@@ -59,6 +59,13 @@ public class HomeGamesFragment extends CommonLogicFragment {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+
+		getActivityFace().setBadgeValueForId(R.id.menu_games, 0);
+	}
+
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		NewNavigationMenuAdapter adapter = new NewNavigationMenuAdapter(getActivity(), menuItems);

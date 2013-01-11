@@ -3,19 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:robo="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="45dp"
     android:orientation="horizontal"
     >
 
     <com.chess.RoboTextView
-        android:id="@+id/actionBarTitleTxt"
+        android:id="@id/actionbar_compat_title"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:padding="10dp"
-        android:text="Medium Text"
-        android:textSize="18sp"
+        android:paddingLeft="48dip"
+        android:textSize="20sp"
         android:textColor="@color/new_soft_white"
         style="@style/DarkShadowBottom"
         robo:ttf="Bold"

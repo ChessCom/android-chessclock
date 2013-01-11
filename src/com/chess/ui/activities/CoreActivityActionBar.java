@@ -151,29 +151,30 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	private void adjustActionBar() {
-		getActionBarHelper().showMenuItemById(R.id.menu_settings, showActionSettings);
-		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
-		getActionBarHelper().showMenuItemById(R.id.menu_refresh, showActionRefresh);
-		getActionBarHelper().showMenuItemById(R.id.menu_search, showActionSearch);
-		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected());
+//		getActionBarHelper().showMenuItemById(R.id.menu_settings, showActionSettings);
+//		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
+//		getActionBarHelper().showMenuItemById(R.id.menu_refresh, showActionRefresh);
+//		getActionBarHelper().showMenuItemById(R.id.menu_search, showActionSearch);
+//		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected());
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.sign_out, menu);
-		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected(), menu);
-		getActionBarHelper().showMenuItemById(R.id.menu_search, showActionSearch, menu);
-		getActionBarHelper().showMenuItemById(R.id.menu_settings, showActionSettings, menu);
-		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame, menu);
-		getActionBarHelper().showMenuItemById(R.id.menu_refresh, showActionRefresh, menu);
+//		menuInflater.inflate(R.menu.sign_out, menu);
+		menuInflater.inflate(R.menu.new_action_menu, menu);
+//		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected(), menu);
+//		getActionBarHelper().showMenuItemById(R.id.menu_search, showActionSearch, menu);
+//		getActionBarHelper().showMenuItemById(R.id.menu_settings, showActionSettings, menu);
+//		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame, menu);
+//		getActionBarHelper().showMenuItemById(R.id.menu_refresh, showActionRefresh, menu);
 
-		if(HONEYCOMB_PLUS_API){
-			// Get the SearchView and set the searchable configuration
-			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-			SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-		}
+//		if(HONEYCOMB_PLUS_API){
+//			// Get the SearchView and set the searchable configuration
+//			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//			SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+//			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//		}
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -181,8 +182,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-//				backToHomeActivity(); // TODO do something to invent logic to go back to old app
-				getSlidingMenu().toggle();
+//				backToHomeActivity(); // TODO toggle comment here to go back to old app
+//				getSlidingMenu().toggle(); // TODO restore
+				break;
 			case R.id.menu_settings:
 				startActivity(new Intent(this, PreferencesScreenActivity.class));
 				break;
@@ -200,24 +202,24 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	// ---------- LiveChessClientEventListenerFace ----------------
 	@Override
 	public void onConnecting() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActionBarHelper().showMenuItemById(R.id.menu_singOut, false);
-				getActionBarHelper().setRefreshActionItemState(true);
-			}
-		});
+//		runOnUiThread(new Runnable() {   // there will be no indication
+//			@Override
+//			public void run() {
+//				getActionBarHelper().showMenuItemById(R.id.menu_singOut, false);
+//				getActionBarHelper().setRefreshActionItemState(true);
+//			}
+//		});
 	}
 
 	@Override
 	public void onConnectionEstablished() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActionBarHelper().setRefreshActionItemState(false);
-				getActionBarHelper().showMenuItemById(R.id.menu_singOut, true);
-			}
-		});
+//		runOnUiThread(new Runnable() {
+//			@Override
+//			public void run() {
+//				getActionBarHelper().setRefreshActionItemState(false);
+//				getActionBarHelper().showMenuItemById(R.id.menu_singOut, true);
+//			}
+//		});
 	}
 
 	@Override
@@ -256,13 +258,13 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	@Override
 	public void onConnectionFailure(String message) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActionBarHelper().setRefreshActionItemState(false);
-				getActionBarHelper().showMenuItemById(R.id.menu_singOut, false);
-			}
-		});
+//		runOnUiThread(new Runnable() {
+//			@Override
+//			public void run() {
+//				getActionBarHelper().setRefreshActionItemState(false);
+//				getActionBarHelper().showMenuItemById(R.id.menu_singOut, false);
+//			}
+//		});
 
 		if (isPaused)
 			return;

@@ -14,7 +14,7 @@ import java.util.List;
 public class BaseActivity extends SlidingFragmentActivity {
 
 	private int mTitleRes;
-	protected Fragment mFrag;
+	protected Fragment leftMenuFragment;
 
 	public BaseActivity(int titleRes) {
 		mTitleRes = titleRes;
@@ -29,8 +29,8 @@ public class BaseActivity extends SlidingFragmentActivity {
 		// set the Behind View
 		setBehindContentView(R.layout.slide_menu_left_frame);
 		FragmentTransaction ft = this.getSupportFragmentManager().beginTransaction();
-		mFrag = new SampleListFragment();
-		ft.replace(R.id.menu_frame_left, mFrag);
+		leftMenuFragment = new SampleListFragment();
+		ft.replace(R.id.menu_frame_left, leftMenuFragment);
 		ft.commit();
 
 		// customize the SlidingMenu
@@ -42,47 +42,9 @@ public class BaseActivity extends SlidingFragmentActivity {
 		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//		case android.R.id.home:
-//			toggle();
-//			return true;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
-
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu) {  // TODO check
 		return true;
-	}
-
-	public class BasePagerAdapter extends FragmentPagerAdapter {
-		private List<Fragment> mFragments = new ArrayList<Fragment>();
-		private ViewPager mPager;
-
-		public BasePagerAdapter(FragmentManager fm, ViewPager vp) {
-			super(fm);
-			mPager = vp;
-			mPager.setAdapter(this);
-			for (int i = 0; i < 3; i++) {
-				addTab(new SampleListFragment());
-			}
-		}
-
-		public void addTab(Fragment frag) {
-			mFragments.add(frag);
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			return mFragments.get(position);
-		}
-
-		@Override
-		public int getCount() {
-			return mFragments.size();
-		}
 	}
 
 }

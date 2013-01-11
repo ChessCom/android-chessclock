@@ -28,6 +28,7 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
+import com.chess.ui.views.ActionBarBackgroundDrawable;
 import com.chess.ui.views.BadgeDrawable;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -100,14 +101,17 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		SimpleMenu tempMenu = new SimpleMenu(mActivity);
 		SimpleMenuItem homeItem = new SimpleMenuItem(tempMenu, android.R.id.home, 0,
 				mActivity.getString(R.string.app_name));
-		homeItem.setIcon(R.drawable.ic_home);
+		homeItem.setIcon(R.drawable.ic_action_menu);
 		addActionItemCompatFromMenuItem(homeItem);
 
 		// Add title text
 		TextView titleText = new TextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
 		titleText.setLayoutParams(springLayoutParams);
 		titleText.setText(mActivity.getTitle());
+//		titleText.setId(R.id.actionbar_compat_title);
 		actionBarCompat.addView(titleText);
+
+		actionBarCompat.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
 	}
 
 	/**
@@ -116,7 +120,6 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 	@Override
 	public void setRefreshActionItemState(boolean refreshing) {
 		RelativeLayout refreshButtonLay = (RelativeLayout) mActivity.findViewById(R.id.actionbar_compat_item_refresh);
-//		View refreshIndicator = mActivity.findViewById(R.id.actionbar_compat_item_refresh_progress);
 
 		if (refreshButtonLay != null) {
 			if(refreshing){
@@ -243,6 +246,15 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 			}
 //			compatView.setVisibility(show ? View.VISIBLE : View.GONE);
 		}
+	}
+
+	@Override
+	public void setTitle(int titleId) {
+		View compatView = getActionBarCompat();
+		if (compatView != null) {
+			((TextView) compatView.findViewById(R.id.actionbar_compat_title)).setText(titleId);
+		}
+
 	}
 
 	/**

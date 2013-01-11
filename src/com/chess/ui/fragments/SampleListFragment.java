@@ -14,7 +14,7 @@ import com.chess.R;
 public class SampleListFragment extends /*List*/Fragment {
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_main_menu_frame, container, false);
+		return inflater.inflate(R.layout.new_navigation_menu_frame, container, false);
 	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {

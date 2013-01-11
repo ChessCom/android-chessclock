@@ -18,4 +18,11 @@ public class HomeChessComFragment extends CommonLogicFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_home_chesscom_frame, container, false);
 	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		getActivityFace().setBadgeValueForId(R.id.menu_games, 1);
+	}
 }

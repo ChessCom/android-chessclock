@@ -141,11 +141,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_singOut:
-				showPopupDialog(R.string.confirm, R.string.signout_confirm, LOGOUT_TAG);
-				break;
-		}
+//		switch (item.getItemId()) {
+//			case R.id.menu_singOut:
+//				showPopupDialog(R.string.confirm, R.string.signout_confirm, LOGOUT_TAG);
+//				break;
+//		}
 		return super.onOptionsItemSelected(item);
 	}
 

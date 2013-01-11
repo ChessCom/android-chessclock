@@ -16,8 +16,8 @@ import android.util.DisplayMetrics;
  */
 public class LeftImageButton extends RoboButton {
 
-	public static float BORDER_OFFSET;
-	public static float LINE_WIDTH;
+	public static final float BORDER_OFFSET = 3.0f;
+	public static final float LINE_WIDTH = 1.0f;
 
 	private Drawable icon;
 	private Paint borderPaint;
@@ -40,9 +40,6 @@ public class LeftImageButton extends RoboButton {
 	}
 
 	private void init(Context context, AttributeSet attrs) {
-		float density = context.getResources().getDisplayMetrics().density;
-		int densityDpi = context.getResources().getDisplayMetrics().densityDpi;
-
 		// back for image
 		TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.EnhancedField);
 		icon = array.getDrawable(R.styleable.EnhancedField_leftImage);
@@ -59,21 +56,10 @@ public class LeftImageButton extends RoboButton {
 		borderPaint.setStrokeWidth(1);
 		borderPaint.setStyle(Paint.Style.STROKE);
 
-		float borderOffset = 1.5f;
-		float lineWidth = 0.5f;
-		if (densityDpi <= DisplayMetrics.DENSITY_LOW) {
-			lineWidth = 0.5f;
-			borderOffset = 0.5f;
-		}
-		BORDER_OFFSET = borderOffset * density;
-		LINE_WIDTH = lineWidth * density;
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) { // TODO use Picture?
-		if (!initialized) {
-			initImage(canvas);
-		}
 
 		int height = getHeight();
 		for (int i = 0, cnt = borderColors.length; i < cnt; i++) {
@@ -109,9 +95,4 @@ public class LeftImageButton extends RoboButton {
 		super.onDraw(canvas);
 	}
 
-	private void initImage(Canvas canvas) {
-
-		initialized = true;
-
-	}
 }

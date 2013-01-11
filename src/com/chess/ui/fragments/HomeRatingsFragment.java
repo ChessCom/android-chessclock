@@ -24,5 +24,10 @@ public class HomeRatingsFragment extends CommonLogicFragment {
 		return inflater.inflate(R.layout.new_home_ratings_frame, container, false);
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
 
+		getActivityFace().setBadgeValueForId(R.id.menu_games, 2);
+	}
 }

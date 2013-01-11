@@ -92,7 +92,7 @@
             android:inputType="textPassword"
             android:password="true"
             style="@style/WhiteGrayEditText.Bottom"
-            custom:leftImage="@drawable/ic_password"
+            custom:leftImage="@drawable/ic_retype_password"
             android:imeOptions="actionDone"
             />
 
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:text="@string/new_by_signing_up_accept_mobile"
             style="@style/SetupSmallFont"
-            android:paddingTop="15dip"
+            android:paddingTop="10dip"
             />
 
     </LinearLayout>

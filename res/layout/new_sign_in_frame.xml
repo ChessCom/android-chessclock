@@ -7,8 +7,7 @@
     android:id="@+id/mainFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/signin_scr_bottom_padding"
-    android:paddingBottom="@dimen/signin_scr_bottom_padding"
+    android:paddingTop="@dimen/signin_scr_top_padding"
     android:paddingLeft="@dimen/signin_scr_side_padding"
     android:paddingRight="@dimen/signin_scr_side_padding"
     android:background="@color/new_main_back"
@@ -20,13 +19,13 @@
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:layout_centerInParent="true"
+        android:visibility="visible"
         >
 
         <ImageView
             android:id="@+id/logoImg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/signin_logo_margin_top"
             android:layout_marginBottom="@dimen/signin_main_margin_top"
             android:adjustViewBounds="true"
@@ -46,6 +45,7 @@
                 android:layout_weight="1"
                 android:text="@string/sing_up"
                 android:background="@drawable/button_grey_left_selector"
+                android:padding="2dip"
                 />
 
             <com.chess.RoboButton
@@ -55,6 +55,7 @@
                 android:layout_weight="1"
                 android:text="@string/singinPlayguest"
                 android:background="@drawable/button_grey_right_selector"
+                android:padding="2dip"
                 />
         </LinearLayout>
 

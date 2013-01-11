@@ -1,6 +1,8 @@
 package com.chess.ui.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -8,9 +10,12 @@ import android.view.Menu;
 import com.chess.R;
 import com.chess.ui.fragments.*;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
+import com.chess.ui.views.LogoBackgroundDrawable;
 import com.slidingmenu.lib.SlidingMenu;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +29,8 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	private Fragment currentActiveFragment;
 	private Hashtable<Integer, Integer> badgeItems;
 	private CommonLogicFragment rightMenuFragment;
+	private LogoBackgroundDrawable logoBackground;
+	private SlidingMenu slidingMenu;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,29 +39,20 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 
 		setContentView(R.layout.new_main_active_screen);
 
-		// change left menu fragment
-		FragmentTransaction ft = this.getSupportFragmentManager().beginTransaction();
-		mFrag = new NavigationMenuFragment();
-		ft.replace(R.id.menu_frame_left, mFrag);
-		ft.commit();
+		openMenuListeners = new ArrayList<SlidingMenu.OnOpenedListener>();
 
 		// set the Above View
 		switchFragment(new SignInFragment());
 
-		// set right menu. Left Menu is already set in BaseActivity
-		rightMenuFragment = new DailyGamesFragment();
-		SlidingMenu sm = getSlidingMenu();
-		sm.setMode(SlidingMenu.LEFT_RIGHT);
-		sm.setSecondaryMenu(R.layout.slide_menu_right_frame);
-		getSupportFragmentManager()
-				.beginTransaction()
-				.replace(R.id.menu_frame_right, rightMenuFragment)
-				.commit();
-		sm.setSecondaryShadowDrawable(R.drawable.defaultshadowright);
-		sm.setShadowDrawable(R.drawable.defaultshadow);
-		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		slidingMenu = getSlidingMenu();
+		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+		slidingMenu.setOnOpenedListener(openMenuListener);
 
 		badgeItems = new Hashtable<Integer, Integer>();
+
+		logoBackground = new LogoBackgroundDrawable(this);
+
+
 	}
 
 	@Override
@@ -76,11 +74,80 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	}
 
 	@Override
+	public void setTitle(int titleId) {
+		getActionBarHelper().setTitle(titleId);
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		logoBackground.updateConfig();
+	}
+
+	private List<SlidingMenu.OnOpenedListener> openMenuListeners;
+	private SlidingMenu.OnOpenedListener openMenuListener = new SlidingMenu.OnOpenedListener() {
+		@Override
+		public void onOpened() {
+			for (SlidingMenu.OnOpenedListener openedListener : openMenuListeners) { // Inform listeners inside fragments
+				openedListener.onOpened();
+			}
+
+			if (slidingMenu.isSecondaryMenuShowing()) {
+				showToast("Right");
+			} else {
+				showToast("Left");
+			}
+
+		}
+	};
+
+	public void addOnOpenMenuListener(SlidingMenu.OnOpenedListener listener) {
+		openMenuListeners.add(listener);
+	}
+
+	@Override
+	public void registerGcm() {
+		registerGcmService();
+	}
+
+	@Override
+	public void changeRightFragment(CommonLogicFragment fragment) {
+		// set right menu. Left Menu is already set in BaseActivity
+//		rightMenuFragment = new DailyGamesFragment();
+		rightMenuFragment = fragment;
+		SlidingMenu sm = getSlidingMenu();
+		sm.setMode(SlidingMenu.LEFT_RIGHT);
+		sm.setSecondaryMenu(R.layout.slide_menu_right_frame);
+		getSupportFragmentManager()
+				.beginTransaction()
+				.replace(R.id.menu_frame_right, rightMenuFragment)
+				.commit();
+		sm.setSecondaryShadowDrawable(R.drawable.defaultshadowright);
+		sm.setShadowDrawable(R.drawable.defaultshadow);
+		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+	}
+
+	@Override
+	public void changeLeftFragment(CommonLogicFragment fragment) {
+		// change left menu fragment
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//		leftMenuFragment = new NavigationMenuFragment();
+		leftMenuFragment = fragment;
+		ft.replace(R.id.menu_frame_left, leftMenuFragment);
+		ft.commit();
+	}
+
+	@Override
+	public void setTouchModeToSlidingMenu(int touchMode){
+		SlidingMenu sm = getSlidingMenu();
+		sm.setTouchModeAbove(touchMode);
+	}
+
+	@Override
 	public void openFragment(BasePopupsFragment fragment) {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		currentActiveFragment = fragment;
 
-//		ft.setCustomAnimations(R.anim.hold, R.anim.slide_from_0_to_minus100, R.anim.hold, android.R.anim.slide_out_right);
 		ft.replace(R.id.content_frame, fragment);
 		ft.addToBackStack(null);
 		ft.commit();
@@ -91,7 +158,6 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		currentActiveFragment = fragment;
 
-//		ft.setCustomAnimations(R.anim.hold, R.anim.slide_from_0_to_minus100, R.anim.hold, android.R.anim.slide_out_right);
 		ft.replace(R.id.content_frame, fragment);
 		ft.addToBackStack(null);
 		ft.commit();
@@ -116,34 +182,35 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	}
 	@Override
 	public boolean isMenuActive() {
-		return getSlidingMenu().isMenuShowing();
+//		return getSlidingMenu().isMenuShowing();
+		return false;
 	}
 
 	@Override
 	public void toggleMenu(int code) {
-		switch (code) {
-			case SlidingMenu.LEFT:
-				if (getSlidingMenu().isMenuShowing()) {
-					getSlidingMenu().toggle();
-				} else {
-					getSlidingMenu().showMenu();
-				}
-				break;
-			case SlidingMenu.RIGHT:
-				boolean visible = getSlidingMenu().isMenuShowing();
-				if (visible) {
-					getSlidingMenu().toggle();
-				} else {
-					getSlidingMenu().showSecondaryMenu();
-				}
-				rightMenuFragment.onVisibilityChanged(visible);
-				break;
-		}
+//		switch (code) {
+//			case SlidingMenu.LEFT:
+//				if (getSlidingMenu().isMenuShowing()) {
+//					getSlidingMenu().toggle();
+//				} else {
+//					getSlidingMenu().showMenu();
+//				}
+//				break;
+//			case SlidingMenu.RIGHT:
+//				boolean visible = getSlidingMenu().isMenuShowing();
+//				if (visible) {
+//					getSlidingMenu().toggle();
+//				} else {
+//					getSlidingMenu().showSecondaryMenu();
+//				}
+//				rightMenuFragment.onVisibilityChanged(visible);
+//				break;
+//		}
 	}
 
 	@Override
 	public void closeMenu(int code) {
-		getSlidingMenu().toggle();
+//		getSlidingMenu().toggle();
 	}
 
 	@Override
@@ -177,6 +244,11 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	@Override
 	public CoreActivityActionBar getActionBarActivity() {
 		return getInstance();
+	}
+
+	@Override
+	public Drawable getLogoBackground() {
+		return logoBackground;
 	}
 
 	@Override

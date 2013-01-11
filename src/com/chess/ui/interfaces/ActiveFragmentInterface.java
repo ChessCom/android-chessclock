@@ -1,8 +1,11 @@
 package com.chess.ui.interfaces;
 
 
+import android.graphics.drawable.Drawable;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.fragments.BasePopupsFragment;
+import com.chess.ui.fragments.CommonLogicFragment;
+import com.slidingmenu.lib.SlidingMenu;
 
 public interface ActiveFragmentInterface {
 
@@ -27,4 +30,16 @@ public interface ActiveFragmentInterface {
     void setBadgeValueForId(int menuId, int value);
 
 	CoreActivityActionBar getActionBarActivity();
+
+	Drawable getLogoBackground();
+
+	void changeRightFragment(CommonLogicFragment fragment);
+
+	void changeLeftFragment(CommonLogicFragment fragment);
+
+	void registerGcm();
+
+	void setTouchModeToSlidingMenu(int touchMode);
+
+	void addOnOpenMenuListener(SlidingMenu.OnOpenedListener listener);
 }

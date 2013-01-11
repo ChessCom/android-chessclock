@@ -1,6 +1,5 @@
 package com.slidingmenu.lib.app;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
@@ -37,10 +36,6 @@ public class SlidingFragmentActivity extends FragmentActivity implements Sliding
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		mHelper.onSaveInstanceState(outState);
-	}
-
-	protected ActionBar getSupportActionBar(){
-		return getActionBar();
 	}
 
 	@Override

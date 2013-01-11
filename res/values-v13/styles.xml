@@ -27,7 +27,7 @@
 	<style name="ActionBar" parent="android:style/Widget.Holo.Light.ActionBar">
 		<item name="android:background">@drawable/top_bar_texture</item>
 		<item name="android:titleTextStyle">@style/ActionBarTitle</item>
-		<item name="android:icon">@drawable/alpha_wr</item>
-		<item name="android:homeAsUpIndicator">@drawable/empty</item>
+		<item name="android:icon">@drawable/ic_action_menu</item>
+		<item name="android:homeAsUpIndicator">@drawable/ic_action_menu</item>
 	</style>
 </resources>

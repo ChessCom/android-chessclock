@@ -25,12 +25,10 @@ public class LeftImageEditText extends RoboEditText {
 	public static final int MID = 2;
 	public static final int BOT = 3;
 
-	public static float BORDER_OFFSET;
-	public static float LINE_WIDTH;
+	public static float BORDER_OFFSET = 2.0f;
 
 	private Drawable icon;
 	private int imageWidth;
-	private Paint borderPaint;
 	private boolean initialized;
 	private ShapeDrawable backForImage;
 	private int roundMode;
@@ -58,7 +56,6 @@ public class LeftImageEditText extends RoboEditText {
 
 	private void init(Context context, AttributeSet attrs) {
 		density = context.getResources().getDisplayMetrics().density;
-		int densityDpi = context.getResources().getDisplayMetrics().densityDpi;
 
 		// back for image
 		TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.EnhancedField);
@@ -106,32 +103,18 @@ public class LeftImageEditText extends RoboEditText {
 		backForImage = new ShapeDrawable(new RoundRectShape(outerR, null, null));
 		backForImage.getPaint().setColor(color);
 
-
-		borderPaint = new Paint();
-		borderPaint.setColor(Color.GREEN);
-		borderPaint.setStrokeWidth(3);
-		borderPaint.setStyle(Paint.Style.STROKE);
-
 		linePaint = new Paint();
 		linePaint.setColor(context.getResources().getColor(R.color.light_grey_border));
 		linePaint.setStrokeWidth(1);
 		linePaint.setStyle(Paint.Style.STROKE);
-
-		float borderOffset = 1.0f;
-		float lineWidth = 0.5f;
-		if (densityDpi <= DisplayMetrics.DENSITY_LOW) {
-			lineWidth = 0.5f;
-			borderOffset = 0.5f;
-		}
-		BORDER_OFFSET = borderOffset * density;
-		LINE_WIDTH = lineWidth * density;
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) { // TODO use Picture?
 		if (!initialized) {
-			initImage(canvas);
+			initImage();
 		}
+
 		int height = getHeight();
 
 		backForImage.draw(canvas);
@@ -156,7 +139,7 @@ public class LeftImageEditText extends RoboEditText {
 		super.onDraw(canvas);
 	}
 
-	private void initImage(Canvas canvas) {
+	private void initImage() {
 		int width = getWidth();
 		int height = getHeight();
 
@@ -165,26 +148,35 @@ public class LeftImageEditText extends RoboEditText {
 		lineYStart = height - 1;
 		lineYStop = height - 1;
 
+		int x0 = (int)BORDER_OFFSET;
+		int y0 = 0;
+		int x1 = height;
+		int y1 = 0;
+
 		switch (roundMode) {
 			case ONE:
-				backForImage.setBounds((int)BORDER_OFFSET , (int)BORDER_OFFSET, height, (int) (height - BORDER_OFFSET + 1));
+				y0 = (int) BORDER_OFFSET;
+				y1 = (int) (height - BORDER_OFFSET + 1);
+
 				break;
 			case TOP:
-				backForImage.setBounds((int)BORDER_OFFSET, (int)BORDER_OFFSET, height, (int) (height - BORDER_OFFSET + 1));
+				y0 = (int)BORDER_OFFSET;
+				y1 = (int) (height - BORDER_OFFSET + 1);
+
 				break;
 			case MID:
-				backForImage.setBounds((int)BORDER_OFFSET, (int)BORDER_OFFSET - 1, height, (int) (height - BORDER_OFFSET) +1);
+				y0 = (int)BORDER_OFFSET - 1;
+				y1 = (int) (height - BORDER_OFFSET) +1;
 				break;
 			case BOT:
 				lineYStart = 0;
 				lineYStop = 0;
 
-				backForImage.setBounds((int) BORDER_OFFSET , (int)BORDER_OFFSET - 1, height, (int) (height - BORDER_OFFSET));
-				break;
-			default:
-				backForImage.setBounds((int)BORDER_OFFSET, (int)BORDER_OFFSET, height, (int) (height - BORDER_OFFSET + 1));
+				y0 = (int)BORDER_OFFSET - 1;
+				y1 =  (int) (height - BORDER_OFFSET);
 				break;
 		}
+		backForImage.setBounds(x0, y0, x1, y1);
 
 		initialized = true;
 	}

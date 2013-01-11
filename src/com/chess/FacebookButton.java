@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,38 +14,37 @@ import android.util.DisplayMetrics;
  */
 public class FacebookButton extends RoboButton {
 
-	public static float BORDER_OFFSET;
-	public static float LINE_WIDTH;
+	public static final float BORDER_OFFSET = 3.0f;
+	public static final float LINE_WIDTH = 1.0f;
 
 	private Drawable icon;
 	private Paint borderPaint;
-	private boolean initialized;
 	private int[] borderColors;
 	private int imageWidth;
 	private float facebookTextShift;
 
 	public FacebookButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		init(context, attrs);
+		init(context);
 	}
 
 	public FacebookButton(Context context) {
 		super(context);
+		init(context);
 	}
 
 	public FacebookButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init(context, attrs);
+		init(context);
 	}
 
-	private void init(Context context, AttributeSet attrs) {
+	private void init(Context context) {
 		icon = context.getResources().getDrawable(R.drawable.ic_facebook);
 		imageWidth = icon.getIntrinsicWidth();
 		int imageHeight = icon.getIntrinsicHeight();
 		icon.setBounds(0, 0, imageWidth, imageHeight);
 
 		float density = context.getResources().getDisplayMetrics().density;
-		int densityDpi = context.getResources().getDisplayMetrics().densityDpi;
 
 		borderColors = new int[4];
 		borderColors[0] = context.getResources().getColor(R.color.f_emboss_top_2);
@@ -58,22 +56,11 @@ public class FacebookButton extends RoboButton {
 		borderPaint.setStrokeWidth(1);
 		borderPaint.setStyle(Paint.Style.STROKE);
 
-		float borderOffset = 1.5f;
-		float lineWidth = 0.5f;
-		if (densityDpi <= DisplayMetrics.DENSITY_LOW) {
-			lineWidth = 0.5f;
-			borderOffset = 0.5f;
-		}
-		BORDER_OFFSET = borderOffset * density;
-		LINE_WIDTH = lineWidth * density;
 		facebookTextShift = 20 * density;
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) { // TODO use Picture?
-		if (!initialized) {
-			initImage(canvas);
-		}
 
 		int height = getHeight();
 		for (int i = 0, cnt = borderColors.length; i < cnt; i++) {
@@ -114,8 +101,4 @@ public class FacebookButton extends RoboButton {
 		super.onDraw(canvas);
 	}
 
-	private void initImage(Canvas canvas) {
-
-		initialized = true;
-	}
 }

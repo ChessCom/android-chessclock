@@ -139,4 +139,6 @@ public abstract class ActionBarHelper {
 	}
 
 	public abstract void showActionBar(boolean show);
+
+	public abstract void setTitle(int titleId);
 }

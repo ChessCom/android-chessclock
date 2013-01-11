@@ -110,24 +110,24 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	// ---------- LiveChessClientEventListenerFace ----------------
 	@Override
 	public void onConnecting() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActionBarHelper().showMenuItemById(R.id.menu_singOut, false);
-				getActionBarHelper().setRefreshActionItemState(true);
-			}
-		});
+//		runOnUiThread(new Runnable() {
+//			@Override
+//			public void run() {
+//				getActionBarHelper().showMenuItemById(R.id.menu_singOut, false);
+//				getActionBarHelper().setRefreshActionItemState(true);
+//			}
+//		});
 	}
 
 	@Override
 	public void onConnectionEstablished() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActionBarHelper().setRefreshActionItemState(false);
-				getActionBarHelper().showMenuItemById(R.id.menu_singOut, true);
-			}
-		});
+//		runOnUiThread(new Runnable() {
+//			@Override
+//			public void run() {
+//				getActionBarHelper().setRefreshActionItemState(false);
+//				getActionBarHelper().showMenuItemById(R.id.menu_singOut, true);
+//			}
+//		});
 	}
 
 	@Override
@@ -167,13 +167,13 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
 	@Override
 	public void onConnectionFailure(String message) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActionBarHelper().setRefreshActionItemState(false);
-				getActionBarHelper().showMenuItemById(R.id.menu_singOut, false);
-			}
-		});
+//		runOnUiThread(new Runnable() {
+//			@Override
+//			public void run() {
+//				getActionBarHelper().setRefreshActionItemState(false);
+//				getActionBarHelper().showMenuItemById(R.id.menu_singOut, false);
+//			}
+//		});
 
 		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG);
 		getLastPopupFragment().setButtons(1);

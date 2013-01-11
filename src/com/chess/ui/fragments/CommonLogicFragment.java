@@ -84,6 +84,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 //		setHasOptionsMenu(true);
 	}
 
+	protected void setTitle(int titleId) {
+		getActivity().setTitle(titleId);
+	}
+
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -133,10 +138,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		if (broadcastReceiver != null) {
 			getActivity().unregisterReceiver(broadcastReceiver);
 		}
-	}
-
-	public void onVisibilityChanged(boolean visible) {
-
 	}
 
 	protected void backToHomeFragment() {
@@ -259,6 +260,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		AppData.setLiveChessMode(getActivity(), false);
 		DataHolder.reset();
 		TacticsDataHolder.reset();
+
+		getActivityFace().registerGcm();
 
 		afterLogin();
 	}

@@ -158,16 +158,11 @@
     <dimen name="common_button_margin_top">23dip</dimen>
     <dimen name="common_main_hit_button_margin_top">10dip</dimen>
 
-    <!--SignIn Screen-->
-    <dimen name="new_signin_main_margin_top">126dip</dimen>
-    <dimen name="new_invite_main_margin_top">126dip</dimen>
-    <dimen name="new_signup_main_margin_top">126dip</dimen>
-
-
     <!--Create Profile-->
     <dimen name="create_profile_logo_margin_top">35dip</dimen>
     <dimen name="create_profile_main_margin_top">32dip</dimen>
     <dimen name="create_profile_field_margin_top">35dip</dimen>
+    <dimen name="create_profile_skip_padding_top">15dip</dimen>
 
     <!--Invite Screen-->
     <dimen name="invite_logo_margin_top">35dip</dimen>
@@ -175,5 +170,6 @@
     <dimen name="new_signup_field_margin_top">18dip</dimen>
     <dimen name="new_signup_facebook_margin_bottom">18dip</dimen>
     <dimen name="new_setup_small_fonts_size">14sp</dimen>
+
 
 </resources>

@@ -163,7 +163,7 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 			passwordRetypeEdt.requestFocus();
 			return false;
 		}
-
+		CID = 1; // TODO restore
 		if (CID == -1) {
 			showToast(getString(R.string.wrongcountry));
 			return false;
@@ -180,7 +180,7 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
 		loadItem.addRequestParams(RestHelper.P_EMAIL, email);
 		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, CID);
-		loadItem.addRequestParams(RestHelper.P_COUNTRY_CODE, 0); // TODO
+		loadItem.addRequestParams(RestHelper.P_COUNTRY_CODE, "RU"); // TODO
 		loadItem.addRequestParams(RestHelper.P_APP_TYPE, RestHelper.V_ANDROID);
 
 //		new GetStringObjTask(registerUpdateListener).executeTask(loadItem);

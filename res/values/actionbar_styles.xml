@@ -14,7 +14,7 @@
   limitations under the License.
   -->
 
-<resources>
+<resources xmlns:chess="http://schemas.android.com/apk/res/com.chess">
     <style name="AppTheme" parent="android:style/Theme.Black">
         <item name="android:windowTitleSize">@dimen/actionbar_compat_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompat</item>
@@ -76,12 +76,13 @@
     <style name="ActionBarCompatTitleBase">
         <item name="android:id">@id/actionbar_compat_title</item>
         <!-- layout_width/height/weight must be set in code -->
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:paddingLeft">2dp</item>
-        <item name="android:paddingRight">6dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingLeft">48dp</item>
+        <item name="android:paddingRight">2dp</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">marquee</item>
+        <item name="ttf">Bold</item>
     </style>
 
     <style name="ActionBarCompatTitle" parent="style/ActionBarCompatTitleBase">

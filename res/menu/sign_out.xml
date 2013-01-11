@@ -44,11 +44,11 @@
 		android:showAsAction="always"
 		/>
 
-	<item android:id="@+id/menu_signOut"
+<!--	<item android:id="@+id/menu_singOut"
 		android:title="@string/signout"
 		android:orderInCategory="4"
 		android:icon="@drawable/ic_action_sign_out"
-		android:showAsAction="always"/>
+		android:showAsAction="always"/>-->
 
 
 </menu>

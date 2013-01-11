@@ -5,6 +5,7 @@ import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import com.chess.R;
+import com.chess.RoboTextView;
 import com.chess.utilities.AppUtils;
 
 /**
@@ -25,7 +26,6 @@ public class BadgeDrawable extends Drawable {
 	private final float density;
 	private final RectF badgeRect;
 	private final float cornerRadius;
-	//	private final Paint rectangleBorderTopPaint;
 	private final Paint rectangleBorderBottomPaint;
 	private final RectF badgeBorderRect;
 	private final int rectangleSize;
@@ -66,11 +66,6 @@ public class BadgeDrawable extends Drawable {
 		rectangleBorderPaint.setStrokeWidth(1.0f);
 		rectangleBorderPaint.setStyle(Paint.Style.STROKE);
 
-//		rectangleBorderTopPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-//		rectangleBorderTopPaint.setColor(border1Color);
-//		rectangleBorderTopPaint.setStrokeWidth(1.0f);
-//		rectangleBorderTopPaint.setStyle(Paint.Style.STROKE);
-
 		rectangleBorderBottomPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		rectangleBorderBottomPaint.setDither(true);
 		rectangleBorderBottomPaint.setColor(border1Color);
@@ -81,10 +76,12 @@ public class BadgeDrawable extends Drawable {
 		textSize = 11 * density;
 		textWidth = 3 * density;
 		textHeight = 5 * density;
+
 		textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		textPaint.setColor(Color.WHITE);
 		textPaint.setTextSize(textSize);
-		textPaint.setTypeface(Typeface.DEFAULT_BOLD);
+		Typeface font = Typeface.createFromAsset(context.getAssets(), RoboTextView.MAIN_FONT + "Bold" + ".ttf");
+		textPaint.setTypeface(font);
 
 		Rect bounds = icon.getBounds();
 		bottom = (int) (bounds.bottom * density);
@@ -93,7 +90,7 @@ public class BadgeDrawable extends Drawable {
 		badgeRect = new RectF();
 		badgeBorderRect = new RectF();
 
-		cornerRadius = 3 * density;
+		cornerRadius = 4 * density;
 
 		// Used only for PRE-ICE
 		viewHeight = context.getResources().getDimension(R.dimen.actionbar_compat_height);
@@ -142,13 +139,18 @@ public class BadgeDrawable extends Drawable {
 			canvas.translate(iconX0, iconY0);
 			icon.draw(canvas);
 			canvas.restore();
-
 		}
 
-		canvas.drawRoundRect(badgeRect, cornerRadius, cornerRadius, rectangleMainPaint);
-		canvas.drawRoundRect(badgeBorderRect, cornerRadius, cornerRadius, rectangleBorderBottomPaint);
-		canvas.drawRoundRect(badgeRect, cornerRadius, cornerRadius, rectangleBorderPaint);
-		canvas.drawText(String.valueOf(value), badgeRect.centerX() - textWidth, badgeRect.centerY() + textHeight, textPaint);
+		if (value != 0) {
+			canvas.drawRoundRect(badgeRect, cornerRadius, cornerRadius, rectangleMainPaint);
+			canvas.drawRoundRect(badgeBorderRect, cornerRadius, cornerRadius, rectangleBorderBottomPaint);
+			canvas.drawRoundRect(badgeRect, cornerRadius, cornerRadius, rectangleBorderPaint);
+
+			// Draw text
+			canvas.drawText(String.valueOf(value), badgeRect.centerX() - textWidth - density,
+					badgeRect.centerY() + textHeight - density, textPaint);
+
+		}
 	}
 
 	@Override

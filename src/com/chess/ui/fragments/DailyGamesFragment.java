@@ -38,6 +38,7 @@ import com.chess.ui.adapters.OnlineFinishedGamesCursorAdapter;
 import com.chess.ui.adapters.SectionedAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.utilities.AppUtils;
+import com.slidingmenu.lib.SlidingMenu;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,7 +46,7 @@ import com.chess.utilities.AppUtils;
  * Date: 02.01.13
  * Time: 7:42
  */
-public class DailyGamesFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class DailyGamesFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, SlidingMenu.OnOpenedListener {
 
 	private static final int CURRENT_GAMES_SECTION = 0;
 	private static final int CHALLENGES_SECTION = 1;
@@ -85,11 +86,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private boolean onVacation;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_daily_games_frame, container, false);
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// init adapters
@@ -104,6 +100,13 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
 
 		listUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
+
+		getActivityFace().addOnOpenMenuListener(this);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.new_daily_games_frame, container, false);
 	}
 
 	@Override
@@ -120,16 +123,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	@Override
-	public void onVisibilityChanged(boolean visible) {
-		getActivityFace().setBadgeValueForId(R.id.menu_new_game, 0);
-	}
-
-	@Override
 	public void onStart() {
-//		showActionRefresh = true; // no need on this fragment
-//		showActionNewGame = true;
-
-		getActivityFace().setBadgeValueForId(R.id.menu_new_game, 0);
 		super.onStart();
 		init();
 
@@ -287,6 +281,11 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			startActivity(intent);
 		}
 		return true;
+	}
+
+	@Override
+	public void onOpened() {
+		getActivityFace().setBadgeValueForId(R.id.menu_games, 0);
 	}
 
 	private class GamesUpdateReceiver extends BroadcastReceiver {

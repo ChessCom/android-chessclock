@@ -33,7 +33,7 @@ public class SplashActivity extends CommonLogicActivity {
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					startActivity(new Intent(SplashActivity.this, HomeScreenActivity.class));
+					startActivity(new Intent(SplashActivity.this, NewLoginActivity.class));
 					AppData.setGuest(getContext(), false);
 					AppData.setLiveChessMode(getContext(), false);
 				}
@@ -49,40 +49,40 @@ public class SplashActivity extends CommonLogicActivity {
 		}*/
 	}
 
-	private class TokenValidationListener extends AbstractUpdateListener<String>{
-
-		public TokenValidationListener() {
-			super(getContext());
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			splashProgress.setVisibility(show? View.VISIBLE: View.INVISIBLE);
-		}
-
-		@Override
-		public void updateData(String returnedObj) {
-			if (AppData.isNotificationsEnabled(getContext())) {
-				checkMove();
-			}
-
-			startActivity(new Intent(SplashActivity.this, HomeScreenActivity.class));
-			AppData.setGuest(getContext(), false);
-			AppData.setLiveChessMode(getContext(), false);
-		}
-
-		@Override
-		public void errorHandle(String resultMessage) {
-			goToLoginScreen();
-			showToast(resultMessage);
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			goToLoginScreen();
-		}
-	}
+//	private class TokenValidationListener extends AbstractUpdateListener<String>{
+//
+//		public TokenValidationListener() {
+//			super(getContext());
+//		}
+//
+//		@Override
+//		public void showProgress(boolean show) {
+//			splashProgress.setVisibility(show? View.VISIBLE: View.INVISIBLE);
+//		}
+//
+//		@Override
+//		public void updateData(String returnedObj) {
+//			if (AppData.isNotificationsEnabled(getContext())) {
+//				checkMove();
+//			}
+//
+//			startActivity(new Intent(SplashActivity.this, HomeScreenActivity.class));
+//			AppData.setGuest(getContext(), false);
+//			AppData.setLiveChessMode(getContext(), false);
+//		}
+//
+//		@Override
+//		public void errorHandle(String resultMessage) {
+//			goToLoginScreen();
+//			showToast(resultMessage);
+//		}
+//
+//		@Override
+//		public void errorHandle(Integer resultCode) {
+//			super.errorHandle(resultCode);
+//			goToLoginScreen();
+//		}
+//	}
 
 	private void goToLoginScreen(){
 		startActivity(new Intent(getContext(), NewLoginActivity.class));

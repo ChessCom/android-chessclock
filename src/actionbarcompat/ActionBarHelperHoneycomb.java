@@ -18,11 +18,15 @@ package actionbarcompat;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import com.chess.R;
+import com.chess.ui.views.ActionBarBackgroundDrawable;
+import com.chess.ui.views.BackgroundChessDrawable;
 import com.chess.ui.views.BadgeDrawable;
 
 /**
@@ -39,6 +43,12 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	}
 
 	@Override
+	public void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		mActivity.getActionBar().setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		mOptionsMenu = menu;
 		return super.onCreateOptionsMenu(menu);
@@ -46,9 +56,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
 	@Override
 	public void setRefreshActionItemState(boolean refreshing) {
-		// On Honeycomb, we can set the state of the refresh button by giving it
-// a custom
-		// action view.
+		// On Honeycomb, we can set the state of the refresh button by giving it a custom action view.
 		if (mOptionsMenu == null) {
 			return;
 		}
@@ -121,10 +129,14 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	@Override
 	public void setBadgeValueForId(int menuId, int value, Menu menu) {
 		MenuItem item = menu.findItem(menuId);
+		if (item == null) { // we didn't initialized menu with this item
+			return;
+		}
+
 		Drawable icon = item.getIcon();
 		if (icon instanceof BadgeDrawable) {
 			((BadgeDrawable)icon).setValue(value);
-		} else if (value != 0) {
+		} else {
 			item.setIcon(new BadgeDrawable(getActionBarThemedContext(), icon, value));
 		}
 	}
@@ -135,6 +147,14 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 			mActivity.getActionBar().show();
 		} else {
 			mActivity.getActionBar().hide();
+		}
+	}
+
+	@Override
+	public void setTitle(int titleId) {
+		View customView = mActivity.getActionBar().getCustomView();
+		if (customView != null) {
+			((TextView)customView.findViewById(R.id.actionbar_compat_title)).setText(titleId);
 		}
 	}
 

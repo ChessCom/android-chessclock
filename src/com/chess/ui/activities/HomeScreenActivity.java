@@ -116,7 +116,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 		if (tag.equals(LOGOUT_TAG)) {
 			getLccHolder().logout();
-			getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected());
+//			getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected());
 		} else if (tag.equals(CHALLENGE_TAG)) {
 			Log.i(TAG, "Accept challenge: " + currentChallenge);
             challengeTaskRunner.runAcceptChallengeTask(currentChallenge);
@@ -150,32 +150,32 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	}
 
 	private void adjustActionBar(){
-		getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected());
-		getActionBarHelper().showMenuItemById(R.id.menu_search, false);
-		getActionBarHelper().showMenuItemById(R.id.menu_settings, false);
-		getActionBarHelper().showMenuItemById(R.id.menu_new_game, false);
-		getActionBarHelper().showMenuItemById(R.id.menu_refresh, false);
+//		getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected());
+//		getActionBarHelper().showMenuItemById(R.id.menu_search, false);
+//		getActionBarHelper().showMenuItemById(R.id.menu_settings, false);
+//		getActionBarHelper().showMenuItemById(R.id.menu_new_game, false);
+//		getActionBarHelper().showMenuItemById(R.id.menu_refresh, false);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.sign_out, menu);
-		getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected(), menu);
-		getActionBarHelper().showMenuItemById(R.id.menu_search, false, menu);
-		getActionBarHelper().showMenuItemById(R.id.menu_settings, false, menu);
-		getActionBarHelper().showMenuItemById(R.id.menu_refresh, false, menu);
-		getActionBarHelper().showMenuItemById(R.id.menu_new_game, false, menu);
+//		MenuInflater menuInflater = getMenuInflater();
+//		menuInflater.inflate(R.menu.sign_out, menu);
+//		getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected(), menu);
+//		getActionBarHelper().showMenuItemById(R.id.menu_search, false, menu);
+//		getActionBarHelper().showMenuItemById(R.id.menu_settings, false, menu);
+//		getActionBarHelper().showMenuItemById(R.id.menu_refresh, false, menu);
+//		getActionBarHelper().showMenuItemById(R.id.menu_new_game, false, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_singOut:
-				showPopupDialog(R.string.confirm, R.string.signout_confirm, LOGOUT_TAG);
-				break;
-		}
+//		switch (item.getItemId()) {
+//			case R.id.menu_singOut:
+//				showPopupDialog(R.string.confirm, R.string.signout_confirm, LOGOUT_TAG);
+//				break;
+//		}
 		return super.onOptionsItemSelected(item);
 	}
 
