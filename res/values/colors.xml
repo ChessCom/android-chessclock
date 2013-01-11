@@ -90,32 +90,7 @@
     <color name="f_button_pressed_stroke_1">#96657caf</color>
     <color name="f_button_pressed_stroke_2">#FF93afee</color>
 
-    <!--Navigation Menu-->
-    <color name="nav_menu_item">#FF24221f</color>
-    <color name="nav_menu_item_p">#ff181613</color>
-    <color name="nav_menu_item_s">#FF312e2b</color> <!--selected-->
-    <color name="nav_menu_border_top">#FF403f3d</color>
-    <color name="nav_menu_border_top_highlighted">#FF525253</color>
-    <color name="nav_menu_border_bot">#FF000000</color>
-    <color name="nav_menu_upgrade_shine">#FF8796a5</color>
 
-    <!--TabsHome-->
-    <color name="tab_home_shadow">#26000000</color>
-
-    <!--TabsHome Buttons-->
-    <color name="tab_home_button">#FF413d39</color>
-    <color name="tab_home_button_p">#ff3a3734</color>
-    <color name="tab_home_button_c">#FF312e2b</color>
-    <color name="tab_home_button_border">#FF2a2725</color>
-    <color name="tab_home_button_shadow">#FF000000</color>
-    <color name="tab_home_button_text">#FFc8c8c8</color>
-
-    <!--DailyGames-->
-    <color name="daily_games_header_back">#FF1d1c1a</color>
-    <color name="daily_games_header_back_p">#FF1d1c1a</color>
-    <color name="daily_games_header_back_s">#FF1d1c1a</color> <!--selected-->
-    <color name="daily_games_header_back_border_top">#FF2c2b29</color>
-    <color name="daily_games_header_back_border_bot">#FF000000</color>
     <!--Toggle buttons-->
 
 	<color name="toggle_button_1">#FF929292</color>
@@ -188,10 +163,12 @@
 	<!--<color name="shadow_border">#27000000</color>-->
 	<color name="shadow_border">#7F000000</color>
 	<!--<color name="shadow_border">#FF183b94</color>-->
-    <color name="dashboard_item_default">#FF353535</color>
-    <color name="dashboard_item_stroke">#FF575757</color>
-    <!--<color name="dashboard_item_stroke">#FFFFFFFF</color>-->
-    <color name="dashboard_item_stroke_2">#FF232323</color>
+    <!--<color name="dashboard_item_default">#FF353535</color>-->
+    <color name="dashboard_item_default">#FF312e2a</color>
+    <!--<color name="dashboard_item_stroke">#FF312e2a</color>-->
+    <color name="dashboard_item_stroke">#ff484541</color>
+    <!--<color name="dashboard_item_stroke_2">#FF232323</color>-->
+    <color name="dashboard_item_stroke_2">#ff484541</color>
 
 
     <color name="top_bar_stroke_1">#FF5e5e5e</color>
@@ -238,4 +215,45 @@
     <color name="new_normal_gray">#FF72706d</color>
     <color name="new_light_gray">#FFc8c8c8</color>
     <color name="new_main_back">#FF312e2a</color>
+
+    <!--Navigation Menu-->
+    <color name="nav_menu_item">#FF24221f</color>
+    <color name="nav_menu_item_p">#ff181613</color>
+    <color name="nav_menu_item_s">#FF312e2b</color> <!--selected-->
+    <color name="nav_menu_border_top">#FF403f3d</color>
+    <color name="nav_menu_border_top_highlighted">#FF4e4d4c</color>
+    <color name="nav_menu_border_bot">#FF000000</color>
+    <color name="nav_menu_upgrade_shine">#FF8796a5</color>
+
+    <!--Upgrade Menu Item-->
+
+    <color name="new_upgrade_menu_1">#FF383b3d</color>
+    <color name="new_upgrade_menu_2">#FF252320</color>
+    <color name="new_upgrade_menu_p_1">#ff2c2f31</color>
+    <color name="new_upgrade_menu_p_2">#ff181613</color>
+    <color name="new_upgrade_menu_s_1">#ff474a4c</color>
+    <color name="new_upgrade_menu_s_2">#FF312e2b</color>
+    <color name="new_upgrade_menu_glow_1">#FFc1d9f1</color>
+    <color name="new_upgrade_menu_glow_1_p">#ffafc3d9</color>
+    <color name="new_upgrade_menu_glow_1_s">#ffafc3d9</color>
+
+    <!--TabsHome-->
+    <color name="tab_home_shadow">#26000000</color>
+
+    <!--TabsHome Buttons-->
+    <color name="tab_home_button">#FF413d39</color>
+    <color name="tab_home_button_p">#ff3a3734</color>
+    <color name="tab_home_button_c">#FF312e2b</color>
+    <color name="tab_home_button_border">#FF2a2725</color>
+    <color name="tab_home_button_shadow">#FF000000</color>
+    <color name="tab_home_button_text">#FFc8c8c8</color>
+
+    <!--DailyGames-->
+    <color name="daily_games_header_back">#FF1d1c1a</color>
+    <color name="daily_games_header_back_p">#FF1d1c1a</color>
+    <color name="daily_games_header_back_s">#FF1d1c1a</color> <!--selected-->
+    <color name="daily_games_header_back_border_top">#FF2c2b29</color>
+    <color name="daily_games_header_back_border_bot">#FF000000</color>
+
+
 </resources>

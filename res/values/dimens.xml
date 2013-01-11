@@ -153,6 +153,7 @@
 
     <!--Nav Menu-->
     <dimen name="new_nav_menu_item_height">56dip</dimen>
+    <dimen name="new_nav_menu_image_padding_left">14dip</dimen>
 
     <!--Common-->
     <dimen name="common_button_margin_top">23dip</dimen>
@@ -173,4 +174,5 @@
 
     <!--Daily Games-->
     <dimen name="new_daily_games_header_height">28dip</dimen>
+
 </resources>

@@ -100,13 +100,18 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 //		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
 
 		listUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
-
-		getActivityFace().addOnOpenMenuListener(this);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_daily_games_frame, container, false);
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		getActivityFace().addOnOpenMenuListener(this);
 	}
 
 	@Override
@@ -331,7 +336,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		@Override
 		public void updateData(BaseResponseItem returnedObj) {
-			if (isPaused) {
+			if (isPaused || getActivity() == null) {
 				return;
 			}
 
@@ -508,6 +513,10 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		@Override
 		public void updateData(VacationItem returnedObj) {
+			if (getActivity() == null) {
+				return;
+			}
+
 			switch (listenerCode) {
 				case GET:
 					onVacation = returnedObj.getData().isOnVacation();
@@ -555,6 +564,10 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
+			if (getActivity() == null) {
+				return;
+			}
+
 			new LoadDataFromDbTask(finishedGamesCursorUpdateListener, DbHelper.getEchessFinishedListGamesParams(getContext()),
 					getContentResolver()).executeTask();
 		}
@@ -579,7 +592,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		@Override
 		public void updateData(Cursor returnedObj) {
-			super.updateData(returnedObj);
+			if (getActivity() == null) {
+				return;
+			}
 
 			switch (gameType) {
 				case CURRENT:
@@ -619,6 +634,10 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		@Override
 		public void updateData(DailyGamesAllItem returnedObj) {
+			if (getActivity() == null) {
+				return;
+			}
+
 			hostUnreachable = false;
 			challengesGamesAdapter.setItemsList(returnedObj.getData().getChallenges());
 			new SaveEchessCurrentGamesListTask(saveCurrentGamesListUpdateListener, returnedObj.getData().getCurrent(),

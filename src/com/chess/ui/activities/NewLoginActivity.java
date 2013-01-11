@@ -31,6 +31,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	private CommonLogicFragment rightMenuFragment;
 	private LogoBackgroundDrawable logoBackground;
 	private SlidingMenu slidingMenu;
+	private List<SlidingMenu.OnOpenedListener> openMenuListeners;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -84,7 +85,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		logoBackground.updateConfig();
 	}
 
-	private List<SlidingMenu.OnOpenedListener> openMenuListeners;
+
 	private SlidingMenu.OnOpenedListener openMenuListener = new SlidingMenu.OnOpenedListener() {
 		@Override
 		public void onOpened() {

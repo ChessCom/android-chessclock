@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.chess.R;
 import com.chess.ui.adapters.ItemsAdapter;
 
@@ -20,7 +18,10 @@ import java.util.List;
  * Date: 02.01.13
  * Time: 11:04
  */
-public class NavigationMenuFragment extends CommonLogicFragment {
+public class NavigationMenuFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
+
+	private static final int UPGRADE_POS = 0;
+
 	private ListView listView;
 	private List<NavigationMenuItem> menuItems;
 
@@ -50,6 +51,7 @@ public class NavigationMenuFragment extends CommonLogicFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		listView = (ListView) view.findViewById(R.id.listView);
+		listView.setOnItemClickListener(this);
 	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -59,10 +61,23 @@ public class NavigationMenuFragment extends CommonLogicFragment {
 		listView.setAdapter(adapter);
 	}
 
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		for (NavigationMenuItem menuItem : menuItems) {
+			menuItem.selected = false;
+		}
+
+		menuItems.get(position).selected = true;
+		NavigationMenuItem menuItem = (NavigationMenuItem) listView.getItemAtPosition(position);
+		menuItem.selected = true;
+		((BaseAdapter)parent.getAdapter()).notifyDataSetChanged();
+	}
+
 
 	private class NavigationMenuItem {
 		public String tag;
 		public int iconRes;
+		public boolean selected;
 
 		public NavigationMenuItem(String tag, int iconRes) {
 			this.tag = tag;
@@ -78,7 +93,7 @@ public class NavigationMenuFragment extends CommonLogicFragment {
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			return LayoutInflater.from(getContext()).inflate(R.layout.new_navigation_menu_item, null, false);
+			return inflater.inflate(R.layout.new_navigation_menu_item, parent, false);
 		}
 
 		@Override
@@ -87,6 +102,22 @@ public class NavigationMenuFragment extends CommonLogicFragment {
 			icon.setImageResource(item.iconRes);
 			TextView title = (TextView) convertView.findViewById(R.id.row_title);
 			title.setText(item.tag);
+
+			if (pos == UPGRADE_POS){
+				if (item.selected)
+					convertView.setBackgroundResource(R.drawable.upgrade_menu_item_back_selected);
+				else {
+					convertView.setBackgroundResource(R.drawable.upgrade_menu_item_back_selector);
+				}
+			} else {
+				icon.setBackgroundDrawable(null);
+				if (item.selected) {
+					convertView.setBackgroundResource(R.drawable.nav_menu_item_selected);
+				} else {
+					convertView.setBackgroundResource(R.drawable.nav_menu_item_selector);
+				}
+			}
+
 		}
 
 		public Context getContext() {

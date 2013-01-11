@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!--Top Border-->
+    <item>
+        <shape >
+            <solid android:color="@color/nav_menu_border_top"/>
+        </shape>
+    </item>
+
+    <!--Bottom Border-->
+    <item
+        android:top="1dip"
+        >
+        <shape >
+            <solid android:color="@color/nav_menu_border_bot"/>
+        </shape>
+    </item>
+
+    <!--Button-->
+    <item
+        android:bottom="1dip"
+        android:top="1dip"
+        >
+        <shape >
+            <gradient
+                android:angle="360"
+                android:startColor="@color/new_upgrade_menu_p_1"
+                android:endColor="@color/new_upgrade_menu_p_2"/>
+            <size android:height="@dimen/new_nav_menu_item_height"/>
+        </shape>
+    </item>
+
+    <!--Glow-->
+    <item
+        android:id="@id/glow_layer"
+        android:drawable="@drawable/upgrade_menu_item_glow_default"
+        />
+</layer-list>
