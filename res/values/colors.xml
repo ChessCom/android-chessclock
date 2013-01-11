@@ -43,8 +43,10 @@
 
 
     <!--Grey -->
-    <color name="grey_button_1">#FF56514c</color>
-    <color name="grey_button_2">#FF504c46</color>
+    <color name="grey_button_1">#FF524d48</color>
+    <color name="grey_button_2">#FF3d3a36</color>
+    <color name="grey_button_half_1">#FF56514c</color>
+    <color name="grey_button_half_2">#FF504c46</color>
     <color name="grey_button_p_1">#FF56514c</color>
     <color name="grey_button_p_2">#ff3c3832</color>
     <color name="grey_button_d">#FF444444</color>
@@ -108,7 +110,12 @@
     <color name="tab_home_button_shadow">#FF000000</color>
     <color name="tab_home_button_text">#FFc8c8c8</color>
 
-
+    <!--DailyGames-->
+    <color name="daily_games_header_back">#FF1d1c1a</color>
+    <color name="daily_games_header_back_p">#FF1d1c1a</color>
+    <color name="daily_games_header_back_s">#FF1d1c1a</color> <!--selected-->
+    <color name="daily_games_header_back_border_top">#FF2c2b29</color>
+    <color name="daily_games_header_back_border_bot">#FF000000</color>
     <!--Toggle buttons-->
 
 	<color name="toggle_button_1">#FF929292</color>

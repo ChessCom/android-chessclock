@@ -16,7 +16,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.*;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
@@ -32,10 +31,10 @@ import com.chess.model.GameOnlineItem;
 import com.chess.ui.activities.ChatOnlineActivity;
 import com.chess.ui.activities.GameFinishedScreenActivity;
 import com.chess.ui.activities.GameOnlineScreenActivity;
+import com.chess.ui.adapters.DailyGamesSectionedAdapter;
 import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
 import com.chess.ui.adapters.OnlineCurrentGamesCursorAdapter;
 import com.chess.ui.adapters.OnlineFinishedGamesCursorAdapter;
-import com.chess.ui.adapters.SectionedAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.utilities.AppUtils;
 import com.slidingmenu.lib.SlidingMenu;
@@ -75,7 +74,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private OnlineCurrentGamesCursorAdapter currentGamesCursorAdapter;
 	private OnlineChallengesGamesAdapter challengesGamesAdapter;
 	private OnlineFinishedGamesCursorAdapter finishedGamesCursorAdapter;
-	private SectionedAdapter sectionedAdapter;
+	private DailyGamesSectionedAdapter sectionedAdapter;
 	private DailyCurrentGameData gameListCurrentItem;
 	private DailyChallengeData gameListChallengeItem;
 
@@ -89,15 +88,16 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// init adapters
-		sectionedAdapter = new SectionedAdapter(getActivity());
+		sectionedAdapter = new DailyGamesSectionedAdapter(getActivity());
 
 		challengesGamesAdapter = new OnlineChallengesGamesAdapter(getContext(), null);
 		currentGamesCursorAdapter = new OnlineCurrentGamesCursorAdapter(getContext(), null);
 		finishedGamesCursorAdapter = new OnlineFinishedGamesCursorAdapter(getContext(), null);
 
-		sectionedAdapter.addSection(getString(R.string.current_games), currentGamesCursorAdapter);
-		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
-		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
+		sectionedAdapter.addSection(getString(R.string.new_my_move), currentGamesCursorAdapter);
+		sectionedAdapter.addSection(getString(R.string.new_their_move), currentGamesCursorAdapter);
+//		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
+//		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
 
 		listUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 
@@ -151,6 +151,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		releaseResources();
 	}
+
 	private void init() {
 		selectedLoadItem = new LoadItem();
 
@@ -532,6 +533,10 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		@Override
 		public void updateData(DailyCurrentGameData returnedObj) {
+			if (getActivity() == null) {
+				return;
+			}
+
 			new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getEchessCurrentListGamesParams(getContext()),
 					getContentResolver()).executeTask();
 		}

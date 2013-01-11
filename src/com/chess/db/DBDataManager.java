@@ -388,7 +388,7 @@ public class DBDataManager {
 		DailyCurrentGameData dataObj = new DailyCurrentGameData();
 
 		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
-		dataObj.setGameType(getString(cursor, DBConstants.V_GAME_TYPE));
+		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
 		dataObj.setOpponentUsername(getString(cursor, DBConstants.V_OPPONENT_NAME));
 		dataObj.setTimeRemaining(getInt(cursor, DBConstants.V_TIME_REMAINING));
 		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));

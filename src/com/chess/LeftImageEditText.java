@@ -57,25 +57,31 @@ public class LeftImageEditText extends RoboEditText {
 	private void init(Context context, AttributeSet attrs) {
 		density = context.getResources().getDisplayMetrics().density;
 
-		// back for image
 		TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.EnhancedField);
-		int color = Color.WHITE;
+		roundMode = array.getInteger(R.styleable.EnhancedField_round_mode, ONE);
+		// back for image
+		int color;
+		color = array.getInteger(R.styleable.EnhancedField_color, Color.WHITE);
+		icon = array.getDrawable(R.styleable.EnhancedField_leftImage);
+		// back for image
 
-		final int N = array.getIndexCount();
-		for (int i = 0; i < N; i++) {
-			int attr = array.getIndex(i);
-			switch (attr) {
-				case R.styleable.EnhancedField_round_mode:
-					roundMode = array.getInteger(i, ONE);
-					break;
-				case R.styleable.EnhancedField_color:
-					color = array.getInteger(i, Color.WHITE);
-					break;
-				case R.styleable.EnhancedField_leftImage:
-					icon = array.getDrawable(i);
-					break;
-			}
-		}
+//		int color = Color.WHITE;
+//
+//		final int N = array.getIndexCount();
+//		for (int i = 0; i < N; i++) {
+//			int attr = array.getIndex(i);
+//			switch (attr) {
+//				case R.styleable.EnhancedField_round_mode:
+//					roundMode = array.getInteger(i, ONE);
+//					break;
+//				case R.styleable.EnhancedField_color:
+//					color = array.getInteger(i, Color.WHITE);
+//					break;
+//				case R.styleable.EnhancedField_leftImage:
+//					icon = array.getDrawable(i);
+//					break;
+//			}
+//		}
 
 		imageWidth = icon.getIntrinsicWidth();
 		int imageHeight = icon.getIntrinsicHeight();

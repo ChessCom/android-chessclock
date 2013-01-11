@@ -205,15 +205,15 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 	}
 
 
-	@Override
-	protected void afterLogin() {
-		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
-//		if (AppData.isNotificationsEnabled(getActivity())){
-//			checkMove();
-//		}
-
-		backToHomeFragment();
-	}
+//	@Override
+//	protected void afterLogin() {
+//		FlurryAgent.logEvent(FlurryData.LOGGED_IN);     // duplicate logic -> moved to CommonLogicFragment class
+////		if (AppData.isNotificationsEnabled(getActivity())){
+////			checkMove();
+////		}
+//
+//		backToHomeFragment();
+//	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {  // TODO restore

@@ -10,7 +10,7 @@ public class DailyCurrentGameData extends DailyGameBaseData{
 	/*
 	"game_id": 35000530,
 	"i_play_as": 1,
-	"game_type_code": "chess",
+	"game_type": 1,
 	"opponent_username": "erikwwww",
 	"opponent_rating": "1200",
 	"time_remaining": 0,

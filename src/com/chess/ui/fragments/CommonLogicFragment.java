@@ -266,7 +266,13 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		afterLogin();
 	}
 
-	protected void afterLogin(){ }
+	protected void afterLogin(){
+		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
+//		if (AppData.isNotificationsEnabled(getActivity())){
+//			checkMove();
+//		}
+
+		backToHomeFragment();}
 
 	public class DelayedCallback implements Runnable {
 

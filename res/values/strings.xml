@@ -507,6 +507,7 @@
     <string name="menu_notifications">Notifications</string>
     <string name="menu_games">Games</string>
 
+
     <!--<string name="game.aborted_by_server_on_logout">Game has been aborted by the server. %1$s has logged out</string>
     <string name="game.aborted_by_server_on_disconnection">Game has been aborted by the server. %1$s has disconnected</string>
     <string name="announcement.server_restarting">ALERT: Chess.com will be restarting the servers in %1$s minutes!</string>-->

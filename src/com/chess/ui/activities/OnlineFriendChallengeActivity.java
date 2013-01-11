@@ -114,7 +114,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 
 		int color = iPlayAsSpnr.getSelectedItemPosition();
 		int days = daysArr[daysPerMoveSpnr.getSelectedItemPosition()];
-		String gameType = chess960.isChecked() ? RestHelper.V_GAME_CHESS_960 : RestHelper.V_GAME_CHESS;
+		int gameType = chess960.isChecked() ? RestHelper.V_GAME_CHESS_960 : RestHelper.V_GAME_CHESS;
 		int isRated = this.isRatedChkBx.isChecked() ? 1 : 0;
 		String opponentName = ((FriendsItem.Data)  friendsSpnr.getSelectedItem()).getUsername();
 

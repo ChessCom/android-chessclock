@@ -6,7 +6,25 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/new_main_back"
     >
+
+    <FrameLayout
+        android:id="@+id/topButtonsView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dip"
+        android:background="@drawable/nav_menu_item_selector"
+        >
+        <com.chess.RoboButton
+            android:id="@+id/startNewGameBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/start_new_game"
+            android:layout_marginLeft="4dip"
+            style="@style/Text.Button"
+            />
+    </FrameLayout>
 
     <RelativeLayout
         android:id="@+id/loadingView"
@@ -61,8 +79,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:layout_alignParentTop="true"
         android:layout_above="@+id/bottomButtonsView"
+        android:layout_below="@id/topButtonsView"
+
         />
 
     <FrameLayout
@@ -72,7 +91,7 @@
         android:layout_above="@id/bottomButtonsView"
         />
 
-    <LinearLayout
+    <FrameLayout
         android:id="@id/bottomButtonsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -82,22 +101,13 @@
         >
         <com.chess.RoboButton
             android:id="@+id/archiveGamesBtn"
-            android:layout_width="0dip"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/new_game_archive"
             android:layout_marginRight="4dip"
             style="@style/Text.Button.Grey"
             />
-        <com.chess.RoboButton
-            android:id="@+id/startNewGameBtn"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/start_new_game"
-            android:layout_marginLeft="4dip"
-            style="@style/Text.Button"
-            />
-        </LinearLayout>
+
+    </FrameLayout>
 
 </RelativeLayout>

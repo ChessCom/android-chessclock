@@ -63,15 +63,15 @@ public class SignInFragment extends ProfileSetupsFragment implements TextView.On
 		dismissProgressDialog();
 	}
 
-	@Override
-	protected void afterLogin() {
-		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
-//		if (AppData.isNotificationsEnabled(this)){
-//			checkMove();
-//		}
-
-		backToHomeFragment();
-	}
+//	@Override
+//	protected void afterLogin() {
+//		FlurryAgent.logEvent(FlurryData.LOGGED_IN); // duplicate logic -> moved to CommonLogicFragment class
+////		if (AppData.isNotificationsEnabled(this)){
+////			checkMove();
+////		}
+//
+//		backToHomeFragment();
+//	}
 
 	@Override
 	public void onClick(View view) {

@@ -262,8 +262,8 @@ message				false	Only used for `CHAT` command.
 1 = Standard Chess | chess
 2 = Chess 960	   | chess(960)
 	 */
-	public static final String V_GAME_CHESS = "chess";
-	public static final String V_GAME_CHESS_960 = "chess(960)";
+	public static final int V_GAME_CHESS = 1;
+	public static final int V_GAME_CHESS_960 = 2;
 
 	public static final String V_ENCODED_MOVES = "encodedMoves";
 	public static final String V_TACTICS_ID = "tactics_id";

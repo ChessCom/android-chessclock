@@ -10,16 +10,16 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.chess.R;
 
-public class SectionedAdapter extends SectionedListAdapter {
+public class DailyGamesSectionedAdapter extends SectionedListAdapter {
 
-	public SectionedAdapter(Context context) {
+	public DailyGamesSectionedAdapter(Context context) {
 		super(context);
 	}
 
 	@Override
 	protected View getHeaderView(String caption, int index, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = LayoutInflater.from(getContext()).inflate(R.layout.section_list_header, parent, false);
+			convertView = LayoutInflater.from(getContext()).inflate(R.layout.new_daily_games_section_header, parent, false);
 			createViewHolder(convertView);
 		}
 		bindView(convertView, caption);
@@ -28,7 +28,7 @@ public class SectionedAdapter extends SectionedListAdapter {
 
 	private void createViewHolder(View convertView) {
 		ViewHolder viewHolder = new ViewHolder();
-		viewHolder.text = (TextView) convertView.findViewById(R.id.title);
+		viewHolder.text = (TextView) convertView.findViewById(R.id.headerTitle);
 		convertView.setTag(viewHolder);
 	}
 

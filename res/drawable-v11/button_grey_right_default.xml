@@ -75,8 +75,8 @@
         android:right="3px"
         >
         <shape android:dither="true" >
-            <gradient android:angle="315" android:startColor="@color/grey_button_1"
-                      android:endColor="@color/grey_button_2"
+            <gradient android:angle="315" android:startColor="@color/grey_button_half_1"
+                      android:endColor="@color/grey_button_half_2"
                 />
             <corners android:topRightRadius="@dimen/rounded_button_radius"
                      android:bottomRightRadius="@dimen/rounded_button_radius"/>

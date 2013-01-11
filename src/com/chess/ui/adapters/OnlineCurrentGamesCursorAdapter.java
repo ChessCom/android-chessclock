@@ -22,10 +22,10 @@ public class OnlineCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View view = inflater.inflate(R.layout.game_list_item, parent, false);
+		View view = inflater.inflate(R.layout.new_games_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
-		holder.playerTxt = (TextView) view.findViewById(R.id.playerTxt);
-		holder.gameInfoTxt = (TextView) view.findViewById(R.id.gameInfoTxt);
+		holder.playerTxt = (TextView) view.findViewById(R.id.playerNameTxt);
+		holder.gameInfoTxt = (TextView) view.findViewById(R.id.timeLeftTxt);
 
 		view.setTag(holder);
 		return view;

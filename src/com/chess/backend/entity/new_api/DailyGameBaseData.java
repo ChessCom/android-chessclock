@@ -10,7 +10,7 @@ public class DailyGameBaseData {
 /*
 	"game_id": 35000494,
 	"i_play_as": 2,
-	"game_type_code": "chess",
+	"game_type": 1,
 	"opponent_username": "deepgreene",
 	"opponent_rating": null,
 	"time_remaining": 0,
@@ -23,7 +23,7 @@ public class DailyGameBaseData {
 
 	private long game_id;
 	private int i_play_as;
-	private String game_type_code;
+	private int game_type;
 	private String opponent_username;
 	private int opponent_rating;
 	private long time_remaining;
@@ -49,12 +49,12 @@ public class DailyGameBaseData {
 		this.i_play_as = i_play_as;
 	}
 
-	public String getGameType() {
-		return game_type_code;
+	public int getGameType() {
+		return game_type;
 	}
 
-	public void setGameType(String game_type_code) {
-		this.game_type_code = game_type_code;
+	public void setGameType(int game_type) {
+		this.game_type = game_type;
 	}
 
 	public String getOpponentUsername() {

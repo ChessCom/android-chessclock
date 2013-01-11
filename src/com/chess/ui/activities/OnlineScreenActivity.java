@@ -21,7 +21,6 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
@@ -58,7 +57,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private OnlineCurrentGamesCursorAdapter currentGamesCursorAdapter;
 	private OnlineChallengesGamesAdapter challengesGamesAdapter;
 	private OnlineFinishedGamesCursorAdapter finishedGamesCursorAdapter;
-	private SectionedAdapter sectionedAdapter;
+	private DailyGamesSectionedAdapter sectionedAdapter;
 	private DailyCurrentGameData gameListCurrentItem;
 	private DailyChallengeData gameListChallengeItem;
 	private boolean onVacation;
@@ -99,7 +98,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		AppData.setLiveChessMode(this, false);
 		// init adapters
-		sectionedAdapter = new SectionedAdapter(this);
+		sectionedAdapter = new DailyGamesSectionedAdapter(this);
 
 		challengesGamesAdapter = new OnlineChallengesGamesAdapter(this, null);
 		currentGamesCursorAdapter = new OnlineCurrentGamesCursorAdapter(getContext(), null);

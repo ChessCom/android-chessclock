@@ -26,6 +26,7 @@ import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import com.chess.R;
+import com.chess.RoboTextView;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.views.ActionBarBackgroundDrawable;
@@ -105,7 +106,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		addActionItemCompatFromMenuItem(homeItem);
 
 		// Add title text
-		TextView titleText = new TextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
+		RoboTextView titleText = new RoboTextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
 		titleText.setLayoutParams(springLayoutParams);
 		titleText.setText(mActivity.getTitle());
 //		titleText.setId(R.id.actionbar_compat_title);

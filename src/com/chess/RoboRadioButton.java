@@ -25,18 +25,21 @@ public class RoboRadioButton extends RadioButton {
     }
 
     private void setupFont(AttributeSet attrs) {
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.RobotoTextView);
+        TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.RobotoTextView);
+		if (array.getString(R.styleable.RobotoTextView_ttf) != null) {
+			ttfName = array.getString(R.styleable.RobotoTextView_ttf);
+		}
 
-        final int N = a.getIndexCount();
-        for (int i = 0; i < N; i++) {
-            int attr = a.getIndex(i);
-            switch (attr) {
-                case R.styleable.RobotoTextView_ttf: {
-                    ttfName = a.getString(i);
-                }
-                break;
-            }
-        }
+//        final int N = array.getIndexCount();
+//        for (int i = 0; i < N; i++) {
+//            int attr = array.getIndex(i);
+//            switch (attr) {
+//                case R.styleable.RobotoTextView_ttf: {
+//                    ttfName = array.getString(i);
+//                }
+//                break;
+//            }
+//        }
         init();
     }
 

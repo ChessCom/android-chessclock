@@ -171,5 +171,6 @@
     <dimen name="new_signup_facebook_margin_bottom">18dip</dimen>
     <dimen name="new_setup_small_fonts_size">14sp</dimen>
 
-
+    <!--Daily Games-->
+    <dimen name="new_daily_games_header_height">28dip</dimen>
 </resources>
