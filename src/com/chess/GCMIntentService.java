@@ -31,6 +31,8 @@ import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.GCMServerResponseItem;
 import com.chess.backend.entity.LastMoveInfoItem;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.BaseResponseItem;
+import com.chess.backend.entity.new_api.GcmItem;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
@@ -55,7 +57,10 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.*;
 import java.util.List;
 import java.util.Random;
 
@@ -81,8 +86,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Log.d(TAG, "User = " + AppData.getUserName(context) + " Device registered: regId = " + registrationId);
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.GCM_REGISTER);
-		loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserToken(context));
+//		loadItem.setLoadPath(RestHelper.GCM_REGISTER);
+		loadItem.setLoadPath(RestHelper.CMD_GCM);
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(context));
 		loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
 		Log.d(TAG, "Registering to server, registrationId = " + registrationId
@@ -105,9 +112,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 				String token = preferences.getString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
 
 				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.GCM_UNREGISTER);
-				loadItem.addRequestParams(RestHelper.GCM_P_ID, token);
-				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
+//				loadItem.setLoadPath(RestHelper.GCM_UNREGISTER);
+				loadItem.setLoadPath(RestHelper.CMD_GCM);
+				loadItem.setRequestMethod(RestHelper.DELETE);
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, token);
+//				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
 				String url = RestHelper.formPostRequest(loadItem);
 				postData(url, loadItem, GcmHelper.REQUEST_UNREGISTER);
@@ -276,7 +285,122 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 
 	private void postData(String url, LoadItem loadItem, int requestCode) {
-		HttpParams httpParameters = new BasicHttpParams();
+		int result = StaticData.EMPTY_DATA;
+		GcmItem item = null;
+
+//		String url = RestHelper.formCustomRequest(loadItem);
+		if (loadItem.getRequestMethod().equals(RestHelper.POST)){
+			url = RestHelper.formPostRequest(loadItem);
+		}
+		Log.d(TAG, "retrieving from url = " + url);
+
+		long tag = System.currentTimeMillis();
+		BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_REQUEST, "tag=" + tag + " " + url);
+
+		HttpURLConnection connection = null;
+		try {
+			URL urlObj = new URL(url);
+			connection = (HttpURLConnection) urlObj.openConnection();
+			connection.setRequestMethod(loadItem.getRequestMethod());
+
+			if (RestHelper.IS_TEST_SERVER_MODE) {
+				Authenticator.setDefault(new Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(RestHelper.V_TEST_NAME, RestHelper.V_TEST_NAME2.toCharArray());
+					}
+				});
+			}
+
+			if (loadItem.getRequestMethod().equals(RestHelper.POST)){
+				submitPostData(connection, loadItem);
+			}
+
+			final int statusCode = connection.getResponseCode();
+			if (statusCode != HttpStatus.SC_OK) {
+				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
+
+				InputStream inputStream = connection.getErrorStream();
+				String resultString = AppUtils.convertStreamToString(inputStream);
+				BaseResponseItem baseResponse = parseJson(resultString, BaseResponseItem.class);
+				Log.d(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
+				result =  RestHelper.encodeServerCode(baseResponse.getCode());
+			}
+
+			InputStream inputStream = null;
+			String resultString = null;
+			try {
+				inputStream = connection.getInputStream();
+
+				resultString = AppUtils.convertStreamToString(inputStream);
+				BaseResponseItem baseResponse = parseJson(resultString, BaseResponseItem.class);
+				if (baseResponse.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+					item = parseJson(resultString);
+					if(item != null) {
+						result = StaticData.RESULT_OK;
+					}
+
+				}
+			} finally {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+			}
+
+			result = StaticData.RESULT_OK;
+			Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
+			BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + resultString);
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			result = StaticData.INTERNAL_ERROR;
+		} catch (JsonSyntaxException e) {
+			e.printStackTrace();
+			result = StaticData.INTERNAL_ERROR;
+		} catch (IOException e) {
+			Log.e(TAG, "I/O error while retrieving data from " + url, e);
+			result = StaticData.NO_NETWORK;
+		} catch (IllegalStateException e) {
+			Log.e(TAG, "Incorrect URL: " + url, e);
+			result = StaticData.UNKNOWN_ERROR;
+		} catch (Exception e) {
+			Log.e(TAG, "Error while retrieving data from " + url, e);
+			result = StaticData.UNKNOWN_ERROR;
+		} finally {
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
+//		return result;
+
+		if (result == StaticData.RESULT_OK /*&& returnedObj.startsWith(OBJECT_SYMBOL)*/) {
+//			GCMServerResponseItem responseItem = parseJson(returnedObj);
+			String reqCode = requestCode == GcmHelper.REQUEST_REGISTER ? "REGISTER" : "UNREGISTER";
+			Log.d(TAG, "REQUEST_" + reqCode + " \nResult = " + item.getData().getRegistration_id());
+
+			if (item.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+				switch (requestCode) {
+					case GcmHelper.REQUEST_REGISTER:
+						GCMRegistrar.setRegisteredOnServer(context, true);
+						AppData.registerOnChessGCM(context, AppData.getUserToken(context));
+						break;
+					case GcmHelper.REQUEST_UNREGISTER:
+						GCMRegistrar.setRegisteredOnServer(context, false);
+						AppData.unRegisterOnChessGCM(context);
+						// remove saved token
+						SharedPreferences.Editor editor = preferences.edit();
+						editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
+						editor.commit();
+						break;
+				}
+			} else {
+				if (requestCode == GcmHelper.REQUEST_REGISTER && context != null) {
+					Toast.makeText(context, R.string.gcm_not_registered, Toast.LENGTH_SHORT).show();
+				}
+			}
+		}
+
+
+		/*HttpParams httpParameters = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
 		HttpConnectionParams.setSoTimeout(httpParameters, Integer.MAX_VALUE);
 
@@ -352,7 +476,27 @@ public class GCMIntentService extends GCMBaseIntentService {
                     Toast.makeText(context, R.string.gcm_not_registered, Toast.LENGTH_SHORT).show();
                 }
             }
+		}*/
+	}
+
+	private void submitPostData(URLConnection connection, LoadItem loadItem) throws IOException {
+		String query = RestHelper.formPostData(loadItem);
+		String charset = HTTP.UTF_8;
+		connection.setDoOutput(true); // Triggers POST.
+//		connection.setRequestProperty("Accept-Charset", charset);
+		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
+		OutputStream output = null;
+		try {
+			output = connection.getOutputStream();
+			output.write(query.getBytes(charset));
+		} finally {
+			if (output != null) try {
+				output.close();
+			} catch (IOException ex) {
+				Log.e(TAG, "Error while submiting POST data " + ex.toString());
+			}
 		}
+
 	}
 
 	private String formJsonData(List<NameValuePair> requestParams) {
@@ -374,15 +518,25 @@ public class GCMIntentService extends GCMBaseIntentService {
 		return data.toString();
 	}
 
-	GCMServerResponseItem parseJson(String jRespString) {
+	private GcmItem parseJson(String jRespString) {
 		Gson gson = new Gson();
-		try {
-            return gson.fromJson(jRespString, GCMServerResponseItem.class);
-        }catch(JsonSyntaxException ex) {
-            ex.printStackTrace(); // in case you want to see the stacktrace in your log cat output
-            BugSenseHandler.addCrashExtraData("GCM Server Response Item", jRespString);
-            BugSenseHandler.sendException(ex);
-            return GCMServerResponseItem.createFailResponse();
-        }
+		return gson.fromJson(jRespString, GcmItem.class);
 	}
+
+	private <CustomType> CustomType parseJson(String jRespString, Class<CustomType> clazz) {
+		Gson gson = new Gson();
+		return gson.fromJson(jRespString, clazz);
+	}
+
+//	GCMServerResponseItem parseJson(String jRespString) {
+//		Gson gson = new Gson();
+//		try {
+//            return gson.fromJson(jRespString, GCMServerResponseItem.class);
+//        }catch(JsonSyntaxException ex) {
+//            ex.printStackTrace(); // in case you want to see the stacktrace in your log cat output
+//            BugSenseHandler.addCrashExtraData("GCM Server Response Item", jRespString);
+//            BugSenseHandler.sendException(ex);
+//            return GCMServerResponseItem.createFailResponse();
+//        }
+//	}
 }

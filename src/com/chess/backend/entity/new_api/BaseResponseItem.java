@@ -44,6 +44,10 @@ public class BaseResponseItem<ItemType> {
 		return message;
 	}
 
+	/**
+	 *
+	 * @return error code received from server. See more_info field for details
+	 */
 	public int getCode() {
 		return code;
 	}

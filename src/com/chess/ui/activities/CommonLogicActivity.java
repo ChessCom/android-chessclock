@@ -23,6 +23,7 @@ import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.GCMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.TacticsDataHolder;
+import com.chess.backend.entity.new_api.GcmItem;
 import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.entity.new_api.MovesStatusItem;
 import com.chess.backend.entity.new_api.RegisterItem;
@@ -221,11 +222,14 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 				// hence the use of AsyncTask instead of a raw thread.
 
 				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.GCM_REGISTER);
-				loadItem.addRequestParams(RestHelper.GCM_P_ID, AppData.getUserToken(this));
+//				loadItem.setLoadPath(RestHelper.GCM_REGISTER);
+				loadItem.setLoadPath(RestHelper.CMD_GCM);
+				loadItem.setRequestMethod(RestHelper.POST);
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(this));
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
-				new PostJsonDataTask(new PostUpdateListener(REQUEST_REGISTER)).execute(loadItem);
+//				new PostJsonDataTask(new PostUpdateListener(REQUEST_REGISTER)).execute(loadItem);
+				new RequestJsonTask<GcmItem>(new PostUpdateListener(REQUEST_REGISTER)).execute(loadItem);
 			}
 		}
 	}
@@ -244,21 +248,21 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		GCMRegistrar.unregister(this);
 	}
 
-	protected class PostUpdateListener extends AbstractUpdateListener<String> {
+//	protected class PostUpdateListener extends AbstractUpdateListener<String> {
+	protected class PostUpdateListener extends AbstractUpdateListener<GcmItem> {
 		private int requestCode;
 
 		public PostUpdateListener(int requestCode) {
-			super(CommonLogicActivity.this);
+			super(CommonLogicActivity.this, GcmItem.class);
 			this.requestCode = requestCode;
 		}
 
 		@Override
-		public void updateData(String returnedObj) {
-			super.updateData(returnedObj);
+		public void updateData(GcmItem returnedObj) {   // TODO invent exponential leap
 
-			GCMServerResponseItem responseItem = parseJson(returnedObj);
+//			GCMServerResponseItem responseItem = parseJson(returnedObj);
 
-            if (responseItem.getCode() < 400) {
+            if (returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
                 switch (requestCode) {
                     case GcmHelper.REQUEST_REGISTER:
                         GCMRegistrar.setRegisteredOnServer(getContext(), true);

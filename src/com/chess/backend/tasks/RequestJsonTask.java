@@ -30,12 +30,12 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 
 	@Override
 	protected Integer doTheTask(LoadItem... loadItems) {
-		result = getData(loadItems[0]);
+		result = requestData(loadItems[0]);
 //		result = postData(loadItems[0].getLoadPath(), loadItems[0]);
 		return result;
 	}
 
-	private int getData(LoadItem loadItem) {
+	private int requestData(LoadItem loadItem) {
 		String url = RestHelper.formCustomRequest(loadItem);
 		if (loadItem.getRequestMethod().equals(RestHelper.POST)){
 		    url = RestHelper.formPostRequest(loadItem);
@@ -77,8 +77,6 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 			InputStream inputStream = null;
 			String resultString = null;
 			try {
-//				String responseText =  EntityUtils.toString(response.getEntity());   // don't remove for quick debug
-//				Log.d(TAG, "received raw JSON response = " + responseText);
 				inputStream = connection.getInputStream();
 
 				resultString = convertStreamToString(inputStream);
@@ -87,12 +85,9 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 					item = parseJson(resultString);
 					if(item != null) {
 						result = StaticData.RESULT_OK;
-//						Log.d(TAG, "received JSON object = " + parseServerRequest(item));
 					}
 
-				} /*else {  // never happens
-					result = baseResponse.getCode();
-				}*/
+				}
 			} finally {
 				if (inputStream != null) {
 					inputStream.close();

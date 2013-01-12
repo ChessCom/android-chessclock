@@ -10,6 +10,7 @@ import org.apache.http.protocol.HTTP;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.GeneralSecurityException;
+import java.security.spec.RSAOtherPrimeInfo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,7 +58,7 @@ public class RestHelper {
 
 	/* Params */
 	public static final String GCM_P_ID = "id";
-	public static final String GCM_P_REGISTER_ID = "registration_id";
+	public static final String GCM_P_REGISTER_ID = "registrationId";
 //	public static final String GCM_P_DEVICE_ID = "device_id";
 
 
@@ -83,7 +84,7 @@ public class RestHelper {
 //	public static final String GET_FRIEND_REQUEST = BASE_URL + API + "/get_friend_requests";
 //	public static final String GET_VACATION_STATUS = BASE_URL + API + "/get_vacation_status";
 	public static final String GET_ANDROID_VERSION = BASE_URL + API + "/get_android_version";
-	public static final String GET_TACTICS_PROBLEM_BATCH = BASE_URL + API + "/get_tactics_problem_batch";
+//	public static final String GET_TACTICS_PROBLEM_BATCH = BASE_URL + API + "/get_tactics_problem_batch";
 
 	// Echess methods
 //    public static final String ECHESS_SUBMIT_ACTION = BASE_URL + API + "/submit_echess_action";
@@ -96,30 +97,35 @@ public class RestHelper {
 //	public static final String ECHESS_FINISHED_GAMES = BASE_URL + API_V3 + "/get_echess_finished_games";
 //	public static final String ECHESS_INFO = BASE_URL + API_V2 + "/get_echess_info";
 
-	public static final String LOGIN = BASE_URL + API_V2 + "/login";
+//	public static final String LOGIN = BASE_URL + API_V2 + "/login";
 //	public static final String GET_FRIENDS_ONLINE = BASE_URL + API_V2 + "/get_friends";
 //	public static final String GET_FRIENDS = BASE_URL + API + "/get_friends";
 //	public static final String GET_VIDEOS  = BASE_URL + API_V2 + "/get_videos";
 
-	public static final String GET_USER_INFO_V2 = BASE_URL + API_V2 + "/get_user_info";
-	public static final String GET_USER_INFO_V3 = BASE_URL + API_V3 + "/get_user_info";
+//	public static final String GET_USER_INFO_V2 = BASE_URL + API_V2 + "/get_user_info";
+//	public static final String GET_USER_INFO_V3 = BASE_URL + API_V3 + "/get_user_info";
 
 	public static final String GET_GAME_V5 = BASE_URL + API_V5 + "/get_game";
 
 	/* Methods */
-	public static final String CMD_LOGIN = BASE_URL + V1 + USERS +"/login";
-	public static final String CMD_REGISTER = BASE_URL + V1 + USERS +"/register";
+		/*Users*/
+	public static final String CMD_USER = BASE_URL + V1 + USERS;
+	public static final String CMD_LOGIN = CMD_USER +"/login";
+	public static final String CMD_REGISTER = CMD_USER +"/register";
+	public static final String CMD_GCM = CMD_USER + "/gcm";
+		/*Games*/
 	public static final String CMD_GAMES = BASE_URL + V1 + GAMES;
 	public static final String CMD_GAMES_ALL = CMD_GAMES +"/all";
 	public static final String CMD_GAMES_CHALLENGES = CMD_GAMES +"/challenges";
 	public static final String CMD_VACATIONS = CMD_GAMES + "/vacations";
 	public static final String CMD_SEEKS = CMD_GAMES + "/seeks";
 	public static final String CMD_MOVES = CMD_GAMES + "/moves";
+		/*Other stuff*/
 	public static final String CMD_FRIENDS = BASE_URL + V1 + "/friends";
 	public static final String CMD_VIDEOS = BASE_URL + V1 + "/videos";
 	public static final String CMD_TACTICS = BASE_URL + V1 + "/tactics";
 	public static final String CMD_TACTIC_TRAINER = CMD_TACTICS + "/trainer";
-	public static final String CMD_USER = BASE_URL + V1 + USERS;
+
 
 	public static String CMD_ANSWER_GAME_SEEK(long gameSeekId) {return CMD_GAMES + gameSeekId + "/seeks";}
 	public static String CMD_PUT_GAME_ACTION(long gameId) {return CMD_GAMES + gameId + "/actions";}
