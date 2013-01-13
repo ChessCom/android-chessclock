@@ -36,17 +36,6 @@ public class RoboTextView extends TextView implements Serializable {
 			ttfName = array.getString(R.styleable.RobotoTextView_ttf);
 		}
 
-
-//        final int N = array.getIndexCount();
-//        for (int i = 0; i < N; i++) {
-//            int attr = array.getIndex(i);
-//            switch (attr) {
-//                case : {
-//                     = array.getString(i);
-//                }
-//                break;
-//            }
-//        }
         init();
     }
 
@@ -59,5 +48,6 @@ public class RoboTextView extends TextView implements Serializable {
 	public void setTypeface(Typeface tf) {
 		super.setTypeface(tf);
 	}
+
 
 }

@@ -45,7 +45,7 @@ import com.slidingmenu.lib.SlidingMenu;
  * Date: 02.01.13
  * Time: 7:42
  */
-public class DailyGamesFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, SlidingMenu.OnOpenedListener {
+public class HomeDailyGamesFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, SlidingMenu.OnOpenedListener {
 
 	private static final int CURRENT_GAMES_SECTION = 0;
 	private static final int CHALLENGES_SECTION = 1;
@@ -104,7 +104,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_daily_games_frame, container, false);
+		return inflater.inflate(R.layout.new_home_daily_games_frame, container, false);
 	}
 
 	@Override
@@ -124,6 +124,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
 		listView.setAdapter(sectionedAdapter);
+
+		view.findViewById(R.id.startNewGameBtn).setOnClickListener(this);
 
 	}
 
@@ -209,6 +211,15 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			}
 		}
 	};
+
+	@Override
+	public void onClick(View v) {
+		super.onClick(v);
+		if (v.getId() == R.id.startNewGameBtn) {
+			getActivityFace().changeRightFragment(new NewGamesFragment());
+			getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+		}
+	}
 
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {

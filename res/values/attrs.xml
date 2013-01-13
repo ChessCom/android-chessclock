@@ -2,7 +2,6 @@
 <resources>
 
     <declare-styleable name="CenteredButton">
-
         <attr name="buttonDrawable" format="dimension" />
         <attr name="buttonText" format="reference|string" />
     </declare-styleable>
@@ -11,16 +10,20 @@
         <attr name="ttf" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="GreyButtonStyle">
+        <attr name="greyButton" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="OrangeButtonStyle">
+        <attr name="orangeButton" format="reference" />
+    </declare-styleable>
+
     <declare-styleable name="EnhancedField">
         <attr name="round_mode" format="reference|integer" />
         <attr name="color" format="reference|integer" />
         <attr name="leftImage" format="reference|integer" />
         <attr name="rightImage" format="reference|integer" />
     </declare-styleable>
-
-<!--    <declare-styleable name="LeftImageStyle">
-        <attr name="leftImage" format="dimension" />
-    </declare-styleable>-->
 
 	<declare-styleable name="OrangeButtonTheme">
 		<attr name="timerLabelStyle" format="reference"/>

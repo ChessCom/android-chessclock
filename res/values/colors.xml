@@ -214,7 +214,7 @@
     <color name="new_soft_gray">#FFdedddb</color>
     <color name="new_normal_gray">#FF72706d</color>
     <color name="new_light_gray">#FFc8c8c8</color>
-    <color name="new_main_back">#FF312e2a</color>
+    <color name="new_main_back">#FF312e2b</color>
 
     <!--Navigation Menu-->
     <color name="nav_menu_item">#FF24221f</color>

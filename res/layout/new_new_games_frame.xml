@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/new_main_back"
+    >
+
+    <com.chess.ui.views.NewGameSetupTemplateView
+        android:id="@+id/dailyGamesSetupView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+</LinearLayout>

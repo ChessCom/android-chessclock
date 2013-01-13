@@ -241,10 +241,16 @@ public class BasePopupsFragment extends Fragment implements PopupDialogFace {
 	}
 
 	protected void showToast(String msg) {
-		Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+		Context context = getActivity();
+		if (context != null) {
+			Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	protected void showToast(int msgId) {
-		Toast.makeText(getActivity(), msgId, Toast.LENGTH_SHORT).show();
+		Context context = getActivity();
+		if (context != null) {
+			Toast.makeText(context, msgId, Toast.LENGTH_SHORT).show();
+		}
 	}
 }

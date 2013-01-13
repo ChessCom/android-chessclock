@@ -15,6 +15,7 @@
         android:layout_height="match_parent"
         android:minHeight="60dip"
         android:visibility="gone"
+        android:layout_centerInParent="true"
         >
 
         <ProgressBar
@@ -55,6 +56,7 @@
         robo:ttf="Bold"
         style="@style/DarkShadowBottom"
         android:visibility="gone"
+        android:layout_centerInParent="true"
         />
 
     <ListView
@@ -99,6 +101,6 @@
             android:layout_marginLeft="4dip"
             style="@style/Text.Button"
             />
-        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>

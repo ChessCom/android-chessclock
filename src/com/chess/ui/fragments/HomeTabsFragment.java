@@ -48,7 +48,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		showActionBar(true);
 		setTitle(R.string.home);
 
-		Fragment homeGamesFragment = new DailyGamesFragment();
+		Fragment homeGamesFragment = new HomeDailyGamesFragment();
 		changeInternalFragment(homeGamesFragment);
 
 		tabRadioGroup = (RadioGroup) view.findViewById(R.id.tabRadioGroup);
@@ -78,7 +78,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
 				case R.id.gamesBtn:
-					changeInternalFragment(new DailyGamesFragment());
+					changeInternalFragment(new HomeDailyGamesFragment());
 					break;
 				case R.id.chesscomBtn:
 					changeInternalFragment(new HomeChessComFragment());
@@ -104,7 +104,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu_new_game:
+			case R.id.menu_games:
 				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
 
 //				showPopupDialog(R.string.invalidId, "Hello", "test");   // Works!

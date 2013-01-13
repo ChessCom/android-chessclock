@@ -114,7 +114,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	@Override
 	public void changeRightFragment(CommonLogicFragment fragment) {
 		// set right menu. Left Menu is already set in BaseActivity
-//		rightMenuFragment = new DailyGamesFragment();
+//		rightMenuFragment = new HomeDailyGamesFragment();
 		rightMenuFragment = fragment;
 		SlidingMenu sm = getSlidingMenu();
 		sm.setMode(SlidingMenu.LEFT_RIGHT);
@@ -189,24 +189,23 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 
 	@Override
 	public void toggleMenu(int code) {
-//		switch (code) {
-//			case SlidingMenu.LEFT:
-//				if (getSlidingMenu().isMenuShowing()) {
-//					getSlidingMenu().toggle();
-//				} else {
-//					getSlidingMenu().showMenu();
-//				}
-//				break;
-//			case SlidingMenu.RIGHT:
-//				boolean visible = getSlidingMenu().isMenuShowing();
-//				if (visible) {
-//					getSlidingMenu().toggle();
-//				} else {
-//					getSlidingMenu().showSecondaryMenu();
-//				}
-//				rightMenuFragment.onVisibilityChanged(visible);
-//				break;
-//		}
+		switch (code) {
+			case SlidingMenu.LEFT:
+				if (getSlidingMenu().isMenuShowing()) {
+					getSlidingMenu().toggle();
+				} else {
+					getSlidingMenu().showMenu();
+				}
+				break;
+			case SlidingMenu.RIGHT:
+				boolean visible = getSlidingMenu().isMenuShowing();
+				if (visible) {
+					getSlidingMenu().toggle();
+				} else {
+					getSlidingMenu().showSecondaryMenu();
+				}
+				break;
+		}
 	}
 
 	@Override
