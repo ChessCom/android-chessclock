@@ -12,9 +12,10 @@ import java.io.Serializable;
 public class RoboTextView extends TextView implements Serializable {
 
 	private static final long serialVersionUID = -2417945858405913303L;
-	public static final String MAIN_FONT = "fonts/trebuc-";
+	public static final String MAIN_PATH = "fonts/trebuc-";
+	public static final String DEFAULT_FONT = "Regular";
 
-	private String ttfName = "Regular";
+	private String ttfName = DEFAULT_FONT;
 
 	public RoboTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -40,7 +41,7 @@ public class RoboTextView extends TextView implements Serializable {
     }
 
     private void init() {
-        Typeface font = Typeface.createFromAsset(getContext().getAssets(), MAIN_FONT + ttfName + ".ttf");
+        Typeface font = Typeface.createFromAsset(getContext().getAssets(), MAIN_PATH + ttfName + ".ttf");
         setTypeface(font);
     }
 

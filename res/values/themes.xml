@@ -21,6 +21,8 @@
 		<item name="timerLabelStyle">@style/GameLabel.Timer</item>
 		<item name="greyButton">@style/Text.Button.Grey</item>
 		<item name="orangeButton">@style/Text.Button</item>
+		<item name="greyButtonSmall">@style/Text.Button.Grey.Small</item>
+		<item name="orangeButtonSmall">@style/Text.Button.Small</item>
     </style>
 
 

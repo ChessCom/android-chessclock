@@ -2,7 +2,6 @@ package com.chess.ui.views;
 
 import android.content.Context;
 import android.graphics.*;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import com.chess.R;
 import com.chess.RoboTextView;
@@ -80,7 +79,7 @@ public class BadgeDrawable extends Drawable {
 		textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		textPaint.setColor(Color.WHITE);
 		textPaint.setTextSize(textSize);
-		Typeface font = Typeface.createFromAsset(context.getAssets(), RoboTextView.MAIN_FONT + "Bold" + ".ttf");
+		Typeface font = Typeface.createFromAsset(context.getAssets(), RoboTextView.MAIN_PATH + "Bold" + ".ttf");
 		textPaint.setTypeface(font);
 
 		Rect bounds = icon.getBounds();

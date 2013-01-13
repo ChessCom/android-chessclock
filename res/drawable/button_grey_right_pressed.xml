@@ -86,7 +86,7 @@
                 android:top="@dimen/rounded_button_padding_top"
                 android:bottom="@dimen/rounded_button_padding_bottom"
                 />
-            <size android:height="@dimen/grey_button_height"/>
+            <!--<size android:height="@dimen/grey_button_height"/>-->
         </shape>
     </item>
 

@@ -24,6 +24,7 @@ public class NewGameSetupTemplateView extends LinearLayout {
 	private static final int VS_ID = BASE_ID + 12;
 	private static final int LEFT_BTN_ID = BASE_ID + 13;
 	public static final int TOP_TEXT_SIZE = 15;
+	public static final int BUTTON_TEXT_SIZE = 13;
 
 	private static int HEADER_PADDING_LEFT = 13;
 	private static int HEADER_PADDING_RIGHT = 11;
@@ -57,6 +58,8 @@ public class NewGameSetupTemplateView extends LinearLayout {
 		HEADER_PADDING_RIGHT *= density;
 		COMPACT_PADDING *= density;
 
+		addDailyGameSetupView();
+		addDailyGameSetupView();
 		addDailyGameSetupView();
 	}
 
@@ -123,11 +126,13 @@ public class NewGameSetupTemplateView extends LinearLayout {
 			compactRelLay.addView(titleText, defaultWrapParams);
 
 			// Left Button - "3 days Mode"
-			RoboButton leftButton = new RoboButton(getContext(), null, R.attr.greyButton);
+			RoboButton leftButton = new RoboButton(getContext(), null, R.attr.greyButtonSmall);
 			RelativeLayout.LayoutParams leftBtnParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 			leftBtnParams.addRule(RelativeLayout.BELOW, TITLE_ID);
 			leftButton.setText("3 days");
+			leftButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, BUTTON_TEXT_SIZE);
+//			leftButton.setFont(RoboTextView.DEFAULT_FONT);
 			leftButton.setId(LEFT_BTN_ID);
 			compactRelLay.addView(leftButton, leftBtnParams);
 
@@ -138,16 +143,16 @@ public class NewGameSetupTemplateView extends LinearLayout {
 
 			vsTxtParams.addRule(RelativeLayout.RIGHT_OF, LEFT_BTN_ID);
 			vsTxtParams.addRule(RelativeLayout.BELOW, TITLE_ID);
-			vsText.setPadding((int)(8 * density),(int) (10 * density), (int) (8 * density), 0);
+			vsText.setPadding((int) (8 * density), (int) (10 * density), (int) (8 * density), 0);
 			vsText.setText("vs");
 			vsText.setTextColor(getContext().getResources().getColor(R.color.new_normal_gray));
-			vsText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
+			vsText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TOP_TEXT_SIZE);
 			vsText.setId(VS_ID);
 
 			compactRelLay.addView(vsText, vsTxtParams);
 
 			// Right Button - "Random"
-			RoboButton rightButton = new RoboButton(getContext(), null, R.attr.greyButton);
+			RoboButton rightButton = new RoboButton(getContext(), null, R.attr.greyButtonSmall);
 			RelativeLayout.LayoutParams rightButtonParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -156,6 +161,8 @@ public class NewGameSetupTemplateView extends LinearLayout {
 			rightButtonParams.addRule(RelativeLayout.BELOW, TITLE_ID);
 
 			rightButton.setText("Random");
+			rightButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, BUTTON_TEXT_SIZE);
+//			rightButton.setFont(RoboTextView.DEFAULT_FONT);
 
 			compactRelLay.addView(rightButton, rightButtonParams);
 
@@ -183,14 +190,15 @@ public class NewGameSetupTemplateView extends LinearLayout {
 			optionsAndPlayView.addView(optionsTxt, optionsTxtParams);
 
 			// Play Button
-			RoboButton playButton = new RoboButton(getContext(), null, R.attr.orangeButton);
+			RoboButton playButton = new RoboButton(getContext(), null, R.attr.orangeButtonSmall);
 			RelativeLayout.LayoutParams playButtonParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 			playButtonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			playButtonParams.addRule(RelativeLayout.BELOW, LEFT_BTN_ID);
 //			playButton.setLayoutParams(playButtonParams);
 			playButton.setText("Play!");
-
+			playButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+//			playButton.setFont(RoboTextView.DEFAULT_FONT);
 
 			optionsAndPlayView.addView(playButton, playButtonParams);
 

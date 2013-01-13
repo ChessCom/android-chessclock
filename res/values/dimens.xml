@@ -25,8 +25,9 @@
 
     <!--New Buttons and Fields-->
     <dimen name="facebook_button_height">40dip</dimen>
-    <dimen name="sign_in_button_height">40dip</dimen>
-    <dimen name="grey_button_height">41dip</dimen>
+    <dimen name="main_button_height">44dip</dimen>
+    <dimen name="main_small_button_height">35dip</dimen>
+    <dimen name="grey_button_height">42dip</dimen>
     <dimen name="new_edit_field_height">40dip</dimen>
     <dimen name="new_tab_button_height">42dip</dimen>
 

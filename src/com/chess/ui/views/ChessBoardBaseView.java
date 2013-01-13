@@ -9,7 +9,6 @@ import android.graphics.Paint.Style;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import com.chess.R;
@@ -116,7 +115,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		whitePaint.setStyle(Style.STROKE);
 		whitePaint.setColor(Color.WHITE);
 
-		Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), RoboTextView.MAIN_FONT+"Regular.ttf");
+		Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), RoboTextView.MAIN_PATH +"Regular.ttf");
 		int coordinateFont = getResources().getInteger(R.integer.board_highlight_font);
 
 		coordinatesPaint.setStrokeWidth(1.0f);

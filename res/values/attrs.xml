@@ -10,13 +10,13 @@
         <attr name="ttf" format="string" />
     </declare-styleable>
 
-    <declare-styleable name="GreyButtonStyle">
+    <declare-styleable name="ButtonStyles">
         <attr name="greyButton" format="reference" />
+        <attr name="orangeButton" format="reference" />
+        <attr name="greyButtonSmall" format="reference" />
+        <attr name="orangeButtonSmall" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="OrangeButtonStyle">
-        <attr name="orangeButton" format="reference" />
-    </declare-styleable>
 
     <declare-styleable name="EnhancedField">
         <attr name="round_mode" format="reference|integer" />

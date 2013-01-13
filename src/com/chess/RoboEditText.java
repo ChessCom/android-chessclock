@@ -39,7 +39,7 @@ public class RoboEditText extends EditText implements Serializable {
     }
 
     private void init() {
-        Typeface font = Typeface.createFromAsset(getContext().getAssets(), RoboTextView.MAIN_FONT + ttfName + ".ttf");
+        Typeface font = Typeface.createFromAsset(getContext().getAssets(), RoboTextView.MAIN_PATH + ttfName + ".ttf");
         setTypeface(font);
     }
 }
