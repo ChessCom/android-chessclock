@@ -15,6 +15,7 @@
         <attr name="orangeButton" format="reference" />
         <attr name="greyButtonSmall" format="reference" />
         <attr name="orangeButtonSmall" format="reference" />
+        <attr name="greyButtonSmallSolid" format="reference" />
     </declare-styleable>
 
 

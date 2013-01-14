@@ -86,7 +86,7 @@
         <com.chess.RoboButton
             android:id="@+id/archiveGamesBtn"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/home_games_bottom_button_height"
             android:layout_weight="1"
             android:text="@string/new_game_archive"
             android:layout_marginRight="4dip"
@@ -95,7 +95,7 @@
         <com.chess.RoboButton
             android:id="@+id/startNewGameBtn"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/home_games_bottom_button_height"
             android:layout_weight="1"
             android:text="@string/start_new_game"
             android:layout_marginLeft="4dip"

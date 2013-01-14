@@ -2,8 +2,6 @@
 	<dimen name="game_end_popup_text_size">17sp</dimen>
 	<dimen name="live_grid_hotizontal_spacing">30dip</dimen>
     <!--SigIn-->
-    <!--<dimen name="signin_scr_top_padding">20dip</dimen>-->
-    <!--<dimen name="signin_scr_bottom_padding">20dip</dimen>-->
     <dimen name="signin_scr_top_padding">15dip</dimen>
     <dimen name="signin_scr_bottom_padding">48dip</dimen>
     <dimen name="signin_scr_side_padding">40dip</dimen>
@@ -12,13 +10,10 @@
 
     <!--New Design-->
 
-
+    <dimen name="button_min_width">70dip</dimen>
     <!--Nav Menu-->
-    <!--<dimen name="new_nav_menu_item_height">56dip</dimen>-->
 
     <!--Common-->
-<!--    <dimen name="common_button_margin_top">23dip</dimen>
-    <dimen name="common_main_hit_button_margin_top">10dip</dimen>-->
 
 
     <!--Create Profile-->
@@ -27,10 +22,5 @@
     <dimen name="create_profile_field_margin_top">35dip</dimen>
     <dimen name="create_profile_skip_padding_top">15dip</dimen>
 
-    <!--Invite Screen-->
-<!--    <dimen name="invite_logo_margin_top">35dip</dimen>
-    <dimen name="invite_facebook_margin_top">34dip</dimen>
-    <dimen name="new_signup_field_margin_top">18dip</dimen>
-    <dimen name="new_signup_facebook_margin_bottom">18dip</dimen>
-    <dimen name="new_setup_small_fonts_size">14sp</dimen>-->
+
 </resources>

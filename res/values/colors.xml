@@ -53,6 +53,16 @@
     <color name="grey_button_checked">#FFde6e00</color>
     <!--<color name="grey_button_stroke">#23747474</color>-->
 
+    <!--Grey Solid-->
+    <color name="grey_button_solid">#FF66605a</color>
+    <color name="grey_button_solid_p">#ff47413c</color>
+    <color name="grey_button_solid_border_top">#FF76706b</color>
+    <color name="grey_button_solid_border_left">#FF6e6862</color>
+    <color name="grey_button_solid_border_bottom">#FF4e4944</color>
+    <color name="grey_button_solid_border_right">#FF56514c</color>
+
+
+
     <color name="grey_emboss_top">#FF67635e</color>
     <color name="grey_emboss_left">#FF5f5a55</color>
     <color name="grey_emboss_bot">#FF413e3a</color>

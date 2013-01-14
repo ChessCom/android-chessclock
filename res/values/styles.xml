@@ -29,7 +29,7 @@
 		<item name="android:paddingBottom">1dip</item>
 		<item name="android:layout_marginTop">2dip</item>
 		<item name="android:layout_marginBottom">2dip</item>
-		<item name="android:minWidth">68dip</item>
+		<item name="android:minWidth">@dimen/button_min_width</item>
 		<item name="android:minHeight">@dimen/main_button_height</item>
 
         <!--Add Shadow to text-->
@@ -46,15 +46,20 @@
         <item name="android:minHeight">@dimen/grey_button_height</item>
     </style>
 
+    <style name="Text.Button.Grey.Small">
+        <item name="android:background">@drawable/button_grey_selector</item>
+        <item name="android:minHeight">@dimen/main_small_button_height</item>
+    </style>
+
+    <style name="Text.Button.Grey.Small.Solid">
+        <item name="android:background">@drawable/button_grey_solid_selector</item>
+    </style>
+
     <style name="Text.Button.Small">
         <item name="android:background">@drawable/button_orange_selector</item>
         <item name="android:minHeight">@dimen/main_small_button_height</item>
     </style>
 
-    <style name="Text.Button.Grey.Small">
-        <item name="android:background">@drawable/button_grey_selector</item>
-        <item name="android:minHeight">@dimen/main_small_button_height</item>
-    </style>
 
     <style name="Text.Button.Green" >
         <item name="android:background">@drawable/button_green_selector</item>

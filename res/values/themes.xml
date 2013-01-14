@@ -23,6 +23,7 @@
 		<item name="orangeButton">@style/Text.Button</item>
 		<item name="greyButtonSmall">@style/Text.Button.Grey.Small</item>
 		<item name="orangeButtonSmall">@style/Text.Button.Small</item>
+		<item name="greyButtonSmallSolid">@style/Text.Button.Grey.Small.Solid</item>
     </style>
 
 

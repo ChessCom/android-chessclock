@@ -507,6 +507,15 @@
     <string name="menu_notifications">Notifications</string>
     <string name="menu_games">Games</string>
 
+    <!--New Game Menu-->
+    <string name="new_options">Options</string>
+    <string name="new_per_turn">Per Turn</string>
+    <string name="new_time">Time</string>
+    <string name="new_difficulty">Difficulty</string>
+    <string name="new_daily_chess">Daily Chess</string>
+    <string name="new_live_chess">Live Chess</string>
+    <string name="new_comp_chess">Vs. Computer</string>
+
 
     <!--<string name="game.aborted_by_server_on_logout">Game has been aborted by the server. %1$s has logged out</string>
     <string name="game.aborted_by_server_on_disconnection">Game has been aborted by the server. %1$s has disconnected</string>

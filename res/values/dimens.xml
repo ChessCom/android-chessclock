@@ -30,6 +30,7 @@
     <dimen name="grey_button_height">42dip</dimen>
     <dimen name="new_edit_field_height">40dip</dimen>
     <dimen name="new_tab_button_height">42dip</dimen>
+    <dimen name="button_min_width">68dip</dimen>
 
     <!--Edit Fields Paddings-->
     <dimen name="new_edit_field_padding_top">5dip</dimen>
@@ -175,5 +176,6 @@
 
     <!--Daily Games-->
     <dimen name="new_daily_games_header_height">28dip</dimen>
+    <dimen name="home_games_bottom_button_height">40dip</dimen>
 
 </resources>

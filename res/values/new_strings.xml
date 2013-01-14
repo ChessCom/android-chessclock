@@ -21,4 +21,6 @@
     <string name="new_my_move">My Move</string>
     <string name="new_their_move">Their Move</string>
     <string name="new_game_archive">Game Archive</string>
+
+    <string name="new_play_ex">Play!</string>
 </resources>
