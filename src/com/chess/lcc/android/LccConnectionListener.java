@@ -22,6 +22,7 @@ public class LccConnectionListener implements ConnectionListener {
 		String message = lccHolder.getContext().getString(R.string.account_error)
 				+ lccHolder.getContext().getString(R.string.another_login_detected);
 
+		lccHolder.setConnected(false);
 		lccHolder.onAnotherLoginDetected(message);
 	}
 
@@ -105,6 +106,7 @@ public class LccConnectionListener implements ConnectionListener {
 		Log.d(CONNECTION, "The client kicked: " + user.getUsername() + ", reason=" + reason +
 				", message=" + message + ", period=" + period);
 
+		lccHolder.setConnected(false);
 		lccHolder.processConnectionFailure(reason, message);
 	}
 }
