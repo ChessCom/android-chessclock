@@ -11,6 +11,7 @@
     <!--New Design-->
 
     <dimen name="button_min_width">70dip</dimen>
+    <dimen name="small_button_height">37dip</dimen>
     <!--Nav Menu-->
 
     <!--Common-->

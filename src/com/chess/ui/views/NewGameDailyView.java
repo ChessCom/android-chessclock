@@ -15,60 +15,64 @@ import com.chess.RoboTextView;
  * Date: 14.01.13
  * Time: 7:23
  */
-public class NewDailyGameView extends NewDefaultGameView {
+public class NewGameDailyView extends NewGameDefaultView {
 
-	private static final int VS_ID = BASE_ID + 101;
-	private static final int RIGHT_BUTTON_ID = BASE_ID + 102;
+	public static final int VS_ID = 101;
+	public static final int RIGHT_BUTTON_ID = 102;
+	private RoboButton playButton;
+	private RoboButton leftButton;
+	private RoboTextView vsText;
+	private RoboButton rightButton;
 
-	public NewDailyGameView(Context context) {
+	public NewGameDailyView(Context context) {
 		super(context);
 	}
 
-	public NewDailyGameView(Context context, AttributeSet attrs) {
+	public NewGameDailyView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public NewDailyGameView(Context context, AttributeSet attrs, int defStyle) {
+	public NewGameDailyView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
 	@Override
 	protected void addButtons(ConfigItem configItem, RelativeLayout compactRelLay) {
 		// Left Button - "3 days Mode"
-		RoboButton leftButton = new RoboButton(getContext(), null, R.attr.greyButtonSmallSolid);
+		leftButton = new RoboButton(getContext(), null, R.attr.greyButtonSmallSolid);
 		RelativeLayout.LayoutParams leftBtnParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
-		leftBtnParams.addRule(RelativeLayout.BELOW, TITLE_ID);
+		leftBtnParams.addRule(RelativeLayout.BELOW, BASE_ID + TITLE_ID);
 		leftButton.setText(configItem.getLeftButtonText());
 		leftButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, BUTTON_TEXT_SIZE);
-		leftButton.setId(LEFT_BTN_ID);
+		leftButton.setId(BASE_ID + LEFT_BUTTON_ID);
 		compactRelLay.addView(leftButton, leftBtnParams);
 
 		// vs
-		RoboTextView vsText = new RoboTextView(getContext());
+		vsText = new RoboTextView(getContext());
 		RelativeLayout.LayoutParams vsTxtParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
-		vsTxtParams.addRule(RelativeLayout.RIGHT_OF, LEFT_BTN_ID);
-		vsTxtParams.addRule(RelativeLayout.BELOW, TITLE_ID);
+		vsTxtParams.addRule(RelativeLayout.RIGHT_OF, BASE_ID + LEFT_BUTTON_ID);
+		vsTxtParams.addRule(RelativeLayout.BELOW, BASE_ID + TITLE_ID);
 		vsText.setPadding((int) (8 * density), (int) (10 * density), (int) (8 * density), 0);
 		vsText.setText("vs");
 		vsText.setTextColor(getContext().getResources().getColor(R.color.new_normal_gray));
 		vsText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TOP_TEXT_SIZE);
-		vsText.setId(VS_ID);
+		vsText.setId(BASE_ID + VS_ID);
 
 		compactRelLay.addView(vsText, vsTxtParams);
 
 		// Right Button - "Random"
-		RoboButton rightButton = new RoboButton(getContext(), null, R.attr.greyButtonSmallSolid);
+		rightButton = new RoboButton(getContext(), null, R.attr.greyButtonSmallSolid);
 		RelativeLayout.LayoutParams rightButtonParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
 		rightButtonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		rightButtonParams.addRule(RelativeLayout.RIGHT_OF, VS_ID);
-		rightButtonParams.addRule(RelativeLayout.BELOW, TITLE_ID);
+		rightButtonParams.addRule(RelativeLayout.RIGHT_OF, BASE_ID + VS_ID);
+		rightButtonParams.addRule(RelativeLayout.BELOW, BASE_ID + TITLE_ID);
 
-		rightButton.setId(RIGHT_BUTTON_ID);
+		rightButton.setId(BASE_ID + RIGHT_BUTTON_ID);
 		rightButton.setText(configItem.getRightButtonText());
 		rightButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, BUTTON_TEXT_SIZE);
 
@@ -79,14 +83,36 @@ public class NewDailyGameView extends NewDefaultGameView {
 	@Override
 	protected void addCustomView(ConfigItem configItem, RelativeLayout optionsAndPlayView) {
 		// Play Button
-		RoboButton playButton = new RoboButton(getContext(), null, R.attr.orangeButtonSmall);
+		playButton = new RoboButton(getContext(), null, R.attr.orangeButtonSmall);
 		RelativeLayout.LayoutParams playButtonParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
+
+		playButtonParams.setMargins(0, (int) (4 * density), 0, 0);
 		playButtonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		playButtonParams.addRule(RelativeLayout.BELOW, LEFT_BTN_ID);
+		playButtonParams.addRule(RelativeLayout.CENTER_VERTICAL);
+
+		playButton.setId(BASE_ID + PLAY_BUTTON_ID);
 		playButton.setText(R.string.new_play_ex);
-		playButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+		playButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, BUTTON_TEXT_SIZE);
 
 		optionsAndPlayView.addView(playButton, playButtonParams);
+	}
+
+	public void toggleOptions() {
+		optionsVisible = !optionsVisible;
+
+		int compactVisibility = optionsVisible? GONE: VISIBLE;
+
+		playButton.setVisibility(compactVisibility);
+		rightButton.setVisibility(compactVisibility);
+		leftButton.setVisibility(compactVisibility);
+		vsText.setVisibility(compactVisibility);
+		titleText.setVisibility(compactVisibility);
+
+		if(optionsVisible) {
+			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_arrow_down, 0);
+		} else {
+			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_arrow_right, 0);
+		}
 	}
 }

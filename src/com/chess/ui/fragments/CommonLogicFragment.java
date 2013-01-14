@@ -256,6 +256,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 // 		preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]); // TODO used only for live, so should be separate connection to live
 		preferencesEditor.commit();
 
+		if (getActivity() == null) {
+			return;
+		}
+
 		AppData.setGuest(getActivity(), false);
 		AppData.setLiveChessMode(getActivity(), false);
 		DataHolder.reset();

@@ -48,7 +48,7 @@
 
     <style name="Text.Button.Grey.Small">
         <item name="android:background">@drawable/button_grey_selector</item>
-        <item name="android:minHeight">@dimen/main_small_button_height</item>
+        <item name="android:minHeight">@dimen/small_button_height</item>
     </style>
 
     <style name="Text.Button.Grey.Small.Solid">
@@ -57,7 +57,7 @@
 
     <style name="Text.Button.Small">
         <item name="android:background">@drawable/button_orange_selector</item>
-        <item name="android:minHeight">@dimen/main_small_button_height</item>
+        <item name="android:minHeight">@dimen/small_button_height</item>
     </style>
 
 

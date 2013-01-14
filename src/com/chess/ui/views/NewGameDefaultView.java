@@ -1,10 +1,10 @@
 package com.chess.ui.views;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
@@ -17,17 +17,17 @@ import com.chess.RoboTextView;
  * Date: 12.01.13
  * Time: 11:04
  */
-public class NewDefaultGameView extends LinearLayout {
+public class NewGameDefaultView extends LinearLayout implements View.OnClickListener {
 
 	/**
 	 * Must be set outside to be able handle clicks
 	 */
-	protected static int BASE_ID;
-	public static final int TITLE_ID = BASE_ID + 1;
+	protected int BASE_ID;
+	public static final int TITLE_ID = 1;
 
-	public static final int LEFT_BTN_ID = BASE_ID + 2;
-	private static final int PLAY_BUTTON_ID = BASE_ID + 3;
-	private static final int OPTIONS_ID = BASE_ID + 4;
+	public static final int LEFT_BUTTON_ID = 2;
+	public static final int PLAY_BUTTON_ID = 3;
+	public static final int OPTIONS_TXT_ID = 4;
 
 	public static final int TOP_TEXT_SIZE = 14;
 	public static final int BUTTON_TEXT_SIZE = 13;
@@ -36,18 +36,23 @@ public class NewDefaultGameView extends LinearLayout {
 	private int HEADER_PADDING_RIGHT = 11;
 	private int COMPACT_PADDING = 14;
 	protected float density;
+	protected boolean optionsVisible;
+	private RoboButton playButton;
+	private RoboButton leftButton;
+	protected TextView titleText;
+	protected RoboTextView optionsTxt;
 
-	public NewDefaultGameView(Context context) {
+	public NewGameDefaultView(Context context) {
 		super(context);
 		onCreate();
 	}
 
-	public NewDefaultGameView(Context context, AttributeSet attrs) {
+	public NewGameDefaultView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		onCreate();
 	}
 
-	public NewDefaultGameView(Context context, AttributeSet attrs, int defStyle) {
+	public NewGameDefaultView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		onCreate();
 	}
@@ -111,7 +116,6 @@ public class NewDefaultGameView extends LinearLayout {
 			headerView.addView(infoButton, defaultWrapParams);
 
 			addView(headerView);
-
 		}
 
 		// Compact Options Quick view
@@ -120,17 +124,17 @@ public class NewDefaultGameView extends LinearLayout {
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		compactRelLay.setLayoutParams(relParams);
 		compactRelLay.setBackgroundResource(R.drawable.nav_menu_item_selected);
-		compactRelLay.setPadding(COMPACT_PADDING, (int) (9 * density), COMPACT_PADDING, COMPACT_PADDING);
+		compactRelLay.setPadding(COMPACT_PADDING, 0/*(int) (9 * density)*/, COMPACT_PADDING, COMPACT_PADDING);
 
 		{// Add defaultMode View
 			// Add Title
-			TextView titleText = new TextView(getContext());
+			titleText = new TextView(getContext());
 			titleText.setText(configItem.getTitleText());
 			titleText.setTextColor(getContext().getResources().getColor(R.color.new_normal_gray));
 			titleText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TOP_TEXT_SIZE);
 
-			titleText.setId(TITLE_ID);
-			titleText.setPadding(0, 0, 0, (int) (5 * density));
+			titleText.setId(BASE_ID + TITLE_ID);
+			titleText.setPadding(0, (int) (9 * density), 0, (int) (5 * density));
 
 			compactRelLay.addView(titleText, defaultWrapParams);
 
@@ -142,22 +146,24 @@ public class NewDefaultGameView extends LinearLayout {
 			RelativeLayout optionsAndPlayView = new RelativeLayout(getContext());
 			RelativeLayout.LayoutParams optionsLayParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
-			optionsLayParams.setMargins(0, (int) (8 * density), 0, 0);
-			optionsLayParams.addRule(RelativeLayout.BELOW, LEFT_BTN_ID);
+			optionsLayParams.setMargins(0, (int) (4 * density), 0, 0);
+			optionsLayParams.addRule(RelativeLayout.BELOW, BASE_ID + LEFT_BUTTON_ID);
 
 			optionsAndPlayView.setLayoutParams(optionsLayParams);
+			optionsAndPlayView.setMinimumHeight((int) (45 * density));
 
 			// Options label/button
-			RoboTextView optionsTxt = new RoboTextView(getContext());
+			optionsTxt = new RoboTextView(getContext());
 			RelativeLayout.LayoutParams optionsTxtParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 			optionsTxtParams.addRule(RelativeLayout.CENTER_VERTICAL);
 
-			optionsTxt.setId(OPTIONS_ID);
+			optionsTxt.setId(BASE_ID + OPTIONS_TXT_ID);
 			optionsTxt.setText(R.string.new_options);
 			optionsTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TOP_TEXT_SIZE);
 			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_right, 0);
-			optionsTxt.setPadding((int) (3 * density), 0, 0, 0);
+			optionsTxt.setPadding((int) (3 * density), (int) (4 * density), 0, 0);
+			optionsTxt.setOnClickListener(this);
 
 			optionsAndPlayView.addView(optionsTxt, optionsTxtParams);
 
@@ -175,28 +181,51 @@ public class NewDefaultGameView extends LinearLayout {
 
 	protected void addButtons(ConfigItem configItem, RelativeLayout compactRelLay) {
 		// Left Button - "3 days Mode"
-		RoboButton leftButton = new RoboButton(getContext(), null, R.attr.greyButtonSmallSolid);
+		leftButton = new RoboButton(getContext(), null, R.attr.greyButtonSmallSolid);
 		RelativeLayout.LayoutParams leftBtnParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
-		leftBtnParams.addRule(RelativeLayout.BELOW, TITLE_ID);
+		leftBtnParams.addRule(RelativeLayout.BELOW, BASE_ID + TITLE_ID);
 		leftButton.setText(configItem.getLeftButtonText());
 		leftButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, BUTTON_TEXT_SIZE);
-		leftButton.setId(LEFT_BTN_ID);
+		leftButton.setId(BASE_ID + LEFT_BUTTON_ID);
+
 		compactRelLay.addView(leftButton, leftBtnParams);
 
-
 		// Play Button
-		RoboButton playButton = new RoboButton(getContext(), null, R.attr.orangeButtonSmall);
+		playButton = new RoboButton(getContext(), null, R.attr.orangeButtonSmall);
 		RelativeLayout.LayoutParams playButtonParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		playButtonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		playButtonParams.addRule(RelativeLayout.BELOW, TITLE_ID);
+		playButtonParams.addRule(RelativeLayout.BELOW, BASE_ID + TITLE_ID);
 
 		playButton.setText(R.string.new_play_ex);
-		playButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+		playButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, BUTTON_TEXT_SIZE);
 		playButton.setId(BASE_ID + PLAY_BUTTON_ID);
 
 		compactRelLay.addView(playButton, playButtonParams);
+	}
+
+	public void toggleOptions() {
+		optionsVisible = !optionsVisible;
+
+		int compactVisibility = optionsVisible? GONE: VISIBLE;
+
+		playButton.setVisibility(compactVisibility);
+		leftButton.setVisibility(compactVisibility);
+		titleText.setVisibility(compactVisibility);
+
+		if(optionsVisible) {
+			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_arrow_down, 0);
+		} else {
+			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_arrow_right, 0);
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == BASE_ID + OPTIONS_TXT_ID) {
+			toggleOptions();
+		}
 	}
 
 	public static class ConfigItem {

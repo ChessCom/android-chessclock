@@ -8,19 +8,19 @@
     android:background="@color/new_main_back"
     >
 
-    <com.chess.ui.views.NewDailyGameView
+    <com.chess.ui.views.NewGameDailyView
         android:id="@+id/dailyGamesSetupView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
-    <com.chess.ui.views.NewDefaultGameView
+    <com.chess.ui.views.NewGameDefaultView
         android:id="@+id/liveGamesSetupView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
-    <com.chess.ui.views.NewDefaultGameView
+    <com.chess.ui.views.NewGameDefaultView
         android:id="@+id/compGamesSetupView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
