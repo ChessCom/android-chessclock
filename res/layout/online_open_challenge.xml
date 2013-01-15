@@ -22,7 +22,7 @@
 			<com.chess.RoboTextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/GameType"
+				android:text="@string/game_type"
 				android:layout_weight="8"
 				/>
 
@@ -64,7 +64,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:text="@string/IplayAs"
+				android:text="@string/i_play_as"
 				android:layout_weight="6"
 				/>
 
@@ -87,7 +87,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:text="@string/DaysPerMove"
+				android:text="@string/days_per_move"
 				android:layout_weight="6"
 				/>
 
@@ -109,7 +109,7 @@
 			<com.chess.RoboTextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/minrating"
+				android:text="@string/min_rating"
 				android:layout_weight="6"
 				/>
 
@@ -132,7 +132,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:text="@string/maxrating"
+				android:text="@string/max_rating"
 				android:layout_weight="6"
 				/>
 
@@ -150,7 +150,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="left|center_vertical"
-			android:text="@string/RatedGme"
+			android:text="@string/rated_game"
 			/>
 
 		<com.chess.RoboButton

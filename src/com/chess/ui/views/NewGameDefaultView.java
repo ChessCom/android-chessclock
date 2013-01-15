@@ -17,7 +17,7 @@ import com.chess.RoboTextView;
  * Date: 12.01.13
  * Time: 11:04
  */
-public class NewGameDefaultView extends LinearLayout implements View.OnClickListener {
+public abstract class NewGameDefaultView extends LinearLayout implements View.OnClickListener {
 
 	/**
 	 * Must be set outside to be able handle clicks
@@ -34,13 +34,17 @@ public class NewGameDefaultView extends LinearLayout implements View.OnClickList
 
 	private int HEADER_PADDING_LEFT = 13;
 	private int HEADER_PADDING_RIGHT = 11;
-	private int COMPACT_PADDING = 14;
+	protected int COMPACT_PADDING = 14;
+
 	protected float density;
 	protected boolean optionsVisible;
 	private RoboButton playButton;
 	private RoboButton leftButton;
 	protected TextView titleText;
 	protected RoboTextView optionsTxt;
+	protected RelativeLayout compactRelLay;
+	protected View optionsView;
+
 
 	public NewGameDefaultView(Context context) {
 		super(context);
@@ -64,7 +68,7 @@ public class NewGameDefaultView extends LinearLayout implements View.OnClickList
 
 		HEADER_PADDING_LEFT *= density;
 		HEADER_PADDING_RIGHT *= density;
-		COMPACT_PADDING *= density;
+		COMPACT_PADDING = (int) getContext().getResources().getDimension(R.dimen.new_game_frame_padding_side);
 	}
 
 	public void setConfig(ConfigItem configItem) {
@@ -75,16 +79,15 @@ public class NewGameDefaultView extends LinearLayout implements View.OnClickList
 		}
 
 		addGameSetupView(configItem);
+		addOptionsView();
 	}
-
-
 
 	private void addGameSetupView(ConfigItem configItem) {
 		LinearLayout.LayoutParams defaultWrapParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
 		{// Header
-			// Daily Games View
+			// Header View
 			LinearLayout headerView = new LinearLayout(getContext());
 			LinearLayout.LayoutParams headerParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 					(int) (44 * density));
@@ -92,13 +95,14 @@ public class NewGameDefaultView extends LinearLayout implements View.OnClickList
 			headerView.setBackgroundResource(R.drawable.nav_menu_item_default);
 			headerView.setPadding(HEADER_PADDING_LEFT, 0, HEADER_PADDING_RIGHT, 0);
 			headerView.setGravity(Gravity.CENTER_VERTICAL);
-			// DailyGames icon
+
+			// Header icon
 			ImageView imageView = new ImageView(getContext());
 			imageView.setImageResource(configItem.getHeaderIcon());
 
 			headerView.addView(imageView, defaultWrapParams);
 
-			// DailyGames Header
+			// Text Header
 			TextView headerText = new TextView(getContext());
 			LinearLayout.LayoutParams headerTxtParams = new LinearLayout.LayoutParams(0,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -110,7 +114,7 @@ public class NewGameDefaultView extends LinearLayout implements View.OnClickList
 			headerText.setPadding((int) (9 * density), 0, 0, 0);
 			headerView.addView(headerText, headerTxtParams);
 
-			// DailyGames Info Button
+			// Info Button
 			ImageView infoButton = new ImageView(getContext());
 			infoButton.setImageResource(R.drawable.ic_help); // TODO set selector
 			headerView.addView(infoButton, defaultWrapParams);
@@ -119,15 +123,14 @@ public class NewGameDefaultView extends LinearLayout implements View.OnClickList
 		}
 
 		// Compact Options Quick view
-		RelativeLayout compactRelLay = new RelativeLayout(getContext());
+		compactRelLay = new RelativeLayout(getContext());
 		RelativeLayout.LayoutParams relParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		compactRelLay.setLayoutParams(relParams);
 		compactRelLay.setBackgroundResource(R.drawable.nav_menu_item_selected);
-		compactRelLay.setPadding(COMPACT_PADDING, 0/*(int) (9 * density)*/, COMPACT_PADDING, COMPACT_PADDING);
+		compactRelLay.setPadding(COMPACT_PADDING, 0, COMPACT_PADDING, COMPACT_PADDING);
 
 		{// Add defaultMode View
-			// Add Title
 			titleText = new TextView(getContext());
 			titleText.setText(configItem.getTitleText());
 			titleText.setTextColor(getContext().getResources().getColor(R.color.new_normal_gray));
@@ -149,8 +152,10 @@ public class NewGameDefaultView extends LinearLayout implements View.OnClickList
 			optionsLayParams.setMargins(0, (int) (4 * density), 0, 0);
 			optionsLayParams.addRule(RelativeLayout.BELOW, BASE_ID + LEFT_BUTTON_ID);
 
+			optionsAndPlayView.setId(BASE_ID + OPTIONS_TXT_ID);
 			optionsAndPlayView.setLayoutParams(optionsLayParams);
 			optionsAndPlayView.setMinimumHeight((int) (45 * density));
+			optionsAndPlayView.setOnClickListener(this);
 
 			// Options label/button
 			optionsTxt = new RoboTextView(getContext());
@@ -160,6 +165,7 @@ public class NewGameDefaultView extends LinearLayout implements View.OnClickList
 
 			optionsTxt.setId(BASE_ID + OPTIONS_TXT_ID);
 			optionsTxt.setText(R.string.new_options);
+			optionsTxt.setTextColor(getContext().getResources().getColor(R.color.new_soft_gray));
 			optionsTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TOP_TEXT_SIZE);
 			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_right, 0);
 			optionsTxt.setPadding((int) (3 * density), (int) (4 * density), 0, 0);
@@ -172,15 +178,16 @@ public class NewGameDefaultView extends LinearLayout implements View.OnClickList
 			compactRelLay.addView(optionsAndPlayView);
 
 			addView(compactRelLay);
-
 		}
 	}
 
 	protected void addCustomView(ConfigItem configItem, RelativeLayout optionsAndPlayView) {
 	}
 
+	protected abstract void addOptionsView();
+
 	protected void addButtons(ConfigItem configItem, RelativeLayout compactRelLay) {
-		// Left Button - "3 days Mode"
+		// Left Mode Button
 		leftButton = new RoboButton(getContext(), null, R.attr.greyButtonSmallSolid);
 		RelativeLayout.LayoutParams leftBtnParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -214,11 +221,22 @@ public class NewGameDefaultView extends LinearLayout implements View.OnClickList
 		leftButton.setVisibility(compactVisibility);
 		titleText.setVisibility(compactVisibility);
 
+		toggleCompactView();
+	}
+
+	protected void toggleCompactView() {
 		if(optionsVisible) {
-			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_arrow_down, 0);
+			compactRelLay.setBackgroundResource(R.drawable.game_option_back_1);
+			LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (44 *density));
+			compactRelLay.setLayoutParams(layoutParams);
+			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0);
 		} else {
+			compactRelLay.setBackgroundResource(R.drawable.nav_menu_item_selected);
+			LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			compactRelLay.setLayoutParams(layoutParams);
 			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_arrow_right, 0);
 		}
+		compactRelLay.setPadding(COMPACT_PADDING, 0, COMPACT_PADDING, COMPACT_PADDING);
 	}
 
 	@Override

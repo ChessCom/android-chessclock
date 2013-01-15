@@ -8,11 +8,13 @@
     
 
 	<style name="Text" parent="@android:style/TextAppearance.Small">
-		<item name="android:textSize">17sp</item>
-		<item name="android:textColor">@android:color/white</item>
+		<item name="android:textSize">14sp</item>
+		<item name="android:textColor">@color/new_normal_gray</item>
 		<item name="android:textStyle">normal</item>
+<!--
 		<item name="android:paddingTop">3dip</item>
 		<item name="android:paddingBottom">3dip</item>
+-->
 	</style>
 
 
@@ -32,7 +34,7 @@
 		<item name="android:minWidth">@dimen/button_min_width</item>
 		<item name="android:minHeight">@dimen/main_button_height</item>
 
-        <!--Add Shadow to text-->
+        <!--Add Shadow Top to text-->
         <item name="android:textColor">@color/white</item>
         <item name="android:shadowColor">@color/back_shadows_chess</item>
         <item name="android:shadowRadius">0.5</item>
@@ -49,6 +51,7 @@
     <style name="Text.Button.Grey.Small">
         <item name="android:background">@drawable/button_grey_selector</item>
         <item name="android:minHeight">@dimen/small_button_height</item>
+        <item name="android:textSize">13sp</item>
     </style>
 
     <style name="Text.Button.Grey.Small.Solid">

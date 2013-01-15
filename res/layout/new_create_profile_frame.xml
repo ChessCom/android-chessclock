@@ -89,16 +89,23 @@
             android:layout_marginTop="@dimen/common_main_hit_button_margin_top"
             />
 
-        <com.chess.RoboTextView
-            android:id="@+id/skipBtn"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/new_skip_this_step"
-            style="@style/SetupSmallFont"
-            android:textSize="16sp"
-            android:paddingTop="@dimen/create_profile_skip_padding_top"
-            android:drawableRight="@drawable/ic_arrow_right"
-            />
+            android:id="@+id/skipLay"
+            >
+            <com.chess.RoboTextView
+                android:id="@+id/skipBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/new_skip_this_step"
+                style="@style/SetupSmallFont"
+                android:textSize="16sp"
+                android:paddingTop="@dimen/create_profile_skip_padding_top"
+                android:drawableRight="@drawable/ic_arrow_right"
+                android:layout_gravity="center_horizontal"
+                />
+        </FrameLayout>
     </LinearLayout>
 
 </RelativeLayout>

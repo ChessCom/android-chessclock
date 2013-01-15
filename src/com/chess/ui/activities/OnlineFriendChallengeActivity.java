@@ -17,11 +17,9 @@ import com.chess.backend.entity.new_api.FriendsItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.adapters.FriendsSpinnerAdapter;
-import com.chess.utilities.ChessComApiParser;
 
 import java.util.List;
 
@@ -45,7 +43,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_challenge_friend);
 
-		daysArr = getResources().getIntArray(R.array.daysArr);
+		daysArr = getResources().getIntArray(R.array.days_per_move_array);
 		daysPerMoveSpnr = (Spinner) findViewById(R.id.dayspermove);
 		daysPerMoveSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.dayspermove)));
 

@@ -3,11 +3,19 @@ package com.chess.ui.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.RelativeLayout;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.RoboTextView;
+import com.chess.ui.adapters.ItemsAdapter;
+import com.chess.ui.interfaces.ItemClickListenerFace;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,10 +23,11 @@ import com.chess.RoboTextView;
  * Date: 14.01.13
  * Time: 7:23
  */
-public class NewGameDailyView extends NewGameDefaultView {
+public class NewGameDailyView extends NewGameDefaultView implements ItemClickListenerFace {
 
 	public static final int VS_ID = 101;
 	public static final int RIGHT_BUTTON_ID = 102;
+
 	private RoboButton playButton;
 	private RoboButton leftButton;
 	private RoboTextView vsText;
@@ -98,21 +107,88 @@ public class NewGameDailyView extends NewGameDefaultView {
 		optionsAndPlayView.addView(playButton, playButtonParams);
 	}
 
+	@Override
 	public void toggleOptions() {
 		optionsVisible = !optionsVisible;
 
 		int compactVisibility = optionsVisible? GONE: VISIBLE;
+		int expandVisibility = optionsVisible? VISIBLE: GONE;
 
+		// Compact Items
 		playButton.setVisibility(compactVisibility);
 		rightButton.setVisibility(compactVisibility);
 		leftButton.setVisibility(compactVisibility);
 		vsText.setVisibility(compactVisibility);
 		titleText.setVisibility(compactVisibility);
 
-		if(optionsVisible) {
-			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_arrow_down, 0);
-		} else {
-			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_arrow_right, 0);
+		optionsView.setVisibility(expandVisibility);
+
+		toggleCompactView();
+	}
+
+	public void addOptionsView() {
+		optionsView = LayoutInflater.from(getContext()).inflate(R.layout.new_game_option_daily_view, null, false);
+		optionsView.setVisibility(GONE);
+		addView(optionsView);
+
+		int[] newGameButtonsArray = getResources().getIntArray(R.array.days_per_move_array);
+		List<NewDailyGameButtonItem> newGameButtonItems = new ArrayList<NewDailyGameButtonItem>();
+		for (int label : newGameButtonsArray) {
+			newGameButtonItems.add(NewDailyGameButtonItem.createNewButtonFromLabel(label, getContext()));
+		}
+
+		GridView gridView = (GridView) optionsView.findViewById(R.id.dailyGamesModeGrid);
+		gridView.setAdapter(new NewDailyGamesButtonsAdapter(this, newGameButtonItems));
+	}
+
+	@Override
+	public Context getMeContext() {
+		return getContext();
+	}
+
+	private static class NewDailyGameButtonItem {
+
+		public int days;
+		public String label;
+
+		static NewDailyGameButtonItem createNewButtonFromLabel(int label, Context context){
+			NewDailyGameButtonItem buttonItem = new NewDailyGameButtonItem();
+
+			buttonItem.days = label;
+			buttonItem.label = context.getString(R.string.days_arg, label);
+			return buttonItem;
+		}
+	}
+
+	private class NewDailyGamesButtonsAdapter extends ItemsAdapter<NewDailyGameButtonItem> {
+
+		private ItemClickListenerFace clickListenerFace;
+
+		public NewDailyGamesButtonsAdapter(ItemClickListenerFace clickListenerFace, List<NewDailyGameButtonItem> itemList) {
+			super(clickListenerFace.getMeContext(), itemList);
+			this.clickListenerFace = clickListenerFace;
+		}
+
+		@Override
+		protected View createView(ViewGroup parent) {
+			ViewHolder holder = new ViewHolder();
+			RoboButton view = new RoboButton(getContext(), null, R.attr.greyButtonSmallSolid);
+			holder.label = view;
+			view.setTag(holder);
+			view.setOnClickListener(clickListenerFace);
+			return view;
+		}
+
+		@Override
+		protected void bindView(NewDailyGameButtonItem item, int pos, View convertView) {
+			ViewHolder holder = (ViewHolder) convertView.getTag();
+			holder.label.setText(item.label);
+
+			convertView.setTag(itemListId, pos);
+		}
+
+		private class ViewHolder{
+			RoboButton label;
 		}
 	}
 }

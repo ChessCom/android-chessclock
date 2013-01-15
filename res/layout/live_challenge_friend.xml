@@ -99,7 +99,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center"
 					android:layout_weight="6"
-					android:text="@string/IplayAs"
+					android:text="@string/i_play_as"
 					/>
 
 				<Spinner
@@ -118,7 +118,7 @@
 				android:layout_height="wrap_content"
 				android:checked="true"
 				android:gravity="left|center_vertical"
-				android:text="@string/RatedGme"
+				android:text="@string/rated_game"
 				/>
 
 			<com.chess.RoboButton

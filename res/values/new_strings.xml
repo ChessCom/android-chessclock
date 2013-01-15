@@ -23,4 +23,5 @@
     <string name="new_game_archive">Game Archive</string>
 
     <string name="new_play_ex">Play!</string>
+    <string name="days_arg">%d days</string>
 </resources>

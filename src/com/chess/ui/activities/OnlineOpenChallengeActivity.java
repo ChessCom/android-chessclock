@@ -34,7 +34,7 @@ public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnC
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_open_challenge);
 
-		daysArr = getResources().getIntArray(R.array.daysArr);
+		daysArr = getResources().getIntArray(R.array.days_per_move_array);
 		daysPerMoveSpnr = (Spinner) findViewById(R.id.dayspermove);
 		daysPerMoveSpnr.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.dayspermove)));
 

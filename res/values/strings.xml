@@ -59,20 +59,24 @@
 	<string name="challengeFriend">Challenge A Friend</string>
 	<string name="createNewChallenge">Create Open Challenge</string>
 	<string name="currentGame">Current Live Game</string>
-	<string name="GameType">Game Type</string>
+	<string name="game_type">Game Type</string>
+	<string name="type_">Type:</string>
 	<string name="classic">Classic Chess</string>
 	<string name="chess960">Chess 960</string>
 	<string name="friend">Friend</string>
 	<string name="friends">Friends</string>
 	<string name="initialTime">Initial Time</string>
 	<string name="bonusTime">Bonus Time</string>
-	<string name="RatedGme">Rated Game</string>
-	<string name="IplayAs">I Play As</string>
-	<string name="DaysPerMove">Days Per Move</string>
+	<string name="rated_game">Rated Game</string>
+	<string name="rated_game_">Rated Game:</string>
+	<string name="i_play_as">I Play As</string>
+	<string name="i_play_as_">I Play As:</string>
+	<string name="days_per_move">Days Per Move</string>
+	<string name="days_per_move_">Days Per Move:</string>
 	<string name="ChallengeCreate">Create Challenge</string>
-	<string name="onoff">ON / OFF</string>
-	<string name="minrating">Min Rating</string>
-	<string name="maxrating">Max Rating</string>
+	<string name="on_off">ON / OFF</string>
+	<string name="min_rating">Min Rating</string>
+	<string name="max_rating">Max Rating</string>
 	<string name="email">Email</string>
 	<string name="retype">Re-type Password</string>
 	<string name="country">Country</string>
@@ -515,6 +519,9 @@
     <string name="new_daily_chess">Daily Chess</string>
     <string name="new_live_chess">Live Chess</string>
     <string name="new_comp_chess">Vs. Computer</string>
+    <string name="normal">Normal</string>
+    <string name="vs">vs</string>
+    <string name="to">to</string>
 
 
     <!--<string name="game.aborted_by_server_on_logout">Game has been aborted by the server. %1$s has logged out</string>

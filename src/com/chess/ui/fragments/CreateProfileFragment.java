@@ -26,6 +26,7 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 
 		view.findViewById(R.id.createProfileBtn).setOnClickListener(this);
 		view.findViewById(R.id.skipBtn).setOnClickListener(this);
+		view.findViewById(R.id.skipLay).setOnClickListener(this);
 
 		// TODO select country automatically based on location
 	}
@@ -33,6 +34,8 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.skipBtn) {
+			getActivityFace().switchFragment(new HomeTabsFragment());
+		} else if (v.getId() == R.id.skipLay) {
 			getActivityFace().switchFragment(new HomeTabsFragment());
 		} else if (v.getId() == R.id.createProfileBtn) {
 			getActivityFace().openFragment(new InviteFragment());

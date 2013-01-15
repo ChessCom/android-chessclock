@@ -109,7 +109,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:text="@string/minrating"
+				android:text="@string/min_rating"
 				android:layout_weight="6"
 				/>
 
@@ -132,7 +132,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:text="@string/maxrating"
+				android:text="@string/max_rating"
 				android:layout_weight="6"
 				/>
 

@@ -265,5 +265,7 @@
     <color name="daily_games_header_back_border_top">#FF2c2b29</color>
     <color name="daily_games_header_back_border_bot">#FF000000</color>
 
-
+    <!--New Game Options-->
+    <color name="game_option_1_back_top">#FF363330</color>
+    <color name="game_option_1_back_bot">#FF22201e</color>
 </resources>

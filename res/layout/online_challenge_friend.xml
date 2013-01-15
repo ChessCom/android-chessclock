@@ -22,7 +22,7 @@
 			<com.chess.RoboTextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/GameType"
+				android:text="@string/game_type"
 				android:layout_weight="8"
 				/>
 
@@ -89,7 +89,7 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
 				android:layout_weight="6"
-				android:text="@string/IplayAs"
+				android:text="@string/i_play_as"
 				/>
 
 			<Spinner
@@ -112,7 +112,7 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
 				android:layout_weight="6"
-				android:text="@string/DaysPerMove"
+				android:text="@string/days_per_move"
 				/>
 
 			<Spinner
@@ -129,7 +129,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="left|center_vertical"
-			android:text="@string/RatedGme"
+			android:text="@string/rated_game"
 			android:checked="true"
 			/>
 
