@@ -1,16 +1,20 @@
 package com.chess.backend;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+import com.chess.R;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.ConnectLiveChessTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.LiveChessClient;
+import com.chess.ui.activities.LiveScreenActivity;
 
 public class LiveChessService extends Service {
 
@@ -44,6 +48,7 @@ public class LiveChessService extends Service {
 	@Override
 	public void onDestroy() {
 		Log.d(TAG, "SERVICE: onDestroy");
+		stopForeground(true);
 	}
 
 	public void checkAndConnect() {
@@ -75,6 +80,21 @@ public class LiveChessService extends Service {
 		@Override
 		public void updateData(LiveChessClient returnedObj) {
 			Log.d(TAG, "LiveChessClient initialized " + returnedObj);
+
+			// todo: tune notification
+			Notification notification = new Notification(R.drawable.player_indicator_online, // just test. change it
+					"Chess.com Live",
+					System.currentTimeMillis());
+
+			Intent intent = new Intent(getContext(), LiveScreenActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+			PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
+
+			notification.setLatestEventInfo(getContext(), "Chess.com", "Live Online", pendingIntent);
+			notification.flags |= Notification.FLAG_NO_CLEAR;
+
+			startForeground(2048, notification);
 		}
 	}
 
