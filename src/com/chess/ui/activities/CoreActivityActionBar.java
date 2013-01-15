@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.*;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,8 +24,8 @@ import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.LiveEvent;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupCustomViewFragment;
@@ -32,6 +33,8 @@ import com.chess.ui.interfaces.PopupDialogFace;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
 import com.mopub.mobileads.MoPubView;
+
+import java.util.Map;
 
 public abstract class CoreActivityActionBar extends ActionBarActivity implements View.OnClickListener
 		, PopupDialogFace, LiveChessClientEventListenerFace {
@@ -97,6 +100,23 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		super.onResume();
 
 		adjustActionBar();
+
+		executePausedActivityLiveEvents();
+	}
+
+	public void executePausedActivityLiveEvents() {
+
+		Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = getLccHolder().getPausedActivityLiveEvents();
+		Log.d("LCCLOG", "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
+
+		if (pausedActivityLiveEvents.size() > 0) {
+
+			LiveEvent connectionFailureEvent = pausedActivityLiveEvents.get(LiveEvent.Event.CONNECTION_FAILURE);
+			if (connectionFailureEvent != null) {
+				pausedActivityLiveEvents.remove(LiveEvent.Event.CONNECTION_FAILURE);
+				processConnectionFailure(connectionFailureEvent.getMessage());
+			}
+		}
 	}
 
 	@Override
@@ -249,6 +269,17 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	@Override
 	public void onConnectionFailure(String message) {
+		if (isPaused) {
+			LiveEvent connectionFailureEvent = new LiveEvent();
+			connectionFailureEvent.setEvent(LiveEvent.Event.CONNECTION_FAILURE);
+			connectionFailureEvent.setMessage(message);
+			getLccHolder().getPausedActivityLiveEvents().put(connectionFailureEvent.getEvent(), connectionFailureEvent);
+		} else {
+			processConnectionFailure(message);
+		}
+	}
+
+	private void processConnectionFailure(String message) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -256,9 +287,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 				getActionBarHelper().showMenuItemById(R.id.menu_singOut, false);
 			}
 		});
-
-		if (isPaused)
-			return;
 
 		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG);
 		getLastPopupFragment().setButtons(1);
@@ -272,7 +300,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 				getActionBarHelper().setRefreshActionItemState(blocked);
 			}
 		});
-
     }
 
     @Override

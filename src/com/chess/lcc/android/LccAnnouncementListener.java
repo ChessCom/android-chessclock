@@ -32,7 +32,8 @@ public class LccAnnouncementListener implements AnnounceListener {
 			Integer minutes = Integer.parseInt(txt) / 60;
 			String messageI18n = AppUtils.getI18nString(lccHolder.getContext(), "announcement.server_restarting", minutes.toString());
 			Log.d(TAG, messageI18n);
-			// UPDATELCC todo: handle with new UI
+			// UPDATELCC todo: handle with new UI. Show onAdminAnnounce check for background mode in onAdminAnnounce
+			// the same way as we do for ConnectionFailure
 			//lccHolder.getLiveChessClientEventListener().onAdminAnnounce(messageI18n);
 		}
 

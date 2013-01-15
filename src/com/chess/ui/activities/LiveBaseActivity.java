@@ -13,15 +13,14 @@ import com.chess.backend.LiveChessService;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccChallengeTaskRunner;
-import com.chess.lcc.android.LccGameTaskRunner;
-import com.chess.lcc.android.LccHolder;
-import com.chess.lcc.android.OuterChallengeListener;
+import com.chess.lcc.android.*;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupDialogFragment;
+
+import java.util.Map;
 
 /**
  * LiveBaseActivity class
@@ -93,10 +92,38 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+
+		executePausedActivityLiveEvents();
+	}
+
+	@Override
 	protected void onPause() {
 		super.onPause();
 
 		dismissFragmentDialog();
+	}
+
+	public void executePausedActivityLiveEvents() {
+
+		super.executePausedActivityLiveEvents();
+
+		Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = getLccHolder().getPausedActivityLiveEvents();
+		Log.d("LCCLOG", "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
+
+		if (pausedActivityLiveEvents.size() > 0) {
+
+			LiveEvent challengeEvent = pausedActivityLiveEvents.get(LiveEvent.Event.CHALLENGE);
+			if (challengeEvent != null) {
+				pausedActivityLiveEvents.remove(LiveEvent.Event.CHALLENGE);
+				if (challengeEvent.isChallengeDelayed()) {
+					outerChallengeListener.showDelayedDialog(challengeEvent.getChallenge());
+				} else {
+					outerChallengeListener.showDialog(challengeEvent.getChallenge());
+				}
+			}
+		}
 	}
 
 	@Override
@@ -179,33 +206,46 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	private class LiveOuterChallengeListener implements OuterChallengeListener {
 		@Override
 		public void showDelayedDialog(Challenge challenge) {
-			currentChallenge = challenge;
-
-			popupItem.setPositiveBtnId(R.string.accept);
-			popupItem.setNegativeBtnId(R.string.decline);
-			showPopupDialog(R.string.you_been_challenged, composeMessage(challenge), CHALLENGE_TAG);
+			if (isPaused) {
+				LiveEvent liveEvent = new LiveEvent();
+				liveEvent.setEvent(LiveEvent.Event.CHALLENGE);
+				liveEvent.setChallenge(challenge);
+				liveEvent.setChallengeDelayed(true);
+				getLccHolder().getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
+			} else {
+				currentChallenge = challenge;
+				popupItem.setPositiveBtnId(R.string.accept);
+				popupItem.setNegativeBtnId(R.string.decline);
+				showPopupDialog(R.string.you_been_challenged, composeMessage(challenge), CHALLENGE_TAG);
+			}
 		}
 
 		@Override
 		public void showDialog(Challenge challenge) {
-			Log.d("LCCLOG", "need to show challenge dialog");
-			if (popupManager.size() > 0) {
-				Log.d("LCCLOG", "show challenge dialog: popupManager.size() " + popupManager.size());
-				return;
+			if (isPaused) {
+				LiveEvent liveEvent = new LiveEvent();
+				liveEvent.setEvent(LiveEvent.Event.CHALLENGE);
+				liveEvent.setChallenge(challenge);
+				liveEvent.setChallengeDelayed(false);
+				getLccHolder().getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
+			} else {
+				if (popupManager.size() > 0) {
+					return;
+				}
+
+				currentChallenge = challenge;
+
+				PopupItem popupItem = new PopupItem();
+				popupItem.setTitle(R.string.you_been_challenged);
+				popupItem.setMessage(composeMessage(challenge));
+				popupItem.setNegativeBtnId(R.string.decline);
+				popupItem.setPositiveBtnId(R.string.accept);
+
+				PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
+				popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
+
+				popupManager.add(popupDialogFragment);
 			}
-
-			currentChallenge = challenge;
-
-			PopupItem popupItem = new PopupItem();
-			popupItem.setTitle(R.string.you_been_challenged);
-			popupItem.setMessage(composeMessage(challenge));
-			popupItem.setNegativeBtnId(R.string.decline);
-			popupItem.setPositiveBtnId(R.string.accept);
-
-			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
-			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
-
-			popupManager.add(popupDialogFragment);
 		}
 
 		@Override

@@ -23,7 +23,7 @@ import com.chess.utilities.AppUtils;
 
 import java.util.*;
 
-public class LccHolder {
+public class LccHolder { // todo: keep LccHolder instance in LiveChessService as well?
 
 	public static final boolean TESTING_GAME = false;
 	public static final String[] TEST_MOVES_COORD = {"d2d4", "c7c6", "c2c4", "d7d5", "g1f3", "g8f6", "b1c3", "e7e6",
@@ -56,7 +56,9 @@ public class LccHolder {
 	private final Hashtable<Long, Game> lccGames = new Hashtable<Long, Game>();
 	private final Map<String, User> friends = new HashMap<String, User>();
 	private final Map<String, User> onlineFriends = new HashMap<String, User>();
-	private Map<GameEvent.Event, GameEvent> pausedActivityGameEvents = new HashMap<GameEvent.Event, GameEvent>();
+	private Map<LiveGameEvent.Event, LiveGameEvent> pausedActivityGameEvents = new HashMap<LiveGameEvent.Event, LiveGameEvent>();
+	// todo: clear pausedActivityLiveEvents
+	private Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = new HashMap<LiveEvent.Event, LiveEvent>();
 	private final HashMap<Long, Chat> gameChats = new HashMap<Long, Chat>();
 	private LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>> receivedChatMessages =
 			new LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>>();
@@ -64,7 +66,7 @@ public class LccHolder {
 	private SubscriptionId seekListSubscriptionId;
 	private ChessClock whiteClock;
 	private ChessClock blackClock;
-	private boolean activityPausedMode = true;
+	private boolean gameActivityPausedMode = true;
 	private Integer latestMoveNumber;
 	private Long currentGameId;
 	private Long lastGameId;
@@ -99,35 +101,35 @@ public class LccHolder {
 	}
 
 	public void executePausedActivityGameEvents() {
-		/*if (activityPausedMode) {*/
+		/*if (gameActivityPausedMode) {*/
 
 		Log.d(TAG, "executePausedActivityGameEvents size=" + pausedActivityGameEvents.size() + ", events=" + pausedActivityGameEvents);
 
-		setActivityPausedMode(false);
+		setGameActivityPausedMode(false);
 
 		if (pausedActivityGameEvents.size() > 0) {
 
-			GameEvent moveEvent = pausedActivityGameEvents.get(GameEvent.Event.MOVE);
+			LiveGameEvent moveEvent = pausedActivityGameEvents.get(LiveGameEvent.Event.MOVE);
 			if (moveEvent != null && (currentGameId == null || currentGameId.equals(moveEvent.getGameId()))) {
-				pausedActivityGameEvents.remove(moveEvent);
+				pausedActivityGameEvents.remove(LiveGameEvent.Event.MOVE);
 				//lccHolder.getAndroidStuff().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
 				GameLiveItem newGame = new GameLiveItem(getGame(moveEvent.getGameId()), getCurrentGame().getMoveCount() - 1/*moveEvent.getMoveIndex()*/);
 				lccEventListener.onGameRefresh(newGame);
 			}
 
-			GameEvent drawEvent = pausedActivityGameEvents.get(GameEvent.Event.DRAW_OFFER);
+			LiveGameEvent drawEvent = pausedActivityGameEvents.get(LiveGameEvent.Event.DRAW_OFFER);
 			if (drawEvent != null && (currentGameId == null || currentGameId.equals(drawEvent.getGameId()))) {
-				pausedActivityGameEvents.remove(drawEvent);
+				pausedActivityGameEvents.remove(LiveGameEvent.Event.DRAW_OFFER);
 				lccEventListener.onDrawOffered(drawEvent.getDrawOffererUsername());
 			}
 
-			GameEvent endGameEvent = pausedActivityGameEvents.get(GameEvent.Event.END_OF_GAME);
+			LiveGameEvent endGameEvent = pausedActivityGameEvents.get(LiveGameEvent.Event.END_OF_GAME);
 			if (endGameEvent != null && (currentGameId == null || currentGameId.equals(endGameEvent.getGameId()))) {
-				pausedActivityGameEvents.remove(endGameEvent);
+				pausedActivityGameEvents.remove(LiveGameEvent.Event.END_OF_GAME);
 				lccEventListener.onGameEnd(endGameEvent.getGameEndedMessage());
 			}
 
-			pausedActivityGameEvents.clear(); // but it should be already cleared by using remove method
+			//pausedActivityGameEvents.clear();
 		}
 		paintClocks();
 	}
@@ -142,9 +144,9 @@ public class LccHolder {
     public void setLccEventListener(LccEventListener lccEventListener){
         this.lccEventListener = lccEventListener;
         // todo
-		/*if (isActivityPausedMode()) {
+		/*if (isGameActivityPausedMode()) {
 			executePausedActivityGameEvents(lccEventListener);
-			setActivityPausedMode(false);
+			setGameActivityPausedMode(false);
 		}*/
     }
 
@@ -278,8 +280,8 @@ public class LccHolder {
 	}
 
 	public void processConnectionFailure(FailureDetails details) {
-		/*setConnected(false);
-		resetClient();*/
+		setConnected(false);
+		resetClient();
 
 		String detailsMessage;
 		switch (details) {
@@ -372,11 +374,11 @@ public class LccHolder {
 	}
 
 	public boolean isConnected() {
-		return AppData.isLiveConnected(context);
+		return service != null && service.isLiveConnected();
 	}
 
 	public void setConnected(boolean connected) {
-		AppData.setLiveConnected(context, connected);
+		service.setLiveConnected(connected); // todo: can be null?
 		if (connected) {
 			liveChessClientEventListener.onConnectionEstablished();
 
@@ -721,9 +723,9 @@ public class LccHolder {
 	 * All stopping operations will be called in onStop of Service class.
 	 * Also we will send all our request to service via interface instead of Singleton.
 	 */
-	private void stopService(){
+	/*private void stopService(){
 		context.stopService(new Intent(context, LiveChessService.class));
-	}
+	}*/
 
 	public void logout() {
 		Log.d(TAG, "USER LOGOUT");
@@ -752,17 +754,21 @@ public class LccHolder {
 		ownChallenges.remove(id);
 	}
 
-	public boolean isActivityPausedMode() {
-		return activityPausedMode;
+	public boolean isGameActivityPausedMode() {
+		return gameActivityPausedMode;
 	}
 
-	public void setActivityPausedMode(boolean activityPausedMode) { // TODO Unsafe -> replace with save server data holder logic
-		this.activityPausedMode = activityPausedMode;
+	public void setGameActivityPausedMode(boolean gameActivityPausedMode) { // TODO Unsafe -> replace with save server data holder logic
+		this.gameActivityPausedMode = gameActivityPausedMode;
 //		pausedActivityGameEvents.clear();
 	}
 
-	public Map<GameEvent.Event, GameEvent> getPausedActivityGameEvents() {
+	public Map<LiveGameEvent.Event, LiveGameEvent> getPausedActivityGameEvents() {
 		return pausedActivityGameEvents;
+	}
+
+	public Map<LiveEvent.Event, LiveEvent> getPausedActivityLiveEvents() {
+		return pausedActivityLiveEvents;
 	}
 
 	public void checkAndProcessFullGame() {
@@ -822,9 +828,9 @@ public class LccHolder {
 		} else {*/
 			latestMoveNumber = moveIndex;
 		//}
-		if (isActivityPausedMode()) {
-			GameEvent moveEvent = new GameEvent();
-			moveEvent.setEvent(GameEvent.Event.MOVE);
+		if (isGameActivityPausedMode()) {
+			LiveGameEvent moveEvent = new LiveGameEvent();
+			moveEvent.setEvent(LiveGameEvent.Event.MOVE);
 			moveEvent.setGameId(game.getId());
 			//moveEvent.setMoveIndex(moveIndex);
 			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);

@@ -16,6 +16,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccChallengeTaskRunner;
+import com.chess.lcc.android.LiveEvent;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.util.GameTimeConfig;
@@ -49,6 +50,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 
 	protected Challenge currentChallenge;
     private LccChallengeTaskRunner challengeTaskRunner;
+	private LiveOuterChallengeListener liveOuterChallengeListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +78,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 		findViewById(R.id.videoLessonsFrame).setOnClickListener(this);
 		findViewById(R.id.settingsFrame).setOnClickListener(this);
 
-		// set listener to lccHolder
-		getLccHolder().setOuterChallengeListener(new LiveOuterChallengeListener());
+		liveOuterChallengeListener = new LiveOuterChallengeListener();
 
 		challengeTaskRunner = new LccChallengeTaskRunner(new ChallengeTaskListener());
 
@@ -85,14 +86,41 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	}
 
 	@Override
+	protected void onStart() {
+		super.onStart();
+		getLccHolder().setOuterChallengeListener(liveOuterChallengeListener);
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 
 		showFullScreenAd();
-
 		adjustActionBar();
+
+		executePausedActivityLiveEvents();
 	}
 
+	public void executePausedActivityLiveEvents() {
+
+		super.executePausedActivityLiveEvents();
+
+		Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = getLccHolder().getPausedActivityLiveEvents();
+		Log.d("LCCLOG", "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
+
+		if (pausedActivityLiveEvents.size() > 0) {
+
+			LiveEvent challengeEvent = pausedActivityLiveEvents.get(LiveEvent.Event.CHALLENGE);
+			if (challengeEvent != null) {
+				pausedActivityLiveEvents.remove(LiveEvent.Event.CHALLENGE);
+				if (challengeEvent.isChallengeDelayed()) {
+					liveOuterChallengeListener.showDelayedDialog(challengeEvent.getChallenge());
+				} else {
+					liveOuterChallengeListener.showDialog(challengeEvent.getChallenge());
+				}
+			}
+		}
+	}
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
@@ -168,31 +196,47 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 	private class LiveOuterChallengeListener implements OuterChallengeListener {
 		@Override
 		public void showDelayedDialog(Challenge challenge) {
-			currentChallenge = challenge;
-
-			popupItem.setPositiveBtnId(R.string.accept);
-			popupItem.setNegativeBtnId(R.string.decline);
-			showPopupDialog(R.string.you_been_challenged, composeMessage(challenge), CHALLENGE_TAG);
+			if (isPaused) {
+				LiveEvent liveEvent = new LiveEvent();
+				liveEvent.setEvent(LiveEvent.Event.CHALLENGE);
+				liveEvent.setChallenge(challenge);
+				liveEvent.setChallengeDelayed(true);
+				getLccHolder().getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
+			} else {
+				currentChallenge = challenge;
+				popupItem.setPositiveBtnId(R.string.accept);
+				popupItem.setNegativeBtnId(R.string.decline);
+				showPopupDialog(R.string.you_been_challenged, composeMessage(challenge), CHALLENGE_TAG);
+			}
 		}
 
 		@Override
 		public void showDialog(Challenge challenge) {
-			if (popupManager.size() > 0) {
-				return;
+			if (isPaused) {
+				LiveEvent liveEvent = new LiveEvent();
+				liveEvent.setEvent(LiveEvent.Event.CHALLENGE);
+				liveEvent.setChallenge(challenge);
+				liveEvent.setChallengeDelayed(false);
+				getLccHolder().getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
+			} else {
+
+				if (popupManager.size() > 0) {
+					return;
+				}
+
+				currentChallenge = challenge;
+
+				PopupItem popupItem = new PopupItem();
+				popupItem.setTitle(R.string.you_been_challenged);
+				popupItem.setMessage(composeMessage(challenge));
+				popupItem.setNegativeBtnId(R.string.decline);
+				popupItem.setPositiveBtnId(R.string.accept);
+
+				PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
+				popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
+
+				popupManager.add(popupDialogFragment);
 			}
-
-			currentChallenge = challenge;
-
-			PopupItem popupItem = new PopupItem();
-			popupItem.setTitle(R.string.you_been_challenged);
-			popupItem.setMessage(composeMessage(challenge));
-			popupItem.setNegativeBtnId(R.string.decline);
-			popupItem.setPositiveBtnId(R.string.accept);
-
-			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
-			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
-
-			popupManager.add(popupDialogFragment);
 		}
 
 		@Override

@@ -179,7 +179,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			return;
 		}
 
-		//getLccHolder().setActivityPausedMode(false); // moved to execute paused events
+		//getLccHolder().setGameActivityPausedMode(false); // moved to execute paused events
 		getLccHolder().setLccChatMessageListener(this);
 		updateGameState();
 	}
@@ -188,9 +188,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	protected void onPause() {
 		dismissDialogs();
 
-
 		super.onPause();
-		getLccHolder().setActivityPausedMode(true);
+		getLccHolder().setGameActivityPausedMode(true);
 
 		handler.removeCallbacks(blinkSubmitButton);
 	}
@@ -233,29 +232,29 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
     public void setWhitePlayerTimer(String timeString) {
         whiteTimer = timeString;
         runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (userPlayWhite) {
-                    gamePanelView.setBottomPlayerTimer(whiteTimer);
-                } else {
-                    blackPlayerLabel.setText(whiteTimer);
-                }
-            }
-        });
+			@Override
+			public void run() {
+				if (userPlayWhite) {
+					gamePanelView.setBottomPlayerTimer(whiteTimer);
+				} else {
+					blackPlayerLabel.setText(whiteTimer);
+				}
+			}
+		});
     }
 
     public void setBlackPlayerTimer(String timeString) {
         blackTimer = timeString;
         runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (userPlayWhite) {
-                    blackPlayerLabel.setText(blackTimer);
-                } else {
-                    gamePanelView.setBottomPlayerTimer(blackTimer);
-                }
-            }
-        });
+			@Override
+			public void run() {
+				if (userPlayWhite) {
+					blackPlayerLabel.setText(blackTimer);
+				} else {
+					gamePanelView.setBottomPlayerTimer(blackTimer);
+				}
+			}
+		});
     }
 
 	private void changePlayersLabelColors() {
@@ -353,10 +352,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		});
     }
 
-	@Override
+	/*@Override
 	public void onInform(String title, String message){
 		showSinglePopupDialog(title, message);
-	}
+	}*/
 
     @Override
     public void onDrawOffered(String drawOfferUsername) {

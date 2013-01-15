@@ -17,15 +17,17 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.LiveEvent;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
+
+import java.util.Map;
 
 public abstract class CoreActivityHome extends ActionBarActivityHome implements PopupDialogFace,
 		LiveChessClientEventListenerFace, View.OnClickListener {
@@ -51,6 +53,23 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
 		if (startDay == 0 || !DateUtils.isToday(startDay)) {
 			checkUpdate();
+		}
+
+		executePausedActivityLiveEvents();
+	}
+
+	public void executePausedActivityLiveEvents() {
+
+		Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = getLccHolder().getPausedActivityLiveEvents();
+		Log.d("LCCLOG", "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
+
+		if (pausedActivityLiveEvents.size() > 0) {
+
+			LiveEvent connectionFailureEvent = pausedActivityLiveEvents.get(LiveEvent.Event.CONNECTION_FAILURE);
+			if (connectionFailureEvent != null) {
+				pausedActivityLiveEvents.remove(LiveEvent.Event.CONNECTION_FAILURE);
+				processConnectionFailure(connectionFailureEvent.getMessage());
+			}
 		}
 	}
 
@@ -167,9 +186,19 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		});
 	}
 
-
 	@Override
 	public void onConnectionFailure(String message) {
+		if (isPaused) {
+			LiveEvent connectionFailureEvent = new LiveEvent();
+			connectionFailureEvent.setEvent(LiveEvent.Event.CONNECTION_FAILURE);
+			connectionFailureEvent.setMessage(message);
+			getLccHolder().getPausedActivityLiveEvents().put(connectionFailureEvent.getEvent(), connectionFailureEvent);
+		} else {
+			processConnectionFailure(message);
+		}
+	}
+
+	private void processConnectionFailure(String message) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -180,7 +209,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
 		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG);
 		getLastPopupFragment().setButtons(1);
-
 	}
 
     @Override

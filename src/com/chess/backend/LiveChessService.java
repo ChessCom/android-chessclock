@@ -16,6 +16,8 @@ public class LiveChessService extends Service {
 
 	private static final String TAG = "LCCLOG-LiveChessService";
 
+	boolean liveConnected; // it is better to keep this state inside service instead of preferences appdata
+
 	private ServiceBinder serviceBinder = new ServiceBinder();
 
 	public class ServiceBinder extends Binder {
@@ -45,8 +47,12 @@ public class LiveChessService extends Service {
 	}
 
 	public void checkAndConnect() {
-		if (AppData.isLiveChess(getContext()) && !AppData.isLiveConnected(getContext())
-				&& LccHolder.getInstance(getContext()).getClient() == null) {
+		Log.d(TAG, "AppData.isLiveChess(getContext()) " + AppData.isLiveChess(getContext()));
+		Log.d(TAG, "AppData.isLiveConnected(getContext()) " + liveConnected);
+		Log.d(TAG, "AppData.isLiveConnected(getContext()) " + LccHolder.getInstance(getContext()).getClient());
+
+		if (AppData.isLiveChess(getContext()) && !liveConnected
+				/*&& LccHolder.getInstance(getContext()).getClient() == null*/) {
 			runConnectTask();
 		}
 	}
@@ -74,5 +80,13 @@ public class LiveChessService extends Service {
 
 	private Context getContext(){
 		return this;
+	}
+
+	public boolean isLiveConnected() {
+		return liveConnected;
+	}
+
+	public void setLiveConnected(boolean liveConnected) {
+		this.liveConnected = liveConnected;
 	}
 }
