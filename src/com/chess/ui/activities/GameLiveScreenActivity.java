@@ -397,17 +397,19 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
             }
         }
 
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        final View layout;
-        if (!AppUtils.isNeedToUpgrade(this)) {
-            layout = inflater.inflate(R.layout.popup_end_game, null, false);
-        } else {
-            layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
-        }
+        final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+
+				final View layout;
+				if (!AppUtils.isNeedToUpgrade(GameLiveScreenActivity.this)) {
+					layout = inflater.inflate(R.layout.popup_end_game, null, false);
+				} else {
+					layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
+				}
+
 				updatePlayerLabels(game, whitePlayerNewRating, blackPlayerNewRating);
 				showGameEndPopup(layout, getString(R.string.game_over), gameEndMessage);
 
