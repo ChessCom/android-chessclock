@@ -274,9 +274,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		public void updateData(DailyGamesAllItem returnedObj) {
 			hostUnreachable = false;
 			challengesGamesAdapter.setItemsList(returnedObj.getData().getChallenges());
-			new SaveEchessCurrentGamesListTask(saveCurrentGamesListUpdateListener, returnedObj.getData().getCurrent(),
+			new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, returnedObj.getData().getCurrent(),
 					getContentResolver()).executeTask();
-			new SaveEchessFinishedGamesListTask(saveFinishedGamesListUpdateListener, returnedObj.getData().getFinished(),
+			new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, returnedObj.getData().getFinished(),
 					getContentResolver()).executeTask();
 		}
 

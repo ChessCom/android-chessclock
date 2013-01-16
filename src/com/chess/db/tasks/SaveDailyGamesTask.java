@@ -1,48 +1,55 @@
-package com.chess.backend.tasks;
+package com.chess.db.tasks;
 
+import android.content.ContentResolver;
 import android.util.Log;
 import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.BaseResponseItem;
+import com.chess.backend.entity.new_api.DailyGameBaseData;
+import com.chess.backend.entity.new_api.DailyGameByIdItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.AbstractUpdateTask;
+import com.chess.db.DBDataManager;
+import com.chess.model.GameOnlineItem;
+import com.chess.utilities.ChessComApiParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-
 import org.apache.http.HttpStatus;
 
-import org.apache.http.protocol.HTTP;
-
-
-import java.io.*;
-import java.lang.reflect.Type;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.*;
 import java.util.List;
 
-public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, LoadItem> {
-	private static final String TAG = "RequestJsonTask";
+public abstract class SaveDailyGamesTask<T extends DailyGameBaseData> extends AbstractUpdateTask<T , Long> {
 
-	public RequestJsonTask(TaskUpdateInterface<ItemType> taskFace) {
+	private static final String TAG = "SaveDailyGamesTask";
+	private final LoadItem loadItem;
+	protected ContentResolver contentResolver;
+	protected static String[] arguments = new String[2];
+
+	public SaveDailyGamesTask(TaskUpdateInterface<T> taskFace, List<T> currentItems, ContentResolver resolver) {
 		super(taskFace);
+		itemList = currentItems;
+		this.contentResolver = resolver;
+		loadItem = new LoadItem();
 	}
 
-	@Override
-	protected Integer doTheTask(LoadItem... loadItems) {
-		result = requestData(loadItems[0]);
-		return result;
-	}
+	protected void updateOnlineGame(long gameId, String userName, String userToken) {
+		loadItem.setLoadPath(RestHelper.CMD_GAME_BY_ID(gameId));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, userToken);
 
-	private int requestData(LoadItem loadItem) {
-		String url = RestHelper.formCustomRequest(loadItem);
-		if (loadItem.getRequestMethod().equals(RestHelper.POST)){
-		    url = RestHelper.formPostRequest(loadItem);
+		DailyGameByIdItem.Data currentGame = getData(RestHelper.formCustomRequest(loadItem));
+		if (currentGame != null) {
+			DBDataManager.updateOnlineGame(contentResolver, currentGame, userName);
 		}
+	}
 
-//		if (loadItem.getRequestMethod().equals(RestHelper.PUT)){
-//			url = RestHelper.formPostRequest(loadItem) + "?" +RestHelper.P_LOGIN_TOKEN;
-//		}
+	protected DailyGameByIdItem.Data getData(String url) {
+		DailyGameByIdItem item = null;
 		Log.d(TAG, "retrieving from url = " + url);
 
 		long tag = System.currentTimeMillis();
@@ -53,7 +60,6 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 			URL urlObj = new URL(url);
 			connection = (HttpURLConnection) urlObj.openConnection();
 			connection.setRequestMethod(loadItem.getRequestMethod());
-			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=" + HTTP.UTF_8);
 
 			if (RestHelper.IS_TEST_SERVER_MODE) {
 				Authenticator.setDefault(new Authenticator() {
@@ -61,10 +67,6 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 						return new PasswordAuthentication(RestHelper.V_TEST_NAME, RestHelper.V_TEST_NAME2.toCharArray());
 					}
 				});
-			}
-
-			if (loadItem.getRequestMethod().equals(RestHelper.POST)){
-				submitPostData(connection, loadItem);
 			}
 
 			final int statusCode = connection.getResponseCode();
@@ -75,7 +77,7 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 				String resultString = convertStreamToString(inputStream);
 				BaseResponseItem baseResponse = parseJson(resultString, BaseResponseItem.class);
 				Log.d(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
-				return RestHelper.encodeServerCode(baseResponse.getCode());
+				result = RestHelper.encodeServerCode(baseResponse.getCode());
 			}
 
 			InputStream inputStream = null;
@@ -90,7 +92,6 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 					if(item != null) {
 						result = StaticData.RESULT_OK;
 					}
-
 				}
 			} finally {
 				if (inputStream != null) {
@@ -101,7 +102,7 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 			result = StaticData.RESULT_OK;
 			Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
 			BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + resultString);
-
+			return item.getData();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			result = StaticData.INTERNAL_ERROR;
@@ -122,63 +123,16 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 				connection.disconnect();
 			}
 		}
-		return result;
+		return null;
 	}
 
-	private void submitPostData(URLConnection connection, LoadItem loadItem) throws IOException {
-		String query = RestHelper.formPostData(loadItem);
-		String charset = HTTP.UTF_8;
-		connection.setDoOutput(true); // Triggers POST.
-		OutputStream output = null;
-		try {
-			output = connection.getOutputStream();
-			output.write(query.getBytes(charset));
-		} finally {
-			if (output != null) try {
-				output.close();
-			} catch (IOException ex) {
-				Log.e(TAG, "Error while submiting POST data " + ex.toString());
-			}
-		}
-
-	}
-
-	private ItemType parseJson(InputStream jRespString) {
+	private DailyGameByIdItem parseJson(String jRespString) {
 		Gson gson = new Gson();
-		Reader reader = new InputStreamReader(jRespString);
-		return gson.fromJson(reader, getTaskFace().getClassType());
-	}
-
-	private ItemType parseJson(String jRespString) {
-		Gson gson = new Gson();
-		return gson.fromJson(jRespString, getTaskFace().getClassType());
+		return gson.fromJson(jRespString, DailyGameByIdItem.class);
 	}
 
 	private <CustomType> CustomType parseJson(String jRespString, Class<CustomType> clazz) {
 		Gson gson = new Gson();
 		return gson.fromJson(jRespString, clazz);
-	}
-
-	private List<ItemType> parseJson2List(InputStream jRespString) {
-		Gson gson = new Gson();
-		Reader reader = new InputStreamReader(jRespString);
-		Type t = getTaskFace().getListType();
-		return gson.fromJson(reader, t);
-	}
-
-	private List<ItemType> parseJson2List(String jRespString) {
-		Gson gson = new Gson();
-		Type t = getTaskFace().getListType();
-		return gson.fromJson(jRespString, t);
-	}
-
-	private String parseServerRequest(ItemType jRequest) {
-		Gson gson = new Gson();
-		return gson.toJson(jRequest);
-	}
-
-	private String parseServerRequestList(List<ItemType> jRequest) {
-		Gson gson = new Gson();
-		return gson.toJson(jRequest);
 	}
 }

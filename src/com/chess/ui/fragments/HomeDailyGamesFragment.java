@@ -23,8 +23,8 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
-import com.chess.db.tasks.SaveEchessCurrentGamesListTask;
-import com.chess.db.tasks.SaveEchessFinishedGamesListTask;
+import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
+import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameListFinishedItem;
 import com.chess.model.GameOnlineItem;
@@ -248,10 +248,11 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 
 			} else {
 				ChessBoardOnline.resetInstance();
-				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
-				intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
-
-				startActivity(intent);
+				getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
+//				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
+//				intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
+//
+//				startActivity(intent);
 			}
 		} else if (section == CHALLENGES_SECTION) {
 			clickOnChallenge((DailyChallengeData) adapterView.getItemAtPosition(pos));
@@ -651,9 +652,9 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 
 			hostUnreachable = false;
 			challengesGamesAdapter.setItemsList(returnedObj.getData().getChallenges());
-			new SaveEchessCurrentGamesListTask(saveCurrentGamesListUpdateListener, returnedObj.getData().getCurrent(),
+			new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, returnedObj.getData().getCurrent(),
 					getContentResolver()).executeTask();
-			new SaveEchessFinishedGamesListTask(saveFinishedGamesListUpdateListener, returnedObj.getData().getFinished(),
+			new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, returnedObj.getData().getFinished(),
 					getContentResolver()).executeTask();
 		}
 

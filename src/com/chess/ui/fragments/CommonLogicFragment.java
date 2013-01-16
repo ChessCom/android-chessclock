@@ -14,6 +14,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.entity.new_api.RegisterItem;
@@ -81,6 +82,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		preferences = AppData.getPreferences(getActivity()); // TODO rework shared pref usage to unique get method
 		preferencesEditor = preferences.edit();
 
+		handler = new Handler();
 //		setHasOptionsMenu(true);
 	}
 
@@ -142,6 +144,14 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected void backToHomeFragment() {
 		getActivityFace().switchFragment(new HomeTabsFragment());
+	}
+
+	protected void backToLoginFragment() {
+		getActivityFace().switchFragment(new SignInFragment());
+	}
+
+	public SoundPlayer getSoundPlayer() {
+		return SoundPlayer.getInstance(getActivity());
 	}
 
 	protected void signInUser(){

@@ -449,7 +449,8 @@ public class DBDataManager {
 		values.put(DBConstants.V_GAME_NAME, dataObj.getGameName());
 		values.put(DBConstants.V_WHITE_USER_NAME, dataObj.getWhiteUsername());
 		values.put(DBConstants.V_BLACK_USER_NAME, dataObj.getBlackUsername());
-		values.put(DBConstants.V_FEN_START_POSITION, dataObj.getFenStartPosition());
+		String feStartPosition = dataObj.getFenStartPosition();
+		values.put(DBConstants.V_FEN_START_POSITION, feStartPosition == null? "" : feStartPosition);
 		values.put(DBConstants.V_MOVE_LIST, dataObj.getMoveList());
 		values.put(DBConstants.V_WHITE_USER_MOVE, dataObj.isWhiteMove()? 1: 0);
 		values.put(DBConstants.V_WHITE_RATING, dataObj.getWhiteRating());

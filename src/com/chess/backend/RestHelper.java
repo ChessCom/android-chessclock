@@ -57,7 +57,7 @@ public class RestHelper {
 	public static final String GCM_UNREGISTER = GCM_BASE_URL + "/unregister";
 
 	/* Params */
-	public static final String GCM_P_ID = "id";
+//	public static final String GCM_P_ID = "id";
 	public static final String GCM_P_REGISTER_ID = "registrationId";
 //	public static final String GCM_P_DEVICE_ID = "device_id";
 
@@ -127,8 +127,8 @@ public class RestHelper {
 	public static final String CMD_TACTIC_TRAINER = CMD_TACTICS + "/trainer";
 
 
-	public static String CMD_ANSWER_GAME_SEEK(long gameSeekId) {return CMD_GAMES + gameSeekId + "/seeks";}
-	public static String CMD_PUT_GAME_ACTION(long gameId) {return CMD_GAMES + gameId + "/actions";}
+	public static String CMD_ANSWER_GAME_SEEK(long gameSeekId) {return CMD_GAMES + "/" + gameSeekId + "/seeks";}
+	public static String CMD_PUT_GAME_ACTION(long gameId) {return CMD_GAMES + "/" + gameId + "/actions";}
 	public static String CMD_GAME_BY_ID(long gameId) {return CMD_GAMES + "/" + gameId;}
 
 	/* Parameters */

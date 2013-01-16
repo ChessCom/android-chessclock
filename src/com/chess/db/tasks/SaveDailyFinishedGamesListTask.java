@@ -10,18 +10,16 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
-import com.chess.model.GameListFinishedItem;
-import com.chess.model.GameOnlineItem;
 
 import java.util.List;
 
 
-//public class SaveEchessFinishedGamesListTask extends AbstractUpdateTask<GameListFinishedItem, Long> {
-//public class SaveEchessFinishedGamesListTask extends SaveEchessGamesTask<GameListFinishedItem> {
-public class SaveEchessFinishedGamesListTask extends SaveEchessGamesTask<DailyFinishedGameData> {
+//public class SaveDailyFinishedGamesListTask extends AbstractUpdateTask<GameListFinishedItem, Long> {
+//public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<GameListFinishedItem> {
+public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<DailyFinishedGameData> {
 
-	public SaveEchessFinishedGamesListTask(TaskUpdateInterface<DailyFinishedGameData> taskFace,
-										   List<DailyFinishedGameData> finishedItems, ContentResolver resolver) {
+	public SaveDailyFinishedGamesListTask(TaskUpdateInterface<DailyFinishedGameData> taskFace,
+										  List<DailyFinishedGameData> finishedItems, ContentResolver resolver) {
         super(taskFace, finishedItems, resolver);
     }
 
@@ -29,7 +27,7 @@ public class SaveEchessFinishedGamesListTask extends SaveEchessGamesTask<DailyFi
     protected Integer doTheTask(Long... ids) {
 		Context context = getTaskFace().getMeContext();
 		String userName = AppData.getUserName(context);
-//		String userToken = AppData.getUserToken(context);
+		String userToken = AppData.getUserToken(context);
 
 		for (DailyFinishedGameData finishedItem : itemList) {
 
@@ -49,7 +47,7 @@ public class SaveEchessFinishedGamesListTask extends SaveEchessGamesTask<DailyFi
 
 			cursor.close();
 
-//			updateOnlineGame(finishedItem.getGameId(), userName, userToken);
+			updateOnlineGame(finishedItem.getGameId(), userName, userToken);
 		}
 
         result = StaticData.RESULT_OK;

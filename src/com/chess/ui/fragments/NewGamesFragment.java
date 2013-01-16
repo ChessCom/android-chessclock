@@ -68,10 +68,9 @@ public class NewGamesFragment extends CommonLogicFragment {
 		super.onClick(v);
 		int id = v.getId();
 		if (id == DAILY_RIGHT_BUTTON_ID) {
-
 		} else if (id == DAILY_LEFT_BUTTON_ID) {
 		} else if (id == DAILY_PLAY_BUTTON_ID) {
-
+//			getActivityFace().switchFragment(GameDailyFragment.createInstance());
 		} else if (id == LIVE_LEFT_BUTTON_ID) {
 		} else if (id == LIVE_PLAY_BUTTON_ID) {
 

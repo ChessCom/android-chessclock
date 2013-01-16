@@ -42,4 +42,6 @@ public interface ActiveFragmentInterface {
 	void setTouchModeToSlidingMenu(int touchMode);
 
 	void addOnOpenMenuListener(SlidingMenu.OnOpenedListener listener);
+
+	void setFullScreen();
 }
