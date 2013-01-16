@@ -29,9 +29,6 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.PopupItem;
-import com.chess.ui.activities.ChatOnlineActivity;
-import com.chess.ui.activities.GameOnlineScreenActivity;
-import com.chess.ui.activities.OnlineNewGameActivity;
 import com.chess.ui.activities.PreferencesScreenActivity;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
@@ -618,8 +615,7 @@ public class GameDailyFragment extends GameBaseFragment {
 
 	private void loadGamesList() {
 		// replace with db update
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener,
-				DbHelper.getEchessCurrentListGamesParams(getContext()),
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getContext()), // TODO adjust
 				getContentResolver()).executeTask();
 
 //		LoadItem listLoadItem = new LoadItem();

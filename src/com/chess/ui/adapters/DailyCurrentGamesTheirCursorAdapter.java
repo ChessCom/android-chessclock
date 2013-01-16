@@ -11,18 +11,17 @@ import com.chess.db.DBConstants;
 import com.chess.model.BaseGameItem;
 import com.chess.utilities.AppUtils;
 
-public class OnlineCurrentGamesCursorAdapter extends ItemsCursorAdapter {
+public class DailyCurrentGamesTheirCursorAdapter extends ItemsCursorAdapter {
 
 	protected static final String CHESS_960 = " (960)";
-	protected static final String HOUR_SYMBOL = "h";
 
-	public OnlineCurrentGamesCursorAdapter(Context context, Cursor cursor) {
+	public DailyCurrentGamesTheirCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);// TODO change later with CursorLoader
 	}
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_games_list_item, parent, false);
+		View view = inflater.inflate(R.layout.new_daily_games_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.playerTxt = (TextView) view.findViewById(R.id.playerNameTxt);
 		holder.gameInfoTxt = (TextView) view.findViewById(R.id.timeLeftTxt);

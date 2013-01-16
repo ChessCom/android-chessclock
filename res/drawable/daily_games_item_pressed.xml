@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--Top Border-->
+    <item>
+        <shape >
+            <solid android:color="@color/daily_games_item_border_top_p"/>
+        </shape>
+    </item>
+
+    <!--Bottom Border-->
+    <item
+        android:top="1dip"
+        >
+        <shape >
+            <solid android:color="@color/daily_games_item_border_bot"/>
+        </shape>
+    </item>
+
+    <!--Button-->
+    <item
+        android:bottom="1dip"
+        android:top="1dip"
+        >
+        <shape >
+            <solid android:color="@color/daily_games_item_p" />
+            <size android:height="@dimen/new_daily_games_item_height"/>
+        </shape>
+    </item>
+
+
+</layer-list>

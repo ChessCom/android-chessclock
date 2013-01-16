@@ -10,12 +10,12 @@ import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.model.BaseGameItem;
 
-public class OnlineFinishedGamesCursorAdapter extends ItemsCursorAdapter {
+public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 
 	protected static final String CHESS_960 = " (960)";
 
 
-	public OnlineFinishedGamesCursorAdapter(Context context, Cursor cursor) {
+	public DailyFinishedGamesCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
 	}
 

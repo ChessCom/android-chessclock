@@ -28,6 +28,7 @@ import com.chess.db.tasks.*;
 import com.chess.model.*;
 import com.chess.ui.adapters.*;
 import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.InneractiveAdHelper;
 import com.chess.utilities.MopubHelper;
@@ -41,7 +42,7 @@ import com.mopub.mobileads.MoPubView;
  * @created at: 08.02.12 7:12
  */
 public class OnlineScreenActivity extends LiveBaseActivity implements View.OnClickListener,
-		AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+		AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, ItemClickListenerFace {
 	private static final int CURRENT_GAMES_SECTION = 0;
 	private static final int CHALLENGES_SECTION = 1;
 
@@ -54,9 +55,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private OnlineUpdateListener challengeInviteUpdateListener;
 	private OnlineUpdateListener acceptDrawUpdateListener;
 	private LoadItem selectedLoadItem;
-	private OnlineCurrentGamesCursorAdapter currentGamesCursorAdapter;
-	private OnlineChallengesGamesAdapter challengesGamesAdapter;
-	private OnlineFinishedGamesCursorAdapter finishedGamesCursorAdapter;
+	private DailyCurrentGamesMyCursorAdapter currentGamesCursorAdapter;
+	private DailyChallengesGamesAdapter challengesGamesAdapter;
+	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
 	private DailyGamesSectionedAdapter sectionedAdapter;
 	private DailyCurrentGameData gameListCurrentItem;
 	private DailyChallengeData gameListChallengeItem;
@@ -100,9 +101,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		// init adapters
 		sectionedAdapter = new DailyGamesSectionedAdapter(this);
 
-		challengesGamesAdapter = new OnlineChallengesGamesAdapter(this, null);
-		currentGamesCursorAdapter = new OnlineCurrentGamesCursorAdapter(getContext(), null);
-		finishedGamesCursorAdapter = new OnlineFinishedGamesCursorAdapter(getContext(), null);
+		challengesGamesAdapter = new DailyChallengesGamesAdapter(this, null);
+		currentGamesCursorAdapter = new DailyCurrentGamesMyCursorAdapter(getContext(), null);
+		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null);
 
 		sectionedAdapter.addSection(getString(R.string.current_games), currentGamesCursorAdapter);
 		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
@@ -177,6 +178,11 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		releaseResources();
 	}
 
+	@Override
+	public Context getMeContext() {
+		return this;
+	}
+
 	private class SaveCurrentGamesListUpdateListener extends ActionBarUpdateListener<DailyCurrentGameData> {
 		public SaveCurrentGamesListUpdateListener() {
 			super(getInstance());
@@ -190,7 +196,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(DailyCurrentGameData returnedObj) {
-			new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getEchessCurrentListGamesParams(getContext()),
+			new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getContext()),
 					getContentResolver()).executeTask();
 		}
 	}
@@ -656,7 +662,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 	private void loadDbGames() {
 		new LoadDataFromDbTask(currentGamesCursorUpdateListener,
-				DbHelper.getEchessCurrentListGamesParams(getContext()),
+				DbHelper.getDailyCurrentMyListGamesParams(getContext()),
 				getContentResolver()).executeTask();
 		new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
 				DbHelper.getEchessFinishedListGamesParams(getContext()),

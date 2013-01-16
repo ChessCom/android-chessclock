@@ -115,11 +115,11 @@ public class DailyChallengeData {
 		this.game_type = game_type;
 	}
 
-	public boolean isIs_rated() {
+	public boolean isRated() {
 		return is_rated;
 	}
 
-	public void setIs_rated(boolean is_rated) {
+	public void setRated(boolean is_rated) {
 		this.is_rated = is_rated;
 	}
 

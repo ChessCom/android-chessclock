@@ -279,7 +279,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 	private void getGamesList() {
 		new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-				DbHelper.getEchessCurrentListGamesParams(getContext()),
+				DbHelper.getDailyCurrentMyListGamesParams(getContext()),
 				getContentResolver()).executeTask();
 
 //		LoadItem listLoadItem = new LoadItem();

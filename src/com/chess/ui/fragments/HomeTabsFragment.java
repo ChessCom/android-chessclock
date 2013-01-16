@@ -33,7 +33,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		// activate Left and right menu fragments
 		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		getActivityFace().changeLeftFragment(new NavigationMenuFragment());
-		getActivityFace().changeRightFragment(new DailyGamesRightFragment());
+//		getActivityFace().changeRightFragment(new DailyGamesRightFragment());
 	}
 
 	@Override

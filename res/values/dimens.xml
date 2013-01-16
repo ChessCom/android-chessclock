@@ -177,5 +177,6 @@
     <dimen name="new_daily_games_header_height">28dip</dimen>
     <dimen name="home_games_bottom_button_height">40dip</dimen>
     <dimen name="new_game_frame_padding_side">14dip</dimen>
+    <dimen name="new_daily_games_item_height">53dip</dimen>
 
 </resources>

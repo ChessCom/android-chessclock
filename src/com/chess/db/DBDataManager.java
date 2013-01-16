@@ -34,6 +34,8 @@ public class DBDataManager {
 	public static String[] sArguments2 = new String[2];
 	public static String[] sArguments3 = new String[3];
 
+	// -------------- SELECTION DEFINITIONS ---------------------------
+
 	public static String SELECTION_TACTIC_ID_AND_USER = concatArguments(
 			DBConstants.V_TACTIC_ID,
 			DBConstants.V_USER);
@@ -50,6 +52,10 @@ public class DBDataManager {
 			DBConstants.V_USER,
 			DBConstants.V_GAME_ID,
 			DBConstants.V_USER_OFFERED_DRAW);
+
+	public static String SELECTION_USER_TURN = concatArguments(
+			DBConstants.V_USER,
+			DBConstants.V_IS_MY_TURN);
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 

@@ -196,29 +196,29 @@ public class LogoBackgroundDrawable extends Drawable {
 
 		// get screen proportion
 		screenProportion = (float)height/width;
-		Log.d("TEST", "proportion = " + screenProportion);
+//		Log.d("TEST", "proportion = " + screenProportion);
 
 		if (AppUtils.HONEYCOMB_PLUS_API) {
 			if (screenProportion > TALL_KOEF){
 				IMAGE_HEIGHT = (int) (height * 0.39f);//500;
-				Log.d("TEST", "IMAGE_HEIGHT = " +IMAGE_HEIGHT  + " SCR HEIGHT = " + height + " SCR WIDTH = " + width);
+//				Log.d("TEST", "IMAGE_HEIGHT = " +IMAGE_HEIGHT  + " SCR HEIGHT = " + height + " SCR WIDTH = " + width);
 
 				SHADOW_HEIGHT = (int) (IMAGE_HEIGHT + IMAGE_HEIGHT * 0.1f);//600;
-				Log.d("TEST", "SHADOW_HEIGHT = " + SHADOW_HEIGHT );
+//				Log.d("TEST", "SHADOW_HEIGHT = " + SHADOW_HEIGHT );
 			} else {
 				IMAGE_HEIGHT = (int) (height * 0.39f);//500;
-				Log.d("TEST", "IMAGE_HEIGHT = " +IMAGE_HEIGHT  + " SCR HEIGHT = " + height + " SCR WIDTH = " + width);
+//				Log.d("TEST", "IMAGE_HEIGHT = " +IMAGE_HEIGHT  + " SCR HEIGHT = " + height + " SCR WIDTH = " + width);
 
 				SHADOW_HEIGHT = (int) (IMAGE_HEIGHT + IMAGE_HEIGHT * 0.3f);//600;
-				Log.d("TEST", "SHADOW_HEIGHT = " + SHADOW_HEIGHT );
+//				Log.d("TEST", "SHADOW_HEIGHT = " + SHADOW_HEIGHT );
 			}
 		} else {
 //			if ()  // change
 			IMAGE_HEIGHT = (int) (height * 0.39f);//500;
-			Log.d("TEST", "IMAGE_HEIGHT = " +IMAGE_HEIGHT  + " SCR HEIGHT = " + height + " SCR WIDTH = " + width);
+//			Log.d("TEST", "IMAGE_HEIGHT = " +IMAGE_HEIGHT  + " SCR HEIGHT = " + height + " SCR WIDTH = " + width);
 
 			SHADOW_HEIGHT = (int) (IMAGE_HEIGHT + IMAGE_HEIGHT * 0.01f);//600;
-			Log.d("TEST", "SHADOW_HEIGHT = " + SHADOW_HEIGHT );
+//			Log.d("TEST", "SHADOW_HEIGHT = " + SHADOW_HEIGHT );
 		}
 
 

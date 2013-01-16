@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/daily_games_item_selector"
+    android:gravity="center_vertical"
+    android:paddingRight="10dip"
+    >
+
+    <ImageView
+        android:id="@+id/playerImg"
+        android:layout_width="35dip"
+        android:layout_height="35dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="9dip"
+        android:layout_marginBottom="9dip"
+        android:layout_marginRight="10dip"
+        android:src="@drawable/img_profile_picture_stub"
+        android:contentDescription="@string/image"
+        android:layout_centerVertical="true"
+        />
+
+    <TextView
+        android:id="@+id/playerNameTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/new_light_gray"
+        android:textSize="13sp"
+        android:text="Noda (1350)"
+        android:layout_toRightOf="@id/playerImg"
+        android:layout_alignTop="@id/playerImg"
+        />
+
+    <TextView
+        android:id="@+id/gameTimeTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/new_light_gray"
+        android:textSize="13sp"
+        android:gravity="center"
+        android:text="3 days"
+        android:layout_alignBottom="@id/playerImg"
+        android:layout_toRightOf="@id/playerImg"
+        style="@style/DarkShadowBottom"
+        />
+
+    <TextView
+        android:id="@+id/ratedInfoTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/new_light_gray"
+        android:textSize="13sp"
+        android:gravity="center"
+        android:text="Unrated"
+        android:layout_alignBottom="@id/playerImg"
+        android:layout_toRightOf="@id/gameTimeTxt"
+        style="@style/DarkShadowBottom"
+        android:paddingLeft="8dip"
+        />
+
+
+    <ImageView
+        android:id="@+id/cancelBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/btn_cancel"
+        android:contentDescription="@string/cancel"
+        android:layout_toLeftOf="@+id/acceptBtn"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dip"
+        />
+
+    <ImageView
+        android:id="@id/acceptBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/btn_accept"
+        android:contentDescription="@string/accept"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        />
+
+</RelativeLayout>

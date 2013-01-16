@@ -602,7 +602,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private void loadGamesList() {
 		// replace with db update
 		new LoadDataFromDbTask(currentGamesCursorUpdateListener,
-				DbHelper.getEchessCurrentListGamesParams(getContext()),
+				DbHelper.getDailyCurrentMyListGamesParams(getContext()),
 				getContentResolver()).executeTask();
 
 //		LoadItem listLoadItem = new LoadItem();

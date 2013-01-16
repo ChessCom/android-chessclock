@@ -38,18 +38,18 @@ public class SaveDailyCurrentGamesListTask extends SaveDailyGamesTask<DailyCurre
 			arguments2[0] = String.valueOf(userName);
 			arguments2[1] = String.valueOf(currentItem.getGameId());
 
-			Log.d("TEST", "SEARCH game with id = " + currentItem.getGameId() + " user = " + userName);
+//			Log.d("TEST", "SEARCH game with id = " + currentItem.getGameId() + " user = " + userName);
 			// TODO implement beginTransaction logic for performance increase
 			Uri uri = DBConstants.ECHESS_CURRENT_LIST_GAMES_CONTENT_URI;
 			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
 					DBDataManager.SELECTION_GAME_ID, arguments2, null);
-			Log.d("TEST", "cursor count = " + cursor.getCount());
+//			Log.d("TEST", "cursor count = " + cursor.getCount());
 			if (cursor.moveToFirst()) {
-				Log.d("TEST", "UPDATE game with id = " + currentItem.getGameId() + " user = " + userName);
+//				Log.d("TEST", "UPDATE game with id = " + currentItem.getGameId() + " user = " + userName);
 				contentResolver.update(Uri.parse(uri.toString() + DBDataManager.SLASH_ + DBDataManager.getId(cursor)),
 						DBDataManager.putEchessGameListCurrentItemToValues(currentItem, userName), null, null);
 			} else {
-				Log.d("TEST", "INSERT game with id = " + currentItem.getGameId() + " user = " + userName);
+//				Log.d("TEST", "INSERT game with id = " + currentItem.getGameId() + " user = " + userName);
 				contentResolver.insert(uri, DBDataManager.putEchessGameListCurrentItemToValues(currentItem, userName));
 			}
 

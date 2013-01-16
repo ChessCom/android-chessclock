@@ -259,6 +259,13 @@
     <color name="tab_home_button_text">#FFc8c8c8</color>
 
     <!--DailyGames-->
+    <color name="daily_games_item_border_top">#FF4a4745</color>
+    <color name="daily_games_item_border_top_p">#ff504d4a</color>
+    <color name="daily_games_item_border_top_s">#FF55524f</color>
+    <color name="daily_games_item_border_bot">#FF000000</color>
+    <color name="daily_games_item">#FF312e2a</color>
+    <color name="daily_games_item_p">#ff36322e</color>
+    <color name="daily_games_item_s">#FF413d39</color>
     <color name="daily_games_header_back">#FF1d1c1a</color>
     <color name="daily_games_header_back_p">#FF1d1c1a</color>
     <color name="daily_games_header_back_s">#FF1d1c1a</color> <!--selected-->

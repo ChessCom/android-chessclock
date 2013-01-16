@@ -18,9 +18,8 @@ import com.chess.backend.entity.new_api.DailyGameAcceptItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
+import com.chess.ui.adapters.DailyChallengesGamesAdapter;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.InneractiveAdHelper;
 import com.chess.utilities.MopubHelper;
@@ -35,7 +34,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 	private ListView openChallengesListView;
 	private ArrayList<DailyChallengeData> gameListItems = new ArrayList<DailyChallengeData>();
-	private OnlineChallengesGamesAdapter gamesAdapter = null;
+	private DailyChallengesGamesAdapter gamesAdapter = null;
 	private DailyChallengeData gameListElement;
 	private ChallengeInviteUpdateListener challengeInviteUpdateListener;
 	private int successToastMsgId;
@@ -112,10 +111,10 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 //			gameListItems.addAll(ChessComApiParser.getChallengesGames(returnedObj));
 			gameListItems.addAll(returnedObj.getData());
 
-			if (gamesAdapter == null) {
-				gamesAdapter = new OnlineChallengesGamesAdapter(getContext(),  gameListItems);
-				openChallengesListView.setAdapter(gamesAdapter);
-			}
+//			if (gamesAdapter == null) {                 // TODO implement listener face to unlock
+//				gamesAdapter = new DailyChallengesGamesAdapter(getContext(),  gameListItems);
+//				openChallengesListView.setAdapter(gamesAdapter);
+//			}
 
 			gamesAdapter.notifyDataSetChanged();
 		}
