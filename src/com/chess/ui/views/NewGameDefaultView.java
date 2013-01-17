@@ -19,6 +19,8 @@ import com.chess.RoboTextView;
  */
 public abstract class NewGameDefaultView extends LinearLayout implements View.OnClickListener {
 
+	private static int OPTIONS_AND_PLAY_VIEW_HEIGHT;
+	private static int OPTIONS_VIEW_MARGIN_TOP;
 	/**
 	 * Must be set outside to be able handle clicks
 	 */
@@ -32,9 +34,11 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 	public static final int TOP_TEXT_SIZE = 14;
 	public static final int BUTTON_TEXT_SIZE = 13;
 
-	private int HEADER_PADDING_LEFT = 13;
-	private int HEADER_PADDING_RIGHT = 11;
-	protected int COMPACT_PADDING = 14;
+	private static int HEADER_PADDING_LEFT;
+	private static int HEADER_TEXT_PADDING_LEFT;
+	private static int HEADER_HEIGHT;
+	private static int HEADER_PADDING_RIGHT;
+	protected static int COMPACT_PADDING;
 
 	protected float density;
 	protected boolean optionsVisible;
@@ -44,6 +48,12 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 	protected RoboTextView optionsTxt;
 	protected RelativeLayout compactRelLay;
 	protected View optionsView;
+	private static LayoutParams optionsVisibleLayoutParams;
+	private static LayoutParams defaultMatchWidthParams;
+	private static LayoutParams defaultLinearWrapParams;
+	private static RelativeLayout.LayoutParams defaultRelativeMatchWidthParams;
+	private RelativeLayout.LayoutParams optionsLayParams;
+	private RelativeLayout.LayoutParams optionsTxtParams;
 
 
 	public NewGameDefaultView(Context context) {
@@ -66,9 +76,28 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 
 		density = getContext().getResources().getDisplayMetrics().density;
 
-		HEADER_PADDING_LEFT *= density;
-		HEADER_PADDING_RIGHT *= density;
+		HEADER_PADDING_LEFT = (int) (13 * density);   // TODO move to resources?
+		HEADER_PADDING_RIGHT = (int) (11 * density);
+		HEADER_TEXT_PADDING_LEFT = (int) (9 * density);
+		HEADER_HEIGHT = (int) (44 * density);
+
+		OPTIONS_AND_PLAY_VIEW_HEIGHT = (int) (45 * density);
+		OPTIONS_VIEW_MARGIN_TOP = (int) (4 * density);
 		COMPACT_PADDING = (int) getContext().getResources().getDimension(R.dimen.new_game_frame_padding_side);
+
+		optionsVisibleLayoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, HEADER_HEIGHT);
+		defaultMatchWidthParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		defaultLinearWrapParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		defaultRelativeMatchWidthParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+		optionsLayParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+
+		optionsTxt = new RoboTextView(getContext());
+		optionsTxtParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+
+
 	}
 
 	public void setConfig(ConfigItem configItem) {
@@ -83,14 +112,12 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 	}
 
 	private void addGameSetupView(ConfigItem configItem) {
-		LinearLayout.LayoutParams defaultWrapParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
 
 		{// Header
 			// Header View
 			LinearLayout headerView = new LinearLayout(getContext());
 			LinearLayout.LayoutParams headerParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-					(int) (44 * density));
+					HEADER_HEIGHT);
 			headerView.setLayoutParams(headerParams);
 			headerView.setBackgroundResource(R.drawable.nav_menu_item_default);
 			headerView.setPadding(HEADER_PADDING_LEFT, 0, HEADER_PADDING_RIGHT, 0);
@@ -100,7 +127,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 			ImageView imageView = new ImageView(getContext());
 			imageView.setImageResource(configItem.getHeaderIcon());
 
-			headerView.addView(imageView, defaultWrapParams);
+			headerView.addView(imageView, defaultLinearWrapParams);
 
 			// Text Header
 			TextView headerText = new TextView(getContext());
@@ -111,22 +138,20 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 			headerText.setText(configItem.getHeaderText());
 			headerText.setTextColor(getContext().getResources().getColor(R.color.new_normal_gray));
 			headerText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TOP_TEXT_SIZE);
-			headerText.setPadding((int) (9 * density), 0, 0, 0);
+			headerText.setPadding(HEADER_TEXT_PADDING_LEFT, 0, 0, 0);
 			headerView.addView(headerText, headerTxtParams);
 
 			// Info Button
 			ImageView infoButton = new ImageView(getContext());
 			infoButton.setImageResource(R.drawable.ic_help); // TODO set selector
-			headerView.addView(infoButton, defaultWrapParams);
+			headerView.addView(infoButton, defaultLinearWrapParams);
 
 			addView(headerView);
 		}
 
 		// Compact Options Quick view
 		compactRelLay = new RelativeLayout(getContext());
-		RelativeLayout.LayoutParams relParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
-		compactRelLay.setLayoutParams(relParams);
+		compactRelLay.setLayoutParams(defaultRelativeMatchWidthParams);
 		compactRelLay.setBackgroundResource(R.drawable.nav_menu_item_selected);
 		compactRelLay.setPadding(COMPACT_PADDING, 0, COMPACT_PADDING, COMPACT_PADDING);
 
@@ -139,7 +164,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 			titleText.setId(BASE_ID + TITLE_ID);
 			titleText.setPadding(0, (int) (9 * density), 0, (int) (5 * density));
 
-			compactRelLay.addView(titleText, defaultWrapParams);
+			compactRelLay.addView(titleText, defaultLinearWrapParams);
 
 			addButtons(configItem, compactRelLay);
 
@@ -147,20 +172,15 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 
 		{// Add Options View
 			RelativeLayout optionsAndPlayView = new RelativeLayout(getContext());
-			RelativeLayout.LayoutParams optionsLayParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-			optionsLayParams.setMargins(0, (int) (4 * density), 0, 0);
+			optionsLayParams.setMargins(0, OPTIONS_VIEW_MARGIN_TOP, 0, 0);
 			optionsLayParams.addRule(RelativeLayout.BELOW, BASE_ID + LEFT_BUTTON_ID);
 
 			optionsAndPlayView.setId(BASE_ID + OPTIONS_TXT_ID);
 			optionsAndPlayView.setLayoutParams(optionsLayParams);
-			optionsAndPlayView.setMinimumHeight((int) (45 * density));
+			optionsAndPlayView.setMinimumHeight(OPTIONS_AND_PLAY_VIEW_HEIGHT);
 			optionsAndPlayView.setOnClickListener(this);
 
 			// Options label/button
-			optionsTxt = new RoboTextView(getContext());
-			RelativeLayout.LayoutParams optionsTxtParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
 			optionsTxtParams.addRule(RelativeLayout.CENTER_VERTICAL);
 
 			optionsTxt.setId(BASE_ID + OPTIONS_TXT_ID);
@@ -184,7 +204,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 	protected void addCustomView(ConfigItem configItem, RelativeLayout optionsAndPlayView) {
 	}
 
-	protected abstract void addOptionsView();
+	public abstract void addOptionsView();
 
 	protected void addButtons(ConfigItem configItem, RelativeLayout compactRelLay) {
 		// Left Mode Button
@@ -227,13 +247,11 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 	protected void toggleCompactView() {
 		if(optionsVisible) {
 			compactRelLay.setBackgroundResource(R.drawable.game_option_back_1);
-			LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (44 *density));
-			compactRelLay.setLayoutParams(layoutParams);
+			compactRelLay.setLayoutParams(optionsVisibleLayoutParams);
 			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0);
 		} else {
 			compactRelLay.setBackgroundResource(R.drawable.nav_menu_item_selected);
-			LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			compactRelLay.setLayoutParams(layoutParams);
+			compactRelLay.setLayoutParams(defaultMatchWidthParams);
 			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_arrow_right, 0);
 		}
 		compactRelLay.setPadding(COMPACT_PADDING, 0, COMPACT_PADDING, COMPACT_PADDING);

@@ -61,8 +61,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	private int loginReturnCode;
 	private ActiveFragmentInterface activityFace;
-	protected Facebook facebook;
-	protected Handler handler;
+	protected static Facebook facebook;
+	protected static Handler handler;
 	private EditText loginUsernameEdt;
 	private EditText passwordEdt;
 

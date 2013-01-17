@@ -94,7 +94,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 			}
 
 			if (slidingMenu.isSecondaryMenuShowing()) {
-				showToast("Right");
+//				showToast("Right");
 			} else {
 				showToast("Left");
 			}

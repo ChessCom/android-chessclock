@@ -5,18 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import com.chess.R;
-import com.chess.model.NewGameButtonItem;
-import com.chess.ui.adapters.NewGamesButtonsAdapter;
-import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.NewGameCompView;
 import com.chess.ui.views.NewGameDailyView;
 import com.chess.ui.views.NewGameDefaultView;
 import com.chess.ui.views.NewGameLiveView;
+import com.slidingmenu.lib.SlidingMenu;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,7 +19,7 @@ import java.util.List;
  * Date: 12.01.13
  * Time: 9:04
  */
-public class NewGamesFragment extends CommonLogicFragment {
+public class NewGamesFragment extends CommonLogicFragment implements SlidingMenu.OnOpenedListener {
 
 	private static final int DAILY_BASE_ID = 0x00001000;
 	private static final int LIVE_BASE_ID = 0x00002000;
@@ -32,21 +27,17 @@ public class NewGamesFragment extends CommonLogicFragment {
 
 	private final static int DAILY_RIGHT_BUTTON_ID = DAILY_BASE_ID + NewGameDailyView.RIGHT_BUTTON_ID;
 	private final static int DAILY_LEFT_BUTTON_ID = DAILY_BASE_ID + NewGameDefaultView.LEFT_BUTTON_ID;
-//	private final static int DAILY_OPTIONS_TXT_ID = DAILY_BASE_ID + NewGameDefaultView.OPTIONS_TXT_ID;
 	private final static int DAILY_PLAY_BUTTON_ID = DAILY_BASE_ID + NewGameDefaultView.PLAY_BUTTON_ID;
 
 	private final static int LIVE_LEFT_BUTTON_ID = LIVE_BASE_ID + NewGameDefaultView.LEFT_BUTTON_ID;
-//	private final static int LIVE_OPTIONS_TXT_ID = LIVE_BASE_ID + NewGameDefaultView.OPTIONS_TXT_ID;
 	private final static int LIVE_PLAY_BUTTON_ID = LIVE_BASE_ID + NewGameDefaultView.PLAY_BUTTON_ID;
 
 	private final static int COMP_LEFT_BUTTON_ID = COMP_BASE_ID + NewGameDefaultView.LEFT_BUTTON_ID;
-//	private final static int COMP_OPTIONS_TXT_ID = COMP_BASE_ID + NewGameDefaultView.OPTIONS_TXT_ID;
 	private final static int COMP_PLAY_BUTTON_ID = COMP_BASE_ID + NewGameDefaultView.PLAY_BUTTON_ID;
 
 	private NewGameDailyView dailyGamesSetupView;
 	private NewGameLiveView liveGamesSetupView;
 	private NewGameCompView compGamesSetupView;
-	private NewGamesButtonsAdapter newGamesButtonsAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,10 +49,15 @@ public class NewGamesFragment extends CommonLogicFragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		setupNewGameViews(view);
-
-
-
 	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		getActivityFace().addOnOpenMenuListener(this);
+	}
+
 
 	@Override
 	public void onClick(View v) {
@@ -73,7 +69,7 @@ public class NewGamesFragment extends CommonLogicFragment {
 //			getActivityFace().switchFragment(GameDailyFragment.createInstance());
 		} else if (id == LIVE_LEFT_BUTTON_ID) {
 		} else if (id == LIVE_PLAY_BUTTON_ID) {
-
+			// create new live game with defined parameters
 		} else if (id == COMP_LEFT_BUTTON_ID) {
 
 		} else if (id == COMP_PLAY_BUTTON_ID) {
@@ -130,4 +126,18 @@ public class NewGamesFragment extends CommonLogicFragment {
 		compGamesSetupView.findViewById(COMP_PLAY_BUTTON_ID).setOnClickListener(this);
 	}
 
+	@Override
+	public void onOpened() {
+//		showToast("New Games");
+
+//		handler.postDelayed(new Runnable() {
+//			@Override
+//			public void run() {
+//				dailyGamesSetupView.addOptionsView();
+//				liveGamesSetupView.addOptionsView();
+//				compGamesSetupView.addOptionsView();
+//			}
+//		}, 100);
+
+	}
 }

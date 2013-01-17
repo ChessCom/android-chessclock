@@ -110,13 +110,6 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-		getActivityFace().addOnOpenMenuListener(this);
-	}
-
-	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		loadingView = view.findViewById(R.id.loadingView);
@@ -220,7 +213,14 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		super.onClick(view);
 		if (view.getId() == R.id.startNewGameBtn) {
 			getActivityFace().changeRightFragment(new NewGamesFragment());
-			getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+				}
+			}, 50);
+
 		} else if (view.getId() == R.id.acceptBtn) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			gameListChallengeItem = challengesGamesAdapter.getItem(position);

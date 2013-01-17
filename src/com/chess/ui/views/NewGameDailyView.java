@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.RoboTextView;
+import com.chess.RoboToggleButton;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
@@ -172,7 +173,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		@Override
 		protected View createView(ViewGroup parent) {
 			ViewHolder holder = new ViewHolder();
-			RoboButton view = new RoboButton(getContext(), null, R.attr.greyButtonSmallSolid);
+			RoboToggleButton view = new RoboToggleButton(getContext(), null, R.attr.greyButtonSmallSolid);
 			holder.label = view;
 			view.setTag(holder);
 			view.setOnClickListener(clickListenerFace);
@@ -188,7 +189,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		}
 
 		private class ViewHolder{
-			RoboButton label;
+			RoboToggleButton label;
 		}
 	}
 }

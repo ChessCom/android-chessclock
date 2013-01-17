@@ -17,9 +17,7 @@
             android:id="@+id/dailyGamesSetupView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
-
-        </com.chess.ui.views.NewGameDailyView>
+            />
 
         <com.chess.ui.views.NewGameLiveView
             android:id="@+id/liveGamesSetupView"
