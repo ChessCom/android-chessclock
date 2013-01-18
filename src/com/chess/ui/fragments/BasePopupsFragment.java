@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.chess.R;
@@ -252,5 +254,20 @@ public class BasePopupsFragment extends Fragment implements PopupDialogFace {
 		if (context != null) {
 			Toast.makeText(context, msgId, Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	public void showKeyBoard(EditText editText){
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+	}
+
+	public void hideKeyBoard(View editText){
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+	}
+
+	public void hideKeyBoard(){
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 	}
 }

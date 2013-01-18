@@ -16,6 +16,7 @@
 
     <!--<color name="stroke_shadow">#26000000</color>-->
     <color name="dark_grey_border">#FF2a2725</color>
+    <color name="dark_grey_border_for_edit">#ff211e1c</color>
     <color name="light_grey_border">#FFbab8b6</color>
     <color name="semi_transparent_border">#26000000</color>
 
@@ -56,6 +57,7 @@
     <!--Grey Solid-->
     <color name="grey_button_solid">#FF66605a</color>
     <color name="grey_button_solid_p">#ff47413c</color>
+    <color name="grey_button_solid_s">#ffa8a29c</color>
     <color name="grey_button_solid_border_top">#FF76706b</color>
     <color name="grey_button_solid_border_left">#FF6e6862</color>
     <color name="grey_button_solid_border_bottom">#FF4e4944</color>

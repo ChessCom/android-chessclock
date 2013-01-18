@@ -11,10 +11,6 @@
 		<item name="android:textSize">14sp</item>
 		<item name="android:textColor">@color/new_normal_gray</item>
 		<item name="android:textStyle">normal</item>
-<!--
-		<item name="android:paddingTop">3dip</item>
-		<item name="android:paddingBottom">3dip</item>
--->
 	</style>
 
 
@@ -298,6 +294,7 @@
     <style name="WhiteGrayEditText">
         <item name="android:singleLine">true</item>
         <item name="color">@color/new_soft_gray</item>
+        <item name="android:minHeight">@dimen/new_edit_field_height</item>
     </style>
 
     <style name="WhiteGrayEditText.One">

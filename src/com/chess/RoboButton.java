@@ -31,9 +31,15 @@ public class RoboButton extends Button implements Serializable {
 
     private void setupFont(AttributeSet attrs) {
         TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.RobotoTextView);
-		if (array.getString(R.styleable.RobotoTextView_ttf) != null) {
-			ttfName = array.getString(R.styleable.RobotoTextView_ttf);
+		try {
+			if (array.getString(R.styleable.RobotoTextView_ttf) != null) {
+				ttfName = array.getString(R.styleable.RobotoTextView_ttf);
+			}
+		} finally {
+			array.recycle();
 		}
+
+
 //        final int N = array.getIndexCount();
 //        for (int i = 0; i < N; i++) {
 //            int attr = array.getIndex(i);

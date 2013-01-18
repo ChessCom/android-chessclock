@@ -24,7 +24,8 @@
             android:text="@string/opponent_"
             />
 
-        <com.chess.RoboButton
+        <com.chess.EditButton
+            android:id="@+id/opponentEditBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -86,7 +87,8 @@
             android:text="@string/i_play_as_"
             />
 
-        <com.chess.RoboButton
+        <com.chess.EditButton
+            android:id="@+id/myColorEditBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/random"

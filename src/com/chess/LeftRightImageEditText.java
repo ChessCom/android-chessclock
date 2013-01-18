@@ -39,7 +39,7 @@ public class LeftRightImageEditText extends RoboEditText {
 	private int lineYStart;
 	private int lineXStop;
 	private int lineXStart;
-	private float backWidth;
+	private float backImageWidth;
 	private int rightImageOffset;
 	private boolean enlargeHeight;
 	private boolean rightPaddingSet;
@@ -61,12 +61,19 @@ public class LeftRightImageEditText extends RoboEditText {
 
 	private void init(Context context, AttributeSet attrs) {
 		TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.EnhancedField);
-		rightIcon = array.getDrawable(R.styleable.EnhancedField_rightImage);
-		roundMode = array.getInteger(R.styleable.EnhancedField_round_mode, ONE);
-		// back for image
 		int color;
-		color = array.getInteger(R.styleable.EnhancedField_color, Color.WHITE);
-		icon = array.getDrawable(R.styleable.EnhancedField_leftImage);
+		try {
+			rightIcon = array.getDrawable(R.styleable.EnhancedField_rightImage);
+			roundMode = array.getInteger(R.styleable.EnhancedField_round_mode, ONE);
+			// back for image
+
+			color = array.getInteger(R.styleable.EnhancedField_color, Color.WHITE);
+			icon = array.getDrawable(R.styleable.EnhancedField_leftImage);
+
+		} finally {
+			array.recycle();
+		}
+
 
 		rightImageWidth = rightIcon.getIntrinsicWidth();
 		rightImageHeight = rightIcon.getIntrinsicHeight();
@@ -123,9 +130,9 @@ public class LeftRightImageEditText extends RoboEditText {
 		linePaint.setStrokeWidth(1);
 		linePaint.setStyle(Paint.Style.STROKE);
 
-		backWidth = context.getResources().getDimension(R.dimen.new_edit_field_height) + BORDER_OFFSET;
+		backImageWidth = context.getResources().getDimension(R.dimen.new_edit_field_height);
 
-		if (rightImageHeight > backWidth) {
+		if (rightImageHeight > backImageWidth) {
 			enlargeHeight = true;
 		}
 
@@ -144,7 +151,7 @@ public class LeftRightImageEditText extends RoboEditText {
 
 		// place image
 		canvas.save();
-		float imgCenterX = (backWidth - imageWidth)/2;
+		float imgCenterX = (backImageWidth - imageWidth)/2;
 		float imgCenterY = (height - imageWidth)/2;
 		canvas.translate(imgCenterX, imgCenterY);
 		icon.draw(canvas);
@@ -167,9 +174,9 @@ public class LeftRightImageEditText extends RoboEditText {
 
 		// place additional clickable element
 		if (enlargeHeight) {
-			canvas.translate(backWidth + BORDER_OFFSET, - rightImageHeight/2);
+			canvas.translate(backImageWidth + BORDER_OFFSET, - rightImageHeight/2);
 		} else {
-			canvas.translate(backWidth + BORDER_OFFSET, 0);
+			canvas.translate(backImageWidth + BORDER_OFFSET, 0);
 		}
 
 		if (!rightPaddingSet) {
@@ -195,7 +202,7 @@ public class LeftRightImageEditText extends RoboEditText {
 
 		int x0 = (int)BORDER_OFFSET;
 		int y0 = 0;
-		int x1 = (int) backWidth;
+		int x1 = (int) backImageWidth;
 		int y1 = 0;
 
 		switch (roundMode) {

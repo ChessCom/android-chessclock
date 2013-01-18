@@ -58,11 +58,18 @@ public class LeftImageEditText extends RoboEditText {
 		density = context.getResources().getDisplayMetrics().density;
 
 		TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.EnhancedField);
-		roundMode = array.getInteger(R.styleable.EnhancedField_round_mode, ONE);
-		// back for image
 		int color;
-		color = array.getInteger(R.styleable.EnhancedField_color, Color.WHITE);
-		icon = array.getDrawable(R.styleable.EnhancedField_leftImage);
+		try {
+			roundMode = array.getInteger(R.styleable.EnhancedField_round_mode, ONE);
+			// back for image
+
+			color = array.getInteger(R.styleable.EnhancedField_color, Color.WHITE);
+			icon = array.getDrawable(R.styleable.EnhancedField_leftImage);
+		} finally {
+			array.recycle();
+		}
+
+
 		// back for image
 
 //		int color = Color.WHITE;

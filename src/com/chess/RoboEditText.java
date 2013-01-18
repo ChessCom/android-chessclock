@@ -31,9 +31,15 @@ public class RoboEditText extends EditText implements Serializable {
 
     private void setupFont(AttributeSet attrs) {
         TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.RobotoTextView);
-		if (array.getString(R.styleable.RobotoTextView_ttf) != null) {
-			ttfName = array.getString(R.styleable.RobotoTextView_ttf);
+		try {
+			if (array.getString(R.styleable.RobotoTextView_ttf) != null) {
+				ttfName = array.getString(R.styleable.RobotoTextView_ttf);
+			}
+		} finally {
+			array.recycle();
 		}
+
+
 
         init();
     }
@@ -42,4 +48,9 @@ public class RoboEditText extends EditText implements Serializable {
         Typeface font = Typeface.createFromAsset(getContext().getAssets(), RoboTextView.MAIN_PATH + ttfName + ".ttf");
         setTypeface(font);
     }
+
+	public void setFont(String font) {
+		ttfName = font;
+		init();
+	}
 }

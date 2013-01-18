@@ -14,6 +14,7 @@ public class RoboTextView extends TextView implements Serializable {
 	private static final long serialVersionUID = -2417945858405913303L;
 	public static final String MAIN_PATH = "fonts/trebuc-";
 	public static final String DEFAULT_FONT = "Regular";
+	public static final String BOLD_FONT = "Bold";
 
 	private String ttfName = DEFAULT_FONT;
 
@@ -33,8 +34,12 @@ public class RoboTextView extends TextView implements Serializable {
 
     private void setupFont(AttributeSet attrs) {
         TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.RobotoTextView);
-		if (array.getString(R.styleable.RobotoTextView_ttf) != null) {
-			ttfName = array.getString(R.styleable.RobotoTextView_ttf);
+		try {
+			if (array.getString(R.styleable.RobotoTextView_ttf) != null) {
+				ttfName = array.getString(R.styleable.RobotoTextView_ttf);
+			}
+		} finally {
+			array.recycle();
 		}
 
         init();

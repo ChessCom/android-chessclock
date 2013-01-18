@@ -1,8 +1,9 @@
 package com.chess.ui.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
@@ -10,7 +11,6 @@ import com.chess.ui.views.NewGameCompView;
 import com.chess.ui.views.NewGameDailyView;
 import com.chess.ui.views.NewGameDefaultView;
 import com.chess.ui.views.NewGameLiveView;
-import com.slidingmenu.lib.SlidingMenu;
 
 
 /**
@@ -19,7 +19,7 @@ import com.slidingmenu.lib.SlidingMenu;
  * Date: 12.01.13
  * Time: 9:04
  */
-public class NewGamesFragment extends CommonLogicFragment implements SlidingMenu.OnOpenedListener {
+public class NewGamesFragment extends CommonLogicFragment implements View.OnTouchListener {
 
 	private static final int DAILY_BASE_ID = 0x00001000;
 	private static final int LIVE_BASE_ID = 0x00002000;
@@ -35,10 +35,6 @@ public class NewGamesFragment extends CommonLogicFragment implements SlidingMenu
 	private final static int COMP_LEFT_BUTTON_ID = COMP_BASE_ID + NewGameDefaultView.LEFT_BUTTON_ID;
 	private final static int COMP_PLAY_BUTTON_ID = COMP_BASE_ID + NewGameDefaultView.PLAY_BUTTON_ID;
 
-	private NewGameDailyView dailyGamesSetupView;
-	private NewGameLiveView liveGamesSetupView;
-	private NewGameCompView compGamesSetupView;
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_new_games_frame, container, false);
@@ -52,21 +48,16 @@ public class NewGamesFragment extends CommonLogicFragment implements SlidingMenu
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-		getActivityFace().addOnOpenMenuListener(this);
-	}
-
-
-	@Override
 	public void onClick(View v) {
 		super.onClick(v);
 		int id = v.getId();
 		if (id == DAILY_RIGHT_BUTTON_ID) {
 		} else if (id == DAILY_LEFT_BUTTON_ID) {
 		} else if (id == DAILY_PLAY_BUTTON_ID) {
+			hideKeyBoard();
 //			getActivityFace().switchFragment(GameDailyFragment.createInstance());
+			// create new daily game with defined parameters
+			// get parameters from view
 		} else if (id == LIVE_LEFT_BUTTON_ID) {
 		} else if (id == LIVE_PLAY_BUTTON_ID) {
 			// create new live game with defined parameters
@@ -74,15 +65,13 @@ public class NewGamesFragment extends CommonLogicFragment implements SlidingMenu
 
 		} else if (id == COMP_PLAY_BUTTON_ID) {
 
-
-
 		}
 
 	}
 
 	private void setupNewGameViews(View view) {
 		// Daily Games setup
-		dailyGamesSetupView = (NewGameDailyView) view.findViewById(R.id.dailyGamesSetupView);
+		NewGameDailyView dailyGamesSetupView = (NewGameDailyView) view.findViewById(R.id.dailyGamesSetupView);
 
 		NewGameDefaultView.ConfigItem dailyConfig = new NewGameDefaultView.ConfigItem();
 		dailyConfig.setBaseId(DAILY_BASE_ID);
@@ -98,7 +87,7 @@ public class NewGamesFragment extends CommonLogicFragment implements SlidingMenu
 		dailyGamesSetupView.findViewById(DAILY_PLAY_BUTTON_ID).setOnClickListener(this);
 
 		// Live Games setup
-		liveGamesSetupView = (NewGameLiveView) view.findViewById(R.id.liveGamesSetupView);
+		NewGameLiveView liveGamesSetupView = (NewGameLiveView) view.findViewById(R.id.liveGamesSetupView);
 
 		NewGameDefaultView.ConfigItem liveConfig = new NewGameDefaultView.ConfigItem();
 		liveConfig.setBaseId(LIVE_BASE_ID);
@@ -112,7 +101,7 @@ public class NewGamesFragment extends CommonLogicFragment implements SlidingMenu
 		liveGamesSetupView.findViewById(LIVE_PLAY_BUTTON_ID).setOnClickListener(this);
 
 		// Comp Games setup
-		compGamesSetupView = (NewGameCompView) view.findViewById(R.id.compGamesSetupView);
+		NewGameCompView compGamesSetupView = (NewGameCompView) view.findViewById(R.id.compGamesSetupView);
 
 		NewGameDefaultView.ConfigItem compConfig = new NewGameDefaultView.ConfigItem();
 		compConfig.setBaseId(COMP_BASE_ID);
@@ -127,17 +116,9 @@ public class NewGamesFragment extends CommonLogicFragment implements SlidingMenu
 	}
 
 	@Override
-	public void onOpened() {
-//		showToast("New Games");
+	public boolean onTouch(View v, MotionEvent event) {
+		Log.d("TEST", "event " + event.getX());
 
-//		handler.postDelayed(new Runnable() {
-//			@Override
-//			public void run() {
-//				dailyGamesSetupView.addOptionsView();
-//				liveGamesSetupView.addOptionsView();
-//				compGamesSetupView.addOptionsView();
-//			}
-//		}, 100);
-
+		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 }

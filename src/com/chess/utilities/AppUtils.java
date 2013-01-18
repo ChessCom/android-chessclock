@@ -18,6 +18,8 @@ import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
@@ -362,5 +364,20 @@ public class AppUtils {
 	public static String convertStreamToString(java.io.InputStream is) {
 		Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
 		return scanner.hasNext() ? scanner.next() : "";
+	}
+
+	public static void showKeyBoard(Context context, EditText view){
+		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(view, 0 );
+	}
+
+//	public static void showKeyBoard(Context context, EditText editText){
+//		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//		imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+//	}
+//
+	public static void hideKeyBoard(Context context, View editText){
+		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 	}
 }

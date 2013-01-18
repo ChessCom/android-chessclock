@@ -42,7 +42,12 @@ public class LeftImageButton extends RoboButton {
 	private void init(Context context, AttributeSet attrs) {
 		// back for image
 		TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.EnhancedField);
-		icon = array.getDrawable(R.styleable.EnhancedField_leftImage);
+		try {
+			icon = array.getDrawable(R.styleable.EnhancedField_leftImage);
+		} finally {
+			array.recycle();
+		}
+
 
 		imageWidth = icon.getIntrinsicWidth();
 		int imageHeight = icon.getIntrinsicHeight();
