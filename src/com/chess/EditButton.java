@@ -26,6 +26,7 @@ public class EditButton extends RoboEditText implements View.OnClickListener {
 	private Drawable closeBtn;
 	private float density;
 	private int minButtonHeight;
+	private int editTextColor;
 
 	public EditButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -49,7 +50,7 @@ public class EditButton extends RoboEditText implements View.OnClickListener {
 		PADDING_SIDE = (int) (4 * density);
 
 		minButtonHeight = (int) getContext().getResources().getDimension(R.dimen.small_button_height);
-
+		editTextColor = getContext().getResources().getColor(R.color.new_edit_button_text);
 		setHint(""); // disable hint
 		closeBtn = getContext().getResources().getDrawable(R.drawable.ic_clear_text);
 		setSingleLine();
@@ -105,7 +106,7 @@ public class EditButton extends RoboEditText implements View.OnClickListener {
 			setBackgroundResource(R.drawable.edit_button_white_one);
 			setPadding(PADDING, PADDING, PADDING_SIDE, PADDING);
 			setHeight(minButtonHeight);
-			setTextColor(getContext().getResources().getColor(R.color.black));
+			setTextColor(editTextColor);
 
 			setShadowLayer(0, 0, 0, Color.TRANSPARENT);
 			setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0], getCompoundDrawables()[1], closeBtn, getCompoundDrawables()[3]);
@@ -116,7 +117,7 @@ public class EditButton extends RoboEditText implements View.OnClickListener {
 		} else {
 			setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0], getCompoundDrawables()[1], null, getCompoundDrawables()[3]);
 			setBackgroundResource(R.drawable.button_grey_solid_selector);
-			setTextColor(getContext().getResources().getColor(R.color.white));
+			setTextColor(0xFFFFFFFF);
 			float shadowRadius = 0.5f;
 			float shadowDx = 0 ;
 			float shadowDy = -1 ;

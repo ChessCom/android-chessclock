@@ -17,6 +17,7 @@
     <!--<color name="stroke_shadow">#26000000</color>-->
     <color name="dark_grey_border">#FF2a2725</color>
     <color name="dark_grey_border_for_edit">#ff211e1c</color>
+    <color name="new_edit_button_text">#FF262422</color>
     <color name="light_grey_border">#FFbab8b6</color>
     <color name="semi_transparent_border">#26000000</color>
 
