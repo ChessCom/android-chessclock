@@ -24,7 +24,7 @@
             android:text="@string/opponent_"
             />
 
-        <com.chess.EditButton
+        <com.chess.EditButtonSpinner
             android:id="@+id/opponentEditBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
@@ -73,6 +73,7 @@
 
     <!--I Play As-->
     <LinearLayout
+        android:id="@+id/iPlayLay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -87,7 +88,7 @@
             android:text="@string/i_play_as_"
             />
 
-        <com.chess.EditButton
+        <com.chess.EditButtonSpinner
             android:id="@+id/myColorEditBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -182,12 +183,13 @@
             android:paddingRight="17dip"
 
             >
-            <com.chess.RoboButton
+            <com.chess.RoboRadioButton
                 android:id="@+id/minRatingBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1250"
                 style="@style/Text.Button.Grey.Small.Solid"
+                android:button="@null"
+                android:inputType="numberDecimal"
                 />
 
             <com.chess.RoboTextView
@@ -198,13 +200,14 @@
                 android:layout_centerInParent="true"
                 />
 
-            <com.chess.RoboButton
+            <com.chess.RoboRadioButton
                 android:id="@+id/maxRatingBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="1450"
                 style="@style/Text.Button.Grey.Small.Solid"
+                android:button="@null"
+                android:inputType="numberDecimal"
                 />
         </RelativeLayout>
 
@@ -213,9 +216,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/ratingButtonsLay"
-            android:max="200"
-            android:progress="100"
+            android:max="100"
+            android:progress="50"
             android:layout_marginTop="11dip"
+            style="@style/RatingSeekBar"
             />
     </RelativeLayout>
 

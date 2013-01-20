@@ -5,13 +5,8 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.RelativeLayout;
+import android.view.*;
+import android.widget.*;
 import com.chess.*;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -37,6 +32,12 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 	private NewDailyGamesButtonsAdapter newDailyGamesButtonsAdapter;
 	private NewDailyGameConfig.Builder gameConfigBuilder;
 	private float minButtonHeight;
+	private RoboRadioButton minRatingBtn;
+	private RoboRadioButton maxRatingBtn;
+	private SeekBar ratingBar;
+	private Button playBottomBtn;
+
+
 
 	public NewGameDailyView(Context context) {
 		super(context);
@@ -152,7 +153,6 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 	public void addOptionsView() {
 		optionsView = LayoutInflater.from(getContext()).inflate(R.layout.new_game_option_daily_view, null, false);
 		optionsView.setVisibility(GONE);
-		addView(optionsView);
 
 		{// Mode adapter init
 			int[] newGameButtonsArray = getResources().getIntArray(R.array.days_per_move_array);
@@ -164,20 +164,100 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 			GridView gridView = (GridView) optionsView.findViewById(R.id.dailyGamesModeGrid);
 			newDailyGamesButtonsAdapter = new NewDailyGamesButtonsAdapter(this, newGameButtonItems);
 			gridView.setAdapter(newDailyGamesButtonsAdapter);
+			newDailyGamesButtonsAdapter.checkButton(0);
+			// set value to builder
+			gameConfigBuilder.setDaysPerMove(newDailyGamesButtonsAdapter.getItem(0).days);
 		}
 
 
-		EditButton opponentEditBtn = (EditButton) findViewById(R.id.opponentEditBtn);
+		EditButtonSpinner opponentEditBtn = (EditButtonSpinner) optionsView.findViewById(R.id.opponentEditBtn);
 		opponentEditBtn.addOnClickListener(this);
 
-		EditButton myColorEditBtn = (EditButton) findViewById(R.id.myColorEditBtn);
+		EditButtonSpinner myColorEditBtn = (EditButtonSpinner) optionsView.findViewById(R.id.myColorEditBtn);
 		myColorEditBtn.addOnClickListener(this);
+
+		// Rating part
+		int minRatingDefault = 1500; // TODO adjust properly
+		int maxRatingDefault = 1700;
+
+		minRatingBtn = (RoboRadioButton) optionsView.findViewById(R.id.minRatingBtn);
+		minRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
+		minRatingBtn.setText(String.valueOf(minRatingDefault));
+
+		maxRatingBtn = (RoboRadioButton) optionsView.findViewById(R.id.maxRatingBtn);
+		maxRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
+		maxRatingBtn.setText(String.valueOf(maxRatingDefault));
+
+		// set checked minRating Button
+		minRatingBtn.setChecked(true);
+
+		ratingBar = (SeekBar) optionsView.findViewById(R.id.ratingBar);
+		ratingBar.setOnSeekBarChangeListener(ratingBarChangeListener);
+		// TODO create progress drawable
+		ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingBar));
+		playBottomBtn = (Button) optionsView.findViewById(R.id.playBtn);
+
+		addView(optionsView);
+
 	}
 
-	@Override
-	public Context getMeContext() {
-		return getContext();
-	}
+	private CompoundButton.OnCheckedChangeListener ratingSelectionChangeListener = new CompoundButton.OnCheckedChangeListener() {
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			if (buttonView.getId() == R.id.minRatingBtn && isChecked) {
+				minRatingBtn.setChecked(true);
+				maxRatingBtn.setChecked(false);
+
+			} else if (buttonView.getId() == R.id.maxRatingBtn && isChecked){
+				maxRatingBtn.setChecked(true);
+				minRatingBtn.setChecked(false);
+			}
+		}
+	};
+
+	private SeekBar.OnSeekBarChangeListener ratingBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+		@Override
+		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+			TextView checkedButton;
+			int minRating;
+			int maxRating;
+			if (maxRatingBtn.isChecked()) {
+				checkedButton = maxRatingBtn;
+				minRating = 1000; // TODO set from resources
+				maxRating = 2400;
+			} else {
+				checkedButton = minRatingBtn;
+				minRating = 1000;
+				maxRating = 2000;
+			}
+			// get percent progress and convert it to values
+
+			int diff = minRating;
+			float koef = (maxRating - minRating) / 100; // (maxRating - minRating) / maxSeekProgress
+			// progress - percent
+			int value = (int) (koef * progress) + diff; // k * x + b
+
+			checkedButton.setText(String.valueOf(value ));
+
+			if (maxRatingBtn.isChecked()) {
+				gameConfigBuilder.setMaxRating(value);
+				gameConfigBuilder.setMinRating(Integer.parseInt(minRatingBtn.getText().toString()));
+			} else {
+				gameConfigBuilder.setMinRating(value);
+				gameConfigBuilder.setMaxRating(Integer.parseInt(maxRatingBtn.getText().toString()));
+			}
+
+		}
+
+		@Override
+		public void onStartTrackingTouch(SeekBar seekBar) {
+		}
+
+		@Override
+		public void onStopTrackingTouch(SeekBar seekBar) {
+		}
+	};
+
 
 	private static class NewDailyGameButtonItem {
 		public boolean checked;
@@ -199,15 +279,20 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		if (view.getId() == NewDailyGamesButtonsAdapter.BUTTON_ID) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 
-			newDailyGamesButtonsAdapter.unCheckButtons(position);
+			newDailyGamesButtonsAdapter.checkButton(position);
 			// set value to builder
 			gameConfigBuilder.setDaysPerMove(newDailyGamesButtonsAdapter.getItem(position).days);
 		} else if (view.getId() == R.id.opponentEditBtn){
 			Log.d("TEST", "opponentEditBtn clicked");
 		} else if (view.getId() == R.id.myColorEditBtn){
+		} else if (view.getId() == R.id.minRatingBtn){
+		} else if (view.getId() == R.id.maxRatingBtn){
+		} else if (view.getId() == R.id.playBtn){
 			Log.d("TEST", "myColorEditBtn clicked");
 
 		}
+
+
 	}
 
 	private class NewDailyGamesButtonsAdapter extends ItemsAdapter<NewDailyGameButtonItem> {
@@ -222,10 +307,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 
 		@Override
 		protected View createView(ViewGroup parent) {
-//			ViewHolder holder = new ViewHolder();
 			RoboToggleButton view = new RoboToggleButton(getContext(), null, R.attr.greyButtonSmallSolid);
-//			holder.label = view;
-//			view.setTag(holder);
 			view.setId(BUTTON_ID);
 			view.setOnClickListener(clickListenerFace);
 			return view;
@@ -233,18 +315,12 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 
 		@Override
 		protected void bindView(NewDailyGameButtonItem item, int pos, View convertView) {
-//			ViewHolder holder = (ViewHolder) convertView.getTag();
-//			holder.label.setText(item.label);
 			((RoboToggleButton)convertView).setText(item.label);
 			((RoboToggleButton)convertView).setChecked(item.checked);
 			convertView.setTag(itemListId, pos);
 		}
 
-//		private class ViewHolder{
-//			RoboToggleButton label;
-//		}
-
-		public void unCheckButtons(int checkedPosition){
+		public void checkButton(int checkedPosition){
 			for (NewDailyGameButtonItem item : itemsList) {
 				item.checked = false;
 			}
@@ -259,10 +335,12 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		return gameConfigBuilder.build();
 	}
 
-	private static class NewDailyGameConfig {
+	public static class NewDailyGameConfig {
 		private int daysPerMove;
 		private int userColor;
 		private boolean rated;
+		private int minRating;
+		private int maxRating;
 		private int gameType;
 		private String opponentName;
 
@@ -270,6 +348,8 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 			private int daysPerMove;
 			private int userColor;
 			private boolean rated;
+			private int minRating;
+			private int maxRating;
 			private int gameType;
 			private String opponentName;
 /*
@@ -323,6 +403,22 @@ gameSeekName	\w+		false	Name of new game/challenge. Default is `Let's Play!`.
 				return this;
 			}
 
+			public int getMinRating() {
+				return minRating;
+			}
+
+			public void setMinRating(int minRating) {
+				this.minRating = minRating;
+			}
+
+			public int getMaxRating() {
+				return maxRating;
+			}
+
+			public void setMaxRating(int maxRating) {
+				this.maxRating = maxRating;
+			}
+
 			public NewDailyGameConfig build(){
 				return new NewDailyGameConfig(this);
 			}
@@ -334,6 +430,8 @@ gameSeekName	\w+		false	Name of new game/challenge. Default is `Let's Play!`.
 			this.rated = builder.rated;
 			this.gameType = builder.gameType;
 			this.opponentName = builder.opponentName;
+			this.minRating = builder.minRating;
+			this.maxRating = builder.maxRating;
 		}
 
 		public int getDaysPerMove() {
@@ -355,5 +453,18 @@ gameSeekName	\w+		false	Name of new game/challenge. Default is `Let's Play!`.
 		public String getOpponentName() {
 			return opponentName;
 		}
+
+		public int getMinRating() {
+			return minRating;
+		}
+
+		public int getMaxRating() {
+			return maxRating;
+		}
+	}
+
+	@Override
+	public Context getMeContext() {
+		return getContext();
 	}
 }

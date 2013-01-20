@@ -13,8 +13,6 @@
 		<item name="android:textStyle">normal</item>
 	</style>
 
-
-
 	<style name="Text.Button">
 		<item name="android:background">@drawable/button_orange_selector</item>
 		<item name="android:focusable">true</item>
@@ -191,6 +189,31 @@
 		<item name="android:layout_marginBottom">2dip</item>
 		<item name="android:gravity">center_vertical</item>
     </style>
+
+    <style name="SeekBar" parent="android:style/Widget.SeekBar">
+        <!--<item name="android:progressDrawable">@drawable/progress_horizontal</item>-->
+        <!--<item name="android:indeterminateDrawable">@drawable/progress_horizontal</item>-->
+        <!--<item name="android:thumb">@drawable/seek_thumb_selector</item>-->
+        <item name="android:thumbOffset">8dip</item>
+        <item name="android:paddingLeft">7dip</item>
+        <item name="android:paddingRight">7dip</item>
+        <item name="android:minHeight">14dip</item>
+        <item name="android:maxHeight">14dip</item>
+    </style>
+
+    <style name="RatingSeekBar" parent="android:style/Widget.SeekBar">
+        <item name="android:progressDrawable">@drawable/progress_horizontal</item>
+        <!--<item name="android:progressDrawable">@drawable/progress_seek_temp</item>-->
+        <!--<item name="android:progressDrawable">@drawable/empty</item>-->
+        <item name="android:indeterminateDrawable">@drawable/empty</item>
+        <item name="android:thumb">@drawable/seek_thumb_selector</item>
+        <item name="android:thumbOffset">8dip</item>
+        <item name="android:paddingLeft">7dip</item>
+        <item name="android:paddingRight">7dip</item>
+        <item name="android:minHeight">20dip</item>
+        <item name="android:maxHeight">20dip</item>
+    </style>
+
 
     <style name="TabRadioButton" parent="android:Widget.CompoundButton.RadioButton">
         <item name="android:button">@null</item>

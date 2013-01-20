@@ -179,4 +179,9 @@
     <dimen name="new_game_frame_padding_side">14dip</dimen>
     <dimen name="new_daily_games_item_height">53dip</dimen>
 
+    <!--SeekBar-->
+    <dimen name="seek_radius">10dip</dimen>
+    <dimen name="seek_stroke_width">1dip</dimen>
+    <dimen name="seek_thumb_padding">8dip</dimen>
+
 </resources>

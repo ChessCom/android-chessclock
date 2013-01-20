@@ -7,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import com.chess.R;
 import com.chess.utilities.AppUtils;
 
@@ -19,7 +18,7 @@ public class LogoBackgroundDrawable extends Drawable {
 
 	private Rect fullScreenRect;
 	private GradientDrawable shadowDrawable;
-	private Bitmap framedPhoto;
+	private Bitmap roundedBitmap;
 	private int patternWidth;
 	private BitmapDrawable imageBackDrawable;
 	private Bitmap shadowOvalBitmap;
@@ -115,7 +114,7 @@ public class LogoBackgroundDrawable extends Drawable {
 		imageBackDrawable.draw(canvas);
 		canvas.restore();
 
-		framedPhoto = Bitmap.createBitmap(output);
+		roundedBitmap = Bitmap.createBitmap(output);
 	}
 
 	@Override
@@ -123,7 +122,7 @@ public class LogoBackgroundDrawable extends Drawable {
 		int width = canvas.getWidth();
 		int height = canvas.getHeight();
 
-		if (framedPhoto == null) {
+		if (roundedBitmap == null) {
 			setupDrawables(canvas);
 		}
 
@@ -149,7 +148,7 @@ public class LogoBackgroundDrawable extends Drawable {
 //		canvas.drawLine(0, outerRect.bottom, width , outerRect.bottom, green );
 //		canvas.drawLine(0, squareRect.bottom, width , squareRect.bottom, blue );
 
-		canvas.drawBitmap(framedPhoto, null, squareRect, null);
+		canvas.drawBitmap(roundedBitmap, null, squareRect, null);
 		canvas.restore();
 
 //		Paint red = new Paint();

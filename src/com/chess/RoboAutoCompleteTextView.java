@@ -54,4 +54,8 @@ public class RoboAutoCompleteTextView extends AutoCompleteTextView {
         setTypeface(font);
     }
 
+	public void setFont(String font) {
+		ttfName = font;
+		init();
+	}
 }

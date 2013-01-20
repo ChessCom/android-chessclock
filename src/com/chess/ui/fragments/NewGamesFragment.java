@@ -7,6 +7,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.DailySeekItem;
+import com.chess.backend.entity.new_api.FriendsItem;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
+import com.chess.backend.interfaces.TaskUpdateInterface;
+import com.chess.backend.statics.AppData;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.views.NewGameCompView;
 import com.chess.ui.views.NewGameDailyView;
 import com.chess.ui.views.NewGameDefaultView;
@@ -21,6 +29,9 @@ import com.chess.ui.views.NewGameLiveView;
  */
 public class NewGamesFragment extends CommonLogicFragment implements View.OnTouchListener {
 
+	private static final String NO_INVITED_FRIENDS_TAG = "no invited friends";
+	private static final String ERROR_TAG = "send request failed popup";
+
 	private static final int DAILY_BASE_ID = 0x00001000;
 	private static final int LIVE_BASE_ID = 0x00002000;
 	private static final int COMP_BASE_ID = 0x00003000;
@@ -34,6 +45,10 @@ public class NewGamesFragment extends CommonLogicFragment implements View.OnTouc
 
 	private final static int COMP_LEFT_BUTTON_ID = COMP_BASE_ID + NewGameDefaultView.LEFT_BUTTON_ID;
 	private final static int COMP_PLAY_BUTTON_ID = COMP_BASE_ID + NewGameDefaultView.PLAY_BUTTON_ID;
+	private NewGameDailyView dailyGamesSetupView;
+	private NewGameLiveView liveGamesSetupView;
+	private NewGameCompView compGamesSetupView;
+	private CreateChallengeUpdateListener createChallengeUpdateListener;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +60,7 @@ public class NewGamesFragment extends CommonLogicFragment implements View.OnTouc
 		super.onViewCreated(view, savedInstanceState);
 
 		setupNewGameViews(view);
+		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 	}
 
 	@Override
@@ -54,24 +70,60 @@ public class NewGamesFragment extends CommonLogicFragment implements View.OnTouc
 		if (id == DAILY_RIGHT_BUTTON_ID) {
 		} else if (id == DAILY_LEFT_BUTTON_ID) {
 		} else if (id == DAILY_PLAY_BUTTON_ID) {
-			hideKeyBoard();
-//			getActivityFace().switchFragment(GameDailyFragment.createInstance());
-			// create new daily game with defined parameters
-			// get parameters from view
+			// create challenge using formed configuration
+			NewGameDailyView.NewDailyGameConfig newDailyGameConfig = dailyGamesSetupView.getNewDailyGameConfig();
+
+			int color = newDailyGameConfig.getUserColor();
+			int days = newDailyGameConfig.getDaysPerMove();
+			int gameType = newDailyGameConfig.getGameType();
+			String isRated = newDailyGameConfig.isRated()? RestHelper.V_TRUE: RestHelper.V_FALSE;
+			String opponentName = newDailyGameConfig.getOpponentName();
+
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.CMD_SEEKS);
+			loadItem.setRequestMethod(RestHelper.POST);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+			loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, days);
+			loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
+			loadItem.addRequestParams(RestHelper.P_IS_RATED, isRated);
+			loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
+			loadItem.addRequestParams(RestHelper.P_OPPONENT, opponentName);
+
+			new RequestJsonTask<DailySeekItem>(createChallengeUpdateListener).executeTask(loadItem);
+
+
 		} else if (id == LIVE_LEFT_BUTTON_ID) {
 		} else if (id == LIVE_PLAY_BUTTON_ID) {
 			// create new live game with defined parameters
+			liveGamesSetupView.getNewLiveGameConfig();
 		} else if (id == COMP_LEFT_BUTTON_ID) {
 
 		} else if (id == COMP_PLAY_BUTTON_ID) {
-
+			compGamesSetupView.getNewCompGameConfig();
 		}
 
 	}
 
+	private class CreateChallengeUpdateListener extends ActionBarUpdateListener<DailySeekItem> {
+
+		public CreateChallengeUpdateListener() {
+			super(getInstance(), DailySeekItem.class);
+		}
+
+		@Override
+		public void updateData(DailySeekItem returnedObj) {
+			showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
+		}
+
+		@Override
+		public void errorHandle(String resultMessage) {
+			showPopupDialog(getString(R.string.error), resultMessage, ERROR_TAG);
+		}
+	}
+
 	private void setupNewGameViews(View view) {
 		// Daily Games setup
-		NewGameDailyView dailyGamesSetupView = (NewGameDailyView) view.findViewById(R.id.dailyGamesSetupView);
+		dailyGamesSetupView = (NewGameDailyView) view.findViewById(R.id.dailyGamesSetupView);
 
 		NewGameDefaultView.ConfigItem dailyConfig = new NewGameDefaultView.ConfigItem();
 		dailyConfig.setBaseId(DAILY_BASE_ID);
@@ -87,7 +139,7 @@ public class NewGamesFragment extends CommonLogicFragment implements View.OnTouc
 		dailyGamesSetupView.findViewById(DAILY_PLAY_BUTTON_ID).setOnClickListener(this);
 
 		// Live Games setup
-		NewGameLiveView liveGamesSetupView = (NewGameLiveView) view.findViewById(R.id.liveGamesSetupView);
+		liveGamesSetupView = (NewGameLiveView) view.findViewById(R.id.liveGamesSetupView);
 
 		NewGameDefaultView.ConfigItem liveConfig = new NewGameDefaultView.ConfigItem();
 		liveConfig.setBaseId(LIVE_BASE_ID);
@@ -101,7 +153,7 @@ public class NewGamesFragment extends CommonLogicFragment implements View.OnTouc
 		liveGamesSetupView.findViewById(LIVE_PLAY_BUTTON_ID).setOnClickListener(this);
 
 		// Comp Games setup
-		NewGameCompView compGamesSetupView = (NewGameCompView) view.findViewById(R.id.compGamesSetupView);
+		compGamesSetupView = (NewGameCompView) view.findViewById(R.id.compGamesSetupView);
 
 		NewGameDefaultView.ConfigItem compConfig = new NewGameDefaultView.ConfigItem();
 		compConfig.setBaseId(COMP_BASE_ID);

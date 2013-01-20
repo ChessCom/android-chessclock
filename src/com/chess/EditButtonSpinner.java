@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.widget.ArrayAdapter;
 import com.chess.utilities.AppUtils;
 
 
@@ -15,7 +16,7 @@ import com.chess.utilities.AppUtils;
  * Date: 17.01.13
  * Time: 13:53
  */
-public class EditButton extends RoboEditText {
+public class EditButtonSpinner extends RoboAutoCompleteTextView {
 
 	private int PADDING_SIDE;
 	private int PADDING;
@@ -28,20 +29,22 @@ public class EditButton extends RoboEditText {
 	private int defaultMinWidth;
 	private Handler handler;
 
-	public EditButton(Context context, AttributeSet attrs, int defStyle) {
+	public EditButtonSpinner(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		onCreate(context);
 	}
 
-	public EditButton(Context context) {
+	public EditButtonSpinner(Context context) {
 		super(context);
 		onCreate(context);
 	}
 
-	public EditButton(Context context, AttributeSet attrs) {
+	public EditButtonSpinner(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		onCreate(context);
 	}
+
+
 
 	private void onCreate(Context context) {
 		density = context.getResources().getDisplayMetrics().density;
@@ -58,9 +61,37 @@ public class EditButton extends RoboEditText {
 		setSingleLine();
 		setFont(RoboTextView.BOLD_FONT);
 
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+				android.R.layout.simple_dropdown_item_1line, COUNTRIES);
+		setAdapter(adapter);
+
 		defaultMinWidth = (int) getContext().getResources().getDimension(R.dimen.button_min_width);
 	}
 
+	private static final String[] COUNTRIES = new String[] {
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"Belgium",
+			"France", "Italy", "Germany", "Spain"
+	};
 
 	public void addOnClickListener(OnClickListener clickListener) {
 		this.clickListener = clickListener;
@@ -110,6 +141,8 @@ public class EditButton extends RoboEditText {
 			setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0], getCompoundDrawables()[1], closeBtn, getCompoundDrawables()[3]);
 			setCursorVisible(true);
 
+			setMinWidth(300); // TODO adjust properly
+
 			AppUtils.showKeyBoard(getContext(), this);
 
 		} else {
@@ -123,6 +156,9 @@ public class EditButton extends RoboEditText {
 
 			clearFocus();
 			setCursorVisible(false);
+
+			setMinWidth(defaultMinWidth);
+
 
 			handler.postDelayed(new Runnable() {
 				@Override

@@ -278,4 +278,8 @@
     <!--New Game Options-->
     <color name="game_option_1_back_top">#FF363330</color>
     <color name="game_option_1_back_bot">#FF22201e</color>
+
+    <!--SeekBar-->
+    <color name="seek_background">#FF22201e</color>
+    <color name="seek_background_stroke">#FF292623</color>
 </resources>
