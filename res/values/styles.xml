@@ -171,7 +171,7 @@
         <item name="android:textColor">@color/hint_text</item>
     </style>
 
-    <style name="check_Box" parent="android:Widget.CompoundButton.CheckBox">
+    <style name="CheckBox" parent="android:Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/btn_check_selector</item>
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/hint_text</item>
@@ -180,7 +180,7 @@
     </style>
 
 
-    <style name="radio_Button" parent="android:Widget.CompoundButton.RadioButton">
+    <style name="RadioButton" parent="android:Widget.CompoundButton.RadioButton">
         <item name="android:button">@drawable/btn_radio_selector</item>
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/hint_text</item>

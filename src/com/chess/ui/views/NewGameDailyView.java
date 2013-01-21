@@ -36,7 +36,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 	private RoboRadioButton maxRatingBtn;
 	private SeekBar ratingBar;
 	private Button playBottomBtn;
-
+	private SwitchButton ratedGameSwitch;
 
 
 	public NewGameDailyView(Context context) {
@@ -193,9 +193,14 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 
 		ratingBar = (SeekBar) optionsView.findViewById(R.id.ratingBar);
 		ratingBar.setOnSeekBarChangeListener(ratingBarChangeListener);
-		// TODO create progress drawable
-		ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingBar));
+		// TODO adjust progress drawable
+		ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext()));
 		playBottomBtn = (Button) optionsView.findViewById(R.id.playBtn);
+
+		// rated games switch
+		ratedGameSwitch = (SwitchButton) optionsView.findViewById(R.id.ratedGameSwitch);
+		ratedGameSwitch.setOnClickListener(this);
+
 
 		addView(optionsView);
 
@@ -287,6 +292,9 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		} else if (view.getId() == R.id.myColorEditBtn){
 		} else if (view.getId() == R.id.minRatingBtn){
 		} else if (view.getId() == R.id.maxRatingBtn){
+		} else if (view.getId() == SwitchButton.BUTTON_ID
+				|| view.getId() == SwitchButton.TEXT_ID){
+			ratedGameSwitch.toggle(view);
 		} else if (view.getId() == R.id.playBtn){
 			Log.d("TEST", "myColorEditBtn clicked");
 

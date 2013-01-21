@@ -25,13 +25,15 @@ public class RatingProgressDrawable extends Drawable {
 	private Rect patternImageRect;
 	private Bitmap roundedBitmap;
 	private final PorterDuffXfermode xRefMode2;
-	private SeekBar ratingBar;
+
 	private final GradientDrawable gradientDrawable;
 	private final GradientDrawable gradientStrokeDrawable;
+	private int ratingBarHeight = 20;
 
 
-	public RatingProgressDrawable(Context context, SeekBar ratingBar) {
-		this.ratingBar = ratingBar;
+	public RatingProgressDrawable(Context context) {
+
+
 		imageBackDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_progress_bitmap_back);
 		imageBackDrawable.setAntiAlias(true);
 		imageBackDrawable.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
@@ -45,13 +47,13 @@ public class RatingProgressDrawable extends Drawable {
 		gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
 				new int[] {0xFF292623, 0xFF393532});
 
-
+		ratingBarHeight *= context.getResources().getDisplayMetrics().density;
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
 		int width = canvas.getWidth();
-		int height = ratingBar.getMinimumHeight();
+		int height = ratingBarHeight;
 
 
 		gradientStrokeDrawable.setBounds(0, 0, width - 20, height + BORDER_THICK * 2 + BORDER_STROKE_THICK * 2);
@@ -91,6 +93,7 @@ public class RatingProgressDrawable extends Drawable {
 		drawable.setCornerRadii(new float[] { r0, r0, r1, r1,
 				r2, r2, r3, r3 });
 	}
+
 	private Bitmap createRoundedBitmap(int width, int height) {
 		// back pattern
 		Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);

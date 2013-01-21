@@ -15,6 +15,7 @@ public class RoboTextView extends TextView implements Serializable {
 	public static final String MAIN_PATH = "fonts/trebuc-";
 	public static final String DEFAULT_FONT = "Regular";
 	public static final String BOLD_FONT = "Bold";
+	public static final String ROBOTO_BOLD_FONT = "RobotoBold";
 
 	private String ttfName = DEFAULT_FONT;
 
@@ -50,10 +51,9 @@ public class RoboTextView extends TextView implements Serializable {
         setTypeface(font);
     }
 
-	@Override
-	public void setTypeface(Typeface tf) {
-		super.setTypeface(tf);
+	public void setFont(String font) {
+		ttfName = font;
+		init();
 	}
-
 
 }

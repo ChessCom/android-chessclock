@@ -1,6 +1,7 @@
 package com.chess.ui.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -87,7 +88,9 @@ public class NewGamesFragment extends CommonLogicFragment implements View.OnTouc
 			loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
 			loadItem.addRequestParams(RestHelper.P_IS_RATED, isRated);
 			loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
-			loadItem.addRequestParams(RestHelper.P_OPPONENT, opponentName);
+			if (!TextUtils.isEmpty(opponentName)) {
+				loadItem.addRequestParams(RestHelper.P_OPPONENT, opponentName);
+			}
 
 			new RequestJsonTask<DailySeekItem>(createChallengeUpdateListener).executeTask(loadItem);
 

@@ -113,11 +113,18 @@
             android:text="@string/rated_game_"
             />
 
-        <com.chess.RoboCheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Text.Button.Grey.Small.Solid"
+        <!--<include layout="@layout/switch_widget" />-->
+
+
+        <com.chess.SwitchButton
+            android:id="@id/ratedGameSwitch"
+            android:layout_width="@dimen/button_switch_width"
+            android:layout_height="@dimen/button_switch_height"
+            android:background="@drawable/button_switch_back"
             />
+
+        <!--style="@style/customSwitch"-->
+        <!--android:background="@drawable/img_switch_back"-->
 
     </LinearLayout>
 

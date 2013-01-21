@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import com.chess.R;
-import com.chess.RoboButton;
+import com.chess.RoboToggleButton;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
@@ -23,6 +23,7 @@ import java.util.List;
 public class NewGameLiveView extends NewGameDefaultView implements ItemClickListenerFace {
 
 	private NewLiveGameConfig.Builder gameConfigBuilder;
+	private NewLiveGamesButtonsAdapter newLiveGamesButtonsAdapter;
 
 	public NewGameLiveView(Context context) {
 		super(context);
@@ -46,11 +47,11 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 	public void toggleOptions() {
 		super.toggleOptions();
 
-		int expandVisibility = optionsVisible? VISIBLE: GONE;
+		int expandVisibility = optionsVisible ? VISIBLE : GONE;
 
 		optionsView.setVisibility(expandVisibility);
 
-		if(optionsVisible) {
+		if (optionsVisible) {
 			compactRelLay.setBackgroundResource(R.drawable.game_option_back_1);
 		} else {
 			compactRelLay.setBackgroundResource(R.drawable.nav_menu_item_selected);
@@ -64,15 +65,29 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 		optionsView.setVisibility(GONE);
 		addView(optionsView);
 
-		String[] newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
-		List<NewLiveGameButtonItem> newGameButtonItems = new ArrayList<NewLiveGameButtonItem>();
-		for (String label : newGameButtonsArray) {
-			newGameButtonItems.add(NewLiveGameButtonItem.createNewButtonFromLabel(label, getContext()));
+		{// Mode adapter init
+			String[] newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
+			List<NewLiveGameButtonItem> newGameButtonItems = new ArrayList<NewLiveGameButtonItem>();
+			for (String label : newGameButtonsArray) {
+				newGameButtonItems.add(NewLiveGameButtonItem.createNewButtonFromLabel(label, getContext()));
+			}
+
+			GridView gridView = (GridView) optionsView.findViewById(R.id.liveModeGrid);
+			newLiveGamesButtonsAdapter = new NewLiveGamesButtonsAdapter(this, newGameButtonItems);
+			gridView.setAdapter(newLiveGamesButtonsAdapter);
+			newLiveGamesButtonsAdapter.checkButton(0);
+			// set value to builder
 		}
+	}
 
-		GridView gridView = (GridView) optionsView.findViewById(R.id.liveModeGrid);
-		gridView.setAdapter(new NewLiveGamesButtonsAdapter(this, newGameButtonItems));
+	@Override
+	public void onClick(View view) {
+		super.onClick(view);
+		if (view.getId() == NewLiveGamesButtonsAdapter.BUTTON_ID) {
+			Integer position = (Integer) view.getTag(R.id.list_item_id);
 
+			newLiveGamesButtonsAdapter.checkButton(position);
+		}
 	}
 
 	@Override
@@ -81,15 +96,15 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 	}
 
 	public static class NewLiveGameButtonItem {
-
+		public boolean checked;
 		public int min;
 		public int sec;
 		public String label;
 		private static final String PAIR_DIVIDER = " | ";
 
-		public static NewLiveGameButtonItem createNewButtonFromLabel(String label, Context context){
-			NewLiveGameButtonItem  buttonItem = new NewLiveGameButtonItem();
-			if(label.contains(PAIR_DIVIDER)){
+		public static NewLiveGameButtonItem createNewButtonFromLabel(String label, Context context) {
+			NewLiveGameButtonItem buttonItem = new NewLiveGameButtonItem();
+			if (label.contains(PAIR_DIVIDER)) {
 				// "5 | 2"),
 				String[] params = label.split(PAIR_DIVIDER);
 				buttonItem.min = Integer.valueOf(params[0]);
@@ -109,6 +124,7 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 	public class NewLiveGamesButtonsAdapter extends ItemsAdapter<NewLiveGameButtonItem> {
 
 		private ItemClickListenerFace clickListenerFace;
+		public static final int BUTTON_ID = 0x00001234;
 
 		public NewLiveGamesButtonsAdapter(ItemClickListenerFace clickListenerFace, List<NewLiveGameButtonItem> itemList) {
 			super(clickListenerFace.getMeContext(), itemList);
@@ -117,28 +133,31 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			ViewHolder holder = new ViewHolder();
-			RoboButton view = new RoboButton(getContext(), null, R.attr.greyButtonSmallSolid);
-			holder.label = view;
-			view.setTag(holder);
+			RoboToggleButton view = new RoboToggleButton(getContext(), null, R.attr.greyButtonSmallSolid);
+			view.setId(BUTTON_ID);
 			view.setOnClickListener(clickListenerFace);
 			return view;
 		}
 
 		@Override
 		protected void bindView(NewLiveGameButtonItem item, int pos, View convertView) {
-			ViewHolder holder = (ViewHolder) convertView.getTag();
-			holder.label.setText(item.label);
+			((RoboToggleButton) convertView).setText(item.label);
+			((RoboToggleButton) convertView).setChecked(item.checked);
 
 			convertView.setTag(itemListId, pos);
 		}
 
-		private class ViewHolder{
-			RoboButton label;
+		public void checkButton(int checkedPosition) {
+			for (NewLiveGameButtonItem item : itemsList) {
+				item.checked = false;
+			}
+
+			itemsList.get(checkedPosition).checked = true;
+			notifyDataSetChanged();
 		}
 	}
 
-	public NewLiveGameConfig getNewLiveGameConfig(){
+	public NewLiveGameConfig getNewLiveGameConfig() {
 
 		return gameConfigBuilder.build();
 	}
@@ -150,7 +169,7 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 		private int gameType;
 		private String opponentName;
 
-		public static class Builder{
+		public static class Builder {
 			private int daysPerMove;
 			private int userColor;
 			private boolean rated;
@@ -177,7 +196,7 @@ gameSeekName	\w+		false	Name of new game/challenge. Default is `Let's Play!`.
 			/**
 			 * Create new Seek game with default values
 			 */
-			public Builder(){
+			public Builder() {
 				daysPerMove = 3;
 				rated = true;
 			}
@@ -207,7 +226,7 @@ gameSeekName	\w+		false	Name of new game/challenge. Default is `Let's Play!`.
 				return this;
 			}
 
-			public NewLiveGameConfig build(){
+			public NewLiveGameConfig build() {
 				return new NewLiveGameConfig(this);
 			}
 		}
