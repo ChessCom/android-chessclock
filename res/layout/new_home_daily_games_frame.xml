@@ -100,6 +100,8 @@
             android:text="@string/start_new_game"
             android:layout_marginLeft="4dip"
             style="@style/Text.Button"
+            android:paddingLeft="2dip"
+            android:paddingRight="2dip"
             />
     </LinearLayout>
 

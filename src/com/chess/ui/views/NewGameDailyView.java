@@ -194,7 +194,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		ratingBar = (SeekBar) optionsView.findViewById(R.id.ratingBar);
 		ratingBar.setOnSeekBarChangeListener(ratingBarChangeListener);
 		// TODO adjust progress drawable
-		ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext()));
+		ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingBar));
 		playBottomBtn = (Button) optionsView.findViewById(R.id.playBtn);
 
 		// rated games switch

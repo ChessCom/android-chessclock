@@ -28,7 +28,5 @@
 
     <!--Sliding Menu-->
     <item name="selected_view" type="id"/>
-    <!--Switch-->
-    <item name="ratedGameSwitch" type="id"/>
 
 </resources>

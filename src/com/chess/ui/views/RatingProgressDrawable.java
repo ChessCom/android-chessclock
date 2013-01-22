@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.widget.SeekBar;
 import com.chess.R;
+import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,9 +19,12 @@ public class RatingProgressDrawable extends Drawable {
 
 	private final BitmapDrawable imageBackDrawable;
 
-	private static final float CORNER_RADIUS = 21;
-	private static final int BORDER_STROKE_THICK = 1;
-	private static final int BORDER_THICK = 5;
+	private float CORNER_RADIUS = 10;
+	private int BORDER_STROKE_THICK = 1;
+	private float BORDER_THICK = 2.5f;
+	private int RIGHT_OFFSET = 10;
+	private int CENTER_OFFSET = 4;
+	private final SeekBar seekBar;
 
 	private Rect patternImageRect;
 	private Bitmap roundedBitmap;
@@ -31,8 +35,13 @@ public class RatingProgressDrawable extends Drawable {
 	private int ratingBarHeight = 20;
 
 
-	public RatingProgressDrawable(Context context) {
+	public RatingProgressDrawable(Context context, SeekBar seekBar) {
+		this.seekBar = seekBar;
 
+		BORDER_THICK *= context.getResources().getDisplayMetrics().density;
+		RIGHT_OFFSET *= context.getResources().getDisplayMetrics().density;
+		CORNER_RADIUS *= context.getResources().getDisplayMetrics().density;
+		CENTER_OFFSET *= context.getResources().getDisplayMetrics().density;
 
 		imageBackDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_progress_bitmap_back);
 		imageBackDrawable.setAntiAlias(true);
@@ -42,9 +51,11 @@ public class RatingProgressDrawable extends Drawable {
 		xRefMode2 = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
 
 		gradientStrokeDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+//				new int[] {0xFFFFFFFF, 0xFFFF0000});
 				new int[] {0xFF2d2a27, 0xFF35322f});
 
 		gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+//				new int[] {0xFF00FF00, 0xFFFFFFFF});
 				new int[] {0xFF292623, 0xFF393532});
 
 		ratingBarHeight *= context.getResources().getDisplayMetrics().density;
@@ -52,39 +63,68 @@ public class RatingProgressDrawable extends Drawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-		int width = canvas.getWidth();
-		int height = ratingBarHeight;
+//		int width = canvas.getWidth();
+		int width = seekBar.getWidth();
+//		int height = ratingBarHeight;
+		int height = seekBar.getHeight()/2;
 
 
-		gradientStrokeDrawable.setBounds(0, 0, width - 20, height + BORDER_THICK * 2 + BORDER_STROKE_THICK * 2);
-		gradientDrawable.setBounds(BORDER_STROKE_THICK, 0, width - 20 - BORDER_STROKE_THICK * 2,
-				height + BORDER_THICK * 2);
+
+//		if (AppUtils.HONEYCOMB_PLUS_API) {
+			gradientStrokeDrawable.setBounds(0, 0, width - RIGHT_OFFSET, (int) (height + BORDER_THICK * 2 + BORDER_STROKE_THICK * 2));
+			gradientDrawable.setBounds(BORDER_STROKE_THICK, 0, width - RIGHT_OFFSET - BORDER_STROKE_THICK * 2, (int) (height + BORDER_THICK * 2));
+
+//		} else {
+//			gradientStrokeDrawable.setBounds(0, 0, width - RIGHT_OFFSET, height + BORDER_STROKE_THICK * 2);
+//			gradientDrawable.setBounds(BORDER_STROKE_THICK, 0, width - RIGHT_OFFSET - BORDER_STROKE_THICK * 2, height + BORDER_STROKE_THICK * 2);
+//
+//		}
 
 
 		// draw shape above background
 		if (roundedBitmap == null) {
 			roundedBitmap = createRoundedBitmap(width, height);
 
-			patternImageRect.set(0, 0, width - 20 - BORDER_THICK * 2 - BORDER_STROKE_THICK * 2, height);
+//			if (AppUtils.HONEYCOMB_PLUS_API) {
+				patternImageRect.set(0, 0, (int) (width - RIGHT_OFFSET - BORDER_THICK * 2 - BORDER_STROKE_THICK * 2), height);
+//			} else {
+//				patternImageRect.set(0, 0, width - RIGHT_OFFSET - BORDER_STROKE_THICK * 2, height);
+//			}
 		}
 
 		// draw small stroke around gradient back
 		canvas.save();
-		canvas.translate(0, canvas.getHeight() / 4 - BORDER_THICK - BORDER_STROKE_THICK);
+		if (AppUtils.HONEYCOMB_PLUS_API) {
+			canvas.translate(0, canvas.getHeight() / 4 - BORDER_THICK - BORDER_STROKE_THICK);
+
+		} else {
+			canvas.translate(0, height / 3 - BORDER_THICK - BORDER_STROKE_THICK + CENTER_OFFSET);
+
+		}
 		setCornerRadii(gradientStrokeDrawable, CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS);
 		gradientStrokeDrawable.draw(canvas);
 		canvas.restore();
 
 		// gradient rounded background
 		canvas.save();
-		canvas.translate(BORDER_STROKE_THICK, canvas.getHeight() / 4 - BORDER_THICK );
+		if (AppUtils.HONEYCOMB_PLUS_API) {
+			canvas.translate(BORDER_STROKE_THICK, canvas.getHeight() / 4 - BORDER_THICK );
+
+		} else {
+			canvas.translate(BORDER_STROKE_THICK, height / 3  - BORDER_THICK + CENTER_OFFSET);
+
+		}
 		setCornerRadii(gradientDrawable, CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS);
 		gradientDrawable.draw(canvas);
 		canvas.restore();
 
 		// patterned rounded background
 		canvas.save();
-		canvas.translate(BORDER_THICK + BORDER_STROKE_THICK, canvas.getHeight() / 4);
+		if (AppUtils.HONEYCOMB_PLUS_API) {
+			canvas.translate(BORDER_THICK + BORDER_STROKE_THICK, canvas.getHeight() / 4);
+		} else {
+			canvas.translate(BORDER_THICK + BORDER_STROKE_THICK, height / 3 + CENTER_OFFSET );
+		}
 		canvas.drawBitmap(roundedBitmap, null, patternImageRect, null);
 		canvas.restore();
 	}
@@ -130,6 +170,6 @@ public class RatingProgressDrawable extends Drawable {
 
 	@Override
 	public int getOpacity() {
-		return PixelFormat.TRANSLUCENT;
+		return PixelFormat.OPAQUE;
 	}
 }
