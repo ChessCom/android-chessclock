@@ -76,13 +76,14 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		switch (menuItem.iconRes) {
 			case R.drawable.ic_nav_home:
 				getActivityFace().switchFragment(new HomeTabsFragment());
+				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 			case R.drawable.ic_nav_friends:
 				getActivityFace().switchFragment(new FriendsFragment());
+				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 		}
 
-		getActivityFace().toggleMenu(SlidingMenu.LEFT);
 	}
 
 
