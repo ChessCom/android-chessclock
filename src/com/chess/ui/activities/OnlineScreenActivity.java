@@ -112,7 +112,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		loadingView = findViewById(R.id.loadingView);
 		emptyView = (TextView) findViewById(R.id.emptyView);
 
-		listView = (ListView) findViewById(R.id.onlineGamesList);
+		listView = (ListView) findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
 		listView.setAdapter(sectionedAdapter);

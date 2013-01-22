@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.ui.adapters.ItemsAdapter;
+import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +72,17 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		NavigationMenuItem menuItem = (NavigationMenuItem) listView.getItemAtPosition(position);
 		menuItem.selected = true;
 		((BaseAdapter)parent.getAdapter()).notifyDataSetChanged();
+
+		switch (menuItem.iconRes) {
+			case R.drawable.ic_nav_home:
+				getActivityFace().switchFragment(new HomeTabsFragment());
+				break;
+			case R.drawable.ic_nav_friends:
+				getActivityFace().switchFragment(new FriendsFragment());
+				break;
+		}
+
+		getActivityFace().toggleMenu(SlidingMenu.LEFT);
 	}
 
 

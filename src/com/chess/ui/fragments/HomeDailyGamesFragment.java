@@ -25,7 +25,6 @@ import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
-import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameListFinishedItem;
 import com.chess.model.GameOnlineItem;
@@ -115,7 +114,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
-		listView = (ListView) view.findViewById(R.id.onlineGamesList);
+		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
 		listView.setAdapter(sectionedAdapter);
@@ -591,9 +590,9 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		public void showProgress(boolean show) {
 			super.showProgress(show);
 //			if (show) {
-//				Log.d("TEST", "SaveCurrentGamesListUpdateListener start loading");
+//				Log.d("TEST", "SaveFriendsListUpdateListener start loading");
 //			} else {
-//				Log.d("TEST", "SaveCurrentGamesListUpdateListener end loading");
+//				Log.d("TEST", "SaveFriendsListUpdateListener end loading");
 //			}
 			showLoadingView(show);
 		}
@@ -604,10 +603,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 				return;
 			}
 
-			new LoadDataFromDbTask(currentGamesMyCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getContext()),
-					getContentResolver()).executeTask();
-			new LoadDataFromDbTask(currentGamesTheirCursorUpdateListener, DbHelper.getDailyCurrentTheirListGamesParams(getContext()),
-					getContentResolver()).executeTask();
+			loadDbGames();
 		}
 	}
 
@@ -738,9 +734,9 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		public void showProgress(boolean show) {
 			super.showProgress(show);
 //			if (show) {
-//				Log.d("TEST", "DailyGamesUpdateListener start loading");
+//				Log.d("TEST", "FriendsUpdateListener start loading");
 //			} else {
-//				Log.d("TEST", "DailyGamesUpdateListener end loading");
+//				Log.d("TEST", "FriendsUpdateListener end loading");
 //			}
 			showLoadingView(show);
 		}
@@ -764,7 +760,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		public void errorHandle(Integer resultCode) {
 			if (resultCode == StaticData.INTERNAL_ERROR) {
 				emptyView.setText("Internal error occurred");
-//				Log.d("TEST", "DailyGamesUpdateListener showEmptyView ");
+//				Log.d("TEST", "FriendsUpdateListener showEmptyView ");
 				showEmptyView(true);
 			}
 		}

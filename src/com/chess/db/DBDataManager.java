@@ -48,6 +48,10 @@ public class DBDataManager {
 			DBConstants.V_USER,
 			DBConstants.V_GAME_ID);
 
+	public static String SELECTION_USER_ID = concatArguments(
+			DBConstants.V_USER,
+			DBConstants.V_USER_ID);
+
 	public static String SELECTION_USER_OFFERED_DRAW = concatArguments(
 			DBConstants.V_USER,
 			DBConstants.V_GAME_ID,
@@ -78,6 +82,12 @@ public class DBDataManager {
 			DBConstants._ID,
 			DBConstants.V_USER,
 			DBConstants.V_GAME_ID
+	};
+
+	public static final String[] PROJECTION_USER_ID = new String[] {
+			DBConstants._ID,
+			DBConstants.V_USER,
+			DBConstants.V_USER_ID
 	};
 
 	public static final String[] PROJECTION_CURRENT_LIST_GAMES = new String[] {
@@ -144,6 +154,24 @@ public class DBDataManager {
 
 //	public static void updateOnlineGame(ContentResolver contentResolver, GameOnlineItem currentGame, String userName) {
 	public static void updateOnlineGame(ContentResolver contentResolver, DailyGameByIdItem.Data currentGame, String userName) {
+
+        final String[] arguments2 = sArguments2;
+		arguments2[0] = userName;
+		arguments2[1] = String.valueOf(currentGame.getGameId());
+
+		Cursor cursor = contentResolver.query(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI, PROJECTION_GAME_ID, SELECTION_GAME_ID,
+				arguments2, null);
+		if (cursor.moveToFirst()) {
+			contentResolver.update(Uri.parse(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI.toString() + SLASH_ + DBDataManager.getId(cursor)),
+					putGameOnlineItemToValues(currentGame, userName), null, null);
+		} else {
+			contentResolver.insert(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI, putGameOnlineItemToValues(currentGame, userName));
+		}
+
+		cursor.close();
+	}
+
+	public static void updateFriend(ContentResolver contentResolver, DailyGameByIdItem.Data currentGame, String userName) {
 
         final String[] arguments2 = sArguments2;
 		arguments2[0] = userName;
@@ -512,6 +540,20 @@ public class DBDataManager {
 
 		return dataObj;
 	}
+
+	public static ContentValues putFriendItemToValues(FriendsItem.Data dataObj, String userName) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_USER, userName);
+		values.put(DBConstants.V_USERNAME, dataObj.getUsername());
+		values.put(DBConstants.V_USER_ID, dataObj.getUserId());
+		values.put(DBConstants.V_LOCATION, "none"); // TODO restore
+		values.put(DBConstants.V_COUNTRY_ID, 1); // TODO restore
+		values.put(DBConstants.V_PHOTO_URL, ""); // TODO restore
+
+		return values;
+	}
+
 
 	public static boolean checkIfDrawOffered(ContentResolver resolver, String userName, long gameId) {
 		final String[] arguments2 = sArguments2;

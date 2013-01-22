@@ -26,7 +26,7 @@ public class FriendsItem extends BaseResponseItem<List<FriendsItem.Data>> {
 		private String username;
 		private boolean is_online;
 
-		public long getUser_id() {
+		public long getUserId() {
 			return user_id;
 		}
 
@@ -42,11 +42,11 @@ public class FriendsItem extends BaseResponseItem<List<FriendsItem.Data>> {
 			this.username = username;
 		}
 
-		public boolean isIs_online() {
+		public boolean isOnline() {
 			return is_online;
 		}
 
-		public void setIs_online(boolean is_online) {
+		public void setOnline(boolean is_online) {
 			this.is_online = is_online;
 		}
 	}

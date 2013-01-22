@@ -41,4 +41,12 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	public static QueryParams getFriendsListParams(Context context){
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DBConstants.FRIENDS_CONTENT_URI);
+		queryParams.setSelection(DBDataManager.SELECTION_USER);
+		queryParams.setArguments(new String[]{AppData.getUserName(context)});
+		return queryParams;
+	}
+
 }

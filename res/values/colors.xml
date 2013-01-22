@@ -312,4 +312,7 @@
     <color name="switch_btn_main_p_2">#FF6b6560</color>
     <color name="switch_btn_inner_1">#FF4c4844</color>
     <color name="switch_btn_inner_2">#FF5e5a56</color>
+
+    <!--Friends-->
+    <color name="new_friends_top_back">#FFf4f4f4</color>
 </resources>

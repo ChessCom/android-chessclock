@@ -46,7 +46,7 @@ public class LoginItem extends BaseResponseItem<LoginItem.Data>{
 			this.premium_status = premium_status;
 		}
 
-//	public long getUser_id() {
+//	public long getUserId() {
 //		return user_id;
 //	}
 

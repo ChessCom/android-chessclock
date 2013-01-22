@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 11;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 12;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -22,6 +22,7 @@ public class DBConstants {
     public static final String ECHESS_FINISHED_LIST_GAMES_TABLE = "echess_finished_games";
     public static final String ECHESS_CURRENT_LIST_GAMES_TABLE = "echess_current_games";
     public static final String ECHESS_ONLINE_GAMES_TABLE = "echess_online_games";
+    public static final String FRIENDS_TABLE = "friends";
 
 
 
@@ -31,6 +32,7 @@ public class DBConstants {
     public static final Uri ECHESS_FINISHED_LIST_GAMES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ECHESS_FINISHED_LIST_GAMES_TABLE);
     public static final Uri ECHESS_CURRENT_LIST_GAMES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ECHESS_CURRENT_LIST_GAMES_TABLE);
     public static final Uri ECHESS_ONLINE_GAMES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ECHESS_ONLINE_GAMES_TABLE);
+    public static final Uri FRIENDS_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + FRIENDS_TABLE);
 
 
     // uri paths
@@ -39,6 +41,7 @@ public class DBConstants {
     public static final int ECHESS_FINISHED_LIST_GAMES = 2;
     public static final int ECHESS_CURRENT_LIST_GAMES = 3;
     public static final int ECHESS_ONLINE_GAMES = 4;
+    public static final int FRIENDS = 5;
 
 
     // general fields
@@ -95,6 +98,14 @@ public class DBConstants {
 	public static final String V_LAST_MOVE_TO_SQUARE 	= "lastMoveToSquare";
 	public static final String V_GAME_RESULT 			= "gameResult";
 	public static final String V_IS_MY_TURN 			= "isMyTurn";
+
+	/*Friends*/
+	public static final String V_USERNAME 				= "username";
+	public static final String V_USER_ID 				= "user_Id";
+	public static final String V_LOCATION 				= "location";
+	public static final String V_COUNTRY_ID 			= "countryId";
+	public static final String V_PHOTO_URL 				= "photoUrl";
+
 
     /* common commands */
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists ";
@@ -184,5 +195,27 @@ public class DBConstants {
 			+ V_RATED 	    			+ _INT_NOT_NULL + _COMMA
 			+ V_USER_OFFERED_DRAW 	   	+ _INT_NOT_NULL + _COMMA
 			+ V_DAYS_PER_MOVE 			+ _INT_NOT_NULL + _CLOSE;
+
+/*
+
+	public static final String V_LOCATION 				= "location";
+	public static final String V_COUNTRY_ID 			= "countryId";
+	public static final String V_PHOTO_URL 				= "photoUrl";
+
+		public ImageView photoImg;
+		public TextView usernameTxt;
+		public ImageView countryImg;
+		public TextView locationTxt;
+
+	 */
+
+	static final String FRIENDS_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + FRIENDS_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_LOCATION 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_COUNTRY_ID 	    		+ _INT_NOT_NULL + _COMMA
+			+ V_USER_ID 	    		+ _INT_NOT_NULL + _COMMA
+			+ V_PHOTO_URL 	    		+ _TEXT_NOT_NULL + _CLOSE;
 
 }
