@@ -36,7 +36,8 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 
 	private int requestData(LoadItem loadItem) {
 		String url = RestHelper.formCustomRequest(loadItem);
-		if (loadItem.getRequestMethod().equals(RestHelper.POST)){
+		String requestMethod = loadItem.getRequestMethod();
+		if (requestMethod.equals(RestHelper.POST)){
 		    url = RestHelper.formPostRequest(loadItem);
 		}
 
@@ -52,7 +53,7 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 		try {
 			URL urlObj = new URL(url);
 			connection = (HttpURLConnection) urlObj.openConnection();
-			connection.setRequestMethod(loadItem.getRequestMethod());
+			connection.setRequestMethod(requestMethod);
 			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=" + HTTP.UTF_8);
 
 			if (RestHelper.IS_TEST_SERVER_MODE) {
@@ -63,7 +64,7 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 				});
 			}
 
-			if (loadItem.getRequestMethod().equals(RestHelper.POST)){
+			if (requestMethod.equals(RestHelper.POST) || requestMethod.equals(RestHelper.PUT) ){
 				submitPostData(connection, loadItem);
 			}
 
@@ -84,6 +85,10 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 				inputStream = connection.getInputStream();
 
 				resultString = convertStreamToString(inputStream);
+				if (!resultString.startsWith(RestHelper.OBJ_START)){
+					result = StaticData.INTERNAL_ERROR;
+					return result;
+				}
 				BaseResponseItem baseResponse = parseJson(resultString, BaseResponseItem.class);
 				if (baseResponse.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 					item = parseJson(resultString);

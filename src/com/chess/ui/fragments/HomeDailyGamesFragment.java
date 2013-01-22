@@ -134,14 +134,14 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 
 		if (AppUtils.isNetworkAvailable(getActivity()) /*&& !isRestarted*/) {
 			updateVacationStatus();
-//			updateGamesList();
+			updateGamesList();
 		} else {
 			emptyView.setText(R.string.no_network);
 			showEmptyView(true);
 		}
 
 		if (DBDataManager.haveSavedOnlineCurrentGame(getActivity())) {
-//			loadDbGames();
+			loadDbGames();
 		}
 	}
 
