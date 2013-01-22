@@ -349,7 +349,7 @@
 	<string name="blitz_">Blitz: %d</string>
 	<string name="standard_">Standard: %d</string>
 
-	<string name="min_">%s min</string>
+	<string name="min_arg">%s min</string>
 
 	<string name="invalidUserId">Blancs ID utilisateur</string>
 	<string name="invalidContenIid">Blancs Content ID</string>

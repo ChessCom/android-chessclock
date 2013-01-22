@@ -1,4 +1,4 @@
-package com.chess.ui.views;
+package com.chess.ui.views.drawables;
 
 import android.content.Context;
 import android.graphics.*;

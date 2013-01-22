@@ -349,7 +349,7 @@
 	<string name="blitz_">בליץ: %d</string>
 	<string name="standard_">תקן: %d</string>
 
-	<string name="min_">%s דקות</string>
+	<string name="min_arg">%s דקות</string>
 
 	<string name="invalidUserId">שם משתמש לא חוקי</string>
 	<string name="invalidContenIid">חוקי מזהה תוכן</string>

@@ -226,4 +226,24 @@ public class AppData {
 				.clear()
 				.commit();
 	}
+
+	public static int getDefaultDailyMode(Context context) {
+		return getPreferences(context).getInt(AppConstants.PREF_DEFAULT_DAILY_MODE, 0);
+	}
+
+	public static void setDefaultDailyMode(Context context, int mode) {
+		SharedPreferences.Editor editor = getPreferences(context).edit();
+		editor.putInt(AppConstants.PREF_DEFAULT_DAILY_MODE, mode);
+		editor.commit();
+	}
+
+	public static int getDefaultLiveMode(Context context) {
+		return getPreferences(context).getInt(AppConstants.PREF_DEFAULT_LIVE_MODE, 0);
+	}
+
+	public static void setDefaultLiveyMode(Context context, int mode) {
+		SharedPreferences.Editor editor = getPreferences(context).edit();
+		editor.putInt(AppConstants.PREF_DEFAULT_LIVE_MODE, mode);
+		editor.commit();
+	}
 }

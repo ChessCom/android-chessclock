@@ -351,7 +351,7 @@
 	<string name="blitz_">Blitz: %d</string>
 	<string name="standard_">Estándar: %d</string>
 
-	<string name="min_">%s min</string>
+	<string name="min_arg">%s min</string>
 
 	<string name="invalidUserId">ID de usuario no válido</string>
 	<string name="invalidContenIid">Válido de identificación de contenido</string>

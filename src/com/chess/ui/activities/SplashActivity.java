@@ -9,10 +9,10 @@ import com.chess.R;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.ui.views.drawables.LogoBackgroundDrawable;
 
 public class SplashActivity extends CommonLogicActivity {
 
-	private View splashProgress;
 	private static final long SPLASH_DELAY = 1000;
 
 	@Override
@@ -20,11 +20,12 @@ public class SplashActivity extends CommonLogicActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash_screen);
 
-		splashProgress = findViewById(R.id.splashProgress);
+		LogoBackgroundDrawable logoBackgroundDrawable = new LogoBackgroundDrawable(this);
+
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
-			findViewById(R.id.mainView).setBackground(backgroundChessDrawable);
+			findViewById(R.id.mainView).setBackground(logoBackgroundDrawable);
 		} else {
-			findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
+			findViewById(R.id.mainView).setBackgroundDrawable(logoBackgroundDrawable);
 		}
 
 		if (AppData.getUserToken(this).equals(StaticData.SYMBOL_EMPTY)) {

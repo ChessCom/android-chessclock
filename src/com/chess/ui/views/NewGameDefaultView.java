@@ -100,18 +100,18 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 
 	}
 
-	public void setConfig(ConfigItem configItem) {
-		if (configItem.getBaseId() == 0) {
+	public void setConfig(ViewConfig viewConfig) {
+		if (viewConfig.getBaseId() == 0) {
 			throw new IllegalArgumentException("BASE_ID must be set");
 		} else {
-			BASE_ID = configItem.getBaseId();
+			BASE_ID = viewConfig.getBaseId();
 		}
 
-		addGameSetupView(configItem);
+		addGameSetupView(viewConfig);
 		addOptionsView();
 	}
 
-	private void addGameSetupView(ConfigItem configItem) {
+	private void addGameSetupView(ViewConfig viewConfig) {
 
 		{// Header
 			// Header View
@@ -125,7 +125,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 
 			// Header icon
 			ImageView imageView = new ImageView(getContext());
-			imageView.setImageResource(configItem.getHeaderIcon());
+			imageView.setImageResource(viewConfig.getHeaderIcon());
 
 			headerView.addView(imageView, defaultLinearWrapParams);
 
@@ -135,7 +135,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 			headerTxtParams.weight = 1;
 
-			headerText.setText(configItem.getHeaderText());
+			headerText.setText(viewConfig.getHeaderText());
 			headerText.setTextColor(getContext().getResources().getColor(R.color.new_normal_gray));
 			headerText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TOP_TEXT_SIZE);
 			headerText.setPadding(HEADER_TEXT_PADDING_LEFT, 0, 0, 0);
@@ -157,7 +157,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 
 		{// Add defaultMode View
 			titleText = new TextView(getContext());
-			titleText.setText(configItem.getTitleText());
+			titleText.setText(viewConfig.getTitleText());
 			titleText.setTextColor(getContext().getResources().getColor(R.color.new_normal_gray));
 			titleText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TOP_TEXT_SIZE);
 
@@ -166,7 +166,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 
 			compactRelLay.addView(titleText, defaultLinearWrapParams);
 
-			addButtons(configItem, compactRelLay);
+			addButtons(viewConfig, compactRelLay);
 
 		}
 
@@ -193,7 +193,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 
 			optionsAndPlayView.addView(optionsTxt, optionsTxtParams);
 
-			addCustomView(configItem, optionsAndPlayView);
+			addCustomView(viewConfig, optionsAndPlayView);
 
 			compactRelLay.addView(optionsAndPlayView);
 
@@ -201,18 +201,22 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 		}
 	}
 
-	protected void addCustomView(ConfigItem configItem, RelativeLayout optionsAndPlayView) {
+	protected void addCustomView(ViewConfig viewConfig, RelativeLayout optionsAndPlayView) {
 	}
 
 	public abstract void addOptionsView();
 
-	protected void addButtons(ConfigItem configItem, RelativeLayout compactRelLay) {
+	protected void addButtons(ViewConfig viewConfig, RelativeLayout compactRelLay) {
 		// Left Mode Button
 		leftButton = new RoboButton(getContext(), null, R.attr.greyButtonSmallSolid);
 		RelativeLayout.LayoutParams leftBtnParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		leftBtnParams.addRule(RelativeLayout.BELOW, BASE_ID + TITLE_ID);
-		leftButton.setText(configItem.getLeftButtonText());
+		if (viewConfig.getLeftButtonTextId() == 0) {
+			leftButton.setText(viewConfig.getLeftButtonText());
+		} else {
+			leftButton.setText(viewConfig.getLeftButtonTextId());
+		}
 		leftButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, BUTTON_TEXT_SIZE);
 		leftButton.setId(BASE_ID + LEFT_BUTTON_ID);
 
@@ -264,12 +268,13 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 		}
 	}
 
-	public static class ConfigItem {
+	public static class ViewConfig {
 
 		private int headerIcon;
 		private int headerText;
-		private int leftButtonText;
-		private int rightButtonText;
+		private int leftButtonTextId;
+		protected String leftButtonText;
+		private int rightButtonTextId;
 		private int titleText;
 		private int baseId;
 
@@ -289,20 +294,28 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 			this.headerText = headerText;
 		}
 
-		public int getLeftButtonText() {
-			return leftButtonText;
+		public int getLeftButtonTextId() {
+			return leftButtonTextId;
 		}
 
-		public void setLeftButtonText(int leftButtonText) {
+		public void setLeftButtonTextId(int leftButtonTextId) {
+			this.leftButtonTextId = leftButtonTextId;
+		}
+
+		public void setLeftButtonText(String leftButtonText) {
 			this.leftButtonText = leftButtonText;
 		}
 
-		public int getRightButtonText() {
-			return rightButtonText;
+		public String getLeftButtonText() {
+			return leftButtonText;
 		}
 
-		public void setRightButtonText(int rightButtonText) {
-			this.rightButtonText = rightButtonText;
+		public int getRightButtonTextId() {
+			return rightButtonTextId;
+		}
+
+		public void setRightButtonTextId(int rightButtonTextId) {
+			this.rightButtonTextId = rightButtonTextId;
 		}
 
 		public int getTitleText() {

@@ -350,7 +350,7 @@
 	<string name="blitz_">बम बरसाना: %d</string>
 	<string name="standard_">मानक: %d</string>
 
-	<string name="min_">%s मिनट</string>
+	<string name="min_arg">%s मिनट</string>
 
 	<string name="invalidUserId">अवैध प्रयोक्ता आईडी</string>
 	<string name="invalidContenIid">अमान्य कन्टैंट आईडी</string>

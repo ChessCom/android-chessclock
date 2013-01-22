@@ -25,9 +25,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.ui.views.ActionBarBackgroundDrawable;
-import com.chess.ui.views.BackgroundChessDrawable;
-import com.chess.ui.views.BadgeDrawable;
+import com.chess.ui.views.drawables.ActionBarBackgroundDrawable;
+import com.chess.ui.views.drawables.BackgroundChessDrawable;
+import com.chess.ui.views.drawables.BadgeDrawable;
 
 /**
  * An extension of {@link ActionBarHelper} that provides Android 3.0-specific

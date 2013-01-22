@@ -349,7 +349,7 @@
 	<string name="blitz_">مداهمات: %d</string>
 	<string name="standard_">معيار: %d</string>
 
-	<string name="min_">%s دقيقة</string>
+	<string name="min_arg">%s دقيقة</string>
 
     <!--TODO use with arrays-->
 	<string name="invalidUserId">غير صالحة هوية المستخدم</string>

@@ -468,7 +468,7 @@
 	<string name="blitz_">Blitz: %d</string>
 	<string name="standard_">Standard: %d</string>
 
-	<string name="min_">%s min</string>
+	<string name="min_arg">%s min</string>
 
 	<string name="game.dw_restriction">&lt;strong>You must wait 5 minutes between games.&lt;/strong> Your play is restricted because you have not followed our &lt;a href=\'http://support.chess.com/Knowledgebase/Article/View/171/13/fair-play-policy\' target=\'_blank\'>Fair Play Policy&lt;/a> which discourages stalling, abandoning games or intentional aborting. This restriction will be lifted automatically after you play more games fairly.</string>
 	<string name="game.dw_warn">Your account may be restricted if you do not follow our Fair Play Policy. If restricted, you will only be able to play with friends. Please do not intentionally abort/disconnect from games or make your opponents wait unnecessarily. Thank you for keeping Chess.com a fun place to enjoy chess!</string>

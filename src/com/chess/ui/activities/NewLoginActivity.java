@@ -10,7 +10,7 @@ import android.view.Menu;
 import com.chess.R;
 import com.chess.ui.fragments.*;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
-import com.chess.ui.views.LogoBackgroundDrawable;
+import com.chess.ui.views.drawables.LogoBackgroundDrawable;
 import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;

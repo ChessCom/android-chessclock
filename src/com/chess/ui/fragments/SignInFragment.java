@@ -9,11 +9,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.FlurryData;
-import com.chess.ui.views.LogoBackgroundDrawable;
+
 import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
-import com.flurry.android.FlurryAgent;
+
 
 /**
  * Created with IntelliJ IDEA.

@@ -27,7 +27,7 @@ public class NewGameButtonItem {
 			// "10 min"),
 			buttonItem.min = Integer.valueOf(label);
 		}
-		buttonItem.label = context.getString(R.string.min_, label);
+		buttonItem.label = context.getString(R.string.min_arg, label);
 		return buttonItem;
 	}
 

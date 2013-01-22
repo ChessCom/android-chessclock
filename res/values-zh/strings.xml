@@ -344,7 +344,7 @@
 	<string name="blitz_">闪电战: %d</string>
 	<string name="standard_">标准: %d</string>
 
-	<string name="min_">%s 分</string>
+	<string name="min_arg">%s 分</string>
 
 	<string name="invalidUserId">无效的用户ID</string>
 	<string name="invalidContenIid">内容ID无效</string>

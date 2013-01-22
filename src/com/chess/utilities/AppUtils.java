@@ -30,7 +30,7 @@ import com.chess.live.client.User;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
 import com.chess.ui.activities.GameOnlineScreenActivity;
-import com.chess.ui.views.BackgroundChessDrawable;
+import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
 
@@ -236,7 +236,7 @@ public class AppUtils {
 		} else if (minutes > 0) {
 			if (!sb.toString().trim().equals(StaticData.SYMBOL_EMPTY))
 				sb.append(StaticData.SYMBOL_SPACE);
-			sb.append(context.getString(R.string.min_, minutes));
+			sb.append(context.getString(R.string.min_arg, minutes));
 		}
 
 		return sb.toString();

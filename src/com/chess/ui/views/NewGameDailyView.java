@@ -10,6 +10,7 @@ import android.widget.*;
 import com.chess.*;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.ui.views.drawables.RatingProgressDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +35,6 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 	private float minButtonHeight;
 	private RoboRadioButton minRatingBtn;
 	private RoboRadioButton maxRatingBtn;
-	private SeekBar ratingBar;
-	private Button playBottomBtn;
 	private SwitchButton ratedGameSwitch;
 
 
@@ -60,13 +59,17 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 	}
 
 	@Override
-	protected void addButtons(ConfigItem configItem, RelativeLayout compactRelLay) {
+	protected void addButtons(ViewConfig viewConfig, RelativeLayout compactRelLay) {
 		// Left Button - "3 days Mode"
 		leftButton = new RoboButton(getContext(), null, R.attr.greyButtonSmallSolid);
 		RelativeLayout.LayoutParams leftBtnParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		leftBtnParams.addRule(RelativeLayout.BELOW, BASE_ID + TITLE_ID);
-		leftButton.setText(configItem.getLeftButtonText());
+		if (viewConfig.getLeftButtonTextId() == 0) {
+			leftButton.setText(viewConfig.getLeftButtonText());
+		} else {
+			leftButton.setText(viewConfig.getLeftButtonTextId());
+		}
 		leftButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, BUTTON_TEXT_SIZE);
 		leftButton.setId(BASE_ID + LEFT_BUTTON_ID);
 		compactRelLay.addView(leftButton, leftBtnParams);
@@ -105,7 +108,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		float shadowDy = -1;
 		rightButton.setShadowLayer(shadowRadius, shadowDx, shadowDy, Color.BLACK);
 		rightButton.setId(BASE_ID + RIGHT_BUTTON_ID);
-		rightButton.setText(configItem.getRightButtonText());
+		rightButton.setText(viewConfig.getRightButtonTextId());
 		rightButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, BUTTON_TEXT_SIZE);
 		rightButton.setFont(RoboTextView.BOLD_FONT);
 
@@ -114,7 +117,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 	}
 
 	@Override
-	protected void addCustomView(ConfigItem configItem, RelativeLayout optionsAndPlayView) {
+	protected void addCustomView(ViewConfig viewConfig, RelativeLayout optionsAndPlayView) {
 		// Play Button
 		playButton = new RoboButton(getContext(), null, R.attr.orangeButtonSmall);
 		RelativeLayout.LayoutParams playButtonParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -176,31 +179,31 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		EditButtonSpinner myColorEditBtn = (EditButtonSpinner) optionsView.findViewById(R.id.myColorEditBtn);
 		myColorEditBtn.addOnClickListener(this);
 
-		// Rating part
-		int minRatingDefault = 1500; // TODO adjust properly
-		int maxRatingDefault = 1700;
-
-		minRatingBtn = (RoboRadioButton) optionsView.findViewById(R.id.minRatingBtn);
-		minRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
-		minRatingBtn.setText(String.valueOf(minRatingDefault));
-
-		maxRatingBtn = (RoboRadioButton) optionsView.findViewById(R.id.maxRatingBtn);
-		maxRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
-		maxRatingBtn.setText(String.valueOf(maxRatingDefault));
-
-		// set checked minRating Button
-		minRatingBtn.setChecked(true);
-
-		ratingBar = (SeekBar) optionsView.findViewById(R.id.ratingBar);
-		ratingBar.setOnSeekBarChangeListener(ratingBarChangeListener);
-		// TODO adjust progress drawable
-		ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingBar));
-		playBottomBtn = (Button) optionsView.findViewById(R.id.playBtn);
-
 		// rated games switch
 		ratedGameSwitch = (SwitchButton) optionsView.findViewById(R.id.ratedGameSwitch);
-		ratedGameSwitch.setOnClickListener(this);
 
+		{// Rating part
+			int minRatingDefault = 1500; // TODO adjust properly
+			int maxRatingDefault = 1700;
+
+			minRatingBtn = (RoboRadioButton) optionsView.findViewById(R.id.minRatingBtn);
+			minRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
+			minRatingBtn.setText(String.valueOf(minRatingDefault));
+
+			maxRatingBtn = (RoboRadioButton) optionsView.findViewById(R.id.maxRatingBtn);
+			maxRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
+			maxRatingBtn.setText(String.valueOf(maxRatingDefault));
+
+			// set checked minRating Button
+			minRatingBtn.setChecked(true);
+
+			SeekBar ratingBar = (SeekBar) optionsView.findViewById(R.id.ratingBar);
+			ratingBar.setOnSeekBarChangeListener(ratingBarChangeListener);
+			// TODO adjust progress drawable
+			ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingBar));
+		}
+
+		optionsView.findViewById(R.id.playBtn).setOnClickListener(this);
 
 		addView(optionsView);
 
@@ -238,9 +241,9 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 			// get percent progress and convert it to values
 
 			int diff = minRating;
-			float koef = (maxRating - minRating) / 100; // (maxRating - minRating) / maxSeekProgress
+			float factor = (maxRating - minRating) / 100; // (maxRating - minRating) / maxSeekProgress
 			// progress - percent
-			int value = (int) (koef * progress) + diff; // k * x + b
+			int value = (int) (factor * progress) + diff; // k * x + b
 
 			checkedButton.setText(String.valueOf(value ));
 
@@ -292,9 +295,6 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		} else if (view.getId() == R.id.myColorEditBtn){
 		} else if (view.getId() == R.id.minRatingBtn){
 		} else if (view.getId() == R.id.maxRatingBtn){
-		} else if (view.getId() == SwitchButton.BUTTON_ID
-				|| view.getId() == SwitchButton.TEXT_ID){
-			ratedGameSwitch.toggle(view);
 		} else if (view.getId() == R.id.playBtn){
 			Log.d("TEST", "myColorEditBtn clicked");
 
@@ -339,6 +339,8 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 	}
 
 	public NewDailyGameConfig getNewDailyGameConfig(){
+		// set params
+		gameConfigBuilder.setRated(ratedGameSwitch.isSwitchEnabled());
 
 		return gameConfigBuilder.build();
 	}
@@ -411,20 +413,14 @@ gameSeekName	\w+		false	Name of new game/challenge. Default is `Let's Play!`.
 				return this;
 			}
 
-			public int getMinRating() {
-				return minRating;
-			}
-
-			public void setMinRating(int minRating) {
+			public Builder setMinRating(int minRating) {
 				this.minRating = minRating;
+				return this;
 			}
 
-			public int getMaxRating() {
-				return maxRating;
-			}
-
-			public void setMaxRating(int maxRating) {
+			public Builder setMaxRating(int maxRating) {
 				this.maxRating = maxRating;
+				return this;
 			}
 
 			public NewDailyGameConfig build(){

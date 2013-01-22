@@ -348,7 +348,7 @@
 	<string name="blitz_">Блицкриг: %d</string>
 	<string name="standard_">Стандарт: %d</string>
 
-	<string name="min_">%s мин</string>
+	<string name="min_arg">%s мин</string>
 
 	<string name="invalidUserId">Неверный идентификатор пользователя</string>
 	<string name="invalidContenIid">Неверный идентификатор контента</string>

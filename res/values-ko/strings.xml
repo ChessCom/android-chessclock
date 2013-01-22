@@ -344,7 +344,7 @@
 	<string name="blitz_">전격적으로 공격하다: %d</string>
 	<string name="standard_">표준: %d</string>
 
-	<string name="min_">%s 분</string>
+	<string name="min_arg">%s 분</string>
 
 	<string name="invalidUserId">잘못된 사용자 ID</string>
 	<string name="invalidContenIid">잘못된 콘텐츠 ID</string>

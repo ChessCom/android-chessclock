@@ -49,7 +49,9 @@ public class AppConstants {
     public static final String PREF_VIDEO_CATEGORY = "video category";
 
     public static final String PREF_TEMP_TOKEN_GCM = "temporary token for gcm";
-
+	/* New Daily and Live games*/
+	public static final String PREF_DEFAULT_DAILY_MODE = "defaultDailyMode";
+	public static final String PREF_DEFAULT_LIVE_MODE = "defaultLiveMode";
 
 	public static final String FULLSCREEN_AD_ALREADY_SHOWED = "fullscreen_ad_showed";
 	public static final String USER_SESSION_ID = "user_session_id";

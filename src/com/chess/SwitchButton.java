@@ -21,7 +21,7 @@ import com.nineoldandroids.animation.ObjectAnimator;
  * Date: 21.01.13
  * Time: 7:02
  */
-public class SwitchButton extends RelativeLayout {
+public class SwitchButton extends RelativeLayout implements View.OnClickListener {
 
 	public static final int TEXT_SIZE = 11;
 
@@ -109,6 +109,14 @@ public class SwitchButton extends RelativeLayout {
 		}
 		initFlipAnimation();
 
+		setOnClickListener(this);
+	}
+
+	@Override
+	public void onClick(View view) {
+		if (view.getId() == SwitchButton.BUTTON_ID || view.getId() == SwitchButton.TEXT_ID){
+			toggle(view);
+		}
 	}
 
 	@Override
@@ -138,6 +146,10 @@ public class SwitchButton extends RelativeLayout {
 		}
 	}
 
+	public boolean isSwitchEnabled() {
+		return switchEnabled;
+	}
+
 	private android.view.animation.Interpolator accelerator = new LinearInterpolator();
 	private static final int DURATION = 70;
 
@@ -148,14 +160,21 @@ public class SwitchButton extends RelativeLayout {
 		animateHandleLeftShift.setDuration(DURATION);
 		animateHandleLeftShift.setInterpolator(accelerator);
 
+		animateHandleLeftShift.addListener(new AnimatorListenerAdapter() {
+			@Override
+			public void onAnimationEnd(Animator anim) {
+				// inform listener
+			}
+		});
+
 		animateHandleRightShift = ObjectAnimator.ofFloat(handleButton, "translationX", HANDLE_SHIFT, 0f);
 		animateHandleRightShift.setDuration(DURATION);
 		animateHandleRightShift.setInterpolator(accelerator);
 
-		animateHandleLeftShift.addListener(new AnimatorListenerAdapter() {
+		animateHandleRightShift.addListener(new AnimatorListenerAdapter() {
 			@Override
 			public void onAnimationEnd(Animator anim) {
-				// TODO
+				// inform listener
 			}
 		});
 
@@ -168,8 +187,5 @@ public class SwitchButton extends RelativeLayout {
 		animateTextRightShift.setDuration(DURATION);
 		animateTextRightShift.setInterpolator(accelerator);
 	}
-
-
-
 
 }

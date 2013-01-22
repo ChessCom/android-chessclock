@@ -113,18 +113,12 @@
             android:text="@string/rated_game_"
             />
 
-        <!--<include layout="@layout/switch_widget" />-->
-
-
         <com.chess.SwitchButton
             android:id="@+id/ratedGameSwitch"
             android:layout_width="@dimen/button_switch_width"
             android:layout_height="@dimen/button_switch_height"
             android:background="@drawable/button_switch_back"
             />
-
-        <!--style="@style/customSwitch"-->
-        <!--android:background="@drawable/img_switch_back"-->
 
     </LinearLayout>
 
@@ -230,6 +224,7 @@
             />
     </RelativeLayout>
 
+    <!--Play Button-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

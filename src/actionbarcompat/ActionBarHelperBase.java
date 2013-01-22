@@ -29,8 +29,8 @@ import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
-import com.chess.ui.views.ActionBarBackgroundDrawable;
-import com.chess.ui.views.BadgeDrawable;
+import com.chess.ui.views.drawables.ActionBarBackgroundDrawable;
+import com.chess.ui.views.drawables.BadgeDrawable;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 

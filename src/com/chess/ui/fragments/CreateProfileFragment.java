@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
-import com.chess.ui.views.LogoBackgroundDrawable;
+import com.chess.ui.views.drawables.LogoBackgroundDrawable;
 
 /**
  * Created with IntelliJ IDEA.

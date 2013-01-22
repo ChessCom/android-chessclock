@@ -5,11 +5,11 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-import com.chess.R;
-import com.chess.RoboToggleButton;
+import android.widget.*;
+import com.chess.*;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.ui.views.drawables.RatingProgressDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,9 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 
 	private NewLiveGameConfig.Builder gameConfigBuilder;
 	private NewLiveGamesButtonsAdapter newLiveGamesButtonsAdapter;
+	private RoboRadioButton minRatingBtn;
+	private RoboRadioButton maxRatingBtn;
+	private SwitchButton ratedGameSwitch;
 
 	public NewGameLiveView(Context context) {
 		super(context);
@@ -78,7 +81,98 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 			newLiveGamesButtonsAdapter.checkButton(0);
 			// set value to builder
 		}
+
+		EditButtonSpinner opponentEditBtn = (EditButtonSpinner) optionsView.findViewById(R.id.opponentEditBtn);
+		opponentEditBtn.addOnClickListener(this);
+
+		EditButtonSpinner myColorEditBtn = (EditButtonSpinner) optionsView.findViewById(R.id.myColorEditBtn);
+		myColorEditBtn.addOnClickListener(this);
+
+		// rated games switch
+		ratedGameSwitch = (SwitchButton) optionsView.findViewById(R.id.ratedGameSwitch);
+
+
+		{// Rating part
+			int minRatingDefault = 1500; // TODO adjust properly
+			int maxRatingDefault = 1700;
+
+			minRatingBtn = (RoboRadioButton) optionsView.findViewById(R.id.minRatingBtn);
+			minRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
+			minRatingBtn.setText(String.valueOf(minRatingDefault));
+
+			maxRatingBtn = (RoboRadioButton) optionsView.findViewById(R.id.maxRatingBtn);
+			maxRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
+			maxRatingBtn.setText(String.valueOf(maxRatingDefault));
+
+			// set checked minRating Button
+			minRatingBtn.setChecked(true);
+
+			SeekBar ratingBar = (SeekBar) optionsView.findViewById(R.id.ratingBar);
+			ratingBar.setOnSeekBarChangeListener(ratingBarChangeListener);
+			// TODO adjust progress drawable
+			ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingBar));
+		}
+
+		optionsView.findViewById(R.id.playBtn).setOnClickListener(this);
 	}
+
+	private CompoundButton.OnCheckedChangeListener ratingSelectionChangeListener = new CompoundButton.OnCheckedChangeListener() {
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			if (buttonView.getId() == R.id.minRatingBtn && isChecked) {
+				minRatingBtn.setChecked(true);
+				maxRatingBtn.setChecked(false);
+
+			} else if (buttonView.getId() == R.id.maxRatingBtn && isChecked){
+				maxRatingBtn.setChecked(true);
+				minRatingBtn.setChecked(false);
+			}
+		}
+	};
+
+	private SeekBar.OnSeekBarChangeListener ratingBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+		@Override
+		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+			TextView checkedButton;
+			int minRating;
+			int maxRating;
+			if (maxRatingBtn.isChecked()) {
+				checkedButton = maxRatingBtn;
+				minRating = 1000; // TODO set from resources
+				maxRating = 2400;
+			} else {
+				checkedButton = minRatingBtn;
+				minRating = 1000;
+				maxRating = 2000;
+			}
+			// get percent progress and convert it to values
+
+			int diff = minRating;
+			float factor = (maxRating - minRating) / 100; // (maxRating - minRating) / maxSeekProgress
+			// progress - percent
+			int value = (int) (factor * progress) + diff; // k * x + b
+
+			checkedButton.setText(String.valueOf(value ));
+
+			if (maxRatingBtn.isChecked()) {
+				gameConfigBuilder.setMaxRating(value);
+				gameConfigBuilder.setMinRating(Integer.parseInt(minRatingBtn.getText().toString()));
+			} else {
+				gameConfigBuilder.setMinRating(value);
+				gameConfigBuilder.setMaxRating(Integer.parseInt(maxRatingBtn.getText().toString()));
+			}
+
+		}
+
+		@Override
+		public void onStartTrackingTouch(SeekBar seekBar) {
+		}
+
+		@Override
+		public void onStopTrackingTouch(SeekBar seekBar) {
+		}
+	};
+
 
 	@Override
 	public void onClick(View view) {
@@ -114,7 +208,7 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 			} else {
 				// "10 min"),
 				buttonItem.min = Integer.valueOf(label);
-				buttonItem.label = context.getString(R.string.min_, label);
+				buttonItem.label = context.getString(R.string.min_arg, label);
 
 			}
 			return buttonItem;
@@ -158,52 +252,42 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 	}
 
 	public NewLiveGameConfig getNewLiveGameConfig() {
+		// set params
+		gameConfigBuilder.setRated(ratedGameSwitch.isSwitchEnabled());
 
 		return gameConfigBuilder.build();
 	}
 
-	private static class NewLiveGameConfig {
-		private int daysPerMove;
+	public static class ViewLiveConfig extends ViewConfig {
+		public String getLeftButtonText() {
+			return leftButtonText;
+		}
+	}
+
+	public static class NewLiveGameConfig {
 		private int userColor;
 		private boolean rated;
-		private int gameType;
+		private int minRating;
+		private int maxRating;
+		private int initialTime;
+		private int bonusTime;
 		private String opponentName;
 
 		public static class Builder {
-			private int daysPerMove;
 			private int userColor;
 			private boolean rated;
-			private int gameType;
+			private int initialTime;
+			private int bonusTime;
+			private int minRating;
+			private int maxRating;
 			private String opponentName;
-/*
-		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, days);
-		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
-		loadItem.addRequestParams(RestHelper.P_IS_RATED, isRated);
-		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
-		loadItem.addRequestParams(RestHelper.P_OPPONENT, opponentName);
 
-fields____|___values__|required|______explanation__________________________________________________
-opponent				false	See explanation above for possible values. Default is `null`.
-daysPerMove		\d+		true	Days per move. 1,3,5,7,14
-userPosition	0|1|2	true	User will play as - 0 = random, 1 = white, 2 = black. Default is `0`.
-minRating		\d+		false	Minimum rating.
-maxRating		\d+		false	Maximum rating.
-isRated			0|1		true	Is game seek rated or not. Default is `1`.
-gameType	chess(960)?	true	Game type code. Default is `1`.
-gameSeekName	\w+		false	Name of new game/challenge. Default is `Let's Play!`.
-			 */
 
 			/**
 			 * Create new Seek game with default values
 			 */
 			public Builder() {
-				daysPerMove = 3;
 				rated = true;
-			}
-
-			public Builder setDaysPerMove(int daysPerMove) {
-				this.daysPerMove = daysPerMove;
-				return this;
 			}
 
 			public Builder setUserColor(int userColor) {
@@ -216,13 +300,18 @@ gameSeekName	\w+		false	Name of new game/challenge. Default is `Let's Play!`.
 				return this;
 			}
 
-			public Builder setGameType(int gameType) {
-				this.gameType = gameType;
+			public Builder setOpponentName(String opponentName) {
+				this.opponentName = opponentName;
 				return this;
 			}
 
-			public Builder setOpponentName(String opponentName) {
-				this.opponentName = opponentName;
+			public Builder setMinRating(int minRating) {
+				this.minRating = minRating;
+				return this;
+			}
+
+			public Builder setMaxRating(int maxRating) {
+				this.maxRating = maxRating;
 				return this;
 			}
 
@@ -232,15 +321,13 @@ gameSeekName	\w+		false	Name of new game/challenge. Default is `Let's Play!`.
 		}
 
 		private NewLiveGameConfig(Builder builder) {
-			this.daysPerMove = builder.daysPerMove;
 			this.userColor = builder.userColor;
 			this.rated = builder.rated;
-			this.gameType = builder.gameType;
 			this.opponentName = builder.opponentName;
-		}
-
-		public int getDaysPerMove() {
-			return daysPerMove;
+			this.minRating = builder.minRating;
+			this.maxRating = builder.maxRating;
+			this.initialTime = builder.initialTime;
+			this.bonusTime = builder.bonusTime;
 		}
 
 		public int getUserColor() {
@@ -251,12 +338,28 @@ gameSeekName	\w+		false	Name of new game/challenge. Default is `Let's Play!`.
 			return rated;
 		}
 
-		public int getGameType() {
-			return gameType;
-		}
-
 		public String getOpponentName() {
 			return opponentName;
+		}
+
+		public int getMinRating() {
+			return minRating;
+		}
+
+		public int getMaxRating() {
+			return maxRating;
+		}
+
+		public int getInitialTime() {
+			return initialTime;
+		}
+
+		public int getBonusTime() {
+			return bonusTime;
+		}
+
+		public String getDefaultModeLabel(){
+			return String.valueOf(initialTime) + " | " + bonusTime;
 		}
 	}
 }

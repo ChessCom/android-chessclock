@@ -348,7 +348,7 @@
 	<string name="blitz_">حمله رعد اسا: %d</string>
 	<string name="standard_">استاندارد: %d</string>
 
-	<string name="min_">%s دقیقه</string>
+	<string name="min_arg">%s دقیقه</string>
 
 	<string name="invalidUserId">شناسه کاربر نامعتبر است</string>
 	<string name="invalidContenIid">شناسه محتوا نامعتبر</string>

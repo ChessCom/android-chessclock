@@ -3,7 +3,7 @@ package com.chess.ui.fragments;
 import android.os.Bundle;
 import android.view.View;
 import com.chess.R;
-import com.chess.ui.views.LogoBackgroundDrawable;
+
 
 /**
  * Created with IntelliJ IDEA.

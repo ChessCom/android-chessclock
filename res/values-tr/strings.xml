@@ -347,7 +347,7 @@
 	<string name="blitz_">Hava Saldırısı: %d</string>
 	<string name="standard_">Standard: %d</string>
 
-	<string name="min_">%s dk</string>
+	<string name="min_arg">%s dk</string>
 
 	<string name="invalidUserId">Geçersiz Kullanıcı Kimliği</string>
 	<string name="invalidContenIid">Geçersiz İçerik Kimliği</string>

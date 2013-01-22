@@ -34,7 +34,7 @@ import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.backend.tasks.PostJsonDataTask;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.GameListCurrentItem;
-import com.chess.ui.views.BackgroundChessDrawable;
+import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
 import com.facebook.android.*;

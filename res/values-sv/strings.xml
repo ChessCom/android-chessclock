@@ -347,7 +347,7 @@
 	<string name="blitz_">Blitz: %d</string>
 	<string name="standard_">Standard: %d</string>
 
-	<string name="min_">%s minuter</string>
+	<string name="min_arg">%s minuter</string>
 
 	<string name="invalidUserId">Ogiltigt användar-ID</string>
 	<string name="invalidContenIid">Ogiltigt innehålls-ID</string>
