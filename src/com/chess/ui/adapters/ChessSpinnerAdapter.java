@@ -22,10 +22,9 @@ public class ChessSpinnerAdapter extends ItemsAdapter<String> {
 
 	@Override
 	protected View createView(ViewGroup parent) {
-		View view = inflater.inflate(android.R.layout.simple_spinner_item, parent, false);
+		View view = inflater.inflate(R.layout.new_spinner_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.textTxt = (TextView) view.findViewById(android.R.id.text1);
-		holder.textTxt.setTextColor(context.getResources().getColor(R.color.hint_text));
 
 		view.setTag(holder);
 		return view;

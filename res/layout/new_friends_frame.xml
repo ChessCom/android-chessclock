@@ -10,26 +10,26 @@
     >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="44dip"
+        android:layout_height="43dip"
         android:background="@color/new_friends_top_back"
         android:gravity="center_vertical"
         android:paddingLeft="16dip"
         android:paddingRight="8dip"
         >
         <com.chess.RoboTextView
-            android:layout_width="0dip"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="26 Friends"
             custom:ttf="Bold"
             android:textColor="@color/new_friends_grey_text"
             android:textSize="13sp"
+            android:paddingRight="18dip"
             />
         <Spinner
+            android:id="@+id/sortSpinner"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="29dip"
             android:layout_weight="1"
-            android:background="@drawable/edit_grey_one_default"
             />
 
         <com.chess.RoboEditText
@@ -41,7 +41,7 @@
             android:inputType="textAutoComplete"
             android:background="@drawable/edit_grey_one_default"
             android:paddingLeft="9dip"
-            android:paddingRight="5dip"
+            android:paddingRight="6dip"
             android:paddingTop="5dip"
             android:paddingBottom="5dip"
             android:layout_marginLeft="8dip"
@@ -53,6 +53,13 @@
             />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/new_friends_top_border_light"
+        />
+
 
     <com.chess.RoboTextView
         android:id="@+id/emptyView"
@@ -108,8 +115,8 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:cacheColorHint="@color/white"
-        android:divider="@null"
-        android:dividerHeight="0dip"
+        android:divider="@color/new_friends_list_divider"
+        android:dividerHeight="1dip"
         />
 
 </LinearLayout>

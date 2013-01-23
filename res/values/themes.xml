@@ -13,7 +13,7 @@
         <item name="android:textAppearanceSmall">@style/Text</item>
         <item name="android:editTextStyle">@style/DefaultEdt</item>
 		<item name="android:autoCompleteTextViewStyle">@style/DefaultAutoComplete</item>
-        <item name="android:spinnerStyle">@style/spinnerStyle</item>
+        <item name="android:spinnerStyle">@style/Spinner</item>
         <item name="android:checkboxStyle">@style/CheckBox</item>
         <item name="android:radioButtonStyle">@style/RadioButton</item>
 		<item name="android:listViewStyle">@style/DefaultListView</item>
@@ -31,7 +31,7 @@
         <item name="android:buttonStyle">@style/Text.Button</item>
         <item name="android:textAppearanceSmall">@style/Text</item>
         <item name="android:editTextStyle">@style/DefaultEdt</item>
-        <item name="android:spinnerStyle">@style/spinnerStyle</item>
+        <item name="android:spinnerStyle">@style/Spinner</item>
         <item name="android:checkboxStyle">@style/CheckBox</item>
         <item name="android:radioButtonStyle">@style/RadioButton</item>
     </style>

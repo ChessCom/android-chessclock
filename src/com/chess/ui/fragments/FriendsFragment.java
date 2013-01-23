@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
@@ -23,8 +24,12 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
 import com.chess.db.tasks.SaveFriendsListTask;
+import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.chess.ui.adapters.FriendsCursorAdapter;
 import com.chess.utilities.AppUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,6 +47,7 @@ public class FriendsFragment extends CommonLogicFragment {
 	private FriendsUpdateListener friendsUpdateListener;
 	private SaveFriendsListUpdateListener saveFriendsListUpdateListener;
 	private boolean hostUnreachable;
+	private Spinner sortSpinner;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +69,13 @@ public class FriendsFragment extends CommonLogicFragment {
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(friendsAdapter);
+
+		sortSpinner = (Spinner) view.findViewById(R.id.sortSpinner);
+		List<String> sortList = new ArrayList<String>();
+		sortList.add("Name");
+		sortList.add("Country");
+		sortList.add("Online");
+		sortSpinner.setAdapter(new ChessSpinnerAdapter(getActivity(), sortList));
 	}
 
 	@Override

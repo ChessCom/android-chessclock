@@ -37,7 +37,7 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 	private int requestData(LoadItem loadItem) {
 		String url = RestHelper.formCustomRequest(loadItem);
 		String requestMethod = loadItem.getRequestMethod();
-		if (requestMethod.equals(RestHelper.POST)){
+		if (requestMethod.equals(RestHelper.POST) || requestMethod.equals(RestHelper.PUT)){
 		    url = RestHelper.formPostRequest(loadItem);
 		}
 

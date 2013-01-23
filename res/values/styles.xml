@@ -154,20 +154,21 @@
     </style>
     
 
-    <style name="spinnerStyle" parent="@android:style/Widget.Spinner">
-        <item name="android:layout_margin">2dip</item>
+    <style name="Spinner" parent="@android:style/Widget.Spinner">
+        <!--<item name="android:layout_margin">2dip</item>-->
         <item name="android:drawSelectorOnTop">true</item>
-        <item name="android:background">@drawable/spinner_background</item>
+        <item name="android:background">@drawable/edit_grey_one_default</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/hint_text</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:selectable">true</item>
     </style>
 
-    <style name="spinnerStyleDropDown" parent="Text">
+    <style name="SpinnerDropDown" parent="Text">
         <item name="android:textColor">@color/black</item>
     </style>
-    <style name="spinnerText" parent="Text">
+
+    <style name="SpinnerText" parent="Text">
         <item name="android:textColor">@color/hint_text</item>
     </style>
 

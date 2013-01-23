@@ -70,39 +70,66 @@ public class NewGamesFragment extends CommonLogicFragment implements View.OnTouc
 		if (id == DAILY_RIGHT_BUTTON_ID) {
 		} else if (id == DAILY_LEFT_BUTTON_ID) {
 		} else if (id == DAILY_PLAY_BUTTON_ID) {
-			// create challenge using formed configuration
-			NewGameDailyView.NewDailyGameConfig newDailyGameConfig = dailyGamesSetupView.getNewDailyGameConfig();
-
-			int color = newDailyGameConfig.getUserColor();
-			int days = newDailyGameConfig.getDaysPerMove();
-			int gameType = newDailyGameConfig.getGameType();
-			String isRated = newDailyGameConfig.isRated() ? RestHelper.V_TRUE : RestHelper.V_FALSE;
-			String opponentName = newDailyGameConfig.getOpponentName();
-
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_SEEKS);
-			loadItem.setRequestMethod(RestHelper.POST);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
-			loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, days);
-			loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
-			loadItem.addRequestParams(RestHelper.P_IS_RATED, isRated);
-			loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
-			if (!TextUtils.isEmpty(opponentName)) {
-				loadItem.addRequestParams(RestHelper.P_OPPONENT, opponentName);
-			}
-
-			new RequestJsonTask<DailySeekItem>(createChallengeUpdateListener).executeTask(loadItem);
+			createDailyChallenge();
 
 
 		} else if (id == LIVE_LEFT_BUTTON_ID) {
 		} else if (id == LIVE_PLAY_BUTTON_ID) {
-			// create new live game with defined parameters
-			liveGamesSetupView.getNewLiveGameConfig();
+
+
+			createLiveChallenge();
 		} else if (id == COMP_LEFT_BUTTON_ID) {
 
 		} else if (id == COMP_PLAY_BUTTON_ID) {
 			compGamesSetupView.getNewCompGameConfig();
 		}
+
+	}
+
+	private void createDailyChallenge() {
+		// create challenge using formed configuration
+		NewGameDailyView.NewDailyGameConfig newDailyGameConfig = dailyGamesSetupView.getNewDailyGameConfig();
+
+		int color = newDailyGameConfig.getUserColor();
+		int days = newDailyGameConfig.getDaysPerMove();
+		int gameType = newDailyGameConfig.getGameType();
+		String isRated = newDailyGameConfig.isRated() ? RestHelper.V_TRUE : RestHelper.V_FALSE;
+		String opponentName = newDailyGameConfig.getOpponentName();
+
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, days);
+		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
+		loadItem.addRequestParams(RestHelper.P_IS_RATED, isRated);
+		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
+		if (!TextUtils.isEmpty(opponentName)) {
+			loadItem.addRequestParams(RestHelper.P_OPPONENT, opponentName);
+		}
+
+		new RequestJsonTask<DailySeekItem>(createChallengeUpdateListener).executeTask(loadItem);
+	}
+
+	private void createLiveChallenge() { // TODO
+		// create new live game with defined parameters
+//		liveGamesSetupView.getNewLiveGameConfig();
+
+//		Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
+//				getLccHolder().getUser(),
+//				friendsSpinner.getSelectedItem().toString().trim(),
+//				pieceColor, rated, gameTimeConfig,
+//				minMembershipLevel, minRating, maxRating);
+//
+//		// todo: refactor with new LCC
+//		if(!getLccHolder().isConnected() || getLccHolder().getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
+//			getLccHolder().logout();
+//			backToHomeActivity();
+//			return;
+//		}
+//
+//		FlurryAgent.logEvent(FlurryData.CHALLENGE_CREATED);
+//		challengeTaskRunner.runSendChallengeTask(challenge);
 
 	}
 

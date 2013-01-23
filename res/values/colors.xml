@@ -320,5 +320,6 @@
     <color name="new_square_button">#FFf4f4f4</color>
     <color name="new_square_button_p">#ffc7c7c7</color>
     <color name="new_grey_border_light">#FFbfbfbf</color>
-    <color name="new_friends_top_border_light">#FFdfdfdf</color>
+    <color name="new_friends_top_border_light">#FFbfbfbf</color>
+    <color name="new_friends_list_divider">#FFdfdfdf</color>
 </resources>
