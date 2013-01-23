@@ -192,5 +192,5 @@
     <dimen name="button_switch_inner_offset">5dip</dimen>
 
     <!--Friends-->
-    <dimen name="new_button_square_size">32dip</dimen>
+    <dimen name="new_button_square_size">37dip</dimen>
 </resources>

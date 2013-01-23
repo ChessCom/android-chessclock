@@ -83,7 +83,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		vsTxtParams.addRule(RelativeLayout.BELOW, BASE_ID + TITLE_ID);
 		vsText.setPadding((int) (8 * density), (int) (10 * density), (int) (8 * density), 0);
 		vsText.setText("vs");
-		vsText.setTextColor(getContext().getResources().getColor(R.color.new_normal_gray));
+		vsText.setTextColor(getContext().getResources().getColor(R.color.new_normal_grey));
 		vsText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TOP_TEXT_SIZE);
 		vsText.setId(BASE_ID + VS_ID);
 

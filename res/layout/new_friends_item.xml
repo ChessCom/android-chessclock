@@ -2,19 +2,44 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:robo="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="15dip"
+    android:paddingBottom="10dip"
     >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/new_friends_top_border_light"
+        />
+
+
 
     <ImageButton
         android:id="@+id/challengeImgBtn"
         android:layout_width="@dimen/new_button_square_size"
         android:layout_height="@dimen/new_button_square_size"
         android:contentDescription="@string/challenge"
-        android:layout_alignTop="@+id/photoImg"
-        android:background="@drawable/button_square_grey_default"
+        android:background="@drawable/button_square_grey_selector"
         android:src="@drawable/ic_send_challenge"
+        android:layout_marginTop="9dip"
+        android:layout_marginLeft="15dip"
+        />
+
+    <ImageView
+        android:id="@+id/photoImg"
+        android:layout_width="83dip"
+        android:layout_height="83dip"
+        android:contentDescription="@string/photo"
+        android:src="@drawable/img_profile_picture_stub"
+        android:layout_toRightOf="@id/challengeImgBtn"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginTop="8dip"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         />
 
     <ImageButton
@@ -22,60 +47,71 @@
         android:layout_width="@dimen/new_button_square_size"
         android:layout_height="@dimen/new_button_square_size"
         android:contentDescription="@string/challenge"
-        android:background="@drawable/button_square_grey_default"
+        android:background="@drawable/button_square_grey_selector"
         android:src="@drawable/ic_send_message"
         android:layout_alignBottom="@id/photoImg"
+        android:layout_marginLeft="15dip"
         />
 
-    <ImageView
-        android:id="@id/photoImg"
-        android:layout_width="80dip"
-        android:layout_height="80dip"
-        android:contentDescription="@string/photo"
-        android:src="@drawable/img_profile_picture_stub"
-        android:layout_toRightOf="@id/challengeImgBtn"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        />
 
-    <TextView
+
+    <com.chess.RoboTextView
         android:id="@+id/usernameTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/photoImg"
         android:text="crabcackles"
         android:layout_alignTop="@id/photoImg"
+        android:textColor="@color/new_friends_blue_text"
+        robo:ttf="Bold"
+        android:textSize="17sp"
         />
 
     <ImageView
         android:id="@+id/countryImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/challenge"
+        android:layout_width="27dip"
+        android:layout_height="27dip"
+        android:contentDescription="@string/country"
         android:layout_toRightOf="@id/usernameTxt"
         android:src="@drawable/ic_united_states"
-        android:layout_alignTop="@id/photoImg"
-        android:layout_marginLeft="10dip"
+        android:layout_marginTop="5dip"
+        android:layout_marginLeft="7dip"
         />
 
-    <TextView
+    <ImageView
+        android:id="@+id/premiumImg"
+        android:layout_width="20dip"
+        android:layout_height="20dip"
+        android:contentDescription="@string/image"
+        android:layout_toRightOf="@id/countryImg"
+        android:src="@drawable/ic_nav_upgrade"
+        android:layout_alignTop="@id/photoImg"
+        android:layout_marginLeft="10dip"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        />
+
+    <com.chess.RoboTextView
         android:id="@+id/locationTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/photoImg"
         android:layout_below="@id/usernameTxt"
         android:text="location"
+        android:textColor="@color/new_friends_grey_text"
+        android:paddingTop="2dip"
         />
 
-    <TextView
+    <com.chess.RoboTextView
         android:id="@+id/onlineTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/photoImg"
         android:layout_alignBottom="@id/photoImg"
         android:text="offline"
-
+        android:textColor="@color/new_friends_grey_text"
+        robo:ttf="Italic"
+        android:textSize="13sp"
         />
 
 </RelativeLayout>

@@ -2,7 +2,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -16,24 +16,40 @@
         android:paddingLeft="16dip"
         android:paddingRight="8dip"
         >
-        <TextView
+        <com.chess.RoboTextView
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="26 Friends"
+            custom:ttf="Bold"
+            android:textColor="@color/new_friends_grey_text"
+            android:textSize="13sp"
             />
         <Spinner
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/edit_grey_one_default"
             />
-        <EditText
+
+        <com.chess.RoboEditText
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableRight="@drawable/ic_action_search"
+            android:drawableRight="@drawable/ic_search"
             android:gravity="center_vertical"
             android:inputType="textAutoComplete"
+            android:background="@drawable/edit_grey_one_default"
+            android:paddingLeft="9dip"
+            android:paddingRight="5dip"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
+            android:layout_marginLeft="8dip"
+            android:hint="@string/search"
+            android:textSize="13sp"
+            android:cursorVisible="false"
+            android:focusable="false"
+            custom:ttf="Bold"
             />
 
     </LinearLayout>
@@ -48,7 +64,7 @@
         android:textSize="20sp"
         android:textColor="@color/grey_button_1"
         android:paddingLeft="10dip"
-        robo:ttf="Bold"
+        custom:ttf="Bold"
         style="@style/DarkShadowBottom"
         android:visibility="gone"
         />
@@ -80,7 +96,7 @@
             android:textColor="@color/grey_button_1"
             android:paddingLeft="10dip"
             android:layout_centerInParent="true"
-            robo:ttf="Bold"
+            custom:ttf="Bold"
             style="@style/DarkShadowBottom"
             />
 
@@ -90,7 +106,10 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="@color/white"
+        android:cacheColorHint="@color/white"
+        android:divider="@null"
+        android:dividerHeight="0dip"
         />
 
 </LinearLayout>

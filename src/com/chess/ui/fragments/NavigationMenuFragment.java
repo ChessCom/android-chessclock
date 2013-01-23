@@ -82,6 +82,10 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				getActivityFace().switchFragment(new FriendsFragment());
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
+			case R.drawable.ic_nav_stats:
+				getActivityFace().switchFragment(new StatsFragment());
+				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				break;
 		}
 
 	}

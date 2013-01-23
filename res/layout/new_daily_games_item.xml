@@ -24,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textColor="@color/new_light_gray"
+        android:textColor="@color/new_light_grey"
         android:gravity="center_vertical"
         android:text="test"
         />
@@ -33,7 +33,7 @@
         android:id="@+id/timeLeftTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/new_light_gray"
+        android:textColor="@color/new_light_grey"
         android:gravity="center_vertical"
         android:text="test"
         />

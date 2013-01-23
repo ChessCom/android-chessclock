@@ -136,7 +136,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 			headerTxtParams.weight = 1;
 
 			headerText.setText(viewConfig.getHeaderText());
-			headerText.setTextColor(getContext().getResources().getColor(R.color.new_normal_gray));
+			headerText.setTextColor(getContext().getResources().getColor(R.color.new_normal_grey));
 			headerText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TOP_TEXT_SIZE);
 			headerText.setPadding(HEADER_TEXT_PADDING_LEFT, 0, 0, 0);
 			headerView.addView(headerText, headerTxtParams);
@@ -158,7 +158,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 		{// Add defaultMode View
 			titleText = new TextView(getContext());
 			titleText.setText(viewConfig.getTitleText());
-			titleText.setTextColor(getContext().getResources().getColor(R.color.new_normal_gray));
+			titleText.setTextColor(getContext().getResources().getColor(R.color.new_normal_grey));
 			titleText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TOP_TEXT_SIZE);
 
 			titleText.setId(BASE_ID + TITLE_ID);
@@ -185,7 +185,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 
 			optionsTxt.setId(BASE_ID + OPTIONS_TXT_ID);
 			optionsTxt.setText(R.string.new_options);
-			optionsTxt.setTextColor(getContext().getResources().getColor(R.color.new_soft_gray));
+			optionsTxt.setTextColor(getContext().getResources().getColor(R.color.new_soft_grey));
 			optionsTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TOP_TEXT_SIZE);
 			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_right, 0);
 			optionsTxt.setPadding((int) (3 * density), (int) (4 * density), 0, 0);

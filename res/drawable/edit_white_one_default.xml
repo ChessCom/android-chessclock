@@ -2,7 +2,7 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--Shadow-->
+    <!--Border-->
     <item >
         <shape >
             <corners android:radius="@dimen/new_round_button_radius" />

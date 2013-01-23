@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ public class RoboTextView extends TextView implements Serializable {
 		try {
 			if (array.getString(R.styleable.RobotoTextView_ttf) != null) {
 				ttfName = array.getString(R.styleable.RobotoTextView_ttf);
+				Log.d("TEST", "set font " + ttfName);
 			}
 		} finally {
 			array.recycle();

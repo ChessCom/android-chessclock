@@ -9,7 +9,7 @@
 
 	<style name="Text" parent="@android:style/TextAppearance.Small">
 		<item name="android:textSize">14sp</item>
-		<item name="android:textColor">@color/new_normal_gray</item>
+		<item name="android:textColor">@color/new_normal_grey</item>
 		<item name="android:textStyle">normal</item>
 	</style>
 
@@ -316,7 +316,7 @@
 
     <style name="WhiteGrayEditText">
         <item name="android:singleLine">true</item>
-        <item name="color">@color/new_soft_gray</item>
+        <item name="color">@color/new_soft_grey</item>
         <item name="android:minHeight">@dimen/new_edit_field_height</item>
     </style>
 
@@ -347,7 +347,7 @@
 
     <style name="SetupSmallFont">
         <item name="android:textSize">@dimen/new_setup_small_fonts_size</item>
-        <item name="android:textColor">@color/new_normal_gray</item>
+        <item name="android:textColor">@color/new_normal_grey</item>
         <item name="android:gravity">center</item>
     </style>
 </resources>
