@@ -17,6 +17,7 @@ import com.chess.ui.views.ChessBoardBaseView;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
+import com.slidingmenu.lib.SlidingMenu;
 
 import java.text.SimpleDateFormat;
 
@@ -89,6 +90,7 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 			MopubHelper.createRectangleAd(getActivity());
 		}
 
+		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_NONE); // don't mess with boardview touches
 		invalidateGameScreen();
 	}
 
