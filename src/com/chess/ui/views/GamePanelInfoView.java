@@ -29,12 +29,12 @@ import com.chess.ui.views.drawables.CapturedPiecesDrawable;
  */
 public class GamePanelInfoView extends RelativeLayout implements View.OnClickListener {
 
-	private static final int AVATAR_ID = 0x00004400;
-	private static final int PLAYER_ID = 0x00004401;
-	private static final int FLAG_ID = 0x00004402;
-	private static final int PREMIUM_ID = 0x00004403;
-	private static final int CAPTURED_ID = 0x00004404;
-	private static final int TIME_LEFT_ID = 0x00004405;
+	public static final int AVATAR_ID = 0x00004400;
+	public static final int PLAYER_ID = 0x00004401;
+	public static final int FLAG_ID = 0x00004402;
+	public static final int PREMIUM_ID = 0x00004403;
+	public static final int CAPTURED_ID = 0x00004404;
+	public static final int TIME_LEFT_ID = 0x00004405;
 
 	private int AVATAR_SIZE = 22;
 	private int AVATAR_MARGIN = 5;
@@ -90,7 +90,7 @@ public class GamePanelInfoView extends RelativeLayout implements View.OnClickLis
 			avatarParams.setMargins(AVATAR_MARGIN, AVATAR_MARGIN, AVATAR_MARGIN, AVATAR_MARGIN);
 			avatarParams.addRule(RelativeLayout.CENTER_VERTICAL);
 
-			avatarImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.img_profile_picture_stub));
+//			avatarImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.img_profile_picture_stub));
 			avatarImg.setScaleType(ImageView.ScaleType.FIT_XY);
 			avatarImg.setAdjustViewBounds(true);
 			avatarImg.setId(AVATAR_ID);

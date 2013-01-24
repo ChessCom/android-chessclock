@@ -3,9 +3,12 @@ package com.chess.ui.fragments;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
@@ -23,6 +26,7 @@ import com.chess.ui.interfaces.GameCompActivityFace;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardCompView;
 import com.chess.ui.views.GamePanelInfoView;
+import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
@@ -64,6 +68,15 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		topPanelView = (GamePanelInfoView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (GamePanelInfoView) view.findViewById(R.id.bottomPanelView);
 
+		Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
+
+		((ImageView) topPanelView.findViewById(GamePanelInfoView.AVATAR_ID))
+				.setImageDrawable(new BoardAvatarDrawable(getActivity(), src));
+
+		ImageView bottomAvatarImg = (ImageView) bottomPanelView.findViewById(GamePanelInfoView.AVATAR_ID);
+		bottomAvatarImg.setImageDrawable(new BoardAvatarDrawable(getActivity(), src));
+
+		((BoardAvatarDrawable)bottomAvatarImg.getDrawable()).setSide(AppConstants.WHITE_SIDE);
 		bottomPanelView.setSide(AppConstants.WHITE_SIDE);
 
 		init();
