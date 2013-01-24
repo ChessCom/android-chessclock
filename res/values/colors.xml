@@ -64,6 +64,14 @@
     <color name="grey_button_solid_border_bottom">#FF4e4944</color>
     <color name="grey_button_solid_border_right">#FF56514c</color>
 
+    <!--Grey Gradient -=Controls=- -->
+    <color name="grey_button_gradient">#FF66605a</color>
+    <color name="grey_button_gradient_p">#FFb2aca5</color>
+    <color name="grey_button_gradient_p_1">#FF807b76</color>
+    <color name="grey_button_gradient_d">#FF444444</color>
+    <color name="grey_button_gradient_1">#FF4e4a44</color>
+
+
     <!--Emboss Text Field Black-->
     <color name="back_grey_emboss_solid">#FF201d1c</color>
     <color name="back_grey_emboss_solid_border_top">#FF181615</color>
@@ -76,9 +84,11 @@
 
 
 
-    <color name="grey_emboss_top">#FF67635e</color>
+    <!--<color name="grey_emboss_top">#FF67635e</color>-->
+    <color name="grey_emboss_top">#FF767069</color>
     <color name="grey_emboss_left">#FF5f5a55</color>
-    <color name="grey_emboss_bot">#FF413e3a</color>
+    <!--<color name="grey_emboss_bot">#FF413e3a</color>-->
+    <color name="grey_emboss_bot">#FF3b3834</color>
     <color name="grey_emboss_right">#FF44403b</color>
 
     <color name="grey_button_pressed_stroke_1">#968c8c8c</color>

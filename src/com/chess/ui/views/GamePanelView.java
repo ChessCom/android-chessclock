@@ -60,14 +60,14 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
     private int blackSavedPiecesCount[] = pieceItemCounts.clone();
 
     private int[] buttonsDrawableIds = new int[]{
-            R.drawable.ic_next_game,
-            R.drawable.ic_options,
-            R.drawable.ic_flip,
-            R.drawable.ic_analysis,
-            R.drawable.ic_chat,
-            R.drawable.ic_back,
-            R.drawable.ic_forward,
-            R.drawable.ic_hint
+            R.drawable.ic_ctrl_restore,
+            R.drawable.ic_ctrl_options,
+            R.drawable.ic_ctrl_flip,
+            R.drawable.ic_ctrl_analysis,
+            R.drawable.ic_ctrl_chat,
+            R.drawable.ic_ctrl_back,
+            R.drawable.ic_ctrl_fwd,
+            R.drawable.ic_ctrl_hint
     };
 
     public static final int B_NEW_GAME_ID = 0;
@@ -602,7 +602,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
     }
 
     public void turnCompMode() {
-        changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_new_game);
+        changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_ctrl_options);
         hideChatButton();
         addControlButton(1, GamePanelView.B_HINT_ID, R.drawable.button_emboss_mid_selector); // add hint button at second position
 		enableGameButton(B_FORWARD_ID, true);

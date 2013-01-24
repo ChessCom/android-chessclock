@@ -115,7 +115,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		findViewById(R.id.submitBtn).setOnClickListener(this);
 		findViewById(R.id.cancelBtn).setOnClickListener(this);
 
-		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
+		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_ctrl_restore);
 		gamePanelView.enableGameControls(false);
 
 		boardView = (ChessBoardOnlineView) findViewById(R.id.boardview);
