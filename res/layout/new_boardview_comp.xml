@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:id="@+id/statusBarLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        >
+
+        <com.chess.RoboTextView
+            android:id="@+id/thinking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/Thinking"
+            android:visibility="gone"
+            style="@style/GameLabel"
+            />
+
+        <com.chess.RoboTextView
+            android:id="@+id/whiteLabelTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/guest"
+            android:paddingLeft="8dip"
+            android:paddingRight="2dip"
+            style="@style/GameLabel.Player"
+            />
+
+        <com.chess.RoboTextView
+            android:id="@+id/blackLabelTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/Computer"
+            android:paddingLeft="2dip"
+            android:paddingRight="8dip"
+            style="@style/GameLabel.Player"
+            />
+        <!--android:drawableRight="@drawable/player_indicator_black"-->
+
+        <com.chess.RoboTextView
+            android:id="@+id/analysisTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:text="@string/analysis_mode"
+            style="@style/GameLabel"
+            />
+    </RelativeLayout>
+
+    <com.chess.ui.views.GamePanelInfoView
+        android:id="@+id/topPanelView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <com.chess.ui.views.ChessBoardCompView
+        android:id="@+id/boardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"/>
+
+
+    <com.chess.ui.views.GamePanelInfoView
+        android:id="@+id/bottomPanelView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <com.chess.ui.views.GamePanelView
+        android:id="@+id/gamePanelView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+</LinearLayout>

@@ -60,14 +60,14 @@ public class StaticData {
 //	public static final String SAVED_STATE = "saved_state";
 
 	public static final int B_WOOD_DARK_ID 	= 0; // TODO hide to resources
-//	public static final int B_WOOD_LIGHT_ID = 1;
-//	public static final int B_BLUE_ID 		= 2;
-//	public static final int B_BROWN_ID 		= 3;
-//	public static final int B_GREEN_ID 		= 4;
-//	public static final int B_GREY_ID 		= 5;
-//	public static final int B_MARBLE_ID 	= 6;
-//	public static final int B_RED_ID 		= 7;
-//	public static final int B_TAN_ID 		= 8;
+	public static final int B_WOOD_LIGHT_ID = 1;
+	public static final int B_BLUE_ID 		= 2;
+	public static final int B_BROWN_ID 		= 3;
+	public static final int B_GREEN_ID 		= 4;
+	public static final int B_GREY_ID 		= 5;
+	public static final int B_MARBLE_ID 	= 6;
+	public static final int B_RED_ID 		= 7;
+	public static final int B_TAN_ID 		= 8;
 
 
 	public static final String SHP_LANGUAGE = "application language";

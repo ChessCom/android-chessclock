@@ -64,6 +64,16 @@
     <color name="grey_button_solid_border_bottom">#FF4e4944</color>
     <color name="grey_button_solid_border_right">#FF56514c</color>
 
+    <!--Emboss Text Field Black-->
+    <color name="back_grey_emboss_solid">#FF201d1c</color>
+    <color name="back_grey_emboss_solid_border_top">#FF181615</color>
+    <color name="back_grey_emboss_solid_border_bottom">#FF373433</color>
+
+    <!--Emboss Text Field White-->
+    <color name="back_white_emboss_solid">#FFf0f0f0</color>
+    <color name="back_white_emboss_solid_border_top">#FF181615</color>
+    <color name="back_white_emboss_solid_border_bottom">#FF373433</color>
+
 
 
     <color name="grey_emboss_top">#FF67635e</color>

@@ -12,12 +12,14 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.DailySeekItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.views.NewGameCompView;
 import com.chess.ui.views.NewGameDailyView;
 import com.chess.ui.views.NewGameDefaultView;
 import com.chess.ui.views.NewGameLiveView;
+import com.slidingmenu.lib.SlidingMenu;
 
 
 /**
@@ -81,7 +83,10 @@ public class NewGamesFragment extends CommonLogicFragment implements View.OnTouc
 		} else if (id == COMP_LEFT_BUTTON_ID) {
 
 		} else if (id == COMP_PLAY_BUTTON_ID) {
-			compGamesSetupView.getNewCompGameConfig();
+//			compGamesSetupView.getNewCompGameConfig();
+
+			getActivityFace().openFragment(GameCompFragment.newInstance(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK));
+			getActivityFace().toggleMenu(SlidingMenu.RIGHT);
 		}
 
 	}

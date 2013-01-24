@@ -68,7 +68,8 @@ public class AppData {
 	public static int getChessBoardId(Context context) {
 		SharedPreferences preferences = getPreferences(context);
 		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
-		return preferences.getInt(userName + AppConstants.PREF_BOARD_TYPE, StaticData.B_WOOD_DARK_ID);
+//		return preferences.getInt(userName + AppConstants.PREF_BOARD_TYPE, StaticData.B_WOOD_DARK_ID);
+		return preferences.getInt(userName + AppConstants.PREF_BOARD_TYPE, StaticData.B_GREEN_ID);
 	}
 
 	public static int getPiecesId(Context context) {

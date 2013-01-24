@@ -119,4 +119,8 @@ public class AppConstants {
 
     public static final String NEED_TO_RESTART = "needToRestart";
 	public static final String MOVE_NUMBERS_PATTERN = "[0-9]{1,4}[.]";
+
+	/* Common Game sides*/
+	public static final int BLACK_SIDE = 0;
+	public static final int WHITE_SIDE = 1;
 }
