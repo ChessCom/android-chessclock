@@ -1,17 +1,17 @@
 <resources>
 
 	<string name="connect_with_facebook">התחבר לפייסבוק</string>
-	<string name="lccFailedUnavailable">שרת שחמט חי אינו זמין כעת.</string>
-	<string name="lccFailedUpgrading">אנחנו מנסים לשפר את chess.com! כיום האתר הוא להיות משודרג. זה יהיה לחיות שוב בתוך זמן קצר. נסה להתחבר שוב בקרוב. תודה!</string>
+	<string name="live_chess_server_unavailable">שרת שחמט חי אינו זמין כעת.</string>
+	<string name="live_chess_server_upgrading">אנחנו מנסים לשפר את chess.com! כיום האתר הוא להיות משודרג. זה יהיה לחיות שוב בתוך זמן קצר. נסה להתחבר שוב בקרוב. תודה!</string>
 	<string name="app_name">ChessCom</string>
-	<string name="signout">יציאה</string>
+	<string name="sign_out">יציאה</string>
 
 	<!--Dashboard labels-->
-	<string name="menuLive">שחק חיים</string>
-	<string name="menuOnline">שחק</string>
-	<string name="menuComp">לשחק במחשב</string>
-	<string name="menuTactics">טקטיקות מאמן</string>
-	<string name="menuVideo">שיעורי וידאו</string>
+	<string name="dashboard_live">שחק חיים</string>
+	<string name="dashboard_online">שחק</string>
+	<string name="dashboard_computer">לשחק במחשב</string>
+	<string name="dashboard_tactics">טקטיקות מאמן</string>
+	<string name="dashboard_video">שיעורי וידאו</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">הקלטה בשידור חי</string>
@@ -43,81 +43,80 @@
 	<string name="password">סיסמא</string>
 	<string name="log_in">היכנס</string>
 	<string name="sing_up">הירשם</string>
-	<string name="complete_singupButton">השלם הרשמה</string>
-	<string name="singinPlayguest">לשחק כמו אורח</string>
+	<string name="complete_sing_up">השלם הרשמה</string>
+	<string name="play_as_guest">לשחק כמו אורח</string>
 
-	<string name="computerWhite">לבן</string>
-	<string name="computerBlack">שחור</string>
-	<string name="Human">לבני אדם.</string>
+	<string name="white">לבן</string>
+	<string name="black">שחור</string>
+	<string name="human">לבני אדם.</string>
 	<string name="guest">אורח</string>
-	<string name="Computer">מחשב</string>
-	<string name="Thinking">חשיבה …</string>
-	<string name="menuSite">www.chess.com</string>
-	<string name="onlineNewGametitle">משחק חדש</string>
-	<string name="onlineChallenges">פתח אתגרים</string>
-	<string name="challengeFriend">לאתגר לחבר</string>
-	<string name="createNewChallenge">צור האתגר פתוח</string>
-	<string name="currentGame">משחק חי הנוכחי</string>
+	<string name="computer">מחשב</string>
+	<string name="thinking_">חשיבה …</string>
+
+	<string name="open_challenges">פתח אתגרים</string>
+	<string name="challenge_friend">לאתגר לחבר</string>
+	<string name="create_open_challenge">צור האתגר פתוח</string>
+	<string name="current_live_game">משחק חי הנוכחי</string>
 	<string name="game_type">סוג המשחק</string>
-	<string name="classic">שחמט קלאסי</string>
-	<string name="chess960">960 שח</string>
+	<string name="chess_classic">שחמט קלאסי</string>
+	<string name="chess_960">960 שח</string>
 	<string name="friend">חבר</string>
 	<string name="friends">חברים</string>
-	<string name="initialTime">ראשוני זמן</string>
+	<string name="initial_time">ראשוני זמן</string>
 	<string name="bonusTime">בונוס זמן</string>
 	<string name="rated_game">מדורג משחק</string>
 	<string name="i_play_as">אני משחק כמו</string>
 	<string name="days_per_move">ימים לכל העבר</string>
-	<string name="ChallengeCreate">יצירת אתגר</string>
+	<string name="create_challenge">יצירת אתגר</string>
 	<string name="on_off">הפעלה / כיבוי</string>
 	<string name="min_rating">דקות דירוג</string>
 	<string name="max_rating">מקס דירוג</string>
 	<string name="email">דואר אלקטרוני</string>
-	<string name="retype">מחדש את הסיסמה סוג</string>
+	<string name="retype_password">מחדש את הסיסמה סוג</string>
 	<string name="country">ארץ</string>
-	<string name="blue">כחול</string>
-	<string name="brown">חום</string>
-	<string name="green">ירוק</string>
-	<string name="grey">גריי</string>
-	<string name="marble">שיש</string>
-	<string name="red">אדום</string>
-	<string name="tan">שזוף</string>
-	<string name="woodlight">עץ אור</string>
-	<string name="wooddark">עץ כהה</string>
-	<string name="alpha">שקיפות</string>
-	<string name="book">ספר זה.</string>
-	<string name="cases">מקרים</string>
-	<string name="classicP">קלאסי</string>
-	<string name="club">.</string>
-	<string name="condal">מחוז</string>
-	<string name="maya">מאיה</string>
-	<string name="modern">מודרני</string>
-	<string name="vintage">בציר</string>
-	<string name="aim">אחרי העבר</string>
+	<string name="board_blue">כחול</string>
+	<string name="board_brown">חום</string>
+	<string name="board_green">ירוק</string>
+	<string name="board_grey">גריי</string>
+	<string name="board_marble">שיש</string>
+	<string name="board_red">אדום</string>
+	<string name="board_tan">שזוף</string>
+	<string name="board_woodlight">עץ אור</string>
+	<string name="board_wooddark">עץ כהה</string>
+	<string name="piece_alpha">שקיפות</string>
+	<string name="piece_book">ספר זה.</string>
+	<string name="piece_cases">מקרים</string>
+	<string name="piece_classic">קלאסי</string>
+	<string name="piece_club">.</string>
+	<string name="piece_condal">מחוז</string>
+	<string name="piece_maya">מאיה</string>
+	<string name="piece_modern">מודרני</string>
+	<string name="piece_vintage">בציר</string>
+	<string name="after_i_move">אחרי העבר</string>
 	<string name="notification">התראות</string>
-	<string name="notificationE">לאפשר הודעות</string>
-	<string name="ssb">הצג שלח את הלחצן</string>
-	<string name="enableSounds">אפשר צלילים</string>
+	<string name="enable_notifications">לאפשר הודעות</string>
+	<string name="show_submit_button">הצג שלח את הלחצן</string>
+	<string name="enable_sounds">אפשר צלילים</string>
 	<string name="strength">כוח (%):</string>
-	<string name="interfaceP">ממשק</string>
+	<string name="interface_caps">ממשק</string>
 	<string name="board">העלייה למטוס</string>
-	<string name="pieces">חתיכות</string>
-	<string name="showcoords">הצג מרכז</string>
-	<string name="movehighlights">העבר הבהרה</string>
+
+	<string name="show_coordinates">הצג מרכז</string>
+	<string name="move_highlights">העבר הבהרה</string>
 	<string name="invite_a_friend">הזמן חברים</string>
-	<string name="contactUs">צור קשר</string>
+	<string name="contact_us">צור קשר</string>
 	<string name="logout">התנתק</string>
-	<string name="vacationOn">בחופשה</string>
-	<string name="vacationOff">לא בחופשה</string>
-	<string name="ngwhite">משחק חדש (לבן)</string>
-	<string name="ngblack">משחק חדש (שחור)</string>
-	<string name="emailgame">דוא\"ל משחק</string>
+	<string name="vacation_on">בחופשה</string>
+	<string name="vacation_off">לא בחופשה</string>
+	<string name="new_game_white">משחק חדש (לבן)</string>
+	<string name="new_game_black">משחק חדש (שחור)</string>
+	<string name="email_game">דוא\"ל משחק</string>
 	<string name="load">טען משחק שמור</string>
 	<!--<string name="backtogamelist">חזרה לרשימת משחק</string>-->
 	<string name="messages">הודעות</string>
-	<string name="analysis">ניתוח עמוד</string>
-	<string name="drawoffer">להציע תיקו</string>
-	<string name="resignorabort">להתפטר (או לנטוש)</string>
+	<string name="analysis_board">ניתוח עמוד</string>
+	<string name="offer_draw">להציע תיקו</string>
+	<string name="resign_or_abort">להתפטר (או לנטוש)</string>
 	<string name="resign">להתפטר</string>
 	<string name="abort">להפיל</string>
 	<string name="cancel">ביטול</string>
@@ -129,7 +128,7 @@
 	<string name="hint">לרמוז</string>
 	<string name="prev">הקודם</string>
 	<string name="next">הבא</string>
-	<string name="nextgame">המשחק הבא</string>
+	<string name="next_game">המשחק הבא</string>
 	<string name="chat">לשוחח</string>
 	<string name="skill">רמת מיומנות</string>
 	<string name="category">קטגוריה</string>
@@ -137,53 +136,44 @@
 	<string name="play">נגן</string>
 	<string name="videos">סרטונים</string>
 	<string name="congratulations">ברכותיי.</string>
-	<string name="onlinegamecreated">משחק מקוון שנוצר!</string>
-	<string name="challengeSent">לאתגר נשלח!</string>
-	<string name="creating">יצירת …</string>
-	<string name="gettingfriends">קבלת רשימת חברים …</string>
+	<string name="online_game_created">משחק מקוון שנוצר!</string>
+	<string name="challenge_sent">לאתגר נשלח!</string>
+
 	<string name="sorry">מצטער.</string>
-	<string name="nofriends">אין לך עדיין חברים. אתה יכול להזמין אותם דרך www.chess.com.</string>
-	<string name="nofriends_online">החברים שלך לא מחובר. אם לא מזמינים אותם עדיין, עבור www.chess.com.</string>
+	<string name="no_friends_invite">אין לך עדיין חברים. אתה יכול להזמין אותם דרך www.chess.com.</string>
+	<string name="no_friends_online">החברים שלך לא מחובר. אם לא מזמינים אותם עדיין, עבור www.chess.com.</string>
 	<string name="invite">הזמנות</string>
-	<string name="drawaccepted">צייר קיבל!</string>
+	<string name="draw_accepted">צייר קיבל!</string>
 	<string name="accept">קבל</string>
-	<string name="challengeaccepted">לאתגר התקבל!</string>
-	<string name="challengedeclined">האתגר נדחה!</string>
+	<string name="challenge_accepted">לאתגר התקבל!</string>
+	<string name="challenge_declined">האתגר נדחה!</string>
 	<string name="decline">סרב</string>
-	<string name="updatinggameslist">עדכון רשימת משחקים …</string>
-	<!--<string name="challengetitle">לאתגר</string>-->
-	<string name="loadinggames">טוען משחקים …</string>
-	<string name="drawoffered">צייר מוצע</string>
-	<string name="gettingmessages">מקבל הודעות …</string>
-	<string name="sendingmessage">שולח הודעה…</string>
+
+	<string name="draw_offered">צייר מוצע</string>
+
 	<string name="ok">אישור</string>
 	<string name="submit">שלח</string>
 	<string name="login">כניסה</string>
 	<string name="title">כותרת</string>
 	<string name="error">שגיאה</string>
-	<string name="loading">טוען…</string>
-	<string name="wrongcountry">עליך לבחור את המדינה שלך!</string>
-	<string name="wrongpassword">הסיסמה חייבת להיות לפחות 6 תווים!</string>
-	<string name="wrongusername">שם המשתמש חייב להיות לפחות 3 תווים, ורק להכיל אותיות, מספרים, תחתונים, ומקפים. מקומות אסורים.</string>
-	<string name="wrongemail">תצטרך לאשר את המנוי במייל.</string>
-	<string name="wrongretype">להדפיס מחדש את הסיסמה טעות!</string>
-	<string name="signingin">נכנס…</string>
+	<string name="loading_">טוען…</string>
+	<string name="wrong_country">עליך לבחור את המדינה שלך!</string>
+	<string name="wrong_password">הסיסמה חייבת להיות לפחות 6 תווים!</string>
+	<string name="wrong_username">שם המשתמש חייב להיות לפחות 3 תווים, ורק להכיל אותיות, מספרים, תחתונים, ומקפים. מקומות אסורים.</string>
+	<string name="wrong_email">תצטרך לאשר את המנוי במייל.</string>
+	<string name="wrong_retype_pass">להדפיס מחדש את הסיסמה טעות!</string>
+	<string name="signing_in_">נכנס…</string>
 
-	<string name="showanswer">הצג תשובה</string>
-	<string name="skipproblem">דלג בעיה</string>
-	<string name="sendinggameinfo">שליחת מידע על המשחק …</string>
+	<string name="show_answer">הצג תשובה</string>
+	<string name="skip_problem">דלג בעיה</string>
+	<string name="sending_game_info">שליחת מידע על המשחק …</string>
 	<string name="check_field">יש לבדוק את שדה</string>
 	<string name="validateUsername">שם המשתמש חייב להיות בין 3 ל 20 תווים, ורק להכיל אותיות, מספרים, תחתונים, ומקפים. מקומות אסורים.</string>
 	<string name="validatePassword">הסיסמה שלך צריכה להיות בין 6 ל 20 תווים!</string>
-	<string name="black">שחור</string>
-	<string name="white">לבן</string>
+
 	<string name="hours">שעות</string>
 	<string name="days">ימים</string>
-	<string name="playeronline">הנגן מחובר!</string>
-	<string name="playeroffline">נגן מנותק!</string>
-	<string name="mymove">המהלך שלי!</string>
-	<string name="theirmove">צעד שלהם!</string>
-	<string name="gamefinish">לסיים את המשחק הזה</string>
+
 	<string name="random">אקראי</string>
 	<string name="won">זכה</string>
 	<string name="lost">אבוד</string>
@@ -191,20 +181,20 @@
 	<string name="duration">משך</string>
 	<string name="published">פורסם</string>
 	<string name="details">פרטים</string>
-	<string name="playvideo">נגן וידאו</string>
+	<string name="play_video">נגן וידאו</string>
 	<string name="accepted">התקבל:</string>
 	<string name="upgrade">שדרוג</string>
-	<string name="preferencesUpgrade">שדרוג החשבון שלי</string>
-	<string name="videoUpgrade">שדרוג עבור גישה מלאה קטעי וידאו!</string>
+	<string name="upgrade_my_account">שדרוג החשבון שלי</string>
+	<string name="upgrade_to_full_videos">שדרוג עבור גישה מלאה קטעי וידאו!</string>
 	<string name="removeAds">לשדרג ולהסיר מודעות!</string>
 	<string name="accept_draw_q">קבל צייר?</string>
-	<string name="ready_for_first_tackics_q">האם אתה מוכן הטקטיקה הראשונה שלך?</string>
+	<string name="ready_for_first_tactics_q">האם אתה מוכן הטקטיקה הראשונה שלך?</string>
 
 	<string name="max_tactics_reached">אתה פגעו במספר המרבי של טקטיקות להיום. האם אתה רוצה להיות מסוגל לעשות טקטיקות יותר?
 	</string>
 	<string name="yes">כן</string>
 	<string name="no">לא</string>
-	<string name="okay">אישור</string>
+
 	<string name="ten_tactics_completed">10 טקטיקות הושלמה!</string>
 	<string name="offline_mode">מצב לא מקוון</string>
 	<string name="no_network_rating_not_changed">גישה לאינטרנט אינו זמין כרגע. כתוצאה מכך, הדירוג שלך לא ישתנה לאחר השלמת בעיות עד החיבור שלך לאינטרנט חוזר.
@@ -220,9 +210,7 @@
 	<string name="browse">עיין</string>
 
 
-	<string name="bonus_time_left">זמן בונוס שמאל %1$s זמן שהות %2$s</string>
-
-	<string name="pieces_s">חלקים:</string>
+	<string name="pieces_">חלקים:</string>
 	<string name="home">בית</string>
 	<string name="live">חי</string>
 	<string name="online">מקוונים</string>
@@ -235,7 +223,7 @@
 	</string>
 	<string name="live_game">חיים משחק</string>
 	<string name="online_game">משחק מקוון</string>
-	<string name="send_mail">שלח דואר …</string>
+	<string name="send_mail_">שלח דואר …</string>
 	<string name="tournaments">טורנירים</string>
 	<string name="stats">סטטיסטיקות</string>
 	<string name="challenges">אתגר</string>
@@ -243,10 +231,10 @@
 	<string name="analysis_mode">ניתוח מצב</string>
 	<string name="check">- קיבלתי.</string>
 	<string name="choose_a_piece">בחר קטע</string>
-	<string name="open_app_t_see_msg">לחץ כאן כדי לראות את המסר הפנימי של App</string>
+	<string name="open_app_to_see_msg">לחץ כאן כדי לראות את המסר הפנימי של App</string>
 
 	<!--SignOut-->
-	<string name="signout_confirm">האם אתה בטוח שברצונך לצאת מהשרת שחמט חי?</string>
+	<string name="sign_out_confirm">האם אתה בטוח שברצונך לצאת מהשרת שחמט חי?</string>
 	<string name="confirm">אשר</string>
 	<string name="you_been_challenged">אתה כבר פיגור!</string>
 
@@ -264,7 +252,7 @@
 	<string name="your_move">Chess.com - זה התור שלך</string>
 	<string name="your_turn">עכשיו תורך!</string>
 	<string name="login_failed">הכניסה נכשלה:</string>
-	<string name="loggin_out">התנתקות …</string>
+	<string name="login_out">התנתקות …</string>
 	<string name="you_logged_out">אתה מתנתק!</string>
 	<string name="too_short">קצר מדי</string>
 	<string name="can_not_be_empty">לא יכול להיות ריק</string>
@@ -272,7 +260,7 @@
 	<string name="no_chess_account_signup_please">אין לך חשבון Chess.com, להירשם, בבקשה.</string>
 	<string name="pass_dont_match">אין התאמה בין הסיסמאות שלך</string>
 	<string name="username_cannot_be_encoded">שם המשתמש שלך לא יכול להיות מקודד כדי לשלוח בקשה</string>
-	<string name="menu_refresh">רענן</string>
+	<string name="refresh">רענן</string>
 	<string name="version_check">גרסה בדוק</string>
 	<string name="version_is_obsolete_update">את גירסת הלקוח הוא מיושן. אנא עדכן</string>
 
@@ -286,7 +274,7 @@
 	<string name="game_over">המשחק נגמר</string>
 	<string name="draw_game">לצייר להציע</string>
 	<string name="has_offered_draw">הציע תיקו</string>
-	<string name="reconnecting">מתחבר מחדש</string>
+	<string name="reconnecting_">מתחבר מחדש</string>
 	<string name="another_login_detected">כניסה נוספת זוהתה.</string>
 	<string name="loading_live_chess">טוען שחמט חיים</string>
 	<string name="game_draw_by_repetition">המשחק נמשך \n על ידי חזרה</string>
@@ -320,8 +308,6 @@
 	<string name="draw_declined">לצייר נדחה</string>
 	<string name="has_declined_draw">ירד תיקו</string>
 
-	<string name="menu_search">חיפוש</string>
-	<string name="restoring_conntection_to_live">מתחבר מחדש …</string>
 	<string name="application_was_killed">יישום נהרג, שיקום …</string>
 	<string name="no_network">לא ברשת</string>
 	<string name="wireless_settings">הגדרות אלחוטיות</string>

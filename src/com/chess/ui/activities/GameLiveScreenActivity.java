@@ -132,7 +132,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
 				getString(R.string.reside),
-				getString(R.string.drawoffer),
+				getString(R.string.offer_draw),
 				getString(resignOrAbort),
 				getString(R.string.messages)};
 
@@ -557,7 +557,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		getLccHolder().paintClocks();
 		changePlayersLabelColors();
 
-		boardView.setMovesLog(getBoardFace().getMoveListSAN());
+//		boardView.setMovesLog(getBoardFace().getMoveListSAN());
+		boardView.setMovesLog(getBoardFace().getNotationArray());
 	}
 
 	@Override
@@ -626,7 +627,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 					boardView.invalidate();
 					break;
 				case LIVE_DRAW_OFFER:
-					showPopupDialog(R.string.drawoffer, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
+					showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
 					break;
 				case LIVE_RESIGN_OR_ABORT:
 					showPopupDialog(R.string.abort_resign_game, R.string.are_you_sure_q, ABORT_GAME_TAG);

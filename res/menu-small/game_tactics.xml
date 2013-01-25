@@ -23,7 +23,7 @@
 		/>
 
 	<item android:id="@+id/menu_next_game"
-		android:title="@string/nextgame"
+		android:title="@string/next_game"
 		android:icon="@drawable/forward"
 		android:showAsAction="never" />
 	<item android:id="@+id/menu_options"
@@ -36,7 +36,7 @@
 		android:icon="@drawable/reside"
 		android:showAsAction="never" />
 	<item android:id="@+id/menu_analysis"
-		android:title="@string/analysis"
+		android:title="@string/analysis_board"
 		android:icon="@drawable/analysis"
 		android:showAsAction="never" />
 	<item android:id="@+id/menu_previous"

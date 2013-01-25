@@ -146,7 +146,7 @@ public class NewGamesFragment extends CommonLogicFragment implements View.OnTouc
 
 		@Override
 		public void updateData(DailySeekItem returnedObj) {
-			showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
+			showSinglePopupDialog(R.string.congratulations, R.string.online_game_created);
 		}
 
 		@Override

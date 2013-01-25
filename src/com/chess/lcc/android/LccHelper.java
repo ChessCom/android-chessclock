@@ -15,7 +15,6 @@ import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.live.client.*;
 import com.chess.model.GameLiveItem;
-import com.chess.model.MessageItem;
 import com.chess.ui.activities.GameLiveScreenActivity;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.utilities.AppUtils;
@@ -290,7 +289,7 @@ public class LccHolder {
 	}
 
 	public void processConnectionFailure(String reason, String message) {
-		String kickMessage = context.getString(R.string.lccFailedUpgrading);
+		String kickMessage = context.getString(R.string.live_chess_server_upgrading);
 		liveChessClientEventListener.onConnectionFailure(kickMessage
 				+ StaticData.SYMBOL_NEW_STR + context.getString(R.string.reason_) + reason
 				+ StaticData.SYMBOL_NEW_STR + context.getString(R.string.message_) + message);
@@ -303,7 +302,7 @@ public class LccHolder {
 		String detailsMessage;
 		switch (details) {
 			case USER_KICKED: {
-				detailsMessage = context.getString(R.string.lccFailedUpgrading);
+				detailsMessage = context.getString(R.string.live_chess_server_upgrading);
 				break;
 			}
 			case ACCOUNT_FAILED: {
@@ -312,7 +311,7 @@ public class LccHolder {
 			}
 			case SERVER_STOPPED: {
 				detailsMessage = context.getString(R.string.server_stopped)
-						+ context.getString(R.string.lccFailedUnavailable);
+						+ context.getString(R.string.live_chess_server_unavailable);
 				break;
 			}
 			default:

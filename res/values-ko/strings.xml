@@ -1,17 +1,17 @@
 <resources>
 
 	<string name="connect_with_facebook">페이스 북으로 연결</string>
-	<string name="lccFailedUnavailable">라이브 체스 서버는 현재 사용할 수 없습니다.</string>
-	<string name="lccFailedUpgrading">우리는 chess.com 개선을 위해 노력하고 있습니다! 현재 사이트 업그레이 드되고 있습니다. 그것은 금새 다시 살 것입니다. 잠시 후 다시 로그인을 시도해보십시오. 감사합니다!</string>
+	<string name="live_chess_server_unavailable">라이브 체스 서버는 현재 사용할 수 없습니다.</string>
+	<string name="live_chess_server_upgrading">우리는 chess.com 개선을 위해 노력하고 있습니다! 현재 사이트 업그레이 드되고 있습니다. 그것은 금새 다시 살 것입니다. 잠시 후 다시 로그인을 시도해보십시오. 감사합니다!</string>
 	<string name="app_name">ChessCom</string>
-	<string name="signout">로그아웃</string>
+	<string name="sign_out">로그아웃</string>
 
 	<!--Dashboard labels-->
-	<string name="menuLive">라이브 연주</string>
-	<string name="menuOnline">온라인 플레이</string>
-	<string name="menuComp">컴퓨터 재생</string>
-	<string name="menuTactics">전술의 트레이너</string>
-	<string name="menuVideo">비디오 레슨</string>
+	<string name="dashboard_live">라이브 연주</string>
+	<string name="dashboard_online">온라인 플레이</string>
+	<string name="dashboard_computer">컴퓨터 재생</string>
+	<string name="dashboard_tactics">전술의 트레이너</string>
+	<string name="dashboard_video">비디오 레슨</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">살 재생</string>
@@ -43,81 +43,80 @@
 	<string name="password">패스워드</string>
 	<string name="log_in">로그인</string>
 	<string name="sing_up">가입하기</string>
-	<string name="complete_singupButton">가입을 완료</string>
-	<string name="singinPlayguest">손님으로 재생</string>
+	<string name="complete_sing_up">가입을 완료</string>
+	<string name="play_as_guest">손님으로 재생</string>
 
-	<string name="computerWhite">백색</string>
-	<string name="computerBlack">검은</string>
-	<string name="Human">인간</string>
+	<string name="white">백색</string>
+	<string name="black">검은</string>
+	<string name="human">인간</string>
 	<string name="guest">게스트</string>
-	<string name="Computer">컴퓨터</string>
-	<string name="Thinking">생각||사고</string>
-	<string name="menuSite">www.chess.com</string>
-	<string name="onlineNewGametitle">새 게임</string>
-	<string name="onlineChallenges">오픈 도전</string>
-	<string name="challengeFriend">친구 도전</string>
-	<string name="createNewChallenge">오픈 챌린지 만들기</string>
-	<string name="currentGame">현재 라이브 게임</string>
+	<string name="computer">컴퓨터</string>
+	<string name="thinking_">생각||사고</string>
+
+	<string name="open_challenges">오픈 도전</string>
+	<string name="challenge_friend">친구 도전</string>
+	<string name="create_open_challenge">오픈 챌린지 만들기</string>
+	<string name="current_live_game">현재 라이브 게임</string>
 	<string name="game_type">게임 유형</string>
-	<string name="classic">클래식 체스</string>
-	<string name="chess960">체스 960</string>
+	<string name="chess_classic">클래식 체스</string>
+	<string name="chess_960">체스 960</string>
 	<string name="friend">친구</string>
 	<string name="friends">친구</string>
-	<string name="initialTime">초기 시간</string>
+	<string name="initial_time">초기 시간</string>
 	<string name="bonusTime">보너스 시간</string>
 	<string name="rated_game">정격 게임</string>
 	<string name="i_play_as">나는으로 재생</string>
 	<string name="days_per_move">이동 당 일</string>
-	<string name="ChallengeCreate">도전 만들기</string>
+	<string name="create_challenge">도전 만들기</string>
 	<string name="on_off">켜기/끄기</string>
 	<string name="min_rating">최소 평가</string>
 	<string name="max_rating">맥스 평가</string>
 	<string name="email">이메일</string>
-	<string name="retype">재입력 비밀 번호</string>
+	<string name="retype_password">재입력 비밀 번호</string>
 	<string name="country">국가</string>
-	<string name="blue">파랑</string>
-	<string name="brown">갈색</string>
-	<string name="green">녹색</string>
-	<string name="grey">그레이</string>
-	<string name="marble">대리석</string>
-	<string name="red">빨강</string>
-	<string name="tan">~을 무두질하다</string>
-	<string name="woodlight">나무 빛</string>
-	<string name="wooddark">우드 다크</string>
-	<string name="alpha">알파</string>
-	<string name="book">~을 기입하다, ~을 예약하다</string>
-	<string name="cases">실으면됩니다</string>
-	<string name="classicP">기본</string>
-	<string name="club">클럽, 곤봉</string>
-	<string name="condal">Condal</string>
-	<string name="maya">마야</string>
-	<string name="modern">현대식</string>
-	<string name="vintage">포도주</string>
-	<string name="aim">나는 이동 후</string>
+	<string name="board_blue">파랑</string>
+	<string name="board_brown">갈색</string>
+	<string name="board_green">녹색</string>
+	<string name="board_grey">그레이</string>
+	<string name="board_marble">대리석</string>
+	<string name="board_red">빨강</string>
+	<string name="board_tan">~을 무두질하다</string>
+	<string name="board_woodlight">나무 빛</string>
+	<string name="board_wooddark">우드 다크</string>
+	<string name="piece_alpha">알파</string>
+	<string name="piece_book">~을 기입하다, ~을 예약하다</string>
+	<string name="piece_cases">실으면됩니다</string>
+	<string name="piece_classic">기본</string>
+	<string name="piece_club">클럽, 곤봉</string>
+	<string name="piece_condal">Condal</string>
+	<string name="piece_maya">마야</string>
+	<string name="piece_modern">현대식</string>
+	<string name="piece_vintage">포도주</string>
+	<string name="after_i_move">나는 이동 후</string>
 	<string name="notification">알림</string>
-	<string name="notificationE">알림 활성화</string>
-	<string name="ssb">버튼 제출보기</string>
-	<string name="enableSounds">소리를 사용</string>
+	<string name="enable_notifications">알림 활성화</string>
+	<string name="show_submit_button">버튼 제출보기</string>
+	<string name="enable_sounds">소리를 사용</string>
 	<string name="strength">힘</string>
-	<string name="interfaceP">인터페이스</string>
+	<string name="interface_caps">인터페이스</string>
 	<string name="board">게시판</string>
-	<string name="pieces">조각</string>
-	<string name="showcoords">좌표 표시</string>
-	<string name="movehighlights">하이라이트를 이동</string>
+
+	<string name="show_coordinates">좌표 표시</string>
+	<string name="move_highlights">하이라이트를 이동</string>
 	<string name="invite_a_friend">친구 초대</string>
-	<string name="contactUs">고객문의</string>
+	<string name="contact_us">고객문의</string>
 	<string name="logout">로그아웃</string>
-	<string name="vacationOn">휴가</string>
-	<string name="vacationOff">아니 휴가</string>
-	<string name="ngwhite">신규 게임 (흰색)</string>
-	<string name="ngblack">신규 게임 (블랙)</string>
-	<string name="emailgame">이메일 게임</string>
+	<string name="vacation_on">휴가</string>
+	<string name="vacation_off">아니 휴가</string>
+	<string name="new_game_white">신규 게임 (흰색)</string>
+	<string name="new_game_black">신규 게임 (블랙)</string>
+	<string name="email_game">이메일 게임</string>
 	<string name="load">저장된 게임을로드</string>
 	<!--<string name="backtogamelist">게임 목록으로</string>-->
 	<string name="messages">쪽지</string>
-	<string name="analysis">분석 게시판</string>
-	<string name="drawoffer">그리기 기능을 제공</string>
-	<string name="resignorabort">사직 (또는 중지)</string>
+	<string name="analysis_board">분석 게시판</string>
+	<string name="offer_draw">그리기 기능을 제공</string>
+	<string name="resign_or_abort">사직 (또는 중지)</string>
 	<string name="resign">사직하다</string>
 	<string name="abort">유산하다||(질병 따위)를 미연에 방지하다</string>
 	<string name="cancel">취소</string>
@@ -129,7 +128,7 @@
 	<string name="hint">힌트:</string>
 	<string name="prev">이전</string>
 	<string name="next">다음</string>
-	<string name="nextgame">다음 경기</string>
+	<string name="next_game">다음 경기</string>
 	<string name="chat">채팅</string>
 	<string name="skill">기술 수준</string>
 	<string name="category">범주</string>
@@ -137,53 +136,44 @@
 	<string name="play">경기</string>
 	<string name="videos">동영상</string>
 	<string name="congratulations"> 축하해요!</string>
-	<string name="onlinegamecreated">온라인 게임이 만들어!</string>
-	<string name="challengeSent">보낸 도전!</string>
-	<string name="creating">만드는 중 …</string>
-	<string name="gettingfriends">친구 목록을 얻는 …</string>
+	<string name="online_game_created">온라인 게임이 만들어!</string>
+	<string name="challenge_sent">보낸 도전!</string>
+
 	<string name="sorry">미안해요</string>
-	<string name="nofriends">당신은 아직 친구가 없습니다. 당신은 www.chess.com 통해 그들을 초대할 수 있습니다.</string>
-	<string name="nofriends_online">친구가 온라인이 아닙니다. 당신은 아직 그들을 초대하지 않은 경우 www.chess.com로 이동합니다.</string>
+	<string name="no_friends_invite">당신은 아직 친구가 없습니다. 당신은 www.chess.com 통해 그들을 초대할 수 있습니다.</string>
+	<string name="no_friends_online">친구가 온라인이 아닙니다. 당신은 아직 그들을 초대하지 않은 경우 www.chess.com로 이동합니다.</string>
 	<string name="invite">초대</string>
-	<string name="drawaccepted">수락 그리기!</string>
+	<string name="draw_accepted">수락 그리기!</string>
 	<string name="accept">수락</string>
-	<string name="challengeaccepted">수락함 도전!</string>
-	<string name="challengedeclined">도전 실패!</string>
+	<string name="challenge_accepted">수락함 도전!</string>
+	<string name="challenge_declined">도전 실패!</string>
 	<string name="decline">거절</string>
-	<string name="updatinggameslist">게임 목록을 업데이트 중 …</string>
-	<!--<string name="challengetitle">도전</string>-->
-	<string name="loadinggames">로드 게임 …</string>
-	<string name="drawoffered">제공 그리기</string>
-	<string name="gettingmessages">메시 …</string>
-	<string name="sendingmessage">메시지 보내는 중…</string>
+
+	<string name="draw_offered">제공 그리기</string>
+
 	<string name="ok">OK</string>
 	<string name="submit">전송</string>
 	<string name="login">로그인</string>
 	<string name="title">Title</string>
 	<string name="error">오류</string>
-	<string name="loading">로드중입니다…</string>
-	<string name="wrongcountry">당신의 국가를 선택해야합니다!</string>
-	<string name="wrongpassword">비밀 번호는 최소 6 자 이상이어야합니다!</string>
-	<string name="wrongusername">귀하의 사용자 이름은 적어도 3 자 이상이어야하고, 오직 문자, 숫자, 밑줄 및 대시를 포함해야합니다. 공백은 허용되지 않습니다.</string>
-	<string name="wrongemail">당신은 이메일로 멤버십을 확인하셔야합니다.</string>
-	<string name="wrongretype">잘못된 칠 비밀!</string>
-	<string name="signingin">로그인하는 중…</string>
+	<string name="loading_">로드중입니다…</string>
+	<string name="wrong_country">당신의 국가를 선택해야합니다!</string>
+	<string name="wrong_password">비밀 번호는 최소 6 자 이상이어야합니다!</string>
+	<string name="wrong_username">귀하의 사용자 이름은 적어도 3 자 이상이어야하고, 오직 문자, 숫자, 밑줄 및 대시를 포함해야합니다. 공백은 허용되지 않습니다.</string>
+	<string name="wrong_email">당신은 이메일로 멤버십을 확인하셔야합니다.</string>
+	<string name="wrong_retype_pass">잘못된 칠 비밀!</string>
+	<string name="signing_in_">로그인하는 중…</string>
 
-	<string name="showanswer">답변보기</string>
-	<string name="skipproblem">문제 건너뛰기</string>
-	<string name="sendinggameinfo">게임 정보를 보내는 중 …</string>
+	<string name="show_answer">답변보기</string>
+	<string name="skip_problem">문제 건너뛰기</string>
+	<string name="sending_game_info">게임 정보를 보내는 중 …</string>
 	<string name="check_field">필드를 확인합니다</string>
 	<string name="validateUsername">사용자 이름 3시 사이에 20 자 이상이어야하고, 오직 문자, 숫자, 밑줄 및 대시를 포함해야합니다. 공백은 허용되지 않습니다.</string>
 	<string name="validatePassword">비밀 번호는 6, 20 자 사이 여야합니다!</string>
-	<string name="black">검은</string>
-	<string name="white">백색</string>
+
 	<string name="hours">시간</string>
 	<string name="days">날들</string>
-	<string name="playeronline">플레이어 온라인!</string>
-	<string name="playeroffline">플레이어는 오프라인!</string>
-	<string name="mymove">내 이동!</string>
-	<string name="theirmove">그들의 이동!</string>
-	<string name="gamefinish">이 게임을 마침</string>
+
 	<string name="random">무작위</string>
 	<string name="won">원</string>
 	<string name="lost">잃어버린</string>
@@ -191,19 +181,19 @@
 	<string name="duration">기간:</string>
 	<string name="published">게시완료</string>
 	<string name="details">세부사항</string>
-	<string name="playvideo">비디오를 재생</string>
+	<string name="play_video">비디오를 재생</string>
 	<string name="accepted">수락함!</string>
 	<string name="upgrade">업그레이드</string>
-	<string name="preferencesUpgrade">내 계정 업그레 이드</string>
-	<string name="videoUpgrade">동영상에 대한 모든 액세스를 위해 업그레이 드하십시오!</string>
+	<string name="upgrade_my_account">내 계정 업그레 이드</string>
+	<string name="upgrade_to_full_videos">동영상에 대한 모든 액세스를 위해 업그레이 드하십시오!</string>
 	<string name="removeAds">업그레 이드 및 광고 제거!</string>
 	<string name="accept_draw_q">그리기를 수락 하시겠습니까?</string>
-	<string name="ready_for_first_tackics_q">당신은 첫 번째 전술 준비가 되셨습니까?</string>
+	<string name="ready_for_first_tactics_q">당신은 첫 번째 전술 준비가 되셨습니까?</string>
 
 	<string name="max_tactics_reached">오늘은 전술의 최대 개수에 충돌했습니다. 좀 더 전술을 할 수시겠습니까?</string>
 	<string name="yes">예</string>
 	<string name="no">아니오</string>
-	<string name="okay">OK</string>
+
 	<string name="ten_tactics_completed">10 전술 완료!</string>
 	<string name="offline_mode">오프라인 모드</string>
 	<string name="no_network_rating_not_changed">인터넷은 현재 사용할 수 없습니다. 따라서 귀하의 평가는 인터넷 연결 반품 때까지 문제를 완료한 후 변경되지 않습니다.</string>
@@ -216,9 +206,7 @@
 	<string name="browse">찾기</string>
 
 
-	<string name="bonus_time_left">보너스 시간이 남아 %1$s 시간 지출한 %2$s</string>
-
-	<string name="pieces_s">조각 :</string>
+	<string name="pieces_">조각 :</string>
 	<string name="home">홈</string>
 	<string name="live">살다</string>
 	<string name="online">온라인</string>
@@ -230,7 +218,7 @@
 	<string name="invite_text">난 그냥 내 안드로이드 장치에 Chess.com에서 체스를 가입. 여기에 무료 애플 리케이션 다운로드 : http://chess.com/android 또는 http://www.chess.com/register.html에 가입하실 수 있습니다. 그럼 날 찾아 - 내 이름은입니다 \</string>
 	<string name="live_game">게임을하다</string>
 	<string name="online_game">온라인 게임</string>
-	<string name="send_mail">메일 보내기 …</string>
+	<string name="send_mail_">메일 보내기 …</string>
 	<string name="tournaments">토너먼트</string>
 	<string name="stats">통계</string>
 	<string name="challenges">도전</string>
@@ -238,10 +226,10 @@
 	<string name="analysis_mode">분석 모드</string>
 	<string name="check">확인 완료.</string>
 	<string name="choose_a_piece">조각을 선택</string>
-	<string name="open_app_t_see_msg">응용 프로그램의 내부 메시지를 보려면 여기를 누르세요</string>
+	<string name="open_app_to_see_msg">응용 프로그램의 내부 메시지를 보려면 여기를 누르세요</string>
 
 	<!--SignOut-->
-	<string name="signout_confirm">당신은 라이브 바둑 서버에서 로그아웃하겠습니까?</string>
+	<string name="sign_out_confirm">당신은 라이브 바둑 서버에서 로그아웃하겠습니까?</string>
 	<string name="confirm">확인</string>
 	<string name="you_been_challenged">당신은 도전을받은 것!</string>
 
@@ -259,7 +247,7 @@
 	<string name="your_move">Chess.com - 그것은 네 차례야</string>
 	<string name="your_turn">당신 차례!</string>
 	<string name="login_failed">로그인 실패 :</string>
-	<string name="loggin_out">로그아웃</string>
+	<string name="login_out">로그아웃</string>
 	<string name="you_logged_out">당신은 로그아웃!</string>
 	<string name="too_short">너무 짧음</string>
 	<string name="can_not_be_empty">비워둘 수 없습니다</string>
@@ -267,7 +255,7 @@
 	<string name="no_chess_account_signup_please">당신은 더 Chess.com 계정이 없다, 제발 가입하십시오.</string>
 	<string name="pass_dont_match">비밀번호가 일치하지 않습니다.</string>
 	<string name="username_cannot_be_encoded">사용자 이름이 요청을 보내 인코딩 수 없습니다</string>
-	<string name="menu_refresh">~을 상쾌하게하다, ~을 새롭게하다</string>
+	<string name="refresh">~을 상쾌하게하다, ~을 새롭게하다</string>
 	<string name="version_check">버전 확인</string>
 	<string name="version_is_obsolete_update">클라이언트 버전은 쓸모입니다. 업데이 트하시기 바랍니다</string>
 
@@ -281,7 +269,7 @@
 	<string name="game_over">게임 종료</string>
 	<string name="draw_game">제공 그리기</string>
 	<string name="has_offered_draw">무승부를 제공했습니다</string>
-	<string name="reconnecting">다시 연결 중</string>
+	<string name="reconnecting_">다시 연결 중</string>
 	<string name="another_login_detected">다른 로그인이 감지되었습니다.</string>
 	<string name="loading_live_chess">라이브 체스로드</string>
 	<string name="game_draw_by_repetition">게임 반복하여 \n을 그려</string>
@@ -315,8 +303,6 @@
 	<string name="draw_declined">거절 그리기</string>
 	<string name="has_declined_draw">무승부를 거절했습니다</string>
 
-	<string name="menu_search">검색</string>
-	<string name="restoring_conntection_to_live">다시 연결 …</string>
 	<string name="application_was_killed">신청 복원, 살해되었을 때…</string>
 	<string name="no_network">어떤 네트워크도</string>
 	<string name="wireless_settings">무선 설정</string>

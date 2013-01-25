@@ -71,7 +71,7 @@
 				style="@style/Text.Button.Grey"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/singinPlayguest"
+				android:text="@string/play_as_guest"
 				android:layout_weight="1"
 
 				/>

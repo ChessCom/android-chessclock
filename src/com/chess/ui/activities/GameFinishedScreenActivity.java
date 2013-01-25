@@ -83,7 +83,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
-				getString(R.string.emailgame)};
+				getString(R.string.email_game)};
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener();
 
@@ -242,7 +242,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
         whitePlayerLabel.setText(getWhitePlayerName());
         blackPlayerLabel.setText(getBlackPlayerName());
 
-		boardView.setMovesLog(getBoardFace().getMoveListSAN());
+//		boardView.setMovesLog(getBoardFace().getMoveListSAN());
+		boardView.setMovesLog(getBoardFace().getNotationArray());
 	}
 
 	@Override

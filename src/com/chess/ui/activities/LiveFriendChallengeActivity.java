@@ -104,7 +104,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 			friendsSpinner.setEnabled(false);
 
 			popupItem.setPositiveBtnId(R.string.invite);
-			showPopupDialog(R.string.sorry, R.string.nofriends_online, NO_ONLINE_FRIENDS_TAG);
+			showPopupDialog(R.string.sorry, R.string.no_friends_online, NO_ONLINE_FRIENDS_TAG);
 		}else {
             if(friendsCnt > 1){
                 friendsTxt.setText(getString(R.string.friends) + StaticData.SYMBOL_SPACE + StaticData.SYMBOL_LEFT_PAR
@@ -220,7 +220,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 
 	@Override
 	protected void challengeTaskUpdated(Challenge challenge){
-		showSinglePopupDialog(R.string.congratulations, R.string.challengeSent);
+		showSinglePopupDialog(R.string.congratulations, R.string.challenge_sent);
 	}
 
 	@Override

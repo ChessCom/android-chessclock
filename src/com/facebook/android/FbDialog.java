@@ -186,7 +186,7 @@ public class FbDialog extends Dialog {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             Util.logd("Facebook-WebView", "Webview loading URL: " + url);
             super.onPageStarted(view, url, favicon);
-			popupProgressItem.setTitle(R.string.loading);
+			popupProgressItem.setTitle(R.string.loading_);
 			popupProgressDialogFragment.show(fragmentActivity.getSupportFragmentManager(),
 					PROGRESS_TAG);
         }

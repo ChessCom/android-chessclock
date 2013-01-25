@@ -1,10 +1,8 @@
 package com.chess.ui.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,15 +26,9 @@ import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.entity.new_api.MovesStatusItem;
 import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.*;
-import com.chess.backend.tasks.GetStringObjTask;
-import com.chess.backend.tasks.PostJsonDataTask;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.model.GameListCurrentItem;
 import com.chess.ui.views.drawables.BackgroundChessDrawable;
-import com.chess.utilities.AppUtils;
-import com.chess.utilities.ChessComApiParser;
 import com.facebook.android.*;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
@@ -340,7 +332,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		@Override
 		public void showProgress(boolean show) {
 			if (show){
-				showPopupHardProgressDialog(R.string.signingin);
+				showPopupHardProgressDialog(R.string.signing_in_);
 			} else {
 				if(isPaused)
 					return;
@@ -477,7 +469,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	public class SampleLogoutListener implements SessionEvents.LogoutListener {
 		@Override
 		public void onLogoutBegin() {
-			showToast(R.string.loggin_out);
+			showToast(R.string.login_out);
 		}
 
 		@Override

@@ -51,7 +51,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_weight="6"
-					android:text="@string/initialTime"
+					android:text="@string/initial_time"
 					/>
 
 				<com.chess.RoboAutoCompleteTextView
@@ -127,7 +127,7 @@
 				android:layout_height="wrap_content"
 				android:background="@drawable/button_orange_selector"
 				android:layout_marginTop="@dimen/margin_top_between_buttons"
-				android:text="@string/ChallengeCreate"
+				android:text="@string/create_challenge"
 				/>
 		</LinearLayout>
 	</LinearLayout>

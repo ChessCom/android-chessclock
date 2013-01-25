@@ -93,7 +93,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 
 				popupItem.setPositiveBtnId(R.string.invite);
 				popupItem.setNegativeBtnId(R.string.cancel);
-				showPopupDialog(R.string.sorry, R.string.nofriends, NO_INVITED_FRIENDS_TAG);
+				showPopupDialog(R.string.sorry, R.string.no_friends_invite, NO_INVITED_FRIENDS_TAG);
 			}
 		}
 	}
@@ -138,7 +138,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 
 		@Override
 		public void updateData(DailySeekItem returnedObj) {
-			showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
+			showSinglePopupDialog(R.string.congratulations, R.string.online_game_created);
 		}
 
 		@Override

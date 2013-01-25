@@ -480,7 +480,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		whitePlayerLabel.setText(getWhitePlayerName());
 		blackPlayerLabel.setText(getBlackPlayerName());
 
-		boardView.setMovesLog(getBoardFace().getMoveListSAN());
+//		boardView.setMovesLog(getBoardFace().getMoveListSAN());
+		boardView.setMovesLog(getBoardFace().getNotationArray());
 	}
 
 	@Override
@@ -693,16 +694,16 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			menuOptionsItems = new CharSequence[]{
 					getString(R.string.settings),
 					getString(R.string.messages),
-					getString(R.string.emailgame),
+					getString(R.string.email_game),
 					getString(R.string.reside),
 					getString(R.string.abort)};
 		} else {
 			menuOptionsItems = new CharSequence[]{
 					getString(R.string.settings),
 					getString(R.string.messages),
-					getString(R.string.emailgame),
+					getString(R.string.email_game),
 					getString(R.string.reside),
-					getString(R.string.drawoffer),
+					getString(R.string.offer_draw),
 					getString(R.string.resign)};
 		}
 
@@ -780,7 +781,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 					boardView.invalidate();
 					break;
 				case ECHESS_DRAW_OFFER:
-					showPopupDialog(R.string.drawoffer, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
+					showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
 					break;
 				case ECHESS_RESIGN_OR_ABORT:
 					showPopupDialog(R.string.abort_resign_game, R.string.are_you_sure_q, ABORT_GAME_TAG);
@@ -1065,7 +1066,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 			if (listenerCode == SEND_MOVE_UPDATE){
 				if (show) {
-					showPopupHardProgressDialog(R.string.sendinggameinfo);
+					showPopupHardProgressDialog(R.string.sending_game_info);
 				} else {
 					dismissProgressDialog();
 				}
@@ -1086,10 +1087,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 //					switchToNextGame(returnedObj);
 //					break;
 				case CREATE_CHALLENGE_UPDATE:
-					showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
+					showSinglePopupDialog(R.string.congratulations, R.string.online_game_created);
 					break;
 				case DRAW_OFFER_UPDATE:
-					showSinglePopupDialog(R.string.drawoffered, DRAW_OFFER_TAG);
+					showSinglePopupDialog(R.string.draw_offered, DRAW_OFFER_TAG);
 					break;
 				case ABORT_GAME_UPDATE:
 					onGameOver(getString(R.string.game_over), true);

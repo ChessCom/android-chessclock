@@ -1,17 +1,17 @@
 <resources>
 
 	<string name="connect_with_facebook">تماس با فیس بوک</string>
-	<string name="lccFailedUnavailable">سرور شطرنج زنده در حال حاضر در دسترس نیست.</string>
-	<string name="lccFailedUpgrading">ما در حال تلاش برای بهبود chess.com! در حال حاضر سایت در حال ارتقاء است. خواهد شد زندگی دوباره در هیچ زمان. لطفا برای ورود به سایت از مدت اندکی دوباره سعی کنید. با تشکر از شما</string>
+	<string name="live_chess_server_unavailable">سرور شطرنج زنده در حال حاضر در دسترس نیست.</string>
+	<string name="live_chess_server_upgrading">ما در حال تلاش برای بهبود chess.com! در حال حاضر سایت در حال ارتقاء است. خواهد شد زندگی دوباره در هیچ زمان. لطفا برای ورود به سایت از مدت اندکی دوباره سعی کنید. با تشکر از شما</string>
 	<string name="app_name">ChessCom</string>
-	<string name="signout">خروج از سیستم</string>
+	<string name="sign_out">خروج از سیستم</string>
 
 	<!--Dashboard labels-->
-	<string name="menuLive">بازی زندگی</string>
-	<string name="menuOnline">بازی آنلاین</string>
-	<string name="menuComp">بازی کامپیوتر</string>
-	<string name="menuTactics">ترینر تاکتیک</string>
-	<string name="menuVideo">درس های ویدیویی</string>
+	<string name="dashboard_live">بازی زندگی</string>
+	<string name="dashboard_online">بازی آنلاین</string>
+	<string name="dashboard_computer">بازی کامپیوتر</string>
+	<string name="dashboard_tactics">ترینر تاکتیک</string>
+	<string name="dashboard_video">درس های ویدیویی</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">پخش زنده</string>
@@ -43,81 +43,80 @@
 	<string name="password">گذرواژه</string>
 	<string name="log_in">{0}{/0}{1}{2}Sign in{/2}{/1}</string>
 	<string name="sing_up">ثبت نام</string>
-	<string name="complete_singupButton">کامل ثبت نام</string>
-	<string name="singinPlayguest">بازی به عنوان مهمان</string>
+	<string name="complete_sing_up">کامل ثبت نام</string>
+	<string name="play_as_guest">بازی به عنوان مهمان</string>
 
-	<string name="computerWhite">سفید</string>
-	<string name="computerBlack">سیاه</string>
-	<string name="Human">انسانی</string>
+	<string name="white">سفید</string>
+	<string name="black">سیاه</string>
+	<string name="human">انسانی</string>
 	<string name="guest">ميهمان</string>
-	<string name="Computer">کامپیوتر</string>
-	<string name="Thinking">اندیشیدن …</string>
-	<string name="menuSite">www.chess.com</string>
-	<string name="onlineNewGametitle">بازی های جدید</string>
-	<string name="onlineChallenges">چالش باز</string>
-	<string name="challengeFriend">به دوستان</string>
-	<string name="createNewChallenge">ایجاد چالش</string>
-	<string name="currentGame">کنونی بازی زندگی می کنند</string>
+	<string name="computer">کامپیوتر</string>
+	<string name="thinking_">اندیشیدن …</string>
+
+	<string name="open_challenges">چالش باز</string>
+	<string name="challenge_friend">به دوستان</string>
+	<string name="create_open_challenge">ایجاد چالش</string>
+	<string name="current_live_game">کنونی بازی زندگی می کنند</string>
 	<string name="game_type">نوع بازی</string>
-	<string name="classic">شطرنج کلاسیک</string>
-	<string name="chess960">شطرنج 960</string>
+	<string name="chess_classic">شطرنج کلاسیک</string>
+	<string name="chess_960">شطرنج 960</string>
 	<string name="friend">دوست؟</string>
 	<string name="friends">دوست؟</string>
-	<string name="initialTime">زمان اولیه</string>
+	<string name="initial_time">زمان اولیه</string>
 	<string name="bonusTime">زمان پاداش</string>
 	<string name="rated_game">دارای رتبه بازی</string>
 	<string name="i_play_as">من به عنوان بازی</string>
 	<string name="days_per_move">روز در هر حرکت</string>
-	<string name="ChallengeCreate">ایجاد چالش</string>
+	<string name="create_challenge">ایجاد چالش</string>
 	<string name="on_off">بر / خاموش</string>
 	<string name="min_rating">امتیاز حداقل</string>
 	<string name="max_rating">حداکثر امتیاز</string>
 	<string name="email">ایمیل</string>
-	<string name="retype">بازنویسی گذرواژه</string>
+	<string name="retype_password">بازنویسی گذرواژه</string>
 	<string name="country">کشور</string>
-	<string name="blue">آبی</string>
-	<string name="brown">قهوهای</string>
-	<string name="green">سبز</string>
-	<string name="grey">خاکستری</string>
-	<string name="marble">سنگ مرمر</string>
-	<string name="red">قرمز</string>
-	<string name="tan">قهوهای مایل به زرد</string>
-	<string name="woodlight">نور چوب</string>
-	<string name="wooddark">چوب</string>
-	<string name="alpha">آلفا</string>
-	<string name="book">کتاب</string>
-	<string name="cases">موارد</string>
-	<string name="classicP">کلاسیک</string>
-	<string name="club">باشگاه</string>
-	<string name="condal">Condal</string>
-	<string name="maya">مایا</string>
-	<string name="modern">مدرن</string>
-	<string name="vintage">محصول</string>
-	<string name="aim">پس از رو حرکت</string>
+	<string name="board_blue">آبی</string>
+	<string name="board_brown">قهوهای</string>
+	<string name="board_green">سبز</string>
+	<string name="board_grey">خاکستری</string>
+	<string name="board_marble">سنگ مرمر</string>
+	<string name="board_red">قرمز</string>
+	<string name="board_tan">قهوهای مایل به زرد</string>
+	<string name="board_woodlight">نور چوب</string>
+	<string name="board_wooddark">چوب</string>
+	<string name="piece_alpha">آلفا</string>
+	<string name="piece_book">کتاب</string>
+	<string name="piece_cases">موارد</string>
+	<string name="piece_classic">کلاسیک</string>
+	<string name="piece_club">باشگاه</string>
+	<string name="piece_condal">Condal</string>
+	<string name="piece_maya">مایا</string>
+	<string name="piece_modern">مدرن</string>
+	<string name="piece_vintage">محصول</string>
+	<string name="after_i_move">پس از رو حرکت</string>
 	<string name="notification">اخطار</string>
-	<string name="notificationE">فعال کردن آگاه سازی</string>
-	<string name="ssb">نمایش ارسال را فشار دهید</string>
-	<string name="enableSounds">فعالسازیصداها</string>
+	<string name="enable_notifications">فعال کردن آگاه سازی</string>
+	<string name="show_submit_button">نمایش ارسال را فشار دهید</string>
+	<string name="enable_sounds">فعالسازیصداها</string>
 	<string name="strength">قدرت است</string>
-	<string name="interfaceP">رابط (Interface)</string>
+	<string name="interface_caps">رابط (Interface)</string>
 	<string name="board">تخته</string>
-	<string name="pieces">قطعات</string>
-	<string name="showcoords">نمایش مختصات</string>
-	<string name="movehighlights">انتقال نکات برجسته</string>
+
+	<string name="show_coordinates">نمایش مختصات</string>
+	<string name="move_highlights">انتقال نکات برجسته</string>
 	<string name="invite_a_friend">دعوت از دوستان</string>
-	<string name="contactUs">تماس با ما</string>
+	<string name="contact_us">تماس با ما</string>
 	<string name="logout">بیرون رفتن</string>
-	<string name="vacationOn">در تعطیلات</string>
-	<string name="vacationOff">نه در تعطیلات</string>
-	<string name="ngwhite">بازی جدید (سفید)</string>
-	<string name="ngblack">بازی (سیاه و سفید)</string>
-	<string name="emailgame">بازی به ایمیل</string>
+	<string name="vacation_on">در تعطیلات</string>
+	<string name="vacation_off">نه در تعطیلات</string>
+	<string name="new_game_white">بازی جدید (سفید)</string>
+	<string name="new_game_black">بازی (سیاه و سفید)</string>
+	<string name="email_game">بازی به ایمیل</string>
 	<string name="load">بار بازی ذخیره شده</string>
 	<!--<string name="backtogamelist">بازگشت به فهرست بازی ها</string>-->
 	<string name="messages">پیام</string>
-	<string name="analysis">صفحه تجزیه و تحلیل</string>
-	<string name="drawoffer">ارائه قرعه کشی</string>
-	<string name="resignorabort">استعفا (یا ساقطکردن)</string>
+	<string name="analysis_board">صفحه تجزیه و تحلیل</string>
+	<string name="offer_draw">ارائه قرعه کشی</string>
+	<string name="resign_or_abort">استعفا (یا ساقطکردن)</string>
 	<string name="resign">استعفا</string>
 	<string name="abort">بی نتیجه ماندن</string>
 	<string name="cancel">لغو</string>
@@ -129,7 +128,7 @@
 	<string name="hint">تذکر</string>
 	<string name="prev">قبلی</string>
 	<string name="next">ویرایش</string>
-	<string name="nextgame">بازی بعدی</string>
+	<string name="next_game">بازی بعدی</string>
 	<string name="chat">گپ زدن</string>
 	<string name="skill">سطح مهارت</string>
 	<string name="category">دسته</string>
@@ -137,53 +136,44 @@
 	<string name="play">بازی</string>
 	<string name="videos">فیلم</string>
 	<string name="congratulations">تبریک می گیم</string>
-	<string name="onlinegamecreated">بازی آنلاین ایجاد شد!</string>
-	<string name="challengeSent">چالش فرستاده شده!</string>
-	<string name="creating">ایجاد شده همانند </string>
-	<string name="gettingfriends">گرفتن سوال …</string>
+	<string name="online_game_created">بازی آنلاین ایجاد شد!</string>
+	<string name="challenge_sent">چالش فرستاده شده!</string>
+
 	<string name="sorry">ببخشيد.</string>
-	<string name="nofriends">شما هیچ دوستی است. شما می توانید آنها را از طریق www.chess.com دعوت می کنند.</string>
-	<string name="nofriends_online">دوستان خود را آنلاین نیست. اگر شما آنها را دعوت نشده است، به www.chess.com بروید.</string>
+	<string name="no_friends_invite">شما هیچ دوستی است. شما می توانید آنها را از طریق www.chess.com دعوت می کنند.</string>
+	<string name="no_friends_online">دوستان خود را آنلاین نیست. اگر شما آنها را دعوت نشده است، به www.chess.com بروید.</string>
 	<string name="invite">دعوت از دوستان</string>
-	<string name="drawaccepted">رسم پذیرفته شده!</string>
+	<string name="draw_accepted">رسم پذیرفته شده!</string>
 	<string name="accept">قبول کن</string>
-	<string name="challengeaccepted">چالش پذیرفته شده!</string>
-	<string name="challengedeclined">چالش کاهش یافته است.</string>
+	<string name="challenge_accepted">چالش پذیرفته شده!</string>
+	<string name="challenge_declined">چالش کاهش یافته است.</string>
 	<string name="decline">رد کن</string>
-	<string name="updatinggameslist">به روز رسانی لیست بازی ها …</string>
-	<!--<string name="challengetitle">چالش</string>-->
-	<string name="loadinggames">بارگذاری بازی …</string>
-	<string name="drawoffered">رسم ارائه شده</string>
-	<string name="gettingmessages">دریافت پیام …</string>
-	<string name="sendingmessage">ارسال پیام …</string>
+
+	<string name="draw_offered">رسم ارائه شده</string>
+
 	<string name="ok">پذیرش</string>
 	<string name="submit">ارسال</string>
 	<string name="login">ورود</string>
 	<string name="title">عنوان</string>
 	<string name="error">خطا! به روز رسانی تنظيمات شکست خورد.\</string>
-	<string name="loading">what </string>
-	<string name="wrongcountry">شما باید کشور خود را انتخاب کنید!</string>
-	<string name="wrongpassword">رمز عبور شما باید حداقل 6 کاراکتر داشته باشد!</string>
-	<string name="wrongusername">نام کاربری شما باید حداقل 3 کاراکتر باشد و فقط شامل حروف، اعداد، زیرین خط و خط تیره است. فاصله مجاز نمی باشد.</string>
-	<string name="wrongemail">شما نیاز به تایید عضویت خود را به از طریق ایمیل.</string>
-	<string name="wrongretype">دوباره رمز عبور اشتباه تایپ شده!</string>
-	<string name="signingin">ورود به سیستم …</string>
+	<string name="loading_">what </string>
+	<string name="wrong_country">شما باید کشور خود را انتخاب کنید!</string>
+	<string name="wrong_password">رمز عبور شما باید حداقل 6 کاراکتر داشته باشد!</string>
+	<string name="wrong_username">نام کاربری شما باید حداقل 3 کاراکتر باشد و فقط شامل حروف، اعداد، زیرین خط و خط تیره است. فاصله مجاز نمی باشد.</string>
+	<string name="wrong_email">شما نیاز به تایید عضویت خود را به از طریق ایمیل.</string>
+	<string name="wrong_retype_pass">دوباره رمز عبور اشتباه تایپ شده!</string>
+	<string name="signing_in_">ورود به سیستم …</string>
 
-	<string name="showanswer">نمایش پاسخ</string>
-	<string name="skipproblem">پرش مشکلات</string>
-	<string name="sendinggameinfo">ارسال اطلاعات بازی …</string>
+	<string name="show_answer">نمایش پاسخ</string>
+	<string name="skip_problem">پرش مشکلات</string>
+	<string name="sending_game_info">ارسال اطلاعات بازی …</string>
 	<string name="check_field">میدان مقابلهای</string>
 	<string name="validateUsername">نام کاربری شما باید بین 3 تا 20 حرف طولانی باشد، و فقط شامل حروف، اعداد، زیرین خط و خط تیره است. فاصله مجاز نمی باشد.</string>
 	<string name="validatePassword">رمز عبور شما باید بین 6 و 20 حرف طولانی باشد!</string>
-	<string name="black">سیاه</string>
-	<string name="white">سفید</string>
+
 	<string name="hours">ساعت</string>
 	<string name="days">روزها </string>
-	<string name="playeronline">پخش آنلاین!</string>
-	<string name="playeroffline">پخش کاربر</string>
-	<string name="mymove">حرکت من!</string>
-	<string name="theirmove">حرکت خود!</string>
-	<string name="gamefinish">پایان این بازی</string>
+
 	<string name="random">تصادفی</string>
 	<string name="won">برنده</string>
 	<string name="lost">از دست رفته</string>
@@ -191,20 +181,20 @@
 	<string name="duration">مدت</string>
 	<string name="published">منتشر شده</string>
 	<string name="details">جزئیات</string>
-	<string name="playvideo">پخش فیلم</string>
+	<string name="play_video">پخش فیلم</string>
 	<string name="accepted">قبول شد</string>
 	<string name="upgrade">به روز رسانی</string>
-	<string name="preferencesUpgrade">ارتقاء حساب من</string>
-	<string name="videoUpgrade">ارتقا برای دسترسی کامل به فیلم!</string>
+	<string name="upgrade_my_account">ارتقاء حساب من</string>
+	<string name="upgrade_to_full_videos">ارتقا برای دسترسی کامل به فیلم!</string>
 	<string name="removeAds">ارتقا و ثبت نام!</string>
 	<string name="accept_draw_q">قبول رسم؟</string>
-	<string name="ready_for_first_tackics_q">آیا شما آماده برای تاکتیک اول شما؟</string>
+	<string name="ready_for_first_tactics_q">آیا شما آماده برای تاکتیک اول شما؟</string>
 
 	<string name="max_tactics_reached">حداکثر تعداد خود را از تاکتیک های شما برای امروز رسید. آیا شما دوست دارید که قادر به انجام تاکتیک های بیشتر؟
 	</string>
 	<string name="yes">آره.\</string>
 	<string name="no">نه.\</string>
-	<string name="okay">پذیرش</string>
+
 	<string name="ten_tactics_completed">10 تاکتیک های تکمیل شده!</string>
 	<string name="offline_mode">در حالت آفلاین</string>
 	<string name="no_network_rating_not_changed">دسترسی به اینترنت در حال حاضر در دسترس نمی باشد. به عنوان یک نتیجه، امتیاز شما تغییر نخواهد کرد پس از اتمام مشکلات تا زمانی که اتصال اینترنت شما را برمی گرداند.
@@ -218,9 +208,7 @@
 	<string name="browse">انتخاب</string>
 
 
-	<string name="bonus_time_left">زمان پاداش چپ %1$s مدت زمان %2$s</string>
-
-	<string name="pieces_s">قطعات:</string>
+	<string name="pieces_">قطعات:</string>
 	<string name="home">صفحه اصلی</string>
 	<string name="live">زندگی کن</string>
 	<string name="online">آنلاین</string>
@@ -233,7 +221,7 @@
 	</string>
 	<string name="live_game">زندگی بازی</string>
 	<string name="online_game">بازی آنلاین</string>
-	<string name="send_mail">ارسال ایمیل\</string>
+	<string name="send_mail_">ارسال ایمیل\</string>
 	<string name="tournaments">مسابقات</string>
 	<string name="stats">آمار</string>
 	<string name="challenges">چالش ها</string>
@@ -241,10 +229,10 @@
 	<string name="analysis_mode">حالت تجزیه و تحلیل</string>
 	<string name="check"> بررسی مورد استفاده قرار گیرند:</string>
 	<string name="choose_a_piece">یک قطعه را انتخاب کنید</string>
-	<string name="open_app_t_see_msg">اینجا ضربه بزنید این پیام را به داخل برنامه را ببینید</string>
+	<string name="open_app_to_see_msg">اینجا ضربه بزنید این پیام را به داخل برنامه را ببینید</string>
 
 	<!--SignOut-->
-	<string name="signout_confirm">آیا شما مطمئن هستید که می خواهید به ثبت نام در سایت از سرور شطرنج زنده؟</string>
+	<string name="sign_out_confirm">آیا شما مطمئن هستید که می خواهید به ثبت نام در سایت از سرور شطرنج زنده؟</string>
 	<string name="confirm">تکرار</string>
 	<string name="you_been_challenged">تو به چالش گرفته شده است!</string>
 
@@ -262,7 +250,7 @@
 	<string name="your_move">Chess.com - این حرکت خود را</string>
 	<string name="your_turn">نوبت شماست!</string>
 	<string name="login_failed">ورود به سیستم شکست خورد:</string>
-	<string name="loggin_out">خروج از سیستم …</string>
+	<string name="login_out">خروج از سیستم …</string>
 	<string name="you_logged_out">شما وارد شده اند!</string>
 	<string name="too_short">خیلی کوتاه</string>
 	<string name="can_not_be_empty">نمی تواند خالی باشد</string>
@@ -270,7 +258,7 @@
 	<string name="no_chess_account_signup_please">شما حساب Chess.com، ثبت نام در سایت، لطفا.</string>
 	<string name="pass_dont_match">گذرواژه‌ها یکسان نیستند</string>
 	<string name="username_cannot_be_encoded">نام کاربری خود را نمی تواند برای ارسال درخواست کد گذاری</string>
-	<string name="menu_refresh">تازه کردن</string>
+	<string name="refresh">تازه کردن</string>
 	<string name="version_check">چک نسخه</string>
 	<string name="version_is_obsolete_update">نسخه سرویس گیرنده است منسوخ باشد. لطفا به روز رسانی</string>
 
@@ -284,7 +272,7 @@
 	<string name="game_over">بازیتمامشد</string>
 	<string name="draw_game">قرعه کشی را</string>
 	<string name="has_offered_draw">قرعه کشی ارائه کرده است</string>
-	<string name="reconnecting">اتصال مجدد …</string>
+	<string name="reconnecting_">اتصال مجدد …</string>
 	<string name="another_login_detected">یکی دیگر از ورود به سیستم شناسایی شده است.</string>
 	<string name="loading_live_chess">در حال بارگذاری شطرنج زنده</string>
 	<string name="game_draw_by_repetition">بازی کنید \n با تکرار کشیده شده</string>
@@ -318,8 +306,6 @@
 	<string name="draw_declined">قرعه کشی کاهش یافته است</string>
 	<string name="has_declined_draw">قرعه کشی را رد کرده است</string>
 
-	<string name="menu_search">جستجو</string>
-	<string name="restoring_conntection_to_live">اتصال مجدد …</string>
 	<string name="application_was_killed">برنامه، کشته شد، بازگرداندن …</string>
 	<string name="no_network">هیچ شبکه</string>
 	<string name="wireless_settings">تنظیمات بی سیم</string>

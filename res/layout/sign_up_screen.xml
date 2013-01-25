@@ -40,7 +40,7 @@
 			android:id="@+id/RegRetype"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/retype"
+			android:hint="@string/retype_password"
 			android:inputType="textImeMultiLine|textPassword"/>
 
 		<LinearLayout
@@ -71,7 +71,7 @@
 			android:id="@+id/RegSubmitBtn"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/complete_singupButton"/>
+			android:text="@string/complete_sing_up"/>
 
 		<com.facebook.android.LoginButton
 			android:id="@+id/fb_connect"

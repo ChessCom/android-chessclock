@@ -23,7 +23,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:text="@string/initialTime"
+				android:text="@string/initial_time"
 				android:layout_weight="6"
 				/>
 
@@ -116,7 +116,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="@dimen/margin_top_between_buttons"
-			android:text="@string/ChallengeCreate"/>
+			android:text="@string/create_challenge"/>
 	</LinearLayout>
 
 </ScrollView>

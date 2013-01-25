@@ -1,17 +1,17 @@
 <resources>
 
 	<string name="connect_with_facebook">Verbind Met Facebook</string>
-	<string name="lccFailedUnavailable">Live-Schaken-server is momenteel niet beschikbaar.</string>
-	<string name="lccFailedUpgrading">We proberen chess.com te verbeteren! Momenteel is de site wordt bijgewerkt. Het wordt opnieuw leven in een mum van tijd. Probeer opnieuw kort in te loggen. Bedankt!</string>
+	<string name="live_chess_server_unavailable">Live-Schaken-server is momenteel niet beschikbaar.</string>
+	<string name="live_chess_server_upgrading">We proberen chess.com te verbeteren! Momenteel is de site wordt bijgewerkt. Het wordt opnieuw leven in een mum van tijd. Probeer opnieuw kort in te loggen. Bedankt!</string>
 	<string name="app_name">Chesscom</string>
-	<string name="signout">Afmelden</string>
+	<string name="sign_out">Afmelden</string>
 
 	<!--Dashboard labels-->
-	<string name="menuLive">Live spelen</string>
-	<string name="menuOnline">Speel Online</string>
-	<string name="menuComp">Speel Computer</string>
-	<string name="menuTactics">Tactics Trainer</string>
-	<string name="menuVideo">Video Lessen</string>
+	<string name="dashboard_live">Live spelen</string>
+	<string name="dashboard_online">Speel Online</string>
+	<string name="dashboard_computer">Speel Computer</string>
+	<string name="dashboard_tactics">Tactics Trainer</string>
+	<string name="dashboard_video">Video Lessen</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">LIVE SPELEN</string>
@@ -43,81 +43,80 @@
 	<string name="password">Wachtwoord</string>
 	<string name="log_in">Inloggen</string>
 	<string name="sing_up">Aanmelden</string>
-	<string name="complete_singupButton">Compleet Inschrijven</string>
-	<string name="singinPlayguest">Speel als Gast</string>
+	<string name="complete_sing_up">Compleet Inschrijven</string>
+	<string name="play_as_guest">Speel als Gast</string>
 
-	<string name="computerWhite">Wit</string>
-	<string name="computerBlack">Zwart</string>
-	<string name="Human">Menselijk?</string>
+	<string name="white">Wit</string>
+	<string name="black">Zwart</string>
+	<string name="human">Menselijk?</string>
 	<string name="guest">Gast</string>
-	<string name="Computer">Computer</string>
-	<string name="Thinking">Denken …</string>
-	<string name="menuSite">www.chess.com</string>
-	<string name="onlineNewGametitle">Nieuw spel</string>
-	<string name="onlineChallenges">Open Uitdagingen</string>
-	<string name="challengeFriend">Daag een vriend uit</string>
-	<string name="createNewChallenge">Maak Open Challenge</string>
-	<string name="currentGame">Actueel Live-Game</string>
+	<string name="computer">Computer</string>
+	<string name="thinking_">Denken …</string>
+
+	<string name="open_challenges">Open Uitdagingen</string>
+	<string name="challenge_friend">Daag een vriend uit</string>
+	<string name="create_open_challenge">Maak Open Challenge</string>
+	<string name="current_live_game">Actueel Live-Game</string>
 	<string name="game_type">Game Type</string>
-	<string name="classic">Classic Chess</string>
-	<string name="chess960">Chess 960</string>
+	<string name="chess_classic">Classic Chess</string>
+	<string name="chess_960">Chess 960</string>
 	<string name="friend">Vriend</string>
 	<string name="friends">Vrienden</string>
-	<string name="initialTime">Eerste tijd</string>
+	<string name="initial_time">Eerste tijd</string>
 	<string name="bonusTime">Bonus Time</string>
 	<string name="rated_game">Gewaardeerd Game</string>
 	<string name="i_play_as">Ik Speel als</string>
 	<string name="days_per_move">Dagen Per Move</string>
-	<string name="ChallengeCreate">Maak Challenge</string>
+	<string name="create_challenge">Maak Challenge</string>
 	<string name="on_off">Aan/Uit</string>
 	<string name="min_rating">Min Waardering</string>
 	<string name="max_rating">Max Waardering</string>
 	<string name="email">E-mail</string>
-	<string name="retype">Re-type Password</string>
+	<string name="retype_password">Re-type Password</string>
 	<string name="country">Land</string>
-	<string name="blue">Blauw</string>
-	<string name="brown">Bruin</string>
-	<string name="green">Groen</string>
-	<string name="grey">Grijs</string>
-	<string name="marble">Marmer</string>
-	<string name="red">Rood</string>
-	<string name="tan">Geelbruin</string>
-	<string name="woodlight">Wood licht</string>
-	<string name="wooddark">Hout Dark</string>
-	<string name="alpha">Alpha</string>
-	<string name="book">Boeken</string>
-	<string name="cases">Kwesties</string>
-	<string name="classicP">Klassiek</string>
-	<string name="club">Clubs</string>
-	<string name="condal">Condal</string>
-	<string name="maya">Maya</string>
-	<string name="modern">Modern</string>
-	<string name="vintage">Wijnoogst</string>
-	<string name="aim">Nadat ik Verplaats</string>
+	<string name="board_blue">Blauw</string>
+	<string name="board_brown">Bruin</string>
+	<string name="board_green">Groen</string>
+	<string name="board_grey">Grijs</string>
+	<string name="board_marble">Marmer</string>
+	<string name="board_red">Rood</string>
+	<string name="board_tan">Geelbruin</string>
+	<string name="board_woodlight">Wood licht</string>
+	<string name="board_wooddark">Hout Dark</string>
+	<string name="piece_alpha">Alpha</string>
+	<string name="piece_book">Boeken</string>
+	<string name="piece_cases">Kwesties</string>
+	<string name="piece_classic">Klassiek</string>
+	<string name="piece_club">Clubs</string>
+	<string name="piece_condal">Condal</string>
+	<string name="piece_maya">Maya</string>
+	<string name="piece_modern">Modern</string>
+	<string name="piece_vintage">Wijnoogst</string>
+	<string name="after_i_move">Nadat ik Verplaats</string>
 	<string name="notification">Melding</string>
-	<string name="notificationE">Meldingen inschakelen</string>
-	<string name="ssb">Laat de knop Verzenden</string>
-	<string name="enableSounds">Het inschakelen van geluiden</string>
+	<string name="enable_notifications">Meldingen inschakelen</string>
+	<string name="show_submit_button">Laat de knop Verzenden</string>
+	<string name="enable_sounds">Het inschakelen van geluiden</string>
 	<string name="strength">Sterkte</string>
-	<string name="interfaceP">Interface</string>
+	<string name="interface_caps">Interface</string>
 	<string name="board">Boord</string>
-	<string name="pieces">Stuks</string>
-	<string name="showcoords">Coördinaten weergeven</string>
-	<string name="movehighlights">Verplaats Hoogtepunten</string>
+
+	<string name="show_coordinates">Coördinaten weergeven</string>
+	<string name="move_highlights">Verplaats Hoogtepunten</string>
 	<string name="invite_a_friend">Een vriend(in) uitnodigen</string>
-	<string name="contactUs">Contacteer ons</string>
+	<string name="contact_us">Contacteer ons</string>
 	<string name="logout">Afmelden</string>
-	<string name="vacationOn">Op Vakantie</string>
-	<string name="vacationOff">Niet op vakantie</string>
-	<string name="ngwhite">New Game (wit)</string>
-	<string name="ngblack">New Game (zwart)</string>
-	<string name="emailgame">E-mail Game</string>
+	<string name="vacation_on">Op Vakantie</string>
+	<string name="vacation_off">Niet op vakantie</string>
+	<string name="new_game_white">New Game (wit)</string>
+	<string name="new_game_black">New Game (zwart)</string>
+	<string name="email_game">E-mail Game</string>
 	<string name="load">Laad saved game</string>
 	<!--<string name="backtogamelist">Maak een back-Om Game List</string>-->
 	<string name="messages">Berichten</string>
-	<string name="analysis">Analyse van Bestuur</string>
-	<string name="drawoffer">Remise aanbieden</string>
-	<string name="resignorabort">Ontslag nemen (of afbreken)</string>
+	<string name="analysis_board">Analyse van Bestuur</string>
+	<string name="offer_draw">Remise aanbieden</string>
+	<string name="resign_or_abort">Ontslag nemen (of afbreken)</string>
 	<string name="resign">Aftreden</string>
 	<string name="abort">Afbreken</string>
 	<string name="cancel">Annuleren</string>
@@ -129,7 +128,7 @@
 	<string name="hint">Zinspelen</string>
 	<string name="prev">Vorige</string>
 	<string name="next">Volgende</string>
-	<string name="nextgame">Volgende wedstrijd</string>
+	<string name="next_game">Volgende wedstrijd</string>
 	<string name="chat">Chatten</string>
 	<string name="skill">Skill Level</string>
 	<string name="category">Categorie</string>
@@ -137,53 +136,44 @@
 	<string name="play">Afspelen</string>
 	<string name="videos">Video\'s</string>
 	<string name="congratulations">Gefeliciteerd! </string>
-	<string name="onlinegamecreated">Online spel gemaakt!</string>
-	<string name="challengeSent">Daag Verzonden!</string>
-	<string name="creating">Het creëren van …</string>
-	<string name="gettingfriends">Getting vriendenlijst …</string>
+	<string name="online_game_created">Online spel gemaakt!</string>
+	<string name="challenge_sent">Daag Verzonden!</string>
+
 	<string name="sorry">Sorry.</string>
-	<string name="nofriends">Je hebt nog geen vrienden. U kunt ze uitnodigen via www.chess.com.</string>
-	<string name="nofriends_online">Je vrienden zijn niet online. Als u nog niet nodig hen uit, ga naar www.chess.com.</string>
+	<string name="no_friends_invite">Je hebt nog geen vrienden. U kunt ze uitnodigen via www.chess.com.</string>
+	<string name="no_friends_online">Je vrienden zijn niet online. Als u nog niet nodig hen uit, ga naar www.chess.com.</string>
 	<string name="invite">Nodigen</string>
-	<string name="drawaccepted">Teken geaccepteerd!</string>
+	<string name="draw_accepted">Teken geaccepteerd!</string>
 	<string name="accept">Akkoord</string>
-	<string name="challengeaccepted">Daag geaccepteerd!</string>
-	<string name="challengedeclined">Challenge Afgewezen!</string>
+	<string name="challenge_accepted">Daag geaccepteerd!</string>
+	<string name="challenge_declined">Challenge Afgewezen!</string>
 	<string name="decline">Afwijzen</string>
-	<string name="updatinggameslist">Updaten van games lijst …</string>
-	<!--<string name="challengetitle">Uitdaging</string>-->
-	<string name="loadinggames">Spel Laden ..</string>
-	<string name="drawoffered">Teken Aangeboden</string>
-	<string name="gettingmessages">Berichten ontvangen …</string>
-	<string name="sendingmessage">Bericht verzenden…</string>
+
+	<string name="draw_offered">Teken Aangeboden</string>
+
 	<string name="ok">OK</string>
 	<string name="submit">Verzenden</string>
 	<string name="login">Inloggen</string>
 	<string name="title">Titel</string>
 	<string name="error">Fout</string>
-	<string name="loading">Wordt geladen…</string>
-	<string name="wrongcountry">U moet uw land!</string>
-	<string name="wrongpassword">Uw wachtwoord moet minstens 6 tekens lang zijn!</string>
-	<string name="wrongusername">Uw gebruikersnaam moet minstens 3 tekens lang zijn en alleen letters, cijfers, onderstrepingstekens en streepjes. Spaties zijn niet toegestaan.</string>
-	<string name="wrongemail">U moet uw lidmaatschap te bevestigen per e-mail.</string>
-	<string name="wrongretype">Verkeerd overgetypt wachtwoord!</string>
-	<string name="signingin">Aanmelden…</string>
+	<string name="loading_">Wordt geladen…</string>
+	<string name="wrong_country">U moet uw land!</string>
+	<string name="wrong_password">Uw wachtwoord moet minstens 6 tekens lang zijn!</string>
+	<string name="wrong_username">Uw gebruikersnaam moet minstens 3 tekens lang zijn en alleen letters, cijfers, onderstrepingstekens en streepjes. Spaties zijn niet toegestaan.</string>
+	<string name="wrong_email">U moet uw lidmaatschap te bevestigen per e-mail.</string>
+	<string name="wrong_retype_pass">Verkeerd overgetypt wachtwoord!</string>
+	<string name="signing_in_">Aanmelden…</string>
 
-	<string name="showanswer">Toon antwoord</string>
-	<string name="skipproblem">Ga Probleem</string>
-	<string name="sendinggameinfo">Het verzenden van game info …</string>
+	<string name="show_answer">Toon antwoord</string>
+	<string name="skip_problem">Ga Probleem</string>
+	<string name="sending_game_info">Het verzenden van game info …</string>
 	<string name="check_field">Controleer Veld</string>
 	<string name="validateUsername">Uw gebruikersnaam moet tussen 3 en 20 tekens lang zijn en alleen letters, cijfers, onderstrepingstekens en streepjes. Spaties zijn niet toegestaan.</string>
 	<string name="validatePassword">Uw wachtwoord moet tussen de 6 en 20 karakters lang zijn!</string>
-	<string name="black">Zwart</string>
-	<string name="white">Wit</string>
+
 	<string name="hours">uren</string>
 	<string name="days">dagen</string>
-	<string name="playeronline">Player Online!</string>
-	<string name="playeroffline">Speler Offline!</string>
-	<string name="mymove">My Move!</string>
-	<string name="theirmove">Hun Move!</string>
-	<string name="gamefinish">Finish dit spel</string>
+
 	<string name="random">Willekeurig</string>
 	<string name="won">gewonnen</string>
 	<string name="lost">verloren</string>
@@ -191,20 +181,20 @@
 	<string name="duration">Duur</string>
 	<string name="published">Gepubliceerd</string>
 	<string name="details">Details</string>
-	<string name="playvideo">Speel video</string>
+	<string name="play_video">Speel video</string>
 	<string name="accepted">Geaccepteerd:</string>
 	<string name="upgrade">Upgrade</string>
-	<string name="preferencesUpgrade">Mijn account upgraden</string>
-	<string name="videoUpgrade">Upgrade voor volledige toegang tot video\'s!</string>
+	<string name="upgrade_my_account">Mijn account upgraden</string>
+	<string name="upgrade_to_full_videos">Upgrade voor volledige toegang tot video\'s!</string>
 	<string name="removeAds">Upgrade En Verwijder advertenties!</string>
 	<string name="accept_draw_q">Accepteer trekken?</string>
-	<string name="ready_for_first_tackics_q">Bent u klaar voor uw eerste tactiek?</string>
+	<string name="ready_for_first_tactics_q">Bent u klaar voor uw eerste tactiek?</string>
 
 	<string name="max_tactics_reached">Jullie hebben het maximale aantal van de tactiek voor vandaag. Wilt u in staat om meer tactieken te doen?
 	</string>
 	<string name="yes">Ja</string>
 	<string name="no">Nee</string>
-	<string name="okay">OK</string>
+
 	<string name="ten_tactics_completed">10 tactieken voltooid!</string>
 	<string name="offline_mode">Offline-modus</string>
 	<string name="no_network_rating_not_changed">Toegang tot internet is momenteel niet beschikbaar. Als gevolg hiervan, zal je rating niet veranderen na het voltooien van problemen tot aan uw internetverbinding rendement.
@@ -218,9 +208,7 @@
 	<string name="browse">Bladeren</string>
 
 
-	<string name="bonus_time_left">Bonus Resterende tijd %1$s uren en %2$s</string>
-
-	<string name="pieces_s">Stuks</string>
+	<string name="pieces_">Stuks</string>
 	<string name="home">Huizen</string>
 	<string name="live">Leven</string>
 	<string name="online">on line</string>
@@ -233,7 +221,7 @@
 	</string>
 	<string name="live_game">Live wedstrijd</string>
 	<string name="online_game">Online Game</string>
-	<string name="send_mail">Stuur mail …</string>
+	<string name="send_mail_">Stuur mail …</string>
 	<string name="tournaments">Toernooien</string>
 	<string name="stats">Statistieken</string>
 	<string name="challenges">Uitdagingen</string>
@@ -241,10 +229,10 @@
 	<string name="analysis_mode">Analyse-modus</string>
 	<string name="check">Vinkje</string>
 	<string name="choose_a_piece">Kies een stuk</string>
-	<string name="open_app_t_see_msg">Tik hier om het bericht te zien binnenkant van app</string>
+	<string name="open_app_to_see_msg">Tik hier om het bericht te zien binnenkant van app</string>
 
 	<!--SignOut-->
-	<string name="signout_confirm">Weet je zeker dat je wilt afmelden van Live Chess server?</string>
+	<string name="sign_out_confirm">Weet je zeker dat je wilt afmelden van Live Chess server?</string>
 	<string name="confirm">Bevestigen</string>
 	<string name="you_been_challenged">Je hebt uitgedaagd!</string>
 
@@ -262,7 +250,7 @@
 	<string name="your_move">Chess.com - Het is je moves</string>
 	<string name="your_turn">Your Turn!</string>
 	<string name="login_failed">Login mislukt:</string>
-	<string name="loggin_out">Log uit</string>
+	<string name="login_out">Log uit</string>
 	<string name="you_logged_out">U bent uitgelogd!</string>
 	<string name="too_short">Te kort</string>
 	<string name="can_not_be_empty">Kan niet leeg zijn</string>
@@ -270,7 +258,7 @@
 	<string name="no_chess_account_signup_please">Je hebt geen Chess.com account, aanmelden, alsjeblieft.</string>
 	<string name="pass_dont_match">wachtwoord komen niet overeen</string>
 	<string name="username_cannot_be_encoded">Uw gebruikersnaam kan niet worden gecodeerd op het verzoek te sturen</string>
-	<string name="menu_refresh">vernieuwen</string>
+	<string name="refresh">vernieuwen</string>
 	<string name="version_check">Versie controle</string>
 	<string name="version_is_obsolete_update">De client versie is verouderd. Werk</string>
 
@@ -284,7 +272,7 @@
 	<string name="game_over">SPEL UIT</string>
 	<string name="draw_game">Remise aan te bieden</string>
 	<string name="has_offered_draw">heeft aangeboden een gelijkspel</string>
-	<string name="reconnecting">Verbinding wordt opnieuw gemaakt</string>
+	<string name="reconnecting_">Verbinding wordt opnieuw gemaakt</string>
 	<string name="another_login_detected">Een andere login is gedetecteerd.</string>
 	<string name="loading_live_chess">Laden live Schaken</string>
 	<string name="game_draw_by_repetition">Game getrokken \n door herhaling</string>
@@ -318,8 +306,6 @@
 	<string name="draw_declined">DRAW GEWEIGERD</string>
 	<string name="has_declined_draw">is gedaald een gelijkspel</string>
 
-	<string name="menu_search">Zoeken</string>
-	<string name="restoring_conntection_to_live">Opnieuw verbinding maken …</string>
 	<string name="application_was_killed">Toepassing werd gedood, het herstellen van…</string>
 	<string name="no_network">Geen Netwerk</string>
 	<string name="wireless_settings">Draadloze Instellingen</string>

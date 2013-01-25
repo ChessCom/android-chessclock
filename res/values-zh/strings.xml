@@ -1,17 +1,17 @@
 <resources>
 
 	<string name="connect_with_facebook">随着Facebook连接</string>
-	<string name="lccFailedUnavailable">活棋服务器目前无法使用。</string>
-	<string name="lccFailedUpgrading">我们正在努力改善chess.com！目前网站正在升级。将生活在没有时间再次。请尝试再次登陆不久。谢谢！</string>
+	<string name="live_chess_server_unavailable">活棋服务器目前无法使用。</string>
+	<string name="live_chess_server_upgrading">我们正在努力改善chess.com！目前网站正在升级。将生活在没有时间再次。请尝试再次登陆不久。谢谢！</string>
 	<string name="app_name">ChessCom</string>
-	<string name="signout">签出</string>
+	<string name="sign_out">签出</string>
 
 	<!--Dashboard labels-->
-	<string name="menuLive">真人</string>
-	<string name="menuOnline">在线游戏</string>
-	<string name="menuComp">玩电脑</string>
-	<string name="menuTactics">战术教练</string>
-	<string name="menuVideo">视频课程</string>
+	<string name="dashboard_live">真人</string>
+	<string name="dashboard_online">在线游戏</string>
+	<string name="dashboard_computer">玩电脑</string>
+	<string name="dashboard_tactics">战术教练</string>
+	<string name="dashboard_video">视频课程</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">真人</string>
@@ -43,81 +43,80 @@
 	<string name="password">密码:</string>
 	<string name="log_in">登录</string>
 	<string name="sing_up">注册</string>
-	<string name="complete_singupButton">完成注册</string>
-	<string name="singinPlayguest">为来宾播放</string>
+	<string name="complete_sing_up">完成注册</string>
+	<string name="play_as_guest">为来宾播放</string>
 
-	<string name="computerWhite">白色</string>
-	<string name="computerBlack">黑色</string>
-	<string name="Human">人</string>
+	<string name="white">白色</string>
+	<string name="black">黑色</string>
+	<string name="human">人</string>
 	<string name="guest">客人</string>
-	<string name="Computer">计算机</string>
-	<string name="Thinking">思考......</string>
-	<string name="menuSite">www.chess.com</string>
-	<string name="onlineNewGametitle">新的游戏</string>
-	<string name="onlineChallenges">开放的挑战</string>
-	<string name="challengeFriend">挑战朋友</string>
-	<string name="createNewChallenge">创建开放的挑战</string>
-	<string name="currentGame">目前Live游戏</string>
+	<string name="computer">计算机</string>
+	<string name="thinking_">思考......</string>
+
+	<string name="open_challenges">开放的挑战</string>
+	<string name="challenge_friend">挑战朋友</string>
+	<string name="create_open_challenge">创建开放的挑战</string>
+	<string name="current_live_game">目前Live游戏</string>
 	<string name="game_type">游戏类型</string>
-	<string name="classic">经典国际象棋</string>
-	<string name="chess960">国际象棋960</string>
+	<string name="chess_classic">经典国际象棋</string>
+	<string name="chess_960">国际象棋960</string>
 	<string name="friend">友好</string>
 	<string name="friends">朋友</string>
-	<string name="initialTime">起始时间</string>
+	<string name="initial_time">起始时间</string>
 	<string name="bonusTime">奖励时间</string>
 	<string name="rated_game">评分游戏</string>
 	<string name="i_play_as">我也踢</string>
 	<string name="days_per_move">每次移动的日子</string>
-	<string name="ChallengeCreate">创造挑战</string>
+	<string name="create_challenge">创造挑战</string>
 	<string name="on_off">开/关</string>
 	<string name="min_rating">最低评价</string>
 	<string name="max_rating">最高评价</string>
 	<string name="email">电邮</string>
-	<string name="retype">错误重新输入密码！</string>
+	<string name="retype_password">错误重新输入密码！</string>
 	<string name="country">国家</string>
-	<string name="blue">蓝色</string>
-	<string name="brown">褐色</string>
-	<string name="green">绿</string>
-	<string name="grey">灰色</string>
-	<string name="marble">大理石</string>
-	<string name="red">红色</string>
-	<string name="tan">黄褐色的</string>
-	<string name="woodlight">木光</string>
-	<string name="wooddark">木材黑暗</string>
-	<string name="alpha">Alpha</string>
-	<string name="book">n.预订,订票</string>
-	<string name="cases">例</string>
-	<string name="classicP">常规</string>
-	<string name="club">夜总会音乐</string>
-	<string name="condal">Condal</string>
-	<string name="maya">玛雅：</string>
-	<string name="modern">现代</string>
-	<string name="vintage">葡萄酒</string>
-	<string name="aim">我谨动议后</string>
+	<string name="board_blue">蓝色</string>
+	<string name="board_brown">褐色</string>
+	<string name="board_green">绿</string>
+	<string name="board_grey">灰色</string>
+	<string name="board_marble">大理石</string>
+	<string name="board_red">红色</string>
+	<string name="board_tan">黄褐色的</string>
+	<string name="board_woodlight">木光</string>
+	<string name="board_wooddark">木材黑暗</string>
+	<string name="piece_alpha">Alpha</string>
+	<string name="piece_book">n.预订,订票</string>
+	<string name="piece_cases">例</string>
+	<string name="piece_classic">常规</string>
+	<string name="piece_club">夜总会音乐</string>
+	<string name="piece_condal">Condal</string>
+	<string name="piece_maya">玛雅：</string>
+	<string name="piece_modern">现代</string>
+	<string name="piece_vintage">葡萄酒</string>
+	<string name="after_i_move">我谨动议后</string>
 	<string name="notification">呈报书</string>
-	<string name="notificationE">启用通知</string>
-	<string name="ssb">显示提交按钮</string>
-	<string name="enableSounds">用声音</string>
+	<string name="enable_notifications">启用通知</string>
+	<string name="show_submit_button">显示提交按钮</string>
+	<string name="enable_sounds">用声音</string>
 	<string name="strength">支护强度</string>
-	<string name="interfaceP">界面</string>
+	<string name="interface_caps">界面</string>
 	<string name="board">董事会</string>
-	<string name="pieces">个，件，片</string>
-	<string name="showcoords">显示坐标</string>
-	<string name="movehighlights">此举凸显</string>
+
+	<string name="show_coordinates">显示坐标</string>
+	<string name="move_highlights">此举凸显</string>
 	<string name="invite_a_friend">邀请朋友</string>
-	<string name="contactUs">联系我们</string>
+	<string name="contact_us">联系我们</string>
 	<string name="logout">退出</string>
-	<string name="vacationOn">休假</string>
-	<string name="vacationOff">不是度假</string>
-	<string name="ngwhite">新游戏（白）</string>
-	<string name="ngblack">新游戏（黑）</string>
-	<string name="emailgame">电子邮件游戏</string>
+	<string name="vacation_on">休假</string>
+	<string name="vacation_off">不是度假</string>
+	<string name="new_game_white">新游戏（白）</string>
+	<string name="new_game_black">新游戏（黑）</string>
+	<string name="email_game">电子邮件游戏</string>
 	<string name="load">载入保存的游戏</string>
 	<!--<string name="backtogamelist">回游戏列表</string>-->
 	<string name="messages">消息</string>
-	<string name="analysis">分析局</string>
-	<string name="drawoffer">提供平局</string>
-	<string name="resignorabort">辞职（或中止）</string>
+	<string name="analysis_board">分析局</string>
+	<string name="offer_draw">提供平局</string>
+	<string name="resign_or_abort">辞职（或中止）</string>
 	<string name="resign">自愿放弃</string>
 	<string name="abort">终止</string>
 	<string name="cancel">取消</string>
@@ -129,7 +128,7 @@
 	<string name="hint">分包</string>
 	<string name="prev">上一页</string>
 	<string name="next">未来</string>
-	<string name="nextgame">下一场比赛</string>
+	<string name="next_game">下一场比赛</string>
 	<string name="chat">聊天</string>
 	<string name="skill">技能等级</string>
 	<string name="category">类别</string>
@@ -137,53 +136,44 @@
 	<string name="play">玩</string>
 	<string name="videos">视频</string>
 	<string name="congratulations">恭喜！</string>
-	<string name="onlinegamecreated">创建在线游戏！</string>
-	<string name="challengeSent">挑战已发送！</string>
-	<string name="creating">创建…</string>
-	<string name="gettingfriends">获取好友列表…</string>
+	<string name="online_game_created">创建在线游戏！</string>
+	<string name="challenge_sent">挑战已发送！</string>
+
 	<string name="sorry">对不起</string>
-	<string name="nofriends">你有没有朋友。您可以邀请通过www.chess.com的他们。</string>
-	<string name="nofriends_online">你的朋友不在线。如果没有他们还邀请，去到www.chess.com。</string>
+	<string name="no_friends_invite">你有没有朋友。您可以邀请通过www.chess.com的他们。</string>
+	<string name="no_friends_online">你的朋友不在线。如果没有他们还邀请，去到www.chess.com。</string>
 	<string name="invite">邀请</string>
-	<string name="drawaccepted">提请接受！</string>
+	<string name="draw_accepted">提请接受！</string>
 	<string name="accept">接受</string>
-	<string name="challengeaccepted">接受的挑战</string>
-	<string name="challengedeclined">挑战拒收！</string>
+	<string name="challenge_accepted">接受的挑战</string>
+	<string name="challenge_declined">挑战拒收！</string>
 	<string name="decline">拒绝</string>
-	<string name="updatinggameslist">更新游戏列表…</string>
-	<!--<string name="challengetitle">需求</string>-->
-	<string name="loadinggames">载入游戏…</string>
-	<string name="drawoffered">提请发售</string>
-	<string name="gettingmessages">正在接收邮件“%@”</string>
-	<string name="sendingmessage">正在发送邮件：%@</string>
+
+	<string name="draw_offered">提请发售</string>
+
 	<string name="ok">确定</string>
 	<string name="submit">提交</string>
 	<string name="login">登入</string>
 	<string name="title">标题</string>
 	<string name="error">錯誤</string>
-	<string name="loading">载入中…</string>
-	<string name="wrongcountry">你必须选择你的国家！</string>
-	<string name="wrongpassword">您的密码必须至少6个字符长！</string>
-	<string name="wrongusername">你的用户名必须有至少3个字符长，并且只包含字母，数字，下划线和破折号。不允许有空格。</string>
-	<string name="wrongemail">您将需要通过电子邮件确认您的会员。</string>
-	<string name="wrongretype">错误重新输入密码！</string>
-	<string name="signingin">签约仪式在…</string>
+	<string name="loading_">载入中…</string>
+	<string name="wrong_country">你必须选择你的国家！</string>
+	<string name="wrong_password">您的密码必须至少6个字符长！</string>
+	<string name="wrong_username">你的用户名必须有至少3个字符长，并且只包含字母，数字，下划线和破折号。不允许有空格。</string>
+	<string name="wrong_email">您将需要通过电子邮件确认您的会员。</string>
+	<string name="wrong_retype_pass">错误重新输入密码！</string>
+	<string name="signing_in_">签约仪式在…</string>
 
-	<string name="showanswer">显示答案</string>
-	<string name="skipproblem">跳过问题</string>
-	<string name="sendinggameinfo">发送比赛信息…</string>
+	<string name="show_answer">显示答案</string>
+	<string name="skip_problem">跳过问题</string>
+	<string name="sending_game_info">发送比赛信息…</string>
 	<string name="check_field">检查现场</string>
 	<string name="validateUsername">您的用户名必须是3至20个字符长，并且只包含字母，数字，下划线和破折号。不允许有空格。</string>
 	<string name="validatePassword">您的密码必须介于6和20个字符长！</string>
-	<string name="black">黑色</string>
-	<string name="white">白色</string>
+
 	<string name="hours">小时</string>
 	<string name="days">天</string>
-	<string name="playeronline">玩家在线！</string>
-	<string name="playeroffline">玩家离线！</string>
-	<string name="mymove">我这招！</string>
-	<string name="theirmove">他们的举动！</string>
-	<string name="gamefinish">完成这个游戏</string>
+
 	<string name="random">随机</string>
 	<string name="won">赢得</string>
 	<string name="lost">n.迷航;n.失去的,丢失的</string>
@@ -191,19 +181,19 @@
 	<string name="duration">健身时间</string>
 	<string name="published">已发表</string>
 	<string name="details">詳情</string>
-	<string name="playvideo">播放视频</string>
+	<string name="play_video">播放视频</string>
 	<string name="accepted">接受！</string>
 	<string name="upgrade">升级</string>
-	<string name="preferencesUpgrade">升级我的帐户</string>
-	<string name="videoUpgrade">升级为完全访问视频！</string>
+	<string name="upgrade_my_account">升级我的帐户</string>
+	<string name="upgrade_to_full_videos">升级为完全访问视频！</string>
 	<string name="removeAds">升级和删除广告！</string>
 	<string name="accept_draw_q">接受画？</string>
-	<string name="ready_for_first_tackics_q">你准备好你的第一个战术吗？</string>
+	<string name="ready_for_first_tactics_q">你准备好你的第一个战术吗？</string>
 
 	<string name="max_tactics_reached">今天，你已经打战术的最大数量。你想能够做更多的战术？</string>
 	<string name="yes">是</string>
 	<string name="no">不愿意</string>
-	<string name="okay">确定</string>
+
 	<string name="ten_tactics_completed">完成10战术！</string>
 	<string name="offline_mode">离线模式</string>
 	<string name="no_network_rating_not_changed">目前还没有上网。因此，您的评级将不会改变完成后，直到您的Internet连接返回的问题。</string>
@@ -216,9 +206,7 @@
 	<string name="browse">浏览</string>
 
 
-	<string name="bonus_time_left">奖金剩余时间%1$s时间%2$s</string>
-
-	<string name="pieces_s">个，件，片</string>
+	<string name="pieces_">个，件，片</string>
 	<string name="home">家园</string>
 	<string name="live">居住</string>
 	<string name="online">連線</string>
@@ -230,7 +218,7 @@
 	<string name="invite_text">我刚刚签署了我的Andr​​oid设备上的国际象棋在Chess.com发挥。在这里免费下载的应用程序：http://chess.com/android或注册在http://www.chess.com/register.html。然后找我 - 我的用户名是“</string>
 	<string name="live_game">生活游戏</string>
 	<string name="online_game">在线游戏</string>
-	<string name="send_mail">发送邮件</string>
+	<string name="send_mail_">发送邮件</string>
 	<string name="tournaments">子比赛</string>
 	<string name="stats">状态</string>
 	<string name="challenges">面临的挑战</string>
@@ -238,10 +226,10 @@
 	<string name="analysis_mode">分析模式</string>
 	<string name="check">检查！</string>
 	<string name="choose_a_piece">选择一块</string>
-	<string name="open_app_t_see_msg">点击这里查看应用程序的内部消息</string>
+	<string name="open_app_to_see_msg">点击这里查看应用程序的内部消息</string>
 
 	<!--SignOut-->
-	<string name="signout_confirm">你确定你要签署的活棋服务器吗？</string>
+	<string name="sign_out_confirm">你确定你要签署的活棋服务器吗？</string>
 	<string name="confirm">确认</string>
 	<string name="you_been_challenged">你已经受到了挑战！</string>
 
@@ -259,7 +247,7 @@
 	<string name="your_move">Chess.com  - 这是你的移动</string>
 	<string name="your_turn">该你了</string>
 	<string name="login_failed">登录失败</string>
-	<string name="loggin_out">注销</string>
+	<string name="login_out">注销</string>
 	<string name="you_logged_out">您已经登出！</string>
 	<string name="too_short">太短</string>
 	<string name="can_not_be_empty">不能为空</string>
@@ -267,7 +255,7 @@
 	<string name="no_chess_account_signup_please">你有没有Chess.com帐户，注册，请。</string>
 	<string name="pass_dont_match">“密码不相符”；</string>
 	<string name="username_cannot_be_encoded">您的用户名不能编码发送请求</string>
-	<string name="menu_refresh">重新整理</string>
+	<string name="refresh">重新整理</string>
 	<string name="version_check">版本检查</string>
 	<string name="version_is_obsolete_update">客户端版本已经过时了。请更新</string>
 
@@ -281,7 +269,7 @@
 	<string name="game_over">游戏结束</string>
 	<string name="draw_game">画提供</string>
 	<string name="has_offered_draw">已提供平局</string>
-	<string name="reconnecting">正在重新连接</string>
+	<string name="reconnecting_">正在重新连接</string>
 	<string name="another_login_detected">已检测到另一个登录。</string>
 	<string name="loading_live_chess">载入活棋</string>
 	<string name="game_draw_by_repetition">比赛由重复绘制</string>
@@ -315,8 +303,6 @@
 	<string name="draw_declined">绘制拒收</string>
 	<string name="has_declined_draw">已拒绝平局</string>
 
-	<string name="menu_search">搜索</string>
-	<string name="restoring_conntection_to_live">还原现场连线…</string>
 	<string name="application_was_killed">申请被打死，恢复…</string>
 	<string name="no_network">没有网络</string>
 	<string name="wireless_settings">无线设置</string>

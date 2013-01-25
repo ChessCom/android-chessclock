@@ -100,7 +100,7 @@ public class MraidBrowser extends Activity {
             @Override
 			public void onProgressChanged(WebView view, int progress) {
                 Activity a = (Activity) view.getContext();
-                a.setTitle(getString(R.string.loading));
+                a.setTitle(getString(R.string.loading_));
                 a.setProgress(progress * 100);
                 if (progress == 100) a.setTitle(view.getUrl());
             }

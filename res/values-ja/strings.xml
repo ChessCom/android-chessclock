@@ -2,17 +2,17 @@
 <resources>
 
 	<string name="connect_with_facebook">Facebookでは接続</string>
-	<string name="lccFailedUnavailable">ライブチェスのサーバーは現在利用できません。</string>
-	<string name="lccFailedUpgrading">我々はchess.comを改善しようとしています！現在、サイトがアップグレードされています。それは時間がない再び生きるされます。すぐに再度ログインしてみてください。ありがとう！</string>
+	<string name="live_chess_server_unavailable">ライブチェスのサーバーは現在利用できません。</string>
+	<string name="live_chess_server_upgrading">我々はchess.comを改善しようとしています！現在、サイトがアップグレードされています。それは時間がない再び生きるされます。すぐに再度ログインしてみてください。ありがとう！</string>
 	<string name="app_name">ChessCom</string>
-	<string name="signout">サイン・アウト</string>
+	<string name="sign_out">サイン・アウト</string>
 
 	<!--Dashboard labels-->
-	<string name="menuLive">ライブ演奏</string>
-	<string name="menuOnline">オンラインで遊ぶ</string>
-	<string name="menuComp">コンピュータを再生</string>
-	<string name="menuTactics">戦術トレーナー</string>
-	<string name="menuVideo">ビデオレッスン</string>
+	<string name="dashboard_live">ライブ演奏</string>
+	<string name="dashboard_online">オンラインで遊ぶ</string>
+	<string name="dashboard_computer">コンピュータを再生</string>
+	<string name="dashboard_tactics">戦術トレーナー</string>
+	<string name="dashboard_video">ビデオレッスン</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">ライブ演奏</string>
@@ -44,81 +44,80 @@
 	<string name="password">パスワード</string>
 	<string name="log_in">サイン・イン</string>
 	<string name="sing_up">登録</string>
-	<string name="complete_singupButton">サインアップを完了</string>
-	<string name="singinPlayguest">ゲストとしてプレイ</string>
+	<string name="complete_sing_up">サインアップを完了</string>
+	<string name="play_as_guest">ゲストとしてプレイ</string>
 
-	<string name="computerWhite">白</string>
-	<string name="computerBlack">黒</string>
-	<string name="Human">人</string>
+	<string name="white">白</string>
+	<string name="black">黒</string>
+	<string name="human">人</string>
 	<string name="guest">カスタマ：</string>
-	<string name="Computer">コンピュータ</string>
-	<string name="Thinking">考え事…</string>
-	<string name="menuSite">www.chess.com</string>
-	<string name="onlineNewGametitle">新しいゲーム</string>
-	<string name="onlineChallenges">開いている課題</string>
-	<string name="challengeFriend">友達に挑戦</string>
-	<string name="createNewChallenge">オープンチャレンジを作成します。</string>
-	<string name="currentGame">現在のライブゲーム</string>
+	<string name="computer">コンピュータ</string>
+	<string name="thinking_">考え事…</string>
+
+	<string name="open_challenges">開いている課題</string>
+	<string name="challenge_friend">友達に挑戦</string>
+	<string name="create_open_challenge">オープンチャレンジを作成します。</string>
+	<string name="current_live_game">現在のライブゲーム</string>
 	<string name="game_type">ゲームの種類</string>
-	<string name="classic">古典的なチェス</string>
-	<string name="chess960">チェス960</string>
+	<string name="chess_classic">古典的なチェス</string>
+	<string name="chess_960">チェス960</string>
 	<string name="friend">友好惑星</string>
 	<string name="friends">友達</string>
-	<string name="initialTime">最初の時間</string>
+	<string name="initial_time">最初の時間</string>
 	<string name="bonusTime">ボーナスタイム</string>
 	<string name="rated_game">定格ゲーム</string>
 	<string name="i_play_as">私はのように再生</string>
 	<string name="days_per_move">移動毎日</string>
-	<string name="ChallengeCreate">チャレンジを作成します。</string>
+	<string name="create_challenge">チャレンジを作成します。</string>
 	<string name="on_off">オン／オフ：</string>
 	<string name="min_rating">分評価</string>
 	<string name="max_rating">最大定格</string>
 	<string name="email">メール</string>
-	<string name="retype">再入力パスワード</string>
+	<string name="retype_password">再入力パスワード</string>
 	<string name="country">都道府県</string>
-	<string name="blue">青</string>
-	<string name="brown">茶色</string>
-	<string name="green">緑</string>
-	<string name="grey">灰色</string>
-	<string name="marble">白大理石</string>
-	<string name="red">赤</string>
-	<string name="tan">タン</string>
-	<string name="woodlight">木のライト</string>
-	<string name="wooddark">ウッドダーク</string>
-	<string name="alpha">アルファ</string>
-	<string name="book">ブック</string>
-	<string name="cases">ケース</string>
-	<string name="classicP">クラシック</string>
-	<string name="club">クラブ</string>
-	<string name="condal">コンダル</string>
-	<string name="maya">マヤ</string>
-	<string name="modern">モダン</string>
-	<string name="vintage">ビンテージ</string>
-	<string name="aim">私が移動した後、</string>
+	<string name="board_blue">青</string>
+	<string name="board_brown">茶色</string>
+	<string name="board_green">緑</string>
+	<string name="board_grey">灰色</string>
+	<string name="board_marble">白大理石</string>
+	<string name="board_red">赤</string>
+	<string name="board_tan">タン</string>
+	<string name="board_woodlight">木のライト</string>
+	<string name="board_wooddark">ウッドダーク</string>
+	<string name="piece_alpha">アルファ</string>
+	<string name="piece_book">ブック</string>
+	<string name="piece_cases">ケース</string>
+	<string name="piece_classic">クラシック</string>
+	<string name="piece_club">クラブ</string>
+	<string name="piece_condal">コンダル</string>
+	<string name="piece_maya">マヤ</string>
+	<string name="piece_modern">モダン</string>
+	<string name="piece_vintage">ビンテージ</string>
+	<string name="after_i_move">私が移動した後、</string>
 	<string name="notification">通知</string>
-	<string name="notificationE">通知を有効にする</string>
-	<string name="ssb">送信ボタンを表示する</string>
-	<string name="enableSounds">サウンドを有効にする</string>
+	<string name="enable_notifications">通知を有効にする</string>
+	<string name="show_submit_button">送信ボタンを表示する</string>
+	<string name="enable_sounds">サウンドを有効にする</string>
 	<string name="strength">強さ</string>
-	<string name="interfaceP">界面</string>
+	<string name="interface_caps">界面</string>
 	<string name="board">役員</string>
-	<string name="pieces">ピース</string>
-	<string name="showcoords">座標を表示する</string>
-	<string name="movehighlights">ハイライトを移動します</string>
+
+	<string name="show_coordinates">座標を表示する</string>
+	<string name="move_highlights">ハイライトを移動します</string>
 	<string name="invite_a_friend">友達を招待する</string>
-	<string name="contactUs">お問い合わせ</string>
+	<string name="contact_us">お問い合わせ</string>
 	<string name="logout">ログアウト</string>
-	<string name="vacationOn">休暇で</string>
-	<string name="vacationOff">ない休暇</string>
-	<string name="ngwhite">新しいゲーム（白）</string>
-	<string name="ngblack">新しいゲーム（黒）</string>
-	<string name="emailgame">メールゲーム</string>
+	<string name="vacation_on">休暇で</string>
+	<string name="vacation_off">ない休暇</string>
+	<string name="new_game_white">新しいゲーム（白）</string>
+	<string name="new_game_black">新しいゲーム（黒）</string>
+	<string name="email_game">メールゲーム</string>
 	<string name="load">保存したゲームをロードします。</string>
 	<!--<string name="backtogamelist">ゲーム一覧へ戻る</string>-->
 	<string name="messages">メッセージ</string>
-	<string name="analysis">分析委員会</string>
-	<string name="drawoffer">Drawを提供</string>
-	<string name="resignorabort">辞任（または中止）</string>
+	<string name="analysis_board">分析委員会</string>
+	<string name="offer_draw">Drawを提供</string>
+	<string name="resign_or_abort">辞任（または中止）</string>
 	<string name="resign">再びサイン</string>
 	<string name="abort">中止</string>
 	<string name="cancel">キャンセル</string>
@@ -130,7 +129,7 @@
 	<string name="hint">ヒント</string>
 	<string name="prev">前</string>
 	<string name="next">次へ</string>
-	<string name="nextgame">次のゲーム</string>
+	<string name="next_game">次のゲーム</string>
 	<string name="chat">チャット</string>
 	<string name="skill">スキルレベル</string>
 	<string name="category">Category </string>
@@ -138,53 +137,44 @@
 	<string name="play">再生</string>
 	<string name="videos">Videos</string>
 	<string name="congratulations">おめでとうございます！</string>
-	<string name="onlinegamecreated">オンラインゲームが作成されました！</string>
-	<string name="challengeSent">送信されたチャレンジ！</string>
-	<string name="creating">作成…</string>
-	<string name="gettingfriends">フレンドリストを取得する…</string>
+	<string name="online_game_created">オンラインゲームが作成されました！</string>
+	<string name="challenge_sent">送信されたチャレンジ！</string>
+
 	<string name="sorry">残念</string>
-	<string name="nofriends">あなたはまだ友達がいない。あなたが www.chess.com を介してそれらを招待することができます。</string>
-	<string name="nofriends_online">あなたの友人がオンラインではありません。あなたはまだそれらを招待しなかった場合は、www.chess.comに移動します。</string>
+	<string name="no_friends_invite">あなたはまだ友達がいない。あなたが www.chess.com を介してそれらを招待することができます。</string>
+	<string name="no_friends_online">あなたの友人がオンラインではありません。あなたはまだそれらを招待しなかった場合は、www.chess.comに移動します。</string>
 	<string name="invite">参加を依頼</string>
-	<string name="drawaccepted">受け入れ描く！</string>
+	<string name="draw_accepted">受け入れ描く！</string>
 	<string name="accept">同意する</string>
-	<string name="challengeaccepted">承認された挑戦！</string>
-	<string name="challengedeclined">チャレンジは拒否！</string>
+	<string name="challenge_accepted">承認された挑戦！</string>
+	<string name="challenge_declined">チャレンジは拒否！</string>
 	<string name="decline">同意しない(D)</string>
-	<string name="updatinggameslist">ゲームリストを更新しています…</string>
-	<!--<string name="challengetitle">チャレンジ</string>-->
-	<string name="loadinggames">ロードゲーム…</string>
-	<string name="drawoffered">提供される描画</string>
-	<string name="gettingmessages">メッセージを取得する…</string>
-	<string name="sendingmessage">メッセージを送信中…</string>
+
+	<string name="draw_offered">提供される描画</string>
+
 	<string name="ok">確定</string>
 	<string name="submit">次へ</string>
 	<string name="login">ログイン</string>
 	<string name="title">Title</string>
 	<string name="error">エラー</string>
-	<string name="loading">読み込み中…</string>
-	<string name="wrongcountry">あなたの国を選択する必要があります！</string>
-	<string name="wrongpassword">パスワードには、半角 7 文字以上をご使用ください。</string>
-	<string name="wrongusername">あなたのユーザー名は3文字以上の長さが、唯一の文字、数字、下線、およびダッシュを含める必要があります。スペースは許可されていません。</string>
-	<string name="wrongemail">あなたが電子メールでメンバーシップを確認する必要があります。</string>
-	<string name="wrongretype">間違って再入力したパスワード！</string>
-	<string name="signingin">ログイン中…</string>
+	<string name="loading_">読み込み中…</string>
+	<string name="wrong_country">あなたの国を選択する必要があります！</string>
+	<string name="wrong_password">パスワードには、半角 7 文字以上をご使用ください。</string>
+	<string name="wrong_username">あなたのユーザー名は3文字以上の長さが、唯一の文字、数字、下線、およびダッシュを含める必要があります。スペースは許可されていません。</string>
+	<string name="wrong_email">あなたが電子メールでメンバーシップを確認する必要があります。</string>
+	<string name="wrong_retype_pass">間違って再入力したパスワード！</string>
+	<string name="signing_in_">ログイン中…</string>
 
-	<string name="showanswer">回答を表示する</string>
-	<string name="skipproblem">問題をスキップする</string>
-	<string name="sendinggameinfo">ゲーム情報を送信中…</string>
+	<string name="show_answer">回答を表示する</string>
+	<string name="skip_problem">問題をスキップする</string>
+	<string name="sending_game_info">ゲーム情報を送信中…</string>
 	<string name="check_field">フィールドを確認してください</string>
 	<string name="validateUsername">あなたのユーザー名は3〜20文字の長さが、唯一の文字、数字、下線、およびダッシュを含める必要があります。スペースは許可されていません。</string>
 	<string name="validatePassword">パスワードは6〜20文字の長さでなければなりません！</string>
-	<string name="black">黒</string>
-	<string name="white">白</string>
+
 	<string name="hours">時間</string>
 	<string name="days">日</string>
-	<string name="playeronline">プレーヤーが現在オンライン中！</string>
-	<string name="playeroffline">オフラインプレイヤー！</string>
-	<string name="mymove">私の移動！</string>
-	<string name="theirmove">彼らの移動！</string>
-	<string name="gamefinish">このゲームを終える</string>
+
 	<string name="random">ランダム</string>
 	<string name="won">ウォン</string>
 	<string name="lost">損失率</string>
@@ -192,19 +182,19 @@
 	<string name="duration">表示時間</string>
 	<string name="published">公開済み</string>
 	<string name="details">詳細</string>
-	<string name="playvideo">ビデオを再生</string>
+	<string name="play_video">ビデオを再生</string>
 	<string name="accepted">Accepted</string>
 	<string name="upgrade">アップグレード</string>
-	<string name="preferencesUpgrade">マイアカウントをアップグレードする</string>
-	<string name="videoUpgrade">ビデオへのフルアクセスのためにアップグレードしましょう​​！</string>
+	<string name="upgrade_my_account">マイアカウントをアップグレードする</string>
+	<string name="upgrade_to_full_videos">ビデオへのフルアクセスのためにアップグレードしましょう​​！</string>
 	<string name="removeAds">アップグレードして、広告を削除する！</string>
 	<string name="accept_draw_q">描画を受け入れる？</string>
-	<string name="ready_for_first_tackics_q">あなたの最初の戦術のための準備ができていますか？</string>
+	<string name="ready_for_first_tactics_q">あなたの最初の戦術のための準備ができていますか？</string>
 
 	<string name="max_tactics_reached">あなたは今日のために戦術の最大数に達している。あなたはより多くの戦術を行うことができるようにしたいと思います？</string>
 	<string name="yes">はい</string>
 	<string name="no">いいえ</string>
-	<string name="okay">確定</string>
+
 	<string name="ten_tactics_completed">10 戦術は 完了する！</string>
 	<string name="offline_mode">オフラインモード(O)</string>
 	<string name="no_network_rating_not_changed">インターネットアクセスは現在利用できません。結果として、あなたの評価は、インターネット接続が復帰するまでの問題を完了した後に変更されません。</string>
@@ -218,9 +208,7 @@
 	<string name="browse">ブラウズ</string>
 
 
-	<string name="bonus_time_left">ボーナス残り時間%1$s時間を過ごし%2$s</string>
-
-	<string name="pieces_s">ピース</string>
+	<string name="pieces_">ピース</string>
 	<string name="home">ホーム(H)</string>
 	<string name="live">L</string>
 	<string name="online">オンライン</string>
@@ -232,7 +220,7 @@
 	<string name="invite_text">私はちょうど私のAndroidデバイス上Chess.comでチェスを再生するためにサインアップした。ここで無料アプリをダウンロードしてください。http://chess.com/androidまたはhttp://www.chess.com/register.htmlでサインアップ。その後、私を見つける - 私の名は \</string>
 	<string name="live_game">ライブゲーム</string>
 	<string name="online_game">オンライン ゲーム</string>
-	<string name="send_mail">メールの送信</string>
+	<string name="send_mail_">メールの送信</string>
 	<string name="tournaments">トーナメント</string>
 	<string name="stats">統計情報</string>
 	<string name="challenges">課題</string>
@@ -240,10 +228,10 @@
 	<string name="analysis_mode">解析モード</string>
 	<string name="check">検査</string>
 	<string name="choose_a_piece">作品を選択します。</string>
-	<string name="open_app_t_see_msg">appの内部メッセージを見るにはここをタップ</string>
+	<string name="open_app_to_see_msg">appの内部メッセージを見るにはここをタップ</string>
 
 	<!--SignOut-->
-	<string name="signout_confirm">あなたはライブチェスサーバからサインアウトしてもよろしいですか？</string>
+	<string name="sign_out_confirm">あなたはライブチェスサーバからサインアウトしてもよろしいですか？</string>
 	<string name="confirm">確認</string>
 	<string name="you_been_challenged">あなたが挑戦されました！</string>
 
@@ -261,7 +249,7 @@
 	<string name="your_move">Chess.com  - それはあなたの移動だ</string>
 	<string name="your_turn">君の番</string>
 	<string name="login_failed">ログイン失敗</string>
-	<string name="loggin_out">ログアウト</string>
+	<string name="login_out">ログアウト</string>
 	<string name="you_logged_out">あなたがログアウトしました！</string>
 	<string name="too_short">短すぎる</string>
 	<string name="can_not_be_empty">空にすることはできません</string>
@@ -269,7 +257,7 @@
 	<string name="no_chess_account_signup_please">あなたは何Chess.comアカウントをお持ちでいない、してください、サインアップしてください。</string>
 	<string name="pass_dont_match">パスワードが一致しません</string>
 	<string name="username_cannot_be_encoded">ユーザ名は、要求を送信するためにエンコードすることはできません</string>
-	<string name="menu_refresh">リフレッシュ</string>
+	<string name="refresh">リフレッシュ</string>
 	<string name="version_check">バージョンチェック</string>
 	<string name="version_is_obsolete_update">クライアントのバージョンは廃止されました。更新してください</string>
 
@@ -284,7 +272,7 @@
 	<string name="game_over">ゲームオーバー</string>
 	<string name="draw_game">提供されドロー</string>
 	<string name="has_offered_draw">ドローを提供してきました</string>
-	<string name="reconnecting">再接続しています</string>
+	<string name="reconnecting_">再接続しています</string>
 	<string name="another_login_detected">別のログインが検出されました。</string>
 	<string name="loading_live_chess">ライブチェスのロード</string>
 	<string name="game_draw_by_repetition">ゲーム描画 \nから繰り返し</string>
@@ -318,8 +306,6 @@
 	<string name="draw_declined">縮む 減少しました</string>
 	<string name="has_declined_draw">ドローを減少している</string>
 
-	<string name="menu_search">検索</string>
-	<string name="restoring_conntection_to_live">再接続…</string>
 	<string name="application_was_killed">アプリケーションは、リストア、殺された…</string>
 	<string name="no_network">ネットワーク無し</string>
 	<string name="wireless_settings">ワイヤレス設定</string>

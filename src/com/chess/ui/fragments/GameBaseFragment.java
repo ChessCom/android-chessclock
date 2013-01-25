@@ -182,7 +182,7 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 		emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
 		emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");  // TODO localize
 		emailIntent.putExtra(Intent.EXTRA_TEXT, message);
-		startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
+		startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail_)));
 	}
 
 	@Override

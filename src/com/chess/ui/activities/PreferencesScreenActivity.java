@@ -139,26 +139,26 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 
 		// Piece and board bitmaps list init
 		piecesList = new ArrayList<SelectionItem>(9);
-		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_alpha), getString(R.string.alpha)));
-		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_book), getString(R.string.book)));
-		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_cases), getString(R.string.cases)));
-		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_classic), getString(R.string.classicP)));
-		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_club), getString(R.string.club)));
-		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_condal), getString(R.string.condal)));
-		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_maya), getString(R.string.maya)));
-		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_modern), getString(R.string.modern)));
-		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_vintage), getString(R.string.vintage)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_alpha), getString(R.string.piece_alpha)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_book), getString(R.string.piece_book)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_cases), getString(R.string.piece_cases)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_classic), getString(R.string.piece_classic)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_club), getString(R.string.piece_club)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_condal), getString(R.string.piece_condal)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_maya), getString(R.string.piece_maya)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_modern), getString(R.string.piece_modern)));
+		piecesList.add(new SelectionItem(getResources().getDrawable(R.drawable.pieces_vintage), getString(R.string.piece_vintage)));
 
 		boardsList = new ArrayList<SelectionItem>(9);
-		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_wood_dark), getString(R.string.wooddark)));
-		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_wood_light), getString(R.string.woodlight)));
-		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_blue), getString(R.string.blue)));
-		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_brown), getString(R.string.brown)));
-		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_green), getString(R.string.green)));
-		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_grey), getString(R.string.grey)));
-		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_marble), getString(R.string.marble)));
-		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_red), getString(R.string.red)));
-		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_tan), getString(R.string.tan)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_wood_dark), getString(R.string.board_wooddark)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_wood_light), getString(R.string.board_woodlight)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_blue), getString(R.string.board_blue)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_brown), getString(R.string.board_brown)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_green), getString(R.string.board_green)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_grey), getString(R.string.board_grey)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_marble), getString(R.string.board_marble)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_red), getString(R.string.board_red)));
+		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_tan), getString(R.string.board_tan)));
 
 		//spinners
 		int boardsPosition = preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_BOARD_TYPE, 0);
@@ -257,14 +257,14 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_text)
 					+ userName + "\". \n \n Sent from my Android");
 			FlurryAgent.logEvent(FlurryData.INVITE_A_FRIEND, null);
-			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
+			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail_)));
 		} else if (id == R.id.prefContactUs) {
 			Intent emailIntent = new Intent(Intent.ACTION_SEND);
 			emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
 			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppConstants.EMAIL_MOBILE_CHESS_COM});
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Support");
 			emailIntent.putExtra(Intent.EXTRA_TEXT, feedbackBodyCompose());
-			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
+			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail_)));
 		} else if (id == R.id.prefVacation) {
 			changeVacationStatus();
 		}

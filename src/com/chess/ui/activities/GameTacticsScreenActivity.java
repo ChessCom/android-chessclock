@@ -123,7 +123,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
 		menuOptionsItems = new CharSequence[]{
-				getString(R.string.showanswer),
+				getString(R.string.show_answer),
 				getString(R.string.settings)};
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
@@ -164,7 +164,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			} else {
 				popupItem.setPositiveBtnId(R.string.yes);
 				popupItem.setNegativeBtnId(R.string.no);
-				showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
+				showPopupDialog(R.string.ready_for_first_tactics_q, FIRST_TACTICS_TAG);
 			}
 		} else {
 			// TODO show register confirmation dialog
@@ -622,7 +622,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	@Override
 	public void invalidateGameScreen() {
-		boardView.setMovesLog(getBoardFace().getMoveListSAN());
+//		boardView.setMovesLog(getBoardFace().getMoveListSAN());
+		boardView.setMovesLog(getBoardFace().getNotationArray());
 	}
 
 	@Override

@@ -31,7 +31,7 @@
             android:id="@id/pending_list_item_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/loading"
+            android:text="@string/loading_"
             android:gravity="center"
             android:textSize="20sp"
             android:textColor="@color/grey_button_1"

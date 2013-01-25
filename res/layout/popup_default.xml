@@ -33,7 +33,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:maxWidth="@dimen/popup_dialog_text_max_width"
-		android:text="@string/signout_confirm"
+		android:text="@string/sign_out_confirm"
 		android:gravity="center"
 		android:paddingTop="@dimen/default_scr_bottom_padding"
 		android:paddingBottom="@dimen/default_scr_top_padding"

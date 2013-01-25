@@ -2,17 +2,17 @@
 <resources>
 
 	<string name="connect_with_facebook">التواصل مع الفيسبوك</string>
-	<string name="lccFailedUnavailable">يعيش خادم شطرنج غير متوفرة حاليا.</string>
-	<string name="lccFailedUpgrading">نحن نحاول تحسين chess.com! حاليا يتم ترقية الموقع. وسوف يتم العيش مرة أخرى في أي وقت من الأوقات. يرجى محاولة تسجيل الدخول مرة أخرى في وقت قريب. شكرا!</string>
+	<string name="live_chess_server_unavailable">يعيش خادم شطرنج غير متوفرة حاليا.</string>
+	<string name="live_chess_server_upgrading">نحن نحاول تحسين chess.com! حاليا يتم ترقية الموقع. وسوف يتم العيش مرة أخرى في أي وقت من الأوقات. يرجى محاولة تسجيل الدخول مرة أخرى في وقت قريب. شكرا!</string>
 	<string name="app_name">ChessCom</string>
-	<string name="signout">الخروج</string>
+	<string name="sign_out">الخروج</string>
 
 	<!--Dashboard labels-->
-	<string name="menuLive">لعب لايف</string>
-	<string name="menuOnline">تلعب على الانترنت</string>
-	<string name="menuComp">لعب الكمبيوتر</string>
-	<string name="menuTactics">تكتيكات المدرب</string>
-	<string name="menuVideo">فيديو دروس</string>
+	<string name="dashboard_live">لعب لايف</string>
+	<string name="dashboard_online">تلعب على الانترنت</string>
+	<string name="dashboard_computer">لعب الكمبيوتر</string>
+	<string name="dashboard_tactics">تكتيكات المدرب</string>
+	<string name="dashboard_video">فيديو دروس</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">شبكة بلاي لايف</string>
@@ -44,82 +44,81 @@
 	<string name="password">كلمة السر</string>
 	<string name="log_in">توقيع في</string>
 	<string name="sing_up">قم بالتسجيل</string>
-	<string name="complete_singupButton">استكمال اشترك</string>
-	<string name="singinPlayguest">كما تلعب ضيف</string>
+	<string name="complete_sing_up">استكمال اشترك</string>
+	<string name="play_as_guest">كما تلعب ضيف</string>
 
 
-	<string name="computerWhite">الأبيض</string>
-	<string name="computerBlack">الشاي الأسود</string>
-	<string name="Human">البشر الاخرين.</string>
+	<string name="white">الأبيض</string>
+	<string name="black">الشاي الأسود</string>
+	<string name="human">البشر الاخرين.</string>
 	<string name="guest">ضيف</string>
-	<string name="Computer">الكمبيوتر أو الحاسوب</string>
-	<string name="Thinking">جارٍ التفكير…</string>
-	<string name="menuSite">www.chess.com</string>
-	<string name="onlineNewGametitle">لعبة جديدة</string>
-	<string name="onlineChallenges">مفتوحة التحديات</string>
-	<string name="challengeFriend">تحدي صديق</string>
-	<string name="createNewChallenge">خلق تحديا سافرا</string>
-	<string name="currentGame">لايف لعبة الحالي</string>
+	<string name="computer">الكمبيوتر أو الحاسوب</string>
+	<string name="thinking_">جارٍ التفكير…</string>
+
+	<string name="open_challenges">مفتوحة التحديات</string>
+	<string name="challenge_friend">تحدي صديق</string>
+	<string name="create_open_challenge">خلق تحديا سافرا</string>
+	<string name="current_live_game">لايف لعبة الحالي</string>
 	<string name="game_type">لعبة نوع</string>
-	<string name="classic">الشطرنج الكلاسيكي</string>
-	<string name="chess960">الشطرنج 960</string>
+	<string name="chess_classic">الشطرنج الكلاسيكي</string>
+	<string name="chess_960">الشطرنج 960</string>
 	<string name="friend">فريند</string>
 	<string name="friends">مسلسل أصدقاء</string>
-	<string name="initialTime">الأولي وقت</string>
+	<string name="initial_time">الأولي وقت</string>
 	<string name="bonusTime">مكافأة الوقت</string>
 	<string name="rated_game">تصنيف لعبة</string>
 	<string name="i_play_as">أنا العب كما</string>
 	<string name="days_per_move">أيام في تحريك</string>
-	<string name="ChallengeCreate">خلق التحدي</string>
+	<string name="create_challenge">خلق التحدي</string>
 	<string name="on_off">تشغيل / إيقاف</string>
 	<string name="min_rating">تقييم دقيقة</string>
 	<string name="max_rating">أقصى تقدير</string>
 	<string name="email">بريد إلكتروني</string>
-	<string name="retype">إعادة كتابة كلمة السر</string>
+	<string name="retype_password">إعادة كتابة كلمة السر</string>
 	<string name="country">الدولة</string>
-	<string name="blue">الأزرق</string>
-	<string name="brown">البني</string>
-	<string name="green">أخضر</string>
-	<string name="grey">الرمادي</string>
-	<string name="marble">ماربل</string>
-	<string name="red">أحمر</string>
-	<string name="tan">تاني</string>
-	<string name="woodlight">ضَوْءُ وُود</string>
-	<string name="wooddark">الخشب الداكن</string>
-	<string name="alpha">ألفا</string>
-	<string name="book">الدفتر</string>
-	<string name="cases">الحالات</string>
-	<string name="classicP">كلاسيكية؟</string>
-	<string name="club">النادي</string>
-	<string name="condal">برشلونة</string>
-	<string name="maya">مايا</string>
-	<string name="modern">عصري</string>
-	<string name="vintage">خمر</string>
-	<string name="aim">بعد أن حرك</string>
+	<string name="board_blue">الأزرق</string>
+	<string name="board_brown">البني</string>
+	<string name="board_green">أخضر</string>
+	<string name="board_grey">الرمادي</string>
+	<string name="board_marble">ماربل</string>
+	<string name="board_red">أحمر</string>
+	<string name="board_tan">تاني</string>
+	<string name="board_woodlight">ضَوْءُ وُود</string>
+	<string name="board_wooddark">الخشب الداكن</string>
+	<string name="piece_alpha">ألفا</string>
+	<string name="piece_book">الدفتر</string>
+	<string name="piece_cases">الحالات</string>
+	<string name="piece_classic">كلاسيكية؟</string>
+	<string name="piece_club">النادي</string>
+	<string name="piece_condal">برشلونة</string>
+	<string name="piece_maya">مايا</string>
+	<string name="piece_modern">عصري</string>
+	<string name="piece_vintage">خمر</string>
+	<string name="after_i_move">بعد أن حرك</string>
 	<string name="notification">الإشعار</string>
-	<string name="notificationE">تمكين إعلامات</string>
-	<string name="ssb">وتظهر الصورة زر</string>
-	<string name="enableSounds">تمكين الأصوات</string>
+	<string name="enable_notifications">تمكين إعلامات</string>
+	<string name="show_submit_button">وتظهر الصورة زر</string>
+	<string name="enable_sounds">تمكين الأصوات</string>
 	<string name="strength">المقاومة</string>
-	<string name="interfaceP">واجهة المستخدم</string>
+	<string name="interface_caps">واجهة المستخدم</string>
 	<string name="board">العاب لوحيه</string>
-	<string name="pieces">قطعة</string>
-	<string name="showcoords">وتظهر بتنسيق</string>
-	<string name="movehighlights">ويبرز التحرك</string>
+
+	<string name="show_coordinates">وتظهر بتنسيق</string>
+	<string name="move_highlights">ويبرز التحرك</string>
 	<string name="invite_a_friend">دعوة صديق</string>
-	<string name="contactUs">اتصل بنا</string>
+	<string name="contact_us">اتصل بنا</string>
 	<string name="logout">خروج</string>
-	<string name="vacationOn">يوم عطلة</string>
-	<string name="vacationOff">ليس في عطلة</string>
-	<string name="ngwhite">لعبة جديدة (أبيض)</string>
-	<string name="ngblack">لعبة جديدة (أسود)</string>
-	<string name="emailgame">البريد الالكتروني لعبة</string>
+	<string name="vacation_on">يوم عطلة</string>
+	<string name="vacation_off">ليس في عطلة</string>
+	<string name="new_game_white">لعبة جديدة (أبيض)</string>
+	<string name="new_game_black">لعبة جديدة (أسود)</string>
+	<string name="email_game">البريد الالكتروني لعبة</string>
 	<string name="load">تحميل اللعبة المحفوظة</string>
 	<!--<string name="backtogamelist">عودة إلى قائمة لعبة</string>-->
 	<string name="messages">الرسائل</string>
-	<string name="analysis">تحليل المجلس</string>
-	<string name="drawoffer">عرض التعادل</string>
-	<string name="resignorabort">الاستقالة (أو إحباط)</string>
+	<string name="analysis_board">تحليل المجلس</string>
+	<string name="offer_draw">عرض التعادل</string>
+	<string name="resign_or_abort">الاستقالة (أو إحباط)</string>
 	<string name="resign">باستقالته.</string>
 	<string name="abort">تُجْهِض</string>
 	<string name="cancel">إلغاء</string>
@@ -131,7 +130,7 @@
 	<string name="hint">تلميح</string>
 	<string name="prev">السابق</string>
 	<string name="next">التالي</string>
-	<string name="nextgame">المقبل لعبة</string>
+	<string name="next_game">المقبل لعبة</string>
 	<string name="chat">الدردشة</string>
 	<string name="skill">مستوى المهارة</string>
 	<string name="category">القسم</string>
@@ -139,53 +138,44 @@
 	<string name="play">تَمْثيلِيَّة</string>
 	<string name="videos">فيديو</string>
 	<string name="congratulations">تهانينا!</string>
-	<string name="onlinegamecreated">لعبة على الانترنت خلقت!</string>
-	<string name="challengeSent">تحدي المرسلة!</string>
-	<string name="creating">خلق …</string>
-	<string name="gettingfriends">الحصول على قائمة الأصدقاء …</string>
+	<string name="online_game_created">لعبة على الانترنت خلقت!</string>
+	<string name="challenge_sent">تحدي المرسلة!</string>
+
 	<string name="sorry">معذرة!</string>
-	<string name="nofriends">لديك أي أصدقاء حتى الآن. يمكنك دعوتهم عبر www.chess.com.</string>
-	<string name="nofriends_online">أصدقاؤك ليسوا على الانترنت. إذا أنت لم يدعوهم حتى الآن، انتقل إلى www.chess.com.</string>
+	<string name="no_friends_invite">لديك أي أصدقاء حتى الآن. يمكنك دعوتهم عبر www.chess.com.</string>
+	<string name="no_friends_online">أصدقاؤك ليسوا على الانترنت. إذا أنت لم يدعوهم حتى الآن، انتقل إلى www.chess.com.</string>
 	<string name="invite">دعوة</string>
-	<string name="drawaccepted">رسم قبلت!</string>
+	<string name="draw_accepted">رسم قبلت!</string>
 	<string name="accept">قبول</string>
-	<string name="challengeaccepted">تحدي مقبول!</string>
-	<string name="challengedeclined">امتنع التحدي!</string>
+	<string name="challenge_accepted">تحدي مقبول!</string>
+	<string name="challenge_declined">امتنع التحدي!</string>
 	<string name="decline">رفض</string>
-	<string name="updatinggameslist">تحديث قائمة الألعاب …</string>
-	<!--<string name="challengetitle">التحديات</string>-->
-	<string name="loadinggames">تحميل العاب …</string>
-	<string name="drawoffered">رسم معروض</string>
-	<string name="gettingmessages">الكثير من الرسائل …</string>
-	<string name="sendingmessage">جار إرسال الرسالة…</string>
+	<string name="draw_offered">رسم معروض</string>
+
 	<string name="ok">موافق</string>
 	<string name="submit">إرسال</string>
 	<string name="login">تسجيل الدخول</string>
 	<string name="title">العنوان</string>
 	<string name="error">خطأ</string>
-	<string name="loading">جارٍ التحميل…</string>
-	<string name="wrongcountry">يجب تحديد بلدكم!</string>
-	<string name="wrongpassword">مهلا ، يجب أن لا تقل كلمة السر عن 6 أحرف.</string>
-	<string name="wrongusername">يجب أن يكون اسم المستخدم لا يقل عن 3 أحرف، وتحتوي فقط على حروف وأرقام، ويؤكد، وشرطات. لا يسمح للمسافات.</string>
-	<string name="wrongemail">وسوف تحتاج لتأكيد عضويتك من خلال البريد الإلكتروني.</string>
-	<string name="wrongretype">أعد كتابة كلمة المرور غير صحيح!</string>
-	<string name="signingin">جارٍ تسجيل الدخول…</string>
+	<string name="loading_">جارٍ التحميل…</string>
+	<string name="wrong_country">يجب تحديد بلدكم!</string>
+	<string name="wrong_password">مهلا ، يجب أن لا تقل كلمة السر عن 6 أحرف.</string>
+	<string name="wrong_username">يجب أن يكون اسم المستخدم لا يقل عن 3 أحرف، وتحتوي فقط على حروف وأرقام، ويؤكد، وشرطات. لا يسمح للمسافات.</string>
+	<string name="wrong_email">وسوف تحتاج لتأكيد عضويتك من خلال البريد الإلكتروني.</string>
+	<string name="wrong_retype_pass">أعد كتابة كلمة المرور غير صحيح!</string>
+	<string name="signing_in_">جارٍ تسجيل الدخول…</string>
 
-	<string name="showanswer">تبين جواب</string>
-	<string name="skipproblem">تخطي مشكلة</string>
-	<string name="sendinggameinfo">إرسال معلومات لعبة …</string>
+	<string name="show_answer">تبين جواب</string>
+	<string name="skip_problem">تخطي مشكلة</string>
+	<string name="sending_game_info">إرسال معلومات لعبة …</string>
 	<string name="check_field">التحقق الميداني</string>
 	<string name="validateUsername">يجب أن يكون اسم المستخدم الخاص بك ما بين 3 و 20 حرفا، وتحتوي فقط على حروف وأرقام، ويؤكد، وشرطات. لا يسمح للمسافات.</string>
 	<string name="validatePassword">يجب أن تكون كلمة السر ما بين 6 و 20 حرفا!</string>
-	<string name="black">الشاي الأسود</string>
-	<string name="white">الأبيض</string>
+
 	<string name="hours">ساعات</string>
 	<string name="days">أيام</string>
-	<string name="playeronline">لاعب على الانترنت!</string>
-	<string name="playeroffline">لاعب غير متصل!</string>
-	<string name="mymove">نقل لي!</string>
-	<string name="theirmove">انتقالهم!</string>
-	<string name="gamefinish">انهاء هذه اللعبة</string>
+
+
 	<string name="random">عشوائيًا</string>
 	<string name="won">فازا</string>
 	<string name="lost">خسر</string>
@@ -193,19 +183,19 @@
 	<string name="duration">المدة</string>
 	<string name="published">منشور</string>
 	<string name="details">التفاصيل</string>
-	<string name="playvideo">تشغيل الفيديو</string>
+	<string name="play_video">تشغيل الفيديو</string>
 	<string name="accepted">تم القبول في:</string>
 	<string name="upgrade">ترقية</string>
-	<string name="preferencesUpgrade">ترقية حسابي</string>
-	<string name="videoUpgrade">ترقية من أجل الوصول الكامل إلى أشرطة الفيديو!</string>
+	<string name="upgrade_my_account">ترقية حسابي</string>
+	<string name="upgrade_to_full_videos">ترقية من أجل الوصول الكامل إلى أشرطة الفيديو!</string>
 	<string name="removeAds">ترقية وازالة الاعلانات!</string>
 	<string name="accept_draw_q">تقبل السحب؟</string>
-	<string name="ready_for_first_tackics_q">هل أنت على استعداد للتكتيك الخاص بك أولا؟</string>
+	<string name="ready_for_first_tactics_q">هل أنت على استعداد للتكتيك الخاص بك أولا؟</string>
 	<string name="max_tactics_reached">ضربت لك عدد الحد الأقصى من التكتيكات لهذا اليوم. هل ترغب في أن تكون قادرة على بذل المزيد من التكتيكات؟
 	</string>
 	<string name="yes">نعم</string>
 	<string name="no">النُّوبِلْيُوم</string>
-	<string name="okay">موافق</string>
+
 	<string name="ten_tactics_completed">10 تكتيكات الانتهاء!</string>
 	<string name="offline_mode">حاليا الوضع</string>
 	<string name="no_network_rating_not_changed">الدخول إلى الإنترنت غير متوفر حاليا. ونتيجة لذلك، سوف تصويتك لن يتغير بعد الانتهاء من المشاكل حتى يعود الاتصال بالإنترنت.
@@ -220,9 +210,8 @@
 	<string name="browse">تصفح</string>
 
 
-	<string name="bonus_time_left">الوقت مكافأة بقي من %1$s الوقت للبقاء %2$s</string>
 
-	<string name="pieces_s">القطع:</string>
+	<string name="pieces_">القطع:</string>
 	<string name="home">الصفحة الرئيسية</string>
 	<string name="live">المتبرعون الأحياء</string>
 	<string name="online">فالتعلم عبر الانترنت ساعد المتعلمين علي التعلم في البيئة الافتراضية</string>
@@ -235,7 +224,7 @@
 	</string>
 	<string name="live_game">تعيش لعبة</string>
 	<string name="online_game">لعبة على الانترنت</string>
-	<string name="send_mail">إرسال البريد …</string>
+	<string name="send_mail_">إرسال البريد …</string>
 	<string name="tournaments">البطولات</string>
 	<string name="stats">إحصائيات</string>
 	<string name="challenges">التحديات</string>
@@ -243,10 +232,10 @@
 	<string name="analysis_mode">تحليل الوضع</string>
 	<string name="check">تأكد من التالي:</string>
 	<string name="choose_a_piece">اختيار قطعة</string>
-	<string name="open_app_t_see_msg">اضغط هنا للاطلاع على رسالة من داخل التطبيق</string>
+	<string name="open_app_to_see_msg">اضغط هنا للاطلاع على رسالة من داخل التطبيق</string>
 
 	<!--SignOut-->
-	<string name="signout_confirm">هل أنت متأكد أنك تريد تسجيل الخروج من خادم شطرنج لايف؟</string>
+	<string name="sign_out_confirm">هل أنت متأكد أنك تريد تسجيل الخروج من خادم شطرنج لايف؟</string>
 	<string name="confirm">تأكيد</string>
 	<string name="you_been_challenged">لقد تم الطعن لك!</string>
 
@@ -264,7 +253,7 @@
 	<string name="your_move">Chess.com - إنها عملكم</string>
 	<string name="your_turn">دورك!</string>
 	<string name="login_failed">فشل تسجيل الدخول:</string>
-	<string name="loggin_out">تسجيل الخروج …</string>
+	<string name="login_out">تسجيل الخروج …</string>
 	<string name="you_logged_out">لقد قمت بالخروج!</string>
 	<string name="too_short">قصيرة جدا</string>
 	<string name="can_not_be_empty">لا يمكن أن تكون فارغة</string>
@@ -272,7 +261,7 @@
 	<string name="no_chess_account_signup_please">لم يكن لديك حساب Chess.com، بالتسجيل، من فضلك.</string>
 	<string name="pass_dont_match">كلمة السر لا تتطابق</string>
 	<string name="username_cannot_be_encoded">لا يمكن أن اسم المستخدم الخاص بك يمكن ترميز لإرسال طلب</string>
-	<string name="menu_refresh">يُنْعِش</string>
+	<string name="refresh">يُنْعِش</string>
 	<string name="version_check">تحقق من إصدار</string>
 	<string name="version_is_obsolete_update">إصدار العميل عفا عليه الزمن. يرجى تحديث</string>
 
@@ -286,7 +275,7 @@
 	<string name="game_over">اللعبة انتهت</string>
 	<string name="draw_game">يسحب العرض</string>
 	<string name="has_offered_draw">وعرضت بالتعادل</string>
-	<string name="reconnecting">إعادة الاتصال</string>
+	<string name="reconnecting_">إعادة الاتصال</string>
 	<string name="another_login_detected">تم الكشف عن آخر تسجيل الدخول.</string>
 	<string name="loading_live_chess">تحميل الشطرنج لايف</string>
 	<string name="game_draw_by_repetition">التعادل بواسطة لعبة التكرار</string>
@@ -320,8 +309,7 @@
 	<string name="your_end_game_rating_online">تقييمك ( %1$d )</string>
 	<string name="draw_declined">يسحب تراجع</string>
 	<string name="has_declined_draw">وقد انخفض بالتعادل</string>
-	<string name="menu_search">البحث</string>
-	<string name="restoring_conntection_to_live">إعادة الاتصال …</string>
+
 	<string name="application_was_killed">قتل تطبيق، واستعادة …</string>
 	<string name="no_network">لا شبكة</string>
 	<string name="wireless_settings">الإعدادات اللاسلكية</string>

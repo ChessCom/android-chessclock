@@ -31,16 +31,16 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		super.onCreate(savedInstanceState);
 
 		menuItems = new ArrayList<NavigationMenuItem>();
-		menuItems.add(new NavigationMenuItem(getString(R.string.nav_upgrade), R.drawable.ic_nav_upgrade));
-		menuItems.add(new NavigationMenuItem(getString(R.string.nav_home), R.drawable.ic_nav_home));
-		menuItems.add(new NavigationMenuItem(getString(R.string.nav_play), R.drawable.ic_nav_play));
-		menuItems.add(new NavigationMenuItem(getString(R.string.nav_tactics), R.drawable.ic_nav_tactics));
-		menuItems.add(new NavigationMenuItem(getString(R.string.nav_videos), R.drawable.ic_nav_videos));
-		menuItems.add(new NavigationMenuItem(getString(R.string.nav_articles), R.drawable.ic_nav_articles));
-		menuItems.add(new NavigationMenuItem(getString(R.string.nav_stats), R.drawable.ic_nav_stats));
-		menuItems.add(new NavigationMenuItem(getString(R.string.nav_friends), R.drawable.ic_nav_friends));
-		menuItems.add(new NavigationMenuItem(getString(R.string.nav_messages), R.drawable.ic_nav_messages));
-		menuItems.add(new NavigationMenuItem(getString(R.string.nav_settings), R.drawable.ic_nav_settings));
+		menuItems.add(new NavigationMenuItem(getString(R.string.upgrade), R.drawable.ic_nav_upgrade));
+		menuItems.add(new NavigationMenuItem(getString(R.string.home), R.drawable.ic_nav_home));
+		menuItems.add(new NavigationMenuItem(getString(R.string.play), R.drawable.ic_nav_play));
+		menuItems.add(new NavigationMenuItem(getString(R.string.tactics), R.drawable.ic_nav_tactics));
+		menuItems.add(new NavigationMenuItem(getString(R.string.videos), R.drawable.ic_nav_videos));
+		menuItems.add(new NavigationMenuItem(getString(R.string.articles), R.drawable.ic_nav_articles));
+		menuItems.add(new NavigationMenuItem(getString(R.string.stats), R.drawable.ic_nav_stats));
+		menuItems.add(new NavigationMenuItem(getString(R.string.friends), R.drawable.ic_nav_friends));
+		menuItems.add(new NavigationMenuItem(getString(R.string.messages), R.drawable.ic_nav_messages));
+		menuItems.add(new NavigationMenuItem(getString(R.string.settings), R.drawable.ic_nav_settings));
 
 	}
 

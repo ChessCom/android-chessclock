@@ -92,6 +92,8 @@ public interface BoardFace {
 
 	CharSequence getMoveListSAN();
 
+	String[] getNotationArray();
+
 	String convertMoveLive();
 
 	void setAnalysis(boolean analysis);

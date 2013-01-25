@@ -1,17 +1,17 @@
 <resources>
 
 	<string name="connect_with_facebook">Connect with Facebook</string>
-	<string name="lccFailedUnavailable">Levende Chess server er for øyeblikket utilgjengelig.</string>
-	<string name="lccFailedUpgrading">Vi prøver å forbedre chess.com! Foreløpig området blir oppgradert. Det vil være live igjen på kort tid. Vennligst prøv å logge inn igjen snart. Takk!</string>
+	<string name="live_chess_server_unavailable">Levende Chess server er for øyeblikket utilgjengelig.</string>
+	<string name="live_chess_server_upgrading">Vi prøver å forbedre chess.com! Foreløpig området blir oppgradert. Det vil være live igjen på kort tid. Vennligst prøv å logge inn igjen snart. Takk!</string>
 	<string name="app_name">Chesscom</string>
-	<string name="signout">Logg av</string>
+	<string name="sign_out">Logg av</string>
 
 	<!--Dashboard labels-->
-	<string name="menuLive">Spill Live</string>
-	<string name="menuOnline">Spill Online</string>
-	<string name="menuComp">Spill Computer</string>
-	<string name="menuTactics">Taktikk Trainer</string>
-	<string name="menuVideo">Video Leksjoner</string>
+	<string name="dashboard_live">Spill Live</string>
+	<string name="dashboard_online">Spill Online</string>
+	<string name="dashboard_computer">Spill Computer</string>
+	<string name="dashboard_tactics">Taktikk Trainer</string>
+	<string name="dashboard_video">Video Leksjoner</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">SPILL LIVE</string>
@@ -43,81 +43,80 @@
 	<string name="password">Passord</string>
 	<string name="log_in">Logg på</string>
 	<string name="sing_up">Registrer deg</string>
-	<string name="complete_singupButton">Komplett Registrering</string>
-	<string name="singinPlayguest">Spill som Gjest</string>
+	<string name="complete_sing_up">Komplett Registrering</string>
+	<string name="play_as_guest">Spill som Gjest</string>
 
-	<string name="computerWhite">Hvit</string>
-	<string name="computerBlack">Svart</string>
-	<string name="Human">Menneskelig</string>
+	<string name="white">Hvit</string>
+	<string name="black">Svart</string>
+	<string name="human">Menneskelig</string>
 	<string name="guest">Gjest</string>
-	<string name="Computer">Datamaskin</string>
-	<string name="Thinking">Thinking …</string>
-	<string name="menuSite">www.chess.com</string>
-	<string name="onlineNewGametitle">Nytt spill</string>
-	<string name="onlineChallenges">Åpne Utfordringer</string>
-	<string name="challengeFriend">Utfordre en venn</string>
-	<string name="createNewChallenge">Lag Åpen Challenge</string>
-	<string name="currentGame">Gjeldende Live-spill</string>
+	<string name="computer">Datamaskin</string>
+	<string name="thinking_">Thinking …</string>
+
+	<string name="open_challenges">Åpne Utfordringer</string>
+	<string name="challenge_friend">Utfordre en venn</string>
+	<string name="create_open_challenge">Lag Åpen Challenge</string>
+	<string name="current_live_game">Gjeldende Live-spill</string>
 	<string name="game_type">Spilltype</string>
-	<string name="classic">Classic Chess</string>
-	<string name="chess960">Chess 960</string>
+	<string name="chess_classic">Classic Chess</string>
+	<string name="chess_960">Chess 960</string>
 	<string name="friend">Venn</string>
 	<string name="friends">Venner</string>
-	<string name="initialTime">Initial Tid</string>
+	<string name="initial_time">Initial Tid</string>
 	<string name="bonusTime">Bonus Tid</string>
 	<string name="rated_game">Vurdert spill</string>
 	<string name="i_play_as">Jeg Spill som</string>
 	<string name="days_per_move">Dager per trekk</string>
-	<string name="ChallengeCreate">Lag Challenge</string>
+	<string name="create_challenge">Lag Challenge</string>
 	<string name="on_off">ON / OFF</string>
 	<string name="min_rating">Min vurdering</string>
 	<string name="max_rating">Max Rating</string>
 	<string name="email">E-mail</string>
-	<string name="retype">Re-type passord</string>
+	<string name="retype_password">Re-type passord</string>
 	<string name="country">Land</string>
-	<string name="blue">Blå</string>
-	<string name="brown">Brown</string>
-	<string name="green">Grønn</string>
-	<string name="grey">Grey</string>
-	<string name="marble">Marmor</string>
-	<string name="red">Rød</string>
-	<string name="tan">Tan</string>
-	<string name="woodlight">Tre lys</string>
-	<string name="wooddark">Tre Mørk</string>
-	<string name="alpha">Alpha</string>
-	<string name="book">Book</string>
-	<string name="cases">Etui</string>
-	<string name="classicP">Klassisk</string>
-	<string name="club">Club</string>
-	<string name="condal">Condal</string>
-	<string name="maya">Maya</string>
-	<string name="modern">Moderne</string>
-	<string name="vintage">Vintage</string>
-	<string name="aim">Etter at jeg Flytt</string>
+	<string name="board_blue">Blå</string>
+	<string name="board_brown">Brown</string>
+	<string name="board_green">Grønn</string>
+	<string name="board_grey">Grey</string>
+	<string name="board_marble">Marmor</string>
+	<string name="board_red">Rød</string>
+	<string name="board_tan">Tan</string>
+	<string name="board_woodlight">Tre lys</string>
+	<string name="board_wooddark">Tre Mørk</string>
+	<string name="piece_alpha">Alpha</string>
+	<string name="piece_book">Book</string>
+	<string name="piece_cases">Etui</string>
+	<string name="piece_classic">Klassisk</string>
+	<string name="piece_club">Club</string>
+	<string name="piece_condal">Condal</string>
+	<string name="piece_maya">Maya</string>
+	<string name="piece_modern">Moderne</string>
+	<string name="piece_vintage">Vintage</string>
+	<string name="after_i_move">Etter at jeg Flytt</string>
 	<string name="notification">Varsling</string>
-	<string name="notificationE">Aktiver Påminnelser</string>
-	<string name="ssb">Vis Send knappen</string>
-	<string name="enableSounds">Aktiver lyder</string>
+	<string name="enable_notifications">Aktiver Påminnelser</string>
+	<string name="show_submit_button">Vis Send knappen</string>
+	<string name="enable_sounds">Aktiver lyder</string>
 	<string name="strength">Styrke</string>
-	<string name="interfaceP">INTERFACE</string>
+	<string name="interface_caps">INTERFACE</string>
 	<string name="board">Board</string>
-	<string name="pieces">Deler</string>
-	<string name="showcoords">Vis koordinerer</string>
-	<string name="movehighlights">Flytt Høydepunkter</string>
+
+	<string name="show_coordinates">Vis koordinerer</string>
+	<string name="move_highlights">Flytt Høydepunkter</string>
 	<string name="invite_a_friend">Invitér en venn</string>
-	<string name="contactUs">Kontakt oss</string>
+	<string name="contact_us">Kontakt oss</string>
 	<string name="logout">Logg ut</string>
-	<string name="vacationOn">På Ferie</string>
-	<string name="vacationOff">Ikke på ferie</string>
-	<string name="ngwhite">New Game (hvit)</string>
-	<string name="ngblack">New Game (svart)</string>
-	<string name="emailgame">Epost spill</string>
+	<string name="vacation_on">På Ferie</string>
+	<string name="vacation_off">Ikke på ferie</string>
+	<string name="new_game_white">New Game (hvit)</string>
+	<string name="new_game_black">New Game (svart)</string>
+	<string name="email_game">Epost spill</string>
 	<string name="load">Laste lagret spill</string>
 	<!--<string name="backtogamelist">Tilbake til spillhjelpesiden liste</string>-->
 	<string name="messages">Meldinger</string>
-	<string name="analysis">Analyse Board</string>
-	<string name="drawoffer">Tilby A Draw</string>
-	<string name="resignorabort">Fratre (Eller Abort)</string>
+	<string name="analysis_board">Analyse Board</string>
+	<string name="offer_draw">Tilby A Draw</string>
+	<string name="resign_or_abort">Fratre (Eller Abort)</string>
 	<string name="resign">Fratre</string>
 	<string name="abort">avbryte</string>
 	<string name="cancel">Avbryt</string>
@@ -129,7 +128,7 @@
 	<string name="hint">Tips</string>
 	<string name="prev">Forrige</string>
 	<string name="next">Neste</string>
-	<string name="nextgame">Neste spill</string>
+	<string name="next_game">Neste spill</string>
 	<string name="chat">Chat</string>
 	<string name="skill">Kompetansenivå</string>
 	<string name="category">Kategori</string>
@@ -137,52 +136,43 @@
 	<string name="play">Spill av</string>
 	<string name="videos">Videoer</string>
 	<string name="congratulations">Gratulerer!</string>
-	<string name="onlinegamecreated">Online spill laget!</string>
-	<string name="challengeSent">Utfordre Sendt!</string>
-	<string name="creating">Opprette …</string>
-	<string name="gettingfriends">Komme venneliste …</string>
+	<string name="online_game_created">Online spill laget!</string>
+	<string name="challenge_sent">Utfordre Sendt!</string>
+
 	<string name="sorry">Beklager.</string>
-	<string name="nofriends">Du har ingen venner enda. Du kan invitere dem via www.chess.com.</string>
-	<string name="nofriends_online">Dine venner er ikke online. Hvis du ikke invitere dem ennå, gå til www.chess.com.</string>
+	<string name="no_friends_invite">Du har ingen venner enda. Du kan invitere dem via www.chess.com.</string>
+	<string name="no_friends_online">Dine venner er ikke online. Hvis du ikke invitere dem ennå, gå til www.chess.com.</string>
 	<string name="invite">Inviter</string>
-	<string name="drawaccepted">Tegn akseptert!</string>
+	<string name="draw_accepted">Tegn akseptert!</string>
 	<string name="accept">Godta</string>
-	<string name="challengeaccepted">Utfordre akseptert!</string>
-	<string name="challengedeclined">Challenge Avvist!</string>
+	<string name="challenge_accepted">Utfordre akseptert!</string>
+	<string name="challenge_declined">Challenge Avvist!</string>
 	<string name="decline">Avslå</string>
-	<string name="updatinggameslist">Oppdaterer Games List …</string>
-	<!--<string name="challengetitle">Utfordring</string>-->
-	<string name="loadinggames">Laster spill …</string>
-	<string name="drawoffered">Tegn Tilbys</string>
-	<string name="gettingmessages">Får meldinger …</string>
-	<string name="sendingmessage">Sender melding …</string>
+
+	<string name="draw_offered">Tegn Tilbys</string>
+
 	<string name="ok">OK</string>
 	<string name="submit">Send·inn</string>
 	<string name="login">Logg inn</string>
 	<string name="title">Tittel</string>
 	<string name="error">Error</string>
-	<string name="loading">Laster inn …</string>
-	<string name="wrongcountry">Du må velge ditt land!</string>
-	<string name="wrongpassword">Passordet må være minst 6 tegn!</string>
-	<string name="wrongusername">Ditt brukernavn må være minst 3 tegn, og bare inneholde bokstaver, tall, understreking og bindestreker. Mellomrom er ikke tillatt.</string>
-	<string name="wrongemail">Du må bekrefte medlemskapet ditt via e-post.</string>
-	<string name="wrongretype">Feil retyped passord!</string>
-	<string name="signingin">Logger på …</string>
-	<string name="showanswer">Vis svar</string>
-	<string name="skipproblem">Hopp Problem</string>
-	<string name="sendinggameinfo">Sende spill info …</string>
+	<string name="loading_">Laster inn …</string>
+	<string name="wrong_country">Du må velge ditt land!</string>
+	<string name="wrong_password">Passordet må være minst 6 tegn!</string>
+	<string name="wrong_username">Ditt brukernavn må være minst 3 tegn, og bare inneholde bokstaver, tall, understreking og bindestreker. Mellomrom er ikke tillatt.</string>
+	<string name="wrong_email">Du må bekrefte medlemskapet ditt via e-post.</string>
+	<string name="wrong_retype_pass">Feil retyped passord!</string>
+	<string name="signing_in_">Logger på …</string>
+	<string name="show_answer">Vis svar</string>
+	<string name="skip_problem">Hopp Problem</string>
+	<string name="sending_game_info">Sende spill info …</string>
 	<string name="check_field">Sjekk Felt</string>
 	<string name="validateUsername">Ditt brukernavn må være mellom 3 og 20 tegn langt, og bare inneholde bokstaver, tall, understreking og bindestreker. Mellomrom er ikke tillatt.</string>
 	<string name="validatePassword">Passordet må være mellom 6 og 20 tegn langt!</string>
-	<string name="black">Svart</string>
-	<string name="white">hvit</string>
+
 	<string name="hours">Timer</string>
 	<string name="days">dager</string>
-	<string name="playeronline">Spiller Online!</string>
-	<string name="playeroffline">Spiller offline!</string>
-	<string name="mymove">Min Move!</string>
-	<string name="theirmove">Deres Move!</string>
-	<string name="gamefinish">Fullfør dette spillet</string>
+
 	<string name="random">Tilfeldig</string>
 	<string name="won">vant</string>
 	<string name="lost">tapte</string>
@@ -190,20 +180,20 @@
 	<string name="duration">Varighet</string>
 	<string name="published">Publisert</string>
 	<string name="details">Detaljer</string>
-	<string name="playvideo">Spill av video</string>
+	<string name="play_video">Spill av video</string>
 	<string name="accepted">Godtatt</string>
 	<string name="upgrade">Oppgrader</string>
-	<string name="preferencesUpgrade">Oppgradere kontoen min</string>
-	<string name="videoUpgrade">Oppgrader for full tilgang til videoer!</string>
+	<string name="upgrade_my_account">Oppgradere kontoen min</string>
+	<string name="upgrade_to_full_videos">Oppgrader for full tilgang til videoer!</string>
 	<string name="removeAds">Oppgrader Og Fjern annonser!</string>
 	<string name="accept_draw_q">Godta Tegn?</string>
-	<string name="ready_for_first_tackics_q">Er du klar for din første taktikken?</string>
+	<string name="ready_for_first_tactics_q">Er du klar for din første taktikken?</string>
 
 	<string name="max_tactics_reached">Du har truffet maksimalt antall taktikk for i dag. Vil du være i stand til å gjøre mer taktikk?
 	</string>
 	<string name="yes">Ja</string>
 	<string name="no">Nei</string>
-	<string name="okay">OK</string>
+
 	<string name="ten_tactics_completed">10 taktikk ferdig!</string>
 	<string name="offline_mode">Frakoblet modus</string>
 	<string name="no_network_rating_not_changed">Internett tilgang er ikke tilgjengelig for øyeblikket. Som et resultat, vil din rating ikke endre etter endt problemer før din internettforbindelse avkastning.
@@ -217,9 +207,7 @@
 	<string name="browse">Browse</string>
 
 
-	<string name="bonus_time_left">Bonus Tid igjen %1$s tid innlogget %2$s</string>
-
-	<string name="pieces_s">Brikker:</string>
+	<string name="pieces_">Brikker:</string>
 	<string name="home">Home</string>
 	<string name="live">Lev</string>
 	<string name="online">Online</string>
@@ -232,7 +220,7 @@
 	</string>
 	<string name="live_game">Live spill</string>
 	<string name="online_game">Online Game</string>
-	<string name="send_mail">Send mail …</string>
+	<string name="send_mail_">Send mail …</string>
 	<string name="tournaments">Turneringer</string>
 	<string name="stats">Egenskaper</string>
 	<string name="challenges">Utfordringer</string>
@@ -240,10 +228,10 @@
 	<string name="analysis_mode">Analyse Mode</string>
 	<string name="check">kryss av</string>
 	<string name="choose_a_piece">Velg et stykke</string>
-	<string name="open_app_t_see_msg">Trykk her for å se meldingen innsiden av app</string>
+	<string name="open_app_to_see_msg">Trykk her for å se meldingen innsiden av app</string>
 
 	<!--SignOut-->
-	<string name="signout_confirm">Er du sikker på at du vil logge ut fra Live Chess server?</string>
+	<string name="sign_out_confirm">Er du sikker på at du vil logge ut fra Live Chess server?</string>
 	<string name="confirm">Bekreft</string>
 	<string name="you_been_challenged">Du har blitt utfordret!</string>
 
@@ -261,7 +249,7 @@
 	<string name="your_move">Chess.com - Det er Your Move</string>
 	<string name="your_turn">Din tur!</string>
 	<string name="login_failed">Logg mislyktes:</string>
-	<string name="loggin_out">Logge ut …</string>
+	<string name="login_out">Logge ut …</string>
 	<string name="you_logged_out">Du har logget ut!</string>
 	<string name="too_short">For kort</string>
 	<string name="can_not_be_empty">Kan ikke være tom</string>
@@ -269,7 +257,7 @@
 	<string name="no_chess_account_signup_please">Du har ingen Chess.com konto, kan du registrere deg, takk.</string>
 	<string name="pass_dont_match">passord samsvarer ikke</string>
 	<string name="username_cannot_be_encoded">Ditt brukernavn kan ikke kodes å sende forespørsel</string>
-	<string name="menu_refresh">Oppdater</string>
+	<string name="refresh">Oppdater</string>
 	<string name="version_check">Versjon Sjekk</string>
 	<string name="version_is_obsolete_update">Klienten versjonen er foreldet. Vennligst oppdater</string>
 
@@ -283,7 +271,7 @@
 	<string name="game_over">GAME OVER</string>
 	<string name="draw_game">DRAW TILBUD</string>
 	<string name="has_offered_draw">har tilbudt en uavgjort</string>
-	<string name="reconnecting">Kobler til på nytt</string>
+	<string name="reconnecting_">Kobler til på nytt</string>
 	<string name="another_login_detected">En annen pålogging har blitt oppdaget.</string>
 	<string name="loading_live_chess">Laster Levende Chess</string>
 	<string name="game_draw_by_repetition">Spillet tegnet \n ved repetisjon</string>
@@ -317,8 +305,6 @@
 	<string name="draw_declined">DRAW Avvist</string>
 	<string name="has_declined_draw">har avtatt en uavgjort</string>
 
-	<string name="menu_search">Søk</string>
-	<string name="restoring_conntection_to_live">Kobler til på nytt…</string>
 	<string name="application_was_killed">Søknad ble drept, gjenopprette…</string>
 	<string name="no_network">No Network</string>
 	<string name="wireless_settings">Trådløse Innstillinger</string>

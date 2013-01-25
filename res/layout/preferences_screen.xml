@@ -22,7 +22,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/Text.Button.Upgrade"
-			android:text="@string/preferencesUpgrade"
+			android:text="@string/upgrade_my_account"
 			/>
 
 		<!--ONLINE GAME -->
@@ -48,7 +48,7 @@
 			<com.chess.RoboTextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/aim"
+				android:text="@string/after_i_move"
 				android:layout_weight="6"
 				/>
 
@@ -67,14 +67,14 @@
 			android:id="@+id/showOnlineSubmitChckBx"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/ssb"
+			android:text="@string/show_submit_button"
 			/>
 
 		<com.chess.RoboCheckBox
 			android:id="@+id/prefVacation"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/vacationOn"
+			android:text="@string/vacation_on"
 			/>
 
 
@@ -95,7 +95,7 @@
 			android:id="@+id/showLiveSubmitChckBx"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/ssb"
+			android:text="@string/show_submit_button"
 			/>
 
 		<!--Min Rating-->
@@ -188,7 +188,7 @@
 		<com.chess.RoboTextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/interfaceP"
+			android:text="@string/interface_caps"
 			style="@style/SettingsDividerText"
 			robo:ttf="Bold"
 			/>
@@ -254,7 +254,7 @@
 			<com.chess.RoboTextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/pieces"
+				android:text="@string/contact_us"
 				android:layout_weight="6"
 				/>
 
@@ -272,7 +272,7 @@
 			android:id="@+id/enableSoundsChkBx"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/enableSounds"
+			android:text="@string/enable_sounds"
 			/>
 
 		<!--Coordinates-->
@@ -281,21 +281,21 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 
-			android:text="@string/showcoords"/>
+			android:text="@string/show_coordinates"/>
 
 		<!--Move HighLights-->
 		<com.chess.RoboCheckBox
 			android:id="@+id/prefHighlights"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/movehighlights"/>
+			android:text="@string/move_highlights"/>
 
 		<!--Notifications-->
 		<com.chess.RoboCheckBox
 			android:id="@+id/notificationsChckBx"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/notificationE"
+			android:text="@string/enable_notifications"
 			/>
 
 		<!--
@@ -316,7 +316,7 @@
 			android:id="@+id/prefContactUs"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/contactUs"
+			android:text="@string/contact_us"
 			android:layout_marginTop="@dimen/margin_top_between_buttons"
 			/>
 

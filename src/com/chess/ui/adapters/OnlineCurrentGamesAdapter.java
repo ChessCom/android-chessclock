@@ -43,7 +43,7 @@ public class OnlineCurrentGamesAdapter extends ItemsAdapter<GameListCurrentItem>
 
 		String draw = StaticData.SYMBOL_EMPTY;
 		if (item.isDrawOfferPending()) {
-			draw = "\n" + context.getString(R.string.drawoffered);
+			draw = "\n" + context.getString(R.string.draw_offered);
 		}
 
 		holder.playerTxt.setText(item.getOpponentUsername() + gameType + draw);

@@ -155,7 +155,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(gameListElement.getGameId()));
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-			successToastMsgId = R.string.challengeaccepted;
+			successToastMsgId = R.string.challenge_accepted;
 
 			new RequestJsonTask<DailyGameAcceptItem>(challengeInviteUpdateListener).executeTask(loadItem);
 		}
@@ -175,7 +175,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 			loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(gameListElement.getGameId()));
 			loadItem.setRequestMethod(RestHelper.DELETE);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-			successToastMsgId = R.string.challengedeclined;
+			successToastMsgId = R.string.challenge_declined;
 
 			new RequestJsonTask<DailyGameAcceptItem>(challengeInviteUpdateListener).executeTask(loadItem);
 		}

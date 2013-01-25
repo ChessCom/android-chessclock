@@ -36,7 +36,9 @@ import org.apache.http.HttpEntity;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -379,5 +381,11 @@ public class AppUtils {
 	public static void hideKeyBoard(Context context, View editText){
 		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+	}
+
+	public static List<String> convertArrayToList(String[] array){
+		List<String> items = new ArrayList<String>();
+		items.addAll(Arrays.asList(array));
+		return items;
 	}
 }

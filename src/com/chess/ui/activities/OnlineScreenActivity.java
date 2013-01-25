@@ -395,7 +395,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(gameListChallengeItem.getGameId()));
 			loadItem.setRequestMethod(RestHelper.PUT);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-			successToastMsgId = R.string.challengeaccepted;
+			successToastMsgId = R.string.challenge_accepted;
 
 //			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
 			new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);
@@ -445,7 +445,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(gameListChallengeItem.getGameId()));
 			loadItem.setRequestMethod(RestHelper.DELETE);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-			successToastMsgId = R.string.challengedeclined;
+			successToastMsgId = R.string.challenge_declined;
 
 //			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
 			new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);
@@ -606,8 +606,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			new AlertDialog.Builder(getContext())
 					.setItems(new String[]{
 							getString(R.string.chat),
-							getString(R.string.drawoffer),
-							getString(R.string.resignorabort)},
+							getString(R.string.offer_draw),
+							getString(R.string.resign_or_abort)},
 							gameListItemDialogListener)
 					.create().show();
 

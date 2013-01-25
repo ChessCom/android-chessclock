@@ -111,7 +111,7 @@ public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnC
 
 		@Override
 		public void updateData(DailySeekItem returnedObj) {
-			showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
+			showSinglePopupDialog(R.string.congratulations, R.string.online_game_created);
 		}
 
 		@Override

@@ -144,7 +144,7 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 
 	@Override
 	protected void challengeTaskUpdated(Challenge challenge){
-		showSinglePopupDialog(R.string.congratulations, R.string.challengeSent);
+		showSinglePopupDialog(R.string.congratulations, R.string.challenge_sent);
 	}
 
 	@Override

@@ -1,17 +1,17 @@
 <resources>
 
 	<string name="connect_with_facebook">Facebook ile bağlan</string>
-	<string name="lccFailedUnavailable">Canlı Satranç sunucusu şu anda kullanılamıyor.</string>
-	<string name="lccFailedUpgrading">Biz chess.com geliştirmek için çalışıyorlar! Şu anda sitenin güncellenmesi. O hiçbir zaman tekrar yaşamak olacak. Kısa sürede tekrar giriş deneyin. Teşekkürler!</string>
+	<string name="live_chess_server_unavailable">Canlı Satranç sunucusu şu anda kullanılamıyor.</string>
+	<string name="live_chess_server_upgrading">Biz chess.com geliştirmek için çalışıyorlar! Şu anda sitenin güncellenmesi. O hiçbir zaman tekrar yaşamak olacak. Kısa sürede tekrar giriş deneyin. Teşekkürler!</string>
 	<string name="app_name">Chesscom</string>
-	<string name="signout">Çıkış</string>
+	<string name="sign_out">Çıkış</string>
 
 	<!--Dashboard labels-->
-	<string name="menuLive">Canlı oyna</string>
-	<string name="menuOnline">Play Online</string>
-	<string name="menuComp">Bilgisayar oyna</string>
-	<string name="menuTactics">Taktikler Trainer</string>
-	<string name="menuVideo">Video Dersler</string>
+	<string name="dashboard_live">Canlı oyna</string>
+	<string name="dashboard_online">Play Online</string>
+	<string name="dashboard_computer">Bilgisayar oyna</string>
+	<string name="dashboard_tactics">Taktikler Trainer</string>
+	<string name="dashboard_video">Video Dersler</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">CANLI OYNA</string>
@@ -43,81 +43,80 @@
 	<string name="password">Parola</string>
 	<string name="log_in">Giriş Yapın</string>
 	<string name="sing_up">Kaydolun</string>
-	<string name="complete_singupButton">Kayıt tamamlayın</string>
-	<string name="singinPlayguest">Misafir Olarak oyna</string>
+	<string name="complete_sing_up">Kayıt tamamlayın</string>
+	<string name="play_as_guest">Misafir Olarak oyna</string>
 
-	<string name="computerWhite">Beyaz</string>
-	<string name="computerBlack">Siyah</string>
-	<string name="Human">İnsan</string>
+	<string name="white">Beyaz</string>
+	<string name="black">Siyah</string>
+	<string name="human">İnsan</string>
 	<string name="guest">Misafir</string>
-	<string name="Computer">Bilgisayar</string>
-	<string name="Thinking">Düşünüyor</string>
-	<string name="menuSite">www.chess.com</string>
-	<string name="onlineNewGametitle">Yeni Oyun</string>
-	<string name="onlineChallenges">Açık Zorluklar</string>
-	<string name="challengeFriend">A Friend meydan</string>
-	<string name="createNewChallenge">Açık meydan oluşturma</string>
-	<string name="currentGame">Şu Canlı Oyun</string>
+	<string name="computer">Bilgisayar</string>
+	<string name="thinking_">Düşünüyor</string>
+
+	<string name="open_challenges">Açık Zorluklar</string>
+	<string name="challenge_friend">A Friend meydan</string>
+	<string name="create_open_challenge">Açık meydan oluşturma</string>
+	<string name="current_live_game">Şu Canlı Oyun</string>
 	<string name="game_type">Oyun Türü</string>
-	<string name="classic">Klasik Satranç</string>
-	<string name="chess960">Satranç 960</string>
+	<string name="chess_classic">Klasik Satranç</string>
+	<string name="chess_960">Satranç 960</string>
 	<string name="friend">Arkadaş</string>
 	<string name="friends">Arkadaşlar</string>
-	<string name="initialTime">İlk Zaman</string>
+	<string name="initial_time">İlk Zaman</string>
 	<string name="bonusTime">Bonus Zaman</string>
 	<string name="rated_game">Anma Oyunu</string>
 	<string name="i_play_as">Ben gibi oyna</string>
 	<string name="days_per_move">Taşı Başına Gün</string>
-	<string name="ChallengeCreate">Mücadelesi oluşturma</string>
+	<string name="create_challenge">Mücadelesi oluşturma</string>
 	<string name="on_off">ON / OFF</string>
 	<string name="min_rating">Min Rating</string>
 	<string name="max_rating">Max Değerlendirme</string>
 	<string name="email">Eposta</string>
-	<string name="retype">Şifre Tekrar</string>
+	<string name="retype_password">Şifre Tekrar</string>
 	<string name="country">Ülke</string>
-	<string name="blue">Mavi</string>
-	<string name="brown">Kahverengi</string>
-	<string name="green">Yeşil</string>
-	<string name="grey">Gri</string>
-	<string name="marble">Mermer</string>
-	<string name="red">Kırmızı</string>
-	<string name="tan">taba</string>
-	<string name="woodlight">Ahşap Işık</string>
-	<string name="wooddark">Ahşap Koyu</string>
-	<string name="alpha">Alfa</string>
-	<string name="book">Kitap!</string>
-	<string name="cases">Vakalar</string>
-	<string name="classicP">Klasik</string>
-	<string name="club">Kulüp</string>
-	<string name="condal">Condal</string>
-	<string name="maya">Maya</string>
-	<string name="modern">Mod</string>
-	<string name="vintage">Bağbozumu</string>
-	<string name="aim">Ben Taşı sonra</string>
+	<string name="board_blue">Mavi</string>
+	<string name="board_brown">Kahverengi</string>
+	<string name="board_green">Yeşil</string>
+	<string name="board_grey">Gri</string>
+	<string name="board_marble">Mermer</string>
+	<string name="board_red">Kırmızı</string>
+	<string name="board_tan">taba</string>
+	<string name="board_woodlight">Ahşap Işık</string>
+	<string name="board_wooddark">Ahşap Koyu</string>
+	<string name="piece_alpha">Alfa</string>
+	<string name="piece_book">Kitap!</string>
+	<string name="piece_cases">Vakalar</string>
+	<string name="piece_classic">Klasik</string>
+	<string name="piece_club">Kulüp</string>
+	<string name="piece_condal">Condal</string>
+	<string name="piece_maya">Maya</string>
+	<string name="piece_modern">Mod</string>
+	<string name="piece_vintage">Bağbozumu</string>
+	<string name="after_i_move">Ben Taşı sonra</string>
 	<string name="notification">Bilgilendirme</string>
-	<string name="notificationE">Bildirimleri etkinleştir</string>
-	<string name="ssb">Düğme Gönder göster</string>
-	<string name="enableSounds">Sesleri etkinleştirin</string>
+	<string name="enable_notifications">Bildirimleri etkinleştir</string>
+	<string name="show_submit_button">Düğme Gönder göster</string>
+	<string name="enable_sounds">Sesleri etkinleştirin</string>
 	<string name="strength">Güç</string>
-	<string name="interfaceP">Arayüz</string>
+	<string name="interface_caps">Arayüz</string>
 	<string name="board">Tahta</string>
-	<string name="pieces">Parçalar</string>
-	<string name="showcoords">Koordinatları göster</string>
-	<string name="movehighlights">Önemli Taşı</string>
+
+	<string name="show_coordinates">Koordinatları göster</string>
+	<string name="move_highlights">Önemli Taşı</string>
 	<string name="invite_a_friend">Arkadaşını Davet Et</string>
-	<string name="contactUs">İletişim</string>
+	<string name="contact_us">İletişim</string>
 	<string name="logout">Logout</string>
-	<string name="vacationOn">Tatil günü</string>
-	<string name="vacationOff">Değil Vacation</string>
-	<string name="ngwhite">New Game (beyaz)</string>
-	<string name="ngblack">New Game (siyah)</string>
-	<string name="emailgame">E-posta Oyun</string>
+	<string name="vacation_on">Tatil günü</string>
+	<string name="vacation_off">Değil Vacation</string>
+	<string name="new_game_white">New Game (beyaz)</string>
+	<string name="new_game_black">New Game (siyah)</string>
+	<string name="email_game">E-posta Oyun</string>
 	<string name="load">Kayıtlı Oyun yükleyin</string>
 	<!--<string name="backtogamelist">Oyun Listesi için yedekleyin</string>-->
 	<string name="messages">Mesajlar</string>
-	<string name="analysis">Analiz Yönetim Kurulu</string>
-	<string name="drawoffer">A Beraberlik Teklif</string>
-	<string name="resignorabort">İstifa (Ya Durdur)</string>
+	<string name="analysis_board">Analiz Yönetim Kurulu</string>
+	<string name="offer_draw">A Beraberlik Teklif</string>
+	<string name="resign_or_abort">İstifa (Ya Durdur)</string>
 	<string name="resign">Vazgeçme.</string>
 	<string name="abort">Iptal etmek</string>
 	<string name="cancel">İptal </string>
@@ -129,7 +128,7 @@
 	<string name="hint">Ipucu</string>
 	<string name="prev">ÖNCEKİ</string>
 	<string name="next">Sonraki</string>
-	<string name="nextgame">Sonraki Oyun</string>
+	<string name="next_game">Sonraki Oyun</string>
 	<string name="chat">Sohbet</string>
 	<string name="skill">Beceri düzeyi</string>
 	<string name="category">Kategori</string>
@@ -137,53 +136,44 @@
 	<string name="play">Oynat</string>
 	<string name="videos">Videolar</string>
 	<string name="congratulations">Tebrikler!</string>
-	<string name="onlinegamecreated">Online oyun oluşturuldu!</string>
-	<string name="challengeSent">Gönderilen meydan!</string>
-	<string name="creating">Oluşturuluyor …</string>
-	<string name="gettingfriends">Arkadaş Listesi Alınması …</string>
+	<string name="online_game_created">Online oyun oluşturuldu!</string>
+	<string name="challenge_sent">Gönderilen meydan!</string>
+
 	<string name="sorry">Üzüldüm</string>
-	<string name="nofriends">Henüz hiç arkadaşlarım var. Sen www.chess.com aracılığıyla davet edebilirsiniz.</string>
-	<string name="nofriends_online">Arkadaşlarınız çevrimiçi değildir. Henüz davet almadıysanız, www.chess.com gidin.</string>
+	<string name="no_friends_invite">Henüz hiç arkadaşlarım var. Sen www.chess.com aracılığıyla davet edebilirsiniz.</string>
+	<string name="no_friends_online">Arkadaşlarınız çevrimiçi değildir. Henüz davet almadıysanız, www.chess.com gidin.</string>
 	<string name="invite">Davet etmek</string>
-	<string name="drawaccepted">Kabul çiz!</string>
+	<string name="draw_accepted">Kabul çiz!</string>
 	<string name="accept">Kabul et</string>
-	<string name="challengeaccepted">Kabul meydan!</string>
-	<string name="challengedeclined">Mücadelesi Reddedildi!</string>
+	<string name="challenge_accepted">Kabul meydan!</string>
+	<string name="challenge_declined">Mücadelesi Reddedildi!</string>
 	<string name="decline">Reddet</string>
-	<string name="updatinggameslist">Oyun listesi güncelleniyor …</string>
-	<!--<string name="challengetitle">Meydan okuma</string>-->
-	<string name="loadinggames">Yükleniyor Oyunlar …</string>
-	<string name="drawoffered">Açılan Çiz</string>
-	<string name="gettingmessages">Başlarken Mesajlar …</string>
-	<string name="sendingmessage">Mesaj gönder</string>
+
+	<string name="draw_offered">Açılan Çiz</string>
+
 	<string name="ok">Tamam</string>
 	<string name="submit">Gönder</string>
 	<string name="login">Oturum aç</string>
 	<string name="title">Başlık:</string>
 	<string name="error">Hata</string>
-	<string name="loading">Yükleniyor…</string>
-	<string name="wrongcountry">Siz ülkenizi seçmeniz gerekir!</string>
-	<string name="wrongpassword">Şifreniz en az 6 karakter uzunluğunda olmalı!</string>
-	<string name="wrongusername">Kullanıcı adınız en az 3 karakter uzunluğunda olmalı ve sadece harf, rakam, altçizgi, tire ve içermelidir. Boşluklara izin verilmez.</string>
-	<string name="wrongemail">Bu e-posta ile üyelik onay gerekir.</string>
-	<string name="wrongretype">Yanlış retyped şifre!</string>
-	<string name="signingin">Oturum açılıyor…</string>
+	<string name="loading_">Yükleniyor…</string>
+	<string name="wrong_country">Siz ülkenizi seçmeniz gerekir!</string>
+	<string name="wrong_password">Şifreniz en az 6 karakter uzunluğunda olmalı!</string>
+	<string name="wrong_username">Kullanıcı adınız en az 3 karakter uzunluğunda olmalı ve sadece harf, rakam, altçizgi, tire ve içermelidir. Boşluklara izin verilmez.</string>
+	<string name="wrong_email">Bu e-posta ile üyelik onay gerekir.</string>
+	<string name="wrong_retype_pass">Yanlış retyped şifre!</string>
+	<string name="signing_in_">Oturum açılıyor…</string>
 
-	<string name="showanswer">Cevap göster</string>
-	<string name="skipproblem">Sorun geç</string>
-	<string name="sendinggameinfo">Oyun bilgisi gönderiliyor …</string>
+	<string name="show_answer">Cevap göster</string>
+	<string name="skip_problem">Sorun geç</string>
+	<string name="sending_game_info">Oyun bilgisi gönderiliyor …</string>
 	<string name="check_field">Saha Kontrol</string>
 	<string name="validateUsername">Kullanıcı adınız 3 ile 20 karakter uzunluğunda olmalı ve sadece harf, rakam, altçizgi, tire ve içermelidir. Boşluklara izin verilmez.</string>
 	<string name="validatePassword">Parolanız 6 ve 20 karakter arasında olmalıdır!</string>
-	<string name="black">Siyah</string>
-	<string name="white">Beyaz</string>
+
 	<string name="hours">saat</string>
 	<string name="days">günler</string>
-	<string name="playeronline">Oyuncu Online!</string>
-	<string name="playeroffline">Oyuncu Offline!</string>
-	<string name="mymove">Benim Taşı!</string>
-	<string name="theirmove">Onların taşı!</string>
-	<string name="gamefinish">Bu oyunu bitirmek</string>
+
 	<string name="random">Rastgele</string>
 	<string name="won">kazandı</string>
 	<string name="lost">kayıp</string>
@@ -191,20 +181,20 @@
 	<string name="duration">Süre</string>
 	<string name="published">Yayınlandığı</string>
 	<string name="details">Ayrıntılar</string>
-	<string name="playvideo">Video\'yu oynat</string>
+	<string name="play_video">Video\'yu oynat</string>
 	<string name="accepted">Kabul!</string>
 	<string name="upgrade">Yükselt</string>
-	<string name="preferencesUpgrade">Hesabım yükseltme</string>
-	<string name="videoUpgrade">Videolar tam erişim için yükselt!</string>
+	<string name="upgrade_my_account">Hesabım yükseltme</string>
+	<string name="upgrade_to_full_videos">Videolar tam erişim için yükselt!</string>
 	<string name="removeAds">Yükseltme Ve Reklamları Kaldır!</string>
 	<string name="accept_draw_q">Beraberlik Kabul?</string>
-	<string name="ready_for_first_tackics_q">Eğer ilk taktiği için hazır mısınız?</string>
+	<string name="ready_for_first_tactics_q">Eğer ilk taktiği için hazır mısınız?</string>
 
 	<string name="max_tactics_reached">Bugün için taktikler maksimum sayıda vurdu. Daha fazla taktik yapabilmek ister misiniz?
 	</string>
 	<string name="yes">Evet</string>
 	<string name="no">Hayır</string>
-	<string name="okay">Tamam</string>
+
 	<string name="ten_tactics_completed">10 taktikleri tamamlandı!</string>
 	<string name="offline_mode">Çevrimdışı modu</string>
 	<string name="no_network_rating_not_changed">İnternet şu anda kullanılabilir değil. Sonuç olarak, kendi değerlendirmesi Internet bağlantınızı dönene kadar sorunlarını tamamladıktan sonra değişmez.
@@ -218,9 +208,7 @@
 	<string name="browse">Gözat</string>
 
 
-	<string name="bonus_time_left">Bonus Zaman Left %1$s Geçirilen Zaman %2$s</string>
-
-	<string name="pieces_s">Adet:</string>
+	<string name="pieces_">Adet:</string>
 	<string name="home">Ana sayfa</string>
 	<string name="live">Live</string>
 	<string name="online">Çevrimiçi</string>
@@ -233,7 +221,7 @@
 	</string>
 	<string name="live_game">Oyun Canlı</string>
 	<string name="online_game">Online Oyun</string>
-	<string name="send_mail">Posta gönder …</string>
+	<string name="send_mail_">Posta gönder …</string>
 	<string name="tournaments">Turnuvalar</string>
 	<string name="stats">İstatistikler</string>
 	<string name="challenges">Zorluklar</string>
@@ -241,10 +229,10 @@
 	<string name="analysis_mode">Analiz Modu</string>
 	<string name="check">Kontrol edin!</string>
 	<string name="choose_a_piece">Bir parça seçin</string>
-	<string name="open_app_t_see_msg">App içindeki mesajı görmek için buraya dokunun</string>
+	<string name="open_app_to_see_msg">App içindeki mesajı görmek için buraya dokunun</string>
 
 	<!--SignOut-->
-	<string name="signout_confirm">Eğer Canlı Satranç sunucu oturumunu kapatmak istiyor musunuz?</string>
+	<string name="sign_out_confirm">Eğer Canlı Satranç sunucu oturumunu kapatmak istiyor musunuz?</string>
 	<string name="confirm">Onayla</string>
 	<string name="you_been_challenged">Sen Engelliler Been!</string>
 
@@ -262,7 +250,7 @@
 	<string name="your_move">Chess.com - It Your Move var</string>
 	<string name="your_turn">Your Turn!</string>
 	<string name="login_failed">Oturum açma başarısız </string>
-	<string name="loggin_out">Çıkış</string>
+	<string name="login_out">Çıkış</string>
 	<string name="you_logged_out">Siz çıkış yaptınız!</string>
 	<string name="too_short">Çok kısa</string>
 	<string name="can_not_be_empty">Boş olamaz</string>
@@ -270,7 +258,7 @@
 	<string name="no_chess_account_signup_please">Hiçbir Chess.com hesabınız varsa, lütfen kaydolun.</string>
 	<string name="pass_dont_match">Şifreler eşleşmiyor.</string>
 	<string name="username_cannot_be_encoded">Kullanıcı adınız isteği göndermek için kodlanmış olamaz</string>
-	<string name="menu_refresh">yenileme</string>
+	<string name="refresh">yenileme</string>
 	<string name="version_check">Sürüm Kontrol</string>
 	<string name="version_is_obsolete_update">Istemci sürümü artık kullanılmıyor. Güncelleyin</string>
 
@@ -284,7 +272,7 @@
 	<string name="game_over">Oyun bitti.</string>
 	<string name="draw_game">TEKLİF DRAW</string>
 	<string name="has_offered_draw">berabere önerdi</string>
-	<string name="reconnecting">Yeniden bağlanılıyor</string>
+	<string name="reconnecting_">Yeniden bağlanılıyor</string>
 	<string name="another_login_detected">Başka bir giriş tespit edildi.</string>
 	<string name="loading_live_chess">Canlı Satranç Yükleniyor</string>
 	<string name="game_draw_by_repetition">Oyunu tekrar ederek \n çizilmiş</string>
@@ -318,8 +306,6 @@
 	<string name="draw_declined">Reddedildi DRAW</string>
 	<string name="has_declined_draw">berabere düşmüştür</string>
 
-	<string name="menu_search">Ara</string>
-	<string name="restoring_conntection_to_live">Yeniden bağlanıyor …</string>
 	<string name="application_was_killed">Uygulama geri, öldürüldü …</string>
 	<string name="no_network">Şebeke Yok</string>
 	<string name="wireless_settings">Kablosuz Ayarları</string>

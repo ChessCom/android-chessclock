@@ -1,6 +1,7 @@
 package com.chess.ui.views;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -10,6 +11,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -17,6 +19,7 @@ import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.ui.engine.PieceItem;
 import com.chess.ui.interfaces.BoardViewFace;
+import com.chess.utilities.AppUtils;
 
 import java.util.HashMap;
 
@@ -105,6 +108,7 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	private ScrollView movesScroll; // http://stackoverflow.com/questions/10806154/outofmemoryerror-when-inflating-a-layout
 	private boolean blocked;
 	private int cnt;
+	private HorizontalListView horizontalListView;
 
 	public GamePanelView(Context context) {
         super(context);
@@ -243,7 +247,10 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         movesScroll.addView(movesTextView);
         movesScroll.setLayoutParams(listParams);
 
-        infoLayout.addView(movesScroll);
+//        infoLayout.addView(movesScroll);
+		horizontalListView = new HorizontalListView(getContext(), null);
+
+        infoLayout.addView(horizontalListView);
 
         addView(infoLayout);
 
@@ -326,10 +333,73 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         ((ImageButton) findViewById(BUTTON_PREFIX + buttonId)).setImageResource(resId);
     }
 
-    public void setMovesLog(CharSequence move) {
-        movesTextView.setText(move);
-        movesScroll.scrollTo(0, getResources().getDisplayMetrics().heightPixels);
+//    public void setMovesLog(CharSequence notations) {
+    public void setMovesLog(String[] notations) {
+		// set Array adapter
+
+		horizontalListView.setAdapter(new NotationsAdapter(notations));
+
+
+//		movesTextView.setText(notations);
+//        movesScroll.scrollTo(0, getResources().getDisplayMetrics().heightPixels);
     }
+
+	private class NotationsAdapter extends BaseAdapter {
+
+		private String[] dataObjects;
+
+		NotationsAdapter(String[] dataObjects) {
+
+			this.dataObjects = dataObjects;
+		}
+
+		private OnClickListener mOnButtonClicked = new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+
+			}
+		};
+
+		@Override
+		public int getCount() {
+			return dataObjects.length;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		@Override
+		public View getView(int pos, View convertView, ViewGroup parent) {
+			if (convertView == null) {
+				convertView = createView(parent);
+			}
+			bindView(dataObjects[pos], pos, convertView);
+			return convertView;
+		}
+
+		protected View createView(ViewGroup parent){
+			RoboTextView textView = new RoboTextView(getContext());
+			textView.setOnClickListener(mOnButtonClicked);
+
+			return textView;
+		}
+
+		protected void bindView(String item, int pos, View convertView){
+			convertView.setTag(R.id.list_item_id, pos);
+			((TextView)convertView).setText(item);
+
+		}
+
+	}
 
     private int getFramePrefix(boolean isWhite) {
         return isWhite ? WHITE_FRAME_PREFIX : BLACK_FRAME_PREFIX;

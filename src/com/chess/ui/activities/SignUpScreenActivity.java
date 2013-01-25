@@ -160,7 +160,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		}
 
 		if (CID == -1) {
-			showToast(getString(R.string.wrongcountry));
+			showToast(getString(R.string.wrong_country));
 			return false;
 		}
 		return true;

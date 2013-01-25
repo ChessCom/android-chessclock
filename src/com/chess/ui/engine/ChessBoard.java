@@ -1411,17 +1411,27 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public String getMoveListSAN() {
-//		String output = StaticData.SYMBOL_EMPTY;
-		StringBuffer output = new StringBuffer();
-		int i;
-		for (i = 0; i < hply; i++) {
-			if (i % 2 == 0) {
-				output.append(SYMBOL_NEW_STRING).append(i / 2 + 1).append(MOVE_NUBMER_DOT_SEPARATOR);
+		StringBuilder output = new StringBuilder();
+//		int i;
+		for (int i = 0; i < hply; i++) {
+			if (i % 2 == 0) { //
+				output.append(SYMBOL_NEW_STRING);
+				// add move number
+				output.append(i / 2 + 1).append(MOVE_NUBMER_DOT_SEPARATOR);
 			}
 			output.append(histDat[i].notation);
 			output.append(StaticData.SYMBOL_SPACE);
 		}
 		return output.toString();
+	}
+
+	@Override
+	public String[] getNotationArray(){
+		String[] output = new String[hply];
+		for (int i = 0; i < hply; i++) {
+			output[i] = histDat[i].notation;
+		}
+		return output;
 	}
 
 	public String getMoveSAN() {

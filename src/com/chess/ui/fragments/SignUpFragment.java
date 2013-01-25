@@ -165,7 +165,7 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 		}
 		CID = 1; // TODO restore
 		if (CID == -1) {
-			showToast(getString(R.string.wrongcountry));
+			showToast(getString(R.string.wrong_country));
 			return false;
 		}
 		return true;

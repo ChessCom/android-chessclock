@@ -41,7 +41,7 @@ public class DailyCurrentGamesTheirCursorAdapter extends ItemsCursorAdapter {
 
 		String draw = StaticData.SYMBOL_EMPTY;
 		if (getInt(cursor, DBConstants.V_OPPONENT_OFFERED_DRAW) > 0) {
-			draw = "\n" + context.getString(R.string.drawoffered);
+			draw = "\n" + context.getString(R.string.draw_offered);
 		}
 
 		holder.playerTxt.setText(getString(cursor, DBConstants.V_OPPONENT_NAME) + gameType + draw);

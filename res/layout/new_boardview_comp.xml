@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/Thinking"
+            android:text="@string/thinking_"
             android:visibility="gone"
             style="@style/GameLabel"
             />
@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="@string/Computer"
+            android:text="@string/computer"
             android:paddingLeft="2dip"
             android:paddingRight="8dip"
             style="@style/GameLabel.Player"

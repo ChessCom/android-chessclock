@@ -25,7 +25,7 @@
 			<com.chess.RoboTextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/computerWhite"
+				android:text="@string/white"
 				android:layout_weight="8"
 				/>
 
@@ -43,7 +43,7 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="56"
 					android:checked="true"
-					android:text="@string/Human"
+					android:text="@string/human"
 
 					/>
 
@@ -52,7 +52,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_weight="44"
-					android:text="@string/Computer"
+					android:text="@string/computer"
 
 					/>
 
@@ -67,7 +67,7 @@
 			<com.chess.RoboTextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/computerBlack"
+				android:text="@string/black"
 				android:layout_weight="8"
 				/>
 			<RadioGroup
@@ -82,7 +82,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_weight="56"
-					android:text="@string/Human"
+					android:text="@string/human"
 					/>
 
 				<com.chess.RoboRadioButton
@@ -91,7 +91,7 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="44"
 					android:checked="true"
-					android:text="@string/Computer"
+					android:text="@string/computer"
 					/>
 
 			</RadioGroup>

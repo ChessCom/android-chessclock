@@ -197,7 +197,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		@Override
 		public void showProgress(boolean show) {
 			if (show){
-				showPopupHardProgressDialog(R.string.signingin);
+				showPopupHardProgressDialog(R.string.signing_in_);
 			} else {
 				if(isPaused)
 					return;
@@ -331,7 +331,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	public class SampleLogoutListener implements SessionEvents.LogoutListener {
 		@Override
 		public void onLogoutBegin() {
-			showToast(R.string.loggin_out);
+			showToast(R.string.login_out);
 		}
 
 		@Override

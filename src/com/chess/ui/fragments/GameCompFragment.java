@@ -118,9 +118,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 	private void init() {
 		menuOptionsItems = new CharSequence[]{
-				getString(R.string.ngwhite),
-				getString(R.string.ngblack),
-				getString(R.string.emailgame),
+				getString(R.string.new_game_white),
+				getString(R.string.new_game_black),
+				getString(R.string.email_game),
 				getString(R.string.settings)};
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener();
@@ -208,30 +208,31 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		switch (getBoardFace().getMode()) {
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {    //w - human; b - comp
 				whitePlayerLabel.setText(AppData.getUserName(getActivity()));
-				blackPlayerLabel.setText(getString(R.string.Computer));
+				blackPlayerLabel.setText(getString(R.string.computer));
 				updatePlayerDots(getBoardFace().isWhiteToMove());
 				break;
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {    //w - comp; b - human
-				whitePlayerLabel.setText(getString(R.string.Computer));
+				whitePlayerLabel.setText(getString(R.string.computer));
 				blackPlayerLabel.setText(AppData.getUserName(getActivity()));
 				updatePlayerDots(getBoardFace().isWhiteToMove());
 				break;
 			}
 			case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {    //w - human; b - human
-				whitePlayerLabel.setText(getString(R.string.Human));
-				blackPlayerLabel.setText(getString(R.string.Human));
+				whitePlayerLabel.setText(getString(R.string.human));
+				blackPlayerLabel.setText(getString(R.string.human));
 				updatePlayerDots(getBoardFace().isWhiteToMove());
 				break;
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {    //w - comp; b - comp
-				whitePlayerLabel.setText(getString(R.string.Computer));
-				blackPlayerLabel.setText(getString(R.string.Computer));
+				whitePlayerLabel.setText(getString(R.string.computer));
+				blackPlayerLabel.setText(getString(R.string.computer));
 				break;
 			}
 		}
 
-		boardView.setMovesLog(getBoardFace().getMoveListSAN());
+//		boardView.setMovesLog(getBoardFace().getMoveListSAN());
+		boardView.setMovesLog(getBoardFace().getNotationArray());
 	}
 
 	@Override

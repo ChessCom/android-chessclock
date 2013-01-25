@@ -88,7 +88,7 @@
             android:id="@+id/passwordRetypeEdt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/retype"
+            android:hint="@string/retype_password"
             android:inputType="textPassword"
             android:password="true"
             style="@style/WhiteGrayEditText.Bottom"
@@ -100,7 +100,7 @@
             android:id="@+id/RegSubmitBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/complete_singupButton"
+            android:text="@string/complete_sing_up"
             android:layout_marginTop="@dimen/common_main_hit_button_margin_top"
             />
 
