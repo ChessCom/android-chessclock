@@ -103,8 +103,8 @@ public class CapturedPiecesDrawable extends Drawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-		int width = canvas.getWidth();
-		int height = canvas.getHeight();
+		int width = getBounds().width();
+		int height = getBounds().height();
 
 
 		if (side == AppConstants.WHITE_SIDE) {
@@ -118,7 +118,6 @@ public class CapturedPiecesDrawable extends Drawable {
 		}
 
 		backDrawable.setBounds(0, 0, width, height);
-//		backDrawable.draw(canvas);
 
 		// translate to vertical center
 		canvas.translate(0, height / 2 - pieceWidth / 2);

@@ -42,8 +42,8 @@ public class BoardAvatarDrawable extends Drawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-		int width = canvas.getWidth();
-		int height = canvas.getHeight();
+		int width = getBounds().width();
+		int height = getBounds().height();
 
 		if (roundedBitmap == null) {
 			roundedBitmap = createRoundedBitmap(width - BORDER_THICK * 2, height - BORDER_THICK * 2);
