@@ -90,7 +90,6 @@ public class GamePanelInfoView extends RelativeLayout implements View.OnClickLis
 			avatarParams.setMargins(AVATAR_MARGIN, AVATAR_MARGIN, AVATAR_MARGIN, AVATAR_MARGIN);
 			avatarParams.addRule(RelativeLayout.CENTER_VERTICAL);
 
-//			avatarImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.img_profile_picture_stub));
 			avatarImg.setScaleType(ImageView.ScaleType.FIT_XY);
 			avatarImg.setAdjustViewBounds(true);
 			avatarImg.setId(AVATAR_ID);

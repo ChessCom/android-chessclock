@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.RoboTextView;
+import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.PieceItem;
 import com.chess.ui.interfaces.BoardViewFace;
 import com.chess.utilities.AppUtils;
@@ -31,9 +33,10 @@ import java.util.HashMap;
  */
 public class GamePanelView extends LinearLayout implements View.OnClickListener {
 
-    private static final int SHIFT_SIZE = 4;
+	private static final int SHIFT_SIZE = 4;
+	public static final int NOTATION_TEXT_SIZE = 11;
 
-    private LinearLayout controlsLayout;
+	private LinearLayout controlsLayout;
     private int[] pieceIds;
     private int[] whitePieceDrawableIds;
     private int[] blackPieceDrawableIds;
@@ -347,18 +350,18 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 	private class NotationsAdapter extends BaseAdapter {
 
 		private String[] dataObjects;
+		private int textColor;
 
 		NotationsAdapter(String[] dataObjects) {
 
 			this.dataObjects = dataObjects;
+			textColor = getContext().getResources().getColor(R.color.new_light_grey);
 		}
 
 		private OnClickListener mOnButtonClicked = new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-
-
 			}
 		};
 
@@ -368,8 +371,8 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		}
 
 		@Override
-		public Object getItem(int position) {
-			return null;
+		public String getItem(int position) {
+			return dataObjects[position];
 		}
 
 		@Override
@@ -388,6 +391,10 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 		protected View createView(ViewGroup parent){
 			RoboTextView textView = new RoboTextView(getContext());
+			textView.setTextColor(textColor);
+			textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, NOTATION_TEXT_SIZE);
+			textView.setFont(RoboTextView.HELV_NEUE_FONT);
+			textView.setPadding((int) (5 * density), (int) (5 * density), (int) (5 * density), (int) (5 * density));
 			textView.setOnClickListener(mOnButtonClicked);
 
 			return textView;
@@ -395,10 +402,14 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 
 		protected void bindView(String item, int pos, View convertView){
 			convertView.setTag(R.id.list_item_id, pos);
-			((TextView)convertView).setText(item);
 
+			if (pos %2 == 0) {
+				int number = pos / 2 + 1;
+				((TextView)convertView).setText(String.valueOf(number) + StaticData.SYMBOL_DOT + item);
+			} else {
+				((TextView)convertView).setText(item);
+			}
 		}
-
 	}
 
     private int getFramePrefix(boolean isWhite) {

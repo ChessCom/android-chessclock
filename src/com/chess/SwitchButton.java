@@ -98,7 +98,7 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 			textView.setTextColor(getContext().getResources().getColor(R.color.new_normal_grey));
 			textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE);
 			textView.setPadding(TEXT_LEFT_PADDING, 0, 0, 0);
-			textView.setFont(RoboTextView.ROBOTO_BOLD_FONT);
+			textView.setFont(RoboTextView.HELV_NEUE_FONT);
 			textView.setId(TEXT_ID);
 			float shadowRadius = 0.5f ;
 			float shadowDx = 0;
