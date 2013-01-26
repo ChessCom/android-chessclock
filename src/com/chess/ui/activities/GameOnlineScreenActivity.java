@@ -39,7 +39,7 @@ import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.views.ChessBoardNetworkView;
 import com.chess.ui.views.ChessBoardOnlineView;
-import com.chess.ui.views.GamePanelView;
+import com.chess.ui.views.GameControlsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
@@ -115,12 +115,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		findViewById(R.id.submitBtn).setOnClickListener(this);
 		findViewById(R.id.cancelBtn).setOnClickListener(this);
 
-		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_ctrl_restore);
-		gamePanelView.enableGameControls(false);
+		gameControlsView.changeGameButton(GameControlsView.B_NEW_GAME_ID, R.drawable.ic_ctrl_restore);
+		gameControlsView.enableGameControls(false);
 
 		boardView = (ChessBoardOnlineView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setGamePanelView(gamePanelView);
+		boardView.setGameControlsView(gameControlsView);
 		setBoardView(boardView);
 
 		if (extras.getBoolean(AppConstants.NOTIFICATION, false)) {
@@ -256,7 +256,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 					DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 
-					gamePanelView.enableGameControls(true);
+					gameControlsView.enableGameControls(true);
 					boardView.lockBoard(false);
 
 					checkMessages();
@@ -357,7 +357,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 //
 //			DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 //
-//			gamePanelView.enableGameControls(true);
+//			gameControlsView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			checkMessages();
@@ -430,7 +430,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 //
 //			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
 //
-//			gamePanelView.enableGameControls(true);
+//			gameControlsView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			if (getBoardFace().isAnalysis()) {
@@ -480,8 +480,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		whitePlayerLabel.setText(getWhitePlayerName());
 		blackPlayerLabel.setText(getBlackPlayerName());
 
-//		boardView.setMovesLog(getBoardFace().getMoveListSAN());
-		boardView.setMovesLog(getBoardFace().getNotationArray());
+//		boardView.updateNotations(getBoardFace().getMoveListSAN());
+		boardView.updateNotations(getBoardFace().getNotationArray());
 	}
 
 	@Override
@@ -555,7 +555,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 //
 ////			DBDataManager.updateOnlineGame(getContext(), currentGame);
 //
-//			gamePanelView.enableGameControls(true);
+//			gameControlsView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			sendMove();
@@ -623,7 +623,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		preferencesEditor.commit();
 
 		currentGame.setHasNewMessage(false);
-		gamePanelView.haveNewMessage(false);
+		gameControlsView.haveNewMessage(false);
 
 		Intent intent = new Intent(this, ChatOnlineActivity.class);
 		intent.putExtra(BaseGameItem.GAME_ID, gameId);
@@ -635,7 +635,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	private void checkMessages() {
 		if (currentGame.hasNewMessage()) {
-			gamePanelView.haveNewMessage(true);
+			gameControlsView.haveNewMessage(true);
 		}
 	}
 
@@ -1033,7 +1033,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
 
-			gamePanelView.enableGameControls(true);
+			gameControlsView.enableGameControls(true);
 			boardView.lockBoard(false);
 
 			if (getBoardFace().isAnalysis()) {

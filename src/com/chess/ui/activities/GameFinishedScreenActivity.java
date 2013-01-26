@@ -26,7 +26,7 @@ import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.views.ChessBoardNetworkView;
 import com.chess.ui.views.ChessBoardOnlineView;
-import com.chess.ui.views.GamePanelView;
+import com.chess.ui.views.GameControlsView;
 
 import java.util.Calendar;
 
@@ -65,13 +65,13 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	protected void widgetsInit() {
 		super.widgetsInit();
 
-		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
-		gamePanelView.hideChatButton();
-		gamePanelView.enableGameControls(false);
+		gameControlsView.changeGameButton(GameControlsView.B_NEW_GAME_ID, R.drawable.ic_next_game);
+		gameControlsView.hideChatButton();
+		gameControlsView.enableGameControls(false);
 
 		boardView = (ChessBoardOnlineView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setGamePanelView(gamePanelView);
+		boardView.setGameControlsView(gameControlsView);
 		setBoardView(boardView);
 
 //		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
@@ -134,7 +134,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 					currentGame = DBDataManager.getGameFinishedItemFromCursor(returnedObj);
 					returnedObj.close();
 
-					gamePanelView.enableGameControls(true);
+					gameControlsView.enableGameControls(true);
 
 					adjustBoardForGame();
 					break;
@@ -185,7 +185,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 //			getSoundPlayer().playGameStart();
 //
 //			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
-//			gamePanelView.enableGameControls(true);
+//			gameControlsView.enableGameControls(true);
 //
 //			adjustBoardForGame();
 //		}
@@ -242,8 +242,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
         whitePlayerLabel.setText(getWhitePlayerName());
         blackPlayerLabel.setText(getBlackPlayerName());
 
-//		boardView.setMovesLog(getBoardFace().getMoveListSAN());
-		boardView.setMovesLog(getBoardFace().getNotationArray());
+//		boardView.updateNotations(getBoardFace().getMoveListSAN());
+		boardView.updateNotations(getBoardFace().getNotationArray());
 	}
 
 	@Override

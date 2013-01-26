@@ -37,7 +37,7 @@ import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardNetworkView;
 import com.chess.ui.views.ChessBoardOnlineView;
-import com.chess.ui.views.GamePanelView;
+import com.chess.ui.views.GameControlsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
@@ -115,12 +115,12 @@ public class GameDailyFragment extends GameBaseFragment {
 		view.findViewById(R.id.submitBtn).setOnClickListener(this);
 		view.findViewById(R.id.cancelBtn).setOnClickListener(this);
 
-		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
-		gamePanelView.enableGameControls(false);
+		gameControlsView.changeGameButton(GameControlsView.B_NEW_GAME_ID, R.drawable.ic_next_game);
+		gameControlsView.enableGameControls(false);
 
 		boardView = (ChessBoardOnlineView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setGamePanelView(gamePanelView);
+		boardView.setGameControlsView(gameControlsView);
 		setBoardView(boardView);
 
 //		if (extras.getBoolean(AppConstants.NOTIFICATION, false)) { // TODO restore, replace with arguments
@@ -266,7 +266,7 @@ public class GameDailyFragment extends GameBaseFragment {
 
 					DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 
-					gamePanelView.enableGameControls(true);
+					gameControlsView.enableGameControls(true);
 					boardView.lockBoard(false);
 
 					checkMessages();
@@ -370,7 +370,7 @@ public class GameDailyFragment extends GameBaseFragment {
 //
 //			DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 //
-//			gamePanelView.enableGameControls(true);
+//			gameControlsView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			checkMessages();
@@ -443,7 +443,7 @@ public class GameDailyFragment extends GameBaseFragment {
 //
 //			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
 //
-//			gamePanelView.enableGameControls(true);
+//			gameControlsView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			if (getBoardFace().isAnalysis()) {
@@ -493,8 +493,8 @@ public class GameDailyFragment extends GameBaseFragment {
 		whitePlayerLabel.setText(getWhitePlayerName());
 		blackPlayerLabel.setText(getBlackPlayerName());
 
-//		boardView.setMovesLog(getBoardFace().getMoveListSAN());
-		boardView.setMovesLog(getBoardFace().getNotationArray());
+//		boardView.updateNotations(getBoardFace().getMoveListSAN());
+		boardView.updateNotations(getBoardFace().getNotationArray());
 	}
 
 	@Override
@@ -568,7 +568,7 @@ public class GameDailyFragment extends GameBaseFragment {
 //
 ////			DBDataManager.updateOnlineGame(getContext(), currentGame);
 //
-//			gamePanelView.enableGameControls(true);
+//			gameControlsView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			sendMove();
@@ -636,7 +636,7 @@ public class GameDailyFragment extends GameBaseFragment {
 		preferencesEditor.commit();
 
 		currentGame.setHasNewMessage(false);
-		gamePanelView.haveNewMessage(false);
+		gameControlsView.haveNewMessage(false);
 
 		// TODO restore, open ChatFragment
 
@@ -650,7 +650,7 @@ public class GameDailyFragment extends GameBaseFragment {
 
 	private void checkMessages() {
 		if (currentGame.hasNewMessage()) {
-			gamePanelView.haveNewMessage(true);
+			gameControlsView.haveNewMessage(true);
 		}
 	}
 
@@ -1016,7 +1016,8 @@ public class GameDailyFragment extends GameBaseFragment {
 			sendMove();
 		} else if (view.getId() == R.id.newGamePopupBtn) {
 			dismissDialogs();
-			// TODO show NewGameFragment
+			getActivityFace().changeRightFragment(new NewGamesFragment());
+
 //			Intent intent = new Intent(this, OnlineNewGameActivity.class);
 //			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //			startActivity(intent);
@@ -1064,7 +1065,7 @@ public class GameDailyFragment extends GameBaseFragment {
 
 			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
 
-			gamePanelView.enableGameControls(true);
+			gameControlsView.enableGameControls(true);
 			boardView.lockBoard(false);
 
 			if (getBoardFace().isAnalysis()) {

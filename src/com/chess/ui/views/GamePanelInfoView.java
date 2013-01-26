@@ -207,4 +207,11 @@ public class GamePanelInfoView extends RelativeLayout implements View.OnClickLis
 
 	}
 
+	public void setPlayerTimeLeft(String timeLeft) {
+		timeLeftTxt.setText(timeLeft);
+	}
+
+	public void setPlayerLabel(String playerName) {
+		playerTxt.setText(playerName);
+	}
 }

@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import com.chess.R;
+import com.chess.lcc.android.LccHolder;
 import com.chess.ui.fragments.*;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.views.drawables.LogoBackgroundDrawable;
@@ -96,7 +97,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 			if (slidingMenu.isSecondaryMenuShowing()) {
 //				showToast("Right");
 			} else {
-				showToast("Left");
+//				showToast("Left");
 			}
 
 		}
@@ -104,6 +105,11 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 
 	public void addOnOpenMenuListener(SlidingMenu.OnOpenedListener listener) {
 		openMenuListeners.add(listener);
+	}
+
+	@Override
+	public LccHolder getMeLccHolder() {
+		return getLccHolder();
 	}
 
 	@Override

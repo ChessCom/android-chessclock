@@ -26,6 +26,7 @@ import com.chess.ui.interfaces.GameCompActivityFace;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardCompView;
 import com.chess.ui.views.GamePanelInfoView;
+import com.chess.ui.views.NotationView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -47,6 +48,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	private ChessBoardCompView boardView;
 	protected TextView thinking;
 	private int[] compStrengthArray;
+	private NotationView notationsView;
 
 	public static GameCompFragment newInstance(int mode) {
 		GameCompFragment frag = new GameCompFragment();
@@ -65,6 +67,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (GamePanelInfoView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (GamePanelInfoView) view.findViewById(R.id.bottomPanelView);
 
@@ -93,7 +96,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 		boardView = (ChessBoardCompView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setGamePanelView(gamePanelView);
+		boardView.setGameControlsView(gameControlsView);
 
 		ChessBoardComp chessBoardComp = ChessBoardComp.getInstance(this);
 //		boardView.setBoardFace(chessBoardComp);
@@ -102,7 +105,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 		getBoardFace().setMode(getArguments().getInt(AppConstants.GAME_MODE));
 
-		gamePanelView.turnCompMode();
+		gameControlsView.turnCompMode();
 
 		if (getBoardFace().isAnalysis()) {
 			boardView.enableAnalysis();
@@ -231,8 +234,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 			}
 		}
 
-//		boardView.setMovesLog(getBoardFace().getMoveListSAN());
-		boardView.setMovesLog(getBoardFace().getNotationArray());
+//		boardView.updateNotations(getBoardFace().getMoveListSAN());
+		boardView.updateNotations(getBoardFace().getNotationArray());
 	}
 
 	@Override

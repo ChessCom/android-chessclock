@@ -53,7 +53,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
 
 		drawTrackballDrag(canvas);
 
-		drawCapturedPieces();
+//		drawCapturedPieces(); // TODO restore
     }
 
 

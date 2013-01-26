@@ -60,7 +60,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 		boardView = (ChessBoardCompView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setGamePanelView(gamePanelView);
+		boardView.setGameControlsView(gameControlsView);
 
 		ChessBoardComp chessBoardComp = ChessBoardComp.getInstance(this);
 //		boardView.setBoardFace(chessBoardComp);
@@ -69,7 +69,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
         getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 
-		gamePanelView.turnCompMode();
+		gameControlsView.turnCompMode();
 
         if (getBoardFace().isAnalysis()) {
             boardView.enableAnalysis();
@@ -198,8 +198,8 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 			}
 		}
 
-//		boardView.setMovesLog(getBoardFace().getMoveListSAN());
-		boardView.setMovesLog(getBoardFace().getNotationArray());
+//		boardView.updateNotations(getBoardFace().getMoveListSAN());
+		boardView.updateNotations(getBoardFace().getNotationArray());
 	}
 
 	@Override

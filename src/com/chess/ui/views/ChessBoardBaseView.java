@@ -81,7 +81,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected float height;
 	protected Rect rect;
 
-	protected GamePanelView gamePanelView;
+	protected GameControlsView gameControlsView;
 	protected boolean isHighlightEnabled;
 	protected boolean showCoordinates;
 	protected String userName;
@@ -93,6 +93,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected boolean locked;
 	protected PaintFlagsDrawFilter drawFilter;
 	private float density;
+	private NotationView notationsView;
 
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -176,9 +177,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected void onBoardFaceSet(BoardFace boardFace) {
 	}
 
-	public void setGamePanelView(GamePanelView gamePanelView) {
-		this.gamePanelView = gamePanelView;
-		this.gamePanelView.setBoardViewFace(this);
+	public void setGameControlsView(GameControlsView gameControlsView) {
+		this.gameControlsView = gameControlsView;
+		this.gameControlsView.setBoardViewFace(this);
 	}
 
 	@Override
@@ -201,19 +202,20 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		getBoardFace().takeBack();
 		invalidate();
 		gameActivityFace.invalidateGameScreen();
+		notationsView.show(true);
 	}
 
 	@Override
 	public void switchAnalysis() {
 		boolean isAnalysis = getBoardFace().toggleAnalysis();
 
-		gamePanelView.toggleControlButton(GamePanelView.B_ANALYSIS_ID, isAnalysis);
+		gameControlsView.toggleControlButton(GameControlsView.B_ANALYSIS_ID, isAnalysis);
 		gameActivityFace.switch2Analysis(isAnalysis);
 	}
 
 	public void enableAnalysis() {
-		gamePanelView.toggleControlButton(GamePanelView.B_ANALYSIS_ID, true);
-		gamePanelView.enableAnalysisMode(true);
+		gameControlsView.toggleControlButton(GameControlsView.B_ANALYSIS_ID, true);
+		gameControlsView.enableAnalysisMode(true);
 		gameActivityFace.switch2Analysis(true);
 	}
 
@@ -243,11 +245,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		gameActivityFace.newGame();
 	}
 
-//	public void setMovesLog(CharSequence move) {
-	public void setMovesLog(String[] move) {
-		gamePanelView.setMovesLog(move);
-		invalidate();
-		requestFocus();
+//	public void updateNotations(CharSequence move) {
+	public void updateNotations(String[] notations) {
+		notationsView.updateNotations(notations);
+//		gameControlsView.updateNotations(notations);
+//		invalidate();
+//		requestFocus();
 	}
 
 	public void enableTouchTimer() {
@@ -370,35 +373,21 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 	}
 
-	protected void drawCapturedPieces() {
-		// Count captured piecesBitmap
-		gamePanelView.dropAlivePieces();
-
-		for (int i = 0; i < 64; i++) {
-			int pieceId = getBoardFace().getPiece(i);
-			if (getBoardFace().getColor()[i] == ChessBoard.LIGHT) {
-				gamePanelView.addAlivePiece(true, pieceId);
-			} else {
-				gamePanelView.addAlivePiece(false, pieceId);
-			}
-		}
-		gamePanelView.updateCapturedPieces();
-	}
-
-//	protected void loadIdsFromResources(){  // TODO reuse later
-//		TypedArray ar = getResources().obtainTypedArray(R.array.comp_strength);
+//	protected void drawCapturedPieces() {   // TODO restore
+//		// Count captured piecesBitmap
+//		gameControlsView.dropAlivePieces();
 //
-//		int len = ar.length();
-//		int[] resIds = new int[len];
-//		for (int i = 0; i < len; i++)
-//			resIds[i] = ar.getResourceId(i, 0);
-//
-//		ar.recycle();
-//
-//		// Do stuff with resolved reference array, resIds[]...
-//		for (int i = 0; i < len; i++)
-//			Log.v("TEST", "Res Id " + i + " is " + Integer.toHexString(resIds[i]));
+//		for (int i = 0; i < 64; i++) {
+//			int pieceId = getBoardFace().getPiece(i);
+//			if (getBoardFace().getColor()[i] == ChessBoard.LIGHT) {
+//				gameControlsView.addAlivePiece(true, pieceId);
+//			} else {
+//				gameControlsView.addAlivePiece(false, pieceId);
+//			}
+//		}
+//		gameControlsView.updateCapturedPieces();
 //	}
+
 
     protected boolean processTouchEvent(MotionEvent event) {
         return super.onTouchEvent(event);
@@ -410,6 +399,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
     @Override
 	public boolean onTouchEvent(MotionEvent event) {
+		notationsView.show(false);
+
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN: {
 				return onActionDown(event);
@@ -610,7 +601,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	public void lockBoard(boolean lock) {
 		locked = lock;
-        gamePanelView.lock(lock);
+        gameControlsView.lock(lock);
 		setEnabled(!lock);
 	}
 

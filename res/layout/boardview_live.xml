@@ -13,7 +13,6 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical">
-		<!--android:background="@color/game_board_back"-->
 
 		<!--Top Bar-->
 		<RelativeLayout
@@ -68,8 +67,8 @@
 					android:layout_height="wrap_content"
 					android:visibility="visible"/>
 
-				<com.chess.ui.views.GamePanelView
-					android:id="@+id/gamePanelView"
+				<com.chess.ui.views.GameControlsView
+					android:id="@+id/gameControlsView"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					/>

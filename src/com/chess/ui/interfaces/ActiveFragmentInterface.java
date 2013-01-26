@@ -2,6 +2,7 @@ package com.chess.ui.interfaces;
 
 
 import android.graphics.drawable.Drawable;
+import com.chess.lcc.android.LccHolder;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -44,4 +45,6 @@ public interface ActiveFragmentInterface {
 	void addOnOpenMenuListener(SlidingMenu.OnOpenedListener listener);
 
 	void setFullScreen();
+
+	LccHolder getMeLccHolder();
 }

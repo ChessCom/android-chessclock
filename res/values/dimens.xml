@@ -116,7 +116,7 @@
 	<dimen name="game_label_text_size">14sp</dimen>
 
 
-	<!--GamePanelView-->
+	<!--GameControlsView-->
 	<dimen name="game_control_padding_left">10dip</dimen>
 	<dimen name="game_control_padding_right">10dip</dimen>
 	<!--<dimen name="game_control_padding_top">15dip</dimen>-->

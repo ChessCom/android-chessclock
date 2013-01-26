@@ -97,7 +97,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		boardView = (ChessBoardTacticsView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setGamePanelView(gamePanelView);
+		boardView.setGameControlsView(gameControlsView);
 		boardView.setGameActivityFace(this);
 
 		setBoardView(boardView);
@@ -114,8 +114,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		whitePlayerLabel.setVisibility(View.GONE);
 		blackPlayerLabel.setVisibility(View.GONE);
 
-		gamePanelView.hideChatButton();
-		gamePanelView.enableGameControls(false);
+		gameControlsView.hideChatButton();
+		gameControlsView.enableGameControls(false);
 	}
 
 	private void init() {
@@ -299,7 +299,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 //					new GetStringObjTask(tacticsCorrectUpdateListener).executeTask(loadItem);
 					new RequestJsonTask<TacticInfoItem>(tacticsCorrectUpdateListener).executeTask(loadItem);
-					gamePanelView.enableGameControls(false);
+					gameControlsView.enableGameControls(false);
 				}
 				stopTacticsTimer();
 			}
@@ -326,7 +326,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 //				new GetStringObjTask(tacticsWrongUpdateListener).executeTask(loadItem);
 				new RequestJsonTask<TacticInfoItem>(tacticsWrongUpdateListener).executeTask(loadItem);
-				gamePanelView.enableGameControls(false);
+				gameControlsView.enableGameControls(false);
 			}
 			stopTacticsTimer();
 		}
@@ -508,7 +508,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 							getContentResolver()).executeTask();
 					break;
 			}
-			gamePanelView.enableGameControls(true);
+			gameControlsView.enableGameControls(true);
 		}
 
 		@Override
@@ -574,7 +574,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 				break;
 			}
-			gamePanelView.enableGameControls(true);
+			gameControlsView.enableGameControls(true);
 		}
 
 		@Override
@@ -585,7 +585,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void handleErrorRequest() {
-		gamePanelView.enableGameControls(true);
+		gameControlsView.enableGameControls(true);
 
 		noInternet = true;      // TODO handle button click properly
 		showPopupDialog(R.string.offline_mode, R.string.no_network_rating_not_changed, OFFLINE_RATING_TAG);
@@ -622,8 +622,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	@Override
 	public void invalidateGameScreen() {
-//		boardView.setMovesLog(getBoardFace().getMoveListSAN());
-		boardView.setMovesLog(getBoardFace().getNotationArray());
+//		boardView.updateNotations(getBoardFace().getMoveListSAN());
+		boardView.updateNotations(getBoardFace().getNotationArray());
 	}
 
 	@Override
@@ -774,7 +774,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		playLastMoveAnimation();
 
         firstRun = false;
-		gamePanelView.enableGameControls(true);
+		gameControlsView.enableGameControls(true);
 	}
 
 	@Override
@@ -856,7 +856,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 //			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
 			new RequestJsonTask<TacticItem>(getTacticsUpdateListener).executeTask(loadItem);
-			gamePanelView.enableGameControls(false);
+			gameControlsView.enableGameControls(false);
 		}
 	}
 

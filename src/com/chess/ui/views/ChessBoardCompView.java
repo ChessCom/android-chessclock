@@ -127,7 +127,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 	public void makeHint(final int time) {
 
 
-		gamePanelView.toggleControlButton(GamePanelView.B_HINT_ID, true);
+		gameControlsView.toggleControlButton(GameControlsView.B_HINT_ID, true);
 
 		setHint(true);
 		setComputerMoving(true);
@@ -213,7 +213,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 			invalidate();
 
 			setHint(false);
-			gamePanelView.toggleControlButton(GamePanelView.B_HINT_ID, false);
+			gameControlsView.toggleControlButton(GameControlsView.B_HINT_ID, false);
 		}
 	};
 
@@ -245,7 +245,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         }
 
 		drawCoordinates(canvas);
-		drawCapturedPieces();
+//		drawCapturedPieces(); // TODO restore
     }
 
 
@@ -404,14 +404,14 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 	@Override
 	public void switchAnalysis() {
 		super.switchAnalysis();
-		gamePanelView.enableGameButton(GamePanelView.B_HINT_ID, !getBoardFace().isAnalysis());
+		gameControlsView.enableGameButton(GameControlsView.B_HINT_ID, !getBoardFace().isAnalysis());
 	}
 
 	public void enableAnalysis() {
-		gamePanelView.toggleControlButton(GamePanelView.B_ANALYSIS_ID, true);
-		gamePanelView.enableAnalysisMode(true);
+		gameControlsView.toggleControlButton(GameControlsView.B_ANALYSIS_ID, true);
+		gameControlsView.enableAnalysisMode(true);
 		gameActivityFace.switch2Analysis(true);
-		gamePanelView.enableGameButton(GamePanelView.B_HINT_ID, false);
+		gameControlsView.enableGameButton(GameControlsView.B_HINT_ID, false);
 	}
 
 	@Override

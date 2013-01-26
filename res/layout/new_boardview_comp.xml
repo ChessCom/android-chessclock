@@ -59,6 +59,12 @@
             />
     </RelativeLayout>
 
+    <com.chess.ui.views.NotationView
+        android:id="@+id/notationsView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
     <com.chess.ui.views.GamePanelInfoView
         android:id="@+id/topPanelView"
         android:layout_width="match_parent"
@@ -78,8 +84,8 @@
         android:layout_height="wrap_content"
         />
 
-    <com.chess.ui.views.GamePanelView
-        android:id="@+id/gamePanelView"
+    <com.chess.ui.views.GameControlsView
+        android:id="@+id/gameControlsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

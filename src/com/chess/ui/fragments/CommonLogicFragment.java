@@ -24,6 +24,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.lcc.android.LccHolder;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.facebook.android.Facebook;
@@ -340,11 +341,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 	}
 
-	protected List<String> getItemsFromArray(String[] array){
-		List<String> items = new ArrayList<String>();
-		items.addAll(Arrays.asList(array));
-		return items;
-	}
+//	protected List<String> getItemsFromArray(String[] array){
+//		List<String> items = new ArrayList<String>();
+//		items.addAll(Arrays.asList(array));
+//		return items;
+//	}
 
 //	@Override
 //	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -360,4 +361,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 //		}
 //		return true;
 //	}
+
+	protected LccHolder getLccHolder() {
+		return getActivityFace().getMeLccHolder();
+	}
 }

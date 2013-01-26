@@ -14,7 +14,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardBaseView;
-import com.chess.ui.views.GamePanelView;
+import com.chess.ui.views.GameControlsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import com.slidingmenu.lib.SlidingMenu;
@@ -48,7 +48,7 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 	protected ViewGroup statusBarLay;
 
 	protected CharSequence[] menuOptionsItems;
-	protected GamePanelView gamePanelView;
+	protected GameControlsView gameControlsView;
 	private ChessBoardBaseView boardView;
 	protected View endGamePopupView;
 	protected String endGameMessage;
@@ -80,7 +80,7 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 		blackPlayerLabel.setSelected(true);
 
 		analysisTxt = (TextView) view.findViewById(R.id.analysisTxt);
-		gamePanelView = (GamePanelView) view.findViewById(R.id.gamePanelView);
+		gameControlsView = (GameControlsView) view.findViewById(R.id.gameControlsView);
 	}
 
 	@Override
@@ -173,7 +173,7 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 		boardView.enableAnalysis();
 
 		boardView.setFinished(true);
-		//gamePanelView.showBottomPart(false);
+		//gameControlsView.showBottomPart(false);
 		getSoundPlayer().playGameEnd();
 	}
 
