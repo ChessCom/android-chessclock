@@ -26,4 +26,5 @@
     <string name="days_arg">%d days</string>
     <string name="photo">Photo</string>
     <string name="spinner">Spinner</string>
+    <string name="vs_computer">Vs. Computer</string>
 </resources>

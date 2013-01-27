@@ -182,6 +182,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		this.gameControlsView.setBoardViewFace(this);
 	}
 
+	public void setNotationsView(NotationView notationsView) {
+		this.notationsView = notationsView;
+	}
+
 	@Override
 	public void showOptions() {
 		gameActivityFace.showOptions();
@@ -399,7 +403,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
     @Override
 	public boolean onTouchEvent(MotionEvent event) {
-		notationsView.show(false);
+//		notationsView.show(false);
 
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN: {

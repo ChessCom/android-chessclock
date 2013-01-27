@@ -1,5 +1,8 @@
 package com.chess.backend;
 
+import android.content.Context;
+import com.chess.R;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -75,8 +78,7 @@ public class ServerErrorCode {
 	public static final int INVALID_LOGIN_TOKEN_SUPPLIED = 65;			// Invalid login token supplied.
 	public static final int PLEASE_LOGIN_TO_CONTINUE = 66;				// Please login to continue.
 
-	public static String getUserFriendlyMessage(int code){
-
-		return null;
+	public static String getUserFriendlyMessage(Context context, int code){    // TODO convert to strings for i18n
+		return context.getResources().getStringArray(R.array.new_site_api_error_messages)[code-1];
 	}
 }

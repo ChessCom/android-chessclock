@@ -134,7 +134,8 @@ public class RestHelper {
 	/* Parameters */
 	// new
 	public static final String P_USER_NAME_OR_MAIL = "usernameOrEmail";
-	public static final String P_FIELDS = "fields";
+//	public static final String P_FIELDS = "fields";
+	public static final String P_FIELDS = "fields[]";
 	public static final String P_LOGIN_TOKEN = "loginToken";
 	public static final String P_PAGE = "page";
 	public static final String P_ITEMS_PER_PAGE = "itemsPerPage";
@@ -272,6 +273,7 @@ message				false	Only used for `CHAT` command.
 	public static final int V_GAME_CHESS_960 = 2;
 
 	public static final String V_ENCODED_MOVES = "encodedMoves";
+	public static final String V_GAME_ID = "game_id";
 	public static final String V_TACTICS_ID = "tactics_id";
 //	public static final String V_PASSED = "passed";
 	public static final String V_CORRECT_MOVES = "correct_moves";

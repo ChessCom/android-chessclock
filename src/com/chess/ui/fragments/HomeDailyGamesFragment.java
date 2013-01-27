@@ -416,9 +416,15 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 			return;
 		}
 
+		// First we check ids of games what we have. Challenges also will be stored in DB
+		// when we ask server about new ids of games and challenges
+		// if server have new ids we get those games with ids
+
+
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_GAMES_ALL);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+//		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_GAME_ID);
 		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
 
@@ -759,7 +765,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		@Override
 		public void errorHandle(Integer resultCode) {
 			if (resultCode == StaticData.INTERNAL_ERROR) {
-				emptyView.setText("Internal error occurred");
+				emptyView.setText("Internal error occurred"); // TODO adjust properly
 //				Log.d("TEST", "FriendsUpdateListener showEmptyView ");
 				showEmptyView(true);
 			}

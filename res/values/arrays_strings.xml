@@ -1,96 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<string-array name="languages">
-		<item>English</item>
-		<item>العربية</item>
-		<item>中國的</item>
-		<item>Dansk</item>
-		<item>Hollandsk</item>
-		<item>Français</item>
-		<item>Deutsch</item>
-		<item>עברית</item>
-		<item>"हिंदी"</item>
-		<item>Italiano</item>
-		<item>日本の</item>
-		<item>한국의</item>
-		<item>Norske</item>
-		<item>فارسی</item>
-		<item>Polski</item>
-		<item>Português</item>
-		<item>Русский</item>
-		<item>Español</item>
-		<item>Svenska</item>
-		<item>Türk</item>
-	</string-array>
+    <string-array name="languages">
+        <item>English</item>
+        <item>العربية</item>
+        <item>中國的</item>
+        <item>Dansk</item>
+        <item>Hollandsk</item>
+        <item>Français</item>
+        <item>Deutsch</item>
+        <item>עברית</item>
+        <item>"हिंदी"</item>
+        <item>Italiano</item>
+        <item>日本の</item>
+        <item>한국의</item>
+        <item>Norske</item>
+        <item>فارسی</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Русский</item>
+        <item>Español</item>
+        <item>Svenska</item>
+        <item>Türk</item>
+    </string-array>
 
-	<string-array name="promotion_options">
-		<item>Queen</item>
-		<item>Rook</item>
-		<item>Bishop</item>
-		<item>Knight</item>
-		<item>@string/cancel</item>
-	</string-array>
+    <string-array name="promotion_options">
+        <item>Queen</item>
+        <item>Rook</item>
+        <item>Bishop</item>
+        <item>Knight</item>
+        <item>@string/cancel</item>
+    </string-array>
 
 
+    <string-array name="playas">
+        <item>Random</item>
+        <item>White</item>
+        <item>Black</item>
+    </string-array>
 
-	<string-array name="playas">
-		<item>Random</item>
-		<item>White</item>
-		<item>Black</item>
-	</string-array>
+    <string-array name="dayspermove">
+        <item>1 day</item>
+        <item>2 days</item>
+        <item>3 days</item>
+        <item>5 days</item>
+        <item>7 days</item>
+        <item>14 days</item>
+    </string-array>
 
-	<string-array name="dayspermove">
-	    <item>1 day</item>
-		<item>2 days</item>
-		<item>3 days</item>
-		<item>5 days</item>
-		<item>7 days</item>
-		<item>14 days</item>
-	</string-array>
-	
 
-	<string-array name="skill">
-	    <item>Beginner</item>
-		<item>Intermediate</item>
-		<item>Advanced</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>Amazing games</item>
-		<item>Endgames</item>
-		<item>Openings</item>
-		<item>Rules Basics</item>
-		<item>Strategy</item>
-		<item>Tactics</item>
-	</string-array>	
-	
-	<string-array name="AIM">
-	    <item>Go To Next Ready Game</item>
-		<item>Stay On Same Game</item>
-		<item>Return To Game List</item>
-	</string-array>
+    <string-array name="skill">
+        <item>Beginner</item>
+        <item>Intermediate</item>
+        <item>Advanced</item>
+    </string-array>
 
-	<string-array name="Notif">
-	    <item>None</item>
-		<item>Vibrate</item>
-		<item>Ring</item>
-		<item>Blinking LED</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 (weakest)</item>
-		<item>2</item>
-		<item>3</item>
-		<item>4</item>
-		<item>5</item>
-		<item>6</item>
-		<item>7</item>
-		<item>8</item>
-		<item>9</item>
-		<item>10 (strongest)</item>
-	</string-array>
-	
+    <string-array name="category">
+        <item>Amazing games</item>
+        <item>Endgames</item>
+        <item>Openings</item>
+        <item>Rules Basics</item>
+        <item>Strategy</item>
+        <item>Tactics</item>
+    </string-array>
+
+    <string-array name="AIM">
+        <item>Go To Next Ready Game</item>
+        <item>Stay On Same Game</item>
+        <item>Return To Game List</item>
+    </string-array>
+
+    <string-array name="Notif">
+        <item>None</item>
+        <item>Vibrate</item>
+        <item>Ring</item>
+        <item>Blinking LED</item>
+    </string-array>
+
+    <string-array name="strength">
+        <item>1 sec</item>
+        <item>3 sec</item>
+        <item>5 sec</item>
+        <item>10 sec</item>
+        <item>30 sec</item>
+        <item>1 min</item>
+    </string-array>
+
     <string-array name="countries">
         <item>United States</item>
         <item>Canada</item>
@@ -334,326 +329,395 @@
     </string-array>
 
 
-<!--    US - United States
-    CA - Canada
-    AR - Argentina
-    BE - Belgium
-    AF - Afghanistan
-    AL - Albania
-    AD - Andorra
-    AI - Anguilla
-    AG - Antigua/Barbuda
-    AM - Armenia
-    AW - Aruba
-    AU - Australia
-    AT - Austria
-    BS - Bahamas
-    BH - Bahrain
-    BB - Barbados
-    BY - Belarus
-    BZ - Belize
-    BM - Bermuda
-    BO - Bolivia
-    BA - Bosnia-Herzegovina
-    BR - Brazil
-    BG - Bulgaria
-    IC - Canary Islands
-    KY - Cayman Islands
-    CL - Chile
-    CN - China
-    CO - Colombia
-    CR - Costa Rica
-    HR - Croatia
-    CU - Cuba
-    AN - Curacao
-    CY - Cyprus
-    CZ - Czech Republic
-    DK - Denmark
-    DM - Dominica
-    DO - Dominican Republic
-    EC - Ecuador
-    EG - Egypt
-    SV - El Salvador
-    EE - Estonia
-    FK - Falkland Islands
-    FO - Faroe Islands
-    FJ - Fiji
-    FI - Finland
-    FR - France
-    GE - Georgia
-    DE - Germany
-    GI - Gibraltar
-    GR - Greece
-    GL - Greenland
-    GD - Grenada
-    GP - Guadeloupe
-    GU - Guam
-    GT - Guatemala
-    GG - Guernsey
-    GY - Guyana
-    HT - Haiti
-    HN - Honduras
-    HK - Hong Kong
-    HU - Hungary
-    IS - Iceland
-    IN - India
-    ID - Indonesia
-    IR - Iran
-    IQ - Iraq
-    IE - Ireland
-    IM - Isle of Man
-    IL - Israel
-    IT - Italy
-    JM - Jamaica
-    JP - Japan
-    JE - Jersey
-    JO - Jordan
-    KZ - Kazakhstan
-    KI - Kiribati
-    KW - Kuwait
-    LV - Latvia
-    LB - Lebanon
-    LI - Liechtenstein
-    LT - Lithuania
-    LU - Luxembourg
-    MO - Macao
-    MK - Macedonia
-    MY - Malaysia
-    MT - Malta
-    MQ - Martinique
-    MX - Mexico
-    MD - Moldova
-    MC - Monaco
-    MS - Montserrat
-    NR - Nauru
-    NP - Nepal
-    NL - Netherlands
-    NZ - New Zealand
-    NI - Nicaragua
-    NO - Norway
-    OM - Oman
-    PK - Pakistan
-    PA - Panama
-    PG - Papua New Guinea
-    PY - Paraguay
-    PE - Peru
-    PH - Philippines
-    PL - Poland
-    PT - Portugal
-    PR - Puerto Rico
-    RO - Romania
-    RU - Russia
-    KN - Saint Kitts/Nevis
-    LC - Saint Lucia
-    PM - Saint Pierre/Miquelon
-    SM - San Marino
-    SA - Saudi Arabia
-    CS - Serbia-Montenegro
-    SG - Singapore
-    SK - Slovakia
-    SI - Slovenia
-    SB - Solomon Islands
-    ZA - South Africa
-    GS - South Georgia
-    SR - Suriname
-    SE - Sweden
-    CH - Switzerland
-    TW - Taiwan
-    TH - Thailand
-    TO - Tonga
-    TT - Trinidad/Tobago
-    TR - Turkey
-    TM - Turkmenistan
-    TV - Tuvalu
-    UA - Ukraine
-    AE - United Arab Emirates
-    UY - Uruguay
-    UZ - Uzbekistan
-    VU - Vanuatu
-    VA - Vatican City
-    VE - Venezuela
-    VN - Vietnam
-    YE - Yemen
-    YU - Yugoslavia
-    AS - American Samoa
-    VC - Saint Vincent
-    AZ - Azerbaijan
-    MN - Mongolia
-    SY - Syria
-    EN - England
-    MH - Marshall Islands
-    SX - Scotland
-    ES - Spain
-    GB - United Kingdom
-    VI - US Virgin Islands
-    WL - Wales
-    KR - South Korea
-    KG - Kyrgyzstan
-    BD - Bangladesh
-    SD - Sudan
-    BJ - Benin
-    BT - Bhutan
-    BW - Botswana
-    BN - Brunei
-    BI - Burundi
-    KH - Cambodia
-    CM - Cameroon
-    CV - Cape Verde
-    CF - Central Africa
-    TD - Chad
-    CG - Congo
-    CI - Ivory Coast
-    DJ - Djibouti
-    GQ - Equatorial Guinea
-    GA - Gabon
-    GH - Ghana
-    KE - Kenya
-    LA - Laos
-    LR - Liberia
-    MG - Madagascar
-    MA - Morocco
-    MZ - Mozambique
-    MM - Myanmar
-    NA - Namibia
-    NE - Niger
-    NG - Nigeria
-    QA - Qatar
-    RW - Rwanda
-    WS - Samoa
-    ST - Sao Tome/Principe
-    SN - Senegal
-    SL - Sierra Leone
-    SO - Somalia
-    LK - Sri Lanka
-    SZ - Swaziland
-    TJ - Tajikistan
-    TZ - Tanzania
-    TL - Timor-Leste
-    TG - Togo
-    TN - Tunisia
-    UG - Uganda
-    ZM - Zambia
-    ZW - Zimbabwe
-    dz - Algeria
-    MR - Mauritania
-    XX - International
-    RS - Serbia
-    ME - Montenegro
-    LY - Libya
-    GM - Gambia
-    MW - Malawi
-    PS - Palestine
-    ET - Ethiopia
-    MU - Mauritius
-    LS - Lesotho
-    ML - Mali
-    MV - Maldives
-    CT - Catalonia
-    GC - Galicia
-    KO - Kosovo
-    CD - DR Congo
-    AO - Angola
-    KM - Comoros
-    ER - Eritrea
-    GN - Guinea
-    GW - Guinea-Bissau
-    FM - Micronesia
-    KP - North Korea
-    PW - Palau
-    SC - Seychelles
-    EH - Western Sahara
-    VG - British Virgin Islands   -->
+    <!--    US - United States
+        CA - Canada
+        AR - Argentina
+        BE - Belgium
+        AF - Afghanistan
+        AL - Albania
+        AD - Andorra
+        AI - Anguilla
+        AG - Antigua/Barbuda
+        AM - Armenia
+        AW - Aruba
+        AU - Australia
+        AT - Austria
+        BS - Bahamas
+        BH - Bahrain
+        BB - Barbados
+        BY - Belarus
+        BZ - Belize
+        BM - Bermuda
+        BO - Bolivia
+        BA - Bosnia-Herzegovina
+        BR - Brazil
+        BG - Bulgaria
+        IC - Canary Islands
+        KY - Cayman Islands
+        CL - Chile
+        CN - China
+        CO - Colombia
+        CR - Costa Rica
+        HR - Croatia
+        CU - Cuba
+        AN - Curacao
+        CY - Cyprus
+        CZ - Czech Republic
+        DK - Denmark
+        DM - Dominica
+        DO - Dominican Republic
+        EC - Ecuador
+        EG - Egypt
+        SV - El Salvador
+        EE - Estonia
+        FK - Falkland Islands
+        FO - Faroe Islands
+        FJ - Fiji
+        FI - Finland
+        FR - France
+        GE - Georgia
+        DE - Germany
+        GI - Gibraltar
+        GR - Greece
+        GL - Greenland
+        GD - Grenada
+        GP - Guadeloupe
+        GU - Guam
+        GT - Guatemala
+        GG - Guernsey
+        GY - Guyana
+        HT - Haiti
+        HN - Honduras
+        HK - Hong Kong
+        HU - Hungary
+        IS - Iceland
+        IN - India
+        ID - Indonesia
+        IR - Iran
+        IQ - Iraq
+        IE - Ireland
+        IM - Isle of Man
+        IL - Israel
+        IT - Italy
+        JM - Jamaica
+        JP - Japan
+        JE - Jersey
+        JO - Jordan
+        KZ - Kazakhstan
+        KI - Kiribati
+        KW - Kuwait
+        LV - Latvia
+        LB - Lebanon
+        LI - Liechtenstein
+        LT - Lithuania
+        LU - Luxembourg
+        MO - Macao
+        MK - Macedonia
+        MY - Malaysia
+        MT - Malta
+        MQ - Martinique
+        MX - Mexico
+        MD - Moldova
+        MC - Monaco
+        MS - Montserrat
+        NR - Nauru
+        NP - Nepal
+        NL - Netherlands
+        NZ - New Zealand
+        NI - Nicaragua
+        NO - Norway
+        OM - Oman
+        PK - Pakistan
+        PA - Panama
+        PG - Papua New Guinea
+        PY - Paraguay
+        PE - Peru
+        PH - Philippines
+        PL - Poland
+        PT - Portugal
+        PR - Puerto Rico
+        RO - Romania
+        RU - Russia
+        KN - Saint Kitts/Nevis
+        LC - Saint Lucia
+        PM - Saint Pierre/Miquelon
+        SM - San Marino
+        SA - Saudi Arabia
+        CS - Serbia-Montenegro
+        SG - Singapore
+        SK - Slovakia
+        SI - Slovenia
+        SB - Solomon Islands
+        ZA - South Africa
+        GS - South Georgia
+        SR - Suriname
+        SE - Sweden
+        CH - Switzerland
+        TW - Taiwan
+        TH - Thailand
+        TO - Tonga
+        TT - Trinidad/Tobago
+        TR - Turkey
+        TM - Turkmenistan
+        TV - Tuvalu
+        UA - Ukraine
+        AE - United Arab Emirates
+        UY - Uruguay
+        UZ - Uzbekistan
+        VU - Vanuatu
+        VA - Vatican City
+        VE - Venezuela
+        VN - Vietnam
+        YE - Yemen
+        YU - Yugoslavia
+        AS - American Samoa
+        VC - Saint Vincent
+        AZ - Azerbaijan
+        MN - Mongolia
+        SY - Syria
+        EN - England
+        MH - Marshall Islands
+        SX - Scotland
+        ES - Spain
+        GB - United Kingdom
+        VI - US Virgin Islands
+        WL - Wales
+        KR - South Korea
+        KG - Kyrgyzstan
+        BD - Bangladesh
+        SD - Sudan
+        BJ - Benin
+        BT - Bhutan
+        BW - Botswana
+        BN - Brunei
+        BI - Burundi
+        KH - Cambodia
+        CM - Cameroon
+        CV - Cape Verde
+        CF - Central Africa
+        TD - Chad
+        CG - Congo
+        CI - Ivory Coast
+        DJ - Djibouti
+        GQ - Equatorial Guinea
+        GA - Gabon
+        GH - Ghana
+        KE - Kenya
+        LA - Laos
+        LR - Liberia
+        MG - Madagascar
+        MA - Morocco
+        MZ - Mozambique
+        MM - Myanmar
+        NA - Namibia
+        NE - Niger
+        NG - Nigeria
+        QA - Qatar
+        RW - Rwanda
+        WS - Samoa
+        ST - Sao Tome/Principe
+        SN - Senegal
+        SL - Sierra Leone
+        SO - Somalia
+        LK - Sri Lanka
+        SZ - Swaziland
+        TJ - Tajikistan
+        TZ - Tanzania
+        TL - Timor-Leste
+        TG - Togo
+        TN - Tunisia
+        UG - Uganda
+        ZM - Zambia
+        ZW - Zimbabwe
+        dz - Algeria
+        MR - Mauritania
+        XX - International
+        RS - Serbia
+        ME - Montenegro
+        LY - Libya
+        GM - Gambia
+        MW - Malawi
+        PS - Palestine
+        ET - Ethiopia
+        MU - Mauritius
+        LS - Lesotho
+        ML - Mali
+        MV - Maldives
+        CT - Catalonia
+        GC - Galicia
+        KO - Kosovo
+        CD - DR Congo
+        AO - Angola
+        KM - Comoros
+        ER - Eritrea
+        GN - Guinea
+        GW - Guinea-Bissau
+        FM - Micronesia
+        KP - North Korea
+        PW - Palau
+        SC - Seychelles
+        EH - Western Sahara
+        VG - British Virgin Islands   -->
 
-	<!-- temporary -->
-	<string-array name="site_api_error_messages">
-		<item>Invalid User ID</item>
-		<item>Invalid Content ID</item>
-		<item>Please login again.</item>
-		<item>Too many login attempts.</item>
-		<item>Account not yet active!</item>
-		<item>Account has been disabled.</item>
-		<item>Invalid username parameter.</item>
-		<item>Invalid Place</item>
-		<item>Invalid Tournament ID</item>
-		<item>Trophy Already Inserted</item>
-		<item>You are on vacation.</item>
-		<item>Invalid days per move.</item>
-		<item>Invalid email.</item>
-		<item>Invalid username.</item>
-		<item>Self challenge.</item>
-		<item>Opponent on vacation.</item>
-		<item>Opponent unavailable.</item>
-		<item>Rating too low.</item>
-		<item>Rating too high.</item>
-		<item>Opponent mismatched time control.</item>
-		<item>You are blocked.</item>
-		<item>Invalid ratings.</item>
-		<item>Min rating too low.</item>
-		<item>Max rating too high.</item>
-		<item>Max rating too low.</item>
-		<item>Min rating too high.</item>
-		<item>Rating range too small.</item>
-		<item>Rating range must include your own rating.</item>
-		<item>Max seeks exceeded.</item>
-		<item>Make moves before creating more games.</item>
-		<item>Game already started.</item>
-		<item>Timeout % too high.</item>
-		<item>Too few games.</item>
-		<item>Must be premium.</item>
-		<item>Move speed too slow.</item>
-		<item>Cant accept own seek.</item>
-		<item>Not your challenge.</item>
-		<item>Game already started!</item>
-		<item>Need username or auth user.</item>
-		<item>Invalid Username</item>
-		<item>Invalid Fen</item>
-		<item>Max ply</item>
-		<item>Invalid friend request id.</item>
-		<item>Invalid action parameters.</item>
-		<item>Invalid ID.</item>
-		<item>Invalid Game ID.</item>
-		<item>Invalid Key</item>
-		<item>Multiple login methods found. Do not submit username or password with other credentials.</item>
-		<item>Please enter username, not email.</item>
-		<item>Username does not exist.</item>
-		<item>Must give username.</item>
-		<item>Account locked. Login at Chess.com.</item>
-		<item>You must setup a password at Chess.com.</item>
-		<item>Invalid password.</item>
-		<item>Invalid Facebook access token</item>
-		<item>Facebook user has no Chess.com account</item>
-		<item>Invalid app type.</item>
-		<item>Missing username.</item>
-		<item>Missing password.</item>
-		<item>Missing email.</item>
-		<item>Missing country.</item>
-		<item>Invalid country id.</item>
-		<item>Email already taken.</item>
-		<item>Invalid Chess.com email.</item>
-		<item>Username already taken.</item>
-		<item>Username not allowed.</item>
-		<item>Invalid email domain.</item>
-		<item>System error.</item>
-		<item>Weak password.</item>
-		<item>Invalid User</item>
-		<item>Invalid Game Location Type</item>
-		<item>Please request 50 or less games</item>
-		<item>Game Id must be numeric</item>
-		<item>Invalid Game ID</item>
-		<item>Please refresh the game.</item>
-		<item>Game Already Over.</item>
-		<item>Oops! Not your game.</item>
-		<item>It is not your move.</item>
-		<item>Illegal move.</item>
-		<item>No open draw offer.</item>
-		<item>Chat is disabled.</item>
-		<item>Invalid command.</item>
-		<item>Live Game ID must be numeric.</item>
-		<item>Invalid Live Game Id</item>
-		<item>Already on vacation.</item>
-		<item>Out of vacation time.</item>
-		<item>Complete all game moves.</item>
-		<item>User not on vacation.</item>
-	</string-array>
+    <!-- temporary -->
+    <string-array name="new_site_api_error_messages">
+        <item>Multiple login methods found. Do not submit username or password with other credentials.</item>
+        <item>Invalid Facebook access token.</item>
+        <item>Facebook user has no Chess.com account.</item>
+        <item>Account locked. Login at Chess.com.</item>
+        <item>Invalid password or username.</item>
+        <item>Account not yet active!</item>
+        <item>Account has been disabled.</item>
+        <item>You must setup a password at Chess.com.</item>
+        <item>Resource not found.</item>
+        <item>Tactics daily limit reached.</item>
+        <item>You cannot add yourself as a friend.</item>
+        <item>You have already requested to add this member as your friend.</item>
+        <item>This member is already your friend.</item>
+        <item>This user is not accepting friend requests.</item>
+        <item>This user has blocked you!</item>
+        <item>Invalid fen passed.</item>
+        <item>Cannot find user by loginToken or username.</item>
+        <item>Passed ply is greater than max allowed.</item>
+        <item>Please refresh the game.</item>
+        <item>Game already over.</item>
+        <item>It is not your move.</item>
+        <item>Illegal move.</item>
+        <item>No open draw offer.</item>
+        <item>Oops! Not your game.</item>
+        <item>Chat is disabled.</item>
+        <item>Already on vacation.</item>
+        <item>Out of vacation time.</item>
+        <item>Complete all game moves.</item>
+        <item>User not on vacation.</item>
+        <item>You are on vacation.</item>
+        <item>Invalid days per move.</item>
+        <item>Min rating too low.</item>
+        <item>Min rating too high.</item>
+        <item>Max rating too low.</item>
+        <item>Max rating too high.</item>
+        <item>Rating range must include your own rating.</item>
+        <item>Rating range too small.</item>
+        <item>Opponent on vacation.</item>
+        <item>Opponent unavailable.</item>
+        <item>Rating too low.</item>
+        <item>Rating too high.</item>
+        <item>Opponent mismatched time control.</item>
+        <item>You are blocked.</item>
+        <item>Max seeks exceeded.</item>
+        <item>Make moves before creating more games.</item>
+        <item>Invalid user id.</item>
+        <item>Invalid parameter - totalGames</item>
+        <item>Please request 50 or less games</item>
+        <item>Game already started!</item>
+        <item>Timeout percentage too high.</item>
+        <item>Too few games.</item>
+        <item>Must be premium.</item>
+        <item>Move speed too slow.</item>
+        <item>Can\'t accept own seek.</item>
+        <item>Not your challenge.</item>
+        <item>Invalid country id or code passed.</item>
+        <item>Username already taken.</item>
+        <item>Email already taken.</item>
+        <item>Invalid Chess.com email.</item>
+        <item>Invalid username.</item>
+        <item>Username not allowed.</item>
+        <item>Invalid email domain.</item>
+        <item>System error.</item>
+        <item>Weak password.</item>
+        <item>Invalid login token supplied.</item>
+        <item>Please login to continue.</item>
+    </string-array>
+
+    <string-array name="site_api_error_messages">
+        <item>Invalid User ID</item>
+        <item>Invalid Content ID</item>
+        <item>Please login again.</item>
+        <item>Too many login attempts.</item>
+        <item>Account not yet active!</item>
+        <item>Account has been disabled.</item>
+        <item>Invalid username parameter.</item>
+        <item>Invalid Place</item>
+        <item>Invalid Tournament ID</item>
+        <item>Trophy Already Inserted</item>
+        <item>You are on vacation.</item>
+        <item>Invalid days per move.</item>
+        <item>Invalid email.</item>
+        <item>Invalid username.</item>
+        <item>Self challenge.</item>
+        <item>Opponent on vacation.</item>
+        <item>Opponent unavailable.</item>
+        <item>Rating too low.</item>
+        <item>Rating too high.</item>
+        <item>Opponent mismatched time control.</item>
+        <item>You are blocked.</item>
+        <item>Invalid ratings.</item>
+        <item>Min rating too low.</item>
+        <item>Max rating too high.</item>
+        <item>Max rating too low.</item>
+        <item>Min rating too high.</item>
+        <item>Rating range too small.</item>
+        <item>Rating range must include your own rating.</item>
+        <item>Max seeks exceeded.</item>
+        <item>Make moves before creating more games.</item>
+        <item>Game already started.</item>
+        <item>Timeout % too high.</item>
+        <item>Too few games.</item>
+        <item>Must be premium.</item>
+        <item>Move speed too slow.</item>
+        <item>Cant accept own seek.</item>
+        <item>Not your challenge.</item>
+        <item>Game already started!</item>
+        <item>Need username or auth user.</item>
+        <item>Invalid Username</item>
+        <item>Invalid Fen</item>
+        <item>Max ply</item>
+        <item>Invalid friend request id.</item>
+        <item>Invalid action parameters.</item>
+        <item>Invalid ID.</item>
+        <item>Invalid Game ID.</item>
+        <item>Invalid Key</item>
+        <item>Multiple login methods found. Do not submit username or password with other credentials.</item>
+        <item>Please enter username, not email.</item>
+        <item>Username does not exist.</item>
+        <item>Must give username.</item>
+        <item>Account locked. Login at Chess.com.</item>
+        <item>You must setup a password at Chess.com.</item>
+        <item>Invalid password.</item>
+        <item>Invalid Facebook access token</item>
+        <item>Facebook user has no Chess.com account</item>
+        <item>Invalid app type.</item>
+        <item>Missing username.</item>
+        <item>Missing password.</item>
+        <item>Missing email.</item>
+        <item>Missing country.</item>
+        <item>Invalid country id.</item>
+        <item>Email already taken.</item>
+        <item>Invalid Chess.com email.</item>
+        <item>Username already taken.</item>
+        <item>Username not allowed.</item>
+        <item>Invalid email domain.</item>
+        <item>System error.</item>
+        <item>Weak password.</item>
+        <item>Invalid User</item>
+        <item>Invalid Game Location Type</item>
+        <item>Please request 50 or less games</item>
+        <item>Game Id must be numeric</item>
+        <item>Invalid Game ID</item>
+        <item>Please refresh the game.</item>
+        <item>Game Already Over.</item>
+        <item>Oops! Not your game.</item>
+        <item>It is not your move.</item>
+        <item>Illegal move.</item>
+        <item>No open draw offer.</item>
+        <item>Chat is disabled.</item>
+        <item>Invalid command.</item>
+        <item>Live Game ID must be numeric.</item>
+        <item>Invalid Live Game Id</item>
+        <item>Already on vacation.</item>
+        <item>Out of vacation time.</item>
+        <item>Complete all game moves.</item>
+        <item>User not on vacation.</item>
+    </string-array>
 
 </resources>

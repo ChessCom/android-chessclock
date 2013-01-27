@@ -2,24 +2,17 @@ package com.chess.ui.views;
 
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.LevelListDrawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.statics.AppConstants;
-import com.chess.ui.engine.PieceItem;
-import com.chess.ui.interfaces.BoardViewFace;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
+import com.chess.utilities.AppUtils;
 
 /**
  * GamePanelTestActivity class
@@ -56,6 +49,9 @@ public class GamePanelInfoView extends RelativeLayout implements View.OnClickLis
 	private ImageView premiumImg;
 
 	private int side;
+	private boolean useSingleLine;
+	private LayoutParams capturedParams;
+	private LayoutParams capturedSingleParams;
 
 	public GamePanelInfoView(Context context) {
 		super(context);
@@ -68,6 +64,12 @@ public class GamePanelInfoView extends RelativeLayout implements View.OnClickLis
 	}
 
 	public void onCreate() {
+		if (AppUtils.HONEYCOMB_PLUS_API) {
+			useSingleLine = true;
+		} else {
+
+		}
+
 		density = getContext().getResources().getDisplayMetrics().density;
 
 		CAPTURED_PIECES_VIEW_HEIGHT *= density;
@@ -99,10 +101,14 @@ public class GamePanelInfoView extends RelativeLayout implements View.OnClickLis
 
 		{// add player name
 			playerTxt = new RoboTextView(getContext());
-			RelativeLayout.LayoutParams playerParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+			LayoutParams playerParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 			playerParams.addRule(RelativeLayout.RIGHT_OF, AVATAR_ID);
-			playerParams.addRule(RelativeLayout.CENTER_VERTICAL);
+			if (useSingleLine) {
+				playerParams.addRule(RelativeLayout.CENTER_VERTICAL);
+			} else {
+				playerParams.addRule(RelativeLayout.ALIGN_TOP, AVATAR_ID);
+			}
 
 			playerTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
 			playerTxt.setTextColor(getContext().getResources().getColor(R.color.new_light_grey));
@@ -115,10 +121,14 @@ public class GamePanelInfoView extends RelativeLayout implements View.OnClickLis
 		{// add player flag
 			flagImg = new ImageView(getContext());
 
-			RelativeLayout.LayoutParams flagParams = new RelativeLayout.LayoutParams(FLAG_SIZE, FLAG_SIZE);
+			LayoutParams flagParams = new LayoutParams(FLAG_SIZE, FLAG_SIZE);
 			flagParams.setMargins(FLAG_MARGIN, FLAG_MARGIN, FLAG_MARGIN, FLAG_MARGIN);
 			flagParams.addRule(RelativeLayout.RIGHT_OF, PLAYER_ID);
-			flagParams.addRule(RelativeLayout.CENTER_VERTICAL);
+			if (useSingleLine) {
+				flagParams.addRule(RelativeLayout.CENTER_VERTICAL);
+			} else {
+				flagParams.addRule(RelativeLayout.ALIGN_TOP, AVATAR_ID);
+			}
 
 			flagImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_united_states));
 			flagImg.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -131,10 +141,14 @@ public class GamePanelInfoView extends RelativeLayout implements View.OnClickLis
 		{// add player premium icon
 			premiumImg = new ImageView(getContext());
 
-			RelativeLayout.LayoutParams premiumParams = new RelativeLayout.LayoutParams(FLAG_SIZE, FLAG_SIZE);
+			LayoutParams premiumParams = new LayoutParams(FLAG_SIZE, FLAG_SIZE);
 			premiumParams.setMargins(FLAG_MARGIN, FLAG_MARGIN, FLAG_MARGIN, FLAG_MARGIN);
 			premiumParams.addRule(RelativeLayout.RIGHT_OF, FLAG_ID);
-			premiumParams.addRule(RelativeLayout.CENTER_VERTICAL);
+			if (useSingleLine) {
+				premiumParams.addRule(RelativeLayout.CENTER_VERTICAL);
+			} else {
+				premiumParams.addRule(RelativeLayout.ALIGN_TOP, AVATAR_ID);
+			}
 
 			premiumImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_nav_upgrade));
 			premiumImg.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -146,7 +160,7 @@ public class GamePanelInfoView extends RelativeLayout implements View.OnClickLis
 
 		{// add time left text
 			timeLeftTxt = new RoboTextView(getContext());
-			RelativeLayout.LayoutParams timeLeftParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+			LayoutParams timeLeftParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					AVATAR_SIZE);
 			timeLeftParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			timeLeftParams.addRule(RelativeLayout.CENTER_VERTICAL);
@@ -164,16 +178,25 @@ public class GamePanelInfoView extends RelativeLayout implements View.OnClickLis
 
 		{// add captured drawable view
 			capturedPiecesView = new View(getContext());
-			RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(CAPTURED_PIECES_VIEW_WIDTH,
+			capturedParams = new LayoutParams(CAPTURED_PIECES_VIEW_WIDTH,
 					CAPTURED_PIECES_VIEW_HEIGHT);
-			imageParams.addRule(RelativeLayout.LEFT_OF, TIME_LEFT_ID);
-			imageParams.addRule(RelativeLayout.CENTER_VERTICAL);
+			if (useSingleLine) {
+				capturedParams.addRule(RelativeLayout.LEFT_OF, TIME_LEFT_ID);
+				capturedParams.addRule(RelativeLayout.CENTER_VERTICAL);
+			} else {
+				capturedParams.addRule(RelativeLayout.RIGHT_OF, AVATAR_ID);
+				capturedParams.addRule(RelativeLayout.BELOW, PLAYER_ID);
+			}
+
+			capturedSingleParams = new LayoutParams(CAPTURED_PIECES_VIEW_WIDTH,
+					CAPTURED_PIECES_VIEW_HEIGHT);
+			capturedSingleParams.addRule(ALIGN_PARENT_RIGHT);
 
 			CapturedPiecesDrawable capturedPiecesDrawable = new CapturedPiecesDrawable(getContext());
 			capturedPiecesView.setBackgroundDrawable(capturedPiecesDrawable);
 			capturedPiecesView.setId(CAPTURED_ID);
 
-			addView(capturedPiecesView, imageParams);
+			addView(capturedPiecesView, capturedParams);
 		}
 	}
 
@@ -184,7 +207,7 @@ public class GamePanelInfoView extends RelativeLayout implements View.OnClickLis
 		// change avatar border
 
 		// change pieces color
-		((CapturedPiecesDrawable)capturedPiecesView.getBackground()).setSide(side);
+		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).setSide(side);
 
 		// change timeLeft color and background
 		if (side == AppConstants.WHITE_SIDE) {
@@ -213,5 +236,15 @@ public class GamePanelInfoView extends RelativeLayout implements View.OnClickLis
 
 	public void setPlayerLabel(String playerName) {
 		playerTxt.setText(playerName);
+	}
+
+	public void showTimeLeft(boolean show) {
+		timeLeftTxt.setVisibility(show ? VISIBLE : GONE);
+		if (show) {
+			capturedPiecesView.setLayoutParams(capturedParams);
+		} else {
+			capturedPiecesView.setLayoutParams(capturedSingleParams);
+		}
+
 	}
 }

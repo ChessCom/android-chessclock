@@ -62,7 +62,13 @@
     <com.chess.ui.views.NotationView
         android:id="@+id/notationsView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="36dip"
+        android:visibility="visible"
+        android:gravity="center_vertical"
+        android:paddingLeft="7dip"
+        android:paddingTop="7dip"
+        android:paddingRight="7dip"
+        android:background="@color/notations_back"
         />
 
     <com.chess.ui.views.GamePanelInfoView

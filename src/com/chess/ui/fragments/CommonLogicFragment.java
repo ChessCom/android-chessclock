@@ -219,6 +219,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		@Override
 		public void errorHandle(Integer resultCode) {
+			dismissProgressDialog();
+
 			if (RestHelper.containsServerCode(resultCode)) {
 				// get server code
 				int serverCode = RestHelper.decodeServerCode(resultCode);
@@ -232,8 +234,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 						showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
 						break;
 					default:
-//						String serverMessage = ServerErrorCode.getUserFriendlyMessage(); // TODO restore
-//						showToast(serverMessage);
+						String serverMessage = ServerErrorCode.getUserFriendlyMessage(getActivity(), serverCode); // TODO restore
+						showToast(serverMessage);
 
 						break;
 				}

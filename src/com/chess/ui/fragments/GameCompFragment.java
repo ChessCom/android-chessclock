@@ -67,6 +67,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		setTitle(R.string.vs_computer);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (GamePanelInfoView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (GamePanelInfoView) view.findViewById(R.id.bottomPanelView);
@@ -81,6 +82,14 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 		((BoardAvatarDrawable)bottomAvatarImg.getDrawable()).setSide(AppConstants.WHITE_SIDE);
 		bottomPanelView.setSide(AppConstants.WHITE_SIDE);
+
+		// set player names
+		topPanelView.setPlayerLabel("Computer");
+		bottomPanelView.setPlayerLabel(AppData.getUserName(getActivity()));
+
+		// hide timeLeft
+		topPanelView.showTimeLeft(false);
+		bottomPanelView.showTimeLeft(false);
 
 		init();
 
@@ -97,6 +106,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		boardView = (ChessBoardCompView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setGameControlsView(gameControlsView);
+		boardView.setNotationsView(notationsView);
 
 		ChessBoardComp chessBoardComp = ChessBoardComp.getInstance(this);
 //		boardView.setBoardFace(chessBoardComp);

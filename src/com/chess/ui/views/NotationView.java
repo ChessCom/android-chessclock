@@ -50,12 +50,12 @@ public class NotationView extends LinearLayout {
 
 
     public void onCreate() {
-        setOrientation(VERTICAL);
+//        setOrientation(VERTICAL);
         density = getContext().getResources().getDisplayMetrics().density;
 
         LayoutParams infoLayParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-
+		infoLayParams.gravity = Gravity.CENTER_VERTICAL;
         LinearLayout infoLayout = new LinearLayout(getContext());
         infoLayout.setLayoutParams(infoLayParams);
 

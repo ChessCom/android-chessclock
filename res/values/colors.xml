@@ -342,4 +342,7 @@
     <color name="new_grey_border_light">#FFbfbfbf</color>
     <color name="new_friends_top_border_light">#FFbfbfbf</color>
     <color name="new_friends_list_divider">#FFdfdfdf</color>
+
+    <!--Notations-->
+    <color name="notations_back">#FF22201e</color>
 </resources>

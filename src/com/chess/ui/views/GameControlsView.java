@@ -134,7 +134,7 @@ public class GameControlsView extends LinearLayout implements View.OnClickListen
 	}
 
 
-	public void onClick(View view) {
+	public void onClick(View view) {  // TODO rework click handles
 		if (blocked)
 			return;
 
@@ -174,9 +174,12 @@ public class GameControlsView extends LinearLayout implements View.OnClickListen
 	}
 
 	public void turnCompMode() {
-		changeGameButton(GameControlsView.B_NEW_GAME_ID, R.drawable.ic_ctrl_options);
+//		changeGameButton(GameControlsView.B_NEW_GAME_ID, R.drawable.ic_ctrl_options);
+		changeGameButton(GameControlsView.B_FLIP_ID, R.drawable.ic_ctrl_hint);
+		changeGameButton(GameControlsView.B_ANALYSIS_ID, R.drawable.ic_ctrl_help);
 		hideChatButton();
-		addControlButton(1, GameControlsView.B_HINT_ID, R.drawable.button_emboss_mid_selector); // add hint button at second position
+//		addControlButton(1, GameControlsView.B_HINT_ID, R.drawable.button_emboss_mid_selector); // add hint button at second position
+		showGameButton(GameControlsView.B_NEW_GAME_ID, false);
 		enableGameButton(B_FORWARD_ID, true);
 		enableGameButton(B_BACK_ID, true);
 	}
