@@ -191,6 +191,7 @@ public class GamePanelInfoView extends RelativeLayout implements View.OnClickLis
 			capturedSingleParams = new LayoutParams(CAPTURED_PIECES_VIEW_WIDTH,
 					CAPTURED_PIECES_VIEW_HEIGHT);
 			capturedSingleParams.addRule(ALIGN_PARENT_RIGHT);
+			capturedSingleParams.addRule(RelativeLayout.CENTER_VERTICAL);
 
 			CapturedPiecesDrawable capturedPiecesDrawable = new CapturedPiecesDrawable(getContext());
 			capturedPiecesView.setBackgroundDrawable(capturedPiecesDrawable);
