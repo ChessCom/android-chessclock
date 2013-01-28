@@ -1,6 +1,5 @@
 package com.chess.ui.adapters;
 
-import android.content.Context;
 import android.database.DataSetObserver;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,17 +8,23 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.ui.interfaces.ItemClickListenerFace;
 
-public class DailyGamesSectionedAdapter extends SectionedListAdapter {
+public class CustomSectionedAdapter extends SectionedListAdapter {
 
-	public DailyGamesSectionedAdapter(Context context) {
-		super(context);
+	private ItemClickListenerFace clickListenerFace;
+	private int layoutResource;
+
+	public CustomSectionedAdapter(ItemClickListenerFace itemClickListenerFace, int layoutResource) {
+		super(itemClickListenerFace.getMeContext());
+		clickListenerFace = itemClickListenerFace;
+		this.layoutResource = layoutResource;
 	}
 
 	@Override
 	protected View getHeaderView(String caption, int index, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = LayoutInflater.from(getContext()).inflate(R.layout.new_daily_games_section_header, parent, false);
+			convertView = LayoutInflater.from(getContext()).inflate(layoutResource, parent, false);
 			createViewHolder(convertView);
 		}
 		bindView(convertView, caption);
@@ -29,6 +34,7 @@ public class DailyGamesSectionedAdapter extends SectionedListAdapter {
 	private void createViewHolder(View convertView) {
 		ViewHolder viewHolder = new ViewHolder();
 		viewHolder.text = (TextView) convertView.findViewById(R.id.headerTitle);
+		convertView.setOnClickListener(clickListenerFace);
 		convertView.setTag(viewHolder);
 	}
 
@@ -36,8 +42,6 @@ public class DailyGamesSectionedAdapter extends SectionedListAdapter {
 		ViewHolder view = (ViewHolder) convertView.getTag();
 		view.text.setText(text);
 	}
-
-
 
 	private class ViewHolder {
 		TextView text;

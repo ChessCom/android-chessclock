@@ -43,7 +43,8 @@ import com.slidingmenu.lib.SlidingMenu;
  * Date: 02.01.13
  * Time: 7:42
  */
-public class HomeDailyGamesFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, SlidingMenu.OnOpenedListener, ItemClickListenerFace {
+public class HomeDailyGamesFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
+		AdapterView.OnItemLongClickListener, SlidingMenu.OnOpenedListener, ItemClickListenerFace {
 
 	private static final int CURRENT_GAMES_SECTION = 1;
 	private static final int CHALLENGES_SECTION = 0;
@@ -74,7 +75,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 	private DailyCurrentGamesTheirCursorAdapter currentGamesTheirCursorAdapter;
 	private DailyChallengesGamesAdapter challengesGamesAdapter;
 //	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
-	private DailyGamesSectionedAdapter sectionedAdapter;
+	private CustomSectionedAdapter sectionedAdapter;
 	private DailyCurrentGameData gameListCurrentItem;
 	private DailyChallengeData gameListChallengeItem;
 
@@ -88,7 +89,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// init adapters
-		sectionedAdapter = new DailyGamesSectionedAdapter(getActivity());
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header);
 
 		challengesGamesAdapter = new DailyChallengesGamesAdapter(this, null);
 		currentGamesTheirCursorAdapter = new DailyCurrentGamesTheirCursorAdapter(getContext(), null);

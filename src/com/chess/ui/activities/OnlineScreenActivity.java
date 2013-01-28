@@ -58,7 +58,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private DailyCurrentGamesMyCursorAdapter currentGamesCursorAdapter;
 	private DailyChallengesGamesAdapter challengesGamesAdapter;
 	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
-	private DailyGamesSectionedAdapter sectionedAdapter;
+	private CustomSectionedAdapter sectionedAdapter;
 	private DailyCurrentGameData gameListCurrentItem;
 	private DailyChallengeData gameListChallengeItem;
 	private boolean onVacation;
@@ -99,7 +99,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		AppData.setLiveChessMode(this, false);
 		// init adapters
-		sectionedAdapter = new DailyGamesSectionedAdapter(this);
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_daily_challenge_game_item);
 
 		challengesGamesAdapter = new DailyChallengesGamesAdapter(this, null);
 		currentGamesCursorAdapter = new DailyCurrentGamesMyCursorAdapter(getContext(), null);

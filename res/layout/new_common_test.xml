@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/new_main_back"
+    >
+
+    <include layout="@layout/new_videos_thumb_list_item" />
+    <include layout="@layout/new_arrow_section_header" />
+    <include layout="@layout/new_common_description_list_item" />
+    <include layout="@layout/new_common_description_list_item" />
+    <include layout="@layout/new_arrow_section_header" />
+    <include layout="@layout/new_common_description_list_item" />
+    <include layout="@layout/new_common_description_list_item" />
+
+</LinearLayout>
+

@@ -335,6 +335,7 @@
 
     <!--Friends-->
     <color name="new_friends_top_back">#FFf4f4f4</color>
+
     <color name="new_friends_blue_text">#FF0a5689</color>
     <color name="new_friends_grey_text">#FFa7a6a2</color>
     <color name="new_square_button">#FFf4f4f4</color>
@@ -345,4 +346,19 @@
 
     <!--Notations-->
     <color name="notations_back">#FF22201e</color>
+
+
+    <!--Videos-->
+    <color name="thumbnail_border">#FFbebebe</color>
+    <!--Video Play Btn back-->
+    <color name="thumbnail_play_border_1">#FFe3e2e2</color>
+    <color name="thumbnail_play_border_2">#FFe9e9e9</color>
+    <color name="thumbnail_play_border_inner">#FFf3f3f3</color>
+
+    <color name="new_dark_green">#FF4e763b</color>
+    <color name="new_subtitle_dark_grey">#FF32302d</color>
+    <color name="new_subtitle_light_grey">#FF827c76</color>
+    <color name="new_common_list_thumb_grey">#FF797979</color>
+    <color name="new_list_header_text">#FF818181</color>
+
 </resources>
