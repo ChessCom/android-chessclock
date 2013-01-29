@@ -39,12 +39,12 @@
 	<string name="settings">הגדרות</string>
 	<string name="start_new_game">התחל משחק חדש</string>
 	<!--<string name="dont_have_account_q">אין לך חשבון?</string>-->
-	<string name="singinUsername">שם משתמש</string>
-	<string name="singinPassword">סיסמא</string>
-	<string name="singinButton">היכנס</string>
-	<string name="sing_up">הירשם</string>
-	<string name="complete_singupButton">השלם הרשמה</string>
-	<string name="singinPlayguest">לשחק כמו אורח</string>
+	<string name="signinUsername">שם משתמש</string>
+	<string name="signinPassword">סיסמא</string>
+	<string name="signinButton">היכנס</string>
+	<string name="sign_up">הירשם</string>
+	<string name="complete_signupButton">השלם הרשמה</string>
+	<string name="signinPlayguest">לשחק כמו אורח</string>
 
 	<string name="computerWhite">לבן</string>
 	<string name="computerBlack">שחור</string>

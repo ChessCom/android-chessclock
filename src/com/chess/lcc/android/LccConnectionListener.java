@@ -23,7 +23,7 @@ public class LccConnectionListener implements ConnectionListener {
 				+ lccHolder.getContext().getString(R.string.another_login_detected);
 
 		lccHolder.setConnected(false);
-		lccHolder.onAnotherLoginDetected(message);
+		lccHolder.onOtherClientEntered(message);
 	}
 
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {

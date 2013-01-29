@@ -39,12 +39,12 @@
 	<string name="settings">Configuração</string>
 	<string name="start_new_game">Jogo Novo</string>
 	<!--<string name="dont_have_account_q">Ainda não tem uma conta?</string>-->
-	<string name="singinUsername">Nome de Usuário </string>
-	<string name="singinPassword">Palavra-passe</string>
-	<string name="singinButton">Entrar</string>
-	<string name="sing_up">Cadastre-se</string>
-	<string name="complete_singupButton">Cadastre-se concluir</string>
-	<string name="singinPlayguest">Jogue como convidado</string>
+	<string name="signinUsername">Nome de Usuário </string>
+	<string name="signinPassword">Palavra-passe</string>
+	<string name="signinButton">Entrar</string>
+	<string name="sign_up">Cadastre-se</string>
+	<string name="complete_signupButton">Cadastre-se concluir</string>
+	<string name="signinPlayguest">Jogue como convidado</string>
 
 	<string name="computerWhite">Branco</string>
 	<string name="computerBlack">Preto</string>

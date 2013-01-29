@@ -47,15 +47,6 @@ public class VideoScreenActivity extends LiveBaseActivity {
 
 		init();
 
-		Button upgrade = (Button) findViewById(R.id.upgradeBtn);
-		upgrade.setOnClickListener(this);
-
-		if (AppUtils.isNeedToUpgradePremium(this)) {
-			upgrade.setVisibility(View.VISIBLE);
-		} else {
-			upgrade.setVisibility(View.GONE);
-		}
-
 		recent = findViewById(R.id.recent);
 		title = (TextView) findViewById(R.id.title);
 		desc = (TextView) findViewById(R.id.desc);
@@ -90,6 +81,16 @@ public class VideoScreenActivity extends LiveBaseActivity {
 	protected void onResume() {
 		super.onResume();
 		updateVideoItem();
+	}
+
+	protected void onLiveServiceConnected() {
+		Button upgrade = (Button) findViewById(R.id.upgradeBtn);
+		upgrade.setOnClickListener(this);
+		if (AppUtils.isNeedToUpgradePremium(this, getLccHolder())) {
+			upgrade.setVisibility(View.VISIBLE);
+		} else {
+			upgrade.setVisibility(View.GONE);
+		}
 	}
 
 	private void updateVideoItem() {

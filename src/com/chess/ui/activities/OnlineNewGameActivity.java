@@ -47,18 +47,6 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_new_game);
 
-		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
-		upgradeBtn.setOnClickListener(this);
-
-		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
-		if (AppUtils.isNeedToUpgrade(this)) {
-			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
-				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveAd), this);
-			} else {
-				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
-			}
-		}
-
 		init();
 
 		openChallengesListView = (ListView) this.findViewById(R.id.openChallenges);
@@ -87,6 +75,20 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 		updateList();
 		handler.postDelayed(updateListOrder, UPDATE_DELAY);
+	}
+
+	protected void onLiveServiceConnected() {
+		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
+		upgradeBtn.setOnClickListener(this);
+
+		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
+		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
+			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
+				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveAd), this);
+			} else {
+				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
+			}
+		}
 	}
 
 	private void updateList(){

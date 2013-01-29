@@ -139,15 +139,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 			logoutBtn.setText(R.string.logout);
 		}
 
-		Button preferencesUpgrade = (Button) findViewById(R.id.upgradeBtn);
-		preferencesUpgrade.setOnClickListener(this);
-
-		if (AppUtils.isNeedToUpgrade(this)) {
-			preferencesUpgrade.setVisibility(View.VISIBLE);
-		} else {
-			preferencesUpgrade.setVisibility(View.GONE);
-		}
-
 		Spinner langSpinner = (Spinner) findViewById(R.id.langSpinner);
 		Spinner boardsSpinner = (Spinner) findViewById(R.id.boardsSpinner);
 		Spinner piecesSpinner = (Spinner) findViewById(R.id.piecesSpinner);
@@ -207,6 +198,17 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		enableNotifications.setOnCheckedChangeListener(this);
 		showCoordinates.setOnCheckedChangeListener(this);
 		showHighlights.setOnCheckedChangeListener(this);
+	}
+
+	protected void onLiveServiceConnected() {
+		Button preferencesUpgrade = (Button) findViewById(R.id.upgradeBtn);
+		preferencesUpgrade.setOnClickListener(this);
+
+		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
+			preferencesUpgrade.setVisibility(View.VISIBLE);
+		} else {
+			preferencesUpgrade.setVisibility(View.GONE);
+		}
 	}
 
 	@Override

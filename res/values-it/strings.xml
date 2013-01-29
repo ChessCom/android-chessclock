@@ -39,12 +39,12 @@
 	<string name="settings">Impostazioni</string>
 	<string name="start_new_game">Inizia nuovo gioco</string>
 	<!--<string name="dont_have_account_q">Non hai un account?</string>-->
-	<string name="singinUsername">Nome utente</string>
-	<string name="singinPassword">Password</string>
-	<string name="singinButton">Sign in (accedi)</string>
-	<string name="sing_up">Registrati</string>
-	<string name="complete_singupButton">Completa Iscriviti</string>
-	<string name="singinPlayguest">Gioca come Ospite</string>
+	<string name="signinUsername">Nome utente</string>
+	<string name="signinPassword">Password</string>
+	<string name="signinButton">Sign in (accedi)</string>
+	<string name="sign_up">Registrati</string>
+	<string name="complete_signupButton">Completa Iscriviti</string>
+	<string name="signinPlayguest">Gioca come Ospite</string>
 
 	<string name="computerWhite">Bianco</string>
 	<string name="computerBlack">Nero</string>

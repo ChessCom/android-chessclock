@@ -1,6 +1,5 @@
 package com.chess.lcc.android;
 
-import android.content.Context;
 import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.FlurryData;
@@ -23,17 +22,16 @@ public class LccGameTaskRunner {
 
 	private LiveChessClient liveChessClient;
 	private TaskUpdateInterface<Game> gameTaskFace;
-	private Context context;
+	private LccHolder lccHolder;
 
-	public LccGameTaskRunner(TaskUpdateInterface<Game> gameTaskFace) {
+	public LccGameTaskRunner(TaskUpdateInterface<Game> gameTaskFace, LccHolder lccHolder) {
 		this.gameTaskFace = gameTaskFace;
-		context = gameTaskFace.getMeContext();
-		this.liveChessClient = LccHolder.getInstance(context).getClient();
+		this.lccHolder = lccHolder;
+		this.liveChessClient = lccHolder.getClient();
 	}
 
-
 	public void runMakeDrawTask() {
-		new LiveMakeDrawTask().executeTask(LccHolder.getInstance(context).getCurrentGame());
+		new LiveMakeDrawTask().executeTask(lccHolder.getCurrentGame());
 	}
 
 	private class LiveMakeDrawTask extends AbstractUpdateTask<Game, Game> {
@@ -49,7 +47,7 @@ public class LccGameTaskRunner {
 	}
 
 	public void runMakeResignTask() {
-		new LiveMakeResignTask().executeTask(LccHolder.getInstance(context).getCurrentGame());
+		new LiveMakeResignTask().executeTask(lccHolder.getCurrentGame());
 	}
 
 	private class LiveMakeResignTask extends AbstractUpdateTask<Game, Game> {
@@ -65,7 +63,7 @@ public class LccGameTaskRunner {
 	}
 
 	public void runAbortGameTask() {
-		new LiveAbortGameTask().executeTask(LccHolder.getInstance(context).getCurrentGame());
+		new LiveAbortGameTask().executeTask(lccHolder.getCurrentGame());
 	}
 
 	private class LiveAbortGameTask extends AbstractUpdateTask<Game, Game> {
@@ -81,7 +79,7 @@ public class LccGameTaskRunner {
 	}
 
 	public void runRejectDrawTask() {
-		new LiveRejectDrawTask().executeTask(LccHolder.getInstance(context).getCurrentGame());
+		new LiveRejectDrawTask().executeTask(lccHolder.getCurrentGame());
 	}
 
 	private class LiveRejectDrawTask extends AbstractUpdateTask<Game, Game> {
@@ -126,7 +124,4 @@ public class LccGameTaskRunner {
 			return StaticData.RESULT_OK;
 		}
 	}
-
-
-
 }

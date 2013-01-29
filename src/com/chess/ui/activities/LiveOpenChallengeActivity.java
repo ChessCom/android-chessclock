@@ -83,6 +83,10 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 		showActionSettings = true;
 	}
 
+	protected void onLiveServiceConnected() {
+		checkIfLiveUserAlive();
+	}
+
 	public void onResume() {
 		super.onResume();
 

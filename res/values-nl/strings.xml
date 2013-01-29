@@ -39,12 +39,12 @@
 	<string name="settings">Instellingen</string>
 	<string name="start_new_game">Start New Game</string>
 	<!--<string name="dont_have_account_q">Heb je nog geen account?</string>-->
-	<string name="singinUsername">Gebruikersnaam</string>
-	<string name="singinPassword">Wachtwoord</string>
-	<string name="singinButton">Inloggen</string>
-	<string name="sing_up">Aanmelden</string>
-	<string name="complete_singupButton">Compleet Inschrijven</string>
-	<string name="singinPlayguest">Speel als Gast</string>
+	<string name="signinUsername">Gebruikersnaam</string>
+	<string name="signinPassword">Wachtwoord</string>
+	<string name="signinButton">Inloggen</string>
+	<string name="sign_up">Aanmelden</string>
+	<string name="complete_signupButton">Compleet Inschrijven</string>
+	<string name="signinPlayguest">Speel als Gast</string>
 
 	<string name="computerWhite">Wit</string>
 	<string name="computerBlack">Zwart</string>

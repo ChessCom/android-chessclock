@@ -39,12 +39,12 @@
 	<string name="settings">Inställningar</string>
 	<string name="start_new_game">Starta Nytt spel</string>
 	<!--<string name="dont_have_account_q">Har du inte ett konto?</string>-->
-	<string name="singinUsername">Användarnamn</string>
-	<string name="singinPassword">Lösenord</string>
-	<string name="singinButton">Logga in</string>
-	<string name="sing_up">Anmäl dig</string>
-	<string name="complete_singupButton">Komplett Registrera</string>
-	<string name="singinPlayguest">Spela som gäst</string>
+	<string name="signinUsername">Användarnamn</string>
+	<string name="signinPassword">Lösenord</string>
+	<string name="signinButton">Logga in</string>
+	<string name="sign_up">Anmäl dig</string>
+	<string name="complete_signupButton">Komplett Registrera</string>
+	<string name="signinPlayguest">Spela som gäst</string>
 
 	<string name="computerWhite">Vit</string>
 	<string name="computerBlack">Svart:</string>

@@ -40,12 +40,12 @@
 	<string name="settings">Configuración</string>
 	<string name="start_new_game">Iniciar un nuevo juego</string>
 	<!--<string name="dont_have_account_q">¿Todavía no tienes una cuenta?</string>-->
-	<string name="singinUsername">Usuario</string>
-	<string name="singinPassword">Contraseña</string>
-	<string name="singinButton">Inicia sesión</string>
-	<string name="sing_up">Regístrate</string>
-	<string name="complete_singupButton">Completa Registro</string>
-	<string name="singinPlayguest">Juega como invitado</string>
+	<string name="signinUsername">Usuario</string>
+	<string name="signinPassword">Contraseña</string>
+	<string name="signinButton">Inicia sesión</string>
+	<string name="sign_up">Regístrate</string>
+	<string name="complete_signupButton">Completa Registro</string>
+	<string name="signinPlayguest">Juega como invitado</string>
 
 	<string name="computerWhite">Blancos</string>
 	<string name="computerBlack">black</string>

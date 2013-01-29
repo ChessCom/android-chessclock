@@ -51,13 +51,16 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 	private boolean forceReenterCred;
 
-	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, boolean forceReenterCred) {
+	private LccHolder lccHolder;
+
+	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, boolean forceReenterCred, LccHolder lccHolder) {
 		super(taskFace);
 		this.forceReenterCred = forceReenterCred;
 	}
 
-	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace) {
+	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, LccHolder lccHolder) {
 		super(taskFace);
+		this.lccHolder = lccHolder;
 	}
 
 	@Override
@@ -125,8 +128,8 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			throw new LiveChessClientException("Unable to initialize HttpClient", e);
 		}
 
-		LccHolder.getInstance(context).setLiveChessClient(item);
-		LccHolder.getInstance(context).performConnect(forceReenterCred);
+		lccHolder.setLiveChessClient(item);
+		lccHolder.performConnect(forceReenterCred);
 		return StaticData.RESULT_OK;
 	}
 }

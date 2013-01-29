@@ -90,7 +90,15 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
         friendsTxt = (TextView) findViewById(R.id.friendsTxt);
     }
 
-    @Override
+    protected void onLiveServiceConnected() {
+		if (!checkIfLiveUserAlive()) {
+			return;
+		}
+
+		updateScreen();
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 

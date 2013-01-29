@@ -38,7 +38,7 @@ public class NetworkChangeService extends Service {
 				return;
 			}
 
-			LccHolder lccHolder = LccHolder.getInstance(context);
+			//LccHolder lccHolder = LccHolder.getInstance(context);
 
 			/*boolean failover = intent.getBooleanExtra("FAILOVER_CONNECTION", false);
 								   System.out.println("!!!!!!!! NetworkChangeReceiver failover=" + failover);*/

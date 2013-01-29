@@ -9,6 +9,7 @@ import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.ConnectLiveChessTask;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
@@ -46,7 +47,6 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 	private final LccAdminEventListener adminEventListener;
 	private LiveChessClient lccClient;
 	private User user;
-	private static LccHolder instance;
 
 	private HashMap<Long, Challenge> challenges = new HashMap<Long, Challenge>();
 	private final Hashtable<Long, Challenge> seeks = new Hashtable<Long, Challenge>();
@@ -76,17 +76,13 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 	private LiveChessClientEventListenerFace liveChessClientEventListener;
     private LccEventListener lccEventListener;
     private LccChatMessageListener lccChatMessageListener;
-	private LiveChessService service;
 
-	public static LccHolder getInstance(Context context) {
-		if (instance == null) {
-			instance = new LccHolder(context);
-		}
-		return instance;
-	}
+	boolean liveConnected; // it is better to keep this state inside lccholder/service instead of preferences appdata
+	private LiveChessService.LccConnectUpdateListener lccConnectUpdateListener;
 
-    private LccHolder(Context context) {
+    public LccHolder(Context context, LiveChessService.LccConnectUpdateListener lccConnectUpdateListener) {
 		this.context = context;
+		this.lccConnectUpdateListener = lccConnectUpdateListener;
 
 		chatListener = new LccChatListener(this);
 		connectionListener = new LccConnectionListener(this);
@@ -268,7 +264,7 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 		this.liveChessClientEventListener = liveChessClientEventListener;
 	}
 
-	public void onAnotherLoginDetected(String message){
+	public void onOtherClientEntered(String message){
 		liveChessClientEventListener.onConnectionFailure(message);
 	}
 
@@ -374,11 +370,11 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 	}
 
 	public boolean isConnected() {
-		return service != null && service.isLiveConnected();
+		return liveConnected;
 	}
 
 	public void setConnected(boolean connected) {
-		service.setLiveConnected(connected); // todo: can be null?
+		liveConnected = connected;
 		if (connected) {
 			liveChessClientEventListener.onConnectionEstablished();
 
@@ -740,7 +736,7 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 		clearSeeks();
 		clearOnlineFriends();
 
-		instance = null;
+		//instance = null; // TODO: reset instance, or recreate/restart whole Service?
 	}
 
 	public boolean isSeekContains(Long id) {
@@ -920,13 +916,12 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 		challengeListener.setOuterChallengeListener(outerChallengeListener);
 	}
 
-	public void setService(LiveChessService service) {
-		this.service = service;
+	public void runConnectTask() {
+		new ConnectLiveChessTask(lccConnectUpdateListener, this).executeTask();
 	}
 
 	public void runConnectTask(boolean forceReenterCred) {
-		if (service != null)
-			service.runConnectTask(forceReenterCred);
+		new ConnectLiveChessTask(lccConnectUpdateListener, forceReenterCred, this).executeTask();
 	}
 
 	/*public void runConnectTask() {

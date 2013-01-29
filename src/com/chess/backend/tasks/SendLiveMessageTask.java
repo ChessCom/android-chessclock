@@ -13,15 +13,17 @@ import com.chess.lcc.android.LccHolder;
 public class SendLiveMessageTask extends AbstractUpdateTask<String, Long> {
 
 	private String message;
+	private LccHolder lccHolder;
 
-	public SendLiveMessageTask(TaskUpdateInterface<String> taskFace, String message) {
+	public SendLiveMessageTask(TaskUpdateInterface<String> taskFace, String message, LccHolder lccHolder) {
 		super(taskFace);
 		this.message = message;
+		this.lccHolder = lccHolder;
 	}
 
 	@Override
 	protected Integer doTheTask(Long... params) {
-		LccHolder.getInstance(taskFace.getMeContext()).sendChatMessage(params[0], message);
+		lccHolder.sendChatMessage(params[0], message);
 		return StaticData.RESULT_OK;
 	}
 }

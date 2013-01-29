@@ -40,12 +40,12 @@
 	<string name="settings">إعدادات</string>
 	<string name="start_new_game">تبدأ لعبة جديدة</string>
 	<!--<string name="dont_have_account_q">لم يكن لديك حساب؟</string>-->
-	<string name="singinUsername">اسم المستخدم</string>
-	<string name="singinPassword">كلمة السر</string>
-	<string name="singinButton">توقيع في</string>
-	<string name="sing_up">قم بالتسجيل</string>
-	<string name="complete_singupButton">استكمال اشترك</string>
-	<string name="singinPlayguest">كما تلعب ضيف</string>
+	<string name="signinUsername">اسم المستخدم</string>
+	<string name="signinPassword">كلمة السر</string>
+	<string name="signinButton">توقيع في</string>
+	<string name="sign_up">قم بالتسجيل</string>
+	<string name="complete_signupButton">استكمال اشترك</string>
+	<string name="signinPlayguest">كما تلعب ضيف</string>
 
 
 	<string name="computerWhite">الأبيض</string>

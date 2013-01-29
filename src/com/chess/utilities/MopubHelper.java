@@ -22,9 +22,9 @@ public class MopubHelper {
 		SharedPreferences preferences = AppData.getPreferences(context);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
 
-		if (!AppUtils.isNeedToUpgrade(context)) {
+		/*if (!AppUtils.isNeedToUpgrade(context)) {
 			return;
-		}
+		}*/
 
 		int adsShowCounter = preferences.getInt(AppConstants.ADS_SHOW_COUNTER, 0);
 
@@ -59,7 +59,7 @@ public class MopubHelper {
 		SharedPreferences preferences = AppData.getPreferences(context);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
 
-		if (!AppUtils.isNeedToUpgrade(context) || rectangleAdView == null) {
+		if (/*!AppUtils.isNeedToUpgrade(context) || */rectangleAdView == null) {
 			return;
 		}
 

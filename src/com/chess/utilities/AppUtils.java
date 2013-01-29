@@ -213,26 +213,34 @@ public class AppUtils {
 		notifyManager.cancel(id);
 	}
 
-	public static boolean isNeedToUpgrade(Context context){
+	public static boolean isNeedToUpgrade(Context context, LccHolder lccHolder){
 		boolean liveMembershipLevel = false;
-		User user = LccHolder.getInstance(context).getUser();
-		if (user != null) {
-			liveMembershipLevel = AppData.isLiveChess(context)
-					&& (user.getMembershipLevel() < StaticData.GOLD_LEVEL);
+
+		if (lccHolder != null) {
+			User user = lccHolder.getUser();
+			if (user != null) {
+				liveMembershipLevel = AppData.isLiveChess(context)
+						&& (user.getMembershipLevel() < StaticData.GOLD_LEVEL);
+			}
 		}
+
 		return AppData.isGuest(context)
 				|| liveMembershipLevel
 				|| (!AppData.isLiveChess(context) && AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER)
 				&& AppData.getUserPremiumStatus(context) != StaticData.NOT_INITIALIZED_USER;
 	}
 
-	public static boolean isNeedToUpgradePremium(Context context){
+	public static boolean isNeedToUpgradePremium(Context context, LccHolder lccHolder){
 		boolean liveMembershipLevel = false;
-		User user = LccHolder.getInstance(context).getUser();
-		if (user != null) {
-			liveMembershipLevel = AppData.isLiveChess(context)
-					&& (user.getMembershipLevel() < StaticData.DIAMOND_LEVEL);
+
+		if (lccHolder != null) {
+			User user = lccHolder.getUser();
+			if (user != null) {
+				liveMembershipLevel = AppData.isLiveChess(context)
+						&& (user.getMembershipLevel() < StaticData.DIAMOND_LEVEL);
+			}
 		}
+
 		return liveMembershipLevel
 				|| (!AppData.isLiveChess(context) && AppData.getUserPremiumStatus(context) < StaticData.DIAMOND_USER)
 				&& AppData.getUserPremiumStatus(context) != StaticData.NOT_INITIALIZED_USER;

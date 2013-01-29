@@ -21,7 +21,7 @@
 		android:id="@+id/usernameEdt"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="@string/singinUsername"
+		android:hint="@string/signinUsername"
 		android:inputType="textPersonName"
 		android:singleLine="true"
 		android:imeOptions="actionNext"
@@ -31,7 +31,7 @@
 		android:id="@+id/passwordEdt"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="@string/singinPassword"
+		android:hint="@string/signinPassword"
 		android:password="true"
 		android:singleLine="true"
 		android:imeOptions="actionDone"
@@ -41,7 +41,7 @@
 		android:id="@+id/re_signin"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/singinButton"
+		android:text="@string/signinButton"
 		/>
 
 	<com.facebook.android.LoginButton

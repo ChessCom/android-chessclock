@@ -33,17 +33,28 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 		chatListView = (ListView) findViewById(R.id.chatLV);
 		findViewById(R.id.sendBtn).setOnClickListener(this);
 
-		messagesAdapter = new MessagesAdapter(ChatLiveActivity.this, getLccHolder().getMessagesList());
-		chatListView.setAdapter(messagesAdapter);
-
 		messageUpdateListener = new MessageUpdateListener();
-
-		showActionRefresh = true;
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		showKeyBoard(sendEdt);
+
+		if (getLccHolder() != null) {
+		    getLccHolder().setLccChatMessageListener(this);
+		    updateList();
+		}
+	}
+
+	@Override
+	protected void onLiveServiceConnected() {
+		super.onLiveServiceConnected();
+
+		messagesAdapter = new MessagesAdapter(ChatLiveActivity.this, getLccHolder().getMessagesList());
+		chatListView.setAdapter(messagesAdapter);
+		showActionRefresh = true;
 
 		showKeyBoard(sendEdt);
 		getLccHolder().setLccChatMessageListener(this);
@@ -80,7 +91,7 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 	public void onClick(View view) {
 		if (view.getId() == R.id.sendBtn) {
 			Long gameId = getLccHolder().getCurrentGameId();
-			new SendLiveMessageTask(messageUpdateListener, getTextFromField(sendEdt)).execute(gameId);
+			new SendLiveMessageTask(messageUpdateListener, getTextFromField(sendEdt), getLccHolder()).execute(gameId);
 			updateList();
 
 			sendEdt.setText(StaticData.SYMBOL_EMPTY);

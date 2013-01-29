@@ -40,12 +40,12 @@
 	<string name="settings">Настройки</string>
 	<string name="start_new_game">Начать Новую Игру</string>
 	<!--<string name="dont_have_account_q">Нет Аккаунта?</string>-->
-	<string name="singinUsername">Имя пользователя</string>
-	<string name="singinPassword">Пароль</string>
-	<string name="singinButton">Войти</string>
-	<string name="sing_up">Регистрация</string>
-	<string name="complete_singupButton">Завершить Регистрацию</string>
-	<string name="singinPlayguest">Играть Как Гость</string>
+	<string name="signinUsername">Имя пользователя</string>
+	<string name="signinPassword">Пароль</string>
+	<string name="signinButton">Войти</string>
+	<string name="sign_up">Регистрация</string>
+	<string name="complete_signupButton">Завершить Регистрацию</string>
+	<string name="signinPlayguest">Играть Как Гость</string>
 
 	<string name="computerWhite">Белые</string>
 	<string name="computerBlack">Чёрные</string>

@@ -40,12 +40,12 @@
 	<string name="settings">Indstillinger</string>
 	<string name="start_new_game">Start nyt spil</string>
 	<!--<string name="dont_have_account_q">Har du ikke en konto?</string>-->
-	<string name="singinUsername">Brugernavn:</string>
-	<string name="singinPassword">Adgangskode</string>
-	<string name="singinButton">Log ind</string>
-	<string name="sing_up">Tilmeld dig</string>
-	<string name="complete_singupButton">Komplet Tilmelding</string>
-	<string name="singinPlayguest">Spil som Gæst</string>
+	<string name="signinUsername">Brugernavn:</string>
+	<string name="signinPassword">Adgangskode</string>
+	<string name="signinButton">Log ind</string>
+	<string name="sign_up">Tilmeld dig</string>
+	<string name="complete_signupButton">Komplet Tilmelding</string>
+	<string name="signinPlayguest">Spil som Gæst</string>
 
 	<string name="computerWhite">Hvid</string>
 	<string name="computerBlack">Sort</string>

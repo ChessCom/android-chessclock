@@ -11,7 +11,6 @@ import android.util.Log;
 import com.chess.R;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.tasks.ConnectLiveChessTask;
 import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.LiveChessClient;
 import com.chess.ui.activities.LiveScreenActivity;
@@ -20,18 +19,25 @@ public class LiveChessService extends Service {
 
 	private static final String TAG = "LCCLOG-LiveChessService";
 
-	boolean liveConnected; // it is better to keep this state inside service instead of preferences appdata
-
 	private ServiceBinder serviceBinder = new ServiceBinder();
 
+	// or move holder code to Service itself.
+	// but in this case we should have ability to reset holder data when it is necessary, for instance logout
+	private LccHolder lccHolder;
+
+	LccConnectUpdateListener lccConnectUpdateListener = new LccConnectUpdateListener();
+
 	public class ServiceBinder extends Binder {
-		public LiveChessService getService(){
-			return LiveChessService.this;
+		public LccHolder getLccHolder(){
+			return LiveChessService.this.getLccHolder();
 		}
 	}
 
 	public IBinder onBind(Intent intent) {
 		Log.d(TAG, "SERVICE: onBind");
+		if (lccHolder == null) {
+			lccHolder = new LccHolder(getContext(), lccConnectUpdateListener);
+		}
 		return serviceBinder;
 	}
 
@@ -39,7 +45,7 @@ public class LiveChessService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(TAG, "SERVICE: onStartCommand");
 
-		checkAndConnect();
+		//checkAndConnect();  // todo: anr. move it to listener
 
 		//return START_STICKY;
 		return START_CONTINUATION_MASK;
@@ -48,28 +54,20 @@ public class LiveChessService extends Service {
 	@Override
 	public void onDestroy() {
 		Log.d(TAG, "SERVICE: onDestroy");
+		//lccHolder.logout();
+		lccHolder = null;
 		stopForeground(true);
 	}
 
 	public void checkAndConnect() {
 		Log.d(TAG, "AppData.isLiveChess(getContext()) " + AppData.isLiveChess(getContext()));
-		Log.d(TAG, "AppData.isLiveConnected(getContext()) " + liveConnected);
-		Log.d(TAG, "AppData.isLiveConnected(getContext()) " + LccHolder.getInstance(getContext()).getClient());
+		Log.d(TAG, "lccHolder.isConnected() " + lccHolder.isConnected());
+		Log.d(TAG, "lccHolder.getClient() " + lccHolder.getClient());
 
-		if (AppData.isLiveChess(getContext()) && !liveConnected
+		if (AppData.isLiveChess(getContext()) && !lccHolder.isConnected()
 				/*&& LccHolder.getInstance(getContext()).getClient() == null*/) {
-			runConnectTask();
+			lccHolder.runConnectTask();
 		}
-	}
-
-	public void runConnectTask() {
-		Log.d(TAG, "SERVICE: runConnectTask");
-		new ConnectLiveChessTask(new LccConnectUpdateListener()).executeTask();
-	}
-
-	public void runConnectTask(boolean forceReenterCred) {
-		Log.d(TAG, "SERVICE: runConnectTask");
-		new ConnectLiveChessTask(new LccConnectUpdateListener(), forceReenterCred).executeTask();
 	}
 
 	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
@@ -82,7 +80,7 @@ public class LiveChessService extends Service {
 			Log.d(TAG, "LiveChessClient initialized " + returnedObj);
 
 			// todo: tune notification
-			Notification notification = new Notification(R.drawable.player_indicator_online, // just test. change it
+			Notification notification = new Notification(R.drawable.player_indicator_online, // just test. change drawable
 					"Chess.com Live",
 					System.currentTimeMillis());
 
@@ -102,11 +100,7 @@ public class LiveChessService extends Service {
 		return this;
 	}
 
-	public boolean isLiveConnected() {
-		return liveConnected;
-	}
-
-	public void setLiveConnected(boolean liveConnected) {
-		this.liveConnected = liveConnected;
+	public LccHolder getLccHolder() {
+		return lccHolder;
 	}
 }
