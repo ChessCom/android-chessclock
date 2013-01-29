@@ -20,12 +20,11 @@
         android:id="@+id/titleTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="A Guide for White:
-            Avoiding the Sicilian -
-            Alapin Part 1!"
+        android:text="A Guide for White: Avoiding the Sicilian - Alapin Part 1!"
         android:layout_toRightOf="@id/thumbnailImg"
         android:paddingLeft="20dip"
         android:paddingBottom="1dip"
+        android:layout_marginTop="-4dip"
         android:textColor="@color/new_dark_green"
         android:textSize="15sp"
         custom:ttf="Bold"
@@ -41,7 +40,7 @@
         android:paddingLeft="20dip"
         android:paddingTop="0dip"
         android:paddingBottom="2dip"
-        android:layout_marginTop="-2dip"
+        android:layout_marginTop="-1dip"
         android:textColor="@color/new_subtitle_dark_grey"
         android:textSize="12sp"
         custom:ttf="RobotoRegular"
