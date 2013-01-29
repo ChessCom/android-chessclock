@@ -182,8 +182,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-//				backToHomeActivity(); // TODO toggle comment here to go back to old app
-				getSlidingMenu().toggle();
+				backToHomeActivity(); // TODO toggle comment here to go back to old app
+//				getSlidingMenu().toggle();
 				break;
 			case R.id.menu_settings:
 				startActivity(new Intent(this, PreferencesScreenActivity.class));

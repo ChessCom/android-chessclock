@@ -80,6 +80,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				break;
 			case R.drawable.ic_nav_videos:
 				getActivityFace().switchFragment(new VideosFragment());
+//				getActivityFace().switchFragment(new VideosDetailsFragment());
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 			case R.drawable.ic_nav_friends:

@@ -194,5 +194,6 @@
     <!--Friends-->
     <dimen name="new_button_square_size">37dip</dimen>
     <dimen name="video_play_btn_back_ring_size">47dip</dimen>
+    <dimen name="video_play_btn_back_ring_size_big">100dip</dimen>
     <dimen name="common_list_thumb_size">45dip</dimen>
 </resources>

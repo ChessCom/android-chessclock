@@ -4,6 +4,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    android:id="@+id/commonDescriptionListView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="65dip"
@@ -35,16 +36,29 @@
         />
 
     <com.chess.RoboTextView
-        android:id="@+id/authorTxt"
+        android:id="@+id/byTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="by GM Gregory Kaidanov"
+        android:text="@string/by"
         android:layout_toRightOf="@id/thumbnailImg"
         android:layout_below="@id/titleTxt"
         android:paddingLeft="10dip"
         android:paddingBottom="2dip"
+        android:textColor="@color/new_light_grey"
+        android:textSize="11sp"
+        />
+
+    <com.chess.RoboTextView
+        android:id="@+id/authorTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GM Gregory Kaidanov"
+        android:layout_toRightOf="@id/byTxt"
+        android:layout_below="@id/titleTxt"
+        android:paddingLeft="3dip"
+        android:paddingBottom="2dip"
         android:textColor="@color/white"
-        android:textSize="12sp"
+        android:textSize="11sp"
         custom:ttf="Bold"
         />
 

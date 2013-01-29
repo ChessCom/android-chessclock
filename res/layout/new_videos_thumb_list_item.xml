@@ -32,13 +32,29 @@
         />
 
     <com.chess.RoboTextView
-        android:id="@+id/authorTxt"
+        android:id="@+id/byTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="by GM Gregory Kaidanov"
+        android:text="@string/by"
         android:layout_toRightOf="@id/thumbnailImg"
         android:layout_below="@id/titleTxt"
         android:paddingLeft="20dip"
+        android:paddingTop="0dip"
+        android:paddingBottom="2dip"
+        android:layout_marginTop="-2dip"
+        android:textColor="@color/new_subtitle_dark_grey"
+        android:textSize="12sp"
+        custom:ttf="RobotoRegular"
+        />
+    <!--custom:ttf="RobotoRegular"-->
+    <com.chess.RoboTextView
+        android:id="@+id/authorTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GM Gregory Kaidanov"
+        android:layout_toRightOf="@id/byTxt"
+        android:layout_below="@id/titleTxt"
+        android:paddingLeft="3dip"
         android:paddingBottom="2dip"
         android:textColor="@color/new_subtitle_dark_grey"
         android:textSize="12sp"

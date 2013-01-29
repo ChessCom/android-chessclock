@@ -87,6 +87,7 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 				resultString = convertStreamToString(inputStream);
 				if (!resultString.startsWith(RestHelper.OBJ_START)){
 					result = StaticData.INTERNAL_ERROR;
+					Log.d(TAG, "ERROR -> WebRequest SERVER RESPONSE: " + resultString);
 					return result;
 				}
 				BaseResponseItem baseResponse = parseJson(resultString, BaseResponseItem.class);

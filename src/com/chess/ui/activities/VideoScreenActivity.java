@@ -215,7 +215,8 @@ public class VideoScreenActivity extends LiveBaseActivity {
 
 			Intent intent = new Intent(Intent.ACTION_VIEW);
 //			intent.setDataAndType(Uri.parse(item.getViewUrl().trim()), "video/*");
-			intent.setDataAndType(Uri.parse(item.getMobile_view_url().trim()), "video/*");
+//			intent.setDataAndType(Uri.parse(item.getMobile_view_url().trim()), "video/*");
+			intent.setDataAndType(Uri.parse("http://s3.amazonaws.com/chesscom-videos/videos/ios/kaidanovs-comprehensive-repertoire-two-knights-defense---part-2.m3u8"), "video/*");
 			startActivity(intent);
 		} else if (view.getId() == R.id.start) {
 			int skillId = skillsSpinner.getSelectedItemPosition();

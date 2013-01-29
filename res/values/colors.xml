@@ -356,6 +356,7 @@
     <color name="thumbnail_play_border_inner">#FFf3f3f3</color>
 
     <color name="new_dark_green">#FF4e763b</color>
+    <color name="new_author_dark_grey">#FF45413f</color>
     <color name="new_subtitle_dark_grey">#FF32302d</color>
     <color name="new_subtitle_light_grey">#FF827c76</color>
     <color name="new_common_list_thumb_grey">#FF797979</color>
