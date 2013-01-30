@@ -90,7 +90,9 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 	public void onResume() {
 		super.onResume();
 
+		if (getLccHolder() != null) {
 		checkIfLiveUserAlive();
+		}
 	}
 
 	@Override

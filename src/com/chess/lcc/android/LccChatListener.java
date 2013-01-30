@@ -42,7 +42,8 @@ public class LccChatListener implements ChatListener {
 			}*/
 	}
 
-	@Override
+	// todo: remove
+	/*@Override
 	public boolean onSubscribedChatListReceived(Collection<? extends Chat> chats) {
 		String str =
 				"CHAT LISTENER: Previously Subscribed Chat List received: user=" + lccHolder.getUser().getUsername() + ", listSize=" + chats.size();
@@ -52,7 +53,7 @@ public class LccChatListener implements ChatListener {
 		Log.d(TAG, str);
 
 		return false;
-	}
+	}*/
 
 	@Override
 	public void onChatOpened(Chat chat) {

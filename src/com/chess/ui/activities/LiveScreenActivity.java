@@ -120,16 +120,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	}
 
 	protected void onLiveServiceConnected() {
-
-		Log.d("lcclog", "AppData.isLiveChess(getContext()) " + AppData.isLiveChess(getContext()));
-		Log.d("lcclog", "lccHolder.isConnected() " + getLccHolder().isConnected());
-		Log.d("lcclog", "lccHolder.getClient() " + getLccHolder().getClient());
-
-		 if (AppData.isLiveChess(getContext()) && !getLccHolder().isConnected()
-				/*&& LccHolder.getInstance(getContext()).getClient() == null*/) {
-			getLccHolder().runConnectTask();
-		}
-
 		showLoadingView(!getLccHolder().isConnected());
 
 		if (getLccHolder().currentGameExist()) {

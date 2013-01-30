@@ -102,7 +102,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 	protected void onResume() {
 		super.onResume();
 
-		if (!checkIfLiveUserAlive()){
+		if (getLccHolder() == null || !checkIfLiveUserAlive()) {
 			return;
 		}
 

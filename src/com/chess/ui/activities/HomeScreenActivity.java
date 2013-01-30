@@ -592,7 +592,9 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			moPubInterstitial.destroy();
 		}
 		super.onDestroy();
+		if (isLCSBound) {
 		unbindService(liveChessServiceConnectionListener);
+		}
 	}
 
 	@Override

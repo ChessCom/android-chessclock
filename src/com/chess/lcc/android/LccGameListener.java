@@ -19,7 +19,7 @@ import static com.chess.live.rules.GameResult.*;
 public class LccGameListener implements GameListener {
 
 	private LccHolder lccHolder;
-    private Long latestGameId;
+    private Long latestGameId = 0L;
     private Context context;
     private static final String TAG = "LCCLOG-GAME";
 
@@ -28,7 +28,8 @@ public class LccGameListener implements GameListener {
         context = lccHolder.getContext();
     }
 
-	public boolean onGameListReceived(Collection<? extends Game> games) {
+	// todo: remove
+	/*public boolean onGameListReceived(Collection<? extends Game> games) {
 		Log.d(TAG, "GAME LISTENER: Game list received.");
 		latestGameId = 0L;
 
@@ -45,8 +46,7 @@ public class LccGameListener implements GameListener {
 		Log.d(TAG, "GAME LISTENER: latestGameId=" + latestGameId);
 
 		return false;
-
-    }
+    }*/
 
     public void onGameArchiveReceived(User user, Collection<? extends Game> games) {
     }
@@ -86,18 +86,22 @@ public class LccGameListener implements GameListener {
 				", newClockValue=" + newClockValue + ", clockAdjustment=" + clockAdjustment);
 	}
 
-    private boolean isOldGame(Long gameId) {
+	@Override
+	public void onGameComputerAnalysisRequested(Long aLong, boolean b, String s) {
+	}
+
+	private boolean isOldGame(Long gameId) {
         return gameId < latestGameId;
     }
 
 	private boolean isActualGame(Game game) {
 		Long gameId = game.getId();
 
-		if (!isMyGame(game)) { // todo: remove this unobserveGame logic after fixing LCC bug
+		/*if (!isMyGame(game)) {
 			lccHolder.getClient().unobserveGame(gameId);
 			Log.d(TAG, "GAME LISTENER: unobserve game " + gameId);
 			return false;
-		} else if (lccHolder.isUserPlayingAnotherGame(gameId)) {
+		} else */if (lccHolder.isUserPlayingAnotherGame(gameId)) {
 			Log.d(TAG, "GAME LISTENER: abort and exit second game");
 			lccHolder.getClient().abortGame(game, "abort second game");
 			lccHolder.getClient().exitGame(game);
@@ -277,7 +281,7 @@ public class LccGameListener implements GameListener {
         }
     }*/
 
-	private boolean isMyGame(Game game) {
+	/*private boolean isMyGame(Game game) {
 		String whiteUsername = game.getWhitePlayer().getUsername().toLowerCase();
 		String blackUsername = game.getBlackPlayer().getUsername().toLowerCase();
 		String userName = lccHolder.getUsername().toLowerCase();
@@ -289,5 +293,5 @@ public class LccGameListener implements GameListener {
 		}
 
 		return isMyGame;
-	}
+	}*/
 }

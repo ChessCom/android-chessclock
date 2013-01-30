@@ -45,10 +45,10 @@ public class LiveChessService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(TAG, "SERVICE: onStartCommand");
 
-		//checkAndConnect();  // todo: anr. move it to listener
+		checkAndConnect();
 
-		//return START_STICKY;
-		return START_CONTINUATION_MASK;
+		return START_STICKY;
+		//return START_CONTINUATION_MASK;
 	}
 
 	@Override

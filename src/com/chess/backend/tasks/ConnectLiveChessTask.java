@@ -81,6 +81,9 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			item.setSupportedClientFeature(ClientFeature.AnnounceService, true);
 			item.setSupportedClientFeature(ClientFeature.AdminService, true); // UPDATELCC todo: check
 
+			item.setSupportedClientFeature(ClientFeature.GenericGameSupport, true);
+			item.setSupportedClientFeature(ClientFeature.GenericChatSupport, true);
+
 			//PublicChatsBasic
 			//PublicChatsFull
 			//PrivateChats

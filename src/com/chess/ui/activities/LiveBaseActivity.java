@@ -100,10 +100,12 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		unbindService(liveChessServiceConnectionListener);
+		if (isLCSBound) {
+			unbindService(liveChessServiceConnectionListener);
+		}
 	}
 
-	protected boolean checkIfLiveUserAlive(){
+	protected boolean checkIfLiveUserAlive() {
 		boolean alive = true;
 		if (getLccHolder().getUser() == null) {
 			if (AppData.isLiveChess(this)) {
