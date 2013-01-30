@@ -11,7 +11,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
-import com.chess.ui.adapters.ChessSpinnerAdapter;
+import com.chess.ui.adapters.ChessWhiteSpinnerAdapter;
 import com.chess.ui.engine.ChessBoardComp;
 import com.flurry.android.FlurryAgent;
 
@@ -33,7 +33,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 		findViewById(R.id.load).setOnClickListener(this);
 
 		strength = (Spinner) findViewById(R.id.strengthSpinner);
-		strength.setAdapter(new ChessSpinnerAdapter(this, getItemsFromEntries(R.array.strength)));
+		strength.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.strength)));
 		strength.setOnItemSelectedListener(this);
 
 		findViewById(R.id.start).setOnClickListener(this);

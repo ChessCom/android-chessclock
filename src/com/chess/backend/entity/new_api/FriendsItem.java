@@ -14,9 +14,12 @@ public class FriendsItem extends BaseResponseItem<List<FriendsItem.Data>> {
     "count": 4,
     "data": [
         {
-            "user_id": 31,
+          	"user_id": 31,
             "username": "jay",
-            "is_online": true
+            "is_online": true,
+            "country_id": 2,
+            "location": "Israel",
+            "avatar_url": "http://www.capi.com/images_users/avatars/jay.gif"
         }...
     ]
 */
@@ -25,6 +28,9 @@ public class FriendsItem extends BaseResponseItem<List<FriendsItem.Data>> {
 		private long user_id;
 		private String username;
 		private boolean is_online;
+		private long country_id;
+		private String location;
+		private String avatar_url;
 
 		public long getUserId() {
 			return user_id;
@@ -48,6 +54,18 @@ public class FriendsItem extends BaseResponseItem<List<FriendsItem.Data>> {
 
 		public void setOnline(boolean is_online) {
 			this.is_online = is_online;
+		}
+
+		public long getCountryId() {
+			return country_id;
+		}
+
+		public String getLocation() {
+			return location;
+		}
+
+		public String getAvatarUrl() {
+			return avatar_url;
 		}
 	}
 }

@@ -83,7 +83,7 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 
 		getCountryCode();
 //		Spinner countrySpinner = (Spinner) view.findViewById(R.id.country);  // TODO create in CreateProfileFragment
-//		countrySpinner.setAdapter(new ChessSpinnerAdapter(getActivity(), getItemsFromArray(tmp2)));
+//		countrySpinner.setAdapter(new ChessWhiteSpinnerAdapter(getActivity(), getItemsFromArray(tmp2)));
 //		countrySpinner.setOnItemSelectedListener(this);
 
 		regSubmit.setOnClickListener(this);

@@ -4,39 +4,30 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
-import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.BaseResponseItem;
-import com.chess.backend.entity.new_api.DailyGameByIdItem;
 import com.chess.backend.entity.new_api.FriendsItem;
+import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import org.apache.http.HttpStatus;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.*;
 import java.util.List;
 
 
-public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Long> {
+public class SaveVideosListTask extends AbstractUpdateTask<VideoItem.VideoDataItem, Long> {
 	private static final String TAG = "SaveFriendsListTask";
 
 	private ContentResolver contentResolver;
 	protected static String[] arguments = new String[2];
 	private LoadItem loadItem;
 
-	public SaveFriendsListTask(TaskUpdateInterface<FriendsItem.Data> taskFace, List<FriendsItem.Data> currentItems,
-							   ContentResolver resolver) {
+	public SaveVideosListTask(TaskUpdateInterface<VideoItem.VideoDataItem> taskFace, List<VideoItem.VideoDataItem> currentItems,
+							  ContentResolver resolver) {
         super(taskFace);
 		this.itemList = currentItems;
 		this.contentResolver = resolver;
@@ -49,26 +40,27 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 		Context context = getTaskFace().getMeContext();
 		String userName = AppData.getUserName(context);
 		String userToken = AppData.getUserToken(context);
-
-		for (FriendsItem.Data currentItem : itemList) { // if
+		// TODO compare received list of current games with saved db data for current games.
+		// if item is not found in received list that means it became finished
+		for (VideoItem.VideoDataItem currentItem : itemList) { // if
 			final String[] arguments2 = arguments;
 			arguments2[0] = String.valueOf(userName);
-			arguments2[1] = String.valueOf(currentItem.getUserId());
+			arguments2[1] = String.valueOf(currentItem.getName());
 
 			// TODO implement beginTransaction logic for performance increase
-			Uri uri = DBConstants.FRIENDS_CONTENT_URI;
-			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_USER_ID,
-					DBDataManager.SELECTION_USER_ID, arguments2, null);
+			Uri uri = DBConstants.VIDEOS_CONTENT_URI;
+			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_NAME,
+					DBDataManager.SELECTION_NAME, arguments2, null);
 			if (cursor.moveToFirst()) {
 				contentResolver.update(Uri.parse(uri.toString() + DBDataManager.SLASH_ + DBDataManager.getId(cursor)),
-						DBDataManager.putFriendItemToValues(currentItem, userName), null, null);
+						DBDataManager.putVideoItemToValues(currentItem, userName), null, null);
 			} else {
-				contentResolver.insert(uri, DBDataManager.putFriendItemToValues(currentItem, userName));
+				contentResolver.insert(uri, DBDataManager.putVideoItemToValues(currentItem, userName));
 			}
 
 			cursor.close();
 
-			updateFriends(currentItem.getUserId(), userName, userToken);
+//			updateFriends(currentItem.getUserId(), userName, userToken);
 		}
 
         result = StaticData.RESULT_OK;

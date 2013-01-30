@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="43dip">
+    <Spinner
+        android:id="@+id/categoriesSpinner"
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/button_tab_home_middle_selector"
+
+        />
+    <Spinner
+        android:id="@+id/sortSpinner"
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/button_tab_home_middle_selector"
+        />
+    <ImageButton
+        android:layout_width="43dip"
+        android:layout_height="43dip"
+        android:src="@drawable/ic_search"
+        android:background="@drawable/button_tab_home_middle_selector"
+        android:contentDescription="@string/search"/>
+
+</LinearLayout>

@@ -12,7 +12,7 @@
     android:paddingBottom="8dip"
     android:paddingLeft="10dip"
     android:paddingRight="10dip"
-    android:background="@drawable/nav_menu_item_selected"
+    android:background="@drawable/nav_menu_item_selector"
     >
 
     <ImageView

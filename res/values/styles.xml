@@ -155,7 +155,6 @@
     
 
     <style name="Spinner" parent="@android:style/Widget.Spinner">
-        <!--<item name="android:layout_margin">2dip</item>-->
         <item name="android:drawSelectorOnTop">true</item>
         <item name="android:background">@drawable/edit_grey_one_default</item>
         <item name="android:textSize">14sp</item>

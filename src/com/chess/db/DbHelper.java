@@ -49,4 +49,12 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	public static QueryParams getVideosListParams(Context context){
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DBConstants.VIDEOS_CONTENT_URI);
+		queryParams.setSelection(DBDataManager.SELECTION_USER);
+		queryParams.setArguments(new String[]{AppData.getUserName(context)});
+		return queryParams;
+	}
+
 }

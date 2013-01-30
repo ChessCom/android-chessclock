@@ -120,13 +120,19 @@ public class RestHelper {
 	public static final String CMD_VACATIONS = CMD_GAMES + "/vacations";
 	public static final String CMD_SEEKS = CMD_GAMES + "/seeks";
 	public static final String CMD_MOVES = CMD_GAMES + "/moves";
+		/*Articles*/
+	public static final String CMD_ARTICLES = BASE_URL + V1 + "/articles";
+	public static final String CMD_ARTICLES_LIST = CMD_ARTICLES + "/list";
+	public static final String CMD_ARTICLES_CATEGORIES = CMD_ARTICLES + "/categories";
+	public static String CMD_ARTICLE_BY_ID(long id) {return CMD_ARTICLES + "/" + id;}
+	public static String CMD_ARTICLE_COMMENTS(long id) {return CMD_ARTICLES + "/" + id + "/comments";} // POST
+
 		/*Other stuff*/
 	public static final String CMD_FRIENDS = BASE_URL + V1 + "/friends";
 	public static final String CMD_VIDEOS = BASE_URL + V1 + "/videos";
+
 	public static final String CMD_TACTICS = BASE_URL + V1 + "/tactics";
 	public static final String CMD_TACTIC_TRAINER = CMD_TACTICS + "/trainer";
-
-
 	public static String CMD_ANSWER_GAME_SEEK(long gameSeekId) {return CMD_GAMES + "/" + gameSeekId + "/seeks";}
 	public static String CMD_PUT_GAME_ACTION(long gameId) {return CMD_GAMES + "/" + gameId + "/actions";}
 	public static String CMD_GAME_BY_ID(long gameId) {return CMD_GAMES + "/" + gameId;}

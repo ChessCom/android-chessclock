@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 12;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 13;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -23,6 +23,8 @@ public class DBConstants {
     public static final String ECHESS_CURRENT_LIST_GAMES_TABLE = "echess_current_games";
     public static final String ECHESS_ONLINE_GAMES_TABLE = "echess_online_games";
     public static final String FRIENDS_TABLE = "friends";
+    public static final String ARTICLES_TABLE = "articles";
+    public static final String VIDEOS_TABLE = "videos";
 
 
 
@@ -33,6 +35,8 @@ public class DBConstants {
     public static final Uri ECHESS_CURRENT_LIST_GAMES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ECHESS_CURRENT_LIST_GAMES_TABLE);
     public static final Uri ECHESS_ONLINE_GAMES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ECHESS_ONLINE_GAMES_TABLE);
     public static final Uri FRIENDS_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + FRIENDS_TABLE);
+    public static final Uri ARTICLES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ARTICLES_TABLE);
+    public static final Uri VIDEOS_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + VIDEOS_TABLE);
 
 
     // uri paths
@@ -42,6 +46,8 @@ public class DBConstants {
     public static final int ECHESS_CURRENT_LIST_GAMES = 3;
     public static final int ECHESS_ONLINE_GAMES = 4;
     public static final int FRIENDS = 5;
+    public static final int ARTICLES = 6;
+    public static final int VIDEOS = 7;
 
 
     // general fields
@@ -51,7 +57,7 @@ public class DBConstants {
     /* TacticsItem Fields */
 
     public static final String V_USER     		= "user";
-    public static final String V_TACTIC_ID 		= "tactic_id";
+    public static final String V_TACTIC_ID 		= "tacticId";
     public static final String V_FEN      		= "fen";
     public static final String V_MOVE_LIST      = "moveList";
     public static final String V_ATTEMPT_CNT    = "attemptCnt";
@@ -101,10 +107,33 @@ public class DBConstants {
 
 	/*Friends*/
 	public static final String V_USERNAME 				= "username";
-	public static final String V_USER_ID 				= "user_Id";
+	public static final String V_USER_ID 				= "userId";
 	public static final String V_LOCATION 				= "location";
 	public static final String V_COUNTRY_ID 			= "countryId";
 	public static final String V_PHOTO_URL 				= "photoUrl";
+
+	/*Articles*/
+	public static final String V_ARTICLE_ID 			= "articleId";
+	public static final String V_TITLE 					= "title";
+	public static final String V_CREATE_DATE 			= "createDate";
+	public static final String V_ARTICLE_CATEGORY 		= "articleCategory";
+	public static final String V_ARTICLE_CATEGORY_ID 	= "articleCategoryId";
+	public static final String V_CHESS_TITLE 			= "chessTitle";
+	public static final String V_FIRST_NAME 			= "firstName";
+	public static final String V_LAST_NAME 				= "lastName";
+
+
+	/*Videos*/
+
+	public static final String V_NAME 				= "name";
+	public static final String V_DESCRIPTION 		= "description";
+	public static final String V_CATEGORY 			= "category";
+	public static final String V_SKILL_LEVEL 		= "skillLevel";
+	public static final String V_ECO_NAME 			= "ecoName";
+	public static final String V_MINUTES 			= "minutes";
+	public static final String V_MOBILE_URL 		= "mobileUrl";
+	public static final String V_KEY_FEN 			= "keyFen";
+
 
 
     /* common commands */
@@ -196,19 +225,6 @@ public class DBConstants {
 			+ V_USER_OFFERED_DRAW 	   	+ _INT_NOT_NULL + _COMMA
 			+ V_DAYS_PER_MOVE 			+ _INT_NOT_NULL + _CLOSE;
 
-/*
-
-	public static final String V_LOCATION 				= "location";
-	public static final String V_COUNTRY_ID 			= "countryId";
-	public static final String V_PHOTO_URL 				= "photoUrl";
-
-		public ImageView photoImg;
-		public TextView usernameTxt;
-		public ImageView countryImg;
-		public TextView locationTxt;
-
-	 */
-
 	static final String FRIENDS_CREATE =
 			CREATE_TABLE_IF_NOT_EXISTS + FRIENDS_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
@@ -217,5 +233,36 @@ public class DBConstants {
 			+ V_COUNTRY_ID 	    		+ _INT_NOT_NULL + _COMMA
 			+ V_USER_ID 	    		+ _INT_NOT_NULL + _COMMA
 			+ V_PHOTO_URL 	    		+ _TEXT_NOT_NULL + _CLOSE;
+
+
+	static final String ARTICLES_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + ARTICLES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_ARTICLE_ID 				+ _LONG_NOT_NULL + _COMMA
+			+ V_TITLE 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_CREATE_DATE 			+ _LONG_NOT_NULL + _COMMA
+			+ V_ARTICLE_CATEGORY 		+ _TEXT_NOT_NULL + _COMMA
+			+ V_ARTICLE_CATEGORY_ID 	+ _LONG_NOT_NULL + _COMMA
+			+ V_USER_ID 				+ _LONG_NOT_NULL + _COMMA
+			+ V_USERNAME 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_FIRST_NAME 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_LAST_NAME 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_CHESS_TITLE 	    	+ _TEXT_NOT_NULL + _CLOSE;
+
+	static final String VIDEOS_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + VIDEOS_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_DESCRIPTION 			+ _TEXT_NOT_NULL + _COMMA
+			+ V_CATEGORY 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_SKILL_LEVEL 			+ _TEXT_NOT_NULL + _COMMA
+			+ V_ECO_NAME 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_MINUTES 				+ _INT_NOT_NULL + _COMMA
+			+ V_CREATE_DATE 	    	+ _LONG_NOT_NULL + _COMMA
+			+ V_MOBILE_URL 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_KEY_FEN 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_FIRST_NAME 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_LAST_NAME 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_CHESS_TITLE 	    	+ _TEXT_NOT_NULL + _CLOSE;
 
 }

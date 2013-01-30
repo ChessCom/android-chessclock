@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.new_api.FriendsItem;
 
 import java.util.List;
 
@@ -13,29 +12,28 @@ import java.util.List;
  * ChessWhiteSpinnerAdapter class
  *
  * @author alien_roger
- * @created at: 24.02.12 5:22
+ * @created at: 30.01.13 5:22
  */
-public class FriendsSpinnerAdapter extends ItemsAdapter<FriendsItem.Data> {
+public class ChessDarkSpinnerAdapter extends ItemsAdapter<String> {
 
-	public FriendsSpinnerAdapter(Context context, List<FriendsItem.Data> items) {
+	public ChessDarkSpinnerAdapter(Context context, List<String> items) {
 		super(context, items);
 	}
 
 	@Override
 	protected View createView(ViewGroup parent) {
-		View view = inflater.inflate(android.R.layout.simple_spinner_item, parent, false);
+		View view = inflater.inflate(R.layout.new_dark_spinner_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.textTxt = (TextView) view.findViewById(android.R.id.text1);
-		holder.textTxt.setTextColor(context.getResources().getColor(R.color.hint_text));
 
 		view.setTag(holder);
 		return view;
 	}
 
 	@Override
-	protected void bindView(FriendsItem.Data item, int pos, View convertView) {
+	protected void bindView(String item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
-		holder.textTxt.setText(item.getUsername());
+		holder.textTxt.setText(item);
 	}
 
 	@Override
@@ -51,7 +49,7 @@ public class FriendsSpinnerAdapter extends ItemsAdapter<FriendsItem.Data> {
 		}
 
 		holder.textTxt.setTextColor(context.getResources().getColor(R.color.black));
-		holder.textTxt.setText(itemsList.get(position).getUsername());
+		holder.textTxt.setText(itemsList.get(position));
 
 		return convertView;
 	}

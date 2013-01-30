@@ -11,53 +11,51 @@
     android:background="@color/white"
     >
 
-    <include
-        android:id="@+id/thumbnailImg"
-        layout="@layout/new_video_thumbnail_view"
-        />
-
     <com.chess.RoboTextView
         android:id="@+id/titleTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="A Guide for White: Avoiding the Sicilian - Alapin Part 1!"
-        android:layout_toRightOf="@id/thumbnailImg"
-        android:paddingLeft="20dip"
-        android:paddingBottom="1dip"
-        android:layout_marginTop="-4dip"
         android:textColor="@color/new_dark_green"
+        android:paddingBottom="13dip"
         android:textSize="15sp"
         custom:ttf="Bold"
         />
 
-    <com.chess.RoboTextView
-        android:id="@+id/byTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/by"
-        android:layout_toRightOf="@id/thumbnailImg"
+    <ImageView
+        android:id="@+id/thumbnailImg"
+        android:layout_width="35dip"
+        android:layout_height="35dip"
+        android:background="@color/new_common_list_thumb_grey"
         android:layout_below="@id/titleTxt"
-        android:paddingLeft="20dip"
-        android:paddingTop="0dip"
-        android:paddingBottom="2dip"
-        android:layout_marginTop="-1dip"
-        android:textColor="@color/new_subtitle_dark_grey"
-        android:textSize="12sp"
-        custom:ttf="RobotoRegular"
+        android:layout_marginRight="12dip"
         />
+
 
     <com.chess.RoboTextView
         android:id="@+id/authorTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="GM Gregory Kaidanov"
-        android:layout_toRightOf="@id/byTxt"
+        android:layout_toRightOf="@id/thumbnailImg"
         android:layout_below="@id/titleTxt"
-        android:paddingLeft="3dip"
         android:paddingBottom="2dip"
+        android:layout_marginTop="-2dip"
         android:textColor="@color/new_subtitle_dark_grey"
         android:textSize="12sp"
         custom:ttf="Bold"
+        />
+
+    <ImageView
+        android:id="@+id/countryImg"
+        android:layout_width="27dip"
+        android:layout_height="27dip"
+        android:contentDescription="@string/country"
+        android:layout_toRightOf="@id/authorTxt"
+        android:layout_below="@id/titleTxt"
+        android:src="@drawable/ic_united_states"
+        android:layout_marginTop="-6dip"
+        android:layout_marginLeft="7dip"
         />
 
     <com.chess.RoboTextView
@@ -67,7 +65,6 @@
         android:text="11/15/12 | 27 min"
         android:layout_toRightOf="@id/thumbnailImg"
         android:layout_below="@id/authorTxt"
-        android:paddingLeft="20dip"
         android:textColor="@color/new_friends_grey_text"
         android:textSize="13sp"
         />

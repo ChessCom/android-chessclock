@@ -12,8 +12,6 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.DailyCurrentGameData;
-import com.chess.backend.entity.new_api.DailyGamesAllItem;
 import com.chess.backend.entity.new_api.FriendsItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
@@ -22,9 +20,8 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
-import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
 import com.chess.db.tasks.SaveFriendsListTask;
-import com.chess.ui.adapters.ChessSpinnerAdapter;
+import com.chess.ui.adapters.ChessWhiteSpinnerAdapter;
 import com.chess.ui.adapters.FriendsCursorAdapter;
 import com.chess.utilities.AppUtils;
 
@@ -75,7 +72,7 @@ public class FriendsFragment extends CommonLogicFragment {
 		sortList.add("Name");
 		sortList.add("Country");
 		sortList.add("Online");
-		sortSpinner.setAdapter(new ChessSpinnerAdapter(getActivity(), sortList));
+		sortSpinner.setAdapter(new ChessWhiteSpinnerAdapter(getActivity(), sortList));
 	}
 
 	@Override
@@ -90,7 +87,7 @@ public class FriendsFragment extends CommonLogicFragment {
 			showEmptyView(true);
 		}
 
-		if (DBDataManager.haveSavedOnlineCurrentGame(getActivity())) {
+		if (DBDataManager.haveSavedFriends(getActivity())) {
 			loadFromDb();
 		}
 	}

@@ -1,11 +1,14 @@
 package com.chess.ui.fragments;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
@@ -16,8 +19,13 @@ import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DBDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.tasks.LoadDataFromDbTask;
+import com.chess.db.tasks.SaveVideosListTask;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.NewVideosAdapter;
+import com.chess.ui.adapters.VideosCursorAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
@@ -31,13 +39,13 @@ import java.util.Date;
  * Date: 27.01.13
  * Time: 19:12
  */
-public class VideosFragment extends CommonLogicFragment implements ItemClickListenerFace {
+public class VideosFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener {
+
 	public static final String GREY_COLOR_DIVIDER = "##";
 	// 11/15/12 | 27 min
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
 
 	private VideosItemUpdateListener randomVideoUpdateListener;
-
 
 	private String[] categories;
 	private CustomSectionedAdapter sectionedAdapter;
@@ -51,19 +59,23 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private ViewHolder holder;
 	private ForegroundColorSpan foregroundSpan;
 
+	private SaveVideosListUpdateListener saveVideosListUpdateListener;
+	private ListView listView;
+	private View loadingView;
+	private TextView emptyView;
+	private VideosCursorUpdateListener videosCursorUpdateListener;
+	private VideosCursorAdapter videosCursorAdapter;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		categories = getResources().getStringArray(R.array.category);
-/*
-<item>Amazing games</item>
-<item>Endgames</item>
-<item>Openings</item>
-<item>Rules Basics</item>
-<item>Strategy</item>
-<item>Tactics</item>
-*/
+
+		saveVideosListUpdateListener = new SaveVideosListUpdateListener();
+		videosCursorUpdateListener = new VideosCursorUpdateListener();
+
+		videosCursorAdapter = new VideosCursorAdapter(getContext(), null);
 
 		amazingGamesAdapter = new NewVideosAdapter(getActivity(), new ArrayList<VideoItem.VideoDataItem>());
 		endGamesGamesAdapter = new NewVideosAdapter(getActivity(), new ArrayList<VideoItem.VideoDataItem>());
@@ -95,8 +107,14 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		ListView listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(sectionedAdapter);
+		loadingView = view.findViewById(R.id.loadingView);
+		emptyView = (TextView) view.findViewById(R.id.emptyView);
+
+
+		listView = (ListView) view.findViewById(R.id.listView);
+		listView.setAdapter(videosCursorAdapter);
+//		listView.setAdapter(sectionedAdapter);
+		listView.setOnItemClickListener(this);
 
 		holder = new ViewHolder();
 		holder.titleTxt = (TextView) view.findViewById(R.id.titleTxt);
@@ -110,7 +128,16 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 		init();
 
-		updateData();
+		if (AppUtils.isNetworkAvailable(getActivity())) {
+			updateData();
+		} else {
+			emptyView.setText(R.string.no_network);
+			showEmptyView(true);
+		}
+
+		if (DBDataManager.haveSavedFriends(getActivity())) {
+			loadFromDb();
+		}
 	}
 
 	@Override
@@ -161,6 +188,11 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		return getActivity();
 	}
 
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		getActivityFace().openFragment(new VideosCategoriesFragment());
+	}
+
 	private class VideosItemUpdateListener extends ActionBarUpdateListener<VideoItem> {
 
 		final static int AMAZING_GAMES = 0;
@@ -179,6 +211,13 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			showLoadingView(show);
+		}
+
+
+		@Override
 		public void updateData(VideoItem returnedObj) {
 
 			switch (listenerCode){
@@ -192,7 +231,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 							+ firstName + StaticData.SYMBOL_SPACE + lastName;
 					authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 					holder.authorTxt.setText(authorStr);
-
 					holder.titleTxt.setText(item.getName());
 					holder.dateTxt.setText(dateFormatter.format(new Date(item.getLive_date()))
 							+ StaticData.SYMBOL_SPACE + item.getMinutes() + " min"); // TODO
@@ -200,12 +238,16 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 					break;
 				case AMAZING_GAMES:
+
 					amazingGamesAdapter.setItemsList(returnedObj.getData().getVideos());
 					amazingGamesAdapter.notifyDataSetInvalidated();
+
 					break;
 				case END_GAMES:
 					endGamesGamesAdapter.setItemsList(returnedObj.getData().getVideos());
 					endGamesGamesAdapter.notifyDataSetInvalidated();
+
+					new SaveVideosListTask(saveVideosListUpdateListener, returnedObj.getData().getVideos(), getContentResolver()).executeTask();
 					break;
 				case OPENINGS:
 					openingsGamesAdapter.setItemsList(returnedObj.getData().getVideos());
@@ -245,4 +287,100 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		public TextView authorTxt;
 		public TextView dateTxt;
 	}
+
+	private class SaveVideosListUpdateListener extends ActionBarUpdateListener<VideoItem.VideoDataItem> {
+		public SaveVideosListUpdateListener() {
+			super(getInstance());
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			showLoadingView(show);
+		}
+
+		@Override
+		public void updateData(VideoItem.VideoDataItem returnedObj) {
+			if (getActivity() == null) {
+				return;
+			}
+
+			loadFromDb();
+		}
+	}
+
+	private void loadFromDb() {
+		new LoadDataFromDbTask(videosCursorUpdateListener,
+				DbHelper.getVideosListParams(getContext()),
+				getContentResolver()).executeTask();
+
+	}
+
+	private class VideosCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
+
+		public VideosCursorUpdateListener() {
+			super(getInstance());
+
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			showLoadingView(show);
+		}
+
+		@Override
+		public void updateData(Cursor returnedObj) {
+			if (getActivity() == null) {
+				return;
+			}
+
+			videosCursorAdapter.changeCursor(returnedObj);
+			listView.setAdapter(videosCursorAdapter);
+
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			if (resultCode == StaticData.EMPTY_DATA) {
+				emptyView.setText(R.string.no_games);
+			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
+				emptyView.setText(R.string.no_network);
+			}
+			showEmptyView(true);
+		}
+	}
+
+	private void showEmptyView(boolean show) {
+		Log.d("TEST", "showEmptyView show = " + show);
+
+		if (show) {
+			// don't hide loadingView if it's loading
+			if (loadingView.getVisibility() != View.VISIBLE) {
+				loadingView.setVisibility(View.GONE);
+			}
+
+			emptyView.setVisibility(View.VISIBLE);
+			listView.setVisibility(View.GONE);
+		} else {
+			emptyView.setVisibility(View.GONE);
+			listView.setVisibility(View.VISIBLE);
+		}
+	}
+
+	private void showLoadingView(boolean show) {
+		if (show) {
+			emptyView.setVisibility(View.GONE);
+			if (videosCursorAdapter.getCount() == 0) {
+				listView.setVisibility(View.GONE);
+
+			}
+			loadingView.setVisibility(View.VISIBLE);
+		} else {
+			listView.setVisibility(View.VISIBLE);
+			loadingView.setVisibility(View.GONE);
+		}
+	}
+
 }

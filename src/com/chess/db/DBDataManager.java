@@ -61,6 +61,10 @@ public class DBDataManager {
 			DBConstants.V_USER,
 			DBConstants.V_IS_MY_TURN);
 
+	public static String SELECTION_NAME = concatArguments(
+			DBConstants.V_USER,
+			DBConstants.V_NAME);
+
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
 	public static final String[] PROJECTION_ID = new String[] {
@@ -119,6 +123,12 @@ public class DBDataManager {
 			DBConstants.V_USER_OFFERED_DRAW
 	};
 
+	public static final String[] PROJECTION_NAME = new String[] {
+			DBConstants._ID,
+			DBConstants.V_USER,
+			DBConstants.V_NAME
+	};
+
 	public static String concatArguments(String... arguments){
 		StringBuilder selection = new StringBuilder();
 
@@ -169,6 +179,26 @@ public class DBDataManager {
 		}
 
 		cursor.close();
+	}
+
+	/**
+	 * Check if we have saved friends for current user
+	 * @param context to get resources
+	 * @return true if cursor can be positioned to first
+	 */
+	public static boolean haveSavedFriends(Context context) {
+		String userName = getUserName(context);
+
+		ContentResolver contentResolver = context.getContentResolver();
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = userName;
+
+		Cursor cursor = contentResolver.query(DBConstants.FRIENDS_CONTENT_URI,
+				PROJECTION_USER, SELECTION_USER, arguments1, null);
+		boolean exist = cursor.moveToFirst();
+		cursor.close();
+
+		return exist;
 	}
 
 	public static void updateFriend(ContentResolver contentResolver, DailyGameByIdItem.Data currentGame, String userName) {
@@ -547,13 +577,72 @@ public class DBDataManager {
 		values.put(DBConstants.V_USER, userName);
 		values.put(DBConstants.V_USERNAME, dataObj.getUsername());
 		values.put(DBConstants.V_USER_ID, dataObj.getUserId());
-		values.put(DBConstants.V_LOCATION, "none"); // TODO restore
-		values.put(DBConstants.V_COUNTRY_ID, 1); // TODO restore
-		values.put(DBConstants.V_PHOTO_URL, ""); // TODO restore
+		values.put(DBConstants.V_LOCATION, dataObj.getLocation());
+		values.put(DBConstants.V_COUNTRY_ID, dataObj.getCountryId());
+		values.put(DBConstants.V_PHOTO_URL, dataObj.getAvatarUrl());
 
 		return values;
 	}
 
+	public static ContentValues putArticleItemToValues(ArticleItem.Data dataObj, String userName) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_USER, userName);
+		values.put(DBConstants.V_ARTICLE_ID, dataObj.getId());
+		values.put(DBConstants.V_TITLE, dataObj.getTitle());
+		values.put(DBConstants.V_CREATE_DATE, dataObj.getCreate_date());
+		values.put(DBConstants.V_ARTICLE_CATEGORY, dataObj.getArticle_category());
+		values.put(DBConstants.V_ARTICLE_CATEGORY_ID, dataObj.getArticle_category_id());
+		values.put(DBConstants.V_USER_ID, dataObj.getUser_id());
+		values.put(DBConstants.V_USERNAME, dataObj.getUsername());
+		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirst_name());
+		values.put(DBConstants.V_LAST_NAME, dataObj.getLast_name());
+		values.put(DBConstants.V_CHESS_TITLE, dataObj.getChess_title());
+
+		return values;
+	}
+
+	/**
+	 * Check if we have saved videos for current user
+	 * @param context to get resources
+	 * @return true if cursor can be positioned to first
+	 */
+	public static boolean haveSavedVideos(Context context) {
+		String userName = getUserName(context);
+
+		ContentResolver contentResolver = context.getContentResolver();
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = userName;
+
+		Cursor cursor = contentResolver.query(DBConstants.FRIENDS_CONTENT_URI,
+				PROJECTION_USER, SELECTION_USER, arguments1, null);
+		boolean exist = cursor.moveToFirst();
+		cursor.close();
+
+		return exist;
+	}
+
+
+	public static ContentValues putVideoItemToValues(VideoItem.VideoDataItem dataObj, String userName) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_USER, userName);
+		values.put(DBConstants.V_NAME, dataObj.getName());
+		values.put(DBConstants.V_DESCRIPTION, dataObj.getDescription());
+		values.put(DBConstants.V_CATEGORY, dataObj.getCategory());
+		values.put(DBConstants.V_SKILL_LEVEL, dataObj.getSkill_level());
+		String ecoName = dataObj.getEco_name();
+		values.put(DBConstants.V_ECO_NAME, ecoName == null? StaticData.SYMBOL_EMPTY: ecoName);
+		values.put(DBConstants.V_MINUTES, dataObj.getMinutes());
+		values.put(DBConstants.V_CREATE_DATE, dataObj.getLive_date());
+		values.put(DBConstants.V_MOBILE_URL, dataObj.getMobile_view_url());
+		values.put(DBConstants.V_KEY_FEN, dataObj.getKey_fen());
+		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirst_name());
+		values.put(DBConstants.V_LAST_NAME, dataObj.getLast_name());
+		values.put(DBConstants.V_CHESS_TITLE, dataObj.getChess_title());
+
+		return values;
+	}
 
 	public static boolean checkIfDrawOffered(ContentResolver resolver, String userName, long gameId) {
 		final String[] arguments2 = sArguments2;
