@@ -41,7 +41,6 @@ public class RoboTextView extends TextView implements Serializable {
 		try {
 			if (array.getString(R.styleable.RobotoTextView_ttf) != null) {
 				ttfName = array.getString(R.styleable.RobotoTextView_ttf);
-				Log.d("TEST", "set font " + ttfName);
 			}
 		} finally {
 			array.recycle();
