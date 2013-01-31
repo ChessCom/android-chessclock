@@ -49,7 +49,8 @@ public class SaveVideosListTask extends AbstractUpdateTask<VideoItem.VideoDataIt
 
 			// TODO implement beginTransaction logic for performance increase
 			Uri uri = DBConstants.VIDEOS_CONTENT_URI;
-			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_NAME,
+
+			Cursor cursor = contentResolver. query(uri, DBDataManager.PROJECTION_NAME,
 					DBDataManager.SELECTION_NAME, arguments2, null);
 			if (cursor.moveToFirst()) {
 				contentResolver.update(Uri.parse(uri.toString() + DBDataManager.SLASH_ + DBDataManager.getId(cursor)),

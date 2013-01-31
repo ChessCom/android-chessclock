@@ -54,6 +54,7 @@ public class DbHelper {
 		queryParams.setUri(DBConstants.VIDEOS_CONTENT_URI);
 		queryParams.setSelection(DBDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{AppData.getUserName(context)});
+		queryParams.setOrder("firstName");
 		return queryParams;
 	}
 

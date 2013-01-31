@@ -25,7 +25,7 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveVideosListTask;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.NewVideosAdapter;
-import com.chess.ui.adapters.VideosCursorAdapter;
+import com.chess.ui.adapters.NewVideosCursorAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
@@ -64,7 +64,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private View loadingView;
 	private TextView emptyView;
 	private VideosCursorUpdateListener videosCursorUpdateListener;
-	private VideosCursorAdapter videosCursorAdapter;
+	private NewVideosCursorAdapter videosCursorAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		saveVideosListUpdateListener = new SaveVideosListUpdateListener();
 		videosCursorUpdateListener = new VideosCursorUpdateListener();
 
-		videosCursorAdapter = new VideosCursorAdapter(getContext(), null);
+		videosCursorAdapter = new NewVideosCursorAdapter(getContext(), null);
 
 		amazingGamesAdapter = new NewVideosAdapter(getActivity(), new ArrayList<VideoItem.VideoDataItem>());
 		endGamesGamesAdapter = new NewVideosAdapter(getActivity(), new ArrayList<VideoItem.VideoDataItem>());
@@ -177,9 +177,9 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 		loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-		loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_ITEM_ONE);
-		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.V_VIDEO_ITEM_ONE);
-		loadItem.addRequestParams(RestHelper.P_CATEGORY, category);
+//		loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_ITEM_ONE);
+//		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.V_VIDEO_ITEM_ONE);
+//		loadItem.addRequestParams(RestHelper.P_CATEGORY, category);
 		new RequestJsonTask<VideoItem>(videoUpdateListener).executeTask(loadItem);
 	}
 
@@ -190,7 +190,10 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		getActivityFace().openFragment(new VideosCategoriesFragment());
+		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+
+		getActivityFace().openFragment(VideosDetailsFragment.newInstance(DBDataManager.getId(cursor)));
+//		getActivityFace().openFragment(new VideosCategoriesFragment());
 	}
 
 	private class VideosItemUpdateListener extends ActionBarUpdateListener<VideoItem> {
@@ -223,17 +226,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			switch (listenerCode){
 				case RANDOM:
 
-					VideoItem.VideoDataItem item = returnedObj.getData().getVideos().get(0);
-					String firstName = item.getFirst_name();
-					CharSequence chessTitle = item.getChess_title();
-					String lastName =  item.getLast_name();
-					CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
-							+ firstName + StaticData.SYMBOL_SPACE + lastName;
-					authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
-					holder.authorTxt.setText(authorStr);
-					holder.titleTxt.setText(item.getName());
-					holder.dateTxt.setText(dateFormatter.format(new Date(item.getLive_date()))
-							+ StaticData.SYMBOL_SPACE + item.getMinutes() + " min"); // TODO
 
 
 					break;

@@ -6,7 +6,6 @@ import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
@@ -20,13 +19,13 @@ import com.chess.utilities.AppUtils;
  * Date: 29.01.13
  * Time: 17:28
  */
-public class VideosCursorAdapter extends ItemsCursorAdapter {
+public class NewVideosThumbCursorAdapter extends ItemsCursorAdapter {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
 
 	private CharacterStyle foregroundSpan;
 
-	public VideosCursorAdapter(Context context, Cursor cursor) {
+	public NewVideosThumbCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
 
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
@@ -35,7 +34,7 @@ public class VideosCursorAdapter extends ItemsCursorAdapter {
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_common_description_list_item, parent, false);
+		View view = inflater.inflate(R.layout.new_videos_thumb_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.titleTxt = (TextView) view.findViewById(R.id.titleTxt);
 		holder.authorTxt = (TextView) view.findViewById(R.id.authorTxt);

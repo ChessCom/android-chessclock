@@ -636,10 +636,13 @@ public class DBDataManager {
 		values.put(DBConstants.V_MINUTES, dataObj.getMinutes());
 		values.put(DBConstants.V_CREATE_DATE, dataObj.getLive_date());
 		values.put(DBConstants.V_MOBILE_URL, dataObj.getMobile_view_url());
-		values.put(DBConstants.V_KEY_FEN, dataObj.getKey_fen());
+		String keyFen = dataObj.getKey_fen();
+		values.put(DBConstants.V_KEY_FEN,keyFen == null? StaticData.SYMBOL_EMPTY :keyFen);
 		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirst_name());
 		values.put(DBConstants.V_LAST_NAME, dataObj.getLast_name());
-		values.put(DBConstants.V_CHESS_TITLE, dataObj.getChess_title());
+
+		String chessTitle = dataObj.getChess_title();
+		values.put(DBConstants.V_CHESS_TITLE, chessTitle == null? StaticData.SYMBOL_EMPTY: chessTitle);
 
 		return values;
 	}

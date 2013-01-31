@@ -20,7 +20,7 @@
         >
 
         <ImageView
-            android:id="@+id/image"
+            android:id="@+id/videoBackImg"
             android:layout_width="match_parent"
             android:layout_height="240dip"
             android:layout_centerInParent="true"
@@ -39,7 +39,7 @@
             android:visibility="gone" />
 
         <ImageButton
-            android:id="@+id/play"
+            android:id="@+id/playBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -55,14 +55,13 @@
         android:id="@+id/titleTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="A Guide for White: Avoiding the Sicilian - Alapin Part 1!"
         android:layout_below="@id/thumbnailImg"
         android:paddingBottom="9dip"
         android:textColor="@color/new_dark_green"
         android:textSize="20sp"
         custom:ttf="Bold"
         />
-
+    <!--android:text="A Guide for White: Avoiding the Sicilian - Alapin Part 1!"-->
     <ImageView
         android:id="@+id/thumbnailAuthorImg"
         android:layout_width="35dip"
@@ -76,7 +75,6 @@
         android:id="@+id/authorTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GM Gregory Kaidanov"
         android:layout_toRightOf="@id/thumbnailAuthorImg"
         android:layout_below="@id/titleTxt"
         android:paddingLeft="11dip"
@@ -86,6 +84,7 @@
         android:textSize="14sp"
         custom:ttf="Bold"
         />
+    <!--android:text="GM Gregory Kaidanov"-->
 
     <ImageView
         android:id="@+id/countryImg"
@@ -104,7 +103,6 @@
         android:id="@+id/dateTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="11/15/12 | 27 min"
         android:layout_toRightOf="@id/thumbnailAuthorImg"
         android:layout_below="@id/authorTxt"
         android:paddingLeft="11dip"
@@ -112,14 +110,65 @@
         android:textSize="13sp"
         />
 
+    <!--android:text="11/15/12 | 27 min"-->
+
+
     <com.chess.RoboTextView
         android:id="@+id/contextTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="With good reason, most players who aren't, well, chess professionals, would prefer to avoid the many complicated variations of the Open Sicilian. So what are your options? As GM Kaidanov explains, you have one major weapon in addition to the Closed Sicilian Grand Prix Attack (GM Dzindzichashvili's recommendation). Today he describes the important features of the Alapin Sicilian, and then reviews the 4.g3 varation of the 2..Nf6 line."
         android:layout_below="@id/thumbnailAuthorImg"
         android:textColor="@color/new_subtitle_dark_grey"
         android:textSize="14sp"
         />
+    <!--android:text="With good reason, most players who aren't, well, chess professionals, would prefer to avoid the many complicated variations of the Open Sicilian. So what are your options? As GM Kaidanov explains, you have one major weapon in addition to the Closed Sicilian Grand Prix Attack (GM Dzindzichashvili's recommendation). Today he describes the important features of the Alapin Sicilian, and then reviews the 4.g3 varation of the 2..Nf6 line."-->
 
+
+    <com.chess.RoboTextView
+        android:id="@+id/emptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/no_network"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/grey_button_1"
+        android:paddingLeft="10dip"
+        custom:ttf="Bold"
+        style="@style/DarkShadowBottom"
+        android:visibility="gone"
+        />
+
+    <RelativeLayout
+        android:id="@+id/loadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="60dip"
+        android:visibility="gone"
+        >
+
+        <ProgressBar
+            android:layout_width="@dimen/pending_progress_bar_size"
+            android:layout_height="@dimen/pending_progress_bar_size"
+            android:layout_margin="5dip"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/pending_list_item_TextView"
+            style="?android:attr/progressBarStyle"
+            />
+
+        <com.chess.RoboTextView
+            android:id="@id/pending_list_item_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading_"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/grey_button_1"
+            android:paddingLeft="10dip"
+            android:layout_centerInParent="true"
+            custom:ttf="Bold"
+            style="@style/DarkShadowBottom"
+            />
+
+    </RelativeLayout>
 </RelativeLayout>
