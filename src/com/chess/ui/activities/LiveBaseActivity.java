@@ -258,7 +258,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
 			lccHolder = serviceBinder.getLccHolder();
 
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, lccHolder.isConnected(), menu);
+			if (menu != null) {
+				getActionBarHelper().showMenuItemById(R.id.menu_signOut, lccHolder.isConnected(), menu);
+			}
 			getActionBarHelper().showMenuItemById(R.id.menu_signOut, lccHolder.isConnected());
 
 			lccHolder.setLiveChessClientEventListener(LiveBaseActivity.this);

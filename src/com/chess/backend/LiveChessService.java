@@ -25,8 +25,6 @@ public class LiveChessService extends Service {
 	// but in this case we should have ability to reset holder data when it is necessary, for instance logout
 	private LccHolder lccHolder;
 
-	LccConnectUpdateListener lccConnectUpdateListener = new LccConnectUpdateListener();
-
 	public class ServiceBinder extends Binder {
 		public LccHolder getLccHolder(){
 			return LiveChessService.this.getLccHolder();
@@ -36,15 +34,21 @@ public class LiveChessService extends Service {
 	public IBinder onBind(Intent intent) {
 		Log.d(TAG, "SERVICE: onBind");
 		if (lccHolder == null) {
-			lccHolder = new LccHolder(getContext(), lccConnectUpdateListener);
+			lccHolder = new LccHolder(getContext(), new LccConnectUpdateListener());
 		}
 		return serviceBinder;
 	}
+
+	/*@Override
+	public boolean onUnbind(Intent intent) {
+		return super.onUnbind(intent);
+	}*/
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(TAG, "SERVICE: onStartCommand");
 
+		lccHolder = new LccHolder(getContext(), new LccConnectUpdateListener());
 		checkAndConnect();
 
 		return START_STICKY;
@@ -80,7 +84,7 @@ public class LiveChessService extends Service {
 			Log.d(TAG, "LiveChessClient initialized " + returnedObj);
 
 			// todo: tune notification
-			Notification notification = new Notification(R.drawable.player_indicator_online, // just test. change drawable
+			Notification notification = new Notification(R.drawable.ic_stat_chess, // just test. change drawable
 					"Chess.com Live",
 					System.currentTimeMillis());
 
