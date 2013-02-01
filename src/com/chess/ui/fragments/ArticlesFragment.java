@@ -159,21 +159,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 					articlesAdapter.setItemsList(returnedObj.getData());
 					articlesAdapter.notifyDataSetInvalidated();
 					break;
-
-
 			}
-
-			// add data to sectioned adapter
-
-//			recent.setVisibility(View.VISIBLE);
-//			int cnt = Integer.parseInt(returnedObj.getData().getTotal_videos_count());
-//			if (cnt > 0){
-//				item = returnedObj.getData().getVideos().get(0); // new VideoItemOld(returnedObj.split(RestHelper.SYMBOL_ITEM_SPLIT)[2].split("<->"));
-//				title.setText(item.getName());
-//				desc.setText(item.getDescription());
-//
-//				playBtn.setEnabled(true);
-//			}
 		}
 	}
 

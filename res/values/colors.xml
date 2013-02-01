@@ -362,4 +362,11 @@
     <color name="new_common_list_thumb_grey">#FF797979</color>
     <color name="new_list_header_text">#FF818181</color>
 
+    <!--Dark Spinner-->
+    <color name="dark_spinner_back">#FF312e2b</color>
+    <color name="dark_spinner_border_left">#FF3c3936</color>
+    <color name="dark_spinner_border_right">#FF282523</color>
+    <color name="dark_spinner_back_p">#ff262320</color>
+    <color name="dark_spinner_border_left_p">#ff33302d</color>
+    <color name="dark_spinner_border_right_p">#ff23201d</color>
 </resources>

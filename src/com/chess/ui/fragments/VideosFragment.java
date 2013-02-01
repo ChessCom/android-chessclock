@@ -26,14 +26,12 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveVideosListTask;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.NewVideosAdapter;
-import com.chess.ui.adapters.NewVideosCursorAdapter;
 import com.chess.ui.adapters.NewVideosSectionedCursorAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,7 +64,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private View loadingView;
 	private TextView emptyView;
 	private VideosCursorUpdateListener videosCursorUpdateListener;
-//	private NewVideosCursorAdapter videosCursorAdapter;
+	//	private NewVideosCursorAdapter videosCursorAdapter;
 	private NewVideosSectionedCursorAdapter videosCursorAdapter;
 	private boolean need2Update = true;
 
@@ -80,7 +78,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		videosCursorUpdateListener = new VideosCursorUpdateListener();
 
 		videosCursorAdapter = new NewVideosSectionedCursorAdapter(getContext(), null, R.layout.new_arrow_section_header, DBConstants.V_CATEGORY);
-//		videosCursorAdapter = new NewVideosSectionedCursorAdapter(getContext(), null, android.R.layout.preference_category, DBConstants.V_CATEGORY);
 
 		amazingGamesAdapter = new NewVideosAdapter(getActivity(), new ArrayList<VideoItem.VideoDataItem>());
 		endGamesGamesAdapter = new NewVideosAdapter(getActivity(), new ArrayList<VideoItem.VideoDataItem>());
@@ -133,17 +130,10 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	public void onStart() {
 		super.onStart();
 
-//		init();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-
 		if (need2Update) {
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
-				updateData();
+//				updateData();
 			} else {
 				emptyView.setText(R.string.no_network);
 				showEmptyView(true);
@@ -153,7 +143,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 				loadFromDb();
 			}
 		}
-
 	}
 
 	@Override
@@ -161,15 +150,8 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		super.onStop();
 
 		Log.d("TEST", " onStop");
-//		randomVideoUpdateListener.releaseContext();
+//		randomVideoUpdateListener.releaseContext();   // TODO invent logic to release resources
 //		randomVideoUpdateListener = null;
-	}
-
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-
-		Log.d("TEST", " onDestroyView");
 	}
 
 	private void init() {
@@ -186,44 +168,23 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 //		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.V_VIDEO_ITEM_ONE);
 
 		new RequestJsonTask<VideoItem>(randomVideoUpdateListener).executeTask(loadItem);
-
-		// get 2 items from every category
-		for (int i = 0; i < categories.length; i++) {
-//			makeNextCategoryRequest(i);
-		}
-
 	}
 
-	private void makeNextCategoryRequest(int code){  // TODO optimize
-		String category = categories[code];
-		VideosItemUpdateListener videoUpdateListener = new VideosItemUpdateListener(code);
 
-		LoadItem loadItem = new LoadItem();
 
-		loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-//		loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_ITEM_ONE);
-//		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.V_VIDEO_ITEM_ONE);
-//		loadItem.addRequestParams(RestHelper.P_CATEGORY, category);
-		new RequestJsonTask<VideoItem>(videoUpdateListener).executeTask(loadItem);
-	}
-
-	@Override
-	public Context getMeContext() {
-		return getActivity();
-	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		if (videosCursorAdapter.isHeader(position)){
-			Log.d("TEST", "item pos = " + position + " HEADER ");
+		if (videosCursorAdapter.isHeader(position)) {
+			String sectionName = videosCursorAdapter.getSectionName(position);
+
+			getActivityFace().openFragment(VideosCategoriesFragment.newInstance(sectionName));
 		} else {
-			position = videosCursorAdapter.getSectionForPosition(position);
+			position = videosCursorAdapter.getRelativePosition(position);
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 			Log.d("TEST", "item pos = " + position + " name = " + DBDataManager.getString(cursor, DBConstants.V_NAME));
 			getActivityFace().openFragment(VideosDetailsFragment.newInstance(DBDataManager.getId(cursor)));
 		}
-//		getActivityFace().openFragment(new VideosCategoriesFragment());
 	}
 
 	private class VideosItemUpdateListener extends ActionBarUpdateListener<VideoItem> {
@@ -253,7 +214,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		@Override
 		public void updateData(VideoItem returnedObj) {
 
-			switch (listenerCode){
+			switch (listenerCode) {
 				case RANDOM:
 
 					new SaveVideosListTask(saveVideosListUpdateListener, returnedObj.getData().getVideos(), getContentResolver()).executeTask();
@@ -320,8 +281,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	}
 
 	private void loadFromDb() {
-		new LoadDataFromDbTask(videosCursorUpdateListener,
-				DbHelper.getVideosListParams(getContext()),
+		new LoadDataFromDbTask(videosCursorUpdateListener, DbHelper.getVideosListParams(getContext()),
 				getContentResolver()).executeTask();
 
 	}
@@ -393,6 +353,11 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			listView.setVisibility(View.VISIBLE);
 			loadingView.setVisibility(View.GONE);
 		}
+	}
+
+	@Override
+	public Context getMeContext() {
+		return getActivity();
 	}
 
 }

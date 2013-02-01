@@ -17,21 +17,21 @@ package com.chess.ui.adapters;
  */
 
 
-
-import java.util.LinkedHashMap;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DataSetObserver;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
 
-public abstract class NewSectionedCursorAdapter extends ItemsCursorAdapter {
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
+public abstract class NewSectionedCursorLimitedAdapter extends ItemsCursorAdapter {
 
 	private static final String TAG = "SectionCursorAdapter";
 	private static final boolean LOG_FLAG = false;
@@ -43,17 +43,20 @@ public abstract class NewSectionedCursorAdapter extends ItemsCursorAdapter {
 	private final int mHeaderRes;
 	private final String mGroupColumn;
 	private final LayoutInflater mLayoutInflater;
+	private static final int ITEMS_PER_SECTION_CNT = 2;
 
 	private LinkedHashMap<Integer, String> sectionsIndexer;
+	private LinkedHashMap<Integer, Integer> sectionsCounter;
 
 	public static class ViewHolder {
 		public TextView headerTitleTxt;
 	}
 
-	public NewSectionedCursorAdapter(Context context, Cursor cursor, int headerLayout, String groupColumn) {
+	public NewSectionedCursorLimitedAdapter(Context context, Cursor cursor, int headerLayout, String groupColumn) {
 		super(context, cursor);
 
 		sectionsIndexer = new LinkedHashMap<Integer, String>();
+		sectionsCounter = new LinkedHashMap<Integer, Integer>();
 
 		mHeaderRes = headerLayout;
 		mGroupColumn = groupColumn;
@@ -76,27 +79,37 @@ public abstract class NewSectionedCursorAdapter extends ItemsCursorAdapter {
 	};
 
 	private void calculateSectionHeaders() {
-		int i = 0;
 
 		String previous = StaticData.SYMBOL_EMPTY;
-		int count = 0;
+		int sectionNumber = 0;
 
 		final Cursor cursor = getCursor();
 
 		sectionsIndexer.clear();
 
+		int itemsInSection = 0;
+		int lastSectionPosition = 0;
 		do {
-			final String group = cursor.getString(cursor.getColumnIndex(mGroupColumn));
+			final String sectionName = cursor.getString(cursor.getColumnIndex(mGroupColumn));
 
-			if (!group.equals(previous)) {
-				sectionsIndexer.put(i + count, group);
-				previous = group;
+			if (!sectionName.equals(previous)) {
 
-				count++;
+				if (sectionsIndexer.size() > 0){
+					lastSectionPosition += itemsInSection + 1;
+				}
+				sectionsIndexer.put(lastSectionPosition, sectionName);
+				previous = sectionName;
+				sectionNumber++;
+				itemsInSection = 0;
 			}
-			i++;
+
+			if (itemsInSection < ITEMS_PER_SECTION_CNT) {
+				itemsInSection++;
+				sectionsCounter.put(sectionNumber, itemsInSection);
+			}
 
 		} while (cursor.moveToNext());
+		Log.d("TEST", "");
 	}
 
 	public String getGroupCustomFormat(Object obj) {
@@ -120,7 +133,7 @@ public abstract class NewSectionedCursorAdapter extends ItemsCursorAdapter {
 				return convertView;
 			}
 
-			final int mapCursorPos = getSectionForPosition(position);
+			final int mapCursorPos = getRelativePosition(position);
 			cursor.moveToPosition(mapCursorPos);
 
 			return super.getView(mapCursorPos, convertView, parent);
@@ -158,7 +171,13 @@ public abstract class NewSectionedCursorAdapter extends ItemsCursorAdapter {
 
 	@Override
 	public int getCount() {
-		return super.getCount() + sectionsIndexer.size();
+		int sectionsCnt = sectionsIndexer.size();
+		int totalCnt = 0;
+		for (Integer sectionNumber : sectionsCounter.keySet()) {
+			totalCnt += sectionsCounter.get(sectionNumber);
+		}
+
+		return totalCnt + sectionsCnt;
 	}
 
 	@Override
@@ -167,18 +186,35 @@ public abstract class NewSectionedCursorAdapter extends ItemsCursorAdapter {
 		return true;                 // use if need to disable header selection
 	}
 
-	public boolean isHeader(int position) {
-		return getItemViewType(position) == TYPE_HEADER;
-	}
-
-	public int getPositionForSection(int section) {
-		if (sectionsIndexer.containsKey(section)) {
-			return section + 1;
+	/**
+	 * Checks if {@code position} intersects with header of section
+	 * and return next value after header if matches.
+	 *
+	 * @param position
+	 * @return position of specified item
+	 */
+	public int getPositionForItem(int position) {
+		if (isHeader(position)) {
+			return position + 1;
 		}
-		return section;
+		return position;
 	}
 
-	public int getSectionForPosition(int position) {
+	/**
+	 * @param position to compare
+	 * @return true if specified absolute position intersects with header position
+	 */
+	public boolean isHeader(int position) {
+		return sectionsIndexer.containsKey(position);
+	}
+
+	/**
+	 * Gives a number of section for required position
+	 *
+	 * @param position to compare
+	 * @return position relatively headers/offsets
+	 */
+	public int getRelativePosition(int position) {
 		int offset = 0;
 		for (Integer key : sectionsIndexer.keySet()) {
 			if (position > key) {
@@ -193,16 +229,52 @@ public abstract class NewSectionedCursorAdapter extends ItemsCursorAdapter {
 
 	@Override
 	public Object getItem(int position) {
-//		if (getItemViewType(position) == TYPE_NORMAL) {  // use if need to disable header selection
-//			return super.getItem(getRelativePosition(position));
-//		}
 		return super.getItem(position);
 	}
+
+//	private int getPositionInSection(int position) {
+//		int currentSectionNumber = getCurrentSectionNumber(position);
+//		if (currentSectionNumber > 1) { // if in 2+ section
+//			int offset = 1;
+//			for (int i = 1; i < currentSectionNumber; i++) {
+//				offset += sectionsCounter.get(i);
+//				offset++;
+//			}
+//
+//			Log.d("TEST", "offset = " + offset);
+//			int positionInSection = position - offset;
+//			return positionInSection > ITEMS_PER_SECTION_CNT ? 1 : positionInSection;
+//		}
+//
+//		return position > ITEMS_PER_SECTION_CNT ? 1 : position;
+//	}
+
+	public int getPositionForSection(int section) {
+		if (sectionsIndexer.containsKey(section)) {
+			return section + 1;
+		}
+		return section;
+	}
+
+//	private int getCurrentSectionNumber(int position) {
+//		int currentSectionNumber = 1;
+//		int absolutePosition = position;
+//		while (absolutePosition > 0) {
+//			if (isHeader(absolutePosition)) {
+//				currentSectionNumber++;
+//			}
+//
+//			absolutePosition--;
+//		}
+//
+//		return currentSectionNumber;
+//	}
+
 
 	@Override
 	public long getItemId(int position) {
 		if (getItemViewType(position) == TYPE_NORMAL) {
-			return super.getItemId(getSectionForPosition(position));
+			return super.getItemId(getRelativePosition(position));
 		}
 		return super.getItemId(position);
 	}

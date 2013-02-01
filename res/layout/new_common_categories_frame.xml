@@ -5,7 +5,8 @@
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <include layout="@layout/new_categories_selection_view"/>
 
@@ -13,9 +14,11 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="@color/white"
+        android:cacheColorHint="@color/white"
+        android:divider="@color/new_friends_list_divider"
+        android:dividerHeight="1dip"
         />
-
 
     <com.chess.RoboTextView
         android:id="@+id/emptyView"

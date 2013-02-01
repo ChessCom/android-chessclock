@@ -65,6 +65,10 @@ public class DBDataManager {
 			DBConstants.V_USER,
 			DBConstants.V_NAME);
 
+	public static String SELECTION_CATEGORY = concatArguments(
+			DBConstants.V_USER,
+			DBConstants.V_CATEGORY);
+
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
 	public static final String[] PROJECTION_ID = new String[] {
@@ -577,7 +581,8 @@ public class DBDataManager {
 		values.put(DBConstants.V_USER, userName);
 		values.put(DBConstants.V_USERNAME, dataObj.getUsername());
 		values.put(DBConstants.V_USER_ID, dataObj.getUserId());
-		values.put(DBConstants.V_LOCATION, dataObj.getLocation());
+		String location = dataObj.getLocation();
+		values.put(DBConstants.V_LOCATION, location == null? StaticData.SYMBOL_EMPTY: location);
 		values.put(DBConstants.V_COUNTRY_ID, dataObj.getCountryId());
 		values.put(DBConstants.V_PHOTO_URL, dataObj.getAvatarUrl());
 

@@ -53,8 +53,6 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		badgeItems = new Hashtable<Integer, Integer>();
 
 		logoBackground = new LogoBackgroundDrawable(this);
-
-
 	}
 
 	@Override

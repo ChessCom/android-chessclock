@@ -85,11 +85,19 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 				inputStream = connection.getInputStream();
 
 				resultString = convertStreamToString(inputStream);
-				if (!resultString.startsWith(RestHelper.OBJ_START)){
+				if (resultString.contains(RestHelper.OBJ_START)){
+					int firstIndex = resultString.indexOf(RestHelper.OBJ_START);
+
+					int lastIndex = resultString.lastIndexOf(RestHelper.OBJ_END);
+
+					resultString = resultString.substring(firstIndex, lastIndex + 1);
+
+				} else /*(!resultString.startsWith(RestHelper.OBJ_START))*/{
 					result = StaticData.INTERNAL_ERROR;
 					Log.d(TAG, "ERROR -> WebRequest SERVER RESPONSE: " + resultString);
 					return result;
 				}
+
 				BaseResponseItem baseResponse = parseJson(resultString, BaseResponseItem.class);
 				if (baseResponse.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 					item = parseJson(resultString);

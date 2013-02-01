@@ -10,6 +10,9 @@ import android.util.Log;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.ref.SoftReference;
 import java.util.List;
 import java.util.Scanner;
@@ -143,4 +146,18 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 		Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
 		return scanner.hasNext() ? scanner.next() : "";
 	}
+
+//	public static String convertStreamToString(InputStream is) throws Exception {
+//		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+//		StringBuilder sb = new StringBuilder();
+//		String line = null;
+//
+//		while ((line = reader.readLine()) != null) {
+//			sb.append(line);
+//		}
+//
+//		is.close();
+//
+//		return sb.toString();
+//	}
 }

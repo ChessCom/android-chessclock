@@ -58,4 +58,13 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	public static QueryParams getVideosListCategoryParams(Context context, String category){
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DBConstants.VIDEOS_CONTENT_URI);
+		queryParams.setSelection(DBDataManager.SELECTION_CATEGORY);
+		queryParams.setArguments(new String[]{AppData.getUserName(context), category});
+		queryParams.setOrder(DBConstants.V_CATEGORY);
+		return queryParams;
+	}
+
 }
