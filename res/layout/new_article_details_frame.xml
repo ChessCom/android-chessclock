@@ -20,9 +20,9 @@
         android:textColor="@color/new_dark_green"
         android:textSize="20sp"
         custom:ttf="Bold"
-        android:text="The Best Moves Never Played: Key Positions - Part 3"
+
         />
-    <!---->
+    <!--android:text="The Best Moves Never Played: Key Positions - Part 3"-->
     <ImageView
         android:id="@+id/thumbnailAuthorImg"
         android:layout_width="35dip"
@@ -44,9 +44,9 @@
         android:textColor="@color/new_author_dark_grey"
         android:textSize="14sp"
         custom:ttf="Bold"
-        android:text="GM Gregory Kaidanov"
+
         />
-    <!---->
+    <!--android:text="GM Gregory Kaidanov"-->
 
     <ImageView
         android:id="@+id/countryImg"
@@ -70,7 +70,6 @@
         android:paddingLeft="11dip"
         android:textColor="@color/new_subtitle_light_grey"
         android:textSize="13sp"
-        android:text="11/15/12 | 27 min"
         />
 
     <!--android:text="11/15/12 | 27 min"-->
@@ -83,7 +82,6 @@
         android:layout_below="@id/thumbnailAuthorImg"
         android:textColor="@color/new_subtitle_dark_grey"
         android:textSize="14sp"
-        android:text="Generally speaking there are two types of chess players: optimists and pessimists. The first tend to stay positive and evaluate positions in their favor, while those in the latter category often give the opponent too much credit and underestimate their positions. Optimists run a danger of missing the opponent\'s chances and generally overevaluating their positions. On the other hand, pessimists lack faith, and therefore confidence. In my view it is better to be in the first category. I have witnessed strong GMs saying: &quot; I was completely winning &quot; and then checking with the engine I discovered that they only had a small plus. Typically, you wouldn\'t see super-GMs misevaluating the position that badly but all other players definitely do so."
         />
     <!--android:text="With good reason, most players who aren't, well, chess professionals, would prefer to avoid the many complicated variations of the Open Sicilian. So what are your options? As GM Kaidanov explains, you have one major weapon in addition to the Closed Sicilian Grand Prix Attack (GM Dzindzichashvili's recommendation). Today he describes the important features of the Alapin Sicilian, and then reviews the 4.g3 varation of the 2..Nf6 line."-->
 

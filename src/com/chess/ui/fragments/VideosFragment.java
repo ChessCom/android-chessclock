@@ -81,7 +81,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_videos_frame, container, false); // TODO restore
+		return inflater.inflate(R.layout.new_videos_frame, container, false);
 	}
 
 	@Override

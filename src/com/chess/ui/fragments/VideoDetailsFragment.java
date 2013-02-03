@@ -33,7 +33,7 @@ import java.util.Date;
  */
 public class VideoDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace {
 
-	public static final String VIDEO_ID = "videoId";
+	public static final String ITEM_ID = "item_id";
 	public static final String GREY_COLOR_DIVIDER = "##";
 
 	// 11/15/12 | 27 min
@@ -57,14 +57,14 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 	public static VideoDetailsFragment newInstance(long videoId) {
 		VideoDetailsFragment frag = new VideoDetailsFragment();
 		Bundle bundle = new Bundle();
-		bundle.putLong(VIDEO_ID, videoId);
+		bundle.putLong(ITEM_ID, videoId);
 		frag.setArguments(bundle);
 		return frag;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_video_details_frame, container, false); // TODO restore
+		return inflater.inflate(R.layout.new_video_details_frame, container, false);
 	}
 
 	@Override
@@ -98,10 +98,10 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 	}
 
 	private void loadFromDb() {
-		long videoId = getArguments().getLong(VIDEO_ID);
+		long itemId = getArguments().getLong(ITEM_ID);
 
 		new LoadDataFromDbTask(videosCursorUpdateListener, DbHelper.getVideosListParams(),
-				getContentResolver()).executeTask(videoId);
+				getContentResolver()).executeTask(itemId);
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
@@ -33,7 +32,7 @@ import java.util.Date;
  */
 public class ArticleDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace {
 
-	public static final String VIDEO_ID = "videoId";
+	public static final String ITEM_ID = "item_id";
 	public static final String GREY_COLOR_DIVIDER = "##";
 
 	// 11/15/12 | 27 min
@@ -51,13 +50,13 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private TextView contextTxt;
 	private Cursor loadedCursor;
 
-	private VideosCursorUpdateListener videosCursorUpdateListener;
+	private ArticleCursorUpdateListener articleCursorUpdateListener;
 
 
 	public static ArticleDetailsFragment newInstance(long articleId) {
 		ArticleDetailsFragment frag = new ArticleDetailsFragment();
 		Bundle bundle = new Bundle();
-		bundle.putLong(VIDEO_ID, articleId);
+		bundle.putLong(ITEM_ID, articleId);
 		frag.setArguments(bundle);
 		return frag;
 	}
@@ -70,7 +69,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_article_details_frame, container, false); // TODO restore
+		return inflater.inflate(R.layout.new_article_details_frame, container, false);
 	}
 
 	@Override
@@ -98,10 +97,10 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	}
 
 	private void loadFromDb() {
-		long videoId = getArguments().getLong(VIDEO_ID);
+		long itemId = getArguments().getLong(ITEM_ID);
 
-		new LoadDataFromDbTask(videosCursorUpdateListener, DbHelper.getVideosListParams(),
-				getContentResolver()).executeTask(videoId);
+		new LoadDataFromDbTask(articleCursorUpdateListener, DbHelper.getArticlesListParams(),
+				getContentResolver()).executeTask(itemId);
 	}
 
 	@Override
@@ -112,7 +111,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 	private void init() {
 
-		videosCursorUpdateListener = new VideosCursorUpdateListener();
+		articleCursorUpdateListener = new ArticleCursorUpdateListener();
 	}
 
 	@Override
@@ -126,9 +125,9 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 	}
 
-	private class VideosCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
+	private class ArticleCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
 
-		public VideosCursorUpdateListener() {
+		public ArticleCursorUpdateListener() {
 			super(getInstance());
 
 		}
@@ -156,13 +155,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
 			authorTxt.setText(authorStr);
 
-			titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_NAME));
+			titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_TITLE));
 //			thumbnailAuthorImg // TODO adjust image loader
 			countryImg.setImageResource(R.drawable.ic_united_states); // TODO set flag properly // invent flag resources set system
 
-			int duration = DBDataManager.getInt(cursor, DBConstants.V_MINUTES);
-			dateTxt.setText(dateFormatter.format(new Date(DBDataManager.getLong(cursor, DBConstants.V_CREATE_DATE)))
-			 + StaticData.SYMBOL_SPACE + getString(R.string.min_arg, duration));
+			dateTxt.setText(dateFormatter.format(new Date(DBDataManager.getLong(cursor, DBConstants.V_CREATE_DATE))));
 
 			contextTxt.setText(DBDataManager.getString(cursor, DBConstants.V_DESCRIPTION));
 
@@ -187,7 +184,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				loadingView.setVisibility(View.GONE);
 			}
 
-			emptyView.setVisibility(View.VISIBLE);
+//			emptyView.setVisibility(View.VISIBLE);
 //			listView.setVisibility(View.GONE);
 		} else {
 			emptyView.setVisibility(View.GONE);

@@ -61,7 +61,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_common_categories_frame, container, false); // TODO restore
+		return inflater.inflate(R.layout.new_common_categories_frame, container, false);
 	}
 
 	@Override
