@@ -8,8 +8,6 @@
     android:layout_height="match_parent"
     android:background="@color/new_main_back">
 
-    <include layout="@layout/new_videos_thumb_list_item" />
-
     <com.chess.RoboTextView
         android:id="@+id/emptyView"
         android:layout_width="wrap_content"

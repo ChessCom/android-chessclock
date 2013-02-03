@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +15,14 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.ArticleCategoryItem;
 import com.chess.backend.entity.new_api.ArticleItem;
-import com.chess.backend.entity.new_api.VideoCategoryItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveArticleCategoriesTask;
 import com.chess.db.tasks.SaveArticlesListTask;
-import com.chess.db.tasks.SaveVideoCategoriesTask;
 import com.chess.ui.adapters.NewArticlesSectionedCursorAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
@@ -86,6 +81,9 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		listView = (ListView) view.findViewById(R.id.listView);
+		// add header
+		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_article_thumb_list_item, null, false);
+		listView.addHeaderView(headerView);
 		listView.setAdapter(articlesCursorAdapter);
 		listView.setOnItemClickListener(this);
 
@@ -119,8 +117,6 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		}
 	}
 
-
-
 	@Override
 	public void onStop() {
 		super.onStop();
@@ -152,16 +148,21 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		if (articlesCursorAdapter.isHeader(position)) {
-			String sectionName = articlesCursorAdapter.getSectionName(position);
+		boolean headerAdded = listView.getHeaderViewsCount() > 0;
+		int offset = headerAdded? - 1: 0;
+
+		if (position == 0) { // if listView header
+			// TODO load random item and handle click
+			showToast("header clicked");
+		} else if (articlesCursorAdapter.isSectionHeader(position + offset)) {
+			String sectionName = articlesCursorAdapter.getSectionName(position + offset);
 
 			getActivityFace().openFragment(ArticleCategoriesFragment.newInstance(sectionName));
 		} else {
-			position = articlesCursorAdapter.getRelativePosition(position);
-			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+			int internalPosition = articlesCursorAdapter.getRelativePosition(position + offset);
+			Cursor cursor = (Cursor) parent.getItemAtPosition(internalPosition + 1);
 			getActivityFace().openFragment(ArticleDetailsFragment.newInstance(DBDataManager.getId(cursor)));
 		}
-
 	}
 
 	private class ArticleItemUpdateListener extends ActionBarUpdateListener<ArticleItem> {
@@ -258,7 +259,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		}
 	}
 
-	private class SaveArticlesUpdateListener extends ActionBarUpdateListener<ArticleItem.Data>{
+	private class SaveArticlesUpdateListener extends ActionBarUpdateListener<ArticleItem.Data> {
 		public SaveArticlesUpdateListener() {
 			super(getInstance());
 		}
@@ -272,7 +273,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		@Override
 		public void updateData(ArticleItem.Data returnedObj) {
 			super.updateData(returnedObj);
-			if (getActivity() == null){
+			if (getActivity() == null) {
 				return;
 			}
 
@@ -296,7 +297,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 				getContentResolver()).executeTask();
 	}
 
-	private class ArticlesCursorUpdateListener extends ActionBarUpdateListener<Cursor>{
+	private class ArticlesCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
 		public ArticlesCursorUpdateListener() {
 			super(getInstance());
 		}

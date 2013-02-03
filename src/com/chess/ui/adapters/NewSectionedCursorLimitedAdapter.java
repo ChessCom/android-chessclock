@@ -28,7 +28,6 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public abstract class NewSectionedCursorLimitedAdapter extends ItemsCursorAdapter {
@@ -94,7 +93,7 @@ public abstract class NewSectionedCursorLimitedAdapter extends ItemsCursorAdapte
 
 			if (!sectionName.equals(previous)) {
 
-				if (sectionsIndexer.size() > 0){
+				if (sectionsIndexer.size() > 0) {
 					lastSectionPosition += itemsInSection + 1;
 				}
 				sectionsIndexer.put(lastSectionPosition, sectionName);
@@ -185,25 +184,25 @@ public abstract class NewSectionedCursorLimitedAdapter extends ItemsCursorAdapte
 		return true;                 // use if need to disable header selection
 	}
 
-	/**
-	 * Checks if {@code position} intersects with header of section
-	 * and return next value after header if matches.
-	 *
-	 * @param position
-	 * @return position of specified item
-	 */
-	public int getPositionForItem(int position) {
-		if (isHeader(position)) {
-			return position + 1;
-		}
-		return position;
-	}
+//	/**
+//	 * Checks if {@code position} intersects with header of section
+//	 * and return next value after header if matches.
+//	 *
+//	 * @param position
+//	 * @return position of specified item
+//	 */
+//	public int getPositionForItem(int position) {
+//		if (isSectionHeader(position)) {
+//			return position + 1;
+//		}
+//		return position;
+//	}
 
 	/**
 	 * @param position to compare
 	 * @return true if specified absolute position intersects with header position
 	 */
-	public boolean isHeader(int position) {
+	public boolean isSectionHeader(int position) {
 		return sectionsIndexer.containsKey(position);
 	}
 
@@ -259,7 +258,7 @@ public abstract class NewSectionedCursorLimitedAdapter extends ItemsCursorAdapte
 //		int currentSectionNumber = 1;
 //		int absolutePosition = position;
 //		while (absolutePosition > 0) {
-//			if (isHeader(absolutePosition)) {
+//			if (isSectionHeader(absolutePosition)) {
 //				currentSectionNumber++;
 //			}
 //

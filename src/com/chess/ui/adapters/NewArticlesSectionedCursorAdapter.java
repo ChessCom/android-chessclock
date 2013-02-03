@@ -19,7 +19,7 @@ import com.chess.utilities.AppUtils;
  * Date: 31.01.13
  * Time: 13:34
  */
-//public class NewVideosSectionedCursorAdapter extends NewSectionedCursorAdapter {
+//public class NewArticlesSectionedCursorAdapter extends NewSectionedCursorAdapter {
 public class NewArticlesSectionedCursorAdapter extends NewSectionedCursorLimitedAdapter {
 
 	public static final String GREY_COLOR_DIVIDER = "##";

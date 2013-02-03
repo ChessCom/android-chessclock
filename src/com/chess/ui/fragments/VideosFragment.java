@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
@@ -92,6 +90,9 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		listView = (ListView) view.findViewById(R.id.listView);
+		// add header
+		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_thumb_list_item, null, false);
+		listView.addHeaderView(headerView);
 		listView.setAdapter(videosCursorAdapter);
 		listView.setOnItemClickListener(this);
 
@@ -154,13 +155,18 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		if (videosCursorAdapter.isHeader(position)) {
-			String sectionName = videosCursorAdapter.getSectionName(position);
+		boolean headerAdded = listView.getHeaderViewsCount() > 0;
+		int offset = headerAdded? - 1: 0;
+		if (position == 0) { // if listView header
+			// TODO load random item and handle click
+			showToast("header clicked");
+		} else if (videosCursorAdapter.isSectionHeader(position + offset)) {
+			String sectionName = videosCursorAdapter.getSectionName(position + offset);
 
 			getActivityFace().openFragment(VideoCategoriesFragment.newInstance(sectionName));
 		} else {
-			position = videosCursorAdapter.getRelativePosition(position);
-			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+			int internalPosition = videosCursorAdapter.getRelativePosition(position + offset);
+			Cursor cursor = (Cursor) parent.getItemAtPosition(internalPosition + 1);
 			getActivityFace().openFragment(VideoDetailsFragment.newInstance(DBDataManager.getId(cursor)));
 		}
 	}
