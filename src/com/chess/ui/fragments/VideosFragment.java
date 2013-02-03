@@ -14,24 +14,23 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.VideoCategoryItem;
 import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
+import com.chess.db.tasks.SaveVideoCategoriesTask;
 import com.chess.db.tasks.SaveVideosListTask;
-import com.chess.ui.adapters.CustomSectionedAdapter;
-import com.chess.ui.adapters.NewVideosAdapter;
 import com.chess.ui.adapters.NewVideosSectionedCursorAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,55 +44,34 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	// 11/15/12 | 27 min
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
 
-	private VideosItemUpdateListener randomVideoUpdateListener;
-
-	private String[] categories;
-	private CustomSectionedAdapter sectionedAdapter;
-	private NewVideosAdapter amazingGamesAdapter;
-	private NewVideosAdapter endGamesGamesAdapter;
-	private NewVideosAdapter openingsGamesAdapter;
-	private NewVideosAdapter rulesBasicGamesAdapter;
-	private NewVideosAdapter strategyGamesAdapter;
-	private NewVideosAdapter tacticsGamesAdapter;
 
 	private ViewHolder holder;
 	private ForegroundColorSpan foregroundSpan;
 
-	private SaveVideosListUpdateListener saveVideosListUpdateListener;
 	private ListView listView;
 	private View loadingView;
 	private TextView emptyView;
-	private VideosCursorUpdateListener videosCursorUpdateListener;
-	//	private NewVideosCursorAdapter videosCursorAdapter;
+
 	private NewVideosSectionedCursorAdapter videosCursorAdapter;
+
+	private VideosItemUpdateListener videosItemUpdateListener;
+	private SaveVideosUpdateListener saveVideosUpdateListener;
+	private VideosCursorUpdateListener videosCursorUpdateListener;
+
+	private VideoCategoryUpdateListener categoryVideoUpdateListener;
+	private SaveVideoCategoriesUpdateListener saveVideoCategoriesUpdateListener;
+
 	private boolean need2Update = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		categories = getResources().getStringArray(R.array.category);
-
-		saveVideosListUpdateListener = new SaveVideosListUpdateListener();
+		saveVideosUpdateListener = new SaveVideosUpdateListener();
+		saveVideoCategoriesUpdateListener = new SaveVideoCategoriesUpdateListener();
 		videosCursorUpdateListener = new VideosCursorUpdateListener();
 
-		videosCursorAdapter = new NewVideosSectionedCursorAdapter(getContext(), null, R.layout.new_arrow_section_header, DBConstants.V_CATEGORY);
-
-		amazingGamesAdapter = new NewVideosAdapter(getActivity(), new ArrayList<VideoItem.VideoDataItem>());
-		endGamesGamesAdapter = new NewVideosAdapter(getActivity(), new ArrayList<VideoItem.VideoDataItem>());
-		openingsGamesAdapter = new NewVideosAdapter(getActivity(), new ArrayList<VideoItem.VideoDataItem>());
-		rulesBasicGamesAdapter = new NewVideosAdapter(getActivity(), new ArrayList<VideoItem.VideoDataItem>());
-		strategyGamesAdapter = new NewVideosAdapter(getActivity(), new ArrayList<VideoItem.VideoDataItem>());
-		tacticsGamesAdapter = new NewVideosAdapter(getActivity(), new ArrayList<VideoItem.VideoDataItem>());
-
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_arrow_section_header);
-
-		sectionedAdapter.addSection(categories[0], amazingGamesAdapter);
-		sectionedAdapter.addSection(categories[1], endGamesGamesAdapter);
-		sectionedAdapter.addSection(categories[2], openingsGamesAdapter);
-		sectionedAdapter.addSection(categories[3], rulesBasicGamesAdapter);
-		sectionedAdapter.addSection(categories[4], strategyGamesAdapter);
-		sectionedAdapter.addSection(categories[5], tacticsGamesAdapter);
+		videosCursorAdapter = new NewVideosSectionedCursorAdapter(getContext(), null);
 
 		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
@@ -104,7 +82,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_videos_frame, container, false); // TODO restore
-//		return inflater.inflate(R.layout.new_common_test, container, false);
 	}
 
 	@Override
@@ -114,10 +91,8 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
-
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(videosCursorAdapter);
-//		listView.setAdapter(sectionedAdapter);
 		listView.setOnItemClickListener(this);
 
 		holder = new ViewHolder();
@@ -131,15 +106,17 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		super.onStart();
 
 		if (need2Update) {
+			boolean haveSavedData = DBDataManager.haveSavedVideos(getActivity());
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
-//				updateData();
-			} else {
+				updateData();
+				getCategories();
+			} else if(!haveSavedData){
 				emptyView.setText(R.string.no_network);
 				showEmptyView(true);
 			}
 
-			if (DBDataManager.haveSavedFriends(getActivity())) {
+			if (haveSavedData) {
 				loadFromDb();
 			}
 		}
@@ -149,59 +126,48 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	public void onStop() {
 		super.onStop();
 
-		Log.d("TEST", " onStop");
-//		randomVideoUpdateListener.releaseContext();   // TODO invent logic to release resources
-//		randomVideoUpdateListener = null;
+//		videosItemUpdateListener.releaseContext();   // TODO invent logic to release resources
+//		videosItemUpdateListener = null;
 	}
 
 	private void init() {
-		randomVideoUpdateListener = new VideosItemUpdateListener(VideosItemUpdateListener.RANDOM);
+		videosItemUpdateListener = new VideosItemUpdateListener();
+		categoryVideoUpdateListener = new VideoCategoryUpdateListener();
 	}
 
 	private void updateData() {
-		// get random video
+		// get all video // TODO adjust to request only latest updates
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-//		loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_ITEM_ONE);
-//		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.V_VIDEO_ITEM_ONE);
 
-		new RequestJsonTask<VideoItem>(randomVideoUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<VideoItem>(videosItemUpdateListener).executeTask(loadItem);
 	}
 
 
+	private void getCategories() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_VIDEO_CATEGORIES);
 
+		new RequestJsonTask<VideoCategoryItem>(categoryVideoUpdateListener).executeTask(loadItem);
+	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		if (videosCursorAdapter.isHeader(position)) {
 			String sectionName = videosCursorAdapter.getSectionName(position);
 
-			getActivityFace().openFragment(VideosCategoriesFragment.newInstance(sectionName));
+			getActivityFace().openFragment(VideoCategoriesFragment.newInstance(sectionName));
 		} else {
 			position = videosCursorAdapter.getRelativePosition(position);
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-			Log.d("TEST", "item pos = " + position + " name = " + DBDataManager.getString(cursor, DBConstants.V_NAME));
-			getActivityFace().openFragment(VideosDetailsFragment.newInstance(DBDataManager.getId(cursor)));
+			getActivityFace().openFragment(VideoDetailsFragment.newInstance(DBDataManager.getId(cursor)));
 		}
 	}
 
-	private class VideosItemUpdateListener extends ActionBarUpdateListener<VideoItem> {
-
-		final static int AMAZING_GAMES = 0;
-		final static int END_GAMES = 1;
-		final static int OPENINGS = 2;
-		final static int RULES_BASICS = 3;
-		final static int STRATEGY = 4;
-		final static int TACTICS = 5;
-		final static int RANDOM = 6;
-
-		private int listenerCode;
-
-		public VideosItemUpdateListener(int listenerCode) {
-			super(getInstance(), VideoItem.class);
-			this.listenerCode = listenerCode;
+	private class VideoCategoryUpdateListener extends ActionBarUpdateListener<VideoCategoryItem> {
+		public VideoCategoryUpdateListener() {
+			super(getInstance(), VideoCategoryItem.class);
 		}
 
 		@Override
@@ -210,46 +176,34 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			showLoadingView(show);
 		}
 
+		@Override
+		public void updateData(VideoCategoryItem returnedObj) {
+			super.updateData(returnedObj);
+
+			List<VideoCategoryItem.Data> dataList = returnedObj.getData();
+			for (VideoCategoryItem.Data category : dataList) {
+				category.setName(category.getName().replace(StaticData.SYMBOL_AMP_CODE, StaticData.SYMBOL_AMP));
+			}
+
+			new SaveVideoCategoriesTask(saveVideoCategoriesUpdateListener, dataList, getContentResolver()).executeTask();
+		}
+	}
+
+	private class VideosItemUpdateListener extends ActionBarUpdateListener<VideoItem> {
+
+		public VideosItemUpdateListener() {
+			super(getInstance(), VideoItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			showLoadingView(show);
+		}
 
 		@Override
 		public void updateData(VideoItem returnedObj) {
-
-			switch (listenerCode) {
-				case RANDOM:
-
-					new SaveVideosListTask(saveVideosListUpdateListener, returnedObj.getData().getVideos(), getContentResolver()).executeTask();
-
-
-					break;
-				case AMAZING_GAMES:
-
-					amazingGamesAdapter.setItemsList(returnedObj.getData().getVideos());
-					amazingGamesAdapter.notifyDataSetInvalidated();
-
-					break;
-				case END_GAMES:
-					endGamesGamesAdapter.setItemsList(returnedObj.getData().getVideos());
-					endGamesGamesAdapter.notifyDataSetInvalidated();
-
-					break;
-				case OPENINGS:
-					openingsGamesAdapter.setItemsList(returnedObj.getData().getVideos());
-					openingsGamesAdapter.notifyDataSetInvalidated();
-					break;
-				case RULES_BASICS:
-					rulesBasicGamesAdapter.setItemsList(returnedObj.getData().getVideos());
-					rulesBasicGamesAdapter.notifyDataSetInvalidated();
-					break;
-				case STRATEGY:
-					strategyGamesAdapter.setItemsList(returnedObj.getData().getVideos());
-					strategyGamesAdapter.notifyDataSetInvalidated();
-					break;
-				case TACTICS:
-					tacticsGamesAdapter.setItemsList(returnedObj.getData().getVideos());
-					tacticsGamesAdapter.notifyDataSetInvalidated();
-					break;
-
-			}
+			new SaveVideosListTask(saveVideosUpdateListener, returnedObj.getData().getVideos(), getContentResolver()).executeTask();
 		}
 	}
 
@@ -259,15 +213,9 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		public TextView dateTxt;
 	}
 
-	private class SaveVideosListUpdateListener extends ActionBarUpdateListener<VideoItem.VideoDataItem> {
-		public SaveVideosListUpdateListener() {
+	private class SaveVideosUpdateListener extends ActionBarUpdateListener<VideoItem.VideoDataItem> {
+		public SaveVideosUpdateListener() {
 			super(getInstance());
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
 		}
 
 		@Override
@@ -278,12 +226,18 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 			loadFromDb();
 		}
+
+	}
+
+	private class SaveVideoCategoriesUpdateListener extends ActionBarUpdateListener<VideoCategoryItem.Data> {
+		public SaveVideoCategoriesUpdateListener() {
+			super(getInstance());
+		}
 	}
 
 	private void loadFromDb() {
-		new LoadDataFromDbTask(videosCursorUpdateListener, DbHelper.getVideosListParams(getContext()),
+		new LoadDataFromDbTask(videosCursorUpdateListener, DbHelper.getVideosListParams(),
 				getContentResolver()).executeTask();
-
 	}
 
 	private class VideosCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
@@ -325,8 +279,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	}
 
 	private void showEmptyView(boolean show) {
-		Log.d("TEST", "showEmptyView show = " + show);
-
 		if (show) {
 			// don't hide loadingView if it's loading
 			if (loadingView.getVisibility() != View.VISIBLE) {

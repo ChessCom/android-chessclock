@@ -1,5 +1,7 @@
 package com.chess.backend.entity.new_api;
 
+import com.chess.backend.statics.StaticData;
+
 import java.util.List;
 
 /**
@@ -28,9 +30,9 @@ public class ArticleItem extends BaseResponseItem<List<ArticleItem.Data>> {
 		private long article_category_id;
 		private long user_id;
 		private String username;
-		private String first_name = "Georgy";
-		private String chess_title = "GM";
-		private String last_name = "Kaidanov";
+		private String first_name;
+		private String chess_title;
+		private String last_name;
 
 		public long getId() {
 			return id;
@@ -44,15 +46,15 @@ public class ArticleItem extends BaseResponseItem<List<ArticleItem.Data>> {
 			return create_date;
 		}
 
-		public String getArticle_category() {
+		public String getArticleCategory() {
 			return article_category;
 		}
 
-		public long getArticle_category_id() {
+		public long getArticleCategoryId() {
 			return article_category_id;
 		}
 
-		public long getUser_id() {
+		public long getUserId() {
 			return user_id;
 		}
 
@@ -60,16 +62,16 @@ public class ArticleItem extends BaseResponseItem<List<ArticleItem.Data>> {
 			return username;
 		}
 
-		public String getFirst_name() {
-			return first_name;
+		public String getFirstName() {
+			return first_name == null? StaticData.SYMBOL_EMPTY : first_name;
 		}
 
-		public String getChess_title() {
-			return chess_title;
+		public String getChessTitle() {
+			return chess_title == null? StaticData.SYMBOL_EMPTY : chess_title;
 		}
 
-		public String getLast_name() {
-			return last_name;
+		public String getLastName() {
+			return last_name == null? StaticData.SYMBOL_EMPTY : last_name;
 		}
 
 	}

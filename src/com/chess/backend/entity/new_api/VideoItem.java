@@ -1,5 +1,7 @@
 package com.chess.backend.entity.new_api;
 
+import com.chess.backend.statics.StaticData;
+
 import java.util.List;
 
 /**
@@ -8,7 +10,7 @@ import java.util.List;
  * Date: 22.12.12
  * Time: 15:18
  */
-public class VideoItem extends BaseResponseItem<VideoItem.Data>{
+public class VideoItem extends BaseResponseItem<VideoItem.Data> {
 	/*
 	"status": "success",
     "data": {
@@ -46,20 +48,20 @@ public class VideoItem extends BaseResponseItem<VideoItem.Data>{
 	}
 
 	public static class VideoDataItem {
-	/*
-		"name": "The Empire Goes On Strike",
-		"description": "Believe it or not, they have a powerful union.",
-		"category": "Tactics",
-		"skill_level": "Intermediate-Advanced",
-		"eco_name": null,
-		"first_name": "Michael",
-		"chess_title": "GM",
-		"last_name": "Greene",
-		"minutes": 5,
-		"live_date": 1333263600,
-		"mobile_view_url": "http://www.c.com/index_api_dev.php/video/player_mobile/the-empire-goes-on-strike/playme.mp4?loginToken=demo",
-		"key_fen": "1Rr2kn1/Q1B4r/8/5n2/3P2pq/2P5/P4PPP/5RK1 b - - 0 1"
-	*/
+		/*
+			"name": "The Empire Goes On Strike",
+			"description": "Believe it or not, they have a powerful union.",
+			"category": "Tactics",
+			"skill_level": "Intermediate-Advanced",
+			"eco_name": null,
+			"first_name": "Michael",
+			"chess_title": "GM",
+			"last_name": "Greene",
+			"minutes": 5,
+			"live_date": 1333263600,
+			"mobile_view_url": "http://www.c.com/index_api_dev.php/video/player_mobile/the-empire-goes-on-strike/playme.mp4?loginToken=demo",
+			"key_fen": "1Rr2kn1/Q1B4r/8/5n2/3P2pq/2P5/P4PPP/5RK1 b - - 0 1"
+		*/
 		private String name;
 		private String description;
 		private String category;
@@ -90,7 +92,7 @@ public class VideoItem extends BaseResponseItem<VideoItem.Data>{
 		}
 
 		public String getEco_name() {
-			return eco_name;
+			return eco_name == null ? StaticData.SYMBOL_EMPTY : eco_name;
 		}
 
 		public String getFirst_name() {
@@ -98,7 +100,7 @@ public class VideoItem extends BaseResponseItem<VideoItem.Data>{
 		}
 
 		public String getChess_title() {
-			return chess_title;
+			return chess_title == null ? StaticData.SYMBOL_EMPTY : chess_title;
 		}
 
 		public String getLast_name() {
@@ -117,8 +119,8 @@ public class VideoItem extends BaseResponseItem<VideoItem.Data>{
 			return mobile_view_url;
 		}
 
-		public String getKey_fen() {
-			return key_fen;
+		public String getKeyFen() {
+			return key_fen == null ? StaticData.SYMBOL_EMPTY : key_fen; // could be null from server
 		}
 	}
 }

@@ -109,7 +109,6 @@ public abstract class NewSectionedCursorLimitedAdapter extends ItemsCursorAdapte
 			}
 
 		} while (cursor.moveToNext());
-		Log.d("TEST", "");
 	}
 
 	public String getGroupCustomFormat(Object obj) {

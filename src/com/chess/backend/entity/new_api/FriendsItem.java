@@ -1,5 +1,7 @@
 package com.chess.backend.entity.new_api;
 
+import com.chess.backend.statics.StaticData;
+
 import java.util.List;
 
 /**
@@ -61,7 +63,7 @@ public class FriendsItem extends BaseResponseItem<List<FriendsItem.Data>> {
 		}
 
 		public String getLocation() {
-			return location;
+			return location == null? StaticData.SYMBOL_EMPTY: location;
 		}
 
 		public String getAvatarUrl() {

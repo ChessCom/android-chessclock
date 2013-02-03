@@ -3,23 +3,20 @@ package com.chess.ui.fragments;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-
 import com.chess.backend.statics.StaticData;
-
+import com.chess.db.DBConstants;
+import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.adapters.ChessDarkSpinnerAdapter;
 import com.chess.ui.adapters.NewVideosThumbCursorAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +27,10 @@ import java.util.List;
  * Date: 27.01.13
  * Time: 19:12
  */
-public class VideosCategoriesFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+public class VideoCategoriesFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
 	public static final String SECTION_NAME = "section_name";
 
-	//	private NewVideosAdapter videosAdapter;
 	private NewVideosThumbCursorAdapter videosAdapter;
 
 	private Spinner categorySpinner;
@@ -44,11 +40,11 @@ public class VideosCategoriesFragment extends CommonLogicFragment implements Ite
 	private EditText searchEdt;
 	private Spinner sortSpinner;
 	private boolean searchVisible;
-	private boolean need2Update = true;
 	private VideosCursorUpdateListener videosCursorUpdateListener;
+	private boolean categoriesLoaded;
 
-	public static BasePopupsFragment newInstance(String sectionName) {
-		VideosCategoriesFragment frag = new VideosCategoriesFragment();
+	public static VideoCategoriesFragment newInstance(String sectionName) {
+		VideoCategoriesFragment frag = new VideoCategoriesFragment();
 		Bundle bundle = new Bundle();
 		bundle.putString(SECTION_NAME, sectionName);
 		frag.setArguments(bundle);
@@ -59,8 +55,6 @@ public class VideosCategoriesFragment extends CommonLogicFragment implements Ite
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-
-//		videosAdapter = new NewVideosAdapter(getActivity(), new ArrayList<VideoItem.VideoDataItem>());
 		videosAdapter = new NewVideosThumbCursorAdapter(getActivity(), null);
 		videosCursorUpdateListener = new VideosCursorUpdateListener();
 	}
@@ -82,21 +76,6 @@ public class VideosCategoriesFragment extends CommonLogicFragment implements Ite
 		view.findViewById(R.id.searchBtn).setOnClickListener(this);
 
 		categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
-		String selectedCategory = getArguments().getString(SECTION_NAME);
-
-		List<String> list = AppUtils.convertArrayToList(getResources().getStringArray(R.array.category));
-
-		int sectionId;
-		for (sectionId = 0; sectionId < list.size(); sectionId++) {
-			String category = list.get(sectionId);
-			if (category.equals(selectedCategory)) {
-				break;
-			}
-		}
-
-		categorySpinner.setAdapter(new ChessDarkSpinnerAdapter(getActivity(), list));
-		categorySpinner.setOnItemSelectedListener(this);
-		categorySpinner.setSelection(sectionId - 1);  // TODO remember last selection.
 
 		sortSpinner = (Spinner) view.findViewById(R.id.sortSpinner);
 
@@ -110,7 +89,6 @@ public class VideosCategoriesFragment extends CommonLogicFragment implements Ite
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(videosAdapter);
 		listView.setOnItemClickListener(this);
-
 	}
 
 	@Override
@@ -118,20 +96,44 @@ public class VideosCategoriesFragment extends CommonLogicFragment implements Ite
 		super.onStart();
 
 		init();
-//		if (need2Update) {
-//
-//			if (AppUtils.isNetworkAvailable(getActivity())) {
-//				updateData();
-//			} else {
-//				emptyView.setText(R.string.no_network);
-//				showEmptyView(true);
-//			}
-//
-//			if (DBDataManager.haveSavedFriends(getActivity())) {
-//				loadFromDb();
-//			}
-//		}
 
+		if (!categoriesLoaded) {
+			// get list of categories
+			categoriesLoaded = fillCategories();
+		}
+
+		if (!categoriesLoaded) { // load hardcoded categories with passed arg
+
+		}
+	}
+
+	private boolean fillCategories() {
+		Cursor cursor = getContentResolver().query(DBConstants.VIDEO_CATEGORIES_CONTENT_URI, null, null, null, null);
+		List<String> list = new ArrayList<String>();
+		if (!cursor.moveToFirst()) {
+			showToast("Categories are not loaded");
+			return false;
+		}
+
+		do {
+			list.add(DBDataManager.getString(cursor, DBConstants.V_NAME));
+		} while(cursor.moveToNext());
+
+		// get passed argument
+		String selectedCategory = getArguments().getString(SECTION_NAME);
+
+		int sectionId;
+		for (sectionId = 0; sectionId < list.size(); sectionId++) {
+			String category = list.get(sectionId);
+			if (category.equals(selectedCategory)) {
+				break;
+			}
+		}
+
+		categorySpinner.setAdapter(new ChessDarkSpinnerAdapter(getActivity(), list));
+		categorySpinner.setOnItemSelectedListener(this);
+		categorySpinner.setSelection(sectionId);  // TODO remember last selection.
+		return true;
 	}
 
 
@@ -145,26 +147,11 @@ public class VideosCategoriesFragment extends CommonLogicFragment implements Ite
 
 	}
 
-//	private void updateData() {  // pass selected category
-//		String category = (String) categorySpinner.getSelectedItem();
-//		VideosItemUpdateListener videoUpdateListener = new VideosItemUpdateListener();
-//
-//		LoadItem loadItem = new LoadItem();
-//
-//		loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
-//		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-//		loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_ITEM_ONE);
-//		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.V_VIDEO_ITEM_ONE);
-//		loadItem.addRequestParams(RestHelper.P_CATEGORY, category);
-//		new RequestJsonTask<VideoItem>(videoUpdateListener).executeTask(loadItem);
-//	}
-
-
 	private void loadFromDb() {
 		String category = (String) categorySpinner.getSelectedItem();
 
 		new LoadDataFromDbTask(videosCursorUpdateListener,
-				DbHelper.getVideosListCategoryParams(getContext(), category),
+				DbHelper.getVideosListByCategoryParams(category),
 				getContentResolver()).executeTask();
 
 	}
@@ -173,7 +160,6 @@ public class VideosCategoriesFragment extends CommonLogicFragment implements Ite
 
 		public VideosCursorUpdateListener() {
 			super(getInstance());
-
 		}
 
 		@Override
@@ -189,9 +175,6 @@ public class VideosCategoriesFragment extends CommonLogicFragment implements Ite
 			}
 
 			videosAdapter.changeCursor(returnedObj);
-//			listView.setAdapter(videosCursorAdapter);
-
-			need2Update = false;
 		}
 
 		@Override
@@ -234,12 +217,12 @@ public class VideosCategoriesFragment extends CommonLogicFragment implements Ite
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		getActivityFace().openFragment(new VideosDetailsFragment());
+		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+		getActivityFace().openFragment(VideoDetailsFragment.newInstance(DBDataManager.getId(cursor)));
 	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//		updateData();
 		loadFromDb();
 	}
 
@@ -249,40 +232,7 @@ public class VideosCategoriesFragment extends CommonLogicFragment implements Ite
 	}
 
 
-//	private class VideosItemUpdateListener extends ActionBarUpdateListener<VideoItem> {
-//
-//		public VideosItemUpdateListener() {
-//			super(getInstance(), VideoItem.class);
-//		}
-//
-//		@Override
-//		public void showProgress(boolean show) {
-//			super.showProgress(show);
-//			showLoadingView(show);
-//		}
-//
-//		@Override
-//		public void updateData(VideoItem returnedObj) {
-//
-//			videosAdapter.setItemsList(returnedObj.getData().getVideos());
-//			videosAdapter.notifyDataSetInvalidated();
-//		}
-//
-//		@Override
-//		public void errorHandle(Integer resultCode) {
-//			super.errorHandle(resultCode);
-//			if (resultCode == StaticData.EMPTY_DATA) {
-//				emptyView.setText(R.string.no_games);
-//			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
-//				emptyView.setText(R.string.no_network);
-//			}
-//			showEmptyView(true);
-//		}
-//	}
-
 	private void showEmptyView(boolean show) {
-		Log.d("TEST", "showEmptyView show = " + show);
-
 		if (show) {
 			// don't hide loadingView if it's loading
 			if (loadingView.getVisibility() != View.VISIBLE) {

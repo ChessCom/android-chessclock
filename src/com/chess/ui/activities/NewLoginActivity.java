@@ -45,6 +45,8 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 
 		// set the Above View
 		switchFragment(new SignInFragment());
+//		switchFragment(new VideosFragment());
+//		switchFragment(new ArticlesFragment());
 
 		slidingMenu = getSlidingMenu();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);

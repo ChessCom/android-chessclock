@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +13,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
-import com.chess.ui.adapters.CustomSectionedAdapter;
-import com.chess.ui.adapters.VideosAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -36,7 +31,7 @@ import java.util.Date;
  * Date: 27.01.13
  * Time: 19:12
  */
-public class VideosDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace {
+public class VideoDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace {
 
 	public static final String VIDEO_ID = "videoId";
 	public static final String GREY_COLOR_DIVIDER = "##";
@@ -45,9 +40,6 @@ public class VideosDetailsFragment extends CommonLogicFragment implements ItemCl
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
 
 
-	private String[] categories;
-	private CustomSectionedAdapter sectionedAdapter;
-	private VideosAdapter amazingGamesAdapter;
 	private TextView authorTxt;
 	private View loadingView;
 	private TextView emptyView;
@@ -62,23 +54,12 @@ public class VideosDetailsFragment extends CommonLogicFragment implements ItemCl
 	private Cursor loadedCursor;
 	private ImageButton playBtn;
 
-	public static VideosDetailsFragment newInstance(long videoId) {
-		VideosDetailsFragment frag = new VideosDetailsFragment();
+	public static VideoDetailsFragment newInstance(long videoId) {
+		VideoDetailsFragment frag = new VideoDetailsFragment();
 		Bundle bundle = new Bundle();
 		bundle.putLong(VIDEO_ID, videoId);
 		frag.setArguments(bundle);
 		return frag;
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		categories = getResources().getStringArray(R.array.category);
-
-		amazingGamesAdapter = new VideosAdapter(this, new ArrayList<VideoItem.VideoDataItem>());
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_arrow_section_header);
-		sectionedAdapter.addSection(categories[0], amazingGamesAdapter);
 	}
 
 	@Override
@@ -119,10 +100,8 @@ public class VideosDetailsFragment extends CommonLogicFragment implements ItemCl
 	private void loadFromDb() {
 		long videoId = getArguments().getLong(VIDEO_ID);
 
-		new LoadDataFromDbTask(videosCursorUpdateListener,
-				DbHelper.getVideosListParams(getContext()),
+		new LoadDataFromDbTask(videosCursorUpdateListener, DbHelper.getVideosListParams(),
 				getContentResolver()).executeTask(videoId);
-
 	}
 
 	@Override
@@ -207,8 +186,6 @@ public class VideosDetailsFragment extends CommonLogicFragment implements ItemCl
 	}
 
 	private void showEmptyView(boolean show) {
-		Log.d("TEST", "showEmptyView show = " + show);
-
 		if (show) {
 			// don't hide loadingView if it's loading
 			if (loadingView.getVisibility() != View.VISIBLE) {

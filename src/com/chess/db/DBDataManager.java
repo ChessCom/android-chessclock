@@ -5,12 +5,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 import com.chess.backend.entity.new_api.*;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.*;
-import com.chess.ui.activities.GameOnlineScreenActivity;
 
 /**
  * @author alien_roger
@@ -29,6 +27,7 @@ public class DBDataManager {
 	public static final String MORE_ = " > ";
 	public static final String EQUALS_ = " = ";
 	public static final String EQUALS_ARG_ = "=?";
+	public static final String LIMIT_1 = DBConstants._ID + " LIMIT 1";
 
 	public static String[] sArguments1 = new String[1];
 	public static String[] sArguments2 = new String[2];
@@ -61,19 +60,15 @@ public class DBDataManager {
 			DBConstants.V_USER,
 			DBConstants.V_IS_MY_TURN);
 
-	public static String SELECTION_NAME = concatArguments(
-			DBConstants.V_USER,
-			DBConstants.V_NAME);
+	public static String SELECTION_NAME = concatArguments(DBConstants.V_NAME);
 
-	public static String SELECTION_CATEGORY = concatArguments(
-			DBConstants.V_USER,
-			DBConstants.V_CATEGORY);
+	public static String SELECTION_CATEGORY_ID = concatArguments(DBConstants.V_CATEGORY_ID);
+
+	public static String SELECTION_CATEGORY = concatArguments(DBConstants.V_CATEGORY);
+
+	public static String SELECTION_ARTICLE_ID = concatArguments(DBConstants.V_ARTICLE_ID);
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
-
-	public static final String[] PROJECTION_ID = new String[] {
-			DBConstants._ID
-	};
 
 	public static final String[] PROJECTION_TACTIC_ITEM_ID_AND_USER = new String[] {
 			DBConstants._ID,
@@ -129,8 +124,17 @@ public class DBDataManager {
 
 	public static final String[] PROJECTION_NAME = new String[] {
 			DBConstants._ID,
-			DBConstants.V_USER,
 			DBConstants.V_NAME
+	};
+
+	public static final String[] PROJECTION_V_CATEGORY_ID = new String[] {
+			DBConstants._ID,
+			DBConstants.V_CATEGORY_ID
+	};
+
+	public static final String[] PROJECTION_ARTICLE_ID = new String[] {
+			DBConstants._ID,
+			DBConstants.V_ARTICLE_ID
 	};
 
 	public static String concatArguments(String... arguments){
@@ -159,7 +163,7 @@ public class DBDataManager {
 		arguments1[0] = userName;
 
 		Cursor cursor = contentResolver.query(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI,
-				PROJECTION_USER, SELECTION_USER, arguments1, null);
+				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
 
@@ -198,7 +202,7 @@ public class DBDataManager {
 		arguments1[0] = userName;
 
 		Cursor cursor = contentResolver.query(DBConstants.FRIENDS_CONTENT_URI,
-				PROJECTION_USER, SELECTION_USER, arguments1, null);
+				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
 
@@ -246,7 +250,7 @@ public class DBDataManager {
         arguments1[0] = userName;
 
         Cursor cursor = contentResolver.query(DBConstants.TACTICS_BATCH_CONTENT_URI,
-				PROJECTION_USER, SELECTION_USER, arguments1, null);
+				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
 
@@ -493,10 +497,8 @@ public class DBDataManager {
 		values.put(DBConstants.V_OPPONENT_RATING, dataObj.getOpponentRating());
 		values.put(DBConstants.V_TIME_REMAINING, dataObj.getTimeRemaining());
 		values.put(DBConstants.V_TIMESTAMP, dataObj.getTimestamp());
-		String moveTo = dataObj.getLastMoveToSquare();
-		String moveFrom = dataObj.getLastMoveFromSquare();
-		values.put(DBConstants.V_LAST_MOVE_FROM_SQUARE, moveFrom == null? StaticData.SYMBOL_EMPTY: moveFrom);
-		values.put(DBConstants.V_LAST_MOVE_TO_SQUARE, moveTo == null? StaticData.SYMBOL_EMPTY: moveTo);
+		values.put(DBConstants.V_LAST_MOVE_FROM_SQUARE, dataObj.getLastMoveFromSquare());
+		values.put(DBConstants.V_LAST_MOVE_TO_SQUARE, dataObj.getLastMoveToSquare());
 	}
 
 	public static ContentValues putGameOnlineItemToValues(DailyGameByIdItem.Data dataObj, String userName) {
@@ -517,8 +519,7 @@ public class DBDataManager {
 		values.put(DBConstants.V_GAME_NAME, dataObj.getGameName());
 		values.put(DBConstants.V_WHITE_USER_NAME, dataObj.getWhiteUsername());
 		values.put(DBConstants.V_BLACK_USER_NAME, dataObj.getBlackUsername());
-		String feStartPosition = dataObj.getFenStartPosition();
-		values.put(DBConstants.V_FEN_START_POSITION, feStartPosition == null? "" : feStartPosition);
+		values.put(DBConstants.V_FEN_START_POSITION, dataObj.getFenStartPosition());
 		values.put(DBConstants.V_MOVE_LIST, dataObj.getMoveList());
 		values.put(DBConstants.V_WHITE_USER_MOVE, dataObj.isWhiteMove()? 1: 0);
 		values.put(DBConstants.V_WHITE_RATING, dataObj.getWhiteRating());
@@ -581,46 +582,54 @@ public class DBDataManager {
 		values.put(DBConstants.V_USER, userName);
 		values.put(DBConstants.V_USERNAME, dataObj.getUsername());
 		values.put(DBConstants.V_USER_ID, dataObj.getUserId());
-		String location = dataObj.getLocation();
-		values.put(DBConstants.V_LOCATION, location == null? StaticData.SYMBOL_EMPTY: location);
+		values.put(DBConstants.V_LOCATION, dataObj.getLocation());
 		values.put(DBConstants.V_COUNTRY_ID, dataObj.getCountryId());
 		values.put(DBConstants.V_PHOTO_URL, dataObj.getAvatarUrl());
 
 		return values;
 	}
 
-	public static ContentValues putArticleItemToValues(ArticleItem.Data dataObj, String userName) {
+	public static ContentValues putArticleItemToValues(ArticleItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_USER, userName);
 		values.put(DBConstants.V_ARTICLE_ID, dataObj.getId());
 		values.put(DBConstants.V_TITLE, dataObj.getTitle());
 		values.put(DBConstants.V_CREATE_DATE, dataObj.getCreate_date());
-		values.put(DBConstants.V_ARTICLE_CATEGORY, dataObj.getArticle_category());
-		values.put(DBConstants.V_ARTICLE_CATEGORY_ID, dataObj.getArticle_category_id());
-		values.put(DBConstants.V_USER_ID, dataObj.getUser_id());
+		values.put(DBConstants.V_CATEGORY, dataObj.getArticleCategory());
+		values.put(DBConstants.V_CATEGORY_ID, dataObj.getArticleCategoryId());
+		values.put(DBConstants.V_USER_ID, dataObj.getUserId());
 		values.put(DBConstants.V_USERNAME, dataObj.getUsername());
-		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirst_name());
-		values.put(DBConstants.V_LAST_NAME, dataObj.getLast_name());
-		values.put(DBConstants.V_CHESS_TITLE, dataObj.getChess_title());
+		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirstName());
+		values.put(DBConstants.V_LAST_NAME, dataObj.getLastName());
+		values.put(DBConstants.V_CHESS_TITLE, dataObj.getChessTitle());
 
 		return values;
 	}
 
 	/**
-	 * Check if we have saved videos for current user
+	 * Check if we have saved videos for any user
 	 * @param context to get resources
 	 * @return true if cursor can be positioned to first
 	 */
 	public static boolean haveSavedVideos(Context context) {
-		String userName = getUserName(context);
-
 		ContentResolver contentResolver = context.getContentResolver();
-		final String[] arguments1 = sArguments1;
-		arguments1[0] = userName;
 
-		Cursor cursor = contentResolver.query(DBConstants.FRIENDS_CONTENT_URI,
-				PROJECTION_USER, SELECTION_USER, arguments1, null);
+		Cursor cursor = contentResolver.query(DBConstants.VIDEOS_CONTENT_URI, null, null, null, LIMIT_1);
+		boolean exist = cursor.moveToFirst();
+		cursor.close();
+
+		return exist;
+	}
+
+	/**
+	 * Check if we have saved articles for any user
+	 * @param context to get resources
+	 * @return true if cursor can be positioned to first
+	 */
+	public static boolean haveSavedArticles(Context context) {
+		ContentResolver contentResolver = context.getContentResolver();
+
+		Cursor cursor = contentResolver.query(DBConstants.ARTICLES_CONTENT_URI, null, null, null, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
 
@@ -628,26 +637,39 @@ public class DBDataManager {
 	}
 
 
-	public static ContentValues putVideoItemToValues(VideoItem.VideoDataItem dataObj, String userName) {
+	public static ContentValues putVideoItemToValues(VideoItem.VideoDataItem dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_USER, userName);
 		values.put(DBConstants.V_NAME, dataObj.getName());
 		values.put(DBConstants.V_DESCRIPTION, dataObj.getDescription());
 		values.put(DBConstants.V_CATEGORY, dataObj.getCategory());
 		values.put(DBConstants.V_SKILL_LEVEL, dataObj.getSkill_level());
-		String ecoName = dataObj.getEco_name();
-		values.put(DBConstants.V_ECO_NAME, ecoName == null? StaticData.SYMBOL_EMPTY: ecoName);
+		values.put(DBConstants.V_ECO_NAME, dataObj.getEco_name());
 		values.put(DBConstants.V_MINUTES, dataObj.getMinutes());
 		values.put(DBConstants.V_CREATE_DATE, dataObj.getLive_date());
 		values.put(DBConstants.V_MOBILE_URL, dataObj.getMobile_view_url());
-		String keyFen = dataObj.getKey_fen();
-		values.put(DBConstants.V_KEY_FEN,keyFen == null? StaticData.SYMBOL_EMPTY :keyFen);
+		values.put(DBConstants.V_KEY_FEN, dataObj.getKeyFen());
 		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirst_name());
 		values.put(DBConstants.V_LAST_NAME, dataObj.getLast_name());
+		values.put(DBConstants.V_CHESS_TITLE, dataObj.getChess_title());
 
-		String chessTitle = dataObj.getChess_title();
-		values.put(DBConstants.V_CHESS_TITLE, chessTitle == null? StaticData.SYMBOL_EMPTY: chessTitle);
+		return values;
+	}
+
+	public static ContentValues putVideoCategoryItemToValues(VideoCategoryItem.Data dataObj) {
+		ContentValues values = new ContentValues();
+		values.put(DBConstants.V_NAME, dataObj.getName());
+		values.put(DBConstants.V_CATEGORY_ID, dataObj.getId());
+		values.put(DBConstants.V_DISPLAY_ORDER, dataObj.getDisplayOrder());
+
+		return values;
+	}
+
+	public static ContentValues putArticleCategoryItemToValues(ArticleCategoryItem.Data dataObj) {
+		ContentValues values = new ContentValues();
+		values.put(DBConstants.V_NAME, dataObj.getName());
+		values.put(DBConstants.V_CATEGORY_ID, dataObj.getId());
+		values.put(DBConstants.V_DISPLAY_ORDER, dataObj.getDisplayOrder());
 
 		return values;
 	}

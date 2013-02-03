@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.new_api.ArticleItem;
-import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.utilities.AppUtils;
 
@@ -43,9 +42,9 @@ public class NewArticlesAdapter extends ItemsAdapter<ArticleItem.Data> {
 	protected void bindView(ArticleItem.Data item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		String firstName = item.getFirst_name();
-		CharSequence chessTitle = item.getChess_title();
-		String lastName =  item.getLast_name();
+		String firstName = item.getFirstName();
+		CharSequence chessTitle = item.getChessTitle();
+		String lastName =  item.getLastName();
 		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
 				+ firstName + StaticData.SYMBOL_SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);

@@ -130,6 +130,7 @@ public class RestHelper {
 		/*Other stuff*/
 	public static final String CMD_FRIENDS = BASE_URL + V1 + "/friends";
 	public static final String CMD_VIDEOS = BASE_URL + V1 + "/videos";
+	public static final String CMD_VIDEO_CATEGORIES = CMD_VIDEOS + "/categories";
 
 	public static final String CMD_TACTICS = BASE_URL + V1 + "/tactics";
 	public static final String CMD_TACTIC_TRAINER = CMD_TACTICS + "/trainer";

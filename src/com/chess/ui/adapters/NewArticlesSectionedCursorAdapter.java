@@ -20,13 +20,13 @@ import com.chess.utilities.AppUtils;
  * Time: 13:34
  */
 //public class NewVideosSectionedCursorAdapter extends NewSectionedCursorAdapter {
-public class NewVideosSectionedCursorAdapter extends NewSectionedCursorLimitedAdapter {
+public class NewArticlesSectionedCursorAdapter extends NewSectionedCursorLimitedAdapter {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
 
 	private CharacterStyle foregroundSpan;
 
-	public NewVideosSectionedCursorAdapter(Context context, Cursor cursor) {
+	public NewArticlesSectionedCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor, R.layout.new_arrow_section_header, DBConstants.V_CATEGORY);
 
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
@@ -49,15 +49,15 @@ public class NewVideosSectionedCursorAdapter extends NewSectionedCursorLimitedAd
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
 
-		String firstName = DBDataManager.getString(cursor, DBConstants.V_FIRST_NAME);
-		CharSequence chessTitle = DBDataManager.getString(cursor, DBConstants.V_CHESS_TITLE);
-		String lastName =  DBDataManager.getString(cursor, DBConstants.V_LAST_NAME);
+		String firstName = DBDataManager.getString(cursor, DBConstants.V_FIRST_NAME).equals("")? "TestFirstName" : DBDataManager.getString(cursor, DBConstants.V_FIRST_NAME);
+		String chessTitle = DBDataManager.getString(cursor, DBConstants.V_CHESS_TITLE).equals("")? "TIM" : DBDataManager.getString(cursor, DBConstants.V_CHESS_TITLE);
+		String lastName = DBDataManager.getString(cursor, DBConstants.V_LAST_NAME).equals("")? "TestLastName" : DBDataManager.getString(cursor, DBConstants.V_LAST_NAME);
 		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
 				+ firstName + StaticData.SYMBOL_SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		holder.authorTxt.setText(authorStr);
 
-		holder.titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_NAME));
+		holder.titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_TITLE));
 	}
 
 	protected class ViewHolder {

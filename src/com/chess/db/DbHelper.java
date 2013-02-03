@@ -49,20 +49,35 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getVideosListParams(Context context){
+	public static QueryParams getArticlesListParams(){
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.VIDEOS_CONTENT_URI);
-		queryParams.setSelection(DBDataManager.SELECTION_USER);
-		queryParams.setArguments(new String[]{AppData.getUserName(context)});
+		queryParams.setUri(DBConstants.ARTICLES_CONTENT_URI);
 		queryParams.setOrder(DBConstants.V_CATEGORY);
 		return queryParams;
 	}
 
-	public static QueryParams getVideosListCategoryParams(Context context, String category){
+	public static QueryParams getVideosListByCategoryParams(String category){
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.VIDEOS_CONTENT_URI);
 		queryParams.setSelection(DBDataManager.SELECTION_CATEGORY);
-		queryParams.setArguments(new String[]{AppData.getUserName(context), category});
+		queryParams.setArguments(new String[]{category});
+		queryParams.setOrder(DBConstants.V_CATEGORY);
+		return queryParams;
+	}
+
+	public static QueryParams getVideosListParams(){
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DBConstants.VIDEOS_CONTENT_URI);
+		queryParams.setOrder(DBConstants.V_CATEGORY);
+		return queryParams;
+	}
+
+
+	public static QueryParams getArticlesListByCategoryParams(String category){
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DBConstants.ARTICLES_CONTENT_URI);
+		queryParams.setSelection(DBDataManager.SELECTION_CATEGORY);
+		queryParams.setArguments(new String[]{category});
 		queryParams.setOrder(DBConstants.V_CATEGORY);
 		return queryParams;
 	}

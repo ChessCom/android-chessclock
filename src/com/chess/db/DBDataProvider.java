@@ -32,7 +32,9 @@ public class DBDataProvider extends ContentProvider {
 		uriMatcher.addURI(DBConstants.PROVIDER_NAME, DBConstants.ECHESS_ONLINE_GAMES_TABLE, DBConstants.ECHESS_ONLINE_GAMES);
 		uriMatcher.addURI(DBConstants.PROVIDER_NAME, DBConstants.FRIENDS_TABLE, DBConstants.FRIENDS);
 		uriMatcher.addURI(DBConstants.PROVIDER_NAME, DBConstants.ARTICLES_TABLE, DBConstants.ARTICLES);
+		uriMatcher.addURI(DBConstants.PROVIDER_NAME, DBConstants.ARTICLE_CATEGORIES_TABLE, DBConstants.ARTICLE_CATEGORIES);
 		uriMatcher.addURI(DBConstants.PROVIDER_NAME, DBConstants.VIDEOS_TABLE, DBConstants.VIDEOS);
+		uriMatcher.addURI(DBConstants.PROVIDER_NAME, DBConstants.VIDEO_CATEGORIES_TABLE, DBConstants.VIDEO_CATEGORIES);
 
 		// get particular id's from table
 		uriMatcherIds.addURI(DBConstants.PROVIDER_NAME, DBConstants.TACTICS_BATCH_TABLE + "/#", DBConstants.TACTICS_BATCH);
@@ -42,7 +44,9 @@ public class DBDataProvider extends ContentProvider {
 		uriMatcherIds.addURI(DBConstants.PROVIDER_NAME, DBConstants.ECHESS_ONLINE_GAMES_TABLE + "/#", DBConstants.ECHESS_ONLINE_GAMES);
 		uriMatcherIds.addURI(DBConstants.PROVIDER_NAME, DBConstants.FRIENDS_TABLE + "/#", DBConstants.FRIENDS);
 		uriMatcherIds.addURI(DBConstants.PROVIDER_NAME, DBConstants.ARTICLES_TABLE + "/#", DBConstants.ARTICLES);
+		uriMatcherIds.addURI(DBConstants.PROVIDER_NAME, DBConstants.ARTICLE_CATEGORIES_TABLE + "/#", DBConstants.ARTICLE_CATEGORIES);
 		uriMatcherIds.addURI(DBConstants.PROVIDER_NAME, DBConstants.VIDEOS_TABLE + "/#", DBConstants.VIDEOS);
+		uriMatcherIds.addURI(DBConstants.PROVIDER_NAME, DBConstants.VIDEO_CATEGORIES_TABLE + "/#", DBConstants.VIDEO_CATEGORIES);
 
 	}
 
@@ -64,7 +68,9 @@ public class DBDataProvider extends ContentProvider {
 			DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI,
 			DBConstants.FRIENDS_CONTENT_URI,
 			DBConstants.ARTICLES_CONTENT_URI,
-			DBConstants.VIDEOS_CONTENT_URI
+			DBConstants.ARTICLE_CATEGORIES_CONTENT_URI,
+			DBConstants.VIDEOS_CONTENT_URI,
+			DBConstants.VIDEO_CATEGORIES_CONTENT_URI
 	};
 
 	private static int[] pathsArray = new int[]{
@@ -75,7 +81,9 @@ public class DBDataProvider extends ContentProvider {
 			DBConstants.ECHESS_ONLINE_GAMES,
 			DBConstants.FRIENDS,
 			DBConstants.ARTICLES,
-			DBConstants.VIDEOS
+			DBConstants.ARTICLE_CATEGORIES,
+			DBConstants.VIDEOS,
+			DBConstants.VIDEO_CATEGORIES
 	};
 
 	private static String[] tablesArray = new String[]{
@@ -86,7 +94,9 @@ public class DBDataProvider extends ContentProvider {
 			DBConstants.ECHESS_ONLINE_GAMES_TABLE,
 			DBConstants.FRIENDS_TABLE,
 			DBConstants.ARTICLES_TABLE,
-			DBConstants.VIDEOS_TABLE
+			DBConstants.ARTICLE_CATEGORIES_TABLE,
+			DBConstants.VIDEOS_TABLE,
+			DBConstants.VIDEO_CATEGORIES_TABLE
 	};
 
 	private static String[] createTablesArray = new String[]{
@@ -97,7 +107,9 @@ public class DBDataProvider extends ContentProvider {
 			DBConstants.ECHESS_ONLINE_GAMES_CREATE,
 			DBConstants.FRIENDS_CREATE,
 			DBConstants.ARTICLES_CREATE,
-			DBConstants.VIDEOS_CREATE
+			DBConstants.ARTICLE_CATEGORIES_CREATE,
+			DBConstants.VIDEOS_CREATE,
+			DBConstants.VIDEO_CATEGORIES_CREATE
 	};
 
 	@Override

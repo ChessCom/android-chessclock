@@ -1,6 +1,7 @@
 package com.chess.backend.entity.new_api;
 
 import com.chess.backend.RestHelper;
+import com.chess.backend.statics.StaticData;
 
 /**
  * Created with IntelliJ IDEA.
@@ -104,7 +105,7 @@ public class DailyGameByIdItem extends BaseResponseItem<DailyGameByIdItem.Data> 
 		}
 
 		public String getFenStartPosition() {
-			return starting_fen_position;
+			return starting_fen_position == null? StaticData.SYMBOL_EMPTY : starting_fen_position; // could be null from server
 		}
 
 		public void setFenStartPosition(String starting_fen_position) {

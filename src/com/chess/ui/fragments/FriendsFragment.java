@@ -45,6 +45,7 @@ public class FriendsFragment extends CommonLogicFragment {
 	private SaveFriendsListUpdateListener saveFriendsListUpdateListener;
 	private boolean hostUnreachable;
 	private Spinner sortSpinner;
+	private boolean need2update = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -80,16 +81,21 @@ public class FriendsFragment extends CommonLogicFragment {
 		super.onStart();
 		init();
 
-		if (AppUtils.isNetworkAvailable(getActivity()) /*&& !isRestarted*/) {
-			updateData();
-		} else {
-			emptyView.setText(R.string.no_network);
-			showEmptyView(true);
+		if (need2update){
+			boolean haveSavedData = DBDataManager.haveSavedFriends(getActivity());
+
+			if (AppUtils.isNetworkAvailable(getActivity())) {
+				updateData();
+			} else if(!haveSavedData){
+				emptyView.setText(R.string.no_network);
+				showEmptyView(true);
+			}
+
+			if (haveSavedData) {
+				loadFromDb();
+			}
 		}
 
-		if (DBDataManager.haveSavedFriends(getActivity())) {
-			loadFromDb();
-		}
 	}
 
 	@Override

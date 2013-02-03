@@ -30,6 +30,8 @@ public class StaticData {
 	public static final String SYMBOL_TAG = "<";
 	public static final String SYMBOL_COLON = ":";
 	public static final String SYMBOL_DOT = ". ";
+	public static final String SYMBOL_AMP_CODE = "&amp;";
+	public static final String SYMBOL_AMP = "&";
 
 
 	public static final String CLEAR_CHAT_NOTIFICATION = "clear_chat_notification";

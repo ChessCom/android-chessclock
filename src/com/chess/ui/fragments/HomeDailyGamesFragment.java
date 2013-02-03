@@ -84,6 +84,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 	private View loadingView;
 	private boolean hostUnreachable;
 	private boolean onVacation;
+	private boolean need2update = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -132,17 +133,22 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		gamesUpdateReceiver = new GamesUpdateReceiver();
 		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
 
-		if (AppUtils.isNetworkAvailable(getActivity()) /*&& !isRestarted*/) {
-			updateVacationStatus();
-			updateGamesList();
-		} else {
-			emptyView.setText(R.string.no_network);
-			showEmptyView(true);
+		if (need2update) {
+			boolean haveSavedData = DBDataManager.haveSavedOnlineCurrentGame(getActivity());
+
+			if (AppUtils.isNetworkAvailable(getActivity()) ) {
+				updateVacationStatus();
+				updateGamesList();
+			} else if(!haveSavedData) {
+				emptyView.setText(R.string.no_network);
+				showEmptyView(true);
+			}
+
+			if (haveSavedData) {
+				loadDbGames();
+			}
 		}
 
-		if (DBDataManager.haveSavedOnlineCurrentGame(getActivity())) {
-			loadDbGames();
-		}
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.chess.backend.entity.new_api;
 
+import com.chess.backend.statics.StaticData;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -98,7 +100,7 @@ public class DailyGameBaseData {
 	}
 
 	public String getLastMoveFromSquare() {
-		return last_move_from_square;
+		return last_move_from_square == null ? StaticData.SYMBOL_EMPTY : last_move_from_square;
 	}
 
 	public void setLastMoveFromSquare(String last_move_from_square) {
@@ -106,7 +108,7 @@ public class DailyGameBaseData {
 	}
 
 	public String getLastMoveToSquare() {
-		return last_move_to_square;
+		return last_move_to_square == null ? StaticData.SYMBOL_EMPTY : last_move_to_square;
 	}
 
 	public void setLastMoveToSquare(String last_move_to_square) {
