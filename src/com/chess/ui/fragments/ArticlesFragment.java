@@ -253,6 +253,10 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 	private void fillListViewHeaderData() {
+		if (!headerDataLoaded) {
+			return;
+		}
+
 		String firstName = headerData.getFirstName();
 		CharSequence chessTitle = headerData.getChessTitle();
 		String lastName = headerData.getLastName();

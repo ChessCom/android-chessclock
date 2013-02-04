@@ -280,6 +280,10 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	}
 
 	private void fillListViewHeaderData() {
+		if (!headerDataLoaded) {
+			return;
+		}
+
 		String firstName = headerData.getFirstName();
 		String chessTitle = headerData.getChessTitle();
 		String lastName = headerData.getLastName();

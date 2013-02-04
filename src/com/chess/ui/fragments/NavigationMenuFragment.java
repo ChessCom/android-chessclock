@@ -75,29 +75,26 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 
 		switch (menuItem.iconRes) {
 			case R.drawable.ic_nav_home:
-				getActivityFace().switchFragment(new HomeTabsFragment());
+				getActivityFace().switchFragment(new HomeTabsFragment()); // TODO clear stack
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 			case R.drawable.ic_nav_videos:
-				getActivityFace().switchFragment(new VideosFragment());
-//				getActivityFace().switchFragment(new VideoDetailsFragment());
+				getActivityFace().openFragment(new VideosFragment());
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 			case R.drawable.ic_nav_articles:
-				getActivityFace().switchFragment(new ArticlesFragment());
-//				getActivityFace().switchFragment(new ArticleCategoriesFragment());
+				getActivityFace().openFragment(new ArticlesFragment());
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 			case R.drawable.ic_nav_friends:
-				getActivityFace().switchFragment(new FriendsFragment());
+				getActivityFace().openFragment(new FriendsFragment());
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 			case R.drawable.ic_nav_stats:
-				getActivityFace().switchFragment(new StatsFragment());
+				getActivityFace().openFragment(new StatsFragment());
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 		}
-
 	}
 
 
