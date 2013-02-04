@@ -127,7 +127,6 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
 	public void makeHint(final int time) {
 
-
 		gamePanelView.toggleControlButton(GamePanelView.B_HINT_ID, true);
 
 		setHint(true);
@@ -438,7 +437,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
     @Override
     public void showHint() {
-        if (!isComputerMoving()) {
+        if (!isComputerMoving() && !isHint()) {
 			makeHint(compStrength);
         }
     }
