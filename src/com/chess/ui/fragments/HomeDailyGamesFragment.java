@@ -76,7 +76,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 //	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
 	private CustomSectionedAdapter sectionedAdapter;
 	private DailyCurrentGameData gameListCurrentItem;
-	private DailyChallengeData gameListChallengeItem;
+	private DailyChallengeItem.Data gameListChallengeItem;
 
 	private TextView emptyView;
 	private ListView listView;
@@ -271,7 +271,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 //				startActivity(intent);
 			}
 		} else if (section == CHALLENGES_SECTION) {
-			clickOnChallenge((DailyChallengeData) adapterView.getItemAtPosition(pos));
+			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(pos));
 		} else {
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
@@ -325,7 +325,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 					.create().show();
 
 		} else if (section == CHALLENGES_SECTION) {
-			clickOnChallenge((DailyChallengeData) adapterView.getItemAtPosition(pos));
+			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(pos));
 		} else {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
 			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
@@ -357,7 +357,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		}
 	}
 
-	private void clickOnChallenge(DailyChallengeData gameListChallengeItem) {
+	private void clickOnChallenge(DailyChallengeItem.Data gameListChallengeItem) {
 		this.gameListChallengeItem = gameListChallengeItem;
 
 		String title = gameListChallengeItem.getOpponentUsername() + StaticData.SYMBOL_NEW_STR

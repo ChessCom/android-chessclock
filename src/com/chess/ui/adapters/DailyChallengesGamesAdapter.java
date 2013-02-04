@@ -2,22 +2,21 @@ package com.chess.ui.adapters;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.new_api.DailyChallengeData;
+import com.chess.backend.entity.new_api.DailyChallengeItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.BaseGameItem;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
 import java.util.List;
 
-public class DailyChallengesGamesAdapter extends ItemsAdapter<DailyChallengeData> {
+public class DailyChallengesGamesAdapter extends ItemsAdapter<DailyChallengeItem.Data> {
 
 	private final ItemClickListenerFace clickListenerFace;
 
-	public DailyChallengesGamesAdapter(ItemClickListenerFace clickListenerFace, List<DailyChallengeData> itemList) {
+	public DailyChallengesGamesAdapter(ItemClickListenerFace clickListenerFace, List<DailyChallengeItem.Data> itemList) {
 		super(clickListenerFace.getMeContext(), itemList);
 		this.clickListenerFace = clickListenerFace;
 	}
@@ -41,7 +40,7 @@ public class DailyChallengesGamesAdapter extends ItemsAdapter<DailyChallengeData
 
 
 	@Override
-	protected void bindView(DailyChallengeData item, int pos, View convertView) {
+	protected void bindView(DailyChallengeItem.Data item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		holder.cancelBtn.setTag(itemListId, pos);

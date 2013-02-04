@@ -68,15 +68,15 @@ public class DailyGamesAllItem extends BaseResponseItem<DailyGamesAllItem.Data>{
 	 */
 
 	public static class Data {
-		private List<DailyChallengeData> challenges;
+		private List<DailyChallengeItem.Data> challenges;
 		private List<DailyCurrentGameData> current;
 		private List<DailyFinishedGameData> finished;
 
-		public List<DailyChallengeData> getChallenges() {
+		public List<DailyChallengeItem.Data> getChallenges() {
 			return challenges;
 		}
 
-		public void setChallenges(List<DailyChallengeData> challenges) {
+		public void setChallenges(List<DailyChallengeItem.Data> challenges) {
 			this.challenges = challenges;
 		}
 

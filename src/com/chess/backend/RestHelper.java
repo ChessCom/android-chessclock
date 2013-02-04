@@ -113,6 +113,7 @@ public class RestHelper {
 	public static final String CMD_LOGIN = CMD_USER +"/login";
 	public static final String CMD_REGISTER = CMD_USER +"/register";
 	public static final String CMD_GCM = CMD_USER + "/gcm";
+	public static final String CMD_STATS = CMD_USER + "/stats";
 		/*Games*/
 	public static final String CMD_GAMES = BASE_URL + V1 + GAMES;
 	public static final String CMD_GAMES_ALL = CMD_GAMES +"/all";

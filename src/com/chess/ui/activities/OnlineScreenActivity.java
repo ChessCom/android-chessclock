@@ -60,7 +60,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
 	private CustomSectionedAdapter sectionedAdapter;
 	private DailyCurrentGameData gameListCurrentItem;
-	private DailyChallengeData gameListChallengeItem;
+	private DailyChallengeItem.Data gameListChallengeItem;
 	private boolean onVacation;
 	private IntentFilter listUpdateFilter;
 	private BroadcastReceiver gamesUpdateReceiver;
@@ -581,7 +581,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				startActivity(intent);
 			}
 		} else if (section == CHALLENGES_SECTION) {
-			clickOnChallenge((DailyChallengeData) adapterView.getItemAtPosition(pos));
+			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(pos));
 		} else {
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
@@ -612,7 +612,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 					.create().show();
 
 		} else if (section == CHALLENGES_SECTION) {
-			clickOnChallenge((DailyChallengeData) adapterView.getItemAtPosition(pos));
+			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(pos));
 		} else {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
 			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
@@ -634,7 +634,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		}
 	}
 
-	private void clickOnChallenge(DailyChallengeData gameListChallengeItem) {
+	private void clickOnChallenge(DailyChallengeItem.Data gameListChallengeItem) {
 		this.gameListChallengeItem = gameListChallengeItem;
 
 		String title = gameListChallengeItem.getOpponentUsername() + StaticData.SYMBOL_NEW_STR

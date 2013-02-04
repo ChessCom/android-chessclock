@@ -12,8 +12,7 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.DailyChallengeData;
-import com.chess.backend.entity.new_api.DailyChallengesItem;
+import com.chess.backend.entity.new_api.DailyChallengeItem;
 import com.chess.backend.entity.new_api.DailyGameAcceptItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
@@ -33,9 +32,9 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
 
 	private ListView openChallengesListView;
-	private ArrayList<DailyChallengeData> gameListItems = new ArrayList<DailyChallengeData>();
+	private ArrayList<DailyChallengeItem.Data> gameListItems = new ArrayList<DailyChallengeItem.Data>();
 	private DailyChallengesGamesAdapter gamesAdapter = null;
-	private DailyChallengeData gameListElement;
+	private DailyChallengeItem.Data gameListElement;
 	private ChallengeInviteUpdateListener challengeInviteUpdateListener;
 	private int successToastMsgId;
 
@@ -90,14 +89,14 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 	private void updateList(){
 //		new GetStringObjTask(listUpdateListener).executeTask(listLoadItem);
-		new RequestJsonTask<DailyChallengesItem>(listUpdateListener).executeTask(listLoadItem);
+		new RequestJsonTask<DailyChallengeItem>(listUpdateListener).executeTask(listLoadItem);
 	}
 
 //	private class ListUpdateListener extends ChessUpdateListener {
-	private class ListUpdateListener extends ActionBarUpdateListener<DailyChallengesItem> {
+	private class ListUpdateListener extends ActionBarUpdateListener<DailyChallengeItem> {
 
 	public ListUpdateListener() {
-		super(getInstance(), DailyChallengesItem.class);
+		super(getInstance(), DailyChallengeItem.class);
 	}
 
 	@Override
@@ -106,7 +105,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 		}
 
 		@Override
-		public void updateData(DailyChallengesItem returnedObj) {
+		public void updateData(DailyChallengeItem returnedObj) {
 			gameListItems.clear();
 //			gameListItems.addAll(ChessComApiParser.getChallengesGames(returnedObj));
 			gameListItems.addAll(returnedObj.getData());
