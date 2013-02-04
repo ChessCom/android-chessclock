@@ -4,10 +4,13 @@ import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.*;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.*;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
@@ -35,9 +38,8 @@ import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
-import com.chess.ui.views.ChessBoardNetworkView;
-import com.chess.ui.views.ChessBoardOnlineView;
-import com.chess.ui.views.GameControlsView;
+import com.chess.ui.views.*;
+import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
@@ -93,10 +95,14 @@ public class GameDailyFragment extends GameBaseFragment {
 	protected boolean userPlayWhite = true;
 	private LoadFromDbUpdateListener loadFromDbUpdateListener;
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
+	private NotationView notationsView;
+	private GamePanelInfoView topPanelView;
+	private GamePanelInfoView bottomPanelView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.boardview_online, container, false);
+//		return inflater.inflate(R.layout.boardview_daily, container, false);
+		return inflater.inflate(R.layout.new_boardview_daily, container, false);
 	}
 
 	@Override
@@ -111,6 +117,28 @@ public class GameDailyFragment extends GameBaseFragment {
 
 		infoLabelTxt = (TextView) view.findViewById(R.id.thinking);
 
+		setTitle(R.string.daily_chess);
+		notationsView = (NotationView) view.findViewById(R.id.notationsView);
+		topPanelView = (GamePanelInfoView) view.findViewById(R.id.topPanelView);
+		bottomPanelView = (GamePanelInfoView) view.findViewById(R.id.bottomPanelView);
+
+		// set avatars
+		Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
+
+		((ImageView) topPanelView.findViewById(GamePanelInfoView.AVATAR_ID))
+				.setImageDrawable(new BoardAvatarDrawable(getActivity(), src));
+
+		ImageView bottomAvatarImg = (ImageView) bottomPanelView.findViewById(GamePanelInfoView.AVATAR_ID);
+		bottomAvatarImg.setImageDrawable(new BoardAvatarDrawable(getActivity(), src));
+
+		((BoardAvatarDrawable)bottomAvatarImg.getDrawable()).setSide(AppConstants.WHITE_SIDE);
+		// change avatar border
+		bottomPanelView.setSide(AppConstants.WHITE_SIDE);
+
+		// set player names
+		topPanelView.setPlayerLabel("Computer");
+		bottomPanelView.setPlayerLabel(AppData.getUserName(getActivity()));
+
 		submitButtonsLay = view.findViewById(R.id.submitButtonsLay);
 		view.findViewById(R.id.submitBtn).setOnClickListener(this);
 		view.findViewById(R.id.cancelBtn).setOnClickListener(this);
@@ -118,9 +146,10 @@ public class GameDailyFragment extends GameBaseFragment {
 		gameControlsView.changeGameButton(GameControlsView.B_NEW_GAME_ID, R.drawable.ic_next_game);
 		gameControlsView.enableGameControls(false);
 
-		boardView = (ChessBoardOnlineView) view.findViewById(R.id.boardview);
+		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setGameControlsView(gameControlsView);
+		boardView.setNotationsView(notationsView);
 		setBoardView(boardView);
 
 //		if (extras.getBoolean(AppConstants.NOTIFICATION, false)) { // TODO restore, replace with arguments
@@ -218,7 +247,7 @@ public class GameDailyFragment extends GameBaseFragment {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			long gameId = intent.getLongExtra(BaseGameItem.GAME_ID, 0);
-			Log.d("TEST", " move update game id = " + gameId);
+
 			updateGameState(gameId);
 //			loadGameAndUpdate();
 		}

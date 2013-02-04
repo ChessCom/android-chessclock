@@ -29,4 +29,6 @@
     <string name="vs_computer">Vs. Computer</string>
     <string name="arrow">Arrow</string>
     <string name="by">by</string>
+    <string name="daily_chess">Daily Chess</string>
+    <string name="live_chess">Live Chess</string>
 </resources>

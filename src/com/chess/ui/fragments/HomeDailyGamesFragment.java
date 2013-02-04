@@ -29,7 +29,6 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.GameListFinishedItem;
 import com.chess.model.GameOnlineItem;
 import com.chess.ui.activities.ChatOnlineActivity;
-import com.chess.ui.activities.GameFinishedScreenActivity;
 import com.chess.ui.activities.GameOnlineScreenActivity;
 import com.chess.ui.adapters.*;
 import com.chess.ui.engine.ChessBoardOnline;
@@ -138,7 +137,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 
 			if (AppUtils.isNetworkAvailable(getActivity()) ) {
 				updateVacationStatus();
-				updateGamesList();
+				updateData();
 			} else if(!haveSavedData) {
 				emptyView.setText(R.string.no_network);
 				showEmptyView(true);
@@ -276,13 +275,36 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		} else {
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
+			gameListCurrentItem = DBDataManager.getEchessGameListCurrentItemFromCursor(cursor);
+
+//			preferencesEditor.putString(AppConstants.OPPONENT, gameListCurrentItem.getOpponentUsername());
+//			preferencesEditor.commit();
+
+			if (gameListCurrentItem.isDrawOfferPending()) {
+				popupItem.setPositiveBtnId(R.string.accept);
+				popupItem.setNeutralBtnId(R.string.decline);
+				popupItem.setNegativeBtnId(R.string.game);
+
+				showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
+				getLastPopupFragment().setButtons(3);
+
+			} else {
+				ChessBoardOnline.resetInstance();
+				getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
+//				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
+//				intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
+//
+//				startActivity(intent);
+			}
+
+/*			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
 			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
 //			preferencesEditor.putString(AppConstants.OPPONENT, finishedItem.getOpponentUsername());
 //			preferencesEditor.commit();
 
 			Intent intent = new Intent(getContext(), GameFinishedScreenActivity.class);
 			intent.putExtra(BaseGameItem.GAME_ID, finishedItem.getGameId());
-			startActivity(intent);
+			startActivity(intent);*/
 		}
 	}
 
@@ -331,7 +353,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 	private class GamesUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			updateGamesList();
+			updateData();
 		}
 	}
 
@@ -379,10 +401,10 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 			switch (itemCode) {
 				case INVITE:
 					showToast(successToastMsgId);
-					updateGamesList();
+					HomeDailyGamesFragment.this.updateData();
 					break;
 				case DRAW:
-					updateGamesList();
+					HomeDailyGamesFragment.this.updateData();
 					break;
 				case VACATION:
 
@@ -418,7 +440,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		}
 	}
 
-	private void updateGamesList() {
+	private void updateData() {
 		if (!AppUtils.isNetworkAvailable(getActivity())) {
 			return;
 		}
@@ -588,7 +610,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 					break;
 				case DELETE:
 					onVacation = false;
-					updateGamesList();
+					HomeDailyGamesFragment.this.updateData();
 					break;
 			}
 		}
@@ -697,7 +719,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 				case CURRENT_MY:
 					currentGamesMyCursorAdapter.changeCursor(returnedObj);
 //					if (AppUtils.isNetworkAvailable(getContext()) && !hostUnreachable /*&& !isRestarted*/) { // TODO adjust
-////						updateGamesList();
+////						updateData();
 //					} else {
 //						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
 //								DbHelper.getEchessFinishedListGamesParams(getContext()),
@@ -708,7 +730,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 				case CURRENT_THEIR:
 					currentGamesTheirCursorAdapter.changeCursor(returnedObj);
 //					if (AppUtils.isNetworkAvailable(getContext()) && !hostUnreachable /*&& !isRestarted*/) { // TODO adjust
-////						updateGamesList();
+////						updateData();
 //					} else {
 //						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
 //								DbHelper.getEchessFinishedListGamesParams(getContext()),

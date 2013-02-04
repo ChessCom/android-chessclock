@@ -5,9 +5,9 @@ import android.util.AttributeSet;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 
-public class ChessBoardOnlineView extends ChessBoardNetworkView {
+public class ChessBoardDailyView extends ChessBoardNetworkView {
 
-	public ChessBoardOnlineView(Context context, AttributeSet attrs) {
+	public ChessBoardDailyView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 

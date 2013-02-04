@@ -72,6 +72,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		topPanelView = (GamePanelInfoView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (GamePanelInfoView) view.findViewById(R.id.bottomPanelView);
 
+		// set avatars
 		Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
 
 		((ImageView) topPanelView.findViewById(GamePanelInfoView.AVATAR_ID))
@@ -81,6 +82,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		bottomAvatarImg.setImageDrawable(new BoardAvatarDrawable(getActivity(), src));
 
 		((BoardAvatarDrawable)bottomAvatarImg.getDrawable()).setSide(AppConstants.WHITE_SIDE);
+		// change avatar border
 		bottomPanelView.setSide(AppConstants.WHITE_SIDE);
 
 		// set player names
@@ -95,7 +97,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 		widgetsInit(view);
 	}
-
 
 	@Override
 	protected void widgetsInit(View view) {

@@ -24,8 +24,8 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.BoardFace;
+import com.chess.ui.views.ChessBoardDailyView;
 import com.chess.ui.views.ChessBoardNetworkView;
-import com.chess.ui.views.ChessBoardOnlineView;
 import com.chess.ui.views.GameControlsView;
 
 import java.util.Calendar;
@@ -56,7 +56,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.boardview_online);
+		setContentView(R.layout.boardview_daily);
 //		init();
 		widgetsInit();
 	}
@@ -69,7 +69,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		gameControlsView.hideChatButton();
 		gameControlsView.enableGameControls(false);
 
-		boardView = (ChessBoardOnlineView) findViewById(R.id.boardview);
+		boardView = (ChessBoardDailyView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setGameControlsView(gameControlsView);
 		setBoardView(boardView);

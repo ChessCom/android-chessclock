@@ -5,16 +5,11 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="@color/game_board_back"
-	android:orientation="vertical">
-
-	<!--Top game panel part-->
-    <com.chess.ui.views.GamePanelInfoView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+	android:orientation="vertical"
+    >
 
 	<!--Top Bar-->
-<!--	<RelativeLayout
+	<RelativeLayout
 		android:id="@+id/statusBarLay"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -58,7 +53,7 @@
 			android:text="@string/analysis_mode"
 			style="@style/GameLabel"
 			/>
-	</RelativeLayout>-->
+	</RelativeLayout>
 
 	<!--Game Board and Game Panel-->
 	<FrameLayout
@@ -70,7 +65,7 @@
 			android:orientation="vertical"
 			>
 
-			<com.chess.ui.views.ChessBoardOnlineView
+			<com.chess.ui.views.ChessBoardDailyView
 				android:id="@+id/boardview"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -118,5 +113,3 @@
 
 	</FrameLayout>
 </LinearLayout>
-
-

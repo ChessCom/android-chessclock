@@ -37,8 +37,8 @@ import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
+import com.chess.ui.views.ChessBoardDailyView;
 import com.chess.ui.views.ChessBoardNetworkView;
-import com.chess.ui.views.ChessBoardOnlineView;
 import com.chess.ui.views.GameControlsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -100,7 +100,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.boardview_online);
+		setContentView(R.layout.boardview_daily);
 //		init();
 		widgetsInit();
 	}
@@ -118,7 +118,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		gameControlsView.changeGameButton(GameControlsView.B_NEW_GAME_ID, R.drawable.ic_ctrl_restore);
 		gameControlsView.enableGameControls(false);
 
-		boardView = (ChessBoardOnlineView) findViewById(R.id.boardview);
+		boardView = (ChessBoardDailyView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setGameControlsView(gameControlsView);
 		setBoardView(boardView);

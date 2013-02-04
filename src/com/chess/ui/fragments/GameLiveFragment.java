@@ -83,6 +83,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		setTitle(R.string.live_chess);
 		widgetsInit(view);
 		lccInitiated = init();
 
@@ -164,6 +165,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 		boardView = (ChessBoardLiveView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setGameControlsView(gameControlsView);
+		boardView.setNotationsView(notationsView);
 		setBoardView(boardView);
 
 //		boardView.setBoardFace(getBoardFace());
