@@ -6,8 +6,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.Menu;
 import com.chess.R;
+import com.chess.backend.statics.AppData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.ui.fragments.*;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
@@ -33,6 +35,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	private LogoBackgroundDrawable logoBackground;
 	private SlidingMenu slidingMenu;
 	private List<SlidingMenu.OnOpenedListener> openMenuListeners;
+	private boolean showActionBar;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,8 +47,13 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		openMenuListeners = new ArrayList<SlidingMenu.OnOpenedListener>();
 
 		// set the Above View
-		switchFragment(new SignInFragment());
-//		switchFragment(new ArticlesFragment());
+		if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
+			switchFragment(new HomeTabsFragment());
+			showActionBar = true;
+		} else {
+			switchFragment(new SignInFragment());
+			showActionBar = false;
+		}
 
 		slidingMenu = getSlidingMenu();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
@@ -61,7 +69,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 
-		getActionBarHelper().showActionBar(false);
+		getActionBarHelper().showActionBar(showActionBar);
 
 		if (HONEYCOMB_PLUS_API) {
 			getActionBar().setCustomView(R.layout.new_custom_actionbar);

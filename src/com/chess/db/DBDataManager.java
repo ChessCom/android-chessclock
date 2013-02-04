@@ -646,12 +646,12 @@ public class DBDataManager {
 		values.put(DBConstants.V_SKILL_LEVEL, dataObj.getSkill_level());
 		values.put(DBConstants.V_ECO_NAME, dataObj.getEco_name());
 		values.put(DBConstants.V_MINUTES, dataObj.getMinutes());
-		values.put(DBConstants.V_CREATE_DATE, dataObj.getLive_date());
+		values.put(DBConstants.V_CREATE_DATE, dataObj.getCreateDate());
 		values.put(DBConstants.V_MOBILE_URL, dataObj.getMobile_view_url());
 		values.put(DBConstants.V_KEY_FEN, dataObj.getKeyFen());
-		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirst_name());
-		values.put(DBConstants.V_LAST_NAME, dataObj.getLast_name());
-		values.put(DBConstants.V_CHESS_TITLE, dataObj.getChess_title());
+		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirstName());
+		values.put(DBConstants.V_LAST_NAME, dataObj.getLastName());
+		values.put(DBConstants.V_CHESS_TITLE, dataObj.getChessTitle());
 
 		return values;
 	}

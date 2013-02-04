@@ -14,7 +14,6 @@
         android:scaleType="fitXY"
         android:contentDescription="@string/image"
         android:background="@drawable/video_thumb_back"
-
         />
 
     <ProgressBar

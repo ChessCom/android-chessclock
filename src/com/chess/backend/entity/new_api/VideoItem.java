@@ -95,15 +95,15 @@ public class VideoItem extends BaseResponseItem<VideoItem.Data> {
 			return eco_name == null ? StaticData.SYMBOL_EMPTY : eco_name;
 		}
 
-		public String getFirst_name() {
+		public String getFirstName() {
 			return first_name;
 		}
 
-		public String getChess_title() {
+		public String getChessTitle() {
 			return chess_title == null ? StaticData.SYMBOL_EMPTY : chess_title;
 		}
 
-		public String getLast_name() {
+		public String getLastName() {
 			return last_name;
 		}
 
@@ -111,7 +111,7 @@ public class VideoItem extends BaseResponseItem<VideoItem.Data> {
 			return minutes;
 		}
 
-		public long getLive_date() {
+		public long getCreateDate() {
 			return live_date;
 		}
 

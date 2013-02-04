@@ -13,6 +13,9 @@ import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.utilities.AppUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com

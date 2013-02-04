@@ -13,6 +13,9 @@ import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.utilities.AppUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -23,7 +26,6 @@ import com.chess.utilities.AppUtils;
 public class NewArticlesSectionedCursorAdapter extends NewSectionedCursorLimitedAdapter {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
-
 	private CharacterStyle foregroundSpan;
 
 	public NewArticlesSectionedCursorAdapter(Context context, Cursor cursor) {

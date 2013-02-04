@@ -1,7 +1,9 @@
 package com.chess.ui.fragments;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.chess.backend.entity.new_api.ArticleItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
@@ -28,6 +31,7 @@ import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -50,13 +54,18 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 	private NewArticlesSectionedCursorAdapter articlesCursorAdapter;
 
+	private ArticleItemUpdateListener randomArticleUpdateListener;
 	private ArticleItemUpdateListener articleListUpdateListener;
 	private SaveArticlesUpdateListener saveArticlesUpdateListener;
 	private ArticlesCursorUpdateListener articlesCursorUpdateListener;
 
 	private ArticleCategoriesUpdateListener articleCategoriesUpdateListener;
 	private SaveArticleCategoriesUpdateListener saveArticleCategoriesUpdateListener;
+
 	private boolean need2Update = true;
+	private boolean headerDataLoaded;
+	private long headerDataId;
+	private ArticleItem.Data headerData;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -87,10 +96,11 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		listView.setAdapter(articlesCursorAdapter);
 		listView.setOnItemClickListener(this);
 
+		// TODO create loading view for header
 		holder = new ViewHolder();
-		holder.titleTxt = (TextView) view.findViewById(R.id.titleTxt);
-		holder.authorTxt = (TextView) view.findViewById(R.id.authorTxt);
-		holder.dateTxt = (TextView) view.findViewById(R.id.dateTxt);
+		holder.titleTxt = (TextView) headerView.findViewById(R.id.titleTxt);
+		holder.authorTxt = (TextView) headerView.findViewById(R.id.authorTxt);
+		holder.dateTxt = (TextView) headerView.findViewById(R.id.dateTxt);
 	}
 
 	@Override
@@ -114,6 +124,8 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			if (haveSavedData) {
 				loadFromDb();
 			}
+		} else {
+			fillListViewHeaderData();
 		}
 	}
 
@@ -125,7 +137,8 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 	private void init() {
-		articleListUpdateListener = new ArticleItemUpdateListener();
+		randomArticleUpdateListener = new ArticleItemUpdateListener(ArticleItemUpdateListener.RANDOM);
+		articleListUpdateListener = new ArticleItemUpdateListener(ArticleItemUpdateListener.DATA_LIST);
 		saveArticlesUpdateListener = new SaveArticlesUpdateListener();
 		articlesCursorUpdateListener = new ArticlesCursorUpdateListener();
 
@@ -134,10 +147,20 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 	private void updateData() {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_ARTICLES_LIST);
+		{// get random item for header
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.CMD_ARTICLES_LIST);
+			loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.V_VIDEO_ITEM_ONE);
 
-		new RequestJsonTask<ArticleItem>(articleListUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<ArticleItem>(randomArticleUpdateListener).executeTask(loadItem);
+		}
+
+		{// get list for db and sectioned adapter
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.CMD_ARTICLES_LIST);
+
+			new RequestJsonTask<ArticleItem>(articleListUpdateListener).executeTask(loadItem);
+		}
 	}
 
 	private void getCategories() {
@@ -149,11 +172,12 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		boolean headerAdded = listView.getHeaderViewsCount() > 0;
-		int offset = headerAdded? - 1: 0;
+		int offset = headerAdded ? -1 : 0;
 
 		if (position == 0) { // if listView header
-			// TODO load random item and handle click
-			showToast("header clicked");
+			if (headerDataLoaded) {
+				getActivityFace().openFragment(ArticleDetailsFragment.newInstance(headerDataId));
+			}
 		} else if (articlesCursorAdapter.isSectionHeader(position + offset)) {
 			String sectionName = articlesCursorAdapter.getSectionName(position + offset);
 
@@ -166,9 +190,13 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 	private class ArticleItemUpdateListener extends ActionBarUpdateListener<ArticleItem> {
+		private static final int RANDOM = 0;
+		private static final int DATA_LIST = 1;
+		private int listenerCode;
 
-		public ArticleItemUpdateListener() {
+		public ArticleItemUpdateListener(int listenerCode) {
 			super(getInstance(), ArticleItem.class);
+			this.listenerCode = listenerCode;
 		}
 
 		@Override
@@ -179,22 +207,37 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 		@Override
 		public void updateData(ArticleItem returnedObj) {
+			switch (listenerCode) {
+				case RANDOM:
+					headerData = returnedObj.getData().get(0);
+					fillListViewHeaderData();
 
-/*
-			ArticleItem.Data item = returnedObj.getData().get(0);
-			String firstName = item.getFirstName();
-			CharSequence chessTitle = item.getChessTitle();
-			String lastName = item.getLastName();
-			CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
-					+ firstName + StaticData.SYMBOL_SPACE + lastName;
-			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
-			holder.authorTxt.setText(authorStr);
+					// save in Db to open in Details View
+					ContentResolver contentResolver = getContentResolver();
 
-			holder.titleTxt.setText(item.getTitle());
-			holder.dateTxt.setText(dateFormatter.format(new Date(item.getCreate_date())));
-*/
+					Uri uri = DBConstants.ARTICLES_CONTENT_URI;
+					String[] arguments = new String[1];
+					arguments[0] = String.valueOf(headerData.getId());
+					Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ARTICLE_ID,
+							DBDataManager.SELECTION_ARTICLE_ID, arguments, null);
 
-			new SaveArticlesListTask(saveArticlesUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
+					if (cursor.moveToFirst()) {
+						headerDataId = DBDataManager.getId(cursor);
+						contentResolver.update(Uri.parse(uri.toString() + DBDataManager.SLASH_ + headerDataId),
+								DBDataManager.putArticleItemToValues(headerData), null, null);
+					} else {
+						Uri savedUri = contentResolver.insert(uri, DBDataManager.putArticleItemToValues(headerData));
+						headerDataId = Long.parseLong(savedUri.getPathSegments().get(1));
+					}
+
+
+					headerDataLoaded = true;
+
+					break;
+				case DATA_LIST:
+					new SaveArticlesListTask(saveArticlesUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
+					break;
+			}
 		}
 
 		@Override
@@ -207,6 +250,19 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			}
 			showEmptyView(true);
 		}
+	}
+
+	private void fillListViewHeaderData() {
+		String firstName = headerData.getFirstName();
+		CharSequence chessTitle = headerData.getChessTitle();
+		String lastName = headerData.getLastName();
+		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
+				+ firstName + StaticData.SYMBOL_SPACE + lastName;
+		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
+		holder.authorTxt.setText(authorStr);
+
+		holder.titleTxt.setText(headerData.getTitle());
+		holder.dateTxt.setText(dateFormatter.format(new Date(headerData.getCreate_date())));
 	}
 
 	protected class ViewHolder {

@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
-
 import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
 
@@ -55,7 +54,6 @@ public class SignInFragment extends ProfileSetupsFragment implements TextView.On
 	}
 
 
-
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -75,10 +73,10 @@ public class SignInFragment extends ProfileSetupsFragment implements TextView.On
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.signin) {
-			if (!AppUtils.isNetworkAvailable(getActivity())){ // check only if live   // TODO restore
+			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live   // TODO restore
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
-			} else{
+			} else {
 				signInUser();
 			}
 		} else if (view.getId() == R.id.signup) {
@@ -99,11 +97,11 @@ public class SignInFragment extends ProfileSetupsFragment implements TextView.On
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if(resultCode == Activity.RESULT_OK ){
-			if(requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE){
+		if (resultCode == Activity.RESULT_OK) {
+			if (requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE) {
 //				facebook.authorizeCallback(requestCode, resultCode, data);
 				handler.postDelayed(new DelayedCallback(data, requestCode, resultCode), FACEBOOK_DELAY);
-			}else if(requestCode == NETWORK_REQUEST){
+			} else if (requestCode == NETWORK_REQUEST) {
 				signInUser();
 			}
 		}
@@ -111,9 +109,9 @@ public class SignInFragment extends ProfileSetupsFragment implements TextView.On
 
 	@Override
 	public boolean onTouch(View view, MotionEvent motionEvent) {
-		if(view.getId() == R.id.usernameEdt){
+		if (view.getId() == R.id.usernameEdt) {
 			loginUsernameEdt.setSelection(loginUsernameEdt.getText().length());
-		} else if(view.getId() == R.id.passwordEdt){
+		} else if (view.getId() == R.id.passwordEdt) {
 			loginPasswordEdt.setError(null);
 		}
 		return false;
@@ -121,12 +119,12 @@ public class SignInFragment extends ProfileSetupsFragment implements TextView.On
 
 	@Override
 	public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-		if(actionId == EditorInfo.IME_ACTION_DONE || keyEvent.getAction() == KeyEvent.FLAG_EDITOR_ACTION
-				|| keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER ){
-			if(!AppUtils.isNetworkAvailable(getActivity())){ // check only if live
+		if (actionId == EditorInfo.IME_ACTION_DONE || keyEvent.getAction() == KeyEvent.FLAG_EDITOR_ACTION
+				|| keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
-			}else{
+			} else {
 				signInUser();
 			}
 		}

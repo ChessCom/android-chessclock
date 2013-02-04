@@ -8,7 +8,6 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.statics.StaticData;
-import com.chess.model.VideoItemOld;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
 import java.util.List;
@@ -50,14 +49,14 @@ public class VideosAdapter extends ItemsAdapter<VideoItem.VideoDataItem> {
 		holder.fullDescBtn.setTag(itemListId, pos);
 		holder.playBtn.setTag(itemListId, pos);
 
-		CharSequence date = DateFormat.format(MMMM_DD_YYYY, 1000* item.getLive_date()/*getPublishTimestamp()*/);
+		CharSequence date = DateFormat.format(MMMM_DD_YYYY, 1000* item.getCreateDate()/*getPublishTimestamp()*/);
 
 		holder.titleTxt.setText(item.getName()/*getTitle()*/);
 		holder.timesTxt.setText(item.getMinutes() + " min " + " | " + date);
 
 		holder.descTxt.setText(item.getDescription());
-		holder.addInfoTxt.setText(item.getFirst_name()/*getAuthorFirstGame()*/ + StaticData.SYMBOL_SPACE
-				+ item.getLast_name()/*getAuthorLastName()*/);
+		holder.addInfoTxt.setText(item.getFirstName()/*getAuthorFirstGame()*/ + StaticData.SYMBOL_SPACE
+				+ item.getLastName()/*getAuthorLastName()*/);
 	}
 
 	protected class ViewHolder {

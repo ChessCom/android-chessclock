@@ -1,7 +1,9 @@
 package com.chess.ui.fragments;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
@@ -28,6 +31,7 @@ import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,7 +46,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	// 11/15/12 | 27 min
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
 
-
 	private ViewHolder holder;
 	private ForegroundColorSpan foregroundSpan;
 
@@ -53,28 +56,26 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private NewVideosSectionedCursorAdapter videosCursorAdapter;
 
 	private VideosItemUpdateListener videosItemUpdateListener;
+	private VideosItemUpdateListener randomItemUpdateListener;
 	private SaveVideosUpdateListener saveVideosUpdateListener;
 	private VideosCursorUpdateListener videosCursorUpdateListener;
 
-	private VideoCategoryUpdateListener categoryVideoUpdateListener;
+	private VideoCategoriesUpdateListener videoCategoriesUpdateListener;
 	private SaveVideoCategoriesUpdateListener saveVideoCategoriesUpdateListener;
 
 	private boolean need2Update = true;
+	private boolean headerDataLoaded;
+	private long headerDataId;
+	private VideoItem.VideoDataItem headerData;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		saveVideosUpdateListener = new SaveVideosUpdateListener();
-		saveVideoCategoriesUpdateListener = new SaveVideoCategoriesUpdateListener();
-		videosCursorUpdateListener = new VideosCursorUpdateListener();
-
 		videosCursorAdapter = new NewVideosSectionedCursorAdapter(getContext(), null);
 
 		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
-
-		init();
 	}
 
 	@Override
@@ -92,19 +93,23 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		listView = (ListView) view.findViewById(R.id.listView);
 		// add header
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_thumb_list_item, null, false);
+		headerView.setOnClickListener(this);
 		listView.addHeaderView(headerView);
 		listView.setAdapter(videosCursorAdapter);
 		listView.setOnItemClickListener(this);
 
+		// TODO create loading view for header
 		holder = new ViewHolder();
-		holder.titleTxt = (TextView) view.findViewById(R.id.titleTxt);
-		holder.authorTxt = (TextView) view.findViewById(R.id.authorTxt);
-		holder.dateTxt = (TextView) view.findViewById(R.id.dateTxt);
+		holder.titleTxt = (TextView) headerView.findViewById(R.id.titleTxt);
+		holder.authorTxt = (TextView) headerView.findViewById(R.id.authorTxt);
+		holder.dateTxt = (TextView) headerView.findViewById(R.id.dateTxt);
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
+
+		init();
 
 		if (need2Update) {
 			boolean haveSavedData = DBDataManager.haveSavedVideos(getActivity());
@@ -112,7 +117,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			if (AppUtils.isNetworkAvailable(getActivity())) {
 				updateData();
 				getCategories();
-			} else if(!haveSavedData){
+			} else if (!haveSavedData) {
 				emptyView.setText(R.string.no_network);
 				showEmptyView(true);
 			}
@@ -120,6 +125,8 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			if (haveSavedData) {
 				loadFromDb();
 			}
+		} else { // load data to listHeader view
+			fillListViewHeaderData();
 		}
 	}
 
@@ -132,11 +139,24 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	}
 
 	private void init() {
-		videosItemUpdateListener = new VideosItemUpdateListener();
-		categoryVideoUpdateListener = new VideoCategoryUpdateListener();
+		randomItemUpdateListener = new VideosItemUpdateListener(VideosItemUpdateListener.RANDOM);
+		videosItemUpdateListener = new VideosItemUpdateListener(VideosItemUpdateListener.DATA_LIST);
+
+		saveVideosUpdateListener = new SaveVideosUpdateListener();
+		videosCursorUpdateListener = new VideosCursorUpdateListener();
+
+		videoCategoriesUpdateListener = new VideoCategoriesUpdateListener();
+		saveVideoCategoriesUpdateListener = new SaveVideoCategoriesUpdateListener();
 	}
 
 	private void updateData() {
+		{// request random data for the header
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
+			loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.V_VIDEO_ITEM_ONE);
+
+			new RequestJsonTask<VideoItem>(randomItemUpdateListener).executeTask(loadItem);
+		}
 		// get all video // TODO adjust to request only latest updates
 
 		LoadItem loadItem = new LoadItem();
@@ -150,16 +170,16 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_VIDEO_CATEGORIES);
 
-		new RequestJsonTask<VideoCategoryItem>(categoryVideoUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<VideoCategoryItem>(videoCategoriesUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		boolean headerAdded = listView.getHeaderViewsCount() > 0;
-		int offset = headerAdded? - 1: 0;
+		int offset = headerAdded ? -1 : 0;
+
 		if (position == 0) { // if listView header
-			// TODO load random item and handle click
-			showToast("header clicked");
+			// see onClick(View) handle
 		} else if (videosCursorAdapter.isSectionHeader(position + offset)) {
 			String sectionName = videosCursorAdapter.getSectionName(position + offset);
 
@@ -171,8 +191,18 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		}
 	}
 
-	private class VideoCategoryUpdateListener extends ActionBarUpdateListener<VideoCategoryItem> {
-		public VideoCategoryUpdateListener() {
+	@Override
+	public void onClick(View v) {
+		super.onClick(v);
+		if (v.getId() == R.id.videoThumbItemView) {
+			if (headerDataLoaded) {
+				getActivityFace().openFragment(VideoDetailsFragment.newInstance(headerDataId));
+			}
+		}
+	}
+
+	private class VideoCategoriesUpdateListener extends ActionBarUpdateListener<VideoCategoryItem> {
+		public VideoCategoriesUpdateListener() {
 			super(getInstance(), VideoCategoryItem.class);
 		}
 
@@ -197,8 +227,13 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 	private class VideosItemUpdateListener extends ActionBarUpdateListener<VideoItem> {
 
-		public VideosItemUpdateListener() {
+		private static final int RANDOM = 0;
+		private static final int DATA_LIST = 1;
+		private int listenerCode;
+
+		public VideosItemUpdateListener(int listenerCode) {
 			super(getInstance(), VideoItem.class);
+			this.listenerCode = listenerCode;
 		}
 
 		@Override
@@ -209,8 +244,52 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 		@Override
 		public void updateData(VideoItem returnedObj) {
-			new SaveVideosListTask(saveVideosUpdateListener, returnedObj.getData().getVideos(), getContentResolver()).executeTask();
+			switch (listenerCode) {
+				case RANDOM:
+					headerData = returnedObj.getData().getVideos().get(0);
+
+					fillListViewHeaderData();
+
+					// save in Db to open in Details View
+					ContentResolver contentResolver = getContentResolver();
+
+					Uri uri = DBConstants.VIDEOS_CONTENT_URI;
+					String[] arguments = new String[1];
+					arguments[0] = String.valueOf(headerData.getName());
+					Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_NAME,
+							DBDataManager.SELECTION_NAME, arguments, null);
+
+					if (cursor.moveToFirst()) {
+						headerDataId = DBDataManager.getId(cursor);
+						contentResolver.update(Uri.parse(uri.toString() + DBDataManager.SLASH_ + headerDataId),
+								DBDataManager.putVideoItemToValues(headerData), null, null);
+					} else {
+						Uri savedUri = contentResolver.insert(uri, DBDataManager.putVideoItemToValues(headerData));
+						headerDataId = Long.parseLong(savedUri.getPathSegments().get(1));
+					}
+
+
+					headerDataLoaded = true;
+
+					break;
+				case DATA_LIST:
+					new SaveVideosListTask(saveVideosUpdateListener, returnedObj.getData().getVideos(), getContentResolver()).executeTask();
+					break;
+			}
 		}
+	}
+
+	private void fillListViewHeaderData() {
+		String firstName = headerData.getFirstName();
+		String chessTitle = headerData.getChessTitle();
+		String lastName = headerData.getLastName();
+		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
+				+ firstName + StaticData.SYMBOL_SPACE + lastName;
+		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
+		holder.authorTxt.setText(authorStr);
+
+		holder.titleTxt.setText(headerData.getName());
+		holder.dateTxt.setText(dateFormatter.format(new Date(headerData.getCreateDate())));
 	}
 
 	protected class ViewHolder {
@@ -250,7 +329,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 		public VideosCursorUpdateListener() {
 			super(getInstance());
-
 		}
 
 		@Override
@@ -269,7 +347,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			listView.setAdapter(videosCursorAdapter);
 
 			need2Update = false;
-
 		}
 
 		@Override
@@ -282,6 +359,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			}
 			showEmptyView(true);
 		}
+
 	}
 
 	private void showEmptyView(boolean show) {

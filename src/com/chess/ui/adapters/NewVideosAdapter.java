@@ -1,17 +1,14 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
-import android.text.format.DateFormat;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.statics.StaticData;
-import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
 import java.util.List;
@@ -46,9 +43,9 @@ public class NewVideosAdapter extends ItemsAdapter<VideoItem.VideoDataItem> {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 
-		String firstName = item.getFirst_name();
-		CharSequence chessTitle = item.getChess_title();
-		String lastName =  item.getLast_name();
+		String firstName = item.getFirstName();
+		CharSequence chessTitle = item.getChessTitle();
+		String lastName =  item.getLastName();
 		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
 				+ firstName + StaticData.SYMBOL_SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);

@@ -13,6 +13,9 @@ import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.utilities.AppUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -22,14 +25,18 @@ import com.chess.utilities.AppUtils;
 public class NewVideosThumbCursorAdapter extends ItemsCursorAdapter {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
+	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
 
 	private CharacterStyle foregroundSpan;
+	private final Date date;
 
 	public NewVideosThumbCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
 
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
+		date = new Date();
+
 	}
 
 	@Override
@@ -38,6 +45,7 @@ public class NewVideosThumbCursorAdapter extends ItemsCursorAdapter {
 		ViewHolder holder = new ViewHolder();
 		holder.titleTxt = (TextView) view.findViewById(R.id.titleTxt);
 		holder.authorTxt = (TextView) view.findViewById(R.id.authorTxt);
+		holder.dateTxt = (TextView) view.findViewById(R.id.dateTxt);
 
 		view.setTag(holder);
 
@@ -56,12 +64,13 @@ public class NewVideosThumbCursorAdapter extends ItemsCursorAdapter {
 		holder.authorTxt.setText(authorStr);
 
 		holder.titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_NAME));
-
-
+		date.setTime(DBDataManager.getLong(cursor, DBConstants.V_CREATE_DATE));
+		holder.dateTxt.setText(dateFormatter.format(date));
 	}
 
 	protected class ViewHolder {
 		public TextView titleTxt;
 		public TextView authorTxt;
+		public TextView dateTxt;
 	}
 }
