@@ -656,16 +656,7 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static ContentValues putVideoCategoryItemToValues(VideoCategoryItem.Data dataObj) {
-		ContentValues values = new ContentValues();
-		values.put(DBConstants.V_NAME, dataObj.getName());
-		values.put(DBConstants.V_CATEGORY_ID, dataObj.getId());
-		values.put(DBConstants.V_DISPLAY_ORDER, dataObj.getDisplayOrder());
-
-		return values;
-	}
-
-	public static ContentValues putArticleCategoryItemToValues(ArticleCategoryItem.Data dataObj) {
+	public static ContentValues putCommonConsumeCategoryItemToValues(CommonConsumeCategoryItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 		values.put(DBConstants.V_NAME, dataObj.getName());
 		values.put(DBConstants.V_CATEGORY_ID, dataObj.getId());

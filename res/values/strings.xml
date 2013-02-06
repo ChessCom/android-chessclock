@@ -15,31 +15,31 @@
 	<string name="dashboard_video">Video Lessons</string>
 
 	<!--activities/Screen titles-->
-	<string name="label_play_live">PLAY LIVE</string>
-	<string name="label_play_online">PLAY ONLINE</string>
-	<string name="label_play_comp">PLAY COMP</string>
-	<string name="label_online_new_game">NEW ONLINE GAME</string>
-	<string name="label_live_new_game">NEW LIVE GAME</string>
-	<string name="label_video">VIDEO</string>
-	<string name="label_settings">SETTINGS</string>
-	<string name="label_tactics">TACTICS</string>
-	<string name="label_game_live">LIVE GAME</string>
-	<string name="label_game_online">ONLINE GAME</string>
-	<string name="label_game_finished">FINISHED GAME</string>
-	<string name="label_game_comp">COMP GAME</string>
-	<string name="label_chat_live">LIVE CHAT</string>
-	<string name="label_chat_online">ONLINE CHAT</string>
-	<string name="label_sign_up">Join Now – It’s Free!</string>
+    <string name="label_play_live">play live</string>
+    <string name="label_play_online">play online</string>
+    <string name="label_play_comp">play comp</string>
+    <string name="label_online_new_game">new online game</string>
+    <string name="label_live_new_game">new live game</string>
+    <string name="label_video">video</string>  <!--Video screen-->
+    <string name="label_settings">settings</string> <!--Settings Screen-->
+    <string name="label_tactics">tactics</string>
+    <string name="label_game_live">live game</string>
+    <string name="label_game_online">online game</string>
+    <string name="label_game_finished">finished game</string>
+    <string name="label_game_comp">comp game</string>
+    <string name="label_chat_live">live chat</string> <!--Live Game Chat Screen-->
+    <string name="label_chat_online">online chat</string> <!--Online Game Chat Screen-->
+    <string name="label_sign_up">Join Now – It’s Free!</string> <!--Sign Up Title-->
 
-	<string name="label_friend_challenge_live">FRIEND CHALLENGE LIVE</string>
-	<string name="label_create_challenge_live">CREATE LIVE CHALLENGE</string>
-	<string name="label_friend_challenge_online">FRIEND CHALLENGE ONLINE</string>
-	<string name="label_create_challenge_online">CREATE ONLINE CHALLENGE</string>
+    <string name="label_friend_challenge_live">friend challenge live</string>
+    <string name="label_create_challenge_live">create live challenge</string>
+    <string name="label_friend_challenge_online">friend challenge online</string>
+    <string name="label_create_challenge_online">create online challenge</string>
 
 	<!--Settings-->
 	<string name="settings">Settings</string>
 	<string name="start_new_game">Start New Game</string>
-	<!--<string name="dont_have_account_q">Don\'t have an account?</string>-->
+	<!--<string name="dont_have_account_q">Don't have an account?</string>-->
 	<string name="username">Username</string>
 	<string name="password">Password</string>
 	<string name="log_in">Log In</string>
@@ -48,37 +48,37 @@
 	<string name="play_as_guest">Play As Guest</string>
 
     <!--Computer Game settings-->
-	<string name="white">White</string>
-	<string name="black">Black</string>
-	<string name="human">Human</string>
-	<string name="guest">Guest</string>
-	<string name="computer">Computer</string>
-    <string name="new_game_white">New Game (white)</string>
-    <string name="new_game_black">New Game (black)</string>
-    <string name="email_game">Email Game</string>
+	<string name="white">White</string> <!--Switch selector-->
+	<string name="black">Black</string> <!--Switch selector-->
+	<string name="human">Human</string> <!--Switch selector-->
+	<string name="guest">Guest</string> <!--Switch selector-->
+	<string name="computer">Computer</string> <!--Label for computer player-->
+    <string name="new_game_white">New Game (white)</string> <!--Title-->
+    <string name="new_game_black">New Game (black)</string>  <!--Title-->
+    <string name="email_game">Email Game</string> <!--Send game by email-->
     <string name="load">Load Saved Game</string>
-	<string name="thinking_">Thinking…</string>
+	<string name="thinking_">Thinking…</string>  <!--Computer player is thinking during his turn-->
 
     <!--Create Challenges-->
     <string name="create_challenge">Create Challenge</string>
 	<string name="open_challenges">Open Challenges</string>
 	<string name="challenge_friend">Challenge A Friend</string>
-    <string name="congratulations">Congratulations!</string>
+    <string name="congratulations">Congratulations!</string>  <!--Congratulations new challenge created-->
     <string name="online_game_created">Online game created!</string>
     <string name="challenge_sent">Challenge Sent!</string>
 	<string name="create_open_challenge">Create Open Challenge</string>
 	<string name="current_live_game">Current Live Game</string>
     <string name="friend">Friend</string>
     <string name="friends">Friends</string>
-    <string name="sorry">Sorry</string>
+    <string name="sorry">Sorry</string>  <!--Popup title, description message appears below-->
     <string name="no_friends_invite">You have no friends yet. You can invite them via www.chess.com.</string>
-    <string name="no_friends_online">Your friends are not online. If You didn\'t invite them yet, go to www.chess.com.</string>
-    <string name="invite">Invite</string>
+    <string name="no_friends_online">"Your friends are not online. If You didn't invite them yet, go to www.chess.com."</string>
+    <string name="invite">Invite</string>   <!--Invite a friend-->
     <string name="draw_accepted">Draw accepted!</string>
-    <string name="accept">Accept</string>
+    <string name="accept">Accept</string>  <!--Accept action-->
     <string name="challenge_accepted">Challenge Accepted!</string>
     <string name="challenge_declined">Challenge Declined!</string>
-    <string name="decline">Decline</string>
+    <string name="decline">Decline</string>  <!--Decline action-->
 
     <!--Type of the game-->
     <string name="game_type">Game Type</string>
@@ -87,19 +87,19 @@
 	<string name="chess_960">Chess 960</string>
     <!--Game Parameters-->
 	<string name="initial_time">Initial Time</string>
-	<string name="bonusTime">Bonus Time</string>
-	<string name="rated_game">Rated Game</string>
-	<string name="rated_game_">Rated Game:</string>
+	<string name="bonusTime">Bonus Time</string> <!--Game mode option-->
+	<string name="rated_game">Rated Game</string> <!--Game Mode selection-->
+	<string name="rated_game_">Rated Game:</string> <!--Game Mode selection-->
 	<string name="i_play_as">I Play As</string>
 	<string name="i_play_as_">I Play As:</string>
-	<string name="days_per_move">Days Per Move</string>
-	<string name="days_per_move_">Days Per Move:</string>
-	<string name="on_off">ON / OFF</string>  <!--Switch state-->
+	<string name="days_per_move">Days Per Move</string>  <!--Game Mode selection-->
+	<string name="days_per_move_">Days Per Move:</string> <!--Game Mode selection-->
 	<string name="min_rating">Min Rating</string>
 	<string name="max_rating">Max Rating</string>
-	<string name="email">Email</string>
+	<string name="email">Email</string>  <!--Email field-->
 	<string name="retype_password">Re-type Password</string>
 	<string name="country">Country</string>
+
     <!--BoardColors-->
 	<string name="board_blue">Blue</string>
 	<string name="board_brown">Brown</string>
@@ -110,6 +110,7 @@
 	<string name="board_tan">Tan</string>
 	<string name="board_woodlight">Wood Light</string>
 	<string name="board_wooddark">Wood Dark</string>
+
     <!--Pieces styles-->
 	<string name="piece_alpha">Alpha</string>
 	<string name="piece_book">Book</string>
@@ -122,49 +123,48 @@
 	<string name="piece_vintage">Vintage</string>
 
     <!--Settings Screen-->
-	<string name="after_i_move">After I Move</string>
-	<string name="notification">Notification</string>
+	<string name="after_i_move">After I Move</string> <!--Selector title, action follows-->
 	<string name="enable_notifications">Enable Notifications</string>
 	<string name="show_submit_button">Show Submit Button</string>
 	<string name="enable_sounds">Enable sounds</string>
-	<string name="strength">Strength</string>
-	<string name="interface_caps">INTERFACE</string>
-	<string name="board">Board</string>
-	<string name="contact_us">Pieces</string>
+	<string name="strength">Strength</string> <!--Computer opponent skill strength-->
+	<string name="interface_caps">interface</string>  <!--Section title-->
+	<string name="board">Board</string> <!--Game board pattern-->
+	<string name="contact_us">Pieces</string> <!--Pieces set-->
 	<string name="show_coordinates">Show coordinates</string>
 	<string name="move_highlights">Move Highlights</string>
 	<string name="invite_a_friend">Invite A Friend</string>
 	<string name="contactUs">Contact Us</string>
 	<string name="logout">Logout</string>
-	<string name="vacation_on">On Vacation</string>
-	<string name="vacation_off">Not on Vacation</string>
+	<string name="vacation_on">On Vacation</string> <!--Checkbox if user is on vacation-->
+	<string name="vacation_off">Not on Vacation</string> <!--Checkbox if user is not on vacation-->
     <string name="confirm_vacation_title">Confirm Vacation</string>
     <string name="confirm_vacation_msg">Do you really want to go on vacation now?</string>
-    <string name="warning">Warning!</string>
+    <string name="warning">Warning!</string> <!--Popup message title-->
     <string name="account_error">Account error.</string>
     <string name="server_stopped">Server stopped.</string>
-    <string name="reason_">Reason</string>
-    <string name="message_">Message</string>
+    <string name="reason_">Reason</string> <!--Popup message title-->
+    <string name="message_">Message</string> <!--Description message follows-->
     <string name="locale_change">Locale has changed</string>
     <string name="need_app_restart_to_apply">You need to restart app to apply</string>
-    <string name="restart">Restart</string>
+    <string name="restart">Restart</string> <!--Restart application button-->
 
     <!--In Game controls and misc-->
 	<string name="messages">Messages</string>
 	<string name="analysis_board">Analysis Board</string>
 	<string name="offer_draw">Offer A Draw</string>
 	<string name="resign_or_abort">Resign (Or Abort)</string>
-	<string name="resign">Resign</string>
-	<string name="abort">Abort</string>
-	<string name="cancel">Cancel</string>
-	<string name="send">Send</string>
+	<string name="resign">Resign</string>  <!--Action-->
+	<string name="abort">Abort</string> <!--Action-->
+	<string name="cancel">Cancel</string> <!--Action-->
+	<string name="send">Send</string> <!--Action-->
 	<string name="help">Help</string>
-	<string name="game">Game</string>
+	<string name="game">Game</string>  <!--Option list item-->
 	<string name="options">Options</string>
-	<string name="reside">Flip</string>
-	<string name="hint">Hint</string>
-	<string name="prev">Prev</string>
-	<string name="next">Next</string>
+	<string name="reside">Flip</string> <!--Action-->
+	<string name="hint">Hint</string> <!--Action-->
+	<string name="prev">Prev</string> <!--Action-->
+	<string name="next">Next</string> <!--Action-->
 	<string name="next_game">Next Game</string>
 	<string name="chat">Chat</string>
     <string name="draw_offered">Draw Offered</string>
@@ -172,16 +172,16 @@
     <string name="skip_problem">Skip Problem</string>
     <string name="sending_game_info">Sending game info…</string>
     <string name="ok">OK</string>
-    <string name="submit">Submit</string>
+    <string name="submit">Submit</string> <!--Action-->
     <string name="accepted">Accepted!</string>
     <string name="accept_draw_q">Accept Draw?</string>
     <string name="abort_resign_game">Abort/Resign a game:</string>
     <string name="are_you_sure_q">Are You sure?</string>
     <string name="you_got_new_msg">You have a new message!</string>
     <string name="challenges">Challenges</string>
-    <string name="challenge">Challenge</string>
+    <string name="challenge">Challenge</string> <!--Action-->
     <string name="analysis_mode">Analysis Mode</string>
-    <string name="check">Check!</string>
+    <string name="check">Check!</string>  <!--Alert !-->
     <string name="choose_a_piece">Choose a piece</string>
 
 
@@ -200,6 +200,7 @@
     <string name="upgrade_my_account">Upgrade My Account</string>
     <string name="upgrade_to_full_videos">Upgrade for full access to videos!</string>
     <string name="removeAds">Upgrade And Remove Ads!</string>
+
     <!--Video list game categories-->
     <string name="amazing_games_category">amazing-games</string>
     <string name="end_games_category">endgames</string>
@@ -215,79 +216,68 @@
 
     <!--Tactics-->
     <string name="ready_for_first_tactics_q">Are you ready for your first tactic?</string>
-    <string name="max_tactics_reached">You have hit your maximum number of tactics for today. Would you like
-        to be able to do more tactics?
-    </string>
+    <string name="max_tactics_reached">You have hit your maximum number of tactics for today. Would you like to be able to do more tactics?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ten_tactics_completed">10 tactics completed!</string>
     <string name="offline_mode">Offline mode</string>
-    <string name="no_network_rating_not_changed">Internet access is not currently available. As a result, your rating
-        will not change after completing problems until your Internet connection returns.
-    </string>
-    <string name="correct_ex">Correct!</string>
-    <string name="wrong_ex">Wrong!</string>
-    <string name="problem_solved_">Problem Solved!</string>
-    <string name="problem_solved">Problem Solved!
-        \n Score %1$s
-        \n New rating %2$s </string>
+    <string name="no_network_rating_not_changed">Internet access is not currently available. As a result, your rating will not change after completing problems until your Internet connection returns.</string>
+    <string name="correct_ex">Correct!</string>  <!--Popup Title-->
+    <string name="wrong_ex">Wrong!</string>  <!--Popup Title-->
+    <string name="problem_solved_">Problem Solved!</string>   <!--Popup Title-->
+    <string name="score_arg">Score %1$s</string> <!--Game results-->
+    <string name="new_rating_arg">New rating %2$s </string> <!--Game results-->
 
-    <string name="wrong_score">Wrong!
-        \n Score %1$s
-        \n New rating %2$s </string>
     <string name="next_tactic_puzzle">Next Tactic Puzzle</string>
     <string name="upgrade_to_continue">Upgrade To Continue</string>
 
     <string name="retry">Retry</string>
     <string name="stop">Stop</string>
     <string name="daily_limit_reached">Daily Limit Reached</string>
-    <string name="solution">Solution</string>
+    <string name="solution">Solution</string> <!--Action-->
 
 
     <!--Games List Screen-->
-    <string name="hours">hours</string>
-    <string name="days">days</string>
+    <string name="hours">hours</string>  <!--Units-->
+    <string name="days">days</string> <!--Units-->
 
-    <string name="random">Random</string>
-    <string name="won">won</string>
-    <string name="lost">lost</string>
-    <string name="draw">draw</string>
+    <string name="random">Random</string> <!--Player Color pick selector-->
+    <string name="won">won</string> <!--Game results stats-->
+    <string name="lost">lost</string> <!--Game results stats-->
+    <string name="draw">draw</string> <!--Game results stats-->
 
     <!--Sign In/ Sign Up-->
     <string name="register">Register</string>
 	<string name="login">Login</string>
 	<string name="error">Error</string>
-	<string name="loading_">Loading…</string>
+	<string name="loading_">Loading…</string>  <!--Data loading-->
 	<string name="wrong_country">You must select your country!</string>
 	<string name="wrong_password">Your password must be at least 6 characters long!</string>
 	<string name="wrong_username">Your Username must be at least 3 characters long, and only contain letters, numbers, underscores, and dashes. Spaces are not allowed.</string>
 	<string name="wrong_email">You will need to confirm your membership by email.</string>
 	<string name="wrong_retype_pass">Wrong retyped password!</string>
 	<string name="signing_in_">Signing In…</string>
-	<string name="check_field">Check Field</string>
+	<string name="check_field">Check Field</string> <!--Error notification-->
 	<string name="validateUsername">Your Username must be between 3 and 20 characters long, and only contain letters, numbers, underscores, and dashes. Spaces are not allowed.</string>
 	<string name="validatePassword">Your password must be between 6 and 20 characters long!</string>
     <string name="invite_subject">Play Chess with me</string>
-    <string name="invite_text">I just signed up to play chess at Chess.com on my Android device. Download the free app
-        here:
-        http://chess.com/android or signup at http://www.chess.com/register.html . Then find me - my username is \"
-    </string>
+    <string name="invite_text">I just signed up to play chess at Chess.com on my Android device. Download the free app here: http://chess.com/android or signup at http://www.chess.com/register.html . Then find me - my username is \"</string>
 
-	<string name="image">image</string>
-	<string name="browse">Browse</string>
-    <string name="no_network">No Network</string>
+	<string name="image">image</string>  <!--Content description-->
+	<string name="browse">Browse</string>  <!--Browse games-->
+    <string name="no_network">No Network</string> <!--Popup Title-->
     <string name="wireless_settings">Wireless Settings</string>
     <string name="invalid_password">Invalid password</string>
     <string name="login_out">Logging out…</string>
-    <string name="you_logged_out">You have logged out!</string>
-    <string name="too_short">Too short</string>
-    <string name="can_not_be_empty">Can\'t be empty</string>
-    <string name="united_states">United States</string>
+    <string name="you_logged_out">You have logged out!</string> <!--toast message-->
+    <string name="too_short">Too short</string> <!--Error notification-->
+    <string name="can_not_be_empty">"Can't be empty"</string> <!--Field can't be empty-->
+    <string name="united_states">United States</string>  <!--Default country selection-->
     <string name="no_chess_account_signup_please">You have no Chess.com account, sign up, please.</string>
     <string name="pass_dont_match">password do not match</string>
     <string name="username_cannot_be_encoded">Your Username can not be encoded to send request</string>
-    <string name="refresh">refresh</string>
-    <string name="version_check">Version Check</string>
+    <string name="refresh">refresh</string> <!--Action-->
+    <string name="version_check">Version Check</string>  <!--Popup title-->
     <string name="version_is_obsolete_update">The client version is obsolete. Please update</string>
 
 
@@ -298,19 +288,19 @@
 	<string name="tournaments">Tournaments</string>
 	<string name="stats">Stats</string>
 
-	<string name="open_app_to_see_msg">Tap here to see the message inside of app</string>
+	<string name="open_app_to_see_msg">Tap here to see the message inside of app</string> <!--Notification subtitle-->
 
 	<!--SignOut-->
 	<string name="sign_out_confirm">Are you sure you want to sign out from Live Chess server?</string>
 	<string name="confirm">Confirm</string>
-	<string name="you_been_challenged">You\'ve Been Challenged!</string>
+	<string name="you_been_challenged">"You've Been Challenged!"</string>
 
 	<!--Game-->
 	<string name="opponent_">Opponent:</string>
-	<string name="time_">\n Time:</string>
+	<string name="time_">Time:</string>
 	<string name="rated">Rated</string>
 	<string name="unrated">Unrated</string>
-	<string name="you_play">\n You Play:</string>
+	<string name="you_play">You Play:</string>
 	<string name="standard_game">(Standard)</string>
 	<string name="blitz_game">(Blitz)</string>
 	<string name="lightning_game">(Lightning)</string>
@@ -318,7 +308,7 @@
 
     <!--Notifications-->
     <string name="chess_com">ChessCom</string>
-    <string name="your_move">Chess.com - It\'s Your Move</string>
+    <string name="your_move">"Chess.com - It's Your Move"</string>
     <string name="your_turn_in_game_with">In your game with %1$s , %2$s</string>
     <string name="your_turn">Your Turn!</string>
 
@@ -326,58 +316,52 @@
 	<string name="encoding_unsupported">Encoding unsupported</string>
 	<string name="error_occurred_while_login">Error occurred while login, please re-login!</string>
 	<string name="update_available_please_update">An update is available! Please update</string>
-	<string name="update_check">Update Check</string>
-	<string name="won_on_time">\n won on time</string>
-	<string name="won_by_resignation">\n won by resignation</string>
-	<string name="won_by_checkmate">\n won by checkmate</string>
-	<string name="game_over">GAME OVER</string>
-	<string name="draw_game">DRAW OFFER</string>
-	<string name="has_offered_draw">has offered a draw</string>
-	<string name="reconnecting_">Reconnecting…</string>
+	<string name="update_check">Update Check</string> <!--Popup Title-->
+	<string name="won_on_time">%s won on time</string>
+	<string name="won_by_resignation">%s won by resignation</string>
+	<string name="won_by_checkmate">%s won by checkmate</string>
+	<string name="game_over">game over</string>
+	<string name="draw_game">draw offer</string>
+	<string name="has_offered_draw">%s has offered a draw</string>
+	<string name="reconnecting_">Reconnecting…</string> <!--Re-Connection process in progress-->
 	<string name="another_login_detected">Another login has been detected.</string>
 	<string name="loading_live_chess">Loading Live Chess</string>
-	<string name="game_draw_by_repetition">Game drawn \n by repetition</string>
-	<string name="game_drawn_by_agreement">Game drawn \n by agreement</string>
-	<string name="game_drawn_by_stalemate">Game drawn \n by stalemate</string>
-	<string name="game_drawn_insufficient_material">Game drawn -\n insufficient material</string>
-	<string name="game_drawn_by_fifty_move_rule">Game drawn \n by 50-move rule</string>
-	<string name="won_game_abandoned">won - \n game abandoned</string>
-	<string name="game_aborted">Game aborted</string>
+	<string name="game_draw_by_repetition">Game drawn by repetition</string> <!--Game results-->
+	<string name="game_drawn_by_agreement">Game drawn by agreement</string> <!--Game results-->
+	<string name="game_drawn_by_stalemate">Game drawn by stalemate</string> <!--Game results-->
+	<string name="game_drawn_insufficient_material">Game drawn - insufficient material</string> <!--Game results-->
+	<string name="game_drawn_by_fifty_move_rule">Game drawn by 50-move rule</string> <!--Game results-->
+	<string name="won_game_abandoned">won - game abandoned</string> <!--Game results-->
+	<string name="game_aborted">Game aborted</string> <!--Game results-->
 	<string name="new_game">New Game</string>
-	<string name="language">Language</string>
+	<string name="language">Language</string> <!--Language selection-->
 	<string name="not_now">Not now</string>
 
 
 
-	<string name="black_wins">Black wins (0–1)</string>
-	<string name="white_wins">White wins (1–0)</string>
-	<string name="draw_by_stalemate">Draw by stalemate (0–0)</string>
-	<string name="draw_by_3fold_repetition">Draw by threefold repetition (0.5–0.5)</string>
-	<string name="rematch">Rematch</string>
-	<string name="review">Review</string>
-	<string name="your_end_game_rating">Your Rating (%1$s) : (%2$d)</string>
-	<string name="your_end_game_rating_online">Your Rating (%1$d)</string>
+	<string name="black_wins">Black wins (0–1)</string> <!--Game results-->
+	<string name="white_wins">White wins (1–0)</string> <!--Game results-->
+	<string name="draw_by_stalemate">Draw by stalemate (0–0)</string> <!--Game results-->
+	<string name="draw_by_3fold_repetition">Draw by threefold repetition (0.5–0.5)</string> <!--Game results-->
+	<string name="rematch">Rematch</string> <!--Action-->
+	<string name="review">Review</string> <!--Action-->
+	<string name="your_end_game_rating">Your Rating (%1$s) : (%2$s)</string>
+	<string name="your_end_game_rating_online">Your Rating (%1$s)</string>
 
-	<string name="draw_declined">DRAW DECLINED</string>
-	<string name="has_declined_draw">has declined a draw</string>
+	<string name="draw_declined">draw declined</string>
+	<string name="has_declined_draw">%s has declined a draw</string>
 
-	<string name="application_was_killed">Application was killed, restoring…</string>
+	<string name="application_was_killed">Application was killed, restoring…</string> <!--toast message-->
 
 	<string name="session_expired">Your session has expired, please re-login</string>
 
-    <string name="checkmate">Checkmate!</string>
+    <string name="checkmate">Checkmate!</string> <!--Game info toast-->
 
-
-	<string name="bullet_">Bullet: %d</string>
-	<string name="blitz_">Blitz: %d</string>
-	<string name="standard_">Standard: %d</string>
+	<string name="bullet_">Bullet: %s</string> <!--Game mode-->
+	<string name="blitz_">Blitz: %s</string> <!--Game mode-->
+	<string name="standard_">Standard: %s</string> <!--Game mode-->
 
 	<string name="min_arg">%s min</string>
-
-
-
-
-
 
     <!--New Design-->
     <string name="pieces_">Pieces:</string>

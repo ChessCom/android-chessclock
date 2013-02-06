@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/stats_rating_view_height"
+    android:background="@color/white"
+    >
+
+    <!--Divider-->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/new_friends_top_border_light"
+        />
+
+    <com.chess.RoboTextView
+        android:id="@+id/ratingLabelTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Highest Rating"
+        android:textSize="@dimen/stats_rating_list_item_font"
+        android:textColor="@color/new_subtitle_dark_grey"
+        android:paddingTop="14dip"
+        android:paddingLeft="@dimen/stats_padding_side"
+        />
+
+    <com.chess.RoboTextView
+        android:id="@+id/timestampTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10/22/09"
+        android:layout_below="@id/ratingLabelTxt"
+        android:paddingLeft="@dimen/stats_padding_side"
+        android:textColor="@color/stats_label_light_grey"
+        android:textSize="13sp"
+        />
+
+    <com.chess.RoboTextView
+        android:id="@+id/ratingValueTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2065"
+        android:textSize="26sp"
+        android:textColor="@color/new_subtitle_dark_grey"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingRight="@dimen/stats_padding_side"
+        custom:ttf="Bold"
+        />
+
+</RelativeLayout>

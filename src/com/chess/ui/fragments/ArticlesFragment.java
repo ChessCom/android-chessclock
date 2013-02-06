@@ -15,8 +15,8 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.ArticleCategoryItem;
 import com.chess.backend.entity.new_api.ArticleItem;
+import com.chess.backend.entity.new_api.CommonConsumeCategoryItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -166,7 +166,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	private void getCategories() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_ARTICLES_CATEGORIES);
-		new RequestJsonTask<ArticleCategoryItem>(articleCategoriesUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<CommonConsumeCategoryItem>(articleCategoriesUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
@@ -281,9 +281,9 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 
-	private class ArticleCategoriesUpdateListener extends ActionBarUpdateListener<ArticleCategoryItem> {
+	private class ArticleCategoriesUpdateListener extends ActionBarUpdateListener<CommonConsumeCategoryItem> {
 		public ArticleCategoriesUpdateListener() {
-			super(getInstance(), ArticleCategoryItem.class);
+			super(getInstance(), CommonConsumeCategoryItem.class);
 		}
 
 		@Override
@@ -293,7 +293,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		}
 
 		@Override
-		public void updateData(ArticleCategoryItem returnedObj) {
+		public void updateData(CommonConsumeCategoryItem returnedObj) {
 			super.updateData(returnedObj);
 
 			new SaveArticleCategoriesTask(saveArticleCategoriesUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
@@ -313,7 +313,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 
-	private class SaveArticleCategoriesUpdateListener extends ActionBarUpdateListener<ArticleCategoryItem.Data> {
+	private class SaveArticleCategoriesUpdateListener extends ActionBarUpdateListener<CommonConsumeCategoryItem.Data> {
 		public SaveArticleCategoriesUpdateListener() {
 			super(getInstance());
 		}

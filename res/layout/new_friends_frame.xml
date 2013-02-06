@@ -55,12 +55,12 @@
 
     </LinearLayout>
 
+    <!--Divider-->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
         android:background="@color/new_friends_top_border_light"
         />
-
 
     <com.chess.RoboTextView
         android:id="@+id/emptyView"

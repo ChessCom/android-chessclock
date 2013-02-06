@@ -96,7 +96,7 @@
     <string name="game.aborted_by_server">Game has been aborted by the server</string>
     <string name="game.aborted_by_server_on_logout">Game has been aborted by the server</string>
     <string name="game.aborted_by_server_on_disconnection">Game has been aborted by the server</string>
-    <string name="announcement.server_restarting">ALERT: Chess.com will be restarting the servers!</string>
+    <string name="announcement.server_restarting">Alert: Chess.com will be restarting the servers!</string>
     <string name="announcement.server_restart_cancelled">Server restart has been cancelled</string>
 
 

@@ -196,4 +196,9 @@
     <dimen name="video_play_btn_back_ring_size">47dip</dimen>
     <dimen name="video_play_btn_back_ring_size_big">100dip</dimen>
     <dimen name="common_list_thumb_size">45dip</dimen>
+
+    <!--Stats-->
+    <dimen name="stats_rating_view_height">56dip</dimen>
+    <dimen name="stats_padding_side">15dip</dimen>
+    <dimen name="stats_rating_list_item_font">13sp</dimen>
 </resources>

@@ -31,4 +31,10 @@
     <string name="by">by</string>
     <string name="daily_chess">Daily Chess</string>
     <string name="live_chess">Live Chess</string>
+    <string name="games">Games</string>
+    <string name="avg_opp_rating_when_i">Avg. Opponent Rating when I:</string>
+    <string name="games_arg">%s Games</string>
+    <string name="winning_streak">Winning Streak</string>
+    <string name="losing_streak">Losing Streak</string>
+    <string name="most_frequent_opponent">Most Frequent Opponent</string>
 </resources>

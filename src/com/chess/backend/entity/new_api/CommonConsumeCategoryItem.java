@@ -5,22 +5,25 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 30.01.13
- * Time: 11:56
+ * Date: 02.02.13
+ * Time: 8:38
  */
-public class ArticleCategoryItem extends BaseResponseItem<List<ArticleCategoryItem.Data>> {
+public class CommonConsumeCategoryItem extends BaseResponseItem<List<CommonConsumeCategoryItem.Data>> {
 /*
- 	"id": 11,
-	"name": "For Beginners",
-	"display_order": 10
+	{
+		"id": 7,
+		"name": "Rules &amp; Basics",
+		"code":"rules-basics",
+		"display_order": 10
+	},
 */
 
 	public class Data {
-		private long id;
+		private int id;
 		private String name;
 		private int display_order;
 
-		public long getId() {
+		public int getId() {
 			return id;
 		}
 
@@ -28,8 +31,13 @@ public class ArticleCategoryItem extends BaseResponseItem<List<ArticleCategoryIt
 			return name;
 		}
 
+		public void setName(String name) {
+			this.name = name;
+		}
+
 		public int getDisplayOrder() {
 			return display_order;
 		}
 	}
+
 }
