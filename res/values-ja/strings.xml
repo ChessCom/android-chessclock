@@ -69,7 +69,6 @@
 	<string name="i_play_as">私はのように再生</string>
 	<string name="days_per_move">移動毎日</string>
 	<string name="create_challenge">チャレンジを作成します。</string>
-	<string name="on_off">オン／オフ：</string>
 	<string name="min_rating">分評価</string>
 	<string name="max_rating">最大定格</string>
 	<string name="email">メール</string>
@@ -94,7 +93,6 @@
 	<string name="piece_modern">モダン</string>
 	<string name="piece_vintage">ビンテージ</string>
 	<string name="after_i_move">私が移動した後、</string>
-	<string name="notification">通知</string>
 	<string name="enable_notifications">通知を有効にする</string>
 	<string name="show_submit_button">送信ボタンを表示する</string>
 	<string name="enable_sounds">サウンドを有効にする</string>
@@ -314,12 +312,7 @@
 	<string name="register">登録</string>
 	<string name="session_expired">セッションの期限が切れた、再ログインしてください</string>
 	<string name="problem_solved_">問題は解決！</string>
-	<string name="problem_solved">問題は解決！
-		\n スコア %1$s
-		\n 新しい評価 %2$s </string>
-	<string name="wrong_score">間違っている！
-		\n スコア %1$s
-		\n 新しい評価 %2$s </string>
+
 	<string name="next_tactic_puzzle">次の戦術パズル</string>
 	<string name="upgrade_to_continue">続行するにはアップグレード</string>
 

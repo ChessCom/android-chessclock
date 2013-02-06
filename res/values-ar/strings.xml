@@ -70,7 +70,6 @@
 	<string name="i_play_as">أنا العب كما</string>
 	<string name="days_per_move">أيام في تحريك</string>
 	<string name="create_challenge">خلق التحدي</string>
-	<string name="on_off">تشغيل / إيقاف</string>
 	<string name="min_rating">تقييم دقيقة</string>
 	<string name="max_rating">أقصى تقدير</string>
 	<string name="email">بريد إلكتروني</string>
@@ -95,7 +94,6 @@
 	<string name="piece_modern">عصري</string>
 	<string name="piece_vintage">خمر</string>
 	<string name="after_i_move">بعد أن حرك</string>
-	<string name="notification">الإشعار</string>
 	<string name="enable_notifications">تمكين إعلامات</string>
 	<string name="show_submit_button">وتظهر الصورة زر</string>
 	<string name="enable_sounds">تمكين الأصوات</string>
@@ -318,12 +316,7 @@
 	<string name="register">تسجيل</string>
 	<string name="session_expired">جلسة العمل الخاصة بك قد انتهت صلاحيتها، الرجاء إعادة تسجيل الدخول</string>
 	<string name="problem_solved_">حل المشكلة!</string>
-	<string name="problem_solved">حل المشكلة!
-		\n %1$s علامة
-		\n %2$s تصنيف جديد </string>
-	<string name="wrong_score">صحيح!
-		\n %1$s علامة
-		\n %2$s تصنيف جديد </string>
+
 	<string name="next_tactic_puzzle">تكتيك المقبل اللغز</string>
 	<string name="upgrade_to_continue">الترقية للمتابعة</string>
 

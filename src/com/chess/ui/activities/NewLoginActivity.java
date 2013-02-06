@@ -58,7 +58,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 
 		slidingMenu = getSlidingMenu();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-		slidingMenu.setShadowDrawable(R.drawable.defaultshadow);
+//		slidingMenu.setShadowDrawable(R.drawable.defaultshadow);
 		slidingMenu.setOnOpenedListener(openMenuListener);
 
 		badgeItems = new Hashtable<Integer, Integer>();

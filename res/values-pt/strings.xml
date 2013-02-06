@@ -68,7 +68,6 @@
 	<string name="i_play_as">Eu jogo como</string>
 	<string name="days_per_move">Dias por jogada</string>
 	<string name="create_challenge">Criar Desafio</string>
-	<string name="on_off">ON / OFF</string>
 	<string name="min_rating">Avaliação Min</string>
 	<string name="max_rating">Max Rating</string>
 	<string name="email">E-mail</string>
@@ -93,7 +92,6 @@
 	<string name="piece_modern">Moderno</string>
 	<string name="piece_vintage">Vintage</string>
 	<string name="after_i_move">Depois que eu Mova</string>
-	<string name="notification">Notificacão</string>
 	<string name="enable_notifications">Habilitar notificações</string>
 	<string name="show_submit_button">Mostrar Botão Submeter</string>
 	<string name="enable_sounds">Ativar sons</string>
@@ -314,12 +312,7 @@
 	<string name="register">Inscrever</string>
 	<string name="session_expired">Sua sessão expirou, faça o login novamente</string>
 	<string name="problem_solved_">Problema Resolvido!</string>
-	<string name="problem_solved">Problema Resolvido!
-		\n Contagem %1$s
-		\n Nova Classificação %2$s </string>
-	<string name="wrong_score">Errado!
-		\n Contagem %1$s
-		\n Nova Classificação %2$s </string>
+
 	<string name="next_tactic_puzzle">Enigma próxima tática</string>
 	<string name="upgrade_to_continue">Actualiza Para Continuar</string>
 

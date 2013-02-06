@@ -68,7 +68,6 @@
 	<string name="i_play_as">אני משחק כמו</string>
 	<string name="days_per_move">ימים לכל העבר</string>
 	<string name="create_challenge">יצירת אתגר</string>
-	<string name="on_off">הפעלה / כיבוי</string>
 	<string name="min_rating">דקות דירוג</string>
 	<string name="max_rating">מקס דירוג</string>
 	<string name="email">דואר אלקטרוני</string>
@@ -93,7 +92,6 @@
 	<string name="piece_modern">מודרני</string>
 	<string name="piece_vintage">בציר</string>
 	<string name="after_i_move">אחרי העבר</string>
-	<string name="notification">התראות</string>
 	<string name="enable_notifications">לאפשר הודעות</string>
 	<string name="show_submit_button">הצג שלח את הלחצן</string>
 	<string name="enable_sounds">אפשר צלילים</string>
@@ -316,12 +314,7 @@
 	<string name="register">לרשום</string>
 	<string name="session_expired">הפגישה שלך פג, אנא התחבר מחדש</string>
 	<string name="problem_solved_">הבעיה נפתרה!</string>
-	<string name="problem_solved">הבעיה נפתרה!
-		\n ציון %1$s
-		\n דירוג חדש %2$s </string>
-	<string name="wrong_score">טעות!
-		\n ציון %1$s
-		\n דירוג חדש %2$s </string>
+
 	<string name="next_tactic_puzzle">טקטיקה הבא פאזל</string>
 	<string name="upgrade_to_continue">שדרג כדי להמשיך</string>
 

@@ -1,6 +1,7 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -40,12 +41,12 @@ public class SaveVideosListTask extends AbstractUpdateTask<VideoItem.VideoDataIt
 			arguments2[0] = String.valueOf(currentItem.getName());
 
 			// TODO implement beginTransaction logic for performance increase
-			Uri uri = DBConstants.VIDEOS_CONTENT_URI;
+			Uri uri = DBConstants.uriArray[DBConstants.VIDEOS];
 
 			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_NAME,
 					DBDataManager.SELECTION_NAME, arguments2, null);
 			if (cursor.moveToFirst()) {
-				contentResolver.update(Uri.parse(uri.toString() + DBDataManager.SLASH_ + DBDataManager.getId(cursor)),
+				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)),
 						DBDataManager.putVideoItemToValues(currentItem), null, null);
 			} else {
 				contentResolver.insert(uri, DBDataManager.putVideoItemToValues(currentItem));

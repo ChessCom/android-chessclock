@@ -68,7 +68,6 @@
 	<string name="i_play_as">我也踢</string>
 	<string name="days_per_move">每次移动的日子</string>
 	<string name="create_challenge">创造挑战</string>
-	<string name="on_off">开/关</string>
 	<string name="min_rating">最低评价</string>
 	<string name="max_rating">最高评价</string>
 	<string name="email">电邮</string>
@@ -93,7 +92,6 @@
 	<string name="piece_modern">现代</string>
 	<string name="piece_vintage">葡萄酒</string>
 	<string name="after_i_move">我谨动议后</string>
-	<string name="notification">呈报书</string>
 	<string name="enable_notifications">启用通知</string>
 	<string name="show_submit_button">显示提交按钮</string>
 	<string name="enable_sounds">用声音</string>
@@ -311,12 +309,7 @@
 	<string name="register">注册</string>
 	<string name="session_expired">您的会话已过期，请重新登录</string>
 	<string name="problem_solved_">问题解决了！</string>
-	<string name="problem_solved">问题解决了！
-		\n 得分 %1$s
-		\n 新的评级 %2$s </string>
-	<string name="wrong_score">错了！
-		\n 得分 %1$s
-		\n 新的评级 %2$s </string>
+
 	<string name="next_tactic_puzzle">下一步的战术拼图</string>
 	<string name="upgrade_to_continue">升级继续</string>
 

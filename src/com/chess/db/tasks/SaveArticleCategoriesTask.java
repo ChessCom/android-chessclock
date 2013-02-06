@@ -1,6 +1,7 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.LoadItem;
@@ -37,12 +38,12 @@ public class SaveArticleCategoriesTask extends AbstractUpdateTask<CommonConsumeC
 			arguments2[0] = String.valueOf(currentItem.getId());
 
 			// TODO implement beginTransaction logic for performance increase
-			Uri uri = DBConstants.ARTICLE_CATEGORIES_CONTENT_URI;
+			Uri uri = DBConstants.uriArray[DBConstants.ARTICLE_CATEGORIES];
 
 			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_V_CATEGORY_ID,
 					DBDataManager.SELECTION_CATEGORY_ID, arguments2, null);
 			if (cursor.moveToFirst()) {
-				contentResolver.update(Uri.parse(uri.toString() + DBDataManager.SLASH_ + DBDataManager.getId(cursor)),
+				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)),
 						DBDataManager.putCommonConsumeCategoryItemToValues(currentItem), null, null);
 			} else {
 				contentResolver.insert(uri, DBDataManager.putCommonConsumeCategoryItemToValues(currentItem));

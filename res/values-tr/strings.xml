@@ -68,7 +68,6 @@
 	<string name="i_play_as">Ben gibi oyna</string>
 	<string name="days_per_move">Taşı Başına Gün</string>
 	<string name="create_challenge">Mücadelesi oluşturma</string>
-	<string name="on_off">ON / OFF</string>
 	<string name="min_rating">Min Rating</string>
 	<string name="max_rating">Max Değerlendirme</string>
 	<string name="email">Eposta</string>
@@ -93,7 +92,6 @@
 	<string name="piece_modern">Mod</string>
 	<string name="piece_vintage">Bağbozumu</string>
 	<string name="after_i_move">Ben Taşı sonra</string>
-	<string name="notification">Bilgilendirme</string>
 	<string name="enable_notifications">Bildirimleri etkinleştir</string>
 	<string name="show_submit_button">Düğme Gönder göster</string>
 	<string name="enable_sounds">Sesleri etkinleştirin</string>
@@ -314,12 +312,7 @@
 	<string name="register">Kaydetmek</string>
 	<string name="session_expired">Oturumunuz zaman aşımına uğradı, yeniden giriş yapınız</string>
 	<string name="problem_solved_">Sorun çözüldü!</string>
-	<string name="problem_solved">Sorun çözüldü!
-		\n Puan %1$s
-		\n Yeni Değerlendirmesi %2$s </string>
-	<string name="wrong_score">Yanlış!
-		\n Puan %1$s
-		\n Yeni Değerlendirmesi %2$s </string>
+
 	<string name="next_tactic_puzzle">Sonraki Taktik Bulmaca</string>
 	<string name="upgrade_to_continue">Devam Yükseltme</string>
 

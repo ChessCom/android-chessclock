@@ -100,7 +100,7 @@ public class LiveStatsData {
 		this.standard = standard;
 	}
 
-	private class Stats {
+	public class Stats {
 /*
 	"rating": {
       "current": 1324,
@@ -140,7 +140,7 @@ public class LiveStatsData {
 			this.games = games;
 		}
 
-		private class Rating {
+		public class Rating {
 /*
       "current": 1324,
       "highest": {
@@ -191,7 +191,7 @@ public class LiveStatsData {
 				this.average_opponent = average_opponent;
 			}
 
-			private class BestWin {
+			public class BestWin {
 				private int rating;
 				private String username;
 
@@ -213,7 +213,7 @@ public class LiveStatsData {
 			}
 		}
 
-		private class Games {
+		public class Games {
 /*
       "total": 12,
       "wins": 7,

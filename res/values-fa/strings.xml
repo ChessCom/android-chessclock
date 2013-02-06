@@ -68,7 +68,6 @@
 	<string name="i_play_as">من به عنوان بازی</string>
 	<string name="days_per_move">روز در هر حرکت</string>
 	<string name="create_challenge">ایجاد چالش</string>
-	<string name="on_off">بر / خاموش</string>
 	<string name="min_rating">امتیاز حداقل</string>
 	<string name="max_rating">حداکثر امتیاز</string>
 	<string name="email">ایمیل</string>
@@ -93,7 +92,6 @@
 	<string name="piece_modern">مدرن</string>
 	<string name="piece_vintage">محصول</string>
 	<string name="after_i_move">پس از رو حرکت</string>
-	<string name="notification">اخطار</string>
 	<string name="enable_notifications">فعال کردن آگاه سازی</string>
 	<string name="show_submit_button">نمایش ارسال را فشار دهید</string>
 	<string name="enable_sounds">فعالسازیصداها</string>
@@ -314,12 +312,7 @@
 	<string name="register">ثبت نام</string>
 	<string name="session_expired">جلسه شما منقضی شده است، لطفا دوباره وارد سایت شوید</string>
 	<string name="problem_solved_">مشکل حل شده!</string>
-	<string name="problem_solved">مشکل حل شده!
-		\n %1$s مشکل حل شده!
-		\n %2$s نمره</string>
-	<string name="wrong_score">اشتباه است!
-		\n %1$s مشکل حل شده!
-		\n %2$s نمره</string>
+
 	<string name="next_tactic_puzzle">بعدی پازل تاکتیک</string>
 	<string name="upgrade_to_continue">ارتقاء به ادامه</string>
 

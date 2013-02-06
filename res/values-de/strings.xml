@@ -69,7 +69,6 @@
 	<string name="i_play_as">Ich Spiele als</string>
 	<string name="days_per_move">Tage pro Zug</string>
 	<string name="create_challenge">Challenge erstellen</string>
-	<string name="on_off">EIN / AUS</string>
 	<string name="min_rating">Min Rating</string>
 	<string name="max_rating">Max Rating</string>
 	<string name="email">email adresse</string>
@@ -94,7 +93,6 @@
 	<string name="piece_modern">Zeitgemäß</string>
 	<string name="piece_vintage">Jahrgang</string>
 	<string name="after_i_move">Nachdem ich mich bewegen</string>
-	<string name="notification">Benachrichtigung</string>
 	<string name="enable_notifications">Aktivieren Sie Benachrichtigungen</string>
 	<string name="show_submit_button">Zeige Submit Button</string>
 	<string name="enable_sounds">Aktivieren Sounds</string>
@@ -315,12 +313,7 @@
 	<string name="register">Registrieren</string>
 	<string name="session_expired">Ihre Sitzung ist abgelaufen, bitte neu anmelden</string>
 	<string name="problem_solved_">Problem Gelöst!</string>
-	<string name="problem_solved">Problem Gelöst!
-		\n Partitur %1$s
-		\n Neues Rating %2$s </string>
-	<string name="wrong_score">Falsch!
-		\n Partitur %1$s
-		\n Neues Rating %2$s </string>
+
 	<string name="next_tactic_puzzle">Nächste Taktik Puzzle</string>
 	<string name="upgrade_to_continue">Upgrade auf Weiter</string>
 

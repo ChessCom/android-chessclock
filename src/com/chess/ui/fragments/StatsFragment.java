@@ -1,21 +1,31 @@
 package com.chess.ui.fragments;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.*;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.StatsItem;
+import com.chess.backend.entity.new_api.*;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.ui.activities.CoreActivityActionBar;
-import com.chess.ui.views.drawables.PieChartDrawable;
+import com.chess.db.tasks.SaveArticlesListTask;
+import com.chess.db.tasks.SaveStatsTask;
+import com.chess.model.SelectionItem;
+import com.chess.ui.adapters.ChessDarkSpinnerIconAdapter;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,9 +33,20 @@ import com.chess.ui.views.drawables.PieChartDrawable;
  * Date: 23.01.13
  * Time: 10:37
  */
-public class StatsFragment extends CommonLogicFragment {
+public class StatsFragment extends CommonLogicFragment implements AdapterView.OnItemSelectedListener {
 
-	private ActionBarUpdateListener<StatsItem> statsItemUpdateListener;
+	private static final String TAG = "StatsFragment";
+
+	private final static int LIVE_STANDARD = 0;
+	private final static int LIVE_BLITZ = 1;
+	private final static int LIVE_BULLET = 2;
+	private final static int DAILY_CHESS = 3;
+	private final static int DAILY_CHESS960 = 4;
+	private final static int TACTICS = 5;
+	private final static int CHESS_MENTOR = 6;
+
+	private Spinner ratingSpinner;
+	private StatsItemUpdateListener statsItemUpdateListener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,39 +57,20 @@ public class StatsFragment extends CommonLogicFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_stats_frame, container, false);
+		return inflater.inflate(R.layout.new_stats_live_frame, container, false);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		LinearLayout ratingsLinearView = (LinearLayout) view.findViewById(R.id.ratingsLinearView);
+		ratingSpinner = (Spinner) view.findViewById(R.id.ratingSpinner);
 
-		addRatingsViews(ratingsLinearView);
-
-
-	}
-
-	private void addRatingsViews(LinearLayout ratingsLinearView) {
-		LayoutInflater inflater = LayoutInflater.from(getActivity());
-
-		{// Highest Rating
-			RelativeLayout hihghestRatingView = (RelativeLayout) inflater.inflate(R.layout.new_stats_rating_item_view, null, false);
-
-//			ratingsLinearView.addView();
-
-		}
-
-
-
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-
-		updateData();
+		
+		List<SelectionItem> sortList = createSpinnerList(getActivity());
+		ratingSpinner.setAdapter(new ChessDarkSpinnerIconAdapter(getActivity(), sortList));
+		ratingSpinner.setOnItemSelectedListener(this);
+		ratingSpinner.setSelection(0);  // TODO remember last selection.
 	}
 
 	private void init() {
@@ -85,6 +87,16 @@ public class StatsFragment extends CommonLogicFragment {
 		new RequestJsonTask<StatsItem>(statsItemUpdateListener).executeTask(loadItem);
 	}
 
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		updateData();
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+	}
+
+
 	private class StatsItemUpdateListener extends ActionBarUpdateListener<StatsItem> {
 
 		public StatsItemUpdateListener() {
@@ -100,7 +112,88 @@ public class StatsFragment extends CommonLogicFragment {
 		@Override
 		public void updateData(StatsItem returnedObj) {
 			super.updateData(returnedObj);
-			// TODO -> File | Settings | File Templates.
+
+			// Save stats to DB
+//			new SaveStatsTask()
+
+
+			// get selected position of spinner
+			int position = ratingSpinner.getSelectedItemPosition();
+
+			switch (position){
+				case LIVE_STANDARD:
+					changeInternalFragment(new StatsLiveFragment());
+					break;
+				case LIVE_BLITZ:
+					changeInternalFragment(new StatsLiveFragment());
+					break;
+				case LIVE_BULLET:
+					changeInternalFragment(new StatsLiveFragment());
+					break;
+				case DAILY_CHESS:
+					changeInternalFragment(new StatsLiveFragment());
+					break;
+				case DAILY_CHESS960:
+					changeInternalFragment(new StatsLiveFragment());
+					break;
+				case TACTICS:
+					changeInternalFragment(new StatsLiveFragment());
+					break;
+				case CHESS_MENTOR:
+					changeInternalFragment(new StatsLiveFragment());
+					break;
+			}
+		}
+	}
+
+	private void changeInternalFragment(Fragment fragment) {
+		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+		transaction.replace(R.id.tab_content_frame, fragment).commit();
+	}
+
+
+	private List<SelectionItem> createSpinnerList(Context context) {
+		ArrayList<SelectionItem> selectionItems = new ArrayList<SelectionItem>();
+
+		String[] categories = context.getResources().getStringArray(R.array.ratings_categories);
+		for (int i = 0; i < categories.length; i++) {
+			String category = categories[i];
+			SelectionItem selectionItem = new SelectionItem(getIconByCategory(i), category);
+			selectionItems.add(selectionItem);
+		}
+		return selectionItems;
+	}
+
+
+
+	/**
+	 *  Fill list according :
+	 *	Live - Standard
+	 *	Live - Blitz
+	 *	Live - Bullet
+	 *	Daily - Chess
+	 *	Daily - Chess960
+	 *	Tactics
+	 *	Coach Manager
+	 * @param index
+	 * @return Drawable icon for index
+	 */
+	private Drawable getIconByCategory(int index) {
+		switch (index) {
+			case LIVE_STANDARD:
+				return getResources().getDrawable(R.drawable.ic_live_game);
+			case LIVE_BLITZ:
+				return getResources().getDrawable(R.drawable.ic_live_blitz);
+			case LIVE_BULLET:
+				return getResources().getDrawable(R.drawable.ic_live_bullet);
+			case DAILY_CHESS:
+				return getResources().getDrawable(R.drawable.ic_daily_game);
+			case DAILY_CHESS960:
+				return getResources().getDrawable(R.drawable.ic_daily960_game);
+			case TACTICS:
+				return getResources().getDrawable(R.drawable.ic_tactics_game);
+			default: // case CHESS_MENTOR:
+				return getResources().getDrawable(R.drawable.ic_tactics_game);
 		}
 	}
 }

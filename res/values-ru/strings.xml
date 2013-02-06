@@ -69,7 +69,6 @@
 	<string name="i_play_as">Я Играю Как</string>
 	<string name="days_per_move">Дней За Ход</string>
 	<string name="create_challenge">Создать Вызов</string>
-	<string name="on_off">ВКЛ / ВЫКЛ</string>
 	<string name="min_rating">Мин Рейтинг</string>
 	<string name="max_rating">Макс Рейтинг</string>
 	<string name="email">Е-Почта</string>
@@ -94,7 +93,6 @@
 	<string name="piece_modern">Современные</string>
 	<string name="piece_vintage">Винтаж</string>
 	<string name="after_i_move">После Моего Хода</string>
-	<string name="notification">Уведомления</string>
 	<string name="enable_notifications">Включить уведомления</string>
 	<string name="show_submit_button">Показывать кнопку Отправить</string>
 	<string name="enable_sounds">Включить Звуки</string>
@@ -314,12 +312,7 @@
 	<string name="register">Регистрация</string>
 	<string name="session_expired">Время сеанса истекло, пожалуйста, войдите снова</string>
 	<string name="problem_solved_">Проблема решена!</string>
-	<string name="problem_solved">Проблема решена!
-		\n Счет %1$s
-		\n Новый Рейтинг %2$s </string>
-	<string name="wrong_score">Неверно!
-		\n Счет %1$s
-		\n Новый Рейтинг %2$s </string>
+
 	<string name="next_tactic_puzzle">Следующая головоломка</string>
 	<string name="upgrade_to_continue">Улучшить для продолжения</string>
 

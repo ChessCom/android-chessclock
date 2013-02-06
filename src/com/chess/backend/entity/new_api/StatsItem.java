@@ -176,7 +176,7 @@ public class StatsItem extends BaseResponseItem<StatsItem.Data> {
 			this.live = live;
 		}
 
-		public DailyStatsData getTurn_based() {
+		public DailyStatsData getDaily() {
 			return turn_based;
 		}
 
@@ -192,7 +192,7 @@ public class StatsItem extends BaseResponseItem<StatsItem.Data> {
 			this.tactics = tactics;
 		}
 
-		public ChessMentorData getCm() {
+		public ChessMentorData getChessMentor() {
 			return cm;
 		}
 

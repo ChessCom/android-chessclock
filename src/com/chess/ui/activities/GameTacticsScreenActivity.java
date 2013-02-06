@@ -277,7 +277,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 					String title;
 					if (tacticItem.getResultItem() != null && !userIsGuest) {
-						title = getString(R.string.problem_solved, tacticItem.getResultItem().getUserRatingChange(),
+						title = getString(R.string.problem_solved_ ,   // TODO restore
+								tacticItem.getResultItem().getUserRatingChange(),
                                 tacticItem.getResultItem().getUserRating());
 					} else {
 						title = getString(R.string.problem_solved_);
@@ -310,7 +311,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			if (userIsGuest) {
 				showWrongMovePopup(getString(R.string.wrong_ex));
 			} else if (tacticResultItemIsValid && (tacticItem.isRetry() || noInternet)) {
-				String title = getString(R.string.wrong_score,
+				String title = getString(R.string.wrong_ex,   // TODO restore
                         tacticItem.getResultItem().getUserRatingChange(),
                         tacticItem.getResultItem().getUserRating());
 				showWrongMovePopup(title);
@@ -551,7 +552,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 					String title;
 					if (tacticItem.getResultItem() != null) {
-						title = getString(R.string.problem_solved, tacticItem.getResultItem().getUserRatingChange(),
+						title = getString(R.string.problem_solved_, // TODO restore
+								tacticItem.getResultItem().getUserRatingChange(),
 								tacticItem.getResultItem().getUserRating());
 					}else {
 						title = getString(R.string.problem_solved_);
@@ -562,7 +564,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				case WRONG_RESULT:
 
 					if (tacticItem.getResultItem() != null) {
-						title = getString(R.string.wrong_score, tacticItem.getResultItem().getUserRatingChange(),
+						title = getString(R.string.wrong_ex,  // TODO restore
+								tacticItem.getResultItem().getUserRatingChange(),
 								tacticItem.getResultItem().getUserRating());
 					} else {
 						title = getString(R.string.wrong_ex);

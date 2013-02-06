@@ -23,7 +23,6 @@
         >
         <shape >
             <solid android:color="@color/dark_spinner_back" />
-            <padding android:left="0dip" />
         </shape>
     </item>
 

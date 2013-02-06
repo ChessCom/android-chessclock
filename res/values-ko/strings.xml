@@ -68,7 +68,6 @@
 	<string name="i_play_as">나는으로 재생</string>
 	<string name="days_per_move">이동 당 일</string>
 	<string name="create_challenge">도전 만들기</string>
-	<string name="on_off">켜기/끄기</string>
 	<string name="min_rating">최소 평가</string>
 	<string name="max_rating">맥스 평가</string>
 	<string name="email">이메일</string>
@@ -93,7 +92,6 @@
 	<string name="piece_modern">현대식</string>
 	<string name="piece_vintage">포도주</string>
 	<string name="after_i_move">나는 이동 후</string>
-	<string name="notification">알림</string>
 	<string name="enable_notifications">알림 활성화</string>
 	<string name="show_submit_button">버튼 제출보기</string>
 	<string name="enable_sounds">소리를 사용</string>
@@ -311,12 +309,7 @@
 	<string name="register">레지스터</string>
 	<string name="session_expired">세션이 만료되었고, 다시 로그인하시기 바랍니다</string>
 	<string name="problem_solved_">문제는 풀렸다!</string>
-	<string name="problem_solved">문제는 풀렸다!
-		\n 점수 %1$s
-		\n 신규 평가 %2$s </string>
-	<string name="wrong_score">틀렸어!
-		\n 점수 %1$s
-		\n 신규 평가 %2$s </string>
+
 	<string name="next_tactic_puzzle">다음 전술 퍼즐</string>
 	<string name="upgrade_to_continue">계속하려면 업그레 이드</string>
 

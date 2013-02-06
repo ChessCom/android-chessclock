@@ -68,7 +68,6 @@
 	<string name="i_play_as">I Spela som</string>
 	<string name="days_per_move">Dagar per drag</string>
 	<string name="create_challenge">Skapa Utmaning</string>
-	<string name="on_off">TILL / FRÅN</string>
 	<string name="min_rating">Min Rating</string>
 	<string name="max_rating">Max Betyg</string>
 	<string name="email">E-post</string>
@@ -93,7 +92,6 @@
 	<string name="piece_modern">Modern</string>
 	<string name="piece_vintage">Tappning</string>
 	<string name="after_i_move">Efter att jag Flytta</string>
-	<string name="notification">Anmälan</string>
 	<string name="enable_notifications">Aktivera meddelanden</string>
 	<string name="show_submit_button">Visar Lägg knapp</string>
 	<string name="enable_sounds">Aktivera ljud</string>
@@ -312,12 +310,7 @@
 	<string name="register">Registrera</string>
 	<string name="session_expired">Din session har gått ut, vänligen logga in igen</string>
 	<string name="problem_solved_">Problem löst!</string>
-	<string name="problem_solved">Problem löst!
-		\n Betyg %1$s
-		\n Ny Betyget %2$s </string>
-	<string name="wrong_score">Fel!
-		\n Betyg %1$s
-		\n Ny Betyget %2$s </string>
+
 	<string name="next_tactic_puzzle">Nästa Taktik Pussel</string>
 	<string name="upgrade_to_continue">Uppgradera Fortsätta</string>
 

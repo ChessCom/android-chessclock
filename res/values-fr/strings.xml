@@ -70,7 +70,6 @@
 	<string name="i_play_as">Je joue</string>
 	<string name="days_per_move">Jours par coup</string>
 	<string name="create_challenge">Créer Défi</string>
-	<string name="on_off">ON / OFF</string>
 	<string name="min_rating">Note Min</string>
 	<string name="max_rating">Max Note</string>
 	<string name="email">Email</string>
@@ -95,7 +94,6 @@
 	<string name="piece_modern">Moderne</string>
 	<string name="piece_vintage">Millésime</string>
 	<string name="after_i_move">Après ce que je bouge</string>
-	<string name="notification">Notification</string>
 	<string name="enable_notifications">Activer les notifications</string>
 	<string name="show_submit_button">Afficher Bouton Envoyer</string>
 	<string name="enable_sounds">Activez les sons</string>
@@ -316,12 +314,7 @@
 	<string name="register">S\'inscrire</string>
 	<string name="session_expired">Votre session a expiré, s\'il vous plaît ré-ouvrir une session</string>
 	<string name="problem_solved_">Problème résolu!</string>
-	<string name="problem_solved">Problème résolu!
-		\n Score %1$s
-		\n Nouvelle Cotation %2$s </string>
-	<string name="wrong_score">Faux!
-		\n Score %1$s
-		\n Nouvelle Cotation %2$s </string>
+
 	<string name="next_tactic_puzzle">Puzzle tactique suivante</string>
 	<string name="upgrade_to_continue">Mise à jour pour continuer</string>
 

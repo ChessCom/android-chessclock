@@ -68,7 +68,6 @@
 	<string name="i_play_as">Ik Speel als</string>
 	<string name="days_per_move">Dagen Per Move</string>
 	<string name="create_challenge">Maak Challenge</string>
-	<string name="on_off">Aan/Uit</string>
 	<string name="min_rating">Min Waardering</string>
 	<string name="max_rating">Max Waardering</string>
 	<string name="email">E-mail</string>
@@ -93,7 +92,6 @@
 	<string name="piece_modern">Modern</string>
 	<string name="piece_vintage">Wijnoogst</string>
 	<string name="after_i_move">Nadat ik Verplaats</string>
-	<string name="notification">Melding</string>
 	<string name="enable_notifications">Meldingen inschakelen</string>
 	<string name="show_submit_button">Laat de knop Verzenden</string>
 	<string name="enable_sounds">Het inschakelen van geluiden</string>
@@ -314,12 +312,7 @@
 	<string name="register">Registreren</string>
 	<string name="session_expired">Uw sessie is verlopen, dan kunt u opnieuw in te loggen</string>
 	<string name="problem_solved_">Probleem Opgelost!</string>
-	<string name="problem_solved">Probleem Opgelost!
-		\n Score %1$s
-		\n New Rating %2$s </string>
-	<string name="wrong_score">Wrong!
-		\n Score %1$s
-		\n New Rating %2$s </string>
+
 	<string name="next_tactic_puzzle">Następna Puzzle Tactic</string>
 	<string name="upgrade_to_continue">Uaktualnienie do Kontynuuj</string>
 

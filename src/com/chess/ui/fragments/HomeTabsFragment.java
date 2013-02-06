@@ -55,8 +55,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		tabRadioGroup.setOnCheckedChangeListener(this);
 
 		previousCheckedId = tabRadioGroup.getCheckedRadioButtonId();
-
-
 	}
 
 	@Override
@@ -88,7 +86,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 					break;
 			}
 		}
-
 	}
 
 	private void changeInternalFragment(Fragment fragment) {
@@ -106,8 +103,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		switch (item.getItemId()) {
 			case R.id.menu_games:
 				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
-
-//				showPopupDialog(R.string.invalidId, "Hello", "test");   // Works!
 				break;
 		}
 		return true;

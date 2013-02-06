@@ -69,7 +69,6 @@
 	<string name="i_play_as">मैं के रूप में खेलते हैं</string>
 	<string name="days_per_move">हटो प्रति दिन</string>
 	<string name="create_challenge">चैलेंज बनाएँ</string>
-	<string name="on_off">पर / बंद</string>
 	<string name="min_rating">कम से कम दर्ज़ा</string>
 	<string name="max_rating">अधिकतम रेटिंग</string>
 	<string name="email">ईमेल</string>
@@ -94,7 +93,6 @@
 	<string name="piece_modern">आधुनिक </string>
 	<string name="piece_vintage">विंटेज</string>
 	<string name="after_i_move">के बाद मैं ले जाएँ</string>
-	<string name="notification">अधिसूचना</string>
 	<string name="enable_notifications">अधिसूचनाओं को सक्षम करें</string>
 	<string name="show_submit_button">बटन सबमिट करें</string>
 	<string name="enable_sounds">ध्वनियाँ सक्षम</string>
@@ -318,12 +316,7 @@
 	<string name="register">रजिस्टर</string>
 	<string name="session_expired">आपका सत्र समाप्त हो गया है, फिर से लॉगिन करने के लिए कृपया</string>
 	<string name="problem_solved_">समस्या का हल!</string>
-	<string name="problem_solved">समस्या का हल!
-		\n स्कोर %1$s
-		\n नई रेटिंग %2$s </string>
-	<string name="wrong_score">गलत!
-		\n स्कोर %1$s
-		\n नई रेटिंग %2$s </string>
+
 	<string name="next_tactic_puzzle">अगली रणनीति पहेली</string>
 	<string name="upgrade_to_continue">जारी रखें अपग्रेड</string>
 

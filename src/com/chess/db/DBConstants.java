@@ -9,39 +9,49 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 15;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 16;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
+
+	public static final String CONTENT_PATH = "content://";
+	public static final String SLASH = "/";
+
 	/*
 	 * DB table names
 	 */
     static final String DATABASE_NAME  = "Chess DB";
-    public static final String TACTICS_BATCH_TABLE = "tactics_batch";
-    public static final String TACTICS_RESULTS_TABLE = "tactics_results";
-    public static final String ECHESS_FINISHED_LIST_GAMES_TABLE = "echess_finished_games";
-    public static final String ECHESS_CURRENT_LIST_GAMES_TABLE = "echess_current_games";
-    public static final String ECHESS_ONLINE_GAMES_TABLE = "echess_online_games";
-    public static final String FRIENDS_TABLE = "friends";
-    public static final String ARTICLES_TABLE = "articles";
-    public static final String ARTICLE_CATEGORIES_TABLE = "article_categories";
-    public static final String VIDEOS_TABLE = "videos";
-    public static final String VIDEO_CATEGORIES_TABLE = "video_categories";
 
-
+	public static final String[] tablesArray = new String[]{
+			"tactics_batch",
+			"tactics_batch",
+			"tactics_results",
+			"echess_finished_games",
+			"echess_current_games",
+			"echess_online_games",
+			"friends",
+			"articles",
+			"article_categories",
+			"videos",
+			"video_categories",
+			"stats_live_standard",
+			"stats_live_blitz",
+			"stats_live_bullet",
+			"stats_daily_chess",
+			"stats_daily_chess960",
+			"stats_tactics",
+			"stats_chess_mentor"
+	};
 
 	// Content URI
-    public static final Uri TACTICS_BATCH_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + TACTICS_BATCH_TABLE);
-    public static final Uri TACTICS_RESULTS_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + TACTICS_RESULTS_TABLE);
-    public static final Uri ECHESS_FINISHED_LIST_GAMES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ECHESS_FINISHED_LIST_GAMES_TABLE);
-    public static final Uri ECHESS_CURRENT_LIST_GAMES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ECHESS_CURRENT_LIST_GAMES_TABLE);
-    public static final Uri ECHESS_ONLINE_GAMES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ECHESS_ONLINE_GAMES_TABLE);
-    public static final Uri FRIENDS_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + FRIENDS_TABLE);
-    public static final Uri ARTICLES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ARTICLES_TABLE);
-    public static final Uri ARTICLE_CATEGORIES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + ARTICLE_CATEGORIES_TABLE);
-    public static final Uri VIDEOS_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + VIDEOS_TABLE);
-    public static final Uri VIDEO_CATEGORIES_CONTENT_URI = Uri.parse("content://"+ PROVIDER_NAME + "/" + VIDEO_CATEGORIES_TABLE);
+	public static final Uri[] uriArray = new Uri[tablesArray.length];
 
+	static {
+		for (int i = 0; i < tablesArray.length; i++) {
+			String table = tablesArray[i];
+			uriArray[i] = Uri.parse(CONTENT_PATH + PROVIDER_NAME + SLASH + table);
+		}
+	}
 
     // uri paths
     public static final int TACTICS_BATCH = 0;
@@ -54,6 +64,13 @@ public class DBConstants {
     public static final int ARTICLE_CATEGORIES = 7;
     public static final int VIDEOS = 8;
     public static final int VIDEO_CATEGORIES = 9;
+    public static final int STATS_LIVE_STANDARD = 10;
+    public static final int STATS_LIVE_BLITZ = 11;
+    public static final int STATS_LIVE_BULLET = 12;
+    public static final int STATS_DAILY_CHESS = 13;
+    public static final int STATS_DAILY_CHESS960 = 14;
+    public static final int STATS_TACTICS = 15;
+    public static final int STATS_CHESS_MENTOR = 16;
 
 
     // general fields
@@ -132,11 +149,6 @@ public class DBConstants {
 	public static final String V_ID 				= "id";
 	public static final String V_NAME 				= "name";
 	public static final String V_DISPLAY_ORDER 		= "display_order";
-/*
-	"id": 11,
-	"name": "For Beginners",
-	"display_order": 10
-*/
 
 	/*Videos*/
 	public static final String V_DESCRIPTION 		= "description";
@@ -146,12 +158,43 @@ public class DBConstants {
 	public static final String V_MOBILE_URL 		= "mobile_url";
 	public static final String V_KEY_FEN 			= "key_fen";
 
-/*
-		private String chess_video_category_id;
-		private long name;
-		private String code;
-		private int display_order;
- */
+
+	/*
+
+	*/
+	/*Stats*/
+	 /*Rating*/
+	public static final String V_CURRENT 				= "current";
+	public static final String V_HIGHEST_RATING 		= "highest_rating";
+	public static final String V_HIGHEST_TIMESTAMP 		= "highest_timestamp";
+	public static final String V_BEST_WIN_RATING 		= "best_win_rating";
+	public static final String V_BEST_WIN_GAME_ID 		= "best_win_game_id";
+	public static final String V_BEST_WIN_USERNAME 		= "best_win_username";
+	public static final String V_AVERAGE_OPPONENT 		= "average_opponent";
+	 /*Games*/
+	public static final String V_GAMES_TOTAL 			= "games_total";
+	public static final String V_GAMES_WINS 			= "games_wins";
+	public static final String V_GAMES_LOSSES 			= "games_losses";
+	public static final String V_GAMES_DRAWS 			= "games_draws";
+	 /* Daily */
+	public static final String V_RANK 					= "rank";
+	public static final String V_TOTAL_PLAYER_COUNT 	= "total_player_count";
+	public static final String V_TIMEOUTS 				= "timeouts";
+	public static final String V_TIME_PER_MOVE 			= "time_per_move";
+
+	/* Tactics */
+	public static final String V_LOWEST_RATING 			= "lowest_rating";
+	public static final String V_LOWEST_TIMESTAMP 		= "lowest_timestamp";
+	public static final String V_ATTEMPT_COUNT 			= "attempt_count";
+	public static final String V_PASSED_COUNT 			= "passed_count";
+	public static final String V_FAILED_COUNT 			= "failed_count";
+	public static final String V_TOTAL_SECONDS 			= "total_seconds";
+
+	/* Chess Mentor*/
+	public static final String V_LESSONS_TRIED 				= "lessons_tried";
+	public static final String V_TOTAL_LESSON_COUNT 		= "total_lesson_count";
+	public static final String V_LESSON_COMPLETE_PERCENTAGE = "lesson_complete_percentage";
+	public static final String V_TOTAL_TRAINING_SECONDS 	= "total_training_seconds";
 
 
 	/* common commands */
@@ -166,7 +209,7 @@ public class DBConstants {
 
 
     static final String TACTICS_BATCH_TABLE_CREATE =
-            CREATE_TABLE_IF_NOT_EXISTS + TACTICS_BATCH_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+            CREATE_TABLE_IF_NOT_EXISTS + tablesArray[TACTICS_BATCH] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 		    + _TEXT_NOT_NULL + _COMMA
 			+ V_TACTIC_ID       + _LONG_NOT_NULL + _COMMA
 			+ V_FEN 		    + _TEXT_NOT_NULL + _COMMA
@@ -181,7 +224,7 @@ public class DBConstants {
 			+ V_AVG_SECONDS     + _TEXT_NOT_NULL + _CLOSE;
 
     static final String TACTICS_RESULTS_TABLE_CREATE =
-            CREATE_TABLE_IF_NOT_EXISTS + TACTICS_RESULTS_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+            CREATE_TABLE_IF_NOT_EXISTS + tablesArray[TACTICS_RESULTS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
             + V_USER 		        	+ _TEXT_NOT_NULL + _COMMA
             + V_TACTIC_ID           	+ _LONG_NOT_NULL + _COMMA
             + V_SCORE               	+ _TEXT_NOT_NULL + _COMMA
@@ -192,7 +235,7 @@ public class DBConstants {
 
 
     static final String ECHESS_FINISHED_LIST_GAMES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + ECHESS_FINISHED_LIST_GAMES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[ECHESS_FINISHED_LIST_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
 			+ V_GAME_ID 				    + _LONG_NOT_NULL + _COMMA
 			+ V_COLOR 					    + _INT_NOT_NULL + _COMMA
@@ -206,7 +249,7 @@ public class DBConstants {
 			+ V_GAME_RESULT + _INT_NOT_NULL + _CLOSE;
 
 	static final String ECHESS_CURRENT_LIST_GAMES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + ECHESS_CURRENT_LIST_GAMES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[ECHESS_CURRENT_LIST_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
 			+ V_GAME_ID 				    + _LONG_NOT_NULL + _COMMA
 			+ V_COLOR 					    + _INT_NOT_NULL + _COMMA
@@ -222,7 +265,7 @@ public class DBConstants {
 			+ V_HAS_NEW_MESSAGE 			+ _INT_NOT_NULL + _CLOSE;
 
 	static final String ECHESS_ONLINE_GAMES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + ECHESS_ONLINE_GAMES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[ECHESS_ONLINE_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_FINISHED 				+ _INT_NOT_NULL + _COMMA
 			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_GAME_ID 				+ _LONG_NOT_NULL + _COMMA
@@ -244,7 +287,7 @@ public class DBConstants {
 			+ V_DAYS_PER_MOVE 			+ _INT_NOT_NULL + _CLOSE;
 
 	static final String FRIENDS_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + FRIENDS_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[FRIENDS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
 			+ V_LOCATION 	    		+ _TEXT_NOT_NULL + _COMMA
@@ -252,19 +295,8 @@ public class DBConstants {
 			+ V_USER_ID 	    		+ _INT_NOT_NULL + _COMMA
 			+ V_PHOTO_URL 	    		+ _TEXT_NOT_NULL + _CLOSE;
 
-
-/*
-            "id": 202,
-            "title": "Test article 2nd round",
-            "create_date": 1342827342,
-            "article_category": "For Beginners",
-            "article_category_id": 11,
-            "user_id": 5543,
-            "username": "deepgreene"
-	 */
-
 	static final String ARTICLES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + ARTICLES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[ARTICLES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_ARTICLE_ID 				+ _LONG_NOT_NULL + _COMMA
 			+ V_TITLE 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_CREATE_DATE 			+ _LONG_NOT_NULL + _COMMA
@@ -278,13 +310,13 @@ public class DBConstants {
 			+ V_CHESS_TITLE 	    	+ _TEXT_NOT_NULL + " DEFAULT TestIM"+ _CLOSE;
 
 	static final String ARTICLE_CATEGORIES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + ARTICLE_CATEGORIES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[ARTICLE_CATEGORIES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
 			+ V_DISPLAY_ORDER 	    	+ _INT_NOT_NULL + _CLOSE;
 
 	static final String VIDEOS_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + VIDEOS_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[VIDEOS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_DESCRIPTION 			+ _TEXT_NOT_NULL + _COMMA
 			+ V_CATEGORY 				+ _TEXT_NOT_NULL + _COMMA
@@ -299,10 +331,72 @@ public class DBConstants {
 			+ V_CHESS_TITLE 	    	+ _TEXT_NOT_NULL + _CLOSE;
 
 	static final String VIDEO_CATEGORIES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + VIDEO_CATEGORIES_TABLE + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[VIDEO_CATEGORIES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
 			+ V_DISPLAY_ORDER 	    	+ _INT_NOT_NULL + _CLOSE;
+
+	/* Stats */
+/*
+	"stats_live_standard",
+	"stats_live_blitz",
+	"stats_live_bullet",
+	"stats_daily_chess",
+	"stats_daily_chess960",
+	"stats_tactics",
+	"stats_chess_mentor"
+*/
+
+/*
+	"standard": {
+        "rating": {
+          "current": 1268,
+          "highest": {
+            "rating": 1268,
+            "timestamp": 1344327593
+          },
+          "best_win": {
+            "rating": 978,
+            "username": "Computer1-EASY"
+          },
+          "average_opponent": 1254
+        },
+        "games": {
+          "total": 5,
+          "wins": 2,
+          "losses": 3,
+          "draws": 0
+        }
+      }
+*/
+
+//	/*Rating*/
+//	public static final String V_CURRENT 				= "current";
+//	public static final String V_HIGHEST_RATING 		= "highest_rating";
+//	public static final String V_HIGHEST_TIMESTAMP 		= "highest_timestamp";
+//	public static final String V_BEST_WIN_RATING 		= "best_win_rating";
+//	public static final String V_BEST_WIN_GAME_ID 		= "best_win_game_id";
+//	public static final String V_BEST_WIN_USERNAME 		= "best_win_username";
+//	public static final String V_AVERAGE_OPPONENT 		= "average_opponent";
+//	/*Games*/
+//	public static final String V_GAMES_TOTAL 			= "games_total";
+//	public static final String V_GAMES_WINS 			= "games_wins";
+//	public static final String V_GAMES_LOSSES 			= "games_losses";
+//	public static final String V_GAMES_DRAWS 			= "games_draws";
+
+	static final String STATS_LIVE_STANDARD_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[STATS_LIVE_STANDARD] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
+			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
+			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
+			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_GAMES_WINS   	    	+ _INT_NOT_NULL + _COMMA
+			+ V_GAMES_LOSSES 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_GAMES_DRAWS  	    	+ _INT_NOT_NULL + _CLOSE;
 
 
 }

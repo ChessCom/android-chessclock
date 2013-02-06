@@ -69,7 +69,6 @@
 	<string name="i_play_as">Jeg Spil som</string>
 	<string name="days_per_move">Dage per træk</string>
 	<string name="create_challenge">Opret Challenge</string>
-	<string name="on_off">ON / OFF</string>
 	<string name="min_rating">Min Rating</string>
 	<string name="max_rating">Max Rating</string>
 	<string name="email">Email</string>
@@ -94,7 +93,6 @@
 	<string name="piece_modern">Moderne</string>
 	<string name="piece_vintage">Vintage</string>
 	<string name="after_i_move">Efter jeg Flyt</string>
-	<string name="notification">Anmeldelse</string>
 	<string name="enable_notifications">Aktiver beskeder</string>
 	<string name="show_submit_button">Vis knappen Send</string>
 	<string name="enable_sounds">Aktiver lyde</string>
@@ -316,12 +314,7 @@
 	<string name="register">Tilmeld</string>
 	<string name="session_expired">Din session er udløbet, kan du igen logge ind</string>
 	<string name="problem_solved_">Problem løst!</string>
-	<string name="problem_solved">Problem løst!
-		\n Score %1$s
-		\n Ny Bedømmelse %2$s </string>
-	<string name="wrong_score">Forkert!
-		\n Score %1$s
-		\n Ny Bedømmelse %2$s </string>
+
 	<string name="next_tactic_puzzle">Næste Tactic Puzzle</string>
 	<string name="upgrade_to_continue">Opgrader at fortsætte</string>
 

@@ -5,10 +5,8 @@
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="30dip"
-    android:paddingTop="7dip"
     android:paddingLeft="7dip"
     android:paddingRight="8dip"
-    android:paddingBottom="2dip"
     android:gravity="center_vertical"
     >
 
@@ -20,8 +18,9 @@
         custom:ttf="Bold"
         android:textColor="@color/new_light_grey"
         android:textSize="14sp"
-        android:text="test"
         style="@style/DarkShadowBottom"
+        android:paddingLeft="3dip"
+        android:gravity="center_vertical"
         />
 
     <ImageView

@@ -77,7 +77,6 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 		categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
 
-
 		sortSpinner = (Spinner) view.findViewById(R.id.sortSpinner);
 
 		List<String> sortList = new ArrayList<String>();  // TODO set list of sort parameters

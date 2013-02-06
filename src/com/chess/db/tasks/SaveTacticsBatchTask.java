@@ -1,6 +1,7 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -44,11 +45,11 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.Data, Lo
 				arguments[0] = String.valueOf(tacticItem.getId());
 				arguments[1] = userName;
 
-				Uri uri = DBConstants.TACTICS_BATCH_CONTENT_URI;
+				Uri uri = DBConstants.uriArray[DBConstants.TACTICS_BATCH];
 				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_TACTIC_ITEM_ID_AND_USER,
 						DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments, null);
 				if (cursor.moveToFirst()) {
-					contentResolver.update(Uri.parse(uri.toString() + DBDataManager.SLASH_ + DBDataManager.getId(cursor)),
+					contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)),
 							DBDataManager.putTacticItemToValues(tacticItem), null, null);
 				} else {
 					contentResolver.insert(uri, DBDataManager.putTacticItemToValues(tacticItem));

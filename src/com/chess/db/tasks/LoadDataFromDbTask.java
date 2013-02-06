@@ -2,6 +2,7 @@ package com.chess.db.tasks;
 
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -29,7 +30,8 @@ public class LoadDataFromDbTask extends AbstractUpdateTask<Cursor, Long> {
 		int result = StaticData.EMPTY_DATA;
 
 		if (ids != null && ids.length > 0) {
-			item = contentResolver.query(Uri.parse(params.getUri().toString() + "/" + ids[0]), params.getProjection(), params.getSelection(), params.getArguments(), params.getOrder());
+			item = contentResolver.query(ContentUris.withAppendedId(params.getUri(), ids[0]), params.getProjection(),
+					params.getSelection(), params.getArguments(), params.getOrder());
 		} else {
 			if (params.isUseRawQuery()) {
 				ContentProviderClient client = contentResolver.acquireContentProviderClient(DBConstants.PROVIDER_NAME);
@@ -44,7 +46,8 @@ public class LoadDataFromDbTask extends AbstractUpdateTask<Cursor, Long> {
 				client.release();
 
 			} else {
-				item = contentResolver.query(params.getUri(), params.getProjection(), params.getSelection(), params.getArguments(), params.getOrder());
+				item = contentResolver.query(params.getUri(), params.getProjection(), params.getSelection(),
+						params.getArguments(), params.getOrder());
 			}
 		}
 

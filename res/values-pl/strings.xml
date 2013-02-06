@@ -68,7 +68,6 @@
 	<string name="i_play_as">I Play jako</string>
 	<string name="days_per_move">Dni na każde posunięcie</string>
 	<string name="create_challenge">Stwórz Wyzwanie</string>
-	<string name="on_off">ON/OFF (włącz/wyłącz)</string>
 	<string name="min_rating">Ocena min</string>
 	<string name="max_rating">Max Ocena</string>
 	<string name="email">E-mail</string>
@@ -93,7 +92,6 @@
 	<string name="piece_modern">nowoczesny</string>
 	<string name="piece_vintage">Vintage</string>
 	<string name="after_i_move">Po I Move</string>
-	<string name="notification">Powiadomienie</string>
 	<string name="enable_notifications">Włącz powiadomienia</string>
 	<string name="show_submit_button">Pokaż przycisk Submit</string>
 	<string name="enable_sounds">Włącz dźwięki</string>
@@ -314,12 +312,7 @@
 	<string name="register">Zarejestrować</string>
 	<string name="session_expired">Twoja sesja wygasła, należy ponownie zalogować</string>
 	<string name="problem_solved_">Problem rozwiązany!</string>
-	<string name="problem_solved">Problem rozwiązany!
-		\n Wynik %1$s
-		\n Nowa Ocena %2$s </string>
-	<string name="wrong_score">Nieprawda!
-		\n Wynik %1$s
-		\n Nowa Ocena %2$s </string>
+
 	<string name="next_tactic_puzzle">Next Tactic Puzzle</string>
 	<string name="upgrade_to_continue">Upgrade To Continue</string>
 

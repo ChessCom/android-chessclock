@@ -64,6 +64,27 @@
         <item>Tactics</item>
     </string-array>
 
+<!--
+		sortList.add("Live - Standard");
+		sortList.add("Live - Blitz");
+		sortList.add("Live - Lightning");
+		sortList.add("Daily - Chess");
+		sortList.add("Daily - Chess960");
+		sortList.add("Tactics");
+		sortList.add("Coach Manager");
+
+-->
+
+    <string-array name="ratings_categories">
+        <item>Live - Standard</item>
+        <item>Live - Blitz</item>
+        <item>Live - Bullet</item>
+        <item>Daily - Chess</item>
+        <item>Daily - Chess960</item>
+        <item>Tactics</item>
+        <item>Chess Mentor</item>
+    </string-array>
+
     <string-array name="AIM">
         <item>Go To Next Ready Game</item>
         <item>Stay On Same Game</item>
@@ -327,7 +348,6 @@
         <item>Western Sahara</item>
         <item>British Virgin Islands</item>
     </string-array>
-
 
     <!--    US - United States
         CA - Canada

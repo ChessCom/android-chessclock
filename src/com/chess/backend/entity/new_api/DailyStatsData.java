@@ -107,7 +107,7 @@ public class DailyStatsData extends BaseStatsData{
 		this.chess960 = chess960;
 	}
 
-	private class ChessStatsData {
+	public class ChessStatsData {
 		private DailyRating rating;
 
 		public DailyRating getRating() {
@@ -118,7 +118,7 @@ public class DailyStatsData extends BaseStatsData{
 			this.rating = rating;
 		}
 
-		private class DailyRating extends BaseStatsData.Rating{
+		public class DailyRating extends BaseStatsData.Rating{
 			/*
 				"todays_rank": {
 					"rank": null,
@@ -127,7 +127,7 @@ public class DailyStatsData extends BaseStatsData{
 			*/
 			private TodaysRank todays_rank;
 
-			private class TodaysRank {
+			public class TodaysRank {
 				private String rank;
 				private int total_player_count;
 			}
