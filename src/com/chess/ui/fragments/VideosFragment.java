@@ -253,7 +253,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 					// save in Db to open in Details View
 					ContentResolver contentResolver = getContentResolver();
 
-					Uri uri = DBConstants.VIDEOS_CONTENT_URI;
+					Uri uri = DBConstants.uriArray[DBConstants.VIDEOS];
 					String[] arguments = new String[1];
 					arguments[0] = String.valueOf(headerData.getName());
 					Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_NAME,

@@ -1,6 +1,7 @@
 package com.chess.db;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -16,6 +17,8 @@ import com.chess.model.*;
  * @modified 27.10.12
  */
 public class DBDataManager {
+	// TODO improve performance by updating only needed fields
+
 	private final static String TAG = "DBDataManager";
 
 	private static final String ORDER_BY = "ORDER BY";
@@ -162,7 +165,7 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Cursor cursor = contentResolver.query(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI,
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.ECHESS_ONLINE_GAMES],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
@@ -177,13 +180,14 @@ public class DBDataManager {
 		arguments2[0] = userName;
 		arguments2[1] = String.valueOf(currentGame.getGameId());
 
-		Cursor cursor = contentResolver.query(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI, PROJECTION_GAME_ID, SELECTION_GAME_ID,
+		Uri uri = DBConstants.uriArray[DBConstants.ECHESS_ONLINE_GAMES];
+		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_GAME_ID,
 				arguments2, null);
 		if (cursor.moveToFirst()) {
-			contentResolver.update(Uri.parse(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI.toString() + SLASH_ + DBDataManager.getId(cursor)),
+			contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)),
 					putGameOnlineItemToValues(currentGame, userName), null, null);
 		} else {
-			contentResolver.insert(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI, putGameOnlineItemToValues(currentGame, userName));
+			contentResolver.insert(uri, putGameOnlineItemToValues(currentGame, userName));
 		}
 
 		cursor.close();
@@ -201,7 +205,7 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Cursor cursor = contentResolver.query(DBConstants.FRIENDS_CONTENT_URI,
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.FRIENDS],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
@@ -215,13 +219,14 @@ public class DBDataManager {
 		arguments2[0] = userName;
 		arguments2[1] = String.valueOf(currentGame.getGameId());
 
-		Cursor cursor = contentResolver.query(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI, PROJECTION_GAME_ID, SELECTION_GAME_ID,
+		Uri uri = DBConstants.uriArray[DBConstants.ECHESS_ONLINE_GAMES];
+		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_GAME_ID,
 				arguments2, null);
 		if (cursor.moveToFirst()) {
-			contentResolver.update(Uri.parse(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI.toString() + SLASH_ + DBDataManager.getId(cursor)),
+			contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)),
 					putGameOnlineItemToValues(currentGame, userName), null, null);
 		} else {
-			contentResolver.insert(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI, putGameOnlineItemToValues(currentGame, userName));
+			contentResolver.insert(uri, putGameOnlineItemToValues(currentGame, userName));
 		}
 
 		cursor.close();
@@ -249,7 +254,7 @@ public class DBDataManager {
         final String[] arguments1 = sArguments1;
         arguments1[0] = userName;
 
-        Cursor cursor = contentResolver.query(DBConstants.TACTICS_BATCH_CONTENT_URI,
+        Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
@@ -265,7 +270,7 @@ public class DBDataManager {
         arguments2[0] = String.valueOf(tacticItem.getId());
         arguments2[1] = userName;
 
-        Uri uri = DBConstants.TACTICS_BATCH_CONTENT_URI;
+        Uri uri = DBConstants.uriArray[DBConstants.TACTICS_BATCH];
         Cursor cursor = contentResolver.query(uri, PROJECTION_TACTIC_ITEM_ID_AND_USER,
                 SELECTION_TACTIC_ID_AND_USER, arguments2, null);
         if (cursor.moveToFirst()) {
@@ -291,7 +296,7 @@ public class DBDataManager {
         final String[] arguments1 = sArguments1;
         arguments1[0] = userName;
 
-        Cursor cursor = contentResolver.query(DBConstants.TACTICS_BATCH_CONTENT_URI,
+        Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
                 null, SELECTION_USER, arguments1, null);
 
         cursor.moveToFirst();
@@ -312,7 +317,7 @@ public class DBDataManager {
         arguments2[0] = String.valueOf(resultItem.getId());
         arguments2[1] = resultItem.getUser();
 
-        Uri uri = DBConstants.TACTICS_RESULTS_CONTENT_URI;
+        Uri uri = DBConstants.uriArray[DBConstants.TACTICS_RESULTS];
         Cursor cursor = contentResolver.query(uri,null, SELECTION_TACTIC_ID_AND_USER, arguments2, null);
 
         if (cursor.moveToFirst()) {
@@ -332,7 +337,7 @@ public class DBDataManager {
         final String[] arguments2 = sArguments2;
         arguments2[0] = String.valueOf(id);
         arguments2[1] = userName;
-        Cursor cursor = contentResolver.query(DBConstants.TACTICS_RESULTS_CONTENT_URI,
+        Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.TACTICS_RESULTS],
                 null, SELECTION_TACTIC_ID_AND_USER, arguments2, null);
 
         if (cursor.moveToFirst()){
@@ -614,7 +619,7 @@ public class DBDataManager {
 	public static boolean haveSavedVideos(Context context) {
 		ContentResolver contentResolver = context.getContentResolver();
 
-		Cursor cursor = contentResolver.query(DBConstants.VIDEOS_CONTENT_URI, null, null, null, LIMIT_1);
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.VIDEOS], null, null, null, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
 
@@ -629,7 +634,7 @@ public class DBDataManager {
 	public static boolean haveSavedArticles(Context context) {
 		ContentResolver contentResolver = context.getContentResolver();
 
-		Cursor cursor = contentResolver.query(DBConstants.ARTICLES_CONTENT_URI, null, null, null, LIMIT_1);
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.ARTICLES], null, null, null, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
 
@@ -665,12 +670,90 @@ public class DBDataManager {
 		return values;
 	}
 
+	public static ContentValues putStatsLiveItemToValues(LiveStatsData.Stats dataObj, String user) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_USER, user);
+		values.put(DBConstants.V_CURRENT, dataObj.getRating().getCurrent());
+		values.put(DBConstants.V_HIGHEST_RATING, dataObj.getRating().getHighest().getRating());
+		values.put(DBConstants.V_HIGHEST_TIMESTAMP, dataObj.getRating().getHighest().getTimestamp());
+		values.put(DBConstants.V_BEST_WIN_RATING, dataObj.getRating().getBestWin().getRating());
+		values.put(DBConstants.V_BEST_WIN_USERNAME, dataObj.getRating().getBestWin().getUsername());
+		values.put(DBConstants.V_AVERAGE_OPPONENT, dataObj.getRating().getAverageOpponent());
+		values.put(DBConstants.V_GAMES_TOTAL, dataObj.getGames().getTotal());
+		values.put(DBConstants.V_GAMES_WINS, dataObj.getGames().getWins());
+		values.put(DBConstants.V_GAMES_LOSSES, dataObj.getGames().getLosses());
+		values.put(DBConstants.V_GAMES_DRAWS, dataObj.getGames().getDraws());
+
+		return values;
+	}
+
+	public static ContentValues putStatsDailyItemToValues(DailyStatsData.ChessStatsData dataObj, String user) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_USER, user);
+		values.put(DBConstants.V_CURRENT, dataObj.getRating().getCurrent());
+		values.put(DBConstants.V_HIGHEST_RATING, dataObj.getRating().getHighest().getRating());
+		values.put(DBConstants.V_HIGHEST_TIMESTAMP, dataObj.getRating().getHighest().getTimestamp());
+		values.put(DBConstants.V_BEST_WIN_RATING, dataObj.getRating().getBestWin().getRating());
+		values.put(DBConstants.V_BEST_WIN_GAME_ID, dataObj.getRating().getBestWin().getUsername());
+		values.put(DBConstants.V_BEST_WIN_USERNAME, dataObj.getRating().getBestWin().getUsername());
+		values.put(DBConstants.V_AVERAGE_OPPONENT, dataObj.getRating().getAverageOpponent());
+		values.put(DBConstants.V_RANK, dataObj.getRating().getTodaysRank().getRank());
+		values.put(DBConstants.V_TOTAL_PLAYER_COUNT, dataObj.getRating().getTodaysRank().getTotalPlayerCount());
+		values.put(DBConstants.V_TIMEOUTS, dataObj.getTimeouts());
+		values.put(DBConstants.V_TIME_PER_MOVE, dataObj.getTimePerMove());
+
+		values.put(DBConstants.V_GAMES_TOTAL, dataObj.getGames().getTotal());
+		values.put(DBConstants.V_GAMES_WINS, dataObj.getGames().getWins());
+		values.put(DBConstants.V_GAMES_LOSSES, dataObj.getGames().getLosses());
+		values.put(DBConstants.V_GAMES_DRAWS, dataObj.getGames().getDraws());
+
+		return values;
+	}
+
+	public static ContentValues putStatsTacticsItemToValues(TacticsStatsData dataObj, String user) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_USER, user);
+		values.put(DBConstants.V_CURRENT, dataObj.getCurrent());
+		values.put(DBConstants.V_HIGHEST_RATING, dataObj.getHighest().getRating());
+		values.put(DBConstants.V_HIGHEST_TIMESTAMP, dataObj.getHighest().getTimestamp());
+		values.put(DBConstants.V_LOWEST_RATING, dataObj.getLowest().getRating());
+		values.put(DBConstants.V_LOWEST_TIMESTAMP, dataObj.getLowest().getTimestamp());
+
+		values.put(DBConstants.V_ATTEMPT_COUNT, dataObj.getAttemptCount());
+		values.put(DBConstants.V_PASSED_COUNT, dataObj.getPassedCount());
+		values.put(DBConstants.V_FAILED_COUNT, dataObj.getFailedCount());
+		values.put(DBConstants.V_TOTAL_SECONDS, dataObj.getTotalSeconds());
+
+		return values;
+	}
+
+	public static ContentValues putStatsChessMentorItemToValues(ChessMentorData dataObj, String user) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_USER, user);
+		values.put(DBConstants.V_CURRENT, dataObj.getCurrent());
+		values.put(DBConstants.V_HIGHEST_RATING, dataObj.getHighest().getRating());
+		values.put(DBConstants.V_HIGHEST_TIMESTAMP, dataObj.getHighest().getTimestamp());
+		values.put(DBConstants.V_LOWEST_RATING, dataObj.getLowest().getRating());
+		values.put(DBConstants.V_LOWEST_TIMESTAMP, dataObj.getLowest().getTimestamp());
+
+		values.put(DBConstants.V_LESSONS_TRIED, dataObj.getLessonsTried());
+		values.put(DBConstants.V_TOTAL_LESSON_COUNT, dataObj.getTotalLessonCount());
+		values.put(DBConstants.V_LESSON_COMPLETE_PERCENTAGE, dataObj.getLessonCompletePercentage());
+		values.put(DBConstants.V_TOTAL_TRAINING_SECONDS, dataObj.getTotalTrainingSeconds());
+
+		return values;
+	}
+
 	public static boolean checkIfDrawOffered(ContentResolver resolver, String userName, long gameId) {
 		final String[] arguments2 = sArguments2;
 		arguments2[0] = userName;
 		arguments2[1] = String.valueOf(gameId);
 
-		Cursor cursor = resolver.query(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI,
+		Cursor cursor = resolver.query(DBConstants.uriArray[DBConstants.ECHESS_ONLINE_GAMES],
 				PROJECTION_ECHESS_DRAW_OFFERED, SELECTION_USER_OFFERED_DRAW, arguments2, null);
 		return cursor.moveToFirst() && getInt(cursor, DBConstants.V_USER_OFFERED_DRAW) > 0;
 	}

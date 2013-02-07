@@ -141,7 +141,7 @@ public class StatsItem extends BaseResponseItem<StatsItem.Data> {
       "failed_count": 33,
       "total_seconds": 3201
     },
-    "cm": {
+    "chess_mentor": {
       "rating": {
         "current": 1334,
         "highest": {
@@ -166,7 +166,7 @@ public class StatsItem extends BaseResponseItem<StatsItem.Data> {
 		private LiveStatsData live;
 		private DailyStatsData turn_based;
 		private TacticsStatsData tactics;
-		private ChessMentorData cm;
+		private ChessMentorData chess_mentor;
 
 		public LiveStatsData getLive() {
 			return live;
@@ -180,7 +180,7 @@ public class StatsItem extends BaseResponseItem<StatsItem.Data> {
 			return turn_based;
 		}
 
-		public void setTurn_based(DailyStatsData turn_based) {
+		public void setTurnBased(DailyStatsData turn_based) {
 			this.turn_based = turn_based;
 		}
 
@@ -193,11 +193,11 @@ public class StatsItem extends BaseResponseItem<StatsItem.Data> {
 		}
 
 		public ChessMentorData getChessMentor() {
-			return cm;
+			return chess_mentor;
 		}
 
-		public void setCm(ChessMentorData cm) {
-			this.cm = cm;
+		public void setChessMentorData(ChessMentorData chess_mentor) {
+			this.chess_mentor = chess_mentor;
 		}
 	}
 }

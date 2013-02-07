@@ -175,7 +175,7 @@ public class LiveStatsData {
 				this.highest = highest;
 			}
 
-			public BestWin getBest_win() {
+			public BestWin getBestWin() {
 				return best_win;
 			}
 
@@ -183,7 +183,7 @@ public class LiveStatsData {
 				this.best_win = best_win;
 			}
 
-			public int getAverage_opponent() {
+			public int getAverageOpponent() {
 				return average_opponent;
 			}
 

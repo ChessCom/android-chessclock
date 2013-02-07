@@ -2,6 +2,7 @@ package com.chess.db.tasks;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.new_api.CommonConsumeCategoryItem;
@@ -39,11 +40,13 @@ public class SaveVideoCategoriesTask extends AbstractUpdateTask<CommonConsumeCat
 
 			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_V_CATEGORY_ID,
 					DBDataManager.SELECTION_CATEGORY_ID, arguments2, null);
+
+			ContentValues values = DBDataManager.putCommonConsumeCategoryItemToValues(currentItem);
+
 			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)),
-						DBDataManager.putCommonConsumeCategoryItemToValues(currentItem), null, null);
+				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
 			} else {
-				contentResolver.insert(uri, DBDataManager.putCommonConsumeCategoryItemToValues(currentItem));
+				contentResolver.insert(uri, values);
 			}
 
 			cursor.close();

@@ -2,6 +2,7 @@ package com.chess.db.tasks;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -39,11 +40,13 @@ public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<DailyFini
 			Uri uri = DBConstants.uriArray[DBConstants.ECHESS_FINISHED_LIST_GAMES];
 			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
 					DBDataManager.SELECTION_GAME_ID, arguments2, null);
+
+			ContentValues values = DBDataManager.putEchessFinishedListGameToValues(finishedItem, userName);
+
 			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)),
-						DBDataManager.putEchessFinishedListGameToValues(finishedItem, userName), null, null);
+				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
 			} else {
-				contentResolver.insert(uri, DBDataManager.putEchessFinishedListGameToValues(finishedItem, userName));
+				contentResolver.insert(uri, values);
 			}
 
 			cursor.close();

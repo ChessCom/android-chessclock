@@ -108,7 +108,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	}
 
 	private boolean fillCategories() {
-		Cursor cursor = getContentResolver().query(DBConstants.VIDEO_CATEGORIES_CONTENT_URI, null, null, null, null);
+		Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.VIDEO_CATEGORIES], null, null, null, null);
 		List<String> list = new ArrayList<String>();
 		if (!cursor.moveToFirst()) {
 			showToast("Categories are not loaded");

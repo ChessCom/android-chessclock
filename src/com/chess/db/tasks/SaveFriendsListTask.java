@@ -2,6 +2,7 @@ package com.chess.db.tasks;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -60,11 +61,13 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 			Uri uri = DBConstants.uriArray[DBConstants.FRIENDS];
 			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_USER_ID,
 					DBDataManager.SELECTION_USER_ID, arguments2, null);
+
+			ContentValues values = DBDataManager.putFriendItemToValues(currentItem, userName);
+
 			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)),
-						DBDataManager.putFriendItemToValues(currentItem, userName), null, null);
+				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
 			} else {
-				contentResolver.insert(uri, DBDataManager.putFriendItemToValues(currentItem, userName));
+				contentResolver.insert(uri, values);
 			}
 
 			cursor.close();

@@ -1,33 +1,23 @@
 package com.chess.ui.fragments;
 
-import android.content.Context;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.*;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
-import com.chess.model.SelectionItem;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,7 +25,7 @@ import java.util.List;
  * Date: 23.01.13
  * Time: 10:37
  */
-public class StatsLiveFragment extends CommonLogicFragment {
+public class StatsDailyFragment extends CommonLogicFragment {
 
 	private static final String TAG = "StatsFragment";
 
@@ -60,8 +50,8 @@ public class StatsLiveFragment extends CommonLogicFragment {
 	private LiveDataCursorUpdateListener liveLightningCursorUpdateListener;
 	private LiveDataCursorUpdateListener liveBlitzCursorUpdateListener;
 
-	public static StatsLiveFragment newInstance(int code) {
-		StatsLiveFragment frag = new StatsLiveFragment();
+	public static StatsDailyFragment newInstance(int code) {
+		StatsDailyFragment frag = new StatsDailyFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, code);
 

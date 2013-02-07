@@ -6,7 +6,7 @@ package com.chess.backend.entity.new_api;
  * Date: 04.02.13
  * Time: 13:46
  */
-public class DailyStatsData extends BaseStatsData{
+public class DailyStatsData extends BaseStatsData {
 /*
 {
   "turn_based": {
@@ -63,29 +63,6 @@ public class DailyStatsData extends BaseStatsData{
     }
   }
 }
-
-	"rating": {                               "rating": {
-        "current": 997,                         "current": 1268,
-        "highest": {                            "highest": {
-          "rating": 997,                          "rating": 1268,
-          "timestamp": 1257443104                 "timestamp": 1344327593
-        },                                      },
-        "average_opponent": 0,                  "average_opponent": 1254
-        "best_win": {                           "best_win": {
-          "rating": null,                         "rating": 978,
-          "game_id": null                         "username": "Computer1-EASY"
-        },                                      },
-        "todays_rank": {                      },
-          "rank": null,                       "games": {
-          "total_player_count": null            "total": 5,
-        }                                       "wins": 2,
-      },                                        "losses": 3,
-      "games": {                                "draws": 0
-        "total": 1,
-        "wins": 0,
-        "losses": 1,
-        "draws": 0
-      }
 */
 
 	private ChessStatsData chess;
@@ -109,28 +86,46 @@ public class DailyStatsData extends BaseStatsData{
 
 	public class ChessStatsData {
 		private DailyRating rating;
+		private int timeouts;
+		private long time_per_move;
+		private Games games;
 
 		public DailyRating getRating() {
 			return rating;
 		}
 
-		public void setRating(DailyRating rating) {
-			this.rating = rating;
-		}
+		public class DailyRating extends BaseStatsData.Rating {
 
-		public class DailyRating extends BaseStatsData.Rating{
-			/*
-				"todays_rank": {
-					"rank": null,
-					"total_player_count": null
-				}
-			*/
 			private TodaysRank todays_rank;
+
+			public TodaysRank getTodaysRank() {
+				return todays_rank;
+			}
 
 			public class TodaysRank {
 				private String rank;
 				private int total_player_count;
+
+				public String getRank() {
+					return rank;
+				}
+
+				public int getTotalPlayerCount() {
+					return total_player_count;
+				}
 			}
+		}
+
+		public int getTimeouts() {
+			return timeouts;
+		}
+
+		public long getTimePerMove() {
+			return time_per_move;
+		}
+
+		public Games getGames() {
+			return games;
 		}
 	}
 }

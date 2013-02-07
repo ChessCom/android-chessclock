@@ -855,7 +855,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 				// save at this point state to DB
 				currentGame.setDrawOffered(1);
 				String[] arguments = new String[]{String.valueOf(currentGame.isDrawOffered())};
-				getContentResolver().update(DBConstants.ECHESS_ONLINE_GAMES_CONTENT_URI,
+				getContentResolver().update(DBConstants.uriArray[DBConstants.ECHESS_ONLINE_GAMES],
 						DBDataManager.putGameOnlineItemToValues(currentGame, userName),
 						DBDataManager.SELECTION_USER_OFFERED_DRAW, arguments);
 			}

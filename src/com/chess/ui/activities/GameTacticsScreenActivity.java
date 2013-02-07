@@ -411,7 +411,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		if (tacticItemIsValid()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
-			getContentResolver().delete(DBConstants.TACTICS_BATCH_CONTENT_URI,
+			getContentResolver().delete(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
 					DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments);
 		}
 
@@ -929,7 +929,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private void clearSavedTactics() {
         if (tacticItemIsValid()){
             String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
-            getContentResolver().delete(DBConstants.TACTICS_BATCH_CONTENT_URI,
+            getContentResolver().delete(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
                     DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments);
         }
 	}

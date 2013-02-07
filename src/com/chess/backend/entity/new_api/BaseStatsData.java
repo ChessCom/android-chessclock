@@ -81,23 +81,15 @@ public class BaseStatsData {
 			this.highest = highest;
 		}
 
-		public BestWin getBest_win() {
+		public BestWin getBestWin() {
 			return best_win;
 		}
 
-		public void setBest_win(BestWin best_win) {
-			this.best_win = best_win;
-		}
-
-		public int getAverage_opponent() {
+		public int getAverageOpponent() {
 			return average_opponent;
 		}
 
-		public void setAverage_opponent(int average_opponent) {
-			this.average_opponent = average_opponent;
-		}
-
-		private class BestWin {
+		public class BestWin {
 			private int rating;
 			private String username;
 
@@ -119,13 +111,7 @@ public class BaseStatsData {
 		}
 	}
 
-	private class Games {
-		/*
-			  "total": 12,
-			  "wins": 7,
-			  "losses": 5,
-			  "draws": 0
-		*/
+	public class Games {
 		private int total;
 		private int wins;
 		private int losses;
@@ -135,32 +121,16 @@ public class BaseStatsData {
 			return total;
 		}
 
-		public void setTotal(int total) {
-			this.total = total;
-		}
-
 		public int getWins() {
 			return wins;
-		}
-
-		public void setWins(int wins) {
-			this.wins = wins;
 		}
 
 		public int getLosses() {
 			return losses;
 		}
 
-		public void setLosses(int losses) {
-			this.losses = losses;
-		}
-
 		public int getDraws() {
 			return draws;
-		}
-
-		public void setDraws(int draws) {
-			this.draws = draws;
 		}
 	}
 }

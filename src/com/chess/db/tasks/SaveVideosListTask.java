@@ -2,6 +2,7 @@ package com.chess.db.tasks;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -45,11 +46,13 @@ public class SaveVideosListTask extends AbstractUpdateTask<VideoItem.VideoDataIt
 
 			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_NAME,
 					DBDataManager.SELECTION_NAME, arguments2, null);
+
+			ContentValues values = DBDataManager.putVideoItemToValues(currentItem);
+
 			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)),
-						DBDataManager.putVideoItemToValues(currentItem), null, null);
+				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
 			} else {
-				contentResolver.insert(uri, DBDataManager.putVideoItemToValues(currentItem));
+				contentResolver.insert(uri, values);
 			}
 
 			cursor.close();

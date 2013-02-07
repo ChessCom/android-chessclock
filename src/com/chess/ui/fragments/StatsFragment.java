@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +16,11 @@ import com.chess.backend.entity.new_api.*;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.tasks.SaveArticlesListTask;
 import com.chess.db.tasks.SaveStatsTask;
 import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ChessDarkSpinnerIconAdapter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,7 +35,7 @@ public class StatsFragment extends CommonLogicFragment implements AdapterView.On
 
 	private final static int LIVE_STANDARD = 0;
 	private final static int LIVE_BLITZ = 1;
-	private final static int LIVE_BULLET = 2;
+	private final static int LIVE_LIGHTNING = 2;
 	private final static int DAILY_CHESS = 3;
 	private final static int DAILY_CHESS960 = 4;
 	private final static int TACTICS = 5;
@@ -47,6 +43,7 @@ public class StatsFragment extends CommonLogicFragment implements AdapterView.On
 
 	private Spinner ratingSpinner;
 	private StatsItemUpdateListener statsItemUpdateListener;
+	private SaveStatsUpdateListener saveStatsUpdateListener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +72,7 @@ public class StatsFragment extends CommonLogicFragment implements AdapterView.On
 
 	private void init() {
 		statsItemUpdateListener = new StatsItemUpdateListener();
-
+		saveStatsUpdateListener = new SaveStatsUpdateListener();
 	}
 
 	private void updateData() {
@@ -114,7 +111,7 @@ public class StatsFragment extends CommonLogicFragment implements AdapterView.On
 			super.updateData(returnedObj);
 
 			// Save stats to DB
-//			new SaveStatsTask()
+			new SaveStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
 
 
 			// get selected position of spinner
@@ -122,13 +119,13 @@ public class StatsFragment extends CommonLogicFragment implements AdapterView.On
 
 			switch (position){
 				case LIVE_STANDARD:
-					changeInternalFragment(new StatsLiveFragment());
+					changeInternalFragment(StatsLiveFragment.newInstance(LIVE_STANDARD));
 					break;
 				case LIVE_BLITZ:
-					changeInternalFragment(new StatsLiveFragment());
+					changeInternalFragment(StatsLiveFragment.newInstance(LIVE_BLITZ));
 					break;
-				case LIVE_BULLET:
-					changeInternalFragment(new StatsLiveFragment());
+				case LIVE_LIGHTNING:
+					changeInternalFragment(StatsLiveFragment.newInstance(LIVE_LIGHTNING));
 					break;
 				case DAILY_CHESS:
 					changeInternalFragment(new StatsLiveFragment());
@@ -137,12 +134,33 @@ public class StatsFragment extends CommonLogicFragment implements AdapterView.On
 					changeInternalFragment(new StatsLiveFragment());
 					break;
 				case TACTICS:
-					changeInternalFragment(new StatsLiveFragment());
+					changeInternalFragment(new StatsTacticsFragment());
 					break;
 				case CHESS_MENTOR:
 					changeInternalFragment(new StatsLiveFragment());
 					break;
 			}
+		}
+	}
+
+	private class SaveStatsUpdateListener extends ActionBarUpdateListener<StatsItem.Data> {
+
+		public SaveStatsUpdateListener() {
+			super(getInstance());
+		}
+
+		@Override
+		public void updateData(StatsItem.Data returnedObj) {
+			super.updateData(returnedObj);
+
+
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+
+			showToast(" code " + resultCode);
 		}
 	}
 
@@ -184,7 +202,7 @@ public class StatsFragment extends CommonLogicFragment implements AdapterView.On
 				return getResources().getDrawable(R.drawable.ic_live_game);
 			case LIVE_BLITZ:
 				return getResources().getDrawable(R.drawable.ic_live_blitz);
-			case LIVE_BULLET:
+			case LIVE_LIGHTNING:
 				return getResources().getDrawable(R.drawable.ic_live_bullet);
 			case DAILY_CHESS:
 				return getResources().getDrawable(R.drawable.ic_daily_game);

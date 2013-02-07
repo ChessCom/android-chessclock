@@ -2,6 +2,7 @@ package com.chess.db.tasks;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -36,19 +37,17 @@ public class SaveDailyCurrentGamesListTask extends SaveDailyGamesTask<DailyCurre
 			arguments2[0] = String.valueOf(userName);
 			arguments2[1] = String.valueOf(currentItem.getGameId());
 
-//			Log.d("TEST", "SEARCH game with id = " + currentItem.getGameId() + " user = " + userName);
 			// TODO implement beginTransaction logic for performance increase
 			Uri uri = DBConstants.uriArray[DBConstants.ECHESS_CURRENT_LIST_GAMES];
 			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
 					DBDataManager.SELECTION_GAME_ID, arguments2, null);
-//			Log.d("TEST", "cursor count = " + cursor.getCount());
+
+			ContentValues values = DBDataManager.putEchessGameListCurrentItemToValues(currentItem, userName);
+
 			if (cursor.moveToFirst()) {
-//				Log.d("TEST", "UPDATE game with id = " + currentItem.getGameId() + " user = " + userName);
-				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)),
-						DBDataManager.putEchessGameListCurrentItemToValues(currentItem, userName), null, null);
+				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
 			} else {
-//				Log.d("TEST", "INSERT game with id = " + currentItem.getGameId() + " user = " + userName);
-				contentResolver.insert(uri, DBDataManager.putEchessGameListCurrentItemToValues(currentItem, userName));
+				contentResolver.insert(uri, values);
 			}
 
 			cursor.close();
