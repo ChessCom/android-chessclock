@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.CommonConsumeCategoryItem;
+import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
 import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
@@ -170,7 +170,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_VIDEO_CATEGORIES);
 
-		new RequestJsonTask<CommonConsumeCategoryItem>(videoCategoriesUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<CommonFeedCategoryItem>(videoCategoriesUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
@@ -201,9 +201,9 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		}
 	}
 
-	private class VideoCategoriesUpdateListener extends ActionBarUpdateListener<CommonConsumeCategoryItem> {
+	private class VideoCategoriesUpdateListener extends ActionBarUpdateListener<CommonFeedCategoryItem> {
 		public VideoCategoriesUpdateListener() {
-			super(getInstance(), CommonConsumeCategoryItem.class);
+			super(getInstance(), CommonFeedCategoryItem.class);
 		}
 
 		@Override
@@ -213,11 +213,11 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		}
 
 		@Override
-		public void updateData(CommonConsumeCategoryItem returnedObj) {
+		public void updateData(CommonFeedCategoryItem returnedObj) {
 			super.updateData(returnedObj);
 
-			List<CommonConsumeCategoryItem.Data> dataList = returnedObj.getData();
-			for (CommonConsumeCategoryItem.Data category : dataList) {
+			List<CommonFeedCategoryItem.Data> dataList = returnedObj.getData();
+			for (CommonFeedCategoryItem.Data category : dataList) {
 				category.setName(category.getName().replace(StaticData.SYMBOL_AMP_CODE, StaticData.SYMBOL_AMP));
 			}
 
@@ -318,7 +318,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 	}
 
-	private class SaveVideoCategoriesUpdateListener extends ActionBarUpdateListener<CommonConsumeCategoryItem.Data> {
+	private class SaveVideoCategoriesUpdateListener extends ActionBarUpdateListener<CommonFeedCategoryItem.Data> {
 		public SaveVideoCategoriesUpdateListener() {
 			super(getInstance());
 		}

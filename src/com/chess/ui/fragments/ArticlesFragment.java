@@ -16,7 +16,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.ArticleItem;
-import com.chess.backend.entity.new_api.CommonConsumeCategoryItem;
+import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -166,7 +166,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	private void getCategories() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_ARTICLES_CATEGORIES);
-		new RequestJsonTask<CommonConsumeCategoryItem>(articleCategoriesUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<CommonFeedCategoryItem>(articleCategoriesUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
@@ -281,9 +281,9 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 
-	private class ArticleCategoriesUpdateListener extends ActionBarUpdateListener<CommonConsumeCategoryItem> {
+	private class ArticleCategoriesUpdateListener extends ActionBarUpdateListener<CommonFeedCategoryItem> {
 		public ArticleCategoriesUpdateListener() {
-			super(getInstance(), CommonConsumeCategoryItem.class);
+			super(getInstance(), CommonFeedCategoryItem.class);
 		}
 
 		@Override
@@ -293,7 +293,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		}
 
 		@Override
-		public void updateData(CommonConsumeCategoryItem returnedObj) {
+		public void updateData(CommonFeedCategoryItem returnedObj) {
 			super.updateData(returnedObj);
 
 			new SaveArticleCategoriesTask(saveArticleCategoriesUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
@@ -313,7 +313,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 
-	private class SaveArticleCategoriesUpdateListener extends ActionBarUpdateListener<CommonConsumeCategoryItem.Data> {
+	private class SaveArticleCategoriesUpdateListener extends ActionBarUpdateListener<CommonFeedCategoryItem.Data> {
 		public SaveArticleCategoriesUpdateListener() {
 			super(getInstance());
 		}

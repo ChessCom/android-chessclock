@@ -8,14 +8,14 @@ import java.util.List;
  * Date: 02.02.13
  * Time: 8:38
  */
-public class CommonConsumeCategoryItem extends BaseResponseItem<List<CommonConsumeCategoryItem.Data>> {
+public class CommonFeedCategoryItem extends BaseResponseItem<List<CommonFeedCategoryItem.Data>> {
 /*
-	{
-		"id": 7,
-		"name": "Rules &amp; Basics",
-		"code":"rules-basics",
-		"display_order": 10
-	},
+{
+	"id": 7,
+	"name": "Rules &amp; Basics",
+	"code":"rules-basics",
+	"display_order": 10
+},
 */
 
 	public class Data {

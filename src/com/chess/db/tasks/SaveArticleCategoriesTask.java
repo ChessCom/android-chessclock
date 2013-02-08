@@ -6,7 +6,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.CommonConsumeCategoryItem;
+import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
@@ -16,14 +16,14 @@ import com.chess.db.DBDataManager;
 import java.util.List;
 
 
-public class SaveArticleCategoriesTask extends AbstractUpdateTask<CommonConsumeCategoryItem.Data, Long> {
+public class SaveArticleCategoriesTask extends AbstractUpdateTask<CommonFeedCategoryItem.Data, Long> {
 	private static final String TAG = "SaveFriendsListTask";
 
 	private ContentResolver contentResolver;
 	protected static String[] arguments = new String[1];
 	private LoadItem loadItem;
 
-	public SaveArticleCategoriesTask(TaskUpdateInterface<CommonConsumeCategoryItem.Data> taskFace, List<CommonConsumeCategoryItem.Data> currentItems,
+	public SaveArticleCategoriesTask(TaskUpdateInterface<CommonFeedCategoryItem.Data> taskFace, List<CommonFeedCategoryItem.Data> currentItems,
 									 ContentResolver resolver) {
 		super(taskFace);
 		this.itemList = currentItems;
@@ -34,7 +34,7 @@ public class SaveArticleCategoriesTask extends AbstractUpdateTask<CommonConsumeC
 	@Override
 	protected Integer doTheTask(Long... ids) {
 
-		for (CommonConsumeCategoryItem.Data currentItem : itemList) {
+		for (CommonFeedCategoryItem.Data currentItem : itemList) {
 			final String[] arguments2 = arguments;
 			arguments2[0] = String.valueOf(currentItem.getId());
 

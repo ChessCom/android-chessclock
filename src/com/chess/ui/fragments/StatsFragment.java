@@ -12,11 +12,11 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.*;
+import com.chess.backend.entity.new_api.users.UserStatsItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.tasks.SaveStatsTask;
+import com.chess.db.tasks.SaveUserStatsTask;
 import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ChessDarkSpinnerIconAdapter;
 
@@ -81,7 +81,7 @@ public class StatsFragment extends CommonLogicFragment implements AdapterView.On
 		loadItem.setLoadPath(RestHelper.CMD_STATS);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
 
-		new RequestJsonTask<StatsItem>(statsItemUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<UserStatsItem>(statsItemUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
@@ -94,10 +94,10 @@ public class StatsFragment extends CommonLogicFragment implements AdapterView.On
 	}
 
 
-	private class StatsItemUpdateListener extends ActionBarUpdateListener<StatsItem> {
+	private class StatsItemUpdateListener extends ActionBarUpdateListener<UserStatsItem> {
 
 		public StatsItemUpdateListener() {
-			super(getInstance(), StatsItem.class);
+			super(getInstance(), UserStatsItem.class);
 		}
 
 		@Override
@@ -107,11 +107,11 @@ public class StatsFragment extends CommonLogicFragment implements AdapterView.On
 		}
 
 		@Override
-		public void updateData(StatsItem returnedObj) {
+		public void updateData(UserStatsItem returnedObj) {
 			super.updateData(returnedObj);
 
 			// Save stats to DB
-			new SaveStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
+			new SaveUserStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
 
 
 			// get selected position of spinner
@@ -143,14 +143,14 @@ public class StatsFragment extends CommonLogicFragment implements AdapterView.On
 		}
 	}
 
-	private class SaveStatsUpdateListener extends ActionBarUpdateListener<StatsItem.Data> {
+	private class SaveStatsUpdateListener extends ActionBarUpdateListener<UserStatsItem.Data> {
 
 		public SaveStatsUpdateListener() {
 			super(getInstance());
 		}
 
 		@Override
-		public void updateData(StatsItem.Data returnedObj) {
+		public void updateData(UserStatsItem.Data returnedObj) {
 			super.updateData(returnedObj);
 
 

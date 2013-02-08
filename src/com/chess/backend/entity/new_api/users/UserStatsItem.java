@@ -1,4 +1,6 @@
-package com.chess.backend.entity.new_api;
+package com.chess.backend.entity.new_api.users;
+
+import com.chess.backend.entity.new_api.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -6,7 +8,7 @@ package com.chess.backend.entity.new_api;
  * Date: 04.02.13
  * Time: 13:18
  */
-public class StatsItem extends BaseResponseItem<StatsItem.Data> {
+public class UserStatsItem extends BaseResponseItem<UserStatsItem.Data> {
 /*
 {
   "status": "success",
@@ -163,40 +165,40 @@ public class StatsItem extends BaseResponseItem<StatsItem.Data> {
  */
 
 	public class Data {
-		private LiveStatsData live;
-		private DailyStatsData turn_based;
-		private TacticsStatsData tactics;
-		private ChessMentorData chess_mentor;
+		private UserLiveStatsData live;
+		private UserDailyStatsData turn_based;
+		private UserTacticsStatsData tactics;
+		private UserChessMentorStatsData chess_mentor;
 
-		public LiveStatsData getLive() {
+		public UserLiveStatsData getLive() {
 			return live;
 		}
 
-		public void setLive(LiveStatsData live) {
+		public void setLive(UserLiveStatsData live) {
 			this.live = live;
 		}
 
-		public DailyStatsData getDaily() {
+		public UserDailyStatsData getDaily() {
 			return turn_based;
 		}
 
-		public void setTurnBased(DailyStatsData turn_based) {
+		public void setTurnBased(UserDailyStatsData turn_based) {
 			this.turn_based = turn_based;
 		}
 
-		public TacticsStatsData getTactics() {
+		public UserTacticsStatsData getTactics() {
 			return tactics;
 		}
 
-		public void setTactics(TacticsStatsData tactics) {
+		public void setTactics(UserTacticsStatsData tactics) {
 			this.tactics = tactics;
 		}
 
-		public ChessMentorData getChessMentor() {
+		public UserChessMentorStatsData getChessMentor() {
 			return chess_mentor;
 		}
 
-		public void setChessMentorData(ChessMentorData chess_mentor) {
+		public void setChessMentorData(UserChessMentorStatsData chess_mentor) {
 			this.chess_mentor = chess_mentor;
 		}
 	}

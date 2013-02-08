@@ -1,4 +1,4 @@
-package com.chess.backend.entity.new_api;
+package com.chess.backend.entity.new_api.users;
 
 /**
  * Created with IntelliJ IDEA.
@@ -6,7 +6,7 @@ package com.chess.backend.entity.new_api;
  * Date: 04.02.13
  * Time: 15:24
  */
-public class TacticsStatsData {
+public class UserTacticsStatsData {
 /*
     "tactics": {
       "current": 1311,
@@ -25,8 +25,8 @@ public class TacticsStatsData {
     }
 */
 	private int current;
-	private BaseRatingItem highest;
-	private BaseRatingItem lowest;
+	private UserBaseRatingItem highest;
+	private UserBaseRatingItem lowest;
 	private int attempt_count;
 	private int passed_count;
 	private int failed_count;
@@ -36,11 +36,11 @@ public class TacticsStatsData {
 		return current;
 	}
 
-	public BaseRatingItem getHighest() {
+	public UserBaseRatingItem getHighest() {
 		return highest;
 	}
 
-	public BaseRatingItem getLowest() {
+	public UserBaseRatingItem getLowest() {
 		return lowest;
 	}
 

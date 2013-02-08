@@ -84,7 +84,7 @@ public class DbHelper {
 
 	public static QueryParams getStatsLiveStandardParams(String user){
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.STATS_LIVE_STANDARD]);
+		queryParams.setUri(DBConstants.uriArray[DBConstants.USER_STATS_LIVE_STANDARD]);
 		queryParams.setSelection(DBDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{user});
 		return queryParams;
@@ -92,7 +92,7 @@ public class DbHelper {
 
 	public static QueryParams getStatsLiveLightningParams(String user){
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.STATS_LIVE_LIGHTNING]);
+		queryParams.setUri(DBConstants.uriArray[DBConstants.USER_STATS_LIVE_LIGHTNING]);
 		queryParams.setSelection(DBDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{user});
 		return queryParams;
@@ -100,7 +100,7 @@ public class DbHelper {
 
 	public static QueryParams getStatsLiveBlitzParams(String user){
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.STATS_LIVE_BLITZ]);
+		queryParams.setUri(DBConstants.uriArray[DBConstants.USER_STATS_LIVE_BLITZ]);
 		queryParams.setSelection(DBDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{user});
 		return queryParams;

@@ -7,6 +7,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.new_api.*;
+import com.chess.backend.entity.new_api.users.UserChessMentorStatsData;
+import com.chess.backend.entity.new_api.users.UserDailyStatsData;
+import com.chess.backend.entity.new_api.users.UserLiveStatsData;
+import com.chess.backend.entity.new_api.users.UserTacticsStatsData;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.*;
@@ -661,7 +665,7 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static ContentValues putCommonConsumeCategoryItemToValues(CommonConsumeCategoryItem.Data dataObj) {
+	public static ContentValues putCommonConsumeCategoryItemToValues(CommonFeedCategoryItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 		values.put(DBConstants.V_NAME, dataObj.getName());
 		values.put(DBConstants.V_CATEGORY_ID, dataObj.getId());
@@ -670,7 +674,7 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static ContentValues putStatsLiveItemToValues(LiveStatsData.Stats dataObj, String user) {
+	public static ContentValues putStatsLiveItemToValues(UserLiveStatsData.Stats dataObj, String user) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, user);
@@ -688,7 +692,7 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static ContentValues putStatsDailyItemToValues(DailyStatsData.ChessStatsData dataObj, String user) {
+	public static ContentValues putStatsDailyItemToValues(UserDailyStatsData.ChessStatsData dataObj, String user) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, user);
@@ -712,7 +716,7 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static ContentValues putStatsTacticsItemToValues(TacticsStatsData dataObj, String user) {
+	public static ContentValues putStatsTacticsItemToValues(UserTacticsStatsData dataObj, String user) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, user);
@@ -730,7 +734,7 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static ContentValues putStatsChessMentorItemToValues(ChessMentorData dataObj, String user) {
+	public static ContentValues putStatsChessMentorItemToValues(UserChessMentorStatsData dataObj, String user) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, user);

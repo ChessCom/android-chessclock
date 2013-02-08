@@ -51,14 +51,7 @@ public class DBDataProvider extends ContentProvider {
 		return (appDataBase != null);
 	}
 
-/*
- 	static final String  =
-	static final String  =
-	static final String  =
-	static final String STATS_DAILY_CHESS960_CREATE =
-	static final String STATS_TACTICS_CREATE =
-	static final String STATS_CHESS_MENTOR_CREATE =
-	 */
+
 
 
 	private static String[] createTablesArray = new String[]{
@@ -73,13 +66,13 @@ public class DBDataProvider extends ContentProvider {
 			DBConstants.VIDEOS_CREATE,
 			DBConstants.VIDEO_CATEGORIES_CREATE,
 
-			DBConstants.STATS_LIVE_STANDARD_CREATE,
-			DBConstants.STATS_LIVE_LIGHTNING_CREATE,
-			DBConstants.STATS_LIVE_BLITZ_CREATE,
-			DBConstants.STATS_DAILY_CHESS_CREATE,
-			DBConstants.STATS_LIVE_BLITZ_CREATE,
-			DBConstants.VIDEO_CATEGORIES_CREATE,
-			DBConstants.VIDEO_CATEGORIES_CREATE
+			DBConstants.USER_STATS_LIVE_STANDARD_CREATE,
+			DBConstants.USER_STATS_LIVE_LIGHTNING_CREATE,
+			DBConstants.USER_STATS_LIVE_BLITZ_CREATE,
+			DBConstants.USER_STATS_DAILY_CHESS_CREATE,
+			DBConstants.USER_STATS_DAILY_CHESS960_CREATE,
+			DBConstants.USER_STATS_TACTICS_CREATE,
+			DBConstants.USER_STATS_CHESS_MENTOR_CREATE
 	};
 
 	@Override

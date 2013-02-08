@@ -6,7 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import com.chess.backend.entity.new_api.StatsItem;
+import com.chess.backend.entity.new_api.users.UserStatsItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -20,13 +20,13 @@ import com.chess.db.DBDataManager;
  * Date: 06.02.13
  * Time: 19:32
  */
-public class SaveStatsTask extends AbstractUpdateTask<StatsItem.Data, Long> {
+public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Long> {
 
 	private ContentResolver resolver;
 	protected static String[] arguments = new String[1];
 
-	public SaveStatsTask(TaskUpdateInterface<StatsItem.Data> taskFace, StatsItem.Data item,
-						 ContentResolver resolver) {
+	public SaveUserStatsTask(TaskUpdateInterface<UserStatsItem.Data> taskFace, UserStatsItem.Data item,
+							 ContentResolver resolver) {
 		super(taskFace);
 		this.item = item;
 		this.resolver = resolver;
@@ -42,8 +42,6 @@ public class SaveStatsTask extends AbstractUpdateTask<StatsItem.Data, Long> {
 		saveTacticsStats(userName);
 		saveChessMentorStats(userName);
 
-
-
 		return StaticData.RESULT_OK;
 	}
 
@@ -52,7 +50,7 @@ public class SaveStatsTask extends AbstractUpdateTask<StatsItem.Data, Long> {
 		userArgument[0] = String.valueOf(userName);
 
 		{ // Standard
-			Uri uri = DBConstants.uriArray[DBConstants.STATS_LIVE_STANDARD];
+			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_LIVE_STANDARD];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
@@ -66,7 +64,7 @@ public class SaveStatsTask extends AbstractUpdateTask<StatsItem.Data, Long> {
 		}
 
 		{ // Lightning
-			Uri uri = DBConstants.uriArray[DBConstants.STATS_LIVE_LIGHTNING];
+			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_LIVE_LIGHTNING];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
@@ -80,7 +78,7 @@ public class SaveStatsTask extends AbstractUpdateTask<StatsItem.Data, Long> {
 		}
 
 		{ // Blitz
-			Uri uri = DBConstants.uriArray[DBConstants.STATS_LIVE_BLITZ];
+			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_LIVE_BLITZ];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
@@ -100,7 +98,7 @@ public class SaveStatsTask extends AbstractUpdateTask<StatsItem.Data, Long> {
 
 		{ // Classic Chess
 
-			Uri uri = DBConstants.uriArray[DBConstants.STATS_DAILY_CHESS];
+			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_DAILY_CHESS];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
@@ -114,7 +112,7 @@ public class SaveStatsTask extends AbstractUpdateTask<StatsItem.Data, Long> {
 		}
 
 		{ // Chess960
-			Uri uri = DBConstants.uriArray[DBConstants.STATS_DAILY_CHESS960];
+			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_DAILY_CHESS960];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
@@ -132,7 +130,7 @@ public class SaveStatsTask extends AbstractUpdateTask<StatsItem.Data, Long> {
 		final String[] userArgument = arguments;
 		userArgument[0] = String.valueOf(userName);
 		{ // Standard
-			Uri uri = DBConstants.uriArray[DBConstants.STATS_TACTICS];
+			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_TACTICS];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
@@ -151,7 +149,7 @@ public class SaveStatsTask extends AbstractUpdateTask<StatsItem.Data, Long> {
 		userArgument[0] = String.valueOf(userName);
 
 		{ // Standard
-			Uri uri = DBConstants.uriArray[DBConstants.STATS_CHESS_MENTOR];
+			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_CHESS_MENTOR];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 

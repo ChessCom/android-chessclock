@@ -34,13 +34,13 @@ public class DBConstants {
 			"article_categories",
 			"videos",
 			"video_categories",
-			"stats_live_standard",
-			"stats_live_blitz",
-			"stats_live_lightning",
-			"stats_daily_chess",
-			"stats_daily_chess960",
-			"stats_tactics",
-			"stats_chess_mentor"
+			"user_stats_live_standard",
+			"user_stats_live_blitz",
+			"user_stats_live_lightning",
+			"user_stats_daily_chess",
+			"user_stats_daily_chess960",
+			"user_stats_tactics",
+			"user_stats_chess_mentor"
 	};
 
 	// Content URI
@@ -64,13 +64,14 @@ public class DBConstants {
     public static final int ARTICLE_CATEGORIES = 7;
     public static final int VIDEOS = 8;
     public static final int VIDEO_CATEGORIES = 9;
-    public static final int STATS_LIVE_STANDARD = 10;
-    public static final int STATS_LIVE_BLITZ = 11;
-    public static final int STATS_LIVE_LIGHTNING = 12;
-    public static final int STATS_DAILY_CHESS = 13;
-    public static final int STATS_DAILY_CHESS960 = 14;
-    public static final int STATS_TACTICS = 15;
-    public static final int STATS_CHESS_MENTOR = 16;
+
+    public static final int USER_STATS_LIVE_STANDARD = 10;
+    public static final int USER_STATS_LIVE_BLITZ = 11;
+    public static final int USER_STATS_LIVE_LIGHTNING = 12;
+    public static final int USER_STATS_DAILY_CHESS = 13;
+    public static final int USER_STATS_DAILY_CHESS960 = 14;
+    public static final int USER_STATS_TACTICS = 15;
+    public static final int USER_STATS_CHESS_MENTOR = 16;
 
 
     // general fields
@@ -338,8 +339,8 @@ public class DBConstants {
 
 	/* Stats */
 
-	static final String STATS_LIVE_STANDARD_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[STATS_LIVE_STANDARD] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+	static final String USER_STATS_LIVE_STANDARD_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_LIVE_STANDARD] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
 			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
@@ -352,8 +353,8 @@ public class DBConstants {
 			+ V_GAMES_LOSSES 	    	+ _INT_NOT_NULL + _COMMA
 			+ V_GAMES_DRAWS  	    	+ _INT_NOT_NULL + _CLOSE;
 
-	static final String STATS_LIVE_LIGHTNING_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[STATS_LIVE_LIGHTNING] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+	static final String USER_STATS_LIVE_LIGHTNING_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_LIVE_LIGHTNING] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
 			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
@@ -366,8 +367,8 @@ public class DBConstants {
 			+ V_GAMES_LOSSES 	    	+ _INT_NOT_NULL + _COMMA
 			+ V_GAMES_DRAWS  	    	+ _INT_NOT_NULL + _CLOSE;
 
-	static final String STATS_LIVE_BLITZ_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[STATS_LIVE_BLITZ] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+	static final String USER_STATS_LIVE_BLITZ_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_LIVE_BLITZ] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
 			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
@@ -380,8 +381,8 @@ public class DBConstants {
 			+ V_GAMES_LOSSES 	    	+ _INT_NOT_NULL + _COMMA
 			+ V_GAMES_DRAWS  	    	+ _INT_NOT_NULL + _CLOSE;
 
-	static final String STATS_DAILY_CHESS_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[STATS_DAILY_CHESS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+	static final String USER_STATS_DAILY_CHESS_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_DAILY_CHESS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
 			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
@@ -399,8 +400,8 @@ public class DBConstants {
 			+ V_GAMES_LOSSES 	    	+ _INT_NOT_NULL + _COMMA
 			+ V_GAMES_DRAWS  	    	+ _INT_NOT_NULL + _CLOSE;
 
-	static final String STATS_DAILY_CHESS960_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[STATS_DAILY_CHESS960] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+	static final String USER_STATS_DAILY_CHESS960_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_DAILY_CHESS960] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
 			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
@@ -417,8 +418,8 @@ public class DBConstants {
 			+ V_GAMES_DRAWS  	    	+ _INT_NOT_NULL + _CLOSE;
 
 
-	static final String STATS_TACTICS_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[STATS_TACTICS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+	static final String USER_STATS_TACTICS_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_TACTICS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 					+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
 					+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
 					+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
@@ -430,8 +431,8 @@ public class DBConstants {
 					+ V_FAILED_COUNT 	    	+ _INT_NOT_NULL + _COMMA
 					+ V_TOTAL_SECONDS  	    	+ _INT_NOT_NULL + _CLOSE;
 
-	static final String STATS_CHESS_MENTOR_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[STATS_CHESS_MENTOR] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+	static final String USER_STATS_CHESS_MENTOR_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_CHESS_MENTOR] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 					+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
 					+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
 					+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA

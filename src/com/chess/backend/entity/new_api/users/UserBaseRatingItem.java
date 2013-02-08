@@ -1,4 +1,4 @@
-package com.chess.backend.entity.new_api;
+package com.chess.backend.entity.new_api.users;
 
 /**
  * Created with IntelliJ IDEA.
@@ -6,7 +6,7 @@ package com.chess.backend.entity.new_api;
  * Date: 04.02.13
  * Time: 15:35
  */
-public class BaseRatingItem {
+public class UserBaseRatingItem {
 	private int rating;
 	private long timestamp;
 

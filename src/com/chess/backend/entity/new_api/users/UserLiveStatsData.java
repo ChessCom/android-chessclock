@@ -1,4 +1,4 @@
-package com.chess.backend.entity.new_api;
+package com.chess.backend.entity.new_api.users;
 
 /**
  * Created with IntelliJ IDEA.
@@ -6,7 +6,7 @@ package com.chess.backend.entity.new_api;
  * Date: 04.02.13
  * Time: 13:24
  */
-public class LiveStatsData {
+public class UserLiveStatsData {
 /*
 		{
   "lightning": {
@@ -154,7 +154,7 @@ public class LiveStatsData {
       "average_opponent": 1373
 */
 			private int current;
-			private BaseRatingItem highest;
+			private UserBaseRatingItem highest;
 			private BestWin best_win;
 
 			private int average_opponent;
@@ -167,11 +167,11 @@ public class LiveStatsData {
 				this.current = current;
 			}
 
-			public BaseRatingItem getHighest() {
+			public UserBaseRatingItem getHighest() {
 				return highest;
 			}
 
-			public void setHighest(BaseRatingItem highest) {
+			public void setHighest(UserBaseRatingItem highest) {
 				this.highest = highest;
 			}
 

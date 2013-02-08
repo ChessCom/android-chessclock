@@ -1,4 +1,4 @@
-package com.chess.backend.entity.new_api;
+package com.chess.backend.entity.new_api.users;
 
 /**
  * Created with IntelliJ IDEA.
@@ -6,7 +6,7 @@ package com.chess.backend.entity.new_api;
  * Date: 04.02.13
  * Time: 13:46
  */
-public class DailyStatsData extends BaseStatsData {
+public class UserDailyStatsData extends UserBaseStatsData {
 /*
 {
   "turn_based": {
@@ -94,7 +94,7 @@ public class DailyStatsData extends BaseStatsData {
 			return rating;
 		}
 
-		public class DailyRating extends BaseStatsData.Rating {
+		public class DailyRating extends UserBaseStatsData.Rating {
 
 			private TodaysRank todays_rank;
 
