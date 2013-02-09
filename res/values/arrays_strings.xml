@@ -64,18 +64,23 @@
         <item>Tactics</item>
     </string-array>
 
-<!--
-		sortList.add("Live - Standard");
-		sortList.add("Live - Blitz");
-		sortList.add("Live - Lightning");
-		sortList.add("Daily - Chess");
-		sortList.add("Daily - Chess960");
-		sortList.add("Tactics");
-		sortList.add("Coach Manager");
+    <string-array name="game_stats_categories">
+        <item>Live - Standard</item>
+        <item>Live - Blitz</item>
+        <item>Live - Bullet</item>
+        <item>Daily - Chess</item>
+        <item>Daily - Chess960</item>
+    </string-array>
 
--->
+    <string-array name="game_stats_types">
+        <item>standard</item>
+        <item>blitz</item>
+        <item>lightning</item>
+        <item>chess</item>
+        <item>chess960</item>
+    </string-array>
 
-    <string-array name="ratings_categories">
+    <string-array name="user_stats_categories">
         <item>Live - Standard</item>
         <item>Live - Blitz</item>
         <item>Live - Bullet</item>

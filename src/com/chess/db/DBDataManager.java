@@ -7,10 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.new_api.*;
-import com.chess.backend.entity.new_api.users.UserChessMentorStatsData;
-import com.chess.backend.entity.new_api.users.UserDailyStatsData;
-import com.chess.backend.entity.new_api.users.UserLiveStatsData;
-import com.chess.backend.entity.new_api.users.UserTacticsStatsData;
+import com.chess.backend.entity.new_api.stats.*;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.*;
@@ -435,14 +432,6 @@ public class DBDataManager {
 	public static GameListFinishedItem getEchessFinishedListGameFromCursor(Cursor cursor) {
 		GameListFinishedItem dataObj = new GameListFinishedItem();
 
-		/*
-
-		if (getInt(cursor, DBConstants.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
-		if (getInt(cursor, DBConstants.V_GAME_RESULT) == BaseGameItem.GAME_WON) {
-		, DBConstants.V_OPPONENT_NAME) +
-		 */
-//		setListGameItemFromCursor(dataObj, cursor);
-
 		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
 		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
 		dataObj.setOpponentName(getString(cursor, DBConstants.V_OPPONENT_NAME));
@@ -665,7 +654,7 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static ContentValues putCommonConsumeCategoryItemToValues(CommonFeedCategoryItem.Data dataObj) {
+	public static ContentValues putCommonFeedCategoryItemToValues(CommonFeedCategoryItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 		values.put(DBConstants.V_NAME, dataObj.getName());
 		values.put(DBConstants.V_CATEGORY_ID, dataObj.getId());
@@ -674,7 +663,7 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static ContentValues putStatsLiveItemToValues(UserLiveStatsData.Stats dataObj, String user) {
+	public static ContentValues putUserStatsLiveItemToValues(UserLiveStatsData.Stats dataObj, String user) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, user);
@@ -692,15 +681,16 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static ContentValues putStatsDailyItemToValues(UserDailyStatsData.ChessStatsData dataObj, String user) {
+	public static ContentValues putUserStatsDailyItemToValues(UserDailyStatsData.ChessStatsData dataObj, String user) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, user);
 		values.put(DBConstants.V_CURRENT, dataObj.getRating().getCurrent());
 		values.put(DBConstants.V_HIGHEST_RATING, dataObj.getRating().getHighest().getRating());
 		values.put(DBConstants.V_HIGHEST_TIMESTAMP, dataObj.getRating().getHighest().getTimestamp());
+
 		values.put(DBConstants.V_BEST_WIN_RATING, dataObj.getRating().getBestWin().getRating());
-		values.put(DBConstants.V_BEST_WIN_GAME_ID, dataObj.getRating().getBestWin().getUsername());
+		values.put(DBConstants.V_BEST_WIN_GAME_ID, dataObj.getRating().getBestWin().getGameId());
 		values.put(DBConstants.V_BEST_WIN_USERNAME, dataObj.getRating().getBestWin().getUsername());
 		values.put(DBConstants.V_AVERAGE_OPPONENT, dataObj.getRating().getAverageOpponent());
 		values.put(DBConstants.V_RANK, dataObj.getRating().getTodaysRank().getRank());
@@ -716,7 +706,7 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static ContentValues putStatsTacticsItemToValues(UserTacticsStatsData dataObj, String user) {
+	public static ContentValues putUserStatsTacticsItemToValues(UserTacticsStatsData dataObj, String user) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, user);
@@ -734,7 +724,7 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static ContentValues putStatsChessMentorItemToValues(UserChessMentorStatsData dataObj, String user) {
+	public static ContentValues putUserStatsChessMentorItemToValues(UserChessMentorStatsData dataObj, String user) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, user);
@@ -751,6 +741,119 @@ public class DBDataManager {
 
 		return values;
 	}
+
+	public static ContentValues putGameStatsLiveItemToValues(GameStatsItem.Data dataObj, String user) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_USER, user);
+		values.put(DBConstants.V_CURRENT, dataObj.getRating().getCurrent());
+		values.put(DBConstants.V_RANK, dataObj.getRating().getTodaysRank().getRank());
+		values.put(DBConstants.V_TOTAL_PLAYER_COUNT, dataObj.getRating().getTodaysRank().getTotalPlayerCount());
+		values.put(DBConstants.V_PERCENTILE, dataObj.getRating().getPercentile());
+		values.put(DBConstants.V_GLICKO_RD, dataObj.getRating().getGlickoRd());
+
+		values.put(DBConstants.V_HIGHEST_RATING, dataObj.getRating().getHighest().getRating());
+		values.put(DBConstants.V_HIGHEST_TIMESTAMP, dataObj.getRating().getHighest().getTimestamp());
+		values.put(DBConstants.V_LOWEST_RATING, dataObj.getRating().getLowest().getRating());
+		values.put(DBConstants.V_LOWEST_TIMESTAMP, dataObj.getRating().getLowest().getTimestamp());
+		values.put(DBConstants.V_AVERAGE_OPPONENT, dataObj.getRating().getAverageOpponent());
+
+		values.put(DBConstants.V_BEST_WIN_RATING, dataObj.getRating().getBestWin().getRating());
+		values.put(DBConstants.V_BEST_WIN_GAME_ID, dataObj.getRating().getBestWin().getGameId());
+		values.put(DBConstants.V_BEST_WIN_USERNAME, dataObj.getRating().getBestWin().getUsername());
+		values.put(DBConstants.V_AVG_OPPONENT_RATING_WIN, dataObj.getRating().getAverageOpponentRating().getWin());
+		values.put(DBConstants.V_AVG_OPPONENT_RATING_LOSE, dataObj.getRating().getAverageOpponentRating().getLose());
+		values.put(DBConstants.V_AVG_OPPONENT_RATING_DRAW, dataObj.getRating().getAverageOpponentRating().getDraw());
+		values.put(DBConstants.V_UNRATED, dataObj.getGames().getUnrated());
+		values.put(DBConstants.V_IN_PROGRESS, dataObj.getGames().getInProgress());
+		values.put(DBConstants.V_TIMEOUT_PERCENT, dataObj.getGames().getTimeoutPercent());
+
+
+		values.put(DBConstants.V_WINS_TOTAL, dataObj.getGames().getWins().getTotal());
+		values.put(DBConstants.V_WINS_WHITE, dataObj.getGames().getWins().getWhite());
+		values.put(DBConstants.V_WINS_BLACK, dataObj.getGames().getWins().getBlack());
+
+		values.put(DBConstants.V_LOSSES_TOTAL, dataObj.getGames().getLosses().getTotal());
+		values.put(DBConstants.V_LOSSES_WHITE, dataObj.getGames().getLosses().getWhite());
+		values.put(DBConstants.V_LOSSES_BLACK, dataObj.getGames().getLosses().getBlack());
+
+		values.put(DBConstants.V_DRAWS_TOTAL, dataObj.getGames().getDraws().getTotal());
+		values.put(DBConstants.V_DRAWS_WHITE, dataObj.getGames().getDraws().getWhite());
+		values.put(DBConstants.V_DRAWS_BLACK, dataObj.getGames().getDraws().getBlack());
+
+		values.put(DBConstants.V_WINNING_STREAK, dataObj.getGames().getWinningStreak());
+		values.put(DBConstants.V_LOSING_STREAK, dataObj.getGames().getLosingStreak());
+		if (dataObj.getGames().getMostFrequentOpponent() != null) {
+			values.put(DBConstants.V_FREQUENT_OPPONENT_NAME, dataObj.getGames().getMostFrequentOpponent().getUsername());
+			values.put(DBConstants.V_FREQUENT_OPPONENT_GAMES_PLAYED, dataObj.getGames().getMostFrequentOpponent().getGamesPlayed());
+		} else {
+			values.put(DBConstants.V_FREQUENT_OPPONENT_NAME, StaticData.SYMBOL_EMPTY);
+			values.put(DBConstants.V_FREQUENT_OPPONENT_GAMES_PLAYED, 0);
+		}
+
+		return values;
+	}
+
+	public static ContentValues putGameStatsDailyItemToValues(GameStatsItem.Data dataObj, String user) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_USER, user);
+		values.put(DBConstants.V_CURRENT, dataObj.getRating().getCurrent());
+		values.put(DBConstants.V_RANK, dataObj.getRating().getTodaysRank().getRank());
+		values.put(DBConstants.V_TOTAL_PLAYER_COUNT, dataObj.getRating().getTodaysRank().getTotalPlayerCount());
+		values.put(DBConstants.V_PERCENTILE, dataObj.getRating().getPercentile());
+		values.put(DBConstants.V_GLICKO_RD, dataObj.getRating().getGlickoRd());
+
+		values.put(DBConstants.V_HIGHEST_RATING, dataObj.getRating().getHighest().getRating());
+		values.put(DBConstants.V_HIGHEST_TIMESTAMP, dataObj.getRating().getHighest().getTimestamp());
+		values.put(DBConstants.V_LOWEST_RATING, dataObj.getRating().getLowest().getRating());
+		values.put(DBConstants.V_LOWEST_TIMESTAMP, dataObj.getRating().getLowest().getTimestamp());
+		values.put(DBConstants.V_AVERAGE_OPPONENT, dataObj.getRating().getAverageOpponent());
+
+		values.put(DBConstants.V_BEST_WIN_RATING, dataObj.getRating().getBestWin().getRating());
+		values.put(DBConstants.V_BEST_WIN_GAME_ID, dataObj.getRating().getBestWin().getGameId());
+		values.put(DBConstants.V_BEST_WIN_USERNAME, dataObj.getRating().getBestWin().getUsername());
+		values.put(DBConstants.V_AVG_OPPONENT_RATING_WIN, dataObj.getRating().getAverageOpponentRating().getWin());
+		values.put(DBConstants.V_AVG_OPPONENT_RATING_LOSE, dataObj.getRating().getAverageOpponentRating().getLose());
+		values.put(DBConstants.V_AVG_OPPONENT_RATING_DRAW, dataObj.getRating().getAverageOpponentRating().getDraw());
+		values.put(DBConstants.V_UNRATED, dataObj.getGames().getUnrated());
+		values.put(DBConstants.V_IN_PROGRESS, dataObj.getGames().getInProgress());
+		values.put(DBConstants.V_TIMEOUT_PERCENT, dataObj.getGames().getTimeoutPercent());
+
+
+		values.put(DBConstants.V_WINS_TOTAL, dataObj.getGames().getWins().getTotal());
+		values.put(DBConstants.V_WINS_WHITE, dataObj.getGames().getWins().getWhite());
+		values.put(DBConstants.V_WINS_BLACK, dataObj.getGames().getWins().getBlack());
+
+		values.put(DBConstants.V_LOSSES_TOTAL, dataObj.getGames().getLosses().getTotal());
+		values.put(DBConstants.V_LOSSES_WHITE, dataObj.getGames().getLosses().getWhite());
+		values.put(DBConstants.V_LOSSES_BLACK, dataObj.getGames().getLosses().getBlack());
+
+		values.put(DBConstants.V_DRAWS_TOTAL, dataObj.getGames().getDraws().getTotal());
+		values.put(DBConstants.V_DRAWS_WHITE, dataObj.getGames().getDraws().getWhite());
+		values.put(DBConstants.V_DRAWS_BLACK, dataObj.getGames().getDraws().getBlack());
+
+		values.put(DBConstants.V_WINNING_STREAK, dataObj.getGames().getWinningStreak());
+		values.put(DBConstants.V_LOSING_STREAK, dataObj.getGames().getLosingStreak());
+
+		values.put(DBConstants.V_TOURNAMENTS_LEADERBOARD_POINTS, dataObj.getTournaments().getAll().getLeaderboardPoints());
+		values.put(DBConstants.V_TOURNAMENTS_EVENTS_ENTERED, dataObj.getTournaments().getAll().getEventsEntered());
+		values.put(DBConstants.V_TOURNAMENTS_FIRST_PLACE_FINISHES, dataObj.getTournaments().getAll().getFirstPlaceFinishes());
+		values.put(DBConstants.V_TOURNAMENTS_SECOND_PLACE_FINISHES, dataObj.getTournaments().getAll().getSecondPlaceFinishes());
+		values.put(DBConstants.V_TOURNAMENTS_THIRD_PLACE_FINISHES, dataObj.getTournaments().getAll().getThirdPlaceFinishes());
+		values.put(DBConstants.V_TOURNAMENTS_WITHDRAWALS, dataObj.getTournaments().getAll().getWithdrawals());
+		values.put(DBConstants.V_TOURNAMENTS_HOSTED, dataObj.getTournaments().getAll().getTournamentsHosted());
+		values.put(DBConstants.V_TOTAL_COUNT_PLAYERS_HOSTED, dataObj.getTournaments().getAll().getTotalCountPlayersHosted());
+
+		values.put(DBConstants.V_TOURNAMENTS_GAMES_TOTAL, dataObj.getTournaments().getGames().getTotal());
+		values.put(DBConstants.V_TOURNAMENTS_GAMES_WON, dataObj.getTournaments().getGames().getWon());
+		values.put(DBConstants.V_TOURNAMENTS_GAMES_LOST, dataObj.getTournaments().getGames().getLost());
+		values.put(DBConstants.V_TOURNAMENTS_GAMES_DRAWN, dataObj.getTournaments().getGames().getDraw());
+		values.put(DBConstants.V_TOURNAMENTS_GAMES_IN_PROGRESS, dataObj.getTournaments().getGames().getInProgress());
+
+		return values;
+	}
+
 
 	public static boolean checkIfDrawOffered(ContentResolver resolver, String userName, long gameId) {
 		final String[] arguments2 = sArguments2;

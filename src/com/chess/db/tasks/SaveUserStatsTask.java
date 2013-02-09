@@ -6,7 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import com.chess.backend.entity.new_api.users.UserStatsItem;
+import com.chess.backend.entity.new_api.stats.UserStatsItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -54,7 +54,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
-			ContentValues values = DBDataManager.putStatsLiveItemToValues(item.getLive().getStandard(), userName);
+			ContentValues values = DBDataManager.putUserStatsLiveItemToValues(item.getLive().getStandard(), userName);
 
 			if (cursor.moveToFirst()) {
 				resolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
@@ -68,7 +68,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
-			ContentValues values = DBDataManager.putStatsLiveItemToValues(item.getLive().getLightning(), userName);
+			ContentValues values = DBDataManager.putUserStatsLiveItemToValues(item.getLive().getLightning(), userName);
 
 			if (cursor.moveToFirst()) {
 				resolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
@@ -82,7 +82,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
-			ContentValues values = DBDataManager.putStatsLiveItemToValues(item.getLive().getBlitz(), userName);
+			ContentValues values = DBDataManager.putUserStatsLiveItemToValues(item.getLive().getBlitz(), userName);
 
 			if (cursor.moveToFirst()) {
 				resolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
@@ -102,7 +102,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
-			ContentValues values = DBDataManager.putStatsDailyItemToValues(item.getDaily().getChess(), userName);
+			ContentValues values = DBDataManager.putUserStatsDailyItemToValues(item.getDaily().getChess(), userName);
 
 			if (cursor.moveToFirst()) {
 				resolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
@@ -116,7 +116,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
-			ContentValues values = DBDataManager.putStatsDailyItemToValues(item.getDaily().getChess960(), userName);
+			ContentValues values = DBDataManager.putUserStatsDailyItemToValues(item.getDaily().getChess960(), userName);
 
 			if (cursor.moveToFirst()) {
 				resolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
@@ -134,7 +134,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
-			ContentValues values = DBDataManager.putStatsTacticsItemToValues(item.getTactics(), userName);
+			ContentValues values = DBDataManager.putUserStatsTacticsItemToValues(item.getTactics(), userName);
 
 			if (cursor.moveToFirst()) {
 				resolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null); // TODO improve performance by updating only needed fields
@@ -153,7 +153,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
-			ContentValues values = DBDataManager.putStatsChessMentorItemToValues(item.getChessMentor(), userName);
+			ContentValues values = DBDataManager.putUserStatsChessMentorItemToValues(item.getChessMentor(), userName);
 
 			if (cursor.moveToFirst()) {
 				resolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);

@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
 import com.chess.R;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
@@ -25,9 +23,9 @@ import java.util.Date;
  * Date: 23.01.13
  * Time: 10:37
  */
-public class StatsDailyFragment extends CommonLogicFragment {
+public class StatsGameLiveFragment extends CommonLogicFragment {
 
-	private static final String TAG = "StatsFragment";
+	private static final String TAG = "StatsGameFragment";
 
 	public static final int HIGHEST_ID = 0x00002000;
 	public static final int LOWEST_ID = 0x00002100;
@@ -50,8 +48,8 @@ public class StatsDailyFragment extends CommonLogicFragment {
 	private LiveDataCursorUpdateListener liveLightningCursorUpdateListener;
 	private LiveDataCursorUpdateListener liveBlitzCursorUpdateListener;
 
-	public static StatsDailyFragment newInstance(int code) {
-		StatsDailyFragment frag = new StatsDailyFragment();
+	public static StatsGameLiveFragment newInstance(int code) {
+		StatsGameLiveFragment frag = new StatsGameLiveFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, code);
 

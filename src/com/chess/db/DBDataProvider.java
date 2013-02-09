@@ -19,6 +19,7 @@ import static com.chess.db.DBConstants.tablesArray;
  * @modified 27.10.12
  */
 public class DBDataProvider extends ContentProvider {
+
 	private static final UriMatcher uriMatcher;
 	private static final UriMatcher uriMatcherIds;
 
@@ -51,16 +52,15 @@ public class DBDataProvider extends ContentProvider {
 		return (appDataBase != null);
 	}
 
-
-
-
 	private static String[] createTablesArray = new String[]{
 			DBConstants.TACTICS_BATCH_TABLE_CREATE,
 			DBConstants.TACTICS_RESULTS_TABLE_CREATE,
 			DBConstants.ECHESS_FINISHED_LIST_GAMES_CREATE,
 			DBConstants.ECHESS_CURRENT_LIST_GAMES_CREATE,
 			DBConstants.ECHESS_ONLINE_GAMES_CREATE,
+
 			DBConstants.FRIENDS_CREATE,
+
 			DBConstants.ARTICLES_CREATE,
 			DBConstants.ARTICLE_CATEGORIES_CREATE,
 			DBConstants.VIDEOS_CREATE,
@@ -72,7 +72,13 @@ public class DBDataProvider extends ContentProvider {
 			DBConstants.USER_STATS_DAILY_CHESS_CREATE,
 			DBConstants.USER_STATS_DAILY_CHESS960_CREATE,
 			DBConstants.USER_STATS_TACTICS_CREATE,
-			DBConstants.USER_STATS_CHESS_MENTOR_CREATE
+			DBConstants.USER_STATS_CHESS_MENTOR_CREATE,
+
+			DBConstants.GAME_STATS_LIVE_STANDARD_CREATE,
+			DBConstants.GAME_STATS_LIVE_LIGHTNING_CREATE,
+			DBConstants.GAME_STATS_LIVE_BLITZ_CREATE,
+			DBConstants.GAME_STATS_DAILY_CHESS_CREATE,
+			DBConstants.GAME_STATS_DAILY_CHESS960_CREATE
 	};
 
 	@Override

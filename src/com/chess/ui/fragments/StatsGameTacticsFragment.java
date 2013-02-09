@@ -14,7 +14,7 @@ import com.chess.ui.views.drawables.PieChartDrawable;
  * Date: 06.02.13
  * Time: 19:16
  */
-public class StatsTacticsFragment extends CommonLogicFragment {
+public class StatsGameTacticsFragment extends CommonLogicFragment {
 
 	private View graphView;
 

@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 16;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 18;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -24,23 +24,30 @@ public class DBConstants {
 
 	public static final String[] tablesArray = new String[]{
 			"tactics_batch",
-			"tactics_batch",
 			"tactics_results",
 			"echess_finished_games",
 			"echess_current_games",
 			"echess_online_games",
 			"friends",
+
 			"articles",
 			"article_categories",
 			"videos",
 			"video_categories",
+
 			"user_stats_live_standard",
 			"user_stats_live_blitz",
 			"user_stats_live_lightning",
 			"user_stats_daily_chess",
 			"user_stats_daily_chess960",
 			"user_stats_tactics",
-			"user_stats_chess_mentor"
+			"user_stats_chess_mentor",
+
+			"game_stats_live_standard",
+			"game_stats_live_blitz",
+			"game_stats_live_lightning",
+			"game_stats_daily_chess",
+			"game_stats_daily_chess960"
 	};
 
 	// Content URI
@@ -60,6 +67,7 @@ public class DBConstants {
     public static final int ECHESS_CURRENT_LIST_GAMES = 3;
     public static final int ECHESS_ONLINE_GAMES = 4;
     public static final int FRIENDS = 5;
+
     public static final int ARTICLES = 6;
     public static final int ARTICLE_CATEGORIES = 7;
     public static final int VIDEOS = 8;
@@ -72,6 +80,12 @@ public class DBConstants {
     public static final int USER_STATS_DAILY_CHESS960 = 14;
     public static final int USER_STATS_TACTICS = 15;
     public static final int USER_STATS_CHESS_MENTOR = 16;
+
+    public static final int GAME_STATS_LIVE_STANDARD = 17;
+    public static final int GAME_STATS_LIVE_BLITZ = 18;
+    public static final int GAME_STATS_LIVE_LIGHTNING = 19;
+    public static final int GAME_STATS_DAILY_CHESS = 20;
+    public static final int GAME_STATS_DAILY_CHESS960 = 21;
 
 
     // general fields
@@ -159,50 +173,10 @@ public class DBConstants {
 	public static final String V_MOBILE_URL 		= "mobile_url";
 	public static final String V_KEY_FEN 			= "key_fen";
 
-
-	/*
-
-	*/
-	/*Stats*/
-	 /*Rating*/
-	public static final String V_CURRENT 				= "current";
-	public static final String V_HIGHEST_RATING 		= "highest_rating";
-	public static final String V_HIGHEST_TIMESTAMP 		= "highest_timestamp";
-	public static final String V_BEST_WIN_RATING 		= "best_win_rating";
-	public static final String V_BEST_WIN_GAME_ID 		= "best_win_game_id";
-	public static final String V_BEST_WIN_USERNAME 		= "best_win_username";
-	public static final String V_AVERAGE_OPPONENT 		= "average_opponent";
-	 /*Games*/
-	public static final String V_GAMES_TOTAL 			= "games_total";
-	public static final String V_GAMES_WINS 			= "games_wins";
-	public static final String V_GAMES_LOSSES 			= "games_losses";
-	public static final String V_GAMES_DRAWS 			= "games_draws";
-	 /* Daily */
-	public static final String V_RANK 					= "rank";
-	public static final String V_TOTAL_PLAYER_COUNT 	= "total_player_count";
-	public static final String V_TIMEOUTS 				= "timeouts";
-	public static final String V_TIME_PER_MOVE 			= "time_per_move";
-
-	/* Tactics */
-	public static final String V_LOWEST_RATING 			= "lowest_rating";
-	public static final String V_LOWEST_TIMESTAMP 		= "lowest_timestamp";
-	public static final String V_ATTEMPT_COUNT 			= "attempt_count";
-	public static final String V_PASSED_COUNT 			= "passed_count";
-	public static final String V_FAILED_COUNT 			= "failed_count";
-	public static final String V_TOTAL_SECONDS 			= "total_seconds";
-
-	/* Chess Mentor*/
-	public static final String V_LESSONS_TRIED 				= "lessons_tried";
-	public static final String V_TOTAL_LESSON_COUNT 		= "total_lesson_count";
-	public static final String V_LESSON_COMPLETE_PERCENTAGE = "lesson_complete_percentage";
-	public static final String V_TOTAL_TRAINING_SECONDS 	= "total_training_seconds";
-
-
 	/* common commands */
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists ";
     private static final String _INT_NOT_NULL 		= " INT not null";
     private static final String _LONG_NOT_NULL 		= " LONG not null";
-    private static final String _DOUBLE_NOT_NULL 	= " DOUBLE not null";
     private static final String _TEXT_NOT_NULL 		= " TEXT not null";
     private static final String _COMMA 				= ",";
     private static final String _CLOSE 				= ");";
@@ -337,7 +311,40 @@ public class DBConstants {
 			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
 			+ V_DISPLAY_ORDER 	    	+ _INT_NOT_NULL + _CLOSE;
 
-	/* Stats */
+	/* ==================== User Stats ============================== */
+	 /*Rating*/
+	public static final String V_CURRENT 				= "current";
+	public static final String V_HIGHEST_RATING 		= "highest_rating";
+	public static final String V_HIGHEST_TIMESTAMP 		= "highest_timestamp";
+	public static final String V_BEST_WIN_RATING 		= "best_win_rating";
+	public static final String V_BEST_WIN_GAME_ID 		= "best_win_game_id";
+	public static final String V_BEST_WIN_USERNAME 		= "best_win_username";
+	public static final String V_AVERAGE_OPPONENT 		= "average_opponent";
+	/*Games*/
+	public static final String V_GAMES_TOTAL 			= "games_total";
+	public static final String V_GAMES_WINS 			= "games_wins";
+	public static final String V_GAMES_LOSSES 			= "games_losses";
+	public static final String V_GAMES_DRAWS 			= "games_draws";
+	/* Daily */
+	public static final String V_RANK 					= "rank";
+	public static final String V_TOTAL_PLAYER_COUNT 	= "total_player_count";
+	public static final String V_TIMEOUTS 				= "timeouts";
+	public static final String V_TIME_PER_MOVE 			= "time_per_move";
+
+	/* Tactics */
+	public static final String V_LOWEST_RATING 			= "lowest_rating";
+	public static final String V_LOWEST_TIMESTAMP 		= "lowest_timestamp";
+	public static final String V_ATTEMPT_COUNT 			= "attempt_count";
+	public static final String V_PASSED_COUNT 			= "passed_count";
+	public static final String V_FAILED_COUNT 			= "failed_count";
+	public static final String V_TOTAL_SECONDS 			= "total_seconds";
+
+	/* Chess Mentor*/
+	public static final String V_LESSONS_TRIED 				= "lessons_tried";
+	public static final String V_TOTAL_LESSON_COUNT 		= "total_lesson_count";
+	public static final String V_LESSON_COMPLETE_PERCENTAGE = "lesson_complete_percentage";
+	public static final String V_TOTAL_TRAINING_SECONDS 	= "total_training_seconds";
+
 
 	static final String USER_STATS_LIVE_STANDARD_CREATE =
 			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_LIVE_STANDARD] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
@@ -420,28 +427,278 @@ public class DBConstants {
 
 	static final String USER_STATS_TACTICS_CREATE =
 			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_TACTICS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-					+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-					+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
-					+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-					+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-					+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-					+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-					+ V_ATTEMPT_COUNT  	    	+ _INT_NOT_NULL + _COMMA
-					+ V_PASSED_COUNT   	    	+ _INT_NOT_NULL + _COMMA
-					+ V_FAILED_COUNT 	    	+ _INT_NOT_NULL + _COMMA
-					+ V_TOTAL_SECONDS  	    	+ _INT_NOT_NULL + _CLOSE;
+			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
+			+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
+			+ V_ATTEMPT_COUNT  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_PASSED_COUNT   	    	+ _INT_NOT_NULL + _COMMA
+			+ V_FAILED_COUNT 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_TOTAL_SECONDS  	    	+ _INT_NOT_NULL + _CLOSE;
 
 	static final String USER_STATS_CHESS_MENTOR_CREATE =
 			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_CHESS_MENTOR] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-					+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-					+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
-					+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-					+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-					+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-					+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-					+ V_LESSONS_TRIED  	    	+ _INT_NOT_NULL + _COMMA
-					+ V_TOTAL_LESSON_COUNT   	    + _INT_NOT_NULL + _COMMA
-					+ V_LESSON_COMPLETE_PERCENTAGE 	+ _INT_NOT_NULL + _COMMA
-					+ V_TOTAL_TRAINING_SECONDS  	+ _LONG_NOT_NULL + _CLOSE;
+			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
+			+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
+			+ V_LESSONS_TRIED  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_TOTAL_LESSON_COUNT   	    + _INT_NOT_NULL + _COMMA
+			+ V_LESSON_COMPLETE_PERCENTAGE 	+ _INT_NOT_NULL + _COMMA
+			+ V_TOTAL_TRAINING_SECONDS  	+ _LONG_NOT_NULL + _CLOSE;
 
+
+	/* ==================== Game Stats ============================== */
+
+	public static final String V_PERCENTILE 			= "percentile";
+	public static final String V_GLICKO_RD 				= "glicko_rd";
+	public static final String V_AVG_OPPONENT_RATING_WIN = "average_opponent_rating_when_i_win";
+	public static final String V_AVG_OPPONENT_RATING_LOSE = "average_opponent_rating_when_i_lose";
+	public static final String V_AVG_OPPONENT_RATING_DRAW = "average_opponent_rating_when_i_draw";
+	public static final String V_UNRATED 				= "unrated";
+	public static final String V_IN_PROGRESS 			= "in_progress";
+	public static final String V_TIMEOUT_PERCENT 		= "timeout_percent";
+
+	public static final String V_WINS_TOTAL 			= "wins_total";
+	public static final String V_WINS_WHITE 			= "wins_white";
+	public static final String V_WINS_BLACK 			= "wins_black";
+	public static final String V_LOSSES_TOTAL 			= "losses_total";
+	public static final String V_LOSSES_WHITE 			= "losses_white";
+	public static final String V_LOSSES_BLACK 			= "losses_black";
+	public static final String V_DRAWS_TOTAL 			= "draws_total";
+	public static final String V_DRAWS_WHITE 			= "draws_white";
+	public static final String V_DRAWS_BLACK 			= "draws_black";
+	public static final String V_WINNING_STREAK 		= "winning_streak";
+	public static final String V_LOSING_STREAK 			= "losing_streak";
+	public static final String V_FREQUENT_OPPONENT_NAME 			= "frequent_opponent_name";
+	public static final String V_FREQUENT_OPPONENT_GAMES_PLAYED 	= "frequent_opponent_games_played";
+
+	public static final String V_TOURNAMENTS_LEADERBOARD_POINTS 	= "tournaments_leaderboard_points";
+	public static final String V_TOURNAMENTS_EVENTS_ENTERED 		= "tournaments_events_entered";
+	public static final String V_TOURNAMENTS_FIRST_PLACE_FINISHES 	= "tournaments_first_place_finishes";
+	public static final String V_TOURNAMENTS_SECOND_PLACE_FINISHES 	= "tournaments_second_place_finishes";
+	public static final String V_TOURNAMENTS_THIRD_PLACE_FINISHES 	= "tournaments_third_place_finishes";
+	public static final String V_TOURNAMENTS_WITHDRAWALS 			= "tournaments_withdrawals";
+	public static final String V_TOURNAMENTS_HOSTED 				= "tournaments_hosted";
+	public static final String V_TOTAL_COUNT_PLAYERS_HOSTED 		= "total_count_players_hosted";
+
+	public static final String V_TOURNAMENTS_GAMES_TOTAL 			= "tournaments_games_total";
+	public static final String V_TOURNAMENTS_GAMES_WON 				= "tournaments_games_won";
+	public static final String V_TOURNAMENTS_GAMES_LOST 			= "tournaments_games_lost";
+	public static final String V_TOURNAMENTS_GAMES_DRAWN 			= "tournaments_games_drawn";
+	public static final String V_TOURNAMENTS_GAMES_IN_PROGRESS 		= "tournaments_games_in_progress";
+
+	static final String GAME_STATS_LIVE_STANDARD_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[GAME_STATS_LIVE_STANDARD] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
+			+ V_RANK 	    			+ _TEXT_NOT_NULL + _COMMA
+			+ V_TOTAL_PLAYER_COUNT 	    + _INT_NOT_NULL + _COMMA
+			+ V_PERCENTILE 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_GLICKO_RD 	    		+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
+			+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
+			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
+			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
+			+ V_BEST_WIN_GAME_ID 	    + _LONG_NOT_NULL + _COMMA
+			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_AVG_OPPONENT_RATING_WIN + _INT_NOT_NULL + _COMMA
+			+ V_AVG_OPPONENT_RATING_LOSE + _INT_NOT_NULL + _COMMA
+			+ V_AVG_OPPONENT_RATING_DRAW + _INT_NOT_NULL + _COMMA
+			+ V_UNRATED  	    		+ _INT_NOT_NULL + _COMMA
+			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_TIMEOUT_PERCENT  		+ _TEXT_NOT_NULL + _COMMA
+					/* Games */
+			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA   // Games wins
+			+ V_WINS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_WINS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOSSES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOSSES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOSSES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_DRAWS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_DRAWS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_DRAWS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_WINNING_STREAK  	    + _INT_NOT_NULL + _COMMA
+			+ V_LOSING_STREAK	  	    + _INT_NOT_NULL + _COMMA
+			+ V_FREQUENT_OPPONENT_NAME  	    + _TEXT_NOT_NULL + _COMMA
+			+ V_FREQUENT_OPPONENT_GAMES_PLAYED	+ _INT_NOT_NULL + _CLOSE;
+
+
+	static final String GAME_STATS_LIVE_LIGHTNING_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[GAME_STATS_LIVE_LIGHTNING] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
+			+ V_RANK 	    			+ _TEXT_NOT_NULL + _COMMA
+			+ V_TOTAL_PLAYER_COUNT 	    + _INT_NOT_NULL + _COMMA
+			+ V_PERCENTILE 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_GLICKO_RD 	    		+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
+			+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
+			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
+			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
+			+ V_BEST_WIN_GAME_ID 	    + _LONG_NOT_NULL + _COMMA
+			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_AVG_OPPONENT_RATING_WIN + _INT_NOT_NULL + _COMMA
+			+ V_AVG_OPPONENT_RATING_LOSE + _INT_NOT_NULL + _COMMA
+			+ V_AVG_OPPONENT_RATING_DRAW + _INT_NOT_NULL + _COMMA
+			+ V_UNRATED  	    		+ _INT_NOT_NULL + _COMMA
+			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_TIMEOUT_PERCENT  		+ _TEXT_NOT_NULL + _COMMA
+					/* Games */
+			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA   // Games wins
+			+ V_WINS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_WINS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOSSES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOSSES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOSSES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_DRAWS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_DRAWS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_DRAWS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_WINNING_STREAK  	    + _INT_NOT_NULL + _COMMA
+			+ V_LOSING_STREAK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_FREQUENT_OPPONENT_NAME  	    + _TEXT_NOT_NULL + _COMMA
+			+ V_FREQUENT_OPPONENT_GAMES_PLAYED	+ _INT_NOT_NULL + _CLOSE;
+
+	static final String GAME_STATS_LIVE_BLITZ_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[GAME_STATS_LIVE_BLITZ] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
+			+ V_RANK 	    			+ _TEXT_NOT_NULL + _COMMA
+			+ V_TOTAL_PLAYER_COUNT 	    + _INT_NOT_NULL + _COMMA
+			+ V_PERCENTILE 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_GLICKO_RD 	    		+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
+			+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
+			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
+			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
+			+ V_BEST_WIN_GAME_ID 	    + _LONG_NOT_NULL + _COMMA
+			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_AVG_OPPONENT_RATING_WIN + _INT_NOT_NULL + _COMMA
+			+ V_AVG_OPPONENT_RATING_LOSE + _INT_NOT_NULL + _COMMA
+			+ V_AVG_OPPONENT_RATING_DRAW + _INT_NOT_NULL + _COMMA
+			+ V_UNRATED  	    		+ _INT_NOT_NULL + _COMMA
+			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_TIMEOUT_PERCENT  		+ _TEXT_NOT_NULL + _COMMA
+					/* Games */
+			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_WINS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_WINS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOSSES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOSSES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOSSES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_DRAWS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_DRAWS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_DRAWS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_WINNING_STREAK  	    + _INT_NOT_NULL + _COMMA
+			+ V_LOSING_STREAK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_FREQUENT_OPPONENT_NAME  	    + _TEXT_NOT_NULL + _COMMA
+			+ V_FREQUENT_OPPONENT_GAMES_PLAYED	+ _INT_NOT_NULL + _CLOSE;
+
+	static final String GAME_STATS_DAILY_CHESS_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[GAME_STATS_DAILY_CHESS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
+			+ V_RANK 	    			+ _TEXT_NOT_NULL + _COMMA
+			+ V_TOTAL_PLAYER_COUNT 	    + _INT_NOT_NULL + _COMMA
+			+ V_PERCENTILE 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_GLICKO_RD 	    		+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
+			+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
+			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
+			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
+			+ V_BEST_WIN_GAME_ID 	    + _LONG_NOT_NULL + _COMMA
+			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_AVG_OPPONENT_RATING_WIN + _INT_NOT_NULL + _COMMA
+			+ V_AVG_OPPONENT_RATING_LOSE + _INT_NOT_NULL + _COMMA
+			+ V_AVG_OPPONENT_RATING_DRAW + _INT_NOT_NULL + _COMMA
+			+ V_UNRATED  	    		+ _INT_NOT_NULL + _COMMA
+			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_TIMEOUT_PERCENT  		+ _TEXT_NOT_NULL + _COMMA
+			/* Games */
+			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_WINS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_WINS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOSSES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOSSES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOSSES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_DRAWS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_DRAWS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_DRAWS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_WINNING_STREAK  	    + _INT_NOT_NULL + _COMMA
+			+ V_LOSING_STREAK  	    	+ _INT_NOT_NULL + _COMMA
+			/* Tournaments */
+			+ V_TOURNAMENTS_LEADERBOARD_POINTS  	    + _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_EVENTS_ENTERED  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_FIRST_PLACE_FINISHES  	    + _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_SECOND_PLACE_FINISHES  	    + _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_THIRD_PLACE_FINISHES  	    + _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_WITHDRAWALS  	    		+ _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_HOSTED  	    			+ _INT_NOT_NULL + _COMMA
+			+ V_TOTAL_COUNT_PLAYERS_HOSTED  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_GAMES_TOTAL  	   			+ _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_GAMES_WON  	    			+ _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_GAMES_LOST  	    		+ _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_GAMES_DRAWN  	    		+ _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_GAMES_IN_PROGRESS  	    	+ _INT_NOT_NULL + _CLOSE;
+
+	static final String GAME_STATS_DAILY_CHESS960_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[GAME_STATS_DAILY_CHESS960] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
+			+ V_RANK 	    			+ _TEXT_NOT_NULL + _COMMA
+			+ V_TOTAL_PLAYER_COUNT 	    + _INT_NOT_NULL + _COMMA
+			+ V_PERCENTILE 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_GLICKO_RD 	    		+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
+			+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
+			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
+			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
+			+ V_BEST_WIN_GAME_ID 	    + _LONG_NOT_NULL + _COMMA
+			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_AVG_OPPONENT_RATING_WIN + _INT_NOT_NULL + _COMMA
+			+ V_AVG_OPPONENT_RATING_LOSE + _INT_NOT_NULL + _COMMA
+			+ V_AVG_OPPONENT_RATING_DRAW + _INT_NOT_NULL + _COMMA
+			+ V_UNRATED  	    		+ _INT_NOT_NULL + _COMMA
+			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_TIMEOUT_PERCENT  		+ _TEXT_NOT_NULL + _COMMA
+			/* Games */
+			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_WINS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_WINS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOSSES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOSSES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_LOSSES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_DRAWS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_DRAWS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_DRAWS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_WINNING_STREAK  	    + _INT_NOT_NULL + _COMMA
+			+ V_LOSING_STREAK  	    	+ _INT_NOT_NULL + _COMMA
+			/* Tournaments */
+			+ V_TOURNAMENTS_LEADERBOARD_POINTS  	    + _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_EVENTS_ENTERED  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_FIRST_PLACE_FINISHES  	    + _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_SECOND_PLACE_FINISHES  	    + _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_THIRD_PLACE_FINISHES  	    + _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_WITHDRAWALS  	    		+ _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_HOSTED  	    			+ _INT_NOT_NULL + _COMMA
+			+ V_TOTAL_COUNT_PLAYERS_HOSTED  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_GAMES_TOTAL  	   			+ _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_GAMES_WON  	    			+ _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_GAMES_LOST  	    		+ _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_GAMES_DRAWN  	    		+ _INT_NOT_NULL + _COMMA
+			+ V_TOURNAMENTS_GAMES_IN_PROGRESS  	    	+ _INT_NOT_NULL + _CLOSE;
 }

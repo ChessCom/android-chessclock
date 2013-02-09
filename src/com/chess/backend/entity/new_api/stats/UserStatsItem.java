@@ -1,4 +1,4 @@
-package com.chess.backend.entity.new_api.users;
+package com.chess.backend.entity.new_api.stats;
 
 import com.chess.backend.entity.new_api.*;
 
@@ -162,7 +162,7 @@ public class UserStatsItem extends BaseResponseItem<UserStatsItem.Data> {
     }
   }
 }
- */
+*/
 
 	public class Data {
 		private UserLiveStatsData live;

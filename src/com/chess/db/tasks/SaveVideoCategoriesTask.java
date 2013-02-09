@@ -41,7 +41,7 @@ public class SaveVideoCategoriesTask extends AbstractUpdateTask<CommonFeedCatego
 			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_V_CATEGORY_ID,
 					DBDataManager.SELECTION_CATEGORY_ID, arguments2, null);
 
-			ContentValues values = DBDataManager.putCommonConsumeCategoryItemToValues(currentItem);
+			ContentValues values = DBDataManager.putCommonFeedCategoryItemToValues(currentItem);
 
 			if (cursor.moveToFirst()) {
 				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);

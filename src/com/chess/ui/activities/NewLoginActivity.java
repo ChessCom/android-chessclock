@@ -47,15 +47,15 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		openMenuListeners = new ArrayList<SlidingMenu.OnOpenedListener>();
 
 		// set the Above View
-		if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
+//		if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
 //			switchFragment(new HomeTabsFragment());
-//			switchFragment(new StatsFragment());
-			switchFragment(new StatsTacticsFragment());
-			showActionBar = true;
-		} else {
+////			switchFragment(new StatsGameFragment());
+////			switchFragment(new StatsGameTacticsFragment());
+//			showActionBar = true;
+//		} else {
 			switchFragment(new SignInFragment());
 			showActionBar = false;
-		}
+//		}
 
 		slidingMenu = getSlidingMenu();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);

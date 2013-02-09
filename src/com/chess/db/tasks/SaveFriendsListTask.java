@@ -59,8 +59,7 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 
 			// TODO implement beginTransaction logic for performance increase
 			Uri uri = DBConstants.uriArray[DBConstants.FRIENDS];
-			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_USER_ID,
-					DBDataManager.SELECTION_USER_ID, arguments2, null);
+			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_USER_ID, DBDataManager.SELECTION_USER_ID, arguments2, null);
 
 			ContentValues values = DBDataManager.putFriendItemToValues(currentItem, userName);
 

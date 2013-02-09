@@ -113,7 +113,7 @@ public class RestHelper {
 	public static final String CMD_LOGIN = CMD_USER +"/login";
 	public static final String CMD_REGISTER = CMD_USER +"/register";
 	public static final String CMD_GCM = CMD_USER + "/gcm";
-	public static final String CMD_STATS = CMD_USER + "/stats";
+	public static final String CMD_USER_STATS = CMD_USER + "/stats";
 		/*Games*/
 	public static final String CMD_GAMES = BASE_URL + V1 + GAMES;
 	public static final String CMD_GAMES_ALL = CMD_GAMES +"/all";
@@ -121,6 +121,7 @@ public class RestHelper {
 	public static final String CMD_VACATIONS = CMD_GAMES + "/vacations";
 	public static final String CMD_SEEKS = CMD_GAMES + "/seeks";
 	public static final String CMD_MOVES = CMD_GAMES + "/moves";
+	public static final String CMD_GAME_STATS = CMD_GAMES + "/stats";
 		/*Articles*/
 	public static final String CMD_ARTICLES = BASE_URL + V1 + "/articles";
 	public static final String CMD_ARTICLES_LIST = CMD_ARTICLES + "/list";

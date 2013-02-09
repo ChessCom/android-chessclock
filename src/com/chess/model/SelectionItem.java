@@ -6,6 +6,7 @@ import com.chess.backend.statics.StaticData;
 public class SelectionItem {
 	private Drawable image;
 	private String text = StaticData.SYMBOL_EMPTY;
+	private String code = StaticData.SYMBOL_EMPTY;
 	private boolean checked;
 
 	public SelectionItem(Drawable image, String text) {
@@ -29,4 +30,11 @@ public class SelectionItem {
 		return text;
 	}
 
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 }

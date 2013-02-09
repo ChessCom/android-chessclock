@@ -1,4 +1,4 @@
-package com.chess.backend.entity.new_api.users;
+package com.chess.backend.entity.new_api.stats;
 
 /**
  * Created with IntelliJ IDEA.
@@ -96,24 +96,13 @@ public class UserDailyStatsData extends UserBaseStatsData {
 
 		public class DailyRating extends UserBaseStatsData.Rating {
 
-			private TodaysRank todays_rank;
+			private StatsTodaysRank todays_rank;
 
-			public TodaysRank getTodaysRank() {
+			public StatsTodaysRank getTodaysRank() {
 				return todays_rank;
 			}
 
-			public class TodaysRank {
-				private String rank;
-				private int total_player_count;
 
-				public String getRank() {
-					return rank;
-				}
-
-				public int getTotalPlayerCount() {
-					return total_player_count;
-				}
-			}
 		}
 
 		public int getTimeouts() {
