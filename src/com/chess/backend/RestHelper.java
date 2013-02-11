@@ -419,8 +419,7 @@ message				false	Only used for `CHAT` command.
 		return code >> 8;
 	}
 
-
 	public static boolean containsServerCode(int code) {
-		return code >> 8 != 0;
+		return code > 0 && code >> 8 != 0;
 	}
 }

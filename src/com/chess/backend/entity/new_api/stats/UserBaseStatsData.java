@@ -28,7 +28,7 @@ public class UserBaseStatsData {
 */
 
 	private Rating rating;
-	private Games games;
+	private GamesInfoByResult games;
 
 	public Rating getRating() {
 		return rating;
@@ -38,11 +38,11 @@ public class UserBaseStatsData {
 		this.rating = rating;
 	}
 
-	public Games getGames() {
+	public GamesInfoByResult getGames() {
 		return games;
 	}
 
-	public void setGames(Games games) {
+	public void setGames(GamesInfoByResult games) {
 		this.games = games;
 	}
 
@@ -87,29 +87,6 @@ public class UserBaseStatsData {
 
 		public int getAverageOpponent() {
 			return average_opponent;
-		}
-	}
-
-	public class Games {
-		private int total;
-		private int wins;
-		private int losses;
-		private int draws;
-
-		public int getTotal() {
-			return total;
-		}
-
-		public int getWins() {
-			return wins;
-		}
-
-		public int getLosses() {
-			return losses;
-		}
-
-		public int getDraws() {
-			return draws;
 		}
 	}
 }

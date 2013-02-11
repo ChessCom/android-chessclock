@@ -373,4 +373,11 @@
     <!--Stats-->
     <color name="stats_label_grey">#ff65605b</color>
     <color name="stats_label_light_grey">#FFa7a6a2</color>
+
+    <color name="chart_green_1">#FF60932f</color>
+    <color name="chart_green_2">#FF57862a</color>
+    <color name="chart_orange_1">#FFe78a0f</color>
+    <color name="chart_orange_2">#FFe37b0d</color>
+    <color name="chart_grey_1">#FFdbd9d6</color>
+    <color name="chart_grey_2">#FFb4aea7</color>
 </resources>

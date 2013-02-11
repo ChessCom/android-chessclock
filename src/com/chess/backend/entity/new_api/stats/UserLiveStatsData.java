@@ -122,7 +122,7 @@ public class UserLiveStatsData {
     }
 */
 		private Rating rating;
-		private Games games;
+		private GamesInfoByResult games;
 
 		public Rating getRating() {
 			return rating;
@@ -132,11 +132,11 @@ public class UserLiveStatsData {
 			this.rating = rating;
 		}
 
-		public Games getGames() {
+		public GamesInfoByResult getGames() {
 			return games;
 		}
 
-		public void setGames(Games games) {
+		public void setGames(GamesInfoByResult games) {
 			this.games = games;
 		}
 
@@ -193,50 +193,7 @@ public class UserLiveStatsData {
 
 		}
 
-		public class Games {
-/*
-      "total": 12,
-      "wins": 7,
-      "losses": 5,
-      "draws": 0
-*/
-			private int total;
-			private int wins;
-			private int losses;
-			private int draws;
 
-			public int getTotal() {
-				return total;
-			}
-
-			public void setTotal(int total) {
-				this.total = total;
-			}
-
-			public int getWins() {
-				return wins;
-			}
-
-			public void setWins(int wins) {
-				this.wins = wins;
-			}
-
-			public int getLosses() {
-				return losses;
-			}
-
-			public void setLosses(int losses) {
-				this.losses = losses;
-			}
-
-			public int getDraws() {
-				return draws;
-			}
-
-			public void setDraws(int draws) {
-				this.draws = draws;
-			}
-		}
 	}
 
 }

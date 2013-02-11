@@ -41,11 +41,11 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getFriendsListParams(Context context){
+	public static QueryParams getUserParams(String userName, int uriCode){
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.FRIENDS]);
+		queryParams.setUri(DBConstants.uriArray[uriCode]);
 		queryParams.setSelection(DBDataManager.SELECTION_USER);
-		queryParams.setArguments(new String[]{AppData.getUserName(context)});
+		queryParams.setArguments(new String[]{userName});
 		return queryParams;
 	}
 
@@ -81,29 +81,4 @@ public class DbHelper {
 		queryParams.setOrder(DBConstants.V_CATEGORY);
 		return queryParams;
 	}
-
-	public static QueryParams getStatsLiveStandardParams(String user){
-		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.USER_STATS_LIVE_STANDARD]);
-		queryParams.setSelection(DBDataManager.SELECTION_USER);
-		queryParams.setArguments(new String[]{user});
-		return queryParams;
-	}
-
-	public static QueryParams getStatsLiveLightningParams(String user){
-		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.USER_STATS_LIVE_LIGHTNING]);
-		queryParams.setSelection(DBDataManager.SELECTION_USER);
-		queryParams.setArguments(new String[]{user});
-		return queryParams;
-	}
-
-	public static QueryParams getStatsLiveBlitzParams(String user){
-		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.USER_STATS_LIVE_BLITZ]);
-		queryParams.setSelection(DBDataManager.SELECTION_USER);
-		queryParams.setArguments(new String[]{user});
-		return queryParams;
-	}
-
 }

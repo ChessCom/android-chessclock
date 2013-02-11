@@ -150,14 +150,12 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		public void updateData(GameStatsItem.Data returnedObj) {
 			super.updateData(returnedObj);
 			statsSpinner.setEnabled(true);
-
 		}
 
 		@Override
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			statsSpinner.setEnabled(true);
-
 
 			showToast(" code " + resultCode);
 		}

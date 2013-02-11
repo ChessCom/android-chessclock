@@ -17,6 +17,7 @@ import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
@@ -180,7 +181,7 @@ public class FriendsFragment extends CommonLogicFragment {
 
 	private void loadFromDb() {
 		new LoadDataFromDbTask(friendsCursorUpdateListener,
-				DbHelper.getFriendsListParams(getContext()),
+				DbHelper.getUserParams(AppData.getUserName(getActivity()), DBConstants.FRIENDS),
 				getContentResolver()).executeTask();
 
 	}

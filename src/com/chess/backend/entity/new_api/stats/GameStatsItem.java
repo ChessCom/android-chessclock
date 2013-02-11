@@ -89,7 +89,7 @@ public class GameStatsItem extends BaseResponseItem<GameStatsItem.Data> {
 
 	public class Data {
 		private GameRating rating;
-		private GameGames games;
+		private Games games;
 		/**
 		 * Doesn't exist for live games
 		 */
@@ -99,7 +99,7 @@ public class GameStatsItem extends BaseResponseItem<GameStatsItem.Data> {
 			return rating;
 		}
 
-		public GameGames getGames() {
+		public Games getGames() {
 			return games;
 		}
 
@@ -156,13 +156,13 @@ public class GameStatsItem extends BaseResponseItem<GameStatsItem.Data> {
 		}
 	}
 
-	public class GameGames extends GamesInfo {
+	public class Games extends GamesInfoByColor {
 		private int unrated;
 		private int in_progress;
 		private float timeout_percent;
-		private GamesInfo wins;
-		private GamesInfo losses;
-		private GamesInfo draws;
+		private GamesInfoByColor wins;
+		private GamesInfoByColor losses;
+		private GamesInfoByColor draws;
 		private int winning_streak;
 		private int losing_streak;
 
@@ -180,15 +180,15 @@ public class GameStatsItem extends BaseResponseItem<GameStatsItem.Data> {
 			return timeout_percent;
 		}
 
-		public GamesInfo getWins() {
+		public GamesInfoByColor getWins() {
 			return wins;
 		}
 
-		public GamesInfo getLosses() {
+		public GamesInfoByColor getLosses() {
 			return losses;
 		}
 
-		public GamesInfo getDraws() {
+		public GamesInfoByColor getDraws() {
 			return draws;
 		}
 

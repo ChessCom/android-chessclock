@@ -6,7 +6,7 @@ package com.chess.backend.entity.new_api.stats;
  * Date: 08.02.13
  * Time: 11:10
  */
-public class GamesInfo {
+public class GamesInfoByColor {
 /*
   "draws": {
 	"total": 0,

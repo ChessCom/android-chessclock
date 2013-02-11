@@ -27,7 +27,7 @@
         />
 
     <com.chess.RoboTextView
-        android:id="@+id/timestampTxt"
+        android:id="@+id/subtitleTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ratingLabelTxt"

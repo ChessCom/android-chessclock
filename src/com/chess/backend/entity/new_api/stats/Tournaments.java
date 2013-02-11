@@ -83,28 +83,8 @@ public class Tournaments {
 		}
 	}
 
-	public class Games {
-		private int total;
-		private int won;
-		private int lost;
-		private int draw;
+	public class Games  extends GamesInfoByResult{
 		private int in_progress;
-
-		public int getTotal() {
-			return total;
-		}
-
-		public int getWon() {
-			return won;
-		}
-
-		public int getLost() {
-			return lost;
-		}
-
-		public int getDraw() {
-			return draw;
-		}
 
 		public int getInProgress() {
 			return in_progress;

@@ -88,7 +88,7 @@ public class UserDailyStatsData extends UserBaseStatsData {
 		private DailyRating rating;
 		private int timeouts;
 		private long time_per_move;
-		private Games games;
+		private GamesInfoByResult games;
 
 		public DailyRating getRating() {
 			return rating;
@@ -113,7 +113,7 @@ public class UserDailyStatsData extends UserBaseStatsData {
 			return time_per_move;
 		}
 
-		public Games getGames() {
+		public GamesInfoByResult getGames() {
 			return games;
 		}
 	}

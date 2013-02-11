@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 18;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 19;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -454,6 +454,8 @@ public class DBConstants {
 
 	/* ==================== Game Stats ============================== */
 
+	public static final String V_GAMES_WHITE 			= "games_white";
+	public static final String V_GAMES_BLACK 			= "games_black";
 	public static final String V_PERCENTILE 			= "percentile";
 	public static final String V_GLICKO_RD 				= "glicko_rd";
 	public static final String V_AVG_OPPONENT_RATING_WIN = "average_opponent_rating_when_i_win";
@@ -515,7 +517,10 @@ public class DBConstants {
 			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_TIMEOUT_PERCENT  		+ _TEXT_NOT_NULL + _COMMA
 					/* Games */
-			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA   // Games wins
+			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_GAMES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_GAMES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_WINS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_WINS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_LOSSES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
@@ -553,7 +558,10 @@ public class DBConstants {
 			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_TIMEOUT_PERCENT  		+ _TEXT_NOT_NULL + _COMMA
 					/* Games */
-			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA   // Games wins
+			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_GAMES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_GAMES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_WINS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_WINS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_LOSSES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
@@ -590,6 +598,9 @@ public class DBConstants {
 			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_TIMEOUT_PERCENT  		+ _TEXT_NOT_NULL + _COMMA
 					/* Games */
+			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_GAMES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_GAMES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_WINS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_WINS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
@@ -627,6 +638,9 @@ public class DBConstants {
 			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_TIMEOUT_PERCENT  		+ _TEXT_NOT_NULL + _COMMA
 			/* Games */
+			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_GAMES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_GAMES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_WINS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_WINS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
@@ -676,6 +690,9 @@ public class DBConstants {
 			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_TIMEOUT_PERCENT  		+ _TEXT_NOT_NULL + _COMMA
 			/* Games */
+			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_GAMES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_GAMES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_WINS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_WINS_BLACK  	    	+ _INT_NOT_NULL + _COMMA

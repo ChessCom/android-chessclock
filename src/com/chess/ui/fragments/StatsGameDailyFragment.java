@@ -13,8 +13,6 @@ import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
-import com.chess.db.DbHelper;
-import com.chess.db.tasks.LoadDataFromDbTask;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -86,7 +84,7 @@ public class StatsGameDailyFragment extends CommonLogicFragment {
 		{// Highest Rating
 			RelativeLayout highestRatingView = (RelativeLayout) inflater.inflate(R.layout.new_stats_rating_item_view, null, false);
 			((TextView) highestRatingView.findViewById(R.id.ratingLabelTxt)).setText(R.string.highest_rating);
-			highestRatingView.findViewById(R.id.timestampTxt).setId(HIGHEST_ID + RATING_TIMESTAMP_ID);
+			highestRatingView.findViewById(R.id.subtitleTxt).setId(HIGHEST_ID + RATING_TIMESTAMP_ID);
 			highestRatingView.findViewById(R.id.ratingValueTxt).setId(HIGHEST_ID + RATING_VALUE_ID);
 
 			ratingsLinearView.addView(highestRatingView);
@@ -95,7 +93,7 @@ public class StatsGameDailyFragment extends CommonLogicFragment {
 		{// Lowest Rating
 			RelativeLayout highestRatingView = (RelativeLayout) inflater.inflate(R.layout.new_stats_rating_item_view, null, false);
 			((TextView) highestRatingView.findViewById(R.id.ratingLabelTxt)).setText(R.string.lowest_rating);
-			highestRatingView.findViewById(R.id.timestampTxt).setId(LOWEST_ID + RATING_TIMESTAMP_ID);
+			highestRatingView.findViewById(R.id.subtitleTxt).setId(LOWEST_ID + RATING_TIMESTAMP_ID);
 			highestRatingView.findViewById(R.id.ratingValueTxt).setId(LOWEST_ID + RATING_VALUE_ID);
 
 			ratingsLinearView.addView(highestRatingView);
@@ -104,7 +102,7 @@ public class StatsGameDailyFragment extends CommonLogicFragment {
 		{// Average Opponent Rating
 			RelativeLayout highestRatingView = (RelativeLayout) inflater.inflate(R.layout.new_stats_rating_item_view, null, false);
 			((TextView) highestRatingView.findViewById(R.id.ratingLabelTxt)).setText(R.string.avg_opponent_rating);
-			highestRatingView.findViewById(R.id.timestampTxt).setId(AVERAGE_ID + RATING_TIMESTAMP_ID);
+			highestRatingView.findViewById(R.id.subtitleTxt).setId(AVERAGE_ID + RATING_TIMESTAMP_ID);
 			highestRatingView.findViewById(R.id.ratingValueTxt).setId(AVERAGE_ID + RATING_VALUE_ID);
 
 			ratingsLinearView.addView(highestRatingView);
@@ -113,7 +111,7 @@ public class StatsGameDailyFragment extends CommonLogicFragment {
 		{// Best Win Rating
 			RelativeLayout highestRatingView = (RelativeLayout) inflater.inflate(R.layout.new_stats_rating_item_view, null, false);
 			((TextView) highestRatingView.findViewById(R.id.ratingLabelTxt)).setText(R.string.best_win_rating);
-			highestRatingView.findViewById(R.id.timestampTxt).setId(BEST_WIN_ID + RATING_TIMESTAMP_ID);
+			highestRatingView.findViewById(R.id.subtitleTxt).setId(BEST_WIN_ID + RATING_TIMESTAMP_ID);
 			highestRatingView.findViewById(R.id.ratingValueTxt).setId(BEST_WIN_ID + RATING_VALUE_ID);
 
 			ratingsLinearView.addView(highestRatingView);
@@ -137,17 +135,17 @@ public class StatsGameDailyFragment extends CommonLogicFragment {
 	private void updateData() {
 		String userName = AppData.getUserName(getActivity());
 
-		switch (getArguments().getInt(MODE)){
-			case LIVE_STANDARD:
-				new LoadDataFromDbTask(liveStandardCursorUpdateListener, DbHelper.getStatsLiveStandardParams(userName), getContentResolver()).executeTask();
-				break;
-			case LIVE_LIGHTNING:
-				new LoadDataFromDbTask(liveLightningCursorUpdateListener, DbHelper.getStatsLiveLightningParams(userName), getContentResolver()).executeTask();
-				break;
-			case LIVE_BLITZ:
-				new LoadDataFromDbTask(liveBlitzCursorUpdateListener, DbHelper.getStatsLiveBlitzParams(userName), getContentResolver()).executeTask();
-				break;
-		}
+//		switch (getArguments().getInt(MODE)){ // TODO restore
+//			case LIVE_STANDARD:
+//				new LoadDataFromDbTask(liveStandardCursorUpdateListener, DbHelper.getStatsUserLiveStandardParams(userName), getContentResolver()).executeTask();
+//				break;
+//			case LIVE_LIGHTNING:
+//				new LoadDataFromDbTask(liveLightningCursorUpdateListener, DbHelper.getStatsUserLiveLightningParams(userName), getContentResolver()).executeTask();
+//				break;
+//			case LIVE_BLITZ:
+//				new LoadDataFromDbTask(liveBlitzCursorUpdateListener, DbHelper.getStatsUserLiveBlitzParams(userName), getContentResolver()).executeTask();
+//				break;
+//		}
 	}
 
 	private class LiveDataCursorUpdateListener extends ActionBarUpdateListener<Cursor> {

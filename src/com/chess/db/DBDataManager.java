@@ -673,6 +673,7 @@ public class DBDataManager {
 		values.put(DBConstants.V_BEST_WIN_RATING, dataObj.getRating().getBestWin().getRating());
 		values.put(DBConstants.V_BEST_WIN_USERNAME, dataObj.getRating().getBestWin().getUsername());
 		values.put(DBConstants.V_AVERAGE_OPPONENT, dataObj.getRating().getAverageOpponent());
+
 		values.put(DBConstants.V_GAMES_TOTAL, dataObj.getGames().getTotal());
 		values.put(DBConstants.V_GAMES_WINS, dataObj.getGames().getWins());
 		values.put(DBConstants.V_GAMES_LOSSES, dataObj.getGames().getLosses());
@@ -768,6 +769,9 @@ public class DBDataManager {
 		values.put(DBConstants.V_IN_PROGRESS, dataObj.getGames().getInProgress());
 		values.put(DBConstants.V_TIMEOUT_PERCENT, dataObj.getGames().getTimeoutPercent());
 
+		values.put(DBConstants.V_GAMES_TOTAL, dataObj.getGames().getTotal());
+		values.put(DBConstants.V_GAMES_BLACK, dataObj.getGames().getBlack());
+		values.put(DBConstants.V_GAMES_WHITE, dataObj.getGames().getWhite());
 
 		values.put(DBConstants.V_WINS_TOTAL, dataObj.getGames().getWins().getTotal());
 		values.put(DBConstants.V_WINS_WHITE, dataObj.getGames().getWins().getWhite());
@@ -820,6 +824,9 @@ public class DBDataManager {
 		values.put(DBConstants.V_IN_PROGRESS, dataObj.getGames().getInProgress());
 		values.put(DBConstants.V_TIMEOUT_PERCENT, dataObj.getGames().getTimeoutPercent());
 
+		values.put(DBConstants.V_GAMES_TOTAL, dataObj.getGames().getTotal());
+		values.put(DBConstants.V_GAMES_BLACK, dataObj.getGames().getBlack());
+		values.put(DBConstants.V_GAMES_WHITE, dataObj.getGames().getWhite());
 
 		values.put(DBConstants.V_WINS_TOTAL, dataObj.getGames().getWins().getTotal());
 		values.put(DBConstants.V_WINS_WHITE, dataObj.getGames().getWins().getWhite());
@@ -846,12 +853,25 @@ public class DBDataManager {
 		values.put(DBConstants.V_TOTAL_COUNT_PLAYERS_HOSTED, dataObj.getTournaments().getAll().getTotalCountPlayersHosted());
 
 		values.put(DBConstants.V_TOURNAMENTS_GAMES_TOTAL, dataObj.getTournaments().getGames().getTotal());
-		values.put(DBConstants.V_TOURNAMENTS_GAMES_WON, dataObj.getTournaments().getGames().getWon());
-		values.put(DBConstants.V_TOURNAMENTS_GAMES_LOST, dataObj.getTournaments().getGames().getLost());
-		values.put(DBConstants.V_TOURNAMENTS_GAMES_DRAWN, dataObj.getTournaments().getGames().getDraw());
+		values.put(DBConstants.V_TOURNAMENTS_GAMES_WON, dataObj.getTournaments().getGames().getWins());
+		values.put(DBConstants.V_TOURNAMENTS_GAMES_LOST, dataObj.getTournaments().getGames().getLosses());
+		values.put(DBConstants.V_TOURNAMENTS_GAMES_DRAWN, dataObj.getTournaments().getGames().getDraws());
 		values.put(DBConstants.V_TOURNAMENTS_GAMES_IN_PROGRESS, dataObj.getTournaments().getGames().getInProgress());
 
 		return values;
+	}
+
+	public static GamesInfoByResult getGameStatsGamesByResultFromCursor(Cursor cursor) {
+		GamesInfoByResult tournamentGames = new GamesInfoByResult();
+		tournamentGames.setTotal(getInt(cursor, DBConstants.V_GAMES_TOTAL));
+		tournamentGames.setWins(getInt(cursor, DBConstants.V_WINS_TOTAL));
+		tournamentGames.setLosses(getInt(cursor, DBConstants.V_LOSSES_TOTAL));
+		tournamentGames.setDraws(getInt(cursor, DBConstants.V_DRAWS_TOTAL));
+//		tournamentGames.setTotal(2147);
+//		tournamentGames.setWins(1183);
+//		tournamentGames.setLosses(833);
+//		tournamentGames.setDraws(131);
+		return tournamentGames;
 	}
 
 

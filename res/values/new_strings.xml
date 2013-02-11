@@ -44,4 +44,7 @@
     <string name="lowest_rating">Lowest Rating</string>
     <string name="avg_opponent_rating">Average Opponent Rating</string>
     <string name="best_win_rating">Best Win</string>
+    <string name="three_months">(3 Months)</string>
+    <string name="timeouts_last_90_days">Timeouts (last 90 days)</string>
+    <string name="glicko_rd">Glicko RD</string>
 </resources>
