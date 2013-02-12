@@ -767,7 +767,7 @@ public class DBDataManager {
 		values.put(DBConstants.V_AVG_OPPONENT_RATING_DRAW, dataObj.getRating().getAverageOpponentRating().getDraw());
 		values.put(DBConstants.V_UNRATED, dataObj.getGames().getUnrated());
 		values.put(DBConstants.V_IN_PROGRESS, dataObj.getGames().getInProgress());
-		values.put(DBConstants.V_TIMEOUT_PERCENT, dataObj.getGames().getTimeoutPercent());
+		values.put(DBConstants.V_TIMEOUTS, dataObj.getGames().getTimeoutPercent());
 
 		values.put(DBConstants.V_GAMES_TOTAL, dataObj.getGames().getTotal());
 		values.put(DBConstants.V_GAMES_BLACK, dataObj.getGames().getBlack());
@@ -822,7 +822,7 @@ public class DBDataManager {
 		values.put(DBConstants.V_AVG_OPPONENT_RATING_DRAW, dataObj.getRating().getAverageOpponentRating().getDraw());
 		values.put(DBConstants.V_UNRATED, dataObj.getGames().getUnrated());
 		values.put(DBConstants.V_IN_PROGRESS, dataObj.getGames().getInProgress());
-		values.put(DBConstants.V_TIMEOUT_PERCENT, dataObj.getGames().getTimeoutPercent());
+		values.put(DBConstants.V_TIMEOUTS, dataObj.getGames().getTimeoutPercent());
 
 		values.put(DBConstants.V_GAMES_TOTAL, dataObj.getGames().getTotal());
 		values.put(DBConstants.V_GAMES_BLACK, dataObj.getGames().getBlack());
@@ -842,6 +842,14 @@ public class DBDataManager {
 
 		values.put(DBConstants.V_WINNING_STREAK, dataObj.getGames().getWinningStreak());
 		values.put(DBConstants.V_LOSING_STREAK, dataObj.getGames().getLosingStreak());
+
+		if (dataObj.getGames().getMostFrequentOpponent() != null) {
+			values.put(DBConstants.V_FREQUENT_OPPONENT_NAME, dataObj.getGames().getMostFrequentOpponent().getUsername());
+			values.put(DBConstants.V_FREQUENT_OPPONENT_GAMES_PLAYED, dataObj.getGames().getMostFrequentOpponent().getGamesPlayed());
+		} else {
+			values.put(DBConstants.V_FREQUENT_OPPONENT_NAME, StaticData.SYMBOL_EMPTY);
+			values.put(DBConstants.V_FREQUENT_OPPONENT_GAMES_PLAYED, 0);
+		}
 
 		values.put(DBConstants.V_TOURNAMENTS_LEADERBOARD_POINTS, dataObj.getTournaments().getAll().getLeaderboardPoints());
 		values.put(DBConstants.V_TOURNAMENTS_EVENTS_ENTERED, dataObj.getTournaments().getAll().getEventsEntered());
@@ -867,10 +875,6 @@ public class DBDataManager {
 		tournamentGames.setWins(getInt(cursor, DBConstants.V_WINS_TOTAL));
 		tournamentGames.setLosses(getInt(cursor, DBConstants.V_LOSSES_TOTAL));
 		tournamentGames.setDraws(getInt(cursor, DBConstants.V_DRAWS_TOTAL));
-//		tournamentGames.setTotal(2147);
-//		tournamentGames.setWins(1183);
-//		tournamentGames.setLosses(833);
-//		tournamentGames.setDraws(131);
 		return tournamentGames;
 	}
 

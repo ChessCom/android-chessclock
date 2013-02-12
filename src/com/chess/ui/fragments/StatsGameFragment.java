@@ -107,7 +107,11 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-			// TODO -> File | Settings | File Templates.
+			if (show) {
+				showToast("Loading ...");
+			} else {
+				showToast("Done!");
+			}
 		}
 
 		@Override
@@ -118,25 +122,9 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 			new SaveGameStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver(), gameType).executeTask();
 
 			// get selected position of spinner
-			int position = statsSpinner.getSelectedItemPosition();
+			int position = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
 
-			switch (position){
-				case LIVE_STANDARD:
-					changeInternalFragment(StatsGameLiveFragment.newInstance(LIVE_STANDARD));
-					break;
-				case LIVE_BLITZ:
-					changeInternalFragment(StatsGameLiveFragment.newInstance(LIVE_BLITZ));
-					break;
-				case LIVE_LIGHTNING:
-					changeInternalFragment(StatsGameLiveFragment.newInstance(LIVE_LIGHTNING));
-					break;
-				case DAILY_CHESS:
-					changeInternalFragment(new StatsGameLiveFragment());
-					break;
-				case DAILY_CHESS960:
-					changeInternalFragment(new StatsGameLiveFragment());
-					break;
-			}
+			changeInternalFragment(StatsGameDetailsFragment.newInstance(position));
 		}
 	}
 

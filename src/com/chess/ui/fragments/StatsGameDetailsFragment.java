@@ -2,19 +2,24 @@ package com.chess.ui.fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.views.ChartView;
 import com.chess.ui.views.PieView;
+import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,9 +30,10 @@ import java.util.Date;
  * Date: 23.01.13
  * Time: 10:37
  */
-public class StatsGameLiveFragment extends CommonLogicFragment {
+public class StatsGameDetailsFragment extends CommonLogicFragment {
 
 	private static final String TAG = "StatsGameFragment";
+	public static final String GREY_COLOR_DIVIDER = "##";
 
 	public static final int HIGHEST_ID = 0x00002000;
 	public static final int LOWEST_ID = 0x00002100;
@@ -41,15 +47,20 @@ public class StatsGameLiveFragment extends CommonLogicFragment {
 
 	private final static String MODE = "mode";
 
-	private final static int LIVE_STANDARD = 0;
-	private final static int LIVE_BLITZ = 1;
-	private final static int LIVE_LIGHTNING = 2;
+	private final static int STANDARD = 0;
+	private final static int BLITZ = 1;
+	private final static int LIGHTNING = 2;
+	private final static int CHESS = 3;
+	private final static int CHESS960 = 4;
+
 	private static final int CHART_HEIGHT = 420;
 
+	private CursorUpdateListener standardCursorUpdateListener;
+	private CursorUpdateListener lightningCursorUpdateListener;
+	private CursorUpdateListener blitzCursorUpdateListener;
+	private CursorUpdateListener chessCursorUpdateListener;
+	private CursorUpdateListener chess960CursorUpdateListener;
 
-	private LiveDataCursorUpdateListener liveStandardCursorUpdateListener;
-	private LiveDataCursorUpdateListener liveLightningCursorUpdateListener;
-	private LiveDataCursorUpdateListener liveBlitzCursorUpdateListener;
 	private TextView winCntValueTxt;
 	private TextView loseCntValueTxt;
 	private TextView drawCntValueTxt;
@@ -61,13 +72,15 @@ public class StatsGameLiveFragment extends CommonLogicFragment {
 	private TextView percentileValueTxt;
 	private TextView totalGamesValueTxt;
 	private PieView pieView;
-//	private TextView timeoutsValueTxt;
-//	private TextView glickoValueTxt;
-//	private TextView mostFrequentOpponentTxt;
-//	private TextView mostFrequentOpponentGamesTxt;
+	private TextView timeoutsValueTxt;
+	private TextView glickoValueTxt;
+	private TextView mostFrequentOpponentTxt;
+	private TextView mostFrequentOpponentGamesTxt;
+	private TextView timeoutsLabelTxt;
+	private ForegroundColorSpan foregroundSpan;
 
-	public static StatsGameLiveFragment newInstance(int code) {
-		StatsGameLiveFragment frag = new StatsGameLiveFragment();
+	public static StatsGameDetailsFragment newInstance(int code) {
+		StatsGameDetailsFragment frag = new StatsGameDetailsFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, code);
 
@@ -84,7 +97,7 @@ public class StatsGameLiveFragment extends CommonLogicFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_stats_live_frame, container, false);
+		return inflater.inflate(R.layout.new_stats_game_full_frame, container, false);
 	}
 
 	@Override
@@ -118,11 +131,12 @@ public class StatsGameLiveFragment extends CommonLogicFragment {
 
 		winningStreakValueTxt = (TextView) view.findViewById(R.id.winningStreakValueTxt);
 		losingStreakValueTxt = (TextView) view.findViewById(R.id.losingStreakValueTxt);
-//		timeoutsValueTxt = (TextView) view.findViewById(R.id.timeoutsValueTxt);
-//		glickoValueTxt = (TextView) view.findViewById(R.id.glickoValueTxt);
-//
-//		mostFrequentOpponentTxt = (TextView) view.findViewById(R.id.mostFrequentOpponentTxt);
-//		mostFrequentOpponentGamesTxt = (TextView) view.findViewById(R.id.mostFrequentOpponentGamesTxt);
+		timeoutsLabelTxt = (TextView) view.findViewById(R.id.timeoutsLabelTxt);
+		timeoutsValueTxt = (TextView) view.findViewById(R.id.timeoutsValueTxt);
+		glickoValueTxt = (TextView) view.findViewById(R.id.glickoValueTxt);
+
+		mostFrequentOpponentTxt = (TextView) view.findViewById(R.id.mostFrequentOpponentTxt);
+		mostFrequentOpponentGamesTxt = (TextView) view.findViewById(R.id.mostFrequentOpponentGamesTxt);
 	}
 
 
@@ -134,32 +148,44 @@ public class StatsGameLiveFragment extends CommonLogicFragment {
 	}
 
 	private void init() {
-		liveStandardCursorUpdateListener = new LiveDataCursorUpdateListener(LIVE_STANDARD);
-		liveLightningCursorUpdateListener = new LiveDataCursorUpdateListener(LIVE_LIGHTNING);
-		liveBlitzCursorUpdateListener = new LiveDataCursorUpdateListener(LIVE_BLITZ);
+		standardCursorUpdateListener = new CursorUpdateListener(STANDARD);
+		lightningCursorUpdateListener = new CursorUpdateListener(LIGHTNING);
+		blitzCursorUpdateListener = new CursorUpdateListener(BLITZ);
+		chessCursorUpdateListener = new CursorUpdateListener(CHESS);
+		chess960CursorUpdateListener = new CursorUpdateListener(CHESS960);
+
+		int lightGrey = getResources().getColor(R.color.stats_label_light_grey);
+		foregroundSpan = new ForegroundColorSpan(lightGrey);
+
 	}
 
 	private void updateData() {
 		String userName = AppData.getUserName(getActivity());
 
-		switch (getArguments().getInt(MODE)){
-			case LIVE_STANDARD:
-				new LoadDataFromDbTask(liveStandardCursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.GAME_STATS_LIVE_STANDARD), getContentResolver()).executeTask();
+		switch (getArguments().getInt(MODE)) {
+			case STANDARD:
+				new LoadDataFromDbTask(standardCursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.GAME_STATS_LIVE_STANDARD), getContentResolver()).executeTask();
 				break;
-			case LIVE_LIGHTNING:
-				new LoadDataFromDbTask(liveLightningCursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.GAME_STATS_LIVE_LIGHTNING), getContentResolver()).executeTask();
+			case LIGHTNING:
+				new LoadDataFromDbTask(lightningCursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.GAME_STATS_LIVE_LIGHTNING), getContentResolver()).executeTask();
 				break;
-			case LIVE_BLITZ:
-				new LoadDataFromDbTask(liveBlitzCursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.GAME_STATS_LIVE_BLITZ), getContentResolver()).executeTask();
+			case BLITZ:
+				new LoadDataFromDbTask(blitzCursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.GAME_STATS_LIVE_BLITZ), getContentResolver()).executeTask();
+				break;
+			case CHESS:
+				new LoadDataFromDbTask(chessCursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.GAME_STATS_DAILY_CHESS), getContentResolver()).executeTask();
+				break;
+			case CHESS960:
+				new LoadDataFromDbTask(chess960CursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.GAME_STATS_DAILY_CHESS960), getContentResolver()).executeTask();
 				break;
 		}
 	}
 
-	private class LiveDataCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
+	private class CursorUpdateListener extends ActionBarUpdateListener<Cursor> {
 
 		private int listenerCode;
 
-		public LiveDataCursorUpdateListener(int listenerCode) {
+		public CursorUpdateListener(int listenerCode) {
 			super(getInstance());
 			this.listenerCode = listenerCode;
 		}
@@ -173,13 +199,21 @@ public class StatsGameLiveFragment extends CommonLogicFragment {
 				currentRatingTxt.setText(String.valueOf(current));
 
 				int rank = DBDataManager.getInt(returnedObj, DBConstants.V_RANK);
-				absoluteRankTxt.setText(String.valueOf(rank));
+				if (rank == 0) {
+					absoluteRankTxt.setText(R.string.not_available);
 
-				int totalPlayers = DBDataManager.getInt(returnedObj, DBConstants.V_TOTAL_PLAYER_COUNT);
-				totalRankedTxt.setText(String.valueOf(totalPlayers));
+				} else {
+					absoluteRankTxt.setText(String.valueOf(rank));
+					int totalPlayers = DBDataManager.getInt(returnedObj, DBConstants.V_TOTAL_PLAYER_COUNT);
+					totalRankedTxt.setText(getString(R.string.of_arg, totalPlayers));
+				}
 
 				String percentile = DBDataManager.getString(returnedObj, DBConstants.V_PERCENTILE);
-				percentileValueTxt.setText(percentile);
+				if (percentile.equals(String.valueOf(0.f))) {
+					percentileValueTxt.setText(R.string.not_available);
+				} else {
+					percentileValueTxt.setText(percentile + StaticData.SYMBOL_PERCENT);
+				}
 			}
 
 			int totalGamesPlayed = DBDataManager.getInt(returnedObj, DBConstants.V_GAMES_TOTAL);
@@ -206,20 +240,36 @@ public class StatsGameLiveFragment extends CommonLogicFragment {
 				losingStreakValueTxt.setText(String.valueOf(loseCnt));
 			}
 
-			// donut chart
+			// donut/pie chart
 			pieView.setGames(DBDataManager.getGameStatsGamesByResultFromCursor(returnedObj));
 
-//			// timeouts // only for chess gameType
-//			int timeouts = DBDataManager.getInt(returnedObj, DBConstants.V_TIMEOUTS);
-//			timeoutsValueTxt.setText(String.valueOf(timeouts));
-//
-//			int glickoRd = DBDataManager.getInt(returnedObj, DBConstants.V_GLICKO_RD);
-//			glickoValueTxt.setText(String.valueOf(glickoRd));
-//
-//			String mostFrequentOpponentName = DBDataManager.getString(returnedObj, DBConstants.V_FREQUENT_OPPONENT_NAME);
-//			int mostFrequentOpponentGamesPlayed = DBDataManager.getInt(returnedObj, DBConstants.V_FREQUENT_OPPONENT_GAMES_PLAYED);
-//			mostFrequentOpponentTxt.setText(mostFrequentOpponentName);
-//			mostFrequentOpponentGamesTxt.setText(String.valueOf(mostFrequentOpponentGamesPlayed));
+			{// timeouts
+				String timeoutsStr = getString(R.string.timeouts_last_90_days);
+				timeoutsStr = timeoutsStr.replace(StaticData.SYMBOL_LEFT_PAR, GREY_COLOR_DIVIDER + StaticData.SYMBOL_LEFT_PAR);
+				timeoutsStr = timeoutsStr.replace(StaticData.SYMBOL_RIGHT_PAR, StaticData.SYMBOL_RIGHT_PAR + GREY_COLOR_DIVIDER);
+				CharSequence timeoutChr = timeoutsStr;
+				timeoutChr = AppUtils.setSpanBetweenTokens(timeoutChr, GREY_COLOR_DIVIDER, foregroundSpan);
+				timeoutsLabelTxt.setText(timeoutChr);
+
+				int timeouts = DBDataManager.getInt(returnedObj, DBConstants.V_TIMEOUTS);
+				if (timeouts == 0) {
+					timeoutsValueTxt.setText(R.string.not_available);
+				} else {
+					timeoutsValueTxt.setText(String.valueOf(timeouts));
+				}
+			}
+
+			int glickoRd = DBDataManager.getInt(returnedObj, DBConstants.V_GLICKO_RD);
+			glickoValueTxt.setText(String.valueOf(glickoRd));
+
+			String mostFrequentOpponentName = DBDataManager.getString(returnedObj, DBConstants.V_FREQUENT_OPPONENT_NAME);
+			int mostFrequentOpponentGamesPlayed = DBDataManager.getInt(returnedObj, DBConstants.V_FREQUENT_OPPONENT_GAMES_PLAYED);
+			if (mostFrequentOpponentGamesPlayed == 0) {
+				mostFrequentOpponentGamesTxt.setText(R.string.not_available);
+			} else {
+				mostFrequentOpponentTxt.setText(mostFrequentOpponentName);
+				mostFrequentOpponentGamesTxt.setText(getString(R.string.games_arg, mostFrequentOpponentGamesPlayed));
+			}
 		}
 	}
 
@@ -248,10 +298,14 @@ public class StatsGameLiveFragment extends CommonLogicFragment {
 
 		{ // best win on
 			int rating = DBDataManager.getInt(cursor, DBConstants.V_BEST_WIN_RATING);
-			String userName = DBDataManager.getString(cursor, DBConstants.V_BEST_WIN_USERNAME);
+			if (rating == 0) {
+				((TextView) getView().findViewById(BEST_WIN_ID + RATING_VALUE_ID)).setText(R.string.not_available);
+			} else {
+				String userName = DBDataManager.getString(cursor, DBConstants.V_BEST_WIN_USERNAME);
 
-			((TextView) getView().findViewById(BEST_WIN_ID + RATING_VALUE_ID)).setText(String.valueOf(rating));
-			((TextView) getView().findViewById(BEST_WIN_ID + RATING_SUBTITLE_ID)).setText(userName);
+				((TextView) getView().findViewById(BEST_WIN_ID + RATING_VALUE_ID)).setText(String.valueOf(rating));
+				((TextView) getView().findViewById(BEST_WIN_ID + RATING_SUBTITLE_ID)).setText(userName);
+			}
 		}
 	}
 
@@ -296,5 +350,4 @@ public class StatsGameLiveFragment extends CommonLogicFragment {
 			ratingsLinearView.addView(highestRatingView);
 		}
 	}
-
 }

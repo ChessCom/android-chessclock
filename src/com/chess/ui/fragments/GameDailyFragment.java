@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.*;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -1088,6 +1087,9 @@ public class GameDailyFragment extends GameBaseFragment {
 
 		@Override
 		public void updateData(DailyGameByIdItem returnedObj) {
+			if (getActivity() == null) {
+				return;
+			}
 
 //			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
 			currentGame = returnedObj.getData();

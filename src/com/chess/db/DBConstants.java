@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 19;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 21;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -400,7 +400,7 @@ public class DBConstants {
 			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
 			+ V_RANK 	    			+ _TEXT_NOT_NULL + _COMMA
 			+ V_TOTAL_PLAYER_COUNT 	    + _INT_NOT_NULL + _COMMA
-			+ V_TIMEOUTS 	    		+ _INT_NOT_NULL + _COMMA
+			+ V_TIMEOUTS 	    		+ _TEXT_NOT_NULL + _COMMA
 			+ V_TIME_PER_MOVE 	    	+ _LONG_NOT_NULL + _COMMA
 			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_GAMES_WINS   	    	+ _INT_NOT_NULL + _COMMA
@@ -463,7 +463,6 @@ public class DBConstants {
 	public static final String V_AVG_OPPONENT_RATING_DRAW = "average_opponent_rating_when_i_draw";
 	public static final String V_UNRATED 				= "unrated";
 	public static final String V_IN_PROGRESS 			= "in_progress";
-	public static final String V_TIMEOUT_PERCENT 		= "timeout_percent";
 
 	public static final String V_WINS_TOTAL 			= "wins_total";
 	public static final String V_WINS_WHITE 			= "wins_white";
@@ -515,7 +514,7 @@ public class DBConstants {
 			+ V_AVG_OPPONENT_RATING_DRAW + _INT_NOT_NULL + _COMMA
 			+ V_UNRATED  	    		+ _INT_NOT_NULL + _COMMA
 			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TIMEOUT_PERCENT  		+ _TEXT_NOT_NULL + _COMMA
+			+ V_TIMEOUTS  		+ _TEXT_NOT_NULL + _COMMA
 					/* Games */
 			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_GAMES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
@@ -556,7 +555,7 @@ public class DBConstants {
 			+ V_AVG_OPPONENT_RATING_DRAW + _INT_NOT_NULL + _COMMA
 			+ V_UNRATED  	    		+ _INT_NOT_NULL + _COMMA
 			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TIMEOUT_PERCENT  		+ _TEXT_NOT_NULL + _COMMA
+			+ V_TIMEOUTS  		+ _TEXT_NOT_NULL + _COMMA
 					/* Games */
 			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_GAMES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
@@ -596,7 +595,7 @@ public class DBConstants {
 			+ V_AVG_OPPONENT_RATING_DRAW + _INT_NOT_NULL + _COMMA
 			+ V_UNRATED  	    		+ _INT_NOT_NULL + _COMMA
 			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TIMEOUT_PERCENT  		+ _TEXT_NOT_NULL + _COMMA
+			+ V_TIMEOUTS  		+ _TEXT_NOT_NULL + _COMMA
 					/* Games */
 			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_GAMES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
@@ -636,7 +635,7 @@ public class DBConstants {
 			+ V_AVG_OPPONENT_RATING_DRAW + _INT_NOT_NULL + _COMMA
 			+ V_UNRATED  	    		+ _INT_NOT_NULL + _COMMA
 			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TIMEOUT_PERCENT  		+ _TEXT_NOT_NULL + _COMMA
+			+ V_TIMEOUTS  		+ _TEXT_NOT_NULL + _COMMA
 			/* Games */
 			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_GAMES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
@@ -652,6 +651,8 @@ public class DBConstants {
 			+ V_DRAWS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_WINNING_STREAK  	    + _INT_NOT_NULL + _COMMA
 			+ V_LOSING_STREAK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_FREQUENT_OPPONENT_NAME  	    + _TEXT_NOT_NULL + _COMMA
+			+ V_FREQUENT_OPPONENT_GAMES_PLAYED	+ _INT_NOT_NULL + _COMMA
 			/* Tournaments */
 			+ V_TOURNAMENTS_LEADERBOARD_POINTS  	    + _INT_NOT_NULL + _COMMA
 			+ V_TOURNAMENTS_EVENTS_ENTERED  	    	+ _INT_NOT_NULL + _COMMA
@@ -688,7 +689,7 @@ public class DBConstants {
 			+ V_AVG_OPPONENT_RATING_DRAW + _INT_NOT_NULL + _COMMA
 			+ V_UNRATED  	    		+ _INT_NOT_NULL + _COMMA
 			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TIMEOUT_PERCENT  		+ _TEXT_NOT_NULL + _COMMA
+			+ V_TIMEOUTS  				+ _TEXT_NOT_NULL + _COMMA
 			/* Games */
 			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_GAMES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
@@ -704,6 +705,8 @@ public class DBConstants {
 			+ V_DRAWS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_WINNING_STREAK  	    + _INT_NOT_NULL + _COMMA
 			+ V_LOSING_STREAK  	    	+ _INT_NOT_NULL + _COMMA
+			+ V_FREQUENT_OPPONENT_NAME  	    + _TEXT_NOT_NULL + _COMMA
+			+ V_FREQUENT_OPPONENT_GAMES_PLAYED	+ _INT_NOT_NULL + _COMMA
 			/* Tournaments */
 			+ V_TOURNAMENTS_LEADERBOARD_POINTS  	    + _INT_NOT_NULL + _COMMA
 			+ V_TOURNAMENTS_EVENTS_ENTERED  	    	+ _INT_NOT_NULL + _COMMA

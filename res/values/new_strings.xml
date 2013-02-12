@@ -50,4 +50,7 @@
     <string name="pie_chart_win_legend">Win %.0f%%</string>
     <string name="pie_chart_loss_legend">Loss %.0f%%</string>
     <string name="pie_chart_drawn_legend">Drawn %.0f%%</string>
+    <string name="percentile">Percentile</string>
+    <string name="of_arg">of %s</string>
+    <string name="not_available">N/A</string>
 </resources>

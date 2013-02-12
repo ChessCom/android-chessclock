@@ -410,9 +410,7 @@ public class AppUtils {
 	 *
 	 * @see {@link <a>http://developer.android.com/reference/android/text/style/CharacterStyle.html</a> }
 	 */
-	public static CharSequence setSpanBetweenTokens(CharSequence text,
-													String token, CharacterStyle... cs)
-	{
+	public static CharSequence setSpanBetweenTokens(CharSequence text, String token, CharacterStyle... cs) {
 		// Start and end refer to the points where the span will apply
 		int tokenLen = token.length();
 		int start = text.toString().indexOf(token) + tokenLen;
