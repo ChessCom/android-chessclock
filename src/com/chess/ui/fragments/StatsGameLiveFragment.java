@@ -44,7 +44,7 @@ public class StatsGameLiveFragment extends CommonLogicFragment {
 	private final static int LIVE_STANDARD = 0;
 	private final static int LIVE_BLITZ = 1;
 	private final static int LIVE_LIGHTNING = 2;
-	private static final int CHART_HEIGHT = 400;
+	private static final int CHART_HEIGHT = 420;
 
 
 	private LiveDataCursorUpdateListener liveStandardCursorUpdateListener;

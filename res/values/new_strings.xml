@@ -47,4 +47,7 @@
     <string name="three_months">(3 Months)</string>
     <string name="timeouts_last_90_days">Timeouts (last 90 days)</string>
     <string name="glicko_rd">Glicko RD</string>
+    <string name="pie_chart_win_legend">Win %.0f%%</string>
+    <string name="pie_chart_loss_legend">Loss %.0f%%</string>
+    <string name="pie_chart_drawn_legend">Drawn %.0f%%</string>
 </resources>
