@@ -20,7 +20,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.ui.adapters.ChessWhiteSpinnerAdapter;
+import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 
@@ -65,12 +65,12 @@ public class VideoScreenActivity extends LiveBaseActivity {
 		desc = (TextView) findViewById(R.id.desc);
 
 		skillsSpinner = (Spinner) findViewById(R.id.skillsSpinner);
-		skillsSpinner.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.skill)));
+		skillsSpinner.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.skill)));
 		skillsSpinner.setOnItemSelectedListener(skillsItemSelectedListener);
 		skillsSpinner.setSelection(preferences.getInt(AppConstants.PREF_VIDEO_SKILL_LEVEL, 0));
 
 		categoriesSpinner = (Spinner) findViewById(R.id.categoriesSpinner);
-		categoriesSpinner.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.category)));
+		categoriesSpinner.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.category)));
 		categoriesSpinner.setOnItemSelectedListener(categoriesItemSelectedListener);
 		categoriesSpinner.setSelection(preferences.getInt(AppConstants.PREF_VIDEO_CATEGORY, 0));
 

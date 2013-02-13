@@ -80,6 +80,16 @@
         <item>chess960</item>
     </string-array>
 
+    <string-array name="user_stats_types">
+        <item>standard</item>
+        <item>blitz</item>
+        <item>lightning</item>
+        <item>chess</item>
+        <item>chess960</item>
+        <item>tactics</item>
+        <item>chess_mentor</item>
+    </string-array>
+
     <string-array name="user_stats_categories">
         <item>Live - Standard</item>
         <item>Live - Blitz</item>

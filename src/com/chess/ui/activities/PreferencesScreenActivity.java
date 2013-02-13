@@ -16,7 +16,7 @@ import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.SelectionItem;
-import com.chess.ui.adapters.ChessWhiteSpinnerAdapter;
+import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.ui.adapters.SelectionAdapter;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.BaseRequestListener;
@@ -123,19 +123,19 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		showHighlights.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true));
 
 
-		minRatingSpinner.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.minRating)));
+		minRatingSpinner.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.minRating)));
 		minRatingSpinner.setSelection(preferences.getInt(userName + AppConstants.CHALLENGE_MIN_RATING, 0));
 
-		maxRatingSpinner.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.maxRating)));
+		maxRatingSpinner.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.maxRating)));
 		maxRatingSpinner.setSelection(preferences.getInt(userName + AppConstants.CHALLENGE_MAX_RATING, 0));
 
-		langSpinner.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.languages)));
+		langSpinner.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.languages)));
 		langSpinner.setSelection(AppData.getLanguageCode(this));
 
-		afterMyMoveSpinner.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.AIM)));
+		afterMyMoveSpinner.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.AIM)));
 		afterMyMoveSpinner.setSelection(AppData.getAfterMoveAction(this));
 
-		strengthSpinner.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.strength)));
+		strengthSpinner.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.strength)));
 
 		// Piece and board bitmaps list init
 		piecesList = new ArrayList<SelectionItem>(9);

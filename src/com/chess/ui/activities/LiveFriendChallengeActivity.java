@@ -22,7 +22,7 @@ import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
-import com.chess.ui.adapters.ChessWhiteSpinnerAdapter;
+import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.flurry.android.FlurryAgent;
 
 public class LiveFriendChallengeActivity extends LiveBaseActivity implements View.OnTouchListener {
@@ -81,7 +81,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 		bonusTimeEdt.setOnTouchListener(this);
 
 		iPlayAsSpnr = (Spinner) findViewById(R.id.iplayas);
-		iPlayAsSpnr.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.playas)));
+		iPlayAsSpnr.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.playas)));
 
 		findViewById(R.id.createchallenge).setOnClickListener(this);
         friendsTxt = (TextView) findViewById(R.id.friendsTxt);
@@ -115,7 +115,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
             }
             
 			friendsSpinner.setEnabled(true);
-			friendsSpinner.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromArray(friends)));
+			friendsSpinner.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromArray(friends)));
 
 			dismissFragmentDialog();
 		}

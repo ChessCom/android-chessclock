@@ -14,7 +14,7 @@ import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
-import com.chess.ui.adapters.ChessDarkSpinnerAdapter;
+import com.chess.ui.adapters.DarkSpinnerAdapter;
 import com.chess.ui.adapters.NewArticlesThumbCursorAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
@@ -84,7 +84,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		sortList.add("Date");
 		sortList.add("Author's Name");
 		sortList.add("Author's Country");
-		sortSpinner.setAdapter(new ChessDarkSpinnerAdapter(getActivity(), sortList));
+		sortSpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), sortList));
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(articlesAdapter);
@@ -141,7 +141,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 			}
 		}
 
-		categorySpinner.setAdapter(new ChessDarkSpinnerAdapter(getActivity(), list));
+		categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), list));
 		categorySpinner.setOnItemSelectedListener(this);
 		categorySpinner.setSelection(sectionId);  // TODO remember last selection.
 		return true;

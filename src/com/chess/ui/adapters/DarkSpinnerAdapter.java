@@ -9,20 +9,20 @@ import com.chess.R;
 import java.util.List;
 
 /**
- * ChessWhiteSpinnerAdapter class
+ * WhiteSpinnerAdapter class
  *
  * @author alien_roger
- * @created at: 24.02.12 5:22
+ * @created at: 30.01.13 5:22
  */
-public class ChessWhiteSpinnerAdapter extends ItemsAdapter<String> {
+public class DarkSpinnerAdapter extends ItemsAdapter<String> {
 
-	public ChessWhiteSpinnerAdapter(Context context, List<String> items) {
+	public DarkSpinnerAdapter(Context context, List<String> items) {
 		super(context, items);
 	}
 
 	@Override
 	protected View createView(ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_white_spinner_item, parent, false);
+		View view = inflater.inflate(R.layout.new_dark_spinner_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.textTxt = (TextView) view.findViewById(android.R.id.text1);
 

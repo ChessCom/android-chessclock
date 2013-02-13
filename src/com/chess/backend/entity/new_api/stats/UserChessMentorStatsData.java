@@ -24,68 +24,47 @@ public class UserChessMentorStatsData {
         "total_training_seconds": 159
       }
 */
-	private int current;
-	private BaseRating highest;
-	private BaseRating lowest;
-	private int lessons_tried;
-	private int total_lesson_count;
-	private int lesson_complete_percentage;
-	private long total_training_seconds;
+	public Rating rating;
 
-	public int getCurrent() {
-		return current;
+	public Rating getRating() {
+		return rating;
 	}
 
-	public void setCurrent(int current) {
-		this.current = current;
-	}
+	public class Rating {
+		private int current;
+		private BaseRating highest;
+		private BaseRating lowest;
+		private int lessons_tried;
+		private int total_lesson_count;
+		private float lesson_complete_percentage;
+		private long total_training_seconds;
 
-	public BaseRating getHighest() {
-		return highest;
-	}
+		public int getCurrent() {
+			return current;
+		}
 
-	public void setHighest(BaseRating highest) {
-		this.highest = highest;
-	}
+		public BaseRating getHighest() {
+			return highest;
+		}
 
-	public BaseRating getLowest() {
-		return lowest;
-	}
+		public BaseRating getLowest() {
+			return lowest;
+		}
 
-	public void setLowest(BaseRating lowest) {
-		this.lowest = lowest;
-	}
+		public int getLessonsTried() {
+			return lessons_tried;
+		}
 
-	public int getLessonsTried() {
-		return lessons_tried;
-	}
+		public int getTotalLessonCount() {
+			return total_lesson_count;
+		}
 
-	public void setLessonsTried(int lessons_tried) {
-		this.lessons_tried = lessons_tried;
-	}
+		public float getLessonCompletePercentage() {
+			return lesson_complete_percentage;
+		}
 
-	public int getTotalLessonCount() {
-		return total_lesson_count;
+		public long getTotalTrainingSeconds() {
+			return total_training_seconds;
+		}
 	}
-
-	public void setTotalLessonCount(int total_lesson_count) {
-		this.total_lesson_count = total_lesson_count;
-	}
-
-	public int getLessonCompletePercentage() {
-		return lesson_complete_percentage;
-	}
-
-	public void setLessonCompletePercentage(int lesson_complete_percentage) {
-		this.lesson_complete_percentage = lesson_complete_percentage;
-	}
-
-	public long getTotalTrainingSeconds() {
-		return total_training_seconds;
-	}
-
-	public void setTotalTrainingSeconds(long total_training_seconds) {
-		this.total_training_seconds = total_training_seconds;
-	}
-
 }

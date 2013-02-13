@@ -11,14 +11,14 @@ import com.chess.model.SelectionItem;
 import java.util.List;
 
 /**
- * ChessWhiteSpinnerAdapter class
+ * WhiteSpinnerAdapter class
  *
  * @author alien_roger
  * @created at: 30.01.13 5:22
  */
-public class ChessDarkSpinnerIconAdapter extends ItemsAdapter<SelectionItem> {
+public class DarkSpinnerIconAdapter extends ItemsAdapter<SelectionItem> {
 
-	public ChessDarkSpinnerIconAdapter(Context context, List<SelectionItem> items) {
+	public DarkSpinnerIconAdapter(Context context, List<SelectionItem> items) {
 		super(context, items);
 	}
 

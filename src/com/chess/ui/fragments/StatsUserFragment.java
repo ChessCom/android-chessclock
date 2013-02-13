@@ -19,7 +19,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.tasks.SaveUserStatsTask;
 import com.chess.model.SelectionItem;
-import com.chess.ui.adapters.ChessDarkSpinnerIconAdapter;
+import com.chess.ui.adapters.DarkSpinnerIconAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +66,7 @@ public class StatsUserFragment extends CommonLogicFragment implements AdapterVie
 
 		
 		List<SelectionItem> sortList = createSpinnerList(getActivity());
-		statsSpinner.setAdapter(new ChessDarkSpinnerIconAdapter(getActivity(), sortList));
+		statsSpinner.setAdapter(new DarkSpinnerIconAdapter(getActivity(), sortList));
 		statsSpinner.setOnItemSelectedListener(this);
 		statsSpinner.setSelection(0);  // TODO remember last selection.
 	}

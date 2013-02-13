@@ -22,7 +22,7 @@ import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveFriendsListTask;
-import com.chess.ui.adapters.ChessWhiteSpinnerAdapter;
+import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.ui.adapters.FriendsCursorAdapter;
 import com.chess.utilities.AppUtils;
 
@@ -74,7 +74,7 @@ public class FriendsFragment extends CommonLogicFragment {
 		sortList.add("Name");
 		sortList.add("Country");
 		sortList.add("Online");
-		sortSpinner.setAdapter(new ChessWhiteSpinnerAdapter(getActivity(), sortList));
+		sortSpinner.setAdapter(new WhiteSpinnerAdapter(getActivity(), sortList));
 	}
 
 	@Override

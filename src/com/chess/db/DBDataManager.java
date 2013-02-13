@@ -141,6 +141,12 @@ public class DBDataManager {
 			DBConstants.V_ARTICLE_ID
 	};
 
+	public static final String[] PROJECTION_USER_CURRENT_RATING = new String[] {
+			DBConstants._ID,
+			DBConstants.V_USER,
+			DBConstants.V_CURRENT
+	};
+
 	public static String concatArguments(String... arguments){
 		StringBuilder selection = new StringBuilder();
 
@@ -725,7 +731,7 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static ContentValues putUserStatsChessMentorItemToValues(UserChessMentorStatsData dataObj, String user) {
+	public static ContentValues putUserStatsChessMentorItemToValues(UserChessMentorStatsData.Rating dataObj, String user) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, user);

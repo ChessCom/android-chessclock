@@ -8,7 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
@@ -18,7 +19,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.tasks.SaveGameStatsTask;
 import com.chess.model.SelectionItem;
-import com.chess.ui.adapters.ChessDarkSpinnerIconAdapter;
+import com.chess.ui.adapters.DarkSpinnerIconAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +40,20 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	private final static int DAILY_CHESS = 3;
 	private final static int DAILY_CHESS960 = 4;
 
+	private static final String CATEGORY = "mode";
+
 	private Spinner statsSpinner;
 	private StatsItemUpdateListener statsItemUpdateListener;
 	private SaveStatsUpdateListener saveStatsUpdateListener;
 	private String gameType;
+
+	public static StatsGameFragment newInstance(int code) {
+		StatsGameFragment frag = new StatsGameFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt(CATEGORY, code);
+		frag.setArguments(bundle);
+		return frag;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -63,9 +74,10 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		statsSpinner = (Spinner) view.findViewById(R.id.statsSpinner);
 
 		List<SelectionItem> sortList = createSpinnerList(getActivity());
-		statsSpinner.setAdapter(new ChessDarkSpinnerIconAdapter(getActivity(), sortList));
+		statsSpinner.setAdapter(new DarkSpinnerIconAdapter(getActivity(), sortList));
 		statsSpinner.setOnItemSelectedListener(this);
-		statsSpinner.setSelection(0);  // TODO remember last selection.
+		int selectedPosition = getArguments().getInt(CATEGORY);
+		statsSpinner.setSelection(selectedPosition);
 	}
 
 	private void init() {

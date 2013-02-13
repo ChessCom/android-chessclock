@@ -20,7 +20,7 @@ import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
-import com.chess.ui.adapters.ChessWhiteSpinnerAdapter;
+import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.flurry.android.FlurryAgent;
 
 public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.OnTouchListener {
@@ -58,11 +58,11 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 		bonusTimeEdt.setSelection(bonusTimeEdt.getText().length());
 
 		minRatingSpnr = (Spinner) findViewById(R.id.minRating);
-		minRatingSpnr.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.minRating)));
+		minRatingSpnr.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.minRating)));
 		minRatingSpnr.setSelection(preferences.getInt(AppConstants.CHALLENGE_MIN_RATING, 0));
 
 		maxRatingSpnr = (Spinner) findViewById(R.id.maxRating);
-		maxRatingSpnr.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.maxRating)));
+		maxRatingSpnr.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.maxRating)));
 		maxRatingSpnr.setSelection(preferences.getInt(AppConstants.CHALLENGE_MAX_RATING, 0));
 
 		isRated = (CheckBox) findViewById(R.id.ratedGame);

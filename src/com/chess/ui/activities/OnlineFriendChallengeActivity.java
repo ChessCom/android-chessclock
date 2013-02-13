@@ -18,7 +18,7 @@ import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.ui.adapters.ChessWhiteSpinnerAdapter;
+import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.ui.adapters.FriendsSpinnerAdapter;
 
 import java.util.List;
@@ -45,15 +45,15 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 
 		daysArr = getResources().getIntArray(R.array.days_per_move_array);
 		daysPerMoveSpnr = (Spinner) findViewById(R.id.dayspermove);
-		daysPerMoveSpnr.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.dayspermove)));
+		daysPerMoveSpnr.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.dayspermove)));
 
 		chess960 = (RadioButton) findViewById(R.id.chess960);
 
 		iPlayAsSpnr = (Spinner) findViewById(R.id.iplayas);
-		iPlayAsSpnr.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.playas)));
+		iPlayAsSpnr.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.playas)));
 
 		friendsSpnr = (Spinner) findViewById(R.id.friendsSpinner);
-		friendsSpnr.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromArray(new String[]{StaticData.SYMBOL_EMPTY})));
+		friendsSpnr.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromArray(new String[]{StaticData.SYMBOL_EMPTY})));
 
 		isRatedChkBx = (CheckBox) findViewById(R.id.ratedGame);
 		findViewById(R.id.createchallenge).setOnClickListener(this);

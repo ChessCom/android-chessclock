@@ -1,8 +1,9 @@
 package com.chess.backend.interfaces;
 
 import actionbarcompat.ActionBarHelper;
-import android.content.Context;
 import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCode;
 import com.chess.ui.activities.CoreActivityActionBar;
 
 /**
@@ -41,5 +42,20 @@ public abstract class ActionBarUpdateListener<ItemType> extends AbstractUpdateLi
 	@Override
 	public void errorHandle(String resultMessage) {
 		coreActivityActionBar.safeShowSinglePopupDialog(R.string.error, resultMessage);
+	}
+
+	@Override
+	public void errorHandle(Integer resultCode) {
+		super.errorHandle(resultCode);
+
+		// show message only for re-login
+		if (RestHelper.containsServerCode(resultCode)) {
+			int serverCode = RestHelper.decodeServerCode(resultCode);
+			if (serverCode == ServerErrorCode.INVALID_LOGIN_TOKEN_SUPPLIED) {
+				String serverMessage = ServerErrorCode.getUserFriendlyMessage(coreActivityActionBar, serverCode); // TODO restore
+
+				coreActivityActionBar.safeShowSinglePopupDialog(R.string.error, serverMessage);
+			}
+		}
 	}
 }

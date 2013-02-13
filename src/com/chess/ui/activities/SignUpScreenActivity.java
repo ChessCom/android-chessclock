@@ -19,7 +19,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.ui.adapters.ChessWhiteSpinnerAdapter;
+import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
 import com.flurry.android.FlurryAgent;
@@ -78,7 +78,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 		getCountryCode();
 		Spinner countrySpinner = (Spinner) findViewById(R.id.country);
-		countrySpinner.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromArray(tmp2)));
+		countrySpinner.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromArray(tmp2)));
 		countrySpinner.setOnItemSelectedListener(this);
 
 		regSubmit.setOnClickListener(this);

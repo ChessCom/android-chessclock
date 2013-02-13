@@ -14,7 +14,7 @@ import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.ui.adapters.ChessWhiteSpinnerAdapter;
+import com.chess.ui.adapters.WhiteSpinnerAdapter;
 
 public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnClickListener {
 
@@ -36,19 +36,19 @@ public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnC
 
 		daysArr = getResources().getIntArray(R.array.days_per_move_array);
 		daysPerMoveSpnr = (Spinner) findViewById(R.id.dayspermove);
-		daysPerMoveSpnr.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.dayspermove)));
+		daysPerMoveSpnr.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.dayspermove)));
 
 		chess960 = (RadioButton) findViewById(R.id.chess960);
 		iplayasSpnr = (Spinner) findViewById(R.id.iplayas);
-		iplayasSpnr.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.playas)));
+		iplayasSpnr.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.playas)));
 
 		minRatingSpnr = (Spinner) findViewById(R.id.minRating);
-		minRatingSpnr.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.minRating)));
+		minRatingSpnr.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.minRating)));
 		minRatingSpnr.setSelection(preferences.getInt(AppData.getUserName(this) + AppConstants.CHALLENGE_MIN_RATING, 0));
 		// TODO save last selected rating
 
 		maxRatingSpnr = (Spinner) findViewById(R.id.maxRating);
-		maxRatingSpnr.setAdapter(new ChessWhiteSpinnerAdapter(this, getItemsFromEntries(R.array.maxRating)));
+		maxRatingSpnr.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.maxRating)));
 		maxRatingSpnr.setSelection(preferences.getInt(AppData.getUserName(this) + AppConstants.CHALLENGE_MAX_RATING, 0));
 
 		isRatedChkBx = (CheckBox) findViewById(R.id.ratedGame);

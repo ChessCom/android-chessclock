@@ -153,7 +153,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
-			ContentValues values = DBDataManager.putUserStatsChessMentorItemToValues(item.getChessMentor(), userName);
+			ContentValues values = DBDataManager.putUserStatsChessMentorItemToValues(item.getChessMentor().getRating(), userName);
 
 			if (cursor.moveToFirst()) {
 				resolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);

@@ -97,7 +97,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_stats_game_full_frame, container, false);
+		return inflater.inflate(R.layout.new_stats_game_details_frame, container, false);
 	}
 
 	@Override

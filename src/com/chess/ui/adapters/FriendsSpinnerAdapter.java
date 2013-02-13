@@ -10,7 +10,7 @@ import com.chess.backend.entity.new_api.FriendsItem;
 import java.util.List;
 
 /**
- * ChessWhiteSpinnerAdapter class
+ * WhiteSpinnerAdapter class
  *
  * @author alien_roger
  * @created at: 24.02.12 5:22
