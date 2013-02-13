@@ -381,4 +381,32 @@
     <color name="chart_orange_2">#FFe68c2b</color>
     <color name="chart_grey_1">#FFdbd9d6</color>
     <color name="chart_grey_2">#FFd5d2ce</color>
+
+    <!--Upgrade-->
+    <color name="upgrade_green_title">#FF4b7733</color>
+    <color name="upgrade_grey_sub_title">#FF51504d</color>
+    <color name="upgrade_diamond_title">#FF0c334e</color>
+    <color name="upgrade_diamond_sub_title">#FF7490a1</color>
+    <color name="upgrade_platinum_title">#FF51504d</color>
+    <color name="upgrade_platinum_sub_title">#FF8c8781</color>
+    <color name="upgrade_gold_title">#FF7e6a39</color>
+    <color name="upgrade_gold_sub_title">#FF9f8d60</color>
+
+    <!--Upgrade Buttons-->
+    <color name="upgrade_diamond_button">#FFe6f5fb</color>
+    <color name="upgrade_diamond_button_p">#ffd3e2e8</color>
+    <color name="upgrade_diamond_button_border">#FFcad7dc</color>
+    <color name="upgrade_diamond_button_border_1">#FF9fa9ad</color>
+
+    <color name="upgrade_platinum_button">#FFf3f0ee</color>
+    <color name="upgrade_platinum_button_p">#ffe2dfdd</color>
+    <color name="upgrade_platinum_button_border">#FFd5d3d1</color>
+    <color name="upgrade_platinum_button_border_1">#FFa8a6a4</color>
+
+    <color name="upgrade_gold_button">#FFfaf8d7</color>
+    <color name="upgrade_gold_button_p">#ffe8e6c5</color>
+    <color name="upgrade_gold_button_border">#FFdcdabd</color>
+    <color name="upgrade_gold_button_border_1">#FFadab94</color>
+
+
 </resources>

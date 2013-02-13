@@ -53,4 +53,15 @@
     <string name="percentile">Percentile</string>
     <string name="of_arg">of %s</string>
     <string name="not_available">N/A</string>
+
+    <!--Upgrade-->
+    <string name="upgrade_main_title_1">Good Enough for Masters.</string>
+    <string name="upgrade_main_title_2">Simple Enough for Beginners.</string>
+    <string name="upgrade_main_sub_title">Choose a plan to unlock premium features:</string>
+    <string name="diamond">Diamond</string>
+    <string name="diamond_subtitle">Unlimited access to all features</string>
+    <string name="platinum">Platinum</string>
+    <string name="platinum_subtitle">Access to many features</string>
+    <string name="gold">Gold</string>
+    <string name="gold_subtitle">The basic perks</string>
 </resources>
