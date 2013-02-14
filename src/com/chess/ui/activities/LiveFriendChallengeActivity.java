@@ -22,6 +22,7 @@ import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
+import com.chess.live.util.GameType;
 import com.chess.ui.adapters.ChessSpinnerAdapter;
 import com.flurry.android.FlurryAgent;
 
@@ -87,11 +88,19 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
         friendsTxt = (TextView) findViewById(R.id.friendsTxt);
     }
 
-    @Override
+    protected void onLiveServiceConnected() {
+		if (!checkIfLiveUserAlive()) {
+			return;
+		}
+
+		updateScreen();
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 
-		if (!checkIfLiveUserAlive()){
+		if (getLccHolder() == null || !checkIfLiveUserAlive()) {
 			return;
 		}
 
@@ -196,14 +205,16 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 			default: pieceColor = PieceColor.UNDEFINED; break;
 		}
 
+		final GameType gameType = GameType.Chess;
 		Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
 				getLccHolder().getUser(),
 				friendsSpinner.getSelectedItem().toString().trim(),
+				gameType,
 				pieceColor, rated, gameTimeConfig,
 				minMembershipLevel, minRating, maxRating);
 
 		// todo: refactor with new LCC
-		if(!getLccHolder().isConnected() || getLccHolder().getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
+		if (!getLccHolder().isConnected() || getLccHolder().getClient() == null) { // TODO should leave that screen on connection lost or when LCC is become null
 			getLccHolder().logout();
 			backToHomeActivity();
 			return;
@@ -231,7 +242,6 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 		}
 		return false;
 	}
-
 
 	private class InitialTimeTextWatcher implements TextWatcher {
 		@Override

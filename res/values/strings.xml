@@ -40,12 +40,12 @@
 	<string name="settings">Settings</string>
 	<string name="start_new_game">Start New Game</string>
 	<!--<string name="dont_have_account_q">Don\'t have an account?</string>-->
-	<string name="singinUsername">Username</string>
-	<string name="singinPassword">Password</string>
-	<string name="singinButton">Sign In</string>
-	<string name="sing_up">Sign Up</string>
-	<string name="complete_singupButton">Complete Sign Up</string>
-	<string name="singinPlayguest">Play As Guest</string>
+	<string name="signinUsername">Username</string>
+	<string name="signinPassword">Password</string>
+	<string name="signinButton">Sign In</string>
+	<string name="sign_up">Sign Up</string>
+	<string name="complete_signupButton">Complete Sign Up</string>
+	<string name="signinPlayguest">Play As Guest</string>
 
 	<string name="computerWhite">White</string>
 	<string name="computerBlack">Black</string>
@@ -470,16 +470,14 @@
 	<string name="game.dw_warn">Your account may be restricted if you do not follow our Fair Play Policy. If restricted, you will only be able to play with friends. Please do not intentionally abort/disconnect from games or make your opponents wait unnecessarily. Thank you for keeping Chess.com a fun place to enjoy chess!</string>
 	<string name="game.not_accepting_challenges">%1$s is currently not accepting challenges</string>
 	<string name="game.aborted_by_server">Game has been aborted by the server</string>
-	<string name="game.aborted_by_server_on_logout">Game has been aborted by the server</string>
-	<string name="game.aborted_by_server_on_disconnection">Game has been aborted by the server</string>
-	<string name="announcement.server_restarting">ALERT: Chess.com will be restarting the servers!</string>
+	<string name="game.aborted_by_server_on_logout">Game has been aborted by the server. %1$s has logged out</string>
+	<string name="game.aborted_by_server_on_disconnection">Game has been aborted by the server. %1$s has disconnected</string>
+	<!--<string name="announcement.server_restarting">ALERT: Chess.com will be restarting the servers!</string>-->
 	<string name="announcement.server_restart_cancelled">Server restart has been cancelled</string>
     <string name="locale_change">Locale has changed</string>
     <string name="need_app_restart_to_apply">You need to restart app to apply</string>
     <string name="restart">Restart</string>
 
-    <!--<string name="game.aborted_by_server_on_logout">Game has been aborted by the server. %1$s has logged out</string>
-    <string name="game.aborted_by_server_on_disconnection">Game has been aborted by the server. %1$s has disconnected</string>
-    <string name="announcement.server_restarting">ALERT: Chess.com will be restarting the servers in %1$s minutes!</string>-->
+    <string name="announcement.server_restarting">ALERT: Chess.com will be restarting the servers in %1$s minutes!</string>
 
 </resources>

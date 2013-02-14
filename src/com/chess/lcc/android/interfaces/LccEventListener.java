@@ -19,7 +19,7 @@ public interface LccEventListener {
 
     void onGameEnd(String gameEndMessage);
 	
-	void onInform(String title, String message);
+	//void onInform(String title, String message);
 
 	void onGameRecreate();
 }

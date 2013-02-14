@@ -338,7 +338,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_solved, null, false);
 
 		/*LinearLayout adViewWrapper = (LinearLayout) customView.findViewById(R.id.adview_wrapper);
-		if (AppUtils.isNeedToUpgrade(this)) {
+		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
 			MopubHelper.showRectangleAd(adViewWrapper, this);
 		} else {
 			adViewWrapper.setVisibility(View.GONE);

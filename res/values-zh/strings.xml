@@ -39,12 +39,12 @@
 	<string name="settings">设置</string>
 	<string name="start_new_game">开始新游戏</string>
 	<!--<string name="dont_have_account_q">没有帐户？</string>-->
-	<string name="singinUsername">用户名</string>
-	<string name="singinPassword">密码:</string>
-	<string name="singinButton">登录</string>
-	<string name="sing_up">注册</string>
-	<string name="complete_singupButton">完成注册</string>
-	<string name="singinPlayguest">为来宾播放</string>
+	<string name="signinUsername">用户名</string>
+	<string name="signinPassword">密码:</string>
+	<string name="signinButton">登录</string>
+	<string name="sign_up">注册</string>
+	<string name="complete_signupButton">完成注册</string>
+	<string name="signinPlayguest">为来宾播放</string>
 
 	<string name="computerWhite">白色</string>
 	<string name="computerBlack">黑色</string>

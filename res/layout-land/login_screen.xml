@@ -15,7 +15,7 @@
 		android:id="@+id/usernameEdt"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="@string/singinUsername"
+		android:hint="@string/signinUsername"
 		android:singleLine="true"
 		android:imeOptions="actionNext"
 		/>
@@ -24,7 +24,7 @@
 		android:id="@+id/passwordEdt"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="@string/singinPassword"
+		android:hint="@string/signinPassword"
 		android:inputType="textPersonName"
 		android:password="true"
 		android:singleLine="true"
@@ -35,7 +35,7 @@
 		android:id="@+id/signin"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/singinButton"
+		android:text="@string/signinButton"
 		/>
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -46,7 +46,7 @@
 			style="@style/Text.Button.Green"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/sing_up"
+			android:text="@string/sign_up"
 			android:layout_weight="1"
 			/>
 
@@ -55,7 +55,7 @@
 			style="@style/Text.Button.Grey"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/singinPlayguest"
+			android:text="@string/signinPlayguest"
 			android:layout_weight="1"
 			/>
 

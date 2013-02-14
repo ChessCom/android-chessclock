@@ -39,12 +39,12 @@
 	<string name="settings">Ustawienia</string>
 	<string name="start_new_game">Rozpocznij nową grę</string>
 	<!--<string name="dont_have_account_q">Nie masz konta?</string>-->
-	<string name="singinUsername">Nazwa użytkownika</string>
-	<string name="singinPassword">Hasło</string>
-	<string name="singinButton">Zaloguj się</string>
-	<string name="sing_up">Zarejestruj się</string>
-	<string name="complete_singupButton">Wypełnij Zarejestruj</string>
-	<string name="singinPlayguest">Graj jako Gość</string>
+	<string name="signinUsername">Nazwa użytkownika</string>
+	<string name="signinPassword">Hasło</string>
+	<string name="signinButton">Zaloguj się</string>
+	<string name="sign_up">Zarejestruj się</string>
+	<string name="complete_signupButton">Wypełnij Zarejestruj</string>
+	<string name="signinPlayguest">Graj jako Gość</string>
 
 	<string name="computerWhite">Biały</string>
 	<string name="computerBlack">Czarny</string>
@@ -442,8 +442,8 @@
 	<string name="game.dw_warn">Twoje konto może zostać ograniczone, jeśli nie przestrzegają naszego Uczciwy Play. Jeśli ograniczony, będziesz tylko mógł grać z przyjaciółmi. Proszę nie celowo przerwać / odłączyć od gier lub zrobić twoi przeciwnicy czekać niepotrzebnie. Dziękujemy za utrzymywanie Chess.com ciekawym miejscem do cieszyć szachy!</string>
 	<string name="game.not_accepting_challenges">%1$s nie jest obecnie przyjęcie wyzwania</string>
 	<string name="game.aborted_by_server">Gra została przerwana przez serwer</string>
-	<string name="game.aborted_by_server_on_logout">Gra została przerwana przez serwer</string>
-	<string name="game.aborted_by_server_on_disconnection">Gra została przerwana przez serwer</string>
+	<string name="game.aborted_by_server_on_logout">Gra została przerwana przez serwer. %1$s został wylogowany</string>
+	<string name="game.aborted_by_server_on_disconnection">Gra została przerwana przez serwer. %1$s został odłączony</string>
 	<string name="announcement.server_restarting">ALERT: Chess.com będzie ponowne uruchomienie serwerów!</string>
 	<string name="announcement.server_restart_cancelled">Restart serwera został odwołany</string>
 </resources>

@@ -342,7 +342,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		@Override
 		public void errorHandle(String resultMessage) {
 			if (resultMessage.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
-				popupItem.setPositiveBtnId(R.string.sing_up);
+				popupItem.setPositiveBtnId(R.string.sign_up);
 				showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
 			} else {
 				if(resultMessage.equals(RestHelper.R_INVALID_PASS)){

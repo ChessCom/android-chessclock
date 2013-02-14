@@ -44,7 +44,7 @@
 		android:showAsAction="always"
 		/>
 
-	<item android:id="@+id/menu_singOut"
+	<item android:id="@+id/menu_signOut"
 		android:title="@string/signout"
 		android:orderInCategory="4"
 		android:icon="@drawable/ic_action_sign_out"

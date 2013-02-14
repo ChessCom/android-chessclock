@@ -221,4 +221,15 @@ public class AppData {
 		editor.commit();
 	}
 
+	/*public static boolean isLiveConnected(Context context) {
+		SharedPreferences preferences = getPreferences(context);
+		return preferences.getBoolean(AppConstants.IS_LIVE_CONNECTED, true);
+	}
+
+	public static void setLiveConnected(Context context, boolean enabled) {
+		SharedPreferences.Editor editor = getPreferences(context).edit();
+		editor.putBoolean(AppConstants.IS_LIVE_CONNECTED, enabled);
+		editor.commit();
+	}*/
+
 }

@@ -39,12 +39,12 @@
 	<string name="settings">Innstillinger</string>
 	<string name="start_new_game">Start nytt spill</string>
 	<!--<string name="dont_have_account_q">Har du ikke en konto?</string>-->
-	<string name="singinUsername">Brukernavn</string>
-	<string name="singinPassword">Passord</string>
-	<string name="singinButton">Logg på</string>
-	<string name="sing_up">Registrer deg</string>
-	<string name="complete_singupButton">Komplett Registrering</string>
-	<string name="singinPlayguest">Spill som Gjest</string>
+	<string name="signinUsername">Brukernavn</string>
+	<string name="signinPassword">Passord</string>
+	<string name="signinButton">Logg på</string>
+	<string name="sign_up">Registrer deg</string>
+	<string name="complete_signupButton">Komplett Registrering</string>
+	<string name="signinPlayguest">Spill som Gjest</string>
 
 	<string name="computerWhite">Hvit</string>
 	<string name="computerBlack">Svart</string>
@@ -441,8 +441,8 @@
 	<string name="game.dw_warn">Kontoen din kan bli begrenset dersom du ikke følger våre Fair Play Policy. Hvis begrenset, vil du bare kunne spille med venner. Vennligst ikke med vilje abortere / koble fra spill eller lage dine motstandere vente unødvendig. Takk for at du holde Chess.com et morsomt sted å nyte sjakk!</string>
 	<string name="game.not_accepting_challenges">%1$s er for øyeblikket ikke aksepterer utfordringer</string>
 	<string name="game.aborted_by_server">Spillet har blitt avbrutt av serveren</string>
-	<string name="game.aborted_by_server_on_logout">Spillet har blitt avbrutt av serveren</string>
-	<string name="game.aborted_by_server_on_disconnection">Spillet har blitt avbrutt av serveren</string>
+	<string name="game.aborted_by_server_on_logout">Spillet har blitt avbrutt av serveren. %1$s har logget ut</string>
+	<string name="game.aborted_by_server_on_disconnection">Spillet har blitt avbrutt av serveren. %1$s har koblet fra</string>
 	<string name="announcement.server_restarting">ALERT: Chess.com skal starte serverne!</string>
 	<string name="announcement.server_restart_cancelled">Server omstart er avlyst</string>
 </resources>

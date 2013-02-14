@@ -22,7 +22,8 @@ public class LccConnectionListener implements ConnectionListener {
 		String message = lccHolder.getContext().getString(R.string.account_error)
 				+ lccHolder.getContext().getString(R.string.another_login_detected);
 
-		lccHolder.onAnotherLoginDetected(message);
+		lccHolder.setConnected(false);
+		lccHolder.onOtherClientEntered(message);
 	}
 
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {
@@ -31,7 +32,7 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHolder.setFriends(settings.getFriends());
 		lccHolder.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
 
-		Log.d(CONNECTION, "User has been connected: _user=" + user.getUsername() + ", authKey=" + user.getAuthKey());
+		Log.d(CONNECTION, "User has been connected: name=" + user.getUsername() + ", authKey=" + user.getAuthKey() + ", user=" + user);
 	}
 
 	@Override
@@ -45,11 +46,15 @@ public class LccConnectionListener implements ConnectionListener {
 	public void onConnectionFailure(User user, String message, FailureDetails details, Throwable throwable) {
 		Log.d(CONNECTION, "User connection failure:" + message + ", details=" + details);
 
-		if (details != null) {
-			lccHolder.processConnectionFailure(details);
+		/*if (details ==  null) {
+			lccHolder.setConnected(false);
+			lccHolder.resetClient();
+			lccHolder.runConnectTask(true);
 		} else {
-			Log.d(CONNECTION, "User connection failure: IGNORING");
-		}
+			lccHolder.processConnectionFailure(details);
+		}*/
+
+		lccHolder.processConnectionFailure(details);
 	}
 
 	@Override
@@ -71,6 +76,8 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHolder.clearChallenges();
 		lccHolder.clearOwnChallenges();
 		lccHolder.clearSeeks();
+		lccHolder.clearGames();
+		lccHolder.setCurrentGameId(null);
 		lccHolder.setConnected(true);
 	}
 
@@ -91,10 +98,15 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHolder.onObsoleteProtocolVersion();
 	}
 
-	public void onKicked(User user, String reason, String message) { // TODO change when server change
-		Log.d(CONNECTION, "user kicked");
-
-		lccHolder.processConnectionFailure(reason, message);
+	public void onLagInfoReceived(User user, Long aLong) {
+		// todo: UPDATELCC
 	}
 
+	public void onKicked(User user, String reason, String message, Long period) {
+		Log.d(CONNECTION, "The client kicked: " + user.getUsername() + ", reason=" + reason +
+				", message=" + message + ", period=" + period);
+
+		lccHolder.setConnected(false);
+		lccHolder.processConnectionFailure(reason, message);
+	}
 }

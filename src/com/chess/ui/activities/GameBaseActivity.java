@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.lcc.android.LccGameTaskRunner;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameActivityFace;
@@ -54,6 +55,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	private ChessBoardBaseView boardView;
 	protected View endGamePopupView;
 	protected String endGameMessage;
+	protected LccGameTaskRunner gameTaskRunner;
 
 
 	@Override
@@ -90,12 +92,17 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-
-		if (AppUtils.isNeedToUpgrade(this)) {
+		/*if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
 			MopubHelper.createRectangleAd(this);
-		}
-
+		}*/
 		invalidateGameScreen();
+	}
+
+	protected void onLiveServiceConnected() {
+		// todo: check ads appearing here and in onResume
+		/*if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
+			MopubHelper.createRectangleAd(this);
+		}*/
 	}
 
 	protected void setBoardView(ChessBoardBaseView boardView) {
@@ -113,7 +120,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 
 	protected void onDestroy() {
 		// try to destroy ad here as Mopub team suggested
-		if (AppUtils.isNeedToUpgrade(this)) {
+		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
 			MopubHelper.destroyRectangleAd();
 		}
 
@@ -152,7 +159,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 		endGameMessage = message;
 		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
-		if (!AppUtils.isNeedToUpgrade(this)) {
+		if (!AppUtils.isNeedToUpgrade(this, getLccHolder())) {
 			endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
 		}else {
 			endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);

@@ -31,8 +31,10 @@ import com.chess.utilities.AppUtils;
 import com.chess.utilities.InneractiveAdHelper;
 import com.inneractive.api.ads.InneractiveAd;
 
+import java.util.List;
+
 /**
- * GameTacticsScreenActivity class
+ * GameLiveScreenActivity class
  *
  * @author alien_roger
  * @created at: 08.02.12 7:17
@@ -53,9 +55,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private View submitButtonsLay;
 	private GameLiveItem currentGame;
 	private ChessBoardLiveView boardView;
-	private int whitePlayerNewRating;
+	/*private int whitePlayerNewRating;
 	private int blackPlayerNewRating;
-	private int currentPlayerRating;
+	private int currentPlayerRating;*/
 
     private String whiteTimer;
     private String blackTimer;
@@ -74,7 +76,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		setContentView(R.layout.boardview_live);
 
 		widgetsInit();
-		lccInitiated = init();
+		/*lccInitiated = init();
 
 		if(!lccInitiated){
 			return;
@@ -92,11 +94,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			Log.d("LCCLOG-WARNING", warningMessage);
 
 			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG); // todo: check
-		}
+		}*/
 	}
 
 	private boolean init() {
-		if(!getLccHolder().isConnected()){
+		if (!getLccHolder().isConnected()) {
 			showToast(R.string.application_was_killed);
 			return false;
 		}
@@ -104,18 +106,18 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		currentGame = getLccHolder().getGameItem();
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 
-		Game game = getLccHolder().getCurrentGame();
+		/*Game game = getLccHolder().getCurrentGame();
 		switch (game.getGameTimeConfig().getGameTimeClass()) {
 			case BLITZ:
-				currentPlayerRating = getLccHolder().getUser().getBlitzRating();
+				currentPlayerRating = getLccHolder().getUser().getRatingFor(GameRatingClass.Blitz);
 				break;
 			case LIGHTNING:
-				currentPlayerRating = getLccHolder().getUser().getQuickRating();
+				currentPlayerRating = getLccHolder().getUser().getRatingFor(GameRatingClass.Lightning);
 				break;
 			case STANDARD:
-				currentPlayerRating = getLccHolder().getUser().getStandardRating();
+				currentPlayerRating = getLccHolder().getUser().getRatingFor(GameRatingClass.Standard);
 				break;
-		}
+		}*/
 
 		if (!getLccHolder().currentGameExist()) {
 			gamePanelView.enableAnalysisMode(true);
@@ -152,7 +154,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.setGamePanelView(gamePanelView);
 		setBoardView(boardView);
 
-		boardView.setBoardFace(ChessBoardLive.getInstance(this));
+		//boardView.setBoardFace(ChessBoardLive.getInstance(this));
 		boardView.setGameActivityFace(this);
 
 		submitButtonsLay = findViewById(R.id.submitButtonsLay);
@@ -173,12 +175,64 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	protected void onResume() {
 		super.onResume();
 
+		if (getLccHolder() != null) {
+            if (!lccInitiated) { // probably redundant
+                finish();
+                return;
+            }
+
+            //getLccHolder().setGameActivityPausedMode(false); // moved to execute paused events
+            getLccHolder().setLccChatMessageListener(this);
+            updateGameState();
+		}
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		if (getLccHolder() != null) {
+			gameTaskRunner = new LccGameTaskRunner(gameTaskListener, getLccHolder());
+		}
+	}
+
+	@Override
+	protected void onLiveServiceConnected() {
+		super.onLiveServiceConnected();
+
+		gameTaskRunner = new LccGameTaskRunner(gameTaskListener, getLccHolder());
+
+		// todo: duplicate in onStart with lccholder check
+		boardView.setBoardFace(ChessBoardLive.getInstance(this));
+
+		lccInitiated = init();
+
 		if(!lccInitiated){
+			return;
+		}
+
+		if (!isUserColorWhite()) {
+			getBoardFace().setReside(true);
+		}
+
+		invalidateGameScreen(); //
+
+		Log.d("Live Game", "GameLiveScreenActivity started ");
+		if (getLccHolder().getPendingWarnings().size() > 0) {
+			// get last warning
+			warningMessage = getLccHolder().getLastWarningMessage();
+
+			Log.d("LCCLOG-WARNING", warningMessage);
+
+			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG); // todo: check
+		}
+
+		if (!lccInitiated) {
 			finish();
 			return;
 		}
 
-		getLccHolder().setActivityPausedMode(false);
+		//getLccHolder().setGameActivityPausedMode(false); // moved to execute paused events
 		getLccHolder().setLccChatMessageListener(this);
 		updateGameState();
 	}
@@ -187,9 +241,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	protected void onPause() {
 		dismissDialogs();
 
-
 		super.onPause();
-		getLccHolder().setActivityPausedMode(true);
+		getLccHolder().setGameActivityPausedMode(true);
 
 		handler.removeCallbacks(blinkSubmitButton);
 	}
@@ -344,10 +397,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
     @Override
     public void onConnectionBlocked(boolean blocked) {
-        super.onConnectionBlocked(blocked);
-		if (blocked) {
-			blockGame(blocked);
-		}
+		super.onConnectionBlocked(blocked);
+		blockGame(blocked);
     }
 
     @Override
@@ -361,10 +412,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		});
     }
 
-	@Override
+	/*@Override
 	public void onInform(String title, String message){
 		showSinglePopupDialog(title, message);
-	}
+	}*/
 
     @Override
     public void onDrawOffered(String drawOfferUsername) {
@@ -378,39 +429,23 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
     @Override
     public void onGameEnd(final String gameEndMessage) {
-        final Game game = getLccHolder().getLastGame();
-        switch (game.getGameTimeConfig().getGameTimeClass()) {
-            case BLITZ: {
-                whitePlayerNewRating = game.getWhitePlayer().getBlitzRating();
-                blackPlayerNewRating = game.getBlackPlayer().getBlitzRating();
-                break;
-            }
-            case LIGHTNING: {
-                whitePlayerNewRating = game.getWhitePlayer().getQuickRating();
-                blackPlayerNewRating = game.getBlackPlayer().getQuickRating();
-                break;
-            }
-            case STANDARD: {
-                whitePlayerNewRating = game.getWhitePlayer().getStandardRating();
-                blackPlayerNewRating = game.getBlackPlayer().getStandardRating();
-                break;
-            }
-        }
 
         final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
+		final Game game = getLccHolder().getLastGame();
+		final List<Integer> ratings = game.getRatings();
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 
 				final View layout;
-				if (!AppUtils.isNeedToUpgrade(GameLiveScreenActivity.this)) {
+				if (!AppUtils.isNeedToUpgrade(GameLiveScreenActivity.this, getLccHolder())) {
 					layout = inflater.inflate(R.layout.popup_end_game, null, false);
 				} else {
 					layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
 				}
 
-				updatePlayerLabels(game, whitePlayerNewRating, blackPlayerNewRating);
+				updatePlayerLabels(game, ratings.get(0), ratings.get(1));
 				showGameEndPopup(layout, getString(R.string.game_over), gameEndMessage);
 
 				setBoardToFinishedState();
@@ -471,9 +506,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}
 
 		String temporaryDebugInfo =
+				"username=" + getLccHolder().getUsername() +
 				"lccInitiated=" + lccInitiated +
 				", " + boardDebug +
-				", gameSeq=" + getLccHolder().getCurrentGame().getSeq() +
+				", gameSeq=" + getLccHolder().getCurrentGame().getMoves().size() +
 				", boardHply=" + getBoardFace().getHply() +
 				", moveLive=" + getBoardFace().convertMoveLive() +
 				", gamesC=" + getLccHolder().getGamesCount() +
@@ -550,16 +586,18 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	@Override
 	public void invalidateGameScreen() {
-		showSubmitButtonsLay(getBoardFace().isSubmit());
+		if (getLccHolder() != null) {
+			showSubmitButtonsLay(getBoardFace().isSubmit());
 
-		topPlayerLabel.setVisibility(View.VISIBLE);
-		topPlayerClock.setVisibility(View.VISIBLE);
+			topPlayerLabel.setVisibility(View.VISIBLE);
+			topPlayerClock.setVisibility(View.VISIBLE);
 
-		updatePlayerLabels();
-		getLccHolder().paintClocks();
-		changePlayersLabelColors();
+			updatePlayerLabels();
+			getLccHolder().paintClocks();
+			changePlayersLabelColors();
 
-		boardView.setMovesLog(getBoardFace().getMoveListSAN());
+			boardView.setMovesLog(getBoardFace().getMoveListSAN());
+		}
 	}
 
 	@Override
@@ -779,30 +817,35 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		endGameTitleTxt.setText(title);
 		endGameReasonTxt.setText(message);
 
-		int currentPlayerNewRating;
-		if (isUserColorWhite()) {
+		int currentPlayerNewRating = getLccHolder().getLastGame().getRatingForPlayer(getLccHolder().getUsername());
+		/*if (userPlayWhite) {
 			currentPlayerNewRating = whitePlayerNewRating;
 		} else {
 			currentPlayerNewRating = blackPlayerNewRating;
-		}
+		}*/
 
-		int ratingDiff;
-		String sign;
+		int ratingChange = getLccHolder().getLastGame().getRatingChangeForPlayer(getLccHolder().getUsername());
+		/*String sign;
 		if(currentPlayerRating < currentPlayerNewRating){ // 800 1200
 			ratingDiff = currentPlayerNewRating - currentPlayerRating;
 			sign = StaticData.SYMBOL_PLUS;
 		} else { // 800 700
 			ratingDiff = currentPlayerRating - currentPlayerNewRating;
 			sign = StaticData.SYMBOL_MINUS;
-		}
+		}*/
 
-		String rating = getString(R.string.your_end_game_rating, sign + ratingDiff, currentPlayerNewRating);
+		String ratingChangeString = ratingChange > 0 ? "+" + ratingChange : "" + ratingChange;
+
+		String rating = getString(R.string.your_end_game_rating, ratingChangeString, currentPlayerNewRating);
 		yourRatingTxt.setText(rating);
 
-		/*LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-		MopubHelper.showRectangleAd(adViewWrapper, this);*/
-		inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
-		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
+		
+		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
+			/*LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+		    MopubHelper.showRectangleAd(adViewWrapper, this);*/
+			inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
+			InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
+		}
 
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((LinearLayout) layout);
@@ -815,7 +858,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
 
-		if (AppUtils.isNeedToUpgrade(this)) {
+		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}
 	}
@@ -827,7 +870,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.setGameActivityFace(this);
 		onGameStarted();
 		getBoardFace().setJustInitialized(false);
-		getLccHolder().executePausedActivityGameEvents();
+		//getLccHolder().executePausedActivityGameEvents();
 	}
 
 	@Override

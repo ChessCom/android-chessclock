@@ -20,9 +20,9 @@ public class InneractiveAdHelper {
 
 	public static void showBannerAd(Button upgradeBtn, InneractiveAd bannerAd, Context context) {
 
-		if (!AppUtils.isNeedToUpgrade(context)) {
+		/*if (!AppUtils.isNeedToUpgrade(context)) {
 			return;
-		}
+		}*/
 
 		bannerAd.setInneractiveListener(new InneractiveAdListenerImpl(AppConstants.AD_BANNER));
 
@@ -98,7 +98,7 @@ public class InneractiveAdHelper {
 		}
 
 		public void onIaDismissScreen() {
-			log("onIaAdExpandClosed");
+			log("onIaDismissScreen");
 		}
 
 		public void onIaAdFailed() {

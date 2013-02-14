@@ -2,11 +2,13 @@ package com.chess.backend.tasks;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHolder;
+import com.chess.live.client.ClientFeature;
 import com.chess.live.client.LiveChessClient;
 import com.chess.live.client.LiveChessClientException;
 import com.chess.live.client.LiveChessClientFacade;
@@ -24,10 +26,10 @@ import java.io.IOException;
  */
 public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Void> {
 
-	private static final String TAG = "ConnectLiveChessTask";
-	public static final String PKCS_12 = "PKCS12";
+	private static final String TAG = "LCCLOG-ConnectLiveChessTask";
+	/*public static final String PKCS_12 = "PKCS12";
 	public static final String TESTTEST = "testtest";
-	public static final String KEY_FILE_NAME = "chesscom.pkcs12";
+	public static final String KEY_FILE_NAME = "chesscom.pkcs12";*/
 
 	//static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(15);
 
@@ -49,13 +51,16 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 	private boolean forceReenterCred;
 
-	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, boolean forceReenterCred) {
+	private LccHolder lccHolder;
+
+	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, boolean forceReenterCred, LccHolder lccHolder) {
 		super(taskFace);
 		this.forceReenterCred = forceReenterCred;
 	}
 
-	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace) {
+	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, LccHolder lccHolder) {
 		super(taskFace);
+		this.lccHolder = lccHolder;
 	}
 
 	@Override
@@ -72,10 +77,31 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			item = LiveChessClientFacade.createClient(AUTH_URL, CONFIG_BAYEUX_HOST,
 					CONFIG_PORT, CONFIG_URI);
 			item.setClientInfo("Android", versionName, "No-Key");
-			item.setSupportedClientFeatures(false, false);
+
+			item.setSupportedClientFeature(ClientFeature.AnnounceService, true);
+			item.setSupportedClientFeature(ClientFeature.AdminService, true); // UPDATELCC todo: check
+
+			item.setSupportedClientFeature(ClientFeature.GenericGameSupport, true);
+			item.setSupportedClientFeature(ClientFeature.GenericChatSupport, true);
+
+			//PublicChatsBasic
+			//PublicChatsFull
+			//PrivateChats
+			//MultiGames
+			//GameObserve
+			//MultiGameObserve
+			//Tournaments
+			//ExamineBoards
+			//PingService
 
 			HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
-			httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
+
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
+				httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
+			} else {
+				httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
+			}
+
 			httpClient.setMaxConnectionsPerAddress(4);
 			httpClient.setSoTimeout(7000);
 			httpClient.setConnectTimeout(10000);
@@ -105,8 +131,8 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			throw new LiveChessClientException("Unable to initialize HttpClient", e);
 		}
 
-		LccHolder.getInstance(context).setLiveChessClient(item);
-		LccHolder.getInstance(context).performConnect(forceReenterCred);
+		lccHolder.setLiveChessClient(item);
+		lccHolder.performConnect(forceReenterCred);
 		return StaticData.RESULT_OK;
 	}
 }

@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Game;
+import com.chess.live.util.GameRatingClass;
 
 import java.util.Iterator;
 
@@ -32,18 +33,18 @@ public class GameLiveItem extends BaseGameItem {
 		Integer blackRating = 0;
 		switch (lccGame.getGameTimeConfig().getGameTimeClass()) {
 			case BLITZ: {
-				whiteRating = lccGame.getWhitePlayer().getBlitzRating();
-				blackRating = lccGame.getBlackPlayer().getBlitzRating();
+				whiteRating = lccGame.getWhitePlayer().getRatingFor(GameRatingClass.Blitz);
+				blackRating = lccGame.getBlackPlayer().getRatingFor(GameRatingClass.Blitz);
 				break;
 			}
 			case LIGHTNING: {
-				whiteRating = lccGame.getWhitePlayer().getQuickRating();
-				blackRating = lccGame.getBlackPlayer().getQuickRating();
+				whiteRating = lccGame.getWhitePlayer().getRatingFor(GameRatingClass.Lightning);
+				blackRating = lccGame.getBlackPlayer().getRatingFor(GameRatingClass.Lightning);
 				break;
 			}
 			case STANDARD: {
-				whiteRating = lccGame.getWhitePlayer().getStandardRating();
-				blackRating = lccGame.getBlackPlayer().getStandardRating();
+				whiteRating = lccGame.getWhitePlayer().getRatingFor(GameRatingClass.Standard);
+				blackRating = lccGame.getBlackPlayer().getRatingFor(GameRatingClass.Standard);
 				break;
 			}
 		}

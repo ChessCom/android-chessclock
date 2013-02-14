@@ -39,12 +39,12 @@
 	<string name="settings">تنظیمات</string>
 	<string name="start_new_game">شروع بازی های جدید</string>
 	<!--<string name="dont_have_account_q">آیا یک حساب داشته باشید؟</string>-->
-	<string name="singinUsername">نام کاربری</string>
-	<string name="singinPassword">گذرواژه</string>
-	<string name="singinButton">{0}{/0}{1}{2}Sign in{/2}{/1}</string>
-	<string name="sing_up">ثبت نام</string>
-	<string name="complete_singupButton">کامل ثبت نام</string>
-	<string name="singinPlayguest">بازی به عنوان مهمان</string>
+	<string name="signinUsername">نام کاربری</string>
+	<string name="signinPassword">گذرواژه</string>
+	<string name="signinButton">{0}{/0}{1}{2}Sign in{/2}{/1}</string>
+	<string name="sign_up">ثبت نام</string>
+	<string name="complete_signupButton">کامل ثبت نام</string>
+	<string name="signinPlayguest">بازی به عنوان مهمان</string>
 
 	<string name="computerWhite">سفید</string>
 	<string name="computerBlack">سیاه</string>

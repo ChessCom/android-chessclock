@@ -19,9 +19,9 @@ public class MopubHelper {
 	private static MoPubView rectangleAdView;
 
 	public static void showBannerAd(Button upgradeBtn, MoPubView moPubAdView, Context context) {
-		if (!AppUtils.isNeedToUpgrade(context)) {
+		/*if (!AppUtils.isNeedToUpgrade(context)) {
 			return;
-		}
+		}*/
 
 		SharedPreferences preferences = AppData.getPreferences(context);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
@@ -56,9 +56,9 @@ public class MopubHelper {
     }
 
 	public static void showRectangleAd(LinearLayout wrapper, Context context) {
-		if (!AppUtils.isNeedToUpgrade(context) || rectangleAdView == null) {
+		/*if (!AppUtils.isNeedToUpgrade(context) || rectangleAdView == null) {
 			return;
-		}
+		}*/
 
 		SharedPreferences preferences = AppData.getPreferences(context);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();

@@ -38,10 +38,6 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.video_list_screen);
 
-	    Button videoUpgrade = (Button) findViewById(R.id.upgradeBtn);
-        videoUpgrade.setOnClickListener(this);
-        videoUpgrade.setVisibility(AppUtils.isNeedToUpgradePremium(this)? View.VISIBLE: View.GONE);
-
 		listView = (ListView) findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
 
@@ -59,19 +55,25 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		hideKeyBoard();
 	}
 
+	protected void onLiveServiceConnected() {
+		Button videoUpgrade = (Button) findViewById(R.id.upgradeBtn);
+		videoUpgrade.setOnClickListener(this);
+		videoUpgrade.setVisibility(AppUtils.isNeedToUpgradePremium(this, getLccHolder())? View.VISIBLE: View.GONE);
+	}
+
+
 	private void updateList() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GET_VIDEOS);
 		loadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
 		loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_LIST_CNT);
 		loadItem.addRequestParams(RestHelper.P_PAGE, 0);
-        if(keyword != null){ // weird hack because LoadItem -> NameValuePairs can't be Serialized
+        if (keyword != null) { // weird hack because LoadItem -> NameValuePairs can't be Serialized
             loadItem.addRequestParams(RestHelper.P_KEYWORD, keyword);
-        }else{
+        } else {
             loadItem.addRequestParams(RestHelper.P_SKILL_LEVEL, skill);
             loadItem.addRequestParams(RestHelper.P_CATEGORY, category);
         }
-
 
 		//set Pagination adapter params
 		videosList = new ArrayList<VideoItem>();

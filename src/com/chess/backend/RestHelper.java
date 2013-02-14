@@ -186,6 +186,7 @@ public class RestHelper {
 
 
 //	The echess challenges response looks like the following:
+//	The echess challenges response looks like the following:
 //	<
 //	<game_seek_id>: The game id
 //	<game_name>: The seek name - can be null

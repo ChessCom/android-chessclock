@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class LccChatListener implements ChatListener {
 
-    private static final String TAG = "LccChatListener";
+    private static final String TAG = "LCCLOG-CHAT";
 	private final LccHolder lccHolder;
 
     public LccChatListener(LccHolder lccHolder) {
@@ -20,8 +20,8 @@ public class LccChatListener implements ChatListener {
 
 	@Override
 	public void onPublicChatListReceived(Collection<? extends Chat> chats) {
-		/*String str = "CHAT LISTENER: Public Chat List received: user=" + lccHolder.getUser().getUsername() + ", listSize=" + chats.size();
-			for(Chat chat : chats)
+		Log.d(TAG, "CHAT LISTENER: Public Chat List received: listSize=" + chats.size());
+			/*for(Chat chat : chats)
 			{
 			  str += "\n  " + "Chat: roomId=" + chat.getId() + ", name=\"" + chat.getName() + "\"";
 			  if(chat.getId().equals("R1"))
@@ -42,27 +42,29 @@ public class LccChatListener implements ChatListener {
 			}*/
 	}
 
-	@Override
-	public void onSubscribedChatListReceived(Collection<? extends Chat> chats) {
+	// todo: remove
+	/*@Override
+	public boolean onSubscribedChatListReceived(Collection<? extends Chat> chats) {
 		String str =
 				"CHAT LISTENER: Previously Subscribed Chat List received: user=" + lccHolder.getUser().getUsername() + ", listSize=" + chats.size();
 		for (Chat chat : chats) {
 			str += "\n\t" + "Chat: roomId=" + chat.getId() + ",\tname=" + chat.getName();
-			lccHolder.getClient().enterChat(chat, this);
 		}
-		Log.i(TAG, str);
-	}
+		Log.d(TAG, str);
+
+		return false;
+	}*/
 
 	@Override
 	public void onChatOpened(Chat chat) {
-		Log.i(TAG, "CHAT LISTENER: Chat opened: user=" + lccHolder.getUser().getUsername()
+		Log.d(TAG, "CHAT LISTENER: Chat opened: user=" + lccHolder.getUser().getUsername()
 				+ ", roomId=" + chat.getId() + ", name=\"" + chat.getName() + "\"");
 		lccHolder.putGameChat(chat.getGame().getId(), chat);
 	}
 
 	@Override
 	public void onChatEntered(Chat chat, ChatMember member) {
-		Log.i(TAG, "CHAT LISTENER: Chat entered: roomId=" + chat.getId() + ", enteredUser=" + member + ", thisUser=" +
+		Log.d(TAG, "CHAT LISTENER: Chat entered: roomId=" + chat.getId() + ", enteredUser=" + member + ", thisUser=" +
 				lccHolder.getUser().getUsername());
 		if (chat.getGame() != null) {
 			lccHolder.putGameChat(chat.getGame().getId(), chat);
@@ -71,10 +73,12 @@ public class LccChatListener implements ChatListener {
 
 	@Override
 	public void onChatExited(Chat chat, ChatMember member) {
+		Log.d(TAG, "CHAT LISTENER: onChatExited: chat=" + chat + ", member=" + member.getUsername());
 	}
 
 	@Override
 	public void onChatDisabled(Chat chat, ChatMember member) {
+		Log.d(TAG, "CHAT LISTENER: onChatDisabled: chat=" + chat + ", member=" + member.getUsername());
 	}
 
 	@Override
@@ -85,12 +89,12 @@ public class LccChatListener implements ChatListener {
 			str += "\n\tMember: " + member;
 		}
 		str += (headMember != null ? ("\n\tHead: " + headMember) : StaticData.SYMBOL_EMPTY);
-		Log.i(TAG, str);
+		Log.d(TAG, str);
 	}
 
 	@Override
 	public void onMessageReceived(Chat chat, ChatMessage message) {
-		Log.i(TAG, "CHAT LISTENER: Message received: " + message);
+		Log.d(TAG, "CHAT LISTENER: Message received: " + message);
 		LinkedHashMap<Long, ChatMessage> receivedMessages = lccHolder.getChatMessages(chat.getId());
 		if (receivedMessages == null) {
 			receivedMessages = new LinkedHashMap<Long, ChatMessage>();
@@ -98,12 +102,16 @@ public class LccChatListener implements ChatListener {
 		}
 
 		if (lccHolder.isUserBlocked(message.getAuthor().getUsername())) {
-			Log.i(TAG, "CHAT LISTENER: Message received: blocked user");
+			Log.d(TAG, "CHAT LISTENER: Message received: blocked user");
 			return;
 		}
 
 		if (chat.isGameRoom() && receivedMessages.put(message.getId(), message) == null) {
-//			lccHolder.getAndroidStuff().sendBroadcastIntent(0, IntentConstants.ACTION_GAME_CHAT_MSG);
+
+			if (lccHolder.getLccChatMessageListener() == null) {
+				Log.d(TAG, "CHAT exception check lccHolder.getLccChatMessageListener()");
+			}
+
             lccHolder.getLccChatMessageListener().onMessageReceived();
 		}
 	}
@@ -117,12 +125,12 @@ public class LccChatListener implements ChatListener {
 					message.getAuthor().getUsername() + ",\ttext=\"" + message.getMessage() + "\"";
 			onMessageReceived(chat, message);
 		}
-		Log.i(TAG, str);
+		Log.d(TAG, str);
 	}
 
 	@Override
 	public void onMessageRemoved(Chat chat, User by, Long messageId) {
-		Log.i(TAG, "CHAT LISTENER: Message removed: chat=" + chat + ", by=" + by.getUsername() + ", messageId=" + messageId);
+		Log.d(TAG, "CHAT LISTENER: Message removed: chat=" + chat + ", by=" + by.getUsername() + ", messageId=" + messageId);
 
 		LinkedHashMap<Long, ChatMessage> receivedMessages = lccHolder.getChatMessages(chat.getId());
 		if (receivedMessages != null && receivedMessages.size() != 0) {
@@ -131,39 +139,44 @@ public class LccChatListener implements ChatListener {
 	}
 
 	@Override
+	public void onUserMessagesRemoved(Chat chat, User user, User user1) {
+		// todo: UPDATELCC
+	}
+
+	@Override
 	public void onInvitedToPrivateChat(Chat chat, User by, User invited, Collection<ChatMember> members, ChatMember headMember) {
-		Log.i(TAG, "CHAT LISTENER: Invited to private chat: chat=" + chat + ", by=" + by.getUsername());
+		Log.d(TAG, "CHAT LISTENER: Invited to private chat: chat=" + chat + ", by=" + by.getUsername());
 
 	}
 
 	@Override
 	public void onPrivateChatInvitationCancelled(Chat chat, User by) {
-		Log.i(TAG, "CHAT LISTENER: Private chat invitation cancelled: chat=" + chat + ", by=" + by.getUsername());
+		Log.d(TAG, "CHAT LISTENER: Private chat invitation cancelled: chat=" + chat + ", by=" + by.getUsername());
 	}
 
 	@Override
 	public void onPrivateChatInvitationAccepted(Chat chat, User by) {
-		Log.i(TAG, "CHAT LISTENER: Private chat invitation accepted: chat=" + chat + ", by=" + by.getUsername());
+		Log.d(TAG, "CHAT LISTENER: Private chat invitation accepted: chat=" + chat + ", by=" + by.getUsername());
 	}
 
 	@Override
 	public void onPrivateChatInvitationRejected(Chat chat, User by) {
-		Log.i(TAG, "CHAT LISTENER: Private chat invitation rejected: chat=" + chat + ", by=" + by.getUsername());
+		Log.d(TAG, "CHAT LISTENER: Private chat invitation rejected: chat=" + chat + ", by=" + by.getUsername());
 	}
 
 	@Override
 	public void onRemovedFromPrivateChat(Chat chat, User by) {
-		Log.i(TAG, "CHAT LISTENER: Removed from private chat: chat=" + chat + ", by=" + by.getUsername());
+		Log.d(TAG, "CHAT LISTENER: Removed from private chat: chat=" + chat + ", by=" + by.getUsername());
 	}
 
 	@Override
 	public void onVoiceKeyReceived(Chat chat, VoiceRole role, String key) {
-		Log.i(TAG, "CHAT LISTENER: Voice Key Received: chat=" + chat + ", role=" + role + ", key=" + key);
+		Log.d(TAG, "CHAT LISTENER: Voice Key Received: chat=" + chat + ", role=" + role + ", key=" + key);
 	}
 
 	@Override
 	public void onPublicChatInfoReceived(Map<String, Integer> info) {
-		Log.i(TAG, "CHAT LISTENER: Public Chat Info Received: info=" + info);
+		Log.d(TAG, "CHAT LISTENER: Public Chat Info Received: info=" + info);
 	}
 
 }

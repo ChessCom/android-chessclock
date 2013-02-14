@@ -58,8 +58,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected void onPause() {
 		super.onPause();
 
-		/*preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
-		preferencesEditor.commit();*/
+		preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
+		preferencesEditor.commit();
 
 		//mainApp.setForceBannerAdOnFailedLoad(false);
 	}
@@ -77,6 +77,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		}
 
 		if (tag.equals(CONNECT_FAILED_TAG)) {
+//			if (DataHolder.getInstance().isLiveChess()) {
 			if (AppData.isLiveChess(this)) {
 				getLccHolder().logout();
 			}
@@ -87,6 +88,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 				@Override
 				public void run() {
 					AppData.setLiveChessMode(getContext(), false);
+//					DataHolder.getInstance().setLiveChess(false);
 					LccHolder.getInstance(getContext()).setConnected(false);
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
 							.parse(RestHelper.PLAY_ANDROID_HTML)));
@@ -176,8 +178,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			}
 		});
 
-		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG, 1);
-		getLastPopupFragment().setCancelable(false);
+		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG);
+		getLastPopupFragment().setButtons(1);
 
 	}
 
@@ -187,8 +189,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 
     @Override
 	public void onObsoleteProtocolVersion() {
-		popupItem.setButtons(1);
 		showPopupDialog(R.string.version_check, R.string.version_is_obsolete_update, OBSOLETE_VERSION_TAG);
+		getLastPopupFragment().setButtons(1);
 		getLastPopupFragment().setCancelable(false);
 	}
 
@@ -199,6 +201,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	@Override
 	public void onAdminAnnounce(String message) {
 		showSinglePopupDialog(message);
+		getLastPopupFragment().setButtons(1);
 	}
 
 	// -----------------------------------------------------
@@ -223,8 +226,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 			if (isPaused)
 				return;
 
-			popupItem.setButtons(1);
 			showPopupDialog(R.string.update_check, R.string.update_available_please_update, CHECK_UPDATE_TAG);
+			getLastPopupFragment().setButtons(1);
 		}
 	}
 

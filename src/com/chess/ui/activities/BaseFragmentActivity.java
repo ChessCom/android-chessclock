@@ -91,7 +91,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 
 		if (!BuildConfig.DEBUG) {
 			try {
-				BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
+				//BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
 			} catch (Exception e) {
 				e.printStackTrace();
 				String stackTrace = Log.getStackTraceString(e).replaceAll("\n", " ");

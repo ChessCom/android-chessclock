@@ -14,18 +14,21 @@ import com.chess.live.client.User;
  */
 public class LccAdminEventListener implements AdminEventListener {
 
-	private static final String TAG = "LccAdminEventListener";
+	private static final String TAG = "LCCLOG-ADMIN";
 
 	public void onAdminMessageReceived(User sender, User target,
-									   LiveChessClient.AdminMessageType messageType, String reason, String message) {
+									   LiveChessClient.AdminMessageType messageType, String reason, String message, Long period) {
 		Log.d(TAG, "onAdminMessageReceived: sender=" + (sender != null ? sender.getUsername() : null) + ", "
 				+ "targetedUser=" + target.getUsername() + ", messageType=" + messageType + ", reason=" + reason + ", "
 				+ "message=" + message);
-
 	}
 
 	public void onServerShutdownAlertReceived(User sender, String message) {
 		Log.d(TAG, "onServerShutdownAlertReceived: sender=" + (sender != null ? sender.getUsername() : null)
 				+ ", message=" + message);
+	}
+
+	public void onServerMaintenanceAlertReceived(User sender, String codeMessage) {
+		Log.d(TAG, "onServerMaintenanceAlertReceived: sender=" + (sender != null ? sender.getUsername() : null) + ", codeMessage=" + codeMessage);
 	}
 }

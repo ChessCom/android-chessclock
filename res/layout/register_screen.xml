@@ -19,7 +19,7 @@
 			android:id="@+id/RegUsername"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/singinUsername"
+			android:hint="@string/signinUsername"
 			android:inputType="text|textImeMultiLine"/>
 
 		<com.chess.RoboEditText
@@ -33,7 +33,7 @@
 			android:id="@+id/RegPassword"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/singinPassword"
+			android:hint="@string/signinPassword"
 			android:inputType="textImeMultiLine|textPassword"/>
 
 		<com.chess.RoboEditText
@@ -71,7 +71,7 @@
 			android:id="@+id/RegSubmitBtn"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/complete_singupButton"/>
+			android:text="@string/complete_signupButton"/>
 
 		<com.facebook.android.LoginButton
 			android:id="@+id/fb_connect"

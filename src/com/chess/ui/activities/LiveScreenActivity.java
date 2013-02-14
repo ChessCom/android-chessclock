@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,14 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.lcc.android.LccHolder;
 import com.chess.live.client.User;
+import com.chess.live.util.GameRatingClass;
 import com.chess.model.NewGameButtonItem;
 import com.chess.ui.adapters.NewGamesButtonsAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -70,25 +74,11 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	}
 
     protected void widgetsInit(){
-		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
-		upgradeBtn.setOnClickListener(this);
-
 		loadingView = (ViewGroup) findViewById(R.id.loadingView);
 		emptyView = findViewById(R.id.emptyView);
 
-		if (AppUtils.isNeedToUpgrade(this)) {
-			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
-				inneractiveBannerAd = (InneractiveAd) findViewById(R.id.inneractiveBannerAd);
-				InneractiveAdHelper.showBannerAd(upgradeBtn, inneractiveBannerAd, this);
-			} else {
-				/*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
-				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
-			}
-		}
-
 		Button statsBtn = (Button) findViewById(R.id.statsBtn);
 		statsBtn.setOnClickListener(this);
-
 
 		LinearLayout ratingView = (LinearLayout) findViewById(R.id.ratingLay);
 
@@ -108,15 +98,45 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	}
 
 	@Override
+	protected void onStart() {
+		super.onStart();
+		startService(new Intent(this, LiveChessService.class));
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 
+		if (getLccHolder() != null) {
+			showLoadingView(!getLccHolder().isConnected());
+
+			if (getLccHolder().currentGameExist()) {
+				currentGame.setVisibility(View.VISIBLE);
+			} else {
+				currentGame.setVisibility(View.GONE);
+			}
+		}
+	}
+
+	protected void onLiveServiceConnected() {
 		showLoadingView(!getLccHolder().isConnected());
 
 		if (getLccHolder().currentGameExist()) {
 			currentGame.setVisibility(View.VISIBLE);
 		} else {
 			currentGame.setVisibility(View.GONE);
+		}
+
+		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
+		upgradeBtn.setOnClickListener(this);
+		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
+			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
+				inneractiveBannerAd = (InneractiveAd) findViewById(R.id.inneractiveBannerAd);
+				InneractiveAdHelper.showBannerAd(upgradeBtn, inneractiveBannerAd, this);
+			} else {
+				/*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
+			}
 		}
 	}
 
@@ -151,11 +171,13 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 				showActionNewGame = !show;
 				getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
 
-				User user = getLccHolder().getUser();
-				if(!show && user != null){
-					bulletRatingTxt.setText(getString(R.string.bullet_, user.getQuickRating()));
-					blitzRatingTxt.setText(getString(R.string.blitz_, user.getBlitzRating()));
-					standardRatingTxt.setText(getString(R.string.standard_, user.getStandardRating()));
+				if (getLccHolder() != null) {
+					User user = getLccHolder().getUser();
+					if (!show && user != null) {
+						bulletRatingTxt.setText(getString(R.string.bullet_, user.getRatingFor(GameRatingClass.Lightning)));
+						blitzRatingTxt.setText(getString(R.string.blitz_, user.getRatingFor(GameRatingClass.Blitz)));
+						standardRatingTxt.setText(getString(R.string.standard_, user.getRatingFor(GameRatingClass.Standard)));
+					}
 				}
 			}
 		});
@@ -169,7 +191,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 			return;
 		}
 
-		if(tag.equals(NETWORK_CHECK_TAG)){
+		if (tag.equals(NETWORK_CHECK_TAG)) {
 			emptyView.setVisibility(View.VISIBLE);
 			loadingView.setVisibility(View.GONE);
 		}

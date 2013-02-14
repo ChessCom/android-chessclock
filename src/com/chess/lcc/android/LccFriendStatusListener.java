@@ -9,7 +9,7 @@ import com.chess.live.client.FriendStatusListener;
 import com.chess.live.client.User;
 
 public class LccFriendStatusListener implements FriendStatusListener {
-	private static final String TAG = "LccFriendStatusListener";
+	private static final String TAG = "LCCLOG-FRIEND";
 	private final LccHolder lccHolder;
 
 	public LccFriendStatusListener(LccHolder lccHolder) {
