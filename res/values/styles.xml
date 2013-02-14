@@ -214,7 +214,7 @@
         <item name="android:maxHeight">20dip</item>
     </style>
 
-
+    <!--Home Tabs-->
     <style name="TabRadioButton" parent="android:Widget.CompoundButton.RadioButton">
         <item name="android:button">@null</item>
         <item name="android:textSize">17sp</item>
@@ -237,6 +237,28 @@
 
     <style name="TabRadioButton.Right" >
         <item name="android:background">@drawable/button_tab_home_right_selector</item>
+    </style>
+
+    <!--Upgrade-->
+    <style name="RoundRadioButton" parent="android:Widget.CompoundButton.RadioButton">
+        <item name="android:button">@null</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/new_friends_blue_text</item>
+		<item name="android:gravity">center</item>
+        <item name="android:minHeight">32dip</item>
+        <item name="ttf">Bold</item>
+    </style>
+
+    <style name="RoundRadioButton.Left" >
+        <item name="android:background">@drawable/button_upgrade_toggle_left_selector</item>
+    </style>
+
+    <style name="RoundRadioButton.Middle" >
+        <item name="android:background">@drawable/button_upgrade_toggle_middle_selector</item>
+    </style>
+
+    <style name="RoundRadioButton.Right" >
+        <item name="android:background">@drawable/button_upgrade_toggle_right_selector</item>
     </style>
 
 	<style name="SettingsDividerText" parent="Text">

@@ -407,6 +407,14 @@
     <color name="upgrade_gold_button_p">#ffe8e6c5</color>
     <color name="upgrade_gold_button_border">#FFdcdabd</color>
     <color name="upgrade_gold_button_border_1">#FFadab94</color>
+    <color name="diamond_back">#FFccebfd</color>
+
+    <color name="upgrade_toggle_button_border">#FFbfbfbf</color>
+    <color name="upgrade_toggle_button">#FFf7f7f7</color>
+    <color name="upgrade_toggle_button_p">#ffd8d8d8</color>
+    <color name="upgrade_toggle_button_c">#FFe7e7e7</color>
+    <color name="upgrade_toggle_shadow">#18000000</color>
+    <color name="red">#FFc03130</color>
 
 
 </resources>

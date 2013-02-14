@@ -24,5 +24,18 @@ public class UpgradeFragment extends CommonLogicFragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		setTitle(R.string.upgrade);
+
+		view.findViewById(R.id.diamondBtnLay).setOnClickListener(this);
+		view.findViewById(R.id.platinumBtnLay).setOnClickListener(this);
+		view.findViewById(R.id.goldBtnLay).setOnClickListener(this);
+	}
+
+	@Override
+	public void onClick(View v) {
+		super.onClick(v);
+
+		if (v.getId() == R.id.diamondBtnLay) {
+			getActivityFace().openFragment(new UpgradeDetailsFragment());
+		}
 	}
 }

@@ -18,7 +18,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Games"
+            android:text="@string/games"
             style="@style/TabRadioButton.Left"
             android:checked="true"
             />
@@ -27,7 +27,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="ChessCom"
+            android:text="@string/chesscom"
             style="@style/TabRadioButton.Middle"
             />
         <com.chess.RoboRadioButton
@@ -35,7 +35,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Ratings"
+            android:text="@string/ratings"
             style="@style/TabRadioButton.Right"
             />
 

@@ -64,4 +64,8 @@
     <string name="platinum_subtitle">Access to many features</string>
     <string name="gold">Gold</string>
     <string name="gold_subtitle">The basic perks</string>
+    <string name="upgrade_details_title">30-day money back guarantee. Cancel at any time.</string>
+    <string name="chesscom">ChessCom</string>
+    <string name="ratings">Ratings</string>
+    <string name="choose_this_plan">Choose This Plan</string>
 </resources>

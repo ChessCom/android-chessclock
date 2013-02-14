@@ -203,4 +203,5 @@
     <dimen name="stats_rating_list_item_font">13sp</dimen>
     <dimen name="button_upgrade_height">75dip</dimen>
     <dimen name="button_upgrade_radius">4dip</dimen>
+    <dimen name="button_upgrade_toggle_radius">4dip</dimen>
 </resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--Border-->
+    <item>
+        <shape >
+            <corners
+                android:topRightRadius="@dimen/button_upgrade_toggle_radius"
+                android:bottomRightRadius="@dimen/button_upgrade_toggle_radius"
+                />
+            <solid android:color="@color/transparent"/>
+            <stroke
+                android:color="@color/upgrade_toggle_button_border"
+                android:width="1dip"
+                />
+        </shape>
+    </item>
+
+    <!--Button-->
+    <item
+        android:left="1px"
+        android:right="1dip"
+        android:bottom="1dip"
+        android:top="1dip"
+        >
+        <shape >
+            <corners
+                android:topRightRadius="@dimen/button_upgrade_toggle_radius"
+                android:bottomRightRadius="@dimen/button_upgrade_toggle_radius"
+                />
+            <solid android:color="@color/upgrade_toggle_button" />
+        </shape>
+    </item>
+
+
+
+</layer-list>

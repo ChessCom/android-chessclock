@@ -270,6 +270,6 @@
             custom:ttf="Bold"
             />
 
-        </RelativeLayout>
+    </RelativeLayout>
 
 </LinearLayout>
