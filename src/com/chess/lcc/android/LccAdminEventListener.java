@@ -10,7 +10,6 @@ import com.chess.live.client.User;
  * User: vm
  * Date: 19.07.12
  * Time: 21:38
- * To change this template use File | Settings | File Templates.
  */
 public class LccAdminEventListener implements AdminEventListener {
 

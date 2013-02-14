@@ -494,8 +494,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			}
 		});
 
-		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG);
-		getLastPopupFragment().setButtons(1);
+		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG, 1);
+		getLastPopupFragment().setCancelable(false);
 	}
 
 	@Override
@@ -510,8 +510,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public void onObsoleteProtocolVersion() {
+		popupItem.setButtons(1);
 		showPopupDialog(R.string.version_check, R.string.version_is_obsolete_update, OBSOLETE_VERSION_TAG);
-		getLastPopupFragment().setButtons(1);
 		getLastPopupFragment().setCancelable(false);
 	}
 
@@ -523,7 +523,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	public void onAdminAnnounce(String message) {
 		showSinglePopupDialog(message);
-		getLastPopupFragment().setButtons(1);
 	}
 
 	// -----------------------------------------------------

@@ -49,7 +49,7 @@ public class InneractiveAdHelper {
 	}
 
 	public static void showRectangleAd(InneractiveAd rectangleAd, Context context) {
-		if (!AppUtils.isNeedToUpgrade(context) || rectangleAd == null) {
+		if (/*!AppUtils.isNeedToUpgrade(context) || */rectangleAd == null) {
 			return;
 		}
 

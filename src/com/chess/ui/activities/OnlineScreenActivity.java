@@ -147,13 +147,13 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	protected void onLiveServiceConnected() {
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
-		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
 		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
 
 			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
-				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveAd), this);
+				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveBannerAd), this);
 			} else {
-				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
+				/*moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
+				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
 			}
 		}
 	}

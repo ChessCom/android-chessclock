@@ -735,6 +735,7 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 		clearOwnChallenges();
 		clearSeeks();
 		clearOnlineFriends();
+		clearPausedEvents();
 
 		//instance = null;
 	}
@@ -922,7 +923,7 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 	}
 
 	public void runConnectTask() {
-		new ConnectLiveChessTask(new LccConnectUpdateListener()).executeTask();
+		new ConnectLiveChessTask(lccConnectUpdateListener, this).executeTask();
 	}
 
 	public void runDisconnectTask() {
@@ -987,5 +988,10 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 		} else {
 			return isUserColorWhite ? game.getBlackPlayer().getUsername() : game.getWhitePlayer().getUsername();
 		}
+	}
+
+	public void clearPausedEvents() {
+		pausedActivityGameEvents.clear();
+		pausedActivityLiveEvents.clear();
 	}
 }

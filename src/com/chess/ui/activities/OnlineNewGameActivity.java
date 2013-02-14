@@ -20,9 +20,7 @@ import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
 import com.chess.utilities.InneractiveAdHelper;
-import com.chess.utilities.MopubHelper;
 import com.inneractive.api.ads.InneractiveAd;
-import com.mopub.mobileads.MoPubView;
 
 import java.util.ArrayList;
 

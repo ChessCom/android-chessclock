@@ -10,22 +10,13 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.*;
 import android.widget.SearchView;
 import com.chess.R;
 import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
-import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
-import com.chess.model.PopupItem;
-import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.facebook.android.Facebook;
-import com.facebook.android.LoginButton;
 import com.inneractive.api.ads.InneractiveAd;
 
 public abstract class CoreActivityActionBar extends ActionBarActivity implements View.OnClickListener
@@ -99,6 +90,17 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		/*preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
 		preferencesEditor.commit();*/
+	}
+
+	@Override
+	protected void onDestroy() {
+		if (inneractiveBannerAd != null) {
+			inneractiveBannerAd.cleanUp();
+		}
+		if (inneractiveRectangleAd != null) {
+			inneractiveRectangleAd.cleanUp();
+		}
+		super.onDestroy();
 	}
 
 	protected void adjustActionBar() {

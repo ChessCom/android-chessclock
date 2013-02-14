@@ -27,7 +27,11 @@ import com.chess.ui.interfaces.PopupDialogFace;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
 
-public abstract class CoreActivityHome extends ActionBarActivityHome implements PopupDialogFace,
+// this code has been moved to HomeScreenActivity in
+// https://github.com/ChessCom/android/commit/1cc1baddcabf3d8f893deeb8539e92f26f266937
+// todo: remove this file. it is still here in order to make merge changes from new_design branch.
+
+public abstract class CoreActivityHome { /*extends ActionBarActivityHome implements PopupDialogFace,
 		LiveChessClientEventListenerFace, View.OnClickListener {
 
 	private static final String CONNECT_FAILED_TAG = "connect_failed";
@@ -251,6 +255,6 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		if(resultCode == RESULT_OK && requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE){
 			facebook.authorizeCallback(requestCode, resultCode, data);
 		}
-	}
+	}*/
 
 }

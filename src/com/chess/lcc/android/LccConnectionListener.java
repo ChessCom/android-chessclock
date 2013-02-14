@@ -31,6 +31,7 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHolder.setConnected(true);
 		lccHolder.setFriends(settings.getFriends());
 		lccHolder.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
+		lccHolder.clearPausedEvents();
 
 		Log.d(CONNECTION, "User has been connected: name=" + user.getUsername() + ", authKey=" + user.getAuthKey() + ", user=" + user);
 	}
@@ -79,6 +80,7 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHolder.clearGames();
 		lccHolder.setCurrentGameId(null);
 		lccHolder.setConnected(true);
+		lccHolder.clearPausedEvents();
 	}
 
 	@Override

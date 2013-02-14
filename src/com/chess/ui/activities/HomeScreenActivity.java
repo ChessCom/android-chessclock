@@ -1,10 +1,12 @@
 package com.chess.ui.activities;
 
 import actionbarcompat.ActionBarActivityHome;
+import android.app.ActivityOptions;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.DialogFragment;
@@ -20,7 +22,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.lcc.android.LccChallengeTaskRunner;
@@ -38,10 +39,8 @@ import com.chess.utilities.AppUtils;
 import com.chess.utilities.InneractiveAdHelper;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
-import com.flurry.android.FlurryAgent;
 import com.inneractive.api.ads.InneractiveAd;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -63,11 +62,9 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 	//protected MoPubInterstitial moPubInterstitial;
 	protected LccHolder lccHolder;
 	private boolean forceFlag;
-	protected Challenge currentChallenge;
-	private LccChallengeTaskRunner challengeTaskRunner;
 	private LiveOuterChallengeListener liveOuterChallengeListener;
 	protected ChallengeTaskListener challengeTaskListener;
-	protected MoPubInterstitial moPubInterstitial;
+	//protected MoPubInterstitial moPubInterstitial;
 	private Menu menu;
 	private LiveChessServiceConnectionListener liveChessServiceConnectionListener;
 	private boolean isLCSBound;
@@ -101,10 +98,9 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		findViewById(R.id.videoLessonsFrame).setOnClickListener(this);
 		findViewById(R.id.settingsFrame).setOnClickListener(this);
 
-		// set listener to lccHolder
-		getLccHolder().setOuterChallengeListener(new LiveOuterChallengeListener());
-
-		challengeTaskRunner = new LccChallengeTaskRunner(new ChallengeTaskListener());
+		liveOuterChallengeListener = new LiveOuterChallengeListener();
+		challengeTaskListener = new ChallengeTaskListener();
+		liveChessServiceConnectionListener = new LiveChessServiceConnectionListener();
 
 		registerGcmService();
 	}
@@ -167,8 +163,31 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		}
 	}
 
+	public void executePausedActivityLiveEvents() {
 
-	@Override
+		Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = lccHolder.getPausedActivityLiveEvents();
+		Log.d("LCCLOG", "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
+
+		if (pausedActivityLiveEvents.size() > 0) {
+			LiveEvent connectionFailureEvent = pausedActivityLiveEvents.get(LiveEvent.Event.CONNECTION_FAILURE);
+			if (connectionFailureEvent != null) {
+				pausedActivityLiveEvents.remove(LiveEvent.Event.CONNECTION_FAILURE);
+				processConnectionFailure(connectionFailureEvent.getMessage());
+			}
+
+			LiveEvent challengeEvent = pausedActivityLiveEvents.get(LiveEvent.Event.CHALLENGE);
+			if (challengeEvent != null) {
+				pausedActivityLiveEvents.remove(LiveEvent.Event.CHALLENGE);
+				if (challengeEvent.isChallengeDelayed()) {
+					liveOuterChallengeListener.showDelayedDialog(challengeEvent.getChallenge());
+				} else {
+					liveOuterChallengeListener.showDialog(challengeEvent.getChallenge());
+				}
+			}
+		}
+	}
+
+	/*@Override
 	protected void onPause() {
 		super.onPause();
 
@@ -176,7 +195,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		preferencesEditor.commit();
 
 		//mainApp.setForceBannerAdOnFailedLoad(false);
-	}
+	}*/
 
 	private class LiveChessServiceConnectionListener implements ServiceConnection {
 		@Override
@@ -251,7 +270,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		}
 		else if (tag.equals(LOGOUT_TAG)) {
 			getLccHolder().logout();
-			getActionBarHelper().showMenuItemById(R.id.menu_singOut, getLccHolder().isConnected());
+			getActionBarHelper().showMenuItemById(R.id.menu_signOut, getLccHolder().isConnected());
 		}else if(tag.equals(CHALLENGE_TAG)){
 			Log.i(TAG, "Accept challenge: " + currentChallenge);
 			challengeTaskRunner.runAcceptChallengeTask(currentChallenge);
@@ -401,8 +420,8 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			}
 		});
 
-		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG);
-		getLastPopupFragment().setButtons(1);
+		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG, 1);
+		getLastPopupFragment().setCancelable(false);
 	}
 
     @Override
@@ -411,8 +430,8 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 
     @Override
 	public void onObsoleteProtocolVersion() {
+		popupItem.setButtons(1);
 		showPopupDialog(R.string.version_check, R.string.version_is_obsolete_update, OBSOLETE_VERSION_TAG);
-		getLastPopupFragment().setButtons(1);
 		getLastPopupFragment().setCancelable(false);
 	}
 
@@ -423,7 +442,6 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 	@Override
 	public void onAdminAnnounce(String message) {
 		showSinglePopupDialog(message);
-		getLastPopupFragment().setButtons(1);
 	}
 
 	// -----------------------------------------------------
@@ -448,8 +466,8 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			if (isPaused)
 				return;
 
+			popupItem.setButtons(1);
 			showPopupDialog(R.string.update_check, R.string.update_available_please_update, CHECK_UPDATE_TAG);
-			getLastPopupFragment().setButtons(1);
 		}
 	}
 
@@ -629,8 +647,8 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 	}
 	
 	@Override
-	public void onClick(View v) {
-		if (v.getId() == R.id.playLiveFrame) {
+	public void onClick(View view) {
+		if (view.getId() == R.id.playLiveFrame) {
 			Class<?> clazz = AppData.isGuest(this) ? SignUpScreenActivity.class : LiveScreenActivity.class;
 			startAnimatedActivity(view, clazz);
 

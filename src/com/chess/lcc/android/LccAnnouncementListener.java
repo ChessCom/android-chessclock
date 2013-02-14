@@ -10,7 +10,6 @@ import com.chess.utilities.AppUtils;
  * User: vm
  * Date: 19.07.12
  * Time: 13:37
- * To change this template use File | Settings | File Templates.
  */
 
 public class LccAnnouncementListener implements AnnounceListener {

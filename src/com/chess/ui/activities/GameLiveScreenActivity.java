@@ -525,7 +525,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		temporaryDebugInfo = temporaryDebugInfo.replaceAll("\n", " ");
 		//Log.d("TESTTEST", temporaryDebugInfo);
 
-		LccGameTaskRunner gameTaskRunner = new LccGameTaskRunner(new GameTaskListener());
+		LccGameTaskRunner gameTaskRunner = new LccGameTaskRunner(new GameTaskListener(), getLccHolder());
 		getLccHolder().makeMove(move, gameTaskRunner, temporaryDebugInfo);
 	}
 
@@ -685,7 +685,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			super.onPositiveBtnClick(fragment);
 			return;
 		}
-		LccGameTaskRunner gameTaskRunner = new LccGameTaskRunner(new GameTaskListener());
+		LccGameTaskRunner gameTaskRunner = new LccGameTaskRunner(new GameTaskListener(), getLccHolder());
 		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			Log.i(TAG, "Request draw: " + getLccHolder().getCurrentGame());
 			gameTaskRunner.runMakeDrawTask();
@@ -719,7 +719,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			Log.i(TAG, "Decline draw: " + getLccHolder().getCurrentGame());
-			new LccGameTaskRunner(new GameTaskListener()).runRejectDrawTask();
+			new LccGameTaskRunner(new GameTaskListener(), getLccHolder()).runRejectDrawTask();
 		}
 		super.onNegativeBtnClick(fragment);
 	}
