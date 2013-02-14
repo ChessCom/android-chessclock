@@ -48,7 +48,7 @@ public class LiveChessService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(TAG, "SERVICE: onStartCommand");
 
-		lccHolder = new LccHolder(getContext(), new LccConnectUpdateListener());
+		//lccHolder = new LccHolder(getContext(), new LccConnectUpdateListener());
 		checkAndConnect();
 
 		return START_STICKY;
