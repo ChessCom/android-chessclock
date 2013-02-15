@@ -54,7 +54,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	private LccHolder lccHolder;
 
 	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, boolean forceReenterCred, LccHolder lccHolder) {
-		super(taskFace);
+		this(taskFace, lccHolder);
 		this.forceReenterCred = forceReenterCred;
 	}
 

@@ -280,28 +280,33 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 		resetClient();
 
 		String detailsMessage;
-		switch (details) {
-			case USER_KICKED: {
-				detailsMessage = context.getString(R.string.lccFailedUpgrading);
-				break;
-			}
-			case ACCOUNT_FAILED: {
-				runConnectTask(true);
-				return;
-			}
-			case SERVER_STOPPED: {
-				detailsMessage = context.getString(R.string.server_stopped)
-						+ context.getString(R.string.lccFailedUnavailable);
-				break;
-			}
-			case AUTH_URL_FAILED: {
-				return;
-			}
-			default:
-				detailsMessage = context.getString(R.string.pleaseLoginAgain);
-				break;
 
+		if (details == null) {
+			detailsMessage = context.getString(R.string.pleaseLoginAgain);
+		} else {
+			switch (details) {
+				case USER_KICKED: {
+					detailsMessage = context.getString(R.string.lccFailedUpgrading);
+					break;
+				}
+				case ACCOUNT_FAILED: {
+					runConnectTask(true);
+					return;
+				}
+				case SERVER_STOPPED: {
+					detailsMessage = context.getString(R.string.server_stopped)
+							+ context.getString(R.string.lccFailedUnavailable);
+					break;
+				}
+				case AUTH_URL_FAILED: {
+					return;
+				}
+				default:
+					detailsMessage = context.getString(R.string.pleaseLoginAgain);
+					break;
+			}
 		}
+
 		liveChessClientEventListener.onConnectionFailure(detailsMessage);
 	}
 
