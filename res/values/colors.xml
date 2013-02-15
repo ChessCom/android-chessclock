@@ -409,8 +409,8 @@
     <color name="upgrade_gold_button_border_1">#FFadab94</color>
 
     <color name="diamond_back">#FFccebfd</color>
-    <color name="platinum_back">#FFccebfd</color>
-    <color name="gold_back">#FFccebfd</color>
+    <color name="platinum_back">#FFdcd8d5</color>
+    <color name="gold_back">#FFedeaca</color>
 
     <color name="upgrade_toggle_button_border">#FFbfbfbf</color>
     <color name="upgrade_toggle_button">#FFf7f7f7</color>
