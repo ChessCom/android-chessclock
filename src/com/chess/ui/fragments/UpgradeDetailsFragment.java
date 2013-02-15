@@ -16,7 +16,7 @@ import com.chess.backend.statics.StaticData;
  * Date: 14.02.13
  * Time: 18:45
  */
-public class UpgradeDetailsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener {
+public class UpgradeDetailsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener {
 
 	public static final int DIAMOND = 0;
 	public static final int PLATINUM = 1;
@@ -87,10 +87,12 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		monthValueTxt = (TextView) view.findViewById(R.id.monthValueTxt);
 		monthLabelTxt = (TextView) view.findViewById(R.id.monthLabelTxt);
 		monthCheckBox = (CheckBox) view.findViewById(R.id.monthCheckBox);
+		monthCheckBox.setOnCheckedChangeListener(this);
 		yearView = view.findViewById(R.id.yearView);
 		yearValueTxt = (TextView) view.findViewById(R.id.yearValueTxt);
 		yearLabelTxt = (TextView) view.findViewById(R.id.yearLabelTxt);
 		yearCheckBox = (CheckBox) view.findViewById(R.id.yearCheckBox);
+		yearCheckBox.setOnCheckedChangeListener(this);
 		TextView yearDiscountTxt = (TextView) view.findViewById(R.id.yearDiscountTxt);
 		setPlanBtn = (Button) view.findViewById(R.id.setPlanBtn);
 		descriptionView = (LinearLayout) view.findViewById(R.id.descriptionView);
@@ -259,6 +261,15 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			case DIAMOND:
 			default:
 				return R.id.diamondBtn;
+		}
+	}
+
+	@Override
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		if (buttonView.getId() == R.id.monthCheckBox && isChecked) {
+			yearCheckBox.setChecked(false);
+		} else if (buttonView.getId() == R.id.yearCheckBox && isChecked) {
+			monthCheckBox.setChecked(false);
 		}
 	}
 

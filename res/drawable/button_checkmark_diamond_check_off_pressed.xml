@@ -4,7 +4,7 @@
     <item>
         <shape>
             <corners android:radius="@dimen/button_checkmark_radius"/>
-            <solid android:color="@color/new_square_button_p" />
+            <solid android:color="@color/white" />
             <size android:width="@dimen/button_checkmark_size" android:height="@dimen/button_checkmark_size" />
             <stroke android:color="@color/upgrade_diamond_title" android:width="1dip"/>
         </shape>
