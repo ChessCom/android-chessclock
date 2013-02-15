@@ -201,7 +201,11 @@
     <dimen name="stats_rating_view_height">56dip</dimen>
     <dimen name="stats_padding_side">15dip</dimen>
     <dimen name="stats_rating_list_item_font">13sp</dimen>
+
+    <!--Upgrade-->
     <dimen name="button_upgrade_height">75dip</dimen>
     <dimen name="button_upgrade_radius">4dip</dimen>
     <dimen name="button_upgrade_toggle_radius">4dip</dimen>
+    <dimen name="button_checkmark_radius">3dip</dimen>
+    <dimen name="button_checkmark_size">34dip</dimen>
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <corners android:radius="@dimen/button_checkmark_radius"/>
+            <solid android:color="@color/new_square_button_p" />
+            <size android:width="@dimen/button_checkmark_size" android:height="@dimen/button_checkmark_size" />
+            <stroke android:color="@color/upgrade_plan_platinum" android:width="1dip"/>
+        </shape>
+    </item>
+
+    <item
+        android:top="1dip"
+        android:left="1dip"
+        android:right="1dip"
+        android:bottom="1dip"
+        android:drawable="@drawable/ic_platinum_checkmark_pressed">
+
+    </item>
+
+</layer-list>

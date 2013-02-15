@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--Emboss Top Level 1-->
+    <item
+        android:top="0px"
+        android:left="0px"
+        android:right="0px"
+        android:bottom="2px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@color/orange_emboss_top_1"  />
+        </shape>
+    </item>
+
+    <!--Emboss Top Level 2-->
+    <item
+        android:top="1px"
+        android:left="1px"
+        android:right="1px"
+        android:bottom="2px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@color/orange_emboss_top_2"  />
+        </shape>
+    </item>
+
+    <!--Emboss Bottom Level 2-->
+    <item
+        android:top="2px"
+        android:left="2px"
+        android:right="0px"
+        android:bottom="0px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius" />
+            <solid android:color="@color/orange_emboss_bot_2"  />
+        </shape>
+    </item>
+    <!--Emboss Bottom Level 1-->
+    <item
+        android:top="2px"
+        android:left="2px"
+        android:right="1px"
+        android:bottom="1px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius" />
+            <solid android:color="@color/orange_emboss_bot_1"  />
+        </shape>
+    </item>
+
+    <!--Emboss Left Level 1-->
+    <item
+        android:top="2px"
+        android:left="0px"
+        android:right="0px"
+        android:bottom="2px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@color/orange_emboss_left_1"  />
+        </shape>
+    </item>
+    <!--Emboss Left Level 2-->
+    <item
+        android:top="2px"
+        android:left="1px"
+        android:right="2px"
+        android:bottom="2px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@color/orange_emboss_left_2"  />
+        </shape>
+    </item>
+
+    <!--Emboss Right Level 2-->
+    <item
+        android:top="2px"
+        android:left="2px"
+        android:right="0px"
+        android:bottom="2px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius" />
+            <solid android:color="@color/orange_emboss_right_2"  />
+        </shape>
+    </item>
+    <!--Emboss Right Level 1-->
+    <item
+        android:top="2px"
+        android:left="2px"
+        android:right="1px"
+        android:bottom="2px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius" />
+            <solid android:color="@color/orange_emboss_right_1"  />
+        </shape>
+    </item>
+
+    <!--Button-->
+    <item
+        android:left="2px"
+        android:top="2px"
+        android:bottom="2px"
+        android:right="2px"
+        >
+        <shape android:dither="true" >
+            <gradient android:angle="135" android:startColor="@color/orange_button_p_1"
+                      android:endColor="@color/orange_button_p_2"
+                />
+            <corners
+                android:radius="@dimen/rounded_button_radius"
+                />
+            <padding
+                android:left="@dimen/rounded_button_padding_left"
+                android:right="@dimen/rounded_button_padding_right"
+                android:top="@dimen/rounded_button_padding_top"
+                android:bottom="@dimen/rounded_button_padding_bottom"
+                />
+            <!--<size android:height="@dimen/sign_in_button_height"/>-->
+        </shape>
+    </item>
+
+</layer-list>

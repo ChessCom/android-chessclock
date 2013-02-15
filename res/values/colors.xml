@@ -407,14 +407,41 @@
     <color name="upgrade_gold_button_p">#ffe8e6c5</color>
     <color name="upgrade_gold_button_border">#FFdcdabd</color>
     <color name="upgrade_gold_button_border_1">#FFadab94</color>
+
     <color name="diamond_back">#FFccebfd</color>
+    <color name="platinum_back">#FFccebfd</color>
+    <color name="gold_back">#FFccebfd</color>
 
     <color name="upgrade_toggle_button_border">#FFbfbfbf</color>
     <color name="upgrade_toggle_button">#FFf7f7f7</color>
     <color name="upgrade_toggle_button_p">#ffd8d8d8</color>
     <color name="upgrade_toggle_button_c">#FFe7e7e7</color>
     <color name="upgrade_toggle_shadow">#18000000</color>
+
     <color name="red">#FFc03130</color>
 
+    <!--Upgrade Platinum Plan button-->
+    <color name="upgrade_plan_platinum">#FFa49f99</color>
+    <color name="upgrade_plan_platinum_p">#ff827d77</color>
+    <color name="upgrade_plan_platinum_top_1">#FFafaba6</color>
+    <color name="upgrade_plan_platinum_top_2">#FFa9a59f</color>
+    <color name="upgrade_plan_platinum_left_1">#FFa9a59f</color>
+    <color name="upgrade_plan_platinum_left_2">#FFa7a29b</color>
+    <color name="upgrade_plan_platinum_right_1">#FF98938e</color>
+    <color name="upgrade_plan_platinum_right_2">#FF807c77</color>
+    <color name="upgrade_plan_platinum_bot_1">#FF908c86</color>
+    <color name="upgrade_plan_platinum_bot_2">#FF726e6a</color>
+
+    <!--Upgrade Gold Plan button-->
+    <color name="upgrade_plan_gold">#FFa08e5d</color>
+    <color name="upgrade_plan_gold_p">#ff837142</color>
+    <color name="upgrade_plan_gold_top_1">#FFac9c72</color>
+    <color name="upgrade_plan_gold_top_2">#FFa69567</color>
+    <color name="upgrade_plan_gold_left_1">#FFa59467</color>
+    <color name="upgrade_plan_gold_left_2">#FFa29162</color>
+    <color name="upgrade_plan_gold_right_1">#FF948356</color>
+    <color name="upgrade_plan_gold_right_2">#FF7b6d48</color>
+    <color name="upgrade_plan_gold_bot_1">#FF8d7d52</color>
+    <color name="upgrade_plan_gold_bot_2">#FF6e6140</color>
 
 </resources>

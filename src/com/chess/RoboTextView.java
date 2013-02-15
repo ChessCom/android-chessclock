@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -16,6 +15,7 @@ public class RoboTextView extends TextView implements Serializable {
 	public static final String MAIN_PATH = "fonts/trebuc-";
 	public static final String DEFAULT_FONT = "Regular";
 	public static final String BOLD_FONT = "Bold";
+	public static final String ITALIC_FONT = "Italic";
 	public static final String ROBOTO_BOLD_FONT = "RobotoBold";
 	public static final String ROBOTO_REGULAR_FONT = "RobotoRegular";
 	public static final String HELV_NEUE_FONT = "HelveticaNeue";

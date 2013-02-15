@@ -100,6 +100,38 @@
         <item>Chess Mentor</item>
     </string-array>
 
+    <string-array name="upgrade_diamond_features">
+        <item>Video Lessons</item>
+        <item>Chess Mentor Online Training (web)</item>
+        <item>Computer Analysis of Games (web)</item>
+        <item>Chess.com TV - Live Shows (web)</item>
+        <item>Openings &amp; Game Explorer</item>
+        <item>Tactics Trainer</item>
+        <item>Live Tournaments</item>
+        <item>Turn-Based Tournaments</item>
+        <item>Performance Stats</item>
+        <item>No Ads!</item>
+    </string-array>
+
+    <string-array name="upgrade_platinum_features">
+        <item>Computer Analysis of Games (web) 25/week</item>
+        <item>Chess.com TV - Live Shows (web)</item>
+        <item>Openings &amp; Game Explorer</item>
+        <item>Tactics Trainer</item>
+        <item>Live Tournaments</item>
+        <item>Turn-Based Tournaments</item>
+        <item>Performance Stats</item>
+        <item>No Ads!</item>
+    </string-array>
+
+    <string-array name="upgrade_gold_features">
+        <item>Tactics Trainer 25/day</item>
+        <item>Live Tournaments 3/day</item>
+        <item>Turn-Based Tournaments 10/time</item>
+        <item>Performance Stats Self Only</item>
+        <item>No Ads!</item>
+    </string-array>
+
     <string-array name="AIM">
         <item>Go To Next Ready Game</item>
         <item>Stay On Same Game</item>

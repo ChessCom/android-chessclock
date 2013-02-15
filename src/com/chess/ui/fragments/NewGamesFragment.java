@@ -218,7 +218,7 @@ public class NewGamesFragment extends CommonLogicFragment implements View.OnTouc
 			NewGameDefaultView.ViewConfig compConfig = new NewGameDefaultView.ViewConfig();
 			compConfig.setBaseId(COMP_BASE_ID);
 			compConfig.setHeaderIcon(R.drawable.ic_comp_game);
-			compConfig.setHeaderText(R.string.new_comp_chess);
+			compConfig.setHeaderText(R.string.vs_computer);
 			compConfig.setTitleText(R.string.new_difficulty);
 			compConfig.setLeftButtonTextId(R.string.days); // TODO set properly
 

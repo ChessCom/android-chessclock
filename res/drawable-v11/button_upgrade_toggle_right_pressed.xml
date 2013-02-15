@@ -6,7 +6,7 @@
         <shape >
             <corners
                 android:topRightRadius="@dimen/button_upgrade_toggle_radius"
-                android:bottomLeftRadius="@dimen/button_upgrade_toggle_radius"
+                android:bottomRightRadius="@dimen/button_upgrade_toggle_radius"
                 />
             <solid android:color="@color/transparent"/>
             <stroke
@@ -26,7 +26,7 @@
         <shape >
             <corners
                 android:topRightRadius="@dimen/button_upgrade_toggle_radius"
-                android:bottomLeftRadius="@dimen/button_upgrade_toggle_radius"
+                android:bottomRightRadius="@dimen/button_upgrade_toggle_radius"
                 />
             <solid android:color="@color/upgrade_toggle_button_p" />
         </shape>
@@ -64,7 +64,7 @@
         <shape android:dither="true">
             <corners
                 android:topRightRadius="@dimen/button_upgrade_toggle_radius"
-                android:bottomLeftRadius="@dimen/button_upgrade_toggle_radius"
+                android:bottomRightRadius="@dimen/button_upgrade_toggle_radius"
                 />
             <gradient
                 android:centerColor="@color/transparent"

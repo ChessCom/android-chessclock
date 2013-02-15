@@ -1,4 +1,14 @@
 <resources>
+    <!--New Game Menu-->
+    <string name="new_options">Options</string>
+    <string name="new_per_turn">Per Turn</string>
+    <string name="new_time">Time</string>
+    <string name="new_difficulty">Difficulty</string>
+    <string name="new_daily_chess">Daily Chess</string>
+    <string name="new_live_chess">Live Chess</string>
+    <string name="normal">Normal</string>
+    <string name="vs">vs</string>
+    <string name="to">to</string>
 
 	<string name="unable_to_move_on_vacation">Unable to make moves until on vacation</string>
 
@@ -26,7 +36,7 @@
     <string name="days_arg">%d days</string>
     <string name="photo">Photo</string>
     <string name="spinner">Spinner</string>
-    <string name="vs_computer">Vs. Computer</string>
+    <string name="vs_computer">vs. Computer</string>
     <string name="arrow">Arrow</string>
     <string name="by">by</string>
     <string name="daily_chess">Daily Chess</string>
@@ -68,4 +78,11 @@
     <string name="chesscom">ChessCom</string>
     <string name="ratings">Ratings</string>
     <string name="choose_this_plan">Choose This Plan</string>
+    <string name="per_year">/year</string>
+    <string name="per_month">/month</string>
+    <string name="upgrade_diamond_unlock_features_title">Diamond unlock all premium features:</string>
+    <string name="upgrade_platinum_unlock_features_title">Platinum unlock these premium features:</string>
+    <string name="upgrade_gold_unlock_features_title">Gold unlock these premium features:</string>
+    <string name="save">Save</string>
+
 </resources>

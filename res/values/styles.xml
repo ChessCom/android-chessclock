@@ -37,6 +37,10 @@
 
 	</style>
 
+    <style name="Text.Button.OrangeNoBorder">
+        <item name="android:background">@drawable/button_orange_nb_selector</item>
+    </style>
+
     <style name="Text.Button.Grey">
         <item name="android:background">@drawable/button_grey_selector</item>
         <item name="android:minHeight">@dimen/grey_button_height</item>
