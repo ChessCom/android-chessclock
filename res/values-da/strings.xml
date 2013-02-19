@@ -200,8 +200,8 @@
 	</string>
 	<string name="abort_resign_game">Abort / Tilbagetrækning et spil:</string>
 	<string name="are_you_sure_q">Er Du Sikker?</string>
-	<string name="correct_ex">Rigtigt!</string>
-	<string name="wrong_ex">Galt!</string>
+	<string name="correct">Rigtigt!</string>
+	<string name="wrong">Galt!</string>
 
 
 	<string name="you_got_new_msg">Du har en ny besked!</string>

@@ -199,8 +199,8 @@
 	</string>
 	<string name="abort_resign_game">Przerwij / Zrezygnuj grę:</string>
 	<string name="are_you_sure_q">Czy na pewno?</string>
-	<string name="correct_ex">poprawne</string>
-	<string name="wrong_ex">złe</string>
+	<string name="correct">poprawne</string>
+	<string name="wrong">złe</string>
 
 	<string name="you_got_new_msg">Masz nową wiadomość!</string>
 	<string name="browse">Przeglądaj</string>

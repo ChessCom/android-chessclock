@@ -81,7 +81,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected float height;
 	protected Rect rect;
 
-	protected GameControlsView gameControlsView;
+//	protected ControlsBaseView controlsBaseView;
 	protected boolean isHighlightEnabled;
 	protected boolean showCoordinates;
 	protected String userName;
@@ -94,6 +94,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected PaintFlagsDrawFilter drawFilter;
 	private float density;
 	private NotationView notationsView;
+	private ControlsBaseView controlsBaseView;
 
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -177,9 +178,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected void onBoardFaceSet(BoardFace boardFace) {
 	}
 
-	public void setGameControlsView(GameControlsView gameControlsView) {
-		this.gameControlsView = gameControlsView;
-		this.gameControlsView.setBoardViewFace(this);
+	public void setControlsView(ControlsBaseView controlsBaseView) {
+		this.controlsBaseView = controlsBaseView;
+//		this.controlsBaseView.setBoardViewFace(this);
 	}
 
 	public void setNotationsView(NotationView notationsView) {
@@ -206,20 +207,23 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		getBoardFace().takeBack();
 		invalidate();
 		gameActivityFace.invalidateGameScreen();
-		notationsView.show(true);
+		if (notationsView != null) {
+			notationsView.show(true);
+		}
+
 	}
 
 	@Override
 	public void switchAnalysis() {
 		boolean isAnalysis = getBoardFace().toggleAnalysis();
 
-		gameControlsView.toggleControlButton(GameControlsView.B_ANALYSIS_ID, isAnalysis);
+		controlsBaseView.toggleControlButton(ControlsBaseView.B_ANALYSIS_ID, isAnalysis);
 		gameActivityFace.switch2Analysis(isAnalysis);
 	}
 
 	public void enableAnalysis() {
-		gameControlsView.toggleControlButton(GameControlsView.B_ANALYSIS_ID, true);
-		gameControlsView.enableAnalysisMode(true);
+		controlsBaseView.toggleControlButton(ControlsBaseView.B_ANALYSIS_ID, true);
+		controlsBaseView.enableAnalysisMode(true);
 		gameActivityFace.switch2Analysis(true);
 	}
 
@@ -251,8 +255,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 //	public void updateNotations(CharSequence move) {
 	public void updateNotations(String[] notations) {
-		notationsView.updateNotations(notations);
-//		gameControlsView.updateNotations(notations);
+		if (notationsView != null) {
+			notationsView.updateNotations(notations);
+		}
+
+//		controlsBaseView.updateNotations(notations);
 //		invalidate();
 //		requestFocus();
 	}
@@ -379,17 +386,17 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 //	protected void drawCapturedPieces() {   // TODO restore
 //		// Count captured piecesBitmap
-//		gameControlsView.dropAlivePieces();
+//		controlsBaseView.dropAlivePieces();
 //
 //		for (int i = 0; i < 64; i++) {
 //			int pieceId = getBoardFace().getPiece(i);
 //			if (getBoardFace().getColor()[i] == ChessBoard.LIGHT) {
-//				gameControlsView.addAlivePiece(true, pieceId);
+//				controlsBaseView.addAlivePiece(true, pieceId);
 //			} else {
-//				gameControlsView.addAlivePiece(false, pieceId);
+//				controlsBaseView.addAlivePiece(false, pieceId);
 //			}
 //		}
-//		gameControlsView.updateCapturedPieces();
+//		controlsBaseView.updateCapturedPieces();
 //	}
 
 
@@ -605,7 +612,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	public void lockBoard(boolean lock) {
 		locked = lock;
-        gameControlsView.lock(lock);
+        controlsBaseView.lock(lock);
 		setEnabled(!lock);
 	}
 

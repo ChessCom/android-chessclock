@@ -39,7 +39,8 @@ import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.views.ChessBoardDailyView;
 import com.chess.ui.views.ChessBoardNetworkView;
-import com.chess.ui.views.GameControlsView;
+import com.chess.ui.views.ControlsBaseView;
+import com.chess.ui.views.ControlsNetworkView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
@@ -95,6 +96,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	protected boolean userPlayWhite = true;
 	private LoadFromDbUpdateListener loadFromDbUpdateListener;
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
+	private ControlsNetworkView controlsNetworkView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +110,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	@Override
 	protected void widgetsInit() {
 		super.widgetsInit();
+		controlsNetworkView = (ControlsNetworkView) findViewById(R.id.controlsBaseView);
 
 		infoLabelTxt = (TextView) findViewById(R.id.thinking);
 
@@ -115,12 +118,12 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		findViewById(R.id.submitBtn).setOnClickListener(this);
 		findViewById(R.id.cancelBtn).setOnClickListener(this);
 
-		gameControlsView.changeGameButton(GameControlsView.B_NEW_GAME_ID, R.drawable.ic_ctrl_restore);
-		gameControlsView.enableGameControls(false);
+		controlsNetworkView.changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_ctrl_restore);
+		controlsNetworkView.enableGameControls(false);
 
 		boardView = (ChessBoardDailyView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setGameControlsView(gameControlsView);
+		boardView.setControlsView(controlsNetworkView);
 		setBoardView(boardView);
 
 		if (extras.getBoolean(AppConstants.NOTIFICATION, false)) {
@@ -256,7 +259,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 					DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 
-					gameControlsView.enableGameControls(true);
+					controlsNetworkView.enableGameControls(true);
 					boardView.lockBoard(false);
 
 					checkMessages();
@@ -357,7 +360,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 //
 //			DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 //
-//			gameControlsView.enableGameControls(true);
+//			controlsBaseView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			checkMessages();
@@ -430,7 +433,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 //
 //			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
 //
-//			gameControlsView.enableGameControls(true);
+//			controlsBaseView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			if (getBoardFace().isAnalysis()) {
@@ -555,7 +558,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 //
 ////			DBDataManager.updateOnlineGame(getContext(), currentGame);
 //
-//			gameControlsView.enableGameControls(true);
+//			controlsBaseView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			sendMove();
@@ -623,7 +626,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		preferencesEditor.commit();
 
 		currentGame.setHasNewMessage(false);
-		gameControlsView.haveNewMessage(false);
+		controlsNetworkView.haveNewMessage(false);
 
 		Intent intent = new Intent(this, ChatOnlineActivity.class);
 		intent.putExtra(BaseGameItem.GAME_ID, gameId);
@@ -635,7 +638,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	private void checkMessages() {
 		if (currentGame.hasNewMessage()) {
-			gameControlsView.haveNewMessage(true);
+			controlsNetworkView.haveNewMessage(true);
 		}
 	}
 
@@ -1033,7 +1036,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
 
-			gameControlsView.enableGameControls(true);
+			controlsNetworkView.enableGameControls(true);
 			boardView.lockBoard(false);
 
 			if (getBoardFace().isAnalysis()) {

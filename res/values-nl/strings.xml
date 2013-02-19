@@ -199,8 +199,8 @@
 	</string>
 	<string name="abort_resign_game">Afbreken / Ontslag nemen een spel:</string>
 	<string name="are_you_sure_q">Weet je het zeker?</string>
-	<string name="correct_ex">Corrigeer</string>
-	<string name="wrong_ex">fout</string>
+	<string name="correct">Corrigeer</string>
+	<string name="wrong">fout</string>
 
 	<string name="you_got_new_msg">Je hebt een nieuw bericht!</string>
 	<string name="browse">Bladeren</string>

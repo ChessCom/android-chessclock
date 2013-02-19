@@ -16,12 +16,13 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.BoardFace;
+import com.chess.ui.interfaces.BoardViewCompFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
 
 import java.util.Iterator;
 import java.util.TreeSet;
 
-public class ChessBoardCompView extends ChessBoardBaseView {
+public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewCompFace {
 
 	private static final long HINT_REVERSE_DELAY = 1500;
 
@@ -36,6 +37,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 	private GameCompActivityFace gameCompActivityFace;
 	private HintMoveUpdateListener hintMoveUpdateListener;
 	private ComputeMoveUpdateListener computeMoveUpdateListener;
+	private ControlsCompView controlsCompView;
 
 
 	public ChessBoardCompView(Context context, AttributeSet attrs) {
@@ -54,6 +56,10 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
 		compStrength = compStrengthArray[AppData.getCompStrength(getContext())];
     }
+
+	public void setControlsView(ControlsCompView controlsCompView) {
+		this.controlsCompView = controlsCompView;
+	}
 
 	@Override
 	protected void onBoardFaceSet(BoardFace boardFace) {
@@ -127,7 +133,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 	public void makeHint(final int time) {
 
 
-		gameControlsView.toggleControlButton(GameControlsView.B_HINT_ID, true);
+		controlsCompView.toggleControlButton(ControlsCompView.B_HINT_ID, true);
 
 		setHint(true);
 		setComputerMoving(true);
@@ -213,7 +219,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 			invalidate();
 
 			setHint(false);
-			gameControlsView.toggleControlButton(GameControlsView.B_HINT_ID, false);
+			controlsCompView.toggleControlButton(ControlsCompView.B_HINT_ID, false);
 		}
 	};
 
@@ -397,21 +403,17 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         }
     }
 
-    @Override
-    public void switchChat() {
-    }
-
 	@Override
 	public void switchAnalysis() {
 		super.switchAnalysis();
-		gameControlsView.enableGameButton(GameControlsView.B_HINT_ID, !getBoardFace().isAnalysis());
+		controlsCompView.enableGameButton(ControlsCompView.B_HINT_ID, !getBoardFace().isAnalysis());
 	}
 
 	public void enableAnalysis() {
-		gameControlsView.toggleControlButton(GameControlsView.B_ANALYSIS_ID, true);
-		gameControlsView.enableAnalysisMode(true);
+		controlsCompView.toggleControlButton(ControlsBaseView.B_ANALYSIS_ID, true);
+		controlsCompView.enableAnalysisMode(true);
 		gameActivityFace.switch2Analysis(true);
-		gameControlsView.enableGameButton(GameControlsView.B_HINT_ID, false);
+		controlsCompView.enableGameButton(ControlsCompView.B_HINT_ID, false);
 	}
 
 	@Override

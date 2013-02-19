@@ -25,8 +25,9 @@ import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardCompView;
-import com.chess.ui.views.GamePanelInfoView;
+import com.chess.ui.views.ControlsCompView;
 import com.chess.ui.views.NotationView;
+import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -41,14 +42,15 @@ import java.util.Calendar;
  */
 public class GameCompFragment extends GameBaseFragment implements GameCompActivityFace {
 
-	private GamePanelInfoView topPanelView;
-	private GamePanelInfoView bottomPanelView;
+	private PanelInfoGameView topPanelView;
+	private PanelInfoGameView bottomPanelView;
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 	private ChessBoardCompView boardView;
 	protected TextView thinking;
 	private int[] compStrengthArray;
 	private NotationView notationsView;
+	private ControlsCompView controlsCompView;
 
 	public static GameCompFragment newInstance(int mode) {
 		GameCompFragment frag = new GameCompFragment();
@@ -69,16 +71,16 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 		setTitle(R.string.vs_computer);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
-		topPanelView = (GamePanelInfoView) view.findViewById(R.id.topPanelView);
-		bottomPanelView = (GamePanelInfoView) view.findViewById(R.id.bottomPanelView);
+		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
+		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
 		// set avatars
 		Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
 
-		((ImageView) topPanelView.findViewById(GamePanelInfoView.AVATAR_ID))
+		((ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID))
 				.setImageDrawable(new BoardAvatarDrawable(getActivity(), src));
 
-		ImageView bottomAvatarImg = (ImageView) bottomPanelView.findViewById(GamePanelInfoView.AVATAR_ID);
+		ImageView bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 		bottomAvatarImg.setImageDrawable(new BoardAvatarDrawable(getActivity(), src));
 
 		((BoardAvatarDrawable)bottomAvatarImg.getDrawable()).setSide(AppConstants.WHITE_SIDE);
@@ -101,12 +103,13 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	@Override
 	protected void widgetsInit(View view) {
 		super.widgetsInit(view);
+		controlsCompView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
 
 		thinking = (TextView) view.findViewById(R.id.thinking);
 
 		boardView = (ChessBoardCompView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setGameControlsView(gameControlsView);
+		boardView.setControlsView(controlsCompView);
 		boardView.setNotationsView(notationsView);
 
 		ChessBoardComp chessBoardComp = ChessBoardComp.getInstance(this);
@@ -116,7 +119,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 		getBoardFace().setMode(getArguments().getInt(AppConstants.GAME_MODE));
 
-		gameControlsView.turnCompMode();
+		controlsCompView.turnCompMode();  // TODO restore
 
 		if (getBoardFace().isAnalysis()) {
 			boardView.enableAnalysis();
@@ -221,26 +224,26 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	public void invalidateGameScreen() {
 		switch (getBoardFace().getMode()) {
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {    //w - human; b - comp
-				whitePlayerLabel.setText(AppData.getUserName(getActivity()));
-				blackPlayerLabel.setText(getString(R.string.computer));
+//				whitePlayerLabel.setText(AppData.getUserName(getActivity()));
+//				blackPlayerLabel.setText(getString(R.string.computer));
 				updatePlayerDots(getBoardFace().isWhiteToMove());
 				break;
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {    //w - comp; b - human
-				whitePlayerLabel.setText(getString(R.string.computer));
-				blackPlayerLabel.setText(AppData.getUserName(getActivity()));
+//				whitePlayerLabel.setText(getString(R.string.computer));
+//				blackPlayerLabel.setText(AppData.getUserName(getActivity()));
 				updatePlayerDots(getBoardFace().isWhiteToMove());
 				break;
 			}
 			case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {    //w - human; b - human
-				whitePlayerLabel.setText(getString(R.string.human));
-				blackPlayerLabel.setText(getString(R.string.human));
+//				whitePlayerLabel.setText(getString(R.string.human));
+//				blackPlayerLabel.setText(getString(R.string.human));
 				updatePlayerDots(getBoardFace().isWhiteToMove());
 				break;
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {    //w - comp; b - comp
-				whitePlayerLabel.setText(getString(R.string.computer));
-				blackPlayerLabel.setText(getString(R.string.computer));
+//				whitePlayerLabel.setText(getString(R.string.computer));
+//				blackPlayerLabel.setText(getString(R.string.computer));
 				break;
 			}
 		}
@@ -251,15 +254,15 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 	@Override
 	public void onPlayerMove() {
-		whitePlayerLabel.setVisibility(View.VISIBLE);
-		blackPlayerLabel.setVisibility(View.VISIBLE);
+//		whitePlayerLabel.setVisibility(View.VISIBLE);
+//		blackPlayerLabel.setVisibility(View.VISIBLE);
 		thinking.setVisibility(View.GONE);
 	}
 
 	@Override
 	public void onCompMove() {
-		whitePlayerLabel.setVisibility(View.GONE);
-		blackPlayerLabel.setVisibility(View.GONE);
+//		whitePlayerLabel.setVisibility(View.GONE);
+//		blackPlayerLabel.setVisibility(View.GONE);
 		thinking.setVisibility(View.VISIBLE);
 	}
 

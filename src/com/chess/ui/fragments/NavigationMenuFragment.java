@@ -1,12 +1,14 @@
 package com.chess.ui.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
+import com.chess.ui.activities.PreferencesScreenActivity;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -83,6 +85,10 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				getActivityFace().switchFragment(new HomeTabsFragment()); // TODO clear stack
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
+			case R.drawable.ic_nav_tactics:
+				getActivityFace().openFragment(new GameTacticsFragment());
+				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				break;
 			case R.drawable.ic_nav_videos:
 				getActivityFace().openFragment(new VideosFragment());
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
@@ -98,6 +104,11 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 			case R.drawable.ic_nav_stats:
 				getActivityFace().openFragment(StatsGameFragment.newInstance(0));
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				break;
+			case R.drawable.ic_nav_settings:
+				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				Intent intent = new Intent(getActivity(), PreferencesScreenActivity.class);
+				getActivity().startActivity(intent);
 				break;
 		}
 	}

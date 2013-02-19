@@ -6,15 +6,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.*;
-import android.widget.TextView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardBaseView;
-import com.chess.ui.views.GameControlsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import com.slidingmenu.lib.SlidingMenu;
@@ -39,16 +40,15 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 	protected SimpleDateFormat datePgnFormat = new SimpleDateFormat("yyyy.MM.dd");
 
 
-	protected TextView whitePlayerLabel;
-	protected TextView blackPlayerLabel;
+//	protected TextView whitePlayerLabel;
+//	protected TextView blackPlayerLabel;
 
 	protected boolean chat;
 
-	protected TextView analysisTxt;
+//	protected TextView analysisTxt;
 	protected ViewGroup statusBarLay;
 
 	protected CharSequence[] menuOptionsItems;
-	protected GameControlsView gameControlsView;
 	private ChessBoardBaseView boardView;
 	protected View endGamePopupView;
 	protected String endGameMessage;
@@ -74,13 +74,8 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 	protected void widgetsInit(View view) {
 		statusBarLay = (ViewGroup) view.findViewById(R.id.statusBarLay);
 
-		whitePlayerLabel = (TextView) view.findViewById(R.id.whiteLabelTxt);
-		blackPlayerLabel = (TextView) view.findViewById(R.id.blackLabelTxt);
-		whitePlayerLabel.setSelected(true);
-		blackPlayerLabel.setSelected(true);
+//		whitePlayerLabel = (TextView) view.findViewById.analysisTxt);
 
-		analysisTxt = (TextView) view.findViewById(R.id.analysisTxt);
-		gameControlsView = (GameControlsView) view.findViewById(R.id.gameControlsView);
 	}
 
 	@Override
@@ -132,13 +127,13 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 	public abstract String getBlackPlayerName();
 
 	protected void updatePlayerDots(boolean whitePlayerMove){
-		if (whitePlayerMove) {
-			whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_white, 0, 0, 0);
-			blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-		} else {
-			whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-			blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.player_indicator_black, 0);
-		}
+//		if (whitePlayerMove) {
+//			whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_white, 0, 0, 0);
+//			blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+//		} else {
+//			whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+//			blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.player_indicator_black, 0);
+//		}
 	}
 
 	protected void enableScreenLockTimer() {
@@ -173,7 +168,7 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 		boardView.enableAnalysis();
 
 		boardView.setFinished(true);
-		//gameControlsView.showBottomPart(false);
+		//controlsBaseView.showBottomPart(false);
 		getSoundPlayer().playGameEnd();
 	}
 
@@ -189,13 +184,13 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 	public void switch2Analysis(boolean isAnalysis) {
 		showSubmitButtonsLay(false);
 		if (isAnalysis) {
-			analysisTxt.setVisibility(View.VISIBLE);
-			whitePlayerLabel.setVisibility(View.INVISIBLE);
-			blackPlayerLabel.setVisibility(View.INVISIBLE);
+//			analysisTxt.setVisibility(View.VISIBLE);
+//			whitePlayerLabel.setVisibility(View.INVISIBLE);
+//			blackPlayerLabel.setVisibility(View.INVISIBLE);
 		} else {
-			analysisTxt.setVisibility(View.INVISIBLE);
-			whitePlayerLabel.setVisibility(View.VISIBLE);
-			blackPlayerLabel.setVisibility(View.VISIBLE);
+//			analysisTxt.setVisibility(View.INVISIBLE);
+//			whitePlayerLabel.setVisibility(View.VISIBLE);
+//			blackPlayerLabel.setVisibility(View.VISIBLE);
 			restoreGame();
 		}
 	}

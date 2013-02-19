@@ -152,58 +152,59 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 			{// standard
 				Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_LIVE_STANDARD],
 						DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
-				cursor.moveToFirst();
-				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
-
-				ratingList.get(LIVE_STANDARD).setValue(currentRating);
+				if (cursor.moveToFirst()) {
+					int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
+					ratingList.get(LIVE_STANDARD).setValue(currentRating);
+				}
 			}
 			{// blitz
 				Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_LIVE_BLITZ],
 						DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
-				cursor.moveToFirst();
-				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
-
-				ratingList.get(LIVE_BLITZ).setValue(currentRating);
+				if (cursor.moveToFirst()) {
+					int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
+					ratingList.get(LIVE_BLITZ).setValue(currentRating);
+				}
 			}
 			{// bullet
 				Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_LIVE_LIGHTNING],
 						DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
-				cursor.moveToFirst();
-				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
+				if (cursor.moveToFirst()) {
+					int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
 
-				ratingList.get(LIVE_LIGHTNING).setValue(currentRating);
+					ratingList.get(LIVE_LIGHTNING).setValue(currentRating);
+				}
 			}
 			{// chess
 				Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_DAILY_CHESS],
 						DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
-				cursor.moveToFirst();
-				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
-
-				ratingList.get(DAILY_CHESS).setValue(currentRating);
+				if (cursor.moveToFirst()) {
+					int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
+					ratingList.get(DAILY_CHESS).setValue(currentRating);
+				}
 			}
 			{// chess960
 				Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_DAILY_CHESS960],
 						DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
-				cursor.moveToFirst();
-				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
-
-				ratingList.get(DAILY_CHESS960).setValue(currentRating);
+				if (cursor.moveToFirst()) {
+					int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
+					ratingList.get(DAILY_CHESS960).setValue(currentRating);
+				}
 			}
 			{// tactics
 				Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_TACTICS],
 						DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
-				cursor.moveToFirst();
-				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
-
-				ratingList.get(TACTICS).setValue(currentRating);
+				if (cursor.moveToFirst()) {
+					int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
+					ratingList.get(TACTICS).setValue(currentRating);
+				}
 			}
 			{// chess mentor
 				Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_CHESS_MENTOR],
 						DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
-				cursor.moveToFirst();
-				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
-
-				ratingList.get(CHESS_MENTOR).setValue(currentRating);
+				if (cursor.moveToFirst()) {
+					int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
+					ratingList.get(CHESS_MENTOR).setValue(currentRating);
+				}
 			}
 
 			ratingsAdapter.notifyDataSetInvalidated();

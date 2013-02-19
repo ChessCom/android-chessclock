@@ -46,10 +46,18 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 	}
 
 	private void saveLiveStats(String userName) {
+		if (item.getLive() == null) {
+			return;
+		}
+
 		final String[] userArgument = arguments;
 		userArgument[0] = String.valueOf(userName);
 
 		{ // Standard
+			if (item.getLive().getStandard() == null) {
+				return;
+			}
+
 			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_LIVE_STANDARD];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
@@ -64,6 +72,10 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		}
 
 		{ // Lightning
+			if (item.getLive().getLightning() == null) {
+				return;
+			}
+
 			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_LIVE_LIGHTNING];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
@@ -78,6 +90,10 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		}
 
 		{ // Blitz
+			if (item.getLive().getBlitz() == null) {
+				return;
+			}
+
 			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_LIVE_BLITZ];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
@@ -93,10 +109,17 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 	}
 
 	private void saveDailyStats(String userName) {
+		if (item.getDaily() == null) {
+			return;
+		}
+
 		final String[] userArgument = arguments;
 		userArgument[0] = String.valueOf(userName);
 
 		{ // Classic Chess
+			if (item.getDaily().getChess() == null) {
+				return;
+			}
 
 			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_DAILY_CHESS];
 
@@ -112,6 +135,10 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		}
 
 		{ // Chess960
+			if (item.getDaily().getChess960() == null) {
+				return;
+			}
+
 			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_DAILY_CHESS960];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
@@ -127,6 +154,10 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 	}
 
 	private void saveTacticsStats(String userName) {
+		if (item.getTactics() == null) {
+			return;
+		}
+
 		final String[] userArgument = arguments;
 		userArgument[0] = String.valueOf(userName);
 		{ // Standard
@@ -145,6 +176,10 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 	}
 
 	private void saveChessMentorStats(String userName) {
+		if (item.getChessMentor() == null) {
+			return;
+		}
+
 		final String[] userArgument = arguments;
 		userArgument[0] = String.valueOf(userName);
 

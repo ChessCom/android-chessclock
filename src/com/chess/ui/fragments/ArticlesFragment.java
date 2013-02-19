@@ -1,6 +1,8 @@
 package com.chess.ui.fragments;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -221,12 +223,13 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 					Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ARTICLE_ID,
 							DBDataManager.SELECTION_ARTICLE_ID, arguments, null);
 
+					ContentValues values = DBDataManager.putArticleItemToValues(headerData);
+
 					if (cursor.moveToFirst()) {
 						headerDataId = DBDataManager.getId(cursor);
-						contentResolver.update(Uri.parse(uri.toString() + DBDataManager.SLASH_ + headerDataId),
-								DBDataManager.putArticleItemToValues(headerData), null, null);
+						contentResolver.update(ContentUris.withAppendedId(uri, headerDataId), values, null, null);
 					} else {
-						Uri savedUri = contentResolver.insert(uri, DBDataManager.putArticleItemToValues(headerData));
+						Uri savedUri = contentResolver.insert(uri, values);
 						headerDataId = Long.parseLong(savedUri.getPathSegments().get(1));
 					}
 

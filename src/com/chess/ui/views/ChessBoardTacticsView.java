@@ -7,14 +7,16 @@ import android.view.MotionEvent;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
+import com.chess.ui.interfaces.BoardViewTacticsFace;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
 
 import java.util.Iterator;
 import java.util.TreeSet;
 
-public class ChessBoardTacticsView extends ChessBoardBaseView {
+public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardViewTacticsFace {
 
 	private GameTacticsActivityFace gameTacticsActivityFace;
+	private ControlsTacticsView controlsTacticsView;
 
 
 	public ChessBoardTacticsView(Context context, AttributeSet attrs) {
@@ -198,20 +200,34 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
         }
     }
 
-
-
     @Override
-    public void switchChat() {
-    }
-
-
-    @Override
-    public void showHint() { // no hints for tactics
-
+    public void showHint() {
+		gameTacticsActivityFace.showHint();
     }
 
 
 	public void setFinished(boolean finished) {
 		this.finished = finished;
+	}
+
+	@Override
+	public void showStats() {
+		gameTacticsActivityFace.showStats();
+	}
+
+	@Override
+	public void showHelp() {
+		gameTacticsActivityFace.showHelp();
+	}
+
+	@Override
+	public void restart() {
+		gameTacticsActivityFace.restart();
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	public void setControlsView(ControlsTacticsView controlsView) {
+		super.setControlsView(controlsView);
+		this.controlsTacticsView = controlsView;
 	}
 }

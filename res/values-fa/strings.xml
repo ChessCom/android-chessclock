@@ -199,8 +199,8 @@
 	</string>
 	<string name="abort_resign_game">سقط جنین / استعفا بازی:</string>
 	<string name="are_you_sure_q">آیا اطمینان دارید؟</string>
-	<string name="correct_ex">اص</string>
-	<string name="wrong_ex">اشتباه است!</string>
+	<string name="correct">اص</string>
+	<string name="wrong">اشتباه است!</string>
 
 	<string name="you_got_new_msg">شما یک پیام جدید!</string>
 	<string name="browse">انتخاب</string>

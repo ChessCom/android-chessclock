@@ -198,8 +198,8 @@
 	</string>
 	<string name="abort_resign_game">Abort / Avgå ett spel:</string>
 	<string name="are_you_sure_q">Är du säker?</string>
-	<string name="correct_ex">Alldeles riktig?</string>
-	<string name="wrong_ex">Fel!</string>
+	<string name="correct">Alldeles riktig?</string>
+	<string name="wrong">Fel!</string>
 
 	<string name="you_got_new_msg">Du har ett nytt meddelande!</string>
 	<string name="browse">Bläddra</string>

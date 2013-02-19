@@ -199,8 +199,8 @@
 	</string>
 	<string name="abort_resign_game">Abort / Resign un gioco:</string>
 	<string name="are_you_sure_q">Sei sicuro?</string>
-	<string name="correct_ex">Corretta.</string>
-	<string name="wrong_ex">Sbagliato.</string>
+	<string name="correct">Corretta.</string>
+	<string name="wrong">Sbagliato.</string>
 
 
 	<string name="you_got_new_msg">Hai un nuovo messaggio!</string>

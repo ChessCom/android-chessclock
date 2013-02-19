@@ -198,8 +198,8 @@
 	</string>
 	<string name="abort_resign_game">Abort / Melde et spill:</string>
 	<string name="are_you_sure_q">Er du sikker?</string>
-	<string name="correct_ex">Correct?</string>
-	<string name="wrong_ex">Feil!</string>
+	<string name="correct">Correct?</string>
+	<string name="wrong">Feil!</string>
 
 	<string name="you_got_new_msg">Du har en ny melding!</string>
 	<string name="browse">Browse</string>

@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     />
 
-                <com.chess.ui.views.GamePanelInfoView
+                <com.chess.ui.views.PanelInfoGameView
                     android:id="@+id/topPanelView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -79,14 +79,14 @@
                     android:visibility="visible"/>
 
 
-                <com.chess.ui.views.GamePanelInfoView
+                <com.chess.ui.views.PanelInfoGameView
                     android:id="@+id/bottomPanelView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     />
 
-                <com.chess.ui.views.GameControlsView
-                    android:id="@+id/gameControlsView"
+                <com.chess.ui.views.ControlsNetworkView
+                    android:id="@+id/controlsNetworkView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     />

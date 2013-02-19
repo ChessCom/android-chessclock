@@ -96,7 +96,7 @@
 	<dimen name="game_end_layout_padding_side">7dip</dimen>
 	<dimen name="game_label_text_size">12sp</dimen>
 
-	<!--GameControlsView-->
+	<!--ControlsBaseView-->
 	<dimen name="game_control_padding_left">10dip</dimen>
 	<dimen name="game_control_padding_right">10dip</dimen>
 	<dimen name="game_control_padding_top">5dip</dimen>

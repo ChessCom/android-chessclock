@@ -14,15 +14,9 @@ public interface BoardViewFace {
 
 	void switchAnalysis();
 
-//	boolean isInAnalysis();
-
-	void switchChat();
-
 	void moveBack();
 
 	void moveForward();
-
-	void showHint();
 
 	void newGame();
 }

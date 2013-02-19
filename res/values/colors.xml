@@ -23,8 +23,8 @@
 
     <color name="any_button_stroke">#23FFFFFF</color>
     <color name="grey_button_stroke">#18FFFFFF</color>
+
     <!--Orange-->
-    <!--<color name="orange_button_stroke">#23FFFFFF</color>-->
     <color name="orange_button_1">#FFeb9b11</color>
     <color name="orange_button_2">#FFe5820c</color>
     <color name="orange_button_p_1">#ffd68511</color>
@@ -43,6 +43,29 @@
     <color name="orange_button_pressed_stroke_1">#96ff7e00</color>
     <color name="orange_button_pressed_stroke_2">#FFffd9b4</color>
 
+    <!--Red-->
+    <color name="red_button_1">#FFc42b30</color>
+    <color name="red_button_2">#FFb0282c</color>
+    <color name="red_button_p_1">#ffa32829</color>
+    <color name="red_button_p_2">#ff882023</color>
+    <color name="red_button_d">#ff6c1b1b</color>
+
+    <color name="red_emboss_top_1">#FFc94145</color>
+    <color name="red_emboss_top_2">#FFb93d42</color>
+    <color name="red_emboss_bot_1">#FF942125</color>
+    <color name="red_emboss_bot_2">#FF861e21</color>
+
+    <!--Light Green-->
+    <color name="light_green_button_1">#FF89b162</color>
+    <color name="light_green_button_2">#FF7b9f56</color>
+    <color name="light_green_button_p_1">#ff739b4e</color>
+    <color name="light_green_button_p_2">#ff587a3d</color>
+    <color name="light_green_button_d">#ff496633</color>
+
+    <color name="light_green_emboss_top_1">#FF95b972</color>
+    <color name="light_green_emboss_top_2">#FF89aa69</color>
+    <color name="light_green_emboss_bot_1">#FF69874a</color>
+    <color name="light_green_emboss_bot_2">#FF5d7841</color>
 
     <!--Grey -->
     <color name="grey_button_1">#FF524d48</color>

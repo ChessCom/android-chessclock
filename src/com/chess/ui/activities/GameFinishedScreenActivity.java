@@ -26,7 +26,8 @@ import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.views.ChessBoardDailyView;
 import com.chess.ui.views.ChessBoardNetworkView;
-import com.chess.ui.views.GameControlsView;
+import com.chess.ui.views.ControlsBaseView;
+import com.chess.ui.views.ControlsNetworkView;
 
 import java.util.Calendar;
 
@@ -51,6 +52,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	private DailyGameByIdItem.Data currentGame;
 	private long gameId;
 	private LoadFromDbUpdateListener loadFromDbUpdateListener;
+	private ControlsNetworkView controlsNetworkView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +67,15 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	protected void widgetsInit() {
 		super.widgetsInit();
 
-		gameControlsView.changeGameButton(GameControlsView.B_NEW_GAME_ID, R.drawable.ic_next_game);
-		gameControlsView.hideChatButton();
-		gameControlsView.enableGameControls(false);
+		controlsNetworkView = (ControlsNetworkView) findViewById(R.id.controlsNetworkView);
+
+		controlsNetworkView.changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_next_game);
+		controlsNetworkView.hideChatButton();
+		controlsNetworkView.enableGameControls(false);
 
 		boardView = (ChessBoardDailyView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setGameControlsView(gameControlsView);
+		boardView.setControlsView(controlsNetworkView);
 		setBoardView(boardView);
 
 //		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
@@ -134,7 +138,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 					currentGame = DBDataManager.getGameFinishedItemFromCursor(returnedObj);
 					returnedObj.close();
 
-					gameControlsView.enableGameControls(true);
+					controlsNetworkView.enableGameControls(true);
 
 					adjustBoardForGame();
 					break;
@@ -185,7 +189,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 //			getSoundPlayer().playGameStart();
 //
 //			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
-//			gameControlsView.enableGameControls(true);
+//			controlsNetworkView.enableGameControls(true);
 //
 //			adjustBoardForGame();
 //		}

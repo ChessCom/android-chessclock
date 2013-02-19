@@ -197,8 +197,8 @@
 	<string name="no_network_rating_not_changed">인터넷은 현재 사용할 수 없습니다. 따라서 귀하의 평가는 인터넷 연결 반품 때까지 문제를 완료한 후 변경되지 않습니다.</string>
 	<string name="abort_resign_game">중지는 / 게임을 사임 :</string>
 	<string name="are_you_sure_q">확실합니까?</string>
-	<string name="correct_ex">맞습니다.</string>
-	<string name="wrong_ex">표기를 올바르게 했음에도 -가령, 고유명사를 입력했거나 맞춤법 검사 사전에 없는 단어를 사용했을 때-</string>
+	<string name="correct">맞습니다.</string>
+	<string name="wrong">표기를 올바르게 했음에도 -가령, 고유명사를 입력했거나 맞춤법 검사 사전에 없는 단어를 사용했을 때-</string>
 
 	<string name="you_got_new_msg">당신은 새 메시지가 있습니다!</string>
 	<string name="browse">찾기</string>

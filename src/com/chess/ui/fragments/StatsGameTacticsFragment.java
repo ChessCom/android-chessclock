@@ -1,12 +1,10 @@
 package com.chess.ui.fragments;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
-import com.chess.ui.views.drawables.PieChartDrawable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +14,6 @@ import com.chess.ui.views.drawables.PieChartDrawable;
  */
 public class StatsGameTacticsFragment extends CommonLogicFragment {
 
-	private View graphView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,10 +24,5 @@ public class StatsGameTacticsFragment extends CommonLogicFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		graphView = view.findViewById(R.id.graphView);
-
-		Drawable drawable = new PieChartDrawable(getActivity());
-
-		graphView.setBackgroundDrawable(drawable);
 	}
 }

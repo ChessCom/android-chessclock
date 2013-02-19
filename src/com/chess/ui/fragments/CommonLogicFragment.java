@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.EditText;
 import com.chess.R;
@@ -36,9 +37,6 @@ import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -366,5 +364,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected LccHolder getLccHolder() {
 		return getActivityFace().getMeLccHolder();
+	}
+
+	protected Fragment findFragmentByTag(String tag) {
+		return getFragmentManager().findFragmentByTag(tag);
 	}
 }

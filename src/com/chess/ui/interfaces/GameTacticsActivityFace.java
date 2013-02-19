@@ -9,4 +9,12 @@ package com.chess.ui.interfaces;
 public interface GameTacticsActivityFace extends GameActivityFace {
 
 	void verifyMove();
+
+	void showHelp();
+
+	void restart();
+
+	void showHint();
+
+	void showStats();
 }

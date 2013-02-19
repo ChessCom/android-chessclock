@@ -71,8 +71,8 @@
 			android:layout_height="wrap_content"
 			>
 
-			<com.chess.ui.views.GameControlsView
-				android:id="@+id/gameControlsView"
+			<com.chess.ui.views.ControlsBaseView
+				android:id="@+id/controlsBaseView"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				/>

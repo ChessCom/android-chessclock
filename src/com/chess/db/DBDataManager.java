@@ -24,7 +24,7 @@ public class DBDataManager {
 
 	private static final String ORDER_BY = "ORDER BY";
 	private static final String GROUP_BY = "GROUP BY";
-	public static final String SLASH_ = "/";
+//	public static final String SLASH_ = "/";
 	public static final String OR_ = " OR ";
 	public static final String LIKE_ = " LIKE ";
 	public static final String AND_ = " AND ";
@@ -229,11 +229,13 @@ public class DBDataManager {
 		Uri uri = DBConstants.uriArray[DBConstants.ECHESS_ONLINE_GAMES];
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_GAME_ID,
 				arguments2, null);
+
+		ContentValues values = putGameOnlineItemToValues(currentGame, userName);
+
 		if (cursor.moveToFirst()) {
-			contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)),
-					putGameOnlineItemToValues(currentGame, userName), null, null);
+			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
 		} else {
-			contentResolver.insert(uri, putGameOnlineItemToValues(currentGame, userName));
+			contentResolver.insert(uri, values);
 		}
 
 		cursor.close();
@@ -280,11 +282,12 @@ public class DBDataManager {
         Uri uri = DBConstants.uriArray[DBConstants.TACTICS_BATCH];
         Cursor cursor = contentResolver.query(uri, PROJECTION_TACTIC_ITEM_ID_AND_USER,
                 SELECTION_TACTIC_ID_AND_USER, arguments2, null);
+
+		ContentValues values = putTacticItemToValues(tacticItem);
         if (cursor.moveToFirst()) {
-            contentResolver.update(Uri.parse(uri.toString() + SLASH_ + getId(cursor)),
-                    putTacticItemToValues(tacticItem), null, null);
+            contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
         } else {
-            contentResolver.insert(uri, putTacticItemToValues(tacticItem));
+            contentResolver.insert(uri, values);
         }
 
         cursor.close();
@@ -327,11 +330,12 @@ public class DBDataManager {
         Uri uri = DBConstants.uriArray[DBConstants.TACTICS_RESULTS];
         Cursor cursor = contentResolver.query(uri,null, SELECTION_TACTIC_ID_AND_USER, arguments2, null);
 
+		ContentValues values = putTacticResultItemToValues(resultItem);
+
         if (cursor.moveToFirst()) {
-            contentResolver.update(Uri.parse(uri.toString() + SLASH_ + getId(cursor)),
-                    putTacticResultItemToValues(resultItem), null, null);
+            contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
         } else {
-            contentResolver.insert(uri, putTacticResultItemToValues(resultItem));
+            contentResolver.insert(uri, values);
         }
 
         cursor.close();
@@ -455,7 +459,6 @@ public class DBDataManager {
 		values.put(DBConstants.V_OPPONENT_OFFERED_DRAW, dataObj.isDrawOfferPending()? 1 : 0);
 		values.put(DBConstants.V_IS_MY_TURN, dataObj.isMyTurn()? 1 : 0);
 		values.put(DBConstants.V_HAS_NEW_MESSAGE, dataObj.hasNewMessage()? 1 : 0);
-//		Log.d("TEST", "echess values = " + values);
 		return values;
 	}
 

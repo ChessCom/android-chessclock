@@ -25,9 +25,10 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
+import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardLiveView;
+import com.chess.ui.views.ControlsNetworkView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
@@ -66,6 +67,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private String warningMessage;
 
 	private String boardDebug; // temp
+	private ControlsNetworkView controlsNetworkView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -118,10 +120,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}
 
 		if (!getLccHolder().currentGameExist()) {
-			gameControlsView.enableAnalysisMode(true);
+			controlsNetworkView.enableAnalysisMode(true);
 
 			boardView.setFinished(true);
-//			gameControlsView.showBottomPart(false); // seems to be unused in new design
+//			controlsBaseView.showBottomPart(false); // seems to be unused in new design
 		}
 
 		getLccHolder().setLccEventListener(this);
@@ -144,12 +146,14 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	protected void widgetsInit() {
 		super.widgetsInit();
 
+		controlsNetworkView = (ControlsNetworkView) findViewById(R.id.controlsNetworkView);
+
         fadeLay = findViewById(R.id.fadeLay);
 		gameBoardView = findViewById(R.id.baseView);
 
 		boardView = (ChessBoardLiveView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setGameControlsView(gameControlsView);
+		boardView.setControlsView(controlsNetworkView);
 		setBoardView(boardView);
 
 //		boardView.setBoardFace(getBoardFace());
@@ -161,7 +165,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		findViewById(R.id.cancelBtn).setOnClickListener(this);
 
-		gameControlsView.enableAnalysisMode(false);
+		controlsNetworkView.enableAnalysisMode(false);
 
 		topPlayerLabel = whitePlayerLabel;
 		topPlayerClock = blackPlayerLabel;
@@ -232,7 +236,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 //				if (getBoardFace().isReside()) {
 //					topPlayerClock.setText(whiteTimer);
 //				} else {
-//					gameControlsView.setBottomPlayerTimer(whiteTimer);
+//					controlsBaseView.setBottomPlayerTimer(whiteTimer);
 //				}
 			}
 		});
@@ -244,7 +248,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			@Override
 			public void run() {
 //				if (getBoardFace().isReside()) {
-//					gameControlsView.setBottomPlayerTimer(blackTimer);
+//					controlsBaseView.setBottomPlayerTimer(blackTimer);
 //				} else {
 //					topPlayerClock.setText(blackTimer);
 //				}
@@ -269,7 +273,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		topPlayerLabel.setTextColor(topPlayerTextColor);
 		topPlayerClock.setTextColor(topPlayerTextColor);
-//		gameControlsView.setBottomPlayerTextColor(bottomPlayerTextColor);
+//		controlsBaseView.setBottomPlayerTextColor(bottomPlayerTextColor);
 
 		int topPlayerDotId;
 		int bottomPlayerDotId;
@@ -284,10 +288,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		if (topPlayerTextColor == hintColor) { // not active
 			topPlayerClock.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-//			gameControlsView.setBottomIndicator(bottomPlayerDotId);
+//			controlsBaseView.setBottomIndicator(bottomPlayerDotId);
 		} else {
 			topPlayerClock.setCompoundDrawablesWithIntrinsicBounds(topPlayerDotId, 0, 0, 0);
-//			gameControlsView.setBottomIndicator(0);
+//			controlsBaseView.setBottomIndicator(0);
 		}
 	}
 
@@ -355,7 +359,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				gameControlsView.haveNewMessage(true);
+				controlsNetworkView.haveNewMessage(true);
 				boardView.invalidate();
 			}
 		});
@@ -476,7 +480,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				", moveLive=" + getBoardFace().convertMoveLive() +
 				", gamesC=" + getLccHolder().getGamesCount() +
 				", gameId=" + getGameId() +
-				", analysisPanel=" + gameControlsView.isAnalysisEnabled() +
+				", analysisPanel=" + controlsNetworkView.isAnalysisEnabled() +
 				", analysisBoard=" + getBoardFace().isAnalysis() +
 				", latestMoveNumber=" + getLccHolder().getLatestMoveNumber() +
 				", debugString=" + debugString +
@@ -494,10 +498,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private void updatePlayerLabels() {
 		if (getBoardFace().isReside()) {
 			topPlayerLabel.setText(getWhitePlayerName());
-//			gameControlsView.setBottomPlayerLabel(getBlackPlayerName());
+//			controlsBaseView.setBottomPlayerLabel(getBlackPlayerName());
 		} else {
 			topPlayerLabel.setText(getBlackPlayerName());
-//			gameControlsView.setBottomPlayerLabel(getWhitePlayerName());
+//			controlsBaseView.setBottomPlayerLabel(getWhitePlayerName());
 		}
 	}
 
@@ -508,7 +512,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			getLccHolder().setLatestMoveNumber(0);
 			ChessBoardLive.resetInstance();
 		}
-		gameControlsView.enableControlButtons(isAnalysis);
+		controlsNetworkView.enableControlButtons(isAnalysis);
 	}
 
 	@Override
@@ -522,7 +526,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		preferencesEditor.commit();
 
 		currentGame.setHasNewMessage(false);
-		gameControlsView.haveNewMessage(false);
+		controlsNetworkView.haveNewMessage(false);
 
 		Intent intent = new Intent(this, ChatLiveActivity.class);
 		intent.putExtra(BaseGameItem.TIMESTAMP, currentGame.getTimestamp());
@@ -531,7 +535,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	private void checkMessages() {
 		if (currentGame.hasNewMessage()) {
-			gameControlsView.haveNewMessage(true);
+			controlsNetworkView.haveNewMessage(true);
 		}
 	}
 
@@ -741,12 +745,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 			topPlayerLabel.setText(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
 					+ newWhiteRating + StaticData.SYMBOL_RIGHT_PAR);
-//			gameControlsView.setBottomPlayerLabel(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
+//			controlsBaseView.setBottomPlayerLabel(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
 //					+ newBlackRating + StaticData.SYMBOL_RIGHT_PAR);
 		} else {
 			topPlayerLabel.setText(game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
 					+ newBlackRating + StaticData.SYMBOL_RIGHT_PAR);
-//			gameControlsView.setBottomPlayerLabel(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
+//			controlsBaseView.setBottomPlayerLabel(game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR
 //					+ newWhiteRating + StaticData.SYMBOL_RIGHT_PAR); // always at the bottom
 		}
 	}

@@ -87,7 +87,7 @@ public class GameDailyFragment extends GameBaseFragment {
 //	@Deprecated
 //	private GameListCurrentItem gameInfoItem;
 //	private String timeRemains;
-	private TextView infoLabelTxt;
+
 	private IntentFilter boardUpdateFilter;
 	private BroadcastReceiver moveUpdateReceiver;
 
@@ -95,8 +95,9 @@ public class GameDailyFragment extends GameBaseFragment {
 	private LoadFromDbUpdateListener loadFromDbUpdateListener;
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
 	private NotationView notationsView;
-	private GamePanelInfoView topPanelView;
-	private GamePanelInfoView bottomPanelView;
+	private PanelInfoGameView topPanelView;
+	private PanelInfoGameView bottomPanelView;
+	private ControlsNetworkView controlsNetworkView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -113,21 +114,21 @@ public class GameDailyFragment extends GameBaseFragment {
 	@Override
 	protected void widgetsInit(View view) {
 		super.widgetsInit(view);
+		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
 
-		infoLabelTxt = (TextView) view.findViewById(R.id.thinking);
 
 		setTitle(R.string.daily_chess);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
-		topPanelView = (GamePanelInfoView) view.findViewById(R.id.topPanelView);
-		bottomPanelView = (GamePanelInfoView) view.findViewById(R.id.bottomPanelView);
+		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
+		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
 		// set avatars
 		Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
 
-		((ImageView) topPanelView.findViewById(GamePanelInfoView.AVATAR_ID))
+		((ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID))
 				.setImageDrawable(new BoardAvatarDrawable(getActivity(), src));
 
-		ImageView bottomAvatarImg = (ImageView) bottomPanelView.findViewById(GamePanelInfoView.AVATAR_ID);
+		ImageView bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 		bottomAvatarImg.setImageDrawable(new BoardAvatarDrawable(getActivity(), src));
 
 		((BoardAvatarDrawable)bottomAvatarImg.getDrawable()).setSide(AppConstants.WHITE_SIDE);
@@ -142,12 +143,12 @@ public class GameDailyFragment extends GameBaseFragment {
 		view.findViewById(R.id.submitBtn).setOnClickListener(this);
 		view.findViewById(R.id.cancelBtn).setOnClickListener(this);
 
-		gameControlsView.changeGameButton(GameControlsView.B_NEW_GAME_ID, R.drawable.ic_next_game);
-		gameControlsView.enableGameControls(false);
+		controlsNetworkView.changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_next_game);
+		controlsNetworkView.enableGameControls(false);
 
 		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setGameControlsView(gameControlsView);
+		boardView.setControlsView(controlsNetworkView);
 		boardView.setNotationsView(notationsView);
 		setBoardView(boardView);
 
@@ -294,7 +295,7 @@ public class GameDailyFragment extends GameBaseFragment {
 
 					DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 
-					gameControlsView.enableGameControls(true);
+					controlsNetworkView.enableGameControls(true);
 					boardView.lockBoard(false);
 
 					checkMessages();
@@ -398,7 +399,7 @@ public class GameDailyFragment extends GameBaseFragment {
 //
 //			DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 //
-//			gameControlsView.enableGameControls(true);
+//			controlsNetworkView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			checkMessages();
@@ -415,12 +416,10 @@ public class GameDailyFragment extends GameBaseFragment {
 //		timeRemains = gameInfoItem.getTimeRemaining() + gameInfoItem.getTimeRemainingUnits();
 
 		if (isUserMove()) {
-			infoLabelTxt.setText(StaticData.SYMBOL_EMPTY); // disable time as it incorrect when switching to next game
 
-//			infoLabelTxt.setText(timeRemains);
+//			infoLabelTxt.setText(timeRemains); // TODO restore
 			updatePlayerDots(userPlayWhite);
 		} else {
-			infoLabelTxt.setText(StaticData.SYMBOL_EMPTY);
 			updatePlayerDots(!userPlayWhite);
 		}
 
@@ -471,7 +470,7 @@ public class GameDailyFragment extends GameBaseFragment {
 //
 //			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
 //
-//			gameControlsView.enableGameControls(true);
+//			controlsNetworkView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			if (getBoardFace().isAnalysis()) {
@@ -491,12 +490,10 @@ public class GameDailyFragment extends GameBaseFragment {
 //		timeRemains = gameInfoItem.getTimeRemaining() + gameInfoItem.getTimeRemainingUnits();
 
 		if (isUserMove()) {
-			infoLabelTxt.setText(StaticData.SYMBOL_EMPTY); // disable time as it incorrect when switching to next game
 
-//			infoLabelTxt.setText(timeRemains);
+//			infoLabelTxt.setText(timeRemains); // TODO restore
 			updatePlayerDots(userPlayWhite);
 		} else {
-			infoLabelTxt.setText(StaticData.SYMBOL_EMPTY);
 			updatePlayerDots(!userPlayWhite);
 		}
 
@@ -518,8 +515,8 @@ public class GameDailyFragment extends GameBaseFragment {
 	public void invalidateGameScreen() {
 		showSubmitButtonsLay(getBoardFace().isSubmit());
 
-		whitePlayerLabel.setText(getWhitePlayerName());
-		blackPlayerLabel.setText(getBlackPlayerName());
+//		whitePlayerLabel.setText(getWhitePlayerName());
+//		blackPlayerLabel.setText(getBlackPlayerName());
 
 //		boardView.updateNotations(getBoardFace().getMoveListSAN());
 		boardView.updateNotations(getBoardFace().getNotationArray());
@@ -596,7 +593,7 @@ public class GameDailyFragment extends GameBaseFragment {
 //
 ////			DBDataManager.updateOnlineGame(getContext(), currentGame);
 //
-//			gameControlsView.enableGameControls(true);
+//			controlsNetworkView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			sendMove();
@@ -664,7 +661,7 @@ public class GameDailyFragment extends GameBaseFragment {
 		preferencesEditor.commit();
 
 		currentGame.setHasNewMessage(false);
-		gameControlsView.haveNewMessage(false);
+		controlsNetworkView.haveNewMessage(false);
 
 		// TODO restore, open ChatFragment
 
@@ -678,18 +675,13 @@ public class GameDailyFragment extends GameBaseFragment {
 
 	private void checkMessages() {
 		if (currentGame.hasNewMessage()) {
-			gameControlsView.haveNewMessage(true);
+			controlsNetworkView.haveNewMessage(true);
 		}
 	}
 
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {
 		super.switch2Analysis(isAnalysis);
-		if (getBoardFace().isAnalysis()){
-			infoLabelTxt.setVisibility(View.GONE);
-		} else {
-			infoLabelTxt.setVisibility(View.VISIBLE);
-		}
 	}
 
 	@Override
@@ -1096,7 +1088,7 @@ public class GameDailyFragment extends GameBaseFragment {
 
 			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
 
-			gameControlsView.enableGameControls(true);
+			controlsNetworkView.enableGameControls(true);
 			boardView.lockBoard(false);
 
 			if (getBoardFace().isAnalysis()) {

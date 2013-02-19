@@ -199,8 +199,8 @@
 	</string>
 	<string name="abort_resign_game">Abort / bir oyun çekilmek:</string>
 	<string name="are_you_sure_q">Sen emin misin?</string>
-	<string name="correct_ex">Düzeltin!</string>
-	<string name="wrong_ex">Yanlış!</string>
+	<string name="correct">Düzeltin!</string>
+	<string name="wrong">Yanlış!</string>
 
 	<string name="you_got_new_msg">Yeni bir mesajınız var!</string>
 	<string name="browse">Gözat</string>

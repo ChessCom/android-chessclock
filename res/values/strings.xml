@@ -222,10 +222,10 @@
     <string name="ten_tactics_completed">10 tactics completed!</string>
     <string name="offline_mode">Offline mode</string>
     <string name="no_network_rating_not_changed">Internet access is not currently available. As a result, your rating will not change after completing problems until your Internet connection returns.</string>
-    <string name="correct_ex">Correct!</string>  <!--Popup Title-->
-    <string name="wrong_ex">Wrong!</string>  <!--Popup Title-->
+    <string name="correct">Correct</string>  <!--Popup Title-->
+    <string name="wrong">Wrong</string>  <!--Popup Title-->
     <string name="problem_solved_">Problem Solved!</string>   <!--Popup Title-->
-    <string name="score_arg">Score %1$s</string> <!--Game results-->
+    <string name="score_arg">Score: %1$s</string> <!--Game results-->
     <string name="new_rating_arg">New rating %2$s </string> <!--Game results-->
 
     <string name="next_tactic_puzzle">Next Tactic Puzzle</string>
@@ -370,6 +370,7 @@
     <string name="online">Online</string>
     <string name="comp">Comp</string>
     <string name="tactics">Tactics</string>
+    <string name="practice_mode">Practice Mode</string>
     <string name="video">Video</string>
 
     <!--New Strings-->

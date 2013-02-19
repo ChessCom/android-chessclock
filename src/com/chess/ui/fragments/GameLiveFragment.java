@@ -28,9 +28,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
-import com.chess.ui.views.ChessBoardLiveView;
-import com.chess.ui.views.GamePanelInfoView;
-import com.chess.ui.views.NotationView;
+import com.chess.ui.views.*;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
@@ -71,8 +69,9 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 
 	private String boardDebug; // temp
 	private NotationView notationsView;
-	private GamePanelInfoView topPanelView;
-	private GamePanelInfoView bottomPanelView;
+	private PanelInfoGameView topPanelView;
+	private PanelInfoGameView bottomPanelView;
+	private ControlsNetworkView controlsNetworkView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -129,10 +128,10 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 		}
 
 		if (!getLccHolder().currentGameExist()) {
-			gameControlsView.enableAnalysisMode(true);
+			controlsNetworkView.enableAnalysisMode(true);
 
 			boardView.setFinished(true);
-//			gameControlsView.showBottomPart(false); // seems to be unused in new design
+//			controlsNetworkView.showBottomPart(false); // seems to be unused in new design
 		}
 
 		getLccHolder().setLccEventListener(this);
@@ -154,17 +153,18 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 	@Override
 	protected void widgetsInit(View view) {
 		super.widgetsInit(view);
+		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
 
 		fadeLay = view.findViewById(R.id.fadeLay);
 		gameBoardView = view.findViewById(R.id.baseView);
 
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
-		topPanelView = (GamePanelInfoView) view.findViewById(R.id.topPanelView);
-		bottomPanelView = (GamePanelInfoView) view.findViewById(R.id.bottomPanelView);
+		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
+		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
 		boardView = (ChessBoardLiveView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setGameControlsView(gameControlsView);
+		boardView.setControlsView(controlsNetworkView);
 		boardView.setNotationsView(notationsView);
 		setBoardView(boardView);
 
@@ -177,7 +177,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 
 		view.findViewById(R.id.cancelBtn).setOnClickListener(this);
 
-		gameControlsView.enableAnalysisMode(false);
+		controlsNetworkView.enableAnalysisMode(false);
 
 //		topPlayerLabel = whitePlayerLabel;
 //		topPlayerClock = blackPlayerLabel;
@@ -249,7 +249,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 					topPanelView.setPlayerTimeLeft(whiteTimer);
 //					topPlayerClock.setText(whiteTimer);
 				} else {
-//					gameControlsView.setBottomPlayerTimer(whiteTimer);
+//					controlsNetworkView.setBottomPlayerTimer(whiteTimer);
 					bottomPanelView.setPlayerTimeLeft(whiteTimer);
 				}
 			}
@@ -262,7 +262,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 			@Override
 			public void run() {
 				if (getBoardFace().isReside()) {
-//					gameControlsView.setBottomPlayerTimer(blackTimer);
+//					controlsNetworkView.setBottomPlayerTimer(blackTimer);
 					bottomPanelView.setPlayerTimeLeft(blackTimer);
 				} else {
 //					topPlayerClock.setText(blackTimer);
@@ -289,7 +289,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 
 //		topPlayerLabel.setTextColor(topPlayerTextColor); // there will be no
 //		topPlayerClock.setTextColor(topPlayerTextColor);
-//		gameControlsView.setBottomPlayerTextColor(bottomPlayerTextColor);
+//		controlsBaseView.setBottomPlayerTextColor(bottomPlayerTextColor);
 
 
 		int topPlayerDotId;
@@ -305,10 +305,10 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 
 //		if (topPlayerTextColor == hintColor) { // not active // TODO set active side
 //			topPlayerClock.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-//			gameControlsView.setBottomIndicator(bottomPlayerDotId);
+//			controlsBaseView.setBottomIndicator(bottomPlayerDotId);
 //		} else {
 //			topPlayerClock.setCompoundDrawablesWithIntrinsicBounds(topPlayerDotId, 0, 0, 0);
-//			gameControlsView.setBottomIndicator(0);
+//			controlsBaseView.setBottomIndicator(0);
 //		}
 	}
 
@@ -376,7 +376,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				gameControlsView.haveNewMessage(true);
+				controlsNetworkView.haveNewMessage(true);
 				boardView.invalidate();
 			}
 		});
@@ -497,7 +497,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 						", moveLive=" + getBoardFace().convertMoveLive() +
 						", gamesC=" + getLccHolder().getGamesCount() +
 						", gameId=" + getGameId() +
-						", analysisPanel=" + gameControlsView.isAnalysisEnabled() +
+						", analysisPanel=" + controlsNetworkView.isAnalysisEnabled() +
 						", analysisBoard=" + getBoardFace().isAnalysis() +
 						", latestMoveNumber=" + getLccHolder().getLatestMoveNumber() +
 						", debugString=" + debugString +
@@ -515,12 +515,12 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 	private void updatePlayerLabels() {
 		if (getBoardFace().isReside()) {
 //			topPlayerLabel.setText(getWhitePlayerName());
-//			gameControlsView.setBottomPlayerLabel(getBlackPlayerName());
+//			controlsNetworkView.setBottomPlayerLabel(getBlackPlayerName());
 			topPanelView.setPlayerLabel(getWhitePlayerName());
 			bottomPanelView.setPlayerLabel(getBlackPlayerName());
 		} else {
 //			topPlayerLabel.setText(getBlackPlayerName());
-//			gameControlsView.setBottomPlayerLabel(getWhitePlayerName());
+//			controlsNetworkView.setBottomPlayerLabel(getWhitePlayerName());
 			topPanelView.setPlayerLabel(getBlackPlayerName());
 			bottomPanelView.setPlayerLabel(getWhitePlayerName());
 		}
@@ -533,7 +533,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 			getLccHolder().setLatestMoveNumber(0);
 			ChessBoardLive.resetInstance();
 		}
-		gameControlsView.enableControlButtons(isAnalysis);
+		controlsNetworkView.enableControlButtons(isAnalysis);
 	}
 
 	@Override
@@ -547,7 +547,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 		preferencesEditor.commit();
 
 		currentGame.setHasNewMessage(false);
-		gameControlsView.haveNewMessage(false);
+		controlsNetworkView.haveNewMessage(false);
 
 
 		// TODO open ChatFragment
@@ -558,7 +558,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 
 	private void checkMessages() {
 		if (currentGame.hasNewMessage()) {
-			gameControlsView.haveNewMessage(true);
+			controlsNetworkView.haveNewMessage(true);
 		}
 	}
 
@@ -771,13 +771,13 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 		if (getBoardFace().isReside()) {
 
 //			topPlayerLabel.setText(whitePlayerLabel);
-//			gameControlsView.setBottomPlayerLabel(blackPlayerLabel);
+//			controlsNetworkView.setBottomPlayerLabel(blackPlayerLabel);
 
 			topPanelView.setPlayerLabel(whitePlayerLabel);
 			bottomPanelView.setPlayerLabel(blackPlayerLabel);
 		} else {
 //			topPlayerLabel.setText(blackPlayerLabel);
-//			gameControlsView.setBottomPlayerLabel(whitePlayerLabel); // always at the bottom
+//			controlsNetworkView.setBottomPlayerLabel(whitePlayerLabel); // always at the bottom
 			topPanelView.setPlayerLabel(blackPlayerLabel);
 			bottomPanelView.setPlayerLabel(whitePlayerLabel);
 		}

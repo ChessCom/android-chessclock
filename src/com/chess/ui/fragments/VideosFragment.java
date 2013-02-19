@@ -1,6 +1,8 @@
 package com.chess.ui.fragments;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -259,15 +261,15 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 					Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_NAME,
 							DBDataManager.SELECTION_NAME, arguments, null);
 
+					ContentValues values = DBDataManager.putVideoItemToValues(headerData);
+
 					if (cursor.moveToFirst()) {
 						headerDataId = DBDataManager.getId(cursor);
-						contentResolver.update(Uri.parse(uri.toString() + DBDataManager.SLASH_ + headerDataId),
-								DBDataManager.putVideoItemToValues(headerData), null, null);
+						contentResolver.update(ContentUris.withAppendedId(uri, headerDataId), values, null, null);
 					} else {
-						Uri savedUri = contentResolver.insert(uri, DBDataManager.putVideoItemToValues(headerData));
+						Uri savedUri = contentResolver.insert(uri, values);
 						headerDataId = Long.parseLong(savedUri.getPathSegments().get(1));
 					}
-
 
 					headerDataLoaded = true;
 

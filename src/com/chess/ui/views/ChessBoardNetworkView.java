@@ -8,15 +8,17 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
+import com.chess.ui.interfaces.BoardViewNetworkFace;
 import com.chess.ui.interfaces.GameActivityFace;
 
 import java.util.Iterator;
 import java.util.TreeSet;
 
-public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
+public abstract class ChessBoardNetworkView extends ChessBoardBaseView implements BoardViewNetworkFace {
 
 	private String whiteUserName;
 	private String blackUserName;
+	private ControlsNetworkView controlsView;
 
 	public ChessBoardNetworkView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -184,12 +186,8 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 	}
 
     @Override
-	public void switchChat() {
+	public void showChat() {
 		gameActivityFace.switch2Chat();
-	}
-
-	@Override
-	public void showHint() {
 	}
 
 //	public void updateMoves(String newMove) {
@@ -211,5 +209,9 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 	public void updatePlayerNames(String whitePlayerName, String blackPlayerName) {
 		whiteUserName = whitePlayerName.substring(0, whitePlayerName.indexOf(StaticData.SYMBOL_LEFT_PAR)).trim().toLowerCase();
 		blackUserName = blackPlayerName.substring(0, blackPlayerName.indexOf(StaticData.SYMBOL_LEFT_PAR)).trim().toLowerCase();
+	}
+
+	public void setControlsView(ControlsNetworkView controlsView) {
+		this.controlsView = controlsView;
 	}
 }

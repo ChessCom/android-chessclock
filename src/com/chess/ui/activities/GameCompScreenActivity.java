@@ -20,10 +20,11 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
-import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
+import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardCompView;
+import com.chess.ui.views.ControlsCompView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
@@ -41,6 +42,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	private ChessBoardCompView boardView;
 	protected TextView thinking;
 	private int[] compStrengthArray;
+	private ControlsCompView controlsCompView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +58,13 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	protected void widgetsInit() {
 		super.widgetsInit();
 
+		controlsCompView = (ControlsCompView) findViewById(R.id.controlsCompView);
+
 		thinking = (TextView) findViewById(R.id.thinking);
 
 		boardView = (ChessBoardCompView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setGameControlsView(gameControlsView);
+		boardView.setControlsView(controlsCompView);
 
 		ChessBoardComp chessBoardComp = ChessBoardComp.getInstance(this);
 //		boardView.setBoardFace(chessBoardComp);
@@ -68,8 +72,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		setBoardView(boardView);
 
         getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
-
-		gameControlsView.turnCompMode();
 
         if (getBoardFace().isAnalysis()) {
             boardView.enableAnalysis();

@@ -198,8 +198,8 @@
 	<string name="no_network_rating_not_changed">インターネットアクセスは現在利用できません。結果として、あなたの評価は、インターネット接続が復帰するまでの問題を完了した後に変更されません。</string>
 	<string name="abort_resign_game">中止/ゲームを投了。</string>
 	<string name="are_you_sure_q">削除しますか?</string>
-	<string name="correct_ex">正解です。</string>
-	<string name="wrong_ex">それは違う！</string>
+	<string name="correct">正解です。</string>
+	<string name="wrong">それは違う！</string>
 
 
 	<string name="you_got_new_msg">あなたは、新しいメッセージがあります！</string>

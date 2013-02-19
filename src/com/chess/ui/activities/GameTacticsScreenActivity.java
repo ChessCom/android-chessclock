@@ -31,11 +31,12 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
-import com.chess.ui.popup_fragments.BasePopupDialogFragment;
-import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
 import com.chess.ui.interfaces.TacticBoardFace;
+import com.chess.ui.popup_fragments.BasePopupDialogFragment;
+import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardTacticsView;
+import com.chess.ui.views.ControlsTacticsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import com.flurry.android.FlurryAgent;
@@ -80,9 +81,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private int maxTacticAnswerCnt;
     private TacticItem.Data tacticItem;
     private boolean offlineBatchWasLoaded;
+	private ControlsTacticsView controlsTacticsView;
 
 
-    @Override
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -95,9 +97,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	protected void widgetsInit() {
 		super.widgetsInit();
 
+		controlsTacticsView = (ControlsTacticsView) findViewById(R.id.controlsTacticsView);
+
 		boardView = (ChessBoardTacticsView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setGameControlsView(gameControlsView);
+		boardView.setControlsView(controlsTacticsView);
 		boardView.setGameActivityFace(this);
 
 		setBoardView(boardView);
@@ -114,8 +118,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		whitePlayerLabel.setVisibility(View.GONE);
 		blackPlayerLabel.setVisibility(View.GONE);
 
-		gameControlsView.hideChatButton();
-		gameControlsView.enableGameControls(false);
+		controlsTacticsView.enableGameControls(false);
 	}
 
 	private void init() {
@@ -300,7 +303,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 //					new GetStringObjTask(tacticsCorrectUpdateListener).executeTask(loadItem);
 					new RequestJsonTask<TacticInfoItem>(tacticsCorrectUpdateListener).executeTask(loadItem);
-					gameControlsView.enableGameControls(false);
+					controlsTacticsView.enableGameControls(false);
 				}
 				stopTacticsTimer();
 			}
@@ -309,9 +312,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 					&& tacticItem.getResultItem().getUserRatingChange() < 0; // if saved for wrong move. Note that after loading next tactic result is automaically assigns as a positive resultItem.
 
 			if (userIsGuest) {
-				showWrongMovePopup(getString(R.string.wrong_ex));
+				showWrongMovePopup(getString(R.string.wrong));
 			} else if (tacticResultItemIsValid && (tacticItem.isRetry() || noInternet)) {
-				String title = getString(R.string.wrong_ex,   // TODO restore
+				String title = getString(R.string.wrong,   // TODO restore
                         tacticItem.getResultItem().getUserRatingChange(),
                         tacticItem.getResultItem().getUserRating());
 				showWrongMovePopup(title);
@@ -327,10 +330,30 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 //				new GetStringObjTask(tacticsWrongUpdateListener).executeTask(loadItem);
 				new RequestJsonTask<TacticInfoItem>(tacticsWrongUpdateListener).executeTask(loadItem);
-				gameControlsView.enableGameControls(false);
+				controlsTacticsView.enableGameControls(false);
 			}
 			stopTacticsTimer();
 		}
+	}
+
+	@Override
+	public void showHelp() {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void restart() {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void showHint() {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void showStats() {
+		//To change body of implemented methods use File | Settings | File Templates.
 	}
 
 	private void showWrongMovePopup(String title) {
@@ -509,7 +532,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 							getContentResolver()).executeTask();
 					break;
 			}
-			gameControlsView.enableGameControls(true);
+			controlsTacticsView.enableGameControls(true);
 		}
 
 		@Override
@@ -564,11 +587,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				case WRONG_RESULT:
 
 					if (tacticItem.getResultItem() != null) {
-						title = getString(R.string.wrong_ex,  // TODO restore
+						title = getString(R.string.wrong,  // TODO restore
 								tacticItem.getResultItem().getUserRatingChange(),
 								tacticItem.getResultItem().getUserRating());
 					} else {
-						title = getString(R.string.wrong_ex);
+						title = getString(R.string.wrong);
 					}
 
 					showWrongMovePopup(title);
@@ -577,7 +600,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 				break;
 			}
-			gameControlsView.enableGameControls(true);
+			controlsTacticsView.enableGameControls(true);
 		}
 
 		@Override
@@ -588,7 +611,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	private void handleErrorRequest() {
-		gameControlsView.enableGameControls(true);
+		controlsTacticsView.enableGameControls(true);
 
 		noInternet = true;      // TODO handle button click properly
 		showPopupDialog(R.string.offline_mode, R.string.no_network_rating_not_changed, OFFLINE_RATING_TAG);
@@ -777,7 +800,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		playLastMoveAnimation();
 
         firstRun = false;
-		gameControlsView.enableGameControls(true);
+		controlsTacticsView.enableGameControls(true);
 	}
 
 	@Override
@@ -859,7 +882,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 //			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
 			new RequestJsonTask<TacticItem>(getTacticsUpdateListener).executeTask(loadItem);
-			gameControlsView.enableGameControls(false);
+			controlsTacticsView.enableGameControls(false);
 		}
 	}
 

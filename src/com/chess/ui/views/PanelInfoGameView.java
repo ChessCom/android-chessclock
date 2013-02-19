@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.statics.AppConstants;
+import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
 import com.chess.utilities.AppUtils;
 
@@ -20,7 +21,7 @@ import com.chess.utilities.AppUtils;
  * @author alien_roger
  * @created at: 06.03.12 7:39
  */
-public class GamePanelInfoView extends RelativeLayout implements View.OnClickListener {
+public class PanelInfoGameView extends RelativeLayout implements View.OnClickListener {
 
 	public static final int AVATAR_ID = 0x00004400;
 	public static final int PLAYER_ID = 0x00004401;
@@ -53,12 +54,12 @@ public class GamePanelInfoView extends RelativeLayout implements View.OnClickLis
 	private LayoutParams capturedParams;
 	private LayoutParams capturedSingleParams;
 
-	public GamePanelInfoView(Context context) {
+	public PanelInfoGameView(Context context) {
 		super(context);
 		onCreate();
 	}
 
-	public GamePanelInfoView(Context context, AttributeSet attrs) {
+	public PanelInfoGameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		onCreate();
 	}
@@ -206,6 +207,7 @@ public class GamePanelInfoView extends RelativeLayout implements View.OnClickLis
 		this.side = side;
 
 		// change avatar border
+		((BoardAvatarDrawable)avatarImg.getDrawable()).setSide(side);
 
 		// change pieces color
 		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).setSide(side);

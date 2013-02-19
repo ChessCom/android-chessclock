@@ -38,7 +38,12 @@ public class RatingsAdapter extends ItemsAdapter<RatingListItem> {
 	protected void bindView(RatingListItem item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 		holder.labelTxt.setText(item.getText());
-		holder.valueTxt.setText(String.valueOf(item.getValue()));
+		if (item.getValue() == 0) {
+			holder.valueTxt.setText(String.valueOf(item.getValue()));
+		} else {
+			holder.valueTxt.setText(R.string.not_available);
+		}
+
 		Drawable drawable = item.getImage();
 		drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 		holder.labelTxt.setCompoundDrawables(drawable, null, null, null);

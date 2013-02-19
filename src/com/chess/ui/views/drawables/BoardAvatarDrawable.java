@@ -5,8 +5,6 @@ import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
 import com.chess.backend.statics.AppConstants;
 
 /**
@@ -94,6 +92,10 @@ public class BoardAvatarDrawable extends Drawable {
 	public void setSide(int side) {
 		this.side = side;
 		invalidateSelf();
+	}
+
+	public void setBorderThick(int thick) {
+		BORDER_THICK = thick;
 	}
 
 	@Override
