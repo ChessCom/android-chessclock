@@ -98,7 +98,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			playerParams.addRule(RIGHT_OF, AVATAR_ID);
 			playerParams.addRule(CENTER_VERTICAL);
 
-			ratingTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25);
+			ratingTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 28);
 			ratingTxt.setTextColor(Color.WHITE);
 			ratingTxt.setId(PLAYER_ID);
 			ratingTxt.setShadowLayer(0.5f, 0, -1, Color.BLACK);
