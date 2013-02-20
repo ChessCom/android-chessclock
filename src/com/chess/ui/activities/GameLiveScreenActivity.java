@@ -97,11 +97,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}*/
 	}
 
-	private boolean init() {
-		if (!getLccHolder().isConnected()) {
+	private void init() {
+
+		/*if (!getLccHolder().isConnected()) {
 			showToast(R.string.application_was_killed);
 			return false;
-		}
+		}*/
 
 		currentGame = getLccHolder().getGameItem();
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
@@ -139,7 +140,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				getString(R.string.messages)};
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener();
-		return true;
+		//return true;
 	}
 
 	@Override
@@ -205,11 +206,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		// todo: duplicate in onStart with lccholder check
 		boardView.setBoardFace(ChessBoardLive.getInstance(this));
 
-		lccInitiated = init();
+		init();
 
-		if(!lccInitiated){
+		/*if (!lccInitiated) {
 			return;
-		}
+		}*/
 
 		if (!isUserColorWhite()) {
 			getBoardFace().setReside(true);
@@ -242,7 +243,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		dismissDialogs();
 
 		super.onPause();
-		getLccHolder().setGameActivityPausedMode(true);
+
+		if (getLccHolder() != null) { // when user goes to Pause mode too fast, even before Live service init
+			getLccHolder().setGameActivityPausedMode(true);
+		}
 
 		handler.removeCallbacks(blinkSubmitButton);
 	}
@@ -264,7 +268,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		checkMessages();
 
-		blockGame(false);
 		getLccHolder().checkAndReplayMoves();
 
 		// temporary disable playLastMoveAnimation feature, because it can be one of the illegalmove reasons potentially
@@ -383,10 +386,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		getBoardFace().setMovesCount(actualMovesSize);
 
+		blockGame(false);
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				boardView.invalidate();
 				invalidateGameScreen();
 			}
 		});
@@ -398,7 +401,9 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
     @Override
     public void onConnectionBlocked(boolean blocked) {
 		super.onConnectionBlocked(blocked);
-		blockGame(blocked);
+		if (blocked) {
+			blockGame(blocked);
+		}
     }
 
     @Override

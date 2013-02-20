@@ -9,7 +9,6 @@ import android.graphics.Paint.Style;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import com.chess.R;
@@ -424,7 +423,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				return onActionUp(event);
 			}
 		}
-		return super.onTouchEvent(event);    //To change body of overridden methods use File | Settings | File Templates.
+		return super.onTouchEvent(event);
 	}
 
 	protected boolean onActionDown(MotionEvent event) {
@@ -613,7 +612,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	public void lockBoard(boolean lock) {
 		locked = lock;
-        Log.d("TEST", " board locked = " + locked);
         gamePanelView.lock(lock);
 		setEnabled(!lock);
 	}

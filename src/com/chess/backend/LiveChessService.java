@@ -68,8 +68,8 @@ public class LiveChessService extends Service {
 		Log.d(TAG, "lccHolder.isConnected() " + lccHolder.isConnected());
 		Log.d(TAG, "lccHolder.getClient() " + lccHolder.getClient());
 
-		if (AppData.isLiveChess(getContext()) && !lccHolder.isConnected()
-				/*&& LccHolder.getInstance(getContext()).getClient() == null*/) {
+ 		if (AppData.isLiveChess(getContext()) && !lccHolder.isConnected()
+				&& lccHolder.getClient() == null) { // prevent creating several instances when user navigates between activities in "reconnecting" mode
 			lccHolder.runConnectTask();
 		}
 	}
@@ -93,7 +93,7 @@ public class LiveChessService extends Service {
 
 			PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
 
-			notification.setLatestEventInfo(getContext(), "Chess.com", "Live Online", pendingIntent);
+			notification.setLatestEventInfo(getContext(), "Chess.com", "Live", pendingIntent);
 			notification.flags |= Notification.FLAG_NO_CLEAR;
 
 			startForeground(2048, notification);

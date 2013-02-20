@@ -276,20 +276,22 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 	}
 
 	public void processConnectionFailure(FailureDetails details) {
-		setConnected(false);
-		resetClient();
 
-		String detailsMessage;
+		// handles one and only one null-case when user tries to connect when device connection is off
+		// todo: handle other null-cases if any
+		if (details != null) {
 
-		if (details == null) {
-			detailsMessage = context.getString(R.string.pleaseLoginAgain);
-		} else {
+			setConnected(false);
+			resetClient();
+
+			String detailsMessage;
+
 			switch (details) {
 				case USER_KICKED: {
 					detailsMessage = context.getString(R.string.lccFailedUpgrading);
 					break;
 				}
-				case ACCOUNT_FAILED: {
+				case ACCOUNT_FAILED: { // wrong authKey
 					runConnectTask(true);
 					return;
 				}
@@ -305,9 +307,9 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 					detailsMessage = context.getString(R.string.pleaseLoginAgain);
 					break;
 			}
+			liveChessClientEventListener.onConnectionFailure(detailsMessage);
 		}
 
-		liveChessClientEventListener.onConnectionFailure(detailsMessage);
 	}
 
 	public void onObsoleteProtocolVersion() {
@@ -733,14 +735,17 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 		AppData.setLiveChessMode(context, false);
 		setCurrentGameId(null);
 		setUser(null);
-		runDisconnectTask();
 		setConnected(false);
+
 		clearGames();
 		clearChallenges();
 		clearOwnChallenges();
 		clearSeeks();
 		clearOnlineFriends();
 		clearPausedEvents();
+
+		runDisconnectTask();
+		resetClient();
 
 		//instance = null;
 	}
@@ -938,11 +943,8 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 	private class LiveDisconnectTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... voids) {
-			lccClient.disconnect();
-			resetClient();
 			if (lccClient != null) {
 				lccClient.disconnect();
-				lccClient = null;
 			}
 			return null;
 		}
