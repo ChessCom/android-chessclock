@@ -57,8 +57,9 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		compStrength = compStrengthArray[AppData.getCompStrength(getContext())];
     }
 
-	public void setControlsView(ControlsCompView controlsCompView) {
-		this.controlsCompView = controlsCompView;
+	public void setControlsView(ControlsCompView controlsView) {
+		super.setControlsView(controlsView);
+		this.controlsCompView = controlsView;
 	}
 
 	@Override

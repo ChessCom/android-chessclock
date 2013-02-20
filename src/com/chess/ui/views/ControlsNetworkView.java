@@ -18,9 +18,13 @@ import com.chess.ui.interfaces.BoardViewNetworkFace;
  */
 public class ControlsNetworkView extends ControlsBaseView {
 
-
-	private LinearLayout controlsLayout;
-
+	public static final int B_NEW_GAME_ID = 0;
+	public static final int B_OPTIONS_ID = 1;
+	public static final int B_FLIP_ID = 2;
+	public static final int B_ANALYSIS_ID = 3;
+	public static final int B_CHAT_ID = 4;
+	public static final int B_BACK_ID = 5;
+	public static final int B_FORWARD_ID = 6;
 
 	protected int[] buttonsDrawableIds = new int[]{
 			R.drawable.ic_ctrl_restore,
@@ -33,23 +37,7 @@ public class ControlsNetworkView extends ControlsBaseView {
 			R.drawable.ic_ctrl_hint
 	};
 
-	public static final int B_NEW_GAME_ID = 0;
-	public static final int B_OPTIONS_ID = 1;
-	public static final int B_FLIP_ID = 2;
-	public static final int B_ANALYSIS_ID = 3;
-	public static final int B_CHAT_ID = 4;
-	public static final int B_BACK_ID = 5;
-	public static final int B_FORWARD_ID = 6;
-//	public static final int B_HINT_ID = 7;
-
 	private BoardViewNetworkFace boardViewFace;
-
-	//	prefixes
-	public static final int BUTTON_PREFIX = 0x00002000;
-
-
-	private boolean blocked;
-
 
 	public ControlsNetworkView(Context context) {
 		super(context);
@@ -75,6 +63,8 @@ public class ControlsNetworkView extends ControlsBaseView {
 
 		LayoutParams defaultLinLayParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
+		buttonParams = new LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+		buttonParams.weight = 1;
 
 		controlsLayout.setLayoutParams(defaultLinLayParams);
 
@@ -86,53 +76,15 @@ public class ControlsNetworkView extends ControlsBaseView {
 		addControlButton(B_BACK_ID, R.drawable.button_emboss_mid_selector);
 		addControlButton(B_FORWARD_ID, R.drawable.button_emboss_right_selector);
 		addView(controlsLayout);
-
 	}
 
-	private void addControlButton(int buttonId, int backId) {
-		controlsLayout.addView(createControlButton(buttonId, backId));
+	@Override
+	protected int getButtonDrawablesId(int buttonId) {
+		return buttonsDrawableIds[buttonId];
 	}
-
-	public void addControlButton(int position, int buttonId, int backId) {
-		controlsLayout.addView(createControlButton(buttonId, backId), position);
-	}
-
-	private View createControlButton(int buttonId, int backId) {
-		ImageButton imageButton = new ImageButton(getContext());
-		imageButton.setImageResource(buttonsDrawableIds[buttonId]);
-		imageButton.setBackgroundResource(backId);
-		imageButton.setOnClickListener(this);
-		imageButton.setId(BUTTON_PREFIX + buttonId);
-
-		LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
-
-		params.weight = 1;
-		imageButton.setLayoutParams(params);
-		return imageButton;
-	}
-
 
 	public void toggleControlButton(int buttonId, boolean checked) {
-		if (checked) {
-			findViewById(BUTTON_PREFIX + buttonId).setBackgroundResource(R.drawable.button_emboss_mid_checked);
-		} else {
-			findViewById(BUTTON_PREFIX + buttonId).setBackgroundResource(R.drawable.button_emboss_mid_selector);
-		}
 	}
-
-	private void showGameButton(int buttonId, boolean show) {
-		findViewById(BUTTON_PREFIX + buttonId).setVisibility(show ? View.VISIBLE : View.GONE);
-	}
-
-	public void enableGameButton(int buttonId, boolean enable) {
-		findViewById(BUTTON_PREFIX + buttonId).setEnabled(enable);
-	}
-
-	public void changeGameButton(int buttonId, int resId) {
-		((ImageButton) findViewById(BUTTON_PREFIX + buttonId)).setImageResource(resId);
-	}
-
 
 	public void onClick(View view) {  // TODO rework click handles
 		if (blocked)
@@ -142,8 +94,6 @@ public class ControlsNetworkView extends ControlsBaseView {
 			boardViewFace.newGame();
 		} else if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
 			boardViewFace.showOptions();
-//		} else if (view.getId() == BUTTON_PREFIX + B_HINT_ID) {
-//			boardViewFace.showHint();
 		} else if (view.getId() == BUTTON_PREFIX + B_FLIP_ID) {
 			boardViewFace.flipBoard();
 		} else if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID) {
@@ -173,33 +123,7 @@ public class ControlsNetworkView extends ControlsBaseView {
 		showGameButton(ControlsNetworkView.B_CHAT_ID, false);
 	}
 
-	public void turnCompMode() {
-//		changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_ctrl_options);
-		changeGameButton(ControlsNetworkView.B_FLIP_ID, R.drawable.ic_ctrl_hint);
-		changeGameButton(ControlsNetworkView.B_ANALYSIS_ID, R.drawable.ic_ctrl_help);
-		hideChatButton();
-//		addControlButton(1, ControlsBaseView.B_HINT_ID, R.drawable.button_emboss_mid_selector); // add hint button at second position
-		showGameButton(ControlsNetworkView.B_NEW_GAME_ID, false);
-		enableGameButton(B_FORWARD_ID, true);
-		enableGameButton(B_BACK_ID, true);
-	}
-
-	public void enableAnalysisMode(boolean enable) {
-		enableGameButton(B_ANALYSIS_ID, enable);
-		enableGameButton(B_FORWARD_ID, enable);
-		enableGameButton(B_BACK_ID, enable);
-	}
-
-	public void enableControlButtons(boolean enable) {
-		enableGameButton(B_FORWARD_ID, enable);
-		enableGameButton(B_BACK_ID, enable);
-	}
-
-	public void lock(boolean lock) {
-		blocked = lock;
-		setEnabled(!lock);
-	}
-
+	@Override
 	public void enableGameControls(boolean enable) {
 		enableGameButton(B_OPTIONS_ID, enable);
 		enableGameButton(B_ANALYSIS_ID, enable);
@@ -208,12 +132,4 @@ public class ControlsNetworkView extends ControlsBaseView {
 		enableGameButton(B_CHAT_ID, enable);
 		enableGameButton(B_FLIP_ID, enable);
 	}
-
-	// todo: temporary debug
-	public boolean isAnalysisEnabled() {
-		return findViewById(BUTTON_PREFIX + B_ANALYSIS_ID).isEnabled()
-				|| findViewById(BUTTON_PREFIX + B_FORWARD_ID).isEnabled()
-				|| findViewById(BUTTON_PREFIX + B_BACK_ID).isEnabled();
-	}
-
 }

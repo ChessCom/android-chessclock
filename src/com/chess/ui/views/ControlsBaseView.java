@@ -4,10 +4,8 @@ package com.chess.ui.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import com.chess.R;
 
 /**
  * GamePanelTestActivity class
@@ -17,77 +15,30 @@ import com.chess.R;
  */
 public abstract class ControlsBaseView extends LinearLayout implements View.OnClickListener {
 
+	public static final int B_OPTIONS_ID = 0;
+	public static final int B_FLIP_ID = 1;
+	public static final int B_ANALYSIS_ID = 2;
+	public static final int B_BACK_ID = 4;
+	public static final int B_FORWARD_ID = 5;
 
-	private LinearLayout controlsLayout;
-
-
-	protected int[] buttonsDrawableIds = new int[]{
-			R.drawable.ic_ctrl_restore,
-			R.drawable.ic_ctrl_options,
-			R.drawable.ic_ctrl_flip,
-			R.drawable.ic_ctrl_analysis,
-			R.drawable.ic_ctrl_chat,
-			R.drawable.ic_ctrl_back,
-			R.drawable.ic_ctrl_fwd,
-			R.drawable.ic_ctrl_hint
-	};
-
-	public static final int B_NEW_GAME_ID = 0;
-	public static final int B_OPTIONS_ID = 1;
-	public static final int B_FLIP_ID = 2;
-	public static final int B_ANALYSIS_ID = 3;
-//	public static final int B_CHAT_ID = 4;
-	public static final int B_BACK_ID = 5;
-	public static final int B_FORWARD_ID = 6;
-//	public static final int B_HINT_ID = 7;
-
+	protected LinearLayout controlsLayout;
+	protected LayoutParams buttonParams;
 
 	//	prefixes
 	public static final int BUTTON_PREFIX = 0x00002000;
 
-
-	private boolean blocked;
+	protected boolean blocked;
 
 
 	public ControlsBaseView(Context context) {
 		super(context);
-		onCreate();
 	}
 
 	public ControlsBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		onCreate();
 	}
 
-
-	public void onCreate() {
-		setOrientation(VERTICAL);
-
-		controlsLayout = new LinearLayout(getContext());
-		int paddingLeft = (int) getResources().getDimension(R.dimen.game_control_padding_left);
-		int paddingTop = (int) getResources().getDimension(R.dimen.game_control_padding_top);
-		int paddingRight = (int) getResources().getDimension(R.dimen.game_control_padding_right);
-		int paddingBottom = (int) getResources().getDimension(R.dimen.game_control_padding_bottom);
-
-		controlsLayout.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
-
-		LinearLayout.LayoutParams defaultLinLayParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
-
-		controlsLayout.setLayoutParams(defaultLinLayParams);
-
-		addControlButton(B_NEW_GAME_ID, R.drawable.button_emboss_left_selector);
-		addControlButton(B_OPTIONS_ID, R.drawable.button_emboss_mid_selector);
-		addControlButton(B_FLIP_ID, R.drawable.button_emboss_mid_selector);
-		addControlButton(B_ANALYSIS_ID, R.drawable.button_emboss_mid_selector);
-//		addControlButton(B_CHAT_ID, R.drawable.button_emboss_mid_selector);
-		addControlButton(B_BACK_ID, R.drawable.button_emboss_mid_selector);
-		addControlButton(B_FORWARD_ID, R.drawable.button_emboss_right_selector);
-		addView(controlsLayout);
-
-	}
-
-	private void addControlButton(int buttonId, int backId) {
+	protected void addControlButton(int buttonId, int backId) {
 		controlsLayout.addView(createControlButton(buttonId, backId));
 	}
 
@@ -95,31 +46,24 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		controlsLayout.addView(createControlButton(buttonId, backId), position);
 	}
 
-	private View createControlButton(int buttonId, int backId) {
+	protected View createControlButton(int buttonId, int backId) {
 		ImageButton imageButton = new ImageButton(getContext());
-		imageButton.setImageResource(buttonsDrawableIds[buttonId]);
+		imageButton.setImageResource(getButtonDrawablesId(buttonId));
 		imageButton.setBackgroundResource(backId);
 		imageButton.setOnClickListener(this);
 		imageButton.setId(BUTTON_PREFIX + buttonId);
 
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
-
-		params.weight = 1;
-		imageButton.setLayoutParams(params);
+		imageButton.setLayoutParams(buttonParams);
 		return imageButton;
 	}
 
+	protected abstract int getButtonDrawablesId(int buttonId);
+
 
 	public void toggleControlButton(int buttonId, boolean checked) {
-//		if (checked) {
-//			findViewById(BUTTON_PREFIX + buttonId).setBackgroundResource(R.drawable.button_emboss_mid_checked);
-//		} else {
-//			findViewById(BUTTON_PREFIX + buttonId).setBackgroundResource(R.drawable.button_emboss_mid_selector);
-//		}
 	}
 
-	private void showGameButton(int buttonId, boolean show) {
+	protected void showGameButton(int buttonId, boolean show) {
 		findViewById(BUTTON_PREFIX + buttonId).setVisibility(show ? View.VISIBLE : View.GONE);
 	}
 
@@ -130,50 +74,6 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	public void changeGameButton(int buttonId, int resId) {
 		((ImageButton) findViewById(BUTTON_PREFIX + buttonId)).setImageResource(resId);
 	}
-
-
-	public void onClick(View view) {  // TODO rework click handles
-		if (blocked)
-			return;
-
-//		if (view.getId() == BUTTON_PREFIX + B_NEW_GAME_ID) {
-//			boardViewFace.newGame();
-//		} else if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
-//			boardViewFace.showOptions();
-//		} else if (view.getId() == BUTTON_PREFIX + B_FLIP_ID) {
-//			boardViewFace.flipBoard();
-//		} else if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID) {
-//			boardViewFace.switchAnalysis();
-//		} else if (view.getId() == BUTTON_PREFIX + B_BACK_ID) {
-//			boardViewFace.moveBack();
-//		} else if (view.getId() == BUTTON_PREFIX + B_FORWARD_ID) {
-//			boardViewFace.moveForward();
-//		}
-	}
-
-
-//	public void haveNewMessage(boolean newMessage) {
-//		int imgId = newMessage ? R.drawable.ic_chat_nm : R.drawable.ic_chat;
-//
-//		((ImageButton) findViewById(BUTTON_PREFIX + B_CHAT_ID)).setImageResource(imgId);
-//		invalidate();
-//	}
-
-
-//	public void hideChatButton() {
-//		showGameButton(ControlsBaseView.B_CHAT_ID, false);
-//	}
-
-//	public void turnCompMode() {
-////		changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_ctrl_options);
-//		changeGameButton(ControlsBaseView.B_FLIP_ID, R.drawable.ic_ctrl_hint);
-//		changeGameButton(ControlsBaseView.B_ANALYSIS_ID, R.drawable.ic_ctrl_help);
-////		hideChatButton();
-////		addControlButton(1, ControlsBaseView.B_HINT_ID, R.drawable.button_emboss_mid_selector); // add hint button at second position
-//		showGameButton(ControlsBaseView.B_NEW_GAME_ID, false);
-//		enableGameButton(B_FORWARD_ID, true);
-//		enableGameButton(B_BACK_ID, true);
-//	}
 
 	public void enableAnalysisMode(boolean enable) {
 		enableGameButton(B_ANALYSIS_ID, enable);
@@ -196,7 +96,6 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		enableGameButton(B_ANALYSIS_ID, enable);
 		enableGameButton(B_FORWARD_ID, enable);
 		enableGameButton(B_BACK_ID, enable);
-//		enableGameButton(B_CHAT_ID, enable);
 		enableGameButton(B_FLIP_ID, enable);
 	}
 

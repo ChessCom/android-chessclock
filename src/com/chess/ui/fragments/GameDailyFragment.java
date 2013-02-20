@@ -143,7 +143,7 @@ public class GameDailyFragment extends GameBaseFragment {
 		view.findViewById(R.id.submitBtn).setOnClickListener(this);
 		view.findViewById(R.id.cancelBtn).setOnClickListener(this);
 
-		controlsNetworkView.changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_next_game);
+//		controlsNetworkView.changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_next_game);
 		controlsNetworkView.enableGameControls(false);
 
 		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);

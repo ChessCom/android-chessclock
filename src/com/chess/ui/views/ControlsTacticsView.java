@@ -5,7 +5,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.RoboButton;
@@ -20,13 +19,6 @@ import com.chess.ui.interfaces.BoardViewTacticsFace;
  */
 public class ControlsTacticsView extends ControlsBaseView {
 
-
-	private int CONTROL_BUTTON_HEIGHT = 44;
-	private LinearLayout controlsLayout;
-
-
-	private int[] buttonsDrawableTIds;
-
 	public static final int B_OPTIONS_ID = 0;
 	public static final int B_ANALYSIS_ID = 1;  // restart
 	public static final int B_RESTART_ID = 1;  // restart
@@ -37,14 +29,18 @@ public class ControlsTacticsView extends ControlsBaseView {
 	public static final int B_FORWARD_ID = 4;
 	public static final int B_NEXT_ID = 5;
 
+	private int CONTROL_BUTTON_HEIGHT = 44;
+
+	private int[] buttonsDrawableIds = new int[]{
+			R.drawable.ic_ctrl_options,
+			R.drawable.ic_ctrl_analysis,
+			R.drawable.ic_ctrl_help,
+			R.drawable.ic_ctrl_back,
+			R.drawable.ic_ctrl_fwd
+	};
+
 	private BoardViewTacticsFace boardViewFace;
 
-	//	prefixes
-	public static final int BUTTON_PREFIX = 0x00002000;
-
-
-	private boolean blocked;
-	private LayoutParams buttonParams;
 	private State state;
 
 
@@ -57,17 +53,8 @@ public class ControlsTacticsView extends ControlsBaseView {
 		onCreate();
 	}
 
-	@Override
 	public void onCreate() {
 		setOrientation(VERTICAL);
-
-		buttonsDrawableTIds = new int[]{
-				R.drawable.ic_ctrl_options,
-				R.drawable.ic_ctrl_analysis,
-				R.drawable.ic_ctrl_help,
-				R.drawable.ic_ctrl_back,
-				R.drawable.ic_ctrl_fwd
-		};
 
 		float density = getContext().getResources().getDisplayMetrics().density;
 		CONTROL_BUTTON_HEIGHT *= density;
@@ -84,7 +71,6 @@ public class ControlsTacticsView extends ControlsBaseView {
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
 		buttonParams = new LayoutParams(0, CONTROL_BUTTON_HEIGHT);
-
 		buttonParams.weight = 1;
 
 		controlsLayout.setLayoutParams(defaultLinLayParams);
@@ -119,47 +105,9 @@ public class ControlsTacticsView extends ControlsBaseView {
 		controlsLayout.addView(nextButton, params);
 	}
 
-	private void addControlButton(int buttonId, int backId) {
-		controlsLayout.addView(createControlButton(buttonId, backId));
-	}
-
 	@Override
-	public void addControlButton(int position, int buttonId, int backId) {
-		controlsLayout.addView(createControlButton(buttonId, backId), position);
-	}
-
-	private View createControlButton(int buttonId, int backId) {
-		ImageButton imageButton = new ImageButton(getContext());
-		imageButton.setImageResource(buttonsDrawableTIds[buttonId]);
-		imageButton.setBackgroundResource(backId);
-		imageButton.setOnClickListener(this);
-		imageButton.setId(BUTTON_PREFIX + buttonId);
-
-		imageButton.setLayoutParams(buttonParams);
-		return imageButton;
-	}
-
-//	@Override
-//	public void toggleControlButton(int buttonId, boolean checked) {
-//		if (checked) {
-//			findViewById(BUTTON_PREFIX + buttonId).setBackgroundResource(R.drawable.button_emboss_mid_checked);
-//		} else {
-//			findViewById(BUTTON_PREFIX + buttonId).setBackgroundResource(R.drawable.button_emboss_mid_selector);
-//		}
-//	}
-
-	private void showGameButton(int buttonId, boolean show) {
-		findViewById(BUTTON_PREFIX + buttonId).setVisibility(show ? View.VISIBLE : View.GONE);
-	}
-
-	@Override
-	public void enableGameButton(int buttonId, boolean enable) {
-		findViewById(BUTTON_PREFIX + buttonId).setEnabled(enable);
-	}
-
-	@Override
-	public void changeGameButton(int buttonId, int resId) {
-		((ImageButton) findViewById(BUTTON_PREFIX + buttonId)).setImageResource(resId);
+	protected int getButtonDrawablesId(int buttonId) {
+		return buttonsDrawableIds[buttonId];
 	}
 
 	@Override
@@ -169,19 +117,19 @@ public class ControlsTacticsView extends ControlsBaseView {
 
 		if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
 			boardViewFace.showOptions();
-		} else if (state == State.CORRECT){  // analysis & stats
+		} else if (state == State.CORRECT) {  // analysis & stats
 			if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID) {
 				boardViewFace.switchAnalysis();
 			} else if (view.getId() == BUTTON_PREFIX + B_STATS_ID) {
 				boardViewFace.showStats();
 			}
-		}else if (state  == State.WRONG){ // restart & hint
+		} else if (state == State.WRONG) { // restart & hint
 			if (view.getId() == BUTTON_PREFIX + B_RESTART_ID) {
 				boardViewFace.restart();
 			} else if (view.getId() == BUTTON_PREFIX + B_HINT_ID) {
 				boardViewFace.showHint();
 			}
-		} else if (state == State.DEFAULT){
+		} else if (state == State.DEFAULT) {
 			if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID) {
 				boardViewFace.switchAnalysis();
 			} else if (view.getId() == BUTTON_PREFIX + B_HELP_ID) {
@@ -196,41 +144,6 @@ public class ControlsTacticsView extends ControlsBaseView {
 		} else if (view.getId() == BUTTON_PREFIX + B_NEXT_ID) {
 			boardViewFace.newGame();
 		}
-	}
-
-	@Override
-	public void enableAnalysisMode(boolean enable) {
-		enableGameButton(B_ANALYSIS_ID, enable);
-		enableGameButton(B_FORWARD_ID, enable);
-		enableGameButton(B_BACK_ID, enable);
-	}
-
-	@Override
-	public void enableControlButtons(boolean enable) {
-		enableGameButton(B_FORWARD_ID, enable);
-		enableGameButton(B_BACK_ID, enable);
-	}
-
-	@Override
-	public void lock(boolean lock) {
-		blocked = lock;
-		setEnabled(!lock);
-	}
-
-	@Override
-	public void enableGameControls(boolean enable) {
-		enableGameButton(B_OPTIONS_ID, enable);
-		enableGameButton(B_ANALYSIS_ID, enable);
-		enableGameButton(B_FORWARD_ID, enable);
-		enableGameButton(B_HELP_ID, enable);
-		enableGameButton(B_BACK_ID, enable);
-	}
-
-	@Override // todo: temporary debug
-	public boolean isAnalysisEnabled() {
-		return findViewById(BUTTON_PREFIX + B_ANALYSIS_ID).isEnabled()
-				|| findViewById(BUTTON_PREFIX + B_FORWARD_ID).isEnabled()
-				|| findViewById(BUTTON_PREFIX + B_BACK_ID).isEnabled();
 	}
 
 	public void showWrong() {
@@ -259,13 +172,13 @@ public class ControlsTacticsView extends ControlsBaseView {
 		state = State.DEFAULT;
 
 		changeGameButton(B_ANALYSIS_ID, R.drawable.ic_ctrl_analysis);
- 		changeGameButton(B_HELP_ID, R.drawable.ic_ctrl_help);
+		changeGameButton(B_HELP_ID, R.drawable.ic_ctrl_help);
 		showGameButton(B_NEXT_ID, false);
 		showGameButton(B_BACK_ID, true);
 		showGameButton(B_FORWARD_ID, true);
 	}
 
-	enum State{
+	enum State {
 		CORRECT,
 		WRONG,
 		DEFAULT

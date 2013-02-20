@@ -26,7 +26,6 @@ import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.views.ChessBoardDailyView;
 import com.chess.ui.views.ChessBoardNetworkView;
-import com.chess.ui.views.ControlsBaseView;
 import com.chess.ui.views.ControlsNetworkView;
 
 import java.util.Calendar;
@@ -69,7 +68,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 		controlsNetworkView = (ControlsNetworkView) findViewById(R.id.controlsNetworkView);
 
-		controlsNetworkView.changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_next_game);
+//		controlsNetworkView.changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_next_game);
 		controlsNetworkView.hideChatButton();
 		controlsNetworkView.enableGameControls(false);
 

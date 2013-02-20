@@ -35,11 +35,10 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
+import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardDailyView;
 import com.chess.ui.views.ChessBoardNetworkView;
-import com.chess.ui.views.ControlsBaseView;
 import com.chess.ui.views.ControlsNetworkView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -118,7 +117,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		findViewById(R.id.submitBtn).setOnClickListener(this);
 		findViewById(R.id.cancelBtn).setOnClickListener(this);
 
-		controlsNetworkView.changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_ctrl_restore);
+//		controlsNetworkView.changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_ctrl_restore);
 		controlsNetworkView.enableGameControls(false);
 
 		boardView = (ChessBoardDailyView) findViewById(R.id.boardview);

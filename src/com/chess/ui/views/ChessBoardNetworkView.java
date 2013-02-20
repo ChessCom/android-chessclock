@@ -213,6 +213,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 	}
 
 	public void setControlsView(ControlsNetworkView controlsView) {
+		super.setControlsView(controlsView);
 		this.controlsView = controlsView;
 	}
 }
