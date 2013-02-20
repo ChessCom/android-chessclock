@@ -166,7 +166,9 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 	public void executePausedActivityLiveEvents() {
 
 		Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = lccHolder.getPausedActivityLiveEvents();
-		Log.d("LCCLOG", "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
+		if (pausedActivityLiveEvents.size() > 0) {
+			Log.d("LCCLOG", "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
+		}
 
 		if (pausedActivityLiveEvents.size() > 0) {
 			LiveEvent connectionFailureEvent = pausedActivityLiveEvents.get(LiveEvent.Event.CONNECTION_FAILURE);

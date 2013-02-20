@@ -337,12 +337,10 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements P
 	}
 
 	protected void dismissFragmentDialog() {
-		Log.d("LCCLOG", "PAUSED dismissFragmentDialog getLastPopupFragment() " + getLastPopupFragment());
 		if (getLastPopupFragment() == null)
 			return;
 
 		getLastPopupFragment().dismiss();
-		Log.d("LCCLOG", "PAUSED dismissFragmentDialog popupManager.size() " + popupManager.size());
 		popupManager.remove(popupManager.size() - 1);
 	}
 

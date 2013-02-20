@@ -744,8 +744,7 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 		clearOnlineFriends();
 		clearPausedEvents();
 
-		runDisconnectTask();
-		resetClient();
+		runDisconnectTask(); // disconnect and reset client instance
 
 		//instance = null;
 	}
@@ -945,6 +944,7 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 		protected Void doInBackground(Void... voids) {
 			if (lccClient != null) {
 				lccClient.disconnect();
+				resetClient();
 			}
 			return null;
 		}
