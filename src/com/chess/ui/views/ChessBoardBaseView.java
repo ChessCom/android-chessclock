@@ -47,7 +47,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected Bitmap boardBitmap;
 	protected SharedPreferences preferences;
 
-	protected boolean finished;
+//	protected boolean finished;
 	protected boolean firstclick = true;
 	protected boolean pieceSelected;
 	protected boolean track;
@@ -202,7 +202,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	@Override
 	public void moveBack() {
-		finished = false;
+//		finished = false;
+		getBoardFace().setFinished(false);
 		pieceSelected = false;
 		getBoardFace().takeBack();
 		invalidate();
@@ -240,13 +241,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		gameActivityFace.invalidateGameScreen();
 	}
 
-	public void setFinished(boolean finished) {
-		this.finished = finished;
-	}
-
-	public boolean isFinished() {
-		return finished;
-	}
+//	public void setFinished(boolean finished) {
+//		this.finished = finished;
+//	}
+//
+//	public boolean isFinished() {
+//		return finished;
+//	}
 
 	@Override
 	public void newGame() {
@@ -578,7 +579,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			if (!getBoardFace().isPossibleToMakeMoves()) {
 				getBoardFace().getHistDat()[getBoardFace().getHply() - 1].notation += "#";
 				gameActivityFace.invalidateGameScreen();
-				finished = true;
+				getBoardFace().setFinished(true);
+//				finished = true;
 				return true;
 			} else {
 				getBoardFace().getHistDat()[getBoardFace().getHply() - 1].notation += "+";

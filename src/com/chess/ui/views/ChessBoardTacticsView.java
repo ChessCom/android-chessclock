@@ -150,7 +150,8 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
         track = false;
         if (!getBoardFace().isAnalysis()) {
-            if (finished ) // TODO probably never happens
+//            if (finished ) // TODO probably never happens
+            if (getBoardFace().isFinished()) // TODO probably never happens
                 return true;
 
             if (getBoardFace().getHply() % 2 == 0) { // probably could be changed to isLatestMoveMadeUser()
@@ -206,9 +207,9 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
     }
 
 
-	public void setFinished(boolean finished) {
-		this.finished = finished;
-	}
+//	public void setFinished(boolean finished) {
+//		this.finished = finished;
+//	}
 
 	@Override
 	public void showStats() {

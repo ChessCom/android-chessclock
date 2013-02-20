@@ -1,19 +1,26 @@
 package com.chess.backend;
 
 import android.util.Log;
+import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.BaseResponseItem;
+import com.chess.backend.exceptions.InternalErrorException;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.GeneralSecurityException;
-import java.security.spec.RSAOtherPrimeInfo;
+import java.net.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * RestHelper class
@@ -309,9 +316,7 @@ message				false	Only used for `CHAT` command.
 
 
 	public static String formCustomRequest(LoadItem loadItem) {
-
-		String fullUrl = formUrl(loadItem.getRequestParams());
-		return loadItem.getLoadPath() + fullUrl;
+		return loadItem.getLoadPath() + formUrl(loadItem.getRequestParams());
 	}
 
 	public static String formPostRequest(LoadItem loadItem) {
@@ -407,8 +412,7 @@ message				false	Only used for `CHAT` command.
 
 	public static String formCustomPaginationRequest(LoadItem loadItem, int page) {
 		loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
-		String fullUrl = formUrl(loadItem.getRequestParams());
-		return loadItem.getLoadPath() + fullUrl;
+		return loadItem.getLoadPath() + formUrl(loadItem.getRequestParams());
 	}
 
 	public static int encodeServerCode(int code) {
@@ -421,5 +425,144 @@ message				false	Only used for `CHAT` command.
 
 	public static boolean containsServerCode(int code) {
 		return code > 0 && code >> 8 != 0;
+	}
+
+
+	public static  <CustomType> CustomType requestData(LoadItem loadItem, Class<CustomType> customTypeClass) throws InternalErrorException{
+		CustomType item = null;
+		String TAG = "RequestJsonTask";
+//		int result = StaticData.EMPTY_DATA;
+		String url = RestHelper.formCustomRequest(loadItem);
+		String requestMethod = loadItem.getRequestMethod();
+		if (requestMethod.equals(RestHelper.POST) || requestMethod.equals(RestHelper.PUT)){
+			url = RestHelper.formPostRequest(loadItem);
+		}
+
+//		if (loadItem.getRequestMethod().equals(RestHelper.PUT)){
+//			url = RestHelper.formPostRequest(loadItem) + "?" +RestHelper.P_LOGIN_TOKEN;
+//		}
+		Log.d(TAG, "retrieving from url = " + url);
+
+		long tag = System.currentTimeMillis();
+		BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_REQUEST, "tag=" + tag + " " + url);
+
+		HttpURLConnection connection = null;
+		try {
+			URL urlObj = new URL(url);
+			connection = (HttpURLConnection) urlObj.openConnection();
+			connection.setRequestMethod(requestMethod);
+			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=" + HTTP.UTF_8);
+
+			if (RestHelper.IS_TEST_SERVER_MODE) {
+				Authenticator.setDefault(new Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(RestHelper.V_TEST_NAME, RestHelper.V_TEST_NAME2.toCharArray());
+					}
+				});
+			}
+
+			if (requestMethod.equals(RestHelper.POST) || requestMethod.equals(RestHelper.PUT) ){
+				String query = RestHelper.formPostData(loadItem);
+				String charset = HTTP.UTF_8;
+				connection.setDoOutput(true); // Triggers POST.
+				OutputStream output = null;
+				try {
+					output = connection.getOutputStream();
+					output.write(query.getBytes(charset));
+				} finally {
+					if (output != null) try {
+						output.close();
+					} catch (IOException ex) {
+						Log.e(TAG, "Error while submitting POST data " + ex.toString());
+					}
+				}
+			}
+
+			final int statusCode = connection.getResponseCode();
+			Gson gson = new Gson();
+			if (statusCode != HttpStatus.SC_OK) {
+				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
+
+				InputStream inputStream = connection.getErrorStream();
+				String resultString = convertStreamToString(inputStream);
+
+				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
+				Log.d(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
+				throw new InternalErrorException(baseResponse.getCode());
+			}
+
+			InputStream inputStream = null;
+			String resultString = null;
+			try {
+				inputStream = connection.getInputStream();
+
+				resultString = convertStreamToString(inputStream);
+				if (resultString.contains(RestHelper.OBJ_START)){
+					int firstIndex = resultString.indexOf(RestHelper.OBJ_START);
+
+					int lastIndex = resultString.lastIndexOf(RestHelper.OBJ_END);
+
+					resultString = resultString.substring(firstIndex, lastIndex + 1);
+
+				} else /*(!resultString.startsWith(RestHelper.OBJ_START))*/{
+//					result = StaticData.INTERNAL_ERROR;
+					Log.d(TAG, "ERROR -> WebRequest SERVER RESPONSE: " + resultString);
+					throw new InternalErrorException(StaticData.INTERNAL_ERROR);
+				}
+				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
+				if (baseResponse.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+					item = gson.fromJson(resultString, customTypeClass);
+					if(item == null) {
+//						result = StaticData.RESULT_OK;
+						throw new InternalErrorException(StaticData.EMPTY_DATA);
+					}
+				}
+			} finally {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+			}
+
+//			result = StaticData.RESULT_OK;
+			Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
+			BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + resultString);
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+//			result = ;
+			throw new InternalErrorException(e, StaticData.INTERNAL_ERROR);
+		} catch (JsonSyntaxException e) {
+			e.printStackTrace();
+//			result = StaticData.INTERNAL_ERROR;
+			throw new InternalErrorException(e, StaticData.INTERNAL_ERROR);
+		} catch (IOException e) {
+			Log.e(TAG, "I/O error while retrieving data from " + url, e);
+//			result = StaticData.NO_NETWORK;
+			throw new InternalErrorException(e, StaticData.NO_NETWORK);
+		} catch (IllegalStateException e) {
+			Log.e(TAG, "Incorrect URL: " + url, e);
+//			result = StaticData.UNKNOWN_ERROR;
+			throw new InternalErrorException(e, StaticData.UNKNOWN_ERROR);
+		} catch (Exception e) {
+			Log.e(TAG, "Error while retrieving data from " + url, e);
+//			result = StaticData.UNKNOWN_ERROR;
+			throw new InternalErrorException(e, StaticData.UNKNOWN_ERROR);
+		} finally {
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
+		return item;
+	}
+
+
+	public static <ItemType> String parseJsonToString(ItemType jRequest) {
+		Gson gson = new Gson();
+		return gson.toJson(jRequest);
+	}
+
+	public static String convertStreamToString(java.io.InputStream is) {
+		Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
+		return scanner.hasNext() ? scanner.next() : "";
 	}
 }

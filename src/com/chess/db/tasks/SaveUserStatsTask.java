@@ -37,15 +37,15 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		Context context = getTaskFace().getMeContext();
 		String userName = AppData.getUserName(context);
 
-		saveLiveStats(userName);
-		saveDailyStats(userName);
-		saveTacticsStats(userName);
-		saveChessMentorStats(userName);
+		saveLiveStats(userName, item, resolver);
+		saveDailyStats(userName, item, resolver);
+		saveTacticsStats(userName, item, resolver);
+		saveChessMentorStats(userName, item, resolver);
 
 		return StaticData.RESULT_OK;
 	}
 
-	private void saveLiveStats(String userName) {
+	public static void saveLiveStats(String userName, UserStatsItem.Data item, ContentResolver resolver) {
 		if (item.getLive() == null) {
 			return;
 		}
@@ -108,7 +108,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		}
 	}
 
-	private void saveDailyStats(String userName) {
+	public static  void saveDailyStats(String userName, UserStatsItem.Data item, ContentResolver resolver) {
 		if (item.getDaily() == null) {
 			return;
 		}
@@ -153,7 +153,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		}
 	}
 
-	private void saveTacticsStats(String userName) {
+	public static  void saveTacticsStats(String userName, UserStatsItem.Data item, ContentResolver resolver) {
 		if (item.getTactics() == null) {
 			return;
 		}
@@ -175,7 +175,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		}
 	}
 
-	private void saveChessMentorStats(String userName) {
+	public static  void saveChessMentorStats(String userName, UserStatsItem.Data item, ContentResolver resolver) {
 		if (item.getChessMentor() == null) {
 			return;
 		}

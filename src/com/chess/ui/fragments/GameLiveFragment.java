@@ -130,7 +130,8 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 		if (!getLccHolder().currentGameExist()) {
 			controlsNetworkView.enableAnalysisMode(true);
 
-			boardView.setFinished(true);
+//			boardView.setFinished(true);
+			getBoardFace().setFinished(true);
 //			controlsNetworkView.showBottomPart(false); // seems to be unused in new design
 		}
 

@@ -1,6 +1,7 @@
 package com.chess.backend.entity.new_api;
 
 
+import com.chess.backend.statics.StaticData;
 import com.chess.utilities.AppUtils;
 
 import java.util.List;
@@ -166,6 +167,23 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.Data>> {
 
 		public void setAvgSeconds(int avgSeconds) {
 			average_seconds = avgSeconds;
+		}
+
+		public String getPositiveScore() {
+			String score = String.valueOf(resultItem.getScore());
+			int userRatingChangeInt = resultItem.getUserRatingChange();
+			String userRatingChange = String.valueOf(userRatingChangeInt);
+			String plusSymbol = (userRatingChangeInt > 0) ? StaticData.SYMBOL_PLUS : StaticData.SYMBOL_EMPTY;
+			return score + StaticData.SYMBOL_PERCENT + StaticData.SYMBOL_NEW_STR
+					+ StaticData.SYMBOL_LEFT_PAR + plusSymbol + userRatingChange + StaticData.SYMBOL_RIGHT_PAR;
+		}
+
+		public String getNegativeScore() {
+			String score = String.valueOf(resultItem.getScore());
+			int userRatingChangeInt = resultItem.getUserRatingChange();
+			String userRatingChange = String.valueOf(userRatingChangeInt);
+			return score + StaticData.SYMBOL_PERCENT + StaticData.SYMBOL_NEW_STR
+					+ StaticData.SYMBOL_LEFT_PAR + userRatingChange + StaticData.SYMBOL_RIGHT_PAR;
 		}
 	}
 

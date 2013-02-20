@@ -33,7 +33,6 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
 import com.chess.ui.activities.GameOnlineScreenActivity;
 import com.chess.ui.views.drawables.BackgroundChessDrawable;
-import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
 
 import java.io.IOException;
@@ -41,7 +40,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * AppUtils class
@@ -358,16 +356,6 @@ public class AppUtils {
 		inputStream.close();
 
 		return out.toString();
-	}
-
-	public static <ItemType> String parseJsonToString(ItemType jRequest) {
-		Gson gson = new Gson();
-		return gson.toJson(jRequest);
-	}
-
-	public static String convertStreamToString(java.io.InputStream is) {
-		Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
-		return scanner.hasNext() ? scanner.next() : "";
 	}
 
 	public static void showKeyBoard(Context context, EditText view){

@@ -736,7 +736,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	}
 
 	public void startTacticsTimer(TacticItem.Data tacticItem) {
-		boardView.setFinished(false);
+//		boardView.setFinished(false);
+		getBoardFace().setFinished(false);
 		tacticItem.setStop(false);
 
 		tacticsTimer.removeCallbacks(timerUpdateTask);
@@ -818,7 +819,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				getNextTactic();
 			}
 		} else if (view.getId() == R.id.stopBtn) {
-			boardView.setFinished(true);
+//			boardView.setFinished(true);
+			getBoardFace().setFinished(true);
 			tacticItem.setStop(true);
 			stopTacticsTimer();
 			dismissDialogs();

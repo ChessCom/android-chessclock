@@ -1,5 +1,6 @@
 package com.chess.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.*;
 import android.widget.RadioGroup;
 import com.chess.R;
+import com.chess.backend.GetAndSaveUserStats;
 import com.slidingmenu.lib.SlidingMenu;
 
 /**
@@ -25,6 +27,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		super.onCreate(savedInstanceState);
 
 		setHasOptionsMenu(true);
+
+		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
 	}
 
 	@Override

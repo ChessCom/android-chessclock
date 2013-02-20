@@ -408,7 +408,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		String whitePlayerName = AppData.getUserName(getContext());
 		String blackPlayerName = getString(R.string.comp);
 		String result = GAME_GOES;
-		if (boardView.isFinished()) {// means in check state
+//		if (boardView.isFinished()) {// means in check state
+		if (getBoardFace().isFinished()) {// means in check state
 			if (getBoardFace().getSide() == ChessBoard.LIGHT) {
 				result = BLACK_WINS;
 			} else {

@@ -346,7 +346,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
         track = false;
         if (!getBoardFace().isAnalysis()) {
-            if (isComputerMoving() || finished)
+//            if (isComputerMoving() || finished)
+            if (isComputerMoving() || getBoardFace().isFinished())
                 return true;
 
 			if ((AppData.isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
@@ -419,7 +420,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	@Override
     public void moveBack() {
         if (!isComputerMoving()) {
-            finished = false;
+//            finished = false;
+			getBoardFace().setFinished(false);
             pieceSelected = false;
             getBoardFace().takeBack();
             invalidate();

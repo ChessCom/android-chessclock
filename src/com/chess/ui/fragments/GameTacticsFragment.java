@@ -19,6 +19,7 @@ import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.entity.new_api.TacticInfoItem;
 import com.chess.backend.entity.new_api.TacticItem;
 import com.chess.backend.entity.new_api.TacticRatingData;
+import com.chess.backend.entity.new_api.stats.UserStatsItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -86,6 +87,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private boolean offlineBatchWasLoaded;
 	private PanelInfoTacticsView topPanelView;
 	private ControlsTacticsView controlsTacticsView;
+	private int currentRating;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -164,7 +166,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				showPopupDialog(R.string.ready_for_first_tactics_q, FIRST_TACTICS_TAG);
 			}
 		} else {
-			// TODO show register confirmation dialog
 			if (!tacticItem.isStop() && getBoardFace().getMovesCount() > 0) {
 				tacticItem.setRetry(true);
 
@@ -172,9 +173,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				getBoardFace().takeBack();
 				boardView.invalidate();
 				playLastMoveAnimationAndCheck();
-			} else if (tacticItem.isStop()) {
+			} else if (tacticItem.isStop() && !getBoardFace().isFinished()) {
 				startTacticsTimer(tacticItem);
 				topPanelView.setPlayerTimeLeft(tacticItem.getSecondsSpentStr());
+			} else {
+				verifyMove();
 			}
 		}
 	}
@@ -282,20 +285,17 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				boardFace.updateMoves(boardFace.getTacticMoves()[boardFace.getHply()], true);
 				invalidateGameScreen();
 			} else { // correct
+				String newRatingStr = StaticData.SYMBOL_EMPTY;
 				if (tacticItem.isWasShowed()) {
-//					showSolvedTacticPopup(getString(R.string.problem_solved_), false);
-					topPanelView.showCorrect(true, "test");
-					controlsTacticsView.showCorrect();
+					newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
+					showCorrect(newRatingStr);
 				} else if (userIsGuest || tacticItem.isRetry() || noInternet) {
-
-					String newRatingStr = StaticData.SYMBOL_EMPTY;
 					if (tacticItem.getResultItem() != null && !userIsGuest) {
-						newRatingStr = getString(R.string.score_arg, tacticItem.getResultItem().getUserRatingChange());
+						newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
 					}
 
 //					showSolvedTacticPopup(title, false);
-					topPanelView.showCorrect(true, newRatingStr);
-					controlsTacticsView.showCorrect();
+					showCorrect(newRatingStr);
 				} else {
 
 					LoadItem loadItem = new LoadItem();
@@ -313,25 +313,20 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					new RequestJsonTask<TacticInfoItem>(tacticsCorrectUpdateListener).executeTask(loadItem);
 					controlsTacticsView.enableGameControls(false);
 				}
-				stopTacticsTimer();
 			}
 		} else {
-
-
 			boolean tacticResultItemIsValid = tacticItem.getResultItem() != null
-					&& tacticItem.getResultItem().getUserRatingChange() < 0; // if saved for wrong move. Note that after loading next tactic result is automaically assigns as a positive resultItem.
+					&& tacticItem.getResultItem().getUserRatingChange() < 0; // if saved for wrong move. Note that after loading next tactic result is automatically assigns as a positive resultItem.
 
+			String newRatingStr;
 			if (userIsGuest) {
-//				showWrongMovePopup(getString(R.string.wrong));
-				topPanelView.showWrong(true, "test");
-				controlsTacticsView.showWrong();
+				newRatingStr = getString(R.string.score_arg, tacticItem.getNegativeScore());
+				showWrong(newRatingStr);
 			} else if (tacticResultItemIsValid && (tacticItem.isRetry() || noInternet)) {
-				String newRatingStr = getString(R.string.score_arg, " BB%" + StaticData.SYMBOL_NEW_STR +
-						tacticItem.getResultItem().getUserRating());
+				newRatingStr = getString(R.string.score_arg, tacticItem.getNegativeScore());
 //				showWrongMovePopup(title);
 
-				topPanelView.showWrong(true, newRatingStr);
-				controlsTacticsView.showWrong();
+				showWrong(newRatingStr);
 			} else {
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
@@ -346,8 +341,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				new RequestJsonTask<TacticInfoItem>(tacticsWrongUpdateListener).executeTask(loadItem);
 				controlsTacticsView.enableGameControls(false);
 			}
-			stopTacticsTimer();
 		}
+		stopTacticsTimer();
 	}
 
 	@Override
@@ -549,7 +544,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		public void errorHandle(Integer resultCode) {  // TODO restore
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				switch (serverCode){
+				switch (serverCode) {
 					case ServerErrorCode.TACTICS_DAILY_LIMIT_REACHED:
 						showLimitDialog();
 						break;
@@ -594,38 +589,30 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				case CORRECT_RESULT:
 
 					String newRatingStr;
-					int userRatingChangeInt = 0;
-					if (tacticItem.getResultItem() != null) {
-						String score = String.valueOf(tacticItem.getResultItem().getScore());
-						userRatingChangeInt = tacticItem.getResultItem().getUserRatingChange();
-						String userRatingChange = String.valueOf(userRatingChangeInt);
-						newRatingStr = score + StaticData.SYMBOL_NEW_STR + StaticData.SYMBOL_LEFT_PAR + userRatingChange + StaticData.SYMBOL_RIGHT_PAR;
 
-						newRatingStr = getString(R.string.score_arg, newRatingStr);
+					if (tacticItem.getResultItem() != null) {
+						newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
+						tacticItem.setRetry(true); // set auto retry because we will save tactic
 					} else {
 						newRatingStr = getString(R.string.score_arg);
 					}
 //					showSolvedTacticPopup(title, false);
-
-					topPanelView.showCorrect(true, newRatingStr);
-					topPanelView.setPlayerScore(tacticItem.getRating() + userRatingChangeInt);
-					controlsTacticsView.showCorrect();
+					showCorrect(newRatingStr);
 
 					break;
 				case WRONG_RESULT:
 
 					if (tacticItem.getResultItem() != null) {
-						newRatingStr = getString(R.string.score_arg, tacticItem.getResultItem().getUserRatingChange());
+						newRatingStr = getString(R.string.score_arg, tacticItem.getNegativeScore());
+						tacticItem.setRetry(true); // set auto retry because we will save tactic
+
 					} else {
 						newRatingStr = getString(R.string.score_arg);
 					}
 
 //					showWrongMovePopup(title);
 
-					topPanelView.showWrong(true, newRatingStr);
-					controlsTacticsView.showWrong();
-
-					tacticItem.setRetry(true); // set auto retry because we save tactic
+					showWrong(newRatingStr);
 
 					break;
 			}
@@ -636,7 +623,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		public void errorHandle(Integer resultCode) {
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				switch (serverCode){
+				switch (serverCode) {
 					case ServerErrorCode.TACTICS_DAILY_LIMIT_REACHED:
 						showLimitDialog();
 						break;
@@ -647,6 +634,20 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				}
 			}
 		}
+	}
+
+	private void showCorrect(String newRatingStr) {
+		topPanelView.showCorrect(true, newRatingStr);
+		topPanelView.setPlayerScore(tacticItem.getResultItem().getUserRating());
+		controlsTacticsView.showCorrect();
+		getBoardFace().setFinished(true);
+	}
+
+	private void showWrong(String newRatingStr) {
+		topPanelView.showWrong(true, newRatingStr);
+		topPanelView.setPlayerScore(tacticItem.getResultItem().getUserRating());
+		controlsTacticsView.showWrong();
+		getBoardFace().setFinished(true);
 	}
 
 	private void handleErrorRequest() {
@@ -776,11 +777,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	public void startTacticsTimer(TacticItem.Data tacticItem) {
-		boardView.setFinished(false);
+//		boardView.setFinished(false);
+		getBoardFace().setFinished(false);
 		tacticItem.setStop(false);
 
 		tacticsTimer.removeCallbacks(timerUpdateTask);
 		tacticsTimer.postDelayed(timerUpdateTask, TIMER_UPDATE);
+		controlsTacticsView.enableGameControls(true);
 	}
 
 	private Runnable timerUpdateTask = new Runnable() {
@@ -826,7 +829,15 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 //		boardView.setBoardFace(boardFace);
 		boardView.setGameActivityFace(this);
 
-		topPanelView.setPlayerScore(tacticItem.getRating());
+		if (currentRating == 0) {
+			if (tacticItem.getResultItem() == null) {
+				currentRating = DBDataManager.getUserTacticsRating(getActivity());
+			} else {
+				currentRating = tacticItem.getResultItem().getUserRating();
+			}
+		}
+
+		topPanelView.setPlayerScore(currentRating);
 
 		boardFace.setupBoard(tacticItem.getInitialFen());
 
@@ -872,7 +883,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				getNextTactic();
 			}
 		} else if (view.getId() == R.id.stopBtn) {
-			boardView.setFinished(true);
+//			boardView.setFinished(true);
+			getBoardFace().setFinished(true);
 			tacticItem.setStop(true);
 			stopTacticsTimer();
 			dismissDialogs();
@@ -910,7 +922,19 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 
 		if (tag.equals(FIRST_TACTICS_TAG)) {
-			loadNewTacticsBatch();
+			currentRating = DBDataManager.getUserTacticsRating(getActivity());
+
+			if (currentRating == 0) {
+				// get full users stats
+				LoadItem loadItem = new LoadItem();
+				loadItem.setLoadPath(RestHelper.CMD_USER_STATS);
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+
+				new RequestJsonTask<UserStatsItem>(new StatsItemUpdateListener()).executeTask(loadItem);
+			} else {
+				loadNewTacticsBatch();
+			}
+
 		} else if (tag.equals(TEN_TACTICS_TAG)) {
 //			onBackPressed();
 			getActivityFace().showPreviousFragment();
@@ -964,8 +988,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		@Override
 		public void updateListData(List<TacticItem.Data> itemsList) {
-			new SaveTacticsBatchTask(dbTacticBatchSaveListener, itemsList,
-					getContentResolver()).executeTask();
+			new SaveTacticsBatchTask(dbTacticBatchSaveListener, itemsList,getContentResolver()).executeTask();
 			offlineBatchWasLoaded = true;
 		}
 	}
@@ -978,6 +1001,22 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		@Override
 		public void updateData(TacticItem.Data returnedObj) {
 			getNextTactic();
+		}
+	}
+
+	private class StatsItemUpdateListener extends ActionBarUpdateListener<UserStatsItem> {
+
+		public StatsItemUpdateListener() {
+			super(getInstance(), UserStatsItem.class);
+		}
+
+		@Override
+		public void updateData(UserStatsItem returnedObj) {
+			super.updateData(returnedObj);
+
+			currentRating = returnedObj.getData().getTactics().getCurrent();
+//			new SaveUserStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
+			loadNewTacticsBatch();
 		}
 	}
 

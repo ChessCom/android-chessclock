@@ -409,7 +409,8 @@ public class GameDailyFragment extends GameBaseFragment {
 //	}
 
 	private void adjustBoardForGame() {
-		boardView.setFinished(false);
+//		boardView.setFinished(false);
+		getBoardFace().setFinished(false);
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 
@@ -626,7 +627,8 @@ public class GameDailyFragment extends GameBaseFragment {
 
 	private void moveWasSent() {
 		showSubmitButtonsLay(false);
-		if(boardView.isFinished()){
+//		if(boardView.isFinished()){
+		if(getBoardFace().isFinished()){
 			showGameEndPopup(endGamePopupView, endGameMessage);
 		} else {
 			int action = AppData.getAfterMoveAction(getContext());
@@ -836,7 +838,8 @@ public class GameDailyFragment extends GameBaseFragment {
 		String whitePlayerName = currentGame.getWhiteUsername();
 		String blackPlayerName = currentGame.getBlackUsername();
 		String result = GAME_GOES;
-		boolean finished = boardView.isFinished();
+//		boolean finished = boardView.isFinished();
+		boolean finished = getBoardFace().isFinished();
 		if(finished){// means in check state
 			if (getBoardFace().getSide() == ChessBoard.LIGHT) {
 				result = BLACK_WINS;

@@ -165,7 +165,8 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 		showSubmitButtonsLay(false);
 		boardView.enableAnalysis();
 
-		boardView.setFinished(true);
+//		boardView.setFinished(true);
+		getBoardFace().setFinished(true);
 		//controlsBaseView.showBottomPart(false);
 		getSoundPlayer().playGameEnd();
 	}

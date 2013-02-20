@@ -122,7 +122,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		if (!getLccHolder().currentGameExist()) {
 			controlsNetworkView.enableAnalysisMode(true);
 
-			boardView.setFinished(true);
+//			boardView.setFinished(true);
+			getBoardFace().setFinished(true);
 //			controlsBaseView.showBottomPart(false); // seems to be unused in new design
 		}
 

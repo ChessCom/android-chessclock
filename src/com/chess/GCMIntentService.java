@@ -24,15 +24,13 @@ import android.media.MediaPlayer;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
-import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
-import com.chess.backend.entity.GCMServerResponseItem;
 import com.chess.backend.entity.LastMoveInfoItem;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.BaseResponseItem;
 import com.chess.backend.entity.new_api.GcmItem;
+import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
@@ -42,26 +40,7 @@ import com.chess.model.GameListCurrentItem;
 import com.chess.utilities.AppUtils;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.*;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -73,7 +52,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private static final String TAG = "GCMIntentService";
 	private static final String TOKEN = Long.toBinaryString(new Random().nextLong());
 	public static final String OBJECT_SYMBOL = "{";
-    private Context context;
+	private Context context;
 	private SharedPreferences preferences;
 
 	public GCMIntentService() {
@@ -95,8 +74,24 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Log.d(TAG, "Registering to server, registrationId = " + registrationId
 				+ " \ntoken = " + AppData.getUserToken(context));
 
-		String url = RestHelper.formPostRequest(loadItem);
-		postData(url, loadItem, GcmHelper.REQUEST_REGISTER);
+//		String url = RestHelper.formPostRequest(loadItem);
+//		postData(url, loadItem, GcmHelper.REQUEST_REGISTER);
+
+		GcmItem item = null;
+		try {
+			item = RestHelper.requestData(loadItem, GcmItem.class);
+		} catch (InternalErrorException e) {
+			e.logMe();
+		}
+
+		if (item != null && item.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+			GCMRegistrar.setRegisteredOnServer(context, true);
+			AppData.registerOnChessGCM(context, AppData.getUserToken(context));
+		} else {
+			if (context != null) {
+				Toast.makeText(context, R.string.gcm_not_registered, Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 
 	@Override
@@ -118,8 +113,25 @@ public class GCMIntentService extends GCMBaseIntentService {
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, token);
 //				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
-				String url = RestHelper.formPostRequest(loadItem);
-				postData(url, loadItem, GcmHelper.REQUEST_UNREGISTER);
+//				String url = RestHelper.formPostRequest(loadItem); // TODO check
+//				postData(url, loadItem, GcmHelper.REQUEST_UNREGISTER);
+
+				GcmItem item = null;
+				try {
+					item = RestHelper.requestData(loadItem, GcmItem.class);
+				} catch (InternalErrorException e) {
+					e.logMe();
+				}
+
+				if (item != null && item.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+					GCMRegistrar.setRegisteredOnServer(context, false);
+					AppData.unRegisterOnChessGCM(context);
+					// remove saved token
+					SharedPreferences.Editor editor = preferences.edit();
+					editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
+					editor.commit();
+				}
+
 //				new PostJsonDataTask(new PostUpdateListener(GcmHelper.REQUEST_UNREGISTER)).execute(loadItem);// don't need as we are on worker thread alreay
 				Log.d(TAG, "Unregistering from server, registrationId = " + registrationId + "token = " + token);
 			}
@@ -284,249 +296,148 @@ public class GCMIntentService extends GCMBaseIntentService {
 		return super.onRecoverableError(context, errorId);
 	}
 
-	private void postData(String url, LoadItem loadItem, int requestCode) {
-		int result = StaticData.EMPTY_DATA;
-		GcmItem item = null;
+//	private void postData(String url, LoadItem loadItem, int requestCode) {
+//		int result = StaticData.EMPTY_DATA;
+//		GcmItem item = null;
+//
+////		String url = RestHelper.formCustomRequest(loadItem);
+//		if (loadItem.getRequestMethod().equals(RestHelper.POST)){
+//			url = RestHelper.formPostRequest(loadItem);
+//		}
+//		Log.d(TAG, "retrieving from url = " + url);
+//
+//		long tag = System.currentTimeMillis();
+//		BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_REQUEST, "tag=" + tag + " " + url);
+//
+//		HttpURLConnection connection = null;
+//		try {
+//			URL urlObj = new URL(url);
+//			connection = (HttpURLConnection) urlObj.openConnection();
+//			connection.setRequestMethod(loadItem.getRequestMethod());
+//
+//			if (RestHelper.IS_TEST_SERVER_MODE) {
+//				Authenticator.setDefault(new Authenticator() {
+//					protected PasswordAuthentication getPasswordAuthentication() {
+//						return new PasswordAuthentication(RestHelper.V_TEST_NAME, RestHelper.V_TEST_NAME2.toCharArray());
+//					}
+//				});
+//			}
+//
+//			if (loadItem.getRequestMethod().equals(RestHelper.POST)){
+//				submitPostData(connection, loadItem);
+//			}
+//
+//			final int statusCode = connection.getResponseCode();
+//			if (statusCode != HttpStatus.SC_OK) {
+//				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
+//
+//				InputStream inputStream = connection.getErrorStream();
+//				String resultString = AppUtils.convertStreamToString(inputStream);
+//				BaseResponseItem baseResponse = parseJson(resultString, BaseResponseItem.class);
+//				Log.d(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
+//				result =  RestHelper.encodeServerCode(baseResponse.getCode());
+//			}
+//
+//			InputStream inputStream = null;
+//			String resultString = null;
+//			try {
+//				inputStream = connection.getInputStream();
+//
+//				resultString = AppUtils.convertStreamToString(inputStream);
+//				BaseResponseItem baseResponse = parseJson(resultString, BaseResponseItem.class);
+//				if (baseResponse.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+//					item = parseJson(resultString);
+//					if(item != null) {
+//						result = StaticData.RESULT_OK;
+//					}
+//
+//				}
+//			} finally {
+//				if (inputStream != null) {
+//					inputStream.close();
+//				}
+//			}
+//
+//			result = StaticData.RESULT_OK;
+//			Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
+//			BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + resultString);
+//
+//		} catch (MalformedURLException e) {
+//			e.printStackTrace();
+//			result = StaticData.INTERNAL_ERROR;
+//		} catch (JsonSyntaxException e) {
+//			e.printStackTrace();
+//			result = StaticData.INTERNAL_ERROR;
+//		} catch (IOException e) {
+//			Log.e(TAG, "I/O error while retrieving data from " + url, e);
+//			result = StaticData.NO_NETWORK;
+//		} catch (IllegalStateException e) {
+//			Log.e(TAG, "Incorrect URL: " + url, e);
+//			result = StaticData.UNKNOWN_ERROR;
+//		} catch (Exception e) {
+//			Log.e(TAG, "Error while retrieving data from " + url, e);
+//			result = StaticData.UNKNOWN_ERROR;
+//		} finally {
+//			if (connection != null) {
+//				connection.disconnect();
+//			}
+//		}
+////		return result;
+//
+//		if (result == StaticData.RESULT_OK /*&& returnedObj.startsWith(OBJECT_SYMBOL)*/) {
+////			GCMServerResponseItem responseItem = parseJson(returnedObj);
+//
+//		}
+//	}
 
-//		String url = RestHelper.formCustomRequest(loadItem);
-		if (loadItem.getRequestMethod().equals(RestHelper.POST)){
-			url = RestHelper.formPostRequest(loadItem);
-		}
-		Log.d(TAG, "retrieving from url = " + url);
+//	private void submitPostData(URLConnection connection, LoadItem loadItem) throws IOException {
+//		String query = RestHelper.formPostData(loadItem);
+//		String charset = HTTP.UTF_8;
+//		connection.setDoOutput(true); // Triggers POST.
+////		connection.setRequestProperty("Accept-Charset", charset);
+//		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
+//		OutputStream output = null;
+//		try {
+//			output = connection.getOutputStream();
+//			output.write(query.getBytes(charset));
+//		} finally {
+//			if (output != null) try {
+//				output.close();
+//			} catch (IOException ex) {
+//				Log.e(TAG, "Error while submiting POST data " + ex.toString());
+//			}
+//		}
+//
+//	}
 
-		long tag = System.currentTimeMillis();
-		BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_REQUEST, "tag=" + tag + " " + url);
+//	private String formJsonData(List<NameValuePair> requestParams) {
+//		StringBuilder data = new StringBuilder();
+//		String separator = StaticData.SYMBOL_EMPTY;
+//		data.append("{");
+//		for (NameValuePair requestParam : requestParams) {
+//
+//			data.append(separator);
+//			separator = StaticData.SYMBOL_COMMA;
+//			data.append("\"")
+//					.append(requestParam.getName()).append("\"")
+//					.append(":")
+//					.append("\"")
+//					.append(requestParam.getValue())
+//					.append("\"");
+//		}
+//		data.append("}");
+//		return data.toString();
+//	}
 
-		HttpURLConnection connection = null;
-		try {
-			URL urlObj = new URL(url);
-			connection = (HttpURLConnection) urlObj.openConnection();
-			connection.setRequestMethod(loadItem.getRequestMethod());
-
-			if (RestHelper.IS_TEST_SERVER_MODE) {
-				Authenticator.setDefault(new Authenticator() {
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(RestHelper.V_TEST_NAME, RestHelper.V_TEST_NAME2.toCharArray());
-					}
-				});
-			}
-
-			if (loadItem.getRequestMethod().equals(RestHelper.POST)){
-				submitPostData(connection, loadItem);
-			}
-
-			final int statusCode = connection.getResponseCode();
-			if (statusCode != HttpStatus.SC_OK) {
-				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
-
-				InputStream inputStream = connection.getErrorStream();
-				String resultString = AppUtils.convertStreamToString(inputStream);
-				BaseResponseItem baseResponse = parseJson(resultString, BaseResponseItem.class);
-				Log.d(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
-				result =  RestHelper.encodeServerCode(baseResponse.getCode());
-			}
-
-			InputStream inputStream = null;
-			String resultString = null;
-			try {
-				inputStream = connection.getInputStream();
-
-				resultString = AppUtils.convertStreamToString(inputStream);
-				BaseResponseItem baseResponse = parseJson(resultString, BaseResponseItem.class);
-				if (baseResponse.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
-					item = parseJson(resultString);
-					if(item != null) {
-						result = StaticData.RESULT_OK;
-					}
-
-				}
-			} finally {
-				if (inputStream != null) {
-					inputStream.close();
-				}
-			}
-
-			result = StaticData.RESULT_OK;
-			Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
-			BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + resultString);
-
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-			result = StaticData.INTERNAL_ERROR;
-		} catch (JsonSyntaxException e) {
-			e.printStackTrace();
-			result = StaticData.INTERNAL_ERROR;
-		} catch (IOException e) {
-			Log.e(TAG, "I/O error while retrieving data from " + url, e);
-			result = StaticData.NO_NETWORK;
-		} catch (IllegalStateException e) {
-			Log.e(TAG, "Incorrect URL: " + url, e);
-			result = StaticData.UNKNOWN_ERROR;
-		} catch (Exception e) {
-			Log.e(TAG, "Error while retrieving data from " + url, e);
-			result = StaticData.UNKNOWN_ERROR;
-		} finally {
-			if (connection != null) {
-				connection.disconnect();
-			}
-		}
-//		return result;
-
-		if (result == StaticData.RESULT_OK /*&& returnedObj.startsWith(OBJECT_SYMBOL)*/) {
-//			GCMServerResponseItem responseItem = parseJson(returnedObj);
-			String reqCode = requestCode == GcmHelper.REQUEST_REGISTER ? "REGISTER" : "UNREGISTER";
-			Log.d(TAG, "REQUEST_" + reqCode + " \nResult = " + item.getData().getRegistration_id());
-
-			if (item.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
-				switch (requestCode) {
-					case GcmHelper.REQUEST_REGISTER:
-						GCMRegistrar.setRegisteredOnServer(context, true);
-						AppData.registerOnChessGCM(context, AppData.getUserToken(context));
-						break;
-					case GcmHelper.REQUEST_UNREGISTER:
-						GCMRegistrar.setRegisteredOnServer(context, false);
-						AppData.unRegisterOnChessGCM(context);
-						// remove saved token
-						SharedPreferences.Editor editor = preferences.edit();
-						editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
-						editor.commit();
-						break;
-				}
-			} else {
-				if (requestCode == GcmHelper.REQUEST_REGISTER && context != null) {
-					Toast.makeText(context, R.string.gcm_not_registered, Toast.LENGTH_SHORT).show();
-				}
-			}
-		}
-
-
-		/*HttpParams httpParameters = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
-		HttpConnectionParams.setSoTimeout(httpParameters, Integer.MAX_VALUE);
-
-		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
-
-		Log.d(TAG, "posting to url = " + url);
-
-		HttpPost httpPost = new HttpPost(url);
-		try {
-			StringEntity stringEntity = new StringEntity(formJsonData(loadItem.getRequestParams()), HTTP.UTF_8);
-			Log.d(TAG, "sending JSON object = " + formJsonData(loadItem.getRequestParams()));
-
-			httpPost.setEntity(stringEntity);
-			if (RestHelper.IS_TEST_SERVER_MODE)
-			  httpPost.addHeader(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
-		} catch (UnsupportedEncodingException e) {
-			AppUtils.logD(TAG, e.toString());
-		}
-
-		int result = StaticData.EMPTY_DATA;
-		String returnedObj = null;
-		try {
-			HttpResponse response = httpClient.execute(httpPost);
-			final int statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode != HttpStatus.SC_OK) {
-				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
-				return;
-			}
-			if (response != null) {
-				returnedObj = EntityUtils.toString(response.getEntity());
-				result = StaticData.RESULT_OK;
-				Log.d(TAG, "WebRequest SERVER RESPONSE: " + returnedObj);
-			}
-
-		} catch (IOException e) {
-			httpPost.abort();
-			Log.e(TAG, "I/O error while retrieving data from " + url, e);
-			result = StaticData.UNKNOWN_ERROR;
-		} catch (IllegalStateException e) {
-			httpPost.abort();
-			Log.e(TAG, "Incorrect URL: " + url, e);
-			result = StaticData.UNKNOWN_ERROR;
-		} catch (Exception e) {
-			httpPost.abort();
-			Log.e(TAG, "Error while retrieving data from " + url, e);
-			result = StaticData.UNKNOWN_ERROR;
-		} finally {
-			httpClient.getConnectionManager().shutdown();
-		}
-
-		if (result == StaticData.RESULT_OK && returnedObj.startsWith(OBJECT_SYMBOL)) {
-			GCMServerResponseItem responseItem = parseJson(returnedObj);
-			String reqCode = requestCode == GcmHelper.REQUEST_REGISTER ? "REGISTER" : "UNREGISTER";
-			Log.d(TAG, "REQUEST_" + reqCode + " \nResult = " + returnedObj);
-
-			if (responseItem.getCode() < 400) {
-				switch (requestCode) {
-					case GcmHelper.REQUEST_REGISTER:
-						GCMRegistrar.setRegisteredOnServer(context, true);
-						AppData.registerOnChessGCM(context, AppData.getUserToken(context));
-						break;
-					case GcmHelper.REQUEST_UNREGISTER:
-						GCMRegistrar.setRegisteredOnServer(context, false);
-						AppData.unRegisterOnChessGCM(context);
-						// remove saved token
-						SharedPreferences.Editor editor = preferences.edit();
-						editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
-						editor.commit();
-						break;
-				}
-			} else {
-                if (requestCode == GcmHelper.REQUEST_REGISTER && context != null) {
-                    Toast.makeText(context, R.string.gcm_not_registered, Toast.LENGTH_SHORT).show();
-                }
-            }
-		}*/
-	}
-
-	private void submitPostData(URLConnection connection, LoadItem loadItem) throws IOException {
-		String query = RestHelper.formPostData(loadItem);
-		String charset = HTTP.UTF_8;
-		connection.setDoOutput(true); // Triggers POST.
-//		connection.setRequestProperty("Accept-Charset", charset);
-		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
-		OutputStream output = null;
-		try {
-			output = connection.getOutputStream();
-			output.write(query.getBytes(charset));
-		} finally {
-			if (output != null) try {
-				output.close();
-			} catch (IOException ex) {
-				Log.e(TAG, "Error while submiting POST data " + ex.toString());
-			}
-		}
-
-	}
-
-	private String formJsonData(List<NameValuePair> requestParams) {
-		StringBuilder data = new StringBuilder();
-		String separator = StaticData.SYMBOL_EMPTY;
-		data.append("{");
-		for (NameValuePair requestParam : requestParams) {
-
-			data.append(separator);
-			separator = StaticData.SYMBOL_COMMA;
-			data.append("\"")
-					.append(requestParam.getName()).append("\"")
-					.append(":")
-					.append("\"")
-					.append(requestParam.getValue())
-					.append("\"");
-		}
-		data.append("}");
-		return data.toString();
-	}
-
-	private GcmItem parseJson(String jRespString) {
-		Gson gson = new Gson();
-		return gson.fromJson(jRespString, GcmItem.class);
-	}
-
-	private <CustomType> CustomType parseJson(String jRespString, Class<CustomType> clazz) {
-		Gson gson = new Gson();
-		return gson.fromJson(jRespString, clazz);
-	}
+//	private GcmItem parseJson(String jRespString) {
+//		Gson gson = new Gson();
+//		return gson.fromJson(jRespString, GcmItem.class);
+//	}
+//
+//	private <CustomType> CustomType parseJson(String jRespString, Class<CustomType> clazz) {
+//		Gson gson = new Gson();
+//		return gson.fromJson(jRespString, clazz);
+//	}
 
 //	GCMServerResponseItem parseJson(String jRespString) {
 //		Gson gson = new Gson();

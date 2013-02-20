@@ -39,9 +39,9 @@ public class RatingsAdapter extends ItemsAdapter<RatingListItem> {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 		holder.labelTxt.setText(item.getText());
 		if (item.getValue() == 0) {
-			holder.valueTxt.setText(String.valueOf(item.getValue()));
-		} else {
 			holder.valueTxt.setText(R.string.not_available);
+		} else {
+			holder.valueTxt.setText(String.valueOf(item.getValue()));
 		}
 
 		Drawable drawable = item.getImage();

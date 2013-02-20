@@ -23,7 +23,8 @@ public class ChessBoardLiveView extends ChessBoardNetworkView {
 				getBoardFace().getHistDat()[getBoardFace().getHply() - 1].notation += "#";
 				gameActivityFace.invalidateGameScreen();
 			}
-			finished = true; // todo: probably it is better to set Finished flag by lcc.onGameEnded event
+//			finished = true; // todo: probably it is better to set Finished flag by lcc.onGameEnded event
+			getBoardFace().setFinished(true); // todo: probably it is better to set Finished flag by lcc.onGameEnded event
 			return true;
 		}
 

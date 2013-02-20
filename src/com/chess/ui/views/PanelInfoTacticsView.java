@@ -115,6 +115,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 
 			clockTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 			clockTxt.setTextColor(getContext().getResources().getColor(R.color.new_light_grey));
+			clockTxt.setText("--:--");
 			clockTxt.setId(TIME_LEFT_ID);
 			clockTxt.setShadowLayer(0.5f, 0, -1, Color.BLACK);
 			clockTxt.setCompoundDrawablePadding((int) (7 * density));

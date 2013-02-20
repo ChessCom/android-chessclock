@@ -16,7 +16,7 @@ public interface BoardFace {
 
 	void setMode(int mode);
 
-	Move takeBack();
+	void takeBack();
 
 	TreeSet<Move> gen();
 
@@ -42,7 +42,7 @@ public interface BoardFace {
 
 	int[] getPieces();
 
-	int getPiece(int piecePosition);
+	int getPiece(int pieceId);
 
 	int[] getColor();
 
@@ -114,11 +114,7 @@ public interface BoardFace {
 
 	boolean isWhiteToMove();
 
-	Move getLastMove();
+	void setFinished(boolean finished);
 
-	boolean isWhite(int piecePosition);
-
-	/*void setFen(String startPosFEN);
-
-	String getFen();*/
+	boolean isFinished();
 }

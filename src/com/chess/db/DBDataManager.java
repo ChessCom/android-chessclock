@@ -10,7 +10,7 @@ import com.chess.backend.entity.new_api.*;
 import com.chess.backend.entity.new_api.stats.*;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.model.*;
+import com.chess.model.GameListFinishedItem;
 
 /**
  * @author alien_roger
@@ -419,6 +419,8 @@ public class DBDataManager {
 	public static TacticRatingData getTacticResultItemFromCursor(Cursor cursor) {
 		TacticRatingData dataObj = new TacticRatingData();
 
+		dataObj.setUser(getString(cursor, DBConstants.V_USER));
+		dataObj.setId(getLong(cursor, DBConstants.V_TACTIC_ID));
 		dataObj.setScore(getString(cursor, DBConstants.V_SCORE));
 		dataObj.setUserRatingChange(getInt(cursor, DBConstants.V_USER_RATING_CHANGE));
 		dataObj.setUserRating(getInt(cursor, DBConstants.V_USER_RATING));
@@ -426,6 +428,15 @@ public class DBDataManager {
 		dataObj.setProblemRating(getInt(cursor, DBConstants.V_PROBLEM_RATING));
 
 		return dataObj;
+	}
+
+	public static int getUserTacticsRating(Context context) {
+		Cursor cursor = context.getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_TACTICS],
+				DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, new String[]{AppData.getUserName(context)}, null);
+		if (cursor.moveToFirst()) {
+			return DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
+		}
+		return 0;
 	}
 
 

@@ -167,7 +167,8 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 		showSubmitButtonsLay(false);
 		boardView.enableAnalysis();
 
-		boardView.setFinished(true);
+//		boardView.setFinished(true);
+		getBoardFace().setFinished(true);
 		//controlsBaseView.showBottomPart(false);
 		getSoundPlayer().playGameEnd();
 	}

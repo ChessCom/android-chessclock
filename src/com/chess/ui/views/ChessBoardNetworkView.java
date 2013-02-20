@@ -165,7 +165,8 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 		track = false;
 		if (!getBoardFace().isAnalysis()) {
-			if (AppData.isFinishedEchessGameMode(getBoardFace()) || finished || getBoardFace().isSubmit() ||
+//			if (AppData.isFinishedEchessGameMode(getBoardFace()) || finished || getBoardFace().isSubmit() ||
+			if (AppData.isFinishedEchessGameMode(getBoardFace()) || getBoardFace().isFinished() || getBoardFace().isSubmit() ||
 					(getBoardFace().getHply() < getBoardFace().getMovesCount())) {
 				return true;
 			}

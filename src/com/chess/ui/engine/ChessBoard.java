@@ -293,6 +293,7 @@ public class ChessBoard implements BoardFace {
 	//private boolean userColorWhite;
 	protected GameActivityFace gameActivityFace;
 	private SoundPlayer soundPlayer;
+	private boolean finished;
 
 	protected ChessBoard(GameActivityFace gameActivityFace) {
 		this.gameActivityFace = gameActivityFace;
@@ -471,6 +472,15 @@ public class ChessBoard implements BoardFace {
 	public boolean isWhiteToMove() {
 		return hply % 2 == 0;
 		//return (side == LIGHT);
+	}
+
+	@Override
+	public void setFinished(boolean finished) {
+		this.finished = finished;
+	}
+
+	public boolean isFinished() {
+		return finished;
 	}
 
 	/**
