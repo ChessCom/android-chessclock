@@ -313,6 +313,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					new RequestJsonTask<TacticInfoItem>(tacticsCorrectUpdateListener).executeTask(loadItem);
 					controlsTacticsView.enableGameControls(false);
 				}
+				stopTacticsTimer();
 			}
 		} else {
 			boolean tacticResultItemIsValid = tacticItem.getResultItem() != null
@@ -341,8 +342,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				new RequestJsonTask<TacticInfoItem>(tacticsWrongUpdateListener).executeTask(loadItem);
 				controlsTacticsView.enableGameControls(false);
 			}
+			stopTacticsTimer();
 		}
-		stopTacticsTimer();
 	}
 
 	@Override
