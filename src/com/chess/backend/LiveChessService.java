@@ -84,8 +84,8 @@ public class LiveChessService extends Service {
 			Log.d(TAG, "LiveChessClient initialized " + returnedObj);
 
 			// todo: tune notification
-			Notification notification = new Notification(R.drawable.ic_stat_chess, // just test. change drawable
-					"Chess.com Live",
+			Notification notification = new Notification(R.drawable.ic_stat_live, // just test. change drawable
+					getString(R.string.chess_com_live),
 					System.currentTimeMillis());
 
 			Intent intent = new Intent(getContext(), LiveScreenActivity.class);
@@ -93,7 +93,7 @@ public class LiveChessService extends Service {
 
 			PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
 
-			notification.setLatestEventInfo(getContext(), "Chess.com", "Live", pendingIntent);
+			notification.setLatestEventInfo(getContext(), getString(R.string.ches_com),getString(R.string.live), pendingIntent);
 			notification.flags |= Notification.FLAG_NO_CLEAR;
 
 			startForeground(2048, notification);
