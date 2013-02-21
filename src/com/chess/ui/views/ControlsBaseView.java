@@ -15,11 +15,11 @@ import android.widget.LinearLayout;
  */
 public abstract class ControlsBaseView extends LinearLayout implements View.OnClickListener {
 
-	public static final int B_OPTIONS_ID = 0;
-	public static final int B_FLIP_ID = 1;
-	public static final int B_ANALYSIS_ID = 2;
-	public static final int B_BACK_ID = 4;
-	public static final int B_FORWARD_ID = 5;
+//	public static final int B_OPTIONS_ID = 0;
+//	public static final int B_FLIP_ID = 1;
+//	public static final int B_ANALYSIS_ID = 2;
+//	public static final int B_BACK_ID = 4;
+//	public static final int B_FORWARD_ID = 5;
 
 	protected LinearLayout controlsLayout;
 	protected LayoutParams buttonParams;
@@ -75,35 +75,10 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		((ImageButton) findViewById(BUTTON_PREFIX + buttonId)).setImageResource(resId);
 	}
 
-	public void enableAnalysisMode(boolean enable) {
-		enableGameButton(B_ANALYSIS_ID, enable);
-		enableGameButton(B_FORWARD_ID, enable);
-		enableGameButton(B_BACK_ID, enable);
-	}
 
-	public void enableControlButtons(boolean enable) {
-		enableGameButton(B_FORWARD_ID, enable);
-		enableGameButton(B_BACK_ID, enable);
-	}
 
 	public void lock(boolean lock) {
 		blocked = lock;
 		setEnabled(!lock);
 	}
-
-	public void enableGameControls(boolean enable) {
-		enableGameButton(B_OPTIONS_ID, enable);
-		enableGameButton(B_ANALYSIS_ID, enable);
-		enableGameButton(B_FORWARD_ID, enable);
-		enableGameButton(B_BACK_ID, enable);
-		enableGameButton(B_FLIP_ID, enable);
-	}
-
-	// todo: temporary debug
-	public boolean isAnalysisEnabled() {
-		return findViewById(BUTTON_PREFIX + B_ANALYSIS_ID).isEnabled()
-				|| findViewById(BUTTON_PREFIX + B_FORWARD_ID).isEnabled()
-				|| findViewById(BUTTON_PREFIX + B_BACK_ID).isEnabled();
-	}
-
 }

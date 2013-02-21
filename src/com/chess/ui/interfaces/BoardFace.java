@@ -12,6 +12,7 @@ import java.util.TreeSet;
  * @created at: 05.03.12 5:16
  */
 public interface BoardFace {
+
 	int getMode();
 
 	void setMode(int mode);

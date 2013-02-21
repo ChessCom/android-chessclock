@@ -32,7 +32,7 @@
             android:weightSum="100">
 
             <com.chess.RoboRadioButton
-                android:id="@+id/wHuman"
+                android:id="@+id/whiteHumanRadioBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="56"
@@ -42,7 +42,7 @@
                 />
 
             <com.chess.RoboRadioButton
-                android:id="@+id/wComp"
+                android:id="@+id/whiteCompRadioBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="44"
@@ -74,7 +74,7 @@
             android:weightSum="100">
 
             <com.chess.RoboRadioButton
-                android:id="@+id/bHuman"
+                android:id="@+id/blackHumanRadioBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="56"
@@ -83,7 +83,7 @@
                 />
 
             <com.chess.RoboRadioButton
-                android:id="@+id/bComp"
+                android:id="@+id/blackCompRadioBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="44"
@@ -129,14 +129,14 @@
     </LinearLayout>
 
     <com.chess.RoboButton
-        android:id="@+id/start"
+        android:id="@+id/startCompPlayBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_between_buttons"
         android:text="@string/play"/>
 
     <com.chess.RoboButton
-        android:id="@+id/load"
+        android:id="@+id/loadCompPlayBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_between_buttons"

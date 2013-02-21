@@ -2,9 +2,7 @@ package com.chess.ui.fragments;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
@@ -14,7 +12,9 @@ import com.chess.backend.entity.new_api.DailySeekItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.views.NewGameCompView;
 import com.chess.ui.views.NewGameDailyView;
 import com.chess.ui.views.NewGameDefaultView;
@@ -28,10 +28,16 @@ import com.slidingmenu.lib.SlidingMenu;
  * Date: 12.01.13
  * Time: 9:04
  */
-public class NewGamesFragment extends CommonLogicFragment implements View.OnTouchListener {
+public class NewGamesFragment extends CommonLogicFragment {
 
 	private static final String NO_INVITED_FRIENDS_TAG = "no invited friends";
 	private static final String ERROR_TAG = "send request failed popup";
+
+	private static final String MODE = "mode";
+
+	public static final int RIGHT_MENU_MODE = 1;
+	public static final int CENTER_MODE = 2;
+
 
 	private static final int DAILY_BASE_ID = 0x00001000;
 	private static final int LIVE_BASE_ID = 0x00002000;
@@ -47,10 +53,19 @@ public class NewGamesFragment extends CommonLogicFragment implements View.OnTouc
 	private final static int COMP_LEFT_BUTTON_ID = COMP_BASE_ID + NewGameDefaultView.LEFT_BUTTON_ID;
 	private final static int COMP_PLAY_BUTTON_ID = COMP_BASE_ID + NewGameDefaultView.PLAY_BUTTON_ID;
 
+
 	private NewGameDailyView dailyGamesSetupView;
 	private NewGameLiveView liveGamesSetupView;
 	private NewGameCompView compGamesSetupView;
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
+
+	public static NewGamesFragment newInstance(int mode) {
+		NewGamesFragment frag = new NewGamesFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, mode);
+		frag.setArguments(bundle);
+		return frag;
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +75,10 @@ public class NewGamesFragment extends CommonLogicFragment implements View.OnTouc
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		if (getArguments().getInt(MODE) == CENTER_MODE) {
+			setTitle(R.string.new_game);
+		}
 
 		setupNewGameViews(view);
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
@@ -73,22 +92,21 @@ public class NewGamesFragment extends CommonLogicFragment implements View.OnTouc
 		} else if (id == DAILY_LEFT_BUTTON_ID) {
 		} else if (id == DAILY_PLAY_BUTTON_ID) {
 			createDailyChallenge();
-
-
 		} else if (id == LIVE_LEFT_BUTTON_ID) {
 		} else if (id == LIVE_PLAY_BUTTON_ID) {
-
-
 			createLiveChallenge();
 		} else if (id == COMP_LEFT_BUTTON_ID) {
+			// TODO show popup with delay comp selection
+		} else if (id == COMP_PLAY_BUTTON_ID || id == R.id.startCompPlayBtn)  {
+			// drop saved game
+			ChessBoardComp.resetInstance();
+			preferencesEditor.putString(AppData.getUserName(getActivity()) + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
+			preferencesEditor.commit();
 
-		} else if (id == COMP_PLAY_BUTTON_ID) {
-//			compGamesSetupView.getNewCompGameConfig();
-
-			getActivityFace().openFragment(GameCompFragment.newInstance(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK));
-			getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+			startCompGame();
+		} else if (id == R.id.loadCompPlayBtn)  {
+			startCompGame();
 		}
-
 	}
 
 	private void createDailyChallenge() {
@@ -136,6 +154,15 @@ public class NewGamesFragment extends CommonLogicFragment implements View.OnTouc
 //		FlurryAgent.logEvent(FlurryData.CHALLENGE_CREATED);
 //		challengeTaskRunner.runSendChallengeTask(challenge);
 
+	}
+
+	private void startCompGame() {
+		NewGameCompView.NewCompGameConfig config = compGamesSetupView.getNewCompGameConfig();
+
+		getActivityFace().openFragment(GameCompFragment.newInstance(config));
+		if (getArguments().getInt(MODE) == RIGHT_MENU_MODE){
+			getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+		}
 	}
 
 	private class CreateChallengeUpdateListener extends ActionBarUpdateListener<DailySeekItem> {
@@ -215,23 +242,21 @@ public class NewGamesFragment extends CommonLogicFragment implements View.OnTouc
 		{// Comp Games setup
 			compGamesSetupView = (NewGameCompView) view.findViewById(R.id.compGamesSetupView);
 
-			NewGameDefaultView.ViewConfig compConfig = new NewGameDefaultView.ViewConfig();
+			NewGameCompView.ViewCompConfig compConfig = new NewGameCompView.ViewCompConfig();
 			compConfig.setBaseId(COMP_BASE_ID);
 			compConfig.setHeaderIcon(R.drawable.ic_comp_game);
 			compConfig.setHeaderText(R.string.vs_computer);
 			compConfig.setTitleText(R.string.new_difficulty);
-			compConfig.setLeftButtonTextId(R.string.days); // TODO set properly
+			compConfig.setLeftButtonTextId(R.string.delay);
+			compConfig.setHaveSavedGame(AppData.haveSavedCompGame(getActivity()));
 
 			compGamesSetupView.setConfig(compConfig);
 			compGamesSetupView.findViewById(COMP_LEFT_BUTTON_ID).setOnClickListener(this);
 			compGamesSetupView.findViewById(COMP_PLAY_BUTTON_ID).setOnClickListener(this);
+			compGamesSetupView.findViewById(R.id.startCompPlayBtn).setOnClickListener(this);
+			compGamesSetupView.findViewById(R.id.loadCompPlayBtn).setOnClickListener(this);
 		}
-	}
 
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		Log.d("TEST", "event " + event.getX());
-
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
+		view.findViewById(R.id.mainLinView).requestFocus(); // gain focus to prevent keyboard showing
 	}
 }

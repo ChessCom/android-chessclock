@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.Button;
@@ -24,10 +25,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
-import com.chess.ui.views.ChessBoardCompView;
-import com.chess.ui.views.ControlsCompView;
-import com.chess.ui.views.NotationView;
-import com.chess.ui.views.PanelInfoGameView;
+import com.chess.ui.views.*;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -42,6 +40,8 @@ import java.util.Calendar;
  */
 public class GameCompFragment extends GameBaseFragment implements GameCompActivityFace {
 
+	private static final String MODE = "mode";
+	private static final String COMP_DELAY = "comp_delay";
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
 
@@ -51,13 +51,26 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	private int[] compStrengthArray;
 	private NotationView notationsView;
 	private ControlsCompView controlsCompView;
+	private ImageView topAvatarImg;
+	private ImageView bottomAvatarImg;
+	private BoardAvatarDrawable compAvatarDrawable;
+	private BoardAvatarDrawable userAvatarDrawable;
+	private LabelsConfig labelsConfig;
 
-	public static GameCompFragment newInstance(int mode) {
+	public static GameCompFragment newInstance(NewGameCompView.NewCompGameConfig config) {
 		GameCompFragment frag = new GameCompFragment();
 		Bundle bundle = new Bundle();
-		bundle.putInt(AppConstants.GAME_MODE, mode);
+		bundle.putInt(MODE, config.getMode());
+		bundle.putInt(COMP_DELAY, config.getMode());
 		frag.setArguments(bundle);
 		return frag;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		labelsConfig = new LabelsConfig();
 	}
 
 	@Override
@@ -76,20 +89,11 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 		// set avatars
 		Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
+		compAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
+		userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
 
-		((ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID))
-				.setImageDrawable(new BoardAvatarDrawable(getActivity(), src));
-
-		ImageView bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-		bottomAvatarImg.setImageDrawable(new BoardAvatarDrawable(getActivity(), src));
-
-		((BoardAvatarDrawable)bottomAvatarImg.getDrawable()).setSide(AppConstants.WHITE_SIDE);
-		// change avatar border
-		bottomPanelView.setSide(AppConstants.WHITE_SIDE);
-
-		// set player names
-		topPanelView.setPlayerLabel("Computer");
-		bottomPanelView.setPlayerLabel(AppData.getUserName(getActivity()));
+		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
 		// hide timeLeft
 		topPanelView.showTimeLeft(false);
@@ -109,17 +113,20 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 		boardView = (ChessBoardCompView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
+		boardView.setTopPanelView(topPanelView);
+		boardView.setBottomPanelView(bottomPanelView);
 		boardView.setControlsView(controlsCompView);
 		boardView.setNotationsView(notationsView);
+
+		controlsCompView.setBoardViewFace(boardView);
 
 		ChessBoardComp chessBoardComp = ChessBoardComp.getInstance(this);
 //		boardView.setBoardFace(chessBoardComp);
 		boardView.setGameActivityFace(this);
 		setBoardView(boardView);
 
-		getBoardFace().setMode(getArguments().getInt(AppConstants.GAME_MODE));
+		getBoardFace().setMode(getArguments().getInt(MODE));
 
-		controlsCompView.turnCompMode();  // TODO restore
 
 		if (getBoardFace().isAnalysis()) {
 			boardView.enableAnalysis();
@@ -191,7 +198,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	}
 
 	@Override
-	public String getBlackPlayerName() {
+	public String getBlackPlayerName() {  // TODO use correct interfaces
 		return null;
 	}
 
@@ -224,29 +231,65 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	public void invalidateGameScreen() {
 		switch (getBoardFace().getMode()) {
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {    //w - human; b - comp
-//				whitePlayerLabel.setText(AppData.getUserName(getActivity()));
-//				blackPlayerLabel.setText(getString(R.string.computer));
-				updatePlayerDots(getBoardFace().isWhiteToMove());
+
+				labelsConfig.userSide = AppConstants.WHITE_SIDE;
+
+				labelsConfig.topAvatar = compAvatarDrawable;
+				labelsConfig.bottomAvatar = userAvatarDrawable;
+
+				labelsConfig.topPlayerLabel = getString(R.string.computer);
+				labelsConfig.bottomPlayerLabel = AppData.getUserName(getActivity());
+
+				updatePlayerDots(getBoardFace().isWhiteToMove()); // TODO
 				break;
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {    //w - comp; b - human
-//				whitePlayerLabel.setText(getString(R.string.computer));
-//				blackPlayerLabel.setText(AppData.getUserName(getActivity()));
+
+				labelsConfig.userSide = AppConstants.BLACK_SIDE;
+
+				labelsConfig.topAvatar = compAvatarDrawable;
+				labelsConfig.bottomAvatar = userAvatarDrawable;
+
+				labelsConfig.topPlayerLabel = getString(R.string.computer);
+				labelsConfig.bottomPlayerLabel = AppData.getUserName(getActivity());
+
 				updatePlayerDots(getBoardFace().isWhiteToMove());
 				break;
 			}
 			case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {    //w - human; b - human
-//				whitePlayerLabel.setText(getString(R.string.human));
-//				blackPlayerLabel.setText(getString(R.string.human));
+				labelsConfig.userSide = AppConstants.BLACK_SIDE;
+
+				labelsConfig.topAvatar = compAvatarDrawable;
+				labelsConfig.bottomAvatar = userAvatarDrawable;
+
+				labelsConfig.topPlayerLabel = getString(R.string.human);
+				labelsConfig.bottomPlayerLabel = AppData.getUserName(getActivity());
 				updatePlayerDots(getBoardFace().isWhiteToMove());
 				break;
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {    //w - comp; b - comp
-//				whitePlayerLabel.setText(getString(R.string.computer));
-//				blackPlayerLabel.setText(getString(R.string.computer));
+				labelsConfig.userSide = AppConstants.BLACK_SIDE;
+
+				labelsConfig.topAvatar = compAvatarDrawable;
+				labelsConfig.bottomAvatar = userAvatarDrawable;
+
+				labelsConfig.topPlayerLabel = getString(R.string.computer);
+				labelsConfig.bottomPlayerLabel = getString(R.string.computer);
 				break;
 			}
 		}
+
+		userAvatarDrawable.setSide(labelsConfig.userSide);
+		compAvatarDrawable.setSide(labelsConfig.getOpponentSide());
+
+		topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+		bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+
+		topPanelView.setSide(labelsConfig.getOpponentSide());
+		bottomPanelView.setSide(labelsConfig.userSide);
+
+		topPanelView.setPlayerLabel(labelsConfig.topPlayerLabel);
+		bottomPanelView.setPlayerLabel(labelsConfig.bottomPlayerLabel);
 
 //		boardView.updateNotations(getBoardFace().getMoveListSAN());
 		boardView.updateNotations(getBoardFace().getNotationArray());
@@ -470,5 +513,36 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	private void computerMove() {
 		boardView.computerMove(compStrengthArray[AppData.getCompStrength(getContext())]);
 	}
+
+	private class LabelsConfig {
+/*
+		compAvatarDrawable.setSide(AppConstants.BLACK_SIDE);
+		userAvatarDrawable.setSide(AppConstants.WHITE_SIDE);
+
+		topAvatarImg.setImageDrawable(compAvatarDrawable);
+		bottomAvatarImg.setImageDrawable(userAvatarDrawable);
+
+		topPanelView.setSide(AppConstants.BLACK_SIDE);
+		bottomPanelView.setSide(AppConstants.WHITE_SIDE);
+
+		topPanelView.setPlayerLabel(getString(R.string.computer));
+		bottomPanelView.setPlayerLabel(AppData.getUserName(getActivity()));
+*/
+		int topPlayerSide;
+		int bottomPlayerSide;
+		String topPlayerLabel;
+		String bottomPlayerLabel;
+		Drawable topAvatar;
+		Drawable bottomAvatar;
+		int userSide;
+
+
+
+		int getOpponentSide(){
+			return userSide == AppConstants.WHITE_SIDE? AppConstants.BLACK_SIDE: AppConstants.WHITE_SIDE;
+		}
+
+	}
+
 
 }

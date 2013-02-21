@@ -17,24 +17,21 @@ import com.chess.ui.interfaces.BoardViewCompFace;
  */
 public class ControlsCompView extends ControlsBaseView {
 
-	public static final int B_NEW_GAME_ID = 0;
-	public static final int B_OPTIONS_ID = 1;
-	public static final int B_FLIP_ID = 2;
-	public static final int B_ANALYSIS_ID = 3;
-	public static final int B_BACK_ID = 5;
-	public static final int B_FORWARD_ID = 6;
-	public static final int B_HINT_ID = 7;
+	public static final int B_OPTIONS_ID = 0;
+	public static final int B_HINT_ID = 1;
+	public static final int B_HELP_ID = 2;
+	public static final int B_BACK_ID = 3;
+	public static final int B_FORWARD_ID = 4;
 
 	protected int[] buttonsDrawableIds = new int[]{
-			R.drawable.ic_ctrl_restore,
 			R.drawable.ic_ctrl_options,
-			R.drawable.ic_ctrl_flip,
-			R.drawable.ic_ctrl_analysis,
-			R.drawable.ic_ctrl_chat,
+			R.drawable.ic_ctrl_hint,
+			R.drawable.ic_ctrl_help,
 			R.drawable.ic_ctrl_back,
-			R.drawable.ic_ctrl_fwd,
-			R.drawable.ic_ctrl_hint
+			R.drawable.ic_ctrl_fwd
 	};
+
+	private int CONTROL_BUTTON_HEIGHT = 37;
 
 	private BoardViewCompFace boardViewFace;
 
@@ -48,9 +45,11 @@ public class ControlsCompView extends ControlsBaseView {
 		onCreate();
 	}
 
-
 	public void onCreate() {
 		setOrientation(VERTICAL);
+
+		float density = getContext().getResources().getDisplayMetrics().density;
+		CONTROL_BUTTON_HEIGHT *= density;
 
 		controlsLayout = new LinearLayout(getContext());
 		int paddingLeft = (int) getResources().getDimension(R.dimen.game_control_padding_left);
@@ -63,16 +62,14 @@ public class ControlsCompView extends ControlsBaseView {
 		LayoutParams defaultLinLayParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
-		buttonParams = new LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+		buttonParams = new LayoutParams(0, CONTROL_BUTTON_HEIGHT);
 		buttonParams.weight = 1;
 
 		controlsLayout.setLayoutParams(defaultLinLayParams);
 
-		addControlButton(B_NEW_GAME_ID, R.drawable.button_emboss_left_selector);
-		addControlButton(B_OPTIONS_ID, R.drawable.button_emboss_mid_selector);
-		addControlButton(B_FLIP_ID, R.drawable.button_emboss_mid_selector);
-		addControlButton(B_ANALYSIS_ID, R.drawable.button_emboss_mid_selector);
-//		addControlButton(B_CHAT_ID, R.drawable.button_emboss_mid_selector);
+		addControlButton(B_OPTIONS_ID, R.drawable.button_emboss_left_selector);
+		addControlButton(B_HINT_ID, R.drawable.button_emboss_mid_selector);
+		addControlButton(B_HELP_ID, R.drawable.button_emboss_mid_selector);
 		addControlButton(B_BACK_ID, R.drawable.button_emboss_mid_selector);
 		addControlButton(B_FORWARD_ID, R.drawable.button_emboss_right_selector);
 		addView(controlsLayout);
@@ -93,18 +90,12 @@ public class ControlsCompView extends ControlsBaseView {
 		if (blocked)
 			return;
 
-		if (view.getId() == BUTTON_PREFIX + B_NEW_GAME_ID) {
-			boardViewFace.newGame();
-		} else if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
+		if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
 			boardViewFace.showOptions();
 		} else if (view.getId() == BUTTON_PREFIX + B_HINT_ID) {
 			boardViewFace.showHint();
-		} else if (view.getId() == BUTTON_PREFIX + B_FLIP_ID) {
-			boardViewFace.flipBoard();
-		} else if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID) {
+		} else if (view.getId() == BUTTON_PREFIX + B_HELP_ID) {
 			boardViewFace.switchAnalysis();
-//		} else if (view.getId() == BUTTON_PREFIX + B_CHAT_ID) {
-//			boardViewFace.showChat();
 		} else if (view.getId() == BUTTON_PREFIX + B_BACK_ID) {
 			boardViewFace.moveBack();
 		} else if (view.getId() == BUTTON_PREFIX + B_FORWARD_ID) {
@@ -116,15 +107,15 @@ public class ControlsCompView extends ControlsBaseView {
 		this.boardViewFace = boardViewFace;
 	}
 
-	public void turnCompMode() {
-//		changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_ctrl_options);
-		changeGameButton(ControlsCompView.B_FLIP_ID, R.drawable.ic_ctrl_hint);
-		changeGameButton(ControlsCompView.B_ANALYSIS_ID, R.drawable.ic_ctrl_help);
-//		hideChatButton();
-//		addControlButton(1, ControlsBaseView.B_HINT_ID, R.drawable.button_emboss_mid_selector); // add hint button at second position
-		showGameButton(ControlsCompView.B_NEW_GAME_ID, false);
-		enableGameButton(B_FORWARD_ID, true);
-		enableGameButton(B_BACK_ID, true);
+	public void enableControlButtons(boolean enable) {
+		enableGameButton(B_FORWARD_ID, enable);
+		enableGameButton(B_BACK_ID, enable);
 	}
 
+	public void enableGameControls(boolean enable) {
+		enableGameButton(B_OPTIONS_ID, enable);
+		enableGameButton(B_HELP_ID, enable);
+		enableGameButton(B_FORWARD_ID, enable);
+		enableGameButton(B_BACK_ID, enable);
+	}
 }

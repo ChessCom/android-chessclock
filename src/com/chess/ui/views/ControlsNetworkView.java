@@ -18,13 +18,11 @@ import com.chess.ui.interfaces.BoardViewNetworkFace;
  */
 public class ControlsNetworkView extends ControlsBaseView {
 
-	public static final int B_NEW_GAME_ID = 0;
-	public static final int B_OPTIONS_ID = 1;
-	public static final int B_FLIP_ID = 2;
-	public static final int B_ANALYSIS_ID = 3;
-	public static final int B_CHAT_ID = 4;
-	public static final int B_BACK_ID = 5;
-	public static final int B_FORWARD_ID = 6;
+	public static final int B_OPTIONS_ID = 0;
+	public static final int B_ANALYSIS_ID = 2;
+	public static final int B_CHAT_ID = 3;
+	public static final int B_BACK_ID = 4;
+	public static final int B_FORWARD_ID = 5;
 
 	protected int[] buttonsDrawableIds = new int[]{
 			R.drawable.ic_ctrl_restore,
@@ -36,6 +34,8 @@ public class ControlsNetworkView extends ControlsBaseView {
 			R.drawable.ic_ctrl_fwd,
 			R.drawable.ic_ctrl_hint
 	};
+
+	private int CONTROL_BUTTON_HEIGHT = 37;
 
 	private BoardViewNetworkFace boardViewFace;
 
@@ -53,6 +53,9 @@ public class ControlsNetworkView extends ControlsBaseView {
 	public void onCreate() {
 		setOrientation(VERTICAL);
 
+		float density = getContext().getResources().getDisplayMetrics().density;
+		CONTROL_BUTTON_HEIGHT *= density;
+
 		controlsLayout = new LinearLayout(getContext());
 		int paddingLeft = (int) getResources().getDimension(R.dimen.game_control_padding_left);
 		int paddingTop = (int) getResources().getDimension(R.dimen.game_control_padding_top);
@@ -63,14 +66,12 @@ public class ControlsNetworkView extends ControlsBaseView {
 
 		LayoutParams defaultLinLayParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
-		buttonParams = new LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+		buttonParams = new LayoutParams(0, CONTROL_BUTTON_HEIGHT);
 		buttonParams.weight = 1;
 
 		controlsLayout.setLayoutParams(defaultLinLayParams);
 
-		addControlButton(B_NEW_GAME_ID, R.drawable.button_emboss_left_selector);
-		addControlButton(B_OPTIONS_ID, R.drawable.button_emboss_mid_selector);
-		addControlButton(B_FLIP_ID, R.drawable.button_emboss_mid_selector);
+		addControlButton(B_OPTIONS_ID, R.drawable.button_emboss_left_selector);
 		addControlButton(B_ANALYSIS_ID, R.drawable.button_emboss_mid_selector);
 		addControlButton(B_CHAT_ID, R.drawable.button_emboss_mid_selector);
 		addControlButton(B_BACK_ID, R.drawable.button_emboss_mid_selector);
@@ -90,13 +91,11 @@ public class ControlsNetworkView extends ControlsBaseView {
 		if (blocked)
 			return;
 
-		if (view.getId() == BUTTON_PREFIX + B_NEW_GAME_ID) {
+		/*if (view.getId() == BUTTON_PREFIX + B_NEW_GAME_ID) {
 			boardViewFace.newGame();
-		} else if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
+		} else*/ if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
 			boardViewFace.showOptions();
-		} else if (view.getId() == BUTTON_PREFIX + B_FLIP_ID) {
-			boardViewFace.flipBoard();
-		} else if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID) {
+		} if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID) {
 			boardViewFace.switchAnalysis();
 		} else if (view.getId() == BUTTON_PREFIX + B_CHAT_ID) {
 			boardViewFace.showChat();
@@ -118,18 +117,22 @@ public class ControlsNetworkView extends ControlsBaseView {
 		invalidate();
 	}
 
-
-	public void hideChatButton() {
-		showGameButton(ControlsNetworkView.B_CHAT_ID, false);
-	}
-
-	@Override
-	public void enableGameControls(boolean enable) {
-		enableGameButton(B_OPTIONS_ID, enable);
+	public void enableAnalysisMode(boolean enable) {
 		enableGameButton(B_ANALYSIS_ID, enable);
 		enableGameButton(B_FORWARD_ID, enable);
 		enableGameButton(B_BACK_ID, enable);
+	}
+
+	public void enableControlButtons(boolean enable) {
+		enableGameButton(B_FORWARD_ID, enable);
+		enableGameButton(B_BACK_ID, enable);
+	}
+
+	public void enableGameControls(boolean enable) {
+		enableGameButton(B_OPTIONS_ID, enable);
+		enableGameButton(B_ANALYSIS_ID, enable);
 		enableGameButton(B_CHAT_ID, enable);
-		enableGameButton(B_FLIP_ID, enable);
+		enableGameButton(B_FORWARD_ID, enable);
+		enableGameButton(B_BACK_ID, enable);
 	}
 }

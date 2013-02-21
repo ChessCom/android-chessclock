@@ -69,7 +69,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		controlsNetworkView = (ControlsNetworkView) findViewById(R.id.controlsNetworkView);
 
 //		controlsNetworkView.changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_next_game);
-		controlsNetworkView.hideChatButton();
 		controlsNetworkView.enableGameControls(false);
 
 		boardView = (ChessBoardDailyView) findViewById(R.id.boardview);

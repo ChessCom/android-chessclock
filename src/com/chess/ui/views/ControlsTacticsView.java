@@ -178,6 +178,14 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showGameButton(B_FORWARD_ID, true);
 	}
 
+	public void enableGameControls(boolean enable) {
+		enableGameButton(B_OPTIONS_ID, enable);
+		enableGameButton(B_ANALYSIS_ID, enable);
+		enableGameButton(B_HELP_ID, enable);
+		enableGameButton(B_FORWARD_ID, enable);
+		enableGameButton(B_BACK_ID, enable);
+	}
+
 	enum State {
 		CORRECT,
 		WRONG,

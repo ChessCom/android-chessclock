@@ -54,7 +54,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 	@Override
 	public void onClick(View view) { // make code more clear
 		if (view.getId() == R.id.load) {
-			FlurryAgent.logEvent(FlurryData.NEW_GAME_VS_COMPUTER, null);
+			FlurryAgent.logEvent(FlurryData.NEW_GAME_VS_COMPUTER);
 			Intent intent = new Intent(this, GameCompScreenActivity.class);
 			int compGameId = Integer.parseInt(AppData.getCompSavedGame(this).substring(0, 1));
 			intent.putExtra(AppConstants.GAME_MODE, compGameId);
@@ -76,7 +76,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 			preferencesEditor.putString(AppData.getUserName(this) + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
 			preferencesEditor.commit();
 
-			FlurryAgent.logEvent(FlurryData.NEW_GAME_VS_COMPUTER, null);
+			FlurryAgent.logEvent(FlurryData.NEW_GAME_VS_COMPUTER);
 			Intent intent = new Intent(this, GameCompScreenActivity.class);
 			intent.putExtra(AppConstants.GAME_MODE, mode);
 			startActivity(intent);

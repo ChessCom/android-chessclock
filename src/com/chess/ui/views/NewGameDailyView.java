@@ -64,7 +64,9 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		leftButton = new RoboButton(getContext(), null, R.attr.greyButtonSmallSolid);
 		RelativeLayout.LayoutParams leftBtnParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
+
 		leftBtnParams.addRule(RelativeLayout.BELOW, BASE_ID + TITLE_ID);
+
 		if (viewConfig.getLeftButtonTextId() == 0) {
 			leftButton.setText(viewConfig.getLeftButtonText());
 		} else {
@@ -90,7 +92,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		compactRelLay.addView(vsText, vsTxtParams);
 
 		// Right Button - "Random"
-		rightButton = new EditButton(getContext()/*, null, R.attr.greyButtonSmallSolid*/); // don't apply programmatically as it will lead to unable to appear keyboard on touch
+		rightButton = new EditButton(getContext()); // don't apply style programmatically as it will lead to unable to appear keyboard on touch
 		RelativeLayout.LayoutParams rightButtonParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -103,6 +105,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		rightButton.setTextColor(0xFFFFFFFF);
 		rightButton.setGravity(Gravity.CENTER);
 		rightButton.setCursorVisible(false);
+
 		float shadowRadius = 0.5f ;
 		float shadowDx = 0;
 		float shadowDy = -1;

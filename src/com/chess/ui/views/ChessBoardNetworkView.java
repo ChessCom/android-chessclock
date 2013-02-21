@@ -66,8 +66,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		drawDragPosition(canvas);
 
 		drawTrackballDrag(canvas);
-
-//		drawCapturedPieces(); // TODO restore
 	}
 
 	@Override

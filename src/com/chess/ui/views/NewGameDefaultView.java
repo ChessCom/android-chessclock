@@ -87,7 +87,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 
 		optionsVisibleLayoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, HEADER_HEIGHT);
 		defaultMatchWidthParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		defaultLinearWrapParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		defaultLinearWrapParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		defaultRelativeMatchWidthParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 		optionsLayParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -116,8 +116,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 		{// Header
 			// Header View
 			LinearLayout headerView = new LinearLayout(getContext());
-			LinearLayout.LayoutParams headerParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-					HEADER_HEIGHT);
+			LayoutParams headerParams = new LayoutParams(LayoutParams.MATCH_PARENT, HEADER_HEIGHT);
 			headerView.setLayoutParams(headerParams);
 			headerView.setBackgroundResource(R.drawable.nav_menu_item_default);
 			headerView.setPadding(HEADER_PADDING_LEFT, 0, HEADER_PADDING_RIGHT, 0);
@@ -131,8 +130,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 
 			// Text Header
 			TextView headerText = new TextView(getContext());
-			LinearLayout.LayoutParams headerTxtParams = new LinearLayout.LayoutParams(0,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
+			LayoutParams headerTxtParams = new LayoutParams(0, LayoutParams.WRAP_CONTENT);
 			headerTxtParams.weight = 1;
 
 			headerText.setText(viewConfig.getHeaderText());

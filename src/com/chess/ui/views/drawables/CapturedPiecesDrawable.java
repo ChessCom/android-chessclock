@@ -22,10 +22,9 @@ public class CapturedPiecesDrawable extends Drawable {
 	private final static int ROOK_ID = 3;
 	private final static int QUEEN_ID = 4;
 
-	private final int[] whitePieceDrawableIds;
-	private final int[] blackPieceDrawableIds;
 	private final Drawable[] whitePieceDrawables;
 	private final Drawable[] blackPieceDrawables;
+	private int totalPiecesCountArray[] = new int[]{8, 2, 2, 2, 1, 1};
 
 	private int INNER_PIECE_OFFSET = 4;
 	private int BETWEEN_PIECE_OFFSET = 20;
@@ -53,7 +52,7 @@ public class CapturedPiecesDrawable extends Drawable {
 		BETWEEN_PIECE_OFFSET *= density;
 		BETWEEN_PAWN_PIECE_OFFSET *= density;
 
-		whitePieceDrawableIds = new int[]{
+		int[] whitePieceDrawableIds = new int[]{
 				R.drawable.captured_wp,
 				R.drawable.captured_wn,
 				R.drawable.captured_wb,
@@ -61,7 +60,7 @@ public class CapturedPiecesDrawable extends Drawable {
 				R.drawable.captured_wq
 		};
 
-		blackPieceDrawableIds = new int[]{   // TODO reuse to set other drawable sets
+		int[] blackPieceDrawableIds = new int[]{   // TODO reuse to set other drawable sets
 				R.drawable.captured_bp,
 				R.drawable.captured_bn,
 				R.drawable.captured_bb,
@@ -93,12 +92,6 @@ public class CapturedPiecesDrawable extends Drawable {
 		}
 
 		currentSideDrawables = blackPieceDrawables;
-
-		capturedPawnCnt = 8;
-		capturedKnightCnt = 2;
-		capturedBishopCnt = 2;
-		capturedRookCnt = 2;
-		capturedQueenCnt = 1;
 	}
 
 	@Override
@@ -106,15 +99,12 @@ public class CapturedPiecesDrawable extends Drawable {
 		int width = getBounds().width();
 		int height = getBounds().height();
 
-
 		if (side == AppConstants.WHITE_SIDE) {
 			backDrawable = context.getResources().getDrawable(R.drawable.back_white_emboss);
-
 			currentSideDrawables = blackPieceDrawables;
 		} else {
 			backDrawable = context.getResources().getDrawable(R.drawable.back_grey_emboss);
 			currentSideDrawables = whitePieceDrawables;
-
 		}
 
 		backDrawable.setBounds(0, 0, width, height);
@@ -167,7 +157,6 @@ public class CapturedPiecesDrawable extends Drawable {
 		{// draw queen
 			canvas.translate(BETWEEN_PIECE_OFFSET, 0);
 
-
 			for (int i = 0; i < capturedQueenCnt; i++) {
 				canvas.save();
 				canvas.translate(INNER_PIECE_OFFSET * i, 0);
@@ -186,45 +175,48 @@ public class CapturedPiecesDrawable extends Drawable {
 		invalidateSelf();
 	}
 
-
-	public int getCapturedPawnCnt() {
-		return capturedPawnCnt;
-	}
-
-	public void setCapturedPawnCnt(int capturedPawnCnt) {
-		this.capturedPawnCnt = capturedPawnCnt;
-	}
-
-	public int getCapturedKnightCnt() {
-		return capturedKnightCnt;
-	}
-
-	public void setCapturedKnightCnt(int capturedKnightCnt) {
-		this.capturedKnightCnt = capturedKnightCnt;
-	}
-
-	public int getCapturedBishopCnt() {
-		return capturedBishopCnt;
-	}
-
-	public void setCapturedBishopCnt(int capturedBishopCnt) {
-		this.capturedBishopCnt = capturedBishopCnt;
-	}
-
-	public int getCapturedRookCnt() {
-		return capturedRookCnt;
-	}
-
-	public void setCapturedRookCnt(int capturedRookCnt) {
-		this.capturedRookCnt = capturedRookCnt;
-	}
-
-	public int getCapturedQueenCnt() {
-		return capturedQueenCnt;
-	}
-
-	public void setCapturedQueenCnt(int capturedQueenCnt) {
-		this.capturedQueenCnt = capturedQueenCnt;
+	public void updateCapturedPieces(int[] alivePiecesCountArray) {
+		boolean update = false;
+		for (int pieceId = 0; pieceId < alivePiecesCountArray.length; pieceId++) {
+			int aliveCnt = alivePiecesCountArray[pieceId];
+			int totalPieceCnt = totalPiecesCountArray[pieceId];
+			int capturedPieceCnt = totalPieceCnt - aliveCnt;
+			switch (pieceId) {
+				case PAWN_ID:
+					if (capturedPawnCnt != capturedPieceCnt) {
+						capturedPawnCnt = capturedPieceCnt;
+						update = true;
+					}
+					break;
+				case KNIGHT_ID:
+					if (capturedKnightCnt != capturedPieceCnt) {
+						capturedKnightCnt = capturedPieceCnt;
+						update = true;
+					}
+					break;
+				case BISHOP_ID:
+					if (capturedBishopCnt != capturedPieceCnt) {
+						capturedBishopCnt = capturedPieceCnt;
+						update = true;
+					}
+					break;
+				case ROOK_ID:
+					if (capturedRookCnt != capturedPieceCnt) {
+						capturedRookCnt = capturedPieceCnt;
+						update = true;
+					}
+					break;
+				case QUEEN_ID:
+					if (capturedQueenCnt != capturedPieceCnt) {
+						capturedQueenCnt = capturedPieceCnt;
+						update = true;
+					}
+					break;
+			}
+		}
+		if (update) {
+			invalidateSelf();
+		}
 	}
 
 	@Override

@@ -217,7 +217,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 	public void onClick(View view) {
 		super.onClick(view);
 		if (view.getId() == R.id.startNewGameBtn) {
-			getActivityFace().changeRightFragment(new NewGamesFragment());
+			getActivityFace().changeRightFragment(NewGamesFragment.newInstance(NewGamesFragment.RIGHT_MENU_MODE));
 
 			handler.postDelayed(new Runnable() {
 				@Override

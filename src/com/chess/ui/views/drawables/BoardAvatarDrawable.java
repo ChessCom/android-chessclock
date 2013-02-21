@@ -14,8 +14,9 @@ import com.chess.backend.statics.AppConstants;
  * Time: 22:02
  */
 public class BoardAvatarDrawable extends Drawable {
-	private int CORNER_RADIUS = 3;
-	private int BORDER_THICK = 2;
+
+	private float CORNER_RADIUS = 1.5f;
+	private int BORDER_THICK = 1;
 	private Bitmap roundedBitmap;
 	private Drawable imageBackDrawable;
 	private GradientDrawable solidBackDrawable;
@@ -26,8 +27,8 @@ public class BoardAvatarDrawable extends Drawable {
 
 	public BoardAvatarDrawable(Context context, Bitmap sourcePhoto) {
 		float density = context.getResources().getDisplayMetrics().density;
-//		CORNER_RADIUS *= density;
-//		BORDER_THICK *= density;
+		CORNER_RADIUS *= density;
+		BORDER_THICK *= density;
 
 		imageBackDrawable = new BitmapDrawable(context.getResources(), sourcePhoto);
 
@@ -35,7 +36,6 @@ public class BoardAvatarDrawable extends Drawable {
 				new int[] {0xFFFFFFFF, 0xFFFFFFFF});
 		solidBackBlackDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
 				new int[] {0xFF181715, 0xFF181715});
-
 	}
 
 	@Override

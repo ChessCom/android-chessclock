@@ -113,7 +113,6 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 
 			playerTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
 			playerTxt.setTextColor(getContext().getResources().getColor(R.color.new_light_grey));
-			playerTxt.setText("Player (9999)");
 			playerTxt.setId(PLAYER_ID);
 
 			addView(playerTxt, playerParams);
@@ -195,19 +194,22 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 			capturedSingleParams.addRule(RelativeLayout.CENTER_VERTICAL);
 
 			CapturedPiecesDrawable capturedPiecesDrawable = new CapturedPiecesDrawable(getContext());
-			capturedPiecesView.setBackgroundDrawable(capturedPiecesDrawable);
+			if (AppUtils.HONEYCOMB_PLUS_API) {
+				capturedPiecesView.setBackground(capturedPiecesDrawable);
+			} else {
+				capturedPiecesView.setBackgroundDrawable(capturedPiecesDrawable);
+			}
 			capturedPiecesView.setId(CAPTURED_ID);
 
 			addView(capturedPiecesView, capturedParams);
 		}
 	}
 
-
 	public void setSide(int side) {
 		this.side = side;
 
 		// change avatar border
-		((BoardAvatarDrawable)avatarImg.getDrawable()).setSide(side);
+		((BoardAvatarDrawable) avatarImg.getDrawable()).setSide(side);
 
 		// change pieces color
 		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).setSide(side);
@@ -220,7 +222,6 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 			timeLeftTxt.setBackgroundResource(R.drawable.back_grey_emboss);
 			timeLeftTxt.setTextColor(getContext().getResources().getColor(R.color.new_light_grey));
 		}
-
 
 		invalidate();
 	}
@@ -249,5 +250,9 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 			capturedPiecesView.setLayoutParams(capturedSingleParams);
 		}
 
+	}
+
+	public void updateCapturedPieces(int[] alivePiecesCountArray) {
+		((CapturedPiecesDrawable)capturedPiecesView.getBackground()).updateCapturedPieces(alivePiecesCountArray);
 	}
 }

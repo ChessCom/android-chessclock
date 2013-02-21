@@ -148,8 +148,12 @@ public class GameDailyFragment extends GameBaseFragment {
 
 		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
+		boardView.setTopPanelView(topPanelView);
+		boardView.setBottomPanelView(bottomPanelView);
 		boardView.setControlsView(controlsNetworkView);
 		boardView.setNotationsView(notationsView);
+
+		controlsNetworkView.setBoardViewFace(boardView);
 		setBoardView(boardView);
 
 //		if (extras.getBoolean(AppConstants.NOTIFICATION, false)) { // TODO restore, replace with arguments
@@ -1039,7 +1043,7 @@ public class GameDailyFragment extends GameBaseFragment {
 			sendMove();
 		} else if (view.getId() == R.id.newGamePopupBtn) {
 			dismissDialogs();
-			getActivityFace().changeRightFragment(new NewGamesFragment());
+			getActivityFace().changeRightFragment(NewGamesFragment.newInstance(NewGamesFragment.RIGHT_MENU_MODE));
 
 //			Intent intent = new Intent(this, OnlineNewGameActivity.class);
 //			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

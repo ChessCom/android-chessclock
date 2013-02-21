@@ -85,6 +85,10 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				getActivityFace().switchFragment(new HomeTabsFragment()); // TODO clear stack
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
+			case R.drawable.ic_nav_play:
+				getActivityFace().switchFragment(NewGamesFragment.newInstance(NewGamesFragment.CENTER_MODE));
+				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				break;
 			case R.drawable.ic_nav_tactics:
 				getActivityFace().openFragment(new GameTacticsFragment());
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);

@@ -251,12 +251,12 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
             }
         }
 
-		drawCoordinates(canvas);
-//		drawCapturedPieces(); // TODO restore
+		drawCoordinates(canvas); // TODO redraw only once
     }
 
 
-    @Override
+
+	@Override
     public boolean onTrackballEvent(MotionEvent event) {
         if (useTouchTimer) { // start count before next touch
             handler.postDelayed(checkUserIsActive, StaticData.WAKE_SCREEN_TIMEOUT);
@@ -412,10 +412,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	}
 
 	public void enableAnalysis() {
-		controlsCompView.toggleControlButton(ControlsBaseView.B_ANALYSIS_ID, true);
-		controlsCompView.enableAnalysisMode(true);
-		gameActivityFace.switch2Analysis(true);
-		controlsCompView.enableGameButton(ControlsCompView.B_HINT_ID, false);
+		gameActivityFace.switch2Analysis(true);  // will open new screen
 	}
 
 	@Override

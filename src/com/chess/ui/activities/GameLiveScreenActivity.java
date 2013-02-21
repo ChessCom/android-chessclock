@@ -481,7 +481,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				", moveLive=" + getBoardFace().convertMoveLive() +
 				", gamesC=" + getLccHolder().getGamesCount() +
 				", gameId=" + getGameId() +
-				", analysisPanel=" + controlsNetworkView.isAnalysisEnabled() +
 				", analysisBoard=" + getBoardFace().isAnalysis() +
 				", latestMoveNumber=" + getLccHolder().getLatestMoveNumber() +
 				", debugString=" + debugString +
@@ -490,7 +489,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				", moves=" + getBoardFace().getMoveListSAN() +
 				", trace=" + stackTrace;
 		temporaryDebugInfo = temporaryDebugInfo.replaceAll("\n", " ");
-		//Log.d("TESTTEST", temporaryDebugInfo);
 
 		LccGameTaskRunner gameTaskRunner = new LccGameTaskRunner(new GameTaskListener());
 		getLccHolder().makeMove(move, gameTaskRunner, temporaryDebugInfo);

@@ -165,8 +165,12 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 
 		boardView = (ChessBoardLiveView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
+		boardView.setTopPanelView(topPanelView);
+		boardView.setBottomPanelView(bottomPanelView);
 		boardView.setControlsView(controlsNetworkView);
 		boardView.setNotationsView(notationsView);
+
+		controlsNetworkView.setBoardViewFace(boardView);
 		setBoardView(boardView);
 
 //		boardView.setBoardFace(getBoardFace());
@@ -498,7 +502,6 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 						", moveLive=" + getBoardFace().convertMoveLive() +
 						", gamesC=" + getLccHolder().getGamesCount() +
 						", gameId=" + getGameId() +
-						", analysisPanel=" + controlsNetworkView.isAnalysisEnabled() +
 						", analysisBoard=" + getBoardFace().isAnalysis() +
 						", latestMoveNumber=" + getLccHolder().getLatestMoveNumber() +
 						", debugString=" + debugString +
@@ -507,7 +510,6 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 						", moves=" + getBoardFace().getMoveListSAN() +
 						", trace=" + stackTrace;
 		temporaryDebugInfo = temporaryDebugInfo.replaceAll("\n", " ");
-		//Log.d("TESTTEST", temporaryDebugInfo);
 
 		LccGameTaskRunner gameTaskRunner = new LccGameTaskRunner(new GameTaskListener());
 		getLccHolder().makeMove(move, gameTaskRunner, temporaryDebugInfo);
@@ -566,7 +568,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 	@Override
 	public void newGame() {
 //		startActivity(new Intent(this, LiveNewGameActivity.class));
-		getActivityFace().changeRightFragment(new NewGamesFragment());
+		getActivityFace().changeRightFragment(NewGamesFragment.newInstance(NewGamesFragment.RIGHT_MENU_MODE));
 
 	}
 
@@ -880,7 +882,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 //			Intent intent = new Intent(this, LiveNewGameActivity.class);
 //			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //			startActivity(intent);
-			getActivityFace().changeRightFragment(new NewGamesFragment());
+			getActivityFace().changeRightFragment(NewGamesFragment.newInstance(NewGamesFragment.RIGHT_MENU_MODE));
 
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			getLccHolder().rematch();
