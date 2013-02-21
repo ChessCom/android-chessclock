@@ -59,7 +59,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 	public void setControlsView(ControlsCompView controlsView) {
 		super.setControlsView(controlsView);
-		this.controlsCompView = controlsView;
+		controlsCompView = controlsView;
+		controlsCompView.setBoardViewFace(this);
 	}
 
 	@Override
@@ -132,8 +133,6 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	}
 
 	public void makeHint(final int time) {
-
-
 		controlsCompView.toggleControlButton(ControlsCompView.B_HINT_ID, true);
 
 		setHint(true);

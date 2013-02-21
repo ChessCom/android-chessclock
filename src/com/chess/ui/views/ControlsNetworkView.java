@@ -19,20 +19,17 @@ import com.chess.ui.interfaces.BoardViewNetworkFace;
 public class ControlsNetworkView extends ControlsBaseView {
 
 	public static final int B_OPTIONS_ID = 0;
-	public static final int B_ANALYSIS_ID = 2;
-	public static final int B_CHAT_ID = 3;
-	public static final int B_BACK_ID = 4;
-	public static final int B_FORWARD_ID = 5;
+	public static final int B_ANALYSIS_ID = 1;
+	public static final int B_CHAT_ID = 2;
+	public static final int B_BACK_ID = 3;
+	public static final int B_FORWARD_ID = 4;
 
 	protected int[] buttonsDrawableIds = new int[]{
-			R.drawable.ic_ctrl_restore,
 			R.drawable.ic_ctrl_options,
-			R.drawable.ic_ctrl_flip,
 			R.drawable.ic_ctrl_analysis,
 			R.drawable.ic_ctrl_chat,
 			R.drawable.ic_ctrl_back,
-			R.drawable.ic_ctrl_fwd,
-			R.drawable.ic_ctrl_hint
+			R.drawable.ic_ctrl_fwd
 	};
 
 	private int CONTROL_BUTTON_HEIGHT = 37;

@@ -18,7 +18,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 	private String whiteUserName;
 	private String blackUserName;
-	private ControlsNetworkView controlsView;
 
 	public ChessBoardNetworkView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -212,6 +211,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 	public void setControlsView(ControlsNetworkView controlsView) {
 		super.setControlsView(controlsView);
-		this.controlsView = controlsView;
+		controlsView.setBoardViewFace(this);
 	}
 }

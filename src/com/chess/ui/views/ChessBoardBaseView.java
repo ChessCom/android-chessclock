@@ -43,15 +43,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public static final int P_MODERN_ID = 7;
 	public static final int P_VINTAGE_ID = 8;
 
-	//	Ids for piecesBitmap
-	public static final int PAWN_ID = 0;
-	public static final int KNIGHT_ID = 1;
-	public static final int BISHOP_ID = 2;
-	public static final int ROOK_ID = 3;
-	public static final int QUEEN_ID = 4;
-	public static final int KING_ID = 5;
 	public static final int EMPTY_ID = 6;
-	private int pieceItemCounts[] = new int[]{8, 2, 2, 2, 1, 1};
 
 	protected Bitmap[][] piecesBitmaps;
 	protected Bitmap boardBitmap;
@@ -223,7 +215,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	public void setControlsView(ControlsBaseView controlsBaseView) {
 		this.controlsBaseView = controlsBaseView;
-//		this.controlsBaseView.setBoardViewFace(this);
 	}
 
 	public void setNotationsView(NotationView notationsView) {
@@ -254,7 +245,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (notationsView != null) {
 			notationsView.show(true);
 		}
-
 	}
 
 	@Override
@@ -267,11 +257,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public void enableAnalysis() {
 		gameActivityFace.switch2Analysis(true);
 	}
-
-//	@Override
-//	public boolean isInAnalysis() {
-//		return getBoardFace().isAnalysis();
-//	}
 
 	@Override
 	public void moveForward() {

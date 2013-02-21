@@ -290,7 +290,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
 					showCorrect(newRatingStr);
 				} else if (userIsGuest || tacticItem.isRetry() || noInternet) {
-					if (tacticItem.getResultItem() != null && !userIsGuest) {
+					if (/*tacticItem.getResultItem() != null &&*/ !userIsGuest) {
 						newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
 					}
 
@@ -591,25 +591,25 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 					String newRatingStr;
 
-					if (tacticItem.getResultItem() != null) {
+//					if (tacticItem.getResultItem() != null) {
 						newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
 						tacticItem.setRetry(true); // set auto retry because we will save tactic
-					} else {
-						newRatingStr = getString(R.string.score_arg);
-					}
+//					} else {
+//						newRatingStr = getString(R.string.score_arg);
+//					}
 //					showSolvedTacticPopup(title, false);
 					showCorrect(newRatingStr);
 
 					break;
 				case WRONG_RESULT:
 
-					if (tacticItem.getResultItem() != null) {
+//					if (tacticItem.getResultItem() != null) {
 						newRatingStr = getString(R.string.score_arg, tacticItem.getNegativeScore());
 						tacticItem.setRetry(true); // set auto retry because we will save tactic
 
-					} else {
-						newRatingStr = getString(R.string.score_arg);
-					}
+//					} else {
+//						newRatingStr = getString(R.string.score_arg);
+//					}
 
 //					showWrongMovePopup(title);
 
@@ -831,11 +831,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		boardView.setGameActivityFace(this);
 
 		if (currentRating == 0) {
-			if (tacticItem.getResultItem() == null) {
+//			if (tacticItem.getResultItem() == null) {
 				currentRating = DBDataManager.getUserTacticsRating(getActivity());
-			} else {
-				currentRating = tacticItem.getResultItem().getUserRating();
-			}
+//			} else {
+//				currentRating = tacticItem.getResultItem().getUserRating();
+//			}
 		}
 
 		topPanelView.setPlayerScore(currentRating);

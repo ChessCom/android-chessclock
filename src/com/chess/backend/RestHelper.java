@@ -431,16 +431,12 @@ message				false	Only used for `CHAT` command.
 	public static  <CustomType> CustomType requestData(LoadItem loadItem, Class<CustomType> customTypeClass) throws InternalErrorException{
 		CustomType item = null;
 		String TAG = "RequestJsonTask";
-//		int result = StaticData.EMPTY_DATA;
 		String url = RestHelper.formCustomRequest(loadItem);
 		String requestMethod = loadItem.getRequestMethod();
 		if (requestMethod.equals(RestHelper.POST) || requestMethod.equals(RestHelper.PUT)){
 			url = RestHelper.formPostRequest(loadItem);
 		}
 
-//		if (loadItem.getRequestMethod().equals(RestHelper.PUT)){
-//			url = RestHelper.formPostRequest(loadItem) + "?" +RestHelper.P_LOGIN_TOKEN;
-//		}
 		Log.d(TAG, "retrieving from url = " + url);
 
 		long tag = System.currentTimeMillis();
@@ -488,7 +484,7 @@ message				false	Only used for `CHAT` command.
 
 				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
 				Log.d(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
-				throw new InternalErrorException(baseResponse.getCode());
+				throw new InternalErrorException(RestHelper.encodeServerCode(baseResponse.getCode()));
 			}
 
 			InputStream inputStream = null;
@@ -523,29 +519,27 @@ message				false	Only used for `CHAT` command.
 				}
 			}
 
-//			result = StaticData.RESULT_OK;
 			Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
 			BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + resultString);
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-//			result = ;
 			throw new InternalErrorException(e, StaticData.INTERNAL_ERROR);
 		} catch (JsonSyntaxException e) {
 			e.printStackTrace();
-//			result = StaticData.INTERNAL_ERROR;
 			throw new InternalErrorException(e, StaticData.INTERNAL_ERROR);
 		} catch (IOException e) {
-			Log.e(TAG, "I/O error while retrieving data from " + url, e);
-//			result = StaticData.NO_NETWORK;
-			throw new InternalErrorException(e, StaticData.NO_NETWORK);
+			if (e instanceof InternalErrorException) {
+				throw new InternalErrorException(e, ((InternalErrorException)e).getCode());
+			} else {
+				Log.e(TAG, "I/O error while retrieving data from " + url, e);
+				throw new InternalErrorException(e, StaticData.NO_NETWORK);
+			}
 		} catch (IllegalStateException e) {
 			Log.e(TAG, "Incorrect URL: " + url, e);
-//			result = StaticData.UNKNOWN_ERROR;
 			throw new InternalErrorException(e, StaticData.UNKNOWN_ERROR);
 		} catch (Exception e) {
 			Log.e(TAG, "Error while retrieving data from " + url, e);
-//			result = StaticData.UNKNOWN_ERROR;
 			throw new InternalErrorException(e, StaticData.UNKNOWN_ERROR);
 		} finally {
 			if (connection != null) {

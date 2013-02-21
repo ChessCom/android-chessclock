@@ -224,7 +224,6 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 	@Override
 	public void restart() {
 		gameTacticsActivityFace.restart();
-		//To change body of implemented methods use File | Settings | File Templates.
 	}
 
 	public void setControlsView(ControlsTacticsView controlsView) {

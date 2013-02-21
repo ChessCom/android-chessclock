@@ -170,7 +170,6 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 		boardView.setControlsView(controlsNetworkView);
 		boardView.setNotationsView(notationsView);
 
-		controlsNetworkView.setBoardViewFace(boardView);
 		setBoardView(boardView);
 
 //		boardView.setBoardFace(getBoardFace());

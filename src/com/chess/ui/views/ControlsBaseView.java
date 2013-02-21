@@ -15,20 +15,11 @@ import android.widget.LinearLayout;
  */
 public abstract class ControlsBaseView extends LinearLayout implements View.OnClickListener {
 
-//	public static final int B_OPTIONS_ID = 0;
-//	public static final int B_FLIP_ID = 1;
-//	public static final int B_ANALYSIS_ID = 2;
-//	public static final int B_BACK_ID = 4;
-//	public static final int B_FORWARD_ID = 5;
-
 	protected LinearLayout controlsLayout;
 	protected LayoutParams buttonParams;
 
-	//	prefixes
 	public static final int BUTTON_PREFIX = 0x00002000;
-
 	protected boolean blocked;
-
 
 	public ControlsBaseView(Context context) {
 		super(context);
@@ -74,8 +65,6 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	public void changeGameButton(int buttonId, int resId) {
 		((ImageButton) findViewById(BUTTON_PREFIX + buttonId)).setImageResource(resId);
 	}
-
-
 
 	public void lock(boolean lock) {
 		blocked = lock;

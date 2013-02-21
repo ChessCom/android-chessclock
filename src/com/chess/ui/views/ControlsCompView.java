@@ -73,7 +73,6 @@ public class ControlsCompView extends ControlsBaseView {
 		addControlButton(B_BACK_ID, R.drawable.button_emboss_mid_selector);
 		addControlButton(B_FORWARD_ID, R.drawable.button_emboss_right_selector);
 		addView(controlsLayout);
-
 	}
 
 	@Override

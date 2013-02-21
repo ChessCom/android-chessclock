@@ -50,10 +50,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	protected TextView thinking;
 	private int[] compStrengthArray;
 	private NotationView notationsView;
-	private ControlsCompView controlsCompView;
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
-	private BoardAvatarDrawable compAvatarDrawable;
+	private BoardAvatarDrawable opponentAvatarDrawable;
 	private BoardAvatarDrawable userAvatarDrawable;
 	private LabelsConfig labelsConfig;
 
@@ -89,7 +88,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 		// set avatars
 		Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
-		compAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
+		opponentAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
 		userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
 
 		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
@@ -107,7 +106,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	@Override
 	protected void widgetsInit(View view) {
 		super.widgetsInit(view);
-		controlsCompView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
+		ControlsCompView controlsCompView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
 
 		thinking = (TextView) view.findViewById(R.id.thinking);
 
@@ -117,8 +116,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		boardView.setBottomPanelView(bottomPanelView);
 		boardView.setControlsView(controlsCompView);
 		boardView.setNotationsView(notationsView);
-
-		controlsCompView.setBoardViewFace(boardView);
 
 		ChessBoardComp chessBoardComp = ChessBoardComp.getInstance(this);
 //		boardView.setBoardFace(chessBoardComp);
@@ -234,7 +231,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 				labelsConfig.userSide = AppConstants.WHITE_SIDE;
 
-				labelsConfig.topAvatar = compAvatarDrawable;
+				labelsConfig.topAvatar = opponentAvatarDrawable;
 				labelsConfig.bottomAvatar = userAvatarDrawable;
 
 				labelsConfig.topPlayerLabel = getString(R.string.computer);
@@ -247,7 +244,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 				labelsConfig.userSide = AppConstants.BLACK_SIDE;
 
-				labelsConfig.topAvatar = compAvatarDrawable;
+				labelsConfig.topAvatar = opponentAvatarDrawable;
 				labelsConfig.bottomAvatar = userAvatarDrawable;
 
 				labelsConfig.topPlayerLabel = getString(R.string.computer);
@@ -259,7 +256,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 			case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {    //w - human; b - human
 				labelsConfig.userSide = AppConstants.BLACK_SIDE;
 
-				labelsConfig.topAvatar = compAvatarDrawable;
+				labelsConfig.topAvatar = opponentAvatarDrawable;
 				labelsConfig.bottomAvatar = userAvatarDrawable;
 
 				labelsConfig.topPlayerLabel = getString(R.string.human);
@@ -270,7 +267,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 			case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {    //w - comp; b - comp
 				labelsConfig.userSide = AppConstants.BLACK_SIDE;
 
-				labelsConfig.topAvatar = compAvatarDrawable;
+				labelsConfig.topAvatar = opponentAvatarDrawable;
 				labelsConfig.bottomAvatar = userAvatarDrawable;
 
 				labelsConfig.topPlayerLabel = getString(R.string.computer);
@@ -280,7 +277,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		}
 
 		userAvatarDrawable.setSide(labelsConfig.userSide);
-		compAvatarDrawable.setSide(labelsConfig.getOpponentSide());
+		opponentAvatarDrawable.setSide(labelsConfig.getOpponentSide());
 
 		topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
 		bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
@@ -515,19 +512,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	}
 
 	private class LabelsConfig {
-/*
-		compAvatarDrawable.setSide(AppConstants.BLACK_SIDE);
-		userAvatarDrawable.setSide(AppConstants.WHITE_SIDE);
-
-		topAvatarImg.setImageDrawable(compAvatarDrawable);
-		bottomAvatarImg.setImageDrawable(userAvatarDrawable);
-
-		topPanelView.setSide(AppConstants.BLACK_SIDE);
-		bottomPanelView.setSide(AppConstants.WHITE_SIDE);
-
-		topPanelView.setPlayerLabel(getString(R.string.computer));
-		bottomPanelView.setPlayerLabel(AppData.getUserName(getActivity()));
-*/
 		int topPlayerSide;
 		int bottomPlayerSide;
 		String topPlayerLabel;
@@ -536,13 +520,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		Drawable bottomAvatar;
 		int userSide;
 
-
-
 		int getOpponentSide(){
 			return userSide == AppConstants.WHITE_SIDE? AppConstants.BLACK_SIDE: AppConstants.WHITE_SIDE;
 		}
-
 	}
-
 
 }

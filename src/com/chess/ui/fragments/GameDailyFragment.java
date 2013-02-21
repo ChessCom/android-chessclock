@@ -6,6 +6,7 @@ import android.content.*;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.*;
@@ -69,7 +70,7 @@ public class GameDailyFragment extends GameBaseFragment {
 	private GameOnlineUpdatesListener abortGameUpdateListener;
 	private GameOnlineUpdatesListener drawOfferedUpdateListener;
 
-	private GameStateUpdateUpdatesListener gameStateUpdateListener;
+	private GameStateUpdateListener gameStateUpdateListener;
 	//	private StartGameUpdateListener startGameUpdateListener;
 //	private GetGameUpdateListener getGameUpdateListener;
 	private GameOnlineUpdatesListener sendMoveUpdateListener;
@@ -98,10 +99,21 @@ public class GameDailyFragment extends GameBaseFragment {
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
 	private ControlsNetworkView controlsNetworkView;
+	private ImageView topAvatarImg;
+	private ImageView bottomAvatarImg;
+	private BoardAvatarDrawable opponentAvatarDrawable;
+	private BoardAvatarDrawable userAvatarDrawable;
+	private LabelsConfig labelsConfig;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		labelsConfig = new LabelsConfig();
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//		return inflater.inflate(R.layout.boardview_daily, container, false);
 		return inflater.inflate(R.layout.new_boardview_daily, container, false);
 	}
 
@@ -116,28 +128,22 @@ public class GameDailyFragment extends GameBaseFragment {
 		super.widgetsInit(view);
 		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
 
-
 		setTitle(R.string.daily_chess);
+
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
 		// set avatars
 		Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
+		opponentAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
+		userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
 
-		((ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID))
-				.setImageDrawable(new BoardAvatarDrawable(getActivity(), src));
+		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-		ImageView bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-		bottomAvatarImg.setImageDrawable(new BoardAvatarDrawable(getActivity(), src));
-
-		((BoardAvatarDrawable)bottomAvatarImg.getDrawable()).setSide(AppConstants.WHITE_SIDE);
-		// change avatar border
-		bottomPanelView.setSide(AppConstants.WHITE_SIDE);
-
-		// set player names
-		topPanelView.setPlayerLabel("Computer");
-		bottomPanelView.setPlayerLabel(AppData.getUserName(getActivity()));
+		labelsConfig.topAvatar = opponentAvatarDrawable;
+		labelsConfig.bottomAvatar = userAvatarDrawable;
 
 		submitButtonsLay = view.findViewById(R.id.submitButtonsLay);
 		view.findViewById(R.id.submitBtn).setOnClickListener(this);
@@ -153,7 +159,6 @@ public class GameDailyFragment extends GameBaseFragment {
 		boardView.setControlsView(controlsNetworkView);
 		boardView.setNotationsView(notationsView);
 
-		controlsNetworkView.setBoardViewFace(boardView);
 		setBoardView(boardView);
 
 //		if (extras.getBoolean(AppConstants.NOTIFICATION, false)) { // TODO restore, replace with arguments
@@ -185,7 +190,7 @@ public class GameDailyFragment extends GameBaseFragment {
 		abortGameUpdateListener = new GameOnlineUpdatesListener(ABORT_GAME_UPDATE);
 		drawOfferedUpdateListener = new GameOnlineUpdatesListener(DRAW_OFFER_UPDATE);
 
-		gameStateUpdateListener = new GameStateUpdateUpdatesListener();
+		gameStateUpdateListener = new GameStateUpdateListener();
 //		startGameUpdateListener = new StartGameUpdateListener();
 //		getGameUpdateListener = new GetGameUpdateListener();
 		sendMoveUpdateListener = new GameOnlineUpdatesListener(SEND_MOVE_UPDATE);
@@ -197,7 +202,8 @@ public class GameDailyFragment extends GameBaseFragment {
 //		showActionRefresh = true;  // TODO restore
 	}
 
-	/*@Override
+/*
+	@Override
 	protected void onNewIntent(Intent intent) {   // TODO restore, recheck logic
 		super.onNewIntent(intent);
 
@@ -207,10 +213,10 @@ public class GameDailyFragment extends GameBaseFragment {
 			if (gameIdReceived != null){
 				gameId = gameIdReceived;
 
-//				ChessBoardOnline.resetInstance();
+	//			ChessBoardOnline.resetInstance();
 
 				showSubmitButtonsLay(false);
-//				boardView.setBoardFace(getBoardFace());
+	//			boardView.setBoardFace(getBoardFace());
 				boardView.setGameActivityFace(GameOnlineScreenActivity.this);
 
 				getBoardFace().setAnalysis(false);
@@ -218,7 +224,8 @@ public class GameDailyFragment extends GameBaseFragment {
 				loadGameAndUpdate();
 			}
 		}
-	}*/
+	}
+*/
 
 	@Override
 	public void onPause() {
@@ -258,22 +265,9 @@ public class GameDailyFragment extends GameBaseFragment {
 	}
 
 	private void loadGameAndUpdate() {
-
 		// load game from DB. After load update
 		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getEchessGameParams(getActivity(), gameId),
 				getContentResolver()).executeTask();
-
-//		if (getBoardFace().isJustInitialized()) {
-//			updateGameState(gameId);
-//			getBoardFace().setJustInitialized(false);
-//		} else {
-//			LoadItem loadItem = new LoadItem();
-//			loadItem.setLoadPath(RestHelper.GET_GAME_V5);
-//			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-//			loadItem.addRequestParams(RestHelper.P_GID, gameId);
-//
-//			updateGameStateTask = new GetStringObjTask(gameStateUpdateListener).executeTask(loadItem);
-//		}
 	}
 
 	private class LoadFromDbUpdateListener extends AbstractUpdateListener<Cursor> {
@@ -296,6 +290,21 @@ public class GameDailyFragment extends GameBaseFragment {
 
 					currentGame = DBDataManager.getGameOnlineItemFromCursor(returnedObj);
 					returnedObj.close();
+
+					userPlayWhite = currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(getActivity()));
+
+					labelsConfig.topAvatar = opponentAvatarDrawable;
+					labelsConfig.bottomAvatar = userAvatarDrawable;
+
+					if (userPlayWhite) {
+						labelsConfig.userSide = AppConstants.WHITE_SIDE;
+						labelsConfig.topPlayerLabel = getBlackPlayerName();
+						labelsConfig.bottomPlayerLabel = getWhitePlayerName();
+					} else {
+						labelsConfig.userSide = AppConstants.BLACK_SIDE;
+						labelsConfig.topPlayerLabel = getWhitePlayerName();
+						labelsConfig.bottomPlayerLabel = getBlackPlayerName();
+					}
 
 					DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 
@@ -519,6 +528,18 @@ public class GameDailyFragment extends GameBaseFragment {
 
 	public void invalidateGameScreen() {
 		showSubmitButtonsLay(getBoardFace().isSubmit());
+
+		userAvatarDrawable.setSide(labelsConfig.userSide);
+		opponentAvatarDrawable.setSide(labelsConfig.getOpponentSide());
+
+		topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+		bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+
+		topPanelView.setSide(labelsConfig.getOpponentSide());
+		bottomPanelView.setSide(labelsConfig.userSide);
+
+		topPanelView.setPlayerLabel(labelsConfig.topPlayerLabel);
+		bottomPanelView.setPlayerLabel(labelsConfig.bottomPlayerLabel);
 
 //		whitePlayerLabel.setText(getWhitePlayerName());
 //		blackPlayerLabel.setText(getBlackPlayerName());
@@ -1078,9 +1099,9 @@ public class GameDailyFragment extends GameBaseFragment {
 		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 
-	private class GameStateUpdateUpdatesListener extends ActionBarUpdateListener<DailyGameByIdItem> {
+	private class GameStateUpdateListener extends ActionBarUpdateListener<DailyGameByIdItem> {
 
-		private GameStateUpdateUpdatesListener() {
+		private GameStateUpdateListener() {
 			super(getInstance(), DailyGameByIdItem.class);
 		}
 
@@ -1184,5 +1205,20 @@ public class GameDailyFragment extends GameBaseFragment {
 //			showPopupDialog(getString(R.string.error), resultMessage, ERROR_TAG);
 //		}
 //	}
+
+	private class LabelsConfig {
+		int topPlayerSide;
+		int bottomPlayerSide;
+		String topPlayerLabel;
+		String bottomPlayerLabel;
+		Drawable topAvatar;
+		Drawable bottomAvatar;
+		int userSide;
+
+		int getOpponentSide(){
+			return userSide == AppConstants.WHITE_SIDE? AppConstants.BLACK_SIDE: AppConstants.WHITE_SIDE;
+		}
+	}
+
 
 }
