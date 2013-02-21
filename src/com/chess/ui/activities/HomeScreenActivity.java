@@ -110,7 +110,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		super.onStart();
 
 		if (!isLCSBound) {
-			bindService(new Intent(this, LiveChessService.class), liveChessServiceConnectionListener, BIND_AUTO_CREATE);
+			bindService(new Intent(this, LiveChessService.class), liveChessServiceConnectionListener, BIND_IMPORTANT/*BIND_AUTO_CREATE*/);
 		}
 
 		if (lccHolder != null) {
@@ -156,9 +156,11 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		showFullScreenAd();
 		adjustActionBar();
 
+		boolean isConnected = getLccHolder() != null && getLccHolder().isConnected();
+		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
+		//getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
+
 		if (lccHolder != null) {
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, lccHolder.isConnected(), menu);
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, lccHolder.isConnected());
 			executePausedActivityLiveEvents();
 		}
 	}
@@ -271,8 +273,10 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			startActivity(intent);
 		}
 		else if (tag.equals(LOGOUT_TAG)) {
-			getLccHolder().logout();
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, getLccHolder().isConnected());
+			if (getLccHolder() != null) {
+				getLccHolder().logout();
+			}
+			getActionBarHelper().showMenuItemById(R.id.menu_signOut, false);
 		}else if(tag.equals(CHALLENGE_TAG)){
 			Log.i(TAG, "Accept challenge: " + currentChallenge);
 			challengeTaskRunner.runAcceptChallengeTask(currentChallenge);
@@ -311,9 +315,8 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 
 	private void adjustActionBar(){
 		boolean isConnected = getLccHolder() != null && getLccHolder().isConnected();
-		if (getLccHolder() != null) {
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
-		}
+		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
+
 		getActionBarHelper().showMenuItemById(R.id.menu_search, false);
 		getActionBarHelper().showMenuItemById(R.id.menu_settings, false);
 		getActionBarHelper().showMenuItemById(R.id.menu_new_game, false);
@@ -327,9 +330,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 
 		this.menu = menu;
 		boolean isConnected = getLccHolder() != null && getLccHolder().isConnected();
-		if (getLccHolder() != null) {
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
-		}
+		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
 
 		getActionBarHelper().showMenuItemById(R.id.menu_search, false, menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_settings, false, menu);

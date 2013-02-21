@@ -79,7 +79,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		super.onStart();
 
 		if (!isLCSBound) {
-			bindService(new Intent(this, LiveChessService.class), liveChessServiceConnectionListener, BIND_AUTO_CREATE);
+			bindService(new Intent(this, LiveChessService.class), liveChessServiceConnectionListener, BIND_IMPORTANT/*BIND_AUTO_CREATE*/);
 		}
 
 		if (lccHolder != null) {
@@ -121,9 +121,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected void onResume() {
 		super.onResume();
 
+		boolean isConnected = getLccHolder() != null && getLccHolder().isConnected();
+		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
+		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
+
 		if (lccHolder != null) {
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, lccHolder.isConnected(), menu);
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, lccHolder.isConnected());
 			executePausedActivityLiveEvents();
 		}
 	}
@@ -132,9 +134,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected void adjustActionBar() {
 		super.adjustActionBar();
 		boolean isConnected = getLccHolder() != null && getLccHolder().isConnected();
-		if (getLccHolder() != null) {
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
-		}
+		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
 	}
 
 	@Override
@@ -201,7 +201,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			backToHomeActivity();
 
 		} else if (tag.equals(LOGOUT_TAG)) {
-			getLccHolder().logout();
+			if (getLccHolder() != null) {
+				getLccHolder().logout();
+			}
 			backToHomeActivity();
 		} else if (tag.contains(CHALLENGE_TAG)) { // Challenge accepted!
 			Log.i(TAG, "Accept challenge: " + currentChallenge);
@@ -414,7 +416,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		}
 	}
 
-	protected LccHolder getLccHolder() {
+	protected LccHolder getLccHolder() { // todo: check null
 		return lccHolder;
 	}
 
@@ -534,9 +536,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		boolean result = super.onCreateOptionsMenu(menu);
 		this.menu = menu;
 		boolean isConnected = getLccHolder() != null && getLccHolder().isConnected();
-		if (getLccHolder() != null) {
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
-		}
+		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
 		return result;
 	}
 
