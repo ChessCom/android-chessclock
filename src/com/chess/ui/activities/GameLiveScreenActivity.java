@@ -514,10 +514,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		controlsNetworkView.enableControlButtons(isAnalysis);
 	}
 
-	@Override
+/*	@Override
 	public void switch2Chat() {
 		openChatActivity();
-	}
+	}*/
 
 	private void openChatActivity() {
 		preferencesEditor.putString(AppConstants.OPPONENT, isUserColorWhite()
@@ -571,7 +571,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
 	}
 
-	@Override
+//	@Override
 	public void showSubmitButtonsLay(boolean show) {  // TODO remove arg and get state from boardFace
 		submitButtonsLay.setVisibility(show ? View.VISIBLE : View.GONE);
 

@@ -85,6 +85,7 @@
     <string name="upgrade_gold_unlock_features_title">Gold unlock these premium features:</string>
     <string name="save">Save</string>
     <string name="delay">delay</string>
+    <string name="play_move">Play Move</string>
 
 
 </resources>

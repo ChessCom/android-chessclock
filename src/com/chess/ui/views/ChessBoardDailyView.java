@@ -16,4 +16,15 @@ public class ChessBoardDailyView extends ChessBoardNetworkView {
 		String sharedKey = AppConstants.PREF_SHOW_SUBMIT_MOVE;
 		return preferences.getBoolean(AppData.getUserName(getContext()) + sharedKey, true);
 	}
+
+	@Override
+	public void playMove() {
+		gameActivityFace.playMove();
+	}
+
+	@Override
+	public void cancelMove() {
+		gameActivityFace.cancelMove();
+	}
+
 }

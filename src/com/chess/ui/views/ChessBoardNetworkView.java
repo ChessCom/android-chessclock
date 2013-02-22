@@ -10,6 +10,7 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.BoardViewNetworkFace;
 import com.chess.ui.interfaces.GameActivityFace;
+import com.chess.ui.interfaces.GameNetworkActivityFace;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -18,6 +19,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 	private String whiteUserName;
 	private String blackUserName;
+	public GameNetworkActivityFace gameActivityFace;
 
 	public ChessBoardNetworkView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -30,7 +32,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 		whiteUserName = gameActivityFace.getWhitePlayerName();
 		blackUserName = gameActivityFace.getBlackPlayerName();
-
 	}
 
 	public void afterMove() {
@@ -213,4 +214,10 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		super.setControlsView(controlsView);
 		controlsView.setBoardViewFace(this);
 	}
+
+	public void setGameActivityFace(GameNetworkActivityFace gameActivityFace) {
+		super.setGameActivityFace(gameActivityFace);
+		this.gameActivityFace = gameActivityFace;
+	}
+
 }

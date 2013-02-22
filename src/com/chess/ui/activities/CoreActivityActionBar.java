@@ -3,8 +3,6 @@ package com.chess.ui.activities;
 import actionbarcompat.ActionBarActivity;
 import actionbarcompat.ActionBarHelper;
 import android.app.ActionBar;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -15,7 +13,6 @@ import android.support.v4.app.DialogFragment;
 import android.view.*;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
@@ -25,8 +22,8 @@ import com.chess.backend.statics.AppData;
 import com.chess.lcc.android.LccHolder;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.model.PopupItem;
-import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.PopupDialogFace;
+import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
 import com.mopub.mobileads.MoPubView;
@@ -182,8 +179,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				backToHomeActivity(); // TODO toggle comment here to go back to old app
-//				getSlidingMenu().toggle();
+//				backToHomeActivity(); // TODO toggle comment here to go back to old app
+				getSlidingMenu().toggle();
 				break;
 			case R.id.menu_settings:
 				startActivity(new Intent(this, PreferencesScreenActivity.class));

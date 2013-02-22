@@ -37,6 +37,7 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.BoardFace;
+import com.chess.ui.interfaces.GameNetworkActivityFace;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.*;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
@@ -51,7 +52,7 @@ import java.util.Calendar;
  * Date: 15.01.13
  * Time: 13:45
  */
-public class GameDailyFragment extends GameBaseFragment {
+public class GameDailyFragment extends GameBaseFragment implements GameNetworkActivityFace {
 
 	public static final String DOUBLE_SPACE = "  ";
 	private static final String DRAW_OFFER_TAG = "offer draw";
@@ -63,8 +64,6 @@ public class GameDailyFragment extends GameBaseFragment {
 	private static final int ABORT_GAME_UPDATE = 4;
 	private static final int CURRENT_GAME = 0;
 	private static final int GAMES_LIST = 1;
-
-	private View submitButtonsLay;
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 	private GameOnlineUpdatesListener abortGameUpdateListener;
@@ -104,6 +103,17 @@ public class GameDailyFragment extends GameBaseFragment {
 	private BoardAvatarDrawable opponentAvatarDrawable;
 	private BoardAvatarDrawable userAvatarDrawable;
 	private LabelsConfig labelsConfig;
+	private boolean chat;
+
+	public static GameDailyFragment createInstance(long gameId) {
+		GameDailyFragment fragment = new GameDailyFragment();
+		fragment.gameId = gameId;
+		Bundle arguments = new Bundle();
+		arguments.putLong(BaseGameItem.GAME_ID, gameId);
+		fragment.setArguments(arguments);
+
+		return fragment;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -144,10 +154,6 @@ public class GameDailyFragment extends GameBaseFragment {
 
 		labelsConfig.topAvatar = opponentAvatarDrawable;
 		labelsConfig.bottomAvatar = userAvatarDrawable;
-
-		submitButtonsLay = view.findViewById(R.id.submitButtonsLay);
-		view.findViewById(R.id.submitBtn).setOnClickListener(this);
-		view.findViewById(R.id.cancelBtn).setOnClickListener(this);
 
 //		controlsNetworkView.changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_next_game);
 		controlsNetworkView.enableGameControls(false);
@@ -244,15 +250,7 @@ public class GameDailyFragment extends GameBaseFragment {
 		DataHolder.getInstance().setInOnlineGame(gameId, false);
 	}
 
-	public static GameDailyFragment createInstance(long gameId) {
-		GameDailyFragment fragment = new GameDailyFragment();
-		fragment.gameId = gameId;
-		Bundle arguments = new Bundle();
-		arguments.putLong(BaseGameItem.GAME_ID, gameId);
-		fragment.setArguments(arguments);
 
-		return fragment;
-	}
 
 	private class MoveUpdateReceiver extends BroadcastReceiver {
 		@Override
@@ -549,6 +547,12 @@ public class GameDailyFragment extends GameBaseFragment {
 	}
 
 	@Override
+	protected void setBoardToFinishedState(){ // TODO implement state conditions logic for board
+		super.setBoardToFinishedState();
+		showSubmitButtonsLay(false);
+	}
+
+	@Override
 	public String getWhitePlayerName() {
 		if (currentGame == null)
 			return StaticData.SYMBOL_EMPTY;
@@ -708,13 +712,27 @@ public class GameDailyFragment extends GameBaseFragment {
 
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {
-		super.switch2Analysis(isAnalysis);
+		showSubmitButtonsLay(false);
+//		super.switch2Analysis(isAnalysis);
 	}
 
 	@Override
 	public void switch2Chat() {
 		openChatActivity();
 	}
+
+	@Override
+	public void playMove() {
+		sendMove();
+	}
+
+	@Override
+	public void cancelMove() {
+		showSubmitButtonsLay(false);
+
+		getBoardFace().takeBack();
+		getBoardFace().decreaseMovesCount();
+		boardView.invalidate();	}
 
 	@Override
 	public void newGame() {
@@ -776,7 +794,7 @@ public class GameDailyFragment extends GameBaseFragment {
 
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
-		submitButtonsLay.setVisibility(show ? View.VISIBLE : View.GONE);
+		controlsNetworkView.showSubmitButtons(show);
 		if (!show) {
 			getBoardFace().setSubmit(false);
 		}
@@ -787,13 +805,6 @@ public class GameDailyFragment extends GameBaseFragment {
 		inflater.inflate(R.menu.game_echess, menu); // TODO restore, recheck
 		super.onCreateOptionsMenu(menu, inflater);
 	}
-
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		MenuInflater menuInflater = getMenuInflater();
-//		menuInflater.inflate(R.menu.game_echess, menu);
-//		return super.onCreateOptionsMenu(menu);
-//	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -1039,7 +1050,7 @@ public class GameDailyFragment extends GameBaseFragment {
 	@Override
 	protected void restoreGame() {
 //		ChessBoardOnline.resetInstance();
-		boardView.setGameActivityFace(GameDailyFragment.this);
+		boardView.setGameActivityFace(this);
 
 		adjustBoardForGame();
 		getBoardFace().setJustInitialized(false);
@@ -1049,13 +1060,7 @@ public class GameDailyFragment extends GameBaseFragment {
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
-		if (view.getId() == R.id.cancelBtn) {
-			showSubmitButtonsLay(false);
-
-			getBoardFace().takeBack();
-			getBoardFace().decreaseMovesCount();
-			boardView.invalidate();
-		} else if (view.getId() == R.id.submitBtn) {
+		if (view.getId() == R.id.submitBtn) {
 			if(currentGame == null) { // TODO remove or restore after debug
 				throw new IllegalStateException("onClick Submit Button got currentGame = NULL");
 //				return;

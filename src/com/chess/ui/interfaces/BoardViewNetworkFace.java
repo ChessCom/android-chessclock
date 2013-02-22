@@ -10,4 +10,7 @@ public interface BoardViewNetworkFace extends BoardViewFace {
 
 	void showChat();
 
+	void playMove();
+
+	void cancelMove();
 }

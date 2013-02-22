@@ -18,11 +18,7 @@ public interface GameActivityFace {
 
 	void showOptions();
 
-	void showSubmitButtonsLay(boolean show);
-
 	void showChoosePieceDialog(final int col, final int row);
-
-	void switch2Chat();
 
 	void newGame();
 

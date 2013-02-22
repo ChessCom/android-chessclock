@@ -106,7 +106,7 @@ public class ControlsCompView extends ControlsBaseView {
 		this.boardViewFace = boardViewFace;
 	}
 
-	public void enableControlButtons(boolean enable) {
+	public void enableRewindButtons(boolean enable) {
 		enableGameButton(B_FORWARD_ID, enable);
 		enableGameButton(B_BACK_ID, enable);
 	}

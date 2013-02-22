@@ -22,7 +22,6 @@ import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 import com.chess.FacebookButton;
 import com.chess.R;
@@ -66,8 +65,8 @@ public class LoginButton extends FacebookButton implements Serializable{
         mPermissions = permissions;
         mHandler = new Handler();
 
-		setBackgroundResource(fb.isSessionValid() ? R.drawable.button_f_selector
-			: R.drawable.button_f_selector);
+		setBackgroundResource(fb.isSessionValid() ? R.drawable.button_facebook_selector
+			: R.drawable.button_facebook_selector);
 		setText(getResources().getString(fb.isSessionValid() ? R.string.logout
 				: R.string.connect_with_facebook));
 
@@ -133,7 +132,7 @@ public class LoginButton extends FacebookButton implements Serializable{
     private class SessionListener implements AuthListener, LogoutListener {
         
         public void onAuthSucceed() {
-			setBackgroundResource(R.drawable.button_f_selector);
+			setBackgroundResource(R.drawable.button_facebook_selector);
 			setText(getResources().getString(R.string.logout));
             SessionStore.save(mFb, getContext());
         }
@@ -146,7 +145,7 @@ public class LoginButton extends FacebookButton implements Serializable{
         
         public void onLogoutFinish() {
             SessionStore.clear(getContext());
-			setBackgroundResource(R.drawable.button_f_selector);
+			setBackgroundResource(R.drawable.button_facebook_selector);
 			setText(getResources().getString(R.string.connect_with_facebook));
         }
     }

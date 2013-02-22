@@ -5,7 +5,6 @@ import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.*;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
@@ -30,7 +30,10 @@ import com.chess.model.GameListFinishedItem;
 import com.chess.model.GameOnlineItem;
 import com.chess.ui.activities.ChatOnlineActivity;
 import com.chess.ui.activities.GameOnlineScreenActivity;
-import com.chess.ui.adapters.*;
+import com.chess.ui.adapters.CustomSectionedAdapter;
+import com.chess.ui.adapters.DailyChallengesGamesAdapter;
+import com.chess.ui.adapters.DailyCurrentGamesMyCursorAdapter;
+import com.chess.ui.adapters.DailyCurrentGamesTheirCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
@@ -449,7 +452,6 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		// when we ask server about new ids of games and challenges
 		// if server have new ids we get those games with ids
 
-
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_GAMES_ALL);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
@@ -590,11 +592,6 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-//			if (show) {
-//				Log.d("TEST", "VacationUpdateListener start loading");
-//			} else {
-//				Log.d("TEST", "VacationUpdateListener end loading");
-//			}
 			showLoadingView(show);
 		}
 
@@ -624,11 +621,6 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-//			if (show) {
-//				Log.d("TEST", "SaveFriendsListUpdateListener start loading");
-//			} else {
-//				Log.d("TEST", "SaveFriendsListUpdateListener end loading");
-//			}
 			showLoadingView(show);
 		}
 
@@ -642,39 +634,9 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		}
 	}
 
-//	private class SaveFinishedGamesListUpdateListener extends ActionBarUpdateListener<DailyFinishedGameData> {
-//		public SaveFinishedGamesListUpdateListener() {
-//			super(getInstance());
-//		}
-//
-//		@Override
-//		public void showProgress(boolean show) {
-//			super.showProgress(show);
-////			Log.d("TEST", "SaveFinishedGamesListUpdateListener showProgress");
-//			if (show) {
-//				Log.d("TEST", "SaveFinishedGamesListUpdateListener start loading");
-//			} else {
-//				Log.d("TEST", "SaveFinishedGamesListUpdateListener end loading");
-//			}
-//
-//			showLoadingView(show);
-//		}
-//
-//		@Override
-//		public void updateData(DailyFinishedGameData returnedObj) {
-//			if (getActivity() == null) {
-//				return;
-//			}
-//
-////			new LoadDataFromDbTask(finishedGamesCursorUpdateListener, DbHelper.getEchessFinishedListGamesParams(getContext()),
-////					getContentResolver()).executeTask();
-//		}
-//	}
-
 	private class GamesCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
 		public static final int CURRENT_MY = 0;
 		public static final int CURRENT_THEIR = 1;
-//		public static final int FINISHED = 2;
 
 		private int gameType;
 
@@ -686,26 +648,6 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-
-//			// TODO remove after debug
-//			switch (gameType) {
-//				case CURRENT_MY:
-//					if (show) {
-//						Log.d("TEST", "CURRENT_MY start loading");
-//					} else {
-//						Log.d("TEST", "CURRENT_MY end loading");
-//					}
-//
-//					break;
-//				case CURRENT_THEIR:
-//					if (show) {
-//						Log.d("TEST", "CURRENT_THEIR start loading");
-//
-//					} else {
-//						Log.d("TEST", "CURRENT_THEIR end loading");
-//					}
-//					break;
-//			}
 			showLoadingView(show);
 		}
 
@@ -738,9 +680,6 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 //					}
 
 					break;
-//				case FINISHED:
-//					finishedGamesCursorAdapter.changeCursor(returnedObj);
-//					break;
 			}
 		}
 
@@ -752,8 +691,6 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.no_network);
 			}
-
-//			Log.d("TEST", "GamesCursorUpdateListener showEmptyView ");
 
 			showEmptyView(true);
 		}
@@ -768,11 +705,6 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-//			if (show) {
-//				Log.d("TEST", "FriendsUpdateListener start loading");
-//			} else {
-//				Log.d("TEST", "FriendsUpdateListener end loading");
-//			}
 			showLoadingView(show);
 		}
 
@@ -787,16 +719,16 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 
 			new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, returnedObj.getData().getCurrent(),
 					getContentResolver()).executeTask();
-//			new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, returnedObj.getData().getFinished(),
-//					getContentResolver()).executeTask();
 		}
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			if (resultCode == StaticData.INTERNAL_ERROR) {
-				emptyView.setText("Internal error occurred"); // TODO adjust properly
-//				Log.d("TEST", "FriendsUpdateListener showEmptyView ");
-				showEmptyView(true);
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				showToast(ServerErrorCode.getUserFriendlyMessage(getActivity(), serverCode));
+			} else if (resultCode == StaticData.INTERNAL_ERROR) {
+				showToast("Internal error occurred"); // TODO adjust properly
+//				showEmptyView(true);
 			}
 		}
 	}
@@ -808,12 +740,8 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		acceptDrawUpdateListener = null;
 		saveCurrentGamesListUpdateListener.releaseContext();
 		saveCurrentGamesListUpdateListener = null;
-//		saveFinishedGamesListUpdateListener.releaseContext();
-//		saveFinishedGamesListUpdateListener = null;
 		currentGamesMyCursorUpdateListener.releaseContext();
 		currentGamesMyCursorUpdateListener = null;
-//		finishedGamesCursorUpdateListener.releaseContext();
-//		finishedGamesCursorUpdateListener = null;
 
 		dailyGamesUpdateListener.releaseContext();
 		dailyGamesUpdateListener = null;
@@ -824,8 +752,6 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 	}
 
 	private void showEmptyView(boolean show) {
-		Log.d("TEST", "showEmptyView show = " + show);
-
 		if (show) {
 			// don't hide loadingView if it's loading
 			if (loadingView.getVisibility() != View.VISIBLE) {

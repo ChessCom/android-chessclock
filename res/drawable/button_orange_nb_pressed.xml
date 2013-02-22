@@ -1,122 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--Outer Border-->
-    <item >
-        <shape >
-            <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@android:color/transparent" />
-            <stroke android:width="@dimen/default_stroke_width"
-                    android:color="@color/dark_grey_border"/>
-        </shape>
-    </item>
     <!--Emboss Top Level 1-->
     <item
-        android:top="2px"
-        android:left="2px"
-        android:right="2px"
-        android:bottom="4px"
+        android:top="0px"
+        android:left="0px"
+        android:right="0px"
+        android:bottom="2px"
         >
         <shape >
             <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/orange_emboss_top_1"  />
+            <solid android:color="@color/orange_emboss_p_top_1"  />
         </shape>
     </item>
 
     <!--Emboss Top Level 2-->
     <item
-        android:top="3px"
-        android:left="3px"
-        android:right="3px"
-        android:bottom="4px"
+        android:top="1px"
+        android:left="1px"
+        android:right="1px"
+        android:bottom="2px"
         >
         <shape >
             <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/orange_emboss_top_2"  />
+            <solid android:color="@color/orange_emboss_p_top_2"  />
         </shape>
     </item>
 
     <!--Emboss Bottom Level 2-->
     <item
-        android:top="4px"
+        android:top="2px"
         android:left="2px"
-        android:right="2px"
-        android:bottom="2px"
+        android:right="0px"
+        android:bottom="0px"
         >
         <shape >
             <corners android:radius="@dimen/rounded_button_radius" />
-            <solid android:color="@color/orange_emboss_bot_2"  />
+            <solid android:color="@color/orange_emboss_p_bot_2"  />
         </shape>
     </item>
     <!--Emboss Bottom Level 1-->
     <item
-        android:top="4px"
-        android:left="3px"
-        android:right="3px"
-        android:bottom="3px"
+        android:top="2px"
+        android:left="2px"
+        android:right="1px"
+        android:bottom="1px"
         >
         <shape >
             <corners android:radius="@dimen/rounded_button_radius" />
-            <solid android:color="@color/orange_emboss_bot_1"  />
+            <solid android:color="@color/orange_emboss_p_bot_1"  />
         </shape>
     </item>
 
     <!--Emboss Left Level 1-->
     <item
-        android:top="4px"
-        android:left="2px"
-        android:right="2px"
-        android:bottom="4px"
+        android:top="2px"
+        android:left="0px"
+        android:right="0px"
+        android:bottom="2px"
         >
         <shape >
             <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/orange_emboss_left_1"  />
+            <solid android:color="@color/orange_emboss_p_left_1"  />
         </shape>
     </item>
     <!--Emboss Left Level 2-->
     <item
-        android:top="4px"
-        android:left="3px"
-        android:right="4px"
-        android:bottom="4px"
+        android:top="2px"
+        android:left="1px"
+        android:right="2px"
+        android:bottom="2px"
         >
         <shape >
             <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/orange_emboss_left_2"  />
+            <solid android:color="@color/orange_emboss_p_left_2"  />
         </shape>
     </item>
 
     <!--Emboss Right Level 2-->
     <item
-        android:top="4px"
-        android:left="4px"
-        android:right="2px"
-        android:bottom="4px"
+        android:top="2px"
+        android:left="2px"
+        android:right="0px"
+        android:bottom="2px"
         >
         <shape >
             <corners android:radius="@dimen/rounded_button_radius" />
-            <solid android:color="@color/orange_emboss_right_2"  />
+            <solid android:color="@color/orange_emboss_p_right_2"  />
         </shape>
     </item>
     <!--Emboss Right Level 1-->
     <item
-        android:top="4px"
-        android:left="4px"
-        android:right="3px"
-        android:bottom="4px"
+        android:top="2px"
+        android:left="2px"
+        android:right="1px"
+        android:bottom="2px"
         >
         <shape >
             <corners android:radius="@dimen/rounded_button_radius" />
-            <solid android:color="@color/orange_emboss_right_1"  />
+            <solid android:color="@color/orange_emboss_p_right_1"  />
         </shape>
     </item>
 
     <!--Button-->
     <item
-        android:left="4px"
-        android:top="4px"
-        android:bottom="4px"
-        android:right="4px"
+        android:left="2px"
+        android:top="2px"
+        android:bottom="2px"
+        android:right="2px"
         >
         <shape android:dither="true" >
             <gradient android:angle="135" android:startColor="@color/orange_button_p_1"

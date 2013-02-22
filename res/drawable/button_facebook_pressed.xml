@@ -1,25 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:left="@dimen/button_margin4stroke"
-        android:top="@dimen/button_margin4stroke"
-        android:right="@dimen/button_margin4stroke"
-        android:bottom="@dimen/button_margin4stroke"
-        android:drawable="@drawable/button_facebook_p">
-
+    <!--Outer Border-->
+    <item >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@android:color/transparent" />
+            <stroke android:width="@dimen/default_stroke_width"
+                    android:color="@color/semi_transparent_border"/>
+        </shape>
     </item>
-
-    <item>
-        <shape android:dither="true">
-            <corners android:radius="@dimen/button_pressed_stroke_radius"/>
-            <solid android:color="@android:color/transparent"/>
-            <stroke
-                android:width="@dimen/button_pressed_stroke_width_1"
-                android:color="@color/facebook_button_pressed_stroke_1"/>
+    <!--Emboss Top Level 1-->
+    <item
+        android:top="2px"
+        android:left="2px"
+        android:right="2px"
+        android:bottom="4px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@color/f_emboss_top_1"  />
         </shape>
     </item>
 
+    <!--Emboss Top Level 2-->
+    <item
+        android:top="3px"
+        android:left="3px"
+        android:right="3px"
+        android:bottom="4px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@color/f_emboss_top_2"  />
+        </shape>
+    </item>
+
+    <!--Emboss Bottom Level 2-->
+    <item
+        android:top="4px"
+        android:left="2px"
+        android:right="2px"
+        android:bottom="2px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius" />
+            <solid android:color="@color/f_emboss_bot_2"  />
+        </shape>
+    </item>
+    <!--Emboss Bottom Level 1-->
+    <item
+        android:top="4px"
+        android:left="3px"
+        android:right="3px"
+        android:bottom="3px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius" />
+            <solid android:color="@color/f_emboss_bot_1"  />
+        </shape>
+    </item>
+
+    <!--Emboss Left Level 1-->
+    <item
+        android:top="4px"
+        android:left="2px"
+        android:right="2px"
+        android:bottom="4px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@color/f_emboss_left_1"  />
+        </shape>
+    </item>
+    <!--Emboss Left Level 2-->
+    <item
+        android:top="4px"
+        android:left="3px"
+        android:right="4px"
+        android:bottom="4px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@color/f_emboss_left_2"  />
+        </shape>
+    </item>
+
+    <!--Emboss Right Level 2-->
+    <item
+        android:top="4px"
+        android:left="4px"
+        android:right="2px"
+        android:bottom="4px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius" />
+            <solid android:color="@color/f_emboss_right_2"  />
+        </shape>
+    </item>
+    <!--Emboss Right Level 1-->
+    <item
+        android:top="4px"
+        android:left="4px"
+        android:right="3px"
+        android:bottom="4px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius" />
+            <solid android:color="@color/f_emboss_right_1"  />
+        </shape>
+    </item>
+
+    <!--Button-->
+    <item
+        android:left="4px"
+        android:top="4px"
+        android:bottom="4px"
+        android:right="4px"
+        >
+        <shape android:dither="true" >
+            <gradient android:angle="135"
+                      android:startColor="@color/f_button_p_1"
+                      android:endColor="@color/f_button_p_2"
+                />
+            <corners
+                android:radius="@dimen/rounded_button_radius"
+                />
+            <padding
+                android:left="@dimen/rounded_button_padding_left"
+                android:right="@dimen/rounded_button_padding_right"
+                android:top="@dimen/rounded_button_padding_top"
+                android:bottom="@dimen/rounded_button_padding_bottom"
+                />
+            <!--<size android:height="@dimen/facebook_button_height"/>-->
+        </shape>
+    </item>
 
 </layer-list>
-

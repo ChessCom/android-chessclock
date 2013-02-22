@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import com.chess.R;
-import com.chess.RoboButton;
 import com.chess.ui.interfaces.BoardViewNetworkFace;
 
 /**
@@ -17,18 +16,13 @@ import com.chess.ui.interfaces.BoardViewNetworkFace;
  * @author alien_roger
  * @created at: 06.03.12 7:39
  */
-public class ControlsNetworkView extends ControlsBaseView {
+public class ControlsDailyAnalysisView extends ControlsBaseView {
 
 	public static final int B_OPTIONS_ID = 0;
 	public static final int B_ANALYSIS_ID = 1;
 	public static final int B_CHAT_ID = 2;
 	public static final int B_BACK_ID = 3;
 	public static final int B_FORWARD_ID = 4;
-	public static final int B_CANCEL_ID = 5;
-	public static final int B_PLAY_ID = 6;
-
-	private static final long BLINK_DELAY = 5 * 1000;
-	private static final long UNBLINK_DELAY = 400;
 
 	protected int[] buttonsDrawableIds = new int[]{
 			R.drawable.ic_ctrl_options,
@@ -39,27 +33,24 @@ public class ControlsNetworkView extends ControlsBaseView {
 	};
 
 	private int CONTROL_BUTTON_HEIGHT = 37;
-	private int ACTION_BUTTON_MARGIN = 6;
 
 	private BoardViewNetworkFace boardViewFace;
 
-	public ControlsNetworkView(Context context) {
+	public ControlsDailyAnalysisView(Context context) {
 		super(context);
 		onCreate();
 	}
 
-	public ControlsNetworkView(Context context, AttributeSet attrs) {
+	public ControlsDailyAnalysisView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		onCreate();
 	}
-
 
 	public void onCreate() {
 		setOrientation(VERTICAL);
 
 		float density = getContext().getResources().getDisplayMetrics().density;
 		CONTROL_BUTTON_HEIGHT *= density;
-		ACTION_BUTTON_MARGIN *= density;
 
 		controlsLayout = new LinearLayout(getContext());
 		int paddingLeft = (int) getResources().getDimension(R.dimen.game_control_padding_left);
@@ -81,10 +72,6 @@ public class ControlsNetworkView extends ControlsBaseView {
 		addControlButton(B_CHAT_ID, R.drawable.button_emboss_mid_selector);
 		addControlButton(B_BACK_ID, R.drawable.button_emboss_mid_selector);
 		addControlButton(B_FORWARD_ID, R.drawable.button_emboss_right_selector);
-
-		addActionButton(B_CANCEL_ID, R.string.cancel, R.drawable.button_grey_light_selector);
-		addActionButton(B_PLAY_ID, R.string.play_move, R.drawable.button_orange_selector);
-
 		addView(controlsLayout);
 	}
 
@@ -96,33 +83,15 @@ public class ControlsNetworkView extends ControlsBaseView {
 	public void toggleControlButton(int buttonId, boolean checked) {
 	}
 
-	private void addActionButton(int buttonId, int labelId, int backId) {
-		RoboButton button = new RoboButton(getContext(), null, R.attr.orangeButton);
-		button.setBackgroundResource(backId);
-		button.setText(labelId);
-		button.setOnClickListener(this);
-		button.setId(BUTTON_PREFIX + buttonId);
-		button.setVisibility(GONE);
-		LayoutParams buttonParams = new LayoutParams(0, CONTROL_BUTTON_HEIGHT);
-		buttonParams.weight = 1;
-
-		if (buttonId == B_CANCEL_ID) {
-			buttonParams.setMargins(0, 0, ACTION_BUTTON_MARGIN, 0);
-		} else {
-			buttonParams.setMargins(ACTION_BUTTON_MARGIN, 0, 0, 0);
-		}
-
-		controlsLayout.addView(button, buttonParams);
-	}
-
 	public void onClick(View view) {  // TODO rework click handles
 		if (blocked)
 			return;
 
-		if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
+		/*if (view.getId() == BUTTON_PREFIX + B_NEW_GAME_ID) {
+			boardViewFace.newGame();
+		} else*/ if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
 			boardViewFace.showOptions();
-		}
-		if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID) {
+		} if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID) {
 			boardViewFace.switchAnalysis();
 		} else if (view.getId() == BUTTON_PREFIX + B_CHAT_ID) {
 			boardViewFace.showChat();
@@ -130,10 +99,6 @@ public class ControlsNetworkView extends ControlsBaseView {
 			boardViewFace.moveBack();
 		} else if (view.getId() == BUTTON_PREFIX + B_FORWARD_ID) {
 			boardViewFace.moveForward();
-		} else if (view.getId() == BUTTON_PREFIX + B_CANCEL_ID) {
-			boardViewFace.cancelMove();
-		} else if (view.getId() == BUTTON_PREFIX + B_PLAY_ID) {
-			boardViewFace.playMove();
 		}
 	}
 
@@ -166,45 +131,4 @@ public class ControlsNetworkView extends ControlsBaseView {
 		enableGameButton(B_FORWARD_ID, enable);
 		enableGameButton(B_BACK_ID, enable);
 	}
-
-	public void showSubmitButtons(boolean show) {
-		showGameButton(B_OPTIONS_ID, !show);
-		showGameButton(B_ANALYSIS_ID, !show);
-		showGameButton(B_CHAT_ID, !show);
-		showGameButton(B_FORWARD_ID, !show);
-		showGameButton(B_BACK_ID, !show);
-
-		showGameButton(B_CANCEL_ID, show);
-		showGameButton(B_PLAY_ID, show);
-
-		if (!show) {
-			getHandler().removeCallbacks(blinkSubmitButton);
-		}
-	}
-
-	private void blinkSubmitBtn() {
-		getHandler().removeCallbacks(blinkSubmitButton);
-		getHandler().postDelayed(blinkSubmitButton, BLINK_DELAY);
-	}
-
-	private Runnable blinkSubmitButton = new Runnable() {
-		@Override
-		public void run() {
-			findViewById(BUTTON_PREFIX + B_PLAY_ID).setBackgroundResource(R.drawable.button_grey_light_selector);
-
-			getHandler().removeCallbacks(unBlinkSubmitButton);
-			getHandler().postDelayed(unBlinkSubmitButton, UNBLINK_DELAY);
-		}
-	};
-
-	private Runnable unBlinkSubmitButton = new Runnable() {
-		@Override
-		public void run() {
-			findViewById(BUTTON_PREFIX + B_PLAY_ID).setBackgroundResource(R.drawable.button_orange_selector);
-
-			blinkSubmitBtn();
-		}
-	};
-
-
 }

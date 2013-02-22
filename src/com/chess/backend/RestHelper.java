@@ -410,10 +410,10 @@ message				false	Only used for `CHAT` command.
 //				+ LccHolder.HOST + "%2Fmembership.html" + param;
 	}
 
-	public static String formCustomPaginationRequest(LoadItem loadItem, int page) {
-		loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
+/*	public static String formCustomPaginationRequest(LoadItem loadItem, int page) {
+		loadItem.replaceRequestParams(P_PAGE, String.valueOf(page));
 		return loadItem.getLoadPath() + formUrl(loadItem.getRequestParams());
-	}
+	}*/
 
 	public static int encodeServerCode(int code) {
 		return StaticData.INTERNAL_ERROR | code << 8;
@@ -431,10 +431,10 @@ message				false	Only used for `CHAT` command.
 	public static  <CustomType> CustomType requestData(LoadItem loadItem, Class<CustomType> customTypeClass) throws InternalErrorException{
 		CustomType item = null;
 		String TAG = "RequestJsonTask";
-		String url = RestHelper.formCustomRequest(loadItem);
+		String url = formCustomRequest(loadItem);
 		String requestMethod = loadItem.getRequestMethod();
-		if (requestMethod.equals(RestHelper.POST) || requestMethod.equals(RestHelper.PUT)){
-			url = RestHelper.formPostRequest(loadItem);
+		if (requestMethod.equals(POST) || requestMethod.equals(PUT)){
+			url = formPostRequest(loadItem);
 		}
 
 		Log.d(TAG, "retrieving from url = " + url);
@@ -449,29 +449,16 @@ message				false	Only used for `CHAT` command.
 			connection.setRequestMethod(requestMethod);
 			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=" + HTTP.UTF_8);
 
-			if (RestHelper.IS_TEST_SERVER_MODE) {
+			if (IS_TEST_SERVER_MODE) {
 				Authenticator.setDefault(new Authenticator() {
 					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(RestHelper.V_TEST_NAME, RestHelper.V_TEST_NAME2.toCharArray());
+						return new PasswordAuthentication(V_TEST_NAME, V_TEST_NAME2.toCharArray());
 					}
 				});
 			}
 
-			if (requestMethod.equals(RestHelper.POST) || requestMethod.equals(RestHelper.PUT) ){
-				String query = RestHelper.formPostData(loadItem);
-				String charset = HTTP.UTF_8;
-				connection.setDoOutput(true); // Triggers POST.
-				OutputStream output = null;
-				try {
-					output = connection.getOutputStream();
-					output.write(query.getBytes(charset));
-				} finally {
-					if (output != null) try {
-						output.close();
-					} catch (IOException ex) {
-						Log.e(TAG, "Error while submitting POST data " + ex.toString());
-					}
-				}
+			if (requestMethod.equals(POST) || requestMethod.equals(PUT) ){
+				submitPostData(connection, loadItem);
 			}
 
 			final int statusCode = connection.getResponseCode();
@@ -484,7 +471,7 @@ message				false	Only used for `CHAT` command.
 
 				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
 				Log.d(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
-				throw new InternalErrorException(RestHelper.encodeServerCode(baseResponse.getCode()));
+				throw new InternalErrorException(encodeServerCode(baseResponse.getCode()));
 			}
 
 			InputStream inputStream = null;
@@ -493,20 +480,20 @@ message				false	Only used for `CHAT` command.
 				inputStream = connection.getInputStream();
 
 				resultString = convertStreamToString(inputStream);
-				if (resultString.contains(RestHelper.OBJ_START)){
-					int firstIndex = resultString.indexOf(RestHelper.OBJ_START);
+				if (resultString.contains(OBJ_START)){
+					int firstIndex = resultString.indexOf(OBJ_START);
 
-					int lastIndex = resultString.lastIndexOf(RestHelper.OBJ_END);
+					int lastIndex = resultString.lastIndexOf(OBJ_END);
 
 					resultString = resultString.substring(firstIndex, lastIndex + 1);
 
-				} else /*(!resultString.startsWith(RestHelper.OBJ_START))*/{
+				} else /*(!resultString.startsWith(OBJ_START))*/{
 //					result = StaticData.INTERNAL_ERROR;
 					Log.d(TAG, "ERROR -> WebRequest SERVER RESPONSE: " + resultString);
 					throw new InternalErrorException(StaticData.INTERNAL_ERROR);
 				}
 				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
-				if (baseResponse.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+				if (baseResponse.getStatus().equals(R_STATUS_SUCCESS)) {
 					item = gson.fromJson(resultString, customTypeClass);
 					if(item == null) {
 //						result = StaticData.RESULT_OK;
@@ -547,6 +534,24 @@ message				false	Only used for `CHAT` command.
 			}
 		}
 		return item;
+	}
+
+	private static void submitPostData(URLConnection connection, LoadItem loadItem) throws IOException {
+		String query = formPostData(loadItem);
+		String charset = HTTP.UTF_8;
+		connection.setDoOutput(true); // Triggers POST.
+		OutputStream output = null;
+		try {
+			output = connection.getOutputStream();
+			output.write(query.getBytes(charset));
+		} finally {
+			if (output != null) try {
+				output.close();
+			} catch (IOException ex) {
+				Log.e("RequestJsonTask", "Error while submiting POST data " + ex.toString());
+			}
+		}
+
 	}
 
 

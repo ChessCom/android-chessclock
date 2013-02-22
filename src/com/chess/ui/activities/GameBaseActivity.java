@@ -162,7 +162,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	}
 
 	protected void setBoardToFinishedState(){ // TODO implement state conditions logic for board
-		showSubmitButtonsLay(false);
+//		showSubmitButtonsLay(false);
 		boardView.enableAnalysis();
 
 //		boardView.setFinished(true);
@@ -181,7 +181,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {
-		showSubmitButtonsLay(false);
+//		showSubmitButtonsLay(false);
 		if (isAnalysis) {
 			analysisTxt.setVisibility(View.VISIBLE);
 			whitePlayerLabel.setVisibility(View.INVISIBLE);
@@ -194,10 +194,10 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 		}
 	}
 
-	@Override
-	public void switch2Chat() {
-		chat = true;
-	}
+//	@Override
+//	public void switch2Chat() {
+//		chat = true;
+//	}
 
 	protected abstract void restoreGame();
 

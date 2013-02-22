@@ -168,7 +168,6 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 
 			timeLeftTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
 			timeLeftTxt.setTextColor(getContext().getResources().getColor(R.color.new_light_grey));
-			timeLeftTxt.setText("2 days");
 			timeLeftTxt.setBackgroundResource(R.drawable.back_grey_emboss);
 			timeLeftTxt.setId(TIME_LEFT_ID);
 			timeLeftTxt.setFont(RoboTextView.BOLD_FONT);

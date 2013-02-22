@@ -21,17 +21,12 @@
         android:background="@color/notations_back"
         />
 
-    <com.chess.ui.views.PanelInfoGameView
-        android:id="@+id/topPanelView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-
     <com.chess.ui.views.ChessBoardDailyView
         android:id="@+id/boardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
+
 
     <com.chess.ui.views.PanelInfoGameView
         android:id="@+id/bottomPanelView"

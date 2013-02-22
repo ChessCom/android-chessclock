@@ -47,7 +47,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 	private ChessBoardCompView boardView;
-	protected TextView thinking;
+
 	private int[] compStrengthArray;
 	private NotationView notationsView;
 	private ImageView topAvatarImg;
@@ -55,6 +55,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	private BoardAvatarDrawable opponentAvatarDrawable;
 	private BoardAvatarDrawable userAvatarDrawable;
 	private LabelsConfig labelsConfig;
+	private ControlsCompView controlsCompView;
 
 	public static GameCompFragment newInstance(NewGameCompView.NewCompGameConfig config) {
 		GameCompFragment frag = new GameCompFragment();
@@ -106,9 +107,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	@Override
 	protected void widgetsInit(View view) {
 		super.widgetsInit(view);
-		ControlsCompView controlsCompView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
-
-		thinking = (TextView) view.findViewById(R.id.thinking);
+		controlsCompView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
 
 		boardView = (ChessBoardCompView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
@@ -217,10 +216,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	}
 
 	@Override
-	public void showSubmitButtonsLay(boolean show) {
-	}
-
-	@Override
 	public void updateAfterMove() {
 	}
 
@@ -296,14 +291,16 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	public void onPlayerMove() {
 //		whitePlayerLabel.setVisibility(View.VISIBLE);
 //		blackPlayerLabel.setVisibility(View.VISIBLE);
-		thinking.setVisibility(View.GONE);
+//		bottomPanelView.
+		controlsCompView.enableGameControls(true);
 	}
 
 	@Override
 	public void onCompMove() {
 //		whitePlayerLabel.setVisibility(View.GONE);
 //		blackPlayerLabel.setVisibility(View.GONE);
-		thinking.setVisibility(View.VISIBLE);
+		controlsCompView.enableGameControls(false);
+		showToast(R.string.thinking_);
 	}
 
 	@Override
@@ -344,6 +341,11 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	@Override
 	public void newGame() {
 		getActivityFace().showPreviousFragment(); // TODO
+	}
+
+	@Override
+	public void switch2Analysis(boolean isAnalysis) {
+		// TODO restore
 	}
 
 	@Override

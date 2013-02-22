@@ -8,13 +8,11 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.*;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccGameTaskRunner;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
@@ -27,8 +25,12 @@ import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.BoardFace;
+import com.chess.ui.interfaces.GameNetworkActivityFace;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
-import com.chess.ui.views.*;
+import com.chess.ui.views.ChessBoardLiveView;
+import com.chess.ui.views.ControlsNetworkView;
+import com.chess.ui.views.NotationView;
+import com.chess.ui.views.PanelInfoGameView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
@@ -38,21 +40,19 @@ import com.chess.utilities.MopubHelper;
  * Date: 26.01.13
  * Time: 11:33
  */
-public class GameLiveFragment extends GameBaseFragment implements LccEventListener, LccChatMessageListener {
+public class GameLiveFragment extends GameBaseFragment implements GameNetworkActivityFace, LccEventListener, LccChatMessageListener {
 
 
 	private static final String TAG = "GameLiveScreenActivity";
 	private static final String WARNING_TAG = "warning message popup";
 
-	private static final long BLINK_DELAY = 5 * 1000;
-	private static final long UNBLINK_DELAY = 400;
+
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 
 //	protected TextView topPlayerLabel;
 //	protected TextView topPlayerClock;
 
-	private View submitButtonsLay;
 	private GameLiveItem currentGame;
 	private ChessBoardLiveView boardView;
 	private int whitePlayerNewRating;
@@ -64,7 +64,6 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 	private View fadeLay;
 	private View gameBoardView;
 	private boolean lccInitiated;
-	private Button submitBtn;
 	private String warningMessage;
 
 	private String boardDebug; // temp
@@ -175,12 +174,6 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 //		boardView.setBoardFace(getBoardFace());
 		boardView.setGameActivityFace(this);
 
-		submitButtonsLay = view.findViewById(R.id.submitButtonsLay);
-		submitBtn = (Button) view.findViewById(R.id.submitBtn);
-		submitBtn.setOnClickListener(this);
-
-		view.findViewById(R.id.cancelBtn).setOnClickListener(this);
-
 		controlsNetworkView.enableAnalysisMode(false);
 
 //		topPlayerLabel = whitePlayerLabel;
@@ -207,11 +200,8 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 	public void onPause() {
 		dismissDialogs();
 
-
 		super.onPause();
 		getLccHolder().setActivityPausedMode(true);
-
-		handler.removeCallbacks(blinkSubmitButton);
 	}
 
 	private void updateGameState() {
@@ -442,6 +432,12 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 
 	}
 
+	@Override
+	protected void setBoardToFinishedState(){ // TODO implement state conditions logic for board
+		super.setBoardToFinishedState();
+		showSubmitButtonsLay(false);
+	}
+
 	// -----------------------------------------------------------------------------------
 
 	private void blockGame(final boolean block) {
@@ -460,58 +456,15 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 		});
 	}
 
-	protected void sendMove(String debugString) {
-
+	protected void sendMove() {
 		getBoardFace().setSubmit(false);
 		showSubmitButtonsLay(false);
 
 		String move = getBoardFace().convertMoveLive();
 		Log.i(TAG, "LCC make move: " + move);
 
-//		GameRules gameRules = ChessRules.getInstance();
-//		GameSetup gameSetup = gameRules.createDefaultGameSetup();
-//		boolean legalMove;
-
-		/*boolean legalMove;
-		try{
-			String testMove = "";
-			if (move.length() > 2)
-				testMove = Notation.coord2live(move);
-
-			final GameMove gameMove = StandardChessMoveEncoder.decodeMove(testMove, gameSetup);
-			legalMove = gameRules.isMoveLegal(gameMove, gameSetup);
-
-		} catch (Exception ex) {
-			legalMove = false;
-			BugSenseHandler.sendException(ex);
-		}*/
-
-		String stackTrace;
-		try {
-			throw new Exception();
-		} catch (Exception e) {
-			stackTrace = Log.getStackTraceString(e);
-		}
-
-		String temporaryDebugInfo =
-				"lccInitiated=" + lccInitiated +
-						", " + boardDebug +
-						", gameSeq=" + getLccHolder().getCurrentGame().getSeq() +
-						", boardHply=" + getBoardFace().getHply() +
-						", moveLive=" + getBoardFace().convertMoveLive() +
-						", gamesC=" + getLccHolder().getGamesCount() +
-						", gameId=" + getGameId() +
-						", analysisBoard=" + getBoardFace().isAnalysis() +
-						", latestMoveNumber=" + getLccHolder().getLatestMoveNumber() +
-						", debugString=" + debugString +
-						", submit=" + preferences.getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false) +
-						", movesLive=" + getLccHolder().getCurrentGame().getMoves() +
-						", moves=" + getBoardFace().getMoveListSAN() +
-						", trace=" + stackTrace;
-		temporaryDebugInfo = temporaryDebugInfo.replaceAll("\n", " ");
-
 		LccGameTaskRunner gameTaskRunner = new LccGameTaskRunner(new GameTaskListener());
-		getLccHolder().makeMove(move, gameTaskRunner, temporaryDebugInfo);
+		getLccHolder().makeMove(move, gameTaskRunner, StaticData.SYMBOL_EMPTY);
 	}
 
 	private void updatePlayerLabels() {
@@ -530,7 +483,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {
-		super.switch2Analysis(isAnalysis);
+//		super.switch2Analysis(isAnalysis);
 		if (isAnalysis) {
 			getLccHolder().setLatestMoveNumber(0);
 			ChessBoardLive.resetInstance();
@@ -541,6 +494,20 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 	@Override
 	public void switch2Chat() {
 		openChatActivity();
+	}
+
+	@Override
+	public void playMove() {
+		sendMove();
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void cancelMove() {
+		showSubmitButtonsLay(false);
+		getBoardFace().takeBack();
+		getBoardFace().decreaseMovesCount();
+		boardView.invalidate();
 	}
 
 	private void openChatActivity() {
@@ -574,7 +541,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 	@Override
 	public void updateAfterMove() {
 		if (!getBoardFace().isAnalysis())
-			sendMove("update");
+			sendMove();
 	}
 
 	@Override
@@ -601,11 +568,9 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 
 	@Override
 	public void showSubmitButtonsLay(boolean show) {  // TODO remove arg and get state from boardFace
-		submitButtonsLay.setVisibility(show ? View.VISIBLE : View.GONE);
+		controlsNetworkView.showSubmitButtons(show);
 
-		if (show) {
-			blinkSubmitBtn();
-		} else {
+		if (!show) {
 			getBoardFace().setSubmit(false);
 		}
 	}
@@ -785,29 +750,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 		}
 	}
 
-	private void blinkSubmitBtn() {
-		handler.removeCallbacks(blinkSubmitButton);
-		handler.postDelayed(blinkSubmitButton, BLINK_DELAY);
-	}
 
-	private Runnable blinkSubmitButton = new Runnable() {
-		@Override
-		public void run() {
-			submitBtn.setBackgroundResource(R.drawable.button_grey_selector);
-			submitBtn.invalidate();
-			handler.removeCallbacks(unBlinkSubmitButton);
-			handler.postDelayed(unBlinkSubmitButton, UNBLINK_DELAY);
-		}
-	};
-
-	private Runnable unBlinkSubmitButton = new Runnable() {
-		@Override
-		public void run() {
-			submitBtn.setBackgroundResource(R.drawable.button_orange_selector);
-			submitBtn.invalidate();
-			blinkSubmitBtn();
-		}
-	};
 
 
 	private void showGameEndPopup(View layout, String title, String message) {
@@ -870,14 +813,7 @@ public class GameLiveFragment extends GameBaseFragment implements LccEventListen
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
-		if (view.getId() == R.id.cancelBtn) {
-			showSubmitButtonsLay(false);
-			getBoardFace().takeBack();
-			getBoardFace().decreaseMovesCount();
-			boardView.invalidate();
-		} else if (view.getId() == R.id.submitBtn) {
-			sendMove("submit click");
-		} else if (view.getId() == R.id.newGamePopupBtn) {
+		if (view.getId() == R.id.newGamePopupBtn) {
 //			Intent intent = new Intent(this, LiveNewGameActivity.class);
 //			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //			startActivity(intent);

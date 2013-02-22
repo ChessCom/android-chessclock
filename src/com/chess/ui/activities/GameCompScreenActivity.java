@@ -164,10 +164,6 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
 	}
 
-	@Override
-	public void showSubmitButtonsLay(boolean show) {
-	}
-
     @Override
     public void updateAfterMove() {
     }

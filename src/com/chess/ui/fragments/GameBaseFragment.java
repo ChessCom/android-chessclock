@@ -43,7 +43,7 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 //	protected TextView whitePlayerLabel;
 //	protected TextView blackPlayerLabel;
 
-	protected boolean chat;
+//	protected boolean chat;
 
 //	protected TextView analysisTxt;
 	protected ViewGroup statusBarLay;
@@ -164,12 +164,11 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 	}
 
 	protected void setBoardToFinishedState(){ // TODO implement state conditions logic for board
-		showSubmitButtonsLay(false);
 		boardView.enableAnalysis();
 
 //		boardView.setFinished(true);
 		getBoardFace().setFinished(true);
-		//controlsBaseView.showBottomPart(false);
+
 		getSoundPlayer().playGameEnd();
 	}
 
@@ -181,6 +180,7 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 		startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail_)));
 	}
 
+/*
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {
 		showSubmitButtonsLay(false);
@@ -195,11 +195,7 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 			restoreGame();
 		}
 	}
-
-	@Override
-	public void switch2Chat() {
-		chat = true;
-	}
+*/
 
 	protected abstract void restoreGame();
 

@@ -653,7 +653,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		}
 	}
 
-	@Override
+//	@Override
 	public void switch2Chat() {
 		openChatActivity();
 	}
@@ -716,7 +716,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
 	}
 
-	@Override
+//	@Override
 	public void showSubmitButtonsLay(boolean show) {
 		submitButtonsLay.setVisibility(show ? View.VISIBLE : View.GONE);
 		if (!show) {

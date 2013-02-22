@@ -33,10 +33,6 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		controlsLayout.addView(createControlButton(buttonId, backId));
 	}
 
-	public void addControlButton(int position, int buttonId, int backId) {
-		controlsLayout.addView(createControlButton(buttonId, backId), position);
-	}
-
 	protected View createControlButton(int buttonId, int backId) {
 		ImageButton imageButton = new ImageButton(getContext());
 		imageButton.setImageResource(getButtonDrawablesId(buttonId));

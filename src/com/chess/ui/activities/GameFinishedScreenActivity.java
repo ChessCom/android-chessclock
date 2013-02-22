@@ -165,7 +165,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 						long localDbGameId = DBDataManager.getLong(returnedObj, DBConstants.V_GAME_ID);
 						if (localDbGameId != gameId) {
 							gameId = localDbGameId;
-							showSubmitButtonsLay(false);
+//							showSubmitButtonsLay(false);
 							boardView.setGameActivityFace(GameFinishedScreenActivity.this);
 
 							getBoardFace().setAnalysis(true);
@@ -315,10 +315,6 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		new AlertDialog.Builder(this)
 				.setTitle(R.string.options)
 				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
-	}
-
-	@Override
-	public void showSubmitButtonsLay(boolean show) {
 	}
 
 	@Override
