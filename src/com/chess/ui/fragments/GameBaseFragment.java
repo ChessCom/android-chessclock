@@ -164,7 +164,7 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 	}
 
 	protected void setBoardToFinishedState(){ // TODO implement state conditions logic for board
-		boardView.enableAnalysis();
+//		boardView.enableAnalysis(); // TODO recheck logic
 
 //		boardView.setFinished(true);
 		getBoardFace().setFinished(true);

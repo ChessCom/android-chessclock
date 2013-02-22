@@ -73,8 +73,8 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
         getBoardFace().setMode(extras.getInt(AppConstants.GAME_MODE));
 
-        if (getBoardFace().isAnalysis()) {
-            boardView.enableAnalysis();
+        if (getBoardFace().isAnalysis()) {  // TODO recheck logic
+//            boardView.enableAnalysis();
             return;
         }
 

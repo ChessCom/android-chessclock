@@ -46,8 +46,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	private static final String TAG = "GameLiveScreenActivity";
 	private static final String WARNING_TAG = "warning message popup";
 
-
-
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 
 //	protected TextView topPlayerLabel;
@@ -66,7 +64,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	private boolean lccInitiated;
 	private String warningMessage;
 
-	private String boardDebug; // temp
 	private NotationView notationsView;
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
@@ -82,7 +79,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		super.onViewCreated(view, savedInstanceState);
 
 		setTitle(R.string.live_chess);
+
 		widgetsInit(view);
+
 		lccInitiated = init();
 
 		if (!lccInitiated) {
@@ -103,6 +102,61 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG); // todo: check
 		}
 	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		if (!lccInitiated) {
+			getActivityFace().showPreviousFragment();
+			return;
+		}
+
+		getLccHolder().setActivityPausedMode(false);
+		getLccHolder().setLccChatMessageListener(this);
+		updateGameState();
+	}
+
+	@Override
+	public void onPause() {
+		dismissDialogs();
+
+		super.onPause();
+		getLccHolder().setActivityPausedMode(true);
+	}
+
+	@Override
+	protected void widgetsInit(View view) {
+		super.widgetsInit(view);
+		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
+
+		fadeLay = view.findViewById(R.id.fadeLay);
+		gameBoardView = view.findViewById(R.id.baseView);
+
+		notationsView = (NotationView) view.findViewById(R.id.notationsView);
+		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
+		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
+
+		boardView = (ChessBoardLiveView) view.findViewById(R.id.boardview);
+		boardView.setFocusable(true);
+		boardView.setTopPanelView(topPanelView);
+		boardView.setBottomPanelView(bottomPanelView);
+		boardView.setControlsView(controlsNetworkView);
+		boardView.setNotationsView(notationsView);
+
+		setBoardView(boardView);
+
+//		boardView.setBoardFace(getBoardFace());
+		boardView.setGameActivityFace(this);
+
+		controlsNetworkView.enableAnalysisMode(false);
+
+//		topPlayerLabel = whitePlayerLabel;
+//		topPlayerClock = blackPlayerLabel;
+
+//		topPlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);  // TODO restore
+	}
+
 
 	private boolean init() {
 		if (!getLccHolder().isConnected()) {
@@ -148,60 +202,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener();
 		return true;
-	}
-
-	@Override
-	protected void widgetsInit(View view) {
-		super.widgetsInit(view);
-		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
-
-		fadeLay = view.findViewById(R.id.fadeLay);
-		gameBoardView = view.findViewById(R.id.baseView);
-
-		notationsView = (NotationView) view.findViewById(R.id.notationsView);
-		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
-		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
-
-		boardView = (ChessBoardLiveView) view.findViewById(R.id.boardview);
-		boardView.setFocusable(true);
-		boardView.setTopPanelView(topPanelView);
-		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsNetworkView);
-		boardView.setNotationsView(notationsView);
-
-		setBoardView(boardView);
-
-//		boardView.setBoardFace(getBoardFace());
-		boardView.setGameActivityFace(this);
-
-		controlsNetworkView.enableAnalysisMode(false);
-
-//		topPlayerLabel = whitePlayerLabel;
-//		topPlayerClock = blackPlayerLabel;
-
-//		topPlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);  // TODO restore
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		if (!lccInitiated) {
-			getActivityFace().showPreviousFragment();
-			return;
-		}
-
-		getLccHolder().setActivityPausedMode(false);
-		getLccHolder().setLccChatMessageListener(this);
-		updateGameState();
-	}
-
-	@Override
-	public void onPause() {
-		dismissDialogs();
-
-		super.onPause();
-		getLccHolder().setActivityPausedMode(true);
 	}
 
 	private void updateGameState() {
@@ -340,8 +340,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			playSound = i == actualMovesSize - 1;
 			getBoardFace().makeMove(move, playSound);
 		}
-
-		boardDebug = "lastHply=" + getBoardFace().getHply() + ", lastMoves=" + actualMovesSize;
 
 		getBoardFace().setMovesCount(actualMovesSize);
 

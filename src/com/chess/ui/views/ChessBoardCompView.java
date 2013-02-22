@@ -28,8 +28,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 	private static final String DIVIDER_1 = "|";
 	private static final String DIVIDER_2 = ":";
-//	private boolean hint; // TODO make independent from board
-//    private boolean computerMoving; // TODO make independent from board
+
 	private int compStrength;
 	private int[] compStrengthArray;
 	private ComputeMoveTask computeMoveTask;
@@ -51,7 +50,6 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
     public void setGameActivityFace(GameCompActivityFace gameActivityFace) {
 		super.setGameActivityFace(gameActivityFace);
-
         gameCompActivityFace = gameActivityFace;
 
 		compStrength = compStrengthArray[AppData.getCompStrength(getContext())];
@@ -70,12 +68,12 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	}
 
 	private ChessBoardComp getBoardComp(){
-		return ChessBoardComp.getInstance(gameActivityFace);
+		return ChessBoardComp.getInstance(gameCompActivityFace);
 	}
 
 	public void afterMove() {
         getBoardFace().setMovesCount(getBoardFace().getHply());
-		gameActivityFace.invalidateGameScreen();
+		gameCompActivityFace.invalidateGameScreen();
 
         if (isGameOver())
             return;
@@ -172,7 +170,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 			getBoardFace().setMovesCount(getBoardFace().getHply());
 
-			gameActivityFace.invalidateGameScreen();
+			gameCompActivityFace.invalidateGameScreen();
 			gameCompActivityFace.onPlayerMove();
 			invalidate();
 
@@ -314,7 +312,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 						((to > 55) && (getBoardFace().getSide() == ChessBoard.DARK))) &&
                         (getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
 
-                    gameActivityFace.showChoosePieceDialog(col, row);
+					gameCompActivityFace.showChoosePieceDialog(col, row);
                     return true;
                 }
                 if (found && getBoardFace().makeMove(move)) {
@@ -385,7 +383,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
         }
     }
 
-    @Override
+//    @Override
     public void flipBoard() {
         if (!isComputerMoving()) {
             getBoardFace().setReside(!getBoardFace().isReside());
@@ -400,7 +398,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
                 computerMove(compStrength);
             }
             invalidate();
-			gameActivityFace.invalidateGameScreen();
+			gameCompActivityFace.invalidateGameScreen();
         }
     }
 
@@ -410,9 +408,10 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		controlsCompView.enableGameButton(ControlsCompView.B_HINT_ID, !getBoardFace().isAnalysis());
 	}
 
-	public void enableAnalysis() {
-		gameActivityFace.switch2Analysis(true);  // will open new screen
-	}
+//	@Override
+//	public void enableAnalysis() {   // TODO recheck logic
+//		gameCompActivityFace.switch2Analysis(true);  // will open new screen
+//	}
 
 	@Override
     public void moveBack() {
@@ -422,7 +421,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
             pieceSelected = false;
             getBoardFace().takeBack();
             invalidate();
-			gameActivityFace.invalidateGameScreen();
+			gameCompActivityFace.invalidateGameScreen();
         }
     }
 
@@ -432,7 +431,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
             pieceSelected = false;
             getBoardFace().takeNext();
             invalidate();
-			gameActivityFace.invalidateGameScreen();
+			gameCompActivityFace.invalidateGameScreen();
         }
     }
 

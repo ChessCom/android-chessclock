@@ -16,7 +16,6 @@ import java.util.TreeSet;
 public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardViewTacticsFace {
 
 	private GameTacticsActivityFace gameTacticsActivityFace;
-	private ControlsTacticsView controlsTacticsView;
 
 
 	public ChessBoardTacticsView(Context context, AttributeSet attrs) {
@@ -32,7 +31,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
     public void afterMove() {
 		getBoardFace().setMovesCount(getBoardFace().getHply());
-		gameActivityFace.invalidateGameScreen();
+		gameTacticsActivityFace.invalidateGameScreen();
 
 		if (!getBoardFace().isAnalysis()) {
 			gameTacticsActivityFace.verifyMove();
@@ -118,7 +117,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
                         ((to > 55) && (getBoardFace().getSide() == ChessBoard.DARK))) &&
                         (getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
 
-                    gameActivityFace.showChoosePieceDialog(col, row);
+                    gameTacticsActivityFace.showChoosePieceDialog(col, row);
                     return true;
                 }
                 if (found && getBoardFace().makeMove(move)) {
@@ -170,7 +169,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
                 handler.removeCallbacks(this);
                 handler.postDelayed(this, StaticData.WAKE_SCREEN_TIMEOUT);
             } else
-                gameActivityFace.turnScreenOff();
+                gameTacticsActivityFace.turnScreenOff();
 
         }
     };
@@ -206,6 +205,10 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 		gameTacticsActivityFace.showHint();
     }
 
+//	public void enableAnalysis() {  // TODO recheck logic
+//		gameActivityFace.switch2Analysis(true);
+//	}
+
 
 //	public void setFinished(boolean finished) {
 //		this.finished = finished;
@@ -228,6 +231,5 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
 	public void setControlsView(ControlsTacticsView controlsView) {
 		super.setControlsView(controlsView);
-		this.controlsTacticsView = controlsView;
 	}
 }

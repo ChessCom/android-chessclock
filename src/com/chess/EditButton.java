@@ -70,13 +70,13 @@ public class EditButton extends RoboEditText {
 	public boolean onTouchEvent(MotionEvent event) {
 		// get width of editText
 		int width = getWidth();
-		// get width of our close icon
+		// get width of our closeBoard icon
 		int iconWidth = closeBtn.getIntrinsicWidth();
 		// add right padding
 		int paddingRight = getPaddingRight();
 
 		int rightOffset = width - iconWidth - paddingRight;
-		// if user touched up at close button
+		// if user touched up at closeBoard button
 
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:

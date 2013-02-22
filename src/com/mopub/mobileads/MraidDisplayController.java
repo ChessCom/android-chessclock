@@ -40,7 +40,7 @@ class MraidDisplayController extends MraidAbstractController {
     // Tracks whether this controller's view responds to expand() calls.
     private final ExpansionStyle mExpansionStyle;
 
-    // Tracks how this controller's view should display its native close button.
+    // Tracks how this controller's view should display its native closeBoard button.
     private final NativeCloseButtonStyle mNativeCloseButtonStyle;
 
     // Separate instance of MraidView, for displaying "two-part" creatives via the expand(URL) API.
@@ -91,10 +91,10 @@ class MraidDisplayController extends MraidAbstractController {
         }
     };
     
-    // Native close button, used for expanded content.
+    // Native closeBoard button, used for expanded content.
     private ImageView mCloseButton;
     
-    // Tracks whether expanded content provides its own, non-native close button.
+    // Tracks whether expanded content provides its own, non-native closeBoard button.
     private boolean mAdWantsCustomCloseButton;
     
     // The scale factor for a dip (relative to a 160 dpi screen).

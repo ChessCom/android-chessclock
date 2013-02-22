@@ -1041,8 +1041,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			controlsNetworkView.enableGameControls(true);
 			boardView.lockBoard(false);
 
-			if (getBoardFace().isAnalysis()) {
-				boardView.enableAnalysis();
+			if (getBoardFace().isAnalysis()) {  // TODO recheck logic
+//				boardView.enableAnalysis();
 				return;
 			}
 

@@ -267,7 +267,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 
 			} else {
 				ChessBoardOnline.resetInstance();
-				getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
+				getActivityFace().openFragment(GameDailyFragment.newInstance(gameListCurrentItem.getGameId()));
 //				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
 //				intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
 //
@@ -293,7 +293,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 
 			} else {
 				ChessBoardOnline.resetInstance();
-				getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
+				getActivityFace().openFragment(GameDailyFragment.newInstance(gameListCurrentItem.getGameId()));
 //				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
 //				intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
 //

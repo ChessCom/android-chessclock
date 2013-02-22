@@ -114,7 +114,7 @@ public class SlidingMenu extends RelativeLayout {
 	public interface OnCloseListener {
 
 		/**
-		 * On close.
+		 * On closeBoard.
 		 */
 		public void onClose();
 	}

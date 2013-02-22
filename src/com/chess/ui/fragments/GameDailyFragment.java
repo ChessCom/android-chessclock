@@ -105,7 +105,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private LabelsConfig labelsConfig;
 	private boolean chat;
 
-	public static GameDailyFragment createInstance(long gameId) {
+	public static GameDailyFragment newInstance(long gameId) {
 		GameDailyFragment fragment = new GameDailyFragment();
 		fragment.gameId = gameId;
 		Bundle arguments = new Bundle();
@@ -144,16 +144,17 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
-		// set avatars
-		Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
-		opponentAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
-		userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
+		{// set avatars
+			Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
+			opponentAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
+			userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
 
-		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-		labelsConfig.topAvatar = opponentAvatarDrawable;
-		labelsConfig.bottomAvatar = userAvatarDrawable;
+			labelsConfig.topAvatar = opponentAvatarDrawable;
+			labelsConfig.bottomAvatar = userAvatarDrawable;
+		}
 
 //		controlsNetworkView.changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_next_game);
 		controlsNetworkView.enableGameControls(false);
@@ -713,6 +714,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {
 		showSubmitButtonsLay(false);
+
+		getActivityFace().openFragment(GameDailyAnalysisFragment.newInstance(gameId));
 //		super.switch2Analysis(isAnalysis);
 	}
 
@@ -1124,8 +1127,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			controlsNetworkView.enableGameControls(true);
 			boardView.lockBoard(false);
 
-			if (getBoardFace().isAnalysis()) {
-				boardView.enableAnalysis();
+			if (getBoardFace().isAnalysis()) {  // TODO recheck logic
+//				boardView.enableAnalysis();
 				return;
 			}
 

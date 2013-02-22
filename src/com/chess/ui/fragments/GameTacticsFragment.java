@@ -154,7 +154,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			if (DBDataManager.haveSavedTacticGame(getActivity())) {
 				// TODO load tactic item from batch
 				tacticItem = DBDataManager.getLastTacticItemFromDb(getActivity());
-				setTacticToBoard(tacticItem);
+				adjustBoardForGame();
 
 				if (getBoardFace().isLatestMoveMadeUser()) {
 					verifyMove();
@@ -442,7 +442,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 			tacticItem = DBDataManager.getLastTacticItemFromDb(getActivity());
 
-			setTacticToBoard(tacticItem);
+			adjustBoardForGame();
 			currentTacticAnswerCnt = 0;
 		} else {
 			loadNewTacticsBatch();
@@ -723,9 +723,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			case R.id.menu_options:
 				showOptions();
 				break;
-			case R.id.menu_reside:
-				boardView.flipBoard();
-				break;
+//			case R.id.menu_reside:
+//				boardView.flipBoard();
+//				break;
 			case R.id.menu_analysis:
 				boardView.switchAnalysis();
 				break;
@@ -808,15 +808,15 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			return;
 		}
 
-		setTacticToBoard(tacticItem);
+		adjustBoardForGame();
 	}
 
 	@Override
 	public void restart() {
-		setTacticToBoard(tacticItem);
+		adjustBoardForGame();
 	}
 
-	private void setTacticToBoard(TacticItem.Data tacticItem) {
+	private void adjustBoardForGame() {
 		if (!tacticItemIsValid()) { // just in case something weird happen :)
 			return;
 		}
@@ -890,7 +890,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			if (AppData.isGuest(getActivity()) || noInternet) {
 				getNextTactic();
 			} else {
-				setTacticToBoard(tacticItem);
+				adjustBoardForGame();
 			}
 			tacticItem.setRetry(true);
 			dismissDialogs();

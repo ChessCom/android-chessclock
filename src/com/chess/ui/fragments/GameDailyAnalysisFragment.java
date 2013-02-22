@@ -25,8 +25,10 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.BoardFace;
+import com.chess.ui.interfaces.GameAnalysisFace;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.*;
+import com.chess.ui.views.drawables.AnalysisBackDrawable;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -37,14 +39,14 @@ import com.chess.utilities.MopubHelper;
  * Date: 22.02.13
  * Time: 7:26
  */
-public class GameDailyAnalysisFragment extends GameBaseFragment {
+public class GameDailyAnalysisFragment extends GameBaseFragment implements GameAnalysisFace {
 
 	public static final String DOUBLE_SPACE = "  ";
 	private static final String ERROR_TAG = "send request failed popup";
 
 	private static final int CURRENT_GAME = 0;
 
-	private ChessBoardNetworkView boardView;
+	private ChessBoardAnalysisView boardView;
 
 	private DailyGameByIdItem.Data currentGame;
 	private long gameId;
@@ -54,14 +56,15 @@ public class GameDailyAnalysisFragment extends GameBaseFragment {
 	private NotationView notationsView;
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
-	private ControlsNetworkView controlsNetworkView;
+	private ControlsAnalysisView controlsView;
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
 	private BoardAvatarDrawable opponentAvatarDrawable;
 	private BoardAvatarDrawable userAvatarDrawable;
 	private LabelsConfig labelsConfig;
+	private Drawable backgroundDrawable;
 
-	public static GameDailyAnalysisFragment createInstance(long gameId) {
+	public static GameDailyAnalysisFragment newInstance(long gameId) {
 		GameDailyAnalysisFragment fragment = new GameDailyAnalysisFragment();
 		fragment.gameId = gameId;
 		Bundle arguments = new Bundle();
@@ -76,6 +79,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment {
 		super.onCreate(savedInstanceState);
 
 		labelsConfig = new LabelsConfig();
+		backgroundDrawable = new AnalysisBackDrawable();
 	}
 
 	@Override
@@ -86,38 +90,48 @@ public class GameDailyAnalysisFragment extends GameBaseFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		setTitle(R.string.daily_analysis);
+
 		widgetsInit(view);
 	}
 
 	@Override
 	protected void widgetsInit(View view) {
 		super.widgetsInit(view);
-		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
 
-		setTitle(R.string.daily_chess);
-
+		controlsView = (ControlsAnalysisView) view.findViewById(R.id.controlsAnalysisView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
-		// set avatars
-		Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
-		opponentAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
-		userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
+		if (AppUtils.HONEYCOMB_PLUS_API) {
+			bottomPanelView.setBackground(backgroundDrawable);
+			controlsView.setBackground(backgroundDrawable);
+		} else {
+			bottomPanelView.setBackgroundDrawable(backgroundDrawable);
+			controlsView.setBackgroundDrawable(backgroundDrawable);
+		}
 
-		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+		{// set avatars
+			Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
+			opponentAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
+			userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
 
-		labelsConfig.topAvatar = opponentAvatarDrawable;
-		labelsConfig.bottomAvatar = userAvatarDrawable;
+			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-		controlsNetworkView.enableGameControls(false);
+			labelsConfig.topAvatar = opponentAvatarDrawable;
+			labelsConfig.bottomAvatar = userAvatarDrawable;
+		}
 
-		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
+		controlsView.enableGameControls(false);
+
+		boardView = (ChessBoardAnalysisView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsNetworkView);
+		boardView.setControlsView(controlsView);
 		boardView.setNotationsView(notationsView);
 
 		setBoardView(boardView);
@@ -128,8 +142,10 @@ public class GameDailyAnalysisFragment extends GameBaseFragment {
 
 	@Override
 	public void onStart() {
-		init();
 		super.onStart();
+
+		init();
+
 		DataHolder.getInstance().setInOnlineGame(gameId, true);
 		loadGame();
 	}
@@ -165,6 +181,16 @@ public class GameDailyAnalysisFragment extends GameBaseFragment {
 				getContentResolver()).executeTask();
 	}
 
+	@Override
+	public void restart() {
+		adjustBoardForGame();
+	}
+
+	@Override
+	public void closeBoard() {
+		getActivityFace().showPreviousFragment();
+	}
+
 	private class LoadFromDbUpdateListener extends AbstractUpdateListener<Cursor> {
 
 		private int listenerCode;
@@ -177,7 +203,6 @@ public class GameDailyAnalysisFragment extends GameBaseFragment {
 		@Override
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
-
 
 			getSoundPlayer().playGameStart();
 
@@ -201,7 +226,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment {
 
 			DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 
-			controlsNetworkView.enableGameControls(true);
+			controlsView.enableGameControls(true);
 			boardView.lockBoard(false);
 
 			adjustBoardForGame();
@@ -214,7 +239,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment {
 //		boardView.setFinished(false);
 		getBoardFace().setFinished(false);
 
-		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
+//		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName()); // TODO recheck logic
 
 //		timeRemains = gameInfoItem.getTimeRemaining() + gameInfoItem.getTimeRemainingUnits();
 

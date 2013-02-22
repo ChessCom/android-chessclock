@@ -5,10 +5,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import com.chess.R;
-import com.chess.ui.interfaces.BoardViewNetworkFace;
+import com.chess.ui.interfaces.BoardViewAnalysisFace;
 
 /**
  * GamePanelTestActivity class
@@ -16,32 +15,32 @@ import com.chess.ui.interfaces.BoardViewNetworkFace;
  * @author alien_roger
  * @created at: 06.03.12 7:39
  */
-public class ControlsDailyAnalysisView extends ControlsBaseView {
+public class ControlsAnalysisView extends ControlsBaseView {
 
-	public static final int B_OPTIONS_ID = 0;
-	public static final int B_ANALYSIS_ID = 1;
-	public static final int B_CHAT_ID = 2;
-	public static final int B_BACK_ID = 3;
-	public static final int B_FORWARD_ID = 4;
+	public static final int B_RESTART_ID = 0;
+	public static final int B_BACK_ID = 1;
+	public static final int B_FLIP_ID = 2;
+	public static final int B_FORWARD_ID = 3;
+	public static final int B_CLOSE_ID = 4;
 
 	protected int[] buttonsDrawableIds = new int[]{
-			R.drawable.ic_ctrl_options,
-			R.drawable.ic_ctrl_analysis,
-			R.drawable.ic_ctrl_chat,
+			R.drawable.ic_ctrl_restart,
 			R.drawable.ic_ctrl_back,
-			R.drawable.ic_ctrl_fwd
+			R.drawable.ic_ctrl_flip,
+			R.drawable.ic_ctrl_fwd,
+			R.drawable.ic_ctrl_cancel
 	};
 
 	private int CONTROL_BUTTON_HEIGHT = 37;
 
-	private BoardViewNetworkFace boardViewFace;
+	private BoardViewAnalysisFace boardViewFace;
 
-	public ControlsDailyAnalysisView(Context context) {
+	public ControlsAnalysisView(Context context) {
 		super(context);
 		onCreate();
 	}
 
-	public ControlsDailyAnalysisView(Context context, AttributeSet attrs) {
+	public ControlsAnalysisView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		onCreate();
 	}
@@ -67,11 +66,12 @@ public class ControlsDailyAnalysisView extends ControlsBaseView {
 
 		controlsLayout.setLayoutParams(defaultLinLayParams);
 
-		addControlButton(B_OPTIONS_ID, R.drawable.button_emboss_left_selector);
-		addControlButton(B_ANALYSIS_ID, R.drawable.button_emboss_mid_selector);
-		addControlButton(B_CHAT_ID, R.drawable.button_emboss_mid_selector);
+		addControlButton(B_RESTART_ID, R.drawable.button_emboss_left_selector);
 		addControlButton(B_BACK_ID, R.drawable.button_emboss_mid_selector);
-		addControlButton(B_FORWARD_ID, R.drawable.button_emboss_right_selector);
+		addControlButton(B_FLIP_ID, R.drawable.button_emboss_mid_selector);
+		addControlButton(B_FORWARD_ID, R.drawable.button_emboss_mid_selector);
+		addControlButton(B_CLOSE_ID, R.drawable.button_emboss_right_selector);
+
 		addView(controlsLayout);
 	}
 
@@ -87,36 +87,21 @@ public class ControlsDailyAnalysisView extends ControlsBaseView {
 		if (blocked)
 			return;
 
-		/*if (view.getId() == BUTTON_PREFIX + B_NEW_GAME_ID) {
-			boardViewFace.newGame();
-		} else*/ if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
-			boardViewFace.showOptions();
-		} if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID) {
-			boardViewFace.switchAnalysis();
-		} else if (view.getId() == BUTTON_PREFIX + B_CHAT_ID) {
-			boardViewFace.showChat();
+		if (view.getId() == BUTTON_PREFIX + B_RESTART_ID) {
+			boardViewFace.restart();
 		} else if (view.getId() == BUTTON_PREFIX + B_BACK_ID) {
 			boardViewFace.moveBack();
+		} if (view.getId() == BUTTON_PREFIX + B_FLIP_ID) {
+			boardViewFace.flipBoard();
 		} else if (view.getId() == BUTTON_PREFIX + B_FORWARD_ID) {
 			boardViewFace.moveForward();
+		} else if (view.getId() == BUTTON_PREFIX + B_CLOSE_ID) {
+			boardViewFace.closeBoard();
 		}
 	}
 
-	public void setBoardViewFace(BoardViewNetworkFace boardViewFace) {
+	public void setBoardViewFace(BoardViewAnalysisFace boardViewFace) {
 		this.boardViewFace = boardViewFace;
-	}
-
-	public void haveNewMessage(boolean newMessage) {
-		int imgId = newMessage ? R.drawable.ic_chat_nm : R.drawable.ic_chat;
-
-		((ImageButton) findViewById(BUTTON_PREFIX + B_CHAT_ID)).setImageResource(imgId);
-		invalidate();
-	}
-
-	public void enableAnalysisMode(boolean enable) {
-		enableGameButton(B_ANALYSIS_ID, enable);
-		enableGameButton(B_FORWARD_ID, enable);
-		enableGameButton(B_BACK_ID, enable);
 	}
 
 	public void enableControlButtons(boolean enable) {
@@ -125,10 +110,9 @@ public class ControlsDailyAnalysisView extends ControlsBaseView {
 	}
 
 	public void enableGameControls(boolean enable) {
-		enableGameButton(B_OPTIONS_ID, enable);
-		enableGameButton(B_ANALYSIS_ID, enable);
-		enableGameButton(B_CHAT_ID, enable);
-		enableGameButton(B_FORWARD_ID, enable);
+		enableGameButton(B_RESTART_ID, enable);
 		enableGameButton(B_BACK_ID, enable);
+		enableGameButton(B_FLIP_ID, enable);
+		enableGameButton(B_FORWARD_ID, enable);
 	}
 }

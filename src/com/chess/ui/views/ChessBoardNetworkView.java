@@ -146,6 +146,15 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		return true;
 	}
 
+/*	@Override
+	public void flipBoard() {
+		getBoardFace().setReside(!getBoardFace().isReside());
+
+		invalidate();
+		gameActivityFace.invalidateGameScreen();
+	}*/
+
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (useTouchTimer) { // start count before next touch

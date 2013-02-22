@@ -86,6 +86,7 @@
     <string name="save">Save</string>
     <string name="delay">delay</string>
     <string name="play_move">Play Move</string>
+    <string name="daily_analysis">Daily Analysis</string>
 
 
 </resources>

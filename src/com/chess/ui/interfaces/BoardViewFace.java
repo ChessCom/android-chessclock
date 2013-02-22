@@ -10,7 +10,7 @@ public interface BoardViewFace {
 
 	void showOptions();
 
-	void flipBoard();
+//	void flipBoard();
 
 	void switchAnalysis();
 

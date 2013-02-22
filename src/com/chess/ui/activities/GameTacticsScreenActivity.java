@@ -681,9 +681,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			case R.id.menu_options:
 				showOptions();
 				break;
-			case R.id.menu_reside:
-				boardView.flipBoard();
-				break;
+//			case R.id.menu_reside:
+//				boardView.flipBoard();
+//				break;
 			case R.id.menu_analysis:
 				boardView.switchAnalysis();
 				break;

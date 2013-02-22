@@ -124,8 +124,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		getBoardFace().setMode(getArguments().getInt(MODE));
 
 
-		if (getBoardFace().isAnalysis()) {
-			boardView.enableAnalysis();
+		if (getBoardFace().isAnalysis()) {  // TODO recheck logic
+//			boardView.enableAnalysis();
 			return;
 		}
 

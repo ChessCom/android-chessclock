@@ -20,8 +20,8 @@ import com.chess.ui.interfaces.BoardViewTacticsFace;
 public class ControlsTacticsView extends ControlsBaseView {
 
 	public static final int B_OPTIONS_ID = 0;
-	public static final int B_ANALYSIS_ID = 1;  // restart
-	public static final int B_RESTART_ID = 1;  // restart
+	public static final int B_ANALYSIS_ID = 1;
+	public static final int B_RESTART_ID = 1;
 	public static final int B_HELP_ID = 2;
 	public static final int B_HINT_ID = 2;
 	public static final int B_STATS_ID = 2;
@@ -89,7 +89,6 @@ public class ControlsTacticsView extends ControlsBaseView {
 		this.boardViewFace = boardViewFace;
 	}
 
-
 	private void addNextButton() {
 		RoboButton nextButton = new RoboButton(getContext());
 		nextButton.setText(R.string.next);
@@ -149,7 +148,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 	public void showWrong() {
 		state = State.WRONG;
 		// restart
-		changeGameButton(B_ANALYSIS_ID, R.drawable.ic_ctrl_restore);
+		changeGameButton(B_ANALYSIS_ID, R.drawable.ic_ctrl_restart);
 		// hint
 		changeGameButton(B_HELP_ID, R.drawable.ic_ctrl_hint);
 		// next

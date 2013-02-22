@@ -109,7 +109,7 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 //				}
 //			} finally {
 //				if (inputStream != null) {
-//					inputStream.close();
+//					inputStream.closeBoard();
 //				}
 //			}
 //
@@ -150,7 +150,7 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 //			output.write(query.getBytes(charset));
 //		} finally {
 //			if (output != null) try {
-//				output.close();
+//				output.closeBoard();
 //			} catch (IOException ex) {
 //				Log.e(TAG, "Error while submiting POST data " + ex.toString());
 //			}

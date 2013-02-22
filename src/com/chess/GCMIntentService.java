@@ -354,7 +354,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 //				}
 //			} finally {
 //				if (inputStream != null) {
-//					inputStream.close();
+//					inputStream.closeBoard();
 //				}
 //			}
 //
@@ -402,7 +402,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 //			output.write(query.getBytes(charset));
 //		} finally {
 //			if (output != null) try {
-//				output.close();
+//				output.closeBoard();
 //			} catch (IOException ex) {
 //				Log.e(TAG, "Error while submiting POST data " + ex.toString());
 //			}

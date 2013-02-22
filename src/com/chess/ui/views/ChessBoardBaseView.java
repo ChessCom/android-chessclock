@@ -90,7 +90,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected Handler handler;
 	protected boolean userActive;
 	protected Resources resources;
-	protected GameActivityFace gameActivityFace;
+	private GameActivityFace gameActivityFace;
 	protected boolean locked;
 	protected PaintFlagsDrawFilter drawFilter;
 	private float density;
@@ -227,14 +227,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	@Override
-	public void flipBoard() {
-		getBoardFace().setReside(!getBoardFace().isReside());
-
-		invalidate();
-		gameActivityFace.invalidateGameScreen();
-	}
-
-	@Override
 	public void moveBack() {
 //		finished = false;
 		getBoardFace().setFinished(false);
@@ -254,9 +246,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		gameActivityFace.switch2Analysis(isAnalysis);
 	}
 
-	public void enableAnalysis() {
-		gameActivityFace.switch2Analysis(true);
-	}
+//	public void enableAnalysis() {  // TODO recheck logic
+//		gameActivityFace.switch2Analysis(true);
+//	}
 
 	@Override
 	public void moveForward() {

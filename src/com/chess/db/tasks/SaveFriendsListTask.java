@@ -136,7 +136,7 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 //				}
 //			} finally {
 //				if (inputStream != null) {
-//					inputStream.close();
+//					inputStream.closeBoard();
 //				}
 //			}
 //

@@ -771,7 +771,7 @@ public class CustomViewAbove extends ViewGroup {
 				mActivePointerId = INVALID_POINTER;
 				endDrag();
 			} else if (mQuickReturn && mViewBehind.menuTouchInQuickReturn(mContent, mCurItem, ev.getX() + mScrollX)) {
-				// close the menu
+				// closeBoard the menu
 				setCurrentItem(1);
 				endDrag();
 			}

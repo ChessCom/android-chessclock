@@ -75,7 +75,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		menuItem.selected = true;
 		((BaseAdapter)parent.getAdapter()).notifyDataSetChanged();
 
-		// TODO adjust switch/close when the same fragment opened
+		// TODO adjust switch/closeBoard when the same fragment opened
 		switch (menuItem.iconRes) {
 			case R.drawable.ic_nav_upgrade:
 				getActivityFace().openFragment(new UpgradeFragment());

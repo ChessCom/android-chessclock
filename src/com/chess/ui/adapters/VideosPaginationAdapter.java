@@ -111,7 +111,7 @@ public class VideosPaginationAdapter extends PaginationAdapter<VideoItem.VideoDa
 //
 //			} finally {
 //				if (inputStream != null) {
-//					inputStream.close();
+//					inputStream.closeBoard();
 //				}
 //			}
 //

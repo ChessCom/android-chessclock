@@ -156,7 +156,7 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 //			sb.append(line);
 //		}
 //
-//		is.close();
+//		is.closeBoard();
 //
 //		return sb.toString();
 //	}

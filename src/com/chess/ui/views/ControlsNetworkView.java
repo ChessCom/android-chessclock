@@ -2,6 +2,7 @@ package com.chess.ui.views;
 
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ public class ControlsNetworkView extends ControlsBaseView {
 	private int ACTION_BUTTON_MARGIN = 6;
 
 	private BoardViewNetworkFace boardViewFace;
+	private Handler handler;
 
 	public ControlsNetworkView(Context context) {
 		super(context);
@@ -56,6 +58,8 @@ public class ControlsNetworkView extends ControlsBaseView {
 
 	public void onCreate() {
 		setOrientation(VERTICAL);
+
+		handler = new Handler();
 
 		float density = getContext().getResources().getDisplayMetrics().density;
 		CONTROL_BUTTON_HEIGHT *= density;
@@ -178,13 +182,13 @@ public class ControlsNetworkView extends ControlsBaseView {
 		showGameButton(B_PLAY_ID, show);
 
 		if (!show) {
-			getHandler().removeCallbacks(blinkSubmitButton);
+			handler.removeCallbacks(blinkSubmitButton);
 		}
 	}
 
 	private void blinkSubmitBtn() {
-		getHandler().removeCallbacks(blinkSubmitButton);
-		getHandler().postDelayed(blinkSubmitButton, BLINK_DELAY);
+		handler.removeCallbacks(blinkSubmitButton);
+		handler.postDelayed(blinkSubmitButton, BLINK_DELAY);
 	}
 
 	private Runnable blinkSubmitButton = new Runnable() {
@@ -192,8 +196,8 @@ public class ControlsNetworkView extends ControlsBaseView {
 		public void run() {
 			findViewById(BUTTON_PREFIX + B_PLAY_ID).setBackgroundResource(R.drawable.button_grey_light_selector);
 
-			getHandler().removeCallbacks(unBlinkSubmitButton);
-			getHandler().postDelayed(unBlinkSubmitButton, UNBLINK_DELAY);
+			handler.removeCallbacks(unBlinkSubmitButton);
+			handler.postDelayed(unBlinkSubmitButton, UNBLINK_DELAY);
 		}
 	};
 
