@@ -22,8 +22,8 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 public class ChessBoard implements BoardFace {
-	public static final int LIGHT = 0;
-	public static final int DARK = 1;
+	public static final int WHITE_SIDE = 0;
+	public static final int BLACK_SIDE = 1;
 
 	// piecesBitmap codes on boardBitmap
 	public static final int PAWN = 0;
@@ -68,7 +68,7 @@ public class ChessBoard implements BoardFace {
 	public static final String EQUALS_R = "=R";
 	public static final String EQUALS_Q = "=Q";
 	public static final String SYMBOL_NEW_STRING = "\n ";
-	public static final String MOVE_NUBMER_DOT_SEPARATOR = ". ";
+	public static final String MOVE_NUMBER_DOT_SEPARATOR = ". ";
 	public static final String G8_STR = "g8";
 	public static final String C8_STR = "c8";
 	public static final String G1_STR = "g1";
@@ -91,8 +91,8 @@ public class ChessBoard implements BoardFace {
 	private boolean submit;
 
 	private boolean analysis;
-	private int side = LIGHT;
-	private int xside = DARK;
+	private int side = WHITE_SIDE;
+	private int xside = BLACK_SIDE;
 	private int rotated = 0;
 	private int ep = -1;  // en passant move
 	private int fifty = 0;
@@ -255,8 +255,8 @@ public class ChessBoard implements BoardFace {
 	};
 
 	/* The flip array is used to calculate the piecesBitmap/square
-		values for DARK piecesBitmap. The piecesBitmap/square value of a
-		LIGHT pawn is pawnPcsq[sq] and the value of a DARK
+		values for BLACK_SIDE piecesBitmap. The piecesBitmap/square value of a
+		WHITE_SIDE pawn is pawnPcsq[sq] and the value of a BLACK_SIDE
 		pawn is pawnPcsq[flip[sq]] */
 	int flip[] = {
 			56, 57, 58, 59, 60, 61, 62, 63,
@@ -471,7 +471,7 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public boolean isWhiteToMove() {
 		return hply % 2 == 0;
-		//return (side == LIGHT);
+		//return (side == WHITE_SIDE);
 	}
 
 	@Override
@@ -513,7 +513,7 @@ public class ChessBoard implements BoardFace {
 			if (color[i] == attackerSide) {
 				int p = pieces[i];
 				if (p == PAWN) {
-					if (attackerSide == LIGHT) {
+					if (attackerSide == WHITE_SIDE) {
 						if (getColumn(i) != 0 && i - 9 == attackedSquare)
 							return true;
 						if (getColumn(i) != 7 && i - 7 == attackedSquare)
@@ -551,30 +551,30 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public TreeSet<Move> gen() {
-		TreeSet<Move> ret = new TreeSet<Move>();
+		TreeSet<Move> movesSet = new TreeSet<Move>();
 
 		for (int i = 0; i < 64; ++i){
 			if (color[i] == side) {
 				if (pieces[i] == PAWN) {
-					if (side == LIGHT) {
-						if (getColumn(i) != 0 && color[i - 9] == DARK)
-							genPush(ret, i, i - 9, 17);
-						if (getColumn(i) != 7 && color[i - 7] == DARK)
-							genPush(ret, i, i - 7, 17);
+					if (side == WHITE_SIDE) {
+						if (getColumn(i) != 0 && color[i - 9] == BLACK_SIDE)
+							genPush(movesSet, i, i - 9, 17);
+						if (getColumn(i) != 7 && color[i - 7] == BLACK_SIDE)
+							genPush(movesSet, i, i - 7, 17);
 						if (color[i - 8] == EMPTY) {
-							genPush(ret, i, i - 8, 16);
+							genPush(movesSet, i, i - 8, 16);
 							if (i >= 48 && color[i - 16] == EMPTY)
-								genPush(ret, i, i - 16, 24);
+								genPush(movesSet, i, i - 16, 24);
 						}
 					} else {
-						if (getColumn(i) != 0 && color[i + 7] == LIGHT)
-							genPush(ret, i, i + 7, 17);
-						if (getColumn(i) != 7 && color[i + 9] == LIGHT)
-							genPush(ret, i, i + 9, 17);
+						if (getColumn(i) != 0 && color[i + 7] == WHITE_SIDE)
+							genPush(movesSet, i, i + 7, 17);
+						if (getColumn(i) != 7 && color[i + 9] == WHITE_SIDE)
+							genPush(movesSet, i, i + 9, 17);
 						if (color[i + 8] == EMPTY) {
-							genPush(ret, i, i + 8, 16);
+							genPush(movesSet, i, i + 8, 16);
 							if (i <= 15 && color[i + 16] == EMPTY)
-								genPush(ret, i, i + 16, 24);
+								genPush(movesSet, i, i + 16, 24);
 						}
 					}
 				} else if (pieces[i] < offsets.length){
@@ -585,10 +585,10 @@ public class ChessBoard implements BoardFace {
 								break;
 							if (color[n] != EMPTY) {
 								if (color[n] == xside)
-									genPush(ret, i, n, 1);
+									genPush(movesSet, i, n, 1);
 								break;
 							}
-							genPush(ret, i, n, 0);
+							genPush(movesSet, i, n, 0);
 							if (!slide[pieces[i]])
 								break;
 						}
@@ -600,45 +600,45 @@ public class ChessBoard implements BoardFace {
 		/* generate castle moves */
 		int i;
 		//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
-		if (side == LIGHT) {
+		if (side == WHITE_SIDE) {
 			if (!castleMask[2] && whiteCanCastle) {
 				for (i = 0; i < wKingMoveOO.length; i++)
-					genPush(ret, wKing, wKingMoveOO[i], 2);
+					genPush(movesSet, wKing, wKingMoveOO[i], 2);
 			}
 			if (!castleMask[3] && whiteCanCastle) {
 				for (i = 0; i < wKingMoveOOO.length; i++)
-					genPush(ret, wKing, wKingMoveOOO[i], 2);
+					genPush(movesSet, wKing, wKingMoveOOO[i], 2);
 			}
 		} else {
 			if (!castleMask[0] && blackCanCastle) {
 				for (i = 0; i < bKingMoveOO.length; i++)
-					genPush(ret, bKing, bKingMoveOO[i], 2);
+					genPush(movesSet, bKing, bKingMoveOO[i], 2);
 			}
 			if (!castleMask[1] && blackCanCastle) {
 				for (i = 0; i < bKingMoveOOO.length; i++)
-					genPush(ret, bKing, bKingMoveOOO[i], 2);
+					genPush(movesSet, bKing, bKingMoveOOO[i], 2);
 			}
 		}
 
 		/* generate en passant moves */
 		if (ep != -1) {
-			if (side == LIGHT) {
-				if (getColumn(ep) != 0 && color[ep + 7] == LIGHT && pieces[ep + 7] == PAWN){
-					genPush(ret, ep + 7, ep, 21);
+			if (side == WHITE_SIDE) {
+				if (getColumn(ep) != 0 && color[ep + 7] == WHITE_SIDE && pieces[ep + 7] == PAWN){
+					genPush(movesSet, ep + 7, ep, 21);
                 }
-				if (getColumn(ep) != 7 && color[ep + 9] == LIGHT && pieces[ep + 9] == PAWN){
-					genPush(ret, ep + 9, ep, 21);
+				if (getColumn(ep) != 7 && color[ep + 9] == WHITE_SIDE && pieces[ep + 9] == PAWN){
+					genPush(movesSet, ep + 9, ep, 21);
                 }
 			} else {
-				if (getColumn(ep) != 0 && color[ep - 9] == DARK && pieces[ep - 9] == PAWN){
-					genPush(ret, ep - 9, ep, 21);
+				if (getColumn(ep) != 0 && color[ep - 9] == BLACK_SIDE && pieces[ep - 9] == PAWN){
+					genPush(movesSet, ep - 9, ep, 21);
                 }
-				if (getColumn(ep) != 7 && color[ep - 7] == DARK && pieces[ep - 7] == PAWN) {
-                    genPush(ret, ep - 7, ep, 21);
+				if (getColumn(ep) != 7 && color[ep - 7] == BLACK_SIDE && pieces[ep - 7] == PAWN) {
+                    genPush(movesSet, ep - 7, ep, 21);
                 }
 			}
 		}
-		return ret;
+		return movesSet;
 	}
 
 
@@ -653,18 +653,18 @@ public class ChessBoard implements BoardFace {
 		for (int i = 0; i < 64; ++i)
 			if (color[i] == side) {
 				if (pieces[i] == PAWN) {
-					if (side == LIGHT) {
-						if (getColumn(i) != 0 && color[i - 9] == DARK)
+					if (side == WHITE_SIDE) {
+						if (getColumn(i) != 0 && color[i - 9] == BLACK_SIDE)
 							genPush(ret, i, i - 9, 17);
-						if (getColumn(i) != 7 && color[i - 7] == DARK)
+						if (getColumn(i) != 7 && color[i - 7] == BLACK_SIDE)
 							genPush(ret, i, i - 7, 17);
 						if (i <= 15 && color[i - 8] == EMPTY)
 							genPush(ret, i, i - 8, 16);
 					}
-					if (side == DARK) {
-						if (getColumn(i) != 0 && color[i + 7] == LIGHT)
+					if (side == BLACK_SIDE) {
+						if (getColumn(i) != 0 && color[i + 7] == WHITE_SIDE)
 							genPush(ret, i, i + 7, 17);
-						if (getColumn(i) != 7 && color[i + 9] == LIGHT)
+						if (getColumn(i) != 7 && color[i + 9] == WHITE_SIDE)
 							genPush(ret, i, i + 9, 17);
 						if (i >= 48 && color[i + 8] == EMPTY)
 							genPush(ret, i, i + 8, 16);
@@ -685,15 +685,15 @@ public class ChessBoard implements BoardFace {
 						}
 			}
 		if (ep != -1) {
-			if (side == LIGHT) {
-				if (getColumn(ep) != 0 && color[ep + 7] == LIGHT && pieces[ep + 7] == PAWN)
+			if (side == WHITE_SIDE) {
+				if (getColumn(ep) != 0 && color[ep + 7] == WHITE_SIDE && pieces[ep + 7] == PAWN)
 					genPush(ret, ep + 7, ep, 21);
-				if (getColumn(ep) != 7 && color[ep + 9] == LIGHT && pieces[ep + 9] == PAWN)
+				if (getColumn(ep) != 7 && color[ep + 9] == WHITE_SIDE && pieces[ep + 9] == PAWN)
 					genPush(ret, ep + 9, ep, 21);
 			} else {
-				if (getColumn(ep) != 0 && color[ep - 9] == DARK && pieces[ep - 9] == PAWN)
+				if (getColumn(ep) != 0 && color[ep - 9] == BLACK_SIDE && pieces[ep - 9] == PAWN)
 					genPush(ret, ep - 9, ep, 21);
-				if (getColumn(ep) != 7 && color[ep - 7] == DARK && pieces[ep - 7] == PAWN)
+				if (getColumn(ep) != 7 && color[ep - 7] == BLACK_SIDE && pieces[ep - 7] == PAWN)
 					genPush(ret, ep - 7, ep, 21);
 			}
 		}
@@ -710,33 +710,33 @@ public class ChessBoard implements BoardFace {
 	 * it uses the move's history heuristic value. Note that
 	 * 1,000,000 is added to a capture move's score, so it
 	 * always gets ordered above a "normal" move.
-	 * @param ret
+	 * @param movesSet
 	 * @param from
 	 * @param to
 	 * @param bits
 	 */
-	void genPush(TreeSet<Move> ret, int from, int to, int bits) {
+	void genPush(TreeSet<Move> movesSet, int from, int to, int bits) {
 		if ((bits & 16) != 0) {
-			if (side == LIGHT) {
+			if (side == WHITE_SIDE) {
 				if (to <= H8) {
-					genPromote(ret, from, to, bits);
+					genPromote(movesSet, from, to, bits);
 					return;
 				}
 			} else {
 				if (to >= A1) {
-					genPromote(ret, from, to, bits);
+					genPromote(movesSet, from, to, bits);
 					return;
 				}
 			}
 		}
 
-		Move g = new Move(from, to, 0, bits);
+		Move newMove = new Move(from, to, 0, bits);
 
 		if (color[to] != EMPTY)
-			g.setScore(1000000 + (pieces[to] * 10) - pieces[from]);
+			newMove.setScore(1000000 + (pieces[to] * 10) - pieces[from]);
 		else
-			g.setScore(history[from][to]);
-		ret.add(g);
+			newMove.setScore(history[from][to]);
+		movesSet.add(newMove);
 	}
 
 
@@ -1012,7 +1012,7 @@ public class ChessBoard implements BoardFace {
 				}
 			}
 			if (pieces[move.from] == KING) {
-				if (side == DARK) {
+				if (side == BLACK_SIDE) {
 					castleMask[0] = true;
 					castleMask[1] = true;
 					blackCanCastle = false;
@@ -1024,7 +1024,7 @@ public class ChessBoard implements BoardFace {
 			}
 			//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
 			if (pieces[move.from] == ROOK) {
-				if (side == DARK) {
+				if (side == BLACK_SIDE) {
 					if (move.from == bRook2) {
 						castleMask[0] = true;
 						if (castleMask[1]) {
@@ -1054,7 +1054,7 @@ public class ChessBoard implements BoardFace {
 			}
 
 			if ((move.bits & 8) != 0) {
-				if (side == LIGHT)
+				if (side == WHITE_SIDE)
 					ep = move.to + 8;
 				else
 					ep = move.to - 8;
@@ -1132,7 +1132,7 @@ public class ChessBoard implements BoardFace {
 			}
 		}
 		if (pieces[move.from] == KING) {
-			if (side == DARK) {
+			if (side == BLACK_SIDE) {
 				castleMask[0] = true;
 				castleMask[1] = true;
 				blackCanCastle = false;
@@ -1144,7 +1144,7 @@ public class ChessBoard implements BoardFace {
 		}
 		//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
 		if (pieces[move.from] == ROOK) {
-			if (side == DARK) {
+			if (side == BLACK_SIDE) {
 				if (move.from == bRook2) {
 					castleMask[0] = true;
 					if (castleMask[1]) {
@@ -1204,7 +1204,7 @@ public class ChessBoard implements BoardFace {
 		}
 
 		if ((move.bits & 8) != 0) {
-			if (side == LIGHT)
+			if (side == WHITE_SIDE)
 				ep = move.to + 8;
 			else
 				ep = move.to - 8;
@@ -1232,7 +1232,7 @@ public class ChessBoard implements BoardFace {
 
 		/* erase the pawn if this is an en passant move */
 		if ((move.bits & 4) != 0) {
-			if (side == LIGHT) {
+			if (side == WHITE_SIDE) {
 				color[move.to + 8] = EMPTY;
 				pieces[move.to + 8] = EMPTY;
 			} else {
@@ -1379,7 +1379,7 @@ public class ChessBoard implements BoardFace {
 			pieces[move.to] = histDat[hply].capture;
 		}
 		if ((move.bits & 4) != 0) {
-			if (side == LIGHT) {
+			if (side == WHITE_SIDE) {
 				color[move.to + 8] = xside;
 				pieces[move.to + 8] = PAWN;
 			} else {
@@ -1427,7 +1427,7 @@ public class ChessBoard implements BoardFace {
 			if (i % 2 == 0) { //
 				output.append(SYMBOL_NEW_STRING);
 				// add move number
-				output.append(i / 2 + 1).append(MOVE_NUBMER_DOT_SEPARATOR);
+				output.append(i / 2 + 1).append(MOVE_NUMBER_DOT_SEPARATOR);
 			}
 			output.append(histDat[i].notation);
 			output.append(StaticData.SYMBOL_SPACE);
@@ -1632,16 +1632,16 @@ public class ChessBoard implements BoardFace {
 				case EMPTY:
 					sb.append(" .");
 					break;
-				case LIGHT:
+				case WHITE_SIDE:
 					sb.append(" ");
 					sb.append(pieceChar[pieces[i]]);
 					break;
-				case DARK:
+				case BLACK_SIDE:
 					sb.append(" ");
 					sb.append((char) (pieceChar[pieces[i]] + ('a' - 'A')));
 					break;
 				default:
-					throw new IllegalStateException("Square not EMPTY, LIGHT or DARK: " + i);
+					throw new IllegalStateException("Square not EMPTY, WHITE_SIDE or BLACK_SIDE: " + i);
 			}
 			if ((i + 1) % 8 == 0 && i != 63) {
 				sb.append("\n");
@@ -1695,13 +1695,13 @@ public class ChessBoard implements BoardFace {
 		/* this is the first pass: set up pawnRank, pieceMat, and pawnMat. */
 		int i;
 		for (i = 0; i < 10; ++i) {
-			pawnRank[LIGHT][i] = 0;
-			pawnRank[DARK][i] = 7;
+			pawnRank[WHITE_SIDE][i] = 0;
+			pawnRank[BLACK_SIDE][i] = 7;
 		}
-		pieceMat[LIGHT] = 0;
-		pieceMat[DARK] = 0;
-		pawnMat[LIGHT] = 0;
-		pawnMat[DARK] = 0;
+		pieceMat[WHITE_SIDE] = 0;
+		pieceMat[BLACK_SIDE] = 0;
+		pawnMat[WHITE_SIDE] = 0;
+		pawnMat[BLACK_SIDE] = 0;
 
 		for (i = 0; i < 64; i++) {
 			if (color[i] == EMPTY)
@@ -1709,12 +1709,12 @@ public class ChessBoard implements BoardFace {
 			if (pieces[i] == PAWN) {
 				pawnMat[color[i]] += pieceValue[PAWN];
 				int f = getColumn(i) + 1;  /* add 1 because of the extra file in the array */
-				if (color[i] == LIGHT) {
-					if (pawnRank[LIGHT][f] < getRow(i))
-						pawnRank[LIGHT][f] = getRow(i);
+				if (color[i] == WHITE_SIDE) {
+					if (pawnRank[WHITE_SIDE][f] < getRow(i))
+						pawnRank[WHITE_SIDE][f] = getRow(i);
 				} else {
-					if (pawnRank[DARK][f] > getRow(i))
-						pawnRank[DARK][f] = getRow(i);
+					if (pawnRank[BLACK_SIDE][f] > getRow(i))
+						pawnRank[BLACK_SIDE][f] = getRow(i);
 				}
 			} else {
 				try {
@@ -1726,65 +1726,65 @@ public class ChessBoard implements BoardFace {
 		}
 
 		/* this is the second pass: evaluate each piecesBitmap */
-		score[LIGHT] = pieceMat[LIGHT] + pawnMat[LIGHT];
-		score[DARK] = pieceMat[DARK] + pawnMat[DARK];
+		score[WHITE_SIDE] = pieceMat[WHITE_SIDE] + pawnMat[WHITE_SIDE];
+		score[BLACK_SIDE] = pieceMat[BLACK_SIDE] + pawnMat[BLACK_SIDE];
 		for (i = 0; i < 64; ++i) {
 			if (color[i] == EMPTY)
 				continue;
-			if (color[i] == LIGHT) {
+			if (color[i] == WHITE_SIDE) {
 				switch (pieces[i]) {
 					case PAWN:
-						score[LIGHT] += evalLightPawn(i);
+						score[WHITE_SIDE] += evalLightPawn(i);
 						break;
 					case KNIGHT:
-						score[LIGHT] += knightPcsq[i];
+						score[WHITE_SIDE] += knightPcsq[i];
 						break;
 					case BISHOP:
-						score[LIGHT] += bishopPcsq[i];
+						score[WHITE_SIDE] += bishopPcsq[i];
 						break;
 					case ROOK:
-						if (pawnRank[LIGHT][getColumn(i) + 1] == 0) {
-							if (pawnRank[DARK][getColumn(i) + 1] == 7)
-								score[LIGHT] += ROOK_OPEN_FILE_BONUS;
+						if (pawnRank[WHITE_SIDE][getColumn(i) + 1] == 0) {
+							if (pawnRank[BLACK_SIDE][getColumn(i) + 1] == 7)
+								score[WHITE_SIDE] += ROOK_OPEN_FILE_BONUS;
 							else
-								score[LIGHT] += ROOK_SEMI_OPEN_FILE_BONUS;
+								score[WHITE_SIDE] += ROOK_SEMI_OPEN_FILE_BONUS;
 						}
 						if (getRow(i) == 1)
-							score[LIGHT] += ROOK_ON_SEVENTH_BONUS;
+							score[WHITE_SIDE] += ROOK_ON_SEVENTH_BONUS;
 						break;
 					case KING:
-						if (pieceMat[DARK] <= 1200)
-							score[LIGHT] += kingEndgamePcsq[i];
+						if (pieceMat[BLACK_SIDE] <= 1200)
+							score[WHITE_SIDE] += kingEndgamePcsq[i];
 						else
-							score[LIGHT] += evalLightKing(i);
+							score[WHITE_SIDE] += evalLightKing(i);
 						break;
 				}
 			} else {
 				switch (pieces[i]) {
 					case PAWN:
-						score[DARK] += evalDarkPawn(i);
+						score[BLACK_SIDE] += evalDarkPawn(i);
 						break;
 					case KNIGHT:
-						score[DARK] += knightPcsq[flip[i]];
+						score[BLACK_SIDE] += knightPcsq[flip[i]];
 						break;
 					case BISHOP:
-						score[DARK] += bishopPcsq[flip[i]];
+						score[BLACK_SIDE] += bishopPcsq[flip[i]];
 						break;
 					case ROOK:
-						if (pawnRank[DARK][getColumn(i) + 1] == 7) {
-							if (pawnRank[LIGHT][getColumn(i) + 1] == 0)
-								score[DARK] += ROOK_OPEN_FILE_BONUS;
+						if (pawnRank[BLACK_SIDE][getColumn(i) + 1] == 7) {
+							if (pawnRank[WHITE_SIDE][getColumn(i) + 1] == 0)
+								score[BLACK_SIDE] += ROOK_OPEN_FILE_BONUS;
 							else
-								score[DARK] += ROOK_SEMI_OPEN_FILE_BONUS;
+								score[BLACK_SIDE] += ROOK_SEMI_OPEN_FILE_BONUS;
 						}
 						if (getRow(i) == 6)
-							score[DARK] += ROOK_ON_SEVENTH_BONUS;
+							score[BLACK_SIDE] += ROOK_ON_SEVENTH_BONUS;
 						break;
 					case KING:
-						if (pieceMat[LIGHT] <= 1200)
-							score[DARK] += kingEndgamePcsq[flip[i]];
+						if (pieceMat[WHITE_SIDE] <= 1200)
+							score[BLACK_SIDE] += kingEndgamePcsq[flip[i]];
 						else
-							score[DARK] += evalDarkKing(i);
+							score[BLACK_SIDE] += evalDarkKing(i);
 						break;
 				}
 			}
@@ -1792,9 +1792,9 @@ public class ChessBoard implements BoardFace {
 
 		/* the score[] array is set, now return the score relative
 			   to the side to move */
-		if (side == LIGHT)
-			return score[LIGHT] - score[DARK];
-		return score[DARK] - score[LIGHT];
+		if (side == WHITE_SIDE)
+			return score[WHITE_SIDE] - score[BLACK_SIDE];
+		return score[BLACK_SIDE] - score[WHITE_SIDE];
 	}
 
 	int evalLightPawn(int sq) {
@@ -1804,24 +1804,24 @@ public class ChessBoard implements BoardFace {
 		r += pawnPcsq[sq];
 
 		/* if there's a pawn behind this one, it's doubled */
-		if (pawnRank[LIGHT][f] > getRow(sq))
+		if (pawnRank[WHITE_SIDE][f] > getRow(sq))
 			r -= DOUBLED_PAWN_PENALTY;
 
 		/* if there aren't any friendly pawns on either side of
 			   this one, it's isolated */
-		if ((pawnRank[LIGHT][f - 1] == 0) &&
-				(pawnRank[LIGHT][f + 1] == 0))
+		if ((pawnRank[WHITE_SIDE][f - 1] == 0) &&
+				(pawnRank[WHITE_SIDE][f + 1] == 0))
 			r -= ISOLATED_PAWN_PENALTY;
 
 			/* if it's not isolated, it might be backwards */
-		else if ((pawnRank[LIGHT][f - 1] < getRow(sq)) &&
-				(pawnRank[LIGHT][f + 1] < getRow(sq)))
+		else if ((pawnRank[WHITE_SIDE][f - 1] < getRow(sq)) &&
+				(pawnRank[WHITE_SIDE][f + 1] < getRow(sq)))
 			r -= BACKWARDS_PAWN_PENALTY;
 
 		/* add a bonus if the pawn is passed */
-		if ((pawnRank[DARK][f - 1] >= getRow(sq)) &&
-				(pawnRank[DARK][f] >= getRow(sq)) &&
-				(pawnRank[DARK][f + 1] >= getRow(sq)))
+		if ((pawnRank[BLACK_SIDE][f - 1] >= getRow(sq)) &&
+				(pawnRank[BLACK_SIDE][f] >= getRow(sq)) &&
+				(pawnRank[BLACK_SIDE][f + 1] >= getRow(sq)))
 			r += (7 - getRow(sq)) * PASSED_PAWN_BONUS;
 
 		return r;
@@ -1834,24 +1834,24 @@ public class ChessBoard implements BoardFace {
 		r += pawnPcsq[flip[sq]];
 
 		/* if there's a pawn behind this one, it's doubled */
-		if (pawnRank[DARK][f] < getRow(sq))
+		if (pawnRank[BLACK_SIDE][f] < getRow(sq))
 			r -= DOUBLED_PAWN_PENALTY;
 
 		/* if there aren't any friendly pawns on either side of
 			   this one, it's isolated */
-		if ((pawnRank[DARK][f - 1] == 7) &&
-				(pawnRank[DARK][f + 1] == 7))
+		if ((pawnRank[BLACK_SIDE][f - 1] == 7) &&
+				(pawnRank[BLACK_SIDE][f + 1] == 7))
 			r -= ISOLATED_PAWN_PENALTY;
 
 			/* if it's not isolated, it might be backwards */
-		else if ((pawnRank[DARK][f - 1] > getRow(sq)) &&
-				(pawnRank[DARK][f + 1] > getRow(sq)))
+		else if ((pawnRank[BLACK_SIDE][f - 1] > getRow(sq)) &&
+				(pawnRank[BLACK_SIDE][f + 1] > getRow(sq)))
 			r -= BACKWARDS_PAWN_PENALTY;
 
 		/* add a bonus if the pawn is passed */
-		if ((pawnRank[LIGHT][f - 1] <= getRow(sq)) &&
-				(pawnRank[LIGHT][f] <= getRow(sq)) &&
-				(pawnRank[LIGHT][f + 1] <= getRow(sq)))
+		if ((pawnRank[WHITE_SIDE][f - 1] <= getRow(sq)) &&
+				(pawnRank[WHITE_SIDE][f] <= getRow(sq)) &&
+				(pawnRank[WHITE_SIDE][f + 1] <= getRow(sq)))
 			r += getRow(sq) * PASSED_PAWN_BONUS;
 
 		return r;
@@ -1877,15 +1877,15 @@ public class ChessBoard implements BoardFace {
 			   the king */
 		else {
 			for (int i = getColumn(sq); i <= getColumn(sq) + 2; ++i)
-				if ((pawnRank[LIGHT][i] == 0) &&
-						(pawnRank[DARK][i] == 7))
+				if ((pawnRank[WHITE_SIDE][i] == 0) &&
+						(pawnRank[BLACK_SIDE][i] == 7))
 					r -= 10;
 		}
 
 		/* scale the king safety value according to the opponent's material;
 			   the premise is that your king safety can only be bad if the
 			   opponent has enough piecesBitmap to attack you */
-		r *= pieceMat[DARK];
+		r *= pieceMat[BLACK_SIDE];
 		r /= 3100;
 
 		return r;
@@ -1896,19 +1896,19 @@ public class ChessBoard implements BoardFace {
 	int evalLkp(int f) {
 		int r = 0;
 
-		if (pawnRank[LIGHT][f] == 6) ;  /* pawn hasn't moved */
-		else if (pawnRank[LIGHT][f] == 5)
+		if (pawnRank[WHITE_SIDE][f] == 6) ;  /* pawn hasn't moved */
+		else if (pawnRank[WHITE_SIDE][f] == 5)
 			r -= 10;  /* pawn moved one square */
-		else if (pawnRank[LIGHT][f] != 0)
+		else if (pawnRank[WHITE_SIDE][f] != 0)
 			r -= 20;  /* pawn moved more than one square */
 		else
 			r -= 25;  /* no pawn on this file */
 
-		if (pawnRank[DARK][f] == 7)
+		if (pawnRank[BLACK_SIDE][f] == 7)
 			r -= 15;  /* no enemy pawn */
-		else if (pawnRank[DARK][f] == 5)
+		else if (pawnRank[BLACK_SIDE][f] == 5)
 			r -= 10;  /* enemy pawn on the 3rd rank */
-		else if (pawnRank[DARK][f] == 4)
+		else if (pawnRank[BLACK_SIDE][f] == 4)
 			r -= 5;   /* enemy pawn on the 4th rank */
 
 		return r;
@@ -1929,11 +1929,11 @@ public class ChessBoard implements BoardFace {
 			r += evalDkp(6) / 2;
 		} else {
 			for (i = getColumn(sq); i <= getColumn(sq) + 2; ++i)
-				if ((pawnRank[LIGHT][i] == 0) &&
-						(pawnRank[DARK][i] == 7))
+				if ((pawnRank[WHITE_SIDE][i] == 0) &&
+						(pawnRank[BLACK_SIDE][i] == 7))
 					r -= 10;
 		}
-		r *= pieceMat[LIGHT];
+		r *= pieceMat[WHITE_SIDE];
 		r /= 3100;
 		return r;
 	}
@@ -1941,19 +1941,19 @@ public class ChessBoard implements BoardFace {
 	int evalDkp(int f) {
 		int r = 0;
 
-		if (pawnRank[DARK][f] == 1) ;
-		else if (pawnRank[DARK][f] == 2)
+		if (pawnRank[BLACK_SIDE][f] == 1) ;
+		else if (pawnRank[BLACK_SIDE][f] == 2)
 			r -= 10;
-		else if (pawnRank[DARK][f] != 7)
+		else if (pawnRank[BLACK_SIDE][f] != 7)
 			r -= 20;
 		else
 			r -= 25;
 
-		if (pawnRank[LIGHT][f] == 0)
+		if (pawnRank[WHITE_SIDE][f] == 0)
 			r -= 15;
-		else if (pawnRank[LIGHT][f] == 2)
+		else if (pawnRank[WHITE_SIDE][f] == 2)
 			r -= 10;
-		else if (pawnRank[LIGHT][f] == 3)
+		else if (pawnRank[WHITE_SIDE][f] == 3)
 			r -= 5;
 
 		return r;
@@ -1994,11 +1994,11 @@ public class ChessBoard implements BoardFace {
 		return color;
 	}
 
-	public static int getPositionIndex(int c, int r, boolean reside) {
+	public static int getPositionIndex(int col, int row, boolean reside) {
 		if (reside)
-			return 63 - (8 * r + c);
+			return 63 - (8 * row + col);
 		else
-			return (8 * r + c);
+			return (8 * row + col);
 	}
 
 	@Override

@@ -103,7 +103,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 		drawDragPosition(canvas);
 		drawTrackballDrag(canvas);
 
-		drawCoordinates(canvas); // TODO redraw only once
+		drawCoordinates(canvas);
 	}
 
 	@Override
@@ -161,8 +161,8 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 						break;
 					}
 				}
-				if ((((to < 8) && (getBoardFace().getSide() == ChessBoard.LIGHT)) ||
-						((to > 55) && (getBoardFace().getSide() == ChessBoard.DARK))) &&
+				if ((((to < 8) && (getBoardFace().getSide() == ChessBoard.WHITE_SIDE)) ||
+						((to > 55) && (getBoardFace().getSide() == ChessBoard.BLACK_SIDE))) &&
 						(getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
 
 					gameAnalysisActivityFace.showChoosePieceDialog(col, row);

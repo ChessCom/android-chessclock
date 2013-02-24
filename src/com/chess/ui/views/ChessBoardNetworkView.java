@@ -123,8 +123,8 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 						break;
 					}
 				}
-				if ((((to < 8) && (getBoardFace().getSide() == ChessBoard.LIGHT)) ||
-						((to > 55) && (getBoardFace().getSide() == ChessBoard.DARK))) &&
+				if ((((to < 8) && (getBoardFace().getSide() == ChessBoard.WHITE_SIDE)) ||
+						((to > 55) && (getBoardFace().getSide() == ChessBoard.BLACK_SIDE))) &&
 						(getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
 
 					gameActivityFace.showChoosePieceDialog(col, row);

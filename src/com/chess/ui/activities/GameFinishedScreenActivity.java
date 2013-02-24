@@ -369,7 +369,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		String blackPlayerName = currentGame.getBlackUsername();
 		String result;
 
-		if (getBoardFace().getSide() == ChessBoard.LIGHT) {
+		if (getBoardFace().getSide() == ChessBoard.WHITE_SIDE) {
 			result = BLACK_WINS;
 		} else {
 			result = WHITE_WINS;

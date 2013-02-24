@@ -63,12 +63,12 @@ public class Search {
 			for (int i = 1; i <= maxDepth; ++i) {
 				followPV = true;
 				int x = search(-10000, 10000, i);
-				if (output > 0) {
-//					Log.d(SEARCH, /*"%3d  %9d  %5d "*/ i + " " + nodes + " " + x);
-					for (int j = 0; j < pvLength[0]; ++j) {
-//						Log.d(SEARCH, " " + pv[0][j].toString());
-					}
-				}
+//				if (output > 0) {
+////					Log.d(SEARCH, /*"%3d  %9d  %5d "*/ i + " " + nodes + " " + x);
+////					for (int j = 0; j < pvLength[0]; ++j) {
+//////						Log.d(SEARCH, " " + pv[0][j].toString());
+////					}
+//				}
 				if (x > 9000 || x < -9000) {
 					break;
 				}

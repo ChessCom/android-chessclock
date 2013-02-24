@@ -452,7 +452,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		String result = GAME_GOES;
 //		if (boardView.isFinished()) {// means in check state
 		if (getBoardFace().isFinished()) {// means in check state
-			if (getBoardFace().getSide() == ChessBoard.LIGHT) {
+			if (getBoardFace().getSide() == ChessBoard.WHITE_SIDE) {
 				result = BLACK_WINS;
 			} else {
 				result = WHITE_WINS;

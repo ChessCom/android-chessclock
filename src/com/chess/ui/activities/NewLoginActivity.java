@@ -49,8 +49,6 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		// set the Above View
 		if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
 			switchFragment(new HomeTabsFragment());
-//			switchFragment(NewGamesFragment.newInstance(NewGamesFragment.CENTER_MODE));
-//			switchFragment(new StatsGameTacticsFragment());
 			showActionBar = true;
 		} else {
 			switchFragment(new SignInFragment());
