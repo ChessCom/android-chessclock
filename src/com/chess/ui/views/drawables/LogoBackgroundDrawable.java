@@ -53,7 +53,6 @@ public class LogoBackgroundDrawable extends Drawable {
 
 		shadowDrawable = new GradientDrawable(GradientDrawable.Orientation.TL_BR,
 				new int[] { 0x00312e2a, 0x00312e2a, backgroundColor });
-//				new int[] { 0x00312e2a, 0x00312e2a, 0xFFFF0000 });
 		shadowDrawable.setShape(GradientDrawable.OVAL);
 		shadowDrawable.setGradientType(GradientDrawable.RADIAL_GRADIENT);
 

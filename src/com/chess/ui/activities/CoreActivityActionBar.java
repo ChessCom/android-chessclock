@@ -46,7 +46,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected MoPubView moPubView;
 
 	public void setFullScreen() {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		requestWindowFeature(Window.FEATURE_NO_TITLE);  // TODO solve problem for QVGA screens
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	}
@@ -179,8 +179,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-//				backToHomeActivity(); // TODO toggle comment here to go back to old app
-				getSlidingMenu().toggle();
+				backToHomeActivity(); // TODO toggle comment here to go back to old app
+//				getSlidingMenu().toggle();
 				break;
 			case R.id.menu_settings:
 				startActivity(new Intent(this, PreferencesScreenActivity.class));

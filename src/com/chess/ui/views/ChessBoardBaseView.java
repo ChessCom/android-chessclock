@@ -33,6 +33,7 @@ import java.util.TreeSet;
  */
 public abstract class ChessBoardBaseView extends ImageView implements BoardViewFace {
 
+
 	public static final int P_ALPHA_ID = 0;
 	public static final int P_BOOK_ID = 1;
 	public static final int P_CASES_ID = 2;
@@ -44,9 +45,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public static final int P_VINTAGE_ID = 8;
 
 	public static final int EMPTY_ID = 6;
+	private static final int QVGA_WIDTH = 240;
+	private int boardId;
 
 	protected Bitmap[][] piecesBitmaps;
-	protected Bitmap boardBitmap;
 	protected SharedPreferences preferences;
 
 	//	protected boolean finished;
@@ -56,9 +58,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected boolean drag;
 	protected int[] pieces_tmp;
 	protected int[] colors_tmp;
-	protected int W;
-	protected int H;
-	protected int side;
+	private int side;
 	protected int square;
 	protected int from = -1;
 	protected int to = -1;
@@ -75,8 +75,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected String[] signs = {"a", "b", "c", "d", "e", "f", "g", "h"};
 	protected String[] nums = {"1", "2", "3", "4", "5", "6", "7", "8"};
 
-	protected int viewWidth = 0;
-	protected int viewHeight = 0;
+	protected int viewWidth;
+	protected int viewHeight;
+	private int previousWidth;
 
 	protected float width;
 	protected float height;
@@ -98,6 +99,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private ControlsBaseView controlsBaseView;
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
+	private Paint boardBackPaint;
+	private Bitmap boardBitmap;
 
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -105,8 +108,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		density = resources.getDisplayMetrics().density;
 
 		drawFilter = new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG);
+		boardBackPaint = new Paint();
 
-		loadBoard(AppData.getChessBoardId(getContext()));
+		boardId = AppData.getChessBoardId(getContext());
+//		loadBoard(AppData.getChessBoardId(getContext()));
 		loadPieces(AppData.getPiecesId(getContext()));
 
 		handler = new Handler();
@@ -300,26 +305,15 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	};
 
 	protected void drawBoard(Canvas canvas) {
-		W = viewWidth;
-		H = viewHeight;
-
-		if (H < W) {
+		if (viewHeight < viewWidth && viewWidth != QVGA_WIDTH) {
 			square = viewHeight / 8;
-			H -= viewHeight % 8;
 		} else {
 			square = viewWidth / 8;
-			W -= viewWidth % 8;
 		}
 
 		side = square * 2;
 
-		int i, j;
-		for (i = 0; i < 4; i++) {
-			for (j = 0; j < 4; j++) {
-				rect.set(i * side, j * side, i * side + side, j * side + side);
-				canvas.drawBitmap(boardBitmap, null, rect, null);
-			}
-		}
+		canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), boardBackPaint);
 	}
 
 	protected void drawPieces(Canvas canvas) {
@@ -549,6 +543,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		super.onSizeChanged(xNew, yNew, xOld, yOld);
 		viewWidth = (xNew == 0 ? viewWidth : xNew);
 		viewHeight = (yNew == 0 ? viewHeight : yNew);
+		loadBoard();
+
+
+////		int width = viewWidth;
+////		int height = viewHeight;
+//
 	}
 
 	public void promote(int promote, int col, int row) {
@@ -642,8 +642,25 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		setEnabled(!lock);
 	}
 
-	protected void loadBoard(int boardId) {
-		boardBitmap = ((BitmapDrawable) resources.getDrawable(boardsDrawables[boardId])).getBitmap();
+	protected void loadBoard() {
+		if (previousWidth != viewWidth) { // update only if size has changed
+			previousWidth = viewWidth;
+			BitmapDrawable drawable = (BitmapDrawable) resources.getDrawable(boardsDrawables[boardId]);
+			boardBitmap = drawable.getBitmap();
+
+			Bitmap scaledBitmap;
+			int bitmapSize;
+			if (viewHeight < viewWidth && viewWidth != QVGA_WIDTH) { // if landscape mode
+				bitmapSize = viewHeight / 4;
+			} else {
+				bitmapSize = viewWidth / 4;
+			}
+			scaledBitmap = Bitmap.createScaledBitmap(boardBitmap, bitmapSize, bitmapSize, true);
+
+			BitmapShader shader = new BitmapShader(scaledBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+
+			boardBackPaint.setShader(shader);
+		}
 	}
 
 	private void setPieceBitmapFromArray(int[] drawableArray) {
@@ -826,7 +843,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	};
 
 	public void updateBoardAndPiecesImgs() {
-		loadBoard(AppData.getChessBoardId(getContext()));
+		boardId = AppData.getChessBoardId(getContext());
+//		loadBoard(AppData.getChessBoardId(getContext()));
 		loadPieces(AppData.getPiecesId(getContext()));
 
 		invalidate();

@@ -69,6 +69,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 			} else {
 				resolver.insert(uri, values);
 			}
+			cursor.close();
 		}
 
 		{ // Lightning
@@ -87,6 +88,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 			} else {
 				resolver.insert(uri, values);
 			}
+			cursor.close();
 		}
 
 		{ // Blitz
@@ -105,6 +107,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 			} else {
 				resolver.insert(uri, values);
 			}
+			cursor.close();
 		}
 	}
 
@@ -132,6 +135,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 			} else {
 				resolver.insert(uri, values);
 			}
+			cursor.close();
 		}
 
 		{ // Chess960
@@ -150,6 +154,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 			} else {
 				resolver.insert(uri, values);
 			}
+			cursor.close();
 		}
 	}
 
@@ -172,6 +177,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 			} else {
 				resolver.insert(uri, values);
 			}
+			cursor.close();
 		}
 	}
 
@@ -195,6 +201,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 			} else {
 				resolver.insert(uri, values);
 			}
+			cursor.close();
 		}
 	}
 

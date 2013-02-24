@@ -156,7 +156,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			labelsConfig.bottomAvatar = userAvatarDrawable;
 		}
 
-//		controlsNetworkView.changeGameButton(ControlsBaseView.B_NEW_GAME_ID, R.drawable.ic_next_game);
 		controlsNetworkView.enableGameControls(false);
 
 		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
@@ -428,9 +427,15 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 //		timeRemains = gameInfoItem.getTimeRemaining() + gameInfoItem.getTimeRemainingUnits();
 
+		long timeRemains = currentGame.getSecondsRemain();
+
+		String seconds = AppUtils.getTimeLeftFromSeconds(timeRemains, getActivity());
+
+
 		if (isUserMove()) {
 
 //			infoLabelTxt.setText(timeRemains); // TODO restore
+			topPanelView.setPlayerTimeLeft(seconds);
 			updatePlayerDots(userPlayWhite);
 		} else {
 			updatePlayerDots(!userPlayWhite);
@@ -464,7 +469,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		} else {
 			boardFace.setMovesCount(0);
 		}
-
 
 		invalidateGameScreen();
 		boardFace.takeBack();

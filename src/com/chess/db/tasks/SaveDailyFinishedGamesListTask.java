@@ -29,7 +29,6 @@ public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<DailyFini
     protected Integer doTheTask(Long... ids) {
 		Context context = getTaskFace().getMeContext();
 		String userName = AppData.getUserName(context);
-		String userToken = AppData.getUserToken(context);
 
 		for (DailyFinishedGameData finishedItem : itemList) {
 
@@ -51,7 +50,7 @@ public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<DailyFini
 
 			cursor.close();
 
-			updateOnlineGame(finishedItem.getGameId(), userName, userToken);
+			updateOnlineGame(finishedItem.getGameId(), userName);
 		}
 
         result = StaticData.RESULT_OK;

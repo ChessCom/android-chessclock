@@ -6,14 +6,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 import com.chess.backend.entity.new_api.DailyCurrentGameData;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
-
 
 import java.util.List;
 
@@ -29,7 +27,6 @@ public class SaveDailyCurrentGamesListTask extends SaveDailyGamesTask<DailyCurre
     protected Integer doTheTask(Long... ids) {
 		Context context = getTaskFace().getMeContext();
 		String userName = AppData.getUserName(context);
-		String userToken = AppData.getUserToken(context);
 		// TODO compare received list of current games with saved db data for current games.
 		// if item is not found in received list that means it became finished
 		for (DailyCurrentGameData currentItem : itemList) { // if
@@ -52,7 +49,7 @@ public class SaveDailyCurrentGamesListTask extends SaveDailyGamesTask<DailyCurre
 
 			cursor.close();
 
-			updateOnlineGame(currentItem.getGameId(), userName, userToken);
+			updateOnlineGame(currentItem.getGameId(), userName);
 		}
 
         result = StaticData.RESULT_OK;

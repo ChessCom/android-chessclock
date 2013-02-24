@@ -10,10 +10,6 @@ import android.util.Log;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.ref.SoftReference;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,7 +23,7 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	protected int result;
 
 	public AbstractUpdateTask(TaskUpdateInterface<ItemType> taskFace) {
-		if (taskFace == null){ // we may start task right after another but listener at this time will be already killed
+		if (taskFace == null || taskFace.getMeContext() == null){ // we may start task right after another but listener at this time will be already killed
 			cancel(true);
 			return;
 		}
