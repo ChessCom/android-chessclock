@@ -60,7 +60,6 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 
 	private InneractiveAd inneractiveFullscreenAd;
 	//protected MoPubInterstitial moPubInterstitial;
-	protected LccHolder lccHolder;
 	private boolean forceFlag;
 	private LiveOuterChallengeListener liveOuterChallengeListener;
 	protected ChallengeTaskListener challengeTaskListener;
@@ -71,6 +70,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 
 	protected Challenge currentChallenge;
     private LccChallengeTaskRunner challengeTaskRunner;
+	private LiveChessService service;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,13 +110,13 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		super.onStart();
 
 		if (!isLCSBound) {
-			bindService(new Intent(this, LiveChessService.class), liveChessServiceConnectionListener, BIND_IMPORTANT/*BIND_AUTO_CREATE*/);
+			bindService(new Intent(this, LiveChessService.class), liveChessServiceConnectionListener, BIND_AUTO_CREATE);
 		}
 
-		if (lccHolder != null) {
-			lccHolder.setLiveChessClientEventListener(this);
-			lccHolder.setOuterChallengeListener(liveOuterChallengeListener);
-			challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener, lccHolder);
+		if (getLccHolder() != null) {
+			getLccHolder().setLiveChessClientEventListener(this);
+			getLccHolder().setOuterChallengeListener(liveOuterChallengeListener);
+			challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener, getLccHolder());
 		}
 	}
 
@@ -160,14 +160,14 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
 		//getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
 
-		if (lccHolder != null) {
+		if (getLccHolder() != null) {
 			executePausedActivityLiveEvents();
 		}
 	}
 
 	public void executePausedActivityLiveEvents() {
 
-		Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = lccHolder.getPausedActivityLiveEvents();
+		Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = getLccHolder().getPausedActivityLiveEvents();
 		if (pausedActivityLiveEvents.size() > 0) {
 			Log.d("LCCLOG", "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
 		}
@@ -209,14 +209,14 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			isLCSBound = true;
 
 			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
-			lccHolder = serviceBinder.getLccHolder();
+			service = serviceBinder.getService();
 
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, lccHolder.isConnected(), menu);
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, lccHolder.isConnected());
+			getActionBarHelper().showMenuItemById(R.id.menu_signOut, getLccHolder().isConnected(), menu);
+			getActionBarHelper().showMenuItemById(R.id.menu_signOut, getLccHolder().isConnected());
 
-			lccHolder.setLiveChessClientEventListener(HomeScreenActivity.this);
-			lccHolder.setOuterChallengeListener(liveOuterChallengeListener);
-			challengeTaskRunner = new  LccChallengeTaskRunner(challengeTaskListener, lccHolder);
+			getLccHolder().setLiveChessClientEventListener(HomeScreenActivity.this);
+			getLccHolder().setOuterChallengeListener(liveOuterChallengeListener);
+			challengeTaskRunner = new  LccChallengeTaskRunner(challengeTaskListener, getLccHolder());
 			executePausedActivityLiveEvents();
 
 			//showFullScreenAd();
@@ -245,7 +245,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		if (tag.equals(CONNECT_FAILED_TAG)) {
 //			if (DataHolder.getInstance().isLiveChess()) {
 			if (AppData.isLiveChess(this)) {
-				lccHolder.logout();
+				getLccHolder().logout();
 			}
 		}
 		 else if (tag.equals(OBSOLETE_VERSION_TAG)) {
@@ -255,7 +255,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 				public void run() {
 					AppData.setLiveChessMode(getContext(), false);
 //					DataHolder.getInstance().setLiveChess(false);
-					lccHolder.setConnected(false);
+					getLccHolder().setConnected(false);
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
 							.parse(RestHelper.PLAY_ANDROID_HTML)));
 				}
@@ -383,7 +383,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 				PopupCustomViewFragment reLoginFragment = PopupCustomViewFragment.newInstance(popupItem);
 				reLoginFragment.show(getSupportFragmentManager(), RE_LOGIN_TAG);
 
-				lccHolder.logout();
+				getLccHolder().logout();
 
 				((TextView) customView.findViewById(R.id.titleTxt)).setText(message);
 
@@ -408,7 +408,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			LiveEvent connectionFailureEvent = new LiveEvent();
 			connectionFailureEvent.setEvent(LiveEvent.Event.CONNECTION_FAILURE);
 			connectionFailureEvent.setMessage(message);
-			lccHolder.getPausedActivityLiveEvents().put(connectionFailureEvent.getEvent(), connectionFailureEvent);
+			getLccHolder().getPausedActivityLiveEvents().put(connectionFailureEvent.getEvent(), connectionFailureEvent);
 		} else {
 			processConnectionFailure(message);
 		}
@@ -496,8 +496,8 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		}
 	}
 
-	public LccHolder getLccHolder() {
-		return lccHolder;
+	public LccHolder getLccHolder() { // todo: check null
+		return service == null ? null : service.getLccHolder();
 	}
 
 	private class LiveOuterChallengeListener implements OuterChallengeListener {

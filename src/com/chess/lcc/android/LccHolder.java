@@ -79,8 +79,10 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 
 	boolean liveConnected; // it is better to keep this state inside lccholder/service instead of preferences appdata
 	private LiveChessService.LccConnectUpdateListener lccConnectUpdateListener;
+	private final LiveChessService liveService;
 
-    public LccHolder(Context context, LiveChessService.LccConnectUpdateListener lccConnectUpdateListener) {
+	public LccHolder(Context context, LiveChessService liveService, LiveChessService.LccConnectUpdateListener lccConnectUpdateListener) {
+		this.liveService = liveService;
 		this.context = context;
 		this.lccConnectUpdateListener = lccConnectUpdateListener;
 
@@ -275,7 +277,7 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 				+ StaticData.SYMBOL_NEW_STR + context.getString(R.string.message_) + message);
 	}
 
-	public void processConnectionFailure(FailureDetails details) {
+	           public void processConnectionFailure(FailureDetails details) {
 
 		// handles one and only one null-case when user tries to connect when device connection is off
 		// todo: handle other null-cases if any
@@ -283,6 +285,8 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 
 			setConnected(false);
 			resetClient();
+			// todo: probably stop notification
+			// cancelServiceNotification();
 
 			String detailsMessage;
 
@@ -721,13 +725,12 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 		this.blackClock = blackClock;
 	}
 
-	/**
-	 * stop LiveChess service. This is probably will be the only thing that we need to use.
-	 * All stopping operations will be called in onStop of Service class.
-	 * Also we will send all our request to service via interface instead of Singleton.
-	 */
-	/*private void stopService(){
-		context.stopService(new Intent(context, LiveChessService.class));
+	/*private void stopService() {
+		// from doc: Note that if a stopped service still has ServiceConnection objects bound to it with
+		// the BIND_AUTO_CREATE set, it will not be destroyed until all of these bindings are removed.
+		boolean result = context.stopService(new Intent(context, LiveChessService.class));
+		Log.d(TAG, "Live stopService: " + result);
+		liveService.stopSelf(); // don't work too
 	}*/
 
 	public void logout() {
@@ -745,6 +748,8 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 		clearPausedEvents();
 
 		runDisconnectTask(); // disconnect and reset client instance
+
+		cancelServiceNotification();
 
 		//instance = null;
 	}
@@ -1000,5 +1005,14 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 	public void clearPausedEvents() {
 		pausedActivityGameEvents.clear();
 		pausedActivityLiveEvents.clear();
+	}
+
+	private void cancelServiceNotification() {
+		// http://stackoverflow.com/questions/11387320/notificationmanager-cancel-doesnt-work-for-me
+		/*NotificationManager notificationManager =
+				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManager.cancel(R.id.live_service_notification);*/
+
+		liveService.stopForeground(true); // exit Foreground mode and remove Notification icon
 	}
 }

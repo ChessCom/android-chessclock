@@ -26,15 +26,15 @@ public class LiveChessService extends Service {
 	private LccHolder lccHolder;
 
 	public class ServiceBinder extends Binder {
-		public LccHolder getLccHolder(){
-			return LiveChessService.this.getLccHolder();
+		public LiveChessService getService(){
+			return LiveChessService.this;
 		}
 	}
 
 	public IBinder onBind(Intent intent) {
 		Log.d(TAG, "SERVICE: onBind");
 		if (lccHolder == null) {
-			lccHolder = new LccHolder(getContext(), new LccConnectUpdateListener());
+			lccHolder = new LccHolder(getContext(), this, new LccConnectUpdateListener());
 		}
 		return serviceBinder;
 	}
@@ -58,8 +58,10 @@ public class LiveChessService extends Service {
 	@Override
 	public void onDestroy() {
 		Log.d(TAG, "SERVICE: onDestroy");
-		//lccHolder.logout();
-		lccHolder = null;
+		if (lccHolder != null) {
+			lccHolder.logout();
+			lccHolder = null;
+		}
 		stopForeground(true);
 	}
 
@@ -93,10 +95,10 @@ public class LiveChessService extends Service {
 
 			PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
 
-			notification.setLatestEventInfo(getContext(), getString(R.string.ches_com),getString(R.string.live), pendingIntent);
+			notification.setLatestEventInfo(getContext(), getString(R.string.ches_com), getString(R.string.live), pendingIntent);
 			notification.flags |= Notification.FLAG_NO_CLEAR;
 
-			startForeground(2048, notification);
+			startForeground(R.id.live_service_notification, notification);
 		}
 	}
 

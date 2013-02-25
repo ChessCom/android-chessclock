@@ -26,4 +26,6 @@
 
 	<item name="list_item_id" type="id"/>
 
+	<item name="live_service_notification" type="id"/>
+
 </resources>

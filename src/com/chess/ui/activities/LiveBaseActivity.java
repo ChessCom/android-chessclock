@@ -52,10 +52,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected LccChallengeTaskRunner challengeTaskRunner;
 	protected ChallengeTaskListener challengeTaskListener;
 	protected GameTaskListener gameTaskListener;
-	private LccHolder lccHolder;
 	private Menu menu;
 	private LiveChessServiceConnectionListener liveChessServiceConnectionListener;
 	protected boolean isLCSBound;
+	private LiveChessService service;
 	//private boolean shouldBeConnectedToLive;
 
 	@Override
@@ -79,13 +79,13 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		super.onStart();
 
 		if (!isLCSBound) {
-			bindService(new Intent(this, LiveChessService.class), liveChessServiceConnectionListener, BIND_IMPORTANT/*BIND_AUTO_CREATE*/);
+			bindService(new Intent(this, LiveChessService.class), liveChessServiceConnectionListener, BIND_AUTO_CREATE);
 		}
 
-		if (lccHolder != null) {
-			lccHolder.setLiveChessClientEventListener(this);
-			lccHolder.setOuterChallengeListener(outerChallengeListener);
-			challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener, lccHolder);
+		if (getLccHolder() != null) {
+			getLccHolder().setLiveChessClientEventListener(this);
+			getLccHolder().setOuterChallengeListener(outerChallengeListener);
+			challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener, getLccHolder());
 		}
 
 		/*if (AppData.isLiveChess(this) && !AppUtils.isNetworkAvailable(this)) { // check only if live
@@ -125,7 +125,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
 
-		if (lccHolder != null) {
+		if (getLccHolder() != null) {
 			executePausedActivityLiveEvents();
 		}
 	}
@@ -192,7 +192,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				public void run() {
 					AppData.setLiveChessMode(getContext(), false);
 //					DataHolder.getInstance().setLiveChess(false);
-					lccHolder.setConnected(false);
+					getLccHolder().setConnected(false);
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
 							.parse(RestHelper.PLAY_ANDROID_HTML)));
 				}
@@ -269,16 +269,16 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			isLCSBound = true;
 
 			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
-			lccHolder = serviceBinder.getLccHolder();
+			service = serviceBinder.getService();
 
 			if (menu != null) {
-				getActionBarHelper().showMenuItemById(R.id.menu_signOut, lccHolder.isConnected(), menu);
+				getActionBarHelper().showMenuItemById(R.id.menu_signOut, getLccHolder().isConnected(), menu);
 			}
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, lccHolder.isConnected());
+			getActionBarHelper().showMenuItemById(R.id.menu_signOut, getLccHolder().isConnected());
 
-			lccHolder.setLiveChessClientEventListener(LiveBaseActivity.this);
-			lccHolder.setOuterChallengeListener(outerChallengeListener);
-			challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener, lccHolder);
+			getLccHolder().setLiveChessClientEventListener(LiveBaseActivity.this);
+			getLccHolder().setOuterChallengeListener(outerChallengeListener);
+			challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener, getLccHolder());
 			executePausedActivityLiveEvents();
 
 			onLiveServiceConnected();
@@ -417,7 +417,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	protected LccHolder getLccHolder() { // todo: check null
-		return lccHolder;
+		return service == null ? null : service.getLccHolder();
 	}
 
 	// ---------- LiveChessClientEventListenerFace ----------------
