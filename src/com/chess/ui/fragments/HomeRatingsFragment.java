@@ -1,6 +1,5 @@
 package com.chess.ui.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -14,7 +13,6 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.stats.UserStatsItem;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
@@ -108,10 +106,10 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 		}
 	}
 
-	private class StatsItemUpdateListener extends ActionBarUpdateListener<UserStatsItem> {
+	private class StatsItemUpdateListener extends ChessUpdateListener<UserStatsItem> {
 
 		public StatsItemUpdateListener() {
-			super(getInstance(), UserStatsItem.class);
+			super(UserStatsItem.class);
 		}
 
 		@Override
@@ -132,22 +130,18 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 		}
 	}
 
-	private class SaveStatsUpdateListener extends ActionBarUpdateListener<UserStatsItem.Data> {
+	private class SaveStatsUpdateListener extends ChessUpdateListener<UserStatsItem.Data> {
 
 		public SaveStatsUpdateListener() {
-			super(getInstance());
+			super();
 		}
 
 		@Override
 		public void updateData(UserStatsItem.Data returnedObj) {
 			super.updateData(returnedObj);
-			Activity activity = getActivity();
-			if (activity == null) {
-				return;
-			}
 
 			// fill ratings
-			String[] argument = new String[]{AppData.getUserName(activity)};
+			String[] argument = new String[]{AppData.getUserName(getActivity())};
 
 			{// standard
 				Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_LIVE_STANDARD],

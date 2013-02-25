@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
@@ -181,12 +180,12 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 		}
 	}
 
-	private class CursorUpdateListener extends ActionBarUpdateListener<Cursor> {
+	private class CursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		private int listenerCode;
 
 		public CursorUpdateListener(int listenerCode) {
-			super(getInstance());
+			super();
 			this.listenerCode = listenerCode;
 		}
 

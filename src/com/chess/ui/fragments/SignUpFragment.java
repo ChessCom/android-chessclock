@@ -15,12 +15,10 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.RegisterItem;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-
 import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
 import com.flurry.android.FlurryAgent;
@@ -187,10 +185,10 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 		new RequestJsonTask<RegisterItem>(registerUpdateListener).executeTask(loadItem);
 	}
 
-	private class RegisterUpdateListener extends ActionBarUpdateListener<RegisterItem> {
+	private class RegisterUpdateListener extends ChessUpdateListener<RegisterItem> {
 
 		public RegisterUpdateListener() {
-			super(getInstance(), RegisterItem.class);
+			super(RegisterItem.class);
 		}
 
 		@Override

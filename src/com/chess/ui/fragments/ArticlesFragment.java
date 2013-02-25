@@ -19,7 +19,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.ArticleItem;
 import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
@@ -191,13 +190,13 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		}
 	}
 
-	private class ArticleItemUpdateListener extends ActionBarUpdateListener<ArticleItem> {
+	private class ArticleItemUpdateListener extends ChessUpdateListener<ArticleItem> {
 		private static final int RANDOM = 0;
 		private static final int DATA_LIST = 1;
 		private int listenerCode;
 
 		public ArticleItemUpdateListener(int listenerCode) {
-			super(getInstance(), ArticleItem.class);
+			super(ArticleItem.class);
 			this.listenerCode = listenerCode;
 		}
 
@@ -284,9 +283,9 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 
-	private class ArticleCategoriesUpdateListener extends ActionBarUpdateListener<CommonFeedCategoryItem> {
+	private class ArticleCategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem> {
 		public ArticleCategoriesUpdateListener() {
-			super(getInstance(), CommonFeedCategoryItem.class);
+			super(CommonFeedCategoryItem.class);
 		}
 
 		@Override
@@ -316,15 +315,15 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 
-	private class SaveArticleCategoriesUpdateListener extends ActionBarUpdateListener<CommonFeedCategoryItem.Data> {
+	private class SaveArticleCategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem.Data> {
 		public SaveArticleCategoriesUpdateListener() {
-			super(getInstance());
+			super();
 		}
 	}
 
-	private class SaveArticlesUpdateListener extends ActionBarUpdateListener<ArticleItem.Data> {
+	private class SaveArticlesUpdateListener extends ChessUpdateListener<ArticleItem.Data> {
 		public SaveArticlesUpdateListener() {
-			super(getInstance());
+			super();
 		}
 
 		@Override
@@ -336,9 +335,6 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		@Override
 		public void updateData(ArticleItem.Data returnedObj) {
 			super.updateData(returnedObj);
-			if (getActivity() == null) {
-				return;
-			}
 
 			loadFromDb();
 		}
@@ -360,9 +356,9 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 				getContentResolver()).executeTask();
 	}
 
-	private class ArticlesCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
+	private class ArticlesCursorUpdateListener extends ChessUpdateListener<Cursor> {
 		public ArticlesCursorUpdateListener() {
-			super(getInstance());
+			super();
 		}
 
 		@Override

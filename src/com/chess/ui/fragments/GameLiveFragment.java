@@ -11,7 +11,6 @@ import android.view.*;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccGameTaskRunner;
@@ -823,9 +822,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		}
 	}
 
-	private class GameTaskListener extends ActionBarUpdateListener<Game> {
+	private class GameTaskListener extends ChessUpdateListener<Game> {
 		public GameTaskListener() {
-			super(getInstance());
+			super();
 		}
 	}
 }

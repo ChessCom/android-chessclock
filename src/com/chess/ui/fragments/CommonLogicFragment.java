@@ -20,6 +20,7 @@ import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
@@ -186,6 +187,17 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	@Override
 	public void onClick(View v) {
 
+	}
+
+	protected abstract class ChessUpdateListener<ItemType> extends ActionBarUpdateListener<ItemType> {
+
+		public ChessUpdateListener(Class<ItemType> clazz) {
+			super(getInstance(), CommonLogicFragment.this, clazz);
+		}
+
+		public ChessUpdateListener() {
+			super(getInstance(), CommonLogicFragment.this);
+		}
 	}
 
 	private class LoginUpdateListenerNew extends AbstractUpdateListener<LoginItem> {

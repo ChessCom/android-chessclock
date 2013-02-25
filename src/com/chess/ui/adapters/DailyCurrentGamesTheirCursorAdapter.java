@@ -47,11 +47,11 @@ public class DailyCurrentGamesTheirCursorAdapter extends ItemsCursorAdapter {
 		holder.playerTxt.setText(getString(cursor, DBConstants.V_OPPONENT_NAME) + gameType + draw);
 
 		String infoText = StaticData.SYMBOL_EMPTY;
-		if (getInt(cursor, DBConstants.V_IS_MY_TURN) > 0) {
+//		if (getInt(cursor, DBConstants.V_IS_MY_TURN) > 0) {
 
 			long amount = getLong(cursor, DBConstants.V_TIME_REMAINING);
 			infoText = AppUtils.getTimeLeftFromSeconds(amount, context);
-		}
+//		}
 
 		holder.gameInfoTxt.setText(infoText);
 	}

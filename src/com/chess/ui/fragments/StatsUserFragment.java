@@ -14,7 +14,6 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.stats.UserStatsItem;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.tasks.SaveUserStatsTask;
@@ -95,10 +94,10 @@ public class StatsUserFragment extends CommonLogicFragment implements AdapterVie
 	}
 
 
-	private class StatsItemUpdateListener extends ActionBarUpdateListener<UserStatsItem> {
+	private class StatsItemUpdateListener extends ChessUpdateListener<UserStatsItem> {
 
 		public StatsItemUpdateListener() {
-			super(getInstance(), UserStatsItem.class);
+			super(UserStatsItem.class);
 		}
 
 		@Override
@@ -144,10 +143,10 @@ public class StatsUserFragment extends CommonLogicFragment implements AdapterVie
 		}
 	}
 
-	private class SaveStatsUpdateListener extends ActionBarUpdateListener<UserStatsItem.Data> {
+	private class SaveStatsUpdateListener extends ChessUpdateListener<UserStatsItem.Data> {
 
 		public SaveStatsUpdateListener() {
-			super(getInstance());
+			super();
 		}
 
 		@Override

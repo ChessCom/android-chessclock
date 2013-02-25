@@ -20,7 +20,6 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.BaseResponseItem;
 import com.chess.backend.entity.new_api.DailyGameByIdItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
@@ -1111,19 +1110,16 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 
-	private class GameStateUpdateListener extends ActionBarUpdateListener<DailyGameByIdItem> {
+	private class GameStateUpdateListener extends ChessUpdateListener<DailyGameByIdItem> {
 
 		private GameStateUpdateListener() {
-			super(getInstance(), DailyGameByIdItem.class);
+			super(DailyGameByIdItem.class);
 		}
 
 		@Override
 		public void updateData(DailyGameByIdItem returnedObj) {
-			if (getActivity() == null) {
-				return;
-			}
+			super.updateData(returnedObj);
 
-//			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
 			currentGame = returnedObj.getData();
 
 			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
@@ -1145,11 +1141,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		}
 	}
 
-	private class GameOnlineUpdatesListener extends ActionBarUpdateListener<BaseResponseItem> {
+	private class GameOnlineUpdatesListener extends ChessUpdateListener<BaseResponseItem> {
 		private int listenerCode;
 
 		private GameOnlineUpdatesListener(int listenerCode) {
-			super(getInstance(), BaseResponseItem.class);
+			super(BaseResponseItem.class);
 			this.listenerCode = listenerCode;
 		}
 

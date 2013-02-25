@@ -29,6 +29,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		setHasOptionsMenu(true);
 
 		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
+
+
 	}
 
 	@Override
@@ -38,6 +40,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		getActivityFace().changeLeftFragment(new NavigationMenuFragment());
 //		getActivityFace().changeRightFragment(new DailyGamesRightFragment());
+
+
 	}
 
 	@Override
@@ -50,7 +54,14 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		super.onViewCreated(view, savedInstanceState);
 
 		showActionBar(true);
-		setTitle(R.string.home);
+
+		handler.post(new Runnable() {
+			@Override
+			public void run() {
+				setTitle(R.string.home);
+			}
+		});
+
 
 		Fragment homeGamesFragment = new HomeDailyGamesFragment();
 		changeInternalFragment(homeGamesFragment);
@@ -60,6 +71,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		previousCheckedId = tabRadioGroup.getCheckedRadioButtonId();
 	}
+
+
 
 	@Override
 	public void onResume() {

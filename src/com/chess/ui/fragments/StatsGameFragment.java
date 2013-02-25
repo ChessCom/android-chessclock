@@ -14,7 +14,6 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.stats.GameStatsItem;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.tasks.SaveGameStatsTask;
@@ -110,10 +109,10 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	}
 
 
-	private class StatsItemUpdateListener extends ActionBarUpdateListener<GameStatsItem> {
+	private class StatsItemUpdateListener extends ChessUpdateListener<GameStatsItem> {
 
 		public StatsItemUpdateListener() {
-			super(getInstance(), GameStatsItem.class);
+			super(GameStatsItem.class);
 		}
 
 		@Override
@@ -140,10 +139,10 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		}
 	}
 
-	private class SaveStatsUpdateListener extends ActionBarUpdateListener<GameStatsItem.Data> {
+	private class SaveStatsUpdateListener extends ChessUpdateListener<GameStatsItem.Data> {
 
 		public SaveStatsUpdateListener() {
-			super(getInstance());
+			super();
 		}
 
 		@Override

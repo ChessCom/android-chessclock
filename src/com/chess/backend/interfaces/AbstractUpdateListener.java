@@ -1,7 +1,7 @@
 package com.chess.backend.interfaces;
 
 import android.content.Context;
-import com.chess.backend.statics.StaticData;
+import android.support.v4.app.Fragment;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -9,13 +9,39 @@ import java.util.List;
 
 public abstract class AbstractUpdateListener<ItemType> implements TaskUpdateInterface<ItemType> {
 
+	private boolean usedForFragment;
 	private Context context;
 	protected boolean useList;
 	private Class<ItemType> typeClass;
+	private Fragment startedFragment;
+
+	/**
+	 * Use this contructor if you need it for fragment. It will handle getActivity() on updateData callback
+	 * @param context
+	 * @param clazz
+	 * @param startedFragment
+	 */
+	public AbstractUpdateListener(Context context, Fragment startedFragment, Class<ItemType> clazz) {
+		this.context = context;
+		typeClass = clazz;
+		this.startedFragment = startedFragment;
+		usedForFragment = true;
+	}
 
 	public AbstractUpdateListener(Context context, Class<ItemType> clazz) {
 		this.context = context;
 		typeClass = clazz;
+	}
+
+	/**
+	 * Use this contructor if you need it for fragment. It will handle getActivity() on updateData callback
+	 * @param context
+	 * @param startedFragment
+	 */
+	public AbstractUpdateListener(Context context, Fragment startedFragment) {
+		this.context = context;
+		this.startedFragment = startedFragment;
+		usedForFragment = true;
 	}
 
 	public AbstractUpdateListener(Context context) {
@@ -78,6 +104,16 @@ public abstract class AbstractUpdateListener<ItemType> implements TaskUpdateInte
 	@Override
 	public Class<ItemType> getClassType() {
 		return typeClass;
+	}
+
+	@Override
+	public Fragment getStartedFragment() {
+		return startedFragment;
+	}
+
+	@Override
+	public boolean isUsedForFragment() {
+		return usedForFragment;
 	}
 
 }

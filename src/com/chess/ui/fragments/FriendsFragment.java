@@ -13,7 +13,6 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.FriendsItem;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -22,8 +21,8 @@ import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveFriendsListTask;
-import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.ui.adapters.FriendsCursorAdapter;
+import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
@@ -124,10 +123,10 @@ public class FriendsFragment extends CommonLogicFragment {
 		new RequestJsonTask<FriendsItem>(friendsUpdateListener).executeTask(loadItem);
 	}
 
-	private class FriendsUpdateListener extends ActionBarUpdateListener<FriendsItem> {
+	private class FriendsUpdateListener extends ChessUpdateListener<FriendsItem> {
 
 		public FriendsUpdateListener() {
-			super(getInstance(), FriendsItem.class);
+			super(FriendsItem.class);
 		}
 
 		@Override
@@ -138,9 +137,7 @@ public class FriendsFragment extends CommonLogicFragment {
 
 		@Override
 		public void updateData(FriendsItem returnedObj) {
-			if (getActivity() == null) {
-				return;
-			}
+			super.updateData(returnedObj);
 
 			hostUnreachable = false;
 
@@ -158,9 +155,9 @@ public class FriendsFragment extends CommonLogicFragment {
 		}
 	}
 
-	private class SaveFriendsListUpdateListener extends ActionBarUpdateListener<FriendsItem.Data> {
+	private class SaveFriendsListUpdateListener extends ChessUpdateListener<FriendsItem.Data> {
 		public SaveFriendsListUpdateListener() {
-			super(getInstance());
+			super();
 		}
 
 		@Override
@@ -171,9 +168,7 @@ public class FriendsFragment extends CommonLogicFragment {
 
 		@Override
 		public void updateData(FriendsItem.Data returnedObj) {
-			if (getActivity() == null) {
-				return;
-			}
+			super.updateData(returnedObj);
 
 			loadFromDb();
 		}
@@ -186,10 +181,10 @@ public class FriendsFragment extends CommonLogicFragment {
 
 	}
 
-	private class FriendsCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
+	private class FriendsCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		public FriendsCursorUpdateListener() {
-			super(getInstance());
+			super();
 
 		}
 
@@ -201,13 +196,10 @@ public class FriendsFragment extends CommonLogicFragment {
 
 		@Override
 		public void updateData(Cursor returnedObj) {
-			if (getActivity() == null) {
-				return;
-			}
+			super.updateData(returnedObj);
 
 			friendsAdapter.changeCursor(returnedObj);
 			listView.setAdapter(friendsAdapter);
-
 		}
 
 		@Override

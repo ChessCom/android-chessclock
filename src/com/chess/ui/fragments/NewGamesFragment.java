@@ -9,7 +9,6 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.DailySeekItem;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -165,10 +164,10 @@ public class NewGamesFragment extends CommonLogicFragment {
 		}
 	}
 
-	private class CreateChallengeUpdateListener extends ActionBarUpdateListener<DailySeekItem> {
+	private class CreateChallengeUpdateListener extends ChessUpdateListener<DailySeekItem> {
 
 		public CreateChallengeUpdateListener() {
-			super(getInstance(), DailySeekItem.class);
+			super(DailySeekItem.class);
 		}
 
 		@Override

@@ -16,7 +16,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.*;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
@@ -115,6 +114,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
@@ -375,7 +375,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		showPopupDialog(title, CHALLENGE_ACCEPT_TAG);
 	}
 
-	private class OnlineUpdateListener extends ActionBarUpdateListener<BaseResponseItem> {
+	private class OnlineUpdateListener extends ChessUpdateListener<BaseResponseItem> {
 		public static final int INVITE = 3;
 		public static final int DRAW = 4;
 		public static final int VACATION = 5;
@@ -383,7 +383,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		private int itemCode;
 
 		public OnlineUpdateListener(int itemCode) {
-			super(getInstance(),BaseResponseItem.class);
+			super(BaseResponseItem.class);
 			this.itemCode = itemCode;
 		}
 
@@ -578,14 +578,14 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);
 	}
 
-	private class VacationUpdateListener extends ActionBarUpdateListener<VacationItem> {
+	private class VacationUpdateListener extends ChessUpdateListener<VacationItem> {
 
 		static final int GET = 0;
 		static final int DELETE = 1;
 		private int listenerCode;
 
 		public VacationUpdateListener(int listenerCode) {
-			super(getInstance(), VacationItem.class);
+			super(VacationItem.class);
 			this.listenerCode = listenerCode;
 		}
 
@@ -597,9 +597,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 
 		@Override
 		public void updateData(VacationItem returnedObj) {
-			if (getActivity() == null) {
-				return;
-			}
+			super.updateData(returnedObj);
 
 			switch (listenerCode) {
 				case GET:
@@ -613,9 +611,9 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		}
 	}
 
-	private class SaveCurrentGamesListUpdateListener extends ActionBarUpdateListener<DailyCurrentGameData> {
+	private class SaveCurrentGamesListUpdateListener extends ChessUpdateListener<DailyCurrentGameData> {
 		public SaveCurrentGamesListUpdateListener() {
-			super(getInstance());
+			super();
 		}
 
 		@Override
@@ -626,22 +624,20 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 
 		@Override
 		public void updateData(DailyCurrentGameData returnedObj) {
-			if (getActivity() == null) {
-				return;
-			}
+			super.updateData(returnedObj);
 
 			loadDbGames();
 		}
 	}
 
-	private class GamesCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
+	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {
 		public static final int CURRENT_MY = 0;
 		public static final int CURRENT_THEIR = 1;
 
 		private int gameType;
 
 		public GamesCursorUpdateListener(int gameType) {
-			super(getInstance());
+			super();
 			this.gameType = gameType;
 		}
 
@@ -653,9 +649,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 
 		@Override
 		public void updateData(Cursor returnedObj) {
-			if (getActivity() == null) {
-				return;
-			}
+			super.updateData(returnedObj);
 
 			switch (gameType) {
 				case CURRENT_MY:
@@ -696,10 +690,10 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		}
 	}
 
-	private class DailyGamesUpdateListener extends ActionBarUpdateListener<DailyGamesAllItem> {
+	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyGamesAllItem> {
 
 		public DailyGamesUpdateListener() {
-			super(getInstance(), DailyGamesAllItem.class);
+			super(DailyGamesAllItem.class);
 		}
 
 		@Override
@@ -710,9 +704,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 
 		@Override
 		public void updateData(DailyGamesAllItem returnedObj) {
-			if (getActivity() == null) {
-				return;
-			}
+			super.updateData(returnedObj);
 
 			hostUnreachable = false;
 			challengesGamesAdapter.setItemsList(returnedObj.getData().getChallenges());

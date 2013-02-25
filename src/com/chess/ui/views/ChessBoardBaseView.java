@@ -151,7 +151,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		greenHighlightPaint.setStrokeWidth(4.0f);
 		greenHighlightPaint.setStyle(Style.FILL_AND_STROKE);
-		greenHighlightPaint.setColor(0x3600FF00);
+		greenHighlightPaint.setColor(0x5600FF00);
 
 		width = resources.getDisplayMetrics().widthPixels;
 		height = resources.getDisplayMetrics().heightPixels;

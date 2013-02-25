@@ -1,6 +1,7 @@
 package com.chess.backend.interfaces;
 
 import actionbarcompat.ActionBarHelper;
+import android.support.v4.app.Fragment;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
@@ -15,6 +16,26 @@ import com.chess.ui.activities.CoreActivityActionBar;
 public abstract class ActionBarUpdateListener<ItemType> extends AbstractUpdateListener<ItemType> {
 	private ActionBarHelper actionBarHelper;
 	private CoreActivityActionBar coreActivityActionBar;
+	/**
+	 * Use this constructor if you need it for fragment. It will handle getActivity() on updateData callback
+	 * @param coreActivityActionBar
+	 * @param clazz
+	 * @param startedFragment
+	 */
+	public ActionBarUpdateListener(CoreActivityActionBar coreActivityActionBar, Fragment startedFragment, Class<ItemType> clazz) {
+		super(coreActivityActionBar, startedFragment, clazz);
+		init(coreActivityActionBar);
+	}
+
+	/**
+	 * Use this constructor if you need it for fragment. It will handle getActivity() on updateData callback
+	 * @param coreActivityActionBar
+	 * @param startedFragment
+	 */
+	public ActionBarUpdateListener(CoreActivityActionBar coreActivityActionBar, Fragment startedFragment) {
+		super(coreActivityActionBar, startedFragment);
+		init(coreActivityActionBar);
+	}
 
 	public ActionBarUpdateListener(CoreActivityActionBar coreActivityActionBar, Class<ItemType> clazz) {
 		super(coreActivityActionBar, clazz);

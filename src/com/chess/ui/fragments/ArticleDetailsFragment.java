@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
@@ -125,11 +124,10 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 	}
 
-	private class ArticleCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
+	private class ArticleCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		public ArticleCursorUpdateListener() {
-			super(getInstance());
-
+			super();
 		}
 
 		@Override
@@ -140,9 +138,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		@Override
 		public void updateData(Cursor cursor) {
-			if (getActivity() == null) {
-				return;
-			}
+			super.updateData(cursor);
 
 			loadedCursor = cursor;
 

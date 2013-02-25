@@ -1,6 +1,7 @@
 package com.chess.backend.interfaces;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
  * @modified 16.12.2012
  */
 public interface TaskUpdateInterface<ItemType> {
+
 	boolean useList();
 
 	void showProgress(boolean show);
@@ -33,4 +35,8 @@ public interface TaskUpdateInterface<ItemType> {
 	Type getListType();
 
 	Class<ItemType> getClassType();
+
+	Fragment getStartedFragment();
+
+	boolean isUsedForFragment();
 }

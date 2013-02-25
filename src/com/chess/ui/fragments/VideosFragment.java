@@ -19,7 +19,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
 import com.chess.backend.entity.new_api.VideoItem;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
@@ -203,9 +202,9 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		}
 	}
 
-	private class VideoCategoriesUpdateListener extends ActionBarUpdateListener<CommonFeedCategoryItem> {
+	private class VideoCategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem> {
 		public VideoCategoriesUpdateListener() {
-			super(getInstance(), CommonFeedCategoryItem.class);
+			super(CommonFeedCategoryItem.class);
 		}
 
 		@Override
@@ -227,14 +226,14 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		}
 	}
 
-	private class VideosItemUpdateListener extends ActionBarUpdateListener<VideoItem> {
+	private class VideosItemUpdateListener extends ChessUpdateListener<VideoItem> {
 
 		private static final int RANDOM = 0;
 		private static final int DATA_LIST = 1;
 		private int listenerCode;
 
 		public VideosItemUpdateListener(int listenerCode) {
-			super(getInstance(), VideoItem.class);
+			super(VideoItem.class);
 			this.listenerCode = listenerCode;
 		}
 
@@ -304,25 +303,22 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		public TextView dateTxt;
 	}
 
-	private class SaveVideosUpdateListener extends ActionBarUpdateListener<VideoItem.VideoDataItem> {
+	private class SaveVideosUpdateListener extends ChessUpdateListener<VideoItem.VideoDataItem> {
 		public SaveVideosUpdateListener() {
-			super(getInstance());
+			super();
 		}
 
 		@Override
 		public void updateData(VideoItem.VideoDataItem returnedObj) {
-			if (getActivity() == null) {
-				return;
-			}
+			super.updateData(returnedObj);
 
 			loadFromDb();
 		}
-
 	}
 
-	private class SaveVideoCategoriesUpdateListener extends ActionBarUpdateListener<CommonFeedCategoryItem.Data> {
+	private class SaveVideoCategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem.Data> {
 		public SaveVideoCategoriesUpdateListener() {
-			super(getInstance());
+			super();
 		}
 	}
 
@@ -331,10 +327,10 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 				getContentResolver()).executeTask();
 	}
 
-	private class VideosCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
+	private class VideosCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		public VideosCursorUpdateListener() {
-			super(getInstance());
+			super();
 		}
 
 		@Override
@@ -345,9 +341,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 		@Override
 		public void updateData(Cursor returnedObj) {
-			if (getActivity() == null) {
-				return;
-			}
+			super.updateData(returnedObj);
 
 			videosCursorAdapter.changeCursor(returnedObj);
 			listView.setAdapter(videosCursorAdapter);

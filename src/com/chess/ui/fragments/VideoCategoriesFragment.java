@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
@@ -156,10 +155,10 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 	}
 
-	private class VideosCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
+	private class VideosCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		public VideosCursorUpdateListener() {
-			super(getInstance());
+			super();
 		}
 
 		@Override
@@ -170,9 +169,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 		@Override
 		public void updateData(Cursor returnedObj) {
-			if (getActivity() == null) {
-				return;
-			}
+			super.updateData(returnedObj);
 
 			videosAdapter.changeCursor(returnedObj);
 		}

@@ -20,7 +20,6 @@ import com.chess.backend.entity.new_api.TacticInfoItem;
 import com.chess.backend.entity.new_api.TacticItem;
 import com.chess.backend.entity.new_api.TacticRatingData;
 import com.chess.backend.entity.new_api.stats.UserStatsItem;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
@@ -522,11 +521,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 	};
 
-	private class TacticsUpdateListener extends ActionBarUpdateListener<TacticItem> {
+	private class TacticsUpdateListener extends ChessUpdateListener<TacticItem> {
 		private int listenerCode;
 
 		private TacticsUpdateListener(int listenerCode) {
-			super(getInstance(), TacticItem.class);
+			super(TacticItem.class);
 			this.listenerCode = listenerCode;
 		}
 
@@ -569,12 +568,12 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 	}
 
-	private class TacticsInfoUpdateListener extends ActionBarUpdateListener<TacticInfoItem> {
+	private class TacticsInfoUpdateListener extends ChessUpdateListener<TacticInfoItem> {
 
 		private final int listenerCode;
 
 		public TacticsInfoUpdateListener(int listenerCode) {
-			super(getInstance(), TacticInfoItem.class);
+			super(TacticInfoItem.class);
 			this.listenerCode = listenerCode;
 		}
 
@@ -976,10 +975,10 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
 	}
 
-	private class DemoTacticsUpdateListener extends ActionBarUpdateListener<TacticItem.Data> {
+	private class DemoTacticsUpdateListener extends ChessUpdateListener<TacticItem.Data> {
 
 		public DemoTacticsUpdateListener() {
-			super(getInstance());
+			super();
 			useList = true;
 		}
 
@@ -990,9 +989,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 	}
 
-	private class DbTacticBatchSaveListener extends ActionBarUpdateListener<TacticItem.Data> {
+	private class DbTacticBatchSaveListener extends ChessUpdateListener<TacticItem.Data> {
 		public DbTacticBatchSaveListener() {
-			super(getInstance());
+			super();
 		}
 
 		@Override
@@ -1001,10 +1000,10 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 	}
 
-	private class StatsItemUpdateListener extends ActionBarUpdateListener<UserStatsItem> {
+	private class StatsItemUpdateListener extends ChessUpdateListener<UserStatsItem> {
 
 		public StatsItemUpdateListener() {
-			super(getInstance(), UserStatsItem.class);
+			super(UserStatsItem.class);
 		}
 
 		@Override

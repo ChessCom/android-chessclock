@@ -13,8 +13,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.new_api.VideoItem;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
@@ -127,10 +125,10 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		}
 	}
 
-	private class VideosCursorUpdateListener extends ActionBarUpdateListener<Cursor> {
+	private class VideosCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		public VideosCursorUpdateListener() {
-			super(getInstance());
+			super();
 
 		}
 
@@ -142,9 +140,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 
 		@Override
 		public void updateData(Cursor cursor) {
-			if (getActivity() == null) {
-				return;
-			}
+			super.updateData(cursor);
 
 			loadedCursor = cursor;
 
