@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="26dip"
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_welcome_back"
+        android:contentDescription="@string/image"
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        />
+
+    <ImageButton
+        android:id="@+id/playBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_play_video_medium"
+        android:background="@drawable/video_play_btn_back_medium"
+        android:visibility="visible"
+        android:contentDescription="@string/image"/>
+
+
+
+    <com.chess.RoboTextView
+        android:id="@+id/whatChessComTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/what_is_chess_com"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:drawableRight="@drawable/ic_arrow_right_badge"
+        android:drawablePadding="7dip"
+        android:gravity="center"
+        android:textColor="@color/new_light_grey"
+        />
+
+</RelativeLayout>

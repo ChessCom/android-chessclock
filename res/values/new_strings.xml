@@ -88,5 +88,20 @@
     <string name="play_move">Play Move</string>
     <string name="daily_analysis">Daily Analysis</string>
 
+    <!--Welcome-->
+    <string name="what_is_chess_com">What is Chess.com?</string>
+    <string name="welcome_two_line_1">&#8226; More than 6 million members</string>
+    <string name="welcome_two_line_2">&#8226; Millions of games played each week</string>
+    <string name="welcome_two_line_3">&#8226; Huge global chess community</string>
+    <string name="welcome_three_line_1">&#8226; Play live, daily, or vs computer</string>
+    <string name="welcome_three_line_2">&#8226; Challenge your friends to a match</string>
+    <string name="welcome_three_line_3">&#8226; Find opponents at your skill level</string>
+    <string name="welcome_four_line_1">&#8226; Interactive lessons boost your rating</string>
+    <string name="welcome_four_line_2">&#8226; Videos by top professional coaches</string>
+    <string name="welcome_four_line_3">&#8226; Analyze your games and openings</string>
+    <string name="number_one_online_chess">#1 in Online Chess</string>
+    <string name="play_unlimited_free_games">Play Unlimited Free Games</string>
+    <string name="improve_your_game">Improve Your Game</string>
+
 
 </resources>

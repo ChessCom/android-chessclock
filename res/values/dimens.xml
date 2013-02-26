@@ -193,8 +193,13 @@
 
     <!--Friends-->
     <dimen name="new_button_square_size">37dip</dimen>
+
+    <!--Videos-->
     <dimen name="video_play_btn_back_ring_size">47dip</dimen>
     <dimen name="video_play_btn_back_ring_size_big">100dip</dimen>
+    <dimen name="video_play_btn_back_ring_size_medium">80dip</dimen>
+
+
     <dimen name="common_list_thumb_size">45dip</dimen>
 
     <!--Stats-->
@@ -208,4 +213,7 @@
     <dimen name="button_upgrade_toggle_radius">4dip</dimen>
     <dimen name="button_checkmark_radius">3dip</dimen>
     <dimen name="button_checkmark_size">34dip</dimen>
+
+    <!--Welcome-->
+    <dimen name="view_pager_indicator_size">8dip</dimen>
 </resources>

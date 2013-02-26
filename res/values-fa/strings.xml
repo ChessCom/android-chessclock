@@ -42,7 +42,7 @@
 	<string name="username">نام کاربری</string>
 	<string name="password">گذرواژه</string>
 	<string name="log_in">{0}{/0}{1}{2}Sign in{/2}{/1}</string>
-	<string name="sing_up">ثبت نام</string>
+	<string name="sign_up">ثبت نام</string>
 	<string name="complete_sing_up">کامل ثبت نام</string>
 	<string name="play_as_guest">بازی به عنوان مهمان</string>
 

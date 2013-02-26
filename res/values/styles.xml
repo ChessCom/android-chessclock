@@ -46,6 +46,11 @@
         <item name="android:minHeight">@dimen/grey_button_height</item>
     </style>
 
+    <style name="Text.Button.GreyDarker">
+        <item name="android:background">@drawable/button_grey_darker_selector</item>
+        <item name="android:minHeight">@dimen/main_button_height</item>
+    </style>
+
     <style name="Text.Button.Grey.Small">
         <item name="android:background">@drawable/button_grey_selector</item>
         <item name="android:minHeight">@dimen/small_button_height</item>
@@ -274,6 +279,16 @@
 	<style name="lineDivider" >
 		<item name="android:layout_marginBottom">5dip</item>
 	</style>
+
+    <style name="PageRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@drawable/empty</item>
+        <item name="android:layout_margin">5dip</item>
+        <item name="android:clickable">false</item>
+        <item name="android:textSize">1sp</item>
+        <item name="android:background">@drawable/pager_indicator_selector</item>
+    </style>
 
 <!--	<style name="tightContainer" >
 		<item name="android:paddingBottom">5dip</item>

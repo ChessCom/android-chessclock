@@ -20,6 +20,11 @@
     <color name="new_edit_button_text">#FF262422</color>
     <color name="light_grey_border">#FFbab8b6</color>
     <color name="semi_transparent_border">#26000000</color>
+    <color name="light_shadow_border">#16000000</color>
+    <color name="gradient_shadow_1">#10000000</color>
+    <color name="gradient_shadow_2">#16000000</color>
+    <color name="gradient_shadow_3">#20000000</color>
+    <color name="gradient_shadow_4">#26000000</color>
 
     <color name="any_button_stroke">#23FFFFFF</color>
     <color name="grey_button_stroke">#18FFFFFF</color>
@@ -409,6 +414,9 @@
     <color name="thumbnail_play_border_1">#FFe3e2e2</color>
     <color name="thumbnail_play_border_2">#FFe9e9e9</color>
     <color name="thumbnail_play_border_inner">#FFf3f3f3</color>
+    <!--Medium Play Button-->
+    <color name="thumbnail_play_border_medium">#FF908e8b</color>
+    <color name="thumbnail_play_back_medium">#FFfdfdfc</color>
 
     <color name="new_dark_green">#FF4e763b</color>
     <color name="new_author_dark_grey">#FF45413f</color>
@@ -498,5 +506,14 @@
     <color name="upgrade_plan_gold_right_2">#FF7b6d48</color>
     <color name="upgrade_plan_gold_bot_1">#FF8d7d52</color>
     <color name="upgrade_plan_gold_bot_2">#FF6e6140</color>
+
+    <!--Welcome-->
+    <color name="pager_indicator_default">#FF1d1c1a</color>
+    <color name="pager_indicator_selected">#FF68923d</color>
+    <color name="welcome_buttons_lay_back">#FF24221f</color>
+
+    <color name="welcome_two_title_border">#FF8b8a85</color>
+    <color name="welcome_two_title_grey">#FF686664</color>
+    <color name="welcome_white_glow_back">#FF939393</color>
 
 </resources>

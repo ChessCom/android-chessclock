@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!--Shadow-->
+    <item >
+        <shape >
+            <corners android:radius="@dimen/new_round_button_radius" />
+            <solid android:color="@color/transparent"/>
+            <stroke android:width="1px" android:color="@color/gradient_shadow_1" />
+
+        </shape>
+    </item>
+
+    <!--Shadow-->
+    <item
+        android:top="1px"
+        android:left="1px"
+        android:right="1px"
+        android:bottom="1px"
+        >
+        <shape >
+            <corners android:radius="@dimen/new_round_button_radius" />
+            <solid android:color="@color/transparent"/>
+            <stroke android:width="1px" android:color="@color/gradient_shadow_2" />
+
+        </shape>
+    </item>
+
+    <!--Shadow-->
+    <item
+        android:top="2px"
+        android:left="2px"
+        android:right="2px"
+        android:bottom="2px"
+        >
+        <shape >
+            <corners android:radius="@dimen/new_round_button_radius" />
+            <solid android:color="@color/transparent"/>
+            <stroke android:width="1px" android:color="@color/gradient_shadow_3" />
+
+        </shape>
+    </item>
+
+    <!--Shadow-->
+    <item
+        android:top="3px"
+        android:left="3px"
+        android:right="3px"
+        android:bottom="3px"
+        >
+        <shape >
+            <corners android:radius="@dimen/new_round_button_radius" />
+            <solid android:color="@color/transparent"/>
+            <stroke android:width="1px" android:color="@color/gradient_shadow_4" />
+
+        </shape>
+    </item>
+
+    <!--Background-->
+    <item
+        android:top="1px"
+        android:left="2px"
+        android:right="2px"
+        android:bottom="4px"
+        >
+        <shape >
+            <corners android:radius="@dimen/new_round_button_radius" />
+            <stroke android:width="1dip" android:color="@color/welcome_two_title_border" />
+            <solid android:color="@color/thumbnail_play_back_medium" />
+        </shape>
+    </item>
+
+</layer-list>

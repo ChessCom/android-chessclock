@@ -43,7 +43,7 @@
 	<string name="username">Username</string>
 	<string name="password">Password</string>
 	<string name="log_in">Log In</string>
-	<string name="sing_up">Sign Up</string>
+	<string name="sign_up">Sign Up</string>
 	<string name="complete_sing_up">Complete Sign Up</string>
 	<string name="play_as_guest">Play As Guest</string>
 

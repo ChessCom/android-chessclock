@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -87,7 +86,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
                 finish();
                 extras.clear();
             } else if(cmd == StaticData.NAV_FINISH_2_SPLASH){
-				Intent loginIntent = new Intent(this, SplashActivity.class);
+				Intent loginIntent = new Intent(this, WelcomeActivity.class);
 				loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(loginIntent);
 				finish();

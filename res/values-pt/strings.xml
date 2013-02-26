@@ -42,7 +42,7 @@
 	<string name="username">Nome de Usuário </string>
 	<string name="password">Palavra-passe</string>
 	<string name="log_in">Entrar</string>
-	<string name="sing_up">Cadastre-se</string>
+	<string name="sign_up">Cadastre-se</string>
 	<string name="complete_sing_up">Cadastre-se concluir</string>
 	<string name="play_as_guest">Jogue como convidado</string>
 

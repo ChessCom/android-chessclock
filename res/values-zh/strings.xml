@@ -42,7 +42,7 @@
 	<string name="username">用户名</string>
 	<string name="password">密码:</string>
 	<string name="log_in">登录</string>
-	<string name="sing_up">注册</string>
+	<string name="sign_up">注册</string>
 	<string name="complete_sing_up">完成注册</string>
 	<string name="play_as_guest">为来宾播放</string>
 

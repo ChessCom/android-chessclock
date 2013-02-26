@@ -43,7 +43,7 @@
 	<string name="username">Имя пользователя</string>
 	<string name="password">Пароль</string>
 	<string name="log_in">Войти</string>
-	<string name="sing_up">Регистрация</string>
+	<string name="sign_up">Регистрация</string>
 	<string name="complete_sing_up">Завершить Регистрацию</string>
 	<string name="play_as_guest">Играть Как Гость</string>
 

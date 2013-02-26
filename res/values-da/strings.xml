@@ -43,7 +43,7 @@
 	<string name="username">Brugernavn:</string>
 	<string name="password">Adgangskode</string>
 	<string name="log_in">Log ind</string>
-	<string name="sing_up">Tilmeld dig</string>
+	<string name="sign_up">Tilmeld dig</string>
 	<string name="complete_sing_up">Komplet Tilmelding</string>
 	<string name="play_as_guest">Spil som Gæst</string>
 

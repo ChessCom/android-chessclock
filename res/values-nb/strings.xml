@@ -42,7 +42,7 @@
 	<string name="username">Brukernavn</string>
 	<string name="password">Passord</string>
 	<string name="log_in">Logg på</string>
-	<string name="sing_up">Registrer deg</string>
+	<string name="sign_up">Registrer deg</string>
 	<string name="complete_sing_up">Komplett Registrering</string>
 	<string name="play_as_guest">Spill som Gjest</string>
 

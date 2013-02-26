@@ -42,7 +42,7 @@
 	<string name="username">사용자 이름</string>
 	<string name="password">패스워드</string>
 	<string name="log_in">로그인</string>
-	<string name="sing_up">가입하기</string>
+	<string name="sign_up">가입하기</string>
 	<string name="complete_sing_up">가입을 완료</string>
 	<string name="play_as_guest">손님으로 재생</string>
 
