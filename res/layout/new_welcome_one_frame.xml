@@ -23,11 +23,10 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:src="@drawable/ic_play_video_medium"
-        android:background="@drawable/video_play_btn_back_medium"
+        android:background="@drawable/video_play_btn_back_medium_selector"
         android:visibility="visible"
-        android:contentDescription="@string/image"/>
-
-
+        android:contentDescription="@string/image"
+        />
 
     <com.chess.RoboTextView
         android:id="@+id/whatChessComTxt"

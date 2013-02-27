@@ -17,7 +17,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        >
 
         <ImageView
             android:id="@+id/logoImg"
@@ -64,10 +65,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/country"
-            android:inputType="textPersonName"
             style="@style/WhiteGrayEditText.Middle"
             custom:leftImage="@drawable/ic_country"
             custom:rightImage="@drawable/ic_country"
+            android:editable="false"
+            />
+
+        <com.chess.LeftRightImageEditText
+            android:id="@+id/skillEdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/skill_level"
+            style="@style/WhiteGrayEditText.Middle"
+            custom:leftImage="@drawable/ic_skills"
+            custom:rightImage="@drawable/ic_arrow_right"
+            android:editable="false"
             />
 
         <com.chess.LeftRightImageEditText

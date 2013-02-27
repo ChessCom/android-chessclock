@@ -219,7 +219,7 @@ public class NewGamesFragment extends CommonLogicFragment {
 				int bonusTime = 0;
 				int defaultLiveMode = initialTime | (bonusTime << 8);
 
-				AppData.setDefaultLiveyMode(getActivity(), defaultLiveMode);
+				AppData.setDefaultLiveMode(getActivity(), defaultLiveMode);
 			}
 
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="23dip"
+    android:paddingLeft="17dip"
+    android:paddingRight="17dip"
+    android:paddingBottom="20dip"
+    android:background="@drawable/edit_white_top_default"
+    >
+
+    <com.chess.RoboTextView
+        android:id="@+id/nameTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="21sp"
+        android:textColor="@color/new_dark_green"
+        custom:ttf="Bold"
+        />
+
+    <com.chess.RoboTextView
+        android:id="@+id/descTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/new_author_dark_grey"
+        />
+
+</LinearLayout>

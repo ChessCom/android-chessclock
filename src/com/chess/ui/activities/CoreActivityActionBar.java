@@ -70,14 +70,14 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		View mainView = findViewById(R.id.mainView);
-		if (mainView != null) {
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
-				mainView.setBackground(backgroundChessDrawable);
-			} else {
-				mainView.setBackgroundDrawable(backgroundChessDrawable);
-			}
-		}
+//		View mainView = findViewById(R.id.mainView);
+//		if (mainView != null) {
+//			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+//				mainView.setBackground(backgroundChessDrawable);
+//			} else {
+//				mainView.setBackgroundDrawable(backgroundChessDrawable);
+//			}
+//		}
 	}
 
 	@Override

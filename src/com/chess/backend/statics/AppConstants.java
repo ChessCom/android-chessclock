@@ -47,6 +47,8 @@ public class AppConstants {
 	public static final String PREF_PIECES_SET = "piecesBitmap";
     public static final String PREF_VIDEO_SKILL_LEVEL = "video skill level";
     public static final String PREF_VIDEO_CATEGORY = "video category";
+	public static final String PREF_USER_SKILL_LEVEL = "user_skill_level";
+	public static final String PREF_USER_COUNTRY = "user_country";
 
     public static final String PREF_TEMP_TOKEN_GCM = "temporary token for gcm";
 	/* New Daily and Live games*/

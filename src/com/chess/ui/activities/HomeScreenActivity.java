@@ -86,7 +86,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
                 finish();
                 extras.clear();
             } else if(cmd == StaticData.NAV_FINISH_2_SPLASH){
-				Intent loginIntent = new Intent(this, WelcomeActivity.class);
+				Intent loginIntent = new Intent(this, SplashActivity.class);
 				loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(loginIntent);
 				finish();

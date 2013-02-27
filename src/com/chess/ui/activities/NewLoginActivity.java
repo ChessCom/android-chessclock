@@ -6,12 +6,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.Menu;
 import com.chess.R;
-import com.chess.backend.statics.AppData;
 import com.chess.lcc.android.LccHolder;
-import com.chess.ui.fragments.*;
+import com.chess.ui.fragments.BasePopupsFragment;
+import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.WelcomeFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.views.drawables.LogoBackgroundDrawable;
 import com.slidingmenu.lib.SlidingMenu;
@@ -27,7 +27,7 @@ import java.util.Map;
  * Date: 30.12.12
  * Time: 13:37
  */
-public class NewLoginActivity extends LiveBaseActivity implements ActiveFragmentInterface{
+public class NewLoginActivity extends LiveBaseActivity implements ActiveFragmentInterface {
 
 	private Fragment currentActiveFragment;
 	private Hashtable<Integer, Integer> badgeItems;
@@ -47,13 +47,14 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		openMenuListeners = new ArrayList<SlidingMenu.OnOpenedListener>();
 
 		// set the Above View
-		if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
-			switchFragment(new HomeTabsFragment());
-			showActionBar = true;
-		} else {
-			switchFragment(new SignInFragment());
+//		if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
+//			switchFragment(new HomeTabsFragment());
+//			showActionBar = true;
+//		} else {
+//			switchFragment(new SignInFragment());
+			switchFragment(new WelcomeFragment());
 			showActionBar = false;
-		}
+//		}
 
 		slidingMenu = getSlidingMenu();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);

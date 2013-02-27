@@ -160,7 +160,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 
 			titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_NAME));
 //			thumbnailAuthorImg // TODO adjust image loader
-			countryImg.setImageResource(R.drawable.ic_united_states); // TODO set flag properly // invent flag resources set system
+			countryImg.setImageDrawable(AppUtils.getUserFlag(getActivity())); // TODO set flag properly // invent flag resources set system
 
 			int duration = DBDataManager.getInt(cursor, DBConstants.V_MINUTES);
 			dateTxt.setText(dateFormatter.format(new Date(DBDataManager.getLong(cursor, DBConstants.V_CREATE_DATE)))

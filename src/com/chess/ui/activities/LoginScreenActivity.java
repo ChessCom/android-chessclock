@@ -57,7 +57,7 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 
 		findViewById(R.id.signin).setOnClickListener(this);
 		findViewById(R.id.signup).setOnClickListener(this);
-		findViewById(R.id.guestplay).setOnClickListener(this);
+		findViewById(R.id.guestPlayBtn).setOnClickListener(this);
 
 	}
 
@@ -72,7 +72,7 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 			}
 		} else if (view.getId() == R.id.signup) {
 			startActivity(new Intent(this, SignUpScreenActivity.class));
-		} else if (view.getId() == R.id.guestplay) {
+		} else if (view.getId() == R.id.guestPlayBtn) {
 			DataHolder.reset();
 			TacticsDataHolder.reset();
 			AppData.setLiveChessMode(this, false);

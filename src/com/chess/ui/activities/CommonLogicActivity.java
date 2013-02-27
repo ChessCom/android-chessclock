@@ -79,6 +79,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 
 		currentLocale = preferences.getString(AppConstants.CURRENT_LOCALE, StaticData.LOCALE_EN);
 
+		handler = new Handler();
 		mainView = findViewById(R.id.mainView);
 		setLocale();
 	}
@@ -102,7 +103,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 			SessionEvents.addLogoutListener(new SampleLogoutListener());
 			fbLoginBtn.init(this, facebook);
 
-			handler = new Handler();
 
 //			loginUpdateListener = new LoginUpdateListener();
 			loginUpdateListener = new LoginUpdateListenerNew();

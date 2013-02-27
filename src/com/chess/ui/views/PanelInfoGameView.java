@@ -130,7 +130,7 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 				flagParams.addRule(RelativeLayout.ALIGN_TOP, AVATAR_ID);
 			}
 
-			flagImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_united_states));
+			flagImg.setImageDrawable(AppUtils.getUserFlag(getContext()));
 			flagImg.setScaleType(ImageView.ScaleType.FIT_XY);
 			flagImg.setAdjustViewBounds(true);
 			flagImg.setId(FLAG_ID);

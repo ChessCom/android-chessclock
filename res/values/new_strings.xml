@@ -103,5 +103,10 @@
     <string name="play_unlimited_free_games">Play Unlimited Free Games</string>
     <string name="improve_your_game">Improve Your Game</string>
 
+    <!--Create Profile-->
+    <string name="skill_level">Skill Level</string>
+    <string name="choose_level">Choose Level</string>
+    <string name="select_country">Select Country</string>
+
 
 </resources>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@id/mainView"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	>
+
+    <ImageView
+        android:id="@+id/logoImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_new_logo"
+        android:contentDescription="@string/image"
+        android:layout_marginBottom="8dip"
+        android:layout_marginTop="70dip"
+        android:layout_centerHorizontal="true"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/pagerIndicatorGroup"
+        />
+
+    <RadioGroup
+        android:id="@id/pagerIndicatorGroup"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:padding="5dip"
+        android:layout_above="@+id/bottomButtonsLay"
+        />
+
+    <LinearLayout
+        android:id="@id/bottomButtonsLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="17dip"
+        android:paddingLeft="31dip"
+        android:paddingRight="31dip"
+        android:paddingBottom="17dip"
+        android:gravity="center"
+        android:background="@drawable/welcome_buttons_lay_back"
+        android:layout_alignParentBottom="true"
+        >
+
+        <com.chess.RoboButton
+            android:id="@+id/signUpBtn"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/Text.Button.GreyDarker"
+            android:text="@string/sign_up"
+            android:padding="2dip"
+            android:layout_marginRight="2dip"
+            />
+
+        <com.chess.RoboButton
+            android:id="@+id/signInBtn"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/Text.Button.GreyDarker"
+            android:text="@string/log_in"
+            android:layout_marginLeft="2dip"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

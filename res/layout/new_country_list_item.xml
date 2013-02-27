@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="23dip"
+    android:paddingLeft="17dip"
+    android:paddingRight="17dip"
+    android:paddingBottom="20dip"
+    android:background="@drawable/edit_white_top_default"
+    android:gravity="center_vertical"
+    android:minHeight="48dip"
+    >
+
+    <com.chess.RoboTextView
+        android:id="@+id/nameTxt"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="18sp"
+        android:textColor="@color/new_author_dark_grey"
+        android:text="United States"
+        />
+
+    <com.chess.RoboTextView
+        android:id="@+id/codeTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/light_grey"
+        android:text="US"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        />
+
+    <ImageView
+        android:id="@+id/countryImg"
+        android:layout_width="23dip"
+        android:layout_height="23dip"
+        android:src="@drawable/ic_country"
+        android:contentDescription="@string/image"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        />
+
+</LinearLayout>

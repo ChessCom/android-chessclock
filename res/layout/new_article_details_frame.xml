@@ -55,7 +55,6 @@
         android:contentDescription="@string/country"
         android:layout_toRightOf="@id/authorTxt"
         android:layout_below="@id/titleTxt"
-        android:src="@drawable/ic_united_states"
         android:layout_marginTop="-6dip"
         android:layout_marginLeft="7dip"
         />

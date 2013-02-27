@@ -63,19 +63,19 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 	private IntentFilter listUpdateFilter;
 	private BroadcastReceiver gamesUpdateReceiver;
 	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
-//	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
+	//	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
 	private GamesCursorUpdateListener currentGamesTheirCursorUpdateListener;
 	private GamesCursorUpdateListener currentGamesMyCursorUpdateListener;
-//	private GamesCursorUpdateListener finishedGamesCursorUpdateListener; // doesn't load on this screen
+	//	private GamesCursorUpdateListener finishedGamesCursorUpdateListener; // doesn't load on this screen
 	private DailyGamesUpdateListener dailyGamesUpdateListener;
 	private VacationUpdateListener vacationDeleteUpdateListener;
 	private VacationUpdateListener vacationGetUpdateListener;
 
-//	private LoadItem selectedLoadItem;
+	//	private LoadItem selectedLoadItem;
 	private DailyCurrentGamesMyCursorAdapter currentGamesMyCursorAdapter;
 	private DailyCurrentGamesTheirCursorAdapter currentGamesTheirCursorAdapter;
 	private DailyChallengesGamesAdapter challengesGamesAdapter;
-//	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
+	//	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
 	private CustomSectionedAdapter sectionedAdapter;
 	private DailyCurrentGameData gameListCurrentItem;
 	private DailyChallengeItem.Data gameListChallengeItem;
@@ -138,10 +138,10 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		if (need2update) {
 			boolean haveSavedData = DBDataManager.haveSavedOnlineCurrentGame(getActivity());
 
-			if (AppUtils.isNetworkAvailable(getActivity()) ) {
+			if (AppUtils.isNetworkAvailable(getActivity())) {
 				updateVacationStatus();
 				updateData();
-			} else if(!haveSavedData) {
+			} else if (!haveSavedData) {
 				emptyView.setText(R.string.no_network);
 				showEmptyView(true);
 			}

@@ -10,7 +10,7 @@ import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.ComputeMoveTask;
+import com.chess.ui.engine.ComputeMoveTask;
 import com.chess.model.ComputeMoveItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;

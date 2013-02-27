@@ -223,9 +223,29 @@ public class AppData {
 		return getPreferences(context).getInt(AppConstants.PREF_DEFAULT_LIVE_MODE, 0);
 	}
 
-	public static void setDefaultLiveyMode(Context context, int mode) {
+	public static void setDefaultLiveMode(Context context, int mode) {
 		SharedPreferences.Editor editor = getPreferences(context).edit();
 		editor.putInt(AppConstants.PREF_DEFAULT_LIVE_MODE, mode);
 		editor.commit();
+	}
+
+	public static void setUserSkill(Context context, int skillCode) {
+		SharedPreferences.Editor editor = getPreferences(context).edit();
+		editor.putInt(AppConstants.PREF_USER_SKILL_LEVEL, skillCode);
+		editor.commit();
+	}
+
+	public static int getUserSkill(Context context) {
+		return getPreferences(context).getInt(AppConstants.PREF_USER_SKILL_LEVEL, 0);
+	}
+
+	public static void setUserCountry(Context context, String countryName) {
+		SharedPreferences.Editor editor = getPreferences(context).edit();
+		editor.putString(AppConstants.PREF_USER_COUNTRY, countryName);
+		editor.commit();
+	}
+
+	public static String getUserCountry(Context context) {
+		return getPreferences(context).getString(AppConstants.PREF_USER_COUNTRY, "United States");
 	}
 }

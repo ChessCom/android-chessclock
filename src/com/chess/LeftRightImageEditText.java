@@ -65,39 +65,18 @@ public class LeftRightImageEditText extends RoboEditText {
 		try {
 			rightIcon = array.getDrawable(R.styleable.EnhancedField_rightImage);
 			roundMode = array.getInteger(R.styleable.EnhancedField_round_mode, ONE);
-			// back for image
 
 			color = array.getInteger(R.styleable.EnhancedField_color, Color.WHITE);
 			icon = array.getDrawable(R.styleable.EnhancedField_leftImage);
-
 		} finally {
 			array.recycle();
 		}
-
 
 		rightImageWidth = rightIcon.getIntrinsicWidth();
 		rightImageHeight = rightIcon.getIntrinsicHeight();
 		rightIcon.setBounds(0, 0, rightImageWidth, rightImageHeight);
 
 		float density = context.getResources().getDisplayMetrics().density;
-
-
-
-//		final int N = array.getIndexCount();
-//		for (int i = 0; i < N; i++) {
-//			int attr = array.getIndex(i);
-//			switch (attr) {
-//				case R.styleable.EnhancedField_round_mode:
-//					roundMode = array.getInteger(i, ONE);
-//					break;
-//				case R.styleable.EnhancedField_color:
-//					color = array.getInteger(i, Color.WHITE);
-//					break;
-//				case R.styleable.EnhancedField_leftImage:
-//					icon = array.getDrawable(i);
-//					break;
-//			}
-//		}
 
 		imageWidth = icon.getIntrinsicWidth();
 		int imageHeight = icon.getIntrinsicHeight();
@@ -243,5 +222,15 @@ public class LeftRightImageEditText extends RoboEditText {
 		}else {
 			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		}
+	}
+
+	public void updateRightIcon(int iconId) {
+		updateRightIcon(getResources().getDrawable(iconId));
+	}
+	public void updateRightIcon(Drawable icon) {
+		rightIcon = icon;
+		rightImageWidth = rightIcon.getIntrinsicWidth();
+		rightImageHeight = rightIcon.getIntrinsicHeight();
+		rightIcon.setBounds(0, 0, rightImageWidth, rightImageHeight);
 	}
 }

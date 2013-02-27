@@ -58,7 +58,9 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		handler.post(new Runnable() {
 			@Override
 			public void run() {
-				setTitle(R.string.home);
+				if (getActivity() != null) {
+					setTitle(R.string.home);
+				}
 			}
 		});
 

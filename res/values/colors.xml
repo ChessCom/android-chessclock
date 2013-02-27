@@ -416,7 +416,9 @@
     <color name="thumbnail_play_border_inner">#FFf3f3f3</color>
     <!--Medium Play Button-->
     <color name="thumbnail_play_border_medium">#FF908e8b</color>
+    <color name="thumbnail_play_border_medium_p">#ff7c7a77</color>
     <color name="thumbnail_play_back_medium">#FFfdfdfc</color>
+    <color name="thumbnail_play_back_medium_p">#ffe9e9e8</color>
 
     <color name="new_dark_green">#FF4e763b</color>
     <color name="new_author_dark_grey">#FF45413f</color>

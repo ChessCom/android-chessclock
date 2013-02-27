@@ -42,8 +42,8 @@ public class SignInFragment extends ProfileSetupsFragment implements TextView.On
 		setLoginFields(loginUsernameEdt, loginPasswordEdt);
 
 		view.findViewById(R.id.signin).setOnClickListener(this);
-		view.findViewById(R.id.signup).setOnClickListener(this);
-		view.findViewById(R.id.guestplay).setOnClickListener(this);
+//		view.findViewById(R.id.signup).setOnClickListener(this);
+		view.findViewById(R.id.guestPlayBtn).setOnClickListener(this);
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class SignInFragment extends ProfileSetupsFragment implements TextView.On
 		} else if (view.getId() == R.id.signup) {
 			getActivityFace().openFragment(new SignUpFragment());
 
-		} else if (view.getId() == R.id.guestplay) {
+		} else if (view.getId() == R.id.guestPlayBtn) {
 			getActivityFace().openFragment(new CreateProfileFragment());
 //			DataHolder.reset();
 //			TacticsDataHolder.reset();

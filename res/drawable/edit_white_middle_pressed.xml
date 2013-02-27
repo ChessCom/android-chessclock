@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--Border-->
+    <item >
+        <shape >
+            <solid android:color="@android:color/transparent" />
+            <stroke android:width="@dimen/default_stroke_width"
+                    android:color="@color/dark_grey_border"/>
+        </shape>
+    </item>
+
+    <!--Field-->
+    <item
+        android:left="2px"
+        android:top="1px"
+        android:bottom="1px"
+        android:right="2px"
+        >
+        <shape  >
+            <solid android:color="@color/new_square_button_p" />
+            <padding
+                android:left="@dimen/new_edit_field_padding_left"
+                android:right="@dimen/new_edit_field_padding_right"
+                android:top="@dimen/new_edit_field_padding_top"
+                android:bottom="@dimen/new_edit_field_padding_bottom"
+                />
+        </shape>
+    </item>
+
+</layer-list>

@@ -10,6 +10,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -420,4 +421,20 @@ public class AppUtils {
 
 		return text;
 	}
+
+	public static Drawable getCountryFlag(Context context, String userCountry) {
+		try {
+			return Drawable.createFromStream(context.getResources().getAssets().open("flags/" + userCountry + ".png"), null);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("No such Country flag: " + userCountry);
+		}
+	}
+
+	public static Drawable getUserFlag(Context context) {
+		String userCountry = AppData.getUserCountry(context);
+		return getCountryFlag(context, userCountry);
+	}
+
+
 }

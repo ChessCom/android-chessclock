@@ -34,7 +34,7 @@
             android:contentDescription="@string/image"
             />
 
-        <LinearLayout
+<!--        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
@@ -46,18 +46,18 @@
                 android:text="@string/sign_up"
                 android:background="@drawable/button_grey_left_selector"
                 android:padding="2dip"
-                />
+                />-->
 
             <com.chess.RoboButton
-                android:id="@+id/guestplay"
-                android:layout_width="0dip"
+                android:id="@+id/guestPlayBtn"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+
                 android:text="@string/play_as_guest"
-                android:background="@drawable/button_grey_right_selector"
+                android:background="@drawable/button_grey_selector"
                 android:padding="2dip"
                 />
-        </LinearLayout>
+       <!-- </LinearLayout>-->
 
         <com.facebook.android.LoginButton
             android:id="@+id/fb_connect"
