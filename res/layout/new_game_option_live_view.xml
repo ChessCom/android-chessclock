@@ -16,7 +16,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/ic_live_game"
+            android:src="@drawable/ic_live_standard"
             android:contentDescription="@string/image"
             />
         <ImageView

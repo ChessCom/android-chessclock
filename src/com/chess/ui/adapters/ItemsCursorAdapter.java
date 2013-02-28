@@ -4,9 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
+import com.chess.backend.image_load.EnhancedImageDownloader;
 
 public abstract class ItemsCursorAdapter extends CursorAdapter {
 
+	protected final EnhancedImageDownloader imageLoader;
 	protected Context context;
 	protected final LayoutInflater inflater;
 
@@ -15,6 +17,7 @@ public abstract class ItemsCursorAdapter extends CursorAdapter {
 
 		this.context = context;
 		inflater = LayoutInflater.from(context);
+		imageLoader = new EnhancedImageDownloader(context);
 	}
 
 	protected static String getString(Cursor cursor, String column) {

@@ -1,26 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainScrollView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
     >
-
-    <ListView
-        android:id="@+id/listView"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:cacheColorHint="@color/white"
-        android:divider="@color/new_friends_list_divider"
-        android:dividerHeight="1dip"
-        />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:background="@color/new_friends_list_divider"
-        />
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        >
 
-</LinearLayout>
+        <include layout="@layout/new_profile_thumb_view"/>
+
+        <!--Ratings Header-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="33dip"
+            android:background="@color/profile_light_grey_ratings_back"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dip"
+            >
+
+            <com.chess.RoboTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ratings"
+                />
+
+        </LinearLayout>
+
+        <!--Divider-->
+<!--        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/new_friends_list_divider"
+            />-->
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/home_rating_list_height"
+            android:background="@color/white"
+            android:cacheColorHint="@color/white"
+            android:divider="@color/new_friends_list_divider"
+            android:dividerHeight="1dip"
+            />
+
+
+        <!--Friends Group-->
+        <LinearLayout
+            android:id="@+id/friendsHeaderView"
+            android:layout_width="match_parent"
+            android:layout_height="33dip"
+            android:background="@drawable/profile_header_light_grey_selector"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dip"
+            >
+
+            <com.chess.RoboTextView
+                android:id="@+id/friendsTxt"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/friends"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_arrow_right_light"
+                android:layout_marginRight="8dip"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/image"/>
+
+
+        </LinearLayout>
+
+        <GridView
+            android:id="@+id/friendsGridView"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/friends_grid_height"
+            android:cacheColorHint="@color/white"
+            android:columnWidth="50dip"
+            android:verticalSpacing="6dp"
+            android:horizontalSpacing="5dp"
+            android:listSelector="@color/transparent"
+            android:numColumns="5"
+            android:padding="5dp"
+            android:persistentDrawingCache="animation|scrolling"
+            android:scrollbars="none"
+            android:stretchMode="none"
+            android:layout_marginTop="10dip"
+            />
+
+        <!--Trophies Header-->
+        <LinearLayout
+            android:id="@+id/trophiesHeaderView"
+            android:layout_width="match_parent"
+            android:layout_height="33dip"
+            android:background="@drawable/profile_header_light_grey_selector"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dip"
+            >
+
+            <com.chess.RoboTextView
+                android:id="@+id/trophiesTxt"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/trophies"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_arrow_right_light"
+                android:layout_marginRight="8dip"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/image"/>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>

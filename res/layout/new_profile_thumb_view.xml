@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dip"
+    >
+
+
+    <FrameLayout
+        android:id="@+id/userPhotoImg"
+        android:layout_width="80dip"
+        android:layout_height="80dip"
+        android:layout_marginRight="14dip"
+        />
+
+
+    <com.chess.RoboTextView
+        android:id="@+id/userNameTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/userPhotoImg"
+        android:textColor="@color/profile_grey_text"
+        android:textSize="18sp"
+        android:text="ashwath"
+        custom:ttf="Bold"
+        />
+
+    <com.chess.RoboTextView
+        android:id="@+id/userCountryTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/userPhotoImg"
+        android:layout_below="@id/userNameTxt"
+        android:textColor="@color/profile_grey_text"
+        android:textSize="13sp"
+        android:text="Bangalore, India"
+        />
+
+    <ImageView
+        android:id="@+id/userCountryImg"
+        android:layout_width="23dip"
+        android:layout_height="23dip"
+        android:src="@drawable/ic_country"
+        android:contentDescription="@string/image"
+        android:layout_marginRight="14dip"
+        android:layout_toRightOf="@id/userPhotoImg"
+        android:layout_below="@id/userCountryTxt"
+        android:layout_marginTop="8dip"
+        />
+
+</RelativeLayout>

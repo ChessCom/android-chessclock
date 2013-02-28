@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import com.chess.R;
@@ -196,11 +197,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		ft.replace(R.id.content_frame, fragment);
 		ft.commit();
 	}
-	@Override
-	public boolean isMenuActive() {
-//		return getSlidingMenu().isMenuShowing();
-		return false;
-	}
+
 
 	@Override
 	public void toggleMenu(int code) {
@@ -224,30 +221,21 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	}
 
 	@Override
-	public void closeMenu(int code) {
-//		getSlidingMenu().toggle();
-	}
-
-	@Override
 	public void onBackPressed() {
 		showPreviousFragment();
 	}
 
 	@Override
 	public void showPreviousFragment() {
-		/*if(menuFace.isActive())
-			finish();
-		else*/
-		if(getSupportFragmentManager().popBackStackImmediate()){
-			if(getSupportFragmentManager().getBackStackEntryCount() == 0){ // means we have only home fragment in stack
-			}
-		}else{
+		boolean fragmentsLeft = getSupportFragmentManager().popBackStackImmediate();
+		if (!fragmentsLeft){
 			super.onBackPressed();
 		}
 	}
 
 	@Override
-	public void updateCurrentActiveFragment() {
+	public void clearFragmentStack(){
+		getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
 
 	@Override

@@ -157,6 +157,7 @@ public class RestHelper {
 	public static final String P_ITEMS_PER_PAGE = "itemsPerPage";
 
 	public static final String P_USER_NAME = "username";
+	public static final String P_TACTICS_RATING = "tacticsrating";
 	public static final String P_PASSWORD = "password";
 	public static final String P_EMAIL = "email";
 	public static final String P_AUTH_TOKEN = "auth_token";

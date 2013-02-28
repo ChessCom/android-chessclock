@@ -100,7 +100,7 @@
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/top_bar_1</item>
-        <item name="android:background">@drawable/dashboard_button</item>
+        <item name="android:background">@drawable/dashboard_button_text_selector</item>
         <item name="android:duplicateParentState">true</item>
     </style>
 
@@ -111,7 +111,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/top_bar_1</item>
-        <item name="android:background">@drawable/dashboard_button</item>
+        <item name="android:background">@drawable/dashboard_button_text_selector</item>
         <item name="android:duplicateParentState">true</item>
         <item name="android:clickable">true</item>
     </style>

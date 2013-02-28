@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -346,21 +347,12 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 			if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE) {
 				FlurryAgent.logEvent(FlurryData.FB_LOGIN);
 			}
-			preferencesEditor.putString(AppConstants.USERNAME, returnedObj.getData().getUsername().trim().toLowerCase());
-			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, returnedObj.getData().getPremium_status());
+			if (!TextUtils.isEmpty(returnedObj.getData().getUsername())) {
+				preferencesEditor.putString(AppConstants.USERNAME, returnedObj.getData().getUsername().trim().toLowerCase());
+			}
+			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, returnedObj.getData().getPremiumStatus());
 			processLogin(returnedObj.getData());
 
-//			final String[] responseArray = returnedObj.split(RestHelper.SYMBOL_PARAMS_SPLIT);
-//			if (responseArray.length >= 4) {
-//				if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
-//					preferencesEditor.putString(AppConstants.USERNAME, loginUsernameEdt.getText().toString().trim().toLowerCase());
-//					processLogin(responseArray, returnedObj);
-//				} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-//					FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
-//					preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
-//					processLogin(responseArray, returnedObj);
-//				}
-//			}
 		}
 
 		@Override
@@ -487,7 +479,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
 
 //		try {
-//			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, returnedObj.getData().getPremium_status());
+//			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, returnedObj.getData().getPremiumStatus());
 //		} catch (ArrayIndexOutOfBoundsException e) {
 //			String debugInfo = "response = " + AppUtils.parseJsonToString(returnedObj);
 //			BugSenseHandler.addCrashExtraData("APP_LOGIN_DEBUG", debugInfo);
@@ -500,9 +492,9 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 
 //		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
 		try {
-			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(returnedObj.getLogin_token(), HTTP.UTF_8));
+			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(returnedObj.getLoginToken(), HTTP.UTF_8));
 		} catch (UnsupportedEncodingException ignored) {
-			preferencesEditor.putString(AppConstants.USER_TOKEN, returnedObj.getLogin_token());
+			preferencesEditor.putString(AppConstants.USER_TOKEN, returnedObj.getLoginToken());
 //			showSinglePopupDialog(R.string.error, R.string.error_occurred_while_login); // or use that logic?
 //			return;
 		}

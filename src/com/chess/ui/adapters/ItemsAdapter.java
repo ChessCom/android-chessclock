@@ -6,11 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import com.chess.R;
+import com.chess.backend.image_load.EnhancedImageDownloader;
 
 import java.util.List;
 
 public abstract class ItemsAdapter<T> extends BaseAdapter {
 
+	protected final EnhancedImageDownloader imageLoader;
 	protected List<T> itemsList;
 	protected Context context;
 	protected final LayoutInflater inflater;
@@ -21,6 +23,7 @@ public abstract class ItemsAdapter<T> extends BaseAdapter {
 		this.context = context;
 		inflater = LayoutInflater.from(context);
 		itemListId = R.id.list_item_id;
+		imageLoader = new EnhancedImageDownloader(context);
 	}
 
 	public void setItemsList(List<T> list) {

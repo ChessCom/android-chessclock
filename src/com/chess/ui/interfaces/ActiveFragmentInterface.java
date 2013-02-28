@@ -10,11 +10,9 @@ import com.slidingmenu.lib.SlidingMenu;
 
 public interface ActiveFragmentInterface {
 
-    boolean isMenuActive();
-
 	void toggleMenu(int code);
 
-	void closeMenu(int code);
+//	void closeMenu(int code);
 
 	void openFragment(BasePopupsFragment fragment);
 
@@ -26,7 +24,7 @@ public interface ActiveFragmentInterface {
 
     void showPreviousFragment();
 
-    void updateCurrentActiveFragment();
+//    void updateCurrentActiveFragment();
 
     void setBadgeValueForId(int menuId, int value);
 
@@ -47,4 +45,6 @@ public interface ActiveFragmentInterface {
 	void setFullScreen();
 
 	LccHolder getMeLccHolder();
+
+	void clearFragmentStack();
 }

@@ -19,7 +19,6 @@ import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.entity.new_api.TacticInfoItem;
 import com.chess.backend.entity.new_api.TacticItem;
 import com.chess.backend.entity.new_api.TacticRatingData;
-import com.chess.backend.entity.new_api.stats.UserStatsItem;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
@@ -827,7 +826,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		if (currentRating == 0) {
 //			if (tacticItem.getResultItem() == null) {
-				currentRating = DBDataManager.getUserTacticsRating(getActivity());
+			currentRating = AppData.getUserTacticsRating(getActivity());
 //			} else {
 //				currentRating = tacticItem.getResultItem().getUserRating();
 //			}
@@ -918,18 +917,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 
 		if (tag.equals(FIRST_TACTICS_TAG)) {
-			currentRating = DBDataManager.getUserTacticsRating(getActivity());
-
-			if (currentRating == 0) {
-				// get full users stats
-				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.CMD_USER_STATS);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
-
-				new RequestJsonTask<UserStatsItem>(new StatsItemUpdateListener()).executeTask(loadItem);
-			} else {
-				loadNewTacticsBatch();
-			}
+			loadNewTacticsBatch();
 
 		} else if (tag.equals(TEN_TACTICS_TAG)) {
 //			onBackPressed();
@@ -997,22 +985,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		@Override
 		public void updateData(TacticItem.Data returnedObj) {
 			getNextTactic();
-		}
-	}
-
-	private class StatsItemUpdateListener extends ChessUpdateListener<UserStatsItem> {
-
-		public StatsItemUpdateListener() {
-			super(UserStatsItem.class);
-		}
-
-		@Override
-		public void updateData(UserStatsItem returnedObj) {
-			super.updateData(returnedObj);
-
-			currentRating = returnedObj.getData().getTactics().getCurrent();
-//			new SaveUserStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
-			loadNewTacticsBatch();
 		}
 	}
 

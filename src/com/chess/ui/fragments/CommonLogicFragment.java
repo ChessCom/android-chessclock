@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import com.chess.R;
@@ -53,8 +54,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private static final int MIN_USERNAME_LENGTH = 3;
 	private static final int MAX_USERNAME_LENGTH = 20;
 
-	protected static final int REQUEST_REGISTER = 11;
-	private static final int REQUEST_UNREGISTER = 22;
 
 	//	private LoginUpdateListener loginUpdateListener;
 	private LoginUpdateListenerNew loginUpdateListener;
@@ -143,6 +142,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	protected void backToHomeFragment() {
+		getActivityFace().clearFragmentStack();
 		getActivityFace().switchFragment(new HomeTabsFragment());
 	}
 
@@ -177,6 +177,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USER_NAME);
+		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
 
 //		new PostDataTask(loginUpdateListener).executeTask(loadItem);
 		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
@@ -222,8 +223,15 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE) {
 				FlurryAgent.logEvent(FlurryData.FB_LOGIN);
 			}
-			preferencesEditor.putString(AppConstants.USERNAME, returnedObj.getData().getUsername().trim().toLowerCase());
-			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, returnedObj.getData().getPremium_status());
+			if (!TextUtils.isEmpty(returnedObj.getData().getUsername())) {
+				preferencesEditor.putString(AppConstants.USERNAME, returnedObj.getData().getUsername().trim().toLowerCase());
+			}
+//			preferencesEditor.putString(AppConstants.PREF_USER_AVATAR_URL, returnedObj.getData().getAvatarUrl()); // TODO restore
+			preferencesEditor.putString(AppConstants.PREF_USER_AVATAR_URL, "http://d1lalstwiwz2br.cloudfront.net/images_users/avatars/erik_l.gif");
+			if (returnedObj.getData().getTacticsRating() != 0) {
+				preferencesEditor.putInt(AppConstants.PREF_USER_TACTICS_RATING, returnedObj.getData().getTacticsRating());
+			}
+			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, returnedObj.getData().getPremiumStatus());
 			processLogin(returnedObj.getData());
 		}
 
@@ -270,9 +278,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
 
 		try {
-			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(returnedObj.getLogin_token(), HTTP.UTF_8));
+			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(returnedObj.getLoginToken(), HTTP.UTF_8));
 		} catch (UnsupportedEncodingException ignored) {
-			preferencesEditor.putString(AppConstants.USER_TOKEN, returnedObj.getLogin_token());
+			preferencesEditor.putString(AppConstants.USER_TOKEN, returnedObj.getLoginToken());
 //			showSinglePopupDialog(R.string.error, R.string.error_occurred_while_login); // or use that logic?
 //			return;
 		}
@@ -299,7 +307,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 //			checkMove();
 //		}
 
-		backToHomeFragment();}
+		backToHomeFragment();
+	}
 
 	public class DelayedCallback implements Runnable {
 

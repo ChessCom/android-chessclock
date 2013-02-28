@@ -199,7 +199,7 @@ public class StatsUserFragment extends CommonLogicFragment implements AdapterVie
 	private Drawable getIconByCategory(int index) {
 		switch (index) {
 			case LIVE_STANDARD:
-				return getResources().getDrawable(R.drawable.ic_live_game);
+				return getResources().getDrawable(R.drawable.ic_live_standard);
 			case LIVE_BLITZ:
 				return getResources().getDrawable(R.drawable.ic_live_blitz);
 			case LIVE_LIGHTNING:

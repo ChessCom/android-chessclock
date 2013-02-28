@@ -430,16 +430,6 @@ public class DBDataManager {
 		return dataObj;
 	}
 
-	public static int getUserTacticsRating(Context context) {
-		Cursor cursor = context.getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_TACTICS],
-				DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, new String[]{AppData.getUserName(context)}, null);
-		if (cursor.moveToFirst()) {
-			return DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
-		}
-		return 0;
-	}
-
-
 	public static ContentValues putEchessFinishedListGameToValues(DailyFinishedGameData dataObj, String userName) {
 		ContentValues values = new ContentValues();
 

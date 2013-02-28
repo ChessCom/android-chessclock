@@ -248,4 +248,12 @@ public class AppData {
 	public static String getUserCountry(Context context) {
 		return getPreferences(context).getString(AppConstants.PREF_USER_COUNTRY, "United States");
 	}
+
+	public static String getUserAvatarUrl(Context context) {
+		return getPreferences(context).getString(AppConstants.PREF_USER_AVATAR_URL, null);
+	}
+
+	public static int getUserTacticsRating(Context context) {
+		return getPreferences(context).getInt(AppConstants.PREF_USER_TACTICS_RATING, 0);
+	}
 }

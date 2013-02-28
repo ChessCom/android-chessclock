@@ -209,7 +209,7 @@ public class NewGamesFragment extends CommonLogicFragment {
 
 			NewGameDefaultView.ViewConfig liveConfig = new NewGameDefaultView.ViewConfig();
 			liveConfig.setBaseId(LIVE_BASE_ID);
-			liveConfig.setHeaderIcon(R.drawable.ic_live_game);
+			liveConfig.setHeaderIcon(R.drawable.ic_live_standard);
 			liveConfig.setHeaderText(R.string.new_live_chess);
 			liveConfig.setTitleText(R.string.new_time);
 			// set default value

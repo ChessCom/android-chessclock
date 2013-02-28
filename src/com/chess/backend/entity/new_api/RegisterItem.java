@@ -11,38 +11,34 @@ public class RegisterItem extends BaseResponseItem<RegisterItem.Data>{
 	{
 		"status": "success",
 		"data": {
-			"login_token": "6d69c2715c6c069fb8eef91d6e1b4c7c",
-			"premium_status": 3,
-			"user_id": 41,
-			"tactics_rating": 1474,
-			"username": "erik"
+  			"user_id": 23900,
+			"login_token": "058dfd8f10a7961e10112de0e3eaf779",
+			"country_id": 2,
+        	"avatar_url": "http://www.capi.com/images_users/avatars/test.gif"
 		}
 	}
 */
 
 	public static class Data {
-		/*
-			"user_id": 23900,
-			"login_token": "058dfd8f10a7961e10112de0e3eaf779"
-		*/
-		private String login_token;
 		private long user_id;
+		private String login_token;
+		private int country_id;
+		private String avatar_url;
 
-		public String getLogin_token() {
+		public String getLoginToken() {
 			return login_token;
 		}
 
-		public void setLogin_token(String login_token) {
-			this.login_token = login_token;
-		}
-
-		public long getUser_id() {
+		public long getUserId() {
 			return user_id;
 		}
 
-		public void setUser_id(long user_id) {
-			this.user_id = user_id;
+		public int getCountryId() {
+			return country_id;
 		}
 
+		public String getAvatarUrl() {
+			return avatar_url;
+		}
 	}
 }
