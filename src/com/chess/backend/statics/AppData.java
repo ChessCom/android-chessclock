@@ -21,6 +21,12 @@ public class AppData {
 		return context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
 	}
 
+	public static void setUserToken(Context context, String token) {
+		SharedPreferences.Editor editor = getPreferences(context).edit();
+		editor.putString(AppConstants.USER_TOKEN, token);
+		editor.commit();
+	}
+
 	public static String getUserToken(Context context) {
 		SharedPreferences preferences = getPreferences(context);
 		return preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);

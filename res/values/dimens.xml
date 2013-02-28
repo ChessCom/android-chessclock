@@ -216,7 +216,8 @@
 
     <!--Welcome-->
     <dimen name="view_pager_indicator_size">8dip</dimen>
-    <dimen name="home_rating_list_height">344dip</dimen>
+    <dimen name="home_rating_list_height">343dip</dimen>
     <dimen name="friends_grid_height">120dip</dimen>
+    <dimen name="country_flag_size">25dip</dimen>
 
 </resources>

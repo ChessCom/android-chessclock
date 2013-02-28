@@ -42,17 +42,14 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 
 	private static final int AVATAR_SIZE = 80;
 
-	private final static int LIVE_STANDARD = 0;
-	private final static int LIVE_BLITZ = 1;
-	private final static int LIVE_LIGHTNING = 2;
-	private final static int DAILY_CHESS = 3;
+	private final static int DAILY_CHESS = 0;
+	private final static int LIVE_STANDARD = 1;
+	private final static int LIVE_BLITZ = 2;
+	private final static int LIVE_LIGHTNING = 3;
 	private final static int DAILY_CHESS960 = 4;
 	private final static int TACTICS = 5;
 	private final static int CHESS_MENTOR = 6;
 
-
-	//	private StatsItemUpdateListener statsItemUpdateListener;
-//	private SaveStatsUpdateListener saveStatsUpdateListener;
 	private List<RatingListItem> ratingList;
 	private RatingsAdapter ratingsAdapter;
 	private TextView userNameTxt;
@@ -69,9 +66,6 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-//		statsItemUpdateListener = new StatsItemUpdateListener();
-//		saveStatsUpdateListener = new SaveStatsUpdateListener();
 
 		imageDownloader = new EnhancedImageDownloader(getActivity());
 	}
@@ -115,15 +109,6 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 	@Override
 	public void onResume() {
 		super.onResume();
-
-//		{// get full users stats
-//
-//			LoadItem loadItem = new LoadItem();
-//			loadItem.setLoadPath(RestHelper.CMD_USER_STATS);
-//			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
-//
-//			new RequestJsonTask<UserStatsItem>(statsItemUpdateListener).executeTask(loadItem);
-//		}
 
 		fillUserStats();
 
@@ -178,47 +163,6 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 
 		}
 	}
-
-//	private class StatsItemUpdateListener extends ChessUpdateListener<UserStatsItem> {
-//
-//		public StatsItemUpdateListener() {
-//			super(UserStatsItem.class);
-//		}
-//
-//		@Override
-//		public void showProgress(boolean show) {
-//			super.showProgress(show);
-//			showLoadingView(show);
-//		}
-//
-//		@Override
-//		public void updateData(UserStatsItem returnedObj) {
-//			super.updateData(returnedObj);
-//
-//			new SaveUserStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
-//		}
-//	}
-
-//	private class SaveStatsUpdateListener extends ChessUpdateListener<UserStatsItem.Data> {
-//
-//		public SaveStatsUpdateListener() {
-//			super();
-//		}
-//
-//		@Override
-//		public void updateData(UserStatsItem.Data returnedObj) {
-//			super.updateData(returnedObj);
-//
-//
-//		}
-//
-//		@Override
-//		public void errorHandle(Integer resultCode) {
-//			super.errorHandle(resultCode);
-//
-//			showToast(" code " + resultCode);
-//		}
-//	}
 
 	private void fillUserStats() {
 		// fill ratings

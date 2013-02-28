@@ -91,10 +91,10 @@
     </string-array>
 
     <string-array name="user_stats_categories">
+        <item>Daily - Chess</item>
         <item>Live - Standard</item>
         <item>Live - Blitz</item>
         <item>Live - Bullet</item>
-        <item>Daily - Chess</item>
         <item>Daily - Chess960</item>
         <item>Tactics</item>
         <item>Chess Mentor</item>

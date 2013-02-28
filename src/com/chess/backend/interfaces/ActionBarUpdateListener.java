@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
+import com.chess.backend.statics.AppData;
 import com.chess.ui.activities.CoreActivityActionBar;
 
 /**
@@ -76,6 +77,8 @@ public abstract class ActionBarUpdateListener<ItemType> extends AbstractUpdateLi
 				String serverMessage = ServerErrorCode.getUserFriendlyMessage(coreActivityActionBar, serverCode); // TODO restore
 
 				coreActivityActionBar.safeShowSinglePopupDialog(R.string.error, serverMessage);
+
+				AppData.setUserToken(coreActivityActionBar, null);
 			}
 		}
 	}
