@@ -6,8 +6,8 @@
     <item >
         <shape >
             <corners
-                android:bottomLeftRadius="@dimen/new_round_button_radius"
-                android:bottomRightRadius="@dimen/new_round_button_radius"
+                android:topLeftRadius="@dimen/new_round_button_radius"
+                android:topRightRadius="@dimen/new_round_button_radius"
                 />
             <solid android:color="@android:color/transparent" />
             <stroke android:width="@dimen/default_stroke_width"
@@ -18,21 +18,19 @@
     <!--Field-->
     <item
         android:left="2px"
-        android:top="0px"
-        android:bottom="2px"
         android:right="2px"
         >
         <shape  >
             <solid android:color="@color/new_soft_white" />
             <corners
-                android:bottomLeftRadius="@dimen/new_edit_field_internal_radius"
-                android:bottomRightRadius="@dimen/new_edit_field_internal_radius"
+                android:topLeftRadius="@dimen/new_edit_field_internal_radius"
+                android:topRightRadius="@dimen/new_edit_field_internal_radius"
                 />
             <padding
-                android:left="@dimen/new_edit_field_padding_left"
-                android:right="@dimen/new_edit_field_padding_right"
-                android:top="@dimen/new_edit_field_padding_top"
-                android:bottom="@dimen/new_edit_field_padding_bottom"
+                android:left="@dimen/round_list_item_padding_left"
+                android:right="@dimen/round_list_item_padding_right"
+                android:top="@dimen/round_list_item_padding_top"
+                android:bottom="@dimen/round_list_item_padding_bottom"
                 />
         </shape>
     </item>

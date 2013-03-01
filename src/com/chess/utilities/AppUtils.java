@@ -10,6 +10,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
@@ -450,6 +452,15 @@ public class AppUtils {
 			e.printStackTrace();
 			throw new IllegalArgumentException("No such Country flag: " + userCountry);
 		}
+	}
+
+	public static Drawable getCountryFlagScaled(Context context, String userCountry) {
+		int flagSize = (int) context.getResources().getDimension(R.dimen.country_flag_size);
+		Drawable drawable = getCountryFlag(context, userCountry);
+		// get bitmap to scale properly
+		Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+
+		return new BitmapDrawable(context.getResources(), Bitmap.createScaledBitmap(bitmap, flagSize, flagSize, true));
 	}
 
 	public static Drawable getUserFlag(Context context) {

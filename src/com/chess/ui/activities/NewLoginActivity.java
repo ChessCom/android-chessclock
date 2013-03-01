@@ -166,7 +166,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		currentActiveFragment = fragment;
 
 		ft.replace(R.id.content_frame, fragment);
-		ft.addToBackStack(null);
+		ft.addToBackStack(fragment.getClass().getSimpleName());
 		ft.commit();
 	}
 
@@ -176,7 +176,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		currentActiveFragment = fragment;
 
 		ft.replace(R.id.content_frame, fragment);
-		ft.addToBackStack(null);
+		ft.addToBackStack(fragment.getClass().getSimpleName());
 		ft.commit();
 	}
 

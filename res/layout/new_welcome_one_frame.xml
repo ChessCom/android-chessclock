@@ -2,12 +2,14 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/firstView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="26dip"
     >
 
     <ImageView
+        android:id="@+id/firstBackImg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/img_welcome_back"

@@ -69,6 +69,9 @@
             custom:leftImage="@drawable/ic_country"
             custom:rightImage="@drawable/ic_country"
             android:editable="false"
+            android:clickable="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             />
 
         <com.chess.LeftRightImageEditText
@@ -80,10 +83,13 @@
             custom:leftImage="@drawable/ic_skills"
             custom:rightImage="@drawable/ic_arrow_right"
             android:editable="false"
+            android:clickable="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             />
 
         <com.chess.LeftRightImageEditText
-            android:id="@+id/profilePicEdt"
+            android:id="@+id/profilePhotoEdt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/profile_picture"
@@ -91,6 +97,9 @@
             style="@style/WhiteGrayEditText.Bottom"
             custom:rightImage="@drawable/img_profile_picture_stub"
             custom:leftImage="@drawable/ic_profile_picture"
+            android:clickable="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             />
 
         <com.chess.RoboButton

@@ -238,7 +238,12 @@ public class AppData {
 	public static void setUserSkill(Context context, int skillCode) {
 		SharedPreferences.Editor editor = getPreferences(context).edit();
 		editor.putInt(AppConstants.PREF_USER_SKILL_LEVEL, skillCode);
+		editor.putBoolean(AppConstants.PREF_USER_SKILL_LEVEL_SET, true);
 		editor.commit();
+	}
+
+	public static boolean isUserSkillSet(Context context) {
+		return getPreferences(context).getBoolean(AppConstants.PREF_USER_SKILL_LEVEL_SET, false);
 	}
 
 	public static int getUserSkill(Context context) {
@@ -252,7 +257,7 @@ public class AppData {
 	}
 
 	public static String getUserCountry(Context context) {
-		return getPreferences(context).getString(AppConstants.PREF_USER_COUNTRY, "United States");
+		return getPreferences(context).getString(AppConstants.PREF_USER_COUNTRY, null);
 	}
 
 	public static String getUserAvatarUrl(Context context) {

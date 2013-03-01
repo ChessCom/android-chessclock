@@ -72,9 +72,9 @@ public class LeftRightImageEditText extends RoboEditText {
 			array.recycle();
 		}
 
-		rightImageWidth = rightIcon.getIntrinsicWidth();
-		rightImageHeight = rightIcon.getIntrinsicHeight();
-		rightIcon.setBounds(0, 0, rightImageWidth, rightImageHeight);
+		if (rightIcon != null) {
+			setRightIcon(rightIcon);
+		}
 
 		float density = context.getResources().getDisplayMetrics().density;
 
@@ -136,13 +136,15 @@ public class LeftRightImageEditText extends RoboEditText {
 		icon.draw(canvas);
 		canvas.restore();
 
-		// place second image
-		canvas.save();
-		imgCenterX = width - rightImageOffset/2 - rightImageWidth;
-		imgCenterY = (height - rightImageWidth)/2;
-		canvas.translate(imgCenterX, imgCenterY);
-		rightIcon.draw(canvas);
-		canvas.restore();
+		if (rightIcon != null) {
+			// place second image
+			canvas.save();
+			imgCenterX = width - rightImageOffset/2 - rightImageWidth;
+			imgCenterY = (height - rightImageWidth)/2;
+			canvas.translate(imgCenterX, imgCenterY);
+			rightIcon.draw(canvas);
+			canvas.restore();
+		}
 
 		if (roundMode != ONE) { // don't draw bottom/top lines for standalone field
 			canvas.drawLine(lineXStart, lineYStart, lineXStop, lineYStop, linePaint);
@@ -224,10 +226,10 @@ public class LeftRightImageEditText extends RoboEditText {
 		}
 	}
 
-	public void updateRightIcon(int iconId) {
-		updateRightIcon(getResources().getDrawable(iconId));
+	public void setRightIcon(int iconId) {
+		setRightIcon(getResources().getDrawable(iconId));
 	}
-	public void updateRightIcon(Drawable icon) {
+	public void setRightIcon(Drawable icon) {
 		rightIcon = icon;
 		rightImageWidth = rightIcon.getIntrinsicWidth();
 		rightImageHeight = rightIcon.getIntrinsicHeight();

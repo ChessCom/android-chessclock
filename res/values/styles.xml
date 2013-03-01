@@ -362,25 +362,25 @@
     </style>
 
     <style name="WhiteGrayEditText.One">
-        <item name="android:background">@drawable/edit_white_one_default</item>
+        <item name="android:background">@drawable/edit_white_one_selector</item>
         <item name="android:imeOptions">actionNext</item>
         <item name="round_mode">@integer/left_edit_mode_one</item>
     </style>
 
     <style name="WhiteGrayEditText.Top">
-        <item name="android:background">@drawable/edit_white_top_default</item>
+        <item name="android:background">@drawable/edit_white_top_selector</item>
         <item name="android:imeOptions">actionNext</item>
         <item name="round_mode">@integer/left_edit_mode_top</item>
     </style>
 
     <style name="WhiteGrayEditText.Middle">
-        <item name="android:background">@drawable/edit_white_middle_default</item>
+        <item name="android:background">@drawable/edit_white_middle_selector</item>
         <item name="android:imeOptions">actionNext</item>
         <item name="round_mode">@integer/left_edit_mode_mid</item>
     </style>
 
     <style name="WhiteGrayEditText.Bottom">
-        <item name="android:background">@drawable/edit_white_bottom_default</item>
+        <item name="android:background">@drawable/edit_white_bottom_selector</item>
         <item name="android:imeOptions">actionDone</item>
         <item name="round_mode">@integer/left_edit_mode_bot</item>
     </style>

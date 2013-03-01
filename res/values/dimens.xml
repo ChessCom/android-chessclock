@@ -37,6 +37,12 @@
     <dimen name="new_edit_field_padding_right">14dip</dimen>
     <dimen name="new_edit_field_padding_bottom">4dip</dimen>
 
+    <!--Round list item-->
+    <dimen name="round_list_item_padding_top">10dip</dimen>
+    <dimen name="round_list_item_padding_left">14dip</dimen>
+    <dimen name="round_list_item_padding_right">14dip</dimen>
+    <dimen name="round_list_item_padding_bottom">4dip</dimen>
+
     <!--Upgrade Button-->
     <dimen name="button_upgrade_left_padding">43dip</dimen>
     <dimen name="button_upgrade_right_padding">46dip</dimen>

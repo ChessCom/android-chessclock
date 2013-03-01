@@ -1,7 +1,6 @@
 package com.chess.ui.fragments;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -12,8 +11,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.*;
 import com.chess.R;
 import com.chess.ui.views.drawables.LogoBackgroundDrawable;
 import com.nineoldandroids.animation.Animator;
@@ -39,11 +37,10 @@ public class WelcomeFragment extends CommonLogicFragment {
 
 	private ObjectAnimator flipFirstHalf;
 
-
-	private WelcomePagerAdapter mainPageAdapter;
 	private RadioGroup homePageRadioGroup;
 	private LayoutInflater inflater;
 	private ViewPager viewPager;
+	private VideoView videoView;
 
 
 	@Override
@@ -69,7 +66,7 @@ public class WelcomeFragment extends CommonLogicFragment {
 		inflater = LayoutInflater.from(getActivity());
 
 		viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-		mainPageAdapter = new WelcomePagerAdapter();
+		WelcomePagerAdapter mainPageAdapter = new WelcomePagerAdapter();
 		viewPager.setAdapter(mainPageAdapter);
 		viewPager.setOnPageChangeListener(pageChangeListener);
 
@@ -121,11 +118,28 @@ public class WelcomeFragment extends CommonLogicFragment {
 		} else if (v.getId() == R.id.signUpBtn) {
 			getActivityFace().openFragment(new SignUpFragment());
 		} else if (v.getId() == R.id.playBtn) {
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=b3yFPtSDlRc#!")));
+
+			videoView.setVisibility(View.VISIBLE);
+			videoView.setOnPreparedListener(videoPrepareListener);
+			String SrcPath = "/sdcard/Video/VIDEO0069_HD.mp4";
+			videoView.setVideoPath(SrcPath);
+			MediaController mediaController = new MediaController(getActivity());
+			mediaController.show(1);
+			videoView.setMediaController(mediaController);
+			videoView.start();
+//			videoView.requestFocus();
+//			videoView.setZOrderOnTop(true);
+//			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=b3yFPtSDlRc#!")));
 		} else if (v.getId() == R.id.whatChessComTxt) {
 			showNextPage();
 		}
 	}
+
+	private MediaPlayer.OnPreparedListener videoPrepareListener = new MediaPlayer.OnPreparedListener() {
+		@Override
+		public void onPrepared(MediaPlayer mp) {
+		}
+	};
 
 	private class WelcomePagerAdapter extends PagerAdapter {
 
@@ -151,6 +165,20 @@ public class WelcomeFragment extends CommonLogicFragment {
 					view = firstView;
 
 					if (!initiated) {
+						{// add videoView programmatically to adjust height
+							videoView = new VideoView(getActivity());
+							videoView.setVisibility(View.GONE);
+
+							// 641 x 324
+							float k = (float)641/324;
+							int height = (int) (getResources().getDisplayMetrics().widthPixels / k);
+							RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+							params.addRule(RelativeLayout.ALIGN_TOP, R.id.firstBackImg);
+							((ViewGroup) view).addView(videoView, params);
+						}
+
+
+
 						view.findViewById(R.id.playBtn).setOnClickListener(WelcomeFragment.this);
 
 						View whatChessComTxt = view.findViewById(R.id.whatChessComTxt);

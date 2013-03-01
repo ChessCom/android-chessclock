@@ -20,7 +20,7 @@ public class InternalErrorException extends IOException {
 	}
 
 	public InternalErrorException(Throwable cause, int code) {
-		super(cause);
+		super(cause.getMessage());
 		this.code = code;
 	}
 
@@ -29,6 +29,6 @@ public class InternalErrorException extends IOException {
 	}
 
 	public void logMe(){
-		Log.e(TAG, " requestData return code " + getCode() + " trace:" + getCause().toString());
+		Log.e(TAG, " requestData return code " + getCode() + " trace:" + getMessage());
 	}
 }

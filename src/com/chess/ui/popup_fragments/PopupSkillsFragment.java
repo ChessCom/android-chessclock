@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
@@ -54,7 +55,7 @@ public class PopupSkillsFragment extends DialogFragment implements AdapterView.O
 		View popupTitleLay = view.findViewById(R.id.popupTitleLay);
 		popupTitleLay.setBackgroundDrawable(new ActionBarBackgroundDrawable(getActivity()));
 
-		((TextView)view.findViewById(R.id.popupTitleTxt)).setText(R.string.choose_level);
+		((TextView) view.findViewById(R.id.popupTitleTxt)).setText(R.string.choose_level);
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
@@ -66,8 +67,9 @@ public class PopupSkillsFragment extends DialogFragment implements AdapterView.O
 		for (int i = 0; i < names.length; i++) {
 			String name = names[i];
 			String description = descriptions[i];
+			int icon = skillIcons[i];
 
-			skillItems.add(new SkillItem(name, description));
+			skillItems.add(new SkillItem(name, description, icon));
 		}
 
 		listView.setAdapter(new SkillsAdapter(getActivity(), skillItems));
@@ -77,7 +79,9 @@ public class PopupSkillsFragment extends DialogFragment implements AdapterView.O
 	public void onCancel(DialogInterface dialog) {
 		super.onCancel(dialog);
 
-		listener.dialogCanceled();
+		if (listener != null) {
+			listener.dialogCanceled();
+		}
 	}
 
 	@Override
@@ -86,14 +90,15 @@ public class PopupSkillsFragment extends DialogFragment implements AdapterView.O
 	}
 
 
-
 	private class SkillItem {
 		String name;
 		String desc;
+		int iconId;
 
-		private SkillItem(String name, String desc) {
+		private SkillItem(String name, String desc, int iconId) {
 			this.name = name;
 			this.desc = desc;
+			this.iconId = iconId;
 		}
 	}
 
@@ -110,6 +115,7 @@ public class PopupSkillsFragment extends DialogFragment implements AdapterView.O
 
 			holder.name = (TextView) view.findViewById(R.id.nameTxt);
 			holder.desc = (TextView) view.findViewById(R.id.descTxt);
+			holder.icon = (ImageView) view.findViewById(R.id.skillIconImg);
 
 			view.setTag(holder);
 			return view;
@@ -123,21 +129,30 @@ public class PopupSkillsFragment extends DialogFragment implements AdapterView.O
 
 			holder.name.setText(item.name);
 			holder.desc.setText(item.desc);
+			holder.icon.setImageResource(item.iconId);
 		}
 
 		private void setBackground(View view, int pos) {
-			/*if (pos == 0) {
-				view.setBackgroundResource(R.drawable.edit_white_top_selector);
-			} else*/ if (pos == getCount() - 1) {
-				view.setBackgroundResource(R.drawable.edit_white_bottom_selector);
+			if (pos == getCount() - 1) {
+				view.setBackgroundResource(R.drawable.round_list_item_bottom_selector);
 			} else {
-				view.setBackgroundResource(R.drawable.edit_white_middle_selector);
+				view.setBackgroundResource(R.drawable.round_list_item_middle_selector);
 			}
 		}
 
 		private class ViewHolder {
 			TextView name;
 			TextView desc;
+			ImageView icon;
 		}
 	}
+
+	private int[] skillIcons = new int[]{
+			R.drawable.ic_skill_new,
+			R.drawable.ic_skill_improving,
+			R.drawable.ic_skill_intermediate,
+			R.drawable.ic_skill_advanced,
+			R.drawable.ic_skill_expert
+	};
+
 }

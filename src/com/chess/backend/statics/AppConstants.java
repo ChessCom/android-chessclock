@@ -48,6 +48,7 @@ public class AppConstants {
     public static final String PREF_VIDEO_SKILL_LEVEL = "video skill level";
     public static final String PREF_VIDEO_CATEGORY = "video category";
 	public static final String PREF_USER_SKILL_LEVEL = "user_skill_level";
+	public static final String PREF_USER_SKILL_LEVEL_SET = "user_skill_level_was_set";
 	public static final String PREF_USER_COUNTRY = "user_country";
 	public static final String PREF_USER_AVATAR_URL = "user_avatar_url";
 	public static final String PREF_USER_TACTICS_RATING = "user_tactics_rating";

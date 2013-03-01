@@ -8,12 +8,6 @@
     android:paddingBottom="10dip"
     >
 
-<!--    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:background="@color/new_friends_list_divider"
-        />-->
-
     <ImageButton
         android:id="@+id/challengeImgBtn"
         android:layout_width="@dimen/new_button_square_size"

@@ -29,8 +29,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		setHasOptionsMenu(true);
 
 		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
-
-
 	}
 
 	@Override
@@ -74,8 +72,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		previousCheckedId = tabRadioGroup.getCheckedRadioButtonId();
 	}
 
-
-
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -91,7 +87,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 	private void updateTabs() {
 		int checkedButtonId = tabRadioGroup.getCheckedRadioButtonId();
-		if (checkedButtonId != previousCheckedId){
+		if (checkedButtonId != previousCheckedId) {
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
 				case R.id.gamesBtn:

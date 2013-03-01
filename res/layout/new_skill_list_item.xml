@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="23dip"
-    android:paddingLeft="17dip"
-    android:paddingRight="17dip"
-    android:paddingBottom="20dip"
-    android:background="@drawable/edit_white_top_default"
+    android:minHeight="70dip"
+    android:background="@drawable/round_list_item_middle_selector"
     >
 
     <com.chess.RoboTextView
@@ -27,6 +24,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/new_author_dark_grey"
+        android:layout_below="@id/nameTxt"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/skillIconImg"
         />
 
-</LinearLayout>
+    <ImageView
+        android:id="@id/skillIconImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_skill_expert"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:contentDescription="@string/image"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        />
+
+</RelativeLayout>

@@ -523,4 +523,6 @@
     <color name="profile_light_grey_ratings_back">#FFf5f4f2</color>
     <color name="profile_light_grey_ratings_back_p">#ffc7c6c4</color>
 
+    <color name="dark_grey_list_divider">#FFaeaba7</color>
+
 </resources>

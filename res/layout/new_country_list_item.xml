@@ -9,7 +9,7 @@
     android:paddingLeft="17dip"
     android:paddingRight="17dip"
     android:paddingBottom="20dip"
-    android:background="@drawable/edit_white_top_default"
+    android:background="@drawable/round_list_item_middle_selector"
     android:gravity="center_vertical"
     android:minHeight="48dip"
     >

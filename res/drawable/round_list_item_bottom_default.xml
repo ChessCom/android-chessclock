@@ -18,8 +18,6 @@
     <!--Field-->
     <item
         android:left="2px"
-        android:top="0px"
-        android:bottom="2px"
         android:right="2px"
         >
         <shape  >
@@ -29,10 +27,10 @@
                 android:bottomRightRadius="@dimen/new_edit_field_internal_radius"
                 />
             <padding
-                android:left="@dimen/new_edit_field_padding_left"
-                android:right="@dimen/new_edit_field_padding_right"
-                android:top="@dimen/new_edit_field_padding_top"
-                android:bottom="@dimen/new_edit_field_padding_bottom"
+                android:left="@dimen/round_list_item_padding_left"
+                android:right="@dimen/round_list_item_padding_right"
+                android:top="@dimen/round_list_item_padding_top"
+                android:bottom="@dimen/round_list_item_padding_bottom"
                 />
         </shape>
     </item>
