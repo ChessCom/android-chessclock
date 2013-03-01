@@ -121,11 +121,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected void onResume() {
 		super.onResume();
 
-		boolean isConnected = getLccHolder() != null && getLccHolder().isConnected();
-		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
-		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
-
 		if (getLccHolder() != null) {
+			boolean isConnected = getLccHolder().isConnected();
+			getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
+			getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
 			executePausedActivityLiveEvents();
 		}
 	}

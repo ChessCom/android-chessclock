@@ -156,12 +156,9 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		showFullScreenAd();
 		adjustActionBar();
 
-		boolean isConnected = getLccHolder() != null && getLccHolder().isConnected();
-		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
-		//getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
-
 		if (getLccHolder() != null) {
-			executePausedActivityLiveEvents();
+			getActionBarHelper().showMenuItemById(R.id.menu_signOut, getLccHolder().isConnected(), menu);
+			//getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
 		}
 	}
 
