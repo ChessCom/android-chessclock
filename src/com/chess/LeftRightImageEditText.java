@@ -234,5 +234,6 @@ public class LeftRightImageEditText extends RoboEditText {
 		rightImageWidth = rightIcon.getIntrinsicWidth();
 		rightImageHeight = rightIcon.getIntrinsicHeight();
 		rightIcon.setBounds(0, 0, rightImageWidth, rightImageHeight);
+		invalidate();
 	}
 }

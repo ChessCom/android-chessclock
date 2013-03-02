@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -138,9 +140,9 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 	public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
 		super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
-		switch(requestCode) {
+		switch (requestCode) {
 			case REQ_CODE_PICK_IMAGE:
-				if(resultCode == Activity.RESULT_OK){
+				if (resultCode == Activity.RESULT_OK) {
 					Uri selectedImage = imageReturnedIntent.getData();
 					String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -153,8 +155,15 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 					cursor.close();
 
 
-					Bitmap yourSelectedImage = BitmapFactory.decodeFile(filePath);
+					float density = getResources().getDisplayMetrics().density;
+					int size = (int) (58.5f * density);
+					Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+					bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
+					Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+					drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+					profilePhotoEdt.setRightIcon(drawable);
 				}
+				break;
 		}
 	}
 
@@ -188,7 +197,7 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 				startActivityForResult(Intent.createChooser(photoPickIntent, getString(R.string.pick_photo)), REQ_CODE_PICK_IMAGE);
 			} else {
 				Intent photoPickIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				startActivityForResult(Intent.createChooser(photoPickIntent,  getString(R.string.pick_photo)), REQ_CODE_TAKE_IMAGE);
+				startActivityForResult(Intent.createChooser(photoPickIntent, getString(R.string.pick_photo)), REQ_CODE_TAKE_IMAGE);
 			}
 		}
 
@@ -207,12 +216,12 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 		AppData.setUserSkill(getActivity(), code);
 	}
 
-	private void updateSkillLevel(int level){
+	private void updateSkillLevel(int level) {
 		skillEdt.setText(skillNames[level]);
 		skillEdt.setRightIcon(skillIcons[level]);
 	}
 
-	private void updateUserCountry(String country){
+	private void updateUserCountry(String country) {
 		countryEdt.setText(country);
 		countryEdt.setRightIcon(AppUtils.getCountryFlagScaled(getActivity(), country));
 	}

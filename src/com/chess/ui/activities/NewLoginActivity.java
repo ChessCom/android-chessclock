@@ -12,7 +12,10 @@ import android.view.Menu;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
 import com.chess.lcc.android.LccHolder;
-import com.chess.ui.fragments.*;
+import com.chess.ui.fragments.BasePopupsFragment;
+import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.HomeTabsFragment;
+import com.chess.ui.fragments.WelcomeFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.views.drawables.LogoBackgroundDrawable;
 import com.slidingmenu.lib.SlidingMenu;
@@ -155,7 +158,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	}
 
 	@Override
-	public void setTouchModeToSlidingMenu(int touchMode){
+	public void setTouchModeToSlidingMenu(int touchMode) {
 		SlidingMenu sm = getSlidingMenu();
 		sm.setTouchModeAbove(touchMode);
 	}
@@ -228,13 +231,13 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	@Override
 	public void showPreviousFragment() {
 		boolean fragmentsLeft = getSupportFragmentManager().popBackStackImmediate();
-		if (!fragmentsLeft){
+		if (!fragmentsLeft) {
 			super.onBackPressed();
 		}
 	}
 
 	@Override
-	public void clearFragmentStack(){
+	public void clearFragmentStack() {
 		getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
 

@@ -111,6 +111,7 @@
     <string name="choose_photo">Choose Photo</string>
     <string name="take_photo">Take Photo</string>
     <string name="pick_photo">Pick a photo</string>
+    <string name="error_player">Error player</string>
 
 
 </resources>

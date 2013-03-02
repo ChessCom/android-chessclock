@@ -1,6 +1,5 @@
 package com.chess.ui.fragments;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Build;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.PopupItem;
-import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.popup_fragments.PopupDialogFragment;
 import com.chess.ui.popup_fragments.PopupProgressFragment;
