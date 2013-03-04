@@ -123,7 +123,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		if (getLccHolder() != null) {
 			boolean isConnected = getLccHolder().isConnected();
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
+			if (menu != null) {
+				getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
+			}
 			getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
 			executePausedActivityLiveEvents();
 		}
