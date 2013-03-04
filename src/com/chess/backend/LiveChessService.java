@@ -67,7 +67,7 @@ public class LiveChessService extends Service {
 
 	public void checkAndConnect() {
 		Log.d(TAG, "AppData.isLiveChess(getContext()) " + AppData.isLiveChess(getContext()));
-		Log.d(TAG, "lccHolder.isConnected() " + lccHolder.isConnected());
+
 		Log.d(TAG, "lccHolder.getClient() " + lccHolder.getClient());
 
  		if (AppData.isLiveChess(getContext()) && !lccHolder.isConnected()

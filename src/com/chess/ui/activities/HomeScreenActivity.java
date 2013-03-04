@@ -208,7 +208,9 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
 			service = serviceBinder.getService();
 
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, getLccHolder().isConnected(), menu);
+			if (menu != null) {
+				getActionBarHelper().showMenuItemById(R.id.menu_signOut, getLccHolder().isConnected(), menu);
+			}
 			getActionBarHelper().showMenuItemById(R.id.menu_signOut, getLccHolder().isConnected());
 
 			getLccHolder().setLiveChessClientEventListener(HomeScreenActivity.this);
