@@ -335,7 +335,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         }
 
         if (square == 0) {
-            return super.onTouchEvent(event);
+            return super.processTouchEvent(event);
         }
 
         track = false;
