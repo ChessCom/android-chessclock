@@ -130,6 +130,7 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		enableNotifications = (CheckBox) findViewById(R.id.notificationsChckBx);
 		showCoordinates = (CheckBox) findViewById(R.id.prefCoords);
 		showHighlights = (CheckBox) findViewById(R.id.prefHighlights);
+		langSpinner = (Spinner) findViewById(R.id.langSpinner);
 
 		Button logoutBtn = (Button) findViewById(R.id.prefLogout);
 		logoutBtn.setOnClickListener(this);
