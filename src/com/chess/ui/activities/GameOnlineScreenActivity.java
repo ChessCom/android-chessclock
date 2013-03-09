@@ -463,6 +463,10 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 
 	private void getGamesList() {
+
+		gamePanelView.enableGameControls(false);
+		boardView.lockBoard(true);
+
 		LoadItem listLoadItem = new LoadItem();
 		listLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
 		listLoadItem.addRequestParams(RestHelper.P_ID, AppData.getUserToken(getContext()));
@@ -488,6 +492,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 					gameId = currentGame.getGameId();
 					showSubmitButtonsLay(false);
 					boardView.setBoardFace(ChessBoardOnline.getInstance(GameOnlineScreenActivity.this));
+					getBoardFace().setJustInitialized(false);
 					getBoardFace().setAnalysis(false);
 
 					gameInfoItem.setGameId(gameId);
