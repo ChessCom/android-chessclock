@@ -388,6 +388,7 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 		liveConnected = connected;
 		if (connected) {
 			liveChessClientEventListener.onConnectionEstablished();
+			liveService.onLiveConnected();
 
 			lccClient.subscribeToChallengeEvents(challengeListener);
 			lccClient.subscribeToGameEvents(gameListener);

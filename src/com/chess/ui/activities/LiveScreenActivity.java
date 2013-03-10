@@ -12,7 +12,6 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -40,7 +39,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	private Button currentGame;
 	private ViewGroup loadingView;
 	private List<View> infoGroup;
-	private View emptyView;
+	private TextView emptyView;
 	private NewGamesButtonsAdapter newGamesButtonsAdapter;
 	private TextView bulletRatingTxt;
 	private TextView blitzRatingTxt;
@@ -71,7 +70,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 
     protected void widgetsInit(){
 		loadingView = (ViewGroup) findViewById(R.id.loadingView);
-		emptyView = findViewById(R.id.emptyView);
+		emptyView = (TextView) findViewById(R.id.emptyView);
 
 		Button statsBtn = (Button) findViewById(R.id.statsBtn);
 		statsBtn.setOnClickListener(this);
@@ -93,17 +92,17 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		currentGame.setOnClickListener(this);
 	}
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-		startService(new Intent(this, LiveChessService.class));
-	}
+//	@Override
+//	protected void onStart() {
+//		super.onStart();
+//		startService(new Intent(this, LiveChessService.class));  // do not need to start it this way
+//	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 
-		if (getLccHolder() != null) {
+		if (isLCSBound) {
 			showLoadingView(!getLccHolder().isConnected());
 
 			if (getLccHolder().currentGameExist()) {
@@ -111,6 +110,8 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 			} else {
 				currentGame.setVisibility(View.GONE);
 			}
+		} else {
+			showLoadingView(true);
 		}
 	}
 
@@ -129,9 +130,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
 				inneractiveBannerAd = (InneractiveAd) findViewById(R.id.inneractiveBannerAd);
 				InneractiveAdHelper.showBannerAd(upgradeBtn, inneractiveBannerAd, this);
-			} else {
-				/*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
-				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
 			}
 		}
 	}

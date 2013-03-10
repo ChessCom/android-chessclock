@@ -12,6 +12,7 @@ import com.chess.R;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
 import com.chess.live.client.LiveChessClient;
 import com.chess.ui.activities.LiveScreenActivity;
 
@@ -24,9 +25,16 @@ public class LiveChessService extends Service {
 	// or move holder code to Service itself.
 	// but in this case we should have ability to reset holder data when it is necessary, for instance logout
 	private LccHolder lccHolder;
+	private LccConnectionUpdateFace connectionUpdateFace;
+
+	public void setConnectionUpdateFace(LccConnectionUpdateFace connectionUpdateFace) {
+		this.connectionUpdateFace = connectionUpdateFace;
+	}
+
 
 	public class ServiceBinder extends Binder {
 		public LiveChessService getService(){
+			Log.d(TAG, "SERVICE: getService called");
 			return LiveChessService.this;
 		}
 	}
@@ -35,25 +43,29 @@ public class LiveChessService extends Service {
 		Log.d(TAG, "SERVICE: onBind");
 		if (lccHolder == null) {
 			lccHolder = new LccHolder(getContext(), this, new LccConnectUpdateListener());
+			Log.d(TAG, "SERVICE: holder created");
 		}
 		return serviceBinder;
 	}
 
-	/*@Override
-	public boolean onUnbind(Intent intent) {
-		return super.onUnbind(intent);
-	}*/
-
 	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.d(TAG, "SERVICE: onStartCommand");
+	public boolean onUnbind(Intent intent) {
+		Log.d(TAG, "SERVICE: onUnbind ");
+		return super.onUnbind(intent);
 
-		//lccHolder = new LccHolder(getContext(), new LccConnectUpdateListener());
-		checkAndConnect();
-
-		return START_STICKY;
-		//return START_CONTINUATION_MASK;
+		// TODO should be used to release resources
 	}
+
+//	@Override
+//	public int onStartCommand(Intent intent, int flags, int startId) {   // we should never use this because we are not starting service, refer to {@link http://developer.android.com/guide/components/services.html#Lifecycle}
+//		Log.d(TAG, "SERVICE: onStartCommand");
+//
+//		//lccHolder = new LccHolder(getContext(), new LccConnectUpdateListener());
+//
+//
+//		return START_STICKY_COMPATIBILITY;
+//		//return START_CONTINUATION_MASK;
+//	}
 
 	@Override
 	public void onDestroy() {
@@ -73,8 +85,19 @@ public class LiveChessService extends Service {
  		if (AppData.isLiveChess(getContext()) && !lccHolder.isConnected()
 				&& lccHolder.getClient() == null) { // prevent creating several instances when user navigates between activities in "reconnecting" mode
 			lccHolder.runConnectTask();
+		} else if (lccHolder.isConnected()) {
+			onLiveConnected();
+		} else if (lccHolder.getClient() != null) {
+			lccHolder.performConnect(false);
 		}
 	}
+
+	public void onLiveConnected() {
+		if (connectionUpdateFace != null) {
+			connectionUpdateFace.onConnected();
+		}
+	}
+
 
 	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
 		public LccConnectUpdateListener() {
@@ -99,6 +122,8 @@ public class LiveChessService extends Service {
 			notification.flags |= Notification.FLAG_NO_CLEAR;
 
 			startForeground(R.id.live_service_notification, notification);
+
+			onLiveConnected();
 		}
 	}
 

@@ -20,7 +20,11 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.*;
+import com.chess.lcc.android.LccChallengeTaskRunner;
+import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.LiveEvent;
+import com.chess.lcc.android.OuterChallengeListener;
+import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
@@ -28,6 +32,7 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.PopupDialogFragment;
+import com.chess.utilities.AppUtils;
 import com.facebook.android.LoginButton;
 
 import java.util.Map;
@@ -52,11 +57,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected LccChallengeTaskRunner challengeTaskRunner;
 	protected ChallengeTaskListener challengeTaskListener;
 	protected GameTaskListener gameTaskListener;
-	private Menu menu;
 	private LiveChessServiceConnectionListener liveChessServiceConnectionListener;
 	protected boolean isLCSBound;
 	private LiveChessService service;
-	//private boolean shouldBeConnectedToLive;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +67,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		challengeTaskListener = new ChallengeTaskListener();
 		gameTaskListener = new GameTaskListener();
-
-		/*gameTaskRunner = new LccGameTaskRunner(gameTaskListener, lccHolder);
-		challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener, lccHolder);
-		lccHolder.setLiveChessClientEventListener(this);*/
 
 		outerChallengeListener = new LiveOuterChallengeListener();
 
@@ -78,23 +77,15 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected void onStart() {
 		super.onStart();
 
-		if (!isLCSBound) {
-			bindService(new Intent(this, LiveChessService.class), liveChessServiceConnectionListener, BIND_AUTO_CREATE);
-		}
-
-		if (getLccHolder() != null) {
-			getLccHolder().setLiveChessClientEventListener(this);
-			getLccHolder().setOuterChallengeListener(outerChallengeListener);
-			challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener, getLccHolder());
-		}
-
-		/*if (AppData.isLiveChess(this) && !AppUtils.isNetworkAvailable(this)) { // check only if live
+		if (AppData.isLiveChess(this) && !AppUtils.isNetworkAvailable(this)) { // check only if live
 			popupItem.setPositiveBtnId(R.string.wireless_settings);
 			showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
-		} else {
-			//LccHolder.getInstance(this).checkAndConnect();
-			shouldBeConnectedToLive = true;
-		}*/
+		} else if (AppData.isLiveChess(this)) {// bound only if really need it
+
+//			if (!isLCSBound) { // this flag should be used when we accessing service, bound is not nesting operation
+				bindService(new Intent(this, LiveChessService.class), liveChessServiceConnectionListener, BIND_AUTO_CREATE);
+//			}
+		}
 	}
 
 	@Override
@@ -115,27 +106,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			alive = false;
 		}
 		return alive;
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		if (getLccHolder() != null) {
-			boolean isConnected = getLccHolder().isConnected();
-			if (menu != null) {
-				getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
-			}
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
-			executePausedActivityLiveEvents();
-		}
-	}
-
-	@Override
-	protected void adjustActionBar() {
-		super.adjustActionBar();
-		boolean isConnected = getLccHolder() != null && getLccHolder().isConnected();
-		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
 	}
 
 	@Override
@@ -262,19 +232,32 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		return super.onOptionsItemSelected(item);
 	}
 
-	private class LiveChessServiceConnectionListener implements ServiceConnection {
+	private class LiveChessServiceConnectionListener implements ServiceConnection, LccConnectionUpdateFace {
+
+
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
 			Log.d("lcclog", "SERVICE: LIVE onLiveServiceConnected");
 
-			isLCSBound = true;
-
 			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
 			service = serviceBinder.getService();
+			service.setConnectionUpdateFace(this);
+			getLccHolder().setLiveChessClientEventListener(LiveBaseActivity.this);
+			getLccHolder().setOuterChallengeListener(outerChallengeListener);
+			challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener, getLccHolder());
 
-			if (menu != null) {
-				getActionBarHelper().showMenuItemById(R.id.menu_signOut, getLccHolder().isConnected(), menu);
-			}
+			service.checkAndConnect();
+			isLCSBound = true;
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName componentName) {
+			Log.d(TAG, "SERVICE: onServiceDisconnected");
+			isLCSBound = false;
+		}
+
+		@Override
+		public void onConnected() {
 			getActionBarHelper().showMenuItemById(R.id.menu_signOut, getLccHolder().isConnected());
 
 			getLccHolder().setLiveChessClientEventListener(LiveBaseActivity.this);
@@ -283,17 +266,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			executePausedActivityLiveEvents();
 
 			onLiveServiceConnected();
-
-			/*if (shouldBeConnectedToLive) {
-				getLccHolder().getService().checkAndConnect();
-			}
-			*/
-		}
-
-		@Override
-		public void onServiceDisconnected(ComponentName componentName) {
-			Log.d(TAG, "SERVICE: onServiceDisconnected");
-			isLCSBound = false;
 		}
 	}
 
@@ -535,7 +507,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		boolean result = super.onCreateOptionsMenu(menu);
-		this.menu = menu;
+
 		boolean isConnected = getLccHolder() != null && getLccHolder().isConnected();
 		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
 		return result;

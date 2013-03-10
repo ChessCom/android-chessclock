@@ -136,7 +136,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 			// Get the SearchView and set the searchable configuration
 			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 			SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+			if (searchView != null) {
+				searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+			}
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
