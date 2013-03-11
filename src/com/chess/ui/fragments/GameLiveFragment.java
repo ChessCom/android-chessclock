@@ -127,11 +127,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	@Override
 	protected void widgetsInit(View view) {
 		super.widgetsInit(view);
-		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
 
 		fadeLay = view.findViewById(R.id.fadeLay);
 		gameBoardView = view.findViewById(R.id.baseView);
 
+		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
@@ -496,7 +496,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	@Override
 	public void playMove() {
 		sendMove();
-		//To change body of implemented methods use File | Settings | File Templates.
 	}
 
 	@Override
@@ -746,9 +745,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			bottomPanelView.setPlayerLabel(whitePlayerLabel);
 		}
 	}
-
-
-
 
 	private void showGameEndPopup(View layout, String title, String message) {
 

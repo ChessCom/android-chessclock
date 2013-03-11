@@ -3,7 +3,6 @@ package com.chess.backend.interfaces;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -31,8 +30,6 @@ public interface TaskUpdateInterface<ItemType> {
 	Context getMeContext();
 
 	void releaseContext();
-
-	Type getListType();
 
 	Class<ItemType> getClassType();
 

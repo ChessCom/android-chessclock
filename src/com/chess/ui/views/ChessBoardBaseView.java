@@ -212,9 +212,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			}
 		}
 
-		if (topPanelView.getSide() == AppConstants.WHITE_SIDE) {
+		if (topPanelView.getSide() == AppConstants.WHITE_SIDE) { // if opponent is playing white
+			topPanelView.updateCapturedPieces(blackAlivePiecesCount);
+			bottomPanelView.updateCapturedPieces(whiteAlivePiecesCount);
+		} else { // if user is playing black
 			topPanelView.updateCapturedPieces(whiteAlivePiecesCount);
-		} else {
 			bottomPanelView.updateCapturedPieces(blackAlivePiecesCount);
 		}
 	}

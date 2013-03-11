@@ -39,13 +39,6 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 	protected static final String ABORT_GAME_TAG = "abort or resign game";
 	protected SimpleDateFormat datePgnFormat = new SimpleDateFormat("yyyy.MM.dd");
 
-
-//	protected TextView whitePlayerLabel;
-//	protected TextView blackPlayerLabel;
-
-//	protected boolean chat;
-
-//	protected TextView analysisTxt;
 	protected ViewGroup statusBarLay;
 
 	protected CharSequence[] menuOptionsItems;

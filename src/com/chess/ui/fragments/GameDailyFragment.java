@@ -135,10 +135,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	@Override
 	protected void widgetsInit(View view) {
 		super.widgetsInit(view);
-		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
 
 		setTitle(R.string.daily_chess);
 
+		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);

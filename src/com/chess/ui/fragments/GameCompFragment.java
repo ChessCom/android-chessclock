@@ -400,7 +400,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 			switch (i) {
 				case NEW_GAME_WHITE: {
 					ChessBoardComp.resetInstance();
-//					boardView.setBoardFace(getBoardFace());
+					getBoardFace();
 					boardView.setGameActivityFace(GameCompFragment.this);
 					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
 					boardView.invalidate();
@@ -410,7 +410,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 				case NEW_GAME_BLACK: {
 					// TODO encapsulate
 					ChessBoardComp.resetInstance();
-//					boardView.setBoardFace(getBoardFace());
+					getBoardFace();
 					boardView.setGameActivityFace(GameCompFragment.this);
 					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
 					getBoardFace().setReside(true);

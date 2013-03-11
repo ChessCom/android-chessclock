@@ -26,7 +26,6 @@ import android.view.View;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.ui.views.drawables.ActionBarBackgroundDrawable;
-import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import com.chess.ui.views.drawables.BadgeDrawable;
 
 /**

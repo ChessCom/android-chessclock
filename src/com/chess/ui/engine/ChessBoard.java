@@ -475,6 +475,7 @@ public class ChessBoard implements BoardFace {
 		this.finished = finished;
 	}
 
+	@Override
 	public boolean isFinished() {
 		return finished;
 	}

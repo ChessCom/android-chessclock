@@ -8,7 +8,6 @@ package com.chess.ui.interfaces;
  */
 public interface GameNetworkActivityFace extends GameActivityFace{
 
-
 	void showSubmitButtonsLay(boolean show);
 
 	void switch2Chat();

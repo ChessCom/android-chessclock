@@ -19,7 +19,6 @@ import com.chess.ui.views.drawables.LogoBackgroundDrawable;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-import com.google.android.youtube.player.YouTubePlayerView;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -38,6 +37,8 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	private static final long ANIMATION_DELAY = 2000;
 	private static final long REPEAT_TIMEOUT = 6000;
 	private static final int DURATION = 450;
+	public static final String YOUTUBE_DEMO_LINK = "AgTQJUhK2MY";
+
 	private Interpolator accelerator = new AccelerateInterpolator();
 	private Interpolator decelerator = new DecelerateInterpolator();
 
@@ -46,7 +47,6 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	private RadioGroup homePageRadioGroup;
 	private LayoutInflater inflater;
 	private ViewPager viewPager;
-	private YouTubePlayerView youTubeView;
 	private YouTubePlayerSupportFragment youTubePlayerFragment;
 
 
@@ -136,7 +136,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	@Override
 	public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
 		if (!wasRestored) {
-			youTubePlayer.cueVideo("AgTQJUhK2MY");
+			youTubePlayer.cueVideo(YOUTUBE_DEMO_LINK);
 		}
 	}
 
@@ -175,24 +175,11 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 					view = firstView;
 
 					if (!initiated) {
-						{// add youTubeView programmatically to adjust height
-
-							youTubePlayerFragment =
-									(YouTubePlayerSupportFragment) getFragmentManager().findFragmentById(R.id.youtubeFragment);
+						{// add youTubeView to control visibility
+							youTubePlayerFragment =	(YouTubePlayerSupportFragment) getFragmentManager().findFragmentById(R.id.youtubeFragment);
 							youTubePlayerFragment.initialize(AppConstants.YOUTUBE_DEVELOPER_KEY, WelcomeFragment.this);
 							youTubePlayerFragment.getView().setVisibility(View.GONE);
-
-/*
-							// 641 x 324
-							float k = (float)641/324;
-							int height = (int) (getResources().getDisplayMetrics().widthPixels / k);
-							RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
-							params.addRule(RelativeLayout.ALIGN_TOP, R.id.firstBackImg);
-							((ViewGroup) view).addView(youTubeView, params);
-*/
 						}
-
-
 
 						view.findViewById(R.id.playBtn).setOnClickListener(WelcomeFragment.this);
 

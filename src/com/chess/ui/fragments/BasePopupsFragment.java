@@ -27,7 +27,7 @@ import java.util.List;
  * Date: 30.12.12
  * Time: 15:22
  */
-public class BasePopupsFragment extends Fragment implements PopupDialogFace {
+public abstract class BasePopupsFragment extends Fragment implements PopupDialogFace {
 
 	protected static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 	protected static final boolean JELLY_BEAN_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;

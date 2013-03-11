@@ -255,7 +255,6 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		if (compatView != null) {
 			((TextView) compatView.findViewById(R.id.actionbar_compat_title)).setText(titleId);
 		}
-
 	}
 
 	/**

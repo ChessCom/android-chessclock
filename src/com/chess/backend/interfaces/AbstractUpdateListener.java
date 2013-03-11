@@ -2,9 +2,7 @@ package com.chess.backend.interfaces;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 public abstract class AbstractUpdateListener<ItemType> implements TaskUpdateInterface<ItemType> {
@@ -94,11 +92,6 @@ public abstract class AbstractUpdateListener<ItemType> implements TaskUpdateInte
 
 	public void setTypeClass(Class<ItemType> typeClass) {
 		this.typeClass = typeClass;
-	}
-
-	@Override
-	public Type getListType() {
-		return new TypeToken<List<ItemType>>() { }.getType();
 	}
 
 	@Override
