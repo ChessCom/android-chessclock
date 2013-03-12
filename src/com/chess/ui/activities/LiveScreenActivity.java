@@ -12,6 +12,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -90,6 +91,13 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		currentGame = (Button) findViewById(R.id.currentGameBtn);
 		currentGame.setOnClickListener(this);
 	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		startService(new Intent(this, LiveChessService.class));  // do not need to start it this way
+	}
+
 
 	@Override
 	protected void onResume() {

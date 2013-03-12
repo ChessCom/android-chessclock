@@ -56,16 +56,12 @@ public class LiveChessService extends Service {
 		// TODO should be used to release resources
 	}
 
-//	@Override
-//	public int onStartCommand(Intent intent, int flags, int startId) {   // we should never use this because we are not starting service, refer to {@link http://developer.android.com/guide/components/services.html#Lifecycle}
-//		Log.d(TAG, "SERVICE: onStartCommand");
-//
-//		//lccHolder = new LccHolder(getContext(), new LccConnectUpdateListener());
-//
-//
-//		return START_STICKY_COMPATIBILITY;
-//		//return START_CONTINUATION_MASK;
-//	}
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {   // we should never use this because we are not starting service, refer to {@link http://developer.android.com/guide/components/services.html#Lifecycle}
+		Log.d(TAG, "SERVICE: onStartCommand");
+
+		return START_STICKY_COMPATIBILITY;
+	}
 
 	@Override
 	public void onDestroy() {
@@ -87,8 +83,6 @@ public class LiveChessService extends Service {
 			lccHolder.runConnectTask();
 		} else if (lccHolder.isConnected()) {
 			onLiveConnected();
-		} else if (lccHolder.getClient() != null) {
-			lccHolder.performConnect(false);
 		}
 	}
 
