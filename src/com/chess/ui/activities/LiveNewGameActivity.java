@@ -6,9 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
-import com.chess.utilities.AppUtils;
-import com.chess.utilities.InneractiveAdHelper;
-import com.inneractive.api.ads.InneractiveAd;
 
 public class LiveNewGameActivity extends LiveBaseActivity  {
 
@@ -19,18 +16,7 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.live_new_game);
 
-		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
-		upgradeBtn.setOnClickListener(this);
-
-		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
-			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
-				inneractiveBannerAd = (InneractiveAd) findViewById(R.id.inneractiveBannerAd);
-				InneractiveAdHelper.showBannerAd(upgradeBtn, inneractiveBannerAd, this);
-			} else {
-				/*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
-				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
-			}
-		}
+		initUpgradeAndAdWidgets();
 
 		findViewById(R.id.friendchallenge).setOnClickListener(this);
 		findViewById(R.id.challengecreate).setOnClickListener(this);
@@ -57,19 +43,6 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 			currentGameBtn.setVisibility(View.VISIBLE);
 		} else {
 			currentGameBtn.setVisibility(View.GONE);
-		}
-
-		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
-		upgradeBtn.setOnClickListener(this);
-
-		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
-			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
-				inneractiveBannerAd = (InneractiveAd) findViewById(R.id.inneractiveBannerAd);
-				InneractiveAdHelper.showBannerAd(upgradeBtn, inneractiveBannerAd, this);
-			} else {
-				/*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
-				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
-			}
 		}
 	}
 

@@ -21,9 +21,6 @@ import com.chess.live.util.GameRatingClass;
 import com.chess.model.NewGameButtonItem;
 import com.chess.ui.adapters.NewGamesButtonsAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
-import com.chess.utilities.InneractiveAdHelper;
-import com.inneractive.api.ads.InneractiveAd;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +72,8 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		Button statsBtn = (Button) findViewById(R.id.statsBtn);
 		statsBtn.setOnClickListener(this);
 
+		initUpgradeAndAdWidgets();
+
 		LinearLayout ratingView = (LinearLayout) findViewById(R.id.ratingLay);
 
 		GridView gridView = (GridView) findViewById(R.id.gridview);
@@ -91,12 +90,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		currentGame = (Button) findViewById(R.id.currentGameBtn);
 		currentGame.setOnClickListener(this);
 	}
-
-//	@Override
-//	protected void onStart() {
-//		super.onStart();
-//		startService(new Intent(this, LiveChessService.class));  // do not need to start it this way
-//	}
 
 	@Override
 	protected void onResume() {
@@ -122,15 +115,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 			currentGame.setVisibility(View.VISIBLE);
 		} else {
 			currentGame.setVisibility(View.GONE);
-		}
-
-		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
-		upgradeBtn.setOnClickListener(this);
-		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
-			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
-				inneractiveBannerAd = (InneractiveAd) findViewById(R.id.inneractiveBannerAd);
-				InneractiveAdHelper.showBannerAd(upgradeBtn, inneractiveBannerAd, this);
-			}
 		}
 	}
 

@@ -381,12 +381,9 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
         TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
         endGameReasonTxt.setText(message);
 
-		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
-			/*LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-		    MopubHelper.showRectangleAd(adViewWrapper, this);*/
-			inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
-			InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
-		}
+		inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
+		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
+
         PopupItem popupItem = new PopupItem();
         popupItem.setCustomView((LinearLayout) layout);
 
@@ -396,10 +393,12 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
         layout.findViewById(R.id.newGamePopupBtn).setVisibility(View.GONE);
         layout.findViewById(R.id.rematchPopupBtn).setVisibility(View.GONE);
         layout.findViewById(R.id.homePopupBtn).setVisibility(View.GONE);
-        Button reviewBtn = (Button) layout.findViewById(R.id.reviewPopupBtn);
+
+		Button reviewBtn = (Button) layout.findViewById(R.id.reviewPopupBtn);
         reviewBtn.setText(R.string.ok);
         reviewBtn.setOnClickListener(this);
-		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
+
+		if (AppUtils.isNeedToUpgrade(this)) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}
 	}

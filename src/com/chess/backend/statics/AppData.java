@@ -122,7 +122,7 @@ public class AppData {
 	}
 
 	public static int getUserPremiumStatus(Context context) {
-		return Integer.parseInt(getPreferences(context).getString(AppConstants.USER_PREMIUM_STATUS, "" + StaticData.NOT_INITIALIZED_USER));
+		return getPreferences(context).getInt(AppConstants.USER_PREMIUM_STATUS, StaticData.BASIC_USER);
 	}
 
 	public static Intent getMembershipAndroidIntent(Context context) {
@@ -143,7 +143,6 @@ public class AppData {
 		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
 		return preferences.getString(userName + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
 	}
-
 
 	public static boolean haveSavedCompGame(Context context) {
 		SharedPreferences preferences = getPreferences(context);
@@ -221,15 +220,9 @@ public class AppData {
 		editor.commit();
 	}
 
-	/*public static boolean isLiveConnected(Context context) {
-		SharedPreferences preferences = getPreferences(context);
-		return preferences.getBoolean(AppConstants.IS_LIVE_CONNECTED, true);
+	public static void clearPreferences(Context context) {
+		getPreferences(context).edit()
+				.clear()
+				.commit();
 	}
-
-	public static void setLiveConnected(Context context, boolean enabled) {
-		SharedPreferences.Editor editor = getPreferences(context).edit();
-		editor.putBoolean(AppConstants.IS_LIVE_CONNECTED, enabled);
-		editor.commit();
-	}*/
-
 }

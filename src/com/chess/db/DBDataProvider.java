@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+import com.chess.backend.statics.AppData;
 
 /**
  * @author alien_roger
@@ -204,8 +205,10 @@ public class DBDataProvider extends ContentProvider {
 
 
 	private static class DatabaseHelper extends SQLiteOpenHelper {
+		private Context context;
 		DatabaseHelper(Context context) {
 			super(context, DBConstants.DATABASE_NAME, null, DBConstants.DATABASE_VERSION);
+			this.context = context;
 		}
 
 		@Override
@@ -217,9 +220,9 @@ public class DBDataProvider extends ContentProvider {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			Log.w("Content provider database",
-					"Upgrading database from version " +
-							oldVersion + " to " + newVersion +
+			AppData.clearPreferences(context); // clear all values, to avoid class cast exceptions
+
+			Log.w("Content provider database","Upgrading database from version " + oldVersion + " to " + newVersion +
 							", which will destroy all old data");
 			// TODO handle backup data
 			for (String table :tablesArray) {

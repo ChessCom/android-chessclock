@@ -109,6 +109,11 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	}
 
 	protected void widgetsInit() {
+		Button preferencesUpgrade = (Button) findViewById(R.id.upgradeBtn);
+		preferencesUpgrade.setOnClickListener(this);
+
+		preferencesUpgrade.setVisibility(AppUtils.isNeedToUpgrade(this) ? View.VISIBLE : View.GONE);
+
 		findViewById(R.id.prefInvite).setOnClickListener(this);
 		findViewById(R.id.prefContactUs).setOnClickListener(this);
 
@@ -202,17 +207,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		enableNotifications.setOnCheckedChangeListener(this);
 		showCoordinates.setOnCheckedChangeListener(this);
 		showHighlights.setOnCheckedChangeListener(this);
-	}
-
-	protected void onLiveServiceConnected() {
-		Button preferencesUpgrade = (Button) findViewById(R.id.upgradeBtn);
-		preferencesUpgrade.setOnClickListener(this);
-
-		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
-			preferencesUpgrade.setVisibility(View.VISIBLE);
-		} else {
-			preferencesUpgrade.setVisibility(View.GONE);
-		}
 	}
 
 	@Override

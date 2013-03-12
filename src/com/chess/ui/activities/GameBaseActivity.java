@@ -17,7 +17,6 @@ import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.views.ChessBoardBaseView;
 import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.AppUtils;
-import com.chess.utilities.MopubHelper;
 
 import java.text.SimpleDateFormat;
 
@@ -92,18 +91,9 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		/*if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
-			MopubHelper.createRectangleAd(this);
-		}*/
 		invalidateGameScreen();
 	}
 
-	protected void onLiveServiceConnected() {
-		// todo: check ads appearing here and in onResume
-		/*if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
-			MopubHelper.createRectangleAd(this);
-		}*/
-	}
 
 	protected void setBoardView(ChessBoardBaseView boardView) {
 		this.boardView = boardView;
@@ -116,15 +106,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 		// update boardView if boardId has changed
 		boardView.updateBoardAndPiecesImgs();
 		enableScreenLockTimer();
-	}
-
-	protected void onDestroy() {
-		// try to destroy ad here as Mopub team suggested
-		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
-			MopubHelper.destroyRectangleAd();
-		}
-
-		super.onDestroy();
 	}
 
 	@Override
@@ -159,7 +140,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 		endGameMessage = message;
 		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
-		if (!AppUtils.isNeedToUpgrade(this, getLccHolder())) {
+		if (!AppUtils.isNeedToUpgrade(this)) {
 			endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
 		}else {
 			endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);

@@ -34,7 +34,7 @@ public class AppConstants {
 
 	public static final String USERNAME = "username";
 	public static final String PASSWORD = "password";
-	public static final String API_VERSION = "api_version";
+//	public static final String API_VERSION = "api_version"; // what is it used for?
 	public static final String PREF_COMPUTER_STRENGTH = "strength";
 	public static final String PREF_ACTION_AFTER_MY_MOVE = "aim";
 	public static final String USER_PREMIUM_STATUS = "premium_status";

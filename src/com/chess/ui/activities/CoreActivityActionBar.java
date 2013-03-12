@@ -11,11 +11,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.*;
+import android.widget.Button;
 import android.widget.SearchView;
 import com.chess.R;
 import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.ui.interfaces.PopupDialogFace;
+import com.chess.utilities.InneractiveAdHelper;
 import com.facebook.android.Facebook;
 import com.inneractive.api.ads.InneractiveAd;
 
@@ -52,6 +54,14 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		handler = new Handler();
 		extras = getIntent().getExtras();
+	}
+
+	protected void initUpgradeAndAdWidgets() {
+		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
+		upgradeBtn.setOnClickListener(this);
+
+		inneractiveBannerAd = (InneractiveAd) findViewById(R.id.inneractiveBannerAd);
+		InneractiveAdHelper.showBannerAd(upgradeBtn, inneractiveBannerAd, this);
 	}
 
 	@Override

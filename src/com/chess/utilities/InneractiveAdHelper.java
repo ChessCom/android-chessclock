@@ -12,17 +12,16 @@ import com.inneractive.api.ads.InneractiveAd;
 public class InneractiveAdHelper {
 
 	// todo: flags should be removed
-	public static final boolean IS_SHOW_BANNER_ADS = true;
+	private static final boolean IS_SHOW_BANNER_ADS = true;
 	public static final boolean IS_SHOW_FULLSCREEN_ADS = true;
 
 	/*private static LinearLayout rectangleAdWrapper;
 	private static InneractiveAd rectangleAdView;*/
 
 	public static void showBannerAd(Button upgradeBtn, InneractiveAd bannerAd, Context context) {
-
-		/*if (!AppUtils.isNeedToUpgrade(context)) {
+		if (!AppUtils.isNeedToUpgrade(context) || !IS_SHOW_BANNER_ADS) {
 			return;
-		}*/
+		}
 
 		bannerAd.setInneractiveListener(new InneractiveAdListenerImpl(AppConstants.AD_BANNER));
 
@@ -49,7 +48,7 @@ public class InneractiveAdHelper {
 	}
 
 	public static void showRectangleAd(InneractiveAd rectangleAd, Context context) {
-		if (/*!AppUtils.isNeedToUpgrade(context) || */rectangleAd == null) {
+		if (!AppUtils.isNeedToUpgrade(context) || rectangleAd == null) {
 			return;
 		}
 

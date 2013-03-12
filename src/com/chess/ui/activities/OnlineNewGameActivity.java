@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
@@ -17,10 +16,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetStringObjTask;
 import com.chess.model.GameListChallengeItem;
 import com.chess.ui.adapters.OnlineChallengesGamesAdapter;
-import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
-import com.chess.utilities.InneractiveAdHelper;
-import com.inneractive.api.ads.InneractiveAd;
 
 import java.util.ArrayList;
 
@@ -52,6 +48,8 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 		findViewById(R.id.friendchallenge).setOnClickListener(this);
 		findViewById(R.id.challengecreate).setOnClickListener(this);
+
+		initUpgradeAndAdWidgets();
 	}
 
 	private void init() {
@@ -71,21 +69,6 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 		super.onResume();
 
 		updateList();
-	}
-
-	protected void onLiveServiceConnected() {
-		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
-		upgradeBtn.setOnClickListener(this);
-
-		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
-			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
-				inneractiveBannerAd = (InneractiveAd) findViewById(R.id.inneractiveBannerAd);
-				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) inneractiveBannerAd, this);
-			} else {
-				/*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
-				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
-			}
-		}
 	}
 
 	private void updateList(){

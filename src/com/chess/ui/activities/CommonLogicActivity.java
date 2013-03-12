@@ -38,7 +38,10 @@ import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * CommonLogicActivity class
@@ -325,15 +328,15 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		@Override
 		public void updateData(String returnedObj) {
 			if (returnedObj.length() > 0) {
-				final String[] responseArray = returnedObj.split(":");
+				final String[] responseArray = returnedObj.split(RestHelper.SYMBOL_PARAMS_SPLIT);
 				if (responseArray.length >= 4) {
 					if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
 						preferencesEditor.putString(AppConstants.USERNAME, loginUsernameEdt.getText().toString().trim().toLowerCase());
-						processLogin(responseArray, returnedObj);
+						processLogin(responseArray);
 					} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-						FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
+						FlurryAgent.logEvent(FlurryData.FB_LOGIN);
 						preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
-						processLogin(responseArray, returnedObj);
+						processLogin(responseArray);
 					}
 				}
 			}
@@ -385,26 +388,22 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 		}
 	}
 
-	private void processLogin(String[] response, String tempDebug) {
-		if (passwordEdt == null) { // if accidently return in wrong callback, when widgets are not initialized
+	protected void processLogin(String[] response) {
+		if (passwordEdt == null) { // if accidentally return in wrong callback, when widgets are not initialized
 			return;
 		}
 
 		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
 
 		try {
-			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, response[0].split("[+]")[1]);
+			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, Integer.parseInt(response[0].split(RestHelper.SYMBOL_PARAMS_SEPARATOR)[1]));
 		} catch (ArrayIndexOutOfBoundsException e) {
-			String debugInfo = "response=" + tempDebug;
-			BugSenseHandler.addCrashExtraData("APP_LOGIN_DEBUG", debugInfo);
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("DEBUG", debugInfo);
-			FlurryAgent.logEvent("APP_LOGIN_DEBUG", params);
-			preferencesEditor.putString(AppConstants.USER_PREMIUM_STATUS, "" + StaticData.NOT_INITIALIZED_USER);
-			throw new ArrayIndexOutOfBoundsException(debugInfo);
+			showToast(R.string.error_occurred_while_login);
+			backToLoginActivity();
+			return;
 		}
 
-		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
+//		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
 		try {
 			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(response[2], HTTP.UTF_8));
 		} catch (UnsupportedEncodingException ignored) {

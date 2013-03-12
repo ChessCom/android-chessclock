@@ -46,20 +46,26 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		skill = extras.getString(RestHelper.P_SKILL_LEVEL);
 
 		videosListItemUpdateListener = new VideosListItemsUpdateListener();
+
+		Button videoUpgrade = (Button) findViewById(R.id.upgradeBtn);
+		videoUpgrade.setOnClickListener(this);
+		videoUpgrade.setVisibility(AppUtils.isNeedToUpgradePremium(this)? View.VISIBLE: View.GONE);
+
 	}
 
 	@Override
 	protected void onStart() { // called when activity becomes visible. onResume called even when popup appears
 		super.onStart();
+
 		updateList();
 		hideKeyBoard();
 	}
 
-	protected void onLiveServiceConnected() {
-		Button videoUpgrade = (Button) findViewById(R.id.upgradeBtn);
-		videoUpgrade.setOnClickListener(this);
-		videoUpgrade.setVisibility(AppUtils.isNeedToUpgradePremium(this, getLccHolder())? View.VISIBLE: View.GONE);
-	}
+//	protected void onLiveServiceConnected() {         // this is a wrong logic, because we may not be connected to live;
+//		Button videoUpgrade = (Button) findViewById(R.id.upgradeBtn);
+//		videoUpgrade.setOnClickListener(this);
+//		videoUpgrade.setVisibility(AppUtils.isNeedToUpgradePremium(this, getLccHolder())? View.VISIBLE: View.GONE);
+//	}
 
 
 	private void updateList() {

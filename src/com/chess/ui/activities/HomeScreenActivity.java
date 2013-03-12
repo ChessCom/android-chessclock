@@ -573,7 +573,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 
 
 	private void showFullScreenAd() {
-		if (!preferences.getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false) && AppUtils.isNeedToUpgrade(this, getLccHolder())) {
+		if (!preferences.getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false) && AppUtils.isNeedToUpgrade(this)) {
 
 			// TODO handle for support show ad on tablet in portrait mode
 			// TODO: add support for tablet ad units
@@ -586,18 +586,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 				inneractiveFullscreenAd = new InneractiveAd(this, inneractiveAdsAppId, InneractiveAd.IaAdType.Interstitial, 0);
 				inneractiveFullscreenAd.setInneractiveListener(adListener);
 				((LinearLayout) findViewById(R.id.mainView)).addView(inneractiveFullscreenAd);
-
-			} else {
-				/*moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww"); // chess.com
-				//moPubInterstitial = new MoPubInterstitial(this, "12345"); // test
-				//moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
-				moPubInterstitial.setListener(this);
-				moPubInterstitial.load();*/
 			}
-
-			/*MobclixFullScreenAdView fsAdView = new MobclixFullScreenAdView(this);
-			fsAdView.addMobclixAdViewListener(mobFullScreeListener);
-			fsAdView.requestAndDisplayAd();*/
 		}
 	}
 

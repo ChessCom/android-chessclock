@@ -29,6 +29,7 @@ import com.flurry.android.FlurryAgent;
  * @created at: 08.02.12 7:19
  */
 public class VideoScreenActivity extends LiveBaseActivity {
+
 	private VideoItem item;
 	private View recent;
 	private TextView title, desc;
@@ -66,6 +67,11 @@ public class VideoScreenActivity extends LiveBaseActivity {
 
 		findViewById(R.id.start).setOnClickListener(this);
 
+
+		Button upgrade = (Button) findViewById(R.id.upgradeBtn);
+		upgrade.setOnClickListener(this);
+		upgrade.setVisibility(AppUtils.isNeedToUpgradePremium(this) ? View.VISIBLE : View.GONE);
+
 		handleIntent(getIntent());
 	}
 
@@ -81,16 +87,6 @@ public class VideoScreenActivity extends LiveBaseActivity {
 	protected void onResume() {
 		super.onResume();
 		updateVideoItem();
-	}
-
-	protected void onLiveServiceConnected() {
-		Button upgrade = (Button) findViewById(R.id.upgradeBtn);
-		upgrade.setOnClickListener(this);
-		if (AppUtils.isNeedToUpgradePremium(this, getLccHolder())) {
-			upgrade.setVisibility(View.VISIBLE);
-		} else {
-			upgrade.setVisibility(View.GONE);
-		}
 	}
 
 	private void updateVideoItem() {
@@ -145,7 +141,7 @@ public class VideoScreenActivity extends LiveBaseActivity {
 	@Override
 	protected void onNewIntent(Intent intent) {
 		// Because this activity has set launchMode="singleTop", the system calls this method
-		// to deliver the intent if this actvity is currently the foreground activity when
+		// to deliver the intent if this activity is currently the foreground activity when
 		// invoked again (when the user executes a search from this activity, we don't create
 		// a new instance of this activity, so the system delivers the search intent here)
 		handleIntent(intent);

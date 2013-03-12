@@ -211,9 +211,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		init();
 
-		/*if (!lccInitiated) {
-			return;
-		}*/
 
 		if (!isUserColorWhite()) {
 			getBoardFace().setReside(true);
@@ -447,7 +444,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			public void run() {
 
 				final View layout;
-				if (!AppUtils.isNeedToUpgrade(GameLiveScreenActivity.this, getLccHolder())) {
+				if (!AppUtils.isNeedToUpgrade(GameLiveScreenActivity.this)) {
 					layout = inflater.inflate(R.layout.popup_end_game, null, false);
 				} else {
 					layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
@@ -847,13 +844,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		String rating = getString(R.string.your_end_game_rating, ratingChangeString, currentPlayerNewRating);
 		yourRatingTxt.setText(rating);
 
-
-		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
-			/*LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-		    MopubHelper.showRectangleAd(adViewWrapper, this);*/
-			inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
-			InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
-		}
+		inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
+		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
 
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((LinearLayout) layout);
@@ -866,7 +858,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
 
-		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
+		if (AppUtils.isNeedToUpgrade(this)) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}
 	}

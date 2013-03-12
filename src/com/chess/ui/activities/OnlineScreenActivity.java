@@ -7,7 +7,6 @@ import android.support.v4.app.DialogFragment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
@@ -24,10 +23,7 @@ import com.chess.ui.adapters.OnlineCurrentGamesAdapter;
 import com.chess.ui.adapters.OnlineFinishedGamesAdapter;
 import com.chess.ui.adapters.SectionedAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
-import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChessComApiParser;
-import com.chess.utilities.InneractiveAdHelper;
-import com.inneractive.api.ads.InneractiveAd;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +36,7 @@ import java.util.List;
  */
 public class OnlineScreenActivity extends LiveBaseActivity implements View.OnClickListener,
 		AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+
 	private static final int CURRENT_GAMES_SECTION = 0;
 	private static final int CHALLENGES_SECTION = 1;
 
@@ -86,6 +83,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		findViewById(R.id.statsBtn).setOnClickListener(this);
 
 		listUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
+
+		initUpgradeAndAdWidgets();
 	}
 
 	private void init() {
@@ -142,20 +141,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		unRegisterMyReceiver(gamesUpdateReceiver);
 
 		cleanTaskPool();
-	}
-
-	protected void onLiveServiceConnected() {
-		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
-		upgradeBtn.setOnClickListener(this);
-		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
-
-			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
-				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveBannerAd), this);
-			} else {
-				/*moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
-				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
-			}
-		}
 	}
 
 	private class ListUpdateListener extends ChessUpdateListener {

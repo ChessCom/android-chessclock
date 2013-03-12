@@ -162,7 +162,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				showPopupDialog(R.string.ready_for_first_tackics_q, FIRST_TACTICS_TAG);
 			}
 		} else {
-			// TODO show register confirmation dialog
             if (!tacticItem.isStop() && getBoardFace().getMovesCount() > 0) {
 				startTacticsTimer(tacticItem);
 				tacticItem.setRetry(true);
@@ -217,8 +216,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				getBoardFace().takeNext();
 				invalidateGameScreen();
 
-				if (getBoardFace().isLatestMoveMadeUser())
+				if (getBoardFace().isLatestMoveMadeUser()) {
 					verifyMove();
+				}
 			}
 		}, 1300);
 	}
@@ -337,12 +337,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_solved, null, false);
 
-		/*LinearLayout adViewWrapper = (LinearLayout) customView.findViewById(R.id.adview_wrapper);
-		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
-			MopubHelper.showRectangleAd(adViewWrapper, this);
-		} else {
-			adViewWrapper.setVisibility(View.GONE);
-		}*/
 		inneractiveRectangleAd = (InneractiveAd) customView.findViewById(R.id.inneractiveRectangleAd);
 		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
 
@@ -395,7 +389,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		if (tacticItemIsValid()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
-			int deletedCnt = getContentResolver().delete(DBConstants.TACTICS_BATCH_CONTENT_URI,
+			getContentResolver().delete(DBConstants.TACTICS_BATCH_CONTENT_URI,
 					DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments);
 		}
 
@@ -507,7 +501,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			}
 
 			if (!tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) { // means we sent duplicate tactic_id, so result is the same
-                tacticItem.setResultItem(tmp[1].split(":"));
+                tacticItem.setResultItem(tmp[1].split(RestHelper.SYMBOL_PARAMS_SPLIT));
 			}
 
             String title;
@@ -547,7 +541,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			}
 
 			if (!tmp[1].trim().equals(StaticData.SYMBOL_EMPTY)) { // means we sent duplicate tactic_id, so result is the same
-                tacticItem.setResultItem(tmp[1].split(":"));
+                tacticItem.setResultItem(tmp[1].split(RestHelper.SYMBOL_PARAMS_SPLIT));
 			}
 
             String title;
@@ -828,7 +822,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			}
         }
 		FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
-		// TODO move to AsyncTask
+
 		InputStream inputStream = getResources().openRawResource(R.raw.tactics10batch);
 		try {
 			ByteArrayBuffer baf = new ByteArrayBuffer(50);
@@ -896,7 +890,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private void clearSavedTactics() {
         if (tacticItemIsValid()){
             String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
-            int deletedCnt = getContentResolver().delete(DBConstants.TACTICS_BATCH_CONTENT_URI,
+            getContentResolver().delete(DBConstants.TACTICS_BATCH_CONTENT_URI,
                     DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments);
         }
 	}

@@ -814,7 +814,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		if(currentGame == null)
 			return;
 
-
 //		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
 		TextView yourRatingTxt = (TextView) layout.findViewById(R.id.yourRatingTxt);
@@ -837,14 +836,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		String rating = getString(R.string.your_end_game_rating_online, currentPlayerNewRating);
 		yourRatingTxt.setText(rating);
 
-		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
-			/*LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-		    MopubHelper.showRectangleAd(adViewWrapper, this);*/
-			inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
-			InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
-		}
-		/*LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-		MopubHelper.showRectangleAd(adViewWrapper, this);*/
 		inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
 		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
 
@@ -858,7 +849,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
-		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
+
+		if (AppUtils.isNeedToUpgrade(this)) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}
 	}
