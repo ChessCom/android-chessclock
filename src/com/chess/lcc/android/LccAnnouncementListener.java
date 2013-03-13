@@ -15,10 +15,10 @@ import com.chess.utilities.AppUtils;
 public class LccAnnouncementListener implements AnnounceListener {
 
 	private static final String TAG = "LCCLOG-ANNOUNCE";
-	private final LccHolder lccHolder;
+	private final LccHelper lccHelper;
 
-	public LccAnnouncementListener(LccHolder lccHolder) {
-		this.lccHolder = lccHolder;
+	public LccAnnouncementListener(LccHelper lccHelper) {
+		this.lccHelper = lccHelper;
 	}
 
 	public void onAnnounceMessageReceived(User from, AnnounceType type, String codeMessage, String txt, Object object) {
@@ -29,11 +29,11 @@ public class LccAnnouncementListener implements AnnounceListener {
 
 		if (type == AnnounceType.Shutdown && codeMessage == null && txt != null) {
 			Integer minutes = Integer.parseInt(txt) / 60;
-			String messageI18n = AppUtils.getI18nString(lccHolder.getContext(), "announcement.server_restarting", minutes.toString());
+			String messageI18n = AppUtils.getI18nString(lccHelper.getContext(), "announcement.server_restarting", minutes.toString());
 			Log.d(TAG, messageI18n);
 			// UPDATELCC todo: handle with new UI. Show onAdminAnnounce check for background mode in onAdminAnnounce
 			// the same way as we do for ConnectionFailure
-			//lccHolder.getLiveChessClientEventListener().onAdminAnnounce(messageI18n);
+			//lccHelper.getLiveChessClientEventListener().onAdminAnnounce(messageI18n);
 		}
 
 		/*Some notes:

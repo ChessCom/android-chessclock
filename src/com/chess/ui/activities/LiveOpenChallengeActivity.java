@@ -1,7 +1,6 @@
 package com.chess.ui.activities;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
@@ -12,10 +11,9 @@ import android.widget.CheckBox;
 import android.widget.Spinner;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.LccHelper;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.PieceColor;
@@ -78,20 +76,12 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 		bonusTimeTextWatcher = new BonusTimeTextWatcher();
 		bonusTimeValidator = new BonusTimeValidator();
 
-		AppData.setLiveChessMode(this, true);
+//		AppData.setLiveChessMode(this, true); // should not duplicate logic
 		showActionSettings = true;
 	}
 
 	protected void onLiveServiceConnected() {
 		checkIfLiveUserAlive();
-	}
-
-	public void onResume() {
-		super.onResume();
-
-		if (getLccHolder() != null) {
-		checkIfLiveUserAlive();
-		}
 	}
 
 	@Override
@@ -108,7 +98,7 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 				initialTimeEdt.setText("10");
 				bonusTimeEdt.setText("0");
 			}
-			if (getLccHolder().getOwnSeeksCount() >= LccHolder.OWN_SEEKS_LIMIT) {
+			if (liveService.getOwnSeeksCount() >= LccHelper.OWN_SEEKS_LIMIT) {
 				return;
 			}
 
@@ -120,19 +110,19 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 
 			final GameType gameType = GameType.Chess; // todo: support chess960
 			Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
-					getLccHolder().getUser(), to, gameType, PieceColor.UNDEFINED, rated, gameTimeConfig,
+					liveService.getUser(), to, gameType, PieceColor.UNDEFINED, rated, gameTimeConfig,
 					minMembershipLevel, minRating, maxRating);
 
 			// todo: refactor with new LCC
-			if(!getLccHolder().isConnected() || getLccHolder().getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
-				getLccHolder().logout();
+			if(!liveService.isConnected() || liveService.getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
+				liveService.logout();
 				backToHomeActivity();
 				return;
 			}
 
 			FlurryAgent.logEvent(FlurryData.CHALLENGE_CREATED, null);
 
-			challengeTaskRunner.runSendChallengeTask(challenge);
+			liveService.runSendChallengeTask(challenge);
 
 			preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTimeEdt.getText().toString().trim());
 			preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTimeEdt.getText().toString().trim());
@@ -141,17 +131,18 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 			preferencesEditor.commit();
 
 			createChallengeBtn.setEnabled(false);
-			new Handler().postDelayed(new Runnable() {
-				public void run() {
-					createChallengeBtn.setEnabled(true);
-				}
-			}, AppConstants.CHALLENGE_ISSUE_DELAY);
+//			new Handler().postDelayed(new Runnable() {
+//				public void run() {
+//
+//				}
+//			}, AppConstants.CHALLENGE_ISSUE_DELAY);
 		}
 	}
 
 	@Override
 	protected void challengeTaskUpdated(Challenge challenge){
 		showSinglePopupDialog(R.string.congratulations, R.string.challengeSent);
+		createChallengeBtn.setEnabled(true);
 	}
 
 	@Override

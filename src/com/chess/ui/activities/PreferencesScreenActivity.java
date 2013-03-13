@@ -214,7 +214,10 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		int id = view.getId();
 		if (id == R.id.prefLogout) {
 			if (!AppData.isGuest(this)) {
-				getLccHolder().logout();
+				if (isLCSBound) {
+					liveService.logout();
+				}
+
 
 				// un-register from GCM
 				unregisterGcmService();

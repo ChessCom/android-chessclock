@@ -11,27 +11,28 @@ import com.chess.live.client.*;
  */
 public class LccConnectionListener implements ConnectionListener {
 	public static final String CONNECTION = "LCCLOG-CONNECTION";
-	private LccHolder lccHolder;
+	private LccHelper lccHelper;
 
-	public LccConnectionListener(LccHolder lccHolder) {
-		this.lccHolder = lccHolder;
+	public LccConnectionListener(LccHelper lccHelper) {
+		this.lccHelper = lccHelper;
 	}
 
 	public void onOtherClientEntered(User user) {
 		Log.d(CONNECTION, "Another client entered: user=" + user.getUsername());
-		String message = lccHolder.getContext().getString(R.string.account_error)
-				+ lccHolder.getContext().getString(R.string.another_login_detected);
+		String message = lccHelper.getContext().getString(R.string.account_error)
+				+ lccHelper.getContext().getString(R.string.another_login_detected);
 
-		lccHolder.setConnected(false);
-		lccHolder.onOtherClientEntered(message);
+		lccHelper.setConnected(false);
+		lccHelper.onOtherClientEntered(message);
 	}
 
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {
-        lccHolder.setUser(user);
-		lccHolder.setConnected(true);
-		lccHolder.setFriends(settings.getFriends());
-		lccHolder.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
-		lccHolder.clearPausedEvents();
+        lccHelper.setUser(user);
+		Log.d("lccHelper", "lccHelper instance in onConnectionEstablished = " + lccHelper);
+		lccHelper.setConnected(true);
+		lccHelper.setFriends(settings.getFriends());
+		lccHelper.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
+		lccHelper.clearPausedEvents();
 
 		Log.d(CONNECTION, "User has been connected: name=" + user.getUsername() + ", authKey=" + user.getAuthKey() + ", user=" + user);
 	}
@@ -39,8 +40,8 @@ public class LccConnectionListener implements ConnectionListener {
 	@Override
 	public void onSettingsChanged(User user, UserSettings settings) {
 		Log.d(CONNECTION, "onSettingsChanged");
-		lccHolder.setFriends(settings.getFriends());
-		lccHolder.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
+		lccHelper.setFriends(settings.getFriends());
+		lccHelper.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
 	}
 
 	@Override
@@ -48,14 +49,14 @@ public class LccConnectionListener implements ConnectionListener {
 		Log.d(CONNECTION, "User connection failure:" + message + ", details=" + details);
 
 		/*if (details ==  null) {
-			lccHolder.setConnected(false);
-			lccHolder.resetClient();
-			lccHolder.runConnectTask(true);
+			lccHelper.setConnected(false);
+			lccHelper.resetClient();
+			lccHelper.runConnectTask(true);
 		} else {
-			lccHolder.processConnectionFailure(details);
+			lccHelper.processConnectionFailure(details);
 		}*/
 
-		lccHolder.processConnectionFailure(details);
+		lccHelper.processConnectionFailure(details);
 	}
 
 	@Override
@@ -68,19 +69,19 @@ public class LccConnectionListener implements ConnectionListener {
 		}
 		Log.d(CONNECTION, "Connection Lost, with message = " + message
                 + " \nDetails: id = " + failureId + " comments = " + comments);
-		lccHolder.setConnected(false);
+		lccHelper.setConnected(false);
 	}
 
 	@Override
 	public void onConnectionReestablished(User arg0) {
 		Log.d(CONNECTION, "onConnectionReestablished");
-		lccHolder.clearChallenges();
-		lccHolder.clearOwnChallenges();
-		lccHolder.clearSeeks();
-		lccHolder.clearGames();
-		lccHolder.setCurrentGameId(null);
-		lccHolder.setConnected(true);
-		lccHolder.clearPausedEvents();
+		lccHelper.clearChallenges();
+		lccHelper.clearOwnChallenges();
+		lccHelper.clearSeeks();
+		lccHelper.clearGames();
+		lccHelper.setCurrentGameId(null);
+		lccHelper.setConnected(true);
+		lccHelper.clearPausedEvents();
 	}
 
 	@Override
@@ -91,13 +92,13 @@ public class LccConnectionListener implements ConnectionListener {
 	@Override
 	public void onConnectionRestored(User arg0) {
 		Log.d(CONNECTION, "Connection Restored");
-		lccHolder.setConnected(true);
+		lccHelper.setConnected(true);
 	}
 
 	public void onObsoleteProtocolVersion(User user, String serverProtocolVersion, String clientProtocolVersion) {
 		Log.d(CONNECTION, "Protocol version is obsolete (serverProtocolVersion=" + serverProtocolVersion + ", clientProtocolVersion=" +
 						clientProtocolVersion + StaticData.SYMBOL_RIGHT_PAR);
-		lccHolder.onObsoleteProtocolVersion();
+		lccHelper.onObsoleteProtocolVersion();
 	}
 
 	public void onLagInfoReceived(User user, Long aLong) {
@@ -108,7 +109,7 @@ public class LccConnectionListener implements ConnectionListener {
 		Log.d(CONNECTION, "The client kicked: " + user.getUsername() + ", reason=" + reason +
 				", message=" + message + ", period=" + period);
 
-		lccHolder.setConnected(false);
-		lccHolder.processConnectionFailure(reason, message);
+		lccHelper.setConnected(false);
+		lccHelper.processConnectionFailure(reason, message);
 	}
 }

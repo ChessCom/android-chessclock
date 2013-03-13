@@ -43,7 +43,6 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_screen);
 
-
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
 			findViewById(R.id.mainView).setBackground(backgroundChessDrawable);
 		} else {
@@ -99,13 +98,12 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 		return false;
 	}
 
-
-
 	@Override
 	protected void onResume() {
 		super.onResume();
 
-		AppData.setLiveChessMode(this, true);
+//		AppData.setLiveChessMode(this, true);  // why it is true?
+		AppData.setLiveChessMode(this, false);  // if user appeared here - means he is not login, so can't be live, cause no token
 
 		loginUsernameEdt.setText(AppData.getUserName(this));
 		loginPasswordEdt.setText(AppData.getPassword(this));

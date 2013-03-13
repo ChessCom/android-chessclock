@@ -9,7 +9,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
 import com.chess.backend.statics.AppData;
-import com.chess.lcc.android.LccHolder;
 
 public class NetworkChangeService extends Service {
 
@@ -38,7 +37,7 @@ public class NetworkChangeService extends Service {
 				return;
 			}
 
-			//LccHolder lccHolder = LccHolder.getInstance(context);
+			//LccHelper lccHolder = LccHelper.getInstance(context);
 
 			/*boolean failover = intent.getBooleanExtra("FAILOVER_CONNECTION", false);
 								   System.out.println("!!!!!!!! NetworkChangeReceiver failover=" + failover);*/

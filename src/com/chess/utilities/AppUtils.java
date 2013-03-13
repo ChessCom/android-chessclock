@@ -231,39 +231,6 @@ public class AppUtils {
 		return sb.toString();
 	}
 
-//	public static boolean isNeedToUpgrade(Context context, LccHolder lccHolder){
-//		boolean liveMembershipLevel = false;
-//
-//		if (lccHolder != null) {
-//			User user = lccHolder.getUser();
-//			if (user != null) {
-//				liveMembershipLevel = AppData.isLiveChess(context)
-//						&& (user.getMembershipLevel() < StaticData.GOLD_LEVEL);
-//			}
-//		}
-//
-//		return AppData.isGuest(context)
-//				|| liveMembershipLevel
-//				|| (!AppData.isLiveChess(context) && AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER)
-//				&& AppData.getUserPremiumStatus(context) != StaticData.NOT_INITIALIZED_USER;
-//	}
-
-//	public static boolean isNeedToUpgradePremium(Context context, LccHolder lccHolder){
-//		boolean liveMembershipLevel = false;
-//
-//		if (lccHolder != null) {
-//			User user = lccHolder.getUser();
-//			if (user != null) {
-//				liveMembershipLevel = AppData.isLiveChess(context)
-//						&& (user.getMembershipLevel() < StaticData.DIAMOND_LEVEL);
-//			}
-//		}
-//
-//		return liveMembershipLevel
-//				|| (!AppData.isLiveChess(context) && AppData.getUserPremiumStatus(context) < StaticData.DIAMOND_USER)
-//				&& AppData.getUserPremiumStatus(context) != StaticData.NOT_INITIALIZED_USER;
-//	}
-
 	public static String getSecondsTimeFromSecondsStr(long duration) {
 		long seconds = duration % 60;
 		long minutes = duration / 60 % 60;

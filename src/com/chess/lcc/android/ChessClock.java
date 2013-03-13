@@ -17,7 +17,7 @@ public class ChessClock {
 	private int time;
 	private static final int SECOND_TENTHS_THRESHOLD = 20 * SECOND_MS;
 	private static final int MINUTES_SECONDS_THRESHOLD = 121 * 60 * SECOND_MS;
-	private LccHolder lccHolder;
+	private LccHelper lccHelper;
 	private boolean isWhite;
 	private java.util.Timer myTimer;
 	private boolean tenSecondsPlayed;
@@ -25,10 +25,10 @@ public class ChessClock {
 	private String playerName;
 	private boolean isRunning;
 
-	public ChessClock(LccHolder lccHolder, boolean isWhite) {
-		this.lccHolder = lccHolder;
+	public ChessClock(LccHelper lccHelper, boolean isWhite) {
+		this.lccHelper = lccHelper;
 		this.isWhite = isWhite;
-		game = lccHolder.getCurrentGame();
+		game = lccHelper.getCurrentGame();
 		playerName = isWhite ? game.getWhitePlayer().getUsername() : game.getBlackPlayer().getUsername();
 
 		//todo: paint();
@@ -82,7 +82,7 @@ public class ChessClock {
 	}
 
 	public void paint() {
-		LccEventListener eventListener = lccHolder.getLccEventListener();
+		LccEventListener eventListener = lccHelper.getLccEventListener();
 
 		String timer = createTimeString(getTime());
 		if (isWhite) { // if white player move
@@ -152,7 +152,7 @@ public class ChessClock {
 
 				if (getTime() <= SECOND_TENTHS_THRESHOLD && !tenSecondsPlayed) {
 					tenSecondsPlayed = true;
-					SoundPlayer.getInstance(lccHolder.getContext()).playTenSeconds();
+					SoundPlayer.getInstance(lccHelper.getContext()).playTenSeconds();
 				}
 
 				if (getTime() < TENTH_MS) {

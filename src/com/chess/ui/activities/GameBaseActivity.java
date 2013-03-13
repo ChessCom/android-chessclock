@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.lcc.android.LccGameTaskRunner;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameActivityFace;
@@ -54,7 +53,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	private ChessBoardBaseView boardView;
 	protected View endGamePopupView;
 	protected String endGameMessage;
-	protected LccGameTaskRunner gameTaskRunner;
 
 
 	@Override

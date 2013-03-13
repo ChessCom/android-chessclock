@@ -53,7 +53,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	}
 
 	 private void init() {
-		AppData.setLiveChessMode(this, true);
+		AppData.setLiveChessMode(this, true);   // this should be only one place to set it to true
 
 		infoGroup = new ArrayList<View>();
 
@@ -95,7 +95,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	@Override
 	protected void onStart() {
 		super.onStart();
-		startService(new Intent(this, LiveChessService.class));  // do not need to start it this way
+		startService(new Intent(this, LiveChessService.class));
 	}
 
 
@@ -104,9 +104,9 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		super.onResume();
 
 		if (isLCSBound) {
-			showLoadingView(!getLccHolder().isConnected());
+			showLoadingView(!liveService.isConnected());
 
-			if (getLccHolder().currentGameExist()) {
+			if (liveService.currentGameExist()) {
 				currentGame.setVisibility(View.VISIBLE);
 			} else {
 				currentGame.setVisibility(View.GONE);
@@ -117,9 +117,9 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	}
 
 	protected void onLiveServiceConnected() {
-		showLoadingView(!getLccHolder().isConnected());
+		showLoadingView(!liveService.isConnected());
 
-		if (getLccHolder().currentGameExist()) {
+		if (liveService.currentGameExist()) {
 			currentGame.setVisibility(View.VISIBLE);
 		} else {
 			currentGame.setVisibility(View.GONE);
@@ -157,8 +157,8 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 				showActionNewGame = !show;
 				getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
 
-				if (getLccHolder() != null) {
-					User user = getLccHolder().getUser();
+				if (isLCSBound) {
+					User user = liveService.getUser();
 					if (!show && user != null) {
 						bulletRatingTxt.setText(getString(R.string.bullet_, user.getRatingFor(GameRatingClass.Lightning)));
 						blitzRatingTxt.setText(getString(R.string.blitz_, user.getRatingFor(GameRatingClass.Blitz)));
@@ -191,7 +191,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 			startActivity(AppData.getMembershipAndroidIntent(this));
 
 		} else if (view.getId() == R.id.currentGameBtn) {
-			getLccHolder().checkAndProcessFullGame();
+			liveService.checkAndProcessFullGame();
 
 		} else if(view.getId() == R.id.statsBtn){
 			String playerStatsLink = RestHelper.formStatsLink(AppData.getUserToken(this), AppData.getUserName(this));

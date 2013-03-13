@@ -86,21 +86,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+
 		adjustActionBar();
 	}
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-
-		/* // try to destroy ad here as MoPub team suggested
-		if (moPubView != null) {
-			moPubView.destroy();
-		}*/
-
-		/*preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
-		preferencesEditor.commit();*/
-	}
 
 	@Override
 	protected void onDestroy() {
@@ -137,6 +126,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.sign_out, menu);
+
 		getActionBarHelper().showMenuItemById(R.id.menu_search, showActionSearch, menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_settings, showActionSettings, menu);
 		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame, menu);

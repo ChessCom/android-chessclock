@@ -24,22 +24,11 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 		currentGameBtn = (Button) findViewById(R.id.currentGameBtn);
 		currentGameBtn.setOnClickListener(this);
 
-		AppData.setLiveChessMode(this, true);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		if (getLccHolder() != null && getLccHolder().currentGameExist()) {
-			currentGameBtn.setVisibility(View.VISIBLE);
-		} else {
-			currentGameBtn.setVisibility(View.GONE);
-		}
+//		AppData.setLiveChessMode(this, true); // should not duplicate logic
 	}
 
 	protected void onLiveServiceConnected() {
-		if (getLccHolder().currentGameExist()) {
+		if (liveService.currentGameExist()) {
 			currentGameBtn.setVisibility(View.VISIBLE);
 		} else {
 			currentGameBtn.setVisibility(View.GONE);
@@ -55,7 +44,7 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 		} else if (view.getId() == R.id.challengecreate) {
 			startActivity(new Intent(this, LiveOpenChallengeActivity.class));
 		} else if (view.getId() == R.id.currentGameBtn) {
-			getLccHolder().checkAndProcessFullGame();
+			liveService.checkAndProcessFullGame();
 		}
 	}
 }

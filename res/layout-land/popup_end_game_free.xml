@@ -42,12 +42,6 @@
 			android:layout_height="wrap_content"
 			>
 		<!--Ads-->
-		<!--<LinearLayout
-			android:id="@+id/adview_wrapper"
-			android:layout_width="@dimen/ad_popup_width"
-			android:layout_height="@dimen/ad_popup_height"
-			android:layout_gravity="center"
-			/>-->
 
 		<!-- todo: set app id, set update time -->
 
@@ -123,4 +117,16 @@
 			android:paddingRight="5dip"
 			/>
 
+    <!--Link text-->
+    <com.chess.RoboTextView
+        android:id="@+id/rulesLinkTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:textColorLink="@color/blue"
+        android:text="@string/fair_play_policy_link"
+        android:gravity="center"
+        android:padding="5dip"
+        android:visibility="gone"
+        />
 </LinearLayout>

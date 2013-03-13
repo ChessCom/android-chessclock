@@ -346,7 +346,7 @@ public class RestHelper {
 		return LOGIN_HTML_ALS + userToken + GOTO + "%2Fmembership.html" + param;
 //				+ sharedData.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 //				+ "&goto=http%3A%2F%2Fwww."
-//				+ LccHolder.HOST + "%2Fmembership.html" + param;
+//				+ LccHelper.HOST + "%2Fmembership.html" + param;
 	}
 
 	public static String formCustomPaginationRequest(LoadItem loadItem, int page) {

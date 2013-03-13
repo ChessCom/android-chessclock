@@ -12,7 +12,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.ConnectLiveChessTask;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
-import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
+import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
 import com.chess.live.client.*;
 import com.chess.live.rules.GameResult;
 import com.chess.live.util.GameType;
@@ -24,7 +24,7 @@ import com.chess.utilities.AppUtils;
 
 import java.util.*;
 
-public class LccHolder { // todo: keep LccHolder instance in LiveChessService as well?
+public class LccHelper { // todo: keep LccHelper instance in LiveChessService as well?
 
 	public static final boolean TESTING_GAME = false;
 	public static final String[] TEST_MOVES_COORD = {"d2d4", "c7c6", "c2c4", "d7d5", "g1f3", "g8f6", "b1c3", "e7e6",
@@ -34,7 +34,7 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 			"c8b7", "d3e5", "d8c8", "h1c1", "e8g8", "g6d3"
 			/*, "g8g5", "e5g6", "e7f7", "g6e5", "g5e5", "d4e5", "f6e4", "h4h1", "f7f2"*/};
 
-	private static final String TAG = "LCCLOG-LccHolder";
+	private static final String TAG = "LCCLOG-LccHelper";
 	public static final int OWN_SEEKS_LIMIT = 3;
 
 	private final LccChatListener chatListener;
@@ -73,7 +73,7 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 	private Context context;
 	private List<String> pendingWarnings;
 
-	private LiveChessClientEventListenerFace liveChessClientEventListener;
+	private LiveChessClientEventListener liveChessClientEventListener;
     private LccEventListener lccEventListener;
     private LccChatMessageListener lccChatMessageListener;
 
@@ -81,7 +81,7 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 	private LiveChessService.LccConnectUpdateListener lccConnectUpdateListener;
 	private final LiveChessService liveService;
 
-	public LccHolder(Context context, LiveChessService liveService, LiveChessService.LccConnectUpdateListener lccConnectUpdateListener) {
+	public LccHelper(Context context, LiveChessService liveService, LiveChessService.LccConnectUpdateListener lccConnectUpdateListener) {
 		this.liveService = liveService;
 		this.context = context;
 		this.lccConnectUpdateListener = lccConnectUpdateListener;
@@ -217,7 +217,7 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 
 	/*public void checkAndConnect() {
 		if(AppData.isLiveChess(context) && !connected && lccClient == null){
-			LccHolder.getInstance(context).runConnectTask();
+			LccHelper.getInstance(context).runConnectTask();
 		}
 	}*/
 
@@ -251,7 +251,8 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 	}
 
 	public void connectByCreds(String userName, String pass) {
-		Log.d("LCC-CONNECTION", "connectByCreds : user = " + userName + " pass = " + pass);
+//		Log.d("LCC-CONNECTION", "connectByCreds : user = " + userName + " pass = " + pass); // do not post in prod
+		Log.d("LCC-CONNECTION", "connectByCreds : hidden"); // do not post in pod
 		lccClient.connect(userName, pass, connectionListener);
 		liveChessClientEventListener.onConnecting();
 	}
@@ -262,7 +263,7 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 		liveChessClientEventListener.onConnecting();
 	}
 
-	public void setLiveChessClientEventListener(LiveChessClientEventListenerFace liveChessClientEventListener) {
+	public void setLiveChessClientEventListener(LiveChessClientEventListener liveChessClientEventListener) {
 		this.liveChessClientEventListener = liveChessClientEventListener;
 	}
 
@@ -312,7 +313,11 @@ public class LccHolder { // todo: keep LccHolder instance in LiveChessService as
 					break;
 			}
 			liveChessClientEventListener.onConnectionFailure(detailsMessage);
-		}
+		} /*else {     // TODO handle properly
+			setConnected(false);
+			cancelServiceNotification();
+			liveChessClientEventListener.onSessionExpired(context.getString(R.string.login_failed));
+		}*/
 
 	}
 

@@ -10,15 +10,15 @@ import com.chess.live.client.User;
 
 public class LccFriendStatusListener implements FriendStatusListener {
 	private static final String TAG = "LCCLOG-FRIEND";
-	private final LccHolder lccHolder;
+	private final LccHelper lccHelper;
 
-	public LccFriendStatusListener(LccHolder lccHolder) {
-		this.lccHolder = lccHolder;
+	public LccFriendStatusListener(LccHelper lccHelper) {
+		this.lccHelper = lccHelper;
 	}
 
 	public void onFriendStatusReceived(User friend) {
 		Log.d(TAG, "FRIENDS STATUS LISTENER: onFriendStatusReceived " + friend);
-		lccHolder.putFriend(friend);
+		lccHelper.putFriend(friend);
 	}
 
 	@Override
@@ -50,12 +50,12 @@ public class LccFriendStatusListener implements FriendStatusListener {
 	public void onFriendDeleted(User from, User to) {
 		Log.d(TAG, "FRIENDS STATUS LISTENER: onFriendDeleted from " + from + " to " + to);
 		User deletedFriend = null;
-		if (lccHolder.getUser().getUsername().equals(from.getUsername())) {
+		if (lccHelper.getUser().getUsername().equals(from.getUsername())) {
 			deletedFriend = to;
-		} else if (lccHolder.getUser().getUsername().equals(to.getUsername())) {
+		} else if (lccHelper.getUser().getUsername().equals(to.getUsername())) {
 			deletedFriend = from;
 		}
-		lccHolder.removeFriend(deletedFriend);
+		lccHelper.removeFriend(deletedFriend);
 	}
 
 	@Override

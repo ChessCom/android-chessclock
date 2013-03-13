@@ -15,10 +15,10 @@ import java.util.Collection;
 
 public class LccSeekListListener implements SeekListListener {
 	private static final String TAG = "LCCLOG-SEEK";
-	private final LccHolder lccHolder;
+	private final LccHelper lccHelper;
 
-	public LccSeekListListener(LccHolder lccHolder) {
-		this.lccHolder = lccHolder;
+	public LccSeekListListener(LccHelper lccHelper) {
+		this.lccHelper = lccHelper;
 	}
 
 	public void onSeekListReceived(SubscriptionId id, Collection<Challenge> challenges, Integer total) {
@@ -27,11 +27,11 @@ public class LccSeekListListener implements SeekListListener {
 			/*LccUser.LOG.debug(
 					"SEEK LIST LISTENER: Public Seek received: subscriptionId = " + ((SubscriptionIdImpl) id).toDebugString() +
 					", size = " + challenges.size() + ", total = " + total);*/
-			lccHolder.clearSeeks();
+			lccHelper.clearSeeks();
 			for (Challenge challenge : challenges) {
 				addSeek(challenge);
 			}
-			lccHolder.setSeekListSubscriptionId(id);
+			lccHelper.setSeekListSubscriptionId(id);
 		} else {
 			Log.i(TAG, "SEEK LIST LISTENER: Public Seek list received, but it is null");
 		}
@@ -39,21 +39,21 @@ public class LccSeekListListener implements SeekListListener {
 
 	@Override
 	public void onSeekItemAdded(SubscriptionId id, Challenge challenge) {
-		//Log.i("Seek item added: user: " + lccHolder.getUser().getUsername() + ", challenge: " + challenge);
+		//Log.i("Seek item added: user: " + lccHelper.getUser().getUsername() + ", challenge: " + challenge);
 		addSeek(challenge);
 	}
 
 	@Override
 	public void onSeekItemRemoved(SubscriptionId id, Long seekId) {
-		if (lccHolder.isSeekContains(seekId)) {
-			Log.i(TAG, "Seek item removed: user: " + lccHolder.getUser().getUsername() + AppConstants.CHALLENGE + seekId);
+		if (lccHelper.isSeekContains(seekId)) {
+			Log.i(TAG, "Seek item removed: user: " + lccHelper.getUser().getUsername() + AppConstants.CHALLENGE + seekId);
 			/*Seek seek = user.getConnection().getJinSeek(seekId);
 				  if(seek == null)
 				  {
 					return;
 				  }
 				  user.getListenerManager().fireSeekEvent(new SeekEvent(user.getConnection(), null, SeekEvent.SEEK_REMOVED, seek));*/
-			lccHolder.removeSeek(seekId);
+			lccHelper.removeSeek(seekId);
 		}
 	}
 
@@ -69,18 +69,18 @@ public class LccSeekListListener implements SeekListListener {
 			//Log.i("Seek received: ignore computer player");
 			return;
 		}
-		if (lccHolder.isUserBlocked(challenge.getFrom().getUsername())) {
+		if (lccHelper.isUserBlocked(challenge.getFrom().getUsername())) {
 			Log.i(TAG, "Add seek: blocked user");
 			return;
 		}
-		if (lccHolder.isSeekContains(challenge.getId())) {
+		if (lccHelper.isSeekContains(challenge.getId())) {
 			Log.i(TAG, "Add seek: ignore seek, already exists");
 			return;
 		}
-		/*if (challenge.getFrom().getUsername().equals(lccHolder.getUser().getUsername()))
+		/*if (challenge.getFrom().getUsername().equals(lccHelper.getUser().getUsername()))
 			{
-			  Log.i("Seek item added: user: " + lccHolder.getUser().getUsername() + ", challenge: " + challenge);
-			  lccHolder.putSeek(challenge);
+			  Log.i("Seek item added: user: " + lccHelper.getUser().getUsername() + ", challenge: " + challenge);
+			  lccHelper.putSeek(challenge);
 			}*/
 	}
 

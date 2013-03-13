@@ -21,16 +21,16 @@ public class LccChallengeTaskRunner {
 
 	private LccChallengeListener challengeListener;
 	private TaskUpdateInterface<Challenge> challengeTaskFace;
-	private LccHolder lccHolder;
+	private LccHelper lccHelper;
 
-	public LccChallengeTaskRunner(TaskUpdateInterface<Challenge> challengeTaskFace, LccHolder lccHolder) {
+	public LccChallengeTaskRunner(TaskUpdateInterface<Challenge> challengeTaskFace, LccHelper lccHelper) {
 		this.challengeTaskFace = challengeTaskFace;
-		this.lccHolder = lccHolder;
-		challengeListener = lccHolder.getChallengeListener();
+		this.lccHelper = lccHelper;
+		challengeListener = lccHelper.getChallengeListener();
 	}
 
 	private LiveChessClient getClient() {
-		return lccHolder.getClient();
+		return lccHelper.getClient();
 	}
 
 	public void runSendChallengeTask(Challenge challenge) {

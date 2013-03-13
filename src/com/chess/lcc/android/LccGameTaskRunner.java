@@ -22,16 +22,16 @@ public class LccGameTaskRunner {
 
 	private LiveChessClient liveChessClient;
 	private TaskUpdateInterface<Game> gameTaskFace;
-	private LccHolder lccHolder;
+	private LccHelper lccHelper;
 
-	public LccGameTaskRunner(TaskUpdateInterface<Game> gameTaskFace, LccHolder lccHolder) {
+	public LccGameTaskRunner(TaskUpdateInterface<Game> gameTaskFace, LccHelper lccHelper) {
 		this.gameTaskFace = gameTaskFace;
-		this.lccHolder = lccHolder;
-		this.liveChessClient = lccHolder.getClient();
+		this.lccHelper = lccHelper;
+		this.liveChessClient = lccHelper.getClient();
 	}
 
 	public void runMakeDrawTask() {
-		new LiveMakeDrawTask().executeTask(lccHolder.getCurrentGame());
+		new LiveMakeDrawTask().executeTask(lccHelper.getCurrentGame());
 	}
 
 	private class LiveMakeDrawTask extends AbstractUpdateTask<Game, Game> {
@@ -47,7 +47,7 @@ public class LccGameTaskRunner {
 	}
 
 	public void runMakeResignTask() {
-		new LiveMakeResignTask().executeTask(lccHolder.getCurrentGame());
+		new LiveMakeResignTask().executeTask(lccHelper.getCurrentGame());
 	}
 
 	private class LiveMakeResignTask extends AbstractUpdateTask<Game, Game> {
@@ -63,7 +63,7 @@ public class LccGameTaskRunner {
 	}
 
 	public void runAbortGameTask() {
-		new LiveAbortGameTask().executeTask(lccHolder.getCurrentGame());
+		new LiveAbortGameTask().executeTask(lccHelper.getCurrentGame());
 	}
 
 	private class LiveAbortGameTask extends AbstractUpdateTask<Game, Game> {
@@ -79,7 +79,7 @@ public class LccGameTaskRunner {
 	}
 
 	public void runRejectDrawTask() {
-		new LiveRejectDrawTask().executeTask(lccHolder.getCurrentGame());
+		new LiveRejectDrawTask().executeTask(lccHelper.getCurrentGame());
 	}
 
 	private class LiveRejectDrawTask extends AbstractUpdateTask<Game, Game> {

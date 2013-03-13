@@ -72,7 +72,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		init();
 
-		AppData.setLiveChessMode(this, false);
+//		AppData.setLiveChessMode(this, false); // why is it here?
 
 		ListView listView = (ListView) findViewById(R.id.onlineGamesList);
 		listView.setOnItemClickListener(this);
@@ -120,6 +120,11 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		showActionRefresh = true;
 		showActionNewGame = true;
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
 	}
 
 	@Override

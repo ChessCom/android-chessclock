@@ -8,7 +8,6 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.SendLiveMessageTask;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.model.MessageItem;
 import com.chess.ui.adapters.MessagesAdapter;
@@ -42,8 +41,8 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 
 		showKeyBoard(sendEdt);
 
-		if (getLccHolder() != null) {
-		    getLccHolder().setLccChatMessageListener(this);
+		if (isLCSBound) {
+		    liveService.setLccChatMessageListener(this);
 		    updateList();
 		}
 	}
@@ -52,17 +51,17 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 	protected void onLiveServiceConnected() {
 		super.onLiveServiceConnected();
 
-		messagesAdapter = new MessagesAdapter(ChatLiveActivity.this, getLccHolder().getMessagesList());
+		messagesAdapter = new MessagesAdapter(ChatLiveActivity.this, liveService.getMessagesList());
 		chatListView.setAdapter(messagesAdapter);
 		showActionRefresh = true;
 
 		showKeyBoard(sendEdt);
-		getLccHolder().setLccChatMessageListener(this);
+		liveService.setLccChatMessageListener(this);
 		updateList();
 	}
 
 	private void updateList() {
-		List<MessageItem> chatItems = getLccHolder().getMessagesList();
+		List<MessageItem> chatItems = liveService.getMessagesList();
 		messagesAdapter.setItemsList(chatItems);
 		chatListView.post(new AppUtils.ListSelector((chatItems.size() - 1), chatListView));
 	}
@@ -90,19 +89,20 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.sendBtn) {
+			if (isLCSBound) {
+				// todo: refactor with new LCC
+				if(!liveService.isConnected() || liveService.getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
+					liveService.logout();
+					backToHomeActivity();
+					return;
+				}
 
-			// todo: refactor with new LCC
-			if(!getLccHolder().isConnected() || getLccHolder().getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
-				getLccHolder().logout();
-				backToHomeActivity();
-				return;
+				liveService.sendMessage(getTextFromField(sendEdt),messageUpdateListener );
+
+//			updateList();
+
+				sendEdt.setText(StaticData.SYMBOL_EMPTY);
 			}
-
-			Long gameId = getLccHolder().getCurrentGameId();
-			new SendLiveMessageTask(messageUpdateListener, getTextFromField(sendEdt), getLccHolder()).execute(gameId);
-			updateList();
-
-			sendEdt.setText(StaticData.SYMBOL_EMPTY);
 		}
 	}
 
@@ -114,7 +114,7 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 
 		@Override
 		public void updateData(String returnedObj) {
-			messagesAdapter.setItemsList(getLccHolder().getMessagesList());
+			messagesAdapter.setItemsList(liveService.getMessagesList());
 		}
 	}
 

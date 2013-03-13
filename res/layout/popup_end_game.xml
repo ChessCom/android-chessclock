@@ -78,7 +78,21 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/home"
-			style="@style/Text.Button.Grey"/>
+			style="@style/Text.Button.Grey"
+            />
+
+        <!--Link text-->
+        <com.chess.RoboTextView
+            android:id="@+id/rulesLinkTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:textColorLink="@color/blue"
+            android:text="@string/fair_play_policy_link"
+            android:gravity="center"
+            android:padding="5dip"
+            android:visibility="gone"
+            />
 	</LinearLayout>
 
 </LinearLayout>

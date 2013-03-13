@@ -12,10 +12,10 @@ import java.util.Map;
 public class LccChatListener implements ChatListener {
 
     private static final String TAG = "LCCLOG-CHAT";
-	private final LccHolder lccHolder;
+	private final LccHelper lccHelper;
 
-    public LccChatListener(LccHolder lccHolder) {
-		this.lccHolder = lccHolder;
+    public LccChatListener(LccHelper lccHelper) {
+		this.lccHelper = lccHelper;
 	}
 
 	@Override
@@ -26,19 +26,19 @@ public class LccChatListener implements ChatListener {
 			  str += "\n  " + "Chat: roomId=" + chat.getId() + ", name=\"" + chat.getName() + "\"";
 			  if(chat.getId().equals("R1"))
 			  {
-				lccHolder.setMainChat(chat);
+				lccHelper.setMainChat(chat);
 				str += " - entering...";
 				break;
 			  }
 			}
 			Log.i(str);
-			if(lccHolder.getMainChat() != null)
+			if(lccHelper.getMainChat() != null)
 			{
-			  lccHolder.getClient().enterChat(lccHolder.getMainChat(), this);
+			  lccHelper.getClient().enterChat(lccHelper.getMainChat(), this);
 			}
 			else
 			{
-			  LccHolder.LOG.warn("CHAT LISTENER: There is no R1 chat in the list of the public chats");
+			  LccHelper.LOG.warn("CHAT LISTENER: There is no R1 chat in the list of the public chats");
 			}*/
 	}
 
@@ -46,7 +46,7 @@ public class LccChatListener implements ChatListener {
 	/*@Override
 	public boolean onSubscribedChatListReceived(Collection<? extends Chat> chats) {
 		String str =
-				"CHAT LISTENER: Previously Subscribed Chat List received: user=" + lccHolder.getUser().getUsername() + ", listSize=" + chats.size();
+				"CHAT LISTENER: Previously Subscribed Chat List received: user=" + lccHelper.getUser().getUsername() + ", listSize=" + chats.size();
 		for (Chat chat : chats) {
 			str += "\n\t" + "Chat: roomId=" + chat.getId() + ",\tname=" + chat.getName();
 		}
@@ -57,17 +57,17 @@ public class LccChatListener implements ChatListener {
 
 	@Override
 	public void onChatOpened(Chat chat) {
-		Log.d(TAG, "CHAT LISTENER: Chat opened: user=" + lccHolder.getUser().getUsername()
+		Log.d(TAG, "CHAT LISTENER: Chat opened: user=" + lccHelper.getUser().getUsername()
 				+ ", roomId=" + chat.getId() + ", name=\"" + chat.getName() + "\"");
-		lccHolder.putGameChat(chat.getGame().getId(), chat);
+		lccHelper.putGameChat(chat.getGame().getId(), chat);
 	}
 
 	@Override
 	public void onChatEntered(Chat chat, ChatMember member) {
 		Log.d(TAG, "CHAT LISTENER: Chat entered: roomId=" + chat.getId() + ", enteredUser=" + member + ", thisUser=" +
-				lccHolder.getUser().getUsername());
+				lccHelper.getUser().getUsername());
 		if (chat.getGame() != null) {
-			lccHolder.putGameChat(chat.getGame().getId(), chat);
+			lccHelper.putGameChat(chat.getGame().getId(), chat);
 		}
 	}
 
@@ -83,7 +83,7 @@ public class LccChatListener implements ChatListener {
 
 	@Override
 	public void onMembersListReceived(Chat chat, Integer membersCount, Collection<ChatMember> members, ChatMember headMember) {
-		String str = "CHAT LISTENER: Chat Member List received: roomId=" + chat.getId() + ", user=" + lccHolder.getUser().getUsername() +
+		String str = "CHAT LISTENER: Chat Member List received: roomId=" + chat.getId() + ", user=" + lccHelper.getUser().getUsername() +
 				", membersCount=" + membersCount;
 		for (ChatMember member : members) {
 			str += "\n\tMember: " + member;
@@ -95,30 +95,30 @@ public class LccChatListener implements ChatListener {
 	@Override
 	public void onMessageReceived(Chat chat, ChatMessage message) {
 		Log.d(TAG, "CHAT LISTENER: Message received: " + message);
-		LinkedHashMap<Long, ChatMessage> receivedMessages = lccHolder.getChatMessages(chat.getId());
+		LinkedHashMap<Long, ChatMessage> receivedMessages = lccHelper.getChatMessages(chat.getId());
 		if (receivedMessages == null) {
 			receivedMessages = new LinkedHashMap<Long, ChatMessage>();
-			lccHolder.getReceivedChats().put(chat, receivedMessages);
+			lccHelper.getReceivedChats().put(chat, receivedMessages);
 		}
 
-		if (lccHolder.isUserBlocked(message.getAuthor().getUsername())) {
+		if (lccHelper.isUserBlocked(message.getAuthor().getUsername())) {
 			Log.d(TAG, "CHAT LISTENER: Message received: blocked user");
 			return;
 		}
 
 		if (chat.isGameRoom() && receivedMessages.put(message.getId(), message) == null) {
 
-			if (lccHolder.getLccChatMessageListener() == null) {
-				Log.d(TAG, "CHAT exception check lccHolder.getLccChatMessageListener()");
+			if (lccHelper.getLccChatMessageListener() == null) {
+				Log.d(TAG, "CHAT exception check lccHelper.getLccChatMessageListener()");
 			}
 
-            lccHolder.getLccChatMessageListener().onMessageReceived();
+            lccHelper.getLccChatMessageListener().onMessageReceived();
 		}
 	}
 
 	@Override
 	public void onMessageHistoryReceived(Chat chat, Collection<ChatMessage> messages) {
-		String str = "CHAT LISTENER: Chat Message History received: roomId=" + chat.getId() + ", user=" + lccHolder.getUser().getUsername() +
+		String str = "CHAT LISTENER: Chat Message History received: roomId=" + chat.getId() + ", user=" + lccHelper.getUser().getUsername() +
 				", messagesCount=" + messages.size();
 		for (ChatMessage message : messages) {
 			str += "\n\t" + "Message: " + DateTimeUtils.fromDateTime(message.getDateTime()) + ",\tauthor=" +
@@ -132,7 +132,7 @@ public class LccChatListener implements ChatListener {
 	public void onMessageRemoved(Chat chat, User by, Long messageId) {
 		Log.d(TAG, "CHAT LISTENER: Message removed: chat=" + chat + ", by=" + by.getUsername() + ", messageId=" + messageId);
 
-		LinkedHashMap<Long, ChatMessage> receivedMessages = lccHolder.getChatMessages(chat.getId());
+		LinkedHashMap<Long, ChatMessage> receivedMessages = lccHelper.getChatMessages(chat.getId());
 		if (receivedMessages != null && receivedMessages.size() != 0) {
 			receivedMessages.remove(messageId);
 		}

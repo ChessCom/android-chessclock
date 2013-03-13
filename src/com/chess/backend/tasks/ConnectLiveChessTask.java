@@ -7,7 +7,7 @@ import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.LccHelper;
 import com.chess.live.client.ClientFeature;
 import com.chess.live.client.LiveChessClient;
 import com.chess.live.client.LiveChessClientException;
@@ -51,16 +51,17 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 	private boolean forceReenterCred;
 
-	private LccHolder lccHolder;
+	private LccHelper lccHelper;
 
-	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, boolean forceReenterCred, LccHolder lccHolder) {
-		this(taskFace, lccHolder);
+	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, boolean forceReenterCred, LccHelper lccHelper) {
+		this(taskFace, lccHelper);
 		this.forceReenterCred = forceReenterCred;
 	}
 
-	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, LccHolder lccHolder) {
+	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, LccHelper lccHelper) {
 		super(taskFace);
-		this.lccHolder = lccHolder;
+		this.lccHelper = lccHelper;
+
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 		try {
 			String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
 
-//			InputStream keyStoreInputStream = context.getAssets().open(LccHolder.KEY_FILE_NAME);
+//			InputStream keyStoreInputStream = context.getAssets().open(LccHelper.KEY_FILE_NAME);
 			Log.d(TAG, "Start Chess.Com LCC ");
 			Log.d(TAG, "Connecting to: " + CONFIG_BAYEUX_HOST + ":" + CONFIG_PORT);
 
@@ -131,8 +132,8 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			throw new LiveChessClientException("Unable to initialize HttpClient", e);
 		}
 
-		lccHolder.setLiveChessClient(item);
-		lccHolder.performConnect(forceReenterCred);
+		lccHelper.setLiveChessClient(item);
+		lccHelper.performConnect(forceReenterCred);
 		return StaticData.RESULT_OK;
 	}
 }
