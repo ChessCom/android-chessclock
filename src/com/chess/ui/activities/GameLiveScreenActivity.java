@@ -3,6 +3,7 @@ package com.chess.ui.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -11,7 +12,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -70,25 +70,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		setContentView(R.layout.boardview_live);
 
 		widgetsInit();
-		/*lccInitiated = init();
-
-		if(!lccInitiated){
-			return;
-		}
-
-		if (!isUserColorWhite()) {
-			getBoardFace().setReside(true);
-		}
-
-		Log.d("Live Game", "GameLiveScreenActivity started ");
-		if (liveService.getPendingWarnings().size() > 0) {
-			// get last warning
-			warningMessage = liveService.getLastWarningMessage();
-
-			Log.d("LCCLOG-WARNING", warningMessage);
-
-			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG); // todo: check
-		}*/
 	}
 
 	private void init() {
@@ -129,14 +110,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		fadeLay = findViewById(R.id.fadeLay);
 		gameBoardView = findViewById(R.id.baseView);
 
-//		boardView = (ChessBoardLiveView) findViewById(R.id.boardview);
-//		boardView.setFocusable(true);
-//		boardView.setGamePanelView(gamePanelView);
-//		setBoardView(boardView);
-//
-////		boardView.setBoardFace(ChessBoardLive.getInstance(this));
-//		boardView.setGameActivityFace(this);
-
 		submitButtonsLay = findViewById(R.id.submitButtonsLay);
 		submitBtn = (Button) findViewById(R.id.submitBtn);
 		submitBtn.setOnClickListener(this);
@@ -155,29 +128,22 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 
-			ChessBoardLive.resetInstance();
+		Log.d("live", "new intent");
+		ChessBoardLive.resetInstance();
 
-			showSubmitButtonsLay(false);
-			boardView.setBoardFace(ChessBoardOnline.getInstance(this));
-			getBoardFace().setAnalysis(false);
+		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
+		getBoardFace().setAnalysis(false);
+		switch2Analysis(false);
 
-			updateGameState();
+		updateGameState();
 
-			if (!isUserColorWhite()) {
-				getBoardFace().setReside(true);
-			}
+		if (!isUserColorWhite()) {
+			getBoardFace().setReside(true);
+		}
 
-			invalidateGameScreen(); //
+		invalidateGameScreen();
 
-			Log.d("Live Game", "GameLiveScreenActivity started ");
-			if (liveService.getPendingWarnings().size() > 0) {
-				// get last warning
-				warningMessage = liveService.getLastWarningMessage();
-
-				Log.d("LCCLOG-WARNING", warningMessage);
-
-				showPopupDialog(R.string.warning, warningMessage, WARNING_TAG); // todo: check
-			}
+		checkPendingWarnings();
 	}
 
 	@Override
@@ -200,16 +166,16 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			getBoardFace().setReside(true);
 		}
 
-		invalidateGameScreen(); //
+		invalidateGameScreen();
 
-		Log.d("Live Game", "GameLiveScreenActivity started ");
-		if (liveService.getPendingWarnings().size() > 0) {
-			// get last warning
-			warningMessage = liveService.getLastWarningMessage();
+		checkPendingWarnings();
+	}
 
-			Log.d("LCCLOG-WARNING", warningMessage);
-
-			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG); // todo: check
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (isLCSBound) {  // check if this is correct? When Fair Policy popup appears it returns game to the analysis mode
+			updateGameState();
 		}
 	}
 
@@ -503,6 +469,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {
 		super.switch2Analysis(isAnalysis);
+		Log.d("live", "switch2Analysis analysis = " + isAnalysis);
 		if (isAnalysis) {
 			liveService.setLatestMoveNumber(0);
 			ChessBoardLive.resetInstance();
@@ -626,6 +593,17 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			if (isLCSBound) {
 				liveService.getPendingWarnings().remove(warningMessage);
 			}
+			Log.d("live", "positive clicked");
+			// TODO find a real cause of analysis block
+			// restore game to normal state
+			switch2Analysis(false);
+			getBoardFace().setAnalysis(false);
+
+			updateGameState();
+
+			if (!isUserColorWhite()) {
+				getBoardFace().setReside(true);
+			}
 		} else if (tag.equals(ABORT_GAME_TAG)) {
 			if (isLCSBound) {
 
@@ -662,6 +640,11 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 				Log.i(TAG, "Decline draw: " + liveService.getCurrentGame());
 				liveService.runRejectDrawTask();
 			}
+		} else if (tag.equals(WARNING_TAG)) {
+			if (isLCSBound) {
+				liveService.getPendingWarnings().remove(warningMessage);
+			}
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.fair_play_policy_url))));
 		}
 		super.onNegativeBtnClick(fragment);
 	}
@@ -796,11 +779,16 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 			if (message.contains(getString(R.string.won_game_abandoned))) {
 				layout.findViewById(R.id.upgradeBtn).setVisibility(View.GONE);
-				rulesLinkTxt.setVisibility(View.VISIBLE);
+				showFairPolicyLink(rulesLinkTxt);
 			}
 		} else if (message.contains(getString(R.string.won_game_abandoned))) {
-			rulesLinkTxt.setVisibility(View.VISIBLE);
+			showFairPolicyLink(rulesLinkTxt);
 		}
+	}
+
+	private void showFairPolicyLink(TextView rulesLinkTxt) {
+		rulesLinkTxt.setVisibility(View.VISIBLE);
+		rulesLinkTxt.setOnClickListener(this);
 	}
 
 	@Override
@@ -829,6 +817,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			Intent intent = new Intent(this, LiveNewGameActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
+		} else if (view.getId() == R.id.rulesLinkTxt) {
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.fair_play_policy_url))));
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			liveService.rematch();
 			dismissDialogs();
@@ -865,9 +855,16 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}
 	}
 
-	private class GameTaskListener extends ActionBarUpdateListener<Game> {
-		public GameTaskListener() {
-			super(getInstance());
+	private void checkPendingWarnings() {
+		Log.d("live", "checkPendingWarnings");
+		Log.d("Live Game", "GameLiveScreenActivity started ");
+		if (liveService.getPendingWarnings().size() > 0) {
+			// get last warning
+			warningMessage = liveService.getLastWarningMessage();
+
+			Log.d("LCCLOG-WARNING", warningMessage);
+			popupItem.setNegativeBtnId(R.string.fair_play_policy);
+			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG); // it works!
 		}
 	}
 

@@ -80,6 +80,7 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 		showActionSettings = true;
 	}
 
+	@Override
 	protected void onLiveServiceConnected() {
 		checkIfLiveUserAlive();
 	}
@@ -131,18 +132,18 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 			preferencesEditor.commit();
 
 			createChallengeBtn.setEnabled(false);
-//			new Handler().postDelayed(new Runnable() {
-//				public void run() {
-//
-//				}
-//			}, AppConstants.CHALLENGE_ISSUE_DELAY);
+			handler.postDelayed(new Runnable() { // used to prevent overflow by user
+				@Override
+				public void run() {
+					createChallengeBtn.setEnabled(true);
+				}
+			}, AppConstants.CHALLENGE_ISSUE_DELAY);
 		}
 	}
 
 	@Override
 	protected void challengeTaskUpdated(Challenge challenge){
 		showSinglePopupDialog(R.string.congratulations, R.string.challengeSent);
-		createChallengeBtn.setEnabled(true);
 	}
 
 	@Override

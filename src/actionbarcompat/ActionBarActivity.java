@@ -70,8 +70,9 @@ public abstract class ActionBarActivity extends CommonLogicActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			invalidateOptionsMenu();
+		}
 	}
 
 	/**

@@ -14,7 +14,9 @@
     <string name="gcm_not_registered">GCM not registered</string>
     <string name="timer_">Timer: %s</string>
 
-    <string name="fair_play_policy_link">"<a href="http://support.chess.com/Knowledgebase/Article/View/171/6/fair-play-policy">Fair play policy</a>"</string>
+    <string name="fair_play_policy_link"><a href="http://support.chess.com/Knowledgebase/Article/View/171/6/fair-play-policy">Fair play policy</a></string>
+    <string name="fair_play_policy_url">"http://support.chess.com/Knowledgebase/Article/View/171/6/fair-play-policy"</string>
+    <string name="fair_play_policy">Fair Policy</string>
 
 
 </resources>

@@ -178,6 +178,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	@Override
 	protected void afterLogin() {
-//		restartActivity();
+
 	}
 }
