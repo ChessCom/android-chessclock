@@ -199,7 +199,7 @@ public class LiveChessService extends Service {
 					Log.d(TAG,  "NetworkChangeReceiver isConnected " + networkInfo[i].getTypeName());
 					if (lccHelper.getNetworkTypeName() != null && !networkInfo[i].getTypeName().equals(lccHelper.getNetworkTypeName())) {
 						//lccHelper.resetClient();
-						lccHelper.runConnectTask();
+						//lccHelper.runConnectTask();
 						//setNetworkChangedNotification(true);
 						lccHelper.getContext().sendBroadcast(new Intent("com.chess.lcc.android-network-change"));
 					} else {

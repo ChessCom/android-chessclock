@@ -103,10 +103,15 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 				httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
 			}
 
+			/*Log.d(TAG, "INITIAL httpClient.getTimeout() = " + httpClient.getTimeout());
+			Log.d(TAG, "INITIAL httpClient.getSoTimeout() = " + httpClient.getSoTimeout());
+			Log.d(TAG, "INITIAL getIdleTimeout = " + httpClient.getIdleTimeout());
+			Log.d(TAG, "INITIAL httpClient.getConnectTimeout() = " + httpClient.getConnectTimeout());*/
+
 			httpClient.setMaxConnectionsPerAddress(4);
-			httpClient.setSoTimeout(11000);
-			httpClient.setConnectTimeout(11000);
-			httpClient.setTimeout(11000);
+			//httpClient.setSoTimeout(11000);
+			httpClient.setConnectTimeout(11000); // 75000 is default
+			httpClient.setTimeout(11000); // 320000 is default
 
 			/*httpClient.setKeyStoreType(PKCS_12);
 			httpClient.setTrustStoreType(PKCS_12);
