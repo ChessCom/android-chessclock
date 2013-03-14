@@ -3,8 +3,12 @@ package com.chess.backend;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
@@ -52,6 +56,11 @@ public class LiveChessService extends Service {
 		}
 	}
 
+	public void onCreate() {
+		super.onCreate();
+		registerReceiver(networkChangeReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+	}
+
 	public IBinder onBind(Intent intent) {
 		Log.d(TAG, "SERVICE: onBind");
 		Log.d("lccHelper", "lccHelper instance before check = " + lccHelper);
@@ -87,6 +96,7 @@ public class LiveChessService extends Service {
 			lccHelper = null;
 		}
 		stopForeground(true);
+		unregisterReceiver(networkChangeReceiver);
 	}
 
 	public void checkAndConnect(LccConnectionUpdateFace connectionUpdateFace) {
@@ -106,7 +116,10 @@ public class LiveChessService extends Service {
 			onLiveConnected();
 		} else {
 			// we get here when network connection changes and we get different ip address
-			lccHelper.performConnect(true);  // probably need to be changed to create new instance of live client and perform connect
+			//lccHelper.performConnect(true);  // probably need to be changed to create new instance of live client and perform connect
+
+			// vm: lets avoid any manual connects here, LCC is in charge on that.
+
 			Log.d("lccClient", "else case");
 		}
 	}
@@ -150,8 +163,54 @@ public class LiveChessService extends Service {
 		return this;
 	}
 
-	// ------------------- Task runners wrapping ------------------------
+	private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
 
+		@Override
+		public void onReceive(final Context context, final Intent intent) {
+
+			// todo: improve and refactor, just used old code.
+			// OtherClientEntered problem is here
+
+			if (!AppData.isLiveChess(context)) {
+				return;
+			}
+
+			//LccHelper lccHolder = LccHelper.getInstance(context);
+
+			boolean failover = intent.getBooleanExtra("FAILOVER_CONNECTION", false);
+			Log.d(TAG, "NetworkChangeReceiver failover=" + failover);
+
+			final ConnectivityManager connectivityManager = (ConnectivityManager)
+					context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+			final android.net.NetworkInfo wifi =
+					connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+			final android.net.NetworkInfo mobile =
+					connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+			Log.d(TAG, "NetworkChangeReceiver failover wifi=" + wifi.isFailover() + ", mobile=" + mobile.isFailover());
+
+			NetworkInfo[] networkInfo
+					= connectivityManager.getAllNetworkInfo();
+
+			for (int i = 0; i < networkInfo.length; i++) {
+				if (networkInfo[i].isConnected()) {
+					Log.d(TAG,  "NetworkChangeReceiver isConnected " + networkInfo[i].getTypeName());
+					if (lccHelper.getNetworkTypeName() != null && !networkInfo[i].getTypeName().equals(lccHelper.getNetworkTypeName())) {
+						//lccHelper.resetClient();
+						lccHelper.runConnectTask();
+						//setNetworkChangedNotification(true);
+						lccHelper.getContext().sendBroadcast(new Intent("com.chess.lcc.android-network-change"));
+					} else {
+						lccHelper.setNetworkTypeName(networkInfo[i].getTypeName());
+					}
+				}
+			}
+		}
+	};
+
+	// ------------------- Task runners wrapping ------------------------
 
 	public void setChallengeTaskListener(AbstractUpdateListener<Challenge> challengeTaskListener) {
 		challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener, lccHelper);

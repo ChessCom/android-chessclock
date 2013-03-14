@@ -2,6 +2,8 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.chess.R;
@@ -80,6 +82,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	boolean liveConnected; // it is better to keep this state inside lccholder/service instead of preferences appdata
 	private LiveChessService.LccConnectUpdateListener lccConnectUpdateListener;
 	private final LiveChessService liveService;
+	private String networkTypeName;
 
 	public LccHelper(Context context, LiveChessService liveService, LiveChessService.LccConnectUpdateListener lccConnectUpdateListener) {
 		this.liveService = liveService;
@@ -224,12 +227,12 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	/**
 	 * Connect live chess client
 	 */
-	 public void performConnect(boolean forceReenterCred) {
+	 public void performConnect(boolean useCurrentCredentials) {
 
 		String userName = AppData.getUserName(context);
 		String pass = AppData.getPassword(context);
 
-		if (!forceReenterCred) {
+		if (!useCurrentCredentials) {
 
 			if (pass.equals(StaticData.SYMBOL_EMPTY) || RestHelper.IS_TEST_SERVER_MODE) {
 				String sessionId = AppData.getUserSessionId(context);
@@ -278,19 +281,24 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 				+ StaticData.SYMBOL_NEW_STR + context.getString(R.string.message_) + message);
 	}
 
-	           public void processConnectionFailure(FailureDetails details) {
+	public void processConnectionFailure(FailureDetails details) {
 
-		// handles one and only one null-case when user tries to connect when device connection is off
-		// todo: handle other null-cases if any
+		if (details == null && !AppUtils.isNetworkAvailable(context)) {
+			// handle null-case when user tries to connect when device connection is off, just ignore
+			Log.d(TAG, "processConnectionFailure: no active connection, wait for LCC reconnect");
+			return;
+		}
+
+		setConnected(false);
+		cancelServiceNotification();
+
 		if (details != null) {
 
-			setConnected(false);
+			Log.d(TAG, "processConnectionFailure: details=" + details);
+
 			resetClient();
-			// todo: probably stop notification
-			// cancelServiceNotification();
 
 			String detailsMessage;
-
 			switch (details) {
 				case USER_KICKED: {
 					detailsMessage = context.getString(R.string.lccFailedUpgrading);
@@ -313,11 +321,16 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 					break;
 			}
 			liveChessClientEventListener.onConnectionFailure(detailsMessage);
-		} /*else {     // TODO handle properly
-			setConnected(false);
+
+		} else {
+			Log.d(TAG, "processConnectionFailure: details=null, recreate client and connect");
+
+			runConnectTask(true); // lets try this way, recreate and connect
+
+			/*setConnected(false);
 			cancelServiceNotification();
-			liveChessClientEventListener.onSessionExpired(context.getString(R.string.login_failed));
-		}*/
+			liveChessClientEventListener.onSessionExpired(context.getString(R.string.login_failed));*/
+		}
 
 	}
 
@@ -401,6 +414,11 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			lccClient.subscribeToFriendStatusEvents(friendStatusListener);
 			lccClient.subscribeToAdminEvents(adminEventListener);
 			lccClient.subscribeToAnnounces(announcementListener);
+
+			ConnectivityManager connectivityManager = (ConnectivityManager)
+					context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+			networkTypeName = activeNetworkInfo.getTypeName();
 		}
 		liveChessClientEventListener.onConnectionBlocked(!connected);
 	}
@@ -934,8 +952,8 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 
-	public void runConnectTask(boolean forceReenterCred) {
-		new ConnectLiveChessTask(lccConnectUpdateListener, forceReenterCred, this).executeTask();
+	public void runConnectTask(boolean useCurrentCredentials) {
+		new ConnectLiveChessTask(lccConnectUpdateListener, useCurrentCredentials, this).executeTask();
 	}
 
 	public void runConnectTask() {
@@ -1016,5 +1034,13 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		notificationManager.cancel(R.id.live_service_notification);*/
 
 		liveService.stopForeground(true); // exit Foreground mode and remove Notification icon
+	}
+
+	public String getNetworkTypeName() {
+		return networkTypeName;
+	}
+
+	public void setNetworkTypeName(String networkTypeName) {
+		this.networkTypeName = networkTypeName;
 	}
 }

@@ -49,13 +49,13 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.user1.authKey"),
 					"FIXED_PHPSESSID_WEBTIDE_903210957432054387723");*/
 
-	private boolean forceReenterCred;
+	private boolean useCurrentCredentials;
 
 	private LccHelper lccHelper;
 
-	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, boolean forceReenterCred, LccHelper lccHelper) {
+	public  ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, boolean useCurrentCredentials, LccHelper lccHelper) {
 		this(taskFace, lccHelper);
-		this.forceReenterCred = forceReenterCred;
+		this.useCurrentCredentials = useCurrentCredentials;
 	}
 
 	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, LccHelper lccHelper) {
@@ -132,8 +132,9 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			throw new LiveChessClientException("Unable to initialize HttpClient", e);
 		}
 
+		lccHelper.setNetworkTypeName(null); // todo: probably reset networkTypeName somewhere else
 		lccHelper.setLiveChessClient(item);
-		lccHelper.performConnect(forceReenterCred);
+		lccHelper.performConnect(useCurrentCredentials);
 		return StaticData.RESULT_OK;
 	}
 }
