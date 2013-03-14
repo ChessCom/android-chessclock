@@ -89,6 +89,9 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
+		/*if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
+		  MopubHelper.createRectangleAd(this);
+		}*/
 		invalidateGameScreen();
 	}
 
@@ -107,6 +110,15 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 			enableScreenLockTimer();
 		}
 	}
+
+/*	  protected void onDestroy() {
+	    // try to destroy ad here as Mopub team suggested
+	    if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
+	      MopubHelper.destroyRectangleAd();
+	    }
+
+	    super.onDestroy();
+	  }*/
 
 	@Override
 	public void turnScreenOff() {

@@ -381,6 +381,9 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
         TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
         endGameReasonTxt.setText(message);
 
+		/*LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+        MopubHelper.showRectangleAd(adViewWrapper, this);*/
+
 		inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
 		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
 
@@ -399,6 +402,8 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
         reviewBtn.setOnClickListener(this);
 
 		if (AppUtils.isNeedToUpgrade(this)) {
+			/*LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+        MopubHelper.showRectangleAd(adViewWrapper, this);*/
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}
 	}

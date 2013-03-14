@@ -17,7 +17,8 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 		setContentView(R.layout.live_new_game);
 
 		initUpgradeAndAdWidgets();
-
+	   /*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+        MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
 		findViewById(R.id.friendchallenge).setOnClickListener(this);
 		findViewById(R.id.challengecreate).setOnClickListener(this);
 
@@ -27,12 +28,16 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 //		AppData.setLiveChessMode(this, true); // should not duplicate logic
 	}
 
+	@Override
 	protected void onLiveServiceConnected() {
 		if (liveService.currentGameExist()) {
 			currentGameBtn.setVisibility(View.VISIBLE);
 		} else {
 			currentGameBtn.setVisibility(View.GONE);
 		}
+
+		/*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+        MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
 	}
 
 	@Override

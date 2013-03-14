@@ -65,11 +65,11 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	@Override
- 	protected void onPostCreate(Bundle savedInstanceState) {
+	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		View mainView = findViewById(R.id.mainView);
 		if (mainView != null) {
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 				mainView.setBackground(backgroundChessDrawable);
 			} else {
 				mainView.setBackgroundDrawable(backgroundChessDrawable);
@@ -90,6 +90,17 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		adjustActionBar();
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+	    /* // try to destroy ad here as MoPub team suggested
+		if (moPubView != null) {
+		moPubView.destroy();
+    	}*/
+		/*preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
+		preferencesEditor.commit();*/
+	}
 
 	@Override
 	protected void onDestroy() {

@@ -851,6 +851,8 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
 
 		if (AppUtils.isNeedToUpgrade(this)) {
+			/*LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+        MopubHelper.showRectangleAd(adViewWrapper, this);*/
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}
 	}

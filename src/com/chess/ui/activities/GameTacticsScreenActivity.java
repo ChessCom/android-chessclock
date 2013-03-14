@@ -336,7 +336,12 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		TacticsDataHolder.getInstance().setTacticLimitReached(limitReached);
 
 		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_solved, null, false);
-
+		/*LinearLayout adViewWrapper = (LinearLayout) customView.findViewById(R.id.adview_wrapper);
+		if (AppUtils.isNeedToUpgrade(this, getLccHolder())) {
+		  MopubHelper.showRectangleAd(adViewWrapper, this);
+		} else {
+		  adViewWrapper.setVisibility(View.GONE);
+		}*/
 		inneractiveRectangleAd = (InneractiveAd) customView.findViewById(R.id.inneractiveRectangleAd);
 		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
 

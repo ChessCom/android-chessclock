@@ -50,6 +50,8 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 		findViewById(R.id.challengecreate).setOnClickListener(this);
 
 		initUpgradeAndAdWidgets();
+		/*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+        MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
 	}
 
 	private void init() {
