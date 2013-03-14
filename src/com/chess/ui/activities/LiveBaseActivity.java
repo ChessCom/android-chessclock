@@ -55,7 +55,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	protected ChallengeTaskListener challengeTaskListener;
 	protected GameTaskListener gameTaskListener;
-	private LiveChessServiceConnectionListener liveChessServiceConnectionListener;
+	private LiveServiceConnectionListener liveServiceConnectionListener;
 	protected boolean isLCSBound;
 	protected LiveChessService liveService;
 
@@ -63,12 +63,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		challengeTaskListener = new ChallengeTaskListener();
 		gameTaskListener = new GameTaskListener();
-
+		challengeTaskListener = new ChallengeTaskListener();
 		outerChallengeListener = new LiveOuterChallengeListener();
-
-		liveChessServiceConnectionListener = new LiveChessServiceConnectionListener();
+		liveServiceConnectionListener = new LiveServiceConnectionListener();
 	}
 
 	@Override
@@ -79,7 +77,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			popupItem.setPositiveBtnId(R.string.wireless_settings);
 			showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 		} else if (AppData.isLiveChess(this)) {// bound only if really need it
-			bindService(new Intent(this, LiveChessService.class), liveChessServiceConnectionListener, BIND_AUTO_CREATE);
+			bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
 		}
 	}
 
@@ -97,7 +95,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected void onDestroy() {
 		super.onDestroy();
 		if (isLCSBound) {
-			unbindService(liveChessServiceConnectionListener);
+			unbindService(liveServiceConnectionListener);
 		}
 	}
 
@@ -227,7 +225,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (resultCode == RESULT_OK && requestCode == NETWORK_REQUEST) {
-			bindService(new Intent(this, LiveChessService.class), liveChessServiceConnectionListener, BIND_AUTO_CREATE);
+			bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
 			//LccHelper.getInstance(this).checkAndConnect();
 //			shouldBeConnectedToLive = true;
 		}
@@ -243,7 +241,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		return super.onOptionsItemSelected(item);
 	}
 
-	private class LiveChessServiceConnectionListener implements ServiceConnection, LccConnectionUpdateFace {
+	private class LiveServiceConnectionListener implements ServiceConnection, LccConnectionUpdateFace {
 
 
 		@Override
@@ -531,8 +529,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		if (isLCSBound) {
 			isConnected = liveService.isConnected();
 		}
-		Log.d("TEST", "LiveBase onCreateOptionsMenu -> isConnected = " + isConnected);
-		Log.d("lcc", "LiveBase onCreateOptionsMenu -> isConnected = " + isConnected);
 		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
 	}
 

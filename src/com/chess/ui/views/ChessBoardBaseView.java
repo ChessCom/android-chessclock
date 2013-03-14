@@ -166,7 +166,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 	}
 
-
 	public BoardFace getBoardFace() {
 		return boardFace;
 	}
@@ -295,8 +294,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected void drawPieces(Canvas canvas) {
 		int i;
 		for (i = 0; i < 64; i++) {
-			if (drag && i == from)
+			if (drag && i == from) {
 				continue;
+			}
 			int color = boardFace.getColor()[i];
 			int piece = boardFace.getPieces()[i];
 			int x = ChessBoard.getColumn(i, boardFace.isReside());

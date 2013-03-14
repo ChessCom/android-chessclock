@@ -297,8 +297,6 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		if (isLCSBound) {
 			isConnected = liveService.isConnected();
 		}
-//		Log.d("TEST", "Home adjustActionBar -> isConnected = " + isConnected);
-//		Log.d("lcc", "Home adjustActionBar -> isConnected = " + isConnected);
 
 		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
 
@@ -316,9 +314,6 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		if (isLCSBound) {
 			isConnected = liveService.isConnected();
 		}
-		Log.d("TEST", "Home onCreateOptionsMenu -> isConnected = " + isConnected);
-		Log.d("lcc", "isLCSBound = " + isLCSBound + " liveService = " + liveService);
-		Log.d("lcc", "Home onCreateOptionsMenu -> isConnected = " + isConnected);
 
 		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
 

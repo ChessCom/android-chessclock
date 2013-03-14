@@ -795,10 +795,6 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void processFullGame(Game game) {
-		if (lccEventListener != null) {
-			lccEventListener.onGameRecreate();
-		}
-
 		latestMoveNumber = 0; // it was null before
 		ChessBoardLive.resetInstance();
 		putGame(game);

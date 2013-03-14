@@ -102,8 +102,10 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 		super.onStart();
 
 		// update boardView if boardId has changed
-		boardView.updateBoardAndPiecesImgs();
-		enableScreenLockTimer();
+		if (boardView != null) {  // for live game we init it later
+			boardView.updateBoardAndPiecesImgs();
+			enableScreenLockTimer();
+		}
 	}
 
 	@Override
