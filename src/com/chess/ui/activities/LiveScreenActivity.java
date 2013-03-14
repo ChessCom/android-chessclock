@@ -74,6 +74,8 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		statsBtn.setOnClickListener(this);
 
 		initUpgradeAndAdWidgets();
+        /*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+        MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
 
 		LinearLayout ratingView = (LinearLayout) findViewById(R.id.ratingLay);
 
@@ -116,6 +118,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		}
 	}
 
+	@Override
 	protected void onLiveServiceConnected() {
 		showLoadingView(!liveService.isConnected());
 

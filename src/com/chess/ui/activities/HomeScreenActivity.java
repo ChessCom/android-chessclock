@@ -58,7 +58,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 	protected static final String LOGOUT_TAG = "logout_tag";
 
 	private InneractiveAd inneractiveFullscreenAd;
-
+	//protected MoPubInterstitial moPubInterstitial;
 	private boolean forceFlag;
 	private LiveOuterChallengeListener outerChallengeListener;
 	protected ChallengeTaskListener challengeTaskListener;
@@ -593,6 +593,12 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 
 			if (InneractiveAdHelper.IS_SHOW_FULLSCREEN_ADS) {
 
+				  /*moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww"); // chess.com
+-        //moPubInterstitial = new MoPubInterstitial(this, "12345"); // test
+-        //moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
+-        moPubInterstitial.setListener(this);
+-        moPubInterstitial.load();*/
+
 				InneractiveAdHelper.InneractiveAdListenerImpl adListener =
 						new InneractiveAdHelper.InneractiveAdListenerImpl(AppConstants.AD_FULLSCREEN, preferencesEditor);
 				String inneractiveAdsAppId = getString(R.string.inneractiveAdsAppId);
@@ -660,5 +666,35 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		}
 	}
 
+	 /*public void OnInterstitialLoaded() {
+    if (moPubInterstitial.isReady()) {
+      Log.d(AdView.MOPUB, "interstitial ad listener: loaded and ready");
+      moPubInterstitial.show();
+
+      preferencesEditor.putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, true);
+      preferencesEditor.commit();
+    }
+    else {
+      Log.d(AdView.MOPUB, "interstitial ad listener: loaded, but not ready");
+    }
+
+    String response = moPubInterstitial.getMoPubInterstitialView().getResponseString();
+    if (response != null && response.contains(AppConstants.MATOMY_AD)) {
+      Map<String, String> params = new HashMap<String, String>();
+      params.put(AppConstants.RESPONSE, response);
+      FlurryAgent.logEvent(FlurryData.MATOMY_AD_FULLSCREEN_LOADED, params);
+    }
+  }
+
+  public void OnInterstitialFailed() {
+    Log.d(AdView.MOPUB, "interstitial ad listener: failed");
+
+    String response = moPubInterstitial.getMoPubInterstitialView().getResponseString();
+    if (response != null && response.contains(AppConstants.MATOMY_AD)) {
+      Map<String, String> params = new HashMap<String, String>();
+      params.put(AppConstants.RESPONSE, response);
+      FlurryAgent.logEvent(FlurryData.MATOMY_AD_FULLSCREEN_FAILED, params);
+    }
+  }*/
 
 }

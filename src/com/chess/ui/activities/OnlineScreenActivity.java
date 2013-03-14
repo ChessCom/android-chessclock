@@ -85,6 +85,8 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		listUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 
 		initUpgradeAndAdWidgets();
+		/*moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
+        MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
 	}
 
 	private void init() {
