@@ -105,6 +105,8 @@ public class LiveChessService extends Service {
 			Log.d("lccClient", "connected case");
 			onLiveConnected();
 		} else {
+			// we get here when network connection changes and we get different ip address
+			lccHelper.performConnect(true);  // probably need to be changed to create new instance of live client and perform connect
 			Log.d("lccClient", "else case");
 		}
 	}

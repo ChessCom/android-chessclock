@@ -6,6 +6,7 @@ import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -167,7 +168,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				@Override
 				public void run() {
 					AppData.setLiveChessMode(getContext(), false);
-//					DataHolder.getInstance().setLiveChess(false);
 					liveService.setConnected(false);
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.PLAY_ANDROID_HTML)));
 				}
@@ -187,9 +187,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 
 			popupManager.remove(fragment);
-		} /*else if (tag.equals(NETWORK_CHECK_TAG)) {
+		} else if (tag.equals(NETWORK_CHECK_TAG)) {
 			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
-		}*/
+		}
 		super.onPositiveBtnClick(fragment);
 	}
 
@@ -226,8 +226,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		if (resultCode == RESULT_OK && requestCode == NETWORK_REQUEST) {
 			bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
-			//LccHelper.getInstance(this).checkAndConnect();
-//			shouldBeConnectedToLive = true;
 		}
 	}
 
@@ -300,6 +298,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		@Override
 		public void showDialog(Challenge challenge) {
+			Log.d("LCCLOG_CHALLENGE", "CHALLENGE LISTENER. showDialog");
+
+			Log.d("LCCLOG_CHALLENGE", "CHALLENGE LISTENER. showDialog -> isPaused = " + isPaused);
 			if (isPaused) {
 				LiveEvent liveEvent = new LiveEvent();
 				liveEvent.setEvent(LiveEvent.Event.CHALLENGE);
@@ -308,6 +309,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				liveService.getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
 			} else {
 				if (popupManager.size() > 0) {
+					Log.d("LCCLOG_CHALLENGE", "CHALLENGE LISTENER. showDialog -> popupManager.size() > 0 , return" );
 					return;
 				}
 
@@ -321,7 +323,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 				PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
 				popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
-
+				Log.d("LCCLOG_CHALLENGE", "CHALLENGE LISTENER. showDialog -> popupDialogFragment.show ");
 				popupManager.add(popupDialogFragment);
 			}
 		}
@@ -401,10 +403,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		}
 	}
 
-//	protected LccHelper getLccHolder() { // todo: check null
-//		return liveService == null ? null : liveService.getLccHolder();
-//	}
-
 	// ---------- LiveChessClientEventListener ----------------
 	@Override
 	public void onConnecting() {
@@ -419,13 +417,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public void onConnectionEstablished() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-//				getActionBarHelper().setRefreshActionItemState(false);
-//				getActionBarHelper().showMenuItemById(R.id.menu_signOut, true);
-			}
-		});
 	}
 
 	@Override
