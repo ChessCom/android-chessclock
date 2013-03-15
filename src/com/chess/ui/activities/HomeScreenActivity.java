@@ -62,7 +62,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 	private boolean forceFlag;
 	private LiveOuterChallengeListener outerChallengeListener;
 	protected ChallengeTaskListener challengeTaskListener;
-	private LiveChessServiceConnectionListener liveChessServiceConnectionListener;
+	private LiveServiceConnectionListener liveServiceConnectionListener;
 	private boolean isLCSBound;
 
 	protected Challenge currentChallenge;
@@ -84,7 +84,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 
 		outerChallengeListener = new LiveOuterChallengeListener();
 		challengeTaskListener = new ChallengeTaskListener();
-		liveChessServiceConnectionListener = new LiveChessServiceConnectionListener();
+		liveServiceConnectionListener = new LiveServiceConnectionListener();
 
 		registerGcmService();
 	}
@@ -94,7 +94,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		super.onStart();
 
 		if (AppData.isLiveChess(this)/*!isLCSBound*/) { // bound only if we really need it
-			bindService(new Intent(this, LiveChessService.class), liveChessServiceConnectionListener, BIND_AUTO_CREATE);
+			bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
 		}
 	}
 
@@ -171,7 +171,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		//mainApp.setForceBannerAdOnFailedLoad(false);
 	}*/
 
-	private class LiveChessServiceConnectionListener implements ServiceConnection, LccConnectionUpdateFace {
+	private class LiveServiceConnectionListener implements ServiceConnection, LccConnectionUpdateFace {
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
 
@@ -217,7 +217,6 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		}
 
 		if (tag.equals(CONNECT_FAILED_TAG)) {
-//			if (DataHolder.getInstance().isLiveChess()) {
 			if (AppData.isLiveChess(this)) {
 				liveService.logout();
 			}
@@ -228,7 +227,6 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 				@Override
 				public void run() {
 					AppData.setLiveChessMode(getContext(), false);
-//					DataHolder.getInstance().setLiveChess(false);
 					liveService.setConnected(false);
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
 							.parse(RestHelper.PLAY_ANDROID_HTML)));
@@ -283,7 +281,6 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 
 				// todo: check decline challenge
 				Log.i(TAG, "Decline challenge: " + currentChallenge);
-				//fragment.dismiss();
 				popupManager.remove(fragment);
 				liveService.declineCurrentChallenge(currentChallenge);
 			}
@@ -347,8 +344,8 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-//				getActionBarHelper().setRefreshActionItemState(false);    // TODO check
-//				getActionBarHelper().showMenuItemById(R.id.menu_signOut, true);
+				getActionBarHelper().setRefreshActionItemState(false);
+				getActionBarHelper().showMenuItemById(R.id.menu_signOut, true);
 			}
 		});
 	}
@@ -403,8 +400,8 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-//				getActionBarHelper().setRefreshActionItemState(false);            // TODO check
-//				getActionBarHelper().showMenuItemById(R.id.menu_signOut, false);
+				getActionBarHelper().setRefreshActionItemState(false);
+				getActionBarHelper().showMenuItemById(R.id.menu_signOut, false);
 			}
 		});
 
@@ -459,6 +456,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		}
 	}
 
+	@Override
 	protected void backToLoginActivity() {
 		Intent intent = new Intent(this, LoginScreenActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -594,10 +592,10 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			if (InneractiveAdHelper.IS_SHOW_FULLSCREEN_ADS) {
 
 				  /*moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww"); // chess.com
--        //moPubInterstitial = new MoPubInterstitial(this, "12345"); // test
--        //moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
--        moPubInterstitial.setListener(this);
--        moPubInterstitial.load();*/
+				//moPubInterstitial = new MoPubInterstitial(this, "12345"); // test
+				//moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
+				moPubInterstitial.setListener(this);
+				moPubInterstitial.load();*/
 
 				InneractiveAdHelper.InneractiveAdListenerImpl adListener =
 						new InneractiveAdHelper.InneractiveAdListenerImpl(AppConstants.AD_FULLSCREEN, preferencesEditor);
@@ -609,13 +607,14 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		}
 	}
 
+	@Override
 	protected void onDestroy() {
 		if (inneractiveFullscreenAd != null) {
 			inneractiveFullscreenAd.cleanUp();
 		}
 		super.onDestroy();
 		if (isLCSBound) {
-			unbindService(liveChessServiceConnectionListener);
+			unbindService(liveServiceConnectionListener);
 		}
 	}
 

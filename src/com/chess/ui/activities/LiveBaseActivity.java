@@ -417,6 +417,13 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public void onConnectionEstablished() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				getActionBarHelper().setRefreshActionItemState(false);
+				getActionBarHelper().showMenuItemById(R.id.menu_signOut, true);
+			}
+		});
 	}
 
 	@Override
