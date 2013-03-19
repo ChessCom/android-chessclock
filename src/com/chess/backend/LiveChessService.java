@@ -6,7 +6,6 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Binder;
@@ -58,7 +57,7 @@ public class LiveChessService extends Service {
 
 	public void onCreate() {
 		super.onCreate();
-		registerReceiver(networkChangeReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+		//registerReceiver(networkChangeReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
 	}
 
 	public IBinder onBind(Intent intent) {
@@ -96,7 +95,7 @@ public class LiveChessService extends Service {
 			lccHelper = null;
 		}
 		stopForeground(true);
-		unregisterReceiver(networkChangeReceiver);
+		//unregisterReceiver(networkChangeReceiver);
 	}
 
 	public void checkAndConnect(LccConnectionUpdateFace connectionUpdateFace) {
@@ -197,9 +196,13 @@ public class LiveChessService extends Service {
 			for (int i = 0; i < networkInfo.length; i++) {
 				if (networkInfo[i].isConnected()) {
 					Log.d(TAG,  "NetworkChangeReceiver isConnected " + networkInfo[i].getTypeName());
+
+					// todo: check NPE
 					if (lccHelper.getNetworkTypeName() != null && !networkInfo[i].getTypeName().equals(lccHelper.getNetworkTypeName())) {
-						//lccHelper.resetClient();
-						//lccHelper.runConnectTask();
+
+						/*((LiveChessClientImpl) lccHelper.getClient()).leave();
+						lccHelper.runConnectTask();*/
+
 						//setNetworkChangedNotification(true);
 						lccHelper.getContext().sendBroadcast(new Intent("com.chess.lcc.android-network-change"));
 					} else {
