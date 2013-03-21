@@ -311,7 +311,7 @@
 
 	<string name="black_wins">שחור מנצח (0–1)</string>
 	<string name="white_wins">לבן מנצח (1–0)</string>
-	<string name="draw_by_stalemate">ציור של קיפאון (0–0)</string>
+	<string name="draw_by_stalemate">ציור של קיפאון (0.5–0.5)</string>
 	<string name="draw_by_3fold_repetition">ציור על ידי חזרה משולשת (0.5–0.5)</string>
 	<string name="rematch">משחק גומלין</string>
 	<string name="review">בדוק</string>
@@ -321,7 +321,7 @@
 	<string name="has_declined_draw">ירד תיקו</string>
 
 	<string name="menu_search">חיפוש</string>
-	<string name="restoring_conntection_to_live">מתחבר מחדש …</string>
+	<string name="restoring_connection_to_live">מתחבר מחדש …</string>
 	<string name="application_was_killed">יישום נהרג, שיקום …</string>
 	<string name="no_network">לא ברשת</string>
 	<string name="wireless_settings">הגדרות אלחוטיות</string>

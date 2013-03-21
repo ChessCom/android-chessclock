@@ -312,7 +312,7 @@
 
 	<string name="black_wins">أسود يفوز (0–1)</string>
 	<string name="white_wins">الأبيض يفوز (1–0)</string>
-	<string name="draw_by_stalemate">رسم من الجمود (0–0)</string>
+	<string name="draw_by_stalemate">رسم من الجمود (0.5–0.5)</string>
 	<string name="draw_by_3fold_repetition">رسم عن طريق التكرار ثلاثة أضعاف (0.5–0.5)</string>
 	<string name="rematch">مباراة العودة</string>
 	<string name="review">استعراض</string>
@@ -321,7 +321,7 @@
 	<string name="draw_declined">يسحب تراجع</string>
 	<string name="has_declined_draw">وقد انخفض بالتعادل</string>
 	<string name="menu_search">البحث</string>
-	<string name="restoring_conntection_to_live">إعادة الاتصال …</string>
+	<string name="restoring_connection_to_live">إعادة الاتصال …</string>
 	<string name="application_was_killed">قتل تطبيق، واستعادة …</string>
 	<string name="no_network">لا شبكة</string>
 	<string name="wireless_settings">الإعدادات اللاسلكية</string>

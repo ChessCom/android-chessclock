@@ -24,14 +24,15 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 
 	protected abstract boolean need2ShowSubmitButtons();
 
+	@Override
 	public void setGameActivityFace(GameActivityFace gameActivityFace) {
 		super.setGameActivityFace(gameActivityFace);
 
 		whiteUserName = gameActivityFace.getWhitePlayerName();
 		blackUserName = gameActivityFace.getBlackPlayerName();
-
 	}
 
+	@Override
 	public void afterMove() {
 		boardFace.setMovesCount(boardFace.getHply());
 		gameActivityFace.invalidateGameScreen();

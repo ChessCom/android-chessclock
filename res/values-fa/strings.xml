@@ -309,7 +309,7 @@
 
 	<string name="black_wins">سیاه و سفید برنده (0–1)</string>
 	<string name="white_wins">سفید برنده (1–0)</string>
-	<string name="draw_by_stalemate">رسم شده توسط بن بست (0–0)</string>
+	<string name="draw_by_stalemate">رسم شده توسط بن بست (0.5–0.5)</string>
 	<string name="draw_by_3fold_repetition">رسم شده توسط سه برابر تکرار (0.5–0.5)</string>
 	<string name="rematch">مسابقه برگشت</string>
 	<string name="review">بازنگری</string>
@@ -319,7 +319,7 @@
 	<string name="has_declined_draw">قرعه کشی را رد کرده است</string>
 
 	<string name="menu_search">جستجو</string>
-	<string name="restoring_conntection_to_live">اتصال مجدد …</string>
+	<string name="restoring_connection_to_live">اتصال مجدد …</string>
 	<string name="application_was_killed">برنامه، کشته شد، بازگرداندن …</string>
 	<string name="no_network">هیچ شبکه</string>
 	<string name="wireless_settings">تنظیمات بی سیم</string>

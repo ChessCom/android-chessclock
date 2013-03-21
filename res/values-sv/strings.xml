@@ -309,7 +309,7 @@
 
 	<string name="black_wins">Svart vinner (0–1)</string>
 	<string name="white_wins">Vit vinner (1–0)</string>
-	<string name="draw_by_stalemate">Rita dödläge (0–0)</string>
+	<string name="draw_by_stalemate">Rita dödläge (0.5–0.5)</string>
 	<string name="draw_by_3fold_repetition">Rita tre upprepning (0.5–0.5)</string>
 	<string name="rematch">Rematch</string>
 	<string name="review">Granskning</string>
@@ -319,7 +319,7 @@
 	<string name="has_declined_draw">har minskat oavgjort</string>
 
 	<string name="menu_search">Sök</string>
-	<string name="restoring_conntection_to_live">Återansluter …</string>
+	<string name="restoring_connection_to_live">Återansluter …</string>
 	<string name="application_was_killed">Ansökan dödades, återställa …</string>
 	<string name="no_network">Ingen Nätverket</string>
 	<string name="wireless_settings">Trådlösa Inställningar</string>

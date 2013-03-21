@@ -310,7 +310,7 @@
 
 	<string name="black_wins">Черные выиграли (0–1)</string>
 	<string name="white_wins">Белые выиграли (1–0)</string>
-	<string name="draw_by_stalemate">Ничья по тупику (0–0)</string>
+	<string name="draw_by_stalemate">Ничья по тупику (0.5–0.5)</string>
 	<string name="draw_by_3fold_repetition">Ничья по тройному повторению (0.5–0.5)</string>
 	<string name="rematch">Реванш</string>
 	<string name="review">Обзор</string>
@@ -320,7 +320,7 @@
 	<string name="has_declined_draw">отказал в ничье</string>
 
 	<string name="menu_search">Поиск</string>
-	<string name="restoring_conntection_to_live">Реконнектим…</string>
+	<string name="restoring_connection_to_live">Реконнектим…</string>
 	<string name="application_was_killed">Приложение было убито, восстанавливаем…</string>
 	<string name="no_network">Нет Сети</string>
 	<string name="wireless_settings">Настройки Сети</string>

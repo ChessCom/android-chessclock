@@ -311,7 +311,7 @@
 
 	<string name="black_wins">Noir gagne (0–1)</string>
 	<string name="white_wins">Blanc gagne (1–0)</string>
-	<string name="draw_by_stalemate">Dessiner par l\'impasse (0–0)</string>
+	<string name="draw_by_stalemate">Dessiner par l\'impasse (0.5–0.5)</string>
 	<string name="draw_by_3fold_repetition">Dessiner par triple répétition (0.5–0.5)</string>
 	<string name="rematch">Rematch</string>
 	<string name="review">Votre avis</string>
@@ -321,7 +321,7 @@
 	<string name="has_declined_draw">a diminué un tirage au sort</string>
 
 	<string name="menu_search">Rechercher</string>
-	<string name="restoring_conntection_to_live">Reconnexion …</string>
+	<string name="restoring_connection_to_live">Reconnexion …</string>
 	<string name="application_was_killed">La demande a été tué, la restauration …</string>
 	<string name="no_network">Pas de réseau</string>
 	<string name="wireless_settings">Paramètres sans fil</string>

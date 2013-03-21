@@ -309,7 +309,7 @@
 
 	<string name="black_wins">Siyah galibiyet (0–1)</string>
 	<string name="white_wins">Beyaz kazanır (1–0)</string>
-	<string name="draw_by_stalemate">Çıkmazı (0–0) tarafından çizin</string>
+	<string name="draw_by_stalemate">Çıkmazı (0.5–0.5) tarafından çizin</string>
 	<string name="draw_by_3fold_repetition">Üçlü tekrarı (0.5–0.5) tarafından çizin</string>
 	<string name="rematch">Rövanş</string>
 	<string name="review">Gözden geçirin</string>
@@ -319,7 +319,7 @@
 	<string name="has_declined_draw">berabere düşmüştür</string>
 
 	<string name="menu_search">Ara</string>
-	<string name="restoring_conntection_to_live">Yeniden bağlanıyor …</string>
+	<string name="restoring_connection_to_live">Yeniden bağlanıyor …</string>
 	<string name="application_was_killed">Uygulama geri, öldürüldü …</string>
 	<string name="no_network">Şebeke Yok</string>
 	<string name="wireless_settings">Kablosuz Ayarları</string>

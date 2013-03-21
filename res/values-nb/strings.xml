@@ -308,7 +308,7 @@
 
 	<string name="black_wins">Svart vinner (0–1)</string>
 	<string name="white_wins">Hvit vinner (1–0)</string>
-	<string name="draw_by_stalemate">Tegner ved patt (0–0)</string>
+	<string name="draw_by_stalemate">Tegner ved patt (0.5–0.5)</string>
 	<string name="draw_by_3fold_repetition">Tegn av tredelt repetisjon (01.02 til 01.02)</string>
 	<string name="rematch">Omkamp</string>
 	<string name="review">Gjennomgått:</string>
@@ -318,7 +318,7 @@
 	<string name="has_declined_draw">har avtatt en uavgjort</string>
 
 	<string name="menu_search">Søk</string>
-	<string name="restoring_conntection_to_live">Kobler til på nytt…</string>
+	<string name="restoring_connection_to_live">Kobler til på nytt…</string>
 	<string name="application_was_killed">Søknad ble drept, gjenopprette…</string>
 	<string name="no_network">No Network</string>
 	<string name="wireless_settings">Trådløse Innstillinger</string>

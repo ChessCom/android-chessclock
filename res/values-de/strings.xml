@@ -311,7 +311,7 @@
 
 	<string name="black_wins">Schwarz gewinnt (0–1)</string>
 	<string name="white_wins">Weiß gewinnt (1–0)</string>
-	<string name="draw_by_stalemate">Zeichnen Sie durch Patt (0–0)</string>
+	<string name="draw_by_stalemate">Zeichnen Sie durch Patt (0.5–0.5)</string>
 	<string name="draw_by_3fold_repetition">Zeichnen Sie durch dreifache Wiederholung (0.5–0.5)</string>
 	<string name="rematch">Rematch</string>
 	<string name="review">Überprüfen</string>
@@ -321,7 +321,7 @@
 	<string name="has_declined_draw">abgenommen hat ein Unentschieden</string>
 
 	<string name="menu_search">Suche</string>
-	<string name="restoring_conntection_to_live">Verbindung wird wiederhergestellt…</string>
+	<string name="restoring_connection_to_live">Verbindung wird wiederhergestellt…</string>
 	<string name="application_was_killed">Die Applikation wurde getötet, Wiederherstellung…</string>
 	<string name="no_network">Kein Netzwerk</string>
 	<string name="wireless_settings">Wireless-Einstellungen</string>

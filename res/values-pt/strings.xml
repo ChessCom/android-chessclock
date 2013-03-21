@@ -309,7 +309,7 @@
 
 	<string name="black_wins">Preto vence (0–1)</string>
 	<string name="white_wins">Branco vence (1–0)</string>
-	<string name="draw_by_stalemate">Desenhe pelo impasse (0–0)</string>
+	<string name="draw_by_stalemate">Desenhe pelo impasse (0.5–0.5)</string>
 	<string name="draw_by_3fold_repetition">Empate por repetição tripla (0.5–0.5)</string>
 	<string name="rematch">Revanche</string>
 	<string name="review">Resenhar</string>
@@ -319,7 +319,7 @@
 	<string name="has_declined_draw">diminuiu um empate</string>
 
 	<string name="menu_search">Pesquisar</string>
-	<string name="restoring_conntection_to_live">Reconectando …</string>
+	<string name="restoring_connection_to_live">Reconectando …</string>
 	<string name="application_was_killed">A aplicação foi morto, restaurando …</string>
 	<string name="no_network">Sem Rede</string>
 	<string name="wireless_settings">Configurações sem fio</string>

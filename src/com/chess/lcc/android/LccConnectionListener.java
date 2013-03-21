@@ -17,6 +17,7 @@ public class LccConnectionListener implements ConnectionListener {
 		this.lccHelper = lccHelper;
 	}
 
+	@Override
 	public void onOtherClientEntered(User user) {
 		Log.d(CONNECTION, "Another client entered: user=" + user.getUsername());
 		String message = lccHelper.getContext().getString(R.string.account_error)
@@ -26,6 +27,7 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHelper.onOtherClientEntered(message);
 	}
 
+	@Override
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {
         lccHelper.setUser(user);
 		Log.d("lccHelper", "lccHelper instance in onConnectionEstablished = " + lccHelper);
@@ -95,16 +97,19 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHelper.setConnected(true);
 	}
 
+	@Override
 	public void onObsoleteProtocolVersion(User user, String serverProtocolVersion, String clientProtocolVersion) {
 		Log.d(CONNECTION, "Protocol version is obsolete (serverProtocolVersion=" + serverProtocolVersion + ", clientProtocolVersion=" +
 						clientProtocolVersion + StaticData.SYMBOL_RIGHT_PAR);
 		lccHelper.onObsoleteProtocolVersion();
 	}
 
+	@Override
 	public void onLagInfoReceived(User user, Long aLong) {
 		// todo: UPDATELCC
 	}
 
+	@Override
 	public void onKicked(User user, String reason, String message, Long period) {
 		Log.d(CONNECTION, "The client kicked: " + user.getUsername() + ", reason=" + reason +
 				", message=" + message + ", period=" + period);
