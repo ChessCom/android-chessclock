@@ -317,6 +317,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 					return;
 				}
 				default:
+					// todo: show login/password popup instead
 					detailsMessage = context.getString(R.string.pleaseLoginAgain);
 					break;
 			}

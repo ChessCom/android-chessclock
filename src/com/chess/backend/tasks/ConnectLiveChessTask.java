@@ -76,7 +76,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			Log.d(TAG, "Connecting to: " + CONFIG_BAYEUX_HOST + ":" + CONFIG_PORT);
 
 			item = LiveChessClientFacade.createClient(AUTH_URL, CONFIG_BAYEUX_HOST,
-					CONFIG_PORT, CONFIG_URI);
+					CONFIG_PORT, CONFIG_URI); // todo: check incorrect port connection failure
 			item.setClientInfo("Android", versionName, "No-Key");
 
 			item.setSupportedClientFeature(ClientFeature.AnnounceService, true);
