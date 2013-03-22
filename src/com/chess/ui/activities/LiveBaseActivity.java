@@ -34,6 +34,8 @@ import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.LoginButton;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,6 +61,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	private LiveServiceConnectionListener liveServiceConnectionListener;
 	protected boolean isLCSBound;
 	protected LiveChessService liveService;
+	private List<PopupDialogFragment> popupChallengesList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		challengeTaskListener = new ChallengeTaskListener();
 		outerChallengeListener = new LiveOuterChallengeListener();
 		liveServiceConnectionListener = new LiveServiceConnectionListener();
+
+		popupChallengesList = new ArrayList<PopupDialogFragment>();
 	}
 
 	@Override
@@ -186,7 +191,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			liveService.runAcceptChallengeTask(currentChallenge);
 
 
-			popupManager.remove(fragment);
+			popupChallengesList.remove(fragment);
 		} else if (tag.equals(NETWORK_CHECK_TAG)) {
 			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
 		}
@@ -203,7 +208,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		if (tag.equals(CHALLENGE_TAG)) {
 
-			popupManager.remove(fragment);
+			popupChallengesList.remove(fragment);
 			if (isLCSBound) {
 
 				// todo: refactor with new LCC
@@ -308,7 +313,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				liveEvent.setChallengeDelayed(false);
 				liveService.getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
 			} else {
-				if (popupManager.size() > 0) {
+				if (popupChallengesList.size() > 0) {
+
 					Log.d("LCCLOG_CHALLENGE", "CHALLENGE LISTENER. showDialog -> popupManager.size() > 0 , return" );
 					return;
 				}
@@ -324,7 +330,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
 				popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
 				Log.d("LCCLOG_CHALLENGE", "CHALLENGE LISTENER. showDialog -> popupDialogFragment.show ");
-				popupManager.add(popupDialogFragment);
+				popupChallengesList.add(popupDialogFragment);
 			}
 		}
 
