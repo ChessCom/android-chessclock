@@ -10,7 +10,7 @@ import com.chess.live.client.*;
  * File Templates.
  */
 public class LccConnectionListener implements ConnectionListener {
-	public static final String CONNECTION = "LCCLOG-CONNECTION";
+	public static final String TAG = "LccLog-Connection";
 	private LccHelper lccHelper;
 
 	public LccConnectionListener(LccHelper lccHelper) {
@@ -19,7 +19,7 @@ public class LccConnectionListener implements ConnectionListener {
 
 	@Override
 	public void onOtherClientEntered(User user) {
-		Log.d(CONNECTION, "Another client entered: user=" + user.getUsername());
+		Log.d(TAG, "Another client entered: user=" + user.getUsername());
 		String message = lccHelper.getContext().getString(R.string.account_error)
 				+ lccHelper.getContext().getString(R.string.another_login_detected);
 
@@ -30,25 +30,25 @@ public class LccConnectionListener implements ConnectionListener {
 	@Override
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {
         lccHelper.setUser(user);
-		Log.d("lccHelper", "lccHelper instance in onConnectionEstablished = " + lccHelper);
+		Log.d(TAG, "lccHelper instance in onConnectionEstablished = " + lccHelper);
 		lccHelper.setConnected(true);
 		lccHelper.setFriends(settings.getFriends());
 		lccHelper.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
 		lccHelper.clearPausedEvents();
 
-		Log.d(CONNECTION, "User has been connected: name=" + user.getUsername() + ", authKey=" + user.getAuthKey() + ", user=" + user);
+		Log.d(TAG, "User has been connected: name=" + user.getUsername() + ", authKey=" + user.getAuthKey() + ", user=" + user);
 	}
 
 	@Override
 	public void onSettingsChanged(User user, UserSettings settings) {
-		Log.d(CONNECTION, "onSettingsChanged");
+		Log.d(TAG, "onSettingsChanged");
 		lccHelper.setFriends(settings.getFriends());
 		lccHelper.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
 	}
 
 	@Override
 	public void onConnectionFailure(User user, String message, FailureDetails details, Throwable throwable) {
-		Log.d(CONNECTION, "User connection failure:" + message + ", details=" + details);
+		Log.d(TAG, "User connection failure:" + message + ", details=" + details);
 
 		/*if (details ==  null) {
 			lccHelper.setConnected(false);
@@ -69,14 +69,14 @@ public class LccConnectionListener implements ConnectionListener {
 			failureId = details.getFailureId();
 			comments = details.getComments();
 		}
-		Log.d(CONNECTION, "Connection Lost, with message = " + message
+		Log.d(TAG, "Connection Lost, with message = " + message
                 + " \nDetails: id = " + failureId + " comments = " + comments);
 		lccHelper.setConnected(false);
 	}
 
 	@Override
 	public void onConnectionReestablished(User arg0) {
-		Log.d(CONNECTION, "onConnectionReestablished");
+		Log.d(TAG, "onConnectionReestablished");
 		lccHelper.clearChallenges();
 		lccHelper.clearOwnChallenges();
 		lccHelper.clearSeeks();
@@ -88,18 +88,18 @@ public class LccConnectionListener implements ConnectionListener {
 
 	@Override
 	public void onPublishFailed(User user, Throwable th) {
-		Log.d(CONNECTION, "onPublishFailed");
+		Log.d(TAG, "onPublishFailed");
 	}
 
 	@Override
 	public void onConnectionRestored(User arg0) {
-		Log.d(CONNECTION, "Connection Restored");
+		Log.d(TAG, "Connection Restored");
 		lccHelper.setConnected(true);
 	}
 
 	@Override
 	public void onObsoleteProtocolVersion(User user, String serverProtocolVersion, String clientProtocolVersion) {
-		Log.d(CONNECTION, "Protocol version is obsolete (serverProtocolVersion=" + serverProtocolVersion + ", clientProtocolVersion=" +
+		Log.d(TAG, "Protocol version is obsolete (serverProtocolVersion=" + serverProtocolVersion + ", clientProtocolVersion=" +
 						clientProtocolVersion + StaticData.SYMBOL_RIGHT_PAR);
 		lccHelper.onObsoleteProtocolVersion();
 	}
@@ -111,7 +111,7 @@ public class LccConnectionListener implements ConnectionListener {
 
 	@Override
 	public void onKicked(User user, String reason, String message, Long period) {
-		Log.d(CONNECTION, "The client kicked: " + user.getUsername() + ", reason=" + reason +
+		Log.d(TAG, "The client kicked: " + user.getUsername() + ", reason=" + reason +
 				", message=" + message + ", period=" + period);
 
 		lccHelper.setConnected(false);

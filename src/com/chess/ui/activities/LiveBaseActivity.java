@@ -46,7 +46,7 @@ import java.util.Map;
  */
 public abstract class LiveBaseActivity extends CoreActivityActionBar implements LiveChessClientEventListener {
 
-	private static final String TAG = "LiveBaseActivity";
+	private static final String TAG = "LccLog-LiveBaseActivity";
 
 	protected static final String CHALLENGE_TAG = "challenge_tag";
 	protected static final String LOGOUT_TAG = "logout_tag";
@@ -79,10 +79,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected void onStart() {
 		super.onStart();
 
-		if (AppData.isLiveChess(this) && !AppUtils.isNetworkAvailable(this)) { // check only if live
-			popupItem.setPositiveBtnId(R.string.wireless_settings);
-			showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
-		} else if (AppData.isLiveChess(this)) {// bound only if really need it
+		if (AppData.isLiveChess(this)) {
+			if (!AppUtils.isNetworkAvailable(this)) {
+				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
+			}
 			bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
 		}
 	}
@@ -249,7 +250,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-			Log.d("lcclog", "SERVICE: LIVE onLiveServiceConnected");
+			Log.d(TAG, "onLiveServiceConnected");
 
 			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
 			liveService = serviceBinder.getService();
@@ -270,7 +271,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					Log.d("lccHelper", " onConnected callback, liveService.isConnected() = " + liveService.isConnected());
+					Log.d(TAG, " onConnected callback, liveService.isConnected() = " + liveService.isConnected());
 					getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveService.isConnected());
 
 					liveService.setOuterChallengeListener(outerChallengeListener);
@@ -281,6 +282,20 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 					onLiveServiceConnected();
 				}
 			});
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		boolean liveConnected = liveService != null && liveService.isConnected();
+		getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveConnected);
+
+		if (isLCSBound) {
+			liveService.setOuterChallengeListener(outerChallengeListener);
+			liveService.setChallengeTaskListener(challengeTaskListener);
+			executePausedActivityLiveEvents();
 		}
 	}
 

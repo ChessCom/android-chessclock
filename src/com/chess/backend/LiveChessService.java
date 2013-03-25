@@ -62,14 +62,14 @@ public class LiveChessService extends Service {
 
 	public IBinder onBind(Intent intent) {
 		Log.d(TAG, "SERVICE: onBind");
-		Log.d("lccHelper", "lccHelper instance before check = " + lccHelper);
+		Log.d(TAG, "lccHelper instance before check = " + lccHelper);
 		if (lccHelper == null) {
 			lccHelper = new LccHelper(getContext(), this, new LccConnectUpdateListener());
 			Log.d(TAG, "SERVICE: helper created");
 		} else {
 			Log.d(TAG, "SERVICE: helper exist!");
 		}
-		Log.d("lccHelper", "lccHelper instance after check = " + lccHelper);
+		Log.d(TAG, "lccHelper instance after check = " + lccHelper);
 		return serviceBinder;
 	}
 
@@ -81,7 +81,7 @@ public class LiveChessService extends Service {
 	}
 
 	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {   // we should never use this because we are not starting service, refer to {@link http://developer.android.com/guide/components/services.html#Lifecycle}
+	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(TAG, "SERVICE: onStartCommand");
 
 		return START_STICKY_COMPATIBILITY;
@@ -101,8 +101,8 @@ public class LiveChessService extends Service {
 	public void checkAndConnect(LccConnectionUpdateFace connectionUpdateFace) {
 		this.connectionUpdateFace = connectionUpdateFace;
 		Log.d(TAG, "AppData.isLiveChess(getContext()) " + AppData.isLiveChess(getContext()));
-		Log.d("lccHelper", "lccHelper instance in checkAndConnect = " + lccHelper);
-		Log.d("lccClient", "lccClient instance in checkAndConnect = " +  lccHelper.getClient());
+		Log.d(TAG, "lccHelper instance in checkAndConnect = " + lccHelper);
+		Log.d(TAG, "lccClient instance in checkAndConnect = " +  lccHelper.getClient());
 
 		Log.d(TAG, "lccHelper.getClient() " + lccHelper.getClient());
 
@@ -124,7 +124,7 @@ public class LiveChessService extends Service {
 	}
 
 	public void onLiveConnected() {
-		Log.d("lccHelper", " onLiveConnected, connectionUpdateFace = " + connectionUpdateFace);
+		Log.d(TAG, " onLiveConnected, connectionUpdateFace = " + connectionUpdateFace);
 		if (connectionUpdateFace != null) {
 			connectionUpdateFace.onConnected();
 		}

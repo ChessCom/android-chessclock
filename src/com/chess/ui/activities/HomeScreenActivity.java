@@ -51,7 +51,7 @@ import java.util.Map;
 public class HomeScreenActivity extends ActionBarActivityHome implements PopupDialogFace,
 		LiveChessClientEventListener, View.OnClickListener {
 
-	private static final String TAG = "HomeScreenActivity";
+	private static final String TAG = "LccLog-HomeScreenActivity";
 	private static final String CONNECT_FAILED_TAG = "connect_failed";
 	public static final String OBSOLETE_VERSION_TAG = "obsolete version";
 	protected static final String CHALLENGE_TAG = "challenge_tag";
@@ -133,6 +133,13 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 
 		showFullScreenAd();
 		adjustActionBar();
+
+		if (isLCSBound) {
+			liveService.setOuterChallengeListener(outerChallengeListener);
+			liveService.setChallengeTaskListener(challengeTaskListener);
+
+			executePausedActivityLiveEvents();
+		}
 	}
 
 	public void executePausedActivityLiveEvents() {
@@ -175,6 +182,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
 
+			Log.d(TAG, "onLiveServiceConnected");
 			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
 			liveService = serviceBinder.getService();
 			isLCSBound = true;
@@ -195,10 +203,9 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					Log.d("lccHelper", " onConnected callback, liveService.isConnected() = " + liveService.isConnected());
+					Log.d(TAG, " onConnected callback, liveService.isConnected() = " + liveService.isConnected());
 					getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveService.isConnected());
 
-					liveService.setOuterChallengeListener(outerChallengeListener);
 					liveService.setOuterChallengeListener(outerChallengeListener);
 					liveService.setChallengeTaskListener(challengeTaskListener);
 

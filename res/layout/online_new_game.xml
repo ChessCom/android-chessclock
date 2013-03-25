@@ -35,15 +35,6 @@
 			android:layout_marginTop="@dimen/margin_top_between_buttons"
 			android:text="@string/createNewChallenge"/>
 
-		<com.chess.RoboButton
-			android:id="@+id/currentGameBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="10dip"
-			android:layout_marginTop="@dimen/margin_top_between_buttons"
-			android:text="@string/currentGame"
-			android:visibility="gone"/>
-
 		<com.chess.RoboTextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
