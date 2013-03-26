@@ -79,7 +79,8 @@ public class MoPubActivity extends BaseActivity implements OnAdLoadedListener {
         return source.replaceAll("http://ads.mopub.com/m/imp", "mopub://null");
     }
 
-    public void OnAdLoaded(MoPubView m) {
+    @Override
+	public void OnAdLoaded(MoPubView m) {
         m.adAppeared();
     }
 }

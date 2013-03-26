@@ -16,20 +16,23 @@ public class MraidActivity extends BaseActivity {
                 PlacementType.INTERSTITIAL);
         
         mAdView.setOnReadyListener(new MraidView.OnReadyListener() {
-           public void onReady(MraidView view) {
+           @Override
+		   public void onReady(MraidView view) {
                showInterstitialCloseButton();
            }
         });
         
         mAdView.setOnCloseButtonStateChange(new MraidView.OnCloseButtonStateChangeListener() {
-            public void onCloseButtonStateChange(MraidView view, boolean enabled) {
+            @Override
+			public void onCloseButtonStateChange(MraidView view, boolean enabled) {
                 if (enabled) showInterstitialCloseButton();
                 else hideInterstitialCloseButton();
             }
         });
         
         mAdView.setOnCloseListener(new MraidView.OnCloseListener() {
-            public void onClose(MraidView view, ViewState newViewState) {
+            @Override
+			public void onClose(MraidView view, ViewState newViewState) {
                 finish();
             }
         });

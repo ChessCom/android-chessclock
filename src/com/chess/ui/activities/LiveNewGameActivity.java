@@ -2,6 +2,7 @@ package com.chess.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import com.chess.R;
@@ -26,10 +27,12 @@ public class LiveNewGameActivity extends LiveBaseActivity  {
 		currentGameBtn.setOnClickListener(this);
 
 //		AppData.setLiveChessMode(this, true); // should not duplicate logic
+		Log.d("TEST", " new game onCreate");
 	}
 
 	@Override
 	protected void onLiveServiceConnected() {
+		super.onLiveServiceConnected();
 		if (liveService.currentGameExist()) {
 			currentGameBtn.setVisibility(View.VISIBLE);
 		} else {

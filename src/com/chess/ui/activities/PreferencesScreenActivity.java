@@ -460,10 +460,12 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	}
 
 	private class LogoutRequestListener extends BaseRequestListener {
+		@Override
 		public void onComplete(String response, final Object state) {
 			// callback should be run in the original thread,
 			// not the background thread
 			handler.post(new Runnable() {
+				@Override
 				public void run() {
 					SessionEvents.onLogoutFinish();
 				}

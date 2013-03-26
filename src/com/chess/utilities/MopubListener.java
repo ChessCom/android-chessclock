@@ -18,12 +18,15 @@ import java.util.Map;
 public class MopubListener implements MoPubView.OnAdWillLoadListener, MoPubView.OnAdLoadedListener, MoPubView.OnAdFailedListener,
 		MoPubView.OnAdPresentedOverlayListener, MoPubView.OnAdClosedListener, MoPubView.OnAdClickedListener {
 
+	@Override
 	public void OnAdClicked(MoPubView moPubView) {
 	}
 
+	@Override
 	public void OnAdClosed(MoPubView moPubView) {
 	}
 
+	@Override
 	public void OnAdFailed(MoPubView moPubView) {
 		String response = moPubView.getResponseString();
 		if (response != null && response.contains(AppConstants.MATOMY_AD)) {
@@ -33,6 +36,7 @@ public class MopubListener implements MoPubView.OnAdWillLoadListener, MoPubView.
 		}
 	}
 
+	@Override
 	public void OnAdLoaded(MoPubView moPubView) {
 		String response = moPubView.getResponseString();
 		if (response != null && response.contains(AppConstants.MATOMY_AD)) {
@@ -42,9 +46,11 @@ public class MopubListener implements MoPubView.OnAdWillLoadListener, MoPubView.
 		}
 	}
 
+	@Override
 	public void OnAdPresentedOverlay(MoPubView moPubView) {
 	}
 
+	@Override
 	public void OnAdWillLoad(MoPubView moPubView, String url) {
 	}
 }

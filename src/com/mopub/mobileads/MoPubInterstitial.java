@@ -117,12 +117,14 @@ public class MoPubInterstitial implements OnAdLoadedListener, OnAdFailedListener
         if (mInterstitialAdapter != null) mInterstitialAdapter.showInterstitial();
     }
     
-    public void OnAdFailed(MoPubView m) {
+    @Override
+	public void OnAdFailed(MoPubView m) {
         mCurrentInterstitialState = InterstitialState.NOT_READY;
         if (mListener != null) mListener.OnInterstitialFailed();
     }
 
-    public void OnAdLoaded(MoPubView m) {
+    @Override
+	public void OnAdLoaded(MoPubView m) {
         mCurrentInterstitialState = InterstitialState.HTML_AD_READY;
         
         if (mInterstitialAdapter != null) {
@@ -153,14 +155,16 @@ public class MoPubInterstitial implements OnAdLoadedListener, OnAdFailedListener
          */
         
         mAdapterListener = new DefaultInterstitialAdapterListener() {
-            public void onNativeInterstitialLoaded(BaseInterstitialAdapter adapter) {
+            @Override
+			public void onNativeInterstitialLoaded(BaseInterstitialAdapter adapter) {
                 super.onNativeInterstitialLoaded(adapter);
                 MoPubInterstitial.this.show();
             }
         };
         
         mInterstitialView.setOnAdLoadedListener(new OnAdLoadedListener() {
-            public void OnAdLoaded(MoPubView m) {
+            @Override
+			public void OnAdLoaded(MoPubView m) {
                 MoPubInterstitial.this.OnAdLoaded(m);
                 MoPubInterstitial.this.show();
             }
@@ -231,22 +235,26 @@ public class MoPubInterstitial implements OnAdLoadedListener, OnAdFailedListener
     ////////////////////////////////////////////////////////////////////////////////////////////////
     
     public class DefaultInterstitialAdapterListener implements BaseInterstitialAdapterListener {
-        public void onNativeInterstitialLoaded(BaseInterstitialAdapter adapter) {
+        @Override
+		public void onNativeInterstitialLoaded(BaseInterstitialAdapter adapter) {
             mCurrentInterstitialState = InterstitialState.NATIVE_AD_READY;
             mInterstitialView.trackImpression();
             if (mListener != null) mListener.OnInterstitialLoaded();
         }
 
-        public void onNativeInterstitialFailed(BaseInterstitialAdapter adapter) {
+        @Override
+		public void onNativeInterstitialFailed(BaseInterstitialAdapter adapter) {
             mCurrentInterstitialState = InterstitialState.NOT_READY;
             mInterstitialView.loadFailUrl();
         }
 
-        public void onNativeInterstitialClicked(BaseInterstitialAdapter adapter) {
+        @Override
+		public void onNativeInterstitialClicked(BaseInterstitialAdapter adapter) {
             mInterstitialView.registerClick();
         }
         
-        public void onNativeInterstitialExpired(BaseInterstitialAdapter adapter) {
+        @Override
+		public void onNativeInterstitialExpired(BaseInterstitialAdapter adapter) {
             mCurrentInterstitialState = InterstitialState.NOT_READY;
         }
     }

@@ -238,6 +238,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 		return this;
 	}
 
+	@Override
 	public void onCheck() {
 		showToast(R.string.check);
 	}

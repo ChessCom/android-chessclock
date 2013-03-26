@@ -286,6 +286,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		return AppData.isComputerVsHumanWhiteGameMode(getBoardFace());
 	}
 
+	@Override
 	public Long getGameId() {
 		return null;
 	}

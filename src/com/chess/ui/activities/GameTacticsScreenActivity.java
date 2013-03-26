@@ -376,6 +376,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		return null;
 	}
 
+	@Override
 	public Long getGameId() {
 		if (!tacticItemIsValid()) {
 			return null;

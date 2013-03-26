@@ -55,11 +55,13 @@ public class LiveChessService extends Service {
 		}
 	}
 
+	@Override
 	public void onCreate() {
 		super.onCreate();
 		//registerReceiver(networkChangeReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
 	}
 
+	@Override
 	public IBinder onBind(Intent intent) {
 		Log.d(TAG, "SERVICE: onBind");
 		Log.d(TAG, "lccHelper instance before check = " + lccHelper);

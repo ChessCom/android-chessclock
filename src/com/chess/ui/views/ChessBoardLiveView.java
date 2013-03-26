@@ -11,6 +11,7 @@ public class ChessBoardLiveView extends ChessBoardNetworkView {
 		super(context, attrs);
 	}
 
+	@Override
 	protected boolean need2ShowSubmitButtons() {
 		return preferences.getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false);
 	}

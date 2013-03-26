@@ -343,6 +343,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		}
 	}
 
+	@Override
 	public void invalidateGameScreen() {
 		showSubmitButtonsLay(getBoardFace().isSubmit());
 
@@ -554,6 +555,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		getGamesList();
 	}
 
+	@Override
 	public Boolean isUserColorWhite() {
 		if (currentGame != null)
 			return currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(this));
@@ -562,6 +564,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	}
 
 
+	@Override
 	public Long getGameId() {
 		return gameId;
 	}

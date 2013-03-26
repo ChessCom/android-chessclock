@@ -127,10 +127,12 @@ public class PopupItem implements Parcelable {
 	}
 
 	public static final Parcelable.Creator<PopupItem> CREATOR = new Parcelable.Creator<PopupItem>() {
+		@Override
 		public PopupItem createFromParcel(Parcel in) {
 			return new PopupItem(in);
 		}
 
+		@Override
 		public PopupItem[] newArray(int size) {
 			return new PopupItem[size];
 		}

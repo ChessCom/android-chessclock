@@ -89,4 +89,6 @@ public class StaticData {
 	public static final int STAFF_LEVEL = 90;
 
     public static final String LOCALE_EN = "en";
+
+	public static final String INPUT_DATE_FORMAT = "dd.MM.yyyy HH:mm:ss";
 }

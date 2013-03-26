@@ -84,7 +84,13 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 			}
-			bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
+			Log.d("TEST", "onStart isLCSBound = " + isLCSBound + " in " + LiveBaseActivity.this);
+			if (isLCSBound) {
+				onLiveServiceConnected();
+			} else {
+				bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
+			}
+
 		}
 	}
 
@@ -92,10 +98,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected void adjustActionBar() {
 		super.adjustActionBar();
 
-		boolean isConnected = false;
+		boolean isConnected = isLCSBound;
 		if (isLCSBound) {
-			getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
+			isConnected = liveService.isConnected();
 		}
+		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
 	}
 
 	@Override
@@ -251,6 +258,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
 			Log.d(TAG, "onLiveServiceConnected");
+			Log.d("TEST", "onLiveServiceConnected in " + LiveBaseActivity.this);
 
 			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
 			liveService = serviceBinder.getService();
@@ -271,31 +279,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					Log.d(TAG, " onConnected callback, liveService.isConnected() = " + liveService.isConnected());
-					getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveService.isConnected());
-
-					liveService.setOuterChallengeListener(outerChallengeListener);
-					liveService.setChallengeTaskListener(challengeTaskListener);
-
-					executePausedActivityLiveEvents();
-
 					onLiveServiceConnected();
 				}
 			});
-		}
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		boolean liveConnected = liveService != null && liveService.isConnected();
-		getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveConnected);
-
-		if (isLCSBound) {
-			liveService.setOuterChallengeListener(outerChallengeListener);
-			liveService.setChallengeTaskListener(challengeTaskListener);
-			executePausedActivityLiveEvents();
 		}
 	}
 
@@ -548,9 +534,20 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		if (isLCSBound) {
 			isConnected = liveService.isConnected();
 		}
-		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
+		if (HONEYCOMB_PLUS_API) {// this item doesn't exist at this point in pre-ICS
+			getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
+		}
 	}
 
 	protected void onLiveServiceConnected() {
+		Log.d("TEST", " onLiveServiceConnected callback, liveService.isConnected() = " + liveService.isConnected()
+				+ " in " + LiveBaseActivity.this);
+		Log.d(TAG, " onLiveServiceConnected callback, liveService.isConnected() = " + liveService.isConnected());
+		getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveService.isConnected());
+
+		liveService.setOuterChallengeListener(outerChallengeListener);
+		liveService.setChallengeTaskListener(challengeTaskListener);
+
+		executePausedActivityLiveEvents();
 	}
 }

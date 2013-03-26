@@ -8,25 +8,29 @@ class MraidCommandRegistry {
         new HashMap<String, MraidCommandFactory>();
     static {
         commandMap.put("close", new MraidCommandFactory() {
-            public MraidCommand create(Map<String, String> params, MraidView view) {
+            @Override
+			public MraidCommand create(Map<String, String> params, MraidView view) {
                 return new MraidCommandClose(params, view);
             }
         });
         
         commandMap.put("expand", new MraidCommandFactory() {
-            public MraidCommand create(Map<String, String> params, MraidView view) {
+            @Override
+			public MraidCommand create(Map<String, String> params, MraidView view) {
                 return new MraidCommandExpand(params, view);
             }
         });
         
         commandMap.put("usecustomclose", new MraidCommandFactory() {
-            public MraidCommand create(Map<String, String> params, MraidView view) {
+            @Override
+			public MraidCommand create(Map<String, String> params, MraidView view) {
                 return new MraidCommandUseCustomClose(params, view);
             }
         });
         
         commandMap.put("open", new MraidCommandFactory() {
-            public MraidCommand create(Map<String, String> params, MraidView view) {
+            @Override
+			public MraidCommand create(Map<String, String> params, MraidView view) {
                 return new MraidCommandOpen(params, view);
             }
         });

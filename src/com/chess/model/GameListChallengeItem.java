@@ -94,10 +94,12 @@ public class GameListChallengeItem extends BaseGameOnlineItem {
 
 
 	public static final Parcelable.Creator<GameListChallengeItem> CREATOR = new Parcelable.Creator<GameListChallengeItem>() {
+		@Override
 		public GameListChallengeItem createFromParcel(Parcel in) {
 			return new GameListChallengeItem(in);
 		}
 
+		@Override
 		public GameListChallengeItem[] newArray(int size) {
 			return new GameListChallengeItem[size];
 		}

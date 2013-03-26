@@ -21,6 +21,7 @@ public class LccSeekListListener implements SeekListListener {
 		this.lccHelper = lccHelper;
 	}
 
+	@Override
 	public void onSeekListReceived(SubscriptionId id, Collection<Challenge> challenges, Integer total) {
 		if (challenges != null) {
 			Log.i(TAG, "SEEK LIST LISTENER: Public Seek list received: size = " + challenges.size() + ", total = " + total);

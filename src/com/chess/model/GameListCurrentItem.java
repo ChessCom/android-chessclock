@@ -33,10 +33,12 @@ public class GameListCurrentItem extends BaseGameOnlineItem {
 
 
 	public static final Parcelable.Creator<GameListCurrentItem> CREATOR = new Parcelable.Creator<GameListCurrentItem>() {
+		@Override
 		public GameListCurrentItem createFromParcel(Parcel in) {
 			return new GameListCurrentItem(in);
 		}
 
+		@Override
 		public GameListCurrentItem[] newArray(int size) {
 			return new GameListCurrentItem[size];
 		}

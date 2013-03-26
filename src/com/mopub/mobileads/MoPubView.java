@@ -204,7 +204,8 @@ public class MoPubView extends FrameLayout implements Serializable {
 	}
 
     private BroadcastReceiver mScreenStateReceiver = new BroadcastReceiver() {
-            public void onReceive(Context context, Intent intent) {
+            @Override
+			public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
                     if (mIsInForeground) {
                         Log.d(AdView.MOPUB, "Screen sleep with ad in foreground, disable refresh");

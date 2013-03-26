@@ -59,10 +59,12 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 
 
 	public static final Parcelable.Creator<GameListFinishedItem> CREATOR = new Parcelable.Creator<GameListFinishedItem>() {
+		@Override
 		public GameListFinishedItem createFromParcel(Parcel in) {
 			return new GameListFinishedItem(in);
 		}
 
+		@Override
 		public GameListFinishedItem[] newArray(int size) {
 			return new GameListFinishedItem[size];
 		}

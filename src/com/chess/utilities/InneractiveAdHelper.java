@@ -84,39 +84,48 @@ public class InneractiveAdHelper {
 			Log.d("InneractiveAd", adType + ": " + message);
 		}
 
+		@Override
 		public void onIaAdClicked() {
 			log("onIaAdClicked");
 		}
 
+		@Override
 		public void onIaAdExpand() {
 			log("onIaAdExpand");
 		}
 
+		@Override
 		public void onIaAdExpandClosed() {
 			log("onIaAdExpandClosed");
 		}
 
+		@Override
 		public void onIaDismissScreen() {
 			log("onIaDismissScreen");
 		}
 
+		@Override
 		public void onIaAdFailed() {
 			log("onIaAdFailed");
 		}
 
+		@Override
 		public void onIaAdReceived() {
 			log("onIaAdReceived");
 			processInterstitialAdReceived();
 		}
 
+		@Override
 		public void onIaAdResize() {
 			log("onIaAdResize");
 		}
 
+		@Override
 		public void onIaAdResizeClosed() {
 			log("onIaAdResizeClosed");
 		}
 
+		@Override
 		public void onIaDefaultAdReceived() {
 			log("onIaDefaultAdReceived");
 			processInterstitialAdReceived();

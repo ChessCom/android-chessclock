@@ -48,9 +48,11 @@ public class LccGameListener implements GameListener {
 		return false;
     }*/
 
-    public void onGameArchiveReceived(User user, Collection<? extends Game> games) {
+    @Override
+	public void onGameArchiveReceived(User user, Collection<? extends Game> games) {
     }
 
+	@Override
 	public void onGameReset(Game game) {
 		Log.d(TAG, "GAME LISTENER: onGameReset id=" + game.getId() + ", game=" + game);
 
@@ -64,6 +66,7 @@ public class LccGameListener implements GameListener {
 		doUpdateGame(false, game);
 	}
 
+	@Override
 	public void onGameUpdated(Game game) {
 		Log.d(TAG, "GAME LISTENER: onGameUpdated id=" + game.getId() + ", game=" + game);
 
@@ -76,11 +79,13 @@ public class LccGameListener implements GameListener {
 		doUpdateGame(true, game);
 	}
 
+	@Override
 	public void onGameOver(Game game) {
 		Log.d(TAG, "GAME LISTENER: onGameOver " + game);
 		doEndGame(game);
 	}
 
+	@Override
 	public void onGameClockAdjusted(Game game, User player, Integer newClockValue, Integer clockAdjustment, Integer resultClock) {
 		Log.d(TAG, "Game Clock adjusted: gameId=" + game.getId() + ", player=" + player.getUsername() +
 				", newClockValue=" + newClockValue + ", clockAdjustment=" + clockAdjustment);

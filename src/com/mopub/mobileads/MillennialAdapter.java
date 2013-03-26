@@ -141,7 +141,8 @@ public class MillennialAdapter extends BaseAdapter implements MMAdListener {
     @Override
     public void MMAdFailed(MMAdView adview)	{
         mHandler.post(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 if (isInvalidated()) return;
                 
                 Log.d(AdView.MOPUB, "Millennial failed. Trying another");
@@ -153,7 +154,8 @@ public class MillennialAdapter extends BaseAdapter implements MMAdListener {
     @Override
     public void MMAdReturned(MMAdView adview) {
         mHandler.post(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 if (isInvalidated()) return;
                 
                 mMoPubView.removeAllViews();
@@ -178,7 +180,8 @@ public class MillennialAdapter extends BaseAdapter implements MMAdListener {
     @Override
     public void MMAdClickedToNewBrowser(MMAdView adview) {
         mHandler.post(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 if (isInvalidated()) return;
                 
                 Log.d(AdView.MOPUB, "Millennial clicked");
@@ -190,7 +193,8 @@ public class MillennialAdapter extends BaseAdapter implements MMAdListener {
     @Override
     public void MMAdClickedToOverlay(MMAdView adview) {
         mHandler.post(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 if (isInvalidated()) return;
                 
                 Log.d(AdView.MOPUB, "Millennial clicked");

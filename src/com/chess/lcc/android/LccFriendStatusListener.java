@@ -16,6 +16,7 @@ public class LccFriendStatusListener implements FriendStatusListener {
 		this.lccHelper = lccHelper;
 	}
 
+	@Override
 	public void onFriendStatusReceived(User friend) {
 		Log.d(TAG, "FRIENDS STATUS LISTENER: onFriendStatusReceived " + friend);
 		lccHelper.putFriend(friend);

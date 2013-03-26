@@ -53,7 +53,8 @@ public abstract class BaseActivity extends Activity {
 				mCloseButton.setBackgroundDrawable(null);
 			}
             mCloseButton.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
+                @Override
+				public void onClick(View v) {
                     finish();
                 }
             });

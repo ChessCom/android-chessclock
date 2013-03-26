@@ -66,6 +66,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 		return ChessBoardComp.getInstance(gameActivityFace);
 	}
 
+	@Override
 	public void afterMove() {
         boardFace.setMovesCount(boardFace.getHply());
 		gameActivityFace.invalidateGameScreen();
@@ -79,7 +80,8 @@ public class ChessBoardCompView extends ChessBoardBaseView {
     }
 
 
-    protected boolean isGameOver() {
+    @Override
+	protected boolean isGameOver() {
         //saving game for comp game mode if human is playing
         if ((AppData.isComputerVsHumanGameMode(boardFace) || AppData.isHumanVsHumanGameMode(boardFace))
                 && !boardFace.isAnalysis()) {
@@ -352,7 +354,8 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         return super.onTouchEvent(event);
     }
 
-    public void promote(int promote, int col, int row) {
+    @Override
+	public void promote(int promote, int col, int row) {
         boolean found = false;
         TreeSet<Move> moves = boardFace.gen();
         Iterator<Move> iterator = moves.iterator();
@@ -407,6 +410,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 		gamePanelView.enableGameButton(GamePanelView.B_HINT_ID, !boardFace.isAnalysis());
 	}
 
+	@Override
 	public void enableAnalysis() {
 		gamePanelView.toggleControlButton(GamePanelView.B_ANALYSIS_ID, true);
 		gamePanelView.enableAnalysisMode(true);

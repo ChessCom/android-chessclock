@@ -131,7 +131,8 @@ public class MillennialInterstitialAdapter extends BaseInterstitialAdapter imple
     @Override
     public void MMAdFailed(MMAdView adview)	{
         mHandler.post(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 if (isInvalidated()) return;
                 
                 Log.d(AdView.MOPUB, "Millennial interstitial failed. Trying another.");
@@ -145,7 +146,8 @@ public class MillennialInterstitialAdapter extends BaseInterstitialAdapter imple
     @Override
     public void MMAdReturned(MMAdView adview) {
         mHandler.post(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 if (isInvalidated()) return;
                 
                 Log.d(AdView.MOPUB, "Millennial interstitial returned an ad.");
@@ -159,7 +161,8 @@ public class MillennialInterstitialAdapter extends BaseInterstitialAdapter imple
     @Override
     public void MMAdClickedToNewBrowser(MMAdView adview) {
         mHandler.post(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 if (isInvalidated()) return;
                 
                 Log.d(AdView.MOPUB, "Millennial interstitial clicked to new browser");
@@ -171,7 +174,8 @@ public class MillennialInterstitialAdapter extends BaseInterstitialAdapter imple
     @Override
     public void MMAdClickedToOverlay(MMAdView adview) {
         mHandler.post(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 if (isInvalidated()) return;
                 
                 Log.d(AdView.MOPUB, "Millennial interstitial clicked to overlay");
@@ -183,7 +187,8 @@ public class MillennialInterstitialAdapter extends BaseInterstitialAdapter imple
     @Override
     public void MMAdOverlayLaunched(MMAdView adview) {
         mHandler.post(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 if (isInvalidated()) return;
                 
                 Log.d(AdView.MOPUB, "Millennial interstitial launched overlay");
@@ -197,7 +202,8 @@ public class MillennialInterstitialAdapter extends BaseInterstitialAdapter imple
     @Override
     public void MMAdCachingCompleted(MMAdView adview, boolean success) {
         mHandler.post(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 if (isInvalidated()) return;
                 
                 if (mAdapterListener != null) {

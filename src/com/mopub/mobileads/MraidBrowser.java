@@ -97,7 +97,8 @@ public class MraidBrowser extends Activity {
         });
         
         webView.setWebChromeClient(new WebChromeClient() {
-            public void onProgressChanged(WebView view, int progress) {
+            @Override
+			public void onProgressChanged(WebView view, int progress) {
                 Activity a = (Activity) view.getContext();
                 a.setTitle(getString(R.string.loading));
                 a.setProgress(progress * 100);
@@ -110,7 +111,8 @@ public class MraidBrowser extends Activity {
         ImageButton backButton = (ImageButton) findViewById(R.id.browserBackButton);
         backButton.setBackgroundColor(Color.TRANSPARENT);
         backButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
+            @Override
+			public void onClick(View v) {
                 WebView webView = (WebView) findViewById(R.id.webView);
                 if (webView.canGoBack()) webView.goBack();
             }
@@ -119,7 +121,8 @@ public class MraidBrowser extends Activity {
         ImageButton forwardButton = (ImageButton) findViewById(R.id.browserForwardButton);
         forwardButton.setBackgroundColor(Color.TRANSPARENT);
         forwardButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
+            @Override
+			public void onClick(View v) {
                 WebView webView = (WebView) findViewById(R.id.webView);
                 if (webView.canGoForward()) webView.goForward();
             }
@@ -128,7 +131,8 @@ public class MraidBrowser extends Activity {
         ImageButton refreshButton = (ImageButton) findViewById(R.id.browserRefreshButton);
         refreshButton.setBackgroundColor(Color.TRANSPARENT);
         refreshButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
+            @Override
+			public void onClick(View v) {
                 WebView webView = (WebView) findViewById(R.id.webView);
                 webView.reload();
             }
@@ -137,7 +141,8 @@ public class MraidBrowser extends Activity {
         ImageButton closeButton = (ImageButton) findViewById(R.id.browserCloseButton);
         closeButton.setBackgroundColor(Color.TRANSPARENT);
         closeButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
+            @Override
+			public void onClick(View v) {
                 MraidBrowser.this.finish();
             }
         });

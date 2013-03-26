@@ -163,7 +163,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 					ImageButton actionButton = (ImageButton) view.findViewById(id);
 					actionButton.setImageResource(show ? R.drawable.ic_action_refresh
 							: R.drawable.empty);
-				}else {
+				} else {
 					view.findViewById(id).setVisibility(show ? View.VISIBLE : View.GONE);
 				}
 

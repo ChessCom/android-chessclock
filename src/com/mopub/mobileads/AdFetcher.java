@@ -387,6 +387,7 @@ public class AdFetcher {
 			mHeader = header;
 		}
 
+		@Override
 		public void execute() {
 			AdView adView = mWeakAdView.get();
 			if (adView == null || adView.isDestroyed()) {
@@ -422,6 +423,7 @@ public class AdFetcher {
 			}
 		}
 
+		@Override
 		public void cleanup() {
 			mHeader = null;
 		}
@@ -435,6 +437,7 @@ public class AdFetcher {
 			mParamsHash = hash;
 		}
 
+		@Override
 		public void execute() {
 			AdView adView = mWeakAdView.get();
 			if (adView == null || adView.isDestroyed()) {
@@ -446,6 +449,7 @@ public class AdFetcher {
 			mpv.loadNativeSDK(mParamsHash);
 		}
 
+		@Override
 		public void cleanup() {
 			mParamsHash = null;
 		}
@@ -459,6 +463,7 @@ public class AdFetcher {
 			mData = data;
 		}
 
+		@Override
 		public void execute() {
 			AdView adView = mWeakAdView.get();
 			if (adView == null || adView.isDestroyed()) {
@@ -474,6 +479,7 @@ public class AdFetcher {
 					"text/html", "utf-8", null);
 		}
 
+		@Override
 		public void cleanup() {
 			mData = null;
 		}

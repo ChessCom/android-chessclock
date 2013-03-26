@@ -69,7 +69,8 @@ public class MoPubConversionTracker {
     }
 
     Runnable mTrackOpen = new Runnable() {
-        public void run() {
+        @Override
+		public void run() {
             StringBuilder sz = new StringBuilder("http://"+TRACK_HOST+TRACK_HANDLER);
             sz.append("?v=6&id=" + mPackageName);
             

@@ -123,10 +123,12 @@ public class GameOnlineItem extends BaseGameItem {
 
 
 	public static final Parcelable.Creator<GameOnlineItem> CREATOR = new Parcelable.Creator<GameOnlineItem>() {
+		@Override
 		public GameOnlineItem createFromParcel(Parcel in) {
 			return new GameOnlineItem(in);
 		}
 
+		@Override
 		public GameOnlineItem[] newArray(int size) {
 			return new GameOnlineItem[size];
 		}

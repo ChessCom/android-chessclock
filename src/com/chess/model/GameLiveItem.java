@@ -68,10 +68,12 @@ public class GameLiveItem extends BaseGameItem {
 
 
 	public static final Parcelable.Creator<GameLiveItem> CREATOR = new Parcelable.Creator<GameLiveItem>() {
+		@Override
 		public GameLiveItem createFromParcel(Parcel in) {
 			return new GameLiveItem(in);
 		}
 
+		@Override
 		public GameLiveItem[] newArray(int size) {
 			return new GameLiveItem[size];
 		}

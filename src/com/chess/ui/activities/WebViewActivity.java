@@ -22,6 +22,7 @@ public class WebViewActivity extends LiveBaseActivity {
 	private String url;
 	private WebView webView;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 

@@ -163,6 +163,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		playLastMoveAnimation();
 	}
 
+	@Override
 	public void invalidateGameScreen() {
         whitePlayerLabel.setText(getWhitePlayerName());
         blackPlayerLabel.setText(getBlackPlayerName());
@@ -243,6 +244,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 			return null;
 	}
 
+	@Override
 	public Long getGameId() {
 		return gameId;
 	}

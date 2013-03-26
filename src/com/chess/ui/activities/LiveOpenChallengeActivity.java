@@ -82,6 +82,7 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 
 	@Override
 	protected void onLiveServiceConnected() {
+		super.onLiveServiceConnected();
 		checkIfLiveUserAlive();
 	}
 

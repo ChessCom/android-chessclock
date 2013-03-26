@@ -89,6 +89,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 
     @Override
 	protected void onLiveServiceConnected() {
+		super.onLiveServiceConnected();
 		if (!checkIfLiveUserAlive()) {
 			return;
 		}

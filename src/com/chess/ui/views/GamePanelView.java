@@ -544,7 +544,8 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
         }
     }
 
-    public void onClick(View view) {
+    @Override
+	public void onClick(View view) {
 		if (blocked)
 			return;
 

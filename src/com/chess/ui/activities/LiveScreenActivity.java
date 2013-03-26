@@ -120,6 +120,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 
 	@Override
 	protected void onLiveServiceConnected() {
+		super.onLiveServiceConnected();
 		showLoadingView(!liveService.isConnected());
 
 		if (liveService.currentGameExist()) {

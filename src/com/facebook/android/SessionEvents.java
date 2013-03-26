@@ -113,7 +113,6 @@ public class SessionEvents {
         }   
     }
 
-
 	/**
      * Callback interface for authorization events.
      *

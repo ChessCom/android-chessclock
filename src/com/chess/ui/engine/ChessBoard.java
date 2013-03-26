@@ -446,6 +446,7 @@ public class ChessBoard implements BoardFace {
 //		return pieces[(i << 3) + j];
 //	}
 
+	@Override
 	public boolean isWhiteToMove() {
 		return hply % 2 == 0;
 		//return (side == LIGHT);
@@ -2097,6 +2098,7 @@ public class ChessBoard implements BoardFace {
 		return fifty;
 	}
 
+	@Override
 	public boolean isPossibleToMakeMoves() {
 		TreeSet<Move> validMoves = gen();
 

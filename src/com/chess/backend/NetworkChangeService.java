@@ -17,11 +17,13 @@ public class NetworkChangeService extends Service {
 		return null;
 	}
 
+	@Override
 	public void onCreate() {
 		super.onCreate();
 		registerReceiver(networkChangeReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
 	}
 
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(networkChangeReceiver);

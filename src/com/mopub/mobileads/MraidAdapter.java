@@ -42,7 +42,8 @@ public class MraidAdapter extends BaseAdapter {
     private MraidView mMraidView;
     private boolean mPreviousAutorefreshSetting;
     
-    public void init(MoPubView view, String jsonParams) {
+    @Override
+	public void init(MoPubView view, String jsonParams) {
         super.init(view, jsonParams);
         mPreviousAutorefreshSetting = false;
     }
@@ -72,7 +73,8 @@ public class MraidAdapter extends BaseAdapter {
     
     private void initMraidListeners() {
         mMraidView.setOnReadyListener(new MraidView.OnReadyListener() {
-            public void onReady(MraidView view) {
+            @Override
+			public void onReady(MraidView view) {
                 if (!isInvalidated()) {
                     mMoPubView.nativeAdLoaded();
                     mMoPubView.trackNativeImpression();
@@ -81,7 +83,8 @@ public class MraidAdapter extends BaseAdapter {
         });
         
         mMraidView.setOnExpandListener(new MraidView.OnExpandListener() {
-            public void onExpand(MraidView view) {
+            @Override
+			public void onExpand(MraidView view) {
                 if (!isInvalidated()) {
                     mPreviousAutorefreshSetting = mMoPubView.getAutorefreshEnabled();
                     mMoPubView.setAutorefreshEnabled(false);
@@ -92,7 +95,8 @@ public class MraidAdapter extends BaseAdapter {
         });
         
         mMraidView.setOnCloseListener(new MraidView.OnCloseListener() {
-            public void onClose(MraidView view, ViewState newViewState) {
+            @Override
+			public void onClose(MraidView view, ViewState newViewState) {
                 if (!isInvalidated()) {
                     mMoPubView.setAutorefreshEnabled(mPreviousAutorefreshSetting);
                     mMoPubView.adClosed();
@@ -101,7 +105,8 @@ public class MraidAdapter extends BaseAdapter {
         });
 
         mMraidView.setOnFailureListener(new MraidView.OnFailureListener() {
-           public void onFailure(MraidView view) {
+           @Override
+		   public void onFailure(MraidView view) {
                if (!isInvalidated()) mMoPubView.loadFailUrl();
            } 
         });

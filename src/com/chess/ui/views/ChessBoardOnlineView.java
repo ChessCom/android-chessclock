@@ -11,6 +11,7 @@ public class ChessBoardOnlineView extends ChessBoardNetworkView {
 		super(context, attrs);
 	}
 
+	@Override
 	protected boolean need2ShowSubmitButtons() {
 		String sharedKey = AppConstants.PREF_SHOW_SUBMIT_MOVE;
 		return preferences.getBoolean(AppData.getUserName(getContext()) + sharedKey, true);

@@ -99,7 +99,8 @@ public class MraidView extends WebView {
         setHorizontalScrollBarEnabled(false);
         
         setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
+            @Override
+			public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                     case MotionEvent.ACTION_UP:
@@ -126,7 +127,8 @@ public class MraidView extends WebView {
         mListenerInfo = new MraidListenerInfo();
     }
     
-    public void destroy() {
+    @Override
+	public void destroy() {
         mDisplayController.destroy();
         super.destroy();
     }
@@ -145,7 +147,8 @@ public class MraidView extends WebView {
         loadDataWithBaseURL(null, data, "text/html", "UTF-8", null);
     }
 
-    public void loadUrl(String url) {
+    @Override
+	public void loadUrl(String url) {
         HttpClient httpClient = new DefaultHttpClient();
         StringBuffer out = new StringBuffer();
         

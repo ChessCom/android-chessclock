@@ -54,7 +54,8 @@ class MraidDisplayController extends MraidAbstractController {
     
     // Task that periodically checks whether this controller's view is on-screen.
     private Runnable mCheckViewabilityTask = new Runnable() {
-        public void run() {
+        @Override
+		public void run() {
             boolean currentViewable = checkViewable();
             if (mIsViewable != currentViewable) {
                 mIsViewable = currentViewable;
@@ -77,7 +78,8 @@ class MraidDisplayController extends MraidAbstractController {
 	private class OrientationBroadcastReceiver extends BroadcastReceiver {
         private int mLastRotation;
         
-        public void onReceive(Context context, Intent intent) {
+        @Override
+		public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equals(Intent.ACTION_CONFIGURATION_CHANGED)) {
                 int orientation = MraidDisplayController.this.getDisplayRotation();
@@ -264,7 +266,8 @@ class MraidDisplayController extends MraidAbstractController {
             mTwoPartExpansionView = new MraidView(getView().getContext(), ExpansionStyle.DISABLED,
                     NativeCloseButtonStyle.AD_CONTROLLED, PlacementType.INLINE);
             mTwoPartExpansionView.setOnCloseListener(new MraidView.OnCloseListener() {
-                public void onClose(MraidView view, ViewState newViewState) {
+                @Override
+				public void onClose(MraidView view, ViewState newViewState) {
                     close();
                 }
             });
@@ -318,7 +321,8 @@ class MraidDisplayController extends MraidAbstractController {
         View dimmingView = new View(getView().getContext());
         dimmingView.setBackgroundColor(Color.TRANSPARENT);
         dimmingView.setOnTouchListener(new OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
+            @Override
+			public boolean onTouch(View v, MotionEvent event) {
                 return true;
             }
         });
@@ -374,7 +378,8 @@ class MraidDisplayController extends MraidAbstractController {
 					mCloseButton.setBackgroundDrawable(null);
 				}
                 mCloseButton.setOnClickListener(new OnClickListener() {
-                    public void onClick(View v) {
+                    @Override
+					public void onClick(View v) {
                         MraidDisplayController.this.close();
                     }
                 });

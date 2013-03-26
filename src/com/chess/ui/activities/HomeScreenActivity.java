@@ -93,9 +93,29 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 	protected void onStart() {
 		super.onStart();
 
-		if (AppData.isLiveChess(this)/*!isLCSBound*/) { // bound only if we really need it
-			bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
+		if (AppData.isLiveChess(this)) { // bound only if we really need it
+			Log.d("TEST", "onStart isLCSBound = " + isLCSBound + " in " + HomeScreenActivity.this);
+			if (isLCSBound) {
+				onLiveServiceConnected();
+			} else {
+				bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
+			}
 		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
+		Log.d("CheckUpdateTask", "startDay loaded, = " + startDay);
+
+		if (startDay == 0 || !DateUtils.isToday(startDay)) {
+			checkUpdate();
+		}
+
+		showFullScreenAd();
+		adjustActionBar();
 	}
 
 	@Override
@@ -120,27 +140,6 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		}
 	}
 	
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
-		Log.d("CheckUpdateTask", "startDay loaded, = " + startDay);
-
-		if (startDay == 0 || !DateUtils.isToday(startDay)) {
-			checkUpdate();
-		}
-
-		showFullScreenAd();
-		adjustActionBar();
-
-		if (isLCSBound) {
-			liveService.setOuterChallengeListener(outerChallengeListener);
-			liveService.setChallengeTaskListener(challengeTaskListener);
-
-			executePausedActivityLiveEvents();
-		}
-	}
 
 	public void executePausedActivityLiveEvents() {
 
@@ -203,16 +202,20 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					Log.d(TAG, " onConnected callback, liveService.isConnected() = " + liveService.isConnected());
-					getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveService.isConnected());
-
-					liveService.setOuterChallengeListener(outerChallengeListener);
-					liveService.setChallengeTaskListener(challengeTaskListener);
-
-					executePausedActivityLiveEvents();
+					onLiveServiceConnected();
 				}
 			});
 		}
+	}
+
+	private void onLiveServiceConnected() {
+		Log.d(TAG, " onConnected callback, liveService.isConnected() = " + liveService.isConnected());
+		getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveService.isConnected());
+
+		liveService.setOuterChallengeListener(outerChallengeListener);
+		liveService.setChallengeTaskListener(challengeTaskListener);
+
+		executePausedActivityLiveEvents();
 	}
 
 	@Override

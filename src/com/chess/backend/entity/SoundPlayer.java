@@ -74,6 +74,7 @@ public class SoundPlayer {
 				mediaPlayer.setVolume(0.1f, 0.1f);
 				mediaPlayer.start();
 				mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+					@Override
 					public void onCompletion(MediaPlayer mediaPlayer) {
 						mediaPlayer.release();
 					}

@@ -31,11 +31,13 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
 		gameTacticsActivityFace = gameActivityFace;
 	}
 
+	@Override
 	protected void onBoardFaceSet(BoardFace boardFace) {
 		this.boardFace = (TacticBoardFace) boardFace;
 	}
 
-    public void afterMove() {
+    @Override
+	public void afterMove() {
         boardFace.setMovesCount(boardFace.getHply());
 		gameActivityFace.invalidateGameScreen();
 
@@ -184,7 +186,8 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
 		return boardFace;
 	}
 
-    public void promote(int promote, int col, int row) {
+    @Override
+	public void promote(int promote, int col, int row) {
         boolean found = false;
         TreeSet<Move> moves = boardFace.gen();
         Iterator<Move> iterator = moves.iterator();
@@ -223,6 +226,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
     }
 
 
+	@Override
 	public void setFinished(boolean finished) {
 		this.finished = finished;
 	}

@@ -468,6 +468,7 @@ public class AdView extends WebView {
 			setOnTouchListener(null);
 		} else {
 			setOnTouchListener(new View.OnTouchListener() {
+				@Override
 				public boolean onTouch(View v, MotionEvent event) {
 					return (event.getAction() == MotionEvent.ACTION_MOVE);
 				}
@@ -621,6 +622,7 @@ public class AdView extends WebView {
 		if (mImpressionUrl == null) return;
 
 		new Thread(new Runnable() {
+			@Override
 			public void run() {
 				DefaultHttpClient httpclient = new DefaultHttpClient();
 				try {
@@ -644,6 +646,7 @@ public class AdView extends WebView {
 		if (mClickthroughUrl == null) return;
 
 		new Thread(new Runnable() {
+			@Override
 			public void run() {
 				DefaultHttpClient httpclient = new DefaultHttpClient();
 				HttpGet httpget = new HttpGet(mClickthroughUrl);
@@ -667,6 +670,7 @@ public class AdView extends WebView {
 
 	private Handler mRefreshHandler = new Handler();
 	private Runnable mRefreshRunnable = new Runnable() {
+		@Override
 		public void run() {
 			loadAd();
 		}
@@ -761,6 +765,7 @@ public class AdView extends WebView {
 		return mAutorefreshEnabled;
 	}
 
+	@Override
 	public String getUrl() {
 		return mUrl;
 	}
