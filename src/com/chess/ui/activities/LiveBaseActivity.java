@@ -152,9 +152,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			if (challengeEvent != null) {
 				pausedActivityLiveEvents.remove(LiveEvent.Event.CHALLENGE);
 				if (challengeEvent.isChallengeDelayed()) {
-					outerChallengeListener.showDelayedDialog(challengeEvent.getChallenge());
+					outerChallengeListener.showDelayedDialogImmediately(challengeEvent.getChallenge());
 				} else {
-					outerChallengeListener.showDialog(challengeEvent.getChallenge());
+					outerChallengeListener.showDialogImmediately(challengeEvent.getChallenge());
 				}
 			}
 		}
@@ -293,18 +293,42 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				liveEvent.setChallengeDelayed(true);
 				liveService.getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
 			} else {
-				currentChallenge = challenge;
-				popupItem.setPositiveBtnId(R.string.accept);
-				popupItem.setNegativeBtnId(R.string.decline);
-				showPopupDialog(R.string.you_been_challenged, composeMessage(challenge), CHALLENGE_TAG);
+				showDelayedDialogImmediately(challenge);
 			}
 		}
 
 		@Override
-		public void showDialog(Challenge challenge) {
-			Log.d("LCCLOG_CHALLENGE", "CHALLENGE LISTENER. showDialog");
+		public void showDelayedDialogImmediately(Challenge challenge) {
+			Log.d(TAG, "CHALLENGE showDelayedDialogImmediately -> popupDialogFragment.show ");
+			currentChallenge = challenge;
+			popupItem.setPositiveBtnId(R.string.accept);
+			popupItem.setNegativeBtnId(R.string.decline);
+			showPopupDialog(R.string.you_been_challenged, composeMessage(challenge), CHALLENGE_TAG);
+		}
 
-			Log.d("LCCLOG_CHALLENGE", "CHALLENGE LISTENER. showDialog -> isPaused = " + isPaused);
+		@Override
+		public void showDialogImmediately(Challenge challenge) {
+			if (popupChallengesList.size() > 0) {
+				return;
+			}
+
+			currentChallenge = challenge;
+
+			PopupItem popupItem = new PopupItem();
+			popupItem.setTitle(R.string.you_been_challenged);
+			popupItem.setMessage(composeMessage(challenge));
+			popupItem.setNegativeBtnId(R.string.decline);
+			popupItem.setPositiveBtnId(R.string.accept);
+
+			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
+			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
+			Log.d(TAG, "CHALLENGE showDialogImmediately -> popupDialogFragment.show ");
+			popupChallengesList.add(popupDialogFragment);
+		}
+
+		@Override
+		public void showDialog(Challenge challenge) {
+			Log.d(TAG, "CHALLENGE showDialog -> isPaused = " + isPaused);
 			if (isPaused) {
 				LiveEvent liveEvent = new LiveEvent();
 				liveEvent.setEvent(LiveEvent.Event.CHALLENGE);
@@ -312,24 +336,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				liveEvent.setChallengeDelayed(false);
 				liveService.getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
 			} else {
-				if (popupChallengesList.size() > 0) {
-
-					Log.d("LCCLOG_CHALLENGE", "CHALLENGE LISTENER. showDialog -> popupManager.size() > 0 , return" );
-					return;
-				}
-
-				currentChallenge = challenge;
-
-				PopupItem popupItem = new PopupItem();
-				popupItem.setTitle(R.string.you_been_challenged);
-				popupItem.setMessage(composeMessage(challenge));
-				popupItem.setNegativeBtnId(R.string.decline);
-				popupItem.setPositiveBtnId(R.string.accept);
-
-				PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
-				popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
-				Log.d("LCCLOG_CHALLENGE", "CHALLENGE LISTENER. showDialog -> popupDialogFragment.show ");
-				popupChallengesList.add(popupDialogFragment);
+				showDialogImmediately(challenge);
 			}
 		}
 
@@ -538,7 +545,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	protected void onLiveServiceConnected() {
-		Log.d("TEST", " onLiveServiceConnected callback, liveService.isConnected() = " + liveService.isConnected()
+		Log.d("TEST", "onLiveConnected callback, liveService.isConnected() = " + liveService.isConnected()
 				+ " in " + LiveBaseActivity.this);
 		Log.d(TAG, " onLiveServiceConnected callback, liveService.isConnected() = " + liveService.isConnected());
 		getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveService.isConnected());

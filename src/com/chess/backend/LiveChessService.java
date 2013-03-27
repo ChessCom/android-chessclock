@@ -126,7 +126,7 @@ public class LiveChessService extends Service {
 	}
 
 	public void onLiveConnected() {
-		Log.d(TAG, " onLiveConnected, connectionUpdateFace = " + connectionUpdateFace);
+		Log.d(TAG, "onLiveConnected, connectionUpdateFace = " + connectionUpdateFace);
 		if (connectionUpdateFace != null) {
 			connectionUpdateFace.onConnected();
 		}
