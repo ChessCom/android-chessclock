@@ -8,8 +8,12 @@ import android.os.Bundle;
 import android.view.*;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.share.ShareFace;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.StaticData;
+import com.chess.model.BaseGameItem;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameActivityFace;
@@ -267,4 +271,62 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	protected PopupCustomViewFragment getEndPopupDialogFragment(){
 		return (PopupCustomViewFragment) getSupportFragmentManager().findFragmentByTag(END_GAME_TAG);
 	}
+
+	public class ShareItem implements ShareFace {
+
+		private final String gameLink;
+		private BaseGameItem currentGame;
+		private long gameId;
+		private String gameType;
+
+		public ShareItem(BaseGameItem currentGame, long gameId, String gameType) {
+			this.currentGame = currentGame;
+			this.gameId = gameId;
+			this.gameType = gameType;
+			if (gameType.equals(getString(R.string.live))) {
+				gameLink = RestHelper.getLiveGameLink(gameId);
+			} else {
+				gameLink =  RestHelper.getOnlineGameLink(gameId);
+			}
+		}
+
+		@Override
+		public String composeTwitterMessage() {
+			String vsStr = getString(R.string.vs);
+			return currentGame.getWhiteUsername() + StaticData.SYMBOL_SPACE + vsStr + StaticData.SYMBOL_SPACE
+					+ currentGame.getBlackUsername() +StaticData.SYMBOL_SPACE + gameType + gameLink
+					+ getString(R.string.via_chesscom);
+		}
+
+		@Override
+		public String getCaption() {
+			return StaticData.SYMBOL_EMPTY;
+		}
+
+		@Override
+		public String getDescription() {
+			String vsStr = getString(R.string.vs);
+			return getWhitePlayerName() + StaticData.SYMBOL_SPACE
+					+ vsStr + StaticData.SYMBOL_SPACE+ getBlackPlayerName();
+		}
+
+		@Override
+		public String getPicture() {
+			return "http://images.chesscomfiles.com/images/play-chess-hero.png";
+		}
+
+		@Override
+		public String getLink() {
+			return RestHelper.getOnlineGameLink(gameId);
+		}
+
+		@Override
+		public String getName() {
+			String vsStr = getString(R.string.vs);
+			return "Chess: " + currentGame.getWhiteUsername() + StaticData.SYMBOL_SPACE
+					+ vsStr + StaticData.SYMBOL_SPACE + currentGame.getBlackUsername(); // TODO adjust i18n
+		}
+	}
+
+
 }

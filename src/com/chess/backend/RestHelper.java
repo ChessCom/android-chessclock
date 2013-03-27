@@ -354,4 +354,12 @@ public class RestHelper {
 		String fullUrl = formUrl(loadItem.getRequestParams());
 		return loadItem.getLoadPath() + fullUrl;
 	}
+
+	public static String getOnlineGameLink(long gameId) {
+		return "http://www.chess.com/echess/game?id=" + gameId;
+	}
+
+	public static String getLiveGameLink(long gameId) {
+		return "http://www.chess.com/livechess/game?id=" + gameId;
+	}
 }

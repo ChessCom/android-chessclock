@@ -13,5 +13,6 @@
     <string name="locale_change">ロケールは変更されました</string>
     <string name="need_app_restart_to_apply">あなたが適用されるためにアプリを再起動する必要が</string>
     <string name="restart">再起動</string>
+    <string name="share">これを共有</string>
 
 </resources>

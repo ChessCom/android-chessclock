@@ -13,5 +13,6 @@
     <string name="locale_change">Locale a changé</string>
     <string name="need_app_restart_to_apply">Vous devez redémarrer application pour appliquer</string>
     <string name="restart">Reprendre</string>
+    <string name="share">Partager</string>
 
 </resources>

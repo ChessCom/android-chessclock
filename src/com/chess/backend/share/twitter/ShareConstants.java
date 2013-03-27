@@ -9,8 +9,8 @@ public class ShareConstants {
 
 	/*Twitter constants*/
 
-    public static final String CONSUMER_KEY = "LyHy94VBiaHEmmYbpbGNmg";
-    public static final String CONSUMER_SECRET= "j3xPpXPup77pjlVi2ZvNcXm5Zo5XWaooEnbOov81o";
+    public static final String CONSUMER_KEY = "j6ExpY8RXthNBTvZxrEGdQ";
+    public static final String CONSUMER_SECRET= "F6B7Fml7KpJpBNuHNxCj4EiDN3cEBuHT5Yr7RExCc";
 
     public static final String REQUEST_URL = "http://api.twitter.com/oauth/request_token";
     public static final String ACCESS_URL = "http://api.twitter.com/oauth/access_token";

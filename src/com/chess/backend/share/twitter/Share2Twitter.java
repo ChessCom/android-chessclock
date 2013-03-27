@@ -7,14 +7,6 @@ import com.chess.backend.share.ShareFace;
 
 public class Share2Twitter extends ShareObject {
 
-//    [CourseTitle] [CourseStartDate] [Location.locationname] [Location.locationplacename]
-//            [permalink]
-
-//    [PageTitle] [PublishDate]
-//            [Ingress]
-//
-//            [permalink]
-
 	public Share2Twitter(Context context,int imageId, String name) {
 		super(context, imageId, name);
 	}

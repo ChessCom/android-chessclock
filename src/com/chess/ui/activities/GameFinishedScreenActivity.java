@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.share.facebook.Share2Facebook;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -21,6 +23,7 @@ import com.chess.model.GameOnlineItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.fragments.TweetPreviewFragment;
 import com.chess.ui.views.ChessBoardNetworkView;
 import com.chess.ui.views.ChessBoardOnlineView;
 import com.chess.ui.views.GamePanelView;
@@ -45,8 +48,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 	private GameOnlineItem currentGame;
 	private long gameId;
+	private View shareButtonsLay;
 
-    @Override
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -58,6 +62,11 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	@Override
 	protected void widgetsInit() {
 		super.widgetsInit();
+
+		shareButtonsLay = findViewById(R.id.shareButtonsLay);
+		findViewById(R.id.shareFaceBookBtn).setOnClickListener(this);
+		findViewById(R.id.shareTwitterBtn).setOnClickListener(this);
+
 
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
 		gamePanelView.hideChatButton();
@@ -77,7 +86,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
-				getString(R.string.emailgame)};
+				getString(R.string.emailgame),
+				getString(R.string.share)};
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener();
 
@@ -120,7 +130,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	}
 
 	private void adjustBoardForGame() {
-		if(currentGame == null)
+		if (currentGame == null)
 			return;
 
 		if (currentGame.getGameType() == BaseGameItem.CHESS_960)
@@ -165,8 +175,8 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 	@Override
 	public void invalidateGameScreen() {
-        whitePlayerLabel.setText(getWhitePlayerName());
-        blackPlayerLabel.setText(getBlackPlayerName());
+		whitePlayerLabel.setText(getWhitePlayerName());
+		blackPlayerLabel.setText(getBlackPlayerName());
 
 		boardView.setMovesLog(getBoardFace().getMoveListSAN());
 	}
@@ -238,7 +248,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 	@Override
 	public Boolean isUserColorWhite() {
-		if (currentGame != null )
+		if (currentGame != null)
 			return currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(this));
 		else
 			return null;
@@ -292,6 +302,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 		private final int ECHESS_SETTINGS = 0;
 		private final int EMAIL_GAME = 1;
+		private final int SHARE = 2;
 
 		@Override
 		public void onClick(DialogInterface dialogInterface, int i) {
@@ -301,6 +312,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 					break;
 				case EMAIL_GAME:
 					sendPGN();
+					break;
+				case SHARE:
+					shareButtonsLay.setVisibility(View.VISIBLE);
 					break;
 			}
 		}
@@ -322,7 +336,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 		StringBuilder timeControl = new StringBuilder();
 		timeControl.append("1 in ").append(daysPerMove);
-		if (daysPerMove > 1){
+		if (daysPerMove > 1) {
 			timeControl.append(" days");
 		} else {
 			timeControl.append(" day");
@@ -352,6 +366,22 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
 
 		adjustBoardForGame();
+	}
+
+	@Override
+	public void onClick(View view) {
+		super.onClick(view);
+
+		if (view.getId() == R.id.shareFaceBookBtn) {
+			Share2Facebook share2Facebook = new Share2Facebook(this, R.drawable.ic_facebook, "Facebook");
+			ShareItem shareItem = new ShareItem(currentGame, gameId, getString(R.string.online));
+			share2Facebook.shareMe(shareItem);
+		} else if (view.getId() == R.id.shareTwitterBtn) {
+			ShareItem shareItem = new ShareItem(currentGame, gameId, getString(R.string.online));
+
+			TweetPreviewFragment previewFragment = TweetPreviewFragment.newInstance(shareItem.composeTwitterMessage());
+			previewFragment.show(getSupportFragmentManager(), "tweet preview");
+		}
 	}
 
 }

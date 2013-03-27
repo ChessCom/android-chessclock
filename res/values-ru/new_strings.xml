@@ -13,5 +13,6 @@
     <string name="locale_change">Язык изменился</string>
     <string name="need_app_restart_to_apply">Необходимо перезапустить приложение, чтобы применить</string>
     <string name="restart">Перезапуск</string>
+    <string name="share">Поделиться</string>
 
 </resources>

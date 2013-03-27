@@ -478,5 +478,7 @@
 
     <string name="announcement.server_restarting">ALERT: Chess.com will be restarting the servers in %1$s minutes!</string>
     <string name="chess_com_live">Chess.com Live</string>
+    <string name="chars_left">Chars left</string>
+    <string name="too_much_chars">Too much chars</string>
 
 </resources>
