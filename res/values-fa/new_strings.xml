@@ -13,5 +13,6 @@
     <string name="locale_change">زبان تغییر کرده است</string>
     <string name="need_app_restart_to_apply">شما نیاز به راه اندازی مجدد برنامه به درخواست</string>
     <string name="restart">شروع دوباره</string>
+    <string name="share">به اشتراک گذاشتن</string>
 
 </resources>

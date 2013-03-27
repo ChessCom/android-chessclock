@@ -6,7 +6,7 @@
         android:top="@dimen/button_margin4stroke"
         android:right="@dimen/button_margin4stroke"
         android:bottom="@dimen/button_margin4stroke"
-        android:drawable="@drawable/button_f">
+        android:drawable="@drawable/button_twitter">
 
     </item>
     <item >

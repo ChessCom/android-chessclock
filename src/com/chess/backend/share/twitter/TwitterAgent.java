@@ -17,7 +17,7 @@ import oauth.signpost.OAuth;
  * @created 24.02.12
  * @modified 24.02.12
  */
-class TwitterAgent {
+public class TwitterAgent {
 
 	private final SharedPreferences prefs;
 	private final Handler mTwitterHandler = new Handler();

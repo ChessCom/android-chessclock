@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.*;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.Menu;
@@ -17,6 +16,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.share.facebook.Share2Facebook;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
@@ -30,6 +30,7 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.TweetPreviewFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.views.ChessBoardNetworkView;
 import com.chess.ui.views.ChessBoardOnlineView;
@@ -54,6 +55,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private static final String ERROR_TAG = "send request failed popup";
 
 	private View submitButtonsLay;
+	private View shareButtonsLay;
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 	private AbortGameUpdateListener abortGameUpdateListener;
@@ -86,54 +88,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		setContentView(R.layout.boardview_online);
 		init();
 		widgetsInit();
-	}
-
-	@Override
-	protected void widgetsInit() {
-		super.widgetsInit();
-
-		infoLabelTxt = (TextView) findViewById(R.id.thinking);
-
-		submitButtonsLay = findViewById(R.id.submitButtonsLay);
-		findViewById(R.id.submitBtn).setOnClickListener(this);
-		findViewById(R.id.cancelBtn).setOnClickListener(this);
-
-		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
-		gamePanelView.enableGameControls(false);
-
-		boardView = (ChessBoardOnlineView) findViewById(R.id.boardview);
-		boardView.setFocusable(true);
-		boardView.setGamePanelView(gamePanelView);
-		setBoardView(boardView);
-
-		if (extras.getBoolean(AppConstants.NOTIFICATION, false)) {
-			ChessBoardOnline.resetInstance();
-		}
-
-		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
-		boardView.setGameActivityFace(this);
-		boardView.lockBoard(true);
-
-		boardUpdateFilter = new IntentFilter(IntentConstants.BOARD_UPDATE);
-	}
-
-	public void init() {
-		gameInfoItem = (GameListCurrentItem) extras.getParcelable(BaseGameItem.GAME_INFO_ITEM);
-
-		gameId = gameInfoItem.getGameId();
-
-		menuOptionsDialogListener = new MenuOptionsDialogListener();
-		abortGameUpdateListener = new AbortGameUpdateListener();
-		drawOfferedUpdateListener = new DrawOfferedUpdateListener();
-
-		gameStateUpdateListener = new GameStateUpdateListener();
-		startGameUpdateListener = new StartGameUpdateListener();
-		getGameUpdateListener = new GetGameUpdateListener();
-		sendMoveUpdateListener = new SendMoveUpdateListener();
-		gamesListUpdateListener = new GamesListUpdateListener();
-		createChallengeUpdateListener = new CreateChallengeUpdateListener();
-
-		showActionRefresh = true;
 	}
 
 	@Override
@@ -179,9 +133,36 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		unRegisterMyReceiver(moveUpdateReceiver);
 
 		DataHolder.getInstance().setInOnlineGame(gameId, false);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+		if (HONEYCOMB_PLUS_API) {
 			dismissDialogs();
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (updateGameStateTask != null) {
+			updateGameStateTask.cancel(true);
+		}
+	}
+
+	public void init() {
+		gameInfoItem = (GameListCurrentItem) extras.getParcelable(BaseGameItem.GAME_INFO_ITEM);
+
+		gameId = gameInfoItem.getGameId();
+
+		menuOptionsDialogListener = new MenuOptionsDialogListener();
+		abortGameUpdateListener = new AbortGameUpdateListener();
+		drawOfferedUpdateListener = new DrawOfferedUpdateListener();
+
+		gameStateUpdateListener = new GameStateUpdateListener();
+		startGameUpdateListener = new StartGameUpdateListener();
+		getGameUpdateListener = new GetGameUpdateListener();
+		sendMoveUpdateListener = new SendMoveUpdateListener();
+		gamesListUpdateListener = new GamesListUpdateListener();
+		createChallengeUpdateListener = new CreateChallengeUpdateListener();
+
+		showActionRefresh = true;
 	}
 
 	private class MoveUpdateReceiver extends BroadcastReceiver {
@@ -238,6 +219,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	private void adjustBoardForGame() {
 		boardView.setFinished(false);
+		shareButtonsLay.setVisibility(View.GONE);
 
 		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
 
@@ -817,24 +799,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		if(currentGame == null)
 			return;
 
-//		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
 		TextView yourRatingTxt = (TextView) layout.findViewById(R.id.yourRatingTxt);
-//		endGameTitleTxt.setText(R.string.game_over); // already set to game over
 		endGameReasonTxt.setText(message);
 
-
 		int currentPlayerNewRating = getCurrentPlayerRating();
-
-//		int ratingDiff; // TODO fill difference in ratings
-//		String sign;
-//		if(currentPlayerRating < currentPlayerNewRating){ // 800 1200
-//			ratingDiff = currentPlayerNewRating - currentPlayerRating;
-//			sign = StaticData.SYMBOL_PLUS;
-//		} else { // 800 700
-//			ratingDiff = currentPlayerRating - currentPlayerNewRating;
-//			sign = StaticData.SYMBOL_MINUS;
-//		}
 
 		String rating = getString(R.string.your_end_game_rating_online, currentPlayerNewRating);
 		yourRatingTxt.setText(rating);
@@ -855,9 +824,11 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 		if (AppUtils.isNeedToUpgrade(this)) {
 			/*LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-        MopubHelper.showRectangleAd(adViewWrapper, this);*/
+        	MopubHelper.showRectangleAd(adViewWrapper, this);*/
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}
+		// show share buttons
+		shareButtonsLay.setVisibility(View.VISIBLE);
 	}
 
 	private int getCurrentPlayerRating() {
@@ -904,17 +875,18 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			Intent intent = new Intent(this, OnlineNewGameActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
+		} else if (view.getId() == R.id.shareFaceBookBtn) {
+			Share2Facebook share2Facebook = new Share2Facebook(this, R.drawable.ic_facebook, "Facebook");
+			ShareItem shareItem = new ShareItem(currentGame, gameId, getString(R.string.online));
+			share2Facebook.shareMe(shareItem);
+		} else if (view.getId() == R.id.shareTwitterBtn) {
+			ShareItem shareItem = new ShareItem(currentGame, gameId, getString(R.string.online));
+
+			TweetPreviewFragment previewFragment = TweetPreviewFragment.newInstance(shareItem.composeTwitterMessage());
+			previewFragment.show(getSupportFragmentManager(), "tweet preview");
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			sendRematch();
 			dismissDialogs();
-		}
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		if (updateGameStateTask != null) {
-			updateGameStateTask.cancel(true);
 		}
 	}
 
@@ -939,6 +911,39 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		loadItem.addRequestParams(RestHelper.P_OPPONENT, opponent);
 
 		new GetStringObjTask(createChallengeUpdateListener).executeTask(loadItem);
+	}
+
+	@Override
+	protected void widgetsInit() {
+		super.widgetsInit();
+
+		infoLabelTxt = (TextView) findViewById(R.id.thinking);
+
+		submitButtonsLay = findViewById(R.id.submitButtonsLay);
+		findViewById(R.id.submitBtn).setOnClickListener(this);
+		findViewById(R.id.cancelBtn).setOnClickListener(this);
+
+		shareButtonsLay = findViewById(R.id.shareButtonsLay);
+		findViewById(R.id.shareFaceBookBtn).setOnClickListener(this);
+		findViewById(R.id.shareTwitterBtn).setOnClickListener(this);
+
+		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
+		gamePanelView.enableGameControls(false);
+
+		boardView = (ChessBoardOnlineView) findViewById(R.id.boardview);
+		boardView.setFocusable(true);
+		boardView.setGamePanelView(gamePanelView);
+		setBoardView(boardView);
+
+		if (extras.getBoolean(AppConstants.NOTIFICATION, false)) {
+			ChessBoardOnline.resetInstance();
+		}
+
+		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
+		boardView.setGameActivityFace(this);
+		boardView.lockBoard(true);
+
+		boardUpdateFilter = new IntentFilter(IntentConstants.BOARD_UPDATE);
 	}
 
 	private class CreateChallengeUpdateListener extends ChessUpdateListener {

@@ -48,18 +48,17 @@ public class FacebookConnector {
         asyncRunner.logout(this.context, new LogoutRequestListener());
 	}
 
-	public void postMessageOnWall(String msg) {
+	public void postMessageOnWall(Bundle params) {
 		if (facebook.isSessionValid()) {
-		    Bundle parameters = new Bundle();
-		    parameters.putString("message", msg);
 		    try {
-				String response = facebook.request("me/feed", parameters,"POST");
+				String response = facebook.request("me/feed", params, "POST");
 				System.out.println(response);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		} else {
-			login();
+			facebook.dialog(context, "feed", params, new UpdateStatusListener());
+//			login();
 		}
 	}
 

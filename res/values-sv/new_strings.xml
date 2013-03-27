@@ -13,5 +13,6 @@
     <string name="locale_change">Locale har förändrats</string>
     <string name="need_app_restart_to_apply">Du måste starta om appen att tillämpa</string>
     <string name="restart">Starta</string>
+    <string name="share">Dela</string>
 
 </resources>

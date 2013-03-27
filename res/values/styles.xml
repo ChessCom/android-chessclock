@@ -47,9 +47,16 @@
     </style>
 
 
-    <style name="Text.Button.Login" >
-        <item name="android:background">@drawable/button_f_selector</item>
+    <style name="Text.Button.Facebook" >
+        <item name="android:background">@drawable/button_facebook_selector</item>
 		<item name="android:paddingLeft">@dimen/button_login_fb_left_padding</item>
+		<item name="android:drawableLeft">@drawable/ic_facebook</item>
+    </style>
+
+    <style name="Text.Button.Twitter" >
+        <item name="android:background">@drawable/button_twitter_selector</item>
+		<item name="android:paddingLeft">@dimen/button_login_fb_left_padding</item>
+        <item name="android:drawableLeft">@drawable/ic_twitter</item>
     </style>
 
 

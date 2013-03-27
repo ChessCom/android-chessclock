@@ -13,5 +13,6 @@
     <string name="locale_change">语言环境发生了变化</string>
     <string name="need_app_restart_to_apply">您需要重新启动应用程序的应用</string>
     <string name="restart">重新开始</string>
+    <string name="share">分享这</string>
 
 </resources>
