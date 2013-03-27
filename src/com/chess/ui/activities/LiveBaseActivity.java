@@ -137,9 +137,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	public void executePausedActivityLiveEvents() {
 
 		Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = liveService.getPausedActivityLiveEvents();
-		if (pausedActivityLiveEvents.size() > 0) {
-			Log.d("LCCLOG", "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
-		}
+		Log.d(TAG, "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
 
 		if (pausedActivityLiveEvents.size() > 0) {
 
