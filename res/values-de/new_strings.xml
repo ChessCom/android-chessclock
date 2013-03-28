@@ -13,6 +13,6 @@
     <string name="locale_change">Locale hat sich geändert</string>
     <string name="need_app_restart_to_apply">Sie müssen App zu bewerben starten</string>
     <string name="restart">Starten</string>
-    <string name="share">Aktien dieser</string>
+    <string name="share_game">Spiel Teilen</string>
 
 </resources>

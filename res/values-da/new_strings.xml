@@ -13,6 +13,6 @@
     <string name="locale_change">Locale har ændret sig</string>
     <string name="need_app_restart_to_apply">Du skal genstarte app til at anvende</string>
     <string name="restart">Genstart</string>
-    <string name="share">dele dette</string>
+    <string name="share_game">Dele Dette</string>
 
 </resources>

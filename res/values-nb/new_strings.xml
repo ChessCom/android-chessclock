@@ -13,6 +13,6 @@
     <string name="locale_change">Locale har endret</string>
     <string name="need_app_restart_to_apply">Du må starte programmet til å søke</string>
     <string name="restart">Omstart</string>
-    <string name="share">dele denne</string>
+    <string name="share_game">Del Spillet</string>
 
 </resources>

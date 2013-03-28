@@ -84,7 +84,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		menuOptionsItems = new CharSequence[]{
 				getString(R.string.settings),
 				getString(R.string.emailgame),
-				getString(R.string.share)};
+				getString(R.string.share_game)};
 
 		menuOptionsDialogListener = new MenuOptionsDialogListener();
 
@@ -376,7 +376,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 			shareIntent.setType("text/plain");
 			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
 			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
-			startActivity(Intent.createChooser(shareIntent, getString(R.string.share)));
+			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
 		}
 	}
 

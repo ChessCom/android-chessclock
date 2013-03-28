@@ -13,6 +13,6 @@
     <string name="locale_change">लोकेल बदल गया है</string>
     <string name="need_app_restart_to_apply">आप को लागू करने के लिए ऐप्लिकेशन पुन: प्रारंभ करने की आवश्यकता है</string>
     <string name="restart">पुनर्प्रारंभ करें</string>
-    <string name="share">इस साझा</string>
+    <string name="share_game">शेयर खेल</string>
 
 </resources>

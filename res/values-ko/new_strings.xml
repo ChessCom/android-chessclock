@@ -13,6 +13,6 @@
     <string name="locale_change">로케일이 변경되었습니다</string>
     <string name="need_app_restart_to_apply">당신은 적용 할 응용 프로그램을 다시 시작해야합니다</string>
     <string name="restart">다시 시작</string>
-    <string name="share">이 항목을 공유</string>
+    <string name="share_game">공유 게임</string>
 
 </resources>

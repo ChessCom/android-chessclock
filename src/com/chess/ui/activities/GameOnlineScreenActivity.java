@@ -817,6 +817,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.shareBtn).setOnClickListener(this);
 
 		if (AppUtils.isNeedToUpgrade(this)) {
 			/*LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
@@ -876,7 +877,7 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			shareIntent.setType("text/plain");
 			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
 			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
-			startActivity(Intent.createChooser(shareIntent, getString(R.string.share)));
+			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			sendRematch();
 			dismissDialogs();

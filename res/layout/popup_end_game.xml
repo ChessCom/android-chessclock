@@ -99,7 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Text.Button.Twitter"
-            android:text="@string/share"
+            android:text="@string/share_game"
             android:drawableLeft="@null"
             />
 	</LinearLayout>

@@ -774,6 +774,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.shareBtn).setOnClickListener(this);
 
 		if (AppUtils.isNeedToUpgrade(this)) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
@@ -826,7 +827,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			shareIntent.setType("text/plain");
 			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
 			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
-			startActivity(Intent.createChooser(shareIntent, getString(R.string.share)));
+			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			liveService.rematch();
 			dismissDialogs();

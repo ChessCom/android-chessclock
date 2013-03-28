@@ -13,6 +13,6 @@
     <string name="locale_change">Locale değişti</string>
     <string name="need_app_restart_to_apply">Sen uygulamak için uygulamayı yeniden başlatmanız gerekir</string>
     <string name="restart">Yeniden</string>
-    <string name="share">Bunu paylaşmak</string>
+    <string name="share_game">Hisse Oyunu</string>
 
 </resources>

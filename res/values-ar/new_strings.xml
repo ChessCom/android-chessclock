@@ -14,6 +14,6 @@
     <string name="locale_change">لقد تغيرت لغة</string>
     <string name="need_app_restart_to_apply">تحتاج إلى إعادة تشغيل التطبيق لتطبيق</string>
     <string name="restart">إعادة تشغيل</string>
-    <string name="share">مشاركة هذه</string>
+    <string name="share_game">شارك اللعبة</string>
 
 </resources>

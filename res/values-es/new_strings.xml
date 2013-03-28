@@ -13,6 +13,6 @@
     <string name="locale_change">Configuración regional ha cambiado</string>
     <string name="need_app_restart_to_apply">Es necesario reiniciar la aplicación para aplicar</string>
     <string name="restart">Reanudar</string>
-    <string name="share">Compartir esta</string>
+    <string name="share_game">Compartir Juego</string>
 
 </resources>
