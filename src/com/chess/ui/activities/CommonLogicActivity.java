@@ -318,7 +318,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 			if (show){
 				showPopupHardProgressDialog(R.string.signingin);
 			} else {
-				if(isPaused)
+				if (isPaused)
 					return;
 
 				dismissProgressDialog();

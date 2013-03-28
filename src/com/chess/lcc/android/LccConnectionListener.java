@@ -30,7 +30,7 @@ public class LccConnectionListener implements ConnectionListener {
 	@Override
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {
         lccHelper.setUser(user);
-		Log.d(TAG, "lccHelper instance in onConnectionEstablished = " + lccHelper);
+		Log.d(TAG, "onConnectionEstablished: lccHelper = " + lccHelper);
 		lccHelper.setConnected(true);
 		lccHelper.setFriends(settings.getFriends());
 		lccHelper.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());

@@ -87,7 +87,7 @@ public class LccChallengeTaskRunner {
         runRejectChallengeTask(currentChallenge);
         final List<Challenge> retainMe = new ArrayList<Challenge>();
         for (Challenge challenge : challenges.values()) {
-            if(!challenge.equals(currentChallenge))
+            if (!challenge.equals(currentChallenge))
                 retainMe.add(challenge);
         }
 

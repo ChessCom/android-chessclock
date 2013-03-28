@@ -36,7 +36,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			"c8b7", "d3e5", "d8c8", "h1c1", "e8g8", "g6d3"
 			/*, "g8g5", "e5g6", "e7f7", "g6e5", "g5e5", "d4e5", "f6e4", "h4h1", "f7f2"*/};
 
-	private static final String TAG = "LCCLOG-LccHelper";
+	private static final String TAG = "LccLog-LccHelper";
 	public static final int OWN_SEEKS_LIMIT = 3;
 
 	private final LccChatListener chatListener;
@@ -231,10 +231,11 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 		String userName = AppData.getUserName(context);
 		String pass = AppData.getPassword(context);
+		boolean emptyPassword = pass.equals(StaticData.SYMBOL_EMPTY);
 
-		if (!useCurrentCredentials) {
+		if (!useCurrentCredentials) { // todo: rename flag
 
-			if (pass.equals(StaticData.SYMBOL_EMPTY) || RestHelper.IS_TEST_SERVER_MODE) {
+			if (emptyPassword || RestHelper.IS_TEST_SERVER_MODE) {
 				String sessionId = AppData.getUserSessionId(context);
 				connectBySessionId(sessionId);
 			} else {
@@ -242,8 +243,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			}
 
 		} else {
-
-			if (!pass.equals(StaticData.SYMBOL_EMPTY) && !RestHelper.IS_TEST_SERVER_MODE) {
+			if (!emptyPassword && !RestHelper.IS_TEST_SERVER_MODE) {
 				connectByCreds(userName, pass);
 			} else {
 				liveChessClientEventListener.onSessionExpired(context.getString(R.string.session_expired));
@@ -254,14 +254,14 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void connectByCreds(String userName, String pass) {
-//		Log.d("LCC-CONNECTION", "connectByCreds : user = " + userName + " pass = " + pass); // do not post in prod
-		Log.d("LCC-CONNECTION", "connectByCreds : hidden"); // do not post in pod
+//		Log.d(TAG, "connectByCreds : user = " + userName + " pass = " + pass); // do not post in prod
+		Log.d(TAG, "connectByCreds : hidden"); // do not post in pod
 		lccClient.connect(userName, pass, connectionListener);
 		liveChessClientEventListener.onConnecting();
 	}
 
 	public void connectBySessionId(String sessionId) {
-		Log.d("LCC-CONNECTION", "connectBySessionId : sessionId = " + sessionId);
+		Log.d(TAG, "connectBySessionId : sessionId = " + sessionId);
 		lccClient.connect(sessionId, connectionListener);
 		liveChessClientEventListener.onConnecting();
 	}

@@ -157,9 +157,9 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			if (challengeEvent != null) {
 				pausedActivityLiveEvents.remove(LiveEvent.Event.CHALLENGE);
 				if (challengeEvent.isChallengeDelayed()) {
-					outerChallengeListener.showDelayedDialog(challengeEvent.getChallenge());
+					outerChallengeListener.showDelayedDialogImmediately(challengeEvent.getChallenge());
 				} else {
-					outerChallengeListener.showDialog(challengeEvent.getChallenge());
+					outerChallengeListener.showDialogImmediately(challengeEvent.getChallenge());
 				}
 			}
 		}
@@ -207,7 +207,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 	}
 
 	private void onLiveServiceConnected() {
-		Log.d(TAG, " onConnected callback, liveService.isConnected() = " + liveService.isConnected());
+		Log.d(TAG, "onLiveServiceConnected callback, liveService.isConnected() = " + liveService.isConnected());
 		getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveService.isConnected());
 
 		liveService.setOuterChallengeListener(outerChallengeListener);
@@ -501,11 +501,38 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 				liveEvent.setChallengeDelayed(true);
 				liveService.getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
 			} else {
-				currentChallenge = challenge;
-				popupItem.setPositiveBtnId(R.string.accept);
-				popupItem.setNegativeBtnId(R.string.decline);
-				showPopupDialog(R.string.you_been_challenged, composeMessage(challenge), CHALLENGE_TAG);
+				showDelayedDialogImmediately(challenge);
 			}
+		}
+
+		@Override
+		public void showDelayedDialogImmediately(Challenge challenge) {
+			Log.d(TAG, "CHALLENGE showDelayedDialogImmediately -> popupDialogFragment.show ");
+			currentChallenge = challenge;
+			popupItem.setPositiveBtnId(R.string.accept);
+			popupItem.setNegativeBtnId(R.string.decline);
+			showPopupDialog(R.string.you_been_challenged, composeMessage(challenge), CHALLENGE_TAG);
+		}
+
+		@Override
+		public void showDialogImmediately(Challenge challenge) {
+			if (popupManager.size() > 0) {
+				return;
+			}
+
+			currentChallenge = challenge;
+
+			PopupItem popupItem = new PopupItem();
+			popupItem.setTitle(R.string.you_been_challenged);
+			popupItem.setMessage(composeMessage(challenge));
+			popupItem.setNegativeBtnId(R.string.decline);
+			popupItem.setPositiveBtnId(R.string.accept);
+
+			Log.d(TAG, "CHALLENGE showDialogImmediately -> popupDialogFragment.show ");
+			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
+			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
+
+			popupManager.add(popupDialogFragment);
 		}
 
 		@Override
@@ -517,23 +544,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 				liveEvent.setChallengeDelayed(false);
 				liveService.getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
 			} else {
-
-				if (popupManager.size() > 0) {
-					return;
-				}
-
-				currentChallenge = challenge;
-
-				PopupItem popupItem = new PopupItem();
-				popupItem.setTitle(R.string.you_been_challenged);
-				popupItem.setMessage(composeMessage(challenge));
-				popupItem.setNegativeBtnId(R.string.decline);
-				popupItem.setPositiveBtnId(R.string.accept);
-
-				PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
-				popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
-
-				popupManager.add(popupDialogFragment);
+				showDialogImmediately(challenge);
 			}
 		}
 
