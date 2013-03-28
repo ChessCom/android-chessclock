@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.share.facebook.Share2Facebook;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -27,7 +26,6 @@ import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupCustomViewFragment;
-import com.chess.ui.fragments.TweetPreviewFragment;
 import com.chess.ui.views.ChessBoardLiveView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.InneractiveAdHelper;
@@ -64,7 +62,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private Button submitBtn;
 	private String warningMessage;
 	private String boardDebug; // temp
-	private View shareButtonsLay;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -117,10 +114,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		submitBtn = (Button) findViewById(R.id.submitBtn);
 		submitBtn.setOnClickListener(this);
 		findViewById(R.id.cancelBtn).setOnClickListener(this);
-
-		shareButtonsLay = findViewById(R.id.shareButtonsLay);
-		findViewById(R.id.shareFaceBookBtn).setOnClickListener(this);
-		findViewById(R.id.shareTwitterBtn).setOnClickListener(this);
 
 		gamePanelView.enableAnalysisMode(false);
 
@@ -211,7 +204,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	private void onGameStarted() {
 		showSubmitButtonsLay(false);
-		shareButtonsLay.setVisibility(View.GONE);
+
 		getSoundPlayer().playGameStart();
 
 		currentGame = liveService.getGameItem();
@@ -791,9 +784,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		} else if (message.contains(getString(R.string.won_game_abandoned))) {
 			showFairPolicyLink(rulesLinkTxt);
 		}
-
-		// show share buttons
-		shareButtonsLay.setVisibility(View.VISIBLE);
 	}
 
 	private void showFairPolicyLink(TextView rulesLinkTxt) {
@@ -829,15 +819,14 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			startActivity(intent);
 		} else if (view.getId() == R.id.rulesLinkTxt) {
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.fair_play_policy_url))));
-		} else if (view.getId() == R.id.shareFaceBookBtn) {
-			Share2Facebook share2Facebook = new Share2Facebook(this, R.drawable.ic_facebook, "Facebook");
-			ShareItem shareItem = new ShareItem(currentGame, currentGame.getGameId(), getString(R.string.live));
-			share2Facebook.shareMe(shareItem);
-		} else if (view.getId() == R.id.shareTwitterBtn) {
+		} else if (view.getId() == R.id.shareBtn) {
 			ShareItem shareItem = new ShareItem(currentGame, currentGame.getGameId(), getString(R.string.live));
 
-			TweetPreviewFragment previewFragment = TweetPreviewFragment.newInstance(shareItem.composeTwitterMessage());
-			previewFragment.show(getSupportFragmentManager(), "tweet preview");
+			Intent shareIntent = new Intent(Intent.ACTION_SEND);
+			shareIntent.setType("text/plain");
+			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
+			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
+			startActivity(Intent.createChooser(shareIntent, getString(R.string.share)));
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			liveService.rematch();
 			dismissDialogs();

@@ -9,7 +9,6 @@ import android.view.*;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.share.ShareFace;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -272,7 +271,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 		return (PopupCustomViewFragment) getSupportFragmentManager().findFragmentByTag(END_GAME_TAG);
 	}
 
-	public class ShareItem implements ShareFace {
+	public class ShareItem {
 
 		private final String gameLink;
 		private BaseGameItem currentGame;
@@ -290,38 +289,15 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 			}
 		}
 
-		@Override
-		public String composeTwitterMessage() {
+
+		public String composeMessage() {
 			String vsStr = getString(R.string.vs);
 			return currentGame.getWhiteUsername() + StaticData.SYMBOL_SPACE + vsStr + StaticData.SYMBOL_SPACE
-					+ currentGame.getBlackUsername() +StaticData.SYMBOL_SPACE + gameType + gameLink
-					+ getString(R.string.via_chesscom);
+					+ currentGame.getBlackUsername() +StaticData.SYMBOL_SPACE + StaticData.SYMBOL_SPACE + gameType
+					+ gameLink /*+ StaticData.SYMBOL_SPACE + getString(R.string.via_chesscom)*/;
 		}
 
-		@Override
-		public String getCaption() {
-			return StaticData.SYMBOL_EMPTY;
-		}
-
-		@Override
-		public String getDescription() {
-			String vsStr = getString(R.string.vs);
-			return getWhitePlayerName() + StaticData.SYMBOL_SPACE
-					+ vsStr + StaticData.SYMBOL_SPACE+ getBlackPlayerName();
-		}
-
-		@Override
-		public String getPicture() {
-			return "http://images.chesscomfiles.com/images/play-chess-hero.png";
-		}
-
-		@Override
-		public String getLink() {
-			return RestHelper.getOnlineGameLink(gameId);
-		}
-
-		@Override
-		public String getName() {
+		public String getTitle() {
 			String vsStr = getString(R.string.vs);
 			return "Chess: " + currentGame.getWhiteUsername() + StaticData.SYMBOL_SPACE
 					+ vsStr + StaticData.SYMBOL_SPACE + currentGame.getBlackUsername(); // TODO adjust i18n

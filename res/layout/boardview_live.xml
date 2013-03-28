@@ -108,47 +108,7 @@
 						/>
 			</LinearLayout>
 
-            <!--Share buttons layout-->
-            <LinearLayout
-                android:id="@+id/shareButtonsLay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:visibility="invisible">
 
-                <com.chess.RoboButton
-                    android:id="@+id/shareFaceBookBtn"
-                    android:layout_width="0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-
-                    android:layout_toLeftOf="@+id/shareTwitterBtn"
-                    android:layout_alignParentLeft="true"
-                    style="@style/Text.Button.Facebook"
-                    android:text="@string/post_on_facebook"
-                    android:textSize="13sp"
-                    android:paddingTop="2dip"
-                    android:paddingBottom="2dip"
-                    android:paddingLeft="0dip"
-                    android:paddingRight="0dip"
-                    custom:ttf="Bold"
-                    />
-
-                <com.chess.RoboButton
-                    android:id="@+id/shareTwitterBtn"
-                    android:layout_width="0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.8"
-                    style="@style/Text.Button.Twitter"
-                    android:text="@string/post_on_twitter"
-                    android:textSize="13sp"
-                    android:paddingTop="2dip"
-                    android:paddingBottom="2dip"
-                    android:paddingLeft="4dip"
-                    android:paddingRight="2dip"
-                    custom:ttf="Bold"
-                    />
-            </LinearLayout>
 
 		</FrameLayout>
 	</LinearLayout>

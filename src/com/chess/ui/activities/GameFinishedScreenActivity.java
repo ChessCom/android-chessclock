@@ -12,7 +12,6 @@ import android.view.View;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.share.facebook.Share2Facebook;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -23,7 +22,6 @@ import com.chess.model.GameOnlineItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.fragments.TweetPreviewFragment;
 import com.chess.ui.views.ChessBoardNetworkView;
 import com.chess.ui.views.ChessBoardOnlineView;
 import com.chess.ui.views.GamePanelView;
@@ -48,7 +46,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 
 	private GameOnlineItem currentGame;
 	private long gameId;
-	private View shareButtonsLay;
+	private View shareBtn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +61,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	protected void widgetsInit() {
 		super.widgetsInit();
 
-		shareButtonsLay = findViewById(R.id.shareButtonsLay);
-		findViewById(R.id.shareFaceBookBtn).setOnClickListener(this);
-		findViewById(R.id.shareTwitterBtn).setOnClickListener(this);
-
+		shareBtn = findViewById(R.id.shareBtn);
+		shareBtn.setOnClickListener(this);
+		shareBtn.setVisibility(View.VISIBLE);
 
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
 		gamePanelView.hideChatButton();
@@ -314,7 +311,7 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 					sendPGN();
 					break;
 				case SHARE:
-					shareButtonsLay.setVisibility(View.VISIBLE);
+					shareBtn.setVisibility(View.GONE);
 					break;
 			}
 		}
@@ -372,15 +369,14 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 	public void onClick(View view) {
 		super.onClick(view);
 
-		if (view.getId() == R.id.shareFaceBookBtn) {
-			Share2Facebook share2Facebook = new Share2Facebook(this, R.drawable.ic_facebook, "Facebook");
-			ShareItem shareItem = new ShareItem(currentGame, gameId, getString(R.string.online));
-			share2Facebook.shareMe(shareItem);
-		} else if (view.getId() == R.id.shareTwitterBtn) {
+		if (view.getId() == R.id.shareBtn) {
 			ShareItem shareItem = new ShareItem(currentGame, gameId, getString(R.string.online));
 
-			TweetPreviewFragment previewFragment = TweetPreviewFragment.newInstance(shareItem.composeTwitterMessage());
-			previewFragment.show(getSupportFragmentManager(), "tweet preview");
+			Intent shareIntent = new Intent(Intent.ACTION_SEND);
+			shareIntent.setType("text/plain");
+			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
+			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
+			startActivity(Intent.createChooser(shareIntent, getString(R.string.share)));
 		}
 	}
 

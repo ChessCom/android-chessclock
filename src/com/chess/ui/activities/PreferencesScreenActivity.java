@@ -8,7 +8,6 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.share.twitter.TwitterAgent;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
@@ -218,10 +217,6 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 				if (isLCSBound) {
 					liveService.logout();
 				}
-
-				// clear twitter creds
-				TwitterAgent twitterAgent = new TwitterAgent(this);
-				twitterAgent.clearTwitterCredentials();
 
 				// un-register from GCM
 				unregisterGcmService();

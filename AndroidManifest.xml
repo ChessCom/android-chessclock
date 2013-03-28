@@ -150,16 +150,7 @@
 
 		<receiver android:name=".backend.AlarmReceiver"/>
 
-        <activity android:name=".ui.activities.PrepareRequestTokenActivity" android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="x-oauthflow-twitter" android:host="callback" />
-            </intent-filter>
-        </activity>
-
-		<!--
+        <!--
 				  BroadcastReceiver that will receive intents from GCM
 				  services and handle them to the custom IntentService.
 

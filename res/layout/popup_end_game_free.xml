@@ -127,4 +127,14 @@
         android:visibility="gone"
         />
 
+    <!--Share-->
+    <com.chess.RoboButton
+        android:id="@+id/shareBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Text.Button.Twitter"
+        android:text="@string/share"
+        android:drawableLeft="@null"
+        />
+
 </LinearLayout>

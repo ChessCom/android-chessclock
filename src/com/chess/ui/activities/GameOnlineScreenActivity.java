@@ -16,7 +16,6 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.share.facebook.Share2Facebook;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
@@ -30,7 +29,6 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupCustomViewFragment;
-import com.chess.ui.fragments.TweetPreviewFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.views.ChessBoardNetworkView;
 import com.chess.ui.views.ChessBoardOnlineView;
@@ -55,7 +53,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 	private static final String ERROR_TAG = "send request failed popup";
 
 	private View submitButtonsLay;
-	private View shareButtonsLay;
 
 	private MenuOptionsDialogListener menuOptionsDialogListener;
 	private AbortGameUpdateListener abortGameUpdateListener;
@@ -219,7 +216,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 
 	private void adjustBoardForGame() {
 		boardView.setFinished(false);
-		shareButtonsLay.setVisibility(View.GONE);
 
 		timeRemains = gameInfoItem.getTimeRemainingAmount() + gameInfoItem.getTimeRemainingUnits();
 
@@ -827,8 +823,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
         	MopubHelper.showRectangleAd(adViewWrapper, this);*/
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}
-		// show share buttons
-		shareButtonsLay.setVisibility(View.VISIBLE);
 	}
 
 	private int getCurrentPlayerRating() {
@@ -875,15 +869,14 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 			Intent intent = new Intent(this, OnlineNewGameActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-		} else if (view.getId() == R.id.shareFaceBookBtn) {
-			Share2Facebook share2Facebook = new Share2Facebook(this, R.drawable.ic_facebook, "Facebook");
-			ShareItem shareItem = new ShareItem(currentGame, gameId, getString(R.string.online));
-			share2Facebook.shareMe(shareItem);
-		} else if (view.getId() == R.id.shareTwitterBtn) {
+		} else if (view.getId() == R.id.shareBtn) {
 			ShareItem shareItem = new ShareItem(currentGame, gameId, getString(R.string.online));
 
-			TweetPreviewFragment previewFragment = TweetPreviewFragment.newInstance(shareItem.composeTwitterMessage());
-			previewFragment.show(getSupportFragmentManager(), "tweet preview");
+			Intent shareIntent = new Intent(Intent.ACTION_SEND);
+			shareIntent.setType("text/plain");
+			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
+			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
+			startActivity(Intent.createChooser(shareIntent, getString(R.string.share)));
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			sendRematch();
 			dismissDialogs();
@@ -922,10 +915,6 @@ public class GameOnlineScreenActivity extends GameBaseActivity {
 		submitButtonsLay = findViewById(R.id.submitButtonsLay);
 		findViewById(R.id.submitBtn).setOnClickListener(this);
 		findViewById(R.id.cancelBtn).setOnClickListener(this);
-
-		shareButtonsLay = findViewById(R.id.shareButtonsLay);
-		findViewById(R.id.shareFaceBookBtn).setOnClickListener(this);
-		findViewById(R.id.shareTwitterBtn).setOnClickListener(this);
 
 		gamePanelView.changeGameButton(GamePanelView.B_NEW_GAME_ID, R.drawable.ic_next_game);
 		gamePanelView.enableGameControls(false);
