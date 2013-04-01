@@ -125,11 +125,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	}
 
 	@Override
-	protected void onStart() {
-		super.onStart();
-	}
-
-	@Override
 	protected void onResume() {
 		super.onResume();
 		taskPool = new ArrayList<AbstractUpdateTask<String, LoadItem>>();
