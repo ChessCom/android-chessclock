@@ -2,55 +2,54 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.util.Log;
-import com.chess.R;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
 import com.chess.live.client.User;
 import com.chess.live.rules.GameResult;
+import com.chess.R;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.StaticData;
 import com.chess.utilities.AppUtils;
 
 import java.util.Collection;
 import java.util.List;
 
-import static com.chess.live.rules.GameResult.*;
+import static com.chess.live.rules.GameResult.WIN;
 
 public class LccGameListener implements GameListener {
 
 	private LccHelper lccHelper;
-    private Long latestGameId = 0L;
-    private Context context;
-    private static final String TAG = "LCCLOG-GAME";
+	private Long latestGameId = 0L;
+	private Context context;
+	private static final String TAG = "LccLog-GAME";
 
 	public LccGameListener(LccHelper lccHelper) {
-        this.lccHelper = lccHelper;
-        context = lccHelper.getContext();
-    }
+		this.lccHelper = lccHelper;
+		context = lccHelper.getContext();
+	}
 
-	// todo: remove
-	/*public boolean onGameListReceived(Collection<? extends Game> games) {
-		Log.d(TAG, "GAME LISTENER: Game list received.");
+	public void onGameListReceived(Collection<? extends Game> games) {
+		Log.d(TAG, "Game list received, total size = " + games.size());
 		latestGameId = 0L;
 
+		Long gameId;
 		for (Game game : games) {
-			Long gameId = game.getId();
-			if (!isMyGame(game)) { // todo: remove this unobserveGame logic after fixing LCC bug
+			gameId = game.getId();
+			if (!isMyGame(game)) {
 				lccHelper.getClient().unobserveGame(gameId);
-				Log.d(TAG, "GAME LISTENER: unobserve game " + gameId);
+				Log.d(TAG, "unobserve game " + gameId);
 			}
 			else if (gameId > latestGameId) {
 				latestGameId = gameId;
 			}
 		}
-		Log.d(TAG, "GAME LISTENER: latestGameId=" + latestGameId);
 
-		return false;
-    }*/
+		Log.d(TAG, "latestGameId=" + latestGameId);
+	}
 
-    @Override
+	@Override
 	public void onGameArchiveReceived(User user, Collection<? extends Game> games) {
-    }
+	}
 
 	@Override
 	public void onGameReset(Game game) {
@@ -96,26 +95,27 @@ public class LccGameListener implements GameListener {
 	}
 
 	private boolean isOldGame(Long gameId) {
-        return gameId < latestGameId;
-    }
+		return gameId < latestGameId;
+	}
 
 	private boolean isActualGame(Game game) {
 		Long gameId = game.getId();
 
-		/*if (!isMyGame(game)) {
+		if (!isMyGame(game)) { // TODO: check case
 			lccHelper.getClient().unobserveGame(gameId);
 			Log.d(TAG, "GAME LISTENER: unobserve game " + gameId);
 			return false;
-		} else */if (lccHelper.isUserPlayingAnotherGame(gameId)) {
+		} else
+		if (lccHelper.isUserPlayingAnotherGame(gameId)) {
 			Log.d(TAG, "GAME LISTENER: abort and exit second game");
 			lccHelper.getClient().abortGame(game, "abort second game");
 			lccHelper.getClient().exitGame(game);
 			return false;
-		} /*else if (isOldGame(gameId)) {
+		} else if (isOldGame(gameId)) { // TODO: check case
 			Log.d(TAG, "GAME LISTENER: exit old game");
 			lccHelper.getClient().exitGame(game);
 			return false;
-		}*/ else {
+		} else {
 			lccHelper.clearOwnChallenges();
 			lccHelper.clearChallenges();
 			lccHelper.clearSeeks();
@@ -139,7 +139,7 @@ public class LccGameListener implements GameListener {
 		lccHelper.processFullGame(game);
 	}
 
-	 private void doUpdateGame(boolean checkMoves, Game game) {
+	private void doUpdateGame(boolean checkMoves, Game game) {
 
 		// todo: maybe create two separate methods: new move check and draw check
 
@@ -171,75 +171,75 @@ public class LccGameListener implements GameListener {
 		}
 	}
 
-    private void doEndGame(Game game) {
-        lccHelper.putGame(game);
+	private void doEndGame(Game game) {
+		lccHelper.putGame(game);
 
 		Long gameId = game.getId();
 
-        if (isOldGame(gameId)) {
-            Log.d(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + gameId);
-            return;
-        }
+		if (isOldGame(gameId)) {
+			Log.d(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + gameId);
+			return;
+		}
 
         /*lccHelper.getClient().subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1,
                                                         lccHelper.getSeekListListener());*/
 		Long lastGameId = lccHelper.getCurrentGameId() != null ? lccHelper.getCurrentGameId() : gameId;
 		lccHelper.setLastGameId(lastGameId);
 
-        List<GameResult> gameResults = game.getResults();
-        final GameResult whitePlayerResult = gameResults.get(0);
-        final GameResult blackPlayerResult = gameResults.get(1);
-        final String whiteUsername = game.getWhitePlayer().getUsername();
-        final String blackUsername = game.getBlackPlayer().getUsername();
+		List<GameResult> gameResults = game.getResults();
+		final GameResult whitePlayerResult = gameResults.get(0);
+		final GameResult blackPlayerResult = gameResults.get(1);
+		final String whiteUsername = game.getWhitePlayer().getUsername();
+		final String blackUsername = game.getBlackPlayer().getUsername();
 
 		GameResult result;
-        String winnerUsername = null;
+		String winnerUsername = null;
 
-        if (whitePlayerResult == WIN) {
-            result = blackPlayerResult;
-            winnerUsername = whiteUsername;
-        } else if (blackPlayerResult == WIN) {
-            result = whitePlayerResult;
-            winnerUsername = blackUsername;
-        } else {
-            result = whitePlayerResult;
-        }
+		if (whitePlayerResult == WIN) {
+			result = blackPlayerResult;
+			winnerUsername = whiteUsername;
+		} else if (blackPlayerResult == WIN) {
+			result = whitePlayerResult;
+			winnerUsername = blackUsername;
+		} else {
+			result = whitePlayerResult;
+		}
 
-        String message = StaticData.SYMBOL_EMPTY;
-        switch (result) {
-            case TIMEOUT:
-                message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_on_time);
-                break;
-            case RESIGNED:
-                message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_by_resignation);
-                break;
-            case CHECKMATED:
-                message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_by_checkmate);
-                break;
-            case DRAW_BY_REPETITION:
+		String message = StaticData.SYMBOL_EMPTY;
+		switch (result) {
+			case TIMEOUT:
+				message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_on_time);
+				break;
+			case RESIGNED:
+				message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_by_resignation);
+				break;
+			case CHECKMATED:
+				message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_by_checkmate);
+				break;
+			case DRAW_BY_REPETITION:
 				message = context.getString(R.string.game_draw_by_repetition);
-                break;
-            case DRAW_AGREED:
+				break;
+			case DRAW_AGREED:
 				message = context.getString(R.string.game_drawn_by_agreement);
-                break;
-            case STALEMATE:
+				break;
+			case STALEMATE:
 				message = context.getString(R.string.game_drawn_by_stalemate);
-                break;
-            case DRAW_BY_INSUFFICIENT_MATERIAL:
+				break;
+			case DRAW_BY_INSUFFICIENT_MATERIAL:
 				message = context.getString(R.string.game_drawn_insufficient_material);
-                break;
-            case DRAW_BY_50_MOVE:
+				break;
+			case DRAW_BY_50_MOVE:
 				message = context.getString(R.string.game_drawn_by_fifty_move_rule);
-                break;
-            case ABANDONED:
+				break;
+			case ABANDONED:
 				message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_game_abandoned);
-                break;
-            case ABORTED:
+				break;
+			case ABORTED:
 				message = context.getString(R.string.game_aborted);
-                break;
-        }
-        //message = whiteUsername + " vs. " + blackUsername + " - " + message;
-        Log.d(TAG, "GAME LISTENER: " + message);
+				break;
+		}
+		//message = whiteUsername + " vs. " + blackUsername + " - " + message;
+		Log.d(TAG, "GAME LISTENER: " + message);
 
 		if (lccHelper.getWhiteClock() != null) {
 			lccHelper.getWhiteClock().setRunning(false);
@@ -260,21 +260,21 @@ public class LccGameListener implements GameListener {
 			lccHelper.setCurrentGameId(gameId);
 		}
 
-        if (lccHelper.isGameActivityPausedMode()) {
+		if (lccHelper.isGameActivityPausedMode()) {
 			Log.d(TAG, "ActivityPausedMode = true");
-            final LiveGameEvent gameEndedEvent = new LiveGameEvent();
+			final LiveGameEvent gameEndedEvent = new LiveGameEvent();
 			gameEndedEvent.setGameId(gameId);
-            gameEndedEvent.setEvent(LiveGameEvent.Event.END_OF_GAME);
-            gameEndedEvent.setGameEndedMessage(message);
-            lccHelper.getPausedActivityGameEvents().put(gameEndedEvent.getEvent(), gameEndedEvent);
-            if (lccHelper.getLccEventListener() == null) { // if activity is not started yet
-                lccHelper.processFullGame(game);
+			gameEndedEvent.setEvent(LiveGameEvent.Event.END_OF_GAME);
+			gameEndedEvent.setGameEndedMessage(message);
+			lccHelper.getPausedActivityGameEvents().put(gameEndedEvent.getEvent(), gameEndedEvent);
+			if (lccHelper.getLccEventListener() == null) { // if activity is not started yet
+				lccHelper.processFullGame(game);
 				Log.d(TAG, "processFullGame");
-            }
-        } else {
-            lccHelper.getLccEventListener().onGameEnd(message);
-        }
-    }
+			}
+		} else {
+			lccHelper.getLccEventListener().onGameEnd(message);
+		}
+	}
 
     /*public void onDrawRejected(Game game, User rejector) {
         final String rejectorUsername = (rejector != null ? rejector.getUsername() : null);
@@ -286,7 +286,7 @@ public class LccGameListener implements GameListener {
         }
     }*/
 
-	/*private boolean isMyGame(Game game) {
+	private boolean isMyGame(Game game) {
 		String whiteUsername = game.getWhitePlayer().getUsername().toLowerCase();
 		String blackUsername = game.getBlackPlayer().getUsername().toLowerCase();
 		String userName = lccHelper.getUsername().toLowerCase();
@@ -298,5 +298,5 @@ public class LccGameListener implements GameListener {
 		}
 
 		return isMyGame;
-	}*/
+	}
 }
