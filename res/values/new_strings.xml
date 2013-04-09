@@ -28,5 +28,6 @@
     <string name="online_chess">Online Chess</string>
     <string name="via_chesscom">via @chesscom</string>
     <string name="share_game">Share Game</string>
+    <string name="chess">Chess</string>
 
 </resources>

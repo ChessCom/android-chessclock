@@ -292,9 +292,11 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 
 		public String composeMessage() {
 			String vsStr = getString(R.string.vs);
-			return currentGame.getWhiteUsername() + StaticData.SYMBOL_SPACE + vsStr + StaticData.SYMBOL_SPACE
-					+ currentGame.getBlackUsername() +StaticData.SYMBOL_SPACE + StaticData.SYMBOL_SPACE + gameType
-					+ gameLink /*+ StaticData.SYMBOL_SPACE + getString(R.string.via_chesscom)*/;
+			String space = StaticData.SYMBOL_SPACE;
+			return currentGame.getWhiteUsername() + space + vsStr + space + currentGame.getBlackUsername()
+					+ " - " +  gameType  + space + getString(R.string.chess) + space
+					+ getString(R.string.via_chesscom) + space
+					+ gameLink;
 		}
 
 		public String getTitle() {
