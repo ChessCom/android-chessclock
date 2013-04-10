@@ -6,6 +6,10 @@
         <attr name="buttonText" format="reference|string" />
     </declare-styleable>
 
+    <declare-styleable name="PanelInfoGameView">
+        <attr name="oneLine" format="reference|boolean"/>
+    </declare-styleable>
+
     <declare-styleable name="RobotoTextView">
         <attr name="ttf" format="string" />
     </declare-styleable>

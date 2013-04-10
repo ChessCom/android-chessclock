@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import com.chess.R;
 import com.chess.RoboTextView;
@@ -31,7 +32,7 @@ import java.util.TreeSet;
  * @author alien_roger
  * @created at: 25.04.12 10:54
  */
-public abstract class ChessBoardBaseView extends ImageView implements BoardViewFace {
+public abstract class ChessBoardBaseView extends ImageView implements BoardViewFace, View.OnClickListener {
 
 
 	public static final int P_ALPHA_ID = 0;
@@ -290,7 +291,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	//	public void updateNotations(CharSequence move) {
 	public void updateNotations(String[] notations) {
 		if (notationsView != null) {
-			notationsView.updateNotations(notations);
+			notationsView.updateNotations(notations, this, getBoardFace().getHply());
 		}
 
 //		controlsBaseView.updateNotations(notations);
@@ -854,5 +855,40 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		loadPieces(AppData.getPiecesId(getContext()));
 
 		invalidate();
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == NotationView.NOTATION_ID) {// scroll to the specified position
+			Integer pos = (Integer) v.getTag(R.id.list_item_id);
+
+			int totalHply = getBoardFace().getHply() - 1;
+			if (totalHply < pos) {
+				for (int i = totalHply; i < pos; i++) {
+					getBoardFace().takeNext();
+				}
+			} else {
+				for (int i = totalHply; i > pos; i--) {
+					getBoardFace().takeBack();
+				}
+			}
+			checkControlsButtons();
+			invalidate();
+		}
+	}
+
+	private void checkControlsButtons() {
+		BoardFace boardFace = getBoardFace();
+		if (boardFace.getHply() < boardFace.getMovesCount()) {
+			controlsBaseView.enableForwardBtn(true);
+		} else {
+			controlsBaseView.enableForwardBtn(false);
+		}
+
+		if (boardFace.getHply() <= 1) {
+			controlsBaseView.enableBackBtn(false);
+		} else {
+			controlsBaseView.enableBackBtn(true);
+		}
 	}
 }

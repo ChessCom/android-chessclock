@@ -8,7 +8,7 @@
     android:paddingBottom="26dip"
     >
 
-    <ImageView
+<!--    <ImageView
         android:id="@+id/firstBackImg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:layout_centerInParent="true"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        />
+        />-->
 
     <ImageButton
         android:id="@+id/playBtn"

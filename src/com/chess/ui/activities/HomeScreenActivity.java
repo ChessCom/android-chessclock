@@ -317,7 +317,7 @@ public class HomeScreenActivity extends CoreActivityHome implements View.OnClick
 			startAnimatedActivity(view, ComputerScreenActivity.class);
 
 		} else if (view.getId() == R.id.tacticsTrainerFrame) {
-			startAnimatedActivity(view, GameTacticsScreenActivity.class);
+//			startAnimatedActivity(view, GameTacticsScreenActivity.class);
 
 		} else if (view.getId() == R.id.videoLessonsFrame) {
 			startAnimatedActivity(view, VideoScreenActivity.class);

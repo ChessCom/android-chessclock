@@ -66,4 +66,8 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		blocked = lock;
 		setEnabled(!lock);
 	}
+
+	public abstract void enableForwardBtn(boolean enable);
+
+	public abstract void enableBackBtn(boolean enable);
 }

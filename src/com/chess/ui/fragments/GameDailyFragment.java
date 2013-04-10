@@ -132,10 +132,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		widgetsInit(view);
 	}
 
-	@Override
-	protected void widgetsInit(View view) {
-		super.widgetsInit(view);
-
+	private void widgetsInit(View view) {
 		setTitle(R.string.daily_chess);
 
 		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
@@ -434,7 +431,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		if (isUserMove()) {
 
 //			infoLabelTxt.setText(timeRemains); // TODO restore
-			topPanelView.setPlayerTimeLeft(seconds);
+			topPanelView.setTimeLeft(seconds);
 			updatePlayerDots(userPlayWhite);
 		} else {
 			updatePlayerDots(!userPlayWhite);
@@ -1066,14 +1063,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
-		if (view.getId() == R.id.submitBtn) {
-			if(currentGame == null) { // TODO remove or restore after debug
-				throw new IllegalStateException("onClick Submit Button got currentGame = NULL");
-//				return;
-			}
-
-			sendMove();
-		} else if (view.getId() == R.id.newGamePopupBtn) {
+		if (view.getId() == R.id.newGamePopupBtn) {
 			dismissDialogs();
 			getActivityFace().changeRightFragment(NewGamesFragment.newInstance(NewGamesFragment.RIGHT_MENU_MODE));
 

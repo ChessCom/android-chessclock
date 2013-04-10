@@ -9,14 +9,13 @@ import com.chess.live.client.FriendStatusListener;
 import com.chess.live.client.User;
 
 public class LccFriendStatusListener implements FriendStatusListener {
-	private static final String TAG = "LCCLOG-FRIEND";
+	private static final String TAG = "LccFriendStatusListener";
 	private final LccHelper lccHelper;
 
 	public LccFriendStatusListener(LccHelper lccHelper) {
 		this.lccHelper = lccHelper;
 	}
 
-	@Override
 	public void onFriendStatusReceived(User friend) {
 		Log.d(TAG, "FRIENDS STATUS LISTENER: onFriendStatusReceived " + friend);
 		lccHelper.putFriend(friend);

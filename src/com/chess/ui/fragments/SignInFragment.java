@@ -42,8 +42,8 @@ public class SignInFragment extends ProfileSetupsFragment implements TextView.On
 		setLoginFields(loginUsernameEdt, loginPasswordEdt);
 
 		view.findViewById(R.id.signin).setOnClickListener(this);
-//		view.findViewById(R.id.signup).setOnClickListener(this);
-		view.findViewById(R.id.guestPlayBtn).setOnClickListener(this);
+		view.findViewById(R.id.createProfileLay).setOnClickListener(this);
+		view.findViewById(R.id.createProfileBtn).setOnClickListener(this);
 	}
 
 	@Override
@@ -72,17 +72,18 @@ public class SignInFragment extends ProfileSetupsFragment implements TextView.On
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.signin) {
+		int id = view.getId();
+		if (id == R.id.signin) {
 			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live   // TODO restore
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 			} else {
 				signInUser();
 			}
-		} else if (view.getId() == R.id.signup) {
+		} else if (id == R.id.signup) {
 			getActivityFace().openFragment(new SignUpFragment());
 
-		} else if (view.getId() == R.id.guestPlayBtn) {
+		} else if (id == R.id.createProfileLay || id == R.id.createProfileBtn) {
 			getActivityFace().openFragment(new CreateProfileFragment());
 //			DataHolder.reset();
 //			TacticsDataHolder.reset();

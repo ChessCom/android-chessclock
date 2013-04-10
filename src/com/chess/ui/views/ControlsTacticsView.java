@@ -185,6 +185,16 @@ public class ControlsTacticsView extends ControlsBaseView {
 		enableGameButton(B_BACK_ID, enable);
 	}
 
+	@Override
+	public void enableForwardBtn(boolean enable) {
+		enableGameButton(B_FORWARD_ID, enable);
+	}
+
+	@Override
+	public void enableBackBtn(boolean enable) {
+		enableGameButton(B_BACK_ID, enable);
+	}
+
 	enum State {
 		CORRECT,
 		WRONG,

@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
 import com.chess.backend.statics.AppData;
+import com.chess.lcc.android.LccHelper;
 
 public class NetworkChangeService extends Service {
 
@@ -17,13 +18,11 @@ public class NetworkChangeService extends Service {
 		return null;
 	}
 
-	@Override
 	public void onCreate() {
 		super.onCreate();
 		registerReceiver(networkChangeReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
 	}
 
-	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(networkChangeReceiver);
@@ -39,7 +38,7 @@ public class NetworkChangeService extends Service {
 				return;
 			}
 
-			//LccHelper lccHolder = LccHelper.getInstance(context);
+			LccHelper lccHelper = LccHelper.getInstance(context);
 
 			/*boolean failover = intent.getBooleanExtra("FAILOVER_CONNECTION", false);
 								   System.out.println("!!!!!!!! NetworkChangeReceiver failover=" + failover);*/
@@ -61,12 +60,12 @@ public class NetworkChangeService extends Service {
 			/*for (int i = 0; i < networkInfo.length; i++) {
 				if (networkInfo[i].isConnected()) {
 					System.out.println("LCCLOG: NetworkChangeReceiver isConnected " + networkInfo[i].getTypeName());
-					if (lccHolder.getNetworkTypeName() != null && !networkInfo[i].getTypeName().equals(lccHolder.getNetworkTypeName())) {
-						lccHolder.logout();
+					if (lccHelper.getNetworkTypeName() != null && !networkInfo[i].getTypeName().equals(lccHelper.getNetworkTypeName())) {
+						lccHelper.logout();
 						//mainApp.setNetworkChangedNotification(true);
-						lccHolder.getContext().sendBroadcast(new Intent("com.chess.lcc.android-network-change"));
+						lccHelper.getContext().sendBroadcast(new Intent("com.chess.lcc.android-network-change"));
 					} else {
-						lccHolder.setNetworkTypeName(networkInfo[i].getTypeName());
+						lccHelper.setNetworkTypeName(networkInfo[i].getTypeName());
 					}
 				}
 			}*/

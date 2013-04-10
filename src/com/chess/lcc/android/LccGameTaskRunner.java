@@ -1,5 +1,6 @@
 package com.chess.lcc.android;
 
+import android.content.Context;
 import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.FlurryData;
@@ -13,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * LccGameTaskRunner class
+ * LccChallengeTaskRunner class
  *
  * @author alien_roger
  * @created at: 25.05.12 4:38
@@ -22,16 +23,17 @@ public class LccGameTaskRunner {
 
 	private LiveChessClient liveChessClient;
 	private TaskUpdateInterface<Game> gameTaskFace;
-	private LccHelper lccHelper;
+	private Context context;
 
-	public LccGameTaskRunner(TaskUpdateInterface<Game> gameTaskFace, LccHelper lccHelper) {
+	public LccGameTaskRunner(TaskUpdateInterface<Game> gameTaskFace) {
 		this.gameTaskFace = gameTaskFace;
-		this.lccHelper = lccHelper;
-		this.liveChessClient = lccHelper.getClient();
+		context = gameTaskFace.getMeContext();
+		this.liveChessClient = LccHelper.getInstance(context).getClient();
 	}
 
+
 	public void runMakeDrawTask() {
-		new LiveMakeDrawTask().executeTask(lccHelper.getCurrentGame());
+		new LiveMakeDrawTask().executeTask(LccHelper.getInstance(context).getCurrentGame());
 	}
 
 	private class LiveMakeDrawTask extends AbstractUpdateTask<Game, Game> {
@@ -47,7 +49,7 @@ public class LccGameTaskRunner {
 	}
 
 	public void runMakeResignTask() {
-		new LiveMakeResignTask().executeTask(lccHelper.getCurrentGame());
+		new LiveMakeResignTask().executeTask(LccHelper.getInstance(context).getCurrentGame());
 	}
 
 	private class LiveMakeResignTask extends AbstractUpdateTask<Game, Game> {
@@ -63,7 +65,7 @@ public class LccGameTaskRunner {
 	}
 
 	public void runAbortGameTask() {
-		new LiveAbortGameTask().executeTask(lccHelper.getCurrentGame());
+		new LiveAbortGameTask().executeTask(LccHelper.getInstance(context).getCurrentGame());
 	}
 
 	private class LiveAbortGameTask extends AbstractUpdateTask<Game, Game> {
@@ -79,7 +81,7 @@ public class LccGameTaskRunner {
 	}
 
 	public void runRejectDrawTask() {
-		new LiveRejectDrawTask().executeTask(lccHelper.getCurrentGame());
+		new LiveRejectDrawTask().executeTask(LccHelper.getInstance(context).getCurrentGame());
 	}
 
 	private class LiveRejectDrawTask extends AbstractUpdateTask<Game, Game> {
@@ -124,4 +126,7 @@ public class LccGameTaskRunner {
 			return StaticData.RESULT_OK;
 		}
 	}
+
+
+
 }

@@ -18,7 +18,7 @@ import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.CheckUpdateTask;
-import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.model.PopupItem;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
@@ -38,7 +38,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		LccHolder.getInstance(this).setLiveChessClientEventListener(this);
+		LccHelper.getInstance(this).setLiveChessClientEventListener(this);
 	}
 
 	@Override
@@ -63,8 +63,8 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 		//mainApp.setForceBannerAdOnFailedLoad(false);
 	}
 
-	protected LccHolder getLccHolder() {
-		return LccHolder.getInstance(this);
+	protected LccHelper getLccHolder() {
+		return LccHelper.getInstance(this);
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public abstract class CoreActivityHome extends ActionBarActivityHome implements 
 				@Override
 				public void run() {
 					AppData.setLiveChessMode(getContext(), false);
-					LccHolder.getInstance(getContext()).setConnected(false);
+					LccHelper.getInstance(getContext()).setConnected(false);
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
 							.parse(RestHelper.PLAY_ANDROID_HTML)));
 				}

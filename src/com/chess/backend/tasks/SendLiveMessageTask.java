@@ -2,7 +2,7 @@ package com.chess.backend.tasks;
 
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.LccHelper;
 
 /**
  * SendLiveMessageTask class
@@ -21,7 +21,7 @@ public class SendLiveMessageTask extends AbstractUpdateTask<String, Long> {
 
 	@Override
 	protected Integer doTheTask(Long... params) {
-		LccHolder.getInstance(getTaskFace().getMeContext()).sendChatMessage(params[0], message);
+		LccHelper.getInstance(getTaskFace().getMeContext()).sendChatMessage(params[0], message);
 		return StaticData.RESULT_OK;
 	}
 }

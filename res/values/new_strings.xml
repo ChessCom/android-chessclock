@@ -96,7 +96,7 @@
     <string name="welcome_three_line_1">&#8226; Play live, daily, or vs computer</string>
     <string name="welcome_three_line_2">&#8226; Challenge your friends to a match</string>
     <string name="welcome_three_line_3">&#8226; Find opponents at your skill level</string>
-    <string name="welcome_four_line_1">&#8226; Interactive lessons boost your rating</string>
+    <string name="welcome_four_line_1">&#8226; Lessons for beginners to master</string>
     <string name="welcome_four_line_2">&#8226; Videos by top professional coaches</string>
     <string name="welcome_four_line_3">&#8226; Analyze your games and openings</string>
     <string name="number_one_online_chess">#1 in Online Chess</string>
@@ -113,6 +113,8 @@
     <string name="pick_photo">Pick a photo</string>
     <string name="error_player">Error player</string>
     <string name="lessons_upgrade_title">Improve your game with lessons from the masters.</string>
+    <string name="or_login_using_chesscom">Or, Log in Using Chess.com Username:</string>
+    <string name="new_create_an_account">Create an Account</string>
 
 
 </resources>

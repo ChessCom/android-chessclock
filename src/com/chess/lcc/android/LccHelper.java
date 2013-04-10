@@ -1,7 +1,6 @@
 package com.chess.lcc.android;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.chess.R;
@@ -15,13 +14,12 @@ import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.live.client.*;
 import com.chess.model.GameLiveItem;
-import com.chess.ui.activities.GameLiveScreenActivity;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.utilities.AppUtils;
 
 import java.util.*;
 
-public class LccHolder {
+public class LccHelper {
 
 	public static final boolean TESTING_GAME = false;
 	public static final String[] TEST_MOVES_COORD = {"d2d4", "c7c6", "c2c4", "d7d5", "g1f3", "g8f6", "b1c3", "e7e6",
@@ -31,7 +29,7 @@ public class LccHolder {
 			"c8b7", "d3e5", "d8c8", "h1c1", "e8g8", "g6d3"
 			/*, "g8g5", "e5g6", "e7f7", "g6e5", "g5e5", "d4e5", "f6e4", "h4h1", "f7f2"*/};
 
-	private static final String TAG = "LccHolder";
+	private static final String TAG = "LccHelper";
 	public static final int OWN_SEEKS_LIMIT = 3;
 
 	/*public long currentFGTime;
@@ -48,7 +46,7 @@ public class LccHolder {
 	private final LccAdminEventListener adminEventListener;
 	private LiveChessClient lccClient;
 	private User user;
-	private static LccHolder instance;
+	private static LccHelper instance;
 
 	private HashMap<Long, Challenge> challenges = new HashMap<Long, Challenge>();
 	private final Hashtable<Long, Challenge> seeks = new Hashtable<Long, Challenge>();
@@ -81,14 +79,14 @@ public class LccHolder {
     private LccEventListener lccEventListener;
     private LccChatMessageListener lccChatMessageListener;
 
-	public static LccHolder getInstance(Context context) {
+	public static LccHelper getInstance(Context context) {
 		if (instance == null) {
-			instance = new LccHolder(context);
+			instance = new LccHelper(context);
 		}
 		return instance;
 	}
 
-    private LccHolder(Context context) {
+    private LccHelper(Context context) {
 		this.context = context;
 
 		chatListener = new LccChatListener(this);
@@ -231,7 +229,7 @@ public class LccHolder {
 	public void checkAndConnect() {
 //		if(DataHolder.getInstance().isLiveChess() && !connected && lccClient == null){
 		if(AppData.isLiveChess(context) && !connected && lccClient == null){
-			LccHolder.getInstance(context).runConnectTask();
+			LccHelper.getInstance(context).runConnectTask();
 		}
 	}
 
@@ -820,9 +818,9 @@ public class LccHolder {
 		setWhiteClock(new ChessClock(this, true, time));
 		setBlackClock(new ChessClock(this, false, time));
 
-		Intent intent = new Intent(context, GameLiveScreenActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP| Intent.FLAG_ACTIVITY_NEW_TASK);
-		context.startActivity(intent);
+//		Intent intent = new Intent(context, GameLiveScreenActivity.class);
+//		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP| Intent.FLAG_ACTIVITY_NEW_TASK);
+//		context.startActivity(intent);
 	}
 
 	public Integer getLatestMoveNumber() {

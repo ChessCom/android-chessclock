@@ -124,10 +124,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		getLccHolder().setActivityPausedMode(true);
 	}
 
-	@Override
-	protected void widgetsInit(View view) {
-		super.widgetsInit(view);
-
+	private void widgetsInit(View view) {
 		fadeLay = view.findViewById(R.id.fadeLay);
 		gameBoardView = view.findViewById(R.id.baseView);
 
@@ -239,11 +236,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			@Override
 			public void run() {
 				if (getBoardFace().isReside()) {
-					topPanelView.setPlayerTimeLeft(whiteTimer);
+					topPanelView.setTimeLeft(whiteTimer);
 //					topPlayerClock.setText(whiteTimer);
 				} else {
 //					controlsNetworkView.setBottomPlayerTimer(whiteTimer);
-					bottomPanelView.setPlayerTimeLeft(whiteTimer);
+					bottomPanelView.setTimeLeft(whiteTimer);
 				}
 			}
 		});
@@ -256,10 +253,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			public void run() {
 				if (getBoardFace().isReside()) {
 //					controlsNetworkView.setBottomPlayerTimer(blackTimer);
-					bottomPanelView.setPlayerTimeLeft(blackTimer);
+					bottomPanelView.setTimeLeft(blackTimer);
 				} else {
 //					topPlayerClock.setText(blackTimer);
-					topPanelView.setPlayerTimeLeft(blackTimer);
+					topPanelView.setTimeLeft(blackTimer);
 				}
 			}
 		});

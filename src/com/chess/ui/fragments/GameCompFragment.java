@@ -104,9 +104,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		widgetsInit(view);
 	}
 
-	@Override
-	protected void widgetsInit(View view) {
-		super.widgetsInit(view);
+	private void widgetsInit(View view) {
 		controlsCompView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
 
 		boardView = (ChessBoardCompView) view.findViewById(R.id.boardview);

@@ -180,7 +180,6 @@ public class DBDataManager {
 		return exist;
 	}
 
-//	public static void updateOnlineGame(ContentResolver contentResolver, GameOnlineItem currentGame, String userName) {
 	public static void updateOnlineGame(ContentResolver contentResolver, DailyGameByIdItem.Data currentGame, String userName) {
 
         final String[] arguments2 = sArguments2;
@@ -226,7 +225,7 @@ public class DBDataManager {
 		arguments2[0] = userName;
 		arguments2[1] = String.valueOf(currentGame.getGameId());
 
-		Uri uri = DBConstants.uriArray[DBConstants.ECHESS_ONLINE_GAMES];
+		Uri uri = DBConstants.uriArray[DBConstants.FRIENDS];
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_GAME_ID,
 				arguments2, null);
 

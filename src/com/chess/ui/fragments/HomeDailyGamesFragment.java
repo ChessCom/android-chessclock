@@ -28,7 +28,6 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.GameListFinishedItem;
 import com.chess.model.GameOnlineItem;
 import com.chess.ui.activities.ChatOnlineActivity;
-import com.chess.ui.activities.GameOnlineScreenActivity;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.DailyChallengesGamesAdapter;
 import com.chess.ui.adapters.DailyCurrentGamesMyCursorAdapter;
@@ -550,9 +549,9 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
 			ChessBoardOnline.resetInstance();
 
-			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
-			intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
-			startActivity(intent);
+//			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class); // TODO adjust for fragment
+//			intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
+//			startActivity(intent);
 
 		} else if (tag.equals(CHALLENGE_ACCEPT_TAG)) {
 			declineChallenge();

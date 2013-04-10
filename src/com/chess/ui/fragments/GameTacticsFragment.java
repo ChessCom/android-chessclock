@@ -109,8 +109,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		widgetsInit(view);
 	}
 
-	@Override
-	protected void widgetsInit(View view) {
+	private void widgetsInit(View view) {
 		controlsTacticsView = (ControlsTacticsView) view.findViewById(R.id.controlsTacticsView);
 
 		boardView = (ChessBoardTacticsView) view.findViewById(R.id.boardview);

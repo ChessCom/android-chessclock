@@ -30,11 +30,9 @@ import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.LccHelper;
 import com.chess.live.client.User;
-import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
-import com.chess.ui.activities.GameOnlineScreenActivity;
 import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import org.apache.http.HttpEntity;
 
@@ -60,6 +58,7 @@ public class AppUtils {
 	private static final String M = "m";
 
 	public static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+	public static final boolean JELLYBEAN_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
 
 	public static String getApplicationCacheDir(String packageName) {
 		// path should match the specified string
@@ -180,22 +179,22 @@ public class AppUtils {
 
 	public static void showNewMoveStatusNotification(Context context, String title,  String body, int id,
 													 GameListCurrentItem currentGameItem) {
-		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		notifyManager.cancelAll(); // clear all previous notifications
-
-		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
-		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
-		Intent intent = new Intent(context, GameOnlineScreenActivity.class);
-		intent.putExtra(BaseGameItem.GAME_ID, currentGameItem.getGameId());
-		intent.putExtra(AppConstants.NOTIFICATION, true);
-//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  // as we are using singleTask mode for GameOnlineActivity we call enter there via onNewIntent callback
-
-		PendingIntent contentIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
-
-		notification.setLatestEventInfo(context, title, body, contentIntent);
-
-		notifyManager.notify((int) currentGameItem.getGameId(), notification);
+//		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+//		notifyManager.cancelAll(); // clear all previous notifications
+//
+//		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
+//		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+//
+//		Intent intent = new Intent(context, GameOnlineScreenActivity.class);
+//		intent.putExtra(BaseGameItem.GAME_ID, currentGameItem.getGameId());
+//		intent.putExtra(AppConstants.NOTIFICATION, true);
+////		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  // as we are using singleTask mode for GameOnlineActivity we call enter there via onNewIntent callback
+//
+//		PendingIntent contentIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
+//
+//		notification.setLatestEventInfo(context, title, body, contentIntent);
+//
+//		notifyManager.notify((int) currentGameItem.getGameId(), notification);
 	}
 
 	/**
@@ -224,7 +223,7 @@ public class AppUtils {
 
 	public static boolean isNeedToUpgrade(Context context){
 		boolean liveMembershipLevel = false;
-		User user = LccHolder.getInstance(context).getUser();
+		User user = LccHelper.getInstance(context).getUser();
 		if (user != null) {
 			liveMembershipLevel = AppData.isLiveChess(context)
 					&& (user.getMembershipLevel() < StaticData.GOLD_LEVEL);
@@ -237,7 +236,7 @@ public class AppUtils {
 
 	public static boolean isNeedToUpgradePremium(Context context){
 		boolean liveMembershipLevel = false;
-		User user = LccHolder.getInstance(context).getUser();
+		User user = LccHelper.getInstance(context).getUser();
 		if (user != null) {
 			liveMembershipLevel = AppData.isLiveChess(context)
 					&& (user.getMembershipLevel() < StaticData.DIAMOND_LEVEL);
@@ -446,6 +445,15 @@ public class AppUtils {
 	}
 
 	public static Drawable getCountryFlag(Context context, String userCountry) {
+		if (userCountry == null) {
+			try {
+				Log.e("getCountryFlag", " userCountry == NULL");
+				return Drawable.createFromStream(context.getResources().getAssets().open("flags/" + "United States" + ".png"), null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		try {
 			return Drawable.createFromStream(context.getResources().getAssets().open("flags/" + userCountry + ".png"), null);
 		} catch (IOException e) {

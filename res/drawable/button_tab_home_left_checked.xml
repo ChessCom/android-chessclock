@@ -22,35 +22,6 @@
         </shape>
     </item>
 
-    <!-- Inner Shadows -->
-    <!-- Left -->
-    <item
-        android:bottom="2dip"
-        android:top="0dip">
-        <shape android:dither="true" >
-            <gradient
-                android:angle="180"
-                android:startColor="@color/transparent"
-                android:centerColor="@color/transparent"
-                android:endColor="@color/tab_home_shadow"
-                android:centerX="85%"
-                android:centerY="0"
-                />
-        </shape>
-    </item>
-    <!-- Top -->
-    <item
-        android:bottom="2dip"
-        android:top="0dip">
-        <shape android:dither="true">
-            <gradient
-                android:centerColor="@color/transparent"
-                android:startColor="@color/transparent"
-                android:endColor="@color/tab_home_shadow"
-                android:angle="90"
-                android:centerY="75%"
-                />
-        </shape>
-    </item>
+
 
 </layer-list>

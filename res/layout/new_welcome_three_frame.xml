@@ -8,15 +8,15 @@
     android:paddingBottom="26dip"
     >
 
-    <ImageView
+<!--    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="160dip"
-        android:src="@drawable/img_welcome_white_back"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_welcome_three_back"
         android:contentDescription="@string/image"
         android:layout_centerInParent="true"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        />
+        />-->
 
     <com.chess.RoboTextView
         android:layout_width="wrap_content"

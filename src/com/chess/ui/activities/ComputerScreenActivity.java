@@ -1,6 +1,5 @@
 package com.chess.ui.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -55,10 +54,10 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 	public void onClick(View view) { // make code more clear
 		if (view.getId() == R.id.load) {
 			FlurryAgent.logEvent(FlurryData.NEW_GAME_VS_COMPUTER);
-			Intent intent = new Intent(this, GameCompScreenActivity.class);
-			int compGameId = Integer.parseInt(AppData.getCompSavedGame(this).substring(0, 1));
-			intent.putExtra(AppConstants.GAME_MODE, compGameId);
-			startActivity(intent);
+//			Intent intent = new Intent(this, GameCompScreenActivity.class);
+//			int compGameId = Integer.parseInt(AppData.getCompSavedGame(this).substring(0, 1));
+//			intent.putExtra(AppConstants.GAME_MODE, compGameId);
+//			startActivity(intent);
 		} else if (view.getId() == R.id.start) {
 			RadioButton whiteHuman, blackHuman;
 			whiteHuman = (RadioButton) findViewById(R.id.wHuman);
@@ -77,9 +76,9 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 			preferencesEditor.commit();
 
 			FlurryAgent.logEvent(FlurryData.NEW_GAME_VS_COMPUTER);
-			Intent intent = new Intent(this, GameCompScreenActivity.class);
-			intent.putExtra(AppConstants.GAME_MODE, mode);
-			startActivity(intent);
+//			Intent intent = new Intent(this, GameCompScreenActivity.class);
+//			intent.putExtra(AppConstants.GAME_MODE, mode);
+//			startActivity(intent);
 		}
 	}
 

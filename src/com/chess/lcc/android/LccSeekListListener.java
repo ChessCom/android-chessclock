@@ -14,14 +14,13 @@ import com.chess.live.client.SubscriptionId;
 import java.util.Collection;
 
 public class LccSeekListListener implements SeekListListener {
-	private static final String TAG = "LCCLOG-SEEK";
+	private static final String TAG = "LccSeekListListener";
 	private final LccHelper lccHelper;
 
 	public LccSeekListListener(LccHelper lccHelper) {
 		this.lccHelper = lccHelper;
 	}
 
-	@Override
 	public void onSeekListReceived(SubscriptionId id, Collection<Challenge> challenges, Integer total) {
 		if (challenges != null) {
 			Log.i(TAG, "SEEK LIST LISTENER: Public Seek list received: size = " + challenges.size() + ", total = " + total);

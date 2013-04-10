@@ -25,6 +25,7 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	public AbstractUpdateTask(TaskUpdateInterface<ItemType> taskFace) {
 		if (taskFace == null || taskFace.getMeContext() == null){ // we may start task right after another but listener at this time will be already killed
 			cancel(true);
+			Log.e(TAG, "TaskFace is null, not running task");
 			return;
 		}
 		this.taskFace = taskFace;

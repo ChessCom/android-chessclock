@@ -63,7 +63,7 @@ public class NewArticlesThumbCursorAdapter extends ItemsCursorAdapter {
 		holder.authorTxt.setText(authorStr);
 
 		holder.titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_TITLE));
-		date.setTime(DBDataManager.getLong(cursor, DBConstants.V_CREATE_DATE));
+		date.setTime(DBDataManager.getLong(cursor, DBConstants.V_CREATE_DATE) * 1000L);
 		holder.dateTxt.setText(dateFormatter.format(date));
 	}
 

@@ -2,25 +2,18 @@ package com.chess.ui.views;
 
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.LevelListDrawable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.statics.StaticData;
-import com.chess.ui.engine.PieceItem;
-import com.chess.ui.interfaces.BoardViewFace;
+import com.chess.utilities.AppUtils;
 
-import java.util.HashMap;
 
 /**
  * GamePanelTestActivity class
@@ -30,13 +23,16 @@ import java.util.HashMap;
  */
 public class NotationView extends LinearLayout {
 
-	public static final int NOTATION_TEXT_SIZE = 11;
+	public int NOTATION_TEXT_SIZE;
+	public static final int NOTATION_ID = 0x00003321;
+	private int VIEW_PER_PAGE;
 
-    private float density;
-
-	private boolean blocked; // TODO
-
-	private HorizontalListView horizontalListView;
+	private NotationsPagerAdapter notationsAdapter;
+	private String[] originalNotations;
+	private OnClickListener selectionFace;
+	private int textPadding;
+	private ViewPager viewPager;
+	private boolean newNotations;
 
 	public NotationView(Context context) {
         super(context);
@@ -48,104 +44,251 @@ public class NotationView extends LinearLayout {
         onCreate();
     }
 
-
     public void onCreate() {
-//        setOrientation(VERTICAL);
-        density = getContext().getResources().getDisplayMetrics().density;
-
-        LayoutParams infoLayParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-		infoLayParams.gravity = Gravity.CENTER_VERTICAL;
-        LinearLayout infoLayout = new LinearLayout(getContext());
-        infoLayout.setLayoutParams(infoLayParams);
+		float density = getContext().getResources().getDisplayMetrics().density;
+		VIEW_PER_PAGE = getContext().getResources().getInteger(R.integer.notations_per_page);
+		NOTATION_TEXT_SIZE = (int) (getContext().getResources().getDimension(R.dimen.notations_text_size)/density);
 
 
-		horizontalListView = new HorizontalListView(getContext(), null);
+		LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+		viewPager = new ViewPager(getContext());
+		viewPager.setId(R.id.viewPager);
+		addView(viewPager, params);
 
-        infoLayout.addView(horizontalListView);
+		notationsAdapter = new NotationsPagerAdapter();
+		viewPager.setAdapter(notationsAdapter);
+		boolean smallScreen = AppUtils.noNeedTitleBar(getContext());
 
-        addView(infoLayout);
+		int padding = (int) (2 * density);
+		if (smallScreen) {
+			textPadding = (int) (2 * density);
+			padding = 1; // mdpi = 1
+		} else {
+			textPadding = (int) (5 * density);
+		}
+		setPadding(0, padding, 0, padding);
     }
 
-    public void updateNotations(String[] notations) {
-		// set Array adapter
-		horizontalListView.setAdapter(new NotationsAdapter(notations)); // TODO
-    }
+	public void updateNotations(String[] notations, OnClickListener selectionFace, int hply) {
+		this.selectionFace = selectionFace;
 
-	private class NotationsAdapter extends BaseAdapter {
-
-		private String[] dataObjects;
-		private int textColor;
-
-		NotationsAdapter(String[] dataObjects) {
-
-			this.dataObjects = dataObjects;
-			textColor = getContext().getResources().getColor(R.color.new_light_grey);
+		newNotations = false;
+		if (originalNotations != null) {
+			for (int i = 0; i < originalNotations.length; i++) {
+				String notation = originalNotations[i];
+				if (notations.length > i) {
+					if (!notation.equals(notations[i])) {
+						newNotations = true;
+					}
+				}
+			}
 		}
 
-		private OnClickListener mOnButtonClicked = new OnClickListener() {
+		if (newNotations || originalNotations == null || originalNotations.length < notations.length) {
+			originalNotations = notations;
+		}
 
-			@Override
-			public void onClick(View v) {
-				// TODO handle click - list back to the selected item
-			}
-		};
+		if (notationsAdapter == null) {
+			notationsAdapter = new NotationsPagerAdapter();
+			viewPager.setAdapter(notationsAdapter);
+		} else {
+			notationsAdapter.notifyDataSetChanged();
+		}
+		highlightPosition(hply - 1);
+	}
+
+	private class NotationsPagerAdapter extends PagerAdapter {
+		private int selectedPosition;
+		private LinearLayout currentView;
 
 		@Override
 		public int getCount() {
-			return dataObjects.length;
+			if (originalNotations == null) {
+				return 0;
+			}
+			return (int) Math.ceil((originalNotations.length /(float) VIEW_PER_PAGE));
 		}
 
 		@Override
-		public String getItem(int position) {
-			return dataObjects[position];
+		public Object instantiateItem(ViewGroup container, int position) {
+			LinearLayout linearLayout = new LinearLayout(getContext());
+
+			fillNotationsText(position, linearLayout);
+
+			container.addView(linearLayout);
+
+			return linearLayout;
+		}
+
+		private void fillNotationsText(int position, LinearLayout linearLayout) {
+			int absoluteNumber = VIEW_PER_PAGE * position;
+			int i;
+			for (i = 0; i < VIEW_PER_PAGE; i++) {
+
+				RoboTextView textView = new RoboTextView(getContext());
+				LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+						ViewGroup.LayoutParams.WRAP_CONTENT);
+				params.weight = 1;
+
+				textView.setId(NOTATION_ID);
+				textView.setTextSize(NOTATION_TEXT_SIZE);
+				textView.setFont(RoboTextView.HELV_NEUE_FONT);
+				textView.setOnClickListener(mOnButtonClicked);
+				textView.setGravity(Gravity.CENTER);
+
+				int currentPosition = i + absoluteNumber;
+				if (currentPosition >= originalNotations.length) {
+					break;
+				}
+
+				String notation = originalNotations[currentPosition];
+				if (currentPosition % 2 == 0) {
+					int number = (currentPosition) / 2 + 1;
+					notation = number + StaticData.SYMBOL_DOT + notation;
+				}
+
+				textView.setText(notation);
+
+				if (currentPosition == selectedPosition){
+					textView.setBackgroundResource(R.drawable.button_grey_default);
+				} else {
+					textView.setBackgroundDrawable(null);
+				}
+
+				textView.setTag(R.id.list_item_id, currentPosition);
+				textView.setPadding(textPadding, textPadding, textPadding, textPadding);
+
+				linearLayout.addView(textView, params);
+			}
+
+			while (i <= VIEW_PER_PAGE) { // stubs
+				RoboTextView textView = new RoboTextView(getContext());
+				LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+						ViewGroup.LayoutParams.WRAP_CONTENT);
+				params.weight = 1;
+
+				textView.setId(NOTATION_ID);
+				textView.setText(StaticData.SYMBOL_SPACE);
+				textView.setTextSize(NOTATION_TEXT_SIZE);
+				textView.setFont(RoboTextView.HELV_NEUE_FONT);
+				textView.setPadding(textPadding, textPadding, textPadding, textPadding);
+				textView.setGravity(Gravity.CENTER);
+
+				linearLayout.addView(textView, params);
+				i++;
+			}
 		}
 
 		@Override
-		public long getItemId(int position) {
-			return 0;
+		public void destroyItem(ViewGroup container, int position, Object view) {
+			container.removeView((View) view);
 		}
 
 		@Override
-		public View getView(int pos, View convertView, ViewGroup parent) {
-			if (convertView == null) {
-				convertView = createView(parent);
-			}
-			bindView(dataObjects[pos], pos, convertView);
-			return convertView;
+		public boolean isViewFromObject(View view, Object object) {
+			return view == object;
 		}
 
-		protected View createView(ViewGroup parent){
-			RoboTextView textView = new RoboTextView(getContext());
-			textView.setTextColor(textColor);
-			textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, NOTATION_TEXT_SIZE);
-			textView.setFont(RoboTextView.HELV_NEUE_FONT);
-			textView.setOnClickListener(mOnButtonClicked);
-
-			return textView;
+		@Override
+		public void setPrimaryItem(ViewGroup container, int position, Object object) {
+			super.setPrimaryItem(container, position, object);
+			currentView = (LinearLayout) object;
+			updateSelection();
 		}
 
-		protected void bindView(String item, int pos, View convertView){
-			convertView.setTag(R.id.list_item_id, pos);
+		public void selectItem(int pos) {
+			selectedPosition = pos;
+			if (currentView != null) {
+				int childCount = currentView.getChildCount();
 
-			if (pos %2 == 0) {
-				int number = pos / 2 + 1;
-				((TextView)convertView).setText(String.valueOf(number) + StaticData.SYMBOL_DOT + item);
-			} else {
-				((TextView)convertView).setText(item);
-			}
+				int absoluteNumber = VIEW_PER_PAGE * viewPager.getCurrentItem();
+				for (int i = 0; i < childCount; i++) {
+					int currentPosition = i + absoluteNumber;
+					RoboTextView textView = (RoboTextView) currentView.getChildAt(i);
 
-			if (pos == getCount() -1) {
-				convertView.setBackgroundResource(R.drawable.button_grey_solid_default);
-			} else {
-				convertView.setBackgroundDrawable(null);
+					if (currentPosition < originalNotations.length) {
+						String notation = originalNotations[currentPosition];
+
+						if (currentPosition % 2 == 0) {
+							int number = (currentPosition) / 2 + 1;
+							notation = number + StaticData.SYMBOL_DOT + notation;
+						}
+
+						textView.setText(notation);
+						textView.setTag(R.id.list_item_id, currentPosition);
+						textView.setOnClickListener(mOnButtonClicked);
+					} else if (newNotations){
+						textView.setText(StaticData.SYMBOL_SPACE);
+					}
+
+					if (currentPosition == selectedPosition){
+						textView.setBackgroundResource(R.drawable.button_grey_default);
+					} else {
+						textView.setBackgroundDrawable(null);
+					}
+					textView.setPadding(textPadding, textPadding, textPadding, textPadding);
+				}
 			}
-			convertView.setPadding((int) (5 * density), (int) (5 * density), (int) (5 * density), (int) (5 * density));
+		}
+
+		public void updateSelection() {
+			if (currentView != null) {
+				int childCount = currentView.getChildCount();
+
+				int absoluteNumber = VIEW_PER_PAGE * viewPager.getCurrentItem();
+
+				for (int i = 0; i < childCount; i++) {
+					int currentPosition = i + absoluteNumber;
+					RoboTextView textView = (RoboTextView) currentView.getChildAt(i);
+
+					if (currentPosition == selectedPosition){
+						textView.setBackgroundResource(R.drawable.button_grey_default);
+					} else {
+						textView.setBackgroundDrawable(null);
+					}
+					textView.setPadding(textPadding, textPadding, textPadding, textPadding);
+				}
+				invalidate();
+			}
 		}
 	}
 
+
 	public void show(boolean show) {
 		setVisibility(show? VISIBLE : GONE);
+	}
+
+	public void moveBack(int hply) {
+		highlightPosition(hply - 1);
+	}
+
+	public void moveForward(int hply) {
+		highlightPosition(hply - 1);
+	}
+
+	private OnClickListener mOnButtonClicked = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			Integer pos = (Integer) v.getTag(R.id.list_item_id);
+			highlightPosition(pos);
+
+			selectionFace.onClick(v);
+		}
+	};
+
+	private void highlightPosition(int pos){
+		if (pos < 0) {
+			return;
+		}
+		viewPager.setCurrentItem(pos/VIEW_PER_PAGE);
+		notationsAdapter.selectItem(pos);
+	}
+
+	public void resetNotations(){
+		originalNotations = new String[]{};
+		notationsAdapter.notifyDataSetChanged();
+		viewPager.invalidate();
 	}
 
 }

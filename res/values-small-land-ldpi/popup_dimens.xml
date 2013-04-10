@@ -1,6 +1,0 @@
-<resources>
-	<!--Popup internal dimens -->
-	<dimen name="popup_dialog_width_land">350dip</dimen>
-
-
-</resources>

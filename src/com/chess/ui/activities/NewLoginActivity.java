@@ -11,7 +11,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
-import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.LccHelper;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.HomeTabsFragment;
@@ -121,7 +121,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	}
 
 	@Override
-	public LccHolder getMeLccHolder() {
+	public LccHelper getMeLccHolder() {
 		return getLccHolder();
 	}
 

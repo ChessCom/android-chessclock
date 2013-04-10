@@ -85,6 +85,16 @@ public class ControlsCompView extends ControlsBaseView {
 
 	}
 
+	@Override
+	public void enableForwardBtn(boolean enable) {
+		enableGameButton(B_FORWARD_ID, enable);
+	}
+
+	@Override
+	public void enableBackBtn(boolean enable) {
+		enableGameButton(B_BACK_ID, enable);
+	}
+
 	public void onClick(View view) {  // TODO rework click handles
 		if (blocked)
 			return;

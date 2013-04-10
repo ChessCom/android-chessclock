@@ -17,13 +17,13 @@ public class ChessClock {
 	private static final int MINUTES_SECONDS_THRESHOLD = 121 * 60 * 1000;
 	private long runStart = -1;
 	private int displayMode = TIME_DEPENDENT_DISPLAY_MODE;
-	private LccHolder lccHolder;
+	private LccHelper lccHelper;
 	private boolean isWhite;
 	private java.util.Timer myTimer;
 	private boolean tenSecondsPlayed;
 
-	public ChessClock(LccHolder lccHolder, boolean isWhite, int time) {
-		this.lccHolder = lccHolder;
+	public ChessClock(LccHelper lccHelper, boolean isWhite, int time) {
+		this.lccHelper = lccHelper;
 		this.time = time;
 		this.isWhite = isWhite;
 		//todo: paint();
@@ -85,7 +85,7 @@ public class ChessClock {
 	}
 
 	public void paint() {
-		LccEventListener eventListener = lccHolder.getLccEventListener();
+		LccEventListener eventListener = lccHelper.getLccEventListener();
 
 		String timer = createTimeString(getTime());
 		if (isWhite) { // if white player move
@@ -155,7 +155,7 @@ public class ChessClock {
 
 				if (getTime() <= SECOND_TENTHS_THRESHOLD && !tenSecondsPlayed) {
 					tenSecondsPlayed = true;
-					SoundPlayer.getInstance(lccHolder.getContext()).playTenSeconds();
+					SoundPlayer.getInstance(lccHelper.getContext()).playTenSeconds();
 				}
 
 				if (getTime() < 100) {

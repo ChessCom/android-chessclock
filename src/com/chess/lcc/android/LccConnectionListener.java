@@ -10,55 +10,46 @@ import com.chess.live.client.*;
  * File Templates.
  */
 public class LccConnectionListener implements ConnectionListener {
-	public static final String TAG = "LccLog-Connection";
+	public static final String CONNECTION = "LCCLOG-CONNECTION";
 	private LccHelper lccHelper;
 
 	public LccConnectionListener(LccHelper lccHelper) {
 		this.lccHelper = lccHelper;
 	}
 
-	@Override
 	public void onOtherClientEntered(User user) {
-		Log.d(TAG, "Another client entered: user=" + user.getUsername());
+		Log.d(CONNECTION, "Another client entered: user=" + user.getUsername());
 		String message = lccHelper.getContext().getString(R.string.account_error)
 				+ lccHelper.getContext().getString(R.string.another_login_detected);
 
-		lccHelper.setConnected(false);
-		lccHelper.onOtherClientEntered(message);
+		lccHelper.onAnotherLoginDetected(message);
 	}
 
-	@Override
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {
         lccHelper.setUser(user);
-		Log.d(TAG, "onConnectionEstablished: lccHelper = " + lccHelper);
 		lccHelper.setConnected(true);
 		lccHelper.setFriends(settings.getFriends());
 		lccHelper.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
-		lccHelper.clearPausedEvents();
 
-		Log.d(TAG, "User has been connected: name=" + user.getUsername() + ", authKey=" + user.getAuthKey() + ", user=" + user);
+		Log.d(CONNECTION, "User has been connected: _user=" + user.getUsername() + ", authKey=" + user.getAuthKey());
 	}
 
 	@Override
 	public void onSettingsChanged(User user, UserSettings settings) {
-		Log.d(TAG, "onSettingsChanged");
+		Log.d(CONNECTION, "onSettingsChanged");
 		lccHelper.setFriends(settings.getFriends());
 		lccHelper.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
 	}
 
 	@Override
 	public void onConnectionFailure(User user, String message, FailureDetails details, Throwable throwable) {
-		Log.d(TAG, "User connection failure:" + message + ", details=" + details);
+		Log.d(CONNECTION, "User connection failure:" + message + ", details=" + details);
 
-		/*if (details ==  null) {
-			lccHelper.setConnected(false);
-			lccHelper.resetClient();
-			lccHelper.runConnectTask(true);
-		} else {
+		if (details != null) {
 			lccHelper.processConnectionFailure(details);
-		}*/
-
-		lccHelper.processConnectionFailure(details);
+		} else {
+			Log.d(CONNECTION, "User connection failure: IGNORING");
+		}
 	}
 
 	@Override
@@ -69,56 +60,41 @@ public class LccConnectionListener implements ConnectionListener {
 			failureId = details.getFailureId();
 			comments = details.getComments();
 		}
-		Log.d(TAG, "Connection Lost, with message = " + message
+		Log.d(CONNECTION, "Connection Lost, with message = " + message
                 + " \nDetails: id = " + failureId + " comments = " + comments);
 		lccHelper.setConnected(false);
 	}
 
 	@Override
-	public void onConnectionReestablished(User user, UserSettings userSettings, ServerStats serverStats) {
-		Log.d(TAG, "onConnectionReestablished");
+	public void onConnectionReestablished(User arg0) {
+		Log.d(CONNECTION, "onConnectionReestablished");
 		lccHelper.clearChallenges();
 		lccHelper.clearOwnChallenges();
 		lccHelper.clearSeeks();
-		lccHelper.clearGames();
-		lccHelper.setCurrentGameId(null);
 		lccHelper.setConnected(true);
-
-		lccHelper.setFriends(userSettings.getFriends());
-		lccHelper.storeBlockedUsers(userSettings.getBlockedUsers(), userSettings.getBlockingUsers());
-
-		lccHelper.clearPausedEvents();
 	}
 
 	@Override
 	public void onPublishFailed(User user, Throwable th) {
-		Log.d(TAG, "onPublishFailed");
+		Log.d(CONNECTION, "onPublishFailed");
 	}
 
 	@Override
 	public void onConnectionRestored(User arg0) {
-		Log.d(TAG, "Connection Restored");
+		Log.d(CONNECTION, "Connection Restored");
 		lccHelper.setConnected(true);
 	}
 
-	@Override
 	public void onObsoleteProtocolVersion(User user, String serverProtocolVersion, String clientProtocolVersion) {
-		Log.d(TAG, "Protocol version is obsolete (serverProtocolVersion=" + serverProtocolVersion + ", clientProtocolVersion=" +
+		Log.d(CONNECTION, "Protocol version is obsolete (serverProtocolVersion=" + serverProtocolVersion + ", clientProtocolVersion=" +
 						clientProtocolVersion + StaticData.SYMBOL_RIGHT_PAR);
 		lccHelper.onObsoleteProtocolVersion();
 	}
 
-	@Override
-	public void onLagInfoReceived(User user, Long aLong) {
-		// todo: UPDATELCC
-	}
+	public void onKicked(User user, String reason, String message) { // TODO change when server change
+		Log.d(CONNECTION, "user kicked");
 
-	@Override
-	public void onKicked(User user, String reason, String message, Long period) {
-		Log.d(TAG, "The client kicked: " + user.getUsername() + ", reason=" + reason +
-				", message=" + message + ", period=" + period);
-
-		lccHelper.setConnected(false);
 		lccHelper.processConnectionFailure(reason, message);
 	}
+
 }

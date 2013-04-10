@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Toast;
+import android.widget.*;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.ui.views.drawables.LogoBackgroundDrawable;
@@ -153,11 +151,14 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 
 	private class WelcomePagerAdapter extends PagerAdapter {
 
-		private View firstView;
-		private View secondView;
-		private View thirdView;
-		private View fourthView;
-		private boolean initiated;
+		private RelativeLayout firstView;
+		private RelativeLayout secondView;
+		private RelativeLayout thirdView;
+		private RelativeLayout fourthView;
+		private boolean initiatedFirst;
+		private boolean initiatedSecond;
+		private boolean initiatedThird;
+		private boolean initiatedFour;
 
 		@Override
 		public int getCount() {
@@ -170,11 +171,27 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 			switch (position) {
 				case 0:
 					if (firstView == null){
-						firstView = inflater.inflate(R.layout.new_welcome_one_frame, container, false);
+						firstView = (RelativeLayout) inflater.inflate(R.layout.new_welcome_one_frame, container, false);
+
 					}
 					view = firstView;
 
-					if (!initiated) {
+					if (!initiatedFirst) {
+						{// add ImageView back
+							ImageView imageView = new ImageView(getContext());
+							imageView.setAdjustViewBounds(true);
+							imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+							imageView.setImageResource(R.drawable.img_welcome_back);
+							imageView.setId(R.id.firstBackImg);
+
+							int screenWidth = getResources().getDisplayMetrics().widthPixels;
+							int imageHeight = screenWidth / 2;
+
+							RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
+							params.addRule(RelativeLayout.CENTER_IN_PARENT);
+							firstView.addView(imageView, 0, params);
+						}
+
 						{// add youTubeView to control visibility
 							youTubePlayerFragment =	(YouTubePlayerSupportFragment) getFragmentManager().findFragmentById(R.id.youtubeFragment);
 							youTubePlayerFragment.initialize(AppConstants.YOUTUBE_DEVELOPER_KEY, WelcomeFragment.this);
@@ -200,26 +217,75 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 								flipSecondHalf.start();
 							}
 						});
-						initiated = true;
+						initiatedFirst = true;
 					}
 					break;
 				case 1:
 					if (secondView == null) {
-						secondView = inflater.inflate(R.layout.new_welcome_two_frame, container, false);
+						secondView = (RelativeLayout) inflater.inflate(R.layout.new_welcome_two_frame, container, false);
 					}
 					view = secondView;
+
+					if (!initiatedSecond) {
+						ImageView imageView = new ImageView(getContext());
+						imageView.setAdjustViewBounds(true);
+						imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+						imageView.setImageResource(R.drawable.img_welcome_two_back);
+
+						int screenWidth = getResources().getDisplayMetrics().widthPixels;
+						int imageHeight = screenWidth / 2;
+
+						RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
+						params.addRule(RelativeLayout.CENTER_IN_PARENT);
+						secondView.addView(imageView, 0, params);
+
+						initiatedSecond = true;
+					}
 					break;
 				case 2:
 					if (thirdView == null) {
-						thirdView = inflater.inflate(R.layout.new_welcome_three_frame, container, false);
+						thirdView = (RelativeLayout) inflater.inflate(R.layout.new_welcome_three_frame, container, false);
 					}
 					view = thirdView;
+
+					if (!initiatedThird) {
+						ImageView imageView = new ImageView(getContext());
+						imageView.setAdjustViewBounds(true);
+						imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+						imageView.setImageResource(R.drawable.img_welcome_three_back);
+
+						int screenWidth = getResources().getDisplayMetrics().widthPixels;
+						int imageHeight = screenWidth / 2;
+
+						RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
+						params.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+						thirdView.addView(imageView, 0, params);
+
+						initiatedThird = true;
+					}
 					break;
 				case 3:
 					if (fourthView == null) {
-						fourthView = inflater.inflate(R.layout.new_welcome_three_frame, container, false);
+						fourthView = (RelativeLayout) inflater.inflate(R.layout.new_welcome_four_frame, container, false);
 					}
 					view = fourthView;
+
+					if (!initiatedFour) {
+						ImageView imageView = new ImageView(getContext());
+						imageView.setAdjustViewBounds(true);
+						imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+						imageView.setImageResource(R.drawable.img_welcome_four_back);
+
+						int screenWidth = getResources().getDisplayMetrics().widthPixels;
+						int imageHeight = screenWidth / 2;
+
+						RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
+						params.addRule(RelativeLayout.CENTER_IN_PARENT);
+						fourthView.addView(imageView, 0, params);
+
+						initiatedFour = true;
+					}
 					break;
 				default: break;
 			}

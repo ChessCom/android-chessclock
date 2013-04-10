@@ -2,8 +2,11 @@ package com.chess.ui.views;
 
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,6 +17,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
 import com.chess.utilities.AppUtils;
+
 
 /**
  * GamePanelTestActivity class
@@ -30,17 +34,12 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 	public static final int CAPTURED_ID = 0x00004404;
 	public static final int TIME_LEFT_ID = 0x00004405;
 
-	private int AVATAR_SIZE = 22;
-	private int AVATAR_MARGIN = 5;
+	private static final int PLAYER_TEXT_SIZE = 16;
+
+	private int AVATAR_MARGIN = 4;
 
 	private int FLAG_SIZE = 16;
 	private int FLAG_MARGIN = 5;
-
-	private int CAPTURED_PIECES_VIEW_HEIGHT = 22; // same as avatar
-	private int CAPTURED_PIECES_VIEW_WIDTH = 110;
-
-
-	private float density;
 
 	private RoboTextView playerTxt;
 	private ImageView avatarImg;
@@ -52,50 +51,69 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 	private int side;
 	private boolean useSingleLine;
 	private LayoutParams capturedParams;
-	private LayoutParams capturedSingleParams;
-
-	public PanelInfoGameView(Context context) {
-		super(context);
-		onCreate();
-	}
+	private boolean smallScreen;
+	private float density;
+	private int AVATAR_SIZE;
+	private int CAPTURED_PIECES_VIEW_HEIGHT;
+	private int CAPTURED_PIECES_VIEW_WIDTH;
+	private int TIME_LEFT_SIZE;
 
 	public PanelInfoGameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		onCreate();
+		onCreate(attrs);
 	}
 
-	public void onCreate() {
+	public void onCreate(AttributeSet attrs) {
 		if (AppUtils.HONEYCOMB_PLUS_API) {
 			useSingleLine = true;
-		} else {
-
 		}
+
+		TypedArray array = getContext().obtainStyledAttributes(attrs,  R.styleable.PanelInfoGameView);
+		try {
+			useSingleLine = array.getBoolean(R.styleable.PanelInfoGameView_oneLine, false);
+		} finally {
+			array.recycle();
+		}
+
+		AVATAR_SIZE = (int) getContext().getResources().getDimension(R.dimen.panel_info_avatar_size);
+		if (!useSingleLine) {
+			AVATAR_SIZE = (int) getContext().getResources().getDimension(R.dimen.panel_info_avatar_big_size);
+		}
+
+		smallScreen = AppUtils.noNeedTitleBar(getContext());
 
 		density = getContext().getResources().getDisplayMetrics().density;
 
-		CAPTURED_PIECES_VIEW_HEIGHT *= density;
-		CAPTURED_PIECES_VIEW_WIDTH *= density;
-		AVATAR_SIZE *= density;
+		CAPTURED_PIECES_VIEW_HEIGHT = (int) getContext().getResources().getDimension(R.dimen.panel_info_captured_pieces_height);
+		CAPTURED_PIECES_VIEW_WIDTH = (int) getContext().getResources().getDimension(R.dimen.panel_info_captured_pieces_width);
+		TIME_LEFT_SIZE = (int) getContext().getResources().getDimension(R.dimen.panel_info_time_left_size);
+
 		AVATAR_MARGIN *= density;
 		FLAG_SIZE *= density;
 		FLAG_MARGIN *= density;
 
-		setBackgroundResource(R.color.new_main_back);
+		int padding = (int) (2 * density);
+		if (smallScreen) {
+			padding = 1;
+		}
 
-		int padding = (int) (7 * density);
-		setPadding(padding, padding, padding, padding);
+		int paddingSide = (int) (4 * density);
+		setPadding(paddingSide, padding, paddingSide, padding);
 
 
 		{// add avatar view
 			avatarImg = new ImageView(getContext());
 
 			LayoutParams avatarParams = new LayoutParams(AVATAR_SIZE, AVATAR_SIZE);
-			avatarParams.setMargins(AVATAR_MARGIN, AVATAR_MARGIN, AVATAR_MARGIN, AVATAR_MARGIN);
-			avatarParams.addRule(RelativeLayout.CENTER_VERTICAL);
+			avatarParams.setMargins(AVATAR_MARGIN, AVATAR_MARGIN, 0, AVATAR_MARGIN);
+			avatarParams.addRule(CENTER_VERTICAL);
 
 			avatarImg.setScaleType(ImageView.ScaleType.FIT_XY);
 			avatarImg.setAdjustViewBounds(true);
 			avatarImg.setId(AVATAR_ID);
+			if (useSingleLine) {
+				avatarImg.setVisibility(GONE);
+			}
 
 			addView(avatarImg, avatarParams);
 		}
@@ -104,16 +122,22 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 			playerTxt = new RoboTextView(getContext());
 			LayoutParams playerParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
-			playerParams.addRule(RelativeLayout.RIGHT_OF, AVATAR_ID);
 			if (useSingleLine) {
-				playerParams.addRule(RelativeLayout.CENTER_VERTICAL);
+				playerParams.addRule(CENTER_VERTICAL);
+				playerParams.addRule(ALIGN_PARENT_LEFT);
+//				playerParams.addRule(LEFT_OF, CAPTURED_ID);
 			} else {
-				playerParams.addRule(RelativeLayout.ALIGN_TOP, AVATAR_ID);
+				playerParams.addRule(RIGHT_OF, AVATAR_ID);
+				playerParams.addRule(ALIGN_TOP, AVATAR_ID);
 			}
 
-			playerTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
-			playerTxt.setTextColor(getContext().getResources().getColor(R.color.new_light_grey));
+			playerTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, PLAYER_TEXT_SIZE);
+			playerTxt.setFont(RoboTextView.BOLD_FONT);
+			playerTxt.setTextColor(getContext().getResources().getColor(R.color.white));
 			playerTxt.setId(PLAYER_ID);
+			playerTxt.setPadding((int) (4 * density), 0, 0, 0);
+			playerTxt.setMarqueeRepeatLimit(2);
+			playerTxt.setEllipsize(TextUtils.TruncateAt.MARQUEE);
 
 			addView(playerTxt, playerParams);
 		}
@@ -143,14 +167,13 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 
 			LayoutParams premiumParams = new LayoutParams(FLAG_SIZE, FLAG_SIZE);
 			premiumParams.setMargins(FLAG_MARGIN, FLAG_MARGIN, FLAG_MARGIN, FLAG_MARGIN);
-			premiumParams.addRule(RelativeLayout.RIGHT_OF, FLAG_ID);
+			premiumParams.addRule(RIGHT_OF, FLAG_ID);
 			if (useSingleLine) {
-				premiumParams.addRule(RelativeLayout.CENTER_VERTICAL);
+				premiumParams.addRule(CENTER_VERTICAL);
 			} else {
-				premiumParams.addRule(RelativeLayout.ALIGN_TOP, AVATAR_ID);
+				premiumParams.addRule(ALIGN_TOP, AVATAR_ID);
 			}
 
-			premiumImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_nav_upgrade));
 			premiumImg.setScaleType(ImageView.ScaleType.FIT_XY);
 			premiumImg.setAdjustViewBounds(true);
 			premiumImg.setId(PREMIUM_ID);
@@ -161,39 +184,40 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 		{// add time left text
 			timeLeftTxt = new RoboTextView(getContext());
 			LayoutParams timeLeftParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-					AVATAR_SIZE);
-			timeLeftParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			timeLeftParams.addRule(RelativeLayout.CENTER_VERTICAL);
+					TIME_LEFT_SIZE);
+			timeLeftParams.addRule(ALIGN_PARENT_RIGHT);
+			timeLeftParams.addRule(CENTER_VERTICAL);
 			timeLeftParams.setMargins((int) (7 * density), 0, 0, 0);
 
-			timeLeftTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
-			timeLeftTxt.setTextColor(getContext().getResources().getColor(R.color.new_light_grey));
+			timeLeftTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+			timeLeftTxt.setTextColor(getContext().getResources().getColor(R.color.light_grey));
 			timeLeftTxt.setBackgroundResource(R.drawable.back_grey_emboss);
 			timeLeftTxt.setId(TIME_LEFT_ID);
 			timeLeftTxt.setFont(RoboTextView.BOLD_FONT);
+			timeLeftTxt.setGravity(Gravity.CENTER_VERTICAL);
+			if (smallScreen) {
+				timeLeftTxt.setPadding((int)(2* density),(int)(2* density),(int)(2* density),(int)(2* density));
+			} else {
+				timeLeftTxt.setPadding((int)(10* density),(int)(2* density),(int)(10* density),(int)(2* density));
+			}
 
 			addView(timeLeftTxt, timeLeftParams);
 		}
 
 		{// add captured drawable view
 			capturedPiecesView = new View(getContext());
-			capturedParams = new LayoutParams(CAPTURED_PIECES_VIEW_WIDTH,
-					CAPTURED_PIECES_VIEW_HEIGHT);
+			capturedParams = new LayoutParams(CAPTURED_PIECES_VIEW_WIDTH, CAPTURED_PIECES_VIEW_HEIGHT);
 			if (useSingleLine) {
-				capturedParams.addRule(RelativeLayout.LEFT_OF, TIME_LEFT_ID);
-				capturedParams.addRule(RelativeLayout.CENTER_VERTICAL);
+				capturedParams.addRule(LEFT_OF, TIME_LEFT_ID);
+				capturedParams.addRule(CENTER_VERTICAL);
+				capturedParams.addRule(RIGHT_OF, PLAYER_ID);
 			} else {
-				capturedParams.addRule(RelativeLayout.RIGHT_OF, AVATAR_ID);
-				capturedParams.addRule(RelativeLayout.BELOW, PLAYER_ID);
+				capturedParams.addRule(RIGHT_OF, AVATAR_ID);
+				capturedParams.addRule(BELOW, PLAYER_ID);
 			}
 
-			capturedSingleParams = new LayoutParams(CAPTURED_PIECES_VIEW_WIDTH,
-					CAPTURED_PIECES_VIEW_HEIGHT);
-			capturedSingleParams.addRule(ALIGN_PARENT_RIGHT);
-			capturedSingleParams.addRule(RelativeLayout.CENTER_VERTICAL);
-
 			CapturedPiecesDrawable capturedPiecesDrawable = new CapturedPiecesDrawable(getContext());
-			if (AppUtils.HONEYCOMB_PLUS_API) {
+			if (AppUtils.JELLYBEAN_PLUS_API) {
 				capturedPiecesView.setBackground(capturedPiecesDrawable);
 			} else {
 				capturedPiecesView.setBackgroundDrawable(capturedPiecesDrawable);
@@ -207,8 +231,9 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 	public void setSide(int side) {
 		this.side = side;
 
-		// change avatar border
-		((BoardAvatarDrawable) avatarImg.getDrawable()).setSide(side);
+		if ( avatarImg.getDrawable() != null) { // change avatar border
+			((BoardAvatarDrawable) avatarImg.getDrawable()).setSide(side);
+		}
 
 		// change pieces color
 		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).setSide(side);
@@ -217,9 +242,19 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 		if (side == AppConstants.WHITE_SIDE) {
 			timeLeftTxt.setBackgroundResource(R.drawable.back_white_emboss);
 			timeLeftTxt.setTextColor(getContext().getResources().getColor(R.color.new_main_back));
+			if (smallScreen) {
+				timeLeftTxt.setPadding((int)(2* density),(int)(2* density),(int)(2* density),(int)(2* density));
+			} else {
+				timeLeftTxt.setPadding((int)(10* density),(int)(2* density),(int)(10* density),(int)(2* density));
+			}
 		} else {
 			timeLeftTxt.setBackgroundResource(R.drawable.back_grey_emboss);
-			timeLeftTxt.setTextColor(getContext().getResources().getColor(R.color.new_light_grey));
+			timeLeftTxt.setTextColor(getContext().getResources().getColor(R.color.light_grey));
+			if (smallScreen) {
+				timeLeftTxt.setPadding((int)(2* density),(int)(2* density),(int)(2* density),(int)(2* density));
+			} else {
+				timeLeftTxt.setPadding((int)(10* density),(int)(2* density),(int)(10* density),(int)(2* density));
+			}
 		}
 
 		invalidate();
@@ -229,11 +264,16 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 		return side;
 	}
 
+	@Override
 	public void onClick(View view) {  // TODO handle avatar click
 
 	}
 
-	public void setPlayerTimeLeft(String timeLeft) {
+	public void activateTimer(boolean active) {
+		timeLeftTxt.setVisibility(active? VISIBLE: INVISIBLE);
+	}
+
+	public void setTimeLeft(String timeLeft) {
 		timeLeftTxt.setText(timeLeft);
 	}
 
@@ -243,12 +283,6 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 
 	public void showTimeLeft(boolean show) {
 		timeLeftTxt.setVisibility(show ? VISIBLE : GONE);
-		if (show) {
-			capturedPiecesView.setLayoutParams(capturedParams);
-		} else {
-			capturedPiecesView.setLayoutParams(capturedSingleParams);
-		}
-
 	}
 
 	public void updateCapturedPieces(int[] alivePiecesCountArray) {

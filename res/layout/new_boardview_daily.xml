@@ -12,7 +12,7 @@
     <com.chess.ui.views.NotationView
         android:id="@+id/notationsView"
         android:layout_width="match_parent"
-        android:layout_height="36dip"
+        android:layout_height="@dimen/notations_view_height"
         android:visibility="visible"
         android:gravity="center_vertical"
         android:paddingLeft="7dip"

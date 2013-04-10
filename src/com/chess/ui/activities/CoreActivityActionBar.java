@@ -19,7 +19,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
 import com.chess.model.PopupItem;
 import com.chess.ui.interfaces.PopupDialogFace;
@@ -64,7 +64,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		extras = getIntent().getExtras();
 
-        LccHolder.getInstance(this).setLiveChessClientEventListener(this);
+        LccHelper.getInstance(this).setLiveChessClientEventListener(this);
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 				@Override
 				public void run() {
 					AppData.setLiveChessMode(getContext(), false);
-					LccHolder.getInstance(getContext()).setConnected(false);
+					LccHelper.getInstance(getContext()).setConnected(false);
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
 							.parse(RestHelper.PLAY_ANDROID_HTML)));
 				}
@@ -152,7 +152,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 //		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
 //		getActionBarHelper().showMenuItemById(R.id.menu_refresh, showActionRefresh);
 //		getActionBarHelper().showMenuItemById(R.id.menu_search, showActionSearch);
-//		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected());
+//		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHelper.getInstance(this).isConnected());
 	}
 
 	@Override
@@ -160,7 +160,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		MenuInflater menuInflater = getMenuInflater();
 //		menuInflater.inflate(R.menu.sign_out, menu);
 		menuInflater.inflate(R.menu.new_action_menu, menu);
-//		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHolder.getInstance(this).isConnected(), menu);
+//		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHelper.getInstance(this).isConnected(), menu);
 //		getActionBarHelper().showMenuItemById(R.id.menu_search, showActionSearch, menu);
 //		getActionBarHelper().showMenuItemById(R.id.menu_settings, showActionSettings, menu);
 //		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame, menu);
@@ -317,8 +317,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 	}
 
-	protected LccHolder getLccHolder() {
-		return LccHolder.getInstance(this);
+	protected LccHelper getLccHolder() {
+		return LccHelper.getInstance(this);
 	}
 
 	public ActionBarHelper provideActionBarHelper() {

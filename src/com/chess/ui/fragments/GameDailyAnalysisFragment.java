@@ -96,16 +96,13 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		widgetsInit(view);
 	}
 
-	@Override
-	protected void widgetsInit(View view) {
-		super.widgetsInit(view);
-
+	private void widgetsInit(View view) {
 		controlsView = (ControlsAnalysisView) view.findViewById(R.id.controlsAnalysisView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
-		if (AppUtils.HONEYCOMB_PLUS_API) {
+		if (AppUtils.JELLYBEAN_PLUS_API) {
 			bottomPanelView.setBackground(backgroundDrawable);
 			controlsView.setBackground(backgroundDrawable);
 		} else {

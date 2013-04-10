@@ -14,20 +14,329 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="903ddbd2-44e3-4868-b40b-dc7b47113b27" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Abkhazia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Afghanistan.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Aland.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Albania.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Algeria.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/American Samoa.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Andorra.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Angola.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Anguilla.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Antarctica.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Antigua and Barbuda.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Argentina.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Armenia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Aruba.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Australia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Austria.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Azerbaijan.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Bahamas.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Bahrain.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Bangladesh.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Barbados.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Belarus.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Belgium.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Belize.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Benin.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Bermuda.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Bhutan.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Bolivia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Bosnia and Herzegovina.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Botswana.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Brazil.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/British Virgin Islands.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Brunei.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Bulgaria.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Burkina-Faso.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Burundi.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Cambodia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Cameroon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Canada.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Canary Islands.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Cape Verde.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Catalonia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Cayman Islands.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Central Africa.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Chad.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Chile.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/China.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Colombia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Commonwealth.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Comoros.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Congo.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Costa Rica.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Cote-d'Ivoire.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Croatia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Cuba.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Curacao.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Cyprus.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Czech Republic.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/DR Congo.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Denmark.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Djibouti.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Dominica.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Dominican Republic.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/East-Timor.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Ecuador.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Egypt.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/El Salvador.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/England.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Equatorial Guinea.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Eritrea.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Estonia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Ethiopia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/European-Union.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Falkland Islands.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Faroe Islands.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Fiji.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Finland.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/France.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Gabon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Galicia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Gambia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Georgia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Germany.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Ghana.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Gibraltar.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/GoSquared.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Greece.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Greenland.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Grenada.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Guadeloupe.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Guam.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Guatemala.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Guernsey.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Guinea-Bissau.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Guinea.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Guyana.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Haiti.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Honduras.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Hong Kong.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Hungary.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Iceland.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/India.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Indonesia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/International.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Iran.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Iraq.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Ireland.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Isle of Man.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Israel.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Italy.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Ivory Coast.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Jamaica.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Japan.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Jersey.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Jordan.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Kazakhstan.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Kenya.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Kiribati.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Kosovo.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Kuwait.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Kyrgyzstan.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Laos.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Latvia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Lebanon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Lesotho.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Liberia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Libya.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Liechtenstein.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Lithuania.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Luxembourg.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Macao.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Macedonia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Madagascar.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Malawi.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Malaysia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Maldives.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Mali.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Malta.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Mars.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Marshall Islands.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Martinique.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Mauritania.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Mauritius.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Mexico.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Micronesia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Moldova.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Monaco.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Mongolia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Montenegro.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Montserrat.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Morocco.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Mozambique.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Myanmar.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/NATO.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Nagorno-Karabakh.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Namibia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Nauru.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Nepal.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Netherlands-Antilles.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Netherlands.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/New Zealand.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Nicaragua.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Niger.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Nigeria.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Norfolk-Island.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/North Korea.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/North-Cyprus.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Northern-Mariana-Islands.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Norway.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Olympics.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Oman.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Pakistan.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Palau.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Palestine.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Panama.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Papua New Guinea.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Paraguay.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Peru.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Philippines.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Pitcairn-Islands.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Poland.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Portugal.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Puerto Rico.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Qatar.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Red-Cross.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Romania.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Russia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Rwanda.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Saint Kitts and Nevis.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Saint Lucia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Saint Pierre and Miquelon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Saint Vincent.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Saint-Barthelemy.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Saint-Helena.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Samoa.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/San Marino.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Sao Tome and Principe.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Saudi Arabia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Scotland.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Senegal.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Serbia Montenegro.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Serbia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Seychelles.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Sierra Leone.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Singapore.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Slovakia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Slovenia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Solomon Islands.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Somalia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Somaliland.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/South Africa.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/South Georgia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/South Korea.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/South-Ossetia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/South-Sudan.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Spain.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Sri Lanka.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Sudan.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Suriname.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Swaziland.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Sweden.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Switzerland.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Syria.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Taiwan.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Tajikistan.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Tanzania.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Thailand.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Timor-Leste.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Togo.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Tonga.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Trinidad and Tobago.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Tunisia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Turkey.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Turkmenistan.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Tuvalu.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/US Virgin Islands.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Uganda.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Ukraine.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/United Arab Emirates.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/United Kingdom.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/United States.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Uruguay.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Uzbekistan.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Vanuatu.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Vatican City.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Venezuela.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Vietnam.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Wales.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Western Sahara.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Yemen.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Yugoslavia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Zambia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/flags/Zimbabwe.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/ic_skills.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/chess/utilities/CountryItem.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/chess/utilities/LoadCountryFlagsTask.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/chess/ui/popup_fragments/PopupCountriesFragment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/chess/ui/interfaces/PopupListSelectionFace.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/chess/ui/popup_fragments/PopupSkillsFragment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/chess/ui/activities/SplashActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/chess/ui/interfaces/ViewPagerFace.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/chess/ui/fragments/WelcomeFragment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/edit_white_bottom_pressed.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/edit_white_bottom_selector.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/edit_white_middle_pressed.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/edit_white_middle_selector.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/edit_white_one_pressed.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/edit_white_one_selector.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/edit_white_top_pressed.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/edit_white_top_selector.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/values/new_array_values.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/values/new_arrays_strings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/new_country_list_item.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/new_popup_list_selection_frame.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/new_skill_list_item.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/video_play_btn_back_medium_pressed.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/video_play_btn_back_medium_selector.xml" />
+      <change type="DELETED" beforePath="D:\android\workspace\ChessCom\android\res\drawable-xhdpi\ic_united_states.png" afterPath="" />
+      <change type="DELETED" beforePath="D:\android\workspace\ChessCom\android\src\com\chess\ui\activities\WelcomeActivity.java" afterPath="" />
+      <change type="DELETED" beforePath="D:\android\workspace\ChessCom\android\src\com\chess\ui\fragments\WelcomeFourFragment.java" afterPath="" />
+      <change type="DELETED" beforePath="D:\android\workspace\ChessCom\android\src\com\chess\ui\fragments\WelcomeOneFragment.java" afterPath="" />
+      <change type="DELETED" beforePath="D:\android\workspace\ChessCom\android\src\com\chess\ui\fragments\WelcomeThreeFragment.java" afterPath="" />
+      <change type="DELETED" beforePath="D:\android\workspace\ChessCom\android\src\com\chess\ui\fragments\WelcomeTwoFragment.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/backend/statics/AppConstants.java" afterPath="$PROJECT_DIR$/src/com/chess/backend/statics/AppConstants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/views/CenteredButton.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/views/CenteredButton.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/engine/ChessBoard.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/engine/ChessBoard.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/engine/ChessBoardTactics.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/engine/ChessBoardTactics.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/backend/entity/DataHolder.java" afterPath="$PROJECT_DIR$/src/com/chess/backend/entity/DataHolder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/activities/GameFinishedScreenActivity.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/activities/GameFinishedScreenActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/activities/GameLiveScreenActivity.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/activities/GameLiveScreenActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/activities/GameOnlineScreenActivity.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/activities/GameOnlineScreenActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/activities/LiveBaseActivity.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/activities/LiveBaseActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/activities/OnlineScreenActivity.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/activities/OnlineScreenActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/backend/tasks/PostJsonDataTask.java" afterPath="$PROJECT_DIR$/src/com/chess/backend/tasks/PostJsonDataTask.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/backend/RestHelper.java" afterPath="$PROJECT_DIR$/src/com/chess/backend/RestHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/model/VideoItem.java" afterPath="$PROJECT_DIR$/src/com/chess/model/VideoItem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/backend/statics/AppData.java" afterPath="$PROJECT_DIR$/src/com/chess/backend/statics/AppData.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/utilities/AppUtils.java" afterPath="$PROJECT_DIR$/src/com/chess/utilities/AppUtils.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/fragments/ArticleDetailsFragment.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/fragments/ArticleDetailsFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/views/ChessBoardCompView.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/views/ChessBoardCompView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/activities/CommonLogicActivity.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/activities/CommonLogicActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/engine/ComputeMoveTask.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/engine/ComputeMoveTask.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/activities/CoreActivityActionBar.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/activities/CoreActivityActionBar.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/fragments/CreateProfileFragment.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/fragments/CreateProfileFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/fragments/HomeDailyGamesFragment.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/fragments/HomeDailyGamesFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/activities/HomeScreenActivity.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/activities/HomeScreenActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/fragments/HomeTabsFragment.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/fragments/HomeTabsFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/LeftRightImageEditText.java" afterPath="$PROJECT_DIR$/src/com/chess/LeftRightImageEditText.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/activities/LoginScreenActivity.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/activities/LoginScreenActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/fragments/NewGamesFragment.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/fragments/NewGamesFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/activities/NewLoginActivity.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/activities/NewLoginActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/views/PanelInfoGameView.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/views/PanelInfoGameView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/fragments/SignInFragment.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/fragments/SignInFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/chess/ui/fragments/VideoDetailsFragment.java" afterPath="$PROJECT_DIR$/src/com/chess/ui/fragments/VideoDetailsFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/colors.xml" afterPath="$PROJECT_DIR$/res/values/colors.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/edit_white_middle_default.xml" afterPath="$PROJECT_DIR$/res/drawable/edit_white_middle_default.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/edit_white_one_default.xml" afterPath="$PROJECT_DIR$/res/drawable/edit_white_one_default.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/edit_white_top_default.xml" afterPath="$PROJECT_DIR$/res/drawable/edit_white_top_default.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/ic_action_send_selector.xml" afterPath="$PROJECT_DIR$/res/drawable/ic_action_send_selector.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/login_screen.xml" afterPath="$PROJECT_DIR$/res/layout/login_screen.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout-land/login_screen.xml" afterPath="$PROJECT_DIR$/res/layout-land/login_screen.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout-small-v14/login_screen.xml" afterPath="$PROJECT_DIR$/res/layout-small-v14/login_screen.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout-xlarge-land-mdpi/login_screen.xml" afterPath="$PROJECT_DIR$/res/layout-xlarge-land-mdpi/login_screen.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/new_article_details_frame.xml" afterPath="$PROJECT_DIR$/res/layout/new_article_details_frame.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/new_article_thumb_list_item.xml" afterPath="$PROJECT_DIR$/res/layout/new_article_thumb_list_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/new_create_profile_frame.xml" afterPath="$PROJECT_DIR$/res/layout/new_create_profile_frame.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/new_friends_item.xml" afterPath="$PROJECT_DIR$/res/layout/new_friends_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/new_sign_in_frame.xml" afterPath="$PROJECT_DIR$/res/layout/new_sign_in_frame.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/new_strings.xml" afterPath="$PROJECT_DIR$/res/values/new_strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/new_video_details_frame.xml" afterPath="$PROJECT_DIR$/res/layout/new_video_details_frame.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/new_welcome_one_frame.xml" afterPath="$PROJECT_DIR$/res/layout/new_welcome_one_frame.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/welcome_screen.xml" afterPath="$PROJECT_DIR$/res/layout/welcome_screen.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/layout/welcome_screen.xml" afterPath="$PROJECT_DIR$/res/layout/new_welcome_frame.xml" />
+      <change type="MOVED" beforePath="D:\android\workspace\ChessCom\android\res\drawable\video_play_btn_back_medium.xml" afterPath="$PROJECT_DIR$/res/drawable/video_play_btn_back_medium_default.xml" />
     </list>
     <ignored path="develop_working_comp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -45,7 +354,7 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <breakpoint_any>
+    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
         <option name="NOTIFY_UNCAUGHT" value="true" />
@@ -81,6 +390,7 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -93,8 +403,8 @@
       <file leaf-file-name="GameCompScreenActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/chess/ui/activities/GameCompScreenActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3298" max-vertical-offset="12172">
-              <caret line="194" column="39" selection-start="6088" selection-end="6088" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2295" max-vertical-offset="7259">
+              <caret line="135" column="39" selection-start="4453" selection-end="4453" />
               <folding />
             </state>
           </provider>
@@ -172,7 +482,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -184,6 +493,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -220,19 +530,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -259,6 +556,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -397,11 +707,12 @@
       <updated>1393975738798</updated>
       <workItem from="1393975742428" duration="631000" />
       <workItem from="1394086411950" duration="4000" />
+      <workItem from="1394090485950" duration="24000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="635000" />
+    <option name="totallyTimeSpent" value="659000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="53" y="-4" width="1317" height="776" extended-state="0" />
@@ -410,6 +721,7 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1324201" sideWeight="0.50317967" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13089803" sideWeight="0.50673" order="17" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32858273" sideWeight="0.8192956" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24782264" sideWeight="0.78386605" order="10" side_tool="false" content_ui="tabs" />
@@ -422,6 +734,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6240487" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14838201" sideWeight="0.7672282" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32858273" sideWeight="0.8147014" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18863457" sideWeight="0.7672282" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.09893455" sideWeight="0.49247822" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="true" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32935154" sideWeight="0.7868613" order="4" side_tool="false" content_ui="tabs" x="155" y="469" width="1026" height="608" />
@@ -430,20 +743,18 @@
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6854962" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1217656" sideWeight="0.5" order="18" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34648776" sideWeight="0.8812785" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3561644" sideWeight="0.50397456" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23287672" sideWeight="0.48297703" order="11" side_tool="false" content_ui="tabs" x="302" y="127" width="916" height="462" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.54198474" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Duplicates" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3093415" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.54198474" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -477,6 +788,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/chess/ui/engine/CompEngineHelper.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="442" max-vertical-offset="9248">
+          <caret line="26" column="47" selection-start="723" selection-end="723" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/engine-src/droidfish/DroidFish/src/org/petero/droidfish/GUIInterface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="136" max-vertical-offset="1581">
+          <caret line="30" column="58" selection-start="1094" selection-end="1094" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/chess/ui/activities/GameCompScreenActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="12172">
+          <caret line="194" column="39" selection-start="6088" selection-end="6088" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/chess/ui/engine/CompEngineHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="9248">
           <caret line="26" column="47" selection-start="723" selection-end="723" />
           <folding />
@@ -493,8 +828,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/chess/ui/activities/GameCompScreenActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2465" max-vertical-offset="11118">
-          <caret line="194" column="39" selection-start="6088" selection-end="6088" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2295" max-vertical-offset="7259">
+          <caret line="135" column="39" selection-start="4453" selection-end="4453" />
           <folding />
         </state>
       </provider>

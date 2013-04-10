@@ -436,9 +436,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
 			ChessBoardOnline.resetInstance();
 
-			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
-			intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
-			startActivity(intent);
+//			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
+//			intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
+//			startActivity(intent);
 
 		} else if (tag.equals(CHALLENGE_ACCEPT_TAG)) {
 			LoadItem loadItem = new LoadItem();
@@ -575,10 +575,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 			} else {
 				ChessBoardOnline.resetInstance();
-				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
-				intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
-
-				startActivity(intent);
+//				Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class);
+//				intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
+//
+//				startActivity(intent);
 			}
 		} else if (section == CHALLENGES_SECTION) {
 			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(pos));
@@ -589,9 +589,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			preferencesEditor.putString(AppConstants.OPPONENT, finishedItem.getOpponentUsername());
 			preferencesEditor.commit();
 
-			Intent intent = new Intent(getContext(), GameFinishedScreenActivity.class);
-			intent.putExtra(BaseGameItem.GAME_ID, finishedItem.getGameId());
-			startActivity(intent);
+//			Intent intent = new Intent(getContext(), GameFinishedScreenActivity.class);
+//			intent.putExtra(BaseGameItem.GAME_ID, finishedItem.getGameId());
+//			startActivity(intent);
 		}
 	}
 

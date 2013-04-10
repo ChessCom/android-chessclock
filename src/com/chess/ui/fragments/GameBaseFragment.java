@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
@@ -39,8 +38,6 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 	protected static final String ABORT_GAME_TAG = "abort or resign game";
 	protected SimpleDateFormat datePgnFormat = new SimpleDateFormat("yyyy.MM.dd");
 
-	protected ViewGroup statusBarLay;
-
 	protected CharSequence[] menuOptionsItems;
 	private ChessBoardBaseView boardView;
 	protected View endGamePopupView;
@@ -62,13 +59,6 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 			savedInstanceState.putBoolean(AppConstants.SMALL_SCREEN, true);
 		}
 		super.onCreate(savedInstanceState);
-	}
-
-	protected void widgetsInit(View view) {
-		statusBarLay = (ViewGroup) view.findViewById(R.id.statusBarLay);
-
-//		whitePlayerLabel = (TextView) view.findViewById.analysisTxt);
-
 	}
 
 	@Override

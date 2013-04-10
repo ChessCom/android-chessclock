@@ -46,9 +46,12 @@ public class RestHelper {
 	public static final String R_YOUR_MOVE = "Success+1";
 	public static final String R_OPPONENT_MOVE = "Success+0";
 
-//	https://github.com/ChessCom/chess/blob/develop/docs/api_user_manual.txt
-	public static final String BASE_URL = "http://www.chess-7.com/index_api_qa.php";
-//	public static final String BASE_URL = "http://www.chess.com";
+	//	http://api.chess-7.com
+	public static final String HOST_PRODUCTION = "api.chess.com";
+	public static final String HOST_TEST = "api.chess-7.com";
+	public static final String HOST = HOST_TEST; // switch production/test server
+
+	public static final String BASE_URL = "http://" + HOST;
 	private static final String API = "/api";
 	private static final String V1 = "/v1";
 	private static final String API_V2 = API + "/v2";
@@ -408,7 +411,7 @@ message				false	Only used for `CHAT` command.
 		return LOGIN_HTML_ALS + userToken + GOTO + "%2Fmembership.html" + param;
 //				+ sharedData.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
 //				+ "&goto=http%3A%2F%2Fwww."
-//				+ LccHolder.HOST + "%2Fmembership.html" + param;
+//				+ LccHelper.HOST + "%2Fmembership.html" + param;
 	}
 
 /*	public static String formCustomPaginationRequest(LoadItem loadItem, int page) {
@@ -488,6 +491,8 @@ message				false	Only used for `CHAT` command.
 
 					resultString = resultString.substring(firstIndex, lastIndex + 1);
 
+					Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
+					BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + resultString);
 				} else /*(!resultString.startsWith(OBJ_START))*/{
 //					result = StaticData.INTERNAL_ERROR;
 					Log.d(TAG, "ERROR -> WebRequest SERVER RESPONSE: " + resultString);
@@ -506,9 +511,6 @@ message				false	Only used for `CHAT` command.
 					inputStream.close();
 				}
 			}
-
-			Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
-			BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + resultString);
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

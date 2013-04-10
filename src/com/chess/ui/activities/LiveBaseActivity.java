@@ -11,7 +11,7 @@ import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccChallengeTaskRunner;
-import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.util.GameTimeConfig;
@@ -55,13 +55,13 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	protected void onStart() {
 		super.onStart();
 
-		LccHolder.getInstance(getContext()).setOuterChallengeListener(outerChallengeListener);
+		LccHelper.getInstance(getContext()).setOuterChallengeListener(outerChallengeListener);
 
 		if (AppData.isLiveChess(this) && !AppUtils.isNetworkAvailable(this)) { // check only if live
 			popupItem.setPositiveBtnId(R.string.wireless_settings);
 			showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 		} else {
-			LccHolder.getInstance(this).checkAndConnect();
+			LccHelper.getInstance(this).checkAndConnect();
 		}
 	}
 
@@ -135,7 +135,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == RESULT_OK && requestCode == NETWORK_REQUEST){
-			LccHolder.getInstance(this).checkAndConnect();
+			LccHelper.getInstance(this).checkAndConnect();
 		}
 	}
 

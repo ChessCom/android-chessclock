@@ -34,37 +34,21 @@
             android:contentDescription="@string/image"
             />
 
-<!--        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <com.chess.RoboButton
-                android:id="@+id/signup"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/sign_up"
-                android:background="@drawable/button_grey_left_selector"
-                android:padding="2dip"
-                />-->
-
-            <com.chess.RoboButton
-                android:id="@+id/guestPlayBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:text="@string/play_as_guest"
-                android:background="@drawable/button_grey_selector"
-                android:padding="2dip"
-                />
-       <!-- </LinearLayout>-->
-
         <com.facebook.android.LoginButton
             android:id="@+id/fb_connect"
             style="@style/FacebookButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/common_button_margin_top"
+            android:layout_marginBottom="@dimen/common_button_margin_top"
+            />
+
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/or_login_using_chesscom"
+            style="@style/SetupSmallFont"
+            android:textSize="13sp"
             />
 
         <com.chess.LeftImageEditText
@@ -99,7 +83,27 @@
             android:text="@string/log_in"
             android:layout_marginTop="@dimen/common_main_hit_button_margin_top"
             />
+
+
     </LinearLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/createProfileLay"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="12dip"
+        >
+        <com.chess.RoboTextView
+            android:id="@+id/createProfileBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_create_an_account"
+            style="@style/SetupSmallFont"
+            android:textSize="16sp"
+            android:drawableRight="@drawable/ic_arrow_right"
+            android:layout_gravity="center_horizontal"
+            />
+    </FrameLayout>
 </RelativeLayout>
 

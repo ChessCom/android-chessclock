@@ -15,7 +15,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHolder;
+import com.chess.lcc.android.LccHelper;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.PieceColor;
@@ -101,7 +101,7 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 				initialTimeEdt.setText("10");
 				bonusTimeEdt.setText("0");
 			}
-			if (getLccHolder().getOwnSeeksCount() >= LccHolder.OWN_SEEKS_LIMIT) {
+			if (getLccHolder().getOwnSeeksCount() >= LccHelper.OWN_SEEKS_LIMIT) {
 				return;
 			}
 
