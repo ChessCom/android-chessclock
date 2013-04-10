@@ -64,7 +64,8 @@
 			<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				>
+                android:paddingBottom="@dimen/game_end_layout_padding_bottom"
+                >
 
 				<com.chess.ui.views.GamePanelView
 					android:id="@+id/gamePanelView"
@@ -72,35 +73,93 @@
 					android:layout_height="wrap_content"
 					/>
 
-				<LinearLayout
-					android:id="@+id/submitButtonsLay"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_alignParentBottom="true"
-					android:paddingLeft="@dimen/game_end_layout_padding_side"
-					android:paddingRight="@dimen/game_end_layout_padding_side"
-					android:paddingBottom="@dimen/game_end_layout_padding_bottom"
-					android:visibility="invisible">
 
-					<com.chess.RoboButton
-							android:id="@+id/submitBtn"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:layout_marginRight="10dip"
-							android:layout_weight="1"
-							style="@style/Text.Button"
-							android:text="@string/submit"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="vertical"
+                    >
 
-					<com.chess.RoboButton
-							android:id="@+id/cancelBtn"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							style="@style/Text.Button.Grey"
-							android:layout_marginLeft="10dip"
-							android:layout_weight="1"
-							android:text="@string/cancel"
-							/>
-				</LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/submitButtonsLay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/game_end_layout_padding_side"
+                        android:paddingRight="@dimen/game_end_layout_padding_side"
+                        android:visibility="invisible"
+                        >
+
+                        <com.chess.RoboButton
+                                android:id="@+id/submitBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="10dip"
+                                android:layout_weight="1"
+                                style="@style/Text.Button"
+                                android:text="@string/submit"/>
+
+                        <com.chess.RoboButton
+                                android:id="@+id/cancelBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/Text.Button.Grey"
+                                android:layout_marginLeft="10dip"
+                                android:layout_weight="1"
+                                android:text="@string/cancel"
+                                />
+                    </LinearLayout>
+
+                    <!--Draw buttons layout-->
+                    <RelativeLayout
+                        android:id="@+id/drawButtonsLay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/game_end_layout_padding_side"
+                        android:paddingRight="@dimen/game_end_layout_padding_side"
+                        android:paddingBottom="@dimen/game_end_layout_padding_bottom"
+                        android:background="@color/game_board_back"
+                        android:visibility="gone">
+
+                        <com.chess.RoboTextView
+                            android:id="@+id/drawTitleTxt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            />
+
+                        <FrameLayout
+                            android:id="@+id/centerDrawPoint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            />
+
+                        <com.chess.RoboButton
+                            android:id="@+id/acceptDrawBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/drawTitleTxt"
+                            android:layout_toLeftOf="@id/centerDrawPoint"
+                            android:layout_marginRight="10dip"
+                            android:layout_alignParentLeft="true"
+                            style="@style/Text.Button.Grey"
+                            android:text="@string/accept"/>
+
+                        <com.chess.RoboButton
+                            android:id="@+id/declineDrawBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/drawTitleTxt"
+                            android:layout_toRightOf="@id/centerDrawPoint"
+                            android:layout_alignParentRight="true"
+                            style="@style/Text.Button.Grey"
+                            android:layout_marginLeft="10dip"
+                            android:text="@string/decline"
+                            />
+                    </RelativeLayout>
+
+                </LinearLayout>
 
 			</RelativeLayout>
 

@@ -45,6 +45,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private static final String WARNING_TAG = "warning message popup";
 	private static final long BLINK_DELAY = 5 * 1000;
 	private static final long UNBLINK_DELAY = 400;
+
 	protected TextView topPlayerLabel;
 	protected TextView topPlayerClock;
 	private MenuOptionsDialogListener menuOptionsDialogListener;
@@ -62,6 +63,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	private Button submitBtn;
 	private String warningMessage;
 	private String boardDebug; // temp
+	private View drawButtonsLay;
+	private TextView drawTitleTxt;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -366,13 +369,20 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	}
 
 	@Override
-	public void onDrawOffered(String drawOfferUsername) {
-		String message = drawOfferUsername + StaticData.SYMBOL_SPACE + getString(R.string.has_offered_draw);
+	public void onDrawOffered(final String drawOfferUsername) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				drawButtonsLay = findViewById(R.id.drawButtonsLay);
+				drawTitleTxt = (TextView) findViewById(R.id.drawTitleTxt);
+				findViewById(R.id.acceptDrawBtn).setOnClickListener(GameLiveScreenActivity.this);
+				findViewById(R.id.declineDrawBtn).setOnClickListener(GameLiveScreenActivity.this);
+				drawButtonsLay.setVisibility(View.VISIBLE);
 
-		popupItem.setPositiveBtnId(R.string.accept);
-		popupItem.setNegativeBtnId(R.string.decline);
-		showPopupDialog(message, DRAW_OFFER_RECEIVED_TAG);
-		getLastPopupFragment().setCancelable(false);
+				String message = drawOfferUsername + StaticData.SYMBOL_SPACE + getString(R.string.has_offered_draw);
+				drawTitleTxt.setText(message);
+			}
+		});
 	}
 
 	@Override
@@ -828,6 +838,18 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
 			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
 			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
+		} else if (view.getId() == R.id.acceptDrawBtn) {
+			if (isLCSBound) {
+				Log.i(TAG, "Request draw: " + liveService.getCurrentGame());
+				liveService.runMakeDrawTask();
+			}
+			drawButtonsLay.setVisibility(View.GONE);
+		} else if (view.getId() == R.id.declineDrawBtn) {
+			if (isLCSBound) {
+				Log.i(TAG, "Decline draw: " + liveService.getCurrentGame());
+				liveService.runRejectDrawTask();
+			}
+			drawButtonsLay.setVisibility(View.GONE);
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			liveService.rematch();
 			dismissDialogs();

@@ -296,7 +296,7 @@
 	<string name="won_by_checkmate">\n won by checkmate</string>
 	<string name="game_over">GAME OVER</string>
 	<string name="draw_game">DRAW OFFER</string>
-	<string name="has_offered_draw">%1$s has offered a draw</string>
+	<string name="has_offered_draw">has offered a draw</string>
 	<string name="reconnecting">Reconnecting…</string>
 	<string name="another_login_detected">Another login has been detected.</string>
 	<string name="loading_live_chess">Loading Live Chess</string>
