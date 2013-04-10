@@ -634,6 +634,10 @@ public class GamePanelView extends LinearLayout implements View.OnClickListener 
 		enableGameButton(B_FLIP_ID, enable);
 	}
 
+	public void activateAnalysis(boolean active) {
+		enableGameButton(B_ANALYSIS_ID, active);
+	}
+
 	// todo: temporary debug
 	public boolean isAnalysisEnabled() {
 		return findViewById(BUTTON_PREFIX + B_ANALYSIS_ID).isEnabled()

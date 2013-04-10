@@ -330,6 +330,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 		customView.findViewById(R.id.stopBtn).setOnClickListener(this);
 		customView.findViewById(R.id.solutionBtn).setOnClickListener(this);
 		customView.findViewById(R.id.nextBtn).setOnClickListener(this);
+
+		gamePanelView.enableGameControls(true);
+		gamePanelView.activateAnalysis(true);
 	}
 
 	private void showSolvedTacticPopup(String title, boolean limitReached) {
@@ -369,6 +372,9 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		PopupCustomViewFragment  customViewFragment = PopupCustomViewFragment.newInstance(popupItem);
 		customViewFragment.show(getSupportFragmentManager(), TACTIC_SOLVED_TAG);
+
+		gamePanelView.enableGameControls(true);
+		gamePanelView.activateAnalysis(true);
 	}
 
 	@Override
@@ -519,7 +525,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
             }
 
 			showSolvedTacticPopup(title, false);
-			gamePanelView.enableGameControls(true);
 		}
 
 		@Override
@@ -530,6 +535,7 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 	private void handleErrorRequest() {
 		gamePanelView.enableGameControls(true);
+		gamePanelView.activateAnalysis(true);
 
 		noInternet = true;
 		showPopupDialog(R.string.offline_mode, R.string.no_network_rating_not_changed, OFFLINE_RATING_TAG);
@@ -559,7 +565,6 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
             }
 
             showWrongMovePopup(title);
-			gamePanelView.enableGameControls(true);
 
 			tacticItem.setRetry(true); // set auto retry because we save tactic
 		}
@@ -739,6 +744,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
         firstRun = false;
 		gamePanelView.enableGameControls(true);
+		gamePanelView.activateAnalysis(false);
+
 	}
 
 	@Override
