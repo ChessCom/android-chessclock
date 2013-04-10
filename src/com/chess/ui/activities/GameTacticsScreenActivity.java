@@ -170,8 +170,11 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 				getBoardFace().takeBack();
 				boardView.invalidate();
 				playLastMoveAnimationAndCheck();
-			} else if(tacticItem.isStop()) {
+			}else if (tacticItem.isStop() && !boardView.isFinished()) {
+				startTacticsTimer(tacticItem);
 				timerTxt.setText(getString(R.string.timer_, tacticItem.getSecondsSpentStr()));
+			} else {
+				verifyMove();
 			}
 		}
 	}
