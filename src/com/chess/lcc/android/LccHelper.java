@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
@@ -38,6 +39,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	private static final String TAG = "LccLog-LccHelper";
 	public static final int OWN_SEEKS_LIMIT = 3;
+	public static final int CONNECTION_FAILURE_DELAY = 3000;
 
 	private final LccChatListener chatListener;
 	private final LccConnectionListener connectionListener;
@@ -326,7 +328,11 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		} else {
 			Log.d(TAG, "processConnectionFailure: details=null, recreate client and connect");
 
-			runConnectTask(true); // lets try this way, recreate and connect
+			new Handler().postDelayed(new Runnable() {
+				public void run() {
+					runConnectTask(true); // lets try this way, recreate and connect
+				}
+			}, CONNECTION_FAILURE_DELAY);
 
 			/*setConnected(false);
 			cancelServiceNotification();
