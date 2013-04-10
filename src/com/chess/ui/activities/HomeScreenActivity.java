@@ -114,6 +114,10 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			checkUpdate();
 		}
 
+		if (isLCSBound) {
+			executePausedActivityLiveEvents();
+		}
+
 		showFullScreenAd();
 		adjustActionBar();
 	}
@@ -213,7 +217,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		liveService.setOuterChallengeListener(outerChallengeListener);
 		liveService.setChallengeTaskListener(challengeTaskListener);
 
-		executePausedActivityLiveEvents();
+		//executePausedActivityLiveEvents();
 	}
 
 	@Override

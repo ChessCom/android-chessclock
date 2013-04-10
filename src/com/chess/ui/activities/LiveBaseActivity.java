@@ -134,6 +134,14 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		dismissFragmentDialog();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (isLCSBound) {
+			executePausedActivityLiveEvents();
+		}
+	}
+
 	public void executePausedActivityLiveEvents() {
 
 		Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = liveService.getPausedActivityLiveEvents();
@@ -553,6 +561,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		liveService.setOuterChallengeListener(outerChallengeListener);
 		liveService.setChallengeTaskListener(challengeTaskListener);
 
-		executePausedActivityLiveEvents();
+		//executePausedActivityLiveEvents();
 	}
 }
