@@ -94,6 +94,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
             int i;
             for (i = 0; i < boardFace.getMovesCount(); i++) {
                 Move move = boardFace.getHistDat()[i].move;
+				//Log.d("compgame", "make move " + (64-move.from) + " " + (64-move.to));
 				builder.append(DIVIDER_1)
 						.append(move.from).append(DIVIDER_2)
 						.append(move.to).append(DIVIDER_2)
