@@ -17,6 +17,7 @@ import com.chess.R;
 import com.chess.backend.entity.SoundPlayer;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.ui.interfaces.PopupDialogFace;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.InneractiveAdHelper;
 import com.facebook.android.Facebook;
 import com.inneractive.api.ads.InneractiveAd;
@@ -57,6 +58,12 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	protected void initUpgradeAndAdWidgets() {
+		if (!AppUtils.isNeedToUpgrade(this)) {
+			findViewById(R.id.bannerUpgradeView).setVisibility(View.GONE);
+		} else {
+			findViewById(R.id.bannerUpgradeView).setVisibility(View.VISIBLE);
+		}
+
 		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
 		upgradeBtn.setOnClickListener(this);
 
