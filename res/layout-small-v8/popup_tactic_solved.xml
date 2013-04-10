@@ -21,27 +21,29 @@
 
 
 	<!--Ads-->
-	<!--<LinearLayout
+	<LinearLayout
 		android:id="@+id/adview_wrapper"
 		android:layout_width="@dimen/ad_popup_width"
 		android:layout_height="@dimen/ad_popup_height"
 		android:layout_gravity="center"
-		/>-->
+		>
+
+        <com.inneractive.api.ads.InneractiveAd
+            android:id="@+id/inneractiveRectangleAd"
+            xmlns:inneractive="http://schemas.android.com/apk/res/com.chess"
+            android:layout_width="@dimen/ad_popup_width"
+            android:layout_height="@dimen/ad_popup_height"
+            inneractive:appID="@string/inneractiveAdsAppId"
+            inneractive:adType="Banner"
+            inneractive:refreshInterval="60"
+            inneractive:adAlignment="CENTER"
+            inneractive:optionalAdWidth="@integer/ad_optional_width"
+            inneractive:optionalAdHeight="@integer/ad_optional_height"
+            />
+    </LinearLayout>
 
 	<!-- todo: set app id, set update time -->
 
-	<com.inneractive.api.ads.InneractiveAd
-			android:id="@+id/inneractiveRectangleAd"
-			xmlns:inneractive="http://schemas.android.com/apk/res/com.chess"
-			android:layout_width="@dimen/ad_popup_width"
-			android:layout_height="@dimen/ad_popup_height"
-			inneractive:appID="@string/inneractiveAdsAppId"
-			inneractive:adType="Banner"
-			inneractive:refreshInterval="60"
-			inneractive:adAlignment="CENTER"
-			inneractive:optionalAdWidth="300"
-			inneractive:optionalAdHeight="250"
-			android:visibility="gone"/>
 
 	<LinearLayout
 			android:layout_width="match_parent"

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item type="integer" name="fade_opacity">100</item>
-
     <integer name="ad_optional_width">300</integer>
     <integer name="ad_optional_height">250</integer>
 </resources>
