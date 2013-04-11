@@ -814,7 +814,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void checkAndProcessFullGame() {
-		if (currentGameId != null && getGame(currentGameId) != null) {
+		if (isConnected() && currentGameId != null && getGame(currentGameId) != null) {
 			processFullGame(getGame(currentGameId));
 		}
 	}
