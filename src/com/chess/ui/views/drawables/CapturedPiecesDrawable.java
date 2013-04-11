@@ -6,7 +6,7 @@ import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import com.chess.R;
-import com.chess.backend.statics.AppConstants;
+import com.chess.ui.engine.ChessBoard;
 
 /**
  * Created with IntelliJ IDEA.
@@ -99,7 +99,7 @@ public class CapturedPiecesDrawable extends Drawable {
 		int width = getBounds().width();
 		int height = getBounds().height();
 
-		if (side == AppConstants.WHITE_SIDE) {
+		if (side == ChessBoard.WHITE_SIDE) {
 			backDrawable = context.getResources().getDrawable(R.drawable.back_white_emboss);
 			currentSideDrawables = blackPieceDrawables;
 		} else {

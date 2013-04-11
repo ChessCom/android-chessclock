@@ -156,6 +156,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		toggleCompactView();
 	}
 
+	@Override
 	public void addOptionsView() {
 		optionsView = LayoutInflater.from(getContext()).inflate(R.layout.new_game_option_daily_view, null, false);
 		optionsView.setVisibility(GONE);

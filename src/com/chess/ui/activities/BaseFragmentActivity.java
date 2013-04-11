@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,9 +24,9 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.PopupItem;
+import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.popup_fragments.PopupDialogFragment;
 import com.chess.ui.popup_fragments.PopupProgressFragment;
-import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -104,7 +103,7 @@ public abstract class BaseFragmentActivity extends BaseActivity implements Popup
 				e.printStackTrace();
 				String stackTrace = Log.getStackTraceString(e).replaceAll("\n", " ");
 				Map<String, String> params = new HashMap<String, String>();
-				params.put(AppConstants.EXCEPTION, android.os.Build.MODEL + " " + stackTrace);
+				params.put(AppConstants.EXCEPTION, Build.MODEL + " " + stackTrace);
 				FlurryAgent.logEvent(FlurryData.BUGSENSE_INIT_EXCEPTION, params);
 			}
 		}

@@ -1,9 +1,6 @@
 package com.chess.ui.fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
@@ -19,7 +16,6 @@ import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.entity.new_api.TacticInfoItem;
 import com.chess.backend.entity.new_api.TacticItem;
 import com.chess.backend.entity.new_api.TacticRatingData;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
@@ -30,7 +26,6 @@ import com.chess.db.DBDataManager;
 import com.chess.db.tasks.SaveTacticsBatchTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.PopupItem;
-import com.chess.ui.activities.PreferencesScreenActivity;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
@@ -71,7 +66,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private TacticsInfoUpdateListener tacticsWrongUpdateListener;
 	private DbTacticBatchSaveListener dbTacticBatchSaveListener;
 
-	private MenuOptionsDialogListener menuOptionsDialogListener;
+//	private MenuOptionsDialogListener menuOptionsDialogListener;
 	private static final String FIRST_TACTICS_TAG = "first tactics";
 	private static final String TEN_TACTICS_TAG = "ten tactics reached";
 	private static final String OFFLINE_RATING_TAG = "tactics offline rating";
@@ -183,11 +178,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		tacticsTimer = new Handler();
 		inflater = (LayoutInflater) getActivity().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
-		menuOptionsItems = new CharSequence[]{
-				getString(R.string.show_answer),
-				getString(R.string.settings)};
-
-		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
+//		menuOptionsItems = new CharSequence[]{
+//				getString(R.string.show_answer),
+//				getString(R.string.settings)};
+//
+//		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
 		getTacticsUpdateListener = new TacticsUpdateListener(GET_TACTIC);
 		tacticsCorrectUpdateListener = new TacticsInfoUpdateListener(CORRECT_RESULT);
 		tacticsWrongUpdateListener = new TacticsInfoUpdateListener(WRONG_RESULT);
@@ -413,6 +408,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		return null;
 	}
 
+	@Override
 	public Long getGameId() {
 		if (!tacticItemIsValid()) {
 			return null;
@@ -700,9 +696,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void showOptions() {
-		new AlertDialog.Builder(getActivity())
-				.setTitle(R.string.options)
-				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+//		new AlertDialog.Builder(getActivity())
+//				.setTitle(R.string.options)
+//				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
 	}
 
 	@Override
@@ -736,31 +732,31 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		return super.onOptionsItemSelected(item);
 	}
 
-	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
-		final CharSequence[] items;
-		private final int TACTICS_SHOW_ANSWER = 0;
-		private final int TACTICS_SETTINGS = 1;
-
-		private MenuOptionsDialogListener(CharSequence[] items) {
-			this.items = items;
-		}
-
-		@Override
-		public void onClick(DialogInterface dialogInterface, int i) {
-//			Toast.makeText(getActivity(), items[i], Toast.LENGTH_SHORT).show();
-			switch (i) {
-				case TACTICS_SHOW_ANSWER: {
-					showAnswer();
-					break;
-				}
-				case TACTICS_SETTINGS: {
-					startActivity(new Intent(getContext(), PreferencesScreenActivity.class));
-
-					break;
-				}
-			}
-		}
-	}
+//	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
+//		final CharSequence[] items;
+//		private final int TACTICS_SHOW_ANSWER = 0;
+//		private final int TACTICS_SETTINGS = 1;
+//
+//		private MenuOptionsDialogListener(CharSequence[] items) {
+//			this.items = items;
+//		}
+//
+//		@Override
+//		public void onClick(DialogInterface dialogInterface, int i) {
+////			Toast.makeText(getActivity(), items[i], Toast.LENGTH_SHORT).show();
+//			switch (i) {
+//				case TACTICS_SHOW_ANSWER: {
+//					showAnswer();
+//					break;
+//				}
+//				case TACTICS_SETTINGS: {
+//					startActivity(new Intent(getContext(), SettingsScreenActivity.class));
+//
+//					break;
+//				}
+//			}
+//		}
+//	}
 
 	public void stopTacticsTimer() {
 		if (tacticItemIsValid()) {
@@ -855,10 +851,10 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		controlsTacticsView.showDefault();
 		topPanelView.showDefault();
 
-		if (boardFace.getSide() == AppConstants.WHITE_SIDE) {
-			topPanelView.setSide(AppConstants.WHITE_SIDE);
+		if (boardFace.getSide() == ChessBoard.WHITE_SIDE) {
+			topPanelView.setSide(ChessBoard.WHITE_SIDE);
 		} else {
-			topPanelView.setSide(AppConstants.BLACK_SIDE);
+			topPanelView.setSide(ChessBoard.BLACK_SIDE);
 		}
 	}
 

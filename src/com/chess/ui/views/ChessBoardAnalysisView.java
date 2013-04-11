@@ -57,6 +57,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 		colors_tmp = boardFace.getColor().clone();
 	}
 
+	@Override
 	public void afterMove() {
 		getBoardFace().setMovesCount(getBoardFace().getHply());
 		gameAnalysisActivityFace.invalidateGameScreen();
@@ -65,6 +66,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	}
 
 
+	@Override
 	protected boolean isGameOver() {
 		//saving game for comp game mode if human is playing
 		if ((AppData.isComputerVsHumanGameMode(getBoardFace()) || AppData.isHumanVsHumanGameMode(getBoardFace()))
@@ -200,6 +202,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 		return super.onTouchEvent(event);
 	}
 
+	@Override
 	public void promote(int promote, int col, int row) {
 		boolean found = false;
 		TreeSet<Move> moves = getBoardFace().gen();

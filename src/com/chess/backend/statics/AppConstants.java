@@ -4,6 +4,7 @@ public class AppConstants {
 	public static final String FACEBOOK_APP_ID = "2427617054";
 	public static final String BUGSENSE_API_KEY = "189b9851";
 	public static final String YOUTUBE_DEVELOPER_KEY = "AIzaSyDunSUhieh0QurCov5Pl0nwJUpURTYiEsw";
+	public static final String INNERACTIVE_ADS_APP_ID = "Android_IA_Test";
 
 	/*Screen Features*/
 	public static final String SMALL_SCREEN = "small_screen";
@@ -13,6 +14,7 @@ public class AppConstants {
 	public static final String USER_TOKEN = "user_token";
 	public static final String USER_IS_GUEST = "user_is_guest";
 	public static final String IS_LIVE_CHESS_ON = "is_live_chess_mode_on";
+	public static final String IS_LIVE_CONNECTED = "is_live_connected";
 	public static final String CHALLENGE_INITIAL_TIME = "initial_time";
 	public static final String CHALLENGE_BONUS_TIME = "bonus_time";
 	public static final String CHALLENGE_MIN_RATING = "min_rating";
@@ -58,12 +60,15 @@ public class AppConstants {
 	/* New Daily and Live games*/
 	public static final String PREF_DEFAULT_DAILY_MODE = "defaultDailyMode";
 	public static final String PREF_DEFAULT_LIVE_MODE = "defaultLiveMode";
+	public static final String AD_BANNER = "Banner";
+	public static final String AD_RECTANGLE = "Rectangle";
+	public static final String AD_FULLSCREEN = "Fullscreen";
 
 	public static final String FULLSCREEN_AD_ALREADY_SHOWED = "fullscreen_ad_showed";
 	public static final String USER_SESSION_ID = "user_session_id";
 	public static final String FIRST_TIME_START = "first_time_start";
 	public static final String START_DAY = "start_day";
-	public static final String LAST_ACTIVITY_PAUSED_TIME = "last_activity_aause_time";
+//	public static final String LAST_ACTIVITY_PAUSED_TIME = "last_activity_aause_time";
 	public static final String ADS_SHOW_COUNTER = "ads_show_counter";
 	public static final String MATOMY_AD = "matomy";
 	public static final String RESPONSE = "response";
@@ -125,8 +130,4 @@ public class AppConstants {
 
     public static final String NEED_TO_RESTART = "needToRestart";
 	public static final String MOVE_NUMBERS_PATTERN = "[0-9]{1,4}[.]";
-
-	/* Common Game sides*/
-	public static final int BLACK_SIDE = 0;
-	public static final int WHITE_SIDE = 1;
 }

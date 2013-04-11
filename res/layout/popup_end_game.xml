@@ -78,8 +78,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/home"
-			style="@style/Text.Button.Grey"
-            />
+			style="@style/Text.Button.Grey"/>
 
         <!--Link text-->
         <com.chess.RoboTextView
@@ -98,9 +97,10 @@
             android:id="@+id/shareBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Text.Button.Twitter"
+            style="@style/Text.Button.Login"
             android:text="@string/share_game"
             android:drawableLeft="@null"
+            android:paddingLeft="20dip"
             />
 	</LinearLayout>
 

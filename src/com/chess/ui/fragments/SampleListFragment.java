@@ -13,10 +13,12 @@ import com.chess.R;
 
 public class SampleListFragment extends /*List*/Fragment {
 
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_navigation_menu_frame, container, false);
 	}
 
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		SampleAdapter adapter = new SampleAdapter(getActivity());
@@ -41,6 +43,7 @@ public class SampleListFragment extends /*List*/Fragment {
 			super(context, 0);
 		}
 
+		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.new_navigation_menu_item, null);

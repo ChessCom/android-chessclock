@@ -40,6 +40,7 @@ public class NewGameCompView extends NewGameDefaultView {
 
 	}
 
+	@Override
 	public void toggleOptions() {
 		super.toggleOptions();
 

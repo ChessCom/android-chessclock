@@ -455,6 +455,7 @@ message				false	Only used for `CHAT` command.
 
 			if (IS_TEST_SERVER_MODE) {
 				Authenticator.setDefault(new Authenticator() {
+					@Override
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(V_TEST_NAME, V_TEST_NAME2.toCharArray());
 					}
@@ -566,5 +567,13 @@ message				false	Only used for `CHAT` command.
 	public static String convertStreamToString(java.io.InputStream is) {
 		Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
 		return scanner.hasNext() ? scanner.next() : "";
+	}
+
+	public static String getOnlineGameLink(long gameId) {
+		return BASE_URL + "/echess/game?id=" + gameId;
+	}
+
+	public static String getLiveGameLink(long gameId) {
+		return BASE_URL + "/livechess/game?id=" + gameId;
 	}
 }

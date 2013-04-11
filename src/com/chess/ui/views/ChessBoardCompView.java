@@ -71,6 +71,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		return ChessBoardComp.getInstance(gameCompActivityFace);
 	}
 
+	@Override
 	public void afterMove() {
         getBoardFace().setMovesCount(getBoardFace().getHply());
 		gameCompActivityFace.invalidateGameScreen();
@@ -84,7 +85,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
     }
 
 
-    protected boolean isGameOver() {
+    @Override
+	protected boolean isGameOver() {
         //saving game for comp game mode if human is playing
         if ((AppData.isComputerVsHumanGameMode(getBoardFace()) || AppData.isHumanVsHumanGameMode(getBoardFace()))
                 && !getBoardFace().isAnalysis()) {
@@ -357,7 +359,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
         return super.onTouchEvent(event);
     }
 
-    public void promote(int promote, int col, int row) {
+    @Override
+	public void promote(int promote, int col, int row) {
         boolean found = false;
         TreeSet<Move> moves = getBoardFace().gen();
         Iterator<Move> iterator = moves.iterator();

@@ -26,7 +26,7 @@ public class PopupItem implements Parcelable {
     private LinearLayout customView;
 	private int buttons;
 
-	public PopupItem() {
+    public PopupItem() {
         this.positiveBtnId = R.string.ok;
         this.negativeBtnId = R.string.cancel;
         title = StaticData.SYMBOL_EMPTY;
@@ -126,7 +126,7 @@ public class PopupItem implements Parcelable {
 		parcel.writeInt(buttons);
 	}
 
-	public static final Parcelable.Creator<PopupItem> CREATOR = new Parcelable.Creator<PopupItem>() {
+	public static final Creator<PopupItem> CREATOR = new Creator<PopupItem>() {
 		@Override
 		public PopupItem createFromParcel(Parcel in) {
 			return new PopupItem(in);

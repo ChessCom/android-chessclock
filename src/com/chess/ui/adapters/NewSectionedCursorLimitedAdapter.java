@@ -68,10 +68,12 @@ public abstract class NewSectionedCursorLimitedAdapter extends ItemsCursorAdapte
 	}
 
 	private DataSetObserver mDataSetObserver = new DataSetObserver() {
+		@Override
 		public void onChanged() {
 			calculateSectionHeaders();
 		}
 
+		@Override
 		public void onInvalidated() {
 			sectionsIndexer.clear();
 		}

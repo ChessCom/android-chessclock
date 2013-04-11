@@ -113,6 +113,7 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 	 * @param event The motion event.
 	 * @return True if the event was handled, false otherwise.
 	 */
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 
 		switch (event.getAction()) {

@@ -95,6 +95,7 @@ public class ControlsCompView extends ControlsBaseView {
 		enableGameButton(B_BACK_ID, enable);
 	}
 
+	@Override
 	public void onClick(View view) {  // TODO rework click handles
 		if (blocked)
 			return;

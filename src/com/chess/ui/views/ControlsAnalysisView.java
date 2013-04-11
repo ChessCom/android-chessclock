@@ -80,6 +80,7 @@ public class ControlsAnalysisView extends ControlsBaseView {
 		return buttonsDrawableIds[buttonId];
 	}
 
+	@Override
 	public void toggleControlButton(int buttonId, boolean checked) {
 	}
 
@@ -93,6 +94,7 @@ public class ControlsAnalysisView extends ControlsBaseView {
 		enableGameButton(B_BACK_ID, enable);
 	}
 
+	@Override
 	public void onClick(View view) {  // TODO rework click handles
 		if (blocked)
 			return;

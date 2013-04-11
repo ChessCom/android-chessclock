@@ -114,6 +114,28 @@
 		android:paddingLeft="20dip"
 		android:paddingRight="5dip"
 		/>
+    <!--Link text-->
+    <com.chess.RoboTextView
+        android:id="@+id/rulesLinkTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorLink="@color/white"
+        android:text="@string/fair_play_policy_link"
+        android:gravity="center"
+        android:padding="5dip"
+        android:visibility="gone"
+        />
+
+    <!--Share-->
+    <com.chess.RoboButton
+        android:id="@+id/shareBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Text.Button.Login"
+        android:text="@string/share_game"
+        android:drawableLeft="@null"
+        android:paddingLeft="20dip"
+        />
 
     <!--Link text-->
     <com.chess.RoboTextView

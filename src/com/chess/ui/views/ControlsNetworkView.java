@@ -97,6 +97,7 @@ public class ControlsNetworkView extends ControlsBaseView {
 		return buttonsDrawableIds[buttonId];
 	}
 
+	@Override
 	public void toggleControlButton(int buttonId, boolean checked) {
 	}
 
@@ -119,6 +120,7 @@ public class ControlsNetworkView extends ControlsBaseView {
 		controlsLayout.addView(button, buttonParams);
 	}
 
+	@Override
 	public void onClick(View view) {  // TODO rework click handles
 		if (blocked)
 			return;

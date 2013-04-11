@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.ui.activities.PreferencesScreenActivity;
+import com.chess.ui.activities.SettingsScreenActivity;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -46,6 +46,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 
 	}
 
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_navigation_menu_frame, container, false);
 	}
@@ -57,6 +58,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		listView.setOnItemClickListener(this);
 	}
 
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		NewNavigationMenuAdapter adapter = new NewNavigationMenuAdapter(getActivity(), menuItems);
@@ -111,7 +113,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				break;
 			case R.drawable.ic_nav_settings:
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
-				Intent intent = new Intent(getActivity(), PreferencesScreenActivity.class);
+				Intent intent = new Intent(getActivity(), SettingsScreenActivity.class);
 				getActivity().startActivity(intent);
 				break;
 		}

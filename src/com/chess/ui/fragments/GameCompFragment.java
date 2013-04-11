@@ -1,8 +1,5 @@
 package com.chess.ui.fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -18,7 +15,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.model.PopupItem;
-import com.chess.ui.activities.PreferencesScreenActivity;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
@@ -45,7 +41,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
 
-	private MenuOptionsDialogListener menuOptionsDialogListener;
+//	private MenuOptionsDialogListener menuOptionsDialogListener;
 	private ChessBoardCompView boardView;
 
 	private int[] compStrengthArray;
@@ -135,13 +131,13 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	}
 
 	private void init() {
-		menuOptionsItems = new CharSequence[]{
-				getString(R.string.new_game_white),
-				getString(R.string.new_game_black),
-				getString(R.string.email_game),
-				getString(R.string.settings)};
-
-		menuOptionsDialogListener = new MenuOptionsDialogListener();
+//		menuOptionsItems = new CharSequence[]{
+//				getString(R.string.new_game_white),
+//				getString(R.string.new_game_black),
+//				getString(R.string.email_game),
+//				getString(R.string.settings)};
+//
+//		menuOptionsDialogListener = new MenuOptionsDialogListener();
 
 		compStrengthArray = getResources().getIntArray(R.array.comp_strength);
 	}
@@ -208,9 +204,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 	@Override
 	public void showOptions() {
-		new AlertDialog.Builder(getContext())
-				.setTitle(R.string.options)
-				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+//		new AlertDialog.Builder(getContext())
+//				.setTitle(R.string.options)
+//				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
 	}
 
 	@Override
@@ -222,7 +218,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		switch (getBoardFace().getMode()) {
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {    //w - human; b - comp
 
-				labelsConfig.userSide = AppConstants.WHITE_SIDE;
+				labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 
 				labelsConfig.topAvatar = opponentAvatarDrawable;
 				labelsConfig.bottomAvatar = userAvatarDrawable;
@@ -235,7 +231,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {    //w - comp; b - human
 
-				labelsConfig.userSide = AppConstants.BLACK_SIDE;
+				labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 
 				labelsConfig.topAvatar = opponentAvatarDrawable;
 				labelsConfig.bottomAvatar = userAvatarDrawable;
@@ -247,7 +243,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 				break;
 			}
 			case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {    //w - human; b - human
-				labelsConfig.userSide = AppConstants.BLACK_SIDE;
+				labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 
 				labelsConfig.topAvatar = opponentAvatarDrawable;
 				labelsConfig.bottomAvatar = userAvatarDrawable;
@@ -258,7 +254,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 				break;
 			}
 			case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {    //w - comp; b - comp
-				labelsConfig.userSide = AppConstants.BLACK_SIDE;
+				labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 
 				labelsConfig.topAvatar = opponentAvatarDrawable;
 				labelsConfig.bottomAvatar = userAvatarDrawable;
@@ -383,53 +379,54 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		return AppData.isComputerVsHumanWhiteGameMode(getBoardFace());
 	}
 
+	@Override
 	public Long getGameId() {
 		return null;
 	}
 
-	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
-		private final int NEW_GAME_WHITE = 0;
-		private final int NEW_GAME_BLACK = 1;
-		private final int EMAIL_GAME = 2;
-		private final int SETTINGS = 3;
-
-		@Override
-		public void onClick(DialogInterface dialogInterface, int i) {
-			switch (i) {
-				case NEW_GAME_WHITE: {
-					ChessBoardComp.resetInstance();
-					getBoardFace();
-					boardView.setGameActivityFace(GameCompFragment.this);
-					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
-					boardView.invalidate();
-					invalidateGameScreen();
-					break;
-				}
-				case NEW_GAME_BLACK: {
-					// TODO encapsulate
-					ChessBoardComp.resetInstance();
-					getBoardFace();
-					boardView.setGameActivityFace(GameCompFragment.this);
-					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
-					getBoardFace().setReside(true);
-					boardView.invalidate();
-					invalidateGameScreen();
-
-					computerMove();
-					break;
-				}
-				case EMAIL_GAME: {
-					sendPGN();
-					break;
-				}
-
-				case SETTINGS: {
-					startActivity(new Intent(getContext(), PreferencesScreenActivity.class));
-					break;
-				}
-			}
-		}
-	}
+//	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
+//		private final int NEW_GAME_WHITE = 0;
+//		private final int NEW_GAME_BLACK = 1;
+//		private final int EMAIL_GAME = 2;
+//		private final int SETTINGS = 3;
+//
+//		@Override
+//		public void onClick(DialogInterface dialogInterface, int i) {
+//			switch (i) {
+//				case NEW_GAME_WHITE: {
+//					ChessBoardComp.resetInstance();
+//					getBoardFace();
+//					boardView.setGameActivityFace(GameCompFragment.this);
+//					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
+//					boardView.invalidate();
+//					invalidateGameScreen();
+//					break;
+//				}
+//				case NEW_GAME_BLACK: {
+//					// TODO encapsulate
+//					ChessBoardComp.resetInstance();
+//					getBoardFace();
+//					boardView.setGameActivityFace(GameCompFragment.this);
+//					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
+//					getBoardFace().setReside(true);
+//					boardView.invalidate();
+//					invalidateGameScreen();
+//
+//					computerMove();
+//					break;
+//				}
+//				case EMAIL_GAME: {
+//					sendPGN();
+//					break;
+//				}
+//
+//				case SETTINGS: {
+//					startActivity(new Intent(getContext(), SettingsScreenActivity.class));
+//					break;
+//				}
+//			}
+//		}
+//	}
 
 	private void sendPGN() {
 		/*
@@ -521,7 +518,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		int userSide;
 
 		int getOpponentSide(){
-			return userSide == AppConstants.WHITE_SIDE? AppConstants.BLACK_SIDE: AppConstants.WHITE_SIDE;
+			return userSide == ChessBoard.WHITE_SIDE? ChessBoard.BLACK_SIDE: ChessBoard.WHITE_SIDE;
 		}
 	}
 

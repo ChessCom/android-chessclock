@@ -10,8 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.StaticData;
+import com.chess.model.BaseGameItem;
 import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardBaseView;
@@ -27,7 +30,8 @@ import java.text.SimpleDateFormat;
  * Date: 15.01.13
  * Time: 13:46
  */
-public abstract class GameBaseFragment extends CommonLogicFragment implements GameActivityFace {
+//public abstract class GameBaseFragment extends CommonLogicFragment implements GameActivityFace {
+public abstract class GameBaseFragment extends LiveBaseFragment implements GameActivityFace {
 
 	protected static final String GAME_GOES = "*";
 	protected static final String WHITE_WINS = "1-0";
@@ -38,7 +42,7 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 	protected static final String ABORT_GAME_TAG = "abort or resign game";
 	protected SimpleDateFormat datePgnFormat = new SimpleDateFormat("yyyy.MM.dd");
 
-	protected CharSequence[] menuOptionsItems;
+//	protected CharSequence[] menuOptionsItems;
 	private ChessBoardBaseView boardView;
 	protected View endGamePopupView;
 	protected String endGameMessage;
@@ -214,13 +218,14 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 		return getActivity();
 	}
 
+	@Override
 	public void onCheck() {
 		showToast(R.string.check);
 	}
 
 //	public BoardFace getBoardFace(){
 //		return boardView.getBoardFace();
-////		return boardView.getBoardFace();
+//	//		return boardView.getBoardFace();
 //	}
 
 	@Override
@@ -243,5 +248,40 @@ public abstract class GameBaseFragment extends CommonLogicFragment implements Ga
 
 	protected PopupCustomViewFragment getEndPopupDialogFragment(){
 		return (PopupCustomViewFragment) getFragmentManager().findFragmentByTag(END_GAME_TAG);
+	}
+
+	public class ShareItem {
+
+		private final String gameLink;
+		private BaseGameItem currentGame;
+		private long gameId;
+		private String gameType;
+
+		public ShareItem(BaseGameItem currentGame, long gameId, String gameType) {
+			this.currentGame = currentGame;
+			this.gameId = gameId;
+			this.gameType = gameType;
+			if (gameType.equals(getString(R.string.live))) {
+				gameLink = RestHelper.getLiveGameLink(gameId);
+			} else {
+				gameLink =  RestHelper.getOnlineGameLink(gameId);
+			}
+		}
+
+
+		public String composeMessage() {
+			String vsStr = getString(R.string.vs);
+			String space = StaticData.SYMBOL_SPACE;
+			return currentGame.getWhiteUsername() + space + vsStr + space + currentGame.getBlackUsername()
+					+ " - " +  gameType  + space + getString(R.string.chess) + space
+					+ getString(R.string.via_chesscom) + space
+					+ gameLink;
+		}
+
+		public String getTitle() {
+			String vsStr = getString(R.string.vs);
+			return "Chess: " + currentGame.getWhiteUsername() + StaticData.SYMBOL_SPACE
+					+ vsStr + StaticData.SYMBOL_SPACE + currentGame.getBlackUsername(); // TODO adjust i18n
+		}
 	}
 }

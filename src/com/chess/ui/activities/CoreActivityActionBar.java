@@ -5,35 +5,18 @@ import actionbarcompat.ActionBarHelper;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.DialogFragment;
 import android.view.*;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.entity.SoundPlayer;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
-import com.chess.lcc.android.LccHelper;
-import com.chess.lcc.android.interfaces.LiveChessClientEventListenerFace;
-import com.chess.model.PopupItem;
 import com.chess.ui.interfaces.PopupDialogFace;
-import com.chess.ui.popup_fragments.PopupCustomViewFragment;
 import com.facebook.android.Facebook;
-import com.facebook.android.LoginButton;
-import com.mopub.mobileads.MoPubView;
+import com.inneractive.api.ads.InneractiveAd;
 
 public abstract class CoreActivityActionBar extends ActionBarActivity implements View.OnClickListener
-		, PopupDialogFace, LiveChessClientEventListenerFace {
-
-	private static final String CONNECT_FAILED_TAG = "connect_failed";
-	private static final String OBSOLETE_VERSION_TAG = "obsolete version";
-
+		, PopupDialogFace {
 
 	protected Bundle extras;
 	protected Handler handler;
@@ -43,7 +26,9 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected boolean showActionRefresh;
 
 	// we may have this add on every screen, so control it on the lowest level
-	protected MoPubView moPubView;
+	//protected MoPubView moPubView;
+	protected InneractiveAd inneractiveBannerAd;
+	protected InneractiveAd inneractiveRectangleAd;
 
 	public void setFullScreen() {
 //		requestWindowFeature(Window.FEATURE_NO_TITLE);  // TODO solve problem for QVGA screens
@@ -61,10 +46,21 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 
 		handler = new Handler();
-
 		extras = getIntent().getExtras();
+	}
 
-        LccHelper.getInstance(this).setLiveChessClientEventListener(this);
+	protected void initUpgradeAndAdWidgets() {
+//		if (!AppUtils.isNeedToUpgrade(this)) {
+//			findViewById(R.id.bannerUpgradeView).setVisibility(View.GONE);
+//		} else {
+//			findViewById(R.id.bannerUpgradeView).setVisibility(View.VISIBLE);
+//		}
+//
+//		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
+//		upgradeBtn.setOnClickListener(this);
+//
+//		inneractiveBannerAd = (InneractiveAd) findViewById(R.id.inneractiveBannerAd);
+//		InneractiveAdHelper.showBannerAd(upgradeBtn, inneractiveBannerAd, this);
 	}
 
 	@Override
@@ -100,7 +96,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
-		backgroundChessDrawable.updateConfig();
+//		backgroundChessDrawable.updateConfig();
 		super.onConfigurationChanged(newConfig);
 	}
 
@@ -108,46 +104,28 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void onPause() {
 		super.onPause();
 
-		// try to destroy ad here as MoPub team suggested
+	    /* // try to destroy ad here as MoPub team suggested
 		if (moPubView != null) {
-			moPubView.destroy();
-		}
-
-		preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
-		preferencesEditor.commit();
+		moPubView.destroy();
+    	}*/
+		/*preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
+		preferencesEditor.commit();*/
 	}
 
 	@Override
-	public void onPositiveBtnClick(DialogFragment fragment) {
-		String tag = fragment.getTag();
-		if (tag == null) {
-			super.onPositiveBtnClick(fragment);
-			return;
-		}
-
-		if (tag.equals(CONNECT_FAILED_TAG)) {
-			if (AppData.isLiveChess(this)) {
-				getLccHolder().logout();
-			}
-			backToHomeActivity();
-		} else if (tag.equals(OBSOLETE_VERSION_TAG)) {
-			// Show site and
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					AppData.setLiveChessMode(getContext(), false);
-					LccHelper.getInstance(getContext()).setConnected(false);
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri
-							.parse(RestHelper.PLAY_ANDROID_HTML)));
-				}
-			});
-
-			backToHomeActivity();
-		}
-		super.onPositiveBtnClick(fragment);
+	protected void onDestroy() {
+//		if (inneractiveBannerAd != null) {
+//			inneractiveBannerAd.cleanUp();
+//		}
+//		if (inneractiveRectangleAd != null) {
+//			inneractiveRectangleAd.cleanUp();
+//		}
+		super.onDestroy();
 	}
 
-	private void adjustActionBar() {
+
+
+	protected void adjustActionBar() {
 //		getActionBarHelper().showMenuItemById(R.id.menu_settings, showActionSettings);
 //		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
 //		getActionBarHelper().showMenuItemById(R.id.menu_refresh, showActionRefresh);
@@ -155,6 +133,19 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 //		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHelper.getInstance(this).isConnected());
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				backToHomeActivity(); // TODO toggle comment here to go back to old app
+//				getSlidingMenu().toggle();
+				break;
+			case R.id.menu_settings:
+				startActivity(new Intent(this, SettingsScreenActivity.class));
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
@@ -175,19 +166,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case android.R.id.home:
-				backToHomeActivity(); // TODO toggle comment here to go back to old app
-//				getSlidingMenu().toggle();
-				break;
-			case R.id.menu_settings:
-				startActivity(new Intent(this, PreferencesScreenActivity.class));
-				break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+
 
 //	protected abstract class ChessUpdateListener extends ActionBarUpdateListener<String> {
 //		public ChessUpdateListener() {
@@ -196,110 +175,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 //	}
 
 
-	// ---------- LiveChessClientEventListenerFace ----------------
-	@Override
-	public void onConnecting() {
-//		runOnUiThread(new Runnable() {   // there will be no indication
-//			@Override
-//			public void run() {
-//				getActionBarHelper().showMenuItemById(R.id.menu_singOut, false);
-//				getActionBarHelper().setRefreshActionItemState(true);
-//			}
-//		});
-	}
-
-	@Override
-	public void onConnectionEstablished() {
-//		runOnUiThread(new Runnable() {
-//			@Override
-//			public void run() {
-//				getActionBarHelper().setRefreshActionItemState(false);
-//				getActionBarHelper().showMenuItemById(R.id.menu_singOut, true);
-//			}
-//		});
-	}
-
-	@Override
-	public void onSessionExpired(final String message) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-
-				LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-				final LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_relogin_frame, null, false);
-
-				PopupItem popupItem = new PopupItem();
-				popupItem.setCustomView(customView);
-
-				PopupCustomViewFragment reLoginFragment = PopupCustomViewFragment.newInstance(popupItem);
-				reLoginFragment.show(getSupportFragmentManager(), RE_LOGIN_TAG);
-
-				getLccHolder().logout();
-
-				((TextView) customView.findViewById(R.id.titleTxt)).setText(message);
-
-				EditText usernameEdt = (EditText) customView.findViewById(R.id.usernameEdt);
-				EditText passwordEdt = (EditText) customView.findViewById(R.id.passwordEdt);
-				setLoginFields(usernameEdt, passwordEdt);
-
-				customView.findViewById(R.id.re_signin).setOnClickListener(CoreActivityActionBar.this);
-
-				LoginButton facebookLoginButton = (LoginButton) customView.findViewById(R.id.re_fb_connect);
-				facebookInit(facebookLoginButton);
-				facebookLoginButton.logout();
-
-				usernameEdt.setText(AppData.getUserName(CoreActivityActionBar.this));
-			}
-		});
-	}
-
-	@Override
-	public void onConnectionFailure(String message) {
-//		runOnUiThread(new Runnable() {
-//			@Override
-//			public void run() {
-//				getActionBarHelper().setRefreshActionItemState(false);
-//				getActionBarHelper().showMenuItemById(R.id.menu_singOut, false);
-//			}
-//		});
-
-		if (isPaused)
-			return;
-
-		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG);
-		getLastPopupFragment().setButtons(1);
-	}
-
-    @Override
-    public void onConnectionBlocked(final boolean blocked) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActionBarHelper().setRefreshActionItemState(blocked);
-			}
-		});
-
-    }
-
-    @Override
-	public void onObsoleteProtocolVersion() {
-		showPopupDialog(R.string.version_check, R.string.version_is_obsolete_update, OBSOLETE_VERSION_TAG);
-		getLastPopupFragment().setButtons(1);
-		getLastPopupFragment().setCancelable(false);
-	}
-
-	@Override
-	public void onFriendsStatusChanged(){
-
-	}
-
-	@Override
-	public void onAdminAnnounce(String message) {
-		showSinglePopupDialog(message);
-		getLastPopupFragment().setButtons(1);
-	}
-
-	// -----------------------------------------------------
 
 
 	@Override
@@ -317,10 +192,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 	}
 
-	protected LccHelper getLccHolder() {
-		return LccHelper.getInstance(this);
-	}
-
 	public ActionBarHelper provideActionBarHelper() {
 		return getActionBarHelper();
 	}
@@ -335,7 +206,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	@Override
 	protected void afterLogin() {
-//		restartActivity();
+
 	}
 }
-

@@ -34,7 +34,6 @@ import java.util.TreeSet;
  */
 public abstract class ChessBoardBaseView extends ImageView implements BoardViewFace, View.OnClickListener {
 
-
 	public static final int P_ALPHA_ID = 0;
 	public static final int P_BOOK_ID = 1;
 	public static final int P_CASES_ID = 2;
@@ -213,7 +212,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			}
 		}
 
-		if (topPanelView.getSide() == AppConstants.WHITE_SIDE) { // if opponent is playing white
+		if (topPanelView.getSide() == ChessBoard.WHITE_SIDE) { // if opponent is playing white
 			topPanelView.updateCapturedPieces(blackAlivePiecesCount);
 			bottomPanelView.updateCapturedPieces(whiteAlivePiecesCount);
 		} else { // if user is playing black

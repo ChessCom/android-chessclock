@@ -1,8 +1,10 @@
 package com.chess.ui.fragments;
 
-import android.app.AlertDialog;
 import android.app.NotificationManager;
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -31,7 +33,6 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.PopupItem;
-import com.chess.ui.activities.PreferencesScreenActivity;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
@@ -64,7 +65,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private static final int CURRENT_GAME = 0;
 	private static final int GAMES_LIST = 1;
 
-	private MenuOptionsDialogListener menuOptionsDialogListener;
+//	private MenuOptionsDialogListener menuOptionsDialogListener;
 	private GameOnlineUpdatesListener abortGameUpdateListener;
 	private GameOnlineUpdatesListener drawOfferedUpdateListener;
 
@@ -188,7 +189,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	public void init() {
 		gameId = getArguments().getLong(BaseGameItem.GAME_ID, 0);
 
-		menuOptionsDialogListener = new MenuOptionsDialogListener();
+//		menuOptionsDialogListener = new MenuOptionsDialogListener();
 		abortGameUpdateListener = new GameOnlineUpdatesListener(ABORT_GAME_UPDATE);
 		drawOfferedUpdateListener = new GameOnlineUpdatesListener(DRAW_OFFER_UPDATE);
 
@@ -291,11 +292,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 					labelsConfig.bottomAvatar = userAvatarDrawable;
 
 					if (userPlayWhite) {
-						labelsConfig.userSide = AppConstants.WHITE_SIDE;
+						labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 						labelsConfig.topPlayerLabel = getBlackPlayerName();
 						labelsConfig.bottomPlayerLabel = getWhitePlayerName();
 					} else {
-						labelsConfig.userSide = AppConstants.BLACK_SIDE;
+						labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 						labelsConfig.topPlayerLabel = getWhitePlayerName();
 						labelsConfig.bottomPlayerLabel = getBlackPlayerName();
 					}
@@ -525,6 +526,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		}
 	}
 
+	@Override
 	public void invalidateGameScreen() {
 		showSubmitButtonsLay(getBoardFace().isSubmit());
 
@@ -742,6 +744,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		loadGamesList();
 	}
 
+	@Override
 	public Boolean isUserColorWhite() {
 		if (currentGame != null)
 			return currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(getActivity()));
@@ -749,6 +752,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			return null;
 	}
 
+	@Override
 	public Long getGameId() {
 		return gameId;
 	}
@@ -774,25 +778,25 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		boolean userMove =  isUserMove();
 
 		if (getBoardFace().getHply() < 1 && userMove) {
-			menuOptionsItems = new CharSequence[]{
-					getString(R.string.settings),
-					getString(R.string.messages),
-					getString(R.string.email_game),
-					getString(R.string.reside),
-					getString(R.string.abort)};
+//			menuOptionsItems = new CharSequence[]{
+//					getString(R.string.settings),
+//					getString(R.string.messages),
+//					getString(R.string.email_game),
+//					getString(R.string.reside),
+//					getString(R.string.abort)};
 		} else {
-			menuOptionsItems = new CharSequence[]{
-					getString(R.string.settings),
-					getString(R.string.messages),
-					getString(R.string.email_game),
-					getString(R.string.reside),
-					getString(R.string.offer_draw),
-					getString(R.string.resign)};
+//			menuOptionsItems = new CharSequence[]{
+//					getString(R.string.settings),
+//					getString(R.string.messages),
+//					getString(R.string.email_game),
+//					getString(R.string.reside),
+//					getString(R.string.offer_draw),
+//					getString(R.string.resign)};
 		}
 
-		new AlertDialog.Builder(getActivity()) // TODO change with FragmentDialog
-				.setTitle(R.string.options)
-				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+//		new AlertDialog.Builder(getActivity()) // TODO change with FragmentDialog
+//				.setTitle(R.string.options)
+//				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
 	}
 
 	@Override
@@ -838,39 +842,39 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		return super.onOptionsItemSelected(item);
 	}
 
-	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
-		private final int ECHESS_SETTINGS = 0;
-		private final int ECHESS_MESSAGES = 1;
-		private final int EMAIL_GAME = 2;
-		private final int ECHESS_RESIDE = 3;
-		private final int ECHESS_DRAW_OFFER = 4;
-		private final int ECHESS_RESIGN_OR_ABORT = 5;
-
-		@Override
-		public void onClick(DialogInterface dialogInterface, int i) {
-			switch (i) {
-				case ECHESS_SETTINGS:
-					startActivity(new Intent(getContext(), PreferencesScreenActivity.class));
-					break;
-				case ECHESS_MESSAGES:
-					openChatActivity();
-					break;
-				case EMAIL_GAME:
-					sendPGN();
-					break;
-				case ECHESS_RESIDE:
-					getBoardFace().setReside(!getBoardFace().isReside());
-					boardView.invalidate();
-					break;
-				case ECHESS_DRAW_OFFER:
-					showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
-					break;
-				case ECHESS_RESIGN_OR_ABORT:
-					showPopupDialog(R.string.abort_resign_game, R.string.are_you_sure_q, ABORT_GAME_TAG);
-					break;
-			}
-		}
-	}
+//	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
+//		private final int ECHESS_SETTINGS = 0;
+//		private final int ECHESS_MESSAGES = 1;
+//		private final int EMAIL_GAME = 2;
+//		private final int ECHESS_RESIDE = 3;
+//		private final int ECHESS_DRAW_OFFER = 4;
+//		private final int ECHESS_RESIGN_OR_ABORT = 5;
+//
+//		@Override
+//		public void onClick(DialogInterface dialogInterface, int i) {
+//			switch (i) {
+//				case ECHESS_SETTINGS:
+//					startActivity(new Intent(getContext(), SettingsScreenActivity.class));
+//					break;
+//				case ECHESS_MESSAGES:
+//					openChatActivity();
+//					break;
+//				case EMAIL_GAME:
+//					sendPGN();
+//					break;
+//				case ECHESS_RESIDE:
+//					getBoardFace().setReside(!getBoardFace().isReside());
+//					boardView.invalidate();
+//					break;
+//				case ECHESS_DRAW_OFFER:
+//					showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
+//					break;
+//				case ECHESS_RESIGN_OR_ABORT:
+//					showPopupDialog(R.string.abort_resign_game, R.string.are_you_sure_q, ABORT_GAME_TAG);
+//					break;
+//			}
+//		}
+//	}
 
 	private void sendPGN() {
 		CharSequence moves = getBoardFace().getMoveListSAN();
@@ -1214,7 +1218,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		int userSide;
 
 		int getOpponentSide(){
-			return userSide == AppConstants.WHITE_SIDE? AppConstants.BLACK_SIDE: AppConstants.WHITE_SIDE;
+			return userSide == ChessBoard.WHITE_SIDE? ChessBoard.BLACK_SIDE: ChessBoard.WHITE_SIDE;
 		}
 	}
 

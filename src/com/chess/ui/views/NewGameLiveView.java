@@ -47,6 +47,7 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 
 	}
 
+	@Override
 	public void toggleOptions() {
 		super.toggleOptions();
 
@@ -259,6 +260,7 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 	}
 
 	public static class ViewLiveConfig extends ViewConfig {
+		@Override
 		public String getLeftButtonText() {
 			return leftButtonText;
 		}

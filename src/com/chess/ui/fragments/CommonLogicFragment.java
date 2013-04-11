@@ -27,7 +27,6 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.lcc.android.LccHelper;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.facebook.android.Facebook;
@@ -383,9 +382,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 //		return true;
 //	}
 
-	protected LccHelper getLccHolder() {
-		return getActivityFace().getMeLccHolder();
-	}
+//	protected LccHelper getLccHolder() {
+//		return getActivityFace().getMeLccHolder();
+//	}
 
 	protected Fragment findFragmentByTag(String tag) {
 		return getFragmentManager().findFragmentByTag(tag);

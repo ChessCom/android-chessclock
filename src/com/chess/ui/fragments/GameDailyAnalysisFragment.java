@@ -22,12 +22,16 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.PopupItem;
+import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameAnalysisFace;
 import com.chess.ui.popup_fragments.PopupCustomViewFragment;
-import com.chess.ui.views.*;
+import com.chess.ui.views.ChessBoardAnalysisView;
+import com.chess.ui.views.ControlsAnalysisView;
+import com.chess.ui.views.NotationView;
+import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.drawables.AnalysisBackDrawable;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
@@ -212,11 +216,11 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			labelsConfig.bottomAvatar = userAvatarDrawable;
 
 			if (userPlayWhite) {
-				labelsConfig.userSide = AppConstants.WHITE_SIDE;
+				labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 				labelsConfig.topPlayerLabel = getBlackPlayerName();
 				labelsConfig.bottomPlayerLabel = getWhitePlayerName();
 			} else {
-				labelsConfig.userSide = AppConstants.BLACK_SIDE;
+				labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 				labelsConfig.topPlayerLabel = getWhitePlayerName();
 				labelsConfig.bottomPlayerLabel = getBlackPlayerName();
 			}
@@ -287,6 +291,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		boardFace.setJustInitialized(false);
 	}
 
+	@Override
 	public void invalidateGameScreen() {
 
 		userAvatarDrawable.setSide(labelsConfig.userSide);
@@ -353,6 +358,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		//To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	@Override
 	public Boolean isUserColorWhite() {
 		if (currentGame != null)
 			return currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(getActivity()));
@@ -360,6 +366,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			return null;
 	}
 
+	@Override
 	public Long getGameId() {
 		return gameId;
 	}
@@ -488,7 +495,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		int userSide;
 
 		int getOpponentSide() {
-			return userSide == AppConstants.WHITE_SIDE ? AppConstants.BLACK_SIDE : AppConstants.WHITE_SIDE;
+			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
 		}
 	}
 }

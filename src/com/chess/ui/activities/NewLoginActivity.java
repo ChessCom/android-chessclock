@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
-import com.chess.lcc.android.LccHelper;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.HomeTabsFragment;
@@ -41,6 +40,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	private List<SlidingMenu.OnOpenedListener> openMenuListeners;
 	private boolean showActionBar;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -116,14 +116,15 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		}
 	};
 
+	@Override
 	public void addOnOpenMenuListener(SlidingMenu.OnOpenedListener listener) {
 		openMenuListeners.add(listener);
 	}
 
-	@Override
-	public LccHelper getMeLccHolder() {
-		return getLccHolder();
-	}
+//	@Override
+//	public LccHelper getMeLccHolder() {
+//		return getLccHolder();
+//	}
 
 	@Override
 	public void registerGcm() {

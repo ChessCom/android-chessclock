@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
@@ -24,16 +23,19 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
-import com.chess.db.tasks.*;
-import com.chess.model.*;
-import com.chess.ui.adapters.*;
+import com.chess.db.tasks.LoadDataFromDbTask;
+import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
+import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
+import com.chess.model.BaseGameItem;
+import com.chess.model.GameListFinishedItem;
+import com.chess.model.GameOnlineItem;
+import com.chess.ui.adapters.CustomSectionedAdapter;
+import com.chess.ui.adapters.DailyChallengesGamesAdapter;
+import com.chess.ui.adapters.DailyCurrentGamesMyCursorAdapter;
+import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
-import com.chess.utilities.InneractiveAdHelper;
-import com.chess.utilities.MopubHelper;
-import com.inneractive.api.ads.InneractiveAd;
-import com.mopub.mobileads.MoPubView;
 
 /**
  * OnlineScreenActivity class
@@ -83,20 +85,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		setContentView(R.layout.online_screen);
 		Log.d("GetStringObjTask", " ONLINE OnCreate");
 
-		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
-		upgradeBtn.setOnClickListener(this);
-
-		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
-
-		if (AppUtils.isNeedToUpgrade(this)) {
-
-			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
-				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveAd), this);
-			} else {
-				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
-			}
-		}
-
 		AppData.setLiveChessMode(this, false);
 		// init adapters
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_daily_challenge_game_item);
@@ -121,6 +109,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		findViewById(R.id.statsBtn).setOnClickListener(this);
 
 		listUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
+
+		initUpgradeAndAdWidgets();
+		/*moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
+        MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
 	}
 
 	@Override

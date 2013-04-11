@@ -15,13 +15,13 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
+import com.chess.live.util.GameType;
 import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.flurry.android.FlurryAgent;
 
@@ -57,7 +57,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 		bonusTimeTextWatcher = new BonusTimeTextWatcher();
 		bonusTimeValidator = new BonusTimeValidator();
 
-		AppData.setLiveChessMode(this, true);
+//		AppData.setLiveChessMode(this, true);  // should not duplicate logic
 
 		showActionSettings = true;
 	}
@@ -88,9 +88,8 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
     }
 
     @Override
-	protected void onResume() {
-		super.onResume();
-
+	protected void onLiveServiceConnected() {
+		super.onLiveServiceConnected();
 		if (!checkIfLiveUserAlive()){
 			return;
 		}
@@ -99,7 +98,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 	}
 
 	private void updateScreen() {
-		String[] friends = getLccHolder().getOnlineFriends();
+		String[] friends = liveService.getOnlineFriends();
         int friendsCnt = friends.length;
 		if (friendsCnt == 0 || friends[0].equals(StaticData.SYMBOL_EMPTY)) {
 			friendsSpinner.setEnabled(false);
@@ -196,21 +195,23 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 			default: pieceColor = PieceColor.UNDEFINED; break;
 		}
 
+		final GameType gameType = GameType.Chess;
 		Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
-				getLccHolder().getUser(),
+				liveService.getUser(),
 				friendsSpinner.getSelectedItem().toString().trim(),
+				gameType,
 				pieceColor, rated, gameTimeConfig,
 				minMembershipLevel, minRating, maxRating);
 
 		// todo: refactor with new LCC
-		if(!getLccHolder().isConnected() || getLccHolder().getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
-			getLccHolder().logout();
+		if (!liveService.isConnected() || liveService.getClient() == null) { // TODO should leave that screen on connection lost or when LCC is become null
+			liveService.logout();
 			backToHomeActivity();
 			return;
 		}
 
 		FlurryAgent.logEvent(FlurryData.CHALLENGE_CREATED);
-		challengeTaskRunner.runSendChallengeTask(challenge);
+		liveService.runSendChallengeTask(challenge);
 
 		preferencesEditor.putString(AppConstants.CHALLENGE_INITIAL_TIME, initialTimeEdt.getText().toString().trim());
 		preferencesEditor.putString(AppConstants.CHALLENGE_BONUS_TIME, bonusTimeEdt.getText().toString().trim());
@@ -231,7 +232,6 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 		}
 		return false;
 	}
-
 
 	private class InitialTimeTextWatcher implements TextWatcher {
 		@Override

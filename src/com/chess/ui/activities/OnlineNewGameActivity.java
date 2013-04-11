@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
@@ -19,11 +18,6 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.DailyChallengesGamesAdapter;
-import com.chess.utilities.AppUtils;
-import com.chess.utilities.InneractiveAdHelper;
-import com.chess.utilities.MopubHelper;
-import com.inneractive.api.ads.InneractiveAd;
-import com.mopub.mobileads.MoPubView;
 
 import java.util.ArrayList;
 
@@ -47,24 +41,16 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.online_new_game);
 
-		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
-		upgradeBtn.setOnClickListener(this);
-
-		moPubView = (MoPubView) findViewById(R.id.mopub_adview); // init anyway as it is declared in layout
-		if (AppUtils.isNeedToUpgrade(this)) {
-			if (InneractiveAdHelper.IS_SHOW_BANNER_ADS) {
-				InneractiveAdHelper.showBannerAd(upgradeBtn, (InneractiveAd) findViewById(R.id.inneractiveAd), this);
-			} else {
-				MopubHelper.showBannerAd(upgradeBtn, moPubView, this);
-			}
-		}
-
 		openChallengesListView = (ListView) this.findViewById(R.id.openChallenges);
 		openChallengesListView.setAdapter(gamesAdapter);
 		openChallengesListView.setOnItemClickListener(this);
 
 		findViewById(R.id.friendchallenge).setOnClickListener(this);
 		findViewById(R.id.challengecreate).setOnClickListener(this);
+
+		initUpgradeAndAdWidgets();
+		/*moPubView = (MoPubView) findViewById(R.id.mopub_adview);
+        MopubHelper.showBannerAd(upgradeBtn, moPubView, this);*/
 	}
 
 	private void init() {

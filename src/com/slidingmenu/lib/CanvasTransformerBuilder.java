@@ -9,6 +9,7 @@ public class CanvasTransformerBuilder {
 	private CanvasTransformer mTrans;
 
 	private static Interpolator lin = new Interpolator() {
+		@Override
 		public float getInterpolation(float t) {
 			return t;
 		}
@@ -17,6 +18,7 @@ public class CanvasTransformerBuilder {
 	private void initTransformer() {
 		if (mTrans == null)
 			mTrans = new CanvasTransformer() {
+			@Override
 			public void transformCanvas(Canvas canvas, float percentOpen) {	}
 		};
 	}
@@ -32,6 +34,7 @@ public class CanvasTransformerBuilder {
 			final int px, final int py, final Interpolator interp) {
 		initTransformer();
 		mTrans = new CanvasTransformer() {
+			@Override
 			public void transformCanvas(Canvas canvas, float percentOpen) {
 				mTrans.transformCanvas(canvas, percentOpen);
 				float f = interp.getInterpolation(percentOpen);
@@ -51,6 +54,7 @@ public class CanvasTransformerBuilder {
 			final int px, final int py, final Interpolator interp) {
 		initTransformer();
 		mTrans = new CanvasTransformer() {
+			@Override
 			public void transformCanvas(Canvas canvas, float percentOpen) {
 				mTrans.transformCanvas(canvas, percentOpen);
 				float f = interp.getInterpolation(percentOpen);
@@ -70,6 +74,7 @@ public class CanvasTransformerBuilder {
 			final int openedY, final int closedY, final Interpolator interp) {
 		initTransformer();
 		mTrans = new CanvasTransformer() {
+			@Override
 			public void transformCanvas(Canvas canvas, float percentOpen) {
 				mTrans.transformCanvas(canvas, percentOpen);
 				float f = interp.getInterpolation(percentOpen);
@@ -83,6 +88,7 @@ public class CanvasTransformerBuilder {
 	public CanvasTransformer concatTransformer(final CanvasTransformer t) {
 		initTransformer();
 		mTrans = new CanvasTransformer() {
+			@Override
 			public void transformCanvas(Canvas canvas, float percentOpen) {
 				mTrans.transformCanvas(canvas, percentOpen);
 				t.transformCanvas(canvas, percentOpen);

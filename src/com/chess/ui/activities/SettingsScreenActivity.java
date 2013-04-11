@@ -29,12 +29,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * PreferencesScreenActivity class
+ * SettingsScreenActivity class
  *
  * @author alien_roger
  * @created at: 08.02.12 7:18
  */
-public class PreferencesScreenActivity extends LiveBaseActivity implements CompoundButton.OnCheckedChangeListener {
+public class SettingsScreenActivity extends LiveBaseActivity implements CompoundButton.OnCheckedChangeListener {
 
 	private static final String VACATION_TAG = "confirm vacation popup";
 	private static final String LOCALE_CHANGE_TAG = "locale change popup";
@@ -228,7 +228,9 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 		int id = view.getId();
 		if (id == R.id.prefLogout) {
 			if (!AppData.isGuest(this)) {
-				getLccHolder().logout();
+				if (isLCSBound) {
+					liveService.logout();
+				}
 
 				// un-register from GCM
 				unRegisterGcmService();
@@ -507,10 +509,12 @@ public class PreferencesScreenActivity extends LiveBaseActivity implements Compo
 	}
 
 	private class LogoutRequestListener extends BaseRequestListener {
+		@Override
 		public void onComplete(String response, final Object state) {
 			// callback should be run in the original thread,
 			// not the background thread
 			handler.post(new Runnable() {
+				@Override
 				public void run() {
 					SessionEvents.onLogoutFinish();
 				}

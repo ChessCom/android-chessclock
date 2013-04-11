@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.chess.R;
 import com.chess.RoboTextView;
-import com.chess.backend.statics.AppConstants;
+import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
 import com.chess.utilities.AppUtils;
@@ -239,7 +239,7 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).setSide(side);
 
 		// change timeLeft color and background
-		if (side == AppConstants.WHITE_SIDE) {
+		if (side == ChessBoard.WHITE_SIDE) {
 			timeLeftTxt.setBackgroundResource(R.drawable.back_white_emboss);
 			timeLeftTxt.setTextColor(getContext().getResources().getColor(R.color.new_main_back));
 			if (smallScreen) {

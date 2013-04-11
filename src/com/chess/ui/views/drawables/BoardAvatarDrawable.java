@@ -5,7 +5,7 @@ import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import com.chess.backend.statics.AppConstants;
+import com.chess.ui.engine.ChessBoard;
 
 /**
  * Created with IntelliJ IDEA.
@@ -47,7 +47,7 @@ public class BoardAvatarDrawable extends Drawable {
 			roundedBitmap = createRoundedBitmap(width - BORDER_THICK * 2, height - BORDER_THICK * 2);
 		}
 
-		solidBackDrawable = side == AppConstants.WHITE_SIDE? solidBackWhiteDrawable: solidBackBlackDrawable;
+		solidBackDrawable = side == ChessBoard.WHITE_SIDE? solidBackWhiteDrawable: solidBackBlackDrawable;
 
 		solidBackDrawable.setBounds(0, 0, width, height);
 		setCornerRadii(solidBackDrawable, CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS);

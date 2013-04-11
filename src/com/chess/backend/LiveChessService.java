@@ -12,6 +12,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import com.chess.R;
+import com.chess.backend.entity.new_api.ChatItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.interfaces.TaskUpdateInterface;
@@ -100,12 +101,8 @@ public class LiveChessService extends Service {
 		//unregisterReceiver(networkChangeReceiver);
 	}
 
-	public void setConnectionUpdateFace(LccConnectionUpdateFace connectionUpdateFace) {
-		this.connectionUpdateFace = connectionUpdateFace;
-	}
-
 	public void checkAndConnect(LccConnectionUpdateFace connectionUpdateFace) {
-		setConnectionUpdateFace(connectionUpdateFace);
+		this.connectionUpdateFace = connectionUpdateFace;
 		Log.d(TAG, "AppData.isLiveChess(getContext()) " + AppData.isLiveChess(getContext()));
 		Log.d(TAG, "lccHelper instance in checkAndConnect = " + lccHelper);
 		Log.d(TAG, "lccClient instance in checkAndConnect = " +  lccHelper.getClient());
@@ -188,10 +185,10 @@ public class LiveChessService extends Service {
 			final ConnectivityManager connectivityManager = (ConnectivityManager)
 					context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-			final android.net.NetworkInfo wifi =
+			final NetworkInfo wifi =
 					connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-			final android.net.NetworkInfo mobile =
+			final NetworkInfo mobile =
 					connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
 			Log.d(TAG, "NetworkChangeReceiver failover wifi=" + wifi.isFailover() + ", mobile=" + mobile.isFailover());
@@ -317,7 +314,7 @@ public class LiveChessService extends Service {
 
 	}
 
-	public List<MessageItem> getMessagesList() {
+	public List<ChatItem> getMessagesList() {
 		return lccHelper.getMessagesList();
 	}
 

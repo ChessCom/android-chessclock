@@ -54,38 +54,47 @@ public class SlidingFragmentActivity extends FragmentActivity implements Sliding
 		mHelper.registerAboveContentView(v, params);
 	}
 
+	@Override
 	public void setBehindContentView(int id) {
 		setBehindContentView(getLayoutInflater().inflate(id, null));
 	}
 
+	@Override
 	public void setBehindContentView(View v) {
 		setBehindContentView(v, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 	}
 
+	@Override
 	public void setBehindContentView(View v, LayoutParams params) {
 		mHelper.setBehindContentView(v, params);
 	}
 
+	@Override
 	public SlidingMenu getSlidingMenu() {
 		return mHelper.getSlidingMenu();
 	}
 
+	@Override
 	public void toggle() {
 		mHelper.toggle();
 	}
 
+	@Override
 	public void showContent() {
 		mHelper.showContent();
 	}
 
+	@Override
 	public void showMenu() {
 		mHelper.showMenu();
 	}
 
+	@Override
 	public void showSecondaryMenu() {
 		mHelper.showSecondaryMenu();
 	}
 
+	@Override
 	public void setSlidingActionBarEnabled(boolean b) {
 		mHelper.setSlidingActionBarEnabled(b);
 	}

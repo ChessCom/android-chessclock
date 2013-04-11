@@ -27,6 +27,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 	protected abstract boolean need2ShowSubmitButtons();
 
+	@Override
 	public void setGameActivityFace(GameActivityFace gameActivityFace) {
 		super.setGameActivityFace(gameActivityFace);
 
@@ -34,6 +35,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		blackUserName = gameActivityFace.getBlackPlayerName();
 	}
 
+	@Override
 	public void afterMove() {
 		getBoardFace().setMovesCount(getBoardFace().getHply());
 		gameActivityFace.invalidateGameScreen();

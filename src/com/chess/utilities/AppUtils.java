@@ -30,8 +30,6 @@ import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHelper;
-import com.chess.live.client.User;
 import com.chess.model.GameListCurrentItem;
 import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import org.apache.http.HttpEntity;
@@ -209,12 +207,34 @@ public class AppUtils {
 			Log.d(tag, message);
 	}
 
+	public static void startNotificationsUpdate(Context context) {
+//		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
+//
+//		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID,
+//				statusUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//		// schedule the service for updating
+//		AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//		alarms.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), StaticData.REMIND_ALARM_INTERVAL, pendingIntent);
+	}
+
+	public static void stopNotificationsUpdate(Context context) {
+//		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
+//
+//		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID, statusUpdate,
+//				PendingIntent.FLAG_UPDATE_CURRENT);
+//		AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//		alarms.cancel(pendingIntent);
+//
+//		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+//
+//		notifyManager.cancel(R.id.notification_message);
+	}
+
 	public static void cancelNotifications(Context context) {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		notifyManager.cancelAll();
 	}
-
-
 
 	public static void cancelNotification(Context context, int id){
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -222,28 +242,11 @@ public class AppUtils {
 	}
 
 	public static boolean isNeedToUpgrade(Context context){
-		boolean liveMembershipLevel = false;
-		User user = LccHelper.getInstance(context).getUser();
-		if (user != null) {
-			liveMembershipLevel = AppData.isLiveChess(context)
-					&& (user.getMembershipLevel() < StaticData.GOLD_LEVEL);
-		}
-		return AppData.isGuest(context)
-				|| liveMembershipLevel
-				|| (!AppData.isLiveChess(context) && AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER)
-				&& AppData.getUserPremiumStatus(context) != StaticData.NOT_INITIALIZED_USER;
+		return AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER;
 	}
 
 	public static boolean isNeedToUpgradePremium(Context context){
-		boolean liveMembershipLevel = false;
-		User user = LccHelper.getInstance(context).getUser();
-		if (user != null) {
-			liveMembershipLevel = AppData.isLiveChess(context)
-					&& (user.getMembershipLevel() < StaticData.DIAMOND_LEVEL);
-		}
-		return liveMembershipLevel
-				|| (!AppData.isLiveChess(context) && AppData.getUserPremiumStatus(context) < StaticData.DIAMOND_USER)
-				&& AppData.getUserPremiumStatus(context) != StaticData.NOT_INITIALIZED_USER;
+		return AppData.getUserPremiumStatus(context) < StaticData.DIAMOND_USER;
 	}
 
 	public static String getTimeLeftFromSeconds(long duration, Context context) {

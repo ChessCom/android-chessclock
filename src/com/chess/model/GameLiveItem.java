@@ -1,7 +1,6 @@
 package com.chess.model;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameRatingClass;
@@ -67,7 +66,7 @@ public class GameLiveItem extends BaseGameItem {
 	}
 
 
-	public static final Parcelable.Creator<GameLiveItem> CREATOR = new Parcelable.Creator<GameLiveItem>() {
+	public static final Creator<GameLiveItem> CREATOR = new Creator<GameLiveItem>() {
 		@Override
 		public GameLiveItem createFromParcel(Parcel in) {
 			return new GameLiveItem(in);

@@ -8,204 +8,239 @@ import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
 import com.chess.live.client.User;
-import com.chess.live.client.impl.GameImpl;
+import com.chess.live.rules.GameResult;
 import com.chess.utilities.AppUtils;
 
 import java.util.Collection;
 import java.util.List;
 
+import static com.chess.live.rules.GameResult.WIN;
+
 public class LccGameListener implements GameListener {
 
 	private LccHelper lccHelper;
-    private Long latestGameId;
-    private Context context;
-    private static final String TAG = "LCCLOG-GAME";
+	private Long latestGameId = 0L;
+	private Context context;
+	private static final String TAG = "LccLog-GAME";
 
 	public LccGameListener(LccHelper lccHelper) {
-        this.lccHelper = lccHelper;
-        context = lccHelper.getContext();
-    }
+		this.lccHelper = lccHelper;
+		context = lccHelper.getContext();
+	}
 
 	@Override
 	public void onGameListReceived(Collection<? extends Game> games) {
-        Log.d(TAG, "GAME LISTENER: Game list received.");
-        latestGameId = 0L;
-        if (games.size() > 1) {
-            Log.w(TAG, "GAME LISTENER: Game list received. Games count: " + games.size());
-        }
-        for (Game game : games) {
-            if (isMyGame(game) && game.getId() > latestGameId) {
-                latestGameId = game.getId();
-                Log.w(TAG, "GAME LISTENER: Game list received. latestGameId=" + game.getId());
-            }
-        }
-        for (Game game : games) {
-            if (!game.getId().equals(latestGameId)) {
-                Log.d(TAG, "GAME LISTENER: Game list received. Exit game id=" + game.getId());
-                lccHelper.getClient().exitGame(game);
-            }
-        }
-    }
+		Log.d(TAG, "Game list received, total size = " + games.size());
+		latestGameId = 0L;
 
-    public void onGameArchiveReceived(User user, Collection<? extends Game> games) {
-        // TODO: Implement when necessary
-    }
+		Long gameId;
+		for (Game game : games) {
+			gameId = game.getId();
+			if (!isMyGame(game)) {
+				lccHelper.getClient().unobserveGame(gameId);
+				Log.d(TAG, "unobserve game " + gameId);
+			}
+			else if (gameId > latestGameId) {
+				latestGameId = gameId;
+			}
+		}
 
-//    public void onFollowedUserListReceived(Collection<? extends User> users) {
-//        // TODO: Implement when necessary
-//    }
-//
-//    public void onFollowConfirmed(String followedUser, boolean succeed) {
-//        // TODO: Implement when necessary
-//    }
-//
-//    public void onUnfollowConfirmed(String unfollowedUser, boolean succeed) {
-//        // TODO: Implement when necessary
-//    }
+		Log.d(TAG, "latestGameId=" + latestGameId);
+	}
 
-    private boolean isOldGame(Long gameId) {
-        return gameId < latestGameId;
-    }
+	@Override
+	public void onGameArchiveReceived(User user, Collection<? extends Game> games) {
+	}
 
-    @Override
-    public void onFullGameReceived(Game game) { // todo: move logic from onGameListReceived and onGameStarted to onGameReset in new LCC
-        Log.d(TAG, "GAME LISTENER: Full GameItem received: " + game);
-		Long gameId = game.getId();
+	@Override
+	public void onGameReset(Game game) {
+		Log.d(TAG, "GAME LISTENER: onGameReset id=" + game.getId() + ", game=" + game);
 
-		if (!isMyGame(game)) {
-			lccHelper.getClient().unobserveGame(gameId);
-			Log.d(TAG, "GAME LISTENER: unobserve game " + gameId);
+		// check isMyTurn
+
+		if (!isActualGame(game)) {
 			return;
 		}
 
-        if (isOldGame(gameId)) {
-            Log.d(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + gameId);
-            return;
-        }
-        Game oldGame = lccHelper.getGame(gameId);
-        if (oldGame != null) {
-            Log.d(TAG, "LCC: PROCESS EXTRA onFullGameReceived, game id= " + gameId);
-			/*lccHelper.currentFGTime = System.currentTimeMillis();
-			lccHelper.previousFGGameId = lccHelper.currentFGGameId;
-			lccHelper.currentFGGameId = game.getId();*/
-        }
-        if (game.isEnded()) {
-            lccHelper.putGame(game);
-            return;
-        }
-        lccHelper.setCurrentGameId(gameId);
-        lccHelper.processFullGame(game);
-    }
+		doResetGame(game);
+		doUpdateGame(false, game);
+	}
 
-    @Override
-    public void onServerStatusChanged(Game game, Game.ServerStatus oldStatus, Game.ServerStatus newStatus) {
-    }
+	@Override
+	public void onGameUpdated(Game game) {
+		Log.d(TAG, "GAME LISTENER: onGameUpdated id=" + game.getId() + ", game=" + game);
 
-    @Override
-    public void onGameStarted(Game game) {
+		// check isMyTurn
+
+		if (!isActualGame(game)) {
+			return;
+		}
+
+		doUpdateGame(true, game);
+	}
+
+	@Override
+	public void onGameOver(Game game) {
+		Log.d(TAG, "GAME LISTENER: onGameOver " + game);
+		doEndGame(game);
+	}
+
+	@Override
+	public void onGameClockAdjusted(Game game, User player, Integer newClockValue, Integer clockAdjustment, Integer resultClock) {
+		Log.d(TAG, "Game Clock adjusted: gameId=" + game.getId() + ", player=" + player.getUsername() +
+				", newClockValue=" + newClockValue + ", clockAdjustment=" + clockAdjustment);
+	}
+
+	@Override
+	public void onGameComputerAnalysisRequested(Long aLong, boolean b, String s) {
+	}
+
+	private boolean isOldGame(Long gameId) {
+		return gameId < latestGameId;
+	}
+
+	private boolean isActualGame(Game game) {
 		Long gameId = game.getId();
-        Log.d(TAG, "GAME LISTENER: onGameStarted id=" + gameId);
-		if (!isMyGame(game)) {
+
+		if (!isMyGame(game)) { // TODO: check case
 			lccHelper.getClient().unobserveGame(gameId);
 			Log.d(TAG, "GAME LISTENER: unobserve game " + gameId);
-			return;
-		} else if (lccHelper.isUserPlayingAnotherGame(gameId)) {
-            Log.d(TAG, "GAME LISTENER: onGameStarted() abort and exit second game");
-            lccHelper.getClient().abortGame(game, "abort second game");
-            lccHelper.getClient().exitGame(game);
-        } else if (isOldGame(gameId)) {
-            Log.d(TAG, "GAME LISTENER: onGameStarted() exit old game");
-            lccHelper.getClient().exitGame(game);
-        } else {
-            lccHelper.clearOwnChallenges();
-            lccHelper.clearChallenges();
-            lccHelper.clearSeeks();
-
-            //lccHelper.getClient().unsubscribeFromSeekList(lccHelper.getSeekListSubscriptionId());
-            lccHelper.setCurrentGameId(gameId);
-            if (gameId > latestGameId) {
-                latestGameId = gameId;
-                Log.w(TAG, "GAME LISTENER: onGameStarted() latestGameId=" + gameId);
-            }
-        }
-
-		/*if (TESTING_GAME) {
-			if (game.isMoveOf(lccHelper.getUser()) && game.getSeq() == 0) {
-				Log.d(TAG, "First move by: " + lccHelper.getUsername() + ", the movie: "
-						+ TEST_MOVES_COORD[game.getSeq()]);
-				lccHelper.getClient().makeMove(game, TEST_MOVES_COORD[game.getSeq()].trim());
+			return false;
+		} else
+		if (lccHelper.isUserPlayingAnotherGame(gameId)) {
+			Log.d(TAG, "GAME LISTENER: abort and exit second game");
+			lccHelper.getClient().abortGame(game, "abort second game");
+			lccHelper.getClient().exitGame(game);
+			return false;
+		} else if (isOldGame(gameId)) { // TODO: check case
+			Log.d(TAG, "GAME LISTENER: exit old game");
+			lccHelper.getClient().exitGame(game);
+			return false;
+		} else {
+			lccHelper.clearOwnChallenges();
+			lccHelper.clearChallenges();
+			lccHelper.clearSeeks();
+			//lccHelper.getClient().unsubscribeFromSeekList(lccHelper.getSeekListSubscriptionId());
+			lccHelper.setCurrentGameId(gameId);
+			if (gameId > latestGameId) {
+				latestGameId = gameId;
+				Log.d(TAG, "GAME LISTENER: latestGameId=" + gameId);
 			}
-		}*/
-    }
+			return true;
+		}
+	}
 
-    @Override
-    public void onGameEnded(Game game) {
-        Log.d(TAG, "GAME LISTENER: Game ended: " + game);
-        lccHelper.putGame(game);
-        if (isOldGame(game.getId())) {
-            Log.d(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + game.getId());
-            return;
-        }
+	private void doResetGame(Game game) {
+		if (game.isGameOver()) {
+			lccHelper.putGame(game);
+			return;
+		}
+		lccHelper.setCurrentGameId(game.getId());
+		lccHelper.setGameActivityPausedMode(true);
+		lccHelper.processFullGame(game);
+	}
+
+	private void doUpdateGame(boolean checkMoves, Game game) {
+
+		// todo: maybe create two separate methods: new move check and draw check
+
+		if (checkMoves && game.getMoveCount() > lccHelper.getLatestMoveNumber()) { // do not check moves if it was
+			User moveMaker = game.getLastMoveMaker();
+			String move = game.getLastMove();
+			Log.d(TAG, "GAME LISTENER: The move #" + game.getMoveCount() + " received by user: " + lccHelper.getUser().getUsername() +
+					", game.id=" + game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
+			lccHelper.doMoveMade(game, moveMaker, game.getMoveCount() - 1);
+		}
+
+		final String opponentName = lccHelper.getOpponentName();
+
+		if (opponentName != null && game.isDrawOfferedByPlayer(opponentName)) { // check if game is not ended?
+			Log.d(TAG, "GAME LISTENER: Draw offered at the move #" + game.getMoveCount() + ", game.id=" + game.getId()
+					+ ", offerer=" + opponentName + ", game=" + game);
+
+			if (lccHelper.isGameActivityPausedMode()) {
+				final LiveGameEvent drawOfferedEvent = new LiveGameEvent();
+				drawOfferedEvent.setEvent(LiveGameEvent.Event.DRAW_OFFER);
+				drawOfferedEvent.setGameId(game.getId());
+				drawOfferedEvent.setDrawOffererUsername(opponentName);
+				lccHelper.getPausedActivityGameEvents().put(drawOfferedEvent.getEvent(), drawOfferedEvent);
+				Log.d(TAG, "DRAW PAUSED");
+			} else {
+				Log.d(TAG, "DRAW SHOW");
+				lccHelper.getLccEventListener().onDrawOffered(opponentName);
+			}
+		}
+	}
+
+	private void doEndGame(Game game) {
+		lccHelper.putGame(game);
+
+		Long gameId = game.getId();
+
+		if (isOldGame(gameId)) {
+			Log.d(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + gameId);
+			return;
+		}
 
         /*lccHelper.getClient().subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1,
                                                         lccHelper.getSeekListListener());*/
-		Long lastGameId = lccHelper.getCurrentGameId() != null ? lccHelper.getCurrentGameId() : game.getId();
+		Long lastGameId = lccHelper.getCurrentGameId() != null ? lccHelper.getCurrentGameId() : gameId;
 		lccHelper.setLastGameId(lastGameId);
 
-        List<Game.Result> gameResults = game.getGameResults();
-        final Game.Result whitePlayerResult = gameResults.get(0);
-        final Game.Result blackPlayerResult = gameResults.get(1);
-        final String whiteUsername = game.getWhitePlayer().getUsername();
-        final String blackUsername = game.getBlackPlayer().getUsername();
+		List<GameResult> gameResults = game.getResults();
+		final GameResult whitePlayerResult = gameResults.get(0);
+		final GameResult blackPlayerResult = gameResults.get(1);
+		final String whiteUsername = game.getWhitePlayer().getUsername();
+		final String blackUsername = game.getBlackPlayer().getUsername();
 
-        Game.Result result;
-        String winnerUsername = null;
+		GameResult result;
+		String winnerUsername = null;
 
-        if (whitePlayerResult == Game.Result.WIN) {
-            result = blackPlayerResult;
-            winnerUsername = whiteUsername;
-        } else if (blackPlayerResult == Game.Result.WIN) {
-            result = whitePlayerResult;
-            winnerUsername = blackUsername;
-        } else {
-            result = whitePlayerResult;
-        }
+		if (whitePlayerResult == WIN) {
+			result = blackPlayerResult;
+			winnerUsername = whiteUsername;
+		} else if (blackPlayerResult == WIN) {
+			result = whitePlayerResult;
+			winnerUsername = blackUsername;
+		} else {
+			result = whitePlayerResult;
+		}
 
-        String message = StaticData.SYMBOL_EMPTY;
-        switch (result) {
-            case TIMEOUT:
-                message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_on_time);
-                break;
-            case RESIGNED:
-                message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_by_resignation);
-                break;
-            case CHECKMATED:
-                message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_by_checkmate);
-                break;
-            case DRAW_BY_REPETITION:
+		String message = StaticData.SYMBOL_EMPTY;
+		switch (result) {
+			case TIMEOUT:
+				message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_on_time);
+				break;
+			case RESIGNED:
+				message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_by_resignation);
+				break;
+			case CHECKMATED:
+				message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_by_checkmate);
+				break;
+			case DRAW_BY_REPETITION:
 				message = context.getString(R.string.game_draw_by_repetition);
-                break;
-            case DRAW_AGREED:
+				break;
+			case DRAW_AGREED:
 				message = context.getString(R.string.game_drawn_by_agreement);
-                break;
-            case STALEMATE:
+				break;
+			case STALEMATE:
 				message = context.getString(R.string.game_drawn_by_stalemate);
-                break;
-            case DRAW_BY_INSUFFICIENT_MATERIAL:
+				break;
+			case DRAW_BY_INSUFFICIENT_MATERIAL:
 				message = context.getString(R.string.game_drawn_insufficient_material);
-                break;
-            case DRAW_BY_50_MOVE:
+				break;
+			case DRAW_BY_50_MOVE:
 				message = context.getString(R.string.game_drawn_by_fifty_move_rule);
-                break;
-            case ABANDONED:
-				message = winnerUsername + context.getString(R.string.won_game_abandoned);
-                break;
-            case ABORTED:
+				break;
+			case ABANDONED:
+				message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_game_abandoned);
+				break;
+			case ABORTED:
 				message = context.getString(R.string.game_aborted);
-                break;
-        }
-        //message = whiteUsername + " vs. " + blackUsername + " - " + message;
-        Log.d(TAG, "GAME LISTENER: GAME OVER - " + message);
+				break;
+		}
+		//message = whiteUsername + " vs. " + blackUsername + " - " + message;
+		Log.d(TAG, "GAME LISTENER: " + message);
 
 		if (lccHelper.getWhiteClock() != null) {
 			lccHelper.getWhiteClock().setRunning(false);
@@ -214,104 +249,43 @@ public class LccGameListener implements GameListener {
 			lccHelper.getBlackClock().setRunning(false);
 		}
 
-		String abortedCodeMessage = ((GameImpl)game).getCodeMessage(); // used only for aborted games
+		String abortedCodeMessage = game.getCodeMessage(); // used only for aborted games
 		if (abortedCodeMessage != null) {
-			final String messageI18n = AppUtils.getI18nString(context, abortedCodeMessage);
+			final String messageI18n = AppUtils.getI18nString(context, abortedCodeMessage, game.getAborterUsername());
 			if (messageI18n != null) {
 				message = messageI18n;
 			}
 		}
 
 		if (lccHelper.getCurrentGameId() == null) {
-			lccHelper.setCurrentGameId(game.getId());
+			lccHelper.setCurrentGameId(gameId);
 		}
 
-        if (lccHelper.isActivityPausedMode()) {
+		if (lccHelper.isGameActivityPausedMode()) {
 			Log.d(TAG, "ActivityPausedMode = true");
-            final GameEvent gameEndedEvent = new GameEvent();
-			gameEndedEvent.setGameId(game.getId());
-            gameEndedEvent.setEvent(GameEvent.Event.END_OF_GAME);
-            gameEndedEvent.setGameEndedMessage(message);
-            lccHelper.getPausedActivityGameEvents().put(gameEndedEvent.getEvent(), gameEndedEvent);
-            if (lccHelper.getLccEventListener() == null) { // if activity is not started yet
-                lccHelper.processFullGame(game);
+			final LiveGameEvent gameEndedEvent = new LiveGameEvent();
+			gameEndedEvent.setGameId(gameId);
+			gameEndedEvent.setEvent(LiveGameEvent.Event.END_OF_GAME);
+			gameEndedEvent.setGameEndedMessage(message);
+			lccHelper.getPausedActivityGameEvents().put(gameEndedEvent.getEvent(), gameEndedEvent);
+			if (lccHelper.getLccEventListener() == null) { // if activity is not started yet
+				lccHelper.processFullGame(game);
 				Log.d(TAG, "processFullGame");
-            }
-        } else {
-            lccHelper.getLccEventListener().onGameEnd(message);
-        }
-    }
-
-    @Override
-    public void onGameAborted(Game game) {
-        Log.d(TAG, "GAME LISTENER: GameItem aborted: " + game);
-    }
-
-    @Override
-    public void onMoveMade(Game game, User moveMaker, String move) {
-        Log.d(TAG, "GAME LISTENER: The move #" + game.getSeq() + " received by user: " + lccHelper.getUser().getUsername() +
-                        ", game.id=" + game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
-        if (isOldGame(game.getId())) {
-            Log.d(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + game.getId());
-            return;
-        }
-        lccHelper.doMoveMade(game, moveMaker, game.getSeq() - 1);
-
-		/*if (TESTING_GAME && game.isMoveOf(lccHelper.getUser()) && game.getState() == Game.State.Started) {
-			if (game.getSeq() < TEST_MOVES_COORD.length) {
-				lccHelper.getClient().makeMove(game, TEST_MOVES_COORD[game.getSeq()].trim());
 			}
-		}*/
-    }
+		} else {
+			lccHelper.getLccEventListener().onGameEnd(message);
+		}
+	}
 
-    @Override
-    public void onResignMade(Game game, User resignMaker, User winner) {
-        Log.d(TAG, "GAME LISTENER: Game resigned: resigner=" + resignMaker.getUsername() + ", winner=" + winner.getUsername() +
-                        ", game=" + game);
-    }
-
-    @Override
-    public void onDrawOffered(Game game, User offerer) {
-        Log.d(TAG, "GAME LISTENER: Draw offered at the move #" + game.getSeq() + AppConstants.LISTENER + lccHelper.getUser().getUsername() +
-                        ", game.id=" + game.getId() + ", offerer=" + offerer.getUsername() + ", game=" + game);
-        if (isOldGame(game.getId())) {
-            return;
-        }
-        if (offerer.getUsername().equals(lccHelper.getUser().getUsername())) {
-            return;
-        }
-        if (lccHelper.isActivityPausedMode()) {
-            final GameEvent drawOfferedEvent = new GameEvent();
-            drawOfferedEvent.setEvent(GameEvent.Event.DRAW_OFFER);
-            drawOfferedEvent.setGameId(game.getId());
-            drawOfferedEvent.setDrawOffererUsername(offerer.getUsername());
-            lccHelper.getPausedActivityGameEvents().put(drawOfferedEvent.getEvent(), drawOfferedEvent);
-        } else {
-            lccHelper.getLccEventListener().onDrawOffered(offerer.getUsername());
-        }
-    }
-
-    @Override
-    public void onDrawAccepted(Game game, User acceptor) {
-        Log.d(TAG, "GAME LISTENER: Draw accepted at the move #" + game.getSeq() + AppConstants.LISTENER + lccHelper.getUser().getUsername() +
-                        ", game.id=" + game.getId() + ", acceptor=" + acceptor.getUsername() + ", game=" + game);
-    }
-
-    @Override
-    public void onDrawRejected(Game game, User rejector) {
+    /*public void onDrawRejected(Game game, User rejector) {
         final String rejectorUsername = (rejector != null ? rejector.getUsername() : null);
-        Log.d(TAG, "GAME LISTENER: Draw rejected at the move #" + game.getSeq() + AppConstants.LISTENER + lccHelper.getUser().getUsername() +
+        Log.d(TAG, "GAME LISTENER: Draw rejected at the move #" + game.getMoveCount() +
                         ", game.id=" + game.getId() + ", rejector=" + rejectorUsername + ", game=" + game);
         if (!rejectorUsername.equals(lccHelper.getUser().getUsername())) {
 			lccHelper.getLccEventListener().onInform(context.getString(R.string.draw_declined),
 					rejectorUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.has_declined_draw));
         }
-    }
-
-    @Override
-    public void onClockAdjusted(Game game, User player, Integer newClockValue, Integer clockAdjustment) {
-        // TODO: Implement if necessary
-    }
+    }*/
 
 	private boolean isMyGame(Game game) {
 		String whiteUsername = game.getWhitePlayer().getUsername().toLowerCase();

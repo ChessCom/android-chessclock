@@ -29,7 +29,8 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 		gameTacticsActivityFace = gameActivityFace;
 	}
 
-    public void afterMove() {
+    @Override
+	public void afterMove() {
 		getBoardFace().setMovesCount(getBoardFace().getHply());
 		gameTacticsActivityFace.invalidateGameScreen();
 
@@ -172,7 +173,8 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
         }
     };
 
-    public void promote(int promote, int col, int row) {
+    @Override
+	public void promote(int promote, int col, int row) {
         boolean found = false;
         TreeSet<Move> moves = getBoardFace().gen();
         Iterator<Move> iterator = moves.iterator();
