@@ -41,7 +41,7 @@ import java.util.List;
  */
 public class GameLiveScreenActivity extends GameBaseActivity implements LccEventListener, LccChatMessageListener {
 
-	private static final String TAG = "GameLiveScreenActivity";
+	private static final String TAG = "LccLog-GameLiveScreenActivity";
 	private static final String WARNING_TAG = "warning message popup";
 	private static final long BLINK_DELAY = 5 * 1000;
 	private static final long UNBLINK_DELAY = 400;
@@ -70,6 +70,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		//Log.d(TAG, "GAME ACTIVITY CREATE");
+
 		setContentView(R.layout.boardview_live);
 
 		widgetsInit();
@@ -87,6 +89,21 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 			boardView.setFinished(true);
 			gamePanelView.showBottomPart(false);
 		}
+
+		//Log.d(TAG, "GAME ACTIVITY onLiveServiceConnected");
+		//Log.d(TAG, "GAME ACTIVITY onLiveServiceConnected " + liveService.getLastGame());
+
+		/*enableScreenLockTimer();
+
+		if (liveService.currentGameExist()) {
+			currentGame = liveService.getGameItem();
+			boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
+			boardView.updateBoardAndPiecesImgs();
+		} else {
+			gamePanelView.enableAnalysisMode(true);
+			boardView.setFinished(true);
+			gamePanelView.showBottomPart(false);
+		}*/
 
 		liveService.setLccEventListener(this);
 		liveService.setLccChatMessageListener(this);
@@ -150,6 +167,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 	@Override
 	protected void onLiveServiceConnected() {
+
 		super.onLiveServiceConnected();
 
 		boardView = (ChessBoardLiveView) findViewById(R.id.boardview);

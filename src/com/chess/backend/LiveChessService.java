@@ -100,8 +100,12 @@ public class LiveChessService extends Service {
 		//unregisterReceiver(networkChangeReceiver);
 	}
 
-	public void checkAndConnect(LccConnectionUpdateFace connectionUpdateFace) {
+	public void setConnectionUpdateFace(LccConnectionUpdateFace connectionUpdateFace) {
 		this.connectionUpdateFace = connectionUpdateFace;
+	}
+
+	public void checkAndConnect(LccConnectionUpdateFace connectionUpdateFace) {
+		setConnectionUpdateFace(connectionUpdateFace);
 		Log.d(TAG, "AppData.isLiveChess(getContext()) " + AppData.isLiveChess(getContext()));
 		Log.d(TAG, "lccHelper instance in checkAndConnect = " + lccHelper);
 		Log.d(TAG, "lccClient instance in checkAndConnect = " +  lccHelper.getClient());

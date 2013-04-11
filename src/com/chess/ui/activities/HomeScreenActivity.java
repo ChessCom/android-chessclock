@@ -96,6 +96,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		if (AppData.isLiveChess(this)) { // bound only if we really need it
 			Log.d("TEST", "onStart isLCSBound = " + isLCSBound + " in " + HomeScreenActivity.this);
 			if (isLCSBound) {
+				liveService.setConnectionUpdateFace(liveServiceConnectionListener);
 				onLiveServiceConnected();
 			} else {
 				bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);

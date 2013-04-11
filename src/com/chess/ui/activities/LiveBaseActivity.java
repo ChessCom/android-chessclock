@@ -86,6 +86,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			}
 			Log.d("TEST", "onStart isLCSBound = " + isLCSBound + " in " + LiveBaseActivity.this);
 			if (isLCSBound) {
+				liveService.setConnectionUpdateFace(liveServiceConnectionListener);
 				onLiveServiceConnected();
 			} else {
 				bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
@@ -259,7 +260,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	private class LiveServiceConnectionListener implements ServiceConnection, LccConnectionUpdateFace {
-
 
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
