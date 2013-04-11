@@ -66,10 +66,10 @@
 			/>
 	</RelativeLayout>
 
-	<LinearLayout
+	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:orientation="vertical">
+		>
 
 		<com.chess.ui.views.ChessBoardTacticsView
 			android:id="@+id/boardview"
@@ -81,6 +81,16 @@
 			android:id="@+id/gamePanelView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+            android:layout_below="@id/boardview"
 			/>
-	</LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/loadingView"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_centerInParent="true"
+            style="?android:attr/progressBarStyle"
+            android:visibility="gone"
+            />
+	</RelativeLayout>
 </LinearLayout>

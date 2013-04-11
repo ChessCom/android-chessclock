@@ -79,9 +79,10 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private int maxTacticAnswerCnt;
     private TacticItem tacticItem;
     private boolean offlineBatchWasLoaded;
+	private View loadingView;
 
 
-    @Override
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -129,6 +130,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 
 		gamePanelView.hideChatButton();
 		gamePanelView.enableGameControls(false);
+
+		loadingView = findViewById(R.id.loadingView);
 	}
 
 	@Override
@@ -870,6 +873,12 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 	private class DbTacticBatchSaveListener extends AbstractUpdateListener<TacticItem> {
 		public DbTacticBatchSaveListener() {
 			super(getContext());
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			loadingView.setVisibility(show? View.VISIBLE: View.GONE);
 		}
 
 		@Override
