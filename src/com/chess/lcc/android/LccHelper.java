@@ -413,7 +413,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		liveConnected = connected;
 		if (connected) {
 			liveChessClientEventListener.onConnectionEstablished();
-			liveService.onLiveConnected(); // vm: why it is here?  // r: because it's used to notify activity about connected state
+			liveService.onLiveConnected();
 
 			lccClient.subscribeToChallengeEvents(challengeListener);
 			lccClient.subscribeToGameEvents(gameListener);

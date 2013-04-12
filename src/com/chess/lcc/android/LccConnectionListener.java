@@ -80,8 +80,8 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHelper.clearChallenges();
 		lccHelper.clearOwnChallenges();
 		lccHelper.clearSeeks();
-		lccHelper.clearGames();
-		lccHelper.setCurrentGameId(null);
+		/*lccHelper.clearGames();
+		lccHelper.setCurrentGameId(null)*/;
 		lccHelper.setConnected(true);
 		lccHelper.clearPausedEvents();
 	}
