@@ -99,6 +99,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		getActivityFace().getActionBarActivity().provideActionBarHelper().showActionBar(show);
 	}
 
+	protected void updateTitle(int titleId) {
+		getActivityFace().updateTitle(titleId);
+	}
+
+
 	protected void facebookInit(LoginButton fbLoginBtn) {
 		if (fbLoginBtn != null) {
 			facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
@@ -185,7 +190,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	@Override
-	public void onClick(View v) {
+	public void onClick(View view) {
 
 	}
 

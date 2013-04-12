@@ -1,9 +1,6 @@
 package com.chess.backend.tasks;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
@@ -59,19 +56,19 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	protected void blockScreenRotation(boolean block){
 		try {
 			Context context = getTaskFace().getMeContext();
-			if (context instanceof Activity) {
-				Activity activity = (Activity) context;
-				if(block){
-					// Stop the screen orientation changing during an event
-					if(activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-						activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-					}else{
-						activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-					}
-				} else {
-					activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-				}
-			}
+//			if (context instanceof Activity) {
+//				Activity activity = (Activity) context;
+//				if(block){
+//					// Stop the screen orientation changing during an event
+//					if(activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+//						activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//					}else{
+//						activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//					}
+//				} else {
+//					activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+//				}
+//			}
 		} catch (IllegalStateException ex) {
 			Log.d(TAG, "blockScreenRotation " + ex.toString());
 		}

@@ -26,9 +26,10 @@
     <dimen name="facebook_button_height">40dip</dimen>
     <dimen name="main_button_height">44dip</dimen>
     <dimen name="small_button_height">35dip</dimen>
+    <dimen name="small_orange_button_height">33dip</dimen>
     <dimen name="grey_button_height">42dip</dimen>
     <dimen name="new_edit_field_height">40dip</dimen>
-    <dimen name="new_tab_button_height">42dip</dimen>
+    <dimen name="new_tab_button_height">44dip</dimen>
     <dimen name="button_min_width">68dip</dimen>
 
     <!--Edit Fields Paddings-->
@@ -51,7 +52,7 @@
     <dimen name="button_login_fb_left_padding">6dip</dimen>
 
 
-    <dimen name="list_item_image_size">27dip</dimen>
+    <dimen name="list_item_image_size">26dip</dimen>
  	<dimen name="list_item_stroke_width">1px</dimen>
  	
 
@@ -235,5 +236,6 @@
     <dimen name="panel_info_time_left_size">24sp</dimen>
     <dimen name="notations_text_size">14sp</dimen>
     <dimen name="notations_margin_top">0dip</dimen>
+    <dimen name="default_header_height">45dip</dimen>
 
 </resources>

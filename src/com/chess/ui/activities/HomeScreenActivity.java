@@ -626,7 +626,8 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 				InneractiveAdHelper.InneractiveAdListenerImpl adListener =
 						new InneractiveAdHelper.InneractiveAdListenerImpl(AppConstants.AD_FULLSCREEN, preferencesEditor);
 
-				inneractiveFullscreenAd = new InneractiveAd(this, AppConstants.INNERACTIVE_ADS_APP_ID, InneractiveAd.IaAdType.Interstitial, 0);
+				String inneractiveAppId = getString(R.string.inneractiveAdsAppId);
+				inneractiveFullscreenAd = new InneractiveAd(this, inneractiveAppId, InneractiveAd.IaAdType.Interstitial, 0);
 				inneractiveFullscreenAd.setInneractiveListener(adListener);
 				((LinearLayout) findViewById(R.id.mainView)).addView(inneractiveFullscreenAd);
 			}

@@ -18,24 +18,24 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/games"
+            android:text="@string/play"
             style="@style/TabRadioButton.Left"
             android:checked="true"
             />
         <com.chess.RoboRadioButton
-            android:id="@+id/chesscomBtn"
+            android:id="@+id/learnBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/chesscom"
+            android:text="@string/learn"
             style="@style/TabRadioButton.Middle"
             />
         <com.chess.RoboRadioButton
-            android:id="@+id/ratingsBtn"
+            android:id="@+id/feedBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/ratings"
+            android:text="@string/feed"
             style="@style/TabRadioButton.Right"
             />
 

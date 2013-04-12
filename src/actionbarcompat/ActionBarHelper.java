@@ -141,4 +141,9 @@ public abstract class ActionBarHelper {
 	public abstract void showActionBar(boolean show);
 
 	public abstract void setTitle(int titleId);
+
+	public abstract void setCustomView(int layoutId);
+
+	public abstract void setUseHomeIcon(boolean useHomeIcon);
+
 }

@@ -4,7 +4,6 @@ public class AppConstants {
 	public static final String FACEBOOK_APP_ID = "2427617054";
 	public static final String BUGSENSE_API_KEY = "189b9851";
 	public static final String YOUTUBE_DEVELOPER_KEY = "AIzaSyDunSUhieh0QurCov5Pl0nwJUpURTYiEsw";
-	public static final String INNERACTIVE_ADS_APP_ID = "Android_IA_Test";
 
 	/*Screen Features*/
 	public static final String SMALL_SCREEN = "small_screen";

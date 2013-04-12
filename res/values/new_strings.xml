@@ -36,7 +36,7 @@
     <string name="days_arg">%d days</string>
     <string name="photo">Photo</string>
     <string name="spinner">Spinner</string>
-    <string name="vs_computer">vs. Computer</string>
+    <string name="vs_computer">vs Computer</string>
     <string name="arrow">Arrow</string>
     <string name="by">by</string>
     <string name="daily_chess">Daily Chess</string>
@@ -121,4 +121,6 @@
     <string name="share_game">Share Game</string>
     <string name="chess">Chess</string>
     <string name="via_chesscom">via @Chesscom</string>
+    <string name="auto_match">Auto-Match</string>
+    <string name="play_a_friend">Play a friend!</string>
 </resources>

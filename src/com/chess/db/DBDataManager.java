@@ -361,6 +361,28 @@ public class DBDataManager {
 		}
     }
 
+	public static int getUserCurrentRating(Context context, int dbUriCode) {
+		String userName = getUserName(context);
+		ContentResolver contentResolver = context.getContentResolver();
+
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = userName;
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[dbUriCode],
+				PROJECTION_USER_CURRENT_RATING, SELECTION_USER, arguments1, null);
+
+		if (cursor.moveToFirst()){
+			int rating = getInt(cursor, DBConstants.V_CURRENT);
+			cursor.close();
+
+			return rating;
+		} else {
+			cursor.close();
+			return 0;
+		}
+	}
+
+
+	// ---------------------- Value Setters ------------------------------------------------------------------------
     public static ContentValues putTacticItemToValues(TacticItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 

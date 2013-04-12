@@ -16,6 +16,7 @@
 
 package actionbarcompat;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -44,7 +45,11 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	@Override
 	public void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		mActivity.getActionBar().setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
+		ActionBar actionBar = mActivity.getActionBar(); // could be null for small screens
+		if (actionBar != null) {
+			actionBar.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
+	}
+
 	}
 
 	@Override
@@ -153,10 +158,23 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	public void setTitle(int titleId) {
 		View customView = mActivity.getActionBar().getCustomView();
 		if (customView != null) {
-			((TextView)customView.findViewById(R.id.actionbar_compat_title)).setText(titleId);
+			View titleTxt =  customView.findViewById(R.id.actionbar_compat_title);
+			if (titleTxt != null) {
+				((TextView)titleTxt).setText(titleId);
+			}
 		}
 	}
 
+	@Override
+	public void setCustomView(int layoutId) {
+		if (mActivity != null && mActivity.getActionBar() != null) {
+			mActivity.getActionBar().setCustomView(layoutId);
+		}
+	}
+
+	@Override
+	public void setUseHomeIcon(boolean useHomeIcon) {
+	}
 
 	/**
 	 * Returns a {@link android.content.Context} suitable for inflating layouts

@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.ImageView;
 import com.chess.R;
 import com.chess.RoboTextView;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
@@ -441,6 +440,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected boolean onActionDown(MotionEvent event) {
+		if (square == 0) {
+			return false;
+		}
 		int col = (int) (event.getX() - event.getX() % square) / square;
 		int row = (int) (event.getY() - event.getY() % square) / square;
 		if (col > 7 || col < 0 || row > 7 || row < 0) {

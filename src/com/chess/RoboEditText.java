@@ -30,10 +30,10 @@ public class RoboEditText extends EditText implements Serializable {
     }
 
     private void setupFont(AttributeSet attrs) {
-        TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.RobotoTextView);
+        TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.RoboTextView);
 		try {
-			if (array.getString(R.styleable.RobotoTextView_ttf) != null) {
-				ttfName = array.getString(R.styleable.RobotoTextView_ttf);
+			if (array.getString(R.styleable.RoboTextView_ttf) != null) {
+				ttfName = array.getString(R.styleable.RoboTextView_ttf);
 			}
 		} finally {
 			array.recycle();

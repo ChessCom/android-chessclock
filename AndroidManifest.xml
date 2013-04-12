@@ -107,20 +107,20 @@
 			/>
 
 		<!--Game Board screens-->
-		<activity android:name=".ui.activities.GameTacticsScreenActivity" android:label="@string/label_tactics"
+<!--		<activity android:name=".ui.activities.GameTacticsScreenActivity" android:label="@string/label_tactics"
 			    android:launchMode="singleTop"
                 />
 		<activity android:name=".ui.activities.GameCompScreenActivity" android:label="@string/label_game_comp"
 			/>
 		<activity android:name=".ui.activities.GameLiveScreenActivity" android:label="@string/label_game_live"
 			/>
-		<!--android:configChanges="orientation"-->
+		&lt;!&ndash;android:configChanges="orientation"&ndash;&gt;
 		<activity android:name=".ui.activities.GameOnlineScreenActivity" android:label="@string/label_game_online"
                   android:launchMode="singleTask"
             />
 
 		<activity android:name=".ui.activities.GameFinishedScreenActivity" android:label="@string/label_game_finished"
-			/>
+			/>-->
 
 		<activity android:name=".ui.activities.SettingsScreenActivity" android:label="@string/label_settings"
 			android:configChanges="keyboardHidden|keyboard|orientation" android:theme="@style/GreyButtonTheme"/>
@@ -141,8 +141,12 @@
 			/>
 		<activity android:name=".ui.activities.SignUpScreenActivity" android:label="@string/label_sign_up"
 			android:windowSoftInputMode="stateHidden"/>
-		<activity android:name=".ui.activities.WebViewActivity"/>
-        <activity android:name=".ui.activities.NewLoginActivity" android:screenOrientation="portrait" /> <!--TODO restore-->
+
+        <activity android:name=".ui.activities.WebViewActivity"/>
+
+        <activity android:name=".ui.activities.NewLoginActivity"
+                  android:screenOrientation="portrait"
+            /> <!--TODO restore-->
 
         <!--
                   BroadcastReceiver that will receive intents from GCM

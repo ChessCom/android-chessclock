@@ -44,6 +44,7 @@
     <style name="Text.Button.Grey">
         <item name="android:background">@drawable/button_grey_selector</item>
         <item name="android:minHeight">@dimen/grey_button_height</item>
+        <item name="android:textColor">@color/new_light_grey</item>
     </style>
 
     <style name="Text.Button.GreyDarker">
@@ -64,6 +65,11 @@
     <style name="Text.Button.Small">
         <item name="android:background">@drawable/button_orange_selector</item>
         <item name="android:minHeight">@dimen/small_button_height</item>
+    </style>
+
+    <style name="Text.Button.Small.NoBorder">
+        <item name="android:background">@drawable/button_orange_nb_selector</item>
+        <item name="android:minHeight">@dimen/small_orange_button_height</item>
     </style>
 
 
@@ -225,13 +231,14 @@
     <!--Home Tabs-->
     <style name="TabRadioButton" parent="android:Widget.CompoundButton.RadioButton">
         <item name="android:button">@null</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/tab_home_button_text</item>
 		<item name="android:gravity">center</item>
         <item name="android:shadowColor">@color/black</item>
         <item name="android:shadowRadius">1.0</item>
         <item name="android:shadowDx">1.0</item>
         <item name="android:shadowDy">1.0</item>
+        <item name="android:minHeight">@dimen/new_tab_button_height</item>
         <item name="ttf">Bold</item>
     </style>
 

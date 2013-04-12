@@ -38,8 +38,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		getActivityFace().changeLeftFragment(new NavigationMenuFragment());
 //		getActivityFace().changeRightFragment(new DailyGamesRightFragment());
-
-
 	}
 
 	@Override
@@ -51,19 +49,21 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		getActivityFace().setCustomActionBarViewId(R.layout.new_home_actionbar);
+
 		showActionBar(true);
 
-		handler.post(new Runnable() {
-			@Override
-			public void run() {
-				if (getActivity() != null) {
-					setTitle(R.string.home);
-				}
-			}
-		});
+//		handler.post(new Runnable() {
+//			@Override
+//			public void run() {
+//				if (getActivity() != null) {
+//					setTitle(R.string.home);
+//				}
+//			}
+//		});
 
 
-		Fragment homeGamesFragment = new HomeDailyGamesFragment();
+		Fragment homeGamesFragment = new HomePlayFragment();
 		changeInternalFragment(homeGamesFragment);
 
 		tabRadioGroup = (RadioGroup) view.findViewById(R.id.tabRadioGroup);
@@ -91,13 +91,13 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
 				case R.id.gamesBtn:
-					changeInternalFragment(new HomeDailyGamesFragment());
+					changeInternalFragment(new HomePlayFragment());
 					break;
-				case R.id.chesscomBtn:
-					changeInternalFragment(new HomeChessComFragment());
+				case R.id.learnBtn:
+					changeInternalFragment(new HomeLearnFragment());
 					break;
-				case R.id.ratingsBtn:
-					changeInternalFragment(new HomeRatingsFragment());
+				case R.id.feedBtn:
+					changeInternalFragment(new HomeFeedFragment());
 					break;
 			}
 		}

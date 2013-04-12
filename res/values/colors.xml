@@ -19,7 +19,7 @@
     <color name="dark_grey_border_for_edit">#ff211e1c</color>
     <color name="new_edit_button_text">#FF262422</color>
     <color name="light_grey_border">#FFbab8b6</color>
-    <color name="semi_transparent_border">#26000000</color>
+    <color name="semi_transparent_border">#16000000</color>
     <color name="light_shadow_border">#16000000</color>
     <color name="gradient_shadow_1">#10000000</color>
     <color name="gradient_shadow_2">#16000000</color>
@@ -124,20 +124,20 @@
 
 
     <!--Grey Solid-->
-    <color name="grey_button_solid">#FF66605a</color>
-    <color name="grey_button_solid_p">#ff47413c</color>
-    <color name="grey_button_solid_s">#ffa8a29c</color>
-    <color name="grey_button_solid_border_top">#FF76706b</color>
-    <color name="grey_button_solid_border_left">#FF6e6862</color>
-    <color name="grey_button_solid_border_bottom">#FF4e4944</color>
-    <color name="grey_button_solid_border_right">#FF56514c</color>
+    <color name="grey_button_solid">#FF413d39</color>
+    <color name="grey_button_solid_p">#ff322e2a</color>
+    <color name="grey_button_solid_s">#FF5b564f</color>
+    <color name="grey_button_solid_border_top">#FF46423d</color>
+    <color name="grey_button_solid_border_left">#FF43403c</color>
+    <color name="grey_button_solid_border_bottom">#FF3a3633</color>
+    <color name="grey_button_solid_border_right">#FF3c3934</color>
 
     <!--Grey Gradient -=Controls=- -->
-    <color name="grey_button_gradient">#FF66605a</color>
+    <color name="grey_button_gradient">#FF67615a</color>
     <color name="grey_button_gradient_p">#FFb2aca5</color>
     <color name="grey_button_gradient_p_1">#FF807b76</color>
     <color name="grey_button_gradient_d">#FF444444</color>
-    <color name="grey_button_gradient_1">#FF4e4a44</color>
+    <color name="grey_button_gradient_1">#FF4f4a45 </color>
 
 
     <!--Emboss Text Field Black-->
@@ -336,26 +336,31 @@
     <color name="tab_home_shadow">#26000000</color>
 
     <!--TabsHome Buttons-->
-    <color name="tab_home_button">#FF413d39</color>
-    <color name="tab_home_button_p">#ff3a3734</color>
-    <color name="tab_home_button_c">#FF312e2b</color>
-    <color name="tab_home_button_border">#FF2a2725</color>
+    <color name="tab_home_button">#FF312e2b</color>
+    <color name="tab_home_button_p">#ff181613</color>
+    <color name="tab_home_button_c">#FF24221f</color>
+    <color name="tab_home_button_border_left">#FF44413e</color>
+    <color name="tab_home_button_border_left_p">#FF11100f</color>
+    <color name="tab_home_button_border_bottom">#FF141312</color>
+    <color name="tab_home_button_border_right">#FF171614</color>
+    <color name="tab_home_button_border_right_p">#FF11100f</color>
     <color name="tab_home_button_shadow">#FF000000</color>
     <color name="tab_home_button_text">#FFc8c8c8</color>
 
     <!--DailyGames-->
-    <color name="daily_games_item_border_top">#FF4a4745</color>
+    <color name="daily_games_item_border_top">#FF393633</color>
     <color name="daily_games_item_border_top_p">#ff504d4a</color>
     <color name="daily_games_item_border_top_s">#FF55524f</color>
-    <color name="daily_games_item_border_bot">#FF000000</color>
+    <color name="daily_games_item_border_bot">#FF22201e</color>
     <color name="daily_games_item">#FF312e2a</color>
     <color name="daily_games_item_p">#ff36322e</color>
     <color name="daily_games_item_s">#FF413d39</color>
     <color name="daily_games_header_back">#FF1d1c1a</color>
     <color name="daily_games_header_back_p">#FF1d1c1a</color>
     <color name="daily_games_header_back_s">#FF1d1c1a</color> <!--selected-->
-    <color name="daily_games_header_back_border_top">#FF2c2b29</color>
-    <color name="daily_games_header_back_border_bot">#FF000000</color>
+    <color name="daily_games_header_back_border_top">#FF2c2b2a</color>
+    <color name="daily_games_header_back_border_bot">#FF0e0e0d</color>
+    <color name="daily_games_header_back_border_bot_1">#FF3d3b38</color>
 
     <!--New Game Options-->
     <color name="game_option_1_back_top">#FF363330</color>

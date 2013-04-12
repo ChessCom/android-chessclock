@@ -10,7 +10,7 @@
         <attr name="oneLine" format="reference|boolean"/>
     </declare-styleable>
 
-    <declare-styleable name="RobotoTextView">
+    <declare-styleable name="RoboTextView">
         <attr name="ttf" format="string" />
     </declare-styleable>
 

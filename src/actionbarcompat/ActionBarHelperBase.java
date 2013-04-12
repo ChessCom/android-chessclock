@@ -50,6 +50,9 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 	private boolean noActionBar;
 	private ProgressBar refreshIndicator;
 	private ImageButton refreshButton;
+	private boolean customViewSet;
+	private View customView;
+	private boolean useHomeIcon = true;
 
 	protected ActionBarHelperBase(ActionBarActivity activity) {
 		super(activity);
@@ -85,6 +88,10 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		}
 	}
 
+	public void setUseHomeIcon(boolean use) {
+		useHomeIcon = use;
+	}
+
 	/**
 	 * Sets up the compatibility action bar with the given title.
 	 */
@@ -94,23 +101,29 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 			return;
 		}
 
-		LinearLayout.LayoutParams springLayoutParams = new LinearLayout.LayoutParams(0,
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
 				ViewGroup.LayoutParams.MATCH_PARENT);
-		springLayoutParams.weight = 1;
+		layoutParams.weight = 1;
 
+		if (useHomeIcon) {
 		// Add Home button
 		SimpleMenu tempMenu = new SimpleMenu(mActivity);
 		SimpleMenuItem homeItem = new SimpleMenuItem(tempMenu, android.R.id.home, 0,
 				mActivity.getString(R.string.app_name));
 		homeItem.setIcon(R.drawable.ic_action_menu);
 		addActionItemCompatFromMenuItem(homeItem);
+		}
 
-		// Add title text
-		RoboTextView titleText = new RoboTextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
-		titleText.setLayoutParams(springLayoutParams);
-		titleText.setText(mActivity.getTitle());
-//		titleText.setId(R.id.actionbar_compat_title);
-		actionBarCompat.addView(titleText);
+		if (!customViewSet) {
+			// Add title text
+			RoboTextView titleText = new RoboTextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
+			titleText.setLayoutParams(layoutParams);
+			titleText.setText(mActivity.getTitle());
+	//		titleText.setId(R.id.actionbar_compat_title);
+			actionBarCompat.addView(titleText);
+		} else {
+			actionBarCompat.addView(customView, layoutParams);
+		}
 
 		actionBarCompat.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
 	}
@@ -253,8 +266,17 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 	public void setTitle(int titleId) {
 		View compatView = getActionBarCompat();
 		if (compatView != null) {
-			((TextView) compatView.findViewById(R.id.actionbar_compat_title)).setText(titleId);
+			View titleTxt =  customView.findViewById(R.id.actionbar_compat_title);
+			if (titleTxt != null) {
+				((TextView)titleTxt).setText(titleId);
+			}
 		}
+	}
+
+	@Override
+	public void setCustomView(int layoutId) {
+		customViewSet = true;
+		customView = mActivity.getLayoutInflater().inflate(layoutId, null, false);
 	}
 
 	/**

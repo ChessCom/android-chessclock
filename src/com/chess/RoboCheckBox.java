@@ -25,10 +25,10 @@ public class RoboCheckBox extends CheckBox {
 	}
 
     private void setupFont(AttributeSet attrs) {
-        TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.RobotoTextView);
+        TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.RoboTextView);
 		try {
-			if (array.getString(R.styleable.RobotoTextView_ttf) != null) {
-				ttfName = array.getString(R.styleable.RobotoTextView_ttf);
+			if (array.getString(R.styleable.RoboTextView_ttf) != null) {
+				ttfName = array.getString(R.styleable.RoboTextView_ttf);
 			}
 		} finally {
 			array.recycle();
@@ -39,7 +39,7 @@ public class RoboCheckBox extends CheckBox {
 //        for (int i = 0; i < N; i++) {
 //            int attr = array.getIndex(i);
 //            switch (attr) {
-//                case R.styleable.RobotoTextView_ttf: {
+//                case R.styleable.RoboTextView_ttf: {
 //                    ttfName = array.getString(i);
 //                }
 //                break;

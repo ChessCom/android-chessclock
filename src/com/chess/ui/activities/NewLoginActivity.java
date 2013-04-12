@@ -7,14 +7,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.Menu;
 import com.chess.R;
-import com.chess.backend.statics.AppData;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.HomeTabsFragment;
-import com.chess.ui.fragments.WelcomeFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.views.drawables.LogoBackgroundDrawable;
 import com.slidingmenu.lib.SlidingMenu;
@@ -39,6 +36,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	private SlidingMenu slidingMenu;
 	private List<SlidingMenu.OnOpenedListener> openMenuListeners;
 	private boolean showActionBar;
+	private int customActionBarViewId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,17 +46,19 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 
 		setContentView(R.layout.new_main_active_screen);
 
+		customActionBarViewId = R.layout.new_custom_actionbar;
+
 		openMenuListeners = new ArrayList<SlidingMenu.OnOpenedListener>();
 
 		// set the Above View
-		if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
+//		if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
 			switchFragment(new HomeTabsFragment());
 			showActionBar = true;
-		} else {
-//			switchFragment(new SignInFragment());
-			switchFragment(new WelcomeFragment());
-			showActionBar = false;
-		}
+//		} else {
+//	//			switchFragment(new SignInFragment());
+//			switchFragment(new WelcomeFragment());
+//			showActionBar = false;
+//		}
 
 		slidingMenu = getSlidingMenu();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
@@ -72,13 +72,14 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
+		getActionBarHelper().setCustomView(customActionBarViewId);
 		super.onPostCreate(savedInstanceState);
 
 		getActionBarHelper().showActionBar(showActionBar);
 
-		if (HONEYCOMB_PLUS_API) {
-			getActionBar().setCustomView(R.layout.new_custom_actionbar);
-		}
+//		if (HONEYCOMB_PLUS_API) {
+//			getActionBarHelper().setCustomView(R.layout.new_custom_actionbar);
+//		}
 	}
 
 	@Override
@@ -92,6 +93,20 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	public void setTitle(int titleId) {
 		getActionBarHelper().setTitle(titleId);
 	}
+
+	@Override
+	public void updateTitle(int titleId) {
+		getActionBarHelper().setCustomView(R.layout.new_custom_actionbar);
+		getActionBarHelper().setTitle(titleId);
+	}
+
+
+	@Override
+	public void setCustomActionBarViewId(int viewId) {
+		customActionBarViewId = viewId;
+		getActionBarHelper().setCustomView(customActionBarViewId);
+	}
+
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {

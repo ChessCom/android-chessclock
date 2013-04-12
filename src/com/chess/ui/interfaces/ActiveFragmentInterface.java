@@ -9,6 +9,8 @@ import com.slidingmenu.lib.SlidingMenu;
 
 public interface ActiveFragmentInterface {
 
+	void setCustomActionBarViewId(int viewId);
+
 	void toggleMenu(int code);
 
 //	void closeMenu(int code);
@@ -46,4 +48,6 @@ public interface ActiveFragmentInterface {
 //	LccHelper getMeLccHolder();
 
 	void clearFragmentStack();
+
+	void updateTitle(int titleId);
 }

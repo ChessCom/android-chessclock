@@ -15,7 +15,7 @@
  	<dimen name="signin_button_height">45dip</dimen>
 	<!--<dimen name="default_stroke_width">1dip</dimen>-->
  	
- 	<dimen name="list_item_image_size">27dip</dimen>
+ 	<dimen name="list_item_image_size">26dip</dimen>
  	<dimen name="list_item_stroke_width">1px</dimen>
  	
  	<dimen name="signin_logo_margin_top">0dip</dimen>
