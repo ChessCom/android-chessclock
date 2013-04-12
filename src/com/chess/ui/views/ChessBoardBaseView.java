@@ -427,6 +427,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected boolean onActionDown(MotionEvent event) {
+		if (square == 0) {
+			return false;
+		}
 		int col = (int) (event.getX() - event.getX() % square) / square;
 		int row = (int) (event.getY() - event.getY() % square) / square;
 		if (col > 7 || col < 0 || row > 7 || row < 0) {
