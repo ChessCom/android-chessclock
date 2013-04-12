@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="ad_optional_width">300</integer>
-    <integer name="ad_optional_height">250</integer>
+    <integer name="ad_optional_height">100</integer>
 </resources>

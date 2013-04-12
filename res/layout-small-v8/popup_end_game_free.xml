@@ -1,0 +1,145 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="0dp"
+    >
+    <!--End game title-->
+    <com.chess.RoboTextView
+        android:id="@+id/endGameTitleTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        robo:ttf="Bold"
+        android:textSize="@dimen/game_end_popup_text_size"
+        />
+
+    <!--Wins reason-->
+    <com.chess.RoboTextView
+        android:id="@+id/endGameReasonTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        robo:ttf="Bold"
+        />
+
+    <!--Rating-->
+    <com.chess.RoboTextView
+        android:id="@+id/yourRatingTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        robo:ttf="Bold"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <!--New Game | Rematch-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <com.chess.RoboButton
+                android:id="@+id/newGamePopupBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/new_game"
+                style="@style/Text.Button"
+                />
+
+            <com.chess.RoboButton
+                android:id="@+id/rematchPopupBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/rematch"
+                style="@style/Text.Button"
+                />
+        </LinearLayout>
+
+        <!--Home Review-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <com.chess.RoboButton
+                android:id="@+id/homePopupBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/home"
+                style="@style/Text.Button.Grey"/>
+
+            <com.chess.RoboButton
+                android:id="@+id/reviewPopupBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/review"
+                style="@style/Text.Button.Grey"
+                />
+        </LinearLayout>
+
+        <!--Share-->
+        <com.chess.RoboButton
+            android:id="@+id/shareBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Text.Button.Twitter"
+            android:text="@string/share_game"
+            android:drawableLeft="@null"
+            />
+
+    </LinearLayout>
+
+    <!--Ads-->
+    <!-- todo: set app id, set update time -->
+    <com.inneractive.api.ads.InneractiveAd
+        android:id="@+id/inneractiveRectangleAd"
+        xmlns:inneractive="http://schemas.android.com/apk/res/com.chess"
+        android:layout_width="@dimen/ad_popup_width"
+        android:layout_height="@dimen/ad_popup_height"
+        inneractive:appID="@string/inneractiveAdsAppId"
+        inneractive:adType="Banner"
+        inneractive:refreshInterval="60"
+        inneractive:adAlignment="CENTER"
+        inneractive:optionalAdWidth="@integer/ad_optional_width"
+        inneractive:optionalAdHeight="@integer/ad_optional_height"
+        android:visibility="gone"/>
+
+    <!--Upgrade-->
+    <com.chess.RoboButton
+        android:id="@+id/upgradeBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Text.Button.Upgrade"
+        android:text="@string/removeAds"
+        android:paddingTop="0dip"
+        android:paddingBottom="0dip"
+        android:paddingLeft="20dip"
+        android:paddingRight="5dip"
+        />
+
+    <!--Link text-->
+    <com.chess.RoboTextView
+        android:id="@+id/rulesLinkTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorLink="@color/white"
+        android:text="@string/fair_play_policy_link"
+        android:gravity="center"
+        android:padding="5dip"
+        android:visibility="gone"
+        />
+</LinearLayout>
