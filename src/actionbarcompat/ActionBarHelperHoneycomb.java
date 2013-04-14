@@ -156,20 +156,21 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
 	@Override
 	public void setTitle(int titleId) {
-		View customView = mActivity.getActionBar().getCustomView();
-		if (customView != null) {
-			View titleTxt =  customView.findViewById(R.id.actionbar_compat_title);
-			if (titleTxt != null) {
-				((TextView)titleTxt).setText(titleId);
-			}
+		if (mActivity == null || mActivity.getActionBar() == null || mActivity.getActionBar().getCustomView() == null) {
+			return;
+		}
+		View titleTxt =  mActivity.getActionBar().getCustomView().findViewById(R.id.actionbar_compat_title);
+		if (titleTxt != null) {
+			((TextView)titleTxt).setText(titleId);
 		}
 	}
 
 	@Override
 	public void setCustomView(int layoutId) {
-		if (mActivity != null && mActivity.getActionBar() != null) {
-			mActivity.getActionBar().setCustomView(layoutId);
+		if (mActivity == null || mActivity.getActionBar() == null) {
+			return;
 		}
+		mActivity.getActionBar().setCustomView(layoutId);
 	}
 
 	@Override
