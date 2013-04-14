@@ -24,7 +24,8 @@
         android:paddingLeft="20dip"
         android:paddingBottom="1dip"
         android:layout_marginTop="-4dip"
-        android:textColor="@color/new_dark_green"
+        android:textColor="@color/new_blue_text"
+        android:text="A Guide for White: Avoiding the Sicilian -Alapin Part 1!"
         android:textSize="16sp"
         custom:ttf="Bold"
         />
@@ -56,6 +57,7 @@
         android:paddingBottom="2dip"
         android:textColor="@color/new_subtitle_dark_grey"
         android:textSize="12sp"
+        android:text="GM Gregory Kaidanov"
         custom:ttf="Bold"
         />
     <!--android:text="GM Gregory Kaidanov"-->
@@ -69,6 +71,7 @@
         android:paddingLeft="20dip"
         android:textColor="@color/new_friends_grey_text"
         android:textSize="13sp"
+        android:text="11/15/12 | 27 min"
         />
     <!--android:text="11/15/12 | 27 min"-->
 

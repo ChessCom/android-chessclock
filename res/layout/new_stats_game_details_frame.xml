@@ -405,7 +405,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/frequentTitleTxt"
-            android:textColor="@color/new_friends_blue_text"
+            android:textColor="@color/new_blue_text"
             android:textSize="@dimen/stats_rating_list_item_font"
             android:layout_marginTop="-3dip"
             />

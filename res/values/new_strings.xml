@@ -116,11 +116,27 @@
     <string name="or_login_using_chesscom">Or, Log in Using Chess.com Username:</string>
     <string name="new_create_an_account">Create an Account</string>
 
+    <string name="articles">Articles</string>
+    <string name="menu_notifications">Notifications</string>
+    <string name="menu_games">Games</string>
+
+
     <string name="chess_com_live">Chess.com Live</string>
     <string name="ches_com">Chess.com</string>
     <string name="share_game">Share Game</string>
     <string name="chess">Chess</string>
     <string name="via_chesscom">via @Chesscom</string>
+
+    <!--Play Screen-->
     <string name="auto_match">Auto-Match</string>
     <string name="play_a_friend">Play a friend!</string>
+
+    <string name="feed">Feed</string>
+    <string name="learn">Learn</string>
+
+    <!--Learn Screen-->
+    <string name="todays_attempts">Today\'s attempts:</string>
+    <string name="average_score">Average Score:</string>
+    <string name="start">Start</string>
+    <string name="lessons">Lessons</string>
 </resources>

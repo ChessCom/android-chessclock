@@ -397,11 +397,7 @@
     <!--Navigation Menu-->
 
 
-    <string name="articles">Articles</string>
-    <string name="menu_notifications">Notifications</string>
-    <string name="menu_games">Games</string>
-    <string name="feed">Feed</string>
-    <string name="learn">Learn</string>
+
 
 
     <!--<string name="game.aborted_by_server_on_logout">Game has been aborted by the server. %1$s has logged out</string>

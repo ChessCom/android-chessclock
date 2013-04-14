@@ -16,11 +16,19 @@
         android:paddingLeft="13dip"
         android:paddingRight="8dip"
         >
+        <!--Icon-->
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/glyph_live_standard"
+            android:textColor="@color/new_grey_icon_header"
+            style="@style/GlyphIcon"
+            />
+
         <com.chess.RoboTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_live_standard"
             android:drawablePadding="8dip"
             android:text="@string/live_chess"
             android:textColor="@color/new_list_header_text"
@@ -37,13 +45,15 @@
             custom:ttf="Bold"
             />
 
-        <ImageView
+        <!--Right Icon-->
+        <com.chess.RoboTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_right_light"
-            android:layout_marginLeft="15dip"
-            android:contentDescription="@string/image"
+            android:text="@string/glyph_arrow_right"
+            android:textColor="@color/new_grey_icon_header"
+            style="@style/GlyphIcon.Small"
             />
+
     </LinearLayout>
 
     <RelativeLayout
@@ -84,12 +94,20 @@
         android:paddingLeft="13dip"
         android:paddingRight="8dip"
         >
+
+        <!--Icon-->
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/glyph_daily_game"
+            android:textColor="@color/new_grey_icon_header"
+            style="@style/GlyphIcon"
+            />
+
         <com.chess.RoboTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_daily_game"
-            android:drawablePadding="8dip"
             android:text="@string/daily_chess"
             android:textColor="@color/new_list_header_text"
             android:gravity="center_vertical"
@@ -104,13 +122,15 @@
             custom:ttf="Bold"
             />
 
-        <ImageView
+       <!--Right Icon-->
+        <com.chess.RoboTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_right_light"
-            android:layout_marginLeft="15dip"
-            android:contentDescription="@string/image"
+            android:text="@string/glyph_arrow_right"
+            android:textColor="@color/new_grey_icon_header"
+            style="@style/GlyphIcon.Small"
             />
+
     </LinearLayout>
 
     <!--Auto-Match-->
@@ -254,13 +274,16 @@
         android:background="@drawable/daily_games_item_selector"
         android:gravity="center_vertical"
         >
-        <ImageView
-            android:layout_width="@dimen/list_item_image_size"
-            android:layout_height="@dimen/list_item_image_size"
-            android:src="@drawable/ic_play_friend"
+
+        <!--Icon-->
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/glyph_play_friend"
+            android:textColor="@color/new_light_grey_2"
+            style="@style/GlyphIcon"
             android:background="@color/grey_button_solid"
             android:layout_marginRight="12dip"
-            android:contentDescription="@string/image"
             />
 
         <com.chess.RoboTextView
@@ -271,12 +294,13 @@
             android:textColor="@color/new_light_grey"
              />
 
-        <ImageView
+        <!--Right Icon-->
+        <com.chess.RoboTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_right"
-            android:layout_marginLeft="15dip"
-            android:contentDescription="@string/image"
+            android:text="@string/glyph_arrow_right"
+            android:textColor="@color/hint_text"
+            style="@style/GlyphIcon.Small"
             />
 
     </LinearLayout>
@@ -290,24 +314,34 @@
         android:paddingLeft="13dip"
         android:paddingRight="8dip"
         >
+
+        <!--Icon-->
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/glyph_comp_game"
+            android:textColor="@color/new_grey_icon_header"
+            style="@style/GlyphIcon"
+            />
+
         <com.chess.RoboTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_comp_game"
-            android:drawablePadding="8dip"
             android:text="@string/vs_computer"
             android:textColor="@color/new_list_header_text"
             android:gravity="center_vertical"
             />
 
-        <ImageView
+        <!--Right Icon-->
+        <com.chess.RoboTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_right_light"
-            android:layout_marginLeft="15dip"
-            android:contentDescription="@string/image"
+            android:text="@string/glyph_arrow_right"
+            android:textColor="@color/new_grey_icon_header"
+            style="@style/GlyphIcon.Small"
             />
+
     </LinearLayout>
 
     <!--Bottom border for Comp Header-->

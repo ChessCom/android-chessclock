@@ -344,7 +344,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 			highestRatingView.findViewById(R.id.subtitleTxt).setId(BEST_WIN_ID + RATING_SUBTITLE_ID);
 			highestRatingView.findViewById(R.id.ratingValueTxt).setId(BEST_WIN_ID + RATING_VALUE_ID);
 			((TextView) highestRatingView.findViewById(BEST_WIN_ID + RATING_SUBTITLE_ID))
-					.setTextColor(getResources().getColor(R.color.new_friends_blue_text));
+					.setTextColor(getResources().getColor(R.color.new_blue_text));
 
 			ratingsLinearView.addView(highestRatingView);
 		}

@@ -13,8 +13,9 @@
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:contentDescription="@string/image"
-        android:background="@drawable/video_thumb_back"
+        android:background="@drawable/img_tactics_board"
         />
+    <!--android:background="@drawable/video_thumb_back"-->
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -29,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:src="@drawable/ic_play_video"
-        android:background="@drawable/video_play_btn_back"
+        android:background="@drawable/video_play_btn_back_small_selector"
         android:visibility="visible"
         android:contentDescription="@string/image"/>
 

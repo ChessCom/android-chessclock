@@ -1,14 +1,330 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     >
-    <com.chess.RoboTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Learn"
-        />
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <!--Tactics Header-->
+        <LinearLayout
+            android:id="@+id/tacticsHeaderView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_header_height"
+            android:gravity="center_vertical"
+            android:background="@drawable/light_header_selector"
+            android:paddingLeft="13dip"
+            android:paddingRight="8dip"
+            >
+
+            <!--Tactics Icon-->
+            <com.chess.RoboTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/glyph_tactics_game"
+                android:textColor="@color/hint_text"
+                android:textSize="26dip"
+                style="@style/GlyphIcon"
+                />
+
+            <com.chess.RoboTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/tactics"
+                android:textColor="@color/new_main_back"
+                android:textSize="15sp"
+                android:gravity="center_vertical"
+                />
+
+            <com.chess.RoboTextView
+                android:id="@+id/tacticsRatingTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textColor="@color/new_normal_grey"
+                android:textSize="15sp"
+                android:text="1200"
+                custom:ttf="Bold"
+                />
+
+            <!--Right Icon-->
+            <com.chess.RoboTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/glyph_arrow_right"
+                android:textColor="@color/hint_text"
+                style="@style/GlyphIcon.Small"
+                />
+
+        </LinearLayout>
+
+        <!--Board and info -->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dip"
+            >
+
+            <!--Board-->
+            <RelativeLayout
+                android:id="@+id/tacticsBoardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/img_tactics_board"
+                android:layout_marginRight="15dip"
+                >
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_tactics_game_light"
+                    android:background="@drawable/video_play_btn_back_small_selector"
+                    android:visibility="visible"
+                    android:contentDescription="@string/image"
+                    />
+
+            </RelativeLayout>
+
+            <!-- Today's attempts: -->
+            <com.chess.RoboTextView
+                android:id="@+id/todaysAttemptsLabelTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/todays_attempts"
+                android:layout_toRightOf="@id/tacticsBoardView"
+                android:textColor="@color/stats_label_grey"
+                android:textSize="13sp"
+                android:layout_marginRight="7dip"
+                android:layout_marginBottom="3dip"
+                android:layout_marginTop="-3dip"
+                />
+
+            <!-- Attempts value-->
+            <com.chess.RoboTextView
+                android:id="@+id/todaysAttemptsValueTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/todaysAttemptsLabelTxt"
+                android:text="4"
+                android:textColor="@color/new_subtitle_dark_grey"
+                android:textSize="13sp"
+                custom:ttf="Bold"
+                />
+
+            <!-- Average Score: -->
+            <com.chess.RoboTextView
+                android:id="@+id/avgScoreLabelTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/average_score"
+                android:layout_toRightOf="@id/tacticsBoardView"
+                android:layout_below="@id/todaysAttemptsLabelTxt"
+                android:textColor="@color/stats_label_grey"
+                android:textSize="13sp"
+                />
+
+            <!-- Score value-->
+            <com.chess.RoboTextView
+                android:id="@+id/avgScoreValueTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/todaysAttemptsLabelTxt"
+                android:text="75%"
+                android:layout_below="@id/todaysAttemptsLabelTxt"
+                android:textColor="@color/new_subtitle_dark_grey"
+                android:textSize="13sp"
+                custom:ttf="Bold"
+                />
+
+            <!--Start Tactics-->
+            <com.chess.RoboButton
+                android:id="@+id/startTacticsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/start"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@id/tacticsBoardView"
+                android:layout_alignBottom="@id/tacticsBoardView"
+                style="@style/Text.Button.Small.NoBorder"
+                />
+
+        </RelativeLayout>
+
+        <!--Bottom border -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/light_header_back_border_bot"
+            />
+
+        <!--Lessons Header-->
+        <LinearLayout
+            android:id="@+id/lessonsHeaderView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_header_height"
+            android:gravity="center_vertical"
+            android:background="@drawable/light_header_selector"
+            android:paddingLeft="13dip"
+            android:paddingRight="8dip"
+            >
+
+            <!--Lessons Icon-->
+            <com.chess.RoboTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/glyph_lessons"
+                android:textColor="@color/hint_text"
+                style="@style/GlyphIcon"
+                android:textSize="26dip"
+                />
+
+            <com.chess.RoboTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/lessons"
+                android:textColor="@color/new_main_back"
+                android:textSize="15sp"
+                android:gravity="center_vertical"
+                />
+
+            <com.chess.RoboTextView
+                android:id="@+id/lessonsRatingTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textColor="@color/new_normal_grey"
+                android:textSize="15sp"
+                android:text="1200"
+                custom:ttf="Bold"
+                />
+
+            <!--Right Icon-->
+            <com.chess.RoboTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/glyph_arrow_right"
+                android:textColor="@color/hint_text"
+                style="@style/GlyphIcon.Small"
+                />
+
+        </LinearLayout>
+
+        <!--Board and info -->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dip"
+            >
+
+            <RelativeLayout
+                android:id="@+id/lessonsBoardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/img_tactics_board"
+                android:layout_marginRight="15dip"
+                >
+                <!--Board-->
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_lessons"
+                    android:background="@drawable/video_play_btn_back_small_selector"
+                    android:visibility="visible"
+                    android:contentDescription="@string/image"
+                    />
+            </RelativeLayout>
+
+
+            <!-- Lessons Title -->
+            <com.chess.RoboTextView
+                android:id="@+id/lessonTitleTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is the Lesson's Title"
+                android:layout_toRightOf="@id/lessonsBoardView"
+                android:textColor="@color/new_blue_text"
+                android:layout_marginRight="7dip"
+                android:layout_marginBottom="5dip"
+                android:layout_marginTop="-3dip"
+                custom:ttf="Bold"
+                />
+
+            <!--Start Lessons-->
+            <com.chess.RoboButton
+                android:id="@+id/startLessonsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/start"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@id/lessonsBoardView"
+                android:layout_alignBottom="@id/lessonsBoardView"
+                style="@style/Text.Button.Small.NoBorder"
+                />
+
+        </RelativeLayout>
+
+        <!--Bottom border -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/light_header_back_border_bot"
+            />
+
+        <!--Videos Header-->
+        <LinearLayout
+            android:id="@+id/videosHeaderView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_header_height"
+            android:gravity="center_vertical"
+            android:background="@drawable/light_header_selector"
+            android:paddingLeft="13dip"
+            android:paddingRight="8dip"
+            >
+
+            <!--Video Icon-->
+            <com.chess.RoboTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/glyph_videos"
+                android:textColor="@color/hint_text"
+                style="@style/GlyphIcon"
+                android:textSize="26dip"
+                />
+
+            <com.chess.RoboTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/videos"
+                android:textColor="@color/new_main_back"
+                android:textSize="15sp"
+                android:gravity="center_vertical"
+                />
+
+            <!--Right Icon-->
+            <com.chess.RoboTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/glyph_arrow_right"
+                android:textColor="@color/hint_text"
+                style="@style/GlyphIcon.Small"
+                />
+
+        </LinearLayout>
+
+        <include layout="@layout/new_videos_thumb_list_item" />
+
+    </LinearLayout>
+</ScrollView>

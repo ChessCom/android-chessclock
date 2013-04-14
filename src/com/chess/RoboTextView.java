@@ -15,6 +15,7 @@ public class RoboTextView extends TextView implements Serializable {
 	public static final String MAIN_PATH = "fonts/trebuc-";
 	public static final String DEFAULT_FONT = "Regular";
 	public static final String BOLD_FONT = "Bold";
+	public static final String ICON_FONT = "Icon";
 	public static final String ITALIC_FONT = "Italic";
 	public static final String ROBOTO_BOLD_FONT = "RobotoBold";
 	public static final String ROBOTO_REGULAR_FONT = "RobotoRegular";

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Use Icon as custom font to draw icons Mapping are here - link TBD -->
+    <!--Names as strings-->
+    <string name="glyph_daily_game">2</string>
+    <string name="glyph_live_standard">3</string>
+    <string name="glyph_live_blitz">4</string>
+    <string name="glyph_live_bullet">5</string>
+    <string name="glyph_play_friend">n</string>
+    <string name="glyph_daily960_game">6</string>
+    <string name="glyph_tactics_game">7</string>
+    <string name="glyph_lessons">8</string>
+    <string name="glyph_comp_game">9</string>
+    <string name="glyph_videos">J</string>
+
+    <string name="glyph_arrow_right">.</string>
+    <string name="glyph_arrow_left">,</string>
+    <string name="glyph_arrow_up">&#60;</string>
+    <string name="glyph_arrow_down">&#62;</string>
+
+    <!--Dimens -->
+    <dimen name="glyph_icon_padding">8dip</dimen>
+    <dimen name="glyph_icon_default">24dip</dimen>
+    <dimen name="glyph_icon_small">20dip</dimen>
+
+
+</resources>

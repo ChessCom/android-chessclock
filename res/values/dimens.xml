@@ -202,7 +202,7 @@
     <dimen name="new_button_square_size">37dip</dimen>
 
     <!--Videos-->
-    <dimen name="video_play_btn_back_ring_size">47dip</dimen>
+    <dimen name="video_play_btn_back_ring_size">43dip</dimen>
     <dimen name="video_play_btn_back_ring_size_big">100dip</dimen>
     <dimen name="video_play_btn_back_ring_size_medium">80dip</dimen>
 
