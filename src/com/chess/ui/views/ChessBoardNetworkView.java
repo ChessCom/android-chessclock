@@ -2,6 +2,7 @@ package com.chess.ui.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import com.chess.backend.statics.AppData;
@@ -174,16 +175,15 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 		track = false;
 		if (!getBoardFace().isAnalysis()) {
-//			if (AppData.isFinishedEchessGameMode(getBoardFace()) || finished || getBoardFace().isSubmit() ||
 			if (AppData.isFinishedEchessGameMode(getBoardFace()) || getBoardFace().isFinished() || getBoardFace().isSubmit() ||
 					(getBoardFace().getHply() < getBoardFace().getMovesCount())) {
 				return true;
 			}
 
-			if(whiteUserName.equals(StaticData.SYMBOL_EMPTY) || blackUserName.equals(StaticData.SYMBOL_EMPTY))
+			if(TextUtils.isEmpty(whiteUserName) || TextUtils .isEmpty(blackUserName))
 				return true;
 
-			if (whiteUserName.equals(userName)  && !getBoardFace().isWhiteToMove()) {  // TODO check reside
+			if (whiteUserName.equals(userName)  && !getBoardFace().isWhiteToMove()) {
 				return true;
 			}
 			if (blackUserName.equals(userName) && getBoardFace().isWhiteToMove()) {
