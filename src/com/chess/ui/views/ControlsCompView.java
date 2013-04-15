@@ -31,8 +31,6 @@ public class ControlsCompView extends ControlsBaseView {
 			R.drawable.ic_ctrl_fwd
 	};
 
-	private int CONTROL_BUTTON_HEIGHT = 37;
-
 	private BoardViewCompFace boardViewFace;
 
 	public ControlsCompView(Context context) {
@@ -48,8 +46,7 @@ public class ControlsCompView extends ControlsBaseView {
 	public void onCreate() {
 		setOrientation(VERTICAL);
 
-		float density = getContext().getResources().getDisplayMetrics().density;
-		CONTROL_BUTTON_HEIGHT *= density;
+		int controlButtonHeight = (int) getResources().getDimension(R.dimen.game_controls_button_height);
 
 		controlsLayout = new LinearLayout(getContext());
 		int paddingLeft = (int) getResources().getDimension(R.dimen.game_control_padding_left);
@@ -62,7 +59,7 @@ public class ControlsCompView extends ControlsBaseView {
 		LayoutParams defaultLinLayParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
-		buttonParams = new LayoutParams(0, CONTROL_BUTTON_HEIGHT);
+		buttonParams = new LayoutParams(0, controlButtonHeight);
 		buttonParams.weight = 1;
 
 		controlsLayout.setLayoutParams(defaultLinLayParams);
@@ -83,16 +80,6 @@ public class ControlsCompView extends ControlsBaseView {
 	@Override
 	public void toggleControlButton(int buttonId, boolean checked) {
 
-	}
-
-	@Override
-	public void enableForwardBtn(boolean enable) {
-		enableGameButton(B_FORWARD_ID, enable);
-	}
-
-	@Override
-	public void enableBackBtn(boolean enable) {
-		enableGameButton(B_BACK_ID, enable);
 	}
 
 	@Override
@@ -117,15 +104,25 @@ public class ControlsCompView extends ControlsBaseView {
 		this.boardViewFace = boardViewFace;
 	}
 
-	public void enableRewindButtons(boolean enable) {
-		enableGameButton(B_FORWARD_ID, enable);
-		enableGameButton(B_BACK_ID, enable);
-	}
-
 	public void enableGameControls(boolean enable) {
 		enableGameButton(B_OPTIONS_ID, enable);
 		enableGameButton(B_HELP_ID, enable);
 		enableGameButton(B_FORWARD_ID, enable);
 		enableGameButton(B_BACK_ID, enable);
 	}
+
+	public void enableHintButton(boolean enable) {
+		enableGameButton(B_HINT_ID, enable);
+	}
+
+	@Override
+	public void enableForwardBtn(boolean enable) {
+		enableGameButton(B_FORWARD_ID, enable);
+	}
+
+	@Override
+	public void enableBackBtn(boolean enable) {
+		enableGameButton(B_BACK_ID, enable);
+	}
+
 }

@@ -22,7 +22,8 @@ public interface GameActivityFace {
 
 	void newGame();
 
-	void switch2Analysis(boolean isAnalysis);
+//	void switch2Analysis(boolean isAnalysis);
+	void switch2Analysis();
 
     void turnScreenOff();
 	

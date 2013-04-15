@@ -23,6 +23,7 @@
             android:id="@+id/topPanelView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            custom:oneLine="@bool/one_line_for_board"
             />
 
         <com.chess.ui.views.ChessBoardCompView
@@ -36,6 +37,7 @@
             android:id="@+id/bottomPanelView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            custom:oneLine="@bool/one_line_for_board"
             />
 
         <com.chess.ui.views.ControlsNetworkView

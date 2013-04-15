@@ -1,4 +1,4 @@
-package com.chess.ui.fragments;
+package com.chess.ui.fragments.game;
 
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -25,9 +25,10 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameAnalysisFace;
-import com.chess.ui.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardAnalysisView;
 import com.chess.ui.views.ControlsAnalysisView;
 import com.chess.ui.views.NotationView;
@@ -95,7 +96,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.daily_analysis);
+		updateTitle(R.string.daily_analysis);
 
 		widgetsInit(view);
 	}
@@ -354,8 +355,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	}
 
 	@Override
-	public void switch2Analysis(boolean isAnalysis) {
-		//To change body of implemented methods use File | Settings | File Templates.
+	public void switch2Analysis() {
 	}
 
 	@Override

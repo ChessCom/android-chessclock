@@ -15,10 +15,10 @@ import com.slidingmenu.lib.SlidingMenu;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 30.12.12
- * Time: 21:41
+ * Date: 15.04.13
+ * Time: 11:39
  */
-public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener {
+public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener {
 
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId;
@@ -50,19 +50,22 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		updateTitle(R.string.daily_chess);
+
 		getActivityFace().setCustomActionBarViewId(R.layout.new_home_actionbar);
 
-		((TextView)view.findViewById(R.id.leftTabBtn)).setText(R.string.play);
-		((TextView)view.findViewById(R.id.centerTabBtn)).setText(R.string.learn);
-		((TextView)view.findViewById(R.id.rightTabBtn)).setText(R.string.feed);
+		((TextView)view.findViewById(R.id.leftTabBtn)).setText(R.string.games);
+		((TextView)view.findViewById(R.id.centerTabBtn)).setText(R.string.new_);
+		((TextView)view.findViewById(R.id.rightTabBtn)).setText(R.string.stats);
 
 		showActionBar(true);
 
-		Fragment homeGamesFragment = new HomePlayFragment();
+		Fragment homeGamesFragment = new DailyGameSetupFragment();
 		changeInternalFragment(homeGamesFragment);
 
 		tabRadioGroup = (RadioGroup) view.findViewById(R.id.tabRadioGroup);
 		tabRadioGroup.setOnCheckedChangeListener(this);
+		tabRadioGroup.check(R.id.centerTabBtn);
 
 		previousCheckedId = tabRadioGroup.getCheckedRadioButtonId();
 	}
@@ -86,13 +89,13 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
 				case R.id.leftTabBtn:
-					changeInternalFragment(new HomePlayFragment());
+					changeInternalFragment(new HomeDailyGamesFragment());
 					break;
 				case R.id.centerTabBtn:
-					changeInternalFragment(new HomeLearnFragment());
+					changeInternalFragment(new DailyGameSetupFragment());
 					break;
 				case R.id.rightTabBtn:
-					changeInternalFragment(new HomeFeedFragment());
+					changeInternalFragment(StatsGameDetailsFragment.newInstance(StatsGameFragment.DAILY_CHESS));
 					break;
 			}
 		}

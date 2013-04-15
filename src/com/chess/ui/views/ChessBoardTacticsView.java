@@ -49,7 +49,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
 		drawCoordinates(canvas);
 
-		drawHighlight(canvas);
+		drawHighlights(canvas);
 
 		drawDragPosition(canvas);
 
@@ -204,6 +204,10 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
     public void showHint() {
 		gameTacticsActivityFace.showHint();
     }
+
+	@Override
+	public void flipBoard() {
+	}
 
 //	public void enableAnalysis() {  // TODO recheck logic
 //		gameActivityFace.switch2Analysis(true);

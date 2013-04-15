@@ -64,7 +64,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 		drawCoordinates(canvas);
 
-		drawHighlight(canvas);
+		drawHighlights(canvas);
 
 		drawDragPosition(canvas);
 

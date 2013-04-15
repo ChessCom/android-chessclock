@@ -29,8 +29,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	private static final String DIVIDER_1 = "|";
 	private static final String DIVIDER_2 = ":";
 
-	private int compStrength;
-	private int[] compStrengthArray;
+	private int compThinkTime;
 	private ComputeMoveTask computeMoveTask;
 
 	private GameCompActivityFace gameCompActivityFace;
@@ -42,8 +41,6 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	public ChessBoardCompView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-		compStrengthArray = resources.getIntArray(R.array.comp_strength);
-
 		hintMoveUpdateListener = new HintMoveUpdateListener();
 		computeMoveUpdateListener = new ComputeMoveUpdateListener();
     }
@@ -52,7 +49,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		super.setGameActivityFace(gameActivityFace);
         gameCompActivityFace = gameActivityFace;
 
-		compStrength = compStrengthArray[AppData.getCompStrength(getContext())];
+		compThinkTime = AppData.getCompThinkTime(getContext());
     }
 
 	public void setControlsView(ControlsCompView controlsView) {
@@ -80,7 +77,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
             return;
 
         if (!getBoardFace().isAnalysis() && !AppData.isHumanVsHumanGameMode(getBoardFace())) {
-			computerMove(compStrength);
+			computerMove(compThinkTime);
         }
     }
 
@@ -94,7 +91,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			StringBuilder builder = new StringBuilder();
 			builder.append(getBoardFace().getMode());
 
-			builder.append(" [" + getBoardFace().getMoveListSAN().toString().replaceAll("\n", " ") + "] "); // todo: remove debug info
+			builder.append(" [").append(getBoardFace().getMoveListSAN().toString().replaceAll("\n", " ")).append("] "); // todo: remove debug info
 
             int i;
             for (i = 0; i < getBoardFace().getMovesCount(); i++) {
@@ -231,7 +228,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
         if (!isComputerMoving()) {
 			drawPieces(canvas);
-			drawHighlight(canvas);
+			drawHighlights(canvas);
 			drawDragPosition(canvas);
 			drawTrackballDrag(canvas);
         } else {
@@ -346,7 +343,6 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
         track = false;
         if (!getBoardFace().isAnalysis()) {
-//            if (isComputerMoving() || finished)
             if (isComputerMoving() || getBoardFace().isFinished())
                 return true;
 
@@ -386,9 +382,9 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
         }
     }
 
-//    @Override
+    @Override
     public void flipBoard() {
-        if (!isComputerMoving()) {
+        if (!isComputerMoving()) {// shouldn't be able to flip while comp moving
             getBoardFace().setReside(!getBoardFace().isReside());
             if (AppData.isComputerVsHumanGameMode(getBoardFace())) {
                 if (AppData.isComputerVsHumanWhiteGameMode(getBoardFace())) {
@@ -398,17 +394,13 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
                     getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
 
                 }
-                computerMove(compStrength);
+                computerMove(compThinkTime);
             }
             invalidate();
-			gameCompActivityFace.invalidateGameScreen();
         }
-    }
 
-	@Override
-	public void switchAnalysis() {
-		super.switchAnalysis();
-		controlsCompView.enableGameButton(ControlsCompView.B_HINT_ID, !getBoardFace().isAnalysis());
+		gameCompActivityFace.toggleSides();
+		gameCompActivityFace.invalidateGameScreen();
 	}
 
 //	@Override
@@ -441,7 +433,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
     @Override
     public void showHint() {
         if (!isComputerMoving()) {
-			makeHint(compStrength);
+			makeHint(compThinkTime);
         }
     }
 

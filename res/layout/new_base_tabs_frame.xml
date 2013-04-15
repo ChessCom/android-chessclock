@@ -14,28 +14,25 @@
         android:orientation="horizontal"
         >
         <com.chess.RoboRadioButton
-            android:id="@+id/gamesBtn"
+            android:id="@+id/leftTabBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/play"
             style="@style/TabRadioButton.Left"
             android:checked="true"
             />
         <com.chess.RoboRadioButton
-            android:id="@+id/learnBtn"
+            android:id="@+id/centerTabBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/learn"
             style="@style/TabRadioButton.Middle"
             />
         <com.chess.RoboRadioButton
-            android:id="@+id/feedBtn"
+            android:id="@+id/rightTabBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/feed"
             style="@style/TabRadioButton.Right"
             />
 

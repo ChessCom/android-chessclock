@@ -65,12 +65,6 @@ public class AppData {
 		return preferences.getBoolean(userName + AppConstants.PREF_BOARD_COORDINATES, true);
 	}
 
-	public static int getCompStrength(Context context) {
-		SharedPreferences preferences = getPreferences(context);
-		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
-		return preferences.getInt(userName + AppConstants.PREF_COMPUTER_STRENGTH, 0);
-	}
-
 	public static int getChessBoardId(Context context) {
 		SharedPreferences preferences = getPreferences(context);
 		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
@@ -157,6 +151,20 @@ public class AppData {
 		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
 		return !preferences.getString(userName + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY)
 				.equals(StaticData.SYMBOL_EMPTY);
+	}
+
+	public static void clearSavedCompGame(Context context) {
+		SharedPreferences preferences = getPreferences(context);
+		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+		preferences.edit()
+				.putString(userName + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY)
+				.commit();
+	}
+
+	public static int getCompThinkTime(Context context) {
+		SharedPreferences preferences = getPreferences(context);
+		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+		return preferences.getInt(userName + AppConstants.PREF_COMPUTER_DELAY, AppConstants.COMPUTER_THINK_TIME); //milliseconds
 	}
 
 	public static boolean isNotificationsEnabled(Context context) {
@@ -260,11 +268,23 @@ public class AppData {
 		return getPreferences(context).getString(AppConstants.PREF_USER_COUNTRY, null);
 	}
 
-	public static String getUserAvatarUrl(Context context) {
+	public static String getUserAvatar(Context context) {
 		return getPreferences(context).getString(AppConstants.PREF_USER_AVATAR_URL, null);
 	}
 
 	public static int getUserTacticsRating(Context context) {
 		return getPreferences(context).getInt(AppConstants.PREF_USER_TACTICS_RATING, 0);
+	}
+
+	public static void setPossibleMoveHighlight(Context context, boolean checked) {
+		SharedPreferences preferences = getPreferences(context);
+		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+		preferences.edit().putBoolean(userName + AppConstants.PREF_POSSIBLE_MOVE_HIGHLIGHTS, checked).commit();
+	}
+
+	public static boolean isPossibleMoveHighlightOn(Context context) {
+		SharedPreferences preferences = getPreferences(context);
+		String userName = preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+		return preferences.getBoolean(userName + AppConstants.PREF_POSSIBLE_MOVE_HIGHLIGHTS, true);
 	}
 }

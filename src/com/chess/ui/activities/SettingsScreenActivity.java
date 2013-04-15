@@ -112,7 +112,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 
 		String userName = AppData.getUserName(this);
 		afterMyMoveSpinner.setSelection(preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0));
-		strengthSpinner.setSelection(preferences.getInt(userName + AppConstants.PREF_COMPUTER_STRENGTH, 0));
+		strengthSpinner.setSelection(preferences.getInt(userName + AppConstants.PREF_COMPUTER_DELAY, 0));
 
 		showLiveSubmitChckBx.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false));
 		showOnlineSubmitChckBx.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SHOW_SUBMIT_MOVE, true));
@@ -320,7 +320,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 	private AdapterView.OnItemSelectedListener strengthSelectedListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, pos);
+			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_DELAY, pos);
 			preferencesEditor.commit();
 		}
 

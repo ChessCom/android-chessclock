@@ -24,6 +24,7 @@ import java.util.TreeSet;
 public class ChessBoard implements BoardFace {
 	public static final int WHITE_SIDE = 0;
 	public static final int BLACK_SIDE = 1;
+	public static final int NO_SIDE = -1;
 
 	// piecesBitmap codes on boardBitmap
 	public static final int PAWN = 0;

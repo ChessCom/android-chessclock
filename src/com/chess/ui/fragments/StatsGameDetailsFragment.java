@@ -23,6 +23,8 @@ import com.chess.utilities.AppUtils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.chess.ui.fragments.StatsGameFragment.*;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -45,12 +47,6 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 	private final static SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yy");
 
 	private final static String MODE = "mode";
-
-	private final static int STANDARD = 0;
-	private final static int BLITZ = 1;
-	private final static int LIGHTNING = 2;
-	private final static int CHESS = 3;
-	private final static int CHESS960 = 4;
 
 	private static final int CHART_HEIGHT = 420;
 
@@ -147,11 +143,11 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 	}
 
 	private void init() {
-		standardCursorUpdateListener = new CursorUpdateListener(STANDARD);
-		lightningCursorUpdateListener = new CursorUpdateListener(LIGHTNING);
-		blitzCursorUpdateListener = new CursorUpdateListener(BLITZ);
-		chessCursorUpdateListener = new CursorUpdateListener(CHESS);
-		chess960CursorUpdateListener = new CursorUpdateListener(CHESS960);
+		standardCursorUpdateListener = new CursorUpdateListener(LIVE_STANDARD);
+		lightningCursorUpdateListener = new CursorUpdateListener(LIVE_LIGHTNING);
+		blitzCursorUpdateListener = new CursorUpdateListener(LIVE_BLITZ);
+		chessCursorUpdateListener = new CursorUpdateListener(DAILY_CHESS);
+		chess960CursorUpdateListener = new CursorUpdateListener(DAILY_CHESS960);
 
 		int lightGrey = getResources().getColor(R.color.stats_label_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
@@ -162,19 +158,19 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 		String userName = AppData.getUserName(getActivity());
 
 		switch (getArguments().getInt(MODE)) {
-			case STANDARD:
+			case LIVE_STANDARD:
 				new LoadDataFromDbTask(standardCursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.GAME_STATS_LIVE_STANDARD), getContentResolver()).executeTask();
 				break;
-			case LIGHTNING:
+			case LIVE_LIGHTNING:
 				new LoadDataFromDbTask(lightningCursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.GAME_STATS_LIVE_LIGHTNING), getContentResolver()).executeTask();
 				break;
-			case BLITZ:
+			case LIVE_BLITZ:
 				new LoadDataFromDbTask(blitzCursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.GAME_STATS_LIVE_BLITZ), getContentResolver()).executeTask();
 				break;
-			case CHESS:
+			case DAILY_CHESS:
 				new LoadDataFromDbTask(chessCursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.GAME_STATS_DAILY_CHESS), getContentResolver()).executeTask();
 				break;
-			case CHESS960:
+			case DAILY_CHESS960:
 				new LoadDataFromDbTask(chess960CursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.GAME_STATS_DAILY_CHESS960), getContentResolver()).executeTask();
 				break;
 		}

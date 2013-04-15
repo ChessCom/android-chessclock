@@ -84,9 +84,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 //		setHasOptionsMenu(true);
 	}
 
-	protected void setTitle(int titleId) {
-		getActivity().setTitle(titleId);
-	}
+//	protected void setTitle(int titleId) {
+//		getActivity().setTitle(titleId);
+//	}
 
 
 	@Override

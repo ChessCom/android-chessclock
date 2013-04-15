@@ -2,6 +2,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:id="@+id/baseView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,6 +26,7 @@
         android:id="@+id/topPanelView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        custom:oneLine="@bool/one_line_for_board"
         />
 
     <com.chess.ui.views.ChessBoardAnalysisView
@@ -38,6 +40,7 @@
         android:id="@+id/bottomPanelView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        custom:oneLine="@bool/one_line_for_board"
         />
 
     <com.chess.ui.views.ControlsAnalysisView

@@ -14,6 +14,8 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.engine.ChessBoardComp;
+import com.chess.ui.engine.NewCompGameConfig;
+import com.chess.ui.fragments.game.GameCompFragment;
 import com.chess.ui.views.NewGameCompView;
 import com.chess.ui.views.NewGameDailyView;
 import com.chess.ui.views.NewGameDefaultView;
@@ -76,7 +78,7 @@ public class NewGamesFragment extends CommonLogicFragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		if (getArguments().getInt(MODE) == CENTER_MODE) {
-			setTitle(R.string.new_game);
+			updateTitle(R.string.new_game);
 		}
 
 		setupNewGameViews(view);
@@ -156,7 +158,7 @@ public class NewGamesFragment extends CommonLogicFragment {
 	}
 
 	private void startCompGame() {
-		NewGameCompView.NewCompGameConfig config = compGamesSetupView.getNewCompGameConfig();
+		NewCompGameConfig config = compGamesSetupView.getNewCompGameConfig();
 
 		getActivityFace().openFragment(GameCompFragment.newInstance(config));
 		if (getArguments().getInt(MODE) == RIGHT_MENU_MODE){

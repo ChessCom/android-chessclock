@@ -29,8 +29,8 @@ import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
-import com.chess.ui.popup_fragments.PopupCustomViewFragment;
-import com.chess.ui.popup_fragments.PopupDialogFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.LoginButton;
 

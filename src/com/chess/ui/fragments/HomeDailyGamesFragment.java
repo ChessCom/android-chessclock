@@ -33,6 +33,7 @@ import com.chess.ui.adapters.DailyChallengesGamesAdapter;
 import com.chess.ui.adapters.DailyCurrentGamesMyCursorAdapter;
 import com.chess.ui.adapters.DailyCurrentGamesTheirCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.fragments.game.GameDailyFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 import com.slidingmenu.lib.SlidingMenu;

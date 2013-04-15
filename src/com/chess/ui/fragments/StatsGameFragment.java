@@ -33,11 +33,11 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 	private static final String TAG = "StatsGameFragment";
 
-	private final static int LIVE_STANDARD = 0;
-	private final static int LIVE_BLITZ = 1;
-	private final static int LIVE_LIGHTNING = 2;
-	private final static int DAILY_CHESS = 3;
-	private final static int DAILY_CHESS960 = 4;
+	public final static int LIVE_STANDARD = 0;
+	public final static int LIVE_BLITZ = 1;
+	public final static int LIVE_LIGHTNING = 2;
+	public final static int DAILY_CHESS = 3;
+	public final static int DAILY_CHESS960 = 4;
 
 	private static final String CATEGORY = "mode";
 

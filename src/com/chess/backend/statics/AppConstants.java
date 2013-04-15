@@ -20,6 +20,7 @@ public class AppConstants {
 	public static final String CHALLENGE_MAX_RATING = "max_rating";
 	public static final String SAVED_COMPUTER_GAME = "saving";
 	public static final int CHALLENGE_ISSUE_DELAY = 2000;
+	public static final int COMPUTER_THINK_TIME = 500;
 
 	/* Online games*/
 	public static final String USER_OFFERED_DRAW_FOR_GAME = "user offered draw for game";
@@ -36,13 +37,14 @@ public class AppConstants {
 	public static final String USERNAME = "username";
 	public static final String PASSWORD = "password";
 //	public static final String API_VERSION = "api_version";
-	public static final String PREF_COMPUTER_STRENGTH = "strength";
+	public static final String PREF_COMPUTER_DELAY = "computer think delay";
 	public static final String PREF_ACTION_AFTER_MY_MOVE = "aim";
 	public static final String USER_PREMIUM_STATUS = "premium_status";
 	public static final String PREF_SOUNDS = "enableSounds";
-	public static final String PREF_SHOW_SUBMIT_MOVE_LIVE = "ssblive";
+	public static final String PREF_SHOW_SUBMIT_MOVE_LIVE = "show submit move live";
 	public static final String PREF_SHOW_SUBMIT_MOVE = "ssb";
-	public static final String PREF_NOTIFICATION = "notifE";
+	public static final String PREF_NOTIFICATION = "notifications";
+	public static final String PREF_POSSIBLE_MOVE_HIGHLIGHTS = "possible move highlights";
 	public static final String PREF_BOARD_COORDINATES = "coords";
 	public static final String PREF_BOARD_SQUARE_HIGHLIGHT = "highlights";
 	public static final String PREF_BOARD_TYPE = "boardBitmap";

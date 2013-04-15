@@ -37,7 +37,7 @@ public class ProgressImageView extends FrameLayout {
 		float density = getResources().getDisplayMetrics().density;
 
 		size *= density;
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(size, size);
+		LayoutParams params = new LayoutParams(size, size);
 		setLayoutParams(params);
 
 		placeholder = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
@@ -45,7 +45,7 @@ public class ProgressImageView extends FrameLayout {
 
 		{// image
 			imageView = new ImageView(getContext());
-			FrameLayout.LayoutParams photoParams = new FrameLayout.LayoutParams(size, size);
+			LayoutParams photoParams = new LayoutParams(size, size);
 			photoParams.gravity = Gravity.CENTER;
 
 			imageView.setAdjustViewBounds(true);
@@ -55,7 +55,7 @@ public class ProgressImageView extends FrameLayout {
 		}
 		{// progress
 			progress = new ProgressBar(getContext());
-			FrameLayout.LayoutParams progressParams = new FrameLayout.LayoutParams(size / 2, size / 2);
+			LayoutParams progressParams = new LayoutParams(size / 2, size / 2);
 			progressParams.gravity = Gravity.CENTER;
 			progress.setVisibility(GONE);
 
@@ -63,37 +63,21 @@ public class ProgressImageView extends FrameLayout {
 		}
 	}
 
-	public void showProgress() {
-
+	@Override
+	public void setId(int id) {
+		super.setId(id);
+		imageView.setId(id);
 	}
-/*
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/progressImage"
-    android:layout_width="50dip"
-    android:layout_height="50dip"
-    >
 
-    <ImageView
-        android:id="@+id/photoImg"
-        android:layout_width="50dip"
-        android:layout_height="50dip"
-        android:layout_gravity="center"
-        android:adjustViewBounds="false"
-        android:scaleType="fitXY"
-        android:contentDescription="@string/image"
-        />
+	@Override
+	public void setOnClickListener(OnClickListener l) {
+		super.setOnClickListener(l);
+		imageView.setOnClickListener(l);
+	}
 
-    <ProgressBar
-        android:id="@+id/imageProgressBar"
-        style="@android:style/Widget.ProgressBar.Inverse"
-        android:layout_width="20dip"
-        android:layout_height="20dip"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        />
-
-</FrameLayout>
- */
-
+	@Override
+	public void setTag(int key, Object tag) {
+		super.setTag(key, tag);
+		imageView.setTag(key, tag);
+	}
 }

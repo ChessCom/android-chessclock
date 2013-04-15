@@ -17,9 +17,9 @@ import com.chess.LeftRightImageEditText;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
 import com.chess.ui.interfaces.PopupListSelectionFace;
-import com.chess.ui.popup_fragments.PopupCountriesFragment;
-import com.chess.ui.popup_fragments.PopupSelectPhotoFragment;
-import com.chess.ui.popup_fragments.PopupSkillsFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCountriesFragment;
+import com.chess.ui.fragments.popup_fragments.PopupSelectPhotoFragment;
+import com.chess.ui.fragments.popup_fragments.PopupSkillsFragment;
 import com.chess.utilities.AppUtils;
 
 /**

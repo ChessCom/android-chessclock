@@ -10,6 +10,7 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.ui.activities.SettingsScreenActivity;
 import com.chess.ui.adapters.ItemsAdapter;
+import com.chess.ui.fragments.game.GameTacticsFragment;
 import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.List;
  */
 public class NavigationMenuFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
-	private static final int UPGRADE_POS = 0;
+	private static final int UPGRADE_POS = 1;
 
 	private ListView listView;
 	private List<NavigationMenuItem> menuItems;
@@ -33,10 +34,12 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		super.onCreate(savedInstanceState);
 
 		menuItems = new ArrayList<NavigationMenuItem>();
-		menuItems.add(new NavigationMenuItem(getString(R.string.upgrade), R.drawable.ic_nav_upgrade));
 		menuItems.add(new NavigationMenuItem(getString(R.string.home), R.drawable.ic_nav_home));
-		menuItems.add(new NavigationMenuItem(getString(R.string.play), R.drawable.ic_nav_play));
+		menuItems.add(new NavigationMenuItem(getString(R.string.upgrade), R.drawable.ic_nav_upgrade));
+		menuItems.add(new NavigationMenuItem(getString(R.string.play_daily), R.drawable.ic_nav_play_daily));
+		menuItems.add(new NavigationMenuItem(getString(R.string.play_live), R.drawable.ic_nav_play_live));
 		menuItems.add(new NavigationMenuItem(getString(R.string.tactics), R.drawable.ic_nav_tactics));
+		menuItems.add(new NavigationMenuItem(getString(R.string.lessons), R.drawable.ic_nav_lessons));
 		menuItems.add(new NavigationMenuItem(getString(R.string.videos), R.drawable.ic_nav_videos));
 		menuItems.add(new NavigationMenuItem(getString(R.string.articles), R.drawable.ic_nav_articles));
 		menuItems.add(new NavigationMenuItem(getString(R.string.stats), R.drawable.ic_nav_stats));
@@ -79,20 +82,28 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 
 		// TODO adjust switch/closeBoard when the same fragment opened
 		switch (menuItem.iconRes) {
-			case R.drawable.ic_nav_upgrade:
-				getActivityFace().openFragment(new UpgradeFragment());
-				getActivityFace().toggleMenu(SlidingMenu.LEFT);
-				break;
 			case R.drawable.ic_nav_home:
 				getActivityFace().switchFragment(new HomeTabsFragment()); // TODO clear stack
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
-			case R.drawable.ic_nav_play:
-				getActivityFace().switchFragment(NewGamesFragment.newInstance(NewGamesFragment.CENTER_MODE));
+			case R.drawable.ic_nav_upgrade:
+				getActivityFace().openFragment(new UpgradeFragment());
+				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				break;
+			case R.drawable.ic_nav_play_daily:
+				getActivityFace().openFragment(new DailyTabsFragment());
+				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				break;
+			case R.drawable.ic_nav_play_live:
+				getActivityFace().openFragment(NewGamesFragment.newInstance(NewGamesFragment.CENTER_MODE));
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 			case R.drawable.ic_nav_tactics:
 				getActivityFace().openFragment(new GameTacticsFragment());
+				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				break;
+			case R.drawable.ic_nav_lessons:
+				getActivityFace().openFragment(new LessonsFragment());
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 			case R.drawable.ic_nav_videos:
@@ -118,7 +129,6 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				break;
 		}
 	}
-
 
 	private class NavigationMenuItem {
 		public String tag;

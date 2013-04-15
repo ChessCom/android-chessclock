@@ -1,4 +1,4 @@
-package com.chess.ui.fragments;
+package com.chess.ui.fragments.game;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,8 +15,9 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.BaseGameItem;
+import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.ui.interfaces.GameActivityFace;
-import com.chess.ui.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardBaseView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -36,6 +37,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 	protected static final String GAME_GOES = "*";
 	protected static final String WHITE_WINS = "1-0";
 	protected static final String BLACK_WINS = "0-1";
+	protected int AVATAR_SIZE = 44;
 
 	protected static final String END_GAME_TAG = "end game popup";
 	protected static final String DRAW_OFFER_RECEIVED_TAG = "draw offer message received";

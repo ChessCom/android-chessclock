@@ -139,4 +139,8 @@
     <string name="average_score">Average Score:</string>
     <string name="start">Start</string>
     <string name="lessons">Lessons</string>
+    <string name="play_again">Play Again!</string>
+    <string name="play_daily">Play Daily</string>
+    <string name="play_live">Play Live</string>
+    <string name="new_">New</string>
 </resources>

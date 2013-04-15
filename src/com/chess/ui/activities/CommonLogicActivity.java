@@ -57,6 +57,7 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 
 	protected static final int REQUEST_REGISTER = 11;
 	private static final int REQUEST_UNREGISTER = 22;
+	protected int AVATAR_SIZE = 44;
 
 //	private LoginUpdateListener loginUpdateListener;
 	private LoginUpdateListenerNew loginUpdateListener;

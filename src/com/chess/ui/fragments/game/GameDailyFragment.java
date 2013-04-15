@@ -1,4 +1,4 @@
-package com.chess.ui.fragments;
+package com.chess.ui.fragments.game;
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -36,9 +36,10 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameNetworkActivityFace;
-import com.chess.ui.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.*;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
@@ -134,7 +135,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	}
 
 	private void widgetsInit(View view) {
-		setTitle(R.string.daily_chess);
+		updateTitle(R.string.daily_chess);
 
 		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
@@ -714,7 +715,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	}
 
 	@Override
-	public void switch2Analysis(boolean isAnalysis) {
+	public void switch2Analysis() {
 		showSubmitButtonsLay(false);
 
 		getActivityFace().openFragment(GameDailyAnalysisFragment.newInstance(gameId));

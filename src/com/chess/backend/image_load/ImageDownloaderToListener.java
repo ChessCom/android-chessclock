@@ -6,13 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 import com.chess.backend.RestHelper;
 import com.chess.utilities.AppUtils;
 import org.apache.http.HttpEntity;
@@ -20,7 +17,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.*;
 import java.lang.ref.SoftReference;
@@ -30,7 +26,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class EnhancedImageDownloader {
+public class ImageDownloaderToListener {
     private static final String LOG_TAG = "EnhancedImageDownloader";
 	private final Context context;
 	private int imgSize;
@@ -39,13 +35,11 @@ public class EnhancedImageDownloader {
         NO_ASYNC_TASK, NO_DOWNLOADED_DRAWABLE, CORRECT
     }
 
-    private Mode mode = Mode.CORRECT;
-
     private File cacheDir;
 
     private static Resources resources;
 
-    public EnhancedImageDownloader(Context context) {
+    public ImageDownloaderToListener(Context context) {
 		this.context = context;
         resources = context.getResources();
         // Find the dir to save cached images
@@ -68,24 +62,20 @@ public class EnhancedImageDownloader {
 	 * @param holder The ImageView to bind the downloaded image to.
 	 * @param imgSize size of image to be scaled
 	 */
-    public void download(String url, ProgressImageView holder, int imgSize) {
+    public void download(String url, ImageReadyListener holder, int imgSize) {
 		this.imgSize = imgSize;
 		Bitmap bitmap = getBitmapFromCache(url, holder);
 		Log.d(LOG_TAG, " download url = " + url);
 
         if (bitmap == null) {
             forceDownload(url, holder);
-        } else {
-            cancelPotentialDownload(url, holder.imageView);
-            holder.imageView.setImageBitmap(bitmap);
-            holder.progress.setVisibility(View.INVISIBLE);
         }
     }
     /**
      * @param url The URL of the image that will be retrieved from the cache.
      * @return The cached bitmap or null if it was not found.
      */
-    private Bitmap getBitmapFromCache(String url, ProgressImageView pHolder) {
+    private Bitmap getBitmapFromCache(String url, ImageReadyListener readyListener) {
         // I identify images by hashcode. Not a perfect solution, good for the
         // demo.
         String filename = String.valueOf(url.hashCode());
@@ -95,29 +85,29 @@ public class EnhancedImageDownloader {
         // if file is stored so simply read it, do not resize
 		Bitmap bmp = readFile(f);
 		if(bmp != null){
-			pHolder.bitmap = bmp;
-			addBitmapToCache(url, pHolder);
+			readyListener.onImageReady(bmp);
+			addBitmapToCache(url, bmp);
 		}
 
         // First try the hard reference cache
         synchronized (sHardBitmapCache) {
-            final ProgressImageView holder = sHardBitmapCache.get(url);
+            final Bitmap holder = sHardBitmapCache.get(url);
             if (holder != null) {
                 // Bitmap found in hard cache
                 // Move element to first position, so that it is removed last
                 sHardBitmapCache.remove(url);
                 sHardBitmapCache.put(url, holder);
-                return holder.bitmap;
+                return holder;
             }
         }
 
         // Then try the soft reference cache
-        SoftReference<ProgressImageView> bitmapReference = sSoftBitmapCache.get(url);
+        SoftReference<Bitmap> bitmapReference = sSoftBitmapCache.get(url);
         if (bitmapReference != null) {
-            final ProgressImageView holder = bitmapReference.get();
+            final Bitmap holder = bitmapReference.get();
             if (holder != null) {
                 // Bitmap found in soft cache
-                return holder.bitmap;
+                return holder;
             } else {
                 // Soft reference has been Garbage Collected
                 sSoftBitmapCache.remove(url);
@@ -138,80 +128,15 @@ public class EnhancedImageDownloader {
      * Same as download but the image is always downloaded and the cache is not
      * used. Kept private at the moment as its interest is not clear.
      */
-    private void forceDownload(String url, ProgressImageView holder) {
+    private void forceDownload(String url, ImageReadyListener holder) {
         // State sanity: url is guaranteed to never be null in
         // DownloadedDrawable and cache keys.
         if (url == null) {
-            holder.imageView.setImageDrawable(null);
             return;
         }
 
-        if (cancelPotentialDownload(url, holder.imageView)) {
-            BitmapDownloaderTask task;
-            switch (mode) {
-                case NO_ASYNC_TASK: {
-                    holder.bitmap = downloadBitmap(url);
-                    addBitmapToCache(url, holder);
-                    holder.imageView.setImageBitmap(holder.bitmap);
-                }
-                break;
-
-                case NO_DOWNLOADED_DRAWABLE: {
-                    holder.imageView.setMinimumHeight(50);
-                    task = new BitmapDownloaderTask(holder);
-                    task.executeTask(url);
-                }
-                break;
-
-                case CORRECT: {
-                    task = new BitmapDownloaderTask(holder);
-                    EnhDownloadedDrawable enhDownloadedDrawable = new EnhDownloadedDrawable(task, holder);
-                    holder.imageView.setImageDrawable(enhDownloadedDrawable);
-                    holder.imageView.setMinimumHeight(50);
-                    task.executeTask(url);
-                }
-                break;
-            }
-        }
+		new BitmapDownloaderTask(holder).executeTask(url);
     }
-
-    /**
-     * Returns true if the current download has been canceled or if there was no
-     * download in progress on this image view. Returns false if the download in
-     * progress deals with the same url. The download is not stopped in that
-     * case.
-     */
-    private static boolean cancelPotentialDownload(String url, ImageView imageView) {
-        BitmapDownloaderTask bitmapDownloaderTask = getBitmapDownloaderTask(imageView);
-
-        if (bitmapDownloaderTask != null) {
-            String bitmapUrl = bitmapDownloaderTask.url;
-            if ((bitmapUrl == null) || (!bitmapUrl.equals(url))) {
-                bitmapDownloaderTask.cancel(true);
-            } else {
-                // The same URL is already being downloaded.
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * @param imageView Any imageView
-     * @return Retrieve the currently active download task (if any) associated
-     *         with this imageView. null if there is no such task.
-     */
-    private static BitmapDownloaderTask getBitmapDownloaderTask(ImageView imageView) {
-        if (imageView != null) {
-            Drawable drawable = imageView.getDrawable();
-            if (drawable instanceof EnhDownloadedDrawable) {
-                EnhDownloadedDrawable downloadedDrawable = (EnhDownloadedDrawable) drawable;
-                return downloadedDrawable.getBitmapDownloaderTask();
-            }
-        }
-        return null;
-    }
-
 
     /*
       * An InputStream that skips the exact number of bytes provided, unless it
@@ -263,16 +188,10 @@ public class EnhancedImageDownloader {
      */
     class BitmapDownloaderTask extends AsyncTask<String, Void, Bitmap> {
         private String url;
-        private final WeakReference<ProgressImageView> holderReference;
+        private final SoftReference<ImageReadyListener> holderReference;
 
-        public BitmapDownloaderTask(ProgressImageView holder) {
-            holderReference = new WeakReference<ProgressImageView>(holder);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            holderReference.get().progress.setVisibility(View.VISIBLE);
-            super.onPreExecute();
+        public BitmapDownloaderTask(ImageReadyListener holder) {
+            holderReference = new SoftReference<ImageReadyListener>(holder);
         }
 
         /**
@@ -281,14 +200,8 @@ public class EnhancedImageDownloader {
         @Override
         protected Bitmap doInBackground(String... params) {
             url = params[0];
-            Bitmap bmp = downloadBitmap(url);
 
-            if (bmp == null) { // in case http link was wrong
-                if (holderReference != null && holderReference.get() != null && holderReference.get().placeholder != null)
-                    bmp = holderReference.get().noImage; // set no image if we didn't load
-            }
-
-            return bmp;
+			return downloadBitmap(url);
         }
 
         /**
@@ -296,34 +209,17 @@ public class EnhancedImageDownloader {
          */
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            if (holderReference == null || holderReference.get() == null) {
+			if (holderReference == null || holderReference.get() == null) {
                 return;
-            } else {
-                holderReference.get().progress.setVisibility(View.GONE);
             }
 
-            if (isCancelled()) {
-                bitmap = null;
-            }
-
-			if (context == null) { // if activity dead, escape
+			if (isCancelled() || context == null) { // if activity dead, escape
 				return;
 			}
-            ProgressImageView holder = new ProgressImageView(context, imgSize);
 
-            holder.bitmap = bitmap;
+            addBitmapToCache(url, bitmap);
 
-            addBitmapToCache(url, holder);
-
-            holder.imageView = holderReference.get().imageView;
-
-            BitmapDownloaderTask bitmapDownloaderTask = getBitmapDownloaderTask(holder.imageView);
-            // Change bitmap only if this process is still associated with it
-            // Or if we don't use any bitmap to task association
-            // (NO_DOWNLOADED_DRAWABLE mode)
-            if ((this == bitmapDownloaderTask) || (mode != Mode.CORRECT)) {
-                holder.imageView.setImageBitmap(holder.bitmap);
-            }
+			holderReference.get().onImageReady(bitmap);
         }
 
         public AsyncTask<String, Void, Bitmap> executeTask(String... input){
@@ -338,8 +234,7 @@ public class EnhancedImageDownloader {
 
     private Bitmap downloadBitmap(String url) {
         // AndroidHttpClient is not allowed to be used from the main thread
-        final HttpClient client = (mode == Mode.NO_ASYNC_TASK) ? new DefaultHttpClient()
-                : AndroidHttpClient.newInstance("Android");
+        final HttpClient client = AndroidHttpClient.newInstance("Android");
         url = url.replace(" ", "%20");
         final HttpGet getRequest = new HttpGet(url);
 
@@ -460,18 +355,15 @@ public class EnhancedImageDownloader {
     private static final int DELAY_BEFORE_PURGE = 120 * 1000; // in milliseconds
 
     // Hard cache, with a fixed maximum capacity and a life duration
-    private final HashMap<String, ProgressImageView> sHardBitmapCache = new LinkedHashMap<String, ProgressImageView>(HARD_CACHE_CAPACITY / 2, 0.75f, true) {
-        /**
-         *
-         */
-        private static final long serialVersionUID = 7891177567092447801L;
+    private final HashMap<String, Bitmap> sHardBitmapCache = new LinkedHashMap<String, Bitmap>(HARD_CACHE_CAPACITY / 2, 0.75f, true) {
+
 
         @Override
-        protected boolean removeEldestEntry(Entry<String, ProgressImageView> eldest) {
+        protected boolean removeEldestEntry(Entry<String, Bitmap> eldest) {
             if (size() > HARD_CACHE_CAPACITY) {
                 // Entries push-out of hard reference cache are transferred to
                 // soft reference cache
-                sSoftBitmapCache.put(eldest.getKey(), new SoftReference<ProgressImageView>(eldest.getValue()));
+                sSoftBitmapCache.put(eldest.getKey(), new SoftReference<Bitmap>(eldest.getValue()));
                 return true;
             } else
                 return false;
@@ -479,14 +371,14 @@ public class EnhancedImageDownloader {
     };
 
     // Soft cache for bitmaps kicked out of hard cache
-    private final static ConcurrentHashMap<String, SoftReference<ProgressImageView>> sSoftBitmapCache = new ConcurrentHashMap<String, SoftReference<ProgressImageView>>(HARD_CACHE_CAPACITY / 2);
+    private final static ConcurrentHashMap<String, SoftReference<Bitmap>> sSoftBitmapCache = new ConcurrentHashMap<String, SoftReference<Bitmap>>(HARD_CACHE_CAPACITY / 2);
 
     /**
      * Adds this bitmap to the cache.
      *
      * @param holder The newly downloaded bitmap.
      */
-    private void addBitmapToCache(String url, ProgressImageView holder) {
+    private void addBitmapToCache(String url, Bitmap holder) {
         if (holder != null) {
             synchronized (sHardBitmapCache) {
                 sHardBitmapCache.put(url, holder);

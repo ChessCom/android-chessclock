@@ -41,7 +41,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 	@Override
 	protected void onResume() {
 		super.onResume();
-		strength.setSelection(AppData.getCompStrength(this));
+//		strength.setSelection(AppData.getCompStrength(this));
 
 		if (AppData.haveSavedCompGame(this)) {
 			findViewById(R.id.load).setVisibility(View.VISIBLE);
@@ -84,7 +84,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 
 	@Override
 	public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-		preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_STRENGTH, pos);
+		preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_DELAY, pos);
 		preferencesEditor.commit();
 	}
 

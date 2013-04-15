@@ -6,8 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
+import com.chess.ui.engine.NewCompGameConfig;
+import com.chess.ui.fragments.game.GameCompFragment;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,6 +19,24 @@ import com.chess.db.DBDataManager;
  * Time: 18:29
  */
 public class HomePlayFragment extends CommonLogicFragment {
+
+/*
+those are to challenge your friend to play. it just creates a challenge.
+
+those should be random friends who have been online in the last 30 days. (new api! :D)
+
+never display more than 2. but if only 1, or none, show only 1, or none :)
+
+(Friend Name) means their real name. so, for dallin, i would see:
+
+ignoble (Dallin)    [invite]
+
+invite button will just automatically create a challenge, and then show a success message!
+
+play a friend i think is supposed to open friends screen, yes.
+
+Auto-Match should be just a random, open, rated, 3-day seek.
+	 */
 
 	private TextView liveRatingTxt;
 	private TextView dailyRatingTxt;
@@ -31,10 +52,15 @@ public class HomePlayFragment extends CommonLogicFragment {
 
 		liveRatingTxt = (TextView) view.findViewById(R.id.liveRatingTxt);
 		dailyRatingTxt = (TextView) view.findViewById(R.id.dailyRatingTxt);
+
 		view.findViewById(R.id.liveTimeSelectBtn).setOnClickListener(this);
 		view.findViewById(R.id.livePlayBtn).setOnClickListener(this);
-		view.findViewById(R.id.dailyTimeSelectBtn).setOnClickListener(this);
+		view.findViewById(R.id.autoMatchBtn).setOnClickListener(this);
 		view.findViewById(R.id.dailyPlayBtn).setOnClickListener(this);
+		view.findViewById(R.id.inviteFriend1Btn).setOnClickListener(this);
+		view.findViewById(R.id.inviteFriend2Btn).setOnClickListener(this);
+		view.findViewById(R.id.playFriendView).setOnClickListener(this);
+		view.findViewById(R.id.vsCompHeaderView).setOnClickListener(this);
 
 	}
 
@@ -54,8 +80,15 @@ public class HomePlayFragment extends CommonLogicFragment {
 		if (view.getId() == R.id.liveTimeSelectBtn) {
 
 		} else if (view.getId() == R.id.livePlayBtn) {
-		} else if (view.getId() == R.id.dailyTimeSelectBtn) {
+		} else if (view.getId() == R.id.autoMatchBtn) {
 		} else if (view.getId() == R.id.dailyPlayBtn) {
+		} else if (view.getId() == R.id.inviteFriend1Btn) {
+		} else if (view.getId() == R.id.inviteFriend2Btn) {
+		} else if (view.getId() == R.id.playFriendView) {
+		} else if (view.getId() == R.id.vsCompHeaderView) {
+			NewCompGameConfig.Builder gameConfigBuilder = new NewCompGameConfig.Builder();
+			NewCompGameConfig compGameConfig = gameConfigBuilder.setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE).build();
+			getActivityFace().openFragment(GameCompFragment.newInstance(compGameConfig));
 		} else if (view.getId() == R.id.playFriendView) {
 			getActivityFace().openFragment(new FriendsFragment());
 		}

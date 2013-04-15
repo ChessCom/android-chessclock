@@ -14,8 +14,8 @@ import com.chess.R;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.PopupItem;
 import com.chess.ui.interfaces.PopupDialogFace;
-import com.chess.ui.popup_fragments.PopupDialogFragment;
-import com.chess.ui.popup_fragments.PopupProgressFragment;
+import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
+import com.chess.ui.fragments.popup_fragments.PopupProgressFragment;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;

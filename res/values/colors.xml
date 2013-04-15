@@ -540,4 +540,5 @@
 
     <color name="dark_grey_list_divider">#FFaeaba7</color>
 
+    <color name="possible_move_highlight">#6000ad00</color>
 </resources>

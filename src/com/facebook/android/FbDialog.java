@@ -36,7 +36,7 @@ import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.model.PopupItem;
 import com.chess.ui.activities.BaseFragmentActivity;
-import com.chess.ui.popup_fragments.PopupProgressFragment;
+import com.chess.ui.fragments.popup_fragments.PopupProgressFragment;
 import com.facebook.android.Facebook.DialogListener;
 
 public class FbDialog extends Dialog {

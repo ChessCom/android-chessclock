@@ -130,7 +130,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(imageSize, imageSize);
 
 			userPhotoImg.addView(progressImageView, params);
-			imageDownloader.download(AppData.getUserAvatarUrl(getActivity()), progressImageView, AVATAR_SIZE);
+			imageDownloader.download(AppData.getUserAvatar(getActivity()), progressImageView, AVATAR_SIZE);
 		}
 	}
 

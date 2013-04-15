@@ -1,4 +1,4 @@
-package com.chess.ui.fragments;
+package com.chess.ui.fragments.game;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,9 +22,10 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameNetworkActivityFace;
-import com.chess.ui.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardLiveView;
 import com.chess.ui.views.ControlsNetworkView;
 import com.chess.ui.views.NotationView;
@@ -80,7 +81,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.live_chess);
+		updateTitle(R.string.live_chess);
 
 		widgetsInit(view);
 
@@ -451,14 +452,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	}
 
 	@Override
-	public void switch2Analysis(boolean isAnalysis) {
+	public void switch2Analysis() {
 //		super.switch2Analysis(isAnalysis);
-		Log.d("live", "switch2Analysis analysis = " + isAnalysis);
-		if (isAnalysis) {
-			liveService.setLatestMoveNumber(0);
-			ChessBoardLive.resetInstance();
-		}
-		controlsNetworkView.enableControlButtons(isAnalysis);
+//		Log.d("live", "switch2Analysis analysis = " + isAnalysis); // TODO restore
+//		if (isAnalysis) {
+//			liveService.setLatestMoveNumber(0);
+//			ChessBoardLive.resetInstance();
+//		}
+//		controlsNetworkView.enableControlButtons(isAnalysis);
 	}
 
 	@Override
@@ -595,7 +596,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			Log.d("live", "positive clicked");
 			// TODO find a real cause of analysis block
 			// restore game to normal state
-			switch2Analysis(false);
+//			switch2Analysis(false);
 			getBoardFace().setAnalysis(false);
 
 			updateGameState();

@@ -1,4 +1,4 @@
-package com.chess.ui.fragments;
+package com.chess.ui.fragments.game;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -28,10 +28,11 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
+import com.chess.ui.fragments.TacticsStatsFragment;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
 import com.chess.ui.interfaces.TacticBoardFace;
-import com.chess.ui.popup_fragments.BasePopupDialogFragment;
-import com.chess.ui.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardTacticsView;
 import com.chess.ui.views.ControlsTacticsView;
 import com.chess.ui.views.PanelInfoTacticsView;
@@ -81,6 +82,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private PanelInfoTacticsView topPanelView;
 	private ControlsTacticsView controlsTacticsView;
 	private int currentRating;
+	private boolean isAnalysis;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -98,7 +100,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.tactics);
+		updateTitle(R.string.tactics);
 		topPanelView = (PanelInfoTacticsView) view.findViewById(R.id.topPanelView);
 
 		widgetsInit(view);
@@ -665,14 +667,15 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 
 	@Override
-	public void switch2Analysis(boolean isAnalysis) {
+	public void switch2Analysis() {
+		isAnalysis = !isAnalysis;
 		if (isAnalysis) {
 			topPanelView.showPractice(true);
-			setTitle(R.string.practice_mode);
+			updateTitle(R.string.practice_mode);
 
 		} else {
 //			analysisTxt.setVisibility(View.INVISIBLE);
-			setTitle(R.string.tactics);
+			updateTitle(R.string.tactics);
 			restoreGame();
 		}
 		topPanelView.showClock(!isAnalysis);
