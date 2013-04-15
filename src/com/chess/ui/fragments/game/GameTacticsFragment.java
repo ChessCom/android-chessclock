@@ -101,6 +101,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		super.onViewCreated(view, savedInstanceState);
 
 		updateTitle(R.string.tactics);
+
 		topPanelView = (PanelInfoTacticsView) view.findViewById(R.id.topPanelView);
 
 		widgetsInit(view);

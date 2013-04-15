@@ -123,8 +123,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		super.onDestroy();
 	}
 
-
-
 	protected void adjustActionBar() {
 //		getActionBarHelper().showMenuItemById(R.id.menu_settings, showActionSettings);
 //		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
@@ -137,8 +135,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				backToHomeActivity(); // TODO toggle comment here to go back to old app
-//				getSlidingMenu().toggle();
+				getSlidingMenu().toggle();
 				break;
 			case R.id.menu_settings:
 				startActivity(new Intent(this, SettingsScreenActivity.class));

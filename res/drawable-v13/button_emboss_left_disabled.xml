@@ -11,12 +11,12 @@
                 />
             <solid android:color="@android:color/transparent" />
             <stroke android:width="@dimen/default_stroke_width"
-                    android:color="@color/semi_transparent_border"/>
+                    android:color="@color/controls_border"/>
         </shape>
     </item>
 
     <!--Bevel -->
-    <item
+<!--    <item
         android:top="2px"
         android:left="2px"
         android:right="1px"
@@ -32,13 +32,13 @@
                 android:angle="315"
                 />
         </shape>
-    </item>
+    </item>-->
 
     <!--Button-->
     <item
-        android:left="3px"
-        android:top="3px"
-        android:bottom="3px"
+        android:left="2px"
+        android:top="2px"
+        android:bottom="2px"
         android:right="2px"
         >
         <shape  >

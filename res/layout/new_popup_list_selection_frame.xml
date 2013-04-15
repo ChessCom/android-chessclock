@@ -41,31 +41,14 @@
         android:layout_height="match_parent"
         android:minHeight="60dip"
         android:visibility="gone"
-        android:background="@color/white_darker"
-        android:padding="20dip"
         >
 
         <ProgressBar
             android:layout_width="@dimen/pending_progress_bar_size"
             android:layout_height="@dimen/pending_progress_bar_size"
             android:layout_margin="5dip"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/pending_list_item_TextView"
-            style="?android:attr/progressBarStyle"
-            />
-
-        <com.chess.RoboTextView
-            android:id="@id/pending_list_item_TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loading_"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="@color/grey_button_1"
-            android:paddingLeft="10dip"
             android:layout_centerInParent="true"
-            custom:ttf="Bold"
-            style="@style/DarkShadowBottom"
+            style="?android:attr/progressBarStyle"
             />
 
     </RelativeLayout>

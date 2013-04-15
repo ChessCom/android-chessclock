@@ -15,6 +15,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.NewCompGameConfig;
+import com.chess.ui.engine.NewDailyGameConfig;
 import com.chess.ui.fragments.game.GameCompFragment;
 import com.chess.ui.views.NewGameCompView;
 import com.chess.ui.views.NewGameDailyView;
@@ -112,7 +113,7 @@ public class NewGamesFragment extends CommonLogicFragment {
 
 	private void createDailyChallenge() {
 		// create challenge using formed configuration
-		NewGameDailyView.NewDailyGameConfig newDailyGameConfig = dailyGamesSetupView.getNewDailyGameConfig();
+		NewDailyGameConfig newDailyGameConfig = dailyGamesSetupView.getNewDailyGameConfig();
 
 		int color = newDailyGameConfig.getUserColor();
 		int days = newDailyGameConfig.getDaysPerMove();

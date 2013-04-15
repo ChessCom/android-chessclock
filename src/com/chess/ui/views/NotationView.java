@@ -23,9 +23,7 @@ import com.chess.utilities.AppUtils;
  */
 public class NotationView extends LinearLayout {
 
-	public int NOTATION_TEXT_SIZE;
 	public static final int NOTATION_ID = 0x00003321;
-	private int VIEW_PER_PAGE;
 
 	private NotationsPagerAdapter notationsAdapter;
 	private String[] originalNotations;
@@ -33,6 +31,11 @@ public class NotationView extends LinearLayout {
 	private int textPadding;
 	private ViewPager viewPager;
 	private boolean newNotations;
+	private int viewPerPage;
+	public int textSize;
+	public int textColor;
+	public int textColorSelected;
+	private LayoutParams notationTextParams;
 
 	public NotationView(Context context) {
         super(context);
@@ -46,8 +49,10 @@ public class NotationView extends LinearLayout {
 
     public void onCreate() {
 		float density = getContext().getResources().getDisplayMetrics().density;
-		VIEW_PER_PAGE = getContext().getResources().getInteger(R.integer.notations_per_page);
-		NOTATION_TEXT_SIZE = (int) (getContext().getResources().getDimension(R.dimen.notations_text_size)/density);
+		viewPerPage = getContext().getResources().getInteger(R.integer.notations_per_page);
+		textSize = (int) (getContext().getResources().getDimension(R.dimen.notations_text_size)/density);
+		textColor = getContext().getResources().getColor(R.color.notations_text_color);
+		textColorSelected = getContext().getResources().getColor(R.color.notations_text_color_selected);
 
 
 		LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -65,10 +70,16 @@ public class NotationView extends LinearLayout {
 			textPadding = (int) (2 * density);
 			padding = 1; // mdpi = 1
 		} else {
-			textPadding = (int) (5 * density);
+			textPadding = (int) (2 * density);
 		}
 		setPadding(0, padding, 0, padding);
-    }
+
+		notationTextParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+		notationTextParams.weight = 1;
+		notationTextParams.gravity = Gravity.CENTER_VERTICAL;
+
+	}
 
 	public void updateNotations(String[] notations, OnClickListener selectionFace, int hply) {
 		this.selectionFace = selectionFace;
@@ -107,7 +118,7 @@ public class NotationView extends LinearLayout {
 			if (originalNotations == null) {
 				return 0;
 			}
-			return (int) Math.ceil((originalNotations.length /(float) VIEW_PER_PAGE));
+			return (int) Math.ceil((originalNotations.length /(float) viewPerPage));
 		}
 
 		@Override
@@ -122,17 +133,15 @@ public class NotationView extends LinearLayout {
 		}
 
 		private void fillNotationsText(int position, LinearLayout linearLayout) {
-			int absoluteNumber = VIEW_PER_PAGE * position;
+			int absoluteNumber = viewPerPage * position;
 			int i;
-			for (i = 0; i < VIEW_PER_PAGE; i++) {
+			for (i = 0; i < viewPerPage; i++) {
 
 				RoboTextView textView = new RoboTextView(getContext());
-				LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-						ViewGroup.LayoutParams.WRAP_CONTENT);
-				params.weight = 1;
 
 				textView.setId(NOTATION_ID);
-				textView.setTextSize(NOTATION_TEXT_SIZE);
+				textView.setTextSize(textSize);
+				textView.setTextColor(textColor);
 				textView.setFont(RoboTextView.HELV_NEUE_FONT);
 				textView.setOnClickListener(mOnButtonClicked);
 				textView.setGravity(Gravity.CENTER);
@@ -151,31 +160,31 @@ public class NotationView extends LinearLayout {
 				textView.setText(notation);
 
 				if (currentPosition == selectedPosition){
-					textView.setBackgroundResource(R.drawable.button_grey_default);
+					textView.setBackgroundResource(R.drawable.button_grey_flat);
+					textView.setTextColor(textColorSelected);
 				} else {
+					textView.setTextColor(textColor);
 					textView.setBackgroundDrawable(null);
 				}
 
 				textView.setTag(R.id.list_item_id, currentPosition);
 				textView.setPadding(textPadding, textPadding, textPadding, textPadding);
 
-				linearLayout.addView(textView, params);
+				linearLayout.addView(textView, notationTextParams);
 			}
 
-			while (i <= VIEW_PER_PAGE) { // stubs
+			while (i <= viewPerPage) { // stubs
 				RoboTextView textView = new RoboTextView(getContext());
-				LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-						ViewGroup.LayoutParams.WRAP_CONTENT);
-				params.weight = 1;
+
 
 				textView.setId(NOTATION_ID);
 				textView.setText(StaticData.SYMBOL_SPACE);
-				textView.setTextSize(NOTATION_TEXT_SIZE);
+				textView.setTextSize(textSize);
 				textView.setFont(RoboTextView.HELV_NEUE_FONT);
 				textView.setPadding(textPadding, textPadding, textPadding, textPadding);
 				textView.setGravity(Gravity.CENTER);
 
-				linearLayout.addView(textView, params);
+				linearLayout.addView(textView, notationTextParams);
 				i++;
 			}
 		}
@@ -202,7 +211,7 @@ public class NotationView extends LinearLayout {
 			if (currentView != null) {
 				int childCount = currentView.getChildCount();
 
-				int absoluteNumber = VIEW_PER_PAGE * viewPager.getCurrentItem();
+				int absoluteNumber = viewPerPage * viewPager.getCurrentItem();
 				for (int i = 0; i < childCount; i++) {
 					int currentPosition = i + absoluteNumber;
 					RoboTextView textView = (RoboTextView) currentView.getChildAt(i);
@@ -223,8 +232,10 @@ public class NotationView extends LinearLayout {
 					}
 
 					if (currentPosition == selectedPosition){
-						textView.setBackgroundResource(R.drawable.button_grey_default);
+						textView.setBackgroundResource(R.drawable.button_grey_flat);
+						textView.setTextColor(textColorSelected);
 					} else {
+						textView.setTextColor(textColor);
 						textView.setBackgroundDrawable(null);
 					}
 					textView.setPadding(textPadding, textPadding, textPadding, textPadding);
@@ -236,15 +247,17 @@ public class NotationView extends LinearLayout {
 			if (currentView != null) {
 				int childCount = currentView.getChildCount();
 
-				int absoluteNumber = VIEW_PER_PAGE * viewPager.getCurrentItem();
+				int absoluteNumber = viewPerPage * viewPager.getCurrentItem();
 
 				for (int i = 0; i < childCount; i++) {
 					int currentPosition = i + absoluteNumber;
 					RoboTextView textView = (RoboTextView) currentView.getChildAt(i);
 
 					if (currentPosition == selectedPosition){
-						textView.setBackgroundResource(R.drawable.button_grey_default);
+						textView.setBackgroundResource(R.drawable.button_grey_flat);
+						textView.setTextColor(textColorSelected);
 					} else {
+						textView.setTextColor(textColor);
 						textView.setBackgroundDrawable(null);
 					}
 					textView.setPadding(textPadding, textPadding, textPadding, textPadding);
@@ -281,7 +294,7 @@ public class NotationView extends LinearLayout {
 		if (pos < 0) {
 			return;
 		}
-		viewPager.setCurrentItem(pos/VIEW_PER_PAGE);
+		viewPager.setCurrentItem(pos/ viewPerPage);
 		notationsAdapter.selectItem(pos);
 	}
 

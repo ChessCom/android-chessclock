@@ -27,6 +27,7 @@
             style="@style/Text.Button.Grey.Small.Solid"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/dailyPlayViewCenterPoint"
+            android:layout_marginRight="3dip"
             />
 
         <TextView
@@ -45,6 +46,7 @@
             style="@style/Text.Button.Grey.Small.Solid"
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@+id/dailyPlayViewCenterPoint"
+            android:layout_marginLeft="3dip"
             />
 
         <com.chess.RoboButton
@@ -54,6 +56,9 @@
             android:text="@string/new_play_ex"
             android:layout_below="@id/autoMatchBtn"
             style="@style/Text.Button.Small.NoBorder"
+            android:layout_marginTop="4dip"
+            android:layout_marginLeft="1dip"
+            android:layout_marginRight="1dip"
             />
 
     </RelativeLayout>

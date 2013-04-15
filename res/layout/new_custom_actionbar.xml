@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:robo="http://schemas.android.com/apk/res/com.chess"
-android:layout_width="match_parent"
-android:layout_height="45dp"
-android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:orientation="horizontal"
     >
 
-<com.chess.RoboTextView
-    android:id="@id/actionbar_compat_title"
-    android:layout_width="0dp"
-    android:layout_height="match_parent"
-    android:layout_weight="1"
-    android:gravity="center"
-    android:paddingLeft="48dip"
-    android:textSize="20sp"
-    android:textColor="@color/new_soft_white"
-    style="@style/DarkShadowBottom"
-    robo:ttf="Bold"
-    />
+    <com.chess.RoboTextView
+        android:id="@id/actionbar_compat_title"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingLeft="48dip"
+        android:textSize="20sp"
+        android:textColor="@color/new_light_grey"
+        style="@style/DarkShadowBottom"
+        robo:ttf="Bold"
+        />
 
 </LinearLayout>

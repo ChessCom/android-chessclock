@@ -3,6 +3,7 @@ package com.chess.ui.views.drawables;
 import android.content.Context;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import com.chess.ui.engine.ChessBoard;
@@ -15,6 +16,7 @@ import com.chess.ui.engine.ChessBoard;
  */
 public class BoardAvatarDrawable extends Drawable {
 
+	private final ColorDrawable fillBackDrawable;
 	private float CORNER_RADIUS = 1.5f;
 	private int BORDER_THICK = 1;
 	private Bitmap roundedBitmap;
@@ -35,7 +37,10 @@ public class BoardAvatarDrawable extends Drawable {
 		solidBackWhiteDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
 				new int[] {0xFFFFFFFF, 0xFFFFFFFF});
 		solidBackBlackDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-				new int[] {0xFF181715, 0xFF181715});
+				new int[] {0xFF161513, 0xFF161513});
+
+		fillBackDrawable = new ColorDrawable(0xFF1d1c1a);
+
 	}
 
 	@Override
@@ -43,8 +48,10 @@ public class BoardAvatarDrawable extends Drawable {
 		int width = getBounds().width();
 		int height = getBounds().height();
 
+		int bitmapWidth = width - BORDER_THICK * 2;
+		int bitmapHeight = height - BORDER_THICK * 2;
 		if (roundedBitmap == null) {
-			roundedBitmap = createRoundedBitmap(width - BORDER_THICK * 2, height - BORDER_THICK * 2);
+			roundedBitmap = createRoundedBitmap(bitmapWidth, bitmapHeight);
 		}
 
 		solidBackDrawable = side == ChessBoard.WHITE_SIDE? solidBackWhiteDrawable: solidBackBlackDrawable;
@@ -52,6 +59,12 @@ public class BoardAvatarDrawable extends Drawable {
 		solidBackDrawable.setBounds(0, 0, width, height);
 		setCornerRadii(solidBackDrawable, CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS);
 		solidBackDrawable.draw(canvas);
+
+		canvas.save();
+		canvas.translate(BORDER_THICK, BORDER_THICK);
+		fillBackDrawable.setBounds(0, 0, bitmapWidth, bitmapHeight);
+		fillBackDrawable.draw(canvas);
+		canvas.restore();
 
 		canvas.save();
 		canvas.translate(BORDER_THICK, BORDER_THICK);

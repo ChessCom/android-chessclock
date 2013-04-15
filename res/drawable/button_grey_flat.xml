@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <!--Button-->
+    <item >
+        <shape android:dither="true">
+            <solid
+                android:color="@color/grey_button_flat"
+                />
+            <corners
+                android:radius="@dimen/rounded_button_radius"
+                />
+            <padding
+                android:left="@dimen/rounded_button_padding_left"
+                android:right="@dimen/rounded_button_padding_right"
+                android:top="@dimen/rounded_button_padding_top"
+                android:bottom="@dimen/rounded_button_padding_bottom"
+                />
+        </shape>
+    </item>
+
+</layer-list>

@@ -229,8 +229,8 @@
 
     <dimen name="panel_info_height">36dip</dimen>
     <dimen name="notations_view_height">36dip</dimen>
-    <dimen name="panel_info_avatar_size">30dip</dimen>
-    <dimen name="panel_info_avatar_big_size">48dip</dimen>
+    <dimen name="panel_info_avatar_size">22dip</dimen>
+    <dimen name="panel_info_avatar_big_size">32dip</dimen>
     <dimen name="panel_info_captured_pieces_height">22dip</dimen>
     <dimen name="panel_info_captured_pieces_width">125dip</dimen>
     <dimen name="panel_info_time_left_size">24sp</dimen>

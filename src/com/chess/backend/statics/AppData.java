@@ -269,7 +269,7 @@ public class AppData {
 	}
 
 	public static String getUserAvatar(Context context) {
-		return getPreferences(context).getString(AppConstants.PREF_USER_AVATAR_URL, null);
+		return getPreferences(context).getString(AppConstants.PREF_USER_AVATAR_URL, StaticData.SYMBOL_EMPTY);
 	}
 
 	public static int getUserTacticsRating(Context context) {

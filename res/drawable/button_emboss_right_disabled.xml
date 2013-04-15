@@ -7,15 +7,16 @@
         <shape >
             <corners
                 android:topRightRadius="@dimen/toggle_button_radius_shadow"
-                android:bottomLeftRadius="@dimen/toggle_button_radius_shadow"
+                android:bottomRightRadius="@dimen/toggle_button_radius_shadow"
                 />
             <solid android:color="@android:color/transparent" />
             <stroke android:width="@dimen/default_stroke_width"
-                    android:color="@color/semi_transparent_border"/>
+                    android:color="@color/controls_border"/>
         </shape>
     </item>
 
     <!--Bevel -->
+<!--
     <item
         android:top="2px"
         android:left="1px"
@@ -33,13 +34,14 @@
                 />
         </shape>
     </item>
+-->
 
     <!--Button-->
     <item
         android:left="2px"
-        android:top="3px"
-        android:bottom="3px"
-        android:right="3px"
+        android:top="2px"
+        android:bottom="2px"
+        android:right="2px"
         >
         <shape  >
             <gradient

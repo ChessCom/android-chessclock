@@ -11,12 +11,64 @@
                 />
             <solid android:color="@android:color/transparent" />
             <stroke android:width="@dimen/default_stroke_width"
-                    android:color="@color/semi_transparent_border"/>
+                    android:color="@color/controls_border"/>
+        </shape>
+    </item>
+
+    <!--Emboss Top Level 1-->
+    <item
+        android:top="2px"
+        android:left="1px"
+        android:right="2px"
+        android:bottom="3px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@color/grey_button_control_border_top"  />
+        </shape>
+    </item>
+
+    <!--Emboss Bottom Level 1-->
+    <item
+        android:top="3px"
+        android:left="1px"
+        android:right="2px"
+        android:bottom="2px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius" />
+            <solid android:color="@color/grey_button_control_border_bottom"  />
+        </shape>
+    </item>
+
+    <!--Emboss Left Level 1-->
+    <item
+        android:top="3px"
+        android:left="1px"
+        android:right="2px"
+        android:bottom="3px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@color/grey_button_control_border_left"  />
+        </shape>
+    </item>
+
+    <!--Emboss Right Level 1-->
+    <item
+        android:top="3px"
+        android:left="2px"
+        android:right="2px"
+        android:bottom="3px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius" />
+            <solid android:color="@color/grey_button_control_border_right"  />
         </shape>
     </item>
 
     <!--Bevel -->
-    <item
+<!--    <item
         android:top="2px"
         android:left="1px"
         android:right="2px"
@@ -32,11 +84,11 @@
                 android:angle="315"
                 />
         </shape>
-    </item>
+    </item>-->
 
     <!--Button-->
     <item
-        android:left="2px"
+        android:left="3px"
         android:top="3px"
         android:bottom="3px"
         android:right="3px"

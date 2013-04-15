@@ -131,11 +131,13 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		updateTitle(R.string.daily_chess);
+
 		widgetsInit(view);
 	}
 
 	private void widgetsInit(View view) {
-		updateTitle(R.string.daily_chess);
 
 		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
