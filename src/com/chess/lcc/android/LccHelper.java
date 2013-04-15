@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
@@ -328,11 +327,18 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		} else {
 			Log.d(TAG, "processConnectionFailure: details=null, recreate client and connect");
 
-			new Handler().postDelayed(new Runnable() {
-				public void run() {
+			try {                                   // TODO test this way
+				Thread.sleep(CONNECTION_FAILURE_DELAY); // this is not UI thread, so we can sleep it fo our needs in that way.
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+//			new Handler().postDelayed(new Runnable() {  // can't create handler here. https://www.bugsense.com/dashboard/project/609b3b0e/errors/137517065
+//				@Override								// there is no way to post delayed task within worker thread + when context is a Service
+//				public void run() {
 					runConnectTask(true); // lets try this way, recreate and connect
-				}
-			}, CONNECTION_FAILURE_DELAY);
+//				}
+//			}, CONNECTION_FAILURE_DELAY);
 
 			/*setConnected(false);
 			cancelServiceNotification();
