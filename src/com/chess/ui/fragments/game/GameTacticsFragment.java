@@ -28,7 +28,7 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
-import com.chess.ui.fragments.TacticsStatsFragment;
+import com.chess.ui.fragments.stats.TacticsStatsFragment;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
 import com.chess.ui.interfaces.TacticBoardFace;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
@@ -133,9 +133,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 //		init();
 
 		super.onStart();
-		if (!AppData.isGuest(getActivity())) {
-			FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED);
-		}
+		FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED);
 
 	}
 
@@ -270,7 +268,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	public void verifyMove() {
 
 		noInternet = !AppUtils.isNetworkAvailable(getContext());
-		final boolean userIsGuest = AppData.isGuest(getActivity());
 
 		TacticBoardFace boardFace = getBoardFace();
 
@@ -285,10 +282,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				if (tacticItem.isWasShowed()) {
 					newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
 					showCorrect(newRatingStr);
-				} else if (userIsGuest || tacticItem.isRetry() || noInternet) {
-					if (/*tacticItem.getResultItem() != null &&*/ !userIsGuest) {
-						newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
-					}
+				} else if ( tacticItem.isRetry() || noInternet) {
+					newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
 
 //					showSolvedTacticPopup(title, false);
 					showCorrect(newRatingStr);
@@ -316,10 +311,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					&& tacticItem.getResultItem().getUserRatingChange() < 0; // if saved for wrong move. Note that after loading next tactic result is automatically assigns as a positive resultItem.
 
 			String newRatingStr;
-			if (userIsGuest) {
-				newRatingStr = getString(R.string.score_arg, tacticItem.getNegativeScore());
-				showWrong(newRatingStr);
-			} else if (tacticResultItemIsValid && (tacticItem.isRetry() || noInternet)) {
+			if (tacticResultItemIsValid && (tacticItem.isRetry() || noInternet)) {
 				newRatingStr = getString(R.string.score_arg, tacticItem.getNegativeScore());
 //				showWrongMovePopup(title);
 
@@ -890,7 +882,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			dismissDialogs();
 		} else if (view.getId() == R.id.retryBtn) {
 
-			if (AppData.isGuest(getActivity()) || noInternet) {
+			if ( noInternet) {
 				getNextTactic();
 			} else {
 				adjustBoardForGame();
@@ -938,7 +930,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	private void loadNewTacticsBatch() {
 		noInternet = !AppUtils.isNetworkAvailable(getActivity());
-		if (AppData.isGuest(getActivity()) || noInternet || serverError) {
+		if ( noInternet || serverError) {
 			loadOfflineTacticsBatch();
 		} else {
 
@@ -956,14 +948,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void loadOfflineTacticsBatch() {
-		if (offlineBatchWasLoaded) {
-			if (AppData.isGuest(getActivity())) {
-				showPopupDialog(R.string.ten_tactics_completed, TEN_TACTICS_TAG);
-				getLastPopupFragment().setButtons(1);
-				return;
-			}
-		}
-
 		new GetOfflineTacticsBatchTask(new DemoTacticsUpdateListener(), getResources()).executeTask(R.raw.tactics10batch_new);
 		FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
 	}

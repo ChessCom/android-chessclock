@@ -658,11 +658,11 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.playLiveFrame) {
-			Class<?> clazz = AppData.isGuest(this) ? SignUpScreenActivity.class : LiveScreenActivity.class;
+			Class<?> clazz = LiveScreenActivity.class;
 			startAnimatedActivity(view, clazz);
 
 		} else if (view.getId() == R.id.playOnlineFrame) {
-			Class<?> clazz = AppData.isGuest(this) ? SignUpScreenActivity.class : OnlineScreenActivity.class;
+			Class<?> clazz = OnlineScreenActivity.class;
 			startAnimatedActivity(view, clazz);
 
 		} else if (view.getId() == R.id.playComputerFrame) {

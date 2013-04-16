@@ -7,10 +7,18 @@
             <solid android:color="@color/light_header_back_border_top"/>
         </shape>
     </item>
+    <!--Top Border-->
+    <item
+        android:top="1dip"
+        >
+        <shape >
+            <solid android:color="@color/light_header_back_border_top_1"/>
+        </shape>
+    </item>
 
     <!--Bottom Border-->
     <item
-        android:top="1dip"
+        android:top="2dip"
         >
         <shape >
             <solid android:color="@color/light_header_back_border_bot"/>
@@ -20,7 +28,7 @@
     <!--Button-->
     <item
         android:bottom="1dip"
-        android:top="1dip"
+        android:top="2dip"
         >
         <shape >
             <solid android:color="@color/light_header_back" />

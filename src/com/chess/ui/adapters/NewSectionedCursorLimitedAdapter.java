@@ -2,6 +2,7 @@ package com.chess.ui.adapters;
 
 /***
  Copyright 2011 Gonçalo Ferreira
+ Copyright 2013 Alien Roger
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -20,7 +21,6 @@ package com.chess.ui.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DataSetObserver;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

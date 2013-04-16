@@ -8,8 +8,14 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.ui.adapters.ItemsAdapter;
+import com.chess.ui.fragments.articles.ArticlesFragment;
+import com.chess.ui.fragments.daily_games.DailyTabsFragment;
 import com.chess.ui.fragments.game.GameTacticsFragment;
+import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.settings.NewSettingsFragment;
+import com.chess.ui.fragments.stats.StatsGameFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragment;
+import com.chess.ui.fragments.videos.VideosFragment;
 import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;

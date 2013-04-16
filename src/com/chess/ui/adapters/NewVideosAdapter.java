@@ -14,13 +14,13 @@ import com.chess.utilities.AppUtils;
 import java.util.List;
 
 
-public class NewVideosAdapter extends ItemsAdapter<VideoItem.VideoDataItem> {
+public class NewVideosAdapter extends ItemsAdapter<VideoItem.Data> {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
 
 	private CharacterStyle foregroundSpan;
 
-	public NewVideosAdapter(Context context, List<VideoItem.VideoDataItem> items) {
+	public NewVideosAdapter(Context context, List<VideoItem.Data> items) {
 		super(context, items);
 
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
@@ -39,7 +39,7 @@ public class NewVideosAdapter extends ItemsAdapter<VideoItem.VideoDataItem> {
 	}
 
 	@Override
-	protected void bindView(VideoItem.VideoDataItem item, int pos, View convertView) {
+	protected void bindView(VideoItem.Data item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 

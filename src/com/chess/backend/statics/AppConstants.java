@@ -11,7 +11,6 @@ public class AppConstants {
 	public static final String GAME_MODE = "game_mode";
 
 	public static final String USER_TOKEN = "user_token";
-	public static final String USER_IS_GUEST = "user_is_guest";
 	public static final String IS_LIVE_CHESS_ON = "is_live_chess_mode_on";
 	public static final String IS_LIVE_CONNECTED = "is_live_connected";
 	public static final String CHALLENGE_INITIAL_TIME = "initial_time";

@@ -269,7 +269,7 @@
     <style name="RoundRadioButton" parent="android:Widget.CompoundButton.RadioButton">
         <item name="android:button">@null</item>
         <item name="android:textSize">11sp</item>
-        <item name="android:textColor">@color/new_blue_text</item>
+        <item name="android:textColor">@color/new_text_blue</item>
 		<item name="android:gravity">center</item>
         <item name="android:minHeight">32dip</item>
         <item name="ttf">Bold</item>

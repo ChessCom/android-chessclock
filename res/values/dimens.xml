@@ -240,4 +240,5 @@
 
     <!--GameControlsView-->
     <dimen name="game_controls_button_height">37dip</dimen>
+    <dimen name="video_thumb_size">120dip</dimen>
 </resources>

@@ -12,7 +12,7 @@
     android:paddingBottom="8dip"
     android:paddingLeft="10dip"
     android:paddingRight="10dip"
-    android:background="@drawable/nav_menu_item_selector"
+    android:background="@drawable/white_list_item_selector"
     >
 
     <ImageView
@@ -20,6 +20,7 @@
         android:layout_width="@dimen/common_list_thumb_size"
         android:layout_height="@dimen/common_list_thumb_size"
         android:background="@color/new_common_list_thumb_grey"
+        android:contentDescription="@string/image"
         />
 
     <com.chess.RoboTextView
@@ -31,7 +32,7 @@
         android:layout_marginTop="-3dip"
         android:paddingLeft="10dip"
         android:paddingBottom="2dip"
-        android:textColor="@color/new_light_grey"
+        android:textColor="@color/new_text_blue"
         android:textSize="13sp"
         />
 
@@ -41,26 +42,28 @@
         android:layout_height="wrap_content"
         android:text="@string/by"
         android:layout_toRightOf="@id/thumbnailImg"
-        android:layout_below="@id/titleTxt"
+        android:layout_alignBottom="@id/thumbnailImg"
         android:paddingLeft="10dip"
         android:paddingBottom="2dip"
-        android:textColor="@color/new_light_grey"
+        android:textColor="@color/new_author_dark_grey"
         android:textSize="11sp"
         />
+    <!--android:layout_below="@id/titleTxt"-->
 
     <com.chess.RoboTextView
         android:id="@+id/authorTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/thumbnailImg"
         android:text="Test author"
         android:layout_toRightOf="@id/byTxt"
-        android:layout_below="@id/titleTxt"
         android:paddingLeft="3dip"
         android:paddingBottom="2dip"
-        android:textColor="@color/white"
+        android:textColor="@color/new_author_dark_grey"
         android:textSize="11sp"
         custom:ttf="Bold"
         />
+    <!--android:layout_below="@id/titleTxt"-->
 
 </RelativeLayout>
 

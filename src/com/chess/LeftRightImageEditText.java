@@ -43,6 +43,8 @@ public class LeftRightImageEditText extends RoboEditText {
 	private int rightImageOffset;
 	private boolean enlargeHeight;
 	private boolean rightPaddingSet;
+	private int bottomPadding;
+	private int currentViewHeight;
 
 
 	public LeftRightImageEditText(Context context, AttributeSet attrs, int defStyle) {
@@ -116,6 +118,8 @@ public class LeftRightImageEditText extends RoboEditText {
 		}
 
 		rightImageOffset = (int) (26 * density);
+
+		bottomPadding = (int) (10 * density);
 	}
 
 	@Override
@@ -153,11 +157,11 @@ public class LeftRightImageEditText extends RoboEditText {
 			canvas.drawLine(lineXStart, 0, lineXStop, 0, linePaint);
 		}
 
-		// place additional clickable element
+//		// set padding to make text selection work correct
 		if (enlargeHeight) {
-			canvas.translate(backImageWidth + BORDER_OFFSET, - rightImageHeight/2);
+			setPadding((int) (backImageWidth + bottomPadding), 0, 0, (int) (currentViewHeight/2 - getTextSize()/2));
 		} else {
-			canvas.translate(backImageWidth + BORDER_OFFSET, 0);
+			setPadding((int) (backImageWidth + bottomPadding), 0, 0, bottomPadding);
 		}
 
 		if (!rightPaddingSet) {
@@ -219,8 +223,8 @@ public class LeftRightImageEditText extends RoboEditText {
 		if (enlargeHeight) {
 			int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
 
-			int currentHeight = rightImageHeight + rightImageOffset;
-			setMeasuredDimension(parentWidth, currentHeight);
+			currentViewHeight = rightImageHeight + rightImageOffset;
+			setMeasuredDimension(parentWidth, currentViewHeight);
 		}else {
 			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		}

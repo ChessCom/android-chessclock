@@ -241,18 +241,12 @@ public class DBDataManager {
 	}
 
     public static String getUserName(Context context){
-        final boolean userIsGuest = AppData.isGuest(context);
-
-        String userName = AppData.GUEST_USER_NAME;
-        if (!userIsGuest){
-            userName = AppData.getUserName(context);
-        }
-        return userName;
+		return AppData.getUserName(context);
     }
 
     /**
      * Check if we have saved games for current user
-     * @param context
+     * @param context to get resources
      * @return true if cursor can be positioned to first
      */
     public static boolean haveSavedTacticGame(Context context) {
@@ -666,7 +660,7 @@ public class DBDataManager {
 	}
 
 
-	public static ContentValues putVideoItemToValues(VideoItem.VideoDataItem dataObj) {
+	public static ContentValues putVideoItemToValues(VideoItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_NAME, dataObj.getName());
@@ -676,7 +670,7 @@ public class DBDataManager {
 		values.put(DBConstants.V_ECO_NAME, dataObj.getEco_name());
 		values.put(DBConstants.V_MINUTES, dataObj.getMinutes());
 		values.put(DBConstants.V_CREATE_DATE, dataObj.getCreateDate());
-		values.put(DBConstants.V_MOBILE_URL, dataObj.getMobile_view_url());
+		values.put(DBConstants.V_MOBILE_URL, dataObj.getUrl());
 		values.put(DBConstants.V_KEY_FEN, dataObj.getKeyFen());
 		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirstName());
 		values.put(DBConstants.V_LAST_NAME, dataObj.getLastName());

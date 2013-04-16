@@ -3,31 +3,25 @@ package com.chess.db.tasks;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.FriendsItem;
 import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
-import com.google.gson.Gson;
 
 import java.util.List;
 
 
-public class SaveVideosListTask extends AbstractUpdateTask<VideoItem.VideoDataItem, Long> {
+public class SaveVideosListTask extends AbstractUpdateTask<VideoItem.Data, Long> {
 	private static final String TAG = "SaveFriendsListTask";
 
 	private ContentResolver contentResolver;
 	protected static String[] arguments = new String[1];
 
-	public SaveVideosListTask(TaskUpdateInterface<VideoItem.VideoDataItem> taskFace, List<VideoItem.VideoDataItem> currentItems,
+	public SaveVideosListTask(TaskUpdateInterface<VideoItem.Data> taskFace, List<VideoItem.Data> currentItems,
 							  ContentResolver resolver) {
         super(taskFace);
 		this.itemList = currentItems;
@@ -37,7 +31,7 @@ public class SaveVideosListTask extends AbstractUpdateTask<VideoItem.VideoDataIt
 	@Override
     protected Integer doTheTask(Long... ids) {
 
-		for (VideoItem.VideoDataItem currentItem : itemList) {
+		for (VideoItem.Data currentItem : itemList) {
 			final String[] arguments2 = arguments;
 			arguments2[0] = String.valueOf(currentItem.getName());
 

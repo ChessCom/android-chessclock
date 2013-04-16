@@ -13,13 +13,13 @@ import com.chess.ui.interfaces.ItemClickListenerFace;
 import java.util.List;
 
 //public class VideosAdapter extends ItemsAdapter<VideoItemOld> {
-public class VideosAdapter extends ItemsAdapter<VideoItem.VideoDataItem> {
+public class VideosAdapter extends ItemsAdapter<VideoItem.Data> {
 
 	private static final String MMMM_DD_YYYY = "MMMM' 'dd,' 'yyyy";
 	private ItemClickListenerFace clickListenerFace;
 
 //	public VideosAdapter(ItemClickListenerFace clickListenerFace, List<VideoItemOld> items) {
-	public VideosAdapter(ItemClickListenerFace clickListenerFace, List<VideoItem.VideoDataItem> items) {
+	public VideosAdapter(ItemClickListenerFace clickListenerFace, List<VideoItem.Data> items) {
 		super(clickListenerFace.getMeContext(), items);
 		this.clickListenerFace = clickListenerFace;
 	}
@@ -43,7 +43,7 @@ public class VideosAdapter extends ItemsAdapter<VideoItem.VideoDataItem> {
 	}
 
 	@Override
-	protected void bindView(VideoItem.VideoDataItem item, int pos, View convertView) {
+	protected void bindView(VideoItem.Data item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		holder.fullDescBtn.setTag(itemListId, pos);

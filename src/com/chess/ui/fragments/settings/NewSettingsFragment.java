@@ -10,10 +10,12 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.StaticData;
 import com.chess.ui.adapters.ItemsAdapter;
-import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.HomeTabsFragment;
-import com.slidingmenu.lib.SlidingMenu;
+import com.chess.ui.fragments.LiveBaseFragment;
+import com.chess.ui.fragments.sign_in.WelcomeFragment;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ import java.util.List;
  * Date: 15.04.13
  * Time: 20:43
  */
-public class NewSettingsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
+public class NewSettingsFragment extends LiveBaseFragment implements AdapterView.OnItemClickListener {
 
 	private ListView listView;
 	private List<SettingsMenuItem> menuItems;
@@ -49,6 +51,7 @@ public class NewSettingsFragment extends CommonLogicFragment implements AdapterV
 		menuItems.add(new SettingsMenuItem(R.string.alerts_and_emails, R.string.glyph_email_dark));
 		menuItems.add(new SettingsMenuItem(R.string.password, R.string.glyph_password));
 		menuItems.add(new SettingsMenuItem(R.string.account_history, R.string.glyph_history));
+		menuItems.add(new SettingsMenuItem(R.string.logout, R.string.glyph_close));
 	}
 
 	@Override
@@ -87,10 +90,29 @@ public class NewSettingsFragment extends CommonLogicFragment implements AdapterV
 
 		// TODO adjust switch/closeBoard when the same fragment opened
 		switch (menuItem.iconRes) {
-			case R.drawable.ic_nav_home:
-				getActivityFace().switchFragment(new HomeTabsFragment()); // TODO clear stack
-				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+			case R.string.glyph_close:
+				if (isLCSBound) {
+					liveService.logout();
+				}
+
+				// un-register from GCM
+				unRegisterGcmService();
+
+
+//				Facebook facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
+//				SessionStore.restore(facebook, getActivity());
+//				facebook.logoutMe(this, new LogoutRequestListener());
+
+				preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+				preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
+				preferencesEditor.commit();
+
+				AppUtils.cancelNotifications(getActivity());
+				getActivityFace().openFragment(new WelcomeFragment());
+//				getActivityFace().openFragment(new SignInFragment());
+
 				break;
+
 			default: break;
 
 		}

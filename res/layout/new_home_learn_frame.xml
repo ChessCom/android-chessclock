@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/glyph_tactics_game"
-                android:textColor="@color/hint_text"
+                android:textColor="@color/new_normal_grey"
                 android:textSize="26dip"
                 style="@style/GlyphIcon"
                 />
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/tactics"
-                android:textColor="@color/new_main_back"
+                android:textColor="@color/new_subtitle_dark_grey"
                 android:textSize="15sp"
                 android:gravity="center_vertical"
                 />
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/glyph_arrow_right"
-                android:textColor="@color/hint_text"
+                android:textColor="@color/new_normal_grey"
                 style="@style/GlyphIcon.Small"
                 />
 
@@ -77,8 +77,8 @@
             <!--Board-->
             <RelativeLayout
                 android:id="@+id/tacticsBoardView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/video_thumb_size"
+                android:layout_height="@dimen/video_thumb_size"
                 android:background="@drawable/img_tactics_board"
                 android:layout_marginRight="15dip"
                 >
@@ -160,13 +160,6 @@
 
         </RelativeLayout>
 
-        <!--Bottom border -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/light_header_back_border_bot"
-            />
-
         <!--Lessons Header-->
         <LinearLayout
             android:id="@+id/lessonsHeaderView"
@@ -183,7 +176,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/glyph_lessons"
-                android:textColor="@color/hint_text"
+                android:textColor="@color/new_normal_grey"
                 style="@style/GlyphIcon"
                 android:textSize="26dip"
                 />
@@ -193,7 +186,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/lessons"
-                android:textColor="@color/new_main_back"
+                android:textColor="@color/new_subtitle_dark_grey"
                 android:textSize="15sp"
                 android:gravity="center_vertical"
                 />
@@ -214,7 +207,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/glyph_arrow_right"
-                android:textColor="@color/hint_text"
+                android:textColor="@color/new_normal_grey"
                 style="@style/GlyphIcon.Small"
                 />
 
@@ -227,14 +220,14 @@
             android:padding="15dip"
             >
 
+            <!--Board-->
             <RelativeLayout
                 android:id="@+id/lessonsBoardView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/video_thumb_size"
+                android:layout_height="@dimen/video_thumb_size"
                 android:background="@drawable/img_tactics_board"
                 android:layout_marginRight="15dip"
                 >
-                <!--Board-->
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -254,7 +247,7 @@
                 android:layout_height="wrap_content"
                 android:text="This is the Lesson's Title"
                 android:layout_toRightOf="@id/lessonsBoardView"
-                android:textColor="@color/new_blue_text"
+                android:textColor="@color/new_text_blue"
                 android:layout_marginRight="7dip"
                 android:layout_marginBottom="5dip"
                 android:layout_marginTop="-3dip"
@@ -275,13 +268,6 @@
 
         </RelativeLayout>
 
-        <!--Bottom border -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/light_header_back_border_bot"
-            />
-
         <!--Videos Header-->
         <LinearLayout
             android:id="@+id/videosHeaderView"
@@ -298,7 +284,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/glyph_videos"
-                android:textColor="@color/hint_text"
+                android:textColor="@color/new_normal_grey"
                 style="@style/GlyphIcon"
                 android:textSize="26dip"
                 />
@@ -308,7 +294,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/videos"
-                android:textColor="@color/new_main_back"
+                android:textColor="@color/new_subtitle_dark_grey"
                 android:textSize="15sp"
                 android:gravity="center_vertical"
                 />
@@ -318,7 +304,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/glyph_arrow_right"
-                android:textColor="@color/hint_text"
+                android:textColor="@color/new_normal_grey"
                 style="@style/GlyphIcon.Small"
                 />
 

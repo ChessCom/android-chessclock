@@ -195,17 +195,6 @@ public class AppData {
 		editor.commit();
 	}
 
-	public static boolean isGuest(Context context) {
-		SharedPreferences preferences = getPreferences(context);
-		return preferences.getBoolean(AppConstants.USER_IS_GUEST, true);
-	}
-
-	public static void setGuest(Context context, boolean guest) {
-		SharedPreferences.Editor editor = getPreferences(context).edit();
-		editor.putBoolean(AppConstants.USER_IS_GUEST, guest);
-		editor.commit();
-	}
-
 	public static boolean isLiveChess(Context context) {
 		SharedPreferences preferences = getPreferences(context);
 		return preferences.getBoolean(AppConstants.IS_LIVE_CHESS_ON, true);

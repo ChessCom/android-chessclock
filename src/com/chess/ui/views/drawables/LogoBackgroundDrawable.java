@@ -7,14 +7,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import com.chess.R;
 import com.chess.utilities.AppUtils;
 
 public class LogoBackgroundDrawable extends Drawable {
 
 	public static final float TALL_KOEF = 1.7f;
-	public static int IMAGE_HEIGHT = 500;
-	public static int SHADOW_HEIGHT = 600;
 
 	private Rect fullScreenRect;
 	private GradientDrawable shadowDrawable;
@@ -34,6 +33,10 @@ public class LogoBackgroundDrawable extends Drawable {
 	private Context context;
 	private float screenProportion;
 	private boolean portraitMode;
+	public int IMAGE_HEIGHT = 500;
+	public int SHADOW_HEIGHT = 600;
+	private int oldHeight;
+	private int oldWidth;
 
 	public LogoBackgroundDrawable(Context context) {
 		init(context);
@@ -121,13 +124,8 @@ public class LogoBackgroundDrawable extends Drawable {
 		int width = canvas.getWidth();
 		int height = canvas.getHeight();
 
-		if (roundedBitmap == null) {
+		if (roundedBitmap == null || configChanged(canvas)) {
 			setupDrawables(canvas);
-		}
-
-		if(configChanged){
-			setupDrawables(canvas);
-
 			configChanged = false;
 		}
 
@@ -159,7 +157,8 @@ public class LogoBackgroundDrawable extends Drawable {
 				if (screenProportion > TALL_KOEF) {
 					canvas.translate(- width * 0.025f, logoOffset - (SHADOW_HEIGHT - IMAGE_HEIGHT));
 				} else {
-					canvas.translate(- width * 0.025f, logoOffset);
+					canvas.translate(- width * 0.025f, logoOffset - (SHADOW_HEIGHT - IMAGE_HEIGHT));
+//					canvas.translate(- width * 0.025f, logoOffset);
 				}
 			} else {
 				canvas.translate(- width * 0.025f, logoOffset - (SHADOW_HEIGHT - IMAGE_HEIGHT));
@@ -188,16 +187,29 @@ public class LogoBackgroundDrawable extends Drawable {
 		canvas.restore();
 	}
 
+	private boolean configChanged(Canvas canvas) {
+		int width = canvas.getWidth();
+		int height = canvas.getHeight();
+
+		if (oldWidth != width || oldHeight != height) {
+			oldWidth = width;
+			oldHeight = height;
+			configChanged = true;
+		}
+
+		return configChanged;
+	}
+
 	private void setupDrawables(Canvas canvas){
 		int width = canvas.getWidth();
 		int height = canvas.getHeight();
 
 		// get screen proportion
 		screenProportion = (float)height/width;
-//		Log.d("TEST", "proportion = " + screenProportion);
+		Log.d("TEST", "proportion = " + screenProportion);
 
 		if (AppUtils.HONEYCOMB_PLUS_API) {
-			if (screenProportion > TALL_KOEF){
+			if (screenProportion > TALL_KOEF){  // TODO use resource flags
 				IMAGE_HEIGHT = (int) (height * 0.39f);//500;
 //				Log.d("TEST", "IMAGE_HEIGHT = " +IMAGE_HEIGHT  + " SCR HEIGHT = " + height + " SCR WIDTH = " + width);
 

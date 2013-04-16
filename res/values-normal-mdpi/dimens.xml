@@ -133,5 +133,6 @@
     <dimen name="new_signup_field_margin_top">8dip</dimen>
     <dimen name="new_signup_facebook_margin_bottom">8dip</dimen>
     <dimen name="new_setup_small_fonts_size">14sp</dimen>
+    <dimen name="video_thumb_size">120dip</dimen>
 
 </resources>

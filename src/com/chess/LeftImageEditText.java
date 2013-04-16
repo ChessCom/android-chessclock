@@ -5,12 +5,10 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,6 +36,7 @@ public class LeftImageEditText extends RoboEditText {
 	private int lineYStart;
 	private int lineXStop;
 	private int lineXStart;
+	private int bottomPadding;
 
 
 	public LeftImageEditText(Context context, AttributeSet attrs, int defStyle) {
@@ -69,27 +68,6 @@ public class LeftImageEditText extends RoboEditText {
 			array.recycle();
 		}
 
-
-		// back for image
-
-//		int color = Color.WHITE;
-//
-//		final int N = array.getIndexCount();
-//		for (int i = 0; i < N; i++) {
-//			int attr = array.getIndex(i);
-//			switch (attr) {
-//				case R.styleable.EnhancedField_round_mode:
-//					roundMode = array.getInteger(i, ONE);
-//					break;
-//				case R.styleable.EnhancedField_color:
-//					color = array.getInteger(i, Color.WHITE);
-//					break;
-//				case R.styleable.EnhancedField_leftImage:
-//					icon = array.getDrawable(i);
-//					break;
-//			}
-//		}
-
 		imageWidth = icon.getIntrinsicWidth();
 		int imageHeight = icon.getIntrinsicHeight();
 		icon.setBounds(0, 0, imageWidth, imageHeight);
@@ -120,6 +98,8 @@ public class LeftImageEditText extends RoboEditText {
 		linePaint.setColor(context.getResources().getColor(R.color.light_grey_border));
 		linePaint.setStrokeWidth(1);
 		linePaint.setStyle(Paint.Style.STROKE);
+
+		bottomPadding = (int) (10 * density);
 	}
 
 	@Override
@@ -147,8 +127,8 @@ public class LeftImageEditText extends RoboEditText {
 			canvas.drawLine(lineXStart, 0, lineXStop, 0, linePaint);
 		}
 
-		// place additional clickable element
-		canvas.translate(getHeight() + BORDER_OFFSET, - BORDER_OFFSET);
+//		// set padding to make text selection work correct
+		setPadding(height + bottomPadding, 0, 0, bottomPadding);
 		super.onDraw(canvas);
 	}
 

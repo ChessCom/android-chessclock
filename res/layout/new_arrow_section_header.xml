@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
+	android:layout_height="46dip"
     android:gravity="center_vertical"
-    android:paddingTop="6dip"
     android:paddingLeft="8dip"
-    android:paddingBottom="6dip"
     android:paddingRight="8dip"
-    android:background="@drawable/daily_games_header_selector"
+    android:background="@drawable/light_header_selector"
     >
 	<com.chess.RoboTextView
 		android:id="@+id/headerTitle"
@@ -16,7 +14,7 @@
         android:layout_weight="1"
 		android:textSize="14sp"
 		android:paddingLeft="8dip"
-        android:textColor="@color/new_list_header_text"
+        android:textColor="@color/new_main_back"
         android:text="Openings"
 		/>
 

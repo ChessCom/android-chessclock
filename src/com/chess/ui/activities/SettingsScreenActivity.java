@@ -16,8 +16,8 @@ import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.SelectionItem;
-import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.ui.adapters.SelectionAdapter;
+import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.BaseRequestListener;
 import com.facebook.android.Facebook;
@@ -84,7 +84,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 		super.onResume();
 		setParameters();
 
-		if (!AppData.isGuest(this) && !AppData.isLiveChess(this)) { // TODO why not in live?
+		if (!AppData.isLiveChess(this)) { // TODO why not in live?
 			updateVacationStatus();
 		}
 	}
@@ -102,13 +102,8 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 		Button logoutBtn = (Button) findViewById(R.id.prefLogout);
 		logoutBtn.setOnClickListener(this);
 
-		if (AppData.isGuest(this)) {
-			vacationCheckBox.setVisibility(View.GONE);
-			logoutBtn.setText(R.string.login);
-		} else {
-			vacationCheckBox.setOnClickListener(this);
-			logoutBtn.setText(R.string.logout);
-		}
+		vacationCheckBox.setOnClickListener(this);
+		logoutBtn.setText(R.string.logout);
 
 		String userName = AppData.getUserName(this);
 		afterMyMoveSpinner.setSelection(preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0));
@@ -227,26 +222,23 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 	public void onClick(View view) {
 		int id = view.getId();
 		if (id == R.id.prefLogout) {
-			if (!AppData.isGuest(this)) {
-				if (isLCSBound) {
-					liveService.logout();
-				}
-
-				// un-register from GCM
-				unRegisterGcmService();
-
-				AppData.setGuest(this, true);
-
-				Facebook facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
-				SessionStore.restore(facebook, this);
-				facebook.logoutMe(this, new LogoutRequestListener());
-
-				preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
-				preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
-				preferencesEditor.commit();
-
-				AppUtils.cancelNotifications(this);
+			if (isLCSBound) {
+				liveService.logout();
 			}
+
+			// un-register from GCM
+			unRegisterGcmService();
+
+
+			Facebook facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
+			SessionStore.restore(facebook, this);
+			facebook.logoutMe(this, new LogoutRequestListener());
+
+			preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+			preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
+			preferencesEditor.commit();
+
+			AppUtils.cancelNotifications(this);
 
 			openStartScreen(StaticData.NAV_FINISH_2_LOGIN);
 		} else if (id == R.id.upgradeBtn) {
@@ -492,18 +484,16 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 
 		@Override
 		public void updateData(VacationItem returnedObj) {
-			if (!AppData.isGuest(getContext())) {
-				switch (listenerCode) {
-					case GET:
-						vacationCheckBox.setChecked(returnedObj.getData().isOnVacation());
-						break;
-					case POST:
-						vacationCheckBox.setChecked(true);
-						break;
-					case DELETE:
-						vacationCheckBox.setChecked(false);
-						break;
-				}
+			switch (listenerCode) {
+				case GET:
+					vacationCheckBox.setChecked(returnedObj.getData().isOnVacation());
+					break;
+				case POST:
+					vacationCheckBox.setChecked(true);
+					break;
+				case DELETE:
+					vacationCheckBox.setChecked(false);
+					break;
 			}
 		}
 	}

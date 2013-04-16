@@ -11,7 +11,7 @@ import com.chess.backend.statics.StaticData;
 import java.util.List;
 
 //public class VideosPaginationAdapter extends PaginationAdapter<VideoItemOld> {
-public class VideosPaginationAdapter extends PaginationAdapter<VideoItem.VideoDataItem> {
+public class VideosPaginationAdapter extends PaginationAdapter<VideoItem.Data> {
 
 	private static final String TAG = "VideosPaginationAdapter";
 
@@ -20,15 +20,15 @@ public class VideosPaginationAdapter extends PaginationAdapter<VideoItem.VideoDa
 
 //	public VideosPaginationAdapter(Context context, ItemsAdapter<VideoItemOld> adapter,
 //									TaskUpdateInterface<VideoItemOld> taskFace, LoadItem loadItem) {
-	public VideosPaginationAdapter(Context context, ItemsAdapter<VideoItem.VideoDataItem> adapter,
-								   TaskUpdateInterface<VideoItem.VideoDataItem> taskFace, LoadItem loadItem) {
+	public VideosPaginationAdapter(Context context, ItemsAdapter<VideoItem.Data> adapter,
+								   TaskUpdateInterface<VideoItem.Data> taskFace, LoadItem loadItem) {
 		super(context, adapter, taskFace);
         this.loadItem = loadItem;
 		setFirstPage(1);
 	}
 
 	@Override
-	protected List<VideoItem.VideoDataItem> fetchMoreItems(int page) {
+	protected List<VideoItem.Data> fetchMoreItems(int page) {
 //		final String url = RestHelper.formCustomPaginationRequest(loadItem, page + 1);
 //        result = getJsonData(url);
 		loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
@@ -41,7 +41,7 @@ public class VideosPaginationAdapter extends PaginationAdapter<VideoItem.VideoDa
 
 		if (item != null) {
 			result = StaticData.RESULT_OK;
-			itemList = item.getData().getVideos();
+			itemList = item.getData();
 		}
 
 //		result = getData(loadItem, page);

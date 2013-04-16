@@ -18,4 +18,5 @@
 
 	<!--Game Modes-->
 	<dimen name="player_name_max_width">400dip</dimen>
+    <dimen name="video_thumb_size">120dip</dimen>
 </resources>

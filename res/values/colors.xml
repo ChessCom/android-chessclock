@@ -383,7 +383,8 @@
     <!--LightHeader-->
     <color name="light_header_back">#FFf4f4f4</color>
     <color name="light_header_back_p">#ffc2c2c2</color>
-    <color name="light_header_back_border_top">#FFFFFFFF</color>
+    <color name="light_header_back_border_top">#FFdfdfdf</color>
+    <color name="light_header_back_border_top_1">#FFFFFFFF</color>
     <color name="light_header_back_border_bot">#FFdfdfdf</color>
     <!--<color name="light_header_back_border_bot_1">#FF3d3b38</color>-->
 
@@ -428,7 +429,7 @@
     <!--Friends-->
     <color name="new_friends_top_back">#FFf4f4f4</color>
 
-    <color name="new_blue_text">#FF0d5988</color>
+    <color name="new_text_blue">#FF0d5988</color>
     <color name="new_friends_grey_text">#FFa7a6a2</color>
     <color name="new_square_button">#FFf4f4f4</color>
     <color name="new_square_button_p">#ffc7c7c7</color>

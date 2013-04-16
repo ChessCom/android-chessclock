@@ -76,7 +76,6 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 			DataHolder.reset();
 			TacticsDataHolder.reset();
 			AppData.setLiveChessMode(this, false);
-			AppData.setGuest(this, true);
 
 			Intent intent = new Intent(this, HomeScreenActivity.class);
 			startActivity(intent);

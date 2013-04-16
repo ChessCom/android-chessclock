@@ -28,6 +28,8 @@ import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.activities.CoreActivityActionBar;
+import com.chess.ui.fragments.home.HomeTabsFragment;
+import com.chess.ui.fragments.sign_in.SignInFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
@@ -103,6 +105,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		getActivityFace().updateTitle(titleId);
 	}
 
+	protected void unRegisterGcmService() {
+		getActivityFace().unRegisterGcm();
+	}
 
 	protected void facebookInit(LoginButton fbLoginBtn) {
 		if (fbLoginBtn != null) {
@@ -295,7 +300,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			return;
 		}
 
-		AppData.setGuest(getActivity(), false);
 		AppData.setLiveChessMode(getActivity(), false);
 		DataHolder.reset();
 		TacticsDataHolder.reset();

@@ -33,7 +33,7 @@ import com.flurry.android.FlurryAgent;
  */
 public class VideoScreenActivity extends LiveBaseActivity {
 //	private VideoItemOld item;
-	private VideoItem.VideoDataItem item;
+	private VideoItem.Data item;
 	private View recent;
 	private TextView title, desc;
 	private Spinner skillsSpinner;
@@ -124,9 +124,9 @@ public class VideoScreenActivity extends LiveBaseActivity {
 		@Override
 		public void updateData(VideoItem returnedObj) {
 			recent.setVisibility(View.VISIBLE);
-			int cnt = Integer.parseInt(returnedObj.getData().getTotal_videos_count());
+			int cnt = returnedObj.getCount();
 			if (cnt > 0){
-				item = returnedObj.getData().getVideos().get(0); // new VideoItemOld(returnedObj.split(RestHelper.SYMBOL_ITEM_SPLIT)[2].split("<->"));
+				item = returnedObj.getData().get(0); // new VideoItemOld(returnedObj.split(RestHelper.SYMBOL_ITEM_SPLIT)[2].split("<->"));
 				title.setText(item.getName());
 				desc.setText(item.getDescription());
 
@@ -214,7 +214,7 @@ public class VideoScreenActivity extends LiveBaseActivity {
 
 			Intent intent = new Intent(Intent.ACTION_VIEW);
 //			intent.setDataAndType(Uri.parse(item.getViewUrl().trim()), "video/*");
-			intent.setDataAndType(Uri.parse(item.getMobile_view_url().trim()), "video/*");
+			intent.setDataAndType(Uri.parse(item.getUrl().trim()), "video/*");
 //			intent.setDataAndType(Uri.parse("http://s3.amazonaws.com/chesscom-videos/videos/ios/kaidanovs-comprehensive-repertoire-two-knights-defense---part-2.m3u8"), "video/*");
 			startActivity(intent);
 		} else if (view.getId() == R.id.start) {

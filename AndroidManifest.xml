@@ -41,6 +41,10 @@
 			</intent-filter>
 		</activity>
 
+        <activity android:name=".ui.activities.NewLoginActivity"
+                  android:screenOrientation="portrait" android:windowSoftInputMode="adjustResize"
+            /> <!--TODO restore-->
+
 		<activity android:name=".ui.activities.HomeScreenActivity"
 			android:logo="@drawable/ic_logo_bar"
 			android:label=""
@@ -50,11 +54,11 @@
 		<activity android:name="com.google.ads.AdActivity"
 			android:configChanges="keyboard|keyboardHidden|orientation"/>
 
-		<activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity"
+<!--		<activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity"
 			android:theme="@android:style/Theme.Translucent.NoTitleBar"
 			android:configChanges="keyboardHidden|orientation|keyboard"/>
 		<activity android:name="com.millennialmedia.android.VideoPlayer"
-			android:configChanges="keyboardHidden|orientation|keyboard"/>
+			android:configChanges="keyboardHidden|orientation|keyboard"/>-->
 
 		<activity android:name=".ui.activities.VideoListActivity" android:label="@string/label_video"
 			android:configChanges="keyboardHidden|keyboard|orientation"/>
@@ -83,12 +87,12 @@
 		<activity android:name=".ui.activities.OnlineOpenChallengeActivity"
 			android:label="@string/label_create_challenge_online"/>
 
-		<activity android:name="com.mopub.mobileads.MoPubActivity"
+<!--		<activity android:name="com.mopub.mobileads.MoPubActivity"
 			android:configChanges="keyboardHidden|keyboard|orientation"/>
 		<activity android:name="com.mopub.mobileads.MraidActivity"
 			android:configChanges="keyboardHidden|keyboard|orientation"/>
 		<activity android:name="com.mopub.mobileads.MraidBrowser"
-			android:configChanges="keyboardHidden|keyboard|orientation"/>
+			android:configChanges="keyboardHidden|keyboard|orientation"/>-->
 
         <activity android:name="com.inneractive.api.ads.InneractiveFullScreenView" />
 
@@ -144,9 +148,7 @@
 
         <activity android:name=".ui.activities.WebViewActivity"/>
 
-        <activity android:name=".ui.activities.NewLoginActivity"
-                  android:screenOrientation="portrait"
-            /> <!--TODO restore-->
+
 
         <!--
                   BroadcastReceiver that will receive intents from GCM

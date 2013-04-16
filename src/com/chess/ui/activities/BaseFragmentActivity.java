@@ -17,16 +17,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
-import com.chess.BuildConfig;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.PopupItem;
-import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupProgressFragment;
+import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -96,7 +95,7 @@ public abstract class BaseFragmentActivity extends BaseActivity implements Popup
 		}
 		super.onCreate(savedInstanceState);
 
-		if (!BuildConfig.DEBUG) {
+//		if (!BuildConfig.DEBUG) {
 			try {
 				BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
 			} catch (Exception e) {
@@ -106,7 +105,7 @@ public abstract class BaseFragmentActivity extends BaseActivity implements Popup
 				params.put(AppConstants.EXCEPTION, Build.MODEL + " " + stackTrace);
 				FlurryAgent.logEvent(FlurryData.BUGSENSE_INIT_EXCEPTION, params);
 			}
-		}
+//		}
 
 		context = this;
 

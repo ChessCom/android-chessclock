@@ -24,7 +24,7 @@
         android:paddingLeft="20dip"
         android:paddingBottom="1dip"
         android:layout_marginTop="-4dip"
-        android:textColor="@color/new_blue_text"
+        android:textColor="@color/new_text_blue"
         android:text="A Guide for White: Avoiding the Sicilian -Alapin Part 1!"
         android:textSize="16sp"
         custom:ttf="Bold"

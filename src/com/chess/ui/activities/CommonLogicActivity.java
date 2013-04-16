@@ -175,24 +175,9 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	}
 
 	protected void registerGcmService(){
-		if (!AppData.isNotificationsEnabled(this) || AppData.isGuest(this)) { // no need to register if user turned off notifications
+		if (!AppData.isNotificationsEnabled(this)) { // no need to register if user turned off notifications
 			return;
 		}
-
-
-		// Make sure the device has the proper dependencies.
-//		try {
-//			GCMRegistrar.checkDevice(this); // Check device to support GCM, if not supported then turn on timed notifications
-//		} catch (UnsupportedOperationException ex) {
-//			Log.d("TEST_GCM", "Device doesn't support GCM, so use timed notifications " + ex.toString());
-//			AppUtils.startNotificationsUpdate(this);
-//			return;
-//		}
-
-		// Make sure the manifest was properly set - comment out this line
-		// while developing the app, then uncomment it when it's ready.
-//		GCMRegistrar.checkManifest(this);   // don't need to check manifest because it's developers task to write it correct :)
-
 		/* When an application is updated, it should invalidate its existing registration ID.
 		The best way to achieve this validation is by storing the current
 		 application version when a registration ID is stored.
@@ -229,13 +214,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 	}
 
 	protected void unRegisterGcmService(){
-//		try{
-//			GCMRegistrar.checkDevice(this);
-//		} catch (UnsupportedOperationException ex){
-//			Log.d("TEST_GCM", "Device doesn't support GCM, so use timed notifications ");
-//			AppUtils.stopNotificationsUpdate(this);
-//		}
-
 		// save token to unregister from server
 		preferencesEditor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, AppData.getUserToken(this));
 		preferencesEditor.commit();
@@ -501,7 +479,6 @@ public abstract class CommonLogicActivity extends BaseFragmentActivity {
 // 		preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]); // TODO used only for live, so should be separate connection to live
 		preferencesEditor.commit();
 
-		AppData.setGuest(this, false);
 		AppData.setLiveChessMode(this, false);
 		DataHolder.reset();
 		TacticsDataHolder.reset();

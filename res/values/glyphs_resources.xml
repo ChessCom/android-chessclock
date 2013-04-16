@@ -26,6 +26,7 @@
     <string name="glyph_email_light">u</string>
     <string name="glyph_password">d</string>
     <string name="glyph_history">&#730;</string>
+    <string name="glyph_close">B</string>
 
     <string name="glyph_arrow_right">.</string>
     <string name="glyph_arrow_left">,</string>

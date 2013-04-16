@@ -39,6 +39,8 @@ public interface ActiveFragmentInterface {
 
 	void registerGcm();
 
+	void unRegisterGcm();
+
 	void setTouchModeToSlidingMenu(int touchMode);
 
 	void addOnOpenMenuListener(SlidingMenu.OnOpenedListener listener);

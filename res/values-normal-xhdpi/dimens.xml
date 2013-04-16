@@ -22,6 +22,7 @@
     <dimen name="create_profile_main_margin_top">32dip</dimen>
     <dimen name="create_profile_field_margin_top">35dip</dimen>
     <dimen name="create_profile_skip_padding_top">15dip</dimen>
+    <dimen name="video_thumb_size">120dip</dimen>
 
 
 </resources>

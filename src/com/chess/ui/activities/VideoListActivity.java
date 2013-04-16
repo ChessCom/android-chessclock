@@ -15,7 +15,6 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
-import com.chess.model.VideoItemOld;
 import com.chess.ui.adapters.VideosAdapter;
 import com.chess.ui.adapters.VideosPaginationAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -32,7 +31,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
     private String category;
     private String keyword;
 //	private List<VideoItemOld> videosList;
-	private List<VideoItem.VideoDataItem> videosList;
+	private List<VideoItem.Data> videosList;
 
 
     @Override
@@ -91,7 +90,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
         }
 
 		//set Pagination adapter params
-		videosList = new ArrayList<VideoItem.VideoDataItem>();
+		videosList = new ArrayList<VideoItem.Data>();
 		VideosAdapter videosAdapter = new VideosAdapter(this, videosList);
 
 		VideosPaginationAdapter paginationAdapter = new VideosPaginationAdapter(this, videosAdapter, videosListItemUpdateListener, loadItem);
@@ -104,14 +103,14 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		return this;
 	}
 
-	private class VideosListItemsUpdateListener extends ActionBarUpdateListener<VideoItem.VideoDataItem> {
+	private class VideosListItemsUpdateListener extends ActionBarUpdateListener<VideoItem.Data> {
 		public VideosListItemsUpdateListener() {
 			super(getInstance());
 			useList = true;
 		}
 
 		@Override
-		public void updateListData(List<VideoItem.VideoDataItem> itemsList) {
+		public void updateListData(List<VideoItem.Data> itemsList) {
 			videosList.addAll(itemsList);
 		}
 	}
@@ -122,10 +121,10 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 			return; // means we pressed loading view
 		}
 
-		VideoItem.VideoDataItem videoItem = (VideoItem.VideoDataItem) adapter.getItemAtPosition(pos);
+		VideoItem.Data videoItem = (VideoItem.Data) adapter.getItemAtPosition(pos);
 
 		Intent intent = new Intent(Intent.ACTION_VIEW);
-		String videoUrl = videoItem.getMobile_view_url()/*getViewUrl()*/.trim();
+		String videoUrl = videoItem.getUrl()/*getViewUrl()*/.trim();
 		intent.setDataAndType(Uri.parse(videoUrl), "video/*");
 		startActivity(intent);
 	}
@@ -136,16 +135,16 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 			startActivity(AppData.getMembershipVideoIntent(this));
 		} else if(view.getId() == R.id.fullDescBtn){
 			int pos = (Integer) view.getTag(R.id.list_item_id);
-			VideoItem.VideoDataItem videoItem = (VideoItem.VideoDataItem) listView.getItemAtPosition(pos);
+			VideoItem.Data videoItem = (VideoItem.Data) listView.getItemAtPosition(pos);
 
 			showSinglePopupDialog(videoItem.getName(), videoItem.getDescription());
 
 		} else if(view.getId() == R.id.playVideoBtn) {
 			int pos = (Integer) view.getTag(R.id.list_item_id);
-			VideoItem.VideoDataItem videoItem = videosList.get(pos);
+			VideoItem.Data videoItem = videosList.get(pos);
 
 			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.parse(videoItem.getMobile_view_url()/*getViewUrl()*/.trim()), "video/*");
+			intent.setDataAndType(Uri.parse(videoItem.getUrl()/*getViewUrl()*/.trim()), "video/*");
 			startActivity(intent);
 		}
 	}

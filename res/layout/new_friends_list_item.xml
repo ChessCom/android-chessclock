@@ -54,7 +54,7 @@
         android:layout_toRightOf="@id/photoImg"
         android:text="crabcackles"
         android:layout_alignTop="@id/photoImg"
-        android:textColor="@color/new_blue_text"
+        android:textColor="@color/new_text_blue"
         robo:ttf="Bold"
         android:textSize="17sp"
         />

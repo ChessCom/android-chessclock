@@ -9,7 +9,7 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.HomeTabsFragment;
+import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
