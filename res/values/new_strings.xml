@@ -144,4 +144,14 @@
     <string name="play_live">Play Live</string>
     <string name="new_">New</string>
     <string name="analysis">Analysis</string>
+
+    <!--Settings-->
+    <string name="profile">Profile</string>
+    <string name="theme">Theme</string>
+    <string name="privacy">Privacy</string>
+    <string name="blocking">Blocking</string>
+    <string name="tracking">Tracking</string>
+    <string name="sharing">Sharing</string>
+    <string name="alerts_and_emails"><![CDATA[Alerts & Emails]]></string>
+    <string name="account_history">Account History</string>
 </resources>

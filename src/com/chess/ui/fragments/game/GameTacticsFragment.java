@@ -83,6 +83,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private ControlsTacticsView controlsTacticsView;
 	private int currentRating;
 	private boolean isAnalysis;
+	private boolean serverError;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -535,6 +536,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					break;
 			}
 			controlsTacticsView.enableGameControls(true);
+
+			serverError = false;
 		}
 
 		@Override
@@ -548,6 +551,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				}
 			} else {
 				if (resultCode == StaticData.NO_NETWORK) {
+					handleErrorRequest();
+				} else if (resultCode == StaticData.INTERNAL_ERROR){
+					serverError = true;
 					handleErrorRequest();
 				}
 			}
@@ -932,7 +938,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	private void loadNewTacticsBatch() {
 		noInternet = !AppUtils.isNetworkAvailable(getActivity());
-		if (AppData.isGuest(getActivity()) || noInternet) {
+		if (AppData.isGuest(getActivity()) || noInternet || serverError) {
 			loadOfflineTacticsBatch();
 		} else {
 

@@ -1,16 +1,15 @@
 package com.chess.ui.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.ui.activities.SettingsScreenActivity;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.game.GameTacticsFragment;
+import com.chess.ui.fragments.settings.NewSettingsFragment;
 import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
@@ -123,9 +122,9 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 			case R.drawable.ic_nav_settings:
+				getActivityFace().openFragment(new NewSettingsFragment());
+//				getActivityFace().openFragment(new NewSettingsGridFragment());
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
-				Intent intent = new Intent(getActivity(), SettingsScreenActivity.class);
-				getActivity().startActivity(intent);
 				break;
 		}
 	}
@@ -154,9 +153,9 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 
 		@Override
 		protected void bindView(NavigationMenuItem item, int pos, View convertView) {
-			ImageView icon = (ImageView) convertView.findViewById(R.id.row_icon);
+			ImageView icon = (ImageView) convertView.findViewById(R.id.iconImg);
 			icon.setImageResource(item.iconRes);
-			TextView title = (TextView) convertView.findViewById(R.id.row_title);
+			TextView title = (TextView) convertView.findViewById(R.id.rowTitleTxt);
 			title.setText(item.tag);
 
 			if (pos == UPGRADE_POS){

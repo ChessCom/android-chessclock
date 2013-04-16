@@ -48,9 +48,9 @@ public class SampleListFragment extends /*List*/Fragment {
 			if (convertView == null) {
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.new_navigation_menu_item, null);
 			}
-			ImageView icon = (ImageView) convertView.findViewById(R.id.row_icon);
+			ImageView icon = (ImageView) convertView.findViewById(R.id.iconImg);
 			icon.setImageResource(getItem(position).iconRes);
-			TextView title = (TextView) convertView.findViewById(R.id.row_title);
+			TextView title = (TextView) convertView.findViewById(R.id.rowTitleTxt);
 			title.setText(getItem(position).tag);
 
 			return convertView;

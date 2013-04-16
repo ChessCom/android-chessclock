@@ -13,6 +13,19 @@
     <string name="glyph_lessons">8</string>
     <string name="glyph_comp_game">9</string>
     <string name="glyph_videos">J</string>
+    <string name="glyph_profile">b</string>
+    <string name="glyph_board">i</string>
+    <string name="glyph_info">)</string>
+    <!--<string name="glyph_settings">&#729;</string>-->
+    <string name="glyph_settings">d</string>
+    <string name="glyph_theme">l</string>
+    <string name="glyph_blocking">&amp;</string>
+    <string name="glyph_tracking">m</string>
+    <string name="glyph_share">k</string>
+    <string name="glyph_email_dark">y</string>
+    <string name="glyph_email_light">u</string>
+    <string name="glyph_password">d</string>
+    <string name="glyph_history">&#730;</string>
 
     <string name="glyph_arrow_right">.</string>
     <string name="glyph_arrow_left">,</string>
