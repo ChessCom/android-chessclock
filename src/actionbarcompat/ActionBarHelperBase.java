@@ -88,6 +88,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		}
 	}
 
+	@Override
 	public void setUseHomeIcon(boolean use) {
 		useHomeIcon = use;
 	}

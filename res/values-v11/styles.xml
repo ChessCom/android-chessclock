@@ -18,6 +18,7 @@
 
 	<style name="AppTheme" parent="android:style/Theme.Holo.Light">
 		<item name="android:actionBarStyle">@style/ActionBar</item>
+		<item name="android:actionButtonStyle">@style/ActionButton</item>
 		<!--<item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>-->
 		<item name="android:selectableItemBackground">@drawable/action_bar_item_selector</item>
 	</style>
@@ -30,6 +31,10 @@
         <item name="android:background">@drawable/top_bar_texture</item>
         <item name="android:titleTextStyle">@style/ActionBarTitle</item>
         <item name="android:icon">@drawable/ic_logo_bar</item>
+	</style>
+
+	<style name="ActionButton" parent="android:style/Widget.ActionButton">
+        <item name="android:minWidth">@dimen/actionbar_compat_button_width</item>
 	</style>
 
     <style name="ActionBarTitle">
