@@ -99,7 +99,7 @@
 	<!--ControlsBaseView-->
 	<dimen name="game_control_padding_left">10dip</dimen>
 	<dimen name="game_control_padding_right">10dip</dimen>
-	<dimen name="game_control_padding_top">5dip</dimen>
+	<dimen name="game_control_padding_top">0dip</dimen>
 	<dimen name="game_control_padding_bottom">0dip</dimen>
 
 	<dimen name="piece_layout_padding_left">7dip</dimen>
@@ -134,5 +134,6 @@
     <dimen name="new_signup_facebook_margin_bottom">8dip</dimen>
     <dimen name="new_setup_small_fonts_size">14sp</dimen>
     <dimen name="video_thumb_size">120dip</dimen>
+    <dimen name="panel_info_padding_top">2dip</dimen>
 
 </resources>

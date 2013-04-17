@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
-import com.chess.ui.fragments.home.HomeDailyGamesFragment;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,7 +12,7 @@ import com.chess.ui.fragments.home.HomeDailyGamesFragment;
  * Date: 11.01.13
  * Time: 17:36
  */
-public class DailyGamesRightFragment extends HomeDailyGamesFragment {
+public class DailyGamesRightFragment extends DailyGamesFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

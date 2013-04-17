@@ -46,9 +46,7 @@ public class DailyGameSetupFragment extends CommonLogicFragment {
 
 		updateTitle(R.string.daily_chess);
 
-
 		view.findViewById(R.id.dailyPlayBtn).setOnClickListener(this);
-		view.findViewById(R.id.autoMatchBtn).setOnClickListener(this);
 		view.findViewById(R.id.dailyTimeSelectionBtn).setOnClickListener(this);
 		view.findViewById(R.id.inviteFriend1Btn).setOnClickListener(this);
 		view.findViewById(R.id.inviteFriend2Btn).setOnClickListener(this);

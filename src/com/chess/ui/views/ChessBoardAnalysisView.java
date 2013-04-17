@@ -139,17 +139,17 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 			int col = (trackX - trackX % square) / square;
 			int row = (trackY - trackY % square) / square;
 
-			if (firstclick) {
+			if (firstClick) {
 				from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
 				if (getBoardFace().getPieces()[from] != 6 && getBoardFace().getSide() == getBoardFace().getColor()[from]) {
 					pieceSelected = true;
-					firstclick = false;
+					firstClick = false;
 					invalidate();
 				}
 			} else {
 				to = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
 				pieceSelected = false;
-				firstclick = true;
+				firstClick = true;
 				boolean found = false;
 
 				TreeSet<Move> moves = getBoardFace().gen();
@@ -175,7 +175,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 					afterMove();
 				} else if (getBoardFace().getPieces()[to] != 6 && getBoardFace().getSide() == getBoardFace().getColor()[to]) {
 					pieceSelected = true;
-					firstclick = false;
+					firstClick = false;
 					from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
 					invalidate();
 				} else {
@@ -221,7 +221,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 			afterMove();
 		} else if (getBoardFace().getPieces()[to] != 6 && getBoardFace().getSide() == getBoardFace().getColor()[to]) {
 			pieceSelected = true;
-			firstclick = false;
+			firstClick = false;
 			from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
 			invalidate();
 		} else {

@@ -19,7 +19,6 @@
         android:visibility="gone"
         />
 
-
     <com.chess.RoboTextView
         android:id="@+id/emptyView"
         android:layout_width="wrap_content"

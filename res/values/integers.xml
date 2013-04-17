@@ -5,9 +5,7 @@
     <item type="integer" name="home_text_right_weight">3</item>
     
     <item type="integer" name="fade_opacity">60</item>
-	<integer name="board_highlight_font">12</integer>
-    <integer name="ad_optional_width">300</integer>
-    <integer name="ad_optional_height">250</integer>
+	<integer name="board_highlight_font">10</integer>
 
 	<integer name="left_edit_mode_one">0</integer>
 	<integer name="left_edit_mode_top">1</integer>

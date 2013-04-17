@@ -243,7 +243,7 @@
     <style name="TabRadioButton" parent="android:Widget.CompoundButton.RadioButton">
         <item name="android:button">@null</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/tab_home_button_text</item>
+        <item name="android:textColor">@color/new_light_grey</item>
 		<item name="android:gravity">center</item>
         <item name="android:shadowColor">@color/black</item>
         <item name="android:shadowRadius">1.0</item>

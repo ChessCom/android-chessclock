@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--Top transparent-->
+    <item>
+        <shape >
+            <solid android:color="@color/semitransparent" />
+            <size android:height="1px" />
+        </shape>
+    </item>
+    <!--Middle-->
+    <item
+        android:top="1px"
+        >
+        <shape >
+            <solid android:color="@color/new_dark_grey_2" />
+            <size android:height="1px" />
+        </shape>
+    </item>
+    <!--Bottom transparent-->
+    <item
+        android:top="2px"
+        >
+        <shape >
+            <solid android:color="@color/semi_transparent_border" />
+            <size android:height="1px" />
+        </shape>
+    </item>
+</layer-list>

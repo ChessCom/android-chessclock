@@ -67,7 +67,7 @@ public class ControlsNetworkView extends ControlsBaseView {
 
 		controlsLayout = new LinearLayout(getContext());
 		int paddingLeft = (int) getResources().getDimension(R.dimen.game_control_padding_left);
-		int paddingTop = (int) getResources().getDimension(R.dimen.game_control_padding_top);
+		int paddingTop = (int) getResources().getDimension(R.dimen.game_control_padding_top); // set padding to panelInfo instead
 		int paddingRight = (int) getResources().getDimension(R.dimen.game_control_padding_right);
 		int paddingBottom = (int) getResources().getDimension(R.dimen.game_control_padding_bottom);
 

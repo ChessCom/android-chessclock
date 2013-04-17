@@ -7,6 +7,7 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import com.chess.R;
 import com.chess.ui.engine.ChessBoard;
+import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,7 +31,6 @@ public class CapturedPiecesDrawable extends Drawable {
 	private int BETWEEN_PIECE_OFFSET = 20;
 	private int BETWEEN_PAWN_PIECE_OFFSET = 37;
 
-
 	private int capturedPawnCnt;
 	private int capturedKnightCnt;
 	private int capturedBishopCnt;
@@ -41,11 +41,10 @@ public class CapturedPiecesDrawable extends Drawable {
 
 	private Drawable[] currentSideDrawables;
 	private final int pieceWidth;
-	private Drawable backDrawable;
-	private Context context;
 
 	public CapturedPiecesDrawable(Context context) {
-		this.context = context;
+		boolean smallScreen = AppUtils.noNeedTitleBar(context);
+
 		float density = context.getResources().getDisplayMetrics().density;
 
 		INNER_PIECE_OFFSET *= density;
@@ -71,20 +70,25 @@ public class CapturedPiecesDrawable extends Drawable {
 		whitePieceDrawables = new Drawable[5];
 		blackPieceDrawables = new Drawable[5];
 
-		backDrawable = context.getResources().getDrawable(R.drawable.back_grey_emboss);
-
-
 		for (int i = 0, whitePieceDrawablesLength = whitePieceDrawables.length; i < whitePieceDrawablesLength; i++) {
 			whitePieceDrawables[i] = context.getResources().getDrawable(whitePieceDrawableIds[i]);
 			whitePieceDrawables[i].setBounds(0, 0, whitePieceDrawables[i].getIntrinsicWidth(), whitePieceDrawables[i].getIntrinsicHeight());
 		}
 
 		pieceWidth = whitePieceDrawables[KNIGHT_ID].getIntrinsicWidth();
-		INNER_PIECE_OFFSET = pieceWidth / 4;
+		if (smallScreen) {
+			INNER_PIECE_OFFSET = pieceWidth / 6;
 
-		BETWEEN_PIECE_OFFSET = pieceWidth + INNER_PIECE_OFFSET;
+			BETWEEN_PIECE_OFFSET = pieceWidth + INNER_PIECE_OFFSET;
 
-		BETWEEN_PAWN_PIECE_OFFSET = BETWEEN_PIECE_OFFSET * 2;
+			BETWEEN_PAWN_PIECE_OFFSET = (int) (BETWEEN_PIECE_OFFSET * 1.5f);
+		} else {
+			INNER_PIECE_OFFSET = pieceWidth / 4;
+
+			BETWEEN_PIECE_OFFSET = pieceWidth + INNER_PIECE_OFFSET;
+
+			BETWEEN_PAWN_PIECE_OFFSET = BETWEEN_PIECE_OFFSET * 2;
+		}
 
 		for (int i = 0, blackPieceDrawablesLength = blackPieceDrawables.length; i < blackPieceDrawablesLength; i++) {
 			blackPieceDrawables[i] = context.getResources().getDrawable(blackPieceDrawableIds[i]);
@@ -92,6 +96,12 @@ public class CapturedPiecesDrawable extends Drawable {
 		}
 
 		currentSideDrawables = blackPieceDrawables;
+
+//		capturedPawnCnt = 8;
+//		capturedKnightCnt = 2;
+//		capturedBishopCnt = 2;
+//		capturedRookCnt = 2;
+//		capturedQueenCnt = 1;
 	}
 
 	@Override
@@ -99,15 +109,11 @@ public class CapturedPiecesDrawable extends Drawable {
 		int width = getBounds().width();
 		int height = getBounds().height();
 
-		if (side == ChessBoard.WHITE_SIDE) {
-			backDrawable = context.getResources().getDrawable(R.drawable.back_white_emboss);
+		if (side == ChessBoard.BLACK_SIDE) {
 			currentSideDrawables = blackPieceDrawables;
 		} else {
-			backDrawable = context.getResources().getDrawable(R.drawable.back_grey_emboss);
 			currentSideDrawables = whitePieceDrawables;
 		}
-
-		backDrawable.setBounds(0, 0, width, height);
 
 		// translate to vertical center
 		canvas.translate(0, height / 2 - pieceWidth / 2);

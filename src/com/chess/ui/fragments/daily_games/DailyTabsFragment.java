@@ -12,7 +12,6 @@ import com.chess.R;
 import com.chess.backend.GetAndSaveUserStats;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
-import com.chess.ui.fragments.home.HomeDailyGamesFragment;
 import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.slidingmenu.lib.SlidingMenu;
@@ -94,7 +93,7 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
 				case R.id.leftTabBtn:
-					changeInternalFragment(new HomeDailyGamesFragment());
+					changeInternalFragment(new DailyGamesFragment());
 					break;
 				case R.id.centerTabBtn:
 					changeInternalFragment(new DailyGameSetupFragment());

@@ -52,7 +52,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	private ImageView bottomAvatarImg;
 	private ControlsCompView controlsCompView;
 
-//	private MenuOptionsDialogListener menuOptionsDialogListener;
+	//	private MenuOptionsDialogListener menuOptionsDialogListener;
 	private LabelsConfig labelsConfig;
 	private boolean labelsSet;
 	private ImageUpdateListener imageUpdateListener;
@@ -63,7 +63,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	/**
 	 * Use factory to set params
 	 */
-	private GameCompFragment (){
+	private GameCompFragment() {
 
 	}
 
@@ -180,37 +180,37 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		if (!labelsSet) {
 			String userName = AppData.getUserName(getActivity());
 			switch (getBoardFace().getMode()) {
-			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {    //w - human; b - comp
+				case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {    //w - human; b - comp
 					humanBlack = false;
-				labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 
-				labelsConfig.topPlayerLabel = getString(R.string.computer);
+					labelsConfig.topPlayerLabel = getString(R.string.computer);
 					labelsConfig.bottomPlayerLabel = userName;
-				break;
-			}
-			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {    //w - comp; b - human
+					break;
+				}
+				case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {    //w - comp; b - human
 					humanBlack = true;
-				labelsConfig.userSide = ChessBoard.BLACK_SIDE;
+					labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 
-				labelsConfig.topPlayerLabel = getString(R.string.computer);
+					labelsConfig.topPlayerLabel = getString(R.string.computer);
 					labelsConfig.bottomPlayerLabel = userName;
-				break;
-			}
-			case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {    //w - human; b - human
+					break;
+				}
+				case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {    //w - human; b - human
 					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 
 					labelsConfig.topPlayerLabel = userName;
 					labelsConfig.bottomPlayerLabel = userName;
-				break;
-			}
-			case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {    //w - comp; b - comp
+					break;
+				}
+				case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {    //w - comp; b - comp
 					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 
-				labelsConfig.topPlayerLabel = getString(R.string.computer);
-				labelsConfig.bottomPlayerLabel = getString(R.string.computer);
-				break;
+					labelsConfig.topPlayerLabel = getString(R.string.computer);
+					labelsConfig.bottomPlayerLabel = getString(R.string.computer);
+					break;
+				}
 			}
-		}
 			labelsSet = true;
 		}
 		topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
@@ -250,6 +250,14 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 		topPanelView.setPlayerLabel(labelsConfig.topPlayerLabel);
 		bottomPanelView.setPlayerLabel(labelsConfig.bottomPlayerLabel);
+
+		if (topSide == ChessBoard.NO_SIDE) {
+			topPanelView.showFlags(false);
+			bottomPanelView.showFlags(true);
+		} else {
+			topPanelView.showFlags(true);
+			bottomPanelView.showFlags(false);
+		}
 
 		boardView.updateNotations(getBoardFace().getNotationArray());
 	}
@@ -511,8 +519,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		String bottomPlayerLabel;
 		int userSide;
 
-		int getOpponentSide(){
-			return userSide == ChessBoard.WHITE_SIDE? ChessBoard.BLACK_SIDE: ChessBoard.WHITE_SIDE;
+		int getOpponentSide() {
+			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
 		}
 	}
 

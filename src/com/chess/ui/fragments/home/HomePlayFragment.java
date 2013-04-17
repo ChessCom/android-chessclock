@@ -80,6 +80,8 @@ Auto-Match should be just a random, open, rated, 3-day seek.
 		view.findViewById(R.id.inviteFriend1Btn).setOnClickListener(this);
 		view.findViewById(R.id.inviteFriend2Btn).setOnClickListener(this);
 		view.findViewById(R.id.playFriendView).setOnClickListener(this);
+		view.findViewById(R.id.liveHeaderView).setOnClickListener(this);
+		view.findViewById(R.id.dailyHeaderView).setOnClickListener(this);
 		view.findViewById(R.id.vsCompHeaderView).setOnClickListener(this);
 
 	}
@@ -117,7 +119,6 @@ Auto-Match should be just a random, open, rated, 3-day seek.
 		} else if (view.getId() == R.id.playFriendView) {
 			getActivityFace().openFragment(new FriendsFragment());
 		}
-
 	}
 
 	private void setRatings() {

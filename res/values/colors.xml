@@ -11,6 +11,7 @@
     <color name="new_normal_grey">#FF797571</color>
     <color name="new_light_grey">#FFc8c8c8</color>
     <color name="new_light_grey_2">#FFa9a7a6</color>
+    <color name="new_dark_grey_2">#FF1b1a18</color>
     <color name="new_main_back">#FF312e2b</color>
     <color name="new_grey_icon_header">#FF66605a</color>
 
@@ -363,19 +364,18 @@
     <color name="tab_home_button_border_right">#FF171614</color>
     <color name="tab_home_button_border_right_p">#FF11100f</color>
     <color name="tab_home_button_shadow">#FF000000</color>
-    <color name="tab_home_button_text">#FFc8c8c8</color>
 
     <!--DailyGames-->
     <color name="daily_games_item_border_top">#FF393633</color>
-    <color name="daily_games_item_border_top_p">#ff504d4a</color>
-    <color name="daily_games_item_border_top_s">#FF55524f</color>
+    <color name="daily_games_item_border_top_p">#ff2f2c29</color>
+    <color name="daily_games_item_border_top_s">#ff3e3b38</color>
     <color name="daily_games_item_border_bot">#FF22201e</color>
     <color name="daily_games_item">#FF312e2a</color>
-    <color name="daily_games_item_p">#ff36322e</color>
+    <color name="daily_games_item_p">#ff272420</color>
     <color name="daily_games_item_s">#FF413d39</color>
     <color name="daily_games_header_back">#FF1d1c1a</color>
-    <color name="daily_games_header_back_p">#FF1d1c1a</color>
-    <color name="daily_games_header_back_s">#FF1d1c1a</color> <!--selected-->
+    <color name="daily_games_header_back_p">#ff131210</color>
+    <color name="daily_games_header_back_s">#ff252422</color> <!--selected-->
     <color name="daily_games_header_back_border_top">#FF2c2b2a</color>
     <color name="daily_games_header_back_border_bot">#FF0e0e0d</color>
     <color name="daily_games_header_back_border_bot_1">#FF3d3b38</color>
@@ -559,4 +559,7 @@
     <color name="dark_grey_list_divider">#FFaeaba7</color>
 
     <color name="possible_move_highlight">#6000ad00</color>
+
+    <!--Board-->
+    <color name="coordinate_color">#FF2f3c22</color>
 </resources>

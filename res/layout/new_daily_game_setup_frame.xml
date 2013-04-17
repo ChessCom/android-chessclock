@@ -2,62 +2,40 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
+    <!--3 days Play!-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="14dip"
-        android:paddingBottom="8dip"
-        android:paddingLeft="15dip"
+        android:paddingLeft="12dip"
         android:paddingRight="15dip"
         android:background="@drawable/daily_games_item_default"
         >
-
-        <!--Auto-Match Btn-->
-        <com.chess.RoboButton
-            android:id="@+id/autoMatchBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/auto_match"
-            style="@style/Text.Button.Grey.Small.Solid"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/dailyPlayViewCenterPoint"
-            android:layout_marginRight="3dip"
-            />
-
-        <TextView
-            android:id="@id/dailyPlayViewCenterPoint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            />
 
         <!--3 Days-->
         <com.chess.RoboButton
             android:id="@+id/dailyTimeSelectionBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:text="3 days"
             style="@style/Text.Button.Grey.Small.Solid"
-            android:layout_alignParentRight="true"
-            android:layout_toRightOf="@+id/dailyPlayViewCenterPoint"
-            android:layout_marginLeft="3dip"
             />
 
         <com.chess.RoboButton
             android:id="@+id/dailyPlayBtn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="60dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:text="@string/new_play_ex"
-            android:layout_below="@id/autoMatchBtn"
             style="@style/Text.Button.Small.NoBorder"
-            android:layout_marginTop="4dip"
-            android:layout_marginLeft="1dip"
             android:layout_marginRight="1dip"
             />
 
@@ -73,6 +51,7 @@
         android:background="@drawable/daily_games_item_selector"
         android:gravity="center_vertical"
         >
+
         <ImageView
             android:layout_width="@dimen/list_item_image_size"
             android:layout_height="@dimen/list_item_image_size"
@@ -119,6 +98,7 @@
         android:background="@drawable/daily_games_item_selector"
         android:gravity="center_vertical"
         >
+
         <ImageView
             android:layout_width="@dimen/list_item_image_size"
             android:layout_height="@dimen/list_item_image_size"
@@ -126,6 +106,8 @@
             android:background="@color/tab_home_button"
             android:layout_marginRight="12dip"
             android:contentDescription="@string/image"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
             />
 
         <com.chess.RoboTextView
@@ -168,13 +150,14 @@
 
         <!--Icon-->
         <com.chess.RoboTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/list_item_image_size"
+            android:layout_height="@dimen/list_item_image_size"
             android:text="@string/glyph_play_friend"
             android:textColor="@color/new_light_grey_2"
             style="@style/GlyphIcon"
             android:background="@color/grey_button_solid"
             android:layout_marginRight="12dip"
+            android:padding="0dip"
             />
 
         <com.chess.RoboTextView

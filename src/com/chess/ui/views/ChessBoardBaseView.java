@@ -43,15 +43,16 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public static final int P_MODERN_ID = 7;
 	public static final int P_VINTAGE_ID = 8;
 
+	private static final int SQUARES_NUMBER = 8;
 	public static final int EMPTY_ID = 6;
 	private static final int QVGA_WIDTH = 240;
+	private final float density;
 	private int boardId;
 
 	protected Bitmap[][] piecesBitmaps;
 	protected SharedPreferences preferences;
 
-	//	protected boolean finished;
-	protected boolean firstclick = true;
+	protected boolean firstClick = true;
 	protected boolean pieceSelected;
 	protected boolean track;
 	protected boolean drag;
@@ -65,7 +66,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected int trackX = 0;
 	protected int trackY = 0;
 
-	private float NUM_Y_OFFSET = 15;
+	private float NUM_Y_OFFSET = 10;
 	private float TEXT_Y_OFFSET = 3;
 
 	protected Paint yellowPaint;
@@ -106,7 +107,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		resources = context.getResources();
-		float density = resources.getDisplayMetrics().density;
+		density = resources.getDisplayMetrics().density;
 
 		NUM_Y_OFFSET *= density;
 		TEXT_Y_OFFSET *= density;
@@ -129,13 +130,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		yellowPaint.setStyle(Style.STROKE);
 		yellowPaint.setColor(Color.YELLOW);
 
-		Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), RoboTextView.MAIN_PATH + "Regular.ttf");
+		Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), RoboTextView.MAIN_PATH + "Bold.ttf");
 		int coordinateFont = getResources().getInteger(R.integer.board_highlight_font);
+		int coordinateColor = getResources().getColor(R.color.coordinate_color);
 
-		coordinatesPaint.setStrokeWidth(1.0f);
+//		coordinatesPaint.setStrokeWidth(1.0f);
 		coordinatesPaint.setStyle(Style.FILL);
-		coordinatesPaint.setColor(Color.WHITE);
-		coordinatesPaint.setShadowLayer(1.5f, 1.0f, 1.5f, 0xFF000000);
+		coordinatesPaint.setColor(coordinateColor);
+//		coordinatesPaint.setShadowLayer(1.5f, 1.0f, 1.5f, 0xFF000000);
 		coordinatesPaint.setTextSize(coordinateFont * density);
 		coordinatesPaint.setTypeface(typeface);
 
@@ -352,10 +354,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int piece = getBoardFace().getPieces()[i];
 			int x = ChessBoard.getColumn(i, getBoardFace().isReside());
 			int y = ChessBoard.getRow(i, getBoardFace().isReside());
-
+			int inSet = (int) (1 * density);
 			// TODO rework logic to store changed pieces and redraw only them
-			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {    // here is the simple replace/redraw of piece
-				rect.set(x * square, y * square, x * square + square, y * square + square);
+			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {    // here is the simple replace/redraw of piece // draw it bit inside of square
+				rect.set(x * square + inSet, y * square + inSet, x * square + square - inSet, y * square + square - inSet);
 				canvas.drawBitmap(piecesBitmaps[color][piece], null, rect, null);
 			}
 		}
@@ -363,13 +365,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	protected void drawCoordinates(Canvas canvas) {
 		if (showCoordinates) {
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < SQUARES_NUMBER; i++) {
 				if (getBoardFace().isReside()) {
 					canvas.drawText(nums[i], 2, i * square + NUM_Y_OFFSET, coordinatesPaint);
-					canvas.drawText(signs[7 - i], i * square + TEXT_Y_OFFSET, 8 * square - TEXT_Y_OFFSET, coordinatesPaint);
+					canvas.drawText(signs[7 - i], i * square + (square/8) * 7, SQUARES_NUMBER * square - TEXT_Y_OFFSET, coordinatesPaint);
 				} else {
 					canvas.drawText(nums[7 - i], 2, i * square + NUM_Y_OFFSET, coordinatesPaint);
-					canvas.drawText(signs[i], i * square + TEXT_Y_OFFSET, 8 * square - TEXT_Y_OFFSET, coordinatesPaint);
+					canvas.drawText(signs[i], i * square + (square/8) * 7 , SQUARES_NUMBER * square - TEXT_Y_OFFSET, coordinatesPaint);
 				}
 			}
 		}
@@ -471,12 +473,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			invalidate();
 			return false;
 		}
-		if (firstclick) {
+		if (firstClick) {
 			from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
 			if (getBoardFace().getPieces()[from] != ChessBoard.EMPTY
 					&& getBoardFace().getSide() == getBoardFace().getColor()[from]) {
 				pieceSelected = true;
-				firstclick = false;
+				firstClick = false;
 				invalidate();
 			}
 		} else {
@@ -485,7 +487,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					&& getBoardFace().getSide() == getBoardFace().getColor()[fromPosIndex]) {
 				from = fromPosIndex;
 				pieceSelected = true;
-				firstclick = false;
+				firstClick = false;
 				invalidate();
 			}
 		}
@@ -503,7 +505,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 		if (!drag && !pieceSelected)
 			from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
-		if (!firstclick && getBoardFace().getSide() == getBoardFace().getColor()[from]) {
+		if (!firstClick && getBoardFace().getSide() == getBoardFace().getColor()[from]) {
 			drag = true;
 			to = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
 			invalidate();
@@ -522,18 +524,18 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			return false;
 		}
 
-		if (firstclick) {
+		if (firstClick) {
 			from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
 			if (getBoardFace().getPieces()[from] != ChessBoard.EMPTY
 					&& getBoardFace().getSide() == getBoardFace().getColor()[from]) {
 				pieceSelected = true;
-				firstclick = false;
+				firstClick = false;
 				invalidate();
 			}
 		} else {
 			to = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
 			pieceSelected = false;
-			firstclick = true;
+			firstClick = true;
 
 			boolean found = false;
 			TreeSet<Move> moves = getBoardFace().gen();
@@ -562,7 +564,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 					&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
 				pieceSelected = true;
-				firstclick = false;
+				firstClick = false;
 				from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
 			}
 			invalidate();
@@ -599,7 +601,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 				&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
 			pieceSelected = true;
-			firstclick = false;
+			firstClick = false;
 			from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
 			invalidate();
 		} else {

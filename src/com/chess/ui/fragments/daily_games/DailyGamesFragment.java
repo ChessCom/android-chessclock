@@ -1,4 +1,4 @@
-package com.chess.ui.fragments.home;
+package com.chess.ui.fragments.daily_games;
 
 import android.app.AlertDialog;
 import android.content.*;
@@ -35,7 +35,6 @@ import com.chess.ui.adapters.DailyCurrentGamesTheirCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NewGamesFragment;
-import com.chess.ui.fragments.daily_games.GameDailyFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 import com.slidingmenu.lib.SlidingMenu;
@@ -46,7 +45,7 @@ import com.slidingmenu.lib.SlidingMenu;
  * Date: 02.01.13
  * Time: 7:42
  */
-public class HomeDailyGamesFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
+public class DailyGamesFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
 		AdapterView.OnItemLongClickListener, SlidingMenu.OnOpenedListener, ItemClickListenerFace {
 
 	private static final int CURRENT_GAMES_SECTION = 1;
@@ -406,10 +405,10 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 			switch (itemCode) {
 				case INVITE:
 					showToast(successToastMsgId);
-					HomeDailyGamesFragment.this.updateData();
+					DailyGamesFragment.this.updateData();
 					break;
 				case DRAW:
-					HomeDailyGamesFragment.this.updateData();
+					DailyGamesFragment.this.updateData();
 					break;
 				case VACATION:
 
@@ -607,7 +606,7 @@ public class HomeDailyGamesFragment extends CommonLogicFragment implements Adapt
 					break;
 				case DELETE:
 					onVacation = false;
-					HomeDailyGamesFragment.this.updateData();
+					DailyGamesFragment.this.updateData();
 					break;
 			}
 		}
