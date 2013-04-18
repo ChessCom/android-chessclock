@@ -153,8 +153,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
 		getBoardFace().setAnalysis(false);
 		boardView.disableAnalysis();
-		/*gamePanelView.toggleControlButton(GamePanelView.B_ANALYSIS_ID, false);
-		switch2Analysis(false);*/
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		updateGameState();
