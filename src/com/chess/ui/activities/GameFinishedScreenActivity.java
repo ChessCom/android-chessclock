@@ -370,6 +370,9 @@ public class GameFinishedScreenActivity extends GameBaseActivity {
 		super.onClick(view);
 
 		if (view.getId() == R.id.shareBtn) {
+			if (currentGame == null) {
+				return;
+			}
 			ShareItem shareItem = new ShareItem(currentGame, gameId, getString(R.string.online));
 
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
