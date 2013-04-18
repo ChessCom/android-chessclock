@@ -38,7 +38,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	private static final String TAG = "LccLog-LccHelper";
 	public static final int OWN_SEEKS_LIMIT = 3;
-	public static final int CONNECTION_FAILURE_DELAY = 3000;
+	public static final int CONNECTION_FAILURE_DELAY = 2000;
 
 	private final LccChatListener chatListener;
 	private final LccConnectionListener connectionListener;
@@ -327,18 +327,13 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		} else {
 			Log.d(TAG, "processConnectionFailure: details=null, recreate client and connect");
 
-			try {                                   // TODO test this way
-				Thread.sleep(CONNECTION_FAILURE_DELAY); // this is not UI thread, so we can sleep it fo our needs in that way.
+			try {
+				Thread.sleep(CONNECTION_FAILURE_DELAY);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
-//			new Handler().postDelayed(new Runnable() {  // can't create handler here. https://www.bugsense.com/dashboard/project/609b3b0e/errors/137517065
-//				@Override								// there is no way to post delayed task within worker thread + when context is a Service
-//				public void run() {
-					runConnectTask(true); // lets try this way, recreate and connect
-//				}
-//			}, CONNECTION_FAILURE_DELAY);
+			runConnectTask(true); // recreate and connect
 
 			/*setConnected(false);
 			cancelServiceNotification();
