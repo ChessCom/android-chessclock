@@ -147,13 +147,16 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 
-		Log.d("live", "new intent");
+		Log.d(TAG, "new intent");
 		ChessBoardLive.resetInstance();
 
 		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
 		getBoardFace().setAnalysis(false);
-		switch2Analysis(false);
+		boardView.disableAnalysis();
+		/*gamePanelView.toggleControlButton(GamePanelView.B_ANALYSIS_ID, false);
+		switch2Analysis(false);*/
 
+		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		updateGameState();
 
 		if (!isUserColorWhite()) {
@@ -161,6 +164,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		}
 
 		invalidateGameScreen();
+
+		boardView.setFinished(false);
 
 		checkPendingWarnings();
 	}
@@ -324,6 +329,8 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		if (getBoardFace().isAnalysis()) {
 			return;
 		}
+
+		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 
 		String[] actualMoves = gameItem.getMoveList().trim().split(StaticData.SYMBOL_SPACE);
 		int actualMovesSize = actualMoves.length;
@@ -497,7 +504,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	@Override
 	public void switch2Analysis(boolean isAnalysis) {
 		super.switch2Analysis(isAnalysis);
-		Log.d("live", "switch2Analysis analysis = " + isAnalysis);
+		Log.d(TAG, "switch2Analysis analysis = " + isAnalysis);
 		if (isAnalysis) {
 			liveService.setLatestMoveNumber(0);
 			ChessBoardLive.resetInstance();

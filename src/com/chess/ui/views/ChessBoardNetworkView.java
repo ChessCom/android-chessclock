@@ -28,8 +28,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 	public void setGameActivityFace(GameActivityFace gameActivityFace) {
 		super.setGameActivityFace(gameActivityFace);
 
-		whiteUserName = gameActivityFace.getWhitePlayerName();
-		blackUserName = gameActivityFace.getBlackPlayerName();
+		updatePlayerNames(gameActivityFace.getWhitePlayerName(), gameActivityFace.getBlackPlayerName());
 	}
 
 	@Override
@@ -172,7 +171,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 			if(whiteUserName.equals(StaticData.SYMBOL_EMPTY) || blackUserName.equals(StaticData.SYMBOL_EMPTY))
 				return true;
 
-			if (whiteUserName.equals(userName)  && !boardFace.isWhiteToMove()) {  // TODO check reside
+			if (whiteUserName.equals(userName)  && !boardFace.isWhiteToMove()) {
 				return true;
 			}
 			if (blackUserName.equals(userName) && boardFace.isWhiteToMove()) {
@@ -210,7 +209,9 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 //	}
 
 	public void updatePlayerNames(String whitePlayerName, String blackPlayerName) {
-		whiteUserName = whitePlayerName.substring(0, whitePlayerName.indexOf(StaticData.SYMBOL_LEFT_PAR)).trim().toLowerCase();
-		blackUserName = blackPlayerName.substring(0, blackPlayerName.indexOf(StaticData.SYMBOL_LEFT_PAR)).trim().toLowerCase();
+		if (!whitePlayerName.isEmpty() && !blackPlayerName.isEmpty()) {
+			whiteUserName = whitePlayerName.substring(0, whitePlayerName.indexOf(StaticData.SYMBOL_LEFT_PAR)).trim().toLowerCase();
+			blackUserName = blackPlayerName.substring(0, blackPlayerName.indexOf(StaticData.SYMBOL_LEFT_PAR)).trim().toLowerCase();
+		}
 	}
 }

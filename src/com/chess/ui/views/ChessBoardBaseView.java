@@ -219,6 +219,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		gameActivityFace.switch2Analysis(true);
 	}
 
+	public void disableAnalysis() { // probably could be refactored to enableAnalysis(boolean enable)
+		gamePanelView.toggleControlButton(GamePanelView.B_ANALYSIS_ID, false);
+		gamePanelView.enableAnalysisMode(false);
+		gameActivityFace.switch2Analysis(false);
+	}
+
 //	@Override
 //	public boolean isInAnalysis() {
 //		return getBoardFace().isAnalysis();
