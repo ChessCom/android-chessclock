@@ -84,6 +84,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	private LiveChessService.LccConnectUpdateListener lccConnectUpdateListener;
 	private final LiveChessService liveService;
 	private String networkTypeName;
+	//private Game latestGame;
 
 	public LccHelper(Context context, LiveChessService liveService, LiveChessService.LccConnectUpdateListener lccConnectUpdateListener) {
 		this.liveService = liveService;
@@ -153,9 +154,13 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
     }
 
 	public GameLiveItem getGameItem() {
-		Game game = getGame(currentGameId);
+		if (currentGameId == null) {
+			return null;
+		} else {
+			Game game = getGame(currentGameId);
+			return new GameLiveItem(game, game.getMoveCount() - 1);
+		}
 
-		return new GameLiveItem(game, game.getMoveCount() - 1);
 	}
 
 	public int getResignTitle() {
@@ -923,6 +928,10 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	public LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>> getReceivedChats() {
 		return receivedChatMessages;
 	}
+
+	/*public void setLatestGame(Game latestGame) {
+		this.latestGame = latestGame;
+	}*/
 
 	public LinkedHashMap<Long, ChatMessage> getChatMessages(String chatId) {
 		for (Chat storedChat : receivedChatMessages.keySet()) {

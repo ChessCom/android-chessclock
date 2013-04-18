@@ -78,7 +78,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 	}
 
 	private void init() {
-		currentGame = liveService.getGameItem();
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		boardView.updateBoardAndPiecesImgs();
 		enableScreenLockTimer();
@@ -181,6 +180,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		boardView.setBoardFace(ChessBoardLive.getInstance(this));
 		boardView.setGameActivityFace(this);
 
+		currentGame = liveService.getGameItem();
+		if (currentGame == null) {
+			finish(); // probably could be improved in next version
+			return;
+		}
+
 		init();
 
 		updateGameState();
@@ -232,6 +237,10 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		getSoundPlayer().playGameStart();
 
 		currentGame = liveService.getGameItem();
+		if (currentGame == null) {
+			finish(); // probably could be improved in next version
+			return;
+		}
 
 		checkMessages();
 

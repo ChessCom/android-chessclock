@@ -130,6 +130,7 @@ public class LccGameListener implements GameListener {
 	}
 
 	private void doResetGame(Game game) {
+		//lccHelper.setLatestGame(game);
 		if (game.isGameOver()) {
 			lccHelper.putGame(game);
 			return;
