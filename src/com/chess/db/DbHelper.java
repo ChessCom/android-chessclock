@@ -56,12 +56,12 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getVideosListByCategoryParams(String category){
+	public static QueryParams getVideosListByCategoryParams(String category, String sortOrder){
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.VIDEOS]);
 		queryParams.setSelection(DBDataManager.SELECTION_CATEGORY);
 		queryParams.setArguments(new String[]{category});
-		queryParams.setOrder(DBConstants.V_CATEGORY);
+		queryParams.setOrder(sortOrder);
 		return queryParams;
 	}
 

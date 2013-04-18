@@ -154,4 +154,8 @@
     <string name="sharing">Sharing</string>
     <string name="alerts_and_emails"><![CDATA[Alerts & Emails]]></string>
     <string name="account_history">Account History</string>
+
+    <!--Video sort order-->
+    <string name="latest">Latest</string>
+    <string name="authors_name">Author\'s Name</string>
 </resources>

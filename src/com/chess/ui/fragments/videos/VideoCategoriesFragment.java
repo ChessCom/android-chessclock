@@ -1,7 +1,9 @@
 package com.chess.ui.fragments.videos;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +44,8 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	private boolean searchVisible;
 	private VideosCursorUpdateListener videosCursorUpdateListener;
 	private boolean categoriesLoaded;
+	private List<String> sortList;
+	private List<String> sortOrders;
 
 	public static VideoCategoriesFragment newInstance(String sectionName) {
 		VideoCategoriesFragment frag = new VideoCategoriesFragment();
@@ -55,7 +59,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		videosAdapter = new NewVideosThumbCursorAdapter(getActivity(), null);
+		videosAdapter = new NewVideosThumbCursorAdapter(this, null);
 		videosCursorUpdateListener = new VideosCursorUpdateListener();
 	}
 
@@ -81,12 +85,27 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 		sortSpinner = (Spinner) view.findViewById(R.id.sortSpinner);
 
-		List<String> sortList = new ArrayList<String>();  // TODO set list of sort parameters
-		sortList.add("Latest");
-		sortList.add("Date");
-		sortList.add("Author's Name");
-		sortList.add("Author's Country");
+/*
+	+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
+	+ V_SKILL_LEVEL 			+ _TEXT_NOT_NULL + _COMMA
+	+ V_CREATE_DATE 	    	+ _LONG_NOT_NULL + _COMMA
+	+ V_FIRST_NAME 	    		+ _TEXT_NOT_NULL + _COMMA
+*/
+
+		sortList = new ArrayList<String>();  // TODO set list of sort parameters
+		sortList.add(getString(R.string.title));
+		sortList.add(getString(R.string.skill));
+		sortList.add(getString(R.string.latest));
+		sortList.add(getString(R.string.authors_name));
 		sortSpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), sortList));
+		sortSpinner.setOnItemSelectedListener(this);
+
+		sortOrders = new ArrayList<String>();
+		sortOrders.add(DBConstants.V_NAME);
+		sortOrders.add(DBConstants.V_SKILL_LEVEL);
+		sortOrders.add(DBConstants.V_CREATE_DATE);
+		sortOrders.add(DBConstants.V_FIRST_NAME);
+
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(videosAdapter);
@@ -151,18 +170,15 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 	private void loadFromDb() {
 		String category = (String) categorySpinner.getSelectedItem();
+		int sortPosition = sortSpinner.getSelectedItemPosition();
 
+		String sortOrder = sortOrders.get(sortPosition);
 		new LoadDataFromDbTask(videosCursorUpdateListener,
-				DbHelper.getVideosListByCategoryParams(category),
+				DbHelper.getVideosListByCategoryParams(category, sortOrder),
 				getContentResolver()).executeTask();
-
 	}
 
 	private class VideosCursorUpdateListener extends ChessUpdateListener<Cursor> {
-
-		public VideosCursorUpdateListener() {
-			super();
-		}
 
 		@Override
 		public void showProgress(boolean show) {
@@ -190,13 +206,25 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	}
 
 	@Override
-	public void onClick(View v) {
-		super.onClick(v);
-
-		if (v.getId() == R.id.searchBtn) {
+	public void onClick(View view) {
+		super.onClick(view);
+		int id = view.getId();
+		if (id == R.id.searchBtn) {
 			searchVisible = !searchVisible;
 
 			showSearch(searchVisible);
+		} else if (id == R.id.titleTxt || id == R.id.authorTxt || id == R.id.dateTxt){
+			Integer position = (Integer) view.getTag(R.id.list_item_id);
+			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
+			getActivityFace().openFragment(VideoDetailsFragment.newInstance(DBDataManager.getId(cursor)));
+		} else if (id == R.id.thumbnailImg || id == R.id.playBtn){
+			Integer position = (Integer) view.getTag(R.id.list_item_id);
+			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
+
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setDataAndType(Uri.parse("http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"), "video/*"); // TODO restore
+//			intent.setDataAndType(Uri.parse(DBDataManager.getString(cursor, DBConstants.V_MOBILE_URL)), "video/*");
+			startActivity(intent);
 		}
 	}
 

@@ -11,6 +11,7 @@ import com.chess.R;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
+import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
@@ -26,17 +27,19 @@ public class NewVideosThumbCursorAdapter extends ItemsCursorAdapter {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
+	private final ItemClickListenerFace clickFace;
 
 	private CharacterStyle foregroundSpan;
 	private final Date date;
 
-	public NewVideosThumbCursorAdapter(Context context, Cursor cursor) {
-		super(context, cursor);
+	public NewVideosThumbCursorAdapter(ItemClickListenerFace clickFace, Cursor cursor) {
+		super(clickFace.getMeContext(), cursor);
 
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
 		date = new Date();
 
+		this.clickFace = clickFace;
 	}
 
 	@Override
@@ -46,6 +49,14 @@ public class NewVideosThumbCursorAdapter extends ItemsCursorAdapter {
 		holder.titleTxt = (TextView) view.findViewById(R.id.titleTxt);
 		holder.authorTxt = (TextView) view.findViewById(R.id.authorTxt);
 		holder.dateTxt = (TextView) view.findViewById(R.id.dateTxt);
+		holder.thumbnailImg = view.findViewById(R.id.thumbnailImg);
+		holder.playBtn = view.findViewById(R.id.playBtn);
+
+		holder.playBtn.setOnClickListener(clickFace);
+		holder.thumbnailImg.setOnClickListener(clickFace);
+		holder.titleTxt.setOnClickListener(clickFace);
+		holder.authorTxt.setOnClickListener(clickFace);
+		holder.dateTxt.setOnClickListener(clickFace);
 
 		view.setTag(holder);
 
@@ -55,6 +66,13 @@ public class NewVideosThumbCursorAdapter extends ItemsCursorAdapter {
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
+
+		holder.playBtn.setTag(R.id.list_item_id, cursor.getPosition());
+		holder.thumbnailImg.setTag(R.id.list_item_id, cursor.getPosition());
+		holder.titleTxt.setTag(R.id.list_item_id, cursor.getPosition());
+		holder.authorTxt.setTag(R.id.list_item_id, cursor.getPosition());
+		holder.dateTxt.setTag(R.id.list_item_id, cursor.getPosition());
+
 		String firstName = DBDataManager.getString(cursor, DBConstants.V_FIRST_NAME);
 		CharSequence chessTitle = DBDataManager.getString(cursor, DBConstants.V_CHESS_TITLE);
 		String lastName =  DBDataManager.getString(cursor, DBConstants.V_LAST_NAME);
@@ -72,5 +90,7 @@ public class NewVideosThumbCursorAdapter extends ItemsCursorAdapter {
 		public TextView titleTxt;
 		public TextView authorTxt;
 		public TextView dateTxt;
+		public View thumbnailImg;
+		public View playBtn;
 	}
 }
