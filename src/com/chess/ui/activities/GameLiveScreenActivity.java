@@ -22,7 +22,6 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoardLive;
-import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.PopupCustomViewFragment;
@@ -149,7 +148,7 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 		Log.d(TAG, "new intent");
 		ChessBoardLive.resetInstance();
 
-		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
+		boardView.setBoardFace(ChessBoardLive.getInstance(this));
 		getBoardFace().setAnalysis(false);
 		boardView.disableAnalysis();
 
