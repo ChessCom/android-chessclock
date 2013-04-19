@@ -122,7 +122,13 @@ public class AppData {
 	}
 
 	public static int getUserPremiumStatus(Context context) {
-		return getPreferences(context).getInt(AppConstants.USER_PREMIUM_STATUS, StaticData.BASIC_USER);
+		int status;
+		try {
+			status = getPreferences(context).getInt(AppConstants.USER_PREMIUM_STATUS, StaticData.BASIC_USER);
+		} catch (ClassCastException ex) {
+			status = Integer.parseInt(getPreferences(context).getString(AppConstants.USER_PREMIUM_STATUS, String.valueOf(StaticData.BASIC_USER)));
+		}
+		return status;
 	}
 
 	public static Intent getMembershipAndroidIntent(Context context) {
