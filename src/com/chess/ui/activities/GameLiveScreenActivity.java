@@ -172,6 +172,12 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		super.onLiveServiceConnected();
 
+		currentGame = liveService.getGameItem();
+		if (currentGame == null) {
+			finish(); // probably could be improved in next version
+			return;
+		}
+
 		boardView = (ChessBoardLiveView) findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setGamePanelView(gamePanelView);
@@ -179,12 +185,6 @@ public class GameLiveScreenActivity extends GameBaseActivity implements LccEvent
 
 		boardView.setBoardFace(ChessBoardLive.getInstance(this));
 		boardView.setGameActivityFace(this);
-
-		currentGame = liveService.getGameItem();
-		if (currentGame == null) {
-			finish(); // probably could be improved in next version
-			return;
-		}
 
 		init();
 
