@@ -22,10 +22,6 @@
  	<dimen name="signin_button_height">50dip</dimen>
     <!--<dimen name="default_stroke_width">4px</dimen>-->
 
-    <!--Upgrade Button-->
-    <dimen name="button_upgrade_left_padding">43dip</dimen>
-    <dimen name="button_upgrade_right_padding">46dip</dimen>
-
 
     <dimen name="list_item_image_size">26dip</dimen>
  	<dimen name="list_item_stroke_width">1px</dimen>

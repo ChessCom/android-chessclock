@@ -37,13 +37,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * BaseFragmentActivity class
+ * BaseFragmentPopupsActivity class
  *
  * @author alien_roger
  * @created at: 07.07.12 6:42
  */
-//public abstract class BaseFragmentActivity extends FragmentActivity implements PopupDialogFace {
-public abstract class BaseFragmentActivity extends BaseActivity implements PopupDialogFace {
+//public abstract class BaseFragmentPopupsActivity extends FragmentActivity implements PopupDialogFace {
+public abstract class BaseFragmentPopupsActivity extends BaseActivity implements PopupDialogFace {
 
 	protected static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 
@@ -76,7 +76,7 @@ public abstract class BaseFragmentActivity extends BaseActivity implements Popup
 		getWindow().setFormat(PixelFormat.RGBA_8888);
 	}
 
-	public BaseFragmentActivity() {
+	public BaseFragmentPopupsActivity() {
 		super(R.string.chess_com);
 	}
 

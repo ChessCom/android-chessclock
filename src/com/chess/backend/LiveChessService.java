@@ -29,8 +29,7 @@ import com.chess.live.client.Game;
 import com.chess.live.client.LiveChessClient;
 import com.chess.live.client.User;
 import com.chess.model.GameLiveItem;
-import com.chess.model.MessageItem;
-import com.chess.ui.activities.LiveScreenActivity;
+import com.chess.ui.activities.old.LiveScreenActivity;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.chess.ui.activities;
+package com.chess.ui.activities.old;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
+import com.chess.ui.activities.LiveBaseActivity;
 
 /**
  * WebViewActivity class

@@ -1,4 +1,4 @@
-package com.chess.ui.activities;
+package com.chess.ui.activities.old;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -10,6 +10,7 @@ import com.chess.backend.entity.new_api.ChatItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
+import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.ChatMessagesAdapter;
 import com.chess.utilities.AppUtils;
 

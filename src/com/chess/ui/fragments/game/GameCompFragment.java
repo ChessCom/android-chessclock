@@ -92,7 +92,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		updateTitle(R.string.vs_computer);
+		setTitle(R.string.vs_computer);
 
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);

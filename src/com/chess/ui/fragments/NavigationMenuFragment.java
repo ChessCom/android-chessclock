@@ -12,7 +12,7 @@ import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.daily_games.DailyTabsFragment;
 import com.chess.ui.fragments.game.GameTacticsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
-import com.chess.ui.fragments.settings.NewSettingsFragment;
+import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.videos.VideosFragment;
@@ -128,8 +128,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 			case R.drawable.ic_nav_settings:
-				getActivityFace().openFragment(new NewSettingsFragment());
-//				getActivityFace().openFragment(new NewSettingsGridFragment());
+				getActivityFace().openFragment(new SettingsFragment());
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 		}

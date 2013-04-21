@@ -128,6 +128,7 @@ public abstract class ActionBarHelper {
 	 * @param value value to be changed
 	 */
 	public abstract void setBadgeValueForId(int menuId, int value, Menu menu);
+
 	/**
 	 * Returns a {@link android.view.MenuInflater} for use when inflating menus.
 	 * The implementation of this method in {@link ActionBarHelperBase} returns

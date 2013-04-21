@@ -97,7 +97,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		updateTitle(R.string.analysis);
+		setTitle(R.string.analysis);
 
 		widgetsInit(view);
 	}

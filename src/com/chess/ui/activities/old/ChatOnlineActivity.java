@@ -1,4 +1,4 @@
-package com.chess.ui.activities;
+package com.chess.ui.activities.old;
 
 import android.app.NotificationManager;
 import android.content.Context;
@@ -21,6 +21,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.BaseGameItem;
+import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.ChatMessagesAdapter;
 import org.apache.http.protocol.HTTP;
 

@@ -72,7 +72,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		updateTitle(R.string.upgrade);
+		setTitle(R.string.upgrade);
 
 		density = getResources().getDisplayMetrics().density;
 

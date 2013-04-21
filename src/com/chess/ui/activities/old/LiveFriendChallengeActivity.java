@@ -1,4 +1,4 @@
-package com.chess.ui.activities;
+package com.chess.ui.activities.old;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -22,6 +22,7 @@ import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.PieceColor;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.live.util.GameType;
+import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.flurry.android.FlurryAgent;
 

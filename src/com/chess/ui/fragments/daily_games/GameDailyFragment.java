@@ -133,7 +133,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		updateTitle(R.string.daily_chess);
+		setTitle(R.string.daily_chess);
 
 		widgetsInit(view);
 	}

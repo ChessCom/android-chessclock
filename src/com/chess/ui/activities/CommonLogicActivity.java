@@ -29,6 +29,8 @@ import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.*;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.ui.activities.old.HomeScreenActivity;
+import com.chess.ui.activities.old.LoginScreenActivity;
 import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import com.facebook.android.*;
 import com.flurry.android.FlurryAgent;
@@ -47,7 +49,7 @@ import java.util.*;
  * @author alien_roger
  * @created at: 23.09.12 8:10
  */
-public abstract class CommonLogicActivity extends BaseFragmentActivity {
+public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 	private static final int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 	private static final int SIGNIN_CALLBACK_CODE = 16;

@@ -27,7 +27,9 @@ import java.util.Map;
  * Date: 30.12.12
  * Time: 13:37
  */
-public class NewLoginActivity extends LiveBaseActivity implements ActiveFragmentInterface {
+public class MainFragmentFaceActivity extends LiveBaseActivity implements ActiveFragmentInterface {
+
+	private static final String SHOW_ACTION_BAR = "show_actionbar_in_activity";
 
 	private Fragment currentActiveFragment;
 	private Hashtable<Integer, Integer> badgeItems;
@@ -50,15 +52,18 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 
 		openMenuListeners = new ArrayList<SlidingMenu.OnOpenedListener>();
 
-		// set the Above View
-//		if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
-			switchFragment(new HomeTabsFragment());
-			showActionBar = true;
-//		} else {
-//	//			switchFragment(new SignInFragment());
-//			switchFragment(new WelcomeFragment());
-//			showActionBar = false;
-//		}
+		if (savedInstanceState == null) {
+			// set the Above View
+//			if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
+				switchFragment(new HomeTabsFragment());
+				showActionBar = true;
+//			} else {
+//				switchFragment(new WelcomeFragment());
+//				showActionBar = false;
+//			}
+		} else { // fragments state will be automatically restored
+			showActionBar = savedInstanceState.getBoolean(SHOW_ACTION_BAR);
+		}
 
 		slidingMenu = getSlidingMenu();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
@@ -76,10 +81,6 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		super.onPostCreate(savedInstanceState);
 
 		getActionBarHelper().showActionBar(showActionBar);
-
-//		if (HONEYCOMB_PLUS_API) {
-//			getActionBarHelper().setCustomView(R.layout.new_custom_actionbar);
-//		}
 	}
 
 	@Override
@@ -90,14 +91,30 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 	}
 
 	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(SHOW_ACTION_BAR, showActionBar);
+
+	}
+
+	@Override
 	public void setTitle(int titleId) {
 		getActionBarHelper().setTitle(titleId);
 	}
 
 	@Override
 	public void updateTitle(int titleId) {
+		if (!HONEYCOMB_PLUS_API) { // set title before custom view for pre-HC
+			getActionBarHelper().setTitle(titleId);
+		}
 		getActionBarHelper().setCustomView(R.layout.new_custom_actionbar);
 		getActionBarHelper().setTitle(titleId);
+
+		if (!HONEYCOMB_PLUS_API) {
+			for (Map.Entry<Integer, Integer> entry : badgeItems.entrySet()) {
+				getActionBarHelper().setBadgeValueForId(entry.getKey(), entry.getValue());
+			}
+		}
 	}
 
 
@@ -188,7 +205,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		currentActiveFragment = fragment;
 
-		ft.replace(R.id.content_frame, fragment);
+		ft.replace(R.id.content_frame, fragment, fragment.getClass().getSimpleName());
 		ft.addToBackStack(fragment.getClass().getSimpleName());
 		ft.commit();
 	}
@@ -198,7 +215,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		currentActiveFragment = fragment;
 
-		ft.replace(R.id.content_frame, fragment);
+		ft.replace(R.id.content_frame, fragment, fragment.getClass().getSimpleName());
 		ft.addToBackStack(fragment.getClass().getSimpleName());
 		ft.commit();
 	}
@@ -208,7 +225,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		currentActiveFragment = fragment;
 
-		ft.replace(R.id.content_frame, fragment);
+		ft.replace(R.id.content_frame, fragment, fragment.getClass().getSimpleName());
 		ft.commit();
 	}
 
@@ -217,7 +234,7 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		currentActiveFragment = fragment;
 
-		ft.replace(R.id.content_frame, fragment);
+		ft.replace(R.id.content_frame, fragment, fragment.getClass().getSimpleName());
 		ft.commit();
 	}
 
@@ -293,5 +310,4 @@ public class NewLoginActivity extends LiveBaseActivity implements ActiveFragment
 			startActivityFromFragment(currentActiveFragment, intent, requestCode);
 		}
 	}
-
 }

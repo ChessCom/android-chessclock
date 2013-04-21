@@ -27,7 +27,7 @@ import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameListFinishedItem;
 import com.chess.model.GameOnlineItem;
-import com.chess.ui.activities.ChatOnlineActivity;
+import com.chess.ui.activities.old.ChatOnlineActivity;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.DailyChallengesGamesAdapter;
 import com.chess.ui.adapters.DailyCurrentGamesMyCursorAdapter;

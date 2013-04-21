@@ -26,7 +26,7 @@ import java.util.List;
  * Date: 15.04.13
  * Time: 20:43
  */
-public class NewSettingsFragment extends LiveBaseFragment implements AdapterView.OnItemClickListener {
+public class SettingsFragment extends LiveBaseFragment implements AdapterView.OnItemClickListener {
 
 	private ListView listView;
 	private List<SettingsMenuItem> menuItems;
@@ -63,7 +63,7 @@ public class NewSettingsFragment extends LiveBaseFragment implements AdapterView
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		updateTitle(R.string.settings);
+		setTitle(R.string.settings);
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
@@ -90,6 +90,9 @@ public class NewSettingsFragment extends LiveBaseFragment implements AdapterView
 
 		// TODO adjust switch/closeBoard when the same fragment opened
 		switch (menuItem.iconRes) {
+			case R.string.glyph_profile:
+				getActivityFace().openFragment(new SettingsProfileFragment());
+				break;
 			case R.string.glyph_close:
 				if (isLCSBound) {
 					liveService.logout();

@@ -35,7 +35,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.model.PopupItem;
-import com.chess.ui.activities.BaseFragmentActivity;
+import com.chess.ui.activities.BaseFragmentPopupsActivity;
 import com.chess.ui.fragments.popup_fragments.PopupProgressFragment;
 import com.facebook.android.Facebook.DialogListener;
 
@@ -62,13 +62,13 @@ public class FbDialog extends Dialog {
     private ImageView mCrossImage;
     private WebView mWebView;
     private FrameLayout mContent;
-	private BaseFragmentActivity fragmentActivity;
+	private BaseFragmentPopupsActivity fragmentActivity;
 
 	public FbDialog(Context context, String url, DialogListener listener) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         mUrl = url;
         mListener = listener;
-		fragmentActivity = (BaseFragmentActivity) context;
+		fragmentActivity = (BaseFragmentPopupsActivity) context;
     }
 
     @Override

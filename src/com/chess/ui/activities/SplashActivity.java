@@ -28,7 +28,7 @@ public class SplashActivity extends CommonLogicActivity {
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				startActivity(new Intent(SplashActivity.this, NewLoginActivity.class));
+				startActivity(new Intent(SplashActivity.this, MainFragmentFaceActivity.class));
 				AppData.setLiveChessMode(getContext(), false);
 			}
 		}, SPLASH_DELAY);

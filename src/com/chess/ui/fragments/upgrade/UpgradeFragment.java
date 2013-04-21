@@ -24,7 +24,7 @@ public class UpgradeFragment extends CommonLogicFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		updateTitle(R.string.upgrade);
+		setTitle(R.string.upgrade);
 
 		view.findViewById(R.id.diamondBtnLay).setOnClickListener(this);
 		view.findViewById(R.id.platinumBtnLay).setOnClickListener(this);

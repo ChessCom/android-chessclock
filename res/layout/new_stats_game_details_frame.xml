@@ -135,7 +135,7 @@
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:background="@color/new_friends_top_border_light"
+        android:background="@color/new_friends_list_divider"
         />
 
     <!--Average opponent rating-->
@@ -236,7 +236,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:background="@color/new_friends_top_border_light"
+        android:background="@color/new_friends_list_divider"
         />
 
     <!--Winning Streak-->
@@ -271,7 +271,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:background="@color/new_friends_top_border_light"
+        android:background="@color/new_friends_list_divider"
         />
 
     <!--Losing Streak-->
@@ -306,7 +306,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:background="@color/new_friends_top_border_light"
+        android:background="@color/new_friends_list_divider"
         />
 
     <!--Timeouts-->
@@ -343,7 +343,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:background="@color/new_friends_top_border_light"
+        android:background="@color/new_friends_list_divider"
         />
 
     <!--Glicko RD-->
@@ -378,7 +378,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:background="@color/new_friends_top_border_light"
+        android:background="@color/new_friends_list_divider"
         />
 
     <!--Most Frequent Opponent-->

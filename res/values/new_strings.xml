@@ -158,4 +158,13 @@
     <!--Video sort order-->
     <string name="latest">Latest</string>
     <string name="authors_name">Author\'s Name</string>
+    <string name="location">Location</string>
+    <string name="share">Share</string>
+    <string name="profile_membership_renew_cancel">Your %1$s membership will renew on %2$s. Cancel</string>
+    <string name="invite_friends_profile_message">Chess is more fun with Friends! Invite them to join!</string>
+    <string name="profile_account_message">Your account is subject to the site <a href="http://www.chess.com/legal#termsofservice">Terms and Conditions</a>. If you would like
+        to close your account, <a href="http://www.chess.com/home/privacy">tap here.</a>
+    </string>
+    <string name="membership_expire_date_format">dd/MM/yyyy</string>
+    <string name="basic">Basic</string>
 </resources>

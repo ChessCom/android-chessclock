@@ -59,7 +59,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:background="@color/new_friends_top_border_light"
+        android:background="@color/new_friends_list_divider"
         />
 
     <com.chess.RoboTextView

@@ -133,6 +133,10 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 			int imageSize = (int) (AVATAR_SIZE * getResources().getDisplayMetrics().density);
 			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(imageSize, imageSize);
 
+			ViewGroup parent = (ViewGroup) progressImageView.getParent();
+			if (parent != null) {
+				parent.removeAllViews();
+			}
 			userPhotoImg.addView(progressImageView, params);
 			imageDownloader.download(AppData.getUserAvatar(getActivity()), progressImageView, AVATAR_SIZE);
 		}

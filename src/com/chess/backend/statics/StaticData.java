@@ -84,14 +84,14 @@ public class StaticData {
 	public static final int DIAMOND_USER = 3;
 
 	/* Membership levels */
-	public static final int GUEST_LEVEL = 0;
-	public static final int CHEATER_LEVEL = 5;
-	public static final int BASIC_LEVEL = 10;
-	public static final int SILVER_LEVEL = 20;
-	public static final int GOLD_LEVEL = 30;
-	public static final int PLATINUM_LEVEL = 40;
-	public static final int DIAMOND_LEVEL = 50;
-	public static final int STAFF_LEVEL = 90;
+//	public static final int GUEST_LEVEL = 0;
+//	public static final int CHEATER_LEVEL = 5;
+//	public static final int BASIC_LEVEL = 10;
+//	public static final int SILVER_LEVEL = 20;
+//	public static final int GOLD_LEVEL = 30;
+//	public static final int PLATINUM_LEVEL = 40;
+//	public static final int DIAMOND_LEVEL = 50;
+//	public static final int STAFF_LEVEL = 90;
 
     public static final String LOCALE_EN = "en";
 

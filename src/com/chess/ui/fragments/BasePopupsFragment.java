@@ -268,4 +268,16 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 	}
+
+	@Override
+	public void setInitialSavedState(SavedState state) {
+		super.setInitialSavedState(state);
+		// TODO -> File | Settings | File Templates.
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		// TODO -> File | Settings | File Templates.
+	}
 }

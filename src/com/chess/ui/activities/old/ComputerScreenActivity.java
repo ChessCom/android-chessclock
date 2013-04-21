@@ -1,4 +1,4 @@
-package com.chess.ui.activities;
+package com.chess.ui.activities.old;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +10,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
+import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.ui.engine.ChessBoardComp;
 import com.flurry.android.FlurryAgent;

@@ -39,7 +39,7 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		// activate Left and right menu fragments
+		// activate Left and Right menu fragments
 		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		getActivityFace().changeLeftFragment(new NavigationMenuFragment());
 //		getActivityFace().changeRightFragment(new DailyGamesRightFragment());
@@ -54,7 +54,7 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		updateTitle(R.string.daily_chess);
+		setTitle(R.string.daily_chess);
 
 		getActivityFace().setCustomActionBarViewId(R.layout.new_home_actionbar);
 
@@ -93,10 +93,18 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
 				case R.id.leftTabBtn:
-					changeInternalFragment(new DailyGamesFragment());
+					Fragment dailyGamesFragment = getFragmentManager().findFragmentByTag(DailyGamesFragment.class.getSimpleName());
+					if (dailyGamesFragment == null) {
+						dailyGamesFragment = new DailyGamesFragment();
+					}
+					changeInternalFragment(dailyGamesFragment);
 					break;
 				case R.id.centerTabBtn:
-					changeInternalFragment(new DailyGameSetupFragment());
+					Fragment dailyGameSetupFragment = getFragmentManager().findFragmentByTag(DailyGameSetupFragment.class.getSimpleName());
+					if (dailyGameSetupFragment == null) {
+						dailyGameSetupFragment = new DailyGameSetupFragment();
+					}
+					changeInternalFragment(dailyGameSetupFragment);
 					break;
 				case R.id.rightTabBtn:
 					changeInternalFragment(StatsGameDetailsFragment.newInstance(StatsGameFragment.DAILY_CHESS));
@@ -107,7 +115,9 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 
 	private void changeInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.replace(R.id.tab_content_frame, fragment).commit();
+		transaction.replace(R.id.tab_content_frame, fragment, fragment.getClass().getSimpleName());
+		transaction.addToBackStack(fragment.getClass().getSimpleName());
+		transaction.commit();
 	}
 
 	@Override

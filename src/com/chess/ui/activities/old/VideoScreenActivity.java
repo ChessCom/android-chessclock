@@ -1,4 +1,4 @@
-package com.chess.ui.activities;
+package com.chess.ui.activities.old;
 
 import android.app.SearchManager;
 
@@ -20,6 +20,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;

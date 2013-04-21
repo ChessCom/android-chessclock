@@ -1,4 +1,4 @@
-package com.chess.ui.activities;
+package com.chess.ui.activities.old;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -18,6 +18,7 @@ import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.ui.adapters.FriendsSpinnerAdapter;
 

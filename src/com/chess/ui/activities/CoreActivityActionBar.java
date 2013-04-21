@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.view.*;
 import com.chess.R;
 import com.chess.backend.entity.SoundPlayer;
+import com.chess.ui.activities.old.SettingsScreenActivity;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.facebook.android.Facebook;
 import com.inneractive.api.ads.InneractiveAd;

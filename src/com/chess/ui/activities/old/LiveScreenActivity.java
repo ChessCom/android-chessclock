@@ -1,4 +1,4 @@
-package com.chess.ui.activities;
+package com.chess.ui.activities.old;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.live.client.User;
 import com.chess.live.util.GameRatingClass;
 import com.chess.model.NewGameButtonItem;
+import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.NewGamesButtonsAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 

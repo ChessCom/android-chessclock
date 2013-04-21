@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.ui.interfaces.BoardFace;
 
@@ -123,7 +124,23 @@ public class AppData {
 	}
 
 	public static int getUserPremiumStatus(Context context) {
-		return getPreferences(context).getInt(AppConstants.USER_PREMIUM_STATUS, StaticData.NOT_INITIALIZED_USER);
+//		return getPreferences(context).getInt(AppConstants.USER_PREMIUM_STATUS, StaticData.NOT_INITIALIZED_USER);
+		return getPreferences(context).getInt(AppConstants.USER_PREMIUM_STATUS, StaticData.BASIC_USER);
+	}
+
+	public static String getUserPremiumStatusStr(Context context) {
+		int status = getPreferences(context).getInt(AppConstants.USER_PREMIUM_STATUS, StaticData.BASIC_USER);
+		switch (status) {
+			case StaticData.GOLD_USER:
+				return context.getString(R.string.gold);
+			case StaticData.PLATINUM_USER:
+				return context.getString(R.string.platinum);
+			case StaticData.DIAMOND_USER:
+				return context.getString(R.string.gold);
+			case StaticData.BASIC_USER:
+			default:
+				return context.getString(R.string.basic);
+		}
 	}
 
 	public static Intent getMembershipAndroidIntent(Context context) {
@@ -258,7 +275,8 @@ public class AppData {
 	}
 
 	public static String getUserAvatar(Context context) {
-		return getPreferences(context).getString(AppConstants.PREF_USER_AVATAR_URL, StaticData.SYMBOL_EMPTY);
+//		return getPreferences(context).getString(AppConstants.PREF_USER_AVATAR_URL, StaticData.SYMBOL_EMPTY);
+		return getPreferences(context).getString(AppConstants.PREF_USER_AVATAR_URL, "http://d1lalstwiwz2br.cloudfront.net/images_users/avatars/alien_roger.gif"); // TODO restore
 	}
 
 	public static int getUserTacticsRating(Context context) {

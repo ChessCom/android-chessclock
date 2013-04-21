@@ -31,6 +31,7 @@
     <dimen name="new_edit_field_height">40dip</dimen>
     <dimen name="new_tab_button_height">44dip</dimen>
     <dimen name="button_min_width">68dip</dimen>
+    <dimen name="wide_button_min_width">108dip</dimen>
 
     <!--Edit Fields Paddings-->
     <dimen name="new_edit_field_padding_top">5dip</dimen>
@@ -44,9 +45,6 @@
     <dimen name="round_list_item_padding_right">14dip</dimen>
     <dimen name="round_list_item_padding_bottom">4dip</dimen>
 
-    <!--Upgrade Button-->
-    <dimen name="button_upgrade_left_padding">43dip</dimen>
-    <dimen name="button_upgrade_right_padding">46dip</dimen>
 
 	<!--Login fb-->
     <dimen name="button_login_fb_left_padding">6dip</dimen>
@@ -244,4 +242,5 @@
     <!--GameControlsView-->
     <dimen name="game_controls_button_height">37dip</dimen>
     <dimen name="video_thumb_size">120dip</dimen>
+    <dimen name="img_profile_size_big">80dip</dimen>
 </resources>

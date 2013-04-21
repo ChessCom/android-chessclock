@@ -131,7 +131,7 @@
         android:id="@+id/shareBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Text.Button.Login"
+        style="@style/Text.Button.Facebook"
         android:text="@string/share_game"
         android:drawableLeft="@null"
         android:paddingLeft="20dip"

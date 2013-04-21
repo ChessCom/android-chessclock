@@ -79,7 +79,7 @@ public class NewGamesFragment extends CommonLogicFragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		if (getArguments().getInt(MODE) == CENTER_MODE) {
-			updateTitle(R.string.new_game);
+			setTitle(R.string.new_game);
 		}
 
 		setupNewGameViews(view);

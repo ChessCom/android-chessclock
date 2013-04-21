@@ -76,8 +76,8 @@ public class EnhancedImageDownloader {
         if (bitmap == null) {
             forceDownload(url, holder);
         } else {
-            cancelPotentialDownload(url, holder.imageView);
-            holder.imageView.setImageBitmap(bitmap);
+            cancelPotentialDownload(url, holder.getImageView());
+            holder.setImageBitmap(bitmap);
             holder.progress.setVisibility(View.INVISIBLE);
         }
     }
@@ -95,7 +95,7 @@ public class EnhancedImageDownloader {
         // if file is stored so simply read it, do not resize
 		Bitmap bmp = readFile(f);
 		if(bmp != null){
-			pHolder.bitmap = bmp;
+			pHolder.setBitmap(bmp);
 			addBitmapToCache(url, pHolder);
 		}
 
@@ -107,7 +107,7 @@ public class EnhancedImageDownloader {
                 // Move element to first position, so that it is removed last
                 sHardBitmapCache.remove(url);
                 sHardBitmapCache.put(url, holder);
-                return holder.bitmap;
+                return holder.getBitmap();
             }
         }
 
@@ -117,7 +117,7 @@ public class EnhancedImageDownloader {
             final ProgressImageView holder = bitmapReference.get();
             if (holder != null) {
                 // Bitmap found in soft cache
-                return holder.bitmap;
+                return holder.getBitmap();
             } else {
                 // Soft reference has been Garbage Collected
                 sSoftBitmapCache.remove(url);
@@ -142,22 +142,22 @@ public class EnhancedImageDownloader {
         // State sanity: url is guaranteed to never be null in
         // DownloadedDrawable and cache keys.
         if (url == null) {
-            holder.imageView.setImageDrawable(null);
+            holder.setImageDrawable(null);
             return;
         }
 
-        if (cancelPotentialDownload(url, holder.imageView)) {
+        if (cancelPotentialDownload(url, holder.getImageView())) {
             BitmapDownloaderTask task;
             switch (mode) {
                 case NO_ASYNC_TASK: {
-                    holder.bitmap = downloadBitmap(url);
+                    holder.setBitmap(downloadBitmap(url));
                     addBitmapToCache(url, holder);
-                    holder.imageView.setImageBitmap(holder.bitmap);
+                    holder.updateImageBitmap();
                 }
                 break;
 
                 case NO_DOWNLOADED_DRAWABLE: {
-                    holder.imageView.setMinimumHeight(50);
+                    holder.getImageView().setMinimumHeight(50);
                     task = new BitmapDownloaderTask(holder);
                     task.executeTask(url);
                 }
@@ -166,8 +166,8 @@ public class EnhancedImageDownloader {
                 case CORRECT: {
                     task = new BitmapDownloaderTask(holder);
                     EnhDownloadedDrawable enhDownloadedDrawable = new EnhDownloadedDrawable(task, holder);
-                    holder.imageView.setImageDrawable(enhDownloadedDrawable);
-                    holder.imageView.setMinimumHeight(50);
+                    holder.getImageView().setImageDrawable(enhDownloadedDrawable);
+                    holder.getImageView().setMinimumHeight(50);
                     task.executeTask(url);
                 }
                 break;
@@ -309,20 +309,21 @@ public class EnhancedImageDownloader {
 			if (context == null) { // if activity dead, escape
 				return;
 			}
-            ProgressImageView holder = new ProgressImageView(context, imgSize);
+//            ProgressImageView holder = new ProgressImageView(context, imgSize);
+            ProgressImageView holder = holderReference.get();
 
-            holder.bitmap = bitmap;
+            holder.setBitmap(bitmap);
 
             addBitmapToCache(url, holder);
 
-            holder.imageView = holderReference.get().imageView;
+            holder.setImageView(holderReference.get().getImageView());
 
-            BitmapDownloaderTask bitmapDownloaderTask = getBitmapDownloaderTask(holder.imageView);
+            BitmapDownloaderTask bitmapDownloaderTask = getBitmapDownloaderTask(holder.getImageView());
             // Change bitmap only if this process is still associated with it
             // Or if we don't use any bitmap to task association
             // (NO_DOWNLOADED_DRAWABLE mode)
             if ((this == bitmapDownloaderTask) || (mode != Mode.CORRECT)) {
-                holder.imageView.setImageBitmap(holder.bitmap);
+                holder.updateImageBitmap();
             }
         }
 
@@ -365,36 +366,34 @@ public class EnhancedImageDownloader {
 
                     // create descriptor
                     String filename = String.valueOf(url.hashCode());
-                    File f = new File(cacheDir, filename);
+                    File imgFile = new File(cacheDir, filename);
 
                     InputStream is = new URL(url).openStream();
                     // copy stream to file
-                    OutputStream os = new FileOutputStream(f); // save stream to
+                    OutputStream os = new FileOutputStream(imgFile); // save stream to
                     // SD
                     AppUtils.copyStream(is, os);
                     os.close();
 
-                    // decode image size
-                    BitmapFactory.Options o = new BitmapFactory.Options();
-                    o.inJustDecodeBounds = true;
-                    BitmapFactory.decodeStream(new FileInputStream(f), null, o);
+					// Get the dimensions of the View
+					int targetW = imgSize;
+					int targetH = imgSize;
 
-                    // Find the correct scale value. It should be the power of 2.
-                    int width_tmp = o.outWidth, height_tmp = o.outHeight;
-                    int scale = 1;
-                    while (true) {
-                        if (width_tmp / 2 < imgSize || height_tmp / 2 < imgSize)
-                            break;
-                        width_tmp /= 2;
-                        height_tmp /= 2;
-                        scale *= 2;
-                    }
+					// Get the dimensions of the bitmap
+					BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+					bmOptions.inJustDecodeBounds = true;
+					int photoW = bmOptions.outWidth;
+					int photoH = bmOptions.outHeight;
 
-                    // decode with inSampleSize
-                    BitmapFactory.Options o2 = new BitmapFactory.Options();
-                    o2.inSampleSize = scale;
-                    return BitmapFactory.decodeStream(new FlushedInputStream(inputStream), null, o2);
-//					return BitmapFactory.decodeStream(inputStream);
+					// Determine how much to scale down the image
+					int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+					// Decode the image file into a Bitmap sized to fill the View
+					bmOptions.inJustDecodeBounds = false;
+					bmOptions.inSampleSize = scaleFactor;
+					bmOptions.inPurgeable = true;
+
+                    return BitmapFactory.decodeStream(new FlushedInputStream(inputStream), null, bmOptions);
                 } finally {
                     if (inputStream != null) {
                         inputStream.close();

@@ -53,6 +53,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 	private boolean customViewSet;
 	private View customView;
 	private boolean useHomeIcon = true;
+	private CharSequence titleChars;
 
 	protected ActionBarHelperBase(ActionBarActivity activity) {
 		super(activity);
@@ -102,25 +103,24 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 			return;
 		}
 
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
-				ViewGroup.LayoutParams.MATCH_PARENT);
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
 		layoutParams.weight = 1;
 
 		if (useHomeIcon) {
-		// Add Home button
-		SimpleMenu tempMenu = new SimpleMenu(mActivity);
-		SimpleMenuItem homeItem = new SimpleMenuItem(tempMenu, android.R.id.home, 0,
-				mActivity.getString(R.string.app_name));
-		homeItem.setIcon(R.drawable.ic_action_menu);
-		addActionItemCompatFromMenuItem(homeItem);
+			// Add Home button
+			SimpleMenu tempMenu = new SimpleMenu(mActivity);
+			SimpleMenuItem homeItem = new SimpleMenuItem(tempMenu, android.R.id.home, 0,
+					mActivity.getString(R.string.app_name));
+			homeItem.setIcon(R.drawable.ic_action_menu);
+			addActionItemCompatFromMenuItem(homeItem);
 		}
 
 		if (!customViewSet) {
 			// Add title text
 			RoboTextView titleText = new RoboTextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
 			titleText.setLayoutParams(layoutParams);
-			titleText.setText(mActivity.getTitle());
-	//		titleText.setId(R.id.actionbar_compat_title);
+			titleText.setText(titleChars);
+			titleText.setId(R.id.actionbar_compat_title);
 			actionBarCompat.addView(titleText);
 		} else {
 			actionBarCompat.addView(customView, layoutParams);
@@ -137,7 +137,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		RelativeLayout refreshButtonLay = (RelativeLayout) mActivity.findViewById(R.id.actionbar_compat_item_refresh);
 
 		if (refreshButtonLay != null) {
-			if(refreshing){
+			if (refreshing) {
 				refreshIndicator.setVisibility(View.VISIBLE);
 				refreshButton.setVisibility(View.INVISIBLE);
 			} else {
@@ -153,15 +153,15 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		View searchPanel = mActivity.findViewById(R.id.actionbar_compat_item_search_panel);
 		final EditText searchEdit = (EditText) mActivity.findViewById(R.id.actionbar_compat_item_search_edit);
 
-		if(searchButton != null){
-			searchButton.setVisibility(show? View.GONE : View.VISIBLE);
+		if (searchButton != null) {
+			searchButton.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
 
-		if(searchPanel != null){
-			searchPanel.setVisibility(show? View.VISIBLE : View.GONE);
+		if (searchPanel != null) {
+			searchPanel.setVisibility(show ? View.VISIBLE : View.GONE);
 		}
-		
-		if(show){
+
+		if (show) {
 			searchEdit.requestFocus();
 			searchEdit.post(new Runnable() {
 				@Override
@@ -169,17 +169,17 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 					mActivity.showKeyBoard(searchEdit);
 				}
 			});
-		}else{
+		} else {
 			mActivity.hideKeyBoard(searchEdit);
 		}
 	}
 
 	@Override
-	public void showMenuItemById(int id, boolean show){
-		if(!noActionBar) {
-            View view = getActionBarCompat();
-            if(view != null) {
-				if(id == R.id.menu_refresh){
+	public void showMenuItemById(int id, boolean show) {
+		if (!noActionBar) {
+			View view = getActionBarCompat();
+			if (view != null) {
+				if (id == R.id.menu_refresh) {
 					ImageButton actionButton = (ImageButton) view.findViewById(id);
 					actionButton.setImageResource(show ? R.drawable.ic_action_refresh
 							: R.drawable.empty);
@@ -187,7 +187,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 					view.findViewById(id).setVisibility(show ? View.VISIBLE : View.GONE);
 				}
 			}
-        }
+		}
 	}
 
 	@Override
@@ -197,16 +197,16 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 
 	@Override
 	public void setBadgeValueForId(int menuId, int value) {
-		if(!noActionBar) {
-			View view = getActionBarCompat();
-			if(view != null) {
-				Drawable icon = ((ImageButton)view.findViewById(menuId)).getDrawable();
-				if (icon instanceof BadgeDrawable) {
-					((BadgeDrawable)icon).setValue(value);
-				} else if (value != 0) {
-					((ImageButton)view.findViewById(menuId))
-							.setImageDrawable(new BadgeDrawable(view.getContext(), icon, value));
-				}
+		if (noActionBar){
+			return;
+		}
+		View view = getActionBarCompat();
+		if (view != null) {
+			Drawable icon = ((ImageButton) view.findViewById(menuId)).getDrawable();
+			if (icon instanceof BadgeDrawable) {
+				((BadgeDrawable) icon).setValue(value);
+			} else if (value != 0) {
+				((ImageButton) view.findViewById(menuId)).setImageDrawable(new BadgeDrawable(view.getContext(), icon, value));
 			}
 		}
 	}
@@ -236,6 +236,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 	 */
 	@Override
 	protected void onTitleChanged(CharSequence title, int color) {
+		titleChars = title;
 		TextView titleView = (TextView) mActivity.findViewById(R.id.actionbar_compat_title);
 		if (titleView != null) {
 			titleView.setText(title);
@@ -257,7 +258,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		if (compatView != null) {
 			ViewParent viewParent = compatView.getParent();
 			if (viewParent != null && viewParent instanceof View) {
-				((View)viewParent).setVisibility(show ? View.VISIBLE : View.GONE);
+				((View) viewParent).setVisibility(show ? View.VISIBLE : View.GONE);
 			}
 //			compatView.setVisibility(show ? View.VISIBLE : View.GONE);
 		}
@@ -265,19 +266,28 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 
 	@Override
 	public void setTitle(int titleId) {
+		titleChars = mActivity.getString(titleId);
+
 		View compatView = getActionBarCompat();
 		if (compatView != null) {
-			View titleTxt =  customView.findViewById(R.id.actionbar_compat_title);
+			View titleTxt = customView.findViewById(R.id.actionbar_compat_title);
 			if (titleTxt != null) {
-				((TextView)titleTxt).setText(titleId);
+				((TextView) titleTxt).setText(titleId);
 			}
 		}
 	}
 
 	@Override
 	public void setCustomView(int layoutId) {
-		customViewSet = true;
 		customView = mActivity.getLayoutInflater().inflate(layoutId, null, false);
+		customViewSet = layoutId != R.layout.new_custom_actionbar;
+		// restore title and update actionBar view
+		final ViewGroup actionBarCompat = getActionBarCompat();
+		if (actionBarCompat == null) {
+			return;
+		}
+		actionBarCompat.removeAllViews();
+		onPostCreate(null);
 	}
 
 	/**
@@ -315,7 +325,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 					R.dimen.actionbar_compat_button_width),
 					ViewGroup.LayoutParams.MATCH_PARENT));
 
-			if(refreshIndicator == null){
+			if (refreshIndicator == null) {
 				refreshIndicator = new ProgressBar(mActivity, null, R.attr.actionbarCompatProgressIndicatorStyle);
 
 				final int buttonWidth = mActivity.getResources().getDimensionPixelSize(
@@ -335,7 +345,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 
 			}
 
-			if(refreshButton == null){
+			if (refreshButton == null) {
 				// Create the button
 				refreshButton = new ImageButton(mActivity, null, R.attr.actionbarCompatItemStyle);
 				refreshButton.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(
@@ -448,12 +458,12 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 	private TextView.OnEditorActionListener searchActionListener = new TextView.OnEditorActionListener() {
 		@Override
 		public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-			if(actionId == EditorInfo.IME_ACTION_SEARCH || keyEvent.getAction() == KeyEvent.FLAG_EDITOR_ACTION
-					|| keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER ){
+			if (actionId == EditorInfo.IME_ACTION_SEARCH || keyEvent.getAction() == KeyEvent.FLAG_EDITOR_ACTION
+					|| keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
 				showSearchPanel(false);
 				String query = textView.getText().toString().trim();
-				if(!query.equals(StaticData.SYMBOL_EMPTY)){
+				if (!query.equals(StaticData.SYMBOL_EMPTY)) {
 					mActivity.onSearchQuery(query);
 				}
 				return true;
@@ -465,14 +475,14 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 
 	@Override
 	public void onClick(View view) {
-		if(view.getId() == R.id.menu_search){
+		if (view.getId() == R.id.menu_search) {
 			showSearchPanel(true);
-		}else if(view.getId() == R.id.actionbar_compat_item_search_button){
+		} else if (view.getId() == R.id.actionbar_compat_item_search_button) {
 			showSearchPanel(false);
 
 			EditText searchEdit = (EditText) mActivity.findViewById(R.id.actionbar_compat_item_search_edit);
 			String query = searchEdit.getText().toString().trim();
-			if(!query.equals(StaticData.SYMBOL_EMPTY))
+			if (!query.equals(StaticData.SYMBOL_EMPTY))
 				mActivity.onSearchQuery(query);
 
 		}
@@ -527,7 +537,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 							showAsAction = parser.getAttributeIntValue(MENU_RES_NAMESPACE, MENU_ATTR_SHOW_AS_ACTION, -1);
 							if (showAsAction == MenuItem.SHOW_AS_ACTION_ALWAYS
 									|| showAsAction == MenuItem.SHOW_AS_ACTION_IF_ROOM
-									|| showAsAction == (MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW|MenuItem.SHOW_AS_ACTION_ALWAYS)) {
+									|| showAsAction == (MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItem.SHOW_AS_ACTION_ALWAYS)) {
 								mActionItemIds.add(itemId);
 							}
 							break;

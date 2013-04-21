@@ -1,59 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--Shadow-->
+    <!--Emboss Top Level 1-->
     <item
-        >
-        <shape android:dither="true"
-            >
-            <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@android:color/transparent" />
-            <stroke android:width="@dimen/default_stroke_width"
-                    android:color="@color/dark_grey_border"/>
-        </shape>
-    </item>
-
-    <!--Emboss-->
-    <item
-        android:right="1px"
+        android:top="0px"
+        android:left="0px"
+        android:right="0px"
         android:bottom="1px"
         >
-        <shape android:dither="true"
-            >
+        <shape >
             <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/green_emboss_top_left"  />
-
+            <solid android:color="@color/blue_emboss_top"  />
         </shape>
     </item>
+
+    <!--Emboss Bottom Level 2-->
     <item
-        android:left="1px"
         android:top="1px"
-        android:right="1px"
+        android:left="1px"
+        android:right="0px"
+        android:bottom="0px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius" />
+            <solid android:color="@color/blue_emboss_bot"  />
+        </shape>
+    </item>
+
+    <!--Emboss Left Level 1-->
+    <item
+        android:top="1px"
+        android:left="0px"
+        android:right="0px"
         android:bottom="1px"
         >
-        <shape android:dither="true"
-            >
+        <shape >
             <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/green_emboss_low_right"  />
+            <solid android:color="@color/blue_emboss_left"  />
+        </shape>
+    </item>
 
+    <!--Emboss Right Level 2-->
+    <item
+        android:top="1px"
+        android:left="1px"
+        android:right="0px"
+        android:bottom="1px"
+        >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius" />
+            <solid android:color="@color/blue_emboss_right"  />
         </shape>
     </item>
 
     <!--Button-->
     <item
-        android:left="0px"
-        android:top="0px"
+        android:left="1px"
+        android:top="1px"
         android:bottom="1px"
         android:right="1px"
         >
-
         <shape android:dither="true" >
-            <solid android:color="@color/green_button"
-
+            <solid android:color="@color/blue_button"
                 />
-            <stroke android:width="@dimen/default_stroke_width"
-                    android:color="@color/any_button_stroke"/>
             <corners
                 android:radius="@dimen/rounded_button_radius"
                 />
@@ -63,22 +72,7 @@
                 android:top="@dimen/rounded_button_padding_top"
                 android:bottom="@dimen/rounded_button_padding_bottom"
                 />
-            <size android:height="@dimen/default_button_height"/>
         </shape>
     </item>
 
-    <!--Inner shadow-->
-    <!--    <item
-        android:bottom="1px"
-        android:left="1px"
-        android:right="1px"
-        android:top="1px"
-        >
-        <shape android:dither="true">
-            <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@android:color/transparent" />
-            <stroke android:width="@dimen/default_stroke_width"
-                    android:color="@color/orange_button_stroke"/>
-        </shape>
-    </item>-->
 </layer-list>

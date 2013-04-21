@@ -28,7 +28,7 @@ import android.os.*;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.webkit.CookieSyncManager;
-import com.chess.ui.activities.NewLoginActivity;
+import com.chess.ui.activities.MainFragmentFaceActivity;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -234,8 +234,8 @@ public class Facebook {
         mAuthPermissions = permissions;
         mAuthActivityCode = activityCode;
         try {
-			if (activity instanceof NewLoginActivity) {
-				((NewLoginActivity) activity).startActivityFromFragmentForResult(intent, activityCode);
+			if (activity instanceof MainFragmentFaceActivity) {
+				((MainFragmentFaceActivity) activity).startActivityFromFragmentForResult(intent, activityCode);
 			} else {
 				activity.startActivityForResult(intent, activityCode);
 			}

@@ -68,6 +68,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected SharedPreferences preferences;
 	protected SharedPreferences.Editor preferencesEditor;
+	private int titleId;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -97,12 +98,29 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		facebookInit((LoginButton) getView().findViewById(R.id.fb_connect));
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		updateTitle();
+	}
+
 	protected void showActionBar(boolean show) {
 		getActivityFace().getActionBarActivity().provideActionBarHelper().showActionBar(show);
 	}
 
+	protected void setTitle(int titleId) {
+		this.titleId = titleId;
+	}
+
 	protected void updateTitle(int titleId) {
 		getActivityFace().updateTitle(titleId);
+	}
+
+	private void updateTitle() {
+		if (titleId != 0) {
+			getActivityFace().updateTitle(titleId);
+		}
 	}
 
 	protected void unRegisterGcmService() {

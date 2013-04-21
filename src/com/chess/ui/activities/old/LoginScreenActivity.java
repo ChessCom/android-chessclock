@@ -1,4 +1,4 @@
-package com.chess.ui.activities;
+package com.chess.ui.activities.old;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -21,6 +21,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.tasks.CheckUpdateTask;
+import com.chess.ui.activities.CommonLogicActivity;
 import com.chess.utilities.AppUtils;
 import com.facebook.android.Facebook;
 import com.flurry.android.FlurryAgent;

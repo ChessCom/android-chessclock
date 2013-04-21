@@ -1,4 +1,4 @@
-package com.chess.ui.activities;
+package com.chess.ui.activities.old;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
+import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.VideosAdapter;
 import com.chess.ui.adapters.VideosPaginationAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;

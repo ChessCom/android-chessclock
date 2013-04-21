@@ -1,4 +1,4 @@
-package com.chess.ui.activities;
+package com.chess.ui.activities.old;
 
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +14,7 @@ import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.WhiteSpinnerAdapter;
 
 public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnClickListener {

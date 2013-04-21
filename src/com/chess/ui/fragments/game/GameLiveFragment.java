@@ -81,7 +81,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		updateTitle(R.string.live_chess);
+		setTitle(R.string.live_chess);
 
 		widgetsInit(view);
 

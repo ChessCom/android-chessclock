@@ -190,11 +190,20 @@
     <color name="green_button_pressed_stroke_2">#FFd9eec8</color>
     
     <!--Blue Button-->
-    <color name="blue_button">#FF59b111</color>
-    <color name="blue_button_p">#FF419100</color>
+    <color name="blue_button">#FF0083b8</color>
 
-    <color name="blue_emboss_low_right">#FF63a62d</color>
-    <color name="blue_emboss_top_left">#FF6ab5d8</color>
+    <color name="blue_emboss_top">#FF329bc6</color>
+    <color name="blue_emboss_left">#FF198fbf</color>
+    <color name="blue_emboss_bot">#FF006086</color>
+    <color name="blue_emboss_right">#FF006c98</color>
+
+    <!--Pressed-->
+    <color name="blue_button_p">#ff006b9e</color>
+
+    <color name="blue_emboss_top_p">#ff328fba</color>
+    <color name="blue_emboss_left_p">#ff197caa</color>
+    <color name="blue_emboss_bot_p">#ff00557c</color>
+    <color name="blue_emboss_right_p">#ff005e8c</color>
 
 
     <!--Facebook button-->
@@ -214,6 +223,21 @@
 
     <color name="f_button_pressed_stroke_1">#96657caf</color>
     <color name="f_button_pressed_stroke_2">#FF93afee</color>
+
+    <!--Share button-->
+    <color name="share_button">#FF00aced</color>
+
+    <color name="share_emboss_top">#ff00b4f6</color>
+    <color name="share_emboss_left">#ff00b0f3</color>
+    <color name="share_emboss_right">#ff009bd8</color>
+    <color name="share_emboss_bot">#ff008bcb</color>
+    <!--Pressed-->
+    <color name="share_button_p">#ff006b92</color>
+
+    <color name="share_emboss_top_p">#ff00a3e4</color>
+    <color name="share_emboss_left_p">#ff0098d1</color>
+    <color name="share_emboss_right_p">#ff008fcc</color>
+    <color name="share_emboss_bot_p">#ff005e82</color>
 
 
     <!--Toggle buttons-->
@@ -259,6 +283,7 @@
     
     
     <color name="light_blue">#FF5a81dc</color>
+    <color name="light_blue_1">#FFc7dae3</color>
     <color name="dark_blue">#FF314fab</color>
 
     <color name="f_light_blue">#FF667fb0</color>
@@ -430,11 +455,11 @@
     <color name="new_friends_top_back">#FFf4f4f4</color>
 
     <color name="new_text_blue">#FF0d5988</color>
+    <color name="new_text_blue_dark">#FF0e344d</color>
     <color name="new_friends_grey_text">#FFa7a6a2</color>
     <color name="new_square_button">#FFf4f4f4</color>
     <color name="new_square_button_p">#ffc7c7c7</color>
     <color name="new_grey_border_light">#FFbfbfbf</color>
-    <color name="new_friends_top_border_light">#FFbfbfbf</color>
     <color name="new_friends_list_divider">#FFdfdfdf</color>
 
     <!--Notations-->

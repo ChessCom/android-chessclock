@@ -78,15 +78,21 @@
     </style>
 
     <style name="Text.Button.Upgrade" >
-        <item name="android:background">@drawable/button_green_selector</item>
-        <item name="android:paddingLeft">@dimen/button_upgrade_left_padding</item>
-        <item name="android:paddingRight">@dimen/button_upgrade_right_padding</item>
+        <item name="android:background">@drawable/button_blue_selector</item>
+        <item name="android:minWidth">@dimen/wide_button_min_width</item>
+        <item name="android:minHeight">@dimen/small_orange_button_height</item>
     </style>
 
 
-    <style name="Text.Button.Login" >
+    <style name="Text.Button.Facebook" >
         <item name="android:background">@drawable/button_facebook_selector</item>
 		<item name="android:paddingLeft">@dimen/button_login_fb_left_padding</item>
+    </style>
+
+    <style name="Text.Button.Share" >
+        <item name="android:background">@drawable/button_light_blue_selector</item>
+        <item name="android:minHeight">@dimen/small_orange_button_height</item>
+        <item name="android:minWidth">@dimen/wide_button_min_width</item>
     </style>
 
 
@@ -321,6 +327,13 @@
 		<item name="android:gravity">center_vertical</item>
 	</style>
 
+	<style name="LinearListItem">
+		<item name="android:padding">15dip</item>
+		<item name="android:minHeight">@dimen/default_list_item_height</item>
+		<item name="android:gravity">center_vertical</item>
+
+	</style>
+
 
 	<style name="GamePanelButton">
 		<item name="android:layout_weight">1</item>
@@ -408,4 +421,6 @@
         <item name="android:textColor">@color/new_normal_grey</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <dimen name="default_list_item_height">48dip</dimen>
 </resources>

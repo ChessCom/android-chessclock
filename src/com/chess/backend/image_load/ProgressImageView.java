@@ -3,6 +3,7 @@ package com.chess.backend.image_load;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -19,9 +20,10 @@ import com.chess.R;
  * @modified 28.02.13
  */
 public class ProgressImageView extends FrameLayout {
+
 	public Bitmap placeholder;
-	public ImageView imageView;
-	public Bitmap bitmap;
+	private ImageView imageView;
+	private Bitmap bitmap;
 	public ProgressBar progress;
 	public Bitmap noImage;
 
@@ -79,5 +81,33 @@ public class ProgressImageView extends FrameLayout {
 	public void setTag(int key, Object tag) {
 		super.setTag(key, tag);
 		imageView.setTag(key, tag);
+	}
+
+	public void setImageDrawable(Drawable drawable) {
+		imageView.setImageDrawable(drawable);
+	}
+
+	public void setImageBitmap(Bitmap bitmap) {
+		imageView.setImageBitmap(bitmap);
+	}
+
+	public void updateImageBitmap() {
+		imageView.setImageBitmap(bitmap);
+	}
+
+	public ImageView getImageView() {
+		return imageView;
+	}
+
+	public void setImageView(ImageView imageView) {
+		this.imageView = imageView;
+	}
+
+	public Bitmap getBitmap() {
+		return bitmap;
+	}
+
+	public void setBitmap(Bitmap bitmap) {
+		this.bitmap = bitmap;
 	}
 }

@@ -1,4 +1,4 @@
-package com.chess.ui.activities;
+package com.chess.ui.activities.old;
 
 import actionbarcompat.ActionBarActivityHome;
 import android.app.ActivityOptions;
@@ -34,6 +34,7 @@ import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
+import com.chess.ui.activities.SplashActivity;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
