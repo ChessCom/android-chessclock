@@ -11,7 +11,9 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusableInTouchMode="true"
         >
+        <requestFocus />
 
         <!--First Name-->
         <LinearLayout
@@ -36,8 +38,10 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/first_name"
                 android:textColor="@color/new_subtitle_dark_grey"
+                android:textSize="14sp"
                 android:padding="0dip"
                 android:singleLine="true"
+                android:imeOptions="actionDone"
                 />
 
             <!--Clear Btn-->
@@ -48,6 +52,7 @@
                 android:text="@string/glyph_clear"
                 android:textColor="@color/hint_text"
                 style="@style/GlyphIcon"
+                android:paddingLeft="11dip"
                 />
 
         </LinearLayout>
@@ -82,8 +87,10 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/last_name"
                 android:textColor="@color/new_subtitle_dark_grey"
+                android:textSize="14sp"
                 android:padding="0dip"
                 android:singleLine="true"
+                android:imeOptions="actionDone"
                 />
 
             <!--Clear Btn-->
@@ -94,6 +101,7 @@
                 android:text="@string/glyph_clear"
                 android:textColor="@color/hint_text"
                 style="@style/GlyphIcon"
+                android:paddingLeft="11dip"
                 />
 
         </LinearLayout>
@@ -128,8 +136,10 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/location"
                 android:textColor="@color/new_subtitle_dark_grey"
+                android:textSize="14sp"
                 android:padding="0dip"
                 android:singleLine="true"
+                android:imeOptions="actionDone"
                 />
 
             <!--Clear Btn-->
@@ -140,6 +150,7 @@
                 android:text="@string/glyph_clear"
                 android:textColor="@color/hint_text"
                 style="@style/GlyphIcon"
+                android:paddingLeft="11dip"
                 />
 
         </LinearLayout>
@@ -153,9 +164,11 @@
 
         <!--Country-->
         <LinearLayout
+            android:id="@+id/countryLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
+            android:background="@drawable/white_list_item_selector"
             >
 
             <!--Label-->
@@ -172,8 +185,9 @@
                 android:id="@+id/countryValueTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="India"
+                android:text="Country"
                 android:textColor="@color/new_subtitle_dark_grey"
+                android:paddingRight="11dip"
                 />
 
             <!--Country Flag-->
@@ -189,6 +203,7 @@
 
             <!--Right Icon-->
             <com.chess.RoboTextView
+                android:id="@+id/countryArrowIconTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/glyph_arrow_right"
@@ -207,6 +222,7 @@
 
         <!--Profile Picture-->
         <LinearLayout
+            android:id="@+id/userPhotoLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
@@ -214,6 +230,7 @@
             android:paddingRight="15dip"
             android:paddingTop="10dip"
             android:paddingBottom="10dip"
+            android:background="@drawable/white_list_item_selector"
             >
 
             <!--Label-->
@@ -247,6 +264,7 @@
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
             android:background="@color/upgrade_diamond_button"
+            android:padding="15dip"
             >
 
             <!--Label-->
@@ -283,6 +301,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
+            android:padding="15dip"
             >
 
             <!--Label-->
@@ -321,11 +340,10 @@
             >
             <!--Label-->
             <com.chess.RoboTextView
-
+                android:id="@+id/termsLinkTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dip"
-                android:text="@string/profile_account_message"
                 android:gravity="center"
                 android:layout_centerInParent="true"
                 android:textColor="@color/new_subtitle_dark_grey"

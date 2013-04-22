@@ -30,7 +30,7 @@ import com.slidingmenu.lib.SlidingMenu;
  * Date: 25.02.13
  * Time: 19:54
  */
-public class WelcomeFragment extends CommonLogicFragment implements YouTubePlayer.OnInitializedListener {
+public class WelcomeFragment extends CommonLogicFragment implements YouTubePlayer.OnInitializedListener, YouTubePlayer.OnFullscreenListener {
 
 	private static final int PAGE_CNT = 4;
 
@@ -50,6 +50,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	private ViewPager viewPager;
 	private YouTubePlayerSupportFragment youTubePlayerFragment;
 	private View youTubeFrameContainer;
+	private boolean youtubeFragmentGoFullScreen;
 
 
 	@Override
@@ -97,6 +98,20 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 		handler.postDelayed(startAnimation, ANIMATION_DELAY);
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		handler.removeCallbacks(startAnimation);
+
+		if (!youtubeFragmentGoFullScreen) {
+			youTubeFrameContainer.setVisibility(View.GONE);
+			getFragmentManager().beginTransaction()
+					.remove(youTubePlayerFragment)
+					.commit();
+		}
+	}
+
 	private final ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
 
 		@Override
@@ -140,6 +155,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 		if (!wasRestored) {
 			youTubePlayer.cueVideo(YOUTUBE_DEMO_LINK);
 		}
+		youTubePlayer.setOnFullscreenListener(this);
 	}
 
 	private static final int RECOVERY_DIALOG_REQUEST = 1;
@@ -151,6 +167,11 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 			String errorMessage = String.format("error_player", errorReason.toString());
 			Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
 		}
+	}
+
+	@Override
+	public void onFullscreen(boolean youtubeFragmentGoFullScreen) {
+		this.youtubeFragmentGoFullScreen = youtubeFragmentGoFullScreen;
 	}
 
 	private class WelcomePagerAdapter extends PagerAdapter {
@@ -176,7 +197,6 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 				case 0:
 					if (firstView == null){
 						firstView = (RelativeLayout) inflater.inflate(R.layout.new_welcome_one_frame, container, false);
-
 					}
 					view = firstView;
 
@@ -208,7 +228,6 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 										.commit();
 							}
 
-//							youTubePlayerFragment =	(YouTubePlayerSupportFragment) fragmentManager.findFragmentById(R.id.youtubeFragment);
 							youTubePlayerFragment.initialize(AppConstants.YOUTUBE_DEVELOPER_KEY, WelcomeFragment.this);
 
 							youTubeFrameContainer.setVisibility(View.GONE);

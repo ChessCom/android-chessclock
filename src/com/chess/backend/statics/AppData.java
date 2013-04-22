@@ -277,6 +277,7 @@ public class AppData {
 	public static String getUserAvatar(Context context) {
 //		return getPreferences(context).getString(AppConstants.PREF_USER_AVATAR_URL, StaticData.SYMBOL_EMPTY);
 		return getPreferences(context).getString(AppConstants.PREF_USER_AVATAR_URL, "http://d1lalstwiwz2br.cloudfront.net/images_users/avatars/alien_roger.gif"); // TODO restore
+//		return getPreferences(context).getString(AppConstants.PREF_USER_AVATAR_URL, "http://d1lalstwiwz2br.cloudfront.net/images_users/articles/chesscom-player-profiles-roman-dzindzichasvili_small.1.png"); // TODO restore
 	}
 
 	public static int getUserTacticsRating(Context context) {

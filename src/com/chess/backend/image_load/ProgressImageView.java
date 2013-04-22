@@ -5,10 +5,15 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import com.chess.R;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.ObjectAnimator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,7 +24,7 @@ import com.chess.R;
  * @created 27.07.2011
  * @modified 28.02.13
  */
-public class ProgressImageView extends FrameLayout {
+public class ProgressImageView extends FrameLayout implements View.OnTouchListener {
 
 	public Bitmap placeholder;
 	private ImageView imageView;
@@ -55,6 +60,7 @@ public class ProgressImageView extends FrameLayout {
 
 			addView(imageView, photoParams);
 		}
+
 		{// progress
 			progress = new ProgressBar(getContext());
 			LayoutParams progressParams = new LayoutParams(size / 2, size / 2);
@@ -63,6 +69,10 @@ public class ProgressImageView extends FrameLayout {
 
 			addView(progress, progressParams);
 		}
+
+		imageView.setOnTouchListener(this);
+
+		initClickAnimation();
 	}
 
 	@Override
@@ -72,9 +82,9 @@ public class ProgressImageView extends FrameLayout {
 	}
 
 	@Override
-	public void setOnClickListener(OnClickListener l) {
-		super.setOnClickListener(l);
-		imageView.setOnClickListener(l);
+	public void setOnClickListener(OnClickListener listener) {
+		super.setOnClickListener(listener);
+		imageView.setOnClickListener(listener);
 	}
 
 	@Override
@@ -109,5 +119,71 @@ public class ProgressImageView extends FrameLayout {
 
 	public void setBitmap(Bitmap bitmap) {
 		this.bitmap = bitmap;
+	}
+
+	/**
+	 * Implement this method to handle touch screen motion events.
+	 *
+	 * @param event The motion event.
+	 * @return True if the event was handled, false otherwise.
+	 */
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+
+		switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				setPressed(true);
+
+				animateClick();
+				break;
+			case MotionEvent.ACTION_UP:
+				setPressed(false);
+
+				break;
+			case MotionEvent.ACTION_MOVE:
+				setPressed(true);
+
+				break;
+		}
+		return super.onTouchEvent(event);
+	}
+
+	@Override
+	public boolean onTouch(View view, MotionEvent motionEvent) {
+		switch (motionEvent.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				setPressed(true);
+
+				animateClick();
+
+				break;
+			case MotionEvent.ACTION_UP:
+				setPressed(false);
+				break;
+		}
+		return false;
+	}
+
+	private static final int DURATION = 500;
+	private ObjectAnimator flipFirstHalf;
+	private static final float alphaPressed = 0.2f;
+
+	private void initClickAnimation() {
+		final View animationView = imageView;
+
+		flipFirstHalf = ObjectAnimator.ofFloat(animationView, "alpha", 1, alphaPressed, 1);
+		flipFirstHalf.setDuration(DURATION);
+
+		flipFirstHalf.addListener(new AnimatorListenerAdapter() {
+			@Override
+			public void onAnimationEnd(Animator anim) {
+				performClick();
+				imageView.performClick();
+			}
+		});
+	}
+
+	private void animateClick() {
+		flipFirstHalf.start();
 	}
 }

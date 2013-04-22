@@ -52,4 +52,6 @@ public interface ActiveFragmentInterface {
 	void clearFragmentStack();
 
 	void updateTitle(int titleId);
+
+	void showActionBar(boolean show);
 }

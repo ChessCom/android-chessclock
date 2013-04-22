@@ -106,7 +106,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	protected void showActionBar(boolean show) {
-		getActivityFace().getActionBarActivity().provideActionBarHelper().showActionBar(show);
+		getActivityFace().showActionBar(show);
 	}
 
 	protected void setTitle(int titleId) {

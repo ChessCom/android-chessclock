@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.Menu;
 import com.chess.R;
+import com.chess.backend.statics.AppData;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
+import com.chess.ui.fragments.sign_in.WelcomeFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.views.drawables.LogoBackgroundDrawable;
 import com.slidingmenu.lib.SlidingMenu;
@@ -54,13 +57,13 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		if (savedInstanceState == null) {
 			// set the Above View
-//			if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
+			if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
 				switchFragment(new HomeTabsFragment());
 				showActionBar = true;
-//			} else {
-//				switchFragment(new WelcomeFragment());
-//				showActionBar = false;
-//			}
+			} else {
+				switchFragment(new WelcomeFragment());
+				showActionBar = false;
+			}
 		} else { // fragments state will be automatically restored
 			showActionBar = savedInstanceState.getBoolean(SHOW_ACTION_BAR);
 		}
@@ -117,6 +120,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 	}
 
+	@Override
+	public void showActionBar(boolean show) {
+		showActionBar = show;
+		getActionBarHelper().showActionBar(show);
+	}
 
 	@Override
 	public void setCustomActionBarViewId(int viewId) {

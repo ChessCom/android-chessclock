@@ -100,6 +100,7 @@
         <item name="android:padding">@dimen/glyph_icon_padding</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/glyph_icon_default</item>
+        <item name="android:layout_margin">0dip</item>
         <item name="ttf">Icon</item>
     </style>
 
@@ -328,7 +329,8 @@
 	</style>
 
 	<style name="LinearListItem">
-		<item name="android:padding">15dip</item>
+		<item name="android:paddingLeft">15dip</item>
+		<item name="android:paddingRight">15dip</item>
 		<item name="android:minHeight">@dimen/default_list_item_height</item>
 		<item name="android:gravity">center_vertical</item>
 

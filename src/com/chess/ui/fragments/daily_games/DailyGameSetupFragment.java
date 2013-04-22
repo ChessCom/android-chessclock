@@ -13,6 +13,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.engine.NewDailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.FriendsFragment;
 
 /**
  * Created with IntelliJ IDEA.
@@ -72,6 +73,7 @@ public class DailyGameSetupFragment extends CommonLogicFragment {
 		} else if (id == R.id.inviteFriend1Btn) {
 		} else if (id == R.id.inviteFriend2Btn) {
 		} else if (id == R.id.playFriendView) {
+			getActivityFace().openFragment(new FriendsFragment());
 		} else if (id == R.id.dailyOptionsView) {
 
 		}
