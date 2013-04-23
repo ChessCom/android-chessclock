@@ -79,6 +79,10 @@ public abstract class ActionBarUpdateListener<ItemType> extends AbstractUpdateLi
 				coreActivityActionBar.safeShowSinglePopupDialog(R.string.error, serverMessage);
 
 				AppData.setUserToken(coreActivityActionBar, null);
+			} else {
+				String serverMessage = ServerErrorCode.getUserFriendlyMessage(coreActivityActionBar, serverCode); // TODO restore
+
+				coreActivityActionBar.safeShowSinglePopupDialog(R.string.error, serverMessage);
 			}
 		}
 	}

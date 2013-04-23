@@ -1,10 +1,13 @@
 package com.chess.ui.fragments.sign_in;
 
-import android.os.Build;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +16,19 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.*;
 import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.FlurryData;
+import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.views.drawables.LogoBackgroundDrawable;
+import com.chess.utilities.AppUtils;
+import com.facebook.android.Facebook;
+import com.flurry.android.FlurryAgent;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -23,6 +36,11 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.slidingmenu.lib.SlidingMenu;
+import org.apache.http.protocol.HTTP;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.regex.Pattern;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,9 +48,9 @@ import com.slidingmenu.lib.SlidingMenu;
  * Date: 25.02.13
  * Time: 19:54
  */
-public class WelcomeFragment extends CommonLogicFragment implements YouTubePlayer.OnInitializedListener, YouTubePlayer.OnFullscreenListener {
+public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePlayer.OnInitializedListener, YouTubePlayer.OnFullscreenListener {
 
-	private static final int PAGE_CNT = 4;
+	private static final int PAGE_CNT = 5;
 
 	private static final long ANIMATION_DELAY = 2000;
 	private static final long REPEAT_TIMEOUT = 6000;
@@ -51,6 +69,25 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	private YouTubePlayerSupportFragment youTubePlayerFragment;
 	private View youTubeFrameContainer;
 	private boolean youtubeFragmentGoFullScreen;
+	private View bottomButtonsLay;
+
+	// SignUp Part
+
+	protected Pattern emailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[a-zA-Z0-9\\.\\-]+\\.[a-zA-Z]{2,4}");
+	protected Pattern gMailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[g]");   // TODO use for autoComplete
+	private static final String DEFAULT_COUNTRY = "XX";  // International
+
+	private EditText userNameEdt;
+	private EditText emailEdt;
+	private EditText passwordEdt;
+	private EditText passwordRetypeEdt;
+
+	private String userName;
+	private String email;
+	private String password;
+	private RegisterUpdateListener registerUpdateListener;
+	private String[] countryCodes;
+	private String countryCodeName;
 
 
 	@Override
@@ -63,15 +100,6 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 		super.onViewCreated(view, savedInstanceState);
 
 		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
-		showActionBar(false);
-
-		LogoBackgroundDrawable logoBackgroundDrawable = new LogoBackgroundDrawable(getActivity());
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-			view.findViewById(R.id.mainView).setBackground(logoBackgroundDrawable);
-		} else {
-			view.findViewById(R.id.mainView).setBackgroundDrawable(logoBackgroundDrawable);
-		}
 
 		inflater = LayoutInflater.from(getActivity());
 
@@ -89,6 +117,13 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 		view.findViewById(R.id.signInBtn).setOnClickListener(this);
 
 		((RadioButton) homePageRadioGroup.getChildAt(0)).setChecked(true);
+
+		bottomButtonsLay = view.findViewById(R.id.bottomButtonsLay);
+
+		{// SignUp part
+			countryCodes = getResources().getStringArray(R.array.new_countries_codes);
+			registerUpdateListener = new RegisterUpdateListener();
+		}
 	}
 
 	@Override
@@ -96,6 +131,29 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 		super.onResume();
 
 		handler.postDelayed(startAnimation, ANIMATION_DELAY);
+
+		// SignUp part
+		String userCountry = AppData.getUserCountry(getActivity());
+		if (userCountry == null) {
+			String locale = getResources().getConfiguration().locale.getCountry();
+
+			if (locale != null) {
+				int i;
+				boolean found = false;
+				for (i = 0; i < countryCodes.length; i++) {
+					String countryCode = countryCodes[i];
+					if (locale.equals(countryCode)) {
+						found = true;
+						break;
+					}
+				}
+				if (found) {
+					countryCodeName = countryCodes[i];
+				} else {
+					countryCodeName = DEFAULT_COUNTRY;
+				}
+			}
+		}
 	}
 
 	@Override
@@ -116,7 +174,14 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 
 		@Override
 		public void onPageSelected(int position) {
-			((RadioButton) homePageRadioGroup.getChildAt(position)).setChecked(true);
+			if (position == 4) {
+				bottomButtonsLay.setVisibility(View.GONE);
+				homePageRadioGroup.setVisibility(View.GONE);
+			} else {
+				bottomButtonsLay.setVisibility(View.VISIBLE);
+				homePageRadioGroup.setVisibility(View.VISIBLE);
+				((RadioButton) homePageRadioGroup.getChildAt(position)).setChecked(true);
+			}
 		}
 
 		@Override
@@ -136,17 +201,29 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	}
 
 	@Override
-	public void onClick(View v) {
-		if (v.getId() == R.id.signInBtn) {
+	public void onClick(View view) {
+		if (view.getId() == R.id.signInBtn) {
 			getActivityFace().openFragment(new SignInFragment());
-		} else if (v.getId() == R.id.signUpBtn) {
+		} else if (view.getId() == R.id.signUpBtn) {
 			getActivityFace().openFragment(new SignUpFragment());
-		} else if (v.getId() == R.id.playBtn) {
+		} else if (view.getId() == R.id.playBtn) {
 
 			youTubeFrameContainer.setVisibility(View.VISIBLE);
 
-		} else if (v.getId() == R.id.whatChessComTxt) {
+		} else if (view.getId() == R.id.whatChessComTxt) {
 			showNextPage();
+		} else if (view.getId() == R.id.RegSubmitBtn) {
+			if (!checkRegisterInfo()) {
+				return;
+			}
+
+			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live
+				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				showPopupDialog(R.string.warning, R.string.no_network, BasePopupsFragment.NETWORK_CHECK_TAG);
+				return;
+			}
+
+			submitRegisterInfo();
 		}
 	}
 
@@ -159,6 +236,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	}
 
 	private static final int RECOVERY_DIALOG_REQUEST = 1;
+
 	@Override
 	public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
 		if (errorReason.isUserRecoverableError()) {
@@ -180,10 +258,12 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 		private RelativeLayout secondView;
 		private RelativeLayout thirdView;
 		private RelativeLayout fourthView;
+		private RelativeLayout signUpView;
 		private boolean initiatedFirst;
 		private boolean initiatedSecond;
 		private boolean initiatedThird;
 		private boolean initiatedFour;
+		private boolean initiatedFifth;
 
 		@Override
 		public int getCount() {
@@ -195,7 +275,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 			View view = null;
 			switch (position) {
 				case 0:
-					if (firstView == null){
+					if (firstView == null) {
 						firstView = (RelativeLayout) inflater.inflate(R.layout.new_welcome_one_frame, container, false);
 					}
 					view = firstView;
@@ -221,7 +301,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 
 							FragmentManager fragmentManager = getFragmentManager();
 							youTubePlayerFragment = (YouTubePlayerSupportFragment) fragmentManager.findFragmentByTag(YOUTUBE_FRAGMENT_TAG);
-							if (youTubePlayerFragment == null){
+							if (youTubePlayerFragment == null) {
 								youTubePlayerFragment = new YouTubePlayerSupportFragment();
 								fragmentManager.beginTransaction()
 										.add(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
@@ -242,7 +322,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 						flipFirstHalf.setDuration(DURATION);
 						flipFirstHalf.setInterpolator(accelerator);
 
-						final ObjectAnimator flipSecondHalf = ObjectAnimator.ofFloat(whatChessComTxt ,"rotationX", -90f, 0f);
+						final ObjectAnimator flipSecondHalf = ObjectAnimator.ofFloat(whatChessComTxt, "rotationX", -90f, 0f);
 						flipSecondHalf.setDuration(DURATION);
 						flipSecondHalf.setInterpolator(decelerator);
 
@@ -322,8 +402,33 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 						initiatedFour = true;
 					}
 					break;
-				default: break;
+				case 4:
+					if (signUpView == null) {
+						signUpView = (RelativeLayout) inflater.inflate(R.layout.new_welcome_sign_up_frame, container, false);
+					}
+					view = signUpView;
+
+//					if (!initiatedFifth) {
+
+					userNameEdt = (EditText) view.findViewById(R.id.usernameEdt);
+					emailEdt = (EditText) view.findViewById(R.id.emailEdt);
+					passwordEdt = (EditText) view.findViewById(R.id.passwordEdt);
+					passwordRetypeEdt = (EditText) view.findViewById(R.id.passwordRetypeEdt);
+					view.findViewById(R.id.RegSubmitBtn).setOnClickListener(WelcomeFragment.this);
+
+					userNameEdt.addTextChangedListener(new FieldChangeWatcher(userNameEdt));
+					emailEdt.addTextChangedListener(new FieldChangeWatcher(emailEdt));
+					passwordEdt.addTextChangedListener(new FieldChangeWatcher(passwordEdt));
+					passwordRetypeEdt.addTextChangedListener(new FieldChangeWatcher(passwordRetypeEdt));
+
+					setLoginFields(userNameEdt, passwordEdt);
+//					}
+					break;
+
+				default:
+					break;
 			}
+
 			container.addView(view);
 
 			return view;
@@ -347,4 +452,119 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 			handler.postDelayed(this, REPEAT_TIMEOUT);
 		}
 	};
+
+	/* ------------- Sign Up Part --------------------------- */
+	private boolean checkRegisterInfo() {
+		userName = encodeField(userNameEdt);
+		email = encodeField(emailEdt);
+		password = encodeField(passwordEdt);
+
+		if (userName.length() < 3) {
+			userNameEdt.setError(getString(R.string.too_short));
+			userNameEdt.requestFocus();
+			return false;
+		}
+
+		if (!emailPattern.matcher(getTextFromField(emailEdt)).matches()) {
+			emailEdt.setError(getString(R.string.invalidEmail));
+			emailEdt.requestFocus();
+			return true;
+		}
+
+		if (email.equals(StaticData.SYMBOL_EMPTY)) {
+			emailEdt.setError(getString(R.string.can_not_be_empty));
+			emailEdt.requestFocus();
+			return false;
+		}
+
+		if (password.length() < 6) {
+			passwordEdt.setError(getString(R.string.too_short));
+			passwordEdt.requestFocus();
+			return false;
+		}
+
+		if (!password.equals(passwordRetypeEdt.getText().toString())) {
+			passwordRetypeEdt.setError(getString(R.string.pass_dont_match));
+			passwordRetypeEdt.requestFocus();
+			return false;
+		}
+
+
+		return true;
+	}
+
+	private void submitRegisterInfo() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_REGISTER);
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
+		loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
+		loadItem.addRequestParams(RestHelper.P_EMAIL, email);
+		loadItem.addRequestParams(RestHelper.P_COUNTRY_CODE, countryCodeName);
+		loadItem.addRequestParams(RestHelper.P_APP_TYPE, RestHelper.V_ANDROID);
+
+		new RequestJsonTask<RegisterItem>(registerUpdateListener).executeTask(loadItem);
+	}
+
+	private class RegisterUpdateListener extends CommonLogicFragment.ChessUpdateListener<RegisterItem> {
+
+		public RegisterUpdateListener() {
+			super(RegisterItem.class);
+		}
+
+		@Override
+		public void updateData(RegisterItem returnedObj) {
+			FlurryAgent.logEvent(FlurryData.NEW_ACCOUNT_CREATED);
+			showToast(R.string.congratulations);
+
+			preferencesEditor.putString(AppConstants.USERNAME, userNameEdt.getText().toString().toLowerCase());
+			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, RestHelper.V_BASIC_MEMBER);
+			processLogin(returnedObj.getData());
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {  // TODO restore
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == Activity.RESULT_OK) {
+			if (requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE) {
+				CommonLogicFragment.facebook.authorizeCallback(requestCode, resultCode, data);
+			} else if (requestCode == BasePopupsFragment.NETWORK_REQUEST) {
+				submitRegisterInfo();
+			}
+		}
+	}
+
+	private String encodeField(EditText editText) {
+		String value = "";
+		try {
+			value = URLEncoder.encode(getTextFromField(editText), HTTP.UTF_8);
+		} catch (UnsupportedEncodingException e) {
+			editText.setError(getString(R.string.encoding_unsupported));
+		}
+		return value;
+	}
+
+	private class FieldChangeWatcher implements TextWatcher {
+		private EditText editText;
+
+		public FieldChangeWatcher(EditText editText) {
+			this.editText = editText;
+		}
+
+		@Override
+		public void onTextChanged(CharSequence str, int start, int before, int count) {
+			if (str.length() > 1) {
+				editText.setError(null);
+			}
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+		}
+
+		@Override
+		public void afterTextChanged(Editable s) {
+		}
+	}
 }

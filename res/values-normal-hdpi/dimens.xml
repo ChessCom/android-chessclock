@@ -12,9 +12,12 @@
 	<dimen name="signin_main_margin_top">53dip</dimen>
 
     <!--New Design-->
+    <!--Welcome-->
+    <dimen name="welcome_logo_margin_top">20dip</dimen>
 
-<!--    &lt;!&ndash;Nav Menu&ndash;&gt;
-    <dimen name="new_nav_menu_item_height">56dip</dimen>-->
+
+    <!--    &lt;!&ndash;Nav Menu&ndash;&gt;
+        <dimen name="new_nav_menu_item_height">56dip</dimen>-->
 
     <!--Common-->
     <dimen name="common_button_margin_top">23dip</dimen>
@@ -34,6 +37,7 @@
     <dimen name="new_setup_small_fonts_size">14sp</dimen>
     <dimen name="video_thumb_size">120dip</dimen>
     <dimen name="panel_info_padding_top">5dip</dimen>
+    <dimen name="new_signup_title_padding_bottom">16dip</dimen>
 
 
 </resources>

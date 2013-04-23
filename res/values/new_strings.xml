@@ -11,7 +11,7 @@
     <string name="to">to</string>
 
 	<string name="unable_to_move_on_vacation">Unable to make moves until on vacation</string>
-
+    <string name="sign_up_with_facebook"><b>Sign Up</b> with <b>Facebook</b></string>
 	<string name="current_games">Current Games</string>
 	<string name="finished_games">Finished Games</string>
 	<string name="no_challenges_during_vacation">Challenges will not show during vacation</string>
@@ -170,4 +170,6 @@
     <!--<string name="profile_account_message_4"><a href="http://www.chess.com/home/privacy">tap here.</a></string>-->
     <string name="membership_expire_date_format">dd/MM/yyyy</string>
     <string name="basic">Basic</string>
+    <string name="sign_up_now_free">Sign Up Now, It\'s FREE!</string>
+
 </resources>

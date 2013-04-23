@@ -420,7 +420,7 @@
 
     <style name="SetupSmallFont">
         <item name="android:textSize">@dimen/new_setup_small_fonts_size</item>
-        <item name="android:textColor">@color/new_normal_grey</item>
+        <item name="android:textColor">@color/new_light_grey</item>
         <item name="android:gravity">center</item>
     </style>
 

@@ -9,6 +9,8 @@
     <dimen name="signin_main_margin_top">53dip</dimen>
 
     <!--New Design-->
+    <!--Welcome-->
+    <dimen name="welcome_logo_margin_top">70dip</dimen>
 
     <dimen name="button_min_width">70dip</dimen>
     <dimen name="small_button_height">35dip</dimen>
@@ -23,6 +25,7 @@
 
     <!--Panel Info-->
     <dimen name="panel_info_padding_top">8dip</dimen>
+    <dimen name="new_signup_title_padding_bottom">16dip</dimen>
 
 
 </resources>

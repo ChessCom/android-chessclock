@@ -83,8 +83,10 @@
 	<dimen name="signin_scr_side_padding">40dip</dimen>
 	<dimen name="signin_logo_margin_top">5dip</dimen>
 	<dimen name="signin_main_margin_top">53dip</dimen>
+    <!--Welcome-->
+    <dimen name="welcome_logo_margin_top">20dip</dimen>
 
-	<!--Game Modes-->
+    <!--Game Modes-->
 	<dimen name="game_submit_buttons_lay_bot_padding">10dip</dimen>
 	<dimen name="player_name_max_width">150dip</dimen>
 	<dimen name="game_label_padding_top">0dip</dimen>
@@ -131,5 +133,6 @@
     <dimen name="new_setup_small_fonts_size">14sp</dimen>
     <dimen name="video_thumb_size">120dip</dimen>
     <dimen name="panel_info_padding_top">2dip</dimen>
+    <dimen name="new_signup_title_padding_bottom">16dip</dimen>
 
 </resources>

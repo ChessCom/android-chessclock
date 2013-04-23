@@ -20,4 +20,5 @@
 	<dimen name="player_name_max_width">400dip</dimen>
     <dimen name="video_thumb_size">120dip</dimen>
     <dimen name="panel_info_padding_top">11dip</dimen>
+    <dimen name="new_signup_title_padding_bottom">16dip</dimen>
 </resources>

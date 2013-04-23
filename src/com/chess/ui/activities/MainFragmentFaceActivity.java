@@ -62,6 +62,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				showActionBar = true;
 			} else {
 				switchFragment(new WelcomeFragment());
+//				switchFragment(new WelcomeMainFragment());
 				showActionBar = false;
 			}
 		} else { // fragments state will be automatically restored
