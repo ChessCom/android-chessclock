@@ -11,14 +11,16 @@
     <com.chess.ui.views.PanelInfoTacticsView
         android:id="@+id/topPanelView"
         android:layout_width="match_parent"
-        android:layout_height="58dip"
+        android:layout_height="@dimen/new_tactics_panel_info_height"
         />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/panel_info_height"
+
         >
+        <!--android:layout_marginTop="@dimen/panel_info_height"-->
+
         <!--Top Border-->
         <FrameLayout
             android:id="@+id/topBorder"

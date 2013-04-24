@@ -5,7 +5,7 @@
     <gradient
         android:centerX="0.5"
         android:centerY="0.5"
-        android:endColor="@color/dashboard_button"
+        android:endColor="@color/glow_border2"
 
         android:gradientRadius="225"
         android:startColor="@color/glow_border2"

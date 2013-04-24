@@ -52,10 +52,7 @@
         android:right="3px"
         >
         <shape android:dither="true" >
-            <gradient android:angle="315"
-                      android:startColor="@color/light_green_button_1"
-                      android:endColor="@color/light_green_button_2"
-                />
+            <solid android:color="@color/light_green_button_1" />
             <corners
                 android:radius="@dimen/toggle_button_radius"
                 />

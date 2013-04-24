@@ -28,6 +28,7 @@
     <string name="glyph_history">&#730;</string>
     <string name="glyph_close">B</string>
     <string name="glyph_clear">Q</string>
+    <string name="glyph_clock">\'</string>
 
     <string name="glyph_arrow_right">.</string>
     <string name="glyph_arrow_left">,</string>

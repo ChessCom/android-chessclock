@@ -46,15 +46,16 @@
 		android:layout_height="wrap_content"
 		>
 
-		<com.chess.RoboButton
-			android:id="@+id/positiveBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			style="@style/Text.Button"
-			android:text="@string/ok"
-			android:layout_gravity="center_horizontal"
-			android:layout_weight="1"
-			/>
+        <com.chess.RoboButton
+            android:id="@+id/negativeBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/Text.Button.Grey"
+            android:text="@string/cancel"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="2dip"
+            />
 
 		<com.chess.RoboButton
 			android:id="@+id/neutralBtn"
@@ -64,17 +65,21 @@
 			style="@style/Text.Button.Grey"
 			android:text="@string/not_now"
 			android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="2dip"
+            android:layout_marginRight="2dip"
 			/>
 
-		<com.chess.RoboButton
-			android:id="@+id/negativeBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			style="@style/Text.Button.Grey"
-			android:text="@string/cancel"
-			android:layout_gravity="center_horizontal"
-			/>
+        <com.chess.RoboButton
+            android:id="@+id/positiveBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Text.Button"
+            android:text="@string/ok"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:layout_marginLeft="2dip"
+            android:minHeight="@dimen/grey_button_height"
+            />
 	</LinearLayout>
 
 </LinearLayout>

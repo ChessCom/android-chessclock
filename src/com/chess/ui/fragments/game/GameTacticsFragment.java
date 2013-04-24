@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.*;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -84,6 +85,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private int currentRating;
 	private boolean isAnalysis;
 	private boolean serverError;
+	private boolean userSawOfflinePopup;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -278,19 +280,17 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				boardFace.updateMoves(boardFace.getTacticMoves()[boardFace.getHply()], true);
 				invalidateGameScreen();
 			} else { // correct
-				String newRatingStr = StaticData.SYMBOL_EMPTY;
+				String newRatingStr;
 				if (tacticItem.isWasShowed()) {
 					newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
 					showCorrect(newRatingStr);
 				} else if ( tacticItem.isRetry() || noInternet) {
 					newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
 
-//					showSolvedTacticPopup(title, false);
 					showCorrect(newRatingStr);
 				} else {
 
 					LoadItem loadItem = new LoadItem();
-//					loadItem.setLoadPath(RestHelper.TACTICS_TRAINER);
 					loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
 					loadItem.setRequestMethod(RestHelper.POST);
 					loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
@@ -300,7 +300,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					loadItem.addRequestParams(RestHelper.P_SECONDS, tacticItem.getSecondsSpent());
 					loadItem.addRequestParams(RestHelper.P_ENCODED_MOVES, RestHelper.V_FALSE);
 
-//					new GetStringObjTask(tacticsCorrectUpdateListener).executeTask(loadItem);
 					new RequestJsonTask<TacticInfoItem>(tacticsCorrectUpdateListener).executeTask(loadItem);
 					controlsTacticsView.enableGameControls(false);
 				}
@@ -313,7 +312,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			String newRatingStr;
 			if (tacticResultItemIsValid && (tacticItem.isRetry() || noInternet)) {
 				newRatingStr = getString(R.string.score_arg, tacticItem.getNegativeScore());
-//				showWrongMovePopup(title);
 
 				showWrong(newRatingStr);
 			} else {
@@ -326,7 +324,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, getBoardFace().getTacticsCorrectMoves());
 				loadItem.addRequestParams(RestHelper.P_SECONDS, tacticItem.getSecondsSpent());
 
-//				new GetStringObjTask(tacticsWrongUpdateListener).executeTask(loadItem);
 				new RequestJsonTask<TacticInfoItem>(tacticsWrongUpdateListener).executeTask(loadItem);
 				controlsTacticsView.enableGameControls(false);
 			}
@@ -521,6 +518,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		@Override
 		public void updateData(TacticItem returnedObj) {
+			noInternet = false;
+
 			switch (listenerCode) {
 				case GET_TACTIC:
 					new SaveTacticsBatchTask(dbTacticBatchSaveListener, returnedObj.getData(),
@@ -574,6 +573,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		@Override
 		public void updateData(TacticInfoItem returnedObj) {
+			noInternet = false;
+
 			TacticRatingData tacticResultItem = returnedObj.getData().getRatingInfo();
 			if (tacticResultItem != null) {
 				tacticResultItem.setId(tacticItem.getId());
@@ -625,6 +626,14 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				}
 			} else {
 				if (resultCode == StaticData.NO_NETWORK) {
+					switch (listenerCode) {
+						case CORRECT_RESULT:
+							showCorrect(StaticData.SYMBOL_EMPTY);
+							break;
+						case WRONG_RESULT:
+							showWrong(StaticData.SYMBOL_EMPTY);
+							break;
+					}
 					handleErrorRequest();
 				}
 			}
@@ -632,15 +641,19 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void showCorrect(String newRatingStr) {
+		if (!TextUtils.isEmpty(newRatingStr)) {
+			topPanelView.setPlayerScore(tacticItem.getResultItem().getUserRating());
+		}
 		topPanelView.showCorrect(true, newRatingStr);
-		topPanelView.setPlayerScore(tacticItem.getResultItem().getUserRating());
 		controlsTacticsView.showCorrect();
 		getBoardFace().setFinished(true);
 	}
 
 	private void showWrong(String newRatingStr) {
+		if (!TextUtils.isEmpty(newRatingStr)) {
+			topPanelView.setPlayerScore(tacticItem.getResultItem().getUserRating());
+		}
 		topPanelView.showWrong(true, newRatingStr);
-		topPanelView.setPlayerScore(tacticItem.getResultItem().getUserRating());
 		controlsTacticsView.showWrong();
 		getBoardFace().setFinished(true);
 	}
@@ -649,7 +662,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		controlsTacticsView.enableGameControls(true);
 
 		noInternet = true;      // TODO handle button click properly
-		showPopupDialog(R.string.offline_mode, R.string.no_network_rating_not_changed, OFFLINE_RATING_TAG);
+		if (!userSawOfflinePopup) {
+			showPopupDialog(R.string.offline_mode, R.string.no_network_rating_not_changed, OFFLINE_RATING_TAG);
+		}
 	}
 
 //	private class TacticsWrongUpdateListener extends ChessUpdateListener {
@@ -917,12 +932,14 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			loadNewTacticsBatch();
 
 		} else if (tag.equals(TEN_TACTICS_TAG)) {
-//			onBackPressed();
 			getActivityFace().showPreviousFragment();
 		} else if (tag.equals(OFFLINE_RATING_TAG)) {
 //			loadOfflineTacticsBatch(); // There is a case when you connected to wifi, but no internet connection over it.
-
-			getNextTactic();
+			// user saw popup, don't show it again
+			if (!userSawOfflinePopup) {
+				getNextTactic();
+			}
+			userSawOfflinePopup = true;
 		}
 		super.onPositiveBtnClick(fragment);
 	}
@@ -935,13 +952,10 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else {
 
 			LoadItem loadItem = new LoadItem();
-//			loadItem.setLoadPath(RestHelper.GET_TACTICS_PROBLEM_BATCH);
 			loadItem.setLoadPath(RestHelper.CMD_TACTICS);
-//			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_FALSE);
 
-//			new GetStringObjTask(getTacticsUpdateListener).executeTask(loadItem);
 			new RequestJsonTask<TacticItem>(getTacticsUpdateListener).executeTask(loadItem);
 			controlsTacticsView.enableGameControls(false);
 		}
@@ -996,7 +1010,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private void cancelTacticAndLeave() {
 		getBoardFace().setTacticCanceled(true);
 		clearSavedTactics();
-//		onBackPressed();
 		getActivityFace().showPreviousFragment();
 	}
 

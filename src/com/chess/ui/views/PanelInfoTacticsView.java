@@ -2,19 +2,16 @@ package com.chess.ui.views;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.RoboTextView;
-import com.chess.ui.views.drawables.BoardAvatarDrawable;
 
 /**
  * GamePanelTestActivity class
@@ -30,7 +27,6 @@ public class PanelInfoTacticsView extends RelativeLayout {
 	public static final int TOP_BUTTON_ID = 0x00004406;
 	public static final int RATING_CHANGE_ID = 0x00004407;
 
-	private int AVATAR_SIZE = 34;
 	private int TOP_BUTTON_HEIGHT = 36;
 	private int AVATAR_MARGIN = 11;
 
@@ -38,7 +34,6 @@ public class PanelInfoTacticsView extends RelativeLayout {
 	private float density;
 
 	private RoboTextView ratingTxt;
-	private ImageView avatarImg;
 
 	private RoboTextView clockTxt;
 
@@ -47,6 +42,9 @@ public class PanelInfoTacticsView extends RelativeLayout {
 	private OnClickListener listener;
 	private RoboTextView ratingChangeTxt;
 	private RoboTextView practiceTxt;
+	private float clockTextSize = 16;
+	private float clockIconSize = 21;
+	private LinearLayout clockLayout;
 
 	public PanelInfoTacticsView(Context context) {
 		super(context);
@@ -61,41 +59,21 @@ public class PanelInfoTacticsView extends RelativeLayout {
 	public void onCreate() {
 		density = getContext().getResources().getDisplayMetrics().density;
 
-		AVATAR_SIZE *= density;
 		AVATAR_MARGIN *= density;
 		TOP_BUTTON_HEIGHT *= density;
 
 		setBackgroundResource(R.color.new_main_back);
 
 		int padding = (int) (7 * density);
-		setPadding(padding, padding, padding, padding);
+		int paddingLeft = (int) (21 * density);
+		int paddingRight = (int) (12 * density);
+		setPadding(paddingLeft, padding, paddingRight, padding);
 
 
-		{// add avatar view
-			avatarImg = new ImageView(getContext());
-
-			LayoutParams avatarParams = new LayoutParams(AVATAR_SIZE, AVATAR_SIZE);
-			avatarParams.setMargins(AVATAR_MARGIN, 0, AVATAR_MARGIN, 0);
-			avatarParams.addRule(CENTER_VERTICAL);
-
-			avatarImg.setScaleType(ImageView.ScaleType.FIT_XY);
-			avatarImg.setAdjustViewBounds(true);
-			avatarImg.setId(AVATAR_ID);
-
-			// set avatars
-			Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
-			BoardAvatarDrawable boardAvatarDrawable = new BoardAvatarDrawable(getContext(), src);
-			boardAvatarDrawable.setBorderThick(4);
-			avatarImg.setImageDrawable(boardAvatarDrawable);
-
-			addView(avatarImg, avatarParams);
-		}
-
-		{// add player name
+		{// add player rating
 			ratingTxt = new RoboTextView(getContext());
 			LayoutParams playerParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
-			playerParams.addRule(RIGHT_OF, AVATAR_ID);
 			playerParams.addRule(CENTER_VERTICAL);
 
 			ratingTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 28);
@@ -108,22 +86,43 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		}
 
 		{// add time left text
-			clockTxt = new RoboTextView(getContext());
-			LayoutParams timeLeftParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			timeLeftParams.addRule(ALIGN_PARENT_RIGHT);
-			timeLeftParams.addRule(CENTER_VERTICAL);
+			clockLayout = new LinearLayout(getContext());
 
-			clockTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
-			clockTxt.setTextColor(getContext().getResources().getColor(R.color.new_light_grey));
+			RoboTextView clockIconTxt = new RoboTextView(getContext());
+			clockTxt = new RoboTextView(getContext());
+
+			LayoutParams clockLayoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams timePassedParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams clockIconParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+			clockLayoutParams.addRule(CENTER_IN_PARENT);
+			timePassedParams.gravity = CENTER_VERTICAL;
+			clockIconParams.gravity = CENTER_VERTICAL;
+
+			clockIconTxt.setFont(RoboTextView.ICON_FONT);
+			clockIconTxt.setTextSize(clockIconSize);
+			clockIconTxt.setText("\'");
+			clockIconTxt.setTextColor(getContext().getResources().getColor(R.color.main_menu_back_top));
+			int paddingIcon = (int) (7 * density);
+			int paddingIconTop = (int) (3 * density);
+			clockIconTxt.setPadding(0, paddingIconTop, paddingIcon, 0);
+
+			clockLayout.addView(clockIconTxt, clockIconParams);
+
+			clockTxt.setTextSize(clockTextSize);
+			clockTxt.setTextColor(getContext().getResources().getColor(R.color.main_menu_back_top));
+			clockTxt.setFont(RoboTextView.BOLD_FONT);
 			clockTxt.setText("--:--");
 			clockTxt.setId(TIME_LEFT_ID);
-			clockTxt.setShadowLayer(0.5f, 0, -1, Color.BLACK);
-			clockTxt.setCompoundDrawablePadding((int) (7 * density));
-			clockTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_tactics_clock, 0, 0, 0);
-			clockTxt.setGravity(Gravity.CENTER);
-			clockTxt.setPadding(0, 0, (int) (20 * density), 0);
+			clockLayout.addView(clockTxt, timePassedParams);
 
-			addView(clockTxt, timeLeftParams);
+
+			int topPadding = (int) (12 * density);
+			int sidePadding = (int) (29 * density);
+			clockLayout.setBackgroundResource(R.drawable.button_white_solid_selector);
+			clockLayout.setPadding(sidePadding, topPadding, sidePadding, topPadding);
+
+			addView(clockLayout, clockLayoutParams);
 		}
 
 		{// add rating change label
@@ -173,7 +172,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			practiceTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
 			practiceTxt.setTextColor(textColor);
 			practiceTxt.setGravity(Gravity.CENTER);
-			practiceTxt.setPadding(0, 0, (int)(18 * density), 0);
+			practiceTxt.setPadding(0, 0, (int) (18 * density), 0);
 			practiceTxt.setShadowLayer(0.5f, 0, -1, Color.BLACK);
 			practiceTxt.setFont(RoboTextView.BOLD_FONT);
 			practiceTxt.setVisibility(GONE);
@@ -185,9 +184,6 @@ public class PanelInfoTacticsView extends RelativeLayout {
 
 	public void setSide(int side) {
 		this.side = side;
-
-		// change avatar border
-		((BoardAvatarDrawable)avatarImg.getDrawable()).setSide(side);
 
 		invalidate();
 	}
@@ -209,18 +205,19 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		clockTxt.setVisibility(show ? VISIBLE : GONE);
 	}
 
-	public void hideCorrect(){
+	public void hideCorrect() {
 		showCorrect(false, null);
 	}
 
-	public void showDefault(){
-		clockTxt.setVisibility(VISIBLE);
+	public void showDefault() {
+		clockLayout.setVisibility(VISIBLE);
+		ratingTxt.setVisibility(GONE);
 		practiceTxt.setVisibility(GONE);
 		topButton.setVisibility(GONE);
 		ratingChangeTxt.setVisibility(GONE);
 	}
 
-	public void showCorrect(boolean show, String newRatingStr){
+	public void showCorrect(boolean show, String newRatingStr) {
 		if (show) {
 			topButton.setBackgroundResource(R.drawable.button_light_green_selector);
 			topButton.setText(R.string.correct);
@@ -228,7 +225,8 @@ public class PanelInfoTacticsView extends RelativeLayout {
 
 			ratingChangeTxt.setText(newRatingStr);
 			ratingChangeTxt.setVisibility(VISIBLE);
-			clockTxt.setVisibility(GONE);
+			ratingTxt.setVisibility(VISIBLE);
+			clockLayout.setVisibility(GONE);
 			practiceTxt.setVisibility(GONE);
 
 		} else {
@@ -237,11 +235,11 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		}
 	}
 
-	public void hideWrong(){
+	public void hideWrong() {
 		showWrong(false, null);
 	}
 
-	public void showWrong(boolean show, String newRatingStr){
+	public void showWrong(boolean show, String newRatingStr) {
 		if (show) {
 			topButton.setBackgroundResource(R.drawable.button_red_selector);
 			topButton.setText(R.string.wrong);
@@ -249,7 +247,8 @@ public class PanelInfoTacticsView extends RelativeLayout {
 
 			ratingChangeTxt.setText(newRatingStr);
 			ratingChangeTxt.setVisibility(VISIBLE);
-			clockTxt.setVisibility(GONE);
+			ratingTxt.setVisibility(VISIBLE);
+			clockLayout.setVisibility(GONE);
 			practiceTxt.setVisibility(GONE);
 		} else {
 			topButton.setVisibility(GONE);
@@ -257,11 +256,12 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		}
 	}
 
-	public void showPractice(boolean show){
-		practiceTxt.setVisibility(show? VISIBLE: GONE);
+	public void showPractice(boolean show) {
+		practiceTxt.setVisibility(show ? VISIBLE : GONE);
 
 		if (show) {
 			topButton.setVisibility(GONE);
+			ratingTxt.setVisibility(GONE);
 			clockTxt.setVisibility(GONE);
 			ratingChangeTxt.setVisibility(GONE);
 		}

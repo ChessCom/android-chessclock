@@ -79,7 +79,7 @@
     <color name="red_emboss_bot_2">#FF861e21</color>
 
     <!--Light Green-->
-    <color name="light_green_button_1">#FF89b162</color>
+    <color name="light_green_button_1">#FF769656</color>
     <color name="light_green_button_2">#FF7b9f56</color>
     <color name="light_green_button_p_1">#ff739b4e</color>
     <color name="light_green_button_p_2">#ff587a3d</color>
@@ -161,9 +161,11 @@
     <color name="grey_button_control_border_bottom_p">#ff33302c</color>
     <color name="grey_button_control_border_right_p">#ff3a3632</color>
 
-
     <color name="controls_border">#40000000</color>
 
+    <!--Grey Solid-->
+    <color name="white_button_solid">#FFf0f0f0</color>
+    <color name="white_button_solid_p">#ffcbcbcb</color>
 
     <!--Emboss Text Field Black-->
     <color name="back_grey_emboss_solid">#FF201d1c</color>
@@ -303,7 +305,8 @@
     <!--<color name="dark_orange">#FFa94a14</color>-->
 
     <color name="glow_border">#00c9c9c9</color>
-    <color name="glow_border2">#FF5e5e5e</color>   <!--Good-->
+    <!--<color name="glow_border2">#FF5e5e5e</color>   &lt;!&ndash;Good&ndash;&gt;-->
+    <color name="glow_border2">#FF312e2a</color>   <!--Good-->
 
 	<!--<color name="shadow_border">#27000000</color>-->
 	<color name="shadow_border">#7F000000</color>

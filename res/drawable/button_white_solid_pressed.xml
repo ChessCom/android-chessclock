@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--Outer Border-->
+    <item >
+        <shape >
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@android:color/transparent" />
+            <stroke android:width="@dimen/default_stroke_width"
+                    android:color="@color/semi_transparent_border"/>
+        </shape>
+    </item>
+
+
+    <!--Button-->
+    <item
+        android:left="3px"
+        android:top="3px"
+        android:bottom="3px"
+        android:right="3px"
+        >
+        <shape android:dither="true" >
+            <solid android:color="@color/white_button_solid_p" />
+            <corners
+                android:radius="@dimen/rounded_button_radius"
+                />
+            <padding
+                android:left="@dimen/rounded_button_padding_left"
+                android:right="@dimen/rounded_button_padding_right"
+                android:top="@dimen/rounded_button_padding_top"
+                android:bottom="@dimen/rounded_button_padding_bottom"
+                />
+
+        </shape>
+    </item>
+
+</layer-list>

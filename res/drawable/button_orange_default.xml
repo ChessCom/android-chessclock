@@ -131,7 +131,6 @@
 				android:top="@dimen/rounded_button_padding_top"
 				android:bottom="@dimen/rounded_button_padding_bottom"
                 />
-            <!--<size android:height="@dimen/sign_in_button_height"/>-->
         </shape>
     </item>
 
