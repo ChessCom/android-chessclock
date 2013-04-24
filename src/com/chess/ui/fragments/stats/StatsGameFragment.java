@@ -119,11 +119,11 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-			if (show) {
-				showToast("Loading ...");
-			} else {
-				showToast("Done!");
-			}
+//			if (show) {
+//				showToast("Loading ...");
+//			} else {
+//				showToast("Done!");
+//			}
 		}
 
 		@Override
@@ -133,6 +133,15 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 			// Save stats to DB
 			new SaveGameStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver(), gameType).executeTask();
 
+			// get selected position of spinner
+			int position = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
+
+			changeInternalFragment(StatsGameDetailsFragment.newInstance(position));
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
 			// get selected position of spinner
 			int position = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
 

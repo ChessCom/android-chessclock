@@ -18,9 +18,10 @@ import com.chess.db.DBDataManager;
 import com.chess.ui.engine.NewCompGameConfig;
 import com.chess.ui.engine.NewDailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.FriendsFragment;
 import com.chess.ui.fragments.daily_games.DailyGamesOptionsFragment;
+import com.chess.ui.fragments.friends.InviteFriendsFragment;
 import com.chess.ui.fragments.game.GameCompFragment;
+import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.slidingmenu.lib.SlidingMenu;
 
 /**
@@ -143,24 +144,23 @@ Auto-Match should be just a random, open, rated, 3-day seek.
 			createDailyChallenge(); // TODO adjust
 		} else if (view.getId() == R.id.inviteFriend2Btn) {
 			createDailyChallenge(); // TODO adjust
+		} else if (view.getId() == R.id.liveHeaderView) {
+			getActivityFace().openFragment(StatsGameFragment.newInstance(StatsGameFragment.LIVE_STANDARD));
 		} else if (view.getId() == R.id.dailyHeaderView) {
-			// show options
-			getActivityFace().changeRightFragment(new DailyGamesOptionsFragment());
-			getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+			if (positionMode == CENTER_MODE) {
+				getActivityFace().openFragment(StatsGameFragment.newInstance(StatsGameFragment.DAILY_CHESS));
+			} else {
+				getActivityFace().changeRightFragment(new DailyGamesOptionsFragment());
+			}
 		} else if (view.getId() == R.id.playFriendView) {
-			getActivityFace().openFragment(new FriendsFragment());
-			if (positionMode == RIGHT_MENU_MODE) {
+			getActivityFace().changeRightFragment(new InviteFriendsFragment());
+			if (positionMode == CENTER_MODE) {
 				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
 			}
 		} else if (view.getId() == R.id.vsCompHeaderView) {
 			NewCompGameConfig.Builder gameConfigBuilder = new NewCompGameConfig.Builder();
 			NewCompGameConfig compGameConfig = gameConfigBuilder.setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE).build();
 			getActivityFace().openFragment(GameCompFragment.newInstance(compGameConfig));
-			if (positionMode == RIGHT_MENU_MODE) {
-				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
-			}
-		} else if (view.getId() == R.id.playFriendView) {
-			getActivityFace().openFragment(new FriendsFragment());
 			if (positionMode == RIGHT_MENU_MODE) {
 				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
 			}

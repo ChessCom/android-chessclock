@@ -100,6 +100,8 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		setTitle(R.string.stats);
+
 		currentRatingTxt = (TextView) view.findViewById(R.id.currentRatingTxt);
 
 		absoluteRankTxt = (TextView) view.findViewById(R.id.absoluteRankTxt);

@@ -10,6 +10,7 @@ import com.chess.R;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.daily_games.DailyTabsFragment;
+import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.game.GameTacticsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;

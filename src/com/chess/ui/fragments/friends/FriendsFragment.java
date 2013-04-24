@@ -1,4 +1,4 @@
-package com.chess.ui.fragments;
+package com.chess.ui.fragments.friends;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -22,6 +22,7 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveFriendsListTask;
 import com.chess.ui.adapters.FriendsCursorAdapter;
 import com.chess.ui.adapters.WhiteSpinnerAdapter;
+import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;

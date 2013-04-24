@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/new_main_back"
+    >
+
+    <!--Header-->
+    <LinearLayout
+        android:id="@+id/inviteHeaderView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_header_height"
+        android:gravity="center_vertical"
+        android:background="@drawable/daily_games_header_selector"
+        android:paddingLeft="14dip"
+        android:paddingRight="10dip"
+        >
+        <!--Icon-->
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/glyph_play_friend"
+            android:textColor="@color/new_grey_icon_header"
+            style="@style/GlyphIcon.Big"
+            />
+
+        <com.chess.RoboTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="8dip"
+            android:text="@string/invite_friend"
+            android:textColor="@color/new_list_header_text"
+            android:gravity="center_vertical"
+            />
+
+        <!--Right Icon-->
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/glyph_arrow_left"
+            android:textColor="@color/new_grey_icon_header"
+            style="@style/GlyphIcon.Small"
+            />
+
+    </LinearLayout>
+
+    <!--Chess.com Friends-->
+    <LinearLayout
+        android:id="@+id/chesscomFriendsView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="14dip"
+        android:paddingRight="10dip"
+        android:background="@drawable/daily_games_item_selector"
+        android:gravity="center_vertical"
+        >
+
+        <!--Icon-->
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/glyph_chess_com"
+            android:textColor="@color/new_grey_icon_header"
+            style="@style/GlyphIcon.Big"
+            />
+
+        <com.chess.RoboTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/chess_com_friends"
+            android:textColor="@color/new_light_grey"
+            />
+
+        <!--Right Icon-->
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/glyph_arrow_right"
+            android:textColor="@color/hint_text"
+            style="@style/GlyphIcon.Small"
+            />
+
+    </LinearLayout>
+
+    <!--Chess.com Username Play!-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="9dip"
+        android:paddingRight="10dip"
+        android:background="@drawable/daily_games_item_default"
+        android:gravity="center_vertical"
+        >
+
+        <com.chess.EditButtonSpinner
+            android:id="@+id/opponentEditBtn"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/chess_com_username"
+            style="@style/Text.Button.Grey.Small.Solid"
+            android:layout_marginRight="8dip"
+            />
+
+        <com.chess.RoboButton
+            android:id="@+id/dailyPlayBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_play_ex"
+            style="@style/Text.Button.Grey.Small"
+            />
+
+    </LinearLayout>
+
+    <!--Facebook Friends-->
+    <LinearLayout
+        android:id="@+id/facebookFriendsView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="14dip"
+        android:paddingRight="10dip"
+        android:background="@drawable/daily_games_item_selector"
+        android:gravity="center_vertical"
+        >
+
+        <!--Icon-->
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/glyph_facebook"
+            android:textColor="@color/new_grey_icon_header"
+            style="@style/GlyphIcon.Big"
+            />
+
+        <com.chess.RoboTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/facebook_friends"
+            android:textColor="@color/new_light_grey"
+            />
+
+        <!--Right Icon-->
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/glyph_arrow_right"
+            android:textColor="@color/hint_text"
+            style="@style/GlyphIcon.Small"
+            />
+
+    </LinearLayout>
+
+    <!--Your Contacts-->
+    <LinearLayout
+        android:id="@+id/yourContactsView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="14dip"
+        android:paddingRight="10dip"
+        android:background="@drawable/daily_games_item_selector"
+        android:gravity="center_vertical"
+        >
+
+        <!--Icon-->
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/glyph_contacts"
+            android:textColor="@color/new_grey_icon_header"
+            style="@style/GlyphIcon.Big"
+            />
+
+        <com.chess.RoboTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/your_contacts"
+            android:textColor="@color/new_light_grey"
+            />
+
+        <!--Right Icon-->
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/glyph_arrow_right"
+            android:textColor="@color/hint_text"
+            style="@style/GlyphIcon.Small"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

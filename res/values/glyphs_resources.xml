@@ -3,6 +3,7 @@
 
     <!-- Use Icon as custom font to draw icons Mapping are here - link TBD -->
     <!--Names as strings-->
+    <string name="glyph_chess_com">1</string>
     <string name="glyph_daily_game">2</string>
     <string name="glyph_live_standard">3</string>
     <string name="glyph_live_blitz">4</string>
@@ -15,6 +16,7 @@
     <string name="glyph_videos">J</string>
     <string name="glyph_profile">b</string>
     <string name="glyph_board">i</string>
+    <string name="glyph_contacts">o</string>
     <string name="glyph_info">)</string>
     <!--<string name="glyph_settings">&#729;</string>-->
     <string name="glyph_settings">d</string>
@@ -29,6 +31,7 @@
     <string name="glyph_close">B</string>
     <string name="glyph_clear">Q</string>
     <string name="glyph_clock">\'</string>
+    <string name="glyph_facebook">D</string>
 
     <string name="glyph_arrow_right">.</string>
     <string name="glyph_arrow_left">,</string>
@@ -37,6 +40,7 @@
 
     <!--Dimens -->
     <dimen name="glyph_icon_padding">8dip</dimen>
+    <dimen name="glyph_icon_big">30dip</dimen>
     <dimen name="glyph_icon_default">24dip</dimen>
     <dimen name="glyph_icon_small">20dip</dimen>
 

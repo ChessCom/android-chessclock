@@ -31,8 +31,6 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-//		setHasOptionsMenu(true);
-
 		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
 	}
 

@@ -200,7 +200,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 //		menuOptionsItems = new CharSequence[]{
 //				getString(R.string.show_answer),
 //				getString(R.string.settings)};
-//
+
 //		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
 		getTacticsUpdateListener = new TacticsUpdateListener(GET_TACTIC);
 		tacticsCorrectUpdateListener = new TacticsInfoUpdateListener(CORRECT_RESULT);
@@ -356,23 +356,23 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		getActivityFace().openFragment(new TacticsStatsFragment());
 	}
 
-	private void showWrongMovePopup(String title) {
-		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_incorrect, null, false);
-
-		((TextView) customView.findViewById(R.id.titleTxt)).setText(title);
-
-		PopupItem popupItem = new PopupItem();
-		popupItem.setCustomView(customView);
-
-		PopupCustomViewFragment customViewFragment = PopupCustomViewFragment.newInstance(popupItem);
-		customViewFragment.show(getFragmentManager(), WRONG_MOVE_TAG);
-
-
-		customView.findViewById(R.id.retryBtn).setOnClickListener(this);
-		customView.findViewById(R.id.stopBtn).setOnClickListener(this);
-		customView.findViewById(R.id.solutionBtn).setOnClickListener(this);
-		customView.findViewById(R.id.nextBtn).setOnClickListener(this);
-	}
+//	private void showWrongMovePopup(String title) {
+//		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_incorrect, null, false);
+//
+//		((TextView) customView.findViewById(R.id.titleTxt)).setText(title);
+//
+//		PopupItem popupItem = new PopupItem();
+//		popupItem.setCustomView(customView);
+//
+//		PopupCustomViewFragment customViewFragment = PopupCustomViewFragment.newInstance(popupItem);
+//		customViewFragment.show(getFragmentManager(), WRONG_MOVE_TAG);
+//
+//
+//		customView.findViewById(R.id.retryBtn).setOnClickListener(this);
+//		customView.findViewById(R.id.stopBtn).setOnClickListener(this);
+//		customView.findViewById(R.id.solutionBtn).setOnClickListener(this);
+//		customView.findViewById(R.id.nextBtn).setOnClickListener(this);
+//	}
 
 	private void showSolvedTacticPopup(String title, boolean limitReached) {
 		TacticsDataHolder.getInstance().setTacticLimitReached(limitReached);
@@ -480,7 +480,6 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		tacticItem.setWasShowed(true);
 
 		ChessBoardTactics.resetInstance();
-//		boardView.setBoardFace(ChessBoardTactics.getInstance(this));
 		boardView.setGameActivityFace(this);
 
 		tacticItem.setRetry(true);

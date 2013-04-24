@@ -156,7 +156,6 @@
             android:textColor="@color/new_light_grey_2"
             style="@style/GlyphIcon"
             android:background="@color/grey_button_solid"
-            android:layout_marginRight="12dip"
             android:padding="0dip"
             />
 
@@ -164,6 +163,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingLeft="12dip"
             android:text="@string/play_a_friend"
             android:textColor="@color/new_light_grey"
             />

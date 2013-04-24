@@ -108,6 +108,10 @@
         <item name="android:textSize">@dimen/glyph_icon_small</item>
     </style>
 
+    <style name="GlyphIcon.Big">
+        <item name="android:textSize">@dimen/glyph_icon_big</item>
+    </style>
+
     <style name="list_text" >
         <item name="android:textColor">@color/text_black</item>
         <item name="android:textStyle">bold</item>

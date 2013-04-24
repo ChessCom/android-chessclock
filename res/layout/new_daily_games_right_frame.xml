@@ -13,7 +13,10 @@
         android:id="@+id/topButtonsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="6dip"
+        android:paddingTop="20dip"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:paddingBottom="22dip"
         android:background="@drawable/nav_menu_item_selector"
         >
         <com.chess.RoboButton

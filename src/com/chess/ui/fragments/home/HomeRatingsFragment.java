@@ -28,7 +28,7 @@ import com.chess.model.RatingListItem;
 import com.chess.ui.adapters.FriendsCursorGridAdapter;
 import com.chess.ui.adapters.RatingsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.FriendsFragment;
+import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
 import com.chess.utilities.AppUtils;
