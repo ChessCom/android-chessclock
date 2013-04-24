@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.view.*;
 import com.chess.R;
 import com.chess.backend.entity.SoundPlayer;
-import com.chess.ui.activities.old.SettingsScreenActivity;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.facebook.android.Facebook;
 import com.inneractive.api.ads.InneractiveAd;
@@ -137,9 +136,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		switch (item.getItemId()) {
 			case android.R.id.home:
 				getSlidingMenu().toggle();
-				break;
-			case R.id.menu_settings:
-				startActivity(new Intent(this, SettingsScreenActivity.class));
 				break;
 		}
 		return super.onOptionsItemSelected(item);

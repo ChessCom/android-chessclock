@@ -811,40 +811,40 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		}
 	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.game_echess, menu); // TODO restore, recheck
-		super.onCreateOptionsMenu(menu, inflater);
-	}
+//	@Override
+//	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//		inflater.inflate(R.menu.game_echess, menu); // TODO restore, recheck
+//		super.onCreateOptionsMenu(menu, inflater);
+//	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_refresh:
-//				loadGameAndUpdate();
-				updateGameState(gameId);
-				break;
-			case R.id.menu_next_game:
-				newGame();
-				break;
-			case R.id.menu_options:
-				showOptions();
-				break;
-			case R.id.menu_analysis:
-				boardView.switchAnalysis();
-				break;
-			case R.id.menu_chat:
-				openChatActivity();
-				break;
-			case R.id.menu_previous:
-				boardView.moveBack();
-				break;
-			case R.id.menu_next:
-				boardView.moveForward();
-				break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		switch (item.getItemId()) {
+//			case R.id.menu_refresh:
+////				loadGameAndUpdate();
+//				updateGameState(gameId);
+//				break;
+////			case R.id.menu_next_game:
+////				newGame();
+////				break;
+////			case R.id.menu_options:
+////				showOptions();
+////				break;
+////			case R.id.menu_analysis:
+////				boardView.switchAnalysis();
+////				break;
+////			case R.id.menu_chat:
+////				openChatActivity();
+////				break;
+////			case R.id.menu_previous:
+////				boardView.moveBack();
+////				break;
+////			case R.id.menu_next:
+////				boardView.moveForward();
+////				break;
+//		}
+//		return super.onOptionsItemSelected(item);
+//	}
 
 //	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 //		private final int ECHESS_SETTINGS = 0;
@@ -977,15 +977,15 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	}
 
 	protected void changeChatIcon(Menu menu) {
-		MenuItem menuItem = menu.findItem(R.id.menu_chat);
-		if(menuItem == null)
-			return;
-
-		if (currentGame.hasNewMessage()) {
-			menuItem.setIcon(R.drawable.chat_nm);
-		} else {
-			menuItem.setIcon(R.drawable.chat);
-		}
+//		MenuItem menuItem = menu.findItem(R.id.menu_chat);
+//		if(menuItem == null)
+//			return;
+//
+//		if (currentGame.hasNewMessage()) {
+//			menuItem.setIcon(R.drawable.chat_nm);
+//		} else {
+//			menuItem.setIcon(R.drawable.chat);
+//		}
 	}
 
 	@Override

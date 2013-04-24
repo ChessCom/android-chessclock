@@ -51,6 +51,21 @@ import java.util.List;
  */
 public class GameTacticsFragment extends GameBaseFragment implements GameTacticsActivityFace {
 
+/*
+1. help makes one move for you, and you fail the tactic. check how it works on iphone if you can.
+2. michael, what is under options?
+3. if no network, we should have offline tactics still (there should be 100 of them).
+
+Actions:
+
+
+- Next Tactic
+- Show Answer
+- Settings
+
+And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Computer), but then your result is "Solved with Hint"; your score is calculated by treating the request for Hint as a wrong move.
+	 */
+
 	private static final int TIMER_UPDATE = 1000;
 	private static final long TACTIC_ANSWER_DELAY = 1500;
 	private static final int CORRECT_RESULT = 0;
@@ -718,36 +733,36 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 //				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
 	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.game_tactics, menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_next_game:
-				newGame();
-				break;
-			case R.id.menu_options:
-				showOptions();
-				break;
-//			case R.id.menu_reside:
-//				boardView.flipBoard();
+//	@Override
+//	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//		super.onCreateOptionsMenu(menu, inflater);
+//		inflater.inflate(R.menu.game_tactics, menu);
+//	}
+//
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		switch (item.getItemId()) {
+//			case R.id.menu_next_game:
+//				newGame();
 //				break;
-			case R.id.menu_analysis:
-				boardView.switchAnalysis();
-				break;
-			case R.id.menu_previous:
-				boardView.moveBack();
-				break;
-			case R.id.menu_next:
-				boardView.moveForward();
-				break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+//			case R.id.menu_options:
+//				showOptions();
+//				break;
+////			case R.id.menu_reside:
+////				boardView.flipBoard();
+////				break;
+//			case R.id.menu_analysis:
+//				boardView.switchAnalysis();
+//				break;
+//			case R.id.menu_previous:
+//				boardView.moveBack();
+//				break;
+//			case R.id.menu_next:
+//				boardView.moveForward();
+//				break;
+//		}
+//		return super.onOptionsItemSelected(item);
+//	}
 
 //	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 //		final CharSequence[] items;

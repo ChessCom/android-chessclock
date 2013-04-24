@@ -669,9 +669,9 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				updateGamesList();
 				updateVacationStatus();
 				break;
-			case R.id.menu_new_game:
-				startActivity(new Intent(this, OnlineNewGameActivity.class));
-				break;
+//			case R.id.menu_new_game:
+//				startActivity(new Intent(this, OnlineNewGameActivity.class));
+//				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

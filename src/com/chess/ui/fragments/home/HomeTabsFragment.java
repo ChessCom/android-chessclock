@@ -2,10 +2,11 @@ package com.chess.ui.fragments.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
@@ -40,7 +41,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		// activate Left and right menu fragments
 		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		getActivityFace().changeLeftFragment(new NavigationMenuFragment());
-//		getActivityFace().changeRightFragment(new DailyGamesRightFragment());
+//		getActivityFace().changeRightFragment(new DailyGamesNotificationFragment());
 	}
 
 	@Override
@@ -54,12 +55,13 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		getActivityFace().setCustomActionBarViewId(R.layout.new_home_actionbar);
 
-		((TextView)view.findViewById(R.id.leftTabBtn)).setText(R.string.play);
-		((TextView)view.findViewById(R.id.centerTabBtn)).setText(R.string.learn);
-		((TextView)view.findViewById(R.id.rightTabBtn)).setText(R.string.feed);
+		((TextView) view.findViewById(R.id.leftTabBtn)).setText(R.string.play);
+		((TextView) view.findViewById(R.id.centerTabBtn)).setText(R.string.learn);
+		((TextView) view.findViewById(R.id.rightTabBtn)).setText(R.string.feed);
 
 		showActionBar(true);
 
+//		Fragment homeGamesFragment = HomePlayFragment.newInstance(CENTER_MODE);
 		Fragment homeGamesFragment = new HomePlayFragment();
 		changeInternalFragment(homeGamesFragment);
 
@@ -87,15 +89,31 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		if (checkedButtonId != previousCheckedId) {
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
-				case R.id.leftTabBtn:
-					changeInternalFragment(new HomePlayFragment());
+				case R.id.leftTabBtn: {
+					Fragment fragment = findFragmentByTag(HomePlayFragment.class.getSimpleName());
+					if (fragment == null) {
+						fragment = new HomePlayFragment();
+//						fragment = HomePlayFragment.newInstance(CENTER_MODE);
+					}
+					changeInternalFragment(fragment);
 					break;
-				case R.id.centerTabBtn:
-					changeInternalFragment(new HomeLearnFragment());
+				}
+				case R.id.centerTabBtn: {
+					Fragment fragment = findFragmentByTag(HomeLearnFragment.class.getSimpleName());
+					if (fragment == null) {
+						fragment = new HomeLearnFragment();
+					}
+					changeInternalFragment(fragment);
 					break;
-				case R.id.rightTabBtn:
-					changeInternalFragment(new HomeFeedFragment());
+				}
+				case R.id.rightTabBtn: {
+					Fragment fragment = findFragmentByTag(HomeFeedFragment.class.getSimpleName());
+					if (fragment == null) {
+						fragment = new HomeFeedFragment();
+					}
+					changeInternalFragment(fragment);
 					break;
+				}
 			}
 		}
 	}
@@ -105,31 +123,19 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		transaction.replace(R.id.tab_content_frame, fragment).commit();
 	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {   // Should be called to enable OptionsMenu handle
-		super.onCreateOptionsMenu(menu, inflater);
-	}
+//	@Override
+//	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {   // Should be called to enable OptionsMenu handle
+//		super.onCreateOptionsMenu(menu, inflater);
+//	}
+//
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		switch (item.getItemId()) {
+//			case R.id.menu_games:
+//				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+//				break;
+//		}
+//		return true;
+//	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_games:
-				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
-				break;
-		}
-		return true;
-	}
-
-	@Override
-	public void onPositiveBtnClick(DialogFragment fragment) {
-		String tag = fragment.getTag();
-		if (isTagEmpty(fragment)) {
-			return;
-		}
-
-		if (tag.equals("test")) {
-			showToast("test ok passed");
-		}
-		super.onPositiveBtnClick(fragment);
-	}
 }

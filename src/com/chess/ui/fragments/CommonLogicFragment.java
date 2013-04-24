@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import com.chess.R;
@@ -28,6 +31,8 @@ import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.activities.CoreActivityActionBar;
+import com.chess.ui.fragments.daily_games.DailyGamesNotificationFragment;
+import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.sign_in.SignInFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
@@ -36,6 +41,7 @@ import com.facebook.android.LoginButton;
 import com.facebook.android.SessionEvents;
 import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
+import com.slidingmenu.lib.SlidingMenu;
 import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
@@ -55,6 +61,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private static final int MIN_USERNAME_LENGTH = 3;
 	private static final int MAX_USERNAME_LENGTH = 20;
 
+	protected static final String MODE = "mode";
+
+	public static final int RIGHT_MENU_MODE = 1;
+	public static final int CENTER_MODE = 2;
 
 	//	private LoginUpdateListener loginUpdateListener;
 	private LoginUpdateListenerNew loginUpdateListener;
@@ -84,7 +94,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		preferencesEditor = preferences.edit();
 
 		handler = new Handler();
-//		setHasOptionsMenu(true);
+		setHasOptionsMenu(true);
 	}
 
 //	protected void setTitle(int titleId) {
@@ -415,5 +425,25 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected Fragment findFragmentByTag(String tag) {
 		return getFragmentManager().findFragmentByTag(tag);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {   // Should be called to enable OptionsMenu handle
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_games:
+				getActivityFace().changeRightFragment(HomePlayFragment.newInstance(RIGHT_MENU_MODE));
+				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+				break;
+			case R.id.menu_notifications:
+				getActivityFace().changeRightFragment(new DailyGamesNotificationFragment());
+				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+				break;
+		}
+		return true;
 	}
 }

@@ -548,25 +548,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-		menuInflater.inflate(R.menu.game_live, menu);
-		super.onCreateOptionsMenu(menu, menuInflater);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_options:
-				showOptions();
-				break;
-			case R.id.menu_chat:
-				openChatActivity();
-				break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
 	public Boolean isUserColorWhite() {
 		return liveService.isUserColorWhite();
 	}
@@ -650,15 +631,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	}
 
 	protected void changeChatIcon(Menu menu) {
-		MenuItem menuItem = menu.findItem(R.id.menu_chat);
-		if (menuItem == null)
-			return;
-
-		if (currentGame.hasNewMessage()) {
-			menuItem.setIcon(R.drawable.chat_nm);
-		} else {
-			menuItem.setIcon(R.drawable.chat);
-		}
+//		MenuItem menuItem = menu.findItem(R.id.menu_chat);
+//		if (menuItem == null)
+//			return;
+//
+//		if (currentGame.hasNewMessage()) {
+//			menuItem.setIcon(R.drawable.chat_nm);
+//		} else {
+//			menuItem.setIcon(R.drawable.chat);
+//		}
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setHasOptionsMenu(true);
+//		setHasOptionsMenu(true);
 
 		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
 	}
@@ -42,7 +42,7 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 		// activate Left and Right menu fragments
 		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		getActivityFace().changeLeftFragment(new NavigationMenuFragment());
-//		getActivityFace().changeRightFragment(new DailyGamesRightFragment());
+//		getActivityFace().changeRightFragment(new DailyGamesNotificationFragment());
 	}
 
 	@Override
@@ -120,20 +120,20 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 		transaction.commit();
 	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {   // Should be called to enable OptionsMenu handle
-		super.onCreateOptionsMenu(menu, inflater);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_games:
-				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
-				break;
-		}
-		return true;
-	}
+//	@Override
+//	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {   // Should be called to enable OptionsMenu handle
+//		super.onCreateOptionsMenu(menu, inflater);
+//	}
+//
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		switch (item.getItemId()) {
+//			case R.id.menu_games:
+//				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+//				break;
+//		}
+//		return true;
+//	}
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {

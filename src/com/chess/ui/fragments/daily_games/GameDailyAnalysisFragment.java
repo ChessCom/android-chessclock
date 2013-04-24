@@ -400,15 +400,15 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	}
 
 	protected void changeChatIcon(Menu menu) {
-		MenuItem menuItem = menu.findItem(R.id.menu_chat);
-		if (menuItem == null)
-			return;
-
-		if (currentGame.hasNewMessage()) {
-			menuItem.setIcon(R.drawable.chat_nm);
-		} else {
-			menuItem.setIcon(R.drawable.chat);
-		}
+//		MenuItem menuItem = menu.findItem(R.id.menu_chat);
+//		if (menuItem == null)
+//			return;
+//
+//		if (currentGame.hasNewMessage()) {
+//			menuItem.setIcon(R.drawable.chat_nm);
+//		} else {
+//			menuItem.setIcon(R.drawable.chat);
+//		}
 	}
 
 	@Override

@@ -35,12 +35,6 @@ public class NewGamesFragment extends CommonLogicFragment {
 	private static final String NO_INVITED_FRIENDS_TAG = "no invited friends";
 	private static final String ERROR_TAG = "send request failed popup";
 
-	private static final String MODE = "mode";
-
-	public static final int RIGHT_MENU_MODE = 1;
-	public static final int CENTER_MODE = 2;
-
-
 	private static final int DAILY_BASE_ID = 0x00001000;
 	private static final int LIVE_BASE_ID = 0x00002000;
 	private static final int COMP_BASE_ID = 0x00003000;
@@ -62,11 +56,11 @@ public class NewGamesFragment extends CommonLogicFragment {
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
 
 	public static NewGamesFragment newInstance(int mode) {
-		NewGamesFragment frag = new NewGamesFragment();
+		NewGamesFragment fragment = new NewGamesFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, mode);
-		frag.setArguments(bundle);
-		return frag;
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 
 	@Override

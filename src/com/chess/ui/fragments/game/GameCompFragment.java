@@ -339,37 +339,37 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 //		startActivity(intent);
 	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//		MenuInflater menuInflater = getMenuInflater();
-		inflater.inflate(R.menu.game_comp, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_newGame:
-				newGame();
-				break;
-			case R.id.menu_options:
-				showOptions();
-				break;
-			case R.id.menu_reside:
-				boardView.flipBoard();
-				break;
-			case R.id.menu_hint:
-				boardView.showHint();
-				break;
-			case R.id.menu_previous:
-				boardView.moveBack();
-				break;
-			case R.id.menu_next:
-				boardView.moveForward();
-				break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+//	@Override
+//	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+////		MenuInflater menuInflater = getMenuInflater();
+//		inflater.inflate(R.menu.game_comp, menu);
+//		super.onCreateOptionsMenu(menu, inflater);
+//	}
+//
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		switch (item.getItemId()) {
+//			case R.id.menu_newGame:
+//				newGame();
+//				break;
+//			case R.id.menu_options:
+//				showOptions();
+//				break;
+//			case R.id.menu_reside:
+//				boardView.flipBoard();
+//				break;
+//			case R.id.menu_hint:
+//				boardView.showHint();
+//				break;
+//			case R.id.menu_previous:
+//				boardView.moveBack();
+//				break;
+//			case R.id.menu_next:
+//				boardView.moveForward();
+//				break;
+//		}
+//		return super.onOptionsItemSelected(item);
+//	}
 
 	@Override
 	public Boolean isUserColorWhite() {

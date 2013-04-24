@@ -22,8 +22,11 @@
             android:layout_height="wrap_content"
             android:text="@string/start_new_game"
             android:layout_marginLeft="4dip"
-            style="@style/Text.Button"
+            style="@style/Text.Button.OrangeNoBorder"
+            android:minHeight="60dip"
+            android:textSize="23sp"
             />
+
     </FrameLayout>
 
     <RelativeLayout
@@ -38,24 +41,10 @@
             android:layout_width="@dimen/pending_progress_bar_size"
             android:layout_height="@dimen/pending_progress_bar_size"
             android:layout_margin="5dip"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/pending_list_item_TextView"
+            android:layout_centerInParent="true"
             style="?android:attr/progressBarStyle"
             />
 
-        <com.chess.RoboTextView
-            android:id="@id/pending_list_item_TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loading_"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="@color/grey_button_1"
-            android:paddingLeft="10dip"
-            android:layout_centerInParent="true"
-            robo:ttf="Bold"
-            style="@style/DarkShadowBottom"
-            />
 
     </RelativeLayout>
 
@@ -79,35 +68,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:layout_above="@+id/bottomButtonsView"
         android:layout_below="@id/topButtonsView"
 
         />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/actionbar_shadow_bot"
-        android:layout_above="@id/bottomButtonsView"
-        />
 
-    <FrameLayout
-        android:id="@id/bottomButtonsView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="6dip"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/nav_menu_item_selector"
-        >
-        <com.chess.RoboButton
-            android:id="@+id/archiveGamesBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/new_game_archive"
-            android:layout_marginRight="4dip"
-            style="@style/Text.Button.Grey"
-            />
-
-    </FrameLayout>
 
 </RelativeLayout>

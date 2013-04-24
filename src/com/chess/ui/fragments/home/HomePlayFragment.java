@@ -19,7 +19,9 @@ import com.chess.ui.engine.NewCompGameConfig;
 import com.chess.ui.engine.NewDailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.FriendsFragment;
+import com.chess.ui.fragments.daily_games.DailyGamesOptionsFragment;
 import com.chess.ui.fragments.game.GameCompFragment;
+import com.slidingmenu.lib.SlidingMenu;
 
 /**
  * Created with IntelliJ IDEA.
@@ -52,6 +54,21 @@ Auto-Match should be just a random, open, rated, 3-day seek.
 	private TextView dailyRatingTxt;
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
 	private NewDailyGameConfig.Builder gameConfigBuilder;
+	private int positionMode;
+
+	public HomePlayFragment() {
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, CENTER_MODE);
+		setArguments(bundle);
+	}
+
+	public static HomePlayFragment newInstance(int mode) {
+		HomePlayFragment fragment = new HomePlayFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, mode);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +76,16 @@ Auto-Match should be just a random, open, rated, 3-day seek.
 
 		gameConfigBuilder = new NewDailyGameConfig.Builder();
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		if(getArguments() != null){
+			positionMode = getArguments().getInt(MODE);
+		}else{
+			positionMode = savedInstanceState.getInt(MODE);
+		}
 	}
 
 	@Override
@@ -96,6 +123,12 @@ Auto-Match should be just a random, open, rated, 3-day seek.
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt(MODE, positionMode);
+	}
+
+	@Override
 	public void onClick(View view) {
 		super.onClick(view);
 
@@ -110,14 +143,27 @@ Auto-Match should be just a random, open, rated, 3-day seek.
 			createDailyChallenge(); // TODO adjust
 		} else if (view.getId() == R.id.inviteFriend2Btn) {
 			createDailyChallenge(); // TODO adjust
+		} else if (view.getId() == R.id.dailyHeaderView) {
+			// show options
+			getActivityFace().changeRightFragment(new DailyGamesOptionsFragment());
+			getActivityFace().toggleMenu(SlidingMenu.RIGHT);
 		} else if (view.getId() == R.id.playFriendView) {
 			getActivityFace().openFragment(new FriendsFragment());
+			if (positionMode == RIGHT_MENU_MODE) {
+				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+			}
 		} else if (view.getId() == R.id.vsCompHeaderView) {
 			NewCompGameConfig.Builder gameConfigBuilder = new NewCompGameConfig.Builder();
 			NewCompGameConfig compGameConfig = gameConfigBuilder.setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE).build();
 			getActivityFace().openFragment(GameCompFragment.newInstance(compGameConfig));
+			if (positionMode == RIGHT_MENU_MODE) {
+				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+			}
 		} else if (view.getId() == R.id.playFriendView) {
 			getActivityFace().openFragment(new FriendsFragment());
+			if (positionMode == RIGHT_MENU_MODE) {
+				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+			}
 		}
 	}
 

@@ -59,7 +59,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				showActionBar = true;
 //			} else {
 //				switchFragment(new WelcomeFragment());
-////				switchFragment(new WelcomeMainFragment());
 //				showActionBar = false;
 //			}
 		} else { // fragments state will be automatically restored
@@ -68,7 +67,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		slidingMenu = getSlidingMenu();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-//		slidingMenu.setShadowDrawable(R.drawable.defaultshadow);
 		slidingMenu.setOnOpenedListener(openMenuListener);
 
 		badgeItems = new Hashtable<Integer, Integer>();

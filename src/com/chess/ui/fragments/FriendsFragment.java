@@ -2,7 +2,6 @@ package com.chess.ui.fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -228,8 +227,6 @@ public class FriendsFragment extends CommonLogicFragment {
 	}
 
 	private void showEmptyView(boolean show) {
-		Log.d("TEST", "showEmptyView show = " + show);
-
 		if (show) {
 			// don't hide loadingView if it's loading
 			if (loadingView.getVisibility() != View.VISIBLE) {

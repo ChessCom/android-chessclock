@@ -160,7 +160,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 					view.setVisibility(infoVisibility);
 				}
 				showActionNewGame = !show;
-				getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
+//				getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
 
 				if (isLCSBound) {
 					User user = liveService.getUser();
@@ -219,9 +219,9 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()){
-			case R.id.menu_new_game:
-				startActivity(new Intent(this, LiveNewGameActivity.class));
-				break;
+//			case R.id.menu_new_game:
+//				startActivity(new Intent(this, LiveNewGameActivity.class));
+//				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -178,6 +178,7 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 				bottomButtonsLay.setVisibility(View.GONE);
 				homePageRadioGroup.setVisibility(View.GONE);
 			} else {
+				hideKeyBoard();
 				bottomButtonsLay.setVisibility(View.VISIBLE);
 				homePageRadioGroup.setVisibility(View.VISIBLE);
 				((RadioButton) homePageRadioGroup.getChildAt(position)).setChecked(true);
