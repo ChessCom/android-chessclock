@@ -176,5 +176,6 @@
     <string name="chess_com_username">Chess.com Username</string>
     <string name="facebook_friends">Facebook Friends</string>
     <string name="your_contacts">Your Contacts</string>
+    <string name="processing_">Processing…</string>
 
 </resources>

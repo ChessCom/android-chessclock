@@ -193,6 +193,13 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		getLastPopupFragment().show(getFragmentManager(), tag);
 	}
 
+	protected void showPopupProgressDialog(int titleId) {
+		popupProgressItem.setTitle(titleId);
+		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);
+		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.newInstance(popupItem);
+		updateProgressAndShow(popupProgressDialogFragment);
+	}
+
 	protected void showPopupHardProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
 		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);

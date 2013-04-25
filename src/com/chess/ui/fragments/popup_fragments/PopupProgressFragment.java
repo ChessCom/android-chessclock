@@ -19,7 +19,7 @@ public class PopupProgressFragment extends BasePopupDialogFragment {
 
     private TextView titleTxt;
     private TextView messageTxt;
-    private boolean cancelable;
+    private boolean cancelable = true;
 
 	public static PopupProgressFragment newInstance(PopupItem popupItem) {
 		PopupProgressFragment frag = new PopupProgressFragment();

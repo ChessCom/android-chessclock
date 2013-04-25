@@ -12,6 +12,7 @@ import com.chess.R;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
+import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.views.drawables.LogoBackgroundDrawable;
 import com.slidingmenu.lib.SlidingMenu;
@@ -261,6 +262,19 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 					getSlidingMenu().showSecondaryMenu();
 				}
 				break;
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == UpgradeDetailsFragment.RC_REQUEST) {
+			FragmentManager fragmentManager = getSupportFragmentManager(); // the only one way to call it after startIntentSenderForResult
+			Fragment fragment = fragmentManager.findFragmentByTag(UpgradeDetailsFragment.class.getSimpleName());
+			if (fragment != null) {
+				fragment.onActivityResult(requestCode, resultCode,data);
+			}
 		}
 	}
 
