@@ -39,11 +39,11 @@ public class ControlsNetworkView extends ControlsBaseView {
 			R.drawable.ic_ctrl_fwd
 	};
 
-	private int CONTROL_BUTTON_HEIGHT = 37;
 	private int ACTION_BUTTON_MARGIN = 6;
 
 	private BoardViewNetworkFace boardViewFace;
 	private Handler handler;
+	private int controlButtonHeight;
 
 	public ControlsNetworkView(Context context) {
 		super(context);
@@ -62,7 +62,7 @@ public class ControlsNetworkView extends ControlsBaseView {
 		handler = new Handler();
 
 		float density = getContext().getResources().getDisplayMetrics().density;
-		CONTROL_BUTTON_HEIGHT *= density;
+		controlButtonHeight = (int) getResources().getDimension(R.dimen.game_controls_button_height);
 		ACTION_BUTTON_MARGIN *= density;
 
 		controlsLayout = new LinearLayout(getContext());
@@ -75,7 +75,7 @@ public class ControlsNetworkView extends ControlsBaseView {
 
 		LayoutParams defaultLinLayParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
-		buttonParams = new LayoutParams(0, CONTROL_BUTTON_HEIGHT);
+		buttonParams = new LayoutParams(0, controlButtonHeight);
 		buttonParams.weight = 1;
 
 		controlsLayout.setLayoutParams(defaultLinLayParams);
@@ -108,7 +108,7 @@ public class ControlsNetworkView extends ControlsBaseView {
 		button.setOnClickListener(this);
 		button.setId(BUTTON_PREFIX + buttonId);
 		button.setVisibility(GONE);
-		LayoutParams buttonParams = new LayoutParams(0, CONTROL_BUTTON_HEIGHT);
+		LayoutParams buttonParams = new LayoutParams(0, controlButtonHeight);
 		buttonParams.weight = 1;
 
 		if (buttonId == B_CANCEL_ID) {
@@ -126,7 +126,7 @@ public class ControlsNetworkView extends ControlsBaseView {
 			return;
 
 		if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
-			boardViewFace.showOptions();
+			boardViewFace.showOptions(view);
 		}
 		if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID) {
 			boardViewFace.switchAnalysis();

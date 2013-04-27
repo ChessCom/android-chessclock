@@ -18,9 +18,10 @@ import com.chess.db.DBDataManager;
 import com.chess.ui.engine.NewCompGameConfig;
 import com.chess.ui.engine.NewDailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.daily_games.DailyGamesOptionsFragment;
+import com.chess.ui.fragments.daily.DailyGamesOptionsFragment;
 import com.chess.ui.fragments.friends.InviteFriendsFragment;
 import com.chess.ui.fragments.game.GameCompFragment;
+import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -136,6 +137,7 @@ Auto-Match should be just a random, open, rated, 3-day seek.
 		if (view.getId() == R.id.liveTimeSelectBtn) {
 
 		} else if (view.getId() == R.id.livePlayBtn) {
+			getActivityFace().openFragment(new GameLiveFragment());
 		} else if (view.getId() == R.id.autoMatchBtn) {
 			createDailyChallenge(); // TODO adjust
 		} else if (view.getId() == R.id.dailyPlayBtn) {

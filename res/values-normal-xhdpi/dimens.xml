@@ -27,6 +27,7 @@
     <dimen name="panel_info_padding_top">8dip</dimen>
     <dimen name="new_signup_title_padding_bottom">16dip</dimen>
     <dimen name="new_tactics_panel_info_height">78dip</dimen>
+    <dimen name="quick_action_item_min_width">80dip</dimen>
 
 
 </resources>

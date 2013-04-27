@@ -149,13 +149,13 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		return true;
 	}
 
-/*	@Override
+	@Override
 	public void flipBoard() {
 		getBoardFace().setReside(!getBoardFace().isReside());
 
 		invalidate();
 		gameActivityFace.invalidateGameScreen();
-	}*/
+	}
 
 
 	@Override

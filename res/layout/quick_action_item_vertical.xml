@@ -1,0 +1,27 @@
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content" 
+	android:clickable="true"
+	android:focusable="true"
+	android:background="@drawable/button_emboss_one_selector"
+    android:minHeight="@dimen/game_controls_button_height"
+    >
+        	
+<!--	<ImageView
+		android:id="@+id/iv_icon" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"/>-->
+
+	<com.chess.RoboTextView
+		android:id="@+id/actionItemTxt"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:paddingLeft="15dip"
+		android:paddingRight="15dip"
+        style="@style/QuickActionItemText"
+		/>
+									         
+</LinearLayout>         

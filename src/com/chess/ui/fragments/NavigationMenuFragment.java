@@ -9,10 +9,11 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.articles.ArticlesFragment;
-import com.chess.ui.fragments.daily_games.DailyTabsFragment;
+import com.chess.ui.fragments.daily.DailyTabsFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.game.GameTacticsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
+import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
@@ -101,7 +102,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 			case R.drawable.ic_nav_play_live:
-				getActivityFace().openFragment(NewGamesFragment.newInstance(NewGamesFragment.CENTER_MODE));
+				getActivityFace().openFragment(new GameLiveFragment());
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 			case R.drawable.ic_nav_tactics:

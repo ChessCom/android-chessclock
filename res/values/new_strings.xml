@@ -177,5 +177,6 @@
     <string name="facebook_friends">Facebook Friends</string>
     <string name="your_contacts">Your Contacts</string>
     <string name="processing_">Processing…</string>
+    <string name="next_tactic">Next Tactic</string>
 
 </resources>

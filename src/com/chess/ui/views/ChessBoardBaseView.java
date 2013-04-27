@@ -241,8 +241,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	@Override
-	public void showOptions() {
-		gameActivityFace.showOptions();
+	public void showOptions(View view) {
+		gameActivityFace.showOptions(view);
 	}
 
 	@Override

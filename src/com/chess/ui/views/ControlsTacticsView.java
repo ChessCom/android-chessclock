@@ -28,8 +28,6 @@ public class ControlsTacticsView extends ControlsBaseView {
 	public static final int B_HINT_ID = 4;
 	public static final int B_NEXT_ID = 5;
 
-	private int CONTROL_BUTTON_HEIGHT = 44;
-
 	private int[] buttonsDrawableIds = new int[]{
 			R.drawable.ic_ctrl_options,
 			R.drawable.ic_ctrl_help,
@@ -41,6 +39,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 	private BoardViewTacticsFace boardViewFace;
 
 	private State state;
+	private int controlButtonHeight;
 
 
 	public ControlsTacticsView(Context context) {
@@ -55,8 +54,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 	public void onCreate() {
 		setOrientation(VERTICAL);
 
-		float density = getContext().getResources().getDisplayMetrics().density;
-		CONTROL_BUTTON_HEIGHT *= density;
+		controlButtonHeight = (int) getResources().getDimension(R.dimen.game_controls_button_height);
 
 		controlsLayout = new LinearLayout(getContext());
 		int paddingLeft = (int) getResources().getDimension(R.dimen.game_control_padding_left);
@@ -69,7 +67,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 		LayoutParams defaultLinLayParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
-		buttonParams = new LayoutParams(0, CONTROL_BUTTON_HEIGHT);
+		buttonParams = new LayoutParams(0, controlButtonHeight);
 		buttonParams.weight = 1;
 
 		controlsLayout.setLayoutParams(defaultLinLayParams);
@@ -99,7 +97,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 		nextButton.setId(BUTTON_PREFIX + B_NEXT_ID);
 		nextButton.setFont(RoboTextView.BOLD_FONT);
 		nextButton.setVisibility(GONE);
-		LayoutParams params = new LayoutParams(0, CONTROL_BUTTON_HEIGHT);
+		LayoutParams params = new LayoutParams(0, controlButtonHeight);
 
 		params.weight = 2;
 
@@ -117,7 +115,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 			return;
 
 		if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
-			boardViewFace.showOptions();
+			boardViewFace.showOptions(view);
 		} else if (state == State.CORRECT) {  // analysis & stats
 			/*if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID) {
 				boardViewFace.switchAnalysis();

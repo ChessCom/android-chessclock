@@ -19,7 +19,9 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.NewCompGameConfig;
+import com.chess.ui.fragments.CompGameSetupFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
 import com.chess.ui.views.ChessBoardCompView;
@@ -29,6 +31,8 @@ import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
+import quickaction.ActionItem;
+import quickaction.QuickAction;
 
 import java.util.Calendar;
 
@@ -38,10 +42,15 @@ import java.util.Calendar;
  * Date: 24.01.13
  * Time: 6:42
  */
-public class GameCompFragment extends GameBaseFragment implements GameCompActivityFace {
+public class GameCompFragment extends GameBaseFragment implements GameCompActivityFace, QuickAction.OnActionItemClickListener {
 
 	private static final String MODE = "mode";
 	private static final String COMP_DELAY = "comp_delay";
+	// Quick action ids
+	private static final int ID_NEW_GAME = 0;
+	private static final int ID_EMAIL_GAME = 1;
+	private static final int ID_FLIP_BOARD = 2;
+	private static final int ID_SETTINGS = 3;
 
 	private ChessBoardCompView boardView;
 
@@ -59,13 +68,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 	private NotationView notationsView;
 	private boolean humanBlack;
-
-	/**
-	 * Use factory to set params
-	 */
-	private GameCompFragment() {
-
-	}
+	private QuickAction quickAction;
 
 	public static GameCompFragment newInstance(NewCompGameConfig config) {
 		GameCompFragment frag = new GameCompFragment();
@@ -165,10 +168,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	}
 
 	@Override
-	public void showOptions() {
-//		new AlertDialog.Builder(getContext())
-//				.setTitle(R.string.options)
-//				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+	public void showOptions(View view) {
+		quickAction.show(view);
+		quickAction.setAnimStyle(QuickAction.ANIM_REFLECT);
 	}
 
 	@Override
@@ -381,6 +383,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		return null;
 	}
 
+
+
 //	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
 //		private final int NEW_GAME_WHITE = 0;
 //		private final int NEW_GAME_BLACK = 1;
@@ -512,6 +516,19 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		boardView.computerMove(AppData.getCompThinkTime(getContext()));
 	}
 
+	@Override
+	public void onItemClick(QuickAction source, int pos, int actionId) {
+		if (actionId == ID_NEW_GAME) {
+			getActivityFace().openFragment(new CompGameSetupFragment());
+		} else if (actionId == ID_FLIP_BOARD) {
+			boardView.flipBoard();
+		} else if (actionId == ID_EMAIL_GAME) {
+			sendPGN();
+		} else if (actionId == ID_SETTINGS) {
+			getActivityFace().openFragment(new SettingsFragment());
+		}
+	}
+
 	private class LabelsConfig {
 		BoardAvatarDrawable topAvatar;
 		BoardAvatarDrawable bottomAvatar;
@@ -613,6 +630,15 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 		controlsCompView.enableHintButton(true);
 
+		{// Quick action setup
+			quickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
+
+			quickAction.addActionItem(new ActionItem(ID_NEW_GAME, getString(R.string.new_game)));
+			quickAction.addActionItem(new ActionItem(ID_EMAIL_GAME, getString(R.string.email_game)));
+			quickAction.addActionItem(new ActionItem(ID_SETTINGS, getString(R.string.settings)));
+
+			quickAction.setOnActionItemClickListener(this);
+		}
 	}
 
 }

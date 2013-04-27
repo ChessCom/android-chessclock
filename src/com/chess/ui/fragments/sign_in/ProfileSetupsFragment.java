@@ -12,7 +12,7 @@ import com.chess.ui.fragments.CommonLogicFragment;
  * Date: 08.01.13
  * Time: 9:16
  */
-public class ProfileSetupsFragment extends CommonLogicFragment {
+public abstract class ProfileSetupsFragment extends CommonLogicFragment {
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {

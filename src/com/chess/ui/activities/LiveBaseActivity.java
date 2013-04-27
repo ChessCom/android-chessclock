@@ -257,6 +257,21 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		return super.onOptionsItemSelected(item);
 	}
 
+	public void connectLcc() {
+		if (AppData.isLiveChess(this)) {
+			if (!AppUtils.isNetworkAvailable(this)) {
+				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
+			}
+			Log.d("TEST", "onStart isLCSBound = " + isLCSBound + " in " + LiveBaseActivity.this);
+			if (isLCSBound) {
+				onLiveServiceConnected();
+			} else {
+				bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
+			}
+		}
+	}
+
 	private class LiveServiceConnectionListener implements ServiceConnection, LccConnectionUpdateFace {
 
 

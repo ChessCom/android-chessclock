@@ -31,7 +31,7 @@ import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.activities.CoreActivityActionBar;
-import com.chess.ui.fragments.daily_games.DailyGamesNotificationFragment;
+import com.chess.ui.fragments.daily.DailyGamesNotificationFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.sign_in.SignInFragment;

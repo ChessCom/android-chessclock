@@ -1,4 +1,4 @@
-package com.chess.ui.fragments.daily_games;
+package com.chess.ui.fragments.daily;
 
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -373,7 +373,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	}
 
 	@Override
-	public void showOptions() {
+	public void showOptions(View view) {
 	}
 
 	private boolean isUserMove() {

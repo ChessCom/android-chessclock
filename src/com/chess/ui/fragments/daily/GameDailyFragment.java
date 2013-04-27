@@ -1,4 +1,4 @@
-package com.chess.ui.fragments.daily_games;
+package com.chess.ui.fragments.daily;
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -36,8 +36,10 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.fragments.CompGameSetupFragment;
 import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
+import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameNetworkActivityFace;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
@@ -45,6 +47,8 @@ import com.chess.ui.views.*;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
+import quickaction.ActionItem;
+import quickaction.QuickAction;
 
 import java.util.Calendar;
 
@@ -54,7 +58,7 @@ import java.util.Calendar;
  * Date: 15.01.13
  * Time: 13:45
  */
-public class GameDailyFragment extends GameBaseFragment implements GameNetworkActivityFace {
+public class GameDailyFragment extends GameBaseFragment implements GameNetworkActivityFace, QuickAction.OnActionItemClickListener {
 
 	public static final String DOUBLE_SPACE = "  ";
 	private static final String DRAW_OFFER_TAG = "offer draw";
@@ -67,7 +71,21 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private static final int CURRENT_GAME = 0;
 	private static final int GAMES_LIST = 1;
 
-//	private MenuOptionsDialogListener menuOptionsDialogListener;
+	// Quick action ids
+	private static final int ID_NEW_GAME = 0;
+	private static final int ID_OFFER_DRAW = 1;
+	private static final int ID_EMAIL_GAME = 2;
+	private static final int ID_FLIP_BOARD = 3;
+	private static final int ID_SETTINGS = 4;
+
+/*
+	//					getString(R.string.settings),
+//					getString(R.string.email_game),
+//					getString(R.string.reside),
+//					getString(R.string.offer_draw),
+//					getString(R.string.resign)};
+	 */
+
 	private GameOnlineUpdatesListener abortGameUpdateListener;
 	private GameOnlineUpdatesListener drawOfferedUpdateListener;
 
@@ -105,6 +123,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private BoardAvatarDrawable opponentAvatarDrawable;
 	private BoardAvatarDrawable userAvatarDrawable;
 	private LabelsConfig labelsConfig;
+	private QuickAction quickAction;
 	private boolean chat;
 
 	public static GameDailyFragment newInstance(long gameId) {
@@ -177,6 +196,16 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		boardView.lockBoard(true);
 
 		boardUpdateFilter = new IntentFilter(IntentConstants.BOARD_UPDATE);
+
+		{// Quick action setup
+			quickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
+
+			quickAction.addActionItem(new ActionItem(ID_NEW_GAME, getString(R.string.new_game)));
+			quickAction.addActionItem(new ActionItem(ID_EMAIL_GAME, getString(R.string.email_game)));
+			quickAction.addActionItem(new ActionItem(ID_SETTINGS, getString(R.string.settings)));
+
+			quickAction.setOnActionItemClickListener(this);
+		}
 	}
 
 	@Override
@@ -251,6 +280,22 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		DataHolder.getInstance().setInOnlineGame(gameId, false);
 	}
 
+	@Override
+	public void onItemClick(QuickAction source, int pos, int actionId) {
+		if (actionId == ID_NEW_GAME) {
+			getActivityFace().openFragment(new CompGameSetupFragment());
+		} else if (actionId == ID_OFFER_DRAW) {
+			showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
+//				case ECHESS_RESIGN_OR_ABORT:
+//			showPopupDialog(R.string.abort_resign_game, R.string.are_you_sure_q, ABORT_GAME_TAG);
+		} else if (actionId == ID_FLIP_BOARD) {
+			boardView.flipBoard();
+		} else if (actionId == ID_EMAIL_GAME) {
+			sendPGN();
+		} else if (actionId == ID_SETTINGS) {
+			getActivityFace().openFragment(new SettingsFragment());
+		}
+	}
 
 
 	private class MoveUpdateReceiver extends BroadcastReceiver {
@@ -771,7 +816,9 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	}
 
 	@Override
-	public void showOptions() {
+	public void showOptions(View view) {
+		quickAction.show(view);
+		quickAction.setAnimStyle(QuickAction.ANIM_REFLECT);
 /*
 		Offer draw should be able only after the first move was made.
 		Also Abort should change to Resign after that.

@@ -36,6 +36,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	private static final String TAG = "LccLog-LccHelper";
 	public static final int OWN_SEEKS_LIMIT = 3;
+	public static final int CONNECTION_FAILURE_DELAY = 2000;
 
 	private final LccChatListener chatListener;
 	private final LccConnectionListener connectionListener;
@@ -327,7 +328,13 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		} else {
 			Log.d(TAG, "processConnectionFailure: details=null, recreate client and connect");
 
-			runConnectTask(true); // lets try this way, recreate and connect
+			try {
+				Thread.sleep(CONNECTION_FAILURE_DELAY);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			runConnectTask(true); // recreate and connect
 
 			/*setConnected(false);
 			cancelServiceNotification();

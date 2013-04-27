@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,17 +31,20 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
+import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.TacticsStatsFragment;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
 import com.chess.ui.interfaces.TacticBoardFace;
-import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardTacticsView;
 import com.chess.ui.views.ControlsTacticsView;
 import com.chess.ui.views.PanelInfoTacticsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import com.flurry.android.FlurryAgent;
+import quickaction.ActionItem;
+import quickaction.QuickAction;
 
 import java.util.List;
 
@@ -49,7 +54,7 @@ import java.util.List;
  * Date: 16.02.13
  * Time: 7:10
  */
-public class GameTacticsFragment extends GameBaseFragment implements GameTacticsActivityFace {
+public class GameTacticsFragment extends GameBaseFragment implements GameTacticsActivityFace, QuickAction.OnActionItemClickListener {
 
 /*
 1. help makes one move for you, and you fail the tactic. check how it works on iphone if you can.
@@ -71,6 +76,10 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	private static final int CORRECT_RESULT = 0;
 	private static final int WRONG_RESULT = 1;
 	private static final int GET_TACTIC = 2;
+	// Quick action ids
+	private static final int ID_NEXT_TACTIC = 0;
+	private static final int ID_SHOW_ANSWER = 1;
+	private static final int ID_SETTINGS = 2;
 
 	private Handler tacticsTimer;
 	private ChessBoardTacticsView boardView;
@@ -101,6 +110,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	private boolean isAnalysis;
 	private boolean serverError;
 	private boolean userSawOfflinePopup;
+	private QuickAction quickAction;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -142,6 +152,16 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		boardView.setGameActivityFace(this);
 
 		controlsTacticsView.enableGameControls(false);
+
+		{// Quick action setup
+			quickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
+
+			quickAction.addActionItem(new ActionItem(ID_NEXT_TACTIC, getString(R.string.next_tactic)));
+			quickAction.addActionItem(new ActionItem(ID_SHOW_ANSWER, getString(R.string.show_answer)));
+			quickAction.addActionItem(new ActionItem(ID_SETTINGS, getString(R.string.settings)));
+
+			quickAction.setOnActionItemClickListener(this);
+		}
 	}
 
 
@@ -522,6 +542,17 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		}
 	};
 
+	@Override
+	public void onItemClick(QuickAction source, int pos, int actionId) {
+		if (actionId == ID_NEXT_TACTIC) {
+			getNextTactic();
+		} else if (actionId == ID_SHOW_ANSWER) {
+			showAnswer();
+		} else if (actionId == ID_SETTINGS) {
+			getActivityFace().openFragment(new SettingsFragment());
+		}
+	}
+
 	private class TacticsUpdateListener extends ChessUpdateListener<TacticItem> {
 		private int listenerCode;
 
@@ -722,72 +753,14 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	@Override
 	public void newGame() {
 		getNextTactic();
-//		closeOptionsMenu();
 	}
 
 	@Override
-	public void showOptions() {
-//		new AlertDialog.Builder(getActivity())
-//				.setTitle(R.string.options)
-//				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+	public void showOptions(View view) {
+		quickAction.show(view);
+		quickAction.setAnimStyle(QuickAction.ANIM_REFLECT);
 	}
 
-//	@Override
-//	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//		super.onCreateOptionsMenu(menu, inflater);
-//		inflater.inflate(R.menu.game_tactics, menu);
-//	}
-//
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//			case R.id.menu_next_game:
-//				newGame();
-//				break;
-//			case R.id.menu_options:
-//				showOptions();
-//				break;
-////			case R.id.menu_reside:
-////				boardView.flipBoard();
-////				break;
-//			case R.id.menu_analysis:
-//				boardView.switchAnalysis();
-//				break;
-//			case R.id.menu_previous:
-//				boardView.moveBack();
-//				break;
-//			case R.id.menu_next:
-//				boardView.moveForward();
-//				break;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
-
-//	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
-//		final CharSequence[] items;
-//		private final int TACTICS_SHOW_ANSWER = 0;
-//		private final int TACTICS_SETTINGS = 1;
-//
-//		private MenuOptionsDialogListener(CharSequence[] items) {
-//			this.items = items;
-//		}
-//
-//		@Override
-//		public void onClick(DialogInterface dialogInterface, int i) {
-////			Toast.makeText(getActivity(), items[i], Toast.LENGTH_SHORT).show();
-//			switch (i) {
-//				case TACTICS_SHOW_ANSWER: {
-//					showAnswer();
-//					break;
-//				}
-//				case TACTICS_SETTINGS: {
-//					startActivity(new Intent(getContext(), SettingsScreenActivity.class));
-//
-//					break;
-//				}
-//			}
-//		}
-//	}
 
 	public void stopTacticsTimer() {
 		if (tacticItemIsValid()) {
@@ -798,7 +771,6 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	}
 
 	public void startTacticsTimer(TacticItem.Data tacticItem) {
-//		boardView.setFinished(false);
 		getBoardFace().setFinished(false);
 		tacticItem.setStop(false);
 

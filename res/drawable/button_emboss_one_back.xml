@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--Shadow-->
+    <item >
+        <shape >
+            <corners
+                android:radius="@dimen/toggle_button_radius_shadow"
+                />
+            <solid android:color="@android:color/transparent" />
+            <stroke android:width="@dimen/default_stroke_width"
+                    android:color="@color/new_main_back"/>
+        </shape>
+    </item>
+
+    <!--Button-->
+    <item
+        android:left="2px"
+        android:top="2px"
+        android:bottom="2px"
+        android:right="2px"
+        >
+        <shape  >
+            <gradient
+                android:startColor="@color/new_main_back"
+                android:endColor="@color/new_main_back"
+                android:angle="315"
+                />
+            <corners
+                android:radius="@dimen/toggle_button_radius"
+                />
+        </shape>
+    </item>
+
+</layer-list>

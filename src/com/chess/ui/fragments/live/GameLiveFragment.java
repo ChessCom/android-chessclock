@@ -1,4 +1,4 @@
-package com.chess.ui.fragments.game;
+package com.chess.ui.fragments.live;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,7 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
@@ -23,14 +26,18 @@ import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.NewGamesFragment;
+import com.chess.ui.fragments.game.GameBaseFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameNetworkActivityFace;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.views.ChessBoardLiveView;
 import com.chess.ui.views.ControlsNetworkView;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.utilities.AppUtils;
+import quickaction.ActionItem;
+import quickaction.QuickAction;
 
 import java.util.List;
 
@@ -40,11 +47,17 @@ import java.util.List;
  * Date: 26.01.13
  * Time: 11:33
  */
-public class GameLiveFragment extends GameBaseFragment implements GameNetworkActivityFace, LccEventListener, LccChatMessageListener {
+public class GameLiveFragment extends GameBaseFragment implements GameNetworkActivityFace, LccEventListener, LccChatMessageListener, QuickAction.OnActionItemClickListener {
 
 
 	private static final String TAG = "GameLiveScreenActivity";
 	private static final String WARNING_TAG = "warning message popup";
+
+	// Quick action ids
+	private static final int ID_NEW_GAME = 0;
+	private static final int ID_FLIP_BOARD = 1;
+	private static final int ID_SETTINGS = 2;
+
 
 //	private MenuOptionsDialogListener menuOptionsDialogListener;
 
@@ -71,6 +84,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
 	private ControlsNetworkView controlsNetworkView;
+	private QuickAction quickAction;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -104,6 +118,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 //
 //			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG); // todo: check
 //		}
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+
+		AppData.setLiveChessMode(getActivity(), true);
+
+		liveBaseActivity.connectLcc();
 	}
 
 	@Override
@@ -532,10 +555,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	}
 
 	@Override
-	public void showOptions() {
-//		new AlertDialog.Builder(getActivity()) // TODO replace with fragmentDialog
-//				.setTitle(R.string.options)
-//				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+	public void showOptions(View view) {
+		quickAction.show(view);
+		quickAction.setAnimStyle(QuickAction.ANIM_REFLECT);
 	}
 
 	@Override
@@ -859,6 +881,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		}
 	}
 
+	@Override
+	public void onItemClick(QuickAction source, int pos, int actionId) {
+		if (actionId == ID_NEW_GAME) {
+			getActivityFace().openFragment(new LiveGameOptionsFragment());
+		} else if (actionId == ID_SETTINGS) {
+			getActivityFace().openFragment(new SettingsFragment());
+		}
+	}
+
 	private class GameTaskListener extends ActionBarUpdateListener<Game> {
 		public GameTaskListener() {
 			super(getInstance());
@@ -926,5 +957,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 //		topPlayerClock = blackPlayerLabel;
 
 //		topPlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);  // TODO restore
+
+		{// Quick action setup
+			quickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
+
+			quickAction.addActionItem(new ActionItem(ID_NEW_GAME, getString(R.string.next_tactic)));
+			quickAction.addActionItem(new ActionItem(ID_FLIP_BOARD, getString(R.string.show_answer)));
+			quickAction.addActionItem(new ActionItem(ID_SETTINGS, getString(R.string.settings)));
+
+			quickAction.setOnActionItemClickListener(this);
+		}
 	}
 }

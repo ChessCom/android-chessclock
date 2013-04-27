@@ -1,4 +1,4 @@
-package com.chess.ui.fragments.daily_games;
+package com.chess.ui.fragments.daily;
 
 import android.content.Context;
 import android.os.Bundle;

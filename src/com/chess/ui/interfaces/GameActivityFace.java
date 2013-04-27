@@ -1,5 +1,6 @@
 package com.chess.ui.interfaces;
 
+import android.view.View;
 import com.chess.backend.entity.SoundPlayer;
 
 /**
@@ -16,7 +17,7 @@ public interface GameActivityFace {
 
 	Long getGameId();
 
-	void showOptions();
+	void showOptions(View view);
 
 	void showChoosePieceDialog(final int col, final int row);
 
