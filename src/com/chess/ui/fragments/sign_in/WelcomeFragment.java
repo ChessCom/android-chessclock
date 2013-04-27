@@ -2,6 +2,7 @@ package com.chess.ui.fragments.sign_in;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -50,7 +51,8 @@ import java.util.regex.Pattern;
  * Date: 25.02.13
  * Time: 19:54
  */
-public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePlayer.OnInitializedListener, YouTubePlayer.OnFullscreenListener {
+public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePlayer.OnInitializedListener,
+		YouTubePlayer.OnFullscreenListener {
 
 	private static final int PAGE_CNT = 5;
 
@@ -59,6 +61,8 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 	private static final int DURATION = 450;
 	public static final String YOUTUBE_DEMO_LINK = "AgTQJUhK2MY";
 	private static final String YOUTUBE_FRAGMENT_TAG = "youtube fragment";
+	private static final int NON_SET_POSITION = -1;
+	private static final int YOUTUBE_FRAME_POSITION = 0;
 
 	private Interpolator accelerator = new AccelerateInterpolator();
 	private Interpolator decelerator = new DecelerateInterpolator();
@@ -90,9 +94,9 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 	private RegisterUpdateListener registerUpdateListener;
 	private String[] countryCodes;
 	private String countryCodeName;
+	private int pagerSelectedPosition;
+	private boolean initYoutubeFragment;
 	private YouTubePlayer youTubePlayer;
-	private boolean afterResume;
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -124,6 +128,10 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 
 		bottomButtonsLay = view.findViewById(R.id.bottomButtonsLay);
 
+		if (pagerSelectedPosition == NON_SET_POSITION || pagerSelectedPosition == YOUTUBE_FRAME_POSITION) { // force to create youtubeFragment when selected
+			initYoutubeFragment = true;
+		}
+
 		{// SignUp part
 			countryCodes = getResources().getStringArray(R.array.new_countries_codes);
 			registerUpdateListener = new RegisterUpdateListener();
@@ -135,25 +143,6 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 		super.onResume();
 
 		handler.postDelayed(startAnimation, ANIMATION_DELAY);
-
-		Fragment fragmentByTag = getFragmentManager().findFragmentByTag(YOUTUBE_FRAGMENT_TAG);
-//		Log.d("TEST", "onResume youTubePlayerFragment = " + youTubePlayerFragment);
-//		Log.d("TEST", "onResume fragmentByTag = " + fragmentByTag);
-		if (fragmentByTag != null) {
-			afterResume = true;
-			youTubePlayerFragment = (YouTubePlayerSupportFragment) fragmentByTag;
-//			boolean detached = fragmentByTag.isDetached();
-//			Log.d("TEST", "onResume detached = " + detached);
-//			FragmentManager fragmentManager = getFragmentManager();
-//			fragmentManager.beginTransaction().attach(fragmentByTag);
-//			Log.d("TEST", "onResume youTubeFrameContainer = " + youTubeFrameContainer);
-//			if (youTubeFrameContainer != null) {
-//				fragmentManager.beginTransaction()
-//						.add(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
-//						.commit();
-//			}
-			youTubePlayerFragment.initialize(AppConstants.YOUTUBE_DEVELOPER_KEY, WelcomeFragment.this);
-		}
 
 		// SignUp part
 		setUserCountryCode();
@@ -168,12 +157,14 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 		if (!youtubeFragmentGoFullScreen) {
 			releaseYouTubeFragment();
 		}
+		initYoutubeFragment = pagerSelectedPosition == YOUTUBE_FRAME_POSITION;
 	}
 
 	private final ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
 
 		@Override
 		public void onPageSelected(int position) {
+			pagerSelectedPosition = position;
 			if (position == 4) {
 				bottomButtonsLay.setVisibility(View.GONE);
 				homePageRadioGroup.setVisibility(View.GONE);
@@ -182,6 +173,12 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 				bottomButtonsLay.setVisibility(View.VISIBLE);
 				homePageRadioGroup.setVisibility(View.VISIBLE);
 				((RadioButton) homePageRadioGroup.getChildAt(position)).setChecked(true);
+			}
+
+			if (position == 0) { // add youTubeView to control visibility to first welcome frame
+				initYoutubeFragment();
+			} else {
+				releaseYouTubeFragment();
 			}
 		}
 
@@ -205,18 +202,10 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 	public void onClick(View view) {
 		if (view.getId() == R.id.signInBtn) {
 			getActivityFace().openFragment(new SignInFragment());
-			releaseYouTubeFragment();
 		} else if (view.getId() == R.id.signUpBtn) {
 			getActivityFace().openFragment(new SignUpFragment());
-			releaseYouTubeFragment();
 		} else if (view.getId() == R.id.playBtn) {
-
-//			if (afterResume) {
-//				youTubePlayer.setFullscreen(true);
-//				youTubePlayer.play();
-//			} else {
-				youTubeFrameContainer.setVisibility(View.VISIBLE);
-//			}
+			youTubeFrameContainer.setVisibility(View.VISIBLE);
 
 		} else if (view.getId() == R.id.whatChessComTxt) {
 			showNextPage();
@@ -235,12 +224,34 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 		}
 	}
 
-	private void releaseYouTubeFragment() {
-		youTubeFrameContainer.setVisibility(View.GONE);
-		Fragment fragmentByTag = findFragmentByTag(YOUTUBE_FRAGMENT_TAG);
-		Log.d("TEST", "releaseYouTubeFragment fragmentByTag = " + fragmentByTag);
-		Log.d("TEST", "releaseYouTubeFragment youTubePlayerFragment = " + youTubePlayerFragment);
+	private void initYoutubeFragment() {
+		FragmentManager fragmentManager = getFragmentManager();
+		int orientation = getResources().getConfiguration().orientation; // don't drop for landscape orientation
+		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			Fragment fragmentByTag = fragmentManager.findFragmentByTag(YOUTUBE_FRAGMENT_TAG);
+			if (fragmentByTag == null) {
+				youTubePlayerFragment = new YouTubePlayerSupportFragment();
+				fragmentManager.beginTransaction()
+						.add(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
+						.commit();
+			} else {
+				youTubePlayerFragment = (YouTubePlayerSupportFragment) fragmentByTag;
+				fragmentManager.beginTransaction()
+						.replace(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
+						.commit();
+			}
+		} else {
+			youTubePlayerFragment = new YouTubePlayerSupportFragment();
+			fragmentManager.beginTransaction()
+					.replace(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
+					.commit();
+		}
+		youTubePlayerFragment.initialize(AppConstants.YOUTUBE_DEVELOPER_KEY, this);
+	}
 
+	private void releaseYouTubeFragment() {
+		Log.d("TEST", "releaseYouTubeFragment -> youTubePlayerFragment = " + youTubePlayerFragment);
+		youTubeFrameContainer.setVisibility(View.GONE);
 		if (youTubePlayerFragment != null) {
 			getFragmentManager().beginTransaction()
 					.detach(youTubePlayerFragment)
@@ -275,6 +286,10 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 		this.youtubeFragmentGoFullScreen = youtubeFragmentGoFullScreen;
 	}
 
+	public void hideYoutubeFullScreen() {
+		youTubePlayer.setFullscreen(false);
+	}
+
 	private class WelcomePagerAdapter extends PagerAdapter {
 
 		private RelativeLayout firstView;
@@ -286,7 +301,6 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 		private boolean initiatedSecond;
 		private boolean initiatedThird;
 		private boolean initiatedFour;
-		private boolean initiatedFifth;
 
 		@Override
 		public int getCount() {
@@ -295,38 +309,21 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 
 		@Override
 		public Object instantiateItem(ViewGroup container, int position) {
-			Log.d("TEST", " pager, pos = " +position + ", instantiateItem______________________________");
 			View view = null;
 			switch (position) {
 				case 0:
-					Log.d("TEST", " pager firstView = " + firstView + " initiatedFirst = " + initiatedFirst);
-
 					if (firstView == null) {
 						firstView = (RelativeLayout) inflater.inflate(R.layout.new_welcome_one_frame, container, false);
 					}
 					view = firstView;
 
-				{// add youTubeView to control visibility
+					// add youTubeView to control visibility
 					youTubeFrameContainer = firstView.findViewById(R.id.youTubeFrameContainer);
-
-					FragmentManager fragmentManager = getFragmentManager();
-					youTubePlayerFragment = (YouTubePlayerSupportFragment) fragmentManager.findFragmentByTag(YOUTUBE_FRAGMENT_TAG);
-					Log.d("TEST", " pager youTubePlayerFragment = " + youTubePlayerFragment);
-					if (youTubePlayerFragment == null) {
-						youTubePlayerFragment = new YouTubePlayerSupportFragment();
-						fragmentManager.beginTransaction()
-								.add(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
-								.commit();
-					} else {
-						fragmentManager.beginTransaction()
-								.replace(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
-								.commit();
-					}
-
-					youTubePlayerFragment.initialize(AppConstants.YOUTUBE_DEVELOPER_KEY, WelcomeFragment.this);
-
 					youTubeFrameContainer.setVisibility(View.GONE);
-				}
+
+					if (initYoutubeFragment) {
+						initYoutubeFragment();
+					}
 
 					if (!initiatedFirst) {
 						{// add ImageView back
@@ -343,28 +340,6 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 							params.addRule(RelativeLayout.CENTER_IN_PARENT);
 							firstView.addView(imageView, 0, params);
 						}
-
-//						{// add youTubeView to control visibility
-//							youTubeFrameContainer = firstView.findViewById(R.id.youTubeFrameContainer);
-//
-//							FragmentManager fragmentManager = getFragmentManager();
-//							youTubePlayerFragment = (YouTubePlayerSupportFragment) fragmentManager.findFragmentByTag(YOUTUBE_FRAGMENT_TAG);
-//							Log.d("TEST", " pager youTubePlayerFragment = " + youTubePlayerFragment);
-//							if (youTubePlayerFragment == null) {
-//								youTubePlayerFragment = new YouTubePlayerSupportFragment();
-//								fragmentManager.beginTransaction()
-//										.add(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
-//										.commit();
-//							} else {
-//								fragmentManager.beginTransaction()
-//										.replace(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
-//										.commit();
-//							}
-//
-//							youTubePlayerFragment.initialize(AppConstants.YOUTUBE_DEVELOPER_KEY, WelcomeFragment.this);
-//
-//							youTubeFrameContainer.setVisibility(View.GONE);
-//						}
 
 						view.findViewById(R.id.playBtn).setOnClickListener(WelcomeFragment.this);
 

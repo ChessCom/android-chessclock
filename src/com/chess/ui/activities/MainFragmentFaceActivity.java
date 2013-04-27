@@ -283,6 +283,13 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public void onBackPressed() {
+		// there is no way to handle backPressed from fragment, so do this non OOP solution. Google, why are you so evil
+		WelcomeFragment welcomeFragment = (WelcomeFragment) getSupportFragmentManager().findFragmentByTag(WelcomeFragment.class.getSimpleName());
+		int orientation = getResources().getConfiguration().orientation;
+		if (welcomeFragment != null && orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			welcomeFragment.hideYoutubeFullScreen();
+			return;
+		}
 		showPreviousFragment();
 	}
 
@@ -296,17 +303,12 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public void clearFragmentStack() {
-//		Use FragmentManager.getBackStackEntryCount()/getBackStackEntryAt().getId() to retrieve the ID of the first entry on the back stack, and FragmentManager.popBackStack(int id, FragmentManager.POP_BACK_STACK_INCLUSIVE).
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		int count = fragmentManager.getBackStackEntryCount();
 		if (count > 0) {
 			int firstFragmentId = fragmentManager.getBackStackEntryAt(0).getId();
 			fragmentManager.popBackStack(firstFragmentId, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		}
-
-
-//		getSupportFragmentManager().popBackStack(HomeTabsFragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//		getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
 
 	@Override
