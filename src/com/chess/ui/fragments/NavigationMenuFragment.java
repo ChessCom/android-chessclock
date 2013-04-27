@@ -54,6 +54,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		menuItems.add(new NavigationMenuItem(getString(R.string.messages), R.drawable.ic_nav_messages));
 		menuItems.add(new NavigationMenuItem(getString(R.string.settings), R.drawable.ic_nav_settings));
 
+		menuItems.get(0).selected = true;
 	}
 
 	@Override

@@ -315,12 +315,11 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 				boardFace.updateMoves(boardFace.getTacticMoves()[boardFace.getHply()], true);
 				invalidateGameScreen();
 			} else { // correct
-				String newRatingStr;
-				if (tacticItem.isWasShowed()) {
-					newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
-					showCorrect(newRatingStr);
-				} else if ( tacticItem.isRetry() || noInternet) {
-					newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
+				if (tacticItem.isWasShowed() || tacticItem.isRetry() || noInternet) {
+					String newRatingStr = StaticData.SYMBOL_EMPTY;
+					if (tacticItem.getResultItem()  != null) {
+						newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
+					}
 
 					showCorrect(newRatingStr);
 				} else {

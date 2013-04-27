@@ -3,11 +3,13 @@ package com.chess.ui.fragments.sign_in;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,6 +90,8 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 	private RegisterUpdateListener registerUpdateListener;
 	private String[] countryCodes;
 	private String countryCodeName;
+	private YouTubePlayer youTubePlayer;
+	private boolean afterResume;
 
 
 	@Override
@@ -132,28 +136,27 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 
 		handler.postDelayed(startAnimation, ANIMATION_DELAY);
 
-		// SignUp part
-		String userCountry = AppData.getUserCountry(getActivity());
-		if (userCountry == null) {
-			String locale = getResources().getConfiguration().locale.getCountry();
-
-			if (locale != null) {
-				int i;
-				boolean found = false;
-				for (i = 0; i < countryCodes.length; i++) {
-					String countryCode = countryCodes[i];
-					if (locale.equals(countryCode)) {
-						found = true;
-						break;
-					}
-				}
-				if (found) {
-					countryCodeName = countryCodes[i];
-				} else {
-					countryCodeName = DEFAULT_COUNTRY;
-				}
-			}
+		Fragment fragmentByTag = getFragmentManager().findFragmentByTag(YOUTUBE_FRAGMENT_TAG);
+//		Log.d("TEST", "onResume youTubePlayerFragment = " + youTubePlayerFragment);
+//		Log.d("TEST", "onResume fragmentByTag = " + fragmentByTag);
+		if (fragmentByTag != null) {
+			afterResume = true;
+			youTubePlayerFragment = (YouTubePlayerSupportFragment) fragmentByTag;
+//			boolean detached = fragmentByTag.isDetached();
+//			Log.d("TEST", "onResume detached = " + detached);
+//			FragmentManager fragmentManager = getFragmentManager();
+//			fragmentManager.beginTransaction().attach(fragmentByTag);
+//			Log.d("TEST", "onResume youTubeFrameContainer = " + youTubeFrameContainer);
+//			if (youTubeFrameContainer != null) {
+//				fragmentManager.beginTransaction()
+//						.add(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
+//						.commit();
+//			}
+			youTubePlayerFragment.initialize(AppConstants.YOUTUBE_DEVELOPER_KEY, WelcomeFragment.this);
 		}
+
+		// SignUp part
+		setUserCountryCode();
 	}
 
 	@Override
@@ -163,10 +166,7 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 		handler.removeCallbacks(startAnimation);
 
 		if (!youtubeFragmentGoFullScreen) {
-			youTubeFrameContainer.setVisibility(View.GONE);
-			getFragmentManager().beginTransaction()
-					.remove(youTubePlayerFragment)
-					.commit();
+			releaseYouTubeFragment();
 		}
 	}
 
@@ -205,11 +205,18 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 	public void onClick(View view) {
 		if (view.getId() == R.id.signInBtn) {
 			getActivityFace().openFragment(new SignInFragment());
+			releaseYouTubeFragment();
 		} else if (view.getId() == R.id.signUpBtn) {
 			getActivityFace().openFragment(new SignUpFragment());
+			releaseYouTubeFragment();
 		} else if (view.getId() == R.id.playBtn) {
 
-			youTubeFrameContainer.setVisibility(View.VISIBLE);
+//			if (afterResume) {
+//				youTubePlayer.setFullscreen(true);
+//				youTubePlayer.play();
+//			} else {
+				youTubeFrameContainer.setVisibility(View.VISIBLE);
+//			}
 
 		} else if (view.getId() == R.id.whatChessComTxt) {
 			showNextPage();
@@ -218,7 +225,7 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 				return;
 			}
 
-			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live
+			if (!AppUtils.isNetworkAvailable(getActivity())) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, BasePopupsFragment.NETWORK_CHECK_TAG);
 				return;
@@ -228,11 +235,26 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 		}
 	}
 
+	private void releaseYouTubeFragment() {
+		youTubeFrameContainer.setVisibility(View.GONE);
+		Fragment fragmentByTag = findFragmentByTag(YOUTUBE_FRAGMENT_TAG);
+		Log.d("TEST", "releaseYouTubeFragment fragmentByTag = " + fragmentByTag);
+		Log.d("TEST", "releaseYouTubeFragment youTubePlayerFragment = " + youTubePlayerFragment);
+
+		if (youTubePlayerFragment != null) {
+			getFragmentManager().beginTransaction()
+					.detach(youTubePlayerFragment)
+					.commit();
+			youTubePlayerFragment = null;
+		}
+	}
+
 	@Override
 	public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
 		if (!wasRestored) {
 			youTubePlayer.cueVideo(YOUTUBE_DEMO_LINK);
 		}
+		this.youTubePlayer = youTubePlayer;
 		youTubePlayer.setOnFullscreenListener(this);
 	}
 
@@ -273,13 +295,38 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 
 		@Override
 		public Object instantiateItem(ViewGroup container, int position) {
+			Log.d("TEST", " pager, pos = " +position + ", instantiateItem______________________________");
 			View view = null;
 			switch (position) {
 				case 0:
+					Log.d("TEST", " pager firstView = " + firstView + " initiatedFirst = " + initiatedFirst);
+
 					if (firstView == null) {
 						firstView = (RelativeLayout) inflater.inflate(R.layout.new_welcome_one_frame, container, false);
 					}
 					view = firstView;
+
+				{// add youTubeView to control visibility
+					youTubeFrameContainer = firstView.findViewById(R.id.youTubeFrameContainer);
+
+					FragmentManager fragmentManager = getFragmentManager();
+					youTubePlayerFragment = (YouTubePlayerSupportFragment) fragmentManager.findFragmentByTag(YOUTUBE_FRAGMENT_TAG);
+					Log.d("TEST", " pager youTubePlayerFragment = " + youTubePlayerFragment);
+					if (youTubePlayerFragment == null) {
+						youTubePlayerFragment = new YouTubePlayerSupportFragment();
+						fragmentManager.beginTransaction()
+								.add(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
+								.commit();
+					} else {
+						fragmentManager.beginTransaction()
+								.replace(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
+								.commit();
+					}
+
+					youTubePlayerFragment.initialize(AppConstants.YOUTUBE_DEVELOPER_KEY, WelcomeFragment.this);
+
+					youTubeFrameContainer.setVisibility(View.GONE);
+				}
 
 					if (!initiatedFirst) {
 						{// add ImageView back
@@ -297,22 +344,27 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 							firstView.addView(imageView, 0, params);
 						}
 
-						{// add youTubeView to control visibility
-							youTubeFrameContainer = firstView.findViewById(R.id.youTubeFrameContainer);
-
-							FragmentManager fragmentManager = getFragmentManager();
-							youTubePlayerFragment = (YouTubePlayerSupportFragment) fragmentManager.findFragmentByTag(YOUTUBE_FRAGMENT_TAG);
-							if (youTubePlayerFragment == null) {
-								youTubePlayerFragment = new YouTubePlayerSupportFragment();
-								fragmentManager.beginTransaction()
-										.add(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
-										.commit();
-							}
-
-							youTubePlayerFragment.initialize(AppConstants.YOUTUBE_DEVELOPER_KEY, WelcomeFragment.this);
-
-							youTubeFrameContainer.setVisibility(View.GONE);
-						}
+//						{// add youTubeView to control visibility
+//							youTubeFrameContainer = firstView.findViewById(R.id.youTubeFrameContainer);
+//
+//							FragmentManager fragmentManager = getFragmentManager();
+//							youTubePlayerFragment = (YouTubePlayerSupportFragment) fragmentManager.findFragmentByTag(YOUTUBE_FRAGMENT_TAG);
+//							Log.d("TEST", " pager youTubePlayerFragment = " + youTubePlayerFragment);
+//							if (youTubePlayerFragment == null) {
+//								youTubePlayerFragment = new YouTubePlayerSupportFragment();
+//								fragmentManager.beginTransaction()
+//										.add(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
+//										.commit();
+//							} else {
+//								fragmentManager.beginTransaction()
+//										.replace(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
+//										.commit();
+//							}
+//
+//							youTubePlayerFragment.initialize(AppConstants.YOUTUBE_DEVELOPER_KEY, WelcomeFragment.this);
+//
+//							youTubeFrameContainer.setVisibility(View.GONE);
+//						}
 
 						view.findViewById(R.id.playBtn).setOnClickListener(WelcomeFragment.this);
 
@@ -455,6 +507,30 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 	};
 
 	/* ------------- Sign Up Part --------------------------- */
+	private void setUserCountryCode() {
+		String userCountry = AppData.getUserCountry(getActivity());
+		if (userCountry == null) {
+			String locale = getResources().getConfiguration().locale.getCountry();
+
+			if (locale != null) {
+				int i;
+				boolean found = false;
+				for (i = 0; i < countryCodes.length; i++) {
+					String countryCode = countryCodes[i];
+					if (locale.equals(countryCode)) {
+						found = true;
+						break;
+					}
+				}
+				if (found) {
+					countryCodeName = countryCodes[i];
+				} else {
+					countryCodeName = DEFAULT_COUNTRY;
+				}
+			}
+		}
+	}
+
 	private boolean checkRegisterInfo() {
 		userName = encodeField(userNameEdt);
 		email = encodeField(emailEdt);

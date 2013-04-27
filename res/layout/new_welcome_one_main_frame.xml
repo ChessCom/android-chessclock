@@ -39,12 +39,14 @@
             android:contentDescription="@string/image"
             />
 
+<!--
         <FrameLayout
             android:id="@+id/youTubeFrameContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/firstBackImg"
             />
+-->
 
         <com.chess.RoboTextView
             android:id="@+id/whatChessComTxt"

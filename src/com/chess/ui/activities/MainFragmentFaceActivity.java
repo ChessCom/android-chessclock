@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.Menu;
 import com.chess.R;
+import com.chess.backend.statics.AppData;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
+import com.chess.ui.fragments.sign_in.WelcomeFragment;
 import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.views.drawables.LogoBackgroundDrawable;
@@ -55,13 +58,13 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		if (savedInstanceState == null) {
 			// set the Above View
-//			if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
+			if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
 				switchFragment(new HomeTabsFragment());
 				showActionBar = true;
-//			} else {
-//				switchFragment(new WelcomeFragment());
-//				showActionBar = false;
-//			}
+			} else {
+				switchFragment(new WelcomeFragment());
+				showActionBar = false;
+			}
 		} else { // fragments state will be automatically restored
 			showActionBar = savedInstanceState.getBoolean(SHOW_ACTION_BAR);
 		}
@@ -293,7 +296,17 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public void clearFragmentStack() {
-		getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//		Use FragmentManager.getBackStackEntryCount()/getBackStackEntryAt().getId() to retrieve the ID of the first entry on the back stack, and FragmentManager.popBackStack(int id, FragmentManager.POP_BACK_STACK_INCLUSIVE).
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		int count = fragmentManager.getBackStackEntryCount();
+		if (count > 0) {
+			int firstFragmentId = fragmentManager.getBackStackEntryAt(0).getId();
+			fragmentManager.popBackStack(firstFragmentId, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+		}
+
+
+//		getSupportFragmentManager().popBackStack(HomeTabsFragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//		getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
 
 	@Override

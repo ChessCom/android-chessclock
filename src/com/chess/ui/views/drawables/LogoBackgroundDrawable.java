@@ -7,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import com.chess.R;
 import com.chess.utilities.AppUtils;
 
@@ -206,7 +205,7 @@ public class LogoBackgroundDrawable extends Drawable {
 
 		// get screen proportion
 		screenProportion = (float)height/width;
-		Log.d("TEST", "proportion = " + screenProportion);
+//		Log.d("TEST", "proportion = " + screenProportion);
 
 		if (AppUtils.HONEYCOMB_PLUS_API) {
 			if (screenProportion > TALL_KOEF){  // TODO use resource flags

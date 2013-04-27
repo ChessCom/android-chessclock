@@ -101,7 +101,6 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				// un-register from GCM
 				unRegisterGcmService();
 
-
 //				Facebook facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
 //				SessionStore.restore(facebook, getActivity());
 //				facebook.logoutMe(this, new LogoutRequestListener());
@@ -111,13 +110,12 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				preferencesEditor.commit();
 
 				AppUtils.cancelNotifications(getActivity());
-				getActivityFace().openFragment(new WelcomeFragment());
-//				getActivityFace().openFragment(new SignInFragment());
+				getActivityFace().clearFragmentStack();
+				getActivityFace().switchFragment(new WelcomeFragment());
 
 				break;
 
 			default: break;
-
 		}
 	}
 
