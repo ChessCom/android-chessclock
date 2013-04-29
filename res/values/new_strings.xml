@@ -186,5 +186,6 @@
     <string name="sounds">Sounds</string>
     <string name="pieces_style">Pieces Style</string>
     <string name="show_legal_moves">Show Legal Moves</string>
+    <string name="flip_board">Flip Board</string>
 
 </resources>

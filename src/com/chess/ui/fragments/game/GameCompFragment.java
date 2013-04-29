@@ -635,6 +635,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 			quickAction.addActionItem(new ActionItem(ID_NEW_GAME, getString(R.string.new_game)));
 			quickAction.addActionItem(new ActionItem(ID_EMAIL_GAME, getString(R.string.email_game)));
+			quickAction.addActionItem(new ActionItem(ID_FLIP_BOARD, getString(R.string.flip_board)));
 			quickAction.addActionItem(new ActionItem(ID_SETTINGS, getString(R.string.settings)));
 
 			quickAction.setOnActionItemClickListener(this);
