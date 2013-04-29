@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--Outer border 1-->
+    <item >
+        <shape android:dither="true">
+            <corners android:radius="@dimen/button_switch_white_back_corners"/>
+            <gradient
+                android:startColor="@color/switch_white_back_border_top_1"
+                android:endColor="@color/switch_white_back_border_bot_1"
+                android:angle="270"
+                />
+        </shape>
+    </item>
+
+    <!--Outer border 2 + 1px-->
+    <item
+        android:top="1px"
+        android:left="1px"
+        android:right="1px"
+        android:bottom="1px"
+        >
+        <shape android:dither="true">
+            <corners android:radius="@dimen/button_switch_white_back_corners"/>
+            <gradient
+                android:startColor="@color/switch_white_back_border_top_2"
+                android:endColor="@color/switch_white_back_border_bot_2"
+                android:angle="270"
+                />
+        </shape>
+    </item>
+
+    <!--Main Gradient + 1px-->
+    <item
+        android:top="2px"
+        android:left="2px"
+        android:right="2px"
+        android:bottom="2px"
+        >
+        <shape android:dither="true">
+            <corners android:radius="@dimen/button_switch_white_back_corners"/>
+            <gradient
+                android:startColor="@color/switch_white_back_inner_main_1"
+                android:endColor="@color/switch_white_back_inner_main_2"
+                android:angle="270"
+                />
+        </shape>
+    </item>
+
+    <!--Shadow-->
+    <item
+        android:top="1px"
+        android:left="2px"
+        android:right="2px"
+        android:bottom="2px"
+        >
+        <shape android:dither="true">
+            <corners android:radius="@dimen/button_switch_white_back_corners"/>
+            <gradient
+                android:startColor="@color/semitransparent"
+                android:centerColor="@color/transparent"
+                android:endColor="@color/transparent"
+                android:angle="270"
+                android:centerY="10%"
+                />
+        </shape>
+    </item>
+
+
+    <!--White round overlay-->
+    <item
+        android:top="13dip"
+        android:left="2px"
+        android:right="2px"
+        android:bottom="2px"
+        >
+        <shape android:dither="true">
+            <corners android:radius="@dimen/button_switch_white_back_corners"/>
+            <solid
+                android:color="@color/semitransparent_white_1"
+                />
+        </shape>
+    </item>
+
+
+</layer-list>

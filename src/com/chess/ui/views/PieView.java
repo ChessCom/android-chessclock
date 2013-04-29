@@ -26,7 +26,7 @@ public class PieView extends View {
 	public static int DONUT_HALF_SIZE;
 	private int TEXT_WIDTH;
 
-	public static final String MAIN_PATH = "fonts/trebuc-";
+	public static final String MAIN_PATH = "fonts/custom-";
 
 	private ShapeDrawable[] mDrawables;
 	private GamesInfoByResult games;

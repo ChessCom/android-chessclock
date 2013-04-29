@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,8 +92,6 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 	private RegisterUpdateListener registerUpdateListener;
 	private String[] countryCodes;
 	private String countryCodeName;
-	private int pagerSelectedPosition;
-	private boolean initYoutubeFragment;
 	private YouTubePlayer youTubePlayer;
 
 	@Override
@@ -106,7 +102,6 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
 		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
 
 		inflater = LayoutInflater.from(getActivity());
@@ -127,10 +122,6 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 		((RadioButton) homePageRadioGroup.getChildAt(0)).setChecked(true);
 
 		bottomButtonsLay = view.findViewById(R.id.bottomButtonsLay);
-
-		if (pagerSelectedPosition == NON_SET_POSITION || pagerSelectedPosition == YOUTUBE_FRAME_POSITION) { // force to create youtubeFragment when selected
-			initYoutubeFragment = true;
-		}
 
 		{// SignUp part
 			countryCodes = getResources().getStringArray(R.array.new_countries_codes);
@@ -157,14 +148,12 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 		if (!youtubeFragmentGoFullScreen) {
 			releaseYouTubeFragment();
 		}
-		initYoutubeFragment = pagerSelectedPosition == YOUTUBE_FRAME_POSITION;
 	}
 
 	private final ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
 
 		@Override
 		public void onPageSelected(int position) {
-			pagerSelectedPosition = position;
 			if (position == 4) {
 				bottomButtonsLay.setVisibility(View.GONE);
 				homePageRadioGroup.setVisibility(View.GONE);
@@ -205,8 +194,8 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 		} else if (view.getId() == R.id.signUpBtn) {
 			getActivityFace().openFragment(new SignUpFragment());
 		} else if (view.getId() == R.id.playBtn) {
+			initYoutubeFragment();
 			youTubeFrameContainer.setVisibility(View.VISIBLE);
-
 		} else if (view.getId() == R.id.whatChessComTxt) {
 			showNextPage();
 		} else if (view.getId() == R.id.RegSubmitBtn) {
@@ -225,33 +214,16 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 	}
 
 	private void initYoutubeFragment() {
-		FragmentManager fragmentManager = getFragmentManager();
-		int orientation = getResources().getConfiguration().orientation; // don't drop for landscape orientation
-		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			Fragment fragmentByTag = fragmentManager.findFragmentByTag(YOUTUBE_FRAGMENT_TAG);
-			if (fragmentByTag == null) {
-				youTubePlayerFragment = new YouTubePlayerSupportFragment();
-				fragmentManager.beginTransaction()
-						.add(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
-						.commit();
-			} else {
-				youTubePlayerFragment = (YouTubePlayerSupportFragment) fragmentByTag;
-				fragmentManager.beginTransaction()
-						.replace(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
-						.commit();
-			}
-		} else {
-			youTubePlayerFragment = new YouTubePlayerSupportFragment();
-			fragmentManager.beginTransaction()
-					.replace(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
-					.commit();
-		}
+		youTubePlayerFragment = new YouTubePlayerSupportFragment();
+		getFragmentManager().beginTransaction()
+				.replace(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
+				.commit();
 		youTubePlayerFragment.initialize(AppConstants.YOUTUBE_DEVELOPER_KEY, this);
 	}
 
 	private void releaseYouTubeFragment() {
-		Log.d("TEST", "releaseYouTubeFragment -> youTubePlayerFragment = " + youTubePlayerFragment);
-		youTubeFrameContainer.setVisibility(View.GONE);
+		if (youTubeFrameContainer != null)
+			youTubeFrameContainer.setVisibility(View.GONE);
 		if (youTubePlayerFragment != null) {
 			getFragmentManager().beginTransaction()
 					.detach(youTubePlayerFragment)
@@ -286,8 +258,17 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 		this.youtubeFragmentGoFullScreen = youtubeFragmentGoFullScreen;
 	}
 
-	public void hideYoutubeFullScreen() {
-		youTubePlayer.setFullscreen(false);
+	/**
+	 *
+	 * @return true player was previously initiated and fullscreen was turned off
+	 */
+	public boolean hideYoutubeFullScreen() {
+		if (youTubePlayer != null) {
+			youTubePlayer.setFullscreen(false);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private class WelcomePagerAdapter extends PagerAdapter {
@@ -321,8 +302,14 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 					youTubeFrameContainer = firstView.findViewById(R.id.youTubeFrameContainer);
 					youTubeFrameContainer.setVisibility(View.GONE);
 
-					if (initYoutubeFragment) {
-						initYoutubeFragment();
+					int orientation = getResources().getConfiguration().orientation; // auto-init for fullscreen
+					if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+						Fragment fragmentByTag = getFragmentManager().findFragmentByTag(YOUTUBE_FRAGMENT_TAG);
+						youTubePlayerFragment = (YouTubePlayerSupportFragment) fragmentByTag;
+						getFragmentManager().beginTransaction()
+								.replace(R.id.youTubeFrameContainer, youTubePlayerFragment, YOUTUBE_FRAGMENT_TAG)
+								.commit();
+						youTubePlayerFragment.initialize(AppConstants.YOUTUBE_DEVELOPER_KEY, WelcomeFragment.this);
 					}
 
 					if (!initiatedFirst) {
@@ -476,7 +463,9 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 	private Runnable startAnimation = new Runnable() {
 		@Override
 		public void run() {
-			flipFirstHalf.start();
+			if (flipFirstHalf != null) { // can be null if we return from savedInstance to non first page
+				flipFirstHalf.start();
+			}
 			handler.postDelayed(this, REPEAT_TIMEOUT);
 		}
 	};

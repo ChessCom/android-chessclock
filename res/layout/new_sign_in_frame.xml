@@ -81,7 +81,7 @@
                 />
 
             <com.chess.RoboButton
-                android:id="@+id/signin"
+                android:id="@+id/signinBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/log_in"

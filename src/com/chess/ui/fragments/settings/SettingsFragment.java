@@ -93,6 +93,9 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 			case R.string.glyph_profile:
 				getActivityFace().openFragment(new SettingsProfileFragment());
 				break;
+			case R.string.glyph_board:
+				getActivityFace().openFragment(new SettingsBoardFragment());
+				break;
 			case R.string.glyph_close:
 				if (isLCSBound) {
 					liveService.logout();

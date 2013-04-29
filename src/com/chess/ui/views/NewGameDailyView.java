@@ -348,7 +348,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 
 	public NewDailyGameConfig getNewDailyGameConfig(){
 		// set params
-		gameConfigBuilder.setRated(ratedGameSwitch.isSwitchEnabled());
+		gameConfigBuilder.setRated(ratedGameSwitch.isChecked());
 
 		return gameConfigBuilder.build();
 	}

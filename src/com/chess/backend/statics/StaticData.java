@@ -73,9 +73,6 @@ public class StaticData {
 	public static final int B_RED_ID 		= 7;
 	public static final int B_TAN_ID 		= 8;
 
-
-	public static final String SHP_LANGUAGE = "application language";
-
 	/* User types */
 //	public static final int NOT_INITIALIZED_USER = -1;
 	public static final int BASIC_USER = 0;

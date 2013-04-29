@@ -14,6 +14,24 @@
         <attr name="ttf" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="SwitchButton">
+        <attr name="switchBackOn" format="reference" />
+        <attr name="switchBackOff" format="reference" />
+        <attr name="switchHandle" format="reference" />
+        <attr name="switchHandleWidth" format="integer" />
+        <attr name="switchHandleHeight" format="integer" />
+        <attr name="switchHandleShift" format="float" />
+        <attr name="switchTextShift" format="float" />
+        <attr name="switchTextSize" format="dimension|reference" />
+        <attr name="switchTextColorOn" format="color|reference" />
+        <attr name="switchTextColorOff" format="color|reference" />
+        <attr name="switchTextFont" format="string" />
+        <attr name="switchTextOn" format="string|reference" />
+        <attr name="switchTextOff" format="string|reference" />
+        <attr name="switchTextLeftPadding" format="integer" />
+        <attr name="switchTextUseShadow" format="boolean" />
+    </declare-styleable>
+
 
 
     <declare-styleable name="ButtonStyles">

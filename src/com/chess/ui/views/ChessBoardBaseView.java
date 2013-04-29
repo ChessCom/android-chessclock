@@ -87,7 +87,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected Rect rect;
 
 	protected boolean isHighlightEnabled;
-	protected boolean isPossibleMoveHighlightEnabled;
+	protected boolean showLegalMoves;
 	protected boolean showCoordinates;
 	protected String userName;
 	protected boolean useTouchTimer;
@@ -172,10 +172,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		userName = AppData.getUserName(getContext());
 
-		isHighlightEnabled = AppData.isHighlightEnabled(getContext());
-		isPossibleMoveHighlightEnabled = AppData.isPossibleMoveHighlightOn(getContext());
+		isHighlightEnabled = AppData.isHighlightLastMove(getContext());
+		showLegalMoves = AppData.isShowLegalMoves(getContext());
 
-		showCoordinates = AppData.showCoordinates(getContext());
+		showCoordinates = AppData.isShowCoordinates(getContext());
 	}
 
 	@Override
@@ -399,7 +399,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					x * square + square - 1 , y * square + square -1, yellowPaint);
 		}
 
-		if (pieceSelected && isPossibleMoveHighlightEnabled) { // draw all possible moved coordinates
+		if (pieceSelected && showLegalMoves) { // draw all possible move coordinates
 			TreeSet<Move> moves = getBoardFace().gen();
 
 			for (Move move : moves) {

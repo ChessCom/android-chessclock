@@ -60,6 +60,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			// set the Above View
 			if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
 				switchFragment(new HomeTabsFragment());
+//				switchFragment(new SettingsFragment());
+//				switchFragment(new SettingsBoardFragment());
 				showActionBar = true;
 			} else {
 				switchFragment(new WelcomeFragment());
@@ -287,8 +289,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		WelcomeFragment welcomeFragment = (WelcomeFragment) getSupportFragmentManager().findFragmentByTag(WelcomeFragment.class.getSimpleName());
 		int orientation = getResources().getConfiguration().orientation;
 		if (welcomeFragment != null && orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			welcomeFragment.hideYoutubeFullScreen();
-			return;
+			if (welcomeFragment.hideYoutubeFullScreen()) {
+				return;
+			}
 		}
 		showPreviousFragment();
 	}

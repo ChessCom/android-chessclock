@@ -12,14 +12,13 @@ import java.io.Serializable;
 public class RoboTextView extends TextView implements Serializable {
 
 	private static final long serialVersionUID = -2417945858405913303L;
-	public static final String MAIN_PATH = "fonts/trebuc-";
+	public static final String MAIN_PATH = "fonts/custom-"; // Default font is Trebuchet MS
 	public static final String DEFAULT_FONT = "Regular";
 	public static final String BOLD_FONT = "Bold";
-	public static final String ICON_FONT = "Icon";
+	public static final String ICON_FONT = "Icon"; // Chess.com Glyph
 	public static final String ITALIC_FONT = "Italic";
-	public static final String ROBOTO_BOLD_FONT = "RobotoBold";
-	public static final String ROBOTO_REGULAR_FONT = "RobotoRegular";
-	public static final String HELV_NEUE_FONT = "HelveticaNeue";
+	public static final String HELV_NEUE_FONT = "Neue"; // HelveticaNeue
+	public static final String HELV_NEUE_BOLD_FONT = "NeueBold"; // HelveticaNeue
 
 	private String ttfName = DEFAULT_FONT;
 

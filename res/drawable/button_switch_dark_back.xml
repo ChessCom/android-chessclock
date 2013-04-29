@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--Outer border 1-->
+    <item >
+        <shape android:dither="true">
+            <corners android:radius="@dimen/button_switch_back_corners"/>
+            <gradient
+                android:startColor="@color/switch_dark_back_border_top_1"
+                android:endColor="@color/switch_dark_back_border_bot_1"
+                android:angle="270"
+                />
+        </shape>
+    </item>
+
+    <!--Outer border 2 + 1px-->
+    <item
+        android:top="1px"
+        android:left="1px"
+        android:right="1px"
+        android:bottom="1px"
+        >
+        <shape android:dither="true">
+            <corners android:radius="@dimen/button_switch_back_corners"/>
+            <gradient
+                android:startColor="@color/switch_dark_back_border_top_2"
+                android:endColor="@color/switch_dark_back_border_bot_2"
+                android:angle="270"
+                />
+        </shape>
+    </item>
+
+    <!--Dark Border + 5px-->
+    <item
+        android:top="6px"
+        android:left="6px"
+        android:right="6px"
+        android:bottom="6px"
+        >
+        <shape android:dither="true">
+            <corners android:radius="@dimen/button_switch_back_corners"/>
+            <solid android:color="@color/switch_dark_back_inner_border" />
+        </shape>
+    </item>
+
+    <!--InnerShadow + 1px-->
+    <item
+        android:top="7px"
+        android:left="7px"
+        android:right="7px"
+        android:bottom="7px"
+        >
+        <shape android:dither="true">
+            <corners android:radius="@dimen/button_switch_back_corners"/>
+            <gradient
+                android:startColor="@color/switch_dark_back_inner_shadow_1"
+                android:endColor="@color/switch_dark_back_inner_shadow_2"
+                android:angle="270"
+                />
+        </shape>
+    </item>
+
+    <!--Main Gradient + 1px-->
+    <item
+        android:top="8px"
+        android:left="8px"
+        android:right="8px"
+        android:bottom="8px"
+        >
+        <shape android:dither="true">
+            <corners android:radius="@dimen/button_switch_back_corners"/>
+            <solid android:color="@color/switch_dark_back_inner_main_2" />
+        </shape>
+    </item>
+
+
+
+</layer-list>

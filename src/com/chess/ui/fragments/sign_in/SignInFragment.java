@@ -43,7 +43,7 @@ public class SignInFragment extends ProfileSetupsFragment implements TextView.On
 
 		setLoginFields(loginUsernameEdt, loginPasswordEdt);
 
-		view.findViewById(R.id.signin).setOnClickListener(this);
+		view.findViewById(R.id.signinBtn).setOnClickListener(this);
 		view.findViewById(R.id.createProfileLay).setOnClickListener(this);
 		view.findViewById(R.id.createProfileBtn).setOnClickListener(this);
 	}
@@ -75,16 +75,13 @@ public class SignInFragment extends ProfileSetupsFragment implements TextView.On
 	@Override
 	public void onClick(View view) {
 		int id = view.getId();
-		if (id == R.id.signin) {
+		if (id == R.id.signinBtn) {
 			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live   // TODO restore
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, BasePopupsFragment.NETWORK_CHECK_TAG);
 			} else {
 				signInUser();
 			}
-		} else if (id == R.id.signup) {
-			getActivityFace().openFragment(new SignUpFragment());
-
 		} else if (id == R.id.createProfileLay || id == R.id.createProfileBtn) {
 			getActivityFace().openFragment(new CreateProfileFragment());
 //			DataHolder.reset();

@@ -68,7 +68,7 @@ public class SoundPlayer {
 	}
 
 	private void playSound(int soundResource) {
-		if (AppData.playSounds(context)) {
+		if (AppData.isPlaySounds(context)) {
 			try {
 				MediaPlayer mediaPlayer = MediaPlayer.create(context, soundResource);
 				mediaPlayer.setVolume(0.1f, 0.1f);

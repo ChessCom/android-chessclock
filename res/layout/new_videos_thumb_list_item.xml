@@ -44,7 +44,7 @@
         android:layout_marginTop="-1dip"
         android:textColor="@color/new_subtitle_dark_grey"
         android:textSize="12sp"
-        custom:ttf="RobotoRegular"
+        custom:ttf="Neue"
         />
 
     <com.chess.RoboTextView

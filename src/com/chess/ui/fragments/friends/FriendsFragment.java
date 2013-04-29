@@ -51,9 +51,7 @@ public class FriendsFragment extends CommonLogicFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		friendsAdapter = new FriendsCursorAdapter(getContext(), null);
-
 	}
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,7 +71,7 @@ public class FriendsFragment extends CommonLogicFragment {
 		listView.setAdapter(friendsAdapter);
 
 		sortSpinner = (Spinner) view.findViewById(R.id.sortSpinner);
-		List<String> sortList = new ArrayList<String>();
+		List<String> sortList = new ArrayList<String>();  // TODO localize
 		sortList.add("Name");
 		sortList.add("Country");
 		sortList.add("Online");

@@ -191,12 +191,16 @@
     <dimen name="seek_stroke_width">1dip</dimen>
     <dimen name="seek_thumb_padding">8dip</dimen>
 
-    <!--Switch-->
-    <dimen name="button_switch_width">83dip</dimen>
-    <dimen name="button_switch_height">26dip</dimen>
+    <!--Switch Dark-->
+    <dimen name="button_switch_dark_width">83dip</dimen>
+    <dimen name="button_switch_dark_height">26dip</dimen>
     <dimen name="button_switch_back_corners">24dip</dimen>
+    <dimen name="button_switch_white_back_corners">51dip</dimen>
     <dimen name="button_switch_corners">51dip</dimen>
     <dimen name="button_switch_inner_offset">5dip</dimen>
+    <!--White-->
+    <dimen name="button_switch_white_width">77dip</dimen>
+    <dimen name="button_switch_white_height">27dip</dimen>
 
     <!--Friends-->
     <dimen name="new_button_square_size">37dip</dimen>

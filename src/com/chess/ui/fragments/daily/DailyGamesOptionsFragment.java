@@ -321,7 +321,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 
 	public NewDailyGameConfig getNewDailyGameConfig(){
 		// set params
-		gameConfigBuilder.setRated(ratedGameSwitch.isSwitchEnabled());
+		gameConfigBuilder.setRated(ratedGameSwitch.isChecked());
 
 		return gameConfigBuilder.build();
 	}

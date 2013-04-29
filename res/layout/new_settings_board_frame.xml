@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <!-- Pieces -->
+        <LinearLayout
+            android:id="@+id/piecesView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/LinearListItem"
+            android:paddingRight="0dip"
+            android:background="@drawable/white_list_item_selector"
+            >
+            <!--Label-->
+            <com.chess.RoboTextView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:text="@string/pieces_style"
+                android:layout_weight="1"
+                style="@style/SettingsListText"
+                />
+
+            <Spinner
+                android:id="@+id/piecesSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="37dip"
+                android:background="@drawable/white_list_item_selector"
+                />
+
+            <!--Right Icon-->
+            <com.chess.RoboTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/glyph_arrow_right"
+                android:textColor="@color/hint_text"
+                style="@style/GlyphIcon.Small"
+                />
+        </LinearLayout>
+
+        <!--Divider-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/new_friends_list_divider"
+            />
+
+        <!-- Board -->
+        <LinearLayout
+            android:id="@+id/boardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/LinearListItem"
+            android:paddingRight="0dip"
+            android:background="@drawable/white_list_item_selector"
+            >
+            <com.chess.RoboTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/board"
+                android:layout_weight="1"
+                style="@style/SettingsListText"
+                />
+
+            <Spinner
+                android:id="@+id/boardsSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/white_list_item_selector"
+                />
+
+            <!--Right Icon-->
+            <com.chess.RoboTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/glyph_arrow_right"
+                android:textColor="@color/hint_text"
+                style="@style/GlyphIcon.Small"
+                />
+
+        </LinearLayout>
+
+        <!--Divider-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/new_friends_list_divider"
+            />
+
+        <!--Coordinates-->
+        <LinearLayout
+            android:id="@+id/coordinatesView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/LinearListItem"
+            android:paddingRight="10dip"
+            android:background="@drawable/white_list_item_selector"
+            >
+
+            <!--Label-->
+            <com.chess.RoboTextView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:text="@string/coordinates"
+                android:layout_weight="1"
+                style="@style/SettingsListText"
+                />
+
+            <com.chess.SwitchButton
+                android:id="@+id/coordinatesSwitch"
+                style="@style/Switch.White"
+                />
+        </LinearLayout>
+
+        <!--Divider-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/new_friends_list_divider"
+            />
+
+        <!--Highlight Last Move-->
+        <LinearLayout
+            android:id="@+id/highlightLastMoveView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/LinearListItem"
+            android:paddingRight="10dip"
+            android:background="@drawable/white_list_item_selector"
+            >
+
+            <!--Label-->
+            <com.chess.RoboTextView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:text="@string/highlight_last_move"
+                android:layout_weight="1"
+                style="@style/SettingsListText"
+                />
+
+            <com.chess.SwitchButton
+                android:id="@+id/highlightLastMoveSwitch"
+                style="@style/Switch.White"
+                custom:switchTextOn="@string/yes"
+                custom:switchTextOff="@string/no"
+                />
+        </LinearLayout>
+
+        <!--Divider-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/new_friends_list_divider"
+            />
+
+        <!--Show legal moves-->
+        <LinearLayout
+            android:id="@+id/showLegalMovesView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/LinearListItem"
+            android:paddingRight="10dip"
+            android:background="@drawable/white_list_item_selector"
+            >
+
+            <!--Label-->
+            <com.chess.RoboTextView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:text="@string/show_legal_moves"
+                android:layout_weight="1"
+                style="@style/SettingsListText"
+                />
+
+            <com.chess.SwitchButton
+                android:id="@+id/showLegalMovesSwitch"
+                style="@style/Switch.White"
+                custom:switchTextOn="@string/yes"
+                custom:switchTextOff="@string/no"
+                />
+
+        </LinearLayout>
+
+        <!--Divider-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/new_friends_list_divider"
+            />
+
+        <!--Answer Show White on Bottom-->
+        <LinearLayout
+            android:id="@+id/answerShowBottomView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/LinearListItem"
+            android:paddingRight="10dip"
+            android:background="@drawable/white_list_item_selector"
+            >
+
+            <!--Label-->
+            <com.chess.RoboTextView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_show_white_on_bottom"
+                android:layout_weight="1"
+                style="@style/SettingsListText"
+                />
+
+            <com.chess.SwitchButton
+                android:id="@+id/answerShowBottomSwitch"
+                style="@style/Switch.White"
+                />
+        </LinearLayout>
+
+        <!--Divider-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/new_friends_list_divider"
+            />
+
+        <!--Sounds-->
+        <LinearLayout
+            android:id="@+id/soundsView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/LinearListItem"
+            android:paddingRight="10dip"
+            android:background="@drawable/white_list_item_selector"
+            >
+
+            <!--Label-->
+            <com.chess.RoboTextView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:text="@string/sounds"
+                android:layout_weight="1"
+                style="@style/SettingsListText"
+                />
+
+            <com.chess.SwitchButton
+                android:id="@+id/soundsSwitch"
+                style="@style/Switch.White"
+                />
+        </LinearLayout>
+
+        <!--Divider-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/new_friends_list_divider"
+            />
+
+    </LinearLayout>
+</ScrollView>

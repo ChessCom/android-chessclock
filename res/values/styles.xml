@@ -337,9 +337,13 @@
 		<item name="android:paddingRight">15dip</item>
 		<item name="android:minHeight">@dimen/default_list_item_height</item>
 		<item name="android:gravity">center_vertical</item>
-
 	</style>
 
+	<style name="SettingsListText">
+		<item name="android:textColor">@color/new_subtitle_dark_grey</item>
+		<item name="android:textSize">15sp</item>
+		<item name="android:gravity">center_vertical</item>
+	</style>
 
 	<style name="GamePanelButton">
 		<item name="android:layout_weight">1</item>
@@ -368,6 +372,50 @@
 		<item name="android:ellipsize">marquee</item>
 		<item name="android:marqueeRepeatLimit">marquee_forever</item>
 	</style>
+
+    <style name="Switch">
+
+    </style>
+
+    <style name="Switch.Dark">
+        <item name="switchBackOn">@drawable/button_switch_dark_back</item>
+        <item name="switchBackOff">@drawable/button_switch_dark_back</item>
+        <item name="switchHandle">@drawable/button_switch_dark_handle_selector</item>
+        <item name="switchHandleWidth">42</item>
+        <item name="switchHandleHeight">22</item>
+        <item name="switchHandleShift">-40.0</item>
+        <item name="switchTextShift">40.0</item>
+        <item name="switchTextSize">12sp</item>
+        <item name="switchTextColorOn">@color/new_normal_grey</item>
+        <item name="switchTextColorOff">@color/new_normal_grey</item>
+        <item name="switchTextOn">@string/yes</item>
+        <item name="switchTextOff">@string/no</item>
+        <item name="switchTextFont">Neue</item>
+        <item name="switchTextLeftPadding">13</item>
+        <item name="switchTextUseShadow">false</item>
+        <item name="android:layout_width">@dimen/button_switch_dark_width</item>
+        <item name="android:layout_height">@dimen/button_switch_dark_height</item>
+    </style>
+
+    <style name="Switch.White">
+        <item name="switchBackOn">@drawable/button_switch_white_back_checked</item>
+        <item name="switchBackOff">@drawable/button_switch_white_back_default</item>
+        <item name="switchHandle">@drawable/button_switch_white_handle_selector</item>
+        <item name="switchHandleWidth">26</item>
+        <item name="switchHandleHeight">26</item>
+        <item name="switchHandleShift">-51.0</item>
+        <item name="switchTextShift">21.0</item>
+        <item name="switchTextSize">16sp</item>
+        <item name="switchTextColorOn">@color/white</item>
+        <item name="switchTextColorOff">@color/switch_white_back_border_top_1</item>
+        <item name="switchTextFont">NeueBold</item>
+        <item name="switchTextOn">@string/on</item>
+        <item name="switchTextOff">@string/off</item>
+        <item name="switchTextLeftPadding">13</item>
+        <item name="switchTextUseShadow">true</item>
+        <item name="android:layout_width">@dimen/button_switch_white_width</item>
+        <item name="android:layout_height">@dimen/button_switch_white_height</item>
+    </style>
 
 	<style name="DarkShadowBottom">
 		<item name="android:textColor">@color/white</item>

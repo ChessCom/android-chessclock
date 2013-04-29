@@ -26,9 +26,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:textColor="@color/new_subtitle_dark_grey"
-        android:textSize="15sp"
-        android:gravity="center_vertical"
+        style="@style/SettingsListText"
+
         />
 
 </LinearLayout>

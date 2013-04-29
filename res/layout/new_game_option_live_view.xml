@@ -131,9 +131,7 @@
 
         <com.chess.SwitchButton
             android:id="@+id/ratedGameSwitch"
-            android:layout_width="@dimen/button_switch_width"
-            android:layout_height="@dimen/button_switch_height"
-            android:background="@drawable/button_switch_back"
+            style="@style/Switch.Dark"
             />
 
     </LinearLayout>

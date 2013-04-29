@@ -111,12 +111,12 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 		strengthSpinner.setSelection(preferences.getInt(userName + AppConstants.PREF_COMPUTER_DELAY, 0));
 
 		showLiveSubmitChckBx.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false));
-		showOnlineSubmitChckBx.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SHOW_SUBMIT_MOVE, true));
+		showOnlineSubmitChckBx.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SHOW_SUBMIT_MOVE_DAILY, true));
 
 		enableSounds.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SOUNDS, true));
-		enableNotifications.setChecked(preferences.getBoolean(userName + AppConstants.PREF_NOTIFICATION, true));
+		enableNotifications.setChecked(preferences.getBoolean(userName + AppConstants.PREF_DAILY_NOTIFICATIONS, true));
 		showCoordinates.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_COORDINATES, true));
-		showHighlights.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, true));
+		showHighlights.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_HIGHLIGHT_LAST_MOVE, true));
 
 
 		minRatingSpinner.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.minRating)));
@@ -157,7 +157,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_tan), getString(R.string.board_tan)));
 
 		//spinners
-		int boardsPosition = preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_BOARD_TYPE, 0);
+		int boardsPosition = preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_BOARD_STYLE, 0);
 		boardsSpinner.setSelection(boardsPosition);
 		boardsList.get(boardsPosition).setChecked(true);
 		boardsSpinner.setAdapter(new SelectionAdapter(this, boardsList));
@@ -344,7 +344,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(pos);
 			selectionItem.setChecked(true);
 
-			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_BOARD_TYPE, pos);
+			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_BOARD_STYLE, pos);
 			preferencesEditor.commit();
 
 			((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
@@ -379,7 +379,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 	@Override
 	public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
 		if (compoundButton.getId() == R.id.showOnlineSubmitChckBx) {
-			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE, checked);
+			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE_DAILY, checked);
 		} else if (compoundButton.getId() == R.id.showLiveSubmitChckBx) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, checked);
 		} else if (compoundButton.getId() == R.id.enableSoundsChkBx) {
@@ -387,7 +387,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 		} else if (compoundButton.getId() == R.id.notificationsChckBx) {
 			// don't check move if pref didn't changed
 			boolean notificationsWasEnabled = AppData.isNotificationsEnabled(this);
-			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_NOTIFICATION, checked);
+			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_DAILY_NOTIFICATIONS, checked);
 			preferencesEditor.commit();
 
 			if (!notificationsWasEnabled && checked) {
@@ -400,7 +400,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 		} else if (compoundButton.getId() == R.id.prefCoords) {
 			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_BOARD_COORDINATES, checked);
 		} else if (compoundButton.getId() == R.id.prefHighlights) {
-			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_BOARD_SQUARE_HIGHLIGHT, checked);
+			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_BOARD_HIGHLIGHT_LAST_MOVE, checked);
 		}
 		preferencesEditor.commit();
 	}
@@ -436,7 +436,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 //			new GetStringObjTask(vacationLeaveStatusUpdateListener).executeTask(loadItem);
 			new RequestJsonTask<VacationItem>(vacationStatusPostUpdateListener).executeTask(loadItem);
 		} else if (tag.equals(LOCALE_CHANGE_TAG)) {
-			preferencesEditor.putInt(AppData.getUserName(getContext()) + StaticData.SHP_LANGUAGE, localeSelectedId);
+			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_LANGUAGE, localeSelectedId);
 			preferencesEditor.commit();
 
 			setLocale();

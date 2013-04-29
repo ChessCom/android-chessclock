@@ -346,6 +346,8 @@
 	<color name="player_ind_green_stroke">#FF419100</color>
 
 	<color name="semitransparent">#7f000000</color>
+	<color name="semitransparent_white">#46FFFFFF</color>
+	<color name="semitransparent_white_1">#AFFFFFFF</color>
 
     <!--Sliding Menu-->
     <color name="holo_blue_bright">#ff00ddff</color>
@@ -425,35 +427,73 @@
     <color name="seek_background">#FF22201e</color>
     <color name="seek_background_stroke">#FF292623</color>
 
-    <!--Switch Button Back-->
-    <color name="switch_back_border_top_1">#FF2d2a27</color>
-    <color name="switch_back_border_top_2">#FF292623</color>
-    <color name="switch_back_border_bot_1">#FF35322f</color>
-    <color name="switch_back_border_bot_2">#FF393532</color>
-    <color name="switch_back_inner_border">#FF1a1613</color>
-    <color name="switch_back_inner_shadow_1">#FF121110</color>
-    <color name="switch_back_inner_shadow_2">#FF23211f</color>
-    <color name="switch_back_inner_main_1">#FF211f1d</color>
-    <color name="switch_back_inner_main_2">#FF23211f</color>
+    <!--Switch Button Dark Back-->
+    <color name="switch_dark_back_border_top_1">#FF2d2a27</color>
+    <color name="switch_dark_back_border_top_2">#FF292623</color>
+    <color name="switch_dark_back_border_bot_1">#FF35322f</color>
+    <color name="switch_dark_back_border_bot_2">#FF393532</color>
+    <color name="switch_dark_back_inner_border">#FF1a1613</color>
+    <color name="switch_dark_back_inner_shadow_1">#FF121110</color>
+    <color name="switch_dark_back_inner_shadow_2">#FF23211f</color>
+    <color name="switch_dark_back_inner_main_1">#FF211f1d</color>
+    <color name="switch_dark_back_inner_main_2">#FF23211f</color>
 
 
-    <!--Switch Button Handler-->
-    <color name="switch_btn_border">#FF141311</color>
-    <color name="switch_btn_top_1">#FF696461</color>
-    <color name="switch_btn_top_2">#FF5d5855</color>
-    <color name="switch_btn_top_1_p">#FF8f8882</color>
-    <color name="switch_btn_top_2_p">#FF8a827d</color>
+    <!--Switch Button Dark Handler-->
+    <color name="switch_dark_btn_border">#FF141311</color>
+    <color name="switch_dark_btn_top_1">#FF696461</color>
+    <color name="switch_dark_btn_top_2">#FF5d5855</color>
+    <color name="switch_dark_btn_bot_1">#FF484440</color>
+    <color name="switch_dark_btn_bot_2">#FF393633</color>
+    <color name="switch_dark_btn_main">#FF534e4a</color>
+    <color name="switch_dark_btn_inner_1">#FF4c4844</color>
+    <color name="switch_dark_btn_inner_2">#FF5e5a56</color>
 
-    <color name="switch_btn_bot_1">#FF484440</color>
-    <color name="switch_btn_bot_2">#FF393633</color>
-    <color name="switch_btn_bot_1_p">#FF484441</color>
-    <color name="switch_btn_bot_2_p">#FF5d5853</color>
+    <!--Pressed-->
+    <color name="switch_dark_btn_top_1_p">#FF8f8882</color>
+    <color name="switch_dark_btn_top_2_p">#FF8a827d</color>
+    <color name="switch_dark_btn_bot_1_p">#FF484441</color>
+    <color name="switch_dark_btn_bot_2_p">#FF5d5853</color>
+    <color name="switch_dark_btn_main_p_1">#FF827a74</color>
+    <color name="switch_dark_btn_main_p_2">#FF6b6560</color>
 
-    <color name="switch_btn_main">#FF534e4a</color>
-    <color name="switch_btn_main_p_1">#FF827a74</color>
-    <color name="switch_btn_main_p_2">#FF6b6560</color>
-    <color name="switch_btn_inner_1">#FF4c4844</color>
-    <color name="switch_btn_inner_2">#FF5e5a56</color>
+
+    <!--Switch Button White Back-->
+    <color name="switch_white_back_border_top_1">#FF7e7e7e</color>
+    <color name="switch_white_back_border_top_2">#FF8c8c8c</color>
+    <color name="switch_white_back_border_bot_1">#FFbebebe</color>
+    <color name="switch_white_back_border_bot_2">#FFe9e9e9</color>
+    <!--<color name="switch_white_back_inner_border">#FF1a1613</color>-->
+    <color name="switch_white_back_inner_shadow_1">#FFd2d2d2</color>
+    <color name="switch_white_back_inner_shadow_2">#FFe9e9e9</color>
+    <color name="switch_white_back_inner_main_1">#FFe0e0e0</color>
+    <color name="switch_white_back_inner_main_2">#FFe9e9e9</color>
+
+    <!--Checked-->
+    <color name="switch_white_back_border_top_2_c">#FF7ba452</color>
+    <color name="switch_white_back_border_bot_2_c">#FF7ba452</color>
+    <color name="switch_white_back_inner_main_1_c">#FF80ab55</color>
+    <color name="switch_white_back_inner_main_2_c">#FF83ae57</color>
+
+    <!--Switch Button White Handler-->
+    <color name="switch_white_btn_border">#FF616161</color>
+    <color name="switch_white_btn_top_1">#FFf7f7f7</color>
+    <color name="switch_white_btn_top_2">#FFededed</color>
+    <color name="switch_white_btn_bot_1">#FFfbfbfb</color>
+    <color name="switch_white_btn_bot_2">#FFfcfcfc</color>
+
+    <!--<color name="switch_white_btn_main">#FF534e4a</color>-->
+    <color name="switch_white_btn_inner_1">#FFd9d9d9</color>
+    <color name="switch_white_btn_inner_2">#FFfbfbfb</color>
+
+    <!--Pressed-->
+    <color name="switch_white_btn_top_1_p">#ffc5c5c5</color>
+    <color name="switch_white_btn_top_2_p">#ffbbbbbb</color>
+    <color name="switch_white_btn_bot_1_p">#ffc9c9c9</color>
+    <color name="switch_white_btn_bot_2_p">#ffcacaca</color>
+    <color name="switch_white_btn_main_p_1">#ffa7a7a7</color>
+    <color name="switch_white_btn_main_p_2">#ffcccccc</color>
+
 
     <!--Friends-->
     <color name="new_friends_top_back">#FFf4f4f4</color>

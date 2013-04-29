@@ -130,7 +130,7 @@
 	<string name="strength">Strength</string> <!--Computer opponent skill strength-->
 	<string name="interface_caps">interface</string>  <!--Section title-->
 	<string name="board">Board</string> <!--Game board pattern-->
-	<string name="contact_us">Pieces</string> <!--Pieces set-->
+	<string name="contact_us">Contacts Us</string> <!--Pieces set-->
 	<string name="show_coordinates">Show coordinates</string>
 	<string name="move_highlights">Move Highlights</string>
 	<string name="invite_a_friend">Invite A Friend</string>

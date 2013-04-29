@@ -90,7 +90,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		preferences = AppData.getPreferences(getActivity()); // TODO rework shared pref usage to unique get method
+		preferences = AppData.getPreferences(getActivity());
 		preferencesEditor = preferences.edit();
 
 		handler = new Handler();

@@ -254,7 +254,7 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 
 	public NewLiveGameConfig getNewLiveGameConfig() {
 		// set params
-		gameConfigBuilder.setRated(ratedGameSwitch.isSwitchEnabled());
+		gameConfigBuilder.setRated(ratedGameSwitch.isChecked());
 
 		return gameConfigBuilder.build();
 	}

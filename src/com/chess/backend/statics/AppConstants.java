@@ -39,16 +39,22 @@ public class AppConstants {
 	public static final String PREF_COMPUTER_DELAY = "computer think delay";
 	public static final String PREF_ACTION_AFTER_MY_MOVE = "aim";
 	public static final String USER_PREMIUM_STATUS = "premium_status";
-	public static final String PREF_SOUNDS = "enableSounds";
+
+	/* Board and Game Preferences */
+	public static final String PREF_SOUNDS = "enable sounds";
 	public static final String PREF_SHOW_SUBMIT_MOVE_LIVE = "show submit move live";
-	public static final String PREF_SHOW_SUBMIT_MOVE = "ssb";
-	public static final String PREF_NOTIFICATION = "notifications";
-	public static final String PREF_POSSIBLE_MOVE_HIGHLIGHTS = "possible move highlights";
-	public static final String PREF_BOARD_COORDINATES = "coords";
-	public static final String PREF_BOARD_SQUARE_HIGHLIGHT = "highlights";
-	public static final String PREF_BOARD_TYPE = "boardBitmap";
-	public static final String PREF_PIECES_SET = "piecesBitmap";
-    public static final String PREF_VIDEO_SKILL_LEVEL = "video skill level";
+	public static final String PREF_SHOW_SUBMIT_MOVE_DAILY = "show submit button daily";
+	public static final String PREF_DAILY_NOTIFICATIONS = "use daily notifications";
+	public static final String PREF_SHOW_LEGAL_MOVES = "show possible move highlights";
+	public static final String PREF_BOARD_COORDINATES = "show coordinates";
+	public static final String PREF_BOARD_HIGHLIGHT_LAST_MOVE = "highlight last move";
+	public static final String PREF_BOARD_SHOW_ANSWER_BOTTOM = "show answer bottom";
+
+	public static final String PREF_BOARD_STYLE = "board style";
+	public static final String PREF_PIECES_SET = "pieces set";
+	public static final String PREF_LANGUAGE = "application language";
+
+	public static final String PREF_VIDEO_SKILL_LEVEL = "video skill level";
     public static final String PREF_VIDEO_CATEGORY = "video category";
 	public static final String PREF_USER_SKILL_LEVEL = "user_skill_level";
 	public static final String PREF_USER_SKILL_LEVEL_SET = "user_skill_level_was_set";
