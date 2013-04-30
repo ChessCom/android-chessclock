@@ -43,9 +43,9 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	private Spinner sortSpinner;
 	private boolean searchVisible;
 	private VideosCursorUpdateListener videosCursorUpdateListener;
-	private boolean categoriesLoaded;
-	private List<String> sortList;
+//	private boolean categoriesLoaded;
 	private List<String> sortOrders;
+	private List<String> categoriesList;
 
 	public static VideoCategoriesFragment newInstance(String sectionName) {
 		VideoCategoriesFragment frag = new VideoCategoriesFragment();
@@ -61,6 +61,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 		videosAdapter = new NewVideosThumbCursorAdapter(this, null);
 		videosCursorUpdateListener = new VideosCursorUpdateListener();
+		categoriesList = new ArrayList<String>();
 	}
 
 	@Override
@@ -92,7 +93,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	+ V_FIRST_NAME 	    		+ _TEXT_NOT_NULL + _COMMA
 */
 
-		sortList = new ArrayList<String>();  // TODO set list of sort parameters
+		List<String> sortList = new ArrayList<String>();
 		sortList.add(getString(R.string.title));
 		sortList.add(getString(R.string.skill));
 		sortList.add(getString(R.string.latest));
@@ -118,42 +119,38 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 		init();
 
-		if (!categoriesLoaded) {
-			// get list of categories
-			categoriesLoaded = fillCategories();
-		}
+		boolean loaded = categoriesList.size() != 0 || fillCategories();
 
-		if (!categoriesLoaded) { // load hardcoded categories with passed arg
+		if (loaded) {
+			// get passed argument
+			String selectedCategory = getArguments().getString(SECTION_NAME);
 
+			int sectionId;
+			for (sectionId = 0; sectionId < categoriesList.size(); sectionId++) {
+				String category = categoriesList.get(sectionId);
+				if (category.equals(selectedCategory)) {
+					break;
+				}
+			}
+
+			categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), categoriesList));
+			categorySpinner.setOnItemSelectedListener(this);
+			categorySpinner.setSelection(sectionId);  // TODO remember last selection.
 		}
 	}
 
 	private boolean fillCategories() {
 		Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.VIDEO_CATEGORIES], null, null, null, null);
-		List<String> list = new ArrayList<String>();
+
 		if (!cursor.moveToFirst()) {
 			showToast("Categories are not loaded");
 			return false;
 		}
 
 		do {
-			list.add(DBDataManager.getString(cursor, DBConstants.V_NAME));
+			categoriesList.add(DBDataManager.getString(cursor, DBConstants.V_NAME));
 		} while(cursor.moveToNext());
 
-		// get passed argument
-		String selectedCategory = getArguments().getString(SECTION_NAME);
-
-		int sectionId;
-		for (sectionId = 0; sectionId < list.size(); sectionId++) {
-			String category = list.get(sectionId);
-			if (category.equals(selectedCategory)) {
-				break;
-			}
-		}
-
-		categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), list));
-		categorySpinner.setOnItemSelectedListener(this);
-		categorySpinner.setSelection(sectionId);  // TODO remember last selection.
 		return true;
 	}
 
@@ -222,8 +219,8 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
 			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.parse("http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"), "video/*"); // TODO restore
-//			intent.setDataAndType(Uri.parse(DBDataManager.getString(cursor, DBConstants.V_MOBILE_URL)), "video/*");
+//			intent.setDataAndType(Uri.parse("http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"), "video/*"); // TODO restore
+			intent.setDataAndType(Uri.parse(DBDataManager.getString(cursor, DBConstants.V_MOBILE_URL)), "video/*");
 			startActivity(intent);
 		}
 	}

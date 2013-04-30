@@ -94,7 +94,8 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 			// todo: refactor with new LCC
 				if(!liveService.isConnected() || liveService.getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
 					liveService.logout();
-				backToHomeActivity();
+//				backToHomeActivity();
+					unBindLiveService();
 				return;
 			}
 

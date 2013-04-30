@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dip"
+    >
+
+    <com.chess.RoboTextView
+        android:id="@+id/centerTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/matching"
+        android:textSize="23sp"
+        android:textColor="@color/white"
+        />
+
+    <ProgressBar
+        android:id="@+id/loadingView"
+        android:layout_width="60dip"
+        android:layout_height="60dip"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/centerTxt"
+        style="?android:attr/progressBarStyle"
+        />
+
+    <com.chess.RoboButton
+        android:id="@+id/cancelLiveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>

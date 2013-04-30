@@ -126,7 +126,7 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 			checkMove();
 		}
 
-		backToHomeActivity();
+//		backToHomeActivity();
 	}
 
 	private void checkUpdate() {

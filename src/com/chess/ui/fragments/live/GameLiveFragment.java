@@ -25,6 +25,7 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.engine.NewLiveGameConfig;
 import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
@@ -86,6 +87,19 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	private ControlsNetworkView controlsNetworkView;
 	private QuickAction quickAction;
 
+	public GameLiveFragment() {
+
+	}
+
+
+	public static GameLiveFragment newInstance(NewLiveGameConfig liveGameConfig) {
+		GameLiveFragment fragment = new GameLiveFragment();
+
+//		Bundle bundle = new Bundle();
+//		bundle.
+		return fragment;
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_boardview_live, container, false);
@@ -126,7 +140,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 		AppData.setLiveChessMode(getActivity(), true);
 
-		liveBaseActivity.connectLcc();
 	}
 
 	@Override
@@ -149,7 +162,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	}
 
 	@Override
-	protected void onLiveServiceConnected() {
+	public void onLiveServiceConnected() {
 //		super.onLiveServiceConnected();
 
 		liveService.setLccEventListener(this);

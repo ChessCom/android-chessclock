@@ -157,7 +157,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		}
 
 		if(tag.equals(ERROR_TAG)){
-			backToLoginActivity();
+//			backToLoginActivity();
 		} else if(tag.equals(NO_INVITED_FRIENDS_TAG)){
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.BASE_URL)));
         }

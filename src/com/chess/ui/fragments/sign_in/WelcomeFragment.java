@@ -53,14 +53,13 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 		YouTubePlayer.OnFullscreenListener {
 
 	private static final int PAGE_CNT = 5;
+	private static final int SIGN_UP_PAGE = 4;
 
 	private static final long ANIMATION_DELAY = 2000;
 	private static final long REPEAT_TIMEOUT = 6000;
 	private static final int DURATION = 450;
 	public static final String YOUTUBE_DEMO_LINK = "AgTQJUhK2MY";
 	private static final String YOUTUBE_FRAGMENT_TAG = "youtube fragment";
-	private static final int NON_SET_POSITION = -1;
-	private static final int YOUTUBE_FRAME_POSITION = 0;
 
 	private Interpolator accelerator = new AccelerateInterpolator();
 	private Interpolator decelerator = new DecelerateInterpolator();
@@ -265,6 +264,15 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 	public boolean hideYoutubeFullScreen() {
 		if (youTubePlayer != null) {
 			youTubePlayer.setFullscreen(false);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean swipeBackFromSignUp() {
+		if (viewPager.getCurrentItem() == SIGN_UP_PAGE) {
+			viewPager.setCurrentItem(SIGN_UP_PAGE - 1, true);
 			return true;
 		} else {
 			return false;

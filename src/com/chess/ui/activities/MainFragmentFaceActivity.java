@@ -292,6 +292,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			if (welcomeFragment.hideYoutubeFullScreen()) {
 				return;
 			}
+		} else if (welcomeFragment != null) { // if swipe to registration screen, handle back button to swipe back
+			if (welcomeFragment.swipeBackFromSignUp()) {
+				return;
+			}
 		}
 		showPreviousFragment();
 	}

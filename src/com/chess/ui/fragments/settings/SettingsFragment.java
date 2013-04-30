@@ -97,9 +97,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				getActivityFace().openFragment(new SettingsBoardFragment());
 				break;
 			case R.string.glyph_close:
-				if (isLCSBound) {
-					liveService.logout();
-				}
+				logoutFromLive();
 
 				// un-register from GCM
 				unRegisterGcmService();

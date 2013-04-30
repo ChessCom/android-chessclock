@@ -35,9 +35,9 @@ import com.chess.live.client.Challenge;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
 import com.chess.ui.activities.SplashActivity;
-import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
+import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.InneractiveAdHelper;
 import com.facebook.android.Facebook;
@@ -126,27 +126,27 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		adjustActionBar();
 	}
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        Bundle extras = intent.getExtras();
-        if(extras != null){
-            int cmd = extras.getInt(StaticData.NAVIGATION_CMD);
-            if(cmd == StaticData.NAV_FINISH_2_LOGIN){
-                Intent loginIntent = new Intent(this, LoginScreenActivity.class);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(loginIntent);
-                finish();
-                extras.clear();
-            } else if(cmd == StaticData.NAV_FINISH_2_SPLASH){
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		Bundle extras = intent.getExtras();
+		if (extras != null) {
+			int cmd = extras.getInt(StaticData.NAVIGATION_CMD);
+			if (cmd == StaticData.NAV_FINISH_2_LOGIN) {
+				Intent loginIntent = new Intent(this, LoginScreenActivity.class);
+				loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(loginIntent);
+				finish();
+				extras.clear();
+			} else if (cmd == StaticData.NAV_FINISH_2_SPLASH) {
 				Intent loginIntent = new Intent(this, SplashActivity.class);
 				loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(loginIntent);
 				finish();
 				extras.clear();
 			}
-        }
-    }
+		}
+	}
 
 
 	public void executePausedActivityLiveEvents() {
@@ -233,11 +233,13 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		}
 
 		if (tag.equals(CONNECT_FAILED_TAG)) {
-			if (AppData.isLiveChess(this)) {
-				liveService.logout();
+			if (isLCSBound) {
+				if (AppData.isLiveChess(this)) {
+					liveService.logout();
+				}
+				unbindService(liveServiceConnectionListener);
 			}
-		}
-		else if (tag.equals(OBSOLETE_VERSION_TAG)) {
+		} else if (tag.equals(OBSOLETE_VERSION_TAG)) {
 			// Show site and
 			runOnUiThread(new Runnable() {
 				@Override
@@ -259,13 +261,12 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			}
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.GOOGLE_PLAY_URI));
 			startActivity(intent);
-		}
-		else if (tag.equals(LOGOUT_TAG)) {
+		} else if (tag.equals(LOGOUT_TAG)) {
 			if (isLCSBound) {
 				liveService.logout();
 			}
 //			getActionBarHelper().showMenuItemById(R.id.menu_signOut, false);
-		}else if(tag.equals(CHALLENGE_TAG)){
+		} else if (tag.equals(CHALLENGE_TAG)) {
 			if (isLCSBound) {
 				Log.i(TAG, "Accept challenge: " + currentChallenge);
 				liveService.runAcceptChallengeTask(currentChallenge);
@@ -291,7 +292,8 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 				// todo: refactor with new LCC
 				if (!liveService.isConnected() || liveService.getClient() == null) { // TODO should leave that screen on connection lost or when LCC is become null
 					liveService.logout();
-					backToHomeActivity();
+//					backToHomeActivity();
+					unBindLiveService();
 					return;
 				}
 
@@ -305,7 +307,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		super.onNegativeBtnClick(fragment);
 	}
 
-	private void adjustActionBar(){
+	private void adjustActionBar() {
 //		boolean isConnected = false;
 //		if (isLCSBound) {
 //			isConnected = liveService.isConnected();
@@ -338,11 +340,11 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		return super.onCreateOptionsMenu(menu);
 	}
 
-    private class ChallengeTaskListener extends AbstractUpdateListener<Challenge> {
-        public ChallengeTaskListener() {
-            super(getContext());
-        }
-    }
+	private class ChallengeTaskListener extends AbstractUpdateListener<Challenge> {
+		public ChallengeTaskListener() {
+			super(getContext());
+		}
+	}
 
 	// ---------- LiveChessClientEventListener ----------------
 	@Override
@@ -438,7 +440,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 	}
 
 	@Override
-	public void onFriendsStatusChanged(){
+	public void onFriendsStatusChanged() {
 	}
 
 	@Override
@@ -473,7 +475,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		}
 	}
 
-	@Override
+//	@Override
 	protected void backToLoginActivity() {
 		Intent intent = new Intent(this, LoginScreenActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -491,7 +493,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if(resultCode == RESULT_OK && requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE){
+		if (resultCode == RESULT_OK && requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE) {
 			facebook.authorizeCallback(requestCode, resultCode, data);
 		}
 	}
@@ -561,25 +563,25 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			dismissAllPopups();
 		}
 
-		private String composeMessage(Challenge challenge){
-			String rated = challenge.isRated()? getString(R.string.rated): getString(R.string.unrated);
+		private String composeMessage(Challenge challenge) {
+			String rated = challenge.isRated() ? getString(R.string.rated) : getString(R.string.unrated);
 			GameTimeConfig config = challenge.getGameTimeConfig();
 			String blitz = StaticData.SYMBOL_EMPTY;
-			if(config.isBlitz()){
+			if (config.isBlitz()) {
 				blitz = getString(R.string.blitz_game);
-			}else if(config.isLightning()){
+			} else if (config.isLightning()) {
 				blitz = getString(R.string.lightning_game);
-			}else if(config.isStandard()){
+			} else if (config.isStandard()) {
 				blitz = getString(R.string.standard_game);
 			}
 
 			String timeIncrement = StaticData.SYMBOL_EMPTY;
 
-			if(config.getTimeIncrement() > 0){
-				timeIncrement = " | "+ String.valueOf(config.getTimeIncrement()/10);
+			if (config.getTimeIncrement() > 0) {
+				timeIncrement = " | " + String.valueOf(config.getTimeIncrement() / 10);
 			}
 
-			String timeMode = config.getBaseTime()/10/60 + timeIncrement + StaticData.SYMBOL_SPACE + blitz;
+			String timeMode = config.getBaseTime() / 10 / 60 + timeIncrement + StaticData.SYMBOL_SPACE + blitz;
 			String playerColor;
 
 			switch (challenge.getColor()) {
@@ -641,9 +643,13 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			inneractiveFullscreenAd.cleanUp();
 		}
 		super.onDestroy();
+		unBindLiveService();
+	}
+
+	private void unBindLiveService() {
 		if (isLCSBound) {
 			unbindService(liveServiceConnectionListener);
-	}
+		}
 	}
 
 	@Override
@@ -685,7 +691,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			// Create a scale-up animation that originates at the button being pressed.
 
 			ActivityOptions opts = ActivityOptions.makeScaleUpAnimation(view, 0, 0,
-					view.getWidth()/2, view.getHeight()/2);
+					view.getWidth() / 2, view.getHeight() / 2);
 			// Request the activity be started, using the custom animation options.
 			startActivity(new Intent(this, clazz), opts.toBundle());
 

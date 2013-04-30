@@ -208,7 +208,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 			checkMove();
 		}
 
-		backToHomeActivity();
+//		backToHomeActivity();
 	}
 
 	@Override

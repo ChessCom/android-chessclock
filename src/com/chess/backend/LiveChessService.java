@@ -268,7 +268,9 @@ public class LiveChessService extends Service {
 	}
 
 	public void logout() {
-		lccHelper.logout();
+		if (lccHelper != null) {
+			lccHelper.logout();
+		}
 	}
 
 	public Map<LiveEvent.Event, LiveEvent> getPausedActivityLiveEvents() {

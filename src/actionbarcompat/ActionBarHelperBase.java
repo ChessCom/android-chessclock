@@ -120,7 +120,8 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 			RoboTextView titleText = new RoboTextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
 			titleText.setLayoutParams(layoutParams);
 			titleText.setText(titleChars);
-			titleText.setId(R.id.actionbar_compat_title);
+//			titleText.setId(R.id.actionbar_compat_title);
+			titleText.setFont(RoboTextView.BOLD_FONT);
 			actionBarCompat.addView(titleText);
 		} else {
 			actionBarCompat.addView(customView, layoutParams);

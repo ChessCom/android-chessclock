@@ -82,7 +82,7 @@
         <item name="android:paddingRight">2dp</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">marquee</item>
-        <item name="ttf">Bold</item>
+        <!--<item name="ttf">Icon</item>--> <!--Doesn't work here-->
     </style>
 
     <style name="ActionBarCompatTitle" parent="style/ActionBarCompatTitleBase">

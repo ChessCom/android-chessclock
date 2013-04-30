@@ -21,12 +21,35 @@ public class LiveBaseFragment extends CommonLogicFragment {
 		super.onAttach(activity);
 
 		liveBaseActivity = (LiveBaseActivity) activity;
+//		if (AppData.isLiveChess(activity)) {
+//			liveBaseActivity.connectLcc();
+//		}
 	}
 
 	protected LiveChessService getLiveService(){
 		return liveBaseActivity.getLiveService();
 	}
 
-	protected void  onLiveServiceConnected() {
+	public void  onLiveServiceConnected() {
+		showToast("live connected");
 	}
+
+	public boolean isLCSBound() {
+		return isLCSBound;
+	}
+
+	public void setLCSBound(boolean LCSBound) {
+		isLCSBound = LCSBound;
+		if (isLCSBound) {
+			liveService = liveBaseActivity.getLiveService();
+		}
+	}
+
+	protected void logoutFromLive() {
+		if (isLCSBound) {
+			liveService.logout();
+			liveBaseActivity.unBindLiveService();
+		}
+	}
+
 }

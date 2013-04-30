@@ -15,9 +15,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
-import com.chess.backend.ServerErrorCode;
 import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.GCMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
@@ -27,12 +27,16 @@ import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.entity.new_api.MovesStatusItem;
 import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
-import com.chess.backend.statics.*;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.FlurryData;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.ui.activities.old.HomeScreenActivity;
-import com.chess.ui.activities.old.LoginScreenActivity;
 import com.chess.ui.views.drawables.BackgroundChessDrawable;
-import com.facebook.android.*;
+import com.facebook.android.Facebook;
+import com.facebook.android.LoginButton;
+import com.facebook.android.SessionEvents;
+import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
@@ -41,7 +45,10 @@ import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * CommonLogicActivity class
@@ -490,19 +497,19 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 	protected void afterLogin(){ }
 
-	protected void backToHomeActivity() {
-		Intent intent = new Intent(this, HomeScreenActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(intent);
-		finish();
-	}
+//	protected void backToHomeActivity() {
+//		Intent intent = new Intent(this, HomeScreenActivity.class);
+//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//		startActivity(intent);
+//		finish();
+//	}
 
-	protected void backToLoginActivity() {
-		Intent intent = new Intent(this, LoginScreenActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(intent);
-		finish();
-	}
+//	protected void backToLoginActivity() {
+//		Intent intent = new Intent(this, LoginScreenActivity.class);
+//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//		startActivity(intent);
+//		finish();
+//	}
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {

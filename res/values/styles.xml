@@ -156,10 +156,10 @@
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:clickable">true</item>
-        <!--<item name="android:background">@drawable/textfield_selector</item>-->
+        <item name="android:background">@drawable/edit_white_one_selector</item>
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/black</item>
-        <!--<item name="android:minHeight">@dimen/default_field_height</item>-->
+        <item name="android:minHeight">@dimen/default_field_height</item>
         <item name="android:paddingBottom">7dip</item>
         <item name="android:gravity">bottom</item>
         <item name="android:textColorHint">@color/hint_text</item>

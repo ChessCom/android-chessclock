@@ -13,7 +13,7 @@ import com.chess.ui.fragments.daily.DailyTabsFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.game.GameTacticsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
-import com.chess.ui.fragments.live.GameLiveFragment;
+import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
@@ -91,6 +91,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		// TODO adjust switch/closeBoard when the same fragment opened
 		switch (menuItem.iconRes) {
 			case R.drawable.ic_nav_home:
+				getActivityFace().clearFragmentStack(); // TODO check
 				getActivityFace().switchFragment(new HomeTabsFragment()); // TODO clear stack
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
@@ -103,7 +104,8 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 			case R.drawable.ic_nav_play_live:
-				getActivityFace().openFragment(new GameLiveFragment());
+//				getActivityFace().openFragment(new GameLiveFragment());
+				getActivityFace().openFragment(new LiveGameWaitFragment());
 				getActivityFace().toggleMenu(SlidingMenu.LEFT);
 				break;
 			case R.drawable.ic_nav_tactics:

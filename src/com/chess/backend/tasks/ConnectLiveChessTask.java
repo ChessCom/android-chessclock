@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
-import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LccHelper;
@@ -33,8 +32,10 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 	//static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(15);
 
-	public static final String AUTH_URL = RestHelper.CMD_LOGIN + "?username=%s&password=%s";
-	public static final String CONFIG_BAYEUX_HOST = "live." + RestHelper.HOST;
+//	public static final String AUTH_URL = RestHelper.CMD_LOGIN + "?username=%s&password=%s";
+	public static final String AUTH_URL = "http://www.chess-2.com/api/v2/login" + "?username=%s&password=%s"; // TODO set correct way
+//	public static final String CONFIG_BAYEUX_HOST = "live." + RestHelper.HOST;
+	public static final String CONFIG_BAYEUX_HOST = "live." + "chess-2.com";
 	final static Config CONFIG = new Config(StaticData.SYMBOL_EMPTY, "assets/my.properties", true);
 	public static final String CONFIG_URI =
 			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.uri"), "/cometd");
@@ -44,7 +45,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	  public static final String CONFIG_BAYEUX_HOST = HOST;*/
 
 	//Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.host"), "live.chess-4.com");
-	public static final Integer CONFIG_PORT = RestHelper.IS_TEST_SERVER_MODE? 8080: 80;
+	public static final Integer CONFIG_PORT = /*RestHelper.IS_TEST_SERVER_MODE? 8080:*/ 80;
 	/*public static final String CONFIG_AUTH_KEY =
 			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.user1.authKey"),
 					"FIXED_PHPSESSID_WEBTIDE_903210957432054387723");*/

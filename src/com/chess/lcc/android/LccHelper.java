@@ -237,12 +237,12 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 		if (!useCurrentCredentials) { // todo: rename flag
 
-			if (emptyPassword || RestHelper.IS_TEST_SERVER_MODE) {
-				String sessionId = AppData.getUserSessionId(context);
-				connectBySessionId(sessionId);
-			} else {
+//			if (emptyPassword || RestHelper.IS_TEST_SERVER_MODE) {
+//				String sessionId = AppData.getUserSessionId(context);
+//				connectBySessionId(sessionId);
+//			} else {
 				connectByCreds(userName, pass);
-			}
+//			}
 
 		} else {
 			if (!emptyPassword && !RestHelper.IS_TEST_SERVER_MODE) {
