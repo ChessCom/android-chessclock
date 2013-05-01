@@ -297,20 +297,25 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 		setConnected(false);
 		cancelServiceNotification();
+		logout();
+
+		Log.d(TAG, "processConnectionFailure: details=" + details);
+
+		String detailsMessage;
 
 		if (details != null) {
 
-			Log.d(TAG, "processConnectionFailure: details=" + details);
-
-			resetClient();
-
-			String detailsMessage;
 			switch (details) {
 				case USER_KICKED: {
 					detailsMessage = context.getString(R.string.lccFailedUpgrading);
 					break;
 				}
 				case ACCOUNT_FAILED: { // wrong authKey
+					try {
+						Thread.sleep(CONNECTION_FAILURE_DELAY);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 					runConnectTask(true);
 					return;
 				}
@@ -319,18 +324,22 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 							+ context.getString(R.string.lccFailedUnavailable);
 					break;
 				}
-				case AUTH_URL_FAILED: {
+				/*case AUTH_URL_FAILED: {
 					return;
-				}
+				}*/
 				default:
 					// todo: show login/password popup instead
 					detailsMessage = context.getString(R.string.pleaseLoginAgain);
 					break;
 			}
-			liveChessClientEventListener.onConnectionFailure(detailsMessage);
-
 		} else {
-			Log.d(TAG, "processConnectionFailure: details=null, recreate client and connect");
+			detailsMessage = context.getString(R.string.pleaseLoginAgain);
+		}
+
+		liveChessClientEventListener.onConnectionFailure(detailsMessage);
+
+		/*else {
+			Log.d(TAG, "processConnectionFailure: details=null");
 
 			try {
 				Thread.sleep(CONNECTION_FAILURE_DELAY);
@@ -338,12 +347,12 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 				e.printStackTrace();
 			}
 
-			runConnectTask(true); // recreate and connect
+			runConnectTask(true); // recreate and connect*/
 
 			/*setConnected(false);
 			cancelServiceNotification();
 			liveChessClientEventListener.onSessionExpired(context.getString(R.string.login_failed));*/
-		}
+		//}
 
 	}
 
