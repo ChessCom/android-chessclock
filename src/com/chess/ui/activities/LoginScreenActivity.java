@@ -159,12 +159,6 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 		}
 
 		if(tag.equals(CHECK_UPDATE_TAG)){
-			if (forceFlag) {
-				// drop start day
-				preferencesEditor.putLong(AppConstants.START_DAY, 0);
-				preferencesEditor.commit();
-
-			}
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.GOOGLE_PLAY_URI)));
 		}else if (tag.equals(CHESS_NO_ACCOUNT_TAG)){
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));

@@ -248,10 +248,6 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		}
 		if (tag.equals(CHECK_UPDATE_TAG)) {
 			if (forceFlag) {
-				// drop start day
-				preferencesEditor.putLong(AppConstants.START_DAY, 0);
-				preferencesEditor.commit();
-
 				backToLoginActivity();
 			}
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.GOOGLE_PLAY_URI));

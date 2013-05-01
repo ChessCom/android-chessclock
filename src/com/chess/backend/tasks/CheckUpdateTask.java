@@ -58,17 +58,20 @@ public class CheckUpdateTask extends AbstractUpdateTask<Boolean, String> {
 			if (actualVersion < preferredVersion) {
 				preferencesEditor.putBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false);
 				result = StaticData.RESULT_OK;
-			}else {
+			} else {
 				result = StaticData.DATA_EXIST;
 			}
-			// Save last update time to prevent update on every home screen resume
-			Log.d("CheckUpdateTask","START_DAY saved at =" + System.currentTimeMillis());
-			preferencesEditor.putLong(AppConstants.START_DAY, System.currentTimeMillis());
-			preferencesEditor.commit();
 
 			if (actualVersion < minimumVersion) {
 				item = true; // need to force update
+				// drop start day
+				preferencesEditor.putLong(AppConstants.START_DAY, 0);
+			} else {
+				// Save last update time to prevent update on every home screen resume
+				Log.d("CheckUpdateTask","START_DAY saved at =" + System.currentTimeMillis());
+				preferencesEditor.putLong(AppConstants.START_DAY, System.currentTimeMillis());
 			}
+			preferencesEditor.commit();
 
 		} catch (Exception e) {
 			result = StaticData.UNKNOWN_ERROR;
