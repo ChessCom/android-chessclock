@@ -38,7 +38,7 @@
                 android:contentDescription="@string/image"
                 />
 
-            <com.facebook.android.LoginButton
+            <com.facebook.widget.LoginButton
                 android:id="@+id/fb_connect"
                 style="@style/FacebookButton"
                 android:layout_width="match_parent"

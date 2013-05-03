@@ -10,9 +10,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
 import com.chess.ui.fragments.BasePopupsFragment;
-import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
-import com.facebook.android.Facebook;
 
 
 /**
@@ -98,10 +96,10 @@ public class SignInFragment extends ProfileSetupsFragment implements TextView.On
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK) {
-			if (requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE) {
+			/*if (requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE) {
 //				facebook.authorizeCallback(requestCode, resultCode, data);
 				CommonLogicFragment.handler.postDelayed(new CommonLogicFragment.DelayedCallback(data, requestCode, resultCode), CommonLogicFragment.FACEBOOK_DELAY);
-			} else if (requestCode == BasePopupsFragment.NETWORK_REQUEST) {
+			} else*/ if (requestCode == BasePopupsFragment.NETWORK_REQUEST) {
 				signInUser();
 			}
 		}

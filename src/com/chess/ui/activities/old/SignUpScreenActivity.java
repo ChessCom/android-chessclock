@@ -22,7 +22,6 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.utilities.AppUtils;
-import com.facebook.android.Facebook;
 import com.flurry.android.FlurryAgent;
 import org.apache.http.protocol.HTTP;
 
@@ -215,9 +214,9 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == RESULT_OK ){
-			if(requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE){
+			/*if(requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE){
 				facebook.authorizeCallback(requestCode, resultCode, data);
-			}else if(requestCode == NETWORK_REQUEST){
+			}else*/ if(requestCode == NETWORK_REQUEST){
 				submitRegisterInfo();
 			}
 		}

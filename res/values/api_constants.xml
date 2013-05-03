@@ -4,5 +4,5 @@
 
 	<item type="string" name="inneractiveAdsAppId">Android_IA_Test</item>
 	<!--<item type="string" name="inneractiveAdsAppId">Chesscom_LearnAndPlayChess_Android</item>-->
-
+    <string name="facebook_app_id">248677718605629</string>
 </resources>

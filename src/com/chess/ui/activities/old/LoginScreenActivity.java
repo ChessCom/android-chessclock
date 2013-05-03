@@ -23,7 +23,6 @@ import com.chess.backend.statics.FlurryData;
 import com.chess.backend.tasks.CheckUpdateTask;
 import com.chess.ui.activities.CommonLogicActivity;
 import com.chess.utilities.AppUtils;
-import com.facebook.android.Facebook;
 import com.flurry.android.FlurryAgent;
 
 /**
@@ -42,6 +41,7 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_screen);
+
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
 			findViewById(R.id.mainView).setBackground(backgroundChessDrawable);
@@ -101,8 +101,7 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 	protected void onResume() {
 		super.onResume();
 
-//		AppData.setLiveChessMode(this, true);  // why it is true?
-		AppData.setLiveChessMode(this, false);  // if user appeared here - means he is not login, so can't be live, cause no token
+		AppData.setLiveChessMode(this, true);
 
 		loginUsernameEdt.setText(AppData.getUserName(this));
 		loginPasswordEdt.setText(AppData.getPassword(this));
@@ -144,10 +143,12 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 			if (isPaused)
 				return;
 
-			popupItem.setButtons(1);
 			showPopupDialog(R.string.update_check, R.string.update_available_please_update, CHECK_UPDATE_TAG);
+			getLastPopupFragment().setButtons(1);
 		}
 	}
+
+
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
@@ -158,6 +159,12 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 		}
 
 		if(tag.equals(CHECK_UPDATE_TAG)){
+			if (forceFlag) {
+				// drop start day
+				preferencesEditor.putLong(AppConstants.START_DAY, 0);
+				preferencesEditor.commit();
+
+			}
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.GOOGLE_PLAY_URI)));
 		}/*else if (tag.equals(CHESS_NO_ACCOUNT_TAG)){
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));
@@ -168,11 +175,11 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == RESULT_OK ) {
-			if (requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE) {
+		if(resultCode == RESULT_OK ){
+			/*if(requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE){
 //				facebook.authorizeCallback(requestCode, resultCode, data);
 				handler.postDelayed(new DelayedCallback(data, requestCode, resultCode), FACEBOOK_DELAY);
-			} else if (requestCode == NETWORK_REQUEST) {
+			}else*/ if(requestCode == NETWORK_REQUEST){
 				signInUser();
 			}
 		}

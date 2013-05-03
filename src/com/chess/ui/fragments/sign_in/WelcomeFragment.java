@@ -28,7 +28,6 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
-import com.facebook.android.Facebook;
 import com.flurry.android.FlurryAgent;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -576,9 +575,9 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {  // TODO restore
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK) {
-			if (requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE) {
+			/*if (requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE) {
 				CommonLogicFragment.facebook.authorizeCallback(requestCode, resultCode, data);
-			} else if (requestCode == BasePopupsFragment.NETWORK_REQUEST) {
+			} else */if (requestCode == BasePopupsFragment.NETWORK_REQUEST) {
 				submitRegisterInfo();
 			}
 		}

@@ -45,7 +45,7 @@
                 android:paddingBottom="@dimen/new_signup_title_padding_bottom"
                 />
 
-            <com.facebook.android.LoginButton
+            <com.facebook.widget.LoginButton
                 android:id="@+id/fb_connect"
                 style="@style/FacebookButton"
                 android:layout_width="match_parent"

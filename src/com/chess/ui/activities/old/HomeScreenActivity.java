@@ -40,8 +40,6 @@ import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.InneractiveAdHelper;
-import com.facebook.android.Facebook;
-import com.facebook.android.LoginButton;
 import com.inneractive.api.ads.InneractiveAd;
 
 import java.util.Map;
@@ -394,9 +392,9 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 
 				customView.findViewById(R.id.re_signin).setOnClickListener(HomeScreenActivity.this);
 
-				LoginButton facebookLoginButton = (LoginButton) customView.findViewById(R.id.re_fb_connect);
-				facebookInit(facebookLoginButton);
-				facebookLoginButton.logout();
+//				LoginButton facebookLoginButton = (LoginButton) customView.findViewById(R.id.re_fb_connect);
+//				facebookInit(facebookLoginButton);
+//				facebookLoginButton.logout();
 
 				usernameEdt.setText(AppData.getUserName(HomeScreenActivity.this));
 			}
@@ -490,13 +488,13 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		}
 	}*/
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == RESULT_OK && requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE) {
-			facebook.authorizeCallback(requestCode, resultCode, data);
-		}
-	}
+//	@Override
+//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		super.onActivityResult(requestCode, resultCode, data);
+//		if (resultCode == RESULT_OK && requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE) {
+//			facebook.authorizeCallback(requestCode, resultCode, data);
+//		}
+//	}
 
 //	public LccHelper getLccHolder() { // todo: check null
 //		return liveService == null ? null : liveService.getLccHolder();

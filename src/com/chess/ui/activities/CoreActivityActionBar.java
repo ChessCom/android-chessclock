@@ -3,7 +3,6 @@ package com.chess.ui.activities;
 import actionbarcompat.ActionBarActivity;
 import actionbarcompat.ActionBarHelper;
 import android.app.ActionBar;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.view.*;
 import com.chess.R;
 import com.chess.backend.entity.SoundPlayer;
 import com.chess.ui.interfaces.PopupDialogFace;
-import com.facebook.android.Facebook;
 import com.inneractive.api.ads.InneractiveAd;
 
 public abstract class CoreActivityActionBar extends ActionBarActivity implements View.OnClickListener
@@ -178,13 +176,13 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if(resultCode == RESULT_OK && requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE && facebook != null){
-			facebook.authorizeCallback(requestCode, resultCode, data);
-		}
-	}
+//	@Override
+//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		super.onActivityResult(requestCode, resultCode, data);
+//		if(resultCode == RESULT_OK && requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE && facebook != null){
+//			facebook.authorizeCallback(requestCode, resultCode, data);
+//		}
+//	}
 
 	public ActionBarHelper provideActionBarHelper() {
 		return getActionBarHelper();

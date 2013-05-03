@@ -33,7 +33,7 @@ import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
-import com.facebook.android.LoginButton;
+import com.facebook.widget.LoginButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -513,7 +513,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 				LoginButton facebookLoginButton = (LoginButton) customView.findViewById(R.id.re_fb_connect);
 				facebookInit(facebookLoginButton);
-				facebookLoginButton.logout();
+//				facebookLoginButton.logout();
 
 				usernameEdt.setText(AppData.getUserName(LiveBaseActivity.this));
 

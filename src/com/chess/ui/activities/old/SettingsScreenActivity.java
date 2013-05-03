@@ -20,10 +20,6 @@ import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.SelectionAdapter;
 import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.utilities.AppUtils;
-import com.facebook.android.BaseRequestListener;
-import com.facebook.android.Facebook;
-import com.facebook.android.SessionEvents;
-import com.facebook.android.SessionStore;
 import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
@@ -231,9 +227,9 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 			unRegisterGcmService();
 
 
-			Facebook facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
-			SessionStore.restore(facebook, this);
-			facebook.logoutMe(this, new LogoutRequestListener());
+//			Facebook facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
+//			SessionStore.restore(facebook, this);
+//			facebook.logoutMe(this, new LogoutRequestListener());
 
 			preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
 			preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
@@ -499,17 +495,17 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 		}
 	}
 
-	private class LogoutRequestListener extends BaseRequestListener {
-		@Override
-		public void onComplete(String response, final Object state) {
-			// callback should be run in the original thread,
-			// not the background thread
-			handler.post(new Runnable() {
-				@Override
-				public void run() {
-					SessionEvents.onLogoutFinish();
-				}
-			});
-		}
-	}
+//	private class LogoutRequestListener extends BaseRequestListener {
+//		@Override
+//		public void onComplete(String response, final Object state) {
+//			// callback should be run in the original thread,
+//			// not the background thread
+//			handler.post(new Runnable() {
+//				@Override
+//				public void run() {
+//					SessionEvents.onLogoutFinish();
+//				}
+//			});
+//		}
+//	}
 }

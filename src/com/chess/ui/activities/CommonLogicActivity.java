@@ -33,10 +33,8 @@ import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.views.drawables.BackgroundChessDrawable;
-import com.facebook.android.Facebook;
-import com.facebook.android.LoginButton;
-import com.facebook.android.SessionEvents;
-import com.facebook.android.SessionStore;
+//import com.facebook.android.Facebook;
+import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
@@ -74,7 +72,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 	protected BackgroundChessDrawable backgroundChessDrawable;
 	private String currentLocale;
-	protected Facebook facebook;
+//	protected Facebook facebook;
 	protected Handler handler;
 	private EditText loginUsernameEdt;
 	private EditText passwordEdt;
@@ -95,29 +93,29 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		setLocale();
 	}
 
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		if (mainView != null) {
-			facebookInit((LoginButton) mainView.findViewById(R.id.fb_connect));
-		}
-	}
+//	@Override
+//	protected void onPostCreate(Bundle savedInstanceState) {
+//		super.onPostCreate(savedInstanceState);
+////		if (mainView != null) {
+////			facebookInit((LoginButton) mainView.findViewById(R.id.fb_connect));
+////		}
+//	}
 
 	protected void facebookInit(LoginButton fbLoginBtn) {
-		if (fbLoginBtn != null) {
-			facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
-			SessionStore.restore(facebook, this);
-
-			SessionEvents.dropAuthListeners();
-			SessionEvents.addAuthListener(new SampleAuthListener());
-			SessionEvents.dropLogoutListeners();
-			SessionEvents.addLogoutListener(new SampleLogoutListener());
-			fbLoginBtn.init(this, facebook);
-
-
-//			loginUpdateListener = new LoginUpdateListener();
-			loginUpdateListener = new LoginUpdateListenerNew();
-		}
+//		if (fbLoginBtn != null) {
+//			facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
+//			SessionStore.restore(facebook, this);
+//
+//			SessionEvents.dropAuthListeners();
+//			SessionEvents.addAuthListener(new SampleAuthListener());
+//			SessionEvents.dropLogoutListeners();
+//			SessionEvents.addLogoutListener(new SampleLogoutListener());
+//			fbLoginBtn.init(this, facebook);
+//
+//
+////			loginUpdateListener = new LoginUpdateListener();
+//			loginUpdateListener = new LoginUpdateListenerNew();
+//		}
 	}
 
 	@Override
@@ -306,6 +304,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USER_NAME);
+		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
 
 //		new PostDataTask(loginUpdateListener).executeTask(loadItem);
 		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
@@ -425,39 +424,38 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 //		}
 //	}
 
-	public class SampleAuthListener implements SessionEvents.AuthListener {
-		@Override
-		public void onAuthSucceed() {
-			LoadItem loadItem = new LoadItem();
-//			loadItem.setLoadPath(RestHelper.LOGIN);
-			loadItem.setLoadPath(RestHelper.CMD_LOGIN);
-			loadItem.setRequestMethod(RestHelper.POST);
-			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, facebook.getAccessToken());
-//			loadItem.addRequestParams(RestHelper.P_RETURN, RestHelper.V_USERNAME);
-			loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_USERNAME);
+//	public class SampleAuthListener implements SessionEvents.AuthListener {
+//		@Override
+//		public void onAuthSucceed() {
+//			LoadItem loadItem = new LoadItem();
+////			loadItem.setLoadPath(RestHelper.LOGIN);
+//			loadItem.setLoadPath(RestHelper.CMD_LOGIN);
+//			loadItem.setRequestMethod(RestHelper.POST);
+//			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, facebook.getAccessToken());
+////			loadItem.addRequestParams(RestHelper.P_RETURN, RestHelper.V_USERNAME);
+//			loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_USERNAME);
+//
+//			new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
+//			loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
+//		}
+//
+//		@Override
+//		public void onAuthFail(String error) {
+//			showToast(getString(R.string.login_failed)+ StaticData.SYMBOL_SPACE + error);
+//		}
+//	}
+//	public class SampleLogoutListener implements SessionEvents.LogoutListener {
+//		@Override
+//		public void onLogoutBegin() {
+//			showToast(R.string.login_out);
+//		}
+//
+//		@Override
+//		public void onLogoutFinish() {
+//			showToast(R.string.you_logged_out);
+//		}
+//	}
 
-			new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
-			loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
-		}
-
-		@Override
-		public void onAuthFail(String error) {
-			showToast(getString(R.string.login_failed)+ StaticData.SYMBOL_SPACE + error);
-		}
-	}
-	public class SampleLogoutListener implements SessionEvents.LogoutListener {
-		@Override
-		public void onLogoutBegin() {
-			showToast(R.string.login_out);
-		}
-
-		@Override
-		public void onLogoutFinish() {
-			showToast(R.string.you_logged_out);
-		}
-	}
-
-//	private void processLogin(String[] response, String tempDebug) {
 	protected void processLogin(RegisterItem.Data returnedObj) {
 		if (passwordEdt == null) { // if accidently return in wrong callback, when widgets are not initialized
 			return;
@@ -545,7 +543,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		@Override
 		public void run() {
 			handler.removeCallbacks(this);
-			facebook.authorizeCallback(requestCode, resultCode, data);
+//			facebook.authorizeCallback(requestCode, resultCode, data);
 		}
 	}
 
