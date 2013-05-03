@@ -164,17 +164,18 @@ public class AppUtils {
 			if(player == null) // someone hasn't player?
 				return;
 
-			player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-				@Override
-				public void onCompletion(MediaPlayer mediaPlayer) {
-					player.stop();
-					player.release();
-				}
-			});
+			player.setOnCompletionListener(completionListener);
 			player.start();
 		}
 	}
 
+	private static MediaPlayer.OnCompletionListener completionListener = new MediaPlayer.OnCompletionListener() {
+		@Override
+		public void onCompletion(MediaPlayer mediaPlayer) {
+			mediaPlayer.stop();
+			mediaPlayer.release();
+		}
+	};
 
 	public static void showNewMoveStatusNotification(Context context, String title,  String body, int id,
 													 GameListCurrentItem currentGameItem) {

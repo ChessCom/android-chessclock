@@ -62,8 +62,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 3. if no network, we should have offline tactics still (there should be 100 of them).
 
 Actions:
-
-
 - Next Tactic
 - Show Answer
 - Settings
@@ -79,7 +77,8 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	// Quick action ids
 	private static final int ID_NEXT_TACTIC = 0;
 	private static final int ID_SHOW_ANSWER = 1;
-	private static final int ID_SETTINGS = 2;
+	private static final int ID_PRACTICE = 2;
+	private static final int ID_SETTINGS = 3;
 
 	private Handler tacticsTimer;
 	private ChessBoardTacticsView boardView;
@@ -92,7 +91,6 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	private TacticsInfoUpdateListener tacticsWrongUpdateListener;
 	private DbTacticBatchSaveListener dbTacticBatchSaveListener;
 
-//	private MenuOptionsDialogListener menuOptionsDialogListener;
 	private static final String FIRST_TACTICS_TAG = "first tactics";
 	private static final String TEN_TACTICS_TAG = "ten tactics reached";
 	private static final String OFFLINE_RATING_TAG = "tactics offline rating";
@@ -213,32 +211,6 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		}
 	}
 
-	private void init() {
-		tacticsTimer = new Handler();
-		inflater = (LayoutInflater) getActivity().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-
-//		menuOptionsItems = new CharSequence[]{
-//				getString(R.string.show_answer),
-//				getString(R.string.settings)};
-
-//		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
-		getTacticsUpdateListener = new TacticsUpdateListener(GET_TACTIC);
-		tacticsCorrectUpdateListener = new TacticsInfoUpdateListener(CORRECT_RESULT);
-		tacticsWrongUpdateListener = new TacticsInfoUpdateListener(WRONG_RESULT);
-		dbTacticBatchSaveListener = new DbTacticBatchSaveListener();
-	}
-
-
-	@Override
-	protected void dismissDialogs() {
-		if (findFragmentByTag(WRONG_MOVE_TAG) != null) {
-			((BasePopupDialogFragment) findFragmentByTag(WRONG_MOVE_TAG)).dismiss();
-		}
-		if (findFragmentByTag(TACTIC_SOLVED_TAG) != null) {
-			((BasePopupDialogFragment) findFragmentByTag(TACTIC_SOLVED_TAG)).dismiss();
-		}
-	}
-
 	@Override
 	public void onPause() {
 		dismissDialogs();
@@ -256,6 +228,34 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		super.onStop();
 //		releaseResources();
 	}
+
+
+	private void init() {
+		tacticsTimer = new Handler();
+		inflater = (LayoutInflater) getActivity().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+
+//		menuOptionsItems = new CharSequence[]{
+//				getString(R.string.show_answer),
+//				getString(R.string.settings)};
+
+//		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
+		getTacticsUpdateListener = new TacticsUpdateListener();
+		tacticsCorrectUpdateListener = new TacticsInfoUpdateListener(CORRECT_RESULT);
+		tacticsWrongUpdateListener = new TacticsInfoUpdateListener(WRONG_RESULT);
+		dbTacticBatchSaveListener = new DbTacticBatchSaveListener();
+	}
+
+
+	@Override
+	protected void dismissDialogs() {
+		if (findFragmentByTag(WRONG_MOVE_TAG) != null) {
+			((BasePopupDialogFragment) findFragmentByTag(WRONG_MOVE_TAG)).dismiss();
+		}
+		if (findFragmentByTag(TACTIC_SOLVED_TAG) != null) {
+			((BasePopupDialogFragment) findFragmentByTag(TACTIC_SOLVED_TAG)).dismiss();
+		}
+	}
+
 
 	/**
 	 * Check if tactic was canceled or limit reached
@@ -315,55 +315,62 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 				boardFace.updateMoves(boardFace.getTacticMoves()[boardFace.getHply()], true);
 				invalidateGameScreen();
 			} else { // correct
-				if (tacticItem.isWasShowed() || tacticItem.isRetry() || noInternet) {
+				if (tacticItem.isWasShowed()) {
+					sendWrongResult();
+				} else if (tacticItem.isRetry() || noInternet) {
 					String newRatingStr = StaticData.SYMBOL_EMPTY;
-					if (tacticItem.getResultItem()  != null) {
-						newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
+					if (tacticItem.getResultItem() != null) {
+						newRatingStr = tacticItem.getPositiveScore();
 					}
-
 					showCorrect(newRatingStr);
 				} else {
-
-					LoadItem loadItem = new LoadItem();
-					loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
-					loadItem.setRequestMethod(RestHelper.POST);
-					loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-					loadItem.addRequestParams(RestHelper.P_TACTICS_ID, tacticItem.getId());
-					loadItem.addRequestParams(RestHelper.P_PASSED, RestHelper.V_TRUE);
-					loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, boardFace.getTacticsCorrectMoves());
-					loadItem.addRequestParams(RestHelper.P_SECONDS, tacticItem.getSecondsSpent());
-					loadItem.addRequestParams(RestHelper.P_ENCODED_MOVES, RestHelper.V_FALSE);
-
-					new RequestJsonTask<TacticInfoItem>(tacticsCorrectUpdateListener).executeTask(loadItem);
-					controlsTacticsView.enableGameControls(false);
+					sendCorrectResult();
 				}
 				stopTacticsTimer();
 			}
 		} else {
-			boolean tacticResultItemIsValid = tacticItem.getResultItem() != null
-					&& tacticItem.getResultItem().getUserRatingChange() < 0; // if saved for wrong move. Note that after loading next tactic result is automatically assigns as a positive resultItem.
-
-			String newRatingStr;
-			if (tacticResultItemIsValid && (tacticItem.isRetry() || noInternet)) {
-				newRatingStr = getString(R.string.score_arg, tacticItem.getNegativeScore());
-
+			if (tacticItem.isRetry() || noInternet) {
+				String newRatingStr = StaticData.SYMBOL_EMPTY;
+				if (tacticItem.getResultItem() != null) {
+					newRatingStr = tacticItem.getNegativeScore();
+				}
 				showWrong(newRatingStr);
 			} else {
-				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
-				loadItem.setRequestMethod(RestHelper.POST);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-				loadItem.addRequestParams(RestHelper.P_TACTICS_ID, tacticItem.getId());
-				loadItem.addRequestParams(RestHelper.P_PASSED, RestHelper.V_FALSE);
-				loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, getBoardFace().getTacticsCorrectMoves());
-				loadItem.addRequestParams(RestHelper.P_SECONDS, tacticItem.getSecondsSpent());
-
-				new RequestJsonTask<TacticInfoItem>(tacticsWrongUpdateListener).executeTask(loadItem);
-				controlsTacticsView.enableGameControls(false);
+				sendWrongResult();
 			}
 			stopTacticsTimer();
 		}
 	}
+
+	private void sendCorrectResult() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_TACTICS_ID, tacticItem.getId());
+		loadItem.addRequestParams(RestHelper.P_PASSED, RestHelper.V_TRUE);
+		loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, getBoardFace().getTacticsCorrectMoves());
+		loadItem.addRequestParams(RestHelper.P_SECONDS, tacticItem.getSecondsSpent());
+		loadItem.addRequestParams(RestHelper.P_ENCODED_MOVES, RestHelper.V_FALSE);
+
+		new RequestJsonTask<TacticInfoItem>(tacticsCorrectUpdateListener).executeTask(loadItem);
+		controlsTacticsView.enableGameControls(false);
+	}
+
+	private void sendWrongResult() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_TACTICS_ID, tacticItem.getId());
+		loadItem.addRequestParams(RestHelper.P_PASSED, RestHelper.V_FALSE);
+		loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, getBoardFace().getTacticsCorrectMoves());
+		loadItem.addRequestParams(RestHelper.P_SECONDS, tacticItem.getSecondsSpent());
+
+		new RequestJsonTask<TacticInfoItem>(tacticsWrongUpdateListener).executeTask(loadItem);
+		controlsTacticsView.enableGameControls(false);
+	}
+
 
 	@Override
 	public void showHelp() {
@@ -547,29 +554,25 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 			getNextTactic();
 		} else if (actionId == ID_SHOW_ANSWER) {
 			showAnswer();
+		} else if (actionId == ID_PRACTICE) {
+			switch2Analysis();
 		} else if (actionId == ID_SETTINGS) {
 			getActivityFace().openFragment(new SettingsFragment());
 		}
 	}
 
 	private class TacticsUpdateListener extends ChessUpdateListener<TacticItem> {
-		private int listenerCode;
 
-		private TacticsUpdateListener(int listenerCode) {
+		private TacticsUpdateListener() {
 			super(TacticItem.class);
-			this.listenerCode = listenerCode;
 		}
 
 		@Override
 		public void updateData(TacticItem returnedObj) {
 			noInternet = false;
 
-			switch (listenerCode) {
-				case GET_TACTIC:
-					new SaveTacticsBatchTask(dbTacticBatchSaveListener, returnedObj.getData(),
-							getContentResolver()).executeTask();
-					break;
-			}
+			new SaveTacticsBatchTask(dbTacticBatchSaveListener, returnedObj.getData(),
+					getContentResolver()).executeTask();
 			controlsTacticsView.enableGameControls(true);
 
 			serverError = false;
@@ -587,7 +590,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 			} else {
 				if (resultCode == StaticData.NO_NETWORK) {
 					handleErrorRequest();
-				} else if (resultCode == StaticData.INTERNAL_ERROR){
+				} else if (resultCode == StaticData.INTERNAL_ERROR) {
 					serverError = true;
 					handleErrorRequest();
 				}
@@ -625,34 +628,26 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 				tacticResultItem.setUser(tacticItem.getUser());
 				tacticItem.setResultItem(tacticResultItem);
 			}
+			String newRatingStr = StaticData.SYMBOL_EMPTY;
 			switch (listenerCode) {
 				case CORRECT_RESULT:
-
-					String newRatingStr;
-
-//					if (tacticItem.getResultItem() != null) {
-						newRatingStr = getString(R.string.score_arg, tacticItem.getPositiveScore());
+					if (tacticItem.getResultItem() != null) {
+						newRatingStr = tacticItem.getPositiveScore();
 						tacticItem.setRetry(true); // set auto retry because we will save tactic
-//					} else {
-//						newRatingStr = getString(R.string.score_arg);
-//					}
-//					showSolvedTacticPopup(title, false);
-					showCorrect(newRatingStr);
+					}
 
+					showCorrect(newRatingStr);
 					break;
 				case WRONG_RESULT:
-
-//					if (tacticItem.getResultItem() != null) {
-						newRatingStr = getString(R.string.score_arg, tacticItem.getNegativeScore());
-						tacticItem.setRetry(true); // set auto retry because we will save tactic
-
-//					} else {
-//						newRatingStr = getString(R.string.score_arg);
-//					}
-
-//					showWrongMovePopup(title);
-
-					showWrong(newRatingStr);
+					if (tacticItem.isWasShowed()) {
+						showWrong(getString(R.string.solved_with_hint));
+					} else {
+						if (tacticItem.getResultItem() != null) {
+							newRatingStr = tacticItem.getNegativeScore();
+							tacticItem.setRetry(true); // set auto retry because we will save tactic
+						}
+						showWrong(newRatingStr);
+					}
 
 					break;
 			}
@@ -711,31 +706,14 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		}
 	}
 
-//	private class TacticsWrongUpdateListener extends ChessUpdateListener {
-//
-//		@Override
-//		public void updateData(String returnedObj) {
-//		}
-//
-//		@Override
-//		public void errorHandle(Integer resultCode) {
-//			handleErrorRequest();
-//		}
-//	}
-
-
 	@Override
 	public void switch2Analysis() {
 		isAnalysis = !isAnalysis;
-		if (isAnalysis) {
-			topPanelView.showPractice(true);
-			updateTitle(R.string.practice_mode);
-
-		} else {
-//			analysisTxt.setVisibility(View.INVISIBLE);
-			updateTitle(R.string.tactics);
+		if (!isAnalysis) {
 			restoreGame();
 		}
+		topPanelView.showPractice(isAnalysis);
+		getBoardFace().setAnalysis(isAnalysis);
 		topPanelView.showClock(!isAnalysis);
 		controlsTacticsView.showDefault();
 	}
@@ -875,14 +853,12 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 				getNextTactic();
 			}
 		} else if (view.getId() == R.id.stopBtn) {
-//			boardView.setFinished(true);
 			getBoardFace().setFinished(true);
 			tacticItem.setStop(true);
 			stopTacticsTimer();
 			dismissDialogs();
 		} else if (view.getId() == R.id.retryBtn) {
-
-			if ( noInternet) {
+			if (noInternet) {
 				getNextTactic();
 			} else {
 				adjustBoardForGame();
@@ -894,13 +870,10 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 			showAnswer();
 			dismissDialogs();
 		} else if (view.getId() == R.id.cancelBtn) {
-
 			dismissDialogs();
 
 			if (TacticsDataHolder.getInstance().isTacticLimitReached()) {
 				cancelTacticAndLeave();
-//				onBackPressed();
-				getActivityFace().showPreviousFragment();
 			}
 		}
 	}
@@ -932,7 +905,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 
 	private void loadNewTacticsBatch() {
 		noInternet = !AppUtils.isNetworkAvailable(getActivity());
-		if ( noInternet || serverError) {
+		if (noInternet || serverError) {
 			loadOfflineTacticsBatch();
 		} else {
 
@@ -960,7 +933,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 
 		@Override
 		public void updateListData(List<TacticItem.Data> itemsList) {
-			new SaveTacticsBatchTask(dbTacticBatchSaveListener, itemsList,getContentResolver()).executeTask();
+			new SaveTacticsBatchTask(dbTacticBatchSaveListener, itemsList, getContentResolver()).executeTask();
 			offlineBatchWasLoaded = true;
 		}
 	}

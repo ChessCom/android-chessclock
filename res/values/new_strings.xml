@@ -188,5 +188,6 @@
     <string name="show_legal_moves">Show Legal Moves</string>
     <string name="flip_board">Flip Board</string>
     <string name="matching">Matching</string>
+    <string name="solved_with_hint">Solved with Hint</string>
 
 </resources>

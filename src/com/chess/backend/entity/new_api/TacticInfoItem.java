@@ -18,7 +18,7 @@ public class TacticInfoItem extends BaseResponseItem<TacticInfoItem.Data> {
             "problem_rating": 1199
         },
         "tactics_problem": {
-            "tactics_problem_id": 873,
+            "id": 873,
             "initial_fen": "6K1/3r3r/5kn1/5p1N/5P2/8/8/4R1R1 b KQkq - 1 1",
             "clean_move_string": "1... Rxh5 2. Rxg6+ Kxg6 3. Re6# ",
             "attempt_count": 2,

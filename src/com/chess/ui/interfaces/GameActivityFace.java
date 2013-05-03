@@ -1,7 +1,7 @@
 package com.chess.ui.interfaces;
 
 import android.view.View;
-import com.chess.backend.entity.SoundPlayer;
+import com.chess.backend.statics.SoundPlayer;
 
 /**
  * GameActivityFace class

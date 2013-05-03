@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.*;
 import com.chess.R;
-import com.chess.backend.entity.SoundPlayer;
+import com.chess.backend.statics.SoundPlayer;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.inneractive.api.ads.InneractiveAd;
 

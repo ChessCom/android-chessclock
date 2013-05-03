@@ -543,6 +543,7 @@ message				false	Only used for `CHAT` command.
 
 	private static void submitPostData(URLConnection connection, LoadItem loadItem) throws IOException {
 		String query = formPostData(loadItem);
+		Log.d("RequestJsonTask"," POST: " + query);
 		String charset = HTTP.UTF_8;
 		connection.setDoOutput(true); // Triggers POST.
 		OutputStream output = null;

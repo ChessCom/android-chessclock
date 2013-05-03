@@ -259,6 +259,7 @@ public class AppData {
 
 	public static void setPlaySounds(Context context, boolean checked) {
 		setBooleanValue(context, PREF_SOUNDS, checked);
+		SoundPlayer.getInstance(context);// update internal flag
 	}
 
 	public static boolean isPlaySounds(Context context) {

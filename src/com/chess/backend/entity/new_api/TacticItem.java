@@ -18,7 +18,7 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.Data>> {
 		"count": 3,
 		"data": [
 			{
-				"tactics_problem_id": 823,
+				"id": 823,
 				"initial_fen": "5r1k/1b4pp/8/p1R5/Pp2p2q/1Q2B2P/1P3PrK/4R3 w - - 1 2",
 				"clean_move_string": "1. Kxg2 Rxf2+ 2. Bxf2 e3+ 3. Rd5 Qxf2+ 4. Kh1 Qxe1+ 5. Kh2 Qf2+ 6. Kh1 e2 ",
 				"attempt_count": 1,
@@ -29,7 +29,7 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.Data>> {
 		]
 
         "tactics_problem": {
-            "tactics_problem_id": 873,
+            "id": 873,
             "initial_fen": "6K1/3r3r/5kn1/5p1N/5P2/8/8/4R1R1 b KQkq - 1 1",
             "clean_move_string": "1... Rxh5 2. Rxg6+ Kxg6 3. Re6# ",
             "attempt_count": 2,
@@ -41,13 +41,14 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.Data>> {
 
 	public static class Data {
 
-		private long tactics_problem_id;
+		private long id;
 		private String initial_fen;
 		private String clean_move_string;
 		private int attempt_count;
 		private int passed_count;
 		private int rating;
 		private int average_seconds;
+		/*Local addition */
 		private String user;
 		private long secondsSpent;
 		private TacticRatingData resultItem;
@@ -55,8 +56,12 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.Data>> {
 		private boolean wasShowed;
 		private boolean retry;
 
+		public void setId(long id) {
+			this.id = id;
+		}
+
 		public long getId() {
-			return tactics_problem_id;
+			return id;
 		}
 
 		public String getInitialFen() {
@@ -141,9 +146,7 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.Data>> {
 		}
 
 
-		public void setId(long id) {
-			tactics_problem_id = id;
-		}
+
 
 		public void setFen(String fen) {
 			initial_fen = fen;
@@ -170,20 +173,16 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.Data>> {
 		}
 
 		public String getPositiveScore() {
-			String score = String.valueOf(resultItem.getScore());
 			int userRatingChangeInt = resultItem.getUserRatingChange();
 			String userRatingChange = String.valueOf(userRatingChangeInt);
 			String plusSymbol = (userRatingChangeInt > 0) ? StaticData.SYMBOL_PLUS : StaticData.SYMBOL_EMPTY;
-			return score + StaticData.SYMBOL_PERCENT + StaticData.SYMBOL_NEW_STR
-					+ StaticData.SYMBOL_LEFT_PAR + plusSymbol + userRatingChange + StaticData.SYMBOL_RIGHT_PAR;
+			return StaticData.SYMBOL_LEFT_PAR + plusSymbol + userRatingChange + StaticData.SYMBOL_RIGHT_PAR;
 		}
 
 		public String getNegativeScore() {
-			String score = String.valueOf(resultItem.getScore());
 			int userRatingChangeInt = resultItem.getUserRatingChange();
 			String userRatingChange = String.valueOf(userRatingChangeInt);
-			return score + StaticData.SYMBOL_PERCENT + StaticData.SYMBOL_NEW_STR
-					+ StaticData.SYMBOL_LEFT_PAR + userRatingChange + StaticData.SYMBOL_RIGHT_PAR;
+			return StaticData.SYMBOL_LEFT_PAR + userRatingChange + StaticData.SYMBOL_RIGHT_PAR;
 		}
 	}
 

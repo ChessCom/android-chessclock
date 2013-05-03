@@ -19,7 +19,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.SoundPlayer;
+import com.chess.backend.statics.SoundPlayer;
 import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.entity.new_api.RegisterItem;

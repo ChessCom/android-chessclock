@@ -10,7 +10,7 @@
 package com.chess.ui.engine;
 
 import android.util.Log;
-import com.chess.backend.entity.SoundPlayer;
+import com.chess.backend.statics.SoundPlayer;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.interfaces.BoardFace;

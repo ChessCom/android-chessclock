@@ -252,4 +252,11 @@
     <dimen name="new_signup_title_padding_bottom">16dip</dimen>
     <dimen name="new_tactics_panel_info_height">58dip</dimen>
     <dimen name="quick_action_item_min_width">80dip</dimen>
+
+    <!--Tactics Top Panel-->
+    <dimen name="new_tactics_top_result_text_size">15sp</dimen>
+    <dimen name="new_tactics_clock_icon_size">21dip</dimen>
+    <dimen name="new_tactics_clock_text_size">16sp</dimen>
+    <dimen name="new_tactics_rating_text_size">24sp</dimen>
+    <dimen name="new_tactics_rating_change_text_size">18sp</dimen>
 </resources>

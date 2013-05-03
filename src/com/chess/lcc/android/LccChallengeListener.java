@@ -1,7 +1,7 @@
 package com.chess.lcc.android;
 
 import android.util.Log;
-import com.chess.backend.entity.SoundPlayer;
+import com.chess.backend.statics.SoundPlayer;
 import com.chess.backend.statics.AppConstants;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.ChallengeListener;

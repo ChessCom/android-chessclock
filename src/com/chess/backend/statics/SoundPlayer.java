@@ -1,9 +1,8 @@
-package com.chess.backend.entity;
+package com.chess.backend.statics;
 
 import android.content.Context;
 import android.media.MediaPlayer;
 import com.chess.R;
-import com.chess.backend.statics.AppData;
 
 /**
  * SoundPlayer class
@@ -13,10 +12,12 @@ import com.chess.backend.statics.AppData;
  */
 public class SoundPlayer {
 	private static SoundPlayer ourInstance;
+	private static boolean playSounds;
 
 	public static SoundPlayer getInstance(Context context) {
 		if(ourInstance == null){
 			ourInstance = new SoundPlayer(context);
+			playSounds = AppData.isPlaySounds(context);
 		}
 		return ourInstance;
 	}
@@ -68,20 +69,23 @@ public class SoundPlayer {
 	}
 
 	private void playSound(int soundResource) {
-		if (AppData.isPlaySounds(context)) {
-			try {
-				MediaPlayer mediaPlayer = MediaPlayer.create(context, soundResource);
-				mediaPlayer.setVolume(0.1f, 0.1f);
-				mediaPlayer.start();
-				mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-					@Override
-					public void onCompletion(MediaPlayer mediaPlayer) {
-						mediaPlayer.release();
-					}
-				});
-			} catch (Exception e) { // TODO eliminate
-				e.printStackTrace();
+		if (playSounds) {
+			MediaPlayer mediaPlayer = MediaPlayer.create(context, soundResource);
+
+			if (mediaPlayer == null) {
+				return;
 			}
+
+			mediaPlayer.start();
+			mediaPlayer.setOnCompletionListener(completionListener);
 		}
 	}
+
+	private static MediaPlayer.OnCompletionListener completionListener = new MediaPlayer.OnCompletionListener() {
+		@Override
+		public void onCompletion(MediaPlayer mediaPlayer) {
+			mediaPlayer.stop();
+			mediaPlayer.release();
+		}
+	};
 }
