@@ -35,7 +35,6 @@ import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.PopupDialogFragment;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.utilities.AppUtils;
-import com.chess.utilities.InneractiveAdHelper;
 import com.facebook.android.Facebook;
 import com.facebook.android.LoginButton;
 import com.inneractive.api.ads.InneractiveAd;
@@ -604,27 +603,27 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 
 
 	private void showFullScreenAd() {
-		if (!preferences.getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false) && AppUtils.isNeedToUpgrade(this)) {
-
-			// TODO handle for support show ad on tablet in portrait mode
-			// TODO: add support for tablet ad units
-
-			if (InneractiveAdHelper.IS_SHOW_FULLSCREEN_ADS) {
-
-				  /*moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww"); // chess.com
-				//moPubInterstitial = new MoPubInterstitial(this, "12345"); // test
-				//moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
-				moPubInterstitial.setListener(this);
-				moPubInterstitial.load();*/
-
-				InneractiveAdHelper.InneractiveAdListenerImpl adListener =
-						new InneractiveAdHelper.InneractiveAdListenerImpl(AppConstants.AD_FULLSCREEN, preferencesEditor);
-				String inneractiveAdsAppId = getString(R.string.inneractiveAdsAppId);
-				inneractiveFullscreenAd = new InneractiveAd(this, inneractiveAdsAppId, InneractiveAd.IaAdType.Interstitial, 0);
-				inneractiveFullscreenAd.setInneractiveListener(adListener);
-				((LinearLayout) findViewById(R.id.mainView)).addView(inneractiveFullscreenAd);
-			}
-		}
+//		if (!preferences.getBoolean(AppConstants.FULLSCREEN_AD_ALREADY_SHOWED, false) && AppUtils.isNeedToUpgrade(this)) {
+//
+//			// TODO handle for support show ad on tablet in portrait mode
+//			// TODO: add support for tablet ad units
+//
+//			if (InneractiveAdHelper.IS_SHOW_FULLSCREEN_ADS) {
+//
+//				  /*moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww"); // chess.com
+//				//moPubInterstitial = new MoPubInterstitial(this, "12345"); // test
+//				//moPubInterstitial = new MoPubInterstitial(this, "agltb3B1Yi1pbmNyDAsSBFNpdGUYsckMDA"); // test
+//				moPubInterstitial.setListener(this);
+//				moPubInterstitial.load();*/
+//
+//				InneractiveAdHelper.InneractiveAdListenerImpl adListener =
+//						new InneractiveAdHelper.InneractiveAdListenerImpl(AppConstants.AD_FULLSCREEN, preferencesEditor);
+//				String inneractiveAdsAppId = getString(R.string.inneractiveAdsAppId);
+//				inneractiveFullscreenAd = new InneractiveAd(this, inneractiveAdsAppId, InneractiveAd.IaAdType.Interstitial, 0);
+//				inneractiveFullscreenAd.setInneractiveListener(adListener);
+//				((LinearLayout) findViewById(R.id.mainView)).addView(inneractiveFullscreenAd);
+//			}
+//		}
 	}
 
 	@Override
