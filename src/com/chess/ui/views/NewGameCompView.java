@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
-import com.chess.ui.engine.NewCompGameConfig;
+import com.chess.ui.engine.configs.NewCompGameConfig;
 
 /**
  * Created with IntelliJ IDEA.

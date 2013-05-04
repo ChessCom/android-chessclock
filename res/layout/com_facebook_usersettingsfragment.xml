@@ -55,7 +55,8 @@
             android:layout_marginTop="35dp"
             android:layout_marginBottom="35dp"
             loginView:login_text="@string/com_facebook_usersettingsfragment_log_in_button"
-            style="@style/com_facebook_loginview_silver_style" />
+            style="@style/com_facebook_loginview_default_style"
+            />
 
         <com.chess.RoboButton
             android:id="@+id/closeFacebookSettingsBtn"
@@ -63,7 +64,8 @@
             android:layout_height="wrap_content"
             android:text="@string/close"
             style="@style/Text.Button.Facebook"
-            android:visibility="gone"
+            android:visibility="visible"
+            android:padding="2dip"
             />
 
     </LinearLayout>

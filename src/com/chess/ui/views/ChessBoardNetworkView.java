@@ -60,15 +60,17 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 		drawBoard(canvas);
 
-		drawPieces(canvas);
+		if (gameActivityFace != null && getBoardFace() != null) {
+			drawPieces(canvas);
+
+			drawHighlights(canvas);
+
+			drawDragPosition(canvas);
+
+			drawTrackballDrag(canvas);
+		}
 
 		drawCoordinates(canvas);
-
-		drawHighlights(canvas);
-
-		drawDragPosition(canvas);
-
-		drawTrackballDrag(canvas);
 	}
 
 	@Override

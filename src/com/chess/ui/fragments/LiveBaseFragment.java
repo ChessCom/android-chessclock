@@ -31,7 +31,6 @@ public class LiveBaseFragment extends CommonLogicFragment {
 	}
 
 	public void  onLiveServiceConnected() {
-		showToast("live connected");
 	}
 
 	public boolean isLCSBound() {

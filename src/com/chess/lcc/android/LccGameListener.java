@@ -46,6 +46,10 @@ public class LccGameListener implements GameListener {
 		}
 
 		Log.d(TAG, "latestGameId=" + latestGameId);
+
+		if (latestGameId == 0) {
+			lccHelper.getLccEventListener().createSeek();
+		}
 	}
 
 	@Override
@@ -133,10 +137,10 @@ public class LccGameListener implements GameListener {
 	private void doResetGame(Game game) {
 		if (game.isGameOver()) {
 			lccHelper.putGame(game);
-			return;
+//			return;
 		}
 		lccHelper.setCurrentGameId(game.getId());
-		lccHelper.setGameActivityPausedMode(true);
+//		lccHelper.setGameActivityPausedMode(true);
 		lccHelper.processFullGame(game);
 	}
 
@@ -158,17 +162,17 @@ public class LccGameListener implements GameListener {
 			Log.d(TAG, "GAME LISTENER: Draw offered at the move #" + game.getMoveCount() + ", game.id=" + game.getId()
 					+ ", offerer=" + opponentName + ", game=" + game);
 
-			if (lccHelper.isGameActivityPausedMode()) {
+			/*if (lccHelper.isGameActivityPausedMode()) {
 				final LiveGameEvent drawOfferedEvent = new LiveGameEvent();
 				drawOfferedEvent.setEvent(LiveGameEvent.Event.DRAW_OFFER);
 				drawOfferedEvent.setGameId(game.getId());
 				drawOfferedEvent.setDrawOffererUsername(opponentName);
 				lccHelper.getPausedActivityGameEvents().put(drawOfferedEvent.getEvent(), drawOfferedEvent);
 				Log.d(TAG, "DRAW PAUSED");
-			} else {
+			} else {*/
 				Log.d(TAG, "DRAW SHOW");
 				lccHelper.getLccEventListener().onDrawOffered(opponentName);
-			}
+			//}
 		}
 	}
 
@@ -261,7 +265,7 @@ public class LccGameListener implements GameListener {
 			lccHelper.setCurrentGameId(gameId);
 		}
 
-		if (lccHelper.isGameActivityPausedMode()) {
+		/*if (lccHelper.isGameActivityPausedMode()) {
 			Log.d(TAG, "ActivityPausedMode = true");
 			final LiveGameEvent gameEndedEvent = new LiveGameEvent();
 			gameEndedEvent.setGameId(gameId);
@@ -272,9 +276,9 @@ public class LccGameListener implements GameListener {
 				lccHelper.processFullGame(game);
 				Log.d(TAG, "processFullGame");
 			}
-		} else {
+		} else {*/
 			lccHelper.getLccEventListener().onGameEnd(message);
-		}
+		//}
 	}
 
     /*public void onDrawRejected(Game game, User rejector) {
@@ -288,9 +292,9 @@ public class LccGameListener implements GameListener {
     }*/
 
 	private boolean isMyGame(Game game) {
-		String whiteUsername = game.getWhitePlayer().getUsername().toLowerCase();
-		String blackUsername = game.getBlackPlayer().getUsername().toLowerCase();
-		String userName = lccHelper.getUsername().toLowerCase();
+		String whiteUsername = game.getWhitePlayer().getUsername();
+		String blackUsername = game.getBlackPlayer().getUsername();
+		String userName = lccHelper.getUsername();
 
 		boolean isMyGame = userName.equals(whiteUsername) || userName.equals(blackUsername);
 

@@ -25,7 +25,7 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.engine.NewLiveGameConfig;
+import com.chess.ui.engine.configs.NewLiveGameConfig;
 import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
@@ -303,6 +303,16 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	@Override
 	public void onGameRecreate() {
 		getActivityFace().showPreviousFragment();
+	}
+
+	@Override
+	public void startGameFromService() {
+		// shouldn't be used here. Use in WaitFragment instead
+	}
+
+	@Override
+	public void createSeek() {
+		// shouldn't be used here. Use in WaitFragment instead
 	}
 
 	@Override

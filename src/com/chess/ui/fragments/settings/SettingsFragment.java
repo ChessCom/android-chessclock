@@ -16,6 +16,7 @@ import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.ui.fragments.sign_in.WelcomeFragment;
 import com.chess.utilities.AppUtils;
+import com.facebook.Session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,9 +103,10 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				// un-register from GCM
 				unRegisterGcmService();
 
-//				Facebook facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
-//				SessionStore.restore(facebook, getActivity());
-//				facebook.logoutMe(this, new LogoutRequestListener());
+				Session facebookSession = Session.getActiveSession();
+				if (facebookSession != null) {
+					facebookSession.closeAndClearTokenInformation();
+				}
 
 				preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
 				preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);

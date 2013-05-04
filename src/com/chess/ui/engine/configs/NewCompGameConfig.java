@@ -1,4 +1,4 @@
-package com.chess.ui.engine;
+package com.chess.ui.engine.configs;
 
 /**
  * Created with IntelliJ IDEA.

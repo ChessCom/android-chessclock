@@ -924,7 +924,8 @@ public abstract class PickerFragment<T extends GraphObject> extends Fragment {
     class SingleSelectionStrategy extends SelectionStrategy {
         private String selectedId;
 
-        public Collection<String> getSelectedIds() {
+        @Override
+		public Collection<String> getSelectedIds() {
             return Arrays.asList(new String[]{selectedId});
         }
 
@@ -975,7 +976,8 @@ public abstract class PickerFragment<T extends GraphObject> extends Fragment {
     class MultiSelectionStrategy extends SelectionStrategy {
         private Set<String> selectedIds = new HashSet<String>();
 
-        public Collection<String> getSelectedIds() {
+        @Override
+		public Collection<String> getSelectedIds() {
             return selectedIds;
         }
 

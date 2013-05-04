@@ -11,7 +11,7 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.DailySeekItem;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.ui.engine.NewDailyGameConfig;
+import com.chess.ui.engine.configs.NewDailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.friends.InviteFriendsFragment;
 import com.slidingmenu.lib.SlidingMenu;

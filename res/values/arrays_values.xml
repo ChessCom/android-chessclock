@@ -27,13 +27,13 @@
 
 	<string-array name="new_live_game_button_values">
 		<item>30</item>
+        <item>10</item>
 		<item>5 | 2</item>
 		<item>2 | 1</item>
 		<item>15 | 5</item>
 		<item>5</item>
+        <item>3</item>
 		<item>1</item>
-		<item>10</item>
-		<item>3</item>
 	</string-array>
 
 	<integer-array name="days_per_move_array">

@@ -121,7 +121,8 @@ public class SharedPreferencesTokenCachingStrategy extends TokenCachingStrategy 
      *
      * @return A Bundle with the information contained in this cache
      */
-    public Bundle load() {
+    @Override
+	public Bundle load() {
         Bundle settings = new Bundle();
 
         Map<String, ?> allCachedEntries = cache.getAll();
@@ -147,7 +148,8 @@ public class SharedPreferencesTokenCachingStrategy extends TokenCachingStrategy 
      * @param bundle
      *          The Bundle containing information to be cached
      */
-    public void save(Bundle bundle) {
+    @Override
+	public void save(Bundle bundle) {
         Validate.notNull(bundle, "bundle");
 
         SharedPreferences.Editor editor = cache.edit();
@@ -173,7 +175,8 @@ public class SharedPreferencesTokenCachingStrategy extends TokenCachingStrategy 
     /**
      * Clears out all token information stored in this cache.
      */
-    public void clear() {
+    @Override
+	public void clear() {
         cache.edit().clear().commit();
     }
 

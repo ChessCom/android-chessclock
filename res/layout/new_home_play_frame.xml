@@ -8,9 +8,11 @@
     >
 
     <LinearLayout
+        android:id="@+id/homePlayLinLay"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         >
         <!--Live Chess-->
         <LinearLayout
@@ -63,18 +65,22 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/liveOptionsView"
             android:layout_width="match_parent"
-            android:layout_height="52dip"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dip"
+            android:paddingBottom="8dip"
             android:paddingLeft="15dip"
             android:paddingRight="15dip"
             android:background="@drawable/daily_games_item_default"
+            android:animateLayoutChanges="true"
             >
 
+            <!--Time selection | Default time-->
             <com.chess.RoboButton
                 android:id="@+id/liveTimeSelectBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:text="10 min"
                 style="@style/Text.Button.Grey.Small.Solid"
                 />
@@ -84,9 +90,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/new_play_ex"
-                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 style="@style/Text.Button.Small.NoBorder"
+                />
+
+            <!--Live Options-->
+            <RelativeLayout
+                android:id="@+id/liveHomeOptionsFrame"
+                android:layout_below="@id/liveTimeSelectBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 />
 
         </RelativeLayout>
@@ -144,7 +157,7 @@
         <!--Auto-Match-->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="52dip"
+            android:layout_height="wrap_content"
             android:paddingLeft="15dip"
             android:paddingRight="15dip"
             android:background="@drawable/daily_games_item_default"

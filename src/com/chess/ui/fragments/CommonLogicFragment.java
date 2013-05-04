@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,7 +20,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.statics.SoundPlayer;
 import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.entity.new_api.RegisterItem;
@@ -28,6 +28,7 @@ import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
+import com.chess.backend.statics.SoundPlayer;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.fragments.daily.DailyGamesNotificationFragment;
@@ -64,8 +65,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected static final String MODE = "mode";
 
-	public static final int RIGHT_MENU_MODE = 1;
-	public static final int CENTER_MODE = 2;
+	public static final int CENTER_MODE = 1;
+	public static final int RIGHT_MENU_MODE = 2;
 
 	//	private LoginUpdateListener loginUpdateListener;
 	private LoginUpdateListenerNew loginUpdateListener;
@@ -192,7 +193,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			}
 		});
 
-		handler = new Handler();
+
 		loginUpdateListener = new LoginUpdateListenerNew();
 	}
 
@@ -491,5 +492,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				break;
 		}
 		return true;
+	}
+
+	protected void logTest(String messageToLog) {
+		Log.d("TEST", messageToLog);
 	}
 }

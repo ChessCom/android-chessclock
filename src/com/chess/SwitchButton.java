@@ -183,7 +183,7 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 		initFlipAnimation();
 
 		setOnClickListener(this);
-//		setBackOn(switchEnabled);
+		setBackOn(switchEnabled);
 	}
 
 	@Override

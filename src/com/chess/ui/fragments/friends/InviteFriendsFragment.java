@@ -58,7 +58,7 @@ public class InviteFriendsFragment extends CommonLogicFragment {
 
 	private void sendRequestDialog() {
 		Session facebookSession = Session.getActiveSession();
-		if (facebookSession == null || facebookSession.isClosed()) {
+		if (facebookSession == null || facebookSession.isClosed() || !facebookSession.isOpened()) {
 			getActivityFace().changeRightFragment(UserSettingsFragment.showFromRightInvites());
 			return;
 		}

@@ -18,6 +18,7 @@
 
   	<dimen name="default_field_height">37dip</dimen>
   	<dimen name="default_button_text_size">16sp</dimen>
+    <dimen name="default_list_item_height">48dip</dimen>
   	<dimen name="default_button_height">40dip</dimen>    <!--Plus glow borders-->
  	<dimen name="signin_button_height">50dip</dimen>
     <dimen name="default_stroke_width">4px</dimen>
@@ -259,4 +260,6 @@
     <dimen name="new_tactics_clock_text_size">16sp</dimen>
     <dimen name="new_tactics_rating_text_size">24sp</dimen>
     <dimen name="new_tactics_rating_change_text_size">18sp</dimen>
+    <dimen name="home_play_live_labels_padding_side">25dip</dimen>
+    <dimen name="new_right_live_option_button_width">88dip</dimen>
 </resources>

@@ -100,7 +100,7 @@
         <item name="android:padding">@dimen/glyph_icon_padding</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/glyph_icon_default</item>
-        <item name="android:layout_margin">0dip</item>
+        <!--<item name="android:layout_margin">0dip</item>-->
         <item name="ttf">Icon</item>
     </style>
 
@@ -117,7 +117,25 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/list_item_text_size</item>
     </style>
-    
+
+    <style name="HomeLiveOptionsButton" parent="Text.Button.Grey.Small.Solid">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">2dip</item>
+        <item name="android:layout_margin">1px</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="RightLiveOptionsButton" parent="Text.Button.Grey.Small.Solid">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">@dimen/new_right_live_option_button_width</item>
+        <item name="android:padding">2dip</item>
+        <item name="android:layout_margin">1px</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
     <style name="DashboardButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -165,6 +183,12 @@
         <item name="android:textColorHint">@color/hint_text</item>
 		<item name="android:layout_marginTop">2dip</item>
 		<item name="android:layout_marginBottom">2dip</item>
+    </style>
+
+    <style name="DefaultEdt.Empty">
+        <item name="android:background">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">20dip</item>
     </style>
 
 	<style name="DefaultAutoComplete" parent="DefaultEdt" >
@@ -476,5 +500,4 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <dimen name="default_list_item_height">48dip</dimen>
 </resources>

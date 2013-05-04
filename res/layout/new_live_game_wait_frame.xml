@@ -2,37 +2,89 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dip"
     >
 
-    <com.chess.RoboTextView
-        android:id="@+id/centerTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/matching"
-        android:textSize="23sp"
-        android:textColor="@color/white"
-        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        >
 
-    <ProgressBar
-        android:id="@+id/loadingView"
-        android:layout_width="60dip"
-        android:layout_height="60dip"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/centerTxt"
-        style="?android:attr/progressBarStyle"
-        />
+        <com.chess.ui.views.PanelInfoGameView
+            android:id="@+id/topPanelView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:oneLine="@bool/one_line_for_board"
+            android:visibility="invisible"
+            android:layout_marginTop="@dimen/notations_view_height"
+            />
 
-    <com.chess.RoboButton
-        android:id="@+id/cancelLiveBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cancel"
-        android:layout_alignParentBottom="true"
-        />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <!--Top Border-->
+            <FrameLayout
+                android:id="@+id/topBorder"
+                android:layout_width="match_parent"
+                android:layout_height="3px"
+                android:background="@drawable/game_board_divider"
+                />
+
+            <com.chess.ui.views.ChessBoardLiveView
+                android:id="@+id/boardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/topBorder"
+                android:layout_marginTop="-1px"
+                />
+
+            <!--Bottom Border-->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/boardview"
+                android:background="@drawable/game_board_divider"
+                android:layout_marginTop="-1px"
+                />
+
+            <ProgressBar
+                android:id="@+id/loadingView"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:layout_centerInParent="true"
+                style="?android:attr/progressBarStyle"
+                android:visibility="gone"
+                />
+
+        </RelativeLayout>
+
+        <com.chess.RoboTextView
+            android:id="@+id/centerTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/panel_info_height"
+            android:gravity="center"
+            android:text="@string/matching"
+            android:textSize="23sp"
+            android:textColor="@color/hint_text"
+            custom:ttf="Bold"
+            />
+
+        <com.chess.RoboButton
+            android:id="@+id/cancelLiveBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            style="@style/Text.Button.Grey"
+            android:layout_margin="15dip"
+            />
+
+    </LinearLayout>
 
 </RelativeLayout>

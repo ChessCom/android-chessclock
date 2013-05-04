@@ -530,7 +530,8 @@ class AuthorizationClient implements Serializable {
             }
         }
 
-        boolean tryAuthorize(final AuthorizationRequest request) {
+        @Override
+		boolean tryAuthorize(final AuthorizationRequest request) {
             getTokenClient = new GetTokenClient(context, request.getApplicationId());
             if (!getTokenClient.start()) {
                 return false;

@@ -30,6 +30,7 @@ import com.chess.live.client.LiveChessClient;
 import com.chess.live.client.User;
 import com.chess.model.GameLiveItem;
 import com.chess.ui.activities.old.LiveScreenActivity;
+import com.chess.ui.engine.configs.NewLiveGameConfig;
 
 import java.util.HashMap;
 import java.util.List;
@@ -414,6 +415,10 @@ public class LiveChessService extends Service {
 
 	public void rematch() {
 		lccHelper.rematch();
+	}
+
+	public void createChallenge(NewLiveGameConfig config) {
+		lccHelper.createChallenge(config);
 	}
 
 	public void sendMessage(String message, TaskUpdateInterface<String> taskFace) {

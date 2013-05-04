@@ -10,6 +10,7 @@ import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.new_api.ChatItem;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.ConnectLiveChessTask;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
@@ -17,10 +18,13 @@ import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
 import com.chess.live.client.*;
 import com.chess.live.rules.GameResult;
+import com.chess.live.util.GameTimeConfig;
 import com.chess.live.util.GameType;
 import com.chess.model.GameLiveItem;
 import com.chess.ui.engine.ChessBoardLive;
+import com.chess.ui.engine.configs.NewLiveGameConfig;
 import com.chess.utilities.AppUtils;
+import com.flurry.android.FlurryAgent;
 
 import java.util.*;
 
@@ -822,9 +826,9 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void processFullGame(Game game) {
-		if (lccEventListener != null) {
-			lccEventListener.onGameRecreate();
-		}
+//		if (lccEventListener != null) {
+//			lccEventListener.onGameRecreate();
+//		}
 
 		latestMoveNumber = 0; // it was null before
 		ChessBoardLive.resetInstance();
@@ -842,9 +846,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		setWhiteClock(new ChessClock(this, true));
 		setBlackClock(new ChessClock(this, false));
 
-//		Intent intent = new Intent(context, GameLiveScreenActivity.class);
-//		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP| Intent.FLAG_ACTIVITY_NEW_TASK);
-//		context.startActivity(intent);
+		lccEventListener.startGameFromService();
 	}
 
 	public Integer getLatestMoveNumber() {
@@ -1047,6 +1049,35 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		notificationManager.cancel(R.id.live_service_notification);*/
 
 		liveService.stopForeground(true); // exit Foreground mode and remove Notification icon
+	}
+
+//	public void createChallenge(String friend) {
+	public void createChallenge(NewLiveGameConfig config) {
+		if (getOwnSeeksCount() >= LccHelper.OWN_SEEKS_LIMIT || getUser() == null) {
+			return; // TODO throw exception
+		}
+		boolean rated = config.isRated();
+
+		Integer initialTime = config.getInitialTime();
+		Integer bonusTime = config.getBonusTime();
+
+		GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTime * 60 * 10, bonusTime * 10);
+
+		Integer minRating = config.getMinRating();
+		Integer maxRating = config.getMaxRating();
+		Integer minMembershipLevel = null;
+		PieceColor pieceColor = PieceColor.UNDEFINED;
+
+		final GameType gameType = GameType.Chess;
+		Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
+				getUser(),
+				config.getOpponentName(),
+				gameType,
+				pieceColor, rated, gameTimeConfig,
+				minMembershipLevel, minRating, maxRating);
+
+		FlurryAgent.logEvent(FlurryData.CHALLENGE_CREATED);
+		liveService.runSendChallengeTask(challenge);
 	}
 
 	public String getNetworkTypeName() {

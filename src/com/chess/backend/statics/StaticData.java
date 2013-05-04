@@ -29,6 +29,7 @@ public class StaticData {
 	public static final String SYMBOL_MINUS = "-";
 	public static final String SYMBOL_TAG = "<";
 	public static final String SYMBOL_COLON = ":";
+	public static final String SYMBOL_SLASH = "|";
 	public static final String SYMBOL_DOT = ". ";
 	public static final String SYMBOL_AMP_CODE = "&amp;";
 	public static final String SYMBOL_AMP = "&";

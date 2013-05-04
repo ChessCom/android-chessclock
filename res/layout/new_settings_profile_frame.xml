@@ -42,6 +42,7 @@
                 android:padding="0dip"
                 android:singleLine="true"
                 android:imeOptions="actionDone"
+                style="@style/DefaultEdt.Empty"
                 />
 
             <!--Clear Btn-->
@@ -91,6 +92,7 @@
                 android:padding="0dip"
                 android:singleLine="true"
                 android:imeOptions="actionDone"
+                style="@style/DefaultEdt.Empty"
                 />
 
             <!--Clear Btn-->
@@ -140,6 +142,8 @@
                 android:padding="0dip"
                 android:singleLine="true"
                 android:imeOptions="actionDone"
+                style="@style/DefaultEdt.Empty"
+                android:layout_gravity="center_vertical"
                 />
 
             <!--Clear Btn-->

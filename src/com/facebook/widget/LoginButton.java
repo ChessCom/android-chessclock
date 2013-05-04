@@ -605,7 +605,8 @@ public class LoginButton extends FacebookButton {
                     builder.setMessage(message)
                            .setCancelable(true)
                            .setPositiveButton(logout, new DialogInterface.OnClickListener() {
-                               public void onClick(DialogInterface dialog, int which) {
+                               @Override
+							   public void onClick(DialogInterface dialog, int which) {
                                    openSession.closeAndClearTokenInformation();
                                }
                            })

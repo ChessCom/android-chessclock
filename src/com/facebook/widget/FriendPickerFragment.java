@@ -129,12 +129,14 @@ public class FriendPickerFragment extends PickerFragment<GraphUser> {
         a.recycle();
     }
 
-    public void setSettingsFromBundle(Bundle inState) {
+    @Override
+	public void setSettingsFromBundle(Bundle inState) {
         super.setSettingsFromBundle(inState);
         setFriendPickerSettingsFromBundle(inState);
     }
 
-    void saveSettingsToBundle(Bundle outState) {
+    @Override
+	void saveSettingsToBundle(Bundle outState) {
         super.saveSettingsToBundle(outState);
 
         outState.putString(USER_ID_BUNDLE_KEY, userId);

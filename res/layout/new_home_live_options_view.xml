@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--Mode labels-->
+    <!--Standard-->
+    <com.chess.RoboTextView
+        android:id="@+id/liveLabelStandardTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/GlyphIcon.Big"
+        android:text="@string/glyph_live_standard"
+        android:layout_marginLeft="@dimen/home_play_live_labels_padding_side"
+        android:visibility="gone"
+        />
+
+    <!--Blitz-->
+    <com.chess.RoboTextView
+        android:id="@+id/liveLabelBlitzTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/GlyphIcon.Big"
+        android:text="@string/glyph_live_blitz"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        />
+
+    <!--Bullet-->
+    <com.chess.RoboTextView
+        android:id="@+id/liveLabelBulletTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/GlyphIcon.Big"
+        android:text="@string/glyph_live_bullet"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/home_play_live_labels_padding_side"
+        android:visibility="gone"
+        />
+
+    <!--Time selections-->
+    <LinearLayout
+        android:id="@+id/liveTimeSelectionFirstRowView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/liveLabelStandardTxt"
+        >
+
+        <!--30 min-->
+        <com.chess.RoboButton
+            android:id="@+id/standard1SelectBtn"
+            style="@style/HomeLiveOptionsButton"
+            />
+
+        <!--10 min-->
+        <com.chess.RoboButton
+            android:id="@+id/blitz1SelectBtn"
+            style="@style/HomeLiveOptionsButton"
+            />
+        <!--5|2 min-->
+        <com.chess.RoboButton
+            android:id="@+id/blitz2SelectBtn"
+            style="@style/HomeLiveOptionsButton"
+            />
+
+        <!--2|1 min-->
+        <com.chess.RoboButton
+            android:id="@+id/bullet1SelectBtn"
+            style="@style/HomeLiveOptionsButton"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/liveTimeSelectionFirstRowView"
+        >
+
+        <!--15|5 min-->
+        <com.chess.RoboButton
+            android:id="@+id/standard2SelectBtn"
+            style="@style/HomeLiveOptionsButton"
+            />
+
+        <!--5 min-->
+        <com.chess.RoboButton
+            android:id="@+id/blitz3SelectBtn"
+            style="@style/HomeLiveOptionsButton"
+            />
+
+        <!--3 min-->
+        <com.chess.RoboButton
+            android:id="@+id/blitz4SelectBtn"
+            style="@style/HomeLiveOptionsButton"
+            />
+
+        <!--1 min-->
+        <com.chess.RoboButton
+            android:id="@+id/bullet2SelectBtn"
+            style="@style/HomeLiveOptionsButton"
+            />
+
+    </LinearLayout>
+</merge>

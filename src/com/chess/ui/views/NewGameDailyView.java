@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.*;
 import com.chess.ui.adapters.ItemsAdapter;
-import com.chess.ui.engine.NewDailyGameConfig;
+import com.chess.ui.engine.configs.NewDailyGameConfig;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
 

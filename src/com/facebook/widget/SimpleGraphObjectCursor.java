@@ -48,7 +48,8 @@ class SimpleGraphObjectCursor<T extends GraphObject> implements com.facebook.wid
         this.fromCache |= fromCache;
     }
 
-    public boolean isFromCache() {
+    @Override
+	public boolean isFromCache() {
         return fromCache;
     }
 
@@ -56,7 +57,8 @@ class SimpleGraphObjectCursor<T extends GraphObject> implements com.facebook.wid
         this.fromCache = fromCache;
     }
 
-    public boolean areMoreObjectsAvailable() {
+    @Override
+	public boolean areMoreObjectsAvailable() {
         return moreObjectsAvailable;
     }
 
