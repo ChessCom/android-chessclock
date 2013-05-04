@@ -37,7 +37,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	private Fragment currentActiveFragment;
 	private Hashtable<Integer, Integer> badgeItems;
-	private CommonLogicFragment rightMenuFragment;
 	private LogoBackgroundDrawable logoBackground;
 	private SlidingMenu slidingMenu;
 	private List<SlidingMenu.OnOpenedListener> openMenuListeners;
@@ -181,13 +180,12 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public void changeRightFragment(CommonLogicFragment fragment) {
 		// set right menu. Left Menu is already set in BaseActivity
 //		rightMenuFragment = new DailyGamesFragment();
-		rightMenuFragment = fragment;
 		SlidingMenu sm = getSlidingMenu();
 		sm.setMode(SlidingMenu.LEFT_RIGHT);
 		sm.setSecondaryMenu(R.layout.slide_menu_right_frame);
 		getSupportFragmentManager()
 				.beginTransaction()
-				.replace(R.id.menu_frame_right, rightMenuFragment)
+				.replace(R.id.menu_frame_right, fragment)
 				.commit();
 		sm.setSecondaryShadowDrawable(R.drawable.defaultshadowright);
 		sm.setShadowDrawable(R.drawable.defaultshadow);
@@ -198,7 +196,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public void changeLeftFragment(CommonLogicFragment fragment) {
 		// change left menu fragment
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//		leftMenuFragment = new NavigationMenuFragment();
 		leftMenuFragment = fragment;
 		ft.replace(R.id.menu_frame_left, leftMenuFragment);
 		ft.commit();

@@ -189,5 +189,6 @@
     <string name="flip_board">Flip Board</string>
     <string name="matching">Matching</string>
     <string name="solved_with_hint">Solved with Hint</string>
+    <string name="close">close</string>
 
 </resources>

@@ -6,6 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.facebook.FacebookException;
+import com.facebook.FacebookOperationCanceledException;
+import com.facebook.Session;
+import com.facebook.widget.UserSettingsFragment;
+import com.facebook.widget.WebDialog;
 import com.slidingmenu.lib.SlidingMenu;
 
 /**
@@ -45,8 +50,48 @@ public class InviteFriendsFragment extends CommonLogicFragment {
 			getActivityFace().toggleMenu(SlidingMenu.RIGHT);
 		} else if (id == R.id.dailyPlayBtn) {
 		} else if (id == R.id.facebookFriendsView) {
+			sendRequestDialog();
 		} else if (id == R.id.yourContactsView) {
-
+			getActivityFace().changeRightFragment(new UserSettingsFragment());
 		}
+	}
+
+	private void sendRequestDialog() {
+		Session facebookSession = Session.getActiveSession();
+		if (facebookSession == null || facebookSession.isClosed()) {
+			getActivityFace().changeRightFragment(UserSettingsFragment.showFromRightInvites());
+			return;
+		}
+
+		Bundle params = new Bundle();
+		params.putString("message", "Let's play Chess via Chess.com android app");
+
+		WebDialog requestsDialog = (
+				new WebDialog.RequestsDialogBuilder(getActivity(),
+						facebookSession,
+						params))
+				.setOnCompleteListener(new WebDialog.OnCompleteListener() {
+
+					@Override
+					public void onComplete(Bundle values, FacebookException error) {
+						if (error != null) {
+							if (error instanceof FacebookOperationCanceledException) {
+								showToast("Request cancelled");
+							} else {
+								showToast("Network Error");
+							}
+						} else {
+							final String requestId = values.getString("request");
+							if (requestId != null) {
+								showToast("Request sent");
+							} else {
+								showToast("Request cancelled");
+							}
+						}
+					}
+
+				})
+				.build();
+		requestsDialog.show();
 	}
 }

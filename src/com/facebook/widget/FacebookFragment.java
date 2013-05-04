@@ -18,7 +18,7 @@ package com.facebook.widget;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import com.chess.ui.fragments.CommonLogicFragment;
 import com.facebook.Session;
 import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
@@ -39,7 +39,7 @@ import java.util.List;
  * 
  * <p>The methods in this class are not thread-safe.</p>
  */
-class FacebookFragment extends Fragment {
+class FacebookFragment extends CommonLogicFragment {
 
     private SessionTracker sessionTracker;
 

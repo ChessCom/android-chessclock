@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.ui.fragments.friends.InviteFriendsFragment;
 import com.facebook.*;
 import com.facebook.model.GraphUser;
 
@@ -52,8 +53,11 @@ public class UserSettingsFragment extends FacebookFragment {
     private static final String FIELDS = "fields";
     
     private static final String REQUEST_FIELDS = TextUtils.join(",", new String[] {ID, NAME, PICTURE});
+	private static final String SHOW_CLOSE_BUTTON = "show close button";
+	private static final String CLOSE_LOGIC = "close logic case";
+	private static final int RIGHT_INVITES_ID = 0;
 
-    private LoginButton loginButton;
+	private LoginButton loginButton;
     private LoginButton.LoginButtonProperties loginButtonProperties = new LoginButton.LoginButtonProperties();
     private TextView connectedStateLabel;
     private GraphUser user;
@@ -61,6 +65,15 @@ public class UserSettingsFragment extends FacebookFragment {
     private Drawable userProfilePic;
     private String userProfilePicID;
     private Session.StatusCallback sessionStatusCallback;
+
+	public static UserSettingsFragment showFromRightInvites() {
+		UserSettingsFragment fragment = new UserSettingsFragment();
+		Bundle bundle = new Bundle();
+		bundle.putBoolean(SHOW_CLOSE_BUTTON, true);
+		bundle.putInt(CLOSE_LOGIC, RIGHT_INVITES_ID);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,7 +96,30 @@ public class UserSettingsFragment extends FacebookFragment {
         return view;
     }
 
-    @Override
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		if (getArguments() != null && getArguments().getBoolean(SHOW_CLOSE_BUTTON)) {
+			final int caseId = getArguments().getInt(CLOSE_LOGIC);
+			View closeBtn = view.findViewById(R.id.closeFacebookSettingsBtn);
+			closeBtn.setVisibility(View.VISIBLE);
+			closeBtn.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					switch (caseId){
+						case RIGHT_INVITES_ID:
+							getActivityFace().changeRightFragment(new InviteFriendsFragment());
+							break;
+					}
+
+				}
+			});
+		}
+	}
+
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
@@ -367,7 +403,9 @@ public class UserSettingsFragment extends FacebookFragment {
                             new ImageRequest.Callback() {
                                 @Override
                                 public void onCompleted(ImageResponse response) {
-                                    processImageResponse(user.getId(), response);
+									if (user != null) {
+										processImageResponse(user.getId(), response);
+									}
                                 }
                             })
                     .build();
