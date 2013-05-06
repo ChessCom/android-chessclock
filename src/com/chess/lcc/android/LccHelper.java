@@ -740,7 +740,8 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		final Integer minMembershipLevel = null;
 		final GameType gameType = GameType.Chess;
 		final Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
-				user, to, gameType, color, lastGame.isRated(), lastGame.getGameTimeConfig(), minMembershipLevel, minRating, maxRating);
+				user, to, gameType, color, lastGame.isRated(),
+				lastGame.getGameTimeConfig(), minMembershipLevel, minRating, maxRating);
 
 		challenge.setRematchGameId(lastGameId);
 		lccClient.sendChallenge(challenge, challengeListener);

@@ -11,9 +11,11 @@ import android.text.TextUtils;
 import android.view.Menu;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.IntentConstants;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
+import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.sign_in.WelcomeFragment;
 import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
@@ -85,6 +87,20 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		super.onPostCreate(savedInstanceState);
 
 		getActionBarHelper().showActionBar(showActionBar);
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+
+		if (intent.hasExtra(IntentConstants.LIVE_CHESS)) {
+			LiveGameWaitFragment fragmentByTag = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
+			if (fragmentByTag == null) {
+				fragmentByTag = new LiveGameWaitFragment();
+			}
+			switchFragment( fragmentByTag);
+		}
+
 	}
 
 	@Override
@@ -245,9 +261,17 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		ft.commit();
 	}
 
+	@Override
+	public void toggleLeftMenu() {
+		toggleMenu(SlidingMenu.LEFT);
+	}
 
 	@Override
-	public void toggleMenu(int code) {
+	public void toggleRightMenu() {
+		toggleMenu(SlidingMenu.RIGHT);
+	}
+
+	private void toggleMenu(int code) {
 		switch (code) {
 			case SlidingMenu.LEFT:
 				if (getSlidingMenu().isMenuShowing()) {

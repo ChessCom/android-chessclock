@@ -79,6 +79,7 @@ public class NotationView extends LinearLayout {
 		notationTextParams.weight = 1;
 		notationTextParams.gravity = Gravity.CENTER_VERTICAL;
 
+		setBackgroundResource(R.color.notations_back);
 	}
 
 	public void updateNotations(String[] notations, OnClickListener selectionFace, int hply) {

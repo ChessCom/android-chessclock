@@ -106,6 +106,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				Session facebookSession = Session.getActiveSession();
 				if (facebookSession != null) {
 					facebookSession.closeAndClearTokenInformation();
+					Session.setActiveSession(null);
 				}
 
 				preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);

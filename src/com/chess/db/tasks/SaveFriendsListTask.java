@@ -6,27 +6,17 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
-import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.BaseResponseItem;
-import com.chess.backend.entity.new_api.DailyGameByIdItem;
 import com.chess.backend.entity.new_api.FriendsItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import org.apache.http.HttpStatus;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.*;
 import java.util.List;
 
 
@@ -80,7 +70,7 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
     }
 
 	private void updateFriends(long userId, String userName, String userToken) {
-		loadItem.setLoadPath(RestHelper.CMD_USER);
+		loadItem.setLoadPath(RestHelper.CMD_USERS);
 		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
 
 //		FriendsItem.Data friend = getData(RestHelper.formCustomRequest(loadItem));

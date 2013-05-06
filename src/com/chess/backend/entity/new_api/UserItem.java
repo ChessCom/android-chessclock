@@ -6,27 +6,92 @@ package com.chess.backend.entity.new_api;
  * Date: 21.12.12
  * Time: 12:42
  */
-public class UserItem {
-	/*
-	"user_id": 11438,
-    "chess_title": null,
-    "username": "alien_roger",
-    "online_class": "offline",
-    "country": "United States",
-    "country_code": "us",
-    "last_login_date": "22 hours",
-    "best_rating": 0,
-    "best_rating_type": null,
-    "in_progress_count": 1,
-    "timeout_percent": "100%",
-    "friends": false,
-    "has_avatar": false,
-    "avatar_url": "http://d1lalstwiwz2br.cloudfront.net/images_users/avatars/alien_roger.1.gif",
-    "is_unrated": true,
-    "points": 0,
-    "trophies": "<img class=\"avatar-30 left-2\" src=\"http:www.c.com/test_url_please_change/images_trophies/30-712.jpg\" alt=\"Welcome to Chess.com! from CHESScom\" />",
-    "status": null,
-    "membership_class_html": "",
-    "is_tracked_user": false
-	 */
+public class UserItem extends BaseResponseItem<UserItem.Data> {
+/*
+	"id": 31,
+	"username": "jay",
+	"avatar_small_url": "//www.c.com/images/noavatar_l.gif",
+	"country_id": 2,
+	"last_login_date": "2013-03-08T05:52:08-0800",
+	"points": 549,
+	"chess_title": "GM",
+	"status": "ciaooooooo"
+
+	*/
+
+	public static class Data {
+		private long id;
+		private String username;
+		private String avatar_small_url;
+		private long country_id;
+		private String last_login_date;
+		private int points;
+		private String chess_title;
+		private String status;
+
+		public long getId() {
+			return id;
+		}
+
+		public void setId(long id) {
+			this.id = id;
+		}
+
+		public String getUsername() {
+			return username;
+		}
+
+		public void setUsername(String username) {
+			this.username = username;
+		}
+
+		public String getAvatar_small_url() {
+			return avatar_small_url;
+		}
+
+		public void setAvatar_small_url(String avatar_small_url) {
+			this.avatar_small_url = avatar_small_url;
+		}
+
+		public long getCountry_id() {
+			return country_id;
+		}
+
+		public void setCountry_id(long country_id) {
+			this.country_id = country_id;
+		}
+
+		public String getLast_login_date() {
+			return last_login_date;
+		}
+
+		public void setLast_login_date(String last_login_date) {
+			this.last_login_date = last_login_date;
+		}
+
+		public int getPoints() {
+			return points;
+		}
+
+		public void setPoints(int points) {
+			this.points = points;
+		}
+
+		public String getChess_title() {
+			return chess_title;
+		}
+
+		public void setChess_title(String chess_title) {
+			this.chess_title = chess_title;
+		}
+
+		public String getStatus() {
+			return status;
+		}
+
+		public void setStatus(String status) {
+			this.status = status;
+		}
+	}
+
 }

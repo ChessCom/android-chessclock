@@ -70,8 +70,8 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dip"
             android:paddingBottom="8dip"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip"
+            android:paddingLeft="@dimen/default_scr_side_padding"
+            android:paddingRight="@dimen/default_scr_side_padding"
             android:background="@drawable/daily_games_item_default"
             android:animateLayoutChanges="true"
             >
@@ -158,8 +158,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip"
+            android:paddingLeft="@dimen/default_scr_side_padding"
+            android:paddingRight="@dimen/default_scr_side_padding"
             android:background="@drawable/daily_games_item_default"
             >
 
@@ -198,8 +198,8 @@
             android:id="@+id/inviteFriendView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip"
+            android:paddingLeft="@dimen/default_scr_side_padding"
+            android:paddingRight="@dimen/default_scr_side_padding"
             android:background="@drawable/daily_games_item_selector"
             android:gravity="center_vertical"
             >
@@ -245,8 +245,8 @@
             android:id="@+id/inviteFriendView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip"
+            android:paddingLeft="@dimen/default_scr_side_padding"
+            android:paddingRight="@dimen/default_scr_side_padding"
             android:background="@drawable/daily_games_item_selector"
             android:gravity="center_vertical"
             >
@@ -292,7 +292,7 @@
             android:id="@+id/playFriendView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="15dip"
+            android:paddingLeft="@dimen/default_scr_side_padding"
             android:paddingRight="8dip"
             android:background="@drawable/daily_games_item_selector"
             android:gravity="center_vertical"

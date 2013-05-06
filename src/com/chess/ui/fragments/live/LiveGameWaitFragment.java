@@ -1,12 +1,15 @@
 package com.chess.ui.fragments.live;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.lcc.android.interfaces.LccEventListener;
+import com.chess.live.client.Game;
 import com.chess.model.GameLiveItem;
 import com.chess.ui.engine.configs.NewLiveGameConfig;
 import com.chess.ui.fragments.LiveBaseFragment;
@@ -22,8 +25,9 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 	private static final String CONFIG = "config";
 	private View loadingView;
 	private NewLiveGameConfig liveGameConfig;
+	private GameTaskListener gameTaskListener;
 
-	public LiveGameWaitFragment(){
+	public LiveGameWaitFragment() {
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(CONFIG, new NewLiveGameConfig.Builder().build());
 		setArguments(bundle);
@@ -35,6 +39,13 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 		bundle.putParcelable(CONFIG, config);
 		fragment.setArguments(bundle);
 		return fragment;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		gameTaskListener = new GameTaskListener();
 	}
 
 	@Override
@@ -55,9 +66,9 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		if(getArguments() != null){
+		if (getArguments() != null) {
 			liveGameConfig = getArguments().getParcelable(CONFIG);
-		}else{
+		} else {
 			liveGameConfig = savedInstanceState.getParcelable(CONFIG);
 		}
 	}
@@ -81,11 +92,8 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 	@Override
 	public void onLiveServiceConnected() {
 		super.onLiveServiceConnected();
-
-
-
-		// TODO here we are connected, can get user info and create seek
-
+		liveService.setLccEventListener(this);
+		liveService.setGameTaskListener(gameTaskListener);
 	}
 
 	@Override
@@ -123,21 +131,38 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 	public void onInform(String title, String message) {
 	}
 
-	@Override
-	public void onGameRecreate() {
-	}
+//	@Override
+//	public void onGameRecreate() {
+//	}
 
 	@Override
 	public void startGameFromService() {
-		loadingView.setVisibility(View.GONE);
-		showToast("challenge created, ready to start");
-		logTest("challenge created, ready to start");
+		final FragmentActivity activity = getActivity();
+		if (activity != null) {
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					loadingView.setVisibility(View.GONE);
+//					showToast("challenge created, ready to start");
+					logTest("challenge created, ready to start");
+					Long gameId = liveService.getCurrentGameId();
+					logTest("gameId = " + gameId);
+					getActivityFace().switchFragment(GameLiveFragment.newInstance(gameId));
+				}
+			});
+		}
 	}
 
 	@Override
 	public void createSeek() {
 		if (liveGameConfig != null) {
 			liveService.createChallenge(liveGameConfig);
+		}
+	}
+
+	private class GameTaskListener extends ActionBarUpdateListener<Game> {
+		public GameTaskListener() {
+			super(getInstance());
 		}
 	}
 }

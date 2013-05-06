@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:background="@drawable/white_border_flat_back"
     android:gravity="center_vertical"
-    android:paddingLeft="15dip"
+    android:paddingLeft="@dimen/default_scr_side_padding"
     >
 
     <!--Icon-->

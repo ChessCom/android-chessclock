@@ -2,30 +2,37 @@ package com.chess.ui.fragments.live;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.UserItem;
+import com.chess.backend.image_load.ImageDownloaderToListener;
+import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
+import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.engine.configs.NewLiveGameConfig;
 import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
@@ -33,9 +40,10 @@ import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameNetworkActivityFace;
 import com.chess.ui.views.ChessBoardLiveView;
-import com.chess.ui.views.ControlsNetworkView;
+import com.chess.ui.views.ControlsLiveView;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
+import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
 import quickaction.ActionItem;
 import quickaction.QuickAction;
@@ -56,20 +64,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 	// Quick action ids
 	private static final int ID_NEW_GAME = 0;
-	private static final int ID_FLIP_BOARD = 1;
-	private static final int ID_SETTINGS = 2;
-
-
-//	private MenuOptionsDialogListener menuOptionsDialogListener;
-
-//	protected TextView topPlayerLabel;
-//	protected TextView topPlayerClock;
+//	private static final int ID_FLIP_BOARD = 1;
+	private static final int ID_OFFER_DRAW = 2;
+	private static final int ID_RESIGN_ABORT = 3;
+	private static final int ID_SETTINGS = 4;
+	private static final String GAME_ID = "game_id";
 
 	private GameLiveItem currentGame;
 	private ChessBoardLiveView boardView;
-	private int whitePlayerNewRating;
-	private int blackPlayerNewRating;
-	private int currentPlayerRating;
 
 	private String whiteTimer;
 	private String blackTimer;
@@ -78,26 +80,38 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	private boolean lccInitiated;
 	private String warningMessage;
 	private GameTaskListener gameTaskListener;
-	private View drawButtonsLay;
-	private TextView drawTitleTxt;
+
 
 	private NotationView notationsView;
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
-	private ControlsNetworkView controlsNetworkView;
+	private ControlsLiveView controlsLiveView;
 	private QuickAction quickAction;
+	private long gameId;
+	private LabelsConfig labelsConfig;
+	private UserInfoUpdateListener userInfoUpdateListener;
+	private ImageView topAvatarImg;
+	private ImageView bottomAvatarImg;
+	private ImageDownloaderToListener imageDownloader;
 
 	public GameLiveFragment() {
-
 	}
 
-
-	public static GameLiveFragment newInstance(NewLiveGameConfig liveGameConfig) {
+	public static GameLiveFragment newInstance(long id) {
 		GameLiveFragment fragment = new GameLiveFragment();
-
-//		Bundle bundle = new Bundle();
-//		bundle.
+		Bundle bundle = new Bundle();
+		bundle.putLong(GAME_ID, id);
+		fragment.setArguments(bundle);
 		return fragment;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		gameTaskListener = new GameTaskListener();
+		userInfoUpdateListener = new UserInfoUpdateListener();
+		imageDownloader = new ImageDownloaderToListener(getActivity());
 	}
 
 	@Override
@@ -112,42 +126,25 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		setTitle(R.string.live_chess);
 
 		widgetsInit(view);
-
-//		lccInitiated = init();
-//
-//		if (!lccInitiated) {
-//			return;
-//		}
-
-//		if (!isUserColorWhite()) {
-//			getBoardFace().setReside(true);
-//		}
-//
-//		Log.d("Live Game", "GameLiveScreenActivity started ");
-//		if (getLccHolder().getPendingWarnings().size() > 0) {
-//			// get last warning
-//			warningMessage = getLccHolder().getLastWarningMessage();
-//
-//			Log.d("LCCLOG-WARNING", warningMessage);
-//
-//			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG); // todo: check
-//		}
+		init();
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
-
-		AppData.setLiveChessMode(getActivity(), true);
-
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		if (getArguments() != null) {
+			gameId = getArguments().getLong(GAME_ID);
+		} else {
+			gameId = savedInstanceState.getLong(GAME_ID);
+		}
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 
-		if (isLCSBound) {  // check if this is correct? When Fair Policy popup appears it returns game to the analysis mode
-			updateGameState();
+		if (isLCSBound) {
+			onGameStarted();
 		}
 	}
 
@@ -162,22 +159,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putLong(GAME_ID, gameId);
+	}
+
+	@Override
 	public void onLiveServiceConnected() {
-//		super.onLiveServiceConnected();
-
-		liveService.setLccEventListener(this);
-		liveService.setLccChatMessageListener(this);
-		liveService.setGameTaskListener(gameTaskListener);
-
-		boardView = (ChessBoardLiveView) getView().findViewById(R.id.boardview);
-		boardView.setFocusable(true);
-		boardView.setTopPanelView(topPanelView);
-		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsNetworkView);
-		boardView.setNotationsView(notationsView);
-		boardView.setGameActivityFace(this);// setBoardFace(ChessBoardFast.getInstance(this));
-		setBoardView(boardView);
-		controlsNetworkView.setBoardViewFace(boardView);
+		super.onLiveServiceConnected();
 
 	/*	init();
 
@@ -192,27 +182,27 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		checkPendingWarnings();*/
 	}
 
-	private void updateGameState() {
-		if (getBoardFace().isJustInitialized()) {
-			onGameStarted();
-			getBoardFace().setJustInitialized(false);
-		}
-
-		liveService.executePausedActivityGameEvents();
-	}
-
 	// ----------------------Lcc Events ---------------------------------------------
 
 	private void onGameStarted() {
-		showSubmitButtonsLay(false);
-
-		getSoundPlayer().playGameStart();
-
 		currentGame = liveService.getGameItem();
+
+		if (!isUserColorWhite()) {
+			getBoardFace().setReside(true);
+			boardView.invalidate();
+		}
+
+		invalidateGameScreen();
+		checkPendingWarnings();
+
+		showSubmitButtonsLay(false);
+		getSoundPlayer().playGameStart();
 
 		checkMessages();
 
-		liveService.checkAndReplayMoves();
+		if (liveService.getCurrentGame().isGameOver()) { // avoid races on update moves logic for active game, doUpdateGame updates moves, avoid peaces disappearing and invalidmovie exception
+			liveService.checkAndReplayMoves();
+		}
 
 		// temporary disable playLastMoveAnimation feature, because it can be one of the illegalmove reasons potentially
 		// todo: probably could be enabled with new LCC
@@ -222,6 +212,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		playLastMoveAnimation();*/
 
 		liveService.checkFirstTestMove();
+		liveService.executePausedActivityGameEvents();
+
 	}
 
 	@Override
@@ -232,9 +224,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			public void run() {
 				if (getBoardFace().isReside()) {
 					topPanelView.setTimeLeft(whiteTimer);
-//					topPlayerClock.setText(whiteTimer);
 				} else {
-//					controlsNetworkView.setBottomPlayerTimer(whiteTimer);
 					bottomPanelView.setTimeLeft(whiteTimer);
 				}
 			}
@@ -248,62 +238,20 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			@Override
 			public void run() {
 				if (getBoardFace().isReside()) {
-//					controlsNetworkView.setBottomPlayerTimer(blackTimer);
 					bottomPanelView.setTimeLeft(blackTimer);
 				} else {
-//					topPlayerClock.setText(blackTimer);
 					topPanelView.setTimeLeft(blackTimer);
 				}
 			}
 		});
 	}
 
-	private void changePlayersLabelColors() {
-		int hintColor = getResources().getColor(R.color.hint_text);
-		int whiteColor = getResources().getColor(R.color.white);
-
-		int topPlayerTextColor;
-		int bottomPlayerTextColor;
-
-		if (getBoardFace().isWhiteToMove()) {
-			topPlayerTextColor = getBoardFace().isReside() ? whiteColor : hintColor;
-			bottomPlayerTextColor = getBoardFace().isReside() ? hintColor : whiteColor;
-		} else {
-			topPlayerTextColor = getBoardFace().isReside() ? hintColor : whiteColor;
-			bottomPlayerTextColor = getBoardFace().isReside() ? whiteColor : hintColor;
-		}
-
-//		topPlayerLabel.setTextColor(topPlayerTextColor); // there will be no
-//		topPlayerClock.setTextColor(topPlayerTextColor);
-//		controlsBaseView.setBottomPlayerTextColor(bottomPlayerTextColor);
-
-
-		int topPlayerDotId;
-		int bottomPlayerDotId;
-
-		if (getBoardFace().isReside()) {
-			topPlayerDotId = R.drawable.player_indicator_white;
-			bottomPlayerDotId = R.drawable.player_indicator_black;
-		} else {
-			topPlayerDotId = R.drawable.player_indicator_black;
-			bottomPlayerDotId = R.drawable.player_indicator_white;
-		}
-
-//		if (topPlayerTextColor == hintColor) { // not active // TODO set active side
-//			topPlayerClock.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-//			controlsBaseView.setBottomIndicator(bottomPlayerDotId);
-//		} else {
-//			topPlayerClock.setCompoundDrawablesWithIntrinsicBounds(topPlayerDotId, 0, 0, 0);
-//			controlsBaseView.setBottomIndicator(0);
-//		}
-	}
-
 	// ----------------------Lcc Events ---------------------------------------------
 
-	@Override
-	public void onGameRecreate() {
-		getActivityFace().showPreviousFragment();
-	}
+//	@Override
+//	public void onGameRecreate() {
+//		getActivityFace().showPreviousFragment();
+//	}
 
 	@Override
 	public void startGameFromService() {
@@ -372,7 +320,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				controlsNetworkView.haveNewMessage(true);
+				controlsLiveView.haveNewMessage(true);
 				boardView.invalidate();
 			}
 		});
@@ -422,7 +370,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	}
 
 	@Override
-	protected void setBoardToFinishedState(){ // TODO implement state conditions logic for board
+	protected void setBoardToFinishedState() { // TODO implement state conditions logic for board
 		super.setBoardToFinishedState();
 		showSubmitButtonsLay(false);
 	}
@@ -458,7 +406,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			throw new Exception();
 		} catch (Exception e) {
 			stackTrace = Log.getStackTraceString(e);
-	}
+		}
 
 		String temporaryDebugInfo =
 				"username=" + liveService.getUsername() +
@@ -483,20 +431,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		liveService.makeMove(move, temporaryDebugInfo);
 	}
 
-	private void updatePlayerLabels() {
-		if (getBoardFace().isReside()) {
-//			topPlayerLabel.setText(getWhitePlayerName());
-//			controlsNetworkView.setBottomPlayerLabel(getBlackPlayerName());
-			topPanelView.setPlayerLabel(getWhitePlayerName());
-			bottomPanelView.setPlayerLabel(getBlackPlayerName());
-		} else {
-//			topPlayerLabel.setText(getBlackPlayerName());
-//			controlsNetworkView.setBottomPlayerLabel(getWhitePlayerName());
-			topPanelView.setPlayerLabel(getBlackPlayerName());
-			bottomPanelView.setPlayerLabel(getWhitePlayerName());
-		}
-	}
-
 	@Override
 	public void switch2Analysis() {
 //		super.switch2Analysis(isAnalysis);
@@ -505,12 +439,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 //			liveService.setLatestMoveNumber(0);
 //			ChessBoardLive.resetInstance();
 //		}
-//		controlsNetworkView.enableControlButtons(isAnalysis);
+//		controlsLiveView.enableControlButtons(isAnalysis);
 	}
 
 	@Override
 	public void switch2Chat() {
-		openChatActivity();
+		openChat();
 	}
 
 	@Override
@@ -526,32 +460,26 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		boardView.invalidate();
 	}
 
-	private void openChatActivity() {
-		preferencesEditor.putString(AppConstants.OPPONENT, isUserColorWhite()
-				? currentGame.getBlackUsername() : currentGame.getWhiteUsername());
-		preferencesEditor.commit();
+	private void openChat() {
+//		preferencesEditor.putString(AppConstants.OPPONENT, isUserColorWhite()
+//				? currentGame.getBlackUsername() : currentGame.getWhiteUsername());
+//		preferencesEditor.commit();
 
 		currentGame.setHasNewMessage(false);
-		controlsNetworkView.haveNewMessage(false);
+		controlsLiveView.haveNewMessage(false);
 
-
-		// TODO open ChatFragment
-//		Intent intent = new Intent(this, ChatLiveActivity.class);
-//		intent.putExtra(BaseGameItem.TIMESTAMP, currentGame.getTimestamp());
-//		startActivity(intent);
+		getActivityFace().openFragment(new LiveChatFragment());
 	}
 
 	private void checkMessages() {
 		if (currentGame.hasNewMessage()) {
-			controlsNetworkView.haveNewMessage(true);
+			controlsLiveView.haveNewMessage(true);
 		}
 	}
 
 	@Override
 	public void newGame() {
-//		startActivity(new Intent(this, LiveNewGameActivity.class));
 		getActivityFace().changeRightFragment(NewGamesFragment.newInstance(NewGamesFragment.RIGHT_MENU_MODE));
-
 	}
 
 	@Override
@@ -563,18 +491,30 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	@Override
 	public void invalidateGameScreen() {
 		if (isLCSBound) {
-		showSubmitButtonsLay(getBoardFace().isSubmit());
+			showSubmitButtonsLay(getBoardFace().isSubmit());
 
-//		topPlayerLabel.setVisibility(View.VISIBLE); // TODO restore - recheck
-//		topPlayerClock.setVisibility(View.VISIBLE);
+			if (labelsConfig.bottomAvatar != null) {
+				labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+				bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+			}
 
-		updatePlayerLabels();
+			if (labelsConfig.topAvatar != null) {
+				labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+				topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+			}
+
+			topPanelView.activateTimer(true);
+			bottomPanelView.activateTimer(true);
+
+			topPanelView.setSide(labelsConfig.getOpponentSide());
+			bottomPanelView.setSide(labelsConfig.userSide);
+
+			topPanelView.setPlayerLabel(labelsConfig.topPlayerLabel);
+			bottomPanelView.setPlayerLabel(labelsConfig.bottomPlayerLabel);
+
+			boardView.updateNotations(getBoardFace().getNotationArray());
 			liveService.paintClocks();
-		changePlayersLabelColors();
-
-//		boardView.updateNotations(getBoardFace().getMoveListSAN());
-		boardView.updateNotations(getBoardFace().getNotationArray());
-	}
+		}
 	}
 
 	@Override
@@ -585,7 +525,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 	@Override
 	public void showSubmitButtonsLay(boolean show) {  // TODO remove arg and get state from boardFace
-		controlsNetworkView.showSubmitButtons(show);
+		controlsLiveView.showSubmitButtons(show);
 
 		if (!show) {
 			getBoardFace().setSubmit(false);
@@ -625,7 +565,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 //			switch2Analysis(false);
 			getBoardFace().setAnalysis(false);
 
-			updateGameState();
+			onGameStarted();
 
 			if (!isUserColorWhite()) {
 				getBoardFace().setReside(true);
@@ -636,17 +576,17 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 				Game game = liveService.getCurrentGame();
 
 				if (liveService.isFairPlayRestriction()) {
-				Log.i("LCCLOG", ": resign game by fair play restriction: " + game);
-				Log.i(TAG, "Resign game: " + game);
+					Log.i("LCCLOG", ": resign game by fair play restriction: " + game);
+					Log.i(TAG, "Resign game: " + game);
 					liveService.runMakeResignTask();
 				} else if (liveService.isAbortableBySeq()) {
-				Log.i(TAG, "LCCLOG: abort game: " + game);
+					Log.i(TAG, "LCCLOG: abort game: " + game);
 					liveService.runAbortGameTask();
-			} else {
-				Log.i(TAG, "LCCLOG: resign game: " + game);
+				} else {
+					Log.i(TAG, "LCCLOG: resign game: " + game);
 					liveService.runMakeResignTask();
+				}
 			}
-		}
 		}
 		super.onPositiveBtnClick(fragment);
 	}
@@ -673,26 +613,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.fair_play_policy_url))));
 		}
 		super.onNegativeBtnClick(fragment);
-	}
-
-	protected void changeChatIcon(Menu menu) {
-//		MenuItem menuItem = menu.findItem(R.id.menu_chat);
-//		if (menuItem == null)
-//			return;
-//
-//		if (currentGame.hasNewMessage()) {
-//			menuItem.setIcon(R.drawable.chat_nm);
-//		} else {
-//			menuItem.setIcon(R.drawable.chat);
-//		}
-	}
-
-	@Override
-	public void onPrepareOptionsMenu(Menu menu) {
-		if (currentGame != null) {
-			changeChatIcon(menu);
-		}
-		super.onPrepareOptionsMenu(menu);
 	}
 
 	// ---------------- Players names and labels -----------------------------------------------------------------
@@ -730,15 +650,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		String blackPlayerLabel = game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR + newBlackRating + StaticData.SYMBOL_RIGHT_PAR;
 
 		if (getBoardFace().isReside()) {
-
-//			topPlayerLabel.setText(whitePlayerLabel);
-//			controlsNetworkView.setBottomPlayerLabel(blackPlayerLabel);
-
 			topPanelView.setPlayerLabel(whitePlayerLabel);
 			bottomPanelView.setPlayerLabel(blackPlayerLabel);
 		} else {
-//			topPlayerLabel.setText(blackPlayerLabel);
-//			controlsNetworkView.setBottomPlayerLabel(whitePlayerLabel); // always at the bottom
 			topPanelView.setPlayerLabel(blackPlayerLabel);
 			bottomPanelView.setPlayerLabel(whitePlayerLabel);
 		}
@@ -810,11 +724,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	protected void restoreGame() {
 		if (isLCSBound) {
 			ChessBoardLive.resetInstance();
-	//		boardView.setBoardFace(getBoardFace());
 			boardView.setGameActivityFace(this);
 			onGameStarted();
 			getBoardFace().setJustInitialized(false);
-	//		liveService.executePausedActivityGameEvents();
 		}
 	}
 
@@ -856,40 +768,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 //			}
 //			drawButtonsLay.setVisibility(View.GONE);
 		} else if (view.getId() == R.id.rematchPopupBtn) {
-			liveService.rematch();
+			if (isLCSBound) {
+				liveService.rematch();
+			}
 			dismissDialogs();
 		}
 	}
-
-//	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
-//		private final int LIVE_SETTINGS = 0;
-//		private final int LIVE_RESIDE = 1;
-//		private final int LIVE_DRAW_OFFER = 2;
-//		private final int LIVE_RESIGN_OR_ABORT = 3;
-//		private final int LIVE_MESSAGES = 4;
-//
-//		@Override
-//		public void onClick(DialogInterface dialogInterface, int pos) {
-//			switch (pos) {
-//				case LIVE_SETTINGS:
-//					startActivity(new Intent(getContext(), SettingsScreenActivity.class));
-//					break;
-//				case LIVE_RESIDE:
-//					getBoardFace().setReside(!getBoardFace().isReside());
-//					boardView.invalidate();
-//					break;
-//				case LIVE_DRAW_OFFER:
-//					showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
-//					break;
-//				case LIVE_RESIGN_OR_ABORT:
-//					showPopupDialog(R.string.abort_resign_game, R.string.are_you_sure_q, ABORT_GAME_TAG);
-//					break;
-//				case LIVE_MESSAGES:
-//					openChatActivity();
-//					break;
-//			}
-//		}
-//	}
 
 	private void checkPendingWarnings() {
 		Log.d("live", "checkPendingWarnings");
@@ -907,7 +791,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	@Override
 	public void onItemClick(QuickAction source, int pos, int actionId) {
 		if (actionId == ID_NEW_GAME) {
-			getActivityFace().openFragment(new LiveGameOptionsFragment());
+			getActivityFace().changeRightFragment(new LiveGameOptionsFragment());
+			getActivityFace().toggleRightMenu();
+		} else if (actionId == ID_OFFER_DRAW) {
+			showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
+		} else if (actionId == ID_RESIGN_ABORT) {
+			showPopupDialog(R.string.abort_resign_game, R.string.are_you_sure_q, ABORT_GAME_TAG);
 		} else if (actionId == ID_SETTINGS) {
 			getActivityFace().openFragment(new SettingsFragment());
 		}
@@ -921,43 +810,61 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 	private void init() {
 		currentGame = liveService.getGameItem();
+
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		boardView.updateBoardAndPiecesImgs();
 		enableScreenLockTimer();
 
 		if (!liveService.currentGameExist()) {
-//			gamePanelView.enableAnalysisMode(true);
-			controlsNetworkView.enableAnalysisMode(true);
-
+			controlsLiveView.enableAnalysisMode(true);
 			getBoardFace().setFinished(true);
-//			gamePanelView.showBottomPart(false);
 		}
 
 		liveService.setLccEventListener(this);
 		liveService.setLccChatMessageListener(this);
 		liveService.setGameTaskListener(gameTaskListener);
 
-		int resignOrAbort = liveService.getResignTitle();
+		{// set avatars
+			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-//		menuOptionsItems = new CharSequence[]{
-//				getString(R.string.settings),
-//				getString(R.string.reside),
-//				getString(R.string.drawoffer),
-//				getString(resignOrAbort),
-//				getString(R.string.messages)};
-//
-//		menuOptionsDialogListener = new MenuOptionsDialogListener();
+			String opponentName;
+			if (isUserColorWhite()) {
+				opponentName = currentGame.getBlackUsername();
+			} else {
+				opponentName = currentGame.getWhiteUsername();
+			}
+			// request opponent avatar
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.CMD_USERS);
+			loadItem.addRequestParams(RestHelper.P_USER_NAME, opponentName);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+			new RequestJsonTask<UserItem>(userInfoUpdateListener).executeTask(loadItem);
+		}
+
+		{// fill labels
+			labelsConfig = new LabelsConfig();
+			if (isUserColorWhite()) {
+				labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+
+				labelsConfig.topPlayerLabel = getBlackPlayerName();
+				labelsConfig.bottomPlayerLabel = getWhitePlayerName();
+			} else {
+				labelsConfig.userSide = ChessBoard.BLACK_SIDE;
+
+				labelsConfig.topPlayerLabel = getWhitePlayerName();
+				labelsConfig.bottomPlayerLabel = getBlackPlayerName();
+			}
+		}
 
 		lccInitiated = true;
 	}
-
-
 
 	private void widgetsInit(View view) {
 		fadeLay = view.findViewById(R.id.fadeLay);
 		gameBoardView = view.findViewById(R.id.baseView);
 
-		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
+		controlsLiveView = (ControlsLiveView) view.findViewById(R.id.controlsLiveView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
@@ -966,29 +873,81 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		boardView.setFocusable(true);
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsNetworkView);
+		boardView.setControlsView(controlsLiveView);
 		boardView.setNotationsView(notationsView);
-
 		setBoardView(boardView);
-
-//		boardView.setBoardFace(getBoardFace());
 		boardView.setGameActivityFace(this);
-
-		controlsNetworkView.enableAnalysisMode(false);
-
-//		topPlayerLabel = whitePlayerLabel;
-//		topPlayerClock = blackPlayerLabel;
-
-//		topPlayerLabel.setMaxWidth(getResources().getDisplayMetrics().widthPixels);  // TODO restore
+		controlsLiveView.setBoardViewFace(boardView);
 
 		{// Quick action setup
 			quickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
-
-			quickAction.addActionItem(new ActionItem(ID_NEW_GAME, getString(R.string.next_tactic)));
-			quickAction.addActionItem(new ActionItem(ID_FLIP_BOARD, getString(R.string.show_answer)));
+			quickAction.addActionItem(new ActionItem(ID_NEW_GAME, getString(R.string.new_game)));
+			quickAction.addActionItem(new ActionItem(ID_OFFER_DRAW, getString(R.string.offer_draw)));
+			quickAction.addActionItem(new ActionItem(ID_RESIGN_ABORT, getString(liveService.getResignTitle())));
 			quickAction.addActionItem(new ActionItem(ID_SETTINGS, getString(R.string.settings)));
-
 			quickAction.setOnActionItemClickListener(this);
+		}
+	}
+
+	private class LabelsConfig {
+		BoardAvatarDrawable topAvatar;
+		BoardAvatarDrawable bottomAvatar;
+		String topPlayerLabel;
+		String bottomPlayerLabel;
+		int userSide;
+
+		int getOpponentSide() {
+			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
+		}
+	}
+
+	private class UserInfoUpdateListener extends ChessUpdateListener<UserItem> {
+
+		public UserInfoUpdateListener() {
+			super(UserItem.class);
+		}
+
+		@Override
+		public void updateData(UserItem returnedObj) {
+			super.updateData(returnedObj);
+
+			String opponentAvatarUrl = returnedObj.getData().getAvatar_small_url();
+			imageDownloader.download(opponentAvatarUrl, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
+		}
+	}
+
+	private class ImageUpdateListener implements ImageReadyListener {
+
+		private static final int TOP_AVATAR = 0;
+		private static final int BOTTOM_AVATAR = 1;
+		private int code;
+
+		private ImageUpdateListener(int code) {
+			this.code = code;
+		}
+
+		@Override
+		public void onImageReady(Bitmap bitmap) {
+			switch (code) {
+				case TOP_AVATAR:
+					labelsConfig.topAvatar = new BoardAvatarDrawable(getContext(), bitmap);
+
+					labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+					topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+					topPanelView.invalidate();
+
+					String userAvatarUrl = AppData.getUserAvatar(getContext());
+					imageDownloader.download(userAvatarUrl,new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
+
+					break;
+				case BOTTOM_AVATAR:
+					labelsConfig.bottomAvatar = new BoardAvatarDrawable(getContext(), bitmap);
+
+					labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+					bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+					bottomPanelView.invalidate();
+					break;
+			}
 		}
 	}
 }

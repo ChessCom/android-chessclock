@@ -39,8 +39,8 @@
             android:background="@drawable/white_border_back"
             android:paddingTop="14dip"
             android:paddingBottom="13dip"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip"
+            android:paddingLeft="@dimen/default_scr_side_padding"
+            android:paddingRight="@dimen/default_scr_side_padding"
             custom:ttf="Bold"
             />
 

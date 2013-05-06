@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:paddingTop="15dip"
-    android:paddingLeft="15dip"
-    android:paddingRight="15dip"
+    android:paddingLeft="@dimen/default_scr_side_padding"
+    android:paddingRight="@dimen/default_scr_side_padding"
     >
     <!--Video Thumbnail-->
     <RelativeLayout

@@ -166,8 +166,9 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
-    <style name="ttt" parent="@android:style/Widget.EditText">
-
+    <style name="NotationsStyle">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginTop">@dimen/notations_margin_top</item>
     </style>
 
     <style name="DefaultEdt">

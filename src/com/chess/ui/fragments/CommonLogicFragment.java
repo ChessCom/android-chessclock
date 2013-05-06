@@ -42,7 +42,6 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
-import com.slidingmenu.lib.SlidingMenu;
 import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
@@ -460,7 +459,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 //	public boolean onOptionsItemSelected(MenuItem item) {
 //		switch (item.getItemId()) {
 //			case android.R.id.home:
-//				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+//				getActivityFace().toggleLeftMenu();
 //				break;
 //		}
 //		return true;
@@ -484,11 +483,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		switch (item.getItemId()) {
 			case R.id.menu_games:
 				getActivityFace().changeRightFragment(HomePlayFragment.newInstance(RIGHT_MENU_MODE));
-				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+				getActivityFace().toggleRightMenu();
 				break;
 			case R.id.menu_notifications:
 				getActivityFace().changeRightFragment(new DailyGamesNotificationFragment());
-				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+				getActivityFace().toggleRightMenu();
 				break;
 		}
 		return true;

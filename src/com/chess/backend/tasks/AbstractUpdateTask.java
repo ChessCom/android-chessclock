@@ -96,13 +96,11 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 
 		try{
 			getTaskFace().showProgress(false);
-
+			if (notValidToReturnForFragment()) {
+				Log.d(TAG, " fragment is not valid to return data");
+				return;
+			}
 			if (result == StaticData.RESULT_OK) {
-				if (notValidToReturnForFragment()) {
-					Log.d(TAG, " fragment is not valid to return data");
-					return;
-				}
-
 				if (useList)
 					getTaskFace().updateListData(itemList);
 				else

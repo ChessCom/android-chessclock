@@ -275,7 +275,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		} else if (view.getId() == R.id.minRatingBtn){
 		} else if (view.getId() == R.id.maxRatingBtn){
 		} else if (view.getId() == R.id.dailyHeaderView){
-			getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+			getActivityFace().toggleRightMenu();
 		} else if (view.getId() == R.id.playBtn){
 			Log.d("TEST", "myColorEditBtn clicked");
 

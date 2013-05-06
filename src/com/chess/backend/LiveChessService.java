@@ -17,6 +17,7 @@ import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.lcc.android.*;
@@ -29,7 +30,7 @@ import com.chess.live.client.Game;
 import com.chess.live.client.LiveChessClient;
 import com.chess.live.client.User;
 import com.chess.model.GameLiveItem;
-import com.chess.ui.activities.old.LiveScreenActivity;
+import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.ui.engine.configs.NewLiveGameConfig;
 
 import java.util.HashMap;
@@ -147,8 +148,9 @@ public class LiveChessService extends Service {
 			Notification notification = new Notification(R.drawable.ic_stat_live, getString(R.string.chess_com_live),
 					System.currentTimeMillis());
 
-			Intent intent = new Intent(getContext(), LiveScreenActivity.class);
+			Intent intent = new Intent(getContext(), MainFragmentFaceActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			intent.putExtra(IntentConstants.LIVE_CHESS, true);
 
 			PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
 

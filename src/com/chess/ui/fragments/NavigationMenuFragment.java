@@ -93,48 +93,48 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 			case R.drawable.ic_nav_home:
 				getActivityFace().clearFragmentStack(); // TODO check
 				getActivityFace().switchFragment(new HomeTabsFragment()); // TODO clear stack
-				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				getActivityFace().toggleLeftMenu();
 				break;
 			case R.drawable.ic_nav_upgrade:
 				getActivityFace().openFragment(new UpgradeFragment());
-				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				getActivityFace().toggleLeftMenu();
 				break;
 			case R.drawable.ic_nav_play_daily:
 				getActivityFace().openFragment(new DailyTabsFragment());
-				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				getActivityFace().toggleLeftMenu();
 				break;
 			case R.drawable.ic_nav_play_live:
 //				getActivityFace().openFragment(new GameLiveFragment());
 				getActivityFace().openFragment(new LiveGameWaitFragment());
-				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				getActivityFace().toggleLeftMenu();
 				break;
 			case R.drawable.ic_nav_tactics:
 				getActivityFace().openFragment(new GameTacticsFragment());
-				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				getActivityFace().toggleLeftMenu();
 				break;
 			case R.drawable.ic_nav_lessons:
 				getActivityFace().openFragment(new LessonsFragment());
-				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				getActivityFace().toggleLeftMenu();
 				break;
 			case R.drawable.ic_nav_videos:
 				getActivityFace().openFragment(new VideosFragment());
-				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				getActivityFace().toggleLeftMenu();
 				break;
 			case R.drawable.ic_nav_articles:
 				getActivityFace().openFragment(new ArticlesFragment());
-				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				getActivityFace().toggleLeftMenu();
 				break;
 			case R.drawable.ic_nav_friends:
 				getActivityFace().openFragment(new FriendsFragment());
-				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				getActivityFace().toggleLeftMenu();
 				break;
 			case R.drawable.ic_nav_stats:
 				getActivityFace().openFragment(StatsGameFragment.newInstance(0));
-				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				getActivityFace().toggleLeftMenu();
 				break;
 			case R.drawable.ic_nav_settings:
 				getActivityFace().openFragment(new SettingsFragment());
-				getActivityFace().toggleMenu(SlidingMenu.LEFT);
+				getActivityFace().toggleLeftMenu();
 				break;
 		}
 	}

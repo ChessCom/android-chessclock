@@ -14,12 +14,7 @@
         android:id="@+id/notationsView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/notations_view_height"
-        android:visibility="visible"
-        android:gravity="center_vertical"
-        android:paddingLeft="7dip"
-        android:paddingTop="7dip"
-        android:paddingRight="7dip"
-        android:background="@color/notations_back"
+        style="@style/NotationsStyle"
         />
 
     <com.chess.ui.views.PanelInfoGameView

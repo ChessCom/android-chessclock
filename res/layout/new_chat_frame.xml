@@ -9,13 +9,18 @@
     >
 
     <ListView
-        android:id="@+id/chatLV"
+        android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll"
         android:layout_weight="1"
         android:background="@drawable/daily_games_item_default"
+        android:divider="@null"
+        android:dividerHeight="0px"
+        android:paddingTop="@dimen/default_scr_top_padding"
+        android:paddingLeft="@dimen/default_scr_side_padding"
+        android:paddingRight="@dimen/default_scr_side_padding"
         />
 
     <LinearLayout

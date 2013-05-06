@@ -119,11 +119,11 @@ public class RestHelper {
 
 	/* Methods */
 		/*Users*/
-	public static final String CMD_USER = BASE_URL + V1 + USERS;
-	public static final String CMD_LOGIN = CMD_USER +"/login";
-	public static final String CMD_REGISTER = CMD_USER +"/register";
-	public static final String CMD_GCM = CMD_USER + "/gcm";
-	public static final String CMD_USER_STATS = CMD_USER + "/stats";
+	public static final String CMD_USERS = BASE_URL + V1 + USERS;
+	public static final String CMD_LOGIN = CMD_USERS +"/login";
+	public static final String CMD_REGISTER = CMD_USERS +"/register";
+	public static final String CMD_GCM = CMD_USERS + "/gcm";
+	public static final String CMD_USER_STATS = CMD_USERS + "/stats";
 		/*Games*/
 	public static final String CMD_GAMES = BASE_URL + V1 + GAMES;
 	public static final String CMD_GAMES_ALL = CMD_GAMES +"/all";

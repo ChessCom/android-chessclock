@@ -11,9 +11,9 @@ public interface ActiveFragmentInterface {
 
 	void setCustomActionBarViewId(int viewId);
 
-	void toggleMenu(int code);
+	void toggleLeftMenu();
 
-//	void closeMenu(int code);
+	void toggleRightMenu();
 
 	void openFragment(BasePopupsFragment fragment);
 

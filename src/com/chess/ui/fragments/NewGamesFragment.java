@@ -21,7 +21,6 @@ import com.chess.ui.views.NewGameCompView;
 import com.chess.ui.views.NewGameDailyView;
 import com.chess.ui.views.NewGameDefaultView;
 import com.chess.ui.views.NewGameLiveView;
-import com.slidingmenu.lib.SlidingMenu;
 
 
 /**
@@ -157,7 +156,7 @@ public class NewGamesFragment extends CommonLogicFragment {
 
 		getActivityFace().openFragment(GameCompFragment.newInstance(config));
 		if (getArguments().getInt(MODE) == RIGHT_MENU_MODE){
-			getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+			getActivityFace().toggleRightMenu();
 		}
 	}
 

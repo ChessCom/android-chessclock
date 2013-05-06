@@ -226,7 +226,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			handler.postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+					getActivityFace().toggleRightMenu();
 				}
 			}, 50);
 

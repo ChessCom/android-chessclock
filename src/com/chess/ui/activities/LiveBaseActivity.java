@@ -286,6 +286,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		}
 	}
 
+	public boolean isLCSBound() {
+		return isLCSBound;
+	}
+
 	private class LiveServiceConnectionListener implements ServiceConnection, LccConnectionUpdateFace {
 
 

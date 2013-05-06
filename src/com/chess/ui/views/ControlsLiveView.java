@@ -17,22 +17,20 @@ import com.chess.ui.interfaces.BoardViewNetworkFace;
  * @author alien_roger
  * @created at: 06.03.12 7:39
  */
-public class ControlsNetworkView extends ControlsBaseView {
+public class ControlsLiveView extends ControlsBaseView {
 
 	public static final int B_OPTIONS_ID = 0;
-	public static final int B_ANALYSIS_ID = 1;
-	public static final int B_CHAT_ID = 2;
-	public static final int B_BACK_ID = 3;
-	public static final int B_FORWARD_ID = 4;
-	public static final int B_CANCEL_ID = 5;
-	public static final int B_PLAY_ID = 6;
+	public static final int B_CHAT_ID = 1;
+	public static final int B_BACK_ID = 2;
+	public static final int B_FORWARD_ID = 3;
+	public static final int B_CANCEL_ID = 4;
+	public static final int B_PLAY_ID = 5;
 
 	private static final long BLINK_DELAY = 5 * 1000;
 	private static final long UNBLINK_DELAY = 400;
 
 	protected int[] buttonsDrawableIds = new int[]{
 			R.drawable.ic_ctrl_options,
-			R.drawable.ic_ctrl_analysis,
 			R.drawable.ic_ctrl_chat,
 			R.drawable.ic_ctrl_back,
 			R.drawable.ic_ctrl_fwd
@@ -44,12 +42,12 @@ public class ControlsNetworkView extends ControlsBaseView {
 	private Handler handler;
 	private int controlButtonHeight;
 
-	public ControlsNetworkView(Context context) {
+	public ControlsLiveView(Context context) {
 		super(context);
 		onCreate();
 	}
 
-	public ControlsNetworkView(Context context, AttributeSet attrs) {
+	public ControlsLiveView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		onCreate();
 	}
@@ -80,7 +78,6 @@ public class ControlsNetworkView extends ControlsBaseView {
 		controlsLayout.setLayoutParams(defaultLinLayParams);
 
 		addControlButton(B_OPTIONS_ID, R.drawable.button_emboss_left_selector);
-		addControlButton(B_ANALYSIS_ID, R.drawable.button_emboss_mid_selector);
 		addControlButton(B_CHAT_ID, R.drawable.button_emboss_mid_selector);
 		addControlButton(B_BACK_ID, R.drawable.button_emboss_mid_selector);
 		addControlButton(B_FORWARD_ID, R.drawable.button_emboss_right_selector);
@@ -127,9 +124,7 @@ public class ControlsNetworkView extends ControlsBaseView {
 		if (view.getId() == BUTTON_PREFIX + B_OPTIONS_ID) {
 			boardViewFace.showOptions(view);
 		}
-		if (view.getId() == BUTTON_PREFIX + B_ANALYSIS_ID) {
-			boardViewFace.switchAnalysis();
-		} else if (view.getId() == BUTTON_PREFIX + B_CHAT_ID) {
+		if (view.getId() == BUTTON_PREFIX + B_CHAT_ID) {
 			boardViewFace.showChat();
 		} else if (view.getId() == BUTTON_PREFIX + B_BACK_ID) {
 			boardViewFace.moveBack();
@@ -147,14 +142,13 @@ public class ControlsNetworkView extends ControlsBaseView {
 	}
 
 	public void haveNewMessage(boolean newMessage) {
-//		int imgId = newMessage ? R.drawable.ic_chat_nm : R.drawable.ic_chat; // TODO create custom top badge drawable
-
+//		int imgId = newMessage ? R.drawable.ic_chat_nm : R.drawable.ic_chat;
+//
 //		((ImageButton) findViewById(BUTTON_PREFIX + B_CHAT_ID)).setImageResource(imgId);
 		invalidate();
 	}
 
 	public void enableAnalysisMode(boolean enable) {
-		enableGameButton(B_ANALYSIS_ID, enable);
 		enableGameButton(B_FORWARD_ID, enable);
 		enableGameButton(B_BACK_ID, enable);
 	}
@@ -166,7 +160,6 @@ public class ControlsNetworkView extends ControlsBaseView {
 
 	public void enableGameControls(boolean enable) {
 		enableGameButton(B_OPTIONS_ID, enable);
-		enableGameButton(B_ANALYSIS_ID, enable);
 		enableGameButton(B_CHAT_ID, enable);
 		enableGameButton(B_FORWARD_ID, enable);
 		enableGameButton(B_BACK_ID, enable);
@@ -174,7 +167,6 @@ public class ControlsNetworkView extends ControlsBaseView {
 
 	public void showSubmitButtons(boolean show) {
 		showGameButton(B_OPTIONS_ID, !show);
-		showGameButton(B_ANALYSIS_ID, !show);
 		showGameButton(B_CHAT_ID, !show);
 		showGameButton(B_FORWARD_ID, !show);
 		showGameButton(B_BACK_ID, !show);

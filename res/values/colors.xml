@@ -9,8 +9,10 @@
     <color name="new_soft_white">#FFf5f5f5</color>
     <color name="new_soft_grey">#FFdedddb</color>
     <color name="new_normal_grey">#FF797571</color>
+    <color name="new_light_grey_0">#FFcbcbca</color>
     <color name="new_light_grey">#FFc8c8c8</color>
     <color name="new_light_grey_2">#FFa9a7a6</color>
+    <color name="new_light_grey_3">#FF8e8c8b</color>
     <color name="new_dark_grey_2">#FF1b1a18</color>
     <color name="new_main_back">#FF312e2b</color>
     <!--<color name="new_main_back">#ff2a2724</color>-->

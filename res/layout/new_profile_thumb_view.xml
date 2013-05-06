@@ -5,7 +5,7 @@
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="15dip"
+    android:paddingLeft="@dimen/default_scr_side_padding"
     android:paddingBottom="15dip"
     >
 

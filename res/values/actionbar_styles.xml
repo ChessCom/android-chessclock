@@ -70,7 +70,7 @@
 	</style>
 
 	<style name="ActionBarCompatSearchButton" parent="ActionBarCompatItemBase">
-		<item name="android:src">@drawable/ic_action_search</item>
+		<!--<item name="android:src">@drawable/ic_action_search</item>-->
 	</style>
 
     <style name="ActionBarCompatTitleBase">

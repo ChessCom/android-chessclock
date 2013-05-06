@@ -21,7 +21,7 @@ public interface LccEventListener {
 	
 	void onInform(String title, String message);
 
-	void onGameRecreate();
+//	void onGameRecreate();
 
 	void startGameFromService();
 

@@ -44,10 +44,10 @@ public class InviteFriendsFragment extends CommonLogicFragment {
 
 		int id = view.getId();
 		if (id == R.id.inviteHeaderView) {
-			getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+			getActivityFace().toggleRightMenu();
 		} else if (id == R.id.chesscomFriendsView) {
 			getActivityFace().openFragment(new FriendsFragment());
-			getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+			getActivityFace().toggleRightMenu();
 		} else if (id == R.id.dailyPlayBtn) {
 		} else if (id == R.id.facebookFriendsView) {
 			sendRequestDialog();

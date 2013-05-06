@@ -127,7 +127,7 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 //	public boolean onOptionsItemSelected(MenuItem item) {
 //		switch (item.getItemId()) {
 //			case R.id.menu_games:
-//				getActivityFace().toggleMenu(SlidingMenu.RIGHT);
+//				getActivityFace().toggleRightMenu();
 //				break;
 //		}
 //		return true;

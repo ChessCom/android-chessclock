@@ -9,8 +9,6 @@ import com.chess.backend.entity.new_api.ChatItem;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
@@ -20,12 +18,11 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 
 	private String userName;
 	private String opponentName;
-	private static SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
 
 	public ChatMessagesAdapter(Context context, List<ChatItem> items) {
 		super(context, items);
-        ownerColor = context.getResources().getColor(R.color.green_button);
-        opponentColor = context.getResources().getColor(R.color.orange_button_1);
+        ownerColor = context.getResources().getColor(R.color.new_light_grey_0);
+        opponentColor = context.getResources().getColor(R.color.new_light_grey_2);
 
 		userName =  AppData.getUserName(context);
 		opponentName =  AppData.getOpponentName(context);
@@ -35,8 +32,7 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 	protected View createView(ViewGroup parent) {
 		ViewHolder holder = new ViewHolder();
 
-		View view = inflater.inflate(R.layout.chat_item, null, false);
-		holder.playerLabel = (TextView) view.findViewById(R.id.playerLabelTxt);
+		View view = inflater.inflate(R.layout.chat_list_item, null, false);
 		holder.text = (TextView) view.findViewById(R.id.messageTxt);
 
 		view.setTag(holder);
@@ -47,20 +43,17 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 	protected void bindView(ChatItem item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		holder.text.setText(item.getContent());
-		String time = dateFormat.format(new Date(item.getTimestamp()));
 		if (item.isMine()) {
-			holder.playerLabel.setTextColor(ownerColor);
-			holder.playerLabel.setText(time + StaticData.SYMBOL_SPACE + userName);
+			holder.text.setTextColor(ownerColor);
+			holder.text.setText(userName + StaticData.SYMBOL_COLON + StaticData.SYMBOL_SPACE + item.getContent());
 		} else {
-			holder.playerLabel.setTextColor(opponentColor);
-			holder.playerLabel.setText(time + StaticData.SYMBOL_SPACE + opponentName);
+			holder.text.setTextColor(opponentColor);
+			holder.text.setText(opponentName + StaticData.SYMBOL_COLON + StaticData.SYMBOL_SPACE + item.getContent());
 		}
 	}
 
 
 	private static class ViewHolder{
-		TextView playerLabel;
 		TextView text;
 	}
 }
