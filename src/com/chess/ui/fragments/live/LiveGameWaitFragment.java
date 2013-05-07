@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
+import com.chess.backend.LiveChessService;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
+import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
 import com.chess.model.GameLiveItem;
@@ -92,6 +94,14 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 	@Override
 	public void onLiveServiceConnected() {
 		super.onLiveServiceConnected();
+		LiveChessService liveService;
+		try {
+			liveService = getLiveService();
+		} catch (DataNotValidException e) {
+			logTest(e.getMessage());
+			getActivityFace().showPreviousFragment();
+			return;
+		}
 		liveService.setLccEventListener(this);
 		liveService.setGameTaskListener(gameTaskListener);
 	}
@@ -142,9 +152,17 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 			activity.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
+					LiveChessService liveService;
+					try {
+						liveService = getLiveService();
+					} catch (DataNotValidException e) {
+						logTest(e.getMessage());
+						getActivityFace().showPreviousFragment();   // TODO handle correctly
+						return;
+					}
 					loadingView.setVisibility(View.GONE);
-//					showToast("challenge created, ready to start");
 					logTest("challenge created, ready to start");
+
 					Long gameId = liveService.getCurrentGameId();
 					logTest("gameId = " + gameId);
 					getActivityFace().switchFragment(GameLiveFragment.newInstance(gameId));
@@ -156,6 +174,14 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 	@Override
 	public void createSeek() {
 		if (liveGameConfig != null) {
+			LiveChessService liveService;
+			try {
+				liveService = getLiveService();
+			} catch (DataNotValidException e) {
+				logTest(e.getMessage());
+				getActivityFace().showPreviousFragment();
+				return;
+			}
 			liveService.createChallenge(liveGameConfig);
 		}
 	}

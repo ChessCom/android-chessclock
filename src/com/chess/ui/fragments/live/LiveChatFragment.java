@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
+import com.chess.backend.LiveChessService;
 import com.chess.backend.entity.new_api.ChatItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
+import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.ui.adapters.ChatMessagesAdapter;
 import com.chess.ui.fragments.LiveBaseFragment;
@@ -53,17 +55,24 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 		showKeyBoard(sendEdt);
 
 		if (isLCSBound) {
-			liveService.setLccChatMessageListener(this);
-			messagesAdapter = new ChatMessagesAdapter(getActivity(), liveService.getMessagesList());
-			listView.setAdapter(messagesAdapter);
+			LiveChessService liveService;
+			try {
+				liveService = getLiveService();
+				liveService.setLccChatMessageListener(this);
+				messagesAdapter = new ChatMessagesAdapter(getActivity(), liveService.getMessagesList());
+				listView.setAdapter(messagesAdapter);
 
-			showKeyBoard(sendEdt);
-			liveService.setLccChatMessageListener(this);
-			updateList();
+				showKeyBoard(sendEdt);
+				liveService.setLccChatMessageListener(this);
+				updateList();
+			} catch (DataNotValidException e) {
+				logTest(e.getMessage());
+			}
 		}
 	}
 
-	private void updateList() {
+	private void updateList() throws DataNotValidException {
+		LiveChessService liveService = getLiveService();
 		List<ChatItem> chatItems = liveService.getMessagesList();
 		messagesAdapter.setItemsList(chatItems);
 		listView.post(new AppUtils.ListSelector((chatItems.size() - 1), listView));
@@ -74,7 +83,11 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				updateList();
+				try {
+					updateList();
+				} catch (DataNotValidException e) {
+					logTest(e.getMessage());
+				}
 			}
 		});
 	}
@@ -83,14 +96,15 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 	public void onClick(View view) {
 		if (view.getId() == R.id.sendBtn) {
 			if (isLCSBound) {
-				// todo: refactor with new LCC
-				if (!liveService.isConnected() || liveService.getClient() == null) { // TODO should leave that screen on connection lost or when LCC is become null
-					liveService.logout();
-					liveBaseActivity.unBindLiveService();
+
+				LiveChessService liveService;
+				try {
+					liveService = getLiveService();
+				} catch (DataNotValidException e) {
+					logTest(e.getMessage());
 					getActivityFace().showPreviousFragment();
 					return;
 				}
-
 				liveService.sendMessage(getTextFromField(sendEdt), messageUpdateListener);
 
 				sendEdt.setText(StaticData.SYMBOL_EMPTY);
@@ -106,6 +120,13 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 
 		@Override
 		public void updateData(String returnedObj) {
+			LiveChessService liveService;
+			try {
+				liveService = getLiveService();
+			} catch (DataNotValidException e) {
+				logTest(e.getMessage());
+				return;
+			}
 			messagesAdapter.setItemsList(liveService.getMessagesList());
 		}
 	}

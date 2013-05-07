@@ -109,7 +109,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		if (isLCSBound) {
 			showLoadingView(!liveService.isConnected());
 
-			if (liveService.currentGameExist()) {
+			if (liveService.isCurrentGameExist()) {
 			currentGame.setVisibility(View.VISIBLE);
 		} else {
 			currentGame.setVisibility(View.GONE);
@@ -124,7 +124,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 		super.onLiveServiceConnected();
 		showLoadingView(!liveService.isConnected());
 
-		if (liveService.currentGameExist()) {
+		if (liveService.isCurrentGameExist()) {
 			currentGame.setVisibility(View.VISIBLE);
 		} else {
 			currentGame.setVisibility(View.GONE);

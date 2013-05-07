@@ -34,7 +34,7 @@ public class LiveNewGameActivity extends LiveBaseActivity {
 	@Override
 	protected void onLiveServiceConnected() {
 		super.onLiveServiceConnected();
-		if (liveService.currentGameExist()) {
+		if (liveService.isCurrentGameExist()) {
 			currentGameBtn.setVisibility(View.VISIBLE);
 		} else {
 			currentGameBtn.setVisibility(View.GONE);

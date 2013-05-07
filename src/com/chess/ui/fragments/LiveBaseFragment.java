@@ -3,6 +3,7 @@ package com.chess.ui.fragments;
 import android.app.Activity;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.statics.AppData;
+import com.chess.lcc.android.DataNotValidException;
 import com.chess.ui.activities.LiveBaseActivity;
 
 /**
@@ -14,7 +15,7 @@ import com.chess.ui.activities.LiveBaseActivity;
 public class LiveBaseFragment extends CommonLogicFragment {
 
 	protected LiveBaseActivity liveBaseActivity;
-	protected LiveChessService liveService;
+	private LiveChessService liveService;
 	protected boolean isLCSBound;
 
 	@Override
@@ -30,11 +31,24 @@ public class LiveBaseFragment extends CommonLogicFragment {
 		}
 	}
 
-	protected LiveChessService getLiveService(){
-		return liveBaseActivity.getLiveService();
+	protected LiveChessService getLiveService() throws DataNotValidException {
+		LiveChessService service = liveBaseActivity.getLiveService();
+		if (service == null || !service.isUserConnected()) {
+			if (service == null) {
+				throw new DataNotValidException(DataNotValidException.SERVICE_NULL);
+			} else if (service.getLccHelper() == null) {
+				throw new DataNotValidException(DataNotValidException.LCC_HELPER_NULL);
+			} else if (service.getUser() == null) {
+				throw new DataNotValidException(DataNotValidException.USER_NULL);
+			} else /*if (!service.isConnected())*/ {
+				throw new DataNotValidException(DataNotValidException.NOT_CONNECTED);
+			}
+		} else {
+			return service;
+		}
 	}
 
-	public void  onLiveServiceConnected() {
+	public void onLiveServiceConnected() {
 	}
 
 	public boolean isLCSBound() {

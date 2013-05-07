@@ -589,19 +589,19 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	protected void adjustSignOutActionMenu(Menu menu) {
-		boolean isConnected = false;
-		if (isLCSBound) {
-			isConnected = liveService.isConnected();
-		}
-		if (HONEYCOMB_PLUS_API) {// this item doesn't exist at this point in pre-ICS
-//			getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
-		}
+//		boolean isConnected = false;
+//		if (isLCSBound) {
+//			isConnected = liveService.isConnected();
+//		}
+//		if (HONEYCOMB_PLUS_API) {// this item doesn't exist at this point in pre-ICS
+////			getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
+//		}
 	}
 
 	protected void onLiveServiceConnected() {
-		Log.d("TEST", "onLiveConnected callback, liveService.isConnected() = " + liveService.isConnected()
-				+ " in " + LiveBaseActivity.this);
-		Log.d(TAG, " onLiveServiceConnected callback, liveService.isConnected() = " + liveService.isConnected());
+//		Log.d("TEST", "onLiveConnected callback, liveService.isConnected() = " + liveService.isConnected()
+//				+ " in " + LiveBaseActivity.this);
+//		Log.d(TAG, " onLiveServiceConnected callback, liveService.isConnected() = " + liveService.isConnected());
 //		getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveService.isConnected());
 
 		liveService.setOuterChallengeListener(outerChallengeListener);

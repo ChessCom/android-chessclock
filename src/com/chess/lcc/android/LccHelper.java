@@ -79,8 +79,8 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	private List<String> pendingWarnings;
 
 	private LiveChessClientEventListener liveChessClientEventListener;
-    private LccEventListener lccEventListener;
-    private LccChatMessageListener lccChatMessageListener;
+	private LccEventListener lccEventListener;
+	private LccChatMessageListener lccChatMessageListener;
 
 	boolean liveConnected; // it is better to keep this state inside lccholder/service instead of preferences appdata
 	private LiveChessService.LccConnectUpdateListener lccConnectUpdateListener;
@@ -145,14 +145,14 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		}
 	}
 
-    public void setLccEventListener(LccEventListener lccEventListener){
-        this.lccEventListener = lccEventListener;
-        // todo
+	public void setLccEventListener(LccEventListener lccEventListener) {
+		this.lccEventListener = lccEventListener;
+		// todo
 		/*if (isGameActivityPausedMode()) {
 			executePausedActivityGameEvents(lccEventListener);
 			setGameActivityPausedMode(false);
 		}*/
-    }
+	}
 
 	public GameLiveItem getGameItem() {
 		Game game = getGame(currentGameId);
@@ -196,7 +196,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 					ChatItem chatItem = new ChatItem();
 					chatItem.setContent(message.getMessage());
 					chatItem.setIsMine(message.getAuthor().getUsername().equals(getUser().getUsername()));
-					chatItem.setTimestamp( message.getDateTime().getTime());
+					chatItem.setTimestamp(message.getDateTime().getTime());
 					messageItems.add(chatItem);
 				}
 			}
@@ -233,7 +233,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	/**
 	 * Connect live chess client
 	 */
-	 public void performConnect(boolean useCurrentCredentials) {
+	public void performConnect(boolean useCurrentCredentials) {
 
 		String userName = AppData.getUserName(context);
 		String pass = AppData.getPassword(context);
@@ -245,7 +245,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 //				String sessionId = AppData.getUserSessionId(context);
 //				connectBySessionId(sessionId);
 //			} else {
-				connectByCreds(userName, pass);
+			connectByCreds(userName, pass);
 //			}
 
 		} else {
@@ -276,7 +276,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		this.liveChessClientEventListener = liveChessClientEventListener;
 	}
 
-	public void onOtherClientEntered(String message){
+	public void onOtherClientEntered(String message) {
 		liveChessClientEventListener.onConnectionFailure(message);
 	}
 
@@ -351,17 +351,17 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		liveChessClientEventListener.onObsoleteProtocolVersion();
 	}
 
-    public LccEventListener getLccEventListener() {
-        return lccEventListener;
-    }
+	public LccEventListener getLccEventListener() {
+		return lccEventListener;
+	}
 
-    public void setLccChatMessageListener(LccChatMessageListener lccChatMessageListener) {
-        this.lccChatMessageListener = lccChatMessageListener;
-    }
+	public void setLccChatMessageListener(LccChatMessageListener lccChatMessageListener) {
+		this.lccChatMessageListener = lccChatMessageListener;
+	}
 
-    public LccChatMessageListener getLccChatMessageListener() {
-        return lccChatMessageListener;
-    }
+	public LccChatMessageListener getLccChatMessageListener() {
+		return lccChatMessageListener;
+	}
 
 	public void setLiveChessClient(LiveChessClient liveChessClient) {
 		lccClient = liveChessClient;
@@ -729,8 +729,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		if (whiteUsername.equals(userName)) {
 			to = blackUsername;
 			color = switchColor ? PieceColor.BLACK : PieceColor.WHITE;
-		}
-		else if (blackUsername.equals(userName)) {
+		} else if (blackUsername.equals(userName)) {
 			to = whiteUsername;
 			color = switchColor ? PieceColor.WHITE : PieceColor.BLACK;
 		}
@@ -873,7 +872,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 					+ ", latestMoveNumber=" + latestMoveNumber + StaticData.SYMBOL_RIGHT_PAR);
 			return;
 		} else {*/
-			latestMoveNumber = moveIndex;
+		latestMoveNumber = moveIndex;
 		//}
 		if (isGameActivityPausedMode()) {
 			LiveGameEvent moveEvent = new LiveGameEvent();
@@ -941,7 +940,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		return null;
 	}
 
-	public boolean currentGameExist(){
+	public boolean isCurrentGameExist() {
 		return currentGameId != null && getGame(currentGameId) != null && !getGame(currentGameId).isGameOver();
 	}
 
@@ -1052,7 +1051,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		liveService.stopForeground(true); // exit Foreground mode and remove Notification icon
 	}
 
-//	public void createChallenge(String friend) {
+	//	public void createChallenge(String friend) {
 	public void createChallenge(NewLiveGameConfig config) {
 		if (getOwnSeeksCount() >= LccHelper.OWN_SEEKS_LIMIT || getUser() == null) {
 			return; // TODO throw exception

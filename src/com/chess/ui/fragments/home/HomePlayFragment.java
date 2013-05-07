@@ -28,7 +28,6 @@ import com.chess.ui.fragments.friends.InviteFriendsFragment;
 import com.chess.ui.fragments.game.GameCompFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
-import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
 import java.util.HashMap;

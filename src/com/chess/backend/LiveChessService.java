@@ -244,9 +244,7 @@ public class LiveChessService extends Service {
 		gameTaskRunner = new LccGameTaskRunner(gameTaskListener, lccHelper);
 	}
 
-	public void checkTestMove() {
-		lccHelper.checkTestMove();
-	}
+
 
 	public void runMakeDrawTask() {
 		gameTaskRunner.runMakeDrawTask();
@@ -266,6 +264,24 @@ public class LiveChessService extends Service {
 
 
 	// ------------------- Lcc Holder wrapping --------------------------
+	public LccHelper getLccHelper(){
+		return lccHelper;
+	}
+
+	public boolean isUserConnected() {
+		return lccHelper != null && lccHelper.getUser() != null && isConnected();
+	}
+
+	public boolean isCurrentGameExist() {
+		return lccHelper != null && lccHelper.isCurrentGameExist();
+	}
+
+	public boolean isValidToMakeMove() {
+		return lccHelper != null && lccHelper.getUser() != null && isConnected() && lccHelper.isCurrentGameExist();
+	}
+
+
+
 	public User getUser() {
 		return lccHelper.getUser();
 	}
@@ -274,6 +290,10 @@ public class LiveChessService extends Service {
 		if (lccHelper != null) {
 			lccHelper.logout();
 		}
+	}
+
+	public void checkTestMove() {
+		lccHelper.checkTestMove();
 	}
 
 	public Map<LiveEvent.Event, LiveEvent> getPausedActivityLiveEvents() {
@@ -307,10 +327,6 @@ public class LiveChessService extends Service {
 
 	public void setLccChatMessageListener(LccChatMessageListener chatMessageListener) {
 		lccHelper.setLccChatMessageListener(chatMessageListener);
-	}
-
-	public boolean currentGameExist() {
-		return lccHelper.currentGameExist();
 	}
 
 	public void setLccEventListener(LccEventListener eventListener) {

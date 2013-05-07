@@ -110,6 +110,7 @@ public class LccChatListener implements ChatListener {
 
 			if (lccHelper.getLccChatMessageListener() == null) {
 				Log.d(TAG, "CHAT exception check lccHelper.getLccChatMessageListener()");
+				return;
 			}
 
             lccHelper.getLccChatMessageListener().onMessageReceived();
