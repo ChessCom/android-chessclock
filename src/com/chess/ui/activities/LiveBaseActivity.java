@@ -80,10 +80,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		super.onStart();
 
 		if (AppData.isLiveChess(this)) {
-			/*if (!AppUtils.isNetworkAvailable(this)) {
+			if (!AppUtils.isNetworkAvailable(this)) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
-			}*/
+			}
 			Log.d("TEST", "onStart isLCSBound = " + isLCSBound + " in " + LiveBaseActivity.this);
 			if (isLCSBound) {
 				liveService.setConnectionUpdateFace(liveServiceConnectionListener);
