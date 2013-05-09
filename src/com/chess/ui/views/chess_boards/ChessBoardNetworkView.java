@@ -1,4 +1,4 @@
-package com.chess.ui.views;
+package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -12,6 +12,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.BoardViewNetworkFace;
 import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.interfaces.GameNetworkActivityFace;
+import com.chess.ui.views.game_controls.ControlsNetworkView;
 
 import java.util.Iterator;
 import java.util.TreeSet;

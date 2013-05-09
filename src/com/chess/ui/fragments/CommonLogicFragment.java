@@ -83,6 +83,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private GraphUser facebookUser;
 	private UiLifecycleHelper facebookUiHelper;
 	private boolean facebookActive;
+	protected View loadingView;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -105,6 +106,12 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 //		getActivity().setTitle(titleId);
 //	}
 
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		loadingView = view.findViewById(R.id.loadingView);
+	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -293,7 +300,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	}
 
-	protected abstract class ChessUpdateListener<ItemType> extends ActionBarUpdateListener<ItemType> {
+	protected class ChessUpdateListener<ItemType> extends ActionBarUpdateListener<ItemType> {
 
 		public ChessUpdateListener(Class<ItemType> clazz) {
 			super(getInstance(), CommonLogicFragment.this, clazz);
@@ -301,6 +308,14 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		public ChessUpdateListener() {
 			super(getInstance(), CommonLogicFragment.this);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			if (loadingView != null) {
+				loadingView.setVisibility(show? View.VISIBLE: View.GONE);
+			}
 		}
 	}
 

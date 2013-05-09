@@ -1,4 +1,4 @@
-package com.chess.ui.views;
+package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,6 +17,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.BoardViewCompFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
+import com.chess.ui.views.game_controls.ControlsCompView;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -129,7 +130,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	}
 
 	public void makeHint(final int time) {
-		controlsCompView.toggleControlButton(ControlsCompView.B_HINT_ID, true);
+		controlsCompView.enableHintButton(false);
 
 		setHint(true);
 		setComputerMoving(true);
@@ -215,7 +216,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			invalidate();
 
 			setHint(false);
-			controlsCompView.toggleControlButton(ControlsCompView.B_HINT_ID, false);
+			controlsCompView.enableHintButton(true);
 		}
 	};
 

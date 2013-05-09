@@ -48,6 +48,7 @@ gameSeekName	\w+		false	Name of new game/challenge. Default is `Let's Play!`.
 		public Builder(){
 			daysPerMove = 3;
 			rated = true;
+			gameType = 1;
 		}
 
 		public Builder setDaysPerMove(int daysPerMove) {

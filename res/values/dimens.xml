@@ -262,4 +262,5 @@
     <dimen name="new_tactics_rating_change_text_size">18sp</dimen>
     <dimen name="home_play_live_labels_padding_side">25dip</dimen>
     <dimen name="new_right_live_option_button_width">88dip</dimen>
+    <dimen name="daily_list_item_image_size">30dip</dimen>
 </resources>

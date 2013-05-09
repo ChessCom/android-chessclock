@@ -37,7 +37,7 @@
                 android:background="@drawable/game_board_divider"
                 />
 
-            <com.chess.ui.views.ChessBoardLiveView
+            <com.chess.ui.views.chess_boards.ChessBoardLiveView
                 android:id="@+id/boardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

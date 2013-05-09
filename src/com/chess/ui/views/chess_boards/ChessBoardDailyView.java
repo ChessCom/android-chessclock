@@ -1,4 +1,4 @@
-package com.chess.ui.views;
+package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
 import android.util.AttributeSet;

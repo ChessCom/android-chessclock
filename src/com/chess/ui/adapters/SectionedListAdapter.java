@@ -22,7 +22,6 @@ public abstract class SectionedListAdapter extends BaseAdapter {
 	}
 
 	public SectionedListAdapter(Context context) {
-		super();
 		this.context = context;
 	}
 
@@ -41,7 +40,7 @@ public abstract class SectionedListAdapter extends BaseAdapter {
 	@Override
 	public int getViewTypeCount() {
 		int total = 1; // one for the header, plus those from sections
-		for (Section section : this.sections) {
+		for (Section section : sections) {
 			total += section.adapter.getViewTypeCount();
 		}
 		return (total);
@@ -50,7 +49,7 @@ public abstract class SectionedListAdapter extends BaseAdapter {
 	@Override
 	public int getItemViewType(int position) {
 		int typeOffset = TYPE_SECTION_HEADER + 1; // start counting from here
-		for (Section section : this.sections) {
+		for (Section section : sections) {
 			int count = section.adapter.getCount();
 			if (count != 0) {
 				if (position == 0) {
@@ -84,28 +83,33 @@ public abstract class SectionedListAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		int total = 0;
-		for (Section section : this.sections) {
+		for (Section section : sections) {
 			if (section.adapter != null && section.adapter.getCount() != 0)
 				total += section.adapter.getCount() + 1; // add one for header
 		}
 		return (total);
 	}
 
-	public int getCurrentSection(int pos){
-		int sectionsCnt = sections.size();
+	/**
+	 * Section means adapter with it's own items
+	 * @param pos selected position
+	 * @return section(adapter) number which is responsible for providing data for selected position
+	 */
+	public int getCurrentSection(int pos) {
+		final int sectionsCnt = sections.size();
 		int section;
 		int headersCnt = 0;
 		int passedItems = 0;
 		int lastPassedItems = 0;
 
-		for (section = 0; section < sectionsCnt; section++){
-			passedItems += getSection(section).adapter.getCount();
-//			if(passedItems > 0)
-			if(passedItems > lastPassedItems) {
+		for (section=0; section < sectionsCnt; section++) {
+			passedItems += getSection(section).adapter.getCount(); // items in section. If there are 0 items, don't display/count header
+
+			if (passedItems > lastPassedItems) { // means we switched to another section, adding header
 				lastPassedItems = passedItems;
 				headersCnt++;
 			}
-			if(pos < headersCnt + passedItems){
+			if (pos < headersCnt + passedItems) { // if we found needed section, quit
 				break;
 			}
 		}
@@ -114,7 +118,7 @@ public abstract class SectionedListAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-		for (Section section : this.sections) {
+		for (Section section : sections) {
 			int count = section.adapter.getCount();
 			if (count == 0)
 				continue;

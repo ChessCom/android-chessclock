@@ -35,7 +35,7 @@
             android:background="@drawable/game_board_divider"
             />
 
-        <com.chess.ui.views.ChessBoardCompView
+        <com.chess.ui.views.chess_boards.ChessBoardCompView
             android:id="@+id/boardview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
         custom:oneLine="@bool/one_line_for_board"
         />
 
-    <com.chess.ui.views.ControlsCompView
+    <com.chess.ui.views.game_controls.ControlsCompView
         android:id="@+id/controlsCompView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

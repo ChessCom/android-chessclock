@@ -9,9 +9,9 @@ public class DbHelper {
 	public static QueryParams getDailyCurrentMyListGamesParams(Context context){
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.ECHESS_CURRENT_LIST_GAMES]);
-		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_LIST_GAMES);
-		queryParams.setSelection(DBDataManager.SELECTION_USER_TURN);
-		queryParams.setArguments(new String[]{AppData.getUserName(context), RestHelper.V_TRUE});
+//		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_LIST_GAMES);
+//		queryParams.setSelection(DBDataManager.SELECTION_USER_TURN);
+//		queryParams.setArguments(new String[]{AppData.getUserName(context), RestHelper.V_TRUE});
 		return queryParams;
 	}
 

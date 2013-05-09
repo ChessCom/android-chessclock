@@ -30,6 +30,7 @@
     <dimen name="quick_action_item_min_width">80dip</dimen>
     <dimen name="home_play_live_labels_padding_side">25dip</dimen>
     <dimen name="new_right_live_option_button_width">88dip</dimen>
+    <dimen name="daily_list_item_image_size">30dip</dimen>
 
 
 </resources>

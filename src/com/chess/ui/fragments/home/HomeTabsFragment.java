@@ -13,6 +13,7 @@ import com.chess.R;
 import com.chess.backend.GetAndSaveUserStats;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
+import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.slidingmenu.lib.SlidingMenu;
 
 /**
@@ -61,8 +62,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		showActionBar(true);
 
-//		Fragment homeGamesFragment = HomePlayFragment.newInstance(CENTER_MODE);
-		Fragment homeGamesFragment = new HomePlayFragment();
+//		Fragment homeGamesFragment = new HomePlayFragment();
+		Fragment homeGamesFragment = new DailyGamesFragment();
 		changeInternalFragment(homeGamesFragment);
 
 		tabRadioGroup = (RadioGroup) view.findViewById(R.id.tabRadioGroup);
@@ -90,10 +91,14 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
 				case R.id.leftTabBtn: {
-					Fragment fragment = findFragmentByTag(HomePlayFragment.class.getSimpleName());
+//					Fragment fragment = findFragmentByTag(HomePlayFragment.class.getSimpleName());
+//					if (fragment == null) {
+//						fragment = new HomePlayFragment();
+//					}
+//					changeInternalFragment(fragment);
+					Fragment fragment = findFragmentByTag(DailyGamesFragment.class.getSimpleName());
 					if (fragment == null) {
-						fragment = new HomePlayFragment();
-//						fragment = HomePlayFragment.newInstance(CENTER_MODE);
+						fragment = new DailyGamesFragment();
 					}
 					changeInternalFragment(fragment);
 					break;

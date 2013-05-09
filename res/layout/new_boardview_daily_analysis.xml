@@ -36,7 +36,7 @@
             android:background="@drawable/game_board_divider"
             />
 
-        <com.chess.ui.views.ChessBoardAnalysisView
+        <com.chess.ui.views.chess_boards.ChessBoardAnalysisView
             android:id="@+id/boardview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
         custom:oneLine="@bool/one_line_for_board"
         />
 
-    <com.chess.ui.views.ControlsAnalysisView
+    <com.chess.ui.views.game_controls.ControlsAnalysisView
         android:id="@+id/controlsAnalysisView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

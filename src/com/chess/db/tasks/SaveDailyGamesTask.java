@@ -34,11 +34,12 @@ public abstract class SaveDailyGamesTask<T extends DailyGameBaseData> extends Ab
 
 		String userToken = AppData.getUserToken(taskFace.getMeContext());
 
+		loadItem.setLoadPath(RestHelper.CMD_GAMES);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, userToken);
 	}
 
 	protected void updateOnlineGame(long gameId, String userName) {
-		loadItem.setLoadPath(RestHelper.CMD_GAME_BY_ID(gameId));
+		loadItem.addRequestParams(RestHelper.P_GAME_ID, gameId);
 
 		DailyGameByIdItem.Data currentGame = null;
 		try {

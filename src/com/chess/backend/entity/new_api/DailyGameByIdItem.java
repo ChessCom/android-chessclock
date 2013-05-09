@@ -11,36 +11,32 @@ import com.chess.backend.statics.StaticData;
  */
 public class DailyGameByIdItem extends BaseResponseItem<DailyGameByIdItem.Data> {
 
-
 /*
-    "status": "success",
-    "data": {
-        "game_id": 35000574,
-        "game_type": 1,
-        "timestamp": 1355687586,
-        "game_name": "Let's Play!",
-        "white_username": "erik",
-        "black_username": "jay",
-        "starting_fen_position": null,
-        "move_list": "1. e4 ",
-        "user_to_move": 2,
-        "white_rating": 1471,
-        "black_rating": 1206,
-        "encoded_move_string": "mC",
-        "has_new_message": false,
-        "seconds_remaining": 256125,
-        "game_result": "",
-        "draw_offered": 0,
-        "rated": true,
-        "days_per_move": 3
-    }
-*/
+    "id": 35001998,
+    "game_type": 1,
+    "time_remaining": 0,
+    "timestamp": 1367965030,
+    "name": "Let's Play!",
+    "has_new_message": false,
+    "game_score": 0,
+    "white_username": "rest",
+    "black_username": "erik",
+    "user_to_move": 1,
+    "white_rating": 1200,
+    "black_rating": 1201,
+    "is_rated": true,
+    "days_per_move": 3,
+    "draw_offered": 0,
+    "encoded_move_string": "",
+    "move_list": ""
+ */
+
 
 	public static class Data {
-		private long game_id;
+		private long id;
 		private int game_type;
 		private long timestamp;
-		private String game_name;
+		private String name;
 		private String white_username;
 		private String black_username;
 		private String starting_fen_position;
@@ -50,18 +46,18 @@ public class DailyGameByIdItem extends BaseResponseItem<DailyGameByIdItem.Data> 
 		private int black_rating;
 		private String encoded_move_string;
 		private boolean has_new_message;
-		private long seconds_remaining;
-		private String game_result;
+		private long time_remaining;
+		private int game_score;
 		private int draw_offered;
-		private boolean rated;
+		private boolean is_rated;
 		private int days_per_move;
 
 		public long getGameId() {
-			return game_id;
+			return id;
 		}
 
 		public void setGameId(long game_id) {
-			this.game_id = game_id;
+			this.id = game_id;
 		}
 
 		public int getGameType() {
@@ -81,11 +77,11 @@ public class DailyGameByIdItem extends BaseResponseItem<DailyGameByIdItem.Data> 
 		}
 
 		public String getGameName() {
-			return game_name;
+			return name;
 		}
 
 		public void setGameName(String game_name) {
-			this.game_name = game_name;
+			this.name = game_name;
 		}
 
 		public String getWhiteUsername() {
@@ -169,19 +165,19 @@ public class DailyGameByIdItem extends BaseResponseItem<DailyGameByIdItem.Data> 
 		}
 
 		public long getSecondsRemain() {
-			return seconds_remaining;
+			return time_remaining;
 		}
 
 		public void setSecondsRemain(long seconds_remaining) {
-			this.seconds_remaining = seconds_remaining;
+			this.time_remaining = seconds_remaining;
 		}
 
-		public String getGameResult() {
-			return game_result;
+		public int getGameScore() {
+			return game_score;
 		}
 
-		public void setGameResult(String game_result) {
-			this.game_result = game_result;
+		public void setGameScore(int game_result) {
+			this.game_score = game_result;
 		}
 
 		public int isDrawOffered() {
@@ -193,11 +189,11 @@ public class DailyGameByIdItem extends BaseResponseItem<DailyGameByIdItem.Data> 
 		}
 
 		public boolean isRated() {
-			return rated;
+			return is_rated;
 		}
 
 		public void setRated(boolean rated) {
-			this.rated = rated;
+			this.is_rated = rated;
 		}
 
 		public int getDaysPerMove() {

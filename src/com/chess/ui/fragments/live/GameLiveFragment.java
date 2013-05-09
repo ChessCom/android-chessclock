@@ -17,7 +17,6 @@ import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -37,8 +36,8 @@ import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameNetworkActivityFace;
-import com.chess.ui.views.ChessBoardLiveView;
-import com.chess.ui.views.ControlsLiveView;
+import com.chess.ui.views.chess_boards.ChessBoardLiveView;
+import com.chess.ui.views.game_controls.ControlsLiveView;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
@@ -77,7 +76,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	private View gameBoardView;
 	private boolean lccInitiated;
 	private String warningMessage;
-	private GameTaskListener gameTaskListener;
+	private ChessUpdateListener<Game> gameTaskListener;
 
 
 	private NotationView notationsView;
@@ -107,7 +106,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		gameTaskListener = new GameTaskListener();
+		gameTaskListener = new ChessUpdateListener<Game>();
 //		userInfoUpdateListener = new UserInfoUpdateListener();
 		imageDownloader = new ImageDownloaderToListener(getActivity());
 	}
@@ -200,7 +199,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		LiveChessService liveService = getLiveService();
 		GameLiveItem currentGame = liveService.getGameItem();
 
-		if (!isUserColorWhite()) {
+		if (!liveService.isUserColorWhite()) {
 			getBoardFace().setReside(true);
 			boardView.invalidate();
 		}
@@ -214,6 +213,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		}
 
 		showSubmitButtonsLay(false);
+		controlsLiveView.enableAnalysisMode(false);
+		getBoardFace().setFinished(false);
 		getSoundPlayer().playGameStart();
 
 		if (currentGame.hasNewMessage()) {
@@ -275,7 +276,22 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 	@Override
 	public void startGameFromService() {
-		// shouldn't be used here. Use in WaitFragment instead
+		Activity activity = getActivity();
+		if (activity != null) {
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					dismissProgressDialog();
+					dismissDialogs(); // hide game end popup
+
+					try {
+						onGameStarted();
+					} catch (DataNotValidException e) {
+						logTest(e.getMessage());
+					}
+				}
+			});
+		}
 	}
 
 	@Override
@@ -293,8 +309,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			return;
 		}
 
-		if (getBoardFace().isAnalysis())
+		if (getBoardFace().isAnalysis() && gameItem.getGameId() == gameId) {
 			return;
+		} else {
+			getBoardFace().setAnalysis(false);
+			gameId = gameItem.getGameId();
+		}
 
 		String[] actualMoves = gameItem.getMoveList().trim().split(" ");
 		int actualMovesSize = actualMoves.length;
@@ -363,6 +383,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 	@Override
 	public void onDrawOffered(String drawOfferUsername) {
+		// TODO show button at top panel view
 //		drawButtonsLay = getView().findViewById(R.id.drawButtonsLay);
 //		drawTitleTxt = (TextView) getView().findViewById(R.id.drawTitleTxt);
 //		getView().findViewById(R.id.acceptDrawBtn).setOnClickListener(GameLiveFragment.this);
@@ -375,7 +396,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 	@Override
 	public void onGameEnd(final String gameEndMessage) {
-		LiveChessService liveService = null;
+		LiveChessService liveService;
 		try {
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
@@ -916,12 +937,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			showPopupDialog(R.string.abort_resign_game, R.string.are_you_sure_q, ABORT_GAME_TAG);
 		} else if (actionId == ID_SETTINGS) {
 			getActivityFace().openFragment(new SettingsFragment());
-		}
-	}
-
-	private class GameTaskListener extends ActionBarUpdateListener<Game> {
-		public GameTaskListener() {
-			super(getInstance());
 		}
 	}
 

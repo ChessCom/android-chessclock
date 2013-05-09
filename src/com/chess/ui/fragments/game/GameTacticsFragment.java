@@ -35,10 +35,11 @@ import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.TacticsStatsFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
 import com.chess.ui.interfaces.TacticBoardFace;
-import com.chess.ui.views.ChessBoardTacticsView;
-import com.chess.ui.views.ControlsTacticsView;
+import com.chess.ui.views.chess_boards.ChessBoardTacticsView;
+import com.chess.ui.views.game_controls.ControlsTacticsView;
 import com.chess.ui.views.PanelInfoTacticsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -83,7 +84,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	private Handler tacticsTimer;
 	private ChessBoardTacticsView boardView;
 
-	private boolean noInternet;
+	private boolean noNetwork;
 	private boolean firstRun = true;
 
 	private TacticsUpdateListener getTacticsUpdateListener;
@@ -304,7 +305,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	@Override
 	public void verifyMove() {
 
-		noInternet = !AppUtils.isNetworkAvailable(getContext());
+		noNetwork = !AppUtils.isNetworkAvailable(getContext());
 
 		TacticBoardFace boardFace = getBoardFace();
 
@@ -317,11 +318,11 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 			} else { // correct
 				if (tacticItem.isWasShowed()) {
 					sendWrongResult();
-				} else if (tacticItem.isRetry() || noInternet) {
+				} else if (tacticItem.isRetry() || noNetwork) {
 					String newRatingStr = StaticData.SYMBOL_EMPTY;
-					if (tacticItem.getResultItem() != null) {
+//					if (tacticItem.getResultItem() != null) {
 						newRatingStr = tacticItem.getPositiveScore();
-					}
+//					}
 					showCorrect(newRatingStr);
 				} else {
 					sendCorrectResult();
@@ -329,11 +330,11 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 				stopTacticsTimer();
 			}
 		} else {
-			if (tacticItem.isRetry() || noInternet) {
+			if (tacticItem.isRetry() || noNetwork) {
 				String newRatingStr = StaticData.SYMBOL_EMPTY;
-				if (tacticItem.getResultItem() != null) {
+//				if (tacticItem.getResultItem() != null) {
 					newRatingStr = tacticItem.getNegativeScore();
-				}
+//				}
 				showWrong(newRatingStr);
 			} else {
 				sendWrongResult();
@@ -569,7 +570,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 
 		@Override
 		public void updateData(TacticItem returnedObj) {
-			noInternet = false;
+			noNetwork = false;
 
 			new SaveTacticsBatchTask(dbTacticBatchSaveListener, returnedObj.getData(),
 					getContentResolver()).executeTask();
@@ -620,21 +621,21 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 
 		@Override
 		public void updateData(TacticInfoItem returnedObj) {
-			noInternet = false;
+			noNetwork = false;
 
 			TacticRatingData tacticResultItem = returnedObj.getData().getRatingInfo();
-			if (tacticResultItem != null) {
+//			if (tacticResultItem != null) {
 				tacticResultItem.setId(tacticItem.getId());
 				tacticResultItem.setUser(tacticItem.getUser());
 				tacticItem.setResultItem(tacticResultItem);
-			}
+//			}
 			String newRatingStr = StaticData.SYMBOL_EMPTY;
 			switch (listenerCode) {
 				case CORRECT_RESULT:
-					if (tacticItem.getResultItem() != null) {
+//					if (tacticItem.getResultItem() != null) {
 						newRatingStr = tacticItem.getPositiveScore();
 						tacticItem.setRetry(true); // set auto retry because we will save tactic
-					}
+//					}
 
 					showCorrect(newRatingStr);
 					break;
@@ -642,10 +643,10 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 					if (tacticItem.isWasShowed()) {
 						showWrong(getString(R.string.solved_with_hint));
 					} else {
-						if (tacticItem.getResultItem() != null) {
+//						if (tacticItem.getResultItem() != null) {
 							newRatingStr = tacticItem.getNegativeScore();
 							tacticItem.setRetry(true); // set auto retry because we will save tactic
-						}
+//						}
 						showWrong(newRatingStr);
 					}
 
@@ -700,7 +701,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	private void handleErrorRequest() {
 		controlsTacticsView.enableGameControls(true);
 
-		noInternet = true;      // TODO handle button click properly
+		noNetwork = true;      // TODO handle button click properly
 		if (!userSawOfflinePopup) {
 			showPopupDialog(R.string.offline_mode, R.string.no_network_rating_not_changed, OFFLINE_RATING_TAG);
 		}
@@ -847,8 +848,8 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 
 			if (TacticsDataHolder.getInstance().isTacticLimitReached()) {
 				FlurryAgent.logEvent(FlurryData.UPGRADE_FROM_TACTICS, null);
-				startActivity(AppData.getMembershipIntent(StaticData.SYMBOL_EMPTY, getContext()));
-
+				getActivityFace().openFragment(new UpgradeFragment());
+//				startActivity(AppData.getMembershipIntent(StaticData.SYMBOL_EMPTY, getContext()));
 			} else {
 				getNextTactic();
 			}
@@ -858,7 +859,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 			stopTacticsTimer();
 			dismissDialogs();
 		} else if (view.getId() == R.id.retryBtn) {
-			if (noInternet) {
+			if (noNetwork) {
 				getNextTactic();
 			} else {
 				adjustBoardForGame();
@@ -904,8 +905,8 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 
 
 	private void loadNewTacticsBatch() {
-		noInternet = !AppUtils.isNetworkAvailable(getActivity());
-		if (noInternet || serverError) {
+		noNetwork = !AppUtils.isNetworkAvailable(getActivity());
+		if (noNetwork || serverError) {
 			loadOfflineTacticsBatch();
 		} else {
 

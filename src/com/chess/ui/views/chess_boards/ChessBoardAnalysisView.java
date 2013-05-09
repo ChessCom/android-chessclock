@@ -1,4 +1,4 @@
-package com.chess.ui.views;
+package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,6 +13,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.BoardViewAnalysisFace;
 import com.chess.ui.interfaces.GameAnalysisFace;
+import com.chess.ui.views.game_controls.ControlsAnalysisView;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -239,7 +240,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	@Override
 	public void switchAnalysis() {
 		super.switchAnalysis();
-		controlsAnalysisView.enableGameButton(ControlsCompView.B_HINT_ID, !getBoardFace().isAnalysis());
+//		controlsAnalysisView.en(ControlsCompView.B_HINT_ID, !getBoardFace().isAnalysis());
 	}
 
 	@Override

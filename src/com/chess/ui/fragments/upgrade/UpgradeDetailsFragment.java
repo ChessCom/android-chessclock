@@ -469,8 +469,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				Log.d(TAG, "Infinite gas subscription purchased.");
 				showSinglePopupDialog("Thank you for subscribing to !" + IabHelper.SKU_GOLD_MONTH);
 				isGoldMonthPayed = true;
-				updateData();
-				setWaitScreen(false);
 			} else if (purchase.getSku().equals(IabHelper.SKU_GOLD_YEAR)) {
 				Log.d(TAG, IabHelper.SKU_GOLD_YEAR  + " subscription purchased.");
 				showSinglePopupDialog("Thank you for subscribing to !" + IabHelper.SKU_GOLD_YEAR);

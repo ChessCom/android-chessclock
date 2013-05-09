@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,9 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.BaseGameItem;
 import com.chess.ui.fragments.LiveBaseFragment;
-import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
-import com.chess.ui.views.ChessBoardBaseView;
+import com.chess.ui.interfaces.GameActivityFace;
+import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import com.slidingmenu.lib.SlidingMenu;
@@ -65,6 +66,20 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 			savedInstanceState.putBoolean(AppConstants.SMALL_SCREEN, true);
 		}
 		super.onCreate(savedInstanceState);
+
+		// TODO check logic , add manual handling flag
+		AudioManager audio = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+		switch( audio.getRingerMode() ){
+			case AudioManager.RINGER_MODE_NORMAL:
+				AppData.setPlaySounds(getActivity(), true);
+				break;
+			case AudioManager.RINGER_MODE_SILENT:
+				AppData.setPlaySounds(getActivity(), false);
+				break;
+			case AudioManager.RINGER_MODE_VIBRATE:
+				AppData.setPlaySounds(getActivity(), false);
+				break;
+		}
 	}
 
 	@Override

@@ -148,7 +148,7 @@ public class RestHelper {
 	public static final String CMD_TACTIC_TRAINER = CMD_TACTICS + "/trainer";
 	public static String CMD_ANSWER_GAME_SEEK(long gameSeekId) {return CMD_GAMES + "/" + gameSeekId + "/seeks";}
 	public static String CMD_PUT_GAME_ACTION(long gameId) {return CMD_GAMES + "/" + gameId + "/actions";}
-	public static String CMD_GAME_BY_ID(long gameId) {return CMD_GAMES + "/" + gameId;}
+//	public static String CMD_GAME_BY_ID(long gameId) {return CMD_GAMES + "/" + gameId;}
 
 	/* Parameters */
 	// new
@@ -190,7 +190,8 @@ gameSeekName	\w+	false	Name of new game/challenge. Default is `Let's Play!`.
 	public static final String P_MIN_RATING = "minRating";
 	public static final String P_MAX_RATING = "maxRating";
 	public static final String P_IS_RATED = "isRated";
-	public static final String P_GAME_TYPE = "gameTypeCode";
+	public static final String P_GAME_TYPE = "gameTypeCodeId";
+	public static final String P_GAME_ID = "gameId";
 
 	public static final String P_UID = "uid";
 	public static final String P_LOCATION = "location";

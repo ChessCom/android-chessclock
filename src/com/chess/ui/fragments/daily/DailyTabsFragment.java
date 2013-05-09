@@ -62,12 +62,13 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 
 		showActionBar(true);
 
-		Fragment homeGamesFragment = new DailyGameSetupFragment();
+//		Fragment homeGamesFragment = new DailyGameSetupFragment();
+		Fragment homeGamesFragment = new DailyGamesFragment();
 		changeInternalFragment(homeGamesFragment);
 
 		tabRadioGroup = (RadioGroup) view.findViewById(R.id.tabRadioGroup);
 		tabRadioGroup.setOnCheckedChangeListener(this);
-		tabRadioGroup.check(R.id.centerTabBtn);
+		tabRadioGroup.check(R.id.leftTabBtn);// TODO centerTabBtn
 
 		previousCheckedId = tabRadioGroup.getCheckedRadioButtonId();
 	}

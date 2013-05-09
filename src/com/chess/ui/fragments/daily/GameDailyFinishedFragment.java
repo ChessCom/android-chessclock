@@ -11,7 +11,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,11 +42,12 @@ import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.CompGameSetupFragment;
 import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameNetworkActivityFace;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
-import com.chess.ui.views.*;
+import com.chess.ui.views.NotationView;
+import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
@@ -58,10 +62,10 @@ import java.util.Calendar;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 15.01.13
- * Time: 13:45
+ * Date: 08.05.13
+ * Time: 18:52
  */
-public class GameDailyFragment extends GameBaseFragment implements GameNetworkActivityFace, QuickAction.OnActionItemClickListener {
+public class GameDailyFinishedFragment extends GameBaseFragment implements GameNetworkActivityFace, QuickAction.OnActionItemClickListener {
 
 	public static final String DOUBLE_SPACE = "  ";
 	private static final String DRAW_OFFER_TAG = "offer draw";
@@ -121,8 +125,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private QuickAction quickAction;
 	private boolean chat;
 
-	public static GameDailyFragment newInstance(long gameId) {
-		GameDailyFragment fragment = new GameDailyFragment();
+	public static GameDailyFinishedFragment newInstance(long gameId) {
+		GameDailyFinishedFragment fragment = new GameDailyFinishedFragment();
 		fragment.gameId = gameId;
 		Bundle arguments = new Bundle();
 		arguments.putLong(BaseGameItem.GAME_ID, gameId);
@@ -152,7 +156,56 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		widgetsInit(view);
 	}
 
+	private void widgetsInit(View view) {
 
+		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
+		notationsView = (NotationView) view.findViewById(R.id.notationsView);
+		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
+		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
+
+		{// set avatars
+			Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
+			opponentAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
+			userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
+
+			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+
+			labelsConfig.topAvatar = opponentAvatarDrawable;
+			labelsConfig.bottomAvatar = userAvatarDrawable;
+		}
+
+		controlsNetworkView.enableGameControls(false);
+
+		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
+		boardView.setFocusable(true);
+		boardView.setTopPanelView(topPanelView);
+		boardView.setBottomPanelView(bottomPanelView);
+		boardView.setControlsView(controlsNetworkView);
+		boardView.setNotationsView(notationsView);
+
+		setBoardView(boardView);
+
+//		if (extras.getBoolean(AppConstants.NOTIFICATION, false)) { // TODO restore, replace with arguments
+////			ChessBoardOnline.resetInstance();
+//		}
+
+//		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
+		boardView.setGameActivityFace(this);
+		boardView.lockBoard(true);
+
+		boardUpdateFilter = new IntentFilter(IntentConstants.BOARD_UPDATE);
+
+		{// Quick action setup
+			quickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
+
+			quickAction.addActionItem(new ActionItem(ID_NEW_GAME, getString(R.string.new_game)));
+			quickAction.addActionItem(new ActionItem(ID_EMAIL_GAME, getString(R.string.email_game)));
+			quickAction.addActionItem(new ActionItem(ID_SETTINGS, getString(R.string.settings)));
+
+			quickAction.setOnActionItemClickListener(this);
+		}
+	}
 
 	@Override
 	public void onStart() {
@@ -316,7 +369,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 						if (localDbGameId != gameId) {
 							gameId = localDbGameId;
 							showSubmitButtonsLay(false);
-							boardView.setGameActivityFace(GameDailyFragment.this);
+							boardView.setGameActivityFace(GameDailyFinishedFragment.this);
 
 							getBoardFace().setAnalysis(false);
 
@@ -1206,57 +1259,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 //		}
 //	}
 
-	private void widgetsInit(View view) {
-
-		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
-		notationsView = (NotationView) view.findViewById(R.id.notationsView);
-		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
-		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
-
-		{// set avatars
-			Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
-			opponentAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
-			userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
-
-			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-
-			labelsConfig.topAvatar = opponentAvatarDrawable;
-			labelsConfig.bottomAvatar = userAvatarDrawable;
-		}
-
-		controlsNetworkView.enableGameControls(false);
-
-		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
-		boardView.setFocusable(true);
-		boardView.setTopPanelView(topPanelView);
-		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsNetworkView);
-		boardView.setNotationsView(notationsView);
-
-		setBoardView(boardView);
-
-//		if (extras.getBoolean(AppConstants.NOTIFICATION, false)) { // TODO restore, replace with arguments
-////			ChessBoardOnline.resetInstance();
-//		}
-
-//		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
-		boardView.setGameActivityFace(this);
-		boardView.lockBoard(true);
-
-		boardUpdateFilter = new IntentFilter(IntentConstants.BOARD_UPDATE);
-
-		{// Quick action setup
-			quickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
-
-			quickAction.addActionItem(new ActionItem(ID_NEW_GAME, getString(R.string.new_game)));
-			quickAction.addActionItem(new ActionItem(ID_EMAIL_GAME, getString(R.string.email_game)));
-			quickAction.addActionItem(new ActionItem(ID_SETTINGS, getString(R.string.settings)));
-
-			quickAction.setOnActionItemClickListener(this);
-		}
-	}
-
 	private class LabelsConfig {
 		int topPlayerSide;
 		int bottomPlayerSide;
@@ -1270,6 +1272,5 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			return userSide == ChessBoard.WHITE_SIDE? ChessBoard.BLACK_SIDE: ChessBoard.WHITE_SIDE;
 		}
 	}
-
 
 }

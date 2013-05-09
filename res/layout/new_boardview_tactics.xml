@@ -29,7 +29,7 @@
             android:background="@drawable/game_board_divider"
             />
 
-        <com.chess.ui.views.ChessBoardTacticsView
+        <com.chess.ui.views.chess_boards.ChessBoardTacticsView
             android:id="@+id/boardview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
     </RelativeLayout>
 
 
-    <com.chess.ui.views.ControlsTacticsView
+    <com.chess.ui.views.game_controls.ControlsTacticsView
         android:id="@+id/controlsTacticsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

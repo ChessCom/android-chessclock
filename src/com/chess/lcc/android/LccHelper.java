@@ -743,7 +743,8 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 				lastGame.getGameTimeConfig(), minMembershipLevel, minRating, maxRating);
 
 		challenge.setRematchGameId(lastGameId);
-		lccClient.sendChallenge(challenge, challengeListener);
+
+		liveService.runSendChallengeTask(challenge);
 	}
 
 	public ChessClock getBlackClock() {

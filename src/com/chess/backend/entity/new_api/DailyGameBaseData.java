@@ -10,7 +10,7 @@ import com.chess.backend.statics.StaticData;
  */
 public class DailyGameBaseData {
 /*
-	"game_id": 35000494,
+	"id": 35000494,
 	"i_play_as": 2,
 	"game_type": 1,
 	"opponent_username": "deepgreene",
@@ -23,7 +23,7 @@ public class DailyGameBaseData {
 	"is_opponent_online": false,
 */
 
-	private long game_id;
+	private long id;
 	private int i_play_as;
 	private int game_type;
 	private String opponent_username;
@@ -36,11 +36,11 @@ public class DailyGameBaseData {
 	private boolean is_opponent_online;
 
 	public long getGameId() {
-		return game_id;
+		return id;
 	}
 
-	public void setGameId(long game_id) {
-		this.game_id = game_id;
+	public void setGameId(long id) {
+		this.id = id;
 	}
 
 	public int getMyColor() {

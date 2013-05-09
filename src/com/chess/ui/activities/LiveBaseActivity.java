@@ -604,6 +604,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 //		Log.d(TAG, " onLiveServiceConnected callback, liveService.isConnected() = " + liveService.isConnected());
 //		getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveService.isConnected());
 
+		if (liveService.getLccHelper() == null) {
+			return;
+		}
+
 		liveService.setOuterChallengeListener(outerChallengeListener);
 		liveService.setChallengeTaskListener(challengeTaskListener);
 

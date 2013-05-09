@@ -9,7 +9,6 @@ import com.chess.R;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.model.BaseGameItem;
-import com.chess.utilities.AppUtils;
 
 public class DailyCurrentGamesTheirCursorAdapter extends ItemsCursorAdapter {
 
@@ -46,14 +45,15 @@ public class DailyCurrentGamesTheirCursorAdapter extends ItemsCursorAdapter {
 
 		holder.playerTxt.setText(getString(cursor, DBConstants.V_OPPONENT_NAME) + gameType + draw);
 
-		String infoText = StaticData.SYMBOL_EMPTY;
-//		if (getInt(cursor, DBConstants.V_IS_MY_TURN) > 0) {
-
-			long amount = getLong(cursor, DBConstants.V_TIME_REMAINING);
-			infoText = AppUtils.getTimeLeftFromSeconds(amount, context);
+		// don't show time if it's not my move
+//		String infoText = StaticData.SYMBOL_EMPTY;
+////		if (getInt(cursor, DBConstants.V_IS_MY_TURN) > 0) {
+//
+//			long amount = getLong(cursor, DBConstants.V_TIME_REMAINING);
+//			infoText = AppUtils.getTimeLeftFromSeconds(amount, context);
 //		}
 
-		holder.gameInfoTxt.setText(infoText);
+//		holder.gameInfoTxt.setText(infoText);
 	}
 
 	protected class ViewHolder {

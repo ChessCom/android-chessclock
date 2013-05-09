@@ -3,14 +3,15 @@
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-    android:background="@drawable/daily_games_header_selector"
-    android:gravity="center_vertical">
+    android:background="@drawable/light_header_selector"
+    android:gravity="center_vertical"
+    >
 	<com.chess.RoboTextView
 		android:id="@+id/headerTitle"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:textSize="14sp"
 		android:paddingLeft="8dip"
-        android:textColor="@color/new_light_grey"
+        android:textColor="@color/new_main_back"
 		/>
 </LinearLayout>

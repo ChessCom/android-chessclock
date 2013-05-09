@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/white_list_item_selector"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/default_scr_side_padding"
+    android:paddingTop="8dip"
+    android:paddingRight="@dimen/default_scr_side_padding"
+    android:paddingBottom="8dip"
+    >
+
+    <FrameLayout
+        android:id="@+id/boardPreviewFrame"
+        android:layout_width="@dimen/video_thumb_size"
+        android:layout_height="@dimen/video_thumb_size"
+        android:background="@drawable/img_tactics_board"
+        android:layout_marginRight="@dimen/default_scr_side_padding"
+        />
+
+    <FrameLayout
+        android:id="@+id/playerImgFrame"
+        android:layout_width="@dimen/daily_list_item_image_size"
+        android:layout_height="@dimen/daily_list_item_image_size"
+        android:background="@drawable/img_profile_picture_stub"
+        android:layout_toRightOf="@id/boardPreviewFrame"
+        android:layout_marginRight="@dimen/default_scr_side_padding"
+        />
+
+    <com.chess.RoboTextView
+        android:id="@+id/playerNameTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/new_text_blue"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@id/playerImgFrame"
+        android:text="test"
+        custom:ttf="Bold"
+        android:layout_marginTop="-4dip"
+        />
+
+    <!--Icon-->
+    <com.chess.RoboTextView
+        android:id="@+id/timeLeftIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:layout_toRightOf="@id/playerImgFrame"
+        android:layout_below="@id/playerNameTxt"
+        style="@style/GlyphIcon"
+        android:padding="3dip"
+        android:text="@string/glyph_clock"
+        />
+
+    <com.chess.RoboTextView
+        android:id="@+id/timeLeftTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:textSize="15sp"
+        android:gravity="center_vertical"
+        android:layout_below="@id/playerNameTxt"
+        android:layout_toRightOf="@id/timeLeftIcon"
+        android:text="8 min"
+        android:paddingTop="2dip"
+        custom:ttf="Bold"
+        />
+
+</RelativeLayout>

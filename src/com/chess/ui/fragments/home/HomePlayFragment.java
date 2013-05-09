@@ -44,6 +44,17 @@ public class HomePlayFragment extends CommonLogicFragment {
 	private static final String ERROR_TAG = "error popup";
 
 /*
+page 9 is the "New Game" screen. that should show if they have NO games (in progress, or completed).
+it should also show if they click on the NEW GAME button http://i.imgur.com/QOz3DQB.png  HomePlaySetupFragment
+
+if they have games where it is their turn to move, show screen 10 - hide the NEW GAME button and just show the games.
+
+if they have no moves to make, show the NEW GAME button as in screen 11.
+
+screen 12 shows the completed games. those are ALWAYS there, at the bottom of games in progress.
+	 */
+
+/*
 those are to challenge your friend to play. it just creates a challenge.
 
 those should be random friends who have been online in the last 30 days. (new api! :D)
@@ -124,9 +135,7 @@ Auto-Match should be just a random, open, rated, 3-day seek.
 		}
 
 		widgetsInit(view);
-
 	}
-
 
 	@Override
 	public void onStart() {
@@ -134,7 +143,6 @@ Auto-Match should be just a random, open, rated, 3-day seek.
 
 		setRatings();
 		// load friends, get only 2
-
 	}
 
 	@Override
