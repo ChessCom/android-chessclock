@@ -9,19 +9,32 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.chess.LeftImageEditText;
 import com.chess.LeftRightImageEditText;
 import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.UserItem;
+import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.home.HomeTabsFragment;
-import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.fragments.popup_fragments.PopupCountriesFragment;
 import com.chess.ui.fragments.popup_fragments.PopupSelectPhotoFragment;
 import com.chess.ui.fragments.popup_fragments.PopupSkillsFragment;
+import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.utilities.AppUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,21 +49,32 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 	public static final String PHOTO_SELECTION = "PHOTO_SELECTION";
 
 	private static final String DEFAULT_COUNTRY = "United States";
+	private static final int AVATAR_SIZE = 80;
 	private static final int REQ_CODE_PICK_IMAGE = 33;
 	private static final int REQ_CODE_TAKE_IMAGE = 55;
+	private static final int NON_INIT = -1;
 
 
 	private String[] skillNames;
 	private String[] countryNames;
 	private String[] countryCodes;
+	private int[] countryIds;
+	private int userCountryId = NON_INIT;
 	private LeftRightImageEditText skillEdt;
 	private LeftRightImageEditText countryEdt;
 	private LeftRightImageEditText profilePhotoEdt;
-	private CountrySelectedListener countrySelectedListener;
-	private PhotoSelectedListener photoSelectedListener;
 	private PopupSkillsFragment skillsFragment;
+	private CreateProfileUpdateListener createProfileUpdateListener;
+	private LeftImageEditText firstNameEdt;
+	private LeftImageEditText lastNameEdt;
+	/* photo */
+	private EnhancedImageDownloader imageDownloader;
 	private PopupCountriesFragment countriesFragment;
 	private PopupSelectPhotoFragment photoSelectFragment;
+	private PhotoSelectedListener photoSelectedListener;
+	private CountrySelectedListener countrySelectedListener;
+	private String mCurrentPhotoPath;
+	private boolean photoChanged;
 
 
 	@Override
@@ -60,8 +84,12 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 		skillNames = getResources().getStringArray(R.array.skills_name);
 		countryNames = getResources().getStringArray(R.array.new_countries);
 		countryCodes = getResources().getStringArray(R.array.new_countries_codes);
+		countryIds = getResources().getIntArray(R.array.new_country_ids);
+		imageDownloader = new EnhancedImageDownloader(getActivity());
 		countrySelectedListener = new CountrySelectedListener();
 		photoSelectedListener = new PhotoSelectedListener();
+
+		createProfileUpdateListener = new CreateProfileUpdateListener();
 	}
 
 	@Override
@@ -77,6 +105,8 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 		view.findViewById(R.id.skipBtn).setOnClickListener(this);
 		view.findViewById(R.id.skipLay).setOnClickListener(this);
 
+		firstNameEdt = (LeftImageEditText) view.findViewById(R.id.firstNameEdt);
+		lastNameEdt = (LeftImageEditText) view.findViewById(R.id.lastNameEdt);
 		countryEdt = (LeftRightImageEditText) view.findViewById(R.id.countryEdt);
 		countryEdt.setOnClickListener(this);
 
@@ -111,6 +141,7 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 				}
 				if (found) {
 					userCountry = countryNames[i];
+					userCountryId = countryIds[i];
 				} else {
 					userCountry = DEFAULT_COUNTRY;
 				}
@@ -133,7 +164,7 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 		} else if (v.getId() == R.id.profilePhotoEdt) {
 			showPhotoSelectFragment();
 		} else if (v.getId() == R.id.createProfileBtn) {
-			getActivityFace().openFragment(new InviteFragment());
+			createProfile();
 		}
 	}
 
@@ -152,19 +183,102 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 					cursor.moveToFirst();
 
 					int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-					String filePath = cursor.getString(columnIndex);
+//					String filePath = cursor.getString(columnIndex);
+					mCurrentPhotoPath = cursor.getString(columnIndex);
 					cursor.close();
 
 
 					float density = getResources().getDisplayMetrics().density;
-					int size = (int) (58.5f * density);
-					Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+					int size = (int) (58.5f * density); // TODO remove hardcode
+					Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
 					bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
 					Drawable drawable = new BitmapDrawable(getResources(), bitmap);
 					drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
 					profilePhotoEdt.setRightIcon(drawable);
 				}
 				break;
+			case REQ_CODE_TAKE_IMAGE:
+				setPic();
+				break;
+		}
+	}
+
+	private void setPic() {
+		// Get the dimensions of the View
+
+		int targetW = profilePhotoEdt.getRightImageWidth();
+		int targetH = profilePhotoEdt.getRightImageHeight();
+
+		// Get the dimensions of the bitmap
+		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+		bmOptions.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+		int photoW = bmOptions.outWidth;
+		int photoH = bmOptions.outHeight;
+
+		// Determine how much to scale down the image
+		int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+
+		// Decode the image file into a Bitmap sized to fill the View
+		bmOptions.inJustDecodeBounds = false;
+		bmOptions.inSampleSize = scaleFactor;
+		bmOptions.inPurgeable = true;
+
+		Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+		float density = getResources().getDisplayMetrics().density;
+		int size = (int) (58.5f * density); // TODO remove hardcode
+		bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
+		Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+		drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+		profilePhotoEdt.setRightIcon(drawable);
+		photoChanged = true;
+	}
+
+	private void createProfile() {
+		// check needed fields
+
+		if (userCountryId == NON_INIT) {
+			countryEdt.setError(getString(R.string.required));
+			return;
+		}
+
+		LoadItem loadItem = new LoadItem();
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.setLoadPath(RestHelper.CMD_USER_PROFILE(AppData.getUserId(getActivity())));
+		loadItem.addRequestParams(RestHelper.P_FIRST_NAME, getTextFromField(firstNameEdt));
+		loadItem.addRequestParams(RestHelper.P_LAST_NAME, getTextFromField(lastNameEdt));
+		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, userCountryId);
+		loadItem.addRequestParams(RestHelper.P_SKILL_LEVEL, AppData.getUserSkill(getActivity()));
+		loadItem.setFileMark(RestHelper.P_AVATAR);
+		loadItem.setFilePath(mCurrentPhotoPath);
+
+		new RequestJsonTask<UserItem>(createProfileUpdateListener).executeTask(loadItem);
+	}
+
+	private class CreateProfileUpdateListener extends ChessUpdateListener<UserItem> {
+
+		public CreateProfileUpdateListener() {
+			super(UserItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			if (show) {
+				showPopupHardProgressDialog(R.string.processing_);
+			} else {
+				if (isPaused)
+					return;
+
+				dismissProgressDialog();
+			}
+		}
+
+		@Override
+		public void updateData(UserItem returnedObj) {
+			AppData.setUserAvatar(getActivity(), returnedObj.getData().getAvatar());
+
+			getActivityFace().openFragment(new InviteFragment());
 		}
 	}
 
@@ -175,6 +289,7 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 			countriesFragment.dismiss();
 			countriesFragment = null;
 			String country = countryNames[code];
+			userCountryId = countryIds[code];
 
 			AppData.setUserCountry(getActivity(), country);
 			updateUserCountry(country);
@@ -188,6 +303,9 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 
 	private class PhotoSelectedListener implements PopupListSelectionFace {
 
+		private static final String JPEG_FILE_PREFIX = "IMG_";
+		private static final String JPEG_FILE_SUFFIX = ".jpg";
+
 		@Override
 		public void valueSelected(int code) {
 			photoSelectFragment.dismiss();
@@ -197,15 +315,84 @@ public class CreateProfileFragment extends ProfileSetupsFragment implements View
 				photoPickIntent.setType("image/*");
 				startActivityForResult(Intent.createChooser(photoPickIntent, getString(R.string.pick_photo)), REQ_CODE_PICK_IMAGE);
 			} else {
-				Intent photoPickIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				startActivityForResult(Intent.createChooser(photoPickIntent, getString(R.string.pick_photo)), REQ_CODE_TAKE_IMAGE);
+				if (AppUtils.isIntentAvailable(getActivity(), MediaStore.ACTION_IMAGE_CAPTURE)) {
+					Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					File file;
+
+					try {
+						file = setUpPhotoFile();
+						mCurrentPhotoPath = file.getAbsolutePath();
+						takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+					} catch (IOException e) {
+						e.printStackTrace();
+						mCurrentPhotoPath = null;
+					}
+					startActivityForResult(takePictureIntent, REQ_CODE_TAKE_IMAGE);
+				}
 			}
+		}
+
+		private File setUpPhotoFile() throws IOException {
+
+			File f = createImageFile();
+			mCurrentPhotoPath = f.getAbsolutePath();
+
+			return f;
+		}
+
+		private File createImageFile() throws IOException {
+			// Create an image file name
+			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+			String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
+			File image = File.createTempFile(
+					imageFileName,
+					JPEG_FILE_SUFFIX,
+					getAlbumDir()
+			);
+			mCurrentPhotoPath = image.getAbsolutePath();
+			return image;
 		}
 
 		@Override
 		public void dialogCanceled() {
 			photoSelectFragment = null;
 		}
+	}
+
+	private File getAlbumDir() {
+		File storageDir = null;
+
+		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+
+			storageDir = getAlbumStorageDir(getAlbumName());
+
+			if (storageDir != null) {
+				if (!storageDir.mkdirs()) {
+					if (!storageDir.exists()) {
+						Log.d("CameraSample", "failed to create directory");
+						return null;
+					}
+				}
+			}
+
+		} else {
+			Log.v(getString(R.string.app_name), "External storage is not mounted READ/WRITE.");
+		}
+
+		return storageDir;
+	}
+
+	private String getAlbumName() {
+		return "Chess.com";
+	}
+
+	public File getAlbumStorageDir(String albumName) {
+		return new File(
+				Environment.getExternalStoragePublicDirectory(
+						Environment.DIRECTORY_PICTURES
+				),
+				albumName
+		);
 	}
 
 	@Override

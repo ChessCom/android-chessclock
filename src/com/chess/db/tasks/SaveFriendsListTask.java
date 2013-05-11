@@ -71,7 +71,7 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 
 	private void updateFriends(long userId, String userName, String userToken) {
 		loadItem.setLoadPath(RestHelper.CMD_USERS);
-		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
+		loadItem.addRequestParams(RestHelper.P_USERNAME, userName);
 
 //		FriendsItem.Data friend = getData(RestHelper.formCustomRequest(loadItem));
 //		if (friend != null) {

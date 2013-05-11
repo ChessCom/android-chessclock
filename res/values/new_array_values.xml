@@ -234,7 +234,7 @@
 
     </string-array>
 
-    <string-array name="new_country_ids">
+    <integer-array name="new_country_ids">
         <item>2</item>
         <item>3</item>
         <item>4</item>
@@ -465,6 +465,6 @@
         <item>328</item>
         <item>329</item>
 
-    </string-array>
+    </integer-array>
 
 </resources>

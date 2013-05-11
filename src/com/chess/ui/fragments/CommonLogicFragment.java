@@ -72,7 +72,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	private int loginReturnCode;
 	private ActiveFragmentInterface activityFace;
-//	protected static Facebook facebook;
+	//	protected static Facebook facebook;
 	protected static Handler handler;
 	private EditText loginUsernameEdt;
 	private EditText passwordEdt;
@@ -216,7 +216,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 	}
 
-	private void loginWithFacebook(Session session){
+	private void loginWithFacebook(Session session) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
@@ -237,7 +237,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		return activityFace.getActionBarActivity();
 	}
 
-	protected ActiveFragmentInterface getActivityFace (){
+	protected ActiveFragmentInterface getActivityFace() {
 		return activityFace;
 	}
 
@@ -264,7 +264,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		return SoundPlayer.getInstance(getActivity());
 	}
 
-	protected void signInUser(){
+	protected void signInUser() {
 		String userName = getTextFromField(loginUsernameEdt);
 		if (userName.length() < MIN_USERNAME_LENGTH || userName.length() > MAX_USERNAME_LENGTH) {
 			loginUsernameEdt.setError(getString(R.string.validateUsername));
@@ -283,10 +283,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 //		loadItem.setLoadPath(RestHelper.LOGIN);
 		loadItem.setLoadPath(RestHelper.CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
-//		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
+//		loadItem.addRequestParams(RestHelper.P_USERNAME, userName);
 		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USER_NAME);
+		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
 
 //		new PostDataTask(loginUpdateListener).executeTask(loadItem);
@@ -314,7 +314,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		public void showProgress(boolean show) {
 			super.showProgress(show);
 			if (loadingView != null) {
-				loadingView.setVisibility(show? View.VISIBLE: View.GONE);
+				loadingView.setVisibility(show ? View.VISIBLE : View.GONE);
 			}
 		}
 	}
@@ -326,10 +326,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		@Override
 		public void showProgress(boolean show) {
-			if (show){
+			if (show) {
 				showPopupHardProgressDialog(R.string.signing_in_);
 			} else {
-				if(isPaused)
+				if (isPaused)
 					return;
 
 				dismissProgressDialog();
@@ -360,7 +360,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			if (RestHelper.containsServerCode(resultCode)) {
 				// get server code
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				switch (serverCode){
+				switch (serverCode) {
 					case ServerErrorCode.INVALID_USERNAME_PASSWORD:
 						passwordEdt.setError(getResources().getString(R.string.invalid_password));
 						passwordEdt.requestFocus();
@@ -393,6 +393,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			return;
 		}
 
+		preferencesEditor.putLong(AppConstants.USER_ID, returnedObj.getUserId());
+		AppData.setUserCountryId(getActivity(), returnedObj.getCountryId());
 		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
 
 		try {
@@ -418,7 +420,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		afterLogin();
 	}
 
-	protected void afterLogin(){
+	protected void afterLogin() {
 		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
 //		if (AppData.isNotificationsEnabled(getActivity())){
 //			checkMove();

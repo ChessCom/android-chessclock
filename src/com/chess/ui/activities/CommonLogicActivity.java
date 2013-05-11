@@ -300,10 +300,10 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 //		loadItem.setLoadPath(RestHelper.LOGIN);
 		loadItem.setLoadPath(RestHelper.CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
-//		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
+//		loadItem.addRequestParams(RestHelper.P_USERNAME, userName);
 		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USER_NAME);
+		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
 
 //		new PostDataTask(loginUpdateListener).executeTask(loadItem);

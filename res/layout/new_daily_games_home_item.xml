@@ -41,6 +41,7 @@
         android:text="test"
         custom:ttf="Bold"
         android:layout_marginTop="-4dip"
+        android:layout_marginBottom="-3dip"
         />
 
     <!--Icon-->
@@ -51,8 +52,12 @@
         android:textColor="@color/red"
         android:layout_toRightOf="@id/playerImgFrame"
         android:layout_below="@id/playerNameTxt"
-        style="@style/GlyphIcon"
-        android:padding="3dip"
+        android:textSize="@dimen/glyph_icon_default"
+        custom:ttf="Icon"
+        android:paddingTop="3dip"
+        android:paddingLeft="0dip"
+        android:paddingRight="5dip"
+        android:paddingBottom="3dip"
         android:text="@string/glyph_clock"
         />
 
@@ -61,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/red"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:gravity="center_vertical"
         android:layout_below="@id/playerNameTxt"
         android:layout_toRightOf="@id/timeLeftIcon"

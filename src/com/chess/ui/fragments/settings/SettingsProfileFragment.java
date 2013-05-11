@@ -12,9 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Html;
-import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
-import android.text.style.URLSpan;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.*;
@@ -24,14 +22,18 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.UserItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCountriesFragment;
 import com.chess.ui.fragments.popup_fragments.PopupSelectPhotoFragment;
-import com.chess.ui.fragments.upgrade.UpgradeFragment;
+import com.chess.ui.fragments.sign_in.InviteFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.utilities.AppUtils;
 
@@ -66,6 +68,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private String membershipType;
 	private String membershipExpireDate;
 	private SimpleDateFormat dateFormatter;
+	/* photo */
 	private FrameLayout userPhotoImg;
 	private EnhancedImageDownloader imageDownloader;
 	private ProgressImageView progressImageView;
@@ -75,6 +78,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private CountrySelectedListener countrySelectedListener;
 	private String mCurrentPhotoPath;
 	private boolean photoChanged;
+	/* country */
 	private String[] countryNames;
 	private String[] countryCodes;
 	private TextView countryValueTxt;
@@ -180,16 +184,16 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 //		textView.setText(s);
 //	}
 
-	private class URLSpanNoUnderline extends URLSpan {
-		public URLSpanNoUnderline(String url) {
-			super(url);
-		}
-		@Override
-		public void updateDrawState(TextPaint ds) {
-			super.updateDrawState(ds);
-			ds.setUnderlineText(false);
-		}
-	}
+//	private class URLSpanNoUnderline extends URLSpan {
+//		public URLSpanNoUnderline(String url) {
+//			super(url);
+//		}
+//		@Override
+//		public void updateDrawState(TextPaint ds) {
+//			super.updateDrawState(ds);
+//			ds.setUnderlineText(false);
+//		}
+//	}
 
 	@Override
 	public void onResume() {
@@ -242,7 +246,8 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			shareIntent.putExtra(Intent.EXTRA_TEXT, "Invitation text");
 			startActivity(Intent.createChooser(shareIntent, getString(R.string.invite_a_friend)));
 		} else if (id == R.id.upgradeBtn) {
-			getActivityFace().openFragment(new UpgradeFragment());
+			createProfile();
+//			getActivityFace().openFragment(new UpgradeFragment());
 		}
 	}
 
@@ -261,13 +266,13 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 					cursor.moveToFirst();
 
 					int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-					String filePath = cursor.getString(columnIndex);
+					mCurrentPhotoPath = cursor.getString(columnIndex);
 					cursor.close();
 
 
 					float density = getResources().getDisplayMetrics().density;
 					int size = (int) (AVATAR_SIZE * density);
-					Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+					Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
 
 					bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
 					Drawable drawable = new BitmapDrawable(getResources(), bitmap);
@@ -280,6 +285,48 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			case REQ_CODE_TAKE_IMAGE:
 				setPic();
 				break;
+		}
+	}
+
+	private void createProfile() {
+		// check needed fields
+
+		LoadItem loadItem = new LoadItem();
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.setLoadPath(RestHelper.CMD_USER_PROFILE(AppData.getUserId(getActivity())));
+		loadItem.addRequestParams(RestHelper.P_FIRST_NAME, getTextFromField(firstNameValueEdt));
+		loadItem.addRequestParams(RestHelper.P_LAST_NAME, getTextFromField(lastNameValueEdt));
+		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, AppData.getUserCountryId(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_SKILL_LEVEL, AppData.getUserSkill(getActivity()));
+		loadItem.setFileMark(RestHelper.P_AVATAR);
+		loadItem.setFilePath(mCurrentPhotoPath);
+
+		new RequestJsonTask<UserItem>(new CreateProfileUpdateListener()).executeTask(loadItem);
+	}
+
+	private class CreateProfileUpdateListener extends ChessUpdateListener<UserItem> {
+
+		public CreateProfileUpdateListener() {
+			super(UserItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			if (show) {
+				showPopupHardProgressDialog(R.string.processing_);
+			} else {
+				if (isPaused)
+					return;
+
+				dismissProgressDialog();
+			}
+		}
+
+		@Override
+		public void updateData(UserItem returnedObj) {
+			AppData.setUserAvatar(getActivity(), returnedObj.getData().getAvatar());
+
+			getActivityFace().openFragment(new InviteFragment());
 		}
 	}
 

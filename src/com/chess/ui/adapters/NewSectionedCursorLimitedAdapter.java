@@ -42,17 +42,20 @@ public abstract class NewSectionedCursorLimitedAdapter extends ItemsCursorAdapte
 	private final int mHeaderRes;
 	private final String mGroupColumn;
 	private final LayoutInflater mLayoutInflater;
-	private static final int ITEMS_PER_SECTION_CNT = 2;
+//	private static final int ITEMS_PER_SECTION_CNT = 2;
 
 	private LinkedHashMap<Integer, String> sectionsIndexer;
 	private LinkedHashMap<Integer, Integer> sectionsCounter;
+	private int itemsPerSectionCnt;
 
 	public static class ViewHolder {
 		public TextView headerTitleTxt;
 	}
 
-	public NewSectionedCursorLimitedAdapter(Context context, Cursor cursor, int headerLayout, String groupColumn) {
+	public NewSectionedCursorLimitedAdapter(Context context, Cursor cursor, int headerLayout, String groupColumn,
+											int itemsPerSectionCnt) {
 		super(context, cursor);
+		this.itemsPerSectionCnt = itemsPerSectionCnt;
 
 		sectionsIndexer = new LinkedHashMap<Integer, String>();
 		sectionsCounter = new LinkedHashMap<Integer, Integer>();
@@ -104,7 +107,7 @@ public abstract class NewSectionedCursorLimitedAdapter extends ItemsCursorAdapte
 				itemsInSection = 0;
 			}
 
-			if (itemsInSection < ITEMS_PER_SECTION_CNT) {
+			if (itemsInSection < itemsPerSectionCnt) {
 				itemsInSection++;
 				sectionsCounter.put(sectionNumber, itemsInSection);
 			}

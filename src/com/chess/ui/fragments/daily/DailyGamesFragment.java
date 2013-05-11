@@ -37,6 +37,8 @@ import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 import com.slidingmenu.lib.SlidingMenu;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -408,7 +410,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_GAMES_ALL);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
-//		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_GAME_ID);
+//		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_ID);
 		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
 
@@ -676,10 +678,28 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			hostUnreachable = false;
 			challengesGamesAdapter.setItemsList(returnedObj.getData().getChallenges());
 
-			new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, returnedObj.getData().getCurrent(),
-					getContentResolver()).executeTask();
-			new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, returnedObj.getData().getFinished(),
-					getContentResolver()).executeTask();
+			{ // current games
+				List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
+				boolean gamesLeft = DBDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList);
+
+				if (gamesLeft) {
+					new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, currentGamesList, getContentResolver()).executeTask();
+				} else {
+					currentGamesMyCursorAdapter.changeCursor(null);
+				}
+			}
+
+			{ // finished
+				List<DailyFinishedGameData> finishedGameDataList = returnedObj.getData().getFinished();
+				boolean gamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList);
+
+				if (gamesLeft) {
+					new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
+							getContentResolver()).executeTask();
+				} else {
+					finishedGamesCursorAdapter.changeCursor(null);
+				}
+			}
 		}
 
 		@Override

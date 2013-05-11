@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/TabRadioButton.Left"
-            android:checked="true"
             />
         <com.chess.RoboRadioButton
             android:id="@+id/centerTabBtn"

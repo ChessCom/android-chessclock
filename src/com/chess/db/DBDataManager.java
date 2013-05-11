@@ -12,6 +12,9 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.GameListFinishedItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author alien_roger
  * @created 27.10.12
@@ -197,6 +200,105 @@ public class DBDataManager {
 		}
 
 		cursor.close();
+	}
+
+	/**
+	 *
+	 * @return true if still have current games
+	 */
+	public static boolean checkAndDeleteNonExistCurrentGames(Context context, List<DailyCurrentGameData> gamesList) {
+		// compare to current list games
+		String userName = getUserName(context);
+
+		ContentResolver contentResolver = context.getContentResolver();
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = userName;
+
+		Uri uri = DBConstants.uriArray[DBConstants.ECHESS_CURRENT_LIST_GAMES];
+		long[] gamesIds;
+		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER, arguments1, null);
+		if (cursor.moveToFirst()) {
+			gamesIds = new long[cursor.getCount()];
+			int i = 0;
+			do {
+				gamesIds[i++] = getLong(cursor, DBConstants.V_GAME_ID);
+			} while (cursor.moveToNext());
+		} else {
+			return true;
+		}
+
+		List<Long> idsToRemove = new ArrayList<Long>();
+		for (long gamesId : gamesIds) {
+			boolean found = false;
+			for (DailyCurrentGameData listCurrentItem : gamesList) {
+				if (listCurrentItem.getGameId() == gamesId) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				idsToRemove.add(gamesId);
+			}
+		}
+
+		if (idsToRemove.size() > 0) {
+			for (Long id : idsToRemove) {
+				final String[] arguments2 = sArguments2;
+				arguments2[0] = userName;
+				arguments2[1] = String.valueOf(id);
+				contentResolver.delete(uri, SELECTION_GAME_ID, arguments2);
+			}
+		}
+
+		return gamesIds.length > idsToRemove.size();
+	}
+
+
+	public static boolean checkAndDeleteNonExistFinishedGames(Context context, List<DailyFinishedGameData> gamesList) {
+		// compare to current list games
+		String userName = getUserName(context);
+
+		ContentResolver contentResolver = context.getContentResolver();
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = userName;
+
+		Uri uri = DBConstants.uriArray[DBConstants.ECHESS_FINISHED_LIST_GAMES];
+		long[] gamesIds;
+		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER, arguments1, null);
+		if (cursor.moveToFirst()) {
+			gamesIds = new long[cursor.getCount()];
+			int i = 0;
+			do {
+				gamesIds[i++] = getLong(cursor, DBConstants.V_GAME_ID);
+			} while (cursor.moveToNext());
+		} else {
+			return true;
+		}
+
+		List<Long> idsToRemove = new ArrayList<Long>();
+		for (long gamesId : gamesIds) {
+			boolean found = false;
+			for (DailyFinishedGameData listCurrentItem : gamesList) {
+				if (listCurrentItem.getGameId() == gamesId) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				idsToRemove.add(gamesId);
+			}
+		}
+
+		if (idsToRemove.size() > 0) {
+			for (Long id : idsToRemove) {
+				final String[] arguments2 = sArguments2;
+				arguments2[0] = userName;
+				arguments2[1] = String.valueOf(id);
+				contentResolver.delete(uri,	SELECTION_GAME_ID, arguments2);
+			}
+		}
+
+		return gamesIds.length > idsToRemove.size();
 	}
 
 	/**

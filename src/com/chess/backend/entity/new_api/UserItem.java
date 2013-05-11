@@ -8,9 +8,18 @@ package com.chess.backend.entity.new_api;
  */
 public class UserItem extends BaseResponseItem<UserItem.Data> {
 /*
+    "status": "success",
+    "data": {
+        "id": 23900,
+        "country_id": 2,
+        "avatar": "//www.c.com/images/noavatar_l.gif"
+    }
+*/
+
+/*
 	"id": 31,
 	"username": "jay",
-	"avatar_small_url": "//www.c.com/images/noavatar_l.gif",
+	"avatar": "//www.c.com/images/noavatar_l.gif",
 	"country_id": 2,
 	"last_login_date": "2013-03-08T05:52:08-0800",
 	"points": 549,
@@ -22,7 +31,7 @@ public class UserItem extends BaseResponseItem<UserItem.Data> {
 	public static class Data {
 		private long id;
 		private String username;
-		private String avatar_small_url;
+		private String avatar;
 		private long country_id;
 		private String last_login_date;
 		private int points;
@@ -45,12 +54,12 @@ public class UserItem extends BaseResponseItem<UserItem.Data> {
 			this.username = username;
 		}
 
-		public String getAvatar_small_url() {
-			return avatar_small_url;
+		public String getAvatar() {
+			return avatar;
 		}
 
-		public void setAvatar_small_url(String avatar_small_url) {
-			this.avatar_small_url = avatar_small_url;
+		public void setAvatar(String avatar) {
+			this.avatar = avatar;
 		}
 
 		public long getCountry_id() {

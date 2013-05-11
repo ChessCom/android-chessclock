@@ -46,6 +46,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	public static final String GREY_COLOR_DIVIDER = "##";
 	// 11/15/12 | 27 min
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
+	private static final int ARTICLES_PER_CATEGORY = 2;
 
 	private ViewHolder holder;
 	private ForegroundColorSpan foregroundSpan;
@@ -73,7 +74,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		articlesCursorAdapter = new NewArticlesSectionedCursorAdapter(getActivity(), null);
+		articlesCursorAdapter = new NewArticlesSectionedCursorAdapter(getActivity(), null, ARTICLES_PER_CATEGORY);
 
 		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);

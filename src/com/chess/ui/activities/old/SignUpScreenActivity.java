@@ -169,9 +169,9 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	private void submitRegisterInfo() {
 		LoadItem loadItem = new LoadItem();
 //		loadItem.setLoadPath(RestHelper.REGISTER);
-		loadItem.setLoadPath(RestHelper.CMD_REGISTER);
+		loadItem.setLoadPath(RestHelper.CMD_USERS);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
+		loadItem.addRequestParams(RestHelper.P_USERNAME, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
 		loadItem.addRequestParams(RestHelper.P_EMAIL, email);
 		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, CID);

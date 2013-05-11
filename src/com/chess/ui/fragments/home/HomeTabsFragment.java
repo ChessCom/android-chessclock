@@ -11,10 +11,22 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.GetAndSaveUserStats;
+import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCode;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.DailyCurrentGameData;
+import com.chess.backend.entity.new_api.DailyFinishedGameData;
+import com.chess.backend.entity.new_api.DailyGamesAllItem;
+import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DBDataManager;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.slidingmenu.lib.SlidingMenu;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,12 +38,14 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId;
+	private DailyGamesUpdateListener dailyGamesUpdateListener;
+	private boolean showDailyGamesFragment = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setHasOptionsMenu(true);
+		dailyGamesUpdateListener = new DailyGamesUpdateListener();
 
 		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
 	}
@@ -63,19 +77,35 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		showActionBar(true);
 
 //		Fragment homeGamesFragment = new HomePlayFragment();
-		Fragment homeGamesFragment = new DailyGamesFragment();
-		changeInternalFragment(homeGamesFragment);
+//		Fragment homeGamesFragment = new DailyGamesFragment();
+//		changeInternalFragment(homeGamesFragment);
 
 		tabRadioGroup = (RadioGroup) view.findViewById(R.id.tabRadioGroup);
 		tabRadioGroup.setOnCheckedChangeListener(this);
 
-		previousCheckedId = tabRadioGroup.getCheckedRadioButtonId();
+//		previousCheckedId = tabRadioGroup.getCheckedRadioButtonId();
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+
+		// check if user have daily games in progress or completed. May check in DB
+		// get games_id's and compare it to local DB
+		// if there are game_id which we don't have, then fetch it
+
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_GAMES_ALL);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_ID);
+		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		updateTabs();
+
+//		updateTabs();
 
 		getActivityFace().setBadgeValueForId(R.id.menu_games, 7);
 	}
@@ -91,14 +121,17 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
 				case R.id.leftTabBtn: {
-//					Fragment fragment = findFragmentByTag(HomePlayFragment.class.getSimpleName());
-//					if (fragment == null) {
-//						fragment = new HomePlayFragment();
-//					}
-//					changeInternalFragment(fragment);
-					Fragment fragment = findFragmentByTag(DailyGamesFragment.class.getSimpleName());
-					if (fragment == null) {
-						fragment = new DailyGamesFragment();
+					Fragment fragment;
+					if (showDailyGamesFragment) {
+						fragment = findFragmentByTag(DailyGamesFragment.class.getSimpleName());
+						if (fragment == null) {
+							fragment = new DailyGamesFragment();
+						}
+					} else {
+						fragment = findFragmentByTag(HomePlayFragment.class.getSimpleName());
+						if (fragment == null) {
+							fragment = new HomePlayFragment();
+						}
 					}
 					changeInternalFragment(fragment);
 					break;
@@ -128,4 +161,40 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		transaction.replace(R.id.tab_content_frame, fragment).commit();
 	}
 
+	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyGamesAllItem> {
+
+		public DailyGamesUpdateListener() {
+			super(DailyGamesAllItem.class);
+		}
+
+		@Override
+		public void updateData(DailyGamesAllItem returnedObj) {
+			super.updateData(returnedObj);
+
+			// current games
+			List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
+			boolean currentGamesLeft = DBDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList);
+
+			// finished
+			List<DailyFinishedGameData> finishedGameDataList = returnedObj.getData().getFinished();
+			boolean finishedGamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList);
+
+			showDailyGamesFragment = currentGamesLeft || finishedGamesLeft;
+
+			tabRadioGroup.check(R.id.leftTabBtn);
+			updateTabs();
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				showToast(ServerErrorCode.getUserFriendlyMessage(getActivity(), serverCode));
+			} else if (resultCode == StaticData.INTERNAL_ERROR) {
+				showToast("Internal error occurred"); // TODO adjust properly
+//				showEmptyView(true);
+			}
+			updateTabs();
+		}
+	}
 }

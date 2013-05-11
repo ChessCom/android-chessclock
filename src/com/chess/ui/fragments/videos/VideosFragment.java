@@ -47,6 +47,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	public static final String GREY_COLOR_DIVIDER = "##";
 	// 11/15/12 | 27 min
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
+	private static final int VIDEOS_PER_CATEGORY = 2;
 
 	private ViewHolder holder;
 	private ForegroundColorSpan foregroundSpan;
@@ -74,7 +75,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		videosCursorAdapter = new NewVideosSectionedCursorAdapter(getContext(), null);
+		videosCursorAdapter = new NewVideosSectionedCursorAdapter(getContext(), null, VIDEOS_PER_CATEGORY);
 
 		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
@@ -165,6 +166,8 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
+		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, 8);
+		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_CATEGORY, VIDEOS_PER_CATEGORY);
 
 		new RequestJsonTask<VideoItem>(videosItemUpdateListener).executeTask(loadItem);
 	}

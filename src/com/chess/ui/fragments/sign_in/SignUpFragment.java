@@ -14,18 +14,13 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.BasePopupsFragment;
-import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
-import org.apache.http.protocol.HTTP;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.regex.Pattern;
 
 /**
@@ -49,8 +44,8 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 	private String email;
 	private String password;
 	private RegisterUpdateListener registerUpdateListener;
-	private String[] countryCodes;
-	private String countryCodeName;
+//	private String[] countryCodes;
+//	private String countryCodeName;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,7 +56,7 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		countryCodes = getResources().getStringArray(R.array.new_countries_codes);
+//		countryCodes = getResources().getStringArray(R.array.new_countries_codes);
 
 		userNameEdt = (EditText) view.findViewById(R.id.usernameEdt);
 		emailEdt = (EditText) view.findViewById(R.id.emailEdt);
@@ -87,27 +82,27 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 	public void onResume() {
 		super.onResume();
 
-		String userCountry = AppData.getUserCountry(getActivity());
-		if (userCountry == null) {
-			String locale = getResources().getConfiguration().locale.getCountry();
-
-			if (locale != null) {
-				int i;
-				boolean found = false;
-				for (i = 0; i < countryCodes.length; i++) {
-					String countryCode = countryCodes[i];
-					if (locale.equals(countryCode)) {
-						found = true;
-						break;
-					}
-				}
-				if (found) {
-					countryCodeName = countryCodes[i];
-				} else {
-					countryCodeName = DEFAULT_COUNTRY;
-				}
-			}
-		}
+//		String userCountry = AppData.getUserCountry(getActivity());
+//		if (userCountry == null) {
+//			String locale = getResources().getConfiguration().locale.getCountry();
+//
+//			if (locale != null) {
+//				int i;
+//				boolean found = false;
+//				for (i = 0; i < countryCodes.length; i++) {
+//					String countryCode = countryCodes[i];
+//					if (locale.equals(countryCode)) {
+//						found = true;
+//						break;
+//					}
+//				}
+//				if (found) {
+//					countryCodeName = countryCodes[i];
+//				} else {
+//					countryCodeName = DEFAULT_COUNTRY;
+//				}
+//			}
+//		}
 	}
 
 	@Override
@@ -129,9 +124,9 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 	}
 
 	private boolean checkRegisterInfo() {
-		userName = encodeField(userNameEdt);
-		email = encodeField(emailEdt);
-		password = encodeField(passwordEdt);
+		userName = getTextFromField(userNameEdt);
+		email = getTextFromField(emailEdt);
+		password = getTextFromField(passwordEdt);
 
 		if (userName.length() < 3) {
 			userNameEdt.setError(getString(R.string.too_short));
@@ -163,29 +158,46 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 			return false;
 		}
 
-
 		return true;
 	}
 
+/*
+username		true	Username for new user.
+password		false	Password for new user.
+email		false	Email address of new user.
+facebookAccessToken		false	Facebook access token.
+appType	pre|mobile|iphone|android|blackberry|facebook|windows	false	Optional application type. Default is `mobile`.
+*/
+
 	private void submitRegisterInfo() {
 		LoadItem loadItem = new LoadItem();
-//		loadItem.setLoadPath(RestHelper.REGISTER);
-		loadItem.setLoadPath(RestHelper.CMD_REGISTER);
+		loadItem.setLoadPath(RestHelper.CMD_USERS);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_USER_NAME, userName);
+		loadItem.addRequestParams(RestHelper.P_USERNAME, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
 		loadItem.addRequestParams(RestHelper.P_EMAIL, email);
-		loadItem.addRequestParams(RestHelper.P_COUNTRY_CODE, countryCodeName);
+//		loadItem.addRequestParams(RestHelper.P_COUNTRY_CODE, countryCodeName);
 		loadItem.addRequestParams(RestHelper.P_APP_TYPE, RestHelper.V_ANDROID);
 
-//		new GetStringObjTask(registerUpdateListener).executeTask(loadItem);
 		new RequestJsonTask<RegisterItem>(registerUpdateListener).executeTask(loadItem);
 	}
 
-	private class RegisterUpdateListener extends CommonLogicFragment.ChessUpdateListener<RegisterItem> {
+	private class RegisterUpdateListener extends ChessUpdateListener<RegisterItem> {
 
 		public RegisterUpdateListener() {
 			super(RegisterItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			if (show) {
+				showPopupHardProgressDialog(R.string.processing_);
+			} else {
+				if (isPaused)
+					return;
+
+				dismissProgressDialog();
+			}
 		}
 
 		@Override
@@ -200,15 +212,11 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 	}
 
 
-//	@Override
-//	protected void afterLogin() {
-//		FlurryAgent.logEvent(FlurryData.LOGGED_IN);     // duplicate logic -> moved to CommonLogicFragment class
-////		if (AppData.isNotificationsEnabled(getActivity())){
-////			checkMove();
-////		}
-//
-//		backToHomeFragment();
-//	}
+	@Override
+	protected void afterLogin() {
+		FlurryAgent.logEvent(FlurryData.LOGGED_IN);     // duplicate logic -> moved to CommonLogicFragment class
+		getActivityFace().openFragment(new CreateProfileFragment());
+	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {  // TODO restore
@@ -220,16 +228,6 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 				submitRegisterInfo();
 			}
 		}
-	}
-
-	private String encodeField(EditText editText) {
-		String value = "";
-		try {
-			value = URLEncoder.encode(getTextFromField(editText), HTTP.UTF_8);
-		} catch (UnsupportedEncodingException e) {
-			editText.setError(getString(R.string.encoding_unsupported));
-		}
-		return value;
 	}
 
 	private class FieldChangeWatcher implements TextWatcher {

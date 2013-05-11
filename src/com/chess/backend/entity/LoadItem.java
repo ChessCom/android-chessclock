@@ -18,6 +18,8 @@ public class LoadItem { // TODO refactor with builder
     private String loadPath;
 	private List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	private String requestMethod;
+	private String filePath;
+	private String fileMark;
 
 	public LoadItem() {
 		nameValuePairs = new ArrayList<NameValuePair>();
@@ -75,5 +77,21 @@ public class LoadItem { // TODO refactor with builder
 
 	public void setRequestMethod(String requestMethod) {
 		this.requestMethod = requestMethod;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getFileMark() {
+		return fileMark;
+	}
+
+	public void setFileMark(String fileMark) {
+		this.fileMark = fileMark;
 	}
 }

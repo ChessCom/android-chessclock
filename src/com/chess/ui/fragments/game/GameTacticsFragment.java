@@ -320,9 +320,9 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 					sendWrongResult();
 				} else if (tacticItem.isRetry() || noNetwork) {
 					String newRatingStr = StaticData.SYMBOL_EMPTY;
-//					if (tacticItem.getResultItem() != null) {
+					if (tacticItem.getResultItem() != null) {
 						newRatingStr = tacticItem.getPositiveScore();
-//					}
+					}
 					showCorrect(newRatingStr);
 				} else {
 					sendCorrectResult();
@@ -332,9 +332,9 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		} else {
 			if (tacticItem.isRetry() || noNetwork) {
 				String newRatingStr = StaticData.SYMBOL_EMPTY;
-//				if (tacticItem.getResultItem() != null) {
+				if (tacticItem.getResultItem() != null) {
 					newRatingStr = tacticItem.getNegativeScore();
-//				}
+				}
 				showWrong(newRatingStr);
 			} else {
 				sendWrongResult();
@@ -624,18 +624,18 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 			noNetwork = false;
 
 			TacticRatingData tacticResultItem = returnedObj.getData().getRatingInfo();
-//			if (tacticResultItem != null) {
+			if (tacticResultItem != null) {
 				tacticResultItem.setId(tacticItem.getId());
 				tacticResultItem.setUser(tacticItem.getUser());
 				tacticItem.setResultItem(tacticResultItem);
-//			}
+			}
 			String newRatingStr = StaticData.SYMBOL_EMPTY;
 			switch (listenerCode) {
 				case CORRECT_RESULT:
-//					if (tacticItem.getResultItem() != null) {
+					if (tacticItem.getResultItem() != null) {
 						newRatingStr = tacticItem.getPositiveScore();
 						tacticItem.setRetry(true); // set auto retry because we will save tactic
-//					}
+					}
 
 					showCorrect(newRatingStr);
 					break;
@@ -643,10 +643,10 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 					if (tacticItem.isWasShowed()) {
 						showWrong(getString(R.string.solved_with_hint));
 					} else {
-//						if (tacticItem.getResultItem() != null) {
+						if (tacticItem.getResultItem() != null) {
 							newRatingStr = tacticItem.getNegativeScore();
 							tacticItem.setRetry(true); // set auto retry because we will save tactic
-//						}
+						}
 						showWrong(newRatingStr);
 					}
 

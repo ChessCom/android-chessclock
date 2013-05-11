@@ -157,7 +157,7 @@ public class LeftRightImageEditText extends RoboEditText {
 			canvas.drawLine(lineXStart, 0, lineXStop, 0, linePaint);
 		}
 
-//		// set padding to make text selection work correct
+		// set padding to make text selection work correct
 		if (enlargeHeight) {
 			setPadding((int) (backImageWidth + bottomPadding), 0, 0, (int) (currentViewHeight/2 - getTextSize()/2));
 		} else {
@@ -233,11 +233,20 @@ public class LeftRightImageEditText extends RoboEditText {
 	public void setRightIcon(int iconId) {
 		setRightIcon(getResources().getDrawable(iconId));
 	}
+
 	public void setRightIcon(Drawable icon) {
 		rightIcon = icon;
 		rightImageWidth = rightIcon.getIntrinsicWidth();
 		rightImageHeight = rightIcon.getIntrinsicHeight();
 		rightIcon.setBounds(0, 0, rightImageWidth, rightImageHeight);
 		invalidate();
+	}
+
+	public int getRightImageWidth() {
+		return rightImageWidth;
+	}
+
+	public int getRightImageHeight() {
+		return rightImageHeight;
 	}
 }

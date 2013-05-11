@@ -971,7 +971,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			// request opponent avatar
 //			LoadItem loadItem = new LoadItem();
 //			loadItem.setLoadPath(RestHelper.CMD_USERS);
-//			loadItem.addRequestParams(RestHelper.P_USER_NAME, opponentName);
+//			loadItem.addRequestParams(RestHelper.P_USERNAME, opponentName);
 //			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
 //			new RequestJsonTask<UserItem>(userInfoUpdateListener).executeTask(loadItem);
 
@@ -1049,7 +1049,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 //		public void updateData(UserItem returnedObj) {
 //			super.updateData(returnedObj);
 //
-//			String opponentAvatarUrl = returnedObj.getData().getAvatar_small_url();
+//			String opponentAvatarUrl = returnedObj.getData().getAvatar();
 //			imageDownloader.download(opponentAvatarUrl, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 //		}
 //	}
