@@ -774,13 +774,8 @@ public class GameTacticsScreenActivity extends GameBaseActivity implements GameT
 			stopTacticsTimer();
 			dismissDialogs();
 		} else if (view.getId() == R.id.retryBtn) {
-
-			if (AppData.isGuest(this) || noInternet) {
-				getNextTactic();
-			} else {
-				setTacticToBoard(tacticItem);
-			}
-            tacticItem.setRetry(true);
+			tacticItem.setRetry(true);
+			setTacticToBoard(tacticItem);
 			dismissDialogs();
 
 		} else if (view.getId() == R.id.solutionBtn) {
