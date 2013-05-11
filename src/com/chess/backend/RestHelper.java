@@ -470,6 +470,11 @@ message				false	Only used for `CHAT` command.
 
 					resultString = resultString.substring(firstIndex, lastIndex + 1);
 
+					// TODO remove hardcode!!!
+					if (resultString.contains("\"challenges\":[[]]")) {
+						resultString = resultString.replace("\"challenges\":[[]]", "\"challenges\":[]");
+					}
+
 					Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
 					BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + resultString);
 				} else /*(!resultString.startsWith(OBJ_START))*/ {

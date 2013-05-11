@@ -87,6 +87,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private boolean hostUnreachable;
 	private boolean onVacation;
 	private boolean need2update = true;
+	private View newGameButtonView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -123,6 +124,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
 		listView.setAdapter(sectionedAdapter);
+
+		view.findViewById(R.id.startNewGameBtn).setOnClickListener(this);
+		newGameButtonView = view.findViewById(R.id.newGameButtonView);
 	}
 
 	@Override
@@ -542,12 +546,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(VacationItem returnedObj) {
 			super.updateData(returnedObj);
 
@@ -687,6 +685,17 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				} else {
 					currentGamesMyCursorAdapter.changeCursor(null);
 				}
+
+				// check if we need to show new game button in dailyGamesFragment
+				boolean myTurnInDailyGames = false;
+				for (DailyCurrentGameData dailyGame : currentGamesList) {
+					if (dailyGame.isMyTurn()) {
+						myTurnInDailyGames = true;
+						break;
+					}
+				}
+
+				newGameButtonView.setVisibility(myTurnInDailyGames? View.GONE: View.VISIBLE);
 			}
 
 			{ // finished

@@ -3,7 +3,7 @@
 <resources xmlns:chess="http://schemas.android.com/apk/res/com.chess">
 
     <style name="ActionBarCompatBackground" parent="ActionBarCompat">
-        <item name="android:background">@drawable/top_bar_texture</item>
+
     </style>
     
 

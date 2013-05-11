@@ -2,7 +2,7 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,11 +29,33 @@
         android:textSize="20sp"
         android:textColor="@color/grey_button_1"
         android:paddingLeft="10dip"
-        robo:ttf="Bold"
+        custom:ttf="Bold"
         style="@style/DarkShadowBottom"
         android:visibility="gone"
         android:layout_centerInParent="true"
         />
+
+    <!--Start New Game-->
+    <LinearLayout
+        android:id="@+id/newGameButtonView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="14dip"
+        android:background="@drawable/light_header_selector"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <com.chess.RoboButton
+            android:id="@+id/startNewGameBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/main_button_height"
+            android:text="@string/start_new_game"
+            style="@style/Text.Button.OrangeNoBorder"
+            />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/listView"
@@ -41,7 +63,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:cacheColorHint="@color/white"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/newGameButtonView"
         android:dividerHeight="0px"
         android:divider="@null"
         />

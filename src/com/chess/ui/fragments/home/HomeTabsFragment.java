@@ -36,8 +36,10 @@ import java.util.List;
  */
 public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener {
 
+	private static final int NON_INIT = -1;
+
 	private RadioGroup tabRadioGroup;
-	private int previousCheckedId;
+	private int previousCheckedId = NON_INIT;
 	private DailyGamesUpdateListener dailyGamesUpdateListener;
 	private boolean showDailyGamesFragment = true;
 
@@ -104,10 +106,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	@Override
 	public void onResume() {
 		super.onResume();
-
-//		updateTabs();
-
-		getActivityFace().setBadgeValueForId(R.id.menu_games, 7);
+		getActivityFace().setBadgeValueForId(R.id.menu_games, 7); // TODO use properly
 	}
 
 	@Override
@@ -181,7 +180,10 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 			showDailyGamesFragment = currentGamesLeft || finishedGamesLeft;
 
-			tabRadioGroup.check(R.id.leftTabBtn);
+			if (previousCheckedId == NON_INIT) {
+				tabRadioGroup.check(R.id.leftTabBtn);
+			}
+
 			updateTabs();
 		}
 
