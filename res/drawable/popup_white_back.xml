@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item>
+        <shape
+            android:dither="true"
+            android:shape="rectangle">
+            <solid android:color="@color/transparent" />
+            <corners android:radius="@dimen/new_round_button_radius" />
+            <stroke
+                android:width="1dip"
+                android:color="@color/popup_white_border_grey"/>
+        </shape>
+    </item>
+
+    <item
+        android:bottom="1dip"
+        android:left="1dip"
+        android:right="1dip"
+        android:top="1dip"
+        >
+        <shape >
+            <corners android:radius="@dimen/new_round_button_radius" />
+            <solid android:color="@color/popup_back_white" />
+        </shape>
+    </item>
+
+</layer-list>

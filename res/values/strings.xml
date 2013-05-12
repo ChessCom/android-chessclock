@@ -326,6 +326,7 @@
 	<string name="reconnecting_">Reconnecting…</string> <!--Re-Connection process in progress-->
 	<string name="another_login_detected">Another login has been detected.</string>
 	<string name="loading_live_chess">Loading Live Chess</string>
+	<string name="game_drawn">Game drawn</string> <!--Game results-->
 	<string name="game_draw_by_repetition">Game drawn by repetition</string> <!--Game results-->
 	<string name="game_drawn_by_agreement">Game drawn by agreement</string> <!--Game results-->
 	<string name="game_drawn_by_stalemate">Game drawn by stalemate</string> <!--Game results-->

@@ -264,9 +264,9 @@
 	<string name="error_occurred_while_login">Hata oluştu giriş yaparken, relogin lütfen!</string>
 	<string name="update_available_please_update">Bir güncelleştirme kullanılabilir! Güncelleyin</string>
 	<string name="update_check">Kontrol güncelleyin</string>
-	<string name="won_on_time">\n zaman kazandı</string>
-	<string name="won_by_resignation">\n istifa kazandı</string>
-	<string name="won_by_checkmate">\n mat kazandı</string>
+	<string name="won_on_time">%s zaman kazandı</string>
+	<string name="won_by_resignation">%s istifa kazandı</string>
+	<string name="won_by_checkmate">%s mat kazandı</string>
 	<string name="game_over">Oyun bitti.</string>
 	<string name="draw_game">TEKLİF DRAW</string>
 	<string name="has_offered_draw">berabere önerdi</string>

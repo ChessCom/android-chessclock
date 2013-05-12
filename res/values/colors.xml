@@ -307,20 +307,8 @@
     <color name="green_transp">#7F59b111</color>
     <!--<color name="dark_orange">#FFa94a14</color>-->
 
-    <color name="glow_border">#00c9c9c9</color>
-    <!--<color name="glow_border2">#FF5e5e5e</color>   &lt;!&ndash;Good&ndash;&gt;-->
-    <color name="glow_border2">#FF312e2a</color>   <!--Good-->
-
-	<!--<color name="shadow_border">#27000000</color>-->
-	<color name="shadow_border">#7F000000</color>
-	<!--<color name="shadow_border">#FF183b94</color>-->
-    <!--<color name="dashboard_item_default">#FF353535</color>-->
-    <color name="dashboard_item_default">#FF312e2a</color>
-    <!--<color name="dashboard_item_stroke">#FF312e2a</color>-->
-    <color name="dashboard_item_stroke">#ff484541</color>
-    <!--<color name="dashboard_item_stroke_2">#FF232323</color>-->
-    <color name="dashboard_item_stroke_2">#ff484541</color>
-
+    <color name="popup_back_white">#EFf8faf6</color>
+    <color name="popup_white_border_grey">#FF918f8d</color>
 
     <color name="top_bar_stroke_1">#FF5e5e5e</color>
     <color name="top_bar_stroke_2">#FF404040</color>

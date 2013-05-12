@@ -264,9 +264,9 @@
 	<string name="error_occurred_while_login">Произошла ошибка во время входа в систему, пожалуйста, войдите снова!</string>
 	<string name="update_available_please_update">Обновление доступно! Пожалуйста, обновите</string>
 	<string name="update_check">Проверка обновлений</string>
-	<string name="won_on_time">\nвыиграл по времени</string>
-	<string name="won_by_resignation">\nвыиграл по отставке</string>
-	<string name="won_by_checkmate">\nвыиграл поставив мат</string>
+	<string name="won_on_time">%s выиграл по времени</string>
+	<string name="won_by_resignation">%s выиграл по отставке</string>
+	<string name="won_by_checkmate">%s выиграл поставив мат</string>
 	<string name="game_over">КОНЕЦ ИГРЫ</string>
 	<string name="draw_game">ПРЕДЛОЖЕНА НИЧЬЯ</string>
 	<string name="has_offered_draw">предложил ничью</string>

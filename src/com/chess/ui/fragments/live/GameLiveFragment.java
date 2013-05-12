@@ -25,6 +25,8 @@ import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
+import com.chess.live.rules.GameResult;
+import com.chess.live.util.GameRatingClass;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
@@ -37,16 +39,18 @@ import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameNetworkActivityFace;
-import com.chess.ui.views.chess_boards.ChessBoardLiveView;
-import com.chess.ui.views.game_controls.ControlsLiveView;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
+import com.chess.ui.views.chess_boards.ChessBoardLiveView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
+import com.chess.ui.views.game_controls.ControlsLiveView;
 import com.chess.utilities.AppUtils;
 import quickaction.ActionItem;
 import quickaction.QuickAction;
 
 import java.util.List;
+
+import static com.chess.live.rules.GameResult.WIN;
 
 /**
  * Created with IntelliJ IDEA.
@@ -91,6 +95,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
 	private ImageDownloaderToListener imageDownloader;
+	private int gameEndTitleId;
 
 	public GameLiveFragment() {
 	}
@@ -442,6 +447,18 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 		final Game game = liveService.getLastGame();
 		final List<Integer> ratings = game.getRatings();
+		// Get side result
+		List<GameResult> gameResults = game.getResults();
+		final GameResult whitePlayerResult = gameResults.get(0);
+		final GameResult blackPlayerResult = gameResults.get(1);
+
+		gameEndTitleId = R.string.black_wins;
+		if (whitePlayerResult == WIN) {
+			gameEndTitleId = R.string.white_wins;
+		} else if (blackPlayerResult != WIN) {
+			gameEndTitleId = R.string.game_drawn;
+		}
+
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -453,7 +470,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 				}
 
 				updatePlayerLabels(game, ratings.get(0), ratings.get(1));
-				showGameEndPopup(layout, getString(R.string.game_over), gameEndMessage);
+				showGameEndPopup(layout, getString(gameEndTitleId), gameEndMessage);
 
 				setBoardToFinishedState();
 			}
@@ -830,32 +847,30 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		}
 		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
+		TextView ratingTitleTxt = (TextView) layout.findViewById(R.id.ratingTitleTxt);
 		TextView yourRatingTxt = (TextView) layout.findViewById(R.id.yourRatingTxt);
 		TextView rulesLinkTxt = (TextView) layout.findViewById(R.id.rulesLinkTxt);
 		endGameTitleTxt.setText(title);
 		endGameReasonTxt.setText(message);
 
 		int currentPlayerNewRating = liveService.getLastGame().getRatingForPlayer(liveService.getUsername());
-		/*if (isUserColorWhite()) {
-			currentPlayerNewRating = whitePlayerNewRating;
-		} else {
-			currentPlayerNewRating = blackPlayerNewRating;
-		}*/
-
 		int ratingChange = liveService.getLastGame().getRatingChangeForPlayer(liveService.getUsername());
-		/*String sign;
-		if (currentPlayerRating < currentPlayerNewRating) { // 800 1200
-			ratingDiff = currentPlayerNewRating - currentPlayerRating;
-			sign = StaticData.SYMBOL_PLUS;
-		} else { // 800 700
-			ratingDiff = currentPlayerRating - currentPlayerNewRating;
-			sign = StaticData.SYMBOL_MINUS;
-		}*/
+
+		GameRatingClass gameRatingClass = liveService.getLastGame().getGameRatingClass();
+		String newRatingStr = getString(R.string.live);
+		if (gameRatingClass == GameRatingClass.Standard) {
+			newRatingStr += StaticData.SYMBOL_SPACE + getString(R.string.standard);
+		} else if (gameRatingClass == GameRatingClass.Blitz) {
+			newRatingStr += StaticData.SYMBOL_SPACE + getString(R.string.blitz);
+		} else /*if (gameRatingClass == GameRatingClass.Lightning)*/ {
+			newRatingStr += StaticData.SYMBOL_SPACE + getString(R.string.lightning);
+		}
 
 		String ratingChangeString = ratingChange > 0 ? "+" + ratingChange : "" + ratingChange;
-
-		String rating = getString(R.string.your_end_game_rating, ratingChangeString, currentPlayerNewRating);
+		String rating = currentPlayerNewRating + StaticData.SYMBOL_SPACE
+				+ StaticData.SYMBOL_LEFT_PAR + ratingChangeString + StaticData.SYMBOL_RIGHT_PAR;
 		yourRatingTxt.setText(rating);
+		ratingTitleTxt.setText(getString(R.string.new_game_rating_arg, newRatingStr));
 
 //		inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
 //		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);

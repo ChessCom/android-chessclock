@@ -266,9 +266,9 @@
 	<string name="error_occurred_while_login">Ocurrió un error al inicio de sesión, por favor, iniciar la sesión!</string>
 	<string name="update_available_please_update">Una actualización está disponible! Por favor, actualice</string>
 	<string name="update_check">Comprobación de actualizaciones</string>
-	<string name="won_on_time">\n ganó en el tiempo</string>
-	<string name="won_by_resignation">\n ganada por la resignación</string>
-	<string name="won_by_checkmate">\n ganado por jaque mate</string>
+	<string name="won_on_time">%s ganó en el tiempo</string>
+	<string name="won_by_resignation">%s ganada por la resignación</string>
+	<string name="won_by_checkmate">%s ganado por jaque mate</string>
 	<string name="game_over">Fin del juego.</string>
 	<string name="draw_game">SORTEO OFERTA</string>
 	<string name="has_offered_draw">ha ofrecido un empate</string>

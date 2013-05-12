@@ -1,6 +1,6 @@
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
@@ -12,8 +12,9 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
-		robo:ttf="Bold"
+		custom:ttf="Bold"
 		android:textSize="@dimen/game_end_popup_text_size"
+        android:textColor="@color/new_dark_green"
 		/>
 
 	<!--Wins reason-->
@@ -23,7 +24,23 @@
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
 		android:gravity="center_horizontal"
-		robo:ttf="Bold"
+        android:textSize="16sp"
+        android:textColor="@color/new_author_dark_grey"
+        android:paddingTop="6dip"
+        android:paddingBottom="6dip"
+		/>
+
+	<!--Rating title-->
+	<com.chess.RoboTextView
+		android:id="@+id/ratingTitleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center_horizontal"
+        android:textSize="16sp"
+        android:textColor="@color/new_author_dark_grey"
+        android:paddingTop="6dip"
+        android:paddingBottom="6dip"
 		/>
 
 	<!--Rating-->
@@ -32,7 +49,10 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
-		robo:ttf="Bold"
+		custom:ttf="Bold"
+        android:textColor="@color/new_dark_green"
+        android:textSize="21sp"
+        android:paddingBottom="6dip"
 		/>
 
 	<LinearLayout
@@ -48,7 +68,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/new_game"
-			style="@style/Text.Button"
+			style="@style/Text.Button.OrangeNoBorder"
 			/>
 
 		<!--Rematch -->
@@ -58,7 +78,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/rematch"
-			style="@style/Text.Button"
+			style="@style/Text.Button.OrangeNoBorder"
 			/>
 
 		<!--Review-->
@@ -68,7 +88,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/review"
-			style="@style/Text.Button.Grey"
+			style="@style/Text.Button.Grey.Light"
 			/>
 
 		<!--Home-->
@@ -78,7 +98,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/home"
-			style="@style/Text.Button.Grey"/>
+			style="@style/Text.Button.Grey.Light"/>
 
         <!--Link text-->
         <com.chess.RoboTextView

@@ -10,7 +10,7 @@
 	android:paddingBottom="@dimen/popup_custom_bottom_padding"
 	android:paddingLeft="@dimen/popup_custom_side_padding"
 	android:paddingRight="@dimen/popup_custom_side_padding"
-	android:background="@drawable/dashboard_single_back"
+	android:background="@drawable/popup_white_back"
 	android:layout_marginRight="@dimen/popup_side_margin"
 	android:layout_marginLeft="@dimen/popup_side_margin"
 	>

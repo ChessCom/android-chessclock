@@ -265,9 +265,9 @@
 	<string name="error_occurred_while_login">Errore durante il login, nuovo login!</string>
 	<string name="update_available_please_update">Un aggiornamento è disponibile! Si prega di aggiornare</string>
 	<string name="update_check">Aggiornamento Verifica</string>
-	<string name="won_on_time">\n ha vinto in tempo</string>
-	<string name="won_by_resignation">\n vinta da dimissioni</string>
-	<string name="won_by_checkmate">\n vinta da scacco matto</string>
+	<string name="won_on_time">%s ha vinto in tempo</string>
+	<string name="won_by_resignation">%s vinta da dimissioni</string>
+	<string name="won_by_checkmate">%s vinta da scacco matto</string>
 	<string name="game_over">GAME OVER</string>
 	<string name="draw_game">DISEGNO OFFERTA</string>
 	<string name="has_offered_draw">ha offerto un pareggio</string>

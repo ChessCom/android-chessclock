@@ -266,9 +266,9 @@
 	<string name="error_occurred_while_login">Der opstod en fejl under login, bedes du logger ind igen!</string>
 	<string name="update_available_please_update">En opdatering er tilgængelig! Opdater venligst</string>
 	<string name="update_check">Opdater Check</string>
-	<string name="won_on_time">\n vandt til tiden</string>
-	<string name="won_by_resignation">\n vandt af resignation</string>
-	<string name="won_by_checkmate">\n vandt af Checkmate</string>
+	<string name="won_on_time">%s vandt til tiden</string>
+	<string name="won_by_resignation">%s vandt af resignation</string>
+	<string name="won_by_checkmate">%s vandt af Checkmate</string>
 	<string name="game_over">GAME OVER</string>
 	<string name="draw_game">DRAW TILBUD</string>
 	<string name="has_offered_draw">har tilbudt en lodtrækning</string>

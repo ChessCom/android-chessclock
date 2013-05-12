@@ -267,9 +267,9 @@
 	<string name="error_occurred_while_login">حدث خطأ أثناء تسجيل الدخول، يرجى relogin!</string>
 	<string name="update_available_please_update">يتوفر تحديث! يرجى تحديث</string>
 	<string name="update_check">تحديث تحقق</string>
-	<string name="won_on_time">\nوفاز في الوقت المحدد</string>
-	<string name="won_by_resignation">وفاز من قبل استقالة\n</string>
-	<string name="won_by_checkmate">\nفاز بها كش ملك</string>
+	<string name="won_on_time">%sوفاز في الوقت المحدد</string>
+	<string name="won_by_resignation">%sاز من قبل استقالة\n</string>
+	<string name="won_by_checkmate">%sفاز بها كش ملك</string>
 	<string name="game_over">اللعبة انتهت</string>
 	<string name="draw_game">يسحب العرض</string>
 	<string name="has_offered_draw">وعرضت بالتعادل</string>

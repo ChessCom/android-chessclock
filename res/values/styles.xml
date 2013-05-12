@@ -47,6 +47,11 @@
         <item name="android:textColor">@color/new_light_grey</item>
     </style>
 
+    <style name="Text.Button.Grey.Light">
+        <item name="android:background">@drawable/button_grey_solid_nb_selector</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="Text.Button.GreyDarker">
         <item name="android:background">@drawable/button_grey_darker_selector</item>
         <item name="android:minHeight">@dimen/main_button_height</item>
@@ -136,35 +141,6 @@
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="DashboardButton">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:gravity">center</item>
-        <item name="android:drawablePadding">5dp</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/top_bar_1</item>
-        <item name="android:background">@drawable/dashboard_button_text_selector</item>
-        <item name="android:duplicateParentState">true</item>
-    </style>
-
-    <style name="MyDashboardButton">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/top_bar_1</item>
-        <item name="android:background">@drawable/dashboard_button_text_selector</item>
-        <item name="android:duplicateParentState">true</item>
-        <item name="android:clickable">true</item>
-    </style>
-
-    <style name="DashboardItem">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-    </style>
 
     <style name="NotationsStyle">
         <item name="android:gravity">center_vertical</item>

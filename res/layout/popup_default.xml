@@ -2,7 +2,7 @@
 
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="@dimen/popup_dialog_width"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
@@ -11,7 +11,7 @@
 	android:paddingBottom="@dimen/popup__bottom_padding"
 	android:paddingLeft="@dimen/popup_side_padding"
 	android:paddingRight="@dimen/popup_side_padding"
-	android:background="@drawable/dashboard_single_back"
+	android:background="@drawable/popup_white_back"
 	android:layout_marginRight="@dimen/popup_side_margin"
 	android:layout_marginLeft="@dimen/popup_side_margin"
 	>
@@ -22,10 +22,9 @@
 		android:layout_height="wrap_content"
 		android:maxWidth="@dimen/popup_dialog_text_max_width"
 		android:gravity="center"
-		android:textStyle="bold"
 		android:textSize="19sp"
-		style="@style/DarkShadowBottom"
-		robo:ttf="Bold"
+		android:textColor="@color/new_dark_green"
+        custom:ttf="Bold"
 		/>
 
 	<com.chess.RoboTextView
@@ -33,12 +32,11 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:maxWidth="@dimen/popup_dialog_text_max_width"
-		android:text="@string/sign_out_confirm"
 		android:gravity="center"
 		android:paddingTop="@dimen/default_scr_bottom_padding"
 		android:paddingBottom="@dimen/default_scr_top_padding"
-		style="@style/DarkShadowBottom"
 		android:textSize="17sp"
+        android:textColor="@color/new_author_dark_grey"
 		/>
 
 	<LinearLayout
@@ -51,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/Text.Button.Grey"
+            style="@style/Text.Button.Grey.Light"
             android:text="@string/cancel"
             android:layout_gravity="center_horizontal"
             android:layout_marginRight="2dip"
@@ -62,7 +60,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			style="@style/Text.Button.Grey"
+			style="@style/Text.Button.Grey.Light"
 			android:text="@string/not_now"
 			android:layout_gravity="center_horizontal"
             android:layout_marginLeft="2dip"
@@ -73,7 +71,7 @@
             android:id="@+id/positiveBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Text.Button"
+            style="@style/Text.Button.OrangeNoBorder"
             android:text="@string/ok"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"

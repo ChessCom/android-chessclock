@@ -266,9 +266,9 @@
 	<string name="error_occurred_while_login">त्रुटि हुई लॉगिन जबकि, relogin कृपया!</string>
 	<string name="update_available_please_update">एक अद्यतन उपलब्ध है! अपडेट करें</string>
 	<string name="update_check">जाँच करें अद्यतन</string>
-	<string name="won_on_time">\n समय पर जीता</string>
-	<string name="won_by_resignation">\n इस्तीफे से जीता</string>
-	<string name="won_by_checkmate">\n शह और मात से जीता</string>
+	<string name="won_on_time">%s समय पर जीता</string>
+	<string name="won_by_resignation">%s इस्तीफे से जीता</string>
+	<string name="won_by_checkmate">%s शह और मात से जीता</string>
 	<string name="game_over">गेम समाप्त </string>
 	<string name="draw_game">की पेशकश की आकर्षित</string>
 	<string name="has_offered_draw">एक ड्रॉ की पेशकश की</string>

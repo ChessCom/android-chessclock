@@ -264,9 +264,9 @@
 	<string name="error_occurred_while_login">Fout opgetreden tijdens het aanmelden, dan kunt u weer inloggen!</string>
 	<string name="update_available_please_update">Er is een update beschikbaar! Werk</string>
 	<string name="update_check">Werk Controleer</string>
-	<string name="won_on_time">\n won op tijd</string>
-	<string name="won_by_resignation">\n gewonnen door ontslag</string>
-	<string name="won_by_checkmate">\n gewonnen door schaakmat</string>
+	<string name="won_on_time">%s won op tijd</string>
+	<string name="won_by_resignation">%s gewonnen door ontslag</string>
+	<string name="won_by_checkmate">%s gewonnen door schaakmat</string>
 	<string name="game_over">SPEL UIT</string>
 	<string name="draw_game">Remise aan te bieden</string>
 	<string name="has_offered_draw">heeft aangeboden een gelijkspel</string>

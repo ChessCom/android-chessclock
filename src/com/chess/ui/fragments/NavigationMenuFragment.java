@@ -92,11 +92,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		switch (menuItem.iconRes) {
 			case R.drawable.ic_nav_home: {
 				getActivityFace().clearFragmentStack();
-				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(HomeTabsFragment.class.getSimpleName());
-				if(fragmentByTag == null) {
-					fragmentByTag = new HomeTabsFragment();
-				}
-				getActivityFace().switchFragment(fragmentByTag);
+				getActivityFace().switchFragment(new HomeTabsFragment());
 				getActivityFace().toggleLeftMenu();
 				break;}
 			case R.drawable.ic_nav_upgrade:{

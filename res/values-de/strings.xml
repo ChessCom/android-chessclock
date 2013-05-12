@@ -265,9 +265,9 @@
 	<string name="error_occurred_while_login">Fehler beim Login, wenden Sie sich bitte erneut anmelden!</string>
 	<string name="update_available_please_update">Ein Update ist verfügbar! Bitte aktualisieren</string>
 	<string name="update_check">Update Check</string>
-	<string name="won_on_time">\n gewann auf Zeit</string>
-	<string name="won_by_resignation">\n gewonnen durch Rücktritt</string>
-	<string name="won_by_checkmate">\n gewonnen durch Schachmatt</string>
+	<string name="won_on_time">%s gewann auf Zeit</string>
+	<string name="won_by_resignation">%s gewonnen durch Rücktritt</string>
+	<string name="won_by_checkmate">%s gewonnen durch Schachmatt</string>
 	<string name="game_over">SPIELENDE</string>
 	<string name="draw_game">Remisangebot</string>
 	<string name="has_offered_draw">hat angeboten, ein Remis</string>

@@ -266,9 +266,9 @@
 	<string name="error_occurred_while_login">שגיאה בזמן ההתחברות, אנא relogin!</string>
 	<string name="update_available_please_update">עדכון זמין! אנא עדכן</string>
 	<string name="update_check">הסימון עדכן</string>
-	<string name="won_on_time">\n ניצח על הזמן</string>
-	<string name="won_by_resignation">\n ניצח התפטרותו</string>
-	<string name="won_by_checkmate">\n ניצח מט</string>
+	<string name="won_on_time">%s ניצח על הזמן</string>
+	<string name="won_by_resignation">%s ניצח התפטרותו</string>
+	<string name="won_by_checkmate">%s ניצח מט</string>
 	<string name="game_over">המשחק נגמר</string>
 	<string name="draw_game">לצייר להציע</string>
 	<string name="has_offered_draw">הציע תיקו</string>

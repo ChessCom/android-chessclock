@@ -266,9 +266,9 @@
 	<string name="error_occurred_while_login">Une erreur s\'est produite tout en identifiant, s\'il vous plaît se reconnecter!</string>
 	<string name="update_available_please_update">Une mise à jour est disponible! S\'il vous plaît mettre à jour</string>
 	<string name="update_check">Mise à jour Vérifiez</string>
-	<string name="won_on_time">\n gagné sur le temps</string>
-	<string name="won_by_resignation">\n remporté par la démission</string>
-	<string name="won_by_checkmate">\n remporté par échec et mat</string>
+	<string name="won_on_time">%s gagné sur le temps</string>
+	<string name="won_by_resignation">%s remporté par la démission</string>
+	<string name="won_by_checkmate">%s remporté par échec et mat</string>
 	<string name="game_over">GAME OVER</string>
 	<string name="draw_game">TIRAGE OFFRE</string>
 	<string name="has_offered_draw">a offert un tirage au sort</string>

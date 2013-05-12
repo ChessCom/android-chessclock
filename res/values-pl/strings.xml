@@ -264,9 +264,9 @@
 	<string name="error_occurred_while_login">Wystąpił błąd podczas logowania, należy przelogować!</string>
 	<string name="update_available_please_update">Aktualizacja jest dostępna! Proszę zaktualizować</string>
 	<string name="update_check">Aktualizacja Sprawdź</string>
-	<string name="won_on_time">\n wygrała na czas</string>
-	<string name="won_by_resignation">\n wygrała rezygnacji</string>
-	<string name="won_by_checkmate">\n wygrała mata</string>
+	<string name="won_on_time">%s wygrała na czas</string>
+	<string name="won_by_resignation">%s wygrała rezygnacji</string>
+	<string name="won_by_checkmate">%s wygrała mata</string>
 	<string name="game_over">Koniec gry?</string>
 	<string name="draw_game">RYSOWANIE OFERTA</string>
 	<string name="has_offered_draw">zaproponował remis</string>

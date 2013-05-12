@@ -263,9 +263,9 @@
 	<string name="error_occurred_while_login">Feil oppstod ved pålogging, kan du logge inn på nytt!</string>
 	<string name="update_available_please_update">En oppdatering er tilgjengelig! Vennligst oppdater</string>
 	<string name="update_check">Oppdater Sjekk</string>
-	<string name="won_on_time">\n vant på tid</string>
-	<string name="won_by_resignation">\n vunnet av resignasjon</string>
-	<string name="won_by_checkmate">\n vunnet av sjakkmatt</string>
+	<string name="won_on_time">%s vant på tid</string>
+	<string name="won_by_resignation">%s vunnet av resignasjon</string>
+	<string name="won_by_checkmate">%s vunnet av sjakkmatt</string>
 	<string name="game_over">GAME OVER</string>
 	<string name="draw_game">DRAW TILBUD</string>
 	<string name="has_offered_draw">har tilbudt en uavgjort</string>

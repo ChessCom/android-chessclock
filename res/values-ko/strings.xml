@@ -261,9 +261,9 @@
 	<string name="error_occurred_while_login">오류가 발생했습니다 로그인 동안 relogin를주세요!</string>
 	<string name="update_available_please_update">업데이 트가 가능! 업데이 트하시기 바랍니다</string>
 	<string name="update_check">업데이트 확인</string>
-	<string name="won_on_time">\n 은 시간에 원</string>
-	<string name="won_by_resignation">\n은 사표가 원</string>
-	<string name="won_by_checkmate">\n은 장군에 의해 원</string>
+	<string name="won_on_time">%s 은 시간에 원</string>
+	<string name="won_by_resignation">%s 은 사표가 원</string>
+	<string name="won_by_checkmate">%s 은 장군에 의해 원</string>
 	<string name="game_over">게임 종료</string>
 	<string name="draw_game">제공 그리기</string>
 	<string name="has_offered_draw">무승부를 제공했습니다</string>

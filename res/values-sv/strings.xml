@@ -262,9 +262,9 @@
 	<string name="error_occurred_while_login">Fel uppstod när inloggning, vänligen logga in igen!</string>
 	<string name="update_available_please_update">En uppdatering finns tillgänglig! Uppdatera</string>
 	<string name="update_check">Uppdatera Kontrollera</string>
-	<string name="won_on_time">\n vann på tiden</string>
-	<string name="won_by_resignation">\n vann med avgång</string>
-	<string name="won_by_checkmate">\n vann med schackmatt</string>
+	<string name="won_on_time">%s vann på tiden</string>
+	<string name="won_by_resignation">%s vann med avgång</string>
+	<string name="won_by_checkmate">%s vann med schackmatt</string>
 	<string name="game_over">GAME OVER</string>
 	<string name="draw_game">DRA ERBJUDER</string>
 	<string name="has_offered_draw">har erbjudit oavgjort</string>

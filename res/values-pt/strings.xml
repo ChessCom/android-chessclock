@@ -264,9 +264,9 @@
 	<string name="error_occurred_while_login">Ocorreu um erro enquanto login, por favor relogin!</string>
 	<string name="update_available_please_update">Uma atualização está disponível! Por favor, atualize</string>
 	<string name="update_check">Atualize Confira</string>
-	<string name="won_on_time">\n ganhou no tempo</string>
-	<string name="won_by_resignation">\n ganhou por renúncia</string>
-	<string name="won_by_checkmate">\n ganhou por xeque-mate</string>
+	<string name="won_on_time">%s ganhou no tempo</string>
+	<string name="won_by_resignation">%s ganhou por renúncia</string>
+	<string name="won_by_checkmate">%s ganhou por xeque-mate</string>
 	<string name="game_over">FIM DO JOGO</string>
 	<string name="draw_game">SORTEIO OFERTA</string>
 	<string name="has_offered_draw">ofereceu um empate</string>

@@ -264,9 +264,9 @@
 	<string name="error_occurred_while_login">خطا رخ داده است در حالی که ورود به سیستم، لطفا relogin!</string>
 	<string name="update_available_please_update">به روز رسانی در دسترس است! لطفا به روز رسانی</string>
 	<string name="update_check">بررسی به روز رسانی</string>
-	<string name="won_on_time">\n در زمان به دست آورد</string>
-	<string name="won_by_resignation">\n برنده توسط استعفای</string>
-	<string name="won_by_checkmate">\ برنده توسط مات</string>
+	<string name="won_on_time">%s در زمان به دست آورد</string>
+	<string name="won_by_resignation">%s برنده توسط استعفای</string>
+	<string name="won_by_checkmate">%s برنده توسط مات</string>
 	<string name="game_over">بازیتمامشد</string>
 	<string name="draw_game">قرعه کشی را</string>
 	<string name="has_offered_draw">قرعه کشی ارائه کرده است</string>
