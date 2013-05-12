@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,19 +39,19 @@ public class NotationView extends LinearLayout {
 	private LayoutParams notationTextParams;
 
 	public NotationView(Context context) {
-        super(context);
-        onCreate();
-    }
+		super(context);
+		onCreate();
+	}
 
-    public NotationView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        onCreate();
-    }
+	public NotationView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		onCreate();
+	}
 
-    public void onCreate() {
+	public void onCreate() {
 		float density = getContext().getResources().getDisplayMetrics().density;
 		viewPerPage = getContext().getResources().getInteger(R.integer.notations_per_page);
-		textSize = (int) (getContext().getResources().getDimension(R.dimen.notations_text_size)/density);
+		textSize = (int) (getContext().getResources().getDimension(R.dimen.notations_text_size) / density);
 		textColor = getContext().getResources().getColor(R.color.notations_text_color);
 		textColorSelected = getContext().getResources().getColor(R.color.notations_text_color_selected);
 
@@ -119,7 +120,7 @@ public class NotationView extends LinearLayout {
 			if (originalNotations == null) {
 				return 0;
 			}
-			return (int) Math.ceil((originalNotations.length /(float) viewPerPage));
+			return (int) Math.ceil((originalNotations.length / (float) viewPerPage));
 		}
 
 		@Override
@@ -160,7 +161,7 @@ public class NotationView extends LinearLayout {
 
 				textView.setText(notation);
 
-				if (currentPosition == selectedPosition){
+				if (currentPosition == selectedPosition) {
 					textView.setBackgroundResource(R.drawable.button_grey_flat);
 					textView.setTextColor(textColorSelected);
 				} else {
@@ -176,7 +177,6 @@ public class NotationView extends LinearLayout {
 
 			while (i <= viewPerPage) { // stubs
 				RoboTextView textView = new RoboTextView(getContext());
-
 
 				textView.setId(NOTATION_ID);
 				textView.setText(StaticData.SYMBOL_SPACE);
@@ -228,11 +228,11 @@ public class NotationView extends LinearLayout {
 						textView.setText(notation);
 						textView.setTag(R.id.list_item_id, currentPosition);
 						textView.setOnClickListener(mOnButtonClicked);
-					} else if (newNotations){
+					} else if (newNotations) {
 						textView.setText(StaticData.SYMBOL_SPACE);
 					}
 
-					if (currentPosition == selectedPosition){
+					if (currentPosition == selectedPosition) {
 						textView.setBackgroundResource(R.drawable.button_grey_flat);
 						textView.setTextColor(textColorSelected);
 					} else {
@@ -254,7 +254,7 @@ public class NotationView extends LinearLayout {
 					int currentPosition = i + absoluteNumber;
 					RoboTextView textView = (RoboTextView) currentView.getChildAt(i);
 
-					if (currentPosition == selectedPosition){
+					if (currentPosition == selectedPosition) {
 						textView.setBackgroundResource(R.drawable.button_grey_flat);
 						textView.setTextColor(textColorSelected);
 					} else {
@@ -270,7 +270,7 @@ public class NotationView extends LinearLayout {
 
 
 	public void show(boolean show) {
-		setVisibility(show? VISIBLE : GONE);
+		setVisibility(show ? VISIBLE : GONE);
 	}
 
 	public void moveBack(int hply) {
@@ -291,17 +291,20 @@ public class NotationView extends LinearLayout {
 		}
 	};
 
-	private void highlightPosition(int pos){
+	private void highlightPosition(int pos) {
 		if (pos < 0) {
 			return;
 		}
-		viewPager.setCurrentItem(pos/ viewPerPage);
+		viewPager.setCurrentItem(pos / viewPerPage);
 		notationsAdapter.selectItem(pos);
 	}
 
-	public void resetNotations(){
+	public void resetNotations() {
+		Log.d("TEST", " reset notations");
 		originalNotations = new String[]{};
 		notationsAdapter.notifyDataSetChanged();
+		newNotations = true;
+		notationsAdapter.selectItem(-1);
 		viewPager.invalidate();
 	}
 

@@ -13,12 +13,12 @@ import com.chess.ui.fragments.daily.DailyTabsFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.game.GameTacticsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
+import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.videos.VideosFragment;
-import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,52 +90,95 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 
 		// TODO adjust switch/closeBoard when the same fragment opened
 		switch (menuItem.iconRes) {
-			case R.drawable.ic_nav_home:
-				getActivityFace().clearFragmentStack(); // TODO check
-				getActivityFace().switchFragment(new HomeTabsFragment()); // TODO clear stack
+			case R.drawable.ic_nav_home: {
+				getActivityFace().clearFragmentStack();
+				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(HomeTabsFragment.class.getSimpleName());
+				if(fragmentByTag == null) {
+					fragmentByTag = new HomeTabsFragment();
+				}
+				getActivityFace().switchFragment(fragmentByTag);
 				getActivityFace().toggleLeftMenu();
-				break;
-			case R.drawable.ic_nav_upgrade:
-				getActivityFace().openFragment(new UpgradeFragment());
+				break;}
+			case R.drawable.ic_nav_upgrade:{
+				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(UpgradeFragment.class.getSimpleName());
+				if(fragmentByTag == null) {
+					fragmentByTag = new UpgradeFragment();
+				}
+				getActivityFace().openFragment(fragmentByTag);
 				getActivityFace().toggleLeftMenu();
-				break;
-			case R.drawable.ic_nav_play_daily:
-				getActivityFace().openFragment(new DailyTabsFragment());
+				break;}
+			case R.drawable.ic_nav_play_daily:{
+				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(DailyTabsFragment.class.getSimpleName());
+				if(fragmentByTag == null) {
+					fragmentByTag = new DailyTabsFragment();
+				}
+				getActivityFace().openFragment(fragmentByTag);
 				getActivityFace().toggleLeftMenu();
-				break;
-			case R.drawable.ic_nav_play_live:
-//				getActivityFace().openFragment(new GameLiveFragment());
-				getActivityFace().openFragment(new LiveGameWaitFragment());
+				break;}
+			case R.drawable.ic_nav_play_live:{
+				BasePopupsFragment liveFragment = (BasePopupsFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
+				if (liveFragment == null) {
+					liveFragment = new LiveGameWaitFragment();
+				}
+				getActivityFace().openFragment(liveFragment);
 				getActivityFace().toggleLeftMenu();
-				break;
-			case R.drawable.ic_nav_tactics:
-				getActivityFace().openFragment(new GameTacticsFragment());
+				break;}
+			case R.drawable.ic_nav_tactics:{
+				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragment.class.getSimpleName());
+				if (fragmentByTag == null) {
+					fragmentByTag = new GameTacticsFragment();
+				}
+				getActivityFace().openFragment(fragmentByTag);
 				getActivityFace().toggleLeftMenu();
-				break;
-			case R.drawable.ic_nav_lessons:
-				getActivityFace().openFragment(new LessonsFragment());
+				break;}
+			case R.drawable.ic_nav_lessons:{
+				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(LessonsFragment.class.getSimpleName());
+				if(fragmentByTag == null) {
+					fragmentByTag = new LessonsFragment();
+				}
+				getActivityFace().openFragment(fragmentByTag);
 				getActivityFace().toggleLeftMenu();
-				break;
-			case R.drawable.ic_nav_videos:
-				getActivityFace().openFragment(new VideosFragment());
+				break;}
+			case R.drawable.ic_nav_videos:{
+				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(VideosFragment.class.getSimpleName());
+				if(fragmentByTag == null) {
+					fragmentByTag = new VideosFragment();
+				}
+				getActivityFace().openFragment(fragmentByTag);
 				getActivityFace().toggleLeftMenu();
-				break;
-			case R.drawable.ic_nav_articles:
-				getActivityFace().openFragment(new ArticlesFragment());
+				break;}
+			case R.drawable.ic_nav_articles:{
+				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(ArticlesFragment.class.getSimpleName());
+				if(fragmentByTag == null) {
+					fragmentByTag = new ArticlesFragment();
+				}
+				getActivityFace().openFragment(fragmentByTag);
 				getActivityFace().toggleLeftMenu();
-				break;
-			case R.drawable.ic_nav_friends:
-				getActivityFace().openFragment(new FriendsFragment());
+				break;}
+			case R.drawable.ic_nav_friends:{
+				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(FriendsFragment.class.getSimpleName());
+				if(fragmentByTag == null) {
+					fragmentByTag = new FriendsFragment();
+				}
+				getActivityFace().openFragment(fragmentByTag);
 				getActivityFace().toggleLeftMenu();
-				break;
-			case R.drawable.ic_nav_stats:
-				getActivityFace().openFragment(StatsGameFragment.newInstance(0));
+				break;}
+			case R.drawable.ic_nav_stats:{
+				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(StatsGameFragment.class.getSimpleName());
+				if(fragmentByTag == null) {
+					fragmentByTag = new StatsGameFragment();
+				}
+				getActivityFace().openFragment(fragmentByTag);
 				getActivityFace().toggleLeftMenu();
-				break;
-			case R.drawable.ic_nav_settings:
-				getActivityFace().openFragment(new SettingsFragment());
+				break;}
+			case R.drawable.ic_nav_settings:{
+				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(SettingsFragment.class.getSimpleName());
+				if(fragmentByTag == null) {
+					fragmentByTag = new SettingsFragment();
+				}
+				getActivityFace().openFragment(fragmentByTag);
 				getActivityFace().toggleLeftMenu();
-				break;
+				break;}
 		}
 	}
 

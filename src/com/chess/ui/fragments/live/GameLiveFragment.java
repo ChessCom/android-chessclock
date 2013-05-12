@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -196,13 +197,21 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	// ----------------------Lcc Events ---------------------------------------------
 
 	private void onGameStarted() throws DataNotValidException {
+		logTest("onGameStarted");
+
 		LiveChessService liveService = getLiveService();
 		GameLiveItem currentGame = liveService.getGameItem();
 
+		ChessBoardLive.resetInstance();
+		boardView.setGameActivityFace(this);
+
 		if (!liveService.isUserColorWhite()) {
 			getBoardFace().setReside(true);
-			boardView.invalidate();
 		}
+		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
+		boardView.updateBoardAndPiecesImgs();
+		notationsView.resetNotations();
+//		boardView.invalidate();
 
 		invalidateGameScreen();
 		if (liveService.getPendingWarnings().size() > 0) {
@@ -240,7 +249,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	@Override
 	public void setWhitePlayerTimer(String timeString) {
 		whiteTimer = timeString;
-		getActivity().runOnUiThread(new Runnable() {
+		FragmentActivity activity = getActivity();
+		if (activity == null) {
+			return;
+		}
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				if (getBoardFace().isReside()) {
@@ -255,7 +268,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	@Override
 	public void setBlackPlayerTimer(String timeString) {
 		blackTimer = timeString;
-		getActivity().runOnUiThread(new Runnable() { // TODO add check
+		FragmentActivity activity = getActivity();
+		if (activity == null) {
+			return;
+		}
+		activity.runOnUiThread(new Runnable() { // TODO add check
 			@Override
 			public void run() {
 				if (getBoardFace().isReside()) {
@@ -301,6 +318,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 	@Override
 	public void onGameRefresh(GameLiveItem gameItem) {
+		logTest("onGameRefresh");
+		Activity activity = getActivity();
+		if (activity == null) {
+			logTest("activity = null, quit");
+			return;
+		}
 		LiveChessService liveService;
 		try {
 			liveService = getLiveService();
@@ -313,6 +336,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			return;
 		} else {
 			getBoardFace().setAnalysis(false);
+			getBoardFace().setFinished(false);
 			gameId = gameItem.getGameId();
 		}
 
@@ -342,9 +366,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 		getBoardFace().setMovesCount(actualMovesSize);
 
-		getActivity().runOnUiThread(new Runnable() {
+		if (!liveService.isUserColorWhite()) {
+			getBoardFace().setReside(true);
+		}
+
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+
+				boardView.setGameActivityFace(GameLiveFragment.this);
 				boardView.invalidate();
 				invalidateGameScreen();
 			}
@@ -396,6 +426,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 	@Override
 	public void onGameEnd(final String gameEndMessage) {
+		final Activity activity = getActivity();
+		if (activity == null) {
+			return;
+		}
+
 		LiveChessService liveService;
 		try {
 			liveService = getLiveService();
@@ -407,11 +442,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 		final Game game = liveService.getLastGame();
 		final List<Integer> ratings = game.getRatings();
-		getActivity().runOnUiThread(new Runnable() {
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				final View layout;
-				if (!AppUtils.isNeedToUpgrade(getActivity())) {
+				if (!AppUtils.isNeedToUpgrade(activity)) {
 					layout = inflater.inflate(R.layout.popup_end_game, null, false);
 				} else {
 					layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
@@ -435,7 +470,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	// -----------------------------------------------------------------------------------
 
 	private void blockGame(final boolean block) {
-		getActivity().runOnUiThread(new Runnable() {
+		FragmentActivity activity = getActivity();
+		if (activity == null) {
+			return;
+		}
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				if (block) {
@@ -852,8 +891,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	@Override
 	protected void restoreGame() {
 		if (isLCSBound) {
-			ChessBoardLive.resetInstance();
-			boardView.setGameActivityFace(this);
+//			ChessBoardLive.resetInstance();		 // moved to onGameStarted
+//			boardView.setGameActivityFace(this);
 			try {
 				onGameStarted();
 			} catch (DataNotValidException e) {
@@ -944,9 +983,13 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		LiveChessService liveService = getLiveService();
 
 		GameLiveItem currentGame = liveService.getGameItem();
+		if (currentGame == null) {
+			throw new DataNotValidException(DataNotValidException.GAME_NOT_EXIST);
+		}
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		boardView.updateBoardAndPiecesImgs();
+		notationsView.resetNotations();
 		enableScreenLockTimer();
 
 		if (!liveService.isCurrentGameExist()) {

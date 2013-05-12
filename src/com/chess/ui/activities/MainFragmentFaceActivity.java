@@ -15,6 +15,7 @@ import com.chess.backend.statics.IntentConstants;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
+import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.sign_in.WelcomeFragment;
 import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
@@ -94,6 +95,12 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		super.onNewIntent(intent);
 
 		if (intent.hasExtra(IntentConstants.LIVE_CHESS)) {
+
+			GameLiveFragment gameLiveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
+			if (gameLiveFragment != null) {
+				switchFragment(gameLiveFragment);
+				return;
+			}
 			LiveGameWaitFragment fragmentByTag = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
 			if (fragmentByTag == null) {
 				fragmentByTag = new LiveGameWaitFragment();

@@ -14,6 +14,7 @@ public class DataNotValidException extends IOException {
 	public static final String LCC_HELPER_NULL = "LccHelper has become NULL, we leaved or signed out";
 	public static final String USER_NULL = "User has become NULL";
 	public static final String NOT_CONNECTED = "lcc is not connected";
+	public static final String GAME_NOT_EXIST = "live game doesn't exist";
 
 	public DataNotValidException(String message) {
 		super(message);

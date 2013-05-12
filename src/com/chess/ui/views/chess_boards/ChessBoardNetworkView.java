@@ -189,12 +189,11 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 			if (whiteUserName.equals(userName)  && !getBoardFace().isWhiteToMove()) {
 				return true;
 			}
+
 			if (blackUserName.equals(userName) && getBoardFace().isWhiteToMove()) {
 				return true;
 			}
-
 		}
-
 		return super.onTouchEvent(event);
 	}
 

@@ -155,9 +155,12 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public GameLiveItem getGameItem() {
-		Game game = getGame(currentGameId);
-
-		return new GameLiveItem(game, game.getMoveCount() - 1);
+		if (currentGameId == null) {
+			return null;
+		} else {
+			Game game = getGame(currentGameId);
+			return new GameLiveItem(game, game.getMoveCount() - 1);
+		}
 	}
 
 	public int getResignTitle() {

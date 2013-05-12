@@ -47,6 +47,12 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	private SaveStatsUpdateListener saveStatsUpdateListener;
 	private String gameType;
 
+	public StatsGameFragment() {
+		Bundle bundle = new Bundle();
+		bundle.putInt(CATEGORY, LIVE_STANDARD);
+		setArguments(bundle);
+	}
+
 	public static StatsGameFragment newInstance(int code) {
 		StatsGameFragment frag = new StatsGameFragment();
 		Bundle bundle = new Bundle();
