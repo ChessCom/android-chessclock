@@ -13,18 +13,34 @@
 
     <style name="Button.Grey">
         <!--Default colors-->
-<!--
-        <item name="btn_top">#FFFFFFFF</item>
-        <item name="btn_left">#FFFFFF00</item>
-        <item name="btn_right">#FF00FF00</item>
-        <item name="btn_bottom">#FFFF0000</item>
--->
         <item name="btn_top">@color/grey_button_solid_border_top</item>
         <item name="btn_left">@color/grey_button_solid_border_left</item>
         <item name="btn_right">@color/grey_button_solid_border_right</item>
         <item name="btn_bottom">@color/grey_button_solid_border_bottom</item>
 
+        <item name="btn_top_p">@color/grey_button_solid_border_top</item>
+        <item name="btn_left_p">@color/grey_button_solid_border_left</item>
+        <item name="btn_right_p">@color/grey_button_solid_border_right</item>
+        <item name="btn_bottom_p">@color/grey_button_solid_border_bottom</item>
+
         <item name="btn_solid">@color/grey_button_solid</item>
+        <item name="btn_solid_p">@color/grey_button_solid_p</item>
+    </style>
+
+    <style name="Button.DarkGrey">
+        <!--Default colors-->
+        <item name="btn_top">@color/grey_button_solid_border_top</item>
+        <item name="btn_left">@color/grey_button_solid_border_left</item>
+        <item name="btn_right">@color/grey_button_solid_border_right</item>
+        <item name="btn_bottom">@color/grey_button_solid_border_bottom</item>
+
+        <item name="btn_top_p">@color/grey_button_solid_border_top</item>
+        <item name="btn_left_p">@color/grey_button_solid_border_left</item>
+        <item name="btn_right_p">@color/grey_button_solid_border_right</item>
+        <item name="btn_bottom_p">@color/grey_button_solid_border_bottom</item>
+
+        <item name="btn_solid">@color/grey_button_solid</item>
+        <item name="btn_solid_p">@color/grey_button_solid_p</item>
     </style>
 
 </resources>

@@ -7,6 +7,7 @@ import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
 import com.chess.R;
@@ -20,15 +21,16 @@ import java.util.List;
  * Date: 12.05.13
  * Time: 18:40
  */
-public class ButtonDrawable extends Drawable {
+public class ButtonDrawable extends StateListDrawable {
 
 	private static final int DEFAULT_RADIUS = 4;
 	private static final int DEFAULT_ANGLE = 270;
 	private static final int DEFAULT_PADDING = 2;
 	private static final int DEFAULT_BEVEL_INSET = 1;
-	private final LayerDrawable layerDrawable;
+	private final LayerDrawable enabledDrawable;
+	private final LayerDrawable pressedDrawable;
 	private final Resources resources;
-	private final List<LayerInfo> layers;
+
 	private final int levelCnt;
 	private final float[] outerR;
 
@@ -67,115 +69,8 @@ public class ButtonDrawable extends Drawable {
 	private int radius;
 
 	private boolean initialized;
-
-/*
-
-    <!--Outer Border-->
-    <item>
-        <shape>
-            <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@android:color/transparent"/>
-            <stroke
-                android:width="@dimen/default_stroke_width"
-                android:color="@color/semi_transparent_border"/>
-        </shape>
-    </item>
-    <!--Emboss Top Level 1-->
-    <item
-        android:top="2px"
-        android:left="2px"
-        android:right="2px"
-        android:bottom="3px"
-        >
-        <shape>
-            <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/grey_emboss_top"/>
-        </shape>
-    </item>
-
-    <!--Emboss Bottom Level 1-->
-    <item
-        android:top="3px"
-        android:left="2px"
-        android:right="2px"
-        android:bottom="2px"
-        >
-        <shape>
-            <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/grey_emboss_bot"/>
-        </shape>
-    </item>
-
-    <!--Emboss Left Level 1-->
-    <item
-        android:top="3px"
-        android:left="2px"
-        android:right="2px"
-        android:bottom="3px"
-        >
-        <shape>
-            <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/grey_emboss_left"/>
-        </shape>
-    </item>
-
-    <!--Emboss Right Level 1-->
-    <item
-        android:top="3px"
-        android:left="3px"
-        android:right="2px"
-        android:bottom="3px"
-        >
-        <shape>
-            <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/grey_emboss_right"/>
-        </shape>
-    </item>
-
-    <!--Button-->
-    <item
-        android:left="3px"
-        android:top="3px"
-        android:bottom="3px"
-        android:right="3px"
-        >
-        <shape android:dither="true">
-            <gradient
-                android:angle="315"
-                android:startColor="@color/grey_button_1"
-                android:endColor="@color/grey_button_2"
-                />
-            <corners
-                android:radius="@dimen/rounded_button_radius"
-                />
-            <padding
-                android:left="@dimen/rounded_button_padding_left"
-                android:right="@dimen/rounded_button_padding_right"
-                android:top="@dimen/rounded_button_padding_top"
-                android:bottom="@dimen/rounded_button_padding_bottom"
-                />
-        </shape>
-    </item>
-
-	 */
-
-
-/*
-
-
-        <!--Disabled colors-->
-        <attr name="btn_top_d" format="reference" />
-        <attr name="btn_left_d" format="reference" />
-        <attr name="btn_right_d" format="reference" />
-        <attr name="btn_bottom_d" format="reference" />
-
-        <attr name="btn_solid_d" format="reference|integer" /> <!--Button main solid pressed-->
-        <attr name="btn_gradient_start_d" format="reference|integer" /> <!--Button main gradient-->
-        <attr name="btn_gradient_center_d" format="reference|integer" />
-        <attr name="btn_gradient_end_d" format="reference|integer" />
-
-    </declare-styleable>
-*/
+	private boolean pressed;
+	private boolean enabled;
 
 	public ButtonDrawable(Context context, AttributeSet attrs) {
 		resources = context.getResources();
@@ -186,6 +81,127 @@ public class ButtonDrawable extends Drawable {
 		padding = DEFAULT_PADDING;
 		radius = DEFAULT_RADIUS;
 
+		parseAttributes(context, attrs);
+
+		outerR = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
+
+		List<LayerInfo> enabledLayers = new ArrayList<LayerInfo>();
+		List<LayerInfo> pressedLayers = new ArrayList<LayerInfo>();
+
+		int[] topInset = new int[]{0, 0, 0, 1};  // TODO improve
+		int[] bottomInset = new int[]{1, 1, 0, 0};
+		int[] leftInset = new int[]{1, 0, 0, 1};
+		int[] rightInset = new int[]{1, 1, 0, 1};
+		int[] buttonInset = new int[]{1, 1, 1, 1};
+
+
+		{ // outer border
+			int strokeSize = resources.getDimensionPixelSize(R.dimen.default_stroke_width);
+			RectF stroke = new RectF(strokeSize, strokeSize, strokeSize, strokeSize);
+
+			RoundRectShape rectShape = new RoundRectShape(outerR, stroke, outerR);
+			ShapeDrawable shapeDrawable = new ShapeDrawable(rectShape);
+			shapeDrawable.getPaint().setColor(colorOuterBorder);
+
+			enabledLayers.add(new LayerInfo(shapeDrawable, 0, 0, 0, 0));
+			pressedLayers.add(new LayerInfo(shapeDrawable, 0, 0, 0, 0));  // TODO check
+		}
+
+		if (bevelLvl == 1) {
+			createLayer(colorTop, topInset, enabledLayers);
+			createLayer(colorBottom, bottomInset, enabledLayers);
+			createLayer(colorLeft, leftInset, enabledLayers);
+			createLayer(colorRight, rightInset, enabledLayers);
+			// Pressed
+			createLayer(colorTopP, topInset, pressedLayers);
+			createLayer(colorBottomP, bottomInset, pressedLayers);
+			createLayer(colorLeftP, leftInset, pressedLayers);
+			createLayer(colorRightP, rightInset, pressedLayers);
+		}
+
+		if (isSolid) {
+			createLayer(colorSolid, buttonInset, enabledLayers);
+			createLayer(colorSolidP, buttonInset, pressedLayers);
+		}
+
+		levelCnt = enabledLayers.size();
+		Drawable[] enabledDrawables = new Drawable[levelCnt];  // TODO improve that mess
+		for (int i = 0; i < levelCnt; i++) {
+			LayerInfo layerInfo = enabledLayers.get(i);
+			enabledDrawables[i] = layerInfo.shapeDrawable;
+		}
+		enabledDrawable = new LayerDrawable(enabledDrawables);
+		for (int i = 1; i < levelCnt; i++) { // start from 2nd level, first is shadow
+			LayerInfo layer = enabledLayers.get(i);
+			enabledDrawable.setLayerInset(i, layer.leftInSet, layer.topInSet, layer.rightInSet, layer.bottomInSet);
+		}
+
+		Drawable[] pressedDrawables = new Drawable[levelCnt]; // TODO improve that mess
+		for (int i = 0; i < levelCnt; i++) {
+			LayerInfo layerInfo = pressedLayers.get(i);
+			pressedDrawables[i] = layerInfo.shapeDrawable;
+		}
+		pressedDrawable = new LayerDrawable(pressedDrawables);
+		for (int i = 1; i < levelCnt; i++) { // start from 2nd level, first is shadow
+			LayerInfo layer = pressedLayers.get(i);
+			pressedDrawable.setLayerInset(i, layer.leftInSet, layer.topInSet, layer.rightInSet, layer.bottomInSet);
+		}
+
+
+		addState(new int[]{android.R.attr.state_pressed}, pressedDrawable);
+		addState(new int[]{android.R.attr.state_enabled}, enabledDrawable);
+	}
+
+	private void createLayer(int color, int[] inSet, List<LayerInfo> layers) {
+		ShapeDrawable drawable = new ShapeDrawable(new RoundRectShape(outerR, null, null));
+		drawable.getPaint().setColor(color);
+		layers.add(new LayerInfo(drawable, bevelInset + inSet[0], bevelInset + inSet[1],
+										   bevelInset + inSet[2], bevelInset + inSet[3]));
+	}
+
+	@Override
+	public void draw(Canvas canvas) {
+		super.draw(canvas);
+		int width = canvas.getWidth();
+		int height = canvas.getHeight();
+		if (!initialized) {
+			iniLayers(width, height);
+		}
+	}
+
+	private void iniLayers(int width, int height) {
+		if (!isSolid) {
+//			((ShapeDrawable) layerDrawable.getDrawable(levelCnt)).getPaint().setShader(makeLinear(width, height,
+//					colorGradientStart, colorGradientCenter, colorGradientEnd));
+		}
+
+		initialized = true;
+	}
+
+	private static Shader makeLinear(int width, int height, int startColor, int centerColor, int endColor) {
+		return new LinearGradient(0, 0, width, height,
+				new int[]{startColor, centerColor, endColor},
+				null, Shader.TileMode.REPEAT);
+	}
+
+	@Override
+	public void setAlpha(int alpha) {
+		enabledDrawable.setAlpha(alpha);
+		pressedDrawable.setAlpha(alpha);
+	}
+
+	@Override
+	public void setColorFilter(ColorFilter cf) {
+		enabledDrawable.setColorFilter(cf);
+		pressedDrawable.setColorFilter(cf);
+	}
+
+	@Override
+	public int getOpacity() {
+		return PixelFormat.OPAQUE;
+	}
+
+	private void parseAttributes(Context context, AttributeSet attrs) {
 		// get style
 		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.RoboButton);
 
@@ -300,106 +316,6 @@ public class ButtonDrawable extends Drawable {
 		} finally {
 			array.recycle();
 		}
-
-
-		outerR = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
-
-		layers = new ArrayList<LayerInfo>();
-
-		// top config
-		// left config
-		// right config
-		// bottom config
-		int[] topInset = new int[]{0, 0, 0, 1};
-		int[] bottomInset = new int[]{1, 1, 0, 0};
-		int[] leftInset = new int[]{1, 0, 0, 1};
-		int[] rightInset = new int[]{1, 1, 0, 1};
-		int[] buttonInset = new int[]{1, 1, 1, 1};
-
-
-		{ // outer border
-			int strokeSize = resources.getDimensionPixelSize(R.dimen.default_stroke_width);
-			RectF stroke = new RectF(strokeSize, strokeSize, strokeSize, strokeSize);
-
-			RoundRectShape rectShape = new RoundRectShape(outerR, stroke, outerR);
-			ShapeDrawable shapeDrawable = new ShapeDrawable(rectShape);
-			shapeDrawable.getPaint().setColor(colorOuterBorder);
-			layers.add(new LayerInfo(shapeDrawable, 0, 0, 0, 0));
-		}
-
-		if (bevelLvl == 1) {
-			createLayer(colorTop, topInset);
-			createLayer(colorBottom, bottomInset);
-			createLayer(colorLeft, leftInset);
-			createLayer(colorRight, rightInset);
-		}
-
-		if (isSolid) {
-			createLayer(colorSolid,buttonInset);
-		}
-
-
-		levelCnt = layers.size();
-		Drawable[] drawables = new Drawable[levelCnt];
-		for (int i = 0; i < levelCnt; i++) {
-			LayerInfo layerInfo = layers.get(i);
-			drawables[i] = layerInfo.shapeDrawable;
-		}
-
-		layerDrawable = new LayerDrawable(drawables);
-//		layerDrawable.setLayerInset(0);// no need to set bounds for first
-		for (int i = 1; i < levelCnt; i++) { // start from 2nd level, first is shadow
-			LayerInfo layer = layers.get(i);
-			layerDrawable.setLayerInset(i, layer.leftInSet, layer.topInSet, layer.rightInSet, layer.bottomInSet);
-		}
-	}
-
-	private void createLayer(int color, int[] inSet) {
-		ShapeDrawable drawable = new ShapeDrawable(new RoundRectShape(outerR, null, null));
-		drawable.getPaint().setColor(color);
-		layers.add(new LayerInfo(drawable, bevelInset + inSet[0], bevelInset + inSet[1],
-										   bevelInset + inSet[2], bevelInset + inSet[3]));
-	}
-
-	private static Shader makeLinear(int width, int height, int startColor, int centerColor, int endColor) {
-		return new LinearGradient(0, 0, width, height,
-				new int[]{startColor, centerColor, endColor},
-				null, Shader.TileMode.REPEAT);
-	}
-
-	@Override
-	public void draw(Canvas canvas) {
-		int width = canvas.getWidth();
-		int height = canvas.getHeight();
-		if (!initialized) {
-			iniLayers(width, height);
-		}
-		layerDrawable.setBounds(0, 0, width, height);
-		layerDrawable.draw(canvas);
-	}
-
-	private void iniLayers(int width, int height) {
-		if (!isSolid) {
-			((ShapeDrawable) layerDrawable.getDrawable(levelCnt)).getPaint().setShader(makeLinear(width, height,
-					colorGradientStart, colorGradientCenter, colorGradientEnd));
-		}
-
-		initialized = true;
-	}
-
-	@Override
-	public void setAlpha(int alpha) {
-		layerDrawable.setAlpha(alpha);
-	}
-
-	@Override
-	public void setColorFilter(ColorFilter cf) {
-		layerDrawable.setColorFilter(cf);
-	}
-
-	@Override
-	public int getOpacity() {
-		return PixelFormat.OPAQUE;
 	}
 
 	private class LayerInfo {
