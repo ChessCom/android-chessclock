@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:custom="http://schemas.android.com/apk/res/com.chess">
+
+    <style name="Button" parent="Text.Button">
+        <item name="btn_radius">@dimen/rounded_button_radius</item>
+        <item name="btn_is_solid">true</item>
+        <item name="btn_padding">@dimen/rounded_button_padding_left</item>
+        <item name="btn_bevel_lvl">1</item>
+        <item name="btn_bevel_inset">2px</item>
+        <item name="btn_outer_border">@color/semi_transparent_border</item>
+    </style>
+
+    <style name="Button.Grey">
+        <!--Default colors-->
+<!--
+        <item name="btn_top">#FFFFFFFF</item>
+        <item name="btn_left">#FFFFFF00</item>
+        <item name="btn_right">#FF00FF00</item>
+        <item name="btn_bottom">#FFFF0000</item>
+-->
+        <item name="btn_top">@color/grey_button_solid_border_top</item>
+        <item name="btn_left">@color/grey_button_solid_border_left</item>
+        <item name="btn_right">@color/grey_button_solid_border_right</item>
+        <item name="btn_bottom">@color/grey_button_solid_border_bottom</item>
+
+        <item name="btn_solid">@color/grey_button_solid</item>
+    </style>
+
+</resources>

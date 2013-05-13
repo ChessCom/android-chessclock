@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--
+
+ &lt;!&ndash;Outer Border&ndash;&gt;
+    <item>
+        <shape>
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@android:color/transparent"/>
+            <stroke
+                android:width="@dimen/default_stroke_width"
+                android:color="@color/semi_transparent_border"/>
+        </shape>
+    </item>
+    &lt;!&ndash;Emboss Top Level 1&ndash;&gt;
+    <item
+        android:top="2px"
+        android:left="2px"
+        android:right="2px"
+        android:bottom="3px"
+        >
+        <shape>
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@color/grey_emboss_top"/>
+        </shape>
+    </item>
+
+    &lt;!&ndash;Emboss Bottom Level 1&ndash;&gt;
+    <item
+        android:top="3px"
+        android:left="2px"
+        android:right="2px"
+        android:bottom="2px"
+        >
+        <shape>
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@color/grey_emboss_bot"/>
+        </shape>
+    </item>
+
+    &lt;!&ndash;Emboss Left Level 1&ndash;&gt;
+    <item
+        android:top="3px"
+        android:left="2px"
+        android:right="2px"
+        android:bottom="3px"
+        >
+        <shape>
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@color/grey_emboss_left"/>
+        </shape>
+    </item>
+
+    &lt;!&ndash;Emboss Right Level 1&ndash;&gt;
+    <item
+        android:top="3px"
+        android:left="3px"
+        android:right="2px"
+        android:bottom="3px"
+        >
+        <shape>
+            <corners android:radius="@dimen/rounded_button_radius"/>
+            <solid android:color="@color/grey_emboss_right"/>
+        </shape>
+    </item>
+
+    &lt;!&ndash;Button&ndash;&gt;
+    <item
+        android:left="3px"
+        android:top="3px"
+        android:bottom="3px"
+        android:right="3px"
+        >
+        <shape android:dither="true">
+            <gradient
+                android:angle="315"
+                android:startColor="@color/grey_button_1"
+                android:endColor="@color/grey_button_2"
+                />
+            <corners
+                android:radius="@dimen/rounded_button_radius"
+                />
+            <padding
+                android:left="@dimen/rounded_button_padding_left"
+                android:right="@dimen/rounded_button_padding_right"
+                android:top="@dimen/rounded_button_padding_top"
+                android:bottom="@dimen/rounded_button_padding_bottom"
+                />
+        </shape>
+    </item>
+
+-->
+
+    <declare-styleable name="RoboButton">
+        <attr name="btn_radius" format="reference|dimension" />      <!--Common button radius-->
+        <attr name="btn_is_solid" format="reference|boolean" />
+        <attr name="btn_gradient_angle" format="reference|integer" />
+        <attr name="btn_padding" format="reference|dimension" />
+        <attr name="btn_bevel_lvl" format="reference|integer" />
+        <attr name="btn_bevel_inset" format="reference|dimension" />
+
+        <!--Default colors-->
+        <attr name="btn_outer_border" format="reference|color" />    <!--Outer border color-->
+        <attr name="btn_top" format="reference|color" /> <!--Top line bevel-->
+        <attr name="btn_left" format="reference|color" /> <!--Left line bevel-->
+        <attr name="btn_right" format="reference|color" /> <!--Right line bevel-->
+        <attr name="btn_bottom" format="reference|color" /> <!--Bottom line bevel-->
+            <!--Level 2-->
+        <attr name="btn_top_2" format="reference|color" />
+        <attr name="btn_left_2" format="reference|color" />
+        <attr name="btn_right_2" format="reference|color" />
+        <attr name="btn_bottom_2" format="reference|color" />
+
+        <attr name="btn_solid" format="reference|color" /> <!--Button main solid-->
+        <attr name="btn_gradient_start" format="reference|color" />  <!--Button main gradient-->
+        <attr name="btn_gradient_center" format="reference|color" />
+        <attr name="btn_gradient_end" format="reference|color" />
+
+        <!--Pressed colors-->
+        <attr name="btn_top_p" format="reference|color" />
+        <attr name="btn_left_p" format="reference|color" />
+        <attr name="btn_right_p" format="reference|color" />
+        <attr name="btn_bottom_p" format="reference|color" />
+
+            <!--Level 2-->
+        <attr name="btn_top_2_p" format="reference|color" />
+        <attr name="btn_left_2_p" format="reference|color" />
+        <attr name="btn_right_2_p" format="reference|color" />
+        <attr name="btn_bottom_2_p" format="reference|color" />
+
+        <attr name="btn_solid_p" format="reference|color" /> <!--Button main solid pressed-->
+        <attr name="btn_gradient_start_p" format="reference|color" /> <!--Button main gradient-->
+        <attr name="btn_gradient_center_p" format="reference|color" />
+        <attr name="btn_gradient_end_p" format="reference|color" />
+
+        <!--Disabled colors-->
+        <attr name="btn_top_d" format="reference|color" />
+        <attr name="btn_left_d" format="reference|color" />
+        <attr name="btn_right_d" format="reference|color" />
+        <attr name="btn_bottom_d" format="reference|color" />
+
+        <attr name="btn_solid_d" format="reference|color" /> <!--Button main solid pressed-->
+        <attr name="btn_gradient_start_d" format="reference|color" /> <!--Button main gradient-->
+        <attr name="btn_gradient_center_d" format="reference|color" />
+        <attr name="btn_gradient_end_d" format="reference|color" />
+
+    </declare-styleable>
+
+
+</resources>
