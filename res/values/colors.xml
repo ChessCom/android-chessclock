@@ -43,8 +43,8 @@
     <!--Orange-->
     <color name="orange_button_1">#FFeb9b11</color>
     <color name="orange_button_2">#FFe5820c</color>
-    <color name="orange_button_p_1">#ffcd7c11</color>
-    <color name="orange_button_p_2">#ffc7650c</color>
+    <color name="orange_button_1_p">#ffcd7c11</color>
+    <color name="orange_button_2_p">#ffc7650c</color>
     <color name="orange_button_d">#ffa65300</color>
 
     <color name="orange_emboss_top_1">#FFf1b751</color>
@@ -57,14 +57,14 @@
     <color name="orange_emboss_right_2">#FFa05b08</color>
 
     <!--Pressed-->
-    <color name="orange_emboss_p_top_1">#ffc7650c</color>
-    <color name="orange_emboss_p_top_2">#ffc7650c</color>
-    <color name="orange_emboss_p_left_1">#ffc7650c</color>
-    <color name="orange_emboss_p_left_2">#ffc7650c</color>
-    <color name="orange_emboss_p_right_1">#ffd99129</color>
-    <color name="orange_emboss_p_right_2">#ffd99029</color>
-    <color name="orange_emboss_p_bot_1">#ffc7650c</color>
-    <color name="orange_emboss_p_bot_2">#ffc7650c</color>
+    <color name="orange_emboss_top_1_p">#ffc7650c</color>
+    <color name="orange_emboss_top_2_p">#ffc7650c</color>
+    <color name="orange_emboss_left_1_p">#ffc7650c</color>
+    <color name="orange_emboss_left_2_p">#ffc7650c</color>
+    <color name="orange_emboss_right_1_p">#ffd99129</color>
+    <color name="orange_emboss_right_2_p">#ffd99029</color>
+    <color name="orange_emboss_bot_1_p">#ffc7650c</color>
+    <color name="orange_emboss_bot_2_p">#ffc7650c</color>
 
     <color name="orange_button_pressed_stroke_1">#96ff7e00</color>
     <color name="orange_button_pressed_stroke_2">#FFffd9b4</color>
@@ -72,8 +72,8 @@
     <!--Red-->
     <color name="red_button_1">#FFc42b30</color>
     <color name="red_button_2">#FFb0282c</color>
-    <color name="red_button_p_1">#ffa32829</color>
-    <color name="red_button_p_2">#ff882023</color>
+    <color name="red_button_1_p">#ffa32829</color>
+    <color name="red_button_2_p">#ff882023</color>
     <color name="red_button_d">#ff6c1b1b</color>
 
     <color name="red_emboss_top_1">#FFc94145</color>
@@ -84,8 +84,8 @@
     <!--Light Green-->
     <color name="light_green_button_1">#FF769656</color>
     <color name="light_green_button_2">#FF7b9f56</color>
-    <color name="light_green_button_p_1">#ff739b4e</color>
-    <color name="light_green_button_p_2">#ff587a3d</color>
+    <color name="light_green_button_1_p">#ff739b4e</color>
+    <color name="light_green_button_2_p">#ff587a3d</color>
     <color name="light_green_button_d">#ff496633</color>
 
     <color name="light_green_emboss_top_1">#FF95b972</color>
@@ -96,7 +96,7 @@
     <!--Grey -->
     <color name="grey_button_1">#FF524d48</color>
     <color name="grey_button_2">#FF3d3a36</color>
-    <color name="grey_button_half_1">#FF56514c</color>
+    <color name="grey_button_half_1">#FF56514c</color> <!--Darker-->
     <color name="grey_button_half_2">#FF504c46</color>
     <color name="grey_emboss_top">#FF767069</color>
     <color name="grey_emboss_left">#FF5f5a55</color>
@@ -106,10 +106,10 @@
     <!--Grey Pressed-->
     <color name="grey_button_p_1">#FF56514c</color>
     <color name="grey_button_p_2">#ff3c3832</color>
-    <color name="grey_emboss_p_top">#ff322e27</color>
-    <color name="grey_emboss_p_left">#ff322e27</color>
-    <color name="grey_emboss_p_bot">#ff322e27</color>
-    <color name="grey_emboss_p_right">#ff4d4843</color>
+    <color name="grey_emboss_top_p">#ff322e27</color>
+    <color name="grey_emboss_left_p">#ff322e27</color>
+    <color name="grey_emboss_bot_p">#ff322e27</color>
+    <color name="grey_emboss_right_p">#ff4d4843</color>
     <!--Grey Disabled & checked-->
     <color name="grey_button_d">#FF444444</color>
     <color name="grey_button_checked">#FFde6e00</color>
@@ -124,12 +124,12 @@
     <color name="grey_button_light_bot_1">#FF57524e</color>
     <color name="grey_button_light_bot_2">#FF3d3935</color>
     <!--Grey Light Pressed-->
-    <color name="grey_button_light_p_1">#ff5f5852</color>
-    <color name="grey_button_light_p_2">#ff3c3732</color>
-    <color name="grey_button_light_p_top_1">#ff37322d</color>
-    <color name="grey_button_light_p_top_2">#ff37322d</color>
-    <color name="grey_button_light_p_bot_1">#ff37322d</color>
-    <color name="grey_button_light_p_bot_2">#ff37322d</color>
+    <color name="grey_button_light_1_p">#ff5f5852</color>
+    <color name="grey_button_light_2_p">#ff3c3732</color>
+    <color name="grey_button_light_top_1_p">#ff37322d</color>
+    <color name="grey_button_light_top_2_p">#ff37322d</color>
+    <color name="grey_button_light_bot_1_p">#ff37322d</color>
+    <color name="grey_button_light_bot_2_p">#ff37322d</color>
     <!--Grey Light Disabled-->
     <color name="grey_button_light_d">#FF444444</color>
 
@@ -214,8 +214,8 @@
     <!--Facebook button-->
     <color name="f_button_1">#FF4f76b7</color>
     <color name="f_button_2">#FF4162a2</color>
-    <color name="f_button_p_1">#ff4c65a3</color>
-    <color name="f_button_p_2">#ff3e518e</color>
+    <color name="f_button_1_p">#ff4c65a3</color>
+    <color name="f_button_2_p">#ff3e518e</color>
 
     <color name="f_emboss_top_1">#FF7f9bcb</color>
     <color name="f_emboss_top_2">#FF6f8ec4</color>
@@ -251,8 +251,8 @@
 	<!--<color name="toggle_button_1">#FF3d3d3d</color>-->
 	<color name="toggle_button_2">#FF3d3d3d</color>
 
-	<color name="toggle_button_p_1">#ff6b6b6b</color>
-	<color name="toggle_button_p_2">#ff1a1a1a</color>
+	<color name="toggle_button_1_p">#ff6b6b6b</color>
+	<color name="toggle_button_2_p">#ff1a1a1a</color>
 
 	<!--<color name="toggle_button_inside_stroke">#FF191919</color>-->
 	<color name="toggle_button_inside_stroke">#00000000</color>
@@ -364,10 +364,10 @@
 
     <color name="new_upgrade_menu_1">#FF383b3d</color>
     <color name="new_upgrade_menu_2">#FF252320</color>
-    <color name="new_upgrade_menu_p_1">#ff2c2f31</color>
-    <color name="new_upgrade_menu_p_2">#ff181613</color>
-    <color name="new_upgrade_menu_s_1">#ff474a4c</color>
-    <color name="new_upgrade_menu_s_2">#FF312e2b</color>
+    <color name="new_upgrade_menu_1_p">#ff2c2f31</color>
+    <color name="new_upgrade_menu_2_p">#ff181613</color>
+    <color name="new_upgrade_menu_1_s">#ff474a4c</color>
+    <color name="new_upgrade_menu_2_s">#FF312e2b</color>
     <color name="new_upgrade_menu_glow_1">#FFc1d9f1</color>
     <color name="new_upgrade_menu_glow_1_p">#ffafc3d9</color>
     <color name="new_upgrade_menu_glow_1_s">#ffafc3d9</color>

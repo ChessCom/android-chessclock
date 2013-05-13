@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
 
-            style="@style/Button.Grey"
+            style="@style/Button.DarkGrey"
             android:text="@string/log_in"
             android:layout_marginLeft="2dip"
             />

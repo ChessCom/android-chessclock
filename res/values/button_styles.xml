@@ -18,29 +18,39 @@
         <item name="btn_right">@color/grey_button_solid_border_right</item>
         <item name="btn_bottom">@color/grey_button_solid_border_bottom</item>
 
+        <item name="btn_solid">@color/grey_button_solid</item>
+
+        <!--Pressed-->
         <item name="btn_top_p">@color/grey_button_solid_border_top</item>
         <item name="btn_left_p">@color/grey_button_solid_border_left</item>
         <item name="btn_right_p">@color/grey_button_solid_border_right</item>
         <item name="btn_bottom_p">@color/grey_button_solid_border_bottom</item>
 
-        <item name="btn_solid">@color/grey_button_solid</item>
         <item name="btn_solid_p">@color/grey_button_solid_p</item>
     </style>
 
+
     <style name="Button.DarkGrey">
+        <item name="btn_is_solid">false</item>
+        <item name="btn_gradient_angle">TL_BR</item>
         <!--Default colors-->
-        <item name="btn_top">@color/grey_button_solid_border_top</item>
-        <item name="btn_left">@color/grey_button_solid_border_left</item>
-        <item name="btn_right">@color/grey_button_solid_border_right</item>
-        <item name="btn_bottom">@color/grey_button_solid_border_bottom</item>
+        <item name="btn_top">@color/grey_emboss_top</item>
+        <item name="btn_left">@color/grey_emboss_left</item>
+        <item name="btn_right">@color/grey_emboss_right</item>
+        <item name="btn_bottom">@color/grey_emboss_bot</item>
 
-        <item name="btn_top_p">@color/grey_button_solid_border_top</item>
-        <item name="btn_left_p">@color/grey_button_solid_border_left</item>
-        <item name="btn_right_p">@color/grey_button_solid_border_right</item>
-        <item name="btn_bottom_p">@color/grey_button_solid_border_bottom</item>
+        <item name="btn_gradient_start">@color/grey_button_half_1</item>
+        <item name="btn_gradient_end">@color/grey_button_half_2</item>
 
-        <item name="btn_solid">@color/grey_button_solid</item>
-        <item name="btn_solid_p">@color/grey_button_solid_p</item>
+        <!--Pressed-->
+        <item name="btn_top_p">@color/grey_emboss_top_p</item>
+        <item name="btn_left_p">@color/grey_emboss_left_p</item>
+        <item name="btn_right_p">@color/grey_emboss_right_p</item>
+        <item name="btn_bottom_p">@color/grey_emboss_bot_p</item>
+
+        <item name="btn_gradient_start_p">@color/grey_button_half_2</item>
+        <item name="btn_gradient_end_p">@color/grey_button_half_1</item>
+
     </style>
 
 </resources>

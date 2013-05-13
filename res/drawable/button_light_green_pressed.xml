@@ -54,8 +54,8 @@
         <shape android:dither="true" >
             <gradient
                 android:angle="315"
-                android:startColor="@color/light_green_button_p_1"
-                android:endColor="@color/light_green_button_p_2"
+                android:startColor="@color/light_green_button_1_p"
+                android:endColor="@color/light_green_button_2_p"
                 />
             <corners
                 android:radius="@dimen/toggle_button_radius"

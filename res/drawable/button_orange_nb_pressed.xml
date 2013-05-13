@@ -10,7 +10,7 @@
         >
         <shape >
             <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/orange_emboss_p_top_1"  />
+            <solid android:color="@color/orange_emboss_top_1_p"  />
         </shape>
     </item>
 
@@ -36,7 +36,7 @@
         >
         <shape >
             <corners android:radius="@dimen/rounded_button_radius" />
-            <solid android:color="@color/orange_emboss_p_bot_2"  />
+            <solid android:color="@color/orange_emboss_bot_2_p"  />
         </shape>
     </item>
     <!--Emboss Bottom Level 1-->
@@ -61,7 +61,7 @@
         >
         <shape >
             <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/orange_emboss_p_left_1"  />
+            <solid android:color="@color/orange_emboss_left_1_p"  />
         </shape>
     </item>
     <!--Emboss Left Level 2-->
@@ -86,7 +86,7 @@
         >
         <shape >
             <corners android:radius="@dimen/rounded_button_radius" />
-            <solid android:color="@color/orange_emboss_p_right_2"  />
+            <solid android:color="@color/orange_emboss_right_2_p"  />
         </shape>
     </item>
     <!--Emboss Right Level 1-->
@@ -110,8 +110,8 @@
         android:right="1px"
         >
         <shape android:dither="true" >
-            <gradient android:angle="135" android:startColor="@color/orange_button_p_1"
-                      android:endColor="@color/orange_button_p_2"
+            <gradient android:angle="135" android:startColor="@color/orange_button_1_p"
+                      android:endColor="@color/orange_button_2_p"
                 />
             <corners
                 android:radius="@dimen/rounded_button_radius"

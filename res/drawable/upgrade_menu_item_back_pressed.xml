@@ -26,8 +26,8 @@
         <shape >
             <gradient
                 android:angle="360"
-                android:startColor="@color/new_upgrade_menu_p_1"
-                android:endColor="@color/new_upgrade_menu_p_2"/>
+                android:startColor="@color/new_upgrade_menu_1_p"
+                android:endColor="@color/new_upgrade_menu_2_p"/>
             <size android:height="@dimen/new_nav_menu_item_height"/>
         </shape>
     </item>

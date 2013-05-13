@@ -27,12 +27,24 @@ public class ButtonDrawable extends StateListDrawable {
 	private static final int DEFAULT_ANGLE = 270;
 	private static final int DEFAULT_PADDING = 2;
 	private static final int DEFAULT_BEVEL_INSET = 1;
+
+	private static final int TOP_BOTTOM = 0;
+	private static final int TR_BL = 1;
+	private static final int RIGHT_LEFT = 2;
+	private static final int BR_TL = 3;
+	private static final int BOTTOM_TOP = 4;
+	private static final int BL_TR = 5;
+	private static final int LEFT_RIGHT = 6;
+	private static final int TL_BR = 7;
+	private static final int TRANSPARENT = 0x00000000;
+
 	private final LayerDrawable enabledDrawable;
 	private final LayerDrawable pressedDrawable;
 	private final Resources resources;
 
 	private final int levelCnt;
 	private final float[] outerR;
+	private final int buttonIndex;
 
 	private int colorOuterBorder;
 	private int colorBottom;
@@ -122,16 +134,20 @@ public class ButtonDrawable extends StateListDrawable {
 		if (isSolid) {
 			createLayer(colorSolid, buttonInset, enabledLayers);
 			createLayer(colorSolidP, buttonInset, pressedLayers);
+		} else {
+			createLayer(TRANSPARENT, buttonInset, enabledLayers);
+			createLayer(TRANSPARENT, buttonInset, pressedLayers);
 		}
 
 		levelCnt = enabledLayers.size();
+		buttonIndex = levelCnt - 1;
 		Drawable[] enabledDrawables = new Drawable[levelCnt];  // TODO improve that mess
 		for (int i = 0; i < levelCnt; i++) {
 			LayerInfo layerInfo = enabledLayers.get(i);
 			enabledDrawables[i] = layerInfo.shapeDrawable;
 		}
 		enabledDrawable = new LayerDrawable(enabledDrawables);
-		for (int i = 1; i < levelCnt; i++) { // start from 2nd level, first is shadow
+		for (int i = 0; i < levelCnt; i++) { // start from 2nd level, first is shadow
 			LayerInfo layer = enabledLayers.get(i);
 			enabledDrawable.setLayerInset(i, layer.leftInSet, layer.topInSet, layer.rightInSet, layer.bottomInSet);
 		}
@@ -142,11 +158,10 @@ public class ButtonDrawable extends StateListDrawable {
 			pressedDrawables[i] = layerInfo.shapeDrawable;
 		}
 		pressedDrawable = new LayerDrawable(pressedDrawables);
-		for (int i = 1; i < levelCnt; i++) { // start from 2nd level, first is shadow
+		for (int i = 0; i < levelCnt; i++) { // start from 2nd level, first is shadow
 			LayerInfo layer = pressedLayers.get(i);
 			pressedDrawable.setLayerInset(i, layer.leftInSet, layer.topInSet, layer.rightInSet, layer.bottomInSet);
 		}
-
 
 		addState(new int[]{android.R.attr.state_pressed}, pressedDrawable);
 		addState(new int[]{android.R.attr.state_enabled}, enabledDrawable);
@@ -154,34 +169,91 @@ public class ButtonDrawable extends StateListDrawable {
 
 	private void createLayer(int color, int[] inSet, List<LayerInfo> layers) {
 		ShapeDrawable drawable = new ShapeDrawable(new RoundRectShape(outerR, null, null));
-		drawable.getPaint().setColor(color);
-		layers.add(new LayerInfo(drawable, bevelInset + inSet[0], bevelInset + inSet[1],
-										   bevelInset + inSet[2], bevelInset + inSet[3]));
+		if (color != TRANSPARENT) {
+			drawable.getPaint().setColor(color);
+		}
+		layers.add(new LayerInfo(drawable, bevelInset + inSet[0], bevelInset + inSet[1], bevelInset + inSet[2], bevelInset + inSet[3]));
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
-		super.draw(canvas);
 		int width = canvas.getWidth();
 		int height = canvas.getHeight();
 		if (!initialized) {
 			iniLayers(width, height);
 		}
+		super.draw(canvas);
 	}
 
 	private void iniLayers(int width, int height) {
 		if (!isSolid) {
-//			((ShapeDrawable) layerDrawable.getDrawable(levelCnt)).getPaint().setShader(makeLinear(width, height,
-//					colorGradientStart, colorGradientCenter, colorGradientEnd));
+			((ShapeDrawable) enabledDrawable.getDrawable(buttonIndex)).getPaint().setShader(
+					makeLinear(width, height, colorGradientStart, colorGradientCenter, colorGradientEnd));
+			((ShapeDrawable) pressedDrawable.getDrawable(buttonIndex)).getPaint().setShader(
+					makeLinear(width, height, colorGradientStartP, colorGradientCenterP, colorGradientEndP));
 		}
 
 		initialized = true;
 	}
 
-	private static Shader makeLinear(int width, int height, int startColor, int centerColor, int endColor) {
-		return new LinearGradient(0, 0, width, height,
-				new int[]{startColor, centerColor, endColor},
-				null, Shader.TileMode.REPEAT);
+	private Shader makeLinear(int width, int height, int startColor, int centerColor, int endColor) {
+		RectF r = new RectF(0, 0, width, height);
+		float x0, x1, y0, y1;
+		switch (gradientAngle) {
+			case TOP_BOTTOM:
+				x0 = r.left;
+				y0 = r.top;
+				x1 = x0;
+				y1 = r.bottom;
+				break;
+			case TR_BL:
+				x0 = r.right;
+				y0 = r.top;
+				x1 = r.left;
+				y1 = r.bottom;
+				break;
+			case RIGHT_LEFT:
+				x0 = r.right;
+				y0 = r.top;
+				x1 = r.left;
+				y1 = y0;
+				break;
+			case BR_TL:
+				x0 = r.right;
+				y0 = r.bottom;
+				x1 = r.left;
+				y1 = r.top;
+				break;
+			case BOTTOM_TOP:
+				x0 = r.left;
+				y0 = r.bottom;
+				x1 = x0;
+				y1 = r.top;
+				break;
+			case BL_TR:
+				x0 = r.left;
+				y0 = r.bottom;
+				x1 = r.right;
+				y1 = r.top;
+				break;
+			case LEFT_RIGHT:
+				x0 = r.left;
+				y0 = r.top;
+				x1 = r.right;
+				y1 = y0;
+				break;
+			default:/* TL_BR */
+				x0 = r.left;
+				y0 = r.top;
+				x1 = r.right;
+				y1 = r.bottom;
+				break;
+		}
+
+		return new LinearGradient(x0, y0, x1, y1,
+				new int[]{startColor, /*centerColor,*/ endColor},
+				null,
+				Shader.TileMode.CLAMP);
 	}
 
 	@Override

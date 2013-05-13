@@ -20,7 +20,7 @@
         >
         <shape>
             <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/grey_emboss_p_top"/>
+            <solid android:color="@color/grey_emboss_top_p"/>
         </shape>
     </item>
 
@@ -33,7 +33,7 @@
         >
         <shape>
             <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/grey_emboss_p_bot"/>
+            <solid android:color="@color/grey_emboss_bot_p"/>
         </shape>
     </item>
 
@@ -46,7 +46,7 @@
         >
         <shape>
             <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/grey_emboss_p_left"/>
+            <solid android:color="@color/grey_emboss_left_p"/>
         </shape>
     </item>
 
@@ -59,7 +59,7 @@
         >
         <shape>
             <corners android:radius="@dimen/rounded_button_radius"/>
-            <solid android:color="@color/grey_emboss_p_right"/>
+            <solid android:color="@color/grey_emboss_right_p"/>
         </shape>
     </item>
 
