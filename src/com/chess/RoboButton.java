@@ -6,7 +6,8 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.Button;
-import com.chess.ui.views.drawables.ButtonDrawable;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawable;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
 
 import java.io.Serializable;
@@ -34,24 +35,13 @@ public class RoboButton extends Button implements Serializable {
     private void setupFont(AttributeSet attrs) {
         TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.RoboTextView);
 		try {
-			if (array.getString(R.styleable.RoboTextView_ttf) != null) {
+			if (array.hasValue(R.styleable.RoboTextView_ttf)) {
 				ttfName = array.getString(R.styleable.RoboTextView_ttf);
 			}
 		} finally {
 			array.recycle();
 		}
 
-
-//        final int N = array.getIndexCount();
-//        for (int i = 0; i < N; i++) {
-//            int attr = array.getIndex(i);
-//            switch (attr) {
-//                case R.styleable.RoboTextView_ttf: {
-//                    ttfName = array.getString(i);
-//                }
-//                break;
-//            }
-//        }
         init(attrs);
     }
 
@@ -64,7 +54,7 @@ public class RoboButton extends Button implements Serializable {
 			if (array == null)
 				return;
 			try {
-				if (!array.hasValue(R.styleable.RoboButton_btn_radius)) {
+				if (!array.hasValue(R.styleable.RoboButton_btn_is_solid)) {
 					return;
 				}
 			} finally {
@@ -84,4 +74,13 @@ public class RoboButton extends Button implements Serializable {
         ttfName = font;
         init(null);
     }
+
+	public void setDrawableStyle(int styleId) {
+		ButtonDrawable buttonDrawable = ButtonDrawableBuilder.createDrawable(getContext(), styleId);
+		if (AppUtils.HONEYCOMB_PLUS_API) {
+			setBackground(buttonDrawable);
+		} else {
+			setBackgroundDrawable(buttonDrawable);
+		}
+	}
 }

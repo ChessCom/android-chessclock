@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/chess_com_username"
-            style="@style/Text.Button.Grey.Small.Solid"
+            style="@style/Button.Grey.Solid.Small"
             android:layout_marginRight="8dip"
             />
 
@@ -112,7 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/new_play_ex"
-            style="@style/Text.Button.Grey.Small"
+            style="@style/Button.Grey.Small"
             />
 
     </LinearLayout>

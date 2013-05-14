@@ -1,11 +1,13 @@
 package com.chess;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
 
 
@@ -44,21 +46,22 @@ public class EditButton extends RoboEditText {
 	}
 
 	private void onCreate(Context context) {
-		density = context.getResources().getDisplayMetrics().density;
+		Resources resources = context.getResources();
+		density = resources.getDisplayMetrics().density;
 
 		PADDING = (int) (10 * density);
 		PADDING_SIDE = (int) (4 * density);
 
 		handler = new Handler();
 
-		minButtonHeight = (int) getContext().getResources().getDimension(R.dimen.small_button_height);
-		editTextColor = getContext().getResources().getColor(R.color.new_edit_button_text);
+		minButtonHeight = (int) resources.getDimension(R.dimen.small_button_height);
+		editTextColor = resources.getColor(R.color.new_edit_button_text);
 		setHint(""); // disable hint
-		closeBtn = getContext().getResources().getDrawable(R.drawable.ic_clear_text);
+		closeBtn = resources.getDrawable(R.drawable.ic_clear_text);
 		setSingleLine();
 		setFont(RoboTextView.BOLD_FONT);
 
-		defaultMinWidth = (int) getContext().getResources().getDimension(R.dimen.button_min_width);
+		defaultMinWidth = (int) resources.getDimension(R.dimen.button_min_width);
 	}
 
 
@@ -114,8 +117,9 @@ public class EditButton extends RoboEditText {
 
 		} else {
 			setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0], getCompoundDrawables()[1], null, getCompoundDrawables()[3]);
-			setBackgroundResource(R.drawable.button_grey_solid_selector);
-			setTextColor(0xFFFFFFFF); // white color
+			ButtonDrawableBuilder.setBackgroundToView(this, R.style.Button_Grey_Solid);
+//			setBackgroundResource(R.drawable.button_grey_solid_selector);
+			setTextColor(Color.WHITE);
 			float shadowRadius = 0.5f;
 			float shadowDx = 0 ;
 			float shadowDy = -1 ;

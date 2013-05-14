@@ -33,7 +33,6 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 
 	protected Pattern emailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[a-zA-Z0-9\\.\\-]+\\.[a-zA-Z]{2,4}");
 	protected Pattern gMailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[g]");   // TODO use for autoComplete
-	private static final String DEFAULT_COUNTRY = "XX";  // International
 
 	private EditText userNameEdt;
 	private EditText emailEdt;
@@ -44,8 +43,6 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 	private String email;
 	private String password;
 	private RegisterUpdateListener registerUpdateListener;
-//	private String[] countryCodes;
-//	private String countryCodeName;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,13 +53,11 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-//		countryCodes = getResources().getStringArray(R.array.new_countries_codes);
-
 		userNameEdt = (EditText) view.findViewById(R.id.usernameEdt);
 		emailEdt = (EditText) view.findViewById(R.id.emailEdt);
 		passwordEdt = (EditText) view.findViewById(R.id.passwordEdt);
 		passwordRetypeEdt = (EditText) view.findViewById(R.id.passwordRetypeEdt);
-		view.findViewById(R.id.RegSubmitBtn).setOnClickListener(this);
+		view.findViewById(R.id.completeSignUpBtn).setOnClickListener(this);
 
 		userNameEdt.addTextChangedListener(new FieldChangeWatcher(userNameEdt));
 		emailEdt.addTextChangedListener(new FieldChangeWatcher(emailEdt));
@@ -70,45 +65,14 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 		passwordRetypeEdt.addTextChangedListener(new FieldChangeWatcher(passwordRetypeEdt));
 
 		setLoginFields(userNameEdt, passwordEdt);
-//		Spinner countrySpinner = (Spinner) view.findViewById(R.id.country);  // TODO create in CreateProfileFragment
-//		countrySpinner.setAdapter(new WhiteSpinnerAdapter(getActivity(), getItemsFromArray(tmp2)));
-//		countrySpinner.setOnItemSelectedListener(this);
-
 
 		registerUpdateListener = new RegisterUpdateListener();
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-
-//		String userCountry = AppData.getUserCountry(getActivity());
-//		if (userCountry == null) {
-//			String locale = getResources().getConfiguration().locale.getCountry();
-//
-//			if (locale != null) {
-//				int i;
-//				boolean found = false;
-//				for (i = 0; i < countryCodes.length; i++) {
-//					String countryCode = countryCodes[i];
-//					if (locale.equals(countryCode)) {
-//						found = true;
-//						break;
-//					}
-//				}
-//				if (found) {
-//					countryCodeName = countryCodes[i];
-//				} else {
-//					countryCodeName = DEFAULT_COUNTRY;
-//				}
-//			}
-//		}
-	}
-
-	@Override
 	public void onClick(View view) {
 		super.onClick(view);
-		if (view.getId() == R.id.RegSubmitBtn) {
+		if (view.getId() == R.id.completeSignUpBtn) {
 			if (!checkRegisterInfo()){
 				return;
 			}
@@ -161,14 +125,6 @@ public class SignUpFragment extends ProfileSetupsFragment implements View.OnClic
 		return true;
 	}
 
-/*
-username		true	Username for new user.
-password		false	Password for new user.
-email		false	Email address of new user.
-facebookAccessToken		false	Facebook access token.
-appType	pre|mobile|iphone|android|blackberry|facebook|windows	false	Optional application type. Default is `mobile`.
-*/
-
 	private void submitRegisterInfo() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_USERS);
@@ -176,7 +132,6 @@ appType	pre|mobile|iphone|android|blackberry|facebook|windows	false	Optional app
 		loadItem.addRequestParams(RestHelper.P_USERNAME, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
 		loadItem.addRequestParams(RestHelper.P_EMAIL, email);
-//		loadItem.addRequestParams(RestHelper.P_COUNTRY_CODE, countryCodeName);
 		loadItem.addRequestParams(RestHelper.P_APP_TYPE, RestHelper.V_ANDROID);
 
 		new RequestJsonTask<RegisterItem>(registerUpdateListener).executeTask(loadItem);
@@ -222,9 +177,7 @@ appType	pre|mobile|iphone|android|blackberry|facebook|windows	false	Optional app
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {  // TODO restore
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == Activity.RESULT_OK ){
-			/*if(requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE){
-				CommonLogicFragment.facebook.authorizeCallback(requestCode, resultCode, data);
-			}else*/ if(requestCode == BasePopupsFragment.NETWORK_REQUEST){
+			if(requestCode == BasePopupsFragment.NETWORK_REQUEST){
 				submitRegisterInfo();
 			}
 		}

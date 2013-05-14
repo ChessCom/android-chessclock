@@ -40,7 +40,7 @@
 
             <com.facebook.widget.LoginButton
                 android:id="@+id/fb_connect"
-                style="@style/FacebookButton"
+                style="@style/Button.Facebook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/common_button_margin_top"
@@ -85,6 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/log_in"
+                style="@style/Button.OrangeNoBorder"
                 android:layout_marginTop="@dimen/common_main_hit_button_margin_top"
                 />
 

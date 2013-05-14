@@ -90,7 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:minHeight="60dip"
-        android:background="@drawable/dashboard_single_fade"
+        android:background="@drawable/board_fade_back"
         android:visibility="invisible"
         android:layout_gravity="center"
         >

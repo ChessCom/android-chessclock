@@ -67,7 +67,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 		emailEdt = (EditText) findViewById(R.id.emailEdt);
 		passwordEdt = (EditText) findViewById(R.id.RegPassword);
 		regRetypeEdt = (EditText) findViewById(R.id.RegRetype);
-		regSubmit = (Button) findViewById(R.id.RegSubmitBtn);
+		regSubmit = (Button) findViewById(R.id.completeSignUpBtn);
 
 		userNameEdt.addTextChangedListener(new FieldChangeWatcher(userNameEdt));
 		emailEdt.addTextChangedListener(new FieldChangeWatcher(emailEdt));
@@ -109,7 +109,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.RegSubmitBtn) {
+		if (view.getId() == R.id.completeSignUpBtn) {
 			if (!checkRegisterInfo()){
 				return;
 			}

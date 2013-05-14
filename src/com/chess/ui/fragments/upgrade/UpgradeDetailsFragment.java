@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
+import com.chess.RoboButton;
 import com.chess.RoboTextView;
 import com.chess.backend.billing.IabHelper;
 import com.chess.backend.billing.IabResult;
@@ -60,7 +61,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private TextView yearValueTxt;
 	private TextView yearLabelTxt;
 	private CheckBox yearCheckBox;
-	private Button setPlanBtn;
+	private RoboButton setPlanBtn;
 	private LinearLayout descriptionView;
 
 	private float density;
@@ -155,7 +156,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		yearCheckBox = (CheckBox) view.findViewById(R.id.yearCheckBox);
 		yearCheckBox.setOnCheckedChangeListener(this);
 		TextView yearDiscountTxt = (TextView) view.findViewById(R.id.yearDiscountTxt);
-		setPlanBtn = (Button) view.findViewById(R.id.setPlanBtn);
+		setPlanBtn = (RoboButton) view.findViewById(R.id.setPlanBtn);
 		setPlanBtn.setOnClickListener(this);
 		descriptionView = (LinearLayout) view.findViewById(R.id.descriptionView);
 
@@ -234,7 +235,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 //		yearCheckBox.setChecked(planConfig.isYearPayed());
 		yearCheckBox.setEnabled(!planConfig.isYearPayed());
 
-		setPlanBtn.setBackgroundResource(planConfig.buttonBackId);
+		setPlanBtn.setDrawableStyle(planConfig.buttonStyleId);
 		descriptionView.setBackgroundResource(planConfig.descriptionBackId);
 		int padding = (int) (15 * density);
 		descriptionView.setPadding(padding, padding, padding, padding);
@@ -276,7 +277,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		diamondConfig.monthValue = DIAMOND_MONTH_PAY;
 		diamondConfig.yearValue = DIAMOND_YEAR_PAY;
 		diamondConfig.checkBoxDrawableId = R.drawable.button_checkmark_diamond_selector;
-		diamondConfig.buttonBackId = R.drawable.button_orange_nb_selector;
+		diamondConfig.buttonStyleId = R.style.Button_OrangeNoBorder;
 		diamondConfig.descriptionBackId = R.drawable.button_upgrade_diamond_flat;
 		diamondConfig.unlockFeaturesTitleId = R.string.upgrade_diamond_unlock_features_title;
 		diamondConfig.features = getResources().getStringArray(R.array.upgrade_diamond_features);
@@ -296,7 +297,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		platinumConfig.monthValue = PLATINUM_MONTH_PAY;
 		platinumConfig.yearValue = PLATINUM_YEAR_PAY;
 		platinumConfig.checkBoxDrawableId = R.drawable.button_checkmark_platinum_selector;
-		platinumConfig.buttonBackId = R.drawable.button_grey_solid_nb_selector;
+		platinumConfig.buttonStyleId = R.style.Button_Grey2Solid_NoBorder;
 		platinumConfig.descriptionBackId = R.drawable.button_upgrade_platinum_flat;
 		platinumConfig.unlockFeaturesTitleId = R.string.upgrade_platinum_unlock_features_title;
 		platinumConfig.features = getResources().getStringArray(R.array.upgrade_platinum_features);
@@ -315,7 +316,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		goldConfig.monthValue = GOLD_MONTH_PAY;
 		goldConfig.yearValue = GOLD_YEAR_PAY;
 		goldConfig.checkBoxDrawableId = R.drawable.button_checkmark_gold_selector;
-		goldConfig.buttonBackId = R.drawable.button_brown_solid_nb_selector;
+		goldConfig.buttonStyleId = R.style.Button_Brown;
 		goldConfig.descriptionBackId = R.drawable.button_upgrade_gold_flat;
 		goldConfig.unlockFeaturesTitleId = R.string.upgrade_gold_unlock_features_title;
 		goldConfig.features = getResources().getStringArray(R.array.upgrade_gold_features);
@@ -356,7 +357,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		String yearValue;
 		int checkBoxDrawableId;
 		int descriptionBackId;
-		int buttonBackId;
+		int buttonStyleId;
 		int unlockFeaturesTitleId;
 		String[] features;
 		private boolean yearPayed;

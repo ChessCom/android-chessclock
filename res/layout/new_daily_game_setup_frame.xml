@@ -24,7 +24,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="3 days"
-            style="@style/Text.Button.Grey.Small.Solid"
+            style="@style/Button.Grey.Solid.Small"
             />
 
         <com.chess.RoboButton
@@ -35,7 +35,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="@string/new_play_ex"
-            style="@style/Text.Button.Small.NoBorder"
+            style="@style/Button.OrangeNoBorder.Small"
             android:layout_marginRight="1dip"
             />
 
@@ -83,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/invite"
-            style="@style/Text.Button.Grey.Small.Solid"
+            style="@style/Button.Grey.Solid.Small"
             />
 
     </LinearLayout>
@@ -132,7 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/invite"
-            style="@style/Text.Button.Grey.Small.Solid"
+            style="@style/Button.Grey.Solid.Small"
             />
 
     </LinearLayout>

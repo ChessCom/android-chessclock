@@ -15,6 +15,7 @@ import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.NewDailyGameConfig;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +105,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		rightButtonParams.addRule(RelativeLayout.RIGHT_OF, BASE_ID + VS_ID);
 		rightButtonParams.addRule(RelativeLayout.BELOW, BASE_ID + TITLE_ID);
 
-		rightButton.setBackgroundResource(R.drawable.button_grey_solid_selector);
+		ButtonDrawableBuilder.setBackgroundToView(rightButton, R.style.Button_Grey_Solid);
 		rightButton.setMinHeight((int) minButtonHeight);
 		rightButton.setTextColor(0xFFFFFFFF);
 		rightButton.setGravity(Gravity.CENTER);

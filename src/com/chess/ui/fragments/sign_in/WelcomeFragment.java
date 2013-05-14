@@ -73,7 +73,6 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 
 	protected Pattern emailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[a-zA-Z0-9\\.\\-]+\\.[a-zA-Z]{2,4}");
 	protected Pattern gMailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[g]");   // TODO use for autoComplete
-	private static final String DEFAULT_COUNTRY = "XX";  // International
 
 	private EditText userNameEdt;
 	private EditText emailEdt;
@@ -84,8 +83,6 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 	private String email;
 	private String password;
 	private RegisterUpdateListener registerUpdateListener;
-//	private String[] countryCodes;
-//	private String countryCodeName;
 	private YouTubePlayer youTubePlayer;
 
 	@Override
@@ -118,7 +115,6 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 		bottomButtonsLay = view.findViewById(R.id.bottomButtonsLay);
 
 		{// SignUp part
-//			countryCodes = getResources().getStringArray(R.array.new_countries_codes);
 			registerUpdateListener = new RegisterUpdateListener();
 		}
 	}
@@ -128,9 +124,6 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 		super.onResume();
 
 		handler.postDelayed(startAnimation, ANIMATION_DELAY);
-
-		// SignUp part
-//		setUserCountryCode();
 	}
 
 	@Override
@@ -192,7 +185,7 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 			youTubeFrameContainer.setVisibility(View.VISIBLE);
 		} else if (view.getId() == R.id.whatChessComTxt) {
 			showNextPage();
-		} else if (view.getId() == R.id.RegSubmitBtn) {
+		} else if (view.getId() == R.id.completeSignUpBtn) {
 			if (!checkRegisterInfo()) {
 				return;
 			}
@@ -426,13 +419,11 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 					}
 					view = signUpView;
 
-//					if (!initiatedFifth) {
-
 					userNameEdt = (EditText) view.findViewById(R.id.usernameEdt);
 					emailEdt = (EditText) view.findViewById(R.id.emailEdt);
 					passwordEdt = (EditText) view.findViewById(R.id.passwordEdt);
 					passwordRetypeEdt = (EditText) view.findViewById(R.id.passwordRetypeEdt);
-					view.findViewById(R.id.RegSubmitBtn).setOnClickListener(WelcomeFragment.this);
+					view.findViewById(R.id.completeSignUpBtn).setOnClickListener(WelcomeFragment.this);
 
 					userNameEdt.addTextChangedListener(new FieldChangeWatcher(userNameEdt));
 					emailEdt.addTextChangedListener(new FieldChangeWatcher(emailEdt));
@@ -440,7 +431,6 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 					passwordRetypeEdt.addTextChangedListener(new FieldChangeWatcher(passwordRetypeEdt));
 
 					setLoginFields(userNameEdt, passwordEdt);
-//					}
 					break;
 
 				default:
@@ -472,31 +462,6 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 			handler.postDelayed(this, REPEAT_TIMEOUT);
 		}
 	};
-
-	/* ------------- Sign Up Part --------------------------- */
-//	private void setUserCountryCode() {
-//		String userCountry = AppData.getUserCountry(getActivity());
-//		if (userCountry == null) {
-//			String locale = getResources().getConfiguration().locale.getCountry();
-//
-//			if (locale != null) {
-//				int i;
-//				boolean found = false;
-//				for (i = 0; i < countryCodes.length; i++) {
-//					String countryCode = countryCodes[i];
-//					if (locale.equals(countryCode)) {
-//						found = true;
-//						break;
-//					}
-//				}
-//				if (found) {
-//					countryCodeName = countryCodes[i];
-//				} else {
-//					countryCodeName = DEFAULT_COUNTRY;
-//				}
-//			}
-//		}
-//	}
 
 	private boolean checkRegisterInfo() {
 		userName = getTextFromField(userNameEdt);
@@ -544,7 +509,6 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 		loadItem.addRequestParams(RestHelper.P_USERNAME, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
 		loadItem.addRequestParams(RestHelper.P_EMAIL, email);
-//		loadItem.addRequestParams(RestHelper.P_COUNTRY_CODE, countryCodeName);
 		loadItem.addRequestParams(RestHelper.P_APP_TYPE, RestHelper.V_ANDROID);
 
 		new RequestJsonTask<RegisterItem>(registerUpdateListener).executeTask(loadItem);
@@ -583,9 +547,7 @@ public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePla
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {  // TODO restore
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK) {
-			/*if (requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE) {
-				CommonLogicFragment.facebook.authorizeCallback(requestCode, resultCode, data);
-			} else */if (requestCode == BasePopupsFragment.NETWORK_REQUEST) {
+			if (requestCode == BasePopupsFragment.NETWORK_REQUEST) {
 				submitRegisterInfo();
 			}
 		}

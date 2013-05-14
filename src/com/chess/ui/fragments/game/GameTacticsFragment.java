@@ -8,9 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
@@ -38,9 +36,9 @@ import com.chess.ui.fragments.stats.TacticsStatsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
 import com.chess.ui.interfaces.TacticBoardFace;
+import com.chess.ui.views.PanelInfoTacticsView;
 import com.chess.ui.views.chess_boards.ChessBoardTacticsView;
 import com.chess.ui.views.game_controls.ControlsTacticsView;
-import com.chess.ui.views.PanelInfoTacticsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import com.flurry.android.FlurryAgent;
@@ -383,28 +381,12 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		getActivityFace().openFragment(new TacticsStatsFragment());
 	}
 
-//	private void showWrongMovePopup(String title) {
-//		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_incorrect, null, false);
-//
-//		((TextView) customView.findViewById(R.id.titleTxt)).setText(title);
-//
-//		PopupItem popupItem = new PopupItem();
-//		popupItem.setCustomView(customView);
-//
-//		PopupCustomViewFragment customViewFragment = PopupCustomViewFragment.newInstance(popupItem);
-//		customViewFragment.show(getFragmentManager(), WRONG_MOVE_TAG);
-//
-//
-//		customView.findViewById(R.id.retryBtn).setOnClickListener(this);
-//		customView.findViewById(R.id.stopBtn).setOnClickListener(this);
-//		customView.findViewById(R.id.solutionBtn).setOnClickListener(this);
-//		customView.findViewById(R.id.nextBtn).setOnClickListener(this);
-//	}
+	private void showLimitReachedPopup() {
+		FlurryAgent.logEvent(FlurryData.TACTICS_DAILY_LIMIT_EXCEEDED);
 
-	private void showSolvedTacticPopup(String title, boolean limitReached) {
-		TacticsDataHolder.getInstance().setTacticLimitReached(limitReached);
+		TacticsDataHolder.getInstance().setTacticLimitReached(true);
 
-		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_solved, null, false);
+		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_limit_reached, null, false);
 
 		LinearLayout adViewWrapper = (LinearLayout) customView.findViewById(R.id.adview_wrapper);
 		if (AppUtils.isNeedToUpgrade(getActivity())) {
@@ -413,23 +395,10 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 			adViewWrapper.setVisibility(View.GONE);
 		}
 
-		int nextBtnId = R.string.next_tactic_puzzle;
-		int nextBtnColorId = R.drawable.button_orange_selector;
-		if (limitReached) {
-			title = getString(R.string.daily_limit_reached);
-			nextBtnId = R.string.upgrade_to_continue;
-			nextBtnColorId = R.drawable.button_green_selector;
-
-			clearSavedTactics();
-		}
-
-		((TextView) customView.findViewById(R.id.titleTxt)).setText(title);
+		clearSavedTactics();
 
 		customView.findViewById(R.id.cancelBtn).setOnClickListener(this);
-		Button nextBtn = (Button) customView.findViewById(R.id.nextBtn);
-		nextBtn.setText(nextBtnId);
-		nextBtn.setBackgroundResource(nextBtnColorId);
-		nextBtn.setOnClickListener(this);
+		customView.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(customView);
@@ -452,10 +421,6 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		}
 	}
 
-	private void showLimitDialog() {
-		FlurryAgent.logEvent(FlurryData.TACTICS_DAILY_LIMIT_EXCEEDED);
-		showSolvedTacticPopup(StaticData.SYMBOL_EMPTY, true);
-	}
 
 	private void getNextTactic() {
 		handler.removeCallbacks(showTacticMoveTask);
@@ -484,7 +449,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 //		public void updateData(String returnedObj) {
 //			String[] tmp = returnedObj.trim().split(RestHelper.SYMBOL_ITEM_SPLIT);
 //			if (tmp.length < 2) {
-//				showLimitDialog();   // This is also wrong step, because we should never reach this condition
+//				showLimitReachedPopup();   // This is also wrong step, because we should never reach this condition
 //				return;
 //			}
 //		}
@@ -585,7 +550,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				switch (serverCode) {
 					case ServerErrorCode.TACTICS_DAILY_LIMIT_REACHED:
-						showLimitDialog();
+						showLimitReachedPopup();
 						break;
 				}
 			} else {
@@ -597,12 +562,12 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 				}
 			}
 //			if (returnedObj.getCount() == 0) { // "Success+||"   - means we reached limit and there is no tactics
-//				showLimitDialog(); // limit dialog should be shown after updating tactic, while getting new
+//				showLimitReachedPopup(); // limit dialog should be shown after updating tactic, while getting new
 //				return;
 //			}
 //			if (listenerCode == GET_TACTIC) {
 //				if (resultMessage.equals(RestHelper.R_TACTICS_LIMIT_REACHED)) {
-//					showLimitDialog();  // This should be the only way to show limit dialog for registered user
+//					showLimitReachedPopup();  // This should be the only way to show limit dialog for registered user
 //				} else {
 //					showSinglePopupDialog(resultMessage);
 //				}
@@ -661,7 +626,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				switch (serverCode) {
 					case ServerErrorCode.TACTICS_DAILY_LIMIT_REACHED:
-						showLimitDialog();
+						showLimitReachedPopup();
 						break;
 				}
 			} else {
@@ -787,6 +752,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 
 	@Override
 	public void restart() {
+		tacticItem.setRetry(true);
 		adjustBoardForGame();
 	}
 
@@ -797,7 +763,6 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 
 		ChessBoardTactics.resetInstance();
 		final TacticBoardFace boardFace = ChessBoardTactics.getInstance(this);
-//		boardView.setBoardFace(boardFace);
 		boardView.setGameActivityFace(this);
 
 		if (currentRating == 0) {
@@ -842,38 +807,24 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
-		if (view.getId() == R.id.nextBtn) {
+		if (view.getId() == R.id.upgradeBtn) {
 
 			dismissDialogs();
 
 			if (TacticsDataHolder.getInstance().isTacticLimitReached()) {
-				FlurryAgent.logEvent(FlurryData.UPGRADE_FROM_TACTICS, null);
+				FlurryAgent.logEvent(FlurryData.UPGRADE_FROM_TACTICS);
 				getActivityFace().openFragment(new UpgradeFragment());
-//				startActivity(AppData.getMembershipIntent(StaticData.SYMBOL_EMPTY, getContext()));
-			} else {
-				getNextTactic();
 			}
-		} else if (view.getId() == R.id.stopBtn) {
-			getBoardFace().setFinished(true);
-			tacticItem.setStop(true);
-			stopTacticsTimer();
-			dismissDialogs();
-		} else if (view.getId() == R.id.retryBtn) {
-			if (noNetwork) {
-				getNextTactic();
-			} else {
-				adjustBoardForGame();
-			}
-			tacticItem.setRetry(true);
-			dismissDialogs();
+//		} else if (view.getId() == R.id.stopBtn) {
+//			getBoardFace().setFinished(true);
+//			tacticItem.setStop(true);
+//			stopTacticsTimer();
+//			dismissDialogs();
 
-		} else if (view.getId() == R.id.solutionBtn) {
-			showAnswer();
-			dismissDialogs();
 		} else if (view.getId() == R.id.cancelBtn) {
 			dismissDialogs();
 
-			if (TacticsDataHolder.getInstance().isTacticLimitReached()) {
+			if (TacticsDataHolder.getInstance().isTacticLimitReached()) {  // should be only way it was clicked
 				cancelTacticAndLeave();
 			}
 		}

@@ -155,7 +155,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_toRightOf="@id/tacticsBoardView"
                 android:layout_alignBottom="@id/tacticsBoardView"
-                style="@style/Text.Button.Small.NoBorder"
+                style="@style/Button.OrangeNoBorder.Small"
                 />
 
         </RelativeLayout>
@@ -263,7 +263,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_toRightOf="@id/lessonsBoardView"
                 android:layout_alignBottom="@id/lessonsBoardView"
-                style="@style/Text.Button.Small.NoBorder"
+                style="@style/Button.OrangeNoBorder.Small"
                 />
 
         </RelativeLayout>

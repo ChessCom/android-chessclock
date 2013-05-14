@@ -220,7 +220,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 			Intent intent = new Intent(Intent.ACTION_VIEW);
 //			intent.setDataAndType(Uri.parse("http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"), "video/*"); // TODO restore
-			intent.setDataAndType(Uri.parse(DBDataManager.getString(cursor, DBConstants.V_MOBILE_URL)), "video/*");
+			intent.setDataAndType(Uri.parse(DBDataManager.getString(cursor, DBConstants.V_URL)), "video/*");
 			startActivity(intent);
 		}
 	}

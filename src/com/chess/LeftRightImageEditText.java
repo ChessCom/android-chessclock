@@ -1,6 +1,7 @@
 package com.chess;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -62,7 +63,8 @@ public class LeftRightImageEditText extends RoboEditText {
 	}
 
 	private void init(Context context, AttributeSet attrs) {
-		TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.EnhancedField);
+		Resources resources = context.getResources();
+		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.EnhancedField);
 		int color;
 		try {
 			rightIcon = array.getDrawable(R.styleable.EnhancedField_rightImage);
@@ -78,13 +80,13 @@ public class LeftRightImageEditText extends RoboEditText {
 			setRightIcon(rightIcon);
 		}
 
-		float density = context.getResources().getDisplayMetrics().density;
+		float density = resources.getDisplayMetrics().density;
 
 		imageWidth = icon.getIntrinsicWidth();
 		int imageHeight = icon.getIntrinsicHeight();
 		icon.setBounds(0, 0, imageWidth, imageHeight);
 
-		float radius = context.getResources().getDimension(R.dimen.new_round_button_radius);
+		float radius = resources.getDimension(R.dimen.new_round_button_radius);
 		float[] outerR;
 		switch (roundMode) {
 			case ONE:
@@ -107,11 +109,11 @@ public class LeftRightImageEditText extends RoboEditText {
 		backForImage.getPaint().setColor(color);
 
 		linePaint = new Paint();
-		linePaint.setColor(context.getResources().getColor(R.color.light_grey_border));
+		linePaint.setColor(resources.getColor(R.color.light_grey_border));
 		linePaint.setStrokeWidth(1);
 		linePaint.setStyle(Paint.Style.STROKE);
 
-		backImageWidth = context.getResources().getDimension(R.dimen.new_edit_field_height);
+		backImageWidth = resources.getDimension(R.dimen.new_edit_field_height);
 
 		if (rightImageHeight > backImageWidth) {
 			enlargeHeight = true;

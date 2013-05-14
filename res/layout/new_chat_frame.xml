@@ -53,7 +53,7 @@
                 android:id="@+id/sendBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Text.Button.Grey.Small.Solid"
+                style="@style/Button.Grey.Solid.Small"
                 android:text="@string/send"
                 />
 

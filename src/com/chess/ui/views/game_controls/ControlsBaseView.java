@@ -122,9 +122,9 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		return imageButton;
 	}
 
-	void addActionButton(ButtonIds buttonId, int labelId, int backId) {
-		RoboButton button = new RoboButton(getContext(), null, R.attr.orangeButton);
-		button.setBackgroundResource(backId);
+	void addActionButton(ButtonIds buttonId, int labelId, int styleId) {
+		RoboButton button = new RoboButton(getContext());
+		button.setDrawableStyle(styleId);
 		button.setText(labelId);
 		button.setOnClickListener(this);
 		button.setId(getButtonId(buttonId));

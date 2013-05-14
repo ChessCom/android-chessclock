@@ -287,7 +287,7 @@
                 android:id="@+id/upgradeBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Text.Button.Upgrade"
+                style="@style/Button.Upgrade"
                 android:text="@string/upgrade"
                 />
 
@@ -323,7 +323,7 @@
                 android:id="@+id/shareBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Text.Button.Share"
+                style="@style/Button.Share"
                 android:text="@string/share"
                 />
 

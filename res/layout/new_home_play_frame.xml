@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10 min"
-                style="@style/Text.Button.Grey.Small.Solid"
+                style="@style/Button.Grey.Solid.Small"
                 />
 
             <com.chess.RoboButton
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/new_play_ex"
                 android:layout_alignParentRight="true"
-                style="@style/Text.Button.Small.NoBorder"
+                style="@style/Button.OrangeNoBorder.Small"
                 />
 
             <!--Live Options-->
@@ -169,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/auto_match"
-                style="@style/Text.Button.Grey.Small.Solid"
+                style="@style/Button.Grey.Solid.Small"
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@+id/dailyPlayViewCenterPoint"
                 />
@@ -188,7 +188,7 @@
                 android:text="@string/new_play_ex"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                style="@style/Text.Button.Small.NoBorder"
+                style="@style/Button.OrangeNoBorder.Small"
                 />
 
         </RelativeLayout>
@@ -235,7 +235,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/invite"
-                style="@style/Text.Button.Grey.Small.Solid"
+                style="@style/Button.Grey.Solid.Small"
                 />
 
         </LinearLayout>
@@ -282,7 +282,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/invite"
-                style="@style/Text.Button.Grey.Small.Solid"
+                style="@style/Button.Grey.Solid.Small"
                 />
 
         </LinearLayout>

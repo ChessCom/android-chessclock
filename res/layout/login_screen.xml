@@ -60,7 +60,7 @@
 
 		<com.facebook.widget.LoginButton
 			android:id="@+id/fb_connect"
-			style="@style/Text.Button.Facebook"
+			style="@style/Button.Facebook"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:drawableLeft="@drawable/facebook_icon"
@@ -68,7 +68,7 @@
 
 		<com.chess.RoboButton
 			android:id="@+id/signup"
-			style="@style/Text.Button.Green"
+			style="@style/Button.Green"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/sign_up"
@@ -76,7 +76,7 @@
 
 		<com.chess.RoboButton
 			android:id="@+id/guestPlayBtn"
-			style="@style/Text.Button.Grey"
+			style="@style/Button.Grey"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/play_as_guest"

@@ -92,7 +92,7 @@
 		android:layout_height="wrap_content"
 		android:drawableLeft="@drawable/ic_chartbar"
 		android:text="@string/stats"
-		style="@style/Text.Button.Grey"
+		style="@style/Button.Grey"
 		/>
 
 	<com.chess.RoboButton

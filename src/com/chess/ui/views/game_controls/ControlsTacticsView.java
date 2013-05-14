@@ -50,7 +50,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 	private void addNextButton() {
 		RoboButton nextButton = new RoboButton(getContext());
 		nextButton.setText(R.string.next);
-		nextButton.setBackgroundResource(R.drawable.button_orange_selector);
+		nextButton.setDrawableStyle(R.style.Button_Orange2);
 		nextButton.setOnClickListener(this);
 		nextButton.setId(getButtonId(NEXT));
 		nextButton.setFont(RoboTextView.BOLD_FONT);

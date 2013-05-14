@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import com.chess.R;
+import com.chess.RoboButton;
 import com.chess.ui.interfaces.BoardViewNetworkFace;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
@@ -42,8 +43,8 @@ public class ControlsNetworkView extends ControlsBaseView {
 		addControlButton(BACK, R.drawable.button_emboss_mid_selector);
 		addControlButton(FORWARD, R.drawable.button_emboss_right_selector);
 
-		addActionButton(CANCEL, R.string.cancel, R.drawable.button_grey_light_selector);
-		addActionButton(PLAY, R.string.play_move, R.drawable.button_orange_selector);
+		addActionButton(CANCEL, R.string.cancel, R.style.Button_Grey2Solid_NoBorder_Light);
+		addActionButton(PLAY, R.string.play_move, R.style.Button_Orange2);
 
 		addView(controlsLayout);
 	}
@@ -134,7 +135,7 @@ public class ControlsNetworkView extends ControlsBaseView {
 	private Runnable blinkSubmitButton = new Runnable() {
 		@Override
 		public void run() {
-			findViewById(getButtonId(PLAY)).setBackgroundResource(R.drawable.button_grey_light_selector);
+			((RoboButton)findViewById(getButtonId(PLAY))).setDrawableStyle(R.style.Button_Grey2Solid_NoBorder_Light);
 
 			handler.removeCallbacks(unBlinkSubmitButton);
 			handler.postDelayed(unBlinkSubmitButton, UNBLINK_DELAY);
@@ -144,7 +145,7 @@ public class ControlsNetworkView extends ControlsBaseView {
 	private Runnable unBlinkSubmitButton = new Runnable() {
 		@Override
 		public void run() {
-			findViewById(getButtonId(PLAY)).setBackgroundResource(R.drawable.button_orange_selector);
+			((RoboButton)findViewById(getButtonId(PLAY))).setDrawableStyle(R.style.Button_Orange2);
 
 			blinkSubmitBtn();
 		}

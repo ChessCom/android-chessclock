@@ -68,7 +68,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/new_game"
-			style="@style/Text.Button.OrangeNoBorder"
+			style="@style/Button.OrangeNoBorder"
 			/>
 
 		<!--Rematch -->
@@ -78,7 +78,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/rematch"
-			style="@style/Text.Button.OrangeNoBorder"
+			style="@style/Button.OrangeNoBorder"
 			/>
 
 		<!--Review-->
@@ -88,7 +88,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/review"
-			style="@style/Text.Button.Grey.Light"
+			style="@style/Button.Grey2Solid.NoBorder.Light"
 			/>
 
 		<!--Home-->
@@ -98,7 +98,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/home"
-			style="@style/Text.Button.Grey.Light"/>
+			style="@style/Button.Grey2Solid.NoBorder.Light"/>
 
         <!--Link text-->
         <com.chess.RoboTextView
@@ -117,7 +117,7 @@
             android:id="@+id/shareBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Text.Button.Facebook"
+            style="@style/Button.Facebook"
             android:text="@string/share_game"
             android:drawableLeft="@null"
             android:paddingLeft="20dip"

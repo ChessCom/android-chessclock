@@ -14,7 +14,6 @@
 	</style>
 
 	<style name="Text.Button">
-		<item name="android:background">@drawable/button_orange_selector</item>
 		<item name="android:focusable">true</item>
 		<item name="android:clickable">true</item>
 		<item name="android:textSize">@dimen/default_button_text_size</item>
@@ -37,12 +36,14 @@
 
 	</style>
 
+<!--
     <style name="Text.Button.OrangeNoBorder">
-        <item name="android:background">@drawable/button_orange_nb_selector</item>
+        &lt;!&ndash;<item name="android:background">@drawable/button_orange_nb_selector</item>&ndash;&gt;
     </style>
+-->
 
-    <style name="Text.Button.Grey">
-        <item name="android:background">@drawable/button_grey_selector</item>
+<!--    <style name="Text.Button.Grey">
+        &lt;!&ndash;<item name="android:background">@drawable/button_grey_selector</item>&ndash;&gt;
         <item name="android:minHeight">@dimen/grey_button_height</item>
         <item name="android:textColor">@color/new_light_grey</item>
     </style>
@@ -50,52 +51,51 @@
     <style name="Text.Button.Grey.Light">
         <item name="android:background">@drawable/button_grey_solid_nb_selector</item>
         <item name="android:textColor">@color/white</item>
-    </style>
+    </style>-->
 
-    <style name="Text.Button.GreyDarker">
-        <item name="android:background">@drawable/button_grey_darker_selector</item>
+<!--    <style name="Text.Button.GreyDarker">
+        &lt;!&ndash;<item name="android:background">@drawable/button_grey_darker_selector</item>&ndash;&gt;
         <item name="android:minHeight">@dimen/main_button_height</item>
-    </style>
+    </style>-->
 
-    <style name="Text.Button.Grey.Small">
-        <item name="android:background">@drawable/button_grey_selector</item>
+<!--    <style name="Text.Button.Grey.Small">
+        &lt;!&ndash;<item name="android:background">@drawable/button_grey_selector</item>&ndash;&gt;
         <item name="android:minHeight">@dimen/small_button_height</item>
         <item name="android:textSize">13sp</item>
     </style>
 
     <style name="Text.Button.Grey.Small.Solid">
         <item name="android:background">@drawable/button_grey_solid_selector</item>
-    </style>
+    </style>-->
 
-    <style name="Text.Button.Small">
-        <item name="android:background">@drawable/button_orange_selector</item>
+<!--    <style name="Text.Button.Small">
+        &lt;!&ndash;<item name="android:background">@drawable/button_orange_selector</item>&ndash;&gt;
         <item name="android:minHeight">@dimen/small_button_height</item>
-    </style>
+    </style>-->
 
-    <style name="Text.Button.Small.NoBorder">
-        <item name="android:background">@drawable/button_orange_nb_selector</item>
+<!--    <style name="Text.Button.Small.NoBorder">
+        &lt;!&ndash;<item name="android:background">@drawable/button_orange_nb_selector</item>&ndash;&gt;
         <item name="android:minHeight">@dimen/small_orange_button_height</item>
-    </style>
+    </style>-->
 
 
-    <style name="Text.Button.Green" >
-        <item name="android:background">@drawable/button_green_selector</item>
-    </style>
+<!--    <style name="Text.Button.Green" >
+        &lt;!&ndash;<item name="android:background">@drawable/button_green_selector</item>&ndash;&gt;
+    </style>-->
 
-    <style name="Text.Button.Upgrade" >
-        <item name="android:background">@drawable/button_blue_selector</item>
+    <style name="Button.Upgrade" parent="Button.Blue" >
         <item name="android:minWidth">@dimen/wide_button_min_width</item>
         <item name="android:minHeight">@dimen/small_orange_button_height</item>
     </style>
 
 
-    <style name="Text.Button.Facebook" >
-        <item name="android:background">@drawable/button_facebook_selector</item>
+<!--    <style name="Text.Button.Facebook" >
+        &lt;!&ndash;<item name="android:background">@drawable/button_facebook_selector</item>&ndash;&gt;
 		<item name="android:paddingLeft">@dimen/button_login_fb_left_padding</item>
-    </style>
+    </style>-->
 
-    <style name="Text.Button.Share" >
-        <item name="android:background">@drawable/button_light_blue_selector</item>
+    <style name="Button.Share" parent="Button.Blue.Light" >
+        <!--<item name="android:background">@drawable/button_light_blue_selector</item>-->
         <item name="android:minHeight">@dimen/small_orange_button_height</item>
         <item name="android:minWidth">@dimen/wide_button_min_width</item>
     </style>
@@ -123,7 +123,7 @@
         <item name="android:textSize">@dimen/list_item_text_size</item>
     </style>
 
-    <style name="HomeLiveOptionsButton" parent="Text.Button.Grey.Small.Solid">
+    <style name="HomeLiveOptionsButton" parent="Button.Grey.Solid.Small">
         <item name="android:layout_width">0dip</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
@@ -132,7 +132,7 @@
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="RightLiveOptionsButton" parent="Text.Button.Grey.Small.Solid">
+    <style name="RightLiveOptionsButton" parent="Button.Grey.Solid.Small">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minWidth">@dimen/new_right_live_option_button_width</item>
@@ -176,12 +176,6 @@
 		<item name="android:dropDownVerticalOffset">-6dip</item>
 		<item name="android:dropDownHorizontalOffset">0dip</item>
 		<item name="android:dropDownWidth">wrap_content</item>
-	</style>
-
-	<style name="DefaultListView" parent="android:style/Widget.ListView" >
-		<item name="android:cacheColorHint">@android:color/transparent</item>
-		<item name="android:background">@android:color/transparent</item>
-		<item name="android:listSelector">@drawable/list_selector_background</item>
 	</style>
 
     <style name="DashboardItemText" parent="@android:style/Widget.TextView">
@@ -319,11 +313,6 @@
         <item name="android:background">@drawable/pager_indicator_selector</item>
     </style>
 
-<!--	<style name="tightContainer" >
-		<item name="android:paddingBottom">5dip</item>
-		<item name="android:paddingTop">5dip</item>
-	</style>-->
-
 	<style name="LinearDescription">
 		<item name="android:weightSum">10</item>
 		<item name="android:paddingBottom">@dimen/default_linear_bottom_padding</item>
@@ -428,15 +417,14 @@
 
     <!--New Slide Menu Design Styles-->
 
-    <style name="FacebookButton" parent="Text.Button">
+<!--    <style name="FacebookButton" parent="Text.Button">
         <item name="color">@color/f_button_1</item>
         <item name="android:background">@drawable/button_facebook_selector</item>
         <item name="ttf">Bold</item>
-    </style>
+    </style>-->
 
-    <style name="GreyImageButton" parent="Text.Button">
+    <style name="GreyImageButton" parent="Button.Grey">
         <item name="color">@color/grey_button_1</item>
-        <item name="android:background">@drawable/button_grey_selector</item>
         <item name="ttf">Bold</item>
     </style>
 

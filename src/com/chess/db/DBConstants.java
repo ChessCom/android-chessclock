@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 24;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 25;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -166,12 +166,15 @@ public class DBConstants {
 	public static final String V_DISPLAY_ORDER 		= "display_order";
 
 	/*Videos*/
+	public static final String V_VIDEO_ID 			= "video_id";
 	public static final String V_DESCRIPTION 		= "description";
 	public static final String V_SKILL_LEVEL 		= "skill_level";
-	public static final String V_ECO_NAME 			= "eco_name";
 	public static final String V_MINUTES 			= "minutes";
-	public static final String V_MOBILE_URL 		= "mobile_url";
+	public static final String V_URL 				= "url";
 	public static final String V_KEY_FEN 			= "key_fen";
+	public static final String V_USER_AVATAR 		= "user_avatar";
+	public static final String V_VIEW_COUNT 		= "view_count";
+	public static final String V_COMMENT_COUNT 		= "comment_count";
 
 	/* common commands */
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists ";
@@ -295,11 +298,17 @@ public class DBConstants {
 			+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_DESCRIPTION 			+ _TEXT_NOT_NULL + _COMMA
 			+ V_CATEGORY 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
+			+ V_VIDEO_ID 				+ _INT_NOT_NULL + _COMMA
 			+ V_SKILL_LEVEL 			+ _TEXT_NOT_NULL + _COMMA
-			+ V_ECO_NAME 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_USERNAME				+ _TEXT_NOT_NULL + _COMMA
+			+ V_USER_AVATAR				+ _TEXT_NOT_NULL + _COMMA
 			+ V_MINUTES 				+ _INT_NOT_NULL + _COMMA
+			+ V_VIEW_COUNT 				+ _INT_NOT_NULL + _COMMA
+			+ V_COUNTRY_ID 				+ _INT_NOT_NULL + _COMMA
+			+ V_COMMENT_COUNT 			+ _INT_NOT_NULL + _COMMA
 			+ V_CREATE_DATE 	    	+ _LONG_NOT_NULL + _COMMA
-			+ V_MOBILE_URL 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_URL 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_KEY_FEN 	    		+ _TEXT_NOT_NULL + _COMMA
 			+ V_FIRST_NAME 	    		+ _TEXT_NOT_NULL + _COMMA
 			+ V_LAST_NAME 	    		+ _TEXT_NOT_NULL + _COMMA

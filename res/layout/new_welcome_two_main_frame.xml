@@ -108,7 +108,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/Text.Button.GreyDarker"
+            style="@style/Button.Grey.Dark"
             android:text="@string/sign_up"
             android:padding="2dip"
             android:layout_marginRight="2dip"
@@ -119,7 +119,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/Text.Button.GreyDarker"
+            style="@style/Button.Grey.Dark"
             android:text="@string/log_in"
             android:layout_marginLeft="2dip"
             />

@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.RoboTextView;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 /**
  * GamePanelTestActivity class
@@ -121,7 +122,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			clockIconTxt.setFont(RoboTextView.ICON_FONT);
 			float clockIconSize = resources.getDimension(R.dimen.new_tactics_clock_icon_size)/density; // 21;
 			clockIconTxt.setTextSize(clockIconSize);
-			clockIconTxt.setText("\'");
+			clockIconTxt.setText(R.string.glyph_clock);
 			clockIconTxt.setTextColor(resources.getColor(R.color.main_menu_back_top));
 			int paddingIcon = (int) (7 * density);
 			int paddingIconTop = (int) (3 * density);
@@ -139,7 +140,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 
 			int topPadding = (int) (12 * density);
 			int sidePadding = (int) (29 * density);
-			clockLayout.setBackgroundResource(R.drawable.button_white_solid_selector);
+			ButtonDrawableBuilder.setBackgroundToView(clockLayout,  R.style.Button_White);
 			clockLayout.setPadding(sidePadding, topPadding, sidePadding, topPadding);
 
 			addView(clockLayout, clockLayoutParams);
@@ -155,7 +156,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			topButton.setMinimumWidth((int) (110 * density));
 			topButton.setText(R.string.wrong);
 			topButton.setFont(RoboTextView.BOLD_FONT);
-			topButton.setBackgroundResource(R.drawable.button_red_selector);
+			topButton.setDrawableStyle(R.style.Button_Red);
 			topButton.setVisibility(GONE);
 
 			addView(topButton, params);
@@ -218,7 +219,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 
 	public void showCorrect(boolean show, String newRatingStr) {
 		if (show) {
-			topButton.setBackgroundResource(R.drawable.button_light_green_selector);
+			topButton.setDrawableStyle(R.style.Button_Green_Light);
 			topButton.setText(R.string.correct);
 			topButton.setVisibility(VISIBLE);
 
@@ -240,7 +241,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 
 	public void showWrong(boolean show, String newRatingStr) {
 		if (show) {
-			topButton.setBackgroundResource(R.drawable.button_red_selector);
+			topButton.setDrawableStyle(R.style.Button_Red);
 			topButton.setText(R.string.wrong);
 			topButton.setVisibility(VISIBLE);
 

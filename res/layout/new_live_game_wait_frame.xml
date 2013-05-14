@@ -82,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/cancel"
-            style="@style/Text.Button.Grey"
+            style="@style/Button.Grey"
             android:layout_margin="15dip"
             />
 

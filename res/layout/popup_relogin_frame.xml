@@ -46,7 +46,7 @@
 
 	<com.facebook.widget.LoginButton
 		android:id="@+id/re_fb_connect"
-		style="@style/Text.Button.Facebook"
+		style="@style/Button.Facebook"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/connect_with_facebook"

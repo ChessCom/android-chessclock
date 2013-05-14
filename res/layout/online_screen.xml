@@ -11,7 +11,7 @@
 	android:paddingLeft="@dimen/default_scr_side_padding"
 	android:paddingRight="@dimen/default_scr_side_padding"
 	>
-	<include layout="@layout/banner_ad_view"/>
+	<include layout="@layout/mopub_ad_view"/>
 
 	<RelativeLayout
 		android:layout_width="match_parent"
@@ -26,7 +26,7 @@
 			android:layout_height="wrap_content"
 			android:drawableLeft="@drawable/ic_tournament"
 			android:text="@string/tournaments"
-			style="@style/Text.Button.Grey"
+			style="@style/Button.Grey"
 			/>
 
 		<com.chess.RoboButton
@@ -35,7 +35,7 @@
 			android:layout_height="wrap_content"
 			android:drawableLeft="@drawable/ic_chartbar"
 			android:text="@string/stats"
-			style="@style/Text.Button.Grey"
+			style="@style/Button.Grey"
 			android:layout_alignParentRight="true"
 			android:layout_toRightOf="@id/tournaments"
 			/>

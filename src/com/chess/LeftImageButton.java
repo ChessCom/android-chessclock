@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,7 +40,7 @@ public class LeftImageButton extends RoboButton {
 
 	private void init(Context context, AttributeSet attrs) {
 		// back for image
-		TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.EnhancedField);
+		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.EnhancedField);
 		try {
 			icon = array.getDrawable(R.styleable.EnhancedField_leftImage);
 		} finally {

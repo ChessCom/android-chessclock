@@ -120,7 +120,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		if (view.getId() == R.id.playBtn) {
 			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.parse(DBDataManager.getString(loadedCursor, DBConstants.V_MOBILE_URL)), "video/*");
+			intent.setDataAndType(Uri.parse(DBDataManager.getString(loadedCursor, DBConstants.V_URL)), "video/*");
 			startActivity(intent);
 		}
 	}

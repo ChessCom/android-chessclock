@@ -41,6 +41,8 @@
     <color name="grey_button_stroke">#18FFFFFF</color>
 
     <!--Orange-->
+    <color name="orange_button">#FFe7912a</color>
+    <color name="orange_button_p">#ffc7712a</color>
     <color name="orange_button_1">#FFeb9b11</color>
     <color name="orange_button_2">#FFe5820c</color>
     <color name="orange_button_1_p">#ffcd7c11</color>
@@ -51,12 +53,13 @@
     <color name="orange_emboss_top_2">#FFefad3d</color>
     <color name="orange_emboss_left_1">#FFeda529</color>
     <color name="orange_emboss_left_2">#FFeda529</color>
-    <color name="orange_emboss_bot_1">#FFb87a0e</color>
-    <color name="orange_emboss_bot_2">#FFa46c0c</color>
+    <color name="orange_emboss_bottom_1">#FFb87a0e</color>
+    <color name="orange_emboss_bottom_2">#FFa46c0c</color>
     <color name="orange_emboss_right_1">#FFc8720d</color>
     <color name="orange_emboss_right_2">#FFa05b08</color>
 
     <!--Pressed-->
+<!--
     <color name="orange_emboss_top_1_p">#ffc7650c</color>
     <color name="orange_emboss_top_2_p">#ffc7650c</color>
     <color name="orange_emboss_left_1_p">#ffc7650c</color>
@@ -65,28 +68,26 @@
     <color name="orange_emboss_right_2_p">#ffd99029</color>
     <color name="orange_emboss_bot_1_p">#ffc7650c</color>
     <color name="orange_emboss_bot_2_p">#ffc7650c</color>
-
-    <color name="orange_button_pressed_stroke_1">#96ff7e00</color>
-    <color name="orange_button_pressed_stroke_2">#FFffd9b4</color>
+-->
 
     <!--Red-->
     <color name="red_button_1">#FFc42b30</color>
     <color name="red_button_2">#FFb0282c</color>
-    <color name="red_button_1_p">#ffa32829</color>
+<!--<color name="red_button_1_p">#ffa32829</color>
     <color name="red_button_2_p">#ff882023</color>
-    <color name="red_button_d">#ff6c1b1b</color>
+    <color name="red_button_d">#ff6c1b1b</color>-->
 
     <color name="red_emboss_top_1">#FFc94145</color>
     <color name="red_emboss_top_2">#FFb93d42</color>
-    <color name="red_emboss_bot_1">#FF942125</color>
-    <color name="red_emboss_bot_2">#FF861e21</color>
+    <color name="red_emboss_bottom_1">#FF942125</color>
+    <color name="red_emboss_bottom_2">#FF861e21</color>
 
     <!--Light Green-->
     <color name="light_green_button_1">#FF769656</color>
     <color name="light_green_button_2">#FF7b9f56</color>
-    <color name="light_green_button_1_p">#ff739b4e</color>
+<!--<color name="light_green_button_1_p">#ff739b4e</color>
     <color name="light_green_button_2_p">#ff587a3d</color>
-    <color name="light_green_button_d">#ff496633</color>
+    <color name="light_green_button_d">#ff496633</color>-->
 
     <color name="light_green_emboss_top_1">#FF95b972</color>
     <color name="light_green_emboss_top_2">#FF89aa69</color>
@@ -100,19 +101,19 @@
     <color name="grey_button_half_2">#FF504c46</color>
     <color name="grey_emboss_top">#FF767069</color>
     <color name="grey_emboss_left">#FF5f5a55</color>
-    <color name="grey_emboss_bot">#FF3b3834</color>
     <color name="grey_emboss_right">#FF44403b</color>
+    <color name="grey_emboss_bottom">#FF3b3834</color>
 
     <!--Grey Pressed-->
-    <color name="grey_button_p_1">#FF56514c</color>
-    <color name="grey_button_p_2">#ff3c3832</color>
+    <!--<color name="grey_button_1_p">#FF56514c</color>
+    <color name="grey_button_2_p">#ff3c3832</color>
     <color name="grey_emboss_top_p">#ff322e27</color>
     <color name="grey_emboss_left_p">#ff322e27</color>
-    <color name="grey_emboss_bot_p">#ff322e27</color>
     <color name="grey_emboss_right_p">#ff4d4843</color>
+    <color name="grey_emboss_bottom_p">#ff322e27</color>-->
     <!--Grey Disabled & checked-->
-    <color name="grey_button_d">#FF444444</color>
-    <color name="grey_button_checked">#FFde6e00</color>
+    <!--<color name="grey_button_d">#FF444444</color>
+    <color name="grey_button_checked">#FFde6e00</color>-->
 
 
 
@@ -124,12 +125,12 @@
     <color name="grey_button_light_bot_1">#FF57524e</color>
     <color name="grey_button_light_bot_2">#FF3d3935</color>
     <!--Grey Light Pressed-->
-    <color name="grey_button_light_1_p">#ff5f5852</color>
+    <!--<color name="grey_button_light_1_p">#ff5f5852</color>
     <color name="grey_button_light_2_p">#ff3c3732</color>
     <color name="grey_button_light_top_1_p">#ff37322d</color>
     <color name="grey_button_light_top_2_p">#ff37322d</color>
     <color name="grey_button_light_bot_1_p">#ff37322d</color>
-    <color name="grey_button_light_bot_2_p">#ff37322d</color>
+    <color name="grey_button_light_bot_2_p">#ff37322d</color>-->
     <!--Grey Light Disabled-->
     <color name="grey_button_light_d">#FF444444</color>
 
@@ -140,8 +141,8 @@
 
     <!--Grey Solid-->
     <color name="grey_button_solid">#FF413d39</color>
-    <color name="grey_button_solid_p">#ff322e2a</color>
-    <color name="grey_button_solid_s">#FF5b564f</color>
+    <!--<color name="grey_button_solid_p">#ff322e2a</color>-->
+    <!--<color name="grey_button_solid_s">#FF5b564f</color>-->
     <color name="grey_button_solid_border_top">#FF46423d</color>
     <color name="grey_button_solid_border_left">#FF43403c</color>
     <color name="grey_button_solid_border_bottom">#FF3a3633</color>
@@ -168,7 +169,7 @@
 
     <!--Grey Solid-->
     <color name="white_button_solid">#FFf0f0f0</color>
-    <color name="white_button_solid_p">#ffcbcbcb</color>
+    <!--<color name="white_button_solid_p">#ffcbcbcb</color>-->
 
     <!--Emboss Text Field Black-->
     <color name="back_grey_emboss_solid">#FF201d1c</color>
@@ -181,34 +182,28 @@
     <color name="back_white_emboss_solid_border_bottom">#FF373433</color>
 
 
-    <color name="grey_button_pressed_stroke_1">#968c8c8c</color>
-    <color name="grey_button_pressed_stroke_2">#FFdddddd</color>
-
     <!--Green Button-->
     <color name="green_button">#FF59b111</color>
-    <color name="green_button_p">#FF419100</color>
+    <!--<color name="green_button_p">#FF419100</color>-->
 
     <color name="green_emboss_low_right">#FF63a62d</color>
     <color name="green_emboss_top_left">#FF7fc349</color>
 
-    <color name="green_button_pressed_stroke_1">#9663b91c</color>
-    <color name="green_button_pressed_stroke_2">#FFd9eec8</color>
-    
     <!--Blue Button-->
     <color name="blue_button">#FF0083b8</color>
 
     <color name="blue_emboss_top">#FF329bc6</color>
     <color name="blue_emboss_left">#FF198fbf</color>
-    <color name="blue_emboss_bot">#FF006086</color>
+    <color name="blue_emboss_bottom">#FF006086</color>
     <color name="blue_emboss_right">#FF006c98</color>
 
     <!--Pressed-->
-    <color name="blue_button_p">#ff006b9e</color>
+<!--<color name="blue_button_p">#ff006b9e</color>
 
     <color name="blue_emboss_top_p">#ff328fba</color>
     <color name="blue_emboss_left_p">#ff197caa</color>
-    <color name="blue_emboss_bot_p">#ff00557c</color>
-    <color name="blue_emboss_right_p">#ff005e8c</color>
+    <color name="blue_emboss_bottom_p">#ff00557c</color>
+    <color name="blue_emboss_right_p">#ff005e8c</color>-->
 
 
     <!--Facebook button-->
@@ -221,8 +216,8 @@
     <color name="f_emboss_top_2">#FF6f8ec4</color>
     <color name="f_emboss_left_1">#FF6184be</color>
     <color name="f_emboss_left_2">#FF6184be</color>
-    <color name="f_emboss_bot_1">#FF3e5d91</color>
-    <color name="f_emboss_bot_2">#FF365280</color>
+    <color name="f_emboss_bottom_1">#FF3e5d91</color>
+    <color name="f_emboss_bottom_2">#FF365280</color>
     <color name="f_emboss_right_1">#FF39568c</color>
     <color name="f_emboss_right_2">#FF2d4471</color>
 
@@ -235,45 +230,18 @@
     <color name="share_emboss_top">#ff00b4f6</color>
     <color name="share_emboss_left">#ff00b0f3</color>
     <color name="share_emboss_right">#ff009bd8</color>
-    <color name="share_emboss_bot">#ff008bcb</color>
+    <color name="share_emboss_bottom">#ff008bcb</color>
     <!--Pressed-->
-    <color name="share_button_p">#ff006b92</color>
+<!--    <color name="share_button_p">#ff006b92</color>
 
     <color name="share_emboss_top_p">#ff00a3e4</color>
     <color name="share_emboss_left_p">#ff0098d1</color>
     <color name="share_emboss_right_p">#ff008fcc</color>
-    <color name="share_emboss_bot_p">#ff005e82</color>
+    <color name="share_emboss_bot_p">#ff005e82</color>-->
 
-
-    <!--Toggle buttons-->
-
-	<color name="toggle_button_1">#FF929292</color>
-	<!--<color name="toggle_button_1">#FF3d3d3d</color>-->
-	<color name="toggle_button_2">#FF3d3d3d</color>
-
-	<color name="toggle_button_1_p">#ff6b6b6b</color>
-	<color name="toggle_button_2_p">#ff1a1a1a</color>
-
-	<!--<color name="toggle_button_inside_stroke">#FF191919</color>-->
-	<color name="toggle_button_inside_stroke">#00000000</color>
-	<color name="blue_button_reversed_inside_stroke">#FF0068cb</color>
-
-	<color name="toggle_button_outer_shadow">#5BFFFFFF</color>
-	<!--    <color name="blue_button_inside_shadow">#7F000000</color>-->
-	<color name="blue_button_inside_shadow">#00000000</color>
-
-	<!--Game Board-->
-	<color name="game_board_back">#ff262626</color>
-	<!--<color name="game_board_back">#FF000000</color>-->
 
     <!--Settings -->
     <color name="underline_color_grey">#FF8f8f8f</color>
-
-    <color name="list_pressed_1">#FFf98c15</color>
-    <color name="list_pressed_2">#FFe07a0d</color>
-
-    <color name="dark_orange">#FFb66400</color>
-    <color name="dark_orange_1">#FFa15906</color>
 
     <color name="dark_light">#FFf3f4f6</color>
     
@@ -303,9 +271,7 @@
 
     <color name="blue">#FF183b94</color>
     <color name="orange">#FFf97028</color>
-    <color name="orange_transp">#7Ff97028</color>
-    <color name="green_transp">#7F59b111</color>
-    <!--<color name="dark_orange">#FFa94a14</color>-->
+
 
     <color name="popup_back_white">#EFf8faf6</color>
     <color name="popup_white_border_grey">#FF918f8d</color>
@@ -320,20 +286,6 @@
 
 	<color name="transparent">#00000000</color>
 	<color name="disabled">#FF7a7a7a</color>
-
-	<!--Players indicators-->
-	<color name="player_ind_white_1">#fffcfcfc</color>
-	<color name="player_ind_white_2">#FFa3a3a3</color>
-	<!--<color name="player_ind_white_stroke">#fff5f5f5</color>-->
-	<color name="player_ind_white_stroke">#fff19324</color>
-
-	<color name="player_ind_black_1">#FF000000</color>
-	<color name="player_ind_black_2">#FF575757</color>
-	<color name="player_ind_black_stroke">#FF000000</color>
-
-	<color name="player_ind_green_1">#FF419100</color>
-	<color name="player_ind_green_2">#FF59b111</color>
-	<color name="player_ind_green_stroke">#FF419100</color>
 
 	<color name="semitransparent">#7f000000</color>
 	<color name="semitransparent_white">#46FFFFFF</color>
@@ -453,7 +405,6 @@
     <color name="switch_white_back_border_top_2">#FF8c8c8c</color>
     <color name="switch_white_back_border_bot_1">#FFbebebe</color>
     <color name="switch_white_back_border_bot_2">#FFe9e9e9</color>
-    <!--<color name="switch_white_back_inner_border">#FF1a1613</color>-->
     <color name="switch_white_back_inner_shadow_1">#FFd2d2d2</color>
     <color name="switch_white_back_inner_shadow_2">#FFe9e9e9</color>
     <color name="switch_white_back_inner_main_1">#FFe0e0e0</color>
@@ -586,8 +537,8 @@
     <color name="upgrade_plan_platinum_left_2">#FFa7a29b</color>
     <color name="upgrade_plan_platinum_right_1">#FF98938e</color>
     <color name="upgrade_plan_platinum_right_2">#FF807c77</color>
-    <color name="upgrade_plan_platinum_bot_1">#FF908c86</color>
-    <color name="upgrade_plan_platinum_bot_2">#FF726e6a</color>
+    <color name="upgrade_plan_platinum_bottom_1">#FF908c86</color>
+    <color name="upgrade_plan_platinum_bottom_2">#FF726e6a</color>
 
     <!--Upgrade Gold Plan button-->
     <color name="upgrade_plan_gold">#FFa08e5d</color>
@@ -598,8 +549,8 @@
     <color name="upgrade_plan_gold_left_2">#FFa29162</color>
     <color name="upgrade_plan_gold_right_1">#FF948356</color>
     <color name="upgrade_plan_gold_right_2">#FF7b6d48</color>
-    <color name="upgrade_plan_gold_bot_1">#FF8d7d52</color>
-    <color name="upgrade_plan_gold_bot_2">#FF6e6140</color>
+    <color name="upgrade_plan_gold_bottom_1">#FF8d7d52</color>
+    <color name="upgrade_plan_gold_bottom_2">#FF6e6140</color>
 
     <!--Welcome-->
     <color name="pager_indicator_default">#FF1d1c1a</color>

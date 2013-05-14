@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:minHeight="@dimen/main_button_height"
             android:text="@string/start_new_game"
-            style="@style/Text.Button.OrangeNoBorder"
+            style="@style/Button.OrangeNoBorder"
             />
 
     </LinearLayout>
@@ -93,7 +93,7 @@
             android:layout_weight="1"
             android:text="@string/new_game_archive"
             android:layout_marginRight="4dip"
-            style="@style/Text.Button.Grey"
+            style="@style/Button.Grey"
             />
         <com.chess.RoboButton
             android:id="@+id/startNewGameBtn"

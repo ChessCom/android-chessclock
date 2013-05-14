@@ -767,13 +767,19 @@ public class DBDataManager {
 
 		values.put(DBConstants.V_NAME, dataObj.getName());
 		values.put(DBConstants.V_DESCRIPTION, dataObj.getDescription());
-		values.put(DBConstants.V_CATEGORY, dataObj.getCategory());
-		values.put(DBConstants.V_SKILL_LEVEL, dataObj.getSkill_level());
-		values.put(DBConstants.V_ECO_NAME, dataObj.getEco_name());
+		values.put(DBConstants.V_CATEGORY, dataObj.getCategoryName());
+		values.put(DBConstants.V_CATEGORY_ID, dataObj.getCategoryId());
+		values.put(DBConstants.V_VIDEO_ID, dataObj.getVideoId());
+		values.put(DBConstants.V_SKILL_LEVEL, dataObj.getSkillLevel());
+		values.put(DBConstants.V_USER_AVATAR, dataObj.getUserAvatar());
 		values.put(DBConstants.V_MINUTES, dataObj.getMinutes());
+		values.put(DBConstants.V_VIEW_COUNT, dataObj.getViewCount());
+		values.put(DBConstants.V_COUNTRY_ID, dataObj.getCountryId());
+		values.put(DBConstants.V_COMMENT_COUNT, dataObj.getCommentCount());
 		values.put(DBConstants.V_CREATE_DATE, dataObj.getCreateDate());
-		values.put(DBConstants.V_MOBILE_URL, dataObj.getUrl());
+		values.put(DBConstants.V_URL, dataObj.getUrl());
 		values.put(DBConstants.V_KEY_FEN, dataObj.getKeyFen());
+		values.put(DBConstants.V_USERNAME, dataObj.getUsername());
 		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirstName());
 		values.put(DBConstants.V_LAST_NAME, dataObj.getLastName());
 		values.put(DBConstants.V_CHESS_TITLE, dataObj.getChessTitle());

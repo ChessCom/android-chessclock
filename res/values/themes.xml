@@ -16,14 +16,14 @@
         <item name="android:spinnerStyle">@style/Spinner</item>
         <item name="android:checkboxStyle">@style/CheckBox</item>
         <item name="android:radioButtonStyle">@style/RadioButton</item>
-		<item name="android:listViewStyle">@style/DefaultListView</item>
+		<!--<item name="android:listViewStyle">@style/DefaultListView</item>-->
 		<item name="android:listChoiceIndicatorSingle">@drawable/btn_radio_selector</item>
 		<item name="timerLabelStyle">@style/GameLabel.Timer</item>
-		<item name="greyButton">@style/Text.Button.Grey</item>
+		<item name="greyButton">@style/Button.Grey</item>
 		<item name="orangeButton">@style/Text.Button</item>
-		<item name="greyButtonSmall">@style/Text.Button.Grey.Small</item>
-		<item name="orangeButtonSmall">@style/Text.Button.Small</item>
-		<item name="greyButtonSmallSolid">@style/Text.Button.Grey.Small.Solid</item>
+		<item name="greyButtonSmall">@style/Button.Grey.Small</item>
+		<item name="orangeButtonSmall">@style/Button.Orange2.Small</item>
+		<item name="greyButtonSmallSolid">@style/Button.Grey.Solid.Small</item>
     </style>
 
 
@@ -37,7 +37,7 @@
     </style>
 
 	<style name="GreyButtonTheme" parent="OrangeButtonTheme">
-		<item name="android:buttonStyle">@style/Text.Button.Grey</item>
+		<item name="android:buttonStyle">@style/Button.Grey</item>
 	</style>
 
 

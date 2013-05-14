@@ -50,7 +50,7 @@ public class FacebookButton extends RoboButton {
 		borderColors[0] = context.getResources().getColor(R.color.f_emboss_top_2);
 		borderColors[1] = context.getResources().getColor(R.color.f_emboss_top_1);
 		borderColors[2] = 0xFF284160;
-		borderColors[3] = context.getResources().getColor(R.color.f_emboss_bot_2);
+		borderColors[3] = context.getResources().getColor(R.color.f_emboss_bottom_2);
 
 		borderPaint = new Paint();
 		borderPaint.setStrokeWidth(1);

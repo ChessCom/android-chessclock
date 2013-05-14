@@ -5,6 +5,8 @@
     <declare-styleable name="RoboButton">
         <attr name="btn_radius" format="reference|dimension" />      <!--Common button radius-->
         <attr name="btn_is_solid" format="reference|boolean" />
+        <attr name="btn_use_border" format="reference|boolean" />
+        <attr name="btn_use_pressed_layer" format="reference|boolean" />
 
         <attr name="btn_padding" format="reference|dimension" />
         <attr name="btn_bevel_lvl" format="reference|integer" />

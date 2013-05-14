@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:text="@string/new_invite_facebook"
             android:layout_marginTop="@dimen/invite_facebook_margin_top"
-            style="@style/FacebookButton"
+            style="@style/Button.Facebook"
             />
 
 
@@ -74,6 +74,7 @@
             android:layout_height="wrap_content"
             android:text="@string/new_start_playing"
             custom:ttf="Bold"
+            style="@style/Button.Orange2"
             android:layout_marginTop="@dimen/common_button_margin_top"
             />
 

@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/random"
-            style="@style/Text.Button.Grey.Small.Solid"
+            style="@style/Button.Grey.Solid.Small"
             />
     </LinearLayout>
 
@@ -109,7 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/random"
-            style="@style/Text.Button.Grey.Small.Solid"
+            style="@style/Button.Grey.Solid.Small"
             />
     </LinearLayout>
 
@@ -178,7 +178,7 @@
                 android:id="@+id/minRatingBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Text.Button.Grey.Small.Solid"
+                style="@style/Button.Grey.Solid.Small"
                 android:button="@null"
                 android:inputType="numberDecimal"
                 />
@@ -196,7 +196,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                style="@style/Text.Button.Grey.Small.Solid"
+                style="@style/Button.Grey.Solid.Small"
                 android:button="@null"
                 android:inputType="numberDecimal"
                 />

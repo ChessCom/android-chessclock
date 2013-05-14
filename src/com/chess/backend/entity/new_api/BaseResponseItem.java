@@ -1,5 +1,7 @@
 package com.chess.backend.entity.new_api;
 
+import com.chess.backend.statics.StaticData;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -54,5 +56,9 @@ public class BaseResponseItem<ItemType> {
 
 	public String getMore_info() {
 		return more_info;
+	}
+
+	protected static String getSafeValue(String value) {
+		return value == null? StaticData.SYMBOL_EMPTY : value;
 	}
 }
