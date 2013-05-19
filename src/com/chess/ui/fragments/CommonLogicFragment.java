@@ -7,7 +7,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -25,10 +27,7 @@ import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.FlurryData;
-import com.chess.backend.statics.SoundPlayer;
+import com.chess.backend.statics.*;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.fragments.daily.DailyGamesNotificationFragment;
@@ -280,16 +279,14 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 
 		LoadItem loadItem = new LoadItem();
-//		loadItem.setLoadPath(RestHelper.LOGIN);
 		loadItem.setLoadPath(RestHelper.CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
-//		loadItem.addRequestParams(RestHelper.P_USERNAME, userName);
+		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
 		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
 
-//		new PostDataTask(loginUpdateListener).executeTask(loadItem);
 		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
 
 		loginReturnCode = SIGNIN_CALLBACK_CODE;
@@ -298,6 +295,19 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	@Override
 	public void onClick(View view) {
 
+	}
+
+	protected String getDeviceId() {
+		FragmentActivity activity = getActivity();
+		if (activity != null) {
+			String string = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+			while ((string != null ? string.length() : 0) < 32) {
+				string += "a";
+			}
+			return string;
+		} else {
+			return StaticData.SYMBOL_EMPTY;
+		}
 	}
 
 	protected class ChessUpdateListener<ItemType> extends ActionBarUpdateListener<ItemType> {

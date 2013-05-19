@@ -5,15 +5,15 @@
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     >
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:padding="15dip"
-        android:background="@color/white"
         >
 
         <com.chess.RoboTextView

@@ -15,47 +15,48 @@ import com.chess.ui.interfaces.PopupDialogFace;
  * @created 10.07.12
  * @modified 10.07.12
  */
-public abstract class BasePopupDialogFragment extends DialogFragment implements View.OnClickListener  {
+public abstract class BasePopupDialogFragment extends DialogFragment implements View.OnClickListener {
 
-    protected static final String POPUP_ITEM = "popup item";
+	protected static final String POPUP_ITEM = "popup item";
+	public static final String TAG = "BasePopupDialogFragment";
 
-    protected PopupDialogFace listener;
-    protected PopupItem popupItem;
+	protected PopupDialogFace listener;
+	protected PopupItem popupItem;
 
-    protected int buttonsNumber;
-    protected boolean isShowed;
+	protected int buttonsNumber;
+	protected boolean isShowed;
 	protected boolean isPaused;
 
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(STYLE_NO_FRAME, 0);
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(STYLE_NO_FRAME, 0);
 	}
 
 	@Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if(getArguments() != null){
-            popupItem = getArguments().getParcelable(POPUP_ITEM);
-        }else{
-            popupItem = savedInstanceState.getParcelable(POPUP_ITEM);
-        }
-    }
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		if (getArguments() != null) {
+			popupItem = getArguments().getParcelable(POPUP_ITEM);
+		} else {
+			popupItem = savedInstanceState.getParcelable(POPUP_ITEM);
+		}
+	}
 
-    public void updatePopupItem(PopupItem popupItem) {
-        this.popupItem = popupItem;
-		if(!isVisible()){
-			if(getArguments().containsKey(POPUP_ITEM)){
+	public void updatePopupItem(PopupItem popupItem) {
+		this.popupItem = popupItem;
+		if (!isVisible()) {
+			if (getArguments().containsKey(POPUP_ITEM)) {
 				setArguments(null);
 			}
 			Bundle arguments = new Bundle();
 			arguments.putParcelable(POPUP_ITEM, popupItem);
 			setArguments(arguments);
 		}
-    }
+	}
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
 		outState.putSerializable("smth", "value");
 		super.onSaveInstanceState(outState);
 		outState.putParcelable(POPUP_ITEM, popupItem);
@@ -74,49 +75,58 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
 	}
 
 	@Override
-    public void onClick(View view) {
-        if(view.getId() == R.id.positiveBtn){
-            listener.onPositiveBtnClick(this);
-        }else if(view.getId() == R.id.neutralBtn){
+	public void onClick(View view) {
+		if (view.getId() == R.id.positiveBtn) {
+			listener.onPositiveBtnClick(this);
+		} else if (view.getId() == R.id.neutralBtn) {
 			listener.onNeutralBtnCLick(this);
-        }else if(view.getId() == R.id.negativeBtn){
-            listener.onNegativeBtnClick(this);
-        }
-    }
+		} else if (view.getId() == R.id.negativeBtn) {
+			listener.onNegativeBtnClick(this);
+		}
+	}
 
-    @Override
-    public void show(FragmentManager manager, String tag) {
-        isShowed = true;
+	public void setButtons(int buttonsNumber) {
+		this.buttonsNumber = buttonsNumber;
+	}
+
+	@Override
+	public void show(FragmentManager manager, String tag) {
+		isShowed = true;
 		FragmentTransaction ft = manager.beginTransaction();
 		ft.add(this, tag);
-		try{
-			int commitAllowingStateLoss = ft.commitAllowingStateLoss();
-			Log.d("LCCLOG", "show fragment: commitAllowingStateLoss=" + commitAllowingStateLoss);
-		} catch (IllegalStateException ex){
-			Log.e("LCCLOG-FragmentShow", "Fragment was showed when activity is dead " + ex.toString());
-			ex.printStackTrace();
+		try {
+			ft.commitAllowingStateLoss();
+		} catch (IllegalStateException ex) {
+			Log.e("FragmentShow", "Fragment was showed when activity is dead " + ex.toString());
 		}
-    }
+	}
 
-    @Override
-    public int show(FragmentTransaction transaction, String tag) {
-        isShowed = true;
-        return super.show(transaction, tag);
-    }
+	@Override
+	public int show(FragmentTransaction transaction, String tag) {
+		isShowed = true;
+		return super.show(transaction, tag);
+	}
 
-    @Override
-    public void dismiss() {
-		if (getDialog() != null) {
-			getDialog().dismiss();
-		}
-        if(isShowed || isVisible()) {
+	@Override
+	public void dismiss() {
+		try {
+
 			if (getDialog() != null) {
 				getDialog().dismiss();
 			}
-			super.dismiss();
+			if (isShowed || isVisible()) {
+				if (getDialog() != null) {
+					getDialog().dismiss();
+				}
+				super.dismiss();
+			}
+		} catch (IllegalStateException ex) {
+			if (ex.getMessage() != null && ex.getMessage().equals("Can not perform this action after onSaveInstanceState")) {
+				Log.e(TAG, "caught - " + ex.getMessage());
+			}
 		}
-        isShowed = false;
-    }
+		isShowed = false;
+	}
 
 	@Override
 	public void onDestroyView() {

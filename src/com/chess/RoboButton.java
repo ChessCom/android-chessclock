@@ -20,7 +20,7 @@ public class RoboButton extends Button implements Serializable {
 
 	public RoboButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		setupFont(attrs);
+		setupFont(context, attrs);
 	}
 
 	public RoboButton(Context context) {
@@ -29,11 +29,14 @@ public class RoboButton extends Button implements Serializable {
 
 	public RoboButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		setupFont(attrs);
+		setupFont(context, attrs);
 	}
 
-    private void setupFont(AttributeSet attrs) {
-        TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.RoboTextView);
+	private void setupFont(Context context, AttributeSet attrs) {
+		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.RoboTextView);
+		if (array == null) {
+			return;
+		}
 		try {
 			if (array.hasValue(R.styleable.RoboTextView_ttf)) {
 				ttfName = array.getString(R.styleable.RoboTextView_ttf);
@@ -42,15 +45,17 @@ public class RoboButton extends Button implements Serializable {
 			array.recycle();
 		}
 
-        init(attrs);
-    }
+		init(context, attrs);
+	}
 
-    private void init(AttributeSet attrs) {
-        Typeface font = Typeface.createFromAsset(getContext().getAssets(), RoboTextView.MAIN_PATH + ttfName + ".ttf");
-        setTypeface(font);
+    private void init(Context context, AttributeSet attrs) {
+		if (!isInEditMode()) {
+			Typeface font = Typeface.createFromAsset(context.getAssets(), RoboTextView.MAIN_PATH + ttfName + ".ttf");
+			setTypeface(font);
+		}
 
 		if (attrs != null) {
-			TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.RoboButton);
+			TypedArray array =context.obtainStyledAttributes(attrs, R.styleable.RoboButton);
 			if (array == null)
 				return;
 			try {
@@ -70,10 +75,10 @@ public class RoboButton extends Button implements Serializable {
 
     }
 
-    public void setFont(String font) {
-        ttfName = font;
-        init(null);
-    }
+	public void setFont(String font) {
+		ttfName = font;
+		init(getContext(), null);
+	}
 
 	public void setDrawableStyle(int styleId) {
 		ButtonDrawable buttonDrawable = ButtonDrawableBuilder.createDrawable(getContext(), styleId);

@@ -10,7 +10,6 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
-import android.util.Log;
 import com.chess.R;
 
 import java.util.ArrayList;
@@ -330,7 +329,6 @@ public class ButtonDrawable extends StateListDrawable {
 		}
 
 		mutate();
-		Log.d("TEST", " enabled = " + enabled + " pressed = " + pressed);
 		if (enabled && pressed) {
 			setColorFilter(pressedFilter);
 			setAlpha(enabledAlpha);

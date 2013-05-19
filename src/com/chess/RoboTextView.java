@@ -24,7 +24,7 @@ public class RoboTextView extends TextView implements Serializable {
 
 	public RoboTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-        setupFont(attrs);
+        setupFont(context, attrs);
 	}
 
 	public RoboTextView(Context context) {
@@ -33,11 +33,14 @@ public class RoboTextView extends TextView implements Serializable {
 
 	public RoboTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-        setupFont(attrs);
+        setupFont(context, attrs);
     }
 
-    private void setupFont(AttributeSet attrs) {
-        TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.RoboTextView);
+    private void setupFont(Context context, AttributeSet attrs) {
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.RoboTextView);
+		if (array == null) {
+			return;
+		}
 		try {
 			if (array.hasValue(R.styleable.RoboTextView_ttf)) {
 				ttfName = array.getString(R.styleable.RoboTextView_ttf);
@@ -46,17 +49,19 @@ public class RoboTextView extends TextView implements Serializable {
 			array.recycle();
 		}
 
-        init();
+        init(context);
     }
 
-    private void init() {
-        Typeface font = Typeface.createFromAsset(getContext().getAssets(), MAIN_PATH + ttfName + ".ttf");
-        setTypeface(font);
+    private void init(Context context) {
+		if (!isInEditMode()) {
+			Typeface font = Typeface.createFromAsset(context.getAssets(), MAIN_PATH + ttfName + ".ttf");
+			setTypeface(font);
+		}
     }
 
 	public void setFont(String font) {
 		ttfName = font;
-		init();
+		init(getContext());
 	}
 
 }

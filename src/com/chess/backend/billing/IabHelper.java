@@ -68,12 +68,12 @@ import java.util.List;
  *
  */
 public class IabHelper {
-	public static final String SKU_GOLD_MONTH = "gold_month_1";
-	public static final String SKU_GOLD_YEAR = "gold_year_1";
-	public static final String SKU_PLATINUM_MONTH = "platinum_month_1";
-	public static final String SKU_PLATINUM_YEAR = "platinum_year_1";
-	public static final String SKU_DIAMOND_MONTH = "diamond_month_1";
-	public static final String SKU_DIAMOND_YEAR = "diamond_year_1";
+	public static final String SKU_GOLD_MONTH = "test_gold_month_2";
+	public static final String SKU_GOLD_YEAR = "test_gold_year_2";
+	public static final String SKU_PLATINUM_MONTH = "test_platinum_month_2";
+	public static final String SKU_PLATINUM_YEAR = "test_platinum_year_2";
+	public static final String SKU_DIAMOND_MONTH = "test_diamond_month_1";
+	public static final String SKU_DIAMOND_YEAR = "test_diamond_year_1";
 
     // Is debug logging enabled?
     boolean mDebugLog = false;

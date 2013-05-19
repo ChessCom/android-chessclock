@@ -11,12 +11,17 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.RoboTextView;
+import com.chess.backend.RestHelper;
 import com.chess.backend.billing.IabHelper;
 import com.chess.backend.billing.IabResult;
 import com.chess.backend.billing.Inventory;
 import com.chess.backend.billing.Purchase;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.fragments.CommonLogicFragment;
+
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -91,8 +96,28 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
          * want to make it easy for an attacker to replace the public key with one
          * of their own and then fake messages from the server.
          */
-		// TODO get public key from server
-		String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkCrfcT7Ho29ms/a8zvzWvgtcsDmI/gKFnNlFmtNGREGvfquFSzwz7SjisHX6/Lq3//d1lVWxrRpsQcUwfkOYHshVbym5mzaW/06UgADPa4eRJ+JK4+1ts+oJJGX0eJYMhWP16ppQ1NVFSAWyE0WHhyDis1dIyCLZxKIVcZP9aKeAoVM94QPOdv5MU2O61tzEnEID1KXq9Wr8raKngJDZ2EcUn+1oLilRCp7gFbfU8jlZd0326WA5cLOoAVJQ6EV2WnDNmGWBgcMYOT3WBoHWWZjRyPPL3VWsnEkA0CHFS3RCNzBADPj9UPIwaXINhCoLC+NXiXUuEC0V/bD0O3QYWwIDAQAB";
+		setupIabHelper();
+//		// get public key from server
+//		LoadItem loadItem = new LoadItem();
+//		loadItem.setLoadPath(RestHelper.CMD_IAB);
+//		loadItem.addRequestParams(RestHelper.P_FIELDS, "key");
+//
+//		new RequestJsonTask<UserItem>(new GetPublicKeyListener()).executeTask(loadItem); // TODO set proper item
+
+	}
+
+//	private class GetPublicKeyListener extends ChessUpdateListener<UserItem> {
+//
+//		@Override
+//		public void updateData(UserItem returnedObj) {
+//			super.updateData(returnedObj);
+//			setupIabHelper();
+//		}
+//	}
+
+	private void setupIabHelper() {
+		// here we get public key
+		String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8PdNZ3V+FkqhBry7E2zAKx9Tvj/wcCBNs7zOm/dZyt1fdwmbHsRnL9RhVG5cIlxL86GLMKJfvfnTy8R9pJA0CKA9YBXK93Zq4V0GPzqBS9U+mBWGFJ2Qb7JYKxPlIAmEhIbSou4EPSnzfnPSE3pAoUpeUTDGvTTNML1jzbzNBeeY12rnq5VyDY87rqP3iDvEkqJkN+iMR59QYgcQNHZf4dzJtsP3G1AIEJt4fzCoT134RvBDrtr7N+G23v8EdWad07EjPjP21Slz/84dIL3aj1OlUG/HZU2/QL2y+TwBpJLP/kDsqDkxoKayFxwBjjfAq4BCfcUcKjDWZFvZlT0mXwIDAQAB";
 
 		// Create the helper, passing it our context and the public key to verify signatures with
 		Log.d(TAG, "Creating IAB helper.");
@@ -117,7 +142,9 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 				// Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
 				Log.d(TAG, "Setup successful. Querying inventory.");
-				mHelper.queryInventoryAsync(mGotInventoryListener);
+				mHelper.queryInventoryAsync(new GotInventoryListener());
+				setWaitScreen(true);
+
 			}
 		});
 	}
@@ -221,7 +248,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 		monthLabelTxt.setTextColor(planConfig.subTitleColor);
 		monthCheckBox.setButtonDrawable(planConfig.checkBoxDrawableId);
-//		monthCheckBox.setChecked(planConfig.isMonthPayed()); //TODO adjust
 		monthCheckBox.setEnabled(!planConfig.isMonthPayed());
 		// per year
 		yearView.setBackgroundResource(planConfig.payViewColorId);
@@ -232,7 +258,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 		yearLabelTxt.setTextColor(planConfig.subTitleColor);
 		yearCheckBox.setButtonDrawable(planConfig.checkBoxDrawableId);
-//		yearCheckBox.setChecked(planConfig.isYearPayed());
 		yearCheckBox.setEnabled(!planConfig.isYearPayed());
 
 		setPlanBtn.setDrawableStyle(planConfig.buttonStyleId);
@@ -436,21 +461,56 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			return;
 		}
 
-        /* TODO: for security, generate your payload here for verification. See the comments on
-         *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use
-         *        an empty string, but on a production app you should carefully generate this. */
-		String payload = "";
+		sendPayment(itemId);
+//		LoadItem loadItem = new LoadItem();
+//		loadItem.setLoadPath(RestHelper.CMD_IAB);
+//
+//		new RequestJsonTask<UserItem>(new GetPayloadListener(itemId)).executeTask(loadItem);
+	}
+
+//	private class GetPayloadListener extends ChessUpdateListener<UserItem> {
+//
+//		private String itemId;  // TODO get itemId from server
+//
+//		private GetPayloadListener(String itemId) {
+//			this.itemId = itemId;
+//		}
+//
+//		@Override
+//		public void updateData(UserItem returnedObj) {
+//			super.updateData(returnedObj);
+//
+//          sendPayment(itemId);
+//		}
+//	}
+
+	private void sendPayment(String itemId) {
+			/* TODO: for security, generate your payload here for verification. See the comments on
+			 *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use
+			 *        an empty string, but on a production app you should carefully generate this. */
+
+		LoadItem loadItem = new LoadItem();
+		loadItem.addRequestParams(RestHelper.P_USERNAME, AppData.getUserName(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_MEMBERSHIP_TYPE, itemId);
+
+
+		String payload = RestHelper.formPostData(loadItem);
 
 		setWaitScreen(true);
-		Log.d(TAG, "Launching purchase flow for infinite gas subscription.");
+		Log.d(TAG, "Launching purchase flow for subscription.");
 		mHelper.launchPurchaseFlow(getActivity(), itemId, IabHelper.ITEM_TYPE_SUBS,
-				RC_REQUEST, mPurchaseFinishedListener, payload);
+				RC_REQUEST, new PurchaseFinishedListener(), payload);
 	}
 
 	// Callback for when a purchase is finished
-	IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+	private class PurchaseFinishedListener implements IabHelper.OnIabPurchaseFinishedListener {
+
 		@Override
 		public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+			if (getActivity() == null) {
+				logTest("onIabPurchaseFinished - >activity null");
+				return;
+			}
 			Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
 			if (result.isFailure()) {
 				showSinglePopupDialog("Error purchasing: " + result);
@@ -458,7 +518,10 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				return;
 			}
 			if (!verifyDeveloperPayload(purchase)) {
-				showSinglePopupDialog("Error purchasing. Authenticity verification failed.");
+				showSinglePopupDialog("Oops. Authenticity verification failed."
+						+ " payload = " + purchase.getDeveloperPayload());
+				logTest("oops - user =" + AppData.getUserName(getActivity())
+						+ " order = " + purchase.getSku() + "payload = " + purchase.getDeveloperPayload());
 				setWaitScreen(false);
 				return;
 			}
@@ -467,7 +530,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 			if (purchase.getSku().equals(IabHelper.SKU_GOLD_MONTH)) {
 				// bought the infinite gas subscription
-				Log.d(TAG, "Infinite gas subscription purchased.");
+				Log.d(TAG, IabHelper.SKU_GOLD_MONTH  + " subscription purchased.");
 				showSinglePopupDialog("Thank you for subscribing to !" + IabHelper.SKU_GOLD_MONTH);
 				isGoldMonthPayed = true;
 			} else if (purchase.getSku().equals(IabHelper.SKU_GOLD_YEAR)) {
@@ -494,7 +557,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			updateData();
 			setWaitScreen(false);
 		}
-	};
+	}
 
 	// We're being destroyed. It's important to dispose of the helper here!
 	@Override
@@ -515,11 +578,17 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private boolean isDiamondYearPayed;
 
 	// Listener that's called when we finish querying the items and subscriptions we own
-	IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+	private class GotInventoryListener implements  IabHelper.QueryInventoryFinishedListener {
 		@Override
 		public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+			if (isPaused) {
+				return;
+			}
+
+			setWaitScreen(false);
 			Log.d(TAG, "Query inventory finished.");
 			if (result.isFailure()) {
+
 				showSinglePopupDialog("Failed to query inventory: " + result);
 				return;
 			}
@@ -536,8 +605,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			{// gold month
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_GOLD_MONTH);
 
-//				isGoldMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
-				isGoldMonthPayed = true; // TODO restore
+				isGoldMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
 			}
 			{// gold year
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_GOLD_YEAR);
@@ -571,11 +639,36 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			setWaitScreen(false);
 			Log.d(TAG, "Initial inventory query finished; enabling main UI.");
 		}
-	};
+	}
 
 	/** Verifies the developer payload of a purchase. */
 	boolean verifyDeveloperPayload(Purchase p) {
 		String payload = p.getDeveloperPayload();
+
+		if (!payload.contains(RestHelper.P_USERNAME)) {
+			return false;
+		}
+		// get username and membership type
+//		payload.split("")
+		String[] pairs = payload.split("&");
+		HashMap<String, String> map = new HashMap<String, String>();
+
+		for (String pair : pairs) {
+			String[] keyValues = pair.split("=");
+			map.put(keyValues[0], keyValues[1]);
+		}
+
+
+		String username = map.get(RestHelper.P_USERNAME);
+		String membershipType = map.get(RestHelper.P_MEMBERSHIP_TYPE);
+
+		if (username.equals(AppData.getUserName(getActivity())) // erik == erik
+				&& membershipType.equals(p.getSku()) // gold_1 == gold_1
+				) {
+			return true;
+		} else {
+			return false;
+		}
 		// TODO get payload from server
         /*
          * TODO: verify that the developer payload of the purchase is correct. It will be
@@ -600,16 +693,34 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
          * installations is recommended.
          */
 
-		return true;
+//		return true;
 	}
+
+/*
+	// get username and membership type
+	String[] pairs = payload.split("&");
+	HashMap<String, String> map = new HashMap<String, String>();
+
+	for (String pair : pairs) {
+		String[] keyValues = pair.split("=");
+		map.put(keyValues[0], keyValues[1]);
+	}
+
+	String username = map.get(RestHelper.P_USERNAME);
+	String membershipType = map.get(RestHelper.P_MEMBERSHIP_TYPE);
+	if (username.equals(AppData.getUserName(getActivity())) // erik == erik
+			&& membershipType.equals(itemId)) { // gold_1 == gold_1
+		logTest("sendPaymentRequest verify true");
+
+	} else {
+		logTest("sendPaymentRequest verify false");
+	}
+*/
 
 	private void setWaitScreen(boolean show) {
 		if (show){
 			showPopupProgressDialog(R.string.processing_);
 		} else {
-//			if(isPaused)
-//				return;
-
 			dismissProgressDialog();
 		}
 	}

@@ -129,6 +129,8 @@ public class RestHelper {
 		return CMD_GAMES + "/" + gameId + "/actions";
 	}
 
+	public static final String CMD_IAB = BASE_URL + V1 + "/iab";
+
 	/* Parameters */
 	// new
 	public static final String P_USER_NAME_OR_MAIL = "usernameOrEmail";
@@ -142,6 +144,7 @@ public class RestHelper {
 	public static final String P_TACTICS_RATING = "tacticsrating";
 	public static final String P_PASSWORD = "password";
 	public static final String P_EMAIL = "email";
+	public static final String P_DEVICE_ID = "deviceId";
 	public static final String P_AUTH_TOKEN = "auth_token";
 	public static final String P_FIRST_NAME = "firstName";
 	public static final String P_LAST_NAME = "lastName";
@@ -149,6 +152,7 @@ public class RestHelper {
 	public static final String P_AVATAR = "avatar";
 	public static final String P_COUNTRY_ID = "countryId";
 	public static final String P_COUNTRY_CODE = "countryCode";
+	public static final String P_MEMBERSHIP_TYPE = "membershipType";
 	//	public static final String P_APP_TYPE = "app_type";
 	public static final String P_APP_TYPE = "appType";
 	//	public static final String P_FACEBOOK_ACCESS_TOKEN = "facebook_access_token";
