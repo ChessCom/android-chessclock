@@ -44,7 +44,7 @@ import java.util.regex.Pattern;
  * Date: 25.02.13
  * Time: 19:54
  */
-public class WelcomeFragment extends ProfileSetupsFragment implements YouTubePlayer.OnInitializedListener,
+public class WelcomeFragment extends CommonLogicFragment implements YouTubePlayer.OnInitializedListener,
 		YouTubePlayer.OnFullscreenListener {
 
 	private static final int PAGE_CNT = 5;

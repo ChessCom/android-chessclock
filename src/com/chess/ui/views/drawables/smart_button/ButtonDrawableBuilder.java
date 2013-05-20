@@ -8,6 +8,7 @@ import com.chess.utilities.AppUtils;
 
 import static com.chess.ui.views.drawables.smart_button.ButtonDrawable.DEFAULT_ANGLE;
 import static com.chess.ui.views.drawables.smart_button.ButtonDrawable.DEFAULT_BEVEL_INSET;
+import static com.chess.ui.views.drawables.smart_button.RectButtonDrawable.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +21,22 @@ public class ButtonDrawableBuilder {
 	private static ButtonDrawable setDefaults(Context context) {
 		Resources resources = context.getResources();
 		ButtonDrawable buttonDrawable = new ButtonDrawable();
+		buttonDrawable.isSolid = true;
+		buttonDrawable.useBorder = true;
+		buttonDrawable.usePressedLayer = false;
+		buttonDrawable.gradientAngle = DEFAULT_ANGLE;
+		buttonDrawable.bevelLvl = 1;
+		buttonDrawable.bevelInset = DEFAULT_BEVEL_INSET;
+
+		buttonDrawable.radius = resources.getDimensionPixelSize(R.dimen.rounded_button_radius);
+		buttonDrawable.colorOuterBorder = resources.getColor(R.color.semi_transparent_border);
+
+		return buttonDrawable;
+	}
+
+	private static RectButtonDrawable setRectDefaults(Context context) {
+		Resources resources = context.getResources();
+		RectButtonDrawable buttonDrawable = new RectButtonDrawable();
 		buttonDrawable.isSolid = true;
 		buttonDrawable.useBorder = true;
 		buttonDrawable.usePressedLayer = false;
@@ -79,6 +96,60 @@ public class ButtonDrawableBuilder {
 				createGreySolid(buttonDrawable, resources);
 
 				return buttonDrawable;
+			case R.style.Rect_TopLeft:
+				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+				createRect(rectButtonDrawable, resources);
+
+				rectButtonDrawable.rectPosition = TOP_LEFT;
+				return rectButtonDrawable;
+			case R.style.Rect_TopMiddle:
+				rectButtonDrawable = setRectDefaults(context);
+				createRect(rectButtonDrawable, resources);
+
+				rectButtonDrawable.rectPosition = TOP_MIDDLE;
+				return rectButtonDrawable;
+			case R.style.Rect_TopRight:
+				rectButtonDrawable = setRectDefaults(context);
+				createRect(rectButtonDrawable, resources);
+
+				rectButtonDrawable.rectPosition = TOP_RIGHT;
+				return rectButtonDrawable;
+			case R.style.Rect_TabLeft:
+				rectButtonDrawable = setRectDefaults(context);
+				createRect(rectButtonDrawable, resources);
+
+				rectButtonDrawable.rectPosition = TAB_LEFT;
+				return rectButtonDrawable;
+			case R.style.Rect_TabMiddle:
+				rectButtonDrawable = setRectDefaults(context);
+				createRect(rectButtonDrawable, resources);
+
+				rectButtonDrawable.rectPosition = TAB_MIDDLE;
+				return rectButtonDrawable;
+			case R.style.Rect_TabRight:
+				rectButtonDrawable = setRectDefaults(context);
+				createRect(rectButtonDrawable, resources);
+
+				rectButtonDrawable.rectPosition = TAB_RIGHT;
+				return rectButtonDrawable;
+			case R.style.Rect_BottomLeft:
+				rectButtonDrawable = setRectDefaults(context);
+				createRect(rectButtonDrawable, resources);
+
+				rectButtonDrawable.rectPosition = BOTTOM_LEFT;
+				return rectButtonDrawable;
+			case R.style.Rect_BottomMiddle:
+				rectButtonDrawable = setRectDefaults(context);
+				createRect(rectButtonDrawable, resources);
+
+				rectButtonDrawable.rectPosition = BOTTOM_MIDDLE;
+				return rectButtonDrawable;
+			case R.style.Rect_BottomRight:
+				rectButtonDrawable = setRectDefaults(context);
+				createRect(rectButtonDrawable, resources);
+
+				rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
+				return rectButtonDrawable;
 			default /*R.style.Button_Orange2*/:
 				createOrange2(buttonDrawable, resources);
 
@@ -87,9 +158,6 @@ public class ButtonDrawableBuilder {
 	}
 
 	private static void createGrey2SolidNoBorder(ButtonDrawable buttonDrawable, Resources resources) {
-/*
-        <item name="android:minHeight">@dimen/grey_button_height</item>
-*/
 		buttonDrawable.bevelLvl = 2;
 		buttonDrawable.useBorder = false;
 		// Colors for bevel
@@ -197,9 +265,6 @@ public class ButtonDrawableBuilder {
 	}
 
 	private static void createGreySolid(ButtonDrawable buttonDrawable, Resources resources) {
-/*
-        <item name="android:textColor">@color/white</item>
-*/
 		// Colors for bevel
 		buttonDrawable.colorTop = resources.getColor(R.color.grey_button_solid_border_top);
 		buttonDrawable.colorLeft = resources.getColor(R.color.grey_button_solid_border_left);
@@ -207,6 +272,28 @@ public class ButtonDrawableBuilder {
 		buttonDrawable.colorBottom = resources.getColor(R.color.grey_button_solid_border_bottom);
 		// Button colors
 		buttonDrawable.colorSolid = resources.getColor(R.color.grey_button_solid);
+		// init layers
+		buttonDrawable.init(resources);
+	}
+
+	private static void createRect(RectButtonDrawable buttonDrawable, Resources resources) {
+		// no radius
+		buttonDrawable.radius = 0;
+		buttonDrawable.useBorder = false;
+		buttonDrawable.bevelLvl = 1;
+
+		// Colors for bevel
+		buttonDrawable.colorTop = resources.getColor(R.color.transparent_button_border_top);
+		buttonDrawable.colorLeft = resources.getColor(R.color.transparent_button_border_left);
+		buttonDrawable.colorRight = resources.getColor(R.color.transparent_button_border_right);
+		buttonDrawable.colorBottom = resources.getColor(R.color.transparent_button_border_bottom);
+		// Level 2 for bevel
+		buttonDrawable.colorTop2 = resources.getColor(R.color.transparent_button_border_top_2);
+		buttonDrawable.colorLeft2 = resources.getColor(R.color.transparent_button_border_left_2);
+		buttonDrawable.colorRight2 = resources.getColor(R.color.transparent_button_border_right_2);
+		buttonDrawable.colorBottom2 = resources.getColor(R.color.transparent_button_border_bottom_2);
+		// Button colors
+		buttonDrawable.colorSolid = resources.getColor(R.color.transparent_button);
 		// init layers
 		buttonDrawable.init(resources);
 	}

@@ -9,6 +9,8 @@
 
 
     <style name="OrangeButtonTheme" parent="MyAppTheme">
+        <!--<item name="android:windowIsTranslucent">true</item>-->
+        <!--<item name="android:windowBackground">@drawable/img_theme_green_felt</item>-->
         <item name="android:buttonStyle">@style/Text.Button</item>
         <item name="android:textAppearanceSmall">@style/Text</item>
         <item name="android:editTextStyle">@style/DefaultEdt</item>

@@ -10,10 +10,10 @@
         android:layout_marginTop="16dip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_emboss_one_back"
         android:fadingEdgeLength="5dip"
         android:scrollbars="none">
-        
+        <!--android:background="@drawable/button_emboss_one_back"-->
+
         <LinearLayout
             android:id="@+id/tracks"
             android:orientation="horizontal"

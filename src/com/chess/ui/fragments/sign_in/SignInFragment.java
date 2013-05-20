@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
 import com.chess.ui.fragments.BasePopupsFragment;
+import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
 
 
@@ -19,7 +20,7 @@ import com.chess.utilities.AppUtils;
  * Date: 30.12.12
  * Time: 15:21
  */
-public class SignInFragment extends ProfileSetupsFragment implements TextView.OnEditorActionListener, View.OnTouchListener {
+public class SignInFragment extends CommonLogicFragment implements TextView.OnEditorActionListener, View.OnTouchListener {
 
 	private boolean forceFlag;
 	private EditText loginUsernameEdt;

@@ -18,7 +18,7 @@ import static com.chess.backend.statics.AppConstants.*;
  */
 public class AppData {
 
-	public static SharedPreferences getPreferences(Context context){
+	public static SharedPreferences getPreferences(Context context) {
 		return context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
 	}
 
@@ -43,10 +43,10 @@ public class AppData {
 		return getIntValue(context, PREF_ACTION_AFTER_MY_MOVE, StaticData.AFTER_MOVE_GO_TO_NEXT_GAME);
 	}
 
-    public static String getUserName(Context context){
-        SharedPreferences preferences = getPreferences(context);
-        return preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
-    }
+	public static String getUserName(Context context) {
+		SharedPreferences preferences = getPreferences(context);
+		return preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+	}
 
 	public static String getPassword(Context context) {
 		SharedPreferences preferences = getPreferences(context);
@@ -54,7 +54,6 @@ public class AppData {
 	}
 
 	/**
-	 *
 	 * @param context
 	 * @return
 	 */
@@ -314,6 +313,15 @@ public class AppData {
 		setBooleanValue(context, PREF_BOARD_SHOW_ANSWER_BOTTOM, checked);
 	}
 
+	public static void setThemeBackId(Context context, int themeId) {
+		setIntValue(context, PREF_THEME_BACK_ID, themeId);
+	}
+
+	public static int getThemeBackId(Context context) {
+		return getIntValue(context, PREF_THEME_BACK_ID, R.drawable.img_theme_green_felt);
+	}
+
+
 	/*--------------------------- Common Shared logic ------------------------*/
 
 	private static void setBooleanValue(Context context, String field, boolean checked) {
@@ -331,6 +339,7 @@ public class AppData {
 		String userName = preferences.getString(USERNAME, StaticData.SYMBOL_EMPTY);
 		return preferences.getBoolean(userName + field, defValue);
 	}
+
 	private static void setStringValue(Context context, String field, String value) {
 		SharedPreferences preferences = getPreferences(context);
 		String userName = preferences.getString(USERNAME, StaticData.SYMBOL_EMPTY);

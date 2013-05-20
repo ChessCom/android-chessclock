@@ -106,4 +106,8 @@ public class SlidingFragmentActivity extends FragmentActivity implements Sliding
 		return super.onKeyUp(keyCode, event);
 	}
 
+	public void setBackToDecorChild(int themeBackId) {
+		mHelper.setBackToDecorChild(themeBackId);
+	}
+
 }

@@ -34,12 +34,14 @@ public class ControlsTacticsView extends ControlsBaseView {
 		super.init();
 
 		removeAllViews();
-		addControlButton(OPTIONS, R.drawable.button_emboss_left_selector);
-		addControlButton(RESTART, R.drawable.button_emboss_right_selector);
-		addControlButton(HINT, R.drawable.button_emboss_right_selector);
-		addControlButton(HELP, R.drawable.button_emboss_mid_selector);
-		addControlButton(BACK, R.drawable.button_emboss_mid_selector);
-		addControlButton(FORWARD, R.drawable.button_emboss_right_selector);
+
+		addControlButton(OPTIONS, R.style.Rect_BottomLeft);
+		addControlButton(RESTART, R.style.Rect_BottomMiddle);
+		addControlButton(HINT, R.style.Rect_BottomMiddle);
+		addControlButton(HELP, R.style.Rect_BottomMiddle);
+		addControlButton(BACK, R.style.Rect_BottomMiddle);
+		addControlButton(FORWARD, R.style.Rect_BottomRight);
+
 		addNextButton();
 
 		addView(controlsLayout);

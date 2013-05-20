@@ -24,6 +24,7 @@ import com.chess.backend.entity.new_api.UserItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCountriesFragment;
 import com.chess.ui.fragments.popup_fragments.PopupSelectPhotoFragment;
@@ -42,7 +43,7 @@ import java.util.Date;
  * Date: 03.01.13
  * Time: 9:09
  */
-public class CreateProfileFragment extends ProfileSetupsFragment implements View.OnClickListener, PopupListSelectionFace {
+public class CreateProfileFragment extends CommonLogicFragment implements View.OnClickListener, PopupListSelectionFace {
 
 	public static final String SKILL_SELECTION = "SKILL_SELECTION";
 	public static final String COUNTRY_SELECTION = "COUNTRY_SELECTION";

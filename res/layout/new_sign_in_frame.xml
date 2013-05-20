@@ -7,7 +7,7 @@
     android:id="@+id/mainFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/new_main_back"
+    android:focusableInTouchMode="true"
     >
 
     <ScrollView
@@ -26,7 +26,7 @@
             android:gravity="center_horizontal"
             >
 
-            <ImageView
+<!--            <ImageView
                 android:id="@+id/logoImg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/img_new_logo"
                 android:contentDescription="@string/image"
-                />
+                />-->
 
             <com.facebook.widget.LoginButton
                 android:id="@+id/fb_connect"
@@ -88,7 +88,7 @@
                 style="@style/Button.OrangeNoBorder"
                 android:layout_marginTop="@dimen/common_main_hit_button_margin_top"
                 />
-
+            <!--style="@style/Button.OrangeNoBorder"-->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

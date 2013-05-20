@@ -5,9 +5,9 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
-    android:background="@drawable/button_emboss_left_selector"
     android:minHeight="@dimen/default_button_height"
     >
+    <!--android:background="@drawable/button_emboss_left_selector"-->
 
     <!--    <ImageView
             android:id="@+id/iv_icon"

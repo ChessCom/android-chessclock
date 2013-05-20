@@ -73,7 +73,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		NewNavigationMenuAdapter adapter = new NewNavigationMenuAdapter(getActivity(), menuItems);
+		SettingsMenuAdapter adapter = new SettingsMenuAdapter(getActivity(), menuItems);
 
 		listView.setAdapter(adapter);
 	}
@@ -96,6 +96,9 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				break;
 			case R.string.glyph_board:
 				getActivityFace().openFragment(new SettingsBoardFragment());
+				break;
+			case R.string.glyph_theme:
+				getActivityFace().openFragment(new SettingsThemeFragment());
 				break;
 			case R.string.glyph_close:
 				logoutFromLive();
@@ -134,9 +137,9 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		}
 	}
 
-	private class NewNavigationMenuAdapter extends ItemsAdapter<SettingsMenuItem> {
+	private class SettingsMenuAdapter extends ItemsAdapter<SettingsMenuItem> {
 
-		public NewNavigationMenuAdapter(Context context, List<SettingsMenuItem> menuItems) {
+		public SettingsMenuAdapter(Context context, List<SettingsMenuItem> menuItems) {
 			super(context, menuItems);
 		}
 

@@ -2,11 +2,8 @@ package com.chess.ui.views.drawables;
 
 import android.content.Context;
 import android.graphics.*;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.shapes.RectShape;
-import android.graphics.drawable.shapes.Shape;
 import com.chess.R;
 
 /**
@@ -21,7 +18,7 @@ public class ActionBarBackgroundDrawable extends Drawable {
 	private final GradientDrawable mDrawable;
 	private final Paint mPaint;
 	private final Rect mRect;
-	private final BitmapDrawable imageOverDrawable;
+//	private final BitmapDrawable imageOverDrawable;
 	private final int topBarCornerRadius;
 
 	public ActionBarBackgroundDrawable(Context context) {
@@ -30,17 +27,17 @@ public class ActionBarBackgroundDrawable extends Drawable {
 		float density = context.getResources().getDisplayMetrics().density;
 		int topBarColor1 = context.getResources().getColor(R.color.top_bar_1);
 		int topBarColor2 = context.getResources().getColor(R.color.top_bar_2);
-		int topBarBorderColor = context.getResources().getColor(R.color.top_bar_border);
+//		int topBarBorderColor = context.getResources().getColor(R.color.top_bar_border);
 		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mRect = new Rect();
 
 		mDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[] { topBarColor1, topBarColor2 });
 		mDrawable.setShape(GradientDrawable.RECTANGLE);
 		mDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-		mDrawable.setStroke((int) density, topBarBorderColor);
+//		mDrawable.setStroke((int) density, topBarBorderColor);
 
-		imageOverDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.img_top_bar_texture_overlay);
-		imageOverDrawable.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+//		imageOverDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.img_top_bar_texture_overlay);
+//		imageOverDrawable.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 
 		topBarCornerRadius = (int) context.getResources().getDimension(R.dimen.new_round_button_radius);
 	}
@@ -49,11 +46,12 @@ public class ActionBarBackgroundDrawable extends Drawable {
 	public void draw(Canvas canvas) {
 		mRect.set(0, 0, canvas.getWidth(), canvas.getHeight());
 		mDrawable.setBounds(mRect);
-		setCornerRadii(mDrawable, topBarCornerRadius, topBarCornerRadius, 0, 0);
+//		setCornerRadii(mDrawable, topBarCornerRadius, topBarCornerRadius, 0, 0);
+		setCornerRadii(mDrawable, 0, 0, 0, 0);
 		mDrawable.draw(canvas);
 
-		imageOverDrawable.setBounds(mRect);
-		imageOverDrawable.draw(canvas);
+//		imageOverDrawable.setBounds(mRect);
+//		imageOverDrawable.draw(canvas);
 	}
 
 	static void setCornerRadii(GradientDrawable drawable, float r0, float r1, float r2, float r3) {

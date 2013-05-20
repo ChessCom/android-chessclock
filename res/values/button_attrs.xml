@@ -11,6 +11,7 @@
         <attr name="btn_padding" format="reference|dimension" />
         <attr name="btn_bevel_lvl" format="reference|integer" />
         <attr name="btn_bevel_inset" format="reference|dimension" />
+        <attr name="btn_is_rect" format="reference|boolean" />
 
         <!--Default colors-->
         <attr name="btn_outer_border" format="reference|color" />    <!--Outer border color-->
@@ -66,6 +67,20 @@
             <enum name="BL_TR" value="5"/>
             <enum name="LEFT_RIGHT" value="6"/>
             <enum name="TL_BR" value="7"/>
+        </attr>
+
+        <attr name="btn_rect_pos">
+            <enum name="topLeft" value="0"/>
+            <enum name="topMiddle" value="1"/>
+            <enum name="topRight" value="2"/>
+
+            <enum name="tabLeft" value="3"/>
+            <enum name="tabMiddle" value="4"/>
+            <enum name="tabRight" value="5"/>
+
+            <enum name="bottomLeft" value="6"/>
+            <enum name="bottomMiddle" value="7"/>
+            <enum name="bottomRight" value="8"/>
         </attr>
 
     </declare-styleable>

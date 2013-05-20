@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
+import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 
 /**
@@ -13,7 +14,7 @@ import com.chess.ui.fragments.home.HomeTabsFragment;
  * Date: 04.01.13
  * Time: 13:39
  */
-public class InviteFragment extends ProfileSetupsFragment implements View.OnClickListener {
+public class InviteFragment extends CommonLogicFragment implements View.OnClickListener {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

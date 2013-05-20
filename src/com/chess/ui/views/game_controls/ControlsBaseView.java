@@ -2,6 +2,7 @@ package com.chess.ui.views.game_controls;
 
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
@@ -10,10 +11,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.RoboButton;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 import java.util.HashMap;
-
-import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.CANCEL;
 
 /**
  * GamePanelTestActivity class
@@ -60,7 +60,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	protected LayoutParams buttonParams;
 
 	protected boolean blocked;
-	private int ACTION_BUTTON_MARGIN = 6;
+//	private int ACTION_BUTTON_MARGIN = 6;
 	int controlButtonHeight;
 	Handler handler;
 	HashMap<ButtonIds, Integer> buttonDrawablesMap;
@@ -78,20 +78,24 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 	void init() {
 		setOrientation(VERTICAL);
+		Resources resources = getResources();
+		if (resources == null) {
+			return;
+		}
 
 		handler = new Handler();
 
-		float density = getContext().getResources().getDisplayMetrics().density;
-		controlButtonHeight = (int) getResources().getDimension(R.dimen.game_controls_button_height);
-		ACTION_BUTTON_MARGIN *= density;
+//		float density = resources.getDisplayMetrics().density;
+		controlButtonHeight = (int) resources.getDimension(R.dimen.game_controls_button_height);
+//		ACTION_BUTTON_MARGIN *= density;
 
 		controlsLayout = new LinearLayout(getContext());
-		int paddingLeft = (int) getResources().getDimension(R.dimen.game_control_padding_left);
-		int paddingTop = (int) getResources().getDimension(R.dimen.game_control_padding_top); // set padding to panelInfo instead
-		int paddingRight = (int) getResources().getDimension(R.dimen.game_control_padding_right);
-		int paddingBottom = (int) getResources().getDimension(R.dimen.game_control_padding_bottom);
+		int paddingLeft = (int) resources.getDimension(R.dimen.game_control_padding_left);
+		int paddingTop = (int) resources.getDimension(R.dimen.game_control_padding_top); // set padding to panelInfo instead
+		int paddingRight = (int) resources.getDimension(R.dimen.game_control_padding_right);
+		int paddingBottom = (int) resources.getDimension(R.dimen.game_control_padding_bottom);
 
-		controlsLayout.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+//		controlsLayout.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
 
 		LayoutParams defaultLinLayParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -111,10 +115,10 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		controlsLayout.addView(createControlButton(buttonId, backId));
 	}
 
-	View createControlButton(ButtonIds buttonId, int backId) {
+	View createControlButton(ButtonIds buttonId, int styleId) {
 		ImageButton imageButton = new ImageButton(getContext());
 		imageButton.setImageResource(buttonDrawablesMap.get(buttonId));
-		imageButton.setBackgroundResource(backId);
+		ButtonDrawableBuilder.setBackgroundToView(imageButton, styleId);
 		imageButton.setOnClickListener(this);
 		imageButton.setId(getButtonId(buttonId));
 
@@ -132,11 +136,11 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		LayoutParams buttonParams = new LayoutParams(0, controlButtonHeight);
 		buttonParams.weight = 1;
 
-		if (buttonId == CANCEL) {
-			buttonParams.setMargins(0, 0, ACTION_BUTTON_MARGIN, 0);
-		} else {
-			buttonParams.setMargins(ACTION_BUTTON_MARGIN, 0, 0, 0);
-		}
+//		if (buttonId == CANCEL) {
+//			buttonParams.setMargins(0, 0, ACTION_BUTTON_MARGIN, 0);
+//		} else {
+//			buttonParams.setMargins(ACTION_BUTTON_MARGIN, 0, 0, 0);
+//		}
 
 		controlsLayout.addView(button, buttonParams);
 	}

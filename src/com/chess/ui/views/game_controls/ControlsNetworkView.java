@@ -37,11 +37,11 @@ public class ControlsNetworkView extends ControlsBaseView {
 	void init() {
 		super.init();
 
-		addControlButton(OPTIONS, R.drawable.button_emboss_left_selector);
-		addControlButton(ANALYSIS, R.drawable.button_emboss_mid_selector);
-		addControlButton(CHAT, R.drawable.button_emboss_mid_selector);
-		addControlButton(BACK, R.drawable.button_emboss_mid_selector);
-		addControlButton(FORWARD, R.drawable.button_emboss_right_selector);
+		addControlButton(OPTIONS, R.style.Rect_BottomLeft);
+		addControlButton(ANALYSIS, R.style.Rect_BottomMiddle);
+		addControlButton(CHAT, R.style.Rect_BottomMiddle);
+		addControlButton(BACK, R.style.Rect_BottomMiddle);
+		addControlButton(FORWARD, R.style.Rect_BottomRight);
 
 		addActionButton(CANCEL, R.string.cancel, R.style.Button_Grey2Solid_NoBorder_Light);
 		addActionButton(PLAY, R.string.play_move, R.style.Button_Orange2);

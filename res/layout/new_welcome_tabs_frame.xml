@@ -2,9 +2,9 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     >
     <RadioGroup
         android:id="@+id/tabRadioGroup"
@@ -17,21 +17,22 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/Rect.TabLeft"
+            style="@style/Rect.TopLeft"
             />
+        <!--TODO create RadioButton with ability to set image-->
         <com.chess.RoboRadioButton
             android:id="@+id/centerTabBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/Rect.TabMiddle"
+            style="@style/Rect.TopMiddle"
             />
         <com.chess.RoboRadioButton
             android:id="@+id/rightTabBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/Rect.TabRight"
+            style="@style/Rect.TopRight"
             />
 
     </RadioGroup>
@@ -43,4 +44,3 @@
         />
 
 </LinearLayout>
-

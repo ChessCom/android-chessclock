@@ -17,6 +17,8 @@
     <color name="new_main_back">#FF312e2b</color>
     <!--<color name="new_main_back">#ff2a2724</color>-->
     <color name="new_grey_icon_header">#FF66605a</color>
+    <color name="default_button_overlay_p">#33000000</color> <!--20% transparent black-->
+    <color name="rect_button_overlay_p">#11000000</color> <!--20% transparent black-->
 
 
     <!--Back shadow-->
@@ -279,9 +281,8 @@
     <color name="top_bar_stroke_1">#FF5e5e5e</color>
     <color name="top_bar_stroke_2">#FF404040</color>
 
-    <color name="top_bar_1">#ff413f3c</color>
-    <color name="top_bar_2">#ff2e2c29</color>
-    <color name="top_bar_3">#FF201e1c</color>  <!--TODO remove-->
+    <color name="top_bar_1">#66000000</color>
+    <color name="top_bar_2">#66000000</color>
     <color name="top_bar_border">#26FFFFFF</color>
 
 	<color name="transparent">#00000000</color>
@@ -304,13 +305,13 @@
 
 
     <!--Navigation Menu-->
-    <color name="nav_menu_item">#FF24221f</color>
-    <color name="nav_menu_item_p">#ff181613</color>
-    <color name="nav_menu_item_s">#FF312e2b</color> <!--selected-->
-    <color name="nav_menu_border_top">#FF403f3d</color>
-    <color name="nav_menu_border_top_highlighted">#FF4e4d4c</color>
-    <color name="nav_menu_border_bot">#FF000000</color>
-    <color name="nav_menu_upgrade_shine">#FF8796a5</color>
+    <color name="nav_menu_item">#0024221f</color>
+    <color name="nav_menu_item_p">#22181613</color>
+    <color name="nav_menu_item_s">#66312e2b</color> <!--selected-->
+    <color name="nav_menu_border_top">#22403f3d</color>
+    <color name="nav_menu_border_top_highlighted">#224e4d4c</color>
+    <color name="nav_menu_border_bot">#22000000</color>
+    <color name="nav_menu_upgrade_shine">#228796a5</color>
 
     <!--Upgrade Menu Item-->
 
@@ -338,27 +339,57 @@
     <color name="tab_home_button_border_right_p">#FF11100f</color>
     <color name="tab_home_button_shadow">#FF000000</color>
 
+    <color name="transparent_button">#01000000</color>
+<!--
+    <color name="transparent_button_border_top">#FFFF0000</color>
+    <color name="transparent_button_border_left">#FF00FF00</color>
+    <color name="transparent_button_border_bottom">#FF0000FF</color>
+    <color name="transparent_button_border_right">#FFF0F000</color>
+-->
+    <color name="transparent_button_border_top">#2F000000</color>
+    <color name="transparent_button_border_left">#13FFFFFF</color>
+    <color name="transparent_button_border_bottom">#2F000000</color>
+    <color name="transparent_button_border_right">#2FFFFFFF</color>
+    <color name="transparent_button_border_top_2">#FF000000</color>
+    <color name="transparent_button_border_left_2">#FF0F00F0</color>
+    <color name="transparent_button_border_bottom_2">#00000000</color>
+    <color name="transparent_button_border_right_2">#00000000</color>
+
+<!--
+    <color name="transparent_button_border_top_2">#FF000000</color>
+    <color name="transparent_button_border_left_2">#FF000000</color>
+    <color name="transparent_button_border_bottom_2">#FF000000</color>
+    <color name="transparent_button_border_right_2">#FF000000</color>
+-->
+
+<!--
+    <color name="transparent_button_border_top_2">#4FFFFFFF</color>
+    <color name="transparent_button_border_left_2">#4FFFFFFF</color>
+    <color name="transparent_button_border_bottom_2">#4FFFFFFF</color>
+    <color name="transparent_button_border_right_2">#4FFFFFFF</color>
+-->
+
     <!--DailyGames-->
-    <color name="daily_games_item_border_top">#FF393633</color>
-    <color name="daily_games_item_border_top_p">#ff2f2c29</color>
-    <color name="daily_games_item_border_top_s">#ff3e3b38</color>
-    <color name="daily_games_item_border_bot">#FF22201e</color>
-    <color name="daily_games_item">#FF312e2a</color>
-    <color name="daily_games_item_p">#ff272420</color>
-    <color name="daily_games_item_s">#FF413d39</color>
-    <color name="daily_games_header_back">#FF1d1c1a</color>
-    <color name="daily_games_header_back_p">#ff131210</color>
-    <color name="daily_games_header_back_s">#ff252422</color> <!--selected-->
-    <color name="daily_games_header_back_border_top">#FF2c2b2a</color>
-    <color name="daily_games_header_back_border_bot">#FF0e0e0d</color>
-    <color name="daily_games_header_back_border_bot_1">#FF3d3b38</color>
+    <color name="daily_games_item_border_top">#22393633</color>
+    <color name="daily_games_item_border_top_p">#222f2c29</color>
+    <color name="daily_games_item_border_top_s">#223e3b38</color>
+    <color name="daily_games_item_border_bot">#2222201e</color>
+    <color name="daily_games_item">#22312e2a</color>
+    <color name="daily_games_item_p">#22272420</color>
+    <color name="daily_games_item_s">#22413d39</color>
+    <color name="daily_games_header_back">#001d1c1a</color>
+    <color name="daily_games_header_back_p">#22131210</color>
+    <color name="daily_games_header_back_s">#66252422</color> <!--selected-->
+    <color name="daily_games_header_back_border_top">#222c2b2a</color>
+    <color name="daily_games_header_back_border_bot">#220e0e0d</color>
+    <color name="daily_games_header_back_border_bot_1">#223d3b38</color>
 
     <!--LightHeader-->
-    <color name="light_header_back">#FFf4f4f4</color>
-    <color name="light_header_back_p">#ffc2c2c2</color>
-    <color name="light_header_back_border_top">#FFdfdfdf</color>
-    <color name="light_header_back_border_top_1">#FFFFFFFF</color>
-    <color name="light_header_back_border_bot">#FFdfdfdf</color>
+    <color name="light_header_back">#22f4f4f4</color>
+    <color name="light_header_back_p">#22c2c2c2</color>
+    <color name="light_header_back_border_top">#22dfdfdf</color>
+    <color name="light_header_back_border_top_1">#22FFFFFF</color>
+    <color name="light_header_back_border_bot">#22dfdfdf</color>
     <!--<color name="light_header_back_border_bot_1">#FF3d3b38</color>-->
 
     <!--New Game Options-->
@@ -448,7 +479,7 @@
     <color name="new_friends_list_divider">#FFdfdfdf</color>
 
     <!--Notations-->
-    <color name="notations_back">#FF22201e</color>
+    <color name="notations_back">#7F22201e</color>
 
 
     <!--Videos-->

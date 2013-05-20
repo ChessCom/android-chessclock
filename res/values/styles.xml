@@ -260,15 +260,15 @@
     </style>
 
     <style name="TabRadioButton.Left" >
-        <item name="android:background">@drawable/button_tab_home_left_selector</item>
+        <!--<item name="android:background">@drawable/button_tab_home_left_selector</item>-->
     </style>
 
     <style name="TabRadioButton.Middle" >
-        <item name="android:background">@drawable/button_tab_home_middle_selector</item>
+        <!--<item name="android:background">@drawable/button_tab_home_middle_selector</item>-->
     </style>
 
     <style name="TabRadioButton.Right" >
-        <item name="android:background">@drawable/button_tab_home_right_selector</item>
+        <!--<item name="android:background">@drawable/button_tab_home_right_selector</item>-->
     </style>
 
     <!--Upgrade-->
@@ -330,7 +330,7 @@
 	</style>
 
 	<style name="SettingsListText">
-		<item name="android:textColor">@color/new_subtitle_dark_grey</item>
+		<item name="android:textColor">@color/white</item>
 		<item name="android:textSize">15sp</item>
 		<item name="android:gravity">center_vertical</item>
 	</style>

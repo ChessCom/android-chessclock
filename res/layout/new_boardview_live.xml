@@ -5,7 +5,6 @@
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/new_main_back"
     >
 
     <LinearLayout
@@ -72,7 +71,8 @@
         <com.chess.ui.views.PanelInfoGameView
             android:id="@+id/bottomPanelView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             custom:oneLine="@bool/one_line_for_board"
             />
 

@@ -7,7 +7,8 @@
         <item name="btn_is_solid">true</item>
         <item name="btn_padding">@dimen/rounded_button_padding_left</item>
         <item name="btn_bevel_lvl">1</item>
-        <item name="btn_bevel_inset">2px</item>
+        <item name="btn_bevel_inset">1dip</item> <!--2px-->
+        <item name="btn_is_rect">false</item>
         <item name="btn_outer_border">@color/semi_transparent_border</item>
         <item name="btn_use_border">true</item>
         <item name="btn_use_pressed_layer">false</item>
@@ -128,6 +129,7 @@
     <style name="Button.Facebook">
         <item name="btn_bevel_lvl">2</item>
         <item name="btn_is_solid">false</item>
+        <item name="btn_use_border">false</item>
 
         <item name="btn_top">@color/f_emboss_top_1</item>
         <item name="btn_left">@color/f_emboss_left_1</item>
@@ -238,5 +240,122 @@
 
         <item name="btn_solid">@color/white_button_solid</item>
     </style>
+
+    <!--====================================== Rect Buttons =========================================== -->
+
+    <style name="Rect" parent="android:Widget.CompoundButton.RadioButton">
+        <item name="android:button">@null</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/new_light_grey</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">@dimen/new_tab_button_height</item>
+        <item name="ttf">Bold</item>
+
+        <!--ButtonDrawable params-->
+        <item name="btn_is_solid">true</item>
+        <item name="btn_padding">@dimen/rounded_button_padding_left</item>
+        <item name="btn_outer_border">@color/semi_transparent_border</item>
+        <item name="btn_use_pressed_layer">false</item>
+
+        <item name="btn_radius">0dip</item>
+        <item name="btn_use_border">false</item>
+        <item name="btn_bevel_lvl">1</item>
+        <item name="btn_is_rect">true</item>
+
+        <item name="btn_top">@color/transparent_button</item>
+        <item name="btn_left">@color/transparent_button</item>
+        <item name="btn_right">@color/transparent_button_border_right</item>
+        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
+
+        <item name="btn_top_2">@color/transparent_button_border_top_2</item>
+        <item name="btn_left_2">@color/transparent_button_border_left_2</item>
+        <item name="btn_right_2">@color/transparent_button_border_right_2</item>
+        <item name="btn_bottom_2">@color/transparent_button_border_bottom_2</item>
+
+        <item name="btn_solid">@color/transparent_button</item>
+    </style>
+
+    <!-- ============= Top ===================== -->
+    <style name="Rect.TopLeft">
+        <item name="btn_rect_pos">topLeft</item>
+<!--
+        <item name="btn_bevel_lvl">1</item>
+
+        <item name="btn_top">@color/transparent_button</item>
+        <item name="btn_left">@color/transparent_button</item>
+        <item name="btn_right">@color/transparent_button_border_right</item>
+        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
+-->
+    </style>
+
+    <style name="Rect.TopMiddle">
+        <item name="btn_rect_pos">topMiddle</item>
+<!--
+        <item name="btn_bevel_lvl">1</item>
+
+        <item name="btn_top">@color/transparent_button</item>
+        <item name="btn_left">@color/transparent_button</item>
+        <item name="btn_right">@color/transparent_button_border_right</item>
+        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
+-->
+    </style>
+
+    <style name="Rect.TopRight">
+        <item name="btn_rect_pos">topRight</item>
+<!--
+        <item name="btn_bevel_lvl">1</item>
+
+        <item name="btn_top">@color/transparent_button</item>
+        <item name="btn_left">@color/transparent_button</item>
+        <item name="btn_right">@color/transparent_button_border_right</item>
+        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
+-->
+    </style>
+
+    <!-- ============= Tab ===================== -->
+    <style name="Rect.TabLeft">
+        <item name="btn_rect_pos">tabLeft</item>
+    </style>
+
+    <style name="Rect.TabMiddle">
+        <item name="btn_rect_pos">tabMiddle</item>
+    </style>
+
+    <style name="Rect.TabRight">
+        <item name="btn_rect_pos">tabRight</item>
+    </style>
+
+    <!-- ============= Bottom(Controls) ===================== -->
+    <style name="Rect.BottomLeft">
+        <item name="btn_rect_pos">bottomLeft</item>
+
+        <item name="btn_top">@color/transparent_button_border_top</item>
+        <item name="btn_left">@color/transparent_button_border_left</item>
+        <item name="btn_right">@color/transparent_button</item>
+        <item name="btn_bottom">@color/transparent_button</item>
+    </style>
+
+    <style name="Rect.BottomMiddle">
+        <item name="btn_rect_pos">bottomMiddle</item>
+
+        <item name="btn_top">@color/transparent_button_border_top</item>
+        <item name="btn_left">@color/transparent_button_border_left</item>
+        <item name="btn_right">@color/transparent_button</item>
+        <item name="btn_bottom">@color/transparent_button</item>
+    </style>
+
+    <style name="Rect.BottomRight">
+        <item name="btn_rect_pos">bottomRight</item>
+
+        <item name="btn_top">@color/transparent_button_border_top</item>
+        <item name="btn_left">@color/transparent_button_border_left</item>
+        <item name="btn_right">@color/transparent_button</item>
+        <item name="btn_bottom">@color/transparent_button</item>
+    </style>
+
+
+
+
+
 
 </resources>

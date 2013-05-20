@@ -18,6 +18,7 @@ import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.BasePopupsFragment;
+import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 
@@ -29,7 +30,7 @@ import java.util.regex.Pattern;
  * Date: 30.12.12
  * Time: 20:07
  */
-public class SignUpFragment extends ProfileSetupsFragment implements View.OnClickListener{
+public class SignUpFragment extends CommonLogicFragment implements View.OnClickListener{
 
 	protected Pattern emailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[a-zA-Z0-9\\.\\-]+\\.[a-zA-Z]{2,4}");
 	protected Pattern gMailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[g]");   // TODO use for autoComplete

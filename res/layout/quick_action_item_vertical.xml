@@ -5,10 +5,10 @@
 	android:layout_height="wrap_content" 
 	android:clickable="true"
 	android:focusable="true"
-	android:background="@drawable/button_emboss_one_selector"
     android:minHeight="@dimen/game_controls_button_height"
     >
-        	
+    <!--android:background="@drawable/button_emboss_one_selector"-->
+
 <!--	<ImageView
 		android:id="@+id/iv_icon" 
 		android:layout_width="wrap_content" 

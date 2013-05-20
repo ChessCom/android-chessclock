@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +113,7 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 //		mArrowUp 	= (ImageView) mRootView.findViewById(R.id.arrow_up);
 
 		mScroller	= (ScrollView) mRootView.findViewById(R.id.scroller);
-		
+		ButtonDrawableBuilder.setBackgroundToView(mScroller, R.style.Rect);
 		//This was previously defined on show() method, moved here to prevent force close that occured
 		//when tapping fastly on a view to show quickaction dialog.
 		//Thanx to zammbi (github.com/zammbi)
@@ -157,7 +158,8 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
         } else {
             container = mInflater.inflate(R.layout.quick_action_item_vertical, null);
         }
-		
+		ButtonDrawableBuilder.setBackgroundToView(container, R.style.Rect);
+
 //		ImageView img 	= (ImageView) container.findViewById(R.id.iv_icon);
 		TextView text 	= (TextView) container.findViewById(R.id.actionItemTxt);
 		

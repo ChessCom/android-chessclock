@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/new_main_back">
+    >
 
     <com.chess.RoboTextView
         android:id="@+id/emptyView"

@@ -54,4 +54,6 @@ public interface ActiveFragmentInterface {
 	void updateTitle(int titleId);
 
 	void showActionBar(boolean show);
+
+	void setMainBackground(int drawableThemeId);
 }

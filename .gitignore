@@ -1,3 +1,5 @@
+.idea
 /gen
 /out
-
+/*.iml
+/!_app_screens_!

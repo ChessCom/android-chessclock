@@ -14,10 +14,12 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.sign_in.WelcomeFragment;
+import com.chess.ui.fragments.sign_in.WelcomeTabsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.views.drawables.LogoBackgroundDrawable;
@@ -62,11 +64,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			// set the Above View
 			if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
 				switchFragment(new HomeTabsFragment());
-//				switchFragment(new DailyGamesFragment());
-//				switchFragment(new SettingsBoardFragment());
 				showActionBar = true;
 			} else {
-				switchFragment(new WelcomeFragment());
+				switchFragment(new WelcomeTabsFragment());
+//				switchFragment(new WelcomeFragment());
 				showActionBar = false;
 			}
 		} else { // fragments state will be automatically restored
@@ -80,6 +81,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		badgeItems = new Hashtable<Integer, Integer>();
 
 		logoBackground = new LogoBackgroundDrawable(this);
+
+		int id = AppData.getThemeBackId(this);
+		getWindow().setBackgroundDrawableResource(id);
 	}
 
 	@Override
@@ -151,6 +155,13 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 	@Override
+	public void setMainBackground(int drawableThemeId) {
+		AppData.setThemeBackId(this, drawableThemeId);
+		getWindow().setBackgroundDrawableResource(drawableThemeId);
+		setBackToDecorChild(drawableThemeId);
+	}
+
+	@Override
 	public void setCustomActionBarViewId(int viewId) {
 		customActionBarViewId = viewId;
 		getActionBarHelper().setCustomView(customActionBarViewId);
@@ -161,7 +172,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		super.onConfigurationChanged(newConfig);
 		logoBackground.updateConfig();
 	}
-
 
 	private SlidingMenu.OnOpenedListener openMenuListener = new SlidingMenu.OnOpenedListener() {
 		@Override
