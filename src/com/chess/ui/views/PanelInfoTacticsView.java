@@ -63,8 +63,6 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		AVATAR_MARGIN *= density;
 		TOP_BUTTON_HEIGHT *= density;
 
-		setBackgroundResource(R.color.new_main_back);
-
 		int padding = (int) (7 * density);
 		int paddingLeft = (int) (21 * density);
 		int paddingRight = (int) (12 * density);

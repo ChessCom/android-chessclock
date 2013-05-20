@@ -38,13 +38,13 @@ public class ControlsLiveView extends ControlsBaseView {
 			super.init();
 
 
-		addControlButton(OPTIONS, R.style.Rect_BottomLeft);
-		addControlButton(CHAT, R.style.Rect_BottomMiddle);
-		addControlButton(BACK, R.style.Rect_BottomMiddle);
-		addControlButton(FORWARD, R.style.Rect_BottomRight);
+		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
+		addControlButton(CHAT, R.style.Rect_Bottom_Middle);
+		addControlButton(BACK, R.style.Rect_Bottom_Middle);
+		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
 
-		addActionButton(CANCEL, R.string.cancel, R.style.Button_Grey2Solid_NoBorder_Light);
-		addActionButton(PLAY, R.string.play_move, R.style.Button_Orange2);
+		addActionButton(CLOSE, R.string.glyph_close, R.style.Rect_Bottom_Left);
+		addActionButton(MAKE_MOVE, R.string.glyph_arrow_right, R.style.Rect_Bottom_Right_Orange);
 
 		addView(controlsLayout);
 	}
@@ -63,9 +63,9 @@ public class ControlsLiveView extends ControlsBaseView {
 			boardViewFace.moveBack();
 		} else if (view.getId() == getButtonId(FORWARD)) {
 			boardViewFace.moveForward();
-		} else if (view.getId() == getButtonId(CANCEL)) {
+		} else if (view.getId() == getButtonId(CLOSE)) {
 			boardViewFace.cancelMove();
-		} else if (view.getId() == getButtonId(PLAY)) {
+		} else if (view.getId() == getButtonId(MAKE_MOVE)) {
 			boardViewFace.playMove();
 		}
 	}
@@ -104,8 +104,8 @@ public class ControlsLiveView extends ControlsBaseView {
 		showGameButton(FORWARD, !show);
 		showGameButton(BACK, !show);
 
-		showGameButton(CANCEL, show);
-		showGameButton(PLAY, show);
+		showGameButton(CLOSE, show);
+		showGameButton(MAKE_MOVE, show);
 
 		if (!show) {
 			handler.removeCallbacks(blinkSubmitButton);
@@ -114,12 +114,12 @@ public class ControlsLiveView extends ControlsBaseView {
 
 	@Override
 	public void enableForwardBtn(boolean enable) {
-		enableGameButton(FORWARD, enable);
+//		enableGameButton(FORWARD, enable);
 	}
 
 	@Override
 	public void enableBackBtn(boolean enable) {
-		enableGameButton(BACK, enable);
+//		enableGameButton(BACK, enable);
 	}
 
 	private void blinkSubmitBtn() {
@@ -130,7 +130,7 @@ public class ControlsLiveView extends ControlsBaseView {
 	private Runnable blinkSubmitButton = new Runnable() {
 		@Override
 		public void run() {
-			((RoboButton)findViewById(getButtonId(PLAY))).setDrawableStyle(R.style.Button_Grey2Solid_NoBorder_Light);
+			((RoboButton)findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(R.style.Button_Grey2Solid_NoBorder_Light);
 
 			handler.removeCallbacks(unBlinkSubmitButton);
 			handler.postDelayed(unBlinkSubmitButton, UNBLINK_DELAY);
@@ -140,7 +140,7 @@ public class ControlsLiveView extends ControlsBaseView {
 	private Runnable unBlinkSubmitButton = new Runnable() {
 		@Override
 		public void run() {
-			((RoboButton)findViewById(getButtonId(PLAY))).setDrawableStyle(R.style.Button_Orange2);
+			((RoboButton)findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(R.style.Button_Orange2);
 
 			blinkSubmitBtn();
 		}

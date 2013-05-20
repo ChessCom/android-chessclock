@@ -195,7 +195,7 @@
         <item name="btn_right">@color/light_green_emboss_bot_2</item>
         <item name="btn_bottom">@color/light_green_emboss_bot_1</item>
 
-        <item name="btn_solid">@color/light_green_button_1</item>
+        <item name="btn_solid">@color/light_green_button</item>
     </style>
 
     <!--====================================== Red Buttons =========================================== -->
@@ -208,7 +208,7 @@
         <item name="btn_right">@color/red_emboss_bottom_2</item>
         <item name="btn_bottom">@color/red_emboss_bottom_1</item>
 
-        <item name="btn_solid">@color/red_button_1</item>
+        <item name="btn_solid">@color/red_button</item>
     </style>
 
     <!--====================================== Brown Buttons =========================================== -->
@@ -278,38 +278,14 @@
     <!-- ============= Top ===================== -->
     <style name="Rect.TopLeft">
         <item name="btn_rect_pos">topLeft</item>
-<!--
-        <item name="btn_bevel_lvl">1</item>
-
-        <item name="btn_top">@color/transparent_button</item>
-        <item name="btn_left">@color/transparent_button</item>
-        <item name="btn_right">@color/transparent_button_border_right</item>
-        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
--->
     </style>
 
     <style name="Rect.TopMiddle">
         <item name="btn_rect_pos">topMiddle</item>
-<!--
-        <item name="btn_bevel_lvl">1</item>
-
-        <item name="btn_top">@color/transparent_button</item>
-        <item name="btn_left">@color/transparent_button</item>
-        <item name="btn_right">@color/transparent_button_border_right</item>
-        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
--->
     </style>
 
     <style name="Rect.TopRight">
         <item name="btn_rect_pos">topRight</item>
-<!--
-        <item name="btn_bevel_lvl">1</item>
-
-        <item name="btn_top">@color/transparent_button</item>
-        <item name="btn_left">@color/transparent_button</item>
-        <item name="btn_right">@color/transparent_button_border_right</item>
-        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
--->
     </style>
 
     <!-- ============= Tab ===================== -->
@@ -326,7 +302,7 @@
     </style>
 
     <!-- ============= Bottom(Controls) ===================== -->
-    <style name="Rect.BottomLeft">
+    <style name="Rect.Bottom">
         <item name="btn_rect_pos">bottomLeft</item>
 
         <item name="btn_top">@color/transparent_button_border_top</item>
@@ -335,22 +311,35 @@
         <item name="btn_bottom">@color/transparent_button</item>
     </style>
 
-    <style name="Rect.BottomMiddle">
-        <item name="btn_rect_pos">bottomMiddle</item>
-
-        <item name="btn_top">@color/transparent_button_border_top</item>
-        <item name="btn_left">@color/transparent_button_border_left</item>
-        <item name="btn_right">@color/transparent_button</item>
-        <item name="btn_bottom">@color/transparent_button</item>
+    <style name="Rect.Bottom.Left">
+        <item name="btn_rect_pos">bottomLeft</item>
     </style>
 
-    <style name="Rect.BottomRight">
+    <style name="Rect.Bottom.Middle">
+        <item name="btn_rect_pos">bottomMiddle</item>
+    </style>
+
+    <style name="Rect.Bottom.Right">
+        <item name="btn_rect_pos">bottomRight</item>
+    </style>
+
+    <!-- ============= Colored Buttons ===================== -->
+    <style name="Rect.Bottom.Right.Orange">
         <item name="btn_rect_pos">bottomRight</item>
 
-        <item name="btn_top">@color/transparent_button_border_top</item>
-        <item name="btn_left">@color/transparent_button_border_left</item>
-        <item name="btn_right">@color/transparent_button</item>
-        <item name="btn_bottom">@color/transparent_button</item>
+        <item name="btn_solid">@color/orange_button_flat</item>
+    </style>
+
+    <style name="Rect.Bottom.Right.Red">
+        <item name="btn_rect_pos">bottomRight</item>
+
+        <item name="btn_solid">@color/red_button</item>
+    </style>
+
+    <style name="Rect.Bottom.Right.Green">
+        <item name="btn_rect_pos">bottomRight</item>
+
+        <item name="btn_solid">@color/light_green_button</item>
     </style>
 
 

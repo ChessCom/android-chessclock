@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import com.chess.R;
 import com.chess.RoboButton;
-import com.chess.RoboTextView;
 import com.chess.ui.interfaces.BoardViewTacticsFace;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
@@ -35,14 +34,16 @@ public class ControlsTacticsView extends ControlsBaseView {
 
 		removeAllViews();
 
-		addControlButton(OPTIONS, R.style.Rect_BottomLeft);
-		addControlButton(RESTART, R.style.Rect_BottomMiddle);
-		addControlButton(HINT, R.style.Rect_BottomMiddle);
-		addControlButton(HELP, R.style.Rect_BottomMiddle);
-		addControlButton(BACK, R.style.Rect_BottomMiddle);
-		addControlButton(FORWARD, R.style.Rect_BottomRight);
+		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
+		addControlButton(PLAY_FOR_ME, R.style.Rect_Bottom_Middle);
+		addControlButton(ANALYSIS, R.style.Rect_Bottom_Middle);
+		addControlButton(HINT, R.style.Rect_Bottom_Middle);
+		addControlButton(HELP, R.style.Rect_Bottom_Middle);
+		addControlButton(BACK, R.style.Rect_Bottom_Middle);
+		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
 
 		addNextButton();
+		addWrongButton();
 
 		addView(controlsLayout);
 
@@ -50,18 +51,29 @@ public class ControlsTacticsView extends ControlsBaseView {
 	}
 
 	private void addNextButton() {
-		RoboButton nextButton = new RoboButton(getContext());
-		nextButton.setText(R.string.next);
-		nextButton.setDrawableStyle(R.style.Button_Orange2);
-		nextButton.setOnClickListener(this);
-		nextButton.setId(getButtonId(NEXT));
-		nextButton.setFont(RoboTextView.BOLD_FONT);
-		nextButton.setVisibility(GONE);
+		RoboButton button = getDefaultButton();
+		button.setText(R.string.glyph_arrow_right);
+		button.setDrawableStyle(R.style.Rect_Bottom_Right_Green);
+		button.setId(getButtonId(NEXT));
+		button.setVisibility(GONE);
 		LayoutParams params = new LayoutParams(0, controlButtonHeight);
 
 		params.weight = 2;
 
-		controlsLayout.addView(nextButton, params);
+		controlsLayout.addView(button, params);
+	}
+
+	private void addWrongButton() {
+		RoboButton button = getDefaultButton();
+		button.setText(R.string.glyph_restore);
+		button.setDrawableStyle(R.style.Rect_Bottom_Right_Red);
+		button.setId(getButtonId(RESTART));
+		button.setVisibility(GONE);
+		LayoutParams params = new LayoutParams(0, controlButtonHeight);
+
+		params.weight = 2;
+
+		controlsLayout.addView(button, params);
 	}
 
 	public void setBoardViewFace(BoardViewTacticsFace boardViewFace) {
@@ -79,6 +91,8 @@ public class ControlsTacticsView extends ControlsBaseView {
 			boardViewFace.showStats();
 		} else if (view.getId() == getButtonId(RESTART)) {
 			boardViewFace.restart();
+		} else if (view.getId() == getButtonId(PLAY_FOR_ME)) {
+			boardViewFace.showHint();
 		} else if (view.getId() == getButtonId(HINT)) {
 			boardViewFace.showHint();
 		} else if (view.getId() == getButtonId(HELP)) {
@@ -93,24 +107,28 @@ public class ControlsTacticsView extends ControlsBaseView {
 	}
 
 	public void showWrong() {
-		showGameButton(RESTART, true);
-		showGameButton(HINT, true);
+		showGameButton(HINT, false);
 		showGameButton(HELP, false);
+		showGameButton(ANALYSIS, false);
 		showGameButton(BACK, false);
 		showGameButton(FORWARD, false);
-		showGameButton(NEXT, true);
+		showGameButton(PLAY_FOR_ME, true);
+		showGameButton(RESTART, true);
 	}
 
 	public void showCorrect() {
 		showGameButton(HINT, false);
 		showGameButton(HELP, false);
-		showGameButton(BACK, true);
-		showGameButton(FORWARD, true);
+		showGameButton(BACK, false);
+		showGameButton(FORWARD, false);
+		showGameButton(ANALYSIS, true);
 		showGameButton(NEXT, true);
 	}
 
 	public void showDefault() {
 		showGameButton(RESTART, false);
+		showGameButton(PLAY_FOR_ME, false);
+		showGameButton(ANALYSIS, false);
 		showGameButton(HELP, true);
 		showGameButton(HINT, false);
 		showGameButton(NEXT, false);
@@ -127,12 +145,12 @@ public class ControlsTacticsView extends ControlsBaseView {
 
 	@Override
 	public void enableForwardBtn(boolean enable) {
-		enableGameButton(FORWARD, enable);
+//		enableGameButton(FORWARD, enable);
 	}
 
 	@Override
 	public void enableBackBtn(boolean enable) {
-		enableGameButton(BACK, enable);
+//		enableGameButton(BACK, enable);
 	}
 
 }

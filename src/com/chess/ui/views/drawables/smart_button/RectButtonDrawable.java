@@ -39,7 +39,7 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 	int rectPosition;
 
-	private static final int edgeOffset = 10;
+	private int edgeOffset;
 
 	/* state & other values */
 	private boolean initialized;
@@ -79,10 +79,11 @@ public class RectButtonDrawable extends ButtonDrawable {
 		bevelRect = new RectF(bevelSize, bevelSize, bevelSize, bevelSize);
 
 		PRESSED_OVERLAY = resources.getColor(R.color.rect_button_overlay_p);
-//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.OVERLAY);
 		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.XOR);
 
-		List<LayerInfo> enabledLayers = new ArrayList<LayerInfo>();
+		edgeOffset = resources.getDimensionPixelSize(R.dimen.rect_edge_offset);
+
+				List <LayerInfo> enabledLayers = new ArrayList<LayerInfo>();
 		List<LayerInfo> pressedLayers = new ArrayList<LayerInfo>();
 
 		insetOne = new InsetInfo();
@@ -134,33 +135,33 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 		switch (rectPosition) {
 			case TOP_LEFT:
-				enabledDrawable.setBounds(-edgeOffset, -edgeOffset, canvas.getWidth() + edgeOffset, canvas.getHeight());
+				enabledDrawable.setBounds(-edgeOffset, -edgeOffset, canvas.getWidth() + edgeOffset/2, canvas.getHeight());
 				break;
 			case TOP_MIDDLE:
-				enabledDrawable.setBounds(0, -edgeOffset, canvas.getWidth() + edgeOffset, canvas.getHeight());
+				enabledDrawable.setBounds(-edgeOffset/2, -edgeOffset, canvas.getWidth() + edgeOffset/2, canvas.getHeight());
 				break;
 			case TOP_RIGHT:
-				enabledDrawable.setBounds(0, -edgeOffset, canvas.getWidth() + edgeOffset, canvas.getHeight());
+				enabledDrawable.setBounds(-edgeOffset/2, -edgeOffset, canvas.getWidth() + edgeOffset, canvas.getHeight());
 				break;
 
 			case TAB_LEFT:
-				enabledDrawable.setBounds(-edgeOffset, 0, canvas.getWidth(), canvas.getHeight());
+				enabledDrawable.setBounds(-edgeOffset, 0, canvas.getWidth() + edgeOffset/2, canvas.getHeight());
 				break;
 			case TAB_MIDDLE:
-				enabledDrawable.setBounds(-edgeOffset, 0, canvas.getWidth(), canvas.getHeight());
+				enabledDrawable.setBounds(-edgeOffset/2, 0, canvas.getWidth() + edgeOffset/2, canvas.getHeight());
 				break;
 			case TAB_RIGHT:
-				enabledDrawable.setBounds(-edgeOffset, 0, canvas.getWidth() + edgeOffset, canvas.getHeight());
+				enabledDrawable.setBounds(-edgeOffset/2, 0, canvas.getWidth() + edgeOffset, canvas.getHeight());
 				break;
 
 			case BOTTOM_LEFT:
-				enabledDrawable.setBounds(-edgeOffset, 0, canvas.getWidth(), canvas.getHeight() + edgeOffset);
+				enabledDrawable.setBounds(-edgeOffset, 0, canvas.getWidth() + edgeOffset/2, canvas.getHeight() + edgeOffset);
 				break;
 			case BOTTOM_MIDDLE:
-				enabledDrawable.setBounds(-edgeOffset, 0, canvas.getWidth(), canvas.getHeight() + edgeOffset);
+				enabledDrawable.setBounds(-edgeOffset/2, 0, canvas.getWidth() + edgeOffset/2, canvas.getHeight() + edgeOffset);
 				break;
 			case BOTTOM_RIGHT:
-				enabledDrawable.setBounds(-edgeOffset, 0, canvas.getWidth() + edgeOffset, canvas.getHeight() + edgeOffset);
+				enabledDrawable.setBounds(-edgeOffset/2, 0, canvas.getWidth() + edgeOffset, canvas.getHeight() + edgeOffset);
 				break;
 
 		}

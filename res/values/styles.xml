@@ -36,76 +36,20 @@
 
 	</style>
 
-<!--
-    <style name="Text.Button.OrangeNoBorder">
-        &lt;!&ndash;<item name="android:background">@drawable/button_orange_nb_selector</item>&ndash;&gt;
-    </style>
--->
-
-<!--    <style name="Text.Button.Grey">
-        &lt;!&ndash;<item name="android:background">@drawable/button_grey_selector</item>&ndash;&gt;
-        <item name="android:minHeight">@dimen/grey_button_height</item>
-        <item name="android:textColor">@color/new_light_grey</item>
-    </style>
-
-    <style name="Text.Button.Grey.Light">
-        <item name="android:background">@drawable/button_grey_solid_nb_selector</item>
-        <item name="android:textColor">@color/white</item>
-    </style>-->
-
-<!--    <style name="Text.Button.GreyDarker">
-        &lt;!&ndash;<item name="android:background">@drawable/button_grey_darker_selector</item>&ndash;&gt;
-        <item name="android:minHeight">@dimen/main_button_height</item>
-    </style>-->
-
-<!--    <style name="Text.Button.Grey.Small">
-        &lt;!&ndash;<item name="android:background">@drawable/button_grey_selector</item>&ndash;&gt;
-        <item name="android:minHeight">@dimen/small_button_height</item>
-        <item name="android:textSize">13sp</item>
-    </style>
-
-    <style name="Text.Button.Grey.Small.Solid">
-        <item name="android:background">@drawable/button_grey_solid_selector</item>
-    </style>-->
-
-<!--    <style name="Text.Button.Small">
-        &lt;!&ndash;<item name="android:background">@drawable/button_orange_selector</item>&ndash;&gt;
-        <item name="android:minHeight">@dimen/small_button_height</item>
-    </style>-->
-
-<!--    <style name="Text.Button.Small.NoBorder">
-        &lt;!&ndash;<item name="android:background">@drawable/button_orange_nb_selector</item>&ndash;&gt;
-        <item name="android:minHeight">@dimen/small_orange_button_height</item>
-    </style>-->
-
-
-<!--    <style name="Text.Button.Green" >
-        &lt;!&ndash;<item name="android:background">@drawable/button_green_selector</item>&ndash;&gt;
-    </style>-->
-
     <style name="Button.Upgrade" parent="Button.Blue" >
         <item name="android:minWidth">@dimen/wide_button_min_width</item>
         <item name="android:minHeight">@dimen/small_orange_button_height</item>
     </style>
 
-
-<!--    <style name="Text.Button.Facebook" >
-        &lt;!&ndash;<item name="android:background">@drawable/button_facebook_selector</item>&ndash;&gt;
-		<item name="android:paddingLeft">@dimen/button_login_fb_left_padding</item>
-    </style>-->
-
     <style name="Button.Share" parent="Button.Blue.Light" >
-        <!--<item name="android:background">@drawable/button_light_blue_selector</item>-->
         <item name="android:minHeight">@dimen/small_orange_button_height</item>
         <item name="android:minWidth">@dimen/wide_button_min_width</item>
     </style>
-
 
     <style name="GlyphIcon">
         <item name="android:padding">@dimen/glyph_icon_padding</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/glyph_icon_default</item>
-        <!--<item name="android:layout_margin">0dip</item>-->
         <item name="ttf">Icon</item>
     </style>
 

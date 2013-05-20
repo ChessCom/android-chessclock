@@ -18,7 +18,7 @@ public class BoardAvatarDrawable extends Drawable {
 
 	private final ColorDrawable fillBackDrawable;
 	private float CORNER_RADIUS = 1.5f;
-	private int BORDER_THICK = 1;
+	private int BORDER_THICK = 2;
 	private Bitmap roundedBitmap;
 	private Drawable imageBackDrawable;
 	private GradientDrawable solidBackDrawable;

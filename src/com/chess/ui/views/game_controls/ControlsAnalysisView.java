@@ -31,23 +31,23 @@ public class ControlsAnalysisView extends ControlsBaseView {
 	void init() {
 		super.init();
 
-		addControlButton(RESTART, R.style.Rect_BottomLeft);
-		addControlButton(BACK, R.style.Rect_BottomMiddle);
-		addControlButton(FLIP, R.style.Rect_BottomMiddle);
-		addControlButton(FORWARD, R.style.Rect_BottomMiddle);
-		addControlButton(CLOSE, R.style.Rect_BottomRight);
+		addControlButton(RESTART, R.style.Rect_Bottom_Left);
+		addControlButton(BACK, R.style.Rect_Bottom_Middle);
+		addControlButton(FLIP, R.style.Rect_Bottom_Middle);
+		addControlButton(FORWARD, R.style.Rect_Bottom_Middle);
+		addControlButton(CLOSE, R.style.Rect_Bottom_Right);
 
 		addView(controlsLayout);
 	}
 
 	@Override
 	public void enableForwardBtn(boolean enable) {
-		enableGameButton(FORWARD, enable);
+//		enableGameButton(FORWARD, enable);
 	}
 
 	@Override
 	public void enableBackBtn(boolean enable) {
-		enableGameButton(BACK, enable);
+//		enableGameButton(BACK, enable);
 	}
 
 	@Override

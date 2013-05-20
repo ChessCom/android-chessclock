@@ -14,7 +14,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.LiveBaseFragment;
-import com.chess.ui.fragments.sign_in.WelcomeFragment;
+import com.chess.ui.fragments.sign_in.WelcomeTabsFragment;
 import com.chess.utilities.AppUtils;
 import com.facebook.Session;
 
@@ -41,7 +41,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		menuItems.add(new SettingsMenuItem(R.string.board_and_pieces, R.string.glyph_board));
 		menuItems.add(new SettingsMenuItem(R.string.daily_chess, R.string.glyph_daily_game));
 		menuItems.add(new SettingsMenuItem(R.string.live_chess, R.string.glyph_live_standard));
-		menuItems.add(new SettingsMenuItem(R.string.tactics, R.string.glyph_tactics_game));
+		menuItems.add(new SettingsMenuItem(R.string.tactics, R.string.glyph_help));
 		menuItems.add(new SettingsMenuItem(R.string.lessons, R.string.glyph_lessons));
 		menuItems.add(new SettingsMenuItem(R.string.theme, R.string.glyph_theme));
 		menuItems.add(new SettingsMenuItem(R.string.profile, R.string.glyph_info));
@@ -118,7 +118,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 
 				AppUtils.cancelNotifications(getActivity());
 				getActivityFace().clearFragmentStack();
-				getActivityFace().switchFragment(new WelcomeFragment());
+				getActivityFace().switchFragment(new WelcomeTabsFragment());
 
 				break;
 

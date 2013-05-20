@@ -14,7 +14,6 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
@@ -67,7 +66,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				showActionBar = true;
 			} else {
 				switchFragment(new WelcomeTabsFragment());
-//				switchFragment(new WelcomeFragment());
 				showActionBar = false;
 			}
 		} else { // fragments state will be automatically restored

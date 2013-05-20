@@ -20,6 +20,7 @@
  	<dimen name="signin_button_height">50dip</dimen>
     <dimen name="default_stroke_width">4px</dimen>
     <dimen name="default_bevel_size">1dip</dimen>
+    <dimen name="rect_edge_offset">2dip</dimen>
 
     <!--New Buttons and Fields-->
     <dimen name="facebook_button_height">40dip</dimen>
@@ -236,7 +237,7 @@
     <dimen name="panel_info_player_text_size">12dip</dimen>
     <dimen name="panel_info_avatar_margin_right">7dip</dimen>
     <dimen name="panel_info_avatar_size">22dip</dimen>
-    <dimen name="panel_info_avatar_big_size">32dip</dimen>
+    <dimen name="panel_info_avatar_big_size">35dip</dimen>
     <dimen name="panel_info_captured_pieces_height">22dip</dimen>
     <dimen name="panel_info_captured_pieces_width">125dip</dimen>
     <dimen name="panel_info_time_left_size">24sp</dimen>
@@ -246,6 +247,7 @@
 
     <!--GameControlsView-->
     <dimen name="game_controls_button_height">48dip</dimen>
+    <dimen name="game_controls_icon_size">20dip</dimen>
     <dimen name="video_thumb_size">120dip</dimen>
     <dimen name="img_profile_size_big">80dip</dimen>
     <dimen name="new_signup_title_padding_bottom">16dip</dimen>

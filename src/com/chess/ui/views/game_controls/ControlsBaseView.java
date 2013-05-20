@@ -7,10 +7,10 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.RoboButton;
+import com.chess.RoboTextView;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 import java.util.HashMap;
@@ -24,6 +24,9 @@ import java.util.HashMap;
 public abstract class ControlsBaseView extends LinearLayout implements View.OnClickListener {
 
 	public static final int BUTTON_PREFIX = 0x00002000;
+	int controlIconSize;
+	private int controlIconColor;
+	private float density;
 
 	enum ButtonIds {
 		OPTIONS,
@@ -32,28 +35,32 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		FLIP,
 		CLOSE,
 		CHAT,
+		CHAT_NM,
 		HELP,
 		STATS,
 		HINT,
 		BACK,
 		FORWARD,
-		CANCEL,
-		PLAY,
+		PLAY_FOR_ME,
+		MAKE_MOVE,
 		NEXT
 	}
 
-	private Integer[] drawableIds = new Integer[]{
-			R.drawable.ic_ctrl_options,
-			R.drawable.ic_ctrl_analysis,
-			R.drawable.ic_ctrl_restart,
-			R.drawable.ic_ctrl_flip,
-			R.drawable.ic_ctrl_close,
-			R.drawable.ic_ctrl_chat,
-			R.drawable.ic_ctrl_help,
-			R.drawable.ic_ctrl_stats,
-			R.drawable.ic_ctrl_hint,
-			R.drawable.ic_ctrl_back,
-			R.drawable.ic_ctrl_fwd
+	private Integer[] glyphIds = new Integer[]{
+			R.string.glyph_options,
+			R.string.glyph_board,
+			R.string.glyph_restore,
+			R.string.glyph_flip,
+			R.string.glyph_close,
+			R.string.glyph_chat,
+			R.string.glyph_chat_nm,
+			R.string.glyph_help,
+			R.string.glyph_stats,
+			R.string.glyph_hint,
+			R.string.glyph_left,
+			R.string.glyph_right,
+			R.string.glyph_play,
+			R.string.glyph_check
 	};
 
 	protected LinearLayout controlsLayout;
@@ -63,7 +70,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 //	private int ACTION_BUTTON_MARGIN = 6;
 	int controlButtonHeight;
 	Handler handler;
-	HashMap<ButtonIds, Integer> buttonDrawablesMap;
+	HashMap<ButtonIds, Integer> buttonGlyphsMap;
 
 
 	public ControlsBaseView(Context context) {
@@ -85,17 +92,12 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 		handler = new Handler();
 
-//		float density = resources.getDisplayMetrics().density;
+		density = resources.getDisplayMetrics().density;
 		controlButtonHeight = (int) resources.getDimension(R.dimen.game_controls_button_height);
-//		ACTION_BUTTON_MARGIN *= density;
+		controlIconSize = resources.getDimensionPixelSize(R.dimen.game_controls_icon_size);
+		controlIconColor = resources.getColor(R.color.text_controls_icons);
 
 		controlsLayout = new LinearLayout(getContext());
-		int paddingLeft = (int) resources.getDimension(R.dimen.game_control_padding_left);
-		int paddingTop = (int) resources.getDimension(R.dimen.game_control_padding_top); // set padding to panelInfo instead
-		int paddingRight = (int) resources.getDimension(R.dimen.game_control_padding_right);
-		int paddingBottom = (int) resources.getDimension(R.dimen.game_control_padding_bottom);
-
-//		controlsLayout.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
 
 		LayoutParams defaultLinLayParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -104,10 +106,10 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 		controlsLayout.setLayoutParams(defaultLinLayParams);
 
-		buttonDrawablesMap = new HashMap<ButtonIds, Integer>();
+		buttonGlyphsMap = new HashMap<ButtonIds, Integer>();
 		ButtonIds[] values = ButtonIds.values();
-		for (int i = 0; i < drawableIds.length; i++) {
-			buttonDrawablesMap.put(values[i], drawableIds[i]);
+		for (int i = 0; i < glyphIds.length; i++) {
+			buttonGlyphsMap.put(values[i], glyphIds[i]);
 		}
 	}
 
@@ -116,18 +118,17 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	}
 
 	View createControlButton(ButtonIds buttonId, int styleId) {
-		ImageButton imageButton = new ImageButton(getContext());
-		imageButton.setImageResource(buttonDrawablesMap.get(buttonId));
-		ButtonDrawableBuilder.setBackgroundToView(imageButton, styleId);
-		imageButton.setOnClickListener(this);
-		imageButton.setId(getButtonId(buttonId));
+		RoboButton button = getDefaultButton();
+		button.setText(buttonGlyphsMap.get(buttonId));
+		ButtonDrawableBuilder.setBackgroundToView(button, styleId);
+		button.setId(getButtonId(buttonId));
 
-		imageButton.setLayoutParams(buttonParams);
-		return imageButton;
+		button.setLayoutParams(buttonParams);
+		return button;
 	}
 
 	void addActionButton(ButtonIds buttonId, int labelId, int styleId) {
-		RoboButton button = new RoboButton(getContext());
+		RoboButton button = getDefaultButton();
 		button.setDrawableStyle(styleId);
 		button.setText(labelId);
 		button.setOnClickListener(this);
@@ -136,13 +137,22 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		LayoutParams buttonParams = new LayoutParams(0, controlButtonHeight);
 		buttonParams.weight = 1;
 
-//		if (buttonId == CANCEL) {
-//			buttonParams.setMargins(0, 0, ACTION_BUTTON_MARGIN, 0);
-//		} else {
-//			buttonParams.setMargins(ACTION_BUTTON_MARGIN, 0, 0, 0);
-//		}
-
 		controlsLayout.addView(button, buttonParams);
+	}
+
+	RoboButton getDefaultButton() {
+		RoboButton button = new RoboButton(getContext());
+		button.setFont(RoboTextView.ICON_FONT);
+		button.setTextSize(controlIconSize);
+		button.setTextColor(controlIconColor);
+		button.setOnClickListener(this);
+
+		float shadowRadius = 2* density + 0.5f;
+		float shadowDx = 0 * density /*+ 0.5f*/;
+		float shadowDy = 0 * density /*+ 0.5f*/;
+		button.setShadowLayer(shadowRadius, shadowDx, shadowDy, 0x88000000);
+
+		return button;
 	}
 
 	int getButtonId(ButtonIds buttonId) {

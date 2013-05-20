@@ -10,15 +10,16 @@
     <string name="glyph_live_bullet">5</string>
     <string name="glyph_play_friend">n</string>
     <string name="glyph_daily960_game">6</string>
-    <string name="glyph_tactics_game">7</string>
+    <string name="glyph_help">7</string>
     <string name="glyph_lessons">8</string>
     <string name="glyph_comp_game">9</string>
-    <string name="glyph_videos">J</string>
+
+
+
     <string name="glyph_profile">b</string>
     <string name="glyph_board">i</string>
     <string name="glyph_contacts">o</string>
     <string name="glyph_info">)</string>
-    <!--<string name="glyph_settings">&#729;</string>-->
     <string name="glyph_settings">d</string>
     <string name="glyph_theme">l</string>
     <string name="glyph_blocking">&amp;</string>
@@ -33,10 +34,27 @@
     <string name="glyph_clock">\'</string>
     <string name="glyph_facebook">D</string>
 
-    <string name="glyph_arrow_right">.</string>
-    <string name="glyph_arrow_left">,</string>
-    <string name="glyph_arrow_up">&#60;</string>
-    <string name="glyph_arrow_down">&#62;</string>
+    <string name="glyph_options">r</string>
+    <string name="glyph_restore">L</string>
+    <string name="glyph_refresh">:</string>
+    <string name="glyph_flip">N</string>
+    <string name="glyph_check">G</string>
+    <string name="glyph_play">J</string>
+    <string name="glyph_chat">c</string>
+    <string name="glyph_chat_nm">v</string>
+    <string name="glyph_stats">;</string>
+    <string name="glyph_search">-</string>
+    <string name="glyph_hint">g</string>
+
+    <string name="glyph_right">.</string>
+    <string name="glyph_left">,</string>
+    <string name="glyph_up">&#60;</string>
+    <string name="glyph_down">&#62;</string>
+
+    <string name="glyph_arrow_right">]</string>
+    <string name="glyph_arrow_left">[</string>
+    <string name="glyph_arrow_up">}</string>
+    <string name="glyph_arrow_down">{</string>
 
     <!--Dimens -->
     <dimen name="glyph_icon_padding">8dip</dimen>

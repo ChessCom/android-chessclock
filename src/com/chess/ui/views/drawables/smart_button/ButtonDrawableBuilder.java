@@ -132,21 +132,39 @@ public class ButtonDrawableBuilder {
 
 				rectButtonDrawable.rectPosition = TAB_RIGHT;
 				return rectButtonDrawable;
-			case R.style.Rect_BottomLeft:
+			case R.style.Rect_Bottom_Left:
 				rectButtonDrawable = setRectDefaults(context);
 				createRect(rectButtonDrawable, resources);
 
 				rectButtonDrawable.rectPosition = BOTTOM_LEFT;
 				return rectButtonDrawable;
-			case R.style.Rect_BottomMiddle:
+			case R.style.Rect_Bottom_Middle:
 				rectButtonDrawable = setRectDefaults(context);
 				createRect(rectButtonDrawable, resources);
 
 				rectButtonDrawable.rectPosition = BOTTOM_MIDDLE;
 				return rectButtonDrawable;
-			case R.style.Rect_BottomRight:
+			case R.style.Rect_Bottom_Right:
 				rectButtonDrawable = setRectDefaults(context);
 				createRect(rectButtonDrawable, resources);
+
+				rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
+				return rectButtonDrawable;
+			case R.style.Rect_Bottom_Right_Orange:  // TODO group
+				rectButtonDrawable = setRectDefaults(context);
+				createRect(rectButtonDrawable, resources, R.color.orange_button_flat);
+
+				rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
+				return rectButtonDrawable;
+			case R.style.Rect_Bottom_Right_Red:
+				rectButtonDrawable = setRectDefaults(context);
+				createRect(rectButtonDrawable, resources, R.color.red_button);
+
+				rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
+				return rectButtonDrawable;
+			case R.style.Rect_Bottom_Right_Green:
+				rectButtonDrawable = setRectDefaults(context);
+				createRect(rectButtonDrawable, resources, R.color.light_green_button);
 
 				rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
 				return rectButtonDrawable;
@@ -216,7 +234,7 @@ public class ButtonDrawableBuilder {
 		buttonDrawable.colorRight = resources.getColor(R.color.light_green_emboss_bot_2);
 		buttonDrawable.colorBottom = resources.getColor(R.color.light_green_emboss_bot_1);
 		// Button colors
-		buttonDrawable.colorSolid = resources.getColor(R.color.light_green_button_1);
+		buttonDrawable.colorSolid = resources.getColor(R.color.light_green_button);
 		// init layers
 		buttonDrawable.init(resources);
 	}
@@ -229,7 +247,7 @@ public class ButtonDrawableBuilder {
 		buttonDrawable.colorRight = resources.getColor(R.color.red_emboss_bottom_2);
 		buttonDrawable.colorBottom = resources.getColor(R.color.red_emboss_bottom_1);
 		// Button colors
-		buttonDrawable.colorSolid = resources.getColor(R.color.red_button_1);
+		buttonDrawable.colorSolid = resources.getColor(R.color.red_button);
 		// init layers
 		buttonDrawable.init(resources);
 	}
@@ -277,6 +295,10 @@ public class ButtonDrawableBuilder {
 	}
 
 	private static void createRect(RectButtonDrawable buttonDrawable, Resources resources) {
+		createRect(buttonDrawable, resources, R.color.transparent_button);
+	}
+
+	private static void createRect(RectButtonDrawable buttonDrawable, Resources resources, int buttonColor) {
 		// no radius
 		buttonDrawable.radius = 0;
 		buttonDrawable.useBorder = false;
@@ -287,13 +309,8 @@ public class ButtonDrawableBuilder {
 		buttonDrawable.colorLeft = resources.getColor(R.color.transparent_button_border_left);
 		buttonDrawable.colorRight = resources.getColor(R.color.transparent_button_border_right);
 		buttonDrawable.colorBottom = resources.getColor(R.color.transparent_button_border_bottom);
-		// Level 2 for bevel
-		buttonDrawable.colorTop2 = resources.getColor(R.color.transparent_button_border_top_2);
-		buttonDrawable.colorLeft2 = resources.getColor(R.color.transparent_button_border_left_2);
-		buttonDrawable.colorRight2 = resources.getColor(R.color.transparent_button_border_right_2);
-		buttonDrawable.colorBottom2 = resources.getColor(R.color.transparent_button_border_bottom_2);
 		// Button colors
-		buttonDrawable.colorSolid = resources.getColor(R.color.transparent_button);
+		buttonDrawable.colorSolid = resources.getColor(buttonColor);
 		// init layers
 		buttonDrawable.init(resources);
 	}

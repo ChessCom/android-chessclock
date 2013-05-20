@@ -45,7 +45,7 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_arrow_left"
+                android:text="@string/glyph_left"
                 android:textColor="@color/new_grey_icon_header"
                 style="@style/GlyphIcon.Small"
                 />

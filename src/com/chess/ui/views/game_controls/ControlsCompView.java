@@ -32,11 +32,11 @@ public class ControlsCompView extends ControlsBaseView {
 	void init() {
 		super.init();
 
-		addControlButton(OPTIONS, R.style.Rect_BottomLeft);
-		addControlButton(HINT, R.style.Rect_BottomMiddle);
-		addControlButton(HELP, R.style.Rect_BottomMiddle);
-		addControlButton(BACK, R.style.Rect_BottomMiddle);
-		addControlButton(FORWARD, R.style.Rect_BottomRight);
+		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
+		addControlButton(HINT, R.style.Rect_Bottom_Middle);
+//		addControlButton(HELP, R.style.Rect_Bottom_Middle);
+		addControlButton(BACK, R.style.Rect_Bottom_Middle);
+		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
 
 		addView(controlsLayout);
 	}
@@ -65,7 +65,7 @@ public class ControlsCompView extends ControlsBaseView {
 
 	public void enableGameControls(boolean enable) {
 		enableGameButton(OPTIONS, enable);
-		enableGameButton(HELP, enable);
+		enableGameButton(HINT, enable);
 		enableGameButton(FORWARD, enable);
 		enableGameButton(BACK, enable);
 	}
@@ -76,12 +76,12 @@ public class ControlsCompView extends ControlsBaseView {
 
 	@Override
 	public void enableForwardBtn(boolean enable) {
-		enableGameButton(FORWARD, enable);
+//		enableGameButton(FORWARD, enable);
 	}
 
 	@Override
 	public void enableBackBtn(boolean enable) {
-		enableGameButton(BACK, enable);
+//		enableGameButton(BACK, enable);
 	}
 
 }

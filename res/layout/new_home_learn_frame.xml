@@ -29,7 +29,7 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_tactics_game"
+                android:text="@string/glyph_help"
                 android:textColor="@color/new_normal_grey"
                 android:textSize="26dip"
                 style="@style/GlyphIcon"
@@ -60,7 +60,7 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_arrow_right"
+                android:text="@string/glyph_right"
                 android:textColor="@color/new_normal_grey"
                 style="@style/GlyphIcon.Small"
                 />
@@ -206,7 +206,7 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_arrow_right"
+                android:text="@string/glyph_right"
                 android:textColor="@color/new_normal_grey"
                 style="@style/GlyphIcon.Small"
                 />
@@ -283,7 +283,7 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_videos"
+                android:text="@string/glyph_play"
                 android:textColor="@color/new_normal_grey"
                 style="@style/GlyphIcon"
                 android:textSize="26dip"
@@ -303,7 +303,7 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_arrow_right"
+                android:text="@string/glyph_right"
                 android:textColor="@color/new_normal_grey"
                 style="@style/GlyphIcon.Small"
                 />
