@@ -13,12 +13,12 @@
         android:layout_height="wrap_content"
         >
         <!--Daily Chess-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/dailyHeaderView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_header_height"
             android:gravity="center_vertical"
-            android:background="@drawable/daily_games_header_selector"
+            style="@style/ListItem.Header"
             android:paddingLeft="13dip"
             android:paddingRight="8dip"
             >
@@ -50,7 +50,7 @@
                 style="@style/GlyphIcon.Small"
                 />
 
-        </LinearLayout>
+        </com.chess.LinLayout>
 
         <!--Opponent-->
         <LinearLayout
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/random"
-                style="@style/Button.Grey.Solid.Small"
+                style="@style/Button.Glassy.Small"
                 android:layout_marginLeft="12dip"
                 />
         </LinearLayout>
@@ -140,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/random"
-                style="@style/Button.Grey.Solid.Small"
+                style="@style/Button.Glassy.Small"
                 />
         </LinearLayout>
 
@@ -189,7 +189,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/normal"
-                style="@style/Button.Grey.Solid.Small"
+                style="@style/Button.Glassy.Small"
                 />
         </LinearLayout>
 
@@ -237,7 +237,7 @@
                     android:id="@+id/minRatingBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Button.Grey.Solid.Small"
+                    style="@style/Button.Glassy.Small"
                     android:button="@null"
                     android:inputType="numberDecimal"
                     />
@@ -255,7 +255,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    style="@style/Button.Grey.Solid.Small"
+                    style="@style/Button.Glassy.Small"
                     android:button="@null"
                     android:inputType="numberDecimal"
                     />

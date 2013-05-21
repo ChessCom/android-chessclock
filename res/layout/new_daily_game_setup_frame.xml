@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="12dip"
         android:paddingRight="@dimen/default_scr_side_padding"
-        android:background="@drawable/daily_games_item_default"
+        style="@style/ListItem"
         >
 
         <!--3 Days-->
@@ -24,7 +24,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="3 days"
-            style="@style/Button.Grey.Solid.Small"
+            style="@style/Button.Glassy.Small"
             />
 
         <com.chess.RoboButton
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/default_scr_side_padding"
         android:paddingRight="@dimen/default_scr_side_padding"
-        android:background="@drawable/daily_games_item_selector"
+        style="@style/ListItem"
         android:gravity="center_vertical"
         >
 
@@ -83,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/invite"
-            style="@style/Button.Grey.Solid.Small"
+            style="@style/Button.Glassy.Small"
             />
 
     </LinearLayout>
@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/default_scr_side_padding"
         android:paddingRight="@dimen/default_scr_side_padding"
-        android:background="@drawable/daily_games_item_selector"
+        style="@style/ListItem"
         android:gravity="center_vertical"
         >
 
@@ -132,7 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/invite"
-            style="@style/Button.Grey.Solid.Small"
+            style="@style/Button.Glassy.Small"
             />
 
     </LinearLayout>
@@ -144,7 +144,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/default_scr_side_padding"
         android:paddingRight="8dip"
-        android:background="@drawable/daily_games_item_selector"
+        style="@style/ListItem"
         android:gravity="center_vertical"
         >
 
@@ -186,7 +186,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/default_scr_side_padding"
         android:paddingRight="8dip"
-        android:background="@drawable/daily_games_item_selector"
+        style="@style/ListItem"
         android:gravity="center_vertical"
         >
 

@@ -93,7 +93,6 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:textSize="20sp"
-        android:textColor="@color/grey_button_1"
         android:paddingLeft="10dip"
         custom:ttf="Bold"
         style="@style/DarkShadowBottom"

@@ -24,7 +24,6 @@ import java.util.List;
 public class ButtonDrawable extends StateListDrawable {
 
 	static final int DEFAULT_RADIUS = 4;
-	static final int DEFAULT_ANGLE = 270;
 	static final int DEFAULT_BEVEL_INSET = 2;
 
 	static final int TOP_BOTTOM = 0;
@@ -35,7 +34,10 @@ public class ButtonDrawable extends StateListDrawable {
 	static final int BL_TR = 5;
 	static final int LEFT_RIGHT = 6;
 	static final int TL_BR = 7;
+
+
 	static final int TRANSPARENT = 0x00000000;
+	public static final int DEF_VALUE = -1;
 	static int PRESSED_OVERLAY;
 
 	InsetInfo insetOne;
@@ -50,6 +52,7 @@ public class ButtonDrawable extends StateListDrawable {
 
 	float[] outerRect;
 	RectF bevelRect;
+	RectF glassyRect;
 
 	int buttonIndex;
 
@@ -83,6 +86,7 @@ public class ButtonDrawable extends StateListDrawable {
 
 	int gradientAngle;
 	boolean isSolid;
+	boolean isGlassy;
 	boolean useBorder;
 	boolean usePressedLayer;
 	int bevelLvl;
@@ -90,8 +94,22 @@ public class ButtonDrawable extends StateListDrawable {
 	int radius;
 	int bevelSize;
 
+	/* Padding */
+	int padding;
+	int leftPadding;
+	int topPadding;
+	int rightPadding;
+	int bottomPadding;
+	int userPaddingLeftInitial;
+	int userPaddingRightInitial;
+	boolean leftPaddingDefined;
+	boolean rightPaddingDefined;
+
+
 	/* state & other values */
 	private boolean initialized;
+	private static final int glassyBorderIndex = 0;
+	int glassyBevelSize;
 
 	/**
 	 * Use for init ButtonDrawableBuilder
@@ -124,7 +142,9 @@ public class ButtonDrawable extends StateListDrawable {
 //		float density = resources.getDisplayMetrics().density;
 		outerRect = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
 		bevelSize = resources.getDimensionPixelSize(R.dimen.default_bevel_size);
+		glassyBevelSize = resources.getDimensionPixelSize(R.dimen.default_bevel_glassy_size);
 		bevelRect = new RectF(bevelSize, bevelSize, bevelSize, bevelSize);
+		glassyRect = new RectF(glassyBevelSize, glassyBevelSize, glassyBevelSize, glassyBevelSize);
 
 		PRESSED_OVERLAY = resources.getColor(R.color.default_button_overlay_p);
 		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.SRC_ATOP); // perfect! makes darker
@@ -197,20 +217,32 @@ public class ButtonDrawable extends StateListDrawable {
 			}
 		}
 
+		if (isGlassy) {
+			((ShapeDrawable) enabledDrawable.getDrawable(glassyBorderIndex)).getPaint().setShader(
+					makeLinear(width, height, colorGradientStart, colorGradientCenter, colorGradientEnd));
+		}
+
+
 		initialized = true;
 	}
 
 	void createDefaultState(List<LayerInfo> enabledLayers) {   // TODO it can be improved!
-		createLayer(colorTop, insetOne.top, enabledLayers);
-		createLayer(colorBottom, insetOne.bottom, enabledLayers); // order means
-		createLayer(colorLeft, insetOne.left, enabledLayers);
-		createLayer(colorRight, insetOne.right, enabledLayers);
+		if (isGlassy) {
+			ShapeDrawable drawable = new ShapeDrawable(new RoundRectShape(outerRect, glassyRect, outerRect));
+			enabledLayers.add(new LayerInfo(drawable, bevelInset + insetOne.top[0], bevelInset + insetOne.top[1],
+					bevelInset + insetOne.top[2], bevelInset + insetOne.top[3]));
+		} else {
+			createLayer(colorTop, insetOne.top, enabledLayers);
+			createLayer(colorBottom, insetOne.bottom, enabledLayers); // order is important
+			createLayer(colorLeft, insetOne.left, enabledLayers);
+			createLayer(colorRight, insetOne.right, enabledLayers);
 
-		if (bevelLvl == 2) {
-			createLayer(colorTop2, insetTwo.top, enabledLayers);
-			createLayer(colorBottom2, insetTwo.bottom, enabledLayers);
-			createLayer(colorLeft2, insetTwo.left, enabledLayers);
-			createLayer(colorRight2, insetTwo.right, enabledLayers);
+			if (bevelLvl == 2) {
+				createLayer(colorTop2, insetTwo.top, enabledLayers);
+				createLayer(colorBottom2, insetTwo.bottom, enabledLayers);
+				createLayer(colorLeft2, insetTwo.left, enabledLayers);
+				createLayer(colorRight2, insetTwo.right, enabledLayers);
+			}
 		}
 
 		int[] button = bevelLvl == 1 ? insetOne.button : insetTwo.button;
@@ -266,14 +298,15 @@ public class ButtonDrawable extends StateListDrawable {
 		addState(new int[]{android.R.attr.state_pressed}, pressedDrawable);
 	}
 
-	private void createLayer(int color, int[] inSet, List<LayerInfo> layers) {
+	void createLayer(int color, int[] inSet, List<LayerInfo> layers) {
 		createLayer(color, inSet, layers, false);
 	}
 
-	private void createLayer(int color, int[] inSet, List<LayerInfo> layers, boolean isButton) {
+	void createLayer(int color, int[] inSet, List<LayerInfo> layers, boolean isButton) {
 		ShapeDrawable drawable;
 		if (isButton) {
 			drawable = new ShapeDrawable(new RoundRectShape(outerRect, null, null));
+			setPaddingToShape(drawable);
 		} else {
 			drawable = new ShapeDrawable(new RoundRectShape(outerRect, bevelRect, outerRect));
 		}
@@ -281,6 +314,43 @@ public class ButtonDrawable extends StateListDrawable {
 			drawable.getPaint().setColor(color);
 		}
 		layers.add(new LayerInfo(drawable, bevelInset + inSet[0], bevelInset + inSet[1], bevelInset + inSet[2], bevelInset + inSet[3]));
+	}
+
+	/**
+	 * Set padding to internal cover only shape of LayerDrawables
+	 * @param drawable to which we set padding must be ShapeDrawable
+	 */
+	void setPaddingToShape(ShapeDrawable drawable) {
+		if (padding != DEF_VALUE) {
+			userPaddingLeftInitial = padding;
+			userPaddingRightInitial = padding;
+			leftPaddingDefined = true;
+			rightPaddingDefined = true;
+		}
+
+		if (leftPadding != DEF_VALUE) {
+			userPaddingLeftInitial = leftPadding;
+			leftPaddingDefined = true;
+		}
+
+		if (rightPadding != DEF_VALUE) {
+			userPaddingRightInitial = rightPadding;
+			rightPaddingDefined = true;
+		}
+
+		int leftPad = padding;
+		int topPad = padding;
+		int rightPad = padding;
+		int bottomPad = padding;
+		if (leftPaddingDefined) {
+			leftPad = userPaddingLeftInitial;
+		}
+
+		if (rightPaddingDefined) {
+			rightPad = userPaddingRightInitial;
+		}
+
+		drawable.setPadding(leftPad, topPad, rightPad, bottomPad);
 	}
 
 	Shader makeLinear(int width, int height, int startColor, int centerColor, int endColor) {
@@ -338,7 +408,7 @@ public class ButtonDrawable extends StateListDrawable {
 		}
 
 		return new LinearGradient(x0, y0, x1, y1,
-				new int[]{startColor, /*centerColor,*/ endColor},
+				new int[]{startColor, startColor, /*centerColor,*/ endColor},
 				null,
 				Shader.TileMode.CLAMP);
 	}
@@ -382,9 +452,10 @@ public class ButtonDrawable extends StateListDrawable {
 		try { // values
 			radius = array.getDimensionPixelSize(R.styleable.RoboButton_btn_radius, DEFAULT_RADIUS);
 			isSolid = array.getBoolean(R.styleable.RoboButton_btn_is_solid, true);
+			isGlassy = array.getBoolean(R.styleable.RoboButton_btn_is_glassy, false);
 			useBorder = array.getBoolean(R.styleable.RoboButton_btn_use_border, true);
 			usePressedLayer = array.getBoolean(R.styleable.RoboButton_btn_use_pressed_layer, false);
-			gradientAngle = array.getInt(R.styleable.RoboButton_btn_gradient_angle, DEFAULT_ANGLE);
+			gradientAngle = array.getInt(R.styleable.RoboButton_btn_gradient_angle, TL_BR);
 //			padding = array.getDimensionPixelSize(R.styleable.RoboButton_btn_padding, DEFAULT_PADDING);
 			bevelLvl = array.getInt(R.styleable.RoboButton_btn_bevel_lvl, 1);
 			bevelInset = array.getDimensionPixelSize(R.styleable.RoboButton_btn_bevel_inset, DEFAULT_BEVEL_INSET);
@@ -426,10 +497,47 @@ public class ButtonDrawable extends StateListDrawable {
 			colorGradientCenterP = array.getInt(R.styleable.RoboButton_btn_gradient_center_p, TRANSPARENT);
 			colorGradientEndP = array.getInt(R.styleable.RoboButton_btn_gradient_end_p, TRANSPARENT);
 
-
+			parseDefaultAttrs(context, attrs);
 		} finally {
 			array.recycle();
 		}
+	}
+
+
+	void parseDefaultAttrs(Context context, AttributeSet attrs) {
+		int PADDING_INDEX = 0;
+		int PADDING_LEFT_INDEX = 1;
+		int PADDING_TOP_INDEX = 2;
+		int PADDING_RIGHT_INDEX = 3;
+		int PADDING_BOTTOM_INDEX = 4;
+		int[] defaultPadding = {android.R.attr.padding, android.R.attr.paddingLeft, android.R.attr.paddingTop, android.R.attr.paddingRight, android.R.attr.paddingBottom};
+		TypedArray array = context.obtainStyledAttributes(attrs, defaultPadding);
+		if (array == null) {
+			return;
+		}
+		padding = array.getDimensionPixelSize(PADDING_INDEX, DEF_VALUE);
+		if (padding != DEF_VALUE) {
+			userPaddingLeftInitial = padding;
+			userPaddingRightInitial = padding;
+			leftPaddingDefined = true;
+			rightPaddingDefined = true;
+		}
+
+		leftPadding = array.getDimensionPixelSize(PADDING_LEFT_INDEX, DEF_VALUE);
+		if (leftPadding != DEF_VALUE) {
+			userPaddingLeftInitial = leftPadding;
+			leftPaddingDefined = true;
+		}
+
+		topPadding = array.getDimensionPixelSize(PADDING_TOP_INDEX, DEF_VALUE);
+
+		rightPadding = array.getDimensionPixelSize(PADDING_RIGHT_INDEX, DEF_VALUE);
+		if (rightPadding != DEF_VALUE) {
+			userPaddingRightInitial = rightPadding;
+			rightPaddingDefined = true;
+		}
+
+		bottomPadding = array.getDimensionPixelSize(PADDING_BOTTOM_INDEX, DEF_VALUE);
 	}
 
 	class LayerInfo {

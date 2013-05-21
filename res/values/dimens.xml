@@ -20,6 +20,7 @@
  	<dimen name="signin_button_height">50dip</dimen>
     <dimen name="default_stroke_width">4px</dimen>
     <dimen name="default_bevel_size">1dip</dimen>
+    <dimen name="default_bevel_glassy_size">1px</dimen>
     <dimen name="rect_edge_offset">2dip</dimen>
 
     <!--New Buttons and Fields-->

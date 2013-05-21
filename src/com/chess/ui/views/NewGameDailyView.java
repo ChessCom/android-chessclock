@@ -51,9 +51,9 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		super(context, attrs);
 	}
 
-	public NewGameDailyView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-	}
+//	public NewGameDailyView(Context context, AttributeSet attrs, int defStyle) {
+//		super(context, attrs, defStyle);
+//	}
 
 	@Override
 	public void onCreate() {
@@ -105,7 +105,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		rightButtonParams.addRule(RelativeLayout.RIGHT_OF, BASE_ID + VS_ID);
 		rightButtonParams.addRule(RelativeLayout.BELOW, BASE_ID + TITLE_ID);
 
-		ButtonDrawableBuilder.setBackgroundToView(rightButton, R.style.Button_Grey_Solid);
+		ButtonDrawableBuilder.setBackgroundToView(rightButton, R.style.Button_Glassy);
 		rightButton.setMinHeight((int) minButtonHeight);
 		rightButton.setTextColor(0xFFFFFFFF);
 		rightButton.setGravity(Gravity.CENTER);

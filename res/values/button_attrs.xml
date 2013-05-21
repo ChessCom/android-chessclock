@@ -12,6 +12,7 @@
         <attr name="btn_bevel_lvl" format="reference|integer" />
         <attr name="btn_bevel_inset" format="reference|dimension" />
         <attr name="btn_is_rect" format="reference|boolean" />
+        <attr name="btn_is_glassy" format="reference|boolean" />
 
         <!--Default colors-->
         <attr name="btn_outer_border" format="reference|color" />    <!--Outer border color-->
@@ -81,6 +82,8 @@
             <enum name="bottomLeft" value="6"/>
             <enum name="bottomMiddle" value="7"/>
             <enum name="bottomRight" value="8"/>
+
+            <enum name="listItem" value="9"/>
         </attr>
 
     </declare-styleable>

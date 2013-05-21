@@ -432,69 +432,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected void afterLogin() {
 		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
-//		if (AppData.isNotificationsEnabled(getActivity())){
-//			checkMove();
-//		}
-
 		backToHomeFragment();
 	}
 
-//	public class SampleAuthListener implements SessionEvents.AuthListener {
-//		@Override
-//		public void onAuthSucceed() {
-//			LoadItem loadItem = new LoadItem();
-//			loadItem.setLoadPath(RestHelper.CMD_LOGIN);
-//			loadItem.setRequestMethod(RestHelper.POST);
-//			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, facebook.getAccessToken());
-//			loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_USERNAME);
-//			loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_TACTICS_RATING);
-//
-//			new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
-//			loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
-//		}
-//
-//		@Override
-//		public void onAuthFail(String error) {
-//			showToast(getString(R.string.login_failed)+ StaticData.SYMBOL_SPACE + error);
-//		}
-//	}
-
-//	public class SampleLogoutListener implements SessionEvents.LogoutListener {
-//		@Override
-//		public void onLogoutBegin() {
-//			showToast(R.string.login_out);
-//		}
-//
-//		@Override
-//		public void onLogoutFinish() {
-//			showToast(R.string.you_logged_out);
-//		}
-//	}
-
-//	protected List<String> getItemsFromArray(String[] array){
-//		List<String> items = new ArrayList<String>();
-//		items.addAll(Arrays.asList(array));
-//		return items;
-//	}
-
-//	@Override
-//	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//		inflater.inflate(R.menu.sign_out, menu);
-//	}
-//
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//			case android.R.id.home:
-//				getActivityFace().toggleLeftMenu();
-//				break;
-//		}
-//		return true;
-//	}
-
-//	protected LccHelper getLccHolder() {
-//		return getActivityFace().getMeLccHolder();
-//	}
 
 	protected Fragment findFragmentByTag(String tag) {
 		return getFragmentManager().findFragmentByTag(tag);

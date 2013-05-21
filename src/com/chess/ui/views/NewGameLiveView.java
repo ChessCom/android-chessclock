@@ -14,6 +14,7 @@ import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.NewLiveGameConfig;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +41,9 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 		super(context, attrs);
 	}
 
-	public NewGameLiveView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-	}
+//	public NewGameLiveView(Context context, AttributeSet attrs, int defStyle) {
+//		super(context, attrs, defStyle);
+//	}
 
 	@Override
 	public void onCreate() {
@@ -62,7 +63,7 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 		if (optionsVisible) {
 			compactRelLay.setBackgroundResource(R.drawable.game_option_back_1);
 		} else {
-			compactRelLay.setBackgroundResource(R.drawable.nav_menu_item_selected);
+			ButtonDrawableBuilder.setBackgroundToView(compactRelLay, R.style.ListItem_Header);
 		}
 		compactRelLay.setPadding(COMPACT_PADDING, 0, COMPACT_PADDING, COMPACT_PADDING);
 	}

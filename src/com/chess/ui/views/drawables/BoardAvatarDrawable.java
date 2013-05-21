@@ -35,9 +35,9 @@ public class BoardAvatarDrawable extends Drawable {
 		imageBackDrawable = new BitmapDrawable(context.getResources(), sourcePhoto);
 
 		solidBackWhiteDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-				new int[] {0xFFFFFFFF, 0xFFFFFFFF});
+				new int[]{0xFFFFFFFF, 0xFFFFFFFF});
 		solidBackBlackDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-				new int[] {0xFF161513, 0xFF161513});
+				new int[]{0xFF161513, 0xFF161513});
 
 		fillBackDrawable = new ColorDrawable(0xFF1d1c1a);
 
@@ -54,7 +54,7 @@ public class BoardAvatarDrawable extends Drawable {
 			roundedBitmap = createRoundedBitmap(bitmapWidth, bitmapHeight);
 		}
 
-		solidBackDrawable = side == ChessBoard.WHITE_SIDE? solidBackWhiteDrawable: solidBackBlackDrawable;
+		solidBackDrawable = side == ChessBoard.WHITE_SIDE ? solidBackWhiteDrawable : solidBackBlackDrawable;
 
 		solidBackDrawable.setBounds(0, 0, width, height);
 		setCornerRadii(solidBackDrawable, CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS);
@@ -73,11 +73,13 @@ public class BoardAvatarDrawable extends Drawable {
 	}
 
 	static void setCornerRadii(GradientDrawable drawable, float r0, float r1, float r2, float r3) {
-		drawable.setCornerRadii(new float[] { r0, r0, r1, r1,
-				r2, r2, r3, r3 });
+		drawable.setCornerRadii(new float[]{r0, r0, r1, r1,
+				r2, r2, r3, r3});
 	}
 
 	private Bitmap createRoundedBitmap(int width, int height) {
+		width = width <= 0 ? 1 : width;
+		height = height <= 0 ? 1 : height;
 		// back pattern
 		Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 

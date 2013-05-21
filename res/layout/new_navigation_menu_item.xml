@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.chess.LinLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/new_nav_menu_item_height"
     android:orientation="horizontal"
-    android:background="@drawable/nav_menu_item_selector"
+    style="@style/ListItem"
     android:gravity="center_vertical">
 
 
@@ -26,4 +28,4 @@
         android:gravity="center_vertical"
          />
 
-</LinearLayout>
+</com.chess.LinLayout>

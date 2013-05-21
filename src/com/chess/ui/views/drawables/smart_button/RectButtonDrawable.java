@@ -37,6 +37,8 @@ public class RectButtonDrawable extends ButtonDrawable {
 	static final int BOTTOM_MIDDLE = 7;
 	static final int BOTTOM_RIGHT = 8;
 
+	static final int LIST_ITEM = 9;
+
 	int rectPosition;
 
 	private int edgeOffset;
@@ -163,6 +165,9 @@ public class RectButtonDrawable extends ButtonDrawable {
 			case BOTTOM_RIGHT:
 				enabledDrawable.setBounds(-edgeOffset/2, 0, canvas.getWidth() + edgeOffset, canvas.getHeight() + edgeOffset);
 				break;
+			case LIST_ITEM:
+				enabledDrawable.setBounds(-edgeOffset, 0, canvas.getWidth() + edgeOffset, canvas.getHeight() + edgeOffset);
+				break;
 
 		}
 		super.draw(canvas);
@@ -171,7 +176,7 @@ public class RectButtonDrawable extends ButtonDrawable {
 	@Override
 	protected void createDefaultState(List<LayerInfo> enabledLayers) {   // TODO it can be improved!
 		createLayer(colorTop, insetOne.top, enabledLayers);
-		createLayer(colorBottom, insetOne.bottom, enabledLayers); // order means
+		createLayer(colorBottom, insetOne.bottom, enabledLayers); // order is important
 		createLayer(colorLeft, insetOne.left, enabledLayers);
 		createLayer(colorRight, insetOne.right, enabledLayers);
 
@@ -236,25 +241,6 @@ public class RectButtonDrawable extends ButtonDrawable {
 		addState(new int[]{android.R.attr.state_pressed}, pressedDrawable);
 	}
 
-	private void createLayer(int color, int[] inSet, List<LayerInfo> layers) {
-		createLayer(color, inSet, layers, false);
-	}
-
-	private void createLayer(int color, int[] inSet, List<LayerInfo> layers, boolean isButton) {
-		ShapeDrawable drawable;
-		if (isButton) {
-			drawable = new ShapeDrawable(new RoundRectShape(outerRect, null, null));
-		} else {
-			drawable = new ShapeDrawable(new RoundRectShape(outerRect, bevelRect, outerRect));
-		}
-
-		if (color != TRANSPARENT) {  // TODO adjust proper logic for transparent solid use
-			drawable.getPaint().setColor(color);
-		}
-		layers.add(new LayerInfo(drawable, inSet[0], inSet[1], inSet[2], inSet[3]));
-	}
-
-
 	@Override
 	protected void parseAttributes(Context context, AttributeSet attrs) {
 		super.parseAttributes(context, attrs);
@@ -266,51 +252,6 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 		try { // values
 			rectPosition = array.getInt(R.styleable.RoboButton_btn_rect_pos, BOTTOM_MIDDLE);
-		/*	isSolid = array.getBoolean(R.styleable.RoboButton_btn_is_solid, true);
-			useBorder = array.getBoolean(R.styleable.RoboButton_btn_use_border, true);
-			usePressedLayer = array.getBoolean(R.styleable.RoboButton_btn_use_pressed_layer, false);
-			gradientAngle = array.getInt(R.styleable.RoboButton_btn_gradient_angle, DEFAULT_ANGLE);
-//			padding = array.getDimensionPixelSize(R.styleable.RoboButton_btn_padding, DEFAULT_PADDING);
-			bevelLvl = array.getInt(R.styleable.RoboButton_btn_bevel_lvl, 1);
-			bevelInset = array.getDimensionPixelSize(R.styleable.RoboButton_btn_bevel_inset, DEFAULT_BEVEL_INSET);
-
-			// Colors for bevel
-			colorOuterBorder = array.getInt(R.styleable.RoboButton_btn_outer_border, TRANSPARENT);
-			colorTop = array.getInt(R.styleable.RoboButton_btn_top, TRANSPARENT);
-			colorLeft = array.getInt(R.styleable.RoboButton_btn_left, TRANSPARENT);
-			colorRight = array.getInt(R.styleable.RoboButton_btn_right, TRANSPARENT);
-			colorBottom = array.getInt(R.styleable.RoboButton_btn_bottom, TRANSPARENT);
-
-			// Level 2 for bevel
-			colorTop2 = array.getInt(R.styleable.RoboButton_btn_top_2, TRANSPARENT);
-			colorLeft2 = array.getInt(R.styleable.RoboButton_btn_left_2, TRANSPARENT);
-			colorRight2 = array.getInt(R.styleable.RoboButton_btn_right_2, TRANSPARENT);
-			colorBottom2 = array.getInt(R.styleable.RoboButton_btn_bottom_2, TRANSPARENT);
-
-			// Button colors
-			colorSolid = array.getInt(R.styleable.RoboButton_btn_solid, TRANSPARENT);
-			colorGradientStart = array.getInt(R.styleable.RoboButton_btn_gradient_start, TRANSPARENT);
-			colorGradientCenter = array.getInt(R.styleable.RoboButton_btn_gradient_center, TRANSPARENT);
-			colorGradientEnd = array.getInt(R.styleable.RoboButton_btn_gradient_end, TRANSPARENT);
-
-			*//* ---------------------- Pressed states colors -------------------------------------------*//*
-			colorTopP = array.getInt(R.styleable.RoboButton_btn_top_p, TRANSPARENT);
-			colorLeftP = array.getInt(R.styleable.RoboButton_btn_left_p, TRANSPARENT);
-			colorRightP = array.getInt(R.styleable.RoboButton_btn_right_p, TRANSPARENT);
-			colorBottomP = array.getInt(R.styleable.RoboButton_btn_bottom_p, TRANSPARENT);
-
-			// Level 2 Pressed
-			colorTop2P = array.getInt(R.styleable.RoboButton_btn_top_2_p, TRANSPARENT);
-			colorLeft2P = array.getInt(R.styleable.RoboButton_btn_left_2_p, TRANSPARENT);
-			colorRight2P = array.getInt(R.styleable.RoboButton_btn_right_2_p, TRANSPARENT);
-			colorBottom2P = array.getInt(R.styleable.RoboButton_btn_bottom_2_p, TRANSPARENT);
-
-			// Button colors Pressed
-			colorSolidP = array.getInt(R.styleable.RoboButton_btn_solid_p, TRANSPARENT);
-			colorGradientStartP = array.getInt(R.styleable.RoboButton_btn_gradient_start_p, TRANSPARENT);
-			colorGradientCenterP = array.getInt(R.styleable.RoboButton_btn_gradient_center_p, TRANSPARENT);
-			colorGradientEndP = array.getInt(R.styleable.RoboButton_btn_gradient_end_p, TRANSPARENT);
-*/
 
 		} finally {
 			array.recycle();

@@ -81,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/cancel"
-            style="@style/Button.Grey"
+            style="@style/Button.Glassy"
             android:layout_margin="15dip"
             />
 

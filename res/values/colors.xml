@@ -10,8 +10,7 @@
     <color name="new_soft_grey">#FFdedddb</color>
     <color name="new_normal_grey">#FF797571</color>
     <color name="new_light_grey_0">#FFcbcbca</color>
-    <!--<color name="new_light_grey">#FFc8c8c8</color>-->
-    <color name="new_light_grey">#FFbec7ba</color>
+    <color name="new_light_grey">#FFc8c8c8</color>
     <color name="new_light_grey_2">#FFa9a7a6</color>
     <color name="new_light_grey_3">#FF8e8c8b</color>
     <color name="new_light_grey_4">#FFb9c2b6</color>
@@ -79,35 +78,10 @@
     <color name="light_green_emboss_bot_1">#FF69874a</color>
     <color name="light_green_emboss_bot_2">#FF5d7841</color>
 
-    <!--Grey -->
-    <color name="grey_button_1">#FF524d48</color>
-    <color name="grey_button_2">#FF3d3a36</color>
-    <color name="grey_button_half_1">#FF56514c</color> <!--Darker-->
-    <color name="grey_button_half_2">#FF504c46</color>
-    <color name="grey_emboss_top">#FF767069</color>
-    <color name="grey_emboss_left">#FF5f5a55</color>
-    <color name="grey_emboss_right">#FF44403b</color>
-    <color name="grey_emboss_bottom">#FF3b3834</color>
-
-    <!--Grey Light-->
-    <color name="grey_button_light_1">#FF736c66</color>
-    <color name="grey_button_light_2">#FF504b46</color>
-    <color name="grey_button_light_top_1">#FF817b76</color>
-    <color name="grey_button_light_top_2">#FF625d59</color>
-    <color name="grey_button_light_bot_1">#FF57524e</color>
-    <color name="grey_button_light_bot_2">#FF3d3935</color>
-
     <!--Grey Flat-->
     <color name="grey_button_flat">#FF68625b</color>
     <color name="notations_text_color">#FFacabaa</color>
     <color name="notations_text_color_selected">#FFfefefe</color>
-
-    <!--Grey Solid-->
-    <color name="grey_button_solid">#FF413d39</color>
-    <color name="grey_button_solid_border_top">#FF46423d</color>
-    <color name="grey_button_solid_border_left">#FF43403c</color>
-    <color name="grey_button_solid_border_bottom">#FF3a3633</color>
-    <color name="grey_button_solid_border_right">#FF3c3934</color>
 
     <!--Grey Gradient -=Controls=- -->
     <color name="grey_button_gradient">#FF504c47</color>
@@ -282,6 +256,9 @@
     <color name="tab_home_button_shadow">#FF000000</color>
 
     <color name="transparent_button">#01000000</color>
+    <color name="glassy_button">#22000000</color>
+    <color name="grey_button_1">#FF524d48</color>
+    <color name="grey_button_solid">#FF413d39</color>
 
 <!--
     <color name="transparent_button_border_top">#FFFF0000</color>
@@ -305,13 +282,6 @@
     <color name="transparent_button_border_left_2">#FF000000</color>
     <color name="transparent_button_border_bottom_2">#FF000000</color>
     <color name="transparent_button_border_right_2">#FF000000</color>
--->
-
-<!--
-    <color name="transparent_button_border_top_2">#4FFFFFFF</color>
-    <color name="transparent_button_border_left_2">#4FFFFFFF</color>
-    <color name="transparent_button_border_bottom_2">#4FFFFFFF</color>
-    <color name="transparent_button_border_right_2">#4FFFFFFF</color>
 -->
 
     <!--DailyGames-->

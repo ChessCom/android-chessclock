@@ -14,12 +14,12 @@
         android:animateLayoutChanges="true"
         >
         <!--Live Chess-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/liveHeaderView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_header_height"
             android:gravity="center_vertical"
-            android:background="@drawable/daily_games_header_selector"
+            style="@style/ListItem.Header"
             android:paddingLeft="13dip"
             android:paddingRight="8dip"
             >
@@ -61,9 +61,9 @@
                 style="@style/GlyphIcon.Small"
                 />
 
-        </LinearLayout>
+        </com.chess.LinLayout>
 
-        <RelativeLayout
+        <com.chess.RelLayout
             android:id="@+id/liveOptionsView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
             android:paddingBottom="8dip"
             android:paddingLeft="@dimen/default_scr_side_padding"
             android:paddingRight="@dimen/default_scr_side_padding"
-            android:background="@drawable/daily_games_item_default"
+            style="@style/ListItem"
             android:animateLayoutChanges="true"
             >
 
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10 min"
-                style="@style/Button.Grey.Solid.Small"
+                style="@style/Button.Glassy.Small"
                 />
 
             <com.chess.RoboButton
@@ -101,15 +101,15 @@
                 android:layout_height="wrap_content"
                 />
 
-        </RelativeLayout>
+        </com.chess.RelLayout>
 
         <!--Daily Chess-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/dailyHeaderView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_header_height"
             android:gravity="center_vertical"
-            android:background="@drawable/daily_games_header_selector"
+            style="@style/ListItem.Header"
             android:paddingLeft="13dip"
             android:paddingRight="8dip"
             >
@@ -151,15 +151,15 @@
                 style="@style/GlyphIcon.Small"
                 />
 
-        </LinearLayout>
+        </com.chess.LinLayout>
 
         <!--Auto-Match-->
-        <RelativeLayout
+        <com.chess.RelLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/default_scr_side_padding"
             android:paddingRight="@dimen/default_scr_side_padding"
-            android:background="@drawable/daily_games_item_default"
+            style="@style/ListItem"
             >
 
             <com.chess.RoboButton
@@ -168,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/auto_match"
-                style="@style/Button.Grey.Solid.Small"
+                style="@style/Button.Glassy.Small"
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@+id/dailyPlayViewCenterPoint"
                 />
@@ -190,16 +190,16 @@
                 style="@style/Button.OrangeNoBorder.Small"
                 />
 
-        </RelativeLayout>
+        </com.chess.RelLayout>
 
         <!-- Friend view 1-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/inviteFriendView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/default_scr_side_padding"
             android:paddingRight="@dimen/default_scr_side_padding"
-            android:background="@drawable/daily_games_item_selector"
+            style="@style/ListItem"
             android:gravity="center_vertical"
             >
 
@@ -234,19 +234,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/invite"
-                style="@style/Button.Grey.Solid.Small"
+                style="@style/Button.Glassy.Small"
                 />
 
-        </LinearLayout>
+        </com.chess.LinLayout>
 
         <!-- Friend view 2-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/inviteFriendView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/default_scr_side_padding"
             android:paddingRight="@dimen/default_scr_side_padding"
-            android:background="@drawable/daily_games_item_selector"
+            style="@style/ListItem"
             android:gravity="center_vertical"
             >
 
@@ -281,19 +281,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/invite"
-                style="@style/Button.Grey.Solid.Small"
+                style="@style/Button.Glassy.Small"
                 />
 
-        </LinearLayout>
+        </com.chess.LinLayout>
 
         <!--Play Friend!-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/playFriendView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/default_scr_side_padding"
             android:paddingRight="8dip"
-            android:background="@drawable/daily_games_item_selector"
+            style="@style/ListItem"
             android:gravity="center_vertical"
             >
 
@@ -326,15 +326,15 @@
                 style="@style/GlyphIcon.Small"
                 />
 
-        </LinearLayout>
+        </com.chess.LinLayout>
 
         <!--vs Computer-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/vsCompHeaderView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_header_height"
             android:gravity="center_vertical"
-            android:background="@drawable/daily_games_header_selector"
+            style="@style/ListItem.Header"
             android:paddingLeft="13dip"
             android:paddingRight="8dip"
             >
@@ -366,7 +366,7 @@
                 style="@style/GlyphIcon.Small"
                 />
 
-        </LinearLayout>
+        </com.chess.LinLayout>
 
         <!--Bottom border for Comp Header-->
         <View

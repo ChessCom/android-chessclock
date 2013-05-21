@@ -78,14 +78,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		showActionBar(true);
 
-//		Fragment homeGamesFragment = new HomePlayFragment();
-//		Fragment homeGamesFragment = new DailyGamesFragment();
-//		changeInternalFragment(homeGamesFragment);
-
 		tabRadioGroup = (RadioGroup) view.findViewById(R.id.tabRadioGroup);
 		tabRadioGroup.setOnCheckedChangeListener(this);
-
-//		previousCheckedId = tabRadioGroup.getCheckedRadioButtonId();
 	}
 
 	@Override

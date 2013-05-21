@@ -76,7 +76,7 @@
 
 		<com.chess.RoboButton
 			android:id="@+id/guestPlayBtn"
-			style="@style/Button.Grey"
+			style="@style/Button.Glassy"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/play_as_guest"

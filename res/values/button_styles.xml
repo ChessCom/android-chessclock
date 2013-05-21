@@ -51,34 +51,33 @@
         <item name="android:minHeight">@dimen/small_orange_button_height</item>
     </style>
 
-    <!--====================================== Grey Buttons =========================================== -->
-    <style name="Button.Grey">
-        <item name="btn_is_solid">false</item>
+    <!--====================================== Glassy Buttons =========================================== -->
+    <style name="Button.Glassy">
+        <item name="btn_is_solid">true</item>
+        <item name="btn_use_border">false</item>
+        <item name="btn_is_glassy">true</item>
         <item name="btn_gradient_angle">TL_BR</item>
 
-        <item name="btn_top">@color/grey_emboss_top</item>
-        <item name="btn_left">@color/grey_emboss_left</item>
-        <item name="btn_right">@color/grey_emboss_right</item>
-        <item name="btn_bottom">@color/grey_emboss_bottom</item>
+        <item name="btn_top">@color/transparent_button_border_top</item>
+        <item name="btn_left">@color/transparent_button_border_left</item>
+        <item name="btn_right">@color/transparent_button_border_right</item>
+        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
 
-        <item name="btn_gradient_start">@color/grey_button_1</item>
-        <item name="btn_gradient_end">@color/grey_button_2</item>
+        <item name="btn_solid">@color/glassy_button</item>
+
+        <item name="btn_gradient_start">@color/transparent_button_border_left</item>
+        <item name="btn_gradient_end">@color/transparent_button_border_top</item>
 
         <item name="android:minHeight">@dimen/grey_button_height</item>
         <item name="android:textColor">@color/new_light_grey</item>
     </style>
 
-    <style name="Button.Grey.Solid">
-        <item name="btn_is_solid">true</item>
-        <item name="btn_top">@color/grey_button_solid_border_top</item>
-        <item name="btn_left">@color/grey_button_solid_border_left</item>
-        <item name="btn_right">@color/grey_button_solid_border_right</item>
-        <item name="btn_bottom">@color/grey_button_solid_border_bottom</item>
-        <item name="btn_solid">@color/grey_button_solid</item>
-
-        <item name="android:textColor">@color/white</item>
+    <style name="Button.Glassy.Small">
+        <item name="android:minHeight">@dimen/small_button_height</item>
+        <item name="android:textSize">13sp</item>
     </style>
 
+    <!--====================================== Grey Buttons =========================================== -->
     <style name="Button.Grey2Solid">
         <item name="btn_bevel_lvl">2</item>
 
@@ -104,25 +103,6 @@
     <style name="Button.Grey2Solid.NoBorder.Light">
         <item name="android:textColor">@color/white</item>
     </style>
-
-    <style name="Button.Grey.Small">
-        <item name="android:minHeight">@dimen/small_button_height</item>
-        <item name="android:textSize">13sp</item>
-    </style>
-
-    <style name="Button.Grey.Solid.Small">
-        <item name="android:minHeight">@dimen/small_button_height</item>
-        <item name="android:textSize">13sp</item>
-    </style>
-
-    <style name="Button.Grey.Dark">
-        <item name="btn_gradient_start">@color/grey_button_half_1</item>
-        <item name="btn_gradient_end">@color/grey_button_half_2</item>
-
-        <item name="android:textColor">@color/white</item>
-        <!--<item name="android:minHeight">@dimen/main_button_height</item>-->
-    </style>
-
     <!--====================================== Blue Buttons =========================================== -->
 
     <!-- Facebook -->
@@ -342,6 +322,36 @@
         <item name="btn_solid">@color/light_green_button</item>
     </style>
 
+    <!--====================================== List Items(can't be derived from Text or Button) =================== -->
+
+    <style name="ListItem">
+        <!--ButtonDrawable params-->
+        <item name="btn_radius">0dip</item>
+        <item name="btn_is_rect">true</item>
+        <item name="btn_padding">@dimen/rounded_button_padding_left</item>
+        <item name="btn_is_solid">true</item>
+        <item name="btn_use_border">false</item>
+        <item name="btn_bevel_lvl">1</item>
+        <item name="btn_bevel_inset">1dip</item> <!--2px-->
+        <item name="btn_use_pressed_layer">false</item>
+
+        <item name="btn_rect_pos">listItem</item>
+
+        <item name="btn_top">@color/transparent_button</item>
+        <item name="btn_left">@color/transparent_button</item>
+        <item name="btn_right">@color/transparent_button_border_right</item>
+        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
+
+        <item name="btn_solid">@color/transparent_button</item>
+
+        <item name="android:minHeight">@dimen/new_daily_games_item_height</item>
+    </style>
+
+    <style name="ListItem.Header">
+        <item name="btn_solid">@color/glassy_button</item>
+
+        <item name="android:minHeight">@dimen/new_daily_games_header_height</item>
+    </style>
 
 
 

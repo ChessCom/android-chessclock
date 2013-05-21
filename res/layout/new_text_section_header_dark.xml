@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.chess.LinLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-    android:background="@drawable/daily_games_header_selector"
+    style="@style/ListItem.Header"
     android:gravity="center_vertical"
     >
 	<com.chess.RoboTextView
@@ -14,4 +16,4 @@
 		android:paddingLeft="8dip"
         android:textColor="@color/new_light_grey"
 		/>
-</LinearLayout>
+</com.chess.LinLayout>

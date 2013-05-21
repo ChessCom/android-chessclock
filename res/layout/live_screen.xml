@@ -40,7 +40,6 @@
 		android:gravity="center"
 		android:layout_gravity="center"
 		android:textSize="20sp"
-		android:textColor="@color/grey_button_1"
 		android:paddingLeft="10dip"
 		robo:ttf="Bold"
 		style="@style/DarkShadowBottom"
@@ -92,7 +91,7 @@
 		android:layout_height="wrap_content"
 		android:drawableLeft="@drawable/ic_chartbar"
 		android:text="@string/stats"
-		style="@style/Button.Grey"
+		style="@style/Button.Glassy"
 		/>
 
 	<com.chess.RoboButton

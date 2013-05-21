@@ -117,7 +117,7 @@ public class EditButton extends RoboEditText {
 
 		} else {
 			setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[0], getCompoundDrawables()[1], null, getCompoundDrawables()[3]);
-			ButtonDrawableBuilder.setBackgroundToView(this, R.style.Button_Grey_Solid);
+			ButtonDrawableBuilder.setBackgroundToView(this, R.style.Button_Glassy);
 //			setBackgroundResource(R.drawable.button_grey_solid_selector);
 			setTextColor(Color.WHITE);
 			float shadowRadius = 0.5f;

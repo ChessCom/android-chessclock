@@ -41,7 +41,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/cancel"
-			style="@style/Button.Grey"
+			style="@style/Button.Glassy"
 			/>
 
 		<com.chess.RoboButton

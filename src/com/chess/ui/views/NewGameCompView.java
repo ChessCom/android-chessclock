@@ -8,6 +8,7 @@ import android.widget.RadioButton;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.ui.engine.configs.NewCompGameConfig;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,9 +31,9 @@ public class NewGameCompView extends NewGameDefaultView {
 		super(context, attrs);
 	}
 
-	public NewGameCompView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-	}
+//	public NewGameCompView(Context context, AttributeSet attrs, int defStyle) {
+//		super(context, attrs, defStyle);
+//	}
 
 	@Override
 	public void onCreate() {
@@ -52,7 +53,8 @@ public class NewGameCompView extends NewGameDefaultView {
 		if(optionsVisible) {
 			compactRelLay.setBackgroundResource(R.drawable.game_option_back_1);
 		} else {
-			compactRelLay.setBackgroundResource(R.drawable.nav_menu_item_selected);
+			ButtonDrawableBuilder.setBackgroundToView(compactRelLay, R.style.ListItem_Header);
+
 		}
 		compactRelLay.setPadding(COMPACT_PADDING, 0, COMPACT_PADDING, COMPACT_PADDING);
 	}

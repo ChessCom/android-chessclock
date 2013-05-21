@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@drawable/daily_games_item_selector"
+    style="@style/ListItem"
     android:gravity="center_vertical"
     android:paddingRight="10dip"
     >

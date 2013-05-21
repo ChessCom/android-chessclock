@@ -8,12 +8,12 @@
     >
 
     <!--Header-->
-    <LinearLayout
+    <com.chess.LinLayout
         android:id="@+id/inviteHeaderView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_header_height"
         android:gravity="center_vertical"
-        android:background="@drawable/daily_games_header_selector"
+        style="@style/ListItem.Header"
         android:paddingLeft="14dip"
         android:paddingRight="10dip"
         >
@@ -45,16 +45,16 @@
             style="@style/GlyphIcon.Small"
             />
 
-    </LinearLayout>
+    </com.chess.LinLayout>
 
     <!--Chess.com Friends-->
-    <LinearLayout
+    <com.chess.LinLayout
         android:id="@+id/chesscomFriendsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="14dip"
         android:paddingRight="10dip"
-        android:background="@drawable/daily_games_item_selector"
+        style="@style/ListItem"
         android:gravity="center_vertical"
         >
 
@@ -84,15 +84,15 @@
             style="@style/GlyphIcon.Small"
             />
 
-    </LinearLayout>
+    </com.chess.LinLayout>
 
     <!--Chess.com Username Play!-->
-    <LinearLayout
+    <com.chess.LinLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="9dip"
         android:paddingRight="10dip"
-        android:background="@drawable/daily_games_item_default"
+        style="@style/ListItem"
         android:gravity="center_vertical"
         >
 
@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/chess_com_username"
-            style="@style/Button.Grey.Solid.Small"
+            style="@style/Button.Glassy.Small"
             android:layout_marginRight="8dip"
             />
 
@@ -111,19 +111,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/new_play_ex"
-            style="@style/Button.Grey.Small"
+            style="@style/Button.Glassy.Small"
             />
 
-    </LinearLayout>
+    </com.chess.LinLayout>
 
     <!--Facebook Friends-->
-    <LinearLayout
+    <com.chess.LinLayout
         android:id="@+id/facebookFriendsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="14dip"
         android:paddingRight="10dip"
-        android:background="@drawable/daily_games_item_selector"
+        style="@style/ListItem"
         android:gravity="center_vertical"
         >
 
@@ -153,16 +153,16 @@
             style="@style/GlyphIcon.Small"
             />
 
-    </LinearLayout>
+    </com.chess.LinLayout>
 
     <!--Your Contacts-->
-    <LinearLayout
+    <com.chess.LinLayout
         android:id="@+id/yourContactsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="14dip"
         android:paddingRight="10dip"
-        android:background="@drawable/daily_games_item_selector"
+        style="@style/ListItem"
         android:gravity="center_vertical"
         >
 
@@ -192,6 +192,6 @@
             style="@style/GlyphIcon.Small"
             />
 
-    </LinearLayout>
+    </com.chess.LinLayout>
 
 </LinearLayout>

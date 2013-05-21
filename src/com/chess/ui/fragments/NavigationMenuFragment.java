@@ -19,6 +19,7 @@ import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.videos.VideosFragment;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -216,9 +217,9 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 			} else {
 				icon.setBackgroundDrawable(null);
 				if (item.selected) {
-					convertView.setBackgroundResource(R.drawable.nav_menu_item_selected);
+					ButtonDrawableBuilder.setBackgroundToView(convertView, R.style.ListItem_Header);
 				} else {
-					convertView.setBackgroundResource(R.drawable.nav_menu_item_selector);
+					ButtonDrawableBuilder.setBackgroundToView(convertView, R.style.ListItem);
 				}
 			}
 

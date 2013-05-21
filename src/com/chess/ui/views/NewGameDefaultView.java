@@ -10,6 +10,7 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.RoboTextView;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,10 +67,10 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 		onCreate();
 	}
 
-	public NewGameDefaultView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		onCreate();
-	}
+//	public NewGameDefaultView(Context context, AttributeSet attrs, int defStyle) {
+//		super(context, attrs, defStyle);
+//		onCreate();
+//	}
 
 	public void onCreate() {
 		setOrientation(VERTICAL);
@@ -118,7 +119,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 			LinearLayout headerView = new LinearLayout(getContext());
 			LayoutParams headerParams = new LayoutParams(LayoutParams.MATCH_PARENT, HEADER_HEIGHT);
 			headerView.setLayoutParams(headerParams);
-			headerView.setBackgroundResource(R.drawable.nav_menu_item_default);
+			ButtonDrawableBuilder.setBackgroundToView(headerView, R.style.ListItem);
 			headerView.setPadding(HEADER_PADDING_LEFT, 0, HEADER_PADDING_RIGHT, 0);
 			headerView.setGravity(Gravity.CENTER_VERTICAL);
 
@@ -150,7 +151,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 		// Compact Options Quick view
 		compactRelLay = new RelativeLayout(getContext());
 		compactRelLay.setLayoutParams(defaultRelativeMatchWidthParams);
-		compactRelLay.setBackgroundResource(R.drawable.nav_menu_item_selected);
+		ButtonDrawableBuilder.setBackgroundToView(compactRelLay, R.style.ListItem_Header);
 		compactRelLay.setPadding(COMPACT_PADDING, 0, COMPACT_PADDING, COMPACT_PADDING);
 
 		{// Add defaultMode View
@@ -252,7 +253,8 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 			compactRelLay.setLayoutParams(optionsVisibleLayoutParams);
 			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0);
 		} else {
-			compactRelLay.setBackgroundResource(R.drawable.nav_menu_item_selected);
+			ButtonDrawableBuilder.setBackgroundToView(compactRelLay, R.style.ListItem_Header);
+
 			compactRelLay.setLayoutParams(defaultMatchWidthParams);
 			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_arrow_right, 0);
 		}

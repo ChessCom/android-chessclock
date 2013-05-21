@@ -4,7 +4,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     >
 
     <LinearLayout
@@ -267,7 +266,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
-            android:background="@color/upgrade_diamond_button"
             android:padding="15dip"
             >
 
@@ -287,7 +285,9 @@
                 android:id="@+id/upgradeBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Button.Upgrade"
+                style="@style/Button.OrangeNoBorder"
+                android:minWidth="@dimen/wide_button_min_width"
+                android:minHeight="@dimen/small_orange_button_height"
                 android:text="@string/upgrade"
                 />
 
