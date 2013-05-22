@@ -24,6 +24,7 @@ import com.chess.db.DBDataManager;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
+import com.chess.ui.fragments.daily.DailyGamesNotificationFragment;
 import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.List;
@@ -58,7 +59,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		// activate Left and right menu fragments
 		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		getActivityFace().changeLeftFragment(new NavigationMenuFragment());
-//		getActivityFace().changeRightFragment(new DailyGamesNotificationFragment());
+		getActivityFace().changeRightFragment(new DailyGamesNotificationFragment());
 	}
 
 	@Override

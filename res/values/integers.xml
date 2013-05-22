@@ -13,4 +13,5 @@
 	<integer name="left_edit_mode_bot">3</integer>
 
     <integer name="notations_per_page">6</integer>
+
 </resources>

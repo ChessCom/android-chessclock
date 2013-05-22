@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.RoboTextView;
@@ -78,7 +79,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			ratingTxt.setTextColor(Color.WHITE);
 			ratingTxt.setId(RATING_ID);
 			ratingTxt.setShadowLayer(0.5f, 0, -1, Color.BLACK);
-			ratingTxt.setFont(RoboTextView.BOLD_FONT);
+			ratingTxt.setFont(FontsHelper.BOLD_FONT);
 			ratingTxt.setGravity(Gravity.CENTER_VERTICAL);
 			ratingTxt.setPadding(0, (int) (3 * density), 0, 0);
 
@@ -98,7 +99,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			ratingChangeTxt.setGravity(Gravity.CENTER_VERTICAL);
 			ratingChangeTxt.setPadding((int)(8 * density), 0, 0, 0);
 			ratingChangeTxt.setShadowLayer(0.5f, 0, -1, Color.BLACK);
-			ratingChangeTxt.setFont(RoboTextView.BOLD_FONT);
+			ratingChangeTxt.setFont(FontsHelper.BOLD_FONT);
 
 			addView(ratingChangeTxt, layoutParams);
 		}
@@ -117,7 +118,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			timePassedParams.gravity = CENTER_VERTICAL;
 			clockIconParams.gravity = CENTER_VERTICAL;
 
-			clockIconTxt.setFont(RoboTextView.ICON_FONT);
+			clockIconTxt.setFont(FontsHelper.ICON_FONT);
 			float clockIconSize = resources.getDimension(R.dimen.new_tactics_clock_icon_size)/density; // 21;
 			clockIconTxt.setTextSize(clockIconSize);
 			clockIconTxt.setText(R.string.glyph_clock);
@@ -131,7 +132,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			float clockTextSize = resources.getDimension(R.dimen.new_tactics_clock_text_size)/density;//16;
 			clockTxt.setTextSize(clockTextSize);
 			clockTxt.setTextColor(resources.getColor(R.color.main_menu_back_top));
-			clockTxt.setFont(RoboTextView.BOLD_FONT);
+			clockTxt.setFont(FontsHelper.BOLD_FONT);
 			clockTxt.setText("--:--");
 			clockTxt.setId(TIME_LEFT_ID);
 			clockLayout.addView(clockTxt, timePassedParams);
@@ -153,7 +154,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			topButton.setTextSize(resources.getDimension(R.dimen.new_tactics_top_result_text_size)/ density);
 			topButton.setMinimumWidth((int) (110 * density));
 			topButton.setText(R.string.wrong);
-			topButton.setFont(RoboTextView.BOLD_FONT);
+			topButton.setFont(FontsHelper.BOLD_FONT);
 			topButton.setDrawableStyle(R.style.Button_Red);
 			topButton.setVisibility(GONE);
 
@@ -172,7 +173,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			practiceTxt.setGravity(Gravity.CENTER);
 			practiceTxt.setPadding(0, 0, (int) (18 * density), 0);
 			practiceTxt.setShadowLayer(0.5f, 0, -1, Color.BLACK);
-			practiceTxt.setFont(RoboTextView.BOLD_FONT);
+			practiceTxt.setFont(FontsHelper.BOLD_FONT);
 			practiceTxt.setVisibility(GONE);
 			practiceTxt.setText(R.string.practice_mode);
 

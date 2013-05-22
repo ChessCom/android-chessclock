@@ -15,12 +15,12 @@
         >
 
         <!--Tactics Header-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/tacticsHeaderView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_header_height"
             android:gravity="center_vertical"
-            android:background="@drawable/light_header_selector"
+            style="@style/ListItem.Header.Light"
             android:paddingLeft="13dip"
             android:paddingRight="8dip"
             >
@@ -40,20 +40,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/tactics"
-                android:textColor="@color/new_subtitle_dark_grey"
-                android:textSize="15sp"
-                android:gravity="center_vertical"
+                style="@style/HeaderTitle.Dark"
                 />
 
             <com.chess.RoboTextView
                 android:id="@+id/tacticsRatingTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:textColor="@color/new_normal_grey"
-                android:textSize="15sp"
+                style="@style/HeaderTitle.Dark"
                 android:text="1200"
-                custom:ttf="Bold"
                 />
 
             <!--Right Icon-->
@@ -65,7 +61,7 @@
                 style="@style/GlyphIcon.Small"
                 />
 
-        </LinearLayout>
+        </com.chess.LinLayout>
 
         <!--Board and info -->
         <RelativeLayout
@@ -161,12 +157,12 @@
         </RelativeLayout>
 
         <!--Lessons Header-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/lessonsHeaderView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_header_height"
             android:gravity="center_vertical"
-            android:background="@drawable/light_header_selector"
+            style="@style/ListItem.Header.Light"
             android:paddingLeft="13dip"
             android:paddingRight="8dip"
             >
@@ -186,9 +182,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/lessons"
-                android:textColor="@color/new_subtitle_dark_grey"
-                android:textSize="15sp"
-                android:gravity="center_vertical"
+                style="@style/HeaderTitle.Dark"
                 />
 
             <com.chess.RoboTextView
@@ -197,9 +191,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:textColor="@color/new_normal_grey"
-                android:textSize="15sp"
+                style="@style/HeaderTitle.Dark"
                 android:text="1200"
-                custom:ttf="Bold"
                 />
 
             <!--Right Icon-->
@@ -211,7 +204,7 @@
                 style="@style/GlyphIcon.Small"
                 />
 
-        </LinearLayout>
+        </com.chess.LinLayout>
 
         <!--Board and info -->
         <RelativeLayout
@@ -269,12 +262,12 @@
         </RelativeLayout>
 
         <!--Videos Header-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/videosHeaderView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_header_height"
             android:gravity="center_vertical"
-            android:background="@drawable/light_header_selector"
+            style="@style/ListItem.Header.Light"
             android:paddingLeft="13dip"
             android:paddingRight="8dip"
             >
@@ -294,9 +287,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/videos"
-                android:textColor="@color/new_subtitle_dark_grey"
-                android:textSize="15sp"
-                android:gravity="center_vertical"
+                style="@style/HeaderTitle.Dark"
                 />
 
             <!--Right Icon-->
@@ -308,7 +299,7 @@
                 style="@style/GlyphIcon.Small"
                 />
 
-        </LinearLayout>
+        </com.chess.LinLayout>
 
         <include layout="@layout/new_videos_thumb_list_item" />
 

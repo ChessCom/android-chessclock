@@ -5,25 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/main_button_height"
     android:animateLayoutChanges="true"
-    android:background="@color/dark_spinner_back"
     android:gravity="center_vertical"
     >
-    <Spinner
+    <com.chess.RoboSpinner
         android:id="@+id/categoriesSpinner"
         android:layout_width="0dip"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/button_dark_spinner_selector"
         android:paddingLeft="7dip"
         android:paddingBottom="4dip"
         />
 
-    <Spinner
+    <com.chess.RoboSpinner
         android:id="@+id/sortSpinner"
         android:layout_width="0dip"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/button_dark_spinner_selector"
+        style="@style/ListItem"
         android:paddingLeft="7dip"
         android:paddingBottom="4dip"
         />
@@ -50,7 +48,7 @@
         android:layout_width="@dimen/main_button_height"
         android:layout_height="@dimen/main_button_height"
         android:src="@drawable/ic_search"
-        android:background="@drawable/button_dark_spinner_selector"
+        android:background="@color/transparent"
         android:contentDescription="@string/search"/>
 
 </LinearLayout>

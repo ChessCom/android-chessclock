@@ -36,12 +36,12 @@
         />
 
     <!--Start New Game-->
-    <LinearLayout
+    <com.chess.LinLayout
         android:id="@+id/newGameButtonView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="14dip"
-        android:background="@drawable/light_header_selector"
+        style="@style/ListItem.Header"
         android:orientation="vertical"
         android:visibility="gone"
         >
@@ -55,7 +55,7 @@
             style="@style/Button.OrangeNoBorder"
             />
 
-    </LinearLayout>
+    </com.chess.LinLayout>
 
     <ListView
         android:id="@+id/listView"

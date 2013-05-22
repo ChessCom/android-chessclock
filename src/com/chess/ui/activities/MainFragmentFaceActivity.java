@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.Menu;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
@@ -18,7 +17,6 @@ import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.sign_in.WelcomeFragment;
-import com.chess.ui.fragments.sign_in.WelcomeTabsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.ui.views.drawables.LogoBackgroundDrawable;
@@ -61,13 +59,13 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		if (savedInstanceState == null) {
 			// set the Above View
-			if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
+//			if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
 				switchFragment(new HomeTabsFragment());
 				showActionBar = true;
-			} else {
-				switchFragment(new WelcomeTabsFragment());
-				showActionBar = false;
-			}
+//			} else {
+//				switchFragment(new WelcomeTabsFragment());
+//				showActionBar = false;
+//			}
 		} else { // fragments state will be automatically restored
 			showActionBar = savedInstanceState.getBoolean(SHOW_ACTION_BAR);
 		}
@@ -192,11 +190,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		openMenuListeners.add(listener);
 	}
 
-//	@Override
-//	public LccHelper getMeLccHolder() {
-//		return getLccHolder();
-//	}
-
 	@Override
 	public void registerGcm() {
 		registerGcmService();
@@ -210,7 +203,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	@Override
 	public void changeRightFragment(CommonLogicFragment fragment) {
 		// set right menu. Left Menu is already set in BaseActivity
-//		rightMenuFragment = new DailyGamesFragment();
 		SlidingMenu sm = getSlidingMenu();
 		sm.setMode(SlidingMenu.LEFT_RIGHT);
 		sm.setSecondaryMenu(R.layout.slide_menu_right_frame);

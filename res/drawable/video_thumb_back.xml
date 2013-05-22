@@ -18,7 +18,7 @@
         android:bottom="1px"
         >
         <shape>
-            <solid android:color="@color/new_friends_top_back"/>
+            <solid android:color="@color/header_light"/>
         </shape>
 
     </item>

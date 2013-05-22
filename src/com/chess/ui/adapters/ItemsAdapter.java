@@ -52,12 +52,12 @@ public abstract class ItemsAdapter<T> extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int pos, View convertView, ViewGroup parent) {
-		if (convertView == null) {
-			convertView = createView(parent);
+	public View getView(int pos, View view, ViewGroup parent) {
+		if (view == null) {
+			view = createView(parent);
 		}
-		bindView(itemsList.get(pos), pos, convertView);
-		return convertView;
+		bindView(itemsList.get(pos), pos, view);
+		return view;
 	}
 
 	protected abstract View createView(ViewGroup parent);

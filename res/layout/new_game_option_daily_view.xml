@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/glyph_daily_game"
-                android:textColor="@color/new_grey_icon_header"
+                android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon"
                 />
 
@@ -46,18 +46,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/glyph_left"
-                android:textColor="@color/new_grey_icon_header"
+                android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon.Small"
                 />
 
         </com.chess.LinLayout>
 
         <!--Opponent-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:layout_width="match_parent"
             android:layout_height="65dip"
             android:gravity="center_vertical"
-            android:background="@drawable/game_option_back_1"
+            style="@style/ListItem"
             android:paddingLeft="@dimen/new_game_frame_padding_side"
             android:paddingRight="@dimen/new_game_frame_padding_side"
             >
@@ -77,13 +77,13 @@
                 style="@style/Button.Glassy.Small"
                 android:layout_marginLeft="12dip"
                 />
-        </LinearLayout>
+        </com.chess.LinLayout>
 
         <!--Days Per Move - Mode-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/game_option_back_1"
+            style="@style/ListItem"
             android:orientation="vertical"
             android:paddingLeft="@dimen/new_game_frame_padding_side"
             android:paddingRight="@dimen/new_game_frame_padding_side"
@@ -115,15 +115,15 @@
                 android:listSelector="@android:color/transparent"
                 />
 
-        </LinearLayout>
+        </com.chess.LinLayout>
 
         <!--I Play As-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/iPlayLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:background="@drawable/game_option_back_1"
+            style="@style/ListItem"
             android:paddingLeft="@dimen/new_game_frame_padding_side"
             android:paddingRight="@dimen/new_game_frame_padding_side"
             >
@@ -142,14 +142,14 @@
                 android:text="@string/random"
                 style="@style/Button.Glassy.Small"
                 />
-        </LinearLayout>
+        </com.chess.LinLayout>
 
         <!--Rated Game-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:layout_width="match_parent"
             android:layout_height="50dip"
             android:gravity="center_vertical"
-            android:background="@drawable/game_option_back_1"
+            style="@style/ListItem"
             android:paddingLeft="@dimen/new_game_frame_padding_side"
             android:paddingRight="@dimen/new_game_frame_padding_side"
             >
@@ -166,14 +166,14 @@
                 style="@style/Switch.Dark"
                 />
 
-        </LinearLayout>
+        </com.chess.LinLayout>
 
         <!--Type-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:background="@drawable/game_option_back_1"
+            style="@style/ListItem"
             android:paddingLeft="@dimen/new_game_frame_padding_side"
             android:paddingRight="@dimen/new_game_frame_padding_side"
             >
@@ -191,14 +191,14 @@
                 android:text="@string/normal"
                 style="@style/Button.Glassy.Small"
                 />
-        </LinearLayout>
+        </com.chess.LinLayout>
 
         <!--Rating View-->
-        <RelativeLayout
+        <com.chess.RelLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:background="@drawable/game_option_back_1"
+            style="@style/ListItem"
             android:paddingLeft="@dimen/new_game_frame_padding_side"
             android:paddingRight="@dimen/new_game_frame_padding_side"
             android:paddingTop="12dip"
@@ -271,14 +271,14 @@
                 android:layout_marginTop="11dip"
                 style="@style/RatingSeekBar"
                 />
-        </RelativeLayout>
+        </com.chess.RelLayout>
 
         <!--Play Button-->
-        <FrameLayout
+        <com.chess.LinLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/new_game_frame_padding_side"
-            android:background="@drawable/game_option_back_1"
+            style="@style/ListItem"
             >
 
             <com.chess.RoboButton
@@ -287,7 +287,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/play"
                 />
-        </FrameLayout>
+        </com.chess.LinLayout>
 
     </LinearLayout>
 </ScrollView>

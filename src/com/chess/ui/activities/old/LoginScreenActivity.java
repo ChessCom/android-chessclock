@@ -2,7 +2,6 @@ package com.chess.ui.activities.old;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
@@ -43,7 +42,7 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 		setContentView(R.layout.login_screen);
 
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+		if (AppUtils.JELLYBEAN_PLUS_API){
 			findViewById(R.id.mainView).setBackground(backgroundChessDrawable);
 		} else {
 			findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);

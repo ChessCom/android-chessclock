@@ -284,7 +284,7 @@ public class HomePlayFragment extends CommonLogicFragment {
 		view.findViewById(R.id.vsCompHeaderView).setOnClickListener(this);
 
 		{ // live options
-			if (HONEYCOMB_PLUS_API) {
+			if (JELLY_BEAN_PLUS_API) {
 				ViewGroup liveOptionsView = (ViewGroup) view.findViewById(R.id.homePlayLinLay);
 				LayoutTransition layoutTransition = liveOptionsView.getLayoutTransition();
 				layoutTransition.enableTransitionType(LayoutTransition.CHANGING);

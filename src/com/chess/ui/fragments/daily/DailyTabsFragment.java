@@ -5,16 +5,16 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.GetAndSaveUserStats;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
-import com.slidingmenu.lib.SlidingMenu;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,15 +32,6 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 		super.onCreate(savedInstanceState);
 
 		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		// activate Left and Right menu fragments
-		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		getActivityFace().changeLeftFragment(new NavigationMenuFragment());
-//		getActivityFace().changeRightFragment(new DailyGamesNotificationFragment());
 	}
 
 	@Override

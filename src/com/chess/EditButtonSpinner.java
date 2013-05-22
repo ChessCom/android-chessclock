@@ -62,7 +62,7 @@ public class EditButtonSpinner extends RoboAutoCompleteTextView {
 		setHint(""); // disable hint
 		closeBtn = resources.getDrawable(R.drawable.ic_clear_text);
 		setSingleLine();
-		setFont(RoboTextView.BOLD_FONT);
+		setFont(FontsHelper.BOLD_FONT);
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
 				android.R.layout.simple_dropdown_item_1line, COUNTRIES);

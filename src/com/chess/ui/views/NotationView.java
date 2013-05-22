@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.statics.StaticData;
@@ -144,7 +145,7 @@ public class NotationView extends LinearLayout {
 				textView.setId(NOTATION_ID);
 				textView.setTextSize(textSize);
 				textView.setTextColor(textColor);
-				textView.setFont(RoboTextView.HELV_NEUE_FONT);
+				textView.setFont(FontsHelper.HELV_NEUE_FONT);
 				textView.setOnClickListener(mOnButtonClicked);
 				textView.setGravity(Gravity.CENTER);
 
@@ -181,7 +182,7 @@ public class NotationView extends LinearLayout {
 				textView.setId(NOTATION_ID);
 				textView.setText(StaticData.SYMBOL_SPACE);
 				textView.setTextSize(textSize);
-				textView.setFont(RoboTextView.HELV_NEUE_FONT);
+				textView.setFont(FontsHelper.HELV_NEUE_FONT);
 				textView.setPadding(textPadding, textPadding, textPadding, textPadding);
 				textView.setGravity(Gravity.CENTER);
 

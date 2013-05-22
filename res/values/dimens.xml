@@ -21,7 +21,8 @@
     <dimen name="default_stroke_width">4px</dimen>
     <dimen name="default_bevel_size">1dip</dimen>
     <dimen name="default_bevel_glassy_size">1px</dimen>
-    <dimen name="rect_edge_offset">2dip</dimen>
+    <!--<dimen name="rect_edge_offset">2dip</dimen>-->
+    <!--<dimen name="rect_edge_offset">2dip</dimen>-->
 
     <!--New Buttons and Fields-->
     <dimen name="facebook_button_height">40dip</dimen>
@@ -264,4 +265,6 @@
     <dimen name="home_play_live_labels_padding_side">25dip</dimen>
     <dimen name="new_right_live_option_button_width">88dip</dimen>
     <dimen name="daily_list_item_image_size">30dip</dimen>
+    <dimen name="header_title_size">15sp</dimen>
+    <dimen name="rect_edge_offset">2dip</dimen>
 </resources>

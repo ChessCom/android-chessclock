@@ -12,8 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
-        android:dividerHeight="0dip"
+        android:dividerHeight="0px"
         android:cacheColorHint="@color/transparent"
+        android:listSelector="@color/transparent"
+        android:scrollbars="none"
         />
 
 </LinearLayout>

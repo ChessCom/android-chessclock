@@ -39,12 +39,14 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 	static final int LIST_ITEM = 9;
 
-	int rectPosition;
+	int rectPosition = DEF_VALUE;
 
 	private int edgeOffset;
+	InsetInfo insetOne = new InsetInfo();
+	InsetInfo insetTwo = new InsetInfo();
 
 	/* state & other values */
-	private boolean initialized;
+	private boolean boundsInit;
 
 	/**
 	 * Use for init ButtonDrawableBuilder
@@ -76,35 +78,41 @@ public class RectButtonDrawable extends ButtonDrawable {
 	@Override
 	void init(Resources resources) {
 		float density = resources.getDisplayMetrics().density;
-		outerRect = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
+		if (radius > 0) {
+			outerRect = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
+		} else {
+			outerRect = null;
+		}
+
 		bevelSize = resources.getDimensionPixelSize(R.dimen.default_bevel_size);
 		bevelRect = new RectF(bevelSize, bevelSize, bevelSize, bevelSize);
 
-		PRESSED_OVERLAY = resources.getColor(R.color.rect_button_overlay_p);
-		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.XOR);
+		int pressedOverlay = resources.getColor(R.color.rect_button_overlay_p);
+		pressedFilter = new PorterDuffColorFilter(pressedOverlay, PorterDuff.Mode.XOR);
 
-		edgeOffset = resources.getDimensionPixelSize(R.dimen.rect_edge_offset);
+		edgeOffset = resources.getDimensionPixelSize(R.dimen.rect_edge_offset); // 4px/ 2px / 2px
 
-				List <LayerInfo> enabledLayers = new ArrayList<LayerInfo>();
+		List <LayerInfo> enabledLayers = new ArrayList<LayerInfo>();
 		List<LayerInfo> pressedLayers = new ArrayList<LayerInfo>();
 
 		insetOne = new InsetInfo();
 		int in1 = (int) (1 * density);
 		bevelInset = 0;
-		insetOne.top = new int[]{bevelInset + 0, bevelInset + 0, bevelInset + 0, bevelInset + in1};
-		insetOne.left = new int[]{bevelInset + 0, bevelInset + in1, bevelInset + 0, bevelInset + in1};
-		insetOne.right = new int[]{bevelInset + in1, bevelInset + in1, bevelInset + 0, bevelInset + in1};
-		insetOne.bottom = new int[]{bevelInset /*+ in1*/, bevelInset + in1, bevelInset + in1, bevelInset + 0};
-		insetOne.button = new int[]{bevelInset + in1, bevelInset + in1, bevelInset + in1, bevelInset + in1};
+		insetOne.top = new int[]{bevelInset, bevelInset, bevelInset, bevelInset + in1};
+		insetOne.left = new int[]{bevelInset, bevelInset + in1, bevelInset, bevelInset + in1};
+		insetOne.right = new int[]{bevelInset + in1, bevelInset + in1, bevelInset, bevelInset + in1};
+		insetOne.bottom = new int[]{bevelInset, bevelInset + in1, bevelInset + in1, bevelInset};
+		insetOne.button = new int[]{bevelInset + in1*2, bevelInset + in1*2, bevelInset + in1*2, bevelInset + in1*2};
 
-		insetTwo = new InsetInfo();
-		int in2 = (int) (2 * density);
-		insetTwo.top = new int[]{insetOne.top[0] + 0, insetOne.top[1] + 0, insetOne.top[2] + 0, insetOne.top[3] + in2};
-		insetTwo.left = new int[]{insetOne.left[0] + 0, insetOne.left[1] + in2, insetOne.left[2] + 0, insetOne.left[3] + in2};
-		insetTwo.right = new int[]{insetOne.right[0] + in2, insetOne.right[1] + in2, insetOne.right[2] + 0, insetOne.right[3] + in2};
-		insetTwo.bottom = new int[]{insetOne.bottom[0] + in2, insetOne.bottom[1] + in2, insetOne.bottom[2] + in2, insetOne.bottom[3] + 0};
-		insetTwo.button = new int[]{insetOne.button[0] + in2, insetOne.button[1] + in2, insetOne.button[2] + in2, insetOne.button[3] + in2};
-
+		if (bevelLvl == 2) {
+			insetTwo = new InsetInfo();
+			int in2 = (int) (2 * density);
+			insetTwo.top = new int[]{insetOne.top[0], insetOne.top[1], insetOne.top[2], insetOne.top[3] + in2};
+			insetTwo.left = new int[]{insetOne.left[0], insetOne.left[1] + in2, insetOne.left[2], insetOne.left[3] + in2};
+			insetTwo.right = new int[]{insetOne.right[0] + in2, insetOne.right[1] + in2, insetOne.right[2], insetOne.right[3] + in2};
+			insetTwo.bottom = new int[]{insetOne.bottom[0] + in2, insetOne.bottom[1] + in2, insetOne.bottom[2] + in2, insetOne.bottom[3]};
+			insetTwo.button = new int[]{insetOne.button[0] + in2, insetOne.button[1] + in2, insetOne.button[2] + in2, insetOne.button[3] + in2};
+		}
 
 		if (useBorder) { // outer border
 			int strokeSize = resources.getDimensionPixelSize(R.dimen.default_stroke_width);
@@ -131,50 +139,60 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-		if (!initialized) {
-			iniLayers(canvas);
+		if (!boundsInit) {
+			initBounds(canvas);
 		}
 
-		switch (rectPosition) {
-			case TOP_LEFT:
-				enabledDrawable.setBounds(-edgeOffset, -edgeOffset, canvas.getWidth() + edgeOffset/2, canvas.getHeight());
-				break;
-			case TOP_MIDDLE:
-				enabledDrawable.setBounds(-edgeOffset/2, -edgeOffset, canvas.getWidth() + edgeOffset/2, canvas.getHeight());
-				break;
-			case TOP_RIGHT:
-				enabledDrawable.setBounds(-edgeOffset/2, -edgeOffset, canvas.getWidth() + edgeOffset, canvas.getHeight());
-				break;
-
-			case TAB_LEFT:
-				enabledDrawable.setBounds(-edgeOffset, 0, canvas.getWidth() + edgeOffset/2, canvas.getHeight());
-				break;
-			case TAB_MIDDLE:
-				enabledDrawable.setBounds(-edgeOffset/2, 0, canvas.getWidth() + edgeOffset/2, canvas.getHeight());
-				break;
-			case TAB_RIGHT:
-				enabledDrawable.setBounds(-edgeOffset/2, 0, canvas.getWidth() + edgeOffset, canvas.getHeight());
-				break;
-
-			case BOTTOM_LEFT:
-				enabledDrawable.setBounds(-edgeOffset, 0, canvas.getWidth() + edgeOffset/2, canvas.getHeight() + edgeOffset);
-				break;
-			case BOTTOM_MIDDLE:
-				enabledDrawable.setBounds(-edgeOffset/2, 0, canvas.getWidth() + edgeOffset/2, canvas.getHeight() + edgeOffset);
-				break;
-			case BOTTOM_RIGHT:
-				enabledDrawable.setBounds(-edgeOffset/2, 0, canvas.getWidth() + edgeOffset, canvas.getHeight() + edgeOffset);
-				break;
-			case LIST_ITEM:
-				enabledDrawable.setBounds(-edgeOffset, 0, canvas.getWidth() + edgeOffset, canvas.getHeight() + edgeOffset);
-				break;
-
-		}
 		super.draw(canvas);
 	}
 
+	private void initBounds(Canvas canvas){
+		int width = canvas.getWidth();
+		int height = canvas.getHeight();
+		switch (rectPosition) {
+			case TOP_LEFT:
+				enabledDrawable.setBounds(-edgeOffset, -edgeOffset, width + edgeOffset/2, height);
+				break;
+			case TOP_MIDDLE:
+				enabledDrawable.setBounds(-edgeOffset/2, -edgeOffset, width + edgeOffset/2, height);
+				break;
+			case TOP_RIGHT:
+				enabledDrawable.setBounds(-edgeOffset/2, -edgeOffset, width + edgeOffset, height);
+				break;
+
+			case TAB_LEFT:
+				enabledDrawable.setBounds(-edgeOffset, 0, width + edgeOffset/2, height);
+				break;
+			case TAB_MIDDLE:
+				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset/2, height);
+				break;
+			case TAB_RIGHT:
+				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset, height);
+				break;
+
+			case BOTTOM_LEFT:
+				enabledDrawable.setBounds(-edgeOffset, 0, width + edgeOffset/2, height + edgeOffset);
+				break;
+			case BOTTOM_MIDDLE:
+				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset/2, height + edgeOffset);
+				break;
+			case BOTTOM_RIGHT:
+				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset, height + edgeOffset);
+				break;
+			case LIST_ITEM:
+				enabledDrawable.setBounds(-edgeOffset, -edgeOffset/2, width + edgeOffset, height + edgeOffset/2);
+				break;
+
+		}
+		boundsInit = true;
+	}
+
+	/**
+	 * Use override because we are using own inset* object
+	 * @param enabledLayers layers to fill with
+	 */
 	@Override
-	protected void createDefaultState(List<LayerInfo> enabledLayers) {   // TODO it can be improved!
+	protected void createDefaultState(List<LayerInfo> enabledLayers) {
 		createLayer(colorTop, insetOne.top, enabledLayers);
 		createLayer(colorBottom, insetOne.bottom, enabledLayers); // order is important
 		createLayer(colorLeft, insetOne.left, enabledLayers);
@@ -205,40 +223,7 @@ public class RectButtonDrawable extends ButtonDrawable {
 			enabledDrawable.setLayerInset(i, layer.leftInSet, layer.topInSet, layer.rightInSet, layer.bottomInSet);
 		}
 
-		addState(new int[]{}, enabledDrawable);
-	}
-
-	@Override
-	protected void createPressedState(List<LayerInfo> pressedLayers) {
-		createLayer(colorTopP, insetOne.top, pressedLayers);
-		createLayer(colorBottomP, insetOne.bottom, pressedLayers);
-		createLayer(colorLeftP, insetOne.left, pressedLayers);
-		createLayer(colorRightP, insetOne.right, pressedLayers);
-
-		if (bevelLvl == 2) {
-			createLayer(colorTop2P, insetTwo.top, pressedLayers);
-			createLayer(colorBottom2P, insetTwo.bottom, pressedLayers);
-			createLayer(colorLeft2P, insetTwo.left, pressedLayers);
-			createLayer(colorRight2P, insetTwo.right, pressedLayers);
-		}
-
-		int[] button = bevelLvl == 1 ? insetOne.button : insetTwo.button;
-		int color = isSolid ? colorSolidP : TRANSPARENT;
-		createLayer(color, button, pressedLayers, true);
-
-		int levelCnt = pressedLayers.size();
-		Drawable[] pressedDrawables = new Drawable[levelCnt]; // TODO improve that mess
-		for (int i = 0; i < levelCnt; i++) {
-			LayerInfo layerInfo = pressedLayers.get(i);
-			pressedDrawables[i] = layerInfo.shapeDrawable;
-		}
-		pressedDrawable = new LayerDrawable(pressedDrawables);
-		for (int i = 0; i < levelCnt; i++) { // start from 2nd level, first is shadow
-			LayerInfo layer = pressedLayers.get(i);
-			pressedDrawable.setLayerInset(i, layer.leftInSet, layer.topInSet, layer.rightInSet, layer.bottomInSet);
-		}
-
-		addState(new int[]{android.R.attr.state_pressed}, pressedDrawable);
+		addState(ENABLED_STATE, enabledDrawable);
 	}
 
 	@Override
@@ -257,6 +242,5 @@ public class RectButtonDrawable extends ButtonDrawable {
 			array.recycle();
 		}
 	}
-
 
 }

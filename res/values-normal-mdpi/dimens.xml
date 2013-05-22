@@ -139,5 +139,7 @@
     <dimen name="home_play_live_labels_padding_side">25dip</dimen>
     <dimen name="new_right_live_option_button_width">75dip</dimen>
     <dimen name="daily_list_item_image_size">30dip</dimen>
+    <dimen name="header_title_size">15sp</dimen>
+    <dimen name="rect_edge_offset">1dip</dimen>
 
 </resources>

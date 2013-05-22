@@ -9,8 +9,6 @@
 
 
     <style name="OrangeButtonTheme" parent="MyAppTheme">
-        <!--<item name="android:windowIsTranslucent">true</item>-->
-        <!--<item name="android:windowBackground">@drawable/img_theme_green_felt</item>-->
         <item name="android:buttonStyle">@style/Text.Button</item>
         <item name="android:textAppearanceSmall">@style/Text</item>
         <item name="android:editTextStyle">@style/DefaultEdt</item>
@@ -18,7 +16,7 @@
         <item name="android:spinnerStyle">@style/Spinner</item>
         <item name="android:checkboxStyle">@style/CheckBox</item>
         <item name="android:radioButtonStyle">@style/RadioButton</item>
-		<!--<item name="android:listViewStyle">@style/DefaultListView</item>-->
+		<item name="android:listViewStyle">@style/DefaultListView</item>
 		<item name="android:listChoiceIndicatorSingle">@drawable/btn_radio_selector</item>
 		<item name="timerLabelStyle">@style/GameLabel.Timer</item>
 		<item name="greyButton">@style/Button.Glassy</item>

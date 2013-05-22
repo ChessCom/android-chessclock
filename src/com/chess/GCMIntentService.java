@@ -48,10 +48,9 @@ import java.util.Random;
  */
 public class GCMIntentService extends GCMBaseIntentService {
 
-	@SuppressWarnings("hiding")
+//	@SuppressWarnings("hiding")
 	private static final String TAG = "GCMIntentService";
 	private static final String TOKEN = Long.toBinaryString(new Random().nextLong());
-	public static final String OBJECT_SYMBOL = "{";
 	private Context context;
 	private SharedPreferences preferences;
 

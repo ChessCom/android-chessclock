@@ -249,7 +249,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 
 	protected void toggleCompactView() {
 		if(optionsVisible) {
-			compactRelLay.setBackgroundResource(R.drawable.game_option_back_1);
+			ButtonDrawableBuilder.setBackgroundToView(compactRelLay, R.style.ListItem);
 			compactRelLay.setLayoutParams(optionsVisibleLayoutParams);
 			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0);
 		} else {

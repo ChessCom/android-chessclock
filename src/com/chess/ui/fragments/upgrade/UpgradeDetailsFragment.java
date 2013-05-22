@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.RoboTextView;
@@ -251,7 +252,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		monthCheckBox.setEnabled(!planConfig.isMonthPayed());
 		// per year
 		yearView.setBackgroundResource(planConfig.payViewColorId);
-		yearView.setPadding(0, (int) (12 * density), 0, (int) (16 * density));
+		yearView.setPadding(0, (int) (12 * density), 0, (int) (16 * density)); // TODO improve performance
 
 		yearValueTxt.setText(planConfig.yearValue);
 		yearValueTxt.setTextColor(planConfig.titleColor);
@@ -273,7 +274,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 		unlockTitleTxt.setTextColor(planConfig.subTitleColor);
 		unlockTitleTxt.setText(planConfig.unlockFeaturesTitleId);
-		unlockTitleTxt.setFont(RoboTextView.ITALIC_FONT);
+		unlockTitleTxt.setFont(FontsHelper.ITALIC_FONT);
 		unlockTitleTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
 		unlockTitleTxt.setPadding(0, 0, 0, (int) (7 * density));
 		descriptionView.addView(unlockTitleTxt, params);
@@ -282,9 +283,9 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			RoboTextView featureTxt = new RoboTextView(getActivity());
 			featureTxt.setText(feature);
 			featureTxt.setTextColor(planConfig.subTitleColor);
-			featureTxt.setFont(RoboTextView.BOLD_FONT);
+			featureTxt.setFont(FontsHelper.BOLD_FONT);
 			featureTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
-			featureTxt.setPadding(0, 0, 0, (int) (6 * density));
+			featureTxt.setPadding(0, 0, 0, (int) (6 * density));    // TODO remove hardcode
 
 			descriptionView.addView(featureTxt, params);
 		}

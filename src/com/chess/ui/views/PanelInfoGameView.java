@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.ui.engine.ChessBoard;
@@ -187,7 +188,7 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 			timeLeftTxt.setTextColor(resources.getColor(R.color.light_grey));
 			timeLeftTxt.setBackgroundResource(R.drawable.back_grey_emboss);
 			timeLeftTxt.setId(TIME_LEFT_ID);
-			timeLeftTxt.setFont(RoboTextView.BOLD_FONT);
+			timeLeftTxt.setFont(FontsHelper.BOLD_FONT);
 			timeLeftTxt.setGravity(Gravity.CENTER_VERTICAL);
 			setTimeLeftPadding();
 

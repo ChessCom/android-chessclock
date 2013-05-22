@@ -3,24 +3,12 @@ package com.chess;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
 import java.io.Serializable;
 
 public class RoboTextView extends TextView implements Serializable {
-
-	private static final long serialVersionUID = -2417945858405913303L;
-	public static final String MAIN_PATH = "fonts/custom-"; // Default font is Trebuchet MS
-	public static final String DEFAULT_FONT = "Regular";
-	public static final String BOLD_FONT = "Bold";
-	public static final String ICON_FONT = "Icon"; // Chess.com Glyph
-	public static final String ITALIC_FONT = "Italic";
-	public static final String HELV_NEUE_FONT = "Neue"; // HelveticaNeue
-	public static final String HELV_NEUE_BOLD_FONT = "NeueBold"; // HelveticaNeue
-
-	private String ttfName = DEFAULT_FONT;
 
 	public RoboTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -41,6 +29,7 @@ public class RoboTextView extends TextView implements Serializable {
 		if (array == null) {
 			return;
 		}
+		String ttfName = null;
 		try {
 			if (array.hasValue(R.styleable.RoboTextView_ttf)) {
 				ttfName = array.getString(R.styleable.RoboTextView_ttf);
@@ -49,19 +38,17 @@ public class RoboTextView extends TextView implements Serializable {
 			array.recycle();
 		}
 
-        init(context);
+        init(context, ttfName);
     }
 
-    private void init(Context context) {
-		if (!isInEditMode()) {
-			Typeface font = Typeface.createFromAsset(context.getAssets(), MAIN_PATH + ttfName + ".ttf");
-			setTypeface(font);
+    private void init(Context context, String ttfName) {
+		if (!isInEditMode() && ttfName != null) {
+			setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
 		}
     }
 
 	public void setFont(String font) {
-		ttfName = font;
-		init(getContext());
+		init(getContext(), font);
 	}
 
 }

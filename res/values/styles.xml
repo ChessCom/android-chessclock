@@ -61,6 +61,21 @@
         <item name="android:textSize">@dimen/glyph_icon_big</item>
     </style>
 
+    <style name="HeaderTitle">
+        <item name="android:textSize">@dimen/header_title_size</item>
+        <item name="ttf">Bold</item>
+    </style>
+
+    <style name="HeaderTitle.Light">
+        <item name="android:textColor">@color/new_list_header_text</item>
+    </style>
+
+    <style name="HeaderTitle.Dark">
+        <item name="android:textColor">@color/new_subtitle_dark_grey</item>
+    </style>
+
+
+
     <style name="list_text" >
         <item name="android:textColor">@color/text_black</item>
         <item name="android:textStyle">bold</item>
@@ -110,6 +125,16 @@
         <item name="android:background">@null</item>
         <item name="android:gravity">center</item>
         <item name="android:minHeight">20dip</item>
+    </style>
+
+    <style name="DefaultListView">
+        <item name="android:background">@null</item>
+        <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">0px</item>
+        <item name="android:cacheColorHint">@color/transparent</item>
+        <item name="android:listSelector">@color/transparent</item>
+        <item name="android:fadingEdge">none</item>
+        <item name="android:scrollbars">none</item>
     </style>
 
 	<style name="DefaultAutoComplete" parent="DefaultEdt" >
@@ -266,7 +291,7 @@
 		<item name="android:gravity">center_vertical</item>
 	</style>
 
-	<style name="LinearListItem">
+	<style name="LinearListItem" parent="ListItem">
 		<item name="android:paddingLeft">15dip</item>
 		<item name="android:paddingRight">15dip</item>
 		<item name="android:minHeight">@dimen/default_list_item_height</item>

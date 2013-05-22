@@ -45,7 +45,7 @@
     
     
     <style name="ActionBarCompat">
-        <item name="android:background">#eee</item>
+        <item name="android:background">@color/transparent</item>
     </style>
 
     <style name="ActionBarCompatItemBase">

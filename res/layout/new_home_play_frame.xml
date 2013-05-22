@@ -28,18 +28,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/glyph_live_standard"
-                android:textColor="@color/new_grey_icon_header"
-                style="@style/GlyphIcon"
+                android:textColor="@color/new_light_grey_2"
+                style="@style/GlyphIcon.Big"
                 />
 
             <com.chess.RoboTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawablePadding="8dip"
                 android:text="@string/live_chess"
-                android:textColor="@color/new_list_header_text"
-                android:gravity="center_vertical"
+                style="@style/HeaderTitle.Light"
                 />
 
             <com.chess.RoboTextView
@@ -57,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/glyph_right"
-                android:textColor="@color/new_grey_icon_header"
+                android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon.Small"
                 />
 
@@ -67,8 +65,7 @@
             android:id="@+id/liveOptionsView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="8dip"
-            android:paddingBottom="8dip"
+            android:padding="8dip"
             android:paddingLeft="@dimen/default_scr_side_padding"
             android:paddingRight="@dimen/default_scr_side_padding"
             style="@style/ListItem"
@@ -119,8 +116,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/glyph_daily_game"
-                android:textColor="@color/new_grey_icon_header"
-                style="@style/GlyphIcon"
+                android:textColor="@color/new_light_grey_2"
+                style="@style/GlyphIcon.Big"
                 />
 
             <com.chess.RoboTextView
@@ -128,8 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/daily_chess"
-                android:textColor="@color/new_list_header_text"
-                android:gravity="center_vertical"
+                style="@style/HeaderTitle.Light"
                 />
 
             <com.chess.RoboTextView
@@ -147,7 +143,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/glyph_right"
-                android:textColor="@color/new_grey_icon_header"
+                android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon.Small"
                 />
 
@@ -227,6 +223,7 @@
                 android:layout_weight="1"
                 android:paddingLeft="4dip"
                 android:text="(Friend Name)"
+                android:textColor="@color/new_light_grey"
                 />
 
             <com.chess.RoboButton
@@ -274,6 +271,7 @@
                 android:layout_weight="1"
                 android:paddingLeft="4dip"
                 android:text="(Friend Name)"
+                android:textColor="@color/new_light_grey"
                 />
 
             <com.chess.RoboButton
@@ -344,8 +342,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/glyph_comp_game"
-                android:textColor="@color/new_grey_icon_header"
-                style="@style/GlyphIcon"
+                android:textColor="@color/new_light_grey_2"
+                style="@style/GlyphIcon.Big"
                 />
 
             <com.chess.RoboTextView
@@ -353,8 +351,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/vs_computer"
-                android:textColor="@color/new_list_header_text"
-                android:gravity="center_vertical"
+                style="@style/HeaderTitle.Light"
                 />
 
             <!--Right Icon-->
@@ -362,7 +359,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/glyph_right"
-                android:textColor="@color/new_grey_icon_header"
+                android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon.Small"
                 />
 

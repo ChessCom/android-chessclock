@@ -8,14 +8,11 @@ import android.util.AttributeSet;
 import android.widget.Button;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
-import com.chess.ui.views.drawables.smart_button.RectButtonDrawable;
 import com.chess.utilities.AppUtils;
 
 import java.io.Serializable;
 
 public class RoboButton extends Button implements Serializable {
-
-	private static final long serialVersionUID = -7816685707888388856L;
 
 	private String ttfName = "Bold";
 
@@ -50,44 +47,12 @@ public class RoboButton extends Button implements Serializable {
 	}
 
     private void init(Context context, AttributeSet attrs) {
-		if (!isInEditMode()) {
-			Typeface font = Typeface.createFromAsset(context.getAssets(), RoboTextView.MAIN_PATH + ttfName + ".ttf");
+		if (!isInEditMode() && ttfName != null) {
+			Typeface font = FontsHelper.getInstance().getTypeFace(context, ttfName);
 			setTypeface(font);
 		}
-
-		if (attrs != null) {
-			TypedArray array =context.obtainStyledAttributes(attrs, R.styleable.RoboButton);
-			if (array == null) {
-				return;
-			}
-			boolean isRect = false;
-			try {
-				if (!array.hasValue(R.styleable.RoboButton_btn_is_solid)) {
-					return;
-				}
-				isRect = array.getBoolean(R.styleable.RoboButton_btn_is_rect, false);
-			} finally {
-				array.recycle();
-			}
-
-			if (isRect) {
-				RectButtonDrawable background = new RectButtonDrawable(getContext(), attrs);
-				if (AppUtils.HONEYCOMB_PLUS_API) {
-					setBackground(background);
-				} else {
-					setBackgroundDrawable(background);
-				}
-			} else {
-				ButtonDrawable background = new ButtonDrawable(getContext(), attrs);
-				if (AppUtils.HONEYCOMB_PLUS_API) {
-					setBackground(background);
-				} else {
-					setBackgroundDrawable(background);
-				}
-			}
-		}
-
-    }
+		ButtonDrawableBuilder.setBackgroundToView(this, attrs);
+	}
 
 	public void setFont(String font) {
 		ttfName = font;
@@ -96,7 +61,7 @@ public class RoboButton extends Button implements Serializable {
 
 	public void setDrawableStyle(int styleId) {
 		ButtonDrawable buttonDrawable = ButtonDrawableBuilder.createDrawable(getContext(), styleId);
-		if (AppUtils.HONEYCOMB_PLUS_API) {
+		if (AppUtils.JELLYBEAN_PLUS_API) {
 			setBackground(buttonDrawable);
 		} else {
 			setBackgroundDrawable(buttonDrawable);

@@ -94,7 +94,7 @@ public class AppUtils {
 	}
 
 	public static void setBackground(View mainView, Context context) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+		if (JELLYBEAN_PLUS_API){
 			mainView.setBackground(new BackgroundChessDrawable(context));
 		} else {
 			mainView.setBackgroundDrawable(new BackgroundChessDrawable(context));

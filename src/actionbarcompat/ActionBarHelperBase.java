@@ -25,6 +25,7 @@ import android.text.TextWatcher;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
+import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.statics.AppConstants;
@@ -120,8 +121,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 			RoboTextView titleText = new RoboTextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
 			titleText.setLayoutParams(layoutParams);
 			titleText.setText(titleChars);
-//			titleText.setId(R.id.actionbar_compat_title);
-			titleText.setFont(RoboTextView.BOLD_FONT);
+			titleText.setFont(FontsHelper.BOLD_FONT);
 			actionBarCompat.addView(titleText);
 		} else {
 			actionBarCompat.addView(customView, layoutParams);

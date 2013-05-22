@@ -66,12 +66,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	public static final int CENTER_MODE = 1;
 	public static final int RIGHT_MENU_MODE = 2;
 
-	//	private LoginUpdateListener loginUpdateListener;
 	private LoginUpdateListenerNew loginUpdateListener;
 
 	private int loginReturnCode;
 	private ActiveFragmentInterface activityFace;
-	//	protected static Facebook facebook;
 	protected static Handler handler;
 	private EditText loginUsernameEdt;
 	private EditText passwordEdt;
@@ -100,11 +98,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		handler = new Handler();
 		setHasOptionsMenu(true);
 	}
-
-//	protected void setTitle(int titleId) {
-//		getActivity().setTitle(titleId);
-//	}
-
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -399,7 +392,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	protected void processLogin(RegisterItem.Data returnedObj) {
-		if (passwordEdt == null) { // if accidently return in wrong callback, when widgets are not initialized
+		if (passwordEdt == null) { // if accidentally return in wrong callback, when widgets are not initialized
 			return;
 		}
 
@@ -453,7 +446,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				getActivityFace().toggleRightMenu();
 				break;
 			case R.id.menu_notifications:
-				getActivityFace().changeRightFragment(new DailyGamesNotificationFragment());
+				CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(DailyGamesNotificationFragment.class.getSimpleName());
+				if (fragment == null) {
+					fragment = new DailyGamesNotificationFragment();
+				}
+				getActivityFace().changeRightFragment(fragment);
 				getActivityFace().toggleRightMenu();
 				break;
 		}

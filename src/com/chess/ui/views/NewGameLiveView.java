@@ -61,7 +61,7 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 		optionsView.setVisibility(expandVisibility);
 
 		if (optionsVisible) {
-			compactRelLay.setBackgroundResource(R.drawable.game_option_back_1);
+			ButtonDrawableBuilder.setBackgroundToView(compactRelLay, R.style.ListItem);
 		} else {
 			ButtonDrawableBuilder.setBackgroundToView(compactRelLay, R.style.ListItem_Header);
 		}

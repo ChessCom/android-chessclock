@@ -1,12 +1,12 @@
 package com.chess.ui.activities;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
 import com.chess.ui.views.drawables.LogoBackgroundDrawable;
+import com.chess.utilities.AppUtils;
 
 public class SplashActivity extends CommonLogicActivity {
 
@@ -19,7 +19,7 @@ public class SplashActivity extends CommonLogicActivity {
 
 		LogoBackgroundDrawable logoBackgroundDrawable = new LogoBackgroundDrawable(this);
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+		if (AppUtils.JELLYBEAN_PLUS_API){
 			findViewById(R.id.mainView).setBackground(logoBackgroundDrawable);
 		} else {
 			findViewById(R.id.mainView).setBackgroundDrawable(logoBackgroundDrawable);

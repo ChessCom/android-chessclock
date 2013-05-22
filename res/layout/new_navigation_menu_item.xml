@@ -3,11 +3,11 @@
 <com.chess.LinLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/new_nav_menu_item_height"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/new_nav_menu_item_height"
     android:orientation="horizontal"
     style="@style/ListItem"
     android:gravity="center_vertical">
-
 
     <ImageView
         android:id="@+id/iconImg"

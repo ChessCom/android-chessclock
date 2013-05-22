@@ -118,7 +118,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		rightButton.setId(BASE_ID + RIGHT_BUTTON_ID);
 		rightButton.setText(viewConfig.getRightButtonTextId());
 		rightButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, BUTTON_TEXT_SIZE);
-		rightButton.setFont(RoboTextView.BOLD_FONT);
+		rightButton.setFont(FontsHelper.BOLD_FONT);
 
 		compactRelLay.addView(rightButton, rightButtonParams);
 

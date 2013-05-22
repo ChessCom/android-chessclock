@@ -19,7 +19,6 @@ import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.videos.VideosFragment;
-import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 
 		menuItems = new ArrayList<NavigationMenuItem>();
 		menuItems.add(new NavigationMenuItem(getString(R.string.home), R.drawable.ic_nav_home));
-		menuItems.add(new NavigationMenuItem(getString(R.string.upgrade), R.drawable.ic_nav_upgrade));
+		menuItems.add(new NavigationMenuItem(getString(R.string.upgrade), R.drawable.ic_nav_upgrade_shine));
 		menuItems.add(new NavigationMenuItem(getString(R.string.play_daily), R.drawable.ic_nav_play_daily));
 		menuItems.add(new NavigationMenuItem(getString(R.string.play_live), R.drawable.ic_nav_play_live));
 		menuItems.add(new NavigationMenuItem(getString(R.string.tactics), R.drawable.ic_nav_tactics));
@@ -96,7 +95,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				getActivityFace().switchFragment(new HomeTabsFragment());
 				getActivityFace().toggleLeftMenu();
 				break;}
-			case R.drawable.ic_nav_upgrade:{
+			case R.drawable.ic_nav_upgrade_shine:{
 				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(UpgradeFragment.class.getSimpleName());
 				if(fragmentByTag == null) {
 					fragmentByTag = new UpgradeFragment();
@@ -198,35 +197,30 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			return inflater.inflate(R.layout.new_navigation_menu_item, parent, false);
+			View view = inflater.inflate(R.layout.new_navigation_menu_item, parent, false);
+			ViewHolder holder = new ViewHolder();
+			holder.icon = (ImageView) view.findViewById(R.id.iconImg);
+			holder.title = (TextView) view.findViewById(R.id.rowTitleTxt);
+			view.setTag(holder);
+
+			return view;
 		}
 
 		@Override
-		protected void bindView(NavigationMenuItem item, int pos, View convertView) {
-			ImageView icon = (ImageView) convertView.findViewById(R.id.iconImg);
-			icon.setImageResource(item.iconRes);
-			TextView title = (TextView) convertView.findViewById(R.id.rowTitleTxt);
-			title.setText(item.tag);
-
-			if (pos == UPGRADE_POS){
-				if (item.selected)
-					convertView.setBackgroundResource(R.drawable.upgrade_menu_item_back_selected);
-				else {
-					convertView.setBackgroundResource(R.drawable.upgrade_menu_item_back_selector);
-				}
-			} else {
-				icon.setBackgroundDrawable(null);
-				if (item.selected) {
-					ButtonDrawableBuilder.setBackgroundToView(convertView, R.style.ListItem_Header);
-				} else {
-					ButtonDrawableBuilder.setBackgroundToView(convertView, R.style.ListItem);
-				}
-			}
+		protected void bindView(NavigationMenuItem item, int pos, View view) {
+			ViewHolder holder = (ViewHolder) view.getTag();
+			holder.icon.setImageResource(item.iconRes);
+			holder.title.setText(item.tag);
 
 		}
 
 		public Context getContext() {
 			return context;
+		}
+
+		public class ViewHolder {
+			ImageView icon;
+			TextView title;
 		}
 	}
 }

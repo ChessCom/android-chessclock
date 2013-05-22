@@ -59,7 +59,7 @@ public class EditButton extends RoboEditText {
 		setHint(""); // disable hint
 		closeBtn = resources.getDrawable(R.drawable.ic_clear_text);
 		setSingleLine();
-		setFont(RoboTextView.BOLD_FONT);
+		setFont(FontsHelper.BOLD_FONT);
 
 		defaultMinWidth = (int) resources.getDimension(R.dimen.button_min_width);
 	}

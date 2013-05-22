@@ -12,8 +12,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import com.chess.FontsHelper;
 import com.chess.R;
-import com.chess.RoboTextView;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
@@ -133,16 +133,15 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		yellowPaint.setStyle(Style.STROKE);
 		yellowPaint.setColor(Color.YELLOW);
 
-		Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), RoboTextView.MAIN_PATH + "Bold.ttf");
-		int coordinateFont = getResources().getInteger(R.integer.board_highlight_font);
-		int coordinateColor = getResources().getColor(R.color.coordinate_color);
+		int coordinateFont = resources.getInteger(R.integer.board_highlight_font);
+		int coordinateColor = resources.getColor(R.color.coordinate_color);
 
 //		coordinatesPaint.setStrokeWidth(1.0f);
 		coordinatesPaint.setStyle(Style.FILL);
 		coordinatesPaint.setColor(coordinateColor);
 //		coordinatesPaint.setShadowLayer(1.5f, 1.0f, 1.5f, 0xFF000000);
 		coordinatesPaint.setTextSize(coordinateFont * density);
-		coordinatesPaint.setTypeface(typeface);
+		coordinatesPaint.setTypeface(FontsHelper.getInstance().getTypeFace(getContext(), FontsHelper.BOLD_FONT));
 
 		madeMovePaint.setStrokeWidth(3.0f);
 		madeMovePaint.setStyle(Style.STROKE);
@@ -152,7 +151,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		greenPaint.setStyle(Style.STROKE);
 		greenPaint.setColor(Color.GREEN);
 
-		int possibleMoveHighlight = getResources().getColor(R.color.possible_move_highlight);
+		int possibleMoveHighlight = resources.getColor(R.color.possible_move_highlight);
 		greenHighlightPaint.setStrokeWidth(4.0f);
 		greenHighlightPaint.setStyle(Style.FILL);
 		greenHighlightPaint.setColor(possibleMoveHighlight);

@@ -8,7 +8,7 @@
     >
 
     <!--3 days Play!-->
-    <RelativeLayout
+    <com.chess.RelLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="12dip"
@@ -39,10 +39,10 @@
             android:layout_marginRight="1dip"
             />
 
-    </RelativeLayout>
+    </com.chess.RelLayout>
 
     <!-- Friend view 1-->
-    <LinearLayout
+    <com.chess.LinLayout
         android:id="@+id/inviteFriendView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,10 +86,10 @@
             style="@style/Button.Glassy.Small"
             />
 
-    </LinearLayout>
+    </com.chess.LinLayout>
 
     <!-- Friend view 2-->
-    <LinearLayout
+    <com.chess.LinLayout
         android:id="@+id/inviteFriendView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -135,10 +135,10 @@
             style="@style/Button.Glassy.Small"
             />
 
-    </LinearLayout>
+    </com.chess.LinLayout>
 
     <!--Play Friend!-->
-    <LinearLayout
+    <com.chess.LinLayout
         android:id="@+id/playFriendView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -177,10 +177,10 @@
             style="@style/GlyphIcon.Small"
             />
 
-    </LinearLayout>
+    </com.chess.LinLayout>
 
     <!--Options-->
-    <LinearLayout
+    <com.chess.LinLayout
         android:id="@+id/dailyOptionsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -207,6 +207,6 @@
             style="@style/GlyphIcon.Small"
             />
 
-    </LinearLayout>
+    </com.chess.LinLayout>
 
 </LinearLayout>

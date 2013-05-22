@@ -5,10 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
@@ -145,20 +142,29 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			return inflater.inflate(R.layout.new_settings_menu_item, parent, false);
+			View view = inflater.inflate(R.layout.new_settings_menu_item, parent, false);
+			ViewHolder holder = new ViewHolder();
+			holder.icon = (TextView) view.findViewById(R.id.iconTxt);
+			holder.title = (TextView) view.findViewById(R.id.rowTitleTxt);
+			view.setTag(holder);
+
+			return view;
 		}
 
 		@Override
-		protected void bindView(SettingsMenuItem item, int pos, View convertView) {
-			TextView icon = (TextView) convertView.findViewById(R.id.iconTxt);
-			icon.setText(item.iconRes);
-
-			TextView title = (TextView) convertView.findViewById(R.id.rowTitleTxt);
-			title.setText(item.nameId);
+		protected void bindView(SettingsMenuItem item, int pos, View view) {
+			ViewHolder holder = (ViewHolder) view.getTag();
+			holder.icon.setText(item.iconRes);
+			holder.title.setText(item.nameId);
 		}
 
 		public Context getContext() {
 			return context;
+		}
+
+		public class ViewHolder {
+			TextView icon;
+			TextView title;
 		}
 	}
 }

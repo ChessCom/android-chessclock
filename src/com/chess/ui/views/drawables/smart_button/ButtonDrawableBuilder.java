@@ -2,6 +2,8 @@ package com.chess.ui.views.drawables.smart_button;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.util.AttributeSet;
 import android.view.View;
 import com.chess.R;
 import com.chess.utilities.AppUtils;
@@ -51,10 +53,45 @@ public class ButtonDrawableBuilder {
 
 	public static void setBackgroundToView(View view, int styleId) {
 		ButtonDrawable buttonDrawable = createDrawable(view.getContext(), styleId);
-		if (AppUtils.HONEYCOMB_PLUS_API) {
+		if (AppUtils.JELLYBEAN_PLUS_API) {
 			view.setBackground(buttonDrawable);
 		} else {
 			view.setBackgroundDrawable(buttonDrawable);
+		}
+	}
+
+	public static void setBackgroundToView(View view, AttributeSet attrs) {
+		Context context = view.getContext();
+		if (context != null && attrs != null) {                            // TODO hide to Builder
+			TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.RoboButton);
+			if (array == null) {
+				return;
+			}
+			boolean isRect = false;
+			try {
+				if (!array.hasValue(R.styleable.RoboButton_btn_is_solid)) {
+					return;
+				}
+				isRect = array.getBoolean(R.styleable.RoboButton_btn_is_rect, false);
+			} finally {
+				array.recycle();
+			}
+
+			if (isRect) {
+				RectButtonDrawable background = new RectButtonDrawable(context, attrs);
+				if (AppUtils.JELLYBEAN_PLUS_API) {
+					view.setBackground(background);
+				} else {
+					view.setBackgroundDrawable(background);
+				}
+			} else {
+				ButtonDrawable background = new ButtonDrawable(context, attrs);
+				if (AppUtils.JELLYBEAN_PLUS_API) {
+					view.setBackground(background);
+				} else {
+					view.setBackgroundDrawable(background);
+				}
+			}
 		}
 	}
 

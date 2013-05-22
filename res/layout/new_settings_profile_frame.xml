@@ -15,7 +15,7 @@
         <requestFocus />
 
         <!--First Name-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
@@ -55,17 +55,10 @@
                 android:paddingLeft="11dip"
                 />
 
-        </LinearLayout>
-
-        <!--Divider-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/new_friends_list_divider"
-            />
+        </com.chess.LinLayout>
 
         <!--Last Name-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
@@ -105,17 +98,10 @@
                 android:paddingLeft="11dip"
                 />
 
-        </LinearLayout>
-
-        <!--Divider-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/new_friends_list_divider"
-            />
+        </com.chess.LinLayout>
 
         <!--Location-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
@@ -156,17 +142,10 @@
                 android:paddingLeft="11dip"
                 />
 
-        </LinearLayout>
-
-        <!--Divider-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/new_friends_list_divider"
-            />
+        </com.chess.LinLayout>
 
         <!--Country-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/countryLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -214,17 +193,10 @@
                 style="@style/GlyphIcon.Small"
                 />
 
-        </LinearLayout>
-
-        <!--Divider-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/new_friends_list_divider"
-            />
+        </com.chess.LinLayout>
 
         <!--Profile Picture-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/userPhotoLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -252,17 +224,10 @@
                 android:layout_height="@dimen/img_profile_size_big"
                 />
 
-        </LinearLayout>
-
-        <!--Blue Divider-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/light_blue_1"
-            />
+        </com.chess.LinLayout>
 
         <!--Membership renew-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
@@ -291,17 +256,10 @@
                 android:text="@string/upgrade"
                 />
 
-        </LinearLayout>
-
-        <!--Blue Divider-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/light_blue_1"
-            />
+        </com.chess.LinLayout>
 
         <!--Invite Friends-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
@@ -327,17 +285,10 @@
                 android:text="@string/share"
                 />
 
-        </LinearLayout>
-
-        <!--Divider-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/new_friends_list_divider"
-            />
+        </com.chess.LinLayout>
 
         <!--Terms-->
-        <RelativeLayout
+        <com.chess.RelLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
@@ -353,7 +304,7 @@
                 style="@style/SettingsListText"
                 />
 
-        </RelativeLayout>
+        </com.chess.RelLayout>
 
     </LinearLayout>
 

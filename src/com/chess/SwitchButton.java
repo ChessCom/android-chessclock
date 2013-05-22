@@ -156,7 +156,7 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 			buttonParams.addRule(RelativeLayout.CENTER_VERTICAL);
 			buttonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
-			if (AppUtils.HONEYCOMB_PLUS_API) {
+			if (AppUtils.JELLYBEAN_PLUS_API) {
 				handleButton.setBackground(handleDrawable);
 			} else {
 				handleButton.setBackgroundDrawable(handleDrawable);
@@ -289,13 +289,13 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 
 	private void setBackOn(boolean on) {
 		if (on) {
-			if (AppUtils.HONEYCOMB_PLUS_API) {
+			if (AppUtils.JELLYBEAN_PLUS_API) {
 				setBackground(backOnDrawable);
 			} else {
 				setBackgroundDrawable(backOnDrawable);
 			}
 		} else {
-			if (AppUtils.HONEYCOMB_PLUS_API) {
+			if (AppUtils.JELLYBEAN_PLUS_API) {
 				setBackground(backOffDrawable);
 			} else {
 				setBackgroundDrawable(backOffDrawable);

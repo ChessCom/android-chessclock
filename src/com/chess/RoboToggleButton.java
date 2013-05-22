@@ -3,15 +3,12 @@ package com.chess;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.ToggleButton;
 
 import java.io.Serializable;
 
 public class RoboToggleButton extends ToggleButton implements Serializable {
-
-	private static final long serialVersionUID = -7816685707888388856L;
 
 	private String ttfName = "Bold";
 
@@ -46,9 +43,8 @@ public class RoboToggleButton extends ToggleButton implements Serializable {
 	}
 
 	private void init(Context context) {
-		if (!isInEditMode()) {
-			Typeface font = Typeface.createFromAsset(context.getAssets(), RoboTextView.MAIN_PATH + ttfName + ".ttf");
-			setTypeface(font);
+		if (!isInEditMode() && ttfName != null) {
+			setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
 		}
 	}
 

@@ -8,9 +8,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboButton;
-import com.chess.RoboTextView;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 import java.util.HashMap;
@@ -142,7 +142,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 	RoboButton getDefaultButton() {
 		RoboButton button = new RoboButton(getContext());
-		button.setFont(RoboTextView.ICON_FONT);
+		button.setFont(FontsHelper.ICON_FONT);
 		button.setTextSize(controlIconSize);
 		button.setTextColor(controlIconColor);
 		button.setOnClickListener(this);

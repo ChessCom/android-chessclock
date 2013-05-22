@@ -3,7 +3,6 @@ package com.chess;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.CheckBox;
 
@@ -41,9 +40,8 @@ public class RoboCheckBox extends CheckBox {
 	}
 
 	private void init(Context context) {
-		if (!isInEditMode()) {
-			Typeface font = Typeface.createFromAsset(context.getAssets(), RoboTextView.MAIN_PATH + ttfName + ".ttf");
-			setTypeface(font);
+		if (!isInEditMode() && ttfName != null) {
+			setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
 		}
 	}
 

@@ -36,7 +36,6 @@
 			/>
 
 		<!--Divider-->
-		<include layout="@layout/divider_view" />
 
 		<LinearLayout
 			android:id="@+id/afterIMoveLayout"
@@ -88,7 +87,6 @@
 			robo:ttf="Bold"
 			/>
 		<!--Divider-->
-		<include layout="@layout/divider_view" />
 
 		<!--Show Live Submit Button-->
 		<com.chess.RoboCheckBox
@@ -157,7 +155,6 @@
 			/>
 
 		<!--Divider-->
-		<include layout="@layout/divider_view" />
 
 
 		<LinearLayout
@@ -194,7 +191,6 @@
 			/>
 
 		<!--Divider-->
-		<include layout="@layout/divider_view" />
 
 
 		<!-- Language -->
