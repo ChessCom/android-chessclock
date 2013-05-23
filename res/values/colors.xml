@@ -180,20 +180,13 @@
     
     <color name="f_stroke">#FF899dc2</color>
 
-    <color name="dashboard_button">#FF3d3d3d</color>
-
-    <color name="blue">#FF183b94</color>
     <color name="orange">#FFf97028</color>
 
 
     <color name="popup_back_white">#EFf8faf6</color>
     <color name="popup_white_border_grey">#FF918f8d</color>
 
-    <color name="top_bar_stroke_1">#FF5e5e5e</color>
-    <color name="top_bar_stroke_2">#FF404040</color>
 
-    <color name="action_bar_overlay">#33000000</color>
-    <color name="action_bar_border">#26FFFFFF</color>
 
 	<color name="transparent">#00000000</color>
 	<color name="disabled">#FF7a7a7a</color>
@@ -202,9 +195,6 @@
 	<color name="semitransparent_white">#46FFFFFF</color>
 	<color name="semitransparent_white_1">#AFFFFFFF</color>
 
-    <!--Sliding Menu-->
-    <color name="holo_blue_bright">#ff00ddff</color>
-
     <!--Badge colors-->
     <color name="action_badge_border_1">#ff000000</color>
     <color name="action_badge_border_top">#FFb54144</color>
@@ -212,19 +202,6 @@
     <color name="action_badge_main_1">#FFb32c32</color>
     <color name="action_badge_main_2">#FFa5292b</color>
 
-
-
-    <!--Navigation Menu-->
-    <color name="nav_menu_item">#00000000</color>
-    <color name="nav_menu_item_p">#33000000</color>
-    <color name="nav_menu_item_s">#33FFFFFF</color> <!--selected-->
-    <color name="nav_menu_border_top">#2F000000</color>
-    <!--<color name="nav_menu_border_top">#FFFF0000</color>-->
-    <color name="nav_menu_border_top_1">#15FFFFFF</color>
-    <color name="nav_menu_border_top_highlighted">#004e4d4c</color>
-    <!--<color name="nav_menu_border_bot">#2F000000</color>-->
-    <color name="nav_menu_border_bot">#00FF0000</color>
-    <!--<color name="nav_menu_upgrade_shine">#228796a5</color>-->
 
     <!--Upgrade Menu Item-->
     <color name="new_upgrade_menu_1">#00383b3d</color>
@@ -239,38 +216,28 @@
     <color name="new_upgrade_menu_glow_1_p">#ffafc3d9</color>
     <color name="new_upgrade_menu_glow_1_s">#ffafc3d9</color>
 
-    <!--TabsHome-->
-    <color name="tab_home_shadow">#26000000</color>
+    <!--Main ActionBar overlay color-->
+    <color name="action_bar_overlay">#33000000</color>   <!--Should be the same as checked color for tabs-->
 
-    <!--TabsHome Buttons-->
-    <color name="tab_home_button">#FF312e2b</color>
-    <color name="tab_home_button_p">#ff181613</color>
-    <color name="tab_home_button_c">#FF24221f</color>
-    <color name="tab_home_button_border_left">#FF44413e</color>
-    <color name="tab_home_button_border_left_p">#FF11100f</color>
-    <color name="tab_home_button_border_bottom">#FF141312</color>
-    <color name="tab_home_button_border_right">#FF171614</color>
-    <color name="tab_home_button_border_right_p">#FF11100f</color>
-    <color name="tab_home_button_shadow">#FF000000</color>
+    <!--Custom Button Drawable main colors-->
 
-    <color name="default_button_overlay_p">#33000000</color> <!--20% transparent black-->
+    <color name="default_button_overlay_p">#44000000</color> <!--20% transparent black-->
     <color name="default_button_overlay_s">#33FFFFFF</color>
+    <color name="default_button_overlay_c">#88000000</color>
     <color name="glassy_button_overlay_p">#66000000</color>
-    <color name="glassy_button_overlay_s">#66FFFFFF</color>
-    <color name="rect_button_overlay_p">#11000000</color>
+    <color name="glassy_button_overlay_s">#99000000</color>
+    <color name="rect_button_overlay_p">#33000000</color>
+    <color name="rect_button_overlay_c">#12000000</color> <!--Good!-->
 
     <color name="transparent_button">#00100000</color>
-    <color name="glassy_button">#48000000</color>
-    <!--<color name="glassy_button">#FFFF0000</color>-->
+    <color name="glassy_button">#33000000</color>
     <color name="grey_button_1">#FF524d48</color>
     <color name="grey_button_solid">#FF413d39</color>
 
-<!--
-    <color name="transparent_button_border_top">#FFFF0000</color>
-    <color name="transparent_button_border_left">#FF00FF00</color>
-    <color name="transparent_button_border_bottom">#FF0000FF</color>
-    <color name="transparent_button_border_right">#FFF0F000</color>
--->
+    <!--<color name="transparent_button_border_top">#FFFF0000</color>-->
+    <!--<color name="transparent_button_border_left">#FF00FF00</color>-->
+    <!--<color name="transparent_button_border_bottom">#FF0000FF</color>-->
+    <!--<color name="transparent_button_border_right">#FFF0F000</color>-->
 
     <color name="transparent_button_border_top">#4F000000</color>
     <color name="transparent_button_border_left">#15FFFFFF</color>
@@ -289,21 +256,6 @@
     <color name="transparent_button_border_right_2">#FF000000</color>
 -->
 
-    <!--DailyGames-->
-    <color name="daily_games_item_border_top">#22393633</color>
-    <color name="daily_games_item_border_top_p">#222f2c29</color>
-    <color name="daily_games_item_border_top_s">#223e3b38</color>
-    <color name="daily_games_item_border_bot">#2222201e</color>
-    <color name="daily_games_item">#22312e2a</color>
-    <color name="daily_games_item_p">#22272420</color>
-    <color name="daily_games_item_s">#22413d39</color>
-    <color name="daily_games_header_back">#001d1c1a</color>
-    <color name="daily_games_header_back_p">#22131210</color>
-    <color name="daily_games_header_back_s">#66252422</color> <!--selected-->
-    <color name="daily_games_header_back_border_top">#222c2b2a</color>
-    <color name="daily_games_header_back_border_bot">#220e0e0d</color>
-    <color name="daily_games_header_back_border_bot_1">#223d3b38</color>
-
     <!--LightHeader-->
     <color name="light_header_back">#22f4f4f4</color>
     <color name="light_header_back_p">#22c2c2c2</color>
@@ -311,10 +263,6 @@
     <color name="light_header_back_border_top_1">#22FFFFFF</color>
     <color name="light_header_back_border_bot">#22dfdfdf</color>
     <!--<color name="light_header_back_border_bot_1">#FF3d3b38</color>-->
-
-    <!--New Game Options-->
-    <color name="game_option_1_back_top">#FF363330</color>
-    <color name="game_option_1_back_bot">#FF22201e</color>
 
     <!--SeekBar-->
     <color name="seek_background">#FF22201e</color>
@@ -389,6 +337,7 @@
 
     <!--Friends-->
     <color name="header_light">#FFf4f4f4</color>
+    <color name="header_dark">#66000000</color>
 
     <color name="new_text_blue">#FF0d5988</color>
     <color name="new_text_blue_dark">#FF0e344d</color>
@@ -399,7 +348,7 @@
     <color name="new_friends_list_divider">#FFdfdfdf</color>
 
     <!--Notations-->
-    <color name="notations_back">#7F22201e</color>
+    <color name="notations_back">#66000000</color>
 
 
     <!--Videos-->
@@ -421,14 +370,6 @@
     <color name="new_common_list_thumb_grey">#FF797979</color>
     <!--<color name="new_list_header_text">#FF818181</color>-->
     <color name="new_list_header_text">#FFFFFFFF</color>
-
-    <!--Dark Spinner-->
-<!--    <color name="dark_spinner_back">#FF312e2b</color>
-    <color name="dark_spinner_border_left">#FF3c3936</color>
-    <color name="dark_spinner_border_right">#FF282523</color>
-    <color name="dark_spinner_back_p">#ff262320</color>
-    <color name="dark_spinner_border_left_p">#ff33302d</color>
-    <color name="dark_spinner_border_right_p">#ff23201d</color>-->
 
     <!--Stats-->
     <color name="stats_label_grey">#ff65605b</color>

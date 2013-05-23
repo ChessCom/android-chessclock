@@ -203,7 +203,6 @@
                 android:layout_width="@dimen/list_item_image_size"
                 android:layout_height="@dimen/list_item_image_size"
                 android:src="@drawable/img_profile_picture_stub"
-                android:background="@color/tab_home_button"
                 android:layout_marginRight="12dip"
                 android:contentDescription="@string/image"
                 />
@@ -226,14 +225,6 @@
                 android:textColor="@color/new_light_grey"
                 />
 
-            <com.chess.RoboButton
-                android:id="@+id/inviteFriend1Btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/invite"
-                style="@style/Button.Glassy.Small"
-                />
-
         </com.chess.LinLayout>
 
         <!-- Friend view 2-->
@@ -251,7 +242,6 @@
                 android:layout_width="@dimen/list_item_image_size"
                 android:layout_height="@dimen/list_item_image_size"
                 android:src="@drawable/img_profile_picture_stub"
-                android:background="@color/tab_home_button"
                 android:layout_marginRight="12dip"
                 android:contentDescription="@string/image"
                 />
@@ -274,14 +264,6 @@
                 android:textColor="@color/new_light_grey"
                 />
 
-            <com.chess.RoboButton
-                android:id="@+id/inviteFriend2Btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/invite"
-                style="@style/Button.Glassy.Small"
-                />
-
         </com.chess.LinLayout>
 
         <!--Play Friend!-->
@@ -302,7 +284,7 @@
                 android:text="@string/glyph_play_friend"
                 android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon"
-                android:background="@color/grey_button_solid"
+                android:background="@color/new_soft_grey"
                 android:padding="0dip"
                 />
 
@@ -315,14 +297,6 @@
                 android:paddingLeft="12dip"
                 />
 
-            <!--Right Icon-->
-            <com.chess.RoboTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/glyph_right"
-                android:textColor="@color/hint_text"
-                style="@style/GlyphIcon.Small"
-                />
 
         </com.chess.LinLayout>
 
@@ -364,13 +338,6 @@
                 />
 
         </com.chess.LinLayout>
-
-        <!--Bottom border for Comp Header-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/daily_games_header_back_border_bot_1"
-            />
 
     </LinearLayout>
 </ScrollView>

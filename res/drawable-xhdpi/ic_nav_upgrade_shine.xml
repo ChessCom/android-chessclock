@@ -19,5 +19,6 @@
 
     <!--Icon-->
     <item
-        android:drawable="@drawable/ic_nav_upgrade" />
+        android:drawable="@drawable/ic_nav_upgrade"
+        />
 </layer-list>

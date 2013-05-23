@@ -11,9 +11,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import com.chess.FontsHelper;
 import com.chess.R;
+import com.chess.RelLayout;
 import com.chess.RoboTextView;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
@@ -27,7 +27,7 @@ import com.chess.utilities.AppUtils;
  * @author alien_roger
  * @created at: 06.03.12 7:39
  */
-public class PanelInfoGameView extends RelativeLayout implements View.OnClickListener {
+public class PanelInfoGameView extends RelLayout implements View.OnClickListener {
 
 	public static final int AVATAR_ID = 0x00004400;
 	public static final int PLAYER_ID = 0x00004401;
@@ -49,6 +49,7 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 	private int side;
 	private boolean smallScreen;
 	private float density;
+	private Resources resources;
 
 	public PanelInfoGameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -58,7 +59,7 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 	public void onCreate(AttributeSet attrs) {
 		boolean useSingleLine;
 		Context context = getContext();
-		Resources resources = context.getResources();
+		resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
 
 		if (AppUtils.HONEYCOMB_PLUS_API) {
@@ -123,7 +124,6 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 				playerParams.addRule(ALIGN_PARENT_LEFT);
 			} else {
 				playerParams.addRule(RIGHT_OF, AVATAR_ID);
-//				playerParams.addRule(ALIGN_TOP, AVATAR_ID);
 				playerParams.addRule(ALIGN_PARENT_TOP);
 			}
 
@@ -232,10 +232,10 @@ public class PanelInfoGameView extends RelativeLayout implements View.OnClickLis
 		// change timeLeft color and background
 		if (side == ChessBoard.WHITE_SIDE) {
 			timeLeftTxt.setBackgroundResource(R.drawable.back_white_emboss);
-			timeLeftTxt.setTextColor(getContext().getResources().getColor(R.color.new_main_back));
+			timeLeftTxt.setTextColor(resources.getColor(R.color.new_main_back));
 		} else {
 			timeLeftTxt.setBackgroundResource(R.drawable.back_grey_emboss);
-			timeLeftTxt.setTextColor(getContext().getResources().getColor(R.color.light_grey));
+			timeLeftTxt.setTextColor(resources.getColor(R.color.light_grey));
 		}
 		setTimeLeftPadding();
 

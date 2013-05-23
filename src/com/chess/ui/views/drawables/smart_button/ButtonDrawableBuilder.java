@@ -37,7 +37,7 @@ public class ButtonDrawableBuilder {
 
 	private static RectButtonDrawable setRectDefaults(Context context) {
 		Resources resources = context.getResources();
-		RectButtonDrawable buttonDrawable = new RectButtonDrawable();
+		RectButtonDrawable buttonDrawable = new RectButtonDrawable();// TODO improve code - remove duplicates
 		buttonDrawable.isSolid = true;
 		buttonDrawable.useBorder = true;
 		buttonDrawable.usePressedLayer = false;
@@ -96,130 +96,138 @@ public class ButtonDrawableBuilder {
 	}
 
 	public static ButtonDrawable createDrawable(Context context, int styleId) {
-		ButtonDrawable buttonDrawable = setDefaults(context);
+
 
 		Resources resources = context.getResources();
-		switch (styleId) {
-			case R.style.Button_Red:
-				createRed(buttonDrawable, resources);
+		if (styleId == R.style.Button_Red) {
+			ButtonDrawable buttonDrawable = setDefaults(context);
+			createRed(buttonDrawable, resources);
 
-				return buttonDrawable;
-			case R.style.Button_Green_Light:
-				createGreenLight(buttonDrawable, resources);
+			return buttonDrawable;
+		} else if (styleId == R.style.Button_Green_Light) {
+			ButtonDrawable buttonDrawable = setDefaults(context);
+			createGreenLight(buttonDrawable, resources);
 
-				return buttonDrawable;
-			case R.style.Button_OrangeNoBorder:
-				createOrangeNoBorder(buttonDrawable, resources);
+			return buttonDrawable;
+		} else if (styleId == R.style.Button_OrangeNoBorder) {
+			ButtonDrawable buttonDrawable = setDefaults(context);
+			createOrangeNoBorder(buttonDrawable, resources);
 
-				return buttonDrawable;
-			case R.style.Button_Brown:
-				createBrown(buttonDrawable, resources);
+			return buttonDrawable;
+		} else if (styleId == R.style.Button_Brown) {
+			ButtonDrawable buttonDrawable = setDefaults(context);
+			createBrown(buttonDrawable, resources);
 
-				return buttonDrawable;
-			case R.style.Button_Grey2Solid_NoBorder:
-				createGrey2SolidNoBorder(buttonDrawable, resources);
+			return buttonDrawable;
+		} else if (styleId == R.style.Button_Grey2Solid_NoBorder) {
+			ButtonDrawable buttonDrawable = setDefaults(context);
+			createGrey2SolidNoBorder(buttonDrawable, resources);
 
-				return buttonDrawable;
-			case R.style.Button_Grey2Solid_NoBorder_Light:
-				createGrey2SolidNoBorder(buttonDrawable, resources); // should set text color to white
+			return buttonDrawable;
+		} else if (styleId == R.style.Button_Grey2Solid_NoBorder_Light) {
+			ButtonDrawable buttonDrawable = setDefaults(context);
+			createGrey2SolidNoBorder(buttonDrawable, resources); // should set text color to white
 
-				return buttonDrawable;
-			case R.style.Button_White:
-				createWhite(buttonDrawable, resources);
+			return buttonDrawable;
+		} else if (styleId == R.style.Button_White) {
+			ButtonDrawable buttonDrawable = setDefaults(context);
+			createWhite(buttonDrawable, resources);
 
-				return buttonDrawable;
-			case R.style.Button_Glassy:
-				createGlassy(buttonDrawable, resources);
+			return buttonDrawable;
+		} else if (styleId == R.style.Button_Glassy) {
+			ButtonDrawable buttonDrawable = setDefaults(context);
+			createGlassy(buttonDrawable, resources);
 
-				return buttonDrawable;
-			case R.style.Rect_TopLeft:
-				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
-				createRect(rectButtonDrawable, resources);
+			return buttonDrawable;
+		} else if (styleId == R.style.Rect_TopLeft) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = TOP_LEFT;
+			createRect(rectButtonDrawable, resources);
 
-				rectButtonDrawable.rectPosition = TOP_LEFT;
-				return rectButtonDrawable;
-			case R.style.Rect_TopMiddle:
-				rectButtonDrawable = setRectDefaults(context);
-				createRect(rectButtonDrawable, resources);
+			return rectButtonDrawable;
+		} else if (styleId == R.style.Rect_TopMiddle) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = TOP_MIDDLE;
+			createRect(rectButtonDrawable, resources);
 
-				rectButtonDrawable.rectPosition = TOP_MIDDLE;
-				return rectButtonDrawable;
-			case R.style.Rect_TopRight:
-				rectButtonDrawable = setRectDefaults(context);
-				createRect(rectButtonDrawable, resources);
+			return rectButtonDrawable;
+		} else if (styleId == R.style.Rect_TopRight) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = TOP_RIGHT;
+			createRect(rectButtonDrawable, resources);
 
-				rectButtonDrawable.rectPosition = TOP_RIGHT;
-				return rectButtonDrawable;
-			case R.style.Rect_TabLeft:
-				rectButtonDrawable = setRectDefaults(context);
-				createRect(rectButtonDrawable, resources);
+			return rectButtonDrawable;
+		} else if (styleId == R.style.Rect_Tab_Left) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = TAB_LEFT;
+			createRect(rectButtonDrawable, resources);
 
-				rectButtonDrawable.rectPosition = TAB_LEFT;
-				return rectButtonDrawable;
-			case R.style.Rect_TabMiddle:
-				rectButtonDrawable = setRectDefaults(context);
-				createRect(rectButtonDrawable, resources);
+			return rectButtonDrawable;
+		} else if (styleId == R.style.Rect_Tab_Middle) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = TAB_MIDDLE;
+			createRect(rectButtonDrawable, resources);
 
-				rectButtonDrawable.rectPosition = TAB_MIDDLE;
-				return rectButtonDrawable;
-			case R.style.Rect_TabRight:
-				rectButtonDrawable = setRectDefaults(context);
-				createRect(rectButtonDrawable, resources);
+			return rectButtonDrawable;
+		} else if (styleId == R.style.Rect_Tab_Right) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = TAB_RIGHT;
+			createRect(rectButtonDrawable, resources);
 
-				rectButtonDrawable.rectPosition = TAB_RIGHT;
-				return rectButtonDrawable;
-			case R.style.Rect_Bottom_Left:
-				rectButtonDrawable = setRectDefaults(context);
-				createRect(rectButtonDrawable, resources);
+			return rectButtonDrawable;
+		} else if (styleId == R.style.Rect_Bottom_Left) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = BOTTOM_LEFT;
+			createRect(rectButtonDrawable, resources);
 
-				rectButtonDrawable.rectPosition = BOTTOM_LEFT;
-				return rectButtonDrawable;
-			case R.style.Rect_Bottom_Middle:
-				rectButtonDrawable = setRectDefaults(context);
-				createRect(rectButtonDrawable, resources);
+			return rectButtonDrawable;
+		} else if (styleId == R.style.Rect_Bottom_Middle) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = BOTTOM_MIDDLE;
+			createRect(rectButtonDrawable, resources);
 
-				rectButtonDrawable.rectPosition = BOTTOM_MIDDLE;
-				return rectButtonDrawable;
-			case R.style.Rect_Bottom_Right:
-				rectButtonDrawable = setRectDefaults(context);
-				createRect(rectButtonDrawable, resources);
+			return rectButtonDrawable;
+		} else if (styleId == R.style.Rect_Bottom_Right) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
+			createRect(rectButtonDrawable, resources);
 
-				rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
-				return rectButtonDrawable;
-			case R.style.ListItem:
-				rectButtonDrawable = setRectDefaults(context);
-				createRect(rectButtonDrawable, resources);
+			return rectButtonDrawable;
+		} else if (styleId == R.style.ListItem) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = LIST_ITEM;
+			createRect(rectButtonDrawable, resources);
 
-				rectButtonDrawable.rectPosition = LIST_ITEM;
-				return rectButtonDrawable;
-			case R.style.ListItem_Header:
-				rectButtonDrawable = setRectDefaults(context);
-				createRect(rectButtonDrawable, resources, R.color.glassy_button);
+			return rectButtonDrawable;
+		} else if (styleId == R.style.ListItem_Header) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = LIST_ITEM;
+			createRect(rectButtonDrawable, resources, R.color.glassy_button);
 
-				rectButtonDrawable.rectPosition = LIST_ITEM;
-				return rectButtonDrawable;
-			case R.style.Rect_Bottom_Right_Orange:  // TODO group
-				rectButtonDrawable = setRectDefaults(context);
-				createRect(rectButtonDrawable, resources, R.color.orange_button_flat);
+			return rectButtonDrawable;
+		} else if (styleId == R.style.Rect_Bottom_Right_Orange) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
+			createRect(rectButtonDrawable, resources, R.color.orange_button_flat);
 
-				rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
-				return rectButtonDrawable;
-			case R.style.Rect_Bottom_Right_Red:
-				rectButtonDrawable = setRectDefaults(context);
-				createRect(rectButtonDrawable, resources, R.color.red_button);
+			return rectButtonDrawable;
+		} else if (styleId == R.style.Rect_Bottom_Right_Red) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
+			createRect(rectButtonDrawable, resources, R.color.red_button);
 
-				rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
-				return rectButtonDrawable;
-			case R.style.Rect_Bottom_Right_Green:
-				rectButtonDrawable = setRectDefaults(context);
-				createRect(rectButtonDrawable, resources, R.color.light_green_button);
+			return rectButtonDrawable;
+		} else if (styleId == R.style.Rect_Bottom_Right_Green) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
+			createRect(rectButtonDrawable, resources, R.color.light_green_button);
 
-				rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
-				return rectButtonDrawable;
-			default /*R.style.Button_Orange2*/:
-				createOrange2(buttonDrawable, resources);
+			return rectButtonDrawable;
+		} else {
+			ButtonDrawable buttonDrawable = setDefaults(context);
+			createOrange2(buttonDrawable, resources);
 
-				return buttonDrawable;
+			return buttonDrawable;
 		}
 	}
 
@@ -359,9 +367,9 @@ public class ButtonDrawableBuilder {
 		buttonDrawable.bevelLvl = 1;
 
 		// Colors for bevel
-		buttonDrawable.colorTop = resources.getColor(R.color.transparent_button_border_top);
-		buttonDrawable.colorLeft = resources.getColor(R.color.transparent_button_border_left);
-		buttonDrawable.colorRight = resources.getColor(R.color.transparent_button_border_right);
+		buttonDrawable.colorTop = resources.getColor(R.color.transparent_button_border_left);
+//		buttonDrawable.colorLeft = resources.getColor(R.color.transparent_button_border_left);
+//		buttonDrawable.colorRight = resources.getColor(R.color.transparent_button_border_right);
 		buttonDrawable.colorBottom = resources.getColor(R.color.transparent_button_border_bottom);
 		// Button colors
 		buttonDrawable.colorSolid = resources.getColor(buttonColor);

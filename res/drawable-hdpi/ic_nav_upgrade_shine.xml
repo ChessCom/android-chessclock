@@ -13,7 +13,6 @@
                 android:endColor="@color/new_upgrade_menu_glow_3"
                 android:gradientRadius="25"
                 android:type="radial" />
-
         </shape>
     </item>
 

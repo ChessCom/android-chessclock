@@ -101,7 +101,7 @@
     </style>
 
 
-    <style name="NotationsStyle">
+    <style name="NotationsStyle" parent="ListItem.Header.Dark">
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_marginTop">@dimen/notations_margin_top</item>
     </style>
@@ -183,7 +183,7 @@
     <style name="RadioButton" parent="android:Widget.CompoundButton.RadioButton">
         <item name="android:button">@drawable/btn_radio_selector</item>
         <item name="android:textSize">17sp</item>
-        <item name="android:textColor">@color/hint_text</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">normal</item>
 		<item name="android:layout_marginTop">2dip</item>
 		<item name="android:layout_marginBottom">2dip</item>

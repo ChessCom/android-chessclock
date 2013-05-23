@@ -7,6 +7,7 @@ import android.net.Uri;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.ui.interfaces.BoardFace;
+import com.chess.utilities.AppUtils;
 
 import static com.chess.backend.statics.AppConstants.*;
 
@@ -317,8 +318,15 @@ public class AppData {
 		setIntValue(context, PREF_THEME_BACK_ID, themeId);
 	}
 
+	/**
+	 * Get saved theme background Id
+	 * @param context
+	 * @return
+	 */
 	public static int getThemeBackId(Context context) {
-		return getIntValue(context, PREF_THEME_BACK_ID, R.drawable.img_theme_green_felt);
+		int backId = getIntValue(context, PREF_THEME_BACK_ID, R.drawable.img_theme_green_felt);
+		return AppUtils.isThemeBackIdValid(backId) ? backId : R.drawable.img_theme_green_felt;
+//		return R.color.white;
 	}
 
 

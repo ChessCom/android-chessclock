@@ -19,12 +19,12 @@
 	<style name="AppTheme" parent="android:style/Theme.Holo.Light">
 		<item name="android:actionBarStyle">@style/ActionBar</item>
 		<item name="android:actionButtonStyle">@style/ActionButton</item>
-		<!--<item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>-->
+		<!--<item name="android:windowContentOverlay">@color/transparent</item>-->
 		<item name="android:selectableItemBackground">@drawable/action_bar_item_selector</item>
 	</style>
 
 	<style name="NoTitle" parent="android:style/Theme.Holo.Light.NoActionBar">
-		<item name="android:windowBackground">@color/black</item>
+		<item name="android:windowBackground">@color/transparent</item>
 	</style>
 
 	<style name="ActionBar" parent="android:style/Widget.Holo.Light.ActionBar">

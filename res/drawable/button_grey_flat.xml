@@ -6,7 +6,7 @@
     <item >
         <shape android:dither="true">
             <solid
-                android:color="@color/grey_button_flat"
+                android:color="@color/glassy_button"
                 />
             <corners
                 android:radius="@dimen/rounded_button_radius"

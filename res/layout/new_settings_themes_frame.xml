@@ -5,43 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.chess.RoboButton
-        android:id="@+id/greenBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="green"
-        />
-
-    <com.chess.RoboButton
-        android:id="@+id/tigersBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="tigersBtn" />
-
-    <com.chess.RoboButton
-        android:id="@+id/aguaBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="aguaBtn" />
-
-    <com.chess.RoboButton
-        android:id="@+id/charcoalBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="charcoalBtn" />
-
-    <com.chess.RoboButton
-        android:id="@+id/greyBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="greyBtn" />
-
-    <com.chess.RoboButton
-        android:id="@+id/blackwoodBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="blackwoodBtn" />
-
 
 
 </LinearLayout>

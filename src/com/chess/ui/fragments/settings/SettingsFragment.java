@@ -28,6 +28,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 
 	private ListView listView;
 	private List<SettingsMenuItem> menuItems;
+	private SettingsMenuAdapter adapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,11 +51,14 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		menuItems.add(new SettingsMenuItem(R.string.password, R.string.glyph_password));
 		menuItems.add(new SettingsMenuItem(R.string.account_history, R.string.glyph_history));
 		menuItems.add(new SettingsMenuItem(R.string.logout, R.string.glyph_close));
+
+		adapter = new SettingsMenuAdapter(getActivity(), menuItems);
+
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_settings_frame, container, false);
+		return inflater.inflate(R.layout.new_list_view_frame, container, false);
 	}
 
 	@Override
@@ -70,7 +74,6 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		SettingsMenuAdapter adapter = new SettingsMenuAdapter(getActivity(), menuItems);
 
 		listView.setAdapter(adapter);
 	}

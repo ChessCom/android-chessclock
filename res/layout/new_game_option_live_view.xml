@@ -55,12 +55,6 @@
         android:listSelector="@android:color/transparent"
         />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:background="@color/game_option_1_back_bot"
-        />
-
     <!--Opponent-->
     <com.chess.LinLayout
         android:layout_width="match_parent"

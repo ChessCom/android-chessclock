@@ -17,21 +17,21 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/Rect.TabLeft"
+            style="@style/Rect.Tab.Left"
             />
         <com.chess.RoboRadioButton
             android:id="@+id/centerTabBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/Rect.TabMiddle"
+            style="@style/Rect.Tab.Middle"
             />
         <com.chess.RoboRadioButton
             android:id="@+id/rightTabBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/Rect.TabRight"
+            style="@style/Rect.Tab.Right"
             />
 
     </RadioGroup>

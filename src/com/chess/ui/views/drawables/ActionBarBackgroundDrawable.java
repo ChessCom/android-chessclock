@@ -37,12 +37,12 @@ public class ActionBarBackgroundDrawable extends Drawable {
 
 	@Override
 	public void setAlpha(int alpha) {
-
+		mDrawable.setAlpha(alpha);
 	}
 
 	@Override
 	public void setColorFilter(ColorFilter cf) {
-
+		mDrawable.setColorFilter(cf);
 	}
 
 	@Override

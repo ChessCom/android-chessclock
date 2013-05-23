@@ -2,6 +2,7 @@ package com.chess.ui.views;
 
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -14,6 +15,7 @@ import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.statics.StaticData;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
 
 
@@ -41,20 +43,21 @@ public class NotationView extends LinearLayout {
 
 	public NotationView(Context context) {
 		super(context);
-		onCreate();
+		onCreate(null);
 	}
 
 	public NotationView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		onCreate();
+		onCreate(attrs);
 	}
 
-	public void onCreate() {
-		float density = getContext().getResources().getDisplayMetrics().density;
-		viewPerPage = getContext().getResources().getInteger(R.integer.notations_per_page);
-		textSize = (int) (getContext().getResources().getDimension(R.dimen.notations_text_size) / density);
-		textColor = getContext().getResources().getColor(R.color.notations_text_color);
-		textColorSelected = getContext().getResources().getColor(R.color.notations_text_color_selected);
+	public void onCreate(AttributeSet attrs) {
+		Resources resources = getContext().getResources();
+		float density = resources.getDisplayMetrics().density;
+		viewPerPage = resources.getInteger(R.integer.notations_per_page);
+		textSize = (int) (resources.getDimension(R.dimen.notations_text_size) / density);
+		textColor = resources.getColor(R.color.notations_text_color);
+		textColorSelected = resources.getColor(R.color.notations_text_color_selected);
 
 
 		LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -76,12 +79,15 @@ public class NotationView extends LinearLayout {
 		}
 		setPadding(0, padding, 0, padding);
 
-		notationTextParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
+		notationTextParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		notationTextParams.weight = 1;
 		notationTextParams.gravity = Gravity.CENTER_VERTICAL;
 
-		setBackgroundResource(R.color.notations_back);
+		if (attrs != null) {
+			ButtonDrawableBuilder.setBackgroundToView(this, attrs);
+		}
+
+//		setBackgroundResource(R.color.notations_back);
 	}
 
 	public void updateNotations(String[] notations, OnClickListener selectionFace, int hply) {

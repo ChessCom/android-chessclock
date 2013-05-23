@@ -20,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         custom:oneLine="@bool/one_line_for_board"
+        style="@style/ListItem"
         />
 
     <RelativeLayout

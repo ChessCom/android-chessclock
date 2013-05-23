@@ -18,7 +18,7 @@
     <style name="AppTheme" parent="android:style/Theme.Black">
         <item name="android:windowTitleSize">@dimen/actionbar_compat_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompat</item>
-        <!--<item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>-->
+        <!--<item name="android:windowContentOverlay">@color/transparent</item>-->
 
         <!-- for programmatic instantiation -->
         <item name="actionbarCompatTitleStyle">@style/ActionBarCompatTitle</item>
@@ -34,7 +34,7 @@
 	</style>
 
 	<style name="NoTitle" parent="android:Theme.Black.NoTitleBar">
-		<item name="android:windowBackground">@color/black</item>
+		<item name="android:windowBackground">@color/transparent</item>
 	</style>
 
     <style name="TaskTextAppearance" parent="@android:style/TextAppearance">

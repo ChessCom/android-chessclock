@@ -3,16 +3,14 @@ package com.chess.ui.views.drawables.smart_button;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.RectF;
+import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
 import com.chess.R;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,22 +85,47 @@ public class RectButtonDrawable extends ButtonDrawable {
 		bevelSize = resources.getDimensionPixelSize(R.dimen.default_bevel_size);
 		bevelRect = new RectF(bevelSize, bevelSize, bevelSize, bevelSize);
 
+		// set color filters for different drawable state
 		int pressedOverlay = resources.getColor(R.color.rect_button_overlay_p);
 		pressedFilter = new PorterDuffColorFilter(pressedOverlay, PorterDuff.Mode.XOR);
+		int selectedOverlay = resources.getColor(R.color.default_button_overlay_s);
+		selectedFilter = new PorterDuffColorFilter(selectedOverlay, PorterDuff.Mode.XOR);
+		int checkedOverlay = resources.getColor(R.color.rect_button_overlay_c);
+		checkedFilter = new PorterDuffColorFilter(checkedOverlay, PorterDuff.Mode.XOR);
 
-		edgeOffset = resources.getDimensionPixelSize(R.dimen.rect_edge_offset); // 4px/ 2px / 2px
+		if (isCheckable()){
+			if (!AppUtils.HONEYCOMB_PLUS_API ) {
+				checkedFilter = new LightingColorFilter(Color.RED, 1);
+			}
+			enabledFilter = checkedFilter;
+			checkedFilter = null;
+		} else {
+			selectedFilter = null;
+			enabledFilter = null;
+		}
+
+//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.SCREEN); // bad edges
+//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.SRC_IN); //  make transparent  - dark - bad
+//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.SRC_OUT); // bad edges
+//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.DST_IN); // make light transparent
+//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.DARKEN);  // bad edges
+//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.MULTIPLY); // make transparent  - dark - bad
+//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.OVERLAY); // bad edges
+//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.XOR);  // bad edges
+
+
+		edgeOffset = bevelSize*2; // resources.getDimensionPixelSize(R.dimen.rect_edge_offset); // 4px/ 1px / 1px
 
 		List <LayerInfo> enabledLayers = new ArrayList<LayerInfo>();
 		List<LayerInfo> pressedLayers = new ArrayList<LayerInfo>();
 
 		insetOne = new InsetInfo();
-		int in1 = (int) (1 * density);
+		int in1 = bevelSize;
+
 		bevelInset = 0;
-		insetOne.top = new int[]{bevelInset, bevelInset, bevelInset, bevelInset + in1};
-		insetOne.left = new int[]{bevelInset, bevelInset + in1, bevelInset, bevelInset + in1};
-		insetOne.right = new int[]{bevelInset + in1, bevelInset + in1, bevelInset, bevelInset + in1};
-		insetOne.bottom = new int[]{bevelInset, bevelInset + in1, bevelInset + in1, bevelInset};
-		insetOne.button = new int[]{bevelInset + in1*2, bevelInset + in1*2, bevelInset + in1*2, bevelInset + in1*2};
+		insetOne.top = new int[]{in1, in1, in1, 0 };
+		insetOne.bottom = new int[]{0, 0, in1, 0};
+		insetOne.button = new int[]{in1, in1, in1, in1};
 
 		if (bevelLvl == 2) {
 			insetTwo = new InsetInfo();
@@ -137,6 +160,15 @@ public class RectButtonDrawable extends ButtonDrawable {
 		}
 	}
 
+	/**
+	 * For tabs and top buttons we need to draw default state darker then checked
+	 * @return true if drawable used for tabs or top buttons
+	 */
+	private boolean isCheckable() {
+		return rectPosition == TAB_LEFT ||rectPosition == TAB_MIDDLE ||rectPosition == TAB_RIGHT
+				|| rectPosition == TOP_LEFT ||rectPosition == TOP_MIDDLE ||rectPosition == TOP_RIGHT;
+	}
+
 	@Override
 	public void draw(Canvas canvas) {
 		if (!boundsInit) {
@@ -147,8 +179,9 @@ public class RectButtonDrawable extends ButtonDrawable {
 	}
 
 	private void initBounds(Canvas canvas){
-		int width = canvas.getWidth();
-		int height = canvas.getHeight();
+		Rect bounds = canvas.getClipBounds();
+		int width = bounds.width();
+		int height = bounds.height();
 		switch (rectPosition) {
 			case TOP_LEFT:
 				enabledDrawable.setBounds(-edgeOffset, -edgeOffset, width + edgeOffset/2, height);
@@ -172,15 +205,19 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 			case BOTTOM_LEFT:
 				enabledDrawable.setBounds(-edgeOffset, 0, width + edgeOffset/2, height + edgeOffset);
+//				enabledDrawable.setBounds(-edgeOffset*2, 0, width + edgeOffset, height + edgeOffset);
 				break;
 			case BOTTOM_MIDDLE:
 				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset/2, height + edgeOffset);
+//				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset, height + edgeOffset);
 				break;
 			case BOTTOM_RIGHT:
 				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset, height + edgeOffset);
+//				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset*2, height + edgeOffset);
 				break;
 			case LIST_ITEM:
-				enabledDrawable.setBounds(-edgeOffset, -edgeOffset/2, width + edgeOffset, height + edgeOffset/2);
+				int width1 = canvas.getWidth();  // use full screen width to make backward compatibility
+				enabledDrawable.setBounds(-edgeOffset, -edgeOffset/2, width1 + edgeOffset, height);
 				break;
 
 		}
@@ -188,15 +225,15 @@ public class RectButtonDrawable extends ButtonDrawable {
 	}
 
 	/**
-	 * Use override because we are using own inset* object
+	 * Use override because we are using own insetOne* object
 	 * @param enabledLayers layers to fill with
 	 */
 	@Override
 	protected void createDefaultState(List<LayerInfo> enabledLayers) {
 		createLayer(colorTop, insetOne.top, enabledLayers);
 		createLayer(colorBottom, insetOne.bottom, enabledLayers); // order is important
-		createLayer(colorLeft, insetOne.left, enabledLayers);
-		createLayer(colorRight, insetOne.right, enabledLayers);
+//		createLayer(colorLeft, insetOne.left, enabledLayers);
+//		createLayer(colorRight, insetOne.right, enabledLayers);
 
 		if (bevelLvl == 2) {
 			createLayer(colorTop2, insetTwo.top, enabledLayers);

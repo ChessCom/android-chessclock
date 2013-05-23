@@ -276,8 +276,6 @@ public class HomePlayFragment extends CommonLogicFragment {
 		view.findViewById(R.id.livePlayBtn).setOnClickListener(this);
 		view.findViewById(R.id.autoMatchBtn).setOnClickListener(this);
 		view.findViewById(R.id.dailyPlayBtn).setOnClickListener(this);
-		view.findViewById(R.id.inviteFriend1Btn).setOnClickListener(this);
-		view.findViewById(R.id.inviteFriend2Btn).setOnClickListener(this);
 		view.findViewById(R.id.playFriendView).setOnClickListener(this);
 		view.findViewById(R.id.liveHeaderView).setOnClickListener(this);
 		view.findViewById(R.id.dailyHeaderView).setOnClickListener(this);

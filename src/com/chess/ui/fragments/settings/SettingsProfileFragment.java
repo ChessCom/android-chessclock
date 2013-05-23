@@ -80,7 +80,6 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private boolean photoChanged;
 	/* country */
 	private String[] countryNames;
-	private String[] countryCodes;
 	private TextView countryValueTxt;
 	private TextView firstNameClearBtn;
 	private TextView lastNameClearBtn;
@@ -96,7 +95,6 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		imageDownloader = new EnhancedImageDownloader(getActivity());
 		photoSelectedListener = new PhotoSelectedListener();
 		countryNames = getResources().getStringArray(R.array.new_countries);
-		countryCodes = getResources().getStringArray(R.array.new_countries_codes);
 		countrySelectedListener = new CountrySelectedListener();
 	}
 

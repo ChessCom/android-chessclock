@@ -155,6 +155,17 @@
     <string name="alerts_and_emails"><![CDATA[Alerts & Emails]]></string>
     <string name="account_history">Account History</string>
 
+    <!--Themes Names-->
+    <string name="theme_game_room">Game Room</string>
+    <string name="theme_dueling_tigers">Dueling Tigers</string>
+    <string name="theme_blackwood">Blackwood</string>
+    <string name="theme_blackstone">Blackstone</string>
+    <string name="theme_charcoal">Charcoal</string>
+    <string name="theme_agua">Agua</string>
+    <string name="theme_grey_felt">Grey felt</string>
+    <string name="theme_grass">Grass</string>
+
+
     <!--Video sort order-->
     <string name="latest">Latest</string>
     <string name="authors_name">Author\'s Name</string>
@@ -194,6 +205,8 @@
     <string name="new_game_rating_arg">New %s Rating:</string>
     <string name="lightning">Lightning</string> <!--Game mode-->
     <string name="blitz">Blitz</string> <!--Game mode-->
-    <string name="standard">Standard</string> <!--Game mode-->
+    <string name="standard">Standard</string>
+    <string name="select_theme">Select Theme</string>
+    <!--Game mode-->
 
 </resources>

@@ -58,8 +58,17 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		super.onActivityCreated(savedInstanceState);
 		// activate Left and right menu fragments
 		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		getActivityFace().changeLeftFragment(new NavigationMenuFragment());
-		getActivityFace().changeRightFragment(new DailyGamesNotificationFragment());
+		CommonLogicFragment leftMenuFragment = (CommonLogicFragment) findFragmentByTag(NavigationMenuFragment.class.getSimpleName());
+		if (leftMenuFragment == null) {
+			leftMenuFragment = new NavigationMenuFragment();
+		}
+
+		getActivityFace().changeLeftFragment(leftMenuFragment);
+		CommonLogicFragment rightMenuFragment = (CommonLogicFragment) findFragmentByTag(DailyGamesNotificationFragment.class.getSimpleName());
+		if (rightMenuFragment == null) {
+			rightMenuFragment = new DailyGamesNotificationFragment();
+		}
+		getActivityFace().changeRightFragment(rightMenuFragment);
 	}
 
 	@Override
@@ -101,6 +110,9 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	@Override
 	public void onResume() {
 		super.onResume();
+		if (previousCheckedId == NON_INIT) {
+			tabRadioGroup.check(R.id.leftTabBtn);
+		}
 		getActivityFace().setBadgeValueForId(R.id.menu_games, 7); // TODO use properly
 	}
 

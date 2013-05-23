@@ -40,10 +40,13 @@ public class ButtonDrawable extends StateListDrawable {
 	static final int TRANSPARENT = 0x00000000;
 	public static final int DEF_VALUE = -1;
 	static final int[] PRESSED_STATE = new int[]{android.R.attr.state_pressed};
-	static final int[] ENABLED_STATE = new int[]{};
+	static final int[] ENABLED_STATE = new int[]{android.R.attr.state_enabled};
 
+	ColorFilter enabledFilter;
+	ColorFilter disabledFilter;
 	ColorFilter pressedFilter;
 	ColorFilter selectedFilter;
+	ColorFilter checkedFilter;
 	int disabledAlpha;
 	int enabledAlpha;
 
@@ -170,14 +173,16 @@ public class ButtonDrawable extends StateListDrawable {
 
 			int pressedOverlay = resources.getColor(R.color.glassy_button_overlay_p);
 			int selectedOverlay = resources.getColor(R.color.glassy_button_overlay_s);
-			pressedFilter = new PorterDuffColorFilter(pressedOverlay, PorterDuff.Mode.MULTIPLY); // perfect! makes darker
-			selectedFilter = new PorterDuffColorFilter(selectedOverlay, PorterDuff.Mode.MULTIPLY); // perfect! makes darker
+			pressedFilter = new PorterDuffColorFilter(pressedOverlay, PorterDuff.Mode.MULTIPLY);
+			selectedFilter = new PorterDuffColorFilter(selectedOverlay, PorterDuff.Mode.MULTIPLY);
 		} else {
 			int pressedOverlay = resources.getColor(R.color.default_button_overlay_p);
 			int selectedOverlay = resources.getColor(R.color.default_button_overlay_s);
-			pressedFilter = new PorterDuffColorFilter(pressedOverlay, PorterDuff.Mode.SRC_ATOP); // perfect! makes darker
-			selectedFilter = new PorterDuffColorFilter(selectedOverlay, PorterDuff.Mode.SRC_ATOP); // perfect! makes darker
+			pressedFilter = new PorterDuffColorFilter(pressedOverlay, PorterDuff.Mode.SRC_ATOP);
+			selectedFilter = new PorterDuffColorFilter(selectedOverlay, PorterDuff.Mode.SRC_ATOP);
 		}
+		int checkedOverlay = resources.getColor(R.color.default_button_overlay_c);
+		checkedFilter = new PorterDuffColorFilter(checkedOverlay, PorterDuff.Mode.SRC_ATOP);
 
 //		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.SCREEN); // bad edges
 //		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.SRC_IN); //  make transparent  - dark - bad
@@ -314,7 +319,9 @@ public class ButtonDrawable extends StateListDrawable {
 	}
 
 	void createLayer(int color, int[] inSet, List<LayerInfo> layers) {
-		createLayer(color, inSet, layers, false);
+		if (color != TRANSPARENT) {
+			createLayer(color, inSet, layers, false);
+		}
 	}
 
 	void createLayer(int color, int[] inSet, List<LayerInfo> layers, boolean isButton) {
@@ -431,6 +438,7 @@ public class ButtonDrawable extends StateListDrawable {
 		boolean enabled = false;
 		boolean pressed = false;
 		boolean selected = false;
+		boolean checked = false;
 
 		for (int state : states) {
 			if (state == android.R.attr.state_enabled)
@@ -439,6 +447,8 @@ public class ButtonDrawable extends StateListDrawable {
 				pressed = true;
 			else if (state == android.R.attr.state_selected)
 				selected = true;
+			else if (state == android.R.attr.state_checked)
+				checked = true;
 		}
 
 		mutate();
@@ -447,18 +457,26 @@ public class ButtonDrawable extends StateListDrawable {
 			setAlpha(enabledAlpha);
 		} else if (enabled && selected) {
 			setColorFilter(selectedFilter);
-//			setAlpha(enabledAlpha);
+			setAlpha(enabledAlpha);
+		} else if (enabled && checked) {
+			setColorFilter(checkedFilter);
+			setAlpha(enabledAlpha);
 		} else if (!enabled) {
-			setColorFilter(null);
+			setColorFilter(disabledFilter);
 			setAlpha(disabledAlpha);
 		} else {
-			setColorFilter(null);
+			setColorFilter(enabledFilter);
 			setAlpha(enabledAlpha);
 		}
 
-		invalidateSelf();
+//		invalidateSelf();
 
 		return super.onStateChange(states);
+	}
+
+	@Override
+	public boolean isStateful() {
+		return true;
 	}
 
 	protected void parseAttributes(Context context, AttributeSet attrs) {
@@ -493,7 +511,8 @@ public class ButtonDrawable extends StateListDrawable {
 				colorBottom2 = array.getInt(R.styleable.RoboButton_btn_bottom_2, TRANSPARENT);
 			}
 			// Button colors
-			colorSolid = array.getInt(R.styleable.RoboButton_btn_solid, TRANSPARENT);
+			colorSolid = array.getInt(R.styleable.RoboButton_btn_solid, TRANSPARENT);  // TODO restore
+//			colorSolid = Color.GREEN;
 			colorGradientStart = array.getInt(R.styleable.RoboButton_btn_gradient_start, TRANSPARENT);
 			colorGradientCenter = array.getInt(R.styleable.RoboButton_btn_gradient_center, TRANSPARENT);
 			colorGradientEnd = array.getInt(R.styleable.RoboButton_btn_gradient_end, TRANSPARENT);

@@ -273,15 +273,21 @@
     </style>
 
     <!-- ============= Tab ===================== -->
-    <style name="Rect.TabLeft">
+
+    <style name="Rect.Tab">
+        <item name="btn_top">@color/transparent_button_border_left</item>  <!--dark-->
+        <item name="btn_bottom">@color/transparent_button_border_bottom</item> <!--dark-->
+    </style>
+
+    <style name="Rect.Tab.Left">
         <item name="btn_rect_pos">tabLeft</item>
     </style>
 
-    <style name="Rect.TabMiddle">
+    <style name="Rect.Tab.Middle">
         <item name="btn_rect_pos">tabMiddle</item>
     </style>
 
-    <style name="Rect.TabRight">
+    <style name="Rect.Tab.Right">
         <item name="btn_rect_pos">tabRight</item>
     </style>
 
@@ -289,10 +295,8 @@
     <style name="Rect.Bottom">
         <item name="btn_rect_pos">bottomLeft</item>
 
-        <item name="btn_top">@color/transparent_button_border_top</item>
-        <item name="btn_left">@color/transparent_button_border_left</item>
-        <item name="btn_right">@color/transparent_button</item>
-        <item name="btn_bottom">@color/transparent_button</item>
+        <item name="btn_top">@color/transparent_button_border_left</item>
+        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
     </style>
 
     <style name="Rect.Bottom.Left">
@@ -341,10 +345,8 @@
 
         <item name="btn_rect_pos">listItem</item>
 
-        <item name="btn_top">@color/transparent_button_border_top</item>
-        <item name="btn_left">@color/transparent_button</item>
-        <item name="btn_right">@color/transparent_button</item>
-        <item name="btn_bottom">@color/transparent_button_border_left</item>
+        <item name="btn_top">@color/transparent_button_border_left</item>
+        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
 
         <item name="btn_solid">@color/transparent_button</item>
 
@@ -359,6 +361,10 @@
 
     <style name="ListItem.Header.Light">
         <item name="btn_solid">@color/header_light</item>
+    </style>
+
+    <style name="ListItem.Header.Dark">
+        <item name="btn_solid">@color/header_dark</item>
     </style>
 
 

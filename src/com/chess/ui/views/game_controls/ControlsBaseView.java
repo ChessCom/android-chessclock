@@ -164,7 +164,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	}
 
 	public void enableGameButton(ButtonIds buttonId, boolean enable) {
-		findViewById(BUTTON_PREFIX + buttonId.ordinal()).setEnabled(enable);
+//		findViewById(BUTTON_PREFIX + buttonId.ordinal()).setEnabled(enable);
 	}
 
 	public void lock(boolean lock) {

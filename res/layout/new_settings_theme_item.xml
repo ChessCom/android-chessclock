@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.chess.RelLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    android:layout_width="match_parent"
+    android:layout_height="110dip"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    >
+
+    <ImageView
+        android:id="@+id/backImg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/img_theme_agua_sample"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:contentDescription="@string/image"
+        />
+
+    <com.chess.LinLayout
+        style="@style/ListItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <com.chess.RoboTextView
+        android:id="@+id/rowTitleTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        custom:ttf="Bold"
+        android:textSize="27sp"
+        android:textColor="@color/white"
+        android:text="Game Room"
+        android:paddingTop="14dip"
+        android:paddingLeft="@dimen/default_scr_side_padding"
+        />
+
+    <!--Icon-->
+    <com.chess.RoboTextView
+        android:id="@+id/iconTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/rowTitleTxt"
+        android:textColor="@color/white"
+        android:text="@string/glyph_check"
+        style="@style/GlyphIcon"
+        android:layout_marginTop="14dip"
+        android:paddingTop="14dip"
+        android:textSize="26dip"
+        android:layout_marginLeft="10dip"
+        />
+    <!--android:layout_alignBottom="@id/rowTitleTxt"-->
+
+    <ImageView
+        android:layout_width="80dip"
+        android:layout_height="80dip"
+        android:src="@drawable/img_board_theme_sample"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:layout_alignParentRight="true"
+        android:contentDescription="@string/image"
+        android:layout_margin="14dip"
+        />
+
+</com.chess.RelLayout>

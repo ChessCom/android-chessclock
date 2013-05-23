@@ -56,7 +56,6 @@
             android:layout_width="@dimen/list_item_image_size"
             android:layout_height="@dimen/list_item_image_size"
             android:src="@drawable/img_profile_picture_stub"
-            android:background="@color/tab_home_button"
             android:layout_marginRight="12dip"
             android:contentDescription="@string/image"
             />
@@ -103,7 +102,6 @@
             android:layout_width="@dimen/list_item_image_size"
             android:layout_height="@dimen/list_item_image_size"
             android:src="@drawable/img_profile_picture_stub"
-            android:background="@color/tab_home_button"
             android:layout_marginRight="12dip"
             android:contentDescription="@string/image"
             android:scaleType="fitXY"
@@ -155,7 +153,7 @@
             android:text="@string/glyph_play_friend"
             android:textColor="@color/new_light_grey_2"
             style="@style/GlyphIcon"
-            android:background="@color/grey_button_solid"
+            android:background="@color/new_soft_grey"
             android:padding="0dip"
             />
 

@@ -50,7 +50,9 @@ import java.util.List;
  */
 public class AppUtils {
 
-	private static final int MDPI_DENSITY = 1;
+	public static final float MDPI = 1.0f;
+	public static final float HDPI = 1.5f;
+	public static final float XHDPI = 2.0f;
 	private static boolean ENABLE_LOG = true;
 	private static final String DAYS = "d";
 	private static final String H = "h";
@@ -115,7 +117,7 @@ public class AppUtils {
 	public static boolean needFullScreen(Context context) {
 		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 		Configuration config = context.getResources().getConfiguration();
-		return (displayMetrics.density < MDPI_DENSITY || displayMetrics.densityDpi == DisplayMetrics.DENSITY_LOW)
+		return (displayMetrics.density < MDPI || displayMetrics.densityDpi == DisplayMetrics.DENSITY_LOW)
 				&& config.orientation == Configuration.ORIENTATION_PORTRAIT;
 	}
 
@@ -127,7 +129,7 @@ public class AppUtils {
 	public static boolean noNeedTitleBar(Context context) {
 		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 		Configuration config = context.getResources().getConfiguration();
-		return (displayMetrics.density == MDPI_DENSITY || displayMetrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM)
+		return (displayMetrics.density == MDPI || displayMetrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM)
 				&& (displayMetrics.heightPixels <= 480 && config.orientation == Configuration.ORIENTATION_PORTRAIT
 				|| displayMetrics.heightPixels <= 300 && config.orientation == Configuration.ORIENTATION_LANDSCAPE);
 	}
@@ -487,6 +489,29 @@ public class AppUtils {
 		List<ResolveInfo> list =
 				packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 		return list.size() > 0;
+	}
+
+	public static int[] getValidThemeBackIds() {
+		return new int[] {
+				R.drawable.img_theme_green_felt,
+				R.drawable.img_theme_dueling_tigers,
+				R.drawable.img_theme_blackwood,
+				R.drawable.img_theme_blackstone,
+				R.drawable.img_theme_charcoal,
+				R.drawable.img_theme_agua,
+				R.drawable.img_theme_grey_felt,
+				R.drawable.img_theme_grass
+		};
+	}
+
+	public static boolean isThemeBackIdValid(int backId){
+		int[] validThemeBackIds = getValidThemeBackIds();
+		for (int validThemeBackId : validThemeBackIds) {
+			if (validThemeBackId == backId){
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.chess.ui.fragments;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,9 +33,12 @@ import java.util.List;
 public class NavigationMenuFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
 	private static final int UPGRADE_POS = 1;
+	public static final int[] SELECTED_STATE = new int[]{android.R.attr.state_enabled, android.R.attr.state_checked};
+	public static final int[] ENABLED_STATE = new int[]{android.R.attr.state_enabled};
 
 	private ListView listView;
 	private List<NavigationMenuItem> menuItems;
+	private NewNavigationMenuAdapter adapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,26 +59,36 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		menuItems.add(new NavigationMenuItem(getString(R.string.settings), R.drawable.ic_nav_settings));
 
 		menuItems.get(0).selected = true;
+		adapter = new NewNavigationMenuAdapter(getActivity(), menuItems);
+
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_navigation_menu_frame, container, false);
+		return inflater.inflate(R.layout.new_list_view_frame, container, false);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
+		listView.setAdapter(adapter);
+	}
+
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		logTest("left menu resumed");
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		NewNavigationMenuAdapter adapter = new NewNavigationMenuAdapter(getActivity(), menuItems);
+	public void onPause() {
+		super.onPause();
 
-		listView.setAdapter(adapter);
+		logTest("left menu paused!");
 	}
 
 	@Override
@@ -92,6 +106,11 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		switch (menuItem.iconRes) {
 			case R.drawable.ic_nav_home: {
 				getActivityFace().clearFragmentStack();
+//				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(HomeTabsFragment.class.getSimpleName());
+//				if(fragmentByTag == null) {
+//					fragmentByTag = new HomeTabsFragment();
+//				}
+//				getActivityFace().switchFragment(fragmentByTag);
 				getActivityFace().switchFragment(new HomeTabsFragment());
 				getActivityFace().toggleLeftMenu();
 				break;}
@@ -212,6 +231,12 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 			holder.icon.setImageResource(item.iconRes);
 			holder.title.setText(item.tag);
 
+			Drawable background = view.getBackground();
+			if (item.selected) {
+				background.mutate().setState(SELECTED_STATE);
+			} else {
+				background.mutate().setState(ENABLED_STATE);
+			}
 		}
 
 		public Context getContext() {
