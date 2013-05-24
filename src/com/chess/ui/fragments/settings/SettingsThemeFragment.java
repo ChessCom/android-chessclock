@@ -34,12 +34,12 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 		menuItems.add(new ThemeItem(R.string.theme_game_room, R.drawable.img_theme_green_felt, R.drawable.img_theme_green_felt_sample));
 		menuItems.add(new ThemeItem(R.string.theme_dueling_tigers, R.drawable.img_theme_dueling_tigers, R.drawable.img_theme_dueling_tigers_sample));
-		menuItems.add(new ThemeItem(R.string.theme_blackwood, R.drawable.img_theme_blackwood, R.drawable.img_theme_blackwood_sample));
-		menuItems.add(new ThemeItem(R.string.theme_blackstone, R.drawable.img_theme_blackstone, R.drawable.img_theme_blackstone_sample));
-		menuItems.add(new ThemeItem(R.string.theme_charcoal, R.drawable.img_theme_charcoal, R.drawable.img_theme_charcoal_sample));
-		menuItems.add(new ThemeItem(R.string.theme_agua, R.drawable.img_theme_agua, R.drawable.img_theme_agua_sample));
-		menuItems.add(new ThemeItem(R.string.theme_grey_felt, R.drawable.img_theme_grey_felt, R.drawable.img_theme_grey_felt_sample));
-		menuItems.add(new ThemeItem(R.string.theme_grass, R.drawable.img_theme_grass, R.drawable.img_theme_grass_sample));
+//		menuItems.add(new ThemeItem(R.string.theme_blackwood, R.drawable.img_theme_blackwood, R.drawable.img_theme_blackwood_sample));
+//		menuItems.add(new ThemeItem(R.string.theme_blackstone, R.drawable.img_theme_blackstone, R.drawable.img_theme_blackstone_sample));
+//		menuItems.add(new ThemeItem(R.string.theme_charcoal, R.drawable.img_theme_charcoal, R.drawable.img_theme_charcoal_sample));
+//		menuItems.add(new ThemeItem(R.string.theme_agua, R.drawable.img_theme_agua, R.drawable.img_theme_agua_sample));
+//		menuItems.add(new ThemeItem(R.string.theme_grey_felt, R.drawable.img_theme_grey_felt, R.drawable.img_theme_grey_felt_sample));
+//		menuItems.add(new ThemeItem(R.string.theme_grass, R.drawable.img_theme_grass, R.drawable.img_theme_grass_sample));
 
 		int[] themeBackIds = AppUtils.getValidThemeBackIds();
 		if (themeBackIds.length != menuItems.size()) {

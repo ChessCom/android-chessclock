@@ -27,6 +27,7 @@
     <!--New Buttons and Fields-->
     <dimen name="facebook_button_height">40dip</dimen>
     <dimen name="main_button_height">44dip</dimen>
+    <dimen name="big_button_height">56dip</dimen>
     <dimen name="small_button_height">35dip</dimen>
     <dimen name="small_orange_button_height">33dip</dimen>
     <dimen name="grey_button_height">42dip</dimen>
@@ -157,7 +158,8 @@
     <dimen name="menu_header_padding_top">8dp</dimen>
     <dimen name="menu_header_line">3dp</dimen>
     <dimen name="menu_icon_side">40dp</dimen>
-    <dimen name="slidingmenu_offset">60dp</dimen>
+    <dimen name="slidingmenu_offset_right">60dp</dimen>
+    <dimen name="slidingmenu_offset_left">120dp</dimen>
     <dimen name="list_padding">10dp</dimen>
     <dimen name="shadow_width">15dp</dimen>
 

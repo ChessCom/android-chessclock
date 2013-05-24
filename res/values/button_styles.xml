@@ -260,15 +260,20 @@
     </style>
 
     <!-- ============= Top ===================== -->
-    <style name="Rect.TopLeft">
+    <style name="Rect.Top">
+        <item name="btn_top">@color/transparent_button_border_left</item>
+        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
+    </style>
+
+    <style name="Rect.Top.Left">
         <item name="btn_rect_pos">topLeft</item>
     </style>
 
-    <style name="Rect.TopMiddle">
+    <style name="Rect.Top.Middle">
         <item name="btn_rect_pos">topMiddle</item>
     </style>
 
-    <style name="Rect.TopRight">
+    <style name="Rect.Top.Right">
         <item name="btn_rect_pos">topRight</item>
     </style>
 
@@ -277,6 +282,7 @@
     <style name="Rect.Tab">
         <item name="btn_top">@color/transparent_button_border_left</item>  <!--dark-->
         <item name="btn_bottom">@color/transparent_button_border_bottom</item> <!--dark-->
+        <item name="btn_solid">#01000000</item>
     </style>
 
     <style name="Rect.Tab.Left">

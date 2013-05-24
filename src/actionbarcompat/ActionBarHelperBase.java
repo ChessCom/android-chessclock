@@ -206,7 +206,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 			Drawable icon = ((ImageButton) view.findViewById(menuId)).getDrawable();
 			if (icon instanceof BadgeDrawable) {
 				((BadgeDrawable) icon).setValue(value);
-			} else if (value != 0) {
+			} else if (value != 0) {                          // TODO improve, don't create new drawable
 				((ImageButton) view.findViewById(menuId)).setImageDrawable(new BadgeDrawable(view.getContext(), icon, value));
 			}
 		}

@@ -96,8 +96,6 @@ public class ButtonDrawableBuilder {
 	}
 
 	public static ButtonDrawable createDrawable(Context context, int styleId) {
-
-
 		Resources resources = context.getResources();
 		if (styleId == R.style.Button_Red) {
 			ButtonDrawable buttonDrawable = setDefaults(context);
@@ -139,19 +137,19 @@ public class ButtonDrawableBuilder {
 			createGlassy(buttonDrawable, resources);
 
 			return buttonDrawable;
-		} else if (styleId == R.style.Rect_TopLeft) {
+		} else if (styleId == R.style.Rect_Top_Left) {
 			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
 			rectButtonDrawable.rectPosition = TOP_LEFT;
 			createRect(rectButtonDrawable, resources);
 
 			return rectButtonDrawable;
-		} else if (styleId == R.style.Rect_TopMiddle) {
+		} else if (styleId == R.style.Rect_Top_Middle) {
 			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
 			rectButtonDrawable.rectPosition = TOP_MIDDLE;
 			createRect(rectButtonDrawable, resources);
 
 			return rectButtonDrawable;
-		} else if (styleId == R.style.Rect_TopRight) {
+		} else if (styleId == R.style.Rect_Top_Right) {
 			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
 			rectButtonDrawable.rectPosition = TOP_RIGHT;
 			createRect(rectButtonDrawable, resources);

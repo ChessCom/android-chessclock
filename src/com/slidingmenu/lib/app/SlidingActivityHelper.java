@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import com.chess.R;
-import com.chess.backend.statics.AppData;
 import com.slidingmenu.lib.SlidingMenu;
 
 public class SlidingActivityHelper {
@@ -62,7 +61,7 @@ public class SlidingActivityHelper {
 //		TypedArray a = mActivity.getTheme().obtainStyledAttributes(new int[] {android.R.attr.windowBackground});
 //		int background = a.getResourceId(0, 0);
 //		int background = R.color.red;
-		int background = AppData.getThemeBackId(mActivity);
+//		int background = AppData.getThemeBackId(mActivity);
 //		a.recycle();
 
 		if (mEnableSlide) {
@@ -70,7 +69,7 @@ public class SlidingActivityHelper {
 			ViewGroup decor = (ViewGroup) mActivity.getWindow().getDecorView();
 			ViewGroup decorChild = (ViewGroup) decor.getChildAt(0);
 			// save ActionBar themes that have transparent assets
-			decorChild.setBackgroundResource(background);
+//			decorChild.setBackgroundResource(background);
 			decor.removeView(decorChild);
 			mSlidingMenu.setContent(decorChild);
 			decor.addView(mSlidingMenu);
@@ -91,7 +90,7 @@ public class SlidingActivityHelper {
 	}
 
 	public void setBackToDecorChild(int background) {
-		mSlidingMenu.getContent().setBackgroundResource(background);
+//		mSlidingMenu.getContent().setBackgroundResource(background);
 	}
 
 	/**

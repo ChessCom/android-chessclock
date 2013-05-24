@@ -64,6 +64,12 @@ public class SlidingMenu extends RelativeLayout {
 
 	private OnCloseListener mCloseListener;
 
+	private View rightMenuView;
+
+	private int rightMenuWidth;
+
+	private int leftMenuWidth;
+
 	/**
 	 * The listener interface for receiving onOpen events.
 	 * The class that is interested in processing a onOpen
@@ -246,12 +252,12 @@ public class SlidingMenu extends RelativeLayout {
 		if (offsetBehind != -1 && widthBehind != -1)
 			throw new IllegalStateException("Cannot set both behindOffset and behindWidth for a SlidingMenu");
 		else if (offsetBehind != -1)
-			setBehindOffset(offsetBehind);
-		else if (widthBehind != -1)
-			setBehindWidth(widthBehind);
+			setBehindLeftOffset(offsetBehind);
+//		else if (widthBehind != -1)
+//			setBehindWidth(widthBehind);
 		else
-			setBehindOffset(0);
-		float scrollOffsetBehind = ta.getFloat(R.styleable.SlidingMenu_behindScrollScale, 0.33f);
+			setBehindLeftOffset(0);
+		float scrollOffsetBehind = ta.getFloat(R.styleable.SlidingMenu_behindScrollScale, 1.00f);
 		setBehindScrollScale(scrollOffsetBehind);
 		int shadowRes = ta.getResourceId(R.styleable.SlidingMenu_shadowDrawable, -1);
 		if (shadowRes != -1) {
@@ -388,7 +394,10 @@ public class SlidingMenu extends RelativeLayout {
 	 * @param res the new content
 	 */
 	public void setSecondaryMenu(int res) {
-		setSecondaryMenu(LayoutInflater.from(getContext()).inflate(res, null));
+		if (rightMenuView == null) {
+			rightMenuView = LayoutInflater.from(getContext()).inflate(res, null, false);
+		}
+		setSecondaryMenu(rightMenuView);
 	}
 
 	/**
@@ -564,28 +573,60 @@ public class SlidingMenu extends RelativeLayout {
 	}
 
 	/**
-	 * Sets the behind offset.
+	 * Sets the behind offset for left view.
 	 *
-	 * @param i The margin, in pixels, on the right of the screen that the behind view scrolls to.
+	 * @param width The margin, in pixels, on the right of the screen that the behind view scrolls to.
 	 */
-	public void setBehindOffset(int i) {
+	public void setBehindLeftOffset(int width) {
 		//		RelativeLayout.LayoutParams params = ((RelativeLayout.LayoutParams)mViewBehind.getLayoutParams());
 		//		int bottom = params.bottomMargin;
 		//		int top = params.topMargin;
 		//		int left = params.leftMargin;
-		//		params.setMargins(left, top, i, bottom);
-		mViewBehind.setWidthOffset(i);
+		//		params.setMargins(left, top, width, bottom);
+		mViewBehind.setWidthLeftOffset(width);
 	}
 
 	/**
-	 * Sets the behind offset.
+	 * Sets the behind offset for right view.
+	 *
+	 * @param width The margin, in pixels, on the right of the screen that the behind view scrolls to.
+	 */
+	public void setBehindRightOffset(int width) {
+		//		RelativeLayout.LayoutParams params = ((RelativeLayout.LayoutParams)mViewBehind.getLayoutParams());
+		//		int bottom = params.bottomMargin;
+		//		int top = params.topMargin;
+		//		int left = params.leftMargin;
+		//		params.setMargins(left, top, width, bottom);
+		mViewBehind.setWidthRightOffset(width);
+	}
+
+	/**
+	 * Sets the behind offset for left view.
 	 *
 	 * @param resID The dimension resource id to be set as the behind offset.
 	 * The menu, when open, will leave this width margin on the right of the screen.
 	 */
-	public void setBehindOffsetRes(int resID) {
-		int i = (int) getContext().getResources().getDimension(resID);
-		setBehindOffset(i);
+	public void setBehindLeftOffsetRes(int resID) {
+		int width = (int) getContext().getResources().getDimension(resID);
+		if (leftMenuWidth != width) {
+			leftMenuWidth = width;
+			setBehindLeftOffset(width);
+		}
+	}
+
+	/**
+	 * Sets the behind offset for right view.
+	 *
+	 * @param resID The dimension resource id to be set as the behind offset.
+	 * The menu, when open, will leave this width margin on the right of the screen.
+	 */
+	public void setBehindRightOffsetRes(int resID) {
+
+		int width = (int) getContext().getResources().getDimension(resID);
+		if (rightMenuWidth != width) {
+			rightMenuWidth = width;
+			setBehindRightOffset(width);
+		}
 	}
 
 	/**
@@ -607,39 +648,40 @@ public class SlidingMenu extends RelativeLayout {
 		setAboveOffset(i);
 	}
 
-	/**
-	 * Sets the behind width.
-	 *
-	 * @param i The width the Sliding Menu will open to, in pixels
-	 */
-	@SuppressWarnings("deprecation")
-	public void setBehindWidth(int i) {
-		int width;
-		Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE))
-				.getDefaultDisplay();
-		try {
-			Class<?> cls = Display.class;
-			Class<?>[] parameterTypes = {Point.class};
-			Point parameter = new Point();
-			Method method = cls.getMethod("getSize", parameterTypes);
-			method.invoke(display, parameter);
-			width = parameter.x;
-		} catch (Exception e) {
-			width = display.getWidth();
-		}
-		setBehindOffset(width-i);
-	}
+//	/**
+//	 * Sets the behind width.
+//	 *
+//	 * @param i The width the Sliding Menu will open to, in pixels
+//	 */
+//	@SuppressWarnings("deprecation")
+//	public void setBehindWidth(int i) {
+//		int width;
+//		Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE))
+//				.getDefaultDisplay();
+//		try {
+//			Class<?> cls = Display.class;
+//			Class<?>[] parameterTypes = {Point.class};
+//			Point parameter = new Point();
+//			Method method = cls.getMethod("getSize", parameterTypes);
+//			method.invoke(display, parameter);
+//			width = parameter.x;
+//		} catch (Exception e) {
+//			width = display.getWidth();
+//		}
+//		setBehindLeftOffset(width-i);
+//	}
 
-	/**
-	 * Sets the behind width.
-	 *
-	 * @param res The dimension resource id to be set as the behind width offset.
-	 * The menu, when open, will open this wide.
-	 */
-	public void setBehindWidthRes(int res) {
-		int i = (int) getContext().getResources().getDimension(res);
-		setBehindWidth(i);
-	}
+//	/**
+//	 * Sets the behind width.
+//	 *
+//	 * @param res The dimension resource id to be set as the behind width offset.
+//	 * The menu, when open, will open this wide.
+//	 */
+//	@Deprecated
+//	public void setBehindWidthRes(int res) {
+//		int i = (int) getContext().getResources().getDimension(res);
+//		setBehindWidth(i);
+//	}
 
 	/**
 	 * Gets the behind scroll scale.

@@ -36,26 +36,8 @@
         />
 
     <!--Start New Game-->
-    <com.chess.LinLayout
-        android:id="@+id/newGameButtonView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="14dip"
-        style="@style/ListItem.Header"
-        android:orientation="vertical"
-        android:visibility="gone"
-        >
 
-        <com.chess.RoboButton
-            android:id="@+id/startNewGameBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/main_button_height"
-            android:text="@string/start_new_game"
-            style="@style/Button.OrangeNoBorder"
-            />
 
-    </com.chess.LinLayout>
 
     <ListView
         android:id="@+id/listView"
@@ -63,49 +45,19 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:cacheColorHint="@color/white"
-        android:layout_below="@id/newGameButtonView"
         android:dividerHeight="0px"
         android:divider="@null"
         />
 
-<!--
-         android:layout_above="@+id/bottomButtonsView"
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/actionbar_shadow_bot"
-        android:layout_above="@id/bottomButtonsView"
-        />
-
-    <LinearLayout
-        android:id="@id/bottomButtonsView"
+    <com.chess.RoboButton
+        android:id="@+id/startNewGameBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="6dip"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/nav_menu_item_selector"
-        >
-        <com.chess.RoboButton
-            android:id="@+id/archiveGamesBtn"
-            android:layout_width="0dip"
-            android:layout_height="@dimen/home_games_bottom_button_height"
-            android:layout_weight="1"
-            android:text="@string/new_game_archive"
-            android:layout_marginRight="4dip"
-            style="@style/Button.Grey"
-            />
-        <com.chess.RoboButton
-            android:id="@+id/startNewGameBtn"
-            android:layout_width="0dip"
-            android:layout_height="@dimen/home_games_bottom_button_height"
-            android:layout_weight="1"
-            android:text="@string/start_new_game"
-            android:layout_marginLeft="4dip"
-            style="@style/Text.Button"
-            android:paddingLeft="2dip"
-            android:paddingRight="2dip"
-            />
-    </LinearLayout>-->
+        android:minHeight="@dimen/big_button_height"
+        android:text="@string/start_new_game"
+        style="@style/Rect.Bottom.Right.Orange"
+        android:visibility="gone"
+        />
 
 </RelativeLayout>

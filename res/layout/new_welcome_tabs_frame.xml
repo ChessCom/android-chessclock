@@ -17,7 +17,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/Rect.TopLeft"
+            style="@style/Rect.Top.Left"
             />
         <!--TODO create RadioButton with ability to set image-->
         <com.chess.RoboRadioButton
@@ -25,14 +25,14 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/Rect.TopMiddle"
+            style="@style/Rect.Top.Middle"
             />
         <com.chess.RoboRadioButton
             android:id="@+id/rightTabBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/Rect.TopRight"
+            style="@style/Rect.Top.Right"
             />
 
     </RadioGroup>

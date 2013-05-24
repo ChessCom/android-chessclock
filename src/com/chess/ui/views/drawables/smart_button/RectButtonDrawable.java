@@ -10,7 +10,6 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
 import com.chess.R;
-import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,16 +86,14 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 		// set color filters for different drawable state
 		int pressedOverlay = resources.getColor(R.color.rect_button_overlay_p);
-		pressedFilter = new PorterDuffColorFilter(pressedOverlay, PorterDuff.Mode.XOR);
 		int selectedOverlay = resources.getColor(R.color.default_button_overlay_s);
-		selectedFilter = new PorterDuffColorFilter(selectedOverlay, PorterDuff.Mode.XOR);
 		int checkedOverlay = resources.getColor(R.color.rect_button_overlay_c);
-		checkedFilter = new PorterDuffColorFilter(checkedOverlay, PorterDuff.Mode.XOR);
+
+		pressedFilter = new PorterDuffColorFilter(pressedOverlay, PorterDuff.Mode.DARKEN);
+		selectedFilter = new PorterDuffColorFilter(selectedOverlay, PorterDuff.Mode.DARKEN);
+		checkedFilter = new PorterDuffColorFilter(checkedOverlay, PorterDuff.Mode.DARKEN);
 
 		if (isCheckable()){
-			if (!AppUtils.HONEYCOMB_PLUS_API ) {
-				checkedFilter = new LightingColorFilter(Color.RED, 1);
-			}
 			enabledFilter = checkedFilter;
 			checkedFilter = null;
 		} else {

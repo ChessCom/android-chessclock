@@ -20,7 +20,7 @@
 		<item name="android:actionBarStyle">@style/ActionBar</item>
 		<item name="android:actionButtonStyle">@style/ActionButton</item>
 		<!--<item name="android:windowContentOverlay">@color/transparent</item>-->
-		<item name="android:selectableItemBackground">@drawable/action_bar_item_selector</item>
+		<item name="android:selectableItemBackground">@drawable/actionbar_compat_item_selector</item>
 	</style>
 
 	<style name="NoTitle" parent="android:style/Theme.Holo.Light.NoActionBar">

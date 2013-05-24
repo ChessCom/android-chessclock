@@ -56,14 +56,14 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		// activate Left and right menu fragments
+		// activate Left
 		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		CommonLogicFragment leftMenuFragment = (CommonLogicFragment) findFragmentByTag(NavigationMenuFragment.class.getSimpleName());
 		if (leftMenuFragment == null) {
 			leftMenuFragment = new NavigationMenuFragment();
 		}
-
 		getActivityFace().changeLeftFragment(leftMenuFragment);
+		// and right menu fragments
 		CommonLogicFragment rightMenuFragment = (CommonLogicFragment) findFragmentByTag(DailyGamesNotificationFragment.class.getSimpleName());
 		if (rightMenuFragment == null) {
 			rightMenuFragment = new DailyGamesNotificationFragment();

@@ -215,6 +215,13 @@ public class CustomViewAbove extends ViewGroup {
 		}
 
 		item = mViewBehind.getMenuPage(item);
+		if (item == CustomViewBehind.LEFT_ITEM) {
+			mViewBehind.movingLeftMenu = true;
+			mViewBehind.movingRightMenu = false;
+		} else if (item == CustomViewBehind.RIGHT_ITEM) {
+			mViewBehind.movingLeftMenu = false;
+			mViewBehind.movingRightMenu = true;
+		}
 
 		final boolean dispatchSelected = mCurItem != item;
 		mCurItem = item;

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
@@ -29,7 +30,10 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.GameListFinishedItem;
 import com.chess.model.GameOnlineItem;
 import com.chess.ui.activities.old.ChatOnlineActivity;
-import com.chess.ui.adapters.*;
+import com.chess.ui.adapters.CustomSectionedAdapter;
+import com.chess.ui.adapters.DailyChallengesGamesAdapter;
+import com.chess.ui.adapters.DailyCurrentGamesMyCursorAdapter;
+import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NewGamesFragment;
@@ -87,7 +91,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private boolean hostUnreachable;
 	private boolean onVacation;
 	private boolean need2update = true;
-	private View newGameButtonView;
+	private Button startNewGameBtn;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -125,8 +129,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		listView.setOnItemLongClickListener(this);
 		listView.setAdapter(sectionedAdapter);
 
-		view.findViewById(R.id.startNewGameBtn).setOnClickListener(this);
-		newGameButtonView = view.findViewById(R.id.newGameButtonView);
+		startNewGameBtn = (Button) view.findViewById(R.id.startNewGameBtn);
+		startNewGameBtn.setOnClickListener(this);
 	}
 
 	@Override
@@ -695,7 +699,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					}
 				}
 
-				newGameButtonView.setVisibility(myTurnInDailyGames? View.GONE: View.VISIBLE);
+				startNewGameBtn.setVisibility(myTurnInDailyGames? View.GONE: View.VISIBLE);
 			}
 
 			{ // finished

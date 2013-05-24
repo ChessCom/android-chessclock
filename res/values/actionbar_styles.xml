@@ -51,7 +51,7 @@
     <style name="ActionBarCompatItemBase">
         <!-- layout_width/height must be set in code -->
         <item name="android:scaleType">center</item>
-        <item name="android:background">@drawable/actionbar_compat_item</item>
+        <item name="android:background">@drawable/actionbar_compat_item_selector</item>
     </style>
 
     <style name="ActionBarCompatProgressIndicator" parent="android:style/Widget.ProgressBar.Large">

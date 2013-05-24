@@ -27,9 +27,14 @@ public class CustomViewBehind extends ViewGroup {
 	private View mContent;
 	private View mSecondaryContent;
 	private int mMarginThreshold;
-	private int mWidthOffset;
+	private int mWidthLeftOffset;
+	private int mWidthRightOffset;
 	private CanvasTransformer mTransformer;
 	private boolean mChildrenEnabled;
+	public boolean movingLeftMenu;
+	private boolean prevMovingLeftMenu;
+	public boolean movingRightMenu;
+	private boolean prevMovingRightMenu;
 
 	public CustomViewBehind(Context context) {
 		this(context, null);
@@ -49,13 +54,22 @@ public class CustomViewBehind extends ViewGroup {
 		mTransformer = t;
 	}
 
-	public void setWidthOffset(int i) {
-		mWidthOffset = i;
+	public void setWidthLeftOffset(int width) {
+		mWidthLeftOffset = width;
+		requestLayout();
+	}
+
+	public void setWidthRightOffset(int width) {
+		mWidthRightOffset = width;
 		requestLayout();
 	}
 
 	public int getBehindWidth() {
-		return mContent.getWidth();
+		if (movingRightMenu && mSecondaryContent != null) {
+			return mSecondaryContent.getWidth();
+		} else {
+			return mContent.getWidth();
+		}
 	}
 
 	public void setContent(View v) {
@@ -120,9 +134,9 @@ public class CustomViewBehind extends ViewGroup {
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		final int width = r - l;
 		final int height = b - t;
-		mContent.layout(0, 0, width-mWidthOffset, height);
+		mContent.layout(0, 0, width-mWidthLeftOffset, height);
 		if (mSecondaryContent != null)
-			mSecondaryContent.layout(0, 0, width-mWidthOffset, height);
+			mSecondaryContent.layout(0, 0, width-mWidthRightOffset, height);
 	}
 
 	@Override
@@ -130,11 +144,17 @@ public class CustomViewBehind extends ViewGroup {
 		int width = getDefaultSize(0, widthMeasureSpec);
 		int height = getDefaultSize(0, heightMeasureSpec);
 		setMeasuredDimension(width, height);
-		final int contentWidth = getChildMeasureSpec(widthMeasureSpec, 0, width-mWidthOffset);
 		final int contentHeight = getChildMeasureSpec(heightMeasureSpec, 0, height);
-		mContent.measure(contentWidth, contentHeight);
-		if (mSecondaryContent != null)
-			mSecondaryContent.measure(contentWidth, contentHeight);
+		{// measure left view
+			final int contentWidth = getChildMeasureSpec(widthMeasureSpec, 0, width-mWidthLeftOffset);
+			mContent.measure(contentWidth, contentHeight);
+		}
+		{// measure right view
+			if (mSecondaryContent != null){
+				final int contentWidth = getChildMeasureSpec(widthMeasureSpec, 0, width-mWidthRightOffset);
+				mSecondaryContent.measure(contentWidth, contentHeight);
+			}
+		}
 	}
 
 	private int mMode;
@@ -193,12 +213,16 @@ public class CustomViewBehind extends ViewGroup {
 		mFadeDegree = degree;
 	}
 
+	static final int LEFT_ITEM = 0;
+	static final int CENTER_ITEM = 1;
+	static final int RIGHT_ITEM = 2;
+
 	public int getMenuPage(int page) {
-		page = (page > 1) ? 2 : ((page < 1) ? 0 : page);
-		if (mMode == SlidingMenu.LEFT && page > 1) {
-			return 0;
-		} else if (mMode == SlidingMenu.RIGHT && page < 1) {
-			return 2;
+		page = (page > CENTER_ITEM) ? RIGHT_ITEM : ((page < CENTER_ITEM) ? LEFT_ITEM : page);
+		if (mMode == SlidingMenu.LEFT && page > CENTER_ITEM) {
+			return LEFT_ITEM;
+		} else if (mMode == SlidingMenu.RIGHT && page < CENTER_ITEM) {
+			return RIGHT_ITEM;
 		} else {
 			return page;
 		}
@@ -214,8 +238,23 @@ public class CustomViewBehind extends ViewGroup {
 			scrollTo((int)(getBehindWidth() - getWidth() + 
 					(x-getBehindWidth())*mScrollScale), y);
 		} else if (mMode == SlidingMenu.LEFT_RIGHT) {
-			mContent.setVisibility(x >= content.getLeft() ? View.INVISIBLE : View.VISIBLE);
-			mSecondaryContent.setVisibility(x <= content.getLeft() ? View.INVISIBLE : View.VISIBLE);
+			if (x >= content.getLeft()) {
+				mContent.setVisibility(View.INVISIBLE);
+			} else {
+				movingLeftMenu = true;
+				movingRightMenu = false;
+				mContent.setVisibility(View.VISIBLE);
+			}
+			if (x <= content.getLeft()) {
+				mSecondaryContent.setVisibility(View.INVISIBLE);
+			} else {
+				movingLeftMenu = false;
+				movingRightMenu = true;
+				mSecondaryContent.setVisibility(View.VISIBLE);
+			}
+
+			updateMovingDirection();
+
 			vis = x == 0 ? View.INVISIBLE : View.VISIBLE;
 			if (x <= content.getLeft()) {
 				scrollTo((int)((x + getBehindWidth())*mScrollScale), y);				
@@ -227,6 +266,18 @@ public class CustomViewBehind extends ViewGroup {
 		if (vis == View.INVISIBLE)
 			Log.v(TAG, "behind INVISIBLE");
 		setVisibility(vis);
+	}
+
+	private boolean updateMovingDirection() {
+		if (movingLeftMenu != prevMovingLeftMenu) {
+			prevMovingLeftMenu = movingLeftMenu;
+			return true;
+		}
+		if (movingRightMenu != prevMovingRightMenu) {
+			prevMovingRightMenu = movingRightMenu;
+			return true;
+		}
+		return false;
 	}
 
 	public int getMenuLeft(View content, int page) {

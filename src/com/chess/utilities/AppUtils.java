@@ -486,21 +486,22 @@ public class AppUtils {
 	public static boolean isIntentAvailable(Context context, String action) {
 		final PackageManager packageManager = context.getPackageManager();
 		final Intent intent = new Intent(action);
-		List<ResolveInfo> list =
-				packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+		List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 		return list.size() > 0;
 	}
 
 	public static int[] getValidThemeBackIds() {
 		return new int[] {
-				R.drawable.img_theme_green_felt,
-				R.drawable.img_theme_dueling_tigers,
-				R.drawable.img_theme_blackwood,
-				R.drawable.img_theme_blackstone,
-				R.drawable.img_theme_charcoal,
-				R.drawable.img_theme_agua,
-				R.drawable.img_theme_grey_felt,
-				R.drawable.img_theme_grass
+				R.drawable.img_theme_green_felt
+				,
+				R.drawable.img_theme_dueling_tigers
+//				,
+//				R.drawable.img_theme_blackwood,
+//				R.drawable.img_theme_blackstone,
+//				R.drawable.img_theme_charcoal,
+//				R.drawable.img_theme_agua,
+//				R.drawable.img_theme_grey_felt,
+//				R.drawable.img_theme_grass
 		};
 	}
 

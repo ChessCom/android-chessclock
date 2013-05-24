@@ -18,6 +18,4 @@
     <color name="actionbar_title_color">#FFc1c1c1</color>
 	<color name="action_bar_item_pressed">#44000000</color>
 	<color name="action_bar_item_focused">#7F59b111</color>
-
-
 </resources>

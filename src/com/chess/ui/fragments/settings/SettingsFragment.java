@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.LiveBaseFragment;
@@ -116,10 +117,14 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
 				preferencesEditor.commit();
 
+
 				AppUtils.cancelNotifications(getActivity());
 				getActivityFace().clearFragmentStack();
 				getActivityFace().switchFragment(new WelcomeTabsFragment());
 
+				// clear theme
+				AppData.setThemeBackId(getActivity(), R.drawable.img_theme_green_felt);
+				getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
 				break;
 
 			default: break;

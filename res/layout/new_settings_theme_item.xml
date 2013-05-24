@@ -12,7 +12,6 @@
         android:id="@+id/backImg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/img_theme_agua_sample"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:contentDescription="@string/image"

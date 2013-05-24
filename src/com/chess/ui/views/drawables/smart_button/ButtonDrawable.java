@@ -451,32 +451,27 @@ public class ButtonDrawable extends StateListDrawable {
 				checked = true;
 		}
 
-		mutate();
+		Drawable drawable = mutate();
 		if (enabled && pressed) {
-			setColorFilter(pressedFilter);
-			setAlpha(enabledAlpha);
+			drawable.setColorFilter(pressedFilter);
+			drawable.setAlpha(enabledAlpha);
 		} else if (enabled && selected) {
-			setColorFilter(selectedFilter);
-			setAlpha(enabledAlpha);
+			drawable.setColorFilter(selectedFilter);
+			drawable.setAlpha(enabledAlpha);
 		} else if (enabled && checked) {
-			setColorFilter(checkedFilter);
-			setAlpha(enabledAlpha);
+			drawable.setColorFilter(checkedFilter);
+			drawable.setAlpha(enabledAlpha);
 		} else if (!enabled) {
-			setColorFilter(disabledFilter);
-			setAlpha(disabledAlpha);
+			drawable.setColorFilter(disabledFilter);
+			drawable.setAlpha(disabledAlpha);
 		} else {
-			setColorFilter(enabledFilter);
-			setAlpha(enabledAlpha);
+			drawable.setColorFilter(enabledFilter);
+			drawable.setAlpha(enabledAlpha);
 		}
 
-//		invalidateSelf();
+		invalidateSelf();// need to update for pre-HC
 
 		return super.onStateChange(states);
-	}
-
-	@Override
-	public boolean isStateful() {
-		return true;
 	}
 
 	protected void parseAttributes(Context context, AttributeSet attrs) {
@@ -497,11 +492,11 @@ public class ButtonDrawable extends StateListDrawable {
 			bevelInset = array.getDimensionPixelSize(R.styleable.RoboButton_btn_bevel_inset, DEFAULT_BEVEL_INSET);
 
 			// Colors for bevel
-			colorOuterBorder = array.getInt(R.styleable.RoboButton_btn_outer_border, TRANSPARENT);
-			colorTop = array.getInt(R.styleable.RoboButton_btn_top, TRANSPARENT);
-			colorLeft = array.getInt(R.styleable.RoboButton_btn_left, TRANSPARENT);
-			colorRight = array.getInt(R.styleable.RoboButton_btn_right, TRANSPARENT);
-			colorBottom = array.getInt(R.styleable.RoboButton_btn_bottom, TRANSPARENT);
+			colorOuterBorder = array.getColor(R.styleable.RoboButton_btn_outer_border, TRANSPARENT);
+			colorTop = array.getColor(R.styleable.RoboButton_btn_top, TRANSPARENT);
+			colorLeft = array.getColor(R.styleable.RoboButton_btn_left, TRANSPARENT);
+			colorRight = array.getColor(R.styleable.RoboButton_btn_right, TRANSPARENT);
+			colorBottom = array.getColor(R.styleable.RoboButton_btn_bottom, TRANSPARENT);
 
 			if (bevelLvl == 2) {
 				// Level 2 for bevel
@@ -511,11 +506,11 @@ public class ButtonDrawable extends StateListDrawable {
 				colorBottom2 = array.getInt(R.styleable.RoboButton_btn_bottom_2, TRANSPARENT);
 			}
 			// Button colors
-			colorSolid = array.getInt(R.styleable.RoboButton_btn_solid, TRANSPARENT);  // TODO restore
-//			colorSolid = Color.GREEN;
-			colorGradientStart = array.getInt(R.styleable.RoboButton_btn_gradient_start, TRANSPARENT);
-			colorGradientCenter = array.getInt(R.styleable.RoboButton_btn_gradient_center, TRANSPARENT);
-			colorGradientEnd = array.getInt(R.styleable.RoboButton_btn_gradient_end, TRANSPARENT);
+			colorSolid = array.getColor(R.styleable.RoboButton_btn_solid, TRANSPARENT);  // TODO restore
+//			colorSolid = 0x33100000;
+			colorGradientStart = array.getColor(R.styleable.RoboButton_btn_gradient_start, TRANSPARENT);
+			colorGradientCenter = array.getColor(R.styleable.RoboButton_btn_gradient_center, TRANSPARENT);
+			colorGradientEnd = array.getColor(R.styleable.RoboButton_btn_gradient_end, TRANSPARENT);
 
 			if (usePressedLayer) {
 				/* ---------------------- Pressed states colors -------------------------------------------*/

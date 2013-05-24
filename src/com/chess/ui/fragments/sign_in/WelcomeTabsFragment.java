@@ -40,6 +40,8 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements RadioGro
 
 		tabRadioGroup = (RadioGroup) view.findViewById(R.id.tabRadioGroup);
 		tabRadioGroup.setOnCheckedChangeListener(this);
+
+		showActionBar(false);
 	}
 
 	@Override
