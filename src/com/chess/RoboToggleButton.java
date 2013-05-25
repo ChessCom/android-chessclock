@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 public class RoboToggleButton extends ToggleButton implements Serializable {
 
-	private String ttfName = "Bold";
+	private String ttfName = FontsHelper.BOLD_FONT;
 
 	public RoboToggleButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -43,7 +43,7 @@ public class RoboToggleButton extends ToggleButton implements Serializable {
 	}
 
 	private void init(Context context) {
-		if (!isInEditMode() && ttfName != null) {
+		if (!isInEditMode()) {
 			setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
 		}
 	}

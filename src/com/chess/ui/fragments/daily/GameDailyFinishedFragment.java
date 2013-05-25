@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -51,6 +49,7 @@ import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
+import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsNetworkView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -164,7 +163,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
 		{// set avatars
-			Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
+			Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
+					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
 			opponentAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
 			userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
 

@@ -50,7 +50,7 @@
                 android:hint="@string/first_name"
                 android:inputType="textPersonName"
                 style="@style/WhiteGrayEditText.Top"
-                custom:leftImage="@drawable/ic_first_name"
+                custom:leftImage="@string/ic_first_name"
                 android:layout_marginTop="@dimen/create_profile_field_margin_top"
                 />
 
@@ -61,7 +61,7 @@
                 android:hint="@string/last_name"
                 android:inputType="textPersonName"
                 style="@style/WhiteGrayEditText.Middle"
-                custom:leftImage="@drawable/ic_last_name"
+                custom:leftImage="@string/ic_first_name"
                 />
 
             <com.chess.LeftRightImageEditText
@@ -70,8 +70,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/country"
                 style="@style/WhiteGrayEditText.Middle"
-                custom:leftImage="@drawable/ic_country"
-                custom:rightImage="@drawable/ic_country"
+                custom:leftImage="@string/ic_country"
+                custom:rightImage="@string/ic_country"
                 android:editable="false"
                 android:clickable="true"
                 android:focusable="false"
@@ -85,7 +85,7 @@
                 android:hint="@string/skill_level"
                 style="@style/WhiteGrayEditText.Middle"
                 custom:leftImage="@drawable/ic_skills"
-                custom:rightImage="@drawable/ic_arrow_right"
+                custom:rightImage="@string/ic_right"
                 android:editable="false"
                 android:clickable="true"
                 android:focusable="false"
@@ -100,7 +100,7 @@
                 android:inputType="textPersonName"
                 style="@style/WhiteGrayEditText.Bottom"
                 custom:rightImage="@drawable/img_profile_picture_stub"
-                custom:leftImage="@drawable/ic_profile_picture"
+                custom:leftImage="@string/ic_photo"
                 android:clickable="true"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
@@ -129,7 +129,7 @@
                     style="@style/SetupSmallFont"
                     android:textSize="16sp"
                     android:paddingTop="@dimen/create_profile_skip_padding_top"
-                    android:drawableRight="@drawable/ic_arrow_right"
+                    android:drawableRight="@string/ic_right"
                     android:layout_gravity="center_horizontal"
                     />
             </FrameLayout>

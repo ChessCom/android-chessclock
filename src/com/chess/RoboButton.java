@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 public class RoboButton extends Button implements Serializable {
 
-	private String ttfName = "Bold";
+	private String ttfName = FontsHelper.BOLD_FONT;
 
 	public RoboButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -47,7 +47,7 @@ public class RoboButton extends Button implements Serializable {
 	}
 
     private void init(Context context, AttributeSet attrs) {
-		if (!isInEditMode() && ttfName != null) {
+		if (!isInEditMode()) {
 			Typeface font = FontsHelper.getInstance().getTypeFace(context, ttfName);
 			setTypeface(font);
 		}

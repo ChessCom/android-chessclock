@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="26dip"
+    >
+
+    <com.chess.RoboTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/improve_your_game"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/thirdWelcomeImg"
+        style="@style/WelcomeFeatureTitle"
+        />
+
+    <ImageButton
+        android:id="@+id/playBtn3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_play_video_medium"
+        android:background="@drawable/video_play_btn_back_medium_selector"
+        android:visibility="visible"
+        android:contentDescription="@string/image"
+        />
+
+    <FrameLayout
+        android:id="@+id/youTubeFrameContainer3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/thirdWelcomeImg"
+        />
+
+    <!--Features list-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        >
+
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_four_line_1"
+            style="@style/WelcomeListFeature"
+            />
+
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_four_line_2"
+            style="@style/WelcomeListFeature"
+            />
+
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_four_line_3"
+            style="@style/WelcomeListFeature"
+            />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

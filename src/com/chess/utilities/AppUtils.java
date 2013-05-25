@@ -493,8 +493,8 @@ public class AppUtils {
 	public static int[] getValidThemeBackIds() {
 		return new int[] {
 				R.drawable.img_theme_green_felt
-				,
-				R.drawable.img_theme_dueling_tigers
+//				,
+//				R.drawable.img_theme_dueling_tigers
 //				,
 //				R.drawable.img_theme_blackwood,
 //				R.drawable.img_theme_blackstone,
@@ -513,6 +513,10 @@ public class AppUtils {
 			}
 		}
 		return false;
+	}
+
+	public static void iconRestore() { // TODO restore icons
+
 	}
 
 }

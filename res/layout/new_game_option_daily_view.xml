@@ -27,7 +27,7 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_daily_game"
+                android:text="@string/ic_daily_game"
                 android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon"
                 />
@@ -45,7 +45,7 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_left"
+                android:text="@string/ic_left"
                 android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon.Small"
                 />

@@ -45,9 +45,9 @@
 
     <declare-styleable name="EnhancedField">
         <attr name="round_mode" format="reference|integer" />
-        <attr name="color" format="reference|integer" />
-        <attr name="leftImage" format="reference|integer" />
-        <attr name="rightImage" format="reference|integer" />
+        <attr name="color" format="reference|color" />
+        <attr name="leftImage" format="reference|string" />
+        <attr name="rightImage" format="reference|string" />
     </declare-styleable>
 
 	<declare-styleable name="OrangeButtonTheme">

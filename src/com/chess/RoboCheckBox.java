@@ -7,7 +7,8 @@ import android.util.AttributeSet;
 import android.widget.CheckBox;
 
 public class RoboCheckBox extends CheckBox {
-	private String ttfName = "Regular";
+
+	private String ttfName = FontsHelper.DEFAULT_FONT;
 
 	public RoboCheckBox(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -40,7 +41,7 @@ public class RoboCheckBox extends CheckBox {
 	}
 
 	private void init(Context context) {
-		if (!isInEditMode() && ttfName != null) {
+		if (!isInEditMode()) {
 			setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
 		}
 	}

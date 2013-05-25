@@ -59,6 +59,10 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		canvas.setDrawFilter(drawFilter);
 		super.onDraw(canvas);
 
+		if (isInEditMode()) {
+			return;
+		}
+
 		drawBoard(canvas);
 
 		if (gameActivityFace != null && getBoardFace() != null) {

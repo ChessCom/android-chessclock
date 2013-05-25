@@ -9,5 +9,6 @@ import android.view.View;
  * @modified 28.05.12
  */
 public interface ItemClickListenerFace extends View.OnClickListener {
+
     Context getMeContext();
 }

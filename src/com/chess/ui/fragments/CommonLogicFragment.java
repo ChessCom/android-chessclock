@@ -33,7 +33,7 @@ import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.fragments.daily.DailyGamesNotificationFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
-import com.chess.ui.fragments.sign_in.SignInFragment;
+import com.chess.ui.fragments.welcome.SignInFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.facebook.Session;
 import com.facebook.SessionState;

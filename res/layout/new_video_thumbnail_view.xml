@@ -24,6 +24,17 @@
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
+    <!--Icon-->
+    <com.chess.RoboButton
+        android:id="@+id/playBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/ic_play"
+        style="@style/GlyphIcon.RoundBack.Play"
+        />
+
+<!--
     <ImageButton
         android:id="@+id/playBtn"
         android:layout_width="wrap_content"
@@ -32,6 +43,8 @@
         android:src="@drawable/ic_play_video"
         android:background="@drawable/video_play_btn_back_small_selector"
         android:visibility="visible"
-        android:contentDescription="@string/image"/>
+        android:contentDescription="@string/image"
+        />
+-->
 
 </RelativeLayout>

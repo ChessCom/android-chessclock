@@ -24,7 +24,6 @@ import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.NewGameDailyView;
 import com.chess.ui.views.NewGameDefaultView;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
-import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +74,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		{// Daily Games setup
 			NewGameDefaultView.ViewConfig dailyConfig = new NewGameDefaultView.ViewConfig();
 			dailyConfig.setBaseId(DAILY_BASE_ID);
-			dailyConfig.setHeaderIcon(R.drawable.ic_daily_game);
+			dailyConfig.setHeaderIcon(R.string.ic_daily_game);
 			dailyConfig.setHeaderText(R.string.new_daily_chess);
 			dailyConfig.setTitleText(R.string.new_per_turn);
 			// set default value

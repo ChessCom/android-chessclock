@@ -2,7 +2,6 @@ package com.chess.ui.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,11 +16,10 @@ import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
-import com.chess.ui.fragments.sign_in.WelcomeFragment;
-import com.chess.ui.fragments.sign_in.WelcomeTabsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
+import com.chess.ui.fragments.welcome.WelcomeFragment;
+import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
-import com.chess.ui.views.drawables.LogoBackgroundDrawable;
 import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
@@ -41,7 +39,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	private Fragment currentActiveFragment;
 	private Hashtable<Integer, Integer> badgeItems;
-	private LogoBackgroundDrawable logoBackground;
 	private SlidingMenu slidingMenu;
 	private List<SlidingMenu.OnOpenedListener> openMenuListeners;
 	private boolean showActionBar;
@@ -77,8 +74,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		slidingMenu.setOnOpenedListener(openMenuListener);
 
 		badgeItems = new Hashtable<Integer, Integer>();
-
-		logoBackground = new LogoBackgroundDrawable(this);
 
 		int id = AppData.getThemeBackId(this);
 		getWindow().setBackgroundDrawableResource(id);
@@ -168,7 +163,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		logoBackground.updateConfig();
 	}
 
 	private SlidingMenu.OnOpenedListener openMenuListener = new SlidingMenu.OnOpenedListener() {
@@ -358,11 +352,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	@Override
 	public CoreActivityActionBar getActionBarActivity() {
 		return getInstance();
-	}
-
-	@Override
-	public Drawable getLogoBackground() {
-		return logoBackground;
 	}
 
 	@Override

@@ -42,16 +42,17 @@
         android:text="Bangalore, India"
         />
 
-    <ImageView
+    <com.chess.RoboButton
         android:id="@+id/userCountryImg"
         android:layout_width="@dimen/country_flag_size"
         android:layout_height="@dimen/country_flag_size"
-        android:src="@drawable/ic_country"
+        android:src="@string/ic_country"
         android:contentDescription="@string/image"
         android:layout_marginRight="14dip"
         android:layout_toRightOf="@id/userPhotoImg"
         android:layout_below="@id/userCountryTxt"
         android:layout_marginTop="3dip"
+        custom:ttf="Icon"
         />
 
 </RelativeLayout>

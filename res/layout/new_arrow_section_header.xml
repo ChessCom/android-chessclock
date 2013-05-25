@@ -20,11 +20,19 @@
         android:text="Openings"
 		/>
 
-    <ImageView
+    <!--Right Icon-->
+    <com.chess.RoboTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ic_right"
+        android:textColor="@color/new_light_grey_2"
+        style="@style/GlyphIcon.Small"
+        />
+<!--    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_arrow_right"
         android:layout_gravity="center_vertical"
         android:contentDescription="@string/arrow"
-        />
+        />-->
 </com.chess.LinLayout>

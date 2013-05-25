@@ -129,7 +129,10 @@ public class RestHelper {
 		return CMD_GAMES + "/" + gameId + "/actions";
 	}
 
-	public static final String CMD_IAB = BASE_URL + V1 + "/iab";
+	public static final String CMD_MEMBERSHIP = BASE_URL + V1 + "/membership";
+	public static final String CMD_MEMBERSHIP_DETAILS = CMD_MEMBERSHIP + "/details";
+	public static final String CMD_DEV_PAYLOAD = CMD_MEMBERSHIP + "/developer-payload";
+
 
 	/* Parameters */
 	// new

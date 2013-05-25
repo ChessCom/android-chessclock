@@ -14,21 +14,22 @@
     >
 
     <FrameLayout
+        android:id="@+id/playerImgFrame"
+        android:layout_width="@dimen/daily_list_item_image_size"
+        android:layout_height="@dimen/daily_list_item_image_size"
+        android:background="@drawable/img_profile_picture_stub"
+        android:layout_marginRight="@dimen/default_scr_side_padding"
+        />
+
+    <FrameLayout
         android:id="@+id/boardPreviewFrame"
         android:layout_width="@dimen/video_thumb_size"
         android:layout_height="@dimen/video_thumb_size"
         android:background="@drawable/img_tactics_board"
         android:layout_marginRight="@dimen/default_scr_side_padding"
+        android:layout_toRightOf="@id/playerImgFrame"
         />
 
-    <FrameLayout
-        android:id="@+id/playerImgFrame"
-        android:layout_width="@dimen/daily_list_item_image_size"
-        android:layout_height="@dimen/daily_list_item_image_size"
-        android:background="@drawable/img_profile_picture_stub"
-        android:layout_toRightOf="@id/boardPreviewFrame"
-        android:layout_marginRight="@dimen/default_scr_side_padding"
-        />
 
     <com.chess.RoboTextView
         android:id="@+id/playerNameTxt"
@@ -37,7 +38,7 @@
         android:textColor="@color/new_text_blue"
         android:textSize="16sp"
         android:gravity="center_vertical"
-        android:layout_toRightOf="@id/playerImgFrame"
+        android:layout_toRightOf="@id/boardPreviewFrame"
         android:text="test"
         custom:ttf="Bold"
         android:layout_marginTop="-4dip"
@@ -50,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/red"
-        android:layout_toRightOf="@id/playerImgFrame"
+        android:layout_toRightOf="@id/boardPreviewFrame"
         android:layout_below="@id/playerNameTxt"
         android:textSize="@dimen/glyph_icon_default"
         custom:ttf="Icon"
@@ -58,7 +59,7 @@
         android:paddingLeft="0dip"
         android:paddingRight="5dip"
         android:paddingBottom="3dip"
-        android:text="@string/glyph_clock"
+        android:text="@string/ic_clock"
         />
 
     <com.chess.RoboTextView

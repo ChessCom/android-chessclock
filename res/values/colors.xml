@@ -8,7 +8,10 @@
     <color name="main_menu_back_top">#FF23221e</color>
     <color name="new_soft_white">#FFf5f5f5</color>
     <color name="new_soft_grey">#FFdedddb</color>
+    <color name="new_soft_grey1">#FFeef2ed</color>
     <color name="new_normal_grey">#FF797571</color>
+    <color name="new_normal_grey_2">#FF999795</color>
+    <color name="new_normal_grey_3">#FFaeaba7</color>
     <color name="new_light_grey_0">#FFcbcbca</color>
     <color name="new_light_grey">#FFc8c8c8</color>
     <color name="new_light_grey_2">#FFa5a4a4</color>
@@ -19,7 +22,6 @@
 
     <!--Back shadow-->
     <color name="back_shadows_chess">#99000000</color>
-
 
     <!--Buttons-->
 
@@ -313,12 +315,12 @@
     <!--Video Play Btn back-->
     <color name="thumbnail_play_border_1">#FFe3e2e2</color>
     <color name="thumbnail_play_border_2">#FFe9e9e9</color>
-    <color name="thumbnail_play_border_inner">#FFf3f3f3</color>
+    <color name="thumbnail_play_border_inner">#33f3f3f3</color>
     <!--Medium Play Button-->
-    <color name="thumbnail_play_border_medium">#FF908e8b</color>
-    <color name="thumbnail_play_border_medium_p">#ff7c7a77</color>
-    <color name="thumbnail_play_back_medium">#FFfdfdfc</color>
-    <color name="thumbnail_play_back_medium_p">#ffe9e9e8</color>
+    <color name="thumbnail_play_border_medium">#88908e8b</color>
+    <color name="thumbnail_play_border_medium_p">#887c7a77</color>
+    <color name="thumbnail_play_back_medium">#EEfdfdfc</color>
+    <color name="thumbnail_play_back_medium_p">#EEe9e9e8</color>
 
     <color name="new_dark_green">#FF4e763b</color>
     <color name="new_author_dark_grey">#FF45413f</color>
@@ -403,9 +405,9 @@
     <color name="upgrade_plan_gold_bottom_2">#FF6e6140</color>
 
     <!--Welcome-->
-    <color name="pager_indicator_default">#FF1d1c1a</color>
-    <color name="pager_indicator_selected">#FF68923d</color>
-    <color name="welcome_buttons_lay_back">#FF24221f</color>
+    <color name="pager_indicator_default">#66000000</color>
+    <color name="pager_indicator_selected">#FFFFFFFF</color>
+
 
     <color name="welcome_two_title_border">#FF8b8a85</color>
     <color name="welcome_two_title_grey">#FF686664</color>
@@ -416,7 +418,6 @@
     <color name="profile_light_grey_ratings_back">#FFf5f4f2</color>
     <color name="profile_light_grey_ratings_back_p">#ffc7c6c4</color>
 
-    <color name="dark_grey_list_divider">#FFaeaba7</color>
 
     <color name="possible_move_highlight">#6000ad00</color>
 

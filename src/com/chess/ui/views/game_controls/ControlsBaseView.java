@@ -47,20 +47,20 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	}
 
 	private Integer[] glyphIds = new Integer[]{
-			R.string.glyph_options,
-			R.string.glyph_board,
-			R.string.glyph_restore,
-			R.string.glyph_flip,
-			R.string.glyph_close,
-			R.string.glyph_chat,
-			R.string.glyph_chat_nm,
-			R.string.glyph_help,
-			R.string.glyph_stats,
-			R.string.glyph_hint,
-			R.string.glyph_left,
-			R.string.glyph_right,
-			R.string.glyph_play,
-			R.string.glyph_check
+			R.string.ic_options,
+			R.string.ic_board,
+			R.string.ic_restore,
+			R.string.ic_flip,
+			R.string.ic_close,
+			R.string.ic_chat,
+			R.string.ic_chat_nm,
+			R.string.ic_help,
+			R.string.ic_stats,
+			R.string.ic_hint,
+			R.string.ic_left,
+			R.string.ic_right,
+			R.string.ic_play,
+			R.string.ic_check
 	};
 
 	protected LinearLayout controlsLayout;

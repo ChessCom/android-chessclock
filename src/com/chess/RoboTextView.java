@@ -10,6 +10,8 @@ import java.io.Serializable;
 
 public class RoboTextView extends TextView implements Serializable {
 
+	private String ttfName = FontsHelper.DEFAULT_FONT;
+
 	public RoboTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
         setupFont(context, attrs);
@@ -29,7 +31,6 @@ public class RoboTextView extends TextView implements Serializable {
 		if (array == null) {
 			return;
 		}
-		String ttfName = null;
 		try {
 			if (array.hasValue(R.styleable.RoboTextView_ttf)) {
 				ttfName = array.getString(R.styleable.RoboTextView_ttf);
@@ -42,7 +43,7 @@ public class RoboTextView extends TextView implements Serializable {
     }
 
     private void init(Context context, String ttfName) {
-		if (!isInEditMode() && ttfName != null) {
+		if (!isInEditMode()) {
 			setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
 		}
     }

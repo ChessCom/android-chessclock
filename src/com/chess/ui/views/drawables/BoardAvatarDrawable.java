@@ -1,11 +1,13 @@
 package com.chess.ui.views.drawables;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import com.chess.R;
 import com.chess.ui.engine.ChessBoard;
 
 /**
@@ -16,31 +18,40 @@ import com.chess.ui.engine.ChessBoard;
  */
 public class BoardAvatarDrawable extends Drawable {
 
-	private final ColorDrawable fillBackDrawable;
+	private ColorDrawable fillBackDrawable;
 	private float CORNER_RADIUS = 1.5f;
 	private int BORDER_THICK = 2;
 	private Bitmap roundedBitmap;
 	private Drawable imageBackDrawable;
 	private GradientDrawable solidBackDrawable;
-	private final GradientDrawable solidBackWhiteDrawable;
-	private final GradientDrawable solidBackBlackDrawable;
+	private GradientDrawable solidBackWhiteDrawable;
+	private GradientDrawable solidBackBlackDrawable;
 	private int side;
 
 
+	public BoardAvatarDrawable(Context context, Drawable sourcePhoto) {
+		imageBackDrawable = sourcePhoto;
+		init(context);
+	}
+
 	public BoardAvatarDrawable(Context context, Bitmap sourcePhoto) {
-		float density = context.getResources().getDisplayMetrics().density;
+		imageBackDrawable = new BitmapDrawable(context.getResources(), sourcePhoto);
+		init(context);
+	}
+
+	private void init(Context context) {
+		Resources resources = context.getResources();
+		float density = resources.getDisplayMetrics().density;
+
 		CORNER_RADIUS *= density;
 		BORDER_THICK *= density;
 
-		imageBackDrawable = new BitmapDrawable(context.getResources(), sourcePhoto);
-
 		solidBackWhiteDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-				new int[]{0xFFFFFFFF, 0xFFFFFFFF});
+				new int[]{0xBFFFFFFF, 0xBFFFFFFF});
 		solidBackBlackDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-				new int[]{0xFF161513, 0xFF161513});
+				new int[]{0xA5000000, 0xA5000000});
 
-		fillBackDrawable = new ColorDrawable(0xFF1d1c1a);
-
+		fillBackDrawable = new ColorDrawable(resources.getColor(R.color.new_soft_grey));
 	}
 
 	@Override
@@ -54,7 +65,7 @@ public class BoardAvatarDrawable extends Drawable {
 			roundedBitmap = createRoundedBitmap(bitmapWidth, bitmapHeight);
 		}
 
-		solidBackDrawable = side == ChessBoard.WHITE_SIDE ? solidBackWhiteDrawable : solidBackBlackDrawable;
+		GradientDrawable solidBackDrawable = side == ChessBoard.WHITE_SIDE ? solidBackWhiteDrawable : solidBackBlackDrawable;
 
 		solidBackDrawable.setBounds(0, 0, width, height);
 		setCornerRadii(solidBackDrawable, CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS);

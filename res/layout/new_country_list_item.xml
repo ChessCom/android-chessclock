@@ -35,14 +35,12 @@
         android:paddingRight="20dip"
         />
 
-    <ImageView
-        android:id="@+id/countryImg"
-        android:layout_width="23dip"
-        android:layout_height="23dip"
-        android:src="@drawable/ic_country"
-        android:contentDescription="@string/image"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
+    <com.chess.RoboTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ic_country"
+        android:textColor="@color/new_light_grey_2"
+        style="@style/GlyphIcon"
         />
 
 </LinearLayout>

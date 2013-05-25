@@ -31,6 +31,7 @@ import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
+import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
@@ -389,25 +390,26 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 	 * Tactics
 	 * Coach Manager
 	 *
-	 * @param index
+	 * @param index to get needed drawable
 	 * @return Drawable icon for index
 	 */
 	private Drawable getIconByCategory(int index) {
+		Context context = getActivity();
 		switch (index) {
 			case LIVE_STANDARD:
-				return getResources().getDrawable(R.drawable.ic_live_standard_light);
+				return new IconDrawable(context, R.string.ic_live_standard);
 			case LIVE_BLITZ:
-				return getResources().getDrawable(R.drawable.ic_live_blitz_light);
+				return new IconDrawable(context, R.string.ic_live_blitz);
 			case LIVE_LIGHTNING:
-				return getResources().getDrawable(R.drawable.ic_live_bullet_light);
+				return new IconDrawable(context, R.string.ic_live_bullet);
 			case DAILY_CHESS:
-				return getResources().getDrawable(R.drawable.ic_daily_game_light);
+				return new IconDrawable(context, R.string.ic_daily_game);
 			case DAILY_CHESS960:
-				return getResources().getDrawable(R.drawable.ic_daily960_game_light);
+				return new IconDrawable(context, R.string.ic_daily960_game);
 			case TACTICS:
-				return getResources().getDrawable(R.drawable.ic_tactics_game_light);
+				return new IconDrawable(context, R.string.ic_help);
 			default: // case CHESS_MENTOR:
-				return getResources().getDrawable(R.drawable.ic_lessons_light);
+				return new IconDrawable(context, R.string.ic_lessons);
 		}
 	}
 }

@@ -1,9 +1,12 @@
 package com.chess.ui.fragments.game;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,11 +27,12 @@ import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
-import com.chess.ui.views.chess_boards.ChessBoardCompView;
-import com.chess.ui.views.game_controls.ControlsCompView;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
+import com.chess.ui.views.chess_boards.ChessBoardCompView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
+import com.chess.ui.views.drawables.IconDrawable;
+import com.chess.ui.views.game_controls.ControlsCompView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import quickaction.ActionItem;
@@ -553,6 +557,10 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 		@Override
 		public void onImageReady(Bitmap bitmap) {
+			Activity activity = getActivity();
+			if (activity == null) {
+				return;
+			}
 			switch (code) {
 				case TOP_AVATAR:
 					labelsConfig.topAvatar = new BoardAvatarDrawable(getContext(), bitmap);
@@ -593,8 +601,10 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
 		{// set avatars
-			Bitmap user = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
-			Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_comp_game)).getBitmap();
+			Drawable user = new IconDrawable(getActivity(), R.string.ic_profile,
+					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
+			Drawable src = new IconDrawable(getActivity(), R.string.ic_comp_game,
+					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
 
 			labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
 			if (getBoardFace().getMode() == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) {

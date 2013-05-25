@@ -8,6 +8,8 @@
     android:layout_height="match_parent"
     >
 
+
+
     <com.chess.ui.views.NotationView
         android:id="@+id/notationsView"
         android:layout_width="match_parent"
@@ -15,7 +17,7 @@
         style="@style/NotationsStyle"
         />
 
-    <com.chess.ui.views.PanelInfoGameView
+    <com.chess.ui.views.PanelInfoWelcomeView
         android:id="@+id/topPanelView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,19 +53,28 @@
             android:layout_marginTop="-1px"
             />
 
-        <ProgressBar
+        <!--Loading Overlay-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/loadingView"
-            android:layout_width="60dip"
-            android:layout_height="60dip"
-            android:layout_centerInParent="true"
-            style="?android:attr/progressBarStyle"
+            android:background="@color/action_bar_overlay"
             android:visibility="gone"
-            />
+            >
+
+            <ProgressBar
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:layout_centerInParent="true"
+                style="?android:attr/progressBarStyle"
+                />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
 
-    <com.chess.ui.views.PanelInfoGameView
+    <com.chess.ui.views.PanelInfoWelcomeView
         android:id="@+id/bottomPanelView"
         android:layout_width="match_parent"
         android:layout_height="0dp"

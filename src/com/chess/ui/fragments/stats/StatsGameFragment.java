@@ -20,6 +20,7 @@ import com.chess.db.tasks.SaveGameStatsTask;
 import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.DarkSpinnerIconAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.views.drawables.IconDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -211,19 +212,20 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	 * @return Drawable icon for index
 	 */
 	private Drawable getIconByCategory(int index) {
+		Context context = getActivity();
 		switch (index) {
 			case LIVE_STANDARD:
-				return getResources().getDrawable(R.drawable.ic_live_standard);
+				return new IconDrawable(context, R.string.ic_live_standard);
 			case LIVE_BLITZ:
-				return getResources().getDrawable(R.drawable.ic_live_blitz);
+				return new IconDrawable(context, R.string.ic_live_blitz);
 			case LIVE_LIGHTNING:
-				return getResources().getDrawable(R.drawable.ic_live_bullet);
+				return new IconDrawable(context, R.string.ic_live_bullet);
 			case DAILY_CHESS:
-				return getResources().getDrawable(R.drawable.ic_daily_game);
+				return new IconDrawable(context, R.string.ic_daily_game);
 			case DAILY_CHESS960:
-				return getResources().getDrawable(R.drawable.ic_daily960_game);
+				return new IconDrawable(context, R.string.ic_daily960_game);
 			default: // case CHESS_MENTOR:
-				return getResources().getDrawable(R.drawable.ic_tactics_game);
+				return new IconDrawable(context, R.string.ic_help);
 		}
 	}
 }

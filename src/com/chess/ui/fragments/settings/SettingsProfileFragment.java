@@ -33,8 +33,9 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCountriesFragment;
 import com.chess.ui.fragments.popup_fragments.PopupSelectPhotoFragment;
-import com.chess.ui.fragments.sign_in.InviteFragment;
+import com.chess.ui.fragments.welcome.InviteFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
+import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.utilities.AppUtils;
 
 import java.io.File;
@@ -131,6 +132,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			locationClearBtn.setOnClickListener(this);		}
 
 		flagImg = (ImageView) view.findViewById(R.id.flagImg);
+		flagImg.setImageDrawable(new IconDrawable(getActivity(), R.string.ic_country));
 		flagImg.setOnClickListener(this);
 
 		countryValueTxt = (TextView) view.findViewById(R.id.countryValueTxt);

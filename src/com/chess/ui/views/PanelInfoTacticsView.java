@@ -121,7 +121,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			clockIconTxt.setFont(FontsHelper.ICON_FONT);
 			float clockIconSize = resources.getDimension(R.dimen.new_tactics_clock_icon_size)/density; // 21;
 			clockIconTxt.setTextSize(clockIconSize);
-			clockIconTxt.setText(R.string.glyph_clock);
+			clockIconTxt.setText(R.string.ic_clock);
 			clockIconTxt.setTextColor(resources.getColor(R.color.main_menu_back_top));
 			int paddingIcon = (int) (7 * density);
 			int paddingIconTop = (int) (3 * density);

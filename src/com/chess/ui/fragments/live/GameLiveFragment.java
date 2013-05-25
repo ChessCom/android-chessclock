@@ -1124,20 +1124,24 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 		@Override
 		public void onImageReady(Bitmap bitmap) {
+			Activity activity = getActivity();
+			if (activity == null) {
+				return;
+			}
 			switch (code) {
 				case TOP_AVATAR:
-					labelsConfig.topAvatar = new BoardAvatarDrawable(getContext(), bitmap);
+					labelsConfig.topAvatar = new BoardAvatarDrawable(activity, bitmap);
 
 					labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
 					topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
 					topPanelView.invalidate();
 
-					String userAvatarUrl = AppData.getUserAvatar(getContext());
+					String userAvatarUrl = AppData.getUserAvatar(activity);
 					imageDownloader.download(userAvatarUrl, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 
 					break;
 				case BOTTOM_AVATAR:
-					labelsConfig.bottomAvatar = new BoardAvatarDrawable(getContext(), bitmap);
+					labelsConfig.bottomAvatar = new BoardAvatarDrawable(activity, bitmap);
 
 					labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
 					bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);

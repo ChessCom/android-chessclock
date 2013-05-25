@@ -8,7 +8,8 @@ import android.widget.RadioButton;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 public class RoboRadioButton extends RadioButton {
-	private String ttfName = "Regular";
+
+	private String ttfName = FontsHelper.DEFAULT_FONT;
 
 	public RoboRadioButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -41,7 +42,7 @@ public class RoboRadioButton extends RadioButton {
 	}
 
 	private void init(Context context, AttributeSet attrs) {
-		if (!isInEditMode() && ttfName != null) {
+		if (!isInEditMode()) {
 			setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
 		}
 		ButtonDrawableBuilder.setBackgroundToView(this, attrs);

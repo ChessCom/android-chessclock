@@ -2,55 +2,18 @@
 
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
-	android:layout_width="@dimen/popup_dialog_width"
-	android:layout_height="wrap_content"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
 	android:orientation="vertical"
-	android:minWidth="@dimen/popup_dialog_width"
-	android:paddingTop="@dimen/popup_top_padding"
-	android:paddingBottom="@dimen/popup__bottom_padding"
-	android:paddingLeft="@dimen/popup_side_padding"
-	android:paddingRight="@dimen/popup_side_padding"
-	android:background="@drawable/popup_white_back"
-	android:layout_marginRight="@dimen/popup_side_margin"
-	android:layout_marginLeft="@dimen/popup_side_margin"
+    android:background="@color/action_bar_overlay"
 	>
 
-	<com.chess.RoboTextView
-		android:id="@+id/popupTitle"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:maxWidth="@dimen/popup_dialog_text_max_width"
-		android:gravity="center"
-        android:textSize="@dimen/game_end_popup_text_size"
-        android:textColor="@color/new_dark_green"
-		custom:ttf="Bold"
-		/>
-
-	<com.chess.RoboTextView
-		android:id="@+id/popupMessage"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:maxWidth="@dimen/popup_dialog_text_max_width"
-		android:gravity="center"
-		android:paddingTop="@dimen/default_scr_bottom_padding"
-		android:paddingBottom="@dimen/default_scr_top_padding"
-		style="@style/DarkShadowBottom"
-		custom:ttf="Bold"
-		android:visibility="gone"
-		android:textSize="17sp"
-		/>
-
 	<ProgressBar
-		android:layout_width="@dimen/popup_dialog_width"
-		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
 		android:indeterminate="true"
-		style="?android:attr/progressBarStyleHorizontal"
-		android:paddingTop="10dip"
-		android:paddingBottom="10dip"
-		android:paddingLeft="25dip"
-		android:paddingRight="25dip"
-		android:layout_gravity="center_horizontal"
+		style="@style/ChessProgressBar"
+		android:layout_gravity="center"
 		/>
 
 </LinearLayout>

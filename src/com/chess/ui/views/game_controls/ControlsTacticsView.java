@@ -52,7 +52,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 
 	private void addNextButton() {
 		RoboButton button = getDefaultButton();
-		button.setText(R.string.glyph_arrow_right);
+		button.setText(R.string.ic_arrow_right);
 		button.setDrawableStyle(R.style.Rect_Bottom_Right_Green);
 		button.setId(getButtonId(NEXT));
 		button.setVisibility(GONE);
@@ -65,7 +65,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 
 	private void addWrongButton() {
 		RoboButton button = getDefaultButton();
-		button.setText(R.string.glyph_restore);
+		button.setText(R.string.ic_restore);
 		button.setDrawableStyle(R.style.Rect_Bottom_Right_Red);
 		button.setId(getButtonId(RESTART));
 		button.setVisibility(GONE);

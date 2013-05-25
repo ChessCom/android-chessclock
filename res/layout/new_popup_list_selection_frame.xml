@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:cacheColorHint="@color/white"
-        android:divider="@color/dark_grey_list_divider"
+        android:divider="@color/new_normal_grey_3"
         android:dividerHeight="1dip"
         />
 

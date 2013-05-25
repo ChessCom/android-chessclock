@@ -27,4 +27,8 @@
     <dimen name="daily_list_item_image_size">30dip</dimen>
     <dimen name="header_title_size">15sp</dimen>
     <dimen name="rect_edge_offset">2dip</dimen>
+    <dimen name="splash_progress_margin_top">100dip</dimen>
+    <dimen name="welcome_feature_text_size">17sp</dimen>
+    <dimen name="welcome_title_text_size">26sp</dimen>
+    <dimen name="board_avatar_icon_size">32dip</dimen>
 </resources>

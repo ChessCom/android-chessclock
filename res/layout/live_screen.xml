@@ -89,7 +89,6 @@
 		android:id="@+id/statsBtn"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:drawableLeft="@drawable/ic_chartbar"
 		android:text="@string/stats"
 		style="@style/Button.Glassy"
 		/>

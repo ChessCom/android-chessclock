@@ -61,23 +61,21 @@
         />
 
 
-    <ImageView
+    <com.chess.RoboTextView
         android:id="@+id/cancelBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/btn_cancel"
-        android:contentDescription="@string/cancel"
+        android:text="@string/ic_close"
         android:layout_toLeftOf="@+id/acceptBtn"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dip"
         />
 
-    <ImageView
+    <com.chess.RoboTextView
         android:id="@id/acceptBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/btn_accept"
-        android:contentDescription="@string/accept"
+        android:text="@string/ic_check"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         />

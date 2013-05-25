@@ -20,7 +20,6 @@
 		android:layout_marginTop="@dimen/signin_logo_margin_top"
 		android:adjustViewBounds="true"
 		android:scaleType="fitXY"
-		android:src="@drawable/img_logo"
 		android:contentDescription="@string/image"
 		/>
 
@@ -63,7 +62,6 @@
 			style="@style/Button.Facebook"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:drawableLeft="@drawable/facebook_icon"
 			/>
 
 		<com.chess.RoboButton

@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         style="@style/GlyphIcon.Big"
         android:textColor="@color/new_light_grey_4"
-        android:text="@string/glyph_live_standard"
+        android:text="@string/ic_live_standard"
         android:layout_marginLeft="@dimen/home_play_live_labels_padding_side"
         android:visibility="gone"
         />
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         style="@style/GlyphIcon.Big"
         android:textColor="@color/new_light_grey_4"
-        android:text="@string/glyph_live_blitz"
+        android:text="@string/ic_live_blitz"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
         />
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         style="@style/GlyphIcon.Big"
         android:textColor="@color/new_light_grey_4"
-        android:text="@string/glyph_live_bullet"
+        android:text="@string/ic_live_bullet"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/home_play_live_labels_padding_side"
         android:visibility="gone"

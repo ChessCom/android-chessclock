@@ -4,7 +4,9 @@
     <!--Common-->
     <item name="mainView" type="id"/>
     <item name="glow_layer" type="id"/>
-    <item name="firstBackImg" type="id"/>
+    <item name="firstWelcomeImg" type="id"/>
+    <item name="secondWelcomeImg" type="id"/>
+    <item name="thirdWelcomeImg" type="id"/>
 
 	<!--Notification-->
 	<item name="notification_message" type="id"/>

@@ -3,62 +3,65 @@
 
     <!-- Use Icon as custom font to draw icons Mapping are here - link TBD -->
     <!--Names as strings-->
-    <string name="glyph_chess_com">1</string>
-    <string name="glyph_daily_game">2</string>
-    <string name="glyph_live_standard">3</string>
-    <string name="glyph_live_blitz">4</string>
-    <string name="glyph_live_bullet">5</string>
-    <string name="glyph_play_friend">n</string>
-    <string name="glyph_daily960_game">6</string>
-    <string name="glyph_help">7</string>
-    <string name="glyph_lessons">8</string>
-    <string name="glyph_comp_game">9</string>
+    <string name="ic_pawn">1</string>
+    <string name="ic_daily_game">2</string>
+    <string name="ic_live_standard">3</string>
+    <string name="ic_live_blitz">4</string>
+    <string name="ic_live_bullet">5</string>
+    <string name="ic_play_friend">n</string>
+    <string name="ic_daily960_game">6</string>
+    <string name="ic_help">7</string>
+    <string name="ic_lessons">8</string>
+    <string name="ic_comp_game">9</string>
 
+    <string name="ic_profile">b</string>
+    <string name="ic_board">i</string>
+    <string name="ic_contacts">o</string>
+    <string name="ic_info">)</string>
+    <string name="ic_settings">d</string>
+    <string name="ic_theme">l</string>
+    <string name="ic_blocking">&amp;</string>
+    <string name="ic_tracking">m</string>
+    <string name="ic_share">k</string>
+    <string name="ic_email_dark">y</string>
+    <string name="ic_email_light">u</string>
+    <string name="ic_password">d</string>
+    <string name="ic_history">&#730;</string>
+    <string name="ic_close">B</string>
+    <string name="ic_clear">Q</string>
+    <string name="ic_clock">\'</string>
+    <string name="ic_facebook">S</string>
+    <string name="ic_facebook_square">D</string>
+    <string name="ic_first_name">h</string>
+    <string name="ic_country">Y</string>
+    <string name="ic_photo">H</string>
 
+    <string name="ic_options">r</string>
+    <string name="ic_restore">L</string>
+    <string name="ic_refresh">:</string>
+    <string name="ic_flip">N</string>
+    <string name="ic_check">G</string>
+    <string name="ic_play">J</string>
+    <string name="ic_chat">c</string>
+    <string name="ic_chat_nm">v</string>
+    <string name="ic_stats">;</string>
+    <string name="ic_search">-</string>
+    <string name="ic_hint">g</string>
 
-    <string name="glyph_profile">b</string>
-    <string name="glyph_board">i</string>
-    <string name="glyph_contacts">o</string>
-    <string name="glyph_info">)</string>
-    <string name="glyph_settings">d</string>
-    <string name="glyph_theme">l</string>
-    <string name="glyph_blocking">&amp;</string>
-    <string name="glyph_tracking">m</string>
-    <string name="glyph_share">k</string>
-    <string name="glyph_email_dark">y</string>
-    <string name="glyph_email_light">u</string>
-    <string name="glyph_password">d</string>
-    <string name="glyph_history">&#730;</string>
-    <string name="glyph_close">B</string>
-    <string name="glyph_clear">Q</string>
-    <string name="glyph_clock">\'</string>
-    <string name="glyph_facebook">D</string>
+    <string name="ic_right">.</string>
+    <string name="ic_left">,</string>
+    <string name="ic_up">&#60;</string>
+    <string name="ic_down">&#62;</string>
 
-    <string name="glyph_options">r</string>
-    <string name="glyph_restore">L</string>
-    <string name="glyph_refresh">:</string>
-    <string name="glyph_flip">N</string>
-    <string name="glyph_check">G</string>
-    <string name="glyph_play">J</string>
-    <string name="glyph_chat">c</string>
-    <string name="glyph_chat_nm">v</string>
-    <string name="glyph_stats">;</string>
-    <string name="glyph_search">-</string>
-    <string name="glyph_hint">g</string>
-
-    <string name="glyph_right">.</string>
-    <string name="glyph_left">,</string>
-    <string name="glyph_up">&#60;</string>
-    <string name="glyph_down">&#62;</string>
-
-    <string name="glyph_arrow_right">]</string>
-    <string name="glyph_arrow_left">[</string>
-    <string name="glyph_arrow_up">}</string>
-    <string name="glyph_arrow_down">{</string>
+    <string name="ic_arrow_right">]</string>
+    <string name="ic_arrow_left">[</string>
+    <string name="ic_arrow_up">}</string>
+    <string name="ic_arrow_down">{</string>
 
     <!--Dimens -->
     <dimen name="glyph_icon_padding">8dip</dimen>
     <dimen name="glyph_icon_big">30dip</dimen>
+    <dimen name="glyph_icon_round_back">30dip</dimen>
     <dimen name="glyph_icon_default">24dip</dimen>
     <dimen name="glyph_icon_small">20dip</dimen>
 

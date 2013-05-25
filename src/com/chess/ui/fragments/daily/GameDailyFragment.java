@@ -6,12 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,14 +40,16 @@ import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.CompGameSetupFragment;
 import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameNetworkActivityFace;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
-import com.chess.ui.views.*;
+import com.chess.ui.views.NotationView;
+import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
+import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsNetworkView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -1214,7 +1217,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
 		{// set avatars
-			Bitmap src = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
+			Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
+					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
 			opponentAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
 			userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
 

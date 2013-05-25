@@ -78,7 +78,6 @@
 			style="@style/Button.Facebook"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:drawableLeft="@drawable/facebook_icon"
 			android:text="@string/connect_with_facebook"
 			android:paddingLeft="5dip"
 			/>

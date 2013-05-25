@@ -2,21 +2,22 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="10dip"
     >
 
-    <ImageButton
+    <com.chess.RoboButton
         android:id="@+id/challengeImgBtn"
         android:layout_width="@dimen/new_button_square_size"
         android:layout_height="@dimen/new_button_square_size"
         android:contentDescription="@string/challenge"
         android:background="@drawable/button_square_grey_selector"
-        android:src="@drawable/ic_send_challenge"
+        android:text="@string/ic_board"
         android:layout_marginTop="9dip"
         android:layout_marginLeft="15dip"
+        custom:ttf="Icon"
         />
 
     <ImageView
@@ -34,15 +35,16 @@
         android:scaleType="fitXY"
         />
 
-    <ImageButton
+    <com.chess.RoboButton
         android:id="@+id/messageImgBtn"
         android:layout_width="@dimen/new_button_square_size"
         android:layout_height="@dimen/new_button_square_size"
         android:contentDescription="@string/challenge"
         android:background="@drawable/button_square_grey_selector"
-        android:src="@drawable/ic_send_message"
+        android:text="@string/ic_email_dark"
         android:layout_alignBottom="@id/photoImg"
         android:layout_marginLeft="15dip"
+        custom:ttf="Icon"
         />
 
 
@@ -55,7 +57,7 @@
         android:text="crabcackles"
         android:layout_alignTop="@id/photoImg"
         android:textColor="@color/new_text_blue"
-        robo:ttf="Bold"
+        custom:ttf="Bold"
         android:textSize="17sp"
         />
 
@@ -101,7 +103,7 @@
         android:layout_alignBottom="@id/photoImg"
         android:text="offline"
         android:textColor="@color/new_friends_grey_text"
-        robo:ttf="Italic"
+        custom:ttf="Italic"
         android:textSize="13sp"
         />
 

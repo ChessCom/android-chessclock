@@ -1,16 +1,19 @@
 package com.chess.ui.views;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.RoboTextView;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -113,10 +116,15 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 	}
 
 	private void addGameSetupView(ViewConfig viewConfig) {
+		Context context = getContext();
+		if (context == null) {
+			return;
+		}
+		Resources resources = context.getResources();
 
 		{// Header
 			// Header View
-			LinearLayout headerView = new LinearLayout(getContext());
+			LinearLayout headerView = new LinearLayout(context);
 			LayoutParams headerParams = new LayoutParams(LayoutParams.MATCH_PARENT, HEADER_HEIGHT);
 			headerView.setLayoutParams(headerParams);
 			ButtonDrawableBuilder.setBackgroundToView(headerView, R.style.ListItem);
@@ -124,40 +132,36 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 			headerView.setGravity(Gravity.CENTER_VERTICAL);
 
 			// Header icon
-			ImageView imageView = new ImageView(getContext());
-			imageView.setImageResource(viewConfig.getHeaderIcon());
+			RoboTextView headerIconTxt = new RoboTextView(context);
+			headerIconTxt.setFont(FontsHelper.ICON_FONT);
+			headerIconTxt.setText(viewConfig.getHeaderIcon());
 
-			headerView.addView(imageView, defaultLinearWrapParams);
+			headerView.addView(headerIconTxt, defaultLinearWrapParams);
 
 			// Text Header
-			TextView headerText = new TextView(getContext());
+			TextView headerText = new TextView(context);
 			LayoutParams headerTxtParams = new LayoutParams(0, LayoutParams.WRAP_CONTENT);
 			headerTxtParams.weight = 1;
 
 			headerText.setText(viewConfig.getHeaderText());
-			headerText.setTextColor(getContext().getResources().getColor(R.color.new_normal_grey));
+			headerText.setTextColor(resources.getColor(R.color.new_normal_grey));
 			headerText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TOP_TEXT_SIZE);
 			headerText.setPadding(HEADER_TEXT_PADDING_LEFT, 0, 0, 0);
 			headerView.addView(headerText, headerTxtParams);
-
-			// Info Button
-			ImageView infoButton = new ImageView(getContext());
-			infoButton.setImageResource(R.drawable.ic_help); // TODO set selector
-			headerView.addView(infoButton, defaultLinearWrapParams);
 
 			addView(headerView);
 		}
 
 		// Compact Options Quick view
-		compactRelLay = new RelativeLayout(getContext());
+		compactRelLay = new RelativeLayout(context);
 		compactRelLay.setLayoutParams(defaultRelativeMatchWidthParams);
 		ButtonDrawableBuilder.setBackgroundToView(compactRelLay, R.style.ListItem_Header);
 		compactRelLay.setPadding(COMPACT_PADDING, 0, COMPACT_PADDING, COMPACT_PADDING);
 
 		{// Add defaultMode View
-			titleText = new TextView(getContext());
+			titleText = new TextView(context);
 			titleText.setText(viewConfig.getTitleText());
-			titleText.setTextColor(getContext().getResources().getColor(R.color.new_normal_grey));
+			titleText.setTextColor(resources.getColor(R.color.new_normal_grey));
 			titleText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TOP_TEXT_SIZE);
 
 			titleText.setId(BASE_ID + TITLE_ID);
@@ -170,7 +174,7 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 		}
 
 		{// Add Options View
-			RelativeLayout optionsAndPlayView = new RelativeLayout(getContext());
+			RelativeLayout optionsAndPlayView = new RelativeLayout(context);
 			optionsLayParams.setMargins(0, OPTIONS_VIEW_MARGIN_TOP, 0, 0);
 			optionsLayParams.addRule(RelativeLayout.BELOW, BASE_ID + LEFT_BUTTON_ID);
 
@@ -184,9 +188,10 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 
 			optionsTxt.setId(BASE_ID + OPTIONS_TXT_ID);
 			optionsTxt.setText(R.string.new_options);
-			optionsTxt.setTextColor(getContext().getResources().getColor(R.color.new_soft_grey));
+			optionsTxt.setTextColor(resources.getColor(R.color.new_soft_grey));
 			optionsTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TOP_TEXT_SIZE);
-			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_right, 0);
+			AppUtils.iconRestore();
+//			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_right, 0);
 			optionsTxt.setPadding((int) (3 * density), (int) (4 * density), 0, 0);
 			optionsTxt.setOnClickListener(this);
 
@@ -251,12 +256,14 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 		if(optionsVisible) {
 			ButtonDrawableBuilder.setBackgroundToView(compactRelLay, R.style.ListItem);
 			compactRelLay.setLayoutParams(optionsVisibleLayoutParams);
-			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0);
+			AppUtils.iconRestore();
+//			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0);
 		} else {
 			ButtonDrawableBuilder.setBackgroundToView(compactRelLay, R.style.ListItem_Header);
 
 			compactRelLay.setLayoutParams(defaultMatchWidthParams);
-			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_arrow_right, 0);
+			AppUtils.iconRestore();
+//			optionsTxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_arrow_right, 0);
 		}
 		compactRelLay.setPadding(COMPACT_PADDING, 0, COMPACT_PADDING, COMPACT_PADDING);
 	}

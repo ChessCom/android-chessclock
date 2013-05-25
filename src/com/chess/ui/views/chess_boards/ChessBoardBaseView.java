@@ -111,6 +111,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		super(context, attrs);
 		resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
+		if (isInEditMode()) {
+			return;
+		}
 
 		NUM_Y_OFFSET *= density;
 		TEXT_Y_OFFSET *= density;

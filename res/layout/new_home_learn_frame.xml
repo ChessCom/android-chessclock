@@ -29,8 +29,8 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_help"
-                android:textColor="@color/new_normal_grey"
+                android:text="@string/ic_help"
+                android:textColor="@color/new_light_grey_2"
                 android:textSize="26dip"
                 style="@style/GlyphIcon"
                 />
@@ -56,8 +56,8 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_right"
-                android:textColor="@color/new_normal_grey"
+                android:text="@string/ic_right"
+                android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon.Small"
                 />
 
@@ -79,14 +79,13 @@
                 android:layout_marginRight="15dip"
                 >
 
-                <ImageButton
+                <com.chess.RoboButton
+                    android:id="@+id/startTacticsRoundBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_tactics_game_light"
-                    android:background="@drawable/video_play_btn_back_small_selector"
-                    android:visibility="visible"
-                    android:contentDescription="@string/image"
+                    android:text="@string/ic_help"
+                    style="@style/GlyphIcon.RoundBack"
                     />
 
             </RelativeLayout>
@@ -171,8 +170,8 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_lessons"
-                android:textColor="@color/new_normal_grey"
+                android:text="@string/ic_lessons"
+                android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon"
                 android:textSize="26dip"
                 />
@@ -199,8 +198,8 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_right"
-                android:textColor="@color/new_normal_grey"
+                android:text="@string/ic_right"
+                android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon.Small"
                 />
 
@@ -221,17 +220,16 @@
                 android:background="@drawable/img_tactics_board"
                 android:layout_marginRight="15dip"
                 >
-                <ImageButton
+                <!--Icon-->
+                <com.chess.RoboButton
+                    android:id="@+id/startLessonsRoundBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_lessons"
-                    android:background="@drawable/video_play_btn_back_small_selector"
-                    android:visibility="visible"
-                    android:contentDescription="@string/image"
+                    android:text="@string/ic_lessons"
+                    style="@style/GlyphIcon.RoundBack"
                     />
             </RelativeLayout>
-
 
             <!-- Lessons Title -->
             <com.chess.RoboTextView
@@ -276,8 +274,8 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_play"
-                android:textColor="@color/new_normal_grey"
+                android:text="@string/ic_play"
+                android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon"
                 android:textSize="26dip"
                 />
@@ -294,8 +292,8 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_right"
-                android:textColor="@color/new_normal_grey"
+                android:text="@string/ic_right"
+                android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon.Small"
                 />
 

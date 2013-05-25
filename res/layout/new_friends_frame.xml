@@ -32,27 +32,6 @@
             android:layout_weight="1"
             />
 
-        <com.chess.RoboEditText
-            android:layout_width="0dip"
-            android:layout_height="29dip"
-            android:layout_weight="1"
-            android:drawableRight="@drawable/ic_search"
-            android:gravity="center_vertical"
-            android:inputType="textAutoComplete"
-            android:background="@drawable/edit_grey_one_default"
-            android:paddingLeft="9dip"
-            android:paddingRight="6dip"
-            android:paddingTop="5dip"
-            android:paddingBottom="5dip"
-            android:layout_marginLeft="8dip"
-            android:hint="@string/search"
-            android:textSize="13sp"
-            android:cursorVisible="false"
-            android:focusable="false"
-            custom:ttf="Bold"
-            android:singleLine="true"
-            />
-
     </LinearLayout>
 
     <!--Divider-->

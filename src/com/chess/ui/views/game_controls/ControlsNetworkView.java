@@ -43,8 +43,8 @@ public class ControlsNetworkView extends ControlsBaseView {
 		addControlButton(BACK, R.style.Rect_Bottom_Middle);
 		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
 
-		addActionButton(CLOSE, R.string.glyph_close, R.style.Rect_Bottom_Left);
-		addActionButton(MAKE_MOVE, R.string.glyph_arrow_right, R.style.Rect_Bottom_Right_Orange);
+		addActionButton(CLOSE, R.string.ic_close, R.style.Rect_Bottom_Left);
+		addActionButton(MAKE_MOVE, R.string.ic_arrow_right, R.style.Rect_Bottom_Right_Orange);
 
 		addView(controlsLayout);
 	}

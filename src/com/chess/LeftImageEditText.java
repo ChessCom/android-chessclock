@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
+import com.chess.ui.views.drawables.IconDrawable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -65,7 +66,8 @@ public class LeftImageEditText extends RoboEditText {
 			// back for image
 
 			color = array.getInteger(R.styleable.EnhancedField_color, Color.WHITE);
-			icon = array.getDrawable(R.styleable.EnhancedField_leftImage);
+			String iconStr = array.getString(R.styleable.EnhancedField_leftImage);
+			icon = new IconDrawable(context, iconStr, R.color.new_normal_grey_3, R.dimen.edit_field_icon_size) ;
 		} finally {
 			array.recycle();
 		}

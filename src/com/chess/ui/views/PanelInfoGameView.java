@@ -58,6 +58,10 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 	public void onCreate(AttributeSet attrs) {
 		boolean useSingleLine;
+		if (isInEditMode()) {
+			return;
+		}
+
 		Context context = getContext();
 		resources = context.getResources();
 		density = resources.getDisplayMetrics().density;

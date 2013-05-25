@@ -12,27 +12,42 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dip"
         >
-        <ImageView
-            android:layout_width="0dip"
+        <!--Mode labels-->
+        <!--Standard-->
+        <com.chess.RoboTextView
+            android:id="@+id/liveLabelStandardTxt"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_live_standard"
-            android:contentDescription="@string/image"
-            />
-        <ImageView
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_live_blitz"
-            android:contentDescription="@string/image"
+            style="@style/GlyphIcon.Big"
+            android:textColor="@color/new_light_grey_4"
+            android:text="@string/ic_live_standard"
+            android:layout_marginLeft="@dimen/home_play_live_labels_padding_side"
+            android:visibility="gone"
             />
 
-        <ImageView
-            android:layout_width="0dip"
+        <!--Blitz-->
+        <com.chess.RoboTextView
+            android:id="@+id/liveLabelBlitzTxt"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_live_bullet"
-            android:contentDescription="@string/image"
+            style="@style/GlyphIcon.Big"
+            android:textColor="@color/new_light_grey_4"
+            android:text="@string/ic_live_blitz"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            />
+
+        <!--Bullet-->
+        <com.chess.RoboTextView
+            android:id="@+id/liveLabelBulletTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/GlyphIcon.Big"
+            android:textColor="@color/new_light_grey_4"
+            android:text="@string/ic_live_bullet"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/home_play_live_labels_padding_side"
+            android:visibility="gone"
             />
     </LinearLayout>
 

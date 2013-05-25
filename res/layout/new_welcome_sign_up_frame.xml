@@ -34,8 +34,6 @@
                 android:contentDescription="@string/image"
                 android:visibility="invisible"
                 />
-            <!--android:layout_marginTop="@dimen/create_profile_logo_margin_top"-->
-
 
             <com.chess.RoboTextView
                 android:layout_width="match_parent"
@@ -70,7 +68,7 @@
                 android:hint="@string/username"
                 android:inputType="textPersonName"
                 style="@style/WhiteGrayEditText.Top"
-                custom:leftImage="@drawable/ic_username"
+                custom:leftImage="@string/ic_profile"
                 android:imeOptions="actionNext"
                 android:layout_marginTop="@dimen/new_signup_field_margin_top"
                 />
@@ -82,7 +80,7 @@
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 style="@style/WhiteGrayEditText.Middle"
-                custom:leftImage="@drawable/ic_sign_up_email"
+                custom:leftImage="@string/ic_email_light"
                 android:imeOptions="actionNext"
                 />
 
@@ -94,7 +92,7 @@
                 android:inputType="textPassword"
                 android:password="true"
                 style="@style/WhiteGrayEditText.Middle"
-                custom:leftImage="@drawable/ic_password"
+                custom:leftImage="@string/ic_password"
                 android:imeOptions="actionNext"
                 />
 
@@ -106,7 +104,7 @@
                 android:inputType="textPassword"
                 android:password="true"
                 style="@style/WhiteGrayEditText.Bottom"
-                custom:leftImage="@drawable/ic_retype_password"
+                custom:leftImage="@string/ic_password"
                 android:imeOptions="actionDone"
                 />
 
@@ -116,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/complete_sing_up"
                 android:layout_marginTop="@dimen/common_main_hit_button_margin_top"
+                style="@style/Button.Orange2"
                 />
 
             <com.chess.RoboTextView

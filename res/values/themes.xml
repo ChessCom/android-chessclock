@@ -14,6 +14,7 @@
         <item name="android:editTextStyle">@style/DefaultEdt</item>
 		<item name="android:autoCompleteTextViewStyle">@style/DefaultAutoComplete</item>
         <item name="android:spinnerStyle">@style/Spinner</item>
+        <item name="android:progressBarStyle">@style/ChessProgressBar</item>
         <item name="android:checkboxStyle">@style/CheckBox</item>
         <item name="android:radioButtonStyle">@style/RadioButton</item>
 		<item name="android:listViewStyle">@style/DefaultListView</item>

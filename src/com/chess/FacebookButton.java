@@ -1,10 +1,12 @@
 package com.chess;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import com.chess.ui.views.drawables.IconDrawable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,18 +41,20 @@ public class FacebookButton extends RoboButton {
 	}
 
 	private void init(Context context) {
-		icon = context.getResources().getDrawable(R.drawable.ic_facebook);
+		Resources resources = context.getResources();
+
+		icon = new IconDrawable(context, R.string.ic_facebook, R.color.white, R.dimen.social_icon_size);
 		imageWidth = icon.getIntrinsicWidth();
 		int imageHeight = icon.getIntrinsicHeight();
 		icon.setBounds(0, 0, imageWidth, imageHeight);
 
-		float density = context.getResources().getDisplayMetrics().density;
+		float density = resources.getDisplayMetrics().density;
 
 		borderColors = new int[4];
-		borderColors[0] = context.getResources().getColor(R.color.f_emboss_top_2);
-		borderColors[1] = context.getResources().getColor(R.color.f_emboss_top_1);
+		borderColors[0] = resources.getColor(R.color.f_emboss_top_2);
+		borderColors[1] = resources.getColor(R.color.f_emboss_top_1);
 		borderColors[2] = 0xFF284160;
-		borderColors[3] = context.getResources().getColor(R.color.f_emboss_bottom_2);
+		borderColors[3] = resources.getColor(R.color.f_emboss_bottom_2);
 
 		borderPaint = new Paint();
 		borderPaint.setStrokeWidth(1);

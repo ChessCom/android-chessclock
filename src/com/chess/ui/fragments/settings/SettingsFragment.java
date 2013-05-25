@@ -5,14 +5,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.LiveBaseFragment;
-import com.chess.ui.fragments.sign_in.WelcomeTabsFragment;
+import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
 import com.chess.utilities.AppUtils;
 import com.facebook.Session;
 
@@ -36,22 +39,22 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		super.onCreate(savedInstanceState);
 
 		menuItems = new ArrayList<SettingsMenuItem>();
-		menuItems.add(new SettingsMenuItem(R.string.profile, R.string.glyph_profile));
-		menuItems.add(new SettingsMenuItem(R.string.board_and_pieces, R.string.glyph_board));
-		menuItems.add(new SettingsMenuItem(R.string.daily_chess, R.string.glyph_daily_game));
-		menuItems.add(new SettingsMenuItem(R.string.live_chess, R.string.glyph_live_standard));
-		menuItems.add(new SettingsMenuItem(R.string.tactics, R.string.glyph_help));
-		menuItems.add(new SettingsMenuItem(R.string.lessons, R.string.glyph_lessons));
-		menuItems.add(new SettingsMenuItem(R.string.theme, R.string.glyph_theme));
-		menuItems.add(new SettingsMenuItem(R.string.profile, R.string.glyph_info));
-		menuItems.add(new SettingsMenuItem(R.string.privacy, R.string.glyph_settings));
-		menuItems.add(new SettingsMenuItem(R.string.blocking, R.string.glyph_blocking));
-		menuItems.add(new SettingsMenuItem(R.string.tracking, R.string.glyph_tracking));
-		menuItems.add(new SettingsMenuItem(R.string.sharing, R.string.glyph_share));
-		menuItems.add(new SettingsMenuItem(R.string.alerts_and_emails, R.string.glyph_email_dark));
-		menuItems.add(new SettingsMenuItem(R.string.password, R.string.glyph_password));
-		menuItems.add(new SettingsMenuItem(R.string.account_history, R.string.glyph_history));
-		menuItems.add(new SettingsMenuItem(R.string.logout, R.string.glyph_close));
+		menuItems.add(new SettingsMenuItem(R.string.profile, R.string.ic_profile));
+		menuItems.add(new SettingsMenuItem(R.string.board_and_pieces, R.string.ic_board));
+		menuItems.add(new SettingsMenuItem(R.string.daily_chess, R.string.ic_daily_game));
+		menuItems.add(new SettingsMenuItem(R.string.live_chess, R.string.ic_live_standard));
+		menuItems.add(new SettingsMenuItem(R.string.tactics, R.string.ic_help));
+		menuItems.add(new SettingsMenuItem(R.string.lessons, R.string.ic_lessons));
+		menuItems.add(new SettingsMenuItem(R.string.theme, R.string.ic_theme));
+		menuItems.add(new SettingsMenuItem(R.string.profile, R.string.ic_info));
+		menuItems.add(new SettingsMenuItem(R.string.privacy, R.string.ic_settings));
+		menuItems.add(new SettingsMenuItem(R.string.blocking, R.string.ic_blocking));
+		menuItems.add(new SettingsMenuItem(R.string.tracking, R.string.ic_tracking));
+		menuItems.add(new SettingsMenuItem(R.string.sharing, R.string.ic_share));
+		menuItems.add(new SettingsMenuItem(R.string.alerts_and_emails, R.string.ic_email_dark));
+		menuItems.add(new SettingsMenuItem(R.string.password, R.string.ic_password));
+		menuItems.add(new SettingsMenuItem(R.string.account_history, R.string.ic_history));
+		menuItems.add(new SettingsMenuItem(R.string.logout, R.string.ic_close));
 
 		adapter = new SettingsMenuAdapter(getActivity(), menuItems);
 
@@ -92,16 +95,16 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 
 		// TODO adjust switch/closeBoard when the same fragment opened
 		switch (menuItem.iconRes) {
-			case R.string.glyph_profile:
+			case R.string.ic_profile:
 				getActivityFace().openFragment(new SettingsProfileFragment());
 				break;
-			case R.string.glyph_board:
+			case R.string.ic_board:
 				getActivityFace().openFragment(new SettingsBoardFragment());
 				break;
-			case R.string.glyph_theme:
+			case R.string.ic_theme:
 				getActivityFace().openFragment(new SettingsThemeFragment());
 				break;
-			case R.string.glyph_close:
+			case R.string.ic_close:
 				logoutFromLive();
 
 				// un-register from GCM

@@ -183,7 +183,7 @@ public class NewGamesFragment extends CommonLogicFragment {
 
 			NewGameDefaultView.ViewConfig dailyConfig = new NewGameDefaultView.ViewConfig();
 			dailyConfig.setBaseId(DAILY_BASE_ID);
-			dailyConfig.setHeaderIcon(R.drawable.ic_daily_game);
+			dailyConfig.setHeaderIcon(R.string.ic_daily_game);
 			dailyConfig.setHeaderText(R.string.new_daily_chess);
 			dailyConfig.setTitleText(R.string.new_per_turn);
 			// set default value
@@ -205,7 +205,7 @@ public class NewGamesFragment extends CommonLogicFragment {
 
 			NewGameDefaultView.ViewConfig liveConfig = new NewGameDefaultView.ViewConfig();
 			liveConfig.setBaseId(LIVE_BASE_ID);
-			liveConfig.setHeaderIcon(R.drawable.ic_live_standard);
+			liveConfig.setHeaderIcon(R.string.ic_live_standard);
 			liveConfig.setHeaderText(R.string.new_live_chess);
 			liveConfig.setTitleText(R.string.new_time);
 			// set default value
@@ -239,7 +239,7 @@ public class NewGamesFragment extends CommonLogicFragment {
 
 			NewGameCompView.ViewCompConfig compConfig = new NewGameCompView.ViewCompConfig();
 			compConfig.setBaseId(COMP_BASE_ID);
-			compConfig.setHeaderIcon(R.drawable.ic_comp_game);
+			compConfig.setHeaderIcon(R.string.ic_comp_game);
 			compConfig.setHeaderText(R.string.vs_computer);
 			compConfig.setTitleText(R.string.new_difficulty);
 			compConfig.setLeftButtonTextId(R.string.delay);

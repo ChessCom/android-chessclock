@@ -15,13 +15,25 @@
         android:gravity="center_horizontal"
         >
 
-        <com.chess.ui.views.PanelInfoGameView
-            android:id="@+id/topPanelView"
+        <com.chess.RoboTextView
+            android:id="@+id/centerTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/panel_info_height"
+            android:gravity="center"
+            android:text="@string/matching"
+            android:textSize="23sp"
+            android:textColor="@color/hint_text"
+            custom:ttf="Bold"
+            />
+
+        <com.chess.RoboButton
+            android:id="@+id/cancelLiveBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:oneLine="@bool/one_line_for_board"
-            android:visibility="invisible"
-            android:layout_marginTop="@dimen/notations_view_height"
+            android:text="@string/cancel"
+            style="@style/Button.Glassy"
+            android:layout_margin="15dip"
             />
 
         <RelativeLayout
@@ -64,26 +76,7 @@
 
         </RelativeLayout>
 
-        <com.chess.RoboTextView
-            android:id="@+id/centerTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/panel_info_height"
-            android:gravity="center"
-            android:text="@string/matching"
-            android:textSize="23sp"
-            android:textColor="@color/hint_text"
-            custom:ttf="Bold"
-            />
 
-        <com.chess.RoboButton
-            android:id="@+id/cancelLiveBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            style="@style/Button.Glassy"
-            android:layout_margin="15dip"
-            />
 
     </LinearLayout>
 

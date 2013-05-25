@@ -27,7 +27,7 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_live_standard"
+                android:text="@string/ic_live_standard"
                 android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon.Big"
                 />
@@ -54,7 +54,7 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_right"
+                android:text="@string/ic_right"
                 android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon.Small"
                 />
@@ -115,7 +115,7 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_daily_game"
+                android:text="@string/ic_daily_game"
                 android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon.Big"
                 />
@@ -142,7 +142,7 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_right"
+                android:text="@string/ic_right"
                 android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon.Small"
                 />
@@ -281,7 +281,7 @@
             <com.chess.RoboTextView
                 android:layout_width="@dimen/list_item_image_size"
                 android:layout_height="@dimen/list_item_image_size"
-                android:text="@string/glyph_play_friend"
+                android:text="@string/ic_play_friend"
                 android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon"
                 android:background="@color/new_soft_grey"
@@ -315,7 +315,7 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_comp_game"
+                android:text="@string/ic_comp_game"
                 android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon.Big"
                 />
@@ -332,7 +332,7 @@
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/glyph_right"
+                android:text="@string/ic_right"
                 android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon.Small"
                 />

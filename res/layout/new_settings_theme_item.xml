@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/rowTitleTxt"
         android:textColor="@color/white"
-        android:text="@string/glyph_check"
+        android:text="@string/ic_check"
         style="@style/GlyphIcon"
         android:layout_marginTop="14dip"
         android:paddingTop="14dip"

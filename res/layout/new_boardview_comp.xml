@@ -52,14 +52,22 @@
             android:layout_marginTop="-1px"
             />
 
-        <ProgressBar
+        <!--Loading Overlay-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/loadingView"
-            android:layout_width="60dip"
-            android:layout_height="60dip"
-            android:layout_centerInParent="true"
-            style="?android:attr/progressBarStyle"
+            android:background="@color/action_bar_overlay"
             android:visibility="gone"
-            />
+            >
+            <ProgressBar
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:layout_centerInParent="true"
+                style="?android:attr/progressBarStyle"
+                />
+        </RelativeLayout>
+
 
     </RelativeLayout>
 

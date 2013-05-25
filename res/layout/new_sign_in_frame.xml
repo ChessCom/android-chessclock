@@ -10,6 +10,21 @@
     android:focusableInTouchMode="true"
     >
 
+    <com.chess.LinLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Rect.Top.Middle"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_new_logo_bar"
+            android:contentDescription="@string/image"
+            />
+
+    </com.chess.LinLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,19 +41,7 @@
             android:gravity="center_horizontal"
             >
 
-<!--            <ImageView
-                android:id="@+id/logoImg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/signin_logo_margin_top"
-                android:layout_marginBottom="@dimen/signin_main_margin_top"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/img_new_logo"
-                android:contentDescription="@string/image"
-                />-->
-
-            <com.facebook.widget.LoginButton
+           <com.facebook.widget.LoginButton
                 android:id="@+id/fb_connect"
                 style="@style/Button.Facebook"
                 android:layout_width="match_parent"
@@ -64,7 +67,7 @@
                 android:singleLine="true"
                 android:imeOptions="actionNext"
                 style="@style/WhiteGrayEditText.Top"
-                custom:leftImage="@drawable/ic_username"
+                custom:leftImage="@string/ic_profile"
                 android:layout_marginTop="@dimen/common_button_margin_top"
                 />
 
@@ -76,7 +79,7 @@
                 android:inputType="textPassword"
                 android:password="true"
                 style="@style/WhiteGrayEditText.Bottom"
-                custom:leftImage="@drawable/ic_password"
+                custom:leftImage="@string/ic_password"
                 android:imeOptions="actionDone"
                 />
 
@@ -88,51 +91,10 @@
                 style="@style/Button.OrangeNoBorder"
                 android:layout_marginTop="@dimen/common_main_hit_button_margin_top"
                 />
-            <!--style="@style/Button.OrangeNoBorder"-->
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/createProfileLay"
-                android:paddingTop="16dip"
-                android:paddingBottom="12dip"
-                android:layout_gravity="bottom"
-                >
-
-                <com.chess.RoboTextView
-                    android:id="@+id/createProfileBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_create_an_account"
-                    style="@style/SetupSmallFont"
-                    android:textSize="16sp"
-                    android:drawableRight="@drawable/ic_arrow_right"
-                    android:layout_gravity="center_horizontal"
-                    />
-            </FrameLayout>
-
 
         </LinearLayout>
 
     </ScrollView>
-    <!--
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/createProfileLay"
-            android:layout_alignParentBottom="true"
-            android:paddingBottom="12dip"
-            >
-            <com.chess.RoboTextView
-                android:id="@+id/createProfileBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/new_create_an_account"
-                style="@style/SetupSmallFont"
-                android:textSize="16sp"
-                android:drawableRight="@drawable/ic_arrow_right"
-                android:layout_gravity="center_horizontal"
-                />
-        </FrameLayout>
-    -->
+
 </RelativeLayout>
 

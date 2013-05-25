@@ -63,13 +63,15 @@
                 android:text="@string/friends"
                 />
 
-            <ImageView
+            <!--Right Icon-->
+            <com.chess.RoboTextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_arrow_right_light"
-                android:layout_marginRight="8dip"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@string/image"/>
+                android:layout_height="wrap_content"
+                android:text="@string/ic_right"
+                android:textColor="@color/new_light_grey_2"
+                style="@style/GlyphIcon.Small"
+                />
+
 
 
         </LinearLayout>
@@ -109,14 +111,15 @@
                 android:text="@string/trophies"
                 />
 
-            <ImageView
+            <!--Right Icon-->
+            <com.chess.RoboTextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_arrow_right_light"
-                android:layout_marginRight="8dip"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@string/image"
+                android:layout_height="wrap_content"
+                android:text="@string/ic_right"
+                android:textColor="@color/new_light_grey_2"
+                style="@style/GlyphIcon.Small"
                 />
+
 
         </LinearLayout>
 

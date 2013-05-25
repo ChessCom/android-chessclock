@@ -69,7 +69,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private BroadcastReceiver gamesUpdateReceiver;
 	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
 	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
-//	private GamesCursorUpdateListener currentGamesTheirCursorUpdateListener;
 	private GamesCursorUpdateListener currentGamesMyCursorUpdateListener;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
 	private DailyGamesUpdateListener dailyGamesUpdateListener;
@@ -78,7 +77,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	//	private LoadItem selectedLoadItem;
 	private DailyCurrentGamesMyCursorAdapter currentGamesMyCursorAdapter;
-//	private DailyCurrentGamesTheirCursorAdapter currentGamesTheirCursorAdapter;
 	private DailyChallengesGamesAdapter challengesGamesAdapter;
 	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
 	private CustomSectionedAdapter sectionedAdapter;
@@ -100,13 +98,11 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_light);
 
 		challengesGamesAdapter = new DailyChallengesGamesAdapter(this, null);
-//		currentGamesTheirCursorAdapter = new DailyCurrentGamesTheirCursorAdapter(getContext(), null);
 		currentGamesMyCursorAdapter = new DailyCurrentGamesMyCursorAdapter(getContext(), null);
 		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null);
 
 		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
 		sectionedAdapter.addSection(getString(R.string.new_my_move), currentGamesMyCursorAdapter);
-//		sectionedAdapter.addSection(getString(R.string.new_their_move), currentGamesTheirCursorAdapter);
 		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
 
 		listUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);

@@ -6,36 +6,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    <RadioGroup
-        android:id="@+id/tabRadioGroup"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:animateLayoutChanges="true"
         >
-        <com.chess.RoboRadioButton
+        <com.chess.RoboButton
             android:id="@+id/leftTabBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/Rect.Top.Left"
+            android:text="@string/log_in"
             />
-        <!--TODO create RadioButton with ability to set image-->
-        <com.chess.RoboRadioButton
+
+        <com.chess.RoboImageButton
             android:id="@+id/centerTabBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/Rect.Top.Middle"
+            android:src="@drawable/img_new_logo_bar"
             />
-        <com.chess.RoboRadioButton
+
+        <com.chess.RoboButton
             android:id="@+id/rightTabBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/Rect.Top.Right"
+            android:text="@string/sign_up"
             />
 
-    </RadioGroup>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/tab_content_frame"
