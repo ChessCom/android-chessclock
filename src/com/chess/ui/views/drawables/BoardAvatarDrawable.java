@@ -27,6 +27,7 @@ public class BoardAvatarDrawable extends Drawable {
 	private GradientDrawable solidBackWhiteDrawable;
 	private GradientDrawable solidBackBlackDrawable;
 	private int side;
+	private SquareShadowDrawable shadowDrawable;
 
 
 	public BoardAvatarDrawable(Context context, Drawable sourcePhoto) {
@@ -52,6 +53,8 @@ public class BoardAvatarDrawable extends Drawable {
 				new int[]{0xA5000000, 0xA5000000});
 
 		fillBackDrawable = new ColorDrawable(resources.getColor(R.color.new_soft_grey));
+
+		shadowDrawable = new SquareShadowDrawable(context);
 	}
 
 	@Override
@@ -75,7 +78,11 @@ public class BoardAvatarDrawable extends Drawable {
 		canvas.translate(BORDER_THICK, BORDER_THICK);
 		fillBackDrawable.setBounds(0, 0, bitmapWidth, bitmapHeight);
 		fillBackDrawable.draw(canvas);
+
+		shadowDrawable.setBounds(0, 0, bitmapWidth, bitmapHeight);
+		shadowDrawable.draw(canvas);
 		canvas.restore();
+
 
 		canvas.save();
 		canvas.translate(BORDER_THICK, BORDER_THICK);

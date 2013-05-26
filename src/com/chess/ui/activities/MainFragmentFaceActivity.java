@@ -322,6 +322,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				return;
 			}
 		}
+		WelcomeTabsFragment welcomeTabsFragment = (WelcomeTabsFragment) getSupportFragmentManager().findFragmentByTag(WelcomeTabsFragment.class.getSimpleName());
+		if (welcomeTabsFragment != null && welcomeTabsFragment.showPreviousFragment()) {
+			return;
+		}
 		showPreviousFragment();
 	}
 

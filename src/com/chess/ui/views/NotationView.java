@@ -52,7 +52,8 @@ public class NotationView extends LinearLayout {
 	}
 
 	public void onCreate(AttributeSet attrs) {
-		Resources resources = getContext().getResources();
+		Context context = getContext();
+		Resources resources = context.getResources();
 		float density = resources.getDisplayMetrics().density;
 		viewPerPage = resources.getInteger(R.integer.notations_per_page);
 		textSize = (int) (resources.getDimension(R.dimen.notations_text_size) / density);
@@ -62,13 +63,13 @@ public class NotationView extends LinearLayout {
 
 		LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
-		viewPager = new ViewPager(getContext());
+		viewPager = new ViewPager(context);
 		viewPager.setId(R.id.viewPager);
 		addView(viewPager, params);
 
 		notationsAdapter = new NotationsPagerAdapter();
 		viewPager.setAdapter(notationsAdapter);
-		boolean smallScreen = AppUtils.noNeedTitleBar(getContext());
+		boolean smallScreen = AppUtils.noNeedTitleBar(context);
 
 		int padding = (int) (2 * density);
 		if (smallScreen) {
@@ -87,7 +88,15 @@ public class NotationView extends LinearLayout {
 			ButtonDrawableBuilder.setBackgroundToView(this, attrs);
 		}
 
-//		setBackgroundResource(R.color.notations_back);
+		smallScreen = AppUtils.noNeedTitleBar(context);
+		if (smallScreen) {
+			setVisibility(GONE);
+		}
+		smallScreen = AppUtils.isHdpi800(context);
+		if (smallScreen) {
+			setVisibility(GONE);
+		}
+
 	}
 
 	public void updateNotations(String[] notations, OnClickListener selectionFace, int hply) {

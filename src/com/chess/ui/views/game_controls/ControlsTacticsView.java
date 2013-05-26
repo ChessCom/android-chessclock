@@ -47,7 +47,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 
 		addView(controlsLayout);
 
-		showGameButton(HINT, false);
+		showDefault();
 	}
 
 	private void addNextButton() {

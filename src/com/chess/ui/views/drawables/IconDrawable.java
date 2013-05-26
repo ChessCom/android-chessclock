@@ -75,7 +75,6 @@ public class IconDrawable extends Drawable {
 	@Override
 	public void draw(Canvas canvas) {
 		Rect clipBounds = getBounds();
-//		Rect clipBounds = canvas.getClipBounds();
 		int width = clipBounds.right;
 		int height = clipBounds.bottom;
 

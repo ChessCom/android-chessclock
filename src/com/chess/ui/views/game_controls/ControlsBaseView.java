@@ -2,6 +2,7 @@ package com.chess.ui.views.game_controls;
 
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -25,7 +26,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 	public static final int BUTTON_PREFIX = 0x00002000;
 	int controlIconSize;
-	private int controlIconColor;
+	private ColorStateList controlIconColor;
 	private float density;
 
 	enum ButtonIds {
@@ -94,8 +95,8 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 		density = resources.getDisplayMetrics().density;
 		controlButtonHeight = (int) resources.getDimension(R.dimen.game_controls_button_height);
-		controlIconSize = resources.getDimensionPixelSize(R.dimen.game_controls_icon_size);
-		controlIconColor = resources.getColor(R.color.text_controls_icons);
+		controlIconSize = (int) (resources.getDimension(R.dimen.game_controls_icon_size) / density);
+		controlIconColor = resources.getColorStateList(R.color.text_controls_icons);
 
 		controlsLayout = new LinearLayout(getContext());
 
@@ -147,9 +148,9 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		button.setTextColor(controlIconColor);
 		button.setOnClickListener(this);
 
-		float shadowRadius = 2* density + 0.5f;
-		float shadowDx = 0 * density /*+ 0.5f*/;
-		float shadowDy = 0 * density /*+ 0.5f*/;
+		float shadowRadius = 2 * density + 0.5f;
+		float shadowDx = 0 * density;
+		float shadowDy = 0 * density;
 		button.setShadowLayer(shadowRadius, shadowDx, shadowDy, 0x88000000);
 
 		return button;
@@ -163,8 +164,17 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		findViewById(BUTTON_PREFIX + buttonId.ordinal()).setVisibility(show ? View.VISIBLE : View.GONE);
 	}
 
+
 	public void enableGameButton(ButtonIds buttonId, boolean enable) {
-//		findViewById(BUTTON_PREFIX + buttonId.ordinal()).setEnabled(enable);
+		findViewById(BUTTON_PREFIX + buttonId.ordinal()).setEnabled(enable);
+//		View view = findViewById(BUTTON_PREFIX + buttonId.ordinal());
+//		if (enable) {
+//			view.getBackground().mutate().setState(ButtonDrawable.STATE_ENABLED);
+//		} else {
+////			view.getBackground().mutate().setState(ButtonDrawable.STATE_PRESSED);
+//			view.getBackground().mutate().setState(ButtonDrawable.STATE_DISABLED);
+//		}
+
 	}
 
 	public void lock(boolean lock) {

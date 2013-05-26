@@ -3,6 +3,7 @@
 
 	<color name="black">#FF000000</color>
 	<color name="white">#FFFFFFFF</color>
+	<color name="semi_transparent_white">#7FFFFFFF</color>
 	<color name="hint_text">#FFa6a3a1</color>
 	<color name="green_text">#FF43a712</color>
     <color name="main_menu_back_top">#FF23221e</color>
@@ -98,6 +99,9 @@
     <color name="grey_button_control_border_right_p">#ff3a3632</color>
 
     <color name="controls_border">#40000000</color>
+    <color name="controls_icon">#A5FFFFFF</color>
+    <color name="controls_icon_p">#FFFFFFFF</color>
+    <color name="controls_icon_d">#66FFFFFF</color>
 
     <!--Grey Solid-->
     <color name="white_button_solid">#FFf0f0f0</color>

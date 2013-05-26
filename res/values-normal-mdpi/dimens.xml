@@ -99,8 +99,12 @@
 	<dimen name="game_control_padding_right">10dip</dimen>
 	<dimen name="game_control_padding_top">0dip</dimen>
 	<dimen name="game_control_padding_bottom">0dip</dimen>
+    <dimen name="game_controls_button_height">37dip</dimen>
+    <dimen name="game_controls_icon_size">30dip</dimen>
 
-	<dimen name="piece_layout_padding_left">7dip</dimen>
+    <dimen name="new_tab_button_height">48dip</dimen>
+
+    <dimen name="piece_layout_padding_left">7dip</dimen>
 	<dimen name="piece_layout_padding_right">0dip</dimen>
 	<dimen name="piece_layout_padding_top">0dip</dimen>
 	<dimen name="piece_layout_padding_bottom">1dip</dimen>
@@ -144,5 +148,8 @@
     <dimen name="splash_progress_margin_top">100dip</dimen>
     <dimen name="welcome_feature_text_size">17sp</dimen>
     <dimen name="welcome_title_text_size">26sp</dimen>
+    <dimen name="welcome_features_padding_bottom">5dip</dimen>
+    <dimen name="new_top_button_height">37dip</dimen>
+    <dimen name="new_bottom_button_height">37dip</dimen>
 
 </resources>

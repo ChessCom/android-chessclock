@@ -114,6 +114,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 			tabRadioGroup.check(R.id.leftTabBtn);
 		}
 		getActivityFace().setBadgeValueForId(R.id.menu_games, 7); // TODO use properly
+//		getActivityFace().setBadgeValueForId(R.id.menu_notifications, 7); // TODO use properly
 	}
 
 	@Override

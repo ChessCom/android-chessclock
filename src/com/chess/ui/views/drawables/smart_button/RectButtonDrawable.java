@@ -110,8 +110,7 @@ public class RectButtonDrawable extends ButtonDrawable {
 //		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.OVERLAY); // bad edges
 //		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.XOR);  // bad edges
 
-
-		edgeOffset = bevelSize*2; // resources.getDimensionPixelSize(R.dimen.rect_edge_offset); // 4px/ 1px / 1px
+		edgeOffset = bevelSize * 2;
 
 		List <LayerInfo> enabledLayers = new ArrayList<LayerInfo>();
 		List<LayerInfo> pressedLayers = new ArrayList<LayerInfo>();
@@ -142,7 +141,6 @@ public class RectButtonDrawable extends ButtonDrawable {
 			RoundRectShape rectShape = new RoundRectShape(outerRect, stroke, outerRect);
 			ShapeDrawable shapeDrawable = new ShapeDrawable(rectShape);
 			shapeDrawable.getPaint().setColor(colorOuterBorder);
-//			shapeDrawable.getPaint().setColor(0xFFFF0000);
 
 			enabledLayers.add(new LayerInfo(shapeDrawable, 0, 0, 0, 0));
 			if (usePressedLayer) {
@@ -202,15 +200,12 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 			case BOTTOM_LEFT:
 				enabledDrawable.setBounds(-edgeOffset, 0, width + edgeOffset/2, height + edgeOffset);
-//				enabledDrawable.setBounds(-edgeOffset*2, 0, width + edgeOffset, height + edgeOffset);
 				break;
 			case BOTTOM_MIDDLE:
 				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset/2, height + edgeOffset);
-//				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset, height + edgeOffset);
 				break;
 			case BOTTOM_RIGHT:
 				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset, height + edgeOffset);
-//				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset*2, height + edgeOffset);
 				break;
 			case LIST_ITEM:
 				int width1 = canvas.getWidth();  // use full screen width to make backward compatibility
@@ -229,8 +224,6 @@ public class RectButtonDrawable extends ButtonDrawable {
 	protected void createDefaultState(List<LayerInfo> enabledLayers) {
 		createLayer(colorTop, insetOne.top, enabledLayers);
 		createLayer(colorBottom, insetOne.bottom, enabledLayers); // order is important
-//		createLayer(colorLeft, insetOne.left, enabledLayers);
-//		createLayer(colorRight, insetOne.right, enabledLayers);
 
 		if (bevelLvl == 2) {
 			createLayer(colorTop2, insetTwo.top, enabledLayers);
@@ -257,7 +250,14 @@ public class RectButtonDrawable extends ButtonDrawable {
 			enabledDrawable.setLayerInset(i, layer.leftInSet, layer.topInSet, layer.rightInSet, layer.bottomInSet);
 		}
 
-		addState(ENABLED_STATE, enabledDrawable);
+		addState(STATE_ENABLED, enabledDrawable);
+		addState(STATE_DISABLED, enabledDrawable);
+	}
+
+	@Override
+	protected boolean onStateChange(int[] states) {
+		boundsInit = false;
+		return super.onStateChange(states);
 	}
 
 	@Override
@@ -269,7 +269,7 @@ public class RectButtonDrawable extends ButtonDrawable {
 			return;
 		}
 
-		try { // values
+		try {
 			rectPosition = array.getInt(R.styleable.RoboButton_btn_rect_pos, BOTTOM_MIDDLE);
 
 		} finally {

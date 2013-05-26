@@ -48,6 +48,12 @@
     <dimen name="splash_progress_margin_top">100dip</dimen>
     <dimen name="welcome_feature_text_size">17sp</dimen>
     <dimen name="welcome_title_text_size">26sp</dimen>
+    <dimen name="game_controls_button_height">37dip</dimen>
+    <dimen name="game_controls_icon_size">30dip</dimen>
+    <dimen name="new_tab_button_height">48dip</dimen>
+    <dimen name="welcome_features_padding_bottom">5dip</dimen>
+    <dimen name="new_top_button_height">48dip</dimen>
+    <dimen name="new_bottom_button_height">37dip</dimen>
 
 
 </resources>

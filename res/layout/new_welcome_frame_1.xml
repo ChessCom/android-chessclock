@@ -5,7 +5,7 @@
     android:id="@+id/firstView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="26dip"
+    android:paddingBottom="@dimen/welcome_features_padding_bottom"
     >
 
     <com.chess.RoboTextView
@@ -39,6 +39,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/firstWelcomeImg"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"

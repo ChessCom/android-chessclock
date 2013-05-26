@@ -3,6 +3,7 @@ package com.chess.ui.views.drawables;
 import android.content.Context;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
 import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.utilities.AppUtils;
@@ -15,7 +16,9 @@ import com.chess.utilities.AppUtils;
  */
 public class BadgeDrawable extends Drawable {
 
+	private static final int ICON_SIZE = 48;
 	private final Drawable icon;
+	private final boolean badDevice;
 	private int value;
 	private Paint rectangleMainPaint;
 	private Paint rectangleBorderPaint;
@@ -37,7 +40,13 @@ public class BadgeDrawable extends Drawable {
 	public BadgeDrawable(Context context, Drawable icon, int value) {
 		this.icon = icon;
 		this.value = value;
-		this.icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+		badDevice = isBadDevice(context);
+
+		if (badDevice) {
+			this.icon.setBounds(0, 0, icon.getIntrinsicWidth() + 5, icon.getIntrinsicHeight() + 5);
+		} else {
+			this.icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+		}
 		rectangleSize = 17;
 
 		density = context.getResources().getDisplayMetrics().density;
@@ -95,26 +104,50 @@ public class BadgeDrawable extends Drawable {
 		viewWidth = context.getResources().getDimension(R.dimen.actionbar_compat_button_width);
 	}
 
+	private boolean isBadDevice(Context context) {
+		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+		return (displayMetrics.density == 1.0f || displayMetrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM)
+				&& (displayMetrics.heightPixels <= 480) && AppUtils.HONEYCOMB_PLUS_API;
+	}
+
 	@Override
 	public void draw(Canvas canvas) {
+
 		float x0;
-		float x1;
 		float y0;
+		float x1;
 		float y1;
 
 		if (AppUtils.HONEYCOMB_PLUS_API) { // TODO set initialized flag
 			x0 = 0;
-			x1 = 0;
-			y0 = rectangleSize * density;
+			y0 = 0;
+			x1 = rectangleSize * density;
 			y1 = rectangleSize * density;
 
-			badgeRect.set(x0, x1, y0, y1);
-			badgeBorderRect.set(1, 1, (rectangleSize - 0.5f) * density, (rectangleSize - 0.5f) * density);
+			if (badDevice) {
+				Rect bounds = getBounds();
+				x0 = bounds.centerX();
+				y0 = bounds.centerY();
+				x1 = x0 + rectangleSize * density;
+				y1 = y0 + rectangleSize * density;
+
+				badgeRect.set(x0, y0, x1, y1);
+				badgeBorderRect.set(x0 + 1, y0 + 1, (rectangleSize - 0.5f) * density, (rectangleSize - 0.5f) * density);
+			} else {
+				badgeRect.set(x0, y0, x1, y1);
+				badgeBorderRect.set(x0 + 1, y0 + 1, (rectangleSize - 0.5f) * density, (rectangleSize - 0.5f) * density);
+			}
 
 			float iconX0 = -icon.getIntrinsicWidth() / 2;
 			float iconY0 = -icon.getIntrinsicHeight() / 2;
 			canvas.save();
-			canvas.translate(iconX0, iconY0);
+			if (badDevice) {
+				float xx = icon.getIntrinsicWidth() ;
+				canvas.translate((ICON_SIZE - xx) /2 - 4, (ICON_SIZE - xx) /2 - 4); // hate this stupid hardcode :(
+			} else {
+				canvas.translate(iconX0, iconY0);
+			}
+
 			icon.draw(canvas);
 			canvas.restore();
 
@@ -123,13 +156,13 @@ public class BadgeDrawable extends Drawable {
 			float yShift = viewHeight / 2;
 
 			x0 = 0 + xShift;
-			x1 = 0 + xShift;
-			y0 = rectangleSize * density + yShift;
+			y0 = 0 + xShift;
+			x1 = rectangleSize * density + yShift;
 			y1 = rectangleSize * density + yShift;
 
 
-			badgeRect.set(x0, x1, y0, y1);
-			badgeBorderRect.set(x0, x1, y0, y1);
+			badgeRect.set(x0, y0, x1, y1);
+			badgeBorderRect.set(x0, y0, x1, y1);
 
 			float iconX0 = (viewWidth - icon.getIntrinsicWidth()) / 2;
 			float iconY0 = (viewHeight - icon.getIntrinsicHeight()) / 2;
@@ -158,6 +191,34 @@ public class BadgeDrawable extends Drawable {
 	@Override
 	public void setColorFilter(ColorFilter cf) {
 	}
+
+	@Override
+	public int getIntrinsicWidth() {
+		if (badDevice) {
+			return ICON_SIZE;
+		} else {
+			return super.getIntrinsicWidth();
+		}
+	}
+
+	@Override
+	public int getIntrinsicHeight() {
+		if (badDevice) {
+			return ICON_SIZE;
+		} else {
+			return super.getIntrinsicWidth();
+		}
+	}
+
+//	@Override
+//	public int getMinimumWidth() {
+//		return 48;
+//	}
+//
+//	@Override
+//	public int getMinimumHeight() {
+//		return 48;
+//	}
 
 	@Override
 	public int getOpacity() {

@@ -135,6 +135,18 @@ public class AppUtils {
 	}
 
 	/**
+	 * For mdpi normal screens we don't need a action bar only
+	 * @param context
+	 * @return
+	 */
+	public static boolean isHdpi800(Context context) {
+		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+		Configuration config = context.getResources().getConfiguration();
+		return (displayMetrics.density == HDPI || displayMetrics.densityDpi == DisplayMetrics.DENSITY_HIGH)
+				&& (displayMetrics.heightPixels <= 800 && config.orientation == Configuration.ORIENTATION_PORTRAIT);
+	}
+
+	/**
 	 * Fire simplified notification with defined arguments
 	 *
 	 * @param context - Application Context for resources

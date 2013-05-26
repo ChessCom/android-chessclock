@@ -263,6 +263,7 @@
     <style name="Rect.Top">
         <item name="btn_top">@color/transparent_button_border_left</item>
         <item name="btn_bottom">@color/transparent_button_border_bottom</item>
+        <item name="android:minHeight">@dimen/new_top_button_height</item>
     </style>
 
     <style name="Rect.Top.Left">
@@ -303,6 +304,7 @@
 
         <item name="btn_top">@color/transparent_button_border_left</item>
         <item name="btn_bottom">@color/transparent_button_border_bottom</item>
+        <item name="android:minHeight">@dimen/new_bottom_button_height</item>
     </style>
 
     <style name="Rect.Bottom.Left">

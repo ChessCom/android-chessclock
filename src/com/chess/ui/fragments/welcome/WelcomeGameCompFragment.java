@@ -161,6 +161,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 //		}
 		handler.removeCallbacks(startAnimation);
 
+		labelsSet = false;
 	}
 
 	@Override
