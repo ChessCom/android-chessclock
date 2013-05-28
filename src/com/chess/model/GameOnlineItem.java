@@ -2,9 +2,7 @@ package com.chess.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.RestHelper;
-import com.chess.backend.statics.AppConstants;
 
 /**
  * @author alien_roger

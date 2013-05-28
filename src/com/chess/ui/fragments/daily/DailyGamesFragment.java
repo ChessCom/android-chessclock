@@ -53,6 +53,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		AdapterView.OnItemLongClickListener, SlidingMenu.OnOpenedListener, ItemClickListenerFace {
 
 	private static final int CHALLENGES_SECTION = 0;
+	private static final int CURRENT_GAMES_SECTION = 1;
 	private static final int FINISHED_GAMES_SECTION = 3;
 
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
@@ -95,7 +96,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// init adapters
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_light);
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_light, CURRENT_GAMES_SECTION);
 
 		challengesGamesAdapter = new DailyChallengesGamesAdapter(this, null);
 		currentGamesMyCursorAdapter = new DailyCurrentGamesMyCursorAdapter(getContext(), null);

@@ -158,15 +158,15 @@
             style="@style/ListItem"
             >
 
-            <com.chess.RoboButton
+            <com.chess.RoboTextView
                 android:id="@+id/autoMatchBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/auto_match"
-                style="@style/Button.Glassy.Small"
+                android:text="@string/vs_random_opponent"
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@+id/dailyPlayViewCenterPoint"
+                android:textColor="@color/new_light_grey"
                 />
 
             <TextView

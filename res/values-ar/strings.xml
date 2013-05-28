@@ -8,11 +8,11 @@
 	<string name="sign_out">الخروج</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">لعب لايف</string>
-	<string name="dashboard_online">تلعب على الانترنت</string>
-	<string name="dashboard_computer">لعب الكمبيوتر</string>
-	<string name="dashboard_tactics">تكتيكات المدرب</string>
-	<string name="dashboard_video">فيديو دروس</string>
+	<string name="play_live">لعب لايف</string>
+	<string name="play_online">تلعب على الانترنت</string>
+	<string name="play_computer">لعب الكمبيوتر</string>
+	<string name="tactics_trainer">تكتيكات المدرب</string>
+	<string name="video_lessons">فيديو دروس</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">شبكة بلاي لايف</string>

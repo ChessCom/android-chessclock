@@ -42,6 +42,7 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
+        android:paddingTop="27dip"
         >
 
         <com.chess.RoboTextView

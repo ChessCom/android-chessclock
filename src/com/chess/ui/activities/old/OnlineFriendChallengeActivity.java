@@ -19,8 +19,8 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.activities.LiveBaseActivity;
-import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.ui.adapters.FriendsSpinnerAdapter;
+import com.chess.ui.adapters.WhiteSpinnerAdapter;
 
 import java.util.List;
 

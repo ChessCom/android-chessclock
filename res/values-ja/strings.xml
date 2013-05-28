@@ -8,11 +8,11 @@
 	<string name="sign_out">サイン・アウト</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">ライブ演奏</string>
-	<string name="dashboard_online">オンラインで遊ぶ</string>
-	<string name="dashboard_computer">コンピュータを再生</string>
-	<string name="dashboard_tactics">戦術トレーナー</string>
-	<string name="dashboard_video">ビデオレッスン</string>
+	<string name="play_live">ライブ演奏</string>
+	<string name="play_online">オンラインで遊ぶ</string>
+	<string name="play_computer">コンピュータを再生</string>
+	<string name="tactics_trainer">戦術トレーナー</string>
+	<string name="video_lessons">ビデオレッスン</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">ライブ演奏</string>

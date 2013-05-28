@@ -8,11 +8,11 @@
 	<string name="sign_out">Sign Out</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">Play Live</string>
-	<string name="dashboard_online">Play Online</string>
-	<string name="dashboard_computer">Play Computer</string>
-	<string name="dashboard_tactics">Tactics Trainer</string>
-	<string name="dashboard_video">Video Lessons</string>
+	<string name="play_live">Play Live</string>
+	<string name="play_online">Play Online</string>
+	<string name="play_computer">Play Computer</string>
+	<string name="tactics_trainer">Tactics Trainer</string>
+	<string name="video_lessons">Video Lessons</string>
 
 	<!--activities/Screen titles-->
     <string name="label_play_live">play live</string>

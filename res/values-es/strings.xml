@@ -8,11 +8,11 @@
 	<string name="sign_out">Cerrar sesión</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">Escuchar en vivo</string>
-	<string name="dashboard_online">Jugar Online</string>
-	<string name="dashboard_computer">Jugar con \n el ordenador</string>
-	<string name="dashboard_tactics">Tácticas Entrenador</string>
-	<string name="dashboard_video">Lecciones en Video</string>
+	<string name="play_live">Escuchar en vivo</string>
+	<string name="play_online">Jugar Online</string>
+	<string name="play_computer">Jugar con \n el ordenador</string>
+	<string name="tactics_trainer">Tácticas Entrenador</string>
+	<string name="video_lessons">Lecciones en Video</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">JUGAR EN VIVO</string>

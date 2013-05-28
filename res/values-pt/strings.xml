@@ -7,11 +7,11 @@
 	<string name="sign_out">Sair</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">Jogar ao vivo</string>
-	<string name="dashboard_online">Jogar Online</string>
-	<string name="dashboard_computer">Jogar computador</string>
-	<string name="dashboard_tactics">Treinador Tactics</string>
-	<string name="dashboard_video">Vídeo Aulas</string>
+	<string name="play_live">Jogar ao vivo</string>
+	<string name="play_online">Jogar Online</string>
+	<string name="play_computer">Jogar computador</string>
+	<string name="tactics_trainer">Treinador Tactics</string>
+	<string name="video_lessons">Vídeo Aulas</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">JOGO AO VIVO</string>

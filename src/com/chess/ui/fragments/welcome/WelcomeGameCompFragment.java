@@ -483,6 +483,13 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	@Override
+	public void onGameOver(String message, boolean need2Finish) {
+//		super.onGameOver(message, need2Finish);
+
+		parentFace.changeInternalFragment(WelcomeTabsFragment.RESULTS_FRAGMENT);
+	}
+
+	@Override
 	protected void showGameEndPopup(View layout, String message) {
 
 		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
@@ -530,7 +537,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		super.onClick(view);
 
 		if (view.getId() == PanelInfoWelcomeView.WHAT_IS_TXT_ID) {
-			parentFace.onClicked(view);
+			parentFace.changeInternalFragment(WelcomeTabsFragment.FEATURES_FRAGMENT);
 		}
 	}
 

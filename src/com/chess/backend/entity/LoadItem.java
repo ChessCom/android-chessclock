@@ -20,6 +20,7 @@ public class LoadItem { // TODO refactor with builder
 	private String requestMethod;
 	private String filePath;
 	private String fileMark;
+	private int fileSize;
 
 	public LoadItem() {
 		nameValuePairs = new ArrayList<NameValuePair>();
@@ -93,5 +94,13 @@ public class LoadItem { // TODO refactor with builder
 
 	public void setFileMark(String fileMark) {
 		this.fileMark = fileMark;
+	}
+
+	public int getFileSize() {
+		return fileSize;
+	}
+
+	public void setFileSize(int fileSize) {
+		this.fileSize = fileSize;
 	}
 }

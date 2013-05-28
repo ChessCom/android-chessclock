@@ -70,6 +70,10 @@ public class EnhancedImageDownloader {
 	 */
     public void download(String url, ProgressImageView holder, int imgSize) {
 		this.imgSize = imgSize;
+		if (url == null) {
+			Log.e(LOG_TAG, " passed url is null. Don't start loading");
+			return;
+		}
 		Bitmap bitmap = getBitmapFromCache(url, holder);
 		Log.d(LOG_TAG, " download url = " + url);
 
@@ -346,13 +350,13 @@ public class EnhancedImageDownloader {
 
         try {
 			if (RestHelper.IS_TEST_SERVER_MODE) {
-				getRequest.addHeader(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
+//				getRequest.addHeader(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
 			}
 
             HttpResponse response = client.execute(getRequest);
             final int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                Log.e("ImageDownloader", "Error " + statusCode + " while retrieving bitmap from " + url);
+                Log.e(LOG_TAG, "Error " + statusCode + " while retrieving bitmap from " + url);
                 return null;
             }
 

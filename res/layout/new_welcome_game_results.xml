@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.chess.RelLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <com.chess.RoboTextView
+        android:id="@+id/resultTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="You Won!"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:minHeight="99dip"
+        android:textSize="30sp"
+        custom:ttf="Bold"
+        style="@style/ListItem"
+        />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/resultTxt"
+        />
+
+
+    <SlidingDrawer
+        android:id="@+id/drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:content="@+id/drawer_content"
+        android:handle="@+id/drawer_handler">
+
+
+        <com.chess.RelLayout
+            android:id="@id/drawer_handler"
+            android:layout_width="match_parent"
+            android:layout_height="37dip"
+            style="@style/ListItem.Header">
+
+            <com.chess.RoboTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/GlyphIcon.Big"
+                android:textColor="@color/white"
+                android:text="@string/ic_menu" />
+
+        </com.chess.RelLayout>
+
+        <RelativeLayout
+            android:id="@id/drawer_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/new_welcome_frame" />
+
+        </RelativeLayout>
+    </SlidingDrawer>
+
+</com.chess.RelLayout>

@@ -7,11 +7,11 @@
 	<string name="sign_out">خروج از سیستم</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">بازی زندگی</string>
-	<string name="dashboard_online">بازی آنلاین</string>
-	<string name="dashboard_computer">بازی کامپیوتر</string>
-	<string name="dashboard_tactics">ترینر تاکتیک</string>
-	<string name="dashboard_video">درس های ویدیویی</string>
+	<string name="play_live">بازی زندگی</string>
+	<string name="play_online">بازی آنلاین</string>
+	<string name="play_computer">بازی کامپیوتر</string>
+	<string name="tactics_trainer">ترینر تاکتیک</string>
+	<string name="video_lessons">درس های ویدیویی</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">پخش زنده</string>

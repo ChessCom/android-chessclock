@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import com.chess.R;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.WelcomeTabsFace;
-import com.chess.ui.views.PanelInfoWelcomeView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +18,10 @@ import com.chess.ui.views.PanelInfoWelcomeView;
  * Time: 17:01
  */
 public class WelcomeTabsFragment extends CommonLogicFragment implements WelcomeTabsFace {
+
+	public static final int FEATURES_FRAGMENT = 0;
+	public static final int RESULTS_FRAGMENT = 1;
+	public static final int SIGN_FRAGMENT = 2;
 
 	private View leftTabBtn;
 	private View rightTabBtn;
@@ -58,9 +61,16 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements WelcomeT
 	}
 
 	@Override
-	public void onClicked(View view) {
-		if (view.getId() == PanelInfoWelcomeView.WHAT_IS_TXT_ID) {
+	public void changeInternalFragment(int code) {
+		if (code == FEATURES_FRAGMENT) {
 			openInternalFragment(new WelcomeFragment(this));
+			openWelcomeFragment = true;
+		} else if (code == RESULTS_FRAGMENT) {
+			openInternalFragment(new ResultsFragment(this));
+			openWelcomeFragment = true;
+		} else if (code == SIGN_FRAGMENT) {
+
+			openInternalFragment(new SignInFragment());
 			openWelcomeFragment = true;
 		}
 	}

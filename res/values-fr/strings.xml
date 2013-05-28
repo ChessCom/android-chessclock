@@ -9,11 +9,11 @@
 	<string name="sign_out">Déconnexion</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">Play Live</string>
-	<string name="dashboard_online">Jouer en ligne</string>
-	<string name="dashboard_computer">Jouez informatique</string>
-	<string name="dashboard_tactics">Formateur Tactics</string>
-	<string name="dashboard_video">Leçons Vidéo</string>
+	<string name="play_live">Play Live</string>
+	<string name="play_online">Jouer en ligne</string>
+	<string name="play_computer">Jouez informatique</string>
+	<string name="tactics_trainer">Formateur Tactics</string>
+	<string name="video_lessons">Leçons Vidéo</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">JOUER EN DIRECT</string>

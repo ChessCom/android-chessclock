@@ -7,11 +7,11 @@
 	<string name="sign_out">Wyloguj się</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">Zagraj na żywo</string>
-	<string name="dashboard_online">Zagraj online</string>
-	<string name="dashboard_computer">Zagraj komputer</string>
-	<string name="dashboard_tactics">Trener taktyka</string>
-	<string name="dashboard_video">Lekcje wideo</string>
+	<string name="play_live">Zagraj na żywo</string>
+	<string name="play_online">Zagraj online</string>
+	<string name="play_computer">Zagraj komputer</string>
+	<string name="tactics_trainer">Trener taktyka</string>
+	<string name="video_lessons">Lekcje wideo</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">ZAGRAJ NA ZYWO</string>

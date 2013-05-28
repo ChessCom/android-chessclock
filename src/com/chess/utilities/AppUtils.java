@@ -1,5 +1,6 @@
 package com.chess.utilities;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -60,6 +61,15 @@ public class AppUtils {
 
 	public static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 	public static final boolean JELLYBEAN_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
+	public static int sizeOfBitmap(Bitmap data) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR1) {
+			return data.getRowBytes() * data.getHeight();
+		} else {
+			return data.getByteCount();
+		}
+	}
 
 	public static String getApplicationCacheDir(String packageName) {
 		// path should match the specified string

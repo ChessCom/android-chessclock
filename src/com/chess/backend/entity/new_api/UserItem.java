@@ -31,12 +31,12 @@ public class UserItem extends BaseResponseItem<UserItem.Data> {
 	public static class Data {
 		private long id;
 		private String username;
-		private String avatar;
+		private String avatar_small_url;
 		private long country_id;
 		private String last_login_date;
 		private int points;
-		private String chess_title;
-		private String status;
+//		private String chess_title = "";
+//		private String status = "";
 
 		public long getId() {
 			return id;
@@ -55,11 +55,11 @@ public class UserItem extends BaseResponseItem<UserItem.Data> {
 		}
 
 		public String getAvatar() {
-			return avatar;
+			return avatar_small_url;
 		}
 
 		public void setAvatar(String avatar) {
-			this.avatar = avatar;
+			this.avatar_small_url = avatar;
 		}
 
 		public long getCountry_id() {
@@ -86,21 +86,14 @@ public class UserItem extends BaseResponseItem<UserItem.Data> {
 			this.points = points;
 		}
 
-		public String getChess_title() {
-			return chess_title;
-		}
+//		public String getChess_title() {
+//			return chess_title;
+//		}
+//
+//		public String getStatus() {
+//			return status;
+//		}
 
-		public void setChess_title(String chess_title) {
-			this.chess_title = chess_title;
-		}
-
-		public String getStatus() {
-			return status;
-		}
-
-		public void setStatus(String status) {
-			this.status = status;
-		}
 	}
 
 }

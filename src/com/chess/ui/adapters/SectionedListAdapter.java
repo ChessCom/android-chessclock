@@ -85,7 +85,7 @@ public abstract class SectionedListAdapter extends BaseAdapter {
 		int total = 0;
 		for (Section section : sections) {
 			if (section.adapter != null && section.adapter.getCount() != 0)
-				total += section.adapter.getCount() + 1; // add one for header
+				total += section.adapter.getCount() /*+ 1*/; // add one for header
 		}
 		return (total);
 	}

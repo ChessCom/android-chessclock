@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.chess.R;
@@ -12,8 +13,11 @@ import com.chess.ui.interfaces.ItemClickListenerFace;
 
 public class CustomSectionedAdapter extends SectionedListAdapter {
 
+	public static final int NON_INIT = -1;
+
 	private ItemClickListenerFace clickListenerFace;
 	private int layoutResource;
+	private int hideHeaderNumber = NON_INIT;
 
 	public CustomSectionedAdapter(ItemClickListenerFace itemClickListenerFace, int layoutResource) {
 		super(itemClickListenerFace.getMeContext());
@@ -21,10 +25,22 @@ public class CustomSectionedAdapter extends SectionedListAdapter {
 		this.layoutResource = layoutResource;
 	}
 
+	public CustomSectionedAdapter(ItemClickListenerFace itemClickListenerFace, int layoutResource, int hideHeaderNumber) {
+		super(itemClickListenerFace.getMeContext());
+		clickListenerFace = itemClickListenerFace;
+		this.layoutResource = layoutResource;
+		this.hideHeaderNumber = hideHeaderNumber;
+	}
+
 	@Override
 	protected View getHeaderView(String caption, int index, View convertView, ViewGroup parent) {
 		if (convertView == null) {
 			convertView = LayoutInflater.from(getContext()).inflate(layoutResource, parent, false);
+			if (index == hideHeaderNumber && hideHeaderNumber != NON_INIT) {
+				AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1);
+				convertView.setLayoutParams(layoutParams);
+				convertView.setVisibility(View.GONE);
+			}
 			createViewHolder(convertView);
 		}
 		bindView(convertView, caption);

@@ -7,11 +7,11 @@
 	<string name="sign_out">Çıkış</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">Canlı oyna</string>
-	<string name="dashboard_online">Play Online</string>
-	<string name="dashboard_computer">Bilgisayar oyna</string>
-	<string name="dashboard_tactics">Taktikler Trainer</string>
-	<string name="dashboard_video">Video Dersler</string>
+	<string name="play_live">Canlı oyna</string>
+	<string name="play_online">Play Online</string>
+	<string name="play_computer">Bilgisayar oyna</string>
+	<string name="tactics_trainer">Taktikler Trainer</string>
+	<string name="video_lessons">Video Dersler</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">CANLI OYNA</string>

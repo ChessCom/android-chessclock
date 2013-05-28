@@ -7,11 +7,11 @@
 	<string name="sign_out">Afmelden</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">Live spelen</string>
-	<string name="dashboard_online">Speel Online</string>
-	<string name="dashboard_computer">Speel Computer</string>
-	<string name="dashboard_tactics">Tactics Trainer</string>
-	<string name="dashboard_video">Video Lessen</string>
+	<string name="play_live">Live spelen</string>
+	<string name="play_online">Speel Online</string>
+	<string name="play_computer">Speel Computer</string>
+	<string name="tactics_trainer">Tactics Trainer</string>
+	<string name="video_lessons">Video Lessen</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">LIVE SPELEN</string>

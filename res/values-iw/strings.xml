@@ -7,11 +7,11 @@
 	<string name="sign_out">יציאה</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">שחק חיים</string>
-	<string name="dashboard_online">שחק</string>
-	<string name="dashboard_computer">לשחק במחשב</string>
-	<string name="dashboard_tactics">טקטיקות מאמן</string>
-	<string name="dashboard_video">שיעורי וידאו</string>
+	<string name="play_live">שחק חיים</string>
+	<string name="play_online">שחק</string>
+	<string name="play_computer">לשחק במחשב</string>
+	<string name="tactics_trainer">טקטיקות מאמן</string>
+	<string name="video_lessons">שיעורי וידאו</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">הקלטה בשידור חי</string>

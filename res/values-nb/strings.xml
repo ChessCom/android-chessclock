@@ -7,11 +7,11 @@
 	<string name="sign_out">Logg av</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">Spill Live</string>
-	<string name="dashboard_online">Spill Online</string>
-	<string name="dashboard_computer">Spill Computer</string>
-	<string name="dashboard_tactics">Taktikk Trainer</string>
-	<string name="dashboard_video">Video Leksjoner</string>
+	<string name="play_live">Spill Live</string>
+	<string name="play_online">Spill Online</string>
+	<string name="play_computer">Spill Computer</string>
+	<string name="tactics_trainer">Taktikk Trainer</string>
+	<string name="video_lessons">Video Leksjoner</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">SPILL LIVE</string>

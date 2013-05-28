@@ -5,16 +5,12 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.ArticleItem;
-import com.chess.backend.entity.new_api.FriendsItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
-import com.google.gson.Gson;
 
 import java.util.List;
 

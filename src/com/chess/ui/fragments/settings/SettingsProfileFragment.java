@@ -33,7 +33,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCountriesFragment;
 import com.chess.ui.fragments.popup_fragments.PopupSelectPhotoFragment;
-import com.chess.ui.fragments.welcome.InviteFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.utilities.AppUtils;
@@ -85,6 +85,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private TextView firstNameClearBtn;
 	private TextView lastNameClearBtn;
 	private TextView locationClearBtn;
+	private int photoFileSize;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -129,7 +130,8 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 			firstNameClearBtn.setOnClickListener(this);
 			lastNameClearBtn.setOnClickListener(this);
-			locationClearBtn.setOnClickListener(this);		}
+			locationClearBtn.setOnClickListener(this);
+		}
 
 		flagImg = (ImageView) view.findViewById(R.id.flagImg);
 		flagImg.setImageDrawable(new IconDrawable(getActivity(), R.string.ic_country));
@@ -199,27 +201,49 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	public void onResume() {
 		super.onResume();
 
+		updateData();
+	}
 
-		// fill parameters
-		membershipType = AppData.getUserPremiumStatusStr(getActivity());
-		if (!membershipType.equals(getString(R.string.basic))) {
-			membershipExpireDate = dateFormatter.format(Calendar.getInstance().getTime()); // TODO set correct time
-			cancelMembershipTxt.setText(getString(R.string.profile_membership_renew_cancel, membershipType, membershipExpireDate));
-		} else {
-			cancelMembershipTxt.setText("Basic user text");
+	private void updateData() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_USERS);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+
+		new RequestJsonTask<UserItem>(new GetUserUpdateListener()).executeTask(loadItem);
+	}
+
+	private class GetUserUpdateListener extends ChessUpdateListener<UserItem> {
+
+		public GetUserUpdateListener() {
+			super(UserItem.class);
 		}
 
-		{// load user avatar
-			int imageSize = (int) (AVATAR_SIZE * getResources().getDisplayMetrics().density);
-			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(imageSize, imageSize);
+		@Override
+		public void updateData(UserItem returnedObj) {
+			super.updateData(returnedObj);
 
-			ViewGroup parent = (ViewGroup) progressImageView.getParent();
-			if (parent != null) {
-				parent.removeAllViews();
+			// fill parameters
+			membershipType = AppData.getUserPremiumStatusStr(getActivity());
+			if (!membershipType.equals(getString(R.string.basic))) {
+				membershipExpireDate = dateFormatter.format(Calendar.getInstance().getTime()); // TODO set correct time
+				cancelMembershipTxt.setText(getString(R.string.profile_membership_renew_cancel, membershipType, membershipExpireDate));
+			} else {
+				cancelMembershipTxt.setText("Basic user text");
 			}
-			userPhotoImg.addView(progressImageView, params);
-			if (!photoChanged) {
-				imageDownloader.download(AppData.getUserAvatar(getActivity()), progressImageView, AVATAR_SIZE);
+
+			{// load user avatar
+				int imageSize = (int) (AVATAR_SIZE * getResources().getDisplayMetrics().density);
+				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(imageSize, imageSize);
+
+				ViewGroup parent = (ViewGroup) progressImageView.getParent();
+				if (parent != null) {
+					parent.removeAllViews();
+				}
+				userPhotoImg.addView(progressImageView, params);
+				AppData.setUserAvatar(getActivity(), returnedObj.getData().getAvatar());
+				if (!photoChanged) {
+					imageDownloader.download(returnedObj.getData().getAvatar() /*AppData.getUserAvatar(getActivity()*/, progressImageView, AVATAR_SIZE);
+				}
 			}
 		}
 	}
@@ -246,8 +270,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			shareIntent.putExtra(Intent.EXTRA_TEXT, "Invitation text");
 			startActivity(Intent.createChooser(shareIntent, getString(R.string.invite_a_friend)));
 		} else if (id == R.id.upgradeBtn) {
-			createProfile();
-//			getActivityFace().openFragment(new UpgradeFragment());
+			getActivityFace().openFragment(new UpgradeFragment());
 		}
 	}
 
@@ -275,6 +298,10 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 					Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
 
 					bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
+					if (bitmap == null) {
+						return;
+					}
+					photoFileSize = AppUtils.sizeOfBitmap(bitmap);
 					Drawable drawable = new BitmapDrawable(getResources(), bitmap);
 					drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
 
@@ -293,13 +320,15 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.setLoadPath(RestHelper.CMD_USER_PROFILE(AppData.getUserId(getActivity())));
-		loadItem.addRequestParams(RestHelper.P_FIRST_NAME, getTextFromField(firstNameValueEdt));
-		loadItem.addRequestParams(RestHelper.P_LAST_NAME, getTextFromField(lastNameValueEdt));
+		loadItem.setLoadPath(RestHelper.CMD_USER_PROFILE);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_FIRST_NAME, AppData.getUserFirstName(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LAST_NAME, AppData.getUserLastName(getActivity()));
 		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, AppData.getUserCountryId(getActivity()));
 		loadItem.addRequestParams(RestHelper.P_SKILL_LEVEL, AppData.getUserSkill(getActivity()));
 		loadItem.setFileMark(RestHelper.P_AVATAR);
 		loadItem.setFilePath(mCurrentPhotoPath);
+		loadItem.setFileSize(photoFileSize);
 
 		new RequestJsonTask<UserItem>(new CreateProfileUpdateListener()).executeTask(loadItem);
 	}
@@ -325,8 +354,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		@Override
 		public void updateData(UserItem returnedObj) {
 			AppData.setUserAvatar(getActivity(), returnedObj.getData().getAvatar());
-
-			getActivityFace().openFragment(new InviteFragment());
+			imageDownloader.download(returnedObj.getData().getAvatar(), progressImageView, AVATAR_SIZE);
 		}
 	}
 
@@ -351,6 +379,10 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		bmOptions.inPurgeable = true;
 
 		Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+		if (bitmap == null) {
+			return;
+		}
+		photoFileSize = AppUtils.sizeOfBitmap(bitmap);
 		progressImageView.setImageBitmap(bitmap);
 		photoChanged = true;
 	}

@@ -8,11 +8,11 @@
 	<string name="sign_out">Выйти</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">Играть Вживую</string>
-	<string name="dashboard_online">Играть Онлайн</string>
-	<string name="dashboard_computer">Играть \nс Компьютером</string>
-	<string name="dashboard_tactics">Тренер Тактик</string>
-	<string name="dashboard_video">Видео</string>
+	<string name="play_live">Играть Вживую</string>
+	<string name="play_online">Играть Онлайн</string>
+	<string name="play_computer">Играть \nс Компьютером</string>
+	<string name="tactics_trainer">Тренер Тактик</string>
+	<string name="video_lessons">Видео</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">ЖИВАЯ ИГРА</string>

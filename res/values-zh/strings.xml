@@ -7,11 +7,11 @@
 	<string name="sign_out">签出</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">真人</string>
-	<string name="dashboard_online">在线游戏</string>
-	<string name="dashboard_computer">玩电脑</string>
-	<string name="dashboard_tactics">战术教练</string>
-	<string name="dashboard_video">视频课程</string>
+	<string name="play_live">真人</string>
+	<string name="play_online">在线游戏</string>
+	<string name="play_computer">玩电脑</string>
+	<string name="tactics_trainer">战术教练</string>
+	<string name="video_lessons">视频课程</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">真人</string>

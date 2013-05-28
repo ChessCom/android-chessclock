@@ -128,6 +128,7 @@
     <string name="via_chesscom">via @Chesscom</string>
 
     <!--Play Screen-->
+    <string name="vs_random_opponent">vs Random Opponent</string>
     <string name="auto_match">Auto-Match</string>
     <string name="play_a_friend">Play a friend!</string>
 
@@ -141,7 +142,6 @@
     <string name="lessons">Lessons</string>
     <string name="play_again">Play Again!</string>
     <string name="play_daily">Play Daily</string>
-    <string name="play_live">Play Live</string>
     <string name="new_">New</string>
     <string name="analysis">Analysis</string>
 
@@ -208,6 +208,9 @@
     <string name="standard">Standard</string>
     <string name="select_theme">Select Theme</string>
     <string name="you">You</string>
+    <string name="interactive_lessons">Interactive Lessons</string>
+    <string name="tactics_and_puzzles"><![CDATA[Tactics & Puzzles]]></string>
+    <string name="rematch_computer">Rematch Computer</string>
     <!--Game mode-->
 
 </resources>

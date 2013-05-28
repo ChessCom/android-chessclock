@@ -398,6 +398,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		preferencesEditor.putLong(AppConstants.USER_ID, returnedObj.getUserId());
 		AppData.setUserCountryId(getActivity(), returnedObj.getCountryId());
+		AppData.setUserAvatar(getActivity(), returnedObj.getAvatarUrl());
 		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
 
 		try {

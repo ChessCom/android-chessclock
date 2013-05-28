@@ -76,6 +76,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 	private CountrySelectedListener countrySelectedListener;
 	private String mCurrentPhotoPath;
 	private boolean photoChanged;
+	private int photoFileSize;
 
 
 	@Override
@@ -193,6 +194,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 					int size = (int) (58.5f * density); // TODO remove hardcode
 					Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
 					bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
+					photoFileSize = AppUtils.sizeOfBitmap(bitmap);
 					Drawable drawable = new BitmapDrawable(getResources(), bitmap);
 					drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
 					profilePhotoEdt.setRightIcon(drawable);
@@ -229,6 +231,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		float density = getResources().getDisplayMetrics().density;
 		int size = (int) (58.5f * density); // TODO remove hardcode
 		bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
+		photoFileSize = AppUtils.sizeOfBitmap(bitmap);
 		Drawable drawable = new BitmapDrawable(getResources(), bitmap);
 		drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
 
@@ -246,13 +249,15 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.setLoadPath(RestHelper.CMD_USER_PROFILE(AppData.getUserId(getActivity())));
+		loadItem.setLoadPath(RestHelper.CMD_USER_PROFILE);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
 		loadItem.addRequestParams(RestHelper.P_FIRST_NAME, getTextFromField(firstNameEdt));
 		loadItem.addRequestParams(RestHelper.P_LAST_NAME, getTextFromField(lastNameEdt));
 		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, userCountryId);
 		loadItem.addRequestParams(RestHelper.P_SKILL_LEVEL, AppData.getUserSkill(getActivity()));
 		loadItem.setFileMark(RestHelper.P_AVATAR);
 		loadItem.setFilePath(mCurrentPhotoPath);
+		loadItem.setFileSize(photoFileSize);
 
 		new RequestJsonTask<UserItem>(createProfileUpdateListener).executeTask(loadItem);
 	}

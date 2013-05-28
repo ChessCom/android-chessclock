@@ -8,11 +8,11 @@
 	<string name="sign_out">Abmelden</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">Play Live</string>
-	<string name="dashboard_online">Spielen Sie Online</string>
-	<string name="dashboard_computer">Computer Spiele</string>
-	<string name="dashboard_tactics">Tactics Trainer</string>
-	<string name="dashboard_video">Video Lektionen</string>
+	<string name="play_live">Play Live</string>
+	<string name="play_online">Spielen Sie Online</string>
+	<string name="play_computer">Computer Spiele</string>
+	<string name="tactics_trainer">Tactics Trainer</string>
+	<string name="video_lessons">Video Lektionen</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">PLAY LIVE</string>

@@ -8,11 +8,11 @@
 	<string name="sign_out">साइन आउट</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">लाइव चलायें</string>
-	<string name="dashboard_online">ऑनलाइन चलायें</string>
-	<string name="dashboard_computer">कम्प्यूटर चलायें</string>
-	<string name="dashboard_tactics">रणनीति ट्रेनर</string>
-	<string name="dashboard_video">वीडियो सबक</string>
+	<string name="play_live">लाइव चलायें</string>
+	<string name="play_online">ऑनलाइन चलायें</string>
+	<string name="play_computer">कम्प्यूटर चलायें</string>
+	<string name="tactics_trainer">रणनीति ट्रेनर</string>
+	<string name="video_lessons">वीडियो सबक</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">जीना</string>

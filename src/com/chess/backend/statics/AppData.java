@@ -44,6 +44,26 @@ public class AppData {
 		return getIntValue(context, PREF_ACTION_AFTER_MY_MOVE, StaticData.AFTER_MOVE_GO_TO_NEXT_GAME);
 	}
 
+	public static void setUserFirstName(Context context, String value) {
+		SharedPreferences.Editor editor = getPreferences(context).edit();
+		editor.putString(FIRST_NAME, value);
+		editor.commit();
+	}
+
+	public static String getUserFirstName(Context context) {
+		return getStringValue(context, FIRST_NAME, StaticData.SYMBOL_EMPTY);
+	}
+
+	public static void setUserLastName(Context context, String value) {
+		SharedPreferences.Editor editor = getPreferences(context).edit();
+		editor.putString(LAST_NAME, value);
+		editor.commit();
+	}
+
+	public static String getUserLastName(Context context) {
+		return getStringValue(context, LAST_NAME, StaticData.SYMBOL_EMPTY);
+	}
+
 	public static String getUserName(Context context) {
 		SharedPreferences preferences = getPreferences(context);
 		return preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);

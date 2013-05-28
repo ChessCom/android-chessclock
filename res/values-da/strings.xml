@@ -8,11 +8,11 @@
 	<string name="sign_out">Log ud</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">Spil Live</string>
-	<string name="dashboard_online">Spil Online</string>
-	<string name="dashboard_computer">Spil Computer</string>
-	<string name="dashboard_tactics">Taktik Trainer</string>
-	<string name="dashboard_video">Videoinstruktion</string>
+	<string name="play_live">Spil Live</string>
+	<string name="play_online">Spil Online</string>
+	<string name="play_computer">Spil Computer</string>
+	<string name="tactics_trainer">Taktik Trainer</string>
+	<string name="video_lessons">Videoinstruktion</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">SPIL LIVE</string>

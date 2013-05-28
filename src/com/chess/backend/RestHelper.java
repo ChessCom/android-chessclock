@@ -1,13 +1,15 @@
 package com.chess.backend;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
-import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.BaseResponseItem;
 import com.chess.backend.exceptions.InternalErrorException;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
+import com.chess.utilities.AppUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.apache.http.HttpStatus;
@@ -87,10 +89,7 @@ public class RestHelper {
 	public static final String CMD_LOGIN = CMD_USERS + "/login";
 	public static final String CMD_GCM = CMD_USERS + "/gcm";
 	public static final String CMD_USER_STATS = CMD_USERS + "/stats";
-
-	public static String CMD_USER_PROFILE(long userId) {
-		return CMD_USERS + "/" + userId + "/profile";
-	}
+	public static final String CMD_USER_PROFILE= CMD_USERS + "/profile";
 
 	/*Games*/
 	public static final String CMD_GAMES = BASE_URL + V1 + GAMES;
@@ -408,50 +407,38 @@ message				false	Only used for `CHAT` command.
 	}
 
 
+	private static final String TAG = "RequestJsonTask";
 	public static <CustomType> CustomType requestData(LoadItem loadItem, Class<CustomType> customTypeClass) throws InternalErrorException {
 		CustomType item = null;
-		String TAG = "RequestJsonTask";
 		String url = formCustomRequest(loadItem);
 		String requestMethod = loadItem.getRequestMethod();
 		if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
 			url = formPostRequest(loadItem);
 		}
 
-		Log.d(TAG, "retrieving from url = " + url);
-
-		long tag = System.currentTimeMillis();
-		BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_REQUEST, "tag=" + tag + " " + url);
+		Log.d(TAG, "requesting by url = " + url);
 
 		HttpURLConnection connection = null;
 		try {
 			URL urlObj = new URL(url);
 			connection = (HttpURLConnection) urlObj.openConnection();
 			connection.setRequestMethod(requestMethod);
-			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=" + HTTP.UTF_8);
-			if (!TextUtils.isEmpty(loadItem.getFilePath())) {
-				String boundary = "*****" + System.currentTimeMillis() + "*****";
-				connection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-			}
-
 
 			if (IS_TEST_SERVER_MODE) {
-				Authenticator.setDefault(new Authenticator() {
-					@Override
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(V_TEST_NAME, V_TEST_NAME2.toCharArray());
-					}
-				});
+				connection.setRequestProperty("Authorization", getBasicAuth());
 			}
 
-			if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
-				submitPostData(connection, loadItem);
-			}
-
-			if (!TextUtils.isEmpty(loadItem.getFilePath())) {
+			if (!TextUtils.isEmpty(loadItem.getFilePath())) { // if multiPart
 				submitRawData(connection, loadItem);
+			} else if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
+				submitPostData(connection, loadItem);
+			} else {
+				connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=" + HTTP.UTF_8);
 			}
 
-			final int statusCode = connection.getResponseCode();
+			int statusCode;
+			statusCode = connection.getResponseCode();
+
 			Gson gson = new Gson();
 			if (statusCode != HttpStatus.SC_OK) {
 				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
@@ -483,9 +470,7 @@ message				false	Only used for `CHAT` command.
 					}
 
 					Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
-					BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_RESPONSE, "tag=" + tag + " " + resultString);
-				} else /*(!resultString.startsWith(OBJ_START))*/ {
-//					result = StaticData.INTERNAL_ERROR;
+				} else {
 					Log.d(TAG, "ERROR -> WebRequest SERVER RESPONSE: " + resultString);
 					throw new InternalErrorException(StaticData.INTERNAL_ERROR);
 				}
@@ -493,7 +478,6 @@ message				false	Only used for `CHAT` command.
 				if (baseResponse.getStatus().equals(R_STATUS_SUCCESS)) {
 					item = gson.fromJson(resultString, customTypeClass);
 					if (item == null) {
-//						result = StaticData.RESULT_OK;
 						throw new InternalErrorException(StaticData.EMPTY_DATA);
 					}
 				}
@@ -508,6 +492,7 @@ message				false	Only used for `CHAT` command.
 			throw new InternalErrorException(e, StaticData.INTERNAL_ERROR);
 		} catch (JsonSyntaxException e) {
 			e.printStackTrace();
+			Log.e(TAG, "JsonSyntaxException Error while retrieving data from " + url, e);
 			throw new InternalErrorException(e, StaticData.INTERNAL_ERROR);
 		} catch (IOException e) {
 			if (e instanceof InternalErrorException) {
@@ -530,48 +515,67 @@ message				false	Only used for `CHAT` command.
 		return item;
 	}
 
+	@TargetApi(Build.VERSION_CODES.FROYO)
+	private static String getBasicAuth() {
+		return Base64.encodeToString((V_TEST_NAME + ":" + V_TEST_NAME2).getBytes(), Base64.NO_WRAP);
+	}
+
 	private static void submitRawData(HttpURLConnection connection, LoadItem loadItem) throws IOException {
-		String TAG = "MULTI-PART";
-		String lineEnd = "\r\n";
-		String twoHyphens = "--";
-		String boundary = "*****";
+		String charset = HTTP.UTF_8;
+		File binaryFile = new File(loadItem.getFilePath());
+		String boundary = Long.toHexString(System.currentTimeMillis()); // Just generate some unique random value.
+		String CRLF = "\r\n"; // Line separator required by multipart/form-data.
+		String twoHypes = "--";
 
+		connection.setDoOutput(true);
+		connection.setRequestProperty("Connection", "Keep-Alive");
+		connection.setRequestProperty("Cache-Control", "no-cache");
+		connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+		PrintWriter writer = null;
+		try {
+			OutputStream output = connection.getOutputStream();
+			writer = new PrintWriter(new OutputStreamWriter(output, charset), true); // true = autoFlush, important!
 
-		DataOutputStream dos = new DataOutputStream(connection.getOutputStream());
+			// Send Normal params
+			List<NameValuePair> nameValuePairs = loadItem.getRequestParams();
 
-		dos.writeBytes(twoHyphens + boundary + lineEnd);
-		dos.writeBytes("Content-Disposition: form-data; name=\"" + loadItem.getFileMark() + "\";filename=\"" + loadItem.getFilePath() + "\"" + lineEnd);
-		dos.writeBytes(lineEnd);
+			for (NameValuePair pair : nameValuePairs) {
+				writer.append(twoHypes + boundary).append(CRLF);
+				writer.append("Content-Disposition: form-data; name=\"" + pair.getName() + "\"").append(CRLF);
+				writer.append("Content-Type: text/plain; charset=" + charset).append(CRLF);
+				writer.append(CRLF);
+				Log.d(TAG, "POST data: name = " + pair.getName() + " value = " + pair.getValue());
+				writer.append(pair.getValue()).append(CRLF).flush();
+			}
 
+			// Send binary file.
+			writer.append(twoHypes + boundary).append(CRLF);
+			writer.append("Content-Disposition: form-data; name=\"" + loadItem.getFileMark() + "\"; filename=\"" + binaryFile.getName() + "\"").append(CRLF);
+			writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(binaryFile.getName())).append(CRLF);
+			writer.append("Content-Transfer-Encoding: binary").append(CRLF);
+			writer.append(CRLF).flush();
+			InputStream input = null;
+			try {
+				input = new FileInputStream(binaryFile);
+				byte[] buffer = new byte[1024];
+				for (int length = 0; (length = input.read(buffer)) > 0;) {
+					output.write(buffer, 0, length);
+				}
+				output.flush(); // Important! Output cannot be closed. Close of writer will close output as well.
+			} finally {
+				if (input != null) try {
+					input.close();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+			writer.append(CRLF).flush(); // CRLF is important! It indicates end of binary boundary.
 
-		Log.d(TAG, "Headers are written");
-
-		// create a buffer of maximum size
-		FileInputStream fileInputStream = new FileInputStream(new File(loadItem.getFilePath()));
-		int bytesAvailable = fileInputStream.available();
-		int maxBufferSize = 1024;
-		int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-		byte[] buffer = new byte[bufferSize];
-
-		// read file and write it into form...
-
-		int bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
-		while (bytesRead > 0) {
-			dos.write(buffer, 0, bufferSize);
-			bytesAvailable = fileInputStream.available();
-			bufferSize = Math.min(bytesAvailable, maxBufferSize);
-			bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+			// End of multipart/form-data.
+			writer.append(twoHypes + boundary + twoHypes).append(CRLF);
+		} finally {
+			if (writer != null) writer.close();
 		}
-
-		// send multipart form data necesssary after file data...
-		dos.writeBytes(lineEnd);
-		dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-
-		// close streams
-		Log.d(TAG, "File is written");
-		fileInputStream.close();
-		dos.flush();
 	}
 
 	private static void submitPostData(URLConnection connection, LoadItem loadItem) throws IOException {
@@ -584,7 +588,7 @@ message				false	Only used for `CHAT` command.
 			output = connection.getOutputStream();
 			output.write(query.getBytes(charset));
 		} finally {
-			if (TextUtils.isEmpty(loadItem.getFilePath())) {  // don't close if we will continue to write
+			if (TextUtils.isEmpty(loadItem.getFilePath()) || !AppUtils.JELLYBEAN_PLUS_API) {  // don't close if we will continue to write. But close if we are on pre JB
 				if (output != null) {
 					try {
 						output.close();
@@ -603,8 +607,8 @@ message				false	Only used for `CHAT` command.
 		return gson.toJson(jRequest);
 	}
 
-	public static String convertStreamToString(java.io.InputStream is) {
-		Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
+	public static String convertStreamToString(InputStream is) {
+		Scanner scanner = new Scanner(is).useDelimiter("\\A");
 		return scanner.hasNext() ? scanner.next() : "";
 	}
 

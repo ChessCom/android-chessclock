@@ -1,7 +1,5 @@
 package com.chess.ui.interfaces;
 
-import android.view.View;
-
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -10,7 +8,7 @@ import android.view.View;
  */
 public interface WelcomeTabsFace {
 
-	void onClicked(View view);
+	void changeInternalFragment(int code);
 
 	void onPageSelected(int page);
 }

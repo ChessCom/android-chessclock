@@ -33,7 +33,6 @@ import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.views.drawables.BackgroundChessDrawable;
-//import com.facebook.android.Facebook;
 import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
@@ -47,6 +46,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+
+//import com.facebook.android.Facebook;
 
 /**
  * CommonLogicActivity class

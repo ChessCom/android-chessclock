@@ -7,11 +7,11 @@
 	<string name="sign_out">Esci</string>
 
 	<!--Dashboard labels-->
-	<string name="dashboard_live">Suonare dal vivo</string>
-	<string name="dashboard_online">Gioca online</string>
-	<string name="dashboard_computer">Gioca Computer</string>
-	<string name="dashboard_tactics">Tattiche Trainer</string>
-	<string name="dashboard_video">Video Lezioni</string>
+	<string name="play_live">Suonare dal vivo</string>
+	<string name="play_online">Gioca online</string>
+	<string name="play_computer">Gioca Computer</string>
+	<string name="tactics_trainer">Tattiche Trainer</string>
+	<string name="video_lessons">Video Lezioni</string>
 
 	<!--activities titles-->
 	<string name="label_play_live">Suonare dal vivo</string>
