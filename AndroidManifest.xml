@@ -30,6 +30,7 @@
 		android:label="@string/app_name"
 		android:logo="@drawable/ic_action_menu"
 		android:theme="@style/OrangeButtonTheme"
+        android:debuggable="true"
 		>
 		<activity android:name=".ui.activities.SplashActivity"
 			android:label="@string/app_name"

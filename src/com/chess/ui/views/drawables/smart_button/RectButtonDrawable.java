@@ -261,6 +261,12 @@ public class RectButtonDrawable extends ButtonDrawable {
 	}
 
 	@Override
+	protected void onBoundsChange(Rect bounds) {
+		boundsInit = false;
+		super.onBoundsChange(bounds);
+	}
+
+	@Override
 	protected void parseAttributes(Context context, AttributeSet attrs) {
 		super.parseAttributes(context, attrs);
 		// get style

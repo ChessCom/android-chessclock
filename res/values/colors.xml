@@ -200,6 +200,7 @@
 	<color name="semitransparent">#7f000000</color>
 	<color name="semitransparent_white">#46FFFFFF</color>
 	<color name="semitransparent_white_1">#AFFFFFFF</color>
+	<color name="semitransparent_white_65">#A5FFFFFF</color>
 
     <!--Badge colors-->
     <color name="action_badge_border_1">#ff000000</color>

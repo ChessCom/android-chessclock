@@ -78,6 +78,70 @@ public class ServerErrorCode {
 	public static final int INVALID_LOGIN_TOKEN_SUPPLIED = 65;			// Invalid login token supplied.
 	public static final int PLEASE_LOGIN_TO_CONTINUE = 66;				// Please login to continue.
 
+	public static final int UNABLE_TO_RESET_CHESS_GAME = 68; // "Unable to reset chess game.";				//
+	public static final int YOU_MUST_SPECIFY_METHOD = 69;// "You must specify \"method\\", \"url\" and \"requestId\".";				//
+	public static final int INVALID_PAGE_NUMBER = 70;// "Invalid page number";				//
+	public static final int YOU_HAVE_ALREADY_CHANGED_YOUR_USERNAME = 71;// "You have already changed your username. Only one change is allowed.";				//
+	public static final int YOU_CAN_T_CHANGE_YOUR_USERNAME_WHILE_YOU_ARE_LOGGED_IN_TO_LIVE_CHESS = 72;// "You can't change your username while you are logged in to Live Chess.";				//
+	public static final int PASSED_PLY_IS_GREATER_THAN_MAX_ALLOWED = 73;// "Passed ply is greater than max allowed.";				//
+	public static final int INVALID_PARAMETER_PASSED = 75;// "Invalid parameter passed.";				//
+	public static final int GAMES_MUST_BE_A_MINIMUM_OF_16_MOVES_TO_BE_SUBMITTED_FOR_COMPUTER_ANALYSIS = 76;// "Games must be a minimum of 16 moves to be submitted for computer analysis.";				//
+	public static final int THIS_GAME_HAS_ALREADY_BEEN_SUBMITTED_FOR_COMPUTER_ANALYSIS = 77;// "This game has already been submitted for computer analysis.";				//
+	public static final int GAME_LIMIT_REACHED = 78;// "Game limit reached.";				//
+	public static final int UNABLE_TO_BE_ANALYZED_BY_OUR_COMPUTER = 79;// "Unable to be analyzed by our computer.";				//
+	public static final int ANALYSIS_IS_STILL_IN_PROGRESS = 80;// "Analysis is still in progress.";				//
+	public static final int SELF_CHALLENGE = 81;// "Self challenge.";				//
+	public static final int AVATAR_IMAGE_IS_INVALID_ALLOWED_FILE_SIZE_ = 82;// "Avatar image is invalid. Allowed file size is 2 MB and allowed mime types are: "image/jpeg, image/gif, image/png".                                    ";				//
+	public static final int USERNAME_SHOULD_HAVE_3_CHARACTERS_OR_MORE = 83;// "Username should have 3 characters or more.                                                                                                            ";				//
+	public static final int USERNAME_SHOULD_HAVE_20_CHARACTERS_OR_LESS = 84;// "Username should have 20 characters or less.                                                                                                           ";				//
+	public static final int USERNAME_IS_NOT_ALLOWED_PLEASE_TRY_AGAIN = 85;// "Username is not allowed. Please try again.                                                                                                            ";				//
+	public static final int TO_PREVENT_SPAM_AND_ABUSE_CHESS_COM_DOESN_T_ALLOW_THROW = 86;// "To prevent spam and abuse, Chess.com doesn't allow throw-away email addresses. Please use a legitimate email address or connect with Facebook. Thanks!";				//
+	public static final int PASSWORD_SHOULD_HAVE_AT_LEAST_6_CHARACTERS = 87;// "Password should have at least 6 characters.                                                                                                           ";				//
+	public static final int FIRST_NAME_SHOULD_HAVE_20_CHARACTERS_OR_LESS = 88;// "First name should have 20 characters or less.                                                                                                         ";				//
+	public static final int LAST_NAME_SHOULD_HAVE_20_CHARACTERS_OR_LESS = 89;// "Last name should have 20 characters or less.                                                                                                          ";				//
+	public static final int THE_IP_HAS_BEEN_ALREADY_BANNED = 90;// "The IP has been already banned                                                                                                                        ";				//
+	public static final int USERNAME_SHOULD_NOT_BE_BLANK = 91;// "Username should not be blank.                                                                                                                         ";				//
+	public static final int INVALID_PRODUCT_SKU = 92;// "Invalid product sku                                                                                                                                   ";				//
+	public static final int INVALID_PURCHASE_DATA = 93;// "Invalid purchase data                                                                                                                                 ";				//
+	public static final int INVALID_PACKAGE_NAME = 94;// "Invalid package name                                                                                                                                  ";				//
+	public static final int INVALID_DEVELOPER_PAYLOAD = 95;// "Invalid developer payload                                                                                                                             ";				//
+	public static final int INVALID_DATA_SIGNATURE = 96;// "Invalid data signature                                                                                                                                ";				//
+	public static final int INVALID_ORDER = 97;// "Invalid order	                                                                                                                                        ";				//
+
+
+/*
+68	Unable to reset chess game.
+69	You must specify "method", "url" and "requestId".
+70	Invalid page number
+71	You have already changed your username. Only one change is allowed.
+72	You can't change your username while you are logged in to Live Chess.
+73	Passed ply is greater than max allowed.
+75	Invalid parameter passed.
+76	Games must be a minimum of 16 moves to be submitted for computer analysis.
+77	This game has already been submitted for computer analysis.
+78	Game limit reached.
+79	Unable to be analyzed by our computer.
+80	Analysis is still in progress.
+81	Self challenge.
+82	Avatar image is invalid. Allowed file size is 2 MB and allowed mime types are: "image/jpeg, image/gif, image/png".
+83	Username should have 3 characters or more.
+84	Username should have 20 characters or less.
+85	Username is not allowed. Please try again.
+86	To prevent spam and abuse, Chess.com doesn't allow throw-away email addresses. Please use a legitimate email address or connect with Facebook. Thanks!
+87	Password should have at least 6 characters.
+88	First name should have 20 characters or less.
+89	Last name should have 20 characters or less.
+90	The IP has been already banned
+91	Username should not be blank.
+92	Invalid product sku
+93	Invalid purchase data
+94	Invalid package name
+95	Invalid developer payload
+96	Invalid data signature
+97	Invalid order
+	 */
+
+
 	public static String getUserFriendlyMessage(Context context, int code){    // TODO convert to strings for i18n
 		return context.getResources().getStringArray(R.array.new_site_api_error_messages)[code-1];
 	}

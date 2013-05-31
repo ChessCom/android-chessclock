@@ -128,9 +128,10 @@ public class RestHelper {
 		return CMD_GAMES + "/" + gameId + "/actions";
 	}
 
-	public static final String CMD_MEMBERSHIP = BASE_URL + V1 + "/membership";
-	public static final String CMD_MEMBERSHIP_DETAILS = CMD_MEMBERSHIP + "/details";
-	public static final String CMD_DEV_PAYLOAD = CMD_MEMBERSHIP + "/developer-payload";
+//	GET /v1/membership/android
+	public static final String CMD_MEMBERSHIP = BASE_URL + V1 + "/membership/android";
+	public static final String CMD_MEMBERSHIP_PAYLOAD = CMD_MEMBERSHIP + "/payload";
+	public static final String CMD_MEMBERSHIP_KEY = CMD_MEMBERSHIP + "/public-key";
 
 
 	/* Parameters */
@@ -169,6 +170,7 @@ public class RestHelper {
 	public static final String P_IS_RATED = "isRated";
 	public static final String P_GAME_TYPE = "gameTypeCodeId";
 	public static final String P_GAME_ID = "gameId";
+	public static final String P_PRODUCT_SKU = "productSku";
 
 	public static final String P_UID = "uid";
 	public static final String P_LOCATION = "location";

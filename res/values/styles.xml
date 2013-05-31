@@ -325,6 +325,7 @@
 		<item name="android:textColor">@color/white</item>
 		<item name="android:textSize">15sp</item>
 		<item name="android:gravity">center_vertical</item>
+		<item name="ttf">Bold</item>
 	</style>
 
 	<style name="GamePanelButton">

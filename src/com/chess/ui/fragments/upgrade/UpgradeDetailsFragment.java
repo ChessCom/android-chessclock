@@ -18,11 +18,13 @@ import com.chess.backend.billing.IabResult;
 import com.chess.backend.billing.Inventory;
 import com.chess.backend.billing.Purchase;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.MembershipItem;
+import com.chess.backend.entity.new_api.MembershipKeyItem;
+import com.chess.backend.entity.new_api.PayloadItem;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
-
-import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,14 +45,14 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 	private static final String PLAN = "plan";
 
-	private static final String DIAMOND_MONTH_PAY = "$14";
-	private static final String DIAMOND_YEAR_PAY = "$99";
-	private static final String PLATINUM_MONTH_PAY = "$7";
-	private static final String PLATINUM_YEAR_PAY = "$49";
-	private static final String GOLD_MONTH_PAY = "$5";
-	private static final String GOLD_YEAR_PAY = "$29";
 	private static final String YEAR_DISCOUNT = "40%";
 
+	private boolean isGoldMonthPayed;
+	private boolean isGoldYearPayed;
+	private boolean isPlatinumMonthPayed;
+	private boolean isPlatinumYearPayed;
+	private boolean isDiamondMonthPayed;
+	private boolean isDiamondYearPayed;
 
 	private RadioGroup radioGroup;
 	private View planDetailsView;
@@ -73,6 +75,8 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private float density;
 	private PlanConfig[] configs;
 	private IabHelper mHelper;
+	private PayloadItem.Data payloadData;
+	private GetDetailsListener detailsListener;
 
 	public static UpgradeDetailsFragment newInstance(int code){
 		UpgradeDetailsFragment frag = new UpgradeDetailsFragment();
@@ -86,68 +90,14 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		 /* base64EncodedPublicKey should be YOUR APPLICATION'S PUBLIC KEY
-         * (that you got from the Google Play developer console). This is not your
-         * developer public key, it's the *app-specific* public key.
-         *
-         * Instead of just storing the entire literal string here embedded in the
-         * program,  construct the key at runtime from pieces or
-         * use bit manipulation (for example, XOR with some other string) to hide
-         * the actual key.  The key itself is not secret information, but we don't
-         * want to make it easy for an attacker to replace the public key with one
-         * of their own and then fake messages from the server.
-         */
-		setupIabHelper();
-//		// get public key from server
-//		LoadItem loadItem = new LoadItem();
-//		loadItem.setLoadPath(RestHelper.CMD_IAB);
-//		loadItem.addRequestParams(RestHelper.P_FIELDS, "key");
-//
-//		new RequestJsonTask<UserItem>(new GetPublicKeyListener()).executeTask(loadItem); // TODO set proper item
+		detailsListener = new GetDetailsListener();
 
-	}
+		// get key from server
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_KEY);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
 
-//	private class GetPublicKeyListener extends ChessUpdateListener<UserItem> {
-//
-//		@Override
-//		public void updateData(UserItem returnedObj) {
-//			super.updateData(returnedObj);
-//			setupIabHelper();
-//		}
-//	}
-
-	private void setupIabHelper() {
-		// here we get public key
-		String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8PdNZ3V+FkqhBry7E2zAKx9Tvj/wcCBNs7zOm/dZyt1fdwmbHsRnL9RhVG5cIlxL86GLMKJfvfnTy8R9pJA0CKA9YBXK93Zq4V0GPzqBS9U+mBWGFJ2Qb7JYKxPlIAmEhIbSou4EPSnzfnPSE3pAoUpeUTDGvTTNML1jzbzNBeeY12rnq5VyDY87rqP3iDvEkqJkN+iMR59QYgcQNHZf4dzJtsP3G1AIEJt4fzCoT134RvBDrtr7N+G23v8EdWad07EjPjP21Slz/84dIL3aj1OlUG/HZU2/QL2y+TwBpJLP/kDsqDkxoKayFxwBjjfAq4BCfcUcKjDWZFvZlT0mXwIDAQAB";
-
-		// Create the helper, passing it our context and the public key to verify signatures with
-		Log.d(TAG, "Creating IAB helper.");
-		mHelper = new IabHelper(getActivity(), base64EncodedPublicKey);
-
-		// enable debug logging (for a production application, you should set this to false).
-		mHelper.enableDebugLogging(true);
-
-		// Start setup. This is asynchronous and the specified listener
-		// will be called once setup completes.
-		Log.d(TAG, "Starting setup.");
-		mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-			@Override
-			public void onIabSetupFinished(IabResult result) {
-				Log.d(TAG, "Setup finished.");
-
-				if (!result.isSuccess()) {
-					// Oh noes, there was a problem.
-					showSinglePopupDialog("Problem setting up in-app billing: " + result);
-					return;
-				}
-
-				// Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
-				Log.d(TAG, "Setup successful. Querying inventory.");
-				mHelper.queryInventoryAsync(new GotInventoryListener());
-				setWaitScreen(true);
-
-			}
-		});
+		new RequestJsonTask<MembershipKeyItem>(new GetKeyListener()).executeTask(loadItem); // TODO set proper item
 	}
 
 	@Override
@@ -165,7 +115,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 		radioGroup = (RadioGroup) view.findViewById(R.id.radioGroup);
 		radioGroup.setOnCheckedChangeListener(this);
-
 
 		planDetailsView = view.findViewById(R.id.planDetailsView);
 		topView = view.findViewById(R.id.topView);
@@ -192,15 +141,43 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 		configs = new PlanConfig[3];
 
-		configs[0] = getDiamondConfig();
-		configs[1] = getPlatinumConfig();
-		configs[2] = getGoldConfig();
+		configs[0] = PlanConfig.getDiamondConfig(getActivity());
+		configs[1] = PlanConfig.getPlatinumConfig(getActivity());
+		configs[2] = PlanConfig.getGoldConfig(getActivity());
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		radioGroup.check(getIdForPlan());
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
+
+		// Pass on the activity result to the helper for handling
+		if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
+			// not handled, so handle it ourselves (here's where you'd
+			// perform any handling of activity results not related to in-app
+			// billing...
+			super.onActivityResult(requestCode, resultCode, data);
+		}
+		else {
+			Log.d(TAG, "onActivityResult handled by IABUtil.");
+		}
+	}
+
+	// We're being destroyed. It's important to dispose of the helper here!
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+
+		// very important:
+		Log.d(TAG, "Destroying helper.");
+		if (mHelper != null) mHelper.dispose();
+		mHelper = null;
 	}
 
 	@Override
@@ -267,7 +244,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		descriptionView.setPadding(padding, padding, padding, padding);
 
 		descriptionView.removeAllViews();
-
+		// TODO improve!
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 		RoboTextView unlockTitleTxt = new RoboTextView(getActivity());
@@ -291,64 +268,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		}
 	}
 
-	private PlanConfig getDiamondConfig() {
-		PlanConfig diamondConfig = new PlanConfig();
-		diamondConfig.planDetailsBack = R.drawable.button_upgrade_diamond_default;
-		diamondConfig.planIconId = R.drawable.ic_upgrade_diamond;
-		diamondConfig.titleColor = getResources().getColor(R.color.upgrade_diamond_title);
-		diamondConfig.titleId = R.string.diamond;
-		diamondConfig.subTitleColor = getResources().getColor(R.color.upgrade_diamond_sub_title);
-		diamondConfig.subTitleId = R.string.diamond_subtitle;
-		diamondConfig.payViewColorId = R.color.diamond_back;
-		diamondConfig.monthValue = DIAMOND_MONTH_PAY;
-		diamondConfig.yearValue = DIAMOND_YEAR_PAY;
-		diamondConfig.checkBoxDrawableId = R.drawable.button_checkmark_diamond_selector;
-		diamondConfig.buttonStyleId = R.style.Button_OrangeNoBorder;
-		diamondConfig.descriptionBackId = R.drawable.button_upgrade_diamond_flat;
-		diamondConfig.unlockFeaturesTitleId = R.string.upgrade_diamond_unlock_features_title;
-		diamondConfig.features = getResources().getStringArray(R.array.upgrade_diamond_features);
-
-		return diamondConfig;
-	}
-
-	private PlanConfig getPlatinumConfig() {
-		PlanConfig platinumConfig = new PlanConfig();
-		platinumConfig.planDetailsBack = R.drawable.button_upgrade_platinum_default;
-		platinumConfig.planIconId = R.drawable.ic_upgrade_platinum;
-		platinumConfig.titleColor = getResources().getColor(R.color.upgrade_platinum_title);
-		platinumConfig.titleId = R.string.platinum;
-		platinumConfig.subTitleColor = getResources().getColor(R.color.upgrade_platinum_sub_title);
-		platinumConfig.subTitleId = R.string.platinum_subtitle;
-		platinumConfig.payViewColorId = R.color.platinum_back;
-		platinumConfig.monthValue = PLATINUM_MONTH_PAY;
-		platinumConfig.yearValue = PLATINUM_YEAR_PAY;
-		platinumConfig.checkBoxDrawableId = R.drawable.button_checkmark_platinum_selector;
-		platinumConfig.buttonStyleId = R.style.Button_Grey2Solid_NoBorder;
-		platinumConfig.descriptionBackId = R.drawable.button_upgrade_platinum_flat;
-		platinumConfig.unlockFeaturesTitleId = R.string.upgrade_platinum_unlock_features_title;
-		platinumConfig.features = getResources().getStringArray(R.array.upgrade_platinum_features);
-		return platinumConfig;
-	}
-
-	private PlanConfig getGoldConfig() {
-		PlanConfig goldConfig = new PlanConfig();
-		goldConfig.planDetailsBack = R.drawable.button_upgrade_gold_default;
-		goldConfig.planIconId = R.drawable.ic_upgrade_gold;
-		goldConfig.titleColor = getResources().getColor(R.color.upgrade_gold_title);
-		goldConfig.titleId = R.string.gold;
-		goldConfig.subTitleColor = getResources().getColor(R.color.upgrade_gold_sub_title);
-		goldConfig.subTitleId = R.string.gold_subtitle;
-		goldConfig.payViewColorId = R.color.gold_back;
-		goldConfig.monthValue = GOLD_MONTH_PAY;
-		goldConfig.yearValue = GOLD_YEAR_PAY;
-		goldConfig.checkBoxDrawableId = R.drawable.button_checkmark_gold_selector;
-		goldConfig.buttonStyleId = R.style.Button_Brown;
-		goldConfig.descriptionBackId = R.drawable.button_upgrade_gold_flat;
-		goldConfig.unlockFeaturesTitleId = R.string.upgrade_gold_unlock_features_title;
-		goldConfig.features = getResources().getStringArray(R.array.upgrade_gold_features);
-		return goldConfig;
-	}
-
 	private int getIdForPlan() {
 		int code = getArguments().getInt(PLAN);
 		switch (code) {
@@ -368,58 +287,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			yearCheckBox.setChecked(false);
 		} else if (buttonView.getId() == R.id.yearCheckBox && isChecked) {
 			monthCheckBox.setChecked(false);
-		}
-	}
-
-	private class PlanConfig {
-		int planDetailsBack;
-		int planIconId;
-		int titleColor;
-		int titleId;
-		int subTitleColor;
-		int subTitleId;
-		int payViewColorId;
-		String monthValue;
-		String yearValue;
-		int checkBoxDrawableId;
-		int descriptionBackId;
-		int buttonStyleId;
-		int unlockFeaturesTitleId;
-		String[] features;
-		private boolean yearPayed;
-		private boolean monthPayed;
-
-		public boolean isYearPayed() {
-			return yearPayed;
-		}
-
-		public void setYearPayed(boolean yearPayed) {
-			this.yearPayed = yearPayed;
-		}
-
-		public boolean isMonthPayed() {
-			return monthPayed;
-		}
-
-		public void setMonthPayed(boolean monthPayed) {
-			this.monthPayed = monthPayed;
-		}
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
-
-		// Pass on the activity result to the helper for handling
-		if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
-			// not handled, so handle it ourselves (here's where you'd
-			// perform any handling of activity results not related to in-app
-			// billing...
-			super.onActivityResult(requestCode, resultCode, data);
-		}
-		else {
-			Log.d(TAG, "onActivityResult handled by IABUtil.");
 		}
 	}
 
@@ -456,49 +323,250 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		}
 	}
 
-	private void sendPaymentRequest(String itemId) {
-		if (!mHelper.subscriptionsSupported()) {
-			showSinglePopupDialog("Subscriptions not supported on your device yet. Sorry!");
-			return;
+
+	private class GetKeyListener extends ChessUpdateListener<MembershipKeyItem> {
+
+		private GetKeyListener() {
+			super(MembershipKeyItem.class);
 		}
 
-		sendPayment(itemId);
-//		LoadItem loadItem = new LoadItem();
-//		loadItem.setLoadPath(RestHelper.CMD_IAB);
-//
-//		new RequestJsonTask<UserItem>(new GetPayloadListener(itemId)).executeTask(loadItem);
+		@Override
+		public void updateData(MembershipKeyItem returnedObj) {
+			super.updateData(returnedObj);
+			// we got key, start init
+			setupIabHelper(returnedObj.getData());
+		}
+
+//		@Override
+//		public void errorHandle(Integer resultCode) {
+//			MembershipKeyItem item = new MembershipKeyItem();
+//			MembershipKeyItem.Data data = new MembershipKeyItem.Data();
+//			data.setPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8PdNZ3V+FkqhBry7E2zAKx9Tvj/wcCBNs7zOm/dZyt1fdwmbHsRnL9RhVG5cIlxL86GLMKJfvfnTy8R9pJA0CKA9YBXK93Zq4V0GPzqBS9U+mBWGFJ2Qb7JYKxPlIAmEhIbSou4EPSnzfnPSE3pAoUpeUTDGvTTNML1jzbzNBeeY12rnq5VyDY87rqP3iDvEkqJkN+iMR59QYgcQNHZf4dzJtsP3G1AIEJt4fzCoT134RvBDrtr7N+G23v8EdWad07EjPjP21Slz/84dIL3aj1OlUG/HZU2/QL2y+TwBpJLP/kDsqDkxoKayFxwBjjfAq4BCfcUcKjDWZFvZlT0mXwIDAQAB");
+//			item.setData(data);
+//			updateData(item);  // TODO remove hardcodes, used to pass key
+//		}
 	}
 
-//	private class GetPayloadListener extends ChessUpdateListener<UserItem> {
-//
-//		private String itemId;  // TODO get itemId from server
-//
-//		private GetPayloadListener(String itemId) {
-//			this.itemId = itemId;
-//		}
-//
-//		@Override
-//		public void updateData(UserItem returnedObj) {
-//			super.updateData(returnedObj);
-//
-//          sendPayment(itemId);
-//		}
-//	}
+	/**
+	 * Set up IabHelper to get inventory of bought items and init data to be able launch purchase flow
+	 */
+	private void setupIabHelper(MembershipKeyItem.Data data) {
+		mHelper = new IabHelper(getActivity(), data.getPublicKey());
+		mHelper.enableDebugLogging(false);
+		mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+			@Override
+			public void onIabSetupFinished(IabResult result) {
+				if (getActivity() == null) {
+					return;
+				}
 
-	private void sendPayment(String itemId) {
-			/* TODO: for security, generate your payload here for verification. See the comments on
-			 *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use
-			 *        an empty string, but on a production app you should carefully generate this. */
+				if (!result.isSuccess()) {
+					// Oh noes, there was a problem.
+					showSinglePopupDialog("Problem setting up in-app billing: " + result);
+					return;
+				}
+
+				// Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
+				mHelper.queryInventoryAsync(new GotInventoryListener());
+				setWaitScreen(true);
+			}
+		});
+	}
+
+	// Listener that's called when we finish querying the items and subscriptions we own
+	private class GotInventoryListener implements  IabHelper.QueryInventoryFinishedListener {
+
+		@Override
+		public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+			if (isPaused || getActivity() == null) {
+				return;
+			}
+
+			setWaitScreen(false);
+			Log.d(TAG, "Query inventory finished.");
+			if (result.isFailure()) {
+
+				showSinglePopupDialog("Failed to query inventory: " + result);
+				return;
+			}
+
+			if (!mHelper.subscriptionsSupported()) {
+				showSinglePopupDialog("Subscriptions not supported on your device yet. Sorry!");
+				return;
+			}
+			Log.d(TAG, "Query inventory was successful.");
+
+            /*
+             * Check for items we own. Notice that for each purchase, we check
+             * the developer payload to see if it's correct! See
+             * verifyDeveloperPayload().
+             */
+
+			// Check every purchased plan?
+			{// gold month
+				Purchase purchase = inventory.getPurchase(IabHelper.SKU_GOLD_MONTH);
+				isGoldMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
+			}
+			{// gold year
+				Purchase purchase = inventory.getPurchase(IabHelper.SKU_GOLD_YEAR);
+				isGoldYearPayed = purchase != null && verifyDeveloperPayload(purchase);
+			}
+			{// platinum month
+				Purchase purchase = inventory.getPurchase(IabHelper.SKU_PLATINUM_MONTH);
+				isPlatinumMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
+			}
+			{// platinum year
+				Purchase purchase = inventory.getPurchase(IabHelper.SKU_PLATINUM_YEAR);
+				isPlatinumYearPayed = purchase != null && verifyDeveloperPayload(purchase);
+			}
+			{// diamond month
+				Purchase purchase = inventory.getPurchase(IabHelper.SKU_DIAMOND_MONTH);
+				isDiamondMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
+			}
+			{// diamond year
+				Purchase purchase = inventory.getPurchase(IabHelper.SKU_DIAMOND_YEAR);
+				isDiamondYearPayed = purchase != null && verifyDeveloperPayload(purchase);
+			}
+
+			setWaitScreen(false); // TODO show another title
+
+			// query our server for membership bought from non Google Play( Apple, Web)
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+
+			new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem); // TODO set proper item
+		}
+	}
+
+	private class GetDetailsListener extends ChessUpdateListener<MembershipItem> {
+
+		private GetDetailsListener() {
+			super(MembershipItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			setWaitScreen(show);
+		}
+
+		@Override
+		public void updateData(MembershipItem returnedObj) {
+			super.updateData(returnedObj);
+
+			// update selected modes
+			if (returnedObj.getData().getIs_premium() > 0) {
+				AppData.setUserPremiumStatus(getActivity(), returnedObj.getData().getLevel());
+
+				String sku = returnedObj.getData().getSku();
+
+				// check if we bought an item in GP, but didn't update our server
+				if (isGoldMonthPayed && !sku.equals("gold_monthly")) {
+
+				}
+
+
+				if (isGoldMonthPayed && !sku.equals("gold_monthly")) { // TODO set constants
+
+//					isGoldMonthPayed = true;
+				} else if (isGoldYearPayed && !sku.equals("gold_yearly")) {
+//					isGoldYearPayed = true;
+				} else if (isPlatinumMonthPayed && !sku.equals("platinum_monthly")) {
+//					isPlatinumMonthPayed = true;
+				} else if (isPlatinumYearPayed && !sku.equals("platinum_yearly")) {
+//					isPlatinumYearPayed = true;
+				} else if (isDiamondMonthPayed && !sku.equals("diamond_monthly")) {
+//					isDiamondMonthPayed = true;
+				} else if (isDiamondYearPayed && !sku.equals("diamond_yearly")) {
+//					isDiamondYearPayed = true;
+				}
+
+				if (sku.equals("gold_monthly")) { // TODO set constants
+
+//					isGoldMonthPayed = true;
+				} else if (sku.equals("gold_yearly")) {
+//					isGoldYearPayed = true;
+				} else if (sku.equals("platinum_monthly")) {
+//					isPlatinumMonthPayed = true;
+				} else if (sku.equals("platinum_yearly")) {
+//					isPlatinumYearPayed = true;
+				} else if (sku.equals("diamond_monthly")) {
+//					isDiamondMonthPayed = true;
+				} else if (sku.equals("diamond_yearly")) {
+//					isDiamondYearPayed = true;
+				}
+			}
+
+			UpgradeDetailsFragment.this.updateData();
+		}
+	}
+
+	private void updateMembershipOnServer() {
+
+/*
+		 String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
+      String dataSignature = data.getStringExtra("INAPP_DATA_SIGNATURE");
+[27.05.2013 21:47:26] Chess.com Lackovic Ivan: you will pass the whole purchase data json string
+[27.05.2013 21:47:28] Chess.com Lackovic Ivan: and the signature
+[27.05.2013 21:47:34] roger: '{
+   "orderId":"12999763169054705758.1371079406387615",
+   "packageName":"com.example.app",
+   "productId":"exampleSku",
+   "purchaseTime":1345678900000,
+   "purchaseState":0,
+   "developerPayload":"bGoa+V7g/yqDXvKRqq+JTFn4uQZbPiQJo4pf9RzJ",
+   "purchaseToken":"rojeslcdyyiapnqcynkjyyjh"
+ }'
+		 */
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.addRequestParams(RestHelper.P_USERNAME, AppData.getUserName(getActivity()));
-		loadItem.addRequestParams(RestHelper.P_MEMBERSHIP_TYPE, itemId);
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+//		loadItem.addRequestParams(RestHelper.P_PRODUCT_SKU, itemId);
+//
+//		new RequestJsonTask<PayloadItem>(new GetPayloadListener(itemId)).executeTask(loadItem);
+	}
 
+	private void sendPaymentRequest(String itemId) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_PAYLOAD);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_PRODUCT_SKU, itemId);
 
-		String payload = RestHelper.formPostData(loadItem);
+		new RequestJsonTask<PayloadItem>(new GetPayloadListener(itemId)).executeTask(loadItem);
+	}
+
+	private class GetPayloadListener extends ChessUpdateListener<PayloadItem> {
+
+		private String targetSku;
+
+		private GetPayloadListener(String targetSku) {
+			super(PayloadItem.class);
+			this.targetSku = targetSku;
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			setWaitScreen(show);
+		}
+
+		@Override
+		public void updateData(PayloadItem returnedObj) {
+			super.updateData(returnedObj);
+
+			payloadData = returnedObj.getData();
+
+			sendPayment(targetSku);
+		}
+	}
+
+	private void sendPayment(String itemId) {
+		String payload = payloadData.getPayload();
 
 		setWaitScreen(true);
-		Log.d(TAG, "Launching purchase flow for subscription.");
 		mHelper.launchPurchaseFlow(getActivity(), itemId, IabHelper.ITEM_TYPE_SUBS,
 				RC_REQUEST, new PurchaseFinishedListener(), payload);
 	}
@@ -555,168 +623,19 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				showSinglePopupDialog("Thank you for subscribing to !" + IabHelper.SKU_DIAMOND_YEAR);
 				isDiamondYearPayed = true;
 			}
-			updateData();
-			setWaitScreen(false);
-		}
-	}
-
-	// We're being destroyed. It's important to dispose of the helper here!
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-
-		// very important:
-		Log.d(TAG, "Destroying helper.");
-		if (mHelper != null) mHelper.dispose();
-		mHelper = null;
-	}
-
-	private boolean isGoldMonthPayed;
-	private boolean isGoldYearPayed;
-	private boolean isPlatinumMonthPayed;
-	private boolean isPlatinumYearPayed;
-	private boolean isDiamondMonthPayed;
-	private boolean isDiamondYearPayed;
-
-	// Listener that's called when we finish querying the items and subscriptions we own
-	private class GotInventoryListener implements  IabHelper.QueryInventoryFinishedListener {
-		@Override
-		public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-			if (isPaused) {
-				return;
-			}
-
-			setWaitScreen(false);
-			Log.d(TAG, "Query inventory finished.");
-			if (result.isFailure()) {
-
-				showSinglePopupDialog("Failed to query inventory: " + result);
-				return;
-			}
-
-			Log.d(TAG, "Query inventory was successful.");
-
-            /*
-             * Check for items we own. Notice that for each purchase, we check
-             * the developer payload to see if it's correct! See
-             * verifyDeveloperPayload().
-             */
-
-			// Check every purchased plan?
-			{// gold month
-				Purchase purchase = inventory.getPurchase(IabHelper.SKU_GOLD_MONTH);
-
-				isGoldMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
-			}
-			{// gold year
-				Purchase purchase = inventory.getPurchase(IabHelper.SKU_GOLD_YEAR);
-
-				isGoldYearPayed = purchase != null && verifyDeveloperPayload(purchase);
-			}
-			{// platinum month
-				Purchase purchase = inventory.getPurchase(IabHelper.SKU_PLATINUM_MONTH);
-
-				isPlatinumMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
-			}
-			{// platinum year
-				Purchase purchase = inventory.getPurchase(IabHelper.SKU_PLATINUM_YEAR);
-
-				isPlatinumYearPayed = purchase != null && verifyDeveloperPayload(purchase);
-			}
-			{// diamond month
-				Purchase purchase = inventory.getPurchase(IabHelper.SKU_DIAMOND_MONTH);
-
-				isDiamondMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
-			}
-			{// diamond year
-				Purchase purchase = inventory.getPurchase(IabHelper.SKU_DIAMOND_YEAR);
-
-				isDiamondYearPayed = purchase != null && verifyDeveloperPayload(purchase);
-			}
-
 
 			updateData();
-
 			setWaitScreen(false);
-			Log.d(TAG, "Initial inventory query finished; enabling main UI.");
 		}
 	}
 
 	/** Verifies the developer payload of a purchase. */
 	boolean verifyDeveloperPayload(Purchase p) {
 		String payload = p.getDeveloperPayload();
-
-		if (!payload.contains(RestHelper.P_USERNAME)) {
-			return false;
-		}
-		// get username and membership type
-//		payload.split("")
-		String[] pairs = payload.split("&");
-		HashMap<String, String> map = new HashMap<String, String>();
-
-		for (String pair : pairs) {
-			String[] keyValues = pair.split("=");
-			map.put(keyValues[0], keyValues[1]);
-		}
-
-
-		String username = map.get(RestHelper.P_USERNAME);
-		String membershipType = map.get(RestHelper.P_MEMBERSHIP_TYPE);
-
-		if (username.equals(AppData.getUserName(getActivity())) // erik == erik
-				&& membershipType.equals(p.getSku()) // gold_1 == gold_1
-				) {
+		if (payloadData == null)
 			return true;
-		} else {
-			return false;
-		}
-		// TODO get payload from server
-        /*
-         * TODO: verify that the developer payload of the purchase is correct. It will be
-         * the same one that you sent when initiating the purchase.
-         *
-         * WARNING: Locally generating a random string when starting a purchase and
-         * verifying it here might seem like a good approach, but this will fail in the
-         * case where the user purchases an item on one device and then uses your app on
-         * a different device, because on the other device you will not have access to the
-         * random string you originally generated.
-         *
-         * So a good developer payload has these characteristics:
-         *
-         * 1. If two different users purchase an item, the payload is different between them,
-         *    so that one user's purchase can't be replayed to another user.
-         *
-         * 2. The payload must be such that you can verify it even when the app wasn't the
-         *    one who initiated the purchase flow (so that items purchased by the user on
-         *    one device work on other devices owned by the user).
-         *
-         * Using your own server to store and verify developer payloads across app
-         * installations is recommended.
-         */
-
-//		return true;
+		return payloadData.getPayload().equals(payload);
 	}
-
-/*
-	// get username and membership type
-	String[] pairs = payload.split("&");
-	HashMap<String, String> map = new HashMap<String, String>();
-
-	for (String pair : pairs) {
-		String[] keyValues = pair.split("=");
-		map.put(keyValues[0], keyValues[1]);
-	}
-
-	String username = map.get(RestHelper.P_USERNAME);
-	String membershipType = map.get(RestHelper.P_MEMBERSHIP_TYPE);
-	if (username.equals(AppData.getUserName(getActivity())) // erik == erik
-			&& membershipType.equals(itemId)) { // gold_1 == gold_1
-		logTest("sendPaymentRequest verify true");
-
-	} else {
-		logTest("sendPaymentRequest verify false");
-	}
-*/
 
 	private void setWaitScreen(boolean show) {
 		if (show){

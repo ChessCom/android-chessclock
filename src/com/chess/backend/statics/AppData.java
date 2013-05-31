@@ -64,6 +64,16 @@ public class AppData {
 		return getStringValue(context, LAST_NAME, StaticData.SYMBOL_EMPTY);
 	}
 
+	public static void setUserLocation(Context context, String value) {
+		SharedPreferences.Editor editor = getPreferences(context).edit();
+		editor.putString(LOCATION, value);
+		editor.commit();
+	}
+
+	public static String getUserLocaion(Context context) {
+		return getStringValue(context, LOCATION, StaticData.SYMBOL_EMPTY);
+	}
+
 	public static String getUserName(Context context) {
 		SharedPreferences preferences = getPreferences(context);
 		return preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
@@ -134,6 +144,10 @@ public class AppData {
 
 	public static boolean isComputerVsHumanBlackGameMode(BoardFace boardFace) {
 		return boardFace.getMode() == GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+	}
+
+	public static void setUserPremiumStatus(Context context, int level) {
+		setIntValue(context, USER_PREMIUM_STATUS, level);
 	}
 
 	public static int getUserPremiumStatus(Context context) {

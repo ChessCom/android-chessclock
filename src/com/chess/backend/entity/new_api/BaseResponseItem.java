@@ -34,6 +34,14 @@ public class BaseResponseItem<ItemType> {
 		return data;
 	}
 
+	/**
+	 * TODO remove, for test purpose only
+ 	 */
+	@Deprecated
+	public void setData(ItemType data) {
+		this.data = data;
+	}
+
 	public String getStatus() {
 		return status;
 	}

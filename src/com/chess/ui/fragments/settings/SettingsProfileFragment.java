@@ -1,13 +1,16 @@
 package com.chess.ui.fragments.settings;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -56,7 +59,6 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	public static final String COUNTRY_SELECTION = "COUNTRY_SELECTION";
 	public static final String BLUE_COLOR_DIVIDER = "##";
 
-	private static final int AVATAR_SIZE = 80;
 	private static final int REQ_CODE_PICK_IMAGE = 33;
 	private static final int REQ_CODE_TAKE_IMAGE = 55;
 
@@ -71,6 +73,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private SimpleDateFormat dateFormatter;
 	/* photo */
 	private FrameLayout userPhotoImg;
+	private GetUserUpdateListener userUpdateListener;
 	private EnhancedImageDownloader imageDownloader;
 	private ProgressImageView progressImageView;
 	private PopupCountriesFragment countriesFragment;
@@ -86,11 +89,20 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private TextView lastNameClearBtn;
 	private TextView locationClearBtn;
 	private int photoFileSize;
+	private String firstNameStr;
+	private String lastNameStr;
+	private String locationStr;
+	private int countryId;
+	private boolean inEditMode;
+	private int AVATAR_SIZE;
+	private float density;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		density = getResources().getDisplayMetrics().density;
+		AVATAR_SIZE = (int) (getResources().getDimension(R.dimen.img_profile_size_big) / density);
 		progressImageView = new ProgressImageView(getContext(), AVATAR_SIZE);
 
 		dateFormatter = new SimpleDateFormat(getString(R.string.membership_expire_date_format));
@@ -98,6 +110,15 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		photoSelectedListener = new PhotoSelectedListener();
 		countryNames = getResources().getStringArray(R.array.new_countries);
 		countrySelectedListener = new CountrySelectedListener();
+
+		// fields data init
+		firstNameStr = AppData.getUserFirstName(getActivity());
+		lastNameStr = AppData.getUserLastName(getActivity());
+		locationStr = AppData.getUserLocaion(getActivity());
+		countryId = AppData.getUserCountryId(getActivity());
+
+		userUpdateListener = new GetUserUpdateListener();
+
 	}
 
 	@Override
@@ -164,6 +185,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			Linkify.addLinks(termsLinkTxt, Linkify.WEB_URLS);
 //			stripUnderlines(termsLinkTxt);
 			termsLinkTxt.setMovementMethod(LinkMovementMethod.getInstance());
+			termsLinkTxt.setLinkTextColor(Color.WHITE);
 		}
 
 		view.findViewById(R.id.shareBtn).setOnClickListener(this);
@@ -171,6 +193,10 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		view.findViewById(R.id.userPhotoLay).setOnClickListener(this);
 		view.findViewById(R.id.countryArrowIconTxt).setOnClickListener(this);
 		view.findViewById(R.id.countryLay).setOnClickListener(this);
+
+		firstNameValueEdt.setText(firstNameStr);
+		lastNameValueEdt.setText(lastNameStr);
+		locationValueEdt.setText(locationStr);
 	}
 
 //	private void stripUnderlines(TextView textView) {
@@ -232,7 +258,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			}
 
 			{// load user avatar
-				int imageSize = (int) (AVATAR_SIZE * getResources().getDisplayMetrics().density);
+				int imageSize = (int) (AVATAR_SIZE * density);
 				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(imageSize, imageSize);
 
 				ViewGroup parent = (ViewGroup) progressImageView.getParent();
@@ -242,7 +268,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 				userPhotoImg.addView(progressImageView, params);
 				AppData.setUserAvatar(getActivity(), returnedObj.getData().getAvatar());
 				if (!photoChanged) {
-					imageDownloader.download(returnedObj.getData().getAvatar() /*AppData.getUserAvatar(getActivity()*/, progressImageView, AVATAR_SIZE);
+					imageDownloader.download(returnedObj.getData().getAvatar(), progressImageView, AVATAR_SIZE);
 				}
 			}
 		}
@@ -293,7 +319,6 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 					cursor.close();
 
 
-					float density = getResources().getDisplayMetrics().density;
 					int size = (int) (AVATAR_SIZE * density);
 					Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
 
@@ -324,7 +349,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
 		loadItem.addRequestParams(RestHelper.P_FIRST_NAME, AppData.getUserFirstName(getActivity()));
 		loadItem.addRequestParams(RestHelper.P_LAST_NAME, AppData.getUserLastName(getActivity()));
-		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, AppData.getUserCountryId(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, 116/*AppData.getUserCountryId(getActivity())*/);
 		loadItem.addRequestParams(RestHelper.P_SKILL_LEVEL, AppData.getUserSkill(getActivity()));
 		loadItem.setFileMark(RestHelper.P_AVATAR);
 		loadItem.setFilePath(mCurrentPhotoPath);
@@ -422,6 +447,10 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
+		if (HONEYCOMB_PLUS_API) {
+			startActionMode();
+		}
+
 		if (v.getId() == R.id.firstNameValueEdt) {
 			firstNameClearBtn.setVisibility(View.VISIBLE);
 		} else if (v.getId() == R.id.lastNameValueEdt) {
@@ -429,7 +458,63 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		} else if (v.getId() == R.id.locationValueEdt) {
 			locationClearBtn.setVisibility(View.VISIBLE);
 		}
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
+		return false;
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void startActionMode() {
+		if (inEditMode) {
+			return;
+		}
+//		ActionModeHelper actionModeHelper = ActionModeHelper.createInstance(getActivityFace().getActionBarActivity());
+		getActivity().startActionMode(new ActionMode.Callback() {
+
+			// Called when the action mode is created; startActionMode() was called
+			@Override
+			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+				// Inflate a menu resource providing context menu items
+				MenuInflater inflater = mode.getMenuInflater();
+				inflater.inflate(R.menu.context_menu, menu);
+				return true;
+			}
+
+			// Called each time the action mode is shown. Always called after onCreateActionMode, but
+			// may be called multiple times if the mode is invalidated.
+			@Override
+			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+				return false; // Return false if nothing is done
+			}
+
+			// Called when the user selects a contextual menu item
+			@Override
+			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+				switch (item.getItemId()) {
+					case R.id.menu_edit:
+						mode.finish(); // Action picked, so close the CAB
+						return true;
+					default:
+						return false;
+				}
+			}
+
+			// Called when the user exits the action mode
+			@Override
+			public void onDestroyActionMode(ActionMode mode) {
+//				if (fieldsWasChanged()) {
+					createProfile();
+//				}
+				inEditMode = false;
+			}
+		});
+
+		inEditMode = true;
+
+
+	}
+
+	private boolean fieldsWasChanged() {
+		return firstNameValueEdt.getText().equals(firstNameStr)
+				|| lastNameValueEdt.equals(lastNameStr) || locationValueEdt.equals(locationStr);
 	}
 
 	private class CountrySelectedListener implements PopupListSelectionFace {
