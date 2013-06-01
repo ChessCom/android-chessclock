@@ -45,9 +45,7 @@ public class AppData {
 	}
 
 	public static void setUserFirstName(Context context, String value) {
-		SharedPreferences.Editor editor = getPreferences(context).edit();
-		editor.putString(FIRST_NAME, value);
-		editor.commit();
+		setStringValue(context, FIRST_NAME, value);
 	}
 
 	public static String getUserFirstName(Context context) {
@@ -55,9 +53,7 @@ public class AppData {
 	}
 
 	public static void setUserLastName(Context context, String value) {
-		SharedPreferences.Editor editor = getPreferences(context).edit();
-		editor.putString(LAST_NAME, value);
-		editor.commit();
+		setStringValue(context, LAST_NAME, value);
 	}
 
 	public static String getUserLastName(Context context) {
@@ -65,12 +61,10 @@ public class AppData {
 	}
 
 	public static void setUserLocation(Context context, String value) {
-		SharedPreferences.Editor editor = getPreferences(context).edit();
-		editor.putString(LOCATION, value);
-		editor.commit();
+		setStringValue(context, LOCATION, value);
 	}
 
-	public static String getUserLocaion(Context context) {
+	public static String getUserLocation(Context context) {
 		return getStringValue(context, LOCATION, StaticData.SYMBOL_EMPTY);
 	}
 

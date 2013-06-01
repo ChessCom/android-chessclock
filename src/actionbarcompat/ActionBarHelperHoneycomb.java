@@ -16,9 +16,11 @@
 
 package actionbarcompat;
 
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +35,7 @@ import com.chess.ui.views.drawables.BadgeDrawable;
  * An extension of {@link ActionBarHelper} that provides Android 3.0-specific
  * functionality for Honeycomb tablets. It thus requires API level 11.
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	private Menu mOptionsMenu;
 	private View mRefreshIndeterminateProgressView = null;
@@ -175,6 +178,11 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
 	@Override
 	public void setUseHomeIcon(boolean useHomeIcon) {
+	}
+
+	@Override
+	public void showActionMode(boolean show) {
+
 	}
 
 	/**

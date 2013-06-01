@@ -720,8 +720,8 @@ public class DBDataManager {
 		values.put(DBConstants.V_ARTICLE_ID, dataObj.getId());
 		values.put(DBConstants.V_TITLE, dataObj.getTitle());
 		values.put(DBConstants.V_CREATE_DATE, dataObj.getCreate_date());
-		values.put(DBConstants.V_CATEGORY, dataObj.getArticleCategory());
-		values.put(DBConstants.V_CATEGORY_ID, dataObj.getArticleCategoryId());
+		values.put(DBConstants.V_CATEGORY, dataObj.getCategoryName());
+		values.put(DBConstants.V_CATEGORY_ID, dataObj.getCategoryId());
 		values.put(DBConstants.V_USER_ID, dataObj.getUserId());
 		values.put(DBConstants.V_USERNAME, dataObj.getUsername());
 		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirstName());

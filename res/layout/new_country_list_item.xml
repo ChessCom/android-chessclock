@@ -35,12 +35,12 @@
         android:paddingRight="20dip"
         />
 
-    <com.chess.RoboTextView
+    <!--Country Icon-->
+    <ImageView
+        android:id="@+id/countryImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ic_country"
-        android:textColor="@color/new_light_grey_2"
-        style="@style/GlyphIcon"
+        android:contentDescription="image"
         />
 
 </LinearLayout>

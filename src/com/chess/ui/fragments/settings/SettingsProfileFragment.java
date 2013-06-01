@@ -1,6 +1,6 @@
 package com.chess.ui.fragments.settings;
 
-import android.annotation.TargetApi;
+import actionbarcompat.ActionModeHelper;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,11 +10,11 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -83,19 +83,22 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private String mCurrentPhotoPath;
 	private boolean photoChanged;
 	/* country */
+	private int[] countryCodes;
 	private String[] countryNames;
 	private TextView countryValueTxt;
+
 	private TextView firstNameClearBtn;
 	private TextView lastNameClearBtn;
 	private TextView locationClearBtn;
-	private int photoFileSize;
 	private String firstNameStr;
 	private String lastNameStr;
 	private String locationStr;
 	private int countryId;
 	private boolean inEditMode;
+	private int photoFileSize;
 	private int AVATAR_SIZE;
 	private float density;
+	private String countryStr;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -109,12 +112,14 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		imageDownloader = new EnhancedImageDownloader(getActivity());
 		photoSelectedListener = new PhotoSelectedListener();
 		countryNames = getResources().getStringArray(R.array.new_countries);
+		countryCodes = getResources().getIntArray(R.array.new_country_ids);
 		countrySelectedListener = new CountrySelectedListener();
 
 		// fields data init
 		firstNameStr = AppData.getUserFirstName(getActivity());
 		lastNameStr = AppData.getUserLastName(getActivity());
-		locationStr = AppData.getUserLocaion(getActivity());
+		locationStr = AppData.getUserLocation(getActivity());
+		countryStr = AppData.getUserCountry(getActivity());
 		countryId = AppData.getUserCountryId(getActivity());
 
 		userUpdateListener = new GetUserUpdateListener();
@@ -194,34 +199,19 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		view.findViewById(R.id.countryArrowIconTxt).setOnClickListener(this);
 		view.findViewById(R.id.countryLay).setOnClickListener(this);
 
+		// filling fields
 		firstNameValueEdt.setText(firstNameStr);
 		lastNameValueEdt.setText(lastNameStr);
 		locationValueEdt.setText(locationStr);
+
+		// hide close buttons
+		firstNameClearBtn.setVisibility(TextUtils.isEmpty(firstNameStr)? View.VISIBLE : View.GONE);
+		lastNameClearBtn.setVisibility(TextUtils.isEmpty(lastNameStr)? View.VISIBLE : View.GONE);
+		locationClearBtn.setVisibility(TextUtils.isEmpty(locationStr)? View.VISIBLE : View.GONE);
+
+		// set country flag
+		updateUserCountry(countryStr);
 	}
-
-//	private void stripUnderlines(TextView textView) {
-//		SpannedString s = (SpannedString) textView.getText();
-//		URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
-//		for (URLSpan span: spans) {
-//			int start = s.getSpanStart(span);
-//			int end = s.getSpanEnd(span);
-//			s. removeSpan(span);
-//			span = new URLSpanNoUnderline(span.getURL());
-//			s.setSpan(span, start, end, 0);
-//		}
-//		textView.setText(s);
-//	}
-
-//	private class URLSpanNoUnderline extends URLSpan {
-//		public URLSpanNoUnderline(String url) {
-//			super(url);
-//		}
-//		@Override
-//		public void updateDrawState(TextPaint ds) {
-//			super.updateDrawState(ds);
-//			ds.setUnderlineText(false);
-//		}
-//	}
 
 	@Override
 	public void onResume() {
@@ -341,16 +331,13 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	}
 
 	private void createProfile() {
-		// check needed fields
-
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.setLoadPath(RestHelper.CMD_USER_PROFILE);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
-		loadItem.addRequestParams(RestHelper.P_FIRST_NAME, AppData.getUserFirstName(getActivity()));
-		loadItem.addRequestParams(RestHelper.P_LAST_NAME, AppData.getUserLastName(getActivity()));
-		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, 116/*AppData.getUserCountryId(getActivity())*/);
-		loadItem.addRequestParams(RestHelper.P_SKILL_LEVEL, AppData.getUserSkill(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_FIRST_NAME, firstNameStr);
+		loadItem.addRequestParams(RestHelper.P_LAST_NAME, lastNameStr);
+		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, countryId);
 		loadItem.setFileMark(RestHelper.P_AVATAR);
 		loadItem.setFilePath(mCurrentPhotoPath);
 		loadItem.setFileSize(photoFileSize);
@@ -447,74 +434,66 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		if (HONEYCOMB_PLUS_API) {
-			startActionMode();
-		}
+		startActionMode();
 
 		if (v.getId() == R.id.firstNameValueEdt) {
 			firstNameClearBtn.setVisibility(View.VISIBLE);
+			lastNameClearBtn.setVisibility(View.GONE);
+			locationClearBtn.setVisibility(View.GONE);
 		} else if (v.getId() == R.id.lastNameValueEdt) {
 			lastNameClearBtn.setVisibility(View.VISIBLE);
+			firstNameClearBtn.setVisibility(View.GONE);
+			locationClearBtn.setVisibility(View.GONE);
 		} else if (v.getId() == R.id.locationValueEdt) {
 			locationClearBtn.setVisibility(View.VISIBLE);
+			lastNameClearBtn.setVisibility(View.GONE);
+			firstNameClearBtn.setVisibility(View.GONE);
 		}
 		return false;
 	}
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private class DoneClickListener implements ActionModeHelper.EditFace {
+
+		@Override
+		public void onDoneClicked() {
+			if (fieldsWasChanged()) {
+				hideKeyBoard();
+				// hide close buttons
+				firstNameClearBtn.setVisibility(View.GONE);
+				lastNameClearBtn.setVisibility(View.GONE);
+				locationClearBtn.setVisibility(View.GONE);
+
+				// remember fields
+				firstNameStr = getTextFromField(firstNameValueEdt);
+				lastNameStr = getTextFromField(lastNameValueEdt);
+				locationStr = getTextFromField(locationValueEdt);
+
+				AppData.setUserFirstName(getActivity(), firstNameStr);
+				AppData.setUserLastName(getActivity(), lastNameStr);
+				AppData.setUserLocation(getActivity(), locationStr);
+
+				createProfile();
+
+				inEditMode = false;
+			}
+		}
+	}
+
 	private void startActionMode() {
 		if (inEditMode) {
 			return;
 		}
-//		ActionModeHelper actionModeHelper = ActionModeHelper.createInstance(getActivityFace().getActionBarActivity());
-		getActivity().startActionMode(new ActionMode.Callback() {
-
-			// Called when the action mode is created; startActionMode() was called
-			@Override
-			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-				// Inflate a menu resource providing context menu items
-				MenuInflater inflater = mode.getMenuInflater();
-				inflater.inflate(R.menu.context_menu, menu);
-				return true;
-			}
-
-			// Called each time the action mode is shown. Always called after onCreateActionMode, but
-			// may be called multiple times if the mode is invalidated.
-			@Override
-			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-				return false; // Return false if nothing is done
-			}
-
-			// Called when the user selects a contextual menu item
-			@Override
-			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-				switch (item.getItemId()) {
-					case R.id.menu_edit:
-						mode.finish(); // Action picked, so close the CAB
-						return true;
-					default:
-						return false;
-				}
-			}
-
-			// Called when the user exits the action mode
-			@Override
-			public void onDestroyActionMode(ActionMode mode) {
-//				if (fieldsWasChanged()) {
-					createProfile();
-//				}
-				inEditMode = false;
-			}
-		});
-
 		inEditMode = true;
 
-
+		ActionModeHelper actionModeHelper = ActionModeHelper.createInstance(getActivityFace().getActionBarActivity());
+		actionModeHelper.setEditFace(new DoneClickListener());
+		actionModeHelper.startActionMode();
 	}
 
 	private boolean fieldsWasChanged() {
-		return firstNameValueEdt.getText().equals(firstNameStr)
-				|| lastNameValueEdt.equals(lastNameStr) || locationValueEdt.equals(locationStr);
+		return !firstNameValueEdt.getText().equals(firstNameStr)
+				|| !lastNameValueEdt.getText().equals(lastNameStr) || !locationValueEdt.getText().equals(locationStr)
+				|| photoChanged;
 	}
 
 	private class CountrySelectedListener implements PopupListSelectionFace {
@@ -524,8 +503,10 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			countriesFragment.dismiss();
 			countriesFragment = null;
 			String country = countryNames[code];
+			countryId = countryCodes[code];
 
 			AppData.setUserCountry(getActivity(), country);
+			AppData.setUserCountryId(getActivity(), countryId);
 			updateUserCountry(country);
 		}
 
@@ -572,10 +553,8 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		}
 
 		private File setUpPhotoFile() throws IOException {
-
 			File f = createImageFile();
 			mCurrentPhotoPath = f.getAbsolutePath();
-
 			return f;
 		}
 
@@ -602,7 +581,6 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		File storageDir = null;
 
 		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-
 			storageDir = getAlbumStorageDir(getAlbumName());
 
 			if (storageDir != null) {
@@ -613,9 +591,8 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 					}
 				}
 			}
-
 		} else {
-			Log.v(getString(R.string.app_name), "External storage is not mounted READ/WRITE.");
+			Log.d(getString(R.string.app_name), "External storage is not mounted READ/WRITE.");
 		}
 
 		return storageDir;
@@ -633,4 +610,28 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 				albumName
 		);
 	}
+
+	//	private void stripUnderlines(TextView textView) {
+//		SpannedString s = (SpannedString) textView.getText();
+//		URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
+//		for (URLSpan span: spans) {
+//			int start = s.getSpanStart(span);
+//			int end = s.getSpanEnd(span);
+//			s. removeSpan(span);
+//			span = new URLSpanNoUnderline(span.getURL());
+//			s.setSpan(span, start, end, 0);
+//		}
+//		textView.setText(s);
+//	}
+
+//	private class URLSpanNoUnderline extends URLSpan {
+//		public URLSpanNoUnderline(String url) {
+//			super(url);
+//		}
+//		@Override
+//		public void updateDrawState(TextPaint ds) {
+//			super.updateDrawState(ds);
+//			ds.setUnderlineText(false);
+//		}
+//	}
 }

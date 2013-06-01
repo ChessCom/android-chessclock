@@ -8,7 +8,10 @@ import android.os.Build;
  * Date: 29.05.13
  * Time: 6:59
  */
-public class ActionModeHelper  {
+public abstract class ActionModeHelper {
+
+	protected EditFace editFace;
+	protected int contextMenuId;
 
 	public static ActionModeHelper createInstance(ActionBarActivity activity) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -17,4 +20,19 @@ public class ActionModeHelper  {
 			return new ActionModeBase(activity);
 		}
 	}
+
+	public void setEditFace(EditFace editFace) {
+		this.editFace = editFace;
+	}
+
+	public void setContextMenuId(int contextMenuId) {
+		this.contextMenuId = contextMenuId;
+	}
+
+	public abstract void startActionMode();
+
+	public interface EditFace {
+		void onDoneClicked();
+	}
+
 }

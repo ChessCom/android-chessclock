@@ -33,6 +33,7 @@ import android.view.MenuInflater;
  */
 public abstract class ActionBarHelper {
 	protected ActionBarActivity mActivity;
+	protected ActionModeHelper.EditFace doneClickListener;
 
 	/**
 	 * Factory method for creating {@link ActionBarHelper} objects for a given
@@ -147,4 +148,9 @@ public abstract class ActionBarHelper {
 
 	public abstract void setUseHomeIcon(boolean useHomeIcon);
 
+	public abstract void showActionMode(boolean show);
+
+	public void setDoneClickListener(ActionModeHelper.EditFace doneClickListener) {
+		this.doneClickListener = doneClickListener;
+	}
 }

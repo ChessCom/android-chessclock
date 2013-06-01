@@ -9,9 +9,16 @@ package actionbarcompat;
 
 public class ActionModeBase extends ActionModeHelper{
 
-	public ActionModeBase(ActionBarActivity activity) {
-		// TODO -> File | Settings | File Templates.
+	private ActionBarActivity activity;
 
+	public ActionModeBase(ActionBarActivity activity) {
+		this.activity = activity;
+	}
+
+	@Override
+	public void startActionMode() {
+		activity.getActionBarHelper().showActionMode(true);
+		activity.getActionBarHelper().setDoneClickListener(editFace);
 	}
 
 

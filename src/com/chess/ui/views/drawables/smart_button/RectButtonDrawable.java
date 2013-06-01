@@ -213,7 +213,7 @@ public class RectButtonDrawable extends ButtonDrawable {
 				break;
 
 		}
-		boundsInit = true;
+//		boundsInit = true;
 	}
 
 	/**

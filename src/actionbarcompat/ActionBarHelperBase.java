@@ -55,6 +55,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 	private View customView;
 	private boolean useHomeIcon = true;
 	private CharSequence titleChars;
+	private boolean actionMode;
 
 	protected ActionBarHelperBase(ActionBarActivity activity) {
 		super(activity);
@@ -82,6 +83,10 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		SimpleMenu menu = new SimpleMenu(mActivity);
 		mActivity.onCreatePanelMenu(Window.FEATURE_OPTIONS_PANEL, menu);
 		mActivity.onPrepareOptionsMenu(menu);
+
+		if (actionMode) { // don't add menu buttons YET
+			return;
+		}
 		for (int i = 0; i < menu.size(); i++) {
 			MenuItem item = menu.getItem(i);
 			if (mActionItemIds.contains(item.getItemId())) {
@@ -104,8 +109,15 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 			return;
 		}
 
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
-		layoutParams.weight = 1;
+		if (actionMode) {
+			// Add Done button
+			SimpleMenu tempMenu = new SimpleMenu(mActivity);
+			SimpleMenuItem homeItem = new SimpleMenuItem(tempMenu, R.id.done, 0,
+					mActivity.getString(R.string.app_name));
+			homeItem.setIcon(R.drawable.ic_cab_done);
+			addActionItemCompatFromMenuItem(homeItem);
+			return;
+		}
 
 		if (useHomeIcon) {
 			// Add Home button
@@ -116,15 +128,18 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 			addActionItemCompatFromMenuItem(homeItem);
 		}
 
+		LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
+		titleParams.weight = 1;
+
 		if (!customViewSet) {
 			// Add title text
 			RoboTextView titleText = new RoboTextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
-			titleText.setLayoutParams(layoutParams);
+			titleText.setLayoutParams(titleParams);
 			titleText.setText(titleChars);
 			titleText.setFont(FontsHelper.BOLD_FONT);
 			actionBarCompat.addView(titleText);
 		} else {
-			actionBarCompat.addView(customView, layoutParams);
+			actionBarCompat.addView(customView, titleParams);
 		}
 
 		actionBarCompat.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
@@ -173,6 +188,17 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 //		} else {
 //			mActivity.hideKeyBoard(searchEdit);
 //		}
+	}
+
+	@Override
+	public void showActionMode(boolean show) {
+		actionMode = show;
+		final ViewGroup actionBarCompat = getActionBarCompat();
+		if (actionBarCompat == null) {
+			return;
+		}
+		actionBarCompat.removeAllViews();
+		onPostCreate(null);
 	}
 
 	@Override
@@ -261,7 +287,6 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 			if (viewParent != null && viewParent instanceof View) {
 				((View) viewParent).setVisibility(show ? View.VISIBLE : View.GONE);
 			}
-//			compatView.setVisibility(show ? View.VISIBLE : View.GONE);
 		}
 	}
 
@@ -375,6 +400,27 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 
 			return refreshButtonLay;
 		} else {
+
+			if (itemId == R.id.done) {
+				ImageButton actionButton = new ImageButton(mActivity, null, R.attr.actionbarCompatItemHomeStyle);
+				actionButton.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(
+						R.dimen.actionbar_compat_button_home_width), ViewGroup.LayoutParams.MATCH_PARENT));
+				actionButton.setImageDrawable(item.getIcon());
+				actionButton.setScaleType(ImageView.ScaleType.CENTER);
+				actionButton.setContentDescription(item.getTitle());
+				actionButton.setId(itemId);
+				actionButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						doneClickListener.onDoneClicked();
+						showActionMode(false);
+					}
+				});
+				actionBar.addView(actionButton);
+
+				return actionButton;
+			}
+
 			// Create the button
 			ImageButton actionButton = new ImageButton(mActivity, null,
 					itemId == android.R.id.home ? R.attr.actionbarCompatItemHomeStyle : R.attr.actionbarCompatItemStyle);
