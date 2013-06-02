@@ -54,7 +54,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	private static final int CHALLENGES_SECTION = 0;
 	private static final int CURRENT_GAMES_SECTION = 1;
-	private static final int FINISHED_GAMES_SECTION = 3;
+	private static final int FINISHED_GAMES_SECTION = 2;
 
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
@@ -154,7 +154,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				loadDbGames();
 			}
 		}
-
 	}
 
 	@Override

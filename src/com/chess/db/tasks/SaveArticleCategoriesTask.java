@@ -53,7 +53,6 @@ public class SaveArticleCategoriesTask extends AbstractUpdateTask<CommonFeedCate
 			}
 
 			cursor.close();
-
 		}
 
 		result = StaticData.RESULT_OK;

@@ -39,12 +39,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	private View loadingView;
 	private TextView emptyView;
 	private ListView listView;
-	private EditText searchEdt;
-	private Spinner sortSpinner;
-	private boolean searchVisible;
 	private VideosCursorUpdateListener videosCursorUpdateListener;
-//	private boolean categoriesLoaded;
-	private List<String> sortOrders;
 	private List<String> categoriesList;
 
 	public static VideoCategoriesFragment newInstance(String sectionName) {
@@ -78,35 +73,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
-		searchEdt = (EditText) view.findViewById(R.id.searchEdt);
-
-		view.findViewById(R.id.searchBtn).setOnClickListener(this);
-
 		categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
-
-		sortSpinner = (Spinner) view.findViewById(R.id.sortSpinner);
-
-/*
-	+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
-	+ V_SKILL_LEVEL 			+ _TEXT_NOT_NULL + _COMMA
-	+ V_CREATE_DATE 	    	+ _LONG_NOT_NULL + _COMMA
-	+ V_FIRST_NAME 	    		+ _TEXT_NOT_NULL + _COMMA
-*/
-
-		List<String> sortList = new ArrayList<String>();
-		sortList.add(getString(R.string.title));
-		sortList.add(getString(R.string.skill));
-		sortList.add(getString(R.string.latest));
-		sortList.add(getString(R.string.authors_name));
-		sortSpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), sortList));
-		sortSpinner.setOnItemSelectedListener(this);
-
-		sortOrders = new ArrayList<String>();
-		sortOrders.add(DBConstants.V_NAME);
-		sortOrders.add(DBConstants.V_SKILL_LEVEL);
-		sortOrders.add(DBConstants.V_CREATE_DATE);
-		sortOrders.add(DBConstants.V_FIRST_NAME);
-
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(videosAdapter);
@@ -173,11 +140,9 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 	private void loadFromDb() {
 		String category = (String) categorySpinner.getSelectedItem();
-		int sortPosition = sortSpinner.getSelectedItemPosition();
 
-		String sortOrder = sortOrders.get(sortPosition);
 		new LoadDataFromDbTask(videosCursorUpdateListener,
-				DbHelper.getVideosListByCategoryParams(category, sortOrder),
+				DbHelper.getVideosListByCategoryParams(category),
 				getContentResolver()).executeTask();
 	}
 
@@ -199,9 +164,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		@Override
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
-			if (resultCode == StaticData.EMPTY_DATA) {
-				emptyView.setText(R.string.no_games);
-			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
+			if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.no_network);
 			}
 			showEmptyView(true);
@@ -212,11 +175,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	public void onClick(View view) {
 		super.onClick(view);
 		int id = view.getId();
-		if (id == R.id.searchBtn) {
-			searchVisible = !searchVisible;
-
-			showSearch(searchVisible);
-		} else if (id == R.id.titleTxt || id == R.id.authorTxt || id == R.id.dateTxt){
+		if (id == R.id.titleTxt || id == R.id.authorTxt || id == R.id.dateTxt){
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 			getActivityFace().openFragment(VideoDetailsFragment.newInstance(DBDataManager.getId(cursor)));
@@ -228,21 +187,6 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 //			intent.setDataAndType(Uri.parse("http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"), "video/*"); // TODO restore
 			intent.setDataAndType(Uri.parse(DBDataManager.getString(cursor, DBConstants.V_URL)), "video/*");
 			startActivity(intent);
-		}
-	}
-
-	private void showSearch(boolean show) {
-		if (show) {
-			categorySpinner.setVisibility(View.GONE);
-			sortSpinner.setVisibility(View.GONE);
-
-			searchEdt.setVisibility(View.VISIBLE);
-
-		} else {
-			categorySpinner.setVisibility(View.VISIBLE);
-			sortSpinner.setVisibility(View.VISIBLE);
-
-			searchEdt.setVisibility(View.GONE);
 		}
 	}
 

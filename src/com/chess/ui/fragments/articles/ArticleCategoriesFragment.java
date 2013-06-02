@@ -37,8 +37,6 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	private View loadingView;
 	private TextView emptyView;
 	private ListView listView;
-	private EditText searchEdt;
-	private boolean searchVisible;
 	private ArticlesCursorUpdateListener articlesCursorUpdateListener;
 	private boolean categoriesLoaded;
 
@@ -71,10 +69,6 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
-
-		searchEdt = (EditText) view.findViewById(R.id.searchEdt);
-
-		view.findViewById(R.id.searchBtn).setOnClickListener(this);
 
 		categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
 
@@ -176,36 +170,10 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		@Override
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
-			if (resultCode == StaticData.EMPTY_DATA) {
-				emptyView.setText(R.string.no_games);
-			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
+			if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.no_network);
 			}
 			showEmptyView(true);
-		}
-	}
-
-	@Override
-	public void onClick(View v) {
-		super.onClick(v);
-
-		if (v.getId() == R.id.searchBtn) {
-			searchVisible = !searchVisible;
-
-			showSearch(searchVisible);
-		}
-	}
-
-	private void showSearch(boolean show) {
-		if (show) {
-			categorySpinner.setVisibility(View.GONE);
-
-			searchEdt.setVisibility(View.VISIBLE);
-
-		} else {
-			categorySpinner.setVisibility(View.VISIBLE);
-
-			searchEdt.setVisibility(View.GONE);
 		}
 	}
 

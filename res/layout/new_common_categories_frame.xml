@@ -6,18 +6,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    >
 
     <include layout="@layout/new_categories_selection_view"/>
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/white"
-        android:cacheColorHint="@color/white"
-        android:divider="@color/new_friends_list_divider"
-        android:dividerHeight="1dip"
+        android:cacheColorHint="@color/transparent"
+        android:divider="@null"
+        android:dividerHeight="0px"
         />
 
     <com.chess.RoboTextView

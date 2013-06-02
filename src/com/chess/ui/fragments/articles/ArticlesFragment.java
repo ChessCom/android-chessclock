@@ -111,6 +111,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		if (need2Update) {
 			boolean haveSavedData = DBDataManager.haveSavedArticles(getActivity());
 
+			loadCategoriesFromDB();
 			if (AppUtils.isNetworkAvailable(getActivity())) {
 				getCategories();
 			} else if (!haveSavedData) {
@@ -122,6 +123,22 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 				loadFromDb();
 			}
 		}
+	}
+
+	private void loadCategoriesFromDB() {
+		// show list of categories
+		Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.ARTICLE_CATEGORIES], null, null, null, null);
+		List<String> list = new ArrayList<String>();
+		if (!cursor.moveToFirst()) {
+			return;
+		}
+
+		do {
+			list.add(DBDataManager.getString(cursor, DBConstants.V_NAME));
+		} while (cursor.moveToNext());
+
+		categoriesAdapter.setItemsList(list);
+		sectionedAdapter.notifyDataSetChanged();
 	}
 
 	private void init() {
@@ -222,19 +239,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			super.updateData(returnedObj);
 
 			// show list of categories
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.ARTICLE_CATEGORIES], null, null, null, null);
-			List<String> list = new ArrayList<String>();
-			if (!cursor.moveToFirst()) {
-				showToast("Categories are not loaded, error occurred");
-				return;
-			}
-
-			do {
-				list.add(DBDataManager.getString(cursor, DBConstants.V_NAME));
-			} while (cursor.moveToNext());
-
-			categoriesAdapter.setItemsList(list);
-			sectionedAdapter.notifyDataSetChanged();
+			loadCategoriesFromDB();
 
 			// loading articles
 			ArticlesFragment.this.updateData();

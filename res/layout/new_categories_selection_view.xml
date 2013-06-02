@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<com.chess.LinLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/main_button_height"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/list_item_height"
     android:animateLayoutChanges="true"
     android:gravity="center_vertical"
+
     >
     <com.chess.RoboSpinner
         android:id="@+id/categoriesSpinner"
@@ -14,31 +16,7 @@
         android:layout_weight="1"
         android:paddingLeft="7dip"
         android:paddingBottom="4dip"
-        />
-
-    <com.chess.RoboEditText
-        android:id="@+id/searchEdt"
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/edit_white_one_default"
-        android:visibility="gone"
-        android:hint="@string/search"
-        android:layout_marginLeft="6dip"
-        android:layout_marginRight="6dip"
-        android:textSize="14sp"
-        android:paddingLeft="8dip"
-        android:paddingBottom="2dip"
-        android:minHeight="30dip"
-        android:gravity="center_vertical"
-        />
-
-    <com.chess.RoboButton
-        android:id="@+id/searchBtn"
-        android:layout_width="@dimen/main_button_height"
-        android:layout_height="@dimen/main_button_height"
         style="@style/ListItem"
-        android:text="@string/ic_search"
-        android:contentDescription="@string/search"/>
+        />
 
-</LinearLayout>
+</com.chess.LinLayout>
