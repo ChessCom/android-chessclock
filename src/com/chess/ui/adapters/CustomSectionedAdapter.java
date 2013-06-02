@@ -17,7 +17,7 @@ public class CustomSectionedAdapter extends SectionedListAdapter {
 
 	private ItemClickListenerFace clickListenerFace;
 	private int layoutResource;
-	private int hideHeaderNumber = NON_INIT;
+	private int[] hideHeadersArray;
 
 	public CustomSectionedAdapter(ItemClickListenerFace itemClickListenerFace, int layoutResource) {
 		super(itemClickListenerFace.getMeContext());
@@ -25,21 +25,25 @@ public class CustomSectionedAdapter extends SectionedListAdapter {
 		this.layoutResource = layoutResource;
 	}
 
-	public CustomSectionedAdapter(ItemClickListenerFace itemClickListenerFace, int layoutResource, int hideHeaderNumber) {
+	public CustomSectionedAdapter(ItemClickListenerFace itemClickListenerFace, int layoutResource, int[] hideHeadersArray) {
 		super(itemClickListenerFace.getMeContext());
 		clickListenerFace = itemClickListenerFace;
 		this.layoutResource = layoutResource;
-		this.hideHeaderNumber = hideHeaderNumber;
+		this.hideHeadersArray = hideHeadersArray;
 	}
 
 	@Override
-	protected View getHeaderView(String caption, int index, View convertView, ViewGroup parent) {
+	protected View getHeaderView(String caption, int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
 			convertView = LayoutInflater.from(getContext()).inflate(layoutResource, parent, false);
-			if (index == hideHeaderNumber && hideHeaderNumber != NON_INIT) {
-				AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1);
-				convertView.setLayoutParams(layoutParams);
-				convertView.setVisibility(View.GONE);
+			if (hideHeadersArray != null ) {
+				for (int index : hideHeadersArray) {
+					if (position == index) {
+						AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1);
+						convertView.setLayoutParams(layoutParams);
+						convertView.setVisibility(View.GONE);
+					}
+				}
 			}
 			createViewHolder(convertView);
 		}

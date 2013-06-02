@@ -96,17 +96,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	@Override
-	protected void adjustActionBar() {
-		super.adjustActionBar();
-
-//		boolean isConnected = isLCSBound;
-//		if (isLCSBound) {
-//			isConnected = liveService.isConnected();
-//		}
-//		getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected);
-	}
-
-	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		unBindLiveService();

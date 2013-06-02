@@ -38,7 +38,6 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	private TextView emptyView;
 	private ListView listView;
 	private EditText searchEdt;
-	private Spinner sortSpinner;
 	private boolean searchVisible;
 	private ArticlesCursorUpdateListener articlesCursorUpdateListener;
 	private boolean categoriesLoaded;
@@ -68,6 +67,8 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		setTitle(R.string.articles);
+
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
@@ -77,19 +78,15 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 		categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
 
-		sortSpinner = (Spinner) view.findViewById(R.id.sortSpinner);
-
-		List<String> sortList = new ArrayList<String>();  // TODO set list of sort parameters
-		sortList.add("Latest");
-		sortList.add("Date");
-		sortList.add("Author's Name");
-		sortList.add("Author's Country");
-		sortSpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), sortList));
-
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(articlesAdapter);
 		listView.setOnItemClickListener(this);
 
+		getActivityFace().showActionMenu(R.id.menu_search, true);
+		getActivityFace().showActionMenu(R.id.menu_notifications, false);
+		getActivityFace().showActionMenu(R.id.menu_games, false);
+
+		setTitlePadding(ONE_ICON);
 	}
 
 	@Override
@@ -202,13 +199,11 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	private void showSearch(boolean show) {
 		if (show) {
 			categorySpinner.setVisibility(View.GONE);
-			sortSpinner.setVisibility(View.GONE);
 
 			searchEdt.setVisibility(View.VISIBLE);
 
 		} else {
 			categorySpinner.setVisibility(View.VISIBLE);
-			sortSpinner.setVisibility(View.VISIBLE);
 
 			searchEdt.setVisibility(View.GONE);
 		}

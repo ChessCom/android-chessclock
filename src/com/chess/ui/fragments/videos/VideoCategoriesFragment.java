@@ -111,6 +111,12 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(videosAdapter);
 		listView.setOnItemClickListener(this);
+
+		getActivityFace().showActionMenu(R.id.menu_search, true);
+		getActivityFace().showActionMenu(R.id.menu_notifications, false);
+		getActivityFace().showActionMenu(R.id.menu_games, false);
+
+		setTitlePadding(ONE_ICON);
 	}
 
 	@Override

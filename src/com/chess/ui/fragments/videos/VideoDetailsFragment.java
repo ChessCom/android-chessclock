@@ -88,6 +88,12 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		playBtn = (ImageButton) view.findViewById(R.id.playBtn);
 		playBtn.setOnClickListener(this);
 		playBtn.setEnabled(false);
+
+		getActivityFace().showActionMenu(R.id.menu_share, true);
+		getActivityFace().showActionMenu(R.id.menu_notifications, false);
+		getActivityFace().showActionMenu(R.id.menu_games, false);
+
+		setTitlePadding(ONE_ICON);
 	}
 
 	@Override

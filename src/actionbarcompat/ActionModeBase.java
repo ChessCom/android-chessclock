@@ -21,5 +21,8 @@ public class ActionModeBase extends ActionModeHelper{
 		activity.getActionBarHelper().setDoneClickListener(editFace);
 	}
 
-
+	@Override
+	public void closeActionMode() {
+//		activity.getActionBarHelper().showActionMode(false);
+	}
 }

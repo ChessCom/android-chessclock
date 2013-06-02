@@ -66,6 +66,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	public static final int CENTER_MODE = 1;
 	public static final int RIGHT_MENU_MODE = 2;
 
+	protected static final int DEFAULT_ICON = 0;
+	protected static final int ONE_ICON = 1;
+	protected static final int TWO_ICON = 2;
+
 	private LoginUpdateListenerNew loginUpdateListener;
 
 	private int loginReturnCode;
@@ -81,6 +85,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private UiLifecycleHelper facebookUiHelper;
 	private boolean facebookActive;
 	protected View loadingView;
+	private int padding;
+	private int paddingCode;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -97,12 +103,22 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		handler = new Handler();
 		setHasOptionsMenu(true);
+
+		padding = (int) (48 * getResources().getDisplayMetrics().density);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		loadingView = view.findViewById(R.id.loadingView);
+
+		getActivityFace().showActionMenu(R.id.menu_add, false);
+		getActivityFace().showActionMenu(R.id.menu_search, false);
+		getActivityFace().showActionMenu(R.id.menu_share, false);
+		getActivityFace().showActionMenu(R.id.menu_notifications, true);
+		getActivityFace().showActionMenu(R.id.menu_games, true);
+
+		setTitlePadding(DEFAULT_ICON);
 	}
 
 	@Override
@@ -121,7 +137,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	public void onResume() {
 		super.onResume();
 
+		// update title and padding here when activity will finish it's setups for actionbar
 		updateTitle();
+		setTitlePadding();
+		getActivityFace().updateActionBarIcons();
+
 		if (facebookActive) {
 			facebookUiHelper.onResume();
 		}
@@ -167,8 +187,22 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		this.titleId = titleId;
 	}
 
-	protected void updateTitle(int titleId) {
-		getActivityFace().updateTitle(titleId);
+	/**
+	 * ONE_ICON means minus 1 from default state, because be default there are 2 icons on right side
+	 * @param code can be 1 or 2 - corresponds for one or two icons offset
+	 */
+	protected void setTitlePadding(int code) {
+		paddingCode = code;
+	}
+
+	private void setTitlePadding() {
+		if (paddingCode == ONE_ICON) {
+			getActivityFace().setTitlePadding(0);
+		} else if (paddingCode == TWO_ICON) { // TODO
+			getActivityFace().setTitlePadding(padding);
+		} else if (paddingCode == DEFAULT_ICON) {
+			getActivityFace().setTitlePadding(padding);
+		}
 	}
 
 	private void updateTitle() {
@@ -288,6 +322,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	@Override
 	public void onClick(View view) {
 
+	}
+
+	protected void setBadgeValueForId(int menuId, int value) {
+		getActivityFace().setBadgeValueForId(menuId, value);
 	}
 
 	protected String getDeviceId() {

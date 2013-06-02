@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 25;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 26;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -95,7 +95,6 @@ public class DBConstants {
     /* TacticsItem Fields */
 
     public static final String V_USER     		= "user";
-    public static final String V_TACTIC_ID 		= "tactic_id";
     public static final String V_FEN      		= "fen";
     public static final String V_MOVE_LIST      = "move_list";
     public static final String V_ATTEMPT_CNT    = "attempt_cnt";
@@ -116,7 +115,6 @@ public class DBConstants {
 
 	/* ECHESS_GAMES */
 	public static final String V_FINISHED 				= "is_finished";
-	public static final String V_GAME_ID 				= "game_id";
 	public static final String V_COLOR 					= "color";
 	public static final String V_GAME_TYPE 				= "game_type";
 	public static final String V_GAME_NAME 				= "game_name";
@@ -151,7 +149,6 @@ public class DBConstants {
 	public static final String V_PHOTO_URL 				= "photo_url";
 
 	/*Articles*/
-	public static final String V_ARTICLE_ID 			= "article_id";
 	public static final String V_TITLE 					= "title";
 	public static final String V_CREATE_DATE 			= "create_date";
 	public static final String V_CATEGORY 				= "category";
@@ -159,6 +156,7 @@ public class DBConstants {
 	public static final String V_CHESS_TITLE 			= "chess_title";
 	public static final String V_FIRST_NAME 			= "first_name";
 	public static final String V_LAST_NAME 				= "last_name";
+	public static final String V_THUMB_CONTENT 			= "thumb_in_content";
 
 	/*Articles Categories*/
 	public static final String V_ID 				= "id";
@@ -166,7 +164,6 @@ public class DBConstants {
 	public static final String V_DISPLAY_ORDER 		= "display_order";
 
 	/*Videos*/
-	public static final String V_VIDEO_ID 			= "video_id";
 	public static final String V_DESCRIPTION 		= "description";
 	public static final String V_SKILL_LEVEL 		= "skill_level";
 	public static final String V_MINUTES 			= "minutes";
@@ -189,7 +186,7 @@ public class DBConstants {
     static final String TACTICS_BATCH_TABLE_CREATE =
             CREATE_TABLE_IF_NOT_EXISTS + tablesArray[TACTICS_BATCH] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 		    + _TEXT_NOT_NULL + _COMMA
-			+ V_TACTIC_ID       + _LONG_NOT_NULL + _COMMA
+			+ V_ID       		+ _LONG_NOT_NULL + _COMMA
 			+ V_FEN 		    + _TEXT_NOT_NULL + _COMMA
 			+ V_MOVE_LIST 	    + _TEXT_NOT_NULL + _COMMA
 			+ V_ATTEMPT_CNT     + _INT_NOT_NULL + _COMMA
@@ -204,7 +201,7 @@ public class DBConstants {
     static final String TACTICS_RESULTS_TABLE_CREATE =
             CREATE_TABLE_IF_NOT_EXISTS + tablesArray[TACTICS_RESULTS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
             + V_USER 		        	+ _TEXT_NOT_NULL + _COMMA
-            + V_TACTIC_ID           	+ _LONG_NOT_NULL + _COMMA
+            + V_ID           			+ _LONG_NOT_NULL + _COMMA
             + V_SCORE               	+ _TEXT_NOT_NULL + _COMMA
             + V_USER_RATING_CHANGE		+ _INT_NOT_NULL + _COMMA
             + V_USER_RATING         	+ _INT_NOT_NULL + _COMMA
@@ -215,7 +212,7 @@ public class DBConstants {
     static final String ECHESS_FINISHED_LIST_GAMES_CREATE =
 			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[ECHESS_FINISHED_LIST_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
-			+ V_GAME_ID 				    + _LONG_NOT_NULL + _COMMA
+			+ V_ID 				    		+ _LONG_NOT_NULL + _COMMA
 			+ V_COLOR 					    + _INT_NOT_NULL + _COMMA
 			+ V_GAME_TYPE 				    + _INT_NOT_NULL + _COMMA
 			+ V_OPPONENT_NAME 			    + _TEXT_NOT_NULL + _COMMA
@@ -229,7 +226,7 @@ public class DBConstants {
 	static final String ECHESS_CURRENT_LIST_GAMES_CREATE =
 			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[ECHESS_CURRENT_LIST_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
-			+ V_GAME_ID 				    + _LONG_NOT_NULL + _COMMA
+			+ V_ID 				    		+ _LONG_NOT_NULL + _COMMA
 			+ V_COLOR 					    + _INT_NOT_NULL + _COMMA
 			+ V_GAME_TYPE 				    + _INT_NOT_NULL + _COMMA
 			+ V_OPPONENT_NAME 			    + _TEXT_NOT_NULL + _COMMA
@@ -246,7 +243,7 @@ public class DBConstants {
 			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[ECHESS_ONLINE_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_FINISHED 				+ _INT_NOT_NULL + _COMMA
 			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_GAME_ID 				+ _LONG_NOT_NULL + _COMMA
+			+ V_ID 						+ _LONG_NOT_NULL + _COMMA
 			+ V_GAME_TYPE 				+ _INT_NOT_NULL + _COMMA
 			+ V_TIMESTAMP 	    		+ _LONG_NOT_NULL + _COMMA
 			+ V_GAME_NAME 	    		+ _TEXT_NOT_NULL + _COMMA
@@ -273,9 +270,10 @@ public class DBConstants {
 			+ V_USER_ID 	    		+ _INT_NOT_NULL + _COMMA
 			+ V_PHOTO_URL 	    		+ _TEXT_NOT_NULL + _CLOSE;
 
+
 	static final String ARTICLES_CREATE =
 			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[ARTICLES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_ARTICLE_ID 				+ _LONG_NOT_NULL + _COMMA
+			+ V_ID 						+ _LONG_NOT_NULL + _COMMA
 			+ V_TITLE 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_CREATE_DATE 			+ _LONG_NOT_NULL + _COMMA
 			+ V_CATEGORY 				+ _TEXT_NOT_NULL + _COMMA
@@ -285,6 +283,9 @@ public class DBConstants {
 			+ V_COUNTRY_ID 	    		+ _INT_NOT_NULL + " DEFAULT 0"+ _COMMA
 			+ V_FIRST_NAME 	    		+ _TEXT_NOT_NULL + " DEFAULT TestFirstName"+ _COMMA
 			+ V_LAST_NAME 	    		+ _TEXT_NOT_NULL + " DEFAULT TestLastName"+ _COMMA
+			+ V_USER_AVATAR 	    	+ _TEXT_NOT_NULL + _COMMA
+			+ V_PHOTO_URL 	    		+ _TEXT_NOT_NULL + _COMMA
+			+ V_THUMB_CONTENT 	    	+ _TEXT_NOT_NULL + _COMMA
 			+ V_CHESS_TITLE 	    	+ _TEXT_NOT_NULL + " DEFAULT TestIM"+ _CLOSE;
 
 	static final String ARTICLE_CATEGORIES_CREATE =
@@ -299,7 +300,7 @@ public class DBConstants {
 			+ V_DESCRIPTION 			+ _TEXT_NOT_NULL + _COMMA
 			+ V_CATEGORY 				+ _TEXT_NOT_NULL + _COMMA
 			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
-			+ V_VIDEO_ID 				+ _INT_NOT_NULL + _COMMA
+			+ V_ID 						+ _INT_NOT_NULL + _COMMA
 			+ V_SKILL_LEVEL 			+ _TEXT_NOT_NULL + _COMMA
 			+ V_USERNAME				+ _TEXT_NOT_NULL + _COMMA
 			+ V_USER_AVATAR				+ _TEXT_NOT_NULL + _COMMA

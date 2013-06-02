@@ -123,7 +123,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 			getFriends();
 		}
 
-		getActivityFace().setBadgeValueForId(R.id.menu_games, 2); // TODO use properly later for notifications
+		setBadgeValueForId(R.id.menu_games, 2); // TODO use properly later for notifications
 
 		userNameTxt.setText(AppData.getUserName(getActivity()));
 		userCountryTxt.setText(AppData.getUserCountry(getActivity()));

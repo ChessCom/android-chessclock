@@ -22,10 +22,7 @@ import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.slidingmenu.lib.SlidingMenu;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -108,17 +105,16 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 	@Override
-	protected void onStart() {
-		super.onStart();
-
-		showActionNewGame = true;
-	}
-
-	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putBoolean(SHOW_ACTION_BAR, showActionBar);
 
+	}
+
+	public void updateActionBarIcons() {
+		if (!HONEYCOMB_PLUS_API) {
+			adjustActionBar();
+		}
 	}
 
 	@Override
@@ -142,6 +138,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 	@Override
+	public void setTitlePadding(int padding) {
+		getActionBarHelper().setTitlePadding(padding);
+	}
+
+	@Override
 	public void showActionBar(boolean show) {
 		showActionBar = show;
 		getActionBarHelper().showActionBar(show);
@@ -152,6 +153,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		AppData.setThemeBackId(this, drawableThemeId);
 		getWindow().setBackgroundDrawableResource(drawableThemeId);
 		setBackToDecorChild(drawableThemeId);
+	}
+
+	@Override
+	public void showActionMenu(int menuId, boolean show) {
+		enableActionMenu(menuId, show);
 	}
 
 	@Override
@@ -209,7 +215,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				.commit();
 		sm.setSecondaryShadowDrawable(R.drawable.defaultshadowright);
 		sm.setShadowDrawable(R.drawable.defaultshadow);
-//		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 
 	@Override
@@ -351,6 +356,12 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public void setBadgeValueForId(int menuId, int value) {
 		badgeItems.put(menuId, value);
 		getActionBarHelper().setBadgeValueForId(menuId, value);
+	}
+
+	@Override
+	public void setBadgeValueForId(int menuId, int value, Menu menu) {
+		badgeItems.put(menuId, value);
+		getActionBarHelper().setBadgeValueForId(menuId, value, menu);
 	}
 
 	@Override

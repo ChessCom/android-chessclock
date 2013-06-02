@@ -125,11 +125,11 @@
         <item name="android:layout_marginTop">@dimen/notations_margin_top</item>
     </style>
 
-    <style name="DefaultEdt">
+    <style name="DefaultEdt" >
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:clickable">true</item>
-        <item name="android:background">@drawable/edit_white_one_selector</item>
+        <item name="android:background">@drawable/textfield_selector</item>
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:minHeight">@dimen/default_field_height</item>
@@ -140,8 +140,9 @@
 		<item name="android:layout_marginBottom">2dip</item>
     </style>
 
-    <style name="DefaultEdt.Empty">
-        <item name="android:background">@null</item>
+    <style name="DefaultEdt.Empty" >
+        <!--<item name="android:background">@drawable/textfield_selector</item>-->
+        <item name="android:background">@color/transparent</item>
         <item name="android:gravity">center</item>
         <item name="android:minHeight">20dip</item>
     </style>

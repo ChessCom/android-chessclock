@@ -64,7 +64,6 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 
 		listUpdateListener = new ListUpdateListener();
 
-		showActionRefresh = true;
 	}
 
 	@Override

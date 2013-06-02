@@ -42,6 +42,8 @@
     <dimen name="welcome_features_padding_bottom">26dip</dimen>
     <dimen name="new_top_button_height">48dip</dimen>
     <dimen name="new_bottom_button_height">48dip</dimen>
+    <dimen name="article_thumb_height">65dip</dimen>
+    <dimen name="article_thumb_width">105dip</dimen>
 
 
 </resources>

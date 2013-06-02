@@ -159,7 +159,6 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 				for (View view : infoGroup) {
 					view.setVisibility(infoVisibility);
 				}
-				showActionNewGame = !show;
 //				getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
 
 				if (isLCSBound) {

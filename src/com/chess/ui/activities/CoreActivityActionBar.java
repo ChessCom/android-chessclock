@@ -3,25 +3,29 @@ package com.chess.ui.activities;
 import actionbarcompat.ActionBarActivity;
 import actionbarcompat.ActionBarHelper;
 import android.app.ActionBar;
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.*;
+import android.widget.SearchView;
 import com.chess.R;
-import com.chess.backend.statics.SoundPlayer;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.inneractive.api.ads.InneractiveAd;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class CoreActivityActionBar extends ActionBarActivity implements View.OnClickListener
 		, PopupDialogFace {
 
 	protected Bundle extras;
 	protected Handler handler;
-	protected boolean showActionSearch;
-	protected boolean showActionSettings;
-	protected boolean showActionNewGame;
-	protected boolean showActionRefresh;
+
+	private HashMap<Integer, Boolean> actionMenuMap;
 
 	// we may have this add on every screen, so control it on the lowest level
 	//protected MoPubView moPubView;
@@ -45,6 +49,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		handler = new Handler();
 		extras = getIntent().getExtras();
+		actionMenuMap = new HashMap<Integer, Boolean>();
 	}
 
 	protected void initUpgradeAndAdWidgets() {
@@ -61,18 +66,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 //		InneractiveAdHelper.showBannerAd(upgradeBtn, inneractiveBannerAd, this);
 	}
 
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-//		View mainView = findViewById(R.id.mainView);
-//		if (mainView != null) {
-//			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
-//				mainView.setBackground(backgroundChessDrawable);
-//			} else {
-//				mainView.setBackgroundDrawable(backgroundChessDrawable);
-//			}
-//		}
-	}
 
 	@Override
 	protected void onStart() {
@@ -121,12 +114,14 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		super.onDestroy();
 	}
 
-	protected void adjustActionBar() {
-//		getActionBarHelper().showMenuItemById(R.id.menu_settings, showActionSettings);
-//		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame);
-//		getActionBarHelper().showMenuItemById(R.id.menu_refresh, showActionRefresh);
-//		getActionBarHelper().showMenuItemById(R.id.menu_search, showActionSearch);
-//		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHelper.getInstance(this).isConnected());
+	public void adjustActionBar() {
+		for (Map.Entry<Integer, Boolean> entry : actionMenuMap.entrySet()) {
+			getActionBarHelper().showMenuItemById(entry.getKey(), entry.getValue());
+		}
+	}
+
+	protected void enableActionMenu(int menuId, boolean show) {
+		actionMenuMap.put(menuId, show);
 	}
 
 	@Override
@@ -141,31 +136,51 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
-//		menuInflater.inflate(R.menu.sign_out, menu);
 		menuInflater.inflate(R.menu.new_action_menu, menu);
-//		getActionBarHelper().showMenuItemById(R.id.menu_singOut, LccHelper.getInstance(this).isConnected(), menu);
-//		getActionBarHelper().showMenuItemById(R.id.menu_search, showActionSearch, menu);
-//		getActionBarHelper().showMenuItemById(R.id.menu_settings, showActionSettings, menu);
-//		getActionBarHelper().showMenuItemById(R.id.menu_new_game, showActionNewGame, menu);
-//		getActionBarHelper().showMenuItemById(R.id.menu_refresh, showActionRefresh, menu);
 
-//		if(HONEYCOMB_PLUS_API){
-//			// Get the SearchView and set the searchable configuration
-//			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//			SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-//			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//		}
+		for (Map.Entry<Integer, Boolean> entry : actionMenuMap.entrySet()) {
+			getActionBarHelper().showMenuItemById(entry.getKey(), entry.getValue(), menu);
+		}
+
+		if(HONEYCOMB_PLUS_API){
+			// Get the SearchView and set the searchable configuration
+			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+			SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	@Override
+	protected void onNewIntent(Intent intent) {
+		// Because this activity has set launchMode="singleTop", the system calls this method
+		// to deliver the intent if this activity is currently the foreground activity when
+		// invoked again (when the user executes a search from this activity, we don't create
+		// a new instance of this activity, so the system delivers the search intent here)
+		handleIntent(intent);
+	}
 
+	private void handleIntent(Intent intent) {
+		if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			onSearchQuery(query);
+		} else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			onSearchQuery(query);
+		}
+	}
 
-//	protected abstract class ChessUpdateListener extends ActionBarUpdateListener<String> {
-//		public ChessUpdateListener() {
-//			super(CoreActivityActionBar.this);
-//		}
-//	}
+	@Override
+	protected void onSearchAutoCompleteQuery(String query) {
 
+	}
+
+	@Override
+	protected void onSearchQuery(String query) {
+//		Intent intent = new Intent(this, VideoListActivity.class);
+//		intent.putExtra(RestHelper.P_KEYWORD, query);
+//		startActivity(intent);
+	}
 
 
 
@@ -176,24 +191,12 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 	}
 
-//	@Override
-//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		super.onActivityResult(requestCode, resultCode, data);
-//		if(resultCode == RESULT_OK && requestCode == Facebook.DEFAULT_AUTH_ACTIVITY_CODE && facebook != null){
-//			facebook.authorizeCallback(requestCode, resultCode, data);
-//		}
-//	}
-
 	public ActionBarHelper provideActionBarHelper() {
 		return getActionBarHelper();
 	}
 
 	protected CoreActivityActionBar getInstance() {
 		return this;
-	}
-
-	public SoundPlayer getSoundPlayer() {
-		return SoundPlayer.getInstance(this);
 	}
 
 	@Override

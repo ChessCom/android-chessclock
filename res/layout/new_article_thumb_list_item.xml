@@ -2,7 +2,7 @@
 
 
 <!--Top Video frame-->
-<RelativeLayout
+<com.chess.RelLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
@@ -11,26 +11,26 @@
     android:background="@color/white"
     >
 
+    <com.chess.backend.image_load.ProgressImageView
+        android:id="@+id/thumbnailImg"
+        android:layout_width="@dimen/article_thumb_width"
+        android:layout_height="@dimen/article_thumb_height"
+        android:background="@color/new_common_list_thumb_grey"
+        android:layout_marginRight="12dip"
+        android:contentDescription="@string/image"
+        />
+
     <com.chess.RoboTextView
         android:id="@+id/titleTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Test Title"
-        android:textColor="@color/new_dark_green"
+        android:textColor="@color/new_text_blue"
+        android:layout_toRightOf="@id/thumbnailImg"
         android:paddingBottom="13dip"
         android:textSize="15sp"
         custom:ttf="Bold"
         />
-
-    <ImageView
-        android:id="@+id/thumbnailImg"
-        android:layout_width="35dip"
-        android:layout_height="35dip"
-        android:background="@color/new_common_list_thumb_grey"
-        android:layout_below="@id/titleTxt"
-        android:layout_marginRight="12dip"
-        android:contentDescription="@string/image"/>
-
 
     <com.chess.RoboTextView
         android:id="@+id/authorTxt"
@@ -68,6 +68,6 @@
         android:textSize="13sp"
         />
 
-</RelativeLayout>
+</com.chess.RelLayout>
 
 

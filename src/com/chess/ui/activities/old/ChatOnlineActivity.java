@@ -65,7 +65,6 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 		timeStampForListUpdateListener = new TimeStampForListUpdateListener();
 		timeStampForSendMessageListener = new TimeStampForSendMessageListener();
 
-		showActionRefresh = true;
 	}
 
 	protected void widgetsInit(){

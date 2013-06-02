@@ -125,8 +125,6 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 	@Override
 	protected void onStart() {
-		showActionRefresh = true;
-		showActionNewGame = true;
 
 		super.onStart();
 		init();

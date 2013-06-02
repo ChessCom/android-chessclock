@@ -49,10 +49,15 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getArticlesListParams(){
+	public static QueryParams getArticlesListParams(int limitCnt){
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.ARTICLES]);
-		queryParams.setOrder(DBConstants.V_CATEGORY);
+		if (limitCnt > 0) {
+			queryParams.setOrder(DBConstants.V_CATEGORY + DBDataManager.LIMIT_ + limitCnt);
+		} else {
+			queryParams.setOrder(DBConstants.V_CATEGORY);
+		}
+
 		return queryParams;
 	}
 

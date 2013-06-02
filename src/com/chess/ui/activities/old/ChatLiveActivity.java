@@ -54,7 +54,7 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 
 		messagesAdapter = new ChatMessagesAdapter(ChatLiveActivity.this, liveService.getMessagesList());
 		listView.setAdapter(messagesAdapter);
-		showActionRefresh = true;
+
 
 		showKeyBoard(sendEdt);
 		liveService.setLccChatMessageListener(this);

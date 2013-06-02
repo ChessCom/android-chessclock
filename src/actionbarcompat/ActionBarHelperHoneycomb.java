@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.RoboTextView;
 import com.chess.ui.views.drawables.ActionBarBackgroundDrawable;
 import com.chess.ui.views.drawables.BadgeDrawable;
 
@@ -51,7 +52,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 		ActionBar actionBar = mActivity.getActionBar(); // could be null for small screens
 		if (actionBar != null) {
 			actionBar.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
-	}
+		}
 
 	}
 
@@ -165,6 +166,17 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 		View titleTxt =  mActivity.getActionBar().getCustomView().findViewById(R.id.actionbar_compat_title);
 		if (titleTxt != null) {
 			((TextView)titleTxt).setText(titleId);
+		}
+	}
+
+	@Override
+	public void setTitlePadding(int padding) {
+		if (mActivity == null || mActivity.getActionBar() == null || mActivity.getActionBar().getCustomView() == null) {
+			return;
+		}
+		RoboTextView titleTxt = (RoboTextView) mActivity.getActionBar().getCustomView().findViewById(R.id.actionbar_compat_title);
+		if (titleTxt != null) {
+			titleTxt.setPadding(padding, 0, 0, 0);
 		}
 	}
 

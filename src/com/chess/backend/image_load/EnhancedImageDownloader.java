@@ -75,7 +75,6 @@ public class EnhancedImageDownloader {
 			return;
 		}
 		Bitmap bitmap = getBitmapFromCache(url, holder);
-		Log.d(LOG_TAG, " download url = " + url);
 
         if (bitmap == null) {
             forceDownload(url, holder);
@@ -346,6 +345,7 @@ public class EnhancedImageDownloader {
         final HttpClient client = (mode == Mode.NO_ASYNC_TASK) ? new DefaultHttpClient()
                 : AndroidHttpClient.newInstance("Android");
         url = url.replace(" ", "%20");
+//        url = url.replace("https", "http");
         final HttpGet getRequest = new HttpGet(url);
 
         try {

@@ -121,7 +121,11 @@ public class RectButtonDrawable extends ButtonDrawable {
 		bevelInset = 0;
 		insetOne.top = new int[]{in1, in1, in1, 0 };
 		insetOne.bottom = new int[]{0, 0, in1, 0};
-		insetOne.button = new int[]{in1, in1, in1, in1};
+		if (rectPosition == LIST_ITEM) {
+			insetOne.button = new int[]{in1 * 2, in1 * 2, in1 * 2, in1};
+		} else {
+			insetOne.button = new int[]{in1, in1, in1, in1};
+		}
 
 		if (bevelLvl == 2) {
 			insetTwo = new InsetInfo();

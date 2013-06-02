@@ -45,8 +45,16 @@
 
         <activity android:name=".ui.activities.MainFragmentFaceActivity"
                   android:screenOrientation="portrait" android:windowSoftInputMode="adjustResize"
-            /> <!--TODO restore-->
+                  android:launchMode="singleTop"> <!--TODO restore-->
+            <!-- Receives the search request. -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+                <!-- No category needed, because the Intent will specify this class component-->
+            </intent-filter>
 
+            <!-- Points to searchable meta data. -->
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable"/>
+        </activity>
 		<activity android:name=".ui.activities.old.HomeScreenActivity"
 			android:logo="@drawable/ic_logo_bar"
 			android:label=""

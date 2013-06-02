@@ -34,6 +34,7 @@ public class DBDataManager {
 	public static final String MORE_ = " > ";
 	public static final String EQUALS_ = " = ";
 	public static final String EQUALS_ARG_ = "=?";
+	public static final String LIMIT_ = " LIMIT ";
 	public static final String LIMIT_1 = DBConstants._ID + " LIMIT 1";
 
 	public static String[] sArguments1 = new String[1];
@@ -43,7 +44,7 @@ public class DBDataManager {
 	// -------------- SELECTION DEFINITIONS ---------------------------
 
 	public static String SELECTION_TACTIC_ID_AND_USER = concatArguments(
-			DBConstants.V_TACTIC_ID,
+			DBConstants.V_ID,
 			DBConstants.V_USER);
 
 	public static String SELECTION_USER = concatArguments(DBConstants.V_USER);
@@ -52,7 +53,7 @@ public class DBDataManager {
 
 	public static String SELECTION_GAME_ID = concatArguments(
 			DBConstants.V_USER,
-			DBConstants.V_GAME_ID);
+			DBConstants.V_ID);
 
 	public static String SELECTION_USER_ID = concatArguments(
 			DBConstants.V_USER,
@@ -60,7 +61,7 @@ public class DBDataManager {
 
 	public static String SELECTION_USER_OFFERED_DRAW = concatArguments(
 			DBConstants.V_USER,
-			DBConstants.V_GAME_ID,
+			DBConstants.V_ID,
 			DBConstants.V_USER_OFFERED_DRAW);
 
 	public static String SELECTION_USER_TURN = concatArguments(
@@ -73,13 +74,13 @@ public class DBDataManager {
 
 	public static String SELECTION_CATEGORY = concatArguments(DBConstants.V_CATEGORY);
 
-	public static String SELECTION_ARTICLE_ID = concatArguments(DBConstants.V_ARTICLE_ID);
+	public static String SELECTION_ARTICLE_ID = concatArguments(DBConstants.V_ID);
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
 	public static final String[] PROJECTION_TACTIC_ITEM_ID_AND_USER = new String[] {
 			DBConstants._ID,
-			DBConstants.V_TACTIC_ID,
+			DBConstants.V_ID,
 			DBConstants.V_USER
 	};
 
@@ -91,7 +92,7 @@ public class DBDataManager {
 	public static final String[] PROJECTION_GAME_ID = new String[] {
 			DBConstants._ID,
 			DBConstants.V_USER,
-			DBConstants.V_GAME_ID
+			DBConstants.V_ID
 	};
 
 	public static final String[] PROJECTION_USER_ID = new String[] {
@@ -103,7 +104,7 @@ public class DBDataManager {
 	public static final String[] PROJECTION_CURRENT_LIST_GAMES = new String[] {
 			DBConstants._ID,
 			DBConstants.V_USER,
-			DBConstants.V_GAME_ID,
+			DBConstants.V_ID,
 			DBConstants.V_OPPONENT_NAME,
 			DBConstants.V_GAME_TYPE,
 			DBConstants.V_IS_MY_TURN,
@@ -116,7 +117,7 @@ public class DBDataManager {
 	public static final String[] PROJECTION_FINISHED_LIST_GAMES = new String[] {
 			DBConstants._ID,
 			DBConstants.V_USER,
-			DBConstants.V_GAME_ID,
+			DBConstants.V_ID,
 			DBConstants.V_GAME_TYPE,
 			DBConstants.V_GAME_RESULT,
 			DBConstants.V_OPPONENT_NAME
@@ -125,7 +126,7 @@ public class DBDataManager {
 	public static final String[] PROJECTION_ECHESS_DRAW_OFFERED = new String[] {
 			DBConstants._ID,
 			DBConstants.V_USER,
-			DBConstants.V_GAME_ID,
+			DBConstants.V_ID,
 			DBConstants.V_USER_OFFERED_DRAW
 	};
 
@@ -141,7 +142,7 @@ public class DBDataManager {
 
 	public static final String[] PROJECTION_ARTICLE_ID = new String[] {
 			DBConstants._ID,
-			DBConstants.V_ARTICLE_ID
+			DBConstants.V_ID
 	};
 
 	public static final String[] PROJECTION_USER_CURRENT_RATING = new String[] {
@@ -221,7 +222,7 @@ public class DBDataManager {
 			gamesIds = new long[cursor.getCount()];
 			int i = 0;
 			do {
-				gamesIds[i++] = getLong(cursor, DBConstants.V_GAME_ID);
+				gamesIds[i++] = getLong(cursor, DBConstants.V_ID);
 			} while (cursor.moveToNext());
 		} else {
 			return true;
@@ -269,7 +270,7 @@ public class DBDataManager {
 			gamesIds = new long[cursor.getCount()];
 			int i = 0;
 			do {
-				gamesIds[i++] = getLong(cursor, DBConstants.V_GAME_ID);
+				gamesIds[i++] = getLong(cursor, DBConstants.V_ID);
 			} while (cursor.moveToNext());
 		} else {
 			return true;
@@ -483,7 +484,7 @@ public class DBDataManager {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, dataObj.getUser());
-		values.put(DBConstants.V_TACTIC_ID, dataObj.getId());
+		values.put(DBConstants.V_ID, dataObj.getId());
 		values.put(DBConstants.V_FEN, dataObj.getInitialFen());
 		values.put(DBConstants.V_MOVE_LIST, dataObj.getCleanMoveString());
 		values.put(DBConstants.V_ATTEMPT_CNT, dataObj.getAttemptCnt());
@@ -503,7 +504,7 @@ public class DBDataManager {
 		TacticItem.Data dataObj = new TacticItem.Data();
 
 		dataObj.setUser(getString(cursor, DBConstants.V_USER));
-		dataObj.setId(getLong(cursor, DBConstants.V_TACTIC_ID));
+		dataObj.setId(getLong(cursor, DBConstants.V_ID));
 		dataObj.setFen(getString(cursor, DBConstants.V_FEN));
 		dataObj.setMoveList(getString(cursor, DBConstants.V_MOVE_LIST));
 		dataObj.setAttemptCnt(getInt(cursor, DBConstants.V_ATTEMPT_CNT));
@@ -522,7 +523,7 @@ public class DBDataManager {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, dataObj.getUser());
-		values.put(DBConstants.V_TACTIC_ID, dataObj.getId());
+		values.put(DBConstants.V_ID, dataObj.getId());
 		values.put(DBConstants.V_SCORE, dataObj.getScoreStr());
 		values.put(DBConstants.V_USER_RATING_CHANGE, dataObj.getUserRatingChange());
 		values.put(DBConstants.V_USER_RATING, dataObj.getUserRating());
@@ -537,7 +538,7 @@ public class DBDataManager {
 		TacticRatingData dataObj = new TacticRatingData();
 
 		dataObj.setUser(getString(cursor, DBConstants.V_USER));
-		dataObj.setId(getLong(cursor, DBConstants.V_TACTIC_ID));
+		dataObj.setId(getLong(cursor, DBConstants.V_ID));
 		dataObj.setScore(getString(cursor, DBConstants.V_SCORE));
 		dataObj.setUserRatingChange(getInt(cursor, DBConstants.V_USER_RATING_CHANGE));
 		dataObj.setUserRating(getInt(cursor, DBConstants.V_USER_RATING));
@@ -560,7 +561,7 @@ public class DBDataManager {
 	public static GameListFinishedItem getEchessFinishedListGameFromCursor(Cursor cursor) {
 		GameListFinishedItem dataObj = new GameListFinishedItem();
 
-		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
+		dataObj.setGameId(getLong(cursor, DBConstants.V_ID));
 		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
 		dataObj.setOpponentName(getString(cursor, DBConstants.V_OPPONENT_NAME));
 //		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
@@ -584,7 +585,7 @@ public class DBDataManager {
 	public static DailyCurrentGameData getEchessGameListCurrentItemFromCursor(Cursor cursor) {
 		DailyCurrentGameData dataObj = new DailyCurrentGameData();
 
-		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
+		dataObj.setGameId(getLong(cursor, DBConstants.V_ID));
 		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
 		dataObj.setOpponentUsername(getString(cursor, DBConstants.V_OPPONENT_NAME));
 		dataObj.setTimeRemaining(getInt(cursor, DBConstants.V_TIME_REMAINING));
@@ -599,7 +600,7 @@ public class DBDataManager {
 	}
 
 //	private static void setListGameItemFromCursor(BaseGameOnlineItem dataObj, Cursor cursor){
-//		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
+//		dataObj.setGameId(getLong(cursor, DBConstants.V_ID));
 //		dataObj.setMyColor(getInt(cursor, DBConstants.V_COLOR));
 //		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
 //		dataObj.setUserNameStrLength(getInt(cursor, DBConstants.V_USER_NAME_STR_LENGTH));
@@ -615,7 +616,7 @@ public class DBDataManager {
 //	}
 
 	private static void setValuesFromListGameItem(ContentValues values, DailyGameBaseData dataObj){
-		values.put(DBConstants.V_GAME_ID, dataObj.getGameId());
+		values.put(DBConstants.V_ID, dataObj.getGameId());
 		values.put(DBConstants.V_COLOR, dataObj.getMyColor());
 		values.put(DBConstants.V_GAME_TYPE, dataObj.getGameType());
 		values.put(DBConstants.V_OPPONENT_NAME, dataObj.getOpponentUsername());
@@ -638,7 +639,7 @@ public class DBDataManager {
 	}
 
 	private static void setValuesFromOnlineGame(ContentValues values, DailyGameByIdItem.Data dataObj){
-		values.put(DBConstants.V_GAME_ID, dataObj.getGameId());
+		values.put(DBConstants.V_ID, dataObj.getGameId());
 		values.put(DBConstants.V_GAME_TYPE, dataObj.getGameType());
 		values.put(DBConstants.V_TIMESTAMP, dataObj.getTimestamp());
 		values.put(DBConstants.V_GAME_NAME, dataObj.getGameName());
@@ -657,7 +658,7 @@ public class DBDataManager {
 	}
 
 	private static void setOnlineGameFromCursor(DailyGameByIdItem.Data dataObj, Cursor cursor){
-		dataObj.setGameId(getLong(cursor, DBConstants.V_GAME_ID));
+		dataObj.setGameId(getLong(cursor, DBConstants.V_ID));
 		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
 		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
 		dataObj.setGameName(getString(cursor, DBConstants.V_GAME_NAME));
@@ -717,16 +718,20 @@ public class DBDataManager {
 	public static ContentValues putArticleItemToValues(ArticleItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_ARTICLE_ID, dataObj.getId());
+		values.put(DBConstants.V_ID, dataObj.getId());
 		values.put(DBConstants.V_TITLE, dataObj.getTitle());
 		values.put(DBConstants.V_CREATE_DATE, dataObj.getCreate_date());
 		values.put(DBConstants.V_CATEGORY, dataObj.getCategoryName());
 		values.put(DBConstants.V_CATEGORY_ID, dataObj.getCategoryId());
+		values.put(DBConstants.V_COUNTRY_ID, dataObj.getCountryId());
 		values.put(DBConstants.V_USER_ID, dataObj.getUserId());
 		values.put(DBConstants.V_USERNAME, dataObj.getUsername());
 		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirstName());
 		values.put(DBConstants.V_LAST_NAME, dataObj.getLastName());
 		values.put(DBConstants.V_CHESS_TITLE, dataObj.getChessTitle());
+		values.put(DBConstants.V_USER_AVATAR, dataObj.getAvatar());
+		values.put(DBConstants.V_PHOTO_URL, dataObj.getImageUrl());
+		values.put(DBConstants.V_THUMB_CONTENT, dataObj.isIsThumbInContent());
 
 		return values;
 	}
@@ -769,7 +774,7 @@ public class DBDataManager {
 		values.put(DBConstants.V_DESCRIPTION, dataObj.getDescription());
 		values.put(DBConstants.V_CATEGORY, dataObj.getCategoryName());
 		values.put(DBConstants.V_CATEGORY_ID, dataObj.getCategoryId());
-		values.put(DBConstants.V_VIDEO_ID, dataObj.getVideoId());
+		values.put(DBConstants.V_ID, dataObj.getVideoId());
 		values.put(DBConstants.V_SKILL_LEVEL, dataObj.getSkillLevel());
 		values.put(DBConstants.V_USER_AVATAR, dataObj.getUserAvatar());
 		values.put(DBConstants.V_MINUTES, dataObj.getMinutes());

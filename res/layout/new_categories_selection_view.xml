@@ -16,16 +16,6 @@
         android:paddingBottom="4dip"
         />
 
-    <com.chess.RoboSpinner
-        android:id="@+id/sortSpinner"
-        android:layout_width="0dip"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        style="@style/ListItem"
-        android:paddingLeft="7dip"
-        android:paddingBottom="4dip"
-        />
-
     <com.chess.RoboEditText
         android:id="@+id/searchEdt"
         android:layout_width="0dip"

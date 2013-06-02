@@ -62,12 +62,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-	}
-
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_article_details_frame, container, false);
 	}
@@ -75,6 +69,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		setTitle(R.string.articles);
 
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
@@ -85,6 +81,12 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		dateTxt = (TextView) view.findViewById(R.id.dateTxt);
 		contextTxt = (TextView) view.findViewById(R.id.contextTxt);
 		authorTxt = (TextView) view.findViewById(R.id.authorTxt);
+
+		getActivityFace().showActionMenu(R.id.menu_share, true);
+		getActivityFace().showActionMenu(R.id.menu_notifications, false);
+		getActivityFace().showActionMenu(R.id.menu_games, false);
+
+		setTitlePadding(ONE_ICON);
 	}
 
 	@Override
@@ -99,7 +101,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private void loadFromDb() {
 		long itemId = getArguments().getLong(ITEM_ID);
 
-		new LoadDataFromDbTask(articleCursorUpdateListener, DbHelper.getArticlesListParams(),
+		new LoadDataFromDbTask(articleCursorUpdateListener, DbHelper.getArticlesListParams(0),
 				getContentResolver()).executeTask(itemId);
 	}
 

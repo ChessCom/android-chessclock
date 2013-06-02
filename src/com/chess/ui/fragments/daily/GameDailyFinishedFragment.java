@@ -365,7 +365,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 				case GAMES_LIST:
 					// iterate through all loaded items in cursor
 					do {
-						long localDbGameId = DBDataManager.getLong(returnedObj, DBConstants.V_GAME_ID);
+						long localDbGameId = DBDataManager.getLong(returnedObj, DBConstants.V_ID);
 						if (localDbGameId != gameId) {
 							gameId = localDbGameId;
 							showSubmitButtonsLay(false);

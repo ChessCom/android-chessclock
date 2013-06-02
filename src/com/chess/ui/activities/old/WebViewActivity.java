@@ -35,7 +35,6 @@ public class WebViewActivity extends LiveBaseActivity {
 
 
 		setTitle(title.toUpperCase());
-		showActionRefresh = true;
 	}
 
 	private void widgetsInit(){

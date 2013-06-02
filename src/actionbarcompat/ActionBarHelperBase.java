@@ -22,6 +22,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
@@ -30,6 +31,7 @@ import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
+import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.views.drawables.ActionBarBackgroundDrawable;
 import com.chess.ui.views.drawables.BadgeDrawable;
 import org.xmlpull.v1.XmlPullParser;
@@ -137,6 +139,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 			titleText.setLayoutParams(titleParams);
 			titleText.setText(titleChars);
 			titleText.setFont(FontsHelper.BOLD_FONT);
+			Log.d("TEST", "title added");
 			actionBarCompat.addView(titleText);
 		} else {
 			actionBarCompat.addView(customView, titleParams);
@@ -165,29 +168,29 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 
 	@Override
 	public void showSearchPanel(boolean show) {
-//		View searchButton = mActivity.findViewById(R.id.menu_search);
-//		View searchPanel = mActivity.findViewById(R.id.actionbar_compat_item_search_panel);
-//		final EditText searchEdit = (EditText) mActivity.findViewById(R.id.actionbar_compat_item_search_edit);
-//
-//		if (searchButton != null) {
-//			searchButton.setVisibility(show ? View.GONE : View.VISIBLE);
-//		}
-//
-//		if (searchPanel != null) {
-//			searchPanel.setVisibility(show ? View.VISIBLE : View.GONE);
-//		}
-//
-//		if (show) {
-//			searchEdit.requestFocus();
-//			searchEdit.post(new Runnable() {
-//				@Override
-//				public void run() {
-//					mActivity.showKeyBoard(searchEdit);
-//				}
-//			});
-//		} else {
-//			mActivity.hideKeyBoard(searchEdit);
-//		}
+		View searchButton = mActivity.findViewById(R.id.menu_search);
+		View searchPanel = mActivity.findViewById(R.id.actionbar_compat_item_search_panel);
+		final EditText searchEdit = (EditText) mActivity.findViewById(R.id.actionbar_compat_item_search_edit);
+
+		if (searchButton != null) {
+			searchButton.setVisibility(show ? View.GONE : View.VISIBLE);
+		}
+
+		if (searchPanel != null) {
+			searchPanel.setVisibility(show ? View.VISIBLE : View.GONE);
+		}
+
+		if (show) {
+			searchEdit.requestFocus();
+			searchEdit.post(new Runnable() {
+				@Override
+				public void run() {
+					mActivity.showKeyBoard(searchEdit);
+				}
+			});
+		} else {
+			mActivity.hideKeyBoard(searchEdit);
+		}
 	}
 
 	@Override
@@ -199,6 +202,10 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		}
 		actionBarCompat.removeAllViews();
 		onPostCreate(null);
+		if (!show) {
+			// restore state and title
+			((CoreActivityActionBar)mActivity).adjustActionBar();
+		}
 	}
 
 	@Override
@@ -228,12 +235,13 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 			return;
 		}
 		View view = getActionBarCompat();
-		if (view != null) {
-			Drawable icon = ((ImageButton) view.findViewById(menuId)).getDrawable();
+		if (view != null && view.findViewById(menuId) != null) {
+			View menuItem = view.findViewById(menuId);
+			Drawable icon = ((ImageButton) menuItem).getDrawable();
 			if (icon instanceof BadgeDrawable) {
 				((BadgeDrawable) icon).setValue(value);
 			} else if (value != 0) {                          // TODO improve, don't create new drawable
-				((ImageButton) view.findViewById(menuId)).setImageDrawable(new BadgeDrawable(view.getContext(), icon, value));
+				((ImageButton) menuItem).setImageDrawable(new BadgeDrawable(view.getContext(), icon, value));
 			}
 		}
 	}
@@ -299,6 +307,17 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 			View titleTxt = customView.findViewById(R.id.actionbar_compat_title);
 			if (titleTxt != null) {
 				((TextView) titleTxt).setText(titleId);
+			}
+		}
+	}
+
+	@Override
+	public void setTitlePadding(int padding) {
+		View compatView = getActionBarCompat();
+		if (compatView != null) {
+			View titleTxt = compatView.findViewById(R.id.actionbar_compat_title);
+			if (titleTxt != null) {
+				titleTxt.setPadding(padding, 0, 0, 0);
 			}
 		}
 	}
@@ -409,13 +428,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 				actionButton.setScaleType(ImageView.ScaleType.CENTER);
 				actionButton.setContentDescription(item.getTitle());
 				actionButton.setId(itemId);
-				actionButton.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						doneClickListener.onDoneClicked();
-						showActionMode(false);
-					}
-				});
+				actionButton.setOnClickListener(this);
 				actionBar.addView(actionButton);
 
 				return actionButton;
@@ -440,46 +453,46 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 			actionBar.addView(actionButton);
 
 
-//			if (itemId == R.id.menu_search) {
-//				actionButton.setOnClickListener(this);
-//
-//				// Add search container
-//				LinearLayout searchPanel = new LinearLayout(mActivity);
-//				LinearLayout.LayoutParams searchPanelLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-//						ViewGroup.LayoutParams.WRAP_CONTENT);
-//				searchPanel.setLayoutParams(searchPanelLayoutParams);
-//				searchPanel.setVisibility(View.GONE);
-//				searchPanel.setOrientation(LinearLayout.HORIZONTAL);
-//				searchPanel.setId(R.id.actionbar_compat_item_search_panel);
-//
-//				// Add EditText to Panel
-//				EditText searchEditText = new EditText(mActivity, null, R.attr.actionbarCompatSearchEditTextStyle);
-//				LinearLayout.LayoutParams searchEditLayoutParams = new LinearLayout.LayoutParams(144,
-//						ViewGroup.LayoutParams.WRAP_CONTENT);
-//				searchEditText.setLayoutParams(searchEditLayoutParams);
-//				searchEditText.setId(R.id.actionbar_compat_item_search_edit);
-//				searchEditText.addTextChangedListener(searchWatcher);
-//				searchEditText.setOnEditorActionListener(searchActionListener);
-//
-//				searchPanel.addView(searchEditText);
-//
-//				// Add search button
-//				ImageButton searchButton2 = new ImageButton(mActivity, null, R.attr.actionbarCompatSearchButtonStyle);
-//				int buttonWidth = mActivity.getResources().getDimensionPixelSize(
-//						R.dimen.actionbar_compat_button_width);
-//				int buttonHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.actionbar_compat_height);
-//				LinearLayout.LayoutParams searchButtonLayoutParams = new LinearLayout.LayoutParams(buttonWidth,
-//						buttonHeight);
-//				searchButton2.setLayoutParams(searchButtonLayoutParams);
-//				searchButton2.setScaleType(ImageView.ScaleType.CENTER);
-//				searchButton2.setId(R.id.actionbar_compat_item_search_button);
-//				searchButton2.setOnClickListener(this);
-//				searchButton2.setImageResource(R.drawable.ic_action_search);
-//
-//				searchPanel.addView(searchButton2);
-//
-//				actionBar.addView(searchPanel);
-//			}
+			if (itemId == R.id.menu_search) {
+				actionButton.setOnClickListener(this);
+
+				// Add search container
+				LinearLayout searchPanel = new LinearLayout(mActivity);
+				LinearLayout.LayoutParams searchPanelLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+						ViewGroup.LayoutParams.WRAP_CONTENT);
+				searchPanel.setLayoutParams(searchPanelLayoutParams);
+				searchPanel.setVisibility(View.GONE);
+				searchPanel.setOrientation(LinearLayout.HORIZONTAL);
+				searchPanel.setId(R.id.actionbar_compat_item_search_panel);
+
+				// Add EditText to Panel
+				EditText searchEditText = new EditText(mActivity, null, R.attr.actionbarCompatSearchEditTextStyle);
+				LinearLayout.LayoutParams searchEditLayoutParams = new LinearLayout.LayoutParams(144,
+						ViewGroup.LayoutParams.WRAP_CONTENT);
+				searchEditText.setLayoutParams(searchEditLayoutParams);
+				searchEditText.setId(R.id.actionbar_compat_item_search_edit);
+				searchEditText.addTextChangedListener(searchWatcher);
+				searchEditText.setOnEditorActionListener(searchActionListener);
+
+				searchPanel.addView(searchEditText);
+
+				// Add search button
+				ImageButton searchButton2 = new ImageButton(mActivity, null, R.attr.actionbarCompatSearchButtonStyle);
+				int buttonWidth = mActivity.getResources().getDimensionPixelSize(
+						R.dimen.actionbar_compat_button_width);
+				int buttonHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.actionbar_compat_height);
+				LinearLayout.LayoutParams searchButtonLayoutParams = new LinearLayout.LayoutParams(buttonWidth,
+						buttonHeight);
+				searchButton2.setLayoutParams(searchButtonLayoutParams);
+				searchButton2.setScaleType(ImageView.ScaleType.CENTER);
+				searchButton2.setId(R.id.actionbar_compat_item_search_button);
+				searchButton2.setOnClickListener(this);
+				searchButton2.setImageResource(R.drawable.ic_action_search);
+
+				searchPanel.addView(searchButton2);
+
+				actionBar.addView(searchPanel);
+			}
 
 			return actionButton;
 		}
@@ -522,17 +535,20 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 
 	@Override
 	public void onClick(View view) {
-//		if (view.getId() == R.id.menu_search) {
-//			showSearchPanel(true);
-//		} else if (view.getId() == R.id.actionbar_compat_item_search_button) {
-//			showSearchPanel(false);
-//
-//			EditText searchEdit = (EditText) mActivity.findViewById(R.id.actionbar_compat_item_search_edit);
-//			String query = searchEdit.getText().toString().trim();
-//			if (!query.equals(StaticData.SYMBOL_EMPTY))
-//				mActivity.onSearchQuery(query);
-//
-//		}
+		if (view.getId() == R.id.menu_search) {
+			showSearchPanel(true);
+		} else if (view.getId() == R.id.actionbar_compat_item_search_button) {
+			showSearchPanel(false);
+
+			EditText searchEdit = (EditText) mActivity.findViewById(R.id.actionbar_compat_item_search_edit);
+			String query = searchEdit.getText().toString().trim();
+			if (!query.equals(StaticData.SYMBOL_EMPTY))
+				mActivity.onSearchQuery(query);
+
+		} else if (view.getId() == R.id.done) {
+			doneClickListener.onDoneClicked();
+			showActionMode(false);
+		}
 	}
 
 	/**

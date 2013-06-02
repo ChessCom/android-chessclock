@@ -17,6 +17,7 @@ import android.view.MenuItem;
 public class ActionModeHoneyComb extends ActionModeHelper implements ActionMode.Callback {
 
 	private ActionBarActivity activity;
+	private ActionMode actionMode;
 
 	public ActionModeHoneyComb(ActionBarActivity activity) {
 		this.activity = activity;
@@ -24,7 +25,7 @@ public class ActionModeHoneyComb extends ActionModeHelper implements ActionMode.
 
 	@Override
 	public void startActionMode() {
-		 activity.startActionMode(this);
+		actionMode = activity.startActionMode(this);
 	}
 
 	@Override
@@ -51,5 +52,10 @@ public class ActionModeHoneyComb extends ActionModeHelper implements ActionMode.
 	@Override
 	public void onDestroyActionMode(ActionMode mode) {
 		editFace.onDoneClicked();
+	}
+
+	@Override
+	public void closeActionMode() {
+//		actionMode.finish();
 	}
 }

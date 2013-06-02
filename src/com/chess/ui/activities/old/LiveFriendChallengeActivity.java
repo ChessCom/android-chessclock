@@ -60,7 +60,6 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 
 //		AppData.setLiveChessMode(this, true);  // should not duplicate logic
 
-		showActionSettings = true;
 	}
 
     protected void widgetsInit() {

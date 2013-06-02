@@ -1,9 +1,12 @@
 package com.chess.backend.image_load;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,6 +29,7 @@ import com.nineoldandroids.animation.ObjectAnimator;
  */
 public class ProgressImageView extends FrameLayout implements View.OnTouchListener {
 
+	private static final int DEFAULT_IMG_SIZE = 80;
 	public Bitmap placeholder;
 	private ImageView imageView;
 	private Bitmap bitmap;
@@ -34,16 +38,40 @@ public class ProgressImageView extends FrameLayout implements View.OnTouchListen
 
 	private int size;
 
+	public ProgressImageView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		onCreate(attrs);
+	}
+
+	public ProgressImageView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+
+		onCreate(attrs);
+	}
+
 	public ProgressImageView(Context context, int size) {
 		super(context);
 		this.size = size;
-		onCreate();
+		onCreate(null);
 	}
 
-	private void onCreate() {
-		float density = getResources().getDisplayMetrics().density;
+	private void onCreate(AttributeSet attrs) {
+		Resources resources = getResources();
+		float density = resources.getDisplayMetrics().density;
 
+
+		if (attrs != null) {
+
+			TypedArray array = getContext().obtainStyledAttributes(attrs,new int[] {android.R.attr.layout_width});
+			try {
+				size = array.getDimensionPixelSize(0, DEFAULT_IMG_SIZE); // 0 for android.R.attr.layout_width
+			} finally {
+				array.recycle();
+			}
+		} else {
 		size *= density;
+		}
+
 		LayoutParams params = new LayoutParams(size, size);
 		setLayoutParams(params);
 

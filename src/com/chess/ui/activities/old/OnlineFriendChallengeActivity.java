@@ -62,7 +62,6 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 		initUpdateListener = new InitUpdateListener();
 
-		showActionSettings = true;
 	}
 
 	@Override

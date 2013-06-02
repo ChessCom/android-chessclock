@@ -203,6 +203,12 @@ public class ButtonDrawableBuilder {
 			createRect(rectButtonDrawable, resources, R.color.glassy_button);
 
 			return rectButtonDrawable;
+		} else if (styleId == R.style.ListItem_Header_Light) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = LIST_ITEM;
+			createRect(rectButtonDrawable, resources, R.color.header_light);
+
+			return rectButtonDrawable;
 		} else if (styleId == R.style.Rect_Bottom_Right_Orange) {
 			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
 			rectButtonDrawable.rectPosition = BOTTOM_RIGHT;

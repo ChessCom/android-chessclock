@@ -96,7 +96,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// init adapters
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_light, CURRENT_GAMES_SECTION);
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_light,
+				new int[]{CURRENT_GAMES_SECTION});
 
 		challengesGamesAdapter = new DailyChallengesGamesAdapter(this, null);
 		currentGamesMyCursorAdapter = new DailyCurrentGamesMyCursorAdapter(getContext(), null);
@@ -239,13 +240,13 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-		int section = sectionedAdapter.getCurrentSection(pos);
+	public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+		int section = sectionedAdapter.getCurrentSection(position);
 
 		if (section == CHALLENGES_SECTION) {
-			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(pos));
+			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(position));
 		} else if (section == FINISHED_GAMES_SECTION) {
-			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
+			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
 
 			getActivityFace().openFragment(GameDailyFinishedFragment.newInstance(finishedItem.getGameId()));
@@ -256,7 +257,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				return;
 			}
 
-			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
+			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 			gameListCurrentItem = DBDataManager.getEchessGameListCurrentItemFromCursor(cursor);
 
 			if (gameListCurrentItem.isDrawOfferPending()) {
@@ -305,7 +306,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	@Override
 	public void onOpened() {
-		getActivityFace().setBadgeValueForId(R.id.menu_games, 0);
+		setBadgeValueForId(R.id.menu_games, 0);
 	}
 
 	@Override

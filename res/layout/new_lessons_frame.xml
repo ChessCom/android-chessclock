@@ -2,37 +2,25 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <ImageView
-            android:id="@+id/upgradeIconImg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_upgrade_diamond"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:contentDescription="@string/image"
-            />
+    <com.chess.RoboTextView
+        android:id="@+id/emptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Under construction"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/grey_button_1"
+        android:paddingLeft="10dip"
+        custom:ttf="Bold"
+        style="@style/DarkShadowBottom"
+        android:layout_centerInParent="true"
+        />
 
-        <com.chess.RoboTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/lessons_upgrade_title"
-            />
-
-        <com.chess.RoboButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/upgrade"
-            style="@style/Button.Upgrade"
-            />
-
-    </RelativeLayout>
 
 </LinearLayout>

@@ -58,7 +58,6 @@ public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnC
 
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 
-		showActionSettings = true;
 	}
 
 	@Override

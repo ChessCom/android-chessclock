@@ -89,7 +89,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 	private GameStateUpdateListener gameStateUpdateListener;
 	//	private StartGameUpdateListener startGameUpdateListener;
-//	private GetGameUpdateListener getGameUpdateListener;
+	//	private GetGameUpdateListener getGameUpdateListener;
 	private GameOnlineUpdatesListener sendMoveUpdateListener;
 	//	private GameOnlineUpdatesListener gamesListUpdateListener;
 	private GameOnlineUpdatesListener createChallengeUpdateListener;
@@ -315,7 +315,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 				case GAMES_LIST:
 					// iterate through all loaded items in cursor
 					do {
-						long localDbGameId = DBDataManager.getLong(returnedObj, DBConstants.V_GAME_ID);
+						long localDbGameId = DBDataManager.getLong(returnedObj, DBConstants.V_ID);
 						if (localDbGameId != gameId) {
 							gameId = localDbGameId;
 							showSubmitButtonsLay(false);

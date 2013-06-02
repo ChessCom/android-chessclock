@@ -31,6 +31,8 @@ public abstract class ActionModeHelper {
 
 	public abstract void startActionMode();
 
+	public abstract void closeActionMode();
+
 	public interface EditFace {
 		void onDoneClicked();
 	}

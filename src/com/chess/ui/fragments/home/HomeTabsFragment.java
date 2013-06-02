@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
@@ -58,6 +56,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		super.onActivityCreated(savedInstanceState);
 		// activate Left
 		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
+
 		CommonLogicFragment leftMenuFragment = (CommonLogicFragment) findFragmentByTag(NavigationMenuFragment.class.getSimpleName());
 		if (leftMenuFragment == null) {
 			leftMenuFragment = new NavigationMenuFragment();
@@ -113,8 +112,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		if (previousCheckedId == NON_INIT) {
 			tabRadioGroup.check(R.id.leftTabBtn);
 		}
-		getActivityFace().setBadgeValueForId(R.id.menu_games, 7); // TODO use properly
-//		getActivityFace().setBadgeValueForId(R.id.menu_notifications, 7); // TODO use properly
+		setBadgeValueForId(R.id.menu_games, 7); // TODO use properly
+//		setBadgeValueForId(R.id.menu_notifications, 7); // TODO use properly
 	}
 
 	@Override

@@ -37,15 +37,16 @@
                 android:id="@+id/firstNameValueEdt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/first_name"
                 android:textColor="@color/white"
                 android:textSize="15sp"
-                android:padding="0dip"
+                android:hint="@string/first_name"
                 android:singleLine="true"
                 android:imeOptions="actionDone"
                 style="@style/DefaultEdt.Empty"
+                android:ellipsize="end"
                 custom:ttf="Bold"
                 />
+            <!---->
 
             <!--Clear Btn-->
             <com.chess.RoboTextView
@@ -84,10 +85,10 @@
                 android:hint="@string/last_name"
                 android:textColor="@color/white"
                 android:textSize="15sp"
-                android:padding="0dip"
                 android:singleLine="true"
                 android:imeOptions="actionDone"
                 style="@style/DefaultEdt.Empty"
+                android:ellipsize="end"
                 custom:ttf="Bold"
                 />
 
@@ -128,11 +129,11 @@
                 android:hint="@string/location"
                 android:textColor="@color/white"
                 android:textSize="15sp"
-                android:padding="0dip"
                 android:singleLine="true"
                 android:imeOptions="actionDone"
                 style="@style/DefaultEdt.Empty"
                 android:layout_gravity="center_vertical"
+                android:ellipsize="end"
                 custom:ttf="Bold"
                 />
 

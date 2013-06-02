@@ -69,7 +69,7 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 		super.onResume();
 		updateTabs();
 
-		getActivityFace().setBadgeValueForId(R.id.menu_games, 7);
+		setBadgeValueForId(R.id.menu_games, 7);
 	}
 
 	@Override

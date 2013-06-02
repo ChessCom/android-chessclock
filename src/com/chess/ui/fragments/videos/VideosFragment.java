@@ -108,6 +108,12 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		holder.titleTxt = (TextView) headerView.findViewById(R.id.titleTxt);
 		holder.authorTxt = (TextView) headerView.findViewById(R.id.authorTxt);
 		holder.dateTxt = (TextView) headerView.findViewById(R.id.dateTxt);
+
+		getActivityFace().showActionMenu(R.id.menu_search, true);
+		getActivityFace().showActionMenu(R.id.menu_notifications, false);
+		getActivityFace().showActionMenu(R.id.menu_games, false);
+
+		setTitlePadding(ONE_ICON);
 	}
 
 	@Override

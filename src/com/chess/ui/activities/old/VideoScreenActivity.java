@@ -87,7 +87,6 @@ public class VideoScreenActivity extends LiveBaseActivity {
 		categoriesItemSelectedListener = new CategoriesItemSelectedListener();
 		videosItemUpdateListener = new VideosItemUpdateListener();
 
-		showActionSearch = true;
 	}
 
 	@Override

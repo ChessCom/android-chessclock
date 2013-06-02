@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
@@ -26,6 +27,7 @@ public class NewArticlesThumbCursorAdapter extends ItemsCursorAdapter {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
+	private int PHOTO_SIZE;
 	private CharacterStyle foregroundSpan;
 	private Date date;
 
@@ -35,12 +37,15 @@ public class NewArticlesThumbCursorAdapter extends ItemsCursorAdapter {
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
 		date = new Date();
+
+		PHOTO_SIZE = (int) context.getResources().getDimension(R.dimen.article_thumb_width);
 	}
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_article_thumb_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
+		holder.thumbnailImg = (ProgressImageView) view.findViewById(R.id.thumbnailImg);
 		holder.titleTxt = (TextView) view.findViewById(R.id.titleTxt);
 		holder.authorTxt = (TextView) view.findViewById(R.id.authorTxt);
 		holder.dateTxt = (TextView) view.findViewById(R.id.dateTxt);
@@ -65,9 +70,12 @@ public class NewArticlesThumbCursorAdapter extends ItemsCursorAdapter {
 		holder.titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_TITLE));
 		date.setTime(DBDataManager.getLong(cursor, DBConstants.V_CREATE_DATE) * 1000L);
 		holder.dateTxt.setText(dateFormatter.format(date));
+
+		imageLoader.download(DBDataManager.getString(cursor, DBConstants.V_PHOTO_URL), holder.thumbnailImg, PHOTO_SIZE );
 	}
 
 	protected class ViewHolder {
+		public ProgressImageView thumbnailImg;
 		public TextView titleTxt;
 		public TextView authorTxt;
 		public TextView dateTxt;

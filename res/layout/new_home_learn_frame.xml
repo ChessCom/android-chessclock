@@ -64,10 +64,11 @@
         </com.chess.LinLayout>
 
         <!--Board and info -->
-        <RelativeLayout
+        <com.chess.RelLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="15dip"
+            style="@style/ListItem"
             >
 
             <!--Board-->
@@ -153,7 +154,7 @@
                 style="@style/Button.OrangeNoBorder.Small"
                 />
 
-        </RelativeLayout>
+        </com.chess.RelLayout>
 
         <!--Lessons Header-->
         <com.chess.LinLayout
@@ -206,10 +207,11 @@
         </com.chess.LinLayout>
 
         <!--Board and info -->
-        <RelativeLayout
+        <com.chess.RelLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="15dip"
+            style="@style/ListItem"
             >
 
             <!--Board-->
@@ -257,7 +259,7 @@
                 style="@style/Button.OrangeNoBorder.Small"
                 />
 
-        </RelativeLayout>
+        </com.chess.RelLayout>
 
         <!--Videos Header-->
         <com.chess.LinLayout

@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Html;
-import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -41,8 +40,7 @@ import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.utilities.AppUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -61,6 +59,10 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 	private static final int REQ_CODE_PICK_IMAGE = 33;
 	private static final int REQ_CODE_TAKE_IMAGE = 55;
+	private static final int FILE_SIZE_LIMIT = 2 * 1024 * 1024;
+	private static final int IMG_SIZE_LIMIT_H = 600; // limit for maximum side size
+	private static final int IMG_SIZE_LIMIT_W = 800; // limit for maximum side size
+
 
 
 	private ImageView flagImg;
@@ -99,6 +101,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private int AVATAR_SIZE;
 	private float density;
 	private String countryStr;
+	private ActionModeHelper actionModeHelper;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -203,11 +206,12 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		firstNameValueEdt.setText(firstNameStr);
 		lastNameValueEdt.setText(lastNameStr);
 		locationValueEdt.setText(locationStr);
+		countryValueTxt.setText(countryStr);
 
 		// hide close buttons
-		firstNameClearBtn.setVisibility(TextUtils.isEmpty(firstNameStr)? View.VISIBLE : View.GONE);
-		lastNameClearBtn.setVisibility(TextUtils.isEmpty(lastNameStr)? View.VISIBLE : View.GONE);
-		locationClearBtn.setVisibility(TextUtils.isEmpty(locationStr)? View.VISIBLE : View.GONE);
+		firstNameClearBtn.setVisibility(/*TextUtils.isEmpty(firstNameStr)? View.VISIBLE :*/ View.GONE);
+		lastNameClearBtn.setVisibility(/*TextUtils.isEmpty(lastNameStr)? View.VISIBLE :*/ View.GONE);
+		locationClearBtn.setVisibility(/*TextUtils.isEmpty(locationStr)? View.VISIBLE :*/ View.GONE);
 
 		// set country flag
 		updateUserCountry(countryStr);
@@ -277,8 +281,10 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			locationValueEdt.setText(StaticData.SYMBOL_EMPTY);
 		} else if (id == R.id.countryLay || id == R.id.flagImg || id == R.id.countryArrowIconTxt) {
 			showCountriesFragment();
+			startActionMode();
 		} else if (id == R.id.userPhotoImg || id == R.id.userPhotoLay) {
 			showPhotoSelectFragment();
+			startActionMode();
 		} else if (id == R.id.shareBtn) {
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
 			shareIntent.setType("text/plain");
@@ -308,15 +314,18 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 					mCurrentPhotoPath = cursor.getString(columnIndex);
 					cursor.close();
 
-
 					int size = (int) (AVATAR_SIZE * density);
 					Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
+
+					int rawSize = AppUtils.sizeOfBitmap(bitmap);
+					if (rawSize > FILE_SIZE_LIMIT) {
+						saveImageForUpload();
+					}
 
 					bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
 					if (bitmap == null) {
 						return;
 					}
-					photoFileSize = AppUtils.sizeOfBitmap(bitmap);
 					Drawable drawable = new BitmapDrawable(getResources(), bitmap);
 					drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
 
@@ -394,9 +403,52 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		if (bitmap == null) {
 			return;
 		}
-		photoFileSize = AppUtils.sizeOfBitmap(bitmap);
+
+		int rawSize = AppUtils.sizeOfBitmap(bitmap);
+		if (rawSize > FILE_SIZE_LIMIT) {
+			saveImageForUpload();
+		}
+
 		progressImageView.setImageBitmap(bitmap);
 		photoChanged = true;
+	}
+
+	private void saveImageForUpload() {
+		Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
+
+		bitmap = Bitmap.createScaledBitmap(bitmap, IMG_SIZE_LIMIT_W, IMG_SIZE_LIMIT_H, false);
+		if (bitmap == null) {
+			return;
+		}
+		photoFileSize = AppUtils.sizeOfBitmap(bitmap);
+
+		File cacheDir;
+		if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+			cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), AppUtils.getApplicationCacheDir(getActivity().getPackageName()));
+		else
+			cacheDir = getActivity().getCacheDir();
+
+		if (!cacheDir.exists())// TODO adjust saving to SD or local , but if not show warning to user
+			cacheDir.mkdirs();
+
+		// save scaled bitmap to sd for upload
+		String filename = AppData.getUserName(getActivity()) + System.currentTimeMillis();
+		File imgFile = new File(cacheDir, filename);
+
+		// save stream to SD
+		try {
+			OutputStream os = new FileOutputStream(imgFile);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 0, os);
+			os.flush();
+			os.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// update path for upload
+		mCurrentPhotoPath = imgFile.getAbsolutePath();
 	}
 
 	private void showCountriesFragment() {
@@ -423,10 +475,13 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 				) {
 			if (v.getId() == R.id.firstNameValueEdt) {
 				firstNameClearBtn.setVisibility(View.GONE);
+				firstNameValueEdt.setBackgroundResource(R.color.transparent);
 			} else if (v.getId() == R.id.lastNameValueEdt) {
 				lastNameClearBtn.setVisibility(View.GONE);
+				lastNameValueEdt.setBackgroundResource(R.color.transparent);
 			} else if (v.getId() == R.id.locationValueEdt) {
 				locationClearBtn.setVisibility(View.GONE);
+				locationValueEdt.setBackgroundResource(R.color.transparent);
 			}
 		}
 		return false;
@@ -437,17 +492,29 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		startActionMode();
 
 		if (v.getId() == R.id.firstNameValueEdt) {
-			firstNameClearBtn.setVisibility(View.VISIBLE);
+			firstNameValueEdt.setBackgroundResource(R.drawable.textfield_selector);
+			firstNameClearBtn.setVisibility(View.GONE); // TODO restore if need
 			lastNameClearBtn.setVisibility(View.GONE);
 			locationClearBtn.setVisibility(View.GONE);
+
+			lastNameValueEdt.setBackgroundResource(R.color.transparent);
+			locationValueEdt.setBackgroundResource(R.color.transparent);
 		} else if (v.getId() == R.id.lastNameValueEdt) {
-			lastNameClearBtn.setVisibility(View.VISIBLE);
-			firstNameClearBtn.setVisibility(View.GONE);
-			locationClearBtn.setVisibility(View.GONE);
-		} else if (v.getId() == R.id.locationValueEdt) {
-			locationClearBtn.setVisibility(View.VISIBLE);
+			lastNameValueEdt.setBackgroundResource(R.drawable.textfield_selector);
 			lastNameClearBtn.setVisibility(View.GONE);
 			firstNameClearBtn.setVisibility(View.GONE);
+			locationClearBtn.setVisibility(View.GONE);
+
+			firstNameValueEdt.setBackgroundResource(R.color.transparent);
+			locationValueEdt.setBackgroundResource(R.color.transparent);
+		} else if (v.getId() == R.id.locationValueEdt) {
+			locationValueEdt.setBackgroundResource(R.drawable.textfield_selector);
+			locationClearBtn.setVisibility(View.GONE);
+			lastNameClearBtn.setVisibility(View.GONE);
+			firstNameClearBtn.setVisibility(View.GONE);
+
+			firstNameValueEdt.setBackgroundResource(R.color.transparent);
+			lastNameValueEdt.setBackgroundResource(R.color.transparent);
 		}
 		return false;
 	}
@@ -464,18 +531,33 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 				locationClearBtn.setVisibility(View.GONE);
 
 				// remember fields
-				firstNameStr = getTextFromField(firstNameValueEdt);
-				lastNameStr = getTextFromField(lastNameValueEdt);
-				locationStr = getTextFromField(locationValueEdt);
+				String firstNameTmp = getTextFromField(firstNameValueEdt);
+//				if (!TextUtils.isEmpty(firstNameTmp)) {
+					firstNameStr = firstNameTmp;
+//				}
+				String lastNameTmp = getTextFromField(lastNameValueEdt);
+//				if (!TextUtils.isEmpty(lastNameTmp)) {
+					lastNameStr = lastNameTmp;
+//				}
+				String locationTmp = getTextFromField(locationValueEdt);
+//				if (!TextUtils.isEmpty(locationTmp)) {
+					locationStr = locationTmp;
+//				}
 
 				AppData.setUserFirstName(getActivity(), firstNameStr);
 				AppData.setUserLastName(getActivity(), lastNameStr);
 				AppData.setUserLocation(getActivity(), locationStr);
+				AppData.setUserCountry(getActivity(), countryStr);
+				AppData.setUserCountryId(getActivity(), countryId);
+
+				firstNameValueEdt.setBackgroundResource(R.color.transparent);
+				lastNameValueEdt.setBackgroundResource(R.color.transparent);
+				locationValueEdt.setBackgroundResource(R.color.transparent);
 
 				createProfile();
-
-				inEditMode = false;
 			}
+
+			inEditMode = false;
 		}
 	}
 
@@ -484,16 +566,17 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			return;
 		}
 		inEditMode = true;
-
-		ActionModeHelper actionModeHelper = ActionModeHelper.createInstance(getActivityFace().getActionBarActivity());
+		if (actionModeHelper == null) {
+			actionModeHelper = ActionModeHelper.createInstance(getActivityFace().getActionBarActivity());
+		}
 		actionModeHelper.setEditFace(new DoneClickListener());
 		actionModeHelper.startActionMode();
 	}
 
 	private boolean fieldsWasChanged() {
-		return !firstNameValueEdt.getText().equals(firstNameStr)
-				|| !lastNameValueEdt.getText().equals(lastNameStr) || !locationValueEdt.getText().equals(locationStr)
-				|| photoChanged;
+		return !getTextFromField(firstNameValueEdt).equals(firstNameStr)
+				|| !getTextFromField(lastNameValueEdt).equals(lastNameStr) || !getTextFromField(locationValueEdt).equals(locationStr)
+				|| photoChanged || countryId != AppData.getUserCountryId(getActivity());
 	}
 
 	private class CountrySelectedListener implements PopupListSelectionFace {
@@ -502,12 +585,10 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		public void valueSelected(int code) {
 			countriesFragment.dismiss();
 			countriesFragment = null;
-			String country = countryNames[code];
+			countryStr = countryNames[code];
 			countryId = countryCodes[code];
 
-			AppData.setUserCountry(getActivity(), country);
-			AppData.setUserCountryId(getActivity(), countryId);
-			updateUserCountry(country);
+			updateUserCountry(countryStr);
 		}
 
 		@Override
@@ -530,7 +611,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		public void valueSelected(int code) {
 			photoSelectFragment.dismiss();
 			photoSelectFragment = null;
-			if (code == 0) {
+			if (code == 0) { // TODO
 				Intent photoPickIntent = new Intent(Intent.ACTION_GET_CONTENT);
 				photoPickIntent.setType("image/*");
 				startActivityForResult(Intent.createChooser(photoPickIntent, getString(R.string.pick_photo)), REQ_CODE_PICK_IMAGE);
@@ -562,18 +643,19 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			// Create an image file name
 			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 			String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
-			File image = File.createTempFile(
+			return File.createTempFile(
 					imageFileName,
 					JPEG_FILE_SUFFIX,
 					getAlbumDir()
 			);
-			mCurrentPhotoPath = image.getAbsolutePath();
-			return image;
 		}
 
 		@Override
 		public void dialogCanceled() {
 			photoSelectFragment = null;
+			inEditMode = false;
+			if (actionModeHelper != null)
+				actionModeHelper.closeActionMode();
 		}
 	}
 
