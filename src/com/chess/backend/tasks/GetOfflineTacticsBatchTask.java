@@ -33,7 +33,8 @@ public class GetOfflineTacticsBatchTask extends AbstractUpdateTask<TacticItem.Da
 
 			TacticItem tacticItem = parseJson(inputStream);
 
-			itemList = tacticItem.getData();
+			itemList.clear();
+			itemList.addAll(tacticItem.getData());
 
 			inputStream.close();
 		} catch (IOException e) {

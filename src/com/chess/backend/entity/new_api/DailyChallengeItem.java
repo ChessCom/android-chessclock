@@ -14,43 +14,43 @@ public class DailyChallengeItem extends BaseResponseItem<List<DailyChallengeItem
     "count": 1,
     "data": [
         {
-            "game_seek_id": 94,
+            "id": 361,
             "opponent_username": "erik",
-            "opponent_rating": 1471,
-            "opponent_win_count": 7,
-            "opponent_loss_count": 7,
+            "opponent_rating": 1201,
+            "opponent_win_count": 9,
+            "opponent_loss_count": 11,
             "opponent_draw_count": 2,
-            "color": 0,
-            "color_descriptive": "Random",
+            "color": 3,
             "days_per_move": 3,
-            "game_type": 1,
+            "game_type_id": 1,
             "is_rated": false,
-            "initial_setup_fen": null
+            "initial_setup_fen": null,
+            "url": "view_game_seek.html?id=361"
         }
     ]
 	*/
 
 
 	public static class Data {
-		private long game_seek_id;
+		private long id;
 		private String opponent_username;
 		private int opponent_rating;
 		private int opponent_win_count;
 		private int opponent_loss_count;
 		private int opponent_draw_count;
 		private int color;
-		private String color_descriptive;
 		private int days_per_move;
-		private int game_type;
+		private int game_type_id;
 		private boolean is_rated;
 		private String initial_setup_fen;
+		private String url;
 
 		public long getGameId() {
-			return game_seek_id;
+			return id;
 		}
 
-		public void setGameId(long game_seek_id) {
-			this.game_seek_id = game_seek_id;
+		public void setGameId(long id) {
+			this.id = id;
 		}
 
 		public String getOpponentUsername() {
@@ -101,14 +101,6 @@ public class DailyChallengeItem extends BaseResponseItem<List<DailyChallengeItem
 			this.color = color;
 		}
 
-		public String getColor_descriptive() {
-			return color_descriptive;
-		}
-
-		public void setColor_descriptive(String color_descriptive) {
-			this.color_descriptive = color_descriptive;
-		}
-
 		public int getDaysPerMove() {
 			return days_per_move;
 		}
@@ -118,11 +110,11 @@ public class DailyChallengeItem extends BaseResponseItem<List<DailyChallengeItem
 		}
 
 		public int getGameType() {
-			return game_type;
+			return game_type_id;
 		}
 
 		public void setGame_type(int game_type) {
-			this.game_type = game_type;
+			this.game_type_id = game_type;
 		}
 
 		public boolean isRated() {
@@ -139,6 +131,10 @@ public class DailyChallengeItem extends BaseResponseItem<List<DailyChallengeItem
 
 		public void setInitial_setup_fen(String initial_setup_fen) {
 			this.initial_setup_fen = initial_setup_fen;
+		}
+
+		public String getUrl() {
+			return url;
 		}
 	}
 }

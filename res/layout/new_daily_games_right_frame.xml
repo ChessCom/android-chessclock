@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     >
 
-    <FrameLayout
+    <com.chess.RelLayout
         android:id="@+id/topButtonsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
             android:textSize="23sp"
             />
 
-    </FrameLayout>
+    </com.chess.RelLayout>
 
     <RelativeLayout
         android:id="@+id/loadingView"

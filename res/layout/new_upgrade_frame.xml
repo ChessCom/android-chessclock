@@ -89,7 +89,7 @@
                 android:layout_marginTop="-2dip"
                 custom:ttf="Italic" />
 
-            <ImageView
+<!--            <ImageView
                 android:layout_width="32dip"
                 android:layout_height="32dip"
                 android:scaleType="fitXY"
@@ -98,7 +98,7 @@
                 android:contentDescription="@string/image"
                 android:layout_margin="7dip"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="true" />-->
 
         </RelativeLayout>
 
@@ -146,7 +146,7 @@
                 android:layout_marginTop="-2dip"
                 custom:ttf="Italic" />
 
-            <ImageView
+<!--            <ImageView
                 android:layout_width="32dip"
                 android:layout_height="32dip"
                 android:scaleType="fitXY"
@@ -155,7 +155,7 @@
                 android:contentDescription="@string/image"
                 android:layout_margin="7dip"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="true" />-->
 
         </RelativeLayout>
 
@@ -203,7 +203,7 @@
                 android:layout_marginTop="-2dip"
                 custom:ttf="Italic" />
 
-            <ImageView
+<!--            <ImageView
                 android:layout_width="32dip"
                 android:layout_height="32dip"
                 android:scaleType="fitXY"
@@ -212,7 +212,7 @@
                 android:contentDescription="@string/image"
                 android:layout_margin="7dip"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="true" />-->
 
         </RelativeLayout>
 

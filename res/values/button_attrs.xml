@@ -84,6 +84,8 @@
             <enum name="bottomRight" value="8"/>
 
             <enum name="listItem" value="9"/>
+            <enum name="listItemHeaderDark" value="10"/>
+            <enum name="listItemHeaderTop" value="11"/>
         </attr>
 
     </declare-styleable>

@@ -16,7 +16,7 @@ import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
  * @author alien_roger
  * @created at: 06.03.12 7:39
  */
-public class ControlsNetworkView extends ControlsBaseView {
+public class ControlsDailyView extends ControlsBaseView {
 
 
 	private static final long BLINK_DELAY = 5 * 1000;
@@ -24,11 +24,11 @@ public class ControlsNetworkView extends ControlsBaseView {
 
 	private BoardViewNetworkFace boardViewFace;
 
-	public ControlsNetworkView(Context context) {
+	public ControlsDailyView(Context context) {
 		super(context);
 	}
 
-	public ControlsNetworkView(Context context, AttributeSet attrs) {
+	public ControlsDailyView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
@@ -44,7 +44,7 @@ public class ControlsNetworkView extends ControlsBaseView {
 		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
 
 		addActionButton(CLOSE, R.string.ic_close, R.style.Rect_Bottom_Left);
-		addActionButton(MAKE_MOVE, R.string.ic_arrow_right, R.style.Rect_Bottom_Right_Orange);
+		addActionButton(MAKE_MOVE, R.string.ic_check, R.style.Rect_Bottom_Right_Orange);
 
 		addView(controlsLayout);
 	}

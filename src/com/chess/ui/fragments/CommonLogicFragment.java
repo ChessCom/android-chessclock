@@ -41,6 +41,7 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
+import com.slidingmenu.lib.SlidingMenu;
 import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
@@ -124,6 +125,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		// set full screen touch
+		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
+
 		LoginButton loginButton = (LoginButton) getView().findViewById(R.id.fb_connect);
 		if (loginButton != null) {
 			facebookUiHelper = new UiLifecycleHelper(getActivity(), callback);
@@ -482,7 +486,12 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		switch (item.getItemId()) {
 			case R.id.menu_games:
 				getActivityFace().changeRightFragment(HomePlayFragment.newInstance(RIGHT_MENU_MODE));
-				getActivityFace().toggleRightMenu();
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						getActivityFace().toggleRightMenu();
+					}
+				}, 100);
 				break;
 			case R.id.menu_notifications:
 				CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(DailyGamesNotificationFragment.class.getSimpleName());
@@ -490,7 +499,12 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 					fragment = new DailyGamesNotificationFragment();
 				}
 				getActivityFace().changeRightFragment(fragment);
-				getActivityFace().toggleRightMenu();
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						getActivityFace().toggleRightMenu();
+					}
+				}, 100);
 				break;
 		}
 		return true;

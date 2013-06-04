@@ -77,20 +77,6 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		listView.setAdapter(adapter);
 	}
 
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		logTest("left menu resumed");
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-
-		logTest("left menu paused!");
-	}
-
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		for (NavigationMenuItem menuItem : menuItems) {

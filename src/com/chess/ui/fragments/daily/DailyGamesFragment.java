@@ -31,15 +31,13 @@ import com.chess.model.GameListFinishedItem;
 import com.chess.model.GameOnlineItem;
 import com.chess.ui.activities.old.ChatOnlineActivity;
 import com.chess.ui.adapters.CustomSectionedAdapter;
-import com.chess.ui.adapters.DailyChallengesGamesAdapter;
-import com.chess.ui.adapters.DailyCurrentGamesMyCursorAdapter;
+import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
-import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.List;
 
@@ -50,15 +48,12 @@ import java.util.List;
  * Time: 7:42
  */
 public class DailyGamesFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
-		AdapterView.OnItemLongClickListener, SlidingMenu.OnOpenedListener, ItemClickListenerFace {
+		AdapterView.OnItemLongClickListener, ItemClickListenerFace {
 
-	private static final int CHALLENGES_SECTION = 0;
-	private static final int CURRENT_GAMES_SECTION = 1;
-	private static final int FINISHED_GAMES_SECTION = 2;
+	private static final int CURRENT_GAMES_SECTION = 0;
+	private static final int FINISHED_GAMES_SECTION = 1;
 
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
-	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
-	private static final String UNABLE_TO_MOVE_TAG = "unable to move popup";
 
 	private int successToastMsgId;
 
@@ -73,37 +68,29 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private GamesCursorUpdateListener currentGamesMyCursorUpdateListener;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
 	private DailyGamesUpdateListener dailyGamesUpdateListener;
-	private VacationUpdateListener vacationDeleteUpdateListener;
-	private VacationUpdateListener vacationGetUpdateListener;
 
-	//	private LoadItem selectedLoadItem;
-	private DailyCurrentGamesMyCursorAdapter currentGamesMyCursorAdapter;
-	private DailyChallengesGamesAdapter challengesGamesAdapter;
+	private DailyCurrentGamesCursorAdapter currentGamesMyCursorAdapter;
 	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
 	private CustomSectionedAdapter sectionedAdapter;
 	private DailyCurrentGameData gameListCurrentItem;
-	private DailyChallengeItem.Data gameListChallengeItem;
 
 	private TextView emptyView;
 	private ListView listView;
 	private View loadingView;
-	private boolean hostUnreachable;
-	private boolean onVacation;
 	private boolean need2update = true;
 	private Button startNewGameBtn;
+	private List<DailyFinishedGameData> finishedGameDataList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// init adapters
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_light,
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
 				new int[]{CURRENT_GAMES_SECTION});
 
-		challengesGamesAdapter = new DailyChallengesGamesAdapter(this, null);
-		currentGamesMyCursorAdapter = new DailyCurrentGamesMyCursorAdapter(getContext(), null);
+		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(getContext(), null);
 		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null);
 
-		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
 		sectionedAdapter.addSection(getString(R.string.new_my_move), currentGamesMyCursorAdapter);
 		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
 
@@ -143,7 +130,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			boolean haveSavedData = DBDataManager.haveSavedOnlineCurrentGame(getActivity());
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
-				updateVacationStatus();
 				updateData();
 			} else if (!haveSavedData) {
 				emptyView.setText(R.string.no_network);
@@ -153,6 +139,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			if (haveSavedData) {
 				loadDbGames();
 			}
+		} else {
+			loadDbGames();
 		}
 	}
 
@@ -171,12 +159,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
 		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
 		currentGamesMyCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_MY);
-//		currentGamesTheirCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_THEIR);
 		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.FINISHED);
 
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
-		vacationGetUpdateListener = new VacationUpdateListener(VacationUpdateListener.GET);
-		vacationDeleteUpdateListener = new VacationUpdateListener(VacationUpdateListener.DELETE);
 	}
 
 	private DialogInterface.OnClickListener gameListItemDialogListener = new DialogInterface.OnClickListener() {
@@ -225,16 +210,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				public void run() {
 					getActivityFace().toggleRightMenu();
 				}
-			}, 50);
+			}, 100);
 
-		} else if (view.getId() == R.id.acceptBtn) {
-			Integer position = (Integer) view.getTag(R.id.list_item_id);
-			gameListChallengeItem = challengesGamesAdapter.getItem(position);
-			acceptChallenge();
-		} else if (view.getId() == R.id.cancelBtn) {
-			Integer position = (Integer) view.getTag(R.id.list_item_id);
-			gameListChallengeItem = challengesGamesAdapter.getItem(position);
-			declineChallenge();
 		}
 	}
 
@@ -242,19 +219,12 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 		int section = sectionedAdapter.getCurrentSection(position);
 
-		if (section == CHALLENGES_SECTION) {
-			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(position));
-		} else if (section == FINISHED_GAMES_SECTION) {
+		if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
 
 			getActivityFace().openFragment(GameDailyFinishedFragment.newInstance(finishedItem.getGameId()));
 		} else {
-			if (onVacation) {
-				popupItem.setNegativeBtnId(R.string.end_vacation);
-				showPopupDialog(R.string.unable_to_move_on_vacation, UNABLE_TO_MOVE_TAG);
-				return;
-			}
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 			gameListCurrentItem = DBDataManager.getEchessGameListCurrentItemFromCursor(cursor);
@@ -278,9 +248,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
 		int section = sectionedAdapter.getCurrentSection(pos);
 
-		if (section == CHALLENGES_SECTION) {
-			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(pos));
-		} else if (section == FINISHED_GAMES_SECTION) {
+		if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
 			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
 
@@ -304,11 +272,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	@Override
-	public void onOpened() {
-		setBadgeValueForId(R.id.menu_games, 0);
-	}
-
-	@Override
 	public Context getMeContext() {
 		return getActivity();
 	}
@@ -320,25 +283,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 	}
 
-	private void clickOnChallenge(DailyChallengeItem.Data gameListChallengeItem) {
-		this.gameListChallengeItem = gameListChallengeItem;
-
-		String title = gameListChallengeItem.getOpponentUsername() + StaticData.SYMBOL_NEW_STR
-				+ getString(R.string.win_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.getOpponentWinCount()
-				+ StaticData.SYMBOL_NEW_STR
-				+ getString(R.string.loss_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.getOpponentLossCount()
-				+ StaticData.SYMBOL_NEW_STR
-				+ getString(R.string.draw_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.getOpponentDrawCount();
-
-		popupItem.setPositiveBtnId(R.string.accept);
-		popupItem.setNegativeBtnId(R.string.decline);
-		showPopupDialog(title, CHALLENGE_ACCEPT_TAG);
-	}
-
 	private class OnlineUpdateListener extends ChessUpdateListener<BaseResponseItem> {
 		public static final int INVITE = 3;
 		public static final int DRAW = 4;
-		public static final int VACATION = 5;
 
 		private int itemCode;
 
@@ -350,7 +297,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-//			Log.d("TEST", "VacationUpdateListener showProgress");
 
 			showLoadingView(show);
 		}
@@ -369,17 +315,11 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				case DRAW:
 					DailyGamesFragment.this.updateData();
 					break;
-				case VACATION:
-
-					break;
 			}
 		}
 
 		@Override
 		public void errorHandle(String resultMessage) {
-			// redundant check? we already clean the tasks pool in onPause, or...?
-			// No, cleaning the task pool doesn't stop task immediately if it already reached onPOstExecute state.
-			// this check prevent illegalStateExc for fragments, when they showed after onSavedInstance was called
 			if (isPaused)
 				return;
 
@@ -396,7 +336,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					|| itemCode == GameOnlineItem.FINISHED_TYPE) {
 				if (resultCode == StaticData.NO_NETWORK || resultCode == StaticData.UNKNOWN_ERROR) {
 					showToast(R.string.host_unreachable_load_local);
-					hostUnreachable = true;
 					loadDbGames();
 				}
 			}
@@ -421,23 +360,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	private void loadDbGames() {
 		new LoadDataFromDbTask(currentGamesMyCursorUpdateListener,
-				DbHelper.getDailyCurrentMyListGamesParams(getContext()),
+				DbHelper.getDailyCurrentListGamesParams(),
 				getContentResolver()).executeTask();
-//		new LoadDataFromDbTask(currentGamesTheirCursorUpdateListener,
-//				DbHelper.getDailyCurrentTheirListGamesParams(getContext()),
-//				getContentResolver()).executeTask();
-		new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-				DbHelper.getEchessFinishedListGamesParams(getContext()),
-				getContentResolver()).executeTask();
-	}
-
-	private void updateVacationStatus() {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_VACATIONS);
-		loadItem.setRequestMethod(RestHelper.GET);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-
-		new RequestJsonTask<VacationItem>(vacationGetUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
@@ -456,23 +380,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_ACCEPTDRAW);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
-//			new GetStringObjTask(acceptDrawUpdateListener).executeTask(loadItem);
 			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
-		} else if (tag.equals(CHALLENGE_ACCEPT_TAG)) {
-			acceptChallenge();
 		}
 		super.onPositiveBtnClick(fragment);
-	}
-
-	private void acceptChallenge() {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(gameListChallengeItem.getGameId()));
-		loadItem.setRequestMethod(RestHelper.PUT);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-		successToastMsgId = R.string.challenge_accepted;
-
-//			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
-		new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
@@ -491,7 +401,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_DECLINEDRAW);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
-//			new GetStringObjTask(acceptDrawUpdateListener).executeTask(loadItem);
 			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
 		}
 		super.onNeutralBtnCLick(fragment);
@@ -511,55 +420,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 //			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class); // TODO adjust for fragment
 //			intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
 //			startActivity(intent);
-
-		} else if (tag.equals(CHALLENGE_ACCEPT_TAG)) {
-			declineChallenge();
-		} else if (tag.equals(UNABLE_TO_MOVE_TAG)) {
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_VACATIONS);
-			loadItem.setRequestMethod(RestHelper.DELETE);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-
-			new RequestJsonTask<VacationItem>(vacationDeleteUpdateListener).executeTask(loadItem);
 		}
 		super.onNegativeBtnClick(fragment);
-	}
-
-	private void declineChallenge() {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(gameListChallengeItem.getGameId()));
-		loadItem.setRequestMethod(RestHelper.DELETE);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-		successToastMsgId = R.string.challenge_declined;
-
-		new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);
-	}
-
-	private class VacationUpdateListener extends ChessUpdateListener<VacationItem> {
-
-		static final int GET = 0;
-		static final int DELETE = 1;
-		private int listenerCode;
-
-		public VacationUpdateListener(int listenerCode) {
-			super(VacationItem.class);
-			this.listenerCode = listenerCode;
-		}
-
-		@Override
-		public void updateData(VacationItem returnedObj) {
-			super.updateData(returnedObj);
-
-			switch (listenerCode) {
-				case GET:
-					onVacation = returnedObj.getData().isOnVacation();
-					break;
-				case DELETE:
-					onVacation = false;
-					DailyGamesFragment.this.updateData();
-					break;
-			}
-		}
 	}
 
 	private class SaveCurrentGamesListUpdateListener extends ChessUpdateListener<DailyCurrentGameData> {
@@ -588,20 +450,19 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
-			new LoadDataFromDbTask(finishedGamesCursorUpdateListener, DbHelper.getEchessFinishedListGamesParams(getContext()),
+			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
+					DbHelper.getEchessFinishedListGamesParams(getContext()),
 					getContentResolver()).executeTask();
 		}
 	}
 
 	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {
 		public static final int CURRENT_MY = 0;
-		public static final int CURRENT_THEIR = 1;
 		public static final int FINISHED = 2;
 
 		private int gameType;
 
 		public GamesCursorUpdateListener(int gameType) {
-			super();
 			this.gameType = gameType;
 		}
 
@@ -626,21 +487,24 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 //								getContentResolver()).executeTask();
 //					}
 
-					break;
-				case CURRENT_THEIR:
-//					currentGamesTheirCursorAdapter.changeCursor(returnedObj);
-//					if (AppUtils.isNetworkAvailable(getContext()) && !hostUnreachable /*&& !isRestarted*/) { // TODO adjust
-//						updateData();
-//					} else {
-//						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-//								DbHelper.getEchessFinishedListGamesParams(getContext()),
-//								getContentResolver()).executeTask();
-//					}
+					if (finishedGameDataList != null) {
+						boolean gamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList);
 
+						if (gamesLeft) {
+							new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
+									getContentResolver()).executeTask();
+						} else {
+							finishedGamesCursorAdapter.changeCursor(null);
+						}
+					} else {
+						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
+								DbHelper.getEchessFinishedListGamesParams(getContext()),
+								getContentResolver()).executeTask();
+					}
 					break;
 				case FINISHED:
 					finishedGamesCursorAdapter.changeCursor(returnedObj);
-
+					need2update = false;
 					break;
 			}
 		}
@@ -674,11 +538,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		public void updateData(DailyGamesAllItem returnedObj) {
 			super.updateData(returnedObj);
 
-			hostUnreachable = false;
-			challengesGamesAdapter.setItemsList(returnedObj.getData().getChallenges());
-
 			{ // current games
-				List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
+				final List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
 				boolean gamesLeft = DBDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList);
 
 				if (gamesLeft) {
@@ -696,20 +557,20 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					}
 				}
 
-				startNewGameBtn.setVisibility(myTurnInDailyGames? View.GONE: View.VISIBLE);
+				startNewGameBtn.setVisibility(myTurnInDailyGames ? View.GONE : View.VISIBLE);
 			}
 
-			{ // finished
-				List<DailyFinishedGameData> finishedGameDataList = returnedObj.getData().getFinished();
-				boolean gamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList);
-
-				if (gamesLeft) {
-					new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-							getContentResolver()).executeTask();
-				} else {
-					finishedGamesCursorAdapter.changeCursor(null);
-				}
-			}
+//			{ // finished
+			finishedGameDataList = returnedObj.getData().getFinished();
+//				boolean gamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList);
+//
+//				if (gamesLeft) {
+//					new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
+//							getContentResolver()).executeTask();
+//				} else {
+//					finishedGamesCursorAdapter.changeCursor(null);
+//				}
+//			}
 		}
 
 		@Override
@@ -736,10 +597,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		dailyGamesUpdateListener.releaseContext();
 		dailyGamesUpdateListener = null;
-		vacationDeleteUpdateListener.releaseContext();
-		vacationDeleteUpdateListener = null;
-		vacationGetUpdateListener.releaseContext();
-		vacationGetUpdateListener = null;
 	}
 
 	private void showEmptyView(boolean show) {

@@ -372,6 +372,7 @@
     </style>
 
     <style name="ListItem.Header.Dark">
+        <item name="btn_rect_pos">listItemHeaderDark</item>
         <item name="btn_solid">@color/header_dark</item>
     </style>
 

@@ -50,7 +50,7 @@ import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
-import com.chess.ui.views.game_controls.ControlsNetworkView;
+import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import quickaction.ActionItem;
@@ -115,7 +115,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private NotationView notationsView;
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
-	private ControlsNetworkView controlsNetworkView;
+	private ControlsDailyView controlsDailyView;
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
 	private BoardAvatarDrawable opponentAvatarDrawable;
@@ -157,7 +157,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	private void widgetsInit(View view) {
 
-		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
+		controlsDailyView = (ControlsDailyView) view.findViewById(R.id.controlsNetworkView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
@@ -175,13 +175,13 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			labelsConfig.bottomAvatar = userAvatarDrawable;
 		}
 
-		controlsNetworkView.enableGameControls(false);
+		controlsDailyView.enableGameControls(false);
 
 		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsNetworkView);
+		boardView.setControlsView(controlsDailyView);
 		boardView.setNotationsView(notationsView);
 
 		setBoardView(boardView);
@@ -351,7 +351,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 					DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 
-					controlsNetworkView.enableGameControls(true);
+					controlsDailyView.enableGameControls(true);
 					boardView.lockBoard(false);
 
 					checkMessages();
@@ -456,7 +456,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //
 //			DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 //
-//			controlsNetworkView.enableGameControls(true);
+//			controlsDailyView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			checkMessages();
@@ -479,12 +479,10 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 
 		if (isUserMove()) {
-
-//			infoLabelTxt.setText(timeRemains); // TODO restore
 			topPanelView.setTimeLeft(seconds);
-			updatePlayerDots(userPlayWhite);
 		} else {
-			updatePlayerDots(!userPlayWhite);
+			// TODO set greyed timeLeft
+//			topPanelView.setTimeLeft(seconds);
 		}
 
 		ChessBoardOnline.resetInstance();
@@ -533,7 +531,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //
 //			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
 //
-//			controlsNetworkView.enableGameControls(true);
+//			controlsDailyView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			if (getBoardFace().isAnalysis()) {
@@ -553,11 +551,10 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //		timeRemains = gameInfoItem.getTimeRemaining() + gameInfoItem.getTimeRemainingUnits();
 
 		if (isUserMove()) {
-
-//			infoLabelTxt.setText(timeRemains); // TODO restore
-			updatePlayerDots(userPlayWhite);
+//			topPanelView.setTimeLeft(seconds);
 		} else {
-			updatePlayerDots(!userPlayWhite);
+			// TODO set greyed timeLeft
+//			topPanelView.setTimeLeft(seconds);
 		}
 
 		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
@@ -675,7 +672,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //
 ////			DBDataManager.updateOnlineGame(getContext(), currentGame);
 //
-//			controlsNetworkView.enableGameControls(true);
+//			controlsDailyView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			sendMove();
@@ -724,7 +721,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	private void loadGamesList() {
 		// replace with db update
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getContext()), // TODO adjust
+//		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getContext()), // TODO adjust
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGamesParams(), // TODO adjust
 				getContentResolver()).executeTask();
 
 //		LoadItem listLoadItem = new LoadItem();
@@ -744,7 +742,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		preferencesEditor.commit();
 
 		currentGame.setHasNewMessage(false);
-		controlsNetworkView.haveNewMessage(false);
+		controlsDailyView.haveNewMessage(false);
 
 		// TODO restore, open ChatFragment
 
@@ -758,7 +756,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	private void checkMessages() {
 		if (currentGame.hasNewMessage()) {
-			controlsNetworkView.haveNewMessage(true);
+			controlsDailyView.haveNewMessage(true);
 		}
 	}
 
@@ -852,7 +850,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
-		controlsNetworkView.showSubmitButtons(show);
+		controlsDailyView.showSubmitButtons(show);
 		if (!show) {
 			getBoardFace().setSubmit(false);
 		}
@@ -993,7 +991,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 				// save at this point state to DB
 				currentGame.setDrawOffered(1);
 				String[] arguments = new String[]{String.valueOf(currentGame.isDrawOffered())};
-				getContentResolver().update(DBConstants.uriArray[DBConstants.ECHESS_ONLINE_GAMES],
+				getContentResolver().update(DBConstants.uriArray[DBConstants.DAILY_ONLINE_GAMES],
 						DBDataManager.putGameOnlineItemToValues(currentGame, userName),
 						DBDataManager.SELECTION_USER_OFFERED_DRAW, arguments);
 			}
@@ -1169,7 +1167,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
 
-			controlsNetworkView.enableGameControls(true);
+			controlsDailyView.enableGameControls(true);
 			boardView.lockBoard(false);
 
 			if (getBoardFace().isAnalysis()) {  // TODO recheck logic

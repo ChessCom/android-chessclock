@@ -22,7 +22,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
@@ -139,7 +138,6 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 			titleText.setLayoutParams(titleParams);
 			titleText.setText(titleChars);
 			titleText.setFont(FontsHelper.BOLD_FONT);
-			Log.d("TEST", "title added");
 			actionBarCompat.addView(titleText);
 		} else {
 			actionBarCompat.addView(customView, titleParams);

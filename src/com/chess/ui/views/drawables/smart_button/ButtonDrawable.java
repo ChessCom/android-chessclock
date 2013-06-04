@@ -103,10 +103,6 @@ public class ButtonDrawable extends StateListDrawable {
 	int topPadding;
 	int rightPadding;
 	int bottomPadding;
-	int userPaddingLeftInitial;
-	int userPaddingRightInitial;
-	boolean leftPaddingDefined;
-	boolean rightPaddingDefined;
 
 
 	/* state & other values */
@@ -344,33 +340,27 @@ public class ButtonDrawable extends StateListDrawable {
 	 * @param drawable to which we set padding must be ShapeDrawable
 	 */
 	void setPaddingToShape(ShapeDrawable drawable) {
-		if (padding != DEF_VALUE) {
-			userPaddingLeftInitial = padding;
-			userPaddingRightInitial = padding;
-			leftPaddingDefined = true;
-			rightPaddingDefined = true;
-		}
-
-		if (leftPadding != DEF_VALUE) {
-			userPaddingLeftInitial = leftPadding;
-			leftPaddingDefined = true;
-		}
-
-		if (rightPadding != DEF_VALUE) {
-			userPaddingRightInitial = rightPadding;
-			rightPaddingDefined = true;
-		}
-
 		int leftPad = padding;
 		int topPad = padding;
 		int rightPad = padding;
 		int bottomPad = padding;
-		if (leftPaddingDefined) {
-			leftPad = userPaddingLeftInitial;
+
+		if (leftPadding != DEF_VALUE) {
+			leftPad = leftPadding;
 		}
-		if (rightPaddingDefined) {
-			rightPad = userPaddingRightInitial;
+
+		if (rightPadding != DEF_VALUE) {
+			rightPad = rightPadding;
 		}
+
+		if (topPadding != DEF_VALUE) {
+			topPad = topPadding;
+		}
+
+		if (bottomPadding != DEF_VALUE) {
+			bottomPad = bottomPadding;
+		}
+
 		drawable.setPadding(leftPad, topPad, rightPad, bottomPad);
 	}
 
@@ -550,27 +540,9 @@ public class ButtonDrawable extends StateListDrawable {
 			return;
 		}
 		padding = array.getDimensionPixelSize(PADDING_INDEX, DEF_VALUE);
-		if (padding != DEF_VALUE) {
-			userPaddingLeftInitial = padding;
-			userPaddingRightInitial = padding;
-			leftPaddingDefined = true;
-			rightPaddingDefined = true;
-		}
-
 		leftPadding = array.getDimensionPixelSize(PADDING_LEFT_INDEX, DEF_VALUE);
-		if (leftPadding != DEF_VALUE) {
-			userPaddingLeftInitial = leftPadding;
-			leftPaddingDefined = true;
-		}
-
 		topPadding = array.getDimensionPixelSize(PADDING_TOP_INDEX, DEF_VALUE);
-
 		rightPadding = array.getDimensionPixelSize(PADDING_RIGHT_INDEX, DEF_VALUE);
-		if (rightPadding != DEF_VALUE) {
-			userPaddingRightInitial = rightPadding;
-			rightPaddingDefined = true;
-		}
-
 		bottomPadding = array.getDimensionPixelSize(PADDING_BOTTOM_INDEX, DEF_VALUE);
 	}
 

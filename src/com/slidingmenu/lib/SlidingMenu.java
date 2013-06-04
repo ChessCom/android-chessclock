@@ -104,6 +104,8 @@ public class SlidingMenu extends RelativeLayout {
 		 * On opened.
 		 */
 		public void onOpened();
+
+		public void onOpenedRight();
 	}
 
 	/**

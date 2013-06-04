@@ -250,11 +250,10 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 //		timeRemains = gameInfoItem.getTimeRemaining() + gameInfoItem.getTimeRemainingUnits();
 
 		if (isUserMove()) {
-
-//			infoLabelTxt.setText(timeRemains); // TODO restore
-			updatePlayerDots(userPlayWhite);
+//			topPanelView.setTimeLeft(seconds);
 		} else {
-			updatePlayerDots(!userPlayWhite);
+			// TODO set greyed timeLeft
+//			topPanelView.setTimeLeft(seconds);
 		}
 
 		ChessBoardOnline.resetInstance();

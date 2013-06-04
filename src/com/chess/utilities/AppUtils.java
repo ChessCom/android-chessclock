@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -541,4 +542,27 @@ public class AppUtils {
 
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public static void printTableContent(Cursor cursor) {
+		if (cursor.moveToFirst()) {
+			Log.d("TABLE", "_____________________________________");
+			do{
+				int columnCount = cursor.getColumnCount();
+				StringBuilder builder = new StringBuilder();
+
+				for(int i=0; i <= columnCount; i++) {
+					switch (cursor.getType(i)) {
+						case Cursor.FIELD_TYPE_INTEGER: {
+							builder.append(cursor.getColumnName(i)).append("=").append(cursor.getInt(i)).append(" ");
+						} break;
+						case Cursor.FIELD_TYPE_STRING: {
+							builder.append(cursor.getColumnName(i)).append("=").append(cursor.getString(i)).append(" ");
+						} break;
+					}
+				}
+				Log.d("TABLE", builder.toString());
+
+			}while(cursor.moveToNext());
+		}
+	}
 }

@@ -37,8 +37,10 @@ public class CustomSectionedAdapter extends SectionedListAdapter {
 		if (convertView == null) {
 			convertView = LayoutInflater.from(getContext()).inflate(layoutResource, parent, false);
 			if (hideHeadersArray != null ) {
+				Log.d("TEST", "getHeaderView, pos = " + position);
 				for (int index : hideHeadersArray) {
 					if (position == index) {
+						Log.d("TEST", "hiding header for pos = " + position);
 						AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1);
 						convertView.setLayoutParams(layoutParams);
 						convertView.setVisibility(View.GONE);

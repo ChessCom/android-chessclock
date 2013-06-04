@@ -1,14 +1,14 @@
 package com.chess.ui.fragments.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.GetAndSaveUserStats;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.LoadItem;
@@ -48,15 +48,16 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
 
-		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
+//		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class)); // TODO adjust properly
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		// activate Left
+		// set full screen touch
 		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
+		// activate Left
 		CommonLogicFragment leftMenuFragment = (CommonLogicFragment) findFragmentByTag(NavigationMenuFragment.class.getSimpleName());
 		if (leftMenuFragment == null) {
 			leftMenuFragment = new NavigationMenuFragment();
@@ -95,6 +96,10 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	public void onStart() {
 		super.onStart();
 
+//		new LoadDataFromDbTask(new GamesCursorUpdateListener(),
+//				DbHelper.getAllByUri(DBConstants.DAILY_FINISHED_LIST_GAMES),
+//				getContentResolver()).executeTask();
+
 		// check if user have daily games in progress or completed. May check in DB
 		// get games_id's and compare it to local DB
 		// if there are game_id which we don't have, then fetch it
@@ -105,6 +110,21 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_ID);
 		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
+
+//	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {  // Used for test
+//
+//		@Override
+//		public void updateData(Cursor cursor) {
+//			super.updateData(cursor);
+//
+//			if (HONEYCOMB_PLUS_API) {
+//				AppUtils.printTableContent(cursor);
+//			}
+//		}
+//	}
+
+
+
 
 	@Override
 	public void onResume() {

@@ -50,7 +50,7 @@ import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
-import com.chess.ui.views.game_controls.ControlsNetworkView;
+import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import quickaction.ActionItem;
@@ -115,7 +115,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private NotationView notationsView;
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
-	private ControlsNetworkView controlsNetworkView;
+	private ControlsDailyView controlsDailyView;
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
 	private BoardAvatarDrawable opponentAvatarDrawable;
@@ -155,8 +155,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		widgetsInit(view);
 	}
 
-
-
 	@Override
 	public void onStart() {
 		init();
@@ -165,7 +163,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		registerReceiver(moveUpdateReceiver, boardUpdateFilter);
 
 		DataHolder.getInstance().setInOnlineGame(gameId, true);
-		loadGameAndUpdate();
+//		loadGameAndUpdate();
+		updateGameState(gameId);
 	}
 
 	public void init() {
@@ -301,7 +300,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 					DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 
-					controlsNetworkView.enableGameControls(true);
+					controlsDailyView.enableGameControls(true);
 					boardView.lockBoard(false);
 
 					checkMessages();
@@ -406,7 +405,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 //
 //			DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 //
-//			controlsNetworkView.enableGameControls(true);
+//			controlsDailyView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			checkMessages();
@@ -429,12 +428,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 
 		if (isUserMove()) {
-
-//			infoLabelTxt.setText(timeRemains); // TODO restore
 			topPanelView.setTimeLeft(seconds);
-			updatePlayerDots(userPlayWhite);
 		} else {
-			updatePlayerDots(!userPlayWhite);
+			// TODO set greyed timeLeft
+//			topPanelView.setTimeLeft(seconds);
 		}
 
 		ChessBoardOnline.resetInstance();
@@ -483,7 +480,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 //
 //			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
 //
-//			controlsNetworkView.enableGameControls(true);
+//			controlsDailyView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			if (getBoardFace().isAnalysis()) {
@@ -501,14 +498,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 
 //		timeRemains = gameInfoItem.getTimeRemaining() + gameInfoItem.getTimeRemainingUnits();
-
-		if (isUserMove()) {
-
-//			infoLabelTxt.setText(timeRemains); // TODO restore
-			updatePlayerDots(userPlayWhite);
-		} else {
-			updatePlayerDots(!userPlayWhite);
-		}
 
 		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
 			String[] moves = currentGame.getMoveList()
@@ -625,7 +614,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 //
 ////			DBDataManager.updateOnlineGame(getContext(), currentGame);
 //
-//			controlsNetworkView.enableGameControls(true);
+//			controlsDailyView.enableGameControls(true);
 //			boardView.lockBoard(false);
 //
 //			sendMove();
@@ -674,7 +663,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 	private void loadGamesList() {
 		// replace with db update
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getContext()), // TODO adjust
+//		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getContext()), // TODO adjust
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGamesParams(), // TODO adjust
 				getContentResolver()).executeTask();
 
 //		LoadItem listLoadItem = new LoadItem();
@@ -694,7 +684,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		preferencesEditor.commit();
 
 		currentGame.setHasNewMessage(false);
-		controlsNetworkView.haveNewMessage(false);
+		controlsDailyView.haveNewMessage(false);
 
 		// TODO restore, open ChatFragment
 
@@ -708,7 +698,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 	private void checkMessages() {
 		if (currentGame.hasNewMessage()) {
-			controlsNetworkView.haveNewMessage(true);
+			controlsDailyView.haveNewMessage(true);
 		}
 	}
 
@@ -745,7 +735,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 	@Override
 	public Boolean isUserColorWhite() {
-		if (currentGame != null)
+		if (currentGame != null && getActivity() != null)
 			return currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(getActivity()));
 		else
 			return null;
@@ -776,7 +766,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		userPlayWhite = currentGame.getWhiteUsername().toLowerCase()
 				.equals(AppData.getUserName(getActivity()));
 
-		boolean userMove =  isUserMove();
+		boolean userMove = isUserMove();
 
 		if (getBoardFace().getHply() < 1 && userMove) {
 //			menuOptionsItems = new CharSequence[]{
@@ -802,7 +792,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
-		controlsNetworkView.showSubmitButtons(show);
+		controlsDailyView.showSubmitButtons(show);
 		if (!show) {
 			getBoardFace().setSubmit(false);
 		}
@@ -943,7 +933,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 				// save at this point state to DB
 				currentGame.setDrawOffered(1);
 				String[] arguments = new String[]{String.valueOf(currentGame.isDrawOffered())};
-				getContentResolver().update(DBConstants.uriArray[DBConstants.ECHESS_ONLINE_GAMES],
+				getContentResolver().update(DBConstants.uriArray[DBConstants.DAILY_ONLINE_GAMES],
 						DBDataManager.putGameOnlineItemToValues(currentGame, userName),
 						DBDataManager.SELECTION_USER_OFFERED_DRAW, arguments);
 			}
@@ -1119,7 +1109,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
 
-			controlsNetworkView.enableGameControls(true);
+			controlsDailyView.enableGameControls(true);
 			boardView.lockBoard(false);
 
 			if (getBoardFace().isAnalysis()) {  // TODO recheck logic
@@ -1127,11 +1117,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 				return;
 			}
 
-			if (getBoardFace().isJustInitialized()){
+//			if (getBoardFace().isJustInitialized()){
 				adjustBoardForGame();
-			} else {
-				onGameRefresh();
-			}
+//			} else {
+//				onGameRefresh();
+//			}
 			checkMessages();
 		}
 	}
@@ -1211,7 +1201,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 	private void widgetsInit(View view) {
 
-		controlsNetworkView = (ControlsNetworkView) view.findViewById(R.id.controlsNetworkView);
+		controlsDailyView = (ControlsDailyView) view.findViewById(R.id.controlsNetworkView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
@@ -1229,13 +1219,13 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			labelsConfig.bottomAvatar = userAvatarDrawable;
 		}
 
-		controlsNetworkView.enableGameControls(false);
+		controlsDailyView.enableGameControls(false);
 
 		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsNetworkView);
+		boardView.setControlsView(controlsDailyView);
 		boardView.setNotationsView(notationsView);
 
 		setBoardView(boardView);

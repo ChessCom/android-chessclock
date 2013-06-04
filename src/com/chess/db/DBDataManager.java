@@ -120,7 +120,8 @@ public class DBDataManager {
 			DBConstants.V_ID,
 			DBConstants.V_GAME_TYPE,
 			DBConstants.V_GAME_RESULT,
-			DBConstants.V_OPPONENT_NAME
+			DBConstants.V_OPPONENT_NAME,
+			DBConstants.V_OPPONENT_RATING
 	};
 
 	public static final String[] PROJECTION_ECHESS_DRAW_OFFERED = new String[] {
@@ -176,7 +177,7 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.ECHESS_ONLINE_GAMES],
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.DAILY_ONLINE_GAMES],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
@@ -190,7 +191,7 @@ public class DBDataManager {
 		arguments2[0] = userName;
 		arguments2[1] = String.valueOf(currentGame.getGameId());
 
-		Uri uri = DBConstants.uriArray[DBConstants.ECHESS_ONLINE_GAMES];
+		Uri uri = DBConstants.uriArray[DBConstants.DAILY_ONLINE_GAMES];
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_GAME_ID,
 				arguments2, null);
 		if (cursor.moveToFirst()) {
@@ -215,7 +216,7 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Uri uri = DBConstants.uriArray[DBConstants.ECHESS_CURRENT_LIST_GAMES];
+		Uri uri = DBConstants.uriArray[DBConstants.DAILY_CURRENT_LIST_GAMES];
 		long[] gamesIds;
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER, arguments1, null);
 		if (cursor.moveToFirst()) {
@@ -263,7 +264,7 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Uri uri = DBConstants.uriArray[DBConstants.ECHESS_FINISHED_LIST_GAMES];
+		Uri uri = DBConstants.uriArray[DBConstants.DAILY_FINISHED_LIST_GAMES];
 		long[] gamesIds;
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER, arguments1, null);
 		if (cursor.moveToFirst()) {
@@ -1022,7 +1023,7 @@ public class DBDataManager {
 		arguments2[0] = userName;
 		arguments2[1] = String.valueOf(gameId);
 
-		Cursor cursor = resolver.query(DBConstants.uriArray[DBConstants.ECHESS_ONLINE_GAMES],
+		Cursor cursor = resolver.query(DBConstants.uriArray[DBConstants.DAILY_ONLINE_GAMES],
 				PROJECTION_ECHESS_DRAW_OFFERED, SELECTION_USER_OFFERED_DRAW, arguments2, null);
 		return cursor.moveToFirst() && getInt(cursor, DBConstants.V_USER_OFFERED_DRAW) > 0;
 	}

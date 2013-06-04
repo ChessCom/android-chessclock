@@ -63,9 +63,9 @@ public class DBConstants {
     // uri paths
     public static final int TACTICS_BATCH = 0;
     public static final int TACTICS_RESULTS = 1;
-    public static final int ECHESS_FINISHED_LIST_GAMES = 2;
-    public static final int ECHESS_CURRENT_LIST_GAMES = 3;
-    public static final int ECHESS_ONLINE_GAMES = 4;
+    public static final int DAILY_FINISHED_LIST_GAMES = 2;
+    public static final int DAILY_CURRENT_LIST_GAMES = 3;
+    public static final int DAILY_ONLINE_GAMES = 4;
     public static final int FRIENDS = 5;
 
     public static final int ARTICLES = 6;
@@ -209,8 +209,8 @@ public class DBConstants {
             + V_PROBLEM_RATING      	+ _INT_NOT_NULL + _CLOSE;
 
 
-    static final String ECHESS_FINISHED_LIST_GAMES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[ECHESS_FINISHED_LIST_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+    static final String DAILY_FINISHED_LIST_GAMES_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[DAILY_FINISHED_LIST_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
 			+ V_ID 				    		+ _LONG_NOT_NULL + _COMMA
 			+ V_COLOR 					    + _INT_NOT_NULL + _COMMA
@@ -223,8 +223,8 @@ public class DBConstants {
 			+ V_LAST_MOVE_TO_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
 			+ V_GAME_RESULT + _INT_NOT_NULL + _CLOSE;
 
-	static final String ECHESS_CURRENT_LIST_GAMES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[ECHESS_CURRENT_LIST_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+	static final String DAILY_CURRENT_LIST_GAMES_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[DAILY_CURRENT_LIST_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
 			+ V_ID 				    		+ _LONG_NOT_NULL + _COMMA
 			+ V_COLOR 					    + _INT_NOT_NULL + _COMMA
@@ -239,8 +239,8 @@ public class DBConstants {
 			+ V_IS_MY_TURN 	        		+ _INT_NOT_NULL + _COMMA
 			+ V_HAS_NEW_MESSAGE 			+ _INT_NOT_NULL + _CLOSE;
 
-	static final String ECHESS_ONLINE_GAMES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[ECHESS_ONLINE_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+	static final String DAILY_ONLINE_GAMES_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[DAILY_ONLINE_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_FINISHED 				+ _INT_NOT_NULL + _COMMA
 			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_ID 						+ _LONG_NOT_NULL + _COMMA

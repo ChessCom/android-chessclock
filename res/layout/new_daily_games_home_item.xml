@@ -13,8 +13,8 @@
     android:paddingBottom="8dip"
     >
 
-    <FrameLayout
-        android:id="@+id/playerImgFrame"
+    <com.chess.backend.image_load.ProgressImageView
+        android:id="@+id/playerImg"
         android:layout_width="@dimen/daily_list_item_image_size"
         android:layout_height="@dimen/daily_list_item_image_size"
         android:background="@drawable/img_profile_picture_stub"
@@ -27,7 +27,7 @@
         android:layout_height="@dimen/video_thumb_size"
         android:background="@drawable/img_tactics_board"
         android:layout_marginRight="@dimen/default_scr_side_padding"
-        android:layout_toRightOf="@id/playerImgFrame"
+        android:layout_toRightOf="@id/playerImg"
         />
 
 

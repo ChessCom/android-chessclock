@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class LoadCountryFlagsTask extends AbstractUpdateTask<CountryItem, Void> {
 
 	public LoadCountryFlagsTask(TaskUpdateInterface<CountryItem> taskUpdateInterface){
-		super(taskUpdateInterface);
+		super(taskUpdateInterface, new ArrayList<CountryItem>());
 	}
 
 	@Override
@@ -27,7 +27,6 @@ public class LoadCountryFlagsTask extends AbstractUpdateTask<CountryItem, Void> 
 		String[] names = resources.getStringArray(R.array.new_countries);
 		String[] codes = resources.getStringArray(R.array.new_countries_codes);
 
-		itemList = new ArrayList<CountryItem>();
 		for (int i = 0; i < names.length; i++) {
 			String name = names[i];
 			String description = codes[i];

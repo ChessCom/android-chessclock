@@ -15,11 +15,21 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	private static final String TAG = "AbstractUpdateTask";
 	private TaskUpdateInterface<ItemType> taskFace; // SoftReferences & WeakReferences are not reliable, because they become killed even at the same activity and task become unfinished
 	protected ItemType item;
-	protected List<ItemType> itemList;
+	protected final List<ItemType> itemList;
 	protected boolean useList;
 	protected int result;
 
 	public AbstractUpdateTask(TaskUpdateInterface<ItemType> taskFace) {
+		init(taskFace);
+		this.itemList = null;
+	}
+
+	public AbstractUpdateTask(TaskUpdateInterface<ItemType> taskFace, List<ItemType> itemList) {
+		init(taskFace);
+		this.itemList = itemList;
+	}
+
+	private void init(TaskUpdateInterface<ItemType> taskFace) {
 		if (taskFace == null || taskFace.getMeContext() == null){ // we may start task right after another but listener at this time will be already killed
 			cancel(true);
 			Log.e(TAG, "TaskFace is null, not running task");

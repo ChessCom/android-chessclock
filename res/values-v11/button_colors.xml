@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--<color name="rect_button_overlay_p">#33000000</color>-->
+    <color name="rect_button_overlay_p_dark">#33000000</color>
     <color name="rect_button_overlay_p">#11000000</color>
     <color name="rect_button_overlay_c">#12000000</color> <!--Good!-->
 </resources>

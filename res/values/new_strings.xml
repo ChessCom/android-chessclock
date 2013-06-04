@@ -212,6 +212,9 @@
     <string name="tactics_and_puzzles"><![CDATA[Tactics & Puzzles]]></string>
     <string name="rematch_computer">Rematch Computer</string>
     <string name="add">Add</string>
+    <string name="archive">Archive</string>
+    <string name="completed">Completed</string>
+    <string name="few_minutes">a few minutes</string>
     <!--Game mode-->
 
 </resources>

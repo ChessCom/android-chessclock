@@ -12,6 +12,7 @@ import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,34 +24,35 @@ public class SaveArticlesListTask extends AbstractUpdateTask<ArticleItem.Data, L
 
 	public SaveArticlesListTask(TaskUpdateInterface<ArticleItem.Data> taskFace, List<ArticleItem.Data> currentItems,
 								ContentResolver resolver) {
-        super(taskFace);
-		this.itemList = currentItems;
+        super(taskFace, new ArrayList<ArticleItem.Data>());
+		this.itemList.addAll(currentItems);
+
 		this.contentResolver = resolver;
 	}
 
-
 	@Override
     protected Integer doTheTask(Long... ids) {
+		synchronized (itemList) {
+			for (ArticleItem.Data currentItem : itemList) {
+				final String[] arguments2 = arguments;
+				arguments2[0] = String.valueOf(currentItem.getId());
 
-		for (ArticleItem.Data currentItem : itemList) {
-			final String[] arguments2 = arguments;
-			arguments2[0] = String.valueOf(currentItem.getId());
+				// TODO implement beginTransaction logic for performance increase
+				Uri uri = DBConstants.uriArray[DBConstants.ARTICLES];
 
-			// TODO implement beginTransaction logic for performance increase
-			Uri uri = DBConstants.uriArray[DBConstants.ARTICLES];
+				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ARTICLE_ID,
+						DBDataManager.SELECTION_ARTICLE_ID, arguments2, null);
 
-			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ARTICLE_ID,
-					DBDataManager.SELECTION_ARTICLE_ID, arguments2, null);
+				ContentValues values = DBDataManager.putArticleItemToValues(currentItem);
 
-			ContentValues values = DBDataManager.putArticleItemToValues(currentItem);
+				if (cursor.moveToFirst()) {
+					contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+				} else {
+					contentResolver.insert(uri, values);
+				}
 
-			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
-			} else {
-				contentResolver.insert(uri, values);
+				cursor.close();
 			}
-
-			cursor.close();
 		}
 
         result = StaticData.RESULT_OK;

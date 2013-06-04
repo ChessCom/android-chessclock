@@ -16,46 +16,60 @@ import com.chess.db.DBDataManager;
 import java.util.List;
 
 
-//public class SaveDailyFinishedGamesListTask extends AbstractUpdateTask<GameListFinishedItem, Long> {
-//public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<GameListFinishedItem> {
 public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<DailyFinishedGameData> {
 
 	public SaveDailyFinishedGamesListTask(TaskUpdateInterface<DailyFinishedGameData> taskFace,
 										  List<DailyFinishedGameData> finishedItems, ContentResolver resolver) {
-        super(taskFace, finishedItems, resolver);
-    }
+		super(taskFace, finishedItems, resolver);
+	}
 
 	@Override
-    protected Integer doTheTask(Long... ids) {
+	protected Integer doTheTask(Long... ids) {
 		Context context = getTaskFace().getMeContext();
 		String userName = AppData.getUserName(context);
 
-		for (DailyFinishedGameData finishedItem : itemList) {
+		synchronized (itemList) {
+//			try {
+//				while (saving) {
+//					Thread.sleep(100);
+//					itemList.wait();
+//				}
+//
+//				saving = true;
+				for (DailyFinishedGameData finishedItem : itemList) {
 
-			final String[] arguments2 = arguments;
-			arguments2[0] = String.valueOf(userName);
-			arguments2[1] = String.valueOf(finishedItem.getGameId()); // Test
+					final String[] arguments2 = arguments;
+					arguments2[0] = String.valueOf(userName);
+					arguments2[1] = String.valueOf(finishedItem.getGameId()); // Test
 
-			Uri uri = DBConstants.uriArray[DBConstants.ECHESS_FINISHED_LIST_GAMES];
-			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
-					DBDataManager.SELECTION_GAME_ID, arguments2, null);
+					Uri uri = DBConstants.uriArray[DBConstants.DAILY_FINISHED_LIST_GAMES];
+//					Log.d("TEST", " save FINISHED , game id = " + finishedItem.getGameId() + " user = " + userName);
+					final Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
+							DBDataManager.SELECTION_GAME_ID, arguments2, null);
 
-			ContentValues values = DBDataManager.putEchessFinishedListGameToValues(finishedItem, userName);
+					ContentValues values = DBDataManager.putEchessFinishedListGameToValues(finishedItem, userName);
 
-			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
-			} else {
-				contentResolver.insert(uri, values);
-			}
+					if (cursor.moveToFirst()) {
+//						Log.d("TEST", " update FINISHED , game id = " + finishedItem.getGameId() + " user = " + userName);
+						contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+					} else {
+//						Log.d("TEST", " insert FINISHED , game id = " + finishedItem.getGameId() + " user = " + userName);
+						contentResolver.insert(uri, values);
+					}
 
-			cursor.close();
+					cursor.close();
 
-			updateOnlineGame(finishedItem.getGameId(), userName);
+					updateOnlineGame(finishedItem.getGameId(), userName);
+				}
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//			saving = false;
+//			itemList.notifyAll();
 		}
+		result = StaticData.RESULT_OK;
 
-        result = StaticData.RESULT_OK;
-
-        return result;
-    }
+		return result;
+	}
 
 }

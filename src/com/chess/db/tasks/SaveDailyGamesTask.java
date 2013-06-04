@@ -8,6 +8,7 @@ import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SaveDailyGamesTask<T extends DailyGameBaseData> extends AbstractUpdateTask<T , Long> {
@@ -17,9 +18,13 @@ public abstract class SaveDailyGamesTask<T extends DailyGameBaseData> extends Ab
 	protected ContentResolver contentResolver;
 	protected static String[] arguments = new String[2];
 
+//	protected boolean saving;
+
+
 	public SaveDailyGamesTask(TaskUpdateInterface<T> taskFace, List<T> currentItems, ContentResolver resolver) {
-		super(taskFace);
-		itemList = currentItems;
+		super(taskFace, new ArrayList<T>());
+		this.itemList.addAll(currentItems);
+
 		this.contentResolver = resolver;
 		loadItem = new LoadItem();
 

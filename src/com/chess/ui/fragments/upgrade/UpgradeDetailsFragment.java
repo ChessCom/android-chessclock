@@ -533,7 +533,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_PAYLOAD);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
-		loadItem.addRequestParams(RestHelper.P_PRODUCT_SKU, itemId);
+		loadItem.addRequestParams(RestHelper.P_RELOAD, RestHelper.V_TRUE);
 
 		new RequestJsonTask<PayloadItem>(new GetPayloadListener(itemId)).executeTask(loadItem);
 	}

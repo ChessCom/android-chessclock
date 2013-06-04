@@ -46,7 +46,6 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		menuItems.add(new SettingsMenuItem(R.string.tactics, R.string.ic_help));
 		menuItems.add(new SettingsMenuItem(R.string.lessons, R.string.ic_lessons));
 		menuItems.add(new SettingsMenuItem(R.string.theme, R.string.ic_theme));
-		menuItems.add(new SettingsMenuItem(R.string.profile, R.string.ic_info));
 		menuItems.add(new SettingsMenuItem(R.string.privacy, R.string.ic_settings));
 		menuItems.add(new SettingsMenuItem(R.string.blocking, R.string.ic_blocking));
 		menuItems.add(new SettingsMenuItem(R.string.tracking, R.string.ic_challenge_friend));

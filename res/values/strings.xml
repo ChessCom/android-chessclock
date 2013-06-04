@@ -243,8 +243,10 @@
 
     <string name="random">Random</string> <!--Player Color pick selector-->
     <string name="won">won</string> <!--Game results stats-->
+    <string name="win">Win</string> <!--Game results stats-->
     <string name="lost">lost</string> <!--Game results stats-->
-    <string name="draw">draw</string> <!--Game results stats-->
+    <string name="loss">Loss</string> <!--Game results stats-->
+    <string name="draw">Draw</string> <!--Game results stats-->
 
     <!--Sign In/ Sign Up-->
     <string name="register">Register</string>

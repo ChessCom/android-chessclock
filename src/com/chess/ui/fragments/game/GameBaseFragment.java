@@ -130,16 +130,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 	@Override
 	public abstract String getBlackPlayerName();
 
-	protected void updatePlayerDots(boolean whitePlayerMove){
-//		if (whitePlayerMove) {
-//			whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(R.drawable.player_indicator_white, 0, 0, 0);
-//			blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-//		} else {
-//			whitePlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-//			blackPlayerLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.player_indicator_black, 0);
-//		}
-	}
-
 	protected void enableScreenLockTimer() {
 		// set touches listener to chessboard. If user don't do any moves, screen will automatically turn off after WAKE_SCREEN_TIMEOUT time
 		boardView.enableTouchTimer();

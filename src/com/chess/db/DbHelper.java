@@ -6,18 +6,33 @@ import com.chess.backend.statics.AppData;
 
 public class DbHelper {
 
+	public static QueryParams getAllByUri(int uriCode){
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DBConstants.uriArray[uriCode]);
+//		queryParams.setSelection(DBDataManager.SELECTION_USER);
+//		queryParams.setArguments(new String[]{"erik"});
+		return queryParams;
+	}
+
+	public static QueryParams getDailyCurrentListGamesParams(){
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_LIST_GAMES]);
+		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_LIST_GAMES);
+		return queryParams;
+	}
+
 	public static QueryParams getDailyCurrentMyListGamesParams(Context context){
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.ECHESS_CURRENT_LIST_GAMES]);
-//		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_LIST_GAMES);
-//		queryParams.setSelection(DBDataManager.SELECTION_USER_TURN);
-//		queryParams.setArguments(new String[]{AppData.getUserName(context), RestHelper.V_TRUE});
+		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_LIST_GAMES]);
+		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_LIST_GAMES);
+		queryParams.setSelection(DBDataManager.SELECTION_USER_TURN);
+		queryParams.setArguments(new String[]{AppData.getUserName(context), RestHelper.V_TRUE});
 		return queryParams;
 	}
 
 	public static QueryParams getDailyCurrentTheirListGamesParams(Context context){
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.ECHESS_CURRENT_LIST_GAMES]);
+		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_LIST_GAMES]);
 		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_LIST_GAMES);
 		queryParams.setSelection(DBDataManager.SELECTION_USER_TURN);
 		queryParams.setArguments(new String[]{AppData.getUserName(context), RestHelper.V_FALSE});
@@ -26,7 +41,7 @@ public class DbHelper {
 
 	public static QueryParams getEchessFinishedListGamesParams(Context context){
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.ECHESS_FINISHED_LIST_GAMES]);
+		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_FINISHED_LIST_GAMES]);
 		queryParams.setProjection(DBDataManager.PROJECTION_FINISHED_LIST_GAMES);
 		queryParams.setSelection(DBDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{AppData.getUserName(context)});
@@ -35,7 +50,7 @@ public class DbHelper {
 
 	public static QueryParams getEchessGameParams(Context context, long gameId){
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.ECHESS_ONLINE_GAMES]);
+		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_ONLINE_GAMES]);
 		queryParams.setSelection(DBDataManager.SELECTION_GAME_ID);
 		queryParams.setArguments(new String[]{AppData.getUserName(context), String.valueOf(gameId)});
 		return queryParams;

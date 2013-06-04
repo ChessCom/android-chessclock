@@ -58,8 +58,6 @@ public class RestHelper {
 	private static final String API_V3 = API + "/v3";
 	private static final String API_V4 = API + "/v4";
 	private static final String API_V5 = API + "/v5";
-	private static final String USERS = "/users";
-	private static final String GAMES = "/games";
 
 	/*Google Cloud Messaging API part*/
 	public static final String GCM_BASE_URL = BASE_URL + "/api/gcm";
@@ -85,14 +83,14 @@ public class RestHelper {
 
 	/* Methods */
 		/*Users*/
-	public static final String CMD_USERS = BASE_URL + V1 + USERS;
+	public static final String CMD_USERS = BASE_URL + V1 + "/users";
 	public static final String CMD_LOGIN = CMD_USERS + "/login";
 	public static final String CMD_GCM = CMD_USERS + "/gcm";
 	public static final String CMD_USER_STATS = CMD_USERS + "/stats";
 	public static final String CMD_USER_PROFILE= CMD_USERS + "/profile";
 
 	/*Games*/
-	public static final String CMD_GAMES = BASE_URL + V1 + GAMES;
+	public static final String CMD_GAMES = BASE_URL + V1 + "/games";
 	public static final String CMD_GAMES_ALL = CMD_GAMES + "/all";
 	public static final String CMD_GAMES_CHALLENGES = CMD_GAMES + "/challenges";
 	public static final String CMD_VACATIONS = CMD_GAMES + "/vacations";
@@ -170,7 +168,7 @@ public class RestHelper {
 	public static final String P_IS_RATED = "isRated";
 	public static final String P_GAME_TYPE = "gameTypeCodeId";
 	public static final String P_GAME_ID = "gameId";
-	public static final String P_PRODUCT_SKU = "productSku";
+	public static final String P_RELOAD = "reload";
 
 	public static final String P_UID = "uid";
 	public static final String P_LOCATION = "location";
@@ -466,11 +464,6 @@ message				false	Only used for `CHAT` command.
 
 					resultString = resultString.substring(firstIndex, lastIndex + 1);
 
-					// TODO remove hardcode!!!
-					if (resultString.contains("\"challenges\":[[]]")) {
-						resultString = resultString.replace("\"challenges\":[[]]", "\"challenges\":[]");
-					}
-
 					Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
 				} else {
 					Log.d(TAG, "ERROR -> WebRequest SERVER RESPONSE: " + resultString);
@@ -582,7 +575,7 @@ message				false	Only used for `CHAT` command.
 
 	private static void submitPostData(URLConnection connection, LoadItem loadItem) throws IOException {
 		String query = formPostData(loadItem);
-		Log.d("RequestJsonTask", " POST: " + query);
+		Log.d(TAG, " POST: " + query);
 		String charset = HTTP.UTF_8;
 		connection.setDoOutput(true); // Triggers POST.
 		OutputStream output = null;
@@ -595,7 +588,7 @@ message				false	Only used for `CHAT` command.
 					try {
 						output.close();
 					} catch (IOException ex) {
-						Log.e("RequestJsonTask", "Error while submiting POST data " + ex.toString());
+						Log.e(TAG, "Error while submiting POST data " + ex.toString());
 					}
 				}
 			}

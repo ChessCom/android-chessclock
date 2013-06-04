@@ -17,6 +17,7 @@ import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,45 +30,47 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 
 	public SaveFriendsListTask(TaskUpdateInterface<FriendsItem.Data> taskFace, List<FriendsItem.Data> currentItems,
 							   ContentResolver resolver) {
-        super(taskFace);
-		this.itemList = currentItems;
+		super(taskFace, new ArrayList<FriendsItem.Data>());
+		this.itemList.addAll(currentItems);
+
 		this.contentResolver = resolver;
 		loadItem = new LoadItem();
 	}
 
 
 	@Override
-    protected Integer doTheTask(Long... ids) {
+	protected Integer doTheTask(Long... ids) {
 		Context context = getTaskFace().getMeContext();
 		String userName = AppData.getUserName(context);
 		String userToken = AppData.getUserToken(context);
 
-		for (FriendsItem.Data currentItem : itemList) { // if
-			final String[] arguments2 = arguments;
-			arguments2[0] = String.valueOf(userName);
-			arguments2[1] = String.valueOf(currentItem.getUserId());
+		synchronized (itemList) {
+			for (FriendsItem.Data currentItem : itemList) { // if
+				final String[] arguments2 = arguments;
+				arguments2[0] = String.valueOf(userName);
+				arguments2[1] = String.valueOf(currentItem.getUserId());
 
-			// TODO implement beginTransaction logic for performance increase
-			Uri uri = DBConstants.uriArray[DBConstants.FRIENDS];
-			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_USER_ID, DBDataManager.SELECTION_USER_ID, arguments2, null);
+				// TODO implement beginTransaction logic for performance increase
+				Uri uri = DBConstants.uriArray[DBConstants.FRIENDS];
+				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_USER_ID, DBDataManager.SELECTION_USER_ID, arguments2, null);
 
-			ContentValues values = DBDataManager.putFriendItemToValues(currentItem, userName);
+				ContentValues values = DBDataManager.putFriendItemToValues(currentItem, userName);
 
-			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
-			} else {
-				contentResolver.insert(uri, values);
+				if (cursor.moveToFirst()) {
+					contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+				} else {
+					contentResolver.insert(uri, values);
+				}
+
+				cursor.close();
+
+				updateFriends(currentItem.getUserId(), userName, userToken);
 			}
-
-			cursor.close();
-
-			updateFriends(currentItem.getUserId(), userName, userToken);
 		}
+		result = StaticData.RESULT_OK;
 
-        result = StaticData.RESULT_OK;
-
-        return result;
-    }
+		return result;
+	}
 
 	private void updateFriends(long userId, String userName, String userToken) {
 		loadItem.setLoadPath(RestHelper.CMD_USERS);

@@ -145,8 +145,12 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		if(HONEYCOMB_PLUS_API){
 			// Get the SearchView and set the searchable configuration
 			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-			SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+			MenuItem menuItem = menu.findItem(R.id.menu_search);
+			if (menuItem != null) {
+				SearchView searchView = (SearchView) menuItem.getActionView();
+				if (searchView != null)
+					searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+			}
 		}
 		return super.onCreateOptionsMenu(menu);
 	}

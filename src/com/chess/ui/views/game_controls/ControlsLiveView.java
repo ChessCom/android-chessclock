@@ -44,7 +44,7 @@ public class ControlsLiveView extends ControlsBaseView {
 		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
 
 		addActionButton(CLOSE, R.string.ic_close, R.style.Rect_Bottom_Left);
-		addActionButton(MAKE_MOVE, R.string.ic_arrow_right, R.style.Rect_Bottom_Right_Orange);
+		addActionButton(MAKE_MOVE, R.string.ic_check, R.style.Rect_Bottom_Right_Orange);
 
 		addView(controlsLayout);
 	}

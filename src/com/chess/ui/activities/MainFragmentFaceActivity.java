@@ -173,17 +173,24 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	private SlidingMenu.OnOpenedListener openMenuListener = new SlidingMenu.OnOpenedListener() {
 		@Override
-		public void onOpened() {
-			for (SlidingMenu.OnOpenedListener openedListener : openMenuListeners) { // Inform listeners inside fragments
-				openedListener.onOpened();
-			}
+		public void onOpened() { // Don't remove reuse later
+//			for (SlidingMenu.OnOpenedListener openedListener : openMenuListeners) { // Inform listeners inside fragments
+//				openedListener.onOpened();
+//			}
 
 			if (slidingMenu.isSecondaryMenuShowing()) {
+				for (SlidingMenu.OnOpenedListener openedListener : openMenuListeners) { // Inform listeners inside fragments
+					openedListener.onOpenedRight();
+				}
 //				showToast("Right");
 			} else {
 //				showToast("Left");
 			}
 
+		}
+
+		@Override
+		public void onOpenedRight() {
 		}
 	};
 
@@ -215,6 +222,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				.commit();
 		sm.setSecondaryShadowDrawable(R.drawable.defaultshadowright);
 		sm.setShadowDrawable(R.drawable.defaultshadow);
+		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 
 	@Override
@@ -358,11 +366,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		getActionBarHelper().setBadgeValueForId(menuId, value);
 	}
 
-	@Override
-	public void setBadgeValueForId(int menuId, int value, Menu menu) {
-		badgeItems.put(menuId, value);
-		getActionBarHelper().setBadgeValueForId(menuId, value, menu);
-	}
+//	@Override
+//	public void setBadgeValueForId(int menuId, int value, Menu menu) {
+//		badgeItems.put(menuId, value);
+//		getActionBarHelper().setBadgeValueForId(menuId, value, menu);
+//	}
 
 	@Override
 	public CoreActivityActionBar getActionBarActivity() {

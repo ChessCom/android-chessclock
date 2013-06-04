@@ -1,6 +1,5 @@
 package com.chess.ui.fragments.daily;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.GetAndSaveUserStats;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
@@ -31,7 +29,7 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
+//		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class)); // TODO adjust properly
 	}
 
 	@Override
@@ -109,21 +107,6 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 		transaction.addToBackStack(fragment.getClass().getSimpleName());
 		transaction.commit();
 	}
-
-//	@Override
-//	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {   // Should be called to enable OptionsMenu handle
-//		super.onCreateOptionsMenu(menu, inflater);
-//	}
-//
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//			case R.id.menu_games:
-//				getActivityFace().toggleRightMenu();
-//				break;
-//		}
-//		return true;
-//	}
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {

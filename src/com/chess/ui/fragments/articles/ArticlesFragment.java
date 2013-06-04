@@ -93,7 +93,6 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
-		listView.setAdapter(sectionedAdapter);
 
 		getActivityFace().showActionMenu(R.id.menu_search, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
@@ -122,13 +121,16 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			if (haveSavedData) {
 				loadFromDb();
 			}
+		} else {
+			loadCategoriesFromDB();
+			loadFromDb();
 		}
 	}
 
 	private void loadCategoriesFromDB() {
 		// show list of categories
 		Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.ARTICLE_CATEGORIES], null, null, null, null);
-		List<String> list = new ArrayList<String>();
+		final List<String> list = new ArrayList<String>();
 		if (!cursor.moveToFirst()) {
 			return;
 		}
@@ -139,6 +141,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 		categoriesAdapter.setItemsList(list);
 		sectionedAdapter.notifyDataSetChanged();
+		listView.setAdapter(sectionedAdapter);
 	}
 
 	private void init() {

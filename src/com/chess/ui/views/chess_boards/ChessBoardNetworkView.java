@@ -12,7 +12,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.BoardViewNetworkFace;
 import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.interfaces.GameNetworkActivityFace;
-import com.chess.ui.views.game_controls.ControlsNetworkView;
+import com.chess.ui.views.game_controls.ControlsDailyView;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -227,7 +227,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		blackUserName = blackPlayerName.substring(0, blackPlayerName.indexOf(StaticData.SYMBOL_LEFT_PAR)).trim().toLowerCase();
 	}
 
-	public void setControlsView(ControlsNetworkView controlsView) {
+	public void setControlsView(ControlsDailyView controlsView) {
 		super.setControlsView(controlsView);
 
 

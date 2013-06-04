@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.chess.RelLayout
+
+<com.chess.LinLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     style="@style/ListItem"
     android:gravity="center_vertical"
-    android:paddingRight="10dip"
     >
 
     <com.chess.backend.image_load.ProgressImageView
@@ -19,40 +20,46 @@
         android:layout_marginRight="10dip"
         android:src="@drawable/img_profile_picture_stub"
         android:contentDescription="@string/image"
-        android:layout_centerVertical="true"
         />
 
-    <TextView
+    <com.chess.RoboTextView
         android:id="@+id/playerNameTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/new_text_blue"
+        android:gravity="center_vertical"
+        android:text="test"
+        custom:ttf="Bold"
+        />
+
+    <ImageView
+        android:id="@+id/premiumImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/image"
+        android:src="@drawable/ic_upgrade_diamond"
+        android:layout_marginLeft="8dip"
+        android:layout_marginRight="4dip"
+        />
+
+    <com.chess.RoboTextView
+        android:id="@+id/ratingTxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/new_normal_grey"
+        android:gravity="center_vertical"
+        android:text=""
+        />
+
+    <com.chess.RoboTextView
+        android:id="@+id/gameResultTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textColor="@color/new_light_grey"
-        android:layout_toRightOf="@id/playerImg"
-        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:text="test"
+        android:paddingRight="15dip"
         />
 
-
-    <com.chess.RoboTextView
-        android:id="@+id/cancelBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ic_close"
-        android:layout_toLeftOf="@+id/acceptBtn"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="10dip"
-        style="@style/GlyphIcon.Big"
-        android:textColor="@color/text_controls_icons"
-        />
-
-    <com.chess.RoboTextView
-        android:id="@id/acceptBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ic_check"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        style="@style/GlyphIcon.Big"
-        android:textColor="@color/text_controls_icons"
-        />
-
-</com.chess.RelLayout>
+</com.chess.LinLayout>

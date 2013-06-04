@@ -79,7 +79,7 @@
         custom:oneLine="@bool/one_line_for_board"
         />
 
-    <com.chess.ui.views.game_controls.ControlsNetworkView
+    <com.chess.ui.views.game_controls.ControlsDailyView
         android:id="@+id/controlsNetworkView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

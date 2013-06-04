@@ -54,6 +54,7 @@
 
 
     <dimen name="list_item_image_size">26dip</dimen>
+    <dimen name="list_item_image_size_big">35dip</dimen>
  	<dimen name="list_item_stroke_width">1px</dimen>
  	
 

@@ -32,7 +32,7 @@ import com.chess.model.GameOnlineItem;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.DailyChallengesGamesAdapter;
-import com.chess.ui.adapters.DailyCurrentGamesMyCursorAdapter;
+import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -58,7 +58,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	private OnlineUpdateListener challengeInviteUpdateListener;
 	private OnlineUpdateListener acceptDrawUpdateListener;
 	private LoadItem selectedLoadItem;
-	private DailyCurrentGamesMyCursorAdapter currentGamesCursorAdapter;
+	private DailyCurrentGamesCursorAdapter currentGamesCursorAdapter;
 	private DailyChallengesGamesAdapter challengesGamesAdapter;
 	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
 	private CustomSectionedAdapter sectionedAdapter;
@@ -91,7 +91,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_daily_challenge_game_item);
 
 		challengesGamesAdapter = new DailyChallengesGamesAdapter(this, null);
-		currentGamesCursorAdapter = new DailyCurrentGamesMyCursorAdapter(getContext(), null);
+		currentGamesCursorAdapter = new DailyCurrentGamesCursorAdapter(getContext(), null);
 		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null);
 
 		sectionedAdapter.addSection(getString(R.string.current_games), currentGamesCursorAdapter);

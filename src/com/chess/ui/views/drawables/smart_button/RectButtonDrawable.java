@@ -35,6 +35,8 @@ public class RectButtonDrawable extends ButtonDrawable {
 	static final int BOTTOM_RIGHT = 8;
 
 	static final int LIST_ITEM = 9;
+	static final int LIST_ITEM_HEADER_DARK = 10;
+	static final int LIST_ITEM_HEADER_TOP = 11;
 
 	int rectPosition = DEF_VALUE;
 
@@ -89,11 +91,15 @@ public class RectButtonDrawable extends ButtonDrawable {
 		int selectedOverlay = resources.getColor(R.color.default_button_overlay_s);
 		int checkedOverlay = resources.getColor(R.color.rect_button_overlay_c);
 
+		if (isCheckable()) {
+			pressedOverlay = resources.getColor(R.color.rect_button_overlay_p_dark);
+		}
+
 		pressedFilter = new PorterDuffColorFilter(pressedOverlay, PorterDuff.Mode.DARKEN);
 		selectedFilter = new PorterDuffColorFilter(selectedOverlay, PorterDuff.Mode.DARKEN);
 		checkedFilter = new PorterDuffColorFilter(checkedOverlay, PorterDuff.Mode.DARKEN);
 
-		if (isCheckable()){
+		if (isCheckable()) {
 			enabledFilter = checkedFilter;
 			checkedFilter = null;
 		} else {
@@ -212,6 +218,7 @@ public class RectButtonDrawable extends ButtonDrawable {
 				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset, height + edgeOffset);
 				break;
 			case LIST_ITEM:
+			case LIST_ITEM_HEADER_DARK:
 				int width1 = canvas.getWidth();  // use full screen width to make backward compatibility
 				enabledDrawable.setBounds(-edgeOffset, -edgeOffset/2, width1 + edgeOffset, height);
 				break;

@@ -8,8 +8,6 @@
     android:layout_height="match_parent"
     >
 
-
-
     <com.chess.ui.views.NotationView
         android:id="@+id/notationsView"
         android:layout_width="match_parent"

@@ -55,9 +55,9 @@ public class DBDataProvider extends ContentProvider {
 	private static String[] createTablesArray = new String[]{
 			DBConstants.TACTICS_BATCH_TABLE_CREATE,
 			DBConstants.TACTICS_RESULTS_TABLE_CREATE,
-			DBConstants.ECHESS_FINISHED_LIST_GAMES_CREATE,
-			DBConstants.ECHESS_CURRENT_LIST_GAMES_CREATE,
-			DBConstants.ECHESS_ONLINE_GAMES_CREATE,
+			DBConstants.DAILY_FINISHED_LIST_GAMES_CREATE,
+			DBConstants.DAILY_CURRENT_LIST_GAMES_CREATE,
+			DBConstants.DAILY_ONLINE_GAMES_CREATE,
 
 			DBConstants.FRIENDS_CREATE,
 
