@@ -55,9 +55,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 
-	private int successToastMsgId;
-
-
 	private OnlineUpdateListener challengeInviteUpdateListener;
 	private OnlineUpdateListener acceptDrawUpdateListener;
 
@@ -210,7 +207,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				public void run() {
 					getActivityFace().toggleRightMenu();
 				}
-			}, 100);
+			}, SIDE_MENU_DELAY);
 
 		}
 	}
@@ -309,7 +306,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 			switch (itemCode) {
 				case INVITE:
-					showToast(successToastMsgId);
 					DailyGamesFragment.this.updateData();
 					break;
 				case DRAW:

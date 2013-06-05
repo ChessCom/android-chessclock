@@ -1,5 +1,7 @@
 package com.chess.ui.engine.configs;
 
+import com.chess.backend.statics.AppConstants;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -18,6 +20,7 @@ public class NewCompGameConfig {
 		 * Create new Seek game with default values
 		 */
 		public Builder(){
+			mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
 			compDelay = 5;
 		}
 

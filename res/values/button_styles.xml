@@ -364,7 +364,7 @@
     <style name="ListItem.Header">
         <item name="btn_solid">@color/glassy_button</item>
 
-        <item name="android:minHeight">@dimen/new_daily_games_header_height</item>
+        <item name="android:minHeight">@dimen/default_header_height</item>
     </style>
 
     <style name="ListItem.Header.Light">

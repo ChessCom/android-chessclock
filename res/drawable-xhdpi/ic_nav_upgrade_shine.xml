@@ -11,7 +11,7 @@
                 android:startColor="@color/new_upgrade_menu_glow_1"
                 android:centerColor="@color/new_upgrade_menu_glow_2"
                 android:endColor="@color/new_upgrade_menu_glow_3"
-                android:gradientRadius="35"
+                android:gradientRadius="33"
                 android:type="radial" />
 
         </shape>

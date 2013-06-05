@@ -41,9 +41,11 @@ import com.chess.ui.fragments.CompGameSetupFragment;
 import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameNetworkActivityFace;
+import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
@@ -53,9 +55,8 @@ import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
-import quickaction.ActionItem;
-import quickaction.QuickAction;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -64,7 +65,7 @@ import java.util.Calendar;
  * Date: 15.01.13
  * Time: 13:45
  */
-public class GameDailyFragment extends GameBaseFragment implements GameNetworkActivityFace, QuickAction.OnActionItemClickListener {
+public class GameDailyFragment extends GameBaseFragment implements GameNetworkActivityFace, PopupListSelectionFace {
 
 	public static final String DOUBLE_SPACE = "  ";
 	private static final String DRAW_OFFER_TAG = "offer draw";
@@ -83,6 +84,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private static final int ID_EMAIL_GAME = 2;
 	private static final int ID_FLIP_BOARD = 3;
 	private static final int ID_SETTINGS = 4;
+	private static final String OPTION_SELECTION = "option select popup";
 
 	private GameOnlineUpdatesListener abortGameUpdateListener;
 	private GameOnlineUpdatesListener drawOfferedUpdateListener;
@@ -121,8 +123,9 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private BoardAvatarDrawable opponentAvatarDrawable;
 	private BoardAvatarDrawable userAvatarDrawable;
 	private LabelsConfig labelsConfig;
-	private QuickAction quickAction;
 	private boolean chat;
+	private ArrayList<String> optionsList;
+	private PopupOptionsMenuFragment optionsSelectFragment;
 
 	public static GameDailyFragment newInstance(long gameId) {
 		GameDailyFragment fragment = new GameDailyFragment();
@@ -229,22 +232,27 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	}
 
 	@Override
-	public void onItemClick(QuickAction source, int pos, int actionId) {
-		if (actionId == ID_NEW_GAME) {
+	public void valueSelected(int code) {
+		if (code == ID_NEW_GAME) {
 			getActivityFace().openFragment(new CompGameSetupFragment());
-		} else if (actionId == ID_OFFER_DRAW) {
+		} else if (code == ID_OFFER_DRAW) {
 			showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
-//				case ECHESS_RESIGN_OR_ABORT:
-//			showPopupDialog(R.string.abort_resign_game, R.string.are_you_sure_q, ABORT_GAME_TAG);
-		} else if (actionId == ID_FLIP_BOARD) {
+		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
-		} else if (actionId == ID_EMAIL_GAME) {
+		} else if (code == ID_EMAIL_GAME) {
 			sendPGN();
-		} else if (actionId == ID_SETTINGS) {
+		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(new SettingsFragment());
 		}
+
+		optionsSelectFragment.dismiss();
+		optionsSelectFragment = null;
 	}
 
+	@Override
+	public void dialogCanceled() {
+		optionsSelectFragment = null;
+	}
 
 	private class MoveUpdateReceiver extends BroadcastReceiver {
 		@Override
@@ -757,37 +765,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 	@Override
 	public void showOptions(View view) {
-		quickAction.show(view);
-		quickAction.setAnimStyle(QuickAction.ANIM_REFLECT);
-/*
-		Offer draw should be able only after the first move was made.
-		Also Abort should change to Resign after that.
-*/
-		userPlayWhite = currentGame.getWhiteUsername().toLowerCase()
-				.equals(AppData.getUserName(getActivity()));
-
-		boolean userMove = isUserMove();
-
-		if (getBoardFace().getHply() < 1 && userMove) {
-//			menuOptionsItems = new CharSequence[]{
-//					getString(R.string.settings),
-//					getString(R.string.messages),
-//					getString(R.string.email_game),
-//					getString(R.string.reside),
-//					getString(R.string.abort)};
-		} else {
-//			menuOptionsItems = new CharSequence[]{
-//					getString(R.string.settings),
-//					getString(R.string.messages),
-//					getString(R.string.email_game),
-//					getString(R.string.reside),
-//					getString(R.string.offer_draw),
-//					getString(R.string.resign)};
+		if (optionsSelectFragment != null) {
+			return;
 		}
-
-//		new AlertDialog.Builder(getActivity()) // TODO change with FragmentDialog
-//				.setTitle(R.string.options)
-//				.setItems(menuOptionsItems, menuOptionsDialogListener).show();
+		optionsSelectFragment = PopupOptionsMenuFragment.newInstance(this, optionsList);
+		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
 	}
 
 	@Override
@@ -797,75 +779,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			getBoardFace().setSubmit(false);
 		}
 	}
-
-//	@Override
-//	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//		inflater.inflate(R.menu.game_echess, menu); // TODO restore, recheck
-//		super.onCreateOptionsMenu(menu, inflater);
-//	}
-
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//			case R.id.menu_refresh:
-////				loadGameAndUpdate();
-//				updateGameState(gameId);
-//				break;
-////			case R.id.menu_next_game:
-////				newGame();
-////				break;
-////			case R.id.menu_options:
-////				showOptions();
-////				break;
-////			case R.id.menu_analysis:
-////				boardView.switchAnalysis();
-////				break;
-////			case R.id.menu_chat:
-////				openChatActivity();
-////				break;
-////			case R.id.menu_previous:
-////				boardView.moveBack();
-////				break;
-////			case R.id.menu_next:
-////				boardView.moveForward();
-////				break;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
-
-//	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
-//		private final int ECHESS_SETTINGS = 0;
-//		private final int ECHESS_MESSAGES = 1;
-//		private final int EMAIL_GAME = 2;
-//		private final int ECHESS_RESIDE = 3;
-//		private final int ECHESS_DRAW_OFFER = 4;
-//		private final int ECHESS_RESIGN_OR_ABORT = 5;
-//
-//		@Override
-//		public void onClick(DialogInterface dialogInterface, int i) {
-//			switch (i) {
-//				case ECHESS_SETTINGS:
-//					startActivity(new Intent(getContext(), SettingsScreenActivity.class));
-//					break;
-//				case ECHESS_MESSAGES:
-//					openChatActivity();
-//					break;
-//				case EMAIL_GAME:
-//					sendPGN();
-//					break;
-//				case ECHESS_RESIDE:
-//					getBoardFace().setReside(!getBoardFace().isReside());
-//					boardView.invalidate();
-//					break;
-//				case ECHESS_DRAW_OFFER:
-//					showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
-//					break;
-//				case ECHESS_RESIGN_OR_ABORT:
-//					showPopupDialog(R.string.abort_resign_game, R.string.are_you_sure_q, ABORT_GAME_TAG);
-//					break;
-//			}
-//		}
-//	}
 
 	private void sendPGN() {
 		CharSequence moves = getBoardFace().getMoveListSAN();
@@ -1135,21 +1048,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			if (isPaused)
-				return;
-
-			if (listenerCode == SEND_MOVE_UPDATE){
-				if (show) {
-					showPopupHardProgressDialog(R.string.sending_game_info);
-				} else {
-					dismissProgressDialog();
-				}
-			}
-		}
-
-		@Override
 		public void updateData(BaseResponseItem returnedObj) {
 			switch (listenerCode) {
 				case SEND_MOVE_UPDATE:
@@ -1240,14 +1138,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 		boardUpdateFilter = new IntentFilter(IntentConstants.BOARD_UPDATE);
 
-		{// Quick action setup
-			quickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
-
-			quickAction.addActionItem(new ActionItem(ID_NEW_GAME, getString(R.string.new_game)));
-			quickAction.addActionItem(new ActionItem(ID_EMAIL_GAME, getString(R.string.email_game)));
-			quickAction.addActionItem(new ActionItem(ID_SETTINGS, getString(R.string.settings)));
-
-			quickAction.setOnActionItemClickListener(this);
+		{// options list setup
+			optionsList = new ArrayList<String>();
+			optionsList.add( getString(R.string.new_game));
+			optionsList.add( getString(R.string.email_game));
+			optionsList.add(getString(R.string.settings));
 		}
 	}
 

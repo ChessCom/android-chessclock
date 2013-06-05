@@ -32,7 +32,7 @@
         >
         <shape >
             <solid android:color="@color/light_header_back" />
-            <size android:height="@dimen/new_daily_games_header_height"/>
+            <size android:height="@dimen/default_header_height"/>
         </shape>
     </item>
 

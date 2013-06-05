@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
-    <com.chess.ui.views.PanelInfoTacticsView
-        android:id="@+id/topPanelView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/new_tactics_panel_info_height"
-        />
-
     <RelativeLayout
+        android:id="@+id/boardLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/new_tactics_board_top_offset"
         >
-        <!--android:layout_marginTop="@dimen/panel_info_height"-->
 
         <!--Top Border-->
         <FrameLayout
@@ -63,14 +56,21 @@
 
         </RelativeLayout>
 
-
     </RelativeLayout>
 
+    <com.chess.ui.views.PanelInfoTacticsView
+        android:id="@+id/topPanelView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/new_tactics_panel_info_height"
+        android:layout_above="@+id/controlsTacticsView"
+        android:layout_below="@id/boardLayout"
+        />
 
     <com.chess.ui.views.game_controls.ControlsTacticsView
         android:id="@+id/controlsTacticsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/panel_info_height"
+        android:layout_alignParentBottom="true"
         />
-</LinearLayout>
+
+</RelativeLayout>

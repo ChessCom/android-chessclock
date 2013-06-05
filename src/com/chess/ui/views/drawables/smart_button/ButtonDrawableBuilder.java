@@ -344,6 +344,7 @@ public class ButtonDrawableBuilder {
 
 	private static void createGlassy(ButtonDrawable buttonDrawable, Resources resources) {
 		buttonDrawable.isGlassy = true;
+		buttonDrawable.useBorder = false;
 		buttonDrawable.gradientAngle = LEFT_RIGHT;
 
 		// Colors for bevel

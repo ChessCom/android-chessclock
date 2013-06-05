@@ -70,8 +70,8 @@
     <!--White round overlay-->
     <item
         android:top="13dip"
-        android:left="2px"
-        android:right="2px"
+        android:left="8px"
+        android:right="8px"
         android:bottom="2px"
         >
         <shape android:dither="true">

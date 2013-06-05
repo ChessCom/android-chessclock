@@ -7,14 +7,14 @@
     android:layout_height="match_parent"
     >
 
-    <LinearLayout
+    <com.chess.LinLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
 
         <!-- Pieces -->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/piecesView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,17 +46,10 @@
                 android:textColor="@color/hint_text"
                 style="@style/GlyphIcon.Small"
                 />
-        </LinearLayout>
-
-        <!--Divider-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/new_friends_list_divider"
-            />
+        </com.chess.LinLayout>
 
         <!-- Board -->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/boardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,17 +81,10 @@
                 style="@style/GlyphIcon.Small"
                 />
 
-        </LinearLayout>
-
-        <!--Divider-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/new_friends_list_divider"
-            />
+        </com.chess.LinLayout>
 
         <!--Coordinates-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/coordinatesView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -120,17 +106,10 @@
                 android:id="@+id/coordinatesSwitch"
                 style="@style/Switch.White"
                 />
-        </LinearLayout>
-
-        <!--Divider-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/new_friends_list_divider"
-            />
+        </com.chess.LinLayout>
 
         <!--Highlight Last Move-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/highlightLastMoveView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -154,17 +133,10 @@
                 custom:switchTextOn="@string/yes"
                 custom:switchTextOff="@string/no"
                 />
-        </LinearLayout>
-
-        <!--Divider-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/new_friends_list_divider"
-            />
+        </com.chess.LinLayout>
 
         <!--Show legal moves-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/showLegalMovesView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -189,17 +161,10 @@
                 custom:switchTextOff="@string/no"
                 />
 
-        </LinearLayout>
-
-        <!--Divider-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/new_friends_list_divider"
-            />
+        </com.chess.LinLayout>
 
         <!--Answer Show White on Bottom-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/answerShowBottomView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -221,17 +186,10 @@
                 android:id="@+id/answerShowBottomSwitch"
                 style="@style/Switch.White"
                 />
-        </LinearLayout>
-
-        <!--Divider-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/new_friends_list_divider"
-            />
+        </com.chess.LinLayout>
 
         <!--Sounds-->
-        <LinearLayout
+        <com.chess.LinLayout
             android:id="@+id/soundsView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -253,14 +211,7 @@
                 android:id="@+id/soundsSwitch"
                 style="@style/Switch.White"
                 />
-        </LinearLayout>
+        </com.chess.LinLayout>
 
-        <!--Divider-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/new_friends_list_divider"
-            />
-
-    </LinearLayout>
+    </com.chess.LinLayout>
 </ScrollView>

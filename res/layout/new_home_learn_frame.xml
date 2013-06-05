@@ -18,7 +18,7 @@
         <com.chess.LinLayout
             android:id="@+id/tacticsHeaderView"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/default_header_height"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             style="@style/ListItem.Header.Light"
             android:paddingLeft="13dip"
@@ -49,7 +49,6 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/new_normal_grey"
                 style="@style/HeaderTitle.Dark"
-                android:text="1200"
                 />
 
             <!--Right Icon-->
@@ -111,7 +110,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/todaysAttemptsLabelTxt"
-                android:text="4"
                 android:textColor="@color/new_subtitle_dark_grey"
                 android:textSize="13sp"
                 custom:ttf="Bold"
@@ -135,7 +133,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/todaysAttemptsLabelTxt"
-                android:text="75%"
                 android:layout_below="@id/todaysAttemptsLabelTxt"
                 android:textColor="@color/new_subtitle_dark_grey"
                 android:textSize="13sp"
@@ -160,7 +157,7 @@
         <com.chess.LinLayout
             android:id="@+id/lessonsHeaderView"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/default_header_height"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             style="@style/ListItem.Header.Light"
             android:paddingLeft="13dip"
@@ -192,7 +189,6 @@
                 android:gravity="center_vertical"
                 android:textColor="@color/new_normal_grey"
                 style="@style/HeaderTitle.Dark"
-                android:text="1200"
                 />
 
             <!--Right Icon-->
@@ -265,7 +261,7 @@
         <com.chess.LinLayout
             android:id="@+id/videosHeaderView"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/default_header_height"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             style="@style/ListItem.Header.Light"
             android:paddingLeft="13dip"

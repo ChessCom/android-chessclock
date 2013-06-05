@@ -74,11 +74,19 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	private boolean humanBlack;
 	private QuickAction quickAction;
 
+	public GameCompFragment() {
+		NewCompGameConfig config = new NewCompGameConfig.Builder().build();
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE,  config.getMode());
+		bundle.putInt(COMP_DELAY, config.getMode());
+		setArguments(bundle);
+	}
+
 	public static GameCompFragment newInstance(NewCompGameConfig config) {
 		GameCompFragment frag = new GameCompFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, config.getMode());
-		bundle.putInt(COMP_DELAY, config.getMode());
+		bundle.putInt(COMP_DELAY, config.getCompDelay());
 		frag.setArguments(bundle);
 		return frag;
 	}
@@ -583,14 +591,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	private void init() {
 		labelsConfig = new LabelsConfig();
 		getBoardFace().setMode(getArguments().getInt(AppConstants.GAME_MODE));
-
-//		menuOptionsItems = new CharSequence[]{
-//				getString(R.string.new_game_white),
-//				getString(R.string.new_game_black),
-//				getString(R.string.email_game),
-//				getString(R.string.settings)};
-//
-//		menuOptionsDialogListener = new MenuOptionsDialogListener();
 	}
 
 	private void widgetsInit(View view) {

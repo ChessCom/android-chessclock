@@ -448,6 +448,7 @@ message				false	Only used for `CHAT` command.
 
 				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
 				Log.d(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
+				Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
 				throw new InternalErrorException(encodeServerCode(baseResponse.getCode()));
 			}
 
@@ -465,6 +466,9 @@ message				false	Only used for `CHAT` command.
 					resultString = resultString.substring(firstIndex, lastIndex + 1);
 
 					Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
+					if (resultString.contains("\"challenges\":[[]]")) {
+						resultString = resultString.replace("\"challenges\":[[]]", "\"challenges\":[]");
+					}
 				} else {
 					Log.d(TAG, "ERROR -> WebRequest SERVER RESPONSE: " + resultString);
 					throw new InternalErrorException(StaticData.INTERNAL_ERROR);

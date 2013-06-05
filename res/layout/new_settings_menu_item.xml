@@ -14,7 +14,7 @@
         android:id="@+id/iconTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/semi_transparent_white"
         android:textSize="26dip"
         android:layout_marginRight="9dip"
         style="@style/GlyphIcon"

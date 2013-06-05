@@ -9,14 +9,14 @@
     style="@style/ListItem"
     android:gravity="center_vertical">
 
-    <ImageView
+    <com.chess.backend.image_load.ProgressImageView
         android:id="@+id/iconImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/nav_item_image_size"
+        android:layout_height="@dimen/nav_item_image_size"
         android:layout_marginLeft="@dimen/new_nav_menu_image_padding_left"
         android:layout_marginRight="17dip"
-        android:src="@drawable/ic_nav_upgrade"
-        android:contentDescription="@string/image"/>
+        android:contentDescription="@string/image"
+        />
 
     <com.chess.RoboTextView
         android:id="@+id/rowTitleTxt"

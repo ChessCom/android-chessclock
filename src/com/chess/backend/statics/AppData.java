@@ -301,6 +301,10 @@ public class AppData {
 //		return getPreferences(context).getString(PREF_USER_AVATAR_URL, "http://d1lalstwiwz2br.cloudfront.net/images_users/articles/chesscom-player-profiles-roman-dzindzichasvili_small.1.png"); // TODO restore
 	}
 
+	public static void setUserTacticsRating(Context context, int value) {
+		setIntValue(context, PREF_USER_TACTICS_RATING, value);
+	}
+
 	public static int getUserTacticsRating(Context context) {
 		return getIntValue(context, PREF_USER_TACTICS_RATING, 0);
 	}

@@ -17,7 +17,7 @@
         <com.chess.LinLayout
             android:id="@+id/liveHeaderView"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/default_header_height"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             style="@style/ListItem.Header"
             android:paddingLeft="13dip"
@@ -104,7 +104,7 @@
         <com.chess.LinLayout
             android:id="@+id/dailyHeaderView"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/default_header_height"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             style="@style/ListItem.Header"
             android:paddingLeft="13dip"
@@ -304,7 +304,7 @@
         <com.chess.LinLayout
             android:id="@+id/vsCompHeaderView"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/default_header_height"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             style="@style/ListItem.Header"
             android:paddingLeft="13dip"

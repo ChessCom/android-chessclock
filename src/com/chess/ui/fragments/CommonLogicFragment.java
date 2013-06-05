@@ -70,6 +70,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected static final int DEFAULT_ICON = 0;
 	protected static final int ONE_ICON = 1;
 	protected static final int TWO_ICON = 2;
+	protected static final long SIDE_MENU_DELAY = 100;
 
 	private LoginUpdateListenerNew loginUpdateListener;
 
@@ -389,10 +390,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			if (!TextUtils.isEmpty(returnedObj.getData().getUsername())) {
 				preferencesEditor.putString(AppConstants.USERNAME, returnedObj.getData().getUsername().trim().toLowerCase());
 			}
-//			preferencesEditor.putString(AppConstants.PREF_USER_AVATAR_URL, returnedObj.getData().getAvatarUrl()); // TODO restore
-			preferencesEditor.putString(AppConstants.PREF_USER_AVATAR_URL, "http://d1lalstwiwz2br.cloudfront.net/images_users/avatars/erik_l.gif");
 			if (returnedObj.getData().getTacticsRating() != 0) {
-				preferencesEditor.putInt(AppConstants.PREF_USER_TACTICS_RATING, returnedObj.getData().getTacticsRating());
+				AppData.setUserTacticsRating(getActivity(), returnedObj.getData().getTacticsRating());
 			}
 			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, returnedObj.getData().getPremiumStatus());
 			processLogin(returnedObj.getData());
@@ -434,7 +433,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	protected void processLogin(RegisterItem.Data returnedObj) {
-		if (passwordEdt == null) { // if accidentally return in wrong callback, when widgets are not initialized
+		if (passwordEdt == null || getActivity() == null) { // if accidentally return in wrong callback, when widgets are not initialized
 			return;
 		}
 
@@ -452,10 +451,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 // 		preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]); // TODO used only for live, so should be separate connection to live
 		preferencesEditor.commit();
-
-		if (getActivity() == null) {
-			return;
-		}
 
 		AppData.setLiveChessMode(getActivity(), false);
 		DataHolder.reset();
@@ -491,7 +486,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 					public void run() {
 						getActivityFace().toggleRightMenu();
 					}
-				}, 100);
+				}, SIDE_MENU_DELAY);
 				break;
 			case R.id.menu_notifications:
 				CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(DailyGamesNotificationFragment.class.getSimpleName());
@@ -504,7 +499,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 					public void run() {
 						getActivityFace().toggleRightMenu();
 					}
-				}, 100);
+				}, SIDE_MENU_DELAY);
 				break;
 		}
 		return true;

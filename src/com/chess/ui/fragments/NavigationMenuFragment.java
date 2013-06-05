@@ -6,12 +6,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.statics.AppData;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.daily.DailyTabsFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
+import com.chess.ui.fragments.game.GameCompFragment;
 import com.chess.ui.fragments.game.GameTacticsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
@@ -32,17 +38,21 @@ import java.util.List;
  */
 public class NavigationMenuFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
-	private static final int UPGRADE_POS = 1;
+	private static final int HOME_POS = 0;
+
 	public static final int[] SELECTED_STATE = new int[]{android.R.attr.state_enabled, android.R.attr.state_checked};
 	public static final int[] ENABLED_STATE = new int[]{android.R.attr.state_enabled};
 
 	private ListView listView;
 	private List<NavigationMenuItem> menuItems;
 	private NewNavigationMenuAdapter adapter;
+	private int imageSize;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		imageSize = (int) (getResources().getDimension(R.dimen.nav_item_image_size)/ getResources().getDisplayMetrics().density);
 
 		menuItems = new ArrayList<NavigationMenuItem>();
 		menuItems.add(new NavigationMenuItem(getString(R.string.home), R.drawable.ic_nav_home));
@@ -57,6 +67,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		menuItems.add(new NavigationMenuItem(getString(R.string.friends), R.drawable.ic_nav_friends));
 		menuItems.add(new NavigationMenuItem(getString(R.string.messages), R.drawable.ic_nav_messages));
 		menuItems.add(new NavigationMenuItem(getString(R.string.settings), R.drawable.ic_nav_settings));
+		menuItems.add(new NavigationMenuItem(getString(R.string.vs_computer), R.drawable.ic_nav_vs_comp));
 
 		menuItems.get(0).selected = true;
 		adapter = new NewNavigationMenuAdapter(getActivity(), menuItems);
@@ -86,11 +97,12 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		menuItems.get(position).selected = true;
 		NavigationMenuItem menuItem = (NavigationMenuItem) listView.getItemAtPosition(position);
 		menuItem.selected = true;
-		((BaseAdapter)parent.getAdapter()).notifyDataSetChanged();
+		((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
 
+		BasePopupsFragment fragmentByTag = null;
 		// TODO adjust switch/closeBoard when the same fragment opened
 		switch (menuItem.iconRes) {
-			case R.drawable.ic_nav_home: {
+			case R.drawable.ic_nav_home:
 				getActivityFace().clearFragmentStack();
 //				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(HomeTabsFragment.class.getSimpleName());
 //				if(fragmentByTag == null) {
@@ -98,89 +110,91 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 //				}
 //				getActivityFace().switchFragment(fragmentByTag);
 				getActivityFace().switchFragment(new HomeTabsFragment());
-				getActivityFace().toggleLeftMenu();
-				break;}
-			case R.drawable.ic_nav_upgrade_shine:{
-				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(UpgradeFragment.class.getSimpleName());
-				if(fragmentByTag == null) {
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						getActivityFace().toggleLeftMenu();
+					}
+				}, SIDE_MENU_DELAY);
+				return;
+			case R.drawable.ic_nav_upgrade_shine:
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(UpgradeFragment.class.getSimpleName());
+				if (fragmentByTag == null) {
 					fragmentByTag = new UpgradeFragment();
 				}
-				getActivityFace().openFragment(fragmentByTag);
-				getActivityFace().toggleLeftMenu();
-				break;}
-			case R.drawable.ic_nav_play_daily:{
-				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(DailyTabsFragment.class.getSimpleName());
-				if(fragmentByTag == null) {
+				break;
+			case R.drawable.ic_nav_play_daily:
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(DailyTabsFragment.class.getSimpleName());
+				if (fragmentByTag == null) {
 					fragmentByTag = new DailyTabsFragment();
 				}
-				getActivityFace().openFragment(fragmentByTag);
-				getActivityFace().toggleLeftMenu();
-				break;}
-			case R.drawable.ic_nav_play_live:{
-				BasePopupsFragment liveFragment = (BasePopupsFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
-				if (liveFragment == null) {
-					liveFragment = new LiveGameWaitFragment();
+				break;
+			case R.drawable.ic_nav_play_live:
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
+				if (fragmentByTag == null) {
+					fragmentByTag = new LiveGameWaitFragment();
 				}
-				getActivityFace().openFragment(liveFragment);
-				getActivityFace().toggleLeftMenu();
-				break;}
-			case R.drawable.ic_nav_tactics:{
-				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragment.class.getSimpleName());
+				break;
+			case R.drawable.ic_nav_tactics:
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragment.class.getSimpleName());
 				if (fragmentByTag == null) {
 					fragmentByTag = new GameTacticsFragment();
 				}
-				getActivityFace().openFragment(fragmentByTag);
-				getActivityFace().toggleLeftMenu();
-				break;}
-			case R.drawable.ic_nav_lessons:{
-				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(LessonsFragment.class.getSimpleName());
-				if(fragmentByTag == null) {
+				break;
+			case R.drawable.ic_nav_lessons:
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(LessonsFragment.class.getSimpleName());
+				if (fragmentByTag == null) {
 					fragmentByTag = new LessonsFragment();
 				}
-				getActivityFace().openFragment(fragmentByTag);
-				getActivityFace().toggleLeftMenu();
-				break;}
-			case R.drawable.ic_nav_videos:{
-				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(VideosFragment.class.getSimpleName());
-				if(fragmentByTag == null) {
+				break;
+			case R.drawable.ic_nav_videos:
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(VideosFragment.class.getSimpleName());
+				if (fragmentByTag == null) {
 					fragmentByTag = new VideosFragment();
 				}
-				getActivityFace().openFragment(fragmentByTag);
-				getActivityFace().toggleLeftMenu();
-				break;}
-			case R.drawable.ic_nav_articles:{
-				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(ArticlesFragment.class.getSimpleName());
-				if(fragmentByTag == null) {
+				break;
+			case R.drawable.ic_nav_articles:
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(ArticlesFragment.class.getSimpleName());
+				if (fragmentByTag == null) {
 					fragmentByTag = new ArticlesFragment();
 				}
-				getActivityFace().openFragment(fragmentByTag);
-				getActivityFace().toggleLeftMenu();
-				break;}
-			case R.drawable.ic_nav_friends:{
-				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(FriendsFragment.class.getSimpleName());
-				if(fragmentByTag == null) {
+				break;
+			case R.drawable.ic_nav_friends:
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(FriendsFragment.class.getSimpleName());
+				if (fragmentByTag == null) {
 					fragmentByTag = new FriendsFragment();
 				}
-				getActivityFace().openFragment(fragmentByTag);
-				getActivityFace().toggleLeftMenu();
-				break;}
-			case R.drawable.ic_nav_stats:{
-				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(StatsGameFragment.class.getSimpleName());
-				if(fragmentByTag == null) {
+				break;
+			case R.drawable.ic_nav_stats:
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(StatsGameFragment.class.getSimpleName());
+				if (fragmentByTag == null) {
 					fragmentByTag = new StatsGameFragment();
 				}
-				getActivityFace().openFragment(fragmentByTag);
-				getActivityFace().toggleLeftMenu();
-				break;}
-			case R.drawable.ic_nav_settings:{
-				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(SettingsFragment.class.getSimpleName());
-				if(fragmentByTag == null) {
+				break;
+			case R.drawable.ic_nav_settings:
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(SettingsFragment.class.getSimpleName());
+				if (fragmentByTag == null) {
 					fragmentByTag = new SettingsFragment();
 				}
-				getActivityFace().openFragment(fragmentByTag);
-				getActivityFace().toggleLeftMenu();
-				break;}
+				break;
+			case R.drawable.ic_nav_vs_comp:
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameCompFragment.class.getSimpleName());
+				if (fragmentByTag == null) {
+					fragmentByTag = new GameCompFragment();
+				}
+				break;
 		}
+		if (fragmentByTag != null) {
+		getActivityFace().openFragment(fragmentByTag);
+//		handler.postDelayed(new Runnable() {
+//			@Override
+//			public void run() {
+//				getActivityFace().toggleLeftMenu();
+//			}
+//		}, SIDE_MENU_DELAY);
+			getActivityFace().toggleLeftMenu();
+		}
+
 	}
 
 	private class NavigationMenuItem {
@@ -196,15 +210,18 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 
 	private class NewNavigationMenuAdapter extends ItemsAdapter<NavigationMenuItem> {
 
+		private final String userAvatarUrl;
+
 		public NewNavigationMenuAdapter(Context context, List<NavigationMenuItem> menuItems) {
 			super(context, menuItems);
+			userAvatarUrl = AppData.getUserAvatar(context);
 		}
 
 		@Override
 		protected View createView(ViewGroup parent) {
 			View view = inflater.inflate(R.layout.new_navigation_menu_item, parent, false);
 			ViewHolder holder = new ViewHolder();
-			holder.icon = (ImageView) view.findViewById(R.id.iconImg);
+			holder.icon = (ProgressImageView) view.findViewById(R.id.iconImg);
 			holder.title = (TextView) view.findViewById(R.id.rowTitleTxt);
 			view.setTag(holder);
 
@@ -214,7 +231,12 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		@Override
 		protected void bindView(NavigationMenuItem item, int pos, View view) {
 			ViewHolder holder = (ViewHolder) view.getTag();
-			holder.icon.setImageResource(item.iconRes);
+			if (pos == HOME_POS) {
+				imageLoader.download(userAvatarUrl, holder.icon, imageSize);
+			} else {
+				holder.icon.setImageDrawable(getResources().getDrawable(item.iconRes));// setImageResource(item.iconRes);
+			}
+
 			holder.title.setText(item.tag);
 
 			Drawable background = view.getBackground();
@@ -230,7 +252,8 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		}
 
 		public class ViewHolder {
-			ImageView icon;
+			ProgressImageView icon;
+//			ImageView icon;
 			TextView title;
 		}
 	}

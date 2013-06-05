@@ -1,6 +1,8 @@
 package com.chess.ui.fragments.game;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
@@ -8,6 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.backend.RestHelper;
@@ -17,6 +20,8 @@ import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.entity.new_api.TacticInfoItem;
 import com.chess.backend.entity.new_api.TacticItem;
 import com.chess.backend.entity.new_api.TacticRatingData;
+import com.chess.backend.image_load.ImageDownloaderToListener;
+import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
@@ -31,20 +36,24 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.TacticsStatsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
+import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.TacticBoardFace;
+import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.PanelInfoTacticsView;
 import com.chess.ui.views.chess_boards.ChessBoardTacticsView;
+import com.chess.ui.views.drawables.BoardAvatarDrawable;
+import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsTacticsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import com.flurry.android.FlurryAgent;
-import quickaction.ActionItem;
-import quickaction.QuickAction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,7 +62,7 @@ import java.util.List;
  * Date: 16.02.13
  * Time: 7:10
  */
-public class GameTacticsFragment extends GameBaseFragment implements GameTacticsActivityFace, QuickAction.OnActionItemClickListener {
+public class GameTacticsFragment extends GameBaseFragment implements GameTacticsActivityFace, PopupListSelectionFace {
 
 /*
 1. help makes one move for you, and you fail the tactic. check how it works on iphone if you can.
@@ -78,6 +87,8 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	private static final int ID_SHOW_ANSWER = 1;
 	private static final int ID_PRACTICE = 2;
 	private static final int ID_SETTINGS = 3;
+	public static final int LAST_MOVE_ANIM_DELAY = 1300;
+	private static final String OPTION_SELECTION = "option select popup";
 
 	private Handler tacticsTimer;
 	private ChessBoardTacticsView boardView;
@@ -107,7 +118,11 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	private boolean isAnalysis;
 	private boolean serverError;
 	private boolean userSawOfflinePopup;
-	private QuickAction quickAction;
+	private ImageUpdateListener imageUpdateListener;
+	private ImageView topAvatarImg;
+	private ImageDownloaderToListener imageDownloader;
+	private ArrayList<String> optionsList;
+	private PopupOptionsMenuFragment optionsSelectFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -127,40 +142,15 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 
 		setTitle(R.string.tactics);
 
-		topPanelView = (PanelInfoTacticsView) view.findViewById(R.id.topPanelView);
-
 		widgetsInit(view);
+
+		// adjust action bar icons
+		getActivityFace().showActionMenu(R.id.menu_share, true);
+		getActivityFace().showActionMenu(R.id.menu_notifications, false);
+		getActivityFace().showActionMenu(R.id.menu_games, false);
+
+		setTitlePadding(ONE_ICON);
 	}
-
-	private void widgetsInit(View view) {
-		controlsTacticsView = (ControlsTacticsView) view.findViewById(R.id.controlsTacticsView);
-
-		boardView = (ChessBoardTacticsView) view.findViewById(R.id.boardview);
-		boardView.setFocusable(true);
-		boardView.setControlsView(controlsTacticsView);
-		boardView.setGameActivityFace(this);
-
-		controlsTacticsView.setBoardViewFace(boardView);
-
-		setBoardView(boardView);
-
-		final ChessBoard chessBoard = ChessBoardTactics.getInstance(this);
-		firstRun = chessBoard.isJustInitialized();
-		boardView.setGameActivityFace(this);
-
-		controlsTacticsView.enableGameControls(false);
-
-		{// Quick action setup
-			quickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
-
-			quickAction.addActionItem(new ActionItem(ID_NEXT_TACTIC, getString(R.string.next_tactic)));
-			quickAction.addActionItem(new ActionItem(ID_SHOW_ANSWER, getString(R.string.show_answer)));
-			quickAction.addActionItem(new ActionItem(ID_SETTINGS, getString(R.string.settings)));
-
-			quickAction.setOnActionItemClickListener(this);
-		}
-	}
-
 
 	@Override
 	public void onStart() {
@@ -228,23 +218,6 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 //		releaseResources();
 	}
 
-
-	private void init() {
-		tacticsTimer = new Handler();
-		inflater = (LayoutInflater) getActivity().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-
-//		menuOptionsItems = new CharSequence[]{
-//				getString(R.string.show_answer),
-//				getString(R.string.settings)};
-
-//		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
-		getTacticsUpdateListener = new TacticsUpdateListener();
-		tacticsCorrectUpdateListener = new TacticsInfoUpdateListener(CORRECT_RESULT);
-		tacticsWrongUpdateListener = new TacticsInfoUpdateListener(WRONG_RESULT);
-		dbTacticBatchSaveListener = new DbTacticBatchSaveListener();
-	}
-
-
 	@Override
 	protected void dismissDialogs() {
 		if (findFragmentByTag(WRONG_MOVE_TAG) != null) {
@@ -277,7 +250,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 				if (getBoardFace().isLatestMoveMadeUser())
 					verifyMove();
 			}
-		}, 1300);
+		}, LAST_MOVE_ANIM_DELAY);
 	}
 
 	@Override
@@ -369,7 +342,6 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		new RequestJsonTask<TacticInfoItem>(tacticsWrongUpdateListener).executeTask(loadItem);
 		controlsTacticsView.enableGameControls(false);
 	}
-
 
 	@Override
 	public void showHelp() {
@@ -515,16 +487,24 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	};
 
 	@Override
-	public void onItemClick(QuickAction source, int pos, int actionId) {
-		if (actionId == ID_NEXT_TACTIC) {
+	public void valueSelected(int code) {
+		if (code == ID_NEXT_TACTIC) {
 			getNextTactic();
-		} else if (actionId == ID_SHOW_ANSWER) {
+		} else if (code == ID_SHOW_ANSWER) {
 			showAnswer();
-		} else if (actionId == ID_PRACTICE) {
+		} else if (code == ID_PRACTICE) {
 			switch2Analysis();
-		} else if (actionId == ID_SETTINGS) {
+		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(new SettingsFragment());
 		}
+
+		optionsSelectFragment.dismiss();
+		optionsSelectFragment = null;
+	}
+
+	@Override
+	public void dialogCanceled() {
+		optionsSelectFragment = null;
 	}
 
 	private class TacticsUpdateListener extends ChessUpdateListener<TacticItem> {
@@ -700,8 +680,11 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 
 	@Override
 	public void showOptions(View view) {
-		quickAction.show(view);
-		quickAction.setAnimStyle(QuickAction.ANIM_REFLECT);
+		if (optionsSelectFragment != null) {
+			return;
+		}
+		optionsSelectFragment = PopupOptionsMenuFragment.newInstance(this, optionsList);
+		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
 	}
 
 
@@ -949,5 +932,84 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		dbTacticBatchSaveListener = null;
 	}
 
+	private void init() {
+		tacticsTimer = new Handler();
+		inflater = (LayoutInflater) getActivity().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+		imageUpdateListener = new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR);
+		imageDownloader = new ImageDownloaderToListener(getContext());
+
+//		menuOptionsItems = new CharSequence[]{
+//				getString(R.string.show_answer),
+//				getString(R.string.settings)};
+
+//		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
+		getTacticsUpdateListener = new TacticsUpdateListener();
+		tacticsCorrectUpdateListener = new TacticsInfoUpdateListener(CORRECT_RESULT);
+		tacticsWrongUpdateListener = new TacticsInfoUpdateListener(WRONG_RESULT);
+		dbTacticBatchSaveListener = new DbTacticBatchSaveListener();
+	}
+
+	private void widgetsInit(View view) {
+		topPanelView = (PanelInfoTacticsView) view.findViewById(R.id.topPanelView);
+		topPanelView.setPlayerScore(AppData.getUserTacticsRating(getActivity()));
+		controlsTacticsView = (ControlsTacticsView) view.findViewById(R.id.controlsTacticsView);
+
+		boardView = (ChessBoardTacticsView) view.findViewById(R.id.boardview);
+		boardView.setFocusable(true);
+		boardView.setControlsView(controlsTacticsView);
+		boardView.setGameActivityFace(this);
+
+		controlsTacticsView.setBoardViewFace(boardView);
+
+		setBoardView(boardView);
+
+		final ChessBoard chessBoard = ChessBoardTactics.getInstance(this);
+		firstRun = chessBoard.isJustInitialized();
+		boardView.setGameActivityFace(this);
+
+		controlsTacticsView.enableGameControls(false);
+
+		{// set avatars
+			Drawable user = new IconDrawable(getActivity(), R.string.ic_profile,
+					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
+
+			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			topAvatarImg.setImageDrawable(user);
+
+			String userAvatarUrl = AppData.getUserAvatar(getContext());
+			imageDownloader.download(userAvatarUrl, imageUpdateListener, AVATAR_SIZE);
+		}
+
+		{// options list setup
+			optionsList = new ArrayList<String>();
+			optionsList.add( getString(R.string.next_tactic));
+			optionsList.add( getString(R.string.show_answer));
+			optionsList.add( getString(R.string.settings));
+		}
+	}
+
+	private class ImageUpdateListener implements ImageReadyListener {
+		private static final int BOTTOM_AVATAR = 1;
+		private int code;
+
+		private ImageUpdateListener(int code) {
+			this.code = code;
+		}
+
+		@Override
+		public void onImageReady(Bitmap bitmap) {
+			Activity activity = getActivity();
+			if (activity == null) {
+				return;
+			}
+			switch (code) {
+				case BOTTOM_AVATAR:
+					BoardAvatarDrawable boardAvatarDrawable = new BoardAvatarDrawable(getContext(), bitmap);
+					topAvatarImg.setImageDrawable(boardAvatarDrawable);
+					topPanelView.invalidate();
+					break;
+			}
+		}
+	}
 
 }

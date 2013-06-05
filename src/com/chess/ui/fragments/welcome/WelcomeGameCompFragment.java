@@ -24,9 +24,11 @@ import com.chess.ui.engine.configs.NewCompGameConfig;
 import com.chess.ui.fragments.CompGameSetupFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
+import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.WelcomeTabsFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
@@ -40,10 +42,10 @@ import com.chess.utilities.MopubHelper;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ObjectAnimator;
-import quickaction.ActionItem;
-import quickaction.QuickAction;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,7 +53,7 @@ import java.util.Calendar;
  * Date: 19.05.13
  * Time: 17:15
  */
-public class WelcomeGameCompFragment extends GameBaseFragment implements GameCompActivityFace, QuickAction.OnActionItemClickListener {
+public class WelcomeGameCompFragment extends GameBaseFragment implements GameCompActivityFace, PopupListSelectionFace {
 
 	private static final String MODE = "mode";
 	private static final String COMP_DELAY = "comp_delay";
@@ -64,6 +66,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	private static final long ANIMATION_DELAY = 1500;
 	private static final long REPEAT_TIMEOUT = 60000;
 	private static final int DURATION = 400;
+	private static final String OPTION_SELECTION = "option select popup";
 	private final WelcomeTabsFace parentFace;
 
 	private Interpolator accelerator = new AccelerateInterpolator();
@@ -83,8 +86,9 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	private NotationView notationsView;
 	private boolean humanBlack;
-	private QuickAction quickAction;
 	private ObjectAnimator flipFirstHalf;
+	private List<String> optionsList;
+	private PopupOptionsMenuFragment optionsSelectFragment;
 
 	public WelcomeGameCompFragment(WelcomeTabsFace parentFace) {
 		NewCompGameConfig config = new NewCompGameConfig.Builder().build();
@@ -186,8 +190,11 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void showOptions(View view) {
-		quickAction.show(view);
-		quickAction.setAnimStyle(QuickAction.ANIM_REFLECT);
+		if (optionsSelectFragment != null) {
+			return;
+		}
+		optionsSelectFragment = PopupOptionsMenuFragment.newInstance(this, optionsList);
+		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
 	}
 
 	@Override
@@ -542,16 +549,24 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	@Override
-	public void onItemClick(QuickAction source, int pos, int actionId) {
-		if (actionId == ID_NEW_GAME) {
+	public void valueSelected(int code) {
+		if (code == ID_NEW_GAME) {
 			getActivityFace().openFragment(new CompGameSetupFragment());
-		} else if (actionId == ID_FLIP_BOARD) {
+		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
-		} else if (actionId == ID_EMAIL_GAME) {
+		} else if (code == ID_EMAIL_GAME) {
 			sendPGN();
-		} else if (actionId == ID_SETTINGS) {
+		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(new SettingsFragment());
 		}
+
+		optionsSelectFragment.dismiss();
+		optionsSelectFragment = null;
+	}
+
+	@Override
+	public void dialogCanceled() {
+		optionsSelectFragment = null;
 	}
 
 	private class LabelsConfig {
@@ -630,15 +645,12 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 		controlsCompView.enableHintButton(true);
 
-		{// Quick action setup
-			quickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
-
-			quickAction.addActionItem(new ActionItem(ID_NEW_GAME, getString(R.string.new_game)));
-			quickAction.addActionItem(new ActionItem(ID_EMAIL_GAME, getString(R.string.email_game)));
-			quickAction.addActionItem(new ActionItem(ID_FLIP_BOARD, getString(R.string.flip_board)));
-			quickAction.addActionItem(new ActionItem(ID_SETTINGS, getString(R.string.settings)));
-
-			quickAction.setOnActionItemClickListener(this);
+		{// options list setup
+			optionsList = new ArrayList<String>();
+			optionsList.add( getString(R.string.new_game));
+			optionsList.add( getString(R.string.email_game));
+			optionsList.add( getString(R.string.flip_board));
+			optionsList.add( getString(R.string.settings));
 		}
 	}
 
