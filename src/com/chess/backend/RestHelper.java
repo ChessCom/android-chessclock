@@ -169,6 +169,8 @@ public class RestHelper {
 	public static final String P_GAME_TYPE = "gameTypeCodeId";
 	public static final String P_GAME_ID = "gameId";
 	public static final String P_RELOAD = "reload";
+	public static final String P_PURCHASE_DATA = "purchaseData";
+	public static final String P_DATA_SIGNATURE = "dataSignature";
 
 	public static final String P_UID = "uid";
 	public static final String P_LOCATION = "location";
@@ -202,10 +204,8 @@ public class RestHelper {
 	public static final String P_DRAW_OFFERED = "draw_offered";
 
 	//	SUBMIT_ECHESS_ACTION
-//	public static final String P_CHESSID = "chessid";
 	public static final String P_COMMAND = "command";
 	public static final String P_NEWMOVE = "newMove";
-	public static final String P_NEWMOVEENCODED = "newMoveEncoded";
 	public static final String P_TIMESTAMP = "timestamp";
 	public static final String P_MESSAGE = "message";
 

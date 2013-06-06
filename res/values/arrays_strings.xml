@@ -729,6 +729,7 @@
         <item>Invalid developer payload</item>
         <item>Invalid data signature</item>
         <item>Invalid order</item>
+        <item>The user does not have a valid developer payload</item>
 
     </string-array>
 

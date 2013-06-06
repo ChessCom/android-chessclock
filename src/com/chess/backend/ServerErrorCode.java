@@ -107,6 +107,7 @@ public class ServerErrorCode {
 	public static final int INVALID_DEVELOPER_PAYLOAD = 95;// "Invalid developer payload                                                                                                                             ";				//
 	public static final int INVALID_DATA_SIGNATURE = 96;// "Invalid data signature                                                                                                                                ";				//
 	public static final int INVALID_ORDER = 97;// "Invalid order	                                                                                                                                        ";				//
+	public static final int USER_DONT_HAVE_VALID_PAYLOAD = 98;// "The user does not have a valid developer payload	                                                                                                                                        ";				//
 
 
 /*
@@ -143,6 +144,11 @@ public class ServerErrorCode {
 
 
 	public static String getUserFriendlyMessage(Context context, int code){    // TODO convert to strings for i18n
-		return context.getResources().getStringArray(R.array.new_site_api_error_messages)[code-1];
+		String[] codesArray = context.getResources().getStringArray(R.array.new_site_api_error_messages);
+		if (code < codesArray.length) {
+			return codesArray[code-1];
+		} else {
+			return "Something wrong has happened, developers working on it";
+		}
 	}
 }

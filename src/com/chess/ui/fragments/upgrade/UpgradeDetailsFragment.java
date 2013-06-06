@@ -13,6 +13,7 @@ import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.RoboTextView;
 import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCode;
 import com.chess.backend.billing.IabHelper;
 import com.chess.backend.billing.IabResult;
 import com.chess.backend.billing.Inventory;
@@ -46,6 +47,12 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private static final String PLAN = "plan";
 
 	private static final String YEAR_DISCOUNT = "40%";
+	public static final String GOLD_MONTHLY = "gold_monthly";
+	public static final String GOLD_YEARLY = "gold_yearly";
+	public static final String PLATINUM_MONTHLY = "platinum_monthly";
+	public static final String PLATINUM_YEARLY = "platinum_yearly";
+	public static final String DIAMOND_MONTHLY = "diamond_monthly";
+	public static final String DIAMOND_YEARLY = "diamond_yearly";
 
 	private boolean isGoldMonthPayed;
 	private boolean isGoldYearPayed;
@@ -77,8 +84,9 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private IabHelper mHelper;
 	private PayloadItem.Data payloadData;
 	private GetDetailsListener detailsListener;
+	private UpgradeDetailsFragment.GetPayloadListener getPayloadListener;
 
-	public static UpgradeDetailsFragment newInstance(int code){
+	public static UpgradeDetailsFragment newInstance(int code) {
 		UpgradeDetailsFragment frag = new UpgradeDetailsFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(PLAN, code);
@@ -91,6 +99,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		super.onCreate(savedInstanceState);
 
 		detailsListener = new GetDetailsListener();
+		getPayloadListener = new GetPayloadListener();
 
 		// get key from server
 		LoadItem loadItem = new LoadItem();
@@ -163,8 +172,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			// perform any handling of activity results not related to in-app
 			// billing...
 			super.onActivityResult(requestCode, resultCode, data);
-		}
-		else {
+		} else {
 			Log.d(TAG, "onActivityResult handled by IABUtil.");
 		}
 	}
@@ -319,10 +327,9 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 					}
 					break;
 			}
-			sendPaymentRequest(sku);
+			sendPayment(sku);
 		}
 	}
-
 
 	private class GetKeyListener extends ChessUpdateListener<MembershipKeyItem> {
 
@@ -336,15 +343,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			// we got key, start init
 			setupIabHelper(returnedObj.getData());
 		}
-
-//		@Override
-//		public void errorHandle(Integer resultCode) {
-//			MembershipKeyItem item = new MembershipKeyItem();
-//			MembershipKeyItem.Data data = new MembershipKeyItem.Data();
-//			data.setPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8PdNZ3V+FkqhBry7E2zAKx9Tvj/wcCBNs7zOm/dZyt1fdwmbHsRnL9RhVG5cIlxL86GLMKJfvfnTy8R9pJA0CKA9YBXK93Zq4V0GPzqBS9U+mBWGFJ2Qb7JYKxPlIAmEhIbSou4EPSnzfnPSE3pAoUpeUTDGvTTNML1jzbzNBeeY12rnq5VyDY87rqP3iDvEkqJkN+iMR59QYgcQNHZf4dzJtsP3G1AIEJt4fzCoT134RvBDrtr7N+G23v8EdWad07EjPjP21Slz/84dIL3aj1OlUG/HZU2/QL2y+TwBpJLP/kDsqDkxoKayFxwBjjfAq4BCfcUcKjDWZFvZlT0mXwIDAQAB");
-//			item.setData(data);
-//			updateData(item);  // TODO remove hardcodes, used to pass key
-//		}
 	}
 
 	/**
@@ -353,28 +351,21 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private void setupIabHelper(MembershipKeyItem.Data data) {
 		mHelper = new IabHelper(getActivity(), data.getPublicKey());
 		mHelper.enableDebugLogging(false);
-		mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-			@Override
-			public void onIabSetupFinished(IabResult result) {
-				if (getActivity() == null) {
-					return;
-				}
+		// get payload from server
+		requestPayload(RestHelper.V_TRUE);
+	}
 
-				if (!result.isSuccess()) {
-					// Oh noes, there was a problem.
-					showSinglePopupDialog("Problem setting up in-app billing: " + result);
-					return;
-				}
+	private void requestPayload(String isReload) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_PAYLOAD);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_RELOAD, isReload);
 
-				// Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
-				mHelper.queryInventoryAsync(new GotInventoryListener());
-				setWaitScreen(true);
-			}
-		});
+		new RequestJsonTask<PayloadItem>(getPayloadListener).executeTask(loadItem);
 	}
 
 	// Listener that's called when we finish querying the items and subscriptions we own
-	private class GotInventoryListener implements  IabHelper.QueryInventoryFinishedListener {
+	private class GotInventoryListener implements IabHelper.QueryInventoryFinishedListener {
 
 		@Override
 		public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
@@ -383,7 +374,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			}
 
 			setWaitScreen(false);
-			Log.d(TAG, "Query inventory finished.");
 			if (result.isFailure()) {
 
 				showSinglePopupDialog("Failed to query inventory: " + result);
@@ -394,41 +384,62 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				showSinglePopupDialog("Subscriptions not supported on your device yet. Sorry!");
 				return;
 			}
-			Log.d(TAG, "Query inventory was successful.");
 
             /*
-             * Check for items we own. Notice that for each purchase, we check
-             * the developer payload to see if it's correct! See
-             * verifyDeveloperPayload().
+			 * Check for items we own. Notice that for each purchase, we check
+             * the developer payload to see if it's correct! See verifyDeveloperPayload().
              */
 
-			// Check every purchased plan?
+			// Check every purchased plan!
 			{// gold month
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_GOLD_MONTH);
 				isGoldMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
+
+				if (isGoldMonthPayed) {
+					updateMembershipOnServer(purchase);
+					return;
+				}
 			}
 			{// gold year
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_GOLD_YEAR);
 				isGoldYearPayed = purchase != null && verifyDeveloperPayload(purchase);
+				if (isGoldYearPayed) {
+					updateMembershipOnServer(purchase);
+					return;
+				}
 			}
 			{// platinum month
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_PLATINUM_MONTH);
 				isPlatinumMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
+				if (isPlatinumMonthPayed) {
+					updateMembershipOnServer(purchase);
+					return;
+				}
 			}
 			{// platinum year
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_PLATINUM_YEAR);
 				isPlatinumYearPayed = purchase != null && verifyDeveloperPayload(purchase);
+				if (isPlatinumYearPayed) {
+					updateMembershipOnServer(purchase);
+					return;
+				}
 			}
 			{// diamond month
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_DIAMOND_MONTH);
 				isDiamondMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
+				if (isDiamondMonthPayed) {
+					updateMembershipOnServer(purchase);
+					return;
+				}
 			}
 			{// diamond year
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_DIAMOND_YEAR);
 				isDiamondYearPayed = purchase != null && verifyDeveloperPayload(purchase);
+				if (isDiamondYearPayed) {
+					updateMembershipOnServer(purchase);
+					return;
+				}
 			}
-
-			setWaitScreen(false); // TODO show another title
 
 			// query our server for membership bought from non Google Play( Apple, Web)
 			LoadItem loadItem = new LoadItem();
@@ -461,90 +472,33 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 				String sku = returnedObj.getData().getSku();
 
-				// check if we bought an item in GP, but didn't update our server
-				if (isGoldMonthPayed && !sku.equals("gold_monthly")) {
-
-				}
-
-
-				if (isGoldMonthPayed && !sku.equals("gold_monthly")) { // TODO set constants
-
-//					isGoldMonthPayed = true;
-				} else if (isGoldYearPayed && !sku.equals("gold_yearly")) {
-//					isGoldYearPayed = true;
-				} else if (isPlatinumMonthPayed && !sku.equals("platinum_monthly")) {
-//					isPlatinumMonthPayed = true;
-				} else if (isPlatinumYearPayed && !sku.equals("platinum_yearly")) {
-//					isPlatinumYearPayed = true;
-				} else if (isDiamondMonthPayed && !sku.equals("diamond_monthly")) {
-//					isDiamondMonthPayed = true;
-				} else if (isDiamondYearPayed && !sku.equals("diamond_yearly")) {
-//					isDiamondYearPayed = true;
-				}
-
-				if (sku.equals("gold_monthly")) { // TODO set constants
-
-//					isGoldMonthPayed = true;
-				} else if (sku.equals("gold_yearly")) {
-//					isGoldYearPayed = true;
-				} else if (sku.equals("platinum_monthly")) {
-//					isPlatinumMonthPayed = true;
-				} else if (sku.equals("platinum_yearly")) {
-//					isPlatinumYearPayed = true;
-				} else if (sku.equals("diamond_monthly")) {
-//					isDiamondMonthPayed = true;
-				} else if (sku.equals("diamond_yearly")) {
-//					isDiamondYearPayed = true;
-				}
+				isGoldMonthPayed = sku.equals(GOLD_MONTHLY);
+				isGoldYearPayed = sku.equals(GOLD_YEARLY);
+				isPlatinumMonthPayed = sku.equals(PLATINUM_MONTHLY);
+				isPlatinumYearPayed = sku.equals(PLATINUM_YEARLY);
+				isDiamondMonthPayed = sku.equals(DIAMOND_MONTHLY);
+				isDiamondYearPayed = sku.equals(DIAMOND_YEARLY);
 			}
 
 			UpgradeDetailsFragment.this.updateData();
 		}
 	}
 
-	private void updateMembershipOnServer() {
-
-/*
-		 String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
-      String dataSignature = data.getStringExtra("INAPP_DATA_SIGNATURE");
-[27.05.2013 21:47:26] Chess.com Lackovic Ivan: you will pass the whole purchase data json string
-[27.05.2013 21:47:28] Chess.com Lackovic Ivan: and the signature
-[27.05.2013 21:47:34] roger: '{
-   "orderId":"12999763169054705758.1371079406387615",
-   "packageName":"com.example.app",
-   "productId":"exampleSku",
-   "purchaseTime":1345678900000,
-   "purchaseState":0,
-   "developerPayload":"bGoa+V7g/yqDXvKRqq+JTFn4uQZbPiQJo4pf9RzJ",
-   "purchaseToken":"rojeslcdyyiapnqcynkjyyjh"
- }'
-		 */
-
+	private void updateMembershipOnServer(Purchase purchase) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
-//		loadItem.addRequestParams(RestHelper.P_PRODUCT_SKU, itemId);
-//
-//		new RequestJsonTask<PayloadItem>(new GetPayloadListener(itemId)).executeTask(loadItem);
-	}
+		loadItem.addRequestParams(RestHelper.P_PURCHASE_DATA, purchase.getOriginalJson());
+		loadItem.addRequestParams(RestHelper.P_DATA_SIGNATURE, purchase.getSignature());
 
-	private void sendPaymentRequest(String itemId) {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_PAYLOAD);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
-		loadItem.addRequestParams(RestHelper.P_RELOAD, RestHelper.V_TRUE);
-
-		new RequestJsonTask<PayloadItem>(new GetPayloadListener(itemId)).executeTask(loadItem);
+		new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem);
 	}
 
 	private class GetPayloadListener extends ChessUpdateListener<PayloadItem> {
 
-		private String targetSku;
-
-		private GetPayloadListener(String targetSku) {
+		private GetPayloadListener() {
 			super(PayloadItem.class);
-			this.targetSku = targetSku;
 		}
 
 		@Override
@@ -559,12 +513,27 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 			payloadData = returnedObj.getData();
 
-			sendPayment(targetSku);
+			mHelper.startSetup(new IabSetupFinishedListener());
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCode.USER_DONT_HAVE_VALID_PAYLOAD) {
+					requestPayload(RestHelper.V_FALSE);
+				} else {
+					super.errorHandle(resultCode);
+				}
+			} else {
+				super.errorHandle(resultCode);
+
+			}
 		}
 	}
 
 	private void sendPayment(String itemId) {
-		String payload = payloadData.getPayload();
+		String payload = itemId + AppData.getUserName(getActivity()) + payloadData.getPayload();
 
 		setWaitScreen(true);
 		mHelper.launchPurchaseFlow(getActivity(), itemId, IabHelper.ITEM_TYPE_SUBS,
@@ -580,65 +549,66 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				logTest("onIabPurchaseFinished - >activity null");
 				return;
 			}
-			Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
-			if (result.isFailure()) {
-				showSinglePopupDialog("Error purchasing: " + result);
-				setWaitScreen(false);
-				return;
-			}
-			if (!verifyDeveloperPayload(purchase)) {
-				showSinglePopupDialog("Oops. Authenticity verification failed."
-						+ " payload = " + purchase.getDeveloperPayload());
-				logTest("oops - user =" + AppData.getUserName(getActivity())
-						+ " order = " + purchase.getSku() + "payload = " + purchase.getDeveloperPayload());
-				setWaitScreen(false);
-				return;
-			}
-
-			Log.d(TAG, "Purchase successful.");
-
-			if (purchase.getSku().equals(IabHelper.SKU_GOLD_MONTH)) {
-				// bought the infinite gas subscription
-				Log.d(TAG, IabHelper.SKU_GOLD_MONTH  + " subscription purchased.");
-				showSinglePopupDialog("Thank you for subscribing to !" + IabHelper.SKU_GOLD_MONTH);
-				isGoldMonthPayed = true;
-			} else if (purchase.getSku().equals(IabHelper.SKU_GOLD_YEAR)) {
-				Log.d(TAG, IabHelper.SKU_GOLD_YEAR  + " subscription purchased.");
-				showSinglePopupDialog("Thank you for subscribing to !" + IabHelper.SKU_GOLD_YEAR);
-				isGoldYearPayed = true;
-			} else if (purchase.getSku().equals(IabHelper.SKU_PLATINUM_MONTH)) {
-				Log.d(TAG, IabHelper.SKU_PLATINUM_MONTH  + " subscription purchased.");
-				showSinglePopupDialog("Thank you for subscribing to !" + IabHelper.SKU_PLATINUM_MONTH);
-				isPlatinumMonthPayed = true;
-			} else if (purchase.getSku().equals(IabHelper.SKU_PLATINUM_YEAR)) {
-				Log.d(TAG, IabHelper.SKU_PLATINUM_YEAR  + " subscription purchased.");
-				showSinglePopupDialog("Thank you for subscribing to !" + IabHelper.SKU_PLATINUM_YEAR);
-				isPlatinumYearPayed = true;
-			} else if (purchase.getSku().equals(IabHelper.SKU_DIAMOND_MONTH)) {
-				Log.d(TAG, IabHelper.SKU_DIAMOND_MONTH  + " subscription purchased.");
-				showSinglePopupDialog("Thank you for subscribing to !" + IabHelper.SKU_DIAMOND_MONTH);
-				isDiamondMonthPayed = true;
-			} else if (purchase.getSku().equals(IabHelper.SKU_DIAMOND_YEAR)) {
-				Log.d(TAG, IabHelper.SKU_DIAMOND_YEAR  + " subscription purchased.");
-				showSinglePopupDialog("Thank you for subscribing to !" + IabHelper.SKU_DIAMOND_YEAR);
-				isDiamondYearPayed = true;
-			}
-
-			updateData();
 			setWaitScreen(false);
+
+			Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
+			// skip if user canceled
+			if (result.isFailure() && result.getResponse() != IabHelper.IABHELPER_USER_CANCELLED) {
+				showSinglePopupDialog("Error purchasing: " + result);
+
+				return;
+			} else if (result.getResponse() == IabHelper.IABHELPER_USER_CANCELLED || purchase == null) {
+				// nothing happened
+				return;
+			}
+
+			if (!verifyDeveloperPayload(purchase)) {
+				showSinglePopupDialog("Authenticity verification failed.");
+				logTest("oops - user =" + AppData.getUserName(getActivity())
+						+ " order = " + purchase.getSku() + "payload = " + purchase.getDeveloperPayload()
+						+ " real payload = " + payloadData.getPayload());
+				return;
+			}
+
+			updateMembershipOnServer(purchase);
 		}
 	}
 
-	/** Verifies the developer payload of a purchase. */
-	boolean verifyDeveloperPayload(Purchase p) {
-		String payload = p.getDeveloperPayload();
-		if (payloadData == null)
-			return true;
+	private class IabSetupFinishedListener implements IabHelper.OnIabSetupFinishedListener {
+		@Override
+		public void onIabSetupFinished(IabResult result) {
+			if (getActivity() == null) {
+				return;
+			}
+
+			if (!result.isSuccess()) {
+				// Oh noes, there was a problem.
+				showSinglePopupDialog("Problem setting up in-app billing: " + result);
+				return;
+			}
+
+			// Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
+			mHelper.queryInventoryAsync(new GotInventoryListener());
+			setWaitScreen(true);
+		}
+	}
+
+	/**
+	 * Verifies the developer payload of a purchase.
+	 */
+	boolean verifyDeveloperPayload(Purchase purchase) {
+		String payload = purchase.getDeveloperPayload();
+		if (payloadData == null) {
+			return false;
+		}
+		String sku = purchase.getSku();
+		String userName = AppData.getUserName(getActivity());
+		payload = payload.substring(sku.length() + userName.length());
 		return payloadData.getPayload().equals(payload);
 	}
 
 	private void setWaitScreen(boolean show) {
-		if (show){
+		if (show) {
 			showPopupProgressDialog(R.string.processing_);
 		} else {
 			dismissProgressDialog();
