@@ -274,8 +274,8 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		labelsConfig.topAvatar.setSide(topSide);
 		labelsConfig.bottomAvatar.setSide(bottomSide);
 
-		topPanelView.setPlayerLabel(labelsConfig.topPlayerLabel);
-		bottomPanelView.setPlayerLabel(labelsConfig.bottomPlayerLabel);
+		topPanelView.setPlayerName(labelsConfig.topPlayerLabel);
+		bottomPanelView.setPlayerName(labelsConfig.bottomPlayerLabel);
 
 		boardView.updateNotations(getBoardFace().getNotationArray());
 	}

@@ -306,7 +306,6 @@
 	<string name="application_was_killed">Søknad ble drept, gjenopprette…</string>
 	<string name="no_network">No Network</string>
 	<string name="wireless_settings">Trådløse Innstillinger</string>
-	<string name="invalid_password">Ugyldig passord</string>
 	<string name="your_turn_in_game_with">I spillet ditt med %1$s , %2$s</string>
 	<string name="register">Register</string>
 	<string name="session_expired">Økten er utløpt, vennligst re-login</string>

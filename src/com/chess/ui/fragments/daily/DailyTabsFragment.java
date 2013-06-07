@@ -51,7 +51,6 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 
 		showActionBar(true);
 
-//		Fragment homeGamesFragment = new DailyGameSetupFragment();
 		Fragment homeGamesFragment = new DailyGamesFragment();
 		changeInternalFragment(homeGamesFragment);
 
@@ -115,9 +114,6 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 			return;
 		}
 
-		if (tag.equals("test")) {
-			showToast("test ok passed");
-		}
 		super.onPositiveBtnClick(fragment);
 	}
 }

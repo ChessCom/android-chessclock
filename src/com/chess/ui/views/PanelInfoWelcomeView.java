@@ -194,7 +194,7 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 	}
 
 	@Override
-	public void setPlayerLabel(String playerName) {
+	public void setPlayerName(String playerName) {
 		playerTxt.setText(playerName);
 	}
 

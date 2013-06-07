@@ -311,7 +311,6 @@
 	<string name="application_was_killed">قتل تطبيق، واستعادة …</string>
 	<string name="no_network">لا شبكة</string>
 	<string name="wireless_settings">الإعدادات اللاسلكية</string>
-	<string name="invalid_password">كلمة السر غير صحيحة</string>
 	<string name="your_turn_in_game_with">%2$s, %1$s  في لعبتك مع</string>
 	<string name="register">تسجيل</string>
 	<string name="session_expired">جلسة العمل الخاصة بك قد انتهت صلاحيتها، الرجاء إعادة تسجيل الدخول</string>

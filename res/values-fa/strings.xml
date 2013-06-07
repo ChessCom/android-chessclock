@@ -307,7 +307,6 @@
 	<string name="application_was_killed">برنامه، کشته شد، بازگرداندن …</string>
 	<string name="no_network">هیچ شبکه</string>
 	<string name="wireless_settings">تنظیمات بی سیم</string>
-	<string name="invalid_password">رمز عبور اشتباه</string>
 	<string name="your_turn_in_game_with">%2$s,  %1$s در بازی خود را با</string>
 	<string name="register">ثبت نام</string>
 	<string name="session_expired">جلسه شما منقضی شده است، لطفا دوباره وارد سایت شوید</string>

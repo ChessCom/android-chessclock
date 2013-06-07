@@ -307,7 +307,6 @@
 	<string name="application_was_killed">Toepassing werd gedood, het herstellen van…</string>
 	<string name="no_network">Geen Netwerk</string>
 	<string name="wireless_settings">Draadloze Instellingen</string>
-	<string name="invalid_password">Ongeldig wachtwoord</string>
 	<string name="your_turn_in_game_with">In uw spel met %1$s , %2$s</string>
 	<string name="register">Registreren</string>
 	<string name="session_expired">Uw sessie is verlopen, dan kunt u opnieuw in te loggen</string>

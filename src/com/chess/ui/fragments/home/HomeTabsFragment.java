@@ -47,8 +47,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		super.onCreate(savedInstanceState);
 
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
-
-//		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class)); // TODO adjust properly
 	}
 
 	@Override
@@ -98,6 +96,10 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 //		new LoadDataFromDbTask(new GamesCursorUpdateListener(),
 //				DbHelper.getAllByUri(DBConstants.DAILY_FINISHED_LIST_GAMES),
+//				getContentResolver()).executeTask();
+//
+//		new LoadDataFromDbTask(new GamesCursorUpdateListener(),
+//				DbHelper.getAllByUri(DBConstants.DAILY_CURRENT_LIST_GAMES),
 //				getContentResolver()).executeTask();
 
 		// check if user have daily games in progress or completed. May check in DB

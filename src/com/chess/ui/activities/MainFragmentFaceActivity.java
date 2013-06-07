@@ -196,7 +196,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public void addOnOpenMenuListener(SlidingMenu.OnOpenedListener listener) {
-		openMenuListeners.add(listener);
+		if (openMenuListeners != null)
+			openMenuListeners.add(listener);
 	}
 
 	@Override

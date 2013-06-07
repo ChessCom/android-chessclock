@@ -168,6 +168,7 @@ public class RestHelper {
 	public static final String P_IS_RATED = "isRated";
 	public static final String P_GAME_TYPE = "gameTypeCodeId";
 	public static final String P_GAME_ID = "gameId";
+	public static final String P_PRODUCT_SKU = "productSku";
 	public static final String P_RELOAD = "reload";
 	public static final String P_PURCHASE_DATA = "purchaseData";
 	public static final String P_DATA_SIGNATURE = "dataSignature";

@@ -82,8 +82,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// init adapters
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
-				new int[]{CURRENT_GAMES_SECTION});
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header/*,
+				new int[]{CURRENT_GAMES_SECTION}*/);
 
 		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(getContext(), null);
 		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null);
@@ -356,7 +356,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	private void loadDbGames() {
 		new LoadDataFromDbTask(currentGamesMyCursorUpdateListener,
-				DbHelper.getDailyCurrentListGamesParams(),
+				DbHelper.getDailyCurrentListGamesParams(getActivity()),
 				getContentResolver()).executeTask();
 	}
 

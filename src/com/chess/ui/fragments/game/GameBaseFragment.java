@@ -35,6 +35,8 @@ import java.text.SimpleDateFormat;
 //public abstract class GameBaseFragment extends CommonLogicFragment implements GameActivityFace {
 public abstract class GameBaseFragment extends LiveBaseFragment implements GameActivityFace {
 
+	public static final int LAST_MOVE_ANIM_DELAY = 1300;
+
 	protected static final String GAME_GOES = "*";
 	protected static final String WHITE_WINS = "1-0";
 	protected static final String BLACK_WINS = "0-1";
@@ -218,7 +220,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 				getBoardFace().takeNext();
 				invalidateGameScreen();
 			}
-		},1300);
+		}, LAST_MOVE_ANIM_DELAY);
 	}
 
 	public Context getMeContext() {

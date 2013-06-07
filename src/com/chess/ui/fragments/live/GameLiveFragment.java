@@ -629,8 +629,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			topPanelView.setSide(labelsConfig.getOpponentSide());
 			bottomPanelView.setSide(labelsConfig.userSide);
 
-			topPanelView.setPlayerLabel(labelsConfig.topPlayerLabel);
-			bottomPanelView.setPlayerLabel(labelsConfig.bottomPlayerLabel);
+			topPanelView.setPlayerName(labelsConfig.topPlayerName);
+			topPanelView.setPlayerRating(labelsConfig.topPlayerRating);
+			bottomPanelView.setPlayerName(labelsConfig.bottomPlayerName);
+			bottomPanelView.setPlayerRating(labelsConfig.bottomPlayerRating);
 
 			boardView.updateNotations(getBoardFace().getNotationArray());
 			try {
@@ -780,7 +782,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
 			logTest(e.getMessage());
-			return null;
+			return StaticData.SYMBOL_EMPTY;
 		}
 		GameLiveItem currentGame = liveService.getGameItem();
 		if (currentGame == null)
@@ -797,7 +799,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
 			logTest(e.getMessage());
-			return null;
+			return StaticData.SYMBOL_EMPTY;
 		}
 		GameLiveItem currentGame = liveService.getGameItem();
 		if (currentGame == null)
@@ -825,15 +827,19 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	}
 
 	private void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {
-		String whitePlayerLabel = game.getWhitePlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR + newWhiteRating + StaticData.SYMBOL_RIGHT_PAR;
-		String blackPlayerLabel = game.getBlackPlayer().getUsername() + StaticData.SYMBOL_LEFT_PAR + newBlackRating + StaticData.SYMBOL_RIGHT_PAR;
 
 		if (getBoardFace().isReside()) {
-			topPanelView.setPlayerLabel(whitePlayerLabel);
-			bottomPanelView.setPlayerLabel(blackPlayerLabel);
+			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+			labelsConfig.topPlayerName = getBlackPlayerName();
+			labelsConfig.topPlayerRating = String.valueOf(newBlackRating);
+			labelsConfig.bottomPlayerName = game.getWhitePlayer().getUsername();
+			labelsConfig.bottomPlayerRating = String.valueOf(newWhiteRating);
 		} else {
-			topPanelView.setPlayerLabel(blackPlayerLabel);
-			bottomPanelView.setPlayerLabel(whitePlayerLabel);
+			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
+			labelsConfig.topPlayerName = game.getWhitePlayer().getUsername();
+			labelsConfig.topPlayerRating = String.valueOf(newWhiteRating);
+			labelsConfig.bottomPlayerName = game.getBlackPlayer().getUsername();
+			labelsConfig.bottomPlayerRating = String.valueOf(newBlackRating);
 		}
 	}
 
@@ -1042,14 +1048,16 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			labelsConfig = new LabelsConfig();
 			if (isUserColorWhite()) {
 				labelsConfig.userSide = ChessBoard.WHITE_SIDE;
-
-				labelsConfig.topPlayerLabel = getBlackPlayerName();
-				labelsConfig.bottomPlayerLabel = getWhitePlayerName();
+				labelsConfig.topPlayerName = currentGame.getBlackUsername();
+				labelsConfig.topPlayerRating = String.valueOf(currentGame.getBlackRating());
+				labelsConfig.bottomPlayerName = currentGame.getWhiteUsername();
+				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getWhiteRating());
 			} else {
 				labelsConfig.userSide = ChessBoard.BLACK_SIDE;
-
-				labelsConfig.topPlayerLabel = getWhitePlayerName();
-				labelsConfig.bottomPlayerLabel = getBlackPlayerName();
+				labelsConfig.topPlayerName = currentGame.getWhiteUsername();
+				labelsConfig.topPlayerRating = String.valueOf(currentGame.getWhiteRating());
+				labelsConfig.bottomPlayerName = currentGame.getBlackUsername();
+				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
 			}
 		}
 
@@ -1088,8 +1096,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	private class LabelsConfig {
 		BoardAvatarDrawable topAvatar;
 		BoardAvatarDrawable bottomAvatar;
-		String topPlayerLabel;
-		String bottomPlayerLabel;
+		String topPlayerName;
+		String bottomPlayerName;
+		String topPlayerRating;
+		String bottomPlayerRating;
 		int userSide;
 
 		int getOpponentSide() {

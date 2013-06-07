@@ -14,10 +14,7 @@ import com.chess.RoboButton;
 import com.chess.RoboTextView;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
-import com.chess.backend.billing.IabHelper;
-import com.chess.backend.billing.IabResult;
-import com.chess.backend.billing.Inventory;
-import com.chess.backend.billing.Purchase;
+import com.chess.backend.billing.*;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.MembershipItem;
 import com.chess.backend.entity.new_api.MembershipKeyItem;
@@ -26,6 +23,8 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -53,6 +52,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	public static final String PLATINUM_YEARLY = "platinum_yearly";
 	public static final String DIAMOND_MONTHLY = "diamond_monthly";
 	public static final String DIAMOND_YEARLY = "diamond_yearly";
+	private static final int HASH_LENGTH = 88;
 
 	private boolean isGoldMonthPayed;
 	private boolean isGoldYearPayed;
@@ -84,7 +84,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private IabHelper mHelper;
 	private PayloadItem.Data payloadData;
 	private GetDetailsListener detailsListener;
-	private UpgradeDetailsFragment.GetPayloadListener getPayloadListener;
+	private GetPayloadListener getPayloadListener;
 
 	public static UpgradeDetailsFragment newInstance(int code) {
 		UpgradeDetailsFragment frag = new UpgradeDetailsFragment();
@@ -356,9 +356,16 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	}
 
 	private void requestPayload(String isReload) {
+		requestPayload(isReload, null);
+	}
+
+	private void requestPayload(String isReload, String sku) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_PAYLOAD);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		if (sku != null) {
+			loadItem.addRequestParams(RestHelper.P_PRODUCT_SKU, sku);
+		}
 		loadItem.addRequestParams(RestHelper.P_RELOAD, isReload);
 
 		new RequestJsonTask<PayloadItem>(getPayloadListener).executeTask(loadItem);
@@ -533,12 +540,57 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	}
 
 	private void sendPayment(String itemId) {
-		String payload = itemId + AppData.getUserName(getActivity()) + payloadData.getPayload();
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_PAYLOAD);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_PRODUCT_SKU, itemId);
+		loadItem.addRequestParams(RestHelper.P_RELOAD, RestHelper.V_FALSE);
 
-		setWaitScreen(true);
-		mHelper.launchPurchaseFlow(getActivity(), itemId, IabHelper.ITEM_TYPE_SUBS,
-				RC_REQUEST, new PurchaseFinishedListener(), payload);
+		new RequestJsonTask<PayloadItem>(new GetPayloadListener1(itemId)).executeTask(loadItem);
 	}
+
+	private class GetPayloadListener1 extends ChessUpdateListener<PayloadItem> {
+
+		private String itemId;
+
+		private GetPayloadListener1(String itemId) {
+			super(PayloadItem.class);
+			this.itemId = itemId;
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			setWaitScreen(show);
+		}
+
+		@Override
+		public void updateData(PayloadItem returnedObj) {
+			super.updateData(returnedObj);
+
+			payloadData = returnedObj.getData();
+
+			setWaitScreen(true);
+			mHelper.launchPurchaseFlow(getActivity(), itemId, IabHelper.ITEM_TYPE_SUBS,
+					RC_REQUEST, new PurchaseFinishedListener(), payloadData.getPayload());
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCode.USER_DONT_HAVE_VALID_PAYLOAD) {
+					requestPayload(RestHelper.V_FALSE);
+				} else {
+					super.errorHandle(resultCode);
+				}
+			} else {
+				super.errorHandle(resultCode);
+
+			}
+		}
+	}
+
 
 	// Callback for when a purchase is finished
 	private class PurchaseFinishedListener implements IabHelper.OnIabPurchaseFinishedListener {
@@ -594,17 +646,37 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	}
 
 	/**
-	 * Verifies the developer payload of a purchase.
+	 * Verifies the developer payload of a purchase with the one that comes with purchase
 	 */
 	boolean verifyDeveloperPayload(Purchase purchase) {
-		String payload = purchase.getDeveloperPayload();
+		String purchasePayload = purchase.getDeveloperPayload();
 		if (payloadData == null) {
 			return false;
 		}
+		//
 		String sku = purchase.getSku();
 		String userName = AppData.getUserName(getActivity());
-		payload = payload.substring(sku.length() + userName.length());
-		return payloadData.getPayload().equals(payload);
+		String serverPayLoad = payloadData.getPayload();
+		String userNameSku = purchasePayload.substring(HASH_LENGTH);
+		purchasePayload = purchasePayload.substring(0, HASH_LENGTH);
+		serverPayLoad= serverPayLoad.substring(0, HASH_LENGTH);
+		try {
+			byte[] decode = Base64.decode(userNameSku);
+			userNameSku = new String(decode, "UTF-8");
+		} catch (Base64DecoderException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		String[] purchaseParams = userNameSku.split("[||]");
+		if (purchaseParams.length == 3) {
+			String purchaseUserName = purchaseParams[0];
+			String purchaseSku = purchaseParams[2];
+			return serverPayLoad.equals(purchasePayload) && purchaseUserName.equals(userName) && purchaseSku.equals(sku);
+		} else {
+			return false;
+		}
 	}
 
 	private void setWaitScreen(boolean show) {

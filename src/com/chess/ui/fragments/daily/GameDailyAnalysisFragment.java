@@ -307,8 +307,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		topPanelView.setSide(labelsConfig.getOpponentSide());
 		bottomPanelView.setSide(labelsConfig.userSide);
 
-		topPanelView.setPlayerLabel(labelsConfig.topPlayerLabel);
-		bottomPanelView.setPlayerLabel(labelsConfig.bottomPlayerLabel);
+
 
 //		whitePlayerLabel.setText(getWhitePlayerName());
 //		blackPlayerLabel.setText(getBlackPlayerName());

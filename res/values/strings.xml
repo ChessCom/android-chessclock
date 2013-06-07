@@ -269,7 +269,6 @@
 	<string name="browse">Browse</string>  <!--Browse games-->
     <string name="no_network">No Network</string> <!--Popup Title-->
     <string name="wireless_settings">Wireless Settings</string>
-    <string name="invalid_password">Invalid password</string>
     <string name="login_out">Logging out…</string>
     <string name="you_logged_out">You have logged out!</string> <!--toast message-->
     <string name="too_short">Too short</string> <!--Error notification-->

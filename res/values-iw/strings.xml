@@ -309,7 +309,6 @@
 	<string name="application_was_killed">יישום נהרג, שיקום …</string>
 	<string name="no_network">לא ברשת</string>
 	<string name="wireless_settings">הגדרות אלחוטיות</string>
-	<string name="invalid_password">סיסמה לא חוקית</string>
 	<string name="your_turn_in_game_with">במשחק שלך %1$s , %2$s</string>
 	<string name="register">לרשום</string>
 	<string name="session_expired">הפגישה שלך פג, אנא התחבר מחדש</string>

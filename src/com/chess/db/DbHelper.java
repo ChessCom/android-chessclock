@@ -14,10 +14,12 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getDailyCurrentListGamesParams(){
+	public static QueryParams getDailyCurrentListGamesParams(Context context){
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_LIST_GAMES]);
 		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_LIST_GAMES);
+		queryParams.setSelection(DBDataManager.SELECTION_USER);
+		queryParams.setArguments(new String[]{AppData.getUserName(context)});
 		return queryParams;
 	}
 

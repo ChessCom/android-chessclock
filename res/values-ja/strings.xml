@@ -307,7 +307,6 @@
 	<string name="application_was_killed">アプリケーションは、リストア、殺された…</string>
 	<string name="no_network">ネットワーク無し</string>
 	<string name="wireless_settings">ワイヤレス設定</string>
-	<string name="invalid_password">無効なパスワード</string>
 	<string name="your_turn_in_game_with">あなたのゲームとの %1$s , %2$s</string>
 	<string name="register">登録</string>
 	<string name="session_expired">セッションの期限が切れた、再ログインしてください</string>

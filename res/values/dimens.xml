@@ -238,7 +238,8 @@
     <dimen name="panel_info_height">36dip</dimen>
     <dimen name="notations_view_height">36dip</dimen>
     <dimen name="panel_info_padding_top">5dip</dimen>
-    <dimen name="panel_info_player_text_size">12sp</dimen>
+    <dimen name="panel_info_player_text_size">14sp</dimen>
+    <dimen name="panel_info_player_rating_text_size">10sp</dimen>
     <dimen name="panel_info_avatar_margin_right">7dip</dimen>
     <dimen name="panel_info_avatar_size">22dip</dimen>
     <dimen name="panel_info_avatar_big_size">35dip</dimen>

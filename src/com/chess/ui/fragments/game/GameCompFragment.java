@@ -262,8 +262,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		labelsConfig.topAvatar.setSide(topSide);
 		labelsConfig.bottomAvatar.setSide(bottomSide);
 
-		topPanelView.setPlayerLabel(labelsConfig.topPlayerLabel);
-		bottomPanelView.setPlayerLabel(labelsConfig.bottomPlayerLabel);
+		topPanelView.setPlayerName(labelsConfig.topPlayerLabel);
+		bottomPanelView.setPlayerName(labelsConfig.bottomPlayerLabel);
 
 		if (topSide == ChessBoard.NO_SIDE) {
 			topPanelView.showFlags(false);

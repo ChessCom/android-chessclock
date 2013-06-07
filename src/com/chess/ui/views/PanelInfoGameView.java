@@ -15,6 +15,7 @@ import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RelLayout;
 import com.chess.RoboTextView;
+import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
@@ -31,10 +32,11 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 	public static final int AVATAR_ID = 0x00004400;
 	public static final int PLAYER_ID = 0x00004401;
-	public static final int FLAG_ID = 0x00004402;
-	public static final int PREMIUM_ID = 0x00004403;
-	public static final int CAPTURED_ID = 0x00004404;
-	public static final int TIME_LEFT_ID = 0x00004405;
+	public static final int RATING_ID = 0x00004402;
+	public static final int FLAG_ID = 0x00004403;
+	public static final int PREMIUM_ID = 0x00004404;
+	public static final int CAPTURED_ID = 0x00004405;
+	public static final int TIME_LEFT_ID = 0x00004406;
 
 	private int FLAG_SIZE = 16;
 	private int FLAG_MARGIN = 5;
@@ -50,6 +52,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	private boolean smallScreen;
 	private float density;
 	private Resources resources;
+	private RoboTextView playerRatingTxt;
 
 	public PanelInfoGameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -78,7 +81,8 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		}
 
 		int playerTextSize = (int) (resources.getDimension(R.dimen.panel_info_player_text_size) / density);
-		int playerTextColor = resources.getColor(R.color.new_light_grey);
+		int playerRatingTextSize = (int) (resources.getDimension(R.dimen.panel_info_player_rating_text_size) / density);
+		int playerTextColor = resources.getColor(R.color.white);
 
 		int avatarSize;
 		if (useSingleLine) {
@@ -128,7 +132,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 				playerParams.addRule(ALIGN_PARENT_LEFT);
 			} else {
 				playerParams.addRule(RIGHT_OF, AVATAR_ID);
-				playerParams.addRule(ALIGN_PARENT_TOP);
+				playerParams.addRule(ALIGN_TOP, AVATAR_ID);
 			}
 
 			playerTxt.setTextSize(playerTextSize);
@@ -137,8 +141,26 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			playerTxt.setPadding((int) (4 * density), 0, 0, 0);
 			playerTxt.setMarqueeRepeatLimit(2);
 			playerTxt.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+			playerTxt.setFont(FontsHelper.BOLD_FONT);
 
 			addView(playerTxt, playerParams);
+		}
+
+		{// add player rating
+			playerRatingTxt = new RoboTextView(context);
+			LayoutParams playerParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT);
+
+			playerParams.addRule(RIGHT_OF, PLAYER_ID);
+			playerParams.addRule(ALIGN_TOP, AVATAR_ID);
+
+			playerRatingTxt.setTextSize(playerRatingTextSize);
+			playerRatingTxt.setTextColor(playerTextColor);
+			playerRatingTxt.setId(RATING_ID);
+			playerRatingTxt.setPadding((int) (4 * density), (int) (3 * density), 0, 0);
+			playerRatingTxt.setFont(FontsHelper.BOLD_FONT);
+
+			addView(playerRatingTxt, playerParams);
 		}
 
 		{// add player flag
@@ -146,11 +168,11 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 			LayoutParams flagParams = new LayoutParams(FLAG_SIZE, FLAG_SIZE);
 			flagParams.setMargins(FLAG_MARGIN, /*(int) (1 * density)*/ 0, FLAG_MARGIN, FLAG_MARGIN);
-			flagParams.addRule(RIGHT_OF, PLAYER_ID);
+			flagParams.addRule(RIGHT_OF, RATING_ID);
 			if (useSingleLine) {
 				flagParams.addRule(CENTER_VERTICAL);
 			} else {
-				flagParams.addRule(ALIGN_PARENT_TOP);
+				flagParams.addRule(ALIGN_TOP, AVATAR_ID);
 			}
 
 			flagImg.setImageDrawable(AppUtils.getUserFlag(context));
@@ -263,8 +285,12 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		timeLeftTxt.setText(timeLeft);
 	}
 
-	public void setPlayerLabel(String playerName) {
+	public void setPlayerName(String playerName) {
 		playerTxt.setText(playerName);
+	}
+
+	public void setPlayerRating(String playerName) {
+		playerRatingTxt.setText(StaticData.SYMBOL_LEFT_PAR + playerName + StaticData.SYMBOL_RIGHT_PAR);
 	}
 
 	public void showTimeLeft(boolean show) {

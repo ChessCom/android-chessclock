@@ -292,7 +292,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 		String pass = getTextFromField(passwordEdt);
 		if (pass.length() == 0) {
-			passwordEdt.setError(getString(R.string.invalid_password));
+			passwordEdt.setError(getString(R.string.password_cant_be_empty));
 			passwordEdt.requestFocus();
 			return;
 		}
@@ -350,7 +350,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				switch (serverCode){
 					case ServerErrorCode.INVALID_USERNAME_PASSWORD:
-						passwordEdt.setError(getResources().getString(R.string.invalid_password));
+						passwordEdt.setError(getResources().getString(R.string.invalid_username_or_password));
 						passwordEdt.requestFocus();
 						break;
 					case ServerErrorCode.FACEBOOK_USER_NO_ACCOUNT:

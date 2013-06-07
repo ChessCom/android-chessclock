@@ -215,6 +215,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		public NewNavigationMenuAdapter(Context context, List<NavigationMenuItem> menuItems) {
 			super(context, menuItems);
 			userAvatarUrl = AppData.getUserAvatar(context);
+			logTest("avatar url for menu = " + userAvatarUrl);
 		}
 
 		@Override

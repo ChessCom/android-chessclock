@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -51,7 +50,6 @@ import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
-import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -143,6 +141,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		super.onCreate(savedInstanceState);
 
 		labelsConfig = new LabelsConfig();
+		init();
 	}
 
 	@Override
@@ -159,58 +158,9 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		widgetsInit(view);
 	}
 
-	private void widgetsInit(View view) {
-
-		controlsDailyView = (ControlsDailyView) view.findViewById(R.id.controlsNetworkView);
-		notationsView = (NotationView) view.findViewById(R.id.notationsView);
-		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
-		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
-
-		{// set avatars
-			Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
-					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
-			opponentAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
-			userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
-
-			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-
-			labelsConfig.topAvatar = opponentAvatarDrawable;
-			labelsConfig.bottomAvatar = userAvatarDrawable;
-		}
-
-		controlsDailyView.enableGameControls(false);
-
-		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
-		boardView.setFocusable(true);
-		boardView.setTopPanelView(topPanelView);
-		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsDailyView);
-		boardView.setNotationsView(notationsView);
-
-		setBoardView(boardView);
-
-//		if (extras.getBoolean(AppConstants.NOTIFICATION, false)) { // TODO restore, replace with arguments
-////			ChessBoardOnline.resetInstance();
-//		}
-
-//		boardView.setBoardFace(ChessBoardOnline.getInstance(this));
-		boardView.setGameActivityFace(this);
-		boardView.lockBoard(true);
-
-		boardUpdateFilter = new IntentFilter(IntentConstants.BOARD_UPDATE);
-
-		{// options list setup
-			optionsList = new ArrayList<String>();
-			optionsList.add( getString(R.string.new_game));
-			optionsList.add( getString(R.string.email_game));
-			optionsList.add(getString(R.string.settings));
-		}
-	}
 
 	@Override
 	public void onStart() {
-		init();
 		super.onStart();
 		moveUpdateReceiver = new MoveUpdateReceiver();
 		registerReceiver(moveUpdateReceiver, boardUpdateFilter);
@@ -219,24 +169,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		loadGameAndUpdate();
 	}
 
-	public void init() {
-		gameId = getArguments().getLong(BaseGameItem.GAME_ID, 0);
 
-//		menuOptionsDialogListener = new MenuOptionsDialogListener();
-		abortGameUpdateListener = new GameOnlineUpdatesListener(ABORT_GAME_UPDATE);
-		drawOfferedUpdateListener = new GameOnlineUpdatesListener(DRAW_OFFER_UPDATE);
-
-		gameStateUpdateListener = new GameStateUpdateListener();
-//		startGameUpdateListener = new StartGameUpdateListener();
-//		getGameUpdateListener = new GetGameUpdateListener();
-		sendMoveUpdateListener = new GameOnlineUpdatesListener(SEND_MOVE_UPDATE);
-//		gamesListUpdateListener = new GameOnlineUpdatesListener(NEXT_GAME_UPDATE);
-		createChallengeUpdateListener = new GameOnlineUpdatesListener(CREATE_CHALLENGE_UPDATE);
-		loadFromDbUpdateListener = new LoadFromDbUpdateListener(CURRENT_GAME);
-
-		currentGamesCursorUpdateListener = new LoadFromDbUpdateListener(GAMES_LIST);
-//		showActionRefresh = true;  // TODO restore
-	}
 
 /*
 	@Override
@@ -341,31 +274,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 					currentGame = DBDataManager.getGameOnlineItemFromCursor(returnedObj);
 					returnedObj.close();
 
-					userPlayWhite = currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(getActivity()));
-
-					labelsConfig.topAvatar = opponentAvatarDrawable;
-					labelsConfig.bottomAvatar = userAvatarDrawable;
-
-					if (userPlayWhite) {
-						labelsConfig.userSide = ChessBoard.WHITE_SIDE;
-						labelsConfig.topPlayerLabel = getBlackPlayerName();
-						labelsConfig.bottomPlayerLabel = getWhitePlayerName();
-					} else {
-						labelsConfig.userSide = ChessBoard.BLACK_SIDE;
-						labelsConfig.topPlayerLabel = getWhitePlayerName();
-						labelsConfig.bottomPlayerLabel = getBlackPlayerName();
-					}
-
-					DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
-
-					controlsDailyView.enableGameControls(true);
-					boardView.lockBoard(false);
-
-					checkMessages();
-
 					adjustBoardForGame();
 
-					getBoardFace().setJustInitialized(false);
 					updateGameState(currentGame.getGameId());
 
 					break;
@@ -473,7 +383,34 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //	}
 
 	private void adjustBoardForGame() {
-//		boardView.setFinished(false);
+		userPlayWhite = currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(getActivity()));
+
+		labelsConfig.topAvatar = opponentAvatarDrawable;
+		labelsConfig.bottomAvatar = userAvatarDrawable;
+
+		if (userPlayWhite) {
+			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+			labelsConfig.topPlayerName = currentGame.getBlackUsername();
+			labelsConfig.topPlayerRating = String.valueOf(currentGame.getBlackRating());
+			labelsConfig.bottomPlayerName = currentGame.getWhiteUsername();
+			labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getWhiteRating());
+		} else {
+			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
+			labelsConfig.topPlayerName = currentGame.getWhiteUsername();
+			labelsConfig.topPlayerRating = String.valueOf(currentGame.getWhiteRating());
+			labelsConfig.bottomPlayerName = currentGame.getBlackUsername();
+			labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
+		}
+
+		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
+
+		controlsDailyView.enableGameControls(true);
+		boardView.lockBoard(false);
+
+		if (currentGame.hasNewMessage()) {
+			controlsDailyView.haveNewMessage(true);
+		}
+
 		getBoardFace().setFinished(false);
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
@@ -583,22 +520,24 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	public void invalidateGameScreen() {
 		showSubmitButtonsLay(getBoardFace().isSubmit());
 
-		userAvatarDrawable.setSide(labelsConfig.userSide);
-		opponentAvatarDrawable.setSide(labelsConfig.getOpponentSide());
+		if (labelsConfig.bottomAvatar != null) {
+			labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+			bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+		}
 
-		topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-		bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+		if (labelsConfig.topAvatar != null) {
+			labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+			topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+		}
 
 		topPanelView.setSide(labelsConfig.getOpponentSide());
 		bottomPanelView.setSide(labelsConfig.userSide);
 
-		topPanelView.setPlayerLabel(labelsConfig.topPlayerLabel);
-		bottomPanelView.setPlayerLabel(labelsConfig.bottomPlayerLabel);
+		topPanelView.setPlayerName(labelsConfig.topPlayerName);
+		topPanelView.setPlayerRating(labelsConfig.topPlayerRating);
+		bottomPanelView.setPlayerName(labelsConfig.bottomPlayerName);
+		bottomPanelView.setPlayerRating(labelsConfig.bottomPlayerRating);
 
-//		whitePlayerLabel.setText(getWhitePlayerName());
-//		blackPlayerLabel.setText(getBlackPlayerName());
-
-//		boardView.updateNotations(getBoardFace().getMoveListSAN());
 		boardView.updateNotations(getBoardFace().getNotationArray());
 	}
 
@@ -729,7 +668,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private void loadGamesList() {
 		// replace with db update
 //		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getContext()), // TODO adjust
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGamesParams(), // TODO adjust
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGamesParams(getActivity()), // TODO adjust
 				getContentResolver()).executeTask();
 
 //		LoadItem listLoadItem = new LoadItem();
@@ -1154,26 +1093,67 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		}
 	}
 
-//	private class CreateChallengeUpdateListener extends ChessUpdateListener {
-//
-//		@Override
-//		public void updateData(String returnedObj) {
-//			showSinglePopupDialog(R.string.congratulations, R.string.onlinegamecreated);
-//		}
-//
-//		@Override
-//		public void errorHandle(String resultMessage) {
-//			showPopupDialog(getString(R.string.error), resultMessage, ERROR_TAG);
-//		}
-//	}
+	public void init() {
+		gameId = getArguments().getLong(BaseGameItem.GAME_ID, 0);
+
+		abortGameUpdateListener = new GameOnlineUpdatesListener(ABORT_GAME_UPDATE);
+		drawOfferedUpdateListener = new GameOnlineUpdatesListener(DRAW_OFFER_UPDATE);
+
+		gameStateUpdateListener = new GameStateUpdateListener();
+		sendMoveUpdateListener = new GameOnlineUpdatesListener(SEND_MOVE_UPDATE);
+		createChallengeUpdateListener = new GameOnlineUpdatesListener(CREATE_CHALLENGE_UPDATE);
+		loadFromDbUpdateListener = new LoadFromDbUpdateListener(CURRENT_GAME);
+
+		currentGamesCursorUpdateListener = new LoadFromDbUpdateListener(GAMES_LIST);
+	}
+
+	private void widgetsInit(View view) {
+
+		controlsDailyView = (ControlsDailyView) view.findViewById(R.id.controlsNetworkView);
+		notationsView = (NotationView) view.findViewById(R.id.notationsView);
+		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
+		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
+
+		{// set avatars
+
+			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+
+			labelsConfig.topAvatar = opponentAvatarDrawable;
+			labelsConfig.bottomAvatar = userAvatarDrawable;
+		}
+
+		controlsDailyView.enableGameControls(false);
+
+		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
+		boardView.setFocusable(true);
+		boardView.setTopPanelView(topPanelView);
+		boardView.setBottomPanelView(bottomPanelView);
+		boardView.setControlsView(controlsDailyView);
+		boardView.setNotationsView(notationsView);
+
+		setBoardView(boardView);
+
+		boardView.setGameActivityFace(this);
+		boardView.lockBoard(true);
+
+		boardUpdateFilter = new IntentFilter(IntentConstants.BOARD_UPDATE);
+
+		{// options list setup
+			optionsList = new ArrayList<String>();
+			optionsList.add( getString(R.string.new_game));
+			optionsList.add( getString(R.string.email_game));
+			optionsList.add(getString(R.string.settings));
+		}
+	}
 
 	private class LabelsConfig {
-		int topPlayerSide;
-		int bottomPlayerSide;
-		String topPlayerLabel;
-		String bottomPlayerLabel;
-		Drawable topAvatar;
-		Drawable bottomAvatar;
+		BoardAvatarDrawable topAvatar;
+		BoardAvatarDrawable bottomAvatar;
+		String topPlayerName;
+		String bottomPlayerName;
+		String topPlayerRating;
+		String bottomPlayerRating;
 		int userSide;
 
 		int getOpponentSide(){

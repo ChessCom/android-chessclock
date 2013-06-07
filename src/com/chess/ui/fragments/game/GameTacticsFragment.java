@@ -87,7 +87,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	private static final int ID_SHOW_ANSWER = 1;
 	private static final int ID_PRACTICE = 2;
 	private static final int ID_SETTINGS = 3;
-	public static final int LAST_MOVE_ANIM_DELAY = 1300;
+
 	private static final String OPTION_SELECTION = "option select popup";
 
 	private Handler tacticsTimer;
@@ -111,7 +111,6 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	private int currentTacticAnswerCnt;
 	private int maxTacticAnswerCnt;
 	private TacticItem.Data tacticItem;
-	private boolean offlineBatchWasLoaded;
 	private PanelInfoTacticsView topPanelView;
 	private ControlsTacticsView controlsTacticsView;
 	private int currentRating;
@@ -869,7 +868,6 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		@Override
 		public void updateListData(List<TacticItem.Data> itemsList) {
 			new SaveTacticsBatchTask(dbTacticBatchSaveListener, itemsList, getContentResolver()).executeTask();
-			offlineBatchWasLoaded = true;
 		}
 	}
 

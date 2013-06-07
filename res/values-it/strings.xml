@@ -309,7 +309,6 @@
 	<string name="application_was_killed">L\'applicazione è stata uccisa, il ripristino …</string>
 	<string name="no_network">No Network</string>
 	<string name="wireless_settings">Impostazioni Wireless</string>
-	<string name="invalid_password">Password non valida</string>
 	<string name="your_turn_in_game_with">Nel vostro gioco con %1$s , %2$s</string>
 	<string name="register">Registro</string>
 	<string name="session_expired">La sessione è scaduta, si prega di ri-effettuare il login</string>
