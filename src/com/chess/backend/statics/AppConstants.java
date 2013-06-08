@@ -76,6 +76,7 @@ public class AppConstants {
 	public static final String MATOMY_AD = "matomy";
 	public static final String RESPONSE = "response";
 	public static final int UPGRADE_SHOW_COUNTER = 10;
+	public static final String WELCOME_GAME_WON = "welcome_game_result_won";
 
 	public static final String ID = "id";
 	public static final String EXTRA_WEB_URL = "extras weblink url";

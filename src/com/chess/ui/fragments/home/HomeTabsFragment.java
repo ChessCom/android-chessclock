@@ -23,7 +23,6 @@ import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.chess.ui.fragments.daily.DailyGamesNotificationFragment;
-import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.List;
 
@@ -50,10 +49,31 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	}
 
 	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.new_base_tabs_frame, container, false);
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		enableSlideMenus(true);
+
+		getActivityFace().setCustomActionBarViewId(R.layout.new_home_actionbar);
+
+		((TextView) view.findViewById(R.id.leftTabBtn)).setText(R.string.play);
+		((TextView) view.findViewById(R.id.centerTabBtn)).setText(R.string.learn);
+		((TextView) view.findViewById(R.id.rightTabBtn)).setText(R.string.feed);
+
+		showActionBar(true);
+
+		tabRadioGroup = (RadioGroup) view.findViewById(R.id.tabRadioGroup);
+		tabRadioGroup.setOnCheckedChangeListener(this);
+	}
+
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		// set full screen touch
-		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
 		// activate Left
 		CommonLogicFragment leftMenuFragment = (CommonLogicFragment) findFragmentByTag(NavigationMenuFragment.class.getSimpleName());
@@ -67,27 +87,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 			rightMenuFragment = new DailyGamesNotificationFragment();
 		}
 		getActivityFace().changeRightFragment(rightMenuFragment);
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_base_tabs_frame, container, false);
-	}
-
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-
-		getActivityFace().setCustomActionBarViewId(R.layout.new_home_actionbar);
-
-		((TextView) view.findViewById(R.id.leftTabBtn)).setText(R.string.play);
-		((TextView) view.findViewById(R.id.centerTabBtn)).setText(R.string.learn);
-		((TextView) view.findViewById(R.id.rightTabBtn)).setText(R.string.feed);
-
-		showActionBar(true);
-
-		tabRadioGroup = (RadioGroup) view.findViewById(R.id.tabRadioGroup);
-		tabRadioGroup.setOnCheckedChangeListener(this);
 	}
 
 	@Override

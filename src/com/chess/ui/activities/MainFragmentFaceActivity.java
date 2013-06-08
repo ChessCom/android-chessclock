@@ -22,7 +22,10 @@ import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.slidingmenu.lib.SlidingMenu;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -111,6 +114,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	}
 
+	@Override
 	public void updateActionBarIcons() {
 		if (!HONEYCOMB_PLUS_API) {
 			adjustActionBar();
@@ -223,7 +227,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				.commit();
 		sm.setSecondaryShadowDrawable(R.drawable.defaultshadowright);
 		sm.setShadowDrawable(R.drawable.defaultshadow);
-		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+//		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 
 	@Override

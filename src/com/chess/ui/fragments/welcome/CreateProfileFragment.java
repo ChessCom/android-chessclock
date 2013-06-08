@@ -103,6 +103,8 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		enableSlideMenus(false);
+
 		view.findViewById(R.id.createProfileBtn).setOnClickListener(this);
 		view.findViewById(R.id.skipBtn).setOnClickListener(this);
 		view.findViewById(R.id.skipLay).setOnClickListener(this);

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.WelcomeTabsFace;
 
@@ -21,7 +22,9 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements WelcomeT
 
 	public static final int FEATURES_FRAGMENT = 0;
 	public static final int RESULTS_FRAGMENT = 1;
-	public static final int SIGN_FRAGMENT = 2;
+	public static final int SIGN_IN_FRAGMENT = 2;
+	public static final int SIGN_UP_FRAGMENT = 3;
+	public static final int GAME_FRAGMENT = 4;
 
 	private View leftTabBtn;
 	private View rightTabBtn;
@@ -31,7 +34,7 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements WelcomeT
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		changeInternalFragment(new WelcomeGameCompFragment(this));
+		changeInternalFragment(WelcomeGameCompFragment.createInstance(this));
 	}
 
 	@Override
@@ -42,6 +45,8 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements WelcomeT
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		enableSlideMenus(false);
 
 		leftTabBtn = view.findViewById(R.id.leftTabBtn);
 		leftTabBtn.setOnClickListener(this);
@@ -60,32 +65,6 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements WelcomeT
 		updateData(view);
 	}
 
-	@Override
-	public void changeInternalFragment(int code) {
-		if (code == FEATURES_FRAGMENT) {
-			openInternalFragment(new WelcomeFragment(this));
-			openWelcomeFragment = true;
-		} else if (code == RESULTS_FRAGMENT) {
-			openInternalFragment(new ResultsFragment(this));
-			openWelcomeFragment = true;
-		} else if (code == SIGN_FRAGMENT) {
-
-			openInternalFragment(new SignInFragment());
-			openWelcomeFragment = true;
-		}
-	}
-
-	@Override
-	public void onPageSelected(int page) {
-		if (page == WelcomeFragment.SIGN_UP_PAGE) {
-			leftTabBtn.setVisibility(View.GONE);
-			rightTabBtn.setVisibility(View.GONE);
-		} else {
-			leftTabBtn.setVisibility(View.VISIBLE);
-			rightTabBtn.setVisibility(View.VISIBLE);
-		}
-	}
-
 	private void updateData(View view) {
 		int id = view.getId();
 		CommonLogicFragment fragment;
@@ -101,7 +80,7 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements WelcomeT
 			openWelcomeFragment = false;
 			fragment = (CommonLogicFragment) findFragmentByTag(WelcomeGameCompFragment.class.getSimpleName());
 			if (fragment == null) {
-				fragment = new WelcomeGameCompFragment(this);
+				fragment = WelcomeGameCompFragment.createInstance(this);
 			}
 			changeInternalFragment(fragment);
 		} else if (id == R.id.rightTabBtn) {
@@ -113,6 +92,49 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements WelcomeT
 			getActivityFace().openFragment(fragment);
 		}
 	}
+
+	@Override
+	public void changeInternalFragment(int code) {
+		if (code == FEATURES_FRAGMENT) {
+			openInternalFragment(WelcomeFragment.createInstance(this));
+			openWelcomeFragment = true;
+		} else if (code == RESULTS_FRAGMENT) {
+			boolean wonGame = preferences.getBoolean(AppConstants.WELCOME_GAME_WON, false);
+			openInternalFragment(ResultsFragment.createInstance(this, wonGame));
+			openWelcomeFragment = true;
+		} else if (code == SIGN_IN_FRAGMENT) {
+
+			CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(SignInFragment.class.getSimpleName());
+			if (fragment == null) {
+				fragment = new SignInFragment();
+			}
+			getActivityFace().openFragment(fragment);
+			openWelcomeFragment = true;
+		} else if (code == SIGN_UP_FRAGMENT) {
+
+			CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(SignUpFragment.class.getSimpleName());
+			if (fragment == null) {
+				fragment = new SignUpFragment();
+			}
+			getActivityFace().openFragment(fragment);
+			openWelcomeFragment = true;
+		} else if (code == GAME_FRAGMENT) {
+			changeInternalFragment(WelcomeGameCompFragment.createInstance(this));
+		}
+	}
+
+	@Override
+	public void onPageSelected(int page) {
+		if (page == WelcomeFragment.SIGN_UP_PAGE) {
+			leftTabBtn.setVisibility(View.GONE);
+			rightTabBtn.setVisibility(View.GONE);
+		} else {
+			leftTabBtn.setVisibility(View.VISIBLE);
+			rightTabBtn.setVisibility(View.VISIBLE);
+		}
+	}
+
+
 
 	private void changeInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();

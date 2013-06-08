@@ -89,6 +89,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected View loadingView;
 	private int padding;
 	private int paddingCode;
+	private boolean slideMenusEnabled;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -112,6 +113,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		enableSlideMenus(true);
+
 		loadingView = view.findViewById(R.id.loadingView);
 
 		getActivityFace().showActionMenu(R.id.menu_add, false);
@@ -126,8 +130,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		// set full screen touch
-		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
+
+		getActivityFace().setTouchModeToSlidingMenu(slideMenusEnabled? SlidingMenu.TOUCHMODE_FULLSCREEN
+				: SlidingMenu.TOUCHMODE_NONE);
 
 		LoginButton loginButton = (LoginButton) getView().findViewById(R.id.fb_connect);
 		if (loginButton != null) {
@@ -214,6 +219,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		if (titleId != 0) {
 			getActivityFace().updateTitle(titleId);
 		}
+	}
+
+	protected void enableSlideMenus(boolean enable) {
+		slideMenusEnabled = enable;
 	}
 
 	protected void unRegisterGcmService() {

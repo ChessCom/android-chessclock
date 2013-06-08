@@ -284,7 +284,7 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
+		outState.putSerializable("smth", "value");
 		super.onSaveInstanceState(outState);
-		// TODO -> File | Settings | File Templates.
 	}
 }

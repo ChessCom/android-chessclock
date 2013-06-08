@@ -35,6 +35,8 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		enableSlideMenus(false);
+
 		loginUsernameEdt = (EditText) view.findViewById(R.id.usernameEdt);
 		loginPasswordEdt = (EditText) view.findViewById(R.id.passwordEdt);
 		loginPasswordEdt.setOnEditorActionListener(this);

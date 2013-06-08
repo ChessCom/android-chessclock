@@ -12,7 +12,6 @@
         android:id="@+id/resultTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="You Won!"
         android:gravity="center"
         android:textColor="@color/white"
         android:minHeight="99dip"

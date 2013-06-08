@@ -29,7 +29,6 @@ import com.flurry.android.FlurryAgent;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.regex.Pattern;
 
@@ -47,7 +46,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 
 	public static final String YOUTUBE_DEMO_LINK = "AgTQJUhK2MY";
 	private static final String YOUTUBE_FRAGMENT_TAG = "youtube fragment";
-	private final WelcomeTabsFace parentFace;
+	private WelcomeTabsFace parentFace;
 
 
 	private RadioGroup homePageRadioGroup;
@@ -74,9 +73,13 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	private RegisterUpdateListener registerUpdateListener;
 	private YouTubePlayer youTubePlayer;
 
-	public WelcomeFragment(WelcomeTabsFace parentFace) {
-		this.parentFace = parentFace;
+	public WelcomeFragment() {
+	}
 
+	public static WelcomeFragment createInstance(WelcomeTabsFace parentFace) {
+		WelcomeFragment fragment = new WelcomeFragment();
+		fragment.parentFace = parentFace;
+		return fragment;
 	}
 
 	@Override
@@ -87,7 +90,8 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
+
+		enableSlideMenus(false);
 
 		inflater = LayoutInflater.from(getActivity());
 

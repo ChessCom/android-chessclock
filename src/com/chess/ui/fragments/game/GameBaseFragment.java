@@ -22,7 +22,6 @@ import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
-import com.slidingmenu.lib.SlidingMenu;
 
 import java.text.SimpleDateFormat;
 
@@ -32,7 +31,6 @@ import java.text.SimpleDateFormat;
  * Date: 15.01.13
  * Time: 13:46
  */
-//public abstract class GameBaseFragment extends CommonLogicFragment implements GameActivityFace {
 public abstract class GameBaseFragment extends LiveBaseFragment implements GameActivityFace {
 
 	public static final int LAST_MOVE_ANIM_DELAY = 1300;
@@ -85,13 +83,19 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 	}
 
 	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		enableSlideMenus(false);
+	}
+
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		if (AppUtils.isNeedToUpgrade(getActivity())) {
 			MopubHelper.createRectangleAd(getActivity());
 		}
 
-		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_NONE); // don't mess with boardview touches
 		invalidateGameScreen();
 	}
 

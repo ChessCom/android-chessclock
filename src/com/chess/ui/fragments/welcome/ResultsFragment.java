@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -31,7 +32,6 @@ import com.flurry.android.FlurryAgent;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,14 +44,29 @@ import java.util.regex.Pattern;
  * Time: 11:52
  */
 public class ResultsFragment extends CommonLogicFragment implements YouTubePlayer.OnInitializedListener,
-		YouTubePlayer.OnFullscreenListener, AdapterView.OnItemClickListener {
+		YouTubePlayer.OnFullscreenListener, AdapterView.OnItemClickListener, SlidingDrawer.OnDrawerOpenListener, SlidingDrawer.OnDrawerCloseListener {
 
 	private static final int PAGE_CNT = 4;
 	public static final int SIGN_UP_PAGE = 3;
 
 	public static final String YOUTUBE_DEMO_LINK = "AgTQJUhK2MY";
 	private static final String YOUTUBE_FRAGMENT_TAG = "youtube fragment";
-	private final WelcomeTabsFace parentFace;
+	private static final int PLAY_ONLINE_ITEM = 0;
+	private static final int CHALLENGE_ITEM = 1;
+	private static final int REMATCH_ITEM = 2;
+	private static final int TACTICS_ITEM = 3;
+	private static final int LESSONS_ITEM = 4;
+	private static final int VIDEOS_ITEM = 5;
+
+	private static final String PLAY_ONLINE_TAG = "play online tag";
+	private static final String CHALLENGE_TAG = "challenge friend tag";
+	private static final String REMATCH_TAG = "rematch tag";
+	private static final String TACTICS_TAG = "tactics tag";
+	private static final String LESSONS_TAG = "lessons tag";
+	private static final String VIDEOS_TAG = "videos tag";
+
+	private WelcomeTabsFace parentFace;
+	private boolean wonGame;
 
 
 	private RadioGroup homePageRadioGroup;
@@ -79,10 +94,18 @@ public class ResultsFragment extends CommonLogicFragment implements YouTubePlaye
 	private YouTubePlayer youTubePlayer;
 	private ArrayList<PromoteItem> menuItems;
 	private PromotesAdapter adapter;
+	private ListView listView;
+	private TextView resultTxt;
 
-	public ResultsFragment(WelcomeTabsFace parentFace) {
-		this.parentFace = parentFace;
+	public ResultsFragment() {
 
+	}
+
+	public static ResultsFragment createInstance(WelcomeTabsFace parentFace, boolean wonGame) {
+		ResultsFragment fragment = new ResultsFragment();
+		fragment.parentFace = parentFace;
+		fragment.wonGame = wonGame;
+		return fragment;
 	}
 
 	@Override
@@ -105,7 +128,6 @@ public class ResultsFragment extends CommonLogicFragment implements YouTubePlaye
 		menuItems.add(new PromoteItem(R.string.videos, R.string.ic_play));
 
 		adapter = new PromotesAdapter(getActivity(), menuItems);
-
 	}
 
 	@Override
@@ -116,10 +138,11 @@ public class ResultsFragment extends CommonLogicFragment implements YouTubePlaye
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
+
+		enableSlideMenus(false);
 
 		{// results part
-			ListView listView = (ListView) view.findViewById(R.id.listView);
+			listView = (ListView) view.findViewById(R.id.listView);
 			listView.setOnItemClickListener(this);
 			listView.setAdapter(adapter);
 		}
@@ -141,6 +164,18 @@ public class ResultsFragment extends CommonLogicFragment implements YouTubePlaye
 		{// SignUp part
 			registerUpdateListener = new RegisterUpdateListener();
 		}
+
+		resultTxt = (TextView) view.findViewById(R.id.resultTxt);
+		if (wonGame) {
+			resultTxt.setText(R.string.you_won);
+		} else {
+			resultTxt.setText(R.string.you_lose);
+		}
+
+
+		SlidingDrawer drawer = (SlidingDrawer) view.findViewById(R.id.drawer);
+		drawer.setOnDrawerCloseListener(this);
+		drawer.setOnDrawerOpenListener(this);
 	}
 
 	@Override
@@ -154,7 +189,79 @@ public class ResultsFragment extends CommonLogicFragment implements YouTubePlaye
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		parentFace.changeInternalFragment(WelcomeTabsFragment.SIGN_FRAGMENT);
+		switch (position) {
+			case PLAY_ONLINE_ITEM:
+				popupItem.setPositiveBtnId(R.string.sign_up);
+				popupItem.setNegativeBtnId(R.string.log_in);
+				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.play_online)), PLAY_ONLINE_TAG);
+				break;
+			case CHALLENGE_ITEM:
+				popupItem.setPositiveBtnId(R.string.sign_up);
+				popupItem.setNegativeBtnId(R.string.log_in);
+				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.challenge_friend)), CHALLENGE_TAG);
+				break;
+			case REMATCH_ITEM:
+				parentFace.changeInternalFragment(WelcomeTabsFragment.GAME_FRAGMENT);
+				break;
+			case TACTICS_ITEM:
+				popupItem.setPositiveBtnId(R.string.sign_up);
+				popupItem.setNegativeBtnId(R.string.log_in);
+				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.solve_tactics_puzzles)), TACTICS_TAG);
+
+				break;
+			case LESSONS_ITEM:
+				popupItem.setPositiveBtnId(R.string.sign_up);
+				popupItem.setNegativeBtnId(R.string.log_in);
+				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.learn_lessons)), LESSONS_TAG);
+				break;
+			case VIDEOS_ITEM:
+				popupItem.setPositiveBtnId(R.string.sign_up);
+				popupItem.setNegativeBtnId(R.string.log_in);
+				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.watch_videos)), VIDEOS_TAG);
+				break;
+		}
+	}
+
+	@Override
+	public void onDrawerOpened() {
+		resultTxt.setVisibility(View.GONE);
+		listView.setVisibility(View.GONE);
+	}
+
+	@Override
+	public void onDrawerClosed() {
+		resultTxt.setVisibility(View.VISIBLE);
+		listView.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void onPositiveBtnClick(DialogFragment fragment) {
+		super.onPositiveBtnClick(fragment);
+
+		String tag = fragment.getTag();
+		if (isTagEmpty(fragment)) {
+			return;
+		}
+
+		if (tag.equals(PLAY_ONLINE_TAG) || tag.equals(CHALLENGE_TAG) || tag.equals(TACTICS_TAG)
+				|| tag.equals(LESSONS_TAG) || tag.equals(VIDEOS_TAG)) {
+			parentFace.changeInternalFragment(WelcomeTabsFragment.SIGN_IN_FRAGMENT);
+		}
+	}
+
+	@Override
+	public void onNegativeBtnClick(DialogFragment fragment) {
+		super.onNegativeBtnClick(fragment);
+
+		String tag = fragment.getTag();
+		if (isTagEmpty(fragment)) {
+			return;
+		}
+
+		if (tag.equals(PLAY_ONLINE_TAG) || tag.equals(CHALLENGE_TAG) || tag.equals(TACTICS_TAG)
+				|| tag.equals(LESSONS_TAG) || tag.equals(VIDEOS_TAG)) {
+			parentFace.changeInternalFragment(WelcomeTabsFragment.SIGN_UP_FRAGMENT);
+		}
 	}
 
 	private class PromoteItem {
@@ -252,6 +359,8 @@ public class ResultsFragment extends CommonLogicFragment implements YouTubePlaye
 			}
 
 			submitRegisterInfo();
+		} else if (view.getId() == R.id.resultTxt) {
+			parentFace.changeInternalFragment(WelcomeTabsFragment.GAME_FRAGMENT);
 		}
 	}
 

@@ -54,6 +54,8 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		enableSlideMenus(false);
+
 		userNameEdt = (EditText) view.findViewById(R.id.usernameEdt);
 		emailEdt = (EditText) view.findViewById(R.id.emailEdt);
 		passwordEdt = (EditText) view.findViewById(R.id.passwordEdt);

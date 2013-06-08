@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.TextView;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 import java.io.Serializable;
 
@@ -39,6 +40,7 @@ public class RoboTextView extends TextView implements Serializable {
 			array.recycle();
 		}
 
+		ButtonDrawableBuilder.setBackgroundToView(this, attrs);
         init(context, ttfName);
     }
 

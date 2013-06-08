@@ -166,7 +166,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		registerReceiver(moveUpdateReceiver, boardUpdateFilter);
 
 		DataHolder.getInstance().setInOnlineGame(gameId, true);
-		loadGameAndUpdate();
+//		loadGameAndUpdate();
+		updateGameState(gameId);
 	}
 
 

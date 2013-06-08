@@ -62,6 +62,10 @@ public class BoardAvatarDrawable extends Drawable {
 		int width = getBounds().width();
 		int height = getBounds().height();
 
+		if (width != height) { // to avoid squeeze, skip this draw
+			return;
+		}
+
 		int bitmapWidth = width - BORDER_THICK * 2;
 		int bitmapHeight = height - BORDER_THICK * 2;
 		if (roundedBitmap == null) {

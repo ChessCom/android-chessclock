@@ -67,7 +67,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	private static final long REPEAT_TIMEOUT = 60000;
 	private static final int DURATION = 400;
 	private static final String OPTION_SELECTION = "option select popup";
-	private final WelcomeTabsFace parentFace;
+	private WelcomeTabsFace parentFace;
 
 	private Interpolator accelerator = new AccelerateInterpolator();
 	private Interpolator decelerator = new DecelerateInterpolator();
@@ -90,13 +90,23 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	private List<String> optionsList;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 
-	public WelcomeGameCompFragment(WelcomeTabsFace parentFace) {
+	public WelcomeGameCompFragment() {
 		NewCompGameConfig config = new NewCompGameConfig.Builder().build();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, config.getMode());
 		bundle.putInt(COMP_DELAY, config.getMode());
 		setArguments(bundle);
-		this.parentFace = parentFace;
+	}
+
+	public static WelcomeGameCompFragment createInstance(WelcomeTabsFace parentFace) {
+		WelcomeGameCompFragment fragment = new WelcomeGameCompFragment();
+		NewCompGameConfig config = new NewCompGameConfig.Builder().build();
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, config.getMode());
+		bundle.putInt(COMP_DELAY, config.getMode());
+		fragment.setArguments(bundle);
+		fragment.parentFace = parentFace;
+		return fragment;
 	}
 
 	@Override
@@ -114,6 +124,8 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		enableSlideMenus(false);
 
 		setTitle(R.string.vs_computer);
 
@@ -344,50 +356,12 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void newGame() {
-		getActivityFace().showPreviousFragment(); // TODO
 	}
 
 	@Override
 	public void switch2Analysis() {
-		ChessBoardComp.resetInstance();
-
-//		Intent intent = new Intent(this, GameCompAnalysisActivity.class);
-//		int mode = getArguments().getInt(AppConstants.GAME_MODE, AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
-//		intent.putExtra(AppConstants.GAME_MODE, mode);
-//		startActivity(intent);
 	}
 
-//	@Override
-//	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-////		MenuInflater menuInflater = getMenuInflater();
-//		inflater.inflate(R.menu.game_comp, menu);
-//		super.onCreateOptionsMenu(menu, inflater);
-//	}
-//
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//			case R.id.menu_newGame:
-//				newGame();
-//				break;
-//			case R.id.menu_options:
-//				showOptions();
-//				break;
-//			case R.id.menu_reside:
-//				boardView.flipBoard();
-//				break;
-//			case R.id.menu_hint:
-//				boardView.showHint();
-//				break;
-//			case R.id.menu_previous:
-//				boardView.moveBack();
-//				break;
-//			case R.id.menu_next:
-//				boardView.moveForward();
-//				break;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
 
 	@Override
 	public Boolean isUserColorWhite() {
@@ -398,52 +372,6 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	public Long getGameId() {
 		return null;
 	}
-
-
-
-//	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
-//		private final int NEW_GAME_WHITE = 0;
-//		private final int NEW_GAME_BLACK = 1;
-//		private final int EMAIL_GAME = 2;
-//		private final int SETTINGS = 3;
-//
-//		@Override
-//		public void onClick(DialogInterface dialogInterface, int i) {
-//			switch (i) {
-//				case NEW_GAME_WHITE: {
-//					ChessBoardComp.resetInstance();
-//					getBoardFace();
-//					boardView.setGameActivityFace(GameCompFragment.this);
-//					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
-//					boardView.invalidate();
-//					invalidateGameScreen();
-//					break;
-//				}
-//				case NEW_GAME_BLACK: {
-//					// TODO encapsulate
-//					ChessBoardComp.resetInstance();
-//					getBoardFace();
-//					boardView.setGameActivityFace(GameCompFragment.this);
-//					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
-//					getBoardFace().setReside(true);
-//					boardView.invalidate();
-//					invalidateGameScreen();
-//
-//					computerMove();
-//					break;
-//				}
-//				case EMAIL_GAME: {
-//					sendPGN();
-//					break;
-//				}
-//
-//				case SETTINGS: {
-//					startActivity(new Intent(getContext(), SettingsScreenActivity.class));
-//					break;
-//				}
-//			}
-//		}
-//	}
 
 	private void sendPGN() {
 		/*
@@ -462,7 +390,6 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		String whitePlayerName = AppData.getUserName(getContext());
 		String blackPlayerName = getString(R.string.comp);
 		String result = GAME_GOES;
-//		if (boardView.isFinished()) {// means in check state
 		if (getBoardFace().isFinished()) {// means in check state
 			if (getBoardFace().getSide() == ChessBoard.WHITE_SIDE) {
 				result = BLACK_WINS;
@@ -492,8 +419,10 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	@Override
 	public void onGameOver(String message, boolean need2Finish) {
 //		super.onGameOver(message, need2Finish);
-
-		parentFace.changeInternalFragment(WelcomeTabsFragment.RESULTS_FRAGMENT);
+		boolean userWon = !message.equals(getString(R.string.black_wins));
+		preferencesEditor.putBoolean(AppConstants.WELCOME_GAME_WON, userWon).commit();
+		if (parentFace != null)  // TODO do something if activity was killed and we restored fragment w/o parentFace :(
+			parentFace.changeInternalFragment(WelcomeTabsFragment.RESULTS_FRAGMENT);
 	}
 
 	@Override
@@ -544,13 +473,15 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		super.onClick(view);
 
 		if (view.getId() == PanelInfoWelcomeView.WHAT_IS_TXT_ID) {
-			parentFace.changeInternalFragment(WelcomeTabsFragment.FEATURES_FRAGMENT);
+			if (parentFace != null)
+				parentFace.changeInternalFragment(WelcomeTabsFragment.FEATURES_FRAGMENT);
 		}
 	}
 
 	@Override
 	public void valueSelected(int code) {
 		if (code == ID_NEW_GAME) {
+
 			getActivityFace().openFragment(new CompGameSetupFragment());
 		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
