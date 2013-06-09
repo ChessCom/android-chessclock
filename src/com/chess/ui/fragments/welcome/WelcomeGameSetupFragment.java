@@ -1,4 +1,4 @@
-package com.chess.ui.fragments;
+package com.chess.ui.fragments.welcome;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,19 +11,30 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.configs.NewCompGameConfig;
-import com.chess.ui.fragments.game.GameCompFragment;
+import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.interfaces.WelcomeTabsFace;
 
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 26.04.13
- * Time: 7:06
+ * Date: 9.06.13
+ * Time: 6:39
  */
-public class CompGameSetupFragment extends CommonLogicFragment {
+public class WelcomeGameSetupFragment extends CommonLogicFragment {
 
 	private RadioButton whiteHuman;
 	private RadioButton blackHuman;
 	private NewCompGameConfig.Builder gameConfigBuilder;
+	private WelcomeTabsFace parentFace;
+
+	public WelcomeGameSetupFragment(){
+	}
+
+	public static WelcomeGameSetupFragment createInstance(WelcomeTabsFace parentFace) {
+		WelcomeGameSetupFragment fragment = new WelcomeGameSetupFragment();
+		fragment.parentFace = parentFace;
+		return fragment;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +55,7 @@ public class CompGameSetupFragment extends CommonLogicFragment {
 		whiteHuman = (RadioButton) view.findViewById(R.id.wHuman);
 		blackHuman = (RadioButton) view.findViewById(R.id.bHuman);
 		view.findViewById(R.id.startPlayBtn).setOnClickListener(this);
+
 	}
 
 	@Override
@@ -55,8 +67,9 @@ public class CompGameSetupFragment extends CommonLogicFragment {
 			preferencesEditor.commit();
 
 			NewCompGameConfig config = getNewCompGameConfig();
+			AppData.setCompGameMode(getActivity(), config.getMode());
+			parentFace.changeInternalFragment(WelcomeTabsFragment.GAME_FRAGMENT);
 
-			getActivityFace().openFragment(GameCompFragment.newInstance(config));
 		}
 	}
 

@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
+import com.chess.ui.engine.configs.NewCompGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.WelcomeTabsFace;
 
@@ -25,16 +27,20 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements WelcomeT
 	public static final int SIGN_IN_FRAGMENT = 2;
 	public static final int SIGN_UP_FRAGMENT = 3;
 	public static final int GAME_FRAGMENT = 4;
+	public static final int GAME_SETUP_FRAGMENT = 5;
 
 	private View leftTabBtn;
 	private View rightTabBtn;
 	private boolean openWelcomeFragment;
+	private NewCompGameConfig config;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		changeInternalFragment(WelcomeGameCompFragment.createInstance(this));
+		config = new NewCompGameConfig.Builder().build();
+
+		changeInternalFragment(WelcomeGameCompFragment.createInstance(this, config));
 	}
 
 	@Override
@@ -80,7 +86,7 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements WelcomeT
 			openWelcomeFragment = false;
 			fragment = (CommonLogicFragment) findFragmentByTag(WelcomeGameCompFragment.class.getSimpleName());
 			if (fragment == null) {
-				fragment = WelcomeGameCompFragment.createInstance(this);
+				fragment = WelcomeGameCompFragment.createInstance(this, config);
 			}
 			changeInternalFragment(fragment);
 		} else if (id == R.id.rightTabBtn) {
@@ -118,8 +124,11 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements WelcomeT
 			}
 			getActivityFace().openFragment(fragment);
 			openWelcomeFragment = true;
+		} else if (code == GAME_SETUP_FRAGMENT) {
+			changeInternalFragment(WelcomeGameSetupFragment.createInstance(this));
 		} else if (code == GAME_FRAGMENT) {
-			changeInternalFragment(WelcomeGameCompFragment.createInstance(this));
+			config.setMode(AppData.getCompGameMode(getActivity()));
+			changeInternalFragment(WelcomeGameCompFragment.createInstance(this, config));
 		}
 	}
 

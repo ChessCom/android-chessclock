@@ -21,7 +21,6 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.configs.NewCompGameConfig;
-import com.chess.ui.fragments.CompGameSetupFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
@@ -98,9 +97,8 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		setArguments(bundle);
 	}
 
-	public static WelcomeGameCompFragment createInstance(WelcomeTabsFace parentFace) {
+	public static WelcomeGameCompFragment createInstance(WelcomeTabsFace parentFace, NewCompGameConfig config) {
 		WelcomeGameCompFragment fragment = new WelcomeGameCompFragment();
-		NewCompGameConfig config = new NewCompGameConfig.Builder().build();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, config.getMode());
 		bundle.putInt(COMP_DELAY, config.getMode());
@@ -140,9 +138,13 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	public void onResume() {
 		super.onResume();
 
-		if (boardView.isComputerMoving()) { // explicit init
-			ChessBoardComp.getInstance(this);
+		ChessBoardComp.resetInstance();
+		getBoardFace().setMode(getArguments().getInt(MODE));
+		if (AppData.haveSavedCompGame(getActivity())) {
+			loadSavedGame();
 		}
+		resideBoardIfCompWhite();
+		invalidateGameScreen();
 
 		if (!getBoardFace().isAnalysis()) {
 
@@ -294,12 +296,12 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void onPlayerMove() {
-		controlsCompView.enableGameControls(true);
+//		controlsCompView.enableGameControls(true);
 	}
 
 	@Override
 	public void onCompMove() {
-		controlsCompView.enableGameControls(false);
+//		controlsCompView.enableGameControls(false);
 	}
 
 	@Override
@@ -356,6 +358,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void newGame() {
+		parentFace.changeInternalFragment(WelcomeTabsFragment.GAME_SETUP_FRAGMENT);
 	}
 
 	@Override
@@ -442,12 +445,8 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
 		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
 
-		layout.findViewById(R.id.newGamePopupBtn).setVisibility(View.GONE);
-		layout.findViewById(R.id.rematchPopupBtn).setVisibility(View.GONE);
-		layout.findViewById(R.id.homePopupBtn).setVisibility(View.GONE);
-		TextView reviewBtn = (TextView) layout.findViewById(R.id.reviewPopupBtn);
-		reviewBtn.setText(R.string.play_again);
-		reviewBtn.setOnClickListener(this);
+		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
 
 		AppData.clearSavedCompGame(getActivity());
 
@@ -481,8 +480,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	@Override
 	public void valueSelected(int code) {
 		if (code == ID_NEW_GAME) {
-
-			getActivityFace().openFragment(new CompGameSetupFragment());
+			newGame();
 		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
 		} else if (code == ID_EMAIL_GAME) {
@@ -514,10 +512,12 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	private void init() {
 		labelsConfig = new LabelsConfig();
-		getBoardFace().setMode(getArguments().getInt(AppConstants.GAME_MODE));
+		ChessBoardComp.resetInstance();
+		getBoardFace().setMode(getArguments().getInt(MODE));
 	}
 
 	private void widgetsInit(View view) {
+		controlsCompView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoWelcomeView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoWelcomeView) view.findViewById(R.id.bottomPanelView);
@@ -545,8 +545,6 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 				}
 			});
 		}
-		controlsCompView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
-		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 
 		{// set avatars
 			Drawable user = new IconDrawable(getActivity(), R.string.ic_profile,
@@ -575,13 +573,14 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		setBoardView(boardView);
 
 		controlsCompView.enableHintButton(true);
+		notationsView.resetNotations();
 
 		{// options list setup
 			optionsList = new ArrayList<String>();
-			optionsList.add( getString(R.string.new_game));
-			optionsList.add( getString(R.string.email_game));
-			optionsList.add( getString(R.string.flip_board));
-			optionsList.add( getString(R.string.settings));
+			optionsList.add(getString(R.string.new_game));
+			optionsList.add(getString(R.string.email_game));
+			optionsList.add(getString(R.string.flip_board));
+			optionsList.add(getString(R.string.settings));
 		}
 	}
 

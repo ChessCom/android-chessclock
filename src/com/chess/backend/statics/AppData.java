@@ -176,10 +176,16 @@ public class AppData {
 		return new Intent(Intent.ACTION_VIEW, Uri.parse(memberShipUrl));
 	}
 
+	public static void setCompGameMode(Context context, int mode) {
+		setIntValue(context, PREF_COMPUTER_MODE, mode);
+	}
+
+	public static int getCompGameMode(Context context) {
+		return getIntValue(context, PREF_COMPUTER_MODE, AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
+	}
+
 	public static String getCompSavedGame(Context context) {
-		SharedPreferences preferences = getPreferences(context);
-		String userName = preferences.getString(USERNAME, StaticData.SYMBOL_EMPTY);
-		return preferences.getString(userName + SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
+		return getStringValue(context, SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
 	}
 
 	public static boolean haveSavedCompGame(Context context) {
@@ -195,9 +201,7 @@ public class AppData {
 	}
 
 	public static int getCompThinkTime(Context context) {
-		SharedPreferences preferences = getPreferences(context);
-		String userName = preferences.getString(USERNAME, StaticData.SYMBOL_EMPTY);
-		return preferences.getInt(userName + PREF_COMPUTER_DELAY, COMPUTER_THINK_TIME); //milliseconds
+		return getIntValue(context, PREF_COMPUTER_DELAY, COMPUTER_THINK_TIME);
 	}
 
 	public static boolean isNotificationsEnabled(Context context) {

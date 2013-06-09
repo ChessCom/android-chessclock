@@ -107,7 +107,7 @@
 		android:layout_height="wrap_content"
 		android:columnWidth="90dp"
 		android:gravity="center"
-		android:horizontalSpacing="@dimen/live_grid_hotizontal_spacing"
+		android:horizontalSpacing="@dimen/live_grid_horizontal_spacing"
 		android:numColumns="auto_fit"
 		android:stretchMode="columnWidth"
 		android:verticalSpacing="10dp"

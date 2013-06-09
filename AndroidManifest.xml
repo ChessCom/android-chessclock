@@ -2,26 +2,32 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 
-	android:versionCode="133"
-	android:versionName="3.0.002a" package="com.chess" android:installLocation="auto">
+	android:versionCode="135"
+	android:versionName="3.0.004a" package="com.chess" android:installLocation="auto">
 
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-	<!--<uses-permission android:name="android.permission.READ_PHONE_STATE"/>-->
 
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
 
 	<!--GCM Permissions-->
-	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- GCM connects to Google Services. -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- GCM requires a Google account. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Keeps the processor from sleeping when a message is received. -->
 
-	<permission android:name="com.chess.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-	<uses-permission android:name="com.chess.permission.C2D_MESSAGE" />
-    <!-- VERY IMPORTANT! Don't forget this permission, or in-app billing won't work. -->
-    <uses-permission android:name="com.android.vending.BILLING" />
+    <!--
+     Creates a custom permission so only this app can receive its messages.
+
+     NOTE: the permission *must* be called PACKAGE.permission.C2D_MESSAGE,
+           where PACKAGE is the application's package name.
+    -->
+    <permission android:name="com.google.android.gcm.demo.app.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission  android:name="com.google.android.gcm.demo.app.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" /> <!-- This app has permission to register and receive data message. -->
+
+    <!--In-App Billing Permissions-->
+    <uses-permission android:name="com.android.vending.BILLING" /> <!-- VERY IMPORTANT! Don't forget this permission, or in-app billing won't work. -->
 
 	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
 	<supports-screens android:largeScreens="true" android:xlargeScreens="true" />

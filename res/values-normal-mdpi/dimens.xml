@@ -58,7 +58,7 @@
 	<dimen name="live_scr_top_padding">16dip</dimen>
 	<dimen name="live_layout_mTop">10dip</dimen>
 	<dimen name="live_challenges_textSize">16sp</dimen>
-	<dimen name="live_grid_hotizontal_spacing">10dip</dimen>
+	<dimen name="live_grid_horizontal_spacing">10dip</dimen>
 	<dimen name="live_grid_padding_top">10dip</dimen>
 	<dimen name="live_grid_padding_bottom">10dip</dimen>
 

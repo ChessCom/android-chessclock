@@ -4,138 +4,125 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	android:padding="0dp"
+    android:background="@color/white"
 	>
-	<!--End game title-->
-	<com.chess.RoboTextView
-		android:id="@+id/endGameTitleTxt"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		android:gravity="center_horizontal"
+    <!--End game title-->
+    <com.chess.RoboTextView
+        android:id="@+id/endGameTitleTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         custom:ttf="Bold"
         android:textSize="@dimen/game_end_popup_text_size"
-        android:textColor="@color/new_dark_green"
-		/>
+        android:textColor="@color/new_subtitle_dark_grey"
+        android:text="Title"
+        />
 
-	<!--Wins reason-->
-	<com.chess.RoboTextView
-		android:id="@+id/endGameReasonTxt"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		android:gravity="center_horizontal"
+    <!--Wins reason-->
+    <com.chess.RoboTextView
+        android:id="@+id/endGameReasonTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
         android:textSize="16sp"
         android:textColor="@color/new_author_dark_grey"
         android:paddingTop="6dip"
         android:paddingBottom="6dip"
+        android:text="Reason"
         />
 
-	<!--Rating-->
-	<com.chess.RoboTextView
-		android:id="@+id/yourRatingTxt"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		custom:ttf="Bold"
-        android:textColor="@color/new_dark_green"
-        android:textSize="21sp"
+    <!--Rating title-->
+    <com.chess.RoboTextView
+        android:id="@+id/ratingTitleTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:textSize="16sp"
+        android:textColor="@color/new_author_dark_grey"
+        android:paddingTop="6dip"
         android:paddingBottom="6dip"
+        android:text="New Rating"
+        />
+
+    <!--Rating-->
+    <com.chess.RoboTextView
+        android:id="@+id/yourRatingTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        custom:ttf="Bold"
+        android:textColor="@color/new_subtitle_dark_grey"
+        android:textSize="21sp"
+        android:text="Rating"
         />
 
 	 <!--New Game | Rematch-->
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+        android:paddingLeft="33dip"
+        android:paddingTop="20dip"
+        android:paddingRight="33dip"
+        android:paddingBottom="20dip"
 		>
 
-		<com.chess.RoboButton
-			android:id="@+id/newGamePopupBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/new_game"
-			style="@style/Button.OrangeNoBorder"
-			/>
+        <!--Rematch -->
+        <com.chess.RoboButton
+            android:id="@+id/rematchPopupBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/rematch"
+            style="@style/Button.OrangeNoBorder"
+            android:layout_marginRight="5dip"
+            />
 
-		<com.chess.RoboButton
-			android:id="@+id/rematchPopupBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/rematch"
-			style="@style/Button.OrangeNoBorder"
-			/>
+        <!--New Game -->
+        <com.chess.RoboButton
+            android:id="@+id/newGamePopupBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/new_game"
+            style="@style/Button.OrangeNoBorder"
+            android:layout_marginLeft="5dip"
+            />
 
 	</LinearLayout>
 
-
-	<!--Home Review-->
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		>
-
-		<com.chess.RoboButton
-			android:id="@+id/homePopupBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/home"
-			style="@style/Button.Grey2Solid.NoBorder.Light"/>
-
-		<com.chess.RoboButton
-			android:id="@+id/reviewPopupBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/review"
-			style="@style/Button.Grey2Solid.NoBorder.Light"
-			/>
-
-	</LinearLayout>
-
-	<!--Ads-->
-	<LinearLayout
-		android:id="@+id/adview_wrapper"
-		android:layout_width="@dimen/ad_popup_width"
-		android:layout_height="@dimen/ad_popup_height"
-		android:layout_gravity="center"
-		/>
-
-	<!--Upgrade-->
-	<com.chess.RoboButton
-		android:id="@+id/upgradeBtn"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		style="@style/Button.Upgrade"
-		android:text="@string/removeAds"
-		android:paddingTop="0dip"
-		android:paddingBottom="0dip"
-		android:paddingLeft="20dip"
-		android:paddingRight="5dip"
-		/>
-    <!--Link text-->
-    <com.chess.RoboTextView
-        android:id="@+id/rulesLinkTxt"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorLink="@color/white"
-        android:text="@string/fair_play_policy_link"
-        android:gravity="center"
-        android:padding="5dip"
-        android:visibility="gone"
-        />
+        android:background="@color/default_button_overlay_p"
+        android:paddingLeft="33dip"
+        android:paddingTop="20dip"
+        android:paddingRight="33dip"
+        android:paddingBottom="20dip"
+        android:orientation="vertical"
+        >
 
-    <!--Share-->
-    <com.chess.RoboButton
-        android:id="@+id/shareBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Button.Facebook"
-        android:text="@string/share_game"
-        android:drawableLeft="@null"
-        android:paddingLeft="20dip"
-        />
+        <!--Share-->
+        <com.chess.RoboButton
+            android:id="@+id/shareBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Button.Facebook"
+            android:text="@string/share_game"
+            android:drawableLeft="@null"
+            android:paddingLeft="20dip"
+            />
+
+        <!--Ads-->
+        <LinearLayout
+            android:id="@+id/adview_wrapper"
+            android:layout_width="@dimen/ad_popup_width"
+            android:layout_height="@dimen/ad_popup_height"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>

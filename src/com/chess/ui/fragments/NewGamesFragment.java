@@ -92,7 +92,7 @@ public class NewGamesFragment extends CommonLogicFragment {
 			createLiveChallenge();
 		} else if (id == COMP_LEFT_BUTTON_ID) {
 			// TODO show popup with delay comp selection
-		} else if (id == COMP_PLAY_BUTTON_ID || id == R.id.startCompPlayBtn)  {
+		} else if (id == COMP_PLAY_BUTTON_ID || id == R.id.startPlayBtn)  {
 			// drop saved game
 			ChessBoardComp.resetInstance();
 			preferencesEditor.putString(AppData.getUserName(getActivity()) + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
@@ -248,7 +248,7 @@ public class NewGamesFragment extends CommonLogicFragment {
 			compGamesSetupView.setConfig(compConfig);
 			compGamesSetupView.findViewById(COMP_LEFT_BUTTON_ID).setOnClickListener(this);
 			compGamesSetupView.findViewById(COMP_PLAY_BUTTON_ID).setOnClickListener(this);
-			compGamesSetupView.findViewById(R.id.startCompPlayBtn).setOnClickListener(this);
+			compGamesSetupView.findViewById(R.id.startPlayBtn).setOnClickListener(this);
 			compGamesSetupView.findViewById(R.id.loadCompPlayBtn).setOnClickListener(this);
 		}
 

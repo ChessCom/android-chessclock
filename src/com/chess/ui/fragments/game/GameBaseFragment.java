@@ -45,7 +45,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 	protected static final String ABORT_GAME_TAG = "abort or resign game";
 	protected SimpleDateFormat datePgnFormat = new SimpleDateFormat("yyyy.MM.dd");
 
-//	protected CharSequence[] menuOptionsItems;
 	private ChessBoardBaseView boardView;
 	protected View endGamePopupView;
 	protected String endGameMessage;
@@ -166,7 +165,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 	protected void setBoardToFinishedState(){ // TODO implement state conditions logic for board
 //		boardView.enableAnalysis(); // TODO recheck logic
 
-//		boardView.setFinished(true);
 		getBoardFace().setFinished(true);
 
 		getSoundPlayer().playGameEnd();
@@ -179,23 +177,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 		emailIntent.putExtra(Intent.EXTRA_TEXT, message);
 		startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail_)));
 	}
-
-/*
-	@Override
-	public void switch2Analysis(boolean isAnalysis) {
-		showSubmitButtonsLay(false);
-		if (isAnalysis) {
-//			analysisTxt.setVisibility(View.VISIBLE);
-//			whitePlayerLabel.setVisibility(View.INVISIBLE);
-//			blackPlayerLabel.setVisibility(View.INVISIBLE);
-		} else {
-//			analysisTxt.setVisibility(View.INVISIBLE);
-//			whitePlayerLabel.setVisibility(View.VISIBLE);
-//			blackPlayerLabel.setVisibility(View.VISIBLE);
-			restoreGame();
-		}
-	}
-*/
 
 	protected abstract void restoreGame();
 
@@ -222,7 +203,8 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 			@Override
 			public void run() {
 				getBoardFace().takeNext();
-				invalidateGameScreen();
+				if (getActivity() != null)
+					invalidateGameScreen();
 			}
 		}, LAST_MOVE_ANIM_DELAY);
 	}
@@ -234,23 +216,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 	@Override
 	public void onCheck() {
 		showToast(R.string.check);
-	}
-
-//	public BoardFace getBoardFace(){
-//		return boardView.getBoardFace();
-//	//		return boardView.getBoardFace();
-//	}
-
-	@Override
-	public void onClick(View view) {
-		if (view.getId() == R.id.homePopupBtn) {
-			backToHomeFragment();
-//			backToHomeActivity();
-		} else if (view.getId() == R.id.reviewPopupBtn) {
-			dismissDialogs();
-		} else if (view.getId() == R.id.upgradeBtn) {
-			startActivity(AppData.getMembershipAndroidIntent(getActivity()));
-		}
 	}
 
 	protected void dismissDialogs() {

@@ -855,7 +855,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
 		TextView ratingTitleTxt = (TextView) layout.findViewById(R.id.ratingTitleTxt);
 		TextView yourRatingTxt = (TextView) layout.findViewById(R.id.yourRatingTxt);
-		TextView rulesLinkTxt = (TextView) layout.findViewById(R.id.rulesLinkTxt);
 		endGameTitleTxt.setText(title);
 		endGameReasonTxt.setText(message);
 
@@ -889,25 +888,13 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
-		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
-		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.shareBtn).setOnClickListener(this);
 
 		if (AppUtils.isNeedToUpgrade(getActivity())) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-			if (message.contains(getString(R.string.won_game_abandoned))) {
-				layout.findViewById(R.id.upgradeBtn).setVisibility(View.GONE);
-				showFairPolicyLink(rulesLinkTxt);
-			}
-		} else if (message.contains(getString(R.string.won_game_abandoned))) {
-			showFairPolicyLink(rulesLinkTxt);
 		}
 	}
 
-	private void showFairPolicyLink(TextView rulesLinkTxt) {
-		rulesLinkTxt.setVisibility(View.VISIBLE);
-		rulesLinkTxt.setOnClickListener(this);
-	}
 
 	@Override
 	protected void restoreGame() {
@@ -933,15 +920,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			getBoardFace().takeBack();
 			getBoardFace().decreaseMovesCount();
 			boardView.invalidate();
-//		} else if (view.getId() == R.id.submitBtn) {
-//			sendMove("submit click");
 		} else if (view.getId() == R.id.newGamePopupBtn) {
-//			Intent intent = new Intent(this, LiveNewGameActivity.class);
-//			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//			startActivity(intent);
 			getActivityFace().changeRightFragment(NewGamesFragment.newInstance(NewGamesFragment.RIGHT_MENU_MODE));
-		} else if (view.getId() == R.id.rulesLinkTxt) {
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.fair_play_policy_url))));
 		} else if (view.getId() == R.id.shareBtn) {
 			LiveChessService liveService;
 			try {

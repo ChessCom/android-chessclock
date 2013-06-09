@@ -694,8 +694,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
-		layout.findViewById(R.id.homePopupBtn).setOnClickListener(this);
-		layout.findViewById(R.id.reviewPopupBtn).setOnClickListener(this);
 		if (AppUtils.isNeedToUpgrade(getActivity())) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}

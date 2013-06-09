@@ -4,8 +4,9 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	android:padding="0dp"
+    android:paddingTop="30dip"
 	>
+
 	<!--End game title-->
 	<com.chess.RoboTextView
 		android:id="@+id/endGameTitleTxt"
@@ -14,7 +15,8 @@
 		android:layout_gravity="center"
 		custom:ttf="Bold"
 		android:textSize="@dimen/game_end_popup_text_size"
-        android:textColor="@color/new_dark_green"
+        android:textColor="@color/new_subtitle_dark_grey"
+        android:text="Title"
 		/>
 
 	<!--Wins reason-->
@@ -28,6 +30,7 @@
         android:textColor="@color/new_author_dark_grey"
         android:paddingTop="6dip"
         android:paddingBottom="6dip"
+        android:text="Reason"
 		/>
 
 	<!--Rating title-->
@@ -41,6 +44,7 @@
         android:textColor="@color/new_author_dark_grey"
         android:paddingTop="6dip"
         android:paddingBottom="6dip"
+        android:text="New Rating"
 		/>
 
 	<!--Rating-->
@@ -50,18 +54,31 @@
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
 		custom:ttf="Bold"
-        android:textColor="@color/new_dark_green"
+        android:textColor="@color/new_subtitle_dark_grey"
         android:textSize="21sp"
-        android:paddingBottom="6dip"
+        android:text="Rating"
 		/>
 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="vertical"
+        android:paddingLeft="33dip"
+        android:paddingTop="20dip"
+        android:paddingRight="33dip"
+        android:paddingBottom="20dip"
 		>
-		<!--New Game -->
+        <!--Rematch -->
+        <com.chess.RoboButton
+            android:id="@+id/rematchPopupBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/rematch"
+            style="@style/Button.OrangeNoBorder"
+            android:layout_marginRight="5dip"
+            />
 
+        <!--New Game -->
 		<com.chess.RoboButton
 			android:id="@+id/newGamePopupBtn"
 			android:layout_width="match_parent"
@@ -69,48 +86,20 @@
 			android:layout_weight="1"
 			android:text="@string/new_game"
 			style="@style/Button.OrangeNoBorder"
+            android:layout_marginLeft="5dip"
 			/>
 
-		<!--Rematch -->
-		<com.chess.RoboButton
-			android:id="@+id/rematchPopupBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/rematch"
-			style="@style/Button.OrangeNoBorder"
-			/>
+	</LinearLayout>
 
-		<!--Review-->
-		<com.chess.RoboButton
-			android:id="@+id/reviewPopupBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/review"
-			style="@style/Button.Grey2Solid.NoBorder.Light"
-			/>
-
-		<!--Home-->
-		<com.chess.RoboButton
-			android:id="@+id/homePopupBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/home"
-			style="@style/Button.Grey2Solid.NoBorder.Light"/>
-
-        <!--Link text-->
-        <com.chess.RoboTextView
-            android:id="@+id/rulesLinkTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorLink="@color/white"
-            android:text="@string/fair_play_policy_link"
-            android:gravity="center"
-            android:padding="5dip"
-            android:visibility="gone"
-            />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/default_button_overlay_p"
+        android:paddingLeft="33dip"
+        android:paddingTop="20dip"
+        android:paddingRight="33dip"
+        android:paddingBottom="20dip"
+        >
 
         <!--Share-->
         <com.chess.RoboButton
@@ -122,6 +111,6 @@
             android:drawableLeft="@null"
             android:paddingLeft="20dip"
             />
-	</LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.chess.ui.fragments.game;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.StaticData;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
@@ -24,9 +26,11 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.engine.configs.NewCompGameConfig;
 import com.chess.ui.fragments.CompGameSetupFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
+import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardCompView;
@@ -35,9 +39,8 @@ import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsCompView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
-import quickaction.ActionItem;
-import quickaction.QuickAction;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -46,8 +49,9 @@ import java.util.Calendar;
  * Date: 24.01.13
  * Time: 6:42
  */
-public class GameCompFragment extends GameBaseFragment implements GameCompActivityFace, QuickAction.OnActionItemClickListener {
+public class GameCompFragment extends GameBaseFragment implements GameCompActivityFace, PopupListSelectionFace {
 
+	private static final String OPTION_SELECTION = "option select popup";
 	private static final String MODE = "mode";
 	private static final String COMP_DELAY = "comp_delay";
 	// Quick action ids
@@ -65,14 +69,13 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	private ImageView bottomAvatarImg;
 	private ControlsCompView controlsCompView;
 
-	//	private MenuOptionsDialogListener menuOptionsDialogListener;
 	private LabelsConfig labelsConfig;
 	private boolean labelsSet;
-	private ImageUpdateListener imageUpdateListener;
 
 	private NotationView notationsView;
 	private boolean humanBlack;
-	private QuickAction quickAction;
+	private ArrayList<String> optionsList;
+	private PopupOptionsMenuFragment optionsSelectFragment;
 
 	public GameCompFragment() {
 		NewCompGameConfig config = new NewCompGameConfig.Builder().build();
@@ -125,9 +128,13 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	public void onResume() {
 		super.onResume();
 
-		if (boardView.isComputerMoving()) { // explicit init
-			ChessBoardComp.getInstance(this);
+		ChessBoardComp.resetInstance();
+		getBoardFace().setMode(getArguments().getInt(MODE));
+		if (AppData.haveSavedCompGame(getActivity())) {
+			loadSavedGame();
 		}
+		resideBoardIfCompWhite();
+		invalidateGameScreen();
 
 		if (!getBoardFace().isAnalysis()) {
 
@@ -181,8 +188,11 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 	@Override
 	public void showOptions(View view) {
-		quickAction.show(view);
-		quickAction.setAnimStyle(QuickAction.ANIM_REFLECT);
+		if (optionsSelectFragment != null) {
+			return;
+		}
+		optionsSelectFragment = PopupOptionsMenuFragment.newInstance(this, optionsList);
+		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
 	}
 
 	@Override
@@ -278,12 +288,12 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 	@Override
 	public void onPlayerMove() {
-		controlsCompView.enableGameControls(true);
+//		controlsCompView.enableGameControls(true);
 	}
 
 	@Override
 	public void onCompMove() {
-		controlsCompView.enableGameControls(false);
+//		controlsCompView.enableGameControls(false);
 	}
 
 	@Override
@@ -340,50 +350,14 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 	@Override
 	public void newGame() {
-		getActivityFace().showPreviousFragment(); // TODO
+		getActivityFace().openFragment(new CompGameSetupFragment());
 	}
 
 	@Override
 	public void switch2Analysis() {
 		ChessBoardComp.resetInstance();
 
-//		Intent intent = new Intent(this, GameCompAnalysisActivity.class);
-//		int mode = getArguments().getInt(AppConstants.GAME_MODE, AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
-//		intent.putExtra(AppConstants.GAME_MODE, mode);
-//		startActivity(intent);
 	}
-
-//	@Override
-//	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-////		MenuInflater menuInflater = getMenuInflater();
-//		inflater.inflate(R.menu.game_comp, menu);
-//		super.onCreateOptionsMenu(menu, inflater);
-//	}
-//
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//			case R.id.menu_newGame:
-//				newGame();
-//				break;
-//			case R.id.menu_options:
-//				showOptions();
-//				break;
-//			case R.id.menu_reside:
-//				boardView.flipBoard();
-//				break;
-//			case R.id.menu_hint:
-//				boardView.showHint();
-//				break;
-//			case R.id.menu_previous:
-//				boardView.moveBack();
-//				break;
-//			case R.id.menu_next:
-//				boardView.moveForward();
-//				break;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
 
 	@Override
 	public Boolean isUserColorWhite() {
@@ -394,52 +368,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	public Long getGameId() {
 		return null;
 	}
-
-
-
-//	private class MenuOptionsDialogListener implements DialogInterface.OnClickListener {
-//		private final int NEW_GAME_WHITE = 0;
-//		private final int NEW_GAME_BLACK = 1;
-//		private final int EMAIL_GAME = 2;
-//		private final int SETTINGS = 3;
-//
-//		@Override
-//		public void onClick(DialogInterface dialogInterface, int i) {
-//			switch (i) {
-//				case NEW_GAME_WHITE: {
-//					ChessBoardComp.resetInstance();
-//					getBoardFace();
-//					boardView.setGameActivityFace(GameCompFragment.this);
-//					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
-//					boardView.invalidate();
-//					invalidateGameScreen();
-//					break;
-//				}
-//				case NEW_GAME_BLACK: {
-//					// TODO encapsulate
-//					ChessBoardComp.resetInstance();
-//					getBoardFace();
-//					boardView.setGameActivityFace(GameCompFragment.this);
-//					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
-//					getBoardFace().setReside(true);
-//					boardView.invalidate();
-//					invalidateGameScreen();
-//
-//					computerMove();
-//					break;
-//				}
-//				case EMAIL_GAME: {
-//					sendPGN();
-//					break;
-//				}
-//
-//				case SETTINGS: {
-//					startActivity(new Intent(getContext(), SettingsScreenActivity.class));
-//					break;
-//				}
-//			}
-//		}
-//	}
 
 	private void sendPGN() {
 		/*
@@ -458,7 +386,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		String whitePlayerName = AppData.getUserName(getContext());
 		String blackPlayerName = getString(R.string.comp);
 		String result = GAME_GOES;
-//		if (boardView.isFinished()) {// means in check state
+
 		if (getBoardFace().isFinished()) {// means in check state
 			if (getBoardFace().getSide() == ChessBoard.WHITE_SIDE) {
 				result = BLACK_WINS;
@@ -487,12 +415,26 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 	@Override
 	protected void showGameEndPopup(View layout, String message) {
+		((TextView) layout.findViewById(R.id.endGameTitleTxt)).setText(message);
+		String winner;
+		if (message.equals(getString(R.string.black_wins))) {
+			if (labelsConfig.userSide == ChessBoard.BLACK_SIDE) {
+				winner = labelsConfig.bottomPlayerLabel;
+			} else { // labelsConfig.userSide == ChessBoard.WHITE_SIDE
+				winner = labelsConfig.topPlayerLabel;
+			}
 
-		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
-		endGameTitleTxt.setText(R.string.game_over);
-
-		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
-		endGameReasonTxt.setText(message);
+		} else { // message.equals(getString(R.string.white_wins))
+			if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
+				winner = labelsConfig.bottomPlayerLabel;
+			} else { // labelsConfig.userSide == ChessBoard.BLACK_SIDE
+				winner = labelsConfig.topPlayerLabel;
+			}
+//			winner = labelsConfig.topPlayerLabel;
+		}
+		((TextView) layout.findViewById(R.id.endGameReasonTxt)).setText(getString(R.string.won_by_checkmate, winner)); // TODO adjust
+		layout.findViewById(R.id.ratingTitleTxt).setVisibility(View.GONE);
+		layout.findViewById(R.id.yourRatingTxt).setVisibility(View.GONE);
 
 		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
 		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
@@ -502,12 +444,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
 		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
 
-		layout.findViewById(R.id.newGamePopupBtn).setVisibility(View.GONE);
-		layout.findViewById(R.id.rematchPopupBtn).setVisibility(View.GONE);
-		layout.findViewById(R.id.homePopupBtn).setVisibility(View.GONE);
-		TextView reviewBtn = (TextView) layout.findViewById(R.id.reviewPopupBtn);
-		reviewBtn.setText(R.string.play_again);
-		reviewBtn.setOnClickListener(this);
+		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.shareBtn).setOnClickListener(this);
 
 		AppData.clearSavedCompGame(getActivity());
 
@@ -529,16 +468,47 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	}
 
 	@Override
-	public void onItemClick(QuickAction source, int pos, int actionId) {
-		if (actionId == ID_NEW_GAME) {
-			getActivityFace().openFragment(new CompGameSetupFragment());
-		} else if (actionId == ID_FLIP_BOARD) {
+	public void onClick(View view) {
+		super.onClick(view);
+
+		if (view.getId() == R.id.newGamePopupBtn) {
+			newGame(); // TODO adjust comp game setup screen
+			dismissDialogs();
+		} else if (view.getId() == R.id.rematchPopupBtn) {
+			newGame();
+			dismissDialogs();
+		}  else if (view.getId() == R.id.shareBtn) {
+			ShareItem shareItem = new ShareItem();
+
+			Intent shareIntent = new Intent(Intent.ACTION_SEND);
+			shareIntent.setType("text/plain");
+			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
+			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
+			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
+			dismissDialogs();
+		}
+	}
+
+	@Override
+	public void valueSelected(int code) {
+		if (code == ID_NEW_GAME) {
+//			getActivityFace().openFragment(new CompGameSetupFragment()); // TODO
+			newGame();
+		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
-		} else if (actionId == ID_EMAIL_GAME) {
+		} else if (code == ID_EMAIL_GAME) {
 			sendPGN();
-		} else if (actionId == ID_SETTINGS) {
+		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(new SettingsFragment());
 		}
+
+		optionsSelectFragment.dismiss();
+		optionsSelectFragment = null;
+	}
+
+	@Override
+	public void dialogCanceled() {
+		optionsSelectFragment = null;
 	}
 
 	private class LabelsConfig {
@@ -588,9 +558,25 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		}
 	}
 
+	public class ShareItem {
+
+		public String composeMessage() {
+			String vsStr = getString(R.string.vs);
+			String space = StaticData.SYMBOL_SPACE;
+			return AppData.getUserName(getActivity())+ space + vsStr + space + getString(R.string.vs_computer)
+					+ " - " + getString(R.string.chess) + space	+ getString(R.string.via_chesscom);
+		}
+
+		public String getTitle() {
+			String vsStr = getString(R.string.vs);
+			String space = StaticData.SYMBOL_SPACE;
+			return "Chess: " + AppData.getUserName(getActivity())+ space + vsStr + space + getString(R.string.vs_computer); // TODO adjust i18n
+		}
+	}
+
 	private void init() {
 		labelsConfig = new LabelsConfig();
-		getBoardFace().setMode(getArguments().getInt(AppConstants.GAME_MODE));
+		getBoardFace().setMode(getArguments().getInt(MODE));
 	}
 
 	private void widgetsInit(View view) {
@@ -619,7 +605,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 				ImageDownloaderToListener imageDownloader = new ImageDownloaderToListener(getContext());
 
 				String userAvatarUrl = AppData.getUserAvatar(getContext());
-				imageUpdateListener = new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR);
+				ImageUpdateListener imageUpdateListener = new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR);
 				imageDownloader.download(userAvatarUrl, imageUpdateListener, AVATAR_SIZE);
 			}
 		}
@@ -640,15 +626,12 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 		controlsCompView.enableHintButton(true);
 
-		{// Quick action setup
-			quickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
-
-			quickAction.addActionItem(new ActionItem(ID_NEW_GAME, getString(R.string.new_game)));
-			quickAction.addActionItem(new ActionItem(ID_EMAIL_GAME, getString(R.string.email_game)));
-			quickAction.addActionItem(new ActionItem(ID_FLIP_BOARD, getString(R.string.flip_board)));
-			quickAction.addActionItem(new ActionItem(ID_SETTINGS, getString(R.string.settings)));
-
-			quickAction.setOnActionItemClickListener(this);
+		{// options list setup
+			optionsList = new ArrayList<String>();
+			optionsList.add(getString(R.string.new_game));
+			optionsList.add(getString(R.string.email_game));
+			optionsList.add(getString(R.string.flip_board));
+			optionsList.add(getString(R.string.settings));
 		}
 	}
 
