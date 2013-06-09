@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -11,11 +12,14 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.chess.FontsHelper;
 import com.chess.R;
+import com.chess.RoboTextView;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.RegisterItem;
@@ -27,6 +31,7 @@ import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.WelcomeTabsFace;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -51,12 +56,12 @@ public class ResultsFragment extends CommonLogicFragment implements YouTubePlaye
 
 	public static final String YOUTUBE_DEMO_LINK = "AgTQJUhK2MY";
 	private static final String YOUTUBE_FRAGMENT_TAG = "youtube fragment";
-	private static final int PLAY_ONLINE_ITEM = 0;
-	private static final int CHALLENGE_ITEM = 1;
-	private static final int REMATCH_ITEM = 2;
-	private static final int TACTICS_ITEM = 3;
-	private static final int LESSONS_ITEM = 4;
-	private static final int VIDEOS_ITEM = 5;
+	private static final int PLAY_ONLINE_ITEM = 1;
+	private static final int CHALLENGE_ITEM = 2;
+	private static final int REMATCH_ITEM = 3;
+	private static final int TACTICS_ITEM = 4;
+	private static final int LESSONS_ITEM = 5;
+	private static final int VIDEOS_ITEM = 6;
 
 	private static final String PLAY_ONLINE_TAG = "play online tag";
 	private static final String CHALLENGE_TAG = "challenge friend tag";
@@ -113,13 +118,6 @@ public class ResultsFragment extends CommonLogicFragment implements YouTubePlaye
 		super.onCreate(savedInstanceState);
 
 		menuItems = new ArrayList<PromoteItem>();
-//		Rematch Computer
-//		Login
-//		Signup to get:
-//		Video Lessons
-//		Online Play
-//		Tactics Training...
-
 		menuItems.add(new PromoteItem(R.string.play_online, R.string.ic_play_online));
 		menuItems.add(new PromoteItem(R.string.challenge_friend, R.string.ic_challenge_friend));
 		menuItems.add(new PromoteItem(R.string.rematch_computer, R.string.ic_comp_game));
@@ -141,13 +139,31 @@ public class ResultsFragment extends CommonLogicFragment implements YouTubePlaye
 
 		enableSlideMenus(false);
 
-		{// results part
-			listView = (ListView) view.findViewById(R.id.listView);
-			listView.setOnItemClickListener(this);
-			listView.setAdapter(adapter);
+		Context context = getActivity();
+		Resources resources = context.getResources();
+		// results part
+		RoboTextView resultTxt = new RoboTextView(context);
+		resultTxt.setTextColor(resources.getColor(R.color.white));
+		resultTxt.setFont(FontsHelper.BOLD_FONT);
+		resultTxt.setTextSize(30);
+		resultTxt.setGravity(Gravity.CENTER);
+		resultTxt.setMinHeight(resources.getDimensionPixelSize(R.dimen.result_title_min_height));
+		ButtonDrawableBuilder.setBackgroundToView(resultTxt, R.style.ListItem);
+
+		if (wonGame) {
+			resultTxt.setText(R.string.you_won);
+		} else {
+			resultTxt.setText(R.string.you_lose);
 		}
 
-		inflater = LayoutInflater.from(getActivity());
+		listView = (ListView) view.findViewById(R.id.listView);
+		listView.setOnItemClickListener(this);
+		listView.addHeaderView(resultTxt);
+		listView.setAdapter(adapter);
+
+
+		// welcome screens part
+		inflater = LayoutInflater.from(context);
 
 		viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 		WelcomePagerAdapter mainPageAdapter = new WelcomePagerAdapter();
@@ -164,14 +180,6 @@ public class ResultsFragment extends CommonLogicFragment implements YouTubePlaye
 		{// SignUp part
 			registerUpdateListener = new RegisterUpdateListener();
 		}
-
-		resultTxt = (TextView) view.findViewById(R.id.resultTxt);
-		if (wonGame) {
-			resultTxt.setText(R.string.you_won);
-		} else {
-			resultTxt.setText(R.string.you_lose);
-		}
-
 
 		SlidingDrawer drawer = (SlidingDrawer) view.findViewById(R.id.drawer);
 		drawer.setOnDrawerCloseListener(this);
@@ -359,8 +367,6 @@ public class ResultsFragment extends CommonLogicFragment implements YouTubePlaye
 			}
 
 			submitRegisterInfo();
-		} else if (view.getId() == R.id.resultTxt) {
-			parentFace.changeInternalFragment(WelcomeTabsFragment.GAME_FRAGMENT);
 		}
 	}
 

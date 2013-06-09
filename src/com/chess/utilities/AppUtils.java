@@ -565,4 +565,15 @@ public class AppUtils {
 			}while(cursor.moveToNext());
 		}
 	}
+
+	public static final String DEFAULT_COUNTRY = "United States";
+	public static String getCountryIdByName(String[] countryNames, int[] countryCodes, int userCountryId) {
+		for (int i = 0; i < countryCodes.length; i++) {
+			int countryCode = countryCodes[i];
+			if (userCountryId == countryCode) {
+				return countryNames[i];
+			}
+		}
+		return DEFAULT_COUNTRY;
+	}
 }

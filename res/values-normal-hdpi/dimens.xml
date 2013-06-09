@@ -59,6 +59,8 @@
     <dimen name="nav_item_image_size">32dip</dimen>
     <dimen name="new_tactics_board_top_offset">72dip</dimen>
     <dimen name="popup_options_select_padding">30dip</dimen>
+    <dimen name="result_title_min_height">77dip</dimen>
+    <dimen name="welcome_result_list_item_height">58dip</dimen>
 
 
 </resources>

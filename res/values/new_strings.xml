@@ -101,7 +101,7 @@
     <string name="welcome_four_line_3">&#8226; Analyze your games and openings</string>
     <string name="number_one_online_chess">#1 in Online Chess</string>
     <string name="unlimited_free_games">Unlimited Free Games</string>
-    <string name="improve_your_game">Improve Your Game</string>
+    <string name="learn_from_masters">Learn from Masters</string>
 
     <!--Create Profile-->
     <string name="skill_level">Skill Level</string>
@@ -128,9 +128,7 @@
     <string name="via_chesscom">via @Chesscom</string>
 
     <!--Play Screen-->
-    <string name="vs_random_opponent">vs Random Opponent</string>
-    <string name="auto_match">Auto-Match</string>
-    <string name="play_a_friend">Play a friend!</string>
+    <string name="vs_random_opponent">vs Random</string>
 
     <string name="feed">Feed</string>
     <string name="learn">Learn</string>

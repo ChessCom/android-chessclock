@@ -120,11 +120,11 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private ControlsDailyView controlsDailyView;
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
-	private BoardAvatarDrawable opponentAvatarDrawable;
-	private BoardAvatarDrawable userAvatarDrawable;
 	private LabelsConfig labelsConfig;
 	private ArrayList<String> optionsList;
 	private PopupOptionsMenuFragment optionsSelectFragment;
+	private String[] countryNames;
+	private int[] countryCodes;
 
 	public static GameDailyFinishedFragment newInstance(long gameId) {
 		GameDailyFinishedFragment fragment = new GameDailyFinishedFragment();
@@ -386,21 +386,22 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private void adjustBoardForGame() {
 		userPlayWhite = currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(getActivity()));
 
-		labelsConfig.topAvatar = opponentAvatarDrawable;
-		labelsConfig.bottomAvatar = userAvatarDrawable;
-
 		if (userPlayWhite) {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 			labelsConfig.topPlayerName = currentGame.getBlackUsername();
 			labelsConfig.topPlayerRating = String.valueOf(currentGame.getBlackRating());
 			labelsConfig.bottomPlayerName = currentGame.getWhiteUsername();
 			labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getWhiteRating());
+			labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
+			labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
 		} else {
 			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 			labelsConfig.topPlayerName = currentGame.getWhiteUsername();
 			labelsConfig.topPlayerRating = String.valueOf(currentGame.getWhiteRating());
 			labelsConfig.bottomPlayerName = currentGame.getBlackUsername();
 			labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
+			labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
+			labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
 		}
 
 		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
@@ -467,6 +468,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 		boardFace.setJustInitialized(false);
 	}
+
+
 
 //	private class GameStateUpdateListener extends ChessUpdateListener {
 //
@@ -538,6 +541,9 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		topPanelView.setPlayerRating(labelsConfig.topPlayerRating);
 		bottomPanelView.setPlayerName(labelsConfig.bottomPlayerName);
 		bottomPanelView.setPlayerRating(labelsConfig.bottomPlayerRating);
+
+		topPanelView.setPlayerFlag(labelsConfig.topPlayerCountry);
+		bottomPanelView.setPlayerFlag(labelsConfig.bottomPlayerCountry);
 
 		boardView.updateNotations(getBoardFace().getNotationArray());
 	}
@@ -1104,6 +1110,9 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		loadFromDbUpdateListener = new LoadFromDbUpdateListener(CURRENT_GAME);
 
 		currentGamesCursorUpdateListener = new LoadFromDbUpdateListener(GAMES_LIST);
+
+		countryNames = getResources().getStringArray(R.array.new_countries);
+		countryCodes = getResources().getIntArray(R.array.new_country_ids);
 	}
 
 	private void widgetsInit(View view) {
@@ -1117,9 +1126,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-
-			labelsConfig.topAvatar = opponentAvatarDrawable;
-			labelsConfig.bottomAvatar = userAvatarDrawable;
 		}
 
 		controlsDailyView.enableGameControls(false);
@@ -1153,6 +1159,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		String bottomPlayerName;
 		String topPlayerRating;
 		String bottomPlayerRating;
+		String topPlayerCountry;
+		String bottomPlayerCountry;
 		int userSide;
 
 		int getOpponentSide(){

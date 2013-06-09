@@ -5,177 +5,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/dailyNewOptionsView"
     >
-
-    <!--3 days Play!-->
-    <com.chess.RelLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="12dip"
-        android:paddingRight="@dimen/default_scr_side_padding"
-        style="@style/ListItem"
-        >
-
-        <!--3 Days-->
-        <com.chess.RoboButton
-            android:id="@+id/dailyTimeSelectionBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="3 days"
-            style="@style/Button.Glassy.Small"
-            />
-
-        <com.chess.RoboButton
-            android:id="@+id/dailyPlayBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="60dip"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="@string/new_play_ex"
-            style="@style/Button.OrangeNoBorder.Small"
-            android:layout_marginRight="1dip"
-            />
-
-    </com.chess.RelLayout>
-
-    <!-- Friend view 1-->
-    <com.chess.LinLayout
-        android:id="@+id/inviteFriendView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/default_scr_side_padding"
-        android:paddingRight="@dimen/default_scr_side_padding"
-        style="@style/ListItem"
-        android:gravity="center_vertical"
-        >
-
-        <ImageView
-            android:layout_width="@dimen/list_item_image_size"
-            android:layout_height="@dimen/list_item_image_size"
-            android:src="@drawable/img_profile_picture_stub"
-            android:layout_marginRight="12dip"
-            android:contentDescription="@string/image"
-            />
-
-        <com.chess.RoboTextView
-            android:id="@+id/friendUserName1Txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Joachim"
-            android:textColor="@color/new_light_grey"
-            />
-
-        <com.chess.RoboTextView
-            android:id="@+id/friendRealName1Txt"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="4dip"
-            android:text="(Friend Name)"
-            />
-
-        <com.chess.RoboButton
-            android:id="@+id/inviteFriend1Btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/invite"
-            style="@style/Button.Glassy.Small"
-            />
-
-    </com.chess.LinLayout>
-
-    <!-- Friend view 2-->
-    <com.chess.LinLayout
-        android:id="@+id/inviteFriendView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/default_scr_side_padding"
-        android:paddingRight="@dimen/default_scr_side_padding"
-        style="@style/ListItem"
-        android:gravity="center_vertical"
-        >
-
-        <ImageView
-            android:layout_width="@dimen/list_item_image_size"
-            android:layout_height="@dimen/list_item_image_size"
-            android:src="@drawable/img_profile_picture_stub"
-            android:layout_marginRight="12dip"
-            android:contentDescription="@string/image"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            />
-
-        <com.chess.RoboTextView
-            android:id="@+id/friendUserName2Txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Joachim"
-            android:textColor="@color/new_light_grey"
-            />
-
-        <com.chess.RoboTextView
-            android:id="@+id/friendRealName2Txt"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="4dip"
-            android:text="(Friend Name)"
-            />
-
-        <com.chess.RoboButton
-            android:id="@+id/inviteFriend2Btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/invite"
-            style="@style/Button.Glassy.Small"
-            />
-
-    </com.chess.LinLayout>
-
-    <!--Play Friend!-->
-    <com.chess.LinLayout
-        android:id="@+id/playFriendView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/default_scr_side_padding"
-        android:paddingRight="8dip"
-        style="@style/ListItem"
-        android:gravity="center_vertical"
-        >
-
-        <!--Icon-->
-        <com.chess.RoboTextView
-            android:layout_width="@dimen/list_item_image_size"
-            android:layout_height="@dimen/list_item_image_size"
-            android:text="@string/ic_play_friend"
-            android:textColor="@color/new_light_grey_2"
-            style="@style/GlyphIcon"
-            android:background="@color/new_soft_grey"
-            android:padding="0dip"
-            />
-
-        <com.chess.RoboTextView
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="12dip"
-            android:text="@string/play_a_friend"
-            android:textColor="@color/new_light_grey"
-            />
-
-        <!--Right Icon-->
-        <com.chess.RoboTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ic_right"
-            android:textColor="@color/hint_text"
-            style="@style/GlyphIcon.Small"
-            />
-
-    </com.chess.LinLayout>
 
     <!--Options-->
     <com.chess.LinLayout
@@ -203,6 +34,159 @@
             android:text="@string/ic_right"
             android:textColor="@color/hint_text"
             style="@style/GlyphIcon.Small"
+            />
+
+    </com.chess.LinLayout>
+    <!--vs Random Opponent-->
+    <com.chess.LinLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/default_scr_side_padding"
+        android:paddingRight="@dimen/default_scr_side_padding"
+        style="@style/ListItem"
+        android:gravity="center_vertical"
+        >
+
+        <!--Icon-->
+        <com.chess.RoboTextView
+            android:layout_width="@dimen/list_item_image_size"
+            android:layout_height="@dimen/list_item_image_size"
+            android:text="@string/ic_vs_random"
+            android:textColor="@color/new_light_grey_2"
+            style="@style/GlyphIcon"
+            android:background="@color/new_soft_grey2"
+            android:padding="0dip"
+            />
+
+        <com.chess.RoboTextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_centerVertical="true"
+            android:text="@string/vs_random_opponent"
+            android:paddingLeft="12dip"
+            android:textColor="@color/semitransparent_white_65"
+            />
+
+        <com.chess.RoboButton
+            android:id="@+id/dailyPlayBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_play_ex"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            style="@style/Button.OrangeNoBorder.Small"
+            />
+
+    </com.chess.LinLayout>
+
+    <!-- Friend view 1-->
+    <com.chess.LinLayout
+        android:id="@+id/inviteFriendView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/default_scr_side_padding"
+        android:paddingRight="@dimen/default_scr_side_padding"
+        style="@style/ListItem"
+        android:gravity="center_vertical"
+        >
+
+        <ImageView
+            android:layout_width="@dimen/list_item_image_size"
+            android:layout_height="@dimen/list_item_image_size"
+            android:src="@drawable/img_profile_picture_stub"
+            android:layout_marginRight="12dip"
+            android:contentDescription="@string/image"
+            />
+
+        <com.chess.RoboTextView
+            android:id="@+id/friendUserName1Txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Joachim"
+            android:textColor="@color/semitransparent_white_65"
+            />
+
+        <com.chess.RoboTextView
+            android:id="@+id/friendRealName1Txt"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="4dip"
+            android:text="(Friend Name)"
+            android:textColor="@color/semitransparent_white_65"
+            />
+
+    </com.chess.LinLayout>
+
+    <!-- Friend view 2-->
+    <com.chess.LinLayout
+        android:id="@+id/inviteFriendView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/default_scr_side_padding"
+        android:paddingRight="@dimen/default_scr_side_padding"
+        style="@style/ListItem"
+        android:gravity="center_vertical"
+        >
+
+        <ImageView
+            android:layout_width="@dimen/list_item_image_size"
+            android:layout_height="@dimen/list_item_image_size"
+            android:src="@drawable/img_profile_picture_stub"
+            android:layout_marginRight="12dip"
+            android:contentDescription="@string/image"
+            />
+
+        <com.chess.RoboTextView
+            android:id="@+id/friendUserName2Txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Joachim"
+            android:textColor="@color/semitransparent_white_65"
+            />
+
+        <com.chess.RoboTextView
+            android:id="@+id/friendRealName2Txt"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="4dip"
+            android:text="(Friend Name)"
+            android:textColor="@color/semitransparent_white_65"
+            />
+
+    </com.chess.LinLayout>
+
+    <!--Play Friend!-->
+    <com.chess.LinLayout
+        android:id="@+id/playFriendView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/default_scr_side_padding"
+        android:paddingRight="8dip"
+        style="@style/ListItem"
+        android:gravity="center_vertical"
+        >
+
+        <!--Icon-->
+        <com.chess.RoboTextView
+            android:layout_width="@dimen/list_item_image_size"
+            android:layout_height="@dimen/list_item_image_size"
+            android:text="@string/ic_play_friend"
+            android:textColor="@color/new_light_grey_2"
+            style="@style/GlyphIcon"
+            android:background="@color/new_soft_grey2"
+            android:padding="0dip"
+            />
+
+        <com.chess.RoboTextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/challenge_friend"
+            android:textColor="@color/semitransparent_white_65"
+            android:paddingLeft="12dip"
             />
 
     </com.chess.LinLayout>

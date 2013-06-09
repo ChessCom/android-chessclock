@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
-    android:layout_height="65dip"
+    android:layout_height="@dimen/welcome_result_list_item_height"
     android:orientation="horizontal"
     style="@style/ListItem"
     android:gravity="center_vertical"

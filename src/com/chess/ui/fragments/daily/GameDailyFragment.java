@@ -156,7 +156,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 	@Override
 	public void onStart() {
-
 		super.onStart();
 		moveUpdateReceiver = new MoveUpdateReceiver();
 		registerReceiver(moveUpdateReceiver, boardUpdateFilter);

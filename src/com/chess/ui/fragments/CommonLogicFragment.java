@@ -239,7 +239,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			}
 		});
 
-
 		loginUpdateListener = new LoginUpdateListenerNew();
 	}
 

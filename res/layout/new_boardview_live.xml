@@ -25,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             custom:oneLine="@bool/one_line_for_board"
+            custom:timeLeftHasBack="true"
             />
 
         <RelativeLayout
@@ -84,6 +85,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             custom:oneLine="@bool/one_line_for_board"
+            custom:timeLeftHasBack="true"
             />
 
         <com.chess.ui.views.game_controls.ControlsLiveView

@@ -130,13 +130,7 @@ public class HomePlayFragment extends CommonLogicFragment {
 			toggleLiveOptionsView();
 		} else if (view.getId() == R.id.livePlayBtn) {
 			createLiveChallenge();
-		} else if (view.getId() == R.id.autoMatchBtn) {
-			createDailyChallenge(); // TODO adjust
 		} else if (view.getId() == R.id.dailyPlayBtn) {
-			createDailyChallenge(); // TODO adjust
-		} else if (view.getId() == R.id.inviteFriend1Btn) {
-			createDailyChallenge(); // TODO adjust
-		} else if (view.getId() == R.id.inviteFriend2Btn) {
 			createDailyChallenge(); // TODO adjust
 		} else if (view.getId() == R.id.liveHeaderView) {
 			getActivityFace().openFragment(StatsGameFragment.newInstance(StatsGameFragment.LIVE_STANDARD));
@@ -266,15 +260,44 @@ public class HomePlayFragment extends CommonLogicFragment {
 		getActivityFace().openFragment(LiveGameWaitFragment.newInstance(liveGameConfigBuilder.build()));
 	}
 
-
 	private void widgetsInit(View view) {
+		int darkBtnColor = getResources().getColor(R.color.stats_label_grey);
+		if (getArguments().getInt(MODE) == CENTER_MODE) { // we use white background and dark titles for centered mode
+			int darkTextColor = getResources().getColor(R.color.new_main_back);
+
+			View homePlayScrollView = view.findViewById(R.id.homePlayScrollView);
+			homePlayScrollView.setBackgroundResource(R.color.white);
+
+			TextView liveChessHeaderTxt = (TextView) view.findViewById(R.id.liveChessHeaderTxt);
+			Button liveTimeSelectBtn = (Button) view.findViewById(R.id.liveTimeSelectBtn);
+			TextView dailyChessHeaderTxt = (TextView) view.findViewById(R.id.dailyChessHeaderTxt);
+			TextView vsRandomTxt = (TextView) view.findViewById(R.id.vsRandomTxt);
+			TextView friendUserName1Txt = (TextView) view.findViewById(R.id.friendUserName1Txt);
+			TextView friendRealName1Txt = (TextView) view.findViewById(R.id.friendRealName1Txt);
+			TextView friendUserName2Txt = (TextView) view.findViewById(R.id.friendUserName2Txt);
+			TextView friendRealName2Txt = (TextView) view.findViewById(R.id.friendRealName2Txt);
+			TextView challengeFriendTxt = (TextView) view.findViewById(R.id.challengeFriendTxt);
+			TextView vsComputerHeaderTxt = (TextView) view.findViewById(R.id.vsComputerHeaderTxt);
+
+			liveChessHeaderTxt.setTextColor(darkTextColor);
+			liveTimeSelectBtn.setTextColor(darkBtnColor);
+			dailyChessHeaderTxt.setTextColor(darkTextColor);
+			vsRandomTxt.setTextColor(darkTextColor);
+			friendUserName1Txt.setTextColor(darkTextColor);
+			friendRealName1Txt.setTextColor(darkTextColor);
+			friendUserName2Txt.setTextColor(darkTextColor);
+			friendRealName2Txt.setTextColor(darkTextColor);
+			challengeFriendTxt.setTextColor(darkTextColor);
+			vsComputerHeaderTxt.setTextColor(darkTextColor);
+		}
+
+
 		liveRatingTxt = (TextView) view.findViewById(R.id.liveRatingTxt);
 		dailyRatingTxt = (TextView) view.findViewById(R.id.dailyRatingTxt);
 
 		liveTimeSelectBtn = (Button) view.findViewById(R.id.liveTimeSelectBtn);
 		liveTimeSelectBtn.setOnClickListener(this);
 		view.findViewById(R.id.livePlayBtn).setOnClickListener(this);
-		view.findViewById(R.id.autoMatchBtn).setOnClickListener(this);
 		view.findViewById(R.id.dailyPlayBtn).setOnClickListener(this);
 		view.findViewById(R.id.playFriendView).setOnClickListener(this);
 		view.findViewById(R.id.liveHeaderView).setOnClickListener(this);
@@ -311,6 +334,11 @@ public class HomePlayFragment extends CommonLogicFragment {
 				int key = buttonEntry.getKey();
 				buttonEntry.getValue().setText(getLiveModeButtonLabel(newGameButtonsArray[key]));
 				buttonEntry.getValue().setOnClickListener(this);
+
+				if (getArguments().getInt(MODE) == CENTER_MODE) {
+					buttonEntry.getValue().setTextColor(darkBtnColor);
+				}
+
 				if (key == mode) {
 					setDefaultQuickLiveMode(buttonEntry.getValue(), buttonEntry.getKey());
 				}

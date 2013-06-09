@@ -80,14 +80,14 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
 				case R.id.leftTabBtn:
-					Fragment dailyGamesFragment = getFragmentManager().findFragmentByTag(DailyGamesFragment.class.getSimpleName());
+					Fragment dailyGamesFragment = findFragmentByTag(DailyGamesFragment.class.getSimpleName());
 					if (dailyGamesFragment == null) {
 						dailyGamesFragment = new DailyGamesFragment();
 					}
 					changeInternalFragment(dailyGamesFragment);
 					break;
 				case R.id.centerTabBtn:
-					Fragment dailyGameSetupFragment = getFragmentManager().findFragmentByTag(DailyGameSetupFragment.class.getSimpleName());
+					Fragment dailyGameSetupFragment = findFragmentByTag(DailyGameSetupFragment.class.getSimpleName());
 					if (dailyGameSetupFragment == null) {
 						dailyGameSetupFragment = new DailyGameSetupFragment();
 					}

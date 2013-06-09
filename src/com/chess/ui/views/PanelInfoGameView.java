@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +52,9 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	private float density;
 	private Resources resources;
 	private RoboTextView playerRatingTxt;
+	private boolean timeLeftHasBack;
+	private int topPlayerTimeLeftColor;
+	private int bottomPlayerTimeLeftColor;
 
 	public PanelInfoGameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -76,6 +78,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.PanelInfoGameView);
 		try {
 			useSingleLine = array.getBoolean(R.styleable.PanelInfoGameView_oneLine, false);
+			timeLeftHasBack = array.getBoolean(R.styleable.PanelInfoGameView_timeLeftHasBack, false);
 		} finally {
 			array.recycle();
 		}
@@ -83,6 +86,14 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		int playerTextSize = (int) (resources.getDimension(R.dimen.panel_info_player_text_size) / density);
 		int playerRatingTextSize = (int) (resources.getDimension(R.dimen.panel_info_player_rating_text_size) / density);
 		int playerTextColor = resources.getColor(R.color.white);
+
+		if (timeLeftHasBack) {
+			topPlayerTimeLeftColor = resources.getColor(R.color.semitransparent_white_65);
+			bottomPlayerTimeLeftColor = resources.getColor(R.color.new_author_dark_grey);
+		} else {
+			topPlayerTimeLeftColor = resources.getColor(R.color.semitransparent_white_65);
+			bottomPlayerTimeLeftColor = resources.getColor(R.color.white);
+		}
 
 		int avatarSize;
 		if (useSingleLine) {
@@ -175,7 +186,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 				flagParams.addRule(ALIGN_TOP, AVATAR_ID);
 			}
 
-			flagImg.setImageDrawable(AppUtils.getUserFlag(context));
+//			flagImg.setImageDrawable(AppUtils.getUserFlag(context));
 			flagImg.setScaleType(ImageView.ScaleType.FIT_XY);
 			flagImg.setAdjustViewBounds(true);
 			flagImg.setId(FLAG_ID);
@@ -210,9 +221,11 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			timeLeftParams.addRule(CENTER_VERTICAL);
 			timeLeftParams.setMargins((int) (7 * density), 0, 0, 0);
 
-			timeLeftTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+			timeLeftTxt.setTextSize(playerTextSize);
 			timeLeftTxt.setTextColor(resources.getColor(R.color.light_grey));
-			timeLeftTxt.setBackgroundResource(R.drawable.back_grey_emboss);
+
+			if (timeLeftHasBack)
+				timeLeftTxt.setBackgroundResource(R.drawable.back_grey_emboss);
 			timeLeftTxt.setId(TIME_LEFT_ID);
 			timeLeftTxt.setFont(FontsHelper.BOLD_FONT);
 			timeLeftTxt.setGravity(Gravity.CENTER_VERTICAL);
@@ -256,14 +269,22 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).setSide(side);
 
 		// change timeLeft color and background
-		if (side == ChessBoard.WHITE_SIDE) {
-			timeLeftTxt.setBackgroundResource(R.drawable.back_white_emboss);
-			timeLeftTxt.setTextColor(resources.getColor(R.color.new_main_back));
+		if (timeLeftHasBack) {
+			if (side == ChessBoard.WHITE_SIDE) {
+				timeLeftTxt.setBackgroundResource(R.drawable.back_white_emboss);
+				timeLeftTxt.setTextColor(topPlayerTimeLeftColor);
+			} else {
+				timeLeftTxt.setBackgroundResource(R.drawable.back_grey_emboss);
+				timeLeftTxt.setTextColor(bottomPlayerTimeLeftColor);
+			}
+			setTimeLeftPadding();
 		} else {
-			timeLeftTxt.setBackgroundResource(R.drawable.back_grey_emboss);
-			timeLeftTxt.setTextColor(resources.getColor(R.color.light_grey));
+			if (side == ChessBoard.WHITE_SIDE) {
+				timeLeftTxt.setTextColor(topPlayerTimeLeftColor);
+			} else {
+				timeLeftTxt.setTextColor(bottomPlayerTimeLeftColor);
+			}
 		}
-		setTimeLeftPadding();
 
 		invalidate();
 	}
@@ -289,8 +310,18 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		playerTxt.setText(playerName);
 	}
 
-	public void setPlayerRating(String playerName) {
-		playerRatingTxt.setText(StaticData.SYMBOL_LEFT_PAR + playerName + StaticData.SYMBOL_RIGHT_PAR);
+	public void setPlayerRating(String playerRating) {
+		if (playerRating != null)
+			playerRatingTxt.setText(StaticData.SYMBOL_LEFT_PAR + playerRating + StaticData.SYMBOL_RIGHT_PAR);
+	}
+
+	public void setPlayerFlag(String country) {
+		flagImg.setImageDrawable(AppUtils.getCountryFlagScaled(getContext(), country));
+	}
+
+	public void showFlags(boolean show) {
+		flagImg.setVisibility(show ? VISIBLE : GONE);
+		premiumImg.setVisibility(show ? VISIBLE : GONE);
 	}
 
 	public void showTimeLeft(boolean show) {
@@ -301,10 +332,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).updateCapturedPieces(alivePiecesCountArray);
 	}
 
-	public void showFlags(boolean show) {
-		flagImg.setVisibility(show ? VISIBLE : GONE);
-		premiumImg.setVisibility(show ? VISIBLE : GONE);
-	}
+
 
 	private void setTimeLeftPadding() {
 		int timeLeftSmallPadding = (int) (2 * density);

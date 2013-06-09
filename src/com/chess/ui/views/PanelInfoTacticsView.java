@@ -25,11 +25,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 	public static final int AVATAR_ID = 0x00004400;
 	public static final int RATING_ID = 0x00004401;
 	public static final int TIME_LEFT_ID = 0x00004405;
-	public static final int TOP_BUTTON_ID = 0x00004406;
-	public static final int RATING_CHANGE_ID = 0x00004407;
-
-	private int TOP_BUTTON_HEIGHT = 36;
-	private int AVATAR_MARGIN = 11;
+	public static final int RATING_CHANGE_ID = 0x00004406;
 
 	private ImageView avatarImg;
 	private float density;
@@ -58,9 +54,6 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		Context context = getContext();
 		Resources resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
-
-		AVATAR_MARGIN *= density;
-		TOP_BUTTON_HEIGHT *= density;
 
 		int padding = (int) (7 * density);
 		int paddingLeft = (int) (21 * density);

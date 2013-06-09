@@ -39,6 +39,8 @@ public class DailyGameByIdItem extends BaseResponseItem<DailyGameByIdItem.Data> 
 		private String name;
 		private String white_username;
 		private String black_username;
+		private int black_user_country;
+		private int white_user_country;
 		private String starting_fen_position;
 		private String move_list;
 		private int user_to_move;
@@ -202,6 +204,14 @@ public class DailyGameByIdItem extends BaseResponseItem<DailyGameByIdItem.Data> 
 
 		public void setDaysPerMove(int days_per_move) {
 			this.days_per_move = days_per_move;
+		}
+
+		public int getBlackUserCountry() {
+			return black_user_country;
+		}
+
+		public int getWhiteUserCountry() {
+			return white_user_country;
 		}
 	}
 }

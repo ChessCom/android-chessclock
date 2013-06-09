@@ -32,15 +32,6 @@
         custom:ttf="Regular"
 		/>
 
-    <!--Archive-->
-	<com.chess.RoboTextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-        android:text="@string/archive"
-        style="@style/HeaderTitle.Dark"
-        custom:ttf="Regular"
-		/>
-
     <!--Right Icon-->
     <com.chess.RoboTextView
         android:layout_width="wrap_content"

@@ -10,7 +10,7 @@
     <com.chess.RoboTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/improve_your_game"
+        android:text="@string/learn_from_masters"
         android:layout_alignParentTop="true"
         android:layout_above="@id/thirdWelcomeImg"
         style="@style/WelcomeFeatureTitle"

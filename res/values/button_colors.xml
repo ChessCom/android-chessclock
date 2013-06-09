@@ -13,6 +13,7 @@
     <color name="glassy_button_overlay_p">#0E000000</color>
     <color name="glassy_button_overlay_s">#0E000000</color>
 
+    <color name="rect_button_overlay_p_dark">#66000000</color>
     <color name="rect_button_overlay_p">#66000000</color>
     <color name="rect_button_overlay_c">#33000000</color> <!--Good!-->
 

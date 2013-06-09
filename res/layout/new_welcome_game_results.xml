@@ -2,31 +2,17 @@
 
 <com.chess.RelLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
-    <com.chess.RoboTextView
-        android:id="@+id/resultTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:minHeight="99dip"
-        android:textSize="30sp"
-        custom:ttf="Bold"
-        style="@style/ListItem"
-        />
-
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/resultTxt"
+        android:layout_marginBottom="@dimen/small_button_height"
         />
-
 
     <SlidingDrawer
         android:id="@+id/drawer"
@@ -39,7 +25,7 @@
         <com.chess.RelLayout
             android:id="@id/drawer_handler"
             android:layout_width="match_parent"
-            android:layout_height="37dip"
+            android:layout_height="@dimen/small_button_height"
             style="@style/ListItem.Header">
 
             <com.chess.RoboTextView

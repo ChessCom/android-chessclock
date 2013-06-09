@@ -48,9 +48,6 @@ public class DailyGameSetupFragment extends CommonLogicFragment {
 		setTitle(R.string.daily_chess);
 
 		view.findViewById(R.id.dailyPlayBtn).setOnClickListener(this);
-		view.findViewById(R.id.dailyTimeSelectionBtn).setOnClickListener(this);
-		view.findViewById(R.id.inviteFriend1Btn).setOnClickListener(this);
-		view.findViewById(R.id.inviteFriend2Btn).setOnClickListener(this);
 		view.findViewById(R.id.playFriendView).setOnClickListener(this);
 		view.findViewById(R.id.dailyOptionsView).setOnClickListener(this);
 	}
@@ -68,10 +65,7 @@ public class DailyGameSetupFragment extends CommonLogicFragment {
 		int id = view.getId();
 		if (id == R.id.dailyPlayBtn) {
 			createDailyChallenge();
-		} else if (id == R.id.autoMatchBtn) {
-		} else if (id == R.id.dailyTimeSelectionBtn) {
-		} else if (id == R.id.inviteFriend1Btn) {
-		} else if (id == R.id.inviteFriend2Btn) {
+
 		} else if (id == R.id.playFriendView) {
 			getActivityFace().changeRightFragment(new InviteFriendsFragment());
 			getActivityFace().toggleRightMenu();

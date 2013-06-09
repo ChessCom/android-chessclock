@@ -8,6 +8,7 @@
 
     <declare-styleable name="PanelInfoGameView">
         <attr name="oneLine" format="reference|boolean"/>
+        <attr name="timeLeftHasBack" format="reference|boolean"/>
     </declare-styleable>
 
     <declare-styleable name="RoboTextView">
