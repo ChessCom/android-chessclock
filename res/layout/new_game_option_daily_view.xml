@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            style="@style/ListItem.Header"
+            style="@style/ListItem.Header.Dark"
             android:paddingLeft="13dip"
             android:paddingRight="8dip"
             >
@@ -53,31 +53,50 @@
         </com.chess.LinLayout>
 
         <!--Opponent-->
-        <com.chess.LinLayout
+        <com.chess.RoboSpinner
+            android:id="@+id/opponentSpinner"
             android:layout_width="match_parent"
-            android:layout_height="65dip"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/default_list_item_height"
+            style="@style/ListItem"
+            />
+
+       <!-- <com.chess.LinLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_list_item_height"
             android:gravity="center_vertical"
             style="@style/ListItem"
             android:paddingLeft="@dimen/new_game_frame_padding_side"
             android:paddingRight="@dimen/new_game_frame_padding_side"
             >
 
+            &lt;!&ndash;Opponent Title&ndash;&gt;
             <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/opponent_"
+                android:textColor="@color/semitransparent_white_65"
                 />
 
-            <com.chess.EditButtonSpinner
-                android:id="@+id/opponentEditBtn"
+            &lt;!&ndash;Opponent Name&ndash;&gt;
+            <com.chess.RoboTextView
+                android:id="@+id/opponentNameTxt"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/random"
-                style="@style/Button.Glassy.Small"
-                android:layout_marginLeft="12dip"
+                android:textColor="@color/semitransparent_white_65"
+                android:paddingLeft="10dip"
                 />
-        </com.chess.LinLayout>
+
+            &lt;!&ndash;Right Icon&ndash;&gt;
+            <com.chess.RoboTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/RightIcon"
+                />
+
+        </com.chess.LinLayout>-->
 
         <!--Days Per Move - Mode-->
         <com.chess.LinLayout
@@ -94,13 +113,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/days_per_move_"
+                android:textColor="@color/semitransparent_white_65"
                 />
 
             <GridView
                 android:id="@+id/dailyGamesModeGrid"
                 android:layout_width="match_parent"
                 android:layout_height="90dip"
-                android:columnWidth="90dp"
+                android:columnWidth="@dimen/new_daily_grid_button_width"
                 android:gravity="center"
                 android:verticalSpacing="1dp"
                 android:horizontalSpacing="1dip"
@@ -133,10 +153,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/i_play_as_"
+                android:textColor="@color/semitransparent_white_65"
                 />
 
-            <com.chess.EditButtonSpinner
-                android:id="@+id/myColorEditBtn"
+            <com.chess.RoboButton
+                android:id="@+id/myColorBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/random"
@@ -159,6 +180,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/rated_game_"
+                android:textColor="@color/semitransparent_white_65"
                 />
 
             <com.chess.SwitchButton
@@ -183,6 +205,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/type_"
+                android:textColor="@color/semitransparent_white_65"
                 />
 
             <com.chess.RoboButton
@@ -211,6 +234,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/min_rating"
                 android:paddingLeft="18dip"
+                android:textColor="@color/semitransparent_white_65"
                 />
 
             <com.chess.RoboTextView
@@ -219,6 +243,7 @@
                 android:text="@string/max_rating"
                 android:layout_alignParentRight="true"
                 android:paddingRight="19dip"
+                android:textColor="@color/semitransparent_white_65"
                 />
 
             <RelativeLayout
@@ -248,6 +273,7 @@
                     android:text="@string/to"
                     android:paddingTop="9dip"
                     android:layout_centerInParent="true"
+                    android:textColor="@color/semitransparent_white_65"
                     />
 
                 <com.chess.RoboRadioButton
@@ -279,6 +305,10 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/new_game_frame_padding_side"
             style="@style/ListItem"
+            android:paddingTop="9dip"
+            android:paddingBottom="9dip"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
             >
 
             <com.chess.RoboButton
@@ -286,6 +316,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/play"
+                style="@style/Button.OrangeNoBorder"
                 />
         </com.chess.LinLayout>
 

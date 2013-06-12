@@ -13,7 +13,7 @@ import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
 import com.chess.model.GameLiveItem;
-import com.chess.ui.engine.configs.NewLiveGameConfig;
+import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.LiveBaseFragment;
 
 /**
@@ -26,16 +26,16 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 
 	private static final String CONFIG = "config";
 	private View loadingView;
-	private NewLiveGameConfig liveGameConfig;
+	private LiveGameConfig liveGameConfig;
 	private GameTaskListener gameTaskListener;
 
 	public LiveGameWaitFragment() {
 		Bundle bundle = new Bundle();
-		bundle.putParcelable(CONFIG, new NewLiveGameConfig.Builder().build());
+		bundle.putParcelable(CONFIG, new LiveGameConfig.Builder().build());
 		setArguments(bundle);
 	}
 
-	public static LiveGameWaitFragment newInstance(NewLiveGameConfig config) {
+	public static LiveGameWaitFragment newInstance(LiveGameConfig config) {
 		LiveGameWaitFragment fragment = new LiveGameWaitFragment();
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(CONFIG, config);
@@ -99,7 +99,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
 			logTest(e.getMessage());
-			getActivityFace().showPreviousFragment();
+			backToHomeFragment();
 			return;
 		}
 		liveService.setLccEventListener(this);

@@ -14,8 +14,8 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.engine.ChessBoardComp;
-import com.chess.ui.engine.configs.NewCompGameConfig;
-import com.chess.ui.engine.configs.NewDailyGameConfig;
+import com.chess.ui.engine.configs.CompGameConfig;
+import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.game.GameCompFragment;
 import com.chess.ui.views.NewGameCompView;
 import com.chess.ui.views.NewGameDailyView;
@@ -106,13 +106,13 @@ public class NewGamesFragment extends CommonLogicFragment {
 
 	private void createDailyChallenge() {
 		// create challenge using formed configuration
-		NewDailyGameConfig newDailyGameConfig = dailyGamesSetupView.getNewDailyGameConfig();
+		DailyGameConfig dailyGameConfig = dailyGamesSetupView.getNewDailyGameConfig();
 
-		int color = newDailyGameConfig.getUserColor();
-		int days = newDailyGameConfig.getDaysPerMove();
-		int gameType = newDailyGameConfig.getGameType();
-		String isRated = newDailyGameConfig.isRated() ? RestHelper.V_TRUE : RestHelper.V_FALSE;
-		String opponentName = newDailyGameConfig.getOpponentName();
+		int color = dailyGameConfig.getUserColor();
+		int days = dailyGameConfig.getDaysPerMove();
+		int gameType = dailyGameConfig.getGameType();
+		String isRated = dailyGameConfig.isRated() ? RestHelper.V_TRUE : RestHelper.V_FALSE;
+		String opponentName = dailyGameConfig.getOpponentName();
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
@@ -152,7 +152,7 @@ public class NewGamesFragment extends CommonLogicFragment {
 	}
 
 	private void startCompGame() {
-		NewCompGameConfig config = compGamesSetupView.getNewCompGameConfig();
+		CompGameConfig config = compGamesSetupView.getNewCompGameConfig();
 
 		getActivityFace().openFragment(GameCompFragment.newInstance(config));
 		if (getArguments().getInt(MODE) == RIGHT_MENU_MODE){
@@ -186,10 +186,7 @@ public class NewGamesFragment extends CommonLogicFragment {
 			dailyConfig.setHeaderIcon(R.string.ic_daily_game);
 			dailyConfig.setHeaderText(R.string.new_daily_chess);
 			dailyConfig.setTitleText(R.string.new_per_turn);
-			// set default value
-			{// TODO remove after debug - we set here a test value
-				AppData.setDefaultDailyMode(getActivity(), 3);
-			}
+
 			int defaultDailyMode = AppData.getDefaultDailyMode(getActivity());
 			dailyConfig.setLeftButtonText(getString(R.string.days_arg, defaultDailyMode));
 			dailyConfig.setRightButtonTextId(R.string.random);

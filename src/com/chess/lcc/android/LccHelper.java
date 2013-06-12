@@ -12,7 +12,6 @@ import com.chess.backend.entity.new_api.ChatItem;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.ConnectLiveChessTask;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
@@ -22,7 +21,7 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.live.util.GameType;
 import com.chess.model.GameLiveItem;
 import com.chess.ui.engine.ChessBoardLive;
-import com.chess.ui.engine.configs.NewLiveGameConfig;
+import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 
@@ -1056,7 +1055,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	//	public void createChallenge(String friend) {
-	public void createChallenge(NewLiveGameConfig config) {
+	public void createChallenge(LiveGameConfig config) {
 		if (getOwnSeeksCount() >= LccHelper.OWN_SEEKS_LIMIT || getUser() == null) {
 			return; // TODO throw exception
 		}

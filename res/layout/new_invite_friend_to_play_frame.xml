@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        style="@style/ListItem.Header"
+        style="@style/ListItem.Header.Dark"
         android:paddingLeft="14dip"
         android:paddingRight="10dip"
         >
@@ -95,16 +95,6 @@
         style="@style/ListItem"
         android:gravity="center_vertical"
         >
-
-        <com.chess.EditButtonSpinner
-            android:id="@+id/opponentEditBtn"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/chess_com_username"
-            style="@style/Button.Glassy.Small"
-            android:layout_marginRight="8dip"
-            />
 
         <com.chess.RoboButton
             android:id="@+id/dailyPlayBtn"

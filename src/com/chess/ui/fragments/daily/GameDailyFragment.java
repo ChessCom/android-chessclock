@@ -40,7 +40,6 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.fragments.CompGameSetupFragment;
 import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
@@ -183,9 +182,9 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	}
 
 	@Override
-	public void valueSelected(int code) {
+	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
-			getActivityFace().openFragment(new CompGameSetupFragment());
+			getActivityFace().openFragment(new DailyGameSetupFragment());
 		} else if (code == ID_OFFER_DRAW) {
 			showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
 		} else if (code == ID_FLIP_BOARD) {
@@ -201,7 +200,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	}
 
 	@Override
-	public void dialogCanceled() {
+	public void onDialogCanceled() {
 		optionsSelectFragment = null;
 	}
 
@@ -693,9 +692,9 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
-		if (AppUtils.isNeedToUpgrade(getActivity())) {
-			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-		}
+//		if (AppUtils.isNeedToUpgrade(getActivity())) {
+//			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+//		}
 	}
 
 	private int getCurrentPlayerRating() {
@@ -869,6 +868,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		{// options list setup
 			optionsList = new ArrayList<String>();
 			optionsList.add( getString(R.string.new_game));
+			optionsList.add( getString(R.string.offer_draw));
+			optionsList.add( getString(R.string.flip_board));
 			optionsList.add( getString(R.string.email_game));
 			optionsList.add(getString(R.string.settings));
 		}

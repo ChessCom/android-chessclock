@@ -136,6 +136,7 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
 		loadItem.addRequestParams(RestHelper.P_EMAIL, email);
 		loadItem.addRequestParams(RestHelper.P_APP_TYPE, RestHelper.V_ANDROID);
+		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
 
 		new RequestJsonTask<RegisterItem>(registerUpdateListener).executeTask(loadItem);
 	}

@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.utilities.AppUtils;
@@ -64,6 +65,10 @@ public class ImageDownloaderToListener {
 	 */
     public void download(String url, ImageReadyListener holder, int imgSize) {
 		this.imgSize = imgSize;
+		if (TextUtils.isEmpty(url)) {
+			Log.e(LOG_TAG, " passed url is null. Don't start loading");
+			return;
+		}
 		Bitmap bitmap = getBitmapFromCache(url, holder);
 		Log.d(LOG_TAG, " download url = " + url);
 
@@ -236,11 +241,14 @@ public class ImageDownloaderToListener {
         // AndroidHttpClient is not allowed to be used from the main thread
         final HttpClient client = AndroidHttpClient.newInstance("Android");
         url = url.replace(" ", "%20");
+		if (!url.startsWith(EnhancedImageDownloader.HTTP_PREFIX)) {
+			url = EnhancedImageDownloader.HTTP_PREFIX + url;
+		}
         final HttpGet getRequest = new HttpGet(url);
 
         try {
 			if (RestHelper.IS_TEST_SERVER_MODE) {
-				getRequest.addHeader(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
+//				getRequest.addHeader(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
 			}
 
             HttpResponse response = client.execute(getRequest);

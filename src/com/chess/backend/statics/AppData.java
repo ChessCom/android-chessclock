@@ -287,22 +287,12 @@ public class AppData {
 		return getIntValue(context, PREF_USER_COUNTRY_ID, 0);
 	}
 
-	public static void setUserId(Context context, long userId) {
-		getPreferences(context).edit().putLong(USER_ID, userId).commit();
-	}
-
-	public static long getUserId(Context context) {
-		return getPreferences(context).getLong(USER_ID, 0);
-	}
-
 	public static void setUserAvatar(Context context, String url) {
 		setStringValue(context, PREF_USER_AVATAR_URL, url);
 	}
 
 	public static String getUserAvatar(Context context) {
 		return getStringValue(context, PREF_USER_AVATAR_URL, StaticData.SYMBOL_EMPTY);
-//		return getPreferences(context).getString(PREF_USER_AVATAR_URL, "http://d1lalstwiwz2br.cloudfront.net/images_users/avatars/alien_roger.gif"); // TODO restore
-//		return getPreferences(context).getString(PREF_USER_AVATAR_URL, "http://d1lalstwiwz2br.cloudfront.net/images_users/articles/chesscom-player-profiles-roman-dzindzichasvili_small.1.png"); // TODO restore
 	}
 
 	public static void setUserTacticsRating(Context context, int value) {

@@ -61,6 +61,9 @@
     <dimen name="popup_options_select_padding">30dip</dimen>
     <dimen name="result_title_min_height">77dip</dimen>
     <dimen name="welcome_result_list_item_height">58dip</dimen>
+    <dimen name="friend_list_photo_size">80dip</dimen>
+    <dimen name="new_daily_grid_button_width">68dip</dimen>
+    <dimen name="notations_view_height">24dip</dimen>
 
 
 </resources>

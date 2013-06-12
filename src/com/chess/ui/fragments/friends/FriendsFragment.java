@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
@@ -21,12 +20,8 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveFriendsListTask;
 import com.chess.ui.adapters.FriendsCursorAdapter;
-import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,8 +38,6 @@ public class FriendsFragment extends CommonLogicFragment {
 	private FriendsCursorUpdateListener friendsCursorUpdateListener;
 	private FriendsUpdateListener friendsUpdateListener;
 	private SaveFriendsListUpdateListener saveFriendsListUpdateListener;
-	private boolean hostUnreachable;
-	private Spinner sortSpinner;
 	private boolean need2update = true;
 
 	@Override
@@ -70,12 +63,11 @@ public class FriendsFragment extends CommonLogicFragment {
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(friendsAdapter);
 
-		sortSpinner = (Spinner) view.findViewById(R.id.sortSpinner);
-		List<String> sortList = new ArrayList<String>();  // TODO localize
-		sortList.add("Name");
-		sortList.add("Country");
-		sortList.add("Online");
-		sortSpinner.setAdapter(new WhiteSpinnerAdapter(getActivity(), sortList));
+		// adjust action bar icons
+		getActivityFace().showActionMenu(R.id.menu_search, true);
+		getActivityFace().showActionMenu(R.id.menu_add, true);
+		getActivityFace().showActionMenu(R.id.menu_notifications, false);
+		getActivityFace().showActionMenu(R.id.menu_games, false);
 	}
 
 	@Override
@@ -141,8 +133,6 @@ public class FriendsFragment extends CommonLogicFragment {
 		public void updateData(FriendsItem returnedObj) {
 			super.updateData(returnedObj);
 
-			hostUnreachable = false;
-
 			new SaveFriendsListTask(saveFriendsListUpdateListener, returnedObj.getData(),
 					getContentResolver()).executeTask();
 
@@ -184,11 +174,6 @@ public class FriendsFragment extends CommonLogicFragment {
 	}
 
 	private class FriendsCursorUpdateListener extends ChessUpdateListener<Cursor> {
-
-		public FriendsCursorUpdateListener() {
-			super();
-
-		}
 
 		@Override
 		public void showProgress(boolean show) {

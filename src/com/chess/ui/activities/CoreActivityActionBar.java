@@ -14,7 +14,6 @@ import android.view.*;
 import android.widget.SearchView;
 import com.chess.R;
 import com.chess.ui.interfaces.PopupDialogFace;
-import com.inneractive.api.ads.InneractiveAd;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,8 +28,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	// we may have this add on every screen, so control it on the lowest level
 	//protected MoPubView moPubView;
-	protected InneractiveAd inneractiveBannerAd;
-	protected InneractiveAd inneractiveRectangleAd;
+//	protected InneractiveAd inneractiveBannerAd;
+//	protected InneractiveAd inneractiveRectangleAd;
 
 	public void setFullScreen() {
 //		requestWindowFeature(Window.FEATURE_NO_TITLE);  // TODO solve problem for QVGA screens

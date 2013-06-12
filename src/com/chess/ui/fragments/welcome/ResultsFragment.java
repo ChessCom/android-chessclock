@@ -24,10 +24,12 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ItemsAdapter;
+import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.WelcomeTabsFace;
@@ -126,6 +128,9 @@ public class ResultsFragment extends CommonLogicFragment implements YouTubePlaye
 		menuItems.add(new PromoteItem(R.string.videos, R.string.ic_play));
 
 		adapter = new PromotesAdapter(getActivity(), menuItems);
+
+		ChessBoardComp.resetInstance();
+		AppData.clearSavedCompGame(getActivity());
 	}
 
 	@Override
@@ -199,32 +204,32 @@ public class ResultsFragment extends CommonLogicFragment implements YouTubePlaye
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		switch (position) {
 			case PLAY_ONLINE_ITEM:
-				popupItem.setPositiveBtnId(R.string.sign_up);
-				popupItem.setNegativeBtnId(R.string.log_in);
+				popupItem.setPositiveBtnId(R.string.log_in);
+				popupItem.setNegativeBtnId(R.string.sign_up);
 				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.play_online)), PLAY_ONLINE_TAG);
 				break;
 			case CHALLENGE_ITEM:
-				popupItem.setPositiveBtnId(R.string.sign_up);
-				popupItem.setNegativeBtnId(R.string.log_in);
+				popupItem.setPositiveBtnId(R.string.log_in);
+				popupItem.setNegativeBtnId(R.string.sign_up);
 				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.challenge_friend)), CHALLENGE_TAG);
 				break;
 			case REMATCH_ITEM:
 				parentFace.changeInternalFragment(WelcomeTabsFragment.GAME_FRAGMENT);
 				break;
 			case TACTICS_ITEM:
-				popupItem.setPositiveBtnId(R.string.sign_up);
-				popupItem.setNegativeBtnId(R.string.log_in);
+				popupItem.setPositiveBtnId(R.string.log_in);
+				popupItem.setNegativeBtnId(R.string.sign_up);
 				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.solve_tactics_puzzles)), TACTICS_TAG);
 
 				break;
 			case LESSONS_ITEM:
-				popupItem.setPositiveBtnId(R.string.sign_up);
-				popupItem.setNegativeBtnId(R.string.log_in);
+				popupItem.setPositiveBtnId(R.string.log_in);
+				popupItem.setNegativeBtnId(R.string.sign_up);
 				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.learn_lessons)), LESSONS_TAG);
 				break;
 			case VIDEOS_ITEM:
-				popupItem.setPositiveBtnId(R.string.sign_up);
-				popupItem.setNegativeBtnId(R.string.log_in);
+				popupItem.setPositiveBtnId(R.string.log_in);
+				popupItem.setNegativeBtnId(R.string.sign_up);
 				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.watch_videos)), VIDEOS_TAG);
 				break;
 		}

@@ -11,7 +11,7 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.DailySeekItem;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.ui.engine.configs.NewDailyGameConfig;
+import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.friends.InviteFriendsFragment;
 
@@ -25,14 +25,14 @@ public class DailyGameSetupFragment extends CommonLogicFragment {
 
 	private static final String ERROR_TAG = "error popup";
 
-	private NewDailyGameConfig.Builder gameConfigBuilder;
+	private DailyGameConfig.Builder gameConfigBuilder;
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		gameConfigBuilder = new NewDailyGameConfig.Builder();
+		gameConfigBuilder = new DailyGameConfig.Builder();
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 	}
 
@@ -77,13 +77,13 @@ public class DailyGameSetupFragment extends CommonLogicFragment {
 
 	private void createDailyChallenge() {
 		// create challenge using formed configuration
-		NewDailyGameConfig newDailyGameConfig = gameConfigBuilder.build();
+		DailyGameConfig dailyGameConfig = gameConfigBuilder.build();
 
-		int color = newDailyGameConfig.getUserColor();
-		int days = newDailyGameConfig.getDaysPerMove();
-		int gameType = newDailyGameConfig.getGameType();
-		String isRated = newDailyGameConfig.isRated() ? RestHelper.V_TRUE : RestHelper.V_FALSE;
-		String opponentName = newDailyGameConfig.getOpponentName();
+		int color = dailyGameConfig.getUserColor();
+		int days = dailyGameConfig.getDaysPerMove();
+		int gameType = dailyGameConfig.getGameType();
+		String isRated = dailyGameConfig.isRated() ? RestHelper.V_TRUE : RestHelper.V_FALSE;
+		String opponentName = dailyGameConfig.getOpponentName();
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_SEEKS);

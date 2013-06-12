@@ -6,7 +6,7 @@ package com.chess.ui.engine.configs;
  * Date: 15.04.13
  * Time: 15:55
  */
-public class NewDailyGameConfig {
+public class DailyGameConfig {
 
 	private int daysPerMove;
 	private int userColor;
@@ -86,12 +86,12 @@ gameSeekName	\w+		false	Name of new game/challenge. Default is `Let's Play!`.
 			return this;
 		}
 
-		public NewDailyGameConfig build(){
-			return new NewDailyGameConfig(this);
+		public DailyGameConfig build(){
+			return new DailyGameConfig(this);
 		}
 	}
 
-	private NewDailyGameConfig(Builder builder) {
+	private DailyGameConfig(Builder builder) {
 		this.daysPerMove = builder.daysPerMove;
 		this.userColor = builder.userColor;
 		this.rated = builder.rated;

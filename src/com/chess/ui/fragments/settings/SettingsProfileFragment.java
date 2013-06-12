@@ -582,7 +582,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private class CountrySelectedListener implements PopupListSelectionFace {
 
 		@Override
-		public void valueSelected(int code) {
+		public void onValueSelected(int code) {
 			countriesFragment.dismiss();
 			countriesFragment = null;
 			countryStr = countryNames[code];
@@ -592,7 +592,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		}
 
 		@Override
-		public void dialogCanceled() {
+		public void onDialogCanceled() {
 			countriesFragment = null;
 		}
 	}
@@ -608,7 +608,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		private static final String JPEG_FILE_SUFFIX = ".jpg";
 
 		@Override
-		public void valueSelected(int code) {
+		public void onValueSelected(int code) {
 			photoSelectFragment.dismiss();
 			photoSelectFragment = null;
 			if (code == 0) { // TODO
@@ -651,7 +651,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		}
 
 		@Override
-		public void dialogCanceled() {
+		public void onDialogCanceled() {
 			photoSelectFragment = null;
 			inEditMode = false;
 			if (actionModeHelper != null)

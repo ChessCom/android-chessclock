@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.image_load.ProgressImageView;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 
@@ -18,15 +19,18 @@ import com.chess.db.DBDataManager;
  */
 public class FriendsCursorAdapter extends ItemsCursorAdapter {
 
+	private final int imageSize;
+
 	public FriendsCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
+		imageSize = (int) (resources.getDimension(R.dimen.friend_list_photo_size) / resources.getDisplayMetrics().density);
 	}
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_friends_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
-		holder.photoImg = (ImageView) view.findViewById(R.id.photoImg);
+		holder.photoImg = (ProgressImageView) view.findViewById(R.id.photoImg);
 		holder.usernameTxt = (TextView) view.findViewById(R.id.usernameTxt);
 		holder.countryImg = (ImageView) view.findViewById(R.id.countryImg);
 		holder.locationTxt = (TextView) view.findViewById(R.id.locationTxt);
@@ -52,11 +56,12 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 		holder.usernameTxt.setText(DBDataManager.getString(cursor, DBConstants.V_USERNAME));
 		holder.locationTxt.setText(DBDataManager.getString(cursor, DBConstants.V_LOCATION));
 
+		imageLoader.download( getString(cursor, DBConstants.V_PHOTO_URL), holder.photoImg, imageSize);
 
 	}
 
 	private class ViewHolder {
-		public ImageView photoImg;
+		public ProgressImageView photoImg;
 		public TextView usernameTxt;
 		public ImageView countryImg;
 		public TextView locationTxt;

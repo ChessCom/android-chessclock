@@ -15,6 +15,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/action_bar_overlay"
+        android:background="@color/sliding_menu_overlay"
         />
 </FrameLayout>

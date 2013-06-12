@@ -15,15 +15,16 @@
         android:contentDescription="@string/challenge"
         android:background="@drawable/button_square_grey_selector"
         android:text="@string/ic_board"
+        android:textColor="@color/hint_text"
         android:layout_marginTop="9dip"
         android:layout_marginLeft="15dip"
-        custom:ttf="Icon"
+        style="@style/GlyphIcon.Square"
         />
 
-    <ImageView
+    <com.chess.backend.image_load.ProgressImageView
         android:id="@+id/photoImg"
-        android:layout_width="83dip"
-        android:layout_height="83dip"
+        android:layout_width="@dimen/friend_list_photo_size"
+        android:layout_height="@dimen/friend_list_photo_size"
         android:contentDescription="@string/photo"
         android:src="@drawable/img_profile_picture_stub"
         android:layout_toRightOf="@id/challengeImgBtn"
@@ -42,12 +43,11 @@
         android:contentDescription="@string/challenge"
         android:background="@drawable/button_square_grey_selector"
         android:text="@string/ic_email_dark"
+        android:textColor="@color/hint_text"
         android:layout_alignBottom="@id/photoImg"
         android:layout_marginLeft="15dip"
-        custom:ttf="Icon"
+        style="@style/GlyphIcon.Square"
         />
-
-
 
     <com.chess.RoboTextView
         android:id="@+id/usernameTxt"

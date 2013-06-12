@@ -22,6 +22,7 @@
         <attr name="switchHandleWidth" format="integer" />
         <attr name="switchHandleHeight" format="integer" />
         <attr name="switchHandleShift" format="float" />
+        <attr name="switchHandleMargin" format="float" />
         <attr name="switchTextShift" format="float" />
         <attr name="switchTextSize" format="dimension|reference" />
         <attr name="switchTextColorOn" format="color|reference" />

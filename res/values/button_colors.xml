@@ -8,8 +8,11 @@
     <color name="default_button_overlay_c">#88000000</color>
     <color name="default_button_overlay_d">#88FFFFFF</color>
 
-    <color name="glassy_button">#33000000</color> <!--Main semi-transparent overlay-->
-    <!--<color name="glassy_button_overlay_p">#66000000</color>-->
+    <color name="glassy_header">#0F000000</color> <!--Main semi-transparent overlay-->
+    <color name="glassy_button">#44000000</color>
+    <color name="glassy_button_1">#66000000</color>
+    <color name="glassy_button_p">#55000000</color>
+    <color name="glassy_button_s">#55000000</color>
     <color name="glassy_button_overlay_p">#0E000000</color>
     <color name="glassy_button_overlay_s">#0E000000</color>
 
@@ -21,27 +24,15 @@
     <color name="grey_button_1">#FF524d48</color>
     <color name="grey_button_solid">#FF413d39</color>
 
-    <!--<color name="transparent_button_border_top">#FFFF0000</color>-->
-    <!--<color name="transparent_button_border_left">#FF00FF00</color>-->
-    <!--<color name="transparent_button_border_bottom">#FF0000FF</color>-->
-    <!--<color name="transparent_button_border_right">#FFF0F000</color>-->
-
-    <color name="transparent_button_border_top">#4F000000</color>
+    <color name="transparent_button_border_top">#3F000000</color>
     <color name="transparent_button_border_left">#15FFFFFF</color>
-    <color name="transparent_button_border_bottom">#4F000000</color>
+    <color name="transparent_button_border_bottom">#3F000000</color>
     <color name="transparent_button_border_right">#15FFFFFF</color>
 
     <color name="transparent_button_border_top_2">#FF000000</color>
     <color name="transparent_button_border_left_2">#FF0F00F0</color>
     <color name="transparent_button_border_bottom_2">#00000000</color>
     <color name="transparent_button_border_right_2">#00000000</color>
-
-    <!--
-        <color name="transparent_button_border_top_2">#FF000000</color>
-        <color name="transparent_button_border_left_2">#FF000000</color>
-        <color name="transparent_button_border_bottom_2">#FF000000</color>
-        <color name="transparent_button_border_right_2">#FF000000</color>
-    -->
 
     <!--LightHeader-->
     <color name="light_header_back">#22f4f4f4</color>

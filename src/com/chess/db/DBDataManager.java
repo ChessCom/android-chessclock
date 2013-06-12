@@ -136,6 +136,11 @@ public class DBDataManager {
 			DBConstants.V_NAME
 	};
 
+	public static final String[] PROJECTION_USERNAME = new String[] {
+			DBConstants._ID,
+			DBConstants.V_USERNAME
+	};
+
 	public static final String[] PROJECTION_V_CATEGORY_ID = new String[] {
 			DBConstants._ID,
 			DBConstants.V_CATEGORY_ID

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/dailyNewOptionsView"
+    android:background="@color/white"
     >
 
     <!--Options-->
@@ -15,7 +16,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/default_scr_side_padding"
         android:paddingRight="8dip"
-        style="@style/ListItem"
+        style="@style/ListItem.Header.Light"
         android:gravity="center_vertical"
         >
 
@@ -24,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/options"
-            android:textColor="@color/new_light_grey"
+            android:textColor="@color/new_main_back"
             />
 
         <!--Right Icon-->
@@ -53,7 +54,7 @@
             android:layout_height="@dimen/list_item_image_size"
             android:text="@string/ic_vs_random"
             android:textColor="@color/new_light_grey_2"
-            style="@style/GlyphIcon"
+            style="@style/GlyphIcon.Square"
             android:background="@color/new_soft_grey2"
             android:padding="0dip"
             />
@@ -65,7 +66,7 @@
             android:layout_centerVertical="true"
             android:text="@string/vs_random_opponent"
             android:paddingLeft="12dip"
-            android:textColor="@color/semitransparent_white_65"
+            android:textColor="@color/new_main_back"
             />
 
         <com.chess.RoboButton
@@ -104,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Joachim"
-            android:textColor="@color/semitransparent_white_65"
+            android:textColor="@color/new_main_back"
             />
 
         <com.chess.RoboTextView
@@ -114,7 +115,7 @@
             android:layout_weight="1"
             android:paddingLeft="4dip"
             android:text="(Friend Name)"
-            android:textColor="@color/semitransparent_white_65"
+            android:textColor="@color/new_main_back"
             />
 
     </com.chess.LinLayout>
@@ -143,7 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Joachim"
-            android:textColor="@color/semitransparent_white_65"
+            android:textColor="@color/new_main_back"
             />
 
         <com.chess.RoboTextView
@@ -153,7 +154,7 @@
             android:layout_weight="1"
             android:paddingLeft="4dip"
             android:text="(Friend Name)"
-            android:textColor="@color/semitransparent_white_65"
+            android:textColor="@color/new_main_back"
             />
 
     </com.chess.LinLayout>
@@ -175,7 +176,7 @@
             android:layout_height="@dimen/list_item_image_size"
             android:text="@string/ic_play_friend"
             android:textColor="@color/new_light_grey_2"
-            style="@style/GlyphIcon"
+            style="@style/GlyphIcon.Square"
             android:background="@color/new_soft_grey2"
             android:padding="0dip"
             />
@@ -185,7 +186,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/challenge_friend"
-            android:textColor="@color/semitransparent_white_65"
+            android:textColor="@color/new_main_back"
             android:paddingLeft="12dip"
             />
 

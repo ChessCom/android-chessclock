@@ -360,13 +360,12 @@ message				false	Only used for `CHAT` command.
 
 			String name;
 			String value;
+			name = pair.getName();
 			try {
-				name = URLEncoder.encode(pair.getName(), HTTP.UTF_8);
 				value = URLEncoder.encode(pair.getValue(), HTTP.UTF_8);
 			} catch (UnsupportedEncodingException e) {
 				Log.e("TEST", "failed to encode url");
 				e.printStackTrace();
-				name = pair.getName();
 				value = pair.getValue();
 			}
 			encodedParams.append(name).append(EQUALS).append(value);

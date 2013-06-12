@@ -293,7 +293,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 	private class CountrySelectedListener implements PopupListSelectionFace {
 
 		@Override
-		public void valueSelected(int code) {
+		public void onValueSelected(int code) {
 			countriesFragment.dismiss();
 			countriesFragment = null;
 			String country = countryNames[code];
@@ -304,7 +304,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		}
 
 		@Override
-		public void dialogCanceled() {
+		public void onDialogCanceled() {
 			countriesFragment = null;
 		}
 	}
@@ -315,7 +315,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		private static final String JPEG_FILE_SUFFIX = ".jpg";
 
 		@Override
-		public void valueSelected(int code) {
+		public void onValueSelected(int code) {
 			photoSelectFragment.dismiss();
 			photoSelectFragment = null;
 			if (code == 0) {
@@ -362,7 +362,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		}
 
 		@Override
-		public void dialogCanceled() {
+		public void onDialogCanceled() {
 			photoSelectFragment = null;
 		}
 	}
@@ -404,7 +404,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 	}
 
 	@Override
-	public void valueSelected(int code) {
+	public void onValueSelected(int code) {
 		skillsFragment.dismiss();
 		skillsFragment = null;
 		updateSkillLevel(code);
@@ -423,7 +423,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 	}
 
 	@Override
-	public void dialogCanceled() {
+	public void onDialogCanceled() {
 		skillsFragment = null;
 	}
 

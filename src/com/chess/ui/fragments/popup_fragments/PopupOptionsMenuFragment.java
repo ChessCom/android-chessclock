@@ -60,13 +60,13 @@ public class PopupOptionsMenuFragment extends DialogFragment implements View.OnC
 		super.onCancel(dialog);
 
 		if (listener != null) {
-			listener.dialogCanceled();
+			listener.onDialogCanceled();
 		}
 	}
 
 	@Override
 	public void onClick(View v) {
-		listener.valueSelected((Integer) v.getTag(R.id.list_item_id));
+		listener.onValueSelected((Integer) v.getTag(R.id.list_item_id));
 	}
 
 	private class StringAdapter extends ItemsAdapter<String> {

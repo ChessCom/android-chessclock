@@ -70,11 +70,6 @@ public abstract class NewGameDefaultView extends LinearLayout implements View.On
 		onCreate();
 	}
 
-//	public NewGameDefaultView(Context context, AttributeSet attrs, int defStyle) {
-//		super(context, attrs, defStyle);
-//		onCreate();
-//	}
-
 	public void onCreate() {
 		setOrientation(VERTICAL);
 

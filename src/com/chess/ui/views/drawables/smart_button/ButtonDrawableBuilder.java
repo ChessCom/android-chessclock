@@ -35,6 +35,22 @@ public class ButtonDrawableBuilder {
 		return buttonDrawable;
 	}
 
+	private static ButtonGlassyDrawable setGlassyDefaults(Context context) {
+		Resources resources = context.getResources();
+		ButtonGlassyDrawable buttonDrawable = new ButtonGlassyDrawable();
+		buttonDrawable.isSolid = true;
+		buttonDrawable.useBorder = true;
+		buttonDrawable.usePressedLayer = false;
+		buttonDrawable.gradientAngle = TL_BR;
+		buttonDrawable.bevelLvl = 1;
+		buttonDrawable.bevelInset = DEFAULT_BEVEL_INSET;
+
+		buttonDrawable.radius = resources.getDimensionPixelSize(R.dimen.rounded_button_radius);
+		buttonDrawable.colorOuterBorder = resources.getColor(R.color.semi_transparent_border);
+
+		return buttonDrawable;
+	}
+
 	private static RectButtonDrawable setRectDefaults(Context context) {
 		Resources resources = context.getResources();
 		RectButtonDrawable buttonDrawable = new RectButtonDrawable();// TODO improve code - remove duplicates
@@ -68,17 +84,26 @@ public class ButtonDrawableBuilder {
 				return;
 			}
 			boolean isRect = false;
+			boolean isGlassy = false;
 			try {
 				if (!array.hasValue(R.styleable.RoboButton_btn_is_solid)) {
 					return;
 				}
 				isRect = array.getBoolean(R.styleable.RoboButton_btn_is_rect, false);
+				isGlassy = array.getBoolean(R.styleable.RoboButton_btn_is_glassy, false);
 			} finally {
 				array.recycle();
 			}
 
 			if (isRect) {
 				RectButtonDrawable background = new RectButtonDrawable(context, attrs);
+				if (AppUtils.JELLYBEAN_PLUS_API) {
+					view.setBackground(background);
+				} else {
+					view.setBackgroundDrawable(background);
+				}
+			} else if (isGlassy){
+				ButtonGlassyDrawable background = new ButtonGlassyDrawable(context, attrs);
 				if (AppUtils.JELLYBEAN_PLUS_API) {
 					view.setBackground(background);
 				} else {
@@ -133,7 +158,7 @@ public class ButtonDrawableBuilder {
 
 			return buttonDrawable;
 		} else if (styleId == R.style.Button_Glassy) {
-			ButtonDrawable buttonDrawable = setDefaults(context);
+			ButtonGlassyDrawable buttonDrawable = setGlassyDefaults(context);
 			createGlassy(buttonDrawable, resources);
 
 			return buttonDrawable;
@@ -200,13 +225,19 @@ public class ButtonDrawableBuilder {
 		} else if (styleId == R.style.ListItem_Header) {
 			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
 			rectButtonDrawable.rectPosition = LIST_ITEM;
-			createRect(rectButtonDrawable, resources, R.color.glassy_button);
+			createRect(rectButtonDrawable, resources, R.color.glassy_header);
 
 			return rectButtonDrawable;
 		} else if (styleId == R.style.ListItem_Header_Light) {
 			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
 			rectButtonDrawable.rectPosition = LIST_ITEM;
 			createRect(rectButtonDrawable, resources, R.color.header_light);
+
+			return rectButtonDrawable;
+		} else if (styleId == R.style.ListItem_Header_Dark) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = LIST_ITEM;
+			createRect(rectButtonDrawable, resources, R.color.header_dark);
 
 			return rectButtonDrawable;
 		} else if (styleId == R.style.Rect_Bottom_Right_Orange) {
@@ -342,9 +373,10 @@ public class ButtonDrawableBuilder {
 		buttonDrawable.init(resources);
 	}
 
-	private static void createGlassy(ButtonDrawable buttonDrawable, Resources resources) {
+	private static void createGlassy(ButtonGlassyDrawable buttonDrawable, Resources resources) {
 		buttonDrawable.isGlassy = true;
 		buttonDrawable.useBorder = false;
+		buttonDrawable.usePressedLayer = true;
 		buttonDrawable.gradientAngle = LEFT_RIGHT;
 
 		// Colors for bevel
@@ -353,7 +385,9 @@ public class ButtonDrawableBuilder {
 		buttonDrawable.colorRight = resources.getColor(R.color.transparent_button_border_right);
 		buttonDrawable.colorBottom = resources.getColor(R.color.transparent_button_border_bottom);
 		// Button colors
-		buttonDrawable.colorSolid = resources.getColor(R.color.glassy_button);
+		buttonDrawable.colorSolid = resources.getColor(R.color.glassy_button_1);
+		buttonDrawable.colorSolidP = resources.getColor(R.color.glassy_button_p);
+		buttonDrawable.colorSolidS = resources.getColor(R.color.glassy_button_s);
 
 		buttonDrawable.colorGradientStart = resources.getColor(R.color.transparent_button_border_left);
 		buttonDrawable.colorGradientEnd = resources.getColor(R.color.transparent_button_border_top);

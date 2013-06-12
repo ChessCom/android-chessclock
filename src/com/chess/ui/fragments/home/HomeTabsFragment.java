@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.GetAndSaveFriends;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.LoadItem;
@@ -46,6 +48,10 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		super.onCreate(savedInstanceState);
 
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
+
+		if (!DBDataManager.haveSavedFriends(getActivity())) {
+			getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class)); // TODO adjust properly
+		}
 	}
 
 	@Override

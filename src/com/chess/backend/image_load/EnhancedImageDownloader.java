@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,7 +32,8 @@ import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EnhancedImageDownloader {
-    private static final String LOG_TAG = "EnhancedImageDownloader";
+	private static final String LOG_TAG = "EnhancedImageDownloader";
+	public static final String HTTP_PREFIX = "http:";
 	private final Context context;
 	private int imgSize;
 
@@ -70,7 +72,7 @@ public class EnhancedImageDownloader {
 	 */
     public void download(String url, ProgressImageView holder, int imgSize) {
 		this.imgSize = imgSize;
-		if (url == null) {
+		if (TextUtils.isEmpty(url)) {
 			Log.e(LOG_TAG, " passed url is null. Don't start loading");
 			return;
 		}
@@ -346,7 +348,11 @@ public class EnhancedImageDownloader {
                 : AndroidHttpClient.newInstance("Android");
         url = url.replace(" ", "%20");
 //        url = url.replace("https", "http");
-        final HttpGet getRequest = new HttpGet(url);
+		if (!url.startsWith(HTTP_PREFIX)) {
+			url = EnhancedImageDownloader.HTTP_PREFIX + url;
+		}
+
+		final HttpGet getRequest = new HttpGet(url);
 
         try {
 			if (RestHelper.IS_TEST_SERVER_MODE) {

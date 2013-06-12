@@ -8,7 +8,7 @@ package com.chess.ui.interfaces;
  */
 public interface PopupListSelectionFace {
 
-	void valueSelected(int code);
+	void onValueSelected(int code);
 
-	void dialogCanceled();
+	void onDialogCanceled();
 }

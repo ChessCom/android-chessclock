@@ -79,13 +79,13 @@ public class PopupCountriesFragment extends DialogFragment implements AdapterVie
 		super.onCancel(dialog);
 
 		if (listener != null) {
-			listener.dialogCanceled();
+			listener.onDialogCanceled();
 		}
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		listener.valueSelected(position);
+		listener.onValueSelected(position);
 	}
 
 	private class CountriesLoadListener extends AbstractUpdateListener<CountryItem> {

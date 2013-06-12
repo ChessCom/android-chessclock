@@ -4,6 +4,6 @@
     <item android:color="@color/controls_icon_s" android:state_selected="true" />
     <item android:color="@color/controls_icon_d" android:state_enabled="false" />
     <item android:color="@color/controls_icon_p" android:state_pressed="true" />
-    <item android:color="@color/controls_icon" />
+    <item android:color="@color/stats_label_grey" />
 </selector>
 

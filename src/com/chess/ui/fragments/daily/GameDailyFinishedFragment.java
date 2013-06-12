@@ -215,7 +215,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	}
 
 	@Override
-	public void valueSelected(int code) {
+	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
 			getActivityFace().openFragment(new CompGameSetupFragment());
 		} else if (code == ID_OFFER_DRAW) {
@@ -233,7 +233,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	}
 
 	@Override
-	public void dialogCanceled() {
+	public void onDialogCanceled() {
 		optionsSelectFragment = null;
 	}
 
@@ -944,9 +944,9 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
-		if (AppUtils.isNeedToUpgrade(getActivity())) {
-			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-		}
+//		if (AppUtils.isNeedToUpgrade(getActivity())) {
+//			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+//		}
 	}
 
 	private int getCurrentPlayerRating() {

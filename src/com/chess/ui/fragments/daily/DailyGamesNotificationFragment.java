@@ -90,7 +90,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// init adapters
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_light);
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark);
 
 		challengesGamesAdapter = new DailyChallengesGamesAdapter(this, null);
 		currentGamesMyCursorAdapter = new DailyCurrentGamesMyCursorRightAdapter(getContext(), null);

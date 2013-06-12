@@ -16,8 +16,6 @@ import com.chess.db.tasks.SaveUserStatsTask;
  */
 public class GetAndSaveUserStats extends IntentService {
 
-	private static final String TAG = "GetAndSaveUserStats";
-
 	public GetAndSaveUserStats() {
 		super("GetAndSaveUserStats");
 	}
@@ -43,8 +41,5 @@ public class GetAndSaveUserStats extends IntentService {
 			SaveUserStatsTask.saveTacticsStats(userName, item.getData(), getContentResolver());
 			SaveUserStatsTask.saveChessMentorStats(userName, item.getData(), getContentResolver());
 		}
-
 	}
-
-
 }

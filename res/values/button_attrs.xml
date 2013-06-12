@@ -43,6 +43,7 @@
         <attr name="btn_right_2_p" format="reference|color" />
         <attr name="btn_bottom_2_p" format="reference|color" />
 
+        <!--Pressed-->
         <attr name="btn_solid_p" format="reference|color" /> <!--Button main solid pressed-->
         <attr name="btn_gradient_start_p" format="reference|color" /> <!--Button main gradient-->
         <attr name="btn_gradient_center_p" format="reference|color" />
@@ -58,6 +59,10 @@
         <attr name="btn_gradient_start_d" format="reference|color" /> <!--Button main gradient-->
         <attr name="btn_gradient_center_d" format="reference|color" />
         <attr name="btn_gradient_end_d" format="reference|color" />
+
+        <!--Selected-->
+        <attr name="btn_solid_s" format="reference|color" /> <!--Button main solid pressed-->
+
 
         <attr name="btn_gradient_angle">
             <enum name="TOP_BOTTOM" value="0"/>

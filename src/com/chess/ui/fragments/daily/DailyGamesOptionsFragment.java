@@ -1,29 +1,34 @@
 package com.chess.ui.fragments.daily;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.GridView;
-import android.widget.SeekBar;
-import android.widget.TextView;
+import android.widget.*;
 import com.chess.*;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.DailySeekItem;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DBConstants;
+import com.chess.db.DBDataManager;
+import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ItemsAdapter;
-import com.chess.ui.engine.configs.NewDailyGameConfig;
+import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.NewGameDailyView;
 import com.chess.ui.views.NewGameDefaultView;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
+import com.chess.ui.views.drawables.smart_button.ButtonGlassyDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +39,7 @@ import java.util.List;
  * Date: 24.04.13
  * Time: 14:26
  */
-public class DailyGamesOptionsFragment extends CommonLogicFragment implements ItemClickListenerFace {
+public class DailyGamesOptionsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemSelectedListener {
 
 	private static final String ERROR_TAG = "send request failed popup";
 
@@ -44,20 +49,37 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 	private final static int DAILY_LEFT_BUTTON_ID = DAILY_BASE_ID + NewGameDefaultView.LEFT_BUTTON_ID;
 	private final static int DAILY_PLAY_BUTTON_ID = DAILY_BASE_ID + NewGameDefaultView.PLAY_BUTTON_ID;
 
-	private NewDailyGamesButtonsAdapter newDailyGamesButtonsAdapter;
-	private NewDailyGameConfig.Builder gameConfigBuilder;
+	private DailyGamesButtonsAdapter dailyGamesButtonsAdapter;
+	private DailyGameConfig.Builder gameConfigBuilder;
 	private RoboRadioButton minRatingBtn;
 	private RoboRadioButton maxRatingBtn;
 	private SwitchButton ratedGameSwitch;
 
-//	private NewGameDailyView dailyGamesSetupView;
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
+	private List<SelectionItem> firendsList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		gameConfigBuilder = new NewDailyGameConfig.Builder();
+		gameConfigBuilder = new DailyGameConfig.Builder();
+
+		{ // load friends from DB          // TODO make it async and fill in popup
+			final String[] arguments1 = new String[1];
+			arguments1[0] = AppData.getUserName(getActivity());
+			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.FRIENDS],
+					DBDataManager.PROJECTION_USERNAME, DBDataManager.SELECTION_USER, arguments1, null);
+
+			firendsList = new ArrayList<SelectionItem>();
+			firendsList.add(new SelectionItem(null, "Random"));
+			if (cursor.moveToFirst()) {
+				do{
+					firendsList.add(new SelectionItem(null, DBDataManager.getString(cursor, DBConstants.V_USERNAME)));
+				}while (cursor.moveToNext());
+			}
+
+			firendsList.get(0).setChecked(true);
+		}
 	}
 
 	@Override
@@ -70,6 +92,16 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		super.onViewCreated(view, savedInstanceState);
 
 		view.findViewById(R.id.dailyHeaderView).setOnClickListener(this);
+//		opponentNameTxt = (TextView) view.findViewById(R.id.opponentNameTxt);
+
+		RoboSpinner opponentSpinner = (RoboSpinner) view.findViewById(R.id.opponentSpinner);
+		Resources resources = getResources();
+
+		OpponentsAdapter selectionAdapter = new OpponentsAdapter(getActivity(), firendsList);
+		opponentSpinner.setAdapter(selectionAdapter);
+		opponentSpinner.setOnItemSelectedListener(this);
+
+		opponentSpinner.setSelection(0);
 
 		{// Daily Games setup
 			NewGameDefaultView.ViewConfig dailyConfig = new NewGameDefaultView.ViewConfig();
@@ -77,10 +109,6 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 			dailyConfig.setHeaderIcon(R.string.ic_daily_game);
 			dailyConfig.setHeaderText(R.string.new_daily_chess);
 			dailyConfig.setTitleText(R.string.new_per_turn);
-			// set default value
-			{// TODO remove after debug - we set here a test value
-				AppData.setDefaultDailyMode(getActivity(), 3);
-			}
 			int defaultDailyMode = AppData.getDefaultDailyMode(getActivity());
 			dailyConfig.setLeftButtonText(getString(R.string.days_arg, defaultDailyMode));
 			dailyConfig.setRightButtonTextId(R.string.random);
@@ -88,25 +116,24 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 
 		{// options setup
 			{// Mode adapter init
-				int[] newGameButtonsArray = getResources().getIntArray(R.array.days_per_move_array);
-				List<NewDailyGameButtonItem> newGameButtonItems = new ArrayList<NewDailyGameButtonItem>();
+				int[] newGameButtonsArray = resources.getIntArray(R.array.days_per_move_array);
+				List<DailyGameButtonItem> newGameButtonItems = new ArrayList<DailyGameButtonItem>();
 				for (int label : newGameButtonsArray) {
-					newGameButtonItems.add(NewDailyGameButtonItem.createNewButtonFromLabel(label, getContext()));
+					newGameButtonItems.add(new DailyGameButtonItem(label, getContext()));
 				}
+				int dailyMode = AppData.getDefaultDailyMode(getActivity());
+				newGameButtonItems.get(dailyMode).checked = true;
 
 				GridView gridView = (GridView) view.findViewById(R.id.dailyGamesModeGrid);
-				newDailyGamesButtonsAdapter = new NewDailyGamesButtonsAdapter(this, newGameButtonItems);
-				gridView.setAdapter(newDailyGamesButtonsAdapter);
-				newDailyGamesButtonsAdapter.checkButton(0);
-				// set value to builder
-				gameConfigBuilder.setDaysPerMove(newDailyGamesButtonsAdapter.getItem(0).days);
+				dailyGamesButtonsAdapter = new DailyGamesButtonsAdapter(this, newGameButtonItems);
+				gridView.setAdapter(dailyGamesButtonsAdapter);
 			}
 
-			EditButtonSpinner opponentEditBtn = (EditButtonSpinner) view.findViewById(R.id.opponentEditBtn);
-			opponentEditBtn.addOnClickListener(this);
+//			EditButtonSpinner opponentEditBtn = (EditButtonSpinner) view.findViewById(R.id.opponentEditBtn);
+//			opponentEditBtn.addOnClickListener(this);
 
-			EditButtonSpinner myColorEditBtn = (EditButtonSpinner) view.findViewById(R.id.myColorEditBtn);
-			myColorEditBtn.addOnClickListener(this);
+//			EditButtonSpinner myColorEditBtn = (EditButtonSpinner) view.findViewById(R.id.myColorEditBtn);
+//			myColorEditBtn.addOnClickListener(this);
 
 			// rated games switch
 			ratedGameSwitch = (SwitchButton) view.findViewById(R.id.ratedGameSwitch);
@@ -131,24 +158,27 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 				// TODO adjust progress drawable
 				ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingBar));
 			}
-
 			view.findViewById(R.id.playBtn).setOnClickListener(this);
-
 		}
-
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
+	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		updateDailyMode(AppData.getDefaultDailyMode(getActivity()));
 	}
 
 	private void createDailyChallenge() {
 		// create challenge using formed configuration
-		NewDailyGameConfig newDailyGameConfig = getNewDailyGameConfig();
+		DailyGameConfig dailyGameConfig = getDailyGameConfig();
 
-		int color = newDailyGameConfig.getUserColor();
-		int days = newDailyGameConfig.getDaysPerMove();
-		int gameType = newDailyGameConfig.getGameType();
-		String isRated = newDailyGameConfig.isRated() ? RestHelper.V_TRUE : RestHelper.V_FALSE;
-		String opponentName = newDailyGameConfig.getOpponentName();
+		int color = dailyGameConfig.getUserColor();
+		int days = dailyGameConfig.getDaysPerMove();
+		int gameType = dailyGameConfig.getGameType();
+		String isRated = dailyGameConfig.isRated() ? RestHelper.V_TRUE : RestHelper.V_FALSE;
+		String opponentName = dailyGameConfig.getOpponentName();
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
@@ -169,6 +199,29 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 	public Context getMeContext() {
 		return getActivity();
 	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+	    updateDailyMode(AppData.getDefaultDailyMode(getActivity()));
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+
+	}
+
+	private void updateDailyMode(final int position) {
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				dailyGamesButtonsAdapter.checkButton(position);
+				// set value to builder
+				gameConfigBuilder.setDaysPerMove(dailyGamesButtonsAdapter.getItem(position).days);
+			}
+		}, 250);
+	}
+
 
 	private class CreateChallengeUpdateListener extends ChessUpdateListener<DailySeekItem> {
 
@@ -245,71 +298,76 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 	};
 
 
-	private static class NewDailyGameButtonItem {
+	private class DailyGameButtonItem {
 		public boolean checked;
 		public int days;
 		public String label;
 
-		static NewDailyGameButtonItem createNewButtonFromLabel(int label, Context context){
-			NewDailyGameButtonItem buttonItem = new NewDailyGameButtonItem();
-
-			buttonItem.days = label;
-			buttonItem.label = context.getString(R.string.days_arg, label);
-			return buttonItem;
+		DailyGameButtonItem(int label, Context context){
+			this.days = label;
+			this.label = context.getString(R.string.days_arg, label);
 		}
 	}
 
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
-		if (view.getId() == NewDailyGamesButtonsAdapter.BUTTON_ID) {
+		if (view.getId() == DailyGamesButtonsAdapter.BUTTON_ID) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
-
-			newDailyGamesButtonsAdapter.checkButton(position);
-			// set value to builder
-			gameConfigBuilder.setDaysPerMove(newDailyGamesButtonsAdapter.getItem(position).days);
-		} else if (view.getId() == R.id.opponentEditBtn){
-			Log.d("TEST", "opponentEditBtn clicked");
-		} else if (view.getId() == R.id.myColorEditBtn){
+			updateDailyMode(position);
+			AppData.setDefaultDailyMode(getActivity(), position);
+		} else if (view.getId() == R.id.myColorBtn){
 		} else if (view.getId() == R.id.minRatingBtn){
 		} else if (view.getId() == R.id.maxRatingBtn){
 		} else if (view.getId() == R.id.dailyHeaderView){
 			getActivityFace().toggleRightMenu();
 		} else if (view.getId() == R.id.playBtn){
-			Log.d("TEST", "myColorEditBtn clicked");
-
+			createDailyChallenge();
 		}
-
-
 	}
 
-	private class NewDailyGamesButtonsAdapter extends ItemsAdapter<NewDailyGameButtonItem> {
+	private class DailyGamesButtonsAdapter extends ItemsAdapter<DailyGameButtonItem> {
 
 		private ItemClickListenerFace clickListenerFace;
 		public static final int BUTTON_ID = 0x00001234;
+		private ColorStateList textColor;
 
-		public NewDailyGamesButtonsAdapter(ItemClickListenerFace clickListenerFace, List<NewDailyGameButtonItem> itemList) {
+		public DailyGamesButtonsAdapter(ItemClickListenerFace clickListenerFace, List<DailyGameButtonItem> itemList) {
 			super(clickListenerFace.getMeContext(), itemList);
 			this.clickListenerFace = clickListenerFace;
+
+			textColor = getResources().getColorStateList(R.color.text_controls_icons);
 		}
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			RoboToggleButton view = new RoboToggleButton(getContext(), null, R.attr.greyButtonSmallSolid);
-			view.setId(BUTTON_ID);
-			view.setOnClickListener(clickListenerFace);
-			return view;
+			RoboButton button = new RoboButton(getContext(), null, R.attr.greyButtonSmallSolid);
+			button.setId(BUTTON_ID);
+			button.setMinimumWidth(getResources().getDimensionPixelSize(R.dimen.new_daily_grid_button_width));
+			button.setDrawableStyle(R.style.Button_Glassy);
+			button.setTextColor(textColor);
+			button.setOnClickListener(clickListenerFace);
+			return button;
 		}
 
 		@Override
-		protected void bindView(NewDailyGameButtonItem item, int pos, View convertView) {
-			((RoboToggleButton)convertView).setText(item.label);
-			((RoboToggleButton)convertView).setChecked(item.checked);
+		protected void bindView(DailyGameButtonItem item, int pos, View convertView) {
 			convertView.setTag(itemListId, pos);
+
+			((RoboButton)convertView).setText(item.label);
+
+			Drawable background = convertView.getBackground();
+			if (item.checked) {
+				((RoboButton)convertView).setTextColor(Color.WHITE);
+				background.mutate().setState(ButtonGlassyDrawable.STATE_SELECTED);
+			} else {
+				((RoboButton)convertView).setTextColor(textColor);
+				background.mutate().setState(ButtonGlassyDrawable.STATE_ENABLED);
+			}
 		}
 
 		public void checkButton(int checkedPosition){
-			for (NewDailyGameButtonItem item : itemsList) {
+			for (DailyGameButtonItem item : itemsList) {
 				item.checked = false;
 			}
 
@@ -318,10 +376,60 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		}
 	}
 
-	public NewDailyGameConfig getNewDailyGameConfig(){
+	public DailyGameConfig getDailyGameConfig(){
 		// set params
 		gameConfigBuilder.setRated(ratedGameSwitch.isChecked());
 
 		return gameConfigBuilder.build();
+	}
+
+	public class OpponentsAdapter extends ItemsAdapter<SelectionItem> {
+
+		public OpponentsAdapter(Context context, List<SelectionItem> items) {
+			super(context, items);
+		}
+
+		@Override
+		protected View createView(ViewGroup parent) {
+			View view = inflater.inflate(R.layout.new_game_opponent_spinner_item, parent, false);
+			ViewHolder holder = new ViewHolder();
+			holder.textTxt = (TextView) view.findViewById(R.id.opponentNameTxt);
+
+			view.setTag(holder);
+			return view;
+		}
+
+		@Override
+		protected void bindView(SelectionItem item, int pos, View convertView) {
+			ViewHolder holder = (ViewHolder) convertView.getTag();
+			holder.textTxt.setText(item.getText());
+		}
+
+		@Override
+		public View getDropDownView(int position, View convertView, ViewGroup parent) {
+			DropViewHolder holder = new DropViewHolder();
+			if (convertView == null) {
+				convertView = inflater.inflate(android.R.layout.simple_list_item_single_choice, parent, false);
+				holder.textTxt = (TextView) convertView.findViewById(android.R.id.text1);
+
+				convertView.setTag(holder);
+			} else {
+				holder = (DropViewHolder) convertView.getTag();
+			}
+
+			holder.textTxt.setTextColor(context.getResources().getColor(R.color.black));
+			holder.textTxt.setText(itemsList.get(position).getText());
+
+			return convertView;
+		}
+
+		private class ViewHolder {
+			TextView textTxt;
+		}
+
+		private class DropViewHolder {
+			TextView textTxt;
+		}
+
 	}
 }

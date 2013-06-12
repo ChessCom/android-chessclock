@@ -69,7 +69,7 @@
     <dimen name="glyph_icon_padding">8dip</dimen>
     <dimen name="glyph_icon_big">30dip</dimen>
     <dimen name="glyph_icon_round_back">30dip</dimen>
-    <dimen name="glyph_icon_default">24dip</dimen>
+    <dimen name="glyph_icon_default">28dip</dimen>
     <dimen name="glyph_icon_small">20dip</dimen>
 
 

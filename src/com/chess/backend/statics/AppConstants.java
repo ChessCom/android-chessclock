@@ -29,7 +29,6 @@ public class AppConstants {
 	public static final String LOCATION = "location";
 	public static final String USERNAME = "username";
 	public static final String PASSWORD = "password";
-	public static final String USER_ID = "user_id";
 //	public static final String API_VERSION = "api_version";
 	public static final String PREF_COMPUTER_DELAY = "computer think delay";
 	public static final String PREF_COMPUTER_MODE = "vs computer game mode";

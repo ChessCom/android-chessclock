@@ -186,13 +186,13 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		}
 		if (fragmentByTag != null) {
 		getActivityFace().openFragment(fragmentByTag);
-//		handler.postDelayed(new Runnable() {
-//			@Override
-//			public void run() {
-//				getActivityFace().toggleLeftMenu();
-//			}
-//		}, SIDE_MENU_DELAY);
-			getActivityFace().toggleLeftMenu();
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				getActivityFace().toggleLeftMenu();
+			}
+		}, SIDE_MENU_DELAY);
+//			getActivityFace().toggleLeftMenu();
 		}
 
 	}

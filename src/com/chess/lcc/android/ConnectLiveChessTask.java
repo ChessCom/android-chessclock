@@ -1,4 +1,4 @@
-package com.chess.backend.tasks;
+package com.chess.lcc.android;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -6,7 +6,7 @@ import android.os.Build;
 import android.util.Log;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
-import com.chess.lcc.android.LccHelper;
+import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.live.client.ClientFeature;
 import com.chess.live.client.LiveChessClient;
 import com.chess.live.client.LiveChessClientException;

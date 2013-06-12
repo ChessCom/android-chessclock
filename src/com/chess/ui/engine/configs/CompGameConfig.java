@@ -8,7 +8,7 @@ import com.chess.backend.statics.AppConstants;
  * Date: 14.04.13
  * Time: 20:05
  */
-public class NewCompGameConfig {
+public class CompGameConfig {
 	private int compDelay;
 	private int mode;
 
@@ -34,12 +34,12 @@ public class NewCompGameConfig {
 			return this;
 		}
 
-		public NewCompGameConfig build(){
-			return new NewCompGameConfig(this);
+		public CompGameConfig build(){
+			return new CompGameConfig(this);
 		}
 	}
 
-	private NewCompGameConfig(Builder builder) {
+	private CompGameConfig(Builder builder) {
 		this.compDelay = builder.compDelay;
 		this.mode = builder.mode;
 	}

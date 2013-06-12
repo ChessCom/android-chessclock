@@ -168,7 +168,7 @@
                 android:layout_height="@dimen/list_item_image_size"
                 android:text="@string/ic_vs_random"
                 android:textColor="@color/new_light_grey_2"
-                style="@style/GlyphIcon"
+                style="@style/GlyphIcon.Square"
                 android:background="@color/new_soft_grey2"
                 android:padding="0dip"
                 />
@@ -291,7 +291,7 @@
                 android:layout_height="@dimen/list_item_image_size"
                 android:text="@string/ic_play_friend"
                 android:textColor="@color/new_light_grey_2"
-                style="@style/GlyphIcon"
+                style="@style/GlyphIcon.Square"
                 android:background="@color/new_soft_grey2"
                 android:padding="0dip"
                 />

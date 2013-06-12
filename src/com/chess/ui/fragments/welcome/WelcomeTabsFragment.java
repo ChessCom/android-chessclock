@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.ui.engine.configs.NewCompGameConfig;
+import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.WelcomeTabsFace;
 
@@ -32,13 +32,13 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements WelcomeT
 	private View leftTabBtn;
 	private View rightTabBtn;
 	private boolean openWelcomeFragment;
-	private NewCompGameConfig config;
+	private CompGameConfig config;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		config = new NewCompGameConfig.Builder().build();
+		config = new CompGameConfig.Builder().build();
 
 		changeInternalFragment(WelcomeGameCompFragment.createInstance(this, config));
 	}

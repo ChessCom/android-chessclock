@@ -890,9 +890,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.shareBtn).setOnClickListener(this);
 
-		if (AppUtils.isNeedToUpgrade(getActivity())) {
-			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-		}
+//		if (AppUtils.isNeedToUpgrade(getActivity())) {
+//			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+//		}
 	}
 
 

@@ -53,6 +53,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	public static final String DIAMOND_MONTHLY = "diamond_monthly";
 	public static final String DIAMOND_YEARLY = "diamond_yearly";
 	private static final int HASH_LENGTH = 88;
+	public static final String PARAMS_DIVIDER = "||";
 
 	private boolean isGoldMonthPayed;
 	private boolean isGoldYearPayed;
@@ -85,6 +86,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private PayloadItem.Data payloadData;
 	private GetDetailsListener detailsListener;
 	private GetPayloadListener getPayloadListener;
+	private String username;
 
 	public static UpgradeDetailsFragment newInstance(int code) {
 		UpgradeDetailsFragment frag = new UpgradeDetailsFragment();
@@ -101,6 +103,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		detailsListener = new GetDetailsListener();
 		getPayloadListener = new GetPayloadListener();
 
+		username = AppData.getUserName(getActivity());
 		// get key from server
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_KEY);
@@ -244,7 +247,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 		yearLabelTxt.setTextColor(planConfig.subTitleColor);
 		yearCheckBox.setButtonDrawable(planConfig.checkBoxDrawableId);
-		yearCheckBox.setEnabled(!planConfig.isYearPayed());
+//		yearCheckBox.setEnabled(!planConfig.isYearPayed());  // TODO add auto toggle if another checkbox is disabled
 
 		setPlanBtn.setDrawableStyle(planConfig.buttonStyleId);
 		descriptionView.setBackgroundResource(planConfig.descriptionBackId);
@@ -534,7 +537,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				}
 			} else {
 				super.errorHandle(resultCode);
-
 			}
 		}
 	}
@@ -544,7 +546,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_PAYLOAD);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
 		loadItem.addRequestParams(RestHelper.P_PRODUCT_SKU, itemId);
-		loadItem.addRequestParams(RestHelper.P_RELOAD, RestHelper.V_FALSE);
+		loadItem.addRequestParams(RestHelper.P_RELOAD, RestHelper.V_TRUE);
 
 		new RequestJsonTask<PayloadItem>(new GetPayloadListener1(itemId)).executeTask(loadItem);
 	}
@@ -570,9 +572,41 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 			payloadData = returnedObj.getData();
 
+			// cut previous additional params // TODO shouldn't be in prod
+			String usernameEncoded = Base64.encode((username + PARAMS_DIVIDER + itemId).getBytes());
+
+			String load = payloadData.getPayload().substring(0, HASH_LENGTH);
+
+			String purchasePayload = load + usernameEncoded;
+
+			{// Test part // TODO remove after tests
+				String serverPayLoad = payloadData.getPayload();
+				String userNameSku = purchasePayload.substring(HASH_LENGTH);
+				String purchasePayload1 = purchasePayload.substring(0, HASH_LENGTH);
+				String serverPayLoad1 = serverPayLoad.substring(0, HASH_LENGTH);
+				try {
+					byte[] decode = Base64.decode(userNameSku);
+					userNameSku = new String(decode, "UTF-8");
+				} catch (Base64DecoderException e) {
+					e.printStackTrace();
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+
+				String[] purchaseParams = userNameSku.split("[||]");
+				if (purchaseParams.length == 3) {
+					String purchaseUserName = purchaseParams[0];
+					String purchaseSku = purchaseParams[2];
+					logTest(purchaseUserName);
+					logTest(purchaseSku);
+				}
+
+				logTest(purchasePayload1);
+				logTest(serverPayLoad1);
+			}
 			setWaitScreen(true);
 			mHelper.launchPurchaseFlow(getActivity(), itemId, IabHelper.ITEM_TYPE_SUBS,
-					RC_REQUEST, new PurchaseFinishedListener(), payloadData.getPayload());
+					RC_REQUEST, new PurchaseFinishedListener(), purchasePayload);
 		}
 
 		@Override
@@ -616,7 +650,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 			if (!verifyDeveloperPayload(purchase)) {
 				showSinglePopupDialog("Authenticity verification failed.");
-				logTest("oops - user =" + AppData.getUserName(getActivity())
+				logTest("oops - user =" + username
 						+ " order = " + purchase.getSku() + "payload = " + purchase.getDeveloperPayload()
 						+ " real payload = " + payloadData.getPayload());
 				return;
@@ -653,13 +687,12 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		if (payloadData == null) {
 			return false;
 		}
-		//
+		// disassemble purchase data and compare every field
 		String sku = purchase.getSku();
-		String userName = AppData.getUserName(getActivity());
 		String serverPayLoad = payloadData.getPayload();
 		String userNameSku = purchasePayload.substring(HASH_LENGTH);
 		purchasePayload = purchasePayload.substring(0, HASH_LENGTH);
-		serverPayLoad= serverPayLoad.substring(0, HASH_LENGTH);
+		serverPayLoad = serverPayLoad.substring(0, HASH_LENGTH);
 		try {
 			byte[] decode = Base64.decode(userNameSku);
 			userNameSku = new String(decode, "UTF-8");
@@ -673,7 +706,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		if (purchaseParams.length == 3) {
 			String purchaseUserName = purchaseParams[0];
 			String purchaseSku = purchaseParams[2];
-			return serverPayLoad.equals(purchasePayload) && purchaseUserName.equals(userName) && purchaseSku.equals(sku);
+			return serverPayLoad.equals(purchasePayload) && purchaseUserName.equals(username) && purchaseSku.equals(sku);
 		} else {
 			return false;
 		}

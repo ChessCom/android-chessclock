@@ -5,7 +5,6 @@
     <style name="ActionBarCompatBackground" parent="ActionBarCompat">
 
     </style>
-    
 
 	<style name="Text" parent="@android:style/TextAppearance.Small">
 		<item name="android:textSize">14sp</item>
@@ -51,6 +50,11 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/glyph_icon_default</item>
         <item name="ttf">Icon</item>
+
+        <!--No Shadow-->
+        <item name="android:shadowRadius">0</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
     </style>
 
     <style name="GlyphIcon.Small">
@@ -58,6 +62,11 @@
     </style>
 
     <style name="GlyphIcon.Big">
+        <item name="android:textSize">@dimen/glyph_icon_big</item>
+    </style>
+
+    <style name="GlyphIcon.Square">
+        <item name="android:padding">3dip</item>
         <item name="android:textSize">@dimen/glyph_icon_big</item>
     </style>
 
@@ -79,6 +88,12 @@
         <item name="android:shadowDx">0</item>
         <item name="android:shadowDy">1.0</item>
     </style>
+
+    <style name="RightIcon" parent="GlyphIcon.Small">
+        <item name="android:text">@string/ic_right</item>
+        <item name="android:textColor">@color/new_light_grey_2</item>
+    </style>
+
 
     <style name="HeaderTitle">
         <item name="android:textSize">@dimen/header_title_size</item>
@@ -226,10 +241,7 @@
     </style>
 
     <style name="RatingSeekBar" parent="android:style/Widget.SeekBar">
-        <item name="android:progressDrawable">@drawable/progress_horizontal</item>
-        <!--<item name="android:progressDrawable">@drawable/progress_seek_temp</item>-->
-        <!--<item name="android:progressDrawable">@drawable/empty</item>-->
-        <item name="android:indeterminateDrawable">@drawable/empty</item>
+         <item name="android:indeterminateDrawable">@drawable/empty</item>
         <item name="android:thumb">@drawable/seek_thumb_selector</item>
         <item name="android:thumbOffset">8dip</item>
         <item name="android:paddingLeft">7dip</item>
@@ -367,16 +379,17 @@
         <item name="switchHandle">@drawable/button_switch_dark_handle_selector</item>
         <item name="switchHandleWidth">42</item>
         <item name="switchHandleHeight">22</item>
-        <item name="switchHandleShift">-40.0</item>
+        <item name="switchHandleShift">-36.0</item>
+        <item name="switchHandleMargin">2.5</item>
         <item name="switchTextShift">40.0</item>
-        <item name="switchTextSize">12sp</item>
-        <item name="switchTextColorOn">@color/new_normal_grey</item>
-        <item name="switchTextColorOff">@color/new_normal_grey</item>
+        <item name="switchTextSize">10sp</item>
+        <item name="switchTextColorOn">@color/new_square_button_p</item>
+        <item name="switchTextColorOff">@color/new_square_button_p</item>
         <item name="switchTextOn">@string/yes</item>
         <item name="switchTextOff">@string/no</item>
-        <item name="switchTextFont">Neue</item>
+        <item name="switchTextFont">Bold</item>
         <item name="switchTextLeftPadding">13</item>
-        <item name="switchTextUseShadow">false</item>
+        <item name="switchTextUseShadow">true</item>
         <item name="android:layout_width">@dimen/button_switch_dark_width</item>
         <item name="android:layout_height">@dimen/button_switch_dark_height</item>
     </style>
@@ -388,6 +401,7 @@
         <item name="switchHandleWidth">26</item>
         <item name="switchHandleHeight">26</item>
         <item name="switchHandleShift">-51.0</item>
+        <item name="switchHandleMargin">0</item>
         <item name="switchTextShift">21.0</item>
         <item name="switchTextSize">16sp</item>
         <item name="switchTextColorOn">@color/white</item>

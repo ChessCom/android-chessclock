@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.*;
 import com.chess.ui.adapters.ItemsAdapter;
-import com.chess.ui.engine.configs.NewDailyGameConfig;
+import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
@@ -36,7 +36,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 	private RoboTextView vsText;
 	private EditButton rightButton;
 	private NewDailyGamesButtonsAdapter newDailyGamesButtonsAdapter;
-	private NewDailyGameConfig.Builder gameConfigBuilder;
+	private DailyGameConfig.Builder gameConfigBuilder;
 	private float minButtonHeight;
 	private RoboRadioButton minRatingBtn;
 	private RoboRadioButton maxRatingBtn;
@@ -51,14 +51,10 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		super(context, attrs);
 	}
 
-//	public NewGameDailyView(Context context, AttributeSet attrs, int defStyle) {
-//		super(context, attrs, defStyle);
-//	}
-
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		gameConfigBuilder = new NewDailyGameConfig.Builder();
+		gameConfigBuilder = new DailyGameConfig.Builder();
 
 		minButtonHeight = getContext().getResources().getDimension(R.dimen.small_button_height);
 	}
@@ -181,12 +177,8 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 			gameConfigBuilder.setDaysPerMove(newDailyGamesButtonsAdapter.getItem(0).days);
 		}
 
-
-		EditButtonSpinner opponentEditBtn = (EditButtonSpinner) optionsView.findViewById(R.id.opponentEditBtn);
-		opponentEditBtn.addOnClickListener(this);
-
-		EditButtonSpinner myColorEditBtn = (EditButtonSpinner) optionsView.findViewById(R.id.myColorEditBtn);
-		myColorEditBtn.addOnClickListener(this);
+//		EditButtonSpinner myColorEditBtn = (EditButtonSpinner) optionsView.findViewById(R.id.myColorEditBtn);
+//		myColorEditBtn.addOnClickListener(this);
 
 		// rated games switch
 		ratedGameSwitch = (SwitchButton) optionsView.findViewById(R.id.ratedGameSwitch);
@@ -222,12 +214,12 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			if (buttonView.getId() == R.id.minRatingBtn && isChecked) {
-				minRatingBtn.setChecked(true);
-				maxRatingBtn.setChecked(false);
+				minRatingBtn.setSelected(true);
+				maxRatingBtn.setSelected(false);
 
 			} else if (buttonView.getId() == R.id.maxRatingBtn && isChecked){
-				maxRatingBtn.setChecked(true);
-				minRatingBtn.setChecked(false);
+				maxRatingBtn.setSelected(true);
+				minRatingBtn.setSelected(false);
 			}
 		}
 	};
@@ -299,9 +291,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 			newDailyGamesButtonsAdapter.checkButton(position);
 			// set value to builder
 			gameConfigBuilder.setDaysPerMove(newDailyGamesButtonsAdapter.getItem(position).days);
-		} else if (view.getId() == R.id.opponentEditBtn){
-			Log.d("TEST", "opponentEditBtn clicked");
-		} else if (view.getId() == R.id.myColorEditBtn){
+		} else if (view.getId() == R.id.myColorBtn){
 		} else if (view.getId() == R.id.minRatingBtn){
 		} else if (view.getId() == R.id.maxRatingBtn){
 		} else if (view.getId() == R.id.playBtn){
@@ -347,7 +337,7 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		}
 	}
 
-	public NewDailyGameConfig getNewDailyGameConfig(){
+	public DailyGameConfig getNewDailyGameConfig(){
 		// set params
 		gameConfigBuilder.setRated(ratedGameSwitch.isChecked());
 

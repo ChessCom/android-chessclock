@@ -11,7 +11,7 @@
         android:id="@+id/boardLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/new_tactics_board_top_offset"
+        android:layout_above="@+id/topPanelView"
         >
 
         <!--Top Border-->
@@ -38,32 +38,31 @@
             android:layout_marginTop="-1px"
             />
 
-        <!--Loading Overlay-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/loadingView"
-            android:background="@color/action_bar_overlay"
-            android:visibility="gone"
-            >
+    </RelativeLayout>
 
-            <ProgressBar
-                android:layout_width="60dip"
-                android:layout_height="60dip"
-                android:layout_centerInParent="true"
-                style="?android:attr/progressBarStyle"
-                />
+    <!--Loading Overlay-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/loadingView"
+        android:background="@color/action_bar_overlay"
+        android:visibility="gone"
+        >
 
-        </RelativeLayout>
+        <ProgressBar
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_centerInParent="true"
+            style="?android:attr/progressBarStyle"
+            />
 
     </RelativeLayout>
 
     <com.chess.ui.views.PanelInfoTacticsView
-        android:id="@+id/topPanelView"
+        android:id="@id/topPanelView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/new_tactics_panel_info_height"
         android:layout_above="@+id/controlsTacticsView"
-        android:layout_below="@id/boardLayout"
         />
 
     <com.chess.ui.views.game_controls.ControlsTacticsView

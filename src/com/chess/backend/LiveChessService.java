@@ -31,7 +31,7 @@ import com.chess.live.client.LiveChessClient;
 import com.chess.live.client.User;
 import com.chess.model.GameLiveItem;
 import com.chess.ui.activities.MainFragmentFaceActivity;
-import com.chess.ui.engine.configs.NewLiveGameConfig;
+import com.chess.ui.engine.configs.LiveGameConfig;
 
 import java.util.HashMap;
 import java.util.List;
@@ -435,7 +435,7 @@ public class LiveChessService extends Service {
 		lccHelper.rematch();
 	}
 
-	public void createChallenge(NewLiveGameConfig config) {
+	public void createChallenge(LiveGameConfig config) {
 		lccHelper.createChallenge(config);
 	}
 

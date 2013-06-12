@@ -2,8 +2,8 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 
-	android:versionCode="136"
-	android:versionName="3.0.005a" package="com.chess" android:installLocation="auto">
+	android:versionCode="139"
+	android:versionName="3.0.008a" package="com.chess" android:installLocation="auto">
 
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -23,7 +23,7 @@
            where PACKAGE is the application's package name.
     -->
     <permission android:name="com.google.android.gcm.demo.app.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-    <uses-permission  android:name="com.google.android.gcm.demo.app.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.gcm.demo.app.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" /> <!-- This app has permission to register and receive data message. -->
 
     <!--In-App Billing Permissions-->
@@ -195,6 +195,7 @@
 		<service android:name=".GCMIntentService" />
         <service android:name=".backend.LiveChessService" />
         <service android:name=".backend.GetAndSaveUserStats"/>
+        <service android:name=".backend.GetAndSaveFriends"/>
 
         <provider android:name=".db.DBDataProvider" android:authorities="com.chess.db_provider" android:exported="false"/>
 

@@ -80,13 +80,13 @@ public class PopupSkillsFragment extends DialogFragment implements AdapterView.O
 		super.onCancel(dialog);
 
 		if (listener != null) {
-			listener.dialogCanceled();
+			listener.onDialogCanceled();
 		}
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		listener.valueSelected(position);
+		listener.onValueSelected(position);
 	}
 
 

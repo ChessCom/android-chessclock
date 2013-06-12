@@ -57,19 +57,22 @@
         <item name="btn_use_border">false</item>
         <item name="btn_is_glassy">true</item>
         <item name="btn_gradient_angle">TOP_BOTTOM</item>
+        <item name="btn_use_pressed_layer">false</item>
 
         <item name="btn_top">@color/transparent_button_border_top</item>
         <item name="btn_left">@color/transparent_button_border_left</item>
         <item name="btn_right">@color/transparent_button_border_right</item>
         <item name="btn_bottom">@color/transparent_button_border_bottom</item>
 
-        <item name="btn_solid">@color/glassy_button</item>
+        <item name="btn_solid">@color/glassy_button_1</item>
+        <item name="btn_solid_p">@color/glassy_button_p</item>
+        <item name="btn_solid_s">@color/glassy_button_s</item>
 
         <item name="btn_gradient_start">@color/transparent_button_border_left</item>
         <item name="btn_gradient_end">@color/transparent_button_border_top</item>
 
         <item name="android:minHeight">@dimen/grey_button_height</item>
-        <item name="android:textColor">@color/new_light_grey</item>
+        <item name="android:textColor">@color/text_controls_icons</item>
         <item name="android:shadowColor">@null</item>
         <item name="android:shadowRadius">0</item>
         <item name="android:shadowDx">0</item>
@@ -362,7 +365,7 @@
     </style>
 
     <style name="ListItem.Header">
-        <item name="btn_solid">@color/glassy_button</item>
+        <item name="btn_solid">@color/glassy_header</item>
 
         <item name="android:minHeight">@dimen/default_header_height</item>
     </style>

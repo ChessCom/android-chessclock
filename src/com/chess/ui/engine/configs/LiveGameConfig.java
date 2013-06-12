@@ -11,7 +11,7 @@ import com.chess.backend.statics.StaticData;
  * Date: 30.04.13
  * Time: 6:55
  */
-public class NewLiveGameConfig implements Parcelable {
+public class LiveGameConfig implements Parcelable {
 	private int userColor;
 	private boolean rated;
 	private int minRating;
@@ -71,12 +71,12 @@ public class NewLiveGameConfig implements Parcelable {
 			}
 		}
 
-		public NewLiveGameConfig build() {
-			return new NewLiveGameConfig(this);
+		public LiveGameConfig build() {
+			return new LiveGameConfig(this);
 		}
 	}
 
-	private NewLiveGameConfig(Builder builder) {
+	private LiveGameConfig(Builder builder) {
 		this.userColor = builder.userColor;
 		this.rated = builder.rated;
 		this.opponentName = builder.opponentName;
@@ -118,7 +118,7 @@ public class NewLiveGameConfig implements Parcelable {
 		return String.valueOf(initialTime) + " | " + bonusTime;
 	}
 
-	protected NewLiveGameConfig(Parcel in) {
+	protected LiveGameConfig(Parcel in) {
 		userColor = in.readInt();
 		rated = in.readByte() != 0x00;
 		minRating = in.readInt();
@@ -144,15 +144,15 @@ public class NewLiveGameConfig implements Parcelable {
 		dest.writeString(opponentName);
 	}
 
-	public static final Parcelable.Creator<NewLiveGameConfig> CREATOR = new Parcelable.Creator<NewLiveGameConfig>() {
+	public static final Parcelable.Creator<LiveGameConfig> CREATOR = new Parcelable.Creator<LiveGameConfig>() {
 		@Override
-		public NewLiveGameConfig createFromParcel(Parcel in) {
-			return new NewLiveGameConfig(in);
+		public LiveGameConfig createFromParcel(Parcel in) {
+			return new LiveGameConfig(in);
 		}
 
 		@Override
-		public NewLiveGameConfig[] newArray(int size) {
-			return new NewLiveGameConfig[size];
+		public LiveGameConfig[] newArray(int size) {
+			return new LiveGameConfig[size];
 		}
 	};
 }

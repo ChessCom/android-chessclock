@@ -1,6 +1,7 @@
 package com.chess.ui.views;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -102,6 +103,11 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_big_size);
 		}
 
+		boolean hasSoftKeys = AppUtils.hasSoftKeys(((Activity)getContext()).getWindowManager());
+		if (hasSoftKeys) {
+			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_medium_size);
+		}
+
 		smallScreen = AppUtils.noNeedTitleBar(context);
 
 		int capturedPiecesViewHeight = (int) resources.getDimension(R.dimen.panel_info_captured_pieces_height);
@@ -111,11 +117,6 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 		FLAG_SIZE *= density;
 		FLAG_MARGIN *= density;
-
-		int padding = (int) resources.getDimension(R.dimen.panel_info_padding_top);
-		int paddingRight = (int) (4 * density);
-		int paddingLeft = (int) (11 * density);
-		setPadding(paddingLeft, padding, paddingRight, padding);
 
 		{// add avatar view
 			avatarImg = new ImageView(context);
@@ -178,7 +179,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			flagImg = new ImageView(context);
 
 			LayoutParams flagParams = new LayoutParams(FLAG_SIZE, FLAG_SIZE);
-			flagParams.setMargins(FLAG_MARGIN, /*(int) (1 * density)*/ 0, FLAG_MARGIN, FLAG_MARGIN);
+			flagParams.setMargins(FLAG_MARGIN, 0, FLAG_MARGIN, FLAG_MARGIN);
 			flagParams.addRule(RIGHT_OF, RATING_ID);
 			if (useSingleLine) {
 				flagParams.addRule(CENTER_VERTICAL);
@@ -186,7 +187,6 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 				flagParams.addRule(ALIGN_TOP, AVATAR_ID);
 			}
 
-//			flagImg.setImageDrawable(AppUtils.getUserFlag(context));
 			flagImg.setScaleType(ImageView.ScaleType.FIT_XY);
 			flagImg.setAdjustViewBounds(true);
 			flagImg.setId(FLAG_ID);
@@ -198,7 +198,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			premiumImg = new ImageView(context);
 
 			LayoutParams premiumParams = new LayoutParams(FLAG_SIZE, FLAG_SIZE);
-			premiumParams.setMargins(FLAG_MARGIN, FLAG_MARGIN, FLAG_MARGIN, FLAG_MARGIN);
+			premiumParams.setMargins(FLAG_MARGIN, 0, FLAG_MARGIN, FLAG_MARGIN);
 			premiumParams.addRule(RIGHT_OF, FLAG_ID);
 			if (useSingleLine) {
 				premiumParams.addRule(CENTER_VERTICAL);
@@ -255,6 +255,18 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			capturedPiecesView.setId(CAPTURED_ID);
 
 			addView(capturedPiecesView, capturedParams);
+		}
+
+		{// Set padding
+			int padding = (int) resources.getDimension(R.dimen.panel_info_padding_top);
+			int paddingRight = (int) (4 * density);
+			int paddingLeft = (int) (11 * density);
+
+			if (hasSoftKeys) {
+				padding = (int) (5 * density);
+			}
+
+			setPadding(paddingLeft, padding, paddingRight, padding);
 		}
 	}
 

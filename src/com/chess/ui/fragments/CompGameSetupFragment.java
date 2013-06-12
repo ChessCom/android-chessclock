@@ -10,7 +10,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoardComp;
-import com.chess.ui.engine.configs.NewCompGameConfig;
+import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.game.GameCompFragment;
 
 /**
@@ -23,13 +23,13 @@ public class CompGameSetupFragment extends CommonLogicFragment {
 
 	private RadioButton whiteHuman;
 	private RadioButton blackHuman;
-	private NewCompGameConfig.Builder gameConfigBuilder;
+	private CompGameConfig.Builder gameConfigBuilder;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		gameConfigBuilder = new NewCompGameConfig.Builder();
+		gameConfigBuilder = new CompGameConfig.Builder();
 	}
 
 	@Override
@@ -54,13 +54,13 @@ public class CompGameSetupFragment extends CommonLogicFragment {
 			preferencesEditor.putString(AppData.getUserName(getActivity()) + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
 			preferencesEditor.commit();
 
-			NewCompGameConfig config = getNewCompGameConfig();
+			CompGameConfig config = getNewCompGameConfig();
 
 			getActivityFace().openFragment(GameCompFragment.newInstance(config));
 		}
 	}
 
-	public NewCompGameConfig getNewCompGameConfig(){
+	public CompGameConfig getNewCompGameConfig(){
 		int mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
 		if (!whiteHuman.isChecked() && blackHuman.isChecked()) {
 			mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;

@@ -102,6 +102,7 @@
     <color name="controls_border">#40000000</color>
     <color name="controls_icon">#A5FFFFFF</color>
     <color name="controls_icon_p">#FFFFFFFF</color>
+    <color name="controls_icon_s">#FFFFFFFF</color>
     <color name="controls_icon_d">#66FFFFFF</color>
 
     <!--Grey Solid-->
@@ -226,27 +227,35 @@
 
     <!--Main ActionBar overlay color-->
     <color name="action_bar_overlay">#33000000</color>   <!--Should be the same as checked color for tabs-->
+    <color name="sliding_menu_overlay">#1F000000</color>   <!--Should be the same as checked color for tabs-->
 
 
 
     <!--SeekBar-->
-    <color name="seek_background">#FF22201e</color>
-    <color name="seek_background_stroke">#FF292623</color>
+    <color name="seek_background">#FFFF0000</color>
+    <color name="seek_background_stroke">#1F000000</color>
 
     <!--Switch Button Dark Back-->
-    <color name="switch_dark_back_border_top_1">#FF2d2a27</color>
-    <color name="switch_dark_back_border_top_2">#FF292623</color>
-    <color name="switch_dark_back_border_bot_1">#FF35322f</color>
-    <color name="switch_dark_back_border_bot_2">#FF393532</color>
-    <color name="switch_dark_back_inner_border">#FF1a1613</color>
-    <color name="switch_dark_back_inner_shadow_1">#FF121110</color>
-    <color name="switch_dark_back_inner_shadow_2">#FF23211f</color>
-    <color name="switch_dark_back_inner_main_1">#FF211f1d</color>
-    <color name="switch_dark_back_inner_main_2">#FF23211f</color>
-
+    <color name="switch_dark_back_border_top_1">#1F000000</color>
+    <color name="switch_dark_back_border_top_2">#1F000000</color>
+    <color name="switch_dark_back_border_bot_1">#15FFFFFF</color>
+    <color name="switch_dark_back_border_bot_2">#15FFFFFF</color>
+    <color name="switch_dark_back_inner_border">#2F000000</color>
+    <color name="switch_dark_back_inner_shadow_1">#00000000</color>
+    <color name="switch_dark_back_inner_shadow_2">#00000000</color>
+    <color name="switch_dark_back_inner_main_1">#00000000</color>
+    <color name="switch_dark_back_inner_main_2">#33000000</color>
 
     <!--Switch Button Dark Handler-->
     <color name="switch_dark_btn_border">#FF141311</color>
+    <color name="switch_dark_btn_top_1">#FF67625e</color>
+    <color name="switch_dark_btn_top_2">#FF5e5954</color>
+    <color name="switch_dark_btn_bot_1">#FF494541</color>
+    <color name="switch_dark_btn_bot_2">#FF393633</color>
+    <color name="switch_dark_btn_main">#FF58524e</color>
+    <color name="switch_dark_btn_inner_1">#FF4b4743</color>
+    <color name="switch_dark_btn_inner_2">#FF625d5a</color>
+<!--
     <color name="switch_dark_btn_top_1">#FF696461</color>
     <color name="switch_dark_btn_top_2">#FF5d5855</color>
     <color name="switch_dark_btn_bot_1">#FF484440</color>
@@ -254,6 +263,7 @@
     <color name="switch_dark_btn_main">#FF534e4a</color>
     <color name="switch_dark_btn_inner_1">#FF4c4844</color>
     <color name="switch_dark_btn_inner_2">#FF5e5a56</color>
+-->
 
     <!--Pressed-->
     <color name="switch_dark_btn_top_1_p">#FF8f8882</color>
@@ -302,7 +312,7 @@
 
     <!--Friends-->
     <color name="header_light">#FFf4f4f4</color>
-    <color name="header_dark">#66000000</color>
+    <color name="header_dark">#44000000</color>
 
     <color name="new_text_blue">#FF0d5988</color>
     <color name="new_text_blue_dark">#FF0e344d</color>

@@ -86,14 +86,6 @@
             android:text="@string/opponent_"
             />
 
-        <com.chess.EditButtonSpinner
-            android:id="@+id/opponentEditBtn"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/random"
-            style="@style/Button.Glassy.Small"
-            />
     </com.chess.LinLayout>
 
     <!--I Play As-->
@@ -113,8 +105,8 @@
             android:text="@string/i_play_as_"
             />
 
-        <com.chess.EditButtonSpinner
-            android:id="@+id/myColorEditBtn"
+        <com.chess.RoboButton
+            android:id="@+id/myColorBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/random"

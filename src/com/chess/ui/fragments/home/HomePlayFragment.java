@@ -19,15 +19,16 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
-import com.chess.ui.engine.configs.NewCompGameConfig;
-import com.chess.ui.engine.configs.NewDailyGameConfig;
-import com.chess.ui.engine.configs.NewLiveGameConfig;
+import com.chess.ui.engine.configs.CompGameConfig;
+import com.chess.ui.engine.configs.DailyGameConfig;
+import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.daily.DailyGamesOptionsFragment;
 import com.chess.ui.fragments.friends.InviteFriendsFragment;
 import com.chess.ui.fragments.game.GameCompFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,8 +47,8 @@ public class HomePlayFragment extends CommonLogicFragment {
 	private TextView liveRatingTxt;
 	private TextView dailyRatingTxt;
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
-	private NewDailyGameConfig.Builder dailyGameConfigBuilder;
-	private NewLiveGameConfig.Builder liveGameConfigBuilder;
+	private DailyGameConfig.Builder dailyGameConfigBuilder;
+	private LiveGameConfig.Builder liveGameConfigBuilder;
 	private int positionMode;
 	private List<View> liveOptionsGroup;
 	private HashMap<Integer, Button> liveButtonsModeMap;
@@ -73,8 +74,8 @@ public class HomePlayFragment extends CommonLogicFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		dailyGameConfigBuilder = new NewDailyGameConfig.Builder();
-		liveGameConfigBuilder = new NewLiveGameConfig.Builder();
+		dailyGameConfigBuilder = new DailyGameConfig.Builder();
+		liveGameConfigBuilder = new LiveGameConfig.Builder();
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 	}
 
@@ -103,6 +104,12 @@ public class HomePlayFragment extends CommonLogicFragment {
 			inflater.inflate(R.layout.new_home_live_options_view, liveHomeOptionsFrame, true);
 		} else {
 			inflater.inflate(R.layout.new_right_live_options_view, liveHomeOptionsFrame, true);
+			View liveHeaderView = view.findViewById(R.id.liveHeaderView);
+			View dailyHeaderView = view.findViewById(R.id.dailyHeaderView);
+			View vsCompHeaderView = view.findViewById(R.id.vsCompHeaderView);
+			ButtonDrawableBuilder.setBackgroundToView(liveHeaderView, R.style.ListItem_Header_Dark);
+			ButtonDrawableBuilder.setBackgroundToView(dailyHeaderView, R.style.ListItem_Header_Dark);
+			ButtonDrawableBuilder.setBackgroundToView(vsCompHeaderView, R.style.ListItem_Header_Dark);
 		}
 
 		widgetsInit(view);
@@ -113,7 +120,7 @@ public class HomePlayFragment extends CommonLogicFragment {
 		super.onStart();
 
 		setRatings();
-		// load friends, get only 2
+		// TODO load friends, get only 2
 	}
 
 	@Override
@@ -146,8 +153,8 @@ public class HomePlayFragment extends CommonLogicFragment {
 				getActivityFace().toggleRightMenu();
 			}
 		} else if (view.getId() == R.id.vsCompHeaderView) {
-			NewCompGameConfig.Builder gameConfigBuilder = new NewCompGameConfig.Builder();
-			NewCompGameConfig compGameConfig = gameConfigBuilder.setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE).build();
+			CompGameConfig.Builder gameConfigBuilder = new CompGameConfig.Builder();
+			CompGameConfig compGameConfig = gameConfigBuilder.setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE).build();
 			getActivityFace().openFragment(GameCompFragment.newInstance(compGameConfig));
 			if (positionMode == RIGHT_MENU_MODE) {
 				getActivityFace().toggleRightMenu();
@@ -216,13 +223,13 @@ public class HomePlayFragment extends CommonLogicFragment {
 
 	private void createDailyChallenge() {
 		// create challenge using formed configuration
-		NewDailyGameConfig newDailyGameConfig = dailyGameConfigBuilder.build();
+		DailyGameConfig dailyGameConfig = dailyGameConfigBuilder.build();
 
-		int color = newDailyGameConfig.getUserColor();
-		int days = newDailyGameConfig.getDaysPerMove();
-		int gameType = newDailyGameConfig.getGameType();
-		String isRated = newDailyGameConfig.isRated() ? RestHelper.V_TRUE : RestHelper.V_FALSE;
-		String opponentName = newDailyGameConfig.getOpponentName();
+		int color = dailyGameConfig.getUserColor();
+		int days = dailyGameConfig.getDaysPerMove();
+		int gameType = dailyGameConfig.getGameType();
+		String isRated = dailyGameConfig.isRated() ? RestHelper.V_TRUE : RestHelper.V_FALSE;
+		String opponentName = dailyGameConfig.getOpponentName();
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
@@ -327,7 +334,7 @@ public class HomePlayFragment extends CommonLogicFragment {
 			liveButtonsModeMap.put(7, (Button) view.findViewById(R.id.bullet2SelectBtn));
 
 			int mode = AppData.getDefaultLiveMode(getActivity());
-
+			darkBtnColor = getResources().getColor(R.color.text_controls_icons_white);
 			// set texts to buttons
 			newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
 			for (Map.Entry<Integer, Button> buttonEntry : liveButtonsModeMap.entrySet()) {

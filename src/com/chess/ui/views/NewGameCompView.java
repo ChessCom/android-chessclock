@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
-import com.chess.ui.engine.configs.NewCompGameConfig;
+import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 /**
@@ -18,7 +18,7 @@ import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
  */
 public class NewGameCompView extends NewGameDefaultView {
 
-	private NewCompGameConfig.Builder gameConfigBuilder;
+	private CompGameConfig.Builder gameConfigBuilder;
 	private RadioButton blackHuman;
 	private RadioButton whiteHuman;
 	private boolean haveSavedGame;
@@ -31,14 +31,10 @@ public class NewGameCompView extends NewGameDefaultView {
 		super(context, attrs);
 	}
 
-//	public NewGameCompView(Context context, AttributeSet attrs, int defStyle) {
-//		super(context, attrs, defStyle);
-//	}
-
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		gameConfigBuilder = new NewCompGameConfig.Builder();
+		gameConfigBuilder = new CompGameConfig.Builder();
 
 	}
 
@@ -77,7 +73,7 @@ public class NewGameCompView extends NewGameDefaultView {
 		loadCompPlayBtn.setVisibility(haveSavedGame ? VISIBLE : GONE);
 	}
 
-	public NewCompGameConfig getNewCompGameConfig(){
+	public CompGameConfig getNewCompGameConfig(){
 		int mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
 		if (!whiteHuman.isChecked() && blackHuman.isChecked()) {
 			mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;

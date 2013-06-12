@@ -1,5 +1,6 @@
 package com.chess.ui.views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -76,15 +77,16 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_big_size);
 		}
 
+		boolean hasSoftKeys = AppUtils.hasSoftKeys(((Activity) getContext()).getWindowManager());
+		if (hasSoftKeys) {
+			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_medium_size);
+		}
+
 		int capturedPiecesViewHeight = (int) resources.getDimension(R.dimen.panel_info_captured_pieces_height);
 		int capturedPiecesViewWidth = (int) resources.getDimension(R.dimen.panel_info_captured_pieces_width);
-		int whatIsTextSize =  (int) (resources.getDimension(R.dimen.panel_info_what_is_size) / density);
+		int whatIsTextSize = (int) (resources.getDimension(R.dimen.panel_info_what_is_size) / density);
 		int avatarMarginRight = (int) resources.getDimension(R.dimen.panel_info_avatar_margin_right);
 
-		int padding = (int) resources.getDimension(R.dimen.panel_info_padding_top);
-		int paddingRight = (int) (4 * density);
-		int paddingLeft = (int) (11 * density);
-		setPadding(paddingLeft, padding, paddingRight, padding);
 
 		{// add avatar view
 			avatarImg = new ImageView(context);
@@ -162,10 +164,22 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			whatIsTxt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_right_badge, 0);
 			whatIsTxt.setCompoundDrawablePadding((int) (7 * density));
 			whatIsTxt.setVisibility(GONE);
-			whatIsTxt.setPadding(0,0, (int) (15 * density), 0);
+			whatIsTxt.setPadding(0, 0, (int) (15 * density), 0);
 
 			addView(whatIsTxt, timeLeftParams);
 
+		}
+
+		{// Set padding
+			int padding = (int) resources.getDimension(R.dimen.panel_info_padding_top);
+			int paddingRight = (int) (4 * density);
+			int paddingLeft = (int) (11 * density);
+
+			if (hasSoftKeys) {
+				padding = (int) (5 * density);
+			}
+
+			setPadding(paddingLeft, padding, paddingRight, padding);
 		}
 	}
 

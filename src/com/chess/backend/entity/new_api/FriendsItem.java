@@ -16,12 +16,14 @@ public class FriendsItem extends BaseResponseItem<List<FriendsItem.Data>> {
     "count": 4,
     "data": [
         {
-          	"user_id": 31,
-            "username": "jay",
-            "is_online": true,
+            "user_id": 11438,
+            "username": "alien_roger",
+            "is_online": false,
             "country_id": 2,
-            "location": "Israel",
-            "avatar_url": "http://www.capi.com/images_users/avatars/jay.gif"
+            "location": "",
+            "avatar_url": "//s3.amazonaws.com/chess-7/images_users/avatars/alien_roger_small.2.png",
+            "last_login_date": 1370966103,
+            "premium_status": 1
         }...
     ]
 */
@@ -33,6 +35,7 @@ public class FriendsItem extends BaseResponseItem<List<FriendsItem.Data>> {
 		private long country_id;
 		private String location;
 		private String avatar_url;
+		private int premium_status;
 
 		public long getUserId() {
 			return user_id;

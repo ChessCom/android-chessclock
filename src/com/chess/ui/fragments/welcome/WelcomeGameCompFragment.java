@@ -20,7 +20,7 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
-import com.chess.ui.engine.configs.NewCompGameConfig;
+import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
@@ -36,7 +36,6 @@ import com.chess.ui.views.chess_boards.ChessBoardCompView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsCompView;
-import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
@@ -90,14 +89,14 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	private PopupOptionsMenuFragment optionsSelectFragment;
 
 	public WelcomeGameCompFragment() {
-		NewCompGameConfig config = new NewCompGameConfig.Builder().build();
+		CompGameConfig config = new CompGameConfig.Builder().build();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, config.getMode());
 		bundle.putInt(COMP_DELAY, config.getMode());
 		setArguments(bundle);
 	}
 
-	public static WelcomeGameCompFragment createInstance(WelcomeTabsFace parentFace, NewCompGameConfig config) {
+	public static WelcomeGameCompFragment createInstance(WelcomeTabsFace parentFace, CompGameConfig config) {
 		WelcomeGameCompFragment fragment = new WelcomeGameCompFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, config.getMode());
@@ -424,8 +423,9 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 //		super.onGameOver(message, need2Finish);
 		boolean userWon = !message.equals(getString(R.string.black_wins));
 		preferencesEditor.putBoolean(AppConstants.WELCOME_GAME_WON, userWon).commit();
-		if (parentFace != null)  // TODO do something if activity was killed and we restored fragment w/o parentFace :(
+		if (parentFace != null) { // TODO do something if activity was killed and we restored fragment w/o parentFace :(
 			parentFace.changeInternalFragment(WelcomeTabsFragment.RESULTS_FRAGMENT);
+		}
 	}
 
 	@Override
@@ -451,9 +451,9 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		AppData.clearSavedCompGame(getActivity());
 
 		controlsCompView.enableHintButton(false);
-		if (AppUtils.isNeedToUpgrade(getActivity())) {
-			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-		}
+//		if (AppUtils.isNeedToUpgrade(getActivity())) {
+//			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+//		}
 	}
 
 	private void resideBoardIfCompWhite() {
@@ -478,7 +478,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	@Override
-	public void valueSelected(int code) {
+	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
 			newGame();
 		} else if (code == ID_FLIP_BOARD) {
@@ -494,7 +494,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	@Override
-	public void dialogCanceled() {
+	public void onDialogCanceled() {
 		optionsSelectFragment = null;
 	}
 

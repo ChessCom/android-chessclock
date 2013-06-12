@@ -11,7 +11,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import com.chess.*;
 import com.chess.ui.adapters.ItemsAdapter;
-import com.chess.ui.engine.configs.NewLiveGameConfig;
+import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class NewGameLiveView extends NewGameDefaultView implements ItemClickListenerFace {
 
-	private NewLiveGameConfig.Builder gameConfigBuilder;
+	private LiveGameConfig.Builder gameConfigBuilder;
 	private NewLiveGamesButtonsAdapter newLiveGamesButtonsAdapter;
 	private RoboRadioButton minRatingBtn;
 	private RoboRadioButton maxRatingBtn;
@@ -48,7 +48,7 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		gameConfigBuilder = new NewLiveGameConfig.Builder();
+		gameConfigBuilder = new LiveGameConfig.Builder();
 
 	}
 
@@ -88,11 +88,8 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 			// set value to builder
 		}
 
-		EditButtonSpinner opponentEditBtn = (EditButtonSpinner) optionsView.findViewById(R.id.opponentEditBtn);
-		opponentEditBtn.addOnClickListener(this);
-
-		EditButtonSpinner myColorEditBtn = (EditButtonSpinner) optionsView.findViewById(R.id.myColorEditBtn);
-		myColorEditBtn.addOnClickListener(this);
+//		EditButtonSpinner myColorEditBtn = (EditButtonSpinner) optionsView.findViewById(R.id.myColorBtn);
+//		myColorEditBtn.addOnClickListener(this);
 
 		// rated games switch
 		ratedGameSwitch = (SwitchButton) optionsView.findViewById(R.id.ratedGameSwitch);
@@ -257,7 +254,7 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 		}
 	}
 
-	public NewLiveGameConfig getNewLiveGameConfig() {
+	public LiveGameConfig getNewLiveGameConfig() {
 		// set params
 		gameConfigBuilder.setRated(ratedGameSwitch.isChecked());
 

@@ -10,7 +10,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoardComp;
-import com.chess.ui.engine.configs.NewCompGameConfig;
+import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.WelcomeTabsFace;
 
@@ -24,7 +24,7 @@ public class WelcomeGameSetupFragment extends CommonLogicFragment {
 
 	private RadioButton whiteHuman;
 	private RadioButton blackHuman;
-	private NewCompGameConfig.Builder gameConfigBuilder;
+	private CompGameConfig.Builder gameConfigBuilder;
 	private WelcomeTabsFace parentFace;
 
 	public WelcomeGameSetupFragment(){
@@ -40,7 +40,7 @@ public class WelcomeGameSetupFragment extends CommonLogicFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		gameConfigBuilder = new NewCompGameConfig.Builder();
+		gameConfigBuilder = new CompGameConfig.Builder();
 	}
 
 	@Override
@@ -66,14 +66,14 @@ public class WelcomeGameSetupFragment extends CommonLogicFragment {
 			preferencesEditor.putString(AppData.getUserName(getActivity()) + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
 			preferencesEditor.commit();
 
-			NewCompGameConfig config = getNewCompGameConfig();
+			CompGameConfig config = getNewCompGameConfig();
 			AppData.setCompGameMode(getActivity(), config.getMode());
 			parentFace.changeInternalFragment(WelcomeTabsFragment.GAME_FRAGMENT);
 
 		}
 	}
 
-	public NewCompGameConfig getNewCompGameConfig(){
+	public CompGameConfig getNewCompGameConfig(){
 		int mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
 		if (!whiteHuman.isChecked() && blackHuman.isChecked()) {
 			mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;

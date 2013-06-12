@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -244,7 +245,11 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	}
 
 	protected String getTextFromField(EditText editText) {
-		return editText.getText().toString().trim();
+		if (TextUtils.isEmpty(editText.getText())){
+			return StaticData.SYMBOL_EMPTY;
+		} else {
+			return editText.getText().toString().trim();
+		}
 	}
 
 	protected void showToast(String msg) {

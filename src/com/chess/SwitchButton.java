@@ -35,6 +35,7 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 	private static final int TEXT_LEFT_PADDING = 13;
 	private static final int HANDLE_BUTTON_WIDTH = 42;
 	private static final int HANDLE_BUTTON_HEIGHT = 22;
+	private static final float HANDLE_BUTTON_MARGIN = 2.5f;
 
 	private Button handleButton;
 	private RoboTextView textView;
@@ -66,11 +67,6 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 		onCreate(context, attrs);
 	}
 
-//	public SwitchButton(Context context) {
-//		super(context);
-//		onCreate(context);
-//	}
-
 	public SwitchButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		onCreate(context, attrs);
@@ -86,55 +82,27 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 		backOffDrawable = resources.getDrawable(R.drawable.button_switch_dark_back);
 		int handleWidth = HANDLE_BUTTON_WIDTH;
 		int handleHeight = HANDLE_BUTTON_HEIGHT;
+		float handleMargin;
 
 		try {
-			if (array.hasValue(R.styleable.SwitchButton_switchBackOn)) {
-				backOnDrawable = array.getDrawable(R.styleable.SwitchButton_switchBackOn);
-			}
-			if (array.hasValue(R.styleable.SwitchButton_switchBackOff)) {
-				backOffDrawable = array.getDrawable(R.styleable.SwitchButton_switchBackOff);
-			}
-			if (array.hasValue(R.styleable.SwitchButton_switchHandle)) {
-				handleDrawable = array.getDrawable(R.styleable.SwitchButton_switchHandle);
-			}
-			if (array.hasValue(R.styleable.SwitchButton_switchHandleWidth)) {
-				handleWidth = array.getInteger(R.styleable.SwitchButton_switchHandleWidth, HANDLE_BUTTON_WIDTH);
-			}
-			if (array.hasValue(R.styleable.SwitchButton_switchHandleHeight)) {
-				handleHeight = array.getInteger(R.styleable.SwitchButton_switchHandleHeight, HANDLE_BUTTON_HEIGHT);
-			}
-			if (array.hasValue(R.styleable.SwitchButton_switchHandleShift)) {
-				handleShift = array.getFloat(R.styleable.SwitchButton_switchHandleShift, HANDLE_SHIFT);
-			}
-			if (array.hasValue(R.styleable.SwitchButton_switchTextShift)) {
-				textShift = array.getFloat(R.styleable.SwitchButton_switchTextShift, TEXT_SHIFT);
-			}
-			if (array.hasValue(R.styleable.SwitchButton_switchTextLeftPadding)) {
-				textLeftPadding = array.getInteger(R.styleable.SwitchButton_switchTextLeftPadding, TEXT_LEFT_PADDING);
-			}
-			
-			if (array.hasValue(R.styleable.SwitchButton_switchTextSize)) {
-				textSize = array.getDimension(R.styleable.SwitchButton_switchTextSize, TEXT_SIZE)/ density;
-			}
-			if (array.hasValue(R.styleable.SwitchButton_switchTextColorOn)) {
-				textColorOn = array.getInteger(R.styleable.SwitchButton_switchTextColorOn, TEXT_COLOR);
-			}
-			if (array.hasValue(R.styleable.SwitchButton_switchTextColorOff)) {
-				textColorOff = array.getInteger(R.styleable.SwitchButton_switchTextColorOff, TEXT_COLOR);
-			}
-			if (array.hasValue(R.styleable.SwitchButton_switchTextOn)) {
-				textOnStr = array.getString(R.styleable.SwitchButton_switchTextOn);
-			}
-			if (array.hasValue(R.styleable.SwitchButton_switchTextOff)) {
-				textOffStr = array.getString(R.styleable.SwitchButton_switchTextOff);
-			}
-			if (array.hasValue(R.styleable.SwitchButton_switchTextFont)) {
-				textFont = array.getString(R.styleable.SwitchButton_switchTextFont);
-			}
-			if (array.hasValue(R.styleable.SwitchButton_switchTextUseShadow)) {
-				textUseShadow = array.getBoolean(R.styleable.SwitchButton_switchTextUseShadow, false);
-			}
-			
+			backOnDrawable = array.getDrawable(R.styleable.SwitchButton_switchBackOn);
+			backOffDrawable = array.getDrawable(R.styleable.SwitchButton_switchBackOff);
+			handleDrawable = array.getDrawable(R.styleable.SwitchButton_switchHandle);
+			handleWidth = array.getInteger(R.styleable.SwitchButton_switchHandleWidth, HANDLE_BUTTON_WIDTH);
+			handleHeight = array.getInteger(R.styleable.SwitchButton_switchHandleHeight, HANDLE_BUTTON_HEIGHT);
+			handleMargin = array.getFloat(R.styleable.SwitchButton_switchHandleMargin, HANDLE_BUTTON_MARGIN) * density;
+			handleShift = array.getFloat(R.styleable.SwitchButton_switchHandleShift, HANDLE_SHIFT);
+			textShift = array.getFloat(R.styleable.SwitchButton_switchTextShift, TEXT_SHIFT);
+			textLeftPadding = array.getInteger(R.styleable.SwitchButton_switchTextLeftPadding, TEXT_LEFT_PADDING);
+
+			textSize = array.getDimension(R.styleable.SwitchButton_switchTextSize, TEXT_SIZE)/ density;
+			textColorOn = array.getInteger(R.styleable.SwitchButton_switchTextColorOn, TEXT_COLOR);
+			textColorOff = array.getInteger(R.styleable.SwitchButton_switchTextColorOff, TEXT_COLOR);
+			textOnStr = array.getString(R.styleable.SwitchButton_switchTextOn);
+			textOffStr = array.getString(R.styleable.SwitchButton_switchTextOff);
+			textFont = array.getString(R.styleable.SwitchButton_switchTextFont);
+			textUseShadow = array.getBoolean(R.styleable.SwitchButton_switchTextUseShadow, true);
+
 		} finally {
 			array.recycle();
 		}
@@ -155,6 +123,7 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 			RelativeLayout.LayoutParams buttonParams = new LayoutParams(handleWidth, handleHeight);
 			buttonParams.addRule(RelativeLayout.CENTER_VERTICAL);
 			buttonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			buttonParams.setMargins((int) handleMargin, 0 ,(int) handleMargin, 0);
 
 			if (AppUtils.JELLYBEAN_PLUS_API) {
 				handleButton.setBackground(handleDrawable);

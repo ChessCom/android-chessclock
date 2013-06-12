@@ -2,7 +2,6 @@ package com.chess.ui.fragments.game;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
@@ -47,7 +46,6 @@ import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.PanelInfoTacticsView;
 import com.chess.ui.views.chess_boards.ChessBoardTacticsView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
-import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsTacticsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -96,7 +94,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	private boolean noNetwork;
 	private boolean firstRun = true;
 
-	private TacticsUpdateListener getTacticsUpdateListener;
+	private GetTacticsUpdateListener getGetTacticsUpdateListener;
 	private TacticsInfoUpdateListener tacticsCorrectUpdateListener;
 	private TacticsInfoUpdateListener tacticsWrongUpdateListener;
 	private DbTacticBatchSaveListener dbTacticBatchSaveListener;
@@ -369,7 +367,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		clearSavedTactics();
 
 		customView.findViewById(R.id.cancelBtn).setOnClickListener(this);
-		customView.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+//		customView.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(customView);
@@ -486,7 +484,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	};
 
 	@Override
-	public void valueSelected(int code) {
+	public void onValueSelected(int code) {
 		if (code == ID_NEXT_TACTIC) {
 			getNextTactic();
 		} else if (code == ID_SHOW_ANSWER) {
@@ -502,13 +500,13 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	}
 
 	@Override
-	public void dialogCanceled() {
+	public void onDialogCanceled() {
 		optionsSelectFragment = null;
 	}
 
-	private class TacticsUpdateListener extends ChessUpdateListener<TacticItem> {
+	private class GetTacticsUpdateListener extends ChessUpdateListener<TacticItem> {
 
-		private TacticsUpdateListener() {
+		private GetTacticsUpdateListener() {
 			super(TacticItem.class);
 		}
 
@@ -626,6 +624,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 
 	private void showCorrect(String newRatingStr) {
 		if (!TextUtils.isEmpty(newRatingStr)) {
+			AppData.setUserTacticsRating(getActivity(), tacticItem.getResultItem().getUserRating());
 			topPanelView.setPlayerScore(tacticItem.getResultItem().getUserRating());
 		}
 		topPanelView.showCorrect(true, newRatingStr);
@@ -635,6 +634,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 
 	private void showWrong(String newRatingStr) {
 		if (!TextUtils.isEmpty(newRatingStr)) {
+			AppData.setUserTacticsRating(getActivity(), tacticItem.getResultItem().getUserRating());
 			topPanelView.setPlayerScore(tacticItem.getResultItem().getUserRating());
 		}
 		topPanelView.showWrong(true, newRatingStr);
@@ -747,13 +747,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		final TacticBoardFace boardFace = ChessBoardTactics.getInstance(this);
 		boardView.setGameActivityFace(this);
 
-		if (currentRating == 0) {
-//			if (tacticItem.getResultItem() == null) {
-			currentRating = AppData.getUserTacticsRating(getActivity());
-//			} else {
-//				currentRating = tacticItem.getResultItem().getUserRating();
-//			}
-		}
+		currentRating = AppData.getUserTacticsRating(getActivity());
 
 		topPanelView.setPlayerScore(currentRating);
 
@@ -848,7 +842,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
 			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_FALSE);
 
-			new RequestJsonTask<TacticItem>(getTacticsUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<TacticItem>(getGetTacticsUpdateListener).executeTask(loadItem);
 			controlsTacticsView.enableGameControls(false);
 		}
 	}
@@ -872,10 +866,6 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	}
 
 	private class DbTacticBatchSaveListener extends ChessUpdateListener<TacticItem.Data> {
-		public DbTacticBatchSaveListener() {
-			super();
-		}
-
 		@Override
 		public void updateData(TacticItem.Data returnedObj) {
 			getNextTactic();
@@ -920,8 +910,8 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 //		tacticsTimer = null;
 		inflater = null;
 
-		getTacticsUpdateListener.releaseContext();
-		getTacticsUpdateListener = null;
+		getGetTacticsUpdateListener.releaseContext();
+		getGetTacticsUpdateListener = null;
 		tacticsCorrectUpdateListener.releaseContext();
 		tacticsCorrectUpdateListener = null;
 		tacticsWrongUpdateListener.releaseContext();
@@ -936,12 +926,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		imageUpdateListener = new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR);
 		imageDownloader = new ImageDownloaderToListener(getContext());
 
-//		menuOptionsItems = new CharSequence[]{
-//				getString(R.string.show_answer),
-//				getString(R.string.settings)};
-
-//		menuOptionsDialogListener = new MenuOptionsDialogListener(menuOptionsItems);
-		getTacticsUpdateListener = new TacticsUpdateListener();
+		getGetTacticsUpdateListener = new GetTacticsUpdateListener();
 		tacticsCorrectUpdateListener = new TacticsInfoUpdateListener(CORRECT_RESULT);
 		tacticsWrongUpdateListener = new TacticsInfoUpdateListener(WRONG_RESULT);
 		dbTacticBatchSaveListener = new DbTacticBatchSaveListener();
@@ -968,11 +953,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		controlsTacticsView.enableGameControls(false);
 
 		{// set avatars
-			Drawable user = new IconDrawable(getActivity(), R.string.ic_profile,
-					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
-
 			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-			topAvatarImg.setImageDrawable(user);
 
 			String userAvatarUrl = AppData.getUserAvatar(getContext());
 			imageDownloader.download(userAvatarUrl, imageUpdateListener, AVATAR_SIZE);

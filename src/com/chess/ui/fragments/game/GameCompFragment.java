@@ -23,7 +23,7 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
-import com.chess.ui.engine.configs.NewCompGameConfig;
+import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CompGameSetupFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
@@ -37,7 +37,6 @@ import com.chess.ui.views.chess_boards.ChessBoardCompView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsCompView;
-import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
 import java.util.ArrayList;
@@ -78,14 +77,14 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	private PopupOptionsMenuFragment optionsSelectFragment;
 
 	public GameCompFragment() {
-		NewCompGameConfig config = new NewCompGameConfig.Builder().build();
+		CompGameConfig config = new CompGameConfig.Builder().build();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE,  config.getMode());
 		bundle.putInt(COMP_DELAY, config.getMode());
 		setArguments(bundle);
 	}
 
-	public static GameCompFragment newInstance(NewCompGameConfig config) {
+	public static GameCompFragment newInstance(CompGameConfig config) {
 		GameCompFragment frag = new GameCompFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, config.getMode());
@@ -451,9 +450,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		AppData.clearSavedCompGame(getActivity());
 
 		controlsCompView.enableHintButton(false);
-		if (AppUtils.isNeedToUpgrade(getActivity())) {
-			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-		}
+//		if (AppUtils.isNeedToUpgrade(getActivity())) {
+//			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+//		}
 	}
 
 	private void resideBoardIfCompWhite() {
@@ -490,7 +489,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	}
 
 	@Override
-	public void valueSelected(int code) {
+	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
 //			getActivityFace().openFragment(new CompGameSetupFragment()); // TODO
 			newGame();
@@ -507,7 +506,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	}
 
 	@Override
-	public void dialogCanceled() {
+	public void onDialogCanceled() {
 		optionsSelectFragment = null;
 	}
 

@@ -22,6 +22,7 @@
 		<item name="android:listViewStyle">@style/DefaultListView</item>
 		<item name="android:listChoiceIndicatorSingle">@drawable/btn_radio_selector</item>
 		<item name="timerLabelStyle">@style/GameLabel.Timer</item>
+        <item name="greyButtonSmallSolid">@style/Button.Glassy.Small</item>
 		<item name="greyButton">@style/Button.Glassy</item>
 		<item name="orangeButton">@style/Text.Button</item>
 		<item name="orangeButtonSmall">@style/Button.Orange2.Small</item>

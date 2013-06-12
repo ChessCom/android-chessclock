@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.chess.LinLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_list_item_height"
+        android:gravity="center_vertical"
+        style="@style/ListItem"
+        android:paddingLeft="@dimen/new_game_frame_padding_side"
+        android:paddingRight="@dimen/new_game_frame_padding_side">
+
+        <!--Opponent Title-->
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/opponent_"
+            android:textColor="@color/semitransparent_white_65" />
+
+        <!--Opponent Name-->
+        <com.chess.RoboTextView
+            android:id="@+id/opponentNameTxt"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/random"
+            android:textColor="@color/semitransparent_white_65"
+            android:paddingLeft="10dip" />
+
+        <!--Right Icon-->
+        <com.chess.RoboTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/RightIcon" />
+
+    </com.chess.LinLayout>
+</LinearLayout>

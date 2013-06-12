@@ -541,7 +541,7 @@ public class SlidingMenu extends RelativeLayout {
 	 */
 	public void toggle(boolean animate) {
 		if (isMenuShowing()) {
-			showContent(animate);
+			showContent(false);
 		} else {
 			showMenu(animate);
 		}

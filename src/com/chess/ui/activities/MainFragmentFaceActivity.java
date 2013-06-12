@@ -102,7 +102,12 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			if (fragmentByTag == null) {
 				fragmentByTag = new LiveGameWaitFragment();
 			}
-			switchFragment( fragmentByTag);
+
+			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+			currentActiveFragment = fragmentByTag;
+
+			ft.replace(R.id.content_frame, fragmentByTag, fragmentByTag.getClass().getSimpleName());
+			ft.commitAllowingStateLoss();
 		}
 
 	}

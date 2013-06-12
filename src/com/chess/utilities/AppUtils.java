@@ -25,7 +25,9 @@ import android.text.SpannableStringBuilder;
 import android.text.style.CharacterStyle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -62,6 +64,7 @@ public class AppUtils {
 
 	public static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 	public static final boolean JELLYBEAN_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+	public static final boolean JELLYBEAN1_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
 	public static int sizeOfBitmap(Bitmap data) {
@@ -155,6 +158,33 @@ public class AppUtils {
 		Configuration config = context.getResources().getConfiguration();
 		return (displayMetrics.density == HDPI || displayMetrics.densityDpi == DisplayMetrics.DENSITY_HIGH)
 				&& (displayMetrics.heightPixels <= 800 && config.orientation == Configuration.ORIENTATION_PORTRAIT);
+	}
+
+	/**
+	 * Check if device has software keys and height of screen need to be adjusted
+	 * @param windowManager
+	 * @return
+	 */
+	public static boolean hasSoftKeys(WindowManager windowManager){
+		if (JELLYBEAN1_PLUS_API) {
+			Display d = windowManager.getDefaultDisplay();
+
+			DisplayMetrics realDisplayMetrics = new DisplayMetrics();
+			d.getRealMetrics(realDisplayMetrics);
+
+			int realHeight = realDisplayMetrics.heightPixels;
+			int realWidth = realDisplayMetrics.widthPixels;
+
+			DisplayMetrics displayMetrics = new DisplayMetrics();
+			d.getMetrics(displayMetrics);
+
+			int displayHeight = displayMetrics.heightPixels;
+			int displayWidth = displayMetrics.widthPixels;
+
+			return (realWidth - displayWidth) > 0 || (realHeight - displayHeight) > 0;
+		} else {
+			return false;
+		}
 	}
 
 	/**

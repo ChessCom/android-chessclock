@@ -72,8 +72,8 @@ public class IabHelper {
 	public static final String SKU_GOLD_YEAR = "test_gold_year_2";
 	public static final String SKU_PLATINUM_MONTH = "test_platinum_month_2";
 	public static final String SKU_PLATINUM_YEAR = "test_platinum_year_2";
-	public static final String SKU_DIAMOND_MONTH = "test_diamond_month_1";
-	public static final String SKU_DIAMOND_YEAR = "test_diamond_year_1";
+	public static final String SKU_DIAMOND_MONTH = "test_diamond_month_2";
+	public static final String SKU_DIAMOND_YEAR = "test_diamond_year_2";
 
     // Is debug logging enabled?
     boolean mDebugLog = false;

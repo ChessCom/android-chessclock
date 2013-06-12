@@ -27,7 +27,10 @@ import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.*;
+import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.FlurryData;
+import com.chess.backend.statics.SoundPlayer;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.fragments.daily.DailyGamesNotificationFragment;
@@ -42,11 +45,10 @@ import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
 import com.slidingmenu.lib.SlidingMenu;
-import org.apache.http.protocol.HTTP;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Arrays;
+
+import static com.chess.backend.statics.AppConstants.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -70,7 +72,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected static final int DEFAULT_ICON = 0;
 	protected static final int ONE_ICON = 1;
 	protected static final int TWO_ICON = 2;
-	protected static final long SIDE_MENU_DELAY = 100;
+	protected static final long SIDE_MENU_DELAY = 150;
 
 	private LoginUpdateListenerNew loginUpdateListener;
 
@@ -395,13 +397,18 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE) {
 				FlurryAgent.logEvent(FlurryData.FB_LOGIN);
 			}
-			if (!TextUtils.isEmpty(returnedObj.getData().getUsername())) {
-				preferencesEditor.putString(AppConstants.USERNAME, returnedObj.getData().getUsername().trim().toLowerCase());
+			String username = returnedObj.getData().getUsername();
+			if (!TextUtils.isEmpty(username)) {
+				preferencesEditor.putString(USERNAME, username);
 			}
+			logTest("set avatar = " + returnedObj.getData().getAvatarUrl());
+			preferencesEditor.putString(username + PREF_USER_AVATAR_URL, returnedObj.getData().getAvatarUrl());
+			preferencesEditor.putInt(username + PREF_USER_COUNTRY_ID, returnedObj.getData().getCountryId());
+
 			if (returnedObj.getData().getTacticsRating() != 0) {
-				AppData.setUserTacticsRating(getActivity(), returnedObj.getData().getTacticsRating());
+				preferencesEditor.putInt(username + PREF_USER_TACTICS_RATING, returnedObj.getData().getTacticsRating());
 			}
-			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, returnedObj.getData().getPremiumStatus());
+			preferencesEditor.putInt(username + USER_PREMIUM_STATUS, returnedObj.getData().getPremiumStatus());
 			processLogin(returnedObj.getData());
 		}
 
@@ -435,7 +442,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			if (resultMessage.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
 				popupItem.setPositiveBtnId(R.string.sign_up);
 				showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
-			} else {
 			}
 		}
 	}
@@ -445,19 +451,15 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			return;
 		}
 
-		preferencesEditor.putLong(AppConstants.USER_ID, returnedObj.getUserId());
-		AppData.setUserCountryId(getActivity(), returnedObj.getCountryId());
-		logTest("setting avatar url = " + returnedObj.getAvatarUrl());
-		AppData.setUserAvatar(getActivity(), returnedObj.getAvatarUrl());
-		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
+		preferencesEditor.putString(PASSWORD, getTextFromField(passwordEdt));
 
-		try {
-			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(returnedObj.getLoginToken(), HTTP.UTF_8));
-		} catch (UnsupportedEncodingException ignored) {
-			preferencesEditor.putString(AppConstants.USER_TOKEN, returnedObj.getLoginToken());
+//		try {
+//			preferencesEditor.putString(USER_TOKEN, URLEncoder.encode(returnedObj.getLoginToken(), HTTP.UTF_8));
+//		} catch (UnsupportedEncodingException ignored) {
+			preferencesEditor.putString(USER_TOKEN, returnedObj.getLoginToken());
 //			showSinglePopupDialog(R.string.error, R.string.error_occurred_while_login); // or use that logic?
 //			return;
-		}
+//		}
 // 		preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]); // TODO used only for live, so should be separate connection to live
 		preferencesEditor.commit();
 
