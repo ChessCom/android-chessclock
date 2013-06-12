@@ -175,23 +175,14 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 
 		{ // Terms link handle
-			int linkColor = getResources().getColor(R.color.new_text_blue);
 			TextView termsLinkTxt = (TextView) view.findViewById(R.id.termsLinkTxt);
 			termsLinkTxt.setClickable(true);
-//			CharSequence termsText = getString(R.string.profile_account_message_1)
-//					+ /*BLUE_COLOR_DIVIDER + */getString(R.string.profile_account_message_2) + BLUE_COLOR_DIVIDER
-//					+ getString(R.string.profile_account_message_3)
-//					+ BLUE_COLOR_DIVIDER + getString(R.string.profile_account_message_4) + BLUE_COLOR_DIVIDER;
-//			termsLinkTxt.setText(AppUtils.setSpanBetweenTokens(termsText, BLUE_COLOR_DIVIDER, new ForegroundColorSpan(linkColor)));
 			String termsText = getString(R.string.profile_account_message_1) + StaticData.SYMBOL_NEW_STR + StaticData.SYMBOL_NEW_STR
 					+ getString(R.string.profile_account_message_2) + StaticData.SYMBOL_SPACE
 					+ getString(R.string.profile_account_message_3) + StaticData.SYMBOL_SPACE
 					+ getString(R.string.profile_account_message_4);
-//			termsLinkTxt.setText(termsText);
 			termsLinkTxt.setText(Html.fromHtml(termsText));
-			termsLinkTxt.setLinkTextColor(linkColor);
 			Linkify.addLinks(termsLinkTxt, Linkify.WEB_URLS);
-//			stripUnderlines(termsLinkTxt);
 			termsLinkTxt.setMovementMethod(LinkMovementMethod.getInstance());
 			termsLinkTxt.setLinkTextColor(Color.WHITE);
 		}

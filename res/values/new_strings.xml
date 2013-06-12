@@ -173,10 +173,8 @@
     <string name="invite_friends_profile_message">Chess is more fun with Friends! Invite them to join!</string>
     <string name="profile_account_message_1">Your account is subject to the site </string>
     <string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice">Terms and Conditions.</a>]]></string>
-    <!--<string name="profile_account_message_2"><a href="http://www.chess.com/legal#termsofservice">Terms and Conditions.</a></string>-->
     <string name="profile_account_message_3">If you would like \nto close your account,</string>
     <string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">tap here.</a>]]></string>
-    <!--<string name="profile_account_message_4"><a href="http://www.chess.com/home/privacy">tap here.</a></string>-->
     <string name="membership_expire_date_format">dd/MM/yyyy</string>
     <string name="basic">Basic</string>
     <string name="sign_up_now_free">Sign Up Now, It\'s FREE!</string>

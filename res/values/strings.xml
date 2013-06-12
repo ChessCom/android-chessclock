@@ -392,7 +392,9 @@
     <string name="first_name">First Name</string>
     <string name="profile_picture">Profile Picture</string>
     <string name="new_signup_without_facebook">or, Sign Up without using Facebook:</string>
-    <string name="new_by_signing_up_accept_mobile">By signing up, I accept Terms of Service</string>
+    <!--<string name="new_by_signing_up_accept_mobile">By signing up, I accept Terms of Service</string>-->
+    <string name="new_by_signing_up_accept_mobile">By signing up, I accept</string>
+    <string name="new_by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Terms of Service</a>]]></string>
     <string name="new_start_chess_game_with_friends">Start a Chess Game with Your Friends</string>
     <string name="new_create_chess_profile">Create Your Online Chess Profile</string>
     <string name="board_and_pieces"><![CDATA[Board & Pieces]]></string>

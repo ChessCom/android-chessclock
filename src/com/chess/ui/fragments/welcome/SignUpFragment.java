@@ -2,13 +2,18 @@ package com.chess.ui.fragments.welcome;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
@@ -68,6 +73,17 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 		passwordRetypeEdt.addTextChangedListener(new FieldChangeWatcher(passwordRetypeEdt));
 
 		setLoginFields(userNameEdt, passwordEdt);
+
+		{ // Terms link handle
+			TextView termsLinkTxt = (TextView) view.findViewById(R.id.termsLinkTxt);
+			termsLinkTxt.setClickable(true);
+			String termsText = getString(R.string.new_by_signing_up_accept_mobile) + StaticData.SYMBOL_NEW_STR + StaticData.SYMBOL_NEW_STR
+					+ getString(R.string.new_by_signing_up_accept_mobile1) ;
+			termsLinkTxt.setText(Html.fromHtml(termsText));
+			Linkify.addLinks(termsLinkTxt, Linkify.WEB_URLS);
+			termsLinkTxt.setMovementMethod(LinkMovementMethod.getInstance());
+			termsLinkTxt.setLinkTextColor(Color.WHITE);
+		}
 
 		registerUpdateListener = new RegisterUpdateListener();
 	}

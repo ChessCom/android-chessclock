@@ -102,7 +102,6 @@ public class ResultsFragment extends CommonLogicFragment implements YouTubePlaye
 	private ArrayList<PromoteItem> menuItems;
 	private PromotesAdapter adapter;
 	private ListView listView;
-	private TextView resultTxt;
 
 	public ResultsFragment() {
 
@@ -237,13 +236,11 @@ public class ResultsFragment extends CommonLogicFragment implements YouTubePlaye
 
 	@Override
 	public void onDrawerOpened() {
-		resultTxt.setVisibility(View.GONE);
 		listView.setVisibility(View.GONE);
 	}
 
 	@Override
 	public void onDrawerClosed() {
-		resultTxt.setVisibility(View.VISIBLE);
 		listView.setVisibility(View.VISIBLE);
 	}
 

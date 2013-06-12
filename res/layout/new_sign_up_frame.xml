@@ -113,9 +113,9 @@
                 />
 
             <com.chess.RoboTextView
+                android:id="@+id/termsLinkTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/new_by_signing_up_accept_mobile"
                 style="@style/SetupSmallFont"
                 android:paddingTop="10dip"
                 />
