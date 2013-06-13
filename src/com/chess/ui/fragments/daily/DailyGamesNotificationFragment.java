@@ -34,7 +34,7 @@ import com.chess.ui.activities.old.ChatOnlineActivity;
 import com.chess.ui.adapters.*;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.NewGamesFragment;
+import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 import com.slidingmenu.lib.SlidingMenu;
@@ -213,7 +213,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 	public void onClick(View view) {
 		super.onClick(view);
 		if (view.getId() == R.id.startNewGameBtn) {
-			getActivityFace().changeRightFragment(NewGamesFragment.newInstance(NewGamesFragment.RIGHT_MENU_MODE));
+			getActivityFace().changeRightFragment(HomePlayFragment.newInstance(RIGHT_MENU_MODE));
 
 			handler.postDelayed(new Runnable() {
 				@Override
@@ -677,7 +677,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 				loadingView.setVisibility(View.GONE);
 			}
 			if (listView.getAdapter().getCount() == 0) { // TODO check
-				emptyView.setVisibility(View.VISIBLE);
+//				emptyView.setVisibility(View.VISIBLE);
 				listView.setVisibility(View.GONE);
 			}
 		} else {

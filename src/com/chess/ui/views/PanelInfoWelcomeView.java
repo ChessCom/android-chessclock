@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -17,7 +16,6 @@ import com.chess.RoboTextView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
 import com.chess.utilities.AppUtils;
-import com.nineoldandroids.animation.ObjectAnimator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,18 +25,9 @@ import com.nineoldandroids.animation.ObjectAnimator;
  */
 public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnClickListener {
 
-	public static final int AVATAR_ID = 0x00004400;
-	public static final int PLAYER_ID = 0x00004401;
-	public static final int CAPTURED_ID = 0x00004404;
-	public static final int WHAT_IS_TXT_ID = 0x00004405;
-
-	private RoboTextView playerTxt;
-	private ImageView avatarImg;
-	private View capturedPiecesView;
-
-	private Handler handler;
+	public static final int WHAT_IS_TXT_ID = 0x00004305;
 	private int side;
-	private ObjectAnimator flipFirstHalf;
+
 
 	public PanelInfoWelcomeView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -48,11 +37,10 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 	@Override
 	public void onCreate(AttributeSet attrs) {
 		boolean useSingleLine;
-		if (isInEditMode()) {
+		Context context = getContext();
+		if (isInEditMode() || context == null) {
 			return;
 		}
-		handler = new Handler();
-		Context context = getContext();
 		Resources resources = context.getResources();
 		float density = resources.getDisplayMetrics().density;
 
@@ -77,7 +65,7 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_big_size);
 		}
 
-		boolean hasSoftKeys = AppUtils.hasSoftKeys(((Activity) getContext()).getWindowManager());
+		boolean hasSoftKeys = AppUtils.hasSoftKeys(((Activity) context).getWindowManager());
 		if (hasSoftKeys) {
 			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_medium_size);
 		}
@@ -111,7 +99,7 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 
 			playerParams.addRule(RIGHT_OF, AVATAR_ID);
-			playerParams.addRule(CENTER_VERTICAL);
+			playerParams.addRule(ALIGN_TOP, AVATAR_ID);
 
 			playerTxt.setTextSize(playerTextSize);
 			playerTxt.setTextColor(playerTextColor);
@@ -176,7 +164,7 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			int paddingLeft = (int) (11 * density);
 
 			if (hasSoftKeys) {
-				padding = (int) (5 * density);
+				padding = (int) (3 * density);
 			}
 
 			setPadding(paddingLeft, padding, paddingRight, padding);
@@ -215,6 +203,10 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 	@Override
 	public void updateCapturedPieces(int[] alivePiecesCountArray) {
 		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).updateCapturedPieces(alivePiecesCountArray);
+	}
+
+	public void resetPieces() {
+		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).dropPieces();
 	}
 
 }

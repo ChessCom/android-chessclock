@@ -33,8 +33,8 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
+import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.interfaces.BoardFace;
@@ -126,7 +126,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.live_chess);
+		setTitle(R.string.live);
 
 		widgetsInit(view);
 		try {
@@ -594,7 +594,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 	@Override
 	public void newGame() {
-		getActivityFace().changeRightFragment(NewGamesFragment.newInstance(NewGamesFragment.RIGHT_MENU_MODE));
+		getActivityFace().changeRightFragment(HomePlayFragment.newInstance(RIGHT_MENU_MODE));
 	}
 
 	@Override
@@ -606,6 +606,27 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 				logTest(e.getMessage());
 			}
 		}
+	}
+
+
+	@Override
+	public void toggleSides() {
+		if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
+			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
+		} else {
+			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+		}
+		BoardAvatarDrawable tempDrawable = labelsConfig.topAvatar;
+		labelsConfig.topAvatar = labelsConfig.bottomAvatar;
+		labelsConfig.bottomAvatar = tempDrawable;
+
+		String tempLabel = labelsConfig.topPlayerName;
+		labelsConfig.topPlayerName = labelsConfig.bottomPlayerName;
+		labelsConfig.bottomPlayerName = tempLabel;
+
+		String tempScore = labelsConfig.topPlayerRating;
+		labelsConfig.topPlayerRating = labelsConfig.bottomPlayerRating;
+		labelsConfig.bottomPlayerRating = tempScore;
 	}
 
 	@Override
@@ -921,7 +942,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			getBoardFace().decreaseMovesCount();
 			boardView.invalidate();
 		} else if (view.getId() == R.id.newGamePopupBtn) {
-			getActivityFace().changeRightFragment(NewGamesFragment.newInstance(NewGamesFragment.RIGHT_MENU_MODE));
+			getActivityFace().changeRightFragment(HomePlayFragment.newInstance(RIGHT_MENU_MODE));
 		} else if (view.getId() == R.id.shareBtn) {
 			LiveChessService liveService;
 			try {

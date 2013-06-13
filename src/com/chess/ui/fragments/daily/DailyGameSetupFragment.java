@@ -45,7 +45,7 @@ public class DailyGameSetupFragment extends CommonLogicFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.daily_chess);
+		setTitle(R.string.daily);
 
 		view.findViewById(R.id.dailyPlayBtn).setOnClickListener(this);
 		view.findViewById(R.id.playFriendView).setOnClickListener(this);

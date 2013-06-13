@@ -252,6 +252,7 @@
     <dimen name="notations_text_size">14sp</dimen>
     <dimen name="notations_margin_top">0dip</dimen>
     <dimen name="default_header_height">45dip</dimen>
+    <dimen name="default_header_height_small">30dip</dimen>
 
     <!--GameControlsView-->
     <dimen name="game_controls_button_height">48dip</dimen>

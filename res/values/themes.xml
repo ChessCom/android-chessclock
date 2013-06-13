@@ -26,6 +26,7 @@
 		<item name="greyButton">@style/Button.Glassy</item>
 		<item name="orangeButton">@style/Text.Button</item>
 		<item name="orangeButtonSmall">@style/Button.Orange2.Small</item>
+        <item name="android:scrollbars">none</item>
     </style>
 
 

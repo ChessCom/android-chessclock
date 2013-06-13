@@ -34,6 +34,7 @@ public class AppConstants {
 	public static final String PREF_COMPUTER_MODE = "vs computer game mode";
 	public static final String PREF_ACTION_AFTER_MY_MOVE = "aim";
 	public static final String USER_PREMIUM_STATUS = "premium_status";
+	public static final String USER_PREMIUM_SKU = "premium_sku";
 
 	/* Board and Game Preferences */
 	public static final String PREF_SOUNDS = "enable sounds";

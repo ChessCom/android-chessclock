@@ -378,6 +378,14 @@
         <item name="btn_rect_pos">listItemHeaderDark</item>
         <item name="btn_solid">@color/header_dark</item>
     </style>
+    <style name="ListItem.Header.Dark.Small">
+        <item name="android:minHeight">@dimen/default_header_height_small</item>
+    </style>
+
+    <style name="ListItem.Header.Notations">
+        <item name="btn_rect_pos">listItemHeaderDark</item>
+        <item name="btn_solid">@color/notations_back</item>
+    </style>
 
 
 

@@ -1,15 +1,17 @@
 package com.chess.ui.fragments.daily;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -21,6 +23,8 @@ import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.BaseResponseItem;
 import com.chess.backend.entity.new_api.DailyGameByIdItem;
+import com.chess.backend.image_load.ImageDownloaderToListener;
+import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -36,9 +40,8 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.fragments.CompGameSetupFragment;
-import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
+import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
@@ -52,7 +55,6 @@ import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
-import com.chess.utilities.MopubHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -68,6 +70,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	public static final String DOUBLE_SPACE = "  ";
 	private static final String DRAW_OFFER_TAG = "offer draw";
 	private static final String ERROR_TAG = "send request failed popup";
+	private static final String OPTION_SELECTION = "option select popup";
 
 	private static final int SEND_MOVE_UPDATE = 1;
 	private static final int CREATE_CHALLENGE_UPDATE = 2;
@@ -78,19 +81,15 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	// Quick action ids
 	private static final int ID_NEW_GAME = 0;
-	private static final int ID_OFFER_DRAW = 1;
+	private static final int ID_FLIP_BOARD = 1;
 	private static final int ID_EMAIL_GAME = 2;
-	private static final int ID_FLIP_BOARD = 3;
-	private static final int ID_SETTINGS = 4;
+	private static final int ID_SETTINGS = 3;
 
 	private GameOnlineUpdatesListener abortGameUpdateListener;
 	private GameOnlineUpdatesListener drawOfferedUpdateListener;
 
 	private GameStateUpdateListener gameStateUpdateListener;
-	//	private StartGameUpdateListener startGameUpdateListener;
-//	private GetGameUpdateListener getGameUpdateListener;
 	private GameOnlineUpdatesListener sendMoveUpdateListener;
-	//	private GameOnlineUpdatesListener gamesListUpdateListener;
 	private GameOnlineUpdatesListener createChallengeUpdateListener;
 
 	private ChessBoardNetworkView boardView;
@@ -99,13 +98,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private DailyGameByIdItem.Data currentGame;
 	private long gameId;
 
-	private static final String OPTION_SELECTION = "option select popup";
-
-	/**
-	 * Use local Db instead, and pass game id through intent directly
-	 */
-//	@Deprecated
-//	private GameListCurrentItem gameInfoItem;
 //	private String timeRemains;
 
 	private IntentFilter boardUpdateFilter;
@@ -123,8 +115,13 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private LabelsConfig labelsConfig;
 	private ArrayList<String> optionsList;
 	private PopupOptionsMenuFragment optionsSelectFragment;
+	private ImageDownloaderToListener imageDownloader;
 	private String[] countryNames;
 	private int[] countryCodes;
+
+	public GameDailyFinishedFragment() {
+
+	}
 
 	public static GameDailyFinishedFragment newInstance(long gameId) {
 		GameDailyFinishedFragment fragment = new GameDailyFinishedFragment();
@@ -153,11 +150,10 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.daily_chess);
+		setTitle(R.string.daily);
 
 		widgetsInit(view);
 	}
-
 
 	@Override
 	public void onStart() {
@@ -169,33 +165,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //		loadGameAndUpdate();
 		updateGameState(gameId);
 	}
-
-
-
-/*
-	@Override
-	protected void onNewIntent(Intent intent) {   // TODO restore, recheck logic
-		super.onNewIntent(intent);
-
-		if (intent.getExtras() != null) {
-			Long gameIdReceived = intent.getLongExtra(BaseGameItem.GAME_ID, 0);
-
-			if (gameIdReceived != null){
-				gameId = gameIdReceived;
-
-	//			ChessBoardOnline.resetInstance();
-
-				showSubmitButtonsLay(false);
-	//			boardView.setBoardFace(getBoardFace());
-				boardView.setGameActivityFace(GameOnlineScreenActivity.this);
-
-				getBoardFace().setAnalysis(false);
-
-				loadGameAndUpdate();
-			}
-		}
-	}
-*/
 
 	@Override
 	public void onPause() {
@@ -217,9 +186,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	@Override
 	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
-			getActivityFace().openFragment(new CompGameSetupFragment());
-		} else if (code == ID_OFFER_DRAW) {
-			showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
+			getActivityFace().openFragment(new DailyGameSetupFragment());
 		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
 		} else if (code == ID_EMAIL_GAME) {
@@ -236,7 +203,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	public void onDialogCanceled() {
 		optionsSelectFragment = null;
 	}
-
 
 	private class MoveUpdateReceiver extends BroadcastReceiver {
 		@Override
@@ -291,24 +257,16 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 							getBoardFace().setAnalysis(false);
 
-//							gameInfoItem.setGameId(gameId);
-
-							loadGameAndUpdate();
-							// same new gameId
-							// TODO restore, if needed
-//							Intent intent = getIntent();              // TODO remove gameInfoItem
-//							intent.putExtra(BaseGameItem.GAME_ID, gameId);
-//							getIntent().replaceExtras(intent);
+							updateGameState(gameId);
+//							loadGameAndUpdate();
 							return;
 						}
 					} while (returnedObj.moveToNext());
 
-//					finish();
-					backToHomeFragment(); // TODO restore, recheck logic
+					getActivityFace().showPreviousFragment();
 
 					break;
 			}
-
 		}
 	}
 
@@ -320,68 +278,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 		new RequestJsonTask<DailyGameByIdItem>(gameStateUpdateListener).executeTask(loadItem);
 	}
-
-	//	private class GamesListUpdateListener extends ChessUpdateListener {
-//
-//		@Override
-//		public void updateData(String returnedObj) {
-//			switchToNextGame(returnedObj);
-//		}
-//	}
-
-//	private void switchToNextGame(String returnedObj){
-//		ArrayList<GameListCurrentItem> currentGames = new ArrayList<GameListCurrentItem>();
-//
-//		for (GameListCurrentItem gameListItem : ChessComApiParser.getCurrentOnlineGames(returnedObj)) {
-//			if (gameListItem.isMyTurn()) {
-//				currentGames.add(gameListItem);
-//			}
-//		}
-//
-//		for (GameListCurrentItem currentGame : currentGames) {
-//			if (currentGame.getGameId() != gameId) {
-//				gameId = currentGame.getGameId();
-//				showSubmitButtonsLay(false);
-////				boardView.setBoardFace(ChessBoardOnline.getInstance(GameOnlineScreenActivity.this));
-//				boardView.setGameActivityFace(GameOnlineScreenActivity.this);
-//
-//				getBoardFace().setAnalysis(false);
-//
-//				gameInfoItem.setGameId(gameId);
-//
-////				updateGameState(gameId); // if next game
-//				loadGameAndUpdate();
-//				// same new gameId
-//				Intent intent = getIntent();
-//				intent.putExtra(BaseGameItem.GAME_INFO_ITEM, gameInfoItem);
-//				getIntent().replaceExtras(intent);
-//				return;
-//			}
-//		}
-//		finish();
-//	}
-
-//	private class StartGameUpdateListener extends ChessUpdateListener {
-//
-//		@Override
-//		public void updateData(String returnedObj) {
-//			showSubmitButtonsLay(false);
-//			getSoundPlayer().playGameStart();
-//
-//			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
-//
-//			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
-//
-//			DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
-//
-//			controlsDailyView.enableGameControls(true);
-//			boardView.lockBoard(false);
-//
-//			checkMessages();
-//
-//			adjustBoardForGame();
-//		}
-//	}
 
 	private void adjustBoardForGame() {
 		userPlayWhite = currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(getActivity()));
@@ -470,54 +366,24 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	}
 
 
-
-//	private class GameStateUpdateListener extends ChessUpdateListener {
-//
-//		@Override
-//		public void updateData(String returnedObj) {
-//			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
-//
-//			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
-//
-//			controlsDailyView.enableGameControls(true);
-//			boardView.lockBoard(false);
-//
-//			if (getBoardFace().isAnalysis()) {
-//				boardView.enableAnalysis();
-//				return;
-//			}
-//
-//			onGameRefresh();
-//			checkMessages();
-//		}
-//	}
-
-	public void onGameRefresh() {
-
-		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
-
-//		timeRemains = gameInfoItem.getTimeRemaining() + gameInfoItem.getTimeRemainingUnits();
-
-		if (isUserMove()) {
-//			topPanelView.setTimeLeft(seconds);
+	@Override
+	public void toggleSides() {
+		if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
+			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 		} else {
-			// TODO set greyed timeLeft
-//			topPanelView.setTimeLeft(seconds);
+			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 		}
+		BoardAvatarDrawable tempDrawable = labelsConfig.topAvatar;
+		labelsConfig.topAvatar = labelsConfig.bottomAvatar;
+		labelsConfig.bottomAvatar = tempDrawable;
 
-		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
-			String[] moves = currentGame.getMoveList()
-					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, StaticData.SYMBOL_EMPTY)
-					.replaceAll(DOUBLE_SPACE, StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE);    // Start after "+" sign
+		String tempLabel = labelsConfig.topPlayerName;
+		labelsConfig.topPlayerName = labelsConfig.bottomPlayerName;
+		labelsConfig.bottomPlayerName = tempLabel;
 
-			if (moves.length - getBoardFace().getMovesCount() == 1) {
-				getBoardFace().updateMoves(moves[moves.length - 1], false);
-
-				getBoardFace().setMovesCount(moves.length);
-				boardView.invalidate();
-			}
-			invalidateGameScreen();
-		}
+		String tempScore = labelsConfig.topPlayerRating;
+		labelsConfig.topPlayerRating = labelsConfig.bottomPlayerRating;
+		labelsConfig.bottomPlayerRating = tempScore;
 	}
 
 	@Override
@@ -559,8 +425,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		if (currentGame == null)
 			return StaticData.SYMBOL_EMPTY;
 		else
-			return currentGame.getWhiteUsername() + StaticData.SYMBOL_LEFT_PAR
-					+ currentGame.getWhiteRating() + StaticData.SYMBOL_RIGHT_PAR;
+			return currentGame.getWhiteUsername();
 	}
 
 	@Override
@@ -568,8 +433,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		if (currentGame == null)
 			return StaticData.SYMBOL_EMPTY;
 		else
-			return currentGame.getBlackUsername() + StaticData.SYMBOL_LEFT_PAR
-					+ currentGame.getBlackRating() + StaticData.SYMBOL_RIGHT_PAR;
+			return currentGame.getBlackUsername();
 	}
 
 	@Override
@@ -590,12 +454,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			// get game entity
 			throw new IllegalStateException("Current game became NULL");
 //			updateGameState(gameId);
-//			LoadItem loadItem = new LoadItem();
-//			loadItem.setLoadPath(RestHelper.GET_GAME_V5);
-//			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-//			loadItem.addRequestParams(RestHelper.P_GID, gameId);
-//
-//			new GetStringObjTask(getGameUpdateListener).executeTask(loadItem);
 		} else {
 			sendMove();
 		}
@@ -616,56 +474,15 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		new RequestJsonTask<BaseResponseItem>(sendMoveUpdateListener).executeTask(loadItem);
 	}
 
-
-//	private class GetGameUpdateListener extends ChessUpdateListener {
-//
-//		@Override
-//		public void updateData(String returnedObj) {
-//			currentGame = ChessComApiParser.getGameParseV3(returnedObj);
-//
-////			DBDataManager.updateOnlineGame(getContext(), currentGame);
-//
-//			controlsDailyView.enableGameControls(true);
-//			boardView.lockBoard(false);
-//
-//			sendMove();
-//		}
-//	}
-
-//	private class SendMoveUpdateListener extends ChessUpdateListener {
-//
-//		@Override
-//		public void showProgress(boolean show) {
-//			super.showProgress(show);
-//			if (isPaused)
-//				return;
-//
-//			if (show) {
-//				showPopupHardProgressDialog(R.string.sendinggameinfo);
-//			} else
-//				dismissProgressDialog();
-//		}
-//
-//		@Override
-//		public void updateData(String returnedObj) {
-//			moveWasSent();
-//
-//			NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//			mNotificationManager.cancel((int) gameId);
-//			mNotificationManager.cancel(R.id.notification_message);
-//		}
-//	}
-
 	private void moveWasSent() {
 		showSubmitButtonsLay(false);
-//		if(boardView.isFinished()){
+
 		if(getBoardFace().isFinished()){
 			showGameEndPopup(endGamePopupView, endGameMessage);
 		} else {
 			int action = AppData.getAfterMoveAction(getContext());
 			if (action == StaticData.AFTER_MOVE_RETURN_TO_GAME_LIST)
 				backToHomeFragment();
-//				finish();
 			else if (action == StaticData.AFTER_MOVE_GO_TO_NEXT_GAME) {
 				loadGamesList();
 			}
@@ -686,7 +503,15 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //		new GetStringObjTask(gamesListUpdateListener).executeTask(listLoadItem);
 	}
 
-	private void openChatActivity() {
+	@Override
+	public void switch2Analysis() {
+		showSubmitButtonsLay(false);
+
+		getActivityFace().openFragment(GameDailyAnalysisFragment.newInstance(gameId));
+	}
+
+	@Override
+	public void switch2Chat() {
 		if(currentGame == null)
 			return;
 
@@ -697,31 +522,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		currentGame.setHasNewMessage(false);
 		controlsDailyView.haveNewMessage(false);
 
-		// TODO restore, open ChatFragment
-
-//		Intent intent = new Intent(this, ChatOnlineActivity.class);
-//		intent.putExtra(BaseGameItem.GAME_ID, gameId);
-//		startActivity(intent);
-	}
-
-
-	private void checkMessages() {
-		if (currentGame.hasNewMessage()) {
-			controlsDailyView.haveNewMessage(true);
-		}
-	}
-
-	@Override
-	public void switch2Analysis() {
-		showSubmitButtonsLay(false);
-
-		getActivityFace().openFragment(GameDailyAnalysisFragment.newInstance(gameId));
-//		super.switch2Analysis(isAnalysis);
-	}
-
-	@Override
-	public void switch2Chat() {
-		openChatActivity();
+		getActivityFace().openFragment(new DailyChatFragment());
 	}
 
 	@Override
@@ -744,7 +545,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	@Override
 	public Boolean isUserColorWhite() {
-		if (currentGame != null)
+		if (currentGame != null && getActivity() != null)
 			return currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(getActivity()));
 		else
 			return null;
@@ -786,7 +587,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		String whitePlayerName = currentGame.getWhiteUsername();
 		String blackPlayerName = currentGame.getBlackUsername();
 		String result = GAME_GOES;
-//		boolean finished = boardView.isFinished();
+
 		boolean finished = getBoardFace().isFinished();
 		if(finished){// means in check state
 			if (getBoardFace().getSide() == ChessBoard.WHITE_SIDE) {
@@ -871,45 +672,15 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 			new RequestJsonTask<BaseResponseItem>(abortGameUpdateListener).executeTask(loadItem);
 		} else if(tag.equals(ERROR_TAG)){
-//			backToLoginActivity();
 			backToLoginFragment();
 		}
 		super.onPositiveBtnClick(fragment);
 	}
 
-	protected void changeChatIcon(Menu menu) {
-//		MenuItem menuItem = menu.findItem(R.id.menu_chat);
-//		if(menuItem == null)
-//			return;
-//
-//		if (currentGame.hasNewMessage()) {
-//			menuItem.setIcon(R.drawable.chat_nm);
-//		} else {
-//			menuItem.setIcon(R.drawable.chat);
-//		}
-	}
-
-	@Override
-	public void onPrepareOptionsMenu(Menu menu) { // TODO restore, recheck
-		if (currentGame != null) {
-			changeChatIcon(menu);
-		}
-		super.onPrepareOptionsMenu(menu);
-	}
-
-	//	@Override
-//	public boolean onPrepareOptionsMenu(Menu menu) {
-//		if (currentGame != null) {
-//			changeChatIcon(menu);
-//		}
-//		return super.onPrepareOptionsMenu(menu);
-//	}
-
 	@Override
 	protected void showGameEndPopup(View layout, String message) {
 		if(currentGame == null) {
 			throw new IllegalStateException("showGameEndPopup starts with currentGame = null");
-//			return;
 		}
 
 //		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
@@ -934,8 +705,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		String rating = getString(R.string.your_end_game_rating_online, currentPlayerNewRating);
 		yourRatingTxt.setText(rating);
 
-		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
+//		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+//		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((LinearLayout) layout);
 
@@ -963,7 +734,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		boardView.setGameActivityFace(this);
 
 		adjustBoardForGame();
-		getBoardFace().setJustInitialized(false);
 	}
 
 
@@ -972,11 +742,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		super.onClick(view);
 		if (view.getId() == R.id.newGamePopupBtn) {
 			dismissDialogs();
-			getActivityFace().changeRightFragment(NewGamesFragment.newInstance(NewGamesFragment.RIGHT_MENU_MODE));
-
-//			Intent intent = new Intent(this, OnlineNewGameActivity.class);
-//			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//			startActivity(intent);
+			getActivityFace().changeRightFragment(HomePlayFragment.newInstance(RIGHT_MENU_MODE));
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			sendRematch();
 			dismissDialogs();
@@ -1019,24 +785,16 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 			currentGame = returnedObj.getData();
 
+//			imageDownloader.download(currentGame.get, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
+//			imageDownloader.download("https://s3.amazonaws.com/chess-7/images_users/avatars/rest_large.10.jpeg", new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
+			imageDownloader.download("http://www.tutorialspoint.com/images/java-mini-logo.png", new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
+
+
 			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
 
-			controlsDailyView.enableGameControls(true);
-			boardView.lockBoard(false);
-
-			if (getBoardFace().isAnalysis()) {  // TODO recheck logic
-//				boardView.enableAnalysis();
-				return;
+			adjustBoardForGame();
 			}
-
-			if (getBoardFace().isJustInitialized()){
-				adjustBoardForGame();
-			} else {
-				onGameRefresh();
-			}
-			checkMessages();
 		}
-	}
 
 	private class GameOnlineUpdatesListener extends ChessUpdateListener<BaseResponseItem> {
 		private int listenerCode;
@@ -1044,21 +802,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		private GameOnlineUpdatesListener(int listenerCode) {
 			super(BaseResponseItem.class);
 			this.listenerCode = listenerCode;
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			if (isPaused)
-				return;
-
-			if (listenerCode == SEND_MOVE_UPDATE){
-				if (show) {
-					showPopupHardProgressDialog(R.string.sending_game_info);
-				} else {
-					dismissProgressDialog();
-				}
-			}
 		}
 
 		@Override
@@ -1111,6 +854,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 		currentGamesCursorUpdateListener = new LoadFromDbUpdateListener(GAMES_LIST);
 
+		imageDownloader = new ImageDownloaderToListener(getActivity());
+
 		countryNames = getResources().getStringArray(R.array.new_countries);
 		countryCodes = getResources().getIntArray(R.array.new_country_ids);
 	}
@@ -1123,7 +868,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
 		{// set avatars
-
 			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 		}
@@ -1147,6 +891,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		{// options list setup
 			optionsList = new ArrayList<String>();
 			optionsList.add( getString(R.string.new_game));
+			optionsList.add(getString(R.string.flip_board));
 			optionsList.add( getString(R.string.email_game));
 			optionsList.add(getString(R.string.settings));
 		}
@@ -1165,6 +910,47 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 		int getOpponentSide(){
 			return userSide == ChessBoard.WHITE_SIDE? ChessBoard.BLACK_SIDE: ChessBoard.WHITE_SIDE;
+		}
+	}
+
+
+	private class ImageUpdateListener implements ImageReadyListener {
+
+		private static final int TOP_AVATAR = 0;
+		private static final int BOTTOM_AVATAR = 1;
+		private int code;
+
+		private ImageUpdateListener(int code) {
+			this.code = code;
+		}
+
+		@Override
+		public void onImageReady(Bitmap bitmap) {
+			Activity activity = getActivity();
+			if (activity == null/* || bitmap == null*/) {
+				Log.e("TEST", "ImageLoader bitmap == null");
+				return;
+			}
+			switch (code) {
+				case TOP_AVATAR:
+					labelsConfig.topAvatar = new BoardAvatarDrawable(activity, bitmap);
+
+					labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+					topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+					topPanelView.invalidate();
+
+					String userAvatarUrl = AppData.getUserAvatar(activity);
+					imageDownloader.download(userAvatarUrl, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
+
+					break;
+				case BOTTOM_AVATAR:
+					labelsConfig.bottomAvatar = new BoardAvatarDrawable(activity, bitmap);
+
+					labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+					bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+					bottomPanelView.invalidate();
+					break;
+			}
 		}
 	}
 

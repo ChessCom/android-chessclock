@@ -668,6 +668,10 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	}
 
 	@Override
+	public void toggleSides() {
+	}
+
+	@Override
 	public void invalidateGameScreen() {
 		boardView.invalidate();
 	}

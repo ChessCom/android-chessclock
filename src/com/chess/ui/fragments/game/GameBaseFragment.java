@@ -148,11 +148,11 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 
 		if (!getBoardFace().isSubmit()) {
 
-			if (!AppUtils.isNeedToUpgrade(getActivity())) {
+//			if (!AppUtils.isNeedToUpgrade(getActivity())) {
 				endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
-			}else {
-				endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);
-			}
+//			}else {
+//				endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);
+//			}
 
 			showGameEndPopup(endGamePopupView, endGameMessage);
 			setBoardToFinishedState();

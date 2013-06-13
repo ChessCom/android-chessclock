@@ -41,12 +41,12 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	private int FLAG_SIZE = 16;
 	private int FLAG_MARGIN = 5;
 
-	private RoboTextView playerTxt;
-	private ImageView avatarImg;
-	private ImageView flagImg;
-	private View capturedPiecesView;
-	private RoboTextView timeLeftTxt;
-	private ImageView premiumImg;
+	protected RoboTextView playerTxt;
+	protected ImageView avatarImg;
+	protected ImageView flagImg;
+	protected View capturedPiecesView;
+	protected RoboTextView timeLeftTxt;
+	protected ImageView premiumImg;
 
 	private int side;
 	private boolean smallScreen;
@@ -263,7 +263,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			int paddingLeft = (int) (11 * density);
 
 			if (hasSoftKeys) {
-				padding = (int) (5 * density);
+				padding = (int) (3 * density);
 			}
 
 			setPadding(paddingLeft, padding, paddingRight, padding);
@@ -344,6 +344,9 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).updateCapturedPieces(alivePiecesCountArray);
 	}
 
+	public void resetPieces() {
+		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).dropPieces();
+	}
 
 
 	private void setTimeLeftPadding() {

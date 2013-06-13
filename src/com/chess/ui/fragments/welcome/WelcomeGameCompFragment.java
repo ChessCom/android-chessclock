@@ -1,22 +1,28 @@
 package com.chess.ui.fragments.welcome;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 import com.bugsense.trace.BugSenseHandler;
+import com.chess.FontsHelper;
+import com.chess.MultiDirectionSlidingDrawer;
 import com.chess.R;
+import com.chess.RoboTextView;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.model.PopupItem;
+import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
@@ -35,8 +41,8 @@ import com.chess.ui.views.PanelInfoWelcomeView;
 import com.chess.ui.views.chess_boards.ChessBoardCompView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.ui.views.game_controls.ControlsCompView;
-import com.chess.utilities.MopubHelper;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -51,11 +57,26 @@ import java.util.List;
  * Date: 19.05.13
  * Time: 17:15
  */
-public class WelcomeGameCompFragment extends GameBaseFragment implements GameCompActivityFace, PopupListSelectionFace {
+public class WelcomeGameCompFragment extends GameBaseFragment implements GameCompActivityFace,
+		PopupListSelectionFace, AdapterView.OnItemClickListener, MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener {
 
 	private static final String MODE = "mode";
 	private static final String COMP_DELAY = "comp_delay";
-	// Quick action ids
+
+	private static final int PLAY_ONLINE_ITEM = 1;
+	private static final int CHALLENGE_ITEM = 2;
+	private static final int REMATCH_ITEM = 3;
+	private static final int TACTICS_ITEM = 4;
+	private static final int LESSONS_ITEM = 5;
+	private static final int VIDEOS_ITEM = 6;
+
+	private static final String PLAY_ONLINE_TAG = "play online tag";
+	private static final String CHALLENGE_TAG = "challenge friend tag";
+	private static final String TACTICS_TAG = "tactics tag";
+	private static final String LESSONS_TAG = "lessons tag";
+	private static final String VIDEOS_TAG = "videos tag";
+
+	// game op action ids
 	private static final int ID_NEW_GAME = 0;
 	private static final int ID_EMAIL_GAME = 1;
 	private static final int ID_FLIP_BOARD = 2;
@@ -63,8 +84,10 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	private static final long ANIMATION_DELAY = 1500;
 	private static final long REPEAT_TIMEOUT = 60000;
-	private static final int DURATION = 400;
+	private static final int FLIP_ANIM_DURATION = 400;
+	private static final int FADE_ANIM_DURATION = 300;
 	private static final String OPTION_SELECTION = "option select popup";
+	private static final long DRAWER_APPEAR_DELAY = 100;
 	private WelcomeTabsFace parentFace;
 
 	private Interpolator accelerator = new AccelerateInterpolator();
@@ -87,6 +110,14 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	private ObjectAnimator flipFirstHalf;
 	private List<String> optionsList;
 	private PopupOptionsMenuFragment optionsSelectFragment;
+	private ListView resultsListView;
+	private ArrayList<PromoteItem> menuItems;
+	private PromotesAdapter resultsAdapter;
+	private View boardLinLay;
+	private MultiDirectionSlidingDrawer slidingDrawer;
+	private RoboTextView resultTxt;
+	private ObjectAnimator fadeBoardAnimator;
+	private ObjectAnimator fadeDrawerAnimator;
 
 	public WelcomeGameCompFragment() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
@@ -420,11 +451,26 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void onGameOver(String message, boolean need2Finish) {
-//		super.onGameOver(message, need2Finish);
 		boolean userWon = !message.equals(getString(R.string.black_wins));
-		preferencesEditor.putBoolean(AppConstants.WELCOME_GAME_WON, userWon).commit();
-		if (parentFace != null) { // TODO do something if activity was killed and we restored fragment w/o parentFace :(
-			parentFace.changeInternalFragment(WelcomeTabsFragment.RESULTS_FRAGMENT);
+
+		topPanelView.resetPieces();
+		bottomPanelView.resetPieces();
+
+		handler.postDelayed(new Runnable() { // delay to show fling animation
+			@Override
+			public void run() {
+				slidingDrawer.animateOpen();
+			}
+		}, DRAWER_APPEAR_DELAY);
+
+		slidingDrawer.setVisibility(View.VISIBLE);
+		fadeDrawerAnimator.reverse();
+		fadeBoardAnimator.start();
+
+		if (userWon) {
+			resultTxt.setText(R.string.you_won);
+		} else {
+			resultTxt.setText(R.string.you_lose);
 		}
 	}
 
@@ -437,8 +483,8 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
 		endGameReasonTxt.setText(message);
 
-		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
+//		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+//		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((LinearLayout) layout);
 
@@ -498,6 +544,86 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		optionsSelectFragment = null;
 	}
 
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		switch (position) {
+			case PLAY_ONLINE_ITEM:
+				popupItem.setPositiveBtnId(R.string.log_in);
+				popupItem.setNegativeBtnId(R.string.sign_up);
+				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.play_online)), PLAY_ONLINE_TAG);
+				break;
+			case CHALLENGE_ITEM:
+				popupItem.setPositiveBtnId(R.string.log_in);
+				popupItem.setNegativeBtnId(R.string.sign_up);
+				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.challenge_friend)), CHALLENGE_TAG);
+				break;
+			case REMATCH_ITEM:
+				parentFace.changeInternalFragment(WelcomeTabsFragment.GAME_FRAGMENT);
+				break;
+			case TACTICS_ITEM:
+				popupItem.setPositiveBtnId(R.string.log_in);
+				popupItem.setNegativeBtnId(R.string.sign_up);
+				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.solve_tactics_puzzles)), TACTICS_TAG);
+
+				break;
+			case LESSONS_ITEM:
+				popupItem.setPositiveBtnId(R.string.log_in);
+				popupItem.setNegativeBtnId(R.string.sign_up);
+				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.learn_lessons)), LESSONS_TAG);
+				break;
+			case VIDEOS_ITEM:
+				popupItem.setPositiveBtnId(R.string.log_in);
+				popupItem.setNegativeBtnId(R.string.sign_up);
+				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.watch_videos)), VIDEOS_TAG);
+				break;
+		}
+	}
+
+	@Override
+	public void onPositiveBtnClick(DialogFragment fragment) {
+		super.onPositiveBtnClick(fragment);
+
+		String tag = fragment.getTag();
+		if (isTagEmpty(fragment)) {
+			return;
+		}
+
+		if (tag.equals(PLAY_ONLINE_TAG) || tag.equals(CHALLENGE_TAG) || tag.equals(TACTICS_TAG)
+				|| tag.equals(LESSONS_TAG) || tag.equals(VIDEOS_TAG)) {
+			parentFace.changeInternalFragment(WelcomeTabsFragment.SIGN_IN_FRAGMENT);
+		}
+	}
+
+	@Override
+	public void onNegativeBtnClick(DialogFragment fragment) {
+		super.onNegativeBtnClick(fragment);
+
+		String tag = fragment.getTag();
+		if (isTagEmpty(fragment)) {
+			return;
+		}
+
+		if (tag.equals(PLAY_ONLINE_TAG) || tag.equals(CHALLENGE_TAG) || tag.equals(TACTICS_TAG)
+				|| tag.equals(LESSONS_TAG) || tag.equals(VIDEOS_TAG)) {
+			parentFace.changeInternalFragment(WelcomeTabsFragment.SIGN_UP_FRAGMENT);
+		}
+	}
+
+	@Override
+	public void onDrawerOpened() {
+		ChessBoardComp.resetInstance();
+		AppData.clearSavedCompGame(getActivity());
+		notationsView.resetNotations();
+		boardView.invalidate();
+	}
+
+	@Override
+	public void onDrawerClosed() {
+		slidingDrawer.setVisibility(View.GONE);
+		fadeBoardAnimator.reverse();
+		fadeDrawerAnimator.start();
+	}
+
 	private class LabelsConfig {
 		BoardAvatarDrawable topAvatar;
 		BoardAvatarDrawable bottomAvatar;
@@ -514,9 +640,21 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		labelsConfig = new LabelsConfig();
 		ChessBoardComp.resetInstance();
 		getBoardFace().setMode(getArguments().getInt(MODE));
+
+		menuItems = new ArrayList<PromoteItem>();
+		menuItems.add(new PromoteItem(R.string.play_online, R.string.ic_play_online));
+		menuItems.add(new PromoteItem(R.string.challenge_friend, R.string.ic_challenge_friend));
+		menuItems.add(new PromoteItem(R.string.rematch_computer, R.string.ic_comp_game));
+		menuItems.add(new PromoteItem(R.string.tactics_and_puzzles, R.string.ic_help));
+		menuItems.add(new PromoteItem(R.string.interactive_lessons, R.string.ic_lessons));
+		menuItems.add(new PromoteItem(R.string.videos, R.string.ic_play));
+
+		resultsAdapter = new PromotesAdapter(getActivity(), menuItems);
 	}
 
 	private void widgetsInit(View view) {
+		Activity activity = getActivity();
+
 		controlsCompView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoWelcomeView) view.findViewById(R.id.topPanelView);
@@ -531,11 +669,11 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 			whatIsTxt.setOnClickListener(this);
 
 			flipFirstHalf = ObjectAnimator.ofFloat(whatIsTxt, "rotationX", 0f, 90f);
-			flipFirstHalf.setDuration(DURATION);
+			flipFirstHalf.setDuration(FLIP_ANIM_DURATION);
 			flipFirstHalf.setInterpolator(accelerator);
 
 			final ObjectAnimator flipSecondHalf = ObjectAnimator.ofFloat(whatIsTxt, "rotationX", -90f, 0f);
-			flipSecondHalf.setDuration(DURATION);
+			flipSecondHalf.setDuration(FLIP_ANIM_DURATION);
 			flipSecondHalf.setInterpolator(decelerator);
 
 			flipFirstHalf.addListener(new AnimatorListenerAdapter() {
@@ -547,15 +685,15 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		}
 
 		{// set avatars
-			Drawable user = new IconDrawable(getActivity(), R.string.ic_profile,
+			Drawable user = new IconDrawable(activity, R.string.ic_profile,
 					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
-			Drawable src = new IconDrawable(getActivity(), R.string.ic_comp_game,
+			Drawable src = new IconDrawable(activity, R.string.ic_comp_game,
 					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
-			labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
+			labelsConfig.topAvatar = new BoardAvatarDrawable(activity, src);
 			if (getBoardFace().getMode() == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) {
 				user = src;
 			}
-			labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), user);
+			labelsConfig.bottomAvatar = new BoardAvatarDrawable(activity, user);
 
 			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
@@ -582,6 +720,36 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 			optionsList.add(getString(R.string.flip_board));
 			optionsList.add(getString(R.string.settings));
 		}
+
+		{ // Results part
+			resultsListView = (ListView) view.findViewById(R.id.listView);
+			// results part
+			resultTxt = new RoboTextView(activity);
+			resultTxt.setTextColor(activity.getResources().getColor(R.color.white));
+			resultTxt.setFont(FontsHelper.BOLD_FONT);
+			resultTxt.setTextSize(30);
+			resultTxt.setGravity(Gravity.CENTER);
+			resultTxt.setMinHeight(activity.getResources().getDimensionPixelSize(R.dimen.result_title_min_height));
+			ButtonDrawableBuilder.setBackgroundToView(resultTxt, R.style.ListItem);
+
+
+			resultsListView.setOnItemClickListener(this);
+			resultsListView.addHeaderView(resultTxt);
+			resultsListView.setAdapter(resultsAdapter);
+
+			slidingDrawer = (MultiDirectionSlidingDrawer) view.findViewById(R.id.slidingDrawer);
+			slidingDrawer.setOnDrawerOpenListener(this);
+			slidingDrawer.setOnDrawerCloseListener(this);
+
+			fadeDrawerAnimator = ObjectAnimator.ofFloat(slidingDrawer, "alpha", 1, 0);
+			fadeDrawerAnimator.setDuration(FADE_ANIM_DURATION);
+			slidingDrawer.setVisibility(View.GONE);
+			fadeDrawerAnimator.start();
+		}
+
+		boardLinLay = view.findViewById(R.id.boardLinLay);
+		fadeBoardAnimator = ObjectAnimator.ofFloat(boardLinLay, "alpha", 1, 0);
+		fadeBoardAnimator.setDuration(FADE_ANIM_DURATION);
 	}
 
 	private Runnable startAnimation = new Runnable() {
@@ -593,5 +761,50 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 			handler.postDelayed(this, REPEAT_TIMEOUT);
 		}
 	};
+
+	private class PromoteItem {
+		public int nameId;
+		public int iconRes;
+		public boolean selected;
+
+		public PromoteItem(int nameId, int iconRes) {
+			this.nameId = nameId;
+			this.iconRes = iconRes;
+		}
+	}
+
+	private class PromotesAdapter extends ItemsAdapter<PromoteItem> {
+
+		public PromotesAdapter(Context context, List<PromoteItem> menuItems) {
+			super(context, menuItems);
+		}
+
+		@Override
+		protected View createView(ViewGroup parent) {
+			View view = inflater.inflate(R.layout.new_results_menu_item, parent, false);
+			ViewHolder holder = new ViewHolder();
+			holder.icon = (TextView) view.findViewById(R.id.iconTxt);
+			holder.title = (TextView) view.findViewById(R.id.rowTitleTxt);
+			view.setTag(holder);
+
+			return view;
+		}
+
+		@Override
+		protected void bindView(PromoteItem item, int pos, View view) {
+			ViewHolder holder = (ViewHolder) view.getTag();
+			holder.icon.setText(item.iconRes);
+			holder.title.setText(item.nameId);
+		}
+
+		public Context getContext() {
+			return context;
+		}
+
+		public class ViewHolder {
+			TextView icon;
+			TextView title;
+		}
+	}
 
 }

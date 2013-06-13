@@ -225,6 +225,16 @@ public class CapturedPiecesDrawable extends Drawable {
 		}
 	}
 
+	public void dropPieces() {
+		capturedPawnCnt = 0;
+		capturedKnightCnt = 0;
+		capturedBishopCnt = 0;
+		capturedRookCnt = 0;
+		capturedQueenCnt = 0;
+
+		invalidateSelf();
+	}
+
 	@Override
 	public void setAlpha(int alpha) {
 	}

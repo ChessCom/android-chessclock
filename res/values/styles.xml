@@ -135,7 +135,7 @@
     </style>
 
 
-    <style name="NotationsStyle" parent="ListItem.Header.Dark">
+    <style name="NotationsStyle" parent="ListItem.Header.Notations">
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_marginTop">@dimen/notations_margin_top</item>
     </style>

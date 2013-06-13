@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.upgrade;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -87,6 +88,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private GetDetailsListener detailsListener;
 	private GetPayloadListener getPayloadListener;
 	private String username;
+	private TextView yearDiscountTxt;
 
 	public static UpgradeDetailsFragment newInstance(int code) {
 		UpgradeDetailsFragment frag = new UpgradeDetailsFragment();
@@ -144,7 +146,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		yearLabelTxt = (TextView) view.findViewById(R.id.yearLabelTxt);
 		yearCheckBox = (CheckBox) view.findViewById(R.id.yearCheckBox);
 		yearCheckBox.setOnCheckedChangeListener(this);
-		TextView yearDiscountTxt = (TextView) view.findViewById(R.id.yearDiscountTxt);
+		yearDiscountTxt = (TextView) view.findViewById(R.id.yearDiscountTxt);
 		setPlanBtn = (RoboButton) view.findViewById(R.id.setPlanBtn);
 		setPlanBtn.setOnClickListener(this);
 		descriptionView = (LinearLayout) view.findViewById(R.id.descriptionView);
@@ -247,7 +249,9 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 		yearLabelTxt.setTextColor(planConfig.subTitleColor);
 		yearCheckBox.setButtonDrawable(planConfig.checkBoxDrawableId);
-//		yearCheckBox.setEnabled(!planConfig.isYearPayed());  // TODO add auto toggle if another checkbox is disabled
+		yearCheckBox.setEnabled(!planConfig.isYearPayed());
+
+		yearDiscountTxt.setVisibility(planConfig.isYearPayed()? View.GONE : View.VISIBLE);
 
 		setPlanBtn.setDrawableStyle(planConfig.buttonStyleId);
 		descriptionView.setBackgroundResource(planConfig.descriptionBackId);
@@ -379,7 +383,8 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 		@Override
 		public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-			if (isPaused || getActivity() == null) {
+			Activity activity = getActivity();
+			if (isPaused || activity == null) {
 				return;
 			}
 
@@ -404,8 +409,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			{// gold month
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_GOLD_MONTH);
 				isGoldMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
-
-				if (isGoldMonthPayed) {
+				if (isGoldMonthPayed && !AppData.getUserPremiumSku(activity).equals(GOLD_MONTHLY)) {
 					updateMembershipOnServer(purchase);
 					return;
 				}
@@ -413,7 +417,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			{// gold year
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_GOLD_YEAR);
 				isGoldYearPayed = purchase != null && verifyDeveloperPayload(purchase);
-				if (isGoldYearPayed) {
+				if (isGoldYearPayed && !AppData.getUserPremiumSku(activity).equals(GOLD_YEARLY)) {
 					updateMembershipOnServer(purchase);
 					return;
 				}
@@ -421,7 +425,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			{// platinum month
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_PLATINUM_MONTH);
 				isPlatinumMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
-				if (isPlatinumMonthPayed) {
+				if (isPlatinumMonthPayed && !AppData.getUserPremiumSku(activity).equals(PLATINUM_MONTHLY)) {
 					updateMembershipOnServer(purchase);
 					return;
 				}
@@ -429,7 +433,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			{// platinum year
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_PLATINUM_YEAR);
 				isPlatinumYearPayed = purchase != null && verifyDeveloperPayload(purchase);
-				if (isPlatinumYearPayed) {
+				if (isPlatinumYearPayed && !AppData.getUserPremiumSku(activity).equals(PLATINUM_YEARLY)) {
 					updateMembershipOnServer(purchase);
 					return;
 				}
@@ -437,7 +441,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			{// diamond month
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_DIAMOND_MONTH);
 				isDiamondMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
-				if (isDiamondMonthPayed) {
+				if (isDiamondMonthPayed && !AppData.getUserPremiumSku(activity).equals(DIAMOND_MONTHLY)) {
 					updateMembershipOnServer(purchase);
 					return;
 				}
@@ -445,7 +449,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			{// diamond year
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_DIAMOND_YEAR);
 				isDiamondYearPayed = purchase != null && verifyDeveloperPayload(purchase);
-				if (isDiamondYearPayed) {
+				if (isDiamondYearPayed && !AppData.getUserPremiumSku(activity).equals(DIAMOND_YEARLY)) {
 					updateMembershipOnServer(purchase);
 					return;
 				}
@@ -454,7 +458,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			// query our server for membership bought from non Google Play( Apple, Web)
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(activity));
 
 			new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem); // TODO set proper item
 		}
@@ -476,21 +480,67 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		public void updateData(MembershipItem returnedObj) {
 			super.updateData(returnedObj);
 
+			Activity activity = getActivity();
+			if (activity == null) {
+				return;
+			}
+
 			// update selected modes
 			if (returnedObj.getData().getIs_premium() > 0) {
-				AppData.setUserPremiumStatus(getActivity(), returnedObj.getData().getLevel());
+				AppData.setUserPremiumStatus(activity, returnedObj.getData().getLevel());
 
 				String sku = returnedObj.getData().getSku();
 
 				isGoldMonthPayed = sku.equals(GOLD_MONTHLY);
+				if (isGoldMonthPayed) {
+					AppData.setUserPremiumSku(activity, GOLD_MONTHLY);
+					AppData.setUserPremiumStatus(activity, StaticData.GOLD_USER);
+				}
 				isGoldYearPayed = sku.equals(GOLD_YEARLY);
+				if (isGoldYearPayed) {
+					AppData.setUserPremiumSku(activity, GOLD_YEARLY);
+					AppData.setUserPremiumStatus(activity, StaticData.GOLD_USER);
+				}
 				isPlatinumMonthPayed = sku.equals(PLATINUM_MONTHLY);
+				if (isPlatinumMonthPayed) {
+					AppData.setUserPremiumSku(activity, PLATINUM_MONTHLY);
+					AppData.setUserPremiumStatus(activity, StaticData.PLATINUM_USER);
+				}
 				isPlatinumYearPayed = sku.equals(PLATINUM_YEARLY);
+				if (isPlatinumYearPayed) {
+					AppData.setUserPremiumSku(activity, PLATINUM_YEARLY);
+					AppData.setUserPremiumStatus(activity, StaticData.PLATINUM_USER);
+				}
 				isDiamondMonthPayed = sku.equals(DIAMOND_MONTHLY);
+				if (isDiamondMonthPayed) {
+					AppData.setUserPremiumSku(activity, DIAMOND_MONTHLY);
+					AppData.setUserPremiumStatus(activity, StaticData.DIAMOND_USER);
+				}
 				isDiamondYearPayed = sku.equals(DIAMOND_YEARLY);
+				if (isDiamondYearPayed) {
+					AppData.setUserPremiumSku(activity, DIAMOND_YEARLY);
+					AppData.setUserPremiumStatus(activity, StaticData.DIAMOND_USER);
+				}
 			}
 
 			UpgradeDetailsFragment.this.updateData();
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			// show message only for re-login
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCode.INVALID_ORDER) {
+					LoadItem loadItem = new LoadItem();
+					loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
+					loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+
+					new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem); // TODO set proper item
+				} else {
+					super.errorHandle(resultCode);
+				}
+			}
 		}
 	}
 

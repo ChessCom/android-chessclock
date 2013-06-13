@@ -161,6 +161,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		getBoardFace().setReside(!getBoardFace().isReside());
 
 		invalidate();
+		gameActivityFace.toggleSides();
 		gameActivityFace.invalidateGameScreen();
 	}
 

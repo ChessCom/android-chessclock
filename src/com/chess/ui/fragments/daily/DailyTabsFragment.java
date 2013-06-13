@@ -41,7 +41,7 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.daily_chess);
+		setTitle(R.string.daily);
 
 		getActivityFace().setCustomActionBarViewId(R.layout.new_home_actionbar);
 
@@ -87,11 +87,7 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 					changeInternalFragment(dailyGamesFragment);
 					break;
 				case R.id.centerTabBtn:
-					Fragment dailyGameSetupFragment = findFragmentByTag(DailyGameSetupFragment.class.getSimpleName());
-					if (dailyGameSetupFragment == null) {
-						dailyGameSetupFragment = new DailyGameSetupFragment();
-					}
-					changeInternalFragment(dailyGameSetupFragment);
+					changeInternalFragment(new DailyGameSetupFragment());
 					break;
 				case R.id.rightTabBtn:
 					changeInternalFragment(StatsGameDetailsFragment.newInstance(StatsGameFragment.DAILY_CHESS));

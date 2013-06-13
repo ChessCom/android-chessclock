@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -23,11 +22,10 @@ import com.chess.ui.interfaces.WelcomeTabsFace;
 public class WelcomeTabsFragment extends CommonLogicFragment implements WelcomeTabsFace {
 
 	public static final int FEATURES_FRAGMENT = 0;
-	public static final int RESULTS_FRAGMENT = 1;
-	public static final int SIGN_IN_FRAGMENT = 2;
-	public static final int SIGN_UP_FRAGMENT = 3;
-	public static final int GAME_FRAGMENT = 4;
-	public static final int GAME_SETUP_FRAGMENT = 5;
+	public static final int SIGN_IN_FRAGMENT = 1;
+	public static final int SIGN_UP_FRAGMENT = 2;
+	public static final int GAME_FRAGMENT = 3;
+	public static final int GAME_SETUP_FRAGMENT = 4;
 
 	private View leftTabBtn;
 	private View rightTabBtn;
@@ -103,10 +101,6 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements WelcomeT
 	public void changeInternalFragment(int code) {
 		if (code == FEATURES_FRAGMENT) {
 			openInternalFragment(WelcomeFragment.createInstance(this));
-			openWelcomeFragment = true;
-		} else if (code == RESULTS_FRAGMENT) {
-			boolean wonGame = preferences.getBoolean(AppConstants.WELCOME_GAME_WON, false);
-			openInternalFragment(ResultsFragment.createInstance(this, wonGame));
 			openWelcomeFragment = true;
 		} else if (code == SIGN_IN_FRAGMENT) {
 

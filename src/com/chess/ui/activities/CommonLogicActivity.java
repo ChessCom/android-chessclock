@@ -526,28 +526,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		super.onPositiveBtnClick(fragment);
 	}
 
-	/**
-	 * Prevent earlier launch of task, as it finish right after onPause callback
-	 */
-	public class DelayedCallback implements Runnable {
-
-		private Intent data;
-		private int resultCode;
-		private int requestCode;
-
-		public DelayedCallback(Intent data, int requestCode, int resultCode) {
-			this.data = data;
-			this.requestCode = requestCode;
-			this.resultCode = resultCode;
-		}
-
-		@Override
-		public void run() {
-			handler.removeCallbacks(this);
-//			facebook.authorizeCallback(requestCode, resultCode, data);
-		}
-	}
-
 	protected void checkMove(){
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_MOVES);

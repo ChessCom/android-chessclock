@@ -241,7 +241,7 @@ public class ImageDownloaderToListener {
         // AndroidHttpClient is not allowed to be used from the main thread
         final HttpClient client = AndroidHttpClient.newInstance("Android");
         url = url.replace(" ", "%20");
-		if (!url.startsWith(EnhancedImageDownloader.HTTP_PREFIX)) {
+		if (!url.startsWith(EnhancedImageDownloader.HTTP)) {
 			url = EnhancedImageDownloader.HTTP_PREFIX + url;
 		}
         final HttpGet getRequest = new HttpGet(url);

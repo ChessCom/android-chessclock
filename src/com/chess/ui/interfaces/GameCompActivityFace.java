@@ -12,6 +12,4 @@ public interface GameCompActivityFace extends GameActivityFace {
 
 	void onCompMove();
 
-	void toggleSides();
-
 }

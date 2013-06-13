@@ -66,7 +66,7 @@ public class PlanConfig {
 		diamondConfig.monthValue = DIAMOND_MONTH_PAY;
 		diamondConfig.yearValue = DIAMOND_YEAR_PAY;
 		diamondConfig.checkBoxDrawableId = R.drawable.button_checkmark_diamond_selector;
-		diamondConfig.buttonStyleId = R.style.Button_OrangeNoBorder;
+		diamondConfig.buttonStyleId = R.style.Button_Blue;
 		diamondConfig.descriptionBackId = R.drawable.button_upgrade_diamond_flat;
 		diamondConfig.unlockFeaturesTitleId = R.string.upgrade_diamond_unlock_features_title;
 		diamondConfig.features = resources.getStringArray(R.array.upgrade_diamond_features);

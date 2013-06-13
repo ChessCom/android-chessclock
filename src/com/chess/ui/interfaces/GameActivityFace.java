@@ -48,4 +48,6 @@ public interface GameActivityFace {
 	boolean currentGameExist();
 
 	BoardFace getBoardFace();
+
+	void toggleSides();
 }

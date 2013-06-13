@@ -2,8 +2,8 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 
-	android:versionCode="139"
-	android:versionName="3.0.008a" package="com.chess" android:installLocation="auto">
+	android:versionCode="140"
+	android:versionName="3.0.009a" package="com.chess" android:installLocation="auto">
 
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -67,8 +67,8 @@
             android:launchMode="singleTop"
 			/>
 
-		<activity android:name="com.google.ads.AdActivity"
-			android:configChanges="keyboard|keyboardHidden|orientation"/>
+<!--		<activity android:name="com.google.ads.AdActivity"
+			android:configChanges="keyboard|keyboardHidden|orientation"/>-->
 
 <!--		<activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity"
 			android:theme="@android:style/Theme.Translucent.NoTitleBar"
@@ -110,7 +110,7 @@
 		<activity android:name="com.mopub.mobileads.MraidBrowser"
 			android:configChanges="keyboardHidden|keyboard|orientation"/>-->
 
-        <activity android:name="com.inneractive.api.ads.InneractiveFullScreenView" />
+        <!--<activity android:name="com.inneractive.api.ads.InneractiveFullScreenView" />-->
 
 		<activity android:name=".ui.activities.old.OnlineScreenActivity" android:label="@string/label_play_online"
                   android:launchMode="singleTask"
@@ -199,7 +199,9 @@
 
         <provider android:name=".db.DBDataProvider" android:authorities="com.chess.db_provider" android:exported="false"/>
 
-		<meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607"/>
+		<!--<meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607"/>-->
+
+        <!--Facebook auth activities and keys-->
         <activity android:name="com.facebook.LoginActivity"
                   android:theme="@android:style/Theme.Translucent.NoTitleBar"
                    />

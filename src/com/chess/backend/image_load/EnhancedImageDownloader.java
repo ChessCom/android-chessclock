@@ -33,6 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class EnhancedImageDownloader {
 	private static final String LOG_TAG = "EnhancedImageDownloader";
+	public static final String HTTP = "http";
 	public static final String HTTP_PREFIX = "http:";
 	private final Context context;
 	private int imgSize;
@@ -348,7 +349,7 @@ public class EnhancedImageDownloader {
                 : AndroidHttpClient.newInstance("Android");
         url = url.replace(" ", "%20");
 //        url = url.replace("https", "http");
-		if (!url.startsWith(HTTP_PREFIX)) {
+		if (!url.startsWith(HTTP)) {
 			url = EnhancedImageDownloader.HTTP_PREFIX + url;
 		}
 

@@ -37,7 +37,6 @@ import com.chess.ui.views.chess_boards.ChessBoardCompView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsCompView;
-import com.chess.utilities.MopubHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -435,8 +434,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		layout.findViewById(R.id.ratingTitleTxt).setVisibility(View.GONE);
 		layout.findViewById(R.id.yourRatingTxt).setVisibility(View.GONE);
 
-		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
+//		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+//		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((LinearLayout) layout);
 

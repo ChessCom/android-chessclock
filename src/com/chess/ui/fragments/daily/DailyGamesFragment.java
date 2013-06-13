@@ -35,7 +35,6 @@ import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
@@ -89,7 +88,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null);
 
 		sectionedAdapter.addSection(getString(R.string.new_my_move), currentGamesMyCursorAdapter);
-		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
+		sectionedAdapter.addSection(getString(R.string.completed), finishedGamesCursorAdapter);
 
 		listUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 	}
@@ -200,7 +199,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	public void onClick(View view) {
 		super.onClick(view);
 		if (view.getId() == R.id.startNewGameBtn) {
-			getActivityFace().changeRightFragment(NewGamesFragment.newInstance(NewGamesFragment.RIGHT_MENU_MODE));
+
+			getActivityFace().openFragment(new DailyGameSetupFragment());
 
 			handler.postDelayed(new Runnable() {
 				@Override

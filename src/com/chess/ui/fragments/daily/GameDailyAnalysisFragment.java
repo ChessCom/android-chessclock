@@ -26,20 +26,17 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
+import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameAnalysisFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardAnalysisView;
-import com.chess.ui.views.drawables.AnalysisBackDrawable;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsAnalysisView;
-import com.chess.utilities.AppUtils;
-import com.chess.utilities.MopubHelper;
 
 /**
  * Created with IntelliJ IDEA.
@@ -70,7 +67,6 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	private BoardAvatarDrawable opponentAvatarDrawable;
 	private BoardAvatarDrawable userAvatarDrawable;
 	private LabelsConfig labelsConfig;
-	private Drawable backgroundDrawable;
 
 	public static GameDailyAnalysisFragment newInstance(long gameId) {
 		GameDailyAnalysisFragment fragment = new GameDailyAnalysisFragment();
@@ -87,7 +83,6 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		super.onCreate(savedInstanceState);
 
 		labelsConfig = new LabelsConfig();
-		backgroundDrawable = new AnalysisBackDrawable();
 	}
 
 	@Override
@@ -109,14 +104,6 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
-
-		if (AppUtils.JELLYBEAN_PLUS_API) {
-			bottomPanelView.setBackground(backgroundDrawable);
-			controlsView.setBackground(backgroundDrawable);
-		} else {
-			bottomPanelView.setBackgroundDrawable(backgroundDrawable);
-			controlsView.setBackgroundDrawable(backgroundDrawable);
-		}
 
 		{// set avatars
 			Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
@@ -295,6 +282,27 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		boardFace.setJustInitialized(false);
 	}
 
+
+	@Override
+	public void toggleSides() { // TODO
+//		if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
+//			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
+//		} else {
+//			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+//		}
+//		BoardAvatarDrawable tempDrawable = labelsConfig.topAvatar;
+//		labelsConfig.topAvatar = labelsConfig.bottomAvatar;
+//		labelsConfig.bottomAvatar = tempDrawable;
+//
+//		String tempLabel = labelsConfig.topPlayerName;
+//		labelsConfig.topPlayerName = labelsConfig.bottomPlayerName;
+//		labelsConfig.bottomPlayerName = tempLabel;
+//
+//		String tempScore = labelsConfig.topPlayerRating;
+//		labelsConfig.topPlayerRating = labelsConfig.bottomPlayerRating;
+//		labelsConfig.bottomPlayerRating = tempScore;
+	}
+
 	@Override
 	public void invalidateGameScreen() {
 
@@ -438,8 +446,8 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		String rating = getString(R.string.your_end_game_rating_online, currentPlayerNewRating);
 		yourRatingTxt.setText(rating);
 
-		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
+//		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+//		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((LinearLayout) layout);
 
@@ -476,7 +484,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		super.onClick(view);
 		if (view.getId() == R.id.newGamePopupBtn) {
 			dismissDialogs();
-			getActivityFace().changeRightFragment(NewGamesFragment.newInstance(NewGamesFragment.RIGHT_MENU_MODE));
+			getActivityFace().changeRightFragment(HomePlayFragment.newInstance(RIGHT_MENU_MODE));
 
 //			Intent intent = new Intent(this, OnlineNewGameActivity.class);
 //			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

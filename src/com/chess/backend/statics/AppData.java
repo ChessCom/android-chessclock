@@ -148,6 +148,14 @@ public class AppData {
 		return getPreferences(context).getInt(USER_PREMIUM_STATUS, StaticData.BASIC_USER);
 	}
 
+	public static void setUserPremiumSku(Context context, String value) {
+		setStringValue(context, USER_PREMIUM_SKU, value);
+	}
+
+	public static String getUserPremiumSku(Context context) {
+		return getPreferences(context).getString(USER_PREMIUM_SKU, StaticData.SYMBOL_EMPTY);
+	}
+
 	public static String getUserPremiumStatusStr(Context context) {
 		int status = getPreferences(context).getInt(USER_PREMIUM_STATUS, StaticData.BASIC_USER);
 		switch (status) {

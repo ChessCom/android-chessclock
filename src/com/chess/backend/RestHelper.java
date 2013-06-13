@@ -166,7 +166,7 @@ public class RestHelper {
 	public static final String P_MIN_RATING = "minRating";
 	public static final String P_MAX_RATING = "maxRating";
 	public static final String P_IS_RATED = "isRated";
-	public static final String P_GAME_TYPE = "gameTypeCodeId";
+	public static final String P_GAME_TYPE = "gameTypeCode";
 	public static final String P_GAME_ID = "gameId";
 	public static final String P_PRODUCT_SKU = "productSku";
 	public static final String P_RELOAD = "reload";
@@ -442,9 +442,9 @@ message				false	Only used for `CHAT` command.
 			Gson gson = new Gson();
 			if (statusCode != HttpStatus.SC_OK) {
 				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
-
 				InputStream inputStream = connection.getErrorStream();
 				String resultString = convertStreamToString(inputStream);
+				Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
 
 				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
 				Log.d(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());

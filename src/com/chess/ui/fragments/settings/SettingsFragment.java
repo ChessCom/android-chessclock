@@ -30,6 +30,7 @@ import java.util.List;
  */
 public class SettingsFragment extends LiveBaseFragment implements AdapterView.OnItemClickListener {
 
+	private static final long SWITCH_DELAY = 50;
 	private ListView listView;
 	private List<SettingsMenuItem> menuItems;
 	private SettingsMenuAdapter adapter;
@@ -127,7 +128,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 					public void run() {
 						getActivityFace().switchFragment(new WelcomeTabsFragment());
 					}
-				}, 100);
+				}, SWITCH_DELAY);
 
 				// clear theme
 				AppData.setThemeBackId(getActivity(), R.drawable.img_theme_green_felt);

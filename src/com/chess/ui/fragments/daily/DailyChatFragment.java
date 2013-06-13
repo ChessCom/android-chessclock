@@ -19,4 +19,11 @@ public class DailyChatFragment extends CommonLogicFragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_chat_frame, container, false);
 	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		setTitle(R.string.chat);
+	}
 }

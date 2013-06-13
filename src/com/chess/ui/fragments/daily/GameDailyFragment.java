@@ -40,8 +40,8 @@ import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.MoveParser;
-import com.chess.ui.fragments.NewGamesFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
+import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
@@ -55,7 +55,6 @@ import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
-import com.chess.utilities.MopubHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,6 +70,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	public static final String DOUBLE_SPACE = "  ";
 	private static final String DRAW_OFFER_TAG = "offer draw";
 	private static final String ERROR_TAG = "send request failed popup";
+	private static final String OPTION_SELECTION = "option select popup";
 
 	private static final int SEND_MOVE_UPDATE = 1;
 	private static final int CREATE_CHALLENGE_UPDATE = 2;
@@ -82,10 +82,9 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	// Quick action ids
 	private static final int ID_NEW_GAME = 0;
 	private static final int ID_OFFER_DRAW = 1;
-	private static final int ID_EMAIL_GAME = 2;
-	private static final int ID_FLIP_BOARD = 3;
+	private static final int ID_FLIP_BOARD = 2;
+	private static final int ID_EMAIL_GAME = 3;
 	private static final int ID_SETTINGS = 4;
-	private static final String OPTION_SELECTION = "option select popup";
 
 	private GameOnlineUpdatesListener abortGameUpdateListener;
 	private GameOnlineUpdatesListener drawOfferedUpdateListener;
@@ -114,12 +113,16 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private ControlsDailyView controlsDailyView;
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
-	private BoardAvatarDrawable opponentAvatarDrawable;
-	private BoardAvatarDrawable userAvatarDrawable;
 	private LabelsConfig labelsConfig;
 	private ArrayList<String> optionsList;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private ImageDownloaderToListener imageDownloader;
+	private String[] countryNames;
+	private int[] countryCodes;
+
+	public GameDailyFragment(){
+
+	}
 
 	public static GameDailyFragment newInstance(long gameId) {
 		GameDailyFragment fragment = new GameDailyFragment();
@@ -148,7 +151,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.daily_chess);
+		setTitle(R.string.daily);
 
 		widgetsInit(view);
 	}
@@ -282,21 +285,22 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private void adjustBoardForGame() {
 		userPlayWhite = currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(getActivity()));
 
-		labelsConfig.topAvatar = opponentAvatarDrawable;
-		labelsConfig.bottomAvatar = userAvatarDrawable;
-
 		if (userPlayWhite) {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 			labelsConfig.topPlayerName = currentGame.getBlackUsername();
 			labelsConfig.topPlayerRating = String.valueOf(currentGame.getBlackRating());
 			labelsConfig.bottomPlayerName = currentGame.getWhiteUsername();
 			labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getWhiteRating());
+			labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
+			labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
 		} else {
 			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 			labelsConfig.topPlayerName = currentGame.getWhiteUsername();
 			labelsConfig.topPlayerRating = String.valueOf(currentGame.getWhiteRating());
 			labelsConfig.bottomPlayerName = currentGame.getBlackUsername();
 			labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
+			labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
+			labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
 		}
 
 		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
@@ -366,18 +370,38 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 
 	@Override
+	public void toggleSides() {
+		if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
+			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
+		} else {
+			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+		}
+		BoardAvatarDrawable tempDrawable = labelsConfig.topAvatar;
+		labelsConfig.topAvatar = labelsConfig.bottomAvatar;
+		labelsConfig.bottomAvatar = tempDrawable;
+
+		String tempLabel = labelsConfig.topPlayerName;
+		labelsConfig.topPlayerName = labelsConfig.bottomPlayerName;
+		labelsConfig.bottomPlayerName = tempLabel;
+
+		String tempScore = labelsConfig.topPlayerRating;
+		labelsConfig.topPlayerRating = labelsConfig.bottomPlayerRating;
+		labelsConfig.bottomPlayerRating = tempScore;
+	}
+
+	@Override
 	public void invalidateGameScreen() {
 		showSubmitButtonsLay(getBoardFace().isSubmit());
 
-//		if (labelsConfig.bottomAvatar != null) {
-//			labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
-//			bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
-//		}
-//
-//		if (labelsConfig.topAvatar != null) {
-//			labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
-//			topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-//		}
+		if (labelsConfig.bottomAvatar != null) {
+			labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+			bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+		}
+
+		if (labelsConfig.topAvatar != null) {
+			labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+			topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+		}
 
 		topPanelView.setSide(labelsConfig.getOpponentSide());
 		bottomPanelView.setSide(labelsConfig.userSide);
@@ -387,11 +411,14 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		bottomPanelView.setPlayerName(labelsConfig.bottomPlayerName);
 		bottomPanelView.setPlayerRating(labelsConfig.bottomPlayerRating);
 
+		topPanelView.setPlayerFlag(labelsConfig.topPlayerCountry);
+		bottomPanelView.setPlayerFlag(labelsConfig.bottomPlayerCountry);
+
 		boardView.updateNotations(getBoardFace().getNotationArray());
 	}
 
 	@Override
-	protected void setBoardToFinishedState(){ // TODO implement state conditions logic for board
+	protected void setBoardToFinishedState() { // TODO implement state conditions logic for board
 		super.setBoardToFinishedState();
 		showSubmitButtonsLay(false);
 	}
@@ -430,7 +457,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			// get game entity
 			throw new IllegalStateException("Current game became NULL");
 //			updateGameState(gameId);
-
 		} else {
 			sendMove();
 		}
@@ -454,7 +480,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private void moveWasSent() {
 		showSubmitButtonsLay(false);
 
-		if(getBoardFace().isFinished()){
+		if (getBoardFace().isFinished()) {
 			showGameEndPopup(endGamePopupView, endGameMessage);
 		} else {
 			int action = AppData.getAfterMoveAction(getContext());
@@ -489,7 +515,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 	@Override
 	public void switch2Chat() {
-		if(currentGame == null)
+		if (currentGame == null)
 			return;
 
 		preferencesEditor.putString(AppConstants.OPPONENT, userPlayWhite
@@ -513,7 +539,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 		getBoardFace().takeBack();
 		getBoardFace().decreaseMovesCount();
-		boardView.invalidate();	}
+		boardView.invalidate();
+	}
 
 	@Override
 	public void newGame() {
@@ -566,7 +593,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		String result = GAME_GOES;
 
 		boolean finished = getBoardFace().isFinished();
-		if(finished){// means in check state
+		if (finished) {// means in check state
 			if (getBoardFace().getSide() == ChessBoard.WHITE_SIDE) {
 				result = BLACK_WINS;
 			} else {
@@ -576,7 +603,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		int daysPerMove = currentGame.getDaysPerMove();
 		StringBuilder timeControl = new StringBuilder();
 		timeControl.append("1 in ").append(daysPerMove);
-		if (daysPerMove > 1){
+		if (daysPerMove > 1) {
 			timeControl.append(" days");
 		} else {
 			timeControl.append(" day");
@@ -594,7 +621,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 				.append("\n [WhiteElo \"").append(currentGame.getWhiteRating()).append("\"]")
 				.append("\n [BlackElo \"").append(currentGame.getBlackRating()).append("\"]")
 				.append("\n [TimeControl \"").append(timeControl.toString()).append("\"]");
-		if(finished){
+		if (finished) {
 			builder.append("\n [Termination \"").append(endGameMessage).append("\"]");
 		}
 		builder.append("\n ").append(moves)
@@ -648,7 +675,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
 
 			new RequestJsonTask<BaseResponseItem>(abortGameUpdateListener).executeTask(loadItem);
-		} else if(tag.equals(ERROR_TAG)){
+		} else if (tag.equals(ERROR_TAG)) {
 			backToLoginFragment();
 		}
 		super.onPositiveBtnClick(fragment);
@@ -656,7 +683,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 	@Override
 	protected void showGameEndPopup(View layout, String message) {
-		if(currentGame == null) {
+		if (currentGame == null) {
 			throw new IllegalStateException("showGameEndPopup starts with currentGame = null");
 		}
 
@@ -682,8 +709,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		String rating = getString(R.string.your_end_game_rating_online, currentPlayerNewRating);
 		yourRatingTxt.setText(rating);
 
-		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
+//		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
+//		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((LinearLayout) layout);
 
@@ -719,7 +746,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		super.onClick(view);
 		if (view.getId() == R.id.newGamePopupBtn) {
 			dismissDialogs();
-			getActivityFace().changeRightFragment(NewGamesFragment.newInstance(NewGamesFragment.RIGHT_MENU_MODE));
+			getActivityFace().changeRightFragment(HomePlayFragment.newInstance(RIGHT_MENU_MODE));
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			sendRematch();
 			dismissDialogs();
@@ -743,7 +770,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
 		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, currentGame.getDaysPerMove());
 		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
-		loadItem.addRequestParams(RestHelper.P_IS_RATED, currentGame.isRated()? 1 : 0);
+		loadItem.addRequestParams(RestHelper.P_IS_RATED, currentGame.isRated() ? 1 : 0);
 		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, currentGame.getGameType());
 		loadItem.addRequestParams(RestHelper.P_OPPONENT, opponent);
 
@@ -832,6 +859,9 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		currentGamesCursorUpdateListener = new LoadFromDbUpdateListener(GAMES_LIST);
 
 		imageDownloader = new ImageDownloaderToListener(getActivity());
+
+		countryNames = getResources().getStringArray(R.array.new_countries);
+		countryCodes = getResources().getIntArray(R.array.new_country_ids);
 	}
 
 	private void widgetsInit(View view) {
@@ -844,9 +874,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		{// set avatars
 			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-
-			labelsConfig.topAvatar = opponentAvatarDrawable;
-			labelsConfig.bottomAvatar = userAvatarDrawable;
 		}
 
 		controlsDailyView.enableGameControls(false);
@@ -867,10 +894,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 		{// options list setup
 			optionsList = new ArrayList<String>();
-			optionsList.add( getString(R.string.new_game));
-			optionsList.add( getString(R.string.offer_draw));
-			optionsList.add( getString(R.string.flip_board));
-			optionsList.add( getString(R.string.email_game));
+			optionsList.add(getString(R.string.new_game));
+			optionsList.add(getString(R.string.offer_draw));
+			optionsList.add(getString(R.string.flip_board));
+			optionsList.add(getString(R.string.email_game));
 			optionsList.add(getString(R.string.settings));
 		}
 	}
@@ -882,10 +909,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		String bottomPlayerName;
 		String topPlayerRating;
 		String bottomPlayerRating;
+		String topPlayerCountry;
+		String bottomPlayerCountry;
 		int userSide;
 
-		int getOpponentSide(){
-			return userSide == ChessBoard.WHITE_SIDE? ChessBoard.BLACK_SIDE: ChessBoard.WHITE_SIDE;
+		int getOpponentSide() {
+			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
 		}
 	}
 

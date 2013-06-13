@@ -4,7 +4,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-    android:background="@color/white"
+    android:paddingTop="30dip"
 	>
     <!--End game title-->
     <com.chess.RoboTextView
@@ -115,13 +115,13 @@
             />
 
         <!--Ads-->
-        <LinearLayout
+<!--        <LinearLayout
             android:id="@+id/adview_wrapper"
             android:layout_width="@dimen/ad_popup_width"
             android:layout_height="@dimen/ad_popup_height"
             android:layout_gravity="center"
             android:orientation="vertical"
-            />
+            />-->
 
     </LinearLayout>
 

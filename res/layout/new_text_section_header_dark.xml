@@ -2,10 +2,11 @@
 
 <com.chess.LinLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-    style="@style/ListItem.Header.Dark"
+    style="@style/ListItem.Header.Dark.Small"
     android:gravity="center_vertical"
     >
 	<com.chess.RoboTextView
@@ -14,6 +15,7 @@
 		android:layout_height="wrap_content"
 		android:textSize="14sp"
 		android:paddingLeft="8dip"
-        android:textColor="@color/new_light_grey"
+        android:textColor="@color/white"
+        custom:ttf="Bold"
 		/>
 </com.chess.LinLayout>
