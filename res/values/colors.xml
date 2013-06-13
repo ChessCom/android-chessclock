@@ -226,8 +226,9 @@
     <color name="new_upgrade_menu_glow_1_s">#ffafc3d9</color>
 
     <!--Main ActionBar overlay color-->
-    <color name="action_bar_overlay">#33000000</color>   <!--Should be the same as checked color for tabs-->
-    <color name="sliding_menu_overlay">#1F000000</color>   <!--Should be the same as checked color for tabs-->
+    <color name="action_bar_overlay">#33000000</color>
+    <color name="sliding_menu_overlay">#1F000000</color>
+    <color name="loading_overlay">#55000000</color>
 
 
 

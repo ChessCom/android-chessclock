@@ -74,7 +74,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected static final int TWO_ICON = 2;
 	protected static final long SIDE_MENU_DELAY = 150;
 
-	private LoginUpdateListenerNew loginUpdateListener;
+	private LoginUpdateListener loginUpdateListener;
 
 	private int loginReturnCode;
 	private ActiveFragmentInterface activityFace;
@@ -241,7 +241,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			}
 		});
 
-		loginUpdateListener = new LoginUpdateListenerNew();
+		loginUpdateListener = new LoginUpdateListener();
 	}
 
 	private Session.StatusCallback callback = new Session.StatusCallback() {
@@ -375,8 +375,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 	}
 
-	private class LoginUpdateListenerNew extends AbstractUpdateListener<LoginItem> {
-		public LoginUpdateListenerNew() {
+	private class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
+		public LoginUpdateListener() {
 			super(getContext(), LoginItem.class);
 		}
 

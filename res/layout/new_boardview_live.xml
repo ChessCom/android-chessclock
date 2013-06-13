@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/loadingView"
-                android:background="@color/action_bar_overlay"
+                android:background="@color/loading_overlay"
                 android:visibility="gone"
                 >
 

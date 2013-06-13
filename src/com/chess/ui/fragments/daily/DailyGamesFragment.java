@@ -201,14 +201,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		if (view.getId() == R.id.startNewGameBtn) {
 
 			getActivityFace().openFragment(new DailyGameSetupFragment());
-
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					getActivityFace().toggleRightMenu();
-				}
-			}, SIDE_MENU_DELAY);
-
 		}
 	}
 
