@@ -2,6 +2,7 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:id="@+id/firstView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,11 +29,20 @@
         android:contentDescription="@string/image"
         />
 
+
     <FrameLayout
         android:id="@+id/youTubeFrameContainer1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/firstWelcomeImg"
+        />
+
+    <com.chess.RoboButton
+        android:id="@+id/closeBtn1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/firstWelcomeImg"
+        style="@style/welcomeCloseBtn"
         />
 
     <!--Features list-->

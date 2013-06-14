@@ -2,6 +2,7 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/welcome_features_padding_bottom"
@@ -32,6 +33,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/thirdWelcomeImg"
+        />
+
+    <com.chess.RoboButton
+        android:id="@+id/closeBtn3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/thirdWelcomeImg"
+        style="@style/welcomeCloseBtn"
         />
 
     <!--Features list-->
