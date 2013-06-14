@@ -780,6 +780,11 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			showLoadingView(show);
+		}
+
+		@Override
 		public void updateData(DailyGameByIdItem returnedObj) {
 			super.updateData(returnedObj);
 
@@ -802,6 +807,11 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		private GameOnlineUpdatesListener(int listenerCode) {
 			super(BaseResponseItem.class);
 			this.listenerCode = listenerCode;
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			showLoadingView(show);
 		}
 
 		@Override

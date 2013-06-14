@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.MembershipItem;
 import com.chess.backend.entity.new_api.UserItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
@@ -42,7 +43,6 @@ import com.chess.utilities.AppUtils;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -64,14 +64,11 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private static final int IMG_SIZE_LIMIT_W = 800; // limit for maximum side size
 
 
-
 	private ImageView flagImg;
 	private TextView cancelMembershipTxt;
 	private EditText firstNameValueEdt;
 	private EditText lastNameValueEdt;
 	private EditText locationValueEdt;
-	private String membershipType;
-	private String membershipExpireDate;
 	private SimpleDateFormat dateFormatter;
 	/* photo */
 	private FrameLayout userPhotoImg;
@@ -102,6 +99,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private float density;
 	private String countryStr;
 	private ActionModeHelper actionModeHelper;
+	private boolean need2Update = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -190,7 +188,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		view.findViewById(R.id.shareBtn).setOnClickListener(this);
 		view.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		view.findViewById(R.id.userPhotoLay).setOnClickListener(this);
-		view.findViewById(R.id.countryArrowIconTxt).setOnClickListener(this);
+//		view.findViewById(R.id.countryArrowIconTxt).setOnClickListener(this);
 		view.findViewById(R.id.countryLay).setOnClickListener(this);
 
 		// filling fields
@@ -200,9 +198,9 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		countryValueTxt.setText(countryStr);
 
 		// hide close buttons
-		firstNameClearBtn.setVisibility(/*TextUtils.isEmpty(firstNameStr)? View.VISIBLE :*/ View.GONE);
-		lastNameClearBtn.setVisibility(/*TextUtils.isEmpty(lastNameStr)? View.VISIBLE :*/ View.GONE);
-		locationClearBtn.setVisibility(/*TextUtils.isEmpty(locationStr)? View.VISIBLE :*/ View.GONE);
+		firstNameClearBtn.setVisibility(View.GONE);
+		lastNameClearBtn.setVisibility(View.GONE);
+		locationClearBtn.setVisibility(View.GONE);
 
 		// set country flag
 		updateUserCountry(countryStr);
@@ -232,15 +230,11 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		@Override
 		public void updateData(UserItem returnedObj) {
 			super.updateData(returnedObj);
-
-			// fill parameters
-			membershipType = AppData.getUserPremiumStatusStr(getActivity());
-			if (!membershipType.equals(getString(R.string.basic))) {
-				membershipExpireDate = dateFormatter.format(Calendar.getInstance().getTime()); // TODO set correct time
-				cancelMembershipTxt.setText(getString(R.string.profile_membership_renew_cancel, membershipType, membershipExpireDate));
-			} else {
-				cancelMembershipTxt.setText("Basic user text");
+			Activity activity = getActivity();
+			if (activity == null) {
+				return;
 			}
+			UserItem.Data data = returnedObj.getData();
 
 			{// load user avatar
 				int imageSize = (int) (AVATAR_SIZE * density);
@@ -251,11 +245,75 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 					parent.removeAllViews();
 				}
 				userPhotoImg.addView(progressImageView, params);
-				AppData.setUserAvatar(getActivity(), returnedObj.getData().getAvatar());
+				AppData.setUserAvatar(activity, data.getAvatar());
 				if (!photoChanged) {
-					imageDownloader.download(returnedObj.getData().getAvatar(), progressImageView, AVATAR_SIZE);
+					imageDownloader.download(data.getAvatar(), progressImageView, AVATAR_SIZE);
 				}
 			}
+
+			firstNameStr = data.getFirstName();
+			lastNameStr = data.getLastName();
+			locationStr = data.getLocation();
+			countryStr = data.getCountryName();
+			countryId = data.getCountryId();
+
+			AppData.setUserFirstName(getActivity(), firstNameStr);
+			AppData.setUserLastName(getActivity(), lastNameStr);
+			AppData.setUserLocation(getActivity(), locationStr);
+			AppData.setUserCountry(getActivity(), countryStr);
+			AppData.setUserCountryId(getActivity(), countryId);
+
+			firstNameValueEdt.setText(firstNameStr);
+			lastNameValueEdt.setText(lastNameStr);
+			locationValueEdt.setText(locationStr);
+
+			updateUserCountry(countryStr);
+
+			if (need2Update) {
+				LoadItem loadItem = new LoadItem();
+				loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(activity));
+
+				new RequestJsonTask<MembershipItem>(new GetDetailsListener()).executeTask(loadItem); // TODO set proper item
+			}
+		}
+	}
+
+	private class GetDetailsListener extends ChessUpdateListener<MembershipItem> {
+
+		private GetDetailsListener() {
+			super(MembershipItem.class);
+		}
+
+		@Override
+		public void updateData(MembershipItem returnedObj) {
+			super.updateData(returnedObj);
+
+			Activity activity = getActivity();
+			if (activity == null) {
+				return;
+			}
+
+			// update selected modes
+			if (returnedObj.getData().getIs_premium() > 0) {
+				AppData.setUserPremiumStatus(activity, returnedObj.getData().getLevel());
+
+				Date time = new Date(returnedObj.getData().getDate().getExpires()* 1000L);
+				String membershipExpireDate = dateFormatter.format(time);
+				String text = getString(R.string.profile_membership_renew_cancel, returnedObj.getData().getType(), membershipExpireDate)
+						+ StaticData.SYMBOL_NEW_STR	+ getString(R.string.profile_membership_renew_cancel_1);
+
+				cancelMembershipTxt.setClickable(true);
+				cancelMembershipTxt.setText(Html.fromHtml(text));
+				Linkify.addLinks(cancelMembershipTxt, Linkify.WEB_URLS);
+				cancelMembershipTxt.setMovementMethod(LinkMovementMethod.getInstance());
+				cancelMembershipTxt.setLinkTextColor(Color.WHITE);
+			} else {
+				cancelMembershipTxt.setText("Basic user text");
+			}
+			cancelMembershipTxt.setVisibility(View.VISIBLE);
+
+			need2Update = false;
 		}
 	}
 
@@ -270,7 +328,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			lastNameValueEdt.setText(StaticData.SYMBOL_EMPTY);
 		} else if (id == R.id.locationClearBtn) {
 			locationValueEdt.setText(StaticData.SYMBOL_EMPTY);
-		} else if (id == R.id.countryLay || id == R.id.flagImg || id == R.id.countryArrowIconTxt) {
+		} else if (id == R.id.countryLay || id == R.id.flagImg /*|| id == R.id.countryArrowIconTxt*/) {
 			showCountriesFragment();
 			startActionMode();
 		} else if (id == R.id.userPhotoImg || id == R.id.userPhotoLay) {
@@ -338,6 +396,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		loadItem.addRequestParams(RestHelper.P_FIRST_NAME, firstNameStr);
 		loadItem.addRequestParams(RestHelper.P_LAST_NAME, lastNameStr);
 		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, countryId);
+		loadItem.addRequestParams(RestHelper.P_LOCATION, locationStr);
 		loadItem.setFileMark(RestHelper.P_AVATAR);
 		loadItem.setFilePath(mCurrentPhotoPath);
 		loadItem.setFileSize(photoFileSize);
@@ -365,8 +424,8 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 		@Override
 		public void updateData(UserItem returnedObj) {
-			AppData.setUserAvatar(getActivity(), returnedObj.getData().getAvatar());
-			imageDownloader.download(returnedObj.getData().getAvatar(), progressImageView, AVATAR_SIZE);
+//			AppData.setUserAvatar(getActivity(), returnedObj.getData().getAvatar());
+//			imageDownloader.download(returnedObj.getData().getAvatar(), progressImageView, AVATAR_SIZE);
 		}
 	}
 
@@ -522,18 +581,9 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 				locationClearBtn.setVisibility(View.GONE);
 
 				// remember fields
-				String firstNameTmp = getTextFromField(firstNameValueEdt);
-//				if (!TextUtils.isEmpty(firstNameTmp)) {
-					firstNameStr = firstNameTmp;
-//				}
-				String lastNameTmp = getTextFromField(lastNameValueEdt);
-//				if (!TextUtils.isEmpty(lastNameTmp)) {
-					lastNameStr = lastNameTmp;
-//				}
-				String locationTmp = getTextFromField(locationValueEdt);
-//				if (!TextUtils.isEmpty(locationTmp)) {
-					locationStr = locationTmp;
-//				}
+				firstNameStr = getTextFromField(firstNameValueEdt);
+				lastNameStr = getTextFromField(lastNameValueEdt);
+				locationStr = getTextFromField(locationValueEdt);
 
 				AppData.setUserFirstName(getActivity(), firstNameStr);
 				AppData.setUserLastName(getActivity(), lastNameStr);

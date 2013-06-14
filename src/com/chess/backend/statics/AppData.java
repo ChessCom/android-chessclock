@@ -157,7 +157,7 @@ public class AppData {
 	}
 
 	public static String getUserPremiumStatusStr(Context context) {
-		int status = getPreferences(context).getInt(USER_PREMIUM_STATUS, StaticData.BASIC_USER);
+		int status = getIntValue(context, USER_PREMIUM_STATUS, StaticData.BASIC_USER);
 		switch (status) {
 			case StaticData.GOLD_USER:
 				return context.getString(R.string.gold);

@@ -31,10 +31,10 @@
             android:paddingLeft="10dip" />
 
         <!--Right Icon-->
-        <com.chess.RoboTextView
+<!--        <com.chess.RoboTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/RightIcon" />
+            style="@style/RightIcon" />-->
 
     </com.chess.LinLayout>
 </LinearLayout>

@@ -2,7 +2,7 @@ package com.chess.ui.fragments.popup_fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -71,19 +71,21 @@ public class PopupOptionsMenuFragment extends DialogFragment implements View.OnC
 
 	private class StringAdapter extends ItemsAdapter<String> {
 
+		private final ColorStateList textColor;
+		private final int minHeight;
+
 		public StringAdapter(Context context, List<String> itemList) {
 			super(context, itemList);
+			textColor = context.getResources().getColorStateList(R.color.text_controls_icons_white);
+			minHeight = context.getResources().getDimensionPixelSize(R.dimen.list_item_height);
 		}
 
 		@Override
 		protected View createView(ViewGroup parent) {
 			RoboButton button = new RoboButton(context, null, R.attr.greyButton);
-			button.setDrawableStyle(R.style.Button_Glassy);
-			button.setTextColor(Color.WHITE);
-			float shadowRadius = 0.5f;
-			float shadowDx = 0 ;
-			float shadowDy = -1 ;
-			button.setShadowLayer(shadowRadius, shadowDx, shadowDy, Color.BLACK);
+			button.setDrawableStyle(R.style.ListItem_Header);
+			button.setTextColor(textColor);
+			button.setMinHeight(minHeight);
 
 			button.setOnClickListener(PopupOptionsMenuFragment.this);
 			ViewHolder holder = new ViewHolder();

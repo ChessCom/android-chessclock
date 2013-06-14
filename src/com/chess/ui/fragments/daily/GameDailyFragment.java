@@ -784,6 +784,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			showLoadingView(show);
+		}
+
+		@Override
 		public void updateData(DailyGameByIdItem returnedObj) {
 			super.updateData(returnedObj);
 
@@ -806,6 +811,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		private GameOnlineUpdatesListener(int listenerCode) {
 			super(BaseResponseItem.class);
 			this.listenerCode = listenerCode;
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			showLoadingView(show);
 		}
 
 		@Override

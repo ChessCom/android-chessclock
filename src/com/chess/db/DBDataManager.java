@@ -231,7 +231,7 @@ public class DBDataManager {
 				gamesIds[i++] = getLong(cursor, DBConstants.V_ID);
 			} while (cursor.moveToNext());
 		} else {
-			return true;
+			return false;
 		}
 
 		List<Long> idsToRemove = new ArrayList<Long>();

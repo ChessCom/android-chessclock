@@ -169,7 +169,8 @@
     <string name="authors_name">Author\'s Name</string>
     <string name="location">Location</string>
     <string name="share">Share</string>
-    <string name="profile_membership_renew_cancel">Your %1$s membership will renew on %2$s. Cancel</string>
+    <string name="profile_membership_renew_cancel">Your %1$s membership will renew on %2$s.</string>
+    <string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account">Cancel</a>]]></string>
     <string name="invite_friends_profile_message">Chess is more fun with Friends! Invite them to join!</string>
     <string name="profile_account_message_1">Your account is subject to the site </string>
     <string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice">Terms and Conditions.</a>]]></string>

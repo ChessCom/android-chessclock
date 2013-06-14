@@ -525,12 +525,12 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		@Override
 		public void updateData(DailyGamesAllItem returnedObj) {
 			super.updateData(returnedObj);
-
+			boolean currentGamesLeft;
 			{ // current games
 				final List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
-				boolean gamesLeft = DBDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList);
+				currentGamesLeft = DBDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList);
 
-				if (gamesLeft) {
+				if (currentGamesLeft) {
 					new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, currentGamesList, getContentResolver()).executeTask();
 				} else {
 					currentGamesMyCursorAdapter.changeCursor(null);
@@ -550,6 +550,23 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 //			{ // finished
 			finishedGameDataList = returnedObj.getData().getFinished();
+			if (!currentGamesLeft) { // if SaveTask will not return to LoadFinishedGamesPoint
+				if (finishedGameDataList != null) {
+					boolean gamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList);
+
+					if (gamesLeft) {
+						new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
+								getContentResolver()).executeTask();
+					} else {
+						finishedGamesCursorAdapter.changeCursor(null);
+					}
+				} else {
+					new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
+							DbHelper.getEchessFinishedListGamesParams(getContext()),
+							getContentResolver()).executeTask();
+				}
+			}
+
 //				boolean gamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList);
 //
 //				if (gamesLeft) {

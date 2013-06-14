@@ -192,14 +192,14 @@
 
 
             <!--Right Icon-->
-            <com.chess.RoboTextView
+<!--            <com.chess.RoboTextView
                 android:id="@+id/countryArrowIconTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ic_right"
                 android:textColor="@color/white"
                 style="@style/GlyphIcon.Small"
-                />
+                />-->
 
         </com.chess.LinLayout>
 
@@ -254,6 +254,7 @@
                 android:textColor="@color/semitransparent_white_65"
                 android:paddingRight="30dip"
                 custom:ttf="Regular"
+                android:visibility="invisible"
                 />
 
             <!--Upgrade Button-->

@@ -61,43 +61,6 @@
             style="@style/ListItem"
             />
 
-       <!-- <com.chess.LinLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_list_item_height"
-            android:gravity="center_vertical"
-            style="@style/ListItem"
-            android:paddingLeft="@dimen/new_game_frame_padding_side"
-            android:paddingRight="@dimen/new_game_frame_padding_side"
-            >
-
-            &lt;!&ndash;Opponent Title&ndash;&gt;
-            <com.chess.RoboTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/opponent_"
-                android:textColor="@color/semitransparent_white_65"
-                />
-
-            &lt;!&ndash;Opponent Name&ndash;&gt;
-            <com.chess.RoboTextView
-                android:id="@+id/opponentNameTxt"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/random"
-                android:textColor="@color/semitransparent_white_65"
-                android:paddingLeft="10dip"
-                />
-
-            &lt;!&ndash;Right Icon&ndash;&gt;
-            <com.chess.RoboTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/RightIcon"
-                />
-
-        </com.chess.LinLayout>-->
-
         <!--Days Per Move - Mode-->
         <com.chess.LinLayout
             android:layout_width="match_parent"

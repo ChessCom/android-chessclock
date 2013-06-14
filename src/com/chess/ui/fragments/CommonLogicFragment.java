@@ -452,15 +452,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 
 		preferencesEditor.putString(PASSWORD, getTextFromField(passwordEdt));
-
-//		try {
-//			preferencesEditor.putString(USER_TOKEN, URLEncoder.encode(returnedObj.getLoginToken(), HTTP.UTF_8));
-//		} catch (UnsupportedEncodingException ignored) {
-			preferencesEditor.putString(USER_TOKEN, returnedObj.getLoginToken());
-//			showSinglePopupDialog(R.string.error, R.string.error_occurred_while_login); // or use that logic?
-//			return;
-//		}
-// 		preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]); // TODO used only for live, so should be separate connection to live
+		preferencesEditor.putString(USER_TOKEN, returnedObj.getLoginToken());
 		preferencesEditor.commit();
 
 		AppData.setLiveChessMode(getActivity(), false);

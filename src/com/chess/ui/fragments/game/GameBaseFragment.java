@@ -218,6 +218,17 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 		showToast(R.string.check);
 	}
 
+	protected void showLoadingView(boolean show) {
+		if (show) {
+			showPopupProgressDialog(R.string.loading_);
+		} else {
+			if (isPaused)
+				return;
+
+			dismissProgressDialog();
+		}
+	}
+
 	protected void dismissDialogs() {
 		if (getEndPopupDialogFragment() != null) {
 			getEndPopupDialogFragment().dismiss();

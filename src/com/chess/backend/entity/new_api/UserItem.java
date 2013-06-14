@@ -8,92 +8,81 @@ package com.chess.backend.entity.new_api;
  */
 public class UserItem extends BaseResponseItem<UserItem.Data> {
 /*
-    "status": "success",
-    "data": {
-        "id": 23900,
+        "id": 11436,
         "country_id": 2,
-        "avatar": "//www.c.com/images/noavatar_l.gif"
-    }
-*/
-
-/*
-	"id": 31,
-	"username": "jay",
-	"avatar": "//www.c.com/images/noavatar_l.gif",
-	"country_id": 2,
-	"last_login_date": "2013-03-08T05:52:08-0800",
-	"points": 549,
-	"chess_title": "GM",
-	"status": "ciaooooooo"
-
+        "avatar": "//s3.amazonaws.com/chess-7/images_users/avatars/rest_origin.12.jpeg",
+        "username": "rest",
+        "last_login_date": 1371214315,
+        "points": 0,
+        "chess_title": null,
+        "status": "ciaaoooo",
+        "first_name": "",
+        "last_name": "",
+        "location": "",
+        "country_name": "United States"
 	*/
 
 	public static class Data {
 		private long id;
 		private String username;
-		private String avatar_small_url;
-		private long country_id;
-		private String last_login_date;
+		private String avatar;
+		private int country_id;
+		private String country_name;
+		private long last_login_date;
 		private int points;
-//		private String chess_title = "";
-//		private String status = "";
+		private String chess_title;
+		private String status;
+		private String first_name;
+		private String last_name;
+		private String location;
 
 		public long getId() {
 			return id;
-		}
-
-		public void setId(long id) {
-			this.id = id;
 		}
 
 		public String getUsername() {
 			return username;
 		}
 
-		public void setUsername(String username) {
-			this.username = username;
-		}
-
 		public String getAvatar() {
-			return avatar_small_url;
+			return avatar;
 		}
 
-		public void setAvatar(String avatar) {
-			this.avatar_small_url = avatar;
-		}
-
-		public long getCountry_id() {
+		public int getCountryId() {
 			return country_id;
 		}
 
-		public void setCountry_id(long country_id) {
-			this.country_id = country_id;
+		public String getCountryName() {
+			return country_name;
 		}
 
-		public String getLast_login_date() {
+		public long getLastLoginDate() {
 			return last_login_date;
-		}
-
-		public void setLast_login_date(String last_login_date) {
-			this.last_login_date = last_login_date;
 		}
 
 		public int getPoints() {
 			return points;
 		}
 
-		public void setPoints(int points) {
-			this.points = points;
+		public String getChessTitle() {
+			return chess_title;
 		}
 
-//		public String getChess_title() {
-//			return chess_title;
-//		}
-//
-//		public String getStatus() {
-//			return status;
-//		}
+		public String getStatus() {
+			return status;
+		}
 
+		public String getFirstName() {
+			return first_name;
+		}
+
+		public String getLastName() {
+			return last_name;
+		}
+
+		public String getLocation() {
+			return location;
+		}
 	}
 
 }
