@@ -180,7 +180,7 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 			FlurryAgent.logEvent(FlurryData.NEW_ACCOUNT_CREATED);
 			showToast(R.string.congratulations);
 
-			preferencesEditor.putString(AppConstants.USERNAME, userNameEdt.getText().toString().toLowerCase());
+			preferencesEditor.putString(AppConstants.USERNAME, getTextFromField(userNameEdt));
 			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, RestHelper.V_BASIC_MEMBER);
 			processLogin(returnedObj.getData());
 		}

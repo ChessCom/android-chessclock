@@ -283,7 +283,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	}
 
 	private void adjustBoardForGame() {
-		userPlayWhite = currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(getActivity()));
+		userPlayWhite = currentGame.getWhiteUsername().equals(AppData.getUserName(getActivity()));
 
 		if (userPlayWhite) {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
@@ -316,19 +316,29 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 
-//		timeRemains = gameInfoItem.getTimeRemaining() + gameInfoItem.getTimeRemainingUnits();
-
-		long timeRemains = currentGame.getSecondsRemain();
-
-		String seconds = AppUtils.getTimeLeftFromSeconds(timeRemains, getActivity());
-
-
-		if (isUserMove()) {
-			topPanelView.setTimeLeft(seconds);
+		long secondsRemain = currentGame.getSecondsRemain();
+		String timeRemains;
+		if (secondsRemain == 0) {
+			timeRemains = getString(R.string.less_than_60_sec);
 		} else {
-			// TODO set greyed timeLeft
-//			topPanelView.setTimeLeft(seconds);
+			timeRemains = AppUtils.getTimeLeftFromSeconds(secondsRemain, getActivity());
 		}
+
+		String defaultTime = getString(R.string.days_arg, currentGame.getDaysPerMove());
+		boolean userMove = isUserMove();
+		if (userMove) {
+			labelsConfig.topPlayerTime = defaultTime;
+			labelsConfig.bottomPlayerTime = timeRemains;
+		} else {
+			labelsConfig.topPlayerTime = timeRemains;
+			labelsConfig.bottomPlayerTime = defaultTime;
+		}
+
+		topPanelView.setTimeRemain(labelsConfig.topPlayerTime);
+		bottomPanelView.setTimeRemain(labelsConfig.bottomPlayerTime);
+
+		topPanelView.showTimeLeftIcon(!userMove);
+		bottomPanelView.showTimeLeftIcon(userMove);
 
 		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
@@ -387,6 +397,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		String tempScore = labelsConfig.topPlayerRating;
 		labelsConfig.topPlayerRating = labelsConfig.bottomPlayerRating;
 		labelsConfig.bottomPlayerRating = tempScore;
+
+		String playerTime = labelsConfig.topPlayerTime;
+		labelsConfig.topPlayerTime = labelsConfig.bottomPlayerTime;
+		labelsConfig.bottomPlayerTime = playerTime;
 	}
 
 	@Override
@@ -550,7 +564,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	@Override
 	public Boolean isUserColorWhite() {
 		if (currentGame != null && getActivity() != null)
-			return currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(getActivity()));
+			return currentGame.getWhiteUsername().equals(AppData.getUserName(getActivity()));
 		else
 			return null;
 	}
@@ -561,8 +575,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	}
 
 	private boolean isUserMove() {
-
-		userPlayWhite = currentGame.getWhiteUsername().toLowerCase()
+		userPlayWhite = currentGame.getWhiteUsername()
 				.equals(AppData.getUserName(getActivity()));
 
 		return (currentGame.isWhiteMove() && userPlayWhite)
@@ -919,6 +932,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		String bottomPlayerName;
 		String topPlayerRating;
 		String bottomPlayerRating;
+		String topPlayerTime;
+		String bottomPlayerTime;
 		String topPlayerCountry;
 		String bottomPlayerCountry;
 		int userSide;

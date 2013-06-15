@@ -220,6 +220,7 @@
     <string name="solve_tactics_puzzles">solve Tactics &amp; Puzzles</string>
     <string name="learn_lessons">learn Lessons</string>
     <string name="watch_videos">watch Video Lessons</string>
+    <string name="less_than_60_sec"><![CDATA[< 60 sec]]></string>
     <!--Game mode-->
 
 </resources>

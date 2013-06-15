@@ -202,7 +202,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			currentGame = DBDataManager.getGameOnlineItemFromCursor(returnedObj);
 			returnedObj.close();
 
-			userPlayWhite = currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(getActivity()));
+			userPlayWhite = currentGame.getWhiteUsername().equals(AppData.getUserName(getActivity()));
 
 			labelsConfig.topAvatar = opponentAvatarDrawable;
 			labelsConfig.bottomAvatar = userAvatarDrawable;
@@ -237,10 +237,10 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 //		timeRemains = gameInfoItem.getTimeRemaining() + gameInfoItem.getTimeRemainingUnits();
 
 		if (isUserMove()) {
-//			topPanelView.setTimeLeft(seconds);
+//			topPanelView.setTimeRemain(seconds);
 		} else {
 			// TODO set greyed timeLeft
-//			topPanelView.setTimeLeft(seconds);
+//			topPanelView.setTimeRemain(seconds);
 		}
 
 		ChessBoardOnline.resetInstance();
@@ -371,7 +371,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	@Override
 	public Boolean isUserColorWhite() {
 		if (currentGame != null)
-			return currentGame.getWhiteUsername().toLowerCase().equals(AppData.getUserName(getActivity()));
+			return currentGame.getWhiteUsername().equals(AppData.getUserName(getActivity()));
 		else
 			return null;
 	}
@@ -386,8 +386,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	}
 
 	private boolean isUserMove() {
-		userPlayWhite = currentGame.getWhiteUsername().toLowerCase()
-				.equals(AppData.getUserName(getActivity()));
+		userPlayWhite = currentGame.getWhiteUsername().equals(AppData.getUserName(getActivity()));
 
 		return (currentGame.isWhiteMove() && userPlayWhite)
 				|| (!currentGame.isWhiteMove() && !userPlayWhite);

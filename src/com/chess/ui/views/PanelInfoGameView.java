@@ -5,12 +5,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RelLayout;
@@ -45,7 +47,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	protected ImageView avatarImg;
 	protected ImageView flagImg;
 	protected View capturedPiecesView;
-	protected RoboTextView timeLeftTxt;
+	protected RoboTextView timeRemainTxt;
 	protected ImageView premiumImg;
 
 	private int side;
@@ -56,6 +58,8 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	private boolean timeLeftHasBack;
 	private int topPlayerTimeLeftColor;
 	private int bottomPlayerTimeLeftColor;
+	private RoboTextView clockIconTxt;
+	private LinearLayout clockLayout;
 
 	public PanelInfoGameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -214,24 +218,51 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		}
 
 		{// add time left text
-			timeLeftTxt = new RoboTextView(context);
-			LayoutParams timeLeftParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-					timeLeftSize);
+			clockLayout = new LinearLayout(context);
+			timeRemainTxt = new RoboTextView(context);
+			clockIconTxt = new RoboTextView(context);
+
+			LayoutParams clockLayoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams timeRemainParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams clockIconParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+			clockLayoutParams.addRule(ALIGN_PARENT_RIGHT);
+			clockLayoutParams.addRule(ALIGN_TOP, AVATAR_ID);
+			clockLayoutParams.setMargins(0, (int) (-5 * density), 0, 0);
+
+			timeRemainParams.gravity = CENTER_VERTICAL;
+			clockIconParams.gravity = CENTER_VERTICAL;
+
+			clockIconTxt.setFont(FontsHelper.ICON_FONT);
+			float clockIconSize = resources.getDimension(R.dimen.new_tactics_clock_icon_size)/density; // 21;
+			clockIconTxt.setTextSize(clockIconSize);
+			clockIconTxt.setText(R.string.ic_clock);
+			clockIconTxt.setTextColor(Color.WHITE);
+			int paddingIcon = (int) (4 * density);
+			int paddingIconTop = (int) (2 * density);
+			clockIconTxt.setPadding(0, paddingIconTop, paddingIcon, 0);
+			clockIconTxt.setVisibility(GONE);
+
+			clockLayout.addView(clockIconTxt, clockIconParams);
+
+			LayoutParams timeLeftParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, timeLeftSize);
 			timeLeftParams.addRule(ALIGN_PARENT_RIGHT);
 			timeLeftParams.addRule(CENTER_VERTICAL);
-			timeLeftParams.setMargins((int) (7 * density), 0, 0, 0);
+			timeLeftParams.setMargins((int) (7 * density), 0, 0, 0); // use to set space between captured pieces in single line mode
 
-			timeLeftTxt.setTextSize(playerTextSize);
-			timeLeftTxt.setTextColor(resources.getColor(R.color.light_grey));
+			timeRemainTxt.setTextSize(playerTextSize);
+			timeRemainTxt.setTextColor(resources.getColor(R.color.light_grey));
 
 			if (timeLeftHasBack)
-				timeLeftTxt.setBackgroundResource(R.drawable.back_grey_emboss);
-			timeLeftTxt.setId(TIME_LEFT_ID);
-			timeLeftTxt.setFont(FontsHelper.BOLD_FONT);
-			timeLeftTxt.setGravity(Gravity.CENTER_VERTICAL);
-			setTimeLeftPadding();
+				clockLayout.setBackgroundResource(R.drawable.back_grey_emboss);
+			timeRemainTxt.setId(TIME_LEFT_ID);
+			timeRemainTxt.setFont(FontsHelper.BOLD_FONT);
+			timeRemainTxt.setGravity(Gravity.CENTER_VERTICAL);
+			setTimeRemainPadding();
 
-			addView(timeLeftTxt, timeLeftParams);
+			clockLayout.addView(timeRemainTxt, timeRemainParams);
+
+			addView(clockLayout, clockLayoutParams);
 		}
 
 		{// add captured drawable view
@@ -283,18 +314,18 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		// change timeLeft color and background
 		if (timeLeftHasBack) {
 			if (side == ChessBoard.WHITE_SIDE) {
-				timeLeftTxt.setBackgroundResource(R.drawable.back_white_emboss);
-				timeLeftTxt.setTextColor(topPlayerTimeLeftColor);
+				clockLayout.setBackgroundResource(R.drawable.back_white_emboss);
+				timeRemainTxt.setTextColor(topPlayerTimeLeftColor);
 			} else {
-				timeLeftTxt.setBackgroundResource(R.drawable.back_grey_emboss);
-				timeLeftTxt.setTextColor(bottomPlayerTimeLeftColor);
+				clockLayout.setBackgroundResource(R.drawable.back_grey_emboss);
+				timeRemainTxt.setTextColor(bottomPlayerTimeLeftColor);
 			}
-			setTimeLeftPadding();
+			setTimeRemainPadding();
 		} else {
 			if (side == ChessBoard.WHITE_SIDE) {
-				timeLeftTxt.setTextColor(topPlayerTimeLeftColor);
+				timeRemainTxt.setTextColor(topPlayerTimeLeftColor);
 			} else {
-				timeLeftTxt.setTextColor(bottomPlayerTimeLeftColor);
+				timeRemainTxt.setTextColor(bottomPlayerTimeLeftColor);
 			}
 		}
 
@@ -310,13 +341,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 	}
 
-	public void activateTimer(boolean active) {
-		timeLeftTxt.setVisibility(active ? VISIBLE : INVISIBLE);
-	}
 
-	public void setTimeLeft(String timeLeft) {
-		timeLeftTxt.setText(timeLeft);
-	}
 
 	public void setPlayerName(String playerName) {
 		playerTxt.setText(playerName);
@@ -336,8 +361,17 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		premiumImg.setVisibility(show ? VISIBLE : GONE);
 	}
 
-	public void showTimeLeft(boolean show) {
-		timeLeftTxt.setVisibility(show ? VISIBLE : GONE);
+	public void setTimeRemain(String timeRemain) {
+		timeRemainTxt.setText(timeRemain);
+		clockIconTxt.setVisibility(timeRemain.length() > 0? View.VISIBLE : View.GONE);
+	}
+
+	public void showTimeRemain(boolean show) {
+		clockLayout.setVisibility(show ? VISIBLE : GONE);
+	}
+
+	public void showTimeLeftIcon(boolean show) {
+		clockIconTxt.setVisibility(show? View.VISIBLE : View.GONE);
 	}
 
 	public void updateCapturedPieces(int[] alivePiecesCountArray) {
@@ -349,14 +383,14 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	}
 
 
-	private void setTimeLeftPadding() {
+	private void setTimeRemainPadding() {
 		int timeLeftSmallPadding = (int) (2 * density);
 		int timeLeftBigPadding = (int) (10 * density);
 
 		if (smallScreen) {
-			timeLeftTxt.setPadding(timeLeftSmallPadding, timeLeftSmallPadding, timeLeftSmallPadding, timeLeftSmallPadding);
+			clockLayout.setPadding(timeLeftSmallPadding, timeLeftSmallPadding, timeLeftSmallPadding, timeLeftSmallPadding);
 		} else {
-			timeLeftTxt.setPadding(timeLeftBigPadding, timeLeftSmallPadding, timeLeftBigPadding, timeLeftSmallPadding);
+			clockLayout.setPadding(timeLeftBigPadding, timeLeftSmallPadding, timeLeftBigPadding, timeLeftSmallPadding);
 		}
 	}
 

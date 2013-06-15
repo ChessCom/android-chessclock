@@ -8,18 +8,18 @@ package com.chess.backend.entity.new_api;
  */
 public class DailyFinishedGameData extends DailyGameBaseData{
 	/*
-	"game_id": 35000494,
+	"id": 35000320,
 	"i_play_as": 2,
-	"game_type_code": "chess",
-	"opponent_username": "deepgreene",
+	"game_type": 1,
+	"opponent_username": "privatepirate",
 	"opponent_rating": null,
 	"time_remaining": 0,
-	"fen": "rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR b KQkq f3 1 2",
-	"timestamp": 1339127284,
-	"last_move_from_square": "f2",
-	"last_move_to_square": "f4",
+	"fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+	"timestamp": 1307403901,
+	"last_move_from_square": null,
+	"last_move_to_square": null,
 	"is_opponent_online": false,
-	"game_score": 0
+	"game_score": 1
 	 */
 	private int game_score;
 

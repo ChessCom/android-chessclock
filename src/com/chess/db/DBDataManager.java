@@ -224,14 +224,19 @@ public class DBDataManager {
 		Uri uri = DBConstants.uriArray[DBConstants.DAILY_CURRENT_LIST_GAMES];
 		long[] gamesIds;
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER, arguments1, null);
-		if (cursor.moveToFirst()) {
+		if (cursor!= null && cursor.moveToFirst()) {
 			gamesIds = new long[cursor.getCount()];
 			int i = 0;
 			do {
 				gamesIds[i++] = getLong(cursor, DBConstants.V_ID);
 			} while (cursor.moveToNext());
-		} else {
+		} else if (gamesList.size() == 0) { // means no current games for that user
+			arguments1[0] = userName;
+			contentResolver.delete(uri, SELECTION_USER, arguments1);
+
 			return false;
+		} else { // current games exist, but not saved yet
+			return true;
 		}
 
 		List<Long> idsToRemove = new ArrayList<Long>();
@@ -272,13 +277,18 @@ public class DBDataManager {
 		Uri uri = DBConstants.uriArray[DBConstants.DAILY_FINISHED_LIST_GAMES];
 		long[] gamesIds;
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER, arguments1, null);
-		if (cursor.moveToFirst()) {
+		if (cursor!= null && cursor.moveToFirst()) {
 			gamesIds = new long[cursor.getCount()];
 			int i = 0;
 			do {
 				gamesIds[i++] = getLong(cursor, DBConstants.V_ID);
 			} while (cursor.moveToNext());
-		} else {
+		} else if (gamesList.size() == 0) { // means no finished games for that user
+			arguments1[0] = userName;
+			contentResolver.delete(uri, SELECTION_USER, arguments1);
+
+			return false;
+		} else { // finished games exist, but not saved yet
 			return true;
 		}
 
@@ -322,8 +332,11 @@ public class DBDataManager {
 
 		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.FRIENDS],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
-		boolean exist = cursor.moveToFirst();
-		cursor.close();
+		boolean exist = false;
+		if (cursor != null) {
+			exist = cursor.moveToFirst();
+			cursor.close();
+		}
 
 		return exist;
 	}

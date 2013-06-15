@@ -262,9 +262,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			@Override
 			public void run() {
 				if (getBoardFace().isReside()) {
-					topPanelView.setTimeLeft(whiteTimer);
+					topPanelView.setTimeRemain(whiteTimer);
 				} else {
-					bottomPanelView.setTimeLeft(whiteTimer);
+					bottomPanelView.setTimeRemain(whiteTimer);
 				}
 			}
 		});
@@ -281,9 +281,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			@Override
 			public void run() {
 				if (getBoardFace().isReside()) {
-					bottomPanelView.setTimeLeft(blackTimer);
+					bottomPanelView.setTimeRemain(blackTimer);
 				} else {
-					topPanelView.setTimeLeft(blackTimer);
+					topPanelView.setTimeRemain(blackTimer);
 				}
 			}
 		});
@@ -644,8 +644,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 				topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
 			}
 
-			topPanelView.activateTimer(true);
-			bottomPanelView.activateTimer(true);
+			topPanelView.showTimeRemain(true);
+			bottomPanelView.showTimeRemain(true);
 
 			topPanelView.setSide(labelsConfig.getOpponentSide());
 			bottomPanelView.setSide(labelsConfig.userSide);

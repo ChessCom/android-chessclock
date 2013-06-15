@@ -608,8 +608,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 			}
 		}
 		// hide timeLeft
-		topPanelView.showTimeLeft(false);
-		bottomPanelView.showTimeLeft(false);
+		topPanelView.showTimeRemain(false);
+		bottomPanelView.showTimeRemain(false);
 
 		boardView = (ChessBoardCompView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
