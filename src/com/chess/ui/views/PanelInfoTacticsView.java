@@ -39,6 +39,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 	private RoboTextView ratingChangeTxt;
 	private RoboTextView practiceTxt;
 	private LinearLayout clockLayout;
+	private RoboTextView clockIconTxt;
 
 	public PanelInfoTacticsView(Context context) {
 		super(context);
@@ -120,7 +121,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		{// add time left text
 			clockLayout = new LinearLayout(context);
 
-			RoboTextView clockIconTxt = new RoboTextView(context);
+			clockIconTxt = new RoboTextView(context);
 			clockTxt = new RoboTextView(context);
 
 			LayoutParams clockLayoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -194,6 +195,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 
 	public void showClock(boolean show) {
 		clockTxt.setVisibility(show ? VISIBLE : GONE);
+		clockIconTxt.setVisibility(show ? VISIBLE : GONE);
 	}
 
 	public void showDefault() {

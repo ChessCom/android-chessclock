@@ -27,7 +27,7 @@ import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CompGameSetupFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
-import com.chess.ui.fragments.settings.SettingsFragment;
+import com.chess.ui.fragments.settings.SettingsBoardFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
@@ -497,7 +497,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		} else if (code == ID_EMAIL_GAME) {
 			sendPGN();
 		} else if (code == ID_SETTINGS) {
-			getActivityFace().openFragment(new SettingsFragment());
+			getActivityFace().openFragment(new SettingsBoardFragment());
 		}
 
 		optionsSelectFragment.dismiss();

@@ -32,7 +32,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/img_new_logo"
                 android:contentDescription="@string/image"
-                android:visibility="invisible"
+                android:visibility="gone"
                 />
 
             <com.chess.RoboTextView
@@ -57,7 +57,7 @@
             <com.chess.RoboTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/new_signup_without_facebook"
+                android:text="@string/or_use_your_email"
                 style="@style/SetupSmallFont"
                 />
 

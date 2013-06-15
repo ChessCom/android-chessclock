@@ -391,7 +391,7 @@
     <string name="last_name">Last Name</string>
     <string name="first_name">First Name</string>
     <string name="profile_picture">Profile Picture</string>
-    <string name="new_signup_without_facebook">or, Sign Up without using Facebook:</string>
+    <string name="or_use_your_email">Or, User Your Email Address:</string>
     <!--<string name="new_by_signing_up_accept_mobile">By signing up, I accept Terms of Service</string>-->
     <string name="new_by_signing_up_accept_mobile">By signing up, I accept</string>
     <string name="new_by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Terms of Service</a>]]></string>

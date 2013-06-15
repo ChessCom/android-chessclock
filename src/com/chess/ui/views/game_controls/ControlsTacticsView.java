@@ -35,14 +35,14 @@ public class ControlsTacticsView extends ControlsBaseView {
 		removeAllViews();
 
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
-//		addControlButton(PLAY_FOR_ME, R.style.Rect_Bottom_Middle);
 		addControlButton(ANALYSIS, R.style.Rect_Bottom_Middle);
 		addControlButton(HINT, R.style.Rect_Bottom_Middle);
 		addControlButton(HELP, R.style.Rect_Bottom_Middle);
 		addControlButton(BACK, R.style.Rect_Bottom_Middle);
 		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
 
-		addNextButton();
+		addNextButton(R.style.Rect_Bottom_Right_Green, NEXT);
+		addNextButton(R.style.Rect_Bottom_Right_Orange, SKIP);
 		addWrongButton();
 
 		addView(controlsLayout);
@@ -50,11 +50,11 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showDefault();
 	}
 
-	private void addNextButton() {
+	private void addNextButton(int styleId, ButtonIds id) {
 		RoboButton button = getDefaultButton();
 		button.setText(R.string.ic_arrow_right);
-		button.setDrawableStyle(R.style.Rect_Bottom_Right_Green);
-		button.setId(getButtonId(NEXT));
+		button.setDrawableStyle(styleId);
+		button.setId(getButtonId(id));
 		button.setVisibility(GONE);
 		LayoutParams params = new LayoutParams(0, controlButtonHeight);
 
@@ -91,8 +91,6 @@ public class ControlsTacticsView extends ControlsBaseView {
 			boardViewFace.showStats();
 		} else if (view.getId() == getButtonId(RESTART)) {
 			boardViewFace.restart();
-//		} else if (view.getId() == getButtonId(PLAY_FOR_ME)) {
-//			boardViewFace.showHint();
 		} else if (view.getId() == getButtonId(HINT)) {
 			boardViewFace.showHint();
 		} else if (view.getId() == getButtonId(HELP)) {
@@ -101,7 +99,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 			boardViewFace.moveBack();
 		} else if (view.getId() == getButtonId(FORWARD)) {
 			boardViewFace.moveForward();
-		} else if (view.getId() == getButtonId(NEXT)) {
+		} else if (view.getId() == getButtonId(NEXT) || view.getId() == getButtonId(SKIP)) {
 			boardViewFace.newGame();
 		}
 	}
@@ -112,7 +110,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showGameButton(ANALYSIS, false);
 		showGameButton(BACK, false);
 		showGameButton(FORWARD, false);
-//		showGameButton(PLAY_FOR_ME, true);
+		showGameButton(SKIP, false);
 		showGameButton(RESTART, true);
 	}
 
@@ -123,15 +121,27 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showGameButton(FORWARD, false);
 		showGameButton(ANALYSIS, true);
 		showGameButton(NEXT, true);
+		showGameButton(SKIP, false);
 	}
 
 	public void showDefault() {
 		showGameButton(RESTART, false);
-//		showGameButton(PLAY_FOR_ME, false);
 		showGameButton(ANALYSIS, false);
 		showGameButton(HELP, true);
 		showGameButton(HINT, false);
 		showGameButton(NEXT, false);
+		showGameButton(SKIP, false);
+		showGameButton(BACK, false);
+		showGameButton(FORWARD, false);
+	}
+
+	public void showAfterRetry() {
+		showGameButton(RESTART, false);
+		showGameButton(ANALYSIS, true);
+		showGameButton(HELP, false);
+		showGameButton(HINT, false);
+		showGameButton(NEXT, false);
+		showGameButton(SKIP, true);
 		showGameButton(BACK, false);
 		showGameButton(FORWARD, false);
 	}
@@ -139,8 +149,6 @@ public class ControlsTacticsView extends ControlsBaseView {
 	public void enableGameControls(boolean enable) {
 		enableGameButton(OPTIONS, enable);
 		enableGameButton(HELP, enable);
-//		enableGameButton(ButtonIds.FORWARD, enable);
-//		enableGameButton(ButtonIds.BACK, enable);
 	}
 
 	@Override

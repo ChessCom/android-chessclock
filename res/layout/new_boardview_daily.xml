@@ -19,7 +19,8 @@
     <com.chess.ui.views.PanelInfoGameView
         android:id="@+id/topPanelView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         custom:oneLine="@bool/one_line_for_board"
         />
 
@@ -50,24 +51,6 @@
             android:background="@drawable/game_board_divider"
             android:layout_marginTop="-1px"
             />
-
-        <!--Loading Overlay-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/loadingView"
-            android:background="@color/loading_overlay"
-            android:visibility="gone"
-            >
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                style="?android:attr/progressBarStyle"
-                />
-
-        </RelativeLayout>
 
     </RelativeLayout>
 

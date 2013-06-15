@@ -10,7 +10,4 @@
     <dimen name="toggle_button_padding_right">2dip</dimen>
     <dimen name="toggle_button_padding_top">2dip</dimen>
     <dimen name="toggle_button_padding_bottom">2dip</dimen>
-
-    <!--<dimen name="default_stroke_width">1px</dimen>-->
-
 </resources>

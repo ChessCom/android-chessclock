@@ -78,7 +78,6 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 
 		{// add avatar view
 			avatarImg = new ImageView(context);
-
 			LayoutParams avatarParams = new LayoutParams(avatarSize, avatarSize);
 			avatarParams.setMargins(0, 0, avatarMarginRight, 0);
 			avatarParams.addRule(CENTER_VERTICAL);
@@ -100,6 +99,7 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 
 			playerParams.addRule(RIGHT_OF, AVATAR_ID);
 			playerParams.addRule(ALIGN_TOP, AVATAR_ID);
+			playerParams.setMargins(0, (int) (-3 * density), 0, 0);
 
 			playerTxt.setTextSize(playerTextSize);
 			playerTxt.setTextColor(playerTextColor);
@@ -142,10 +142,9 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 			timeLeftParams.addRule(ALIGN_PARENT_RIGHT);
 			timeLeftParams.addRule(CENTER_VERTICAL);
-//			timeLeftParams.setMargins((int) (7 * density), 0, 0, 0);
 
 			whatIsTxt.setTextSize(whatIsTextSize);
-			whatIsTxt.setTextColor(resources.getColor(R.color.new_square_button_p));
+			whatIsTxt.setTextColor(resources.getColorStateList(R.color.text_controls_icons));
 			whatIsTxt.setText(R.string.what_is_chess_com);
 			whatIsTxt.setId(WHAT_IS_TXT_ID);
 			whatIsTxt.setGravity(Gravity.CENTER_VERTICAL);

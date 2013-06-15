@@ -44,7 +44,7 @@ import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
-import com.chess.ui.fragments.settings.SettingsFragment;
+import com.chess.ui.fragments.settings.SettingsBoardFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameNetworkActivityFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
@@ -192,7 +192,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		} else if (code == ID_EMAIL_GAME) {
 			sendPGN();
 		} else if (code == ID_SETTINGS) {
-			getActivityFace().openFragment(new SettingsFragment());
+			getActivityFace().openFragment(new SettingsBoardFragment());
 		}
 
 		optionsSelectFragment.dismiss();

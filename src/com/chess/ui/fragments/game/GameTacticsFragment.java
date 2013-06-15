@@ -36,7 +36,7 @@ import com.chess.ui.engine.ChessBoardTactics;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
-import com.chess.ui.fragments.settings.SettingsFragment;
+import com.chess.ui.fragments.settings.SettingsBoardFragment;
 import com.chess.ui.fragments.stats.TacticsStatsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.interfaces.GameTacticsActivityFace;
@@ -61,19 +61,6 @@ import java.util.List;
  * Time: 7:10
  */
 public class GameTacticsFragment extends GameBaseFragment implements GameTacticsActivityFace, PopupListSelectionFace {
-
-/*
-1. help makes one move for you, and you fail the tactic. check how it works on iphone if you can.
-2. michael, what is under options?
-3. if no network, we should have offline tactics still (there should be 100 of them).
-
-Actions:
-- Next Tactic
-- Show Answer
-- Settings
-
-And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Computer), but then your result is "Solved with Hint"; your score is calculated by treating the request for Hint as a wrong move.
-	 */
 
 	private static final int TIMER_UPDATE = 1000;
 	private static final long TACTIC_ANSWER_DELAY = 1500;
@@ -492,7 +479,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 		} else if (code == ID_PRACTICE) {
 			switch2Analysis();
 		} else if (code == ID_SETTINGS) {
-			getActivityFace().openFragment(new SettingsFragment());
+			getActivityFace().openFragment(new SettingsBoardFragment());
 		}
 
 		optionsSelectFragment.dismiss();
@@ -724,12 +711,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 
 	@Override
 	protected void restoreGame() {
-		if (!tacticItemIsValid()) {
-			return;
-		}
-
-		if (tacticItem.isStop()) {
-//			openOptionsMenu();
+		if (!tacticItemIsValid() || tacticItem.isStop()) {
 			return;
 		}
 
@@ -740,6 +722,7 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 	public void restart() {
 		tacticItem.setRetry(true);
 		adjustBoardForGame();
+		controlsTacticsView.showAfterRetry();
 	}
 
 	private void adjustBoardForGame() {
@@ -994,5 +977,18 @@ And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Com
 			}
 		}
 	}
+
+/*
+1. help makes one move for you, and you fail the tactic. check how it works on iphone if you can.
+2. michael, what is under options?
+3. if no network, we should have offline tactics still (there should be 100 of them).
+
+Actions:
+- Next Tactic
+- Show Answer
+- Settings
+
+And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Computer), but then your result is "Solved with Hint"; your score is calculated by treating the request for Hint as a wrong move.
+*/
 
 }

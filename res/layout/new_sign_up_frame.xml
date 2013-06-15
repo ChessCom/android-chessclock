@@ -52,7 +52,7 @@
             <com.chess.RoboTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/new_signup_without_facebook"
+                android:text="@string/or_use_your_email"
                 style="@style/SetupSmallFont"
                 />
 

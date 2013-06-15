@@ -44,9 +44,9 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		HINT,
 		BACK,
 		FORWARD,
-		PLAY_FOR_ME,
 		MAKE_MOVE,
-		NEXT
+		NEXT,
+		SKIP
 	}
 
 	private Integer[] glyphIds = new Integer[]{

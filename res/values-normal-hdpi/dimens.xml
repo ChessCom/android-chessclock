@@ -58,12 +58,13 @@
     <dimen name="article_thumb_width">105dip</dimen>
     <dimen name="nav_item_image_size">32dip</dimen>
     <dimen name="new_tactics_board_top_offset">72dip</dimen>
-    <dimen name="popup_options_select_padding">30dip</dimen>
+    <dimen name="popup_options_select_padding">35dip</dimen>
     <dimen name="result_title_min_height">77dip</dimen>
     <dimen name="welcome_result_list_item_height">58dip</dimen>
     <dimen name="friend_list_photo_size">80dip</dimen>
     <dimen name="new_daily_grid_button_width">68dip</dimen>
     <dimen name="notations_view_height">24dip</dimen>
+    <dimen name="welcome_features_padding_top">16dip</dimen>
 
 
 </resources>

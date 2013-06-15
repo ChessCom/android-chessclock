@@ -501,12 +501,18 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			if (resultCode == StaticData.EMPTY_DATA) {
-				emptyView.setText(R.string.no_games);
+				if (gameType == CURRENT_MY) {
+					new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
+							DbHelper.getEchessFinishedListGamesParams(getContext()),
+							getContentResolver()).executeTask();
+				} else {
+					emptyView.setText(R.string.no_games);
+					showEmptyView(true);
+				}
 			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.no_network);
+				showEmptyView(true);
 			}
-
-			showEmptyView(true);
 		}
 	}
 

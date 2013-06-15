@@ -2,6 +2,7 @@ package com.chess.ui.fragments.welcome;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -9,10 +10,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.Interpolator;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
 import com.chess.FontsHelper;
 import com.chess.MultiDirectionSlidingDrawer;
@@ -21,16 +22,14 @@ import com.chess.RoboTextView;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
-import com.chess.model.PopupItem;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.game.GameBaseFragment;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
-import com.chess.ui.fragments.settings.SettingsFragment;
+import com.chess.ui.fragments.settings.SettingsBoardFragment;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
@@ -43,8 +42,6 @@ import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.ui.views.game_controls.ControlsCompView;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 import java.util.ArrayList;
@@ -82,16 +79,13 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	private static final int ID_FLIP_BOARD = 2;
 	private static final int ID_SETTINGS = 3;
 
-	private static final long ANIMATION_DELAY = 1500;
-	private static final long REPEAT_TIMEOUT = 60000;
-	private static final int FLIP_ANIM_DURATION = 400;
+	private static final long BLINK_DELAY = 10 * 1000;
+	private static final long UNBLINK_DELAY = 400;
 	private static final int FADE_ANIM_DURATION = 300;
 	private static final String OPTION_SELECTION = "option select popup";
 	private static final long DRAWER_APPEAR_DELAY = 100;
+	private static final long END_GAME_DELAY = 1000L;
 	private WelcomeTabsFace parentFace;
-
-	private Interpolator accelerator = new AccelerateInterpolator();
-	private Interpolator decelerator = new DecelerateInterpolator();
 
 	private ChessBoardCompView boardView;
 
@@ -100,24 +94,23 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
-	private ControlsCompView controlsCompView;
 
 	private LabelsConfig labelsConfig;
 	private boolean labelsSet;
 
 	private NotationView notationsView;
 	private boolean humanBlack;
-	private ObjectAnimator flipFirstHalf;
 	private List<String> optionsList;
 	private PopupOptionsMenuFragment optionsSelectFragment;
-	private ListView resultsListView;
-	private ArrayList<PromoteItem> menuItems;
 	private PromotesAdapter resultsAdapter;
-	private View boardLinLay;
 	private MultiDirectionSlidingDrawer slidingDrawer;
 	private RoboTextView resultTxt;
 	private ObjectAnimator fadeBoardAnimator;
 	private ObjectAnimator fadeDrawerAnimator;
+	private TextView whatIsTxt;
+	private ColorStateList whatIsTextColor;
+	private int whiteTextColor;
+	private boolean tourWasClicked;
 
 	public WelcomeGameCompFragment() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
@@ -187,8 +180,9 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 			}
 		}
 
-		handler.postDelayed(startAnimation, ANIMATION_DELAY);
-
+		if (!tourWasClicked) {
+			handler.postDelayed(blinkWhatIs, BLINK_DELAY);
+		}
 	}
 
 	@Override
@@ -201,14 +195,10 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 			ChessBoardComp.resetInstance();
 		}
 
-		// there is shouldn't be such logic for fragment
-//		if (getBoardFace().getMode() != getArguments().getInt(AppConstants.GAME_MODE)) {
-//			Intent intent = getIntent();
-//			intent.putExtra(AppConstants.GAME_MODE, getBoardFace().getMode());
-//			getIntent().replaceExtras(intent);
-//		}
-		handler.removeCallbacks(startAnimation);
-
+		if (!tourWasClicked) {
+			handler.removeCallbacks(blinkWhatIs);
+			handler.removeCallbacks(unBlinkWhatIs);
+		}
 		labelsSet = false;
 	}
 
@@ -407,18 +397,6 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	private void sendPGN() {
-		/*
-				[Event "Let's Play!"]
-				[Site "Chess.com"]
-				[Date "2012.09.13"]
-				[White "anotherRoger"]
-				[Black "alien_roger"]
-				[Result "0-1"]
-				[WhiteElo "1221"]
-				[BlackElo "1119"]
-				[TimeControl "1 in 1 day"]
-				[Termination "alien_roger won on time"]
-				 */
 		CharSequence moves = getBoardFace().getMoveListSAN();
 		String whitePlayerName = AppData.getUserName(getContext());
 		String blackPlayerName = getString(R.string.comp);
@@ -450,56 +428,33 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	@Override
-	public void onGameOver(String message, boolean need2Finish) {
-		boolean userWon = !message.equals(getString(R.string.black_wins));
-
-		topPanelView.resetPieces();
-		bottomPanelView.resetPieces();
-
-		handler.postDelayed(new Runnable() { // delay to show fling animation
+	public void onGameOver(final String message, boolean need2Finish) {
+		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				slidingDrawer.animateOpen();
+				boolean userWon = !message.equals(getString(R.string.black_wins));
+
+				topPanelView.resetPieces();
+				bottomPanelView.resetPieces();
+
+				handler.postDelayed(new Runnable() { // delay to show fling animation
+					@Override
+					public void run() {
+						slidingDrawer.animateOpen();
+					}
+				}, DRAWER_APPEAR_DELAY);
+
+				slidingDrawer.setVisibility(View.VISIBLE);
+				fadeDrawerAnimator.reverse();
+				fadeBoardAnimator.start();
+
+				if (userWon) {
+					resultTxt.setText(R.string.you_won);
+				} else {
+					resultTxt.setText(R.string.you_lose);
+				}
 			}
-		}, DRAWER_APPEAR_DELAY);
-
-		slidingDrawer.setVisibility(View.VISIBLE);
-		fadeDrawerAnimator.reverse();
-		fadeBoardAnimator.start();
-
-		if (userWon) {
-			resultTxt.setText(R.string.you_won);
-		} else {
-			resultTxt.setText(R.string.you_lose);
-		}
-	}
-
-	@Override
-	protected void showGameEndPopup(View layout, String message) {
-
-		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
-		endGameTitleTxt.setText(R.string.game_over);
-
-		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
-		endGameReasonTxt.setText(message);
-
-//		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-//		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
-		PopupItem popupItem = new PopupItem();
-		popupItem.setCustomView((LinearLayout) layout);
-
-		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
-		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
-
-		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
-		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
-
-		AppData.clearSavedCompGame(getActivity());
-
-		controlsCompView.enableHintButton(false);
-//		if (AppUtils.isNeedToUpgrade(getActivity())) {
-//			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-//		}
+		}, END_GAME_DELAY);
 	}
 
 	private void resideBoardIfCompWhite() {
@@ -520,6 +475,10 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		if (view.getId() == PanelInfoWelcomeView.WHAT_IS_TXT_ID) {
 			if (parentFace != null)
 				parentFace.changeInternalFragment(WelcomeTabsFragment.FEATURES_FRAGMENT);
+			tourWasClicked = true;
+
+			handler.removeCallbacks(blinkWhatIs);
+			handler.removeCallbacks(unBlinkWhatIs);
 		}
 	}
 
@@ -532,7 +491,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		} else if (code == ID_EMAIL_GAME) {
 			sendPGN();
 		} else if (code == ID_SETTINGS) {
-			getActivityFace().openFragment(new SettingsFragment());
+			getActivityFace().openFragment(new SettingsBoardFragment());
 		}
 
 		optionsSelectFragment.dismiss();
@@ -641,7 +600,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		ChessBoardComp.resetInstance();
 		getBoardFace().setMode(getArguments().getInt(MODE));
 
-		menuItems = new ArrayList<PromoteItem>();
+		ArrayList<PromoteItem> menuItems = new ArrayList<PromoteItem>();
 		menuItems.add(new PromoteItem(R.string.play_online, R.string.ic_play_online));
 		menuItems.add(new PromoteItem(R.string.challenge_friend, R.string.ic_challenge_friend));
 		menuItems.add(new PromoteItem(R.string.rematch_computer, R.string.ic_comp_game));
@@ -655,7 +614,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	private void widgetsInit(View view) {
 		Activity activity = getActivity();
 
-		controlsCompView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
+		ControlsCompView controlsCompView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoWelcomeView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoWelcomeView) view.findViewById(R.id.bottomPanelView);
@@ -664,24 +623,27 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
 		{ // animate whatIsChess.com
-			TextView whatIsTxt = (TextView) bottomPanelView.findViewById(PanelInfoWelcomeView.WHAT_IS_TXT_ID);
+			whatIsTxt = (TextView) bottomPanelView.findViewById(PanelInfoWelcomeView.WHAT_IS_TXT_ID);
 			whatIsTxt.setVisibility(View.VISIBLE);
 			whatIsTxt.setOnClickListener(this);
+			whatIsTextColor = activity.getResources().getColorStateList(R.color.text_controls_icons);
+			whiteTextColor = activity.getResources().getColor(R.color.white);
 
-			flipFirstHalf = ObjectAnimator.ofFloat(whatIsTxt, "rotationX", 0f, 90f);
-			flipFirstHalf.setDuration(FLIP_ANIM_DURATION);
-			flipFirstHalf.setInterpolator(accelerator);
 
-			final ObjectAnimator flipSecondHalf = ObjectAnimator.ofFloat(whatIsTxt, "rotationX", -90f, 0f);
-			flipSecondHalf.setDuration(FLIP_ANIM_DURATION);
-			flipSecondHalf.setInterpolator(decelerator);
-
-			flipFirstHalf.addListener(new AnimatorListenerAdapter() {
-				@Override
-				public void onAnimationEnd(Animator anim) {
-					flipSecondHalf.start();
-				}
-			});
+//			flipFirstHalf = ObjectAnimator.ofFloat(whatIsTxt, "rotationX", 0f, 90f);
+//			flipFirstHalf.setDuration(FLIP_ANIM_DURATION);
+//			flipFirstHalf.setInterpolator(accelerator);
+//
+//			final ObjectAnimator flipSecondHalf = ObjectAnimator.ofFloat(whatIsTxt, "rotationX", -90f, 0f);
+//			flipSecondHalf.setDuration(FLIP_ANIM_DURATION);
+//			flipSecondHalf.setInterpolator(decelerator);
+//
+//			flipFirstHalf.addListener(new AnimatorListenerAdapter() {
+//				@Override
+//				public void onAnimationEnd(Animator anim) {
+//					flipSecondHalf.start();
+//				}
+//			});
 		}
 
 		{// set avatars
@@ -722,7 +684,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		}
 
 		{ // Results part
-			resultsListView = (ListView) view.findViewById(R.id.listView);
+			ListView resultsListView = (ListView) view.findViewById(R.id.listView);
 			// results part
 			resultTxt = new RoboTextView(activity);
 			resultTxt.setTextColor(activity.getResources().getColor(R.color.white));
@@ -747,18 +709,28 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 			fadeDrawerAnimator.start();
 		}
 
-		boardLinLay = view.findViewById(R.id.boardLinLay);
+		View boardLinLay = view.findViewById(R.id.boardLinLay);
 		fadeBoardAnimator = ObjectAnimator.ofFloat(boardLinLay, "alpha", 1, 0);
 		fadeBoardAnimator.setDuration(FADE_ANIM_DURATION);
 	}
 
-	private Runnable startAnimation = new Runnable() {
+	private Runnable blinkWhatIs = new Runnable() {
 		@Override
 		public void run() {
-			if (flipFirstHalf != null) { // can be null if we return from savedInstance to non first page
-				flipFirstHalf.start();
-			}
-			handler.postDelayed(this, REPEAT_TIMEOUT);
+			whatIsTxt.setTextColor(whiteTextColor);
+
+			handler.removeCallbacks(unBlinkWhatIs);
+			handler.postDelayed(unBlinkWhatIs, UNBLINK_DELAY);
+		}
+	};
+
+	private Runnable unBlinkWhatIs = new Runnable() {
+		@Override
+		public void run() {
+			whatIsTxt.setTextColor(whatIsTextColor);
+
+			handler.removeCallbacks(blinkWhatIs);
+			handler.postDelayed(blinkWhatIs, BLINK_DELAY);
 		}
 	};
 

@@ -78,10 +78,6 @@ public class AppData {
 		return preferences.getString(PASSWORD, StaticData.SYMBOL_EMPTY);
 	}
 
-	/**
-	 * @param context
-	 * @return
-	 */
 	@Deprecated
 	public static String getOpponentName(Context context) {
 		SharedPreferences preferences = getPreferences(context);
@@ -89,7 +85,7 @@ public class AppData {
 	}
 
 	public static int getChessBoardId(Context context) {
-		return getIntValue(context, PREF_BOARD_STYLE, StaticData.B_GREEN_ID);
+		return getIntValue(context, PREF_BOARD_STYLE, StaticData.B_WOOD_DARK_ID);
 	}
 
 	public static void setChessBoardId(Context context, int value) {
