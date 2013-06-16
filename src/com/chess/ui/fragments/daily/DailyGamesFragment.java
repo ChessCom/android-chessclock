@@ -212,7 +212,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
 
-			getActivityFace().openFragment(GameDailyFinishedFragment.newInstance(finishedItem.getGameId()));
+			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
 		} else {
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
@@ -228,7 +228,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 			} else {
 				ChessBoardOnline.resetInstance();
-				getActivityFace().openFragment(GameDailyFragment.newInstance(gameListCurrentItem.getGameId()));
+				getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
 			}
 		}
 	}

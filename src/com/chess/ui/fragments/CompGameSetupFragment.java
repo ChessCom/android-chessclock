@@ -56,7 +56,7 @@ public class CompGameSetupFragment extends CommonLogicFragment {
 
 			CompGameConfig config = getNewCompGameConfig();
 
-			getActivityFace().openFragment(GameCompFragment.newInstance(config));
+			getActivityFace().openFragment(GameCompFragment.createInstance(config));
 		}
 	}
 

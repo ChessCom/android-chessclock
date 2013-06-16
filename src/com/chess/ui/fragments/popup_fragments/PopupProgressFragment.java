@@ -18,7 +18,7 @@ public class PopupProgressFragment extends BasePopupDialogFragment {
 //    private TextView messageTxt;
     private boolean cancelable = true;
 
-	public static PopupProgressFragment newInstance(PopupItem popupItem) {
+	public static PopupProgressFragment createInstance(PopupItem popupItem) {
 		PopupProgressFragment frag = new PopupProgressFragment();
 		Bundle arguments = new Bundle();
 		arguments.putParcelable(POPUP_ITEM, popupItem);

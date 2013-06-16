@@ -39,7 +39,7 @@ public class DailyChatNotesTabFragment extends CommonLogicFragment implements Ra
 
 		showActionBar(true);
 
-//		Fragment homeGamesFragment = HomePlayFragment.newInstance(CENTER_MODE);
+//		Fragment homeGamesFragment = HomePlayFragment.createInstance(CENTER_MODE);
 		Fragment homeGamesFragment = new HomePlayFragment();
 		changeInternalFragment(homeGamesFragment);
 
@@ -68,7 +68,7 @@ public class DailyChatNotesTabFragment extends CommonLogicFragment implements Ra
 					Fragment fragment = findFragmentByTag(HomePlayFragment.class.getSimpleName());
 					if (fragment == null) {
 						fragment = new HomePlayFragment();
-//						fragment = HomePlayFragment.newInstance(CENTER_MODE);
+//						fragment = HomePlayFragment.createInstance(CENTER_MODE);
 					}
 					changeInternalFragment(fragment);
 					break;

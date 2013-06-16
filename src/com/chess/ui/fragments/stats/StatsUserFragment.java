@@ -121,13 +121,13 @@ public class StatsUserFragment extends CommonLogicFragment implements AdapterVie
 
 			switch (position){
 				case LIVE_STANDARD:
-					changeInternalFragment(StatsGameDetailsFragment.newInstance(LIVE_STANDARD));
+					changeInternalFragment(StatsGameDetailsFragment.createInstance(LIVE_STANDARD));
 					break;
 				case LIVE_BLITZ:
-					changeInternalFragment(StatsGameDetailsFragment.newInstance(LIVE_BLITZ));
+					changeInternalFragment(StatsGameDetailsFragment.createInstance(LIVE_BLITZ));
 					break;
 				case LIVE_LIGHTNING:
-					changeInternalFragment(StatsGameDetailsFragment.newInstance(LIVE_LIGHTNING));
+					changeInternalFragment(StatsGameDetailsFragment.createInstance(LIVE_LIGHTNING));
 					break;
 				case DAILY_CHESS:
 					changeInternalFragment(new StatsGameDetailsFragment());

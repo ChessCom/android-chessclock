@@ -75,7 +75,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 	private TextView timeoutsLabelTxt;
 	private ForegroundColorSpan foregroundSpan;
 
-	public static StatsGameDetailsFragment newInstance(int code) {
+	public static StatsGameDetailsFragment createInstance(int code) {
 		StatsGameDetailsFragment frag = new StatsGameDetailsFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, code);

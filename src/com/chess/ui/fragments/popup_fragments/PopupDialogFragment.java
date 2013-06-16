@@ -13,7 +13,6 @@ import com.chess.backend.statics.StaticData;
 import com.chess.model.PopupItem;
 import com.chess.ui.interfaces.PopupDialogFace;
 
-
 /**
  * PopupDialogFragment class
  *
@@ -22,13 +21,13 @@ import com.chess.ui.interfaces.PopupDialogFace;
  */
 public class PopupDialogFragment extends BasePopupDialogFragment {
 
-	private TextView titleTxt;
-	private TextView messageTxt;
-	private Button leftBtn;
-	private Button neutralBtn;
-	private Button rightBtn;
+    private TextView titleTxt;
+    private TextView messageTxt;
+    private Button leftBtn;
+    private Button neutralBtn;
+    private Button rightBtn;
 
-	public static PopupDialogFragment newInstance(PopupItem popupItem, PopupDialogFace popupListener) {
+	public static PopupDialogFragment createInstance(PopupItem popupItem, PopupDialogFace popupListener) {
         PopupDialogFragment frag = new PopupDialogFragment();
 		frag.listener = popupListener;
 		Bundle arguments = new Bundle();
@@ -37,13 +36,13 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
         return frag;
     }
 
-	public static PopupDialogFragment newInstance(PopupItem popupItem) {
-		PopupDialogFragment frag = new PopupDialogFragment();
+	public static PopupDialogFragment createInstance(PopupItem popupItem) {
+        PopupDialogFragment frag = new PopupDialogFragment();
 		Bundle arguments = new Bundle();
 		arguments.putParcelable(POPUP_ITEM, popupItem);
 		frag.setArguments(arguments);
-		return frag;
-	}
+        return frag;
+    }
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -54,50 +53,54 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.popup_default, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.popup_default, container, false);
 
-		messageTxt = (TextView) view.findViewById(R.id.popupMessage);
-		titleTxt = (TextView) view.findViewById(R.id.popupTitle);
+        messageTxt = (TextView)view.findViewById(R.id.popupMessage);
+        titleTxt = (TextView)view.findViewById(R.id.popupTitle);
 
-		leftBtn = (Button) view.findViewById(R.id.positiveBtn);
-		neutralBtn = (Button) view.findViewById(R.id.neutralBtn);
-		rightBtn = (Button) view.findViewById(R.id.negativeBtn);
+        leftBtn = (Button)view.findViewById(R.id.positiveBtn);
+        neutralBtn = (Button)view.findViewById(R.id.neutralBtn);
+        rightBtn = (Button)view.findViewById(R.id.negativeBtn);
 
-		leftBtn.setOnClickListener(this);
-		neutralBtn.setOnClickListener(this);
-		rightBtn.setOnClickListener(this);
+        leftBtn.setOnClickListener(this);
+        neutralBtn.setOnClickListener(this);
+        rightBtn.setOnClickListener(this);
 
-		neutralBtn.setVisibility(View.GONE);
-		return view;
-	}
+        neutralBtn.setVisibility(View.GONE);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        switch (buttonsNumber){
+            case 1:
+                rightBtn.setVisibility(View.GONE);
+                break;
+            case 3:
+				neutralBtn.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
 
 	@Override
 	public void onResume() {
 		super.onResume();
 
 		String message = popupItem.getMessage(getActivity());
-		if (message.contains(StaticData.SYMBOL_TAG)) {
+		if(message.contains(StaticData.SYMBOL_TAG)){
 			messageTxt.setText(Html.fromHtml(message));
-		} else {
+		}else{
 			messageTxt.setText(message);
 		}
 		messageTxt.setVisibility(View.VISIBLE);
 		titleTxt.setText(popupItem.getTitle(getActivity()));
 
-        buttonsNumber = popupItem.getButtons();
-		switch (buttonsNumber) {
-			case 1:
-				rightBtn.setVisibility(View.GONE);
-				break;
-			case 3:
-				neutralBtn.setVisibility(View.VISIBLE);
-				neutralBtn.setText(popupItem.getNeutralBtnId());
-				break;
-		}
 		leftBtn.setText(popupItem.getPositiveBtnId());
+		if(buttonsNumber == 3)
+			neutralBtn.setText(popupItem.getNeutralBtnId());
 		rightBtn.setText(popupItem.getNegativeBtnId());
-
 	}
 
 }

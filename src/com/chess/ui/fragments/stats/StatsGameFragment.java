@@ -54,7 +54,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		setArguments(bundle);
 	}
 
-	public static StatsGameFragment newInstance(int code) {
+	public static StatsGameFragment createInstance(int code) {
 		StatsGameFragment frag = new StatsGameFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(CATEGORY, code);
@@ -143,7 +143,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 			// get selected position of spinner
 			int position = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
 
-			changeInternalFragment(StatsGameDetailsFragment.newInstance(position));
+			changeInternalFragment(StatsGameDetailsFragment.createInstance(position));
 		}
 
 		@Override
@@ -152,7 +152,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 			// get selected position of spinner
 			int position = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
 
-			changeInternalFragment(StatsGameDetailsFragment.newInstance(position));
+			changeInternalFragment(StatsGameDetailsFragment.createInstance(position));
 		}
 	}
 

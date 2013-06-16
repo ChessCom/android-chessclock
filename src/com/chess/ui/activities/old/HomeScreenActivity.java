@@ -379,7 +379,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 				PopupItem popupItem = new PopupItem();
 				popupItem.setCustomView(customView);
 
-				PopupCustomViewFragment reLoginFragment = PopupCustomViewFragment.newInstance(popupItem);
+				PopupCustomViewFragment reLoginFragment = PopupCustomViewFragment.createInstance(popupItem);
 				reLoginFragment.show(getSupportFragmentManager(), RE_LOGIN_TAG);
 
 				liveService.logout();
@@ -537,7 +537,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			popupItem.setNegativeBtnId(R.string.decline);
 			popupItem.setPositiveBtnId(R.string.accept);
 
-			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
+			PopupDialogFragment popupDialogFragment = PopupDialogFragment.createInstance(popupItem);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
 
 			popupManager.add(popupDialogFragment);

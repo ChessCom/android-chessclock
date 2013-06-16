@@ -254,7 +254,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			timeRemainTxt.setTextColor(resources.getColor(R.color.light_grey));
 
 			if (timeLeftHasBack)
-				clockLayout.setBackgroundResource(R.drawable.back_grey_emboss);
+				clockLayout.setBackgroundResource(R.drawable.back_glassy_rounded);
 			timeRemainTxt.setId(TIME_LEFT_ID);
 			timeRemainTxt.setFont(FontsHelper.BOLD_FONT);
 			timeRemainTxt.setGravity(Gravity.CENTER_VERTICAL);
@@ -317,7 +317,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 				clockLayout.setBackgroundResource(R.drawable.back_white_emboss);
 				timeRemainTxt.setTextColor(topPlayerTimeLeftColor);
 			} else {
-				clockLayout.setBackgroundResource(R.drawable.back_grey_emboss);
+				clockLayout.setBackgroundResource(R.drawable.back_glassy_rounded);
 				timeRemainTxt.setTextColor(bottomPlayerTimeLeftColor);
 			}
 			setTimeRemainPadding();

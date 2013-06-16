@@ -15,7 +15,7 @@ public class GameListCurrentItem extends BaseGameOnlineItem {
 	public GameListCurrentItem() {
 	}
 
-	public static GameListCurrentItem newInstance(String[] gcmMessageInfo){
+	public static GameListCurrentItem createInstance(String[] gcmMessageInfo){
 		GameListCurrentItem gameListCurrentItem = new GameListCurrentItem();
 		gameListCurrentItem.gameId = Long.parseLong(gcmMessageInfo[0]);
 		gameListCurrentItem.timeRemainingAmount = Integer.parseInt(gcmMessageInfo[1]);

@@ -90,7 +90,7 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 					changeInternalFragment(new DailyGameSetupFragment());
 					break;
 				case R.id.rightTabBtn:
-					changeInternalFragment(StatsGameDetailsFragment.newInstance(StatsGameFragment.DAILY_CHESS));
+					changeInternalFragment(StatsGameDetailsFragment.createInstance(StatsGameFragment.DAILY_CHESS));
 					break;
 			}
 		}

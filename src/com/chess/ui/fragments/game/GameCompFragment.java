@@ -83,7 +83,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		setArguments(bundle);
 	}
 
-	public static GameCompFragment newInstance(CompGameConfig config) {
+	public static GameCompFragment createInstance(CompGameConfig config) {
 		GameCompFragment frag = new GameCompFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, config.getMode());
@@ -189,7 +189,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		if (optionsSelectFragment != null) {
 			return;
 		}
-		optionsSelectFragment = PopupOptionsMenuFragment.newInstance(this, optionsList);
+		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsList);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
 	}
 
@@ -439,7 +439,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((LinearLayout) layout);
 
-		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
+		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
 		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);

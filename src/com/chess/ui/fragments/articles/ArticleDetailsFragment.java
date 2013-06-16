@@ -53,7 +53,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private ArticleCursorUpdateListener articleCursorUpdateListener;
 
 
-	public static ArticleDetailsFragment newInstance(long articleId) {
+	public static ArticleDetailsFragment createInstance(long articleId) {
 		ArticleDetailsFragment frag = new ArticleDetailsFragment();
 		Bundle bundle = new Bundle();
 		bundle.putLong(ITEM_ID, articleId);

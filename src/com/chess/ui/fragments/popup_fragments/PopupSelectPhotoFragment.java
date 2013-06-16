@@ -29,7 +29,7 @@ public class PopupSelectPhotoFragment extends DialogFragment implements AdapterV
 
 	private PopupListSelectionFace listener;
 
-	public static PopupSelectPhotoFragment newInstance(PopupListSelectionFace listener) {
+	public static PopupSelectPhotoFragment createInstance(PopupListSelectionFace listener) {
 		PopupSelectPhotoFragment frag = new PopupSelectPhotoFragment();
 		frag.listener = listener;
 		return frag;

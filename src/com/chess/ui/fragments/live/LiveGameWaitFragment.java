@@ -35,7 +35,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 		setArguments(bundle);
 	}
 
-	public static LiveGameWaitFragment newInstance(LiveGameConfig config) {
+	public static LiveGameWaitFragment createInstance(LiveGameConfig config) {
 		LiveGameWaitFragment fragment = new LiveGameWaitFragment();
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(CONFIG, config);
@@ -165,7 +165,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 
 					Long gameId = liveService.getCurrentGameId();
 					logTest("gameId = " + gameId);
-					getActivityFace().switchFragment(GameLiveFragment.newInstance(gameId));
+					getActivityFace().switchFragment(GameLiveFragment.createInstance(gameId));
 				}
 			});
 		}

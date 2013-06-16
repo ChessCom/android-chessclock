@@ -483,7 +483,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_games:
-				getActivityFace().changeRightFragment(HomePlayFragment.newInstance(RIGHT_MENU_MODE));
+				getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
 				handler.postDelayed(new Runnable() {
 					@Override
 					public void run() {

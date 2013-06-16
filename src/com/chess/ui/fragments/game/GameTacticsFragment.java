@@ -359,7 +359,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(customView);
 
-		PopupCustomViewFragment customViewFragment = PopupCustomViewFragment.newInstance(popupItem);
+		PopupCustomViewFragment customViewFragment = PopupCustomViewFragment.createInstance(popupItem);
 		customViewFragment.show(getFragmentManager(), TACTIC_SOLVED_TAG);
 	}
 
@@ -498,6 +498,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			showLoadingView(show);
+		}
+
+		@Override
 		public void updateData(TacticItem returnedObj) {
 			noNetwork = false;
 
@@ -546,6 +551,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		public TacticsInfoUpdateListener(int listenerCode) {
 			super(TacticInfoItem.class);
 			this.listenerCode = listenerCode;
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			showLoadingView(show);
 		}
 
 		@Override
@@ -673,7 +683,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		if (optionsSelectFragment != null) {
 			return;
 		}
-		optionsSelectFragment = PopupOptionsMenuFragment.newInstance(this, optionsList);
+		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsList);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
 	}
 
@@ -844,6 +854,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		public DemoTacticsUpdateListener() {
 			super();
 			useList = true;
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			showLoadingView(show);
 		}
 
 		@Override

@@ -213,14 +213,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 	public void onClick(View view) {
 		super.onClick(view);
 		if (view.getId() == R.id.startNewGameBtn) {
-			getActivityFace().changeRightFragment(HomePlayFragment.newInstance(RIGHT_MENU_MODE));
-
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					getActivityFace().toggleRightMenu();
-				}
-			}, 50);
+			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
 
 		} else if (view.getId() == R.id.acceptBtn) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
@@ -243,7 +236,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
 
-			getActivityFace().openFragment(GameDailyFinishedFragment.newInstance(finishedItem.getGameId()));
+			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
 		} else {
 			if (onVacation) {
 				popupItem.setNegativeBtnId(R.string.end_vacation);
@@ -264,7 +257,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 
 			} else {
 				ChessBoardOnline.resetInstance();
-				getActivityFace().openFragment(GameDailyFragment.newInstance(gameListCurrentItem.getGameId()));
+				getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
 			}
 		}
 	}

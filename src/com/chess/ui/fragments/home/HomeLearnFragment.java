@@ -78,7 +78,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 		} else if (id == R.id.startLessonsBtn) {
 			getActivityFace().openFragment(new LessonsFragment());
 		} else if (id == R.id.videoThumbItemView) {
-			getActivityFace().openFragment(VideoDetailsFragment.newInstance(loadedVideoId)); // TODO
+			getActivityFace().openFragment(VideoDetailsFragment.createInstance(loadedVideoId)); // TODO
 		}
 	}
 }

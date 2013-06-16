@@ -62,7 +62,7 @@ public class HomePlayFragment extends CommonLogicFragment {
 		setArguments(bundle);
 	}
 
-	public static HomePlayFragment newInstance(int mode) {
+	public static HomePlayFragment createInstance(int mode) {
 		HomePlayFragment fragment = new HomePlayFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, mode);
@@ -140,10 +140,10 @@ public class HomePlayFragment extends CommonLogicFragment {
 		} else if (view.getId() == R.id.dailyPlayBtn) {
 			createDailyChallenge(); // TODO adjust
 		} else if (view.getId() == R.id.liveHeaderView) {
-			getActivityFace().openFragment(StatsGameFragment.newInstance(StatsGameFragment.LIVE_STANDARD));
+			getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.LIVE_STANDARD));
 		} else if (view.getId() == R.id.dailyHeaderView) {
 			if (positionMode == CENTER_MODE) {
-				getActivityFace().openFragment(StatsGameFragment.newInstance(StatsGameFragment.DAILY_CHESS));
+				getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.DAILY_CHESS));
 			} else {
 				getActivityFace().changeRightFragment(new DailyGamesOptionsFragment());
 			}
@@ -155,7 +155,7 @@ public class HomePlayFragment extends CommonLogicFragment {
 		} else if (view.getId() == R.id.vsCompHeaderView) {
 			CompGameConfig.Builder gameConfigBuilder = new CompGameConfig.Builder();
 			CompGameConfig compGameConfig = gameConfigBuilder.setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE).build();
-			getActivityFace().openFragment(GameCompFragment.newInstance(compGameConfig));
+			getActivityFace().openFragment(GameCompFragment.createInstance(compGameConfig));
 			if (positionMode == RIGHT_MENU_MODE) {
 				getActivityFace().toggleRightMenu();
 			}
@@ -264,7 +264,7 @@ public class HomePlayFragment extends CommonLogicFragment {
 	}
 
 	private void createLiveChallenge() {
-		getActivityFace().openFragment(LiveGameWaitFragment.newInstance(liveGameConfigBuilder.build()));
+		getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build()));
 	}
 
 	private void widgetsInit(View view) {

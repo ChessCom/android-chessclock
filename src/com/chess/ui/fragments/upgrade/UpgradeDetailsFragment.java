@@ -90,7 +90,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private String username;
 	private TextView yearDiscountTxt;
 
-	public static UpgradeDetailsFragment newInstance(int code) {
+	public static UpgradeDetailsFragment createInstance(int code) {
 		UpgradeDetailsFragment frag = new UpgradeDetailsFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(PLAN, code);

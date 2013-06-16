@@ -28,7 +28,7 @@ public class PopupOptionsMenuFragment extends DialogFragment implements View.OnC
 	private PopupListSelectionFace listener;
 	private List<String> itemsList;
 
-	public static PopupOptionsMenuFragment newInstance(PopupListSelectionFace listener, List<String> itemsList) {
+	public static PopupOptionsMenuFragment createInstance(PopupListSelectionFace listener, List<String> itemsList) {
 		PopupOptionsMenuFragment frag = new PopupOptionsMenuFragment();
 		frag.listener = listener;
 		frag.itemsList = itemsList;

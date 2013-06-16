@@ -505,7 +505,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		if (countriesFragment != null) {
 			return;
 		}
-		countriesFragment = PopupCountriesFragment.newInstance(countrySelectedListener);
+		countriesFragment = PopupCountriesFragment.createInstance(countrySelectedListener);
 		countriesFragment.show(getFragmentManager(), COUNTRY_SELECTION);
 	}
 
@@ -513,7 +513,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		if (photoSelectFragment != null) {
 			return;
 		}
-		photoSelectFragment = PopupSelectPhotoFragment.newInstance(photoSelectedListener);
+		photoSelectFragment = PopupSelectPhotoFragment.createInstance(photoSelectedListener);
 		photoSelectFragment.show(getFragmentManager(), PHOTO_SELECTION);
 	}
 

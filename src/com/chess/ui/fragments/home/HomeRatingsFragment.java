@@ -151,7 +151,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 			case LIVE_LIGHTNING:
 			case DAILY_CHESS:
 			case DAILY_CHESS960:
-				getActivityFace().openFragment(StatsGameFragment.newInstance(position));
+				getActivityFace().openFragment(StatsGameFragment.createInstance(position));
 				break;
 			case TACTICS:
 				getActivityFace().openFragment(new StatsGameTacticsFragment());

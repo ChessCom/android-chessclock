@@ -431,7 +431,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		if (skillsFragment != null) {
 			return;
 		}
-		skillsFragment = PopupSkillsFragment.newInstance(this);
+		skillsFragment = PopupSkillsFragment.createInstance(this);
 		skillsFragment.show(getFragmentManager(), SKILL_SELECTION);
 	}
 
@@ -439,7 +439,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		if (countriesFragment != null) {
 			return;
 		}
-		countriesFragment = PopupCountriesFragment.newInstance(countrySelectedListener);
+		countriesFragment = PopupCountriesFragment.createInstance(countrySelectedListener);
 		countriesFragment.show(getFragmentManager(), COUNTRY_SELECTION);
 	}
 
@@ -447,7 +447,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		if (photoSelectFragment != null) {
 			return;
 		}
-		photoSelectFragment = PopupSelectPhotoFragment.newInstance(photoSelectedListener);
+		photoSelectFragment = PopupSelectPhotoFragment.createInstance(photoSelectedListener);
 		photoSelectFragment.show(getFragmentManager(), PHOTO_SELECTION);
 	}
 

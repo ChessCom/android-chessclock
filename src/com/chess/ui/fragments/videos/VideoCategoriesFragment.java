@@ -42,7 +42,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	private VideosCursorUpdateListener videosCursorUpdateListener;
 	private List<String> categoriesList;
 
-	public static VideoCategoriesFragment newInstance(String sectionName) {
+	public static VideoCategoriesFragment createInstance(String sectionName) {
 		VideoCategoriesFragment frag = new VideoCategoriesFragment();
 		Bundle bundle = new Bundle();
 		bundle.putString(SECTION_NAME, sectionName);
@@ -178,7 +178,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		if (id == R.id.titleTxt || id == R.id.authorTxt || id == R.id.dateTxt){
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
-			getActivityFace().openFragment(VideoDetailsFragment.newInstance(DBDataManager.getId(cursor)));
+			getActivityFace().openFragment(VideoDetailsFragment.createInstance(DBDataManager.getId(cursor)));
 		} else if (id == R.id.thumbnailImg || id == R.id.playBtn){
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
@@ -193,7 +193,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		getActivityFace().openFragment(VideoDetailsFragment.newInstance(DBDataManager.getId(cursor)));
+		getActivityFace().openFragment(VideoDetailsFragment.createInstance(DBDataManager.getId(cursor)));
 	}
 
 	@Override

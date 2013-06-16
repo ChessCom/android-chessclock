@@ -118,12 +118,13 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private ImageDownloaderToListener imageDownloader;
 	private String[] countryNames;
 	private int[] countryCodes;
+	private String opponentAvatar;
 
 	public GameDailyFinishedFragment() {
 
 	}
 
-	public static GameDailyFinishedFragment newInstance(long gameId) {
+	public static GameDailyFinishedFragment createInstance(long gameId) {
 		GameDailyFinishedFragment fragment = new GameDailyFinishedFragment();
 		fragment.gameId = gameId;
 		Bundle arguments = new Bundle();
@@ -507,7 +508,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	public void switch2Analysis() {
 		showSubmitButtonsLay(false);
 
-		getActivityFace().openFragment(GameDailyAnalysisFragment.newInstance(gameId));
+		getActivityFace().openFragment(GameDailyAnalysisFragment.createInstance(gameId));
 	}
 
 	@Override
@@ -522,7 +523,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		currentGame.setHasNewMessage(false);
 		controlsDailyView.haveNewMessage(false);
 
-		getActivityFace().openFragment(new DailyChatFragment());
+		getActivityFace().openFragment(DailyChatFragment.createInstance(gameId, opponentAvatar));
 	}
 
 	@Override
@@ -568,7 +569,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		if (optionsSelectFragment != null) {
 			return;
 		}
-		optionsSelectFragment = PopupOptionsMenuFragment.newInstance(this, optionsList);
+		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsList);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
 	}
 
@@ -708,7 +709,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((LinearLayout) layout);
 
-		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
+		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
 		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
@@ -740,7 +741,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		super.onClick(view);
 		if (view.getId() == R.id.newGamePopupBtn) {
 			dismissDialogs();
-			getActivityFace().changeRightFragment(HomePlayFragment.newInstance(RIGHT_MENU_MODE));
+			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			sendRematch();
 			dismissDialogs();
@@ -790,7 +791,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 //			imageDownloader.download(currentGame.get, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 //			imageDownloader.download("https://s3.amazonaws.com/chess-7/images_users/avatars/rest_large.10.jpeg", new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
-			imageDownloader.download("http://www.tutorialspoint.com/images/java-mini-logo.png", new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
+			opponentAvatar = "http://www.tutorialspoint.com/images/java-mini-logo.png";
+			imageDownloader.download(opponentAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 
 
 			DBDataManager.updateOnlineGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));

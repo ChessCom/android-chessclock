@@ -200,11 +200,11 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		} else if (videosCursorAdapter.isSectionHeader(position + offset)) {
 			String sectionName = videosCursorAdapter.getSectionName(position + offset);
 
-			getActivityFace().openFragment(VideoCategoriesFragment.newInstance(sectionName));
+			getActivityFace().openFragment(VideoCategoriesFragment.createInstance(sectionName));
 		} else {
 			int internalPosition = videosCursorAdapter.getRelativePosition(position + offset);
 			Cursor cursor = (Cursor) parent.getItemAtPosition(internalPosition + 1);
-			getActivityFace().openFragment(VideoDetailsFragment.newInstance(DBDataManager.getId(cursor)));
+			getActivityFace().openFragment(VideoDetailsFragment.createInstance(DBDataManager.getId(cursor)));
 		}
 	}
 
@@ -213,7 +213,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		super.onClick(v);
 		if (v.getId() == R.id.videoThumbItemView) {
 			if (headerDataLoaded) {
-				getActivityFace().openFragment(VideoDetailsFragment.newInstance(headerDataId));
+				getActivityFace().openFragment(VideoDetailsFragment.createInstance(headerDataId));
 			}
 		}
 	}

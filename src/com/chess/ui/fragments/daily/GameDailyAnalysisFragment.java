@@ -68,7 +68,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	private BoardAvatarDrawable userAvatarDrawable;
 	private LabelsConfig labelsConfig;
 
-	public static GameDailyAnalysisFragment newInstance(long gameId) {
+	public static GameDailyAnalysisFragment createInstance(long gameId) {
 		GameDailyAnalysisFragment fragment = new GameDailyAnalysisFragment();
 		fragment.gameId = gameId;
 		Bundle arguments = new Bundle();
@@ -401,7 +401,6 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		}
 
 		if (tag.equals(ERROR_TAG)) {
-//			backToLoginActivity();
 			backToLoginFragment();
 		}
 		super.onPositiveBtnClick(fragment);
@@ -450,7 +449,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((LinearLayout) layout);
 
-		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
+		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
 		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
@@ -483,7 +482,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		super.onClick(view);
 		if (view.getId() == R.id.newGamePopupBtn) {
 			dismissDialogs();
-			getActivityFace().changeRightFragment(HomePlayFragment.newInstance(RIGHT_MENU_MODE));
+			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
 
 //			Intent intent = new Intent(this, OnlineNewGameActivity.class);
 //			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

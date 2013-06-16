@@ -36,11 +36,11 @@ public class UpgradeFragment extends CommonLogicFragment {
 		super.onClick(v);
 
 		if (v.getId() == R.id.diamondBtnLay) {
-			getActivityFace().openFragment(UpgradeDetailsFragment.newInstance(UpgradeDetailsFragment.DIAMOND));
+			getActivityFace().openFragment(UpgradeDetailsFragment.createInstance(UpgradeDetailsFragment.DIAMOND));
 		} else if (v.getId() == R.id.platinumBtnLay) {
-			getActivityFace().openFragment(UpgradeDetailsFragment.newInstance(UpgradeDetailsFragment.PLATINUM));
+			getActivityFace().openFragment(UpgradeDetailsFragment.createInstance(UpgradeDetailsFragment.PLATINUM));
 		} else if (v.getId() == R.id.goldBtnLay) {
-			getActivityFace().openFragment(UpgradeDetailsFragment.newInstance(UpgradeDetailsFragment.GOLD));
+			getActivityFace().openFragment(UpgradeDetailsFragment.createInstance(UpgradeDetailsFragment.GOLD));
 		}
 	}
 }

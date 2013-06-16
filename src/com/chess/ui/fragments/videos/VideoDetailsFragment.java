@@ -54,7 +54,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 	private Cursor loadedCursor;
 	private ImageButton playBtn;
 
-	public static VideoDetailsFragment newInstance(long videoId) {
+	public static VideoDetailsFragment createInstance(long videoId) {
 		VideoDetailsFragment frag = new VideoDetailsFragment();
 		Bundle bundle = new Bundle();
 		bundle.putLong(ITEM_ID, videoId);

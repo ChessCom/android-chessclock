@@ -295,7 +295,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	}
 
 	private synchronized void updatePopupAndShow(String tag){
-		popupManager.add(PopupDialogFragment.newInstance(popupItem));
+		popupManager.add(PopupDialogFragment.createInstance(popupItem));
 		getLastPopupFragment().show(getSupportFragmentManager(), tag);
 	}
 
@@ -303,28 +303,28 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	protected void showPopupProgressDialog(String title) {
 		popupProgressItem.setTitle(title);
 		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);
-		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.newInstance(popupItem);
+		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.createInstance(popupItem);
 		updateProgressAndShow(popupProgressDialogFragment);
 	}
 
 	protected void showPopupProgressDialog(String title, String message) {
 		popupProgressItem.setTitle(title);
 		popupProgressItem.setMessage(message);
-		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.newInstance(popupItem);
+		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.createInstance(popupItem);
 		updateProgressAndShow(popupProgressDialogFragment);
 	}
 
 	protected void showPopupProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
 		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);
-		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.newInstance(popupItem);
+		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.createInstance(popupItem);
 		updateProgressAndShow(popupProgressDialogFragment);
 	}
 
 	protected void showPopupHardProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
 		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);
-		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.newInstance(popupItem);
+		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.createInstance(popupItem);
 		popupProgressDialogFragment.setNotCancelable();
 		updateProgressAndShow(popupProgressDialogFragment);
 	}
@@ -332,7 +332,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	protected void showPopupProgressDialog(int titleId, int messageId) {
 		popupProgressItem.setTitle(titleId);
 		popupProgressItem.setMessage(messageId);
-		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.newInstance(popupItem);
+		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.createInstance(popupItem);
 		updateProgressAndShow(popupProgressDialogFragment);
 	}
 

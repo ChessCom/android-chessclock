@@ -162,5 +162,6 @@
     <dimen name="notations_view_height">24dip</dimen>
     <dimen name="welcome_features_padding_top">1dip</dimen>
     <dimen name="welcome_features_padding_bottom">1dip</dimen>
+    <dimen name="chat_icon_size">30dip</dimen>
 
 </resources>

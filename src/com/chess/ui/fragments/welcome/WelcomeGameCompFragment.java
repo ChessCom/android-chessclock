@@ -227,7 +227,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		if (optionsSelectFragment != null) {
 			return;
 		}
-		optionsSelectFragment = PopupOptionsMenuFragment.newInstance(this, optionsList);
+		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsList);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
 	}
 

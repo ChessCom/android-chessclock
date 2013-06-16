@@ -360,7 +360,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			popupItem.setNegativeBtnId(R.string.decline);
 			popupItem.setPositiveBtnId(R.string.accept);
 
-			PopupDialogFragment popupDialogFragment = PopupDialogFragment.newInstance(popupItem);
+			PopupDialogFragment popupDialogFragment = PopupDialogFragment.createInstance(popupItem);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
 			Log.d(TAG, "CHALLENGE showDialogImmediately -> popupDialogFragment.show ");
 			popupChallengesList.add(popupDialogFragment);
@@ -490,7 +490,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				PopupItem popupItem = new PopupItem();
 				popupItem.setCustomView(customView);
 
-				PopupCustomViewFragment reLoginFragment = PopupCustomViewFragment.newInstance(popupItem);
+				PopupCustomViewFragment reLoginFragment = PopupCustomViewFragment.createInstance(popupItem);
 				reLoginFragment.show(getSupportFragmentManager(), RE_LOGIN_TAG);
 
 				liveService.logout();

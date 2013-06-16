@@ -233,7 +233,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 			};
 
 
-			GameListCurrentItem gameListItem = GameListCurrentItem.newInstance(gameInfoValues);
+			GameListCurrentItem gameListItem = GameListCurrentItem.createInstance(gameInfoValues);
 
 			AppUtils.showNewMoveStatusNotification(context,
 					context.getString(R.string.your_move),

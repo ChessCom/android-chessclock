@@ -91,9 +91,9 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		if (AppUtils.isNeedToUpgrade(getActivity())) {
-			MopubHelper.createRectangleAd(getActivity());
-		}
+//		if (AppUtils.isNeedToUpgrade(getActivity())) {
+//			MopubHelper.createRectangleAd(getActivity());
+//		}
 
 		invalidateGameScreen();
 	}

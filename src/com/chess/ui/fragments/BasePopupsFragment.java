@@ -190,21 +190,21 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	}
 
 	private synchronized void updatePopupAndShow(String tag){
-		popupManager.add(PopupDialogFragment.newInstance(popupItem, this));
+		popupManager.add(PopupDialogFragment.createInstance(popupItem, this));
 		getLastPopupFragment().show(getFragmentManager(), tag);
 	}
 
 	protected void showPopupProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
 		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);
-		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.newInstance(popupItem);
+		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.createInstance(popupItem);
 		updateProgressAndShow(popupProgressDialogFragment);
 	}
 
 	protected void showPopupHardProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
 		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);
-		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.newInstance(popupItem);
+		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.createInstance(popupItem);
 		popupProgressDialogFragment.setNotCancelable();
 		updateProgressAndShow(popupProgressDialogFragment);
 	}

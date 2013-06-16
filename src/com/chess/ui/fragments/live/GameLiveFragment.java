@@ -100,7 +100,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	public GameLiveFragment() {
 	}
 
-	public static GameLiveFragment newInstance(long id) {
+	public static GameLiveFragment createInstance(long id) {
 		GameLiveFragment fragment = new GameLiveFragment();
 		Bundle bundle = new Bundle();
 		bundle.putLong(GAME_ID, id);
@@ -594,7 +594,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 	@Override
 	public void newGame() {
-		getActivityFace().changeRightFragment(HomePlayFragment.newInstance(RIGHT_MENU_MODE));
+		getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
 	}
 
 	@Override
@@ -904,7 +904,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((LinearLayout) layout);
 
-		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.newInstance(popupItem);
+		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
 		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
@@ -942,7 +942,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 			getBoardFace().decreaseMovesCount();
 			boardView.invalidate();
 		} else if (view.getId() == R.id.newGamePopupBtn) {
-			getActivityFace().changeRightFragment(HomePlayFragment.newInstance(RIGHT_MENU_MODE));
+			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
 		} else if (view.getId() == R.id.shareBtn) {
 			LiveChessService liveService;
 			try {

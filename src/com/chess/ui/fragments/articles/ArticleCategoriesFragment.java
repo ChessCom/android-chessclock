@@ -40,7 +40,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	private ArticlesCursorUpdateListener articlesCursorUpdateListener;
 	private boolean categoriesLoaded;
 
-	public static ArticleCategoriesFragment newInstance(String sectionName) {
+	public static ArticleCategoriesFragment createInstance(String sectionName) {
 		ArticleCategoriesFragment frag = new ArticleCategoriesFragment();
 		Bundle bundle = new Bundle();
 		bundle.putString(SECTION_NAME, sectionName);
@@ -180,7 +180,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		getActivityFace().openFragment(ArticleDetailsFragment.newInstance(DBDataManager.getId(cursor)));
+		getActivityFace().openFragment(ArticleDetailsFragment.createInstance(DBDataManager.getId(cursor)));
 	}
 
 	@Override

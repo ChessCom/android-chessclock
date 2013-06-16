@@ -1,31 +1,34 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.new_api.ChatItem;
-import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.image_load.ProgressImageView;
 
 import java.util.List;
 
 public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 
-	private int ownerColor;
-    private int opponentColor;
+	private final int imageSize;
+//	private int ownerColor;
+//    private int opponentColor;
 
-	private String userName;
-	private String opponentName;
+//	private String userName;
+//	private String opponentName;
 
 	public ChatMessagesAdapter(Context context, List<ChatItem> items) {
 		super(context, items);
-        ownerColor = context.getResources().getColor(R.color.new_light_grey_0);
-        opponentColor = context.getResources().getColor(R.color.new_light_grey_2);
-
-		userName =  AppData.getUserName(context);
-		opponentName =  AppData.getOpponentName(context);
+		Resources resources = context.getResources();
+//		ownerColor = resources.getColor(R.color.new_light_grey_0);
+//        opponentColor = resources.getColor(R.color.new_light_grey_2);
+//
+//		userName =  AppData.getUserName(context);
+//		this.opponentName = opponentName;
+		imageSize = (int) (resources.getDimension(R.dimen.chat_icon_size) / resources.getDisplayMetrics().density);
 	}
 
 	@Override
@@ -34,6 +37,8 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 
 		View view = inflater.inflate(R.layout.chat_list_item, null, false);
 		holder.text = (TextView) view.findViewById(R.id.messageTxt);
+		holder.myImg = (ProgressImageView) view.findViewById(R.id.myAvatarImg);
+		holder.opponentImg = (ProgressImageView) view.findViewById(R.id.opponentAvatarImg);
 
 		view.setTag(holder);
 		return view;
@@ -44,16 +49,30 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		if (item.isMine()) {
-			holder.text.setTextColor(ownerColor);
-			holder.text.setText(userName + StaticData.SYMBOL_COLON + StaticData.SYMBOL_SPACE + item.getContent());
+//			holder.text.setTextColor(ownerColor);
+//			holder.text.setText(userName + StaticData.SYMBOL_COLON + StaticData.SYMBOL_SPACE + item.getContent());
+			holder.text.setText(item.getContent());
+			holder.text.setBackgroundResource(R.drawable.img_chat_buble_grey);
+
+			imageLoader.download(item.getAvatar(), holder.myImg, imageSize);
+			holder.myImg.setVisibility(View.VISIBLE);
+			holder.opponentImg.setVisibility(View.GONE);
 		} else {
-			holder.text.setTextColor(opponentColor);
-			holder.text.setText(opponentName + StaticData.SYMBOL_COLON + StaticData.SYMBOL_SPACE + item.getContent());
+//			holder.text.setTextColor(opponentColor);
+//			holder.text.setText(opponentName + StaticData.SYMBOL_COLON + StaticData.SYMBOL_SPACE + item.getContent());
+			holder.text.setText(item.getContent());
+			holder.text.setBackgroundResource(R.drawable.img_chat_buble_white);
+
+			imageLoader.download(item.getAvatar(), holder.opponentImg, imageSize);
+			holder.myImg.setVisibility(View.GONE);
+			holder.opponentImg.setVisibility(View.VISIBLE);
 		}
 	}
 
 
 	private static class ViewHolder{
 		TextView text;
+		ProgressImageView myImg;
+		ProgressImageView opponentImg;
 	}
 }

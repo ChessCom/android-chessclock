@@ -35,7 +35,7 @@ public class PopupCountriesFragment extends DialogFragment implements AdapterVie
 	private ViewGroup loadingView;
 	private CountriesAdapter countriesAdapter;
 
-	public static PopupCountriesFragment newInstance(PopupListSelectionFace listener) {
+	public static PopupCountriesFragment createInstance(PopupListSelectionFace listener) {
 		PopupCountriesFragment frag = new PopupCountriesFragment();
 		frag.listener = listener;
 		return frag;

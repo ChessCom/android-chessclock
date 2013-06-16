@@ -10,6 +10,7 @@ public class ChatItem {
 	private boolean is_mine;
 	private String content;
 	private long timestamp;
+	private String avatar;
 
 	public boolean isMine() {
 		return is_mine;
@@ -33,5 +34,13 @@ public class ChatItem {
 
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 }

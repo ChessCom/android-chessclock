@@ -173,11 +173,11 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 		if (section == LATEST_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			getActivityFace().openFragment(ArticleDetailsFragment.newInstance(DBDataManager.getId(cursor)));
+			getActivityFace().openFragment(ArticleDetailsFragment.createInstance(DBDataManager.getId(cursor)));
 		} else if (section == CATEGORIES_SECTION) {
 			String sectionName= (String) adapterView.getItemAtPosition(position);
 
-			getActivityFace().openFragment(ArticleCategoriesFragment.newInstance(sectionName));
+			getActivityFace().openFragment(ArticleCategoriesFragment.createInstance(sectionName));
 		}
 	}
 
