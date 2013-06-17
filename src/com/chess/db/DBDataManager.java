@@ -1,10 +1,8 @@
 package com.chess.db;
 
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.Context;
+import android.content.*;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import com.chess.backend.entity.new_api.*;
 import com.chess.backend.entity.new_api.stats.*;
@@ -124,6 +122,12 @@ public class DBDataManager {
 			DBConstants.V_OPPONENT_RATING
 	};
 
+	public static final String[] PROJECTION_DAILY_OPPONENT = new String[] {
+			DBConstants._ID,
+			DBConstants.V_USER,
+			DBConstants.V_OPPONENT_NAME,
+	};
+
 	public static final String[] PROJECTION_ECHESS_DRAW_OFFERED = new String[] {
 			DBConstants._ID,
 			DBConstants.V_USER,
@@ -175,7 +179,7 @@ public class DBDataManager {
 	 * @param context to get resources
 	 * @return true if cursor can be positioned to first
 	 */
-	public static boolean haveSavedOnlineCurrentGame(Context context) {
+	public static boolean haveSavedDailyGame(Context context) {
 		String userName = getUserName(context);
 
 		ContentResolver contentResolver = context.getContentResolver();
@@ -184,8 +188,16 @@ public class DBDataManager {
 
 		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.DAILY_ONLINE_GAMES],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
-		boolean exist = cursor.moveToFirst();
-		cursor.close();
+		boolean exist = cursor != null && cursor.moveToFirst();
+
+		if (!exist) { // check finished games list
+			cursor = contentResolver.query(DBConstants.uriArray[DBConstants.DAILY_FINISHED_LIST_GAMES],
+					PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
+			exist = cursor != null && cursor.moveToFirst();
+		}
+		if (cursor != null) {
+			cursor.close();
+		}
 
 		return exist;
 	}
@@ -316,6 +328,34 @@ public class DBDataManager {
 		}
 
 		return gamesIds.length > idsToRemove.size();
+	}
+
+	public static Cursor getRecentOpponentsCursor(Context context) {
+		String userName = getUserName(context);
+
+		ContentResolver contentResolver = context.getContentResolver();
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = userName;
+
+		ContentProviderClient client = contentResolver.acquireContentProviderClient(DBConstants.PROVIDER_NAME);
+		SQLiteDatabase dbHandle = ((DBDataProvider) client.getLocalContentProvider()).getDbHandle();
+		StringBuilder projection = new StringBuilder();
+		QueryParams params = new QueryParams();
+		params.setDbName(DBConstants.tablesArray[DBConstants.DAILY_FINISHED_LIST_GAMES]);
+		params.setProjection(PROJECTION_DAILY_OPPONENT);
+		params.setSelection(SELECTION_USER);
+		params.setArguments(arguments1);
+		params.setCommands( GROUP_BY  + StaticData.SYMBOL_SPACE + DBConstants.V_OPPONENT_NAME);
+
+		for (String projections : params.getProjection()) {
+			projection.append(projections).append(StaticData.SYMBOL_COMMA);
+		}
+		// TODO hide to down level
+		Cursor cursor = dbHandle.rawQuery("SELECT " + projection.toString().substring(0, projection.length() - 1)
+				+ " FROM " + params.getDbName() + " " + params.getCommands(), null);
+		client.release();
+
+		return cursor;
 	}
 
 	/**
@@ -567,7 +607,7 @@ public class DBDataManager {
 		return dataObj;
 	}
 
-	public static ContentValues putEchessFinishedListGameToValues(DailyFinishedGameData dataObj, String userName) {
+	public static ContentValues putDailyFinishedListGameToValues(DailyFinishedGameData dataObj, String userName) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, userName);
@@ -576,8 +616,7 @@ public class DBDataManager {
 		return values;
 	}
 
-
-	public static GameListFinishedItem getEchessFinishedListGameFromCursor(Cursor cursor) {
+	public static GameListFinishedItem getDailyFinishedListGameFromCursor(Cursor cursor) {
 		GameListFinishedItem dataObj = new GameListFinishedItem();
 
 		dataObj.setGameId(getLong(cursor, DBConstants.V_ID));
@@ -589,7 +628,7 @@ public class DBDataManager {
 		return dataObj;
 	}
 
-	public static ContentValues putEchessGameListCurrentItemToValues(DailyCurrentGameData dataObj, String userName) {
+	public static ContentValues putDailyGameListCurrentItemToValues(DailyCurrentGameData dataObj, String userName) {
 		ContentValues values = new ContentValues();
 
 		setValuesFromListGameItem(values, dataObj);
@@ -600,8 +639,7 @@ public class DBDataManager {
 		return values;
 	}
 
-
-	public static DailyCurrentGameData getEchessGameListCurrentItemFromCursor(Cursor cursor) {
+	public static DailyCurrentGameData getDailyGameListCurrentItemFromCursor(Cursor cursor) {
 		DailyCurrentGameData dataObj = new DailyCurrentGameData();
 
 		dataObj.setGameId(getLong(cursor, DBConstants.V_ID));

@@ -90,6 +90,7 @@
         android:paddingRight="@dimen/default_scr_side_padding"
         style="@style/ListItem"
         android:gravity="center_vertical"
+        android:visibility="gone"
         >
 
         <ImageView
@@ -155,6 +156,7 @@
             android:paddingLeft="4dip"
             android:text="(Friend Name)"
             android:textColor="@color/new_main_back"
+            android:visibility="gone"
             />
 
     </com.chess.LinLayout>

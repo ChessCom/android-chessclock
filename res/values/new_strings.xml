@@ -221,6 +221,15 @@
     <string name="learn_lessons">learn Lessons</string>
     <string name="watch_videos">watch Video Lessons</string>
     <string name="less_than_60_sec"><![CDATA[< 60 sec]]></string>
+    <string name="add_friend">Add Friend</string>
+    <string name="recent_opponents">Recent Opponents</string>
+    <string name="invite_by_email">Invite by Email</string>
+    <string name="invite_facebook_friend">Invite Facebook Friend</string>
+    <string name="invite_from_contacts">Invite From Contacts</string>
+    <string name="facebook">Facebook</string>
+    <string name="contacts">Contacts</string>
+    <string name="facebook_invite_friend_to_play">\"Let\'s play Chess via Chess.com android app\"</string>
+    <string name="add_friend_request_message">Let\'s play!</string>
     <!--Game mode-->
 
 </resources>

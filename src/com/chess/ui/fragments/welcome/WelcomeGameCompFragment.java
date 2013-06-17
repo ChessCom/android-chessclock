@@ -31,9 +31,9 @@ import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsBoardFragment;
 import com.chess.ui.interfaces.BoardFace;
+import com.chess.ui.interfaces.FragmentTabsFace;
 import com.chess.ui.interfaces.GameCompActivityFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
-import com.chess.ui.interfaces.WelcomeTabsFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.PanelInfoWelcomeView;
@@ -85,7 +85,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	private static final String OPTION_SELECTION = "option select popup";
 	private static final long DRAWER_APPEAR_DELAY = 100;
 	private static final long END_GAME_DELAY = 1000L;
-	private WelcomeTabsFace parentFace;
+	private FragmentTabsFace parentFace;
 
 	private ChessBoardCompView boardView;
 
@@ -120,7 +120,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		setArguments(bundle);
 	}
 
-	public static WelcomeGameCompFragment createInstance(WelcomeTabsFace parentFace, CompGameConfig config) {
+	public static WelcomeGameCompFragment createInstance(FragmentTabsFace parentFace, CompGameConfig config) {
 		WelcomeGameCompFragment fragment = new WelcomeGameCompFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, config.getMode());

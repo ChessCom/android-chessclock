@@ -11,7 +11,7 @@ import com.chess.R;
 import com.chess.backend.statics.AppData;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.interfaces.WelcomeTabsFace;
+import com.chess.ui.interfaces.FragmentTabsFace;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,7 +19,7 @@ import com.chess.ui.interfaces.WelcomeTabsFace;
  * Date: 19.05.13
  * Time: 17:01
  */
-public class WelcomeTabsFragment extends CommonLogicFragment implements WelcomeTabsFace {
+public class WelcomeTabsFragment extends CommonLogicFragment implements FragmentTabsFace {
 
 	public static final int FEATURES_FRAGMENT = 0;
 	public static final int SIGN_IN_FRAGMENT = 1;

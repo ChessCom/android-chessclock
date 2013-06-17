@@ -47,7 +47,7 @@ public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<DailyFini
 					final Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
 							DBDataManager.SELECTION_GAME_ID, arguments2, null);
 
-					ContentValues values = DBDataManager.putEchessFinishedListGameToValues(finishedItem, userName);
+					ContentValues values = DBDataManager.putDailyFinishedListGameToValues(finishedItem, userName);
 
 					if (cursor.moveToFirst()) {
 //						Log.d("TEST", " update FINISHED , game id = " + finishedItem.getGameId() + " user = " + userName);

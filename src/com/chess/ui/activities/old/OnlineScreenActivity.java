@@ -140,7 +140,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			showEmptyView(true);
 		}
 
-		if (DBDataManager.haveSavedOnlineCurrentGame(this)) {
+		if (DBDataManager.haveSavedDailyGame(this)) {
 			loadDbGames();
 		}
 	}
@@ -205,7 +205,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
-			new LoadDataFromDbTask(finishedGamesCursorUpdateListener, DbHelper.getEchessFinishedListGamesParams(getContext()),
+			new LoadDataFromDbTask(finishedGamesCursorUpdateListener, DbHelper.getDailyFinishedListGamesParams(getContext()),
 					getContentResolver()).executeTask();
 		}
 	}
@@ -238,7 +238,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 //						updateGamesList();
 					} else {
 						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-								DbHelper.getEchessFinishedListGamesParams(getContext()),
+								DbHelper.getDailyFinishedListGamesParams(getContext()),
 								getContentResolver()).executeTask();
 					}
 
@@ -551,7 +551,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			}
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			gameListCurrentItem = DBDataManager.getEchessGameListCurrentItemFromCursor(cursor);
+			gameListCurrentItem = DBDataManager.getDailyGameListCurrentItemFromCursor(cursor);
 
 			preferencesEditor.putString(AppConstants.OPPONENT, gameListCurrentItem.getOpponentUsername());
 			preferencesEditor.commit();
@@ -576,7 +576,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		} else {
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
+			GameListFinishedItem finishedItem = DBDataManager.getDailyFinishedListGameFromCursor(cursor);
 			preferencesEditor.putString(AppConstants.OPPONENT, finishedItem.getOpponentUsername());
 			preferencesEditor.commit();
 
@@ -592,7 +592,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		if (section == CURRENT_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			gameListCurrentItem = DBDataManager.getEchessGameListCurrentItemFromCursor(cursor);
+			gameListCurrentItem = DBDataManager.getDailyGameListCurrentItemFromCursor(cursor);
 
 			new AlertDialog.Builder(getContext())
 					.setItems(new String[]{
@@ -606,7 +606,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(pos));
 		} else {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
+			GameListFinishedItem finishedItem = DBDataManager.getDailyFinishedListGameFromCursor(cursor);
 
 			preferencesEditor.putString(AppConstants.OPPONENT, finishedItem.getOpponentUsername());
 			preferencesEditor.commit();
@@ -656,7 +656,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				DbHelper.getDailyCurrentMyListGamesParams(getContext()),
 				getContentResolver()).executeTask();
 		new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-				DbHelper.getEchessFinishedListGamesParams(getContext()),
+				DbHelper.getDailyFinishedListGamesParams(getContext()),
 				getContentResolver()).executeTask();
 	}
 

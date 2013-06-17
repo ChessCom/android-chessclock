@@ -3,6 +3,8 @@ package com.chess.ui.fragments.welcome;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.DialogFragment;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -67,7 +69,7 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 		if (id == R.id.signinBtn) {
 			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live   // TODO restore
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
-				showPopupDialog(R.string.warning, R.string.no_network, BasePopupsFragment.NETWORK_CHECK_TAG);
+				showPopupDialog(R.string.no_network, BasePopupsFragment.NETWORK_CHECK_TAG);
 			} else {
 				signInUser();
 			}
@@ -106,5 +108,21 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void onPositiveBtnClick(DialogFragment fragment) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(BasePopupsFragment.NETWORK_CHECK_TAG)) {
+			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
+			return;
+		}
+
+		super.onPositiveBtnClick(fragment);
 	}
 }

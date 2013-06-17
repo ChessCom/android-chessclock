@@ -499,7 +499,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		@Override
 		public void showProgress(boolean show) {
-			showLoadingView(show);
+			showLoadingProgress(show);
 		}
 
 		@Override
@@ -555,7 +555,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		@Override
 		public void showProgress(boolean show) {
-			showLoadingView(show);
+			showLoadingProgress(show);
 		}
 
 		@Override
@@ -858,7 +858,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		@Override
 		public void showProgress(boolean show) {
-			showLoadingView(show);
+			showLoadingProgress(show);
 		}
 
 		@Override

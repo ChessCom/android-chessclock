@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.chess.LinLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    style="@style/ListItem"
+    android:gravity="center_vertical"
+    android:paddingRight="21dip"
+    >
+
+    <com.chess.backend.image_load.ProgressImageView
+        android:id="@+id/playerImg"
+        android:layout_width="@dimen/list_item_image_size_big"
+        android:layout_height="@dimen/list_item_image_size_big"
+        android:layout_marginLeft="15dip"
+        android:layout_marginTop="10dip"
+        android:layout_marginBottom="10dip"
+        android:layout_marginRight="10dip"
+        android:src="@drawable/img_profile_picture_stub"
+        android:contentDescription="@string/image"/>
+
+    <TextView
+        android:id="@+id/playerNameTxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/new_light_grey"
+        android:gravity="center_vertical"
+        android:text="test"
+        />
+
+</com.chess.LinLayout>

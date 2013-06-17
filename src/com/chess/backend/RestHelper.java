@@ -112,6 +112,7 @@ public class RestHelper {
 
 	/*Other stuff*/
 	public static final String CMD_FRIENDS = BASE_URL + V1 + "/friends";
+	public static final String CMD_FRIENDS_REQUEST = CMD_FRIENDS + "/requests";
 	public static final String CMD_VIDEOS = BASE_URL + V1 + "/videos";
 	public static final String CMD_VIDEO_CATEGORIES = CMD_VIDEOS + "/categories";
 

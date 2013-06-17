@@ -26,7 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.ui.fragments.friends.InviteFriendsFragment;
+import com.chess.ui.fragments.friends.ChallengeFriendFragment;
 import com.facebook.*;
 import com.facebook.model.GraphUser;
 
@@ -55,7 +55,8 @@ public class UserSettingsFragment extends FacebookFragment {
     private static final String REQUEST_FIELDS = TextUtils.join(",", new String[] {ID, NAME, PICTURE});
 	private static final String SHOW_CLOSE_BUTTON = "show close button";
 	private static final String CLOSE_LOGIC = "close logic case";
-	private static final int RIGHT_INVITES_ID = 0;
+	public static final int CENTER_INVITES_ID = 0;
+	public static final int RIGHT_INVITES_ID = 1;
 
 	private LoginButton loginButton;
     private LoginButton.LoginButtonProperties loginButtonProperties = new LoginButton.LoginButtonProperties();
@@ -66,11 +67,15 @@ public class UserSettingsFragment extends FacebookFragment {
     private String userProfilePicID;
     private Session.StatusCallback sessionStatusCallback;
 
-	public static UserSettingsFragment showFromRightInvites() {
+	public UserSettingsFragment() {
+
+	}
+
+	public static UserSettingsFragment showWithCloseBtn(int mode) {
 		UserSettingsFragment fragment = new UserSettingsFragment();
 		Bundle bundle = new Bundle();
 		bundle.putBoolean(SHOW_CLOSE_BUTTON, true);
-		bundle.putInt(CLOSE_LOGIC, RIGHT_INVITES_ID);
+		bundle.putInt(CLOSE_LOGIC, mode);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
@@ -109,8 +114,11 @@ public class UserSettingsFragment extends FacebookFragment {
 				@Override
 				public void onClick(View v) {
 					switch (caseId){
+						case CENTER_INVITES_ID:
+							getActivityFace().showPreviousFragment();
+							break;
 						case RIGHT_INVITES_ID:
-							getActivityFace().changeRightFragment(new InviteFriendsFragment());
+							getActivityFace().changeRightFragment(new ChallengeFriendFragment());
 							break;
 					}
 

@@ -1,6 +1,7 @@
 package com.chess.ui.fragments.home;
 
 import android.animation.LayoutTransition;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -24,7 +25,7 @@ import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.daily.DailyGamesOptionsFragment;
-import com.chess.ui.fragments.friends.InviteFriendsFragment;
+import com.chess.ui.fragments.friends.ChallengeFriendFragment;
 import com.chess.ui.fragments.game.GameCompFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
@@ -55,6 +56,12 @@ public class HomePlayFragment extends CommonLogicFragment {
 	private boolean liveOptionsVisible;
 	private Button liveTimeSelectBtn;
 	private String[] newGameButtonsArray;
+	private View inviteFriendView1;
+	private View inviteFriendView2;
+	private TextView friendUserName1Txt;
+	private TextView friendUserName2Txt;
+	private TextView friendRealName1Txt;
+	private TextView friendRealName2Txt;
 
 	public HomePlayFragment() {
 		Bundle bundle = new Bundle();
@@ -120,13 +127,34 @@ public class HomePlayFragment extends CommonLogicFragment {
 		super.onStart();
 
 		setRatings();
-		// TODO load friends, get only 2
+
+		loadRecentOpponents();
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt(MODE, positionMode);
+	}
+
+	private void loadRecentOpponents() {
+		Cursor cursor = DBDataManager.getRecentOpponentsCursor(getActivity());// TODO load avatars
+		if (cursor != null && cursor.moveToFirst()) {
+			if (cursor.getCount() >= 2) {
+				inviteFriendView1.setVisibility(View.VISIBLE);
+				inviteFriendView2.setVisibility(View.VISIBLE);
+
+				friendUserName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_OPPONENT_NAME));
+				friendRealName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_OPPONENT_NAME));
+				cursor.moveToNext();
+				friendUserName2Txt.setText(DBDataManager.getString(cursor, DBConstants.V_OPPONENT_NAME));
+				friendRealName2Txt.setText(DBDataManager.getString(cursor, DBConstants.V_OPPONENT_NAME));
+			} else if (cursor.getCount() == 1) {
+				inviteFriendView1.setVisibility(View.VISIBLE);
+				friendUserName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_OPPONENT_NAME));
+				friendRealName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_OPPONENT_NAME));
+			}
+		}
 	}
 
 	@Override
@@ -148,7 +176,7 @@ public class HomePlayFragment extends CommonLogicFragment {
 				getActivityFace().changeRightFragment(new DailyGamesOptionsFragment());
 			}
 		} else if (view.getId() == R.id.playFriendView) {
-			getActivityFace().changeRightFragment(new InviteFriendsFragment());
+			getActivityFace().changeRightFragment(new ChallengeFriendFragment());
 			if (positionMode == CENTER_MODE) {
 				getActivityFace().toggleRightMenu();
 			}
@@ -269,6 +297,14 @@ public class HomePlayFragment extends CommonLogicFragment {
 
 	private void widgetsInit(View view) {
 		int darkBtnColor = getResources().getColor(R.color.stats_label_grey);
+
+		inviteFriendView1 = view.findViewById(R.id.inviteFriendView1);
+		inviteFriendView2 = view.findViewById(R.id.inviteFriendView2);
+		friendUserName1Txt = (TextView) view.findViewById(R.id.friendUserName1Txt);
+		friendRealName1Txt = (TextView) view.findViewById(R.id.friendRealName1Txt);
+		friendUserName2Txt = (TextView) view.findViewById(R.id.friendUserName2Txt);
+		friendRealName2Txt = (TextView) view.findViewById(R.id.friendRealName2Txt);
+
 		if (getArguments().getInt(MODE) == CENTER_MODE) { // we use white background and dark titles for centered mode
 			int darkTextColor = getResources().getColor(R.color.new_main_back);
 
@@ -279,10 +315,6 @@ public class HomePlayFragment extends CommonLogicFragment {
 			Button liveTimeSelectBtn = (Button) view.findViewById(R.id.liveTimeSelectBtn);
 			TextView dailyChessHeaderTxt = (TextView) view.findViewById(R.id.dailyChessHeaderTxt);
 			TextView vsRandomTxt = (TextView) view.findViewById(R.id.vsRandomTxt);
-			TextView friendUserName1Txt = (TextView) view.findViewById(R.id.friendUserName1Txt);
-			TextView friendRealName1Txt = (TextView) view.findViewById(R.id.friendRealName1Txt);
-			TextView friendUserName2Txt = (TextView) view.findViewById(R.id.friendUserName2Txt);
-			TextView friendRealName2Txt = (TextView) view.findViewById(R.id.friendRealName2Txt);
 			TextView challengeFriendTxt = (TextView) view.findViewById(R.id.challengeFriendTxt);
 			TextView vsComputerHeaderTxt = (TextView) view.findViewById(R.id.vsComputerHeaderTxt);
 

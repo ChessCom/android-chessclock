@@ -16,7 +16,10 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.*;
+import com.chess.backend.entity.new_api.BaseResponseItem;
+import com.chess.backend.entity.new_api.DailyCurrentGameData;
+import com.chess.backend.entity.new_api.DailyFinishedGameData;
+import com.chess.backend.entity.new_api.DailyGamesAllItem;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
@@ -35,6 +38,8 @@ import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.home.HomeTabsFragment;
+import com.chess.ui.interfaces.FragmentTabsFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
@@ -48,6 +53,9 @@ import java.util.List;
  */
 public class DailyGamesFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
 		AdapterView.OnItemLongClickListener, ItemClickListenerFace {
+
+	public static final int HOME_MODE = 0;
+	public static final int DAILY_MODE = 1;
 
 	private static final int CURRENT_GAMES_SECTION = 0;
 	private static final int FINISHED_GAMES_SECTION = 1;
@@ -76,6 +84,23 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private boolean need2update = true;
 	private Button startNewGameBtn;
 	private List<DailyFinishedGameData> finishedGameDataList;
+	private FragmentTabsFace parentFace;
+	private int mode;
+
+	public DailyGamesFragment() {
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, HOME_MODE);
+		setArguments(bundle);
+	}
+
+	public static DailyGamesFragment createInstance(FragmentTabsFace parentFace, int mode) {
+		DailyGamesFragment fragment = new DailyGamesFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, mode);
+		fragment.setArguments(bundle);
+		fragment.parentFace = parentFace;
+		return fragment;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -115,6 +140,17 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		if (getArguments() != null) {
+			mode = getArguments().getInt(MODE);
+		} else {
+			mode = savedInstanceState.getInt(MODE);
+		}
+	}
+
+	@Override
 	public void onStart() {
 		super.onStart();
 		init();
@@ -123,7 +159,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
 
 		if (need2update) {
-			boolean haveSavedData = DBDataManager.haveSavedOnlineCurrentGame(getActivity());
+			boolean haveSavedData = DBDataManager.haveSavedDailyGame(getActivity());
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
 				updateData();
@@ -147,6 +183,13 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		unRegisterMyReceiver(gamesUpdateReceiver);
 
 		releaseResources();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putInt(MODE, mode);
 	}
 
 	private void init() {
@@ -199,8 +242,13 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	public void onClick(View view) {
 		super.onClick(view);
 		if (view.getId() == R.id.startNewGameBtn) {
-
-			getActivityFace().openFragment(new DailyGameSetupFragment());
+			if (parentFace != null) {
+				if (mode == HOME_MODE) {
+					parentFace.changeInternalFragment(HomeTabsFragment.NEW_GAME);
+				} else {
+					parentFace.changeInternalFragment(DailyTabsFragment.NEW_GAME);
+				}
+			}
 		}
 	}
 
@@ -210,13 +258,13 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
+			GameListFinishedItem finishedItem = DBDataManager.getDailyFinishedListGameFromCursor(cursor);
 
 			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
 		} else {
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			gameListCurrentItem = DBDataManager.getEchessGameListCurrentItemFromCursor(cursor);
+			gameListCurrentItem = DBDataManager.getDailyGameListCurrentItemFromCursor(cursor);
 
 			if (gameListCurrentItem.isDrawOfferPending()) {
 				popupItem.setPositiveBtnId(R.string.accept);
@@ -239,14 +287,14 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
+			GameListFinishedItem finishedItem = DBDataManager.getDailyFinishedListGameFromCursor(cursor);
 
 			Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
 			intent.putExtra(BaseGameItem.GAME_ID, finishedItem.getGameId());
 			startActivity(intent);
 		} else {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			gameListCurrentItem = DBDataManager.getEchessGameListCurrentItemFromCursor(cursor);
+			gameListCurrentItem = DBDataManager.getDailyGameListCurrentItemFromCursor(cursor);
 
 			new AlertDialog.Builder(getContext())
 					.setItems(new String[]{
@@ -439,7 +487,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
 			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-					DbHelper.getEchessFinishedListGamesParams(getContext()),
+					DbHelper.getDailyFinishedListGamesParams(getContext()),
 					getContentResolver()).executeTask();
 		}
 	}
@@ -471,7 +519,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 //						updateData();
 //					} else {
 //						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-//								DbHelper.getEchessFinishedListGamesParams(getContext()),
+//								DbHelper.getDailyFinishedListGamesParams(getContext()),
 //								getContentResolver()).executeTask();
 //					}
 
@@ -486,7 +534,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 						}
 					} else {
 						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-								DbHelper.getEchessFinishedListGamesParams(getContext()),
+								DbHelper.getDailyFinishedListGamesParams(getContext()),
 								getContentResolver()).executeTask();
 					}
 					break;
@@ -503,7 +551,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			if (resultCode == StaticData.EMPTY_DATA) {
 				if (gameType == CURRENT_MY) {
 					new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-							DbHelper.getEchessFinishedListGamesParams(getContext()),
+							DbHelper.getDailyFinishedListGamesParams(getContext()),
 							getContentResolver()).executeTask();
 				} else {
 					emptyView.setText(R.string.no_games);
@@ -568,7 +616,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					}
 				} else {
 					new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-							DbHelper.getEchessFinishedListGamesParams(getContext()),
+							DbHelper.getDailyFinishedListGamesParams(getContext()),
 							getContentResolver()).executeTask();
 				}
 			}

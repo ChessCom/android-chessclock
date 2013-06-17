@@ -59,8 +59,7 @@ public class EditButtonSpinner extends RoboAutoCompleteTextView {
 
 		minButtonHeight = (int) resources.getDimension(R.dimen.small_button_height);
 		editTextColor = resources.getColor(R.color.new_edit_button_text);
-		setHint(""); // disable hint
-		AppUtils.iconRestore();
+
 		closeBtn = resources.getDrawable(R.drawable.ic_arrow_right_badge); // TODO check
 		setSingleLine();
 		setFont(FontsHelper.BOLD_FONT);

@@ -28,7 +28,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.interfaces.WelcomeTabsFace;
+import com.chess.ui.interfaces.FragmentTabsFace;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -53,7 +53,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	public static final String YOUTUBE_DEMO_LINK3 = "iHXCZAShyIY";
 	private static final String YOUTUBE_FRAGMENT_TAG = "youtube fragment";
 
-	private WelcomeTabsFace parentFace;
+	private FragmentTabsFace parentFace;
 
 
 	private RadioGroup homePageRadioGroup;
@@ -90,7 +90,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	public WelcomeFragment() {
 	}
 
-	public static WelcomeFragment createInstance(WelcomeTabsFace parentFace) {
+	public static WelcomeFragment createInstance(FragmentTabsFace parentFace) {
 		WelcomeFragment fragment = new WelcomeFragment();
 		fragment.parentFace = parentFace;
 		return fragment;

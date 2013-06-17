@@ -1,17 +1,21 @@
 package com.chess.ui.fragments.friends;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import com.chess.R;
+import com.chess.db.DBDataManager;
+import com.chess.ui.adapters.RecentOpponentsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.facebook.FacebookException;
 import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Session;
 import com.facebook.widget.UserSettingsFragment;
 import com.facebook.widget.WebDialog;
-import com.slidingmenu.lib.SlidingMenu;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,23 +23,35 @@ import com.slidingmenu.lib.SlidingMenu;
  * Date: 24.04.13
  * Time: 21:39
  */
-public class InviteFriendsFragment extends CommonLogicFragment {
+public class ChallengeFriendFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_invite_friend_to_play_frame, container, false);
+		return inflater.inflate(R.layout.new_challenge_friend_frame, container, false);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		view.findViewById(R.id.inviteHeaderView).setOnClickListener(this);
-		view.findViewById(R.id.chesscomFriendsView).setOnClickListener(this);
-//		view.findViewById(R.id.opponentEditBtn).setOnClickListener(this); // TODO
-		view.findViewById(R.id.dailyPlayBtn).setOnClickListener(this);
-		view.findViewById(R.id.facebookFriendsView).setOnClickListener(this);
-		view.findViewById(R.id.yourContactsView).setOnClickListener(this);
+		ListView listView = (ListView) view.findViewById(R.id.listView);
+
+		Cursor cursor = DBDataManager.getRecentOpponentsCursor(getActivity());
+
+		RecentOpponentsCursorAdapter adapter = new RecentOpponentsCursorAdapter(getActivity(), cursor);
+
+		LayoutInflater inflater = LayoutInflater.from(getActivity());
+		View headerView = inflater.inflate(R.layout.new_challenge_friend_header_view, null, false);
+		listView.addHeaderView(headerView);
+		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(this);
+
+		view.findViewById(R.id.challengeFriendHeaderView).setOnClickListener(this);
+		headerView.findViewById(R.id.chesscomFriendsView).setOnClickListener(this);
+//		headerView.findViewById(R.id.opponentEditBtn).setOnClickListener(this); // TODO
+		headerView.findViewById(R.id.dailyPlayBtn).setOnClickListener(this);
+		headerView.findViewById(R.id.facebookFriendsView).setOnClickListener(this);
+		headerView.findViewById(R.id.yourContactsView).setOnClickListener(this);
 	}
 
 	@Override
@@ -43,7 +59,7 @@ public class InviteFriendsFragment extends CommonLogicFragment {
 		super.onClick(view);
 
 		int id = view.getId();
-		if (id == R.id.inviteHeaderView) {
+		if (id == R.id.challengeFriendHeaderView) {
 			getActivityFace().toggleRightMenu();
 		} else if (id == R.id.chesscomFriendsView) {
 			getActivityFace().openFragment(new FriendsFragment());
@@ -59,7 +75,7 @@ public class InviteFriendsFragment extends CommonLogicFragment {
 	private void sendRequestDialog() {
 		Session facebookSession = Session.getActiveSession();
 		if (facebookSession == null || facebookSession.isClosed() || !facebookSession.isOpened()) {
-			getActivityFace().changeRightFragment(UserSettingsFragment.showFromRightInvites());
+			getActivityFace().changeRightFragment(UserSettingsFragment.showWithCloseBtn(UserSettingsFragment.RIGHT_INVITES_ID));
 			return;
 		}
 
@@ -93,5 +109,10 @@ public class InviteFriendsFragment extends CommonLogicFragment {
 				})
 				.build();
 		requestsDialog.show();
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
 	}
 }

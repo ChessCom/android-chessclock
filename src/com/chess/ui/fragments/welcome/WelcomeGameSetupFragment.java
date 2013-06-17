@@ -12,7 +12,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.interfaces.WelcomeTabsFace;
+import com.chess.ui.interfaces.FragmentTabsFace;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,12 +25,12 @@ public class WelcomeGameSetupFragment extends CommonLogicFragment {
 	private RadioButton whiteHuman;
 	private RadioButton blackHuman;
 	private CompGameConfig.Builder gameConfigBuilder;
-	private WelcomeTabsFace parentFace;
+	private FragmentTabsFace parentFace;
 
 	public WelcomeGameSetupFragment(){
 	}
 
-	public static WelcomeGameSetupFragment createInstance(WelcomeTabsFace parentFace) {
+	public static WelcomeGameSetupFragment createInstance(FragmentTabsFace parentFace) {
 		WelcomeGameSetupFragment fragment = new WelcomeGameSetupFragment();
 		fragment.parentFace = parentFace;
 		return fragment;

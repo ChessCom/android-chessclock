@@ -2,9 +2,7 @@ package com.chess.ui.fragments.friends;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
@@ -199,6 +197,16 @@ public class FriendsFragment extends CommonLogicFragment {
 			}
 			showEmptyView(true);
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_add:
+				getActivityFace().openFragment(new AddFriendFragment());
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void releaseResources() {

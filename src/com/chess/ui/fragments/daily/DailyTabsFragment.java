@@ -13,6 +13,7 @@ import com.chess.R;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
+import com.chess.ui.interfaces.FragmentTabsFace;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +21,9 @@ import com.chess.ui.fragments.stats.StatsGameFragment;
  * Date: 15.04.13
  * Time: 11:39
  */
-public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener {
+public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener, FragmentTabsFace {
+
+	public static final int NEW_GAME = 0;
 
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId;
@@ -80,11 +83,7 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
 				case R.id.leftTabBtn:
-					Fragment dailyGamesFragment = findFragmentByTag(DailyGamesFragment.class.getSimpleName());
-					if (dailyGamesFragment == null) {
-						dailyGamesFragment = new DailyGamesFragment();
-					}
-					changeInternalFragment(dailyGamesFragment);
+					changeInternalFragment(DailyGamesFragment.createInstance(DailyTabsFragment.this, DailyGamesFragment.HOME_MODE));
 					break;
 				case R.id.centerTabBtn:
 					changeInternalFragment(new DailyGameSetupFragment());
@@ -111,5 +110,17 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 		}
 
 		super.onPositiveBtnClick(fragment);
+	}
+
+	@Override
+	public void changeInternalFragment(int code) {
+		if (code == NEW_GAME) {
+			tabRadioGroup.check(R.id.centerTabBtn);
+		}
+	}
+
+	@Override
+	public void onPageSelected(int page) {
+
 	}
 }

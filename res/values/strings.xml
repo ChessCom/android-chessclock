@@ -62,7 +62,7 @@
     <!--Create Challenges-->
     <string name="create_challenge">Create Challenge</string>
 	<string name="open_challenges">Open Challenges</string>
-	<string name="challenge_friend">Challenge A Friend</string>
+	<string name="challenge_friend">Challenge Friend</string>
     <string name="congratulations">Congratulations!</string>  <!--Congratulations new challenge created-->
     <string name="online_game_created">Online game created!</string>
     <string name="challenge_sent">Challenge Sent!</string>
@@ -308,7 +308,7 @@
 	<string name="login_failed">Login Failed:</string>
 
     <!--Notifications-->
-    <string name="chess_com">ChessCom</string>
+    <string name="chess_com">Chess.Com</string>
     <string name="your_move">"Chess.com - It's Your Move"</string>
     <string name="your_turn_in_game_with">In your game with %1$s , %2$s</string>
     <string name="your_turn">Your Turn!</string>

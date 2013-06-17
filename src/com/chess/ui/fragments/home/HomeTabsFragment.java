@@ -25,6 +25,7 @@ import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.chess.ui.fragments.daily.DailyGamesNotificationFragment;
+import com.chess.ui.interfaces.FragmentTabsFace;
 
 import java.util.List;
 
@@ -34,9 +35,10 @@ import java.util.List;
  * Date: 30.12.12
  * Time: 21:41
  */
-public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener {
+public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener, FragmentTabsFace {
 
 	private static final int NON_INIT = -1;
+	public static final int NEW_GAME = 0;
 
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId = NON_INIT;
@@ -130,9 +132,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 //		}
 //	}
 
-
-
-
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -156,10 +155,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 				case R.id.leftTabBtn: {
 					Fragment fragment;
 					if (showDailyGamesFragment) {
-						fragment = findFragmentByTag(DailyGamesFragment.class.getSimpleName());
-						if (fragment == null) {
-							fragment = new DailyGamesFragment();
-						}
+						fragment = DailyGamesFragment.createInstance(HomeTabsFragment.this, DailyGamesFragment.HOME_MODE);
 					} else {
 						fragment = findFragmentByTag(HomePlayFragment.class.getSimpleName());
 						if (fragment == null) {
@@ -192,6 +188,18 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	private void changeInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 		transaction.replace(R.id.tab_content_frame, fragment).commit();
+	}
+
+	@Override
+	public void changeInternalFragment(int code) {
+		if (code == NEW_GAME) {
+			changeInternalFragment(new HomePlayFragment());
+		}
+	}
+
+	@Override
+	public void onPageSelected(int page) {
+
 	}
 
 	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyGamesAllItem> {

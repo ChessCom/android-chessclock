@@ -66,6 +66,7 @@
     <dimen name="notations_view_height">24dip</dimen>
     <dimen name="welcome_features_padding_top">16dip</dimen>
     <dimen name="chat_icon_size">30dip</dimen>
+    <dimen name="edit_button_text_size">14sp</dimen>
 
 
 </resources>

@@ -170,7 +170,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	private void loadGame() {
 		// load game from DB. After load update
-		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getEchessGameParams(getActivity(), gameId),
+		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyGameParams(getActivity(), gameId),
 				getContentResolver()).executeTask();
 	}
 

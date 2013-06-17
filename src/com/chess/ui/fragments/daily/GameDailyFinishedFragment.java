@@ -217,7 +217,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	private void loadGameAndUpdate() {
 		// load game from DB. After load update
-		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getEchessGameParams(getActivity(), gameId),
+		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyGameParams(getActivity(), gameId),
 				getContentResolver()).executeTask();
 	}
 
@@ -780,7 +780,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 		@Override
 		public void showProgress(boolean show) {
-			showLoadingView(show);
+			showLoadingProgress(show);
 		}
 
 		@Override
@@ -811,7 +811,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 		@Override
 		public void showProgress(boolean show) {
-			showLoadingView(show);
+			showLoadingProgress(show);
 		}
 
 		@Override

@@ -6,7 +6,7 @@ package com.chess.ui.interfaces;
  * Date: 25.05.13
  * Time: 11:33
  */
-public interface WelcomeTabsFace {
+public interface FragmentTabsFace {
 
 	void changeInternalFragment(int code);
 

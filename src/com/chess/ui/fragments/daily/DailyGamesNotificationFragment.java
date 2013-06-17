@@ -50,7 +50,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 
 	private static final int CHALLENGES_SECTION = 0;
 	private static final int CURRENT_GAMES_SECTION = 1;
-	private static final int FINISHED_GAMES_SECTION = 2;
+	private static final int FINISHED_GAMES_SECTION = 3;
 
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
@@ -137,7 +137,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
 
 		if (need2update) {
-			boolean haveSavedData = DBDataManager.haveSavedOnlineCurrentGame(getActivity());
+			boolean haveSavedData = DBDataManager.haveSavedDailyGame(getActivity());
 
 			// Don't update because we already updated it on home fragment // TODO adjust properly
 //			if (AppUtils.isNetworkAvailable(getActivity())) {
@@ -234,18 +234,19 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(position));
 		} else if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
+			GameListFinishedItem finishedItem = DBDataManager.getDailyFinishedListGameFromCursor(cursor);
 
 			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
+			getActivityFace().toggleRightMenu();
 		} else {
-			if (onVacation) {
+			if (onVacation) { // TODO remove
 				popupItem.setNegativeBtnId(R.string.end_vacation);
 				showPopupDialog(R.string.unable_to_move_on_vacation, UNABLE_TO_MOVE_TAG);
 				return;
 			}
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			gameListCurrentItem = DBDataManager.getEchessGameListCurrentItemFromCursor(cursor);
+			gameListCurrentItem = DBDataManager.getDailyGameListCurrentItemFromCursor(cursor);
 
 			if (gameListCurrentItem.isDrawOfferPending()) {
 				popupItem.setPositiveBtnId(R.string.accept);
@@ -258,6 +259,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 			} else {
 				ChessBoardOnline.resetInstance();
 				getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
+				getActivityFace().toggleRightMenu();
 			}
 		}
 	}
@@ -270,14 +272,14 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(pos));
 		} else if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			GameListFinishedItem finishedItem = DBDataManager.getEchessFinishedListGameFromCursor(cursor);
+			GameListFinishedItem finishedItem = DBDataManager.getDailyFinishedListGameFromCursor(cursor);
 
 			Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
 			intent.putExtra(BaseGameItem.GAME_ID, finishedItem.getGameId());
 			startActivity(intent);
 		} else {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			gameListCurrentItem = DBDataManager.getEchessGameListCurrentItemFromCursor(cursor);
+			gameListCurrentItem = DBDataManager.getDailyGameListCurrentItemFromCursor(cursor);
 
 			new AlertDialog.Builder(getContext())
 					.setItems(new String[]{
@@ -427,7 +429,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 				DbHelper.getDailyCurrentTheirListGamesParams(getActivity()),
 				getContentResolver()).executeTask();
 		new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-				DbHelper.getEchessFinishedListGamesParams(getActivity()),
+				DbHelper.getDailyFinishedListGamesParams(getActivity()),
 				getContentResolver()).executeTask();
 	}
 
@@ -543,7 +545,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
 			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-					DbHelper.getEchessFinishedListGamesParams(getContext()),
+					DbHelper.getDailyFinishedListGamesParams(getContext()),
 					getContentResolver()).executeTask();
 		}
 	}
@@ -576,7 +578,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 //						updateData();
 //					} else {
 //						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-//								DbHelper.getEchessFinishedListGamesParams(getContext()),
+//								DbHelper.getDailyFinishedListGamesParams(getContext()),
 //								getContentResolver()).executeTask();
 //					}
 

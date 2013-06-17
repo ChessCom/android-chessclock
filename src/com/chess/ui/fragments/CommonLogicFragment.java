@@ -12,8 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -86,8 +84,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected SharedPreferences.Editor preferencesEditor;
 	private int titleId;
 	private GraphUser facebookUser;
-	private UiLifecycleHelper facebookUiHelper;
-	private boolean facebookActive;
+	protected UiLifecycleHelper facebookUiHelper;
+	protected boolean facebookActive;
 	protected View loadingView;
 	private int padding;
 	private int paddingCode;
@@ -244,7 +242,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		loginUpdateListener = new LoginUpdateListener();
 	}
 
-	private Session.StatusCallback callback = new Session.StatusCallback() {
+	protected Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
 			onSessionStateChange(session, state, exception); // TODO create protected method to inform who need
@@ -347,7 +345,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		FragmentActivity activity = getActivity();
 		if (activity != null) {
 			String string = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-			while ((string != null ? string.length() : 0) < 32) {
+			while ((string != null ? string.length() : 0) < 32) { // 32 length is requirement for deviceId parameter
 				string += "a";
 			}
 			return string;
@@ -382,14 +380,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		@Override
 		public void showProgress(boolean show) {
-			if (show) {
-				showPopupHardProgressDialog(R.string.signing_in_);
-			} else {
-				if (isPaused)
-					return;
-
-				dismissProgressDialog();
-			}
+			showLoadingProgress(show);
 		}
 
 		@Override
@@ -401,7 +392,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			if (!TextUtils.isEmpty(username)) {
 				preferencesEditor.putString(USERNAME, username);
 			}
-			logTest("set avatar = " + returnedObj.getData().getAvatarUrl());
+
 			preferencesEditor.putString(username + PREF_USER_AVATAR_URL, returnedObj.getData().getAvatarUrl());
 			preferencesEditor.putInt(username + PREF_USER_COUNTRY_ID, returnedObj.getData().getCountryId());
 
@@ -469,14 +460,19 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		backToHomeFragment();
 	}
 
+	protected void showLoadingProgress(boolean show) {
+		if (show) {
+			showPopupProgressDialog(R.string.loading_);
+		} else {
+			if (isPaused)
+				return;
+
+			dismissProgressDialog();
+		}
+	}
 
 	protected Fragment findFragmentByTag(String tag) {
 		return getFragmentManager().findFragmentByTag(tag);
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {   // Should be called to enable OptionsMenu handle
-		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override
@@ -490,7 +486,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 						getActivityFace().toggleRightMenu();
 					}
 				}, SIDE_MENU_DELAY);
-				break;
+				return true;
 			case R.id.menu_notifications:
 				CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(DailyGamesNotificationFragment.class.getSimpleName());
 				if (fragment == null) {
@@ -503,12 +499,27 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 						getActivityFace().toggleRightMenu();
 					}
 				}, SIDE_MENU_DELAY);
-				break;
+				return true;
 		}
-		return true;
+		return false;
 	}
 
 	protected void logTest(String messageToLog) {
 		Log.d("TEST", messageToLog);
 	}
+
+//	public void printHashKey() { Don't remove, use to find needed facebook hashkey
+//		try {
+//			PackageInfo info = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(),
+//					PackageManager.GET_SIGNATURES);
+//			for (Signature signature : info.signatures) {
+//				MessageDigest md = MessageDigest.getInstance("SHA");
+//				md.update(signature.toByteArray());
+//				Log.d("TEMPTAGHASH KEY:",
+//						Base64.encodeToString(md.digest(), Base64.DEFAULT));
+//			}
+//		} catch (PackageManager.NameNotFoundException e) {
+//		} catch (NoSuchAlgorithmException e) {
+//		}
+//	}
 }

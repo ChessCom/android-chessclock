@@ -220,7 +220,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 	private void loadGameAndUpdate() {
 		// load game from DB. After load update
-		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getEchessGameParams(getActivity(), gameId),
+		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyGameParams(getActivity(), gameId),
 				getContentResolver()).executeTask();
 	}
 
@@ -799,7 +799,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 		@Override
 		public void showProgress(boolean show) {
-			showLoadingView(show);
+			showLoadingProgress(show);
 		}
 
 		@Override
@@ -830,7 +830,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 		@Override
 		public void showProgress(boolean show) {
-			showLoadingView(show);
+			showLoadingProgress(show);
 		}
 
 		@Override

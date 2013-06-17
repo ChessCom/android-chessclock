@@ -14,6 +14,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.adapters.ItemsAdapter;
+import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
 import com.chess.utilities.AppUtils;
@@ -110,6 +111,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				// un-register from GCM
 				unRegisterGcmService();
 
+				// logout from facebook
 				Session facebookSession = Session.getActiveSession();
 				if (facebookSession != null) {
 					facebookSession.closeAndClearTokenInformation();
@@ -133,9 +135,12 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				// clear theme
 				AppData.setThemeBackId(getActivity(), R.drawable.img_theme_green_felt);
 				getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
-				break;
 
-			default: break;
+				// clear comp game
+				ChessBoardComp.resetInstance();
+				AppData.clearSavedCompGame(getActivity());
+
+				break;
 		}
 	}
 
