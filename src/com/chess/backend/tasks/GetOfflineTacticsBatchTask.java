@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 
 /**
  * @author alien_roger
@@ -21,7 +22,7 @@ public class GetOfflineTacticsBatchTask extends AbstractUpdateTask<TacticItem.Da
 	private Resources resources;
 
 	public GetOfflineTacticsBatchTask(TaskUpdateInterface<TacticItem.Data> taskUpdateInterface, Resources resources){
-		super(taskUpdateInterface);
+		super(taskUpdateInterface, new ArrayList<TacticItem.Data>());
 		this.resources = resources;
 	}
 
