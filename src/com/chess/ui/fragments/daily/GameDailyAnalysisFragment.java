@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.DataHolder;
-import com.chess.backend.entity.new_api.DailyGameByIdItem;
+import com.chess.backend.entity.new_api.DailyCurrentGameData;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -53,7 +53,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	private ChessBoardAnalysisView boardView;
 
-	private DailyGameByIdItem.Data currentGame;
+	private DailyCurrentGameData currentGame;
 	private long gameId;
 
 	protected boolean userPlayWhite = true;
@@ -199,7 +199,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 			getSoundPlayer().playGameStart();
 
-			currentGame = DBDataManager.getGameOnlineItemFromCursor(returnedObj);
+			currentGame = DBDataManager.getDailyCurrentGameFromCursor(returnedObj);
 			returnedObj.close();
 
 			userPlayWhite = currentGame.getWhiteUsername().equals(AppData.getUserName(getActivity()));
@@ -253,7 +253,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			boardFace.setReside(true);
 		}
 
-		String FEN = currentGame.getFenStartPosition();
+		String FEN = currentGame.getStartingFenPosition();
 		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
 			boardFace.genCastlePos(FEN);
 			MoveParser.fenParse(FEN, boardFace);
@@ -388,8 +388,8 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	private boolean isUserMove() {
 		userPlayWhite = currentGame.getWhiteUsername().equals(AppData.getUserName(getActivity()));
 
-		return (currentGame.isWhiteMove() && userPlayWhite)
-				|| (!currentGame.isWhiteMove() && !userPlayWhite);
+		return /*(*/currentGame.isMyTurn()/*>WhiteMove() && userPlayWhite)
+				|| (!currentGame.isWhiteMove() && !userPlayWhite)*/;
 	}
 
 	@Override

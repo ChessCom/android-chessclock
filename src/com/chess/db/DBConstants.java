@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 26;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 28;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -25,9 +25,8 @@ public class DBConstants {
 	public static final String[] tablesArray = new String[]{
 			"tactics_batch",
 			"tactics_results",
-			"echess_finished_games",
-			"echess_current_games",
-			"echess_online_games",
+			"daily_finished_games",
+			"daily_current_games",
 			"friends",
 
 			"articles",
@@ -63,29 +62,28 @@ public class DBConstants {
     // uri paths
     public static final int TACTICS_BATCH = 0;
     public static final int TACTICS_RESULTS = 1;
-    public static final int DAILY_FINISHED_LIST_GAMES = 2;
-    public static final int DAILY_CURRENT_LIST_GAMES = 3;
-    public static final int DAILY_ONLINE_GAMES = 4;
-    public static final int FRIENDS = 5;
+    public static final int DAILY_FINISHED_GAMES = 2;
+    public static final int DAILY_CURRENT_GAMES = 3;
+    public static final int FRIENDS = 4;
 
-    public static final int ARTICLES = 6;
-    public static final int ARTICLE_CATEGORIES = 7;
-    public static final int VIDEOS = 8;
-    public static final int VIDEO_CATEGORIES = 9;
+    public static final int ARTICLES = 5;
+    public static final int ARTICLE_CATEGORIES = 6;
+    public static final int VIDEOS = 7;
+    public static final int VIDEO_CATEGORIES = 8;
 
-    public static final int USER_STATS_LIVE_STANDARD = 10;
-    public static final int USER_STATS_LIVE_BLITZ = 11;
-    public static final int USER_STATS_LIVE_LIGHTNING = 12;
-    public static final int USER_STATS_DAILY_CHESS = 13;
-    public static final int USER_STATS_DAILY_CHESS960 = 14;
-    public static final int USER_STATS_TACTICS = 15;
-    public static final int USER_STATS_CHESS_MENTOR = 16;
+    public static final int USER_STATS_LIVE_STANDARD = 9;
+    public static final int USER_STATS_LIVE_BLITZ = 10;
+    public static final int USER_STATS_LIVE_LIGHTNING = 11;
+    public static final int USER_STATS_DAILY_CHESS = 12;
+    public static final int USER_STATS_DAILY_CHESS960 = 13;
+    public static final int USER_STATS_TACTICS = 14;
+    public static final int USER_STATS_CHESS_MENTOR = 15;
 
-    public static final int GAME_STATS_LIVE_STANDARD = 17;
-    public static final int GAME_STATS_LIVE_BLITZ = 18;
-    public static final int GAME_STATS_LIVE_LIGHTNING = 19;
-    public static final int GAME_STATS_DAILY_CHESS = 20;
-    public static final int GAME_STATS_DAILY_CHESS960 = 21;
+    public static final int GAME_STATS_LIVE_STANDARD = 16;
+    public static final int GAME_STATS_LIVE_BLITZ = 17;
+    public static final int GAME_STATS_LIVE_LIGHTNING = 18;
+    public static final int GAME_STATS_DAILY_CHESS = 19;
+    public static final int GAME_STATS_DAILY_CHESS960 = 20;
 
 
     // general fields
@@ -115,30 +113,29 @@ public class DBConstants {
 
 	/* ECHESS_GAMES */
 	public static final String V_FINISHED 				= "is_finished";
-	public static final String V_COLOR 					= "color";
+	public static final String V_I_PLAY_AS 				= "i_play_as";
 	public static final String V_GAME_TYPE 				= "game_type";
 	public static final String V_GAME_NAME 				= "game_name";
-	public static final String V_WHITE_USER_NAME 		= "white_username";
-	public static final String V_BLACK_USER_NAME 		= "black_username";
+	public static final String V_WHITE_USERNAME 		= "white_username";
+	public static final String V_BLACK_USERNAME 		= "black_username";
 	public static final String V_FEN_START_POSITION 	= "fen_start_position";
-	public static final String V_WHITE_USER_MOVE 		= "white_user_move";
 	public static final String V_WHITE_RATING 			= "white_rating";
 	public static final String V_BLACK_RATING 			= "black_rating";
-	public static final String V_ENCODED_MOVE_STR 		= "encoded_move_str";
+	public static final String V_WHITE_AVATAR 			= "white_avatar";
+	public static final String V_BLACK_AVATAR 			= "black_avatar";
 	public static final String V_HAS_NEW_MESSAGE 		= "has_new_message";
-	public static final String V_SECONDS_REMAIN 		= "seconds_remain";
+	public static final String V_IS_OPPONENT_ONLINE		= "is_opponent_online";
 	public static final String V_RATED 					= "rated";
 	public static final String V_DAYS_PER_MOVE 			= "days_per_move";
 	public static final String V_USER_OFFERED_DRAW 		= "user_offered_draw";
 	public static final String V_OPPONENT_OFFERED_DRAW 	= "opponent_offered_draw";
 
-	public static final String V_OPPONENT_NAME 			= "opponent_name";
-	public static final String V_OPPONENT_RATING 		= "opponent_rating";
 	public static final String V_TIME_REMAINING 		= "time_remaining";
 	public static final String V_TIMESTAMP 				= "timestamp";
 	public static final String V_LAST_MOVE_FROM_SQUARE 	= "last_move_from_square";
 	public static final String V_LAST_MOVE_TO_SQUARE 	= "last_move_to_square";
-	public static final String V_GAME_RESULT 			= "game_result";
+	public static final String V_GAME_SCORE 			= "game_score";
+	public static final String V_RESULT_MESSAGE 		= "result_message";
 	public static final String V_IS_MY_TURN 			= "is_my_turn";
 
 	/*Friends*/
@@ -208,58 +205,61 @@ public class DBConstants {
             + V_PROBLEM_RATING_CHANGE 	+ _INT_NOT_NULL + _COMMA
             + V_PROBLEM_RATING      	+ _INT_NOT_NULL + _CLOSE;
 
-
-    static final String DAILY_FINISHED_LIST_GAMES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[DAILY_FINISHED_LIST_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+	static final String DAILY_CURRENT_GAMES_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[DAILY_CURRENT_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
 			+ V_ID 				    		+ _LONG_NOT_NULL + _COMMA
-			+ V_COLOR 					    + _INT_NOT_NULL + _COMMA
+			+ V_FINISHED 					+ _INT_NOT_NULL + _COMMA
+			+ V_RATED 						+ _INT_NOT_NULL + _COMMA
+			+ V_I_PLAY_AS				    + _INT_NOT_NULL + _COMMA
 			+ V_GAME_TYPE 				    + _INT_NOT_NULL + _COMMA
-			+ V_OPPONENT_NAME 			    + _TEXT_NOT_NULL + _COMMA
-			+ V_OPPONENT_RATING 		    + _INT_NOT_NULL + _COMMA
-			+ V_TIME_REMAINING 				+ _INT_NOT_NULL + _COMMA
+			+ V_DAYS_PER_MOVE 			    + _INT_NOT_NULL + _COMMA
+			+ V_FEN 	    				+ _TEXT_NOT_NULL + _COMMA
 			+ V_TIMESTAMP 				    + _LONG_NOT_NULL + _COMMA
+			+ V_GAME_NAME 	    			+ _TEXT_NOT_NULL + _COMMA
 			+ V_LAST_MOVE_FROM_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
 			+ V_LAST_MOVE_TO_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_GAME_RESULT + _INT_NOT_NULL + _CLOSE;
-
-	static final String DAILY_CURRENT_LIST_GAMES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[DAILY_CURRENT_LIST_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
-			+ V_ID 				    		+ _LONG_NOT_NULL + _COMMA
-			+ V_COLOR 					    + _INT_NOT_NULL + _COMMA
-			+ V_GAME_TYPE 				    + _INT_NOT_NULL + _COMMA
-			+ V_OPPONENT_NAME 			    + _TEXT_NOT_NULL + _COMMA
-			+ V_OPPONENT_RATING 		    + _INT_NOT_NULL + _COMMA
+			+ V_IS_OPPONENT_ONLINE 			+ _INT_NOT_NULL + _COMMA
+			+ V_HAS_NEW_MESSAGE 			+ _INT_NOT_NULL + _COMMA
+			+ V_WHITE_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_BLACK_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_WHITE_RATING 		    	+ _INT_NOT_NULL + _COMMA
+			+ V_BLACK_RATING 				+ _INT_NOT_NULL + _COMMA
+			+ V_WHITE_AVATAR 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_BLACK_AVATAR 				+ _TEXT_NOT_NULL + _COMMA
 			+ V_TIME_REMAINING 				+ _INT_NOT_NULL + _COMMA
-			+ V_TIMESTAMP 				    + _LONG_NOT_NULL + _COMMA
-			+ V_LAST_MOVE_FROM_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_LAST_MOVE_TO_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_FEN_START_POSITION 	    	+ _TEXT_NOT_NULL + _COMMA
+			+ V_MOVE_LIST		 	    	+ _TEXT_NOT_NULL + _COMMA
 			+ V_OPPONENT_OFFERED_DRAW       + _INT_NOT_NULL + _COMMA
-			+ V_IS_MY_TURN 	        		+ _INT_NOT_NULL + _COMMA
-			+ V_HAS_NEW_MESSAGE 			+ _INT_NOT_NULL + _CLOSE;
+			+ V_IS_MY_TURN 	        		+ _INT_NOT_NULL + _CLOSE;
 
-	static final String DAILY_ONLINE_GAMES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[DAILY_ONLINE_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_FINISHED 				+ _INT_NOT_NULL + _COMMA
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_ID 						+ _LONG_NOT_NULL + _COMMA
-			+ V_GAME_TYPE 				+ _INT_NOT_NULL + _COMMA
-			+ V_TIMESTAMP 	    		+ _LONG_NOT_NULL + _COMMA
-			+ V_GAME_NAME 	    		+ _TEXT_NOT_NULL + _COMMA
-			+ V_WHITE_USER_NAME 		+ _TEXT_NOT_NULL + _COMMA
-			+ V_BLACK_USER_NAME 		+ _TEXT_NOT_NULL + _COMMA
-			+ V_FEN_START_POSITION 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_MOVE_LIST		 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_WHITE_USER_MOVE 	    + _INT_NOT_NULL + _COMMA
-			+ V_WHITE_RATING 		    + _INT_NOT_NULL + _COMMA
-			+ V_BLACK_RATING 			+ _INT_NOT_NULL + _COMMA
-			+ V_ENCODED_MOVE_STR 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_HAS_NEW_MESSAGE 	    + _INT_NOT_NULL + _COMMA
-			+ V_SECONDS_REMAIN 	    	+ _LONG_NOT_NULL + _COMMA
-			+ V_RATED 	    			+ _INT_NOT_NULL + _COMMA
-			+ V_USER_OFFERED_DRAW 	   	+ _INT_NOT_NULL + _COMMA
-			+ V_DAYS_PER_MOVE 			+ _INT_NOT_NULL + _CLOSE;
+    static final String DAILY_FINISHED_GAMES_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[DAILY_FINISHED_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
+			+ V_ID 				    		+ _LONG_NOT_NULL + _COMMA
+			+ V_FINISHED 					+ _INT_NOT_NULL + _COMMA
+			+ V_RATED 						+ _INT_NOT_NULL + _COMMA
+			+ V_I_PLAY_AS				    + _INT_NOT_NULL + _COMMA
+			+ V_GAME_TYPE 				    + _INT_NOT_NULL + _COMMA
+			+ V_DAYS_PER_MOVE 			    + _INT_NOT_NULL + _COMMA
+			+ V_FEN 	    				+ _TEXT_NOT_NULL + _COMMA
+			+ V_TIMESTAMP 				    + _LONG_NOT_NULL + _COMMA
+			+ V_GAME_NAME 	    			+ _TEXT_NOT_NULL + _COMMA
+			+ V_LAST_MOVE_FROM_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_LAST_MOVE_TO_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
+			+ V_IS_OPPONENT_ONLINE 			+ _INT_NOT_NULL + _COMMA
+			+ V_HAS_NEW_MESSAGE 			+ _INT_NOT_NULL + _COMMA
+			+ V_WHITE_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_BLACK_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_WHITE_AVATAR 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_BLACK_AVATAR 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_WHITE_RATING 		    	+ _INT_NOT_NULL + _COMMA
+			+ V_BLACK_RATING 				+ _INT_NOT_NULL + _COMMA
+			+ V_TIME_REMAINING 				+ _INT_NOT_NULL + _COMMA
+			+ V_FEN_START_POSITION 	    	+ _TEXT_NOT_NULL + _COMMA
+			+ V_MOVE_LIST		 	    	+ _TEXT_NOT_NULL + _COMMA
+			+ V_RESULT_MESSAGE 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_GAME_SCORE 					+ _INT_NOT_NULL + _CLOSE;
 
 	static final String FRIENDS_CREATE =
 			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[FRIENDS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT

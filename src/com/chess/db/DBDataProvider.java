@@ -55,9 +55,8 @@ public class DBDataProvider extends ContentProvider {
 	private static String[] createTablesArray = new String[]{
 			DBConstants.TACTICS_BATCH_TABLE_CREATE,
 			DBConstants.TACTICS_RESULTS_TABLE_CREATE,
-			DBConstants.DAILY_FINISHED_LIST_GAMES_CREATE,
-			DBConstants.DAILY_CURRENT_LIST_GAMES_CREATE,
-			DBConstants.DAILY_ONLINE_GAMES_CREATE,
+			DBConstants.DAILY_FINISHED_GAMES_CREATE,
+			DBConstants.DAILY_CURRENT_GAMES_CREATE,
 
 			DBConstants.FRIENDS_CREATE,
 
@@ -166,7 +165,7 @@ public class DBDataProvider extends ContentProvider {
 		}
 //		throw new IllegalArgumentException("Unsupported URI: " + uri);
 
-		throw new SQLException("Failed to insert row into " + uri);
+		throw new SQLException("Failed to insert row into " + uri); // TODO investigate better exception handling
 	}
 
 	@Override

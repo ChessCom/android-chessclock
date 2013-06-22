@@ -30,7 +30,6 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
 import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
 import com.chess.model.BaseGameItem;
-import com.chess.model.GameListFinishedItem;
 import com.chess.model.GameOnlineItem;
 import com.chess.ui.activities.old.ChatOnlineActivity;
 import com.chess.ui.adapters.CustomSectionedAdapter;
@@ -213,7 +212,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				startActivity(intent);
 			} else if (pos == 1) {
 				String draw = RestHelper.V_OFFERDRAW;
-				if (gameListCurrentItem.isDrawOfferPending())
+				if (gameListCurrentItem.isDrawOffered())
 					draw = RestHelper.V_ACCEPTDRAW;
 
 				LoadItem loadItem = new LoadItem();
@@ -258,15 +257,15 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			GameListFinishedItem finishedItem = DBDataManager.getDailyFinishedListGameFromCursor(cursor);
+			DailyFinishedGameData finishedItem = DBDataManager.getDailyFinishedGameListFromCursor(cursor);
 
 			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
 		} else {
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			gameListCurrentItem = DBDataManager.getDailyGameListCurrentItemFromCursor(cursor);
+			gameListCurrentItem = DBDataManager.getDailyCurrentGameListFromCursor(cursor);
 
-			if (gameListCurrentItem.isDrawOfferPending()) {
+			if (gameListCurrentItem.isDrawOffered()) {
 				popupItem.setPositiveBtnId(R.string.accept);
 				popupItem.setNeutralBtnId(R.string.decline);
 				popupItem.setNegativeBtnId(R.string.game);
@@ -287,14 +286,14 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			GameListFinishedItem finishedItem = DBDataManager.getDailyFinishedListGameFromCursor(cursor);
+			DailyFinishedGameData finishedItem = DBDataManager.getDailyFinishedGameListFromCursor(cursor);
 
 			Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
 			intent.putExtra(BaseGameItem.GAME_ID, finishedItem.getGameId());
 			startActivity(intent);
 		} else {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			gameListCurrentItem = DBDataManager.getDailyGameListCurrentItemFromCursor(cursor);
+			gameListCurrentItem = DBDataManager.getDailyCurrentGameListFromCursor(cursor);
 
 			new AlertDialog.Builder(getContext())
 					.setItems(new String[]{

@@ -251,7 +251,7 @@ public class EnhancedImageDownloader {
 	 * Read file from stored hashlink on SD
 	 *
 	 * @param f file from which we read
-	 * @return read Bitmap
+	 * @return read Bitmap or null, if file wasn't cached on storage
 	 */
 	private Bitmap readFile(File f) {
 		try {

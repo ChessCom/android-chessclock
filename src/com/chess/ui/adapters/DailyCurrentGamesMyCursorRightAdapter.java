@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
@@ -50,7 +51,7 @@ public class DailyCurrentGamesMyCursorRightAdapter extends ItemsCursorAdapter {
 			draw = "\n" + context.getString(R.string.draw_offered);
 		}
 
-		holder.playerTxt.setText(getString(cursor, DBConstants.V_OPPONENT_NAME) + gameType + draw);
+		holder.playerTxt.setText(getString(cursor, DBConstants.V_WHITE_USERNAME) + gameType + draw);
 
 		long amount = getLong(cursor, DBConstants.V_TIME_REMAINING);
 		String infoText;
@@ -61,9 +62,16 @@ public class DailyCurrentGamesMyCursorRightAdapter extends ItemsCursorAdapter {
 		}
 		holder.gameInfoTxt.setText(infoText/*  + " game id = " + getString(cursor, DBConstants.V_ID)*/);
 
-		//		String avatarUrl = getString(cursor, DBConstants.OP)
-		String avatarUrl = "https://s3.amazonaws.com/chess-7/images_users/avatars/erik_small.1.png";
+		// get player side
+		String avatarUrl;
+		if (getInt(cursor, DBConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
+			avatarUrl = getString(cursor, DBConstants.V_WHITE_AVATAR);
+		} else {
+			avatarUrl = getString(cursor, DBConstants.V_BLACK_AVATAR);
+		}
+
 		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
+
 	}
 
 	protected class ViewHolder {

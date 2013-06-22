@@ -28,7 +28,6 @@ import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
-import com.chess.model.GameListFinishedItem;
 import com.chess.model.GameOnlineItem;
 import com.chess.ui.activities.old.ChatOnlineActivity;
 import com.chess.ui.adapters.*;
@@ -184,7 +183,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 				startActivity(intent);
 			} else if (pos == 1) {
 				String draw = RestHelper.V_OFFERDRAW;
-				if (gameListCurrentItem.isDrawOfferPending())
+				if (gameListCurrentItem.isDrawOffered())
 					draw = RestHelper.V_ACCEPTDRAW;
 
 				LoadItem loadItem = new LoadItem();
@@ -234,7 +233,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(position));
 		} else if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			GameListFinishedItem finishedItem = DBDataManager.getDailyFinishedListGameFromCursor(cursor);
+			DailyFinishedGameData finishedItem = DBDataManager.getDailyFinishedGameFromCursor(cursor);
 
 			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
 			getActivityFace().toggleRightMenu();
@@ -246,9 +245,9 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 			}
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			gameListCurrentItem = DBDataManager.getDailyGameListCurrentItemFromCursor(cursor);
+			gameListCurrentItem = DBDataManager.getDailyCurrentGameFromCursor(cursor);
 
-			if (gameListCurrentItem.isDrawOfferPending()) {
+			if (gameListCurrentItem.isDrawOffered()) {
 				popupItem.setPositiveBtnId(R.string.accept);
 				popupItem.setNeutralBtnId(R.string.decline);
 				popupItem.setNegativeBtnId(R.string.game);
@@ -272,14 +271,14 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(pos));
 		} else if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			GameListFinishedItem finishedItem = DBDataManager.getDailyFinishedListGameFromCursor(cursor);
+			DailyFinishedGameData finishedItem = DBDataManager.getDailyFinishedGameFromCursor(cursor);
 
 			Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
 			intent.putExtra(BaseGameItem.GAME_ID, finishedItem.getGameId());
 			startActivity(intent);
 		} else {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			gameListCurrentItem = DBDataManager.getDailyGameListCurrentItemFromCursor(cursor);
+			gameListCurrentItem = DBDataManager.getDailyCurrentGameFromCursor(cursor);
 
 			new AlertDialog.Builder(getContext())
 					.setItems(new String[]{

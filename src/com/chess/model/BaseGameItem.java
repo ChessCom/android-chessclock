@@ -84,8 +84,8 @@ public abstract class BaseGameItem implements Parcelable {
 		return gameId;
 	}
 
-	/*public boolean isDrawOfferPending() {
-		return isDrawOfferPending;
+	/*public boolean isDrawOffered() {
+		return isDrawOffered;
 	}
 
 	public boolean isOpponentOnline() {

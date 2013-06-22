@@ -33,7 +33,7 @@ public class GameListFinishedItem extends BaseGameOnlineItem{
 		timestamp = Long.parseLong(values[10]);
 //		lastMoveFromSquare =  values[11];
 //		lastMoveToSquare = values[12];
-//		isDrawOfferPending = values[13].equals("p");
+//		isDrawOffered = values[13].equals("p");
 		isOpponentOnline = values[14].equals(RestHelper.V_TRUE);
 
 		gameResult = Integer.parseInt(values[14]);

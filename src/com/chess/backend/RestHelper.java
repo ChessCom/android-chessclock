@@ -102,6 +102,10 @@ public class RestHelper {
 	public static final String CMD_ARTICLES_LIST = CMD_ARTICLES + "/list";
 	public static final String CMD_ARTICLES_CATEGORIES = CMD_ARTICLES + "/categories";
 
+	public static String CMD_GAME_BY_ID(long id) {
+		return CMD_GAMES + "/" + id;
+	}
+
 	public static String CMD_ARTICLE_BY_ID(long id) {
 		return CMD_ARTICLES + "/" + id;
 	}
@@ -467,8 +471,8 @@ message				false	Only used for `CHAT` command.
 					resultString = resultString.substring(firstIndex, lastIndex + 1);
 
 					Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
-					if (resultString.contains("\"challenges\":[[]]")) {
-						resultString = resultString.replace("\"challenges\":[[]]", "\"challenges\":[]");
+					if (resultString.contains("\"challenges\":[[]")) {
+						resultString = resultString.replace("[[]]", "[]");
 					}
 				} else {
 					Log.d(TAG, "ERROR -> WebRequest SERVER RESPONSE: " + resultString);

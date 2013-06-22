@@ -14,7 +14,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.ChatItem;
 import com.chess.backend.entity.new_api.DailyChatItem;
-import com.chess.backend.entity.new_api.DailyGameByIdItem;
+import com.chess.backend.entity.new_api.DailyCurrentGameData;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -155,7 +155,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 
 	public void updateList() {
 		LoadItem loadItem = createGetTimeStampLoadItem();
-		new RequestJsonTask<DailyGameByIdItem>(timeStampForListUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<DailyCurrentGameData>(timeStampForListUpdateListener).executeTask(loadItem);
 	}
 
 	private class ChatItemsUpdateListener extends ChessUpdateListener<DailyChatItem> {
@@ -245,7 +245,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 
 	private void sendMessage() {
 		LoadItem loadItem = createGetTimeStampLoadItem();
-		new RequestJsonTask<DailyGameByIdItem>(timeStampForSendMessageListener).executeTask(loadItem);
+		new RequestJsonTask<DailyCurrentGameData>(timeStampForSendMessageListener).executeTask(loadItem);
 	}
 
 	private LoadItem createGetTimeStampLoadItem() {
@@ -256,22 +256,22 @@ public class DailyChatFragment extends CommonLogicFragment{
 		return loadItem;
 	}
 
-	private class GetTimeStampListener extends ActionBarUpdateListener<DailyGameByIdItem> { // TODO use batch API
+	private class GetTimeStampListener extends ActionBarUpdateListener<DailyCurrentGameData> { // TODO use batch API
 
 		public GetTimeStampListener() {
-			super(getInstance(), DailyGameByIdItem.class);
+			super(getInstance(), DailyCurrentGameData.class);
 		}
 
 		@Override
-		public void updateData(DailyGameByIdItem returnedObj) {
-			final DailyGameByIdItem.Data currentGame = returnedObj.getData();
+		public void updateData(DailyCurrentGameData returnedObj) {
+			final DailyCurrentGameData currentGame = returnedObj;
 			timeStamp = currentGame.getTimestamp();
 		}
 	}
 
 	private class TimeStampForListUpdateListener extends GetTimeStampListener {
 		@Override
-		public void updateData(DailyGameByIdItem returnedObj) {
+		public void updateData(DailyCurrentGameData returnedObj) {
 			super.updateData(returnedObj);
 
 			LoadItem loadItem = new LoadItem();
@@ -287,7 +287,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 
 	private class TimeStampForSendMessageListener extends GetTimeStampListener {
 		@Override
-		public void updateData(DailyGameByIdItem returnedObj) {
+		public void updateData(DailyCurrentGameData returnedObj) {
 			super.updateData(returnedObj);
 
 			String message = StaticData.SYMBOL_EMPTY;

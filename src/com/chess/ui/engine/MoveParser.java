@@ -59,16 +59,16 @@ public class MoveParser {
 		int promotion = 0;
 
 		String[] MoveTo = new String[2];
-		String currentmove = move.trim();
+		String currentMove = move.trim();
 
-		if (currentmove.equals(KINGSIDE_CASTLING) || currentmove.equals("O-O+")) {
+		if (currentMove.equals(KINGSIDE_CASTLING) || currentMove.equals("O-O+")) {
 			if (board.getSide() == 0) {
 				return new int[]{board.getwKing(), board.getwKingMoveOO()[0], 0, 2};
 			} else if (board.getSide() == 1) {
 				return new int[]{board.getbKing(), board.getbKingMoveOO()[0], 0, 2};
 			}
 		}
-		if (currentmove.equals(QUEENSIDE_CASTLING) || currentmove.equals("O-O-O+")) {
+		if (currentMove.equals(QUEENSIDE_CASTLING) || currentMove.equals("O-O-O+")) {
 			if (board.getSide() == 0) {
 				return new int[]{board.getwKing(), board.getwKingMoveOOO()[0], 0, 2};
 			} else if (board.getSide() == 1) {
@@ -76,11 +76,11 @@ public class MoveParser {
 			}
 		}
 
-		int end = currentmove.length() - 1;
+		int end = currentMove.length() - 1;
 		while (end != 0) {
-			if (Pattern.matches(REGEXP_NUMBERS, currentmove.substring(end, end + 1))) {
-				MoveTo[0] = currentmove.substring(end - 1, end);
-				MoveTo[1] = currentmove.substring(end, end + 1);
+			if (Pattern.matches(REGEXP_NUMBERS, currentMove.substring(end, end + 1))) {
+				MoveTo[0] = currentMove.substring(end - 1, end);
+				MoveTo[1] = currentMove.substring(end, end + 1);
 				break;
 			}
 			end--;
@@ -89,14 +89,14 @@ public class MoveParser {
 		int i = LetterToBN(MoveTo[0]);
 		int j = NumToBN(MoveTo[1]);
 		int to = j * 8 - i;
-		int from = NumToBN(StaticData.SYMBOL_EMPTY + currentmove.charAt(1)) * 8 - LetterToBN(StaticData.SYMBOL_EMPTY + currentmove.charAt(0));
+		int from = NumToBN(StaticData.SYMBOL_EMPTY + currentMove.charAt(1)) * 8 - LetterToBN(StaticData.SYMBOL_EMPTY + currentMove.charAt(0));
 
 		Iterator<Move> itr = validMoves.iterator();
 		Move M;
 		while (itr.hasNext()) {
 			M = itr.next();
 			if (M.from == from && M.to == to) {
-				char lastChar = currentmove.charAt(currentmove.length() - 1);
+				char lastChar = currentMove.charAt(currentMove.length() - 1);
 				if (lastChar == 'q') {
 					promotion = 4;
 				} else if (lastChar == 'r') {

@@ -7,25 +7,30 @@ package com.chess.backend.entity.new_api;
  * Time: 6:47
  */
 public class DailyCurrentGameData extends DailyGameBaseData{
-	/*
-	"game_id": 35000530,
-	"i_play_as": 1,
+/*
+	"id": 35000579,
 	"game_type": 1,
-	"opponent_username": "erikwwww",
-	"opponent_rating": "1200",
 	"time_remaining": 0,
-	"fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-	"timestamp": 1339849800,
-	"last_move_from_square": null,
-	"last_move_to_square": null,
-	"is_draw_offer_pending": false,
-	"is_opponent_online": false,
-	"is_my_turn": false,
-	"has_new_message": false
-	 */
+	"timestamp": 1370386403,
+	"name": "Let's Play!",
+	"has_new_message": false,
+	"game_score": 0,
+	"white_username": "erik",
+	"black_username": "zarko5",
+	"user_to_move": 1,
+	"white_rating": 1465,
+	"black_rating": 1200,
+	"is_rated": true,
+	"days_per_move": 3,
+	"draw_offered": 0,
+	"encoded_move_string": "mC",
+	"starting_fen_position": null,
+	"move_list": "1. e4 ",
+	"white_avatar": "//www.c.com/images_users/avatars/erik.1.gif",
+	"black_avatar": "//www.c.com/images_users/avatars/zarko5.1.gif"
+*/
 	private boolean is_my_turn;
-	private boolean has_new_message;
-	private boolean is_draw_offer_pending;
+	private boolean draw_offered;
 
 	public boolean isMyTurn() {
 		return is_my_turn;
@@ -35,19 +40,15 @@ public class DailyCurrentGameData extends DailyGameBaseData{
 		this.is_my_turn = is_my_turn;
 	}
 
-	public boolean hasNewMessage() {
-		return has_new_message;
+	public boolean isDrawOffered() {
+		return draw_offered;
 	}
 
-	public void setHasNewMessage(boolean has_new_message) {
-		this.has_new_message = has_new_message;
+	public void setDrawOffered(boolean draw_offered) {
+		this.draw_offered = draw_offered;
 	}
 
-	public boolean isDrawOfferPending() {
-		return is_draw_offer_pending;
-	}
-
-	public void setDrawOfferPending(boolean is_draw_offer_pending) {
-		this.is_draw_offer_pending = is_draw_offer_pending;
+	public void setDrawOffered(int draw_offered) {
+		this.draw_offered = draw_offered > 0;
 	}
 }

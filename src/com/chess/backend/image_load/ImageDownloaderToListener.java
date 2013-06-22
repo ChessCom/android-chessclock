@@ -70,6 +70,7 @@ public class ImageDownloaderToListener {
 			return;
 		}
 		Bitmap bitmap = getBitmapFromCache(url, holder);
+		Log.d(LOG_TAG, "^ _________________________________ ^");
 		Log.d(LOG_TAG, " download url = " + url);
 
         if (bitmap == null) {
@@ -193,10 +194,10 @@ public class ImageDownloaderToListener {
      */
     class BitmapDownloaderTask extends AsyncTask<String, Void, Bitmap> {
         private String url;
-        private final SoftReference<ImageReadyListener> holderReference;
+        ImageReadyListener holderReference;
 
         public BitmapDownloaderTask(ImageReadyListener holder) {
-            holderReference = new SoftReference<ImageReadyListener>(holder);
+            holderReference = holder;
         }
 
         /**
@@ -214,17 +215,22 @@ public class ImageDownloaderToListener {
          */
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-			if (holderReference == null || holderReference.get() == null) {
+			Log.d(LOG_TAG, "onPostExecute bitmap " + bitmap +  " for url = " + url);
+
+			if (holderReference == null /*|| holderReference.get() == null*/) {
+				Log.d(LOG_TAG, "holderReference == null || holderReference.get() == null bitmap " + bitmap +  " for url = " + url);
                 return;
             }
 
 			if (isCancelled() || context == null) { // if activity dead, escape
+				Log.d(LOG_TAG, "isCancelled() || context == null bitmap " + bitmap +  " for url = " + url);
 				return;
 			}
 
             addBitmapToCache(url, bitmap);
 
-			holderReference.get().onImageReady(bitmap);
+			holderReference.onImageReady(bitmap);
+			Log.d(LOG_TAG, "onImageReady bitmap " + bitmap +  " for url = " + url);
         }
 
         public AsyncTask<String, Void, Bitmap> executeTask(String... input){
@@ -238,6 +244,7 @@ public class ImageDownloaderToListener {
     }
 
     private Bitmap downloadBitmap(String url) {
+		Log.d(LOG_TAG, "downloadBitmap start url = " + url);
         // AndroidHttpClient is not allowed to be used from the main thread
         final HttpClient client = AndroidHttpClient.newInstance("Android");
         url = url.replace(" ", "%20");
@@ -254,7 +261,7 @@ public class ImageDownloaderToListener {
             HttpResponse response = client.execute(getRequest);
             final int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                Log.e("ImageDownloader", "Error " + statusCode + " while retrieving bitmap from " + url);
+                Log.e(LOG_TAG, "Error " + statusCode + " while retrieving bitmap from " + url);
                 return null;
             }
 

@@ -2,14 +2,16 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 
-	android:versionCode="142"
-	android:versionName="3.0.011a" package="com.chess" android:installLocation="auto">
+	android:versionCode="143"
+	android:versionName="3.0.012a" package="com.chess" android:installLocation="auto">
 
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!--Read contacts to invite friends-->
+	<uses-permission android:name="android.permission.READ_CONTACTS"/>
 
 	<!--GCM Permissions-->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- GCM connects to Google Services. -->

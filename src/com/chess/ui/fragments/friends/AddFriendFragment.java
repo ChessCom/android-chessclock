@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.chess.EditButton;
 import com.chess.R;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.ContactItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.RequestItem;
 import com.chess.backend.statics.AppData;
@@ -18,6 +19,8 @@ import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.ui.adapters.RecentOpponentsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.popup_fragments.PopupContactSelectFragment;
+import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.facebook.FacebookException;
 import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Session;
@@ -31,9 +34,12 @@ import com.facebook.widget.WebDialog;
  * Date: 16.06.13
  * Time: 16:16
  */
-public class AddFriendFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
+public class AddFriendFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, PopupListSelectionFace {
+
+	private static final String CONTACT_SELECTION = "contact selection";
 
 	private EditButton usernameEditBtn;
+	private PopupContactSelectFragment popupContactSelectFragment;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,7 +77,6 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		facebookUiHelper = new UiLifecycleHelper(getActivity(), callback);
 		facebookUiHelper.onCreate(savedInstanceState);
 		facebookActive = true;
-
 	}
 
 	@Override
@@ -85,6 +90,11 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		} else if (id == R.id.facebookFriendsView) {
 			sendRequestDialog();
 		} else if (id == R.id.yourContactsView) {
+			if (popupContactSelectFragment != null) {
+				return;
+			}
+			popupContactSelectFragment = PopupContactSelectFragment.createInstance(this);
+			popupContactSelectFragment.show(getFragmentManager(), CONTACT_SELECTION);
 		}
 	}
 
@@ -130,7 +140,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		String opponentName = DBDataManager.getString(cursor, DBConstants.V_OPPONENT_NAME);
+		String opponentName = DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME);  // TODO adjust correctly
 		createFriendRequest(opponentName, getString(R.string.add_friend_request_message));
 	}
 
@@ -143,6 +153,21 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		loadItem.addRequestParams(RestHelper.P_MESSAGE, message);
 
 		new RequestJsonTask<RequestItem>(new RequestFriendListener()).executeTask(loadItem);
+	}
+
+	@Override
+	public void onValueSelected(int code) {
+		ContactItem contactItem = popupContactSelectFragment.getContactByPosition(code);
+
+		createFriendRequest(contactItem.getEmail(), getString(R.string.add_friend_request_message));
+
+		popupContactSelectFragment.dismiss();
+		popupContactSelectFragment = null;
+	}
+
+	@Override
+	public void onDialogCanceled() {
+		popupContactSelectFragment = null;
 	}
 
 	private class RequestFriendListener extends ChessUpdateListener<RequestItem> {
@@ -163,5 +188,6 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 			showToast("Request sent");
 		}
 	}
+
 
 }

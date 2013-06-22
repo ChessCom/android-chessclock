@@ -144,15 +144,15 @@ public class HomePlayFragment extends CommonLogicFragment {
 				inviteFriendView1.setVisibility(View.VISIBLE);
 				inviteFriendView2.setVisibility(View.VISIBLE);
 
-				friendUserName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_OPPONENT_NAME));
-				friendRealName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_OPPONENT_NAME));
+				friendUserName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME));
+				friendRealName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME));
 				cursor.moveToNext();
-				friendUserName2Txt.setText(DBDataManager.getString(cursor, DBConstants.V_OPPONENT_NAME));
-				friendRealName2Txt.setText(DBDataManager.getString(cursor, DBConstants.V_OPPONENT_NAME));
+				friendUserName2Txt.setText(DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME));
+				friendRealName2Txt.setText(DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME));
 			} else if (cursor.getCount() == 1) {
 				inviteFriendView1.setVisibility(View.VISIBLE);
-				friendUserName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_OPPONENT_NAME));
-				friendRealName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_OPPONENT_NAME));
+				friendUserName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME));
+				friendRealName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME));
 			}
 		}
 	}

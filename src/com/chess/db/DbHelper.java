@@ -16,8 +16,8 @@ public class DbHelper {
 
 	public static QueryParams getDailyCurrentListGamesParams(Context context){
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_LIST_GAMES]);
-		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_LIST_GAMES);
+		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES]);
+		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_GAMES);
 		queryParams.setSelection(DBDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{AppData.getUserName(context)});
 		return queryParams;
@@ -25,8 +25,8 @@ public class DbHelper {
 
 	public static QueryParams getDailyCurrentMyListGamesParams(Context context){
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_LIST_GAMES]);
-		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_LIST_GAMES);
+		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES]);
+		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_GAMES);
 		queryParams.setSelection(DBDataManager.SELECTION_USER_TURN);
 		queryParams.setArguments(new String[]{AppData.getUserName(context), RestHelper.V_TRUE});
 		return queryParams;
@@ -34,8 +34,8 @@ public class DbHelper {
 
 	public static QueryParams getDailyCurrentTheirListGamesParams(Context context){
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_LIST_GAMES]);
-		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_LIST_GAMES);
+		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES]);
+		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_GAMES);
 		queryParams.setSelection(DBDataManager.SELECTION_USER_TURN);
 		queryParams.setArguments(new String[]{AppData.getUserName(context), RestHelper.V_FALSE});
 		return queryParams;
@@ -43,8 +43,8 @@ public class DbHelper {
 
 	public static QueryParams getDailyFinishedListGamesParams(Context context){
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_FINISHED_LIST_GAMES]);
-		queryParams.setProjection(DBDataManager.PROJECTION_FINISHED_LIST_GAMES);
+		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES]);
+		queryParams.setProjection(DBDataManager.PROJECTION_FINISHED_GAMES);
 		queryParams.setSelection(DBDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{AppData.getUserName(context)});
 		return queryParams;
@@ -52,8 +52,8 @@ public class DbHelper {
 
 	public static QueryParams getRecentDailyOpponentParams(Context context){
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_FINISHED_LIST_GAMES]);
-		queryParams.setProjection(DBDataManager.PROJECTION_DAILY_OPPONENT);
+		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES]);
+		queryParams.setProjection(DBDataManager.PROJECTION_DAILY_PLAYER_NAMES);
 		queryParams.setSelection(DBDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{AppData.getUserName(context)});
 		return queryParams;
@@ -61,7 +61,15 @@ public class DbHelper {
 
 	public static QueryParams getDailyGameParams(Context context, long gameId){
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_ONLINE_GAMES]);
+		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES]);
+		queryParams.setSelection(DBDataManager.SELECTION_GAME_ID);
+		queryParams.setArguments(new String[]{AppData.getUserName(context), String.valueOf(gameId)});
+		return queryParams;
+	}
+
+	public static QueryParams getDailyFinishedGameParams(Context context, long gameId){
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES]);
 		queryParams.setSelection(DBDataManager.SELECTION_GAME_ID);
 		queryParams.setArguments(new String[]{AppData.getUserName(context), String.valueOf(gameId)});
 		return queryParams;

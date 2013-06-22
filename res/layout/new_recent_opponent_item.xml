@@ -28,7 +28,6 @@
         android:layout_weight="1"
         android:textColor="@color/new_light_grey"
         android:gravity="center_vertical"
-        android:text="test"
         />
 
 </com.chess.LinLayout>

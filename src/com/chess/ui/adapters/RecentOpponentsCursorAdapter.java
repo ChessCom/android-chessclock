@@ -40,7 +40,7 @@ public class RecentOpponentsCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View convertView, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		holder.playerTxt.setText(getString(cursor, DBConstants.V_OPPONENT_NAME));
+		holder.playerTxt.setText(getString(cursor, DBConstants.V_WHITE_USERNAME));
 
 		//		String avatarUrl = getString(cursor, DBConstants.OP)
 		String avatarUrl = "https://s3.amazonaws.com/chess-7/images_users/avatars/erik_small.1.png";

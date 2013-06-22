@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
@@ -61,27 +62,33 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 			gameType = CHESS_960;
 		}
 
-		holder.playerTxt.setText(getString(cursor, DBConstants.V_OPPONENT_NAME) + gameType);
-		String opponentRating = getString(cursor, DBConstants.V_OPPONENT_RATING);
+		holder.playerTxt.setText(getString(cursor, DBConstants.V_WHITE_USERNAME) + gameType);
+		String opponentRating = getString(cursor, DBConstants.V_WHITE_RATING);
 
 		holder.ratingTxt.setText(StaticData.SYMBOL_LEFT_PAR + opponentRating + StaticData.SYMBOL_RIGHT_PAR);
 
 		// Loss orange
 		String result = lossStr;
 		holder.gameResultTxt.setTextColor(colorOrange);
-		if (getInt(cursor, DBConstants.V_GAME_RESULT) == BaseGameItem.GAME_WON) {
+		if (getInt(cursor, DBConstants.V_GAME_SCORE) == BaseGameItem.GAME_WON) {
 			// Win Green
 			result = winStr;
 			holder.gameResultTxt.setTextColor(colorGreen);
-		} else if (getInt(cursor, DBConstants.V_GAME_RESULT) == BaseGameItem.GAME_DRAW) {
+		} else if (getInt(cursor, DBConstants.V_GAME_SCORE) == BaseGameItem.GAME_DRAW) {
 			// Draw Grey
 			result = drawStr;
 			holder.gameResultTxt.setTextColor(colorGrey);
 		}
 		holder.gameResultTxt.setText(result);
 
-//		String avatarUrl = getString(cursor, DBConstants.OP)
-		String avatarUrl = "https://s3.amazonaws.com/chess-7/images_users/avatars/erik_small.1.png";
+		// get player side
+		String avatarUrl;
+		if (getInt(cursor, DBConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
+			avatarUrl = getString(cursor, DBConstants.V_WHITE_AVATAR);
+		} else {
+			avatarUrl = getString(cursor, DBConstants.V_BLACK_AVATAR);
+		}
+
 		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 	}
 

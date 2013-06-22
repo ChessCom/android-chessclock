@@ -27,7 +27,6 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
 import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
 import com.chess.model.BaseGameItem;
-import com.chess.model.GameListFinishedItem;
 import com.chess.model.GameOnlineItem;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.CustomSectionedAdapter;
@@ -482,15 +481,15 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		@Override
 		public void onClick(DialogInterface d, int pos) {
 			if (pos == 0) {
-				preferencesEditor.putString(AppConstants.OPPONENT, gameListCurrentItem.getOpponentUsername());
-				preferencesEditor.commit();
+//				preferencesEditor.putString(AppConstants.OPPONENT, gameListCurrentItem.getOpponentUsername());
+//				preferencesEditor.commit();
 
 				Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
 				intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
 				startActivity(intent);
 			} else if (pos == 1) {
 				String draw = RestHelper.V_OFFERDRAW;
-				if (gameListCurrentItem.isDrawOfferPending())
+				if (gameListCurrentItem.isDrawOffered())
 					draw = RestHelper.V_ACCEPTDRAW;
 
 				LoadItem loadItem = new LoadItem();
@@ -551,12 +550,12 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			}
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			gameListCurrentItem = DBDataManager.getDailyGameListCurrentItemFromCursor(cursor);
+			gameListCurrentItem = DBDataManager.getDailyCurrentGameFromCursor(cursor);
 
-			preferencesEditor.putString(AppConstants.OPPONENT, gameListCurrentItem.getOpponentUsername());
-			preferencesEditor.commit();
+//			preferencesEditor.putString(AppConstants.OPPONENT, gameListCurrentItem.getOpponentUsername());
+//			preferencesEditor.commit();
 
-			if (gameListCurrentItem.isDrawOfferPending()) {
+			if (gameListCurrentItem.isDrawOffered()) {
 				popupItem.setPositiveBtnId(R.string.accept);
 				popupItem.setNeutralBtnId(R.string.decline);
 				popupItem.setNegativeBtnId(R.string.game);
@@ -575,10 +574,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(pos));
 		} else {
 
-			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			GameListFinishedItem finishedItem = DBDataManager.getDailyFinishedListGameFromCursor(cursor);
-			preferencesEditor.putString(AppConstants.OPPONENT, finishedItem.getOpponentUsername());
-			preferencesEditor.commit();
+//			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
+//			GameListFinishedItem finishedItem = DBDataManager.getDailyFinishedListGameFromCursor(cursor);
+//			preferencesEditor.putString(AppConstants.OPPONENT, finishedItem.getOpponentUsername());
+//			preferencesEditor.commit();
 
 //			Intent intent = new Intent(getContext(), GameFinishedScreenActivity.class);
 //			intent.putExtra(BaseGameItem.GAME_ID, finishedItem.getGameId());
@@ -592,7 +591,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		if (section == CURRENT_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			gameListCurrentItem = DBDataManager.getDailyGameListCurrentItemFromCursor(cursor);
+			gameListCurrentItem = DBDataManager.getDailyCurrentGameFromCursor(cursor);
 
 			new AlertDialog.Builder(getContext())
 					.setItems(new String[]{
@@ -605,15 +604,15 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		} else if (section == CHALLENGES_SECTION) {
 			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(pos));
 		} else {
-			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			GameListFinishedItem finishedItem = DBDataManager.getDailyFinishedListGameFromCursor(cursor);
-
-			preferencesEditor.putString(AppConstants.OPPONENT, finishedItem.getOpponentUsername());
-			preferencesEditor.commit();
-
-			Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
-			intent.putExtra(BaseGameItem.GAME_ID, finishedItem.getGameId());
-			startActivity(intent);
+//			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
+//			GameListFinishedItem finishedItem = DBDataManager.getDailyFinishedListGameFromCursor(cursor);
+//
+//			preferencesEditor.putString(AppConstants.OPPONENT, finishedItem.getOpponentUsername());
+//			preferencesEditor.commit();
+//
+//			Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
+//			intent.putExtra(BaseGameItem.GAME_ID, finishedItem.getGameId());
+//			startActivity(intent);
 		}
 		return true;
 	}
