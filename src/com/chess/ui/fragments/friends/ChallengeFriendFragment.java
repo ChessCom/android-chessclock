@@ -1,11 +1,16 @@
 package com.chess.ui.fragments.friends;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import com.chess.EditButton;
 import com.chess.R;
@@ -33,8 +38,14 @@ import com.facebook.widget.WebDialog;
  */
 public class ChallengeFriendFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
+	private static final int CONTACT_PICKER_RESULT = 1001;
+
 	private EditButton usernameEditBtn;
 	private View headerView;
+	private View emailIconTxt;
+	private View emailTxt;
+	private EditButton emailEditBtn;
+	private Button addEmailBtn;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,6 +73,12 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 		headerView.findViewById(R.id.facebookFriendsView).setOnClickListener(this);
 		headerView.findViewById(R.id.yourContactsView).setOnClickListener(this);
 		headerView.findViewById(R.id.yourEmailView).setOnClickListener(this);
+
+		emailIconTxt = headerView.findViewById(R.id.emailIconTxt);
+		emailTxt = headerView.findViewById(R.id.emailTxt);
+		emailEditBtn = (EditButton) headerView.findViewById(R.id.emailEditBtn);
+		addEmailBtn = (Button) headerView.findViewById(R.id.addEmailBtn);
+		addEmailBtn.setOnClickListener(this);
 	}
 
 	@Override
@@ -79,10 +96,25 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 		} else if (id == R.id.facebookFriendsView) {
 			sendRequestDialog();
 		} else if (id == R.id.yourEmailView) {
-
+			showEmailEdit(true);
+		} else if (id == R.id.addEmailBtn) {
+			createDailyChallenge(getTextFromField(emailEditBtn));
+			showEmailEdit(false);
 		} else if (id == R.id.yourContactsView) {
-
+			startContactPicker();
 		}
+	}
+
+	private void showEmailEdit(boolean show) {
+		emailIconTxt.setVisibility(show ? View.GONE : View.VISIBLE);
+		emailTxt.setVisibility(show ? View.GONE : View.VISIBLE);
+		emailEditBtn.setVisibility(show ? View.VISIBLE : View.GONE);
+		addEmailBtn.setVisibility(show ? View.VISIBLE : View.GONE);
+	}
+
+	public void startContactPicker() {
+		Intent contactPickerIntent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+		startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT);
 	}
 
 	private void sendRequestDialog() {
@@ -177,6 +209,38 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 		@Override
 		public void errorHandle(String resultMessage) {
 			showSinglePopupDialog(getString(R.string.error), resultMessage);
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == Activity.RESULT_OK && requestCode == CONTACT_PICKER_RESULT) {
+			// handle contact results
+			Bundle extras = data.getExtras();
+			if (extras == null) {
+				return;
+			}
+
+			Uri result = data.getData();
+			if (result == null) {
+				return;
+			}
+			// get the contact id from the Uri
+			String id = result.getLastPathSegment();
+
+			// query for everything email
+			Cursor cursor = getContentResolver().query(
+					ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
+					ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?",
+					new String[]{id}, null);
+
+			if (cursor != null && cursor.moveToFirst()) {
+				int emailIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
+				String email = cursor.getString(emailIdx);
+				createDailyChallenge(email);
+//				showToast("email = " + email); // TODO maybe add email confirmation logic
+			}
 		}
 	}
 }

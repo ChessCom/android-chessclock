@@ -71,6 +71,7 @@
 
         <!--Icon-->
         <com.chess.RoboTextView
+            android:id="@+id/emailIconTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ic_email_dark"
@@ -78,11 +79,32 @@
             style="@style/GlyphIcon.Big" />
 
         <com.chess.RoboTextView
+            android:id="@+id/emailTxt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/invite_by_email"
             android:textColor="@color/new_light_grey" />
+
+        <com.chess.EditButton
+            android:id="@+id/emailEditBtn"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/invite_by_email"
+            style="@style/EditButton"
+            android:layout_marginRight="10dip"
+            android:visibility="gone"
+            />
+
+        <com.chess.RoboButton
+            android:id="@+id/addEmailBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add"
+            style="@style/Button.OrangeNoBorder.Small"
+            android:visibility="gone"
+            />
 
     </com.chess.LinLayout>
 

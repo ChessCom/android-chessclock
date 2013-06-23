@@ -1,16 +1,20 @@
 package com.chess.ui.fragments.friends;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import com.chess.EditButton;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.ContactItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.RequestItem;
 import com.chess.backend.statics.AppData;
@@ -19,8 +23,6 @@ import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.ui.adapters.RecentOpponentsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.popup_fragments.PopupContactSelectFragment;
-import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.facebook.FacebookException;
 import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Session;
@@ -34,15 +36,20 @@ import com.facebook.widget.WebDialog;
  * Date: 16.06.13
  * Time: 16:16
  */
-public class AddFriendFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, PopupListSelectionFace {
+public class AddFriendFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
-	private static final String CONTACT_SELECTION = "contact selection";
+	private static final int CONTACT_PICKER_RESULT = 1001;
 
 	private EditButton usernameEditBtn;
-	private PopupContactSelectFragment popupContactSelectFragment;
+	private View headerView;
+	private View emailIconTxt;
+	private View emailTxt;
+	private EditButton emailEditBtn;
+	private Button addEmailBtn;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		headerView = inflater.inflate(R.layout.new_add_friend_header_view, null, false);
 		return inflater.inflate(R.layout.new_add_friend_frame, container, false);
 	}
 
@@ -58,8 +65,6 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 
 		RecentOpponentsCursorAdapter adapter = new RecentOpponentsCursorAdapter(getActivity(), cursor);
 
-		LayoutInflater inflater = LayoutInflater.from(getActivity());
-		View headerView = inflater.inflate(R.layout.new_add_friend_header_view, null, false);
 		listView.addHeaderView(headerView);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(this);
@@ -68,6 +73,13 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		headerView.findViewById(R.id.addFriendBtn).setOnClickListener(this);
 		headerView.findViewById(R.id.facebookFriendsView).setOnClickListener(this);
 		headerView.findViewById(R.id.yourContactsView).setOnClickListener(this);
+		headerView.findViewById(R.id.yourEmailView).setOnClickListener(this);
+
+		emailIconTxt = headerView.findViewById(R.id.emailIconTxt);
+		emailTxt = headerView.findViewById(R.id.emailTxt);
+		emailEditBtn = (EditButton) headerView.findViewById(R.id.emailEditBtn);
+		addEmailBtn = (Button) headerView.findViewById(R.id.addEmailBtn);
+		addEmailBtn.setOnClickListener(this);
 	}
 
 	@Override
@@ -85,17 +97,24 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 
 		int id = view.getId();
 		if (id == R.id.addFriendBtn) {
-
 			createFriendRequest(getTextFromField(usernameEditBtn), getString(R.string.add_friend_request_message));
 		} else if (id == R.id.facebookFriendsView) {
 			sendRequestDialog();
 		} else if (id == R.id.yourContactsView) {
-			if (popupContactSelectFragment != null) {
-				return;
-			}
-			popupContactSelectFragment = PopupContactSelectFragment.createInstance(this);
-			popupContactSelectFragment.show(getFragmentManager(), CONTACT_SELECTION);
+			startContactPicker();
+		} else if (id == R.id.yourEmailView) {
+			showEmailEdit(true);
+		} else if (id == R.id.addEmailBtn) {
+			createFriendRequest(getTextFromField(emailEditBtn), getString(R.string.add_friend_request_message));
+			showEmailEdit(false);
 		}
+	}
+
+	private void showEmailEdit(boolean show) {
+		emailIconTxt.setVisibility(show ? View.GONE : View.VISIBLE);
+		emailTxt.setVisibility(show ? View.GONE : View.VISIBLE);
+		emailEditBtn.setVisibility(show ? View.VISIBLE : View.GONE);
+		addEmailBtn.setVisibility(show ? View.VISIBLE : View.GONE);
 	}
 
 	private void sendRequestDialog() {
@@ -137,6 +156,11 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		requestsDialog.show();
 	}
 
+	public void startContactPicker() {
+		Intent contactPickerIntent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+		startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT);
+	}
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
@@ -153,21 +177,6 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		loadItem.addRequestParams(RestHelper.P_MESSAGE, message);
 
 		new RequestJsonTask<RequestItem>(new RequestFriendListener()).executeTask(loadItem);
-	}
-
-	@Override
-	public void onValueSelected(int code) {
-		ContactItem contactItem = popupContactSelectFragment.getContactByPosition(code);
-
-		createFriendRequest(contactItem.getEmail(), getString(R.string.add_friend_request_message));
-
-		popupContactSelectFragment.dismiss();
-		popupContactSelectFragment = null;
-	}
-
-	@Override
-	public void onDialogCanceled() {
-		popupContactSelectFragment = null;
 	}
 
 	private class RequestFriendListener extends ChessUpdateListener<RequestItem> {
@@ -189,5 +198,35 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		}
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == Activity.RESULT_OK && requestCode == CONTACT_PICKER_RESULT) {
+			// handle contact results
+			Bundle extras = data.getExtras();
+			if (extras == null) {
+				return;
+			}
 
+			Uri result = data.getData();
+			if (result == null) {
+				return;
+			}
+			// get the contact id from the Uri
+			String id = result.getLastPathSegment();
+
+			// query for everything email
+			Cursor cursor = getContentResolver().query(
+					ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
+					ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?",
+					new String[]{id}, null);
+
+			if (cursor != null && cursor.moveToFirst()) {
+				int emailIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
+				String email = cursor.getString(emailIdx);
+				createFriendRequest(email,  getString(R.string.add_friend_request_message));
+//				showToast("email = " + email); // TODO maybe add email confirmation logic
+			}
+		}
+	}
 }

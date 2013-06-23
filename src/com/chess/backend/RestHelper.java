@@ -453,7 +453,6 @@ message				false	Only used for `CHAT` command.
 
 				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
 				Log.d(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
-				Log.d(TAG, "SERVER RESPONSE: " + resultString);
 				throw new InternalErrorException(encodeServerCode(baseResponse.getCode()));
 			}
 

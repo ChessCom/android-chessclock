@@ -40,8 +40,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 	private static final int NON_INIT = -1;
 	public static final int NEW_GAME = 0;
-	private static final long LEFT_MENU_DELAY = 1000;
-	private static final long RIGHT_MENU_DELAY = 2000;
+	private static final long LEFT_MENU_DELAY = 100;
+	private static final long RIGHT_MENU_DELAY = 200;
 
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId = NON_INIT;

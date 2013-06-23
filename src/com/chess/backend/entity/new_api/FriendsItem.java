@@ -36,6 +36,7 @@ public class FriendsItem extends BaseResponseItem<List<FriendsItem.Data>> {
 		private String location;
 		private String avatar_url;
 		private int premium_status;
+		private long last_login_date;
 
 		public long getUserId() {
 			return user_id;
@@ -71,6 +72,14 @@ public class FriendsItem extends BaseResponseItem<List<FriendsItem.Data>> {
 
 		public String getAvatarUrl() {
 			return avatar_url;
+		}
+
+		public int getPremiumStatus() {
+			return premium_status;
+		}
+
+		public long getLastLoginDate() {
+			return last_login_date;
 		}
 	}
 }

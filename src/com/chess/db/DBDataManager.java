@@ -754,6 +754,9 @@ public class DBDataManager {
 		values.put(DBConstants.V_LOCATION, dataObj.getLocation());
 		values.put(DBConstants.V_COUNTRY_ID, dataObj.getCountryId());
 		values.put(DBConstants.V_PHOTO_URL, dataObj.getAvatarUrl());
+		values.put(DBConstants.V_IS_OPPONENT_ONLINE, dataObj.isOnline()? 1 : 0);
+		values.put(DBConstants.V_PREMIUM_STATUS, dataObj.getPremiumStatus());
+		values.put(DBConstants.V_LAST_LOGIN_DATE, dataObj.getLastLoginDate());
 
 		return values;
 	}

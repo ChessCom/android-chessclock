@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.friends;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.*;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.DailySeekItem;
 import com.chess.backend.entity.new_api.FriendsItem;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -18,7 +20,9 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveFriendsListTask;
 import com.chess.ui.adapters.FriendsCursorAdapter;
+import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
 /**
@@ -27,7 +31,7 @@ import com.chess.utilities.AppUtils;
  * Date: 22.01.13
  * Time: 11:38
  */
-public class FriendsFragment extends CommonLogicFragment {
+public class FriendsFragment extends CommonLogicFragment implements ItemClickListenerFace{
 
 	private ListView listView;
 	private View loadingView;
@@ -41,7 +45,7 @@ public class FriendsFragment extends CommonLogicFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		friendsAdapter = new FriendsCursorAdapter(getContext(), null);
+		friendsAdapter = new FriendsCursorAdapter(this, null);
 	}
 
 	@Override
@@ -115,6 +119,21 @@ public class FriendsFragment extends CommonLogicFragment {
 		new RequestJsonTask<FriendsItem>(friendsUpdateListener).executeTask(loadItem);
 	}
 
+	@Override
+	public void onClick(View view) {
+		super.onClick(view);
+
+		if (view.getId() == R.id.challengeImgBtn) {
+			Cursor cursor = (Cursor) view.getTag(R.id.list_item_id);
+			createDailyChallenge(DBDataManager.getString(cursor, DBConstants.V_USERNAME));
+		}
+	}
+
+	@Override
+	public Context getMeContext() {
+		return getActivity();
+	}
+
 	private class FriendsUpdateListener extends ChessUpdateListener<FriendsItem> {
 
 		public FriendsUpdateListener() {
@@ -147,7 +166,7 @@ public class FriendsFragment extends CommonLogicFragment {
 
 	private class SaveFriendsListUpdateListener extends ChessUpdateListener<FriendsItem.Data> {
 		public SaveFriendsListUpdateListener() {
-			super();
+			super(FriendsItem.Data.class);
 		}
 
 		@Override
@@ -244,6 +263,50 @@ public class FriendsFragment extends CommonLogicFragment {
 		} else {
 			listView.setVisibility(View.VISIBLE);
 			loadingView.setVisibility(View.GONE);
+		}
+	}
+
+	private void createDailyChallenge(String opponentName) {
+		// create challenge using formed configuration
+		DailyGameConfig dailyGameConfig = new DailyGameConfig.Builder().build();
+
+		int color = dailyGameConfig.getUserColor();
+		int days = dailyGameConfig.getDaysPerMove();
+		int gameType = dailyGameConfig.getGameType();
+		String isRated = dailyGameConfig.isRated() ? RestHelper.V_TRUE : RestHelper.V_FALSE;
+
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, days);
+		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
+		loadItem.addRequestParams(RestHelper.P_IS_RATED, isRated);
+		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
+		loadItem.addRequestParams(RestHelper.P_OPPONENT, opponentName);
+
+		new RequestJsonTask<DailySeekItem>(new CreateChallengeUpdateListener()).executeTask(loadItem);
+	}
+
+	private class CreateChallengeUpdateListener extends ChessUpdateListener<DailySeekItem> {
+
+		public CreateChallengeUpdateListener() {
+			super(DailySeekItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			showLoadingProgress(show);
+		}
+
+		@Override
+		public void updateData(DailySeekItem returnedObj) {
+			showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
+		}
+
+		@Override
+		public void errorHandle(String resultMessage) {
+			showSinglePopupDialog(getString(R.string.error), resultMessage);
 		}
 	}
 }
