@@ -105,7 +105,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private BroadcastReceiver moveUpdateReceiver;
 
 	protected boolean userPlayWhite = true;
-	private LoadFromDbUpdateListener loadFromDbUpdateListener;
+//	private LoadFromDbUpdateListener loadFromDbUpdateListener;
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
 	private NotationView notationsView;
 	private PanelInfoGameView topPanelView;
@@ -233,7 +233,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			cursor.close();
 
 			adjustBoardForGame();
-		} // TODO handle error properly
+
+			// update players info
+
+		} else {
+			updateGameState(gameId);
+		}
 	}
 
 	private class LoadFromDbUpdateListener extends AbstractUpdateListener<Cursor> {
@@ -372,8 +377,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			MoveParser.fenParse(FEN, boardFace);
 		}
 
-		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
-			String[] moves = currentGame.getMoveList()
+		String moveList = currentGame.getMoveList();
+//		moveList = MoveCoder.getInstance().decodeMoveList(moveList);
+
+		if (moveList.contains(BaseGameItem.FIRST_MOVE_INDEX)) {
+			String[] moves = moveList
 					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, StaticData.SYMBOL_EMPTY)
 					.replaceAll(DOUBLE_SPACE, StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE);   // Start after "+" sign
 
@@ -858,7 +866,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 //					switchToNextGame(returnedObj);
 //					break;
 				case CREATE_CHALLENGE_UPDATE:
-					showSinglePopupDialog(R.string.congratulations, R.string.online_game_created);
+					showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
 					break;
 				case DRAW_OFFER_UPDATE:
 					showSinglePopupDialog(R.string.draw_offered, DRAW_OFFER_TAG);
@@ -890,7 +898,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		gameStateUpdateListener = new GameStateUpdateListener();
 		sendMoveUpdateListener = new GameOnlineUpdatesListener(SEND_MOVE_UPDATE);
 		createChallengeUpdateListener = new GameOnlineUpdatesListener(CREATE_CHALLENGE_UPDATE);
-		loadFromDbUpdateListener = new LoadFromDbUpdateListener(CURRENT_GAME);
+//		loadFromDbUpdateListener = new LoadFromDbUpdateListener(CURRENT_GAME);
 
 		currentGamesCursorUpdateListener = new LoadFromDbUpdateListener(GAMES_LIST);
 

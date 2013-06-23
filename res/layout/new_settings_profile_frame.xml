@@ -190,17 +190,6 @@
                 android:contentDescription="@string/image"
                 />
 
-
-            <!--Right Icon-->
-<!--            <com.chess.RoboTextView
-                android:id="@+id/countryArrowIconTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ic_right"
-                android:textColor="@color/white"
-                style="@style/GlyphIcon.Small"
-                />-->
-
         </com.chess.LinLayout>
 
         <!--Profile Picture-->
@@ -211,8 +200,6 @@
             style="@style/LinearListItem"
             android:paddingLeft="@dimen/default_scr_side_padding"
             android:paddingRight="@dimen/default_scr_side_padding"
-            android:paddingTop="10dip"
-            android:paddingBottom="10dip"
             android:background="@drawable/white_list_item_selector"
             >
 
@@ -230,7 +217,8 @@
                 android:id="@+id/userPhotoImg"
                 android:layout_width="@dimen/img_profile_size_big"
                 android:layout_height="@dimen/img_profile_size_big"
-                android:layout_margin="9dip"
+                android:layout_marginTop="8dip"
+                android:layout_marginBottom="8dip"
                 />
 
         </com.chess.LinLayout>

@@ -84,6 +84,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 	private boolean onVacation;
 	private boolean need2update = true;
 	private Button startNewGameBtn;
+	private View headerView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -108,6 +109,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		headerView = inflater.inflate(R.layout.new_start_new_game_button_view, null, false);
 		return inflater.inflate(R.layout.new_daily_games_right_frame, container, false);
 	}
 
@@ -119,11 +121,12 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		listView = (ListView) view.findViewById(R.id.listView);
+		listView.addHeaderView(headerView);
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
 		listView.setAdapter(sectionedAdapter);
 
-		startNewGameBtn = (Button) view.findViewById(R.id.startNewGameBtn);
+		startNewGameBtn = (Button) headerView.findViewById(R.id.startNewGameBtn);
 		startNewGameBtn.setOnClickListener(this);
 	}
 
@@ -233,7 +236,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(position));
 		} else if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			DailyFinishedGameData finishedItem = DBDataManager.getDailyFinishedGameFromCursor(cursor);
+			DailyFinishedGameData finishedItem = DBDataManager.getDailyFinishedGameListFromCursor(cursor);
 
 			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
 			getActivityFace().toggleRightMenu();
@@ -245,7 +248,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 			}
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			gameListCurrentItem = DBDataManager.getDailyCurrentGameFromCursor(cursor);
+			gameListCurrentItem = DBDataManager.getDailyCurrentGameListFromCursor(cursor);
 
 			if (gameListCurrentItem.isDrawOffered()) {
 				popupItem.setPositiveBtnId(R.string.accept);

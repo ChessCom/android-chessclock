@@ -14,6 +14,8 @@ import com.chess.ui.interfaces.ItemClickListenerFace;
 public class CustomSectionedAdapter extends SectionedListAdapter {
 
 	public static final int NON_INIT = -1;
+	private AbsListView.LayoutParams hideLayoutParams;
+	private AbsListView.LayoutParams layoutParams;
 
 	private ItemClickListenerFace clickListenerFace;
 	private int layoutResource;
@@ -30,24 +32,26 @@ public class CustomSectionedAdapter extends SectionedListAdapter {
 		clickListenerFace = itemClickListenerFace;
 		this.layoutResource = layoutResource;
 		this.hideHeadersArray = hideHeadersArray;
+		hideLayoutParams = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1);
+		layoutParams = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 	}
 
 	@Override
 	protected View getHeaderView(String caption, int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
 			convertView = LayoutInflater.from(getContext()).inflate(layoutResource, parent, false);
-			if (hideHeadersArray != null ) {
-				Log.d("TEST", "getHeaderView, pos = " + position);
-				for (int index : hideHeadersArray) {
-					if (position == index) {
-						Log.d("TEST", "hiding header for pos = " + position);
-						AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1);
-						convertView.setLayoutParams(layoutParams);
-						convertView.setVisibility(View.GONE);
-					}
+			createViewHolder(convertView);
+		}
+		if (hideHeadersArray != null ) {
+			for (int index : hideHeadersArray) {
+				if (position == index) {
+					convertView.setLayoutParams(hideLayoutParams);
+					convertView.setVisibility(View.GONE);
+				} else {
+					convertView.setLayoutParams(layoutParams);
+					convertView.setVisibility(View.VISIBLE);
 				}
 			}
-			createViewHolder(convertView);
 		}
 		bindView(convertView, caption);
 		return convertView;

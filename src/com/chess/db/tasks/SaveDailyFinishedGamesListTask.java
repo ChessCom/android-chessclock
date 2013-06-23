@@ -26,6 +26,10 @@ public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<DailyFini
 	@Override
 	protected Integer doTheTask(Long... ids) {
 		Context context = getTaskFace().getMeContext();
+		if (context == null) {
+			return StaticData.INTERNAL_ERROR;
+		}
+
 		String userName = AppData.getUserName(context);
 
 		synchronized (itemList) {

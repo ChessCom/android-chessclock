@@ -10,7 +10,6 @@ import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
@@ -78,7 +77,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	private EditText loginUsernameEdt;
 	private EditText passwordEdt;
 	protected boolean isRestarted;
-	private View mainView;
 
 
 	@Override
@@ -90,7 +88,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		currentLocale = preferences.getString(AppConstants.CURRENT_LOCALE, StaticData.LOCALE_EN);
 
 		handler = new Handler();
-		mainView = findViewById(R.id.mainView);
 		setLocale();
 	}
 

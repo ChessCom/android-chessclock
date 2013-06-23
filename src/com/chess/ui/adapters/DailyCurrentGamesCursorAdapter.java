@@ -60,7 +60,19 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 			draw = "\n" + context.getString(R.string.draw_offered);
 		}
 
-		holder.playerTxt.setText(getString(cursor, DBConstants.V_WHITE_USERNAME) + gameType + draw); // TODO restore
+		// get player side, and choose opponent
+		String avatarUrl;
+		String opponentName;
+		if (getInt(cursor, DBConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
+			avatarUrl = getString(cursor, DBConstants.V_WHITE_AVATAR);
+			opponentName = getString(cursor, DBConstants.V_WHITE_USERNAME) + gameType + draw;
+		} else {
+			avatarUrl = getString(cursor, DBConstants.V_BLACK_AVATAR);
+			opponentName = getString(cursor, DBConstants.V_BLACK_USERNAME) + gameType + draw;
+		}
+
+		holder.playerTxt.setText(opponentName + gameType);
+		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 
 		// don't show time if it's not my move
 		if (getInt(cursor, DBConstants.V_IS_MY_TURN) > 0) {
@@ -96,16 +108,6 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		} else {
 			convertView.setPadding(fullPadding, halfPadding, fullPadding, halfPadding);
 		}
-
-		// get player side
-		String avatarUrl;
-		if (getInt(cursor, DBConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
-			avatarUrl = getString(cursor, DBConstants.V_WHITE_AVATAR);
-		} else {
-			avatarUrl = getString(cursor, DBConstants.V_BLACK_AVATAR);
-		}
-
-		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 	}
 
 	private boolean lessThanDay(long amount) {

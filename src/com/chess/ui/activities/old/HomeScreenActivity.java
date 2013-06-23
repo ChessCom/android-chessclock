@@ -75,7 +75,6 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.home_screen);
-		AppUtils.setBackground(findViewById(R.id.mainView), this);
 
 		findViewById(R.id.playLiveFrame).setOnClickListener(this);
 		findViewById(R.id.playOnlineFrame).setOnClickListener(this);
@@ -630,7 +629,6 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 				String inneractiveAppId = getString(R.string.inneractiveAdsAppId);
 				inneractiveFullscreenAd = new InneractiveAd(this, inneractiveAppId, InneractiveAd.IaAdType.Interstitial, 0);
 				inneractiveFullscreenAd.setInneractiveListener(adListener);
-				((LinearLayout) findViewById(R.id.mainView)).addView(inneractiveFullscreenAd);
 			}
 		}
 	}

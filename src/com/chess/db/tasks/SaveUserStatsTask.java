@@ -35,6 +35,9 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 	@Override
 	protected Integer doTheTask(Long... params) {
 		Context context = getTaskFace().getMeContext();
+		if (context == null) {
+			return StaticData.INTERNAL_ERROR;
+		}
 		String userName = AppData.getUserName(context);
 
 		saveLiveStats(userName, item, resolver);

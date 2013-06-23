@@ -27,6 +27,9 @@ public class SaveDailyCurrentGamesListTask extends SaveDailyGamesTask<DailyCurre
 	@Override
 	protected Integer doTheTask(Long... ids) {
 		Context context = getTaskFace().getMeContext();
+		if (context == null) {
+			return StaticData.INTERNAL_ERROR;
+		}
 		String userName = AppData.getUserName(context);
 		// TODO compare received list of current games with saved db data for current games.
 		// if item is not found in received list that means it became finished

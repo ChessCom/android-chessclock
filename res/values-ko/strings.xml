@@ -134,7 +134,7 @@
 	<string name="play">경기</string>
 	<string name="videos">동영상</string>
 	<string name="congratulations"> 축하해요!</string>
-	<string name="online_game_created">온라인 게임이 만들어!</string>
+	<string name="daily_game_created">온라인 게임이 만들어!</string>
 	<string name="challenge_sent">보낸 도전!</string>
 
 	<string name="sorry">미안해요</string>

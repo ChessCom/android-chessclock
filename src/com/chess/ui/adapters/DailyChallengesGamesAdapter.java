@@ -40,7 +40,6 @@ public class DailyChallengesGamesAdapter extends ItemsAdapter<DailyChallengeItem
 		return view;
 	}
 
-
 	@Override
 	protected void bindView(DailyChallengeItem.Data item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
@@ -50,9 +49,7 @@ public class DailyChallengesGamesAdapter extends ItemsAdapter<DailyChallengeItem
 
 		holder.playerTxt.setText(item.getOpponentUsername());
 
-//		String avatarUrl = getString(cursor, DBConstants.OP)
-		String avatarUrl = "https://s3.amazonaws.com/chess-7/images_users/avatars/erik_small.1.png";
-		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
+		imageLoader.download(item.getOpponentAvatar(), holder.playerImg, imageSize);
 	}
 
 	protected class ViewHolder {

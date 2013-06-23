@@ -3,6 +3,7 @@ package com.chess.ui.fragments.home;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 	private static final int NON_INIT = -1;
 	public static final int NEW_GAME = 0;
+	private static final long LEFT_MENU_DELAY = 1000;
+	private static final long RIGHT_MENU_DELAY = 2000;
 
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId = NON_INIT;
@@ -84,17 +87,37 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		super.onActivityCreated(savedInstanceState);
 
 		// activate Left
-		CommonLogicFragment leftMenuFragment = (CommonLogicFragment) findFragmentByTag(NavigationMenuFragment.class.getSimpleName());
-		if (leftMenuFragment == null) {
-			leftMenuFragment = new NavigationMenuFragment();
-		}
-		getActivityFace().changeLeftFragment(leftMenuFragment);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				FragmentManager fragmentManager = getFragmentManager();
+				if (fragmentManager == null || getActivity() == null) {
+					return;
+				}
+
+				CommonLogicFragment leftMenuFragment = (CommonLogicFragment) findFragmentByTag(NavigationMenuFragment.class.getSimpleName());
+				if (leftMenuFragment == null) {
+					leftMenuFragment = new NavigationMenuFragment();
+				}
+				getActivityFace().changeLeftFragment(leftMenuFragment);
+			}
+		}, LEFT_MENU_DELAY);
 		// and right menu fragments
-		CommonLogicFragment rightMenuFragment = (CommonLogicFragment) findFragmentByTag(DailyGamesNotificationFragment.class.getSimpleName());
-		if (rightMenuFragment == null) {
-			rightMenuFragment = new DailyGamesNotificationFragment();
-		}
-		getActivityFace().changeRightFragment(rightMenuFragment);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				FragmentManager fragmentManager = getFragmentManager();
+				if (fragmentManager == null || getActivity() == null) {
+					return;
+				}
+
+				CommonLogicFragment rightMenuFragment = (CommonLogicFragment) findFragmentByTag(DailyGamesNotificationFragment.class.getSimpleName());
+				if (rightMenuFragment == null) {
+					rightMenuFragment = new DailyGamesNotificationFragment();
+				}
+				getActivityFace().changeRightFragment(rightMenuFragment);
+			}
+		}, RIGHT_MENU_DELAY);
 	}
 
 	@Override

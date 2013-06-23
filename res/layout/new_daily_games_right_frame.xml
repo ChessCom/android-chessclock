@@ -8,29 +8,6 @@
     android:layout_height="match_parent"
     >
 
-    <com.chess.RelLayout
-        android:id="@+id/topButtonsView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="20dip"
-        android:paddingLeft="20dip"
-        android:paddingRight="20dip"
-        android:paddingBottom="22dip"
-        style="@style/ListItem"
-        >
-        <com.chess.RoboButton
-            android:id="@+id/startNewGameBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/start_new_game"
-            android:layout_marginLeft="4dip"
-            style="@style/Button.OrangeNoBorder"
-            android:minHeight="60dip"
-            android:textSize="23sp"
-            />
-
-    </com.chess.RelLayout>
-
     <RelativeLayout
         android:id="@+id/loadingView"
         android:layout_width="match_parent"
@@ -46,7 +23,6 @@
             android:layout_centerInParent="true"
             style="?android:attr/progressBarStyle"
             />
-
 
     </RelativeLayout>
 
@@ -70,10 +46,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:layout_below="@id/topButtonsView"
-
         />
-
-
 
 </RelativeLayout>

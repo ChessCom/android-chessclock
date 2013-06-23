@@ -50,14 +50,14 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getRecentDailyOpponentParams(Context context){
-		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES]);
-		queryParams.setProjection(DBDataManager.PROJECTION_DAILY_PLAYER_NAMES);
-		queryParams.setSelection(DBDataManager.SELECTION_USER);
-		queryParams.setArguments(new String[]{AppData.getUserName(context)});
-		return queryParams;
-	}
+//	public static QueryParams getRecentDailyOpponentParams(Context context){
+//		QueryParams queryParams = new QueryParams();
+//		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES]);
+//		queryParams.setProjection(DBDataManager.PROJECTION_DAILY_PLAYER_NAMES);
+//		queryParams.setSelection(DBDataManager.SELECTION_USER);
+//		queryParams.setArguments(new String[]{AppData.getUserName(context)});
+//		return queryParams;
+//	}
 
 	public static QueryParams getDailyGameParams(Context context, long gameId){
 		QueryParams queryParams = new QueryParams();

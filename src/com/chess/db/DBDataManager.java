@@ -4,6 +4,7 @@ import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.new_api.*;
 import com.chess.backend.entity.new_api.stats.*;
 import com.chess.backend.statics.AppData;
@@ -31,6 +32,7 @@ public class DBDataManager {
 	public static final String MORE_ = " > ";
 	public static final String EQUALS_ = " = ";
 	public static final String EQUALS_ARG_ = "=?";
+	public static final String NOT_EQUALS_ARG_ = "!=?";
 	public static final String LIMIT_ = " LIMIT ";
 	public static final String LIMIT_1 = DBConstants._ID + " LIMIT 1";
 
@@ -133,6 +135,7 @@ public class DBDataManager {
 	public static final String[] PROJECTION_DAILY_PLAYER_NAMES = new String[] {
 			DBConstants._ID,
 			DBConstants.V_USER,
+			DBConstants.V_I_PLAY_AS,
 			DBConstants.V_WHITE_USERNAME,
 			DBConstants.V_BLACK_USERNAME
 	};
@@ -348,25 +351,31 @@ public class DBDataManager {
 		String userName = getUserName(context);
 
 		ContentResolver contentResolver = context.getContentResolver();
-		final String[] arguments1 = sArguments1;
-		arguments1[0] = userName;
+		final String[] arguments3 = sArguments3;
+		arguments3[0] = userName;
+		arguments3[1] = userName;
+		arguments3[2] = String.valueOf(RestHelper.P_BLACK);
 
 		ContentProviderClient client = contentResolver.acquireContentProviderClient(DBConstants.PROVIDER_NAME);
 		SQLiteDatabase dbHandle = ((DBDataProvider) client.getLocalContentProvider()).getDbHandle();
 		StringBuilder projection = new StringBuilder();
+		String selection = DBConstants.V_USER + EQUALS_ARG_ + AND_ + "(" + DBConstants.V_WHITE_USERNAME + NOT_EQUALS_ARG_
+				+ AND_ + DBConstants.V_I_PLAY_AS + EQUALS_ARG_ + ")";
+
 		QueryParams params = new QueryParams();
 		params.setDbName(DBConstants.tablesArray[DBConstants.DAILY_FINISHED_GAMES]);
 		params.setProjection(PROJECTION_DAILY_PLAYER_NAMES);
-		params.setSelection(SELECTION_USER);
-		params.setArguments(arguments1);
-		params.setCommands( GROUP_BY  + StaticData.SYMBOL_SPACE + DBConstants.V_WHITE_USERNAME); // TODO verify logic
+		params.setSelection(selection);
+		params.setArguments(arguments3);
+		params.setCommands(GROUP_BY  + StaticData.SYMBOL_SPACE + DBConstants.V_WHITE_USERNAME + ", " + DBConstants.V_BLACK_USERNAME);
 
 		for (String projections : params.getProjection()) {
 			projection.append(projections).append(StaticData.SYMBOL_COMMA);
 		}
-		// TODO hide to down level
+
 		Cursor cursor = dbHandle.rawQuery("SELECT " + projection.toString().substring(0, projection.length() - 1)
-				+ " FROM " + params.getDbName() + " " + params.getCommands(), null);
+				+ " FROM " + params.getDbName() + " WHERE " + params.getSelection() +
+				StaticData.SYMBOL_SPACE + params.getCommands(), params.getArguments());
 		client.release();
 
 		return cursor;

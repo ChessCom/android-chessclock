@@ -50,7 +50,19 @@ public class DailyFinishedGamesCursorRightAdapter extends ItemsCursorAdapter {
 			gameType = CHESS_960;
 		}
 
-		holder.playerTxt.setText(getString(cursor, DBConstants.V_WHITE_USERNAME) + gameType);
+		// get player side, and choose opponent
+		String avatarUrl;
+		String opponentName;
+		if (getInt(cursor, DBConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
+			avatarUrl = getString(cursor, DBConstants.V_WHITE_AVATAR);
+			opponentName = getString(cursor, DBConstants.V_WHITE_USERNAME) + gameType;
+		} else {
+			avatarUrl = getString(cursor, DBConstants.V_BLACK_AVATAR);
+			opponentName = getString(cursor, DBConstants.V_BLACK_USERNAME) + gameType;
+		}
+
+		holder.playerTxt.setText(opponentName + gameType);
+		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 
 		String result = context.getString(R.string.loss);
 		if (getInt(cursor, DBConstants.V_GAME_SCORE) == BaseGameItem.GAME_WON) {
@@ -60,15 +72,6 @@ public class DailyFinishedGamesCursorRightAdapter extends ItemsCursorAdapter {
 		}
 		holder.gameInfoTxt.setText(result);
 
-		// get player side
-		String avatarUrl;
-		if (getInt(cursor, DBConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
-			avatarUrl = getString(cursor, DBConstants.V_WHITE_AVATAR);
-		} else {
-			avatarUrl = getString(cursor, DBConstants.V_BLACK_AVATAR);
-		}
-
-		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 	}
 
 	protected class ViewHolder {

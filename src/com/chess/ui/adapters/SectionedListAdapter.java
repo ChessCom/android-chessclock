@@ -139,7 +139,7 @@ public abstract class SectionedListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		int sectionIndex = 0;
 
-		for (Section section : this.sections) {
+		for (Section section : sections) {
 			int count = section.adapter.getCount();
 			if (count != 0) {
 				if (position == 0) {

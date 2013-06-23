@@ -202,7 +202,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			cursor.close();
 
 			adjustBoardForGame();
-		} // TODO handle error properly
+		}
 	}
 
 	private class LoadFromDbUpdateListener extends AbstractUpdateListener<Cursor> {
@@ -777,7 +777,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //					switchToNextGame(returnedObj);
 //					break;
 				case CREATE_CHALLENGE_UPDATE:
-					showSinglePopupDialog(R.string.congratulations, R.string.online_game_created);
+					showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
 					break;
 			}
 		}

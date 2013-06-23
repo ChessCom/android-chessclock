@@ -108,7 +108,7 @@ public class DailyGameSetupFragment extends CommonLogicFragment {
 
 		@Override
 		public void updateData(DailySeekItem returnedObj) {
-			showSinglePopupDialog(R.string.congratulations, R.string.online_game_created);
+			showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
 		}
 
 		@Override

@@ -126,7 +126,7 @@
 
     <!--Email -->
     <com.chess.LinLayout
-        android:id="@+id/yourContactsView"
+        android:id="@+id/yourEmailView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="14dip"

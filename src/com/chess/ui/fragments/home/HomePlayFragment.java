@@ -62,6 +62,8 @@ public class HomePlayFragment extends CommonLogicFragment {
 	private TextView friendUserName2Txt;
 	private TextView friendRealName1Txt;
 	private TextView friendRealName2Txt;
+	private String firstFriendUserName;
+	private String secondFriendUserName;
 
 	public HomePlayFragment() {
 		Bundle bundle = new Bundle();
@@ -142,16 +144,23 @@ public class HomePlayFragment extends CommonLogicFragment {
 		if (cursor != null && cursor.moveToFirst()) {
 			if (cursor.getCount() >= 2) {
 				inviteFriendView1.setVisibility(View.VISIBLE);
+				inviteFriendView1.setOnClickListener(this);
 				inviteFriendView2.setVisibility(View.VISIBLE);
+				inviteFriendView2.setOnClickListener(this);
 
-				friendUserName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME));
+				firstFriendUserName = DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME);
+				friendUserName1Txt.setText(firstFriendUserName);
 				friendRealName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME));
 				cursor.moveToNext();
-				friendUserName2Txt.setText(DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME));
+				secondFriendUserName = DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME);
+				friendUserName2Txt.setText(secondFriendUserName);
 				friendRealName2Txt.setText(DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME));
 			} else if (cursor.getCount() == 1) {
 				inviteFriendView1.setVisibility(View.VISIBLE);
-				friendUserName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME));
+				inviteFriendView1.setOnClickListener(this);
+
+				firstFriendUserName = DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME);
+				friendUserName1Txt.setText(firstFriendUserName);
 				friendRealName1Txt.setText(DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME));
 			}
 		}
@@ -163,18 +172,24 @@ public class HomePlayFragment extends CommonLogicFragment {
 
 		if (view.getId() == R.id.liveTimeSelectBtn) {
 			toggleLiveOptionsView();
-		} else if (view.getId() == R.id.livePlayBtn) {
-			createLiveChallenge();
-		} else if (view.getId() == R.id.dailyPlayBtn) {
-			createDailyChallenge(); // TODO adjust
 		} else if (view.getId() == R.id.liveHeaderView) {
 			getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.LIVE_STANDARD));
+		} else if (view.getId() == R.id.livePlayBtn) {
+			createLiveChallenge();
 		} else if (view.getId() == R.id.dailyHeaderView) {
 			if (positionMode == CENTER_MODE) {
 				getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.DAILY_CHESS));
 			} else {
 				getActivityFace().changeRightFragment(new DailyGamesOptionsFragment());
 			}
+		} else if (view.getId() == R.id.dailyPlayBtn) {
+			createDailyChallenge(); // TODO adjust
+		} else if (view.getId() == R.id.inviteFriendView1) {
+			dailyGameConfigBuilder.setOpponentName(firstFriendUserName);
+			createDailyChallenge();
+		} else if (view.getId() == R.id.inviteFriendView2) {
+			dailyGameConfigBuilder.setOpponentName(secondFriendUserName);
+			createDailyChallenge();
 		} else if (view.getId() == R.id.playFriendView) {
 			getActivityFace().changeRightFragment(new ChallengeFriendFragment());
 			if (positionMode == CENTER_MODE) {
@@ -281,8 +296,13 @@ public class HomePlayFragment extends CommonLogicFragment {
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			showLoadingProgress(show);
+		}
+
+		@Override
 		public void updateData(DailySeekItem returnedObj) {
-			showSinglePopupDialog(R.string.congratulations, R.string.online_game_created);
+			showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
 		}
 
 		@Override

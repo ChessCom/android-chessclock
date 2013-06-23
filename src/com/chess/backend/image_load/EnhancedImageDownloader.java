@@ -78,6 +78,8 @@ public class EnhancedImageDownloader {
 			return;
 		}
 		Bitmap bitmap = getBitmapFromCache(url, holder);
+//		Log.d(LOG_TAG, "^ _________________________________ ^");
+//		Log.d(LOG_TAG, " download url = " + url);
 
         if (bitmap == null) {
             forceDownload(url, holder);
@@ -302,17 +304,21 @@ public class EnhancedImageDownloader {
          */
         @Override
         protected void onPostExecute(Bitmap bitmap) {
+			Log.d(LOG_TAG, "onPostExecute bitmap " + bitmap +  " for url = " + url);
             if (holderReference == null || holderReference.get() == null) {
+//				Log.d(LOG_TAG, "holderReference == null || holderReference.get() == null bitmap " + bitmap +  " for url = " + url);
                 return;
             } else {
                 holderReference.get().progress.setVisibility(View.GONE);
             }
 
             if (isCancelled()) {
+//				Log.d(LOG_TAG, "isCancelled bitmap " + bitmap +  " for url = " + url);
                 bitmap = null;
             }
 
 			if (context == null) { // if activity dead, escape
+//				Log.d(LOG_TAG, "context == null bitmap " + bitmap +  " for url = " + url);
 				return;
 			}
 //            ProgressImageView holder = new ProgressImageView(context, imgSize);
@@ -329,8 +335,11 @@ public class EnhancedImageDownloader {
             // Or if we don't use any bitmap to task association
             // (NO_DOWNLOADED_DRAWABLE mode)
             if ((this == bitmapDownloaderTask) || (mode != Mode.CORRECT)) {
+//				Log.d(LOG_TAG, "(this == bitmapDownloaderTask) || (mode != Mode.CORRECT) bitmap " + bitmap +  " for url = " + url);
                 holder.updateImageBitmap();
-            }
+            } else {
+//				Log.d(LOG_TAG, "WRONG (this == bitmapDownloaderTask) || (mode != Mode.CORRECT) bitmap " + bitmap +  " for url = " + url);
+			}
         }
 
         public AsyncTask<String, Void, Bitmap> executeTask(String... input){

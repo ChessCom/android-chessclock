@@ -41,13 +41,6 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_screen);
 
-
-		if (AppUtils.JELLYBEAN_PLUS_API){
-			findViewById(R.id.mainView).setBackground(backgroundChessDrawable);
-		} else {
-			findViewById(R.id.mainView).setBackgroundDrawable(backgroundChessDrawable);
-		}
-
 		loginUsernameEdt = (EditText) findViewById(R.id.usernameEdt);
 		loginPasswordEdt = (EditText) findViewById(R.id.passwordEdt);
 		loginPasswordEdt.setOnEditorActionListener(this);

@@ -49,7 +49,19 @@ public class DailyCurrentGamesTheirCursorRightAdapter extends ItemsCursorAdapter
 			draw = "\n" + context.getString(R.string.draw_offered);
 		}
 
-		holder.playerTxt.setText(getString(cursor, DBConstants.V_WHITE_USERNAME) + gameType + draw);
+		// get player side, and choose opponent
+		String avatarUrl;
+		String opponentName;
+		if (getInt(cursor, DBConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
+			avatarUrl = getString(cursor, DBConstants.V_WHITE_AVATAR);
+			opponentName = getString(cursor, DBConstants.V_WHITE_USERNAME) + gameType + draw;
+		} else {
+			avatarUrl = getString(cursor, DBConstants.V_BLACK_AVATAR);
+			opponentName = getString(cursor, DBConstants.V_BLACK_USERNAME) + gameType + draw;
+		}
+
+		holder.playerTxt.setText(opponentName + gameType);
+		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 
 		long amount = getLong(cursor, DBConstants.V_TIME_REMAINING);
 		String infoText;
@@ -59,16 +71,6 @@ public class DailyCurrentGamesTheirCursorRightAdapter extends ItemsCursorAdapter
 			infoText = AppUtils.getTimeLeftFromSeconds(amount, context);
 		}
 		holder.gameInfoTxt.setText(infoText);
-
-		// get player side
-		String avatarUrl;
-		if (getInt(cursor, DBConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
-			avatarUrl = getString(cursor, DBConstants.V_WHITE_AVATAR);
-		} else {
-			avatarUrl = getString(cursor, DBConstants.V_BLACK_AVATAR);
-		}
-
-		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 	}
 
 	protected class ViewHolder {

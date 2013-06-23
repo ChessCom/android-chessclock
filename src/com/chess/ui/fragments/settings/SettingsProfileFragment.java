@@ -210,7 +210,23 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	public void onResume() {
 		super.onResume();
 
-		updateData();
+//		updateData();
+
+		{// load user avatar
+			int imageSize = (int) (AVATAR_SIZE * density);
+			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(imageSize, imageSize);
+
+			ViewGroup parent = (ViewGroup) progressImageView.getParent();
+			if (parent != null) {
+				parent.removeAllViews();
+			}
+			userPhotoImg.addView(progressImageView, params);
+
+//			AppData.setUserAvatar(getActivity(), data.getAvatar());
+			if (!photoChanged) {
+				imageDownloader.download(AppData.getUserAvatar(getActivity()), progressImageView, AVATAR_SIZE);
+			}
+		}
 	}
 
 	private void updateData() {
@@ -388,10 +404,10 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		}
 	}
 
-	private void createProfile() {
+	private void updateProfile() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.setLoadPath(RestHelper.CMD_USER_PROFILE);
+		loadItem.setRequestMethod(RestHelper.PUT);
+		loadItem.setLoadPath(RestHelper.CMD_USERS);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
 		loadItem.addRequestParams(RestHelper.P_FIRST_NAME, firstNameStr);
 		loadItem.addRequestParams(RestHelper.P_LAST_NAME, lastNameStr);
@@ -413,7 +429,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		@Override
 		public void showProgress(boolean show) {
 			if (show) {
-				showPopupHardProgressDialog(R.string.processing_);
+				showPopupProgressDialog(R.string.processing_);
 			} else {
 				if (isPaused)
 					return;
@@ -431,8 +447,8 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 	private void setPic() {
 		// Get the dimensions of the View
-		int targetW = progressImageView.getWidth();
-		int targetH = progressImageView.getHeight();
+		int targetW = Math.max(progressImageView.getWidth(), AVATAR_SIZE);
+		int targetH = Math.max(progressImageView.getHeight(), AVATAR_SIZE);
 
 		// Get the dimensions of the bitmap
 		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -595,7 +611,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 				lastNameValueEdt.setBackgroundResource(R.color.transparent);
 				locationValueEdt.setBackgroundResource(R.color.transparent);
 
-				createProfile();
+				updateProfile();
 			}
 
 			inEditMode = false;

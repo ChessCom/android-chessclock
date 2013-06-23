@@ -23,6 +23,9 @@ public class LoadCountryFlagsTask extends AbstractUpdateTask<CountryItem, Void> 
 	@Override
 	protected Integer doTheTask(Void... params) {
 		Context context = getTaskFace().getMeContext();
+		if (context == null) {
+			return StaticData.INTERNAL_ERROR;
+		}
 		Resources resources = context.getResources();
 		String[] names = resources.getStringArray(R.array.new_countries);
 		String[] codes = resources.getStringArray(R.array.new_countries_codes);

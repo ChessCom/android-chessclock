@@ -2,7 +2,6 @@
 <resources>
 
     <!--Common-->
-    <item name="mainView" type="id"/>
     <item name="glow_layer" type="id"/>
     <item name="firstWelcomeImg" type="id"/>
     <item name="secondWelcomeImg" type="id"/>

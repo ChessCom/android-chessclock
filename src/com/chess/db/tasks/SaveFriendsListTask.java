@@ -41,6 +41,9 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 	@Override
 	protected Integer doTheTask(Long... ids) {
 		Context context = getTaskFace().getMeContext();
+		if (context == null) {
+			return StaticData.INTERNAL_ERROR;
+		}
 		String userName = AppData.getUserName(context);
 		String userToken = AppData.getUserToken(context);
 

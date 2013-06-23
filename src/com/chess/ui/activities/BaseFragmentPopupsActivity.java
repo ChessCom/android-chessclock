@@ -210,7 +210,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 
 	public void hideKeyBoard(){
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(findViewById(R.id.mainView).getWindowToken(), 0);
+		imm.hideSoftInputFromWindow(findViewById(R.id.content_frame).getWindowToken(), 0);
 	}
 
 	protected void showToast(String msg) {

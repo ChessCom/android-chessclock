@@ -72,6 +72,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		slidingMenu = getSlidingMenu();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 		slidingMenu.setOnOpenedListener(openMenuListener);
+		slidingMenu.setOnCloseListener(closeMenuListener);
 
 		badgeItems = new Hashtable<Integer, Integer>();
 
@@ -183,23 +184,22 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private SlidingMenu.OnOpenedListener openMenuListener = new SlidingMenu.OnOpenedListener() {
 		@Override
 		public void onOpened() { // Don't remove reuse later
-//			for (SlidingMenu.OnOpenedListener openedListener : openMenuListeners) { // Inform listeners inside fragments
-//				openedListener.onOpened();
-//			}
-
 			if (slidingMenu.isSecondaryMenuShowing()) {
 				for (SlidingMenu.OnOpenedListener openedListener : openMenuListeners) { // Inform listeners inside fragments
 					openedListener.onOpenedRight();
 				}
-//				showToast("Right");
-			} else {
-//				showToast("Left");
 			}
-
 		}
 
 		@Override
 		public void onOpenedRight() {
+		}
+	};
+
+	private SlidingMenu.OnCloseListener closeMenuListener = new SlidingMenu.OnCloseListener() {
+		@Override
+		public void onClose() {
+			hideKeyBoard();
 		}
 	};
 

@@ -449,11 +449,11 @@ message				false	Only used for `CHAT` command.
 				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
 				InputStream inputStream = connection.getErrorStream();
 				String resultString = convertStreamToString(inputStream);
-				Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
+				Log.d(TAG, "SERVER RESPONSE: " + resultString);
 
 				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
 				Log.d(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
-				Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
+				Log.d(TAG, "SERVER RESPONSE: " + resultString);
 				throw new InternalErrorException(encodeServerCode(baseResponse.getCode()));
 			}
 
@@ -470,9 +470,10 @@ message				false	Only used for `CHAT` command.
 
 					resultString = resultString.substring(firstIndex, lastIndex + 1);
 
-					Log.d(TAG, "WebRequest SERVER RESPONSE: " + resultString);
+					Log.d(TAG, "SERVER RESPONSE: " + resultString);
 					if (resultString.contains("\"challenges\":[[]")) {
-						resultString = resultString.replace("[[]]", "[]");
+						resultString = resultString.replace("[],","").replace("[]]", "]");
+						Log.d(TAG, "After edit SERVER RESPONSE: " + resultString);
 					}
 				} else {
 					Log.d(TAG, "ERROR -> WebRequest SERVER RESPONSE: " + resultString);

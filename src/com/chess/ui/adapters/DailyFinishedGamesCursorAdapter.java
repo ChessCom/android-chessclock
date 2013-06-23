@@ -62,10 +62,23 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 			gameType = CHESS_960;
 		}
 
-		holder.playerTxt.setText(getString(cursor, DBConstants.V_WHITE_USERNAME) + gameType);
-		String opponentRating = getString(cursor, DBConstants.V_WHITE_RATING);
+		// get player side, and choose opponent
+		String avatarUrl;
+		String opponentName;
+		String opponentRating;
+		if (getInt(cursor, DBConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
+			avatarUrl = getString(cursor, DBConstants.V_WHITE_AVATAR);
+			opponentName = getString(cursor, DBConstants.V_WHITE_USERNAME) + gameType;
+			opponentRating = getString(cursor, DBConstants.V_WHITE_RATING);
+		} else {
+			avatarUrl = getString(cursor, DBConstants.V_BLACK_AVATAR);
+			opponentName = getString(cursor, DBConstants.V_BLACK_USERNAME) + gameType;
+			opponentRating = getString(cursor, DBConstants.V_BLACK_RATING);
+		}
 
+		holder.playerTxt.setText(opponentName + gameType);
 		holder.ratingTxt.setText(StaticData.SYMBOL_LEFT_PAR + opponentRating + StaticData.SYMBOL_RIGHT_PAR);
+		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 
 		// Loss orange
 		String result = lossStr;
@@ -80,16 +93,6 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 			holder.gameResultTxt.setTextColor(colorGrey);
 		}
 		holder.gameResultTxt.setText(result);
-
-		// get player side
-		String avatarUrl;
-		if (getInt(cursor, DBConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
-			avatarUrl = getString(cursor, DBConstants.V_WHITE_AVATAR);
-		} else {
-			avatarUrl = getString(cursor, DBConstants.V_BLACK_AVATAR);
-		}
-
-		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 	}
 
 	protected class ViewHolder {

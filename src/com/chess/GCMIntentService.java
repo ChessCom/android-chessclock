@@ -48,7 +48,6 @@ import java.util.Random;
  */
 public class GCMIntentService extends GCMBaseIntentService {
 
-//	@SuppressWarnings("hiding")
 	private static final String TAG = "GCMIntentService";
 	private static final String TOKEN = Long.toBinaryString(new Random().nextLong());
 	private Context context;

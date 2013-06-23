@@ -68,7 +68,7 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 	}
 
 	@Override
-	public void onMessageReceived(){
+	public void onMessageReceived() {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -91,19 +91,19 @@ public class ChatLiveActivity extends LiveBaseActivity implements LccChatMessage
 	public void onClick(View view) {
 		if (view.getId() == R.id.sendBtn) {
 			if (isLCSBound) {
-			// todo: refactor with new LCC
-				if(!liveService.isConnected() || liveService.getClient() == null){ // TODO should leave that screen on connection lost or when LCC is become null
+				// todo: refactor with new LCC
+				if (!liveService.isConnected() || liveService.getClient() == null) { // TODO should leave that screen on connection lost or when LCC is become null
 					liveService.logout();
 //				backToHomeActivity();
 					unBindLiveService();
-				return;
-			}
+					return;
+				}
 
-				liveService.sendMessage(getTextFromField(sendEdt),messageUpdateListener );
+				liveService.sendMessage(getTextFromField(sendEdt), messageUpdateListener);
 
 //			updateList();
 
-			sendEdt.setText(StaticData.SYMBOL_EMPTY);
+				sendEdt.setText(StaticData.SYMBOL_EMPTY);
 			}
 		}
 	}

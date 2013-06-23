@@ -64,7 +64,7 @@
 	<string name="open_challenges">Open Challenges</string>
 	<string name="challenge_friend">Challenge Friend</string>
     <string name="congratulations">Congratulations!</string>  <!--Congratulations new challenge created-->
-    <string name="online_game_created">Online game created!</string>
+    <string name="daily_game_created">Daily game created!</string>
     <string name="challenge_sent">Challenge Sent!</string>
 	<string name="create_open_challenge">Create Open Challenge</string>
 	<string name="current_live_game">Current Live Game</string>

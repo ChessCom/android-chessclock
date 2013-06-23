@@ -44,6 +44,9 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 	@Override
 	protected Integer doTheTask(Long... params) {
 		Context context = getTaskFace().getMeContext();
+		if (context == null) {
+			return StaticData.INTERNAL_ERROR;
+		}
 		String userName = AppData.getUserName(context);
 
 		if (gameType.equals(STANDARD)) {
