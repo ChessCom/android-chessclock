@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
@@ -75,20 +74,7 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 
 		// set premium icon
 		int status = getInt(cursor, DBConstants.V_PREMIUM_STATUS);
-		switch (status) {
-			case StaticData.BASIC_USER:
-				holder.premiumImg.setImageResource(R.drawable.empty);
-				break;
-			case StaticData.GOLD_USER:
-				holder.premiumImg.setImageResource(R.drawable.ic_upgrade_gold);
-				break;
-			case StaticData.PLATINUM_USER:
-				holder.premiumImg.setImageResource(R.drawable.ic_upgrade_platinum);
-				break;
-			case StaticData.DIAMOND_USER:
-				holder.premiumImg.setImageResource(R.drawable.ic_upgrade_diamond);
-				break;
-		}
+		holder.premiumImg.setImageResource(AppUtils.getPremiumIcon(status));
 
 		boolean isOnline = getInt(cursor, DBConstants.V_IS_OPPONENT_ONLINE) > 0 ; // TODO adjust logic for offline mode
 		if (isOnline) {

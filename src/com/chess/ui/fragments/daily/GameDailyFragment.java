@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,6 @@ import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -56,7 +56,6 @@ import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -79,19 +78,20 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private static final int CURRENT_GAME = 0;
 	private static final int GAMES_LIST = 1;
 
-	// Quick action ids
+	// Options ids
 	private static final int ID_NEW_GAME = 0;
 	private static final int ID_OFFER_DRAW = 1;
-	private static final int ID_FLIP_BOARD = 2;
-	private static final int ID_EMAIL_GAME = 3;
-	private static final int ID_SETTINGS = 4;
+	private static final int ID_ABORT_RESIGN = 2;
+	private static final int ID_FLIP_BOARD = 3;
+	private static final int ID_EMAIL_GAME = 4;
+	private static final int ID_SETTINGS = 5;
 
-	private GameOnlineUpdatesListener abortGameUpdateListener;
-	private GameOnlineUpdatesListener drawOfferedUpdateListener;
+	private GameDailyUpdatesListener abortGameUpdateListener;
+	private GameDailyUpdatesListener drawOfferedUpdateListener;
 
 	private GameStateUpdateListener gameStateUpdateListener;
-	private GameOnlineUpdatesListener sendMoveUpdateListener;
-	private GameOnlineUpdatesListener createChallengeUpdateListener;
+	private GameDailyUpdatesListener sendMoveUpdateListener;
+	private GameDailyUpdatesListener createChallengeUpdateListener;
 
 	private ChessBoardNetworkView boardView;
 
@@ -114,7 +114,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
 	private LabelsConfig labelsConfig;
-	private ArrayList<String> optionsList;
+	private SparseArray<String> optionsMap;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private ImageDownloaderToListener imageDownloader;
 	private String[] countryNames;
@@ -138,7 +138,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		labelsConfig = new LabelsConfig();
 		init();
 	}
 
@@ -188,6 +187,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
 			getActivityFace().openFragment(new DailyGameSetupFragment());
+		} else if (code == ID_ABORT_RESIGN) {
+			if (getBoardFace().getHply() < 1 && isUserMove()) {
+				showPopupDialog(R.string.abort_game_, ABORT_GAME_TAG);
+			} else {
+				showPopupDialog(R.string.abort_game_, ABORT_GAME_TAG);
+			}
 		} else if (code == ID_OFFER_DRAW) {
 			showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
 		} else if (code == ID_FLIP_BOARD) {
@@ -223,7 +228,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 //				getContentResolver()).executeTask();
 
 		Cursor cursor = DBDataManager.executeQuery(getContentResolver(),
-				DbHelper.getDailyGameParams(getActivity(), gameId));
+				DbHelper.getDailyGameParams(gameId, getUserName()));
 
 		if (cursor.moveToFirst()) {
 			showSubmitButtonsLay(false);
@@ -294,13 +299,13 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	protected void updateGameState(long gameId) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_GAME_BY_ID(gameId));
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 
 		new RequestJsonTask<DailyCurrentGameData>(gameStateUpdateListener).executeTask(loadItem);
 	}
 
 	private void adjustBoardForGame() {
-		userPlayWhite = currentGame.getWhiteUsername().equals(AppData.getUserName(getActivity()));
+		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUserName());
 
 		if (userPlayWhite) {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
@@ -509,7 +514,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
 		loadItem.setRequestMethod(RestHelper.PUT);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_SUBMIT);
 		loadItem.addRequestParams(RestHelper.P_NEWMOVE, getBoardFace().convertMoveEchess());
 		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
@@ -523,7 +528,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		if (getBoardFace().isFinished()) {
 			showGameEndPopup(endGamePopupView, endGameMessage);
 		} else {
-			int action = AppData.getAfterMoveAction(getContext());
+			int action = getAppData().getAfterMoveAction();
 			if (action == StaticData.AFTER_MOVE_RETURN_TO_GAME_LIST)
 				backToHomeFragment();
 			else if (action == StaticData.AFTER_MOVE_GO_TO_NEXT_GAME) {
@@ -535,12 +540,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private void loadGamesList() {
 		// replace with db update
 //		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getContext()), // TODO adjust
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGamesParams(getActivity()), // TODO adjust
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGamesParams(getUserName()), // TODO adjust
 				getContentResolver()).executeTask();
 
 //		LoadItem listLoadItem = new LoadItem();
 //		listLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
-//		listLoadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+//		listLoadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken(getContext()));
 //		listLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
 //
 //		new GetStringObjTask(gamesListUpdateListener).executeTask(listLoadItem);
@@ -565,7 +570,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		currentGame.setHasNewMessage(false);
 		controlsDailyView.haveNewMessage(false);
 
-		getActivityFace().openFragment(DailyChatFragment.createInstance(gameId, labelsConfig.topPlayerAvatar));
+		getActivityFace().openFragment(DailyChatFragment.createInstance(gameId, labelsConfig.topPlayerAvatar)); // TODO check when flip
 	}
 
 	@Override
@@ -590,7 +595,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	@Override
 	public Boolean isUserColorWhite() {
 		if (currentGame != null && getActivity() != null)
-			return currentGame.getWhiteUsername().equals(AppData.getUserName(getActivity()));
+			return currentGame.getWhiteUsername().equals(getAppData().getUserName());
 		else
 			return null;
 	}
@@ -602,7 +607,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 	private boolean isUserMove() {
 		userPlayWhite = currentGame.getWhiteUsername()
-				.equals(AppData.getUserName(getActivity()));
+				.equals(getAppData().getUserName());
 
 		return /*(*/currentGame.isMyTurn()/* && userPlayWhite)
 				|| (!currentGame.isWhiteMove() && !userPlayWhite)*/;
@@ -613,7 +618,20 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		if (optionsSelectFragment != null) {
 			return;
 		}
-		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsList);
+
+		if (getBoardFace().getHply() < 1 && isUserMove()) {
+			optionsMap.put(ID_ABORT_RESIGN, getString(R.string.abort));
+			optionsMap.remove(ID_OFFER_DRAW);
+		} else {
+			optionsMap.put(ID_ABORT_RESIGN, getString(R.string.resign));
+			optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
+		}
+
+		if (!isUserMove()) {
+			optionsMap.remove(ID_OFFER_DRAW);
+		}
+
+		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsMap);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
 	}
 
@@ -680,7 +698,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			String draw;
 
-			String userName = AppData.getUserName(getActivity());
+			String userName = getAppData().getUserName();
 			boolean drawWasOffered = DBDataManager.checkIfDrawOffered(getContentResolver(), userName, gameId);
 
 
@@ -699,7 +717,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
 
@@ -709,7 +727,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
 
@@ -806,7 +824,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, currentGame.getDaysPerMove());
 		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
 		loadItem.addRequestParams(RestHelper.P_IS_RATED, currentGame.isRated() ? 1 : 0);
@@ -833,16 +851,16 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 			currentGame = returnedObj;
 
-			DBDataManager.updateDailyGame(getContentResolver(), currentGame, AppData.getUserName(getContext()));
+			DBDataManager.updateDailyGame(getContentResolver(), currentGame, getAppData().getUserName());
 
 			adjustBoardForGame();
 		}
 	}
 
-	private class GameOnlineUpdatesListener extends ChessUpdateListener<BaseResponseItem> {
+	private class GameDailyUpdatesListener extends ChessUpdateListener<BaseResponseItem> {
 		private int listenerCode;
 
-		private GameOnlineUpdatesListener(int listenerCode) {
+		private GameDailyUpdatesListener(int listenerCode) {
 			super(BaseResponseItem.class);
 			this.listenerCode = listenerCode;
 		}
@@ -883,7 +901,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			switch (listenerCode) {
 				case CREATE_CHALLENGE_UPDATE:
 					showPopupDialog(getString(R.string.error), resultMessage, ERROR_TAG);
-
 					break;
 			}
 		}
@@ -891,14 +908,14 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 	public void init() {
 		gameId = getArguments().getLong(BaseGameItem.GAME_ID, 0);
+		labelsConfig = new LabelsConfig();
 
-		abortGameUpdateListener = new GameOnlineUpdatesListener(ABORT_GAME_UPDATE);
-		drawOfferedUpdateListener = new GameOnlineUpdatesListener(DRAW_OFFER_UPDATE);
+		abortGameUpdateListener = new GameDailyUpdatesListener(ABORT_GAME_UPDATE);
+		drawOfferedUpdateListener = new GameDailyUpdatesListener(DRAW_OFFER_UPDATE);
 
 		gameStateUpdateListener = new GameStateUpdateListener();
-		sendMoveUpdateListener = new GameOnlineUpdatesListener(SEND_MOVE_UPDATE);
-		createChallengeUpdateListener = new GameOnlineUpdatesListener(CREATE_CHALLENGE_UPDATE);
-//		loadFromDbUpdateListener = new LoadFromDbUpdateListener(CURRENT_GAME);
+		sendMoveUpdateListener = new GameDailyUpdatesListener(SEND_MOVE_UPDATE);
+		createChallengeUpdateListener = new GameDailyUpdatesListener(CREATE_CHALLENGE_UPDATE);
 
 		currentGamesCursorUpdateListener = new LoadFromDbUpdateListener(GAMES_LIST);
 
@@ -935,35 +952,13 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		boardUpdateFilter = new IntentFilter(IntentConstants.BOARD_UPDATE);
 
 		{// options list setup
-			optionsList = new ArrayList<String>();
-			optionsList.add(getString(R.string.new_game));
-			optionsList.add(getString(R.string.offer_draw));
-			optionsList.add(getString(R.string.flip_board));
-			optionsList.add(getString(R.string.email_game));
-			optionsList.add(getString(R.string.settings));
+			optionsMap = new SparseArray<String>();
+			optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));
+			optionsMap.put(ID_FLIP_BOARD, getString(R.string.flip_board));
+			optionsMap.put(ID_EMAIL_GAME, getString(R.string.email_game));
+			optionsMap.put(ID_SETTINGS, getString(R.string.settings));
 		}
 	}
-
-	private class LabelsConfig {
-		BoardAvatarDrawable topAvatar;
-		BoardAvatarDrawable bottomAvatar;
-		String topPlayerName;
-		String bottomPlayerName;
-		String topPlayerRating;
-		String bottomPlayerRating;
-		String topPlayerAvatar;
-		String bottomPlayerAvatar;
-		String topPlayerTime;
-		String bottomPlayerTime;
-		String topPlayerCountry;
-		String bottomPlayerCountry;
-		int userSide;
-
-		int getOpponentSide() {
-			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
-		}
-	}
-
 
 	private class ImageUpdateListener implements ImageReadyListener {
 

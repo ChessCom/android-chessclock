@@ -16,7 +16,6 @@ import com.chess.*;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.DailySeekItem;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
@@ -66,7 +65,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 
 		{ // load friends from DB          // TODO make it async and fill in popup
 			final String[] arguments1 = new String[1];
-			arguments1[0] = AppData.getUserName(getActivity());
+			arguments1[0] = getAppData().getUserName();
 			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.FRIENDS],
 					DBDataManager.PROJECTION_USERNAME, DBDataManager.SELECTION_USER, arguments1, null);
 
@@ -109,7 +108,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 			dailyConfig.setHeaderIcon(R.string.ic_daily_game);
 			dailyConfig.setHeaderText(R.string.new_daily_chess);
 			dailyConfig.setTitleText(R.string.new_per_turn);
-			int defaultDailyMode = AppData.getDefaultDailyMode(getActivity());
+			int defaultDailyMode = getAppData().getDefaultDailyMode();
 			dailyConfig.setLeftButtonText(getString(R.string.days_arg, defaultDailyMode));
 			dailyConfig.setRightButtonTextId(R.string.random);
 		}
@@ -121,7 +120,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 				for (int label : newGameButtonsArray) {
 					newGameButtonItems.add(new DailyGameButtonItem(label, getContext()));
 				}
-				int dailyMode = AppData.getDefaultDailyMode(getActivity());
+				int dailyMode = getAppData().getDefaultDailyMode();
 				newGameButtonItems.get(dailyMode).checked = true;
 
 				GridView gridView = (GridView) view.findViewById(R.id.dailyGamesModeGrid);
@@ -167,7 +166,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 	public void onResume() {
 		super.onResume();
 
-		updateDailyMode(AppData.getDefaultDailyMode(getActivity()));
+		updateDailyMode(getAppData().getDefaultDailyMode());
 	}
 
 	private void createDailyChallenge() {
@@ -183,7 +182,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, days);
 		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
 		loadItem.addRequestParams(RestHelper.P_IS_RATED, isRated);
@@ -203,7 +202,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-	    updateDailyMode(AppData.getDefaultDailyMode(getActivity()));
+	    updateDailyMode(getAppData().getDefaultDailyMode());
 	}
 
 	@Override
@@ -315,7 +314,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		if (view.getId() == DailyGamesButtonsAdapter.BUTTON_ID) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			updateDailyMode(position);
-			AppData.setDefaultDailyMode(getActivity(), position);
+			getAppData().setDefaultDailyMode(position);
 		} else if (view.getId() == R.id.myColorBtn){
 		} else if (view.getId() == R.id.minRatingBtn){
 		} else if (view.getId() == R.id.maxRatingBtn){

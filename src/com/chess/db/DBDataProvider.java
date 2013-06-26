@@ -226,7 +226,7 @@ public class DBDataProvider extends ContentProvider {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			AppData.clearPreferences(context); // clear all values, to avoid class cast exceptions
+			new AppData(context).clearPreferences(); // clear all values, to avoid class cast exceptions
 
 			Log.w("Content provider database",
 					"Upgrading database from version " +

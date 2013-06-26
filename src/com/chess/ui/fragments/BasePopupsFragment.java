@@ -35,11 +35,6 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 
 	private static final String INFO_POPUP_TAG = "information popup";
 	private static final String PROGRESS_TAG = "progress dialog popup";
-	protected static final String NETWORK_CHECK_TAG = "network check popup";
-	protected static final int NETWORK_REQUEST = 3456;
-	protected static final String RE_LOGIN_TAG = "re-login popup";
-	protected static final String CHESS_NO_ACCOUNT_TAG = "chess no account popup";
-	protected static final String CHECK_UPDATE_TAG = "check update";
 
 	protected PopupItem popupItem;
 	protected PopupItem popupProgressItem;
@@ -183,10 +178,19 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		updatePopupAndShow(tag);
 	}
 
-	protected void showPopupDialog(String title, String tag) {  // TODO handle popups overlays - set default button values
+	protected void showPopupDialog(String title, String tag) {
 		popupItem.setTitle(title);
 		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
 		updatePopupAndShow(tag);
+	}
+
+	protected void showPopupDialogTouch(String title, String tag) {
+		popupItem.setTitle(title);
+		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		PopupDialogFragment dialogFragment = PopupDialogFragment.createInstance(popupItem, this);
+		dialogFragment.setCancelableOnTouch(true);
+		popupManager.add(dialogFragment);
+		getLastPopupFragment().show(getFragmentManager(), tag);
 	}
 
 	private synchronized void updatePopupAndShow(String tag){
@@ -269,6 +273,12 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	public void showKeyBoard(EditText editText){
 		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+	}
+
+	public void showKeyBoardImplicit(EditText editText){
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+		imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);   // Call twice to ensure it appear
 	}
 
 	public void hideKeyBoard(View editText){

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,6 @@ import com.chess.backend.entity.new_api.TacticItem;
 import com.chess.backend.entity.new_api.TacticRatingData;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetOfflineTacticsBatchTask;
@@ -51,7 +51,6 @@ import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import com.flurry.android.FlurryAgent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -105,7 +104,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private ImageUpdateListener imageUpdateListener;
 	private ImageView topAvatarImg;
 	private ImageDownloaderToListener imageDownloader;
-	private ArrayList<String> optionsList;
+	private SparseArray<String> optionsArray;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 
 	@Override
@@ -153,9 +152,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		if (firstRun) {
 
-			if (DBDataManager.haveSavedTacticGame(getActivity())) {
+			if (DBDataManager.haveSavedTacticGame(getActivity(), getUserName())) {
 				// TODO load tactic item from batch
-				tacticItem = DBDataManager.getLastTacticItemFromDb(getActivity());
+				tacticItem = DBDataManager.getLastTacticItemFromDb(getActivity(), getUserName());
 				adjustBoardForGame();
 
 				if (getBoardFace().isLatestMoveMadeUser()) {
@@ -192,7 +191,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		stopTacticsTimer();
 
 		if (needToSaveTactic()) {
-			DBDataManager.saveTacticItemToDb(getActivity(), tacticItem);
+			DBDataManager.saveTacticItemToDb(getActivity(), tacticItem, getUserName());
 		}
 	}
 
@@ -302,7 +301,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_TACTICS_ID, tacticItem.getId());
 		loadItem.addRequestParams(RestHelper.P_PASSED, RestHelper.V_TRUE);
 		loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, getBoardFace().getTacticsCorrectMoves());
@@ -317,7 +316,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_TACTICS_ID, tacticItem.getId());
 		loadItem.addRequestParams(RestHelper.P_PASSED, RestHelper.V_FALSE);
 		loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, getBoardFace().getTacticsCorrectMoves());
@@ -387,9 +386,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments);
 		}
 
-		if (DBDataManager.haveSavedTacticGame(getActivity())) {
+		if (DBDataManager.haveSavedTacticGame(getActivity(), getUserName())) {
 
-			tacticItem = DBDataManager.getLastTacticItemFromDb(getActivity());
+			tacticItem = DBDataManager.getLastTacticItemFromDb(getActivity(), getUserName());
 
 			adjustBoardForGame();
 			currentTacticAnswerCnt = 0;
@@ -621,7 +620,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	private void showCorrect(String newRatingStr) {
 		if (!TextUtils.isEmpty(newRatingStr)) {
-			AppData.setUserTacticsRating(getActivity(), tacticItem.getResultItem().getUserRating());
+			getAppData().setUserTacticsRating(tacticItem.getResultItem().getUserRating());
 			topPanelView.setPlayerScore(tacticItem.getResultItem().getUserRating());
 		}
 		topPanelView.showCorrect(true, newRatingStr);
@@ -631,7 +630,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	private void showWrong(String newRatingStr) {
 		if (!TextUtils.isEmpty(newRatingStr)) {
-			AppData.setUserTacticsRating(getActivity(), tacticItem.getResultItem().getUserRating());
+			getAppData().setUserTacticsRating(tacticItem.getResultItem().getUserRating());
 			topPanelView.setPlayerScore(tacticItem.getResultItem().getUserRating());
 		}
 		topPanelView.showWrong(true, newRatingStr);
@@ -683,7 +682,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		if (optionsSelectFragment != null) {
 			return;
 		}
-		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsList);
+		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsArray);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
 	}
 
@@ -744,7 +743,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		final TacticBoardFace boardFace = ChessBoardTactics.getInstance(this);
 		boardView.setGameActivityFace(this);
 
-		currentRating = AppData.getUserTacticsRating(getActivity());
+		currentRating = getAppData().getUserTacticsRating();
 
 		topPanelView.setPlayerScore(currentRating);
 
@@ -836,7 +835,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_TACTICS);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_FALSE);
 
 			new RequestJsonTask<TacticItem>(getGetTacticsUpdateListener).executeTask(loadItem);
@@ -936,7 +935,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	private void widgetsInit(View view) {
 		topPanelView = (PanelInfoTacticsView) view.findViewById(R.id.topPanelView);
-		topPanelView.setPlayerScore(AppData.getUserTacticsRating(getActivity()));
+		topPanelView.setPlayerScore(getAppData().getUserTacticsRating());
 		controlsTacticsView = (ControlsTacticsView) view.findViewById(R.id.controlsTacticsView);
 
 		boardView = (ChessBoardTacticsView) view.findViewById(R.id.boardview);
@@ -957,15 +956,15 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		{// set avatars
 			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-			String userAvatarUrl = AppData.getUserAvatar(getContext());
+			String userAvatarUrl = getAppData().getUserAvatar();
 			imageDownloader.download(userAvatarUrl, imageUpdateListener, AVATAR_SIZE);
 		}
 
 		{// options list setup
-			optionsList = new ArrayList<String>();
-			optionsList.add( getString(R.string.next_tactic));
-			optionsList.add( getString(R.string.show_answer));
-			optionsList.add( getString(R.string.settings));
+			optionsArray = new SparseArray<String>();
+			optionsArray.put(ID_NEXT_TACTIC, getString(R.string.next_tactic));
+			optionsArray.put(ID_SHOW_ANSWER, getString(R.string.show_answer));
+			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
 	}
 

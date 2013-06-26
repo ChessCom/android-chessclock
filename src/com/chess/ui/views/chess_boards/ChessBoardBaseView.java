@@ -50,6 +50,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public static final int EMPTY_ID = 6;
 	private static final int QVGA_WIDTH = 240;
 	private final float density;
+	private AppData appData;
 	private int boardId;
 
 	protected Bitmap[][] piecesBitmaps;
@@ -121,8 +122,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		drawFilter = new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG);
 		boardBackPaint = new Paint();
 
-		boardId = AppData.getChessBoardId(getContext());
-		loadPieces(AppData.getPiecesId(getContext()));
+		appData = new AppData(context);
+		boardId = appData.getChessBoardId();
+		loadPieces(appData.getPiecesId());
 
 		handler = new Handler();
 		greenPaint = new Paint();
@@ -165,7 +167,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		handler.postDelayed(checkUserIsActive, StaticData.WAKE_SCREEN_TIMEOUT);
 		userActive = false;
 
-		preferences = AppData.getPreferences(getContext());
+		preferences = appData.getPreferences();
 	}
 
 	/**
@@ -175,12 +177,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		this.gameActivityFace = gameActivityFace;
 		onBoardFaceSet(gameActivityFace.getBoardFace());
 
-		userName = AppData.getUserName(getContext());
+		userName = getAppData().getUserName();
 
-		isHighlightEnabled = AppData.isHighlightLastMove(getContext());
-		showLegalMoves = AppData.isShowLegalMoves(getContext());
+		isHighlightEnabled = getAppData().isHighlightLastMove();
+		showLegalMoves = getAppData().isShowLegalMoves();
 
-		showCoordinates = AppData.isShowCoordinates(getContext());
+		showCoordinates = getAppData().isShowCoordinates();
 	}
 
 	@Override
@@ -731,6 +733,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 	}
 
+	protected AppData getAppData() {
+		return appData;
+	}
+
 	protected void loadPieces(int piecesSetId) {
 		switch (piecesSetId) {
 			case P_ALPHA_ID:
@@ -900,8 +906,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	};
 
 	public void updateBoardAndPiecesImgs() {
-		boardId = AppData.getChessBoardId(getContext());
-		loadPieces(AppData.getPiecesId(getContext()));
+		boardId = getAppData().getChessBoardId();
+		loadPieces(getAppData().getPiecesId());
 
 		invalidate();
 	}

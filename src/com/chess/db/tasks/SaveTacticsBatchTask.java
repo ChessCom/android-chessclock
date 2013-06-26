@@ -3,7 +3,6 @@ package com.chess.db.tasks;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.new_api.TacticItem;
@@ -21,7 +20,8 @@ import java.util.List;
 //public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItemOld, Long> {
 public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.Data, Long> {
 
-    private ContentResolver contentResolver;
+	private final String userName;
+	private ContentResolver contentResolver;
 	private final List<TacticItem.Data> tacticsBatch;
 	private static String[] arguments = new String[2];
 
@@ -31,15 +31,13 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.Data, Lo
 		this.tacticsBatch = new ArrayList<TacticItem.Data>();
 		this.tacticsBatch.addAll(tacticsBatch);
 		this.contentResolver = resolver;
-    }
+		AppData appData = new AppData(getTaskFace().getMeContext());
+		userName = appData.getUserName();
+
+	}
 
     @Override
     protected Integer doTheTask(Long... ids) {
-		Context context = getTaskFace().getMeContext();
-		if (context == null) {
-			return StaticData.INTERNAL_ERROR;
-		}
-		String userName = AppData.getUserName(context);
 		synchronized (tacticsBatch) {
 			for (TacticItem.Data tacticItem : tacticsBatch) {
 				tacticItem.setUser(userName);

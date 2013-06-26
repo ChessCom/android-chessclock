@@ -49,7 +49,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		super.setGameActivityFace(gameActivityFace);
         gameCompActivityFace = gameActivityFace;
 
-		compThinkTime = AppData.getCompThinkTime(getContext());
+		compThinkTime = getAppData().getCompThinkTime();
     }
 
 	public void setControlsView(ControlsCompView controlsView) {
@@ -76,7 +76,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
         if (isGameOver())
             return;
 
-        if (!getBoardFace().isAnalysis() && !AppData.isHumanVsHumanGameMode(getBoardFace())) {
+        if (!getBoardFace().isAnalysis() && !getAppData().isHumanVsHumanGameMode(getBoardFace())) {
 			computerMove(compThinkTime);
         }
     }
@@ -85,7 +85,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
     @Override
 	protected boolean isGameOver() {
         //saving game for comp game mode if human is playing
-        if ((AppData.isComputerVsHumanGameMode(getBoardFace()) || AppData.isHumanVsHumanGameMode(getBoardFace()))
+        if ((getAppData().isComputerVsHumanGameMode(getBoardFace()) || getAppData().isHumanVsHumanGameMode(getBoardFace()))
                 && !getBoardFace().isAnalysis()) {
 
 			StringBuilder builder = new StringBuilder();
@@ -104,7 +104,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
             }
 
 			SharedPreferences.Editor editor = preferences.edit();
-			editor.putString(AppData.getUserName(getContext()) + AppConstants.SAVED_COMPUTER_GAME, builder.toString());
+			editor.putString(getAppData().getUserName() + AppConstants.SAVED_COMPUTER_GAME, builder.toString());
 			editor.commit();
         }
 		return super.isGameOver();
@@ -176,8 +176,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			if (isGameOver())
 				return;
 
-			if (AppData.isComputerVsComputerGameMode(getBoardFace())
-					|| (isHint() && !AppData.isHumanVsHumanGameMode(getBoardFace()))) {
+			if (getAppData().isComputerVsComputerGameMode(getBoardFace())
+					|| (isHint() && !getAppData().isHumanVsHumanGameMode(getBoardFace()))) {
 				computerMove(returnedObj.getMoveTime());
 			}
 		}
@@ -200,7 +200,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 //			gameActivityFace.invalidateGameScreen();
 			invalidate();
 
-			if (AppData.isComputerVsComputerGameMode(getBoardFace()) || (!AppData.isHumanVsHumanGameMode(getBoardFace()))) {
+			if (getAppData().isComputerVsComputerGameMode(getBoardFace()) || (!getAppData().isHumanVsHumanGameMode(getBoardFace()))) {
 
 //				computerMove(returnedObj.getMoveTime());
 
@@ -346,8 +346,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
             if (isComputerMoving() || getBoardFace().isFinished())
                 return true;
 
-			if ((AppData.isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
-					|| (AppData.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove())) {
+			if ((getAppData().isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
+					|| (getAppData().isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove())) {
 				return true;
 			}
 		}
@@ -386,11 +386,11 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
     public void flipBoard() {
         if (!isComputerMoving()) {// shouldn't be able to flip while comp moving
             getBoardFace().setReside(!getBoardFace().isReside());
-            if (AppData.isComputerVsHumanGameMode(getBoardFace())) {
-                if (AppData.isComputerVsHumanWhiteGameMode(getBoardFace())) {
+            if (getAppData().isComputerVsHumanGameMode(getBoardFace())) {
+                if (getAppData().isComputerVsHumanWhiteGameMode(getBoardFace())) {
                     getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
 
-                } else if (AppData.isComputerVsHumanBlackGameMode(getBoardFace())) {
+                } else if (getAppData().isComputerVsHumanBlackGameMode(getBoardFace())) {
                     getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
 
                 }

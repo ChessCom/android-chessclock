@@ -10,15 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.StaticData;
 import com.chess.ui.adapters.ItemsAdapter;
-import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.fragments.LiveBaseFragment;
-import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
-import com.chess.utilities.AppUtils;
-import com.facebook.Session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +24,6 @@ import java.util.List;
  */
 public class SettingsFragment extends LiveBaseFragment implements AdapterView.OnItemClickListener {
 
-	private static final long SWITCH_DELAY = 50;
 	private ListView listView;
 	private List<SettingsMenuItem> menuItems;
 	private SettingsMenuAdapter adapter;
@@ -107,38 +99,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				break;
 			case R.string.ic_close:
 				logoutFromLive();
-
-				// un-register from GCM
-				unRegisterGcmService();
-
-				// logout from facebook
-				Session facebookSession = Session.getActiveSession();
-				if (facebookSession != null) {
-					facebookSession.closeAndClearTokenInformation();
-					Session.setActiveSession(null);
-				}
-
-				preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
-				preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
-				preferencesEditor.commit();
-
-				AppUtils.cancelNotifications(getActivity());
-				getActivityFace().clearFragmentStack();
-				// make pause to wait while transactions complete
-				handler.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						getActivityFace().switchFragment(new WelcomeTabsFragment());
-					}
-				}, SWITCH_DELAY);
-
-				// clear theme
-				AppData.setThemeBackId(getActivity(), R.drawable.img_theme_green_felt);
-				getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
-
-				// clear comp game
-				ChessBoardComp.resetInstance();
-				AppData.clearSavedCompGame(getActivity());
+				performLogout();
 
 				break;
 		}

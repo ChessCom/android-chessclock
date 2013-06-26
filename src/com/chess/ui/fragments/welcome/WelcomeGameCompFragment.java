@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,7 +101,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	private NotationView notationsView;
 	private boolean humanBlack;
-	private List<String> optionsList;
+	private SparseArray<String> optionsList;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private PromotesAdapter resultsAdapter;
 	private MultiDirectionSlidingDrawer slidingDrawer;
@@ -163,7 +164,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 		ChessBoardComp.resetInstance();
 		getBoardFace().setMode(getArguments().getInt(MODE));
-		if (AppData.haveSavedCompGame(getActivity())) {
+		if (getAppData().haveSavedCompGame()) {
 			loadSavedGame();
 		}
 		resideBoardIfCompWhite();
@@ -171,9 +172,9 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 		if (!getBoardFace().isAnalysis()) {
 
-			boolean isComputerMove = (AppData.isComputerVsComputerGameMode(getBoardFace()))
-					|| (AppData.isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
-					|| (AppData.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove());
+			boolean isComputerMove = (getAppData().isComputerVsComputerGameMode(getBoardFace()))
+					|| (getAppData().isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
+					|| (getAppData().isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove());
 
 			if (isComputerMove) {
 				computerMove();
@@ -188,7 +189,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	@Override
 	public void onPause() {
 		super.onPause();
-		if (AppData.isComputerVsComputerGameMode(getBoardFace()) || AppData.isComputerVsHumanGameMode(getBoardFace())
+		if (getAppData().isComputerVsComputerGameMode(getBoardFace()) || getAppData().isComputerVsHumanGameMode(getBoardFace())
 				&& boardView.isComputerMoving()) { // probably isComputerMoving() is only necessary to check without extra check of game mode
 
 			boardView.stopComputerMove();
@@ -352,7 +353,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	private void loadSavedGame() {
-		String[] moves = AppData.getCompSavedGame(getActivity()).split(RestHelper.SYMBOL_PARAMS_SPLIT_SLASH);
+		String[] moves = getAppData().getCompSavedGame().split(RestHelper.SYMBOL_PARAMS_SPLIT_SLASH);
 
 		BoardFace boardFace = getBoardFace();
 		boardFace.setMovesCount(moves.length);
@@ -367,7 +368,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 						Integer.parseInt(move[2]),
 						Integer.parseInt(move[3])), false);
 			} catch (Exception e) {
-				String debugInfo = "move=" + moves[i] + AppData.getCompSavedGame(getActivity());
+				String debugInfo = "move=" + moves[i] + getAppData().getCompSavedGame();
 				BugSenseHandler.addCrashExtraData("APP_COMP_DEBUG", debugInfo);
 				throw new IllegalArgumentException(debugInfo, e);
 			}
@@ -388,7 +389,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public Boolean isUserColorWhite() {
-		return AppData.isComputerVsHumanWhiteGameMode(getBoardFace());
+		return getAppData().isComputerVsHumanWhiteGameMode(getBoardFace());
 	}
 
 	@Override
@@ -398,7 +399,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	private void sendPGN() {
 		CharSequence moves = getBoardFace().getMoveListSAN();
-		String whitePlayerName = AppData.getUserName(getContext());
+		String whitePlayerName = getAppData().getUserName();
 		String blackPlayerName = getString(R.string.comp);
 		String result = GAME_GOES;
 		if (getBoardFace().isFinished()) {// means in check state
@@ -410,7 +411,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		}
 		if (!isUserColorWhite()) {
 			whitePlayerName = getString(R.string.comp);
-			blackPlayerName = AppData.getUserName(getContext());
+			blackPlayerName = getAppData().getUserName();
 		}
 		String date = datePgnFormat.format(Calendar.getInstance().getTime());
 
@@ -458,14 +459,14 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	private void resideBoardIfCompWhite() {
-		if (AppData.isComputerVsHumanBlackGameMode(getBoardFace())) {
+		if (getAppData().isComputerVsHumanBlackGameMode(getBoardFace())) {
 			getBoardFace().setReside(true);
 			boardView.invalidate();
 		}
 	}
 
 	private void computerMove() {
-		boardView.computerMove(AppData.getCompThinkTime(getContext()));
+		boardView.computerMove(getAppData().getCompThinkTime());
 	}
 
 	@Override
@@ -509,12 +510,12 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 			case PLAY_ONLINE_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.play_online)), PLAY_ONLINE_TAG);
+				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.play_online)), PLAY_ONLINE_TAG);
 				break;
 			case CHALLENGE_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.challenge_friend)), CHALLENGE_TAG);
+				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.challenge_friend)), CHALLENGE_TAG);
 				break;
 			case REMATCH_ITEM:
 				parentFace.changeInternalFragment(WelcomeTabsFragment.GAME_FRAGMENT);
@@ -522,18 +523,17 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 			case TACTICS_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.solve_tactics_puzzles)), TACTICS_TAG);
-
+				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.solve_tactics_puzzles)), TACTICS_TAG);
 				break;
 			case LESSONS_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.learn_lessons)), LESSONS_TAG);
+				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.learn_lessons)), LESSONS_TAG);
 				break;
 			case VIDEOS_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialog(getString(R.string.you_must_have_account_to, getString(R.string.watch_videos)), VIDEOS_TAG);
+				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.watch_videos)), VIDEOS_TAG);
 				break;
 		}
 	}
@@ -571,7 +571,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	@Override
 	public void onDrawerOpened() {
 		ChessBoardComp.resetInstance();
-		AppData.clearSavedCompGame(getActivity());
+		getAppData().clearSavedCompGame();
 		notationsView.resetNotations();
 		boardView.invalidate();
 	}
@@ -676,11 +676,11 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		notationsView.resetNotations();
 
 		{// options list setup
-			optionsList = new ArrayList<String>();
-			optionsList.add(getString(R.string.new_game));
-			optionsList.add(getString(R.string.email_game));
-			optionsList.add(getString(R.string.flip_board));
-			optionsList.add(getString(R.string.settings));
+			optionsList = new SparseArray<String>();
+			optionsList.put(ID_NEW_GAME, getString(R.string.new_game));
+			optionsList.put(ID_FLIP_BOARD, getString(R.string.flip_board));
+			optionsList.put(ID_EMAIL_GAME, getString(R.string.email_game));
+			optionsList.put(ID_SETTINGS, getString(R.string.settings));
 		}
 
 		{ // Results part

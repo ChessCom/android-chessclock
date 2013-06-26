@@ -16,7 +16,6 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.FriendsItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
@@ -117,7 +116,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 
 		fillUserStats();
 
-		if (DBDataManager.haveSavedFriends(getActivity())) {
+		if (DBDataManager.haveSavedFriends(getActivity(), getUserName())) {
 			loadFriendsFromDb();
 		} else {
 			getFriends();
@@ -125,8 +124,8 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 
 		setBadgeValueForId(R.id.menu_games, 2); // TODO use properly later for notifications
 
-		userNameTxt.setText(AppData.getUserName(getActivity()));
-		userCountryTxt.setText(AppData.getUserCountry(getActivity()));
+		userNameTxt.setText(getAppData().getUserName());
+		userCountryTxt.setText(getAppData().getUserCountry());
 		userCountryImg.setImageDrawable(AppUtils.getUserFlag(getActivity()));
 
 		{// load user avatar
@@ -139,7 +138,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 				parent.removeAllViews();
 			}
 			userPhotoImg.addView(progressImageView, params);
-			imageDownloader.download(AppData.getUserAvatar(getActivity()), progressImageView, AVATAR_SIZE);
+			imageDownloader.download(getAppData().getUserAvatar(), progressImageView, AVATAR_SIZE);
 		}
 	}
 
@@ -175,7 +174,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 
 	private void fillUserStats() {
 		// fill ratings
-		String[] argument = new String[]{AppData.getUserName(getActivity())};
+		String[] argument = new String[]{getAppData().getUserName()};
 
 		{// standard
 			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_LIVE_STANDARD],
@@ -240,7 +239,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 
 	private void loadFriendsFromDb() {
 		new LoadDataFromDbTask(friendsCursorUpdateListener,
-				DbHelper.getUserParams(AppData.getUserName(getActivity()), DBConstants.FRIENDS),
+				DbHelper.getUserParams(getAppData().getUserName(), DBConstants.FRIENDS),
 				getContentResolver()).executeTask();
 	}
 
@@ -251,7 +250,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_FRIENDS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 
 		new RequestJsonTask<FriendsItem>(friendsUpdateListener).executeTask(loadItem);
 	}

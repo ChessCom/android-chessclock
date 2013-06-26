@@ -2,7 +2,6 @@ package com.chess.ui.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Build;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.PopupItem;
@@ -58,8 +56,8 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 
 
 	private Context context;
-	protected SharedPreferences preferences;
-	protected SharedPreferences.Editor preferencesEditor;
+//	protected SharedPreferences preferences;
+//	protected SharedPreferences.Editor preferencesEditor;
 
 	protected PopupItem popupItem;
 	protected PopupItem popupProgressItem;
@@ -115,8 +113,8 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 		popupManager = new ArrayList<PopupDialogFragment>();
 		popupProgressManager = new ArrayList<PopupProgressFragment>();
 
-		preferences = AppData.getPreferences(this); // TODO rework shared pref usage to unique get method
-		preferencesEditor = preferences.edit();
+//		preferences = getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
+//		preferencesEditor = preferences.edit();
 	}
 
 	@Override

@@ -22,7 +22,6 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
@@ -98,7 +97,7 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 
 			if (!AppUtils.isNetworkAvailable(getActivity())){ // check only if live
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
-				showPopupDialog(R.string.warning, R.string.no_network, BasePopupsFragment.NETWORK_CHECK_TAG);
+				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 				return;
 			}
 
@@ -197,7 +196,7 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {  // TODO restore
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == Activity.RESULT_OK ){
-			if(requestCode == BasePopupsFragment.NETWORK_REQUEST){
+			if(requestCode == NETWORK_REQUEST){
 				submitRegisterInfo();
 			}
 		}

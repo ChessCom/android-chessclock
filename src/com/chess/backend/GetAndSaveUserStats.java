@@ -22,9 +22,10 @@ public class GetAndSaveUserStats extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
+		AppData appData = new AppData(this);
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_USER_STATS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(this));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
 
 		UserStatsItem item = null;
 		try {
@@ -34,7 +35,7 @@ public class GetAndSaveUserStats extends IntentService {
 		}
 
 		if (item != null) {
-			String userName = AppData.getUserName(this);
+			String userName = appData.getUserName();
 
 			SaveUserStatsTask.saveLiveStats(userName, item.getData(), getContentResolver());
 			SaveUserStatsTask.saveDailyStats(userName, item.getData(), getContentResolver());

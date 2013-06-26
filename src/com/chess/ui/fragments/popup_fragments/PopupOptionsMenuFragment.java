@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.chess.RoboButton;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,12 +28,12 @@ import java.util.List;
 public class PopupOptionsMenuFragment extends DialogFragment implements View.OnClickListener {
 
 	private PopupListSelectionFace listener;
-	private List<String> itemsList;
+	private SparseArray<String> itemsList;
 
-	public static PopupOptionsMenuFragment createInstance(PopupListSelectionFace listener, List<String> itemsList) {
+	public static PopupOptionsMenuFragment createInstance(PopupListSelectionFace listener, SparseArray<String> itemsMap) {
 		PopupOptionsMenuFragment frag = new PopupOptionsMenuFragment();
 		frag.listener = listener;
-		frag.itemsList = itemsList;
+		frag.itemsList = itemsMap;
 		return frag;
 	}
 
@@ -51,8 +53,12 @@ public class PopupOptionsMenuFragment extends DialogFragment implements View.OnC
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		List<String> optionsList = new ArrayList<String>();
+		for (int i=0; i < itemsList.size(); i++){
+			optionsList.add(itemsList.get(i));
+		}
 		ListView listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(new StringAdapter(getActivity(), itemsList));
+		listView.setAdapter(new StringAdapter(getActivity(), optionsList));
 	}
 
 	@Override

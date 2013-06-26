@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import com.chess.R;
-import com.chess.backend.statics.AppData;
 
 public class SplashActivity extends CommonLogicActivity {
 
@@ -19,7 +18,7 @@ public class SplashActivity extends CommonLogicActivity {
 			@Override
 			public void run() {
 				startActivity(new Intent(SplashActivity.this, MainFragmentFaceActivity.class));
-				AppData.setLiveChessMode(getContext(), false);
+				getAppData().setLiveChessMode(false);
 			}
 		}, SPLASH_DELAY);
 	}

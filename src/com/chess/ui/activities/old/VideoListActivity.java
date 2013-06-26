@@ -78,8 +78,8 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 		LoadItem loadItem = new LoadItem();
 //		loadItem.setLoadPath(RestHelper.GET_VIDEOS);
 		loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
-//		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+//		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 //		loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_LIST_CNT);  // TODO should be preferrable
 		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.V_VIDEO_LIST_CNT);  // TODO should be preferrable
 		loadItem.addRequestParams(RestHelper.P_PAGE, 0);
@@ -133,7 +133,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
-			startActivity(AppData.getMembershipVideoIntent(this));
+			startActivity(getAppData().getMembershipVideoIntent());
 		} else if(view.getId() == R.id.fullDescBtn){
 			int pos = (Integer) view.getTag(R.id.list_item_id);
 			VideoItem.Data videoItem = (VideoItem.Data) listView.getItemAtPosition(pos);

@@ -60,17 +60,18 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 	@Override
 	protected void onRegistered(Context context, String registrationId) {
-		Log.d(TAG, "User = " + AppData.getUserName(context) + " Device registered: regId = " + registrationId);
+		AppData appData = new AppData(context);
+		Log.d(TAG, "User = " + appData.getUserName() + " Device registered: regId = " + registrationId);
 
 		LoadItem loadItem = new LoadItem();
 //		loadItem.setLoadPath(RestHelper.GCM_REGISTER);
 		loadItem.setLoadPath(RestHelper.CMD_GCM);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(context));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
 		loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
 		Log.d(TAG, "Registering to server, registrationId = " + registrationId
-				+ " \ntoken = " + AppData.getUserToken(context));
+				+ " \ntoken = " + appData.getUserToken());
 
 //		String url = RestHelper.formPostRequest(loadItem);
 //		postData(url, loadItem, GcmHelper.REQUEST_REGISTER);
@@ -84,7 +85,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		if (item != null && item.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 			GCMRegistrar.setRegisteredOnServer(context, true);
-			AppData.registerOnChessGCM(context, AppData.getUserToken(context));
+			appData.registerOnChessGCM(appData.getUserToken());
 		} else {
 			if (context != null) {
 				Toast.makeText(context, R.string.gcm_not_registered, Toast.LENGTH_SHORT).show();
@@ -94,10 +95,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 	@Override
 	protected void onUnregistered(Context context, String registrationId) {
-		Log.d(TAG, "User = " + AppData.getUserName(context) + " Device unregistered, registrationId = " + registrationId);
+		AppData appData = new AppData(context);
+		Log.d(TAG, "User = " + appData.getUserName() + " Device unregistered, registrationId = " + registrationId);
 
 		if (GCMRegistrar.isRegisteredOnServer(context)) {
-			preferences = AppData.getPreferences(this);
+			preferences = appData.getPreferences();
 			// TODO temporary unregister only if user loged out
 			String realToken = preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
 			if (realToken.equals(StaticData.SYMBOL_EMPTY)) {
@@ -123,7 +125,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 				if (item != null && item.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 					GCMRegistrar.setRegisteredOnServer(context, false);
-					AppData.unRegisterOnChessGCM(context);
+					appData.unRegisterOnChessGCM();
 					// remove saved token
 					SharedPreferences.Editor editor = preferences.edit();
 					editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
@@ -142,20 +144,22 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 	@Override
 	protected void onMessage(Context context, Intent intent) {
-		Log.d(TAG, "User = " + AppData.getUserName(context) + " Received message");
+		AppData appData = new AppData(context);
+		Log.d(TAG, "User = " + appData.getUserName() + " Received message");
 
 		String type = intent.getStringExtra("type");
 
 		if (type.equals(GcmHelper.NOTIFICATION_YOUR_MOVE)) {
-			Log.d(TAG, "received move notification, notifications enabled = " + AppData.isNotificationsEnabled(context));
-			if (!AppData.isNotificationsEnabled(context))   // we check it here because we will use GCM for lists update, so it need to be registered.
+			Log.d(TAG, "received move notification, notifications enabled = " + appData.isNotificationsEnabled());
+			if (!appData.isNotificationsEnabled())   // we check it here because we will use GCM for lists update, so it need to be registered.
 				return;
 
-			showYouTurnNotification(intent);
+			showYouTurnNotification(intent, context);
 		}
 	}
 
-	private synchronized void showYouTurnNotification(Intent intent) {
+	private synchronized void showYouTurnNotification(Intent intent, Context context) {
+		AppData appData = new AppData(context);
 
 		String lastMoveSan = intent.getStringExtra("last_move_san");
 //			String opponentUserId = intent.getStringExtra("opponent_user_id");
@@ -171,7 +175,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Log.d(TAG, " is inOnlineGame = " + DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId)));
 
 		// we use the same registerId for all users on a device, so check username to notify only the needed user
-		if (opponentUsername.equalsIgnoreCase(AppData.getUserName(this))) {
+		if (opponentUsername.equalsIgnoreCase(appData.getUserName())) {
 			return; // don't need notificaion of myself game
 		}
 //		Log.d("TEST", " lastMoveInfoItems.size() = " + DataHolder.getInstance().getLastMoveInfoItems().size());
@@ -242,8 +246,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 					StaticData.MOVE_REQUEST_CODE,
 					gameListItem);
 
-			SharedPreferences preferences = AppData.getPreferences(context);
-			boolean playSounds = preferences.getBoolean(AppData.getUserName(context) + AppConstants.PREF_SOUNDS, false);
+			SharedPreferences preferences = appData.getPreferences();
+			boolean playSounds = preferences.getBoolean(appData.getUserName() + AppConstants.PREF_SOUNDS, false);
 			if (playSounds) {
 				final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
 				if (player != null) {

@@ -19,7 +19,6 @@ import com.chess.backend.LiveChessService;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
@@ -537,7 +536,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 						", analysisBoard=" + getBoardFace().isAnalysis() +
 						", latestMoveNumber=" + liveService.getLatestMoveNumber() +
 						", debugString=" + debugString +
-						", submit=" + preferences.getBoolean(AppData.getUserName(getContext()) + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false) +
+						", submit=" + preferences.getBoolean(getAppData().getUserName() + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false) +
 						", movesLive=" + liveService.getCurrentGame().getMoves() +
 						", moves=" + getBoardFace().getMoveListSAN() +
 						", trace=" + stackTrace;
@@ -1037,7 +1036,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 //			LoadItem loadItem = new LoadItem();
 //			loadItem.setLoadPath(RestHelper.CMD_USERS);
 //			loadItem.addRequestParams(RestHelper.P_USERNAME, opponentName);
-//			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+//			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken(getActivity()));
 //			new RequestJsonTask<UserItem>(userInfoUpdateListener).executeTask(loadItem);
 
 			String opponentAvatarUrl = liveService.getCurrentGame().getOpponentForPlayer(opponentName).getAvatarUrl(); // TODO test
@@ -1147,7 +1146,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 					topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
 					topPanelView.invalidate();
 
-					String userAvatarUrl = AppData.getUserAvatar(activity);
+					String userAvatarUrl = getAppData().getUserAvatar();
 					imageDownloader.download(userAvatarUrl, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 
 					break;

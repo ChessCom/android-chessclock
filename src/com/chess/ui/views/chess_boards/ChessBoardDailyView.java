@@ -14,7 +14,7 @@ public class ChessBoardDailyView extends ChessBoardNetworkView {
 	@Override
 	protected boolean need2ShowSubmitButtons() {
 		String sharedKey = AppConstants.PREF_SHOW_SUBMIT_MOVE_DAILY;
-		return preferences.getBoolean(AppData.getUserName(getContext()) + sharedKey, true);
+		return preferences.getBoolean(getAppData().getUserName() + sharedKey, true);
 	}
 
 	@Override

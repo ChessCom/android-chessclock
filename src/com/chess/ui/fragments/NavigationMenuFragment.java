@@ -12,7 +12,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.AppData;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.daily.DailyTabsFragment;
@@ -214,7 +213,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 
 		public NewNavigationMenuAdapter(Context context, List<NavigationMenuItem> menuItems) {
 			super(context, menuItems);
-			userAvatarUrl = AppData.getUserAvatar(context);
+			userAvatarUrl = getAppData().getUserAvatar();
 			logTest("avatar url for menu = " + userAvatarUrl);
 		}
 

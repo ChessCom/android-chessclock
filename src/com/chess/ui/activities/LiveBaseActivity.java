@@ -19,7 +19,6 @@ import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.LiveEvent;
 import com.chess.lcc.android.OuterChallengeListener;
@@ -81,7 +80,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected void onStart() {
 		super.onStart();
 
-		if (AppData.isLiveChess(this)) {
+		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
@@ -113,7 +112,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		boolean alive = false;
 		if (isLCSBound) {
 			if (liveService.getUser() == null) {
-				if (AppData.isLiveChess(this)) {
+				if (getAppData().isLiveChess()) {
 					liveService.logout();
 				}
 //				backToHomeActivity();
@@ -176,7 +175,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		}
 
 		if (tag.equals(CONNECT_FAILED_TAG)) {
-			if (AppData.isLiveChess(this)) {
+			if (getAppData().isLiveChess()) {
 				liveService.logout();
 			}
 			unBindLiveService();
@@ -186,7 +185,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					AppData.setLiveChessMode(getContext(), false);
+					getAppData().setLiveChessMode(false);
 					liveService.setConnected(false);
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.PLAY_ANDROID_HTML)));
 				}
@@ -261,7 +260,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	public void connectLcc() {
-		if (AppData.isLiveChess(this)) {
+		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
@@ -508,7 +507,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				facebookInit(facebookLoginButton);
 //				facebookLoginButton.logout();
 
-				usernameEdt.setText(AppData.getUserName(LiveBaseActivity.this));
+				usernameEdt.setText(getAppData().getUserName());
 
 				needReLoginToLive = true;
 			}

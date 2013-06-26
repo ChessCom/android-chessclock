@@ -1,6 +1,7 @@
 package com.chess.ui.interfaces;
 
 
+import com.chess.backend.statics.AppData;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -42,6 +43,8 @@ public interface ActiveFragmentInterface {
 
 	void addOnOpenMenuListener(SlidingMenu.OnOpenedListener listener);
 
+	void removeOnOpenMenuListener(SlidingMenu.OnOpenedListener listener);
+
 	void setFullScreen();
 
 //	LccHelper getMeLccHolder();
@@ -59,4 +62,10 @@ public interface ActiveFragmentInterface {
 	void showActionMenu(int menuId, boolean show);
 
 	void updateActionBarIcons();
+
+	AppData getMeAppData();
+
+	String getMeUserName();
+
+	String getMeUserToken();
 }

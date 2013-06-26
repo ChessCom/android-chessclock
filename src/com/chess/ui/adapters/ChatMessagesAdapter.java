@@ -26,7 +26,7 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 //		ownerColor = resources.getColor(R.color.new_light_grey_0);
 //        opponentColor = resources.getColor(R.color.new_light_grey_2);
 //
-//		userName =  AppData.getUserName(context);
+//		userName =  getAppData().getUserName(context);
 //		this.opponentName = opponentName;
 		imageSize = (int) (resources.getDimension(R.dimen.chat_icon_size) / resources.getDisplayMetrics().density);
 	}

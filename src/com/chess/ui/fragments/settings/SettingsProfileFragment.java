@@ -24,13 +24,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.MembershipItem;
 import com.chess.backend.entity.new_api.UserItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -55,6 +55,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 	public static final String PHOTO_SELECTION = "PHOTO_SELECTION";
 	public static final String COUNTRY_SELECTION = "COUNTRY_SELECTION";
+	private static final String EDIT_MODE = "edit_mode";
 	public static final String BLUE_COLOR_DIVIDER = "##";
 
 	private static final int REQ_CODE_PICK_IMAGE = 33;
@@ -117,14 +118,22 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		countrySelectedListener = new CountrySelectedListener();
 
 		// fields data init
-		firstNameStr = AppData.getUserFirstName(getActivity());
-		lastNameStr = AppData.getUserLastName(getActivity());
-		locationStr = AppData.getUserLocation(getActivity());
-		countryStr = AppData.getUserCountry(getActivity());
-		countryId = AppData.getUserCountryId(getActivity());
+		firstNameStr = getAppData().getUserFirstName();
+		lastNameStr = getAppData().getUserLastName();
+		locationStr = getAppData().getUserLocation();
+		countryStr = getAppData().getUserCountry();
+		countryId = getAppData().getUserCountryId();
 
 		userUpdateListener = new GetUserUpdateListener();
 
+		if (savedInstanceState != null) {
+			boolean inEditMode = savedInstanceState.getBoolean(EDIT_MODE);
+			if (inEditMode) {
+				logTest("start AM from onCreate");
+
+				startActionMode();
+			}
+		}
 	}
 
 	@Override
@@ -210,29 +219,14 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	public void onResume() {
 		super.onResume();
 
-//		updateData();
-
-		{// load user avatar
-			int imageSize = (int) (AVATAR_SIZE * density);
-			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(imageSize, imageSize);
-
-			ViewGroup parent = (ViewGroup) progressImageView.getParent();
-			if (parent != null) {
-				parent.removeAllViews();
-			}
-			userPhotoImg.addView(progressImageView, params);
-
-//			AppData.setUserAvatar(getActivity(), data.getAvatar());
-			if (!photoChanged) {
-				imageDownloader.download(AppData.getUserAvatar(getActivity()), progressImageView, AVATAR_SIZE);
-			}
+		logTest("inEditMode = " + inEditMode);
+		if (!inEditMode) {
+			updateData();
 		}
 	}
 
 	private void updateData() {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_USERS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		LoadItem loadItem = LoadHelper.getUserInfo(getUserToken());
 
 		new RequestJsonTask<UserItem>(new GetUserUpdateListener()).executeTask(loadItem);
 	}
@@ -261,7 +255,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 					parent.removeAllViews();
 				}
 				userPhotoImg.addView(progressImageView, params);
-				AppData.setUserAvatar(activity, data.getAvatar());
+				getAppData().setUserAvatar(data.getAvatar());
 				if (!photoChanged) {
 					imageDownloader.download(data.getAvatar(), progressImageView, AVATAR_SIZE);
 				}
@@ -273,11 +267,11 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			countryStr = data.getCountryName();
 			countryId = data.getCountryId();
 
-			AppData.setUserFirstName(getActivity(), firstNameStr);
-			AppData.setUserLastName(getActivity(), lastNameStr);
-			AppData.setUserLocation(getActivity(), locationStr);
-			AppData.setUserCountry(getActivity(), countryStr);
-			AppData.setUserCountryId(getActivity(), countryId);
+			getAppData().setUserFirstName(firstNameStr);
+			getAppData().setUserLastName(lastNameStr);
+			getAppData().setUserLocation(locationStr);
+			getAppData().setUserCountry(countryStr);
+			getAppData().setUserCountryId(countryId);
 
 			firstNameValueEdt.setText(firstNameStr);
 			lastNameValueEdt.setText(lastNameStr);
@@ -288,7 +282,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			if (need2Update) {
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(activity));
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 
 				new RequestJsonTask<MembershipItem>(new GetDetailsListener()).executeTask(loadItem); // TODO set proper item
 			}
@@ -312,7 +306,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 			// update selected modes
 			if (returnedObj.getData().getIs_premium() > 0) {
-				AppData.setUserPremiumStatus(activity, returnedObj.getData().getLevel());
+				getAppData().setUserPremiumStatus(returnedObj.getData().getLevel());
 
 				Date time = new Date(returnedObj.getData().getDate().getExpires()* 1000L);
 				String membershipExpireDate = dateFormatter.format(time);
@@ -381,14 +375,22 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 					int size = (int) (AVATAR_SIZE * density);
 					Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
+					logTest("PATH: " + mCurrentPhotoPath);
+					if (bitmap == null) {
+						logTest("WRONG PATH: " + mCurrentPhotoPath);
+						showToast(R.string.unable_to_select_this_photo);
+						return;
+					}
 
 					int rawSize = AppUtils.sizeOfBitmap(bitmap);
-					if (rawSize > FILE_SIZE_LIMIT) {
+					if (rawSize > FILE_SIZE_LIMIT) {         // TODO
+						showToast(R.string.optimizing_image);
 						saveImageForUpload();
 					}
 
 					bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
 					if (bitmap == null) {
+						showToast(R.string.unable_to_select_this_photo);
 						return;
 					}
 					Drawable drawable = new BitmapDrawable(getResources(), bitmap);
@@ -406,9 +408,9 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 	private void updateProfile() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setRequestMethod(RestHelper.PUT);
-		loadItem.setLoadPath(RestHelper.CMD_USERS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.setLoadPath(RestHelper.CMD_USER_PROFILE);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_FIRST_NAME, firstNameStr);
 		loadItem.addRequestParams(RestHelper.P_LAST_NAME, lastNameStr);
 		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, countryId);
@@ -440,8 +442,8 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 		@Override
 		public void updateData(UserItem returnedObj) {
-//			AppData.setUserAvatar(getActivity(), returnedObj.getData().getAvatar());
-//			imageDownloader.download(returnedObj.getData().getAvatar(), progressImageView, AVATAR_SIZE);
+			getAppData().setUserAvatar(returnedObj.getData().getAvatar());
+			imageDownloader.download(returnedObj.getData().getAvatar(), progressImageView, AVATAR_SIZE);
 		}
 	}
 
@@ -483,10 +485,12 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
 
 		bitmap = Bitmap.createScaledBitmap(bitmap, IMG_SIZE_LIMIT_W, IMG_SIZE_LIMIT_H, false);
+		logTest("saveImageForUpload bitmap = " + bitmap);
 		if (bitmap == null) {
 			return;
 		}
 		photoFileSize = AppUtils.sizeOfBitmap(bitmap);
+		logTest("saveImageForUpload photoFileSize = " + photoFileSize);
 
 		File cacheDir;
 		if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
@@ -498,7 +502,9 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			cacheDir.mkdirs();
 
 		// save scaled bitmap to sd for upload
-		String filename = AppData.getUserName(getActivity()) + System.currentTimeMillis();
+		String filename = getAppData().getUserName() + System.currentTimeMillis();
+		logTest("saveImageForUpload filename = " + filename);
+
 		File imgFile = new File(cacheDir, filename);
 
 		// save stream to SD
@@ -508,13 +514,16 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			os.flush();
 			os.close();
 		} catch (FileNotFoundException e) {
+			logTest("saveImageForUpload FileNotFoundException = " + e.toString());
 			e.printStackTrace();
 		} catch (IOException e) {
+			logTest("saveImageForUpload IOException = " + e.toString());
 			e.printStackTrace();
 		}
 
 		// update path for upload
 		mCurrentPhotoPath = imgFile.getAbsolutePath();
+		logTest("saveImageForUpload mCurrentPhotoPath = " + mCurrentPhotoPath);
 	}
 
 	private void showCountriesFragment() {
@@ -531,6 +540,13 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		}
 		photoSelectFragment = PopupSelectPhotoFragment.createInstance(photoSelectedListener);
 		photoSelectFragment.show(getFragmentManager(), PHOTO_SELECTION);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putBoolean(EDIT_MODE, inEditMode);
 	}
 
 	@Override
@@ -565,6 +581,8 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 			lastNameValueEdt.setBackgroundResource(R.color.transparent);
 			locationValueEdt.setBackgroundResource(R.color.transparent);
+
+			showKeyBoardImplicit(firstNameValueEdt);
 		} else if (v.getId() == R.id.lastNameValueEdt) {
 			lastNameValueEdt.setBackgroundResource(R.drawable.textfield_selector);
 			lastNameClearBtn.setVisibility(View.GONE);
@@ -573,6 +591,8 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 			firstNameValueEdt.setBackgroundResource(R.color.transparent);
 			locationValueEdt.setBackgroundResource(R.color.transparent);
+
+			showKeyBoardImplicit(lastNameValueEdt);
 		} else if (v.getId() == R.id.locationValueEdt) {
 			locationValueEdt.setBackgroundResource(R.drawable.textfield_selector);
 			locationClearBtn.setVisibility(View.GONE);
@@ -581,7 +601,10 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 			firstNameValueEdt.setBackgroundResource(R.color.transparent);
 			lastNameValueEdt.setBackgroundResource(R.color.transparent);
+
+			showKeyBoardImplicit(locationValueEdt);
 		}
+
 		return false;
 	}
 
@@ -601,11 +624,11 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 				lastNameStr = getTextFromField(lastNameValueEdt);
 				locationStr = getTextFromField(locationValueEdt);
 
-				AppData.setUserFirstName(getActivity(), firstNameStr);
-				AppData.setUserLastName(getActivity(), lastNameStr);
-				AppData.setUserLocation(getActivity(), locationStr);
-				AppData.setUserCountry(getActivity(), countryStr);
-				AppData.setUserCountryId(getActivity(), countryId);
+				getAppData().setUserFirstName(firstNameStr);
+				getAppData().setUserLastName(lastNameStr);
+				getAppData().setUserLocation(locationStr);
+				getAppData().setUserCountry(countryStr);
+				getAppData().setUserCountryId(countryId);
 
 				firstNameValueEdt.setBackgroundResource(R.color.transparent);
 				lastNameValueEdt.setBackgroundResource(R.color.transparent);
@@ -620,6 +643,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 	private void startActionMode() {
 		if (inEditMode) {
+			logTest("already in edit mode");
 			return;
 		}
 		inEditMode = true;
@@ -633,7 +657,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private boolean fieldsWasChanged() {
 		return !getTextFromField(firstNameValueEdt).equals(firstNameStr)
 				|| !getTextFromField(lastNameValueEdt).equals(lastNameStr) || !getTextFromField(locationValueEdt).equals(locationStr)
-				|| photoChanged || countryId != AppData.getUserCountryId(getActivity());
+				|| photoChanged || countryId != getAppData().getUserCountryId();
 	}
 
 	private class CountrySelectedListener implements PopupListSelectionFace {

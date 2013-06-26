@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.configs.CompGameConfig;
@@ -51,7 +50,7 @@ public class CompGameSetupFragment extends CommonLogicFragment {
 		if (view.getId() == R.id.startPlayBtn) {
 
 			ChessBoardComp.resetInstance();
-			preferencesEditor.putString(AppData.getUserName(getActivity()) + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
+			preferencesEditor.putString(getAppData().getUserName() + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
 			preferencesEditor.commit();
 
 			CompGameConfig config = getNewCompGameConfig();

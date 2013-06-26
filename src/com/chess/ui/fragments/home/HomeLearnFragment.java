@@ -6,11 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.statics.AppData;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.LessonsFragment;
-import com.chess.ui.fragments.stats.TacticsStatsFragment;
 import com.chess.ui.fragments.game.GameTacticsFragment;
+import com.chess.ui.fragments.stats.TacticsStatsFragment;
 import com.chess.ui.fragments.videos.VideoDetailsFragment;
 import com.chess.ui.fragments.videos.VideosFragment;
 
@@ -56,7 +55,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 		super.onStart();
 
 		// load ratings
-		tacticsRatingTxt.setText(String.valueOf(AppData.getUserTacticsRating(getActivity())));
+		tacticsRatingTxt.setText(String.valueOf(getAppData().getUserTacticsRating()));
 		// load latest video
 //		loadedVideoId
 //		new LoadDataFromDbTask()

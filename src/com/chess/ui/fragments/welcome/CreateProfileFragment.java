@@ -125,11 +125,11 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 	public void onResume() {
 		super.onResume();
 
-		if (AppData.isUserSkillSet(getActivity())) {
-			updateSkillLevel(AppData.getUserSkill(getActivity()));
+		if (getAppData().isUserSkillSet()) {
+			updateSkillLevel(getAppData().getUserSkill());
 		}
 
-		String userCountry = AppData.getUserCountry(getActivity());
+		String userCountry = getAppData().getUserCountry();
 		if (userCountry == null) {
 			String locale = getResources().getConfiguration().locale.getCountry();
 
@@ -252,11 +252,11 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.setLoadPath(RestHelper.CMD_USER_PROFILE);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_FIRST_NAME, getTextFromField(firstNameEdt));
 		loadItem.addRequestParams(RestHelper.P_LAST_NAME, getTextFromField(lastNameEdt));
 		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, userCountryId);
-		loadItem.addRequestParams(RestHelper.P_SKILL_LEVEL, AppData.getUserSkill(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_SKILL_LEVEL, getAppData().getUserSkill());
 		loadItem.setFileMark(RestHelper.P_AVATAR);
 		loadItem.setFilePath(mCurrentPhotoPath);
 		loadItem.setFileSize(photoFileSize);
@@ -284,7 +284,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 
 		@Override
 		public void updateData(UserItem returnedObj) {
-			AppData.setUserAvatar(getActivity(), returnedObj.getData().getAvatar());
+			getAppData().setUserAvatar(returnedObj.getData().getAvatar());
 
 			getActivityFace().openFragment(new InviteFragment());
 		}
@@ -299,7 +299,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 			String country = countryNames[code];
 			userCountryId = countryIds[code];
 
-			AppData.setUserCountry(getActivity(), country);
+			getAppData().setUserCountry(country);
 			updateUserCountry(country);
 		}
 
@@ -409,7 +409,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		skillsFragment = null;
 		updateSkillLevel(code);
 
-		AppData.setUserSkill(getActivity(), code);
+		getAppData().setUserSkill(code);
 	}
 
 	private void updateSkillLevel(int level) {

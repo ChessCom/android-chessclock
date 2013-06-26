@@ -105,7 +105,7 @@ public class VideoScreenActivity extends LiveBaseActivity {
 		LoadItem loadItem = new LoadItem();
 //		loadItem.setLoadPath(RestHelper.GET_VIDEOS);
 		loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_PAGE_SIZE, RestHelper.V_VIDEO_ITEM_ONE);
 		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.V_VIDEO_ITEM_ONE);
 
@@ -207,7 +207,7 @@ public class VideoScreenActivity extends LiveBaseActivity {
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
 			FlurryAgent.logEvent(FlurryData.UPGRADE_FROM_VIDEOS, null);
-			startActivity(AppData.getMembershipVideoIntent(this));
+			startActivity(getAppData().getMembershipVideoIntent());
 		} else if (view.getId() == R.id.playVideoBtn) {
 			FlurryAgent.logEvent(FlurryData.VIDEO_PLAYED, null);
 

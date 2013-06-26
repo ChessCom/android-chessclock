@@ -13,13 +13,14 @@ import android.view.WindowManager;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.BaseGameItem;
+import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
+import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 
@@ -70,13 +71,13 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 		AudioManager audio = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
 		switch( audio.getRingerMode() ){
 			case AudioManager.RINGER_MODE_NORMAL:
-				AppData.setPlaySounds(getActivity(), true);
+				getAppData().setPlaySounds(getActivity(), true);
 				break;
 			case AudioManager.RINGER_MODE_SILENT:
-				AppData.setPlaySounds(getActivity(), false);
+				getAppData().setPlaySounds(getActivity(), false);
 				break;
 			case AudioManager.RINGER_MODE_VIBRATE:
-				AppData.setPlaySounds(getActivity(), false);
+				getAppData().setPlaySounds(getActivity(), false);
 				break;
 		}
 	}
@@ -262,4 +263,26 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 					+ vsStr + StaticData.SYMBOL_SPACE + currentGame.getBlackUsername(); // TODO adjust i18n
 		}
 	}
+
+	public static class LabelsConfig {
+
+		public BoardAvatarDrawable topAvatar;
+		public BoardAvatarDrawable bottomAvatar;
+		public String topPlayerName;
+		public String bottomPlayerName;
+		public String topPlayerRating;
+		public String bottomPlayerRating;
+		public String topPlayerAvatar;
+		public String bottomPlayerAvatar;
+		public String topPlayerTime;
+		public String bottomPlayerTime;
+		public String topPlayerCountry;
+		public String bottomPlayerCountry;
+		public int userSide;
+
+		public int getOpponentSide() {
+			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
+		}
+	}
+
 }

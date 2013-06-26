@@ -60,7 +60,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 		listLoadItem = new LoadItem();
 //		listLoadItem.setLoadPath(RestHelper.ECHESS_OPEN_INVITES);
 		listLoadItem.setLoadPath(RestHelper.CMD_GAMES_CHALLENGES);
-		listLoadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+		listLoadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 
 		listUpdateListener = new ListUpdateListener();
 
@@ -108,7 +108,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
-			startActivity(AppData.getMembershipAndroidIntent(this));
+			startActivity(getAppData().getMembershipAndroidIntent());
 
 		} else if (view.getId() == R.id.friendchallenge) {
 			startActivity(new Intent(this, OnlineFriendChallengeActivity.class));
@@ -139,7 +139,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 		if(tag.equals(CHALLENGE_ACCEPT_TAG)){
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(gameListElement.getGameId()));
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 			successToastMsgId = R.string.challenge_accepted;
 
 			new RequestJsonTask<DailyGameAcceptItem>(challengeInviteUpdateListener).executeTask(loadItem);
@@ -159,7 +159,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(gameListElement.getGameId()));
 			loadItem.setRequestMethod(RestHelper.DELETE);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 			successToastMsgId = R.string.challenge_declined;
 
 			new RequestJsonTask<DailyGameAcceptItem>(challengeInviteUpdateListener).executeTask(loadItem);

@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
@@ -70,7 +69,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	@Override
 	protected boolean isGameOver() {
 		//saving game for comp game mode if human is playing
-		if ((AppData.isComputerVsHumanGameMode(getBoardFace()) || AppData.isHumanVsHumanGameMode(getBoardFace()))
+		if ((getAppData().isComputerVsHumanGameMode(getBoardFace()) || getAppData().isHumanVsHumanGameMode(getBoardFace()))
 				&& !getBoardFace().isAnalysis()) {
 
 			StringBuilder builder = new StringBuilder();
@@ -89,7 +88,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 			}
 
 			SharedPreferences.Editor editor = preferences.edit();
-			editor.putString(AppData.getUserName(getContext()) + AppConstants.SAVED_COMPUTER_GAME, builder.toString());
+			editor.putString(getAppData().getUserName() + AppConstants.SAVED_COMPUTER_GAME, builder.toString());
 			editor.commit();
 		}
 		return super.isGameOver();

@@ -3,7 +3,10 @@ package com.chess.ui.fragments.friends;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
@@ -11,7 +14,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.DailySeekItem;
 import com.chess.backend.entity.new_api.FriendsItem;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
@@ -78,7 +80,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		init();
 
 		if (need2update){
-			boolean haveSavedData = DBDataManager.haveSavedFriends(getActivity());
+			boolean haveSavedData = DBDataManager.haveSavedFriends(getActivity(), getUserName());
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
 				updateData();
@@ -114,7 +116,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_FRIENDS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 
 		new RequestJsonTask<FriendsItem>(friendsUpdateListener).executeTask(loadItem);
 	}
@@ -185,7 +187,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 	private void loadFromDb() {
 		new LoadDataFromDbTask(friendsCursorUpdateListener,
-				DbHelper.getUserParams(AppData.getUserName(getActivity()), DBConstants.FRIENDS),
+				DbHelper.getUserParams(getAppData().getUserName(), DBConstants.FRIENDS),
 				getContentResolver()).executeTask();
 
 	}
@@ -278,7 +280,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, days);
 		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
 		loadItem.addRequestParams(RestHelper.P_IS_RATED, isRated);

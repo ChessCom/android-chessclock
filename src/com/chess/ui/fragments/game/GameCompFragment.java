@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
@@ -38,7 +38,6 @@ import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsCompView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -72,7 +71,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 	private NotationView notationsView;
 	private boolean humanBlack;
-	private ArrayList<String> optionsList;
+	private SparseArray<String> optionsArray;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 
 	public GameCompFragment() {
@@ -128,7 +127,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 		ChessBoardComp.resetInstance();
 		getBoardFace().setMode(getArguments().getInt(MODE));
-		if (AppData.haveSavedCompGame(getActivity())) {
+		if (getAppData().haveSavedCompGame()) {
 			loadSavedGame();
 		}
 		resideBoardIfCompWhite();
@@ -136,9 +135,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 		if (!getBoardFace().isAnalysis()) {
 
-			boolean isComputerMove = (AppData.isComputerVsComputerGameMode(getBoardFace()))
-					|| (AppData.isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
-					|| (AppData.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove());
+			boolean isComputerMove = (getAppData().isComputerVsComputerGameMode(getBoardFace()))
+					|| (getAppData().isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
+					|| (getAppData().isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove());
 
 			if (isComputerMove) {
 				computerMove();
@@ -149,7 +148,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	@Override
 	public void onPause() {
 		super.onPause();
-		if (AppData.isComputerVsComputerGameMode(getBoardFace()) || AppData.isComputerVsHumanGameMode(getBoardFace())
+		if (getAppData().isComputerVsComputerGameMode(getBoardFace()) || getAppData().isComputerVsHumanGameMode(getBoardFace())
 				&& boardView.isComputerMoving()) { // probably isComputerMoving() is only necessary to check without extra check of game mode
 
 			boardView.stopComputerMove();
@@ -189,7 +188,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		if (optionsSelectFragment != null) {
 			return;
 		}
-		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsList);
+		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsArray);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
 	}
 
@@ -200,7 +199,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	@Override
 	public void invalidateGameScreen() {
 		if (!labelsSet) {
-			String userName = AppData.getUserName(getActivity());
+			String userName = getAppData().getUserName();
 			switch (getBoardFace().getMode()) {
 				case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {    //w - human; b - comp
 					humanBlack = false;
@@ -322,7 +321,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	}
 
 	private void loadSavedGame() {
-		String[] moves = AppData.getCompSavedGame(getActivity()).split(RestHelper.SYMBOL_PARAMS_SPLIT_SLASH);
+		String[] moves = getAppData().getCompSavedGame().split(RestHelper.SYMBOL_PARAMS_SPLIT_SLASH);
 
 		BoardFace boardFace = getBoardFace();
 		boardFace.setMovesCount(moves.length);
@@ -337,7 +336,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 						Integer.parseInt(move[2]),
 						Integer.parseInt(move[3])), false);
 			} catch (Exception e) {
-				String debugInfo = "move=" + moves[i] + AppData.getCompSavedGame(getActivity());
+				String debugInfo = "move=" + moves[i] + getAppData().getCompSavedGame();
 				BugSenseHandler.addCrashExtraData("APP_COMP_DEBUG", debugInfo);
 				throw new IllegalArgumentException(debugInfo, e);
 			}
@@ -359,7 +358,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 	@Override
 	public Boolean isUserColorWhite() {
-		return AppData.isComputerVsHumanWhiteGameMode(getBoardFace());
+		return getAppData().isComputerVsHumanWhiteGameMode(getBoardFace());
 	}
 
 	@Override
@@ -381,7 +380,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 				[Termination "alien_roger won on time"]
 				 */
 		CharSequence moves = getBoardFace().getMoveListSAN();
-		String whitePlayerName = AppData.getUserName(getContext());
+		String whitePlayerName = getAppData().getUserName();
 		String blackPlayerName = getString(R.string.comp);
 		String result = GAME_GOES;
 
@@ -394,7 +393,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		}
 		if (!isUserColorWhite()) {
 			whitePlayerName = getString(R.string.comp);
-			blackPlayerName = AppData.getUserName(getContext());
+			blackPlayerName = getAppData().getUserName();
 		}
 		String date = datePgnFormat.format(Calendar.getInstance().getTime());
 
@@ -446,7 +445,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.shareBtn).setOnClickListener(this);
 
-		AppData.clearSavedCompGame(getActivity());
+		getAppData().clearSavedCompGame();
 
 		controlsCompView.enableHintButton(false);
 //		if (AppUtils.isNeedToUpgrade(getActivity())) {
@@ -455,14 +454,14 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	}
 
 	private void resideBoardIfCompWhite() {
-		if (AppData.isComputerVsHumanBlackGameMode(getBoardFace())) {
+		if (getAppData().isComputerVsHumanBlackGameMode(getBoardFace())) {
 			getBoardFace().setReside(true);
 			boardView.invalidate();
 		}
 	}
 
 	private void computerMove() {
-		boardView.computerMove(AppData.getCompThinkTime(getContext()));
+		boardView.computerMove(getAppData().getCompThinkTime());
 	}
 
 	@Override
@@ -561,14 +560,14 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		public String composeMessage() {
 			String vsStr = getString(R.string.vs);
 			String space = StaticData.SYMBOL_SPACE;
-			return AppData.getUserName(getActivity())+ space + vsStr + space + getString(R.string.vs_computer)
+			return getAppData().getUserName()+ space + vsStr + space + getString(R.string.vs_computer)
 					+ " - " + getString(R.string.chess) + space	+ getString(R.string.via_chesscom);
 		}
 
 		public String getTitle() {
 			String vsStr = getString(R.string.vs);
 			String space = StaticData.SYMBOL_SPACE;
-			return "Chess: " + AppData.getUserName(getActivity())+ space + vsStr + space + getString(R.string.vs_computer); // TODO adjust i18n
+			return "Chess: " + getAppData().getUserName()+ space + vsStr + space + getString(R.string.vs_computer); // TODO adjust i18n
 		}
 	}
 
@@ -602,7 +601,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 			if (getBoardFace().getMode() != AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) {
 				ImageDownloaderToListener imageDownloader = new ImageDownloaderToListener(getContext());
 
-				String userAvatarUrl = AppData.getUserAvatar(getContext());
+				String userAvatarUrl = getAppData().getUserAvatar();
 				ImageUpdateListener imageUpdateListener = new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR);
 				imageDownloader.download(userAvatarUrl, imageUpdateListener, AVATAR_SIZE);
 			}
@@ -625,11 +624,11 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		controlsCompView.enableHintButton(true);
 
 		{// options list setup
-			optionsList = new ArrayList<String>();
-			optionsList.add(getString(R.string.new_game));
-			optionsList.add(getString(R.string.email_game));
-			optionsList.add(getString(R.string.flip_board));
-			optionsList.add(getString(R.string.settings));
+			optionsArray = new SparseArray<String>();
+			optionsArray.put(ID_NEW_GAME, getString(R.string.new_game));
+			optionsArray.put(ID_EMAIL_GAME, getString(R.string.email_game));
+			optionsArray.put(ID_FLIP_BOARD, getString(R.string.flip_board));
+			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
 	}
 

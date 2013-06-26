@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.StaticData;
 import com.mopub.mobileads.MoPubView;
 
 public class MopubHelper {
@@ -19,12 +19,12 @@ public class MopubHelper {
 	private static MoPubView rectangleAdView;
 
 	public static void showBannerAd(Button upgradeBtn, MoPubView moPubAdView, Context context) {
-		/*if (!AppUtils.isNeedToUpgrade(context)) {
-			return;
-		}*/
-
-		SharedPreferences preferences = AppData.getPreferences(context);
+		SharedPreferences preferences = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
+
+		if (!AppUtils.isNeedToUpgrade(context)) {
+			return;
+		}
 
 		int adsShowCounter = preferences.getInt(AppConstants.ADS_SHOW_COUNTER, 0);
 
@@ -50,18 +50,18 @@ public class MopubHelper {
 		setListener(rectangleAdView, new MopubListener());
 	}
 
-    public static void destroyRectangleAd(){
-        if (rectangleAdView != null)
+    public static void destroyRectangleAd() {
+        if(rectangleAdView != null)
             rectangleAdView.destroy();
     }
 
 	public static void showRectangleAd(LinearLayout wrapper, Context context) {
-		/*if (!AppUtils.isNeedToUpgrade(context) || rectangleAdView == null) {
-			return;
-		}*/
-
-		SharedPreferences preferences = AppData.getPreferences(context);
+		SharedPreferences preferences = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
+
+		if (!AppUtils.isNeedToUpgrade(context) || rectangleAdView == null) {
+			return;
+		}
 
 		/*if (rectangleAdView == null) {
 			createRectangleAd(app);
@@ -81,6 +81,11 @@ public class MopubHelper {
 		preferencesEditor.commit();
 
 	}
+
+//	public static boolean isShowAds(Context context) {  // we need only one way to detect way in other way it rise NPE for upgrade button
+//		return false;
+//		//return AppUtils.isNeedToUpgrade(context) /*&& VERSION.SDK_INT < 14*/;
+//	}
 
 	public static void setListener(MoPubView mopPubView, MopubListener mopubListener) {
 		mopPubView.setOnAdClickedListener(mopubListener);

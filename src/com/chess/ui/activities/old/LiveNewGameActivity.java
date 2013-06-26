@@ -27,7 +27,7 @@ public class LiveNewGameActivity extends LiveBaseActivity {
 		currentGameBtn = (Button) findViewById(R.id.currentGameBtn);
 		currentGameBtn.setOnClickListener(this);
 
-//		AppData.setLiveChessMode(this, true); // should not duplicate logic
+//		getAppData().setLiveChessMode(this, true); // should not duplicate logic
 		Log.d("TEST", " new game onCreate");
 	}
 
@@ -47,7 +47,7 @@ public class LiveNewGameActivity extends LiveBaseActivity {
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
-			startActivity(AppData.getMembershipAndroidIntent(this));
+			startActivity(getAppData().getMembershipAndroidIntent());
 		} else if (view.getId() == R.id.friendchallenge) {
 			startActivity(new Intent(this, LiveFriendChallengeActivity.class));
 		} else if (view.getId() == R.id.challengecreate) {

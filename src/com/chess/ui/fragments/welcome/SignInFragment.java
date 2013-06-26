@@ -10,8 +10,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.statics.AppData;
-import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
 
@@ -52,8 +50,8 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 	@Override
 	public void onResume() {
 		super.onResume();
-		loginUsernameEdt.setText(AppData.getUserName(getActivity()));
-		loginPasswordEdt.setText(AppData.getPassword(getActivity()));
+		loginUsernameEdt.setText(getAppData().getUserName());
+		loginPasswordEdt.setText(getAppData().getPassword());
 	}
 
 
@@ -69,7 +67,7 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 		if (id == R.id.signinBtn) {
 			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live   // TODO restore
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
-				showPopupDialog(R.string.no_network, BasePopupsFragment.NETWORK_CHECK_TAG);
+				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
 			} else {
 				signInUser();
 			}
@@ -80,7 +78,7 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK) {
-			if (requestCode == BasePopupsFragment.NETWORK_REQUEST) {
+			if (requestCode == NETWORK_REQUEST) {
 				signInUser();
 			}
 		}
@@ -102,7 +100,7 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 				|| keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
-				showPopupDialog(R.string.warning, R.string.no_network, BasePopupsFragment.NETWORK_CHECK_TAG);
+				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 			} else {
 				signInUser();
 			}
@@ -118,7 +116,7 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 			return;
 		}
 
-		if (tag.equals(BasePopupsFragment.NETWORK_CHECK_TAG)) {
+		if (tag.equals(NETWORK_CHECK_TAG)) {
 			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
 			return;
 		}

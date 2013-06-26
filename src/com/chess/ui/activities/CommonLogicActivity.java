@@ -26,10 +26,7 @@ import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.entity.new_api.MovesStatusItem;
 import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.FlurryData;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.*;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import com.facebook.widget.LoginButton;
@@ -77,7 +74,9 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	private EditText loginUsernameEdt;
 	private EditText passwordEdt;
 	protected boolean isRestarted;
-
+	private AppData appData;
+	protected SharedPreferences preferences;
+	protected SharedPreferences.Editor preferencesEditor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +84,26 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 		backgroundChessDrawable = new BackgroundChessDrawable(this);
 
+		appData = new AppData(this);
+		preferences = appData.getPreferences();
+		preferencesEditor = appData.getEditor();
+
 		currentLocale = preferences.getString(AppConstants.CURRENT_LOCALE, StaticData.LOCALE_EN);
 
 		handler = new Handler();
 		setLocale();
+	}
+
+	protected AppData getAppData() {
+		return appData == null? new AppData(this) : appData;
+	}
+
+	protected String getCurrentUserName() {
+		return getAppData().getUserName();
+	}
+
+	protected String getCurrentUserToken() {
+		return getAppData().getUserToken();
 	}
 
 //	@Override
@@ -143,11 +158,11 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		isRestarted = false;
 	}
 
-	protected void setLocale(){
+	protected void setLocale() {
 		String prevLang = getResources().getConfiguration().locale.getLanguage();
 		String[] languageCodes = getResources().getStringArray(R.array.languages_codes);
 
-		String setLocale = languageCodes[AppData.getLanguageCode(this)];
+		String setLocale = languageCodes[appData.getLanguageCode()];
 		if(!prevLang.equals(setLocale)) {
 			Locale locale = new Locale(setLocale);
 			Locale.setDefault(locale);
@@ -180,7 +195,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	}
 
 	protected void registerGcmService(){
-		if (!AppData.isNotificationsEnabled(this)) { // no need to register if user turned off notifications
+		if (!appData.isNotificationsEnabled()) { // no need to register if user turned off notifications
 			return;
 		}
 		/* When an application is updated, it should invalidate its existing registration ID.
@@ -198,7 +213,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 			Log.d("TEST", " no regId - > GCMRegistrar.register");
 		} else {
 			// Device is already registered on GCM, check server.
-			if (GCMRegistrar.isRegisteredOnServer(this) && AppData.isRegisterOnChessGCM(this)) {
+			if (GCMRegistrar.isRegisteredOnServer(this) && appData.isRegisterOnChessGCM()) {
 				// Skips registration.
 			} else {
 				// Try to register again, but not in the UI thread.
@@ -209,7 +224,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 //				loadItem.setLoadPath(RestHelper.GCM_REGISTER);
 				loadItem.setLoadPath(RestHelper.CMD_GCM);
 				loadItem.setRequestMethod(RestHelper.POST);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(this));
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
 //				new PostJsonDataTask(new PostUpdateListener(REQUEST_REGISTER)).execute(loadItem);
@@ -220,7 +235,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 	protected void unRegisterGcmService(){
 		// save token to unregister from server
-		preferencesEditor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, AppData.getUserToken(this));
+		preferencesEditor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, appData.getUserToken());
 		preferencesEditor.commit();
 		GCMRegistrar.unregister(this);
 	}
@@ -243,11 +258,11 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
                 switch (requestCode) {
                     case GcmHelper.REQUEST_REGISTER:
                         GCMRegistrar.setRegisteredOnServer(getContext(), true);
-                        AppData.registerOnChessGCM(getContext(), AppData.getUserToken(getContext()));
+                        appData.registerOnChessGCM(appData.getUserToken());
                         break;
                     case GcmHelper.REQUEST_UNREGISTER:
                         GCMRegistrar.setRegisteredOnServer(getContext(), false);
-                        AppData.unRegisterOnChessGCM(getContext());
+                        appData.unRegisterOnChessGCM();
                         // remove saved token
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
@@ -484,7 +499,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 // 		preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]); // TODO used only for live, so should be separate connection to live
 		preferencesEditor.commit();
 
-		AppData.setLiveChessMode(this, false);
+		getAppData().setLiveChessMode(false);
 		DataHolder.reset();
 		TacticsDataHolder.reset();
 
@@ -526,7 +541,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	protected void checkMove(){
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_MOVES);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(this));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
 
 		new RequestJsonTask<MovesStatusItem>(new CheckMoveUpdateListener()).executeTask(loadItem);
 	}
@@ -566,8 +581,8 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 			}
 
 			if(haveMoves == 1){ // play for one
-				SharedPreferences preferences = AppData.getPreferences(getMeContext());
-				boolean playSounds = preferences.getBoolean(AppData.getUserName(getMeContext()) + AppConstants.PREF_SOUNDS, false);
+				SharedPreferences preferences = appData.getPreferences(getMeContext());
+				boolean playSounds = preferences.getBoolean(appData.getUserName(getMeContext()) + AppConstants.PREF_SOUNDS, false);
 				if(playSounds){
 					final MediaPlayer player = MediaPlayer.create(getMeContext(), R.raw.move_opponent);
 					if(player != null){

@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
@@ -25,17 +26,17 @@ import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.FlurryData;
-import com.chess.backend.statics.SoundPlayer;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.*;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.activities.CoreActivityActionBar;
+import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.fragments.daily.DailyGamesNotificationFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.welcome.SignInFragment;
+import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
+import com.chess.utilities.AppUtils;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
@@ -62,6 +63,12 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private static final int MIN_USERNAME_LENGTH = 3;
 	private static final int MAX_USERNAME_LENGTH = 20;
 
+	protected static final String RE_LOGIN_TAG = "re-login popup";
+	protected static final String NETWORK_CHECK_TAG = "network check popup";
+	protected static final int NETWORK_REQUEST = 3456;
+	protected static final String CHESS_NO_ACCOUNT_TAG = "chess no account popup";
+	protected static final String CHECK_UPDATE_TAG = "check update";
+
 	protected static final String MODE = "mode";
 
 	public static final int CENTER_MODE = 1;
@@ -71,6 +78,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected static final int ONE_ICON = 1;
 	protected static final int TWO_ICON = 2;
 	protected static final long SIDE_MENU_DELAY = 150;
+	private static final long SWITCH_DELAY = 50;
 
 	private LoginUpdateListener loginUpdateListener;
 
@@ -85,7 +93,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private int titleId;
 	private GraphUser facebookUser;
 	protected UiLifecycleHelper facebookUiHelper;
-	protected boolean facebookActive;
+	private boolean facebookActive;
 	protected View loadingView;
 	private int padding;
 	private int paddingCode;
@@ -101,8 +109,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		preferences = AppData.getPreferences(getActivity());
-		preferencesEditor = preferences.edit();
+		preferences = getAppData().getPreferences();
+		preferencesEditor = getAppData().getEditor();
 
 		handler = new Handler();
 		setHasOptionsMenu(true);
@@ -337,6 +345,21 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	}
 
+	@Override
+	public void onPositiveBtnClick(DialogFragment fragment) {
+
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(RE_LOGIN_TAG)) {
+			performLogout();
+		}
+		super.onPositiveBtnClick(fragment);
+	}
+
 	protected void setBadgeValueForId(int menuId, int value) {
 		getActivityFace().setBadgeValueForId(menuId, value);
 	}
@@ -369,6 +392,20 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			super.showProgress(show);
 			if (loadingView != null) {
 				loadingView.setVisibility(show ? View.VISIBLE : View.GONE);
+			}
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+
+			// show message only for re-login
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCode.INVALID_LOGIN_TOKEN_SUPPLIED) {
+
+					safeShowSinglePopupDialog(R.string.session_expired, RE_LOGIN_TAG);
+				}
 			}
 		}
 	}
@@ -446,7 +483,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		preferencesEditor.putString(USER_TOKEN, returnedObj.getLoginToken());
 		preferencesEditor.commit();
 
-		AppData.setLiveChessMode(getActivity(), false);
+		getAppData().setLiveChessMode(false);
 		DataHolder.reset();
 		TacticsDataHolder.reset();
 
@@ -506,6 +543,56 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected void logTest(String messageToLog) {
 		Log.d("TEST", messageToLog);
+	}
+
+	protected AppData getAppData() {
+		return getActivityFace().getMeAppData();
+	}
+
+	protected String getUserName() {
+		return getActivityFace().getMeUserName();
+	}
+
+	protected String getUserToken() {
+		return getActivityFace().getMeUserToken();
+	}
+
+	protected void setFacebookActive(boolean active) {
+		facebookActive = active;
+	}
+
+	protected void performLogout() {
+		// un-register from GCM
+		unRegisterGcmService();
+
+		// logout from facebook
+		Session facebookSession = Session.getActiveSession();
+		if (facebookSession != null) {
+			facebookSession.closeAndClearTokenInformation();
+			Session.setActiveSession(null);
+		}
+
+		preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
+		preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
+		preferencesEditor.commit();
+
+		AppUtils.cancelNotifications(getActivity());
+		getActivityFace().clearFragmentStack();
+		// make pause to wait while transactions complete
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				getActivityFace().switchFragment(new WelcomeTabsFragment());
+			}
+		}, SWITCH_DELAY);
+
+		// clear theme
+		getAppData().setThemeBackId(R.drawable.img_theme_green_felt);
+		getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
+
+		// clear comp game
+		ChessBoardComp.resetInstance();
+		getAppData().clearSavedCompGame();
 	}
 
 //	public void printHashKey() { Don't remove, use to find needed facebook hashkey

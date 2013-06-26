@@ -15,6 +15,9 @@ public abstract class SaveDailyGamesTask<T extends DailyGameBaseData> extends Ab
 
 	private static final String TAG = "SaveDailyGamesTask";
 	private final LoadItem loadItem;
+	protected String userName;
+	protected String userToken;
+	protected AppData appData;
 	protected ContentResolver contentResolver;
 	protected static String[] arguments = new String[2];
 
@@ -32,8 +35,9 @@ public abstract class SaveDailyGamesTask<T extends DailyGameBaseData> extends Ab
 			cancel(true);
 			return;
 		}
-
-		String userToken = AppData.getUserToken(taskFace.getMeContext());
+		appData = new AppData(getTaskFace().getMeContext());
+		userToken = appData.getUserToken();
+		userName = appData.getUserName();
 
 		loadItem.setLoadPath(RestHelper.CMD_GAMES);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, userToken);

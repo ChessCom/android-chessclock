@@ -17,7 +17,6 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.RequestItem;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
@@ -61,7 +60,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 
-		Cursor cursor = DBDataManager.getRecentOpponentsCursor(getActivity());
+		Cursor cursor = DBDataManager.getRecentOpponentsCursor(getActivity(), getUserName());
 
 		RecentOpponentsCursorAdapter adapter = new RecentOpponentsCursorAdapter(getActivity(), cursor);
 
@@ -88,7 +87,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 
 		facebookUiHelper = new UiLifecycleHelper(getActivity(), callback);
 		facebookUiHelper.onCreate(savedInstanceState);
-		facebookActive = true;
+		setFacebookActive(true);
 	}
 
 	@Override
@@ -172,7 +171,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.setLoadPath(RestHelper.CMD_FRIENDS_REQUEST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_USERNAME, username);
 		loadItem.addRequestParams(RestHelper.P_MESSAGE, message);
 

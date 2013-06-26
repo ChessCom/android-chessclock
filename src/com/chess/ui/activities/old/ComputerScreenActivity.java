@@ -42,9 +42,9 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 	@Override
 	protected void onResume() {
 		super.onResume();
-//		strength.setSelection(AppData.getCompStrength(this));
+//		strength.setSelection(getAppData().getCompStrength(this));
 
-		if (AppData.haveSavedCompGame(this)) {
+		if (getAppData().haveSavedCompGame()) {
 			findViewById(R.id.load).setVisibility(View.VISIBLE);
 		} else {
 			findViewById(R.id.load).setVisibility(View.GONE);
@@ -56,7 +56,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 		if (view.getId() == R.id.load) {
 			FlurryAgent.logEvent(FlurryData.NEW_GAME_VS_COMPUTER);
 //			Intent intent = new Intent(this, GameCompScreenActivity.class);
-//			int compGameId = Integer.parseInt(AppData.getCompSavedGame(this).substring(0, 1));
+//			int compGameId = Integer.parseInt(getAppData().getCompSavedGame(this).substring(0, 1));
 //			intent.putExtra(AppConstants.GAME_MODE, compGameId);
 //			startActivity(intent);
 		} else if (view.getId() == R.id.start) {
@@ -73,7 +73,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 				mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
 
 			ChessBoardComp.resetInstance();
-			preferencesEditor.putString(AppData.getUserName(this) + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
+			preferencesEditor.putString(getAppData().getUserName() + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
 			preferencesEditor.commit();
 
 			FlurryAgent.logEvent(FlurryData.NEW_GAME_VS_COMPUTER);
@@ -85,7 +85,7 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 
 	@Override
 	public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-		preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_DELAY, pos);
+		preferencesEditor.putInt(getAppData().getUserName() + AppConstants.PREF_COMPUTER_DELAY, pos);
 		preferencesEditor.commit();
 	}
 

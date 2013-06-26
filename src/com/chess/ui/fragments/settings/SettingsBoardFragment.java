@@ -11,7 +11,6 @@ import android.widget.Spinner;
 import com.chess.R;
 import com.chess.SwitchButton;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.SelectionAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -76,15 +75,15 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 	@Override
 	public void onSwitchChanged(SwitchButton switchButton, boolean checked) {
 		if (switchButton.getId() == R.id.coordinatesSwitch) {
-			AppData.setShowCoordinates(getActivity(), checked);
+			getAppData().setShowCoordinates(checked);
 		} else if (switchButton.getId() == R.id.highlightLastMoveSwitch) {
-			AppData.setHighlightLastMove(getActivity(), checked);
+			getAppData().setHighlightLastMove(checked);
 		} else if (switchButton.getId() == R.id.showLegalMovesSwitch) {
-			AppData.setShowLegalMoves(getActivity(), checked);
+			getAppData().setShowLegalMoves(checked);
 		} else if (switchButton.getId() == R.id.answerShowBottomSwitch) {
-			AppData.setAnswerShowBottom(getActivity(), checked);
+			getAppData().setAnswerShowBottom(checked);
 		} else if (switchButton.getId() == R.id.soundsSwitch) {
-			AppData.setPlaySounds(getActivity(), checked);
+			getAppData().setPlaySounds(getActivity(), checked);
 		}
 	}
 
@@ -98,7 +97,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(pos);
 			selectionItem.setChecked(true);
 
-			AppData.setChessBoardId(getActivity(), pos);
+			getAppData().setChessBoardId(pos);
 
 			((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
 		}
@@ -118,7 +117,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(pos);
 			selectionItem.setChecked(true);
 
-			AppData.setPiecesId(getActivity(), pos);
+			getAppData().setPiecesId(pos);
 
 			((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
 		}
@@ -148,7 +147,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		view.findViewById(R.id.answerShowBottomView).setOnClickListener(this);
 		view.findViewById(R.id.soundsView).setOnClickListener(this);
 
-		String userName = AppData.getUserName(getActivity());
+		String userName = getAppData().getUserName();
 
 		soundsSwitch.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SOUNDS, true));
 		coordinatesSwitch.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_COORDINATES, true));

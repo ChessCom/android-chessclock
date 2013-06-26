@@ -16,7 +16,6 @@ import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.new_api.DailyCurrentGameData;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
@@ -37,6 +36,7 @@ import com.chess.ui.views.chess_boards.ChessBoardAnalysisView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsAnalysisView;
+import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -67,6 +67,8 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	private BoardAvatarDrawable opponentAvatarDrawable;
 	private BoardAvatarDrawable userAvatarDrawable;
 	private LabelsConfig labelsConfig;
+	private String[] countryNames;
+	private int[] countryCodes;
 
 	public static GameDailyAnalysisFragment createInstance(long gameId) {
 		GameDailyAnalysisFragment fragment = new GameDailyAnalysisFragment();
@@ -82,7 +84,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		labelsConfig = new LabelsConfig();
+		init();
 	}
 
 	@Override
@@ -99,58 +101,13 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		widgetsInit(view);
 	}
 
-	private void widgetsInit(View view) {
-		controlsView = (ControlsAnalysisView) view.findViewById(R.id.controlsAnalysisView);
-		notationsView = (NotationView) view.findViewById(R.id.notationsView);
-		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
-		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
-
-		{// set avatars
-			Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
-					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
-			opponentAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
-			userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
-
-			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-
-			labelsConfig.topAvatar = opponentAvatarDrawable;
-			labelsConfig.bottomAvatar = userAvatarDrawable;
-		}
-
-		controlsView.enableGameControls(false);
-
-		boardView = (ChessBoardAnalysisView) view.findViewById(R.id.boardview);
-		boardView.setFocusable(true);
-		boardView.setTopPanelView(topPanelView);
-		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsView);
-		boardView.setNotationsView(notationsView);
-
-		setBoardView(boardView);
-
-		boardView.setGameActivityFace(this);
-		boardView.lockBoard(true);
-	}
-
 	@Override
 	public void onStart() {
 		super.onStart();
 
-		init();
-
 		DataHolder.getInstance().setInOnlineGame(gameId, true);
 		loadGame();
 	}
-
-	public void init() {
-		gameId = getArguments().getLong(BaseGameItem.GAME_ID, 0);
-
-		loadFromDbUpdateListener = new LoadFromDbUpdateListener(CURRENT_GAME);
-
-//		showActionRefresh = true;  // TODO restore
-	}
-
 
 	@Override
 	public void onPause() {
@@ -170,7 +127,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	private void loadGame() {
 		// load game from DB. After load update
-		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyGameParams(getActivity(), gameId),
+		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyGameParams(gameId, getUserName()),
 				getContentResolver()).executeTask();
 	}
 
@@ -202,19 +159,31 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			currentGame = DBDataManager.getDailyCurrentGameFromCursor(returnedObj);
 			returnedObj.close();
 
-			userPlayWhite = currentGame.getWhiteUsername().equals(AppData.getUserName(getActivity()));
+			userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUserName());
 
 			labelsConfig.topAvatar = opponentAvatarDrawable;
 			labelsConfig.bottomAvatar = userAvatarDrawable;
 
 			if (userPlayWhite) {
 				labelsConfig.userSide = ChessBoard.WHITE_SIDE;
-				labelsConfig.topPlayerLabel = getBlackPlayerName();
-				labelsConfig.bottomPlayerLabel = getWhitePlayerName();
+				labelsConfig.topPlayerName = currentGame.getBlackUsername();
+				labelsConfig.topPlayerRating = String.valueOf(currentGame.getBlackRating());
+				labelsConfig.bottomPlayerName = currentGame.getWhiteUsername();
+				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getWhiteRating());
+				labelsConfig.topPlayerAvatar = currentGame.getBlackAvatar();
+				labelsConfig.bottomPlayerAvatar = currentGame.getWhiteAvatar();
+				labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
+				labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
 			} else {
 				labelsConfig.userSide = ChessBoard.BLACK_SIDE;
-				labelsConfig.topPlayerLabel = getWhitePlayerName();
-				labelsConfig.bottomPlayerLabel = getBlackPlayerName();
+				labelsConfig.topPlayerName = currentGame.getWhiteUsername();
+				labelsConfig.topPlayerRating = String.valueOf(currentGame.getWhiteRating());
+				labelsConfig.bottomPlayerName = currentGame.getBlackUsername();
+				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
+				labelsConfig.topPlayerAvatar = currentGame.getWhiteAvatar();
+				labelsConfig.bottomPlayerAvatar = currentGame.getBlackAvatar();
+				labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
+				labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
 			}
 
 			DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
@@ -371,7 +340,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	@Override
 	public Boolean isUserColorWhite() {
 		if (currentGame != null)
-			return currentGame.getWhiteUsername().equals(AppData.getUserName(getActivity()));
+			return currentGame.getWhiteUsername().equals(getAppData().getUserName());
 		else
 			return null;
 	}
@@ -386,7 +355,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	}
 
 	private boolean isUserMove() {
-		userPlayWhite = currentGame.getWhiteUsername().equals(AppData.getUserName(getActivity()));
+		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUserName());
 
 		return /*(*/currentGame.isMyTurn()/*>WhiteMove() && userPlayWhite)
 				|| (!currentGame.isWhiteMove() && !userPlayWhite)*/;
@@ -490,18 +459,47 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		}
 	}
 
+	private void init() {
+		gameId = getArguments().getLong(BaseGameItem.GAME_ID, 0);
+		labelsConfig = new LabelsConfig();
 
-	private class LabelsConfig {
-		int topPlayerSide;
-		int bottomPlayerSide;
-		String topPlayerLabel;
-		String bottomPlayerLabel;
-		Drawable topAvatar;
-		Drawable bottomAvatar;
-		int userSide;
+		loadFromDbUpdateListener = new LoadFromDbUpdateListener(CURRENT_GAME);
 
-		int getOpponentSide() {
-			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
+		countryNames = getResources().getStringArray(R.array.new_countries);
+		countryCodes = getResources().getIntArray(R.array.new_country_ids);
+	}
+
+	private void widgetsInit(View view) {
+		controlsView = (ControlsAnalysisView) view.findViewById(R.id.controlsAnalysisView);
+		notationsView = (NotationView) view.findViewById(R.id.notationsView);
+		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
+		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
+
+		{// set avatars
+			Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
+					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
+			opponentAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
+			userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
+
+			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+
+			labelsConfig.topAvatar = opponentAvatarDrawable;
+			labelsConfig.bottomAvatar = userAvatarDrawable;
 		}
+
+		controlsView.enableGameControls(false);
+
+		boardView = (ChessBoardAnalysisView) view.findViewById(R.id.boardview);
+		boardView.setFocusable(true);
+		boardView.setTopPanelView(topPanelView);
+		boardView.setBottomPanelView(bottomPanelView);
+		boardView.setControlsView(controlsView);
+		boardView.setNotationsView(notationsView);
+
+		setBoardView(boardView);
+
+		boardView.setGameActivityFace(this);
+		boardView.lockBoard(true);
 	}
 }

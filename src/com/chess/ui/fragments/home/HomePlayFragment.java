@@ -15,7 +15,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.DailySeekItem;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
@@ -30,6 +29,7 @@ import com.chess.ui.fragments.game.GameCompFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +42,7 @@ import java.util.Map;
  * Date: 11.04.13
  * Time: 18:29
  */
-public class HomePlayFragment extends CommonLogicFragment {
+public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu.OnOpenedListener{
 	private static final String ERROR_TAG = "error popup";
 
 	private TextView liveRatingTxt;
@@ -128,9 +128,19 @@ public class HomePlayFragment extends CommonLogicFragment {
 	public void onStart() {
 		super.onStart();
 
-		setRatings();
+		getActivityFace().addOnOpenMenuListener(this);
 
-		loadRecentOpponents();
+		if (positionMode == CENTER_MODE) {
+			setRatings();
+			loadRecentOpponents();
+		}
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		getActivityFace().removeOnOpenMenuListener(this);
 	}
 
 	@Override
@@ -140,7 +150,7 @@ public class HomePlayFragment extends CommonLogicFragment {
 	}
 
 	private void loadRecentOpponents() {
-		Cursor cursor = DBDataManager.getRecentOpponentsCursor(getActivity());// TODO load avatars
+		Cursor cursor = DBDataManager.getRecentOpponentsCursor(getActivity(), getUserName());// TODO load avatars
 		if (cursor != null && cursor.moveToFirst()) {
 			if (cursor.getCount() >= 2) {
 				inviteFriendView1.setVisibility(View.VISIBLE);
@@ -208,12 +218,12 @@ public class HomePlayFragment extends CommonLogicFragment {
 	}
 
 	private void setRatings() {
-		// set live rating
-		int liveRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.GAME_STATS_LIVE_STANDARD);
+		// set live rating    // TODO remove open menu listener when fragment goes on pause
+		int liveRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.GAME_STATS_LIVE_STANDARD, getUserName());
 		liveRatingTxt.setText(String.valueOf(liveRating));
 
 		// set daily rating
-		int dailyRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.GAME_STATS_DAILY_CHESS);
+		int dailyRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.GAME_STATS_DAILY_CHESS, getUserName());
 		dailyRatingTxt.setText(String.valueOf(dailyRating));
 
 	}
@@ -243,7 +253,7 @@ public class HomePlayFragment extends CommonLogicFragment {
 		view.setSelected(true);
 		liveTimeSelectBtn.setText(getLiveModeButtonLabel(newGameButtonsArray[mode]));
 		liveGameConfigBuilder.setTimeFromLabel(newGameButtonsArray[mode]);
-		AppData.setDefaultLiveMode(getActivity(), mode);
+		getAppData().setDefaultLiveMode(mode);
 	}
 
 	private void toggleLiveOptionsView() {
@@ -252,7 +262,7 @@ public class HomePlayFragment extends CommonLogicFragment {
 			view.setVisibility(liveOptionsVisible ? View.VISIBLE : View.GONE);
 		}
 
-		int selectedLiveTimeMode = AppData.getDefaultLiveMode(getActivity());
+		int selectedLiveTimeMode = getAppData().getDefaultLiveMode();
 		for (Map.Entry<Integer, Button> buttonEntry : liveButtonsModeMap.entrySet()) {
 			Button button = buttonEntry.getValue();
 			button.setVisibility(liveOptionsVisible ? View.VISIBLE : View.GONE);
@@ -277,7 +287,7 @@ public class HomePlayFragment extends CommonLogicFragment {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, days);
 		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
 		loadItem.addRequestParams(RestHelper.P_IS_RATED, isRated);
@@ -308,6 +318,19 @@ public class HomePlayFragment extends CommonLogicFragment {
 		@Override
 		public void errorHandle(String resultMessage) {
 			showPopupDialog(getString(R.string.error), resultMessage, ERROR_TAG);
+		}
+	}
+
+	@Override
+	public void onOpened() {
+
+	}
+
+	@Override
+	public void onOpenedRight() {
+		if (positionMode == RIGHT_MENU_MODE && !isPaused) {
+			setRatings();
+			loadRecentOpponents();
 		}
 	}
 
@@ -350,7 +373,6 @@ public class HomePlayFragment extends CommonLogicFragment {
 			vsComputerHeaderTxt.setTextColor(darkTextColor);
 		}
 
-
 		liveRatingTxt = (TextView) view.findViewById(R.id.liveRatingTxt);
 		dailyRatingTxt = (TextView) view.findViewById(R.id.dailyRatingTxt);
 
@@ -385,7 +407,7 @@ public class HomePlayFragment extends CommonLogicFragment {
 			liveButtonsModeMap.put(6, (Button) view.findViewById(R.id.blitz4SelectBtn));
 			liveButtonsModeMap.put(7, (Button) view.findViewById(R.id.bullet2SelectBtn));
 
-			int mode = AppData.getDefaultLiveMode(getActivity());
+			int mode = getAppData().getDefaultLiveMode();
 			darkBtnColor = getResources().getColor(R.color.text_controls_icons_white);
 			// set texts to buttons
 			newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);

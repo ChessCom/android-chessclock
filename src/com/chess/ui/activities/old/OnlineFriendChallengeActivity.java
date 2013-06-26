@@ -73,7 +73,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 	private void updateData(){
 		LoadItem loadItem = new LoadItem();   // TODO cache results or pre-load
 		loadItem.setLoadPath(RestHelper.CMD_FRIENDS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(this));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 
 		new RequestJsonTask<FriendsItem>(initUpdateListener).executeTask(loadItem);
 	}
@@ -120,7 +120,7 @@ public class OnlineFriendChallengeActivity extends LiveBaseActivity implements O
 //		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);
 		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(this));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, days);
 		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
 		loadItem.addRequestParams(RestHelper.P_IS_RATED, isRated);

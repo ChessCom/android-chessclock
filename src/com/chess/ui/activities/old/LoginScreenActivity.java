@@ -68,7 +68,7 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 		} else if (view.getId() == R.id.guestPlayBtn) {
 			DataHolder.reset();
 			TacticsDataHolder.reset();
-			AppData.setLiveChessMode(this, false);
+			getAppData().setLiveChessMode(false);
 
 			Intent intent = new Intent(this, HomeScreenActivity.class);
 			startActivity(intent);
@@ -93,10 +93,10 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 	protected void onResume() {
 		super.onResume();
 
-		AppData.setLiveChessMode(this, true);
+		getAppData().setLiveChessMode(true);
 
-		loginUsernameEdt.setText(AppData.getUserName(this));
-		loginPasswordEdt.setText(AppData.getPassword(this));
+		loginUsernameEdt.setText(getAppData().getUserName());
+		loginPasswordEdt.setText(getAppData().getPassword());
 
 		long startDay = preferences.getLong(AppConstants.START_DAY, 0);
 		if (startDay == 0 || !DateUtils.isToday(startDay)) {
@@ -113,7 +113,7 @@ public class LoginScreenActivity extends CommonLogicActivity implements View.OnC
 	@Override
 	protected void afterLogin() {
 		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
-		if (AppData.isNotificationsEnabled(this)){
+		if (getAppData().isNotificationsEnabled()){
 			checkMove();
 		}
 

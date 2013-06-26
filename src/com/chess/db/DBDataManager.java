@@ -7,7 +7,6 @@ import android.net.Uri;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.new_api.*;
 import com.chess.backend.entity.new_api.stats.*;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 
 import java.util.ArrayList;
@@ -193,11 +192,12 @@ public class DBDataManager {
 
 	/**
 	 * Check if we have saved games for current user
+	 *
 	 * @param context to get resources
+	 * @param userName
 	 * @return true if cursor can be positioned to first
 	 */
-	public static boolean haveSavedDailyGame(Context context) {
-		String userName = getUserName(context);
+	public static boolean haveSavedDailyGame(Context context, String userName) {
 
 		ContentResolver contentResolver = context.getContentResolver();
 		final String[] arguments1 = sArguments1;
@@ -242,9 +242,8 @@ public class DBDataManager {
 	 *
 	 * @return true if still have current games
 	 */
-	public static boolean checkAndDeleteNonExistCurrentGames(Context context, List<DailyCurrentGameData> gamesList) {
+	public static boolean checkAndDeleteNonExistCurrentGames(Context context, List<DailyCurrentGameData> gamesList, String userName) {
 		// compare to current list games
-		String userName = getUserName(context);
 
 		ContentResolver contentResolver = context.getContentResolver();
 		final String[] arguments1 = sArguments1;
@@ -294,10 +293,8 @@ public class DBDataManager {
 		return gamesIds.length > idsToRemove.size();
 	}
 
-
-	public static boolean checkAndDeleteNonExistFinishedGames(Context context, List<DailyFinishedGameData> gamesList) {
+	public static boolean checkAndDeleteNonExistFinishedGames(Context context, List<DailyFinishedGameData> gamesList, String userName) {
 		// compare to current list games
-		String userName = getUserName(context);
 
 		ContentResolver contentResolver = context.getContentResolver();
 		final String[] arguments1 = sArguments1;
@@ -347,8 +344,7 @@ public class DBDataManager {
 		return gamesIds.length > idsToRemove.size();
 	}
 
-	public static Cursor getRecentOpponentsCursor(Context context) {
-		String userName = getUserName(context);
+	public static Cursor getRecentOpponentsCursor(Context context, String userName) {
 
 		ContentResolver contentResolver = context.getContentResolver();
 		final String[] arguments3 = sArguments3;
@@ -386,8 +382,7 @@ public class DBDataManager {
 	 * @param context to get resources
 	 * @return true if cursor can be positioned to first
 	 */
-	public static boolean haveSavedFriends(Context context) {
-		String userName = getUserName(context);
+	public static boolean haveSavedFriends(Context context, String userName) {
 
 		ContentResolver contentResolver = context.getContentResolver();
 		final String[] arguments1 = sArguments1;
@@ -404,17 +399,14 @@ public class DBDataManager {
 		return exist;
 	}
 
-	public static String getUserName(Context context){
-		return AppData.getUserName(context);
-    }
-
     /**
      * Check if we have saved games for current user
-     * @param context to get resources
-     * @return true if cursor can be positioned to first
+     *
+	 * @param context to get resources
+	 * @param userName
+	 * @return true if cursor can be positioned to first
      */
-    public static boolean haveSavedTacticGame(Context context) {
-        String userName = getUserName(context);
+    public static boolean haveSavedTacticGame(Context context, String userName) {
 
         ContentResolver contentResolver = context.getContentResolver();
         final String[] arguments1 = sArguments1;
@@ -428,8 +420,7 @@ public class DBDataManager {
         return exist;
     }
 
-    public static int saveTacticItemToDb(Context context, TacticItem.Data tacticItem){
-        String userName = getUserName(context);
+    public static int saveTacticItemToDb(Context context, TacticItem.Data tacticItem, String userName){
         ContentResolver contentResolver = context.getContentResolver();
 
         final String[] arguments2 = sArguments2;
@@ -456,8 +447,7 @@ public class DBDataManager {
         return StaticData.RESULT_OK;
     }
 
-    public static TacticItem.Data getLastTacticItemFromDb(Context context) {
-        String userName = getUserName(context);
+    public static TacticItem.Data getLastTacticItemFromDb(Context context, String userName) {
         ContentResolver contentResolver = context.getContentResolver();
 
         final String[] arguments1 = sArguments1;
@@ -471,7 +461,7 @@ public class DBDataManager {
 		cursor.close();
 
         // set result item
-		TacticRatingData resultItem = getTacticResultItemFromDb(context, tacticItem.getId());
+		TacticRatingData resultItem = getTacticResultItemFromDb(context, tacticItem.getId(), userName);
         tacticItem.setResultItem(resultItem);
 
         return tacticItem;
@@ -498,8 +488,7 @@ public class DBDataManager {
         cursor.close();
     }
 
-    private static TacticRatingData getTacticResultItemFromDb(Context context, long id){
-        String userName = getUserName(context);
+    private static TacticRatingData getTacticResultItemFromDb(Context context, long id, String userName){
         ContentResolver contentResolver = context.getContentResolver();
 
         final String[] arguments2 = sArguments2;
@@ -519,8 +508,7 @@ public class DBDataManager {
 		}
     }
 
-	public static int getUserCurrentRating(Context context, int dbUriCode) {
-		String userName = getUserName(context);
+	public static int getUserCurrentRating(Context context, int dbUriCode, String userName) {
 		ContentResolver contentResolver = context.getContentResolver();
 
 		final String[] arguments1 = sArguments1;
@@ -905,6 +893,8 @@ public class DBDataManager {
 		values.put(DBConstants.V_PASSED_COUNT, dataObj.getPassedCount());
 		values.put(DBConstants.V_FAILED_COUNT, dataObj.getFailedCount());
 		values.put(DBConstants.V_TOTAL_SECONDS, dataObj.getTotalSeconds());
+		values.put(DBConstants.V_TODAYS_ATTEMPTS, dataObj.getTodaysAttemps());
+		values.put(DBConstants.V_TODAYS_AVG_SCORE, dataObj.getTodaysAvgScore());
 
 		return values;
 	}

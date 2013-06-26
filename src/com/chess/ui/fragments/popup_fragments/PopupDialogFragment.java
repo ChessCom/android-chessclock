@@ -26,6 +26,7 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
     private Button leftBtn;
     private Button neutralBtn;
     private Button rightBtn;
+	private boolean cancelableOnTouch;
 
 	public static PopupDialogFragment createInstance(PopupItem popupItem, PopupDialogFace popupListener) {
         PopupDialogFragment frag = new PopupDialogFragment();
@@ -88,6 +89,10 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
 	public void onResume() {
 		super.onResume();
 
+		if (cancelableOnTouch) {
+			getDialog().setCanceledOnTouchOutside(true);
+		}
+
 		String message = popupItem.getMessage(getActivity());
 		if(message.contains(StaticData.SYMBOL_TAG)){
 			messageTxt.setText(Html.fromHtml(message));
@@ -103,4 +108,7 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
 		rightBtn.setText(popupItem.getNegativeBtnId());
 	}
 
+	public void setCancelableOnTouch(boolean cancelableOnTouch) {
+		this.cancelableOnTouch = cancelableOnTouch;
+	}
 }

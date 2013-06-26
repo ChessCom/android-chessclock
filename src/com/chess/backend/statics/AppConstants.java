@@ -58,6 +58,7 @@ public class AppConstants {
 	public static final String PREF_USER_COUNTRY_ID = "user_country_id";
 	public static final String PREF_USER_AVATAR_URL = "user_avatar_url";
 	public static final String PREF_USER_TACTICS_RATING = "user_tactics_rating";
+	public static final String PREF_USER_DAILY_RATING = "user_daily_rating";
 
     public static final String PREF_THEME_BACK_ID = "theme background id";
     public static final String PREF_TEMP_TOKEN_GCM = "temporary token for gcm";

@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.StaticData;
 import com.inneractive.api.ads.InneractiveAd;
 
 public class InneractiveAdHelper {
@@ -25,10 +25,10 @@ public class InneractiveAdHelper {
 
 		bannerAd.setInneractiveListener(new InneractiveAdListenerImpl(AppConstants.AD_BANNER));
 
-		SharedPreferences preferences = AppData.getPreferences(context);
+		SharedPreferences preferences = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
 
-		int adsShowCounter = preferences.getInt(AppConstants.ADS_SHOW_COUNTER, 0);
+		int adsShowCounter = preferences.getInt(AppConstants.ADS_SHOW_COUNTER, 0); // TODO adjust properly for any user
 
 		if (adsShowCounter != AppConstants.UPGRADE_SHOW_COUNTER) {
 			upgradeBtn.setVisibility(View.GONE);
@@ -54,14 +54,14 @@ public class InneractiveAdHelper {
 
 		rectangleAd.setInneractiveListener(new InneractiveAdListenerImpl(AppConstants.AD_RECTANGLE));
 
-		SharedPreferences preferences = AppData.getPreferences(context);
+		SharedPreferences preferences = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
 		SharedPreferences.Editor preferencesEditor = preferences.edit();
 
 		if (rectangleAd.getVisibility() != View.VISIBLE) {
 			rectangleAd.setVisibility(View.VISIBLE);
 		}
 
-		int adsShowCounter = preferences.getInt(AppConstants.ADS_SHOW_COUNTER, 0);
+		int adsShowCounter = preferences.getInt(AppConstants.ADS_SHOW_COUNTER, 0); // TODO adjust properly for any user
 		preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, adsShowCounter + 1);
 		preferencesEditor.commit();
 	}

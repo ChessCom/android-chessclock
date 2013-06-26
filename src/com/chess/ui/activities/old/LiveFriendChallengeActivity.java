@@ -58,7 +58,7 @@ public class LiveFriendChallengeActivity extends LiveBaseActivity implements Vie
 		bonusTimeTextWatcher = new BonusTimeTextWatcher();
 		bonusTimeValidator = new BonusTimeValidator();
 
-//		AppData.setLiveChessMode(this, true);  // should not duplicate logic
+//		getAppData().setLiveChessMode(this, true);  // should not duplicate logic
 
 	}
 

@@ -43,6 +43,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private List<SlidingMenu.OnOpenedListener> openMenuListeners;
 	private boolean showActionBar;
 	private int customActionBarViewId;
+	private AppData appData;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		if (savedInstanceState == null) {
 			// set the Above View
-			if (!TextUtils.isEmpty(AppData.getUserToken(this))) { // if user have login token already
+			if (!TextUtils.isEmpty(getAppData().getUserToken())) { // if user have login token already
 				switchFragment(new HomeTabsFragment());
 				showActionBar = true;
 			} else {
@@ -76,7 +77,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		badgeItems = new Hashtable<Integer, Integer>();
 
-		int id = AppData.getThemeBackId(this);
+		int id = getAppData().getThemeBackId();
 		getWindow().setBackgroundDrawableResource(id);
 	}
 
@@ -160,7 +161,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public void setMainBackground(int drawableThemeId) {
-		AppData.setThemeBackId(this, drawableThemeId);
+		getAppData().setThemeBackId(drawableThemeId);
 		getWindow().setBackgroundDrawableResource(drawableThemeId);
 		setBackToDecorChild(drawableThemeId);
 	}
@@ -207,6 +208,12 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public void addOnOpenMenuListener(SlidingMenu.OnOpenedListener listener) {
 		if (openMenuListeners != null)
 			openMenuListeners.add(listener);
+	}
+
+	@Override
+	public void removeOnOpenMenuListener(SlidingMenu.OnOpenedListener listener) {
+		if (openMenuListeners != null)
+			openMenuListeners.remove(listener);
 	}
 
 	@Override
@@ -403,4 +410,20 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			startActivityFromFragment(currentActiveFragment, intent, requestCode);
 		}
 	}
+
+	@Override
+	public AppData getMeAppData() {
+		return getAppData();
+	}
+
+	@Override
+	public String getMeUserName() {
+		return getCurrentUserName();
+	}
+
+	@Override
+	public String getMeUserToken() {
+		return getCurrentUserToken();
+	}
+
 }

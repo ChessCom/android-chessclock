@@ -77,7 +77,7 @@ public class LiveOpenChallengeActivity extends LiveBaseActivity implements View.
 		bonusTimeTextWatcher = new BonusTimeTextWatcher();
 		bonusTimeValidator = new BonusTimeValidator();
 
-//		AppData.setLiveChessMode(this, true); // should not duplicate logic
+//		getAppData().setLiveChessMode(this, true); // should not duplicate logic
 	}
 
 	@Override

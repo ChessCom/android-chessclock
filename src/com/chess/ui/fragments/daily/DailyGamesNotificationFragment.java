@@ -20,7 +20,6 @@ import com.chess.backend.entity.new_api.BaseResponseItem;
 import com.chess.backend.entity.new_api.DailyChallengeItem;
 import com.chess.backend.entity.new_api.DailyCurrentGameData;
 import com.chess.backend.entity.new_api.DailyFinishedGameData;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -103,8 +102,6 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
 
 		listUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
-
-		getActivityFace().addOnOpenMenuListener(this);
 	}
 
 	@Override
@@ -134,25 +131,17 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 	public void onStart() {
 		super.onStart();
 		init();
+		getActivityFace().addOnOpenMenuListener(this);
 
 		gamesUpdateReceiver = new GamesUpdateReceiver();
 		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
+	}
 
-		if (need2update) {
-			boolean haveSavedData = DBDataManager.haveSavedDailyGame(getActivity());
+	@Override
+	public void onPause() {
+		super.onPause();
 
-			// Don't update because we already updated it on home fragment // TODO adjust properly
-//			if (AppUtils.isNetworkAvailable(getActivity())) {
-//				updateData();
-//			} else if (!haveSavedData) {
-//				emptyView.setText(R.string.no_network);
-//				showEmptyView(true);
-//			}
-
-			if (haveSavedData) {
-				loadDbGames();
-			}
-		}
+		getActivityFace().removeOnOpenMenuListener(this);
 	}
 
 	@Override
@@ -192,7 +181,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 				loadItem.setRequestMethod(RestHelper.PUT);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 				loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
 				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
@@ -202,7 +191,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 				loadItem.setRequestMethod(RestHelper.PUT);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 				loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
 				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
@@ -308,7 +297,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_GAMES_CHALLENGES);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		new RequestJsonTask<DailyChallengeItem>(dailyGamesUpdateListener).executeTask(loadItem);
 
 		loadDbGames();
@@ -327,18 +316,21 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 	}
 
 	private void clickOnChallenge(DailyChallengeItem.Data gameListChallengeItem) {
-		this.gameListChallengeItem = gameListChallengeItem;
-
-		String title = gameListChallengeItem.getOpponentUsername() + StaticData.SYMBOL_NEW_STR
-				+ getString(R.string.win_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.getOpponentWinCount()
-				+ StaticData.SYMBOL_NEW_STR
-				+ getString(R.string.loss_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.getOpponentLossCount()
-				+ StaticData.SYMBOL_NEW_STR
-				+ getString(R.string.draw_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.getOpponentDrawCount();
-
-		popupItem.setPositiveBtnId(R.string.accept);
-		popupItem.setNegativeBtnId(R.string.decline);
-		showPopupDialog(title, CHALLENGE_ACCEPT_TAG);
+		getActivityFace().openFragment(DailyInviteFragment.createInstance(gameListChallengeItem));
+		getActivityFace().toggleRightMenu();
+//
+//		this.gameListChallengeItem = gameListChallengeItem;
+//
+//		String title = gameListChallengeItem.getOpponentUsername() + StaticData.SYMBOL_NEW_STR
+//				+ getString(R.string.win_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.getOpponentWinCount()
+//				+ StaticData.SYMBOL_NEW_STR
+//				+ getString(R.string.loss_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.getOpponentLossCount()
+//				+ StaticData.SYMBOL_NEW_STR
+//				+ getString(R.string.draw_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.getOpponentDrawCount();
+//
+//		popupItem.setPositiveBtnId(R.string.accept);
+//		popupItem.setNegativeBtnId(R.string.decline);
+//		showPopupDialog(title, CHALLENGE_ACCEPT_TAG);
 	}
 
 	private class OnlineUpdateListener extends ChessUpdateListener<BaseResponseItem> {
@@ -418,20 +410,20 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 
 //		LoadItem loadItem = new LoadItem();
 //		loadItem.setLoadPath(RestHelper.CMD_GAMES_ALL);
-//		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+//		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken(getActivity()));
 //		//		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_ID);
 //		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
 
 	private void loadDbGames() {
 		new LoadDataFromDbTask(currentGamesMyCursorUpdateListener,
-				DbHelper.getDailyCurrentMyListGamesParams(getActivity()),
+				DbHelper.getDailyCurrentMyListGamesParams(getUserName()),
 				getContentResolver()).executeTask();
 		new LoadDataFromDbTask(currentGamesTheirCursorUpdateListener,
-				DbHelper.getDailyCurrentTheirListGamesParams(getActivity()),
+				DbHelper.getDailyCurrentTheirListGamesParams(getUserName()),
 				getContentResolver()).executeTask();
 		new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-				DbHelper.getDailyFinishedListGamesParams(getActivity()),
+				DbHelper.getDailyFinishedListGamesParams(getUserName()),
 				getContentResolver()).executeTask();
 	}
 
@@ -447,7 +439,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_ACCEPTDRAW);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
@@ -462,7 +454,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(gameListChallengeItem.getGameId()));
 		loadItem.setRequestMethod(RestHelper.PUT);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		successToastMsgId = R.string.challenge_accepted;
 
 		new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);
@@ -480,7 +472,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_DECLINEDRAW);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
@@ -514,7 +506,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(gameListChallengeItem.getGameId()));
 		loadItem.setRequestMethod(RestHelper.DELETE);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		successToastMsgId = R.string.challenge_declined;
 
 		new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);
@@ -547,7 +539,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
 			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-					DbHelper.getDailyFinishedListGamesParams(getContext()),
+					DbHelper.getDailyFinishedListGamesParams(getUserName()),
 					getContentResolver()).executeTask();
 		}
 	}
@@ -627,18 +619,6 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 
 			challengesGamesAdapter.setItemsList(returnedObj.getData());
 			sectionedAdapter.notifyDataSetChanged();
-//			{ // current games
-//				final List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
-//				boolean gamesLeft = DBDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList);
-//
-//				if (gamesLeft) {
-//					new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, currentGamesList, getContentResolver()).executeTask();
-//				} else {
-//					currentGamesMyCursorAdapter.changeCursor(null);
-//				}
-//			}
-//
-//			finishedGameDataList = returnedObj.getData().getFinished();
 		}
 
 		@Override
@@ -648,7 +628,6 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 				showToast(ServerErrorCode.getUserFriendlyMessage(getActivity(), serverCode));
 			} else if (resultCode == StaticData.INTERNAL_ERROR) {
 				showToast("Internal error occurred"); // TODO adjust properly
-//				showEmptyView(true);
 			}
 		}
 	}
@@ -688,7 +667,6 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 			emptyView.setVisibility(View.GONE);
 			if (sectionedAdapter.getCount() == 0) {
 				listView.setVisibility(View.GONE);
-
 			}
 			loadingView.setVisibility(View.VISIBLE);
 		} else {

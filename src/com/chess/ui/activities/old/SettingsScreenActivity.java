@@ -81,7 +81,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 		super.onResume();
 		setParameters();
 
-		if (!AppData.isLiveChess(this)) { // TODO why not in live?
+		if (!getAppData().isLiveChess()) { // TODO why not in live?
 			updateVacationStatus();
 		}
 	}
@@ -102,7 +102,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 		vacationCheckBox.setOnClickListener(this);
 		logoutBtn.setText(R.string.logout);
 
-		String userName = AppData.getUserName(this);
+		String userName = getAppData().getUserName();
 		afterMyMoveSpinner.setSelection(preferences.getInt(userName + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0));
 		strengthSpinner.setSelection(preferences.getInt(userName + AppConstants.PREF_COMPUTER_DELAY, 0));
 
@@ -122,10 +122,10 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 		maxRatingSpinner.setSelection(preferences.getInt(userName + AppConstants.CHALLENGE_MAX_RATING, 0));
 
 		langSpinner.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.languages)));
-		langSpinner.setSelection(AppData.getLanguageCode(this));
+		langSpinner.setSelection(getAppData().getLanguageCode());
 
 		afterMyMoveSpinner.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.AIM)));
-		afterMyMoveSpinner.setSelection(AppData.getAfterMoveAction(this));
+		afterMyMoveSpinner.setSelection(getAppData().getAfterMoveAction());
 
 		strengthSpinner.setAdapter(new WhiteSpinnerAdapter(this, getItemsFromEntries(R.array.strength)));
 
@@ -153,12 +153,12 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 		boardsList.add(new SelectionItem(getResources().getDrawable(R.drawable.board_tan), getString(R.string.board_tan)));
 
 		//spinners
-		int boardsPosition = preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_BOARD_STYLE, 0);
+		int boardsPosition = preferences.getInt(getAppData().getUserName() + AppConstants.PREF_BOARD_STYLE, 0);
 		boardsSpinner.setSelection(boardsPosition);
 		boardsList.get(boardsPosition).setChecked(true);
 		boardsSpinner.setAdapter(new SelectionAdapter(this, boardsList));
 
-		int piecesPosition = preferences.getInt(AppData.getUserName(this) + AppConstants.PREF_PIECES_SET, 0);
+		int piecesPosition = preferences.getInt(getAppData().getUserName() + AppConstants.PREF_PIECES_SET, 0);
 		piecesSpinner.setSelection(piecesPosition);
 		piecesList.get(piecesPosition).setChecked(true);
 		piecesSpinner.setAdapter(new SelectionAdapter(this, piecesList));
@@ -239,9 +239,9 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 
 			openStartScreen(StaticData.NAV_FINISH_2_LOGIN);
 		} else if (id == R.id.upgradeBtn) {
-			startActivity(AppData.getMembershipAndroidIntent(this));
+			startActivity(getAppData().getMembershipAndroidIntent());
 		} else if (id == R.id.prefInvite) {
-			String userName = AppData.getUserName(this);
+			String userName = getAppData().getUserName();
 			Intent emailIntent = new Intent(Intent.ACTION_SEND);
 			emailIntent.setType(AppConstants.MIME_TYPE_TEXT_PLAIN);
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.invite_subject));
@@ -279,8 +279,8 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 	private AdapterView.OnItemSelectedListener ratingSelectedListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.CHALLENGE_MIN_RATING, minRatingSpinner.getSelectedItemPosition());
-			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.CHALLENGE_MAX_RATING, maxRatingSpinner.getSelectedItemPosition());
+			preferencesEditor.putInt(getAppData().getUserName() + AppConstants.CHALLENGE_MIN_RATING, minRatingSpinner.getSelectedItemPosition());
+			preferencesEditor.putInt(getAppData().getUserName() + AppConstants.CHALLENGE_MAX_RATING, maxRatingSpinner.getSelectedItemPosition());
 			preferencesEditor.commit();
 		}
 
@@ -292,7 +292,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 	private AdapterView.OnItemSelectedListener langSelectedListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			int prevCode = AppData.getLanguageCode(getContext());
+			int prevCode = getAppData().getLanguageCode();
 			if (prevCode != pos) {
 				localeSelectedId = pos;
 
@@ -309,7 +309,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 	private AdapterView.OnItemSelectedListener strengthSelectedListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_COMPUTER_DELAY, pos);
+			preferencesEditor.putInt(getAppData().getUserName() + AppConstants.PREF_COMPUTER_DELAY, pos);
 			preferencesEditor.commit();
 		}
 
@@ -321,7 +321,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 	private AdapterView.OnItemSelectedListener afterMyMoveSelectedListener = new AdapterView.OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> a, View v, int pos, long id) {
-			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_ACTION_AFTER_MY_MOVE, pos);
+			preferencesEditor.putInt(getAppData().getUserName() + AppConstants.PREF_ACTION_AFTER_MY_MOVE, pos);
 			preferencesEditor.commit();
 		}
 
@@ -340,7 +340,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(pos);
 			selectionItem.setChecked(true);
 
-			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_BOARD_STYLE, pos);
+			preferencesEditor.putInt(getAppData().getUserName() + AppConstants.PREF_BOARD_STYLE, pos);
 			preferencesEditor.commit();
 
 			((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
@@ -361,7 +361,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(pos);
 			selectionItem.setChecked(true);
 
-			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_PIECES_SET, pos);
+			preferencesEditor.putInt(getAppData().getUserName() + AppConstants.PREF_PIECES_SET, pos);
 			preferencesEditor.commit();
 
 			((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
@@ -375,15 +375,15 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 	@Override
 	public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
 		if (compoundButton.getId() == R.id.showOnlineSubmitChckBx) {
-			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE_DAILY, checked);
+			preferencesEditor.putBoolean(getAppData().getUserName() + AppConstants.PREF_SHOW_SUBMIT_MOVE_DAILY, checked);
 		} else if (compoundButton.getId() == R.id.showLiveSubmitChckBx) {
-			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, checked);
+			preferencesEditor.putBoolean(getAppData().getUserName() + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, checked);
 		} else if (compoundButton.getId() == R.id.enableSoundsChkBx) {
-			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_SOUNDS, checked);
+			preferencesEditor.putBoolean(getAppData().getUserName() + AppConstants.PREF_SOUNDS, checked);
 		} else if (compoundButton.getId() == R.id.notificationsChckBx) {
 			// don't check move if pref didn't changed
-			boolean notificationsWasEnabled = AppData.isNotificationsEnabled(this);
-			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_DAILY_NOTIFICATIONS, checked);
+			boolean notificationsWasEnabled = getAppData().isNotificationsEnabled();
+			preferencesEditor.putBoolean(getAppData().getUserName() + AppConstants.PREF_DAILY_NOTIFICATIONS, checked);
 			preferencesEditor.commit();
 
 			if (!notificationsWasEnabled && checked) {
@@ -394,9 +394,9 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 			}
 
 		} else if (compoundButton.getId() == R.id.prefCoords) {
-			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_BOARD_COORDINATES, checked);
+			preferencesEditor.putBoolean(getAppData().getUserName() + AppConstants.PREF_BOARD_COORDINATES, checked);
 		} else if (compoundButton.getId() == R.id.prefHighlights) {
-			preferencesEditor.putBoolean(AppData.getUserName(this) + AppConstants.PREF_BOARD_HIGHLIGHT_LAST_MOVE, checked);
+			preferencesEditor.putBoolean(getAppData().getUserName() + AppConstants.PREF_BOARD_HIGHLIGHT_LAST_MOVE, checked);
 		}
 		preferencesEditor.commit();
 	}
@@ -408,7 +408,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_VACATIONS);
 			loadItem.setRequestMethod(RestHelper.DELETE);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 
 //			new GetStringObjTask(vacationStatusUpdateListener).executeTask(loadItem);
 			new RequestJsonTask<VacationItem>(vacationStatusDeleteUpdateListener).executeTask(loadItem);
@@ -427,12 +427,12 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_VACATIONS);
 			loadItem.setRequestMethod(RestHelper.POST);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 
 //			new GetStringObjTask(vacationLeaveStatusUpdateListener).executeTask(loadItem);
 			new RequestJsonTask<VacationItem>(vacationStatusPostUpdateListener).executeTask(loadItem);
 		} else if (tag.equals(LOCALE_CHANGE_TAG)) {
-			preferencesEditor.putInt(AppData.getUserName(getContext()) + AppConstants.PREF_LANGUAGE, localeSelectedId);
+			preferencesEditor.putInt(getAppData().getUserName() + AppConstants.PREF_LANGUAGE, localeSelectedId);
 			preferencesEditor.commit();
 
 			setLocale();
@@ -452,7 +452,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 		if (tag.equals(VACATION_TAG)) {
 			vacationCheckBox.setChecked(false);
 		} else if (tag.equals(LOCALE_CHANGE_TAG)) {
-			langSpinner.setSelection(AppData.getLanguageCode(getContext()));
+			langSpinner.setSelection(getAppData().getLanguageCode());
 		}
 		super.onNegativeBtnClick(fragment);
 	}
@@ -461,7 +461,7 @@ public class SettingsScreenActivity extends LiveBaseActivity implements Compound
 		LoadItem listLoadItem = new LoadItem();
 		listLoadItem.setLoadPath(RestHelper.CMD_VACATIONS);
 		listLoadItem.setRequestMethod(RestHelper.GET);
-		listLoadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+		listLoadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 
 //		new GetStringObjTask(vacationStatusUpdateListener).execute(listLoadItem);
 		new RequestJsonTask<VacationItem>(vacationStatusPostUpdateListener).executeTask(listLoadItem);

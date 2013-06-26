@@ -17,7 +17,6 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.*;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -85,7 +84,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		setContentView(R.layout.online_screen);
 		Log.d("GetStringObjTask", " ONLINE OnCreate");
 
-		AppData.setLiveChessMode(this, false);
+		getAppData().setLiveChessMode(false);
 		// init adapters
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_daily_challenge_game_item);
 
@@ -139,7 +138,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			showEmptyView(true);
 		}
 
-		if (DBDataManager.haveSavedDailyGame(this)) {
+		if (DBDataManager.haveSavedDailyGame(this, getCurrentUserName())) {
 			loadDbGames();
 		}
 	}
@@ -186,7 +185,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(DailyCurrentGameData returnedObj) {
-			new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getContext()),
+			new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getCurrentUserName()),
 					getContentResolver()).executeTask();
 		}
 	}
@@ -204,7 +203,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
-			new LoadDataFromDbTask(finishedGamesCursorUpdateListener, DbHelper.getDailyFinishedListGamesParams(getContext()),
+			new LoadDataFromDbTask(finishedGamesCursorUpdateListener, DbHelper.getDailyFinishedListGamesParams(getCurrentUserName()),
 					getContentResolver()).executeTask();
 		}
 	}
@@ -237,7 +236,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 //						updateGamesList();
 					} else {
 						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-								DbHelper.getDailyFinishedListGamesParams(getContext()),
+								DbHelper.getDailyFinishedListGamesParams(getCurrentUserName()),
 								getContentResolver()).executeTask();
 					}
 
@@ -355,7 +354,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_VACATIONS);
 		loadItem.setRequestMethod(RestHelper.GET);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 
 //		new GetStringObjTask(vacationStatusUpdateListener).execute(loadItem);
 		new RequestJsonTask<VacationItem>(vacationGetUpdateListener).executeTask(loadItem);
@@ -373,7 +372,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_ACCEPTDRAW);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
@@ -384,7 +383,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(gameListChallengeItem.getGameId()));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 			successToastMsgId = R.string.challenge_accepted;
 
 //			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
@@ -405,7 +404,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_DECLINEDRAW);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
@@ -434,7 +433,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(gameListChallengeItem.getGameId()));
 			loadItem.setRequestMethod(RestHelper.DELETE);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 			successToastMsgId = R.string.challenge_declined;
 
 //			new GetStringObjTask(challengeInviteUpdateListener).executeTask(loadItem);
@@ -443,7 +442,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_VACATIONS);
 			loadItem.setRequestMethod(RestHelper.DELETE);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 
 			new RequestJsonTask<VacationItem>(vacationDeleteUpdateListener).executeTask(loadItem);
 		}
@@ -495,7 +494,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 				loadItem.setRequestMethod(RestHelper.PUT);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 				loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
 				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
@@ -506,7 +505,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 				loadItem.setRequestMethod(RestHelper.PUT);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 				loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
 				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
@@ -519,10 +518,10 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.upgradeBtn) {
-			startActivity(AppData.getMembershipAndroidIntent(this));
+			startActivity(getAppData().getMembershipAndroidIntent());
 		} else if (view.getId() == R.id.tournaments) {
 
-			String playerTournamentsLink = RestHelper.formTournamentsLink(AppData.getUserToken(this));
+			String playerTournamentsLink = RestHelper.formTournamentsLink(getAppData().getUserToken());
 			Intent intent = new Intent(this, WebViewActivity.class);
 			intent.putExtra(AppConstants.EXTRA_WEB_URL, playerTournamentsLink);
 			intent.putExtra(AppConstants.EXTRA_TITLE, getString(R.string.tournaments));
@@ -530,7 +529,7 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		} else if (view.getId() == R.id.statsBtn) {
 
-			String playerStatsLink = RestHelper.formStatsLink(AppData.getUserToken(this), AppData.getUserName(this));
+			String playerStatsLink = RestHelper.formStatsLink(getAppData().getUserToken(), getAppData().getUserName());
 			Intent intent = new Intent(this, WebViewActivity.class);
 			intent.putExtra(AppConstants.EXTRA_WEB_URL, playerStatsLink);
 			intent.putExtra(AppConstants.EXTRA_TITLE, getString(R.string.stats));
@@ -646,16 +645,16 @@ public class OnlineScreenActivity extends LiveBaseActivity implements View.OnCli
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_GAMES_ALL);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(this));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
 
 	private void loadDbGames() {
 		new LoadDataFromDbTask(currentGamesCursorUpdateListener,
-				DbHelper.getDailyCurrentMyListGamesParams(getContext()),
+				DbHelper.getDailyCurrentMyListGamesParams(getCurrentUserName()),
 				getContentResolver()).executeTask();
 		new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-				DbHelper.getDailyFinishedListGamesParams(getContext()),
+				DbHelper.getDailyFinishedListGamesParams(getCurrentUserName()),
 				getContentResolver()).executeTask();
 	}
 

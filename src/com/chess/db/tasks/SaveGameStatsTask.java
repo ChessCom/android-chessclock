@@ -3,7 +3,6 @@ package com.chess.db.tasks;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.new_api.stats.GameStatsItem;
@@ -27,6 +26,7 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 	private static final String LIGHTNING = "lightning";
 	private static final String CHESS = "chess";
 	private static final String CHESS960 = "chess960";
+	private final String userName;
 
 	private ContentResolver resolver;
 	protected static String[] arguments = new String[1];
@@ -39,15 +39,13 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 		this.gameType = gameType;
 		this.item = item;
 		this.resolver = resolver;
+		AppData appData = new AppData(getTaskFace().getMeContext());
+		userName = appData.getUserName();
+
 	}
 
 	@Override
 	protected Integer doTheTask(Long... params) {
-		Context context = getTaskFace().getMeContext();
-		if (context == null) {
-			return StaticData.INTERNAL_ERROR;
-		}
-		String userName = AppData.getUserName(context);
 
 		if (gameType.equals(STANDARD)) {
 			saveStatsGameLive(userName, DBConstants.GAME_STATS_LIVE_STANDARD);

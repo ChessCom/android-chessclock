@@ -121,6 +121,7 @@ public class RestHelper {
 	public static final String CMD_VIDEO_CATEGORIES = CMD_VIDEOS + "/categories";
 
 	public static final String CMD_TACTICS = BASE_URL + V1 + "/tactics";
+	public static final String CMD_TACTICS_STATS = CMD_TACTICS + "/stats";
 	public static final String CMD_TACTIC_TRAINER = CMD_TACTICS + "/trainer";
 
 	public static String CMD_ANSWER_GAME_SEEK(long gameSeekId) {
@@ -182,6 +183,7 @@ public class RestHelper {
 	public static final String P_LOCATION = "location";
 	public static final String P_AMOUNT = "amount";
 
+	public static final int P_RANDOM = 0;
 	public static final int P_WHITE = 1;
 	public static final int P_BLACK = 2;
 	public static final String P_GID = "gid"; // game id

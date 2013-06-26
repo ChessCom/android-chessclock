@@ -26,7 +26,6 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.FragmentTabsFace;
 import com.chess.utilities.AppUtils;
@@ -187,7 +186,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 
 			if (!AppUtils.isNetworkAvailable(getActivity())) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
-				showPopupDialog(R.string.warning, R.string.no_network, BasePopupsFragment.NETWORK_CHECK_TAG);
+				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 				return;
 			}
 
@@ -635,12 +634,11 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {  // TODO restore
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK) {
-			if (requestCode == BasePopupsFragment.NETWORK_REQUEST) {
+			if (requestCode == NETWORK_REQUEST) {
 				submitRegisterInfo();
 			}
 		}
 	}
-
 
 	private class FieldChangeWatcher implements TextWatcher {
 		private EditText editText;

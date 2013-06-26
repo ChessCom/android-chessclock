@@ -1,8 +1,6 @@
 package com.chess.db;
 
-import android.content.Context;
 import com.chess.backend.RestHelper;
-import com.chess.backend.statics.AppData;
 
 public class DbHelper {
 
@@ -14,39 +12,39 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getDailyCurrentListGamesParams(Context context){
+	public static QueryParams getDailyCurrentListGamesParams(String username){
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES]);
 		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_GAMES);
 		queryParams.setSelection(DBDataManager.SELECTION_USER);
-		queryParams.setArguments(new String[]{AppData.getUserName(context)});
+		queryParams.setArguments(new String[]{username});
 		return queryParams;
 	}
 
-	public static QueryParams getDailyCurrentMyListGamesParams(Context context){
+	public static QueryParams getDailyCurrentMyListGamesParams(String username){
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES]);
 		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_GAMES);
 		queryParams.setSelection(DBDataManager.SELECTION_USER_TURN);
-		queryParams.setArguments(new String[]{AppData.getUserName(context), RestHelper.V_TRUE});
+		queryParams.setArguments(new String[]{username, RestHelper.V_TRUE});
 		return queryParams;
 	}
 
-	public static QueryParams getDailyCurrentTheirListGamesParams(Context context){
+	public static QueryParams getDailyCurrentTheirListGamesParams(String username){
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES]);
 		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_GAMES);
 		queryParams.setSelection(DBDataManager.SELECTION_USER_TURN);
-		queryParams.setArguments(new String[]{AppData.getUserName(context), RestHelper.V_FALSE});
+		queryParams.setArguments(new String[]{username, RestHelper.V_FALSE});
 		return queryParams;
 	}
 
-	public static QueryParams getDailyFinishedListGamesParams(Context context){
+	public static QueryParams getDailyFinishedListGamesParams(String username){
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES]);
 		queryParams.setProjection(DBDataManager.PROJECTION_FINISHED_GAMES);
 		queryParams.setSelection(DBDataManager.SELECTION_USER);
-		queryParams.setArguments(new String[]{AppData.getUserName(context)});
+		queryParams.setArguments(new String[]{username});
 		return queryParams;
 	}
 
@@ -55,23 +53,23 @@ public class DbHelper {
 //		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES]);
 //		queryParams.setProjection(DBDataManager.PROJECTION_DAILY_PLAYER_NAMES);
 //		queryParams.setSelection(DBDataManager.SELECTION_USER);
-//		queryParams.setArguments(new String[]{AppData.getUserName(context)});
+//		queryParams.setArguments(new String[]{getAppData().getUserName(context)});
 //		return queryParams;
 //	}
 
-	public static QueryParams getDailyGameParams(Context context, long gameId){
+	public static QueryParams getDailyGameParams(long gameId, String username){
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES]);
 		queryParams.setSelection(DBDataManager.SELECTION_GAME_ID);
-		queryParams.setArguments(new String[]{AppData.getUserName(context), String.valueOf(gameId)});
+		queryParams.setArguments(new String[]{username, String.valueOf(gameId)});
 		return queryParams;
 	}
 
-	public static QueryParams getDailyFinishedGameParams(Context context, long gameId){
+	public static QueryParams getDailyFinishedGameParams(long gameId, String username){
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES]);
 		queryParams.setSelection(DBDataManager.SELECTION_GAME_ID);
-		queryParams.setArguments(new String[]{AppData.getUserName(context), String.valueOf(gameId)});
+		queryParams.setArguments(new String[]{username, String.valueOf(gameId)});
 		return queryParams;
 	}
 

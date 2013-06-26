@@ -3,7 +3,6 @@ package com.chess.db.tasks;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.new_api.stats.UserStatsItem;
@@ -22,6 +21,7 @@ import com.chess.db.DBDataManager;
  */
 public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Long> {
 
+	private final String userName;
 	private ContentResolver resolver;
 	protected static String[] arguments = new String[1];
 
@@ -30,15 +30,13 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		super(taskFace);
 		this.item = item;
 		this.resolver = resolver;
+		AppData appData = new AppData(getTaskFace().getMeContext());
+		userName = appData.getUserName();
+
 	}
 
 	@Override
 	protected Integer doTheTask(Long... params) {
-		Context context = getTaskFace().getMeContext();
-		if (context == null) {
-			return StaticData.INTERNAL_ERROR;
-		}
-		String userName = AppData.getUserName(context);
 
 		saveLiveStats(userName, item, resolver);
 		saveDailyStats(userName, item, resolver);

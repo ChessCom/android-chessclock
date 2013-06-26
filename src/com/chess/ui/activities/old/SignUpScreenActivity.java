@@ -203,7 +203,7 @@ public class SignUpScreenActivity extends CoreActivityActionBar implements View.
 	@Override
 	protected void afterLogin() {
 		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
-		if (AppData.isNotificationsEnabled(this)){
+		if (getAppData().isNotificationsEnabled()){
 			checkMove();
 		}
 

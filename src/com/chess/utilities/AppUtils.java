@@ -211,8 +211,9 @@ public class AppUtils {
 		notifyManager.cancelAll();
 		notifyManager.notify(R.id.notification_message, notification);
 
-		SharedPreferences preferences = AppData.getPreferences(context);
-		boolean playSounds = preferences.getBoolean(AppData.getUserName(context) + AppConstants.PREF_SOUNDS, false);
+		AppData appData = new AppData(context);
+		SharedPreferences preferences = appData.getPreferences();
+		boolean playSounds = preferences.getBoolean(appData.getUserName() + AppConstants.PREF_SOUNDS, false);
 		if(playSounds){
 			final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
 
@@ -299,11 +300,25 @@ public class AppUtils {
 	}
 
 	public static boolean isNeedToUpgrade(Context context){
-		return AppData.getUserPremiumStatus(context) < StaticData.GOLD_USER;
+		return new AppData(context).getUserPremiumStatus() < StaticData.GOLD_USER;
 	}
 
 	public static boolean isNeedToUpgradePremium(Context context){
-		return AppData.getUserPremiumStatus(context) < StaticData.DIAMOND_USER;
+		return new AppData(context).getUserPremiumStatus() < StaticData.DIAMOND_USER;
+	}
+
+	public static int getPremiumIcon(int status) {
+		switch (status) {
+			case StaticData.GOLD_USER:
+				return R.drawable.ic_upgrade_gold;
+			case StaticData.PLATINUM_USER:
+				return R.drawable.ic_upgrade_platinum;
+			case StaticData.DIAMOND_USER:
+				return R.drawable.ic_upgrade_diamond;
+			case StaticData.BASIC_USER:
+			default:
+				return R.drawable.empty;
+		}
 	}
 
 	public static String getTimeLeftFromSeconds(long duration, Context context) {
@@ -532,7 +547,7 @@ public class AppUtils {
 	}
 
 	public static Drawable getUserFlag(Context context) {
-		String userCountry = AppData.getUserCountry(context);
+		String userCountry = new AppData(context).getUserCountry();
 		return getCountryFlag(context, userCountry);
 	}
 

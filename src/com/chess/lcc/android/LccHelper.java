@@ -227,7 +227,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	/*public void checkAndConnect() {
-		if(AppData.isLiveChess(context) && !connected && lccClient == null){
+		if(getAppData().isLiveChess(context) && !connected && lccClient == null){
 			LccHelper.getInstance(context).runConnectTask();
 		}
 	}*/
@@ -236,15 +236,15 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	 * Connect live chess client
 	 */
 	public void performConnect(boolean useCurrentCredentials) {
-
-		String userName = AppData.getUserName(context);
-		String pass = AppData.getPassword(context);
+		AppData appData = new AppData(context);
+		String userName = appData.getUserName();
+		String pass = appData.getPassword();
 		boolean emptyPassword = pass.equals(StaticData.SYMBOL_EMPTY);
 
 		if (!useCurrentCredentials) { // todo: rename flag
 
 //			if (emptyPassword || RestHelper.IS_TEST_SERVER_MODE) {
-//				String sessionId = AppData.getUserSessionId(context);
+//				String sessionId = getAppData().getUserSessionId(context);
 //				connectBySessionId(sessionId);
 //			} else {
 			connectByCreds(userName, pass);
@@ -775,7 +775,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	public void logout() {
 		Log.d(TAG, "USER LOGOUT");
-		AppData.setLiveChessMode(context, false);
+		new AppData(context).setLiveChessMode(false);
 		setCurrentGameId(null);
 		setUser(null);
 		setConnected(false);

@@ -121,7 +121,7 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 		} else if (code == GAME_SETUP_FRAGMENT) {
 			changeInternalFragment(WelcomeGameSetupFragment.createInstance(this));
 		} else if (code == GAME_FRAGMENT) {
-			config.setMode(AppData.getCompGameMode(getActivity()));
+			config.setMode(getAppData().getCompGameMode());
 			changeInternalFragment(WelcomeGameCompFragment.createInstance(this, config));
 		}
 	}

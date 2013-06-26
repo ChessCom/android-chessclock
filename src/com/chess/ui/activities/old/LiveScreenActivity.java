@@ -54,7 +54,7 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	}
 
 	 private void init() {
-		AppData.setLiveChessMode(this, true);   // this should be only one place to set it to true
+		getAppData().setLiveChessMode(true);   // this should be only one place to set it to true
 
 		infoGroup = new ArrayList<View>();
 
@@ -192,13 +192,13 @@ public class LiveScreenActivity extends LiveBaseActivity implements ItemClickLis
 	public void onClick(View view) {
 		super.onClick(view);
 		if (view.getId() == R.id.upgradeBtn) {
-			startActivity(AppData.getMembershipAndroidIntent(this));
+			startActivity(getAppData().getMembershipAndroidIntent());
 
 		} else if (view.getId() == R.id.currentGameBtn) {
 			liveService.checkAndProcessFullGame();
 
 		} else if(view.getId() == R.id.statsBtn){
-			String playerStatsLink = RestHelper.formStatsLink(AppData.getUserToken(this), AppData.getUserName(this));
+			String playerStatsLink = RestHelper.formStatsLink(getAppData().getUserToken(), getAppData().getUserName());
 			Intent intent = new Intent(this, WebViewActivity.class);
 			intent.putExtra(AppConstants.EXTRA_WEB_URL, playerStatsLink);
 			intent.putExtra(AppConstants.EXTRA_TITLE, getString(R.string.stats));

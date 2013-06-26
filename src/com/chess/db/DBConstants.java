@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 29;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 30;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -353,6 +353,8 @@ public class DBConstants {
 	public static final String V_PASSED_COUNT 			= "passed_count";
 	public static final String V_FAILED_COUNT 			= "failed_count";
 	public static final String V_TOTAL_SECONDS 			= "total_seconds";
+	public static final String V_TODAYS_ATTEMPTS 		= "todays_attempts";
+	public static final String V_TODAYS_AVG_SCORE		= "todays_average_score";
 
 	/* Chess Mentor*/
 	public static final String V_LESSONS_TRIED 				= "lessons_tried";
@@ -453,6 +455,8 @@ public class DBConstants {
 			+ V_ATTEMPT_COUNT  	    	+ _INT_NOT_NULL + _COMMA
 			+ V_PASSED_COUNT   	    	+ _INT_NOT_NULL + _COMMA
 			+ V_FAILED_COUNT 	    	+ _INT_NOT_NULL + _COMMA
+			+ V_TODAYS_ATTEMPTS 		+ _INT_NOT_NULL + _COMMA
+			+ V_TODAYS_AVG_SCORE	    + _INT_NOT_NULL + _COMMA
 			+ V_TOTAL_SECONDS  	    	+ _INT_NOT_NULL + _CLOSE;
 
 	static final String USER_STATS_CHESS_MENTOR_CREATE =

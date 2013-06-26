@@ -17,7 +17,6 @@ import com.chess.backend.entity.new_api.ChatItem;
 import com.chess.backend.entity.new_api.DailyChatItem;
 import com.chess.backend.entity.new_api.DailyCurrentGameData;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.BaseGameItem;
@@ -190,7 +189,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 	private LoadItem createGetTimeStampLoadItem() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.GET_GAME_V5);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_GID, gameId);
 		return loadItem;
 	}
@@ -216,7 +215,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(ChatOnlineActivity.this));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);
 
@@ -242,7 +241,7 @@ public class ChatOnlineActivity extends LiveBaseActivity {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(ChatOnlineActivity.this));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
 			loadItem.addRequestParams(RestHelper.P_MESSAGE, message);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);

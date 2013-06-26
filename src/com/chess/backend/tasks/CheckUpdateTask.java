@@ -30,7 +30,7 @@ public class CheckUpdateTask extends AbstractUpdateTask<Boolean, String> {
 		super(taskFace);
 		try {
 			context = getTaskFace().getMeContext();
-			preferencesEditor = AppData.getPreferences(getTaskFace().getMeContext()).edit();
+			preferencesEditor = new AppData(context).getEditor();
 		} catch (IllegalStateException ex) {
 			cancel(true);
 			Log.e("CheckUpdateTask", ex.toString());

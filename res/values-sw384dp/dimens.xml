@@ -6,4 +6,7 @@
     <dimen name="popup_options_select_padding">16dip</dimen>
     <dimen name="chat_icon_size">30dip</dimen>
     <dimen name="edit_button_text_size">14sp</dimen>
+    <dimen name="invite_overlay_padding_top">41dip</dimen>
+    <dimen name="invite_overlay_padding_bottom">25dip</dimen>
+    <dimen name="invite_overlay_padding_title_bottom">24dip</dimen>
 </resources>

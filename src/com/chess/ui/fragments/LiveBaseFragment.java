@@ -2,7 +2,6 @@ package com.chess.ui.fragments;
 
 import android.app.Activity;
 import com.chess.backend.LiveChessService;
-import com.chess.backend.statics.AppData;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.ui.activities.LiveBaseActivity;
 
@@ -23,7 +22,7 @@ public class LiveBaseFragment extends CommonLogicFragment {
 		super.onAttach(activity);
 
 		liveBaseActivity = (LiveBaseActivity) activity;
-		if (AppData.isLiveChess(activity)) {
+		if (getAppData().isLiveChess()) {
 			if (liveBaseActivity.isLCSBound()) {
 				isLCSBound = true;
 				liveService = liveBaseActivity.getLiveService();

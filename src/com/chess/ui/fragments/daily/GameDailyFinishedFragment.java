@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,6 @@ import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
@@ -52,7 +52,6 @@ import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -98,12 +97,11 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
 	private LabelsConfig labelsConfig;
-	private ArrayList<String> optionsList;
+	private SparseArray<String> optionsArray;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private ImageDownloaderToListener imageDownloader;
 	private String[] countryNames;
 	private int[] countryCodes;
-	private String opponentAvatar;
 
 	public GameDailyFinishedFragment() {
 
@@ -123,7 +121,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		labelsConfig = new LabelsConfig();
 		init();
 	}
 
@@ -192,7 +189,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //				getContentResolver()).executeTask();
 
 		Cursor cursor = DBDataManager.executeQuery(getContentResolver(),
-				DbHelper.getDailyFinishedGameParams(getActivity(), gameId));
+				DbHelper.getDailyFinishedGameParams(gameId, getUserName()));
 
 		if (cursor.moveToFirst()) {
 			showSubmitButtonsLay(false);
@@ -258,14 +255,14 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //	protected void updateGameState(long gameId) {
 //		LoadItem loadItem = new LoadItem();
 //		loadItem.setLoadPath(RestHelper.CMD_GAMES);
-//		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+//		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken(getContext()));
 //		loadItem.addRequestParams(RestHelper.P_GAME_ID, gameId);
 //
 //		new RequestJsonTask<DailyFinishedGameData>(gameStateUpdateListener).executeTask(loadItem);
 //	}
 
 	private void adjustBoardForGame() {
-		userPlayWhite = currentGame.getWhiteUsername().equals(AppData.getUserName(getActivity()));
+		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUserName());
 
 		if (userPlayWhite) {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
@@ -460,7 +457,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
 		loadItem.setRequestMethod(RestHelper.PUT);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_SUBMIT);
 		loadItem.addRequestParams(RestHelper.P_NEWMOVE, getBoardFace().convertMoveEchess());
 		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
@@ -474,7 +471,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		if (getBoardFace().isFinished()) {
 			showGameEndPopup(endGamePopupView, endGameMessage);
 		} else {
-			int action = AppData.getAfterMoveAction(getContext());
+			int action = getAppData().getAfterMoveAction();
 			if (action == StaticData.AFTER_MOVE_RETURN_TO_GAME_LIST)
 				backToHomeFragment();
 			else if (action == StaticData.AFTER_MOVE_GO_TO_NEXT_GAME) {
@@ -486,12 +483,12 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private void loadGamesList() {
 		// replace with db update
 //		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getContext()), // TODO adjust
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGamesParams(getActivity()), // TODO adjust
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGamesParams(getUserName()), // TODO adjust
 				getContentResolver()).executeTask();
 
 //		LoadItem listLoadItem = new LoadItem();
 //		listLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
-//		listLoadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+//		listLoadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken(getContext()));
 //		listLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
 //
 //		new GetStringObjTask(gamesListUpdateListener).executeTask(listLoadItem);
@@ -516,7 +513,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		currentGame.setHasNewMessage(false);
 		controlsDailyView.haveNewMessage(false);
 
-		getActivityFace().openFragment(DailyChatFragment.createInstance(gameId, opponentAvatar));
+		getActivityFace().openFragment(DailyChatFragment.createInstance(gameId, labelsConfig.topPlayerAvatar)); // TODO check when flip
 	}
 
 	@Override
@@ -541,7 +538,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	@Override
 	public Boolean isUserColorWhite() {
 		if (currentGame != null && getActivity() != null)
-			return currentGame.getWhiteUsername().equals(AppData.getUserName(getActivity()));
+			return currentGame.getWhiteUsername().equals(getAppData().getUserName());
 		else
 			return null;
 	}
@@ -552,7 +549,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	}
 
 //	private boolean isUserMove() {
-//		userPlayWhite = currentGame.getWhiteUsername().equals(AppData.getUserName(getActivity()));
+//		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUserName(getActivity()));
 //
 //		return (currentGame.isWhiteMove() && userPlayWhite)
 //				|| (!currentGame.isWhiteMove() && !userPlayWhite);
@@ -563,7 +560,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		if (optionsSelectFragment != null) {
 			return;
 		}
-		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsList);
+		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsArray);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
 	}
 
@@ -719,7 +716,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, currentGame.getDaysPerMove());
 		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
 		loadItem.addRequestParams(RestHelper.P_IS_RATED, currentGame.isRated() ? 1 : 0);
@@ -796,6 +793,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	public void init() {
 		gameId = getArguments().getLong(BaseGameItem.GAME_ID, 0);
+		labelsConfig = new LabelsConfig();
 
 		gameStateUpdateListener = new GameStateUpdateListener();
 		sendMoveUpdateListener = new GameOnlineUpdatesListener(SEND_MOVE_UPDATE);
@@ -835,31 +833,31 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		boardView.lockBoard(true);
 
 		{// options list setup
-			optionsList = new ArrayList<String>();
-			optionsList.add(getString(R.string.new_game));
-			optionsList.add(getString(R.string.flip_board));
-			optionsList.add(getString(R.string.email_game));
-			optionsList.add(getString(R.string.settings));
+			optionsArray = new SparseArray<String>();
+			optionsArray.put(ID_NEW_GAME, getString(R.string.new_game));
+			optionsArray.put(ID_FLIP_BOARD, getString(R.string.flip_board));
+			optionsArray.put(ID_EMAIL_GAME, getString(R.string.email_game));
+			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
 	}
 
-	private class LabelsConfig {
-		BoardAvatarDrawable topAvatar;
-		BoardAvatarDrawable bottomAvatar;
-		String topPlayerName;
-		String bottomPlayerName;
-		String topPlayerRating;
-		String bottomPlayerRating;
-		String topPlayerAvatar;
-		String bottomPlayerAvatar;
-		String topPlayerCountry;
-		String bottomPlayerCountry;
-		int userSide;
-
-		int getOpponentSide() {
-			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
-		}
-	}
+//	private class LabelsConfig {
+//		BoardAvatarDrawable topAvatar;
+//		BoardAvatarDrawable bottomAvatar;
+//		String topPlayerName;
+//		String bottomPlayerName;
+//		String topPlayerRating;
+//		String bottomPlayerRating;
+//		String topPlayerAvatar;
+//		String bottomPlayerAvatar;
+//		String topPlayerCountry;
+//		String bottomPlayerCountry;
+//		int userSide;
+//
+//		int getOpponentSide() {
+//			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
+//		}
+//	}
 
 	private class ImageUpdateListener implements ImageReadyListener {
 

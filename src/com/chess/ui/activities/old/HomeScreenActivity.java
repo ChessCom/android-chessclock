@@ -94,7 +94,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 	protected void onStart() {
 		super.onStart();
 
-		if (AppData.isLiveChess(this)) { // bound only if we really need it
+		if (getAppData().isLiveChess()) { // bound only if we really need it
 			Log.d("TEST", "onStart isLCSBound = " + isLCSBound + " in " + HomeScreenActivity.this);
 			if (isLCSBound) {
 				onLiveServiceConnected();
@@ -231,7 +231,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 
 		if (tag.equals(CONNECT_FAILED_TAG)) {
 			if (isLCSBound) {
-				if (AppData.isLiveChess(this)) {
+				if (getAppData().isLiveChess()) {
 					liveService.logout();
 				}
 				unbindService(liveServiceConnectionListener);
@@ -241,7 +241,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					AppData.setLiveChessMode(getContext(), false);
+					getAppData().setLiveChessMode(false);
 					liveService.setConnected(false);
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
 							.parse(RestHelper.PLAY_ANDROID_HTML)));
@@ -395,7 +395,7 @@ public class HomeScreenActivity extends ActionBarActivityHome implements PopupDi
 //				facebookInit(facebookLoginButton);
 //				facebookLoginButton.logout();
 
-				usernameEdt.setText(AppData.getUserName(HomeScreenActivity.this));
+				usernameEdt.setText(getAppData().getUserName());
 			}
 		});
 	}

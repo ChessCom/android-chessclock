@@ -3,7 +3,6 @@ package com.chess.db.tasks;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.RestHelper;
@@ -23,6 +22,8 @@ import java.util.List;
 
 public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Long> {
 	private static final String TAG = "SaveFriendsListTask";
+	private final String userName;
+	private final String userToken;
 
 	private ContentResolver contentResolver;
 	protected static String[] arguments = new String[2];
@@ -35,17 +36,14 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 
 		this.contentResolver = resolver;
 		loadItem = new LoadItem();
+		AppData appData = new AppData(getTaskFace().getMeContext());
+		userName = appData.getUserName();
+		userToken = appData.getUserToken();
 	}
 
 
 	@Override
 	protected Integer doTheTask(Long... ids) {
-		Context context = getTaskFace().getMeContext();
-		if (context == null) {
-			return StaticData.INTERNAL_ERROR;
-		}
-		String userName = AppData.getUserName(context);
-		String userToken = AppData.getUserToken(context);
 
 		synchronized (itemList) {
 			for (FriendsItem.Data currentItem : itemList) { // if

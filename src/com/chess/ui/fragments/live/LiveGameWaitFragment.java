@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.AppData;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
@@ -79,7 +78,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 	public void onStart() {
 		super.onStart();
 
-		AppData.setLiveChessMode(getActivity(), true);
+		getAppData().setLiveChessMode(true);
 		liveBaseActivity.connectLcc();
 		loadingView.setVisibility(View.VISIBLE);
 	}

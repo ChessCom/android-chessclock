@@ -30,10 +30,11 @@ public class GetAndSaveFriends extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
+		AppData appData = new AppData(this);
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_FRIENDS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(this));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
 
 		FriendsItem item = null;
 		try {
@@ -43,7 +44,7 @@ public class GetAndSaveFriends extends IntentService {
 		}
 
 		if (item != null) {
-			String userName = AppData.getUserName(this);
+			String userName = appData.getUserName();
 			ContentResolver contentResolver = getContentResolver();
 
 			for (FriendsItem.Data currentItem : item.getData()) { // if

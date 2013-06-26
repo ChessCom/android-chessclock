@@ -14,7 +14,6 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.stats.GameStatsItem;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.tasks.SaveGameStatsTask;
 import com.chess.model.SelectionItem;
@@ -99,7 +98,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		// get full stats
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_GAME_STATS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
 
 		new RequestJsonTask<GameStatsItem>(statsItemUpdateListener).executeTask(loadItem);

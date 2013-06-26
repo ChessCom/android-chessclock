@@ -20,7 +20,6 @@ import com.chess.backend.entity.new_api.BaseResponseItem;
 import com.chess.backend.entity.new_api.DailyCurrentGameData;
 import com.chess.backend.entity.new_api.DailyFinishedGameData;
 import com.chess.backend.entity.new_api.DailyGamesAllItem;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -158,7 +157,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
 
 		if (need2update) {
-			boolean haveSavedData = DBDataManager.haveSavedDailyGame(getActivity());
+			boolean haveSavedData = DBDataManager.haveSavedDailyGame(getActivity(), getUserName());
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
 				updateData();
@@ -218,7 +217,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 				loadItem.setRequestMethod(RestHelper.PUT);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 				loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
 				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
@@ -228,7 +227,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 				loadItem.setRequestMethod(RestHelper.PUT);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 				loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
 				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
@@ -388,14 +387,14 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_GAMES_ALL);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 //		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_ID);
 		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
 
 	private void loadDbGames() {
 		new LoadDataFromDbTask(currentGamesMyCursorUpdateListener,
-				DbHelper.getDailyCurrentListGamesParams(getActivity()),
+				DbHelper.getDailyCurrentListGamesParams(getUserName()),
 				getContentResolver()).executeTask();
 	}
 
@@ -411,7 +410,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_ACCEPTDRAW);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
@@ -432,7 +431,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getContext()));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_DECLINEDRAW);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
@@ -486,7 +485,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
 			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-					DbHelper.getDailyFinishedListGamesParams(getContext()),
+					DbHelper.getDailyFinishedListGamesParams(getUserName()),
 					getContentResolver()).executeTask();
 		}
 	}
@@ -523,7 +522,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 //					}
 
 					if (finishedGameDataList != null) {
-						boolean gamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList);
+						boolean gamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUserName());
 
 						if (gamesLeft) {
 							new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
@@ -533,7 +532,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 						}
 					} else {
 						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-								DbHelper.getDailyFinishedListGamesParams(getContext()),
+								DbHelper.getDailyFinishedListGamesParams(getUserName()),
 								getContentResolver()).executeTask();
 					}
 					break;
@@ -550,7 +549,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			if (resultCode == StaticData.EMPTY_DATA) {
 				if (gameType == CURRENT_MY) {
 					new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-							DbHelper.getDailyFinishedListGamesParams(getContext()),
+							DbHelper.getDailyFinishedListGamesParams(getUserName()),
 							getContentResolver()).executeTask();
 				} else {
 					emptyView.setText(R.string.no_games);
@@ -581,7 +580,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			boolean currentGamesLeft;
 			{ // current games
 				final List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
-				currentGamesLeft = DBDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList);
+				currentGamesLeft = DBDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList, getUserName());
 
 				if (currentGamesLeft) {
 					new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, currentGamesList, getContentResolver()).executeTask();
@@ -605,7 +604,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			finishedGameDataList = returnedObj.getData().getFinished();
 			if (!currentGamesLeft) { // if SaveTask will not return to LoadFinishedGamesPoint
 				if (finishedGameDataList != null) {
-					boolean gamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList);
+					boolean gamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUserName());
 
 					if (gamesLeft) {
 						new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
@@ -615,7 +614,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					}
 				} else {
 					new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-							DbHelper.getDailyFinishedListGamesParams(getContext()),
+							DbHelper.getDailyFinishedListGamesParams(getUserName()),
 							getContentResolver()).executeTask();
 				}
 			}

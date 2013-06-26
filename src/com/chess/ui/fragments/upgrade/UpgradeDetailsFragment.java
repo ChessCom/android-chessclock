@@ -20,7 +20,6 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.MembershipItem;
 import com.chess.backend.entity.new_api.MembershipKeyItem;
 import com.chess.backend.entity.new_api.PayloadItem;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -105,11 +104,11 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		detailsListener = new GetDetailsListener();
 		getPayloadListener = new GetPayloadListener();
 
-		username = AppData.getUserName(getActivity());
+		username = getAppData().getUserName();
 		// get key from server
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_KEY);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 
 		new RequestJsonTask<MembershipKeyItem>(new GetKeyListener()).executeTask(loadItem); // TODO set proper item
 	}
@@ -369,7 +368,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private void requestPayload(String isReload, String sku) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_PAYLOAD);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		if (sku != null) {
 			loadItem.addRequestParams(RestHelper.P_PRODUCT_SKU, sku);
 		}
@@ -409,7 +408,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			{// gold month
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_GOLD_MONTH);
 				isGoldMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
-				if (isGoldMonthPayed && !AppData.getUserPremiumSku(activity).equals(GOLD_MONTHLY)) {
+				if (isGoldMonthPayed && !getAppData().getUserPremiumSku().equals(GOLD_MONTHLY)) {
 					updateMembershipOnServer(purchase);
 					return;
 				}
@@ -417,7 +416,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			{// gold year
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_GOLD_YEAR);
 				isGoldYearPayed = purchase != null && verifyDeveloperPayload(purchase);
-				if (isGoldYearPayed && !AppData.getUserPremiumSku(activity).equals(GOLD_YEARLY)) {
+				if (isGoldYearPayed && !getAppData().getUserPremiumSku().equals(GOLD_YEARLY)) {
 					updateMembershipOnServer(purchase);
 					return;
 				}
@@ -425,7 +424,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			{// platinum month
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_PLATINUM_MONTH);
 				isPlatinumMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
-				if (isPlatinumMonthPayed && !AppData.getUserPremiumSku(activity).equals(PLATINUM_MONTHLY)) {
+				if (isPlatinumMonthPayed && !getAppData().getUserPremiumSku().equals(PLATINUM_MONTHLY)) {
 					updateMembershipOnServer(purchase);
 					return;
 				}
@@ -433,7 +432,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			{// platinum year
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_PLATINUM_YEAR);
 				isPlatinumYearPayed = purchase != null && verifyDeveloperPayload(purchase);
-				if (isPlatinumYearPayed && !AppData.getUserPremiumSku(activity).equals(PLATINUM_YEARLY)) {
+				if (isPlatinumYearPayed && !getAppData().getUserPremiumSku().equals(PLATINUM_YEARLY)) {
 					updateMembershipOnServer(purchase);
 					return;
 				}
@@ -441,7 +440,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			{// diamond month
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_DIAMOND_MONTH);
 				isDiamondMonthPayed = purchase != null && verifyDeveloperPayload(purchase);
-				if (isDiamondMonthPayed && !AppData.getUserPremiumSku(activity).equals(DIAMOND_MONTHLY)) {
+				if (isDiamondMonthPayed && !getAppData().getUserPremiumSku().equals(DIAMOND_MONTHLY)) {
 					updateMembershipOnServer(purchase);
 					return;
 				}
@@ -449,7 +448,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			{// diamond year
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_DIAMOND_YEAR);
 				isDiamondYearPayed = purchase != null && verifyDeveloperPayload(purchase);
-				if (isDiamondYearPayed && !AppData.getUserPremiumSku(activity).equals(DIAMOND_YEARLY)) {
+				if (isDiamondYearPayed && !getAppData().getUserPremiumSku().equals(DIAMOND_YEARLY)) {
 					updateMembershipOnServer(purchase);
 					return;
 				}
@@ -458,7 +457,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			// query our server for membership bought from non Google Play( Apple, Web)
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(activity));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 
 			new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem); // TODO set proper item
 		}
@@ -487,39 +486,39 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 			// update selected modes
 			if (returnedObj.getData().getIs_premium() > 0) {
-				AppData.setUserPremiumStatus(activity, returnedObj.getData().getLevel());
+				getAppData().setUserPremiumStatus(returnedObj.getData().getLevel());
 
 				String sku = returnedObj.getData().getSku();
 
 				isGoldMonthPayed = sku.equals(GOLD_MONTHLY);
 				if (isGoldMonthPayed) {
-					AppData.setUserPremiumSku(activity, GOLD_MONTHLY);
-					AppData.setUserPremiumStatus(activity, StaticData.GOLD_USER);
+					getAppData().setUserPremiumSku(GOLD_MONTHLY);
+					getAppData().setUserPremiumStatus(StaticData.GOLD_USER);
 				}
 				isGoldYearPayed = sku.equals(GOLD_YEARLY);
 				if (isGoldYearPayed) {
-					AppData.setUserPremiumSku(activity, GOLD_YEARLY);
-					AppData.setUserPremiumStatus(activity, StaticData.GOLD_USER);
+					getAppData().setUserPremiumSku(GOLD_YEARLY);
+					getAppData().setUserPremiumStatus(StaticData.GOLD_USER);
 				}
 				isPlatinumMonthPayed = sku.equals(PLATINUM_MONTHLY);
 				if (isPlatinumMonthPayed) {
-					AppData.setUserPremiumSku(activity, PLATINUM_MONTHLY);
-					AppData.setUserPremiumStatus(activity, StaticData.PLATINUM_USER);
+					getAppData().setUserPremiumSku(PLATINUM_MONTHLY);
+					getAppData().setUserPremiumStatus(StaticData.PLATINUM_USER);
 				}
 				isPlatinumYearPayed = sku.equals(PLATINUM_YEARLY);
 				if (isPlatinumYearPayed) {
-					AppData.setUserPremiumSku(activity, PLATINUM_YEARLY);
-					AppData.setUserPremiumStatus(activity, StaticData.PLATINUM_USER);
+					getAppData().setUserPremiumSku(PLATINUM_YEARLY);
+					getAppData().setUserPremiumStatus(StaticData.PLATINUM_USER);
 				}
 				isDiamondMonthPayed = sku.equals(DIAMOND_MONTHLY);
 				if (isDiamondMonthPayed) {
-					AppData.setUserPremiumSku(activity, DIAMOND_MONTHLY);
-					AppData.setUserPremiumStatus(activity, StaticData.DIAMOND_USER);
+					getAppData().setUserPremiumSku(DIAMOND_MONTHLY);
+					getAppData().setUserPremiumStatus(StaticData.DIAMOND_USER);
 				}
 				isDiamondYearPayed = sku.equals(DIAMOND_YEARLY);
 				if (isDiamondYearPayed) {
-					AppData.setUserPremiumSku(activity, DIAMOND_YEARLY);
-					AppData.setUserPremiumStatus(activity, StaticData.DIAMOND_USER);
+					getAppData().setUserPremiumSku(DIAMOND_YEARLY);
+					getAppData().setUserPremiumStatus(StaticData.DIAMOND_USER);
 				}
 			}
 
@@ -534,7 +533,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				if (serverCode == ServerErrorCode.INVALID_ORDER) {
 					LoadItem loadItem = new LoadItem();
 					loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
-					loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+					loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 
 					new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem); // TODO set proper item
 				} else {
@@ -548,7 +547,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_PURCHASE_DATA, purchase.getOriginalJson());
 		loadItem.addRequestParams(RestHelper.P_DATA_SIGNATURE, purchase.getSignature());
 
@@ -594,7 +593,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private void sendPayment(String itemId) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_PAYLOAD);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_PRODUCT_SKU, itemId);
 		loadItem.addRequestParams(RestHelper.P_RELOAD, RestHelper.V_TRUE);
 

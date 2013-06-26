@@ -49,6 +49,7 @@ public class LiveChessService extends Service {
 	private LccConnectionUpdateFace connectionUpdateFace;
 	private LccChallengeTaskRunner challengeTaskRunner;
 	private LccGameTaskRunner gameTaskRunner;
+	private AppData appData;
 
 	public class ServiceBinder extends Binder {
 		public LiveChessService getService(){
@@ -61,6 +62,7 @@ public class LiveChessService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		//registerReceiver(networkChangeReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+		appData = new AppData(this);
 	}
 
 	@Override
@@ -104,13 +106,13 @@ public class LiveChessService extends Service {
 
 	public void checkAndConnect(LccConnectionUpdateFace connectionUpdateFace) {
 		this.connectionUpdateFace = connectionUpdateFace;
-		Log.d(TAG, "AppData.isLiveChess(getContext()) " + AppData.isLiveChess(getContext()));
+		Log.d(TAG, "appData.isLiveChess(getContext()) " + appData.isLiveChess());
 		Log.d(TAG, "lccHelper instance in checkAndConnect = " + lccHelper);
 		Log.d(TAG, "lccClient instance in checkAndConnect = " +  lccHelper.getClient());
 
 		Log.d(TAG, "lccHelper.getClient() " + lccHelper.getClient());
 
-		if (AppData.isLiveChess(getContext()) && !lccHelper.isConnected()
+		if (appData.isLiveChess() && !lccHelper.isConnected()
 				&& lccHelper.getClient() == null) { // prevent creating several instances when user navigates between activities in "reconnecting" mode
 			lccHelper.runConnectTask();
 			Log.d("lccClient", "no lccClient running connection task");
@@ -175,7 +177,7 @@ public class LiveChessService extends Service {
 			// todo: improve and refactor, just used old code.
 			// OtherClientEntered problem is here
 
-			if (!AppData.isLiveChess(context)) {
+			if (!appData.isLiveChess()) {
 				return;
 			}
 

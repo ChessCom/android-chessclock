@@ -31,6 +31,8 @@ public class UserTacticsStatsData {
 	private int passed_count;
 	private int failed_count;
 	private long total_seconds;
+	private int todays_attemps;
+	private int todays_average_score;
 
 	public int getCurrent() {
 		return current;
@@ -58,5 +60,13 @@ public class UserTacticsStatsData {
 
 	public long getTotalSeconds() {
 		return total_seconds;
+	}
+
+	public int getTodaysAttemps() {
+		return todays_attemps;
+	}
+
+	public int getTodaysAvgScore() {
+		return todays_average_score;
 	}
 }

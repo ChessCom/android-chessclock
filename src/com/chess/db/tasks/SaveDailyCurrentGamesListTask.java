@@ -3,12 +3,10 @@ package com.chess.db.tasks;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.new_api.DailyCurrentGameData;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
@@ -26,11 +24,6 @@ public class SaveDailyCurrentGamesListTask extends SaveDailyGamesTask<DailyCurre
 
 	@Override
 	protected Integer doTheTask(Long... ids) {
-		Context context = getTaskFace().getMeContext();
-		if (context == null) {
-			return StaticData.INTERNAL_ERROR;
-		}
-		String userName = AppData.getUserName(context);
 		// TODO compare received list of current games with saved db data for current games.
 		// if item is not found in received list that means it became finished
 		synchronized (itemList) {

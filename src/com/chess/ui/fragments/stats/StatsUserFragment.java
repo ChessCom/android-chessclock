@@ -14,7 +14,6 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.stats.UserStatsItem;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.tasks.SaveUserStatsTask;
 import com.chess.model.SelectionItem;
@@ -81,7 +80,7 @@ public class StatsUserFragment extends CommonLogicFragment implements AdapterVie
 		// get full stats
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_USER_STATS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 
 		new RequestJsonTask<UserStatsItem>(statsItemUpdateListener).executeTask(loadItem);
 	}

@@ -18,14 +18,12 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.DailyCurrentGameData;
 import com.chess.backend.entity.new_api.DailyFinishedGameData;
 import com.chess.backend.entity.new_api.DailyGamesAllItem;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBDataManager;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
-import com.chess.ui.fragments.daily.DailyGamesNotificationFragment;
 import com.chess.ui.interfaces.FragmentTabsFace;
 
 import java.util.List;
@@ -54,7 +52,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
 
-		if (!DBDataManager.haveSavedFriends(getActivity())) {
+		if (!DBDataManager.haveSavedFriends(getActivity(), getUserName())) {
 			getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class)); // TODO adjust properly
 		}
 	}
@@ -111,11 +109,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 					return;
 				}
 
-				CommonLogicFragment rightMenuFragment = (CommonLogicFragment) findFragmentByTag(DailyGamesNotificationFragment.class.getSimpleName());
-				if (rightMenuFragment == null) {
-					rightMenuFragment = new DailyGamesNotificationFragment();
-				}
-				getActivityFace().changeRightFragment(rightMenuFragment);
+				getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
 			}
 		}, RIGHT_MENU_DELAY);
 	}
@@ -138,7 +132,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_GAMES_ALL);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, AppData.getUserToken(getActivity()));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_ID);
 		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
@@ -237,11 +231,11 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 			// current games
 			List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
-			boolean currentGamesLeft = DBDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList);
+			boolean currentGamesLeft = DBDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList, getUserName());
 
 			// finished
 			List<DailyFinishedGameData> finishedGameDataList = returnedObj.getData().getFinished();
-			boolean finishedGamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList);
+			boolean finishedGamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUserName());
 
 			showDailyGamesFragment = currentGamesLeft || finishedGamesLeft;
 

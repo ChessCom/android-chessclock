@@ -35,7 +35,7 @@ public class NetworkChangeService extends Service {
 		public void onReceive(final Context context, final Intent intent) {
 
 //			if (!DataHolder.getInstance().isLiveChess()) {
-			if (!AppData.isLiveChess(context)) {
+			if (!new AppData(context).isLiveChess()) {
 				return;
 			}
 
