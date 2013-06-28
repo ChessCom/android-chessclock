@@ -84,7 +84,6 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 		whitePlayerLabel.setSelected(true);
 		blackPlayerLabel.setSelected(true);
 
-
 		analysisTxt = (TextView) findViewById(R.id.analysisTxt);
 		gamePanelView = (GamePanelView) findViewById(R.id.gamePanelView);
 	}

@@ -9,6 +9,7 @@ import android.graphics.Paint.Style;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import com.chess.R;
@@ -51,8 +52,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected boolean pieceSelected;
 	protected boolean track;
 	protected boolean drag;
-	protected int[] pieces_tmp;
-	protected int[] colors_tmp;
 
 	protected int W;
 	protected int H;
@@ -207,7 +206,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	@Override
 	public void switchAnalysis() {
+
 		boolean isAnalysis = getBoardFace().toggleAnalysis();
+
+		Log.d("", "Analysis setpos switchAnalysis  " + boardFace.isAnalysis());
 
 		gamePanelView.toggleControlButton(GamePanelView.B_ANALYSIS_ID, isAnalysis);
 		gameActivityFace.switch2Analysis(isAnalysis);

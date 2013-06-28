@@ -79,12 +79,16 @@
 	</string-array>
 	
 	<string-array name="strength">
-	    <item>1 sec</item>
-		<item>3 sec</item>
-		<item>5 sec</item>
-		<item>10 sec</item>
-		<item>30 sec</item>
-		<item>1 min</item>
+	    <item>1 (weakest)</item>
+		<item>2</item>
+		<item>3</item>
+		<item>4</item>
+		<item>5</item>
+		<item>6</item>
+		<item>7</item>
+		<item>8</item>
+		<item>9</item>
+		<item>10 (strongest)</item>
 	</string-array>
 	
     <string-array name="countries">

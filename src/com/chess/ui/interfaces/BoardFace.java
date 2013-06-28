@@ -111,4 +111,10 @@ public interface BoardFace {
 	void setJustInitialized(boolean justInitialized);
 
 	boolean isWhiteToMove();
+
+	Move getLastMove();
+
+	/*void setFen(String startPosFEN);
+
+	String getFen();*/
 }

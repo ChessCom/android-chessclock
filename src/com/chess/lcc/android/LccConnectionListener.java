@@ -75,7 +75,7 @@ public class LccConnectionListener implements ConnectionListener {
 	}
 
 	@Override
-	public void onConnectionReestablished(User arg0) {
+	public void onConnectionReestablished(User user, UserSettings userSettings, ServerStats serverStats) {
 		Log.d(TAG, "onConnectionReestablished");
 		lccHelper.clearChallenges();
 		lccHelper.clearOwnChallenges();
@@ -83,6 +83,10 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHelper.clearGames();
 		lccHelper.setCurrentGameId(null);
 		lccHelper.setConnected(true);
+
+		lccHelper.setFriends(userSettings.getFriends());
+		lccHelper.storeBlockedUsers(userSettings.getBlockedUsers(), userSettings.getBlockingUsers());
+
 		lccHelper.clearPausedEvents();
 	}
 

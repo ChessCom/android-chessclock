@@ -72,6 +72,13 @@
 					/>
 			</RelativeLayout>
 
+			<com.chess.RoboTextView
+					android:id="@+id/engineThinkingPath"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:visibility="gone"
+					style="@style/GameLabel"/>
+
 			<com.chess.ui.views.GamePanelView
 				android:id="@+id/gamePanelView"
 				android:layout_width="match_parent"

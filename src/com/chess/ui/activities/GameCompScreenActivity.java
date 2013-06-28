@@ -3,7 +3,11 @@ package com.chess.ui.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,18 +17,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
+import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.tasks.StartEngineTask;
 import com.chess.model.PopupItem;
-import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardComp;
-import com.chess.ui.engine.Move;
+import com.chess.ui.engine.*;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.GameCompActivityFace;
 import com.chess.ui.views.ChessBoardCompView;
+import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.InneractiveAdHelper;
 import com.inneractive.api.ads.InneractiveAd;
+import org.petero.droidfish.Util;
 
 import java.util.Calendar;
 
@@ -40,6 +46,19 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	private ChessBoardCompView boardView;
 	protected TextView thinking;
 	private int[] compStrengthArray;
+	private String[] compTimeLimitArray;
+	private String[] compDepth;
+	private TextView engineThinkingPath;
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (AppData.getCompEngineHelper().isInitialized()) {
+			byte[] data = AppData.getCompEngineHelper().toByteArray();
+			outState.putByteArray(CompEngineHelper.GAME_STATE, data);
+			outState.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +68,8 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 		init();
 		widgetsInit();
+
+		startGame(savedInstanceState);
 	}
 
 	@Override
@@ -70,20 +91,31 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 		gamePanelView.turnCompMode();
 
+		engineThinkingPath = (TextView)findViewById(R.id.engineThinkingPath);
+
+		gamePanelView.activateAnalysis(false);
+
         if (getBoardFace().isAnalysis()) {
             boardView.enableAnalysis();
             return;
         }
 
-		if (AppData.haveSavedCompGame(this) && chessBoardComp.isJustInitialized()) {
-			chessBoardComp.setJustInitialized(false);
-			loadSavedGame();
+		if (AppData.haveSavedCompGame(this)) {
+			if (chessBoardComp.isJustInitialized()) {
+				chessBoardComp.setJustInitialized(false);
+				loadSavedGame();
+			} else {
+				chessBoardComp.setHint(false);
+				chessBoardComp.setComputerMoving(false);
+			}
+		} else {
+			//getBoardFace().setFen(TextIO.startPosFEN);
 		}
 		resideBoardIfCompWhite();
 	}
 
 	public void init() {
-		menuOptionsItems = new CharSequence[]{
+		menuOptionsItems = new CharSequence[] {
 				getString(R.string.ngwhite),
 				getString(R.string.ngblack),
 				getString(R.string.emailgame),
@@ -92,39 +124,47 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		menuOptionsDialogListener = new MenuOptionsDialogListener();
 
 		compStrengthArray = getResources().getIntArray(R.array.comp_strength);
+		compTimeLimitArray = getResources().getStringArray(R.array.comp_time_limit);
+		compDepth = getResources().getStringArray(R.array.comp_book_depth);
+
 	}
 
 	@Override
 	protected void onResume() {
+
+		Log.d("", "testtest 6 " + AppData.getCompEngineHelper());
+
+		if (AppData.getCompEngineHelper() != null && AppData.getCompEngineHelper().isInitialized()) {
+			AppData.getCompEngineHelper().setPaused(false);
+		}
+
 		super.onResume();
 
 		if (boardView.isComputerMoving()) { // explicit init
 			ChessBoardComp.getInstance(this);
 		}
 
-		if (!getBoardFace().isAnalysis()) {
-
-			boolean isComputerMove = (AppData.isComputerVsComputerGameMode(getBoardFace()))
-					|| (AppData.isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
-					|| (AppData.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove());
-
-			if (isComputerMove) {
-				computerMove();
-			}
-		}
 	}
 
 	@Override
 	protected void onPause() {
+
+		// todo @compengine: extract method and put to engine helper
+		if (AppData.getCompEngineHelper().isInitialized()) {
+			AppData.getCompEngineHelper().setPaused(true);
+			byte[] data = AppData.getCompEngineHelper().toByteArray();
+			SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+			String dataStr = AppData.getCompEngineHelper().byteArrToString(data);
+			editor.putString(CompEngineHelper.GAME_STATE, dataStr);
+			editor.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
+			editor.commit();
+		}
+
 		super.onPause();
 		if (AppData.isComputerVsComputerGameMode(getBoardFace()) || AppData.isComputerVsHumanGameMode(getBoardFace())
 				&& boardView.isComputerMoving()) { // probably isComputerMoving() is only necessary to check without extra check of game mode
 			//boardView.stopThinking();
-			boardView.stopComputerMove();
-			ChessBoardComp.resetInstance(); // how we restore it after resume?
-			// - it was implicitly initialized in onResume - onDraw - isComputerMoving method.
-			// we reset the current instance because Comp Search method stains the current board instance when searches a move.
-			// one of the alternative solutions is to clone Board instance somehow and put it to Comp Search method in order to hold original board
+			boardView.stopComputerMove(); // TODO: @compengine stop computer move?
 		}
 
 		if (getBoardFace().getMode() != extras.getInt(AppConstants.GAME_MODE)) {
@@ -132,6 +172,25 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 			intent.putExtra(AppConstants.GAME_MODE, getBoardFace().getMode());
 			getIntent().replaceExtras(intent);
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		if (AppData.getCompEngineHelper().isInitialized())
+			AppData.getCompEngineHelper().shutdownEngine();
+		super.onDestroy();
+	}
+
+	private void startGame(Bundle... savedInstanceState) {
+		int engineMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
+		int strength = compStrengthArray[AppData.getCompStrength(getContext())];
+		int time = Integer.parseInt(compTimeLimitArray[AppData.getCompStrength(getContext())]);
+		int depth = Integer.parseInt(compDepth[AppData.getCompStrength(getContext())]);
+		boolean restoreGame = AppData.haveSavedCompGame(this);
+
+		Bundle state = savedInstanceState.length > 0 ? savedInstanceState[0] : null;
+
+		new StartEngineTask(engineMode, restoreGame, strength, time, depth, this, PreferenceManager.getDefaultSharedPreferences(this), state, getApplicationContext(), new InitComputerEngineUpdateListener()).executeTask();
 	}
 
 	@Override
@@ -209,7 +268,84 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		thinking.setVisibility(View.VISIBLE);
 	}
 
-    @Override
+	@Override
+	public void updateCompMove(String engineMove) {
+
+		if (getBoardFace().getHply() < getBoardFace().getMovesCount()) { // ignoring Forward move fired by engine
+			return;
+		}
+
+		// TODO @compengine: extract logic and put to ChessBoardCompView
+
+		Log.d(CompEngineHelper.TAG, "updateComputerMove " + engineMove);
+
+		int[] moveFT = MoveParser.parseCoordinate(getBoardFace(), engineMove.toString());
+
+		final Move move;
+		if (moveFT.length == 4) {
+			if (moveFT[3] == 2) {
+				move = new com.chess.ui.engine.Move(moveFT[0], moveFT[1], 0, 2);
+			} else {
+				move = new com.chess.ui.engine.Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+			}
+		} else {
+			move = new com.chess.ui.engine.Move(moveFT[0], moveFT[1], 0, 0);
+		}
+
+		Log.d(CompEngineHelper.TAG, "comp make move: " + move);
+		Log.d(CompEngineHelper.TAG, "isHint = " + boardView.isHint());
+
+		if (boardView.isHint()) {
+			//onPlayerMove();
+			AppData.getCompEngineHelper().undoHint();
+		}
+
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+
+				if (boardView.isHint()) {
+					onPlayerMove();
+					//AppData.getCompEngineHelper().undoHint();
+				}
+
+				getBoardFace().makeMove(move);
+				boardView.setComputerMoving(false);
+
+				if (boardView.isHint()) {
+
+					boardView.invalidate();
+
+					//if (/*AppData.isComputerVsComputerGameMode(getBoardFace()) || */(!AppData.isHumanVsHumanGameMode(getBoardFace()))) {
+					handler.postDelayed(reverseHintTask, ChessBoardCompView.HINT_REVERSE_DELAY);
+					//}
+				}
+				else {
+
+					invalidateGameScreen();
+					onPlayerMove();
+					boardView.invalidate();
+
+					getBoardFace().setMovesCount(getBoardFace().getHply());
+					if (boardView.isGameOver())
+						return;
+				}
+			}
+		});
+	}
+
+	private Runnable reverseHintTask = new Runnable() {
+		@Override
+		public void run() {
+			getBoardFace().takeBack();
+			boardView.invalidate();
+
+			boardView.setHint(false);
+			gamePanelView.toggleControlButton(GamePanelView.B_HINT_ID, false);
+		}
+	};
+
+	@Override
 	protected void restoreGame() {
 		ChessBoardComp.resetInstance();
 		ChessBoardComp chessBoardComp = ChessBoardComp.getInstance(this);
@@ -223,9 +359,13 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	}
 
 	private void loadSavedGame() {
-
 		int i;
 		String[] moves = AppData.getCompSavedGame(this).split("[|]");
+
+		/*if (moves[1].startsWith("FEN")) {
+			getBoardFace().setFen(moves[1].split(":")[1]);
+		}*/
+
 		for (i = 1; i < moves.length; i++) {
 			String[] move = moves[i].split(":");
 			try {
@@ -306,6 +446,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
 					boardView.invalidate();
 					invalidateGameScreen();
+					startGame();
 					break;
 				}
 				case NEW_GAME_BLACK: {
@@ -316,15 +457,13 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 					getBoardFace().setReside(true);
 					boardView.invalidate();
 					invalidateGameScreen();
-
-					computerMove();
+					startGame();
 					break;
 				}
 				case EMAIL_GAME: {
 					sendPGN();
 					break;
 				}
-
 				case SETTINGS: {
 					startActivity(new Intent(getContext(), PreferencesScreenActivity.class));
 					break;
@@ -377,6 +516,13 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	}
 
 	@Override
+	public void onGameOver(String message, boolean need2Finish) {
+		super.onGameOver(message, need2Finish);
+		AppData.getCompEngineHelper().setAnalysisMode();
+		// todo @compengine: fix and improve analysis of finished game
+	}
+
+	@Override
     protected void showGameEndPopup(View layout, String message) {
 
         TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
@@ -416,8 +562,125 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		}
 	}
 
-	private void computerMove() {
-		boardView.computerMove(compStrengthArray[AppData.getCompStrength(getContext())]);
+	private class InitComputerEngineUpdateListener extends AbstractUpdateListener<CompEngineHelper> {
+		public InitComputerEngineUpdateListener() {
+			super(getContext());
+		}
+
+		@Override
+		public void updateData(CompEngineHelper returnedObj) {
+			// todo: show progress and enable Play button
+
+			/*Log.d(CompEngineHelper.TAG, "InitComputerEngineUpdateListener updateData");
+
+			//AppData.setCompEngineHelper(returnedObj);
+
+			if (!getBoardFace().isAnalysis() && !AppData.isHumanVsHumanGameMode(getBoardFace())) {
+
+				boolean isComputerMoveAfterRestore = ((AppData.isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
+						|| (AppData.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove() && getBoardFace().getMovesCount() > 0));
+
+				Log.d(CompEngineHelper.TAG, "isComputerMove " + isComputerMoveAfterRestore);
+
+				if (isComputerMoveAfterRestore) {
+					Log.d(CompEngineHelper.TAG, "undo last move " + getBoardFace().getLastMove());
+					boardView.postMoveToEngine(getBoardFace().getLastMove());
+				}
+			}*/
+		}
 	}
 
+	private void setThinkingVisibility(boolean visible) {
+		if (visible) {
+			statusBarLay.setVisibility(View.GONE);
+			engineThinkingPath.setVisibility(View.VISIBLE);
+		} else {
+			statusBarLay.setVisibility(View.VISIBLE);
+			engineThinkingPath.setVisibility(View.GONE);
+		}
+	}
+
+	public final void onEngineThinkingInfo(final String thinkingStr1, final String variantStr) {
+
+
+		CompEngineHelper.log("thinkingStr1 " + thinkingStr1);
+		CompEngineHelper.log("variantStr " + variantStr);
+
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+
+				String log;
+
+				boolean thinkingEmpty = true;
+				{
+					//if (mShowThinking || gameMode.analysisMode()) {
+					String s = "";
+					s = thinkingStr1;
+					if (s.length() > 0) {
+						thinkingEmpty = false;
+						/*if (mShowStats) {
+							if (!thinkingEmpty)
+								s += "\n";
+							s += thinkingStr2;
+							if (s.length() > 0) thinkingEmpty = false;
+						}*/
+					}
+					//}
+					engineThinkingPath.setText(s, TextView.BufferType.SPANNABLE);
+					log = s;
+				}
+				// todo @compengine: show book hints
+				/*if (mShowBookHints && (bookInfoStr.length() > 0)) {
+					String s = "";
+					if (!thinkingEmpty)
+						s += "<br>";
+					s += Util.boldStart + getString(R.string.book) + Util.boldStop + bookInfoStr;
+					engineThinkingPath.append(Html.fromHtml(s));
+					log += s;
+					thinkingEmpty = false;
+				}*/
+				if (/*showVariationLine && */(variantStr.indexOf(' ') >= 0)) {
+					String s = "";
+					if (!thinkingEmpty)
+						s += "<br>";
+					s += Util.boldStart + "Var:" + Util.boldStop + variantStr;
+					engineThinkingPath.append(Html.fromHtml(s));
+					log += s;
+					thinkingEmpty = false;
+				}
+				setThinkingVisibility(!thinkingEmpty);
+
+				/*List<Move> hints = null;
+				if (mShowThinking || gameMode.analysisMode()) {
+					ArrayList<ArrayList<Move>> pvMovesTmp = pvMoves;
+					if (pvMovesTmp.size() == 1) {
+						hints = pvMovesTmp.get(0);
+					} else if (pvMovesTmp.size() > 1) {
+						hints = new ArrayList<Move>();
+						for (ArrayList<Move> pv : pvMovesTmp)
+							if (!pv.isEmpty())
+								hints.add(pv.get(0));
+					}
+				}
+				if ((hints == null) && mShowBookHints)
+					hints = bookMoves;
+				if (((hints == null) || hints.isEmpty()) &&
+						(variantMoves != null) && variantMoves.size() > 1) {
+					hints = variantMoves;
+				}
+				if ((hints != null) && (hints.size() > maxNumArrows)) {
+					hints = hints.subList(0, maxNumArrows);
+				}
+				cb.setMoveHints(hints);*/
+
+				CompEngineHelper.log("Thinking info:\n" + log);
+
+			}
+		});
+	}
+
+	public void run(Runnable runnable) { // todo @compengine: check and refactor
+		runOnUiThread(runnable);
+	}
 }

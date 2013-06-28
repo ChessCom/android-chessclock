@@ -37,6 +37,8 @@ public class ComputerScreenActivity extends LiveBaseActivity implements AdapterV
 		strength.setOnItemSelectedListener(this);
 
 		findViewById(R.id.start).setOnClickListener(this);
+
+		//new StartEngineTask(getApplicationContext(), new InitComputerEngineUpdateListener()).executeTask();
 	}
 
 	@Override

@@ -15,6 +15,8 @@ import com.chess.ui.interfaces.BoardFace;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+// todo: remove
+
 public class Search {
 	final static int MAX_PLY = 32;
 	public static final String SEARCH = "SEARCH";

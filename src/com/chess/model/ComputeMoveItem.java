@@ -9,10 +9,10 @@ import com.chess.ui.interfaces.BoardFace;
  * @created at: 25.09.12 5:36
  */
 public class ComputeMoveItem {
-	private int moveTime;
-	private int[] pieces_tmp;
-	private int[] colors_tmp;
+
+	private String move;
 	private BoardFace boardFace;
+	//private boolean force;
 
 	public BoardFace getBoardFace() {
 		return boardFace;
@@ -22,28 +22,19 @@ public class ComputeMoveItem {
 		this.boardFace = boardFace;
 	}
 
-	public int[] getColors_tmp() {
-		return colors_tmp;
+	public String getMove() {
+		return move;
 	}
 
-	public void setColors_tmp(int[] colors_tmp) {
-		this.colors_tmp = colors_tmp;
+	public void setMove(String move) {
+		this.move = move;
 	}
 
-	public int getMoveTime() {
-		return moveTime;
+	/*public void setForce(boolean force) {
+		this.force = force;
 	}
 
-	public void setMoveTime(int moveTime) {
-		this.moveTime = moveTime;
-	}
-
-	public int[] getPieces_tmp() {
-		return pieces_tmp;
-	}
-
-	public void setPieces_tmp(int[] pieces_tmp) {
-		this.pieces_tmp = pieces_tmp;
-	}
-
+	public boolean isForce() {
+		return force;
+	}*/
 }

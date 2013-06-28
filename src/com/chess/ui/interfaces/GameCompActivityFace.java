@@ -12,4 +12,10 @@ public interface GameCompActivityFace extends GameActivityFace {
 
 	void onCompMove();
 
+	void updateCompMove(String engineMove);
+
+	void onEngineThinkingInfo(String engineThinkingInfo, String variantStr);
+
+	void run(Runnable runnable);
+
 }

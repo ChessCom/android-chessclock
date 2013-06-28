@@ -74,7 +74,6 @@ public class AppConstants {
 	public final static int GAME_MODE_COMPUTER_VS_COMPUTER = 3;
 	public final static int GAME_MODE_VIEW_FINISHED_ECHESS = 5;
 
-
 	//public static final String DEFAULT_GAMEBOARD_CASTLE = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 
 

@@ -1,0 +1,118 @@
+package org.petero.droidfish;
+
+import android.app.Activity;
+import android.content.Context;
+import org.petero.droidfish.GUIInterface;
+import org.petero.droidfish.Util;
+import org.petero.droidfish.gamelogic.Move;
+import org.petero.droidfish.gamelogic.Position;
+
+import java.util.ArrayList;
+
+public class DroidFish extends Activity implements GUIInterface {
+
+	@Override
+	public void setPosition(Position pos, String variantInfo, ArrayList<Move> variantMoves) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void setSelection(int sq) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void setStatus(GameStatus status) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void moveListUpdated() {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void setThinkingInfo(String pvStr, String statStr, String bookInfo, ArrayList<ArrayList<Move>> pvMoves, ArrayList<Move> bookMoves) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void requestPromotePiece() {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void runOnUIThread(Runnable runnable) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void reportInvalidMove(Move m) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void reportEngineName(String engine) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void reportEngineError(String errMsg) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void computerMoveMade() {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void setRemainingTime(long wTime, long bTime, long nextUpdate) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void updateEngineTitle() {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void updateMaterialDifferenceTitle(Util.MaterialDiff diff) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public void setAnimMove(Position sourcePos, Move move, boolean forward) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public boolean whiteBasedScores() {
+		return false;  //To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public boolean ponderMode() {
+		return false;  //To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public int engineThreads() {
+		return 0;  //To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public Context getContext() {
+		return null;  //To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public String playerName() {
+		return null;  //To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public boolean discardVariations() {
+		return false;  //To change body of implemented methods use File | Settings | File Templates.
+	}
+}

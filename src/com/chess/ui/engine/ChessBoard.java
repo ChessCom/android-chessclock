@@ -85,7 +85,7 @@ public class ChessBoard implements BoardFace {
 	private int pawnRank[][] = new int[2][10];
 	private int pieceMat[] = new int[2];
 	private int pawnMat[] = new int[2];
-
+	//private String fen;
 
 	private int boardcolor[] = {
 			0, 1, 0, 1, 0, 1, 0, 1,
@@ -720,6 +720,7 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public void updateMoves(String newMove, boolean playSound) {
 		int[] moveFT = MoveParser.parse(this, newMove);
+		//Move move;
 		if (moveFT.length == 4) {
 			Move move;
 			if (moveFT[3] == 2)
@@ -2025,6 +2026,14 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public boolean toggleAnalysis() {
+
+		/*try {
+			throw new Exception();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Log.d("", "Analysis toggleAnalysis " + !analysis);*/
+
 		return analysis = !analysis;
 	}
 
@@ -2035,6 +2044,14 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public void setAnalysis(boolean analysis) {
+
+		/*try {
+			throw new Exception();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Log.d("", "Analysis setanalysis " + analysis);*/
+
 		this.analysis = analysis;
 	}
 
@@ -2141,4 +2158,19 @@ public class ChessBoard implements BoardFace {
 	public void setJustInitialized(boolean justInitialized) {
 		this.justInitialized = justInitialized;
 	}
+
+	public Move getLastMove() {
+		return hply == 0 ? null : histDat[hply-1].move;
+	}
+
+	/*@Override
+	public void setFen(String fen) {
+		//Log.d(CompEngineHelper.TAG, "RESTORE BOARD setFen " + fen);
+		this.fen = fen;
+	}
+
+	@Override
+	public String getFen() {
+		return fen;
+	}*/
 }
