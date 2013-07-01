@@ -22,7 +22,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.UserItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
@@ -50,7 +49,6 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 	public static final String PHOTO_SELECTION = "PHOTO_SELECTION";
 
 	private static final String DEFAULT_COUNTRY = "United States";
-	private static final int AVATAR_SIZE = 80;
 	private static final int REQ_CODE_PICK_IMAGE = 33;
 	private static final int REQ_CODE_TAKE_IMAGE = 55;
 	private static final int NON_INIT = -1;
@@ -187,7 +185,6 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 					cursor.moveToFirst();
 
 					int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//					String filePath = cursor.getString(columnIndex);
 					mCurrentPhotoPath = cursor.getString(columnIndex);
 					cursor.close();
 
@@ -252,7 +249,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.setLoadPath(RestHelper.CMD_USER_PROFILE);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_FIRST_NAME, getTextFromField(firstNameEdt));
 		loadItem.addRequestParams(RestHelper.P_LAST_NAME, getTextFromField(lastNameEdt));
 		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, userCountryId);

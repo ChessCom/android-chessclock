@@ -98,7 +98,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		// get full stats
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_GAME_STATS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
 
 		new RequestJsonTask<GameStatsItem>(statsItemUpdateListener).executeTask(loadItem);

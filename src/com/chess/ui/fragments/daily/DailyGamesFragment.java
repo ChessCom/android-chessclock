@@ -217,7 +217,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 				loadItem.setRequestMethod(RestHelper.PUT);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 				loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
 				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
@@ -227,7 +227,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 				loadItem.setRequestMethod(RestHelper.PUT);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 				loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
 				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
@@ -387,7 +387,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_GAMES_ALL);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 //		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_ID);
 		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
@@ -410,7 +410,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_ACCEPTDRAW);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
@@ -431,7 +431,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_DECLINEDRAW);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 

@@ -15,6 +15,7 @@ import android.widget.ListView;
 import com.chess.EditButton;
 import com.chess.R;
 import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.RequestItem;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -171,7 +172,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.setLoadPath(RestHelper.CMD_FRIENDS_REQUEST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_USERNAME, username);
 		loadItem.addRequestParams(RestHelper.P_MESSAGE, message);
 
@@ -193,7 +194,22 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		public void updateData(RequestItem returnedObj) {
 			super.updateData(returnedObj);
 
-			showToast("Request sent");
+			showToast(R.string.request_sent);
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCode.RESOURCE_NOT_FOUND) {
+
+					showSinglePopupDialog(R.string.username_not_found);
+				} else {
+					super.errorHandle(resultCode);
+				}
+			} else {
+				super.errorHandle(resultCode);
+			}
 		}
 	}
 

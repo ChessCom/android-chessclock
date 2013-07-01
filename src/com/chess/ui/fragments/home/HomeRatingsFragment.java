@@ -250,7 +250,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_FRIENDS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 		new RequestJsonTask<FriendsItem>(friendsUpdateListener).executeTask(loadItem);
 	}

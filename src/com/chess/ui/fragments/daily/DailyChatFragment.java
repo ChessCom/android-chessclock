@@ -249,7 +249,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 	private LoadItem createGetTimeStampLoadItem() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_GAMES);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_GAME_ID, gameId);
 		return loadItem;
 	}
@@ -275,7 +275,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);
 
@@ -301,7 +301,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
 			loadItem.addRequestParams(RestHelper.P_MESSAGE, message);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);

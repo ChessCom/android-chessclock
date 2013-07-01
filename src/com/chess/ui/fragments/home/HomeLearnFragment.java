@@ -6,6 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.LoadHelper;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.stats.TacticsBasicStatsItem;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.LessonsFragment;
 import com.chess.ui.fragments.game.GameTacticsFragment;
@@ -26,6 +30,18 @@ public class HomeLearnFragment extends CommonLogicFragment {
 	private TextView avgScoreValueTxt;
 	private TextView todaysAttemptsValueTxt;
 	private long loadedVideoId = 0;
+	private int currentTacticsRating;
+	private int tacitcsTodaysAttempts;
+	private int todaysAverageScore;
+	private boolean need2update = true;
+	private StatsUpdateListener statsUpdateListener;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		statsUpdateListener = new StatsUpdateListener();
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,11 +70,34 @@ public class HomeLearnFragment extends CommonLogicFragment {
 	public void onStart() {
 		super.onStart();
 
-		// load ratings
-		tacticsRatingTxt.setText(String.valueOf(getAppData().getUserTacticsRating()));
 		// load latest video
 //		loadedVideoId
 //		new LoadDataFromDbTask()
+
+		LoadItem loadItem = LoadHelper.getTacticsBasicStats(getUserToken());
+		new RequestJsonTask<TacticsBasicStatsItem>(statsUpdateListener).executeTask(loadItem);
+	}
+
+	private class StatsUpdateListener extends ChessUpdateListener<TacticsBasicStatsItem> {
+
+		public StatsUpdateListener() {
+			super(TacticsBasicStatsItem.class);
+		}
+
+		@Override
+		public void updateData(TacticsBasicStatsItem returnedObj) {
+			super.updateData(returnedObj);
+
+			currentTacticsRating = returnedObj.getData().getCurrent();
+			tacitcsTodaysAttempts = returnedObj.getData().getTodaysAttempts();
+			todaysAverageScore = returnedObj.getData().getTodaysAverageScore();
+
+			tacticsRatingTxt.setText(String.valueOf(currentTacticsRating));
+			todaysAttemptsValueTxt.setText(String.valueOf(tacitcsTodaysAttempts));
+			avgScoreValueTxt.setText(String.valueOf(todaysAverageScore));
+
+			need2update = false;
+		}
 	}
 
 	@Override

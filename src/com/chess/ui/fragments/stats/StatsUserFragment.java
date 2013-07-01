@@ -80,7 +80,7 @@ public class StatsUserFragment extends CommonLogicFragment implements AdapterVie
 		// get full stats
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_USER_STATS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 		new RequestJsonTask<UserStatsItem>(statsItemUpdateListener).executeTask(loadItem);
 	}

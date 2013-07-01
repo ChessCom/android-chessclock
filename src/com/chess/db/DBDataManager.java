@@ -57,10 +57,10 @@ public class DBDataManager {
 			DBConstants.V_USER,
 			DBConstants.V_USER_ID);
 
-	public static String SELECTION_USER_OFFERED_DRAW = concatArguments(
+	public static String SELECTION_OPPONENT_OFFERED_DRAW = concatArguments(
 			DBConstants.V_USER,
 			DBConstants.V_ID,
-			DBConstants.V_USER_OFFERED_DRAW);
+			DBConstants.V_OPPONENT_OFFERED_DRAW);
 
 	public static String SELECTION_USER_TURN = concatArguments(
 			DBConstants.V_USER,
@@ -139,11 +139,11 @@ public class DBDataManager {
 			DBConstants.V_BLACK_USERNAME
 	};
 
-	public static final String[] PROJECTION_ECHESS_DRAW_OFFERED = new String[] {
+	public static final String[] PROJECTION_DAILY_DRAW_OFFERED = new String[] {
 			DBConstants._ID,
 			DBConstants.V_USER,
 			DBConstants.V_ID,
-			DBConstants.V_USER_OFFERED_DRAW
+			DBConstants.V_OPPONENT_OFFERED_DRAW
 	};
 
 	public static final String[] PROJECTION_NAME = new String[] {
@@ -1059,8 +1059,8 @@ public class DBDataManager {
 		arguments2[1] = String.valueOf(gameId);
 
 		Cursor cursor = resolver.query(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES],
-				PROJECTION_ECHESS_DRAW_OFFERED, SELECTION_USER_OFFERED_DRAW, arguments2, null);
-		return cursor.moveToFirst() && getInt(cursor, DBConstants.V_USER_OFFERED_DRAW) > 0;
+				PROJECTION_DAILY_DRAW_OFFERED, SELECTION_OPPONENT_OFFERED_DRAW, arguments2, null);
+		return cursor!= null &&cursor.moveToFirst() && getInt(cursor, DBConstants.V_OPPONENT_OFFERED_DRAW) > 0;
 	}
 
 	public static String getString(Cursor cursor, String column) {

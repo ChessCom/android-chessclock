@@ -287,7 +287,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, days);
 		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
 		loadItem.addRequestParams(RestHelper.P_IS_RATED, isRated);

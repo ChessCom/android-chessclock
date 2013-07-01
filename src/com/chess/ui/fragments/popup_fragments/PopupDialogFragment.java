@@ -3,6 +3,7 @@ package com.chess.ui.fragments.popup_fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,12 +95,15 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
 		}
 
 		String message = popupItem.getMessage(getActivity());
-		if(message.contains(StaticData.SYMBOL_TAG)){
-			messageTxt.setText(Html.fromHtml(message));
-		}else{
-			messageTxt.setText(message);
+		if (!TextUtils.isEmpty(message)) {
+			if(message.contains(StaticData.SYMBOL_TAG)){
+				messageTxt.setText(Html.fromHtml(message));
+			}else{
+				messageTxt.setText(message);
+			}
+			messageTxt.setVisibility(View.VISIBLE);
 		}
-		messageTxt.setVisibility(View.VISIBLE);
+
 		titleTxt.setText(popupItem.getTitle(getActivity()));
 
 		leftBtn.setText(popupItem.getPositiveBtnId());

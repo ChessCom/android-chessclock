@@ -20,13 +20,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.BaseResponseItem;
 import com.chess.backend.entity.new_api.DailyCurrentGameData;
+import com.chess.backend.entity.new_api.VacationItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
@@ -85,6 +88,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private static final int ID_FLIP_BOARD = 3;
 	private static final int ID_EMAIL_GAME = 4;
 	private static final int ID_SETTINGS = 5;
+	private static final String END_VACATION_TAG = "end vacation popup";
 
 	private GameDailyUpdatesListener abortGameUpdateListener;
 	private GameDailyUpdatesListener drawOfferedUpdateListener;
@@ -299,7 +303,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	protected void updateGameState(long gameId) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_GAME_BY_ID(gameId));
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 		new RequestJsonTask<DailyCurrentGameData>(gameStateUpdateListener).executeTask(loadItem);
 	}
@@ -507,17 +511,14 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		}
 	}
 
-	private void sendMove() { // TODO check dot's update after move
-		//save rating
-//		currentPlayerRating = getCurrentPlayerRating();
-
+	private void sendMove() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
 		loadItem.setRequestMethod(RestHelper.PUT);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_SUBMIT);
 		loadItem.addRequestParams(RestHelper.P_NEWMOVE, getBoardFace().convertMoveEchess());
-		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
+		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, System.currentTimeMillis() * 1000L/* currentGame.getTimestamp()*/);
 
 		new RequestJsonTask<BaseResponseItem>(sendMoveUpdateListener).executeTask(loadItem);
 	}
@@ -701,23 +702,16 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			String userName = getAppData().getUserName();
 			boolean drawWasOffered = DBDataManager.checkIfDrawOffered(getContentResolver(), userName, gameId);
 
-
 			if (drawWasOffered) { // If Draw was already offered by the opponent, we send accept to it.
 				draw = RestHelper.V_ACCEPTDRAW;
 			} else {
 				draw = RestHelper.V_OFFERDRAW;
-				// save at this point state to DB
-				currentGame.setDrawOffered(1);
-				String[] arguments = new String[]{String.valueOf(currentGame.isDrawOffered())};
-				getContentResolver().update(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES],
-						DBDataManager.putDailyGameCurrentItemToValues(currentGame, userName),
-						DBDataManager.SELECTION_USER_OFFERED_DRAW, arguments);
 			}
 
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
 
@@ -727,11 +721,19 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
 			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
 			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
 
 			new RequestJsonTask<BaseResponseItem>(abortGameUpdateListener).executeTask(loadItem);
+		} else if (tag.equals(END_VACATION_TAG)) {
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.CMD_VACATIONS);
+			loadItem.setRequestMethod(RestHelper.DELETE);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+
+			new RequestJsonTask<VacationItem>(new VacationUpdateListener()).executeTask(loadItem);
+
 		} else if (tag.equals(ERROR_TAG)) {
 			backToLoginFragment();
 		}
@@ -824,7 +826,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, currentGame.getDaysPerMove());
 		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
 		loadItem.addRequestParams(RestHelper.P_IS_RATED, currentGame.isRated() ? 1 : 0);
@@ -896,13 +898,40 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		}
 
 		@Override
-		public void errorHandle(String resultMessage) {
+		public void errorHandle(String resultMessage) {  // TODO check logic, seems like it doesn't call anywhere
 			super.errorHandle(resultMessage);
 			switch (listenerCode) {
 				case CREATE_CHALLENGE_UPDATE:
 					showPopupDialog(getString(R.string.error), resultMessage, ERROR_TAG);
 					break;
 			}
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			// show message only for re-login
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCode.YOUR_ARE_ON_VACATAION) {
+
+					popupItem.setPositiveBtnId(R.string.end_vacation);
+					showPopupDialog(R.string.you_cant_move_on_vacation, END_VACATION_TAG);
+				} else {
+					super.errorHandle(resultCode);
+				}
+			}
+		}
+	}
+
+	private class VacationUpdateListener extends ActionBarUpdateListener<VacationItem> {
+
+		public VacationUpdateListener() {
+			super(getInstance(), VacationItem.class);
+		}
+
+		@Override
+		public void updateData(VacationItem returnedObj) {
+			showToast(R.string.vacation_off);
 		}
 	}
 

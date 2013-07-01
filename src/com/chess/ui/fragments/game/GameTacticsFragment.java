@@ -80,7 +80,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private boolean noNetwork;
 	private boolean firstRun = true;
 
-	private GetTacticsUpdateListener getGetTacticsUpdateListener;
+	private GetTacticsUpdateListener getTacticsUpdateListener;
 	private TacticsInfoUpdateListener tacticsCorrectUpdateListener;
 	private TacticsInfoUpdateListener tacticsWrongUpdateListener;
 	private DbTacticBatchSaveListener dbTacticBatchSaveListener;
@@ -141,7 +141,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		super.onStart();
 		FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED);
-
 	}
 
 	@Override
@@ -220,7 +219,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private boolean needToSaveTactic() {
 		return !getBoardFace().isTacticCanceled()
 				&& !TacticsDataHolder.getInstance().isTacticLimitReached()
-				&& tacticItemIsValid();
+				&& isTacticItemValid();
 	}
 
 	private void playLastMoveAnimationAndCheck() {
@@ -248,7 +247,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public boolean currentGameExist() {
-		return tacticItemIsValid();
+		return isTacticItemValid();
 	}
 
 	@Override
@@ -301,7 +300,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_TACTICS_ID, tacticItem.getId());
 		loadItem.addRequestParams(RestHelper.P_PASSED, RestHelper.V_TRUE);
 		loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, getBoardFace().getTacticsCorrectMoves());
@@ -316,7 +315,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_TACTICS_ID, tacticItem.getId());
 		loadItem.addRequestParams(RestHelper.P_PASSED, RestHelper.V_FALSE);
 		loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, getBoardFace().getTacticsCorrectMoves());
@@ -369,18 +368,17 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public Long getGameId() {
-		if (!tacticItemIsValid()) {
+		if (!isTacticItemValid()) {
 			return null;
 		} else {
 			return tacticItem.getId();
 		}
 	}
 
-
 	private void getNextTactic() {
 		handler.removeCallbacks(showTacticMoveTask);
 
-		if (tacticItemIsValid()) {
+		if (isTacticItemValid()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
 			getContentResolver().delete(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
 					DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments);
@@ -682,13 +680,19 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		if (optionsSelectFragment != null) {
 			return;
 		}
+
+		if (isTacticItemValid() && tacticItem.isRetry()) {
+			optionsArray.put(ID_PRACTICE, getString(R.string.practice_mode));
+		} else {
+			optionsArray.remove(ID_PRACTICE);
+		}
+
 		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsArray);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
 	}
 
-
 	public void stopTacticsTimer() {
-		if (tacticItemIsValid()) {
+		if (isTacticItemValid()) {
 			tacticItem.setStop(true);
 		}
 
@@ -720,7 +724,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	protected void restoreGame() {
-		if (!tacticItemIsValid() || tacticItem.isStop()) {
+		if (!isTacticItemValid() || tacticItem.isStop()) {
 			return;
 		}
 
@@ -735,7 +739,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void adjustBoardForGame() {
-		if (!tacticItemIsValid()) { // just in case something weird happen :)
+		if (!isTacticItemValid()) { // just in case something weird happen :)
 			return;
 		}
 
@@ -766,7 +770,12 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		firstRun = false;
 		controlsTacticsView.enableGameControls(true);
-		controlsTacticsView.showDefault();
+		if (tacticItem.isRetry()) {
+			controlsTacticsView.showAfterRetry();
+		} else {
+			controlsTacticsView.showDefault();
+		}
+
 		topPanelView.showDefault();
 
 		if (boardFace.getSide() == ChessBoard.WHITE_SIDE) {
@@ -835,10 +844,10 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_TACTICS);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_FALSE);
 
-			new RequestJsonTask<TacticItem>(getGetTacticsUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<TacticItem>(getTacticsUpdateListener).executeTask(loadItem);
 			controlsTacticsView.enableGameControls(false);
 		}
 	}
@@ -896,14 +905,14 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void clearSavedTactics() {
-		if (tacticItemIsValid()) {
+		if (isTacticItemValid()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
 			getContentResolver().delete(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
 					DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments);
 		}
 	}
 
-	private boolean tacticItemIsValid() {
+	private boolean isTacticItemValid() {
 		return tacticItem != null;
 	}
 
@@ -911,8 +920,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 //		tacticsTimer = null;
 		inflater = null;
 
-		getGetTacticsUpdateListener.releaseContext();
-		getGetTacticsUpdateListener = null;
+		getTacticsUpdateListener.releaseContext();
+		getTacticsUpdateListener = null;
 		tacticsCorrectUpdateListener.releaseContext();
 		tacticsCorrectUpdateListener = null;
 		tacticsWrongUpdateListener.releaseContext();
@@ -927,7 +936,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		imageUpdateListener = new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR);
 		imageDownloader = new ImageDownloaderToListener(getContext());
 
-		getGetTacticsUpdateListener = new GetTacticsUpdateListener();
+		getTacticsUpdateListener = new GetTacticsUpdateListener();
 		tacticsCorrectUpdateListener = new TacticsInfoUpdateListener(CORRECT_RESULT);
 		tacticsWrongUpdateListener = new TacticsInfoUpdateListener(WRONG_RESULT);
 		dbTacticBatchSaveListener = new DbTacticBatchSaveListener();

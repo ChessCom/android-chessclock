@@ -457,7 +457,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
 		loadItem.setRequestMethod(RestHelper.PUT);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_SUBMIT);
 		loadItem.addRequestParams(RestHelper.P_NEWMOVE, getBoardFace().convertMoveEchess());
 		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
@@ -716,7 +716,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, currentGame.getDaysPerMove());
 		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
 		loadItem.addRequestParams(RestHelper.P_IS_RATED, currentGame.isRated() ? 1 : 0);

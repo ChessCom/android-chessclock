@@ -277,11 +277,11 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 				bottomPanelView.setPlayerRating(String.valueOf(userInfo.getPoints()));
 				labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, userInfo.getCountryId());
 				bottomPanelView.setPlayerFlag(labelsConfig.bottomPlayerCountry);
+				bottomPanelView.setPlayerPremiumIcon(userInfo.getPremiumStatus());
 			} else if (itemCode == OPPONENT) {
 				labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, userInfo.getCountryId());
 				topPanelView.setPlayerFlag(labelsConfig.topPlayerCountry);
-//				topPanelView.setPlayerPremiumIcon(AppUtils.getPremiumIcon(userInfo.get)); // TODO set properly
-
+				topPanelView.setPlayerPremiumIcon(userInfo.getPremiumStatus());
 			}
 		}
 	}
@@ -310,7 +310,7 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(challengeItem.getGameId()));
 		loadItem.setRequestMethod(RestHelper.PUT);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		successToastMsgId = R.string.challenge_accepted;
 
 		new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);
@@ -320,7 +320,7 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(challengeItem.getGameId()));
 		loadItem.setRequestMethod(RestHelper.DELETE);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		successToastMsgId = R.string.challenge_declined;
 
 		new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);

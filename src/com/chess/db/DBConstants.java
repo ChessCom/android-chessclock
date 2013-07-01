@@ -127,7 +127,6 @@ public class DBConstants {
 	public static final String V_IS_OPPONENT_ONLINE		= "is_opponent_online";
 	public static final String V_RATED 					= "rated";
 	public static final String V_DAYS_PER_MOVE 			= "days_per_move";
-	public static final String V_USER_OFFERED_DRAW 		= "user_offered_draw";
 	public static final String V_OPPONENT_OFFERED_DRAW 	= "opponent_offered_draw";
 
 	public static final String V_TIME_REMAINING 		= "time_remaining";

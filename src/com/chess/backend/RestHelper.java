@@ -173,6 +173,7 @@ public class RestHelper {
 	public static final String P_MAX_RATING = "maxRating";
 	public static final String P_IS_RATED = "isRated";
 	public static final String P_GAME_TYPE = "gameTypeCode";
+	public static final String P_TYPE = "type";
 	public static final String P_GAME_ID = "gameId";
 	public static final String P_PRODUCT_SKU = "productSku";
 	public static final String P_RELOAD = "reload";
@@ -272,6 +273,7 @@ message				false	Only used for `CHAT` command.
 	public static final String V_ACCEPTDRAW = "ACCEPTDRAW";
 	public static final String V_DECLINEDRAW = "DECLINEDRAW";
 	public static final String V_CHAT = "CHAT";
+	public static final String V_BASIC = "basic";
 
 	public static final String V_ID = "id";
 
@@ -419,7 +421,7 @@ message				false	Only used for `CHAT` command.
 		CustomType item = null;
 		String url = formCustomRequest(loadItem);
 		String requestMethod = loadItem.getRequestMethod();
-		if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
+		if (requestMethod.equals(POST) || requestMethod.equals(PUT) /*|| requestMethod.equals(DELETE)*/) {
 			url = formPostRequest(loadItem);
 		}
 
@@ -437,7 +439,7 @@ message				false	Only used for `CHAT` command.
 
 			if (!TextUtils.isEmpty(loadItem.getFilePath())) { // if multiPart
 				submitRawData(connection, loadItem);
-			} else if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
+			} else if (requestMethod.equals(POST) || requestMethod.equals(PUT) /*|| requestMethod.equals(DELETE)*/) {
 				submitPostData(connection, loadItem);
 			} else {
 				connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=" + HTTP.UTF_8);

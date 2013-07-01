@@ -108,7 +108,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		// get key from server
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_KEY);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 		new RequestJsonTask<MembershipKeyItem>(new GetKeyListener()).executeTask(loadItem); // TODO set proper item
 	}
@@ -368,7 +368,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private void requestPayload(String isReload, String sku) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_PAYLOAD);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		if (sku != null) {
 			loadItem.addRequestParams(RestHelper.P_PRODUCT_SKU, sku);
 		}
@@ -457,7 +457,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			// query our server for membership bought from non Google Play( Apple, Web)
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 			new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem); // TODO set proper item
 		}
@@ -533,7 +533,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				if (serverCode == ServerErrorCode.INVALID_ORDER) {
 					LoadItem loadItem = new LoadItem();
 					loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
-					loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+					loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 					new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem); // TODO set proper item
 				} else {
@@ -547,7 +547,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_PURCHASE_DATA, purchase.getOriginalJson());
 		loadItem.addRequestParams(RestHelper.P_DATA_SIGNATURE, purchase.getSignature());
 
@@ -593,7 +593,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private void sendPayment(String itemId) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_PAYLOAD);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_PRODUCT_SKU, itemId);
 		loadItem.addRequestParams(RestHelper.P_RELOAD, RestHelper.V_TRUE);
 

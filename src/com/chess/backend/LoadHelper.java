@@ -2,6 +2,8 @@ package com.chess.backend;
 
 import com.chess.backend.entity.LoadItem;
 
+import static com.chess.backend.RestHelper.*;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -11,16 +13,28 @@ import com.chess.backend.entity.LoadItem;
 public class LoadHelper {
 
 	public static LoadItem getUserInfo(String userToken) {
-		return getUserInfo(userToken, null);
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(CMD_USERS);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
+		return loadItem;
 	}
 
 	public static LoadItem getUserInfo(String userToken, String username) {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_USERS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, userToken);
-		if (username != null)
-			loadItem.addRequestParams(RestHelper.P_USERNAME, username);
+		LoadItem loadItem = getUserInfo(userToken);
+		loadItem.addRequestParams(P_USERNAME, username);
+		return loadItem;
+	}
 
+	public static LoadItem getTacticsBasicStats(String userToken) {
+		LoadItem loadItem = getTacticsStats(userToken);
+		loadItem.addRequestParams(P_TYPE, V_BASIC);
+		return loadItem;
+	}
+
+	public static LoadItem getTacticsStats(String userToken) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(CMD_TACTICS_STATS);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		return loadItem;
 	}
 }

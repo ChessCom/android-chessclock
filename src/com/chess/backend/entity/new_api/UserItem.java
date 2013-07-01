@@ -27,6 +27,7 @@ public class UserItem extends BaseResponseItem<UserItem.Data> {
 		private String username;
 		private String avatar;
 		private int country_id;
+		private int premium_status;
 		private String country_name;
 		private long last_login_date;
 		private int points;
@@ -50,6 +51,10 @@ public class UserItem extends BaseResponseItem<UserItem.Data> {
 
 		public int getCountryId() {
 			return country_id;
+		}
+
+		public int getPremiumStatus() {
+			return premium_status;
 		}
 
 		public String getCountryName() {

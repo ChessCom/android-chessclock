@@ -28,12 +28,12 @@ import java.util.List;
 public class PopupOptionsMenuFragment extends DialogFragment implements View.OnClickListener {
 
 	private PopupListSelectionFace listener;
-	private SparseArray<String> itemsList;
+	private SparseArray<String> itemsArray;
 
 	public static PopupOptionsMenuFragment createInstance(PopupListSelectionFace listener, SparseArray<String> itemsMap) {
 		PopupOptionsMenuFragment frag = new PopupOptionsMenuFragment();
 		frag.listener = listener;
-		frag.itemsList = itemsMap;
+		frag.itemsArray = itemsMap;
 		return frag;
 	}
 
@@ -54,8 +54,9 @@ public class PopupOptionsMenuFragment extends DialogFragment implements View.OnC
 		super.onViewCreated(view, savedInstanceState);
 
 		List<String> optionsList = new ArrayList<String>();
-		for (int i=0; i < itemsList.size(); i++){
-			optionsList.add(itemsList.get(i));
+
+		for (int i=0; i < itemsArray.size(); i++){
+			optionsList.add(itemsArray.valueAt(i));
 		}
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(new StringAdapter(getActivity(), optionsList));
@@ -72,7 +73,7 @@ public class PopupOptionsMenuFragment extends DialogFragment implements View.OnC
 
 	@Override
 	public void onClick(View v) {
-		listener.onValueSelected((Integer) v.getTag(R.id.list_item_id));
+		listener.onValueSelected(itemsArray.keyAt((Integer) v.getTag(R.id.list_item_id)));
 	}
 
 	private class StringAdapter extends ItemsAdapter<String> {
