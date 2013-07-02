@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.DataHolder;
 import com.chess.backend.entity.LoadItem;
@@ -454,14 +455,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		//save rating
 //		currentPlayerRating = getCurrentPlayerRating();
 
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
-		loadItem.setRequestMethod(RestHelper.PUT);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_SUBMIT);
+		LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId,  RestHelper.V_SUBMIT, currentGame.getTimestamp());
 		loadItem.addRequestParams(RestHelper.P_NEWMOVE, getBoardFace().convertMoveEchess());
-		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
-
 		new RequestJsonTask<BaseResponseItem>(sendMoveUpdateListener).executeTask(loadItem);
 	}
 
@@ -713,16 +708,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			color = 1;
 		}
 
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
-		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, currentGame.getDaysPerMove());
-		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
-		loadItem.addRequestParams(RestHelper.P_IS_RATED, currentGame.isRated() ? 1 : 0);
-		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, currentGame.getGameType());
-		loadItem.addRequestParams(RestHelper.P_OPPONENT, opponent);
-
+		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), currentGame.getDaysPerMove(), color,
+				currentGame.isRated() ? 1 : 0,  currentGame.getGameType(), opponent);
 		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 

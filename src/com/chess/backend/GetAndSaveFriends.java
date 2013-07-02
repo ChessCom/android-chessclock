@@ -32,9 +32,7 @@ public class GetAndSaveFriends extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		AppData appData = new AppData(this);
 
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_FRIENDS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
+		LoadItem loadItem = LoadHelper.getFriends(appData.getUserToken());
 
 		FriendsItem item = null;
 		try {

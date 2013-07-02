@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.LoadItem;
@@ -214,23 +215,13 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				if (gameListCurrentItem.isDrawOffered())
 					draw = RestHelper.V_ACCEPTDRAW;
 
-				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
-				loadItem.setRequestMethod(RestHelper.PUT);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-				loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
-				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
-
+				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
+						draw, gameListCurrentItem.getTimestamp());
 				new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
 			} else if (pos == 2) {
 
-				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
-				loadItem.setRequestMethod(RestHelper.PUT);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-				loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
-				loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
-
+				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
+						RestHelper.V_RESIGN, gameListCurrentItem.getTimestamp());
 				new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
 			}
 		}
@@ -385,9 +376,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		// when we ask server about new ids of games and challenges
 		// if server have new ids we get those games with ids
 
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_GAMES_ALL);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		LoadItem loadItem = LoadHelper.getAllGames(getUserToken());
 //		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_ID);
 		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
@@ -407,13 +396,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
-			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_ACCEPTDRAW);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
 
+			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
+					RestHelper.V_ACCEPTDRAW, gameListCurrentItem.getTimestamp());
 			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
 		}
 		super.onPositiveBtnClick(fragment);
@@ -428,12 +413,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameListCurrentItem.getGameId()));
-			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_DECLINEDRAW);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, gameListCurrentItem.getTimestamp());
+
+			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
+					RestHelper.V_DECLINEDRAW, gameListCurrentItem.getTimestamp());
 
 			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
 		}

@@ -168,7 +168,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			if (resultCode == StaticData.EMPTY_DATA) {
-				emptyView.setText(R.string.no_games);
+				emptyView.setText("No Articles"); // TODO remove after debug, there should be articles
 			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.no_network);
 			}

@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.RoboButton;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.RegisterItem;
@@ -590,14 +591,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	}
 
 	private void submitRegisterInfo() {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_USERS);
-		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_USERNAME, userName);
-		loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
-		loadItem.addRequestParams(RestHelper.P_EMAIL, email);
-		loadItem.addRequestParams(RestHelper.P_APP_TYPE, RestHelper.V_ANDROID);
-
+		LoadItem loadItem = LoadHelper.postUsers(userName, password, email, getDeviceId());
 		new RequestJsonTask<RegisterItem>(registerUpdateListener).executeTask(loadItem);
 	}
 

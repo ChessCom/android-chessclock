@@ -9,12 +9,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import com.chess.R;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.DailyChallengeItem;
 import com.chess.backend.entity.new_api.DailyGameAcceptItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.activities.LiveBaseActivity;
@@ -156,10 +156,7 @@ public class OnlineNewGameActivity extends LiveBaseActivity implements OnItemCli
 		}
 
 		if(tag.equals(CHALLENGE_ACCEPT_TAG)){
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(gameListElement.getGameId()));
-			loadItem.setRequestMethod(RestHelper.DELETE);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
+			LoadItem loadItem = LoadHelper.declineChallenge(getAppData().getUserToken(),  gameListElement.getGameId());
 			successToastMsgId = R.string.challenge_declined;
 
 			new RequestJsonTask<DailyGameAcceptItem>(challengeInviteUpdateListener).executeTask(loadItem);

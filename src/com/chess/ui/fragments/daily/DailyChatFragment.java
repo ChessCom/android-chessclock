@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.RoboButton;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.ChatItem;
@@ -247,11 +248,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 	}
 
 	private LoadItem createGetTimeStampLoadItem() {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_GAMES);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_GAME_ID, gameId);
-		return loadItem;
+		return LoadHelper.getGameById(getUserToken(), gameId);
 	}
 
 	private class GetTimeStampListener extends ActionBarUpdateListener<DailyCurrentGameData> { // TODO use batch API
@@ -272,13 +269,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 		public void updateData(DailyCurrentGameData returnedObj) {
 			super.updateData(returnedObj);
 
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
-			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);
-
+			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_CHAT, timeStamp);
 			new RequestJsonTask<DailyChatItem>(receiveUpdateListener).executeTask(loadItem);
 		}
 	}
@@ -298,14 +289,8 @@ public class DailyChatFragment extends CommonLogicFragment{
 				showToast(R.string.encoding_unsupported);
 			}
 
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
-			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_CHAT);
+			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_CHAT, timeStamp);
 			loadItem.addRequestParams(RestHelper.P_MESSAGE, message);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, timeStamp);
-
 			new RequestJsonTask<DailyChatItem>(sendUpdateListener).executeTask(loadItem);
 		}
 	}

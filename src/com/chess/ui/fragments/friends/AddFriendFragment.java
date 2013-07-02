@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import com.chess.EditButton;
 import com.chess.R;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.LoadItem;
@@ -169,12 +170,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 	}
 
 	private void createFriendRequest(String username, String message) {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.setLoadPath(RestHelper.CMD_FRIENDS_REQUEST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_USERNAME, username);
-		loadItem.addRequestParams(RestHelper.P_MESSAGE, message);
+		LoadItem loadItem = LoadHelper.postFriend(getUserToken(), username, message);
 
 		new RequestJsonTask<RequestItem>(new RequestFriendListener()).executeTask(loadItem);
 	}

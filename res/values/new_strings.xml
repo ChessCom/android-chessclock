@@ -243,6 +243,7 @@
     <string name="you_cant_move_on_vacation">You can\'t move while on vacation.</string>
     <string name="request_sent">Request sent</string>
     <string name="username_not_found">Username not found</string>
+    <string name="you_havent_added_friends_yet">You haven\'t added friends yet</string>
     <!--Game mode-->
 
 </resources>

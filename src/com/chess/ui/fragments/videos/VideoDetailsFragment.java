@@ -183,7 +183,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			if (resultCode == StaticData.EMPTY_DATA) {
-				emptyView.setText(R.string.no_games);
+				emptyView.setText("No Videos"); // TODO remove after debug, there should be videos
 			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.no_network);
 			}

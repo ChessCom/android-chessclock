@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.RestHelper;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.FriendsItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
@@ -248,10 +248,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 			return;
 		}
 
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_FRIENDS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-
+		LoadItem loadItem = LoadHelper.getFriends(getUserToken());
 		new RequestJsonTask<FriendsItem>(friendsUpdateListener).executeTask(loadItem);
 	}
 
@@ -320,7 +317,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			if (resultCode == StaticData.EMPTY_DATA) {
-				showToast(R.string.no_games);
+				showToast(R.string.you_havent_added_friends_yet);
 			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
 				showToast(R.string.no_network);
 			}

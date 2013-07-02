@@ -7,12 +7,12 @@ import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import com.chess.R;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.DailySeekItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.WhiteSpinnerAdapter;
@@ -84,16 +84,8 @@ public class OnlineOpenChallengeActivity extends LiveBaseActivity implements OnC
 		int gameType = chess960.isChecked() ? 2 : 0;
 		int isRated = this.isRatedChkBx.isChecked() ? 1 : 0;
 
-		LoadItem loadItem = new LoadItem();
-//		loadItem.setLoadPath(RestHelper.ECHESS_NEW_GAME);
-		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
-		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken());
-		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, days);
-		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
-		loadItem.addRequestParams(RestHelper.P_IS_RATED, isRated);
-		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
-
+		LoadItem loadItem = LoadHelper.postGameSeek(getAppData().getUserToken(), days, color, isRated, gameType,
+				null);
 		if (minRating != null)
 			loadItem.addRequestParams(RestHelper.P_MIN_RATING, minRating);
 

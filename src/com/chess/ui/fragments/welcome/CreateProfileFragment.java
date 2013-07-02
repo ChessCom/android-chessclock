@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.chess.LeftImageEditText;
 import com.chess.LeftRightImageEditText;
 import com.chess.R;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.UserItem;
@@ -246,14 +247,8 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 			return;
 		}
 
-		LoadItem loadItem = new LoadItem();
-		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.setLoadPath(RestHelper.CMD_USER_PROFILE);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_FIRST_NAME, getTextFromField(firstNameEdt));
-		loadItem.addRequestParams(RestHelper.P_LAST_NAME, getTextFromField(lastNameEdt));
-		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, userCountryId);
-		loadItem.addRequestParams(RestHelper.P_SKILL_LEVEL, getAppData().getUserSkill());
+		LoadItem loadItem = LoadHelper.postUserProfile(getUserToken(), getTextFromField(firstNameEdt), getTextFromField(lastNameEdt),
+				userCountryId, getAppData().getUserSkill());
 		loadItem.setFileMark(RestHelper.P_AVATAR);
 		loadItem.setFilePath(mCurrentPhotoPath);
 		loadItem.setFileSize(photoFileSize);

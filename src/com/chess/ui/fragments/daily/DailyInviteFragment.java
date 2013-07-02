@@ -307,20 +307,14 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 	}
 
 	private void acceptChallenge() {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(challengeItem.getGameId()));
-		loadItem.setRequestMethod(RestHelper.PUT);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		LoadItem loadItem = LoadHelper.acceptChallenge(getUserToken(), challengeItem.getGameId());
 		successToastMsgId = R.string.challenge_accepted;
 
 		new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);
 	}
 
 	private void declineChallenge() {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_ANSWER_GAME_SEEK(challengeItem.getGameId()));
-		loadItem.setRequestMethod(RestHelper.DELETE);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		LoadItem loadItem = LoadHelper.declineChallenge(getUserToken(), challengeItem.getGameId());
 		successToastMsgId = R.string.challenge_declined;
 
 		new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);

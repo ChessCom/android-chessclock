@@ -12,6 +12,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.GetAndSaveFriends;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.LoadItem;
@@ -130,10 +131,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		// get games_id's and compare it to local DB
 		// if there are game_id which we don't have, then fetch it
 
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_GAMES_ALL);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_ID);
+		LoadItem loadItem = LoadHelper.getAllGamesFiltered(getUserToken(), RestHelper.V_ID);
 		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
 
@@ -152,9 +150,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (previousCheckedId == NON_INIT) {
-			tabRadioGroup.check(R.id.leftTabBtn);
-		}
+
 		setBadgeValueForId(R.id.menu_games, 7); // TODO use properly
 //		setBadgeValueForId(R.id.menu_notifications, 7); // TODO use properly
 	}

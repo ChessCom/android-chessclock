@@ -1,12 +1,11 @@
 package com.chess.ui.fragments.daily;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
-import com.chess.backend.RestHelper;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.DailySeekItem;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -81,21 +80,10 @@ public class DailyGameSetupFragment extends CommonLogicFragment {
 		int color = dailyGameConfig.getUserColor();
 		int days = dailyGameConfig.getDaysPerMove();
 		int gameType = dailyGameConfig.getGameType();
-		String isRated = dailyGameConfig.isRated() ? RestHelper.V_TRUE : RestHelper.V_FALSE;
+		int isRated = dailyGameConfig.isRated() ? 1 : 0;
 		String opponentName = dailyGameConfig.getOpponentName();
 
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
-		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, days);
-		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
-		loadItem.addRequestParams(RestHelper.P_IS_RATED, isRated);
-		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
-		if (!TextUtils.isEmpty(opponentName)) {
-			loadItem.addRequestParams(RestHelper.P_OPPONENT, opponentName);
-		}
-
+		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), days, color, isRated, gameType, opponentName);
 		new RequestJsonTask<DailySeekItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 

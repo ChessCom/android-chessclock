@@ -280,10 +280,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			updateUserCountry(countryStr);
 
 			if (need2Update) {
-				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-
+				LoadItem loadItem = LoadHelper.getMembershipDetails(getUserToken());
 				new RequestJsonTask<MembershipItem>(new GetDetailsListener()).executeTask(loadItem); // TODO set proper item
 			}
 		}
@@ -407,13 +404,8 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	}
 
 	private void updateProfile() {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.setLoadPath(RestHelper.CMD_USER_PROFILE);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_FIRST_NAME, firstNameStr);
-		loadItem.addRequestParams(RestHelper.P_LAST_NAME, lastNameStr);
-		loadItem.addRequestParams(RestHelper.P_COUNTRY_ID, countryId);
+		LoadItem loadItem = LoadHelper.postUserProfile(getUserToken(), firstNameStr, lastNameStr,
+				countryId, getAppData().getUserSkill());
 		loadItem.addRequestParams(RestHelper.P_LOCATION, locationStr);
 		loadItem.setFileMark(RestHelper.P_AVATAR);
 		loadItem.setFilePath(mCurrentPhotoPath);

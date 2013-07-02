@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.DataHolder;
@@ -301,10 +302,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	}
 
 	protected void updateGameState(long gameId) {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_GAME_BY_ID(gameId));
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-
+		LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameId);
 		new RequestJsonTask<DailyCurrentGameData>(gameStateUpdateListener).executeTask(loadItem);
 	}
 
@@ -512,14 +510,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	}
 
 	private void sendMove() {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
-		loadItem.setRequestMethod(RestHelper.PUT);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_SUBMIT);
+		LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId,  RestHelper.V_SUBMIT, currentGame.getTimestamp());
 		loadItem.addRequestParams(RestHelper.P_NEWMOVE, getBoardFace().convertMoveEchess());
-		loadItem.addRequestParams(RestHelper.P_TIMESTAMP, System.currentTimeMillis() * 1000L/* currentGame.getTimestamp()*/);
-
 		new RequestJsonTask<BaseResponseItem>(sendMoveUpdateListener).executeTask(loadItem);
 	}
 
@@ -708,30 +700,14 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 				draw = RestHelper.V_OFFERDRAW;
 			}
 
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
-			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_COMMAND, draw);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
-
+			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, draw, currentGame.getTimestamp());
 			new RequestJsonTask<BaseResponseItem>(drawOfferedUpdateListener).executeTask(loadItem);
 		} else if (tag.equals(ABORT_GAME_TAG)) {
 
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_PUT_GAME_ACTION(gameId));
-			loadItem.setRequestMethod(RestHelper.PUT);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_COMMAND, RestHelper.V_RESIGN);
-			loadItem.addRequestParams(RestHelper.P_TIMESTAMP, currentGame.getTimestamp());
-
+			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId,  RestHelper.V_RESIGN, currentGame.getTimestamp());
 			new RequestJsonTask<BaseResponseItem>(abortGameUpdateListener).executeTask(loadItem);
 		} else if (tag.equals(END_VACATION_TAG)) {
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_VACATIONS);
-			loadItem.setRequestMethod(RestHelper.DELETE);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-
+			LoadItem loadItem = LoadHelper.deleteVacation(getUserToken());
 			new RequestJsonTask<VacationItem>(new VacationUpdateListener()).executeTask(loadItem);
 
 		} else if (tag.equals(ERROR_TAG)) {
@@ -823,16 +799,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			color = 1;
 		}
 
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_SEEKS);
-		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_DAYS_PER_MOVE, currentGame.getDaysPerMove());
-		loadItem.addRequestParams(RestHelper.P_USER_SIDE, color);
-		loadItem.addRequestParams(RestHelper.P_IS_RATED, currentGame.isRated() ? 1 : 0);
-		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, currentGame.getGameType());
-		loadItem.addRequestParams(RestHelper.P_OPPONENT, opponent);
-
+		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), currentGame.getDaysPerMove(), color,
+				currentGame.isRated() ? 1 : 0,  currentGame.getGameType(), opponent);
 		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 

@@ -13,6 +13,7 @@ import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.RoboTextView;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
 import com.chess.backend.billing.*;
@@ -455,10 +456,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			}
 
 			// query our server for membership bought from non Google Play( Apple, Web)
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-
+			LoadItem loadItem = LoadHelper.getMembershipDetails(getUserToken());
 			new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem); // TODO set proper item
 		}
 	}
@@ -531,10 +529,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCode.INVALID_ORDER) {
-					LoadItem loadItem = new LoadItem();
-					loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
-					loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-
+					LoadItem loadItem = LoadHelper.getMembershipDetails(getUserToken());
 					new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem); // TODO set proper item
 				} else {
 					super.errorHandle(resultCode);
@@ -544,13 +539,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	}
 
 	private void updateMembershipOnServer(Purchase purchase) {
-		LoadItem loadItem = new LoadItem();
-		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_PURCHASE_DATA, purchase.getOriginalJson());
-		loadItem.addRequestParams(RestHelper.P_DATA_SIGNATURE, purchase.getSignature());
-
+		LoadItem loadItem = LoadHelper.postMembershipUpdate(getUserToken(), purchase.getOriginalJson(), purchase.getSignature());
 		new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem);
 	}
 
