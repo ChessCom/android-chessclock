@@ -32,6 +32,7 @@ public class CompEngineHelper implements GUIInterface {
 	public static final String GAME_STATE = "gameState";
 	public static final String GAME_STATE_VERSION_NAME = "gameStateVersion";
 	public static final int GAME_STATE_VERSION = 3;
+	public static final int MAX_NUM_HINT_ARROWS = 2;
 
 	private static final boolean LOGGING_ON = true;
 	public static final String TAG = "COMPENGINE";
@@ -59,6 +60,9 @@ public class CompEngineHelper implements GUIInterface {
 	private byte[] stateBeforeHint;
 	private TimeControlData timeControlData;
 	private String variantStr = "";
+	private ArrayList<Move> variantMoves = null;
+	private ArrayList<Move> bookMoves = null;
+	private ArrayList<ArrayList<Move>> pvMoves;
 
 	public DroidChessController init(Context context) {
 
@@ -293,7 +297,7 @@ public class CompEngineHelper implements GUIInterface {
 
 	@Override
 	public String playerName() {
-		return null;
+		return "";
 	}
 
 	@Override
@@ -337,6 +341,8 @@ public class CompEngineHelper implements GUIInterface {
 		log("setPosition - variantMoves =" + variantMoves.toString());
 
 		variantStr = variantInfo;
+
+		this.variantMoves = variantMoves;
 	}
 
 	@Override
@@ -351,9 +357,11 @@ public class CompEngineHelper implements GUIInterface {
 
         String thinkingStr1 = pvStr;
 		//String thinkingStr2 = statStr;
+		this.pvMoves = pvMoves;
 		String bookInfoStr = bookInfo;
+		this.bookMoves = bookMoves;
 
- 		gameCompActivityFace.onEngineThinkingInfo(thinkingStr1, variantStr);
+ 		gameCompActivityFace.onEngineThinkingInfo(thinkingStr1, variantStr, pvMoves, variantMoves, bookMoves);
 
         /*if (engineCtrl.computerBusy()) {
             lastComputationMillis = System.currentTimeMillis();
@@ -513,6 +521,13 @@ public class CompEngineHelper implements GUIInterface {
 
 	public void shutdownEngine() {
 		engineCtrl.shutdownEngine();
+	}
+
+	public boolean isWhitePiece(int square) {
+		int piece = engineCtrl.getCurrentPosition().getPiece(square);
+		boolean result = Piece.isWhite(piece);
+
+		return result;
 	}
 
 	public static void log(String message) {

@@ -51,9 +51,9 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         if (isGameOver())
             return;
 
-        if (!boardFace.isAnalysis()/* && !AppData.isHumanVsHumanGameMode(boardFace)*/) {
+        //if (!boardFace.isAnalysis()/* && !AppData.isHumanVsHumanGameMode(boardFace)*/) {
 			postMoveToEngine(boardFace.getLastMove());
-        }
+        //}
     }
 
     @Override
@@ -96,7 +96,7 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 		if (isHint())
 			return;
 
-		if (!AppData.isHumanVsHumanGameMode(boardFace)) {
+		if (!AppData.isHumanVsHumanGameMode(boardFace) && !getBoardFace().isAnalysis()) {
 			setComputerMoving(true);
 			gameCompActivityFace.onCompMove();
 		}
@@ -170,10 +170,11 @@ public class ChessBoardCompView extends ChessBoardBaseView {
             }
         }*/
 
+		drawMoveHints(canvas); // todo @compengine: move to base class for all game modes
+
 		drawCoordinates(canvas);
 		drawCapturedPieces();
     }
-
 
     @Override
     public boolean onTrackballEvent(MotionEvent event) {

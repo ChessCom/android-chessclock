@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,9 +19,12 @@ import com.chess.R;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.StartEngineTask;
+import com.chess.live.client.PieceColor;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.*;
+import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.GameCompActivityFace;
 import com.chess.ui.views.ChessBoardCompView;
@@ -30,9 +32,12 @@ import com.chess.ui.views.GamePanelView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.InneractiveAdHelper;
 import com.inneractive.api.ads.InneractiveAd;
-import org.petero.droidfish.Util;
+import org.petero.droidfish.GameMode;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * GameTacticsScreenActivity class
@@ -97,6 +102,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
         if (getBoardFace().isAnalysis()) {
             boardView.enableAnalysis();
+			//AppData.getCompEngineHelper().setAnalysisMode();
             return;
         }
 
@@ -182,11 +188,16 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	}
 
 	private void startGame(Bundle... savedInstanceState) {
-		int engineMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
+		int engineMode;
+		if (getBoardFace().isAnalysis()) {
+			engineMode = GameMode.ANALYSIS;
+		} else {
+			engineMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
+		}
 		int strength = compStrengthArray[AppData.getCompStrength(getContext())];
 		int time = Integer.parseInt(compTimeLimitArray[AppData.getCompStrength(getContext())]);
 		int depth = Integer.parseInt(compDepth[AppData.getCompStrength(getContext())]);
-		boolean restoreGame = AppData.haveSavedCompGame(this);
+		boolean restoreGame = AppData.haveSavedCompGame(this) || getBoardFace().isAnalysis();
 
 		Bundle state = savedInstanceState.length > 0 ? savedInstanceState[0] : null;
 
@@ -347,6 +358,9 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 	@Override
 	protected void restoreGame() {
+
+		//startGame();
+
 		ChessBoardComp.resetInstance();
 		ChessBoardComp chessBoardComp = ChessBoardComp.getInstance(this);
 		boardView.setBoardFace(chessBoardComp);
@@ -519,7 +533,10 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 	public void onGameOver(String message, boolean need2Finish) {
 		super.onGameOver(message, need2Finish);
 		AppData.getCompEngineHelper().setAnalysisMode();
-		// todo @compengine: fix and improve analysis of finished game
+
+		// todo @compengine: disable button returning from analysis mode
+		preferencesEditor.putString(AppData.getUserName(this) + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
+		preferencesEditor.commit();
 	}
 
 	@Override
@@ -569,7 +586,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 		@Override
 		public void updateData(CompEngineHelper returnedObj) {
-			// todo: show progress and enable Play button
+			// todo @compengine: enable board after full init od engine, show progress
 
 			/*Log.d(CompEngineHelper.TAG, "InitComputerEngineUpdateListener updateData");
 
@@ -600,8 +617,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		}
 	}
 
-	public final void onEngineThinkingInfo(final String thinkingStr1, final String variantStr) {
-
+	public final void onEngineThinkingInfo(final String thinkingStr1, final String variantStr, final ArrayList<ArrayList<org.petero.droidfish.gamelogic.Move>> pvMoves, final ArrayList<org.petero.droidfish.gamelogic.Move> variantMoves, final ArrayList<org.petero.droidfish.gamelogic.Move> bookMoves) {
 
 		CompEngineHelper.log("thinkingStr1 " + thinkingStr1);
 		CompEngineHelper.log("variantStr " + variantStr);
@@ -614,7 +630,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 				boolean thinkingEmpty = true;
 				{
-					//if (mShowThinking || gameMode.analysisMode()) {
+					//if (mShowThinking || gameMode.analysisMode()) { // getBoardFace().isAnalysis(
 					String s = "";
 					s = thinkingStr1;
 					if (s.length() > 0) {
@@ -630,7 +646,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 					engineThinkingPath.setText(s, TextView.BufferType.SPANNABLE);
 					log = s;
 				}
-				// todo @compengine: show book hints
+				// todo @compengine: show book hints for human player
 				/*if (mShowBookHints && (bookInfoStr.length() > 0)) {
 					String s = "";
 					if (!thinkingEmpty)
@@ -640,7 +656,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 					log += s;
 					thinkingEmpty = false;
 				}*/
-				if (/*showVariationLine && */(variantStr.indexOf(' ') >= 0)) {
+				/*if (showVariationLine && (variantStr.indexOf(' ') >= 0)) { // showVariationLine
 					String s = "";
 					if (!thinkingEmpty)
 						s += "<br>";
@@ -648,34 +664,45 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 					engineThinkingPath.append(Html.fromHtml(s));
 					log += s;
 					thinkingEmpty = false;
-				}
+				}*/
 				setThinkingVisibility(!thinkingEmpty);
 
-				/*List<Move> hints = null;
-				if (mShowThinking || gameMode.analysisMode()) {
-					ArrayList<ArrayList<Move>> pvMovesTmp = pvMoves;
+				// hints arrow
+				List<org.petero.droidfish.gamelogic.Move> hints = null;
+				if (/*mShowThinking ||*/ getBoardFace().isAnalysis()) {
+					ArrayList<ArrayList<org.petero.droidfish.gamelogic.Move>> pvMovesTmp = pvMoves;
 					if (pvMovesTmp.size() == 1) {
 						hints = pvMovesTmp.get(0);
 					} else if (pvMovesTmp.size() > 1) {
-						hints = new ArrayList<Move>();
-						for (ArrayList<Move> pv : pvMovesTmp)
+						hints = new ArrayList<org.petero.droidfish.gamelogic.Move>();
+						for (ArrayList<org.petero.droidfish.gamelogic.Move> pv : pvMovesTmp)
 							if (!pv.isEmpty())
 								hints.add(pv.get(0));
 					}
 				}
-				if ((hints == null) && mShowBookHints)
-					hints = bookMoves;
+				/*if ((hints == null) && mShowBookHints)
+					hints = bookMoves;*/
 				if (((hints == null) || hints.isEmpty()) &&
 						(variantMoves != null) && variantMoves.size() > 1) {
 					hints = variantMoves;
 				}
-				if ((hints != null) && (hints.size() > maxNumArrows)) {
-					hints = hints.subList(0, maxNumArrows);
+				if ((hints != null) && (hints.size() > CompEngineHelper.MAX_NUM_HINT_ARROWS)) {
+					hints = hints.subList(0, CompEngineHelper.MAX_NUM_HINT_ARROWS);
 				}
-				cb.setMoveHints(hints);*/
+
+				HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> hintsMap =
+						new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();
+				if (hints != null) {
+					for (org.petero.droidfish.gamelogic.Move move : hints) {
+						boolean isWhite = AppData.getCompEngineHelper().isWhitePiece(move.from);
+						PieceColor pieceColor = isWhite ? PieceColor.WHITE : PieceColor.BLACK;
+						hintsMap.put(move, pieceColor);
+					}
+				}
+
+				boardView.setMoveHints(hintsMap);
 
 				CompEngineHelper.log("Thinking info:\n" + log);
-
 			}
 		});
 	}

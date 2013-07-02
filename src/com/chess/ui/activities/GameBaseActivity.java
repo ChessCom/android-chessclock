@@ -172,6 +172,7 @@ public abstract class GameBaseActivity extends LiveBaseActivity implements GameA
 	protected void setBoardToFinishedState(){ // TODO implement state conditions logic for board
 		showSubmitButtonsLay(false);
 		boardView.enableAnalysis();
+		boardView.getBoardFace().setAnalysis(true);
 
 		boardView.setFinished(true);
 		//gamePanelView.showBottomPart(false);

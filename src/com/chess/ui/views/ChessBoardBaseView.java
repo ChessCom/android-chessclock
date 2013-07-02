@@ -15,14 +15,15 @@ import android.widget.ImageView;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.live.client.PieceColor; // or create similar enum
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.BoardViewFace;
 import com.chess.ui.interfaces.GameActivityFace;
+import org.petero.droidfish.gamelogic.Position;
 
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * ChessBoardBaseView class
@@ -93,6 +94,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected PaintFlagsDrawFilter drawFilter;
 	private float density;
 
+	private HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> moveHints =
+			new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();
+	private Paint whiteMoveArrowPaint;
+	private Paint blackMoveArrowPaint;
+
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		resources = context.getResources();
@@ -140,6 +146,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		userActive = false;
 
 		preferences = AppData.getPreferences(getContext());
+
+		whiteMoveArrowPaint = initMoveArrowPaint(Color.WHITE);
+		blackMoveArrowPaint = initMoveArrowPaint(Color.BLACK);
 
 	}
 
@@ -815,5 +824,86 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		loadPieces(AppData.getPiecesId(getContext()));
 
 		invalidate();
+	}
+
+	private Paint initMoveArrowPaint(int arrowColor) {
+		Paint paint = new Paint();
+		paint.setStyle(Style.FILL);
+		paint.setAntiAlias(true);
+		paint.setColor(arrowColor);
+		paint.setAlpha(192);
+		return paint;
+	}
+
+	public final void setMoveHints(HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> moveHints) {
+		boolean equal;
+		if ((this.moveHints == null) || (moveHints == null)) {
+			equal = this.moveHints == moveHints;
+		} else {
+			equal = this.moveHints.equals(moveHints);
+		}
+		if (!equal) {
+			this.moveHints = moveHints;
+			invalidate();
+		}
+	}
+
+	public final void drawMoveHints(Canvas canvas) {
+
+		if ((moveHints == null || moveHints.isEmpty()))
+			return;
+		float h = (float)(square / 2.0);
+		float d = (float)(square / 8.0);
+		double v = 35 * Math.PI / 180;
+		double cosv = Math.cos(v);
+		double sinv = Math.sin(v);
+		double tanv = Math.tan(v);
+
+		for (org.petero.droidfish.gamelogic.Move move : moveHints.keySet()) {
+			if ((move == null) || (move.from == move.to))
+				continue;
+			float x0 = getXCrd(Position.getX(move.from)) + h;
+			float y0 = getYCrd(Position.getY(move.from)) + h;
+			float x1 = getXCrd(Position.getX(move.to)) + h;
+			float y1 = getYCrd(Position.getY(move.to)) + h;
+
+			float x2 = (float)(Math.hypot(x1 - x0, y1 - y0) + d);
+			float y2 = 0;
+			float x3 = (float)(x2 - h * cosv);
+			float y3 = (float)(y2 - h * sinv);
+			float x4 = (float)(x3 - d * sinv);
+			float y4 = (float)(y3 + d * cosv);
+			float x5 = (float)(x4 + (-d/2 - y4) / tanv);
+			float y5 = (float)(-d / 2);
+			float x6 = 0;
+			float y6 = y5 / 2;
+			Path path = new Path();
+			path.moveTo(x2, y2);
+			path.lineTo(x3, y3);
+//          path.lineTo(x4, y4);
+			path.lineTo(x5, y5);
+			path.lineTo(x6, y6);
+			path.lineTo(x6, -y6);
+			path.lineTo(x5, -y5);
+//          path.lineTo(x4, -y4);
+			path.lineTo(x3, -y3);
+			path.close();
+			Matrix mtx = new Matrix();
+			mtx.postRotate((float)(Math.atan2(y1 - y0, x1 - x0) * 180 / Math.PI));
+			mtx.postTranslate(x0, y0);
+			path.transform(mtx);
+
+			Paint p = moveHints.get(move) == PieceColor.WHITE ? whiteMoveArrowPaint : blackMoveArrowPaint;
+
+			canvas.drawPath(path, p);
+		}
+	}
+
+	private float getXCrd(int x) {
+		return square * (boardFace.isReside() ? 7 - x : x);
+	}
+
+	private float getYCrd(int y) {
+		return square * (boardFace.isReside() ? y : 7 - y);
 	}
 }

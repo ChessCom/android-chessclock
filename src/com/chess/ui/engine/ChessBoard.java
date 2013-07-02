@@ -2026,14 +2026,6 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public boolean toggleAnalysis() {
-
-		/*try {
-			throw new Exception();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		Log.d("", "Analysis toggleAnalysis " + !analysis);*/
-
 		return analysis = !analysis;
 	}
 
@@ -2044,14 +2036,6 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public void setAnalysis(boolean analysis) {
-
-		/*try {
-			throw new Exception();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		Log.d("", "Analysis setanalysis " + analysis);*/
-
 		this.analysis = analysis;
 	}
 
