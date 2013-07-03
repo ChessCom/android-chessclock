@@ -62,6 +62,7 @@ public class AppConstants {
 
     public static final String PREF_THEME_BACK_ID = "theme background id";
     public static final String PREF_TEMP_TOKEN_GCM = "temporary token for gcm";
+    public static final String PREF_USER_CHOOSE_VIDEO_LIBRARY = "user choose video library mode";
 	/* New Daily and Live games*/
 	public static final String PREF_DEFAULT_DAILY_MODE = "defaultDailyMode";
 	public static final String PREF_DEFAULT_LIVE_MODE = "defaultLiveMode";

@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"/>-->
 
     <!--android:layout_below="@+id/iv_icon"-->
-    <TextView
+    <com.chess.RoboTextView
         android:id="@+id/actionItemTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

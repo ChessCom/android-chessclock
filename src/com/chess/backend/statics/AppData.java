@@ -80,11 +80,11 @@ public class AppData {
 	}
 
 	public String getUserName() {
-		return preferences.getString(AppConstants.USERNAME, StaticData.SYMBOL_EMPTY);
+		return preferences.getString(USERNAME, StaticData.SYMBOL_EMPTY);
 	}
 
 	public void setUserName(String userName) {
-		editor.putString(AppConstants.USERNAME, userName).commit();
+		editor.putString(USERNAME, userName).commit();
 	}
 
 	public String getPassword() {
@@ -147,7 +147,7 @@ public class AppData {
 	}
 
 	public int getUserPremiumStatus() {
-		return preferences.getInt(USER_PREMIUM_STATUS, StaticData.BASIC_USER);
+		return getIntValue(USER_PREMIUM_STATUS, StaticData.BASIC_USER);
 	}
 
 	public void setUserPremiumSku(String value) {
@@ -352,6 +352,14 @@ public class AppData {
 
 	public void setThemeBackId(int themeId) {
 		setIntValue(PREF_THEME_BACK_ID, themeId);
+	}
+
+	public void setUserChooseVideoLibrary(boolean value) {
+		setBooleanValue(PREF_USER_CHOOSE_VIDEO_LIBRARY, value);
+	}
+
+	public boolean isUserChooseVideoLibrary() {
+		return getBooleanValue(PREF_USER_CHOOSE_VIDEO_LIBRARY, false);
 	}
 
 	/**

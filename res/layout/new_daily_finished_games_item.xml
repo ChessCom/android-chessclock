@@ -28,7 +28,6 @@
         android:layout_height="wrap_content"
         android:textColor="@color/new_text_blue"
         android:gravity="center_vertical"
-        android:text="test"
         custom:ttf="Bold"
         />
 

@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     >
 
     <com.chess.RoboTextView
@@ -48,6 +49,51 @@
         android:divider="@null"
         android:dividerHeight="0dip"
         android:background="@android:color/transparent"
+        android:visibility="gone"
         />
+
+    <ExpandableListView
+        android:id="@+id/expListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="0dip"
+        android:background="@android:color/transparent"
+        />
+
+
+    <!--TODO remove this quickly!-->
+    <com.chess.LinLayout
+        android:id="@+id/tempCurriculumHeader"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ListItem.Header.Light"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/default_scr_side_padding"
+        android:paddingRight="8dip"
+        >
+
+        <!--Title-->
+        <com.chess.RoboTextView
+            android:id="@+id/headerTitleTxt"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Video Curriculum"
+            style="@style/HeaderTitle.Dark"
+            />
+
+        <!--Right Icon-->
+        <com.chess.RoboTextView
+            android:id="@+id/headerIconTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ic_up"
+            android:textColor="@color/new_light_grey_2"
+            style="@style/GlyphIcon.Small"
+            />
+
+    </com.chess.LinLayout >
 
 </LinearLayout>

@@ -9,6 +9,7 @@ import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.stats.TacticsBasicStatsItem;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.LessonsFragment;
@@ -35,6 +36,8 @@ public class HomeLearnFragment extends CommonLogicFragment {
 	private int todaysAverageScore;
 	private boolean need2update = true;
 	private StatsUpdateListener statsUpdateListener;
+	private View todaysAttemptsLabelTxt;
+	private View avgScoreLabelTxt;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,8 @@ public class HomeLearnFragment extends CommonLogicFragment {
 		tacticsRatingTxt = (TextView) view.findViewById(R.id.tacticsRatingTxt);
 		lessonsRatingTxt = (TextView) view.findViewById(R.id.lessonsRatingTxt);
 
+		todaysAttemptsLabelTxt = view.findViewById(R.id.todaysAttemptsLabelTxt);
+		avgScoreLabelTxt = view.findViewById(R.id.avgScoreLabelTxt);
 		avgScoreValueTxt = (TextView) view.findViewById(R.id.avgScoreValueTxt);
 		todaysAttemptsValueTxt = (TextView) view.findViewById(R.id.todaysAttemptsValueTxt);
 	}
@@ -73,9 +78,16 @@ public class HomeLearnFragment extends CommonLogicFragment {
 		// load latest video
 //		loadedVideoId
 //		new LoadDataFromDbTask()
-
-		LoadItem loadItem = LoadHelper.getTacticsBasicStats(getUserToken());
-		new RequestJsonTask<TacticsBasicStatsItem>(statsUpdateListener).executeTask(loadItem);
+		// TODO request stats only for premium user
+		if (getAppData().getUserPremiumStatus() > StaticData.BASIC_USER) {
+			LoadItem loadItem = LoadHelper.getTacticsBasicStats(getUserToken());
+			new RequestJsonTask<TacticsBasicStatsItem>(statsUpdateListener).executeTask(loadItem);
+		} else {
+			todaysAttemptsLabelTxt.setVisibility(View.GONE);
+			avgScoreLabelTxt.setVisibility(View.GONE);
+			avgScoreValueTxt.setVisibility(View.GONE);
+			todaysAttemptsValueTxt.setVisibility(View.GONE);
+		}
 	}
 
 	private class StatsUpdateListener extends ChessUpdateListener<TacticsBasicStatsItem> {

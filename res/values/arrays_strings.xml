@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="videos_curriculum">
+        <item>Rules and Basics</item>
+        <item>Openings</item>
+        <item>Tactics</item>
+        <item>Strategy</item>
+        <item>Endgames</item>
+        <item>Amazing games</item>
+        <item>Full Video Library</item>
+    </string-array>
+
+    <string-array name="video_cur_beginners_titles">
+        <item>Everything You Need to Know 1: Start Playing Chess</item>
+        <item>Everything You Need to Know 2: The Opening!</item>
+        <item>Everything You Need to Know 3: Tactics &amp; Strategy!</item>
+        <item>Everything You Need to Know 4: The Endgame!</item>
+        <item>Everything You Need to Know 5: Bring It Together!</item>
+    </string-array>
+
+    <string-array name="video_cur_openings_titles">
+        <item>Opening Principles Explained</item>
+        <item>Every Chess Opening: The First Move!</item>
+        <item>Every Chess Opening: Defenses to 1.e4</item>
+        <item>Every Chess Opening: Defenses to 1.d4</item>
+        <item>How to Develop an Opening Repertoire</item>
+    </string-array>
+
+    <string-array name="video_cur_tactics_titles">
+        <item>Patterns Everyone Must Know: Basic Tactics - 1!</item>
+        <item>Patterns Everyone Must Know: Basic Tactics - 2!</item>
+        <item>Patterns Everyone Must Know: Beyond the Basics 1!</item>
+        <item>Tactics Do Grow On Strategies</item>
+        <item>Tactics Do Grow On Strategies 2</item>
+    </string-array>
+
+    <string-array name="video_cur_strategy_titles">
+        <item>Nominal and Absolute Power of The Pieces</item>
+        <item>The Basic Element of Space in Chess</item>
+        <item>Chess Vocabulary: Pawn(s) Structure!</item>
+        <item>Pawn Structure 101: Every Opening Explained!</item>
+        <item>How To Improve Your Chess</item>
+    </string-array>
+
+    <string-array name="video_cur_endgames_titles">
+        <item>Fundamental Checkmates 1: Rook Roller and K+Q</item>
+        <item>The Big 3 - Important Winning Techniques</item>
+        <item>King and Pawn Endings: The Basics!</item>
+        <item>Practical &amp; Essential Endgame Knowledge - Part 1!</item>
+        <item>Practical &amp; Essential Endgame Knowledge - Part 2!</item>
+    </string-array>
+
+    <string-array name="video_cur_amazing_games_titles">
+        <item>Amazing Games for Beginners: Unusual Wizardry!</item>
+        <item>Amazing Games for Beginners: Dominate the Center!</item>
+        <item>Amazing Games for Beginners: Magic Outpost Part 1</item>
+        <item>Member Analysis: Priceless, Practical Advice!</item>
+        <item>Amateur Game Review: Chess Crimes 1</item>
+    </string-array>
+
     <string-array name="languages">
         <item>English</item>
         <item>العربية</item>

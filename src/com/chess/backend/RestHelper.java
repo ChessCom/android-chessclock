@@ -421,7 +421,7 @@ message				false	Only used for `CHAT` command.
 		CustomType item = null;
 		String url = formCustomRequest(loadItem);
 		String requestMethod = loadItem.getRequestMethod();
-		if (requestMethod.equals(POST) || requestMethod.equals(PUT) /*|| requestMethod.equals(DELETE)*/) {
+		if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
 			url = formPostRequest(loadItem);
 		}
 
@@ -439,7 +439,7 @@ message				false	Only used for `CHAT` command.
 
 			if (!TextUtils.isEmpty(loadItem.getFilePath())) { // if multiPart
 				submitRawData(connection, loadItem);
-			} else if (requestMethod.equals(POST) || requestMethod.equals(PUT) /*|| requestMethod.equals(DELETE)*/) {
+			} else if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
 				submitPostData(connection, loadItem);
 			} else {
 				connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=" + HTTP.UTF_8);
