@@ -6,7 +6,6 @@ import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
@@ -56,7 +55,7 @@ public class NewVideosCursorAdapter extends ItemsCursorAdapter {
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		holder.authorTxt.setText(authorStr);
 
-		holder.titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_NAME));
+		holder.titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_TITLE));
 
 
 	}

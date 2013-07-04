@@ -119,11 +119,11 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	public void onStart() {
 		super.onStart();
 
-//		new LoadDataFromDbTask(new GamesCursorUpdateListener(),
+//		new LoadDataFromDbTask(new DbCursorUpdateListener(),
 //				DbHelper.getAllByUri(DBConstants.DAILY_FINISHED_GAMES),
 //				getContentResolver()).executeTask();
 //
-//		new LoadDataFromDbTask(new GamesCursorUpdateListener(),
+//		new LoadDataFromDbTask(new DbCursorUpdateListener(),
 //				DbHelper.getAllByUri(DBConstants.DAILY_CURRENT_GAMES),
 //				getContentResolver()).executeTask();
 
@@ -135,7 +135,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
 
-//	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {  // Used for test
+//	private class DbCursorUpdateListener extends ChessUpdateListener<Cursor> {  // Used for test
 //
 //		@Override
 //		public void updateData(Cursor cursor) {

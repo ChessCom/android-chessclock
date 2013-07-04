@@ -5,7 +5,7 @@
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-    style="@style/ListItem.Header.Light"
+    style="@style/ListItem.Header_2.Light"
     android:gravity="center_vertical"
     android:paddingLeft="7dip"
     android:paddingRight="15dip"

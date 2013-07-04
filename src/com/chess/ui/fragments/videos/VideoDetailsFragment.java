@@ -167,7 +167,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 //			videoBackImg // TODO adjust image loader
 //			progressBar // TODO adjust image loader
 
-			titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_NAME));
+			titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_TITLE));
 //			thumbnailAuthorImg // TODO adjust image loader
 			countryImg.setImageDrawable(AppUtils.getUserFlag(getActivity())); // TODO set flag properly // invent flag resources set system
 

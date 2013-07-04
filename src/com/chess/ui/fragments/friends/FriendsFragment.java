@@ -209,7 +209,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			if (resultCode == StaticData.EMPTY_DATA) {
-				emptyView.setText(R.string.you_havent_added_friends_yet);
+				emptyView.setText(R.string.you_have_not_added_friends_yet);
 			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.no_network);
 			}

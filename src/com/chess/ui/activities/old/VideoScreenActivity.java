@@ -15,7 +15,6 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -126,7 +125,7 @@ public class VideoScreenActivity extends LiveBaseActivity {
 			int cnt = returnedObj.getCount();
 			if (cnt > 0){
 				item = returnedObj.getData().get(0); // new VideoItemOld(returnedObj.split(RestHelper.SYMBOL_ITEM_SPLIT)[2].split("<->"));
-				title.setText(item.getName());
+				title.setText(item.getTitle());
 				desc.setText(item.getDescription());
 
 				playBtn.setEnabled(true);

@@ -4,7 +4,7 @@ import com.chess.backend.RestHelper;
 
 public class DbHelper {
 
-	public static QueryParams getAllByUri(int uriCode){
+	public static QueryParams getAllByUri(int uriCode) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[uriCode]);
 //		queryParams.setSelection(DBDataManager.SELECTION_USER);
@@ -12,7 +12,7 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getDailyCurrentListGamesParams(String username){
+	public static QueryParams getDailyCurrentListGamesParams(String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES]);
 		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_GAMES);
@@ -21,7 +21,7 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getDailyCurrentMyListGamesParams(String username){
+	public static QueryParams getDailyCurrentMyListGamesParams(String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES]);
 		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_GAMES);
@@ -30,7 +30,7 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getDailyCurrentTheirListGamesParams(String username){
+	public static QueryParams getDailyCurrentTheirListGamesParams(String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES]);
 		queryParams.setProjection(DBDataManager.PROJECTION_CURRENT_GAMES);
@@ -39,7 +39,7 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getDailyFinishedListGamesParams(String username){
+	public static QueryParams getDailyFinishedListGamesParams(String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES]);
 		queryParams.setProjection(DBDataManager.PROJECTION_FINISHED_GAMES);
@@ -57,7 +57,7 @@ public class DbHelper {
 //		return queryParams;
 //	}
 
-	public static QueryParams getDailyGameParams(long gameId, String username){
+	public static QueryParams getDailyGameParams(long gameId, String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES]);
 		queryParams.setSelection(DBDataManager.SELECTION_GAME_ID);
@@ -65,7 +65,7 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getDailyFinishedGameParams(long gameId, String username){
+	public static QueryParams getDailyFinishedGameParams(long gameId, String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES]);
 		queryParams.setSelection(DBDataManager.SELECTION_GAME_ID);
@@ -73,7 +73,7 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getUserParams(String userName, int uriCode){
+	public static QueryParams getUserParams(String userName, int uriCode) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[uriCode]);
 		queryParams.setSelection(DBDataManager.SELECTION_USER);
@@ -81,7 +81,7 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getArticlesListParams(int limitCnt){
+	public static QueryParams getArticlesListParams(int limitCnt) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.ARTICLES]);
 		if (limitCnt > 0) {
@@ -93,7 +93,7 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getVideosListByCategoryParams(String category/*, String sortOrder*/){
+	public static QueryParams getVideosListByCategoryParams(String category/*, String sortOrder*/) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.VIDEOS]);
 		queryParams.setSelection(DBDataManager.SELECTION_CATEGORY);
@@ -102,7 +102,7 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getVideosListParams(){
+	public static QueryParams getVideosListParams() {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.VIDEOS]);
 		queryParams.setOrder(DBConstants.V_CATEGORY);
@@ -110,7 +110,7 @@ public class DbHelper {
 	}
 
 
-	public static QueryParams getArticlesListByCategoryParams(String category){
+	public static QueryParams getArticlesListByCategoryParams(String category) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.ARTICLES]);
 		queryParams.setSelection(DBDataManager.SELECTION_CATEGORY);

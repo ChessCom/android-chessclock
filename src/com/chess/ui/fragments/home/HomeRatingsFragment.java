@@ -317,7 +317,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			if (resultCode == StaticData.EMPTY_DATA) {
-				showToast(R.string.you_havent_added_friends_yet);
+				showToast(R.string.you_have_not_added_friends_yet);
 			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
 				showToast(R.string.no_network);
 			}

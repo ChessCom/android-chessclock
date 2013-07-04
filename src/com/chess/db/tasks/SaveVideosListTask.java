@@ -35,13 +35,13 @@ public class SaveVideosListTask extends AbstractUpdateTask<VideoItem.Data, Long>
 		synchronized (itemList) {
 			for (VideoItem.Data currentItem : itemList) {
 				final String[] arguments2 = arguments;
-				arguments2[0] = String.valueOf(currentItem.getName());
+				arguments2[0] = String.valueOf(currentItem.getTitle());
 
 				// TODO implement beginTransaction logic for performance increase
 				Uri uri = DBConstants.uriArray[DBConstants.VIDEOS];
 
-				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_NAME,
-						DBDataManager.SELECTION_NAME, arguments2, null);
+				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_TITLE,
+						DBDataManager.SELECTION_TITLE, arguments2, null);
 
 				ContentValues values = DBDataManager.putVideoItemToValues(currentItem);
 

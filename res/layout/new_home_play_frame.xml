@@ -67,10 +67,10 @@
             android:id="@+id/liveOptionsView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dip"
+            android:paddingTop="8dip"
+            android:paddingBottom="8dip"
             android:paddingLeft="@dimen/default_scr_side_padding"
             android:paddingRight="@dimen/default_scr_side_padding"
-            style="@style/ListItem"
             android:animateLayoutChanges="true"
             >
 

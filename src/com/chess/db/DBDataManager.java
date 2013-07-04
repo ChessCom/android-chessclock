@@ -66,7 +66,7 @@ public class DBDataManager {
 			DBConstants.V_USER,
 			DBConstants.V_IS_MY_TURN);
 
-	public static String SELECTION_NAME = concatArguments(DBConstants.V_NAME);
+	public static String SELECTION_TITLE = concatArguments(DBConstants.V_TITLE);
 
 	public static String SELECTION_CATEGORY_ID = concatArguments(DBConstants.V_CATEGORY_ID);
 
@@ -146,9 +146,9 @@ public class DBDataManager {
 			DBConstants.V_OPPONENT_OFFERED_DRAW
 	};
 
-	public static final String[] PROJECTION_NAME = new String[] {
+	public static final String[] PROJECTION_TITLE = new String[] {
 			DBConstants._ID,
-			DBConstants.V_NAME
+			DBConstants.V_TITLE
 	};
 
 	public static final String[] PROJECTION_USERNAME = new String[] {
@@ -804,7 +804,7 @@ public class DBDataManager {
 	public static ContentValues putVideoItemToValues(VideoItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_NAME, dataObj.getName());
+		values.put(DBConstants.V_TITLE, dataObj.getTitle());
 		values.put(DBConstants.V_DESCRIPTION, dataObj.getDescription());
 		values.put(DBConstants.V_CATEGORY, dataObj.getCategoryName());
 		values.put(DBConstants.V_CATEGORY_ID, dataObj.getCategoryId());

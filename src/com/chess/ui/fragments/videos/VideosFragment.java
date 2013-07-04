@@ -29,6 +29,7 @@ import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -73,7 +74,8 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private String[][] curriculumItemsTitles;
 	private boolean curriculumMode;
 	private VideoGroupsListAdapter curriculumAdapter;
-	private View tempCurriculumHeader;
+//	private View tempCurriculumHeader;
+	private int itemsPerSectionCnt = 2;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -133,13 +135,16 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		{ // Library mode init
-			tempCurriculumHeader =  view.findViewById(R.id.tempCurriculumHeader);
-			tempCurriculumHeader.setOnClickListener(this);
+//			tempCurriculumHeader =  view.findViewById(R.id.tempCurriculumHeader);
+//			tempCurriculumHeader.setOnClickListener(this);
 			listView = (ListView) view.findViewById(R.id.listView);
 			// add header
 			View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_thumb_list_item, null, false);
 			headerView.setOnClickListener(this);
+			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_curriculum_footer, null, false);
+			footerView.setOnClickListener(this);
 			listView.addHeaderView(headerView);
+			listView.addFooterView(footerView);
 			listView.setAdapter(videosCursorAdapter);
 			listView.setOnItemClickListener(this);
 
@@ -171,7 +176,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private void showLibrary() {
 		boolean show = !curriculumMode;
 		listView.setVisibility(show? View.VISIBLE : View.GONE);
-		tempCurriculumHeader.setVisibility(show? View.VISIBLE : View.GONE);
+//		tempCurriculumHeader.setVisibility(show? View.VISIBLE : View.GONE);
 		expListView.setVisibility(show? View.GONE : View.VISIBLE);
 		if (show) {
 
@@ -212,18 +217,19 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	}
 
 	private void updateData() {
-		{// request random data for the header
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, 1);
-
-			new RequestJsonTask<VideoItem>(randomItemUpdateListener).executeTask(loadItem);
-		}
+//		{// request random data for the header
+//			LoadItem loadItem = new LoadItem();
+//			loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
+//			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+//			loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, 1);
+//
+//			new RequestJsonTask<VideoItem>(randomItemUpdateListener).executeTask(loadItem);
+//		}
 		// get all video // TODO adjust to request only latest updates
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, 8);
 		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_CATEGORY, VIDEOS_PER_CATEGORY);
 
@@ -343,9 +349,9 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 					Uri uri = DBConstants.uriArray[DBConstants.VIDEOS];
 					String[] arguments = new String[1];
-					arguments[0] = String.valueOf(headerData.getName());
-					Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_NAME,
-							DBDataManager.SELECTION_NAME, arguments, null);
+					arguments[0] = String.valueOf(headerData.getTitle());
+					Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_TITLE,
+							DBDataManager.SELECTION_TITLE, arguments, null);
 
 					ContentValues values = DBDataManager.putVideoItemToValues(headerData);
 
@@ -379,7 +385,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 				+ firstName + StaticData.SYMBOL_SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		holder.authorTxt.setText(authorStr);
-		holder.titleTxt.setText(headerData.getName());
+		holder.titleTxt.setText(headerData.getTitle());
 		holder.dateTxt.setText(dateFormatter.format(new Date(headerData.getCreateDate())));
 	}
 
@@ -411,6 +417,13 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	}
 
 	private class VideosCursorUpdateListener extends ChessUpdateListener<Cursor> {
+		private LinkedHashMap<Integer, String> sectionsIndexer;
+		private LinkedHashMap<Integer, Integer> sectionsCounter;
+
+		private VideosCursorUpdateListener() {
+			sectionsIndexer = new LinkedHashMap<Integer, String>();
+			sectionsCounter = new LinkedHashMap<Integer, Integer>();
+		}
 
 		@Override
 		public void showProgress(boolean show) {
@@ -436,23 +449,53 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 			*/
 
-//			String[] groups = new String[]{};
-//			String[][] titles = new String[][]{};
+//			String previous = StaticData.SYMBOL_EMPTY;
+//			int sectionNumber = 0;
+//
+//			int itemsInSection = 0;
+//			int lastSectionPosition = 0;
+//			do {
+//				final String sectionName = cursor.getString(cursor.getColumnIndex(DBConstants.V_CATEGORY));
+//
+//				if (!sectionName.equals(previous)) {
+//
+//					if (sectionsIndexer.size() > 0) {
+//						lastSectionPosition += itemsInSection + 1;
+//					}
+//					sectionsIndexer.put(lastSectionPosition, sectionName);
+//					previous = sectionName;
+//					sectionNumber++;
+//					itemsInSection = 0;
+//				}
+//
+//				if (itemsInSection < itemsPerSectionCnt) {
+//					itemsInSection++;
+//					sectionsCounter.put(sectionNumber, itemsInSection);
+//				}
+//
+//			} while (cursor.moveToNext());
+//
+//			String[] groups = new String[sectionsIndexer.size()];
+//			String[][] titles = new String[sectionsIndexer.size()][];//{};
+//
 //			String prevCategory = "";
-//			String[] tempCategory = new
+//			String[] tempCategory = new String[12];
+
+
+//			int categoryCounter = 0;
 //			do {
 //				String category = DBDataManager.getString(cursor, DBConstants.V_CATEGORY);
 //				if (!prevCategory.equals(category)) { // next group
-//
+//					categoryCounter = 0;
 //				}
 //				String title = DBDataManager.getString(cursor, DBConstants.V_NAME);
-//
+//				tempCategory[categoryCounter] = title;
 //
 //
 //
 //			} while (cursor.moveToNext());
-//
-//
+
+
 //			expListView.setVisibility(View.VISIBLE);
 //			expListView.setAdapter(new VideoGroupsListAdapter(groups, titles));
 

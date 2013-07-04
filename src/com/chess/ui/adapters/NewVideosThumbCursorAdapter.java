@@ -81,7 +81,7 @@ public class NewVideosThumbCursorAdapter extends ItemsCursorAdapter {
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		holder.authorTxt.setText(authorStr);
 
-		holder.titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_NAME));
+		holder.titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_TITLE));
 		date.setTime(DBDataManager.getLong(cursor, DBConstants.V_CREATE_DATE));
 		holder.dateTxt.setText(dateFormatter.format(date));
 	}

@@ -51,7 +51,7 @@ public class NewVideosAdapter extends ItemsAdapter<VideoItem.Data> {
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		holder.authorTxt.setText(authorStr);
 
-		holder.titleTxt.setText(item.getName());
+		holder.titleTxt.setText(item.getTitle());
 
 	}
 

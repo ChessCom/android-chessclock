@@ -34,7 +34,7 @@ public class CategoriesAdapter  extends ItemsAdapter<String> {
 	@Override
 	protected View createView(ViewGroup parent) {
 		RoboTextView textView = new RoboTextView(context);
-		ButtonDrawableBuilder.setBackgroundToView(textView, R.style.ListItem_Header_Light);
+		ButtonDrawableBuilder.setBackgroundToView(textView, R.style.ListItem_Header_2_Light);
 		textView.setTextColor(resources.getColor(R.color.new_main_back));
 		textView.setTextSize(resources.getDimension(R.dimen.header_title_size) / density);
 		textView.setPadding(padding, padding, padding, padding);

@@ -35,8 +35,11 @@ public class RectButtonDrawable extends ButtonDrawable {
 	static final int BOTTOM_RIGHT = 8;
 
 	static final int LIST_ITEM = 9;
-	static final int LIST_ITEM_HEADER_DARK = 10;
-	static final int LIST_ITEM_HEADER_TOP = 11;
+	static final int LIST_ITEM_HEADER = 10;
+	static final int LIST_ITEM_HEADER_2 = 11;
+	static final int LIST_ITEM_HEADER_DARK = 12;
+	static final int LIST_ITEM_HEADER_2_DARK = 13;
+	static final int LIST_ITEM_HEADER_TOP = 14;
 
 	int rectPosition = DEF_VALUE;
 
@@ -128,7 +131,13 @@ public class RectButtonDrawable extends ButtonDrawable {
 		insetOne.top = new int[]{in1, in1, in1, 0 };
 		insetOne.bottom = new int[]{0, 0, in1, 0};
 		if (rectPosition == LIST_ITEM) {
+			insetOne.button = new int[]{in1 * 2, in1 * 2, in1 * 2, in1 *2};
+		} else if (rectPosition == LIST_ITEM_HEADER) { // TODO change to bitMask
 			insetOne.button = new int[]{in1 * 2, in1 * 2, in1 * 2, in1};
+		} else if (rectPosition == LIST_ITEM_HEADER_2 || rectPosition == LIST_ITEM_HEADER_2_DARK) { // TODO change to bitMask
+			insetOne.left = new int[]{in1, in1 * 2, in1, - in1};
+			insetOne.button = new int[]{in1 * 2, in1 * 3, in1 * 2, in1};
+			insetOne.bottom = new int[]{0, 0, in1, 0};
 		} else {
 			insetOne.button = new int[]{in1, in1, in1, in1};
 		}
@@ -217,14 +226,16 @@ public class RectButtonDrawable extends ButtonDrawable {
 			case BOTTOM_RIGHT:
 				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset, height + edgeOffset);
 				break;
-			case LIST_ITEM:
+			case LIST_ITEM: // TODO adjust with bitMask
+			case LIST_ITEM_HEADER:
+			case LIST_ITEM_HEADER_2:
+			case LIST_ITEM_HEADER_TOP:
 			case LIST_ITEM_HEADER_DARK:
+			case LIST_ITEM_HEADER_2_DARK:
 				int width1 = canvas.getWidth();  // use full screen width to make backward compatibility
 				enabledDrawable.setBounds(-edgeOffset, -edgeOffset/2, width1 + edgeOffset, height);
 				break;
-
 		}
-//		boundsInit = true;
 	}
 
 	/**
@@ -233,8 +244,15 @@ public class RectButtonDrawable extends ButtonDrawable {
 	 */
 	@Override
 	protected void createDefaultState(List<LayerInfo> enabledLayers) {
-		createLayer(colorTop, insetOne.top, enabledLayers);
-		createLayer(colorBottom, insetOne.bottom, enabledLayers); // order is important
+		// Draw borders
+		if (rectPosition == LIST_ITEM_HEADER_2 || rectPosition == LIST_ITEM_HEADER_2_DARK) { // TODO change to bitMask
+			createLayer(colorTop, insetOne.top, enabledLayers);
+			createLayer(colorLeft, insetOne.left, enabledLayers);
+			createLayer(colorBottom, insetOne.bottom, enabledLayers); // order is important
+		} else {
+			createLayer(colorTop, insetOne.top, enabledLayers);
+			createLayer(colorBottom, insetOne.bottom, enabledLayers); // order is important
+		}
 
 		if (bevelLvl == 2) {
 			createLayer(colorTop2, insetTwo.top, enabledLayers);
@@ -243,6 +261,7 @@ public class RectButtonDrawable extends ButtonDrawable {
 			createLayer(colorRight2, insetTwo.right, enabledLayers);
 		}
 
+		// Draw button main color
 		int[] button = bevelLvl == 1 ? insetOne.button : insetTwo.button;
 		int color = isSolid ? colorSolid : TRANSPARENT;
 		createLayer(color, button, enabledLayers, true);
@@ -288,7 +307,6 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 		try {
 			rectPosition = array.getInt(R.styleable.RoboButton_btn_rect_pos, BOTTOM_MIDDLE);
-
 		} finally {
 			array.recycle();
 		}

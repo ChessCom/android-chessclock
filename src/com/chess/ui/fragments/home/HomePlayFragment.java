@@ -116,7 +116,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 			View dailyHeaderView = view.findViewById(R.id.dailyHeaderView);
 			View vsCompHeaderView = view.findViewById(R.id.vsCompHeaderView);
 			ButtonDrawableBuilder.setBackgroundToView(liveHeaderView, R.style.ListItem_Header_Dark);
-			ButtonDrawableBuilder.setBackgroundToView(dailyHeaderView, R.style.ListItem_Header_Dark);
+			ButtonDrawableBuilder.setBackgroundToView(dailyHeaderView, R.style.ListItem_Header_2_Dark);
 			ButtonDrawableBuilder.setBackgroundToView(vsCompHeaderView, R.style.ListItem_Header_Dark);
 		}
 

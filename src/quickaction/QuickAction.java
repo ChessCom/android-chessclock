@@ -113,7 +113,7 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 //		mArrowUp 	= (ImageView) mRootView.findViewById(R.id.arrow_up);
 
 		mScroller	= (ScrollView) mRootView.findViewById(R.id.scroller);
-		ButtonDrawableBuilder.setBackgroundToView(mScroller, R.style.ListItem_Header_Light);
+		ButtonDrawableBuilder.setBackgroundToView(mScroller, R.style.ListItem_Header_2_Light);
 		//This was previously defined on show() method, moved here to prevent force close that occured
 		//when tapping fastly on a view to show quickaction dialog.
 		//Thanx to zammbi (github.com/zammbi)

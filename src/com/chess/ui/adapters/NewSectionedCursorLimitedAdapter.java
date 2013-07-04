@@ -42,7 +42,6 @@ public abstract class NewSectionedCursorLimitedAdapter extends ItemsCursorAdapte
 	private final int mHeaderRes;
 	private final String mGroupColumn;
 	private final LayoutInflater mLayoutInflater;
-//	private static final int ITEMS_PER_SECTION_CNT = 2;
 
 	private LinkedHashMap<Integer, String> sectionsIndexer;
 	private LinkedHashMap<Integer, Integer> sectionsCounter;

@@ -14,7 +14,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.AppData;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.VideosAdapter;
 import com.chess.ui.adapters.VideosPaginationAdapter;
@@ -138,7 +137,7 @@ public class VideoListActivity extends LiveBaseActivity implements OnItemClickLi
 			int pos = (Integer) view.getTag(R.id.list_item_id);
 			VideoItem.Data videoItem = (VideoItem.Data) listView.getItemAtPosition(pos);
 
-			showSinglePopupDialog(videoItem.getName(), videoItem.getDescription());
+			showSinglePopupDialog(videoItem.getTitle(), videoItem.getDescription());
 
 		} else if(view.getId() == R.id.playVideoBtn) {
 			int pos = (Integer) view.getTag(R.id.list_item_id);

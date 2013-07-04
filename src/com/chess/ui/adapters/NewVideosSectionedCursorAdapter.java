@@ -19,7 +19,6 @@ import com.chess.utilities.AppUtils;
  * Date: 31.01.13
  * Time: 13:34
  */
-//public class NewVideosSectionedCursorAdapter extends NewSectionedCursorAdapter {
 public class NewVideosSectionedCursorAdapter extends NewSectionedCursorLimitedAdapter {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
@@ -57,7 +56,7 @@ public class NewVideosSectionedCursorAdapter extends NewSectionedCursorLimitedAd
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		holder.authorTxt.setText(authorStr);
 
-		holder.titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_NAME));
+		holder.titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_TITLE));
 	}
 
 	protected class ViewHolder {

@@ -29,6 +29,11 @@
     <color name="transparent_button_border_bottom">#3F000000</color>
     <color name="transparent_button_border_right">#15FFFFFF</color>
 
+    <!--<color name="transparent_button_border_top">#FFFF0000</color>-->
+    <!--<color name="transparent_button_border_left">#FF00FFFF</color>-->
+    <!--<color name="transparent_button_border_bottom">#FF0000FF</color>-->
+    <!--<color name="transparent_button_border_right">#FF00FF00</color>-->
+
     <color name="transparent_button_border_top_2">#FF000000</color>
     <color name="transparent_button_border_left_2">#FF0F00F0</color>
     <color name="transparent_button_border_bottom_2">#00000000</color>

@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/default_scr_side_padding"
         android:paddingRight="8dip"
-        style="@style/ListItem.Header.Light"
+        style="@style/ListItem.Header_2.Light"
         android:gravity="center_vertical"
         >
 

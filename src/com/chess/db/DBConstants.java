@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 30;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 31;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -300,7 +300,7 @@ public class DBConstants {
 
 	static final String VIDEOS_CREATE =
 			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[VIDEOS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_TITLE 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_DESCRIPTION 			+ _TEXT_NOT_NULL + _COMMA
 			+ V_CATEGORY 				+ _TEXT_NOT_NULL + _COMMA
 			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA

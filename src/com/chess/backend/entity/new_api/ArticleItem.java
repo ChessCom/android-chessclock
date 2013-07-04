@@ -22,7 +22,7 @@ public class ArticleItem extends BaseResponseItem<List<ArticleItem.Data>> {
 	"first_name": "Вовк",
 	"last_name": "Андрій",
 	"country_id": 3,
-	"avatar": "https://s3.amazonaws.com/chess-7/images_users/avatars/deepgreene.gif",
+	"avatar_url": "https://s3.amazonaws.com/chess-7/images_users/avatars/deepgreene.gif",
 	"image_url": "https://s3.amazonaws.com/chess-7/images_users/articles/blueness_origin.1.png",
 	"is_thumb_in_content": true
 */
@@ -39,7 +39,7 @@ public class ArticleItem extends BaseResponseItem<List<ArticleItem.Data>> {
 		private String first_name;
 		private String last_name;
 		private int country_id;
-		private String avatar;
+		private String avatar_url;
 		private String image_url;
 		private boolean is_thumb_in_content;
 
@@ -88,7 +88,7 @@ public class ArticleItem extends BaseResponseItem<List<ArticleItem.Data>> {
 		}
 
 		public String getAvatar() {
-			return getSafeValue(avatar);
+			return getSafeValue(avatar_url);
 		}
 
 		public String getImageUrl() {

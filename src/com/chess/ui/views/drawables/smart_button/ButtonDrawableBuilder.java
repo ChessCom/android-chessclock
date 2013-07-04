@@ -229,19 +229,35 @@ public class ButtonDrawableBuilder {
 			return rectButtonDrawable;
 		} else if (styleId == R.style.ListItem_Header) {
 			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
-			rectButtonDrawable.rectPosition = LIST_ITEM;
+			rectButtonDrawable.rectPosition = LIST_ITEM_HEADER;
 			createRect(rectButtonDrawable, resources, R.color.glassy_header);
 
 			return rectButtonDrawable;
-		} else if (styleId == R.style.ListItem_Header_Light) {
+		} else if (styleId == R.style.ListItem_Header_2) {
 			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
-			rectButtonDrawable.rectPosition = LIST_ITEM;
+			rectButtonDrawable.rectPosition = LIST_ITEM_HEADER;
+			createRect(rectButtonDrawable, resources, R.color.glassy_header);
+			rectButtonDrawable.colorLeft = resources.getColor(R.color.transparent_button_border_left);
+
+			return rectButtonDrawable;
+		} else if (styleId == R.style.ListItem_Header_2_Light) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = LIST_ITEM_HEADER;
+			rectButtonDrawable.colorLeft = resources.getColor(R.color.transparent_button_border_left); // doesn't affect
 			createRect(rectButtonDrawable, resources, R.color.header_light);
 
 			return rectButtonDrawable;
 		} else if (styleId == R.style.ListItem_Header_Dark) {
 			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
-			rectButtonDrawable.rectPosition = LIST_ITEM;
+			rectButtonDrawable.rectPosition = LIST_ITEM_HEADER;
+			createRect(rectButtonDrawable, resources, R.color.header_dark);
+
+			return rectButtonDrawable;
+		} else if (styleId == R.style.ListItem_Header_2_Dark) {
+			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+			rectButtonDrawable.rectPosition = LIST_ITEM_HEADER_2_DARK;
+			rectButtonDrawable.colorTop = resources.getColor(R.color.transparent_button_border_top);
+			rectButtonDrawable.colorLeft = resources.getColor(R.color.transparent_button_border_left);
 			createRect(rectButtonDrawable, resources, R.color.header_dark);
 
 			return rectButtonDrawable;
@@ -424,7 +440,9 @@ public class ButtonDrawableBuilder {
 		buttonDrawable.bevelLvl = 1;
 
 		// Colors for bevel
-		buttonDrawable.colorTop = resources.getColor(R.color.transparent_button_border_left);
+		if (buttonDrawable.colorTop == 0) {
+			buttonDrawable.colorTop = resources.getColor(R.color.transparent_button_border_left);
+		}
 //		buttonDrawable.colorLeft = resources.getColor(R.color.transparent_button_border_left);
 //		buttonDrawable.colorRight = resources.getColor(R.color.transparent_button_border_right);
 		buttonDrawable.colorBottom = resources.getColor(R.color.transparent_button_border_bottom);

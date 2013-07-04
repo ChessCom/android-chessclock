@@ -436,10 +436,14 @@ message				false	Only used for `CHAT` command.
 			if (IS_TEST_SERVER_MODE) {
 				connection.setRequestProperty("Authorization", getBasicAuth());
 			}
+			if (requestMethod.equals(DELETE)) {
+				connection.setRequestMethod(GET);
+				connection.setRequestProperty("X-HTTP-Method-Override", DELETE);
+			}
 
 			if (!TextUtils.isEmpty(loadItem.getFilePath())) { // if multiPart
 				submitRawData(connection, loadItem);
-			} else if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
+			} else if (requestMethod.equals(POST) || requestMethod.equals(PUT) || requestMethod.equals(DELETE)) {
 				submitPostData(connection, loadItem);
 			} else {
 				connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=" + HTTP.UTF_8);

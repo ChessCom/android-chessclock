@@ -366,16 +366,34 @@
 
     <style name="ListItem.Header">
         <item name="btn_solid">@color/glassy_header</item>
+        <item name="btn_rect_pos">listItemHeader</item>
 
         <item name="android:minHeight">@dimen/default_header_height</item>
     </style>
 
-    <style name="ListItem.Header.Light">
+    <style name="ListItem.Header_2">
+        <item name="btn_solid">@color/glassy_header</item>
+        <item name="btn_rect_pos">listItemHeader_2</item>
+
+        <item name="btn_top">@color/transparent_button_border_top</item>
+        <item name="btn_left">@color/transparent_button_border_left</item>
+
+        <item name="android:minHeight">@dimen/default_header_height</item>
+    </style>
+
+    <style name="ListItem.Header_2.Light">
         <item name="btn_solid">@color/header_light</item>
     </style>
 
     <style name="ListItem.Header.Dark">
         <item name="btn_rect_pos">listItemHeaderDark</item>
+        <item name="btn_solid">@color/header_dark</item>
+    </style>
+    <style name="ListItem.Header_2.Dark">
+        <item name="btn_rect_pos">listItemHeaderDark_2</item>
+
+        <item name="btn_top">@color/transparent_button_border_top</item>
+        <item name="btn_left">@color/transparent_button_border_top</item>
         <item name="btn_solid">@color/header_dark</item>
     </style>
     <style name="ListItem.Header.Dark.Small">
