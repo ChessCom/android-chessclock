@@ -33,6 +33,7 @@ import com.chess.utilities.AppUtils;
 import com.chess.utilities.InneractiveAdHelper;
 import com.inneractive.api.ads.InneractiveAd;
 import org.petero.droidfish.GameMode;
+import org.petero.droidfish.gamelogic.Position;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -279,14 +280,15 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		thinking.setVisibility(View.VISIBLE);
 	}
 
+	// todo: use only our Move class
 	@Override
-	public void updateCompMove(String engineMove) {
+	public void updateEngineMove(final Position sourcepos, final org.petero.droidfish.gamelogic.Move engineMove) {
+
+		// TODO @compengine: extract logic and put probably to ChessBoardView
 
 		if (getBoardFace().getHply() < getBoardFace().getMovesCount()) { // ignoring Forward move fired by engine
 			return;
 		}
-
-		// TODO @compengine: extract logic and put to ChessBoardCompView
 
 		Log.d(CompEngineHelper.TAG, "updateComputerMove " + engineMove);
 
@@ -320,27 +322,25 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 					//AppData.getCompEngineHelper().undoHint();
 				}
 
-				getBoardFace().makeMove(move);
 				boardView.setComputerMoving(false);
 
+				boardView.setAnimMove(sourcepos, engineMove, move.to, move.from, true);
+				getBoardFace().makeMove(move);
+
 				if (boardView.isHint()) {
-
-					boardView.invalidate();
-
 					//if (/*AppData.isComputerVsComputerGameMode(getBoardFace()) || */(!AppData.isHumanVsHumanGameMode(getBoardFace()))) {
 					handler.postDelayed(reverseHintTask, ChessBoardCompView.HINT_REVERSE_DELAY);
 					//}
 				}
 				else {
-
 					invalidateGameScreen();
 					onPlayerMove();
-					boardView.invalidate();
 
 					getBoardFace().setMovesCount(getBoardFace().getHply());
 					if (boardView.isGameOver())
 						return;
 				}
+				boardView.invalidate();
 			}
 		});
 	}

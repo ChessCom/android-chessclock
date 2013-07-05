@@ -156,7 +156,7 @@ public class CompEngineHelper implements GUIInterface {
 	public void makeMove(String move,/* boolean force,*/ GameCompActivityFace gameCompActivityFace) {
 		this.gameCompActivityFace = gameCompActivityFace;
 
-		log("MAKE MOVE position\n" + engineCtrl.getCurrentPosition());
+		//log("MAKE MOVE position\n" + engineCtrl.getCurrentPosition());
 
 		/*log("UNDO force=" + force);
 		if (force) {
@@ -327,7 +327,7 @@ public class CompEngineHelper implements GUIInterface {
 		log("setAnimMove isBlackUserTurn " + isBlackUserTurn);
 		//this.gameMode = gameMode;
 
-		gameCompActivityFace.updateCompMove(engineMove.toString());
+		gameCompActivityFace.updateEngineMove(sourcePos, engineMove);
 	}
 
 	/*public String getFen() {

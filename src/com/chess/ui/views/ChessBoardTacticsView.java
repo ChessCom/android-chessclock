@@ -52,7 +52,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView {
         super.onDraw(canvas);
 		drawBoard(canvas);
 
-		drawPieces(canvas);
+		drawPieces(canvas, false);
 
 		drawCoordinates(canvas);
 

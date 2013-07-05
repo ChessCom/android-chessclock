@@ -1980,8 +1980,8 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
-	public int getPiece(int pieceId) {
-		return pieces[pieceId];
+	public int getPiece(int piecePosition) {
+		return pieces[piecePosition];
 	}
 
 	@Override

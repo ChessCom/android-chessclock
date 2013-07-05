@@ -42,7 +42,7 @@ public interface BoardFace {
 
 	int[] getPieces();
 
-	int getPiece(int pieceId);
+	int getPiece(int piecePosition);
 
 	int[] getColor();
 

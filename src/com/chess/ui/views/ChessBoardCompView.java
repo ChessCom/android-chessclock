@@ -150,7 +150,13 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 		drawBoard(canvas);
 
         //if (!isComputerMoving()) {
-			drawPieces(canvas);
+
+			// todo @compengine: move to base class for all game modes
+			boolean animationActive = pieceAnimator.updateState();
+			pieceAnimator.draw(canvas);
+
+			drawPieces(canvas, animationActive);
+
 			drawHighlight(canvas);
 			drawDragPosition(canvas);
 			drawTrackballDrag(canvas);

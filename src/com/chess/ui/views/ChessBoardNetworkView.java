@@ -57,7 +57,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView {
 		drawBoard(canvas);
 
 		if (gameActivityFace != null && boardFace != null) {
-			drawPieces(canvas);
+			drawPieces(canvas, false);
 
 			drawHighlight(canvas);
 
