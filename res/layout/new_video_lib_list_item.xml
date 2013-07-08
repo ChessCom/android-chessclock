@@ -19,6 +19,8 @@
         android:id="@+id/titleTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/watchedIconTxt"
         android:paddingBottom="1dip"
         android:text="Test title"
         android:textColor="@color/new_text_blue"
@@ -69,7 +71,7 @@
 
     <!--Right Icon-->
     <com.chess.RoboTextView
-        android:id="@+id/watchedIconTxt"
+        android:id="@id/watchedIconTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -77,6 +79,7 @@
         android:text="@string/ic_check"
         android:textColor="@color/new_light_grey_2"
         style="@style/GlyphIcon"
+        android:layout_marginLeft="6dip"
         />
 
 </RelativeLayout>

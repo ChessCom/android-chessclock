@@ -360,7 +360,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == WATCH_VIDEO_REQUEST) {
 
-			// mark here time
+			// mark here time      // TODO add logic to use savedInstance
 			long resumeFromVideoTime = System.currentTimeMillis();
 
 			if (resumeFromVideoTime - playButtonClickTime > WATCHED_TIME) {
