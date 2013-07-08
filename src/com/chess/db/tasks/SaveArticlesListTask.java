@@ -40,8 +40,8 @@ public class SaveArticlesListTask extends AbstractUpdateTask<ArticleItem.Data, L
 				// TODO implement beginTransaction logic for performance increase
 				Uri uri = DBConstants.uriArray[DBConstants.ARTICLES];
 
-				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ARTICLE_ID,
-						DBDataManager.SELECTION_ARTICLE_ID, arguments2, null);
+				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID,
+						DBDataManager.SELECTION_ITEM_ID, arguments2, null);
 
 				ContentValues values = DBDataManager.putArticleItemToValues(currentItem);
 

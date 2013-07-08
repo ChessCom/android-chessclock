@@ -21,12 +21,12 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:maxWidth="@dimen/popup_dialog_text_max_width"
+        android:paddingBottom="@dimen/default_scr_bottom_padding"
 		android:gravity="center"
 		android:textSize="19sp"
 		android:textColor="@color/new_dark_green"
         custom:ttf="Bold"
         android:text="Title"
-        android:paddingBottom="@dimen/default_scr_bottom_padding"
 		/>
 
 	<com.chess.RoboTextView

@@ -27,6 +27,7 @@
     <item name="settingsFrame" type="id"/>
 
 	<item name="list_item_id" type="id"/>
+	<item name="list_item_id_group" type="id"/>
 
     <!--Sliding Menu-->
     <item name="selected_view" type="id"/>

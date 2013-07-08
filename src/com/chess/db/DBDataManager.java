@@ -72,7 +72,7 @@ public class DBDataManager {
 
 	public static String SELECTION_CATEGORY = concatArguments(DBConstants.V_CATEGORY);
 
-	public static String SELECTION_ARTICLE_ID = concatArguments(DBConstants.V_ID);
+	public static String SELECTION_ITEM_ID = concatArguments(DBConstants.V_ID);
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
@@ -161,7 +161,7 @@ public class DBDataManager {
 			DBConstants.V_CATEGORY_ID
 	};
 
-	public static final String[] PROJECTION_ARTICLE_ID = new String[] {
+	public static final String[] PROJECTION_ITEM_ID = new String[] {
 			DBConstants._ID,
 			DBConstants.V_ID
 	};
@@ -170,6 +170,14 @@ public class DBDataManager {
 			DBConstants._ID,
 			DBConstants.V_USER,
 			DBConstants.V_CURRENT
+	};
+
+	public static final String[] PROJECTION_VIEWED_VIDEO = new String[] {
+			DBConstants._ID,
+			DBConstants.V_USER,
+			DBConstants.V_ID,
+			DBConstants.V_VIDEO_VIEWED
+
 	};
 
 	public static String concatArguments(String... arguments){
@@ -778,11 +786,47 @@ public class DBDataManager {
 	public static boolean haveSavedVideos(Context context) {
 		ContentResolver contentResolver = context.getContentResolver();
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.VIDEOS], null, null, null, LIMIT_1);
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.VIDEOS],
+				PROJECTION_ITEM_ID, null, null, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
 
 		return exist;
+	}
+
+	public static void updateVideoViewedState(ContentResolver contentResolver, VideoViewedItem currentItem) {
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = String.valueOf(currentItem.getUsername());
+
+		Uri uri = DBConstants.uriArray[DBConstants.VIDEO_VIEWED];
+
+		Cursor cursor = contentResolver.query(uri, null,
+				DBDataManager.SELECTION_USER, arguments1, null);
+
+		ContentValues values = DBDataManager.putVideoViewedItemToValues(currentItem);
+
+		if (cursor.moveToFirst()) {
+			contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+		} else {
+			contentResolver.insert(uri, values);
+		}
+
+		cursor.close();
+	}
+
+	public static Cursor getVideoViewedCursor(Context context, String userName) {
+		ContentResolver contentResolver = context.getContentResolver();
+
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = userName;
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.VIDEO_VIEWED],
+				null, SELECTION_USER, arguments1, null);
+
+		if (cursor != null && cursor.moveToFirst()){
+			return cursor;
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -822,6 +866,16 @@ public class DBDataManager {
 		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirstName());
 		values.put(DBConstants.V_LAST_NAME, dataObj.getLastName());
 		values.put(DBConstants.V_CHESS_TITLE, dataObj.getChessTitle());
+
+		return values;
+	}
+
+	public static ContentValues putVideoViewedItemToValues(VideoViewedItem dataObj) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_USER, dataObj.getUsername());
+		values.put(DBConstants.V_ID, dataObj.getVideoId());
+		values.put(DBConstants.V_VIDEO_VIEWED, dataObj.isViewed()? 1 : 0);
 
 		return values;
 	}

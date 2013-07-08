@@ -24,6 +24,7 @@ public class DBDataProvider extends ContentProvider {
 	private static final UriMatcher uriMatcherIds;
 
 	public static final String SLASH_NUMBER = "/#";
+	public static final String EQUALS = " = ";
 
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -77,7 +78,9 @@ public class DBDataProvider extends ContentProvider {
 			DBConstants.GAME_STATS_LIVE_LIGHTNING_CREATE,
 			DBConstants.GAME_STATS_LIVE_BLITZ_CREATE,
 			DBConstants.GAME_STATS_DAILY_CHESS_CREATE,
-			DBConstants.GAME_STATS_DAILY_CHESS960_CREATE
+			DBConstants.GAME_STATS_DAILY_CHESS960_CREATE,
+
+			DBConstants.VIDEO_VIEWED_CREATE
 	};
 
 	@Override
@@ -90,13 +93,6 @@ public class DBDataProvider extends ContentProvider {
 			}
 
 		}
-//		for (int element : pathsArray) {
-//			if (uriMatcher.match(uri) == element) {
-//				return VND_ANDROID_CURSOR_DIR + DBConstants.PROVIDER_NAME;
-//			} else if (uriMatcherIds.match(uri) == element) {
-//				return VND_ANDROID_CURSOR_ITEM + DBConstants.PROVIDER_NAME;
-//			}
-//		}
 		throw new IllegalArgumentException("Unsupported URI: " + uri);
 	}
 
@@ -112,7 +108,7 @@ public class DBDataProvider extends ContentProvider {
 				found = true;
 			} else if (uriMatcherIds.match(uri) == i) {
 				sqlBuilder.setTables(tablesArray[i]);
-				sqlBuilder.appendWhere(DBConstants._ID + " = " + uri.getPathSegments().get(1));
+				sqlBuilder.appendWhere(DBConstants._ID + EQUALS + uri.getPathSegments().get(1));
 				found = true;
 			}
 
@@ -136,7 +132,7 @@ public class DBDataProvider extends ContentProvider {
 				found = true;
 			} else if (uriMatcherIds.match(uri) == i) {
 				count = appDataBase.update(tablesArray[i], values,
-						DBConstants._ID + " = " + uri.getPathSegments().get(1) +
+						DBConstants._ID + EQUALS + uri.getPathSegments().get(1) +
 								(!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
 						selectionArgs);
 				found = true;
@@ -180,7 +176,7 @@ public class DBDataProvider extends ContentProvider {
 				String id = uri.getPathSegments().get(1);
 				count = appDataBase.delete(
 						tablesArray[i],
-						DBConstants._ID + " = " + id + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
+						DBConstants._ID + EQUALS + id + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
 						selectionArgs);
 				found = true;
 			}

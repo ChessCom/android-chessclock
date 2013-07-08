@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 31;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 32;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -46,7 +46,9 @@ public class DBConstants {
 			"game_stats_live_blitz",
 			"game_stats_live_lightning",
 			"game_stats_daily_chess",
-			"game_stats_daily_chess960"
+			"game_stats_daily_chess960",
+
+			"video_viewed"
 	};
 
 	// Content URI
@@ -84,6 +86,8 @@ public class DBConstants {
     public static final int GAME_STATS_LIVE_LIGHTNING = 18;
     public static final int GAME_STATS_DAILY_CHESS = 19;
     public static final int GAME_STATS_DAILY_CHESS960 = 20;
+
+    public static final int VIDEO_VIEWED = 21;
 
 
     // general fields
@@ -170,6 +174,7 @@ public class DBConstants {
 	public static final String V_USER_AVATAR 		= "user_avatar";
 	public static final String V_VIEW_COUNT 		= "view_count";
 	public static final String V_COMMENT_COUNT 		= "comment_count";
+	public static final String V_VIDEO_VIEWED 		= "video_viewed";
 
 	/* common commands */
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists ";
@@ -318,6 +323,12 @@ public class DBConstants {
 			+ V_FIRST_NAME 	    		+ _TEXT_NOT_NULL + _COMMA
 			+ V_LAST_NAME 	    		+ _TEXT_NOT_NULL + _COMMA
 			+ V_CHESS_TITLE 	    	+ _TEXT_NOT_NULL + _CLOSE;
+
+	static final String VIDEO_VIEWED_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[VIDEO_VIEWED] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_ID 						+ _INT_NOT_NULL + _COMMA
+			+ V_VIDEO_VIEWED 	    	+ _INT_NOT_NULL + _CLOSE;
 
 	static final String VIDEO_CATEGORIES_CREATE =
 			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[VIDEO_CATEGORIES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT

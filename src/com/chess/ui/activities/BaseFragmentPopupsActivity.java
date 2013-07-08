@@ -2,6 +2,7 @@ package com.chess.ui.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Build;
@@ -120,6 +121,12 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+		isPaused = false;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 		isPaused = false;
 	}
 

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
 import com.chess.backend.entity.new_api.VideoItem;
+import com.chess.backend.entity.new_api.VideoViewedItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
@@ -22,6 +24,7 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveVideoCategoriesTask;
 import com.chess.db.tasks.SaveVideosListTask;
+import com.chess.model.CurriculumItems;
 import com.chess.ui.adapters.NewVideosSectionedCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -29,7 +32,6 @@ import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -38,13 +40,16 @@ import java.util.List;
  * Date: 27.01.13
  * Time: 19:12
  */
-public class VideosFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener, ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener {
+public class VideosFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener,
+		ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
 	// 11/15/12 | 27 min
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
 	private static final int VIDEOS_PER_CATEGORY = 2;
 	private static final int LIBRARY = 6;
+	private static final int WATCH_VIDEO_REQUEST = 9898;
+	private static final long WATCHED_TIME = 3 * 60 * 1000;
 
 	private ViewHolder holder;
 	private ForegroundColorSpan foregroundSpan;
@@ -69,13 +74,15 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private long headerDataId;
 	private VideoItem.Data headerData;
 
-	private String[] curriculumCategories;
-	private String[][] curriculumItems;
-	private String[][] curriculumItemsTitles;
+	private CurriculumItems curriculumItems;
 	private boolean curriculumMode;
 	private VideoGroupsListAdapter curriculumAdapter;
-//	private View tempCurriculumHeader;
-	private int itemsPerSectionCnt = 2;
+//	private int itemsPerSectionCnt = 2;
+	private long playButtonClickTime;
+	private String currentPlayingLink; // used only for curriculum videos
+	private int currentPlayingId;
+//	private String currentPlayingTitle;
+	private SparseArray<Boolean> curriculumViewedMap;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,7 +102,20 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			curriculumMode = true;
 		}
 
-		curriculumCategories = getResources().getStringArray(R.array.videos_curriculum);
+		curriculumItems = new CurriculumItems();
+		{ // get viewed marks
+			Cursor cursor = DBDataManager.getVideoViewedCursor(getActivity(), getUserName());
+			curriculumViewedMap = new SparseArray<Boolean>();
+			if (cursor != null) {
+				do {
+					curriculumViewedMap.put(DBDataManager.getInt(cursor, DBConstants.V_ID),
+							DBDataManager.getInt(cursor, DBConstants.V_VIDEO_VIEWED) > 0);
+				} while (cursor.moveToNext());
+				cursor.close();
+			}
+		}
+
+		curriculumItems.setCategories(getResources().getStringArray(R.array.videos_curriculum));
 		{ // Titles
 			String[] beginners = getResources().getStringArray(R.array.video_cur_beginners_titles);
 			String[] openings = getResources().getStringArray(R.array.video_cur_openings_titles);
@@ -104,7 +124,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			String[] endgames = getResources().getStringArray(R.array.video_cur_endgames_titles);
 			String[] amazingGames = getResources().getStringArray(R.array.video_cur_amazing_games_titles);
 
-			curriculumItemsTitles = new String[][]{beginners, openings, tactics, strategy, endgames, amazingGames};
+			curriculumItems.setTitles(new String[][]{beginners, openings, tactics, strategy, endgames, amazingGames});
 		}
 		{ // Links
 			String[] beginners = getResources().getStringArray(R.array.video_cur_beginners);
@@ -114,7 +134,17 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			String[] endgames = getResources().getStringArray(R.array.video_cur_endgames);
 			String[] amazingGames = getResources().getStringArray(R.array.video_cur_amazing_games);
 
-			curriculumItems = new String[][]{beginners, openings, tactics, strategy, endgames, amazingGames};
+			curriculumItems.setUrls(new String[][]{beginners, openings, tactics, strategy, endgames, amazingGames});
+		}
+		{ // Ids
+			int[] beginners = getResources().getIntArray(R.array.video_cur_beginners_ids);
+			int[] openings = getResources().getIntArray(R.array.video_cur_openings_ids);
+			int[] tactics = getResources().getIntArray(R.array.video_cur_tactics_ids);
+			int[] strategy = getResources().getIntArray(R.array.video_cur_strategy_ids);
+			int[] endgames = getResources().getIntArray(R.array.video_cur_endgames_ids);
+			int[] amazingGames = getResources().getIntArray(R.array.video_cur_amazing_games_ids);
+
+			curriculumItems.setIds(new int[][]{beginners, openings, tactics, strategy, endgames, amazingGames});
 		}
 		init();
 
@@ -213,7 +243,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 		videoCategoriesUpdateListener = new VideoCategoriesUpdateListener();
 		saveVideoCategoriesUpdateListener = new SaveVideoCategoriesUpdateListener();
-		curriculumAdapter = new VideoGroupsListAdapter(curriculumCategories, curriculumItemsTitles);
+		curriculumAdapter = new VideoGroupsListAdapter(this, curriculumItems);   // categories, titles
 	}
 
 	private void updateData() {
@@ -246,8 +276,8 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-		String url = curriculumItems[groupPosition][childPosition];
-		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+//		String url = curriculumItems[groupPosition][childPosition];
+//		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
 		return true;
 	}
 
@@ -288,10 +318,49 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			if (headerDataLoaded) {
 				getActivityFace().openFragment(VideoDetailsFragment.createInstance(headerDataId));
 			}
+		} else if (v.getId() == R.id.titleTxt) {
+			Integer childPosition = (Integer) v.getTag(R.id.list_item_id);
+			Integer groupPosition = (Integer) v.getTag(R.id.list_item_id_group);
+
+			int id = curriculumItems.getIds()[groupPosition][childPosition];
+			getActivityFace().openFragment(VideoDetailsFragment.createInstance4Curriculum(id));
+		} else if (v.getId() == R.id.watchedIconTxt) {
+			Integer childPosition = (Integer) v.getTag(R.id.list_item_id);
+			Integer groupPosition = (Integer) v.getTag(R.id.list_item_id_group);
+
+			currentPlayingLink = curriculumItems.getUrls()[groupPosition][childPosition];
+			currentPlayingId = curriculumItems.getIds()[groupPosition][childPosition];
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setDataAndType(Uri.parse(currentPlayingLink), "video/*");
+			startActivityForResult(Intent.createChooser(intent, "Select Player"), WATCH_VIDEO_REQUEST);
+
+			// start record time to watch
+			playButtonClickTime = System.currentTimeMillis();
+
 		} else if (v.getId() == R.id.tempCurriculumHeader) {
 			getAppData().setUserChooseVideoLibrary(false);
 			curriculumMode = true;
 			showLibrary();
+		}
+	}
+
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == WATCH_VIDEO_REQUEST) {
+
+			// mark here time
+			long resumeFromVideoTime = System.currentTimeMillis();
+
+			if (resumeFromVideoTime - playButtonClickTime > WATCHED_TIME) {
+				VideoViewedItem item = new VideoViewedItem(currentPlayingId, getUserName(), true);
+				DBDataManager.updateVideoViewedState(getContentResolver(), item);
+
+				// update current list
+				curriculumViewedMap.put(currentPlayingId, true);
+				curriculumAdapter.notifyDataSetChanged();
+			}
 		}
 	}
 
@@ -417,13 +486,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	}
 
 	private class VideosCursorUpdateListener extends ChessUpdateListener<Cursor> {
-		private LinkedHashMap<Integer, String> sectionsIndexer;
-		private LinkedHashMap<Integer, Integer> sectionsCounter;
-
-		private VideosCursorUpdateListener() {
-			sectionsIndexer = new LinkedHashMap<Integer, String>();
-			sectionsCounter = new LinkedHashMap<Integer, Integer>();
-		}
 
 		@Override
 		public void showProgress(boolean show) {
@@ -434,70 +496,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		@Override
 		public void updateData(Cursor cursor) {
 			super.updateData(cursor);
-
-/*
-			{ // Titles
-				String[] beginners = getResources().getStringArray(R.array.video_cur_beginners_titles);
-				String[] openings = getResources().getStringArray(R.array.video_cur_openings_titles);
-				String[] tactics = getResources().getStringArray(R.array.video_cur_tactics_titles);
-				String[] strategy = getResources().getStringArray(R.array.video_cur_strategy_titles);
-				String[] endgames = getResources().getStringArray(R.array.video_cur_endgames_titles);
-				String[] amazingGames = getResources().getStringArray(R.array.video_cur_amazing_games_titles);
-
-				curriculumItemsTitles = new String[][]{beginners, openings, tactics, strategy, endgames, amazingGames};
-			}
-
-			*/
-
-//			String previous = StaticData.SYMBOL_EMPTY;
-//			int sectionNumber = 0;
-//
-//			int itemsInSection = 0;
-//			int lastSectionPosition = 0;
-//			do {
-//				final String sectionName = cursor.getString(cursor.getColumnIndex(DBConstants.V_CATEGORY));
-//
-//				if (!sectionName.equals(previous)) {
-//
-//					if (sectionsIndexer.size() > 0) {
-//						lastSectionPosition += itemsInSection + 1;
-//					}
-//					sectionsIndexer.put(lastSectionPosition, sectionName);
-//					previous = sectionName;
-//					sectionNumber++;
-//					itemsInSection = 0;
-//				}
-//
-//				if (itemsInSection < itemsPerSectionCnt) {
-//					itemsInSection++;
-//					sectionsCounter.put(sectionNumber, itemsInSection);
-//				}
-//
-//			} while (cursor.moveToNext());
-//
-//			String[] groups = new String[sectionsIndexer.size()];
-//			String[][] titles = new String[sectionsIndexer.size()][];//{};
-//
-//			String prevCategory = "";
-//			String[] tempCategory = new String[12];
-
-
-//			int categoryCounter = 0;
-//			do {
-//				String category = DBDataManager.getString(cursor, DBConstants.V_CATEGORY);
-//				if (!prevCategory.equals(category)) { // next group
-//					categoryCounter = 0;
-//				}
-//				String title = DBDataManager.getString(cursor, DBConstants.V_NAME);
-//				tempCategory[categoryCounter] = title;
-//
-//
-//
-//			} while (cursor.moveToNext());
-
-
-//			expListView.setVisibility(View.VISIBLE);
-//			expListView.setAdapter(new VideoGroupsListAdapter(groups, titles));
 
 			videosCursorAdapter.changeCursor(cursor);
 			listView.setAdapter(videosCursorAdapter);
@@ -553,33 +551,41 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 	public class VideoGroupsListAdapter extends BaseExpandableListAdapter {
 		private final LayoutInflater inflater;
-		private String[] groups;
-		private String[][] children;
+		private final int watchedTextColor;
+		private final int unWatchedTextColor;
+		private final int watchedIconColor;
+		private final int unWatchedIconColor;
+		private final CurriculumItems items;
+		private ItemClickListenerFace clickFace;
 
-		public VideoGroupsListAdapter(String[] groups, String[][] children) {
-			this.groups = groups;
-			this.children = children;
+		public VideoGroupsListAdapter(ItemClickListenerFace clickFace, CurriculumItems items) {
+			this.clickFace = clickFace;
+			this.items = items;
 			inflater = LayoutInflater.from(getActivity());
+			watchedTextColor = getResources().getColor(R.color.new_light_grey_3);
+			unWatchedTextColor = getResources().getColor(R.color.new_text_blue);
+			watchedIconColor = getResources().getColor(R.color.new_light_grey_2);
+			unWatchedIconColor = getResources().getColor(R.color.orange_button);
 		}
 
 		@Override
 		public int getGroupCount() {
-			return groups.length;
+			return items.getCategories().length;
 		}
 
 		@Override
 		public int getChildrenCount(int groupPosition) {
-			return children[groupPosition].length;
+			return items.getTitles()[groupPosition].length;
 		}
 
 		@Override
 		public Object getGroup(int groupPosition) {
-			return groups[groupPosition];
+			return items.getCategories()[groupPosition];
 		}
 
 		@Override
 		public Object getChild(int groupPosition, int childPosition) {
-			return children[groupPosition][childPosition];
+			return items.getTitles()[groupPosition][childPosition];
 		}
 
 		@Override
@@ -635,18 +641,36 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 				holder.text = (TextView) convertView.findViewById(R.id.titleTxt);
 				holder.icon = (TextView) convertView.findViewById(R.id.watchedIconTxt);
 				convertView.setTag(holder);
+
+				holder.text.setOnClickListener(clickFace);
+				holder.icon.setOnClickListener(clickFace);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
+			holder.text.setTag(R.id.list_item_id, childPosition);
+			holder.text.setTag(R.id.list_item_id_group, groupPosition);
+
+			holder.icon.setTag(R.id.list_item_id, childPosition);
+			holder.icon.setTag(R.id.list_item_id_group, groupPosition);
+
 			holder.text.setText(getChild(groupPosition, childPosition).toString());
-			if (isLastChild) {
-				holder.icon.setText(R.string.ic_down);
+
+			if (isVideoWatched(groupPosition, childPosition)) {
+				holder.text.setTextColor(watchedTextColor);
+				holder.icon.setTextColor(watchedIconColor);
+				holder.icon.setText(R.string.ic_check);
 			} else {
-				holder.icon.setText(R.string.ic_up);
+				holder.text.setTextColor(unWatchedTextColor);
+				holder.icon.setTextColor(unWatchedIconColor);
+				holder.icon.setText(R.string.ic_play);
 			}
 
 			return convertView;
+		}
+
+		private boolean isVideoWatched(int groupPosition, int childPosition) {
+			return curriculumViewedMap.get(items.getIds()[groupPosition][childPosition], false);
 		}
 
 		@Override

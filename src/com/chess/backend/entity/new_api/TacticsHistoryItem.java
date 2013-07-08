@@ -10,7 +10,7 @@ import java.util.List;
  * Date: 19.02.13
  * Time: 18:18
  */
-public class TacticsHistoryItem extends BaseResponseItem<List<TacticsHistoryItem.Data>> {
+public class TacticsHistoryItem extends BaseResponseItem<TacticsHistoryItem.Data> {
 /*
 "daily_stats": [
       {
@@ -23,25 +23,25 @@ public class TacticsHistoryItem extends BaseResponseItem<List<TacticsHistoryItem
 
 "recent_problems": [
       {
-        "date": 1361230775,
-        "tactics_id": 785,
-        "rating": 1508,
-        "my_rating": 1422,
+        "id": 758,
+        "rating": 1335,
+        "average_seconds": 9,
+        "date": 1361317851,
+        "my_rating": 1383,
         "moves": {
           "correct_move_count": 1,
-          "move_count": 5
+          "move_count": 1
         },
-        "average_seconds": 75,
-        "user_seconds": 92,
+        "user_seconds": 9,
         "outcome": {
-          "status": "failed",
-          "score": 10,
-          "user_rating_change": -21
+          "status": "passed",
+          "score": 40,
+          "user_rating_change": -11
         }
       }, ...
     ],
     "summary": {
-      "current": 1422,
+      "current": 1118,
       "highest": {
         "rating": 1474,
         "timestamp": 1338361200
@@ -50,25 +50,23 @@ public class TacticsHistoryItem extends BaseResponseItem<List<TacticsHistoryItem
         "rating": 0,
         "timestamp": 1338361200
       },
-      "attempt_count": 48,
-      "passed_count": 17,
-      "failed_count": 31,
-      "total_seconds": 3325
+      "attempt_count": 73,
+      "passed_count": 24,
+      "failed_count": 49,
+      "total_seconds": 4304,
+      "todays_attempts": 0,
+      "todays_average_score": 0
     }
   }
 */
 
 	public class Data {
-		private DailyStats daily_stats;
-		private RecentProblems recent_problems;
+		private List<DailyStats> daily_stats;
+		private List<RecentProblems> recent_problems;
 		private UserTacticsStatsData summary;
 
-		public DailyStats getDaily_stats() {
+		public List<DailyStats> getDaily_stats() {
 			return daily_stats;
-		}
-
-		public void setDaily_stats(DailyStats daily_stats) {
-			this.daily_stats = daily_stats;
 		}
 
 		private class DailyStats {
@@ -122,30 +120,30 @@ public class TacticsHistoryItem extends BaseResponseItem<List<TacticsHistoryItem
 		private class RecentProblems {
 /*
       {
-        "date": 1361230775,
-        "tactics_id": 785,
-        "rating": 1508,
-        "my_rating": 1422,
+        "id": 758,
+        "rating": 1335,
+        "average_seconds": 9,
+        "date": 1361317851,
+        "my_rating": 1383,
         "moves": {
           "correct_move_count": 1,
-          "move_count": 5
+          "move_count": 1
         },
-        "average_seconds": 75,
-        "user_seconds": 92,
+        "user_seconds": 9,
         "outcome": {
-          "status": "failed",
-          "score": 10,
-          "user_rating_change": -21
+          "status": "passed",
+          "score": 40,
+          "user_rating_change": -11
         }
       }, ...
 
 */
-			private long date;
-			private int tactics_id;
+			private int id;
 			private int rating;
+			private int average_seconds;
+			private long date;
 			private int my_rating;
 			private Moves moves;
-			private int average_seconds;
 			private int user_seconds;
 			private Outcome outcome;
 

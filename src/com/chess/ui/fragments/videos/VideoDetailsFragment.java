@@ -13,7 +13,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
@@ -24,6 +28,7 @@ import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,6 +39,8 @@ import java.util.Date;
 public class VideoDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace {
 
 	public static final String ITEM_ID = "item_id";
+	public static final String MODE = "mode";
+	public static final int CURRICULUM = 1;
 	public static final String GREY_COLOR_DIVIDER = "##";
 
 	// 11/15/12 | 27 min
@@ -53,6 +60,15 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 	private TextView contextTxt;
 	private Cursor loadedCursor;
 	private ImageButton playBtn;
+
+	public static VideoDetailsFragment createInstance4Curriculum(int videoId) {
+		VideoDetailsFragment frag = new VideoDetailsFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt(ITEM_ID, videoId);
+		bundle.putInt(MODE, CURRICULUM);
+		frag.setArguments(bundle);
+		return frag;
+	}
 
 	public static VideoDetailsFragment createInstance(long videoId) {
 		VideoDetailsFragment frag = new VideoDetailsFragment();
@@ -100,9 +116,19 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 	public void onStart() {
 		super.onStart();
 
-		init();
+		if (getArguments() != null && getArguments().getInt(MODE) == CURRICULUM) {
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+			loadItem.addRequestParams(RestHelper.P_VIDEO_ID, getArguments().getInt(ITEM_ID));
 
-		loadFromDb();
+			new RequestJsonTask<VideoItem>(new VideoDetailsUpdateListener()).executeTask(loadItem);
+
+		} else {
+			init();
+
+			loadFromDb();
+		}
 	}
 
 	private void loadFromDb() {
@@ -134,12 +160,57 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		}
 	}
 
-	private class VideosCursorUpdateListener extends ChessUpdateListener<Cursor> {
+	private class VideoDetailsUpdateListener extends ChessUpdateListener<VideoItem> {
 
-		public VideosCursorUpdateListener() {
-			super();
+		public VideoDetailsUpdateListener() {
+			super(VideoItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			showLoadingProgress(show);
+		}
+
+		@Override
+		public void updateData(VideoItem returnedObj) {
+			super.updateData(returnedObj);
+
+			List<VideoItem.Data> dataList = returnedObj.getData();
+
+			if(dataList.size() > 0) {
+				playBtn.setEnabled(true);
+
+				VideoItem.Data videoData = dataList.get(0);
+
+				int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
+
+				String firstName = videoData.getFirstName();
+				CharSequence chessTitle = videoData.getChessTitle();
+				String lastName = videoData.getLastName();
+				CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
+						+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
+				authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
+				authorTxt.setText(authorStr);
+
+//			videoBackImg // TODO adjust image loader
+//			progressBar // TODO adjust image loader
+
+				titleTxt.setText(videoData.getTitle());
+//			thumbnailAuthorImg // TODO adjust image loader
+				countryImg.setImageDrawable(AppUtils.getUserFlag(getActivity())); // TODO set flag properly // invent flag resources set system
+
+				int duration = videoData.getMinutes();
+				dateTxt.setText(dateFormatter.format(new Date(videoData.getCreateDate()))
+						+ StaticData.SYMBOL_SPACE + getString(R.string.min_arg, duration));
+
+				contextTxt.setText(videoData.getDescription());
+			}
+
 
 		}
+	}
+
+	private class VideosCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		@Override
 		public void showProgress(boolean show) {

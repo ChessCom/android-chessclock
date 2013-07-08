@@ -165,7 +165,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			if (resultCode == StaticData.UNKNOWN_ERROR) {
-				emptyView.setText(R.string.no_network);
+				emptyView.setText(R.string.error);
 			}
 			showEmptyView(true);
 		}

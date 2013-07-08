@@ -1,53 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--Curriculum Links-->
     <string-array name="video_cur_beginners">
-        <item>http://www.chess.com/video/player/everything-you-need-to-know-start-playing-chess</item>
-        <item>http://www.chess.com/video/player/everything-you-need-to-know-the-opening</item>
-        <item>http://www.chess.com/video/player/everything-you-need-to-know-tactics--strategy</item>
-        <item>http://www.chess.com/video/player/everything-you-need-to-know-the-endgame</item>
-        <item>http://www.chess.com/video/player/everything-you-need-to-know-bringing-it-together</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/everything-you-need-to-know-start-playing-chess.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/everything-you-need-to-know-the-opening.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/everything-you-need-to-know-tactics--strategy.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/everything-you-need-to-know-the-endgame.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/everything-you-need-to-know-bringing-it-together.mp4</item>
     </string-array>
 
     <string-array name="video_cur_openings">
-        <item>http://www.chess.com/video/player/opening-principles-explained</item>
-        <item>http://www.chess.com/video/player/every-chess-opening-the-first-move</item>
-        <item>http://www.chess.com/video/player/every-chess-opening-defenses-to-1e4</item>
-        <item>http://www.chess.com/video/player/every-chess-opening-defenses-to-1d4</item>
-        <item>http://www.chess.com/video/player/how-to-develop-an-opening-repetoire</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/opening-principles-explained.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/every-chess-opening-the-first-move.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/every-chess-opening-defenses-to-1e4.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/every-chess-opening-defenses-to-1d4.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/how-to-develop-an-opening-repetoire.mp4</item>
     </string-array>
 
     <string-array name="video_cur_tactics">
-        <item>http://www.chess.com/video/player/patterns-everyone-must-know-basic-tactics---1</item>
-        <item>http://www.chess.com/video/player/patterns-everyone-must-know-basic-tactics---2</item>
-        <item>http://www.chess.com/video/player/patterns-everyone-must-know-beyond-the-basics-1</item>
-        <item>http://www.chess.com/video/player/tactics-do-grow-on-strategies-1</item>
-        <item>http://www.chess.com/video/player/tactics-do-grow-on-strategies-2</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/patterns-everyone-must-know-basic-tactics---1.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/patterns-everyone-must-know-basic-tactics---2.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/patterns-everyone-must-know-beyond-the-basics-1.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/tactics-do-grow-on-strategies-1.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/tactics-do-grow-on-strategies-2.mp4</item>
     </string-array>
 
     <string-array name="video_cur_strategy">
-        <item>http://www.chess.com/video/player/nominal-and-absolute-power-of-the-pieces</item>
-        <item>http://www.chess.com/video/player/space-a-basic-element</item>
-        <item>http://www.chess.com/video/player/king-and-pawn-endings-the-basics3</item>
-        <item>http://www.chess.com/video/player/pawn-structure-101-every-opening-explained</item>
-        <item>http://www.chess.com/video/player/how-to-improve-your-chess</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/nominal-and-absolute-power-of-the-pieces.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/space-a-basic-element.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/king-and-pawn-endings-the-basics3.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/pawn-structure-101-every-opening-explained.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/how-to-improve-your-chess.mp4</item>
     </string-array>
 
     <string-array name="video_cur_endgames">
-        <item>http://www.chess.com/video/player/fundamental-checkmates-1-rook-roller-and-kq</item>
-        <item>http://www.chess.com/video/player/the-big-3---important-winning-techniques-for-beginners</item>
-        <item>http://www.chess.com/video/player/king-and-pawn-endings-the-basics</item>
-        <item>http://www.chess.com/video/player/practical--essential-endgame-knowledge---part-1</item>
-        <item>http://www.chess.com/video/player/practical--essential-endgame-knowledge---part-2</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/fundamental-checkmates-1-rook-roller-and-kq.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/the-big-3---important-winning-techniques-for-beginners.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/king-and-pawn-endings-the-basics.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/practical--essential-endgame-knowledge---part-1.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/practical--essential-endgame-knowledge---part-2.mp4</item>
     </string-array>
 
     <string-array name="video_cur_amazing_games">
-        <item>http://www.chess.com/video/player/amazing-games-for-beginners-unusual-wizardry</item>
-        <item>http://www.chess.com/video/player/amazing-games-for-beginners-dominate-the-center</item>
-        <item>http://www.chess.com/video/player/magnificient-knight-outpost---part-1</item>
-        <item>http://www.chess.com/video/player/member-analysis-priceless-practical-advice</item>
-        <item>http://www.chess.com/video/player/amateur-game-review-chess-crimes-1</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/amazing-games-for-beginners-unusual-wizardry.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/amazing-games-for-beginners-dominate-the-center.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/magnificient-knight-outpost---part-1.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/member-analysis-priceless-practical-advice.mp4</item>
+        <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/amateur-game-review-chess-crimes-1.mp4</item>
     </string-array>
+
+    <!--Curriculum Ids-->
+
+    <integer-array name="video_cur_beginners_ids">
+        <item>979</item>
+        <item>679</item>
+        <item>680</item>
+        <item>681</item>
+        <item>685</item>
+    </integer-array>
+
+    <integer-array name="video_cur_openings_ids">
+        <item>41</item>
+        <item>600</item>
+        <item>1084</item>
+        <item>1082</item>
+        <item>621</item>
+    </integer-array>
+
+    <integer-array name="video_cur_tactics_ids">
+        <item>845</item>
+        <item>846</item>
+        <item>866</item>
+        <item>452</item>
+        <item>453</item>
+    </integer-array>
+
+    <integer-array name="video_cur_strategy_ids">
+        <item>389</item>
+        <item>736</item>
+        <item>447</item>
+        <item>734</item>
+        <item>399</item>
+    </integer-array>
+
+    <integer-array name="video_cur_endgames_ids">
+        <item>84</item>
+        <item>394</item>
+        <item>443</item>
+        <item>1060</item>
+        <item>1072</item>
+    </integer-array>
+
+    <integer-array name="video_cur_amazing_games_ids">
+        <item>603</item>
+        <item>580</item>
+        <item>613</item>
+        <item>1288</item>
+        <item>268</item>
+    </integer-array>
 
     <string-array name="languages_codes">
         <item>en</item>

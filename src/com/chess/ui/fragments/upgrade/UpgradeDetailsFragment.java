@@ -491,32 +491,26 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				isGoldMonthPayed = sku.equals(GOLD_MONTHLY);
 				if (isGoldMonthPayed) {
 					getAppData().setUserPremiumSku(GOLD_MONTHLY);
-					getAppData().setUserPremiumStatus(StaticData.GOLD_USER);
 				}
 				isGoldYearPayed = sku.equals(GOLD_YEARLY);
 				if (isGoldYearPayed) {
 					getAppData().setUserPremiumSku(GOLD_YEARLY);
-					getAppData().setUserPremiumStatus(StaticData.GOLD_USER);
 				}
 				isPlatinumMonthPayed = sku.equals(PLATINUM_MONTHLY);
 				if (isPlatinumMonthPayed) {
 					getAppData().setUserPremiumSku(PLATINUM_MONTHLY);
-					getAppData().setUserPremiumStatus(StaticData.PLATINUM_USER);
 				}
 				isPlatinumYearPayed = sku.equals(PLATINUM_YEARLY);
 				if (isPlatinumYearPayed) {
 					getAppData().setUserPremiumSku(PLATINUM_YEARLY);
-					getAppData().setUserPremiumStatus(StaticData.PLATINUM_USER);
 				}
 				isDiamondMonthPayed = sku.equals(DIAMOND_MONTHLY);
 				if (isDiamondMonthPayed) {
 					getAppData().setUserPremiumSku(DIAMOND_MONTHLY);
-					getAppData().setUserPremiumStatus(StaticData.DIAMOND_USER);
 				}
 				isDiamondYearPayed = sku.equals(DIAMOND_YEARLY);
 				if (isDiamondYearPayed) {
 					getAppData().setUserPremiumSku(DIAMOND_YEARLY);
-					getAppData().setUserPremiumStatus(StaticData.DIAMOND_USER);
 				}
 			}
 

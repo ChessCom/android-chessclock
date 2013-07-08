@@ -159,6 +159,7 @@ public class RestHelper {
 	public static final String P_AVATAR = "avatar";
 	public static final String P_COUNTRY_ID = "countryId";
 	public static final String P_COUNTRY_CODE = "countryCode";
+	public static final String P_VIDEO_ID = "videoId";
 	public static final String P_MEMBERSHIP_TYPE = "membershipType";
 	//	public static final String P_APP_TYPE = "app_type";
 	public static final String P_APP_TYPE = "appType";
