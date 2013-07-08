@@ -9,29 +9,18 @@
     android:layout_height="wrap_content"
     android:minHeight="61dip"
     android:paddingTop="11dip"
-    android:paddingBottom="8dip"
-    android:paddingLeft="10dip"
-    android:paddingRight="10dip"
+    android:paddingLeft="@dimen/default_scr_side_padding"
+    android:paddingRight="@dimen/default_scr_side_padding"
     android:background="@drawable/white_list_item_selector"
     >
 
-    <ImageView
-        android:id="@+id/thumbnailImg"
-        android:layout_width="@dimen/common_list_thumb_size"
-        android:layout_height="@dimen/common_list_thumb_size"
-        android:background="@color/new_common_list_thumb_grey"
-        android:contentDescription="@string/image"
-        android:layout_marginRight="10dip"
-        />
-
+    <!--Title-->
     <com.chess.RoboTextView
         android:id="@+id/titleTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingBottom="1dip"
         android:text="Test title"
-        android:layout_toRightOf="@id/thumbnailImg"
-        android:layout_marginTop="-3dip"
-        android:paddingBottom="2dip"
         android:textColor="@color/new_text_blue"
         android:textSize="15sp"
         custom:ttf="Bold"
@@ -43,9 +32,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/by"
-        android:layout_toRightOf="@id/thumbnailImg"
-        android:layout_below="@id/titleTxt"
         android:textColor="@color/new_author_dark_grey"
+        android:layout_below="@id/titleTxt"
         android:textSize="14sp"
         />
 

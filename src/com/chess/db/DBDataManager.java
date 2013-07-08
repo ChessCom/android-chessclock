@@ -24,7 +24,7 @@ public class DBDataManager {
 
 	private static final String ORDER_BY = "ORDER BY";
 	private static final String GROUP_BY = "GROUP BY";
-//	public static final String SLASH_ = "/";
+	//	public static final String SLASH_ = "/";
 	public static final String OR_ = " OR ";
 	public static final String LIKE_ = " LIKE ";
 	public static final String AND_ = " AND ";
@@ -49,7 +49,7 @@ public class DBDataManager {
 
 	public static String SELECTION_ID = concatArguments(DBConstants._ID);
 
-	public static String SELECTION_GAME_ID = concatArguments(
+	public static String SELECTION_USER_AND_ID = concatArguments(
 			DBConstants.V_USER,
 			DBConstants.V_ID);
 
@@ -76,30 +76,30 @@ public class DBDataManager {
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
-	public static final String[] PROJECTION_TACTIC_ITEM_ID_AND_USER = new String[] {
+	public static final String[] PROJECTION_TACTIC_ITEM_ID_AND_USER = new String[]{
 			DBConstants._ID,
 			DBConstants.V_ID,
 			DBConstants.V_USER
 	};
 
-	public static final String[] PROJECTION_USER = new String[] {
+	public static final String[] PROJECTION_USER = new String[]{
 			DBConstants._ID,
 			DBConstants.V_USER
 	};
 
-	public static final String[] PROJECTION_GAME_ID = new String[] {
+	public static final String[] PROJECTION_GAME_ID = new String[]{
 			DBConstants._ID,
 			DBConstants.V_USER,
 			DBConstants.V_ID
 	};
 
-	public static final String[] PROJECTION_USER_ID = new String[] {
+	public static final String[] PROJECTION_USER_ID = new String[]{
 			DBConstants._ID,
 			DBConstants.V_USER,
 			DBConstants.V_USER_ID
 	};
 
-	public static final String[] PROJECTION_CURRENT_GAMES = new String[] {
+	public static final String[] PROJECTION_CURRENT_GAMES = new String[]{
 			DBConstants._ID,
 			DBConstants.V_USER,
 			DBConstants.V_ID,
@@ -116,7 +116,7 @@ public class DBDataManager {
 			DBConstants.V_TIME_REMAINING
 	};
 
-	public static final String[] PROJECTION_FINISHED_GAMES = new String[] {
+	public static final String[] PROJECTION_FINISHED_GAMES = new String[]{
 			DBConstants._ID,
 			DBConstants.V_USER,
 			DBConstants.V_ID,
@@ -131,7 +131,7 @@ public class DBDataManager {
 			DBConstants.V_BLACK_RATING
 	};
 
-	public static final String[] PROJECTION_DAILY_PLAYER_NAMES = new String[] {
+	public static final String[] PROJECTION_DAILY_PLAYER_NAMES = new String[]{
 			DBConstants._ID,
 			DBConstants.V_USER,
 			DBConstants.V_I_PLAY_AS,
@@ -139,40 +139,40 @@ public class DBDataManager {
 			DBConstants.V_BLACK_USERNAME
 	};
 
-	public static final String[] PROJECTION_DAILY_DRAW_OFFERED = new String[] {
+	public static final String[] PROJECTION_DAILY_DRAW_OFFERED = new String[]{
 			DBConstants._ID,
 			DBConstants.V_USER,
 			DBConstants.V_ID,
 			DBConstants.V_OPPONENT_OFFERED_DRAW
 	};
 
-	public static final String[] PROJECTION_TITLE = new String[] {
+	public static final String[] PROJECTION_TITLE = new String[]{
 			DBConstants._ID,
 			DBConstants.V_TITLE
 	};
 
-	public static final String[] PROJECTION_USERNAME = new String[] {
+	public static final String[] PROJECTION_USERNAME = new String[]{
 			DBConstants._ID,
 			DBConstants.V_USERNAME
 	};
 
-	public static final String[] PROJECTION_V_CATEGORY_ID = new String[] {
+	public static final String[] PROJECTION_V_CATEGORY_ID = new String[]{
 			DBConstants._ID,
 			DBConstants.V_CATEGORY_ID
 	};
 
-	public static final String[] PROJECTION_ITEM_ID = new String[] {
+	public static final String[] PROJECTION_ITEM_ID = new String[]{
 			DBConstants._ID,
 			DBConstants.V_ID
 	};
 
-	public static final String[] PROJECTION_USER_CURRENT_RATING = new String[] {
+	public static final String[] PROJECTION_USER_CURRENT_RATING = new String[]{
 			DBConstants._ID,
 			DBConstants.V_USER,
 			DBConstants.V_CURRENT
 	};
 
-	public static final String[] PROJECTION_VIEWED_VIDEO = new String[] {
+	public static final String[] PROJECTION_VIEWED_VIDEO = new String[]{
 			DBConstants._ID,
 			DBConstants.V_USER,
 			DBConstants.V_ID,
@@ -180,7 +180,7 @@ public class DBDataManager {
 
 	};
 
-	public static String concatArguments(String... arguments){
+	public static String concatArguments(String... arguments) {
 		StringBuilder selection = new StringBuilder();
 
 		String separator = StaticData.SYMBOL_EMPTY;
@@ -193,7 +193,7 @@ public class DBDataManager {
 		return selection.toString();
 	}
 
-	public static Cursor executeQuery(ContentResolver contentResolver, QueryParams params){
+	public static Cursor executeQuery(ContentResolver contentResolver, QueryParams params) {
 		return contentResolver.query(params.getUri(), params.getProjection(), params.getSelection(),
 				params.getArguments(), params.getOrder());
 	}
@@ -201,7 +201,7 @@ public class DBDataManager {
 	/**
 	 * Check if we have saved games for current user
 	 *
-	 * @param context to get resources
+	 * @param context  to get resources
 	 * @param userName
 	 * @return true if cursor can be positioned to first
 	 */
@@ -229,12 +229,12 @@ public class DBDataManager {
 
 	public static void updateDailyGame(ContentResolver contentResolver, DailyCurrentGameData currentGame, String userName) {
 
-        final String[] arguments2 = sArguments2;
+		final String[] arguments2 = sArguments2;
 		arguments2[0] = userName;
 		arguments2[1] = String.valueOf(currentGame.getGameId());
 
 		Uri uri = DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES];
-		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_GAME_ID,
+		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER_AND_ID,
 				arguments2, null);
 		if (cursor.moveToFirst()) {
 			contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)),
@@ -247,7 +247,6 @@ public class DBDataManager {
 	}
 
 	/**
-	 *
 	 * @return true if still have current games
 	 */
 	public static boolean checkAndDeleteNonExistCurrentGames(Context context, List<DailyCurrentGameData> gamesList, String userName) {
@@ -260,7 +259,7 @@ public class DBDataManager {
 		Uri uri = DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES];
 		long[] gamesIds;
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER, arguments1, null);
-		if (cursor!= null && cursor.moveToFirst()) {
+		if (cursor != null && cursor.moveToFirst()) {
 			gamesIds = new long[cursor.getCount()];
 			int i = 0;
 			do {
@@ -294,7 +293,7 @@ public class DBDataManager {
 				final String[] arguments2 = sArguments2;
 				arguments2[0] = userName;
 				arguments2[1] = String.valueOf(id);
-				contentResolver.delete(uri, SELECTION_GAME_ID, arguments2);
+				contentResolver.delete(uri, SELECTION_USER_AND_ID, arguments2);
 			}
 		}
 
@@ -311,7 +310,7 @@ public class DBDataManager {
 		Uri uri = DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES];
 		long[] gamesIds;
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER, arguments1, null);
-		if (cursor!= null && cursor.moveToFirst()) {
+		if (cursor != null && cursor.moveToFirst()) {
 			gamesIds = new long[cursor.getCount()];
 			int i = 0;
 			do {
@@ -345,7 +344,7 @@ public class DBDataManager {
 				final String[] arguments2 = sArguments2;
 				arguments2[0] = userName;
 				arguments2[1] = String.valueOf(id);
-				contentResolver.delete(uri,	SELECTION_GAME_ID, arguments2);
+				contentResolver.delete(uri, SELECTION_USER_AND_ID, arguments2);
 			}
 		}
 
@@ -371,7 +370,7 @@ public class DBDataManager {
 		params.setProjection(PROJECTION_DAILY_PLAYER_NAMES);
 		params.setSelection(selection);
 		params.setArguments(arguments3);
-		params.setCommands(GROUP_BY  + StaticData.SYMBOL_SPACE + DBConstants.V_WHITE_USERNAME + ", " + DBConstants.V_BLACK_USERNAME);
+		params.setCommands(GROUP_BY + StaticData.SYMBOL_SPACE + DBConstants.V_WHITE_USERNAME + ", " + DBConstants.V_BLACK_USERNAME);
 
 		for (String projections : params.getProjection()) {
 			projection.append(projections).append(StaticData.SYMBOL_COMMA);
@@ -387,6 +386,7 @@ public class DBDataManager {
 
 	/**
 	 * Check if we have saved friends for current user
+	 *
 	 * @param context to get resources
 	 * @return true if cursor can be positioned to first
 	 */
@@ -407,114 +407,114 @@ public class DBDataManager {
 		return exist;
 	}
 
-    /**
-     * Check if we have saved games for current user
-     *
-	 * @param context to get resources
+	/**
+	 * Check if we have saved games for current user
+	 *
+	 * @param context  to get resources
 	 * @param userName
 	 * @return true if cursor can be positioned to first
-     */
-    public static boolean haveSavedTacticGame(Context context, String userName) {
+	 */
+	public static boolean haveSavedTacticGame(Context context, String userName) {
 
-        ContentResolver contentResolver = context.getContentResolver();
-        final String[] arguments1 = sArguments1;
-        arguments1[0] = userName;
+		ContentResolver contentResolver = context.getContentResolver();
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = userName;
 
-        Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
 
-        return exist;
-    }
+		return exist;
+	}
 
-    public static int saveTacticItemToDb(Context context, TacticItem.Data tacticItem, String userName){
-        ContentResolver contentResolver = context.getContentResolver();
+	public static int saveTacticItemToDb(Context context, TacticItem.Data tacticItem, String userName) {
+		ContentResolver contentResolver = context.getContentResolver();
 
-        final String[] arguments2 = sArguments2;
-        arguments2[0] = String.valueOf(tacticItem.getId());
-        arguments2[1] = userName;
+		final String[] arguments2 = sArguments2;
+		arguments2[0] = String.valueOf(tacticItem.getId());
+		arguments2[1] = userName;
 
-        Uri uri = DBConstants.uriArray[DBConstants.TACTICS_BATCH];
-        Cursor cursor = contentResolver.query(uri, PROJECTION_TACTIC_ITEM_ID_AND_USER,
-                SELECTION_TACTIC_ID_AND_USER, arguments2, null);
+		Uri uri = DBConstants.uriArray[DBConstants.TACTICS_BATCH];
+		Cursor cursor = contentResolver.query(uri, PROJECTION_TACTIC_ITEM_ID_AND_USER,
+				SELECTION_TACTIC_ID_AND_USER, arguments2, null);
 
 		ContentValues values = putTacticItemToValues(tacticItem);
-        if (cursor.moveToFirst()) {
-            contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
-        } else {
-            contentResolver.insert(uri, values);
-        }
+		if (cursor.moveToFirst()) {
+			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
+		} else {
+			contentResolver.insert(uri, values);
+		}
 
-        cursor.close();
-
-        if (tacticItem.getResultItem() != null) {
-            saveTacticResultItemToDb(context, tacticItem.getResultItem());
-        }
-
-        return StaticData.RESULT_OK;
-    }
-
-    public static TacticItem.Data getLastTacticItemFromDb(Context context, String userName) {
-        ContentResolver contentResolver = context.getContentResolver();
-
-        final String[] arguments1 = sArguments1;
-        arguments1[0] = userName;
-
-        Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
-                null, SELECTION_USER, arguments1, null);
-
-        cursor.moveToFirst();
-        TacticItem.Data tacticItem = getTacticItemFromCursor(cursor);
 		cursor.close();
 
-        // set result item
+		if (tacticItem.getResultItem() != null) {
+			saveTacticResultItemToDb(context, tacticItem.getResultItem());
+		}
+
+		return StaticData.RESULT_OK;
+	}
+
+	public static TacticItem.Data getLastTacticItemFromDb(Context context, String userName) {
+		ContentResolver contentResolver = context.getContentResolver();
+
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = userName;
+
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
+				null, SELECTION_USER, arguments1, null);
+
+		cursor.moveToFirst();
+		TacticItem.Data tacticItem = getTacticItemFromCursor(cursor);
+		cursor.close();
+
+		// set result item
 		TacticRatingData resultItem = getTacticResultItemFromDb(context, tacticItem.getId(), userName);
-        tacticItem.setResultItem(resultItem);
+		tacticItem.setResultItem(resultItem);
 
-        return tacticItem;
-    }
+		return tacticItem;
+	}
 
-    private static void saveTacticResultItemToDb(Context context, TacticRatingData resultItem){
-        ContentResolver contentResolver = context.getContentResolver();
+	private static void saveTacticResultItemToDb(Context context, TacticRatingData resultItem) {
+		ContentResolver contentResolver = context.getContentResolver();
 
-        final String[] arguments2 = sArguments2;
-        arguments2[0] = String.valueOf(resultItem.getId());
-        arguments2[1] = resultItem.getUser();
+		final String[] arguments2 = sArguments2;
+		arguments2[0] = String.valueOf(resultItem.getId());
+		arguments2[1] = resultItem.getUser();
 
-        Uri uri = DBConstants.uriArray[DBConstants.TACTICS_RESULTS];
-        Cursor cursor = contentResolver.query(uri,null, SELECTION_TACTIC_ID_AND_USER, arguments2, null);
+		Uri uri = DBConstants.uriArray[DBConstants.TACTICS_RESULTS];
+		Cursor cursor = contentResolver.query(uri, null, SELECTION_TACTIC_ID_AND_USER, arguments2, null);
 
 		ContentValues values = putTacticResultItemToValues(resultItem);
 
-        if (cursor.moveToFirst()) {
-            contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
-        } else {
-            contentResolver.insert(uri, values);
-        }
+		if (cursor.moveToFirst()) {
+			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
+		} else {
+			contentResolver.insert(uri, values);
+		}
 
-        cursor.close();
-    }
+		cursor.close();
+	}
 
-    private static TacticRatingData getTacticResultItemFromDb(Context context, long id, String userName){
-        ContentResolver contentResolver = context.getContentResolver();
+	private static TacticRatingData getTacticResultItemFromDb(Context context, long id, String userName) {
+		ContentResolver contentResolver = context.getContentResolver();
 
-        final String[] arguments2 = sArguments2;
-        arguments2[0] = String.valueOf(id);
-        arguments2[1] = userName;
-        Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.TACTICS_RESULTS],
-                null, SELECTION_TACTIC_ID_AND_USER, arguments2, null);
+		final String[] arguments2 = sArguments2;
+		arguments2[0] = String.valueOf(id);
+		arguments2[1] = userName;
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.TACTICS_RESULTS],
+				null, SELECTION_TACTIC_ID_AND_USER, arguments2, null);
 
-        if (cursor.moveToFirst()){
+		if (cursor.moveToFirst()) {
 			TacticRatingData resultItem = getTacticResultItemFromCursor(cursor);
-            cursor.close();
+			cursor.close();
 
-            return resultItem;
-        } else {
+			return resultItem;
+		} else {
 			cursor.close();
 			return null;
 		}
-    }
+	}
 
 	public static int getUserCurrentRating(Context context, int dbUriCode, String userName) {
 		ContentResolver contentResolver = context.getContentResolver();
@@ -524,7 +524,7 @@ public class DBDataManager {
 		Cursor cursor = contentResolver.query(DBConstants.uriArray[dbUriCode],
 				PROJECTION_USER_CURRENT_RATING, SELECTION_USER, arguments1, null);
 
-		if (cursor.moveToFirst()){
+		if (cursor.moveToFirst()) {
 			int rating = getInt(cursor, DBConstants.V_CURRENT);
 			cursor.close();
 
@@ -537,7 +537,7 @@ public class DBDataManager {
 
 
 	// ---------------------- Value Setters ------------------------------------------------------------------------
-    public static ContentValues putTacticItemToValues(TacticItem.Data dataObj) {
+	public static ContentValues putTacticItemToValues(TacticItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, dataObj.getUser());
@@ -549,9 +549,9 @@ public class DBDataManager {
 		values.put(DBConstants.V_RATING, dataObj.getRating());
 		values.put(DBConstants.V_AVG_SECONDS, dataObj.getAvgSeconds());
 		values.put(DBConstants.V_SECONDS_SPENT, dataObj.getSecondsSpent());
-		values.put(DBConstants.V_STOP, dataObj.isStop()? 1 :0);
-		values.put(DBConstants.V_WAS_SHOWED, dataObj.isWasShowed()? 1 :0);
-		values.put(DBConstants.V_IS_RETRY, dataObj.isRetry()? 1 :0);
+		values.put(DBConstants.V_STOP, dataObj.isStop() ? 1 : 0);
+		values.put(DBConstants.V_WAS_SHOWED, dataObj.isWasShowed() ? 1 : 0);
+		values.put(DBConstants.V_IS_RETRY, dataObj.isRetry() ? 1 : 0);
 
 		return values;
 	}
@@ -570,13 +570,13 @@ public class DBDataManager {
 		dataObj.setAvgSeconds(getInt(cursor, DBConstants.V_AVG_SECONDS));
 		dataObj.setSecondsSpent(getInt(cursor, DBConstants.V_SECONDS_SPENT));
 		dataObj.setStop(getInt(cursor, DBConstants.V_STOP) > 0);
-        dataObj.setWasShowed(getInt(cursor, DBConstants.V_WAS_SHOWED) > 0);
-        dataObj.setRetry(getInt(cursor, DBConstants.V_IS_RETRY) > 0);
+		dataObj.setWasShowed(getInt(cursor, DBConstants.V_WAS_SHOWED) > 0);
+		dataObj.setRetry(getInt(cursor, DBConstants.V_IS_RETRY) > 0);
 
-        return dataObj;
+		return dataObj;
 	}
 
-    public static ContentValues putTacticResultItemToValues(TacticRatingData dataObj) {
+	public static ContentValues putTacticResultItemToValues(TacticRatingData dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_USER, dataObj.getUser());
@@ -633,12 +633,12 @@ public class DBDataManager {
 		setValuesFromGameItem(values, dataObj);
 		values.put(DBConstants.V_FINISHED, 0);
 		values.put(DBConstants.V_USER, userName);
-		values.put(DBConstants.V_OPPONENT_OFFERED_DRAW, dataObj.isDrawOffered()? 1 : 0);
-		values.put(DBConstants.V_IS_MY_TURN, dataObj.isMyTurn()? 1 : 0);
+		values.put(DBConstants.V_OPPONENT_OFFERED_DRAW, dataObj.isDrawOffered() ? 1 : 0);
+		values.put(DBConstants.V_IS_MY_TURN, dataObj.isMyTurn() ? 1 : 0);
 		return values;
 	}
 
-	private static void setValuesFromGameItem(ContentValues values, DailyGameBaseData dataObj){ // TODO remove
+	private static void setValuesFromGameItem(ContentValues values, DailyGameBaseData dataObj) { // TODO remove
 		values.put(DBConstants.V_ID, dataObj.getGameId());
 		values.put(DBConstants.V_FEN, dataObj.getFen());
 		values.put(DBConstants.V_I_PLAY_AS, dataObj.getMyColor());
@@ -656,8 +656,8 @@ public class DBDataManager {
 		values.put(DBConstants.V_GAME_NAME, dataObj.getName());
 		values.put(DBConstants.V_FEN_START_POSITION, dataObj.getStartingFenPosition());
 		values.put(DBConstants.V_MOVE_LIST, dataObj.getMoveList());
-		values.put(DBConstants.V_HAS_NEW_MESSAGE, dataObj.hasNewMessage()? 1: 0);
-		values.put(DBConstants.V_RATED, dataObj.isRated()? 1: 0);
+		values.put(DBConstants.V_HAS_NEW_MESSAGE, dataObj.hasNewMessage() ? 1 : 0);
+		values.put(DBConstants.V_RATED, dataObj.isRated() ? 1 : 0);
 		values.put(DBConstants.V_DAYS_PER_MOVE, dataObj.getDaysPerMove());
 		values.put(DBConstants.V_IS_OPPONENT_ONLINE, dataObj.isOpponentOnline());
 	}
@@ -674,6 +674,7 @@ public class DBDataManager {
 
 	/**
 	 * Fill data according to PROJECTION_CURRENT_GAMES
+	 *
 	 * @param cursor to fill from
 	 * @return DailyCurrentGameData filled object
 	 */
@@ -697,6 +698,7 @@ public class DBDataManager {
 
 	/**
 	 * Fill data according to PROJECTION_FINISHED_GAMES
+	 *
 	 * @param cursor to fill from
 	 * @return DailyFinishedGameData filled object
 	 */
@@ -716,7 +718,7 @@ public class DBDataManager {
 		return dataObj;
 	}
 
-	private static void setDailyGameFromCursor(DailyGameBaseData dataObj, Cursor cursor){
+	private static void setDailyGameFromCursor(DailyGameBaseData dataObj, Cursor cursor) {
 		dataObj.setGameId(getLong(cursor, DBConstants.V_ID));
 		dataObj.setFen(getString(cursor, DBConstants.V_FEN));
 		dataObj.setIPlayAs(getInt(cursor, DBConstants.V_I_PLAY_AS));
@@ -740,7 +742,6 @@ public class DBDataManager {
 	}
 
 	// ------------------------------------- Friends ----------------------------------------------
-
 	public static ContentValues putFriendItemToValues(FriendsItem.Data dataObj, String userName) {
 		ContentValues values = new ContentValues();
 
@@ -750,7 +751,7 @@ public class DBDataManager {
 		values.put(DBConstants.V_LOCATION, dataObj.getLocation());
 		values.put(DBConstants.V_COUNTRY_ID, dataObj.getCountryId());
 		values.put(DBConstants.V_PHOTO_URL, dataObj.getAvatarUrl());
-		values.put(DBConstants.V_IS_OPPONENT_ONLINE, dataObj.isOnline()? 1 : 0);
+		values.put(DBConstants.V_IS_OPPONENT_ONLINE, dataObj.isOnline() ? 1 : 0);
 		values.put(DBConstants.V_PREMIUM_STATUS, dataObj.getPremiumStatus());
 		values.put(DBConstants.V_LAST_LOGIN_DATE, dataObj.getLastLoginDate());
 
@@ -778,8 +779,29 @@ public class DBDataManager {
 		return values;
 	}
 
+	public static void updateVideoItem(ContentResolver contentResolver, VideoItem.Data currentItem) {
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = String.valueOf(currentItem.getVideoId());
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = DBConstants.uriArray[DBConstants.VIDEOS];
+
+		Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID,
+				DBDataManager.SELECTION_ITEM_ID, arguments1, null);
+
+		ContentValues values = DBDataManager.putVideoItemToValues(currentItem);
+
+		if (cursor.moveToFirst()) {
+			contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+		} else {
+			contentResolver.insert(uri, values);
+		}
+		cursor.close();
+	}
+
 	/**
 	 * Check if we have saved videos for any user
+	 *
 	 * @param context to get resources
 	 * @return true if cursor can be positioned to first
 	 */
@@ -792,6 +814,29 @@ public class DBDataManager {
 		cursor.close();
 
 		return exist;
+	}
+
+	/**
+	 *
+	 * @param context to get ContnetResolver
+	 * @param videoId to search for
+	 * @return _id of video if it was saved before
+	 */
+	public static long haveSavedVideoById(Context context, int videoId) {
+		ContentResolver contentResolver = context.getContentResolver();
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = String.valueOf(videoId);
+
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.VIDEOS],
+				PROJECTION_ITEM_ID, SELECTION_ITEM_ID, arguments1, LIMIT_1);
+		if (cursor != null) {
+			boolean exist = cursor.moveToFirst();
+			cursor.close();
+			if (exist) {
+				return getId(cursor);
+			}
+		}
+		return -1;
 	}
 
 	public static void updateVideoViewedState(ContentResolver contentResolver, VideoViewedItem currentItem) {
@@ -822,15 +867,29 @@ public class DBDataManager {
 		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.VIDEO_VIEWED],
 				null, SELECTION_USER, arguments1, null);
 
-		if (cursor != null && cursor.moveToFirst()){
+		if (cursor != null && cursor.moveToFirst()) {
 			return cursor;
 		} else {
 			return null;
 		}
 	}
 
+	public static boolean isVideoViewed(Context context, String userName, long videoId) {
+		ContentResolver contentResolver = context.getContentResolver();
+
+		final String[] arguments2 = sArguments2;
+		arguments2[0] = userName;
+		arguments2[1] = String.valueOf(videoId);
+
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.VIDEO_VIEWED],
+				null, SELECTION_USER_AND_ID, arguments2, null);
+
+		return cursor != null && cursor.moveToFirst() && getInt(cursor, DBConstants.V_VIDEO_VIEWED) > 0;
+	}
+
 	/**
 	 * Check if we have saved articles for any user
+	 *
 	 * @param context to get resources
 	 * @return true if cursor can be positioned to first
 	 */
@@ -875,7 +934,7 @@ public class DBDataManager {
 
 		values.put(DBConstants.V_USER, dataObj.getUsername());
 		values.put(DBConstants.V_ID, dataObj.getVideoId());
-		values.put(DBConstants.V_VIDEO_VIEWED, dataObj.isViewed()? 1 : 0);
+		values.put(DBConstants.V_VIDEO_VIEWED, dataObj.isViewed() ? 1 : 0);
 
 		return values;
 	}
@@ -1114,7 +1173,7 @@ public class DBDataManager {
 
 		Cursor cursor = resolver.query(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES],
 				PROJECTION_DAILY_DRAW_OFFERED, SELECTION_OPPONENT_OFFERED_DRAW, arguments2, null);
-		return cursor!= null &&cursor.moveToFirst() && getInt(cursor, DBConstants.V_OPPONENT_OFFERED_DRAW) > 0;
+		return cursor != null && cursor.moveToFirst() && getInt(cursor, DBConstants.V_OPPONENT_OFFERED_DRAW) > 0;
 	}
 
 	public static String getString(Cursor cursor, String column) {

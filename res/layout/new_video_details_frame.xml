@@ -31,17 +31,16 @@
                 android:scaleType="fitXY"
                 android:contentDescription="@string/image"
                 android:background="@drawable/video_thumb_back"
-
                 />
 
-            <ProgressBar
+<!--            <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="25dip"
                 android:layout_height="25dip"
                 android:layout_centerInParent="true"
-                android:visibility="gone" />
+                android:visibility="gone" />-->
 
-            <ImageButton
+           <!-- <ImageButton
                 android:id="@+id/playBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,7 +48,19 @@
                 android:src="@drawable/ic_play_video_big"
                 android:background="@drawable/video_play_btn_back_big"
                 android:visibility="visible"
-                android:contentDescription="@string/image" />
+                android:contentDescription="@string/image" />-->
+
+            <!--Icon-->
+            <com.chess.RoboButton
+                android:id="@+id/playBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/ic_play"
+                style="@style/GlyphIcon.RoundBack.Play"
+                android:background="@drawable/video_play_btn_back_big"
+                android:textSize="@dimen/glyph_icon_round_back_big"
+                />
 
         </RelativeLayout>
 

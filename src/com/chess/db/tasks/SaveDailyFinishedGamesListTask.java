@@ -40,7 +40,7 @@ public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<DailyFini
 					Uri uri = DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES];
 //					Log.d("TEST", " save FINISHED , game id = " + finishedItem.getGameId() + " user = " + userName);
 					final Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
-							DBDataManager.SELECTION_GAME_ID, arguments2, null);
+							DBDataManager.SELECTION_USER_AND_ID, arguments2, null);
 
 					ContentValues values = DBDataManager.putDailyFinishedGameToValues(finishedItem, userName);
 

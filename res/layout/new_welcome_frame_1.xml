@@ -18,6 +18,17 @@
         style="@style/WelcomeFeatureTitle"
         />
 
+    <com.chess.RoboButton
+        android:id="@+id/playBtn1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/ic_play"
+        style="@style/GlyphIcon.RoundBack.Play"
+        android:background="@drawable/video_play_btn_back_medium_selector"
+        android:textSize="@dimen/glyph_icon_round_back_medium"
+        />
+<!--
     <ImageButton
         android:id="@+id/playBtn1"
         android:layout_width="wrap_content"
@@ -28,6 +39,7 @@
         android:visibility="visible"
         android:contentDescription="@string/image"
         />
+-->
 
 
     <FrameLayout

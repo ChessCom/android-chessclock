@@ -10,7 +10,7 @@
     android:gravity="center_vertical"
     android:paddingLeft="@dimen/default_scr_side_padding"
     android:paddingRight="8dip"
-    android:paddingTop="4dip"
+    android:paddingTop="12dip"
     android:paddingBottom="4dip"
     >
 
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:text="@string/ic_check"
         android:textColor="@color/new_light_grey_2"
-        style="@style/GlyphIcon.Small"
+        style="@style/GlyphIcon"
         />
 
 </LinearLayout>

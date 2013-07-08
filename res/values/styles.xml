@@ -77,10 +77,11 @@
         <item name="android:background">@drawable/video_play_btn_back_small_selector</item>
         <item name="android:minWidth">0dip</item>
     </style>
-    <style name="GlyphIcon.RoundBack.Play">
-        <item name="android:textColor">@color/orange_button_1</item>
-        <item name="android:paddingLeft">2dip</item>
 
+    <style name="GlyphIcon.RoundBack.Play">
+        <item name="android:textColor">@color/play_orange</item>
+        <item name="android:padding">10dip</item>
+        <item name="android:paddingLeft">20dip</item>
 
         <!--Shadow-->
         <item name="android:shadowColor">@color/back_shadows_chess</item>

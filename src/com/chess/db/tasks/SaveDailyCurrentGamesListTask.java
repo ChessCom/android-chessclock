@@ -43,7 +43,7 @@ public class SaveDailyCurrentGamesListTask extends SaveDailyGamesTask<DailyCurre
 					Uri uri = DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES];
 //					Log.d("TEST", " save DCG , game id = " + currentItem.getGameId() + " user = " + userName);
 					final Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
-							DBDataManager.SELECTION_GAME_ID, arguments2, null);
+							DBDataManager.SELECTION_USER_AND_ID, arguments2, null);
 
 					ContentValues values = DBDataManager.putDailyGameCurrentItemToValues(currentItem, userName);
 

@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
-import android.util.SparseArray;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +49,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private static final int VIDEOS_PER_CATEGORY = 2;
 	private static final int LIBRARY = 6;
 	private static final int WATCH_VIDEO_REQUEST = 9898;
-	private static final long WATCHED_TIME = 3 * 60 * 1000;
+	public static final long WATCHED_TIME = 3 * 60 * 1000;
 
 	private ViewHolder holder;
 	private ForegroundColorSpan foregroundSpan;
@@ -62,7 +62,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private NewVideosSectionedCursorAdapter videosCursorAdapter;
 
 	private VideosItemUpdateListener videosItemUpdateListener;
-	private VideosItemUpdateListener randomItemUpdateListener;
+	private VideosItemUpdateListener latestItemUpdateListener;
 	private SaveVideosUpdateListener saveVideosUpdateListener;
 	private VideosCursorUpdateListener videosCursorUpdateListener;
 
@@ -77,12 +77,10 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private CurriculumItems curriculumItems;
 	private boolean curriculumMode;
 	private VideoGroupsListAdapter curriculumAdapter;
-//	private int itemsPerSectionCnt = 2;
 	private long playButtonClickTime;
-	private String currentPlayingLink; // used only for curriculum videos
 	private int currentPlayingId;
-//	private String currentPlayingTitle;
-	private SparseArray<Boolean> curriculumViewedMap;
+	private SparseBooleanArray curriculumViewedMap;
+	private View headerView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,15 +102,15 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 		curriculumItems = new CurriculumItems();
 		{ // get viewed marks
-			Cursor cursor = DBDataManager.getVideoViewedCursor(getActivity(), getUserName());
-			curriculumViewedMap = new SparseArray<Boolean>();
-			if (cursor != null) {
-				do {
-					curriculumViewedMap.put(DBDataManager.getInt(cursor, DBConstants.V_ID),
-							DBDataManager.getInt(cursor, DBConstants.V_VIDEO_VIEWED) > 0);
-				} while (cursor.moveToNext());
-				cursor.close();
-			}
+//			Cursor cursor = DBDataManager.getVideoViewedCursor(getActivity(), getUserName());
+			curriculumViewedMap = new SparseBooleanArray();
+//			if (cursor != null) {
+//				do {
+//					curriculumViewedMap.put(DBDataManager.getInt(cursor, DBConstants.V_ID),
+//							DBDataManager.getInt(cursor, DBConstants.V_VIDEO_VIEWED) > 0);
+//				} while (cursor.moveToNext());
+//				cursor.close();
+//			}
 		}
 
 		curriculumItems.setCategories(getResources().getStringArray(R.array.videos_curriculum));
@@ -165,11 +163,9 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		{ // Library mode init
-//			tempCurriculumHeader =  view.findViewById(R.id.tempCurriculumHeader);
-//			tempCurriculumHeader.setOnClickListener(this);
 			listView = (ListView) view.findViewById(R.id.listView);
 			// add header
-			View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_thumb_list_item, null, false);
+			headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_thumb_list_item, null, false);
 			headerView.setOnClickListener(this);
 			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_curriculum_footer, null, false);
 			footerView.setOnClickListener(this);
@@ -206,12 +202,23 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private void showLibrary() {
 		boolean show = !curriculumMode;
 		listView.setVisibility(show? View.VISIBLE : View.GONE);
-//		tempCurriculumHeader.setVisibility(show? View.VISIBLE : View.GONE);
 		expListView.setVisibility(show? View.GONE : View.VISIBLE);
+
+		Cursor cursor = DBDataManager.getVideoViewedCursor(getActivity(), getUserName());
+		if (cursor != null) {
+			do {
+				curriculumViewedMap.put(DBDataManager.getInt(cursor, DBConstants.V_ID),
+						DBDataManager.getInt(cursor, DBConstants.V_VIDEO_VIEWED) > 0);
+			} while (cursor.moveToNext());
+			cursor.close();
+		}
 		if (show) {
 
 			if (need2Update) {
 				boolean haveSavedData = DBDataManager.haveSavedVideos(getActivity());
+				if (haveSavedData) {
+					loadFromDb();
+				}
 
 				if (AppUtils.isNetworkAvailable(getActivity())) {
 					updateData();
@@ -221,11 +228,9 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 					showEmptyView(true);
 				}
 
-				if (haveSavedData) {
-					loadFromDb();
-				}
 			} else { // load data to listHeader view
 				fillListViewHeaderData();
+				videosCursorAdapter.notifyDataSetChanged();
 			}
 
 		} else {
@@ -235,7 +240,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 	private void init() {
 		videosCursorAdapter = new NewVideosSectionedCursorAdapter(getContext(), null, VIDEOS_PER_CATEGORY);
-		randomItemUpdateListener = new VideosItemUpdateListener(VideosItemUpdateListener.RANDOM);
+		latestItemUpdateListener = new VideosItemUpdateListener(VideosItemUpdateListener.LATEST);
 		videosItemUpdateListener = new VideosItemUpdateListener(VideosItemUpdateListener.DATA_LIST);
 
 		saveVideosUpdateListener = new SaveVideosUpdateListener();
@@ -247,14 +252,14 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	}
 
 	private void updateData() {
-//		{// request random data for the header
-//			LoadItem loadItem = new LoadItem();
-//			loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
-//			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-//			loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, 1);
-//
-//			new RequestJsonTask<VideoItem>(randomItemUpdateListener).executeTask(loadItem);
-//		}
+		{// request random data for the header
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+			loadItem.addRequestParams(RestHelper.P_LIMIT, 1);
+
+			new RequestJsonTask<VideoItem>(latestItemUpdateListener).executeTask(loadItem);
+		}
 		// get all video // TODO adjust to request only latest updates
 
 		LoadItem loadItem = new LoadItem();
@@ -318,17 +323,23 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			if (headerDataLoaded) {
 				getActivityFace().openFragment(VideoDetailsFragment.createInstance(headerDataId));
 			}
-		} else if (v.getId() == R.id.titleTxt) {
+		} else if (v.getId() == R.id.titleTxt) { // Clicked on title in Curriculum mode, open details
 			Integer childPosition = (Integer) v.getTag(R.id.list_item_id);
 			Integer groupPosition = (Integer) v.getTag(R.id.list_item_id_group);
 
 			int id = curriculumItems.getIds()[groupPosition][childPosition];
-			getActivityFace().openFragment(VideoDetailsFragment.createInstance4Curriculum(id));
+			long savedId = DBDataManager.haveSavedVideoById(getActivity(), id);
+			if (savedId != -1) {
+				getActivityFace().openFragment(VideoDetailsFragment.createInstance(savedId));
+			} else {
+				getActivityFace().openFragment(VideoDetailsCurriculumFragment.createInstance4Curriculum(id));
+			}
+
 		} else if (v.getId() == R.id.watchedIconTxt) {
 			Integer childPosition = (Integer) v.getTag(R.id.list_item_id);
 			Integer groupPosition = (Integer) v.getTag(R.id.list_item_id_group);
 
-			currentPlayingLink = curriculumItems.getUrls()[groupPosition][childPosition];
+			String currentPlayingLink = curriculumItems.getUrls()[groupPosition][childPosition];
 			currentPlayingId = curriculumItems.getIds()[groupPosition][childPosition];
 			Intent intent = new Intent(Intent.ACTION_VIEW);
 			intent.setDataAndType(Uri.parse(currentPlayingLink), "video/*");
@@ -336,8 +347,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 			// start record time to watch
 			playButtonClickTime = System.currentTimeMillis();
-
-		} else if (v.getId() == R.id.tempCurriculumHeader) {
+		} else if (v.getId() == R.id.curriculumHeader) {
 			getAppData().setUserChooseVideoLibrary(false);
 			curriculumMode = true;
 			showLibrary();
@@ -390,7 +400,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 	private class VideosItemUpdateListener extends ChessUpdateListener<VideoItem> {
 
-		private static final int RANDOM = 0;
+		private static final int LATEST = 0;
 		private static final int DATA_LIST = 1;
 		private int listenerCode;
 
@@ -408,7 +418,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		@Override
 		public void updateData(VideoItem returnedObj) {
 			switch (listenerCode) {
-				case RANDOM:
+				case LATEST:
 					headerData = returnedObj.getData().get(0);
 
 					fillListViewHeaderData();
@@ -456,6 +466,8 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		holder.authorTxt.setText(authorStr);
 		holder.titleTxt.setText(headerData.getTitle());
 		holder.dateTxt.setText(dateFormatter.format(new Date(headerData.getCreateDate())));
+
+		headerView.invalidate();
 	}
 
 	protected class ViewHolder {
@@ -497,7 +509,16 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		public void updateData(Cursor cursor) {
 			super.updateData(cursor);
 
+			// Load viewed cursor table and join
+//			Cursor viewedCursor = DBDataManager.getVideoViewedCursor(getActivity(), getUserName());
+//			if (viewedCursor != null) {
+//				do {
+//					curriculumViewedMap.put(DBDataManager.getInt(viewedCursor, DBConstants.V_ID),
+//							DBDataManager.getInt(viewedCursor, DBConstants.V_VIDEO_VIEWED) > 0);
+//				} while(viewedCursor.moveToNext());
+//			}
 			videosCursorAdapter.changeCursor(cursor);
+			videosCursorAdapter.addViewedMap(curriculumViewedMap);
 			listView.setAdapter(videosCursorAdapter);
 
 			need2Update = false;

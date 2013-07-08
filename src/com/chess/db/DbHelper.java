@@ -60,7 +60,7 @@ public class DbHelper {
 	public static QueryParams getDailyGameParams(long gameId, String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES]);
-		queryParams.setSelection(DBDataManager.SELECTION_GAME_ID);
+		queryParams.setSelection(DBDataManager.SELECTION_USER_AND_ID);
 		queryParams.setArguments(new String[]{username, String.valueOf(gameId)});
 		return queryParams;
 	}
@@ -68,7 +68,7 @@ public class DbHelper {
 	public static QueryParams getDailyFinishedGameParams(long gameId, String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES]);
-		queryParams.setSelection(DBDataManager.SELECTION_GAME_ID);
+		queryParams.setSelection(DBDataManager.SELECTION_USER_AND_ID);
 		queryParams.setArguments(new String[]{username, String.valueOf(gameId)});
 		return queryParams;
 	}

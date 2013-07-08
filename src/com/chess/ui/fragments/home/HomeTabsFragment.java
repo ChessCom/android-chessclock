@@ -26,6 +26,7 @@ import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.chess.ui.interfaces.FragmentTabsFace;
+import com.chess.utilities.AppUtils;
 
 import java.util.List;
 
@@ -131,8 +132,15 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		// get games_id's and compare it to local DB
 		// if there are game_id which we don't have, then fetch it
 
-		LoadItem loadItem = LoadHelper.getAllGamesFiltered(getUserToken(), RestHelper.V_ID);
-		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
+		if (AppUtils.isNetworkAvailable(getActivity())) {
+			LoadItem loadItem = LoadHelper.getAllGamesFiltered(getUserToken(), RestHelper.V_ID);
+			new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
+		} else {
+			if (previousCheckedId == NON_INIT) {
+				tabRadioGroup.check(R.id.leftTabBtn);
+			}
+			updateTabs();
+		}
 	}
 
 //	private class DbCursorUpdateListener extends ChessUpdateListener<Cursor> {  // Used for test
