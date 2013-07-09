@@ -275,6 +275,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getWhiteRating());
 			labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
 			labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
+			labelsConfig.topPlayerPremiumStatus = currentGame.getBlackPremiumStatus();
+			labelsConfig.bottomPlayerPremiumStatus = currentGame.getWhitePremiumStatus();
 		} else {
 			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 			labelsConfig.topPlayerName = currentGame.getWhiteUsername();
@@ -285,6 +287,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			labelsConfig.bottomPlayerAvatar = currentGame.getBlackAvatar();
 			labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
 			labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
+			labelsConfig.topPlayerPremiumStatus = currentGame.getWhitePremiumStatus();
+			labelsConfig.bottomPlayerPremiumStatus = currentGame.getBlackPremiumStatus();
 		}
 
 		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
@@ -299,12 +303,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		getBoardFace().setFinished(false);
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
-
-//		timeRemains = gameInfoItem.getTimeRemaining() + gameInfoItem.getTimeRemainingUnits();
-
-		long timeRemains = currentGame.getTimeRemaining();
-
-		String seconds = AppUtils.getTimeLeftFromSeconds(timeRemains, getActivity());
 
 
 //		if (isUserMove()) {
@@ -402,6 +400,14 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 		topPanelView.setPlayerFlag(labelsConfig.topPlayerCountry);
 		bottomPanelView.setPlayerFlag(labelsConfig.bottomPlayerCountry);
+
+		topPanelView.setPlayerPremiumIcon(labelsConfig.topPlayerPremiumStatus);
+		bottomPanelView.setPlayerPremiumIcon(labelsConfig.bottomPlayerPremiumStatus);
+
+		if (currentGameExist()) {
+			topPanelView.setTimeRemain(labelsConfig.topPlayerTime);
+			bottomPanelView.setTimeRemain(labelsConfig.bottomPlayerTime);
+		}
 
 		boardView.updateNotations(getBoardFace().getNotationArray());
 	}

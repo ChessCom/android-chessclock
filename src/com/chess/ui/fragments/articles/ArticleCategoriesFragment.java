@@ -87,7 +87,6 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	public void onStart() {
 		super.onStart();
 
-		init();
 		if (!categoriesLoaded) {
 			// get list of categories
 			categoriesLoaded = fillCategories();
@@ -96,17 +95,6 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		if (!categoriesLoaded) { // load hardcoded categories with passed arg
 
 		}
-	}
-
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		// TODO release resources
-	}
-
-	private void init() {
-
 	}
 
 	private boolean fillCategories() {
@@ -144,19 +132,12 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		new LoadDataFromDbTask(articlesCursorUpdateListener,
 				DbHelper.getArticlesListByCategoryParams(category),
 				getContentResolver()).executeTask();
-
 	}
 
 	private class ArticlesCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
-		public ArticlesCursorUpdateListener() {
-			super();
-
-		}
-
 		@Override
 		public void showProgress(boolean show) {
-			super.showProgress(show);
 			showLoadingView(show);
 		}
 
@@ -171,7 +152,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			if (resultCode == StaticData.UNKNOWN_ERROR) {
-				emptyView.setText(R.string.no_network);
+				emptyView.setText(R.string.no_data);
 			}
 			showEmptyView(true);
 		}

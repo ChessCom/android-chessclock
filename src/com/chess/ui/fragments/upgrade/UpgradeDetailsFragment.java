@@ -102,6 +102,12 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		configs = new PlanConfig[3];
+
+		configs[DIAMOND] = PlanConfig.getDiamondConfig(getActivity());
+		configs[PLATINUM] = PlanConfig.getPlatinumConfig(getActivity());
+		configs[GOLD] = PlanConfig.getGoldConfig(getActivity());
+
 		detailsListener = new GetDetailsListener();
 		getPayloadListener = new GetPayloadListener();
 
@@ -152,12 +158,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		descriptionView = (LinearLayout) view.findViewById(R.id.descriptionView);
 
 		yearDiscountTxt.setText(getString(R.string.save) + StaticData.SYMBOL_NEW_STR + YEAR_DISCOUNT);
-
-		configs = new PlanConfig[3];
-
-		configs[0] = PlanConfig.getDiamondConfig(getActivity());
-		configs[1] = PlanConfig.getPlatinumConfig(getActivity());
-		configs[2] = PlanConfig.getGoldConfig(getActivity());
 	}
 
 	@Override

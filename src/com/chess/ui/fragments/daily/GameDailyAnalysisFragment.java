@@ -159,58 +159,69 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			currentGame = DBDataManager.getDailyCurrentGameFromCursor(returnedObj);
 			returnedObj.close();
 
-			userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUserName());
-
-			labelsConfig.topAvatar = opponentAvatarDrawable;
-			labelsConfig.bottomAvatar = userAvatarDrawable;
-
-			if (userPlayWhite) {
-				labelsConfig.userSide = ChessBoard.WHITE_SIDE;
-				labelsConfig.topPlayerName = currentGame.getBlackUsername();
-				labelsConfig.topPlayerRating = String.valueOf(currentGame.getBlackRating());
-				labelsConfig.bottomPlayerName = currentGame.getWhiteUsername();
-				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getWhiteRating());
-				labelsConfig.topPlayerAvatar = currentGame.getBlackAvatar();
-				labelsConfig.bottomPlayerAvatar = currentGame.getWhiteAvatar();
-				labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
-				labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
-			} else {
-				labelsConfig.userSide = ChessBoard.BLACK_SIDE;
-				labelsConfig.topPlayerName = currentGame.getWhiteUsername();
-				labelsConfig.topPlayerRating = String.valueOf(currentGame.getWhiteRating());
-				labelsConfig.bottomPlayerName = currentGame.getBlackUsername();
-				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
-				labelsConfig.topPlayerAvatar = currentGame.getWhiteAvatar();
-				labelsConfig.bottomPlayerAvatar = currentGame.getBlackAvatar();
-				labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
-				labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
-			}
-
-			DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
-
-			controlsView.enableGameControls(true);
-			boardView.lockBoard(false);
-
 			adjustBoardForGame();
-
-			getBoardFace().setJustInitialized(false);
 		}
 	}
 
 	private void adjustBoardForGame() {
-//		boardView.setFinished(false);
+		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUserName());
+
+		labelsConfig.topAvatar = opponentAvatarDrawable;
+		labelsConfig.bottomAvatar = userAvatarDrawable;
+
+		if (userPlayWhite) {
+			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+			labelsConfig.topPlayerName = currentGame.getBlackUsername();
+			labelsConfig.topPlayerRating = String.valueOf(currentGame.getBlackRating());
+			labelsConfig.bottomPlayerName = currentGame.getWhiteUsername();
+			labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getWhiteRating());
+			labelsConfig.topPlayerAvatar = currentGame.getBlackAvatar();
+			labelsConfig.bottomPlayerAvatar = currentGame.getWhiteAvatar();
+			labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
+			labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
+			labelsConfig.topPlayerPremiumStatus = currentGame.getBlackPremiumStatus();
+			labelsConfig.bottomPlayerPremiumStatus = currentGame.getWhitePremiumStatus();
+		} else {
+			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
+			labelsConfig.topPlayerName = currentGame.getWhiteUsername();
+			labelsConfig.topPlayerRating = String.valueOf(currentGame.getWhiteRating());
+			labelsConfig.bottomPlayerName = currentGame.getBlackUsername();
+			labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
+			labelsConfig.topPlayerAvatar = currentGame.getWhiteAvatar();
+			labelsConfig.bottomPlayerAvatar = currentGame.getBlackAvatar();
+			labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
+			labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
+			labelsConfig.topPlayerPremiumStatus = currentGame.getWhitePremiumStatus();
+			labelsConfig.bottomPlayerPremiumStatus = currentGame.getBlackPremiumStatus();
+		}
+
+		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
+
+		controlsView.enableGameControls(true);
+		boardView.lockBoard(false);
+
 		getBoardFace().setFinished(false);
 
-//		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName()); // TODO recheck logic
-
-//		timeRemains = gameInfoItem.getTimeRemaining() + gameInfoItem.getTimeRemainingUnits();
-
-		if (isUserMove()) {
-//			topPanelView.setTimeRemain(seconds);
+		long secondsRemain = currentGame.getTimeRemaining();
+		String timeRemains;
+		if (secondsRemain == 0) {
+			timeRemains = getString(R.string.less_than_60_sec);
 		} else {
-			// TODO set greyed timeLeft
-//			topPanelView.setTimeRemain(seconds);
+			timeRemains = AppUtils.getTimeLeftFromSeconds(secondsRemain, getActivity());
 		}
+
+		String defaultTime = getString(R.string.days_arg, currentGame.getDaysPerMove());
+		boolean userMove = isUserMove();
+		if (userMove) {
+			labelsConfig.topPlayerTime = defaultTime;
+			labelsConfig.bottomPlayerTime = timeRemains;
+		} else {
+			labelsConfig.topPlayerTime = timeRemains;
+			labelsConfig.bottomPlayerTime = defaultTime;
+		}
+
+		topPanelView.showTimeLeftIcon(!userMove);
+		bottomPanelView.showTimeLeftIcon(userMove);
 
 		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
@@ -254,41 +265,67 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	@Override
 	public void toggleSides() { // TODO
-//		if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
-//			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
-//		} else {
-//			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
-//		}
-//		BoardAvatarDrawable tempDrawable = labelsConfig.topAvatar;
-//		labelsConfig.topAvatar = labelsConfig.bottomAvatar;
-//		labelsConfig.bottomAvatar = tempDrawable;
-//
-//		String tempLabel = labelsConfig.topPlayerName;
-//		labelsConfig.topPlayerName = labelsConfig.bottomPlayerName;
-//		labelsConfig.bottomPlayerName = tempLabel;
-//
-//		String tempScore = labelsConfig.topPlayerRating;
-//		labelsConfig.topPlayerRating = labelsConfig.bottomPlayerRating;
-//		labelsConfig.bottomPlayerRating = tempScore;
+		if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
+			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
+		} else {
+			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+		}
+		BoardAvatarDrawable tempDrawable = labelsConfig.topAvatar;
+		labelsConfig.topAvatar = labelsConfig.bottomAvatar;
+		labelsConfig.bottomAvatar = tempDrawable;
+
+		String tempLabel = labelsConfig.topPlayerName;
+		labelsConfig.topPlayerName = labelsConfig.bottomPlayerName;
+		labelsConfig.bottomPlayerName = tempLabel;
+
+		String tempScore = labelsConfig.topPlayerRating;
+		labelsConfig.topPlayerRating = labelsConfig.bottomPlayerRating;
+		labelsConfig.bottomPlayerRating = tempScore;
+
+		String playerTime = labelsConfig.topPlayerTime;
+		labelsConfig.topPlayerTime = labelsConfig.bottomPlayerTime;
+		labelsConfig.bottomPlayerTime = playerTime;
+
+		int playerPremiumStatus = labelsConfig.topPlayerPremiumStatus;
+		labelsConfig.topPlayerPremiumStatus = labelsConfig.bottomPlayerPremiumStatus;
+		labelsConfig.bottomPlayerPremiumStatus = playerPremiumStatus;
 	}
 
 	@Override
 	public void invalidateGameScreen() {
+		if (labelsConfig.bottomAvatar != null) {
+			labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+			bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+		}
 
-		userAvatarDrawable.setSide(labelsConfig.userSide);
-		opponentAvatarDrawable.setSide(labelsConfig.getOpponentSide());
-
-		topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-		bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+		if (labelsConfig.topAvatar != null) {
+			labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+			topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+		}
 
 		topPanelView.setSide(labelsConfig.getOpponentSide());
 		bottomPanelView.setSide(labelsConfig.userSide);
 
+		topPanelView.setPlayerName(labelsConfig.topPlayerName);
+		topPanelView.setPlayerRating(labelsConfig.topPlayerRating);
+		bottomPanelView.setPlayerName(labelsConfig.bottomPlayerName);
+		bottomPanelView.setPlayerRating(labelsConfig.bottomPlayerRating);
+
+		topPanelView.setPlayerFlag(labelsConfig.topPlayerCountry);
+		bottomPanelView.setPlayerFlag(labelsConfig.bottomPlayerCountry);
 
 
-//		whitePlayerLabel.setText(getWhitePlayerName());
-//		blackPlayerLabel.setText(getBlackPlayerName());
+		topPanelView.setPlayerPremiumIcon(labelsConfig.topPlayerPremiumStatus);
+		bottomPanelView.setPlayerPremiumIcon(labelsConfig.bottomPlayerPremiumStatus);
 
+		if (currentGameExist()) {
+			topPanelView.setTimeRemain(labelsConfig.topPlayerTime);
+			bottomPanelView.setTimeRemain(labelsConfig.bottomPlayerTime);
+
+			boolean userMove = isUserMove();
+			topPanelView.showTimeLeftIcon(!userMove);
+			bottomPanelView.showTimeLeftIcon(userMove);
+		}
 		boardView.updateNotations(getBoardFace().getNotationArray());
 	}
 

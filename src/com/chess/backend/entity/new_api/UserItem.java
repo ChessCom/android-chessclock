@@ -25,7 +25,7 @@ public class UserItem extends BaseResponseItem<UserItem.Data> {
 	public static class Data {
 		private long id;
 		private String username;
-		private String avatar;
+		private String avatar_url;
 		private int country_id;
 		private int premium_status;
 		private String country_name;
@@ -46,7 +46,7 @@ public class UserItem extends BaseResponseItem<UserItem.Data> {
 		}
 
 		public String getAvatar() {
-			return avatar;
+			return avatar_url;
 		}
 
 		public int getCountryId() {

@@ -197,7 +197,6 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		view.findViewById(R.id.shareBtn).setOnClickListener(this);
 		view.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		view.findViewById(R.id.userPhotoLay).setOnClickListener(this);
-//		view.findViewById(R.id.countryArrowIconTxt).setOnClickListener(this);
 		view.findViewById(R.id.countryLay).setOnClickListener(this);
 
 		// filling fields

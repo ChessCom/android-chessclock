@@ -33,11 +33,11 @@ public class Tournaments {
 	private Games games;
 
 	public All getAll() {
-		return all;
+		return all == null? new All() : all;
 	}
 
 	public Games getGames() {
-		return games;
+		return games == null? new Games() : games;
 	}
 
 	public class All {

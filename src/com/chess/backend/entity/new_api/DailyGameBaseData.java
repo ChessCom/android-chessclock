@@ -10,28 +10,32 @@ import com.chess.backend.statics.StaticData;
  */
 public class DailyGameBaseData {
 /*
-	"id": 35002013,
+   "id": 35000778,
 	"i_play_as": 1,
 	"game_type": 1,
-	"time_remaining": 169450,
 	"fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-	"timestamp": 1371718491,
-	"name": "Let's Play!",
+	"timestamp": 1357166897,
+	"name": "marcos",
 	"last_move_from_square": null,
 	"last_move_to_square": null,
-	"is_draw_offer_pending": false,
 	"is_opponent_online": false,
-	"is_my_turn": true,
 	"has_new_message": false,
-	"white_username": "rest",
-	"black_username": "cheatercheaterpumkin",
-	"white_rating": 1349,
-	"black_rating": 1200,
-	"days_per_move": 3,
+	"game_score": 0,
+	"white_username": "erik",
+	"black_username": "deepgreene",
+	"white_rating": 1471,
+	"black_rating": 1749,
+	"is_rated": true,
+	"encoded_moves_piotr_string": "",
 	"starting_fen_position": null,
-	"move_list": null,
-	"white_avatar": "//s3.amazonaws.com/chess-7/images_users/avatars/rest_origin.12.jpeg",
-	"black_avatar": "//s3.amazonaws.com/chess-7/images/noavatar_l.gif"
+	"move_list": "",
+	"result_message": "deepgreene won on time",
+	"white_avatar": "//s3.amazonaws.com/chess-7/images_users/avatars/erik_origin.5.png",
+	"black_avatar": "//s3.amazonaws.com/chess-7/images_users/avatars/deepgreene.gif",
+	"white_premium_status": 3,
+	"black_premium_status": 3,
+	"white_country_id": 2,
+	"black_country_id": 3
 */
 
 	private long id;
@@ -53,8 +57,10 @@ public class DailyGameBaseData {
 	private String move_list;
 	private String white_avatar;
 	private String black_avatar;
-	private int black_user_country;
-	private int white_user_country;
+	private int black_country_id;
+	private int white_country_id;
+	private int white_premium_status;
+	private int black_premium_status;
 	private boolean is_rated;
 	private int days_per_move;
 
@@ -235,19 +241,35 @@ public class DailyGameBaseData {
 	}
 
 	public int getBlackUserCountry() {
-		return black_user_country;
+		return black_country_id;
 	}
 
 	public void setBlackUserCountry(int black_user_country) {
-		this.black_user_country = black_user_country;
+		this.black_country_id = black_user_country;
 	}
 
 	public int getWhiteUserCountry() {
-		return white_user_country;
+		return white_country_id;
 	}
 
 	public void setWhiteUserCountry(int white_user_country) {
-		this.white_user_country = white_user_country;
+		this.white_country_id = white_user_country;
+	}
+
+	public int getWhitePremiumStatus() {
+		return white_premium_status;
+	}
+
+	public void setWhitePremiumStatus(int white_premium_status) {
+		this.white_premium_status = white_premium_status;
+	}
+
+	public int getBlackPremiumStatus() {
+		return black_premium_status;
+	}
+
+	public void setBlackPremiumStatus(int black_premium_status) {
+		this.black_premium_status = black_premium_status;
 	}
 
 	protected static String getSafeValue(String value) {

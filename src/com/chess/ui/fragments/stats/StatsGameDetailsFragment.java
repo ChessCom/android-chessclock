@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
@@ -276,33 +275,33 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 			int rating = DBDataManager.getInt(cursor, DBConstants.V_HIGHEST_RATING);
 			long ratingTime = DBDataManager.getLong(cursor, DBConstants.V_HIGHEST_TIMESTAMP) * 1000L;
 
-			((TextView) getView().findViewById(HIGHEST_ID + RATING_VALUE_ID)).setText(String.valueOf(rating));
-			((TextView) getView().findViewById(HIGHEST_ID + RATING_SUBTITLE_ID)).setText(dateFormatter.format(new Date(ratingTime)));
+			setTextById((HIGHEST_ID + RATING_VALUE_ID), String.valueOf(rating));
+			setTextById((HIGHEST_ID + RATING_SUBTITLE_ID), dateFormatter.format(new Date(ratingTime)));
 		}
 
 		{ // lowest
 			int rating = DBDataManager.getInt(cursor, DBConstants.V_LOWEST_RATING);
 			long ratingTime = DBDataManager.getLong(cursor, DBConstants.V_LOWEST_TIMESTAMP) * 1000L;
 
-			((TextView) getView().findViewById(LOWEST_ID + RATING_VALUE_ID)).setText(String.valueOf(rating));
-			((TextView) getView().findViewById(LOWEST_ID + RATING_SUBTITLE_ID)).setText(dateFormatter.format(new Date(ratingTime)));
+			setTextById((LOWEST_ID + RATING_VALUE_ID), String.valueOf(rating));
+			setTextById((LOWEST_ID + RATING_SUBTITLE_ID), dateFormatter.format(new Date(ratingTime)));
 		}
 
 		{ // average opponent
 			int rating = DBDataManager.getInt(cursor, DBConstants.V_AVERAGE_OPPONENT);
 
-			((TextView) getView().findViewById(AVERAGE_ID + RATING_VALUE_ID)).setText(String.valueOf(rating));
+			setTextById((AVERAGE_ID + RATING_VALUE_ID), String.valueOf(rating));
 		}
 
 		{ // best win on
 			int rating = DBDataManager.getInt(cursor, DBConstants.V_BEST_WIN_RATING);
 			if (rating == 0) {
-				((TextView) getView().findViewById(BEST_WIN_ID + RATING_VALUE_ID)).setText(R.string.not_available);
+				setTextById((BEST_WIN_ID + RATING_VALUE_ID), R.string.not_available);
 			} else {
 				String userName = DBDataManager.getString(cursor, DBConstants.V_BEST_WIN_USERNAME);
 
-				((TextView) getView().findViewById(BEST_WIN_ID + RATING_VALUE_ID)).setText(String.valueOf(rating));
-				((TextView) getView().findViewById(BEST_WIN_ID + RATING_SUBTITLE_ID)).setText(userName);
+				setTextById((BEST_WIN_ID + RATING_VALUE_ID), String.valueOf(rating));
+				setTextById((BEST_WIN_ID + RATING_SUBTITLE_ID), userName);
 			}
 		}
 	}
@@ -347,5 +346,13 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 
 			ratingsLinearView.addView(highestRatingView);
 		}
+	}
+
+	private void setTextById(int id, String text) {
+		((TextView) getView().findViewById(id)).setText(text);
+	}
+
+	private void setTextById(int id, int textId) {
+		((TextView) getView().findViewById(id)).setText(textId);
 	}
 }

@@ -31,11 +31,11 @@ public class ControlsAnalysisView extends ControlsBaseView {
 	void init() {
 		super.init();
 
+		addControlButton(CLOSE, R.style.Rect_Bottom_Right);
+		addControlButton(SEARCH, R.style.Rect_Bottom_Middle);
 		addControlButton(RESTART, R.style.Rect_Bottom_Left);
 		addControlButton(BACK, R.style.Rect_Bottom_Middle);
-		addControlButton(FLIP, R.style.Rect_Bottom_Middle);
 		addControlButton(FORWARD, R.style.Rect_Bottom_Middle);
-		addControlButton(CLOSE, R.style.Rect_Bottom_Right);
 
 		addView(controlsLayout);
 	}
@@ -55,17 +55,16 @@ public class ControlsAnalysisView extends ControlsBaseView {
 		if (blocked)
 			return;
 
-		if (view.getId() == getButtonId(RESTART)) {
+		if (view.getId() == getButtonId(CLOSE)) {
+			boardViewFace.closeBoard();
+		} else if (view.getId() == getButtonId(SEARCH)) {
+			// TODO add search ability
+		} else if (view.getId() == getButtonId(RESTART)) {
 			boardViewFace.restart();
 		} else if (view.getId() == getButtonId(BACK)) {
 			boardViewFace.moveBack();
-		}
-		if (view.getId() == getButtonId(FLIP)) {
-			boardViewFace.flipBoard();
 		} else if (view.getId() == getButtonId(FORWARD)) {
 			boardViewFace.moveForward();
-		} else if (view.getId() == getButtonId(CLOSE)) {
-			boardViewFace.closeBoard();
 		}
 	}
 
@@ -79,9 +78,9 @@ public class ControlsAnalysisView extends ControlsBaseView {
 	}
 
 	public void enableGameControls(boolean enable) {
+		enableGameButton(SEARCH, enable);
 		enableGameButton(RESTART, enable);
 		enableGameButton(BACK, enable);
-		enableGameButton(FLIP, enable);
 		enableGameButton(FORWARD, enable);
 	}
 }

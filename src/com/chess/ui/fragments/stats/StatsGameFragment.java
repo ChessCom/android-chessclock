@@ -124,12 +124,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 		@Override
 		public void showProgress(boolean show) {
-			super.showProgress(show);
-//			if (show) {
-//				showToast("Loading ...");
-//			} else {
-//				showToast("Done!");
-//			}
+			showLoadingProgress(show);
 		}
 
 		@Override
@@ -138,11 +133,6 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 			// Save stats to DB
 			new SaveGameStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver(), gameType).executeTask();
-
-			// get selected position of spinner
-			int position = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
-
-			changeInternalFragment(StatsGameDetailsFragment.createInstance(position));
 		}
 
 		@Override
@@ -157,14 +147,20 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 	private class SaveStatsUpdateListener extends ChessUpdateListener<GameStatsItem.Data> {
 
-		public SaveStatsUpdateListener() {
-			super();
+		@Override
+		public void showProgress(boolean show) {
+			showLoadingProgress(show);
 		}
 
 		@Override
 		public void updateData(GameStatsItem.Data returnedObj) {
 			super.updateData(returnedObj);
 			statsSpinner.setEnabled(true);
+
+			// get selected position of spinner
+			int position = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
+
+			changeInternalFragment(StatsGameDetailsFragment.createInstance(position));
 		}
 
 		@Override
@@ -181,7 +177,6 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		transaction.replace(R.id.stats_content_frame, fragment).commit();
 	}
 
-
 	private List<SelectionItem> createSpinnerList(Context context) {
 		ArrayList<SelectionItem> selectionItems = new ArrayList<SelectionItem>();
 
@@ -195,8 +190,6 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		}
 		return selectionItems;
 	}
-
-
 
 	/**
 	 *  Fill list according :

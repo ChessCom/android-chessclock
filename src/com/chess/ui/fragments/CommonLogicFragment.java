@@ -268,6 +268,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		loadItem.setLoadPath(RestHelper.CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, session.getAccessToken());
+		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_USERNAME);
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_TACTICS_RATING);
 

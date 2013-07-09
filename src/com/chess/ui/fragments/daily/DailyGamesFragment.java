@@ -544,6 +544,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 	}
 
+	// TODO http://www.chess.com/diagram?fen=rnbqkbnr%2Fpppppppp%2F8%2F8%2F3P4%2F8%2FPPP1PPPP%2FRNBQKBNR&size=1
+
 	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyGamesAllItem> {
 
 		public DailyGamesUpdateListener() {

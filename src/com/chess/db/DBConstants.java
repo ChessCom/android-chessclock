@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 32;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 33;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -127,6 +127,8 @@ public class DBConstants {
 	public static final String V_BLACK_RATING 			= "black_rating";
 	public static final String V_WHITE_AVATAR 			= "white_avatar";
 	public static final String V_BLACK_AVATAR 			= "black_avatar";
+	public static final String V_WHITE_PREMIUM_STATUS	= "white_premium_status";
+	public static final String V_BLACK_PREMIUM_STATUS	= "black_premium_status";
 	public static final String V_HAS_NEW_MESSAGE 		= "has_new_message";
 	public static final String V_IS_OPPONENT_ONLINE		= "is_opponent_online";
 	public static final String V_RATED 					= "rated";
@@ -231,6 +233,8 @@ public class DBConstants {
 			+ V_BLACK_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
 			+ V_WHITE_RATING 		    	+ _INT_NOT_NULL + _COMMA
 			+ V_BLACK_RATING 				+ _INT_NOT_NULL + _COMMA
+			+ V_WHITE_PREMIUM_STATUS		+ _INT_NOT_NULL + _COMMA
+			+ V_BLACK_PREMIUM_STATUS		+ _INT_NOT_NULL + _COMMA
 			+ V_WHITE_AVATAR 				+ _TEXT_NOT_NULL + _COMMA
 			+ V_BLACK_AVATAR 				+ _TEXT_NOT_NULL + _COMMA
 			+ V_TIME_REMAINING 				+ _INT_NOT_NULL + _COMMA
@@ -261,6 +265,8 @@ public class DBConstants {
 			+ V_BLACK_AVATAR 				+ _TEXT_NOT_NULL + _COMMA
 			+ V_WHITE_RATING 		    	+ _INT_NOT_NULL + _COMMA
 			+ V_BLACK_RATING 				+ _INT_NOT_NULL + _COMMA
+			+ V_WHITE_PREMIUM_STATUS		+ _INT_NOT_NULL + _COMMA
+			+ V_BLACK_PREMIUM_STATUS		+ _INT_NOT_NULL + _COMMA
 			+ V_TIME_REMAINING 				+ _INT_NOT_NULL + _COMMA
 			+ V_FEN_START_POSITION 	    	+ _TEXT_NOT_NULL + _COMMA
 			+ V_MOVE_LIST		 	    	+ _TEXT_NOT_NULL + _COMMA

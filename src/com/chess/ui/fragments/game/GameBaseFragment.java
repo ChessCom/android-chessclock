@@ -278,6 +278,8 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 		public String bottomPlayerTime;
 		public String topPlayerCountry;
 		public String bottomPlayerCountry;
+		public int topPlayerPremiumStatus;
+		public int bottomPlayerPremiumStatus;
 		public int userSide;
 
 		public int getOpponentSide() {

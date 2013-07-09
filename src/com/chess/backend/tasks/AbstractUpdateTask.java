@@ -126,8 +126,9 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	}
 
 	private boolean notValidToReturnForFragment(){
-		return getTaskFace().isUsedForFragment() &&
-				(getTaskFace().getStartedFragment() == null || getTaskFace().getStartedFragment().getActivity() == null);
+		return getTaskFace().isUsedForFragment() && (getTaskFace().getStartedFragment() == null
+				|| getTaskFace().getStartedFragment().getActivity() == null
+				|| !getTaskFace().getStartedFragment().isVisible());
 	}
 
 //	protected void releaseTaskFace() {  // We are manually release resources in activity

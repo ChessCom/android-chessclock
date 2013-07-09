@@ -47,6 +47,7 @@ public class CustomSectionedAdapter extends SectionedListAdapter {
 				if (position == index) {
 					convertView.setLayoutParams(hideLayoutParams);
 					convertView.setVisibility(View.GONE);
+					break; // hide only one section per invoke
 				} else {
 					convertView.setLayoutParams(layoutParams);
 					convertView.setVisibility(View.VISIBLE);

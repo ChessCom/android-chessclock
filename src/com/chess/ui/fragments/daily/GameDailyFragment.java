@@ -168,7 +168,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 		DataHolder.getInstance().setInOnlineGame(gameId, true);
 		loadGameAndUpdate();
-//		updateGameState(gameId);
 	}
 
 	@Override
@@ -223,15 +222,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			long gameId = intent.getLongExtra(BaseGameItem.GAME_ID, 0);
 
 			updateGameState(gameId);
-//			loadGameAndUpdate();
 		}
 	}
 
 	private void loadGameAndUpdate() {
 		// load game from DB. After load update
-//		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyGameParams(getActivity(), gameId),
-//				getContentResolver()).executeTask();
-
 		Cursor cursor = DBDataManager.executeQuery(getContentResolver(),
 				DbHelper.getDailyGameParams(gameId, getUserName()));
 
@@ -243,8 +238,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			cursor.close();
 
 			adjustBoardForGame();
-
-			// update players info
 
 		} else {
 			updateGameState(gameId);
@@ -319,6 +312,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			labelsConfig.bottomPlayerAvatar = currentGame.getWhiteAvatar();
 			labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
 			labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
+			labelsConfig.topPlayerPremiumStatus = currentGame.getBlackPremiumStatus();
+			labelsConfig.bottomPlayerPremiumStatus = currentGame.getWhitePremiumStatus();
 		} else {
 			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 			labelsConfig.topPlayerName = currentGame.getWhiteUsername();
@@ -329,6 +324,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			labelsConfig.bottomPlayerAvatar = currentGame.getBlackAvatar();
 			labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
 			labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
+			labelsConfig.topPlayerPremiumStatus = currentGame.getWhitePremiumStatus();
+			labelsConfig.bottomPlayerPremiumStatus = currentGame.getBlackPremiumStatus();
 		}
 
 		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
@@ -362,9 +359,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			labelsConfig.bottomPlayerTime = defaultTime;
 		}
 
-		topPanelView.setTimeRemain(labelsConfig.topPlayerTime);
-		bottomPanelView.setTimeRemain(labelsConfig.bottomPlayerTime);
-
 		topPanelView.showTimeLeftIcon(!userMove);
 		bottomPanelView.showTimeLeftIcon(userMove);
 
@@ -384,11 +378,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 			MoveParser.fenParse(FEN, boardFace);
 		}
 
-		String moveList = currentGame.getMoveList();
-//		moveList = MoveCoder.getInstance().decodeMoveList(moveList);
-
-		if (moveList.contains(BaseGameItem.FIRST_MOVE_INDEX)) {
-			String[] moves = moveList
+		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
+			String[] moves = currentGame.getMoveList()
 					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, StaticData.SYMBOL_EMPTY)
 					.replaceAll(DOUBLE_SPACE, StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE);   // Start after "+" sign
 
@@ -434,6 +425,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		String playerTime = labelsConfig.topPlayerTime;
 		labelsConfig.topPlayerTime = labelsConfig.bottomPlayerTime;
 		labelsConfig.bottomPlayerTime = playerTime;
+
+		int playerPremiumStatus = labelsConfig.topPlayerPremiumStatus;
+		labelsConfig.topPlayerPremiumStatus = labelsConfig.bottomPlayerPremiumStatus;
+		labelsConfig.bottomPlayerPremiumStatus = playerPremiumStatus;
 	}
 
 	@Override
@@ -460,6 +455,18 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 		topPanelView.setPlayerFlag(labelsConfig.topPlayerCountry);
 		bottomPanelView.setPlayerFlag(labelsConfig.bottomPlayerCountry);
+
+		topPanelView.setPlayerPremiumIcon(labelsConfig.topPlayerPremiumStatus);
+		bottomPanelView.setPlayerPremiumIcon(labelsConfig.bottomPlayerPremiumStatus);
+
+		if (currentGameExist()) {
+			topPanelView.setTimeRemain(labelsConfig.topPlayerTime);
+			bottomPanelView.setTimeRemain(labelsConfig.bottomPlayerTime);
+
+			boolean userMove = isUserMove();
+			topPanelView.showTimeLeftIcon(!userMove);
+			bottomPanelView.showTimeLeftIcon(userMove);
+		}
 
 		boardView.updateNotations(getBoardFace().getNotationArray());
 	}
