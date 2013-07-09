@@ -33,7 +33,6 @@ import com.chess.utilities.AppUtils;
 import com.chess.utilities.InneractiveAdHelper;
 import com.inneractive.api.ads.InneractiveAd;
 import org.petero.droidfish.GameMode;
-import org.petero.droidfish.gamelogic.Position;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -280,9 +279,8 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 		thinking.setVisibility(View.VISIBLE);
 	}
 
-	// todo: use only our Move class
 	@Override
-	public void updateEngineMove(final Position sourcepos, final org.petero.droidfish.gamelogic.Move engineMove) {
+	public void updateEngineMove(final org.petero.droidfish.gamelogic.Move engineMove) {
 
 		// TODO @compengine: extract logic and put probably to ChessBoardView
 
@@ -324,7 +322,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 				boardView.setComputerMoving(false);
 
-				boardView.setAnimMove(sourcepos, engineMove, move.to, move.from, true);
+				boardView.initMoveAnimator(move, true);
 				getBoardFace().makeMove(move);
 
 				if (boardView.isHint()) {

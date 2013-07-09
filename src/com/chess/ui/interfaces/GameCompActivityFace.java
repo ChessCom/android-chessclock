@@ -17,7 +17,7 @@ public interface GameCompActivityFace extends GameActivityFace {
 
 	void onCompMove();
 
-	void updateEngineMove(Position sourcePos, Move engineMove);
+	void updateEngineMove(Move engineMove);
 
 	void onEngineThinkingInfo(String engineThinkingInfo, String variantStr, ArrayList<ArrayList<Move>> pvMoves, ArrayList<Move> variantMoves, ArrayList<Move> bookMoves);
 

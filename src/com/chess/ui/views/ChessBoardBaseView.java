@@ -21,7 +21,6 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.BoardViewFace;
 import com.chess.ui.interfaces.GameActivityFace;
-import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 
 import java.util.*;
@@ -322,13 +321,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				continue;
 			}
 
-			if (animationActive && i == pieceAnimator.hide1) {
-				if (pieceAnimator.getCapturedPieceBitmap() != null) {
+			if (animationActive && i == moveAnimator.hide1) {
+				if (moveAnimator.getCapturedPieceBitmap() != null) {
 					// todo: refactor
 					int x = ChessBoard.getColumn(i, boardFace.isReside());
 					int y = ChessBoard.getRow(i, boardFace.isReside());
 					rect.set(x * square, y * square, x * square + square, y * square + square);
-					canvas.drawBitmap(pieceAnimator.getCapturedPieceBitmap(), null, rect, null);
+					canvas.drawBitmap(moveAnimator.getCapturedPieceBitmap(), null, rect, null);
 				}
 				continue;
 			}
@@ -882,10 +881,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		for (org.petero.droidfish.gamelogic.Move move : moveHints.keySet()) {
 			if ((move == null) || (move.from == move.to))
 				continue;
-			float x0 = getXCrd(Position.getX(move.from)) + h;
-			float y0 = getYCrd(Position.getY(move.from)) + h;
-			float x1 = getXCrd(Position.getX(move.to)) + h;
-			float y1 = getYCrd(Position.getY(move.to)) + h;
+			float x0 = getXCoordinate(Position.getX(move.from)) + h;
+			float y0 = getYCoordinateForArrow(Position.getY(move.from)) + h;
+			float x1 = getXCoordinate(Position.getX(move.to)) + h;
+			float y1 = getYCoordinateForArrow(Position.getY(move.to)) + h;
 
 			float x2 = (float)(Math.hypot(x1 - x0, y1 - y0) + d);
 			float y2 = 0;
@@ -919,11 +918,16 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 	}
 
-	private int getXCrd(int x) {
+	private int getXCoordinate(int x) {
 		return square * (boardFace.isReside() ? 7 - x : x);
 	}
 
-	private int getYCrd(int y) {
+	private int getYCoordinate(int y) {
+		return square * (boardFace.isReside() ? 7 - y : y);
+	}
+
+	// todo: should be only one getYCoordinate method after refactoring
+	private int getYCoordinateForArrow(int y) {
 		return square * (boardFace.isReside() ? y : 7 - y);
 	}
 
@@ -931,7 +935,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	private Handler handlerTimer = new Handler();
 
-	protected final class PieceAnimator {
+	protected final class MoveAnimator {
 		//boolean paused;
 		//long posHash;   // Position the animation is valid for
 		long startTime = -1; // Time in milliseconds when animation was started
@@ -991,12 +995,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 
 		private void drawAnimPiece(Canvas canvas, int piece, int from, int to, double animState) {
-			if (piece == Piece.EMPTY)
+			if (piece == ChessBoard.EMPTY)
 				return;
-			final int xCrd1 = getXCrd(Position.getX(from));
-			final int yCrd1 = getYCrd(Position.getY(from));
-			final int xCrd2 = getXCrd(Position.getX(to));
-			final int yCrd2 = getYCrd(Position.getY(to));
+			final int xCrd1 = getXCoordinate(ChessBoard.getColumn(from));
+			final int yCrd1 = getYCoordinate(ChessBoard.getRow(from));
+			final int xCrd2 = getXCoordinate(ChessBoard.getColumn(to));
+			final int yCrd2 = getYCoordinate(ChessBoard.getRow(to));
 			final int xCrd = xCrd1 + (int)Math.round((xCrd2 - xCrd1) * animState);
 			final int yCrd = yCrd1 + (int)Math.round((yCrd2 - yCrd1) * animState);
 
@@ -1006,89 +1010,88 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 	}
 
-	protected PieceAnimator pieceAnimator = new PieceAnimator();
+	protected MoveAnimator moveAnimator = new MoveAnimator();
 
-	// todo: refactor - method should operate only with our Move class
-	public final void setAnimMove(Position sourcePos, org.petero.droidfish.gamelogic.Move move, int moveTo, int moveFrom, boolean forward) {
-
-		pieceAnimator.startTime = -1;
+	public final void initMoveAnimator(Move move, boolean forward) {
+		moveAnimator.startTime = -1;
 
 		int animTime; // Animation duration in milliseconds.
 
-		int fromColor = boardFace.getColor()[moveFrom];
-		int fromPiece = boardFace.getPieces()[moveFrom];
-		pieceAnimator.setPieceBitmap(piecesBitmaps[fromColor][fromPiece]);
+		int fromColor = boardFace.getColor()[move.from];
+		int fromPiece = boardFace.getPieces()[move.from];
+		moveAnimator.setPieceBitmap(piecesBitmaps[fromColor][fromPiece]);
 
 		Bitmap capturedPieceBitmap = null;
-		if (boardFace.getPiece(moveTo) != ChessBoard.EMPTY) {
-			int capturedColor = boardFace.getColor()[moveTo];
-			int capturedPiece = boardFace.getPieces()[moveTo];
+		if (boardFace.getPiece(move.to) != ChessBoard.EMPTY) {
+			int capturedColor = boardFace.getColor()[move.to];
+			int capturedPiece = boardFace.getPieces()[move.to];
 			capturedPieceBitmap = piecesBitmaps[capturedColor][capturedPiece];
 		}
-		pieceAnimator.setCapturedPieceBitmap(capturedPieceBitmap);
+		moveAnimator.setCapturedPieceBitmap(capturedPieceBitmap);
 
-		int dx = Position.getX(move.to) - Position.getX(move.from);
-		int dy = Position.getY(move.to) - Position.getY(move.from);
+		int dx = ChessBoard.getColumn(move.to) - ChessBoard.getColumn(move.from);
+		int dy = ChessBoard.getRow(move.to) - ChessBoard.getRow(move.from);
 		double dist = Math.sqrt(dx * dx + dy * dy);
-		double t = Math.sqrt(dist) * 250; // extract speed
+		double t = Math.sqrt(dist) * 150; // extract speed
 		animTime = (int)Math.round(t);
 
-		pieceAnimator.hide1 = -1;
+		moveAnimator.hide1 = -1;
 
 		if (animTime > 0) {
-			pieceAnimator.startTime = System.currentTimeMillis();
-			pieceAnimator.stopTime = pieceAnimator.startTime + animTime;
-			pieceAnimator.piece2 = Piece.EMPTY;
-			pieceAnimator.from2 = -1;
-			pieceAnimator.to2 = -1;
-			pieceAnimator.hide1 = -1;
-			pieceAnimator.hide2 = -1;
+			moveAnimator.startTime = System.currentTimeMillis();
+			moveAnimator.stopTime = moveAnimator.startTime + animTime;
+			moveAnimator.piece2 = ChessBoard.EMPTY;
+			moveAnimator.from2 = -1;
+			moveAnimator.to2 = -1;
+			moveAnimator.hide1 = -1;
+			moveAnimator.hide2 = -1;
 			if (forward) {
-				int pieceFrom = sourcePos.getPiece(move.from);
-				pieceAnimator.piece1 = pieceFrom;
-				pieceAnimator.from1 = move.from;
-				pieceAnimator.to1 = move.to;
-				pieceAnimator.hide1 = moveTo;
-				int pieceTo = sourcePos.getPiece(move.to);
-				if (pieceTo == Piece.EMPTY) { // capture
-					pieceAnimator.piece2 = pieceTo;
-					pieceAnimator.from2 = move.to;
-					pieceAnimator.to2 = move.to;
+				int pieceFrom = getBoardFace().getPiece(move.from);
+				moveAnimator.piece1 = pieceFrom;
+				moveAnimator.from1 = move.from;
+				moveAnimator.to1 = move.to;
+				moveAnimator.hide1 = move.to;
+				int pieceTo = getBoardFace().getPiece(move.to);
+				if (pieceTo == ChessBoard.EMPTY) { // capture
+					moveAnimator.piece2 = pieceTo;
+					moveAnimator.from2 = move.to;
+					moveAnimator.to2 = move.to;
 				} /*else if ((pieceFrom == Piece.WKING) || (pieceFrom == Piece.BKING)) {
 					boolean wtm = Piece.isWhite(pieceFrom);
 					// TODO @compengine: add castling positions
 					if (move.to == move.from + 2) { // O-O
-						pieceAnimator.piece2 = wtm ? Piece.WROOK : ChessBoard.Piece.BROOK;
-						pieceAnimator.from2 = move.to + 1;
-						pieceAnimator.to2 = move.to - 1;
-						pieceAnimator.hide2 = pieceAnimator.to2;
+						moveAnimator.piece2 = wtm ? Piece.WROOK : ChessBoard.Piece.BROOK;
+						moveAnimator.from2 = move.to + 1;
+						moveAnimator.to2 = move.to - 1;
+						moveAnimator.hide2 = moveAnimator.to2;
 					} else if (move.to == move.from - 2) { // O-O-O
-						pieceAnimator.piece2 = wtm ? Piece.WROOK : Piece.BROOK;
-						pieceAnimator.from2 = move.to - 2;
-						pieceAnimator.to2 = move.to + 1;
-						pieceAnimator.hide2 = pieceAnimator.to2;
+						moveAnimator.piece2 = wtm ? Piece.WROOK : Piece.BROOK;
+						moveAnimator.from2 = move.to - 2;
+						moveAnimator.to2 = move.to + 1;
+						moveAnimator.hide2 = moveAnimator.to2;
 					}*/
 				}
 			} else {
-				/*int p = sourcePos.getPiece(move.from);
-				pieceAnimator.piece1 = p;
-				if (move.promoteTo != Piece.EMPTY)
-					pieceAnimator.piece1 = Piece.isWhite(pieceAnimator.piece1) ? Piece.WPAWN : Piece.BPAWN;
-				pieceAnimator.from1 = move.to;
-				pieceAnimator.to1 = move.from;
-				pieceAnimator.hide1 = pieceAnimator.to1;
-				if ((p == Piece.WKING) || (p == Piece.BKING)) {
+				int pieceFrom = getBoardFace().getPiece(move.from);
+				moveAnimator.piece1 = pieceFrom;
+				// todo: check promotions
+				/*if (move.promote > 0)
+					moveAnimator.piece1 = getBoardFace().isWhite(move.from) ? Piece.WPAWN : Piece.BPAWN;*/
+				moveAnimator.from1 = move.to;
+				moveAnimator.to1 = move.from;
+				moveAnimator.hide1 = moveAnimator.to1;
+				/*if ((p == Piece.WKING) || (p == Piece.BKING)) {
 					boolean wtm = Piece.isWhite(p);
 					if (move.to == move.from + 2) { // O-O
-						pieceAnimator.piece2 = wtm ? Piece.WROOK : Piece.BROOK;
-						pieceAnimator.from2 = move.to - 1;
-						pieceAnimator.to2 = move.to + 1;
-						pieceAnimator.hide2 = pieceAnimator.to2;
+						moveAnimator.piece2 = wtm ? Piece.WROOK : Piece.BROOK;
+						moveAnimator.from2 = move.to - 1;
+						moveAnimator.to2 = move.to + 1;
+						moveAnimator.hide2 = moveAnimator.to2;
 					} else if (move.to == move.from - 2) { // O-O-O
-						pieceAnimator.piece2 = wtm ? Piece.WROOK : Piece.BROOK;
-						pieceAnimator.from2 = move.to + 1;
-						pieceAnimator.to2 = move.to - 2;
-						pieceAnimator.hide2 = pieceAnimator.to2;
+						moveAnimator.piece2 = wtm ? Piece.WROOK : Piece.BROOK;
+						moveAnimator.from2 = move.to + 1;
+						moveAnimator.to2 = move.to - 2;
+						moveAnimator.hide2 = moveAnimator.to2;
 					}
 				}*/
 			}
