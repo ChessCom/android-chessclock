@@ -327,7 +327,7 @@ public class CompEngineHelper implements GUIInterface {
 		log("setAnimMove isBlackUserTurn " + isBlackUserTurn);
 		//this.gameMode = gameMode;
 
-		gameCompActivityFace.updateEngineMove(sourcePos, engineMove);
+		gameCompActivityFace.updateEngineMove(engineMove);
 	}
 
 	/*public String getFen() {

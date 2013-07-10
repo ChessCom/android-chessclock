@@ -322,7 +322,7 @@ public class GameCompScreenActivity extends GameBaseActivity implements GameComp
 
 				boardView.setComputerMoving(false);
 
-				boardView.initMoveAnimator(move, true);
+				boardView.addMoveAnimator(move, true);
 				getBoardFace().makeMove(move);
 
 				if (boardView.isHint()) {

@@ -98,6 +98,9 @@ public class ChessBoard implements BoardFace {
 			1, 0, 1, 0, 1, 0, 1, 0
 	};
 
+	public static final int WHITE_PIECE = 1;
+	public static final int BLACK_PIECE = 0;
+
 	// 1 means - white, 0 -> black
 	private int color[] = {
 			1, 1, 1, 1, 1, 1, 1, 1,
@@ -1246,9 +1249,9 @@ public class ChessBoard implements BoardFace {
 	 * takeBack() is very similar to makeMove(), only backwards :)
 	 */
 	@Override
-	public void takeBack() {
+	public Move takeBack() {
         if (hply - 1 < 0)
-            return;
+            return null;
 
 		side ^= 1;
 		xside ^= 1;
@@ -1328,7 +1331,7 @@ public class ChessBoard implements BoardFace {
 				pieces[to] = EMPTY;
 			}
 
-			return;
+			return move;
 		}
 
 
@@ -1354,6 +1357,8 @@ public class ChessBoard implements BoardFace {
 				pieces[move.to - 8] = PAWN;
 			}
 		}
+
+		return move;
 	}
 
 	@Override
@@ -2145,6 +2150,14 @@ public class ChessBoard implements BoardFace {
 
 	public Move getLastMove() {
 		return hply == 0 ? null : histDat[hply-1].move;
+	}
+
+	public boolean isWhite(int piecePosition) {
+		return color[piecePosition] == WHITE_PIECE;
+	}
+
+	public boolean isBlack(int piecePosition) {
+		return color[piecePosition] == BLACK_PIECE;
 	}
 
 	/*@Override

@@ -132,17 +132,6 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 		}
 	}
 
-	private Runnable reverseHintTask = new Runnable() {
-		@Override
-		public void run() {
-			getBoardFace().takeBack();
-			invalidate();
-
-			setHint(false);
-			gamePanelView.toggleControlButton(GamePanelView.B_HINT_ID, false);
-		}
-	};
-
 	@Override
     protected void onDraw(Canvas canvas) {
         canvas.setDrawFilter(drawFilter);
@@ -152,10 +141,25 @@ public class ChessBoardCompView extends ChessBoardBaseView {
         //if (!isComputerMoving()) {
 
 			// todo @compengine: move to base class for all game modes
-			boolean animationActive = pieceAnimator.updateState();
-			pieceAnimator.draw(canvas);
 
-			drawPieces(canvas, animationActive);
+			MoveAnimator moveAnimator = null;
+			boolean animationActive = false;
+			if (movesToAnimate.size() > 0) {
+				moveAnimator = movesToAnimate.getFirst();
+				/*Log.d("testtest", "moveAnimator " + moveAnimator);
+				Log.d("testtest", "movesToAnimate.size() " + movesToAnimate.size());*/
+
+				animationActive = moveAnimator.updateState();
+				if (animationActive) {
+					moveAnimator.draw(canvas);
+				} else {
+					movesToAnimate.remove(moveAnimator);
+					invalidate(); // ?
+				}
+				//Log.d("testtest", "animationActive " + animationActive);
+			}
+
+			drawPieces(canvas, animationActive, moveAnimator);
 
 			drawHighlight(canvas);
 			drawDragPosition(canvas);
@@ -362,12 +366,13 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
 			finished = false;
 			pieceSelected = false;
-			getBoardFace().takeBack();
 
-			Log.d("", "setpos boardFace.isAnalysis() " + boardFace.isAnalysis());
+			Move move = getBoardFace().takeBack();
+			addMoveAnimator(move, false);
 
 			if (AppData.isComputerVsHumanGameMode(boardFace) && !boardFace.isAnalysis()) {
-				getBoardFace().takeBack(); // todo: create method for ply
+				move = getBoardFace().takeBack(); // todo: create method for ply
+				addMoveAnimator(move, false);
 			}
 			invalidate();
 			gameActivityFace.invalidateGameScreen();
@@ -382,8 +387,6 @@ public class ChessBoardCompView extends ChessBoardBaseView {
 
 			pieceSelected = false;
 			getBoardFace().takeNext();
-
-			Log.d("", "setpos boardFace.isAnalysis() " + boardFace.isAnalysis());
 
 			if (AppData.isComputerVsHumanGameMode(boardFace) && !boardFace.isAnalysis()) {
 				getBoardFace().takeNext(); // todo: create method for ply

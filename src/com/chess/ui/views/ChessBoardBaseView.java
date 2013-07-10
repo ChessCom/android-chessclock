@@ -99,6 +99,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();
 	private Paint whiteMoveArrowPaint;
 	private Paint blackMoveArrowPaint;
+	protected LinkedList<MoveAnimator> movesToAnimate = new LinkedList<MoveAnimator>();
 
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -314,7 +315,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 	}
 
-	protected void drawPieces(Canvas canvas, boolean animationActive) {
+	protected void drawPieces(Canvas canvas, boolean animationActive, MoveAnimator moveAnimator) {
 		int i;
 		for (i = 0; i < 64; i++) {
 			if (drag && i == from) {
@@ -935,16 +936,21 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	private Handler handlerTimer = new Handler();
 
-	protected final class MoveAnimator {
+	protected class MoveAnimator {
 		//boolean paused;
-		//long posHash;   // Position the animation is valid for
-		long startTime = -1; // Time in milliseconds when animation was started
-		long stopTime;  // Time in milliseconds when animation should stop
-		long now;       // Current time in milliseconds
+		long startTime = -1;
+		long stopTime;
+		long now;
 		int piece1, from1, to1, hide1 = -1;
 		int piece2, from2, to2, hide2;
 		private Bitmap pieceBitmap;
 		private Bitmap capturedPieceBitmap;
+		private boolean firstRun = true;
+		private Move move;
+
+		MoveAnimator(Move move) {
+			this.move = move;
+		}
 
 		public void setPieceBitmap(Bitmap pieceBitmap) {
 			this.pieceBitmap = pieceBitmap;
@@ -960,24 +966,44 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		public final boolean updateState() {
 			now = System.currentTimeMillis();
-			return animActive();
+			return isAnimtionActive();
 		}
 
-		private final boolean animActive() {
+		private final boolean isAnimtionActive() {
+
+			if (firstRun) {
+				initTimer();
+				firstRun = false;
+			}
+
 			if ((startTime < 0) || (now >= stopTime))
 				return false;
 			return true;
 		}
 
 		/*public final boolean squareHidden(int sq) {
-			if (!animActive())
+			if (!isAnimtionActive())
 				return false;
 			return (sq == hide1) || (sq == hide2);
 		}*/
 
+		private void initTimer() {
+			int dx = ChessBoard.getColumn(move.to) - ChessBoard.getColumn(move.from);
+			int dy = ChessBoard.getRow(move.to) - ChessBoard.getRow(move.from);
+			double dist = Math.sqrt(dx * dx + dy * dy);
+			double t = Math.sqrt(dist) * 1000; // extract speed
+			int animTime = (int)Math.round(t);
+
+			startTime = System.currentTimeMillis();
+			stopTime = startTime + animTime;
+		}
+
 		public final void draw(Canvas canvas) {
-			if (!animActive())
+
+			if (!isAnimtionActive()) {
 				return;
+			}
+
 			double animState = (now - startTime) / (double)(stopTime - startTime);
 			//drawAnimPiece(canvas, piece2, from2, to2, animState); // castling
 			drawAnimPiece(canvas, piece1, from1, to1, animState);
@@ -1004,18 +1030,23 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			final int xCrd = xCrd1 + (int)Math.round((xCrd2 - xCrd1) * animState);
 			final int yCrd = yCrd1 + (int)Math.round((yCrd2 - yCrd1) * animState);
 
+			//Log.d("testtest", xCrd + " " + yCrd);
+
 			rect.set(xCrd, yCrd, xCrd + square, yCrd + square);
 
 			canvas.drawBitmap(pieceBitmap, null, rect, null);
 		}
 	}
 
-	protected MoveAnimator moveAnimator = new MoveAnimator();
+	public void addMoveAnimator(Move move, boolean forward) {
 
-	public final void initMoveAnimator(Move move, boolean forward) {
-		moveAnimator.startTime = -1;
+		//Log.d("testtest", "move " + move);
 
-		int animTime; // Animation duration in milliseconds.
+		MoveAnimator moveAnimator = new MoveAnimator(move);
+
+		// todo: move init to MoveAnimator constructor
+
+		//moveAnimator.startTime = -1;
 
 		int fromColor = boardFace.getColor()[move.from];
 		int fromPiece = boardFace.getPieces()[move.from];
@@ -1029,17 +1060,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 		moveAnimator.setCapturedPieceBitmap(capturedPieceBitmap);
 
-		int dx = ChessBoard.getColumn(move.to) - ChessBoard.getColumn(move.from);
-		int dy = ChessBoard.getRow(move.to) - ChessBoard.getRow(move.from);
-		double dist = Math.sqrt(dx * dx + dy * dy);
-		double t = Math.sqrt(dist) * 150; // extract speed
-		animTime = (int)Math.round(t);
-
 		moveAnimator.hide1 = -1;
 
-		if (animTime > 0) {
-			moveAnimator.startTime = System.currentTimeMillis();
-			moveAnimator.stopTime = moveAnimator.startTime + animTime;
+		//if (animTime > 0) {
 			moveAnimator.piece2 = ChessBoard.EMPTY;
 			moveAnimator.from2 = -1;
 			moveAnimator.to2 = -1;
@@ -1069,8 +1092,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 						moveAnimator.from2 = move.to - 2;
 						moveAnimator.to2 = move.to + 1;
 						moveAnimator.hide2 = moveAnimator.to2;
-					}*/
-				}
+					}
+				}*/
 			} else {
 				int pieceFrom = getBoardFace().getPiece(move.from);
 				moveAnimator.piece1 = pieceFrom;
@@ -1095,5 +1118,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					}
 				}*/
 			}
-		}
+
+			movesToAnimate.add(moveAnimator);
+		//}
+	}
 }
