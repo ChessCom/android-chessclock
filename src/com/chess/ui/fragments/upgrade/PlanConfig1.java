@@ -10,7 +10,7 @@ import com.chess.R;
  * Date: 31.05.13
  * Time: 14:06
  */
-public class PlanConfig {
+public class PlanConfig1 {
 
 	public static final String DIAMOND_MONTH_PAY = "$14";
 	public static final String DIAMOND_YEAR_PAY = "$99";
@@ -52,10 +52,10 @@ public class PlanConfig {
 		this.monthPayed = monthPayed;
 	}
 
-	static PlanConfig getDiamondConfig(Context context) {
+	static PlanConfig1 getDiamondConfig(Context context) {
 		Resources resources = context.getResources();
 
-		PlanConfig diamondConfig = new PlanConfig();
+		PlanConfig1 diamondConfig = new PlanConfig1();
 		diamondConfig.planDetailsBack = R.drawable.button_upgrade_diamond_default;
 		diamondConfig.planIconId = R.drawable.ic_upgrade_diamond;
 		diamondConfig.titleColor = resources.getColor(R.color.upgrade_diamond_title);
@@ -74,10 +74,10 @@ public class PlanConfig {
 		return diamondConfig;
 	}
 
-	static PlanConfig getPlatinumConfig(Context context) {
+	static PlanConfig1 getPlatinumConfig(Context context) {
 		Resources resources = context.getResources();
 
-		PlanConfig platinumConfig = new PlanConfig();
+		PlanConfig1 platinumConfig = new PlanConfig1();
 		platinumConfig.planDetailsBack = R.drawable.button_upgrade_platinum_default;
 		platinumConfig.planIconId = R.drawable.ic_upgrade_platinum;
 		platinumConfig.titleColor = resources.getColor(R.color.upgrade_platinum_title);
@@ -95,10 +95,10 @@ public class PlanConfig {
 		return platinumConfig;
 	}
 
-	static PlanConfig getGoldConfig(Context context) {
+	static PlanConfig1 getGoldConfig(Context context) {
 		Resources resources = context.getResources();
 
-		PlanConfig goldConfig = new PlanConfig();
+		PlanConfig1 goldConfig = new PlanConfig1();
 		goldConfig.planDetailsBack = R.drawable.button_upgrade_gold_default;
 		goldConfig.planIconId = R.drawable.ic_upgrade_gold;
 		goldConfig.titleColor = resources.getColor(R.color.upgrade_gold_title);

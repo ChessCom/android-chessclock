@@ -12,7 +12,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.model.BaseGameItem;
 
-public class DailyFinishedGamesCursorRightAdapter extends ItemsCursorAdapter {
+public class DailyFinishedGamesCursorRightAdapter1 extends ItemsCursorAdapter {
 
 	protected static final String CHESS_960 = " (960)";
 	private final int imageSize;
@@ -21,7 +21,7 @@ public class DailyFinishedGamesCursorRightAdapter extends ItemsCursorAdapter {
 	private final String winStr;
 
 
-	public DailyFinishedGamesCursorRightAdapter(Context context, Cursor cursor) {
+	public DailyFinishedGamesCursorRightAdapter1(Context context, Cursor cursor) {
 		super(context, cursor);
 		imageSize = (int) (resources.getDimension(R.dimen.list_item_image_size_big) / resources.getDisplayMetrics().density);
 		lossStr = context.getString(R.string.loss);
