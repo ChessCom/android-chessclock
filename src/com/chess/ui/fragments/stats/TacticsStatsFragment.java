@@ -35,15 +35,10 @@ public class TacticsStatsFragment extends CommonLogicFragment {
 		new RequestJsonTask<TacticsHistoryItem>(new StatsItemUpdateListener()).executeTask(loadItem);
 	}
 
-	private class StatsItemUpdateListener extends ChessUpdateListener<TacticsHistoryItem> {
+	private class StatsItemUpdateListener extends ChessLoadUpdateListener<TacticsHistoryItem> {
 
 		public StatsItemUpdateListener() {
 			super(TacticsHistoryItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingProgress(show);
 		}
 
 		@Override

@@ -40,23 +40,16 @@ public class VideoDetailsCurriculumFragment extends VideoDetailsFragment {
 		}
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
+		loadItem.setLoadPath(RestHelper.CMD_VIDEO_BY_ID(itemId));
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_VIDEO_ID, itemId);
-		loadItem.addRequestParams(RestHelper.P_LIMIT, 1);
 
 		new RequestJsonTask<VideoItem>(new VideoDetailsUpdateListener()).executeTask(loadItem);
 	}
 
-	private class VideoDetailsUpdateListener extends ChessUpdateListener<VideoItem> {
+	private class VideoDetailsUpdateListener extends ChessLoadUpdateListener<VideoItem> {
 
 		public VideoDetailsUpdateListener() {
 			super(VideoItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingProgress(show);
 		}
 
 		@Override

@@ -5,16 +5,26 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.VideoItem;
+import com.chess.backend.entity.new_api.VideoViewedItem;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
+import com.chess.db.tasks.SaveVideosListTask;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
 import com.chess.ui.adapters.NewVideosThumbCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -32,6 +42,7 @@ import java.util.List;
 public class VideoCategoriesFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
 	public static final String SECTION_NAME = "section_name";
+	private static final int WATCH_VIDEO_REQUEST = 9896;
 
 	private NewVideosThumbCursorAdapter videosAdapter;
 
@@ -40,7 +51,15 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	private TextView emptyView;
 	private ListView listView;
 	private VideosCursorUpdateListener videosCursorUpdateListener;
-	private List<String> categoriesList;
+	private List<String> categoriesNames;
+	private List<Integer> categoriesIds;
+	private SaveVideosUpdateListener saveVideosUpdateListener;
+	private VideosUpdateListener videosUpdateListener;
+	private SparseBooleanArray viewedVideosMap;
+	private long playButtonClickTime;
+	private int currentPlayingId;
+	private boolean need2update = true;
+	private int previousCategoryId;
 
 	public static VideoCategoriesFragment createInstance(String sectionName) {
 		VideoCategoriesFragment frag = new VideoCategoriesFragment();
@@ -54,9 +73,22 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		viewedVideosMap = new SparseBooleanArray();
+		videosUpdateListener = new VideosUpdateListener();
+		saveVideosUpdateListener = new SaveVideosUpdateListener();
 		videosAdapter = new NewVideosThumbCursorAdapter(this, null);
+		videosAdapter.addViewedMap(viewedVideosMap);
 		videosCursorUpdateListener = new VideosCursorUpdateListener();
-		categoriesList = new ArrayList<String>();
+		categoriesNames = new ArrayList<String>();
+		categoriesIds = new ArrayList<Integer>();
+
+		// restore state
+		if (savedInstanceState != null) {
+			playButtonClickTime = savedInstanceState.getLong(VideosFragment.CLICK_TIME);
+			currentPlayingId = savedInstanceState.getInt(VideosFragment.CURRENT_PLAYING_ID);
+
+			verifyAndSaveViewedState();
+		}
 	}
 
 	@Override
@@ -90,21 +122,34 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	public void onStart() {
 		super.onStart();
 
-		boolean loaded = categoriesList.size() != 0 || fillCategories();
+		// get viewed marks
+		Cursor cursor = DBDataManager.getVideoViewedCursor(getActivity(), getUserName());
+		if (cursor != null) {
+			do {
+				int videoId = DBDataManager.getInt(cursor, DBConstants.V_ID);
+				boolean isViewed = DBDataManager.getInt(cursor, DBConstants.V_VIDEO_VIEWED) > 0;
+				viewedVideosMap.put(videoId, isViewed);
+			} while (cursor.moveToNext());
+			cursor.close();
+		}
+
+
+		boolean loaded = categoriesNames.size() != 0 || fillCategories();
 
 		if (loaded) {
 			// get passed argument
 			String selectedCategory = getArguments().getString(SECTION_NAME);
 
 			int sectionId;
-			for (sectionId = 0; sectionId < categoriesList.size(); sectionId++) {
-				String category = categoriesList.get(sectionId);
+			for (sectionId = 0; sectionId < categoriesNames.size(); sectionId++) {
+				String category = categoriesNames.get(sectionId);
 				if (category.equals(selectedCategory)) {
+					categoriesIds.get(sectionId);
 					break;
 				}
 			}
 
-			categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), categoriesList));
+			categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), categoriesNames));
 			categorySpinner.setOnItemSelectedListener(this);
 			categorySpinner.setSelection(sectionId);  // TODO remember last selection.
 		}
@@ -119,17 +164,18 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		}
 
 		do {
-			categoriesList.add(DBDataManager.getString(cursor, DBConstants.V_NAME));
+			categoriesNames.add(DBDataManager.getString(cursor, DBConstants.V_NAME));
+			categoriesIds.add(Integer.valueOf(DBDataManager.getString(cursor, DBConstants.V_CATEGORY_ID)));
 		} while(cursor.moveToNext());
 
 		return true;
 	}
 
 	private void loadFromDb() {
-		String category = (String) categorySpinner.getSelectedItem();
+//		String category = (String) categorySpinner.getSelectedItem();
 
 		new LoadDataFromDbTask(videosCursorUpdateListener,
-				DbHelper.getVideosListByCategoryParams(category),
+				DbHelper.getVideosByCategoryParams(previousCategoryId),
 				getContentResolver()).executeTask();
 	}
 
@@ -137,7 +183,6 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 		@Override
 		public void showProgress(boolean show) {
-			super.showProgress(show);
 			showLoadingView(show);
 		}
 
@@ -170,11 +215,45 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
+			currentPlayingId = DBDataManager.getInt(cursor, DBConstants.V_ID);
 			Intent intent = new Intent(Intent.ACTION_VIEW);
-//			intent.setDataAndType(Uri.parse("http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"), "video/*"); // TODO restore
 			intent.setDataAndType(Uri.parse(DBDataManager.getString(cursor, DBConstants.V_URL)), "video/*");
-			startActivity(intent);
+			startActivityForResult(Intent.createChooser(intent, getString(R.string.select_player)), WATCH_VIDEO_REQUEST);
+
+			// start record time to watch
+			playButtonClickTime = System.currentTimeMillis();
 		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == WATCH_VIDEO_REQUEST) {
+
+			verifyAndSaveViewedState();
+		}
+	}
+
+	private void verifyAndSaveViewedState() {
+		long resumeFromVideoTime = System.currentTimeMillis();
+
+		if (resumeFromVideoTime - playButtonClickTime > VideosFragment.WATCHED_TIME) {
+			VideoViewedItem item = new VideoViewedItem(currentPlayingId, getUserName(), true);
+			DBDataManager.updateVideoViewedState(getContentResolver(), item);
+
+			// update current list
+			viewedVideosMap.put(currentPlayingId, true);
+			videosAdapter.addViewedMap(viewedVideosMap);
+			videosAdapter.notifyDataSetChanged();
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putLong(VideosFragment.CLICK_TIME, playButtonClickTime);
+		outState.putInt(VideosFragment.CURRENT_PLAYING_ID, currentPlayingId);
 	}
 
 	@Override
@@ -185,7 +264,36 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		loadFromDb();
+		Integer categoryId = categoriesIds.get(position);
+
+		if (need2update || categoryId != previousCategoryId) {
+			previousCategoryId = categoryId;
+			need2update = true;
+
+			// check if we have saved videos more than 2(from previous page)
+			Cursor cursor = DBDataManager.executeQuery(getContentResolver(),
+					DbHelper.getVideosByCategoryParams(previousCategoryId));
+
+			if (cursor != null && cursor.getCount() > VideosFragment.VIDEOS_PER_CATEGORY) {
+				cursor.moveToFirst();
+				videosAdapter.changeCursor(cursor);
+				videosAdapter.notifyDataSetChanged();
+				showEmptyView(false);
+			} else {
+				// TODO adjust endless adapter here
+				// Loading full video list from category here!
+
+				LoadItem loadItem = new LoadItem();
+				loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+				loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
+				loadItem.addRequestParams(RestHelper.P_LIMIT, RestHelper.DEFAULT_ITEMS_PER_PAGE);
+
+				new RequestJsonTask<VideoItem>(videosUpdateListener).executeTask(loadItem);
+			}
+		} else {
+			loadFromDb();
+		}
 	}
 
 	@Override
@@ -193,6 +301,33 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 	}
 
+	private class VideosUpdateListener extends ChessLoadUpdateListener<VideoItem> {
+		private VideosUpdateListener() {
+			super(VideoItem.class);
+		}
+
+		@Override
+		public void updateData(VideoItem returnedObj) {
+			new SaveVideosListTask(saveVideosUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
+		}
+	}
+
+	private class SaveVideosUpdateListener extends ChessUpdateListener<VideoItem.Data> {
+
+		@Override
+		public void showProgress(boolean show) {
+			showLoadingView(show);
+		}
+
+		@Override
+		public void updateData(VideoItem.Data returnedObj) {
+			super.updateData(returnedObj);
+
+			need2update = false;
+
+			loadFromDb();
+		}
+	}
 
 	private void showEmptyView(boolean show) {
 		if (show) {

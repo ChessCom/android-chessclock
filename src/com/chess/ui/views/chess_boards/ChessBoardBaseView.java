@@ -1093,7 +1093,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int dx = ChessBoard.getColumn(move.to) - ChessBoard.getColumn(move.from);
 			int dy = ChessBoard.getRow(move.to) - ChessBoard.getRow(move.from);
 			double dist = Math.sqrt(dx * dx + dy * dy);
-			double t = Math.sqrt(dist) * 1000; // extract speed
+			double t = Math.sqrt(dist) * 150; // extract speed
 			int animTime = (int)Math.round(t);
 
 			startTime = System.currentTimeMillis();

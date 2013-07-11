@@ -175,15 +175,10 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		new RequestJsonTask<RequestItem>(new RequestFriendListener()).executeTask(loadItem);
 	}
 
-	private class RequestFriendListener extends ChessUpdateListener<RequestItem> {
+	private class RequestFriendListener extends ChessLoadUpdateListener<RequestItem> {
 
 		private RequestFriendListener() {
 			super(RequestItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingProgress(show);
 		}
 
 		@Override

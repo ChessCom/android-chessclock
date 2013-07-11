@@ -101,6 +101,7 @@ public class RestHelper {
 	public static final String CMD_ARTICLES = BASE_URL + V1 + "/articles";
 	public static final String CMD_ARTICLES_LIST = CMD_ARTICLES + "/list";
 	public static final String CMD_ARTICLES_CATEGORIES = CMD_ARTICLES + "/categories";
+	public static final int DEFAULT_ITEMS_PER_PAGE = 20;
 
 	public static String CMD_GAME_BY_ID(long id) {
 		return CMD_GAMES + "/" + id;
@@ -119,7 +120,9 @@ public class RestHelper {
 	public static final String CMD_FRIENDS_REQUEST = CMD_FRIENDS + "/requests";
 	public static final String CMD_VIDEOS = BASE_URL + V1 + "/videos";
 	public static final String CMD_VIDEO_CATEGORIES = CMD_VIDEOS + "/categories";
-
+	public static String CMD_VIDEO_BY_ID(long id) {
+		return CMD_VIDEOS + "/" + id;
+	}
 	public static final String CMD_TACTICS = BASE_URL + V1 + "/tactics";
 	public static final String CMD_TACTICS_STATS = CMD_TACTICS + "/stats";
 	public static final String CMD_TACTIC_TRAINER = CMD_TACTICS + "/trainer";
@@ -224,7 +227,8 @@ public class RestHelper {
 
 	public static final String P_IPHONE = "iphone";
 	public static final String P_KEYWORD = "keyword";
-	public static final String P_CATEGORY = "category";
+	public static final String P_CATEGORY_ID = "categoryId";
+	public static final String P_CATEGORY_CODE = "categoryCode";
 	//	public static final String P_SKILL_LEVEL = "skill_level";
 	public static final String P_OPENING = "opening";
 	public static final String P_AUTHOR = "author";

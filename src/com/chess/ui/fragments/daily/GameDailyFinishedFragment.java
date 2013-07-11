@@ -719,15 +719,10 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 
-	private class GameStateUpdateListener extends ChessUpdateListener<DailyFinishedGameData> {
+	private class GameStateUpdateListener extends ChessLoadUpdateListener<DailyFinishedGameData> {
 
 		private GameStateUpdateListener() {
 			super(DailyFinishedGameData.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingProgress(show);
 		}
 
 		@Override
@@ -740,17 +735,12 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		}
 	}
 
-	private class GameOnlineUpdatesListener extends ChessUpdateListener<BaseResponseItem> {
+	private class GameOnlineUpdatesListener extends ChessLoadUpdateListener<BaseResponseItem> {
 		private int listenerCode;
 
 		private GameOnlineUpdatesListener(int listenerCode) {
 			super(BaseResponseItem.class);
 			this.listenerCode = listenerCode;
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingProgress(show);
 		}
 
 		@Override

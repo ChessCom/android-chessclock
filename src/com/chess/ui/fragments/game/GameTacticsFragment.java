@@ -488,15 +488,10 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		optionsSelectFragment = null;
 	}
 
-	private class GetTacticsUpdateListener extends ChessUpdateListener<TacticItem> {
+	private class GetTacticsUpdateListener extends ChessLoadUpdateListener<TacticItem> {
 
 		private GetTacticsUpdateListener() {
 			super(TacticItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingProgress(show);
 		}
 
 		@Override
@@ -541,18 +536,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 	}
 
-	private class TacticsInfoUpdateListener extends ChessUpdateListener<TacticInfoItem> {
+	private class TacticsInfoUpdateListener extends ChessLoadUpdateListener<TacticInfoItem> {
 
 		private final int listenerCode;
 
 		public TacticsInfoUpdateListener(int listenerCode) {
 			super(TacticInfoItem.class);
 			this.listenerCode = listenerCode;
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingProgress(show);
 		}
 
 		@Override
@@ -857,16 +847,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);
 	}
 
-	private class DemoTacticsUpdateListener extends ChessUpdateListener<TacticItem.Data> {
+	private class DemoTacticsUpdateListener extends ChessLoadUpdateListener<TacticItem.Data> {
 
 		public DemoTacticsUpdateListener() {
 			super();
 			useList = true;
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingProgress(show);
 		}
 
 		@Override

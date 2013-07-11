@@ -17,19 +17,18 @@
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        custom:ttf="Bold"
         android:textColor="@color/new_friends_grey_text"
-        android:textSize="13sp"
+        android:textSize="15sp"
         android:text="test"
-
+        custom:ttf="Bold"
         />
 
-    <ImageView
+    <!--Right Icon-->
+    <com.chess.RoboTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_spinner"
-        android:contentDescription="@string/spinner"
-        android:adjustViewBounds="false"
-        android:scaleType="center"
+        android:text="@string/ic_triangle_down"
+        android:textColor="@color/new_light_grey_2"
+        style="@style/GlyphIcon.Small"
         />
 </LinearLayout>

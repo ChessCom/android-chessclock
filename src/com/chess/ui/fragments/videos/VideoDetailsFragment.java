@@ -182,7 +182,7 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 		if (view.getId() == R.id.playBtn) {
 			Intent intent = new Intent(Intent.ACTION_VIEW);
 			intent.setDataAndType(Uri.parse(videoUrl), "video/*");
-			startActivityForResult(Intent.createChooser(intent, "Select Player"), WATCH_VIDEO_REQUEST);
+			startActivityForResult(Intent.createChooser(intent, getString(R.string.select_player)), WATCH_VIDEO_REQUEST);
 		}
 	}
 

@@ -811,15 +811,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 
-	private class GameStateUpdateListener extends ChessUpdateListener<DailyCurrentGameData> {
+	private class GameStateUpdateListener extends ChessLoadUpdateListener<DailyCurrentGameData> {
 
 		private GameStateUpdateListener() {
 			super(DailyCurrentGameData.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingProgress(show);
 		}
 
 		@Override
@@ -834,17 +829,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		}
 	}
 
-	private class GameDailyUpdatesListener extends ChessUpdateListener<BaseResponseItem> {
+	private class GameDailyUpdatesListener extends ChessLoadUpdateListener<BaseResponseItem> {
 		private int listenerCode;
 
 		private GameDailyUpdatesListener(int listenerCode) {
 			super(BaseResponseItem.class);
 			this.listenerCode = listenerCode;
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingProgress(show);
 		}
 
 		@Override

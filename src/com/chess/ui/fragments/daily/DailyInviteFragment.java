@@ -320,15 +320,10 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);
 	}
 
-	private class DailyUpdateListener extends ChessUpdateListener<BaseResponseItem> {
+	private class DailyUpdateListener extends ChessLoadUpdateListener<BaseResponseItem> {
 
 		public DailyUpdateListener() {
 			super(BaseResponseItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingProgress(show);
 		}
 
 		@Override
@@ -363,17 +358,12 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		}
 	}
 
-	private class GameDailyUpdatesListener extends ChessUpdateListener<BaseResponseItem> {
+	private class GameDailyUpdatesListener extends ChessLoadUpdateListener<BaseResponseItem> {
 		private int listenerCode;
 
 		private GameDailyUpdatesListener(int listenerCode) {
 			super(BaseResponseItem.class);
 			this.listenerCode = listenerCode;
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingProgress(show);
 		}
 
 		@Override

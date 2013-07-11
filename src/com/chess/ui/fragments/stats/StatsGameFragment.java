@@ -116,15 +116,10 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	}
 
 
-	private class StatsItemUpdateListener extends ChessUpdateListener<GameStatsItem> {
+	private class StatsItemUpdateListener extends ChessLoadUpdateListener<GameStatsItem> {
 
 		public StatsItemUpdateListener() {
 			super(GameStatsItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingProgress(show);
 		}
 
 		@Override
@@ -145,12 +140,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		}
 	}
 
-	private class SaveStatsUpdateListener extends ChessUpdateListener<GameStatsItem.Data> {
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingProgress(show);
-		}
+	private class SaveStatsUpdateListener extends ChessLoadUpdateListener<GameStatsItem.Data> {
 
 		@Override
 		public void updateData(GameStatsItem.Data returnedObj) {

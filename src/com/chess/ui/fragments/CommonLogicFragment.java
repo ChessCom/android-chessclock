@@ -24,7 +24,6 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.entity.new_api.RegisterItem;
-import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.*;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -411,14 +410,25 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 	}
 
-	private class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
-		public LoginUpdateListener() {
-			super(getContext(), LoginItem.class);
+	protected class ChessLoadUpdateListener<ItemType> extends ChessUpdateListener<ItemType> {
+
+		public ChessLoadUpdateListener() {
+			super();
+		}
+
+		public ChessLoadUpdateListener(Class<ItemType> clazz) {
+			super(clazz);
 		}
 
 		@Override
 		public void showProgress(boolean show) {
 			showLoadingProgress(show);
+		}
+	}
+
+	private class LoginUpdateListener extends ChessLoadUpdateListener<LoginItem> {
+		public LoginUpdateListener() {
+			super(LoginItem.class);
 		}
 
 		@Override

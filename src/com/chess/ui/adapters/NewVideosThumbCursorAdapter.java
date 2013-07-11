@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -26,8 +27,13 @@ public class NewVideosThumbCursorAdapter extends ItemsCursorAdapter {
 	public static final String DURATION_DIVIDER = "| ";
 
 	private final ItemClickListenerFace clickFace;
+	private final int watchedTextColor;
+	private final int unWatchedTextColor;
+	private final int watchedIconColor;
+	private final int unWatchedIconColor;
 
 	private CharacterStyle foregroundSpan;
+	private SparseBooleanArray viewedMap;
 
 	public NewVideosThumbCursorAdapter(ItemClickListenerFace clickFace, Cursor cursor) {
 		super(clickFace.getMeContext(), cursor);
@@ -35,6 +41,10 @@ public class NewVideosThumbCursorAdapter extends ItemsCursorAdapter {
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
 
+		watchedTextColor = resources.getColor(R.color.new_light_grey_3);
+		unWatchedTextColor = resources.getColor(R.color.new_text_blue);
+		watchedIconColor = resources.getColor(R.color.new_light_grey_2);
+		unWatchedIconColor = resources.getColor(R.color.orange_button);
 		this.clickFace = clickFace;
 	}
 
@@ -74,6 +84,20 @@ public class NewVideosThumbCursorAdapter extends ItemsCursorAdapter {
 		holder.durationTxt.setText(DURATION_DIVIDER +
 				context.getString(R.string.min_arg, getString(cursor, DBConstants.V_MINUTES)));
 		holder.titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_TITLE));
+
+		if (viewedMap.get(getInt(cursor, DBConstants.V_ID), false)) {
+			holder.titleTxt.setTextColor(watchedTextColor);
+			holder.watchedIconTxt.setTextColor(watchedIconColor);
+			holder.watchedIconTxt.setText(R.string.ic_check);
+		} else {
+			holder.titleTxt.setTextColor(unWatchedTextColor);
+			holder.watchedIconTxt.setTextColor(unWatchedIconColor);
+			holder.watchedIconTxt.setText(R.string.ic_play);
+		}
+	}
+
+	public void addViewedMap(SparseBooleanArray viewedMap) {
+		this.viewedMap = viewedMap;
 	}
 
 	protected class ViewHolder {

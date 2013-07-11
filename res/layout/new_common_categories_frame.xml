@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     >
 
     <include layout="@layout/new_categories_selection_view"/>
@@ -24,7 +25,7 @@
         android:id="@+id/emptyView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="@string/no_network"
+        android:text="@string/no_data"
         android:gravity="center"
         android:layout_gravity="center"
         android:textSize="20sp"

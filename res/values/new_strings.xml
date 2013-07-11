@@ -247,6 +247,7 @@
     <string name="you_have_not_added_friends_yet">You haven\'t added friends yet</string>
     <string name="video_curriculum">Video Curriculum</string>
     <string name="no_data">No Data</string>
+    <string name="select_player">Select Player</string>
     <!--Game mode-->
 
 </resources>

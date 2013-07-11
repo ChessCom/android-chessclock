@@ -181,15 +181,10 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 		new RequestJsonTask<DailySeekItem>(new CreateChallengeUpdateListener()).executeTask(loadItem);
 	}
 
-	private class CreateChallengeUpdateListener extends ChessUpdateListener<DailySeekItem> {
+	private class CreateChallengeUpdateListener extends ChessLoadUpdateListener<DailySeekItem> {
 
 		public CreateChallengeUpdateListener() {
 			super(DailySeekItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingProgress(show);
 		}
 
 		@Override

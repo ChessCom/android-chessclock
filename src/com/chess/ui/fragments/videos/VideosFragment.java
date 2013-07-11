@@ -41,15 +41,15 @@ import java.util.List;
  * Time: 19:12
  */
 public class VideosFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener,
-		ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener {
+		ExpandableListView.OnGroupClickListener {
 
-	private static final String CLICK_TIME = "click time";
-	private static final String CURRENT_PLAYING_ID = "current playing id";
+	public static final String CLICK_TIME = "click time";
+	public static final String CURRENT_PLAYING_ID = "current playing id";
 
 	public static final String GREY_COLOR_DIVIDER = "##";
 	// 11/15/12 | 27 min
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
-	private static final int VIDEOS_PER_CATEGORY = 2;
+	public static final int VIDEOS_PER_CATEGORY = 2;
 	private static final int LIBRARY = 6;
 	private static final int WATCH_VIDEO_REQUEST = 9898;
 	public static final long WATCHED_TIME = 3 * 60 * 1000;
@@ -185,8 +185,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 		{ // Curriculum mode
 			expListView = (ExpandableListView) view.findViewById(R.id.expListView);
-
-			expListView.setOnChildClickListener(this);
 			expListView.setOnGroupClickListener(this);
 			expListView.setGroupIndicator(null);
 		}
@@ -281,13 +279,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 		new RequestJsonTask<CommonFeedCategoryItem>(videoCategoriesUpdateListener).executeTask(loadItem);
-	}
-
-	@Override
-	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-//		String url = curriculumItems[groupPosition][childPosition];
-//		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-		return true;
 	}
 
 	@Override
@@ -490,9 +481,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	}
 
 	private class SaveVideosUpdateListener extends ChessUpdateListener<VideoItem.Data> {
-		public SaveVideosUpdateListener() {
-			super();
-		}
 
 		@Override
 		public void updateData(VideoItem.Data returnedObj) {
@@ -522,14 +510,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		public void updateData(Cursor cursor) {
 			super.updateData(cursor);
 
-			// Load viewed cursor table and join
-//			Cursor viewedCursor = DBDataManager.getVideoViewedCursor(getActivity(), getUserName());
-//			if (viewedCursor != null) {
-//				do {
-//					curriculumViewedMap.put(DBDataManager.getInt(viewedCursor, DBConstants.V_ID),
-//							DBDataManager.getInt(viewedCursor, DBConstants.V_VIDEO_VIEWED) > 0);
-//				} while(viewedCursor.moveToNext());
-//			}
 			videosCursorAdapter.changeCursor(cursor);
 			videosCursorAdapter.addViewedMap(curriculumViewedMap);
 			listView.setAdapter(videosCursorAdapter);
