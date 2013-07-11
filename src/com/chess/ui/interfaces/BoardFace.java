@@ -17,7 +17,7 @@ public interface BoardFace {
 
 	void setMode(int mode);
 
-	void takeBack();
+	Move takeBack();
 
 	TreeSet<Move> gen();
 
@@ -112,6 +112,10 @@ public interface BoardFace {
 	boolean isJustInitialized();
 
 	void setJustInitialized(boolean justInitialized);
+
+	Move getLastMove();
+
+	boolean isWhite(int piecePosition);
 
 	boolean isWhiteToMove();
 

@@ -53,8 +53,8 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 
 	@Override
 	protected void onBoardFaceSet(BoardFace boardFace) {
-		pieces_tmp = boardFace.getPieces().clone();
-		colors_tmp = boardFace.getColor().clone();
+//		pieces_tmp = boardFace.getPieces().clone();
+//		colors_tmp = boardFace.getColor().clone();
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 		super.onDraw(canvas);
 		drawBoard(canvas);
 
-		drawPieces(canvas);
+		drawPieces(canvas, false, null);
 		drawHighlights(canvas);
 		drawDragPosition(canvas);
 		drawTrackballDrag(canvas);

@@ -10,8 +10,8 @@
 package com.chess.ui.engine;
 
 import android.util.Log;
-import com.chess.backend.statics.SoundPlayer;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.SoundPlayer;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.interfaces.BoardFace;
 import com.chess.ui.interfaces.GameActivityFace;
@@ -24,6 +24,9 @@ import java.util.TreeSet;
 public class ChessBoard implements BoardFace {
 	public static final int WHITE_SIDE = 0;
 	public static final int BLACK_SIDE = 1;
+	public static final int WHITE_PIECE = 1;
+	public static final int BLACK_PIECE = 0;
+
 	public static final int NO_SIDE = -1;
 
 	// piecesBitmap codes on boardBitmap
@@ -1234,9 +1237,9 @@ public class ChessBoard implements BoardFace {
 	 * takeBack() is very similar to makeMove(), only backwards :)
 	 */
 	@Override
-	public void takeBack() {
+	public Move takeBack() {
 		if (hply - 1 < 0)
-			return;
+			return null;
 
 		side ^= 1;
 		xside ^= 1;
@@ -1314,7 +1317,7 @@ public class ChessBoard implements BoardFace {
 				pieces[moveTo] = EMPTY;
 			}
 
-			return;
+			return move;
 		}
 
 
@@ -1340,6 +1343,8 @@ public class ChessBoard implements BoardFace {
 				pieces[move.to - 8] = PAWN;
 			}
 		}
+
+		return move;
 	}
 
 	@Override
@@ -2131,5 +2136,30 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public void setJustInitialized(boolean justInitialized) {
 		this.justInitialized = justInitialized;
+	}
+
+	@Override
+	public Move getLastMove() {
+		return hply == 0 ? null : histDat[hply - 1].move;
+	}
+
+	/*@Override
+	public void setFen(String fen) {
+		//Log.d(CompEngineHelper.TAG, "RESTORE BOARD setFen " + fen);
+		this.fen = fen;
+	}
+
+	@Override
+	public String getFen() {
+		return fen;
+	}*/
+
+
+	public boolean isWhite(int piecePosition) {
+		return color[piecePosition] == WHITE_PIECE;
+	}
+
+	public boolean isBlack(int piecePosition) {
+		return color[piecePosition] == BLACK_PIECE;
 	}
 }

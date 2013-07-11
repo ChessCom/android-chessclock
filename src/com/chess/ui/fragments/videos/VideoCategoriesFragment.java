@@ -90,8 +90,6 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	public void onStart() {
 		super.onStart();
 
-		init();
-
 		boolean loaded = categoriesList.size() != 0 || fillCategories();
 
 		if (loaded) {
@@ -125,17 +123,6 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		} while(cursor.moveToNext());
 
 		return true;
-	}
-
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		// TODO release resources
-	}
-
-	private void init() {
-
 	}
 
 	private void loadFromDb() {

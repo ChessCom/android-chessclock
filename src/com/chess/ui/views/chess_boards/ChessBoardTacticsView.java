@@ -46,7 +46,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
         super.onDraw(canvas);
 		drawBoard(canvas);
 
-		drawPieces(canvas);
+		drawPieces(canvas, false, null);
 
 		drawCoordinates(canvas);
 

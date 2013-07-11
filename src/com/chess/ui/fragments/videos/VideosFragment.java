@@ -52,8 +52,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private static final int VIDEOS_PER_CATEGORY = 2;
 	private static final int LIBRARY = 6;
 	private static final int WATCH_VIDEO_REQUEST = 9898;
-//	public static final long WATCHED_TIME = 3 * 60 * 1000;
-	public static final long WATCHED_TIME = 10 * 1000;
+	public static final long WATCHED_TIME = 3 * 60 * 1000;
 	private static final int USER_PRO_RATING = 1600;
 
 	private ViewHolder holder;

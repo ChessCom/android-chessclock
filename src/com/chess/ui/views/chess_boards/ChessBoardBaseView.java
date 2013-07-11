@@ -16,6 +16,7 @@ import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.live.client.PieceColor;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.BoardFace;
@@ -24,8 +25,11 @@ import com.chess.ui.interfaces.GameActivityFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.game_controls.ControlsBaseView;
+import org.petero.droidfish.gamelogic.Position;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.TreeSet;
 
 /**
@@ -46,6 +50,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public static final int P_MODERN_ID = 7;
 	public static final int P_VINTAGE_ID = 8;
 
+	int pieceXDelta, pieceYDelta; // top/left pixel draw position relative to square
+
 	private static final int SQUARES_NUMBER = 8;
 	public static final int EMPTY_ID = 6;
 	private static final int QVGA_WIDTH = 240;
@@ -60,8 +66,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected boolean pieceSelected;
 	protected boolean track;
 	protected boolean drag;
-	protected int[] pieces_tmp;
-	protected int[] colors_tmp;
+
+	protected int W;
+	protected int H;
+	protected int side;
 	protected int square;
 	protected int from = -1;
 	protected int to = -1;
@@ -108,6 +116,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private Paint boardBackPaint;
 	private String[] originalNotations;
 
+	// new engine
+	protected LinkedList<MoveAnimator> movesToAnimate = new LinkedList<MoveAnimator>();
+	private HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> moveHints =
+			new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();
+	private Paint whiteMoveArrowPaint;
+	private Paint blackMoveArrowPaint;
+
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		resources = context.getResources();
@@ -144,7 +159,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 //		coordinatesPaint.setStrokeWidth(1.0f);
 		coordinatesPaint.setStyle(Style.FILL);
 		coordinatesPaint.setColor(coordinateColor);
-//		coordinatesPaint.setShadowLayer(1.5f, 1.0f, 1.5f, 0xFF000000);
 		coordinatesPaint.setTextSize(coordinateFont * density);
 		coordinatesPaint.setTypeface(FontsHelper.getInstance().getTypeFace(getContext(), FontsHelper.BOLD_FONT));
 
@@ -168,6 +182,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		userActive = false;
 
 		preferences = appData.getPreferences();
+
+		whiteMoveArrowPaint = initMoveArrowPaint(Color.WHITE);
+		blackMoveArrowPaint = initMoveArrowPaint(Color.BLACK);
+
+		pieceXDelta = -1;
+		pieceYDelta = -1;
 	}
 
 	/**
@@ -196,6 +216,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			setMeasuredDimension(resolveSize((int) height, widthMeasureSpec),
 					resolveSize((int) height, heightMeasureSpec));
 		}
+
+		pieceXDelta = -1;
+		pieceYDelta = -1;
 	}
 
 	protected BoardFace getBoardFace() {
@@ -352,11 +375,23 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), boardBackPaint);
 	}
 
-	protected void drawPieces(Canvas canvas) {
+	protected void drawPieces(Canvas canvas, boolean animationActive, MoveAnimator moveAnimator) {
 		for (int i = 0; i < 64; i++) {
 			if (drag && i == from) {
 				continue;
 			}
+
+			if (animationActive && i == moveAnimator.hide1) {
+				if (moveAnimator.getCapturedPieceBitmap() != null) {
+					// todo: refactor
+					int x = ChessBoard.getColumn(i, getBoardFace().isReside());
+					int y = ChessBoard.getRow(i, getBoardFace().isReside());
+					rect.set(x * square, y * square, x * square + square, y * square + square);
+					canvas.drawBitmap(moveAnimator.getCapturedPieceBitmap(), null, rect, null);
+				}
+				continue;
+			}
+
 			int color = getBoardFace().getColor()[i];
 			int piece = getBoardFace().getPieces()[i];
 			int x = ChessBoard.getColumn(i, getBoardFace().isReside());
@@ -566,6 +601,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				return true;
 			}
 
+			// todo: show move animation when player makes move by click, and do not show for drag
 			if (found && getBoardFace().makeMove(move)) { // if move is valid
 				afterMove();
 			} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
@@ -912,5 +948,280 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		invalidate();
 	}
 
+	private Paint initMoveArrowPaint(int arrowColor) {
+		Paint paint = new Paint();
+		paint.setStyle(Style.FILL);
+		paint.setAntiAlias(true);
+		paint.setColor(arrowColor);
+		paint.setAlpha(192);
+		return paint;
+	}
 
+	public final void setMoveHints(HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> moveHints) {
+		boolean equal;
+		if ((this.moveHints == null) || (moveHints == null)) {
+			equal = this.moveHints == moveHints;
+		} else {
+			equal = this.moveHints.equals(moveHints);
+		}
+		if (!equal) {
+			this.moveHints = moveHints;
+			invalidate();
+		}
+	}
+
+	public final void drawMoveHints(Canvas canvas) {
+
+		if ((moveHints == null || moveHints.isEmpty()))
+			return;
+		float h = (float)(square / 2.0);
+		float d = (float)(square / 8.0);
+		double v = 35 * Math.PI / 180;
+		double cosv = Math.cos(v);
+		double sinv = Math.sin(v);
+		double tanv = Math.tan(v);
+
+		for (org.petero.droidfish.gamelogic.Move move : moveHints.keySet()) {
+			if ((move == null) || (move.from == move.to))
+				continue;
+			float x0 = getXCoordinate(Position.getX(move.from)) + h;
+			float y0 = getYCoordinateForArrow(Position.getY(move.from)) + h;
+			float x1 = getXCoordinate(Position.getX(move.to)) + h;
+			float y1 = getYCoordinateForArrow(Position.getY(move.to)) + h;
+
+			float x2 = (float)(Math.hypot(x1 - x0, y1 - y0) + d);
+			float y2 = 0;
+			float x3 = (float)(x2 - h * cosv);
+			float y3 = (float)(y2 - h * sinv);
+			float x4 = (float)(x3 - d * sinv);
+			float y4 = (float)(y3 + d * cosv);
+			float x5 = (float)(x4 + (-d/2 - y4) / tanv);
+			float y5 = (float)(-d / 2);
+			float x6 = 0;
+			float y6 = y5 / 2;
+			Path path = new Path();
+			path.moveTo(x2, y2);
+			path.lineTo(x3, y3);
+//          path.lineTo(x4, y4);
+			path.lineTo(x5, y5);
+			path.lineTo(x6, y6);
+			path.lineTo(x6, -y6);
+			path.lineTo(x5, -y5);
+//          path.lineTo(x4, -y4);
+			path.lineTo(x3, -y3);
+			path.close();
+			Matrix mtx = new Matrix();
+			mtx.postRotate((float)(Math.atan2(y1 - y0, x1 - x0) * 180 / Math.PI));
+			mtx.postTranslate(x0, y0);
+			path.transform(mtx);
+
+			Paint p = moveHints.get(move) == PieceColor.WHITE ? whiteMoveArrowPaint : blackMoveArrowPaint;
+
+			canvas.drawPath(path, p);
+		}
+	}
+
+	private int getXCoordinate(int x) {
+		return square * (getBoardFace().isReside() ? 7 - x : x);
+	}
+
+	private int getYCoordinate(int y) {
+		return square * (getBoardFace().isReside() ? 7 - y : y);
+	}
+
+	// todo: should be only one getYCoordinate method after refactoring
+	private int getYCoordinateForArrow(int y) {
+		return square * (getBoardFace().isReside() ? y : 7 - y);
+	}
+
+	// TODO: refactor!
+
+	private Handler handlerTimer = new Handler();
+
+	protected class MoveAnimator {
+		//boolean paused;
+		long startTime = -1;
+		long stopTime;
+		long now;
+		int piece1, from1, to1, hide1 = -1;
+		int piece2, from2, to2, hide2;
+		private Bitmap pieceBitmap;
+		private Bitmap capturedPieceBitmap;
+		private boolean firstRun = true;
+		private Move move;
+
+		MoveAnimator(Move move) {
+			this.move = move;
+		}
+
+		public void setPieceBitmap(Bitmap pieceBitmap) {
+			this.pieceBitmap = pieceBitmap;
+		}
+
+		public void setCapturedPieceBitmap(Bitmap capturedPieceBitmap) {
+			this.capturedPieceBitmap = capturedPieceBitmap;
+		}
+
+		public Bitmap getCapturedPieceBitmap() {
+			return capturedPieceBitmap;
+		}
+
+		public final boolean updateState() {
+			now = System.currentTimeMillis();
+			return isAnimtionActive();
+		}
+
+		private final boolean isAnimtionActive() {
+
+			if (firstRun) {
+				initTimer();
+				firstRun = false;
+			}
+
+			if ((startTime < 0) || (now >= stopTime))
+				return false;
+			return true;
+		}
+
+		/*public final boolean squareHidden(int sq) {
+			if (!isAnimtionActive())
+				return false;
+			return (sq == hide1) || (sq == hide2);
+		}*/
+
+		private void initTimer() {
+			int dx = ChessBoard.getColumn(move.to) - ChessBoard.getColumn(move.from);
+			int dy = ChessBoard.getRow(move.to) - ChessBoard.getRow(move.from);
+			double dist = Math.sqrt(dx * dx + dy * dy);
+			double t = Math.sqrt(dist) * 1000; // extract speed
+			int animTime = (int)Math.round(t);
+
+			startTime = System.currentTimeMillis();
+			stopTime = startTime + animTime;
+		}
+
+		public final void draw(Canvas canvas) {
+
+			if (!isAnimtionActive()) {
+				return;
+			}
+
+			double animState = (now - startTime) / (double)(stopTime - startTime);
+			//drawAnimPiece(canvas, piece2, from2, to2, animState); // castling
+			drawAnimPiece(canvas, piece1, from1, to1, animState);
+			long now2 = System.currentTimeMillis();
+			long delay = 20 - (now2 - now);
+			if (delay < 1) {
+				delay = 1;
+			}
+			handlerTimer.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					invalidate();
+				}
+			}, delay);
+		}
+
+		private void drawAnimPiece(Canvas canvas, int piece, int from, int to, double animState) {
+			if (piece == ChessBoard.EMPTY)
+				return;
+			final int xCrd1 = getXCoordinate(ChessBoard.getColumn(from));
+			final int yCrd1 = getYCoordinate(ChessBoard.getRow(from));
+			final int xCrd2 = getXCoordinate(ChessBoard.getColumn(to));
+			final int yCrd2 = getYCoordinate(ChessBoard.getRow(to));
+			final int xCrd = xCrd1 + (int)Math.round((xCrd2 - xCrd1) * animState);
+			final int yCrd = yCrd1 + (int)Math.round((yCrd2 - yCrd1) * animState);
+
+			//Log.d("testtest", xCrd + " " + yCrd);
+
+			rect.set(xCrd, yCrd, xCrd + square, yCrd + square);
+
+			canvas.drawBitmap(pieceBitmap, null, rect, null);
+		}
+	}
+
+	public void addMoveAnimator(Move move, boolean forward) {
+
+		//Log.d("testtest", "move " + move);
+
+		MoveAnimator moveAnimator = new MoveAnimator(move);
+
+		// todo: move init to MoveAnimator constructor
+
+		//moveAnimator.startTime = -1;
+
+		int fromColor = getBoardFace().getColor()[move.from];
+		int fromPiece = getBoardFace().getPieces()[move.from];
+		moveAnimator.setPieceBitmap(piecesBitmaps[fromColor][fromPiece]);
+
+		Bitmap capturedPieceBitmap = null;
+		if (getBoardFace().getPiece(move.to) != ChessBoard.EMPTY) {
+			int capturedColor = getBoardFace().getColor()[move.to];
+			int capturedPiece = getBoardFace().getPieces()[move.to];
+			capturedPieceBitmap = piecesBitmaps[capturedColor][capturedPiece];
+		}
+		moveAnimator.setCapturedPieceBitmap(capturedPieceBitmap);
+
+		moveAnimator.hide1 = -1;
+
+		//if (animTime > 0) {
+		moveAnimator.piece2 = ChessBoard.EMPTY;
+		moveAnimator.from2 = -1;
+		moveAnimator.to2 = -1;
+		moveAnimator.hide1 = -1;
+		moveAnimator.hide2 = -1;
+		if (forward) {
+			int pieceFrom = getBoardFace().getPiece(move.from);
+			moveAnimator.piece1 = pieceFrom;
+			moveAnimator.from1 = move.from;
+			moveAnimator.to1 = move.to;
+			moveAnimator.hide1 = move.to;
+			int pieceTo = getBoardFace().getPiece(move.to);
+			if (pieceTo == ChessBoard.EMPTY) { // capture
+				moveAnimator.piece2 = pieceTo;
+				moveAnimator.from2 = move.to;
+				moveAnimator.to2 = move.to;
+			} /*else if ((pieceFrom == Piece.WKING) || (pieceFrom == Piece.BKING)) {
+					boolean wtm = Piece.isWhite(pieceFrom);
+					// TODO @compengine: add castling positions
+					if (move.to == move.from + 2) { // O-O
+						moveAnimator.piece2 = wtm ? Piece.WROOK : ChessBoard.Piece.BROOK;
+						moveAnimator.from2 = move.to + 1;
+						moveAnimator.to2 = move.to - 1;
+						moveAnimator.hide2 = moveAnimator.to2;
+					} else if (move.to == move.from - 2) { // O-O-O
+						moveAnimator.piece2 = wtm ? Piece.WROOK : Piece.BROOK;
+						moveAnimator.from2 = move.to - 2;
+						moveAnimator.to2 = move.to + 1;
+						moveAnimator.hide2 = moveAnimator.to2;
+					}
+				}*/
+		} else {
+			int pieceFrom = getBoardFace().getPiece(move.from);
+			moveAnimator.piece1 = pieceFrom;
+			// todo: check promotions
+				/*if (move.promote > 0)
+					moveAnimator.piece1 = getBoardFace().isWhite(move.from) ? Piece.WPAWN : Piece.BPAWN;*/
+			moveAnimator.from1 = move.to;
+			moveAnimator.to1 = move.from;
+			moveAnimator.hide1 = moveAnimator.to1;
+				/*if ((p == Piece.WKING) || (p == Piece.BKING)) {
+					boolean wtm = Piece.isWhite(p);
+					if (move.to == move.from + 2) { // O-O
+						moveAnimator.piece2 = wtm ? Piece.WROOK : Piece.BROOK;
+						moveAnimator.from2 = move.to - 1;
+						moveAnimator.to2 = move.to + 1;
+						moveAnimator.hide2 = moveAnimator.to2;
+					} else if (move.to == move.from - 2) { // O-O-O
+						moveAnimator.piece2 = wtm ? Piece.WROOK : Piece.BROOK;
+						moveAnimator.from2 = move.to + 1;
+						moveAnimator.to2 = move.to - 2;
+						moveAnimator.hide2 = moveAnimator.to2;
+					}
+				}*/
+		}
+
+		movesToAnimate.add(moveAnimator);
+		//}
+	}
 }

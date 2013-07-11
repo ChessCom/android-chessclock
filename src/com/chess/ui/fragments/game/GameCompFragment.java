@@ -2,9 +2,12 @@ package com.chess.ui.fragments.game;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +20,19 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
+import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.live.client.PieceColor;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
+import com.chess.ui.engine.MoveParser;
 import com.chess.ui.engine.configs.CompGameConfig;
+import com.chess.ui.engine.stockfish.CompEngineHelper;
+import com.chess.ui.engine.stockfish.StartEngineTask;
 import com.chess.ui.fragments.CompGameSetupFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
@@ -37,8 +46,12 @@ import com.chess.ui.views.chess_boards.ChessBoardCompView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsCompView;
+import org.petero.droidfish.GameMode;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -74,6 +87,12 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	private SparseArray<String> optionsArray;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 
+	// new engine
+	private int[] compStrengthArray;
+	private String[] compTimeLimitArray;
+	private String[] compDepth;
+	private TextView engineThinkingPath;
+
 	public GameCompFragment() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
 		Bundle bundle = new Bundle();
@@ -89,6 +108,16 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		bundle.putInt(COMP_DELAY, config.getCompDelay());
 		frag.setArguments(bundle);
 		return frag;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (AppData.getCompEngineHelper().isInitialized()) {
+			byte[] data = AppData.getCompEngineHelper().toByteArray();
+			outState.putByteArray(CompEngineHelper.GAME_STATE, data);
+			outState.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
+		}
 	}
 
 	@Override
@@ -119,6 +148,15 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		init();
 
 		widgetsInit(view);
+
+		{ // Engine init
+			engineThinkingPath = (TextView) view.findViewById(R.id.engineThinkingPath);
+			compStrengthArray = getResources().getIntArray(R.array.comp_strength);
+			compTimeLimitArray = getResources().getStringArray(R.array.comp_time_limit);
+			compDepth = getResources().getStringArray(R.array.comp_book_depth);
+		}
+
+		startGame(savedInstanceState);
 	}
 
 	@Override
@@ -143,10 +181,27 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 				computerMove();
 			}
 		}
+
+		Log.d("", "testtest 6 " + AppData.getCompEngineHelper());
+
+		if (AppData.getCompEngineHelper() != null && AppData.getCompEngineHelper().isInitialized()) {
+			AppData.getCompEngineHelper().setPaused(false);
+		}
 	}
 
 	@Override
 	public void onPause() {
+		// todo @compengine: extract method and put to engine helper
+		if (AppData.getCompEngineHelper().isInitialized()) {
+			AppData.getCompEngineHelper().setPaused(true);
+			byte[] data = AppData.getCompEngineHelper().toByteArray();
+			SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+			String dataStr = AppData.getCompEngineHelper().byteArrToString(data);
+			editor.putString(CompEngineHelper.GAME_STATE, dataStr);
+			editor.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
+			editor.commit();
+		}
+
 		super.onPause();
 		if (getAppData().isComputerVsComputerGameMode(getBoardFace()) || getAppData().isComputerVsHumanGameMode(getBoardFace())
 				&& boardView.isComputerMoving()) { // probably isComputerMoving() is only necessary to check without extra check of game mode
@@ -161,6 +216,32 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 //			intent.putExtra(AppConstants.GAME_MODE, getBoardFace().getMode());
 //			getIntent().replaceExtras(intent);
 //		}
+	}
+
+	@Override
+	public void onDestroy() {
+		if (AppData.getCompEngineHelper().isInitialized())
+			AppData.getCompEngineHelper().shutdownEngine();
+		super.onDestroy();
+	}
+
+	private void startGame(Bundle... savedInstanceState) {
+		int engineMode;
+		if (getBoardFace().isAnalysis()) {
+			engineMode = GameMode.ANALYSIS;
+		} else {
+			engineMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
+		}
+		int strength = compStrengthArray[getAppData().getCompStrength(getContext())];
+		int time = Integer.parseInt(compTimeLimitArray[getAppData().getCompStrength(getContext())]);
+		int depth = Integer.parseInt(compDepth[getAppData().getCompStrength(getContext())]);
+		boolean restoreGame = getAppData().haveSavedCompGame() || getBoardFace().isAnalysis();
+
+		Bundle state = savedInstanceState.length > 0 ? savedInstanceState[0] : null;
+
+		new StartEngineTask(engineMode, restoreGame, strength, time, depth, this,
+				PreferenceManager.getDefaultSharedPreferences(getActivity()), state, getActivity().getApplicationContext(),
+				new InitComputerEngineUpdateListener()).executeTask();
 	}
 
 	@Override
@@ -292,6 +373,82 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	public void onCompMove() {
 //		controlsCompView.enableGameControls(false);
 	}
+
+	// todo: use only our Move class
+	@Override
+	public void updateEngineMove(final org.petero.droidfish.gamelogic.Move engineMove) {
+
+		// TODO @compengine: extract logic and put probably to ChessBoardView
+
+		if (getBoardFace().getHply() < getBoardFace().getMovesCount()) { // ignoring Forward move fired by engine
+			return;
+		}
+
+		Log.d(CompEngineHelper.TAG, "updateComputerMove " + engineMove);
+
+		int[] moveFT = MoveParser.parseCoordinate(getBoardFace(), engineMove.toString());
+
+		final Move move;
+		if (moveFT.length == 4) {
+			if (moveFT[3] == 2) {
+				move = new com.chess.ui.engine.Move(moveFT[0], moveFT[1], 0, 2);
+			} else {
+				move = new com.chess.ui.engine.Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+			}
+		} else {
+			move = new com.chess.ui.engine.Move(moveFT[0], moveFT[1], 0, 0);
+		}
+
+		Log.d(CompEngineHelper.TAG, "comp make move: " + move);
+		Log.d(CompEngineHelper.TAG, "isHint = " + boardView.isHint());
+
+		if (boardView.isHint()) {
+			//onPlayerMove();
+			AppData.getCompEngineHelper().undoHint();
+		}
+
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+
+				if (boardView.isHint()) {
+					onPlayerMove();
+					//AppData.getCompEngineHelper().undoHint();
+				}
+
+				boardView.setComputerMoving(false);
+
+				boardView.addMoveAnimator(move, true);
+				getBoardFace().makeMove(move);
+
+				if (boardView.isHint()) {
+					//if (/*AppData.isComputerVsComputerGameMode(getBoardFace()) || */(!AppData.isHumanVsHumanGameMode(getBoardFace()))) {
+					handler.postDelayed(reverseHintTask, ChessBoardCompView.HINT_REVERSE_DELAY);
+					//}
+				} else {
+					invalidateGameScreen();
+					onPlayerMove();
+
+					getBoardFace().setMovesCount(getBoardFace().getHply());
+					if (boardView.isGameOver())
+						return;
+				}
+				boardView.invalidate();
+			}
+		});
+	}
+
+	private Runnable reverseHintTask = new Runnable() {
+		@Override
+		public void run() {
+			getBoardFace().takeBack();
+			boardView.invalidate();
+
+			boardView.setHint(false);
+			controlsCompView.enableGameControls(false);
+//			gamePanelView.toggleControlButton(GamePanelView.B_HINT_ID, false);
+		}
+	};
 
 	@Override
 	public void toggleSides() {
@@ -486,6 +643,34 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		}
 	}
 
+	private class InitComputerEngineUpdateListener extends AbstractUpdateListener<CompEngineHelper> {
+		public InitComputerEngineUpdateListener() {
+			super(getContext());
+		}
+
+		@Override
+		public void updateData(CompEngineHelper returnedObj) {
+			// todo @compengine: enable board after full init od engine, show progress
+
+			/*Log.d(CompEngineHelper.TAG, "InitComputerEngineUpdateListener updateData");
+
+			//AppData.setCompEngineHelper(returnedObj);
+
+			if (!getBoardFace().isAnalysis() && !AppData.isHumanVsHumanGameMode(getBoardFace())) {
+
+				boolean isComputerMoveAfterRestore = ((AppData.isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
+						|| (AppData.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove() && getBoardFace().getMovesCount() > 0));
+
+				Log.d(CompEngineHelper.TAG, "isComputerMove " + isComputerMoveAfterRestore);
+
+				if (isComputerMoveAfterRestore) {
+					Log.d(CompEngineHelper.TAG, "undo last move " + getBoardFace().getLastMove());
+					boardView.postMoveToEngine(getBoardFace().getLastMove());
+				}
+			}*/
+		}
+	}
+
 	@Override
 	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
@@ -630,6 +815,110 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 			optionsArray.put(ID_FLIP_BOARD, getString(R.string.flip_board));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
+	}
+
+	@Override
+	public final void onEngineThinkingInfo(final String thinkingStr1, final String variantStr, final ArrayList<ArrayList<org.petero.droidfish.gamelogic.Move>> pvMoves, final ArrayList<org.petero.droidfish.gamelogic.Move> variantMoves, final ArrayList<org.petero.droidfish.gamelogic.Move> bookMoves) {
+
+		CompEngineHelper.log("thinkingStr1 " + thinkingStr1);
+		CompEngineHelper.log("variantStr " + variantStr);
+
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+
+				String log;
+
+				boolean thinkingEmpty = true;
+				{
+					//if (mShowThinking || gameMode.analysisMode()) { // getBoardFace().isAnalysis(
+					String s = "";
+					s = thinkingStr1;
+					if (s.length() > 0) {
+						thinkingEmpty = false;
+						/*if (mShowStats) {
+							if (!thinkingEmpty)
+								s += "\n";
+							s += thinkingStr2;
+							if (s.length() > 0) thinkingEmpty = false;
+						}*/
+					}
+					//}
+					engineThinkingPath.setText(s, TextView.BufferType.SPANNABLE);
+					log = s;
+				}
+				// todo @compengine: show book hints for human player
+				/*if (mShowBookHints && (bookInfoStr.length() > 0)) {
+					String s = "";
+					if (!thinkingEmpty)
+						s += "<br>";
+					s += Util.boldStart + getString(R.string.book) + Util.boldStop + bookInfoStr;
+					engineThinkingPath.append(Html.fromHtml(s));
+					log += s;
+					thinkingEmpty = false;
+				}*/
+				/*if (showVariationLine && (variantStr.indexOf(' ') >= 0)) { // showVariationLine
+					String s = "";
+					if (!thinkingEmpty)
+						s += "<br>";
+					s += Util.boldStart + "Var:" + Util.boldStop + variantStr;
+					engineThinkingPath.append(Html.fromHtml(s));
+					log += s;
+					thinkingEmpty = false;
+				}*/
+				setThinkingVisibility(!thinkingEmpty);
+
+				// hints arrow
+				List<org.petero.droidfish.gamelogic.Move> hints = null;
+				if (/*mShowThinking ||*/ getBoardFace().isAnalysis()) {
+					ArrayList<ArrayList<org.petero.droidfish.gamelogic.Move>> pvMovesTmp = pvMoves;
+					if (pvMovesTmp.size() == 1) {
+						hints = pvMovesTmp.get(0);
+					} else if (pvMovesTmp.size() > 1) {
+						hints = new ArrayList<org.petero.droidfish.gamelogic.Move>();
+						for (ArrayList<org.petero.droidfish.gamelogic.Move> pv : pvMovesTmp)
+							if (!pv.isEmpty())
+								hints.add(pv.get(0));
+					}
+				}
+				/*if ((hints == null) && mShowBookHints)
+					hints = bookMoves;*/
+				if (((hints == null) || hints.isEmpty()) &&
+						(variantMoves != null) && variantMoves.size() > 1) {
+					hints = variantMoves;
+				}
+				if ((hints != null) && (hints.size() > CompEngineHelper.MAX_NUM_HINT_ARROWS)) {
+					hints = hints.subList(0, CompEngineHelper.MAX_NUM_HINT_ARROWS);
+				}
+
+				HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> hintsMap =
+						new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();
+				if (hints != null) {
+					for (org.petero.droidfish.gamelogic.Move move : hints) {
+						boolean isWhite = AppData.getCompEngineHelper().isWhitePiece(move.from);
+						PieceColor pieceColor = isWhite ? PieceColor.WHITE : PieceColor.BLACK;
+						hintsMap.put(move, pieceColor);
+					}
+				}
+
+				boardView.setMoveHints(hintsMap);
+
+				CompEngineHelper.log("Thinking info:\n" + log);
+			}
+		});
+	}
+
+	private void setThinkingVisibility(boolean visible) { // TODO adjust properly in notations view
+//		if (visible) {
+//			engineThinkingPath.setVisibility(View.VISIBLE);
+//		} else {
+//			engineThinkingPath.setVisibility(View.GONE);
+//		}
+	}
+
+	@Override
+	public void run(Runnable runnable) { // todo @compengine: check and refactor
+		getActivity().runOnUiThread(runnable);
 	}
 
 }
