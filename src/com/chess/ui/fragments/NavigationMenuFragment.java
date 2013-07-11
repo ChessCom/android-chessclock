@@ -15,6 +15,7 @@ import com.chess.backend.image_load.ProgressImageView;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.daily.DailyTabsFragment;
+import com.chess.ui.fragments.forums.ForumsFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.game.GameCompFragment;
 import com.chess.ui.fragments.game.GameTacticsFragment;
@@ -178,9 +179,9 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				}
 				break;
 			case R.drawable.ic_nav_forums:
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(SettingsFragment.class.getSimpleName());
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(ForumsFragment.class.getSimpleName());
 				if (fragmentByTag == null) {
-					fragmentByTag = new SettingsFragment();
+					fragmentByTag = new ForumsFragment();
 				}
 				break;
 			case R.drawable.ic_nav_vs_comp:

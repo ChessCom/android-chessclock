@@ -226,7 +226,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 			}
 		}
 		{// chess mentor
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_CHESS_MENTOR],
+			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_LESSONS],
 					DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
 				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);

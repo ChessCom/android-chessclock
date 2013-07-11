@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
 import com.chess.utilities.AppUtils;
 
 /**
@@ -62,9 +61,9 @@ public class NewVideosSectionedCursorAdapter extends NewSectionedCursorLimitedAd
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
 
-		String firstName = DBDataManager.getString(cursor, DBConstants.V_FIRST_NAME);
-		CharSequence chessTitle = DBDataManager.getString(cursor, DBConstants.V_CHESS_TITLE);
-		String lastName =  DBDataManager.getString(cursor, DBConstants.V_LAST_NAME);
+		String firstName = getString(cursor, DBConstants.V_FIRST_NAME);
+		CharSequence chessTitle = getString(cursor, DBConstants.V_CHESS_TITLE);
+		String lastName =  getString(cursor, DBConstants.V_LAST_NAME);
 		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
 				+ firstName + StaticData.SYMBOL_SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
@@ -73,7 +72,7 @@ public class NewVideosSectionedCursorAdapter extends NewSectionedCursorLimitedAd
 		holder.durationTxt.setText(DURATION_DIVIDER +
 				context.getString(R.string.min_arg, getString(cursor, DBConstants.V_MINUTES)));
 
-		holder.titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_TITLE));
+		holder.titleTxt.setText(getString(cursor, DBConstants.V_TITLE));
 		if (viewedMap.get(getInt(cursor, DBConstants.V_ID), false)) {
 			holder.titleTxt.setTextColor(watchedTextColor);
 			holder.icon.setTextColor(watchedIconColor);

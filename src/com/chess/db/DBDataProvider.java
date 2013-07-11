@@ -80,7 +80,9 @@ public class DBDataProvider extends ContentProvider {
 			DBConstants.GAME_STATS_DAILY_CHESS_CREATE,
 			DBConstants.GAME_STATS_DAILY_CHESS960_CREATE,
 
-			DBConstants.VIDEO_VIEWED_CREATE
+			DBConstants.VIDEO_VIEWED_CREATE,
+			DBConstants.FORUMS_CREATE,
+			DBConstants.FORUM_CATEGORIES_CREATE
 	};
 
 	@Override

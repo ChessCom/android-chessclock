@@ -60,8 +60,8 @@ public class CompEngineHelper implements GUIInterface {
 	private byte[] stateBeforeHint;
 	private TimeControlData timeControlData;
 	private String variantStr = "";
-	private ArrayList<Move> variantMoves = null;
-	private ArrayList<Move> bookMoves = null;
+	private ArrayList<Move> variantMoves;
+	private ArrayList<Move> bookMoves;
 	private ArrayList<ArrayList<Move>> pvMoves;
 
 	public DroidChessController init(Context context) {

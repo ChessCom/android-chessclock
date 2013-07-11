@@ -241,7 +241,7 @@ public class DBDataManager {
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER_AND_ID,
 				arguments2, null);
 		if (cursor.moveToFirst()) {
-			contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)),
+			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)),
 					putDailyGameCurrentItemToValues(currentGame, userName), null, null);
 		} else {
 			contentResolver.insert(uri, putDailyGameCurrentItemToValues(currentGame, userName));
@@ -800,11 +800,33 @@ public class DBDataManager {
 		ContentValues values = DBDataManager.putVideoItemToValues(currentItem);
 
 		if (cursor.moveToFirst()) {
-			contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
 		} else {
 			contentResolver.insert(uri, values);
 		}
 		cursor.close();
+	}
+
+	public static void updateForumItem(ContentResolver contentResolver, ForumItem.Data currentItem) {
+		final String[] arguments1 = sArguments1;
+		for (ForumItem.Topic topic : currentItem.getTopics()) {
+			arguments1[0] = String.valueOf(topic.getId());
+
+			// TODO implement beginTransaction logic for performance increase
+			Uri uri = DBConstants.uriArray[DBConstants.FORUMS];
+
+			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID,
+					DBDataManager.SELECTION_ITEM_ID, arguments1, null);
+
+			ContentValues values = DBDataManager.putForumItemToValues(topic);
+
+			if (cursor.moveToFirst()) {
+				contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
+			} else {
+				contentResolver.insert(uri, values);
+			}
+			cursor.close();
+		}
 	}
 
 	/**
@@ -859,7 +881,7 @@ public class DBDataManager {
 		ContentValues values = DBDataManager.putVideoViewedItemToValues(currentItem);
 
 		if (cursor.moveToFirst()) {
-			contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
 		} else {
 			contentResolver.insert(uri, values);
 		}
@@ -933,6 +955,21 @@ public class DBDataManager {
 		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirstName());
 		values.put(DBConstants.V_LAST_NAME, dataObj.getLastName());
 		values.put(DBConstants.V_CHESS_TITLE, dataObj.getChessTitle());
+
+		return values;
+	}
+
+	public static ContentValues putForumItemToValues(ForumItem.Topic dataObj) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_TITLE, dataObj.getSubject());
+		values.put(DBConstants.V_ID, dataObj.getId());
+		values.put(DBConstants.V_CATEGORY_ID, dataObj.getCategoryId());
+		values.put(DBConstants.V_URL, dataObj.getUrl());
+		values.put(DBConstants.V_USERNAME, dataObj.getTopicUsername());
+		values.put(DBConstants.V_LAST_POST_USERNAME, dataObj.getLastPostUsername());
+		values.put(DBConstants.V_POST_COUNT, dataObj.getPostCount());
+		values.put(DBConstants.V_LAST_POST_DATE, dataObj.getLastPostDate());
 
 		return values;
 	}

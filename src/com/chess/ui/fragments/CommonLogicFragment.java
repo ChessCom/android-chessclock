@@ -90,7 +90,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected SharedPreferences preferences;
 	protected SharedPreferences.Editor preferencesEditor;
 	private int titleId;
-	private GraphUser facebookUser;
 	protected UiLifecycleHelper facebookUiHelper;
 	private boolean facebookActive;
 	protected View loadingView;
@@ -242,7 +241,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		loginBtn.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
 			@Override
 			public void onUserInfoFetched(GraphUser user) {
-				facebookUser = user;
 			}
 		});
 
@@ -448,6 +446,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				preferencesEditor.putInt(username + PREF_USER_TACTICS_RATING, returnedObj.getData().getTacticsRating());
 			}
 			preferencesEditor.putInt(username + USER_PREMIUM_STATUS, returnedObj.getData().getPremiumStatus());
+			preferencesEditor.putString(LIVE_SESSION_ID, returnedObj.getData().getSessionId());
 			processLogin(returnedObj.getData());
 		}
 

@@ -343,6 +343,32 @@ public class AppUtils {
 		return sb.toString();
 	}
 
+	public static String getMomentsLeftFromSeconds(long duration, Context context) {
+		long minutes = duration /60%60;
+		long hours = duration /3600%24;
+		long days = duration /86400;
+		long months = duration /2592000;
+		StringBuilder sb = new StringBuilder();
+
+		if (months > 0) {
+			sb.append(months).append(StaticData.SYMBOL_SPACE).append(context.getString(R.string.months)).append(StaticData.SYMBOL_SPACE);
+		} else if (days > 0) {
+			sb.append(days).append(StaticData.SYMBOL_SPACE).append(context.getString(R.string.days)).append(StaticData.SYMBOL_SPACE);
+		} else if (hours > 0) {
+			if (!sb.toString().trim().equals(StaticData.SYMBOL_EMPTY))
+				sb.append(StaticData.SYMBOL_SPACE);
+			sb.append(hours).append(StaticData.SYMBOL_SPACE).append(context.getString(R.string.hours)).append(StaticData.SYMBOL_SPACE);
+		} else if (minutes > 0) {
+			if (!sb.toString().trim().equals(StaticData.SYMBOL_EMPTY))
+				sb.append(StaticData.SYMBOL_SPACE);
+			sb.append(context.getString(R.string.min_arg, minutes));
+		} else {
+			sb.append(context.getString(R.string.just_now));
+		}
+
+		return sb.toString();
+	}
+
 	public static String getSecondsTimeFromSecondsStr(long duration) {
 		long seconds = duration %60;
 		long minutes = duration /60%60;

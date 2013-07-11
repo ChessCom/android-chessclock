@@ -274,7 +274,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 			Cursor cursor = DBDataManager.executeQuery(getContentResolver(),
 					DbHelper.getVideosByCategoryParams(previousCategoryId));
 
-			if (cursor != null && cursor.getCount() > VideosFragment.VIDEOS_PER_CATEGORY) {
+			if (cursor != null && cursor.getCount() > VideosFragment.ITEMS_PER_CATEGORY) {
 				cursor.moveToFirst();
 				videosAdapter.changeCursor(cursor);
 				videosAdapter.notifyDataSetChanged();

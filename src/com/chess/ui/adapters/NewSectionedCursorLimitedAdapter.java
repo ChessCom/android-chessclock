@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
+import com.chess.db.DBDataManager;
 
 import java.util.LinkedHashMap;
 
@@ -93,7 +94,7 @@ public abstract class NewSectionedCursorLimitedAdapter extends ItemsCursorAdapte
 		int itemsInSection = 0;
 		int lastSectionPosition = 0;
 		do {
-			final String sectionName = cursor.getString(cursor.getColumnIndex(mGroupColumn));
+			final String sectionName = DBDataManager.getString(cursor, mGroupColumn);
 
 			if (!sectionName.equals(previous)) {
 

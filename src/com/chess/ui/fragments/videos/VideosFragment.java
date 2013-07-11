@@ -49,7 +49,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	public static final String GREY_COLOR_DIVIDER = "##";
 	// 11/15/12 | 27 min
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
-	public static final int VIDEOS_PER_CATEGORY = 2;
+	public static final int ITEMS_PER_CATEGORY = 2;
 	private static final int LIBRARY = 6;
 	private static final int WATCH_VIDEO_REQUEST = 9898;
 	public static final long WATCHED_TIME = 3 * 60 * 1000;
@@ -89,55 +89,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
-		foregroundSpan = new ForegroundColorSpan(lightGrey);
-
-		int userRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.GAME_STATS_DAILY_CHESS, getUserName());
-
-		if (getAppData().isUserChooseVideoLibrary() || userRating > USER_PRO_RATING) { // TODO add api logic to check if user saw all videos
-			curriculumMode = false;
-		} else {
-			// everyone is presented with CURRICULUM view by default unless:
-			// a) they have seen every video or lesson, or
-			// b) they have a rating above 1600, or
-			// c) they chose "full library" from the bottom of the curriculum list ( http://i.imgur.com/aWcHqUh.png )
-			curriculumMode = true;
-		}
-
-		curriculumItems = new CurriculumItems();
-
-		curriculumItems.setCategories(getResources().getStringArray(R.array.videos_curriculum));
-		{ // Titles
-			String[] beginners = getResources().getStringArray(R.array.video_cur_beginners_titles);
-			String[] openings = getResources().getStringArray(R.array.video_cur_openings_titles);
-			String[] tactics = getResources().getStringArray(R.array.video_cur_tactics_titles);
-			String[] strategy = getResources().getStringArray(R.array.video_cur_strategy_titles);
-			String[] endgames = getResources().getStringArray(R.array.video_cur_endgames_titles);
-			String[] amazingGames = getResources().getStringArray(R.array.video_cur_amazing_games_titles);
-
-			curriculumItems.setTitles(new String[][]{beginners, openings, tactics, strategy, endgames, amazingGames});
-		}
-		{ // Links
-			String[] beginners = getResources().getStringArray(R.array.video_cur_beginners);
-			String[] openings = getResources().getStringArray(R.array.video_cur_openings);
-			String[] tactics = getResources().getStringArray(R.array.video_cur_tactics);
-			String[] strategy = getResources().getStringArray(R.array.video_cur_strategy);
-			String[] endgames = getResources().getStringArray(R.array.video_cur_endgames);
-			String[] amazingGames = getResources().getStringArray(R.array.video_cur_amazing_games);
-
-			curriculumItems.setUrls(new String[][]{beginners, openings, tactics, strategy, endgames, amazingGames});
-		}
-		{ // Ids
-			int[] beginners = getResources().getIntArray(R.array.video_cur_beginners_ids);
-			int[] openings = getResources().getIntArray(R.array.video_cur_openings_ids);
-			int[] tactics = getResources().getIntArray(R.array.video_cur_tactics_ids);
-			int[] strategy = getResources().getIntArray(R.array.video_cur_strategy_ids);
-			int[] endgames = getResources().getIntArray(R.array.video_cur_endgames_ids);
-			int[] amazingGames = getResources().getIntArray(R.array.video_cur_amazing_games_ids);
-
-			curriculumItems.setIds(new int[][]{beginners, openings, tactics, strategy, endgames, amazingGames});
-		}
 
 		init();
 
@@ -239,19 +190,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		}
 	}
 
-	private void init() {
-		videosCursorAdapter = new NewVideosSectionedCursorAdapter(getContext(), null, VIDEOS_PER_CATEGORY);
-		latestItemUpdateListener = new VideosItemUpdateListener(VideosItemUpdateListener.LATEST);
-		videosItemUpdateListener = new VideosItemUpdateListener(VideosItemUpdateListener.DATA_LIST);
 
-		saveVideosUpdateListener = new SaveVideosUpdateListener();
-		videosCursorUpdateListener = new VideosCursorUpdateListener();
-		curriculumViewedMap = new SparseBooleanArray();
-
-		videoCategoriesUpdateListener = new VideoCategoriesUpdateListener();
-		saveVideoCategoriesUpdateListener = new SaveVideoCategoriesUpdateListener();
-		curriculumAdapter = new VideoGroupsListAdapter(this, curriculumItems);   // categories, titles
-	}
 
 	private void updateData() {
 		{// request random data for the header
@@ -268,7 +207,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, 8);
-		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_CATEGORY, VIDEOS_PER_CATEGORY);
+		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_CATEGORY, ITEMS_PER_CATEGORY);
 
 		new RequestJsonTask<VideoItem>(videosItemUpdateListener).executeTask(loadItem);
 	}
@@ -561,6 +500,69 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	@Override
 	public Context getMeContext() {
 		return getActivity();
+	}
+
+	private void init() {
+		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
+		foregroundSpan = new ForegroundColorSpan(lightGrey);
+
+		int userRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.GAME_STATS_DAILY_CHESS, getUserName());
+
+		if (getAppData().isUserChooseVideoLibrary() || userRating > USER_PRO_RATING) { // TODO add api logic to check if user saw all videos
+			curriculumMode = false;
+		} else {
+			// everyone is presented with CURRICULUM view by default unless:
+			// a) they have seen every video or lesson, or
+			// b) they have a rating above 1600, or
+			// c) they chose "full library" from the bottom of the curriculum list ( http://i.imgur.com/aWcHqUh.png )
+			curriculumMode = true;
+		}
+
+		curriculumItems = new CurriculumItems();
+
+		curriculumItems.setCategories(getResources().getStringArray(R.array.videos_curriculum));
+		{ // Titles
+			String[] beginners = getResources().getStringArray(R.array.video_cur_beginners_titles);
+			String[] openings = getResources().getStringArray(R.array.video_cur_openings_titles);
+			String[] tactics = getResources().getStringArray(R.array.video_cur_tactics_titles);
+			String[] strategy = getResources().getStringArray(R.array.video_cur_strategy_titles);
+			String[] endgames = getResources().getStringArray(R.array.video_cur_endgames_titles);
+			String[] amazingGames = getResources().getStringArray(R.array.video_cur_amazing_games_titles);
+
+			curriculumItems.setTitles(new String[][]{beginners, openings, tactics, strategy, endgames, amazingGames});
+		}
+		{ // Links
+			String[] beginners = getResources().getStringArray(R.array.video_cur_beginners);
+			String[] openings = getResources().getStringArray(R.array.video_cur_openings);
+			String[] tactics = getResources().getStringArray(R.array.video_cur_tactics);
+			String[] strategy = getResources().getStringArray(R.array.video_cur_strategy);
+			String[] endgames = getResources().getStringArray(R.array.video_cur_endgames);
+			String[] amazingGames = getResources().getStringArray(R.array.video_cur_amazing_games);
+
+			curriculumItems.setUrls(new String[][]{beginners, openings, tactics, strategy, endgames, amazingGames});
+		}
+		{ // Ids
+			int[] beginners = getResources().getIntArray(R.array.video_cur_beginners_ids);
+			int[] openings = getResources().getIntArray(R.array.video_cur_openings_ids);
+			int[] tactics = getResources().getIntArray(R.array.video_cur_tactics_ids);
+			int[] strategy = getResources().getIntArray(R.array.video_cur_strategy_ids);
+			int[] endgames = getResources().getIntArray(R.array.video_cur_endgames_ids);
+			int[] amazingGames = getResources().getIntArray(R.array.video_cur_amazing_games_ids);
+
+			curriculumItems.setIds(new int[][]{beginners, openings, tactics, strategy, endgames, amazingGames});
+		}
+
+		videosCursorAdapter = new NewVideosSectionedCursorAdapter(getContext(), null, ITEMS_PER_CATEGORY);
+		latestItemUpdateListener = new VideosItemUpdateListener(VideosItemUpdateListener.LATEST);
+		videosItemUpdateListener = new VideosItemUpdateListener(VideosItemUpdateListener.DATA_LIST);
+
+		saveVideosUpdateListener = new SaveVideosUpdateListener();
+		videosCursorUpdateListener = new VideosCursorUpdateListener();
+		curriculumViewedMap = new SparseBooleanArray();
+
+		videoCategoriesUpdateListener = new VideoCategoriesUpdateListener();
+		saveVideoCategoriesUpdateListener = new SaveVideoCategoriesUpdateListener();
+		curriculumAdapter = new VideoGroupsListAdapter(this, curriculumItems);   // categories, titles
 	}
 
 	public class VideoGroupsListAdapter extends BaseExpandableListAdapter {

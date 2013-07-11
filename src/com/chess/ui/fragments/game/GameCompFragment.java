@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -918,7 +919,10 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 	@Override
 	public void run(Runnable runnable) { // todo @compengine: check and refactor
-		getActivity().runOnUiThread(runnable);
+		FragmentActivity activity = getActivity();
+		if (activity != null) { // can be killed at any time
+			activity.runOnUiThread(runnable);
+		}
 	}
 
 }

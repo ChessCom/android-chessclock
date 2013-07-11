@@ -117,4 +117,12 @@ public class DbHelper {
 		queryParams.setOrder(DBConstants.V_CATEGORY);
 		return queryParams;
 	}
+
+	public static QueryParams getForumsListParams() {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DBConstants.uriArray[DBConstants.FORUMS]);
+		return queryParams;
+	}
+
+
 }

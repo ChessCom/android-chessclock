@@ -29,6 +29,7 @@ public class AppConstants {
 	public static final String LOCATION = "location";
 	public static final String USERNAME = "username";
 	public static final String PASSWORD = "password";
+	public static final String LIVE_SESSION_ID = "live_session_id";
 //	public static final String API_VERSION = "api_version";
 	public static final String PREF_COMPUTER_DELAY = "computer think delay";
 	public static final String PREF_COMPUTER_MODE = "vs computer game mode";
@@ -71,7 +72,6 @@ public class AppConstants {
 	public static final String AD_FULLSCREEN = "Fullscreen";
 
 	public static final String FULLSCREEN_AD_ALREADY_SHOWED = "fullscreen_ad_showed";
-	public static final String USER_SESSION_ID = "user_session_id";
 	public static final String FIRST_TIME_START = "first_time_start";
 	public static final String START_DAY = "start_day";
 //	public static final String LAST_ACTIVITY_PAUSED_TIME = "last_activity_aause_time";

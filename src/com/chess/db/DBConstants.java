@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 33;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 34;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -40,7 +40,7 @@ public class DBConstants {
 			"user_stats_daily_chess",
 			"user_stats_daily_chess960",
 			"user_stats_tactics",
-			"user_stats_chess_mentor",
+			"user_stats_lessons",
 
 			"game_stats_live_standard",
 			"game_stats_live_blitz",
@@ -48,7 +48,10 @@ public class DBConstants {
 			"game_stats_daily_chess",
 			"game_stats_daily_chess960",
 
-			"video_viewed"
+			"video_viewed",
+
+			"forums",
+			"forum_categories"
 	};
 
 	// Content URI
@@ -79,7 +82,7 @@ public class DBConstants {
     public static final int USER_STATS_DAILY_CHESS = 12;
     public static final int USER_STATS_DAILY_CHESS960 = 13;
     public static final int USER_STATS_TACTICS = 14;
-    public static final int USER_STATS_CHESS_MENTOR = 15;
+    public static final int USER_STATS_LESSONS = 15;
 
     public static final int GAME_STATS_LIVE_STANDARD = 16;
     public static final int GAME_STATS_LIVE_BLITZ = 17;
@@ -88,6 +91,8 @@ public class DBConstants {
     public static final int GAME_STATS_DAILY_CHESS960 = 20;
 
     public static final int VIDEO_VIEWED = 21;
+    public static final int FORUMS = 22;
+    public static final int FORUM_CATEGORIES = 23;
 
 
     // general fields
@@ -177,6 +182,11 @@ public class DBConstants {
 	public static final String V_VIEW_COUNT 		= "view_count";
 	public static final String V_COMMENT_COUNT 		= "comment_count";
 	public static final String V_VIDEO_VIEWED 		= "video_viewed";
+
+	/* Forums */
+	public static final String V_LAST_POST_USERNAME = "last_post_username";
+	public static final String V_LAST_POST_DATE = "last_post_date";
+	public static final String V_POST_COUNT 		= "post_count";
 
 	/* common commands */
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists ";
@@ -342,6 +352,22 @@ public class DBConstants {
 			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
 			+ V_DISPLAY_ORDER 	    	+ _INT_NOT_NULL + _CLOSE;
 
+	static final String FORUMS_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[FORUMS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_TITLE 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_ID 						+ _INT_NOT_NULL + _COMMA
+			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
+			+ V_URL 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_LAST_POST_USERNAME 		+ _TEXT_NOT_NULL + _COMMA
+			+ V_POST_COUNT 				+ _INT_NOT_NULL + _COMMA
+			+ V_LAST_POST_DATE 	    	+ _LONG_NOT_NULL + _CLOSE;
+
+	static final String FORUM_CATEGORIES_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[FORUM_CATEGORIES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _CLOSE;
+
 	/* ==================== User Stats ============================== */
 	 /*Rating*/
 	public static final String V_CURRENT 				= "current";
@@ -372,7 +398,7 @@ public class DBConstants {
 	public static final String V_TODAYS_ATTEMPTS 		= "todays_attempts";
 	public static final String V_TODAYS_AVG_SCORE		= "todays_average_score";
 
-	/* Chess Mentor*/
+	/* Lessons*/
 	public static final String V_LESSONS_TRIED 				= "lessons_tried";
 	public static final String V_TOTAL_LESSON_COUNT 		= "total_lesson_count";
 	public static final String V_LESSON_COMPLETE_PERCENTAGE = "lesson_complete_percentage";
@@ -476,7 +502,7 @@ public class DBConstants {
 			+ V_TOTAL_SECONDS  	    	+ _INT_NOT_NULL + _CLOSE;
 
 	static final String USER_STATS_CHESS_MENTOR_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_CHESS_MENTOR] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_LESSONS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
 			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
 			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA

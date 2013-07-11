@@ -111,8 +111,8 @@ public class AppData {
 		return getIntValue(PREF_LANGUAGE, 0);
 	}
 
-	public String getUserSessionId() {
-		return preferences.getString(USER_SESSION_ID, StaticData.SYMBOL_EMPTY);
+	public String getLiveSessionId() {
+		return preferences.getString(LIVE_SESSION_ID, StaticData.SYMBOL_EMPTY);
 	}
 
 	/* Game modes */

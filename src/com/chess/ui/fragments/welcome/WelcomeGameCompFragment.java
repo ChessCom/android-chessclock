@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
@@ -265,7 +266,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		super.onDestroy();
 	}
 
-	private void startGame(Bundle... savedInstanceState) {
+	private void startGame(Bundle savedInstanceState) {
 		int engineMode;
 		if (getBoardFace().isAnalysis()) {
 			engineMode = GameMode.ANALYSIS;
@@ -277,7 +278,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		int depth = Integer.parseInt(compDepth[getAppData().getCompStrength(getContext())]);
 		boolean restoreGame = getAppData().haveSavedCompGame() || getBoardFace().isAnalysis();
 
-		Bundle state = savedInstanceState.length > 0 ? savedInstanceState[0] : null;
+		Bundle state = savedInstanceState;
 
 		new StartEngineTask(engineMode, restoreGame, strength, time, depth, this,
 				PreferenceManager.getDefaultSharedPreferences(getActivity()), state, getActivity().getApplicationContext(),
@@ -999,7 +1000,10 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void run(Runnable runnable) { // todo @compengine: check and refactor
-		getActivity().runOnUiThread(runnable);
+		FragmentActivity activity = getActivity();
+		if (activity != null) { // can be killed at any time
+			activity.runOnUiThread(runnable);
+		}
 	}
 
 	private Runnable blinkWhatIs = new Runnable() {

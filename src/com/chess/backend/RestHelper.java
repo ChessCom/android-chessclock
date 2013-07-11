@@ -102,6 +102,13 @@ public class RestHelper {
 	public static final String CMD_ARTICLES_LIST = CMD_ARTICLES + "/list";
 	public static final String CMD_ARTICLES_CATEGORIES = CMD_ARTICLES + "/categories";
 	public static final int DEFAULT_ITEMS_PER_PAGE = 20;
+	/*Forums*/
+	public static final String CMD_FORUMS = BASE_URL + V1 + "/forums";
+	public static final String CMD_FORUMS_CATEGORIES = CMD_FORUMS + "/categories-and-topics";
+	public static final String CMD_FORUMS_COMMENT = CMD_FORUMS + "/comment";
+	public static final String CMD_FORUMS_COMMENTS = CMD_FORUMS + "/comments";
+	public static final String CMD_FORUMS_TOPIC = CMD_FORUMS + "/topic";
+	public static final String CMD_FORUMS_TOPICS = CMD_FORUMS + "/topics";
 
 	public static String CMD_GAME_BY_ID(long id) {
 		return CMD_GAMES + "/" + id;

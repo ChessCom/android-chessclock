@@ -26,6 +26,7 @@ public class LoginItem extends BaseResponseItem<LoginItem.Data>{
 		private int premium_status;
 		private int tactics_rating;
 		private String username;
+		private String session_id;
 
 		public int getPremiumStatus() {
 			return premium_status;
@@ -37,6 +38,10 @@ public class LoginItem extends BaseResponseItem<LoginItem.Data>{
 
 		public String getUsername() {
 			return username;
+		}
+
+		public String getSessionId(){
+			return session_id;
 		}
 	}
 }

@@ -191,7 +191,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		userArgument[0] = String.valueOf(userName);
 
 		{ // Standard
-			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_CHESS_MENTOR];
+			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_LESSONS];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
