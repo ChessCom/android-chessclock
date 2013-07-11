@@ -66,8 +66,13 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 	@Override
 	public void afterMove() {
+
+		Log.d(CompEngineHelper.TAG, "DEBUGBOARD afterMove");
+
         getBoardFace().setMovesCount(getBoardFace().getHply());
 		gameCompActivityFace.invalidateGameScreen();
+
+		Log.d(CompEngineHelper.TAG, "DEBUGBOARD isGameOver() " + isGameOver());
 
         if (isGameOver())
             return;
@@ -108,6 +113,9 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
     }
 
 	public void postMoveToEngine(Move lastMove) {
+
+		Log.d(CompEngineHelper.TAG, "DEBUGBOARD try to postMoveToEngine " + lastMove);
+
 		if (isHint())
 			return;
 

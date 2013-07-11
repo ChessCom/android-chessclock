@@ -21,7 +21,6 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
-import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
@@ -644,14 +643,12 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		}
 	}
 
-	private class InitComputerEngineUpdateListener extends AbstractUpdateListener<CompEngineHelper> {
-		public InitComputerEngineUpdateListener() {
-			super(getContext());
-		}
+	private class InitComputerEngineUpdateListener extends ChessUpdateListener<CompEngineHelper> {
 
 		@Override
 		public void updateData(CompEngineHelper returnedObj) {
-			// todo @compengine: enable board after full init od engine, show progress
+
+			boardView.lockBoard(false);
 
 			/*Log.d(CompEngineHelper.TAG, "InitComputerEngineUpdateListener updateData");
 
@@ -807,6 +804,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		boardView.setGameActivityFace(this);
 		setBoardView(boardView);
 
+		boardView.lockBoard(true);
+
 		controlsCompView.enableHintButton(true);
 
 		{// options list setup
@@ -925,4 +924,11 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		}
 	}
 
+	private void showLoadingView(boolean show) {
+		if (show) {
+			loadingView.setVisibility(View.VISIBLE);
+		} else {
+			loadingView.setVisibility(View.GONE);
+		}
+	}
 }

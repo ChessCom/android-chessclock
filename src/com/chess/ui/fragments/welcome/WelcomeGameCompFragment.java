@@ -25,7 +25,6 @@ import com.chess.MultiDirectionSlidingDrawer;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.RestHelper;
-import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.live.client.PieceColor;
@@ -413,6 +412,9 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 		// TODO @compengine: extract logic and put probably to ChessBoardView
 
+		Log.d(CompEngineHelper.TAG, "updateEngineMove getBoardFace().getHply()=" + getBoardFace().getHply());
+		Log.d(CompEngineHelper.TAG, "updateEngineMove getBoardFace().getMovesCount()=" + getBoardFace().getMovesCount());
+
 		if (getBoardFace().getHply() < getBoardFace().getMovesCount()) { // ignoring Forward move fired by engine
 			return;
 		}
@@ -640,13 +642,13 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		}
 	}
 
-	private class InitComputerEngineUpdateListener extends AbstractUpdateListener<CompEngineHelper> {
-		public InitComputerEngineUpdateListener() {
-			super(getContext());
-		}
+	private class InitComputerEngineUpdateListener extends ChessUpdateListener<CompEngineHelper> {
 
 		@Override
 		public void updateData(CompEngineHelper returnedObj) {
+
+			boardView.lockBoard(false);
+
 			// todo @compengine: enable board after full init od engine, show progress
 
 			/*Log.d(CompEngineHelper.TAG, "InitComputerEngineUpdateListener updateData");
@@ -856,6 +858,8 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 		boardView.setGameActivityFace(this);
 		setBoardView(boardView);
+
+		boardView.lockBoard(true);
 
 		controlsCompView.enableHintButton(true);
 		notationsView.resetNotations();

@@ -26,6 +26,8 @@ import android.os.Environment;
 
 public class CompEngineHelper implements GUIInterface {
 
+	// todo: should be singleton
+
 	private static final String ENGINE = "stockfish";
 	//private static final String ENGINE = "cuckoochess";
 
@@ -126,11 +128,15 @@ public class CompEngineHelper implements GUIInterface {
 			} else {
 				String dataStr = settings.getString(CompEngineHelper.GAME_STATE, null);
 				version = settings.getInt(GAME_STATE_VERSION_NAME, version);
+				log("MOVEMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! dataStr=" + dataStr);
 				if (dataStr != null)
 					data = strToByteArr(dataStr);
 			}
-			if (data != null)
+			log("MOVEMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! savedInstanceState=" + savedInstanceState);
+			log("MOVEMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! restoring data="+data);
+			if (data != null) {
 				engineCtrl.fromByteArray(data, version);
+			}
 		}
 
 		engineCtrl.setGuiPaused(true);
@@ -151,6 +157,7 @@ public class CompEngineHelper implements GUIInterface {
 		engineCtrl.setEngineStrength(ENGINE, strength);
 
 		engineCtrl.startGame(); // it was before setFENOrPGN
+		log("FINISHED");
 	}
 
 	public void makeMove(String move,/* boolean force,*/ GameCompActivityFace gameCompActivityFace) {

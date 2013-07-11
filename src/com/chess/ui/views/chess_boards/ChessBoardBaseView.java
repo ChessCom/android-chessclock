@@ -9,6 +9,7 @@ import android.graphics.Paint.Style;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -601,11 +602,23 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				return true;
 			}
 
+			Log.d("DEBUGBOARD", "found " + found);
+
+			boolean moveMade = false;
+			if (found) {
+				moveMade = getBoardFace().makeMove(move);
+			}
+
+			Log.d("DEBUGBOARD", "moveMade " + moveMade);
+			Log.d("DEBUGBOARD", "move " + move);
+
 			// todo: show move animation when player makes move by click, and do not show for drag
-			if (found && getBoardFace().makeMove(move)) { // if move is valid
+			if (found && moveMade) { // if move is valid
+				Log.d("DEBUGBOARD", "onActionUp 1");
 				afterMove();
 			} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 					&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
+				Log.d("DEBUGBOARD", "onActionUp 2");
 				pieceSelected = true;
 				firstClick = false;
 				from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());

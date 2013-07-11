@@ -589,7 +589,9 @@ public class DroidChessController {
     public final synchronized void shutdownEngine() {
         gameMode = new GameMode(GameMode.TWO_PLAYERS);
         abortSearch();
-        computerPlayer.shutdownEngine();
+		if (computerPlayer != null) {
+			computerPlayer.shutdownEngine();
+		}
     }
 
     /** Get PGN header tags and values. */
