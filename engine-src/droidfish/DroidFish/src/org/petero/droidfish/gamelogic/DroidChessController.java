@@ -720,19 +720,20 @@ public class DroidChessController {
             final String newPV = buf.toString();
             final String newBookInfo = bookInfo;
             final ArrayList<ArrayList<Move>> pvMoves = new ArrayList<ArrayList<Move>>();
-            for (int i = 0; i < pvInfoV.size(); i++) {
-                if (ponderMove != null) {
-                    ArrayList<Move> tmp = new ArrayList<Move>();
-                    tmp.add(ponderMove);
-                    for (Move m : pvInfoV.get(i).pv)
-                        tmp.add(m);
-                    pvMoves.add(tmp);
-                } else {
-                    pvMoves.add(pvInfoV.get(i).pv);
-                }
-            }
+			for (PvInfo aPvInfoV : pvInfoV) {
+				if (ponderMove != null) {
+					ArrayList<Move> tmp = new ArrayList<Move>();
+					tmp.add(ponderMove);
+					for (Move m : aPvInfoV.pv)
+						tmp.add(m);
+					pvMoves.add(tmp);
+				} else {
+					pvMoves.add(aPvInfoV.pv);
+				}
+			}
             gui.runOnUIThread(new Runnable() {
-                public void run() {
+                @Override
+				public void run() {
                     setThinkingInfo(id, pvMoves, newPV, statStr, newBookInfo, bookMoves);
         }
             });
@@ -817,8 +818,10 @@ public class DroidChessController {
         public void notifySearchResult(final int id, final String cmd, final Move ponder) {
 			Log.d(MyFish.TAG, "notifySearchResult ponder=" + ponder);
             new Thread(new Runnable() {
+				@Override
 				public void run() {
 					gui.runOnUIThread(new Runnable() {
+						@Override
 						public void run() {
                             makeComputerMove(id, cmd, ponder);
 				}
