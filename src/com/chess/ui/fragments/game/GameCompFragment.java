@@ -418,7 +418,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 				boardView.setComputerMoving(false);
 
-				boardView.addMoveAnimator(move, true);
+				boardView.scheduleMoveAnimation(move, true);
 				getBoardFace().makeMove(move);
 
 				if (boardView.isHint()) {
@@ -883,13 +883,13 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 				}
 				/*if ((hints == null) && mShowBookHints)
 					hints = bookMoves;*/
-				if (((hints == null) || hints.isEmpty()) &&
+				/*if (((hints == null) || hints.isEmpty()) &&
 						(variantMoves != null) && variantMoves.size() > 1) {
 					hints = variantMoves;
 				}
 				if ((hints != null) && (hints.size() > CompEngineHelper.MAX_NUM_HINT_ARROWS)) {
 					hints = hints.subList(0, CompEngineHelper.MAX_NUM_HINT_ARROWS);
-				}
+				}*/
 
 				HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> hintsMap =
 						new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();

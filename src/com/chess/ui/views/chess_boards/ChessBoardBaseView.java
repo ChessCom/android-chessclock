@@ -1051,12 +1051,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		return square * (getBoardFace().isReside() ? y : 7 - y);
 	}
 
+	public void scheduleMoveAnimation(Move move, boolean forward) {
+		MoveAnimator moveAnimator = new MoveAnimator(move, forward);
+		movesToAnimate.add(moveAnimator);
+	}
+
 	// TODO: refactor!
 
-	private Handler handlerTimer = new Handler();
-
 	protected class MoveAnimator {
-		//boolean paused;
 		long startTime = -1;
 		long stopTime;
 		long now;
@@ -1065,18 +1067,91 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		private Bitmap pieceBitmap;
 		private Bitmap capturedPieceBitmap;
 		private boolean firstRun = true;
-		private Move move;
+		private final Move move;
+		private final boolean forward;
 
-		MoveAnimator(Move move) {
+		public MoveAnimator(Move move, boolean forward) {
 			this.move = move;
+			this.forward = forward;
+
+			int moveFromPosition = forward ? move.from : move.to;
+			int fromColor = getBoardFace().getColor()[moveFromPosition];
+			int fromPiece = getBoardFace().getPieces()[moveFromPosition];
+			pieceBitmap = piecesBitmaps[fromColor][fromPiece];
+
+			// todo: check game load
+
+			int moveToPosition = forward ? move.to : move.from;
+			if (getBoardFace().getPiece(moveToPosition) != ChessBoard.EMPTY) { // check back and forward
+				int capturedColor = getBoardFace().getColor()[moveToPosition]; //
+				int capturedPiece = getBoardFace().getPieces()[moveToPosition]; //
+				capturedPieceBitmap = piecesBitmaps[capturedColor][capturedPiece];
+			}
+
+			// todo: refactor!
+
+			hide1 = -1;
+
+			//if (animTime > 0) {
+			piece2 = ChessBoard.EMPTY;
+			from2 = -1;
+			to2 = -1;
+			hide1 = -1;
+			hide2 = -1;
+			if (forward) {
+				int pieceFrom = getBoardFace().getPiece(moveFromPosition); // check
+				piece1 = pieceFrom;
+				from1 = move.from;
+				to1 = move.to;
+				hide1 = move.to;
+				int pieceTo = getBoardFace().getPiece(move.to);
+				if (pieceTo == ChessBoard.EMPTY) { // capture
+					piece2 = pieceTo;
+					from2 = move.to;
+					to2 = move.to;
+				} /*else if ((pieceFrom == Piece.WKING) || (pieceFrom == Piece.BKING)) {
+					boolean wtm = Piece.isWhite(pieceFrom);
+					// TODO @compengine: add castling positions
+					if (move.to == move.from + 2) { // O-O
+						moveAnimator.piece2 = wtm ? Piece.WROOK : ChessBoard.Piece.BROOK;
+						moveAnimator.from2 = move.to + 1;
+						moveAnimator.to2 = move.to - 1;
+						moveAnimator.hide2 = moveAnimator.to2;
+					} else if (move.to == move.from - 2) { // O-O-O
+						moveAnimator.piece2 = wtm ? Piece.WROOK : Piece.BROOK;
+						moveAnimator.from2 = move.to - 2;
+						moveAnimator.to2 = move.to + 1;
+						moveAnimator.hide2 = moveAnimator.to2;
+					}
+				}*/
+			} else {
+				int pieceFrom = getBoardFace().getPiece(moveFromPosition);
+				piece1 = pieceFrom;
+				// todo: check promotions
+				/*if (move.promote > 0)
+					moveAnimator.piece1 = getBoardFace().isWhite(move.from) ? Piece.WPAWN : Piece.BPAWN;*/
+				from1 = move.to;
+				to1 = move.from;
+				hide1 = to1;
+				/*if ((p == Piece.WKING) || (p == Piece.BKING)) {
+					boolean wtm = Piece.isWhite(p);
+					if (move.to == move.from + 2) { // O-O
+						moveAnimator.piece2 = wtm ? Piece.WROOK : Piece.BROOK;
+						moveAnimator.from2 = move.to - 1;
+						moveAnimator.to2 = move.to + 1;
+						moveAnimator.hide2 = moveAnimator.to2;
+					} else if (move.to == move.from - 2) { // O-O-O
+						moveAnimator.piece2 = wtm ? Piece.WROOK : Piece.BROOK;
+						moveAnimator.from2 = move.to + 1;
+						moveAnimator.to2 = move.to - 2;
+						moveAnimator.hide2 = moveAnimator.to2;
+					}
+				}*/
+			}
 		}
 
-		public void setPieceBitmap(Bitmap pieceBitmap) {
-			this.pieceBitmap = pieceBitmap;
-		}
-
-		public void setCapturedPieceBitmap(Bitmap capturedPieceBitmap) {
-			this.capturedPieceBitmap = capturedPieceBitmap;
+		public boolean isForward() {
+			return forward;
 		}
 
 		public Bitmap getCapturedPieceBitmap() {
@@ -1085,10 +1160,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		public final boolean updateState() {
 			now = System.currentTimeMillis();
-			return isAnimtionActive();
+			return isAnimationActive();
 		}
 
-		private final boolean isAnimtionActive() {
+		private final boolean isAnimationActive() {
 
 			if (firstRun) {
 				initTimer();
@@ -1101,7 +1176,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 
 		/*public final boolean squareHidden(int sq) {
-			if (!isAnimtionActive())
+			if (!isAnimationActive())
 				return false;
 			return (sq == hide1) || (sq == hide2);
 		}*/
@@ -1110,7 +1185,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int dx = ChessBoard.getColumn(move.to) - ChessBoard.getColumn(move.from);
 			int dy = ChessBoard.getRow(move.to) - ChessBoard.getRow(move.from);
 			double dist = Math.sqrt(dx * dx + dy * dy);
-			double t = Math.sqrt(dist) * 150; // extract speed
+			double t = Math.sqrt(dist) * 500; // extract speed
 			int animTime = (int)Math.round(t);
 
 			startTime = System.currentTimeMillis();
@@ -1119,7 +1194,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		public final void draw(Canvas canvas) {
 
-			if (!isAnimtionActive()) {
+			if (!isAnimationActive()) {
 				return;
 			}
 
@@ -1131,7 +1206,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			if (delay < 1) {
 				delay = 1;
 			}
-			handlerTimer.postDelayed(new Runnable() {
+			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
 					invalidate();
@@ -1155,91 +1230,5 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 			canvas.drawBitmap(pieceBitmap, null, rect, null);
 		}
-	}
-
-	public void addMoveAnimator(Move move, boolean forward) {
-		MoveAnimator moveAnimator = new MoveAnimator(move);
-
-		// todo: move init to MoveAnimator constructor
-
-		//moveAnimator.startTime = -1;
-
-		int movePosition = forward ? move.from : move.to;
-		int fromColor = getBoardFace().getColor()[movePosition];
-		int fromPiece = getBoardFace().getPieces()[movePosition];
-		moveAnimator.setPieceBitmap(piecesBitmaps[fromColor][fromPiece]);
-
-		// todo: check game load
-		// todo: disable prev/next button during animation time
-		// todo: fix capturing animation
-		/*Bitmap capturedPieceBitmap = null;
-		if (getBoardFace().getPiece(movePosition) != ChessBoard.EMPTY) { // check back and forward
-			int capturedColor = getBoardFace().getColor()[movePosition]; //
-			int capturedPiece = getBoardFace().getPieces()[movePosition]; //
-			capturedPieceBitmap = piecesBitmaps[capturedColor][capturedPiece];
-		}
-		moveAnimator.setCapturedPieceBitmap(capturedPieceBitmap);*/
-
-		moveAnimator.hide1 = -1;
-
-		//if (animTime > 0) {
-		moveAnimator.piece2 = ChessBoard.EMPTY;
-		moveAnimator.from2 = -1;
-		moveAnimator.to2 = -1;
-		moveAnimator.hide1 = -1;
-		moveAnimator.hide2 = -1;
-		if (forward) {
-			int pieceFrom = getBoardFace().getPiece(movePosition); // check
-			moveAnimator.piece1 = pieceFrom;
-			moveAnimator.from1 = move.from;
-			moveAnimator.to1 = move.to;
-			moveAnimator.hide1 = move.to;
-			int pieceTo = getBoardFace().getPiece(move.to);
-			if (pieceTo == ChessBoard.EMPTY) { // capture
-				moveAnimator.piece2 = pieceTo;
-				moveAnimator.from2 = move.to;
-				moveAnimator.to2 = move.to;
-			} /*else if ((pieceFrom == Piece.WKING) || (pieceFrom == Piece.BKING)) {
-					boolean wtm = Piece.isWhite(pieceFrom);
-					// TODO @compengine: add castling positions
-					if (move.to == move.from + 2) { // O-O
-						moveAnimator.piece2 = wtm ? Piece.WROOK : ChessBoard.Piece.BROOK;
-						moveAnimator.from2 = move.to + 1;
-						moveAnimator.to2 = move.to - 1;
-						moveAnimator.hide2 = moveAnimator.to2;
-					} else if (move.to == move.from - 2) { // O-O-O
-						moveAnimator.piece2 = wtm ? Piece.WROOK : Piece.BROOK;
-						moveAnimator.from2 = move.to - 2;
-						moveAnimator.to2 = move.to + 1;
-						moveAnimator.hide2 = moveAnimator.to2;
-					}
-				}*/
-		} else {
-			int pieceFrom = getBoardFace().getPiece(movePosition);
-			moveAnimator.piece1 = pieceFrom;
-			// todo: check promotions
-				/*if (move.promote > 0)
-					moveAnimator.piece1 = getBoardFace().isWhite(move.from) ? Piece.WPAWN : Piece.BPAWN;*/
-			moveAnimator.from1 = move.to;
-			moveAnimator.to1 = move.from;
-			moveAnimator.hide1 = moveAnimator.to1;
-				/*if ((p == Piece.WKING) || (p == Piece.BKING)) {
-					boolean wtm = Piece.isWhite(p);
-					if (move.to == move.from + 2) { // O-O
-						moveAnimator.piece2 = wtm ? Piece.WROOK : Piece.BROOK;
-						moveAnimator.from2 = move.to - 1;
-						moveAnimator.to2 = move.to + 1;
-						moveAnimator.hide2 = moveAnimator.to2;
-					} else if (move.to == move.from - 2) { // O-O-O
-						moveAnimator.piece2 = wtm ? Piece.WROOK : Piece.BROOK;
-						moveAnimator.from2 = move.to + 1;
-						moveAnimator.to2 = move.to - 2;
-						moveAnimator.hide2 = moveAnimator.to2;
-					}
-				}*/
-		}
-
-		movesToAnimate.add(moveAnimator);
-		//}
 	}
 }

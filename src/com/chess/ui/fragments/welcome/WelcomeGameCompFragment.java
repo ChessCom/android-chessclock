@@ -452,7 +452,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 				boardView.setComputerMoving(false);
 
-				boardView.addMoveAnimator(move, true);
+				boardView.scheduleMoveAnimation(move, true);
 				getBoardFace().makeMove(move);
 
 				if (boardView.isHint()) {
