@@ -17,7 +17,7 @@ public interface BoardFace {
 
 	void setMode(int mode);
 
-	Move takeBack();
+	void takeBack();
 
 	TreeSet<Move> gen();
 

@@ -1237,9 +1237,9 @@ public class ChessBoard implements BoardFace {
 	 * takeBack() is very similar to makeMove(), only backwards :)
 	 */
 	@Override
-	public Move takeBack() {
+	public void takeBack() {
 		if (hply - 1 < 0)
-			return null;
+			return;
 
 		side ^= 1;
 		xside ^= 1;
@@ -1317,7 +1317,7 @@ public class ChessBoard implements BoardFace {
 				pieces[moveTo] = EMPTY;
 			}
 
-			return move;
+			return;
 		}
 
 
@@ -1343,8 +1343,6 @@ public class ChessBoard implements BoardFace {
 				pieces[move.to - 8] = PAWN;
 			}
 		}
-
-		return move;
 	}
 
 	@Override

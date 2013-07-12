@@ -1158,26 +1158,27 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	public void addMoveAnimator(Move move, boolean forward) {
-
-		//Log.d("testtest", "move " + move);
-
 		MoveAnimator moveAnimator = new MoveAnimator(move);
 
 		// todo: move init to MoveAnimator constructor
 
 		//moveAnimator.startTime = -1;
 
-		int fromColor = getBoardFace().getColor()[move.from];
-		int fromPiece = getBoardFace().getPieces()[move.from];
+		int movePosition = forward ? move.from : move.to;
+		int fromColor = getBoardFace().getColor()[movePosition];
+		int fromPiece = getBoardFace().getPieces()[movePosition];
 		moveAnimator.setPieceBitmap(piecesBitmaps[fromColor][fromPiece]);
 
-		Bitmap capturedPieceBitmap = null;
-		if (getBoardFace().getPiece(move.to) != ChessBoard.EMPTY) {
-			int capturedColor = getBoardFace().getColor()[move.to];
-			int capturedPiece = getBoardFace().getPieces()[move.to];
+		// todo: check game load
+		// todo: disable prev/next button during animation time
+		// todo: fix capturing animation
+		/*Bitmap capturedPieceBitmap = null;
+		if (getBoardFace().getPiece(movePosition) != ChessBoard.EMPTY) { // check back and forward
+			int capturedColor = getBoardFace().getColor()[movePosition]; //
+			int capturedPiece = getBoardFace().getPieces()[movePosition]; //
 			capturedPieceBitmap = piecesBitmaps[capturedColor][capturedPiece];
 		}
-		moveAnimator.setCapturedPieceBitmap(capturedPieceBitmap);
+		moveAnimator.setCapturedPieceBitmap(capturedPieceBitmap);*/
 
 		moveAnimator.hide1 = -1;
 
@@ -1188,7 +1189,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		moveAnimator.hide1 = -1;
 		moveAnimator.hide2 = -1;
 		if (forward) {
-			int pieceFrom = getBoardFace().getPiece(move.from);
+			int pieceFrom = getBoardFace().getPiece(movePosition); // check
 			moveAnimator.piece1 = pieceFrom;
 			moveAnimator.from1 = move.from;
 			moveAnimator.to1 = move.to;
@@ -1214,7 +1215,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					}
 				}*/
 		} else {
-			int pieceFrom = getBoardFace().getPiece(move.from);
+			int pieceFrom = getBoardFace().getPiece(movePosition);
 			moveAnimator.piece1 = pieceFrom;
 			// todo: check promotions
 				/*if (move.promote > 0)

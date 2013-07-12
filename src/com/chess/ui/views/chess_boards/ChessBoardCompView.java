@@ -168,28 +168,30 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
         super.onDraw(canvas);
 		drawBoard(canvas);
 
+		drawHighlights(canvas);
+		drawDragPosition(canvas);
+		drawTrackballDrag(canvas);
+
 		MoveAnimator moveAnimator = null;
 		boolean animationActive = false;
 		if (movesToAnimate.size() > 0) {
 			moveAnimator = movesToAnimate.getFirst();
-				/*Log.d("testtest", "moveAnimator " + moveAnimator);
-				Log.d("testtest", "movesToAnimate.size() " + movesToAnimate.size());*/
-
 			animationActive = moveAnimator.updateState();
 			if (animationActive) {
 				moveAnimator.draw(canvas);
 			} else {
 				movesToAnimate.remove(moveAnimator);
-				invalidate(); // ?
+				if (movesToAnimate.size() > 0) {
+					getBoardFace().takeBack();
+					moveAnimator = movesToAnimate.getFirst();
+					animationActive = moveAnimator.updateState();
+					moveAnimator.draw(canvas);
+				}
 			}
 			//Log.d("testtest", "animationActive " + animationActive);
 		}
 
 		drawPieces(canvas, animationActive, moveAnimator);
-
-		drawHighlights(canvas);
-		drawDragPosition(canvas);
-		drawTrackballDrag(canvas);
 
 		drawMoveHints(canvas); // todo @compengine: move to base class for all game modes
 
@@ -359,7 +361,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 	@Override
     public void moveBack() {
-        if (!isComputerMoving()  && !(getAppData().isComputerVsHumanBlackGameMode(getBoardFace())
+        if (!isComputerMoving() && getBoardFace().getHply() > 0 && !(getAppData().isComputerVsHumanBlackGameMode(getBoardFace())
 				&& getBoardFace().getHply() == 1)) {
 
 			AppData.getCompEngineHelper().moveBack();
@@ -367,11 +369,11 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			getBoardFace().setFinished(false);
             pieceSelected = false;
 
-			Move move = getBoardFace().takeBack();
-			addMoveAnimator(move, false);
+			addMoveAnimator(getBoardFace().getLastMove(), false);
+			getBoardFace().takeBack();
 
-			if (getAppData().isComputerVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {
-				move = getBoardFace().takeBack(); // todo: create method for ply
+			Move move = getBoardFace().getLastMove();
+			if (move != null && getAppData().isComputerVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {
 				addMoveAnimator(move, false);
 			}
             invalidate();

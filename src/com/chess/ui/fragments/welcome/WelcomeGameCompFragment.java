@@ -229,7 +229,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	@Override
 	public void onPause() {
 		// todo @compengine: extract method and put to engine helper
-		if (AppData.getCompEngineHelper().isInitialized()) {
+		if (AppData.getCompEngineHelper() != null && AppData.getCompEngineHelper().isInitialized()) {
 			AppData.getCompEngineHelper().setPaused(true);
 			if (AppData.getCompEngineHelper() != null && AppData.getCompEngineHelper().isGameValid()) {
 				byte[] data = AppData.getCompEngineHelper().toByteArray();
