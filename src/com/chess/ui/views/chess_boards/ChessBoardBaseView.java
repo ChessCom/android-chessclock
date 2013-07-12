@@ -51,6 +51,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public static final int P_MODERN_ID = 7;
 	public static final int P_VINTAGE_ID = 8;
 
+	public static final int PIECE_ANIM_SPEED = 250;
+
 	int pieceXDelta, pieceYDelta; // top/left pixel draw position relative to square
 
 	private static final int SQUARES_NUMBER = 8;
@@ -1185,7 +1187,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int dx = ChessBoard.getColumn(move.to) - ChessBoard.getColumn(move.from);
 			int dy = ChessBoard.getRow(move.to) - ChessBoard.getRow(move.from);
 			double dist = Math.sqrt(dx * dx + dy * dy);
-			double t = Math.sqrt(dist) * 500; // extract speed
+			double t = Math.sqrt(dist) * PIECE_ANIM_SPEED; // extract speed
 			int animTime = (int)Math.round(t);
 
 			startTime = System.currentTimeMillis();

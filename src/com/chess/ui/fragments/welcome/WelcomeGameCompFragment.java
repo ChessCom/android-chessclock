@@ -908,7 +908,11 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		CompEngineHelper.log("thinkingStr1 " + thinkingStr1);
 		CompEngineHelper.log("variantStr " + variantStr);
 
-		getActivity().runOnUiThread(new Runnable() {
+		FragmentActivity activity = getActivity();
+		if (activity == null) {
+			return;
+		}
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 
