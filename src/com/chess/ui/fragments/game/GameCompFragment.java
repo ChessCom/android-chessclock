@@ -643,7 +643,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		}
 	}
 
-	private class InitComputerEngineUpdateListener extends ChessUpdateListener<CompEngineHelper> {
+	private class InitComputerEngineUpdateListener extends ChessLoadUpdateListener<CompEngineHelper> {
 
 		@Override
 		public void updateData(CompEngineHelper returnedObj) {

@@ -106,7 +106,9 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		} else if (id == R.id.yourEmailView) {
 			showEmailEdit(true);
 		} else if (id == R.id.addEmailBtn) {
-			createFriendRequest(getTextFromField(emailEditBtn), getString(R.string.add_friend_request_message));
+			LoadItem loadItem = LoadHelper.postFriendByEmail(getUserToken(), getTextFromField(emailEditBtn), getString(R.string.add_friend_request_message));
+
+			new RequestJsonTask<RequestItem>(new RequestFriendListener()).executeTask(loadItem);
 			showEmailEdit(false);
 		}
 	}

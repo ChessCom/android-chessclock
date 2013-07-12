@@ -143,6 +143,16 @@ public class LoadHelper {
 		return loadItem;
 	}
 
+	public static LoadItem postFriendByEmail(String userToken, String email, String message) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setRequestMethod(POST);
+		loadItem.setLoadPath(CMD_FRIENDS_REQUEST);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
+		loadItem.addRequestParams(P_EMAIL, email);
+		loadItem.addRequestParams(P_MESSAGE, message);
+		return loadItem;
+	}
+
 	public static LoadItem postUserProfile(String userToken, String firstName, String lastName, int userCountryId, int userSkill) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(POST);

@@ -5,6 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="@dimen/list_item_height"
+	android:paddingLeft="@dimen/default_scr_side_padding"
+	android:paddingRight="8dip"
+	android:paddingTop="6dip"
+	android:paddingBottom="6dip"
+	android:background="@drawable/white_list_item_selector"
     >
 
     <!--Title-->

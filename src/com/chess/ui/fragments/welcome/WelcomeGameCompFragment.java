@@ -641,7 +641,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		}
 	}
 
-	private class InitComputerEngineUpdateListener extends ChessUpdateListener<CompEngineHelper> {
+	private class InitComputerEngineUpdateListener extends ChessLoadUpdateListener<CompEngineHelper> {
 
 		@Override
 		public void updateData(CompEngineHelper returnedObj) {

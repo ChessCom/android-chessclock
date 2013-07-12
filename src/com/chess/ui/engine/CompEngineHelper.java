@@ -312,6 +312,7 @@ public class CompEngineHelper implements GUIInterface {
 		return false;
 	}
 
+	@Override
 	public void setAnimMove(Position sourcePos, org.petero.droidfish.gamelogic.Move engineMove, boolean forward) {
 		final GameMode gameMode = engineCtrl.getGameMode();
 

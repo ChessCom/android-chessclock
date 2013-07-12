@@ -20,12 +20,9 @@ import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
-import com.chess.db.DbHelper;
-import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveVideoCategoriesTask;
-import com.chess.db.tasks.SaveVideosListTask;
 import com.chess.model.CurriculumItems;
-import com.chess.ui.adapters.NewVideosSectionedCursorAdapter;
+import com.chess.ui.adapters.NewVideoCategoriesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
@@ -49,7 +46,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	public static final String GREY_COLOR_DIVIDER = "##";
 	// 11/15/12 | 27 min
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
-	public static final int ITEMS_PER_CATEGORY = 2;
+	public static final int ITEMS_PER_CATEGORY = 0;
 	private static final int LIBRARY = 6;
 	private static final int WATCH_VIDEO_REQUEST = 9898;
 	public static final long WATCHED_TIME = 3 * 60 * 1000;
@@ -63,12 +60,9 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private View loadingView;
 	private TextView emptyView;
 
-	private NewVideosSectionedCursorAdapter videosCursorAdapter;
+	private NewVideoCategoriesCursorAdapter categoriesCursorAdapter;
 
-	private VideosItemUpdateListener videosItemUpdateListener;
 	private VideosItemUpdateListener latestItemUpdateListener;
-	private SaveVideosUpdateListener saveVideosUpdateListener;
-	private VideosCursorUpdateListener videosCursorUpdateListener;
 
 	private VideoCategoriesUpdateListener videoCategoriesUpdateListener;
 	private SaveVideoCategoriesUpdateListener saveVideoCategoriesUpdateListener;
@@ -124,7 +118,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			footerView.setOnClickListener(this);
 			listView.addHeaderView(headerView);
 			listView.addFooterView(footerView);
-			listView.setAdapter(videosCursorAdapter);
+			listView.setAdapter(categoriesCursorAdapter);
 			listView.setOnItemClickListener(this);
 
 			// TODO create loading view for header
@@ -152,8 +146,8 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 	private void showLibrary() {
 		boolean show = !curriculumMode;
-		listView.setVisibility(show? View.VISIBLE : View.GONE);
-		expListView.setVisibility(show? View.GONE : View.VISIBLE);
+		listView.setVisibility(show ? View.VISIBLE : View.GONE);
+		expListView.setVisibility(show ? View.GONE : View.VISIBLE);
 
 		// get viewed marks
 		Cursor cursor = DBDataManager.getVideoViewedCursor(getActivity(), getUserName());
@@ -168,22 +162,31 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 		if (show) {
 			if (need2Update) {
-				boolean haveSavedData = DBDataManager.haveSavedVideos(getActivity());
-				if (haveSavedData) {
-					loadFromDb();
+
+//				boolean haveSavedData = DBDataManager.haveSavedVideos(getActivity());
+//				if (haveSavedData) {
+//					loadFromDb();
+//				}
+
+				// get saved categories
+				Cursor categoriesCursor = getContentResolver().query(DBConstants.uriArray[DBConstants.VIDEO_CATEGORIES], null, null, null, null);
+
+				if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
+					categoriesCursorAdapter.changeCursor(categoriesCursor);
 				}
 
 				if (AppUtils.isNetworkAvailable(getActivity())) {
 					updateData();
 					getCategories();
-				} else if (!haveSavedData) {
+				} /*else if (!haveSavedData) {
 					emptyView.setText(R.string.no_network);
 					showEmptyView(true);
-				}
+				}*/
 
 			} else { // load data to listHeader view
 				fillListViewHeaderData();
-				videosCursorAdapter.notifyDataSetChanged();
+//				videosCursorAdapter.notifyDataSetChanged();
+				categoriesCursorAdapter.notifyDataSetChanged();
 			}
 		} else {
 			expListView.setAdapter(curriculumAdapter);
@@ -191,25 +194,14 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	}
 
 
-
 	private void updateData() {
-		{// request random data for the header
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_LIMIT, 1);
-
-			new RequestJsonTask<VideoItem>(latestItemUpdateListener).executeTask(loadItem);
-		}
-		// get all video // TODO adjust to request only latest updates
-
+		// request latest data for the header
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, 8);
-		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_CATEGORY, ITEMS_PER_CATEGORY);
+		loadItem.addRequestParams(RestHelper.P_LIMIT, 1);
 
-		new RequestJsonTask<VideoItem>(videosItemUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<VideoItem>(latestItemUpdateListener).executeTask(loadItem);
 	}
 
 	private void getCategories() {
@@ -239,14 +231,11 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 		if (position == 0) { // if listView header
 			// see onClick(View) handle
-		} else if (videosCursorAdapter.isSectionHeader(position + offset)) {
-			String sectionName = videosCursorAdapter.getSectionName(position + offset);
+		} else {
+			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+			String sectionName = DBDataManager.getString(cursor, DBConstants.V_NAME);
 
 			getActivityFace().openFragment(VideoCategoriesFragment.createInstance(sectionName));
-		} else {
-			int internalPosition = videosCursorAdapter.getRelativePosition(position + offset);
-			Cursor cursor = (Cursor) parent.getItemAtPosition(internalPosition + 1);
-			getActivityFace().openFragment(VideoDetailsFragment.createInstance(DBDataManager.getId(cursor)));
 		}
 	}
 
@@ -343,55 +332,42 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 	private class VideosItemUpdateListener extends ChessUpdateListener<VideoItem> {
 
-		private static final int LATEST = 0;
-		private static final int DATA_LIST = 1;
-		private int listenerCode;
-
-		public VideosItemUpdateListener(int listenerCode) {
+		public VideosItemUpdateListener() {
 			super(VideoItem.class);
-			this.listenerCode = listenerCode;
 		}
 
 		@Override
 		public void showProgress(boolean show) {
-			super.showProgress(show);
 			showLoadingView(show);
 		}
 
 		@Override
 		public void updateData(VideoItem returnedObj) {
-			switch (listenerCode) {
-				case LATEST:
-					headerData = returnedObj.getData().get(0);
+			headerData = returnedObj.getData().get(0);
 
-					fillListViewHeaderData();
 
-					// save in Db to open in Details View
-					ContentResolver contentResolver = getContentResolver();
+			// save in Db to open in Details View
+			ContentResolver contentResolver = getContentResolver();
 
-					Uri uri = DBConstants.uriArray[DBConstants.VIDEOS];
-					String[] arguments = new String[1];
-					arguments[0] = String.valueOf(headerData.getTitle());
-					Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_TITLE,
-							DBDataManager.SELECTION_TITLE, arguments, null);
+			Uri uri = DBConstants.uriArray[DBConstants.VIDEOS];
+			String[] arguments = new String[1];
+			arguments[0] = String.valueOf(headerData.getTitle());
+			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_TITLE,
+					DBDataManager.SELECTION_TITLE, arguments, null);
 
-					ContentValues values = DBDataManager.putVideoItemToValues(headerData);
+			ContentValues values = DBDataManager.putVideoItemToValues(headerData);
 
-					if (cursor.moveToFirst()) {
-						headerDataId = DBDataManager.getId(cursor);
-						contentResolver.update(ContentUris.withAppendedId(uri, headerDataId), values, null, null);
-					} else {
-						Uri savedUri = contentResolver.insert(uri, values);
-						headerDataId = Long.parseLong(savedUri.getPathSegments().get(1));
-					}
-
-					headerDataLoaded = true;
-
-					break;
-				case DATA_LIST:
-					new SaveVideosListTask(saveVideosUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
-					break;
+			if (cursor.moveToFirst()) {
+				headerDataId = DBDataManager.getId(cursor);
+				contentResolver.update(ContentUris.withAppendedId(uri, headerDataId), values, null, null);
+			} else {
+				Uri savedUri = contentResolver.insert(uri, values);
+				headerDataId = Long.parseLong(savedUri.getPathSegments().get(1));
 			}
+
+			headerDataLoaded = true;
+
+			fillListViewHeaderData();
 		}
 	}
 
@@ -419,77 +395,25 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		public TextView dateTxt;
 	}
 
-	private class SaveVideosUpdateListener extends ChessUpdateListener<VideoItem.Data> {
-
-		@Override
-		public void updateData(VideoItem.Data returnedObj) {
-			super.updateData(returnedObj);
-
-			loadFromDb();
-		}
-	}
-
 	private class SaveVideoCategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem.Data> {
-	}
-
-	private void loadFromDb() {
-		new LoadDataFromDbTask(videosCursorUpdateListener, DbHelper.getVideosListParams(),
-				getContentResolver()).executeTask();
-	}
-
-	private class VideosCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
+		public void updateData(CommonFeedCategoryItem.Data returnedObj) {
+			// get saved categories
+			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.VIDEO_CATEGORIES], null, null, null, null);
 
-		@Override
-		public void updateData(Cursor cursor) {
-			super.updateData(cursor);
+			if (cursor.moveToFirst()) {
+				categoriesCursorAdapter.changeCursor(cursor);
+				listView.setAdapter(categoriesCursorAdapter);
 
-			videosCursorAdapter.changeCursor(cursor);
-			videosCursorAdapter.addViewedMap(curriculumViewedMap);
-			listView.setAdapter(videosCursorAdapter);
-
-			need2Update = false;
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			if (resultCode == StaticData.EMPTY_DATA) {
-				emptyView.setText("No Videos"); // TODO remove after debug, there should be videos
-			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
-				emptyView.setText(R.string.no_network);
+				need2Update = false;
 			}
-			showEmptyView(true);
-		}
-
-	}
-
-	private void showEmptyView(boolean show) {
-		if (show) {
-			// don't hide loadingView if it's loading
-			if (loadingView.getVisibility() != View.VISIBLE) {
-				loadingView.setVisibility(View.GONE);
-			}
-
-			emptyView.setVisibility(View.VISIBLE);
-			listView.setVisibility(View.GONE);
-		} else {
-			emptyView.setVisibility(View.GONE);
-			listView.setVisibility(View.VISIBLE);
 		}
 	}
 
 	private void showLoadingView(boolean show) {
 		if (show) {
 			emptyView.setVisibility(View.GONE);
-			if (videosCursorAdapter.getCount() == 0) {
-				listView.setVisibility(View.GONE);
-			}
 			loadingView.setVisibility(View.VISIBLE);
 		} else {
 			listView.setVisibility(View.VISIBLE);
@@ -552,12 +476,9 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			curriculumItems.setIds(new int[][]{beginners, openings, tactics, strategy, endgames, amazingGames});
 		}
 
-		videosCursorAdapter = new NewVideosSectionedCursorAdapter(getContext(), null, ITEMS_PER_CATEGORY);
-		latestItemUpdateListener = new VideosItemUpdateListener(VideosItemUpdateListener.LATEST);
-		videosItemUpdateListener = new VideosItemUpdateListener(VideosItemUpdateListener.DATA_LIST);
+		categoriesCursorAdapter = new NewVideoCategoriesCursorAdapter(getActivity(), null);
+		latestItemUpdateListener = new VideosItemUpdateListener();
 
-		saveVideosUpdateListener = new SaveVideosUpdateListener();
-		videosCursorUpdateListener = new VideosCursorUpdateListener();
 		curriculumViewedMap = new SparseBooleanArray();
 
 		videoCategoriesUpdateListener = new VideoCategoriesUpdateListener();

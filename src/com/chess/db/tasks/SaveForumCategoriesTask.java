@@ -1,7 +1,7 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
-import com.chess.backend.entity.new_api.ForumItem;
+import com.chess.backend.entity.new_api.ForumCategoryItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
@@ -13,17 +13,18 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 11.07.13
- * Time: 17:13
+ * Date: 12.07.13
+ * Time: 21:44
  */
-public class SaveForumsListTask extends AbstractUpdateTask<ForumItem.Data, Long> {
+public class SaveForumCategoriesTask extends AbstractUpdateTask<ForumCategoryItem.Data, Long> {
 
 	private ContentResolver contentResolver;
 	protected static String[] arguments = new String[1];
 
-	public SaveForumsListTask(TaskUpdateInterface<ForumItem.Data> taskFace, List<ForumItem.Data> currentItems,
-							  ContentResolver resolver) {
-		super(taskFace, new ArrayList<ForumItem.Data>());
+	public SaveForumCategoriesTask(TaskUpdateInterface<ForumCategoryItem.Data> taskFace,
+								   List<ForumCategoryItem.Data> currentItems,
+							   ContentResolver resolver) {
+		super(taskFace, new ArrayList<ForumCategoryItem.Data>());
 		this.itemList.addAll(currentItems);
 
 		this.contentResolver = resolver;
@@ -32,8 +33,8 @@ public class SaveForumsListTask extends AbstractUpdateTask<ForumItem.Data, Long>
 	@Override
 	protected Integer doTheTask(Long... ids) {
 		synchronized (itemList) {
-			for (ForumItem.Data currentItem : itemList) {
-				DBDataManager.updateForumItem(contentResolver, currentItem);
+			for (ForumCategoryItem.Data currentItem : itemList) {
+				DBDataManager.updateForumCategoryItem(contentResolver, currentItem);
 			}
 		}
 		result = StaticData.RESULT_OK;
@@ -42,4 +43,3 @@ public class SaveForumsListTask extends AbstractUpdateTask<ForumItem.Data, Long>
 	}
 
 }
-

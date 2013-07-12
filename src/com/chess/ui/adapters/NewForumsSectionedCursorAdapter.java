@@ -18,8 +18,7 @@ import com.chess.utilities.AppUtils;
 public class NewForumsSectionedCursorAdapter extends NewSectionedCursorLimitedAdapter {
 
 	public NewForumsSectionedCursorAdapter(Context context, Cursor cursor, int itemsPerSectionCnt) {
-		super(context, cursor, R.layout.new_arrow_section_header, DBConstants.V_CATEGORY_ID, itemsPerSectionCnt);
-
+		super(context, cursor, R.layout.new_arrow_section_header, DBConstants.V_CATEGORY, itemsPerSectionCnt);
 	}
 
 	@Override
@@ -39,12 +38,13 @@ public class NewForumsSectionedCursorAdapter extends NewSectionedCursorLimitedAd
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
 
-		long timestamp = getInt(cursor, DBConstants.V_LAST_POST_DATE);
-		String lastCommentAgoStr = AppUtils.getMomentsLeftFromSeconds(timestamp, context);
+		long timestamp = getLong(cursor, DBConstants.V_LAST_POST_DATE);
+		String lastCommentAgoStr = AppUtils.getMomentsAgoFromSeconds(timestamp, context);
 		holder.lastCommentAgoTxt.setText(lastCommentAgoStr);
 		holder.titleTxt.setText(getString(cursor, DBConstants.V_TITLE));
 
-		holder.postsCountTxt.setText(String.valueOf(getInt(cursor, DBConstants.V_POST_COUNT)));
+		int postCount = getInt(cursor, DBConstants.V_POST_COUNT);
+		holder.postsCountTxt.setText(context.getString(R.string.posts_arg, postCount));
 	}
 
 	protected class ViewHolder {

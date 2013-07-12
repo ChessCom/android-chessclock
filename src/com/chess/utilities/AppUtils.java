@@ -343,11 +343,13 @@ public class AppUtils {
 		return sb.toString();
 	}
 
-	public static String getMomentsLeftFromSeconds(long duration, Context context) {
-		long minutes = duration /60%60;
-		long hours = duration /3600%24;
-		long days = duration /86400;
-		long months = duration /2592000;
+	public static String getMomentsAgoFromSeconds(long lastStamp, Context context) {
+		long current = System.currentTimeMillis()/ 1000L;
+		long difference = current - lastStamp;
+		long minutes = difference /60%60;
+		long hours = difference /3600%24;
+		long days = difference /86400;
+		long months = difference /2592000;
 		StringBuilder sb = new StringBuilder();
 
 		if (months > 0) {
@@ -361,12 +363,12 @@ public class AppUtils {
 		} else if (minutes > 0) {
 			if (!sb.toString().trim().equals(StaticData.SYMBOL_EMPTY))
 				sb.append(StaticData.SYMBOL_SPACE);
-			sb.append(context.getString(R.string.min_arg, minutes));
+			sb.append(context.getString(R.string.minutes_arg, minutes));
 		} else {
 			sb.append(context.getString(R.string.just_now));
 		}
 
-		return sb.toString();
+		return context.getString(R.string.ago_arg, sb.toString());
 	}
 
 	public static String getSecondsTimeFromSecondsStr(long duration) {

@@ -118,9 +118,9 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getForumsListParams() {
+	public static QueryParams getForumTopicsParams() {
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.FORUMS]);
+		queryParams.setUri(DBConstants.uriArray[DBConstants.FORUM_TOPICS]);
 		return queryParams;
 	}
 
