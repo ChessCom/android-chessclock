@@ -492,6 +492,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		Log.d("DEBUGBOARD", "onTouchEvent event=" + event);
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN: {
 				return onActionDown(event);
@@ -557,6 +558,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected boolean onActionUp(MotionEvent event) {
+
+		Log.d("DEBUGBOARD", "onActionUp");
+
 		int col = (int) (event.getX() - event.getX() % square) / square;
 		int row = (int) (event.getY() - event.getY() % square) / square;
 

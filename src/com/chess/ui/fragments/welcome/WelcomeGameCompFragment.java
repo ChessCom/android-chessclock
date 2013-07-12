@@ -151,7 +151,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		if (AppData.getCompEngineHelper().isInitialized()) {
+		if (AppData.getCompEngineHelper() != null && AppData.getCompEngineHelper().isInitialized()) {
 			byte[] data = AppData.getCompEngineHelper().toByteArray();
 			outState.putByteArray(CompEngineHelper.GAME_STATE, data);
 			outState.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
@@ -217,8 +217,6 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 			}
 		}
 
-		Log.d("", "testtest 6 " + AppData.getCompEngineHelper());
-
 		if (AppData.getCompEngineHelper() != null && AppData.getCompEngineHelper().isInitialized()) {
 			AppData.getCompEngineHelper().setPaused(false);
 		}
@@ -258,12 +256,13 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		labelsSet = false;
 	}
 
-	@Override
+	/*@Override
 	public void onDestroy() {
+		Log.d("DEBUGDEBUG", "DESTROY AppData.getCompEngineHelper().isInitialized() " + AppData.getCompEngineHelper().isInitialized());
 		if (AppData.getCompEngineHelper().isInitialized())
 			AppData.getCompEngineHelper().shutdownEngine();
 		super.onDestroy();
-	}
+	}*/
 
 	private void startGame(Bundle savedInstanceState) {
 		int engineMode;
