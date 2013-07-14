@@ -22,15 +22,11 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveArticleCategoriesTask;
 import com.chess.db.tasks.SaveArticlesListTask;
-import com.chess.ui.adapters.CategoriesAdapter;
+import com.chess.ui.adapters.ArticlesThumbCursorAdapter;
+import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.adapters.CustomSectionedAdapter;
-import com.chess.ui.adapters.NewArticlesThumbCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -50,8 +46,8 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	private View loadingView;
 	private TextView emptyView;
 
-	private NewArticlesThumbCursorAdapter articlesCursorAdapter;
-	private CategoriesAdapter categoriesAdapter;
+	private ArticlesThumbCursorAdapter articlesCursorAdapter;
+	private CommonCategoriesCursorAdapter categoriesAdapter;
 
 	private ArticleItemUpdateListener latestArticleUpdateListener;
 	private SaveArticlesUpdateListener saveArticlesUpdateListener;
@@ -70,8 +66,8 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_light,
 				new int[]{LATEST_SECTION, CATEGORIES_SECTION});
 
-		articlesCursorAdapter = new NewArticlesThumbCursorAdapter(getActivity(), null);
-		categoriesAdapter = new CategoriesAdapter(getActivity(), null);
+		articlesCursorAdapter = new ArticlesThumbCursorAdapter(getActivity(), null);
+		categoriesAdapter = new CommonCategoriesCursorAdapter(getActivity(), null);
 
 		sectionedAdapter.addSection(getString(R.string.articles), articlesCursorAdapter);
 		sectionedAdapter.addSection(getString(R.string.new_my_move), categoriesAdapter); // TODO rename
@@ -110,38 +106,33 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		if (need2Update) {
 			boolean haveSavedData = DBDataManager.haveSavedArticles(getActivity());
 
-			loadCategoriesFromDB();
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (!loadCategoriesFromDB()) {
 				getCategories();
-			} else if (!haveSavedData) {
-				emptyView.setText(R.string.no_network);
-				showEmptyView(true);
 			}
 
 			if (haveSavedData) {
 				loadFromDb();
+			} else {
+				emptyView.setText(R.string.no_data);
+				showEmptyView(true);
 			}
+
 		} else {
 			loadCategoriesFromDB();
 			loadFromDb();
 		}
 	}
 
-	private void loadCategoriesFromDB() {
-		// show list of categories
+	private boolean loadCategoriesFromDB() {
 		Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.ARTICLE_CATEGORIES], null, null, null, null);
-		final List<String> list = new ArrayList<String>();
-		if (!cursor.moveToFirst()) {
-			return;
+		if (cursor != null && cursor.moveToFirst()) {
+			categoriesAdapter.changeCursor(cursor);
+			sectionedAdapter.notifyDataSetChanged();
+
+			listView.setAdapter(sectionedAdapter);
+			return true;
 		}
-
-		do {
-			list.add(DBDataManager.getString(cursor, DBConstants.V_NAME));
-		} while (cursor.moveToNext());
-
-		categoriesAdapter.setItemsList(list);
-		sectionedAdapter.notifyDataSetChanged();
-		listView.setAdapter(sectionedAdapter);
+		return false;
 	}
 
 	private void init() {
@@ -215,7 +206,6 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 		@Override
 		public void showProgress(boolean show) {
-			super.showProgress(show);
 			showLoadingView(show);
 		}
 

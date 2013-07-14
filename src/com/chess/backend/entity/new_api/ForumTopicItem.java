@@ -25,8 +25,10 @@ public class ForumTopicItem extends BaseResponseItem<List<ForumTopicItem.Data>>{
 */
 
 	public class Data {
+
 		private int id;
 		private int category_id;
+		private int topics_total_count;
 		private String category_name;
 		private String subject;
 		private String url;
@@ -73,6 +75,10 @@ public class ForumTopicItem extends BaseResponseItem<List<ForumTopicItem.Data>>{
 
 		public void setCategoryName(String category_name) {
 			this.category_name = category_name;
+		}
+
+		public int getTopicsTotalCount() {
+			return topics_total_count;
 		}
 	}
 

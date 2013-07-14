@@ -14,9 +14,9 @@ import com.chess.db.DBConstants;
  * Date: 12.07.13
  * Time: 20:18
  */
-public class NewVideoCategoriesCursorAdapter extends ItemsCursorAdapter {
+public class CommonCategoriesCursorAdapter extends ItemsCursorAdapter {
 
-	public NewVideoCategoriesCursorAdapter(Context context, Cursor cursor) {
+	public CommonCategoriesCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
 	}
 

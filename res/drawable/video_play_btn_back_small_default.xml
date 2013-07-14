@@ -40,7 +40,6 @@
         >
         <shape android:shape="oval">
             <solid android:color="@color/thumbnail_play_back_medium"/>
-            <!--<padding android:left="2dip" />-->
         </shape>
     </item>
 

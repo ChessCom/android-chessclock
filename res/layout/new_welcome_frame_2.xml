@@ -1,92 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
-    <com.chess.RoboTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/unlimited_free_games"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/secondWelcomeImg"
-        style="@style/WelcomeFeatureTitle"
-        />
+	<com.chess.RoboTextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/unlimited_free_games"
+		android:layout_alignParentTop="true"
+		android:layout_above="@id/secondWelcomeImg"
+		style="@style/WelcomeFeatureTitle" />
 
-    <com.chess.RoboButton
-        android:id="@+id/playBtn2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/ic_play"
-        style="@style/GlyphIcon.RoundBack.Play"
-        android:background="@drawable/video_play_btn_back_medium_selector"
-        android:textSize="@dimen/glyph_icon_round_back_medium"
-        />
+	<!--Back round for icon-->
+	<RelativeLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:background="@drawable/video_play_btn_back_medium_selector"
+		android:gravity="fill"
+		>
 
-    <!--<ImageButton
-        android:id="@+id/playBtn2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/ic_play_video_medium"
-        android:background="@drawable/video_play_btn_back_medium_selector"
-        android:visibility="visible"
-        android:contentDescription="@string/image"
-        />-->
+		<com.chess.RoboTextView
+			android:id="@+id/playBtn2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:text="@string/ic_play"
+			style="@style/GlyphIcon.RoundBack.Play"
+			android:textSize="@dimen/glyph_icon_round_back_medium"
+			android:layout_marginLeft="25dip"
+			/>
 
-    <FrameLayout
-        android:id="@+id/youTubeFrameContainer2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/secondWelcomeImg"
-        />
+	</RelativeLayout>
 
-    <com.chess.RoboButton
-        android:id="@+id/closeBtn2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/secondWelcomeImg"
-        style="@style/welcomeCloseBtn"
-        />
+	<FrameLayout
+		android:id="@+id/youTubeFrameContainer2"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignTop="@id/secondWelcomeImg" />
 
-    <!--Features list-->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/secondWelcomeImg"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/welcome_features_padding_top"
-        android:paddingBottom="@dimen/welcome_features_padding_bottom"
-        >
+	<com.chess.RoboButton
+		android:id="@+id/closeBtn2"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignTop="@id/secondWelcomeImg"
+		style="@style/welcomeCloseBtn" />
 
-        <com.chess.RoboTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/welcome_three_line_1"
-            style="@style/WelcomeListFeature"
-            />
+	<!--Features list-->
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/secondWelcomeImg"
+		android:layout_centerHorizontal="true"
+		android:layout_alignParentBottom="true"
+		android:orientation="vertical"
+		android:paddingTop="@dimen/welcome_features_padding_top"
+		android:paddingBottom="@dimen/welcome_features_padding_bottom">
 
-        <com.chess.RoboTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/welcome_three_line_2"
-            style="@style/WelcomeListFeature"
-            />
+		<com.chess.RoboTextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/welcome_three_line_1"
+			style="@style/WelcomeListFeature" />
 
-        <com.chess.RoboTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/welcome_three_line_3"
-            style="@style/WelcomeListFeature"
-            />
+		<com.chess.RoboTextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/welcome_three_line_2"
+			style="@style/WelcomeListFeature" />
 
-    </LinearLayout>
+		<com.chess.RoboTextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/welcome_three_line_3"
+			style="@style/WelcomeListFeature" />
+
+	</LinearLayout>
 
 
 </RelativeLayout>

@@ -124,5 +124,17 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	public static QueryParams getForumCategoriesParams() {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DBConstants.uriArray[DBConstants.FORUM_CATEGORIES]);
+		return queryParams;
+	}
+
+	public static QueryParams getForumPostsParams() {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DBConstants.uriArray[DBConstants.FORUM_POSTS]);
+		return queryParams;
+	}
+
 
 }

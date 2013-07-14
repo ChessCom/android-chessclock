@@ -3,6 +3,7 @@ package com.chess.ui.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,7 +16,6 @@ import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
 import java.util.Calendar;
-import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,9 +26,7 @@ import java.util.HashMap;
 public class FriendsCursorAdapter extends ItemsCursorAdapter {
 
 	private final int imageSize;
-	private final String[] countryNames;
-	private final int[] countryCodes;
-	private final HashMap<Integer, String> countryMap;
+	private final SparseArray<String> countryMap;
 	private final Calendar today;
 	private final Calendar lastLoginDate;
 	private final ItemClickListenerFace clickListenerFace;
@@ -38,9 +36,9 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 		this.clickListenerFace = clickListenerFace;
 		imageSize = (int) (resources.getDimension(R.dimen.friend_list_photo_size) / resources.getDisplayMetrics().density);
 
-		countryNames = resources.getStringArray(R.array.new_countries);
-		countryCodes = resources.getIntArray(R.array.new_country_ids);
-		countryMap = new HashMap<Integer, String>();
+		String[] countryNames = resources.getStringArray(R.array.new_countries);
+		int[] countryCodes = resources.getIntArray(R.array.new_country_ids);
+		countryMap = new SparseArray<String>();
 		for (int i = 0; i < countryNames.length; i++) {
 			countryMap.put(countryCodes[i], countryNames[i]);
 		}

@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 35;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 36;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -22,6 +22,7 @@ public class DBConstants {
 	 */
     static final String DATABASE_NAME  = "Chess DB";
 
+	// TODO replace with enum!
 	public static final String[] tablesArray = new String[]{
 			"tactics_batch",
 			"tactics_results",
@@ -50,8 +51,9 @@ public class DBConstants {
 
 			"video_viewed",
 
-			"forums",
-			"forum_categories"
+			"forum_topics",
+			"forum_categories",
+			"forum_comments"
 	};
 
 	// Content URI
@@ -64,7 +66,7 @@ public class DBConstants {
 		}
 	}
 
-    // uri paths
+    // uri paths      // TODO replace with enum!
     public static final int TACTICS_BATCH = 0;
     public static final int TACTICS_RESULTS = 1;
     public static final int DAILY_FINISHED_GAMES = 2;
@@ -93,6 +95,7 @@ public class DBConstants {
     public static final int VIDEO_VIEWED = 21;
     public static final int FORUM_TOPICS = 22;
     public static final int FORUM_CATEGORIES = 23;
+    public static final int FORUM_POSTS = 24;
 
 
     // general fields
@@ -377,6 +380,13 @@ public class DBConstants {
 			+ V_TOPIC_COUNT				+ _INT_NOT_NULL + _COMMA
 			+ V_POST_COUNT				+ _INT_NOT_NULL + _COMMA
 			+ V_MIN_MEMBERSHIP			+ _INT_NOT_NULL + _CLOSE;
+
+	static final String FORUM_POSTS_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[FORUM_POSTS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_ID 						+ _INT_NOT_NULL + _COMMA    // Topic id!
+			+ V_USERNAME				+ _TEXT_NOT_NULL + _COMMA
+			+ V_CREATE_DATE				+ _LONG_NOT_NULL + _COMMA
+			+ V_DESCRIPTION				+ _LONG_NOT_NULL + _CLOSE;
 
 	/* ==================== User Stats ============================== */
 	 /*Rating*/

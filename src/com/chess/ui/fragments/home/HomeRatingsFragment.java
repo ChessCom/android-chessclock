@@ -24,12 +24,13 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveFriendsListTask;
 import com.chess.model.RatingListItem;
-import com.chess.ui.adapters.FriendsCursorGridAdapter;
+import com.chess.ui.adapters.FriendsCursorAdapter;
 import com.chess.ui.adapters.RatingsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
+import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.utilities.AppUtils;
 
@@ -42,7 +43,7 @@ import java.util.List;
  * Date: 30.12.12
  * Time: 22:04
  */
-public class HomeRatingsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
+public class HomeRatingsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, ItemClickListenerFace {
 
 	private static final int AVATAR_SIZE = 80;
 
@@ -60,7 +61,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 	private TextView userCountryTxt;
 	private ImageView userCountryImg;
 	private FriendsCursorUpdateListener friendsCursorUpdateListener;
-	private FriendsCursorGridAdapter friendsAdapter;
+	private FriendsCursorAdapter friendsAdapter;
 	private FriendsUpdateListener friendsUpdateListener;
 	private SaveFriendsListUpdateListener saveFriendsListUpdateListener;
 	private FrameLayout userPhotoImg;
@@ -97,7 +98,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 		listView.setOnItemClickListener(this);
 
 		GridView friendsGridView = (GridView) view.findViewById(R.id.friendsGridView);
-		friendsAdapter = new FriendsCursorGridAdapter(getActivity(), null);
+		friendsAdapter = new FriendsCursorAdapter(this, null);
 		friendsGridView.setAdapter(friendsAdapter);
 
 		setGridViewToCenter(friendsGridView);
@@ -250,6 +251,11 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 
 		LoadItem loadItem = LoadHelper.getFriends(getUserToken());
 		new RequestJsonTask<FriendsItem>(friendsUpdateListener).executeTask(loadItem);
+	}
+
+	@Override
+	public Context getMeContext() {
+		return getActivity();
 	}
 
 	private class FriendsUpdateListener extends ChessUpdateListener<FriendsItem> {

@@ -22,7 +22,7 @@ import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.tasks.SaveVideoCategoriesTask;
 import com.chess.model.CurriculumItems;
-import com.chess.ui.adapters.NewVideoCategoriesCursorAdapter;
+import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
@@ -60,7 +60,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private View loadingView;
 	private TextView emptyView;
 
-	private NewVideoCategoriesCursorAdapter categoriesCursorAdapter;
+	private CommonCategoriesCursorAdapter categoriesCursorAdapter;
 
 	private VideosItemUpdateListener latestItemUpdateListener;
 
@@ -476,7 +476,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			curriculumItems.setIds(new int[][]{beginners, openings, tactics, strategy, endgames, amazingGames});
 		}
 
-		categoriesCursorAdapter = new NewVideoCategoriesCursorAdapter(getActivity(), null);
+		categoriesCursorAdapter = new CommonCategoriesCursorAdapter(getActivity(), null);
 		latestItemUpdateListener = new VideosItemUpdateListener();
 
 		curriculumViewedMap = new SparseBooleanArray();

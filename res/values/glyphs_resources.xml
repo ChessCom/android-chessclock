@@ -56,13 +56,13 @@
     <string name="ic_search">–</string>
     <string name="ic_hint">g</string>
 
-    <string name="ic_right">.</string>
-    <string name="ic_left">,</string>
-    <string name="ic_up">&#60;</string>
+    <string name="ic_right">.</string> 			<!-- > -->
+    <string name="ic_left">,</string>         	<!-- < -->
+    <string name="ic_up">&#60;</string>			<!-- ^ -->
     <string name="ic_down">&#62;</string>
 
-    <string name="ic_arrow_right">]</string>
-    <string name="ic_arrow_left">[</string>
+    <string name="ic_arrow_right">]</string>    <!-- -> -->
+    <string name="ic_arrow_left">[</string>		<!-- <- -->
     <string name="ic_arrow_up">}</string>
     <string name="ic_arrow_down">{</string>
 

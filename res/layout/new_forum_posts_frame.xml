@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/white"
+	>
+
+	<ListView
+		android:id="@+id/listView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:divider="@color/new_friends_list_divider"
+		android:dividerHeight="1dip"
+		android:layout_above="@+id/pageIndicatorView"
+		/>
+
+	<com.chess.LinLayout
+		android:id="@id/pageIndicatorView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		style="@style/ListItem.Header_2"
+		android:layout_alignParentBottom="true"
+		android:gravity="center_vertical"
+		android:paddingLeft="9dip"
+		android:paddingRight="9dip"
+		>
+
+		<com.chess.RoboButton
+			android:id="@+id/prevPageBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			style="@style/Button.Page"
+			custom:ttf="Icon"
+			android:text="@string/ic_left"
+			/>
+
+	</com.chess.LinLayout>
+
+</RelativeLayout>

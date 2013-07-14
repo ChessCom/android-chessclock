@@ -176,4 +176,25 @@ public class LoadHelper {
 		loadItem.addRequestParams(P_DEVICE_ID, deviceId);
 		return loadItem;
 	}
+
+	public static LoadItem getForumTopicsForCategory(String userToken, int categoryId, int page) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(CMD_FORUMS_TOPICS);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
+		loadItem.addRequestParams(P_FORUM_CATEGORY_ID, categoryId);
+		loadItem.addRequestParams(P_PAGE, page);
+		loadItem.addRequestParams(P_TOPICS_PER_PAGE, DEFAULT_ITEMS_PER_PAGE);
+		return loadItem;
+	}
+
+	public static LoadItem getForumPostssForTopic(String userToken, int topicId, int page) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(CMD_FORUMS_COMMENTS);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
+		loadItem.addRequestParams(P_FORUM_TOPIC_ID, topicId);
+		loadItem.addRequestParams(P_PAGE, page);
+		loadItem.addRequestParams(P_COMMENTS_PER_PAGE, DEFAULT_ITEMS_PER_PAGE);
+		return loadItem;
+	}
+
 }

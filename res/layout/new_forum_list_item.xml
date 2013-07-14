@@ -12,11 +12,22 @@
 	android:background="@drawable/white_list_item_selector"
     >
 
+	<!--New post icon-->
+	<ImageView
+		android:id="@+id/newPostImg"
+		android:contentDescription="@string/image"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/ic_new_post_t"
+		android:layout_marginRight="15dip"
+		/>
+
     <!--Title-->
     <com.chess.RoboTextView
         android:id="@+id/titleTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/newPostImg"
         android:textColor="@color/new_text_blue"
         custom:ttf="Bold"
         />
@@ -26,9 +37,8 @@
         android:id="@+id/lastCommentAgoTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/byTxt"
+		android:layout_toRightOf="@id/newPostImg"
         android:layout_below="@id/titleTxt"
-        android:text="13 min ago *"
         android:paddingTop="2dip"
         android:paddingLeft="3dip"
         android:textColor="@color/stats_label_light_grey"
@@ -43,7 +53,6 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/byTxt"
         android:layout_below="@id/titleTxt"
-        android:text="14 Posts"
         android:layout_toRightOf="@id/lastCommentAgoTxt"
         android:paddingTop="2dip"
         android:paddingLeft="3dip"

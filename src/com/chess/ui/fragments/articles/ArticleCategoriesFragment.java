@@ -13,8 +13,8 @@ import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
+import com.chess.ui.adapters.ArticlesThumbCursorAdapter;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
-import com.chess.ui.adapters.NewArticlesThumbCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
@@ -31,7 +31,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 	public static final String SECTION_NAME = "section_name";
 
-	private NewArticlesThumbCursorAdapter articlesAdapter;
+	private ArticlesThumbCursorAdapter articlesAdapter;
 
 	private Spinner categorySpinner;
 	private View loadingView;
@@ -52,7 +52,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		articlesAdapter = new NewArticlesThumbCursorAdapter(getActivity(), null);
+		articlesAdapter = new ArticlesThumbCursorAdapter(getActivity(), null);
 		articlesCursorUpdateListener = new ArticlesCursorUpdateListener();
 	}
 

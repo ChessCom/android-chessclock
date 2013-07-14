@@ -26,7 +26,7 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveVideosListTask;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
-import com.chess.ui.adapters.NewVideosThumbCursorAdapter;
+import com.chess.ui.adapters.VideosThumbCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
@@ -44,7 +44,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	public static final String SECTION_NAME = "section_name";
 	private static final int WATCH_VIDEO_REQUEST = 9896;
 
-	private NewVideosThumbCursorAdapter videosAdapter;
+	private VideosThumbCursorAdapter videosAdapter;
 
 	private Spinner categorySpinner;
 	private View loadingView;
@@ -76,7 +76,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		viewedVideosMap = new SparseBooleanArray();
 		videosUpdateListener = new VideosUpdateListener();
 		saveVideosUpdateListener = new SaveVideosUpdateListener();
-		videosAdapter = new NewVideosThumbCursorAdapter(this, null);
+		videosAdapter = new VideosThumbCursorAdapter(this, null);
 		videosAdapter.addViewedMap(viewedVideosMap);
 		videosCursorUpdateListener = new VideosCursorUpdateListener();
 		categoriesNames = new ArrayList<String>();

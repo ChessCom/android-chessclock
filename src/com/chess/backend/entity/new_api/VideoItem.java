@@ -84,7 +84,7 @@ public class VideoItem extends BaseResponseItem<List<VideoItem.Data>> {
 		}
 
 		public long getCreateDate() {
-			return create_date;
+			return create_date * 1000L;
 		}
 
 		public String getUrl() {

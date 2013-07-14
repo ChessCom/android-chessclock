@@ -63,8 +63,4 @@
         android:cacheColorHint="@android:color/transparent"
         />
 
-
-    <!--TODO remove this quickly!-->
-
-
 </LinearLayout>

@@ -31,7 +31,7 @@ import com.chess.db.DBDataManager;
 
 import java.util.LinkedHashMap;
 
-public abstract class NewSectionedCursorLimitedAdapter extends ItemsCursorAdapter {
+public abstract class SectionedCursorLimitedAdapter extends ItemsCursorAdapter {
 
 	private static final String TAG = "SectionCursorAdapter";
 	private static final boolean LOG_FLAG = false;
@@ -52,8 +52,8 @@ public abstract class NewSectionedCursorLimitedAdapter extends ItemsCursorAdapte
 		public TextView headerTitleTxt;
 	}
 
-	public NewSectionedCursorLimitedAdapter(Context context, Cursor cursor, int headerLayout, String groupColumn,
-											int itemsPerSectionCnt) {
+	public SectionedCursorLimitedAdapter(Context context, Cursor cursor, int headerLayout, String groupColumn,
+										 int itemsPerSectionCnt) {
 		super(context, cursor);
 		this.itemsPerSectionCnt = itemsPerSectionCnt;
 

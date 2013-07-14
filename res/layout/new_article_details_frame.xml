@@ -44,9 +44,7 @@
         android:textColor="@color/new_author_dark_grey"
         android:textSize="14sp"
         custom:ttf="Bold"
-
         />
-    <!--android:text="GM Gregory Kaidanov"-->
 
     <ImageView
         android:id="@+id/countryImg"
@@ -71,9 +69,6 @@
         android:textSize="13sp"
         />
 
-    <!--android:text="11/15/12 | 27 min"-->
-
-
     <com.chess.RoboTextView
         android:id="@+id/contextTxt"
         android:layout_width="wrap_content"
@@ -82,8 +77,6 @@
         android:textColor="@color/new_subtitle_dark_grey"
         android:textSize="14sp"
         />
-    <!--android:text="With good reason, most players who aren't, well, chess professionals, would prefer to avoid the many complicated variations of the Open Sicilian. So what are your options? As GM Kaidanov explains, you have one major weapon in addition to the Closed Sicilian Grand Prix Attack (GM Dzindzichashvili's recommendation). Today he describes the important features of the Alapin Sicilian, and then reviews the 4.g3 varation of the 2..Nf6 line."-->
-
 
     <com.chess.RoboTextView
         android:id="@+id/emptyView"

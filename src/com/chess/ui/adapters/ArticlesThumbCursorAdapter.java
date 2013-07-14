@@ -23,7 +23,7 @@ import java.util.Date;
  * Date: 29.01.13
  * Time: 17:28
  */
-public class NewArticlesThumbCursorAdapter extends ItemsCursorAdapter {
+public class ArticlesThumbCursorAdapter extends ItemsCursorAdapter {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
@@ -31,7 +31,7 @@ public class NewArticlesThumbCursorAdapter extends ItemsCursorAdapter {
 	private CharacterStyle foregroundSpan;
 	private Date date;
 
-	public NewArticlesThumbCursorAdapter(Context context, Cursor cursor) {
+	public ArticlesThumbCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
 
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);

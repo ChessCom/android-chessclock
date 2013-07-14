@@ -10,7 +10,7 @@ import com.chess.backend.statics.StaticData;
 
 import java.util.List;
 
-//public class VideosPaginationAdapter extends PaginationAdapter<VideoItemOld> {
+// TODO adjust for VideoCategoriesFragment
 public class VideosPaginationAdapter extends PaginationAdapter<VideoItem.Data> {
 
 	private static final String TAG = "VideosPaginationAdapter";

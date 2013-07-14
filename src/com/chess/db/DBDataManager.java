@@ -72,6 +72,8 @@ public class DBDataManager {
 
 	public static String SELECTION_ITEM_ID = concatArguments(DBConstants.V_ID);
 
+	public static String SELECTION_CREATE_DATE = concatArguments(DBConstants.V_CREATE_DATE);
+
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
 	public static final String[] PROJECTION_TACTIC_ITEM_ID_AND_USER = new String[]{
@@ -166,6 +168,11 @@ public class DBDataManager {
 	public static final String[] PROJECTION_ITEM_ID = new String[]{
 			DBConstants._ID,
 			DBConstants.V_ID
+	};
+
+	public static final String[] PROJECTION_CREATE_DATE = new String[]{
+			DBConstants._ID,
+			DBConstants.V_CREATE_DATE
 	};
 
 	public static final String[] PROJECTION_USER_CURRENT_RATING = new String[]{
@@ -845,6 +852,26 @@ public class DBDataManager {
 		cursor.close();
 	}
 
+	public static void updateForumPostItem(ContentResolver contentResolver, ForumPostItem.Post currentItem) {
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = String.valueOf(currentItem.getCreateDate());
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = DBConstants.uriArray[DBConstants.FORUM_POSTS];
+
+		Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_CREATE_DATE,
+				DBDataManager.SELECTION_CREATE_DATE, arguments1, null);
+
+		ContentValues values = DBDataManager.putForumPostItemToValues(currentItem);
+
+		if (cursor.moveToFirst()) {
+			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
+		} else {
+			contentResolver.insert(uri, values);
+		}
+		cursor.close();
+	}
+
 	/**
 	 * Check if we have saved videos for any user
 	 *
@@ -1003,6 +1030,17 @@ public class DBDataManager {
 		values.put(DBConstants.V_TOPIC_COUNT, dataObj.getTopicCount());
 		values.put(DBConstants.V_POST_COUNT, dataObj.getPostCount());
 		values.put(DBConstants.V_MIN_MEMBERSHIP, dataObj.getMinimumMembershipLevel());
+
+		return values;
+	}
+
+	public static ContentValues putForumPostItemToValues(ForumPostItem.Post dataObj) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_DESCRIPTION, dataObj.getBody());
+		values.put(DBConstants.V_ID, dataObj.getTopicId());
+		values.put(DBConstants.V_CREATE_DATE, dataObj.getCreateDate());
+		values.put(DBConstants.V_USERNAME, dataObj.getUsername());
 
 		return values;
 	}

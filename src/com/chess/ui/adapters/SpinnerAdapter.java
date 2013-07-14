@@ -16,6 +16,7 @@ import java.util.List;
  * @author alien_roger
  * @created at: 24.02.12 5:22
  */
+// Do not remove until release!
 public class SpinnerAdapter extends ItemsAdapter<String> {
 
 	public SpinnerAdapter(Context context, int resourceId) {

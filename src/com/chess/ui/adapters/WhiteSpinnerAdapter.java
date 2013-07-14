@@ -14,6 +14,7 @@ import java.util.List;
  * @author alien_roger
  * @created at: 24.02.12 5:22
  */
+// Do not remove until release!
 public class WhiteSpinnerAdapter extends ItemsAdapter<String> {
 
 	public WhiteSpinnerAdapter(Context context, List<String> items) {

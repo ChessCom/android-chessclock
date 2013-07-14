@@ -18,20 +18,19 @@ package com.chess.ui.adapters;
 
 
 
-import java.util.LinkedHashMap;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
 
-public abstract class NewSectionedCursorAdapter extends ItemsCursorAdapter {
+import java.util.LinkedHashMap;
+// Do not remove until release!
+public abstract class SectionedCursorAdapter extends ItemsCursorAdapter {
 
 	private static final String TAG = "SectionCursorAdapter";
 	private static final boolean LOG_FLAG = false;
@@ -50,7 +49,7 @@ public abstract class NewSectionedCursorAdapter extends ItemsCursorAdapter {
 		public TextView headerTitleTxt;
 	}
 
-	public NewSectionedCursorAdapter(Context context, Cursor cursor, int headerLayout, String groupColumn) {
+	public SectionedCursorAdapter(Context context, Cursor cursor, int headerLayout, String groupColumn) {
 		super(context, cursor);
 
 		sectionsIndexer = new LinkedHashMap<Integer, String>();

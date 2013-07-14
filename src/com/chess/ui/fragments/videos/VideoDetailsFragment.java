@@ -55,6 +55,14 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 	protected String videoUrl;
 	protected int currentPlayingId;
 
+	public static VideoDetailsFragment createInstance(long videoId) {
+		VideoDetailsFragment frag = new VideoDetailsFragment();
+		Bundle bundle = new Bundle();
+		bundle.putLong(ITEM_ID, (int) videoId);
+		frag.setArguments(bundle);
+		return frag;
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_video_details_frame, container, false);
@@ -107,13 +115,7 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 		updateData();
 	}
 
-	public static VideoDetailsFragment createInstance(long videoId) {
-		VideoDetailsFragment frag = new VideoDetailsFragment();
-		Bundle bundle = new Bundle();
-		bundle.putLong(ITEM_ID, (int) videoId);
-		frag.setArguments(bundle);
-		return frag;
-	}
+
 
 	protected void updateData() {
 		QueryParams queryParams = DbHelper.getVideosListParams();

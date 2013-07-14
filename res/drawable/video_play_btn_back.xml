@@ -48,7 +48,6 @@
         >
         <shape android:shape="oval">
             <solid android:color="@color/thumbnail_play_border_inner"/>
-            <padding android:left="4dip" />
         </shape>
     </item>
 
