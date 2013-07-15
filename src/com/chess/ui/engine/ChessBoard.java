@@ -605,20 +605,20 @@ public class ChessBoard implements BoardFace {
 		if (side == WHITE_SIDE) {
 			if (!castleMask[2] && whiteCanCastle) {
 				for (i = 0; i < wKingMoveOO.length; i++)
-					genPush(movesSet, wKing, wKingMoveOO[i], 2);
+					genPush(movesSet, wKing, wKingMoveOO[i], Move.CASTLING_MASK);
 			}
 			if (!castleMask[3] && whiteCanCastle) {
 				for (i = 0; i < wKingMoveOOO.length; i++)
-					genPush(movesSet, wKing, wKingMoveOOO[i], 2);
+					genPush(movesSet, wKing, wKingMoveOOO[i], Move.CASTLING_MASK);
 			}
 		} else {
 			if (!castleMask[0] && blackCanCastle) {
 				for (i = 0; i < bKingMoveOO.length; i++)
-					genPush(movesSet, bKing, bKingMoveOO[i], 2);
+					genPush(movesSet, bKing, bKingMoveOO[i], Move.CASTLING_MASK);
 			}
 			if (!castleMask[1] && blackCanCastle) {
 				for (i = 0; i < bKingMoveOOO.length; i++)
-					genPush(movesSet, bKing, bKingMoveOOO[i], 2);
+					genPush(movesSet, bKing, bKingMoveOOO[i], Move.CASTLING_MASK);
 			}
 		}
 
@@ -752,7 +752,7 @@ public class ChessBoard implements BoardFace {
 		if (moveFT.length == 4) {
 			Move move;
 			if (moveFT[3] == 2)
-				move = new Move(moveFT[0], moveFT[1], 0, 2);
+				move = new Move(moveFT[0], moveFT[1], 0, Move.CASTLING_MASK);
 			else
 				move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
 
@@ -781,7 +781,7 @@ public class ChessBoard implements BoardFace {
 		int what = -1; //0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
 		int kingToRookDistance;
 		int kingDistance;
-		if ((move.bits & 2) != 0) {
+		if (move.isCastling()) {
 			int from = -1, to = -1;
 
 			int[] piece_tmp = pieces.clone();
@@ -1251,7 +1251,7 @@ public class ChessBoard implements BoardFace {
 		whiteCanCastle = histDat[hply].whiteCanCastle;
 		blackCanCastle = histDat[hply].blackCanCastle;
 
-		if ((move.bits & 2) != 0) {
+		if ((move.isCastling())) {
 
 			int[] piece_tmp = pieces.clone();
 
@@ -1493,7 +1493,7 @@ public class ChessBoard implements BoardFace {
 		String output = StaticData.SYMBOL_EMPTY;
 		try {
 			String to = MoveParser.positionToString(move.to);
-			if ((move.bits & 2) != 0) {
+			if (move.isCastling()) {
 				//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
 				int what = histDat[hply - 1].what;
 

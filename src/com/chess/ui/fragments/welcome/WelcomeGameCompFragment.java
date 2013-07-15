@@ -425,7 +425,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		final Move move;
 		if (moveFT.length == 4) {
 			if (moveFT[3] == 2) {
-				move = new Move(moveFT[0], moveFT[1], 0, 2);
+				move = new Move(moveFT[0], moveFT[1], 0, Move.CASTLING_MASK);
 			} else {
 				move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
 			}

@@ -7,6 +7,9 @@
 package com.chess.ui.engine;
 
 public final class Move implements Comparable<Object> {
+
+	public final static int CASTLING_MASK = 2;
+
 	public int from;
 	public int to;
 	public int promote;
@@ -82,5 +85,9 @@ public final class Move implements Comparable<Object> {
 			sb.append(8 - ChessBoard.getRow(to));
 		}
 		return sb.toString();
+	}
+
+	public boolean isCastling() {
+		return (bits & CASTLING_MASK) != 0;
 	}
 }
