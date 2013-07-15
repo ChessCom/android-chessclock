@@ -183,11 +183,12 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 				movesToAnimate.remove(moveAnimator);
 				if (movesToAnimate.size() > 0) {
 					moveAnimator = movesToAnimate.getFirst();
-					/*if (moveAnimator.isForward())
+					if (moveAnimator.isForward()) {
 						getBoardFace().takeNext();
-					{*/
+					}
+					else {
 						getBoardFace().takeBack();
-					//}
+					}
 					animationActive = moveAnimator.updateState();
 					drawPieces(canvas, animationActive, moveAnimator);
 					moveAnimator.draw(canvas);
@@ -393,12 +394,20 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			AppData.getCompEngineHelper().moveForward();
 
             pieceSelected = false;
-            getBoardFace().takeNext();
-			//scheduleMoveAnimation(getBoardFace().getLastMove(), false);
+
+			Move move = getBoardFace().getNextMove();
+			if (move == null) {
+				return;
+			}
+			scheduleMoveAnimation(move, true);
+			getBoardFace().takeNext();
 
 			if (getAppData().isComputerVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {
-				//scheduleMoveAnimation(getBoardFace().getLastMove(), false);
-				getBoardFace().takeNext(); // remove for animation
+				move = getBoardFace().getNextMove();
+				if (move == null) {
+					return;
+				}
+				scheduleMoveAnimation(move, true);
 			}
             invalidate();
 			gameCompActivityFace.invalidateGameScreen();

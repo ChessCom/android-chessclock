@@ -2141,6 +2141,12 @@ public class ChessBoard implements BoardFace {
 		return hply == 0 ? null : histDat[hply - 1].move;
 	}
 
+	@Override
+	public Move getNextMove() {
+		boolean isHistoryPresent = hply < movesCount && histDat[hply] != null;
+		return isHistoryPresent ? histDat[hply].move : null;
+	}
+
 	/*@Override
 	public void setFen(String fen) {
 		//Log.d(CompEngineHelper.TAG, "RESTORE BOARD setFen " + fen);
