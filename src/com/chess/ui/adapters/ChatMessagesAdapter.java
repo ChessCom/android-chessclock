@@ -14,20 +14,10 @@ import java.util.List;
 public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 
 	private final int imageSize;
-//	private int ownerColor;
-//    private int opponentColor;
-
-//	private String userName;
-//	private String opponentName;
 
 	public ChatMessagesAdapter(Context context, List<ChatItem> items) {
 		super(context, items);
 		Resources resources = context.getResources();
-//		ownerColor = resources.getColor(R.color.new_light_grey_0);
-//        opponentColor = resources.getColor(R.color.new_light_grey_2);
-//
-//		userName =  getAppData().getUserName(context);
-//		this.opponentName = opponentName;
 		imageSize = (int) (resources.getDimension(R.dimen.chat_icon_size) / resources.getDisplayMetrics().density);
 	}
 
@@ -35,7 +25,7 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 	protected View createView(ViewGroup parent) {
 		ViewHolder holder = new ViewHolder();
 
-		View view = inflater.inflate(R.layout.chat_list_item, null, false);
+		View view = inflater.inflate(R.layout.new_chat_list_item, null, false);
 		holder.text = (TextView) view.findViewById(R.id.messageTxt);
 		holder.myImg = (ProgressImageView) view.findViewById(R.id.myAvatarImg);
 		holder.opponentImg = (ProgressImageView) view.findViewById(R.id.opponentAvatarImg);

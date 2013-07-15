@@ -55,5 +55,6 @@
     <dimen name="invite_overlay_padding_top">35dip</dimen>
     <dimen name="invite_overlay_padding_bottom">35dip</dimen>
     <dimen name="invite_overlay_padding_title_bottom">24dip</dimen>
+	<dimen name="page_indicator_button_size">31dip</dimen>
 
 </resources>

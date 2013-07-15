@@ -812,7 +812,7 @@ public class DBDataManager {
 		cursor.close();
 	}
 
-	public static void updateForumTopicItem(ContentResolver contentResolver, ForumTopicItem.Data currentItem) {
+	public static void updateForumTopicItem(ContentResolver contentResolver, ForumTopicItem.Topic currentItem) {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = String.valueOf(currentItem.getId());
 
@@ -1002,7 +1002,7 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static ContentValues putForumTopicItemToValues(ForumTopicItem.Data dataObj) {
+	public static ContentValues putForumTopicItemToValues(ForumTopicItem.Topic dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_TITLE, dataObj.getSubject());

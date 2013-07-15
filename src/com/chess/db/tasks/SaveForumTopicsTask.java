@@ -17,15 +17,15 @@ import java.util.List;
  * Date: 11.07.13
  * Time: 17:13
  */
-public class SaveForumTopicsTask extends AbstractUpdateTask<ForumTopicItem.Data, Long> {
+public class SaveForumTopicsTask extends AbstractUpdateTask<ForumTopicItem.Topic, Long> {
 
 	private ContentResolver contentResolver;
 	protected static String[] arguments = new String[1];
 	private SparseArray<String> categoriesMap;
 
-	public SaveForumTopicsTask(TaskUpdateInterface<ForumTopicItem.Data> taskFace, List<ForumTopicItem.Data> currentItems,
+	public SaveForumTopicsTask(TaskUpdateInterface<ForumTopicItem.Topic> taskFace, List<ForumTopicItem.Topic> currentItems,
 							   ContentResolver resolver, SparseArray<String> categoriesMap) {
-		super(taskFace, new ArrayList<ForumTopicItem.Data>());
+		super(taskFace, new ArrayList<ForumTopicItem.Topic>());
 		this.categoriesMap = categoriesMap;
 		this.itemList.addAll(currentItems);
 
@@ -35,7 +35,7 @@ public class SaveForumTopicsTask extends AbstractUpdateTask<ForumTopicItem.Data,
 	@Override
 	protected Integer doTheTask(Long... ids) {
 		synchronized (itemList) {
-			for (ForumTopicItem.Data currentItem : itemList) {
+			for (ForumTopicItem.Topic currentItem : itemList) {
 				currentItem.setCategoryName(categoriesMap.get(currentItem.getCategoryId()));
 				DBDataManager.updateForumTopicItem(contentResolver, currentItem);
 			}

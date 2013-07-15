@@ -11,7 +11,7 @@
 	<item name="notification_message" type="id"/>
 
     <!--Home screens-->
-    <item name="playLive" type="id"/>
+<!--    <item name="playLive" type="id"/>
     <item name="playOnline" type="id"/>
     <item name="playComputer" type="id"/>
     <item name="tacticsTrainer" type="id"/>
@@ -24,7 +24,7 @@
     <item name="tacticsTrainerFrame" type="id"/>
     <item name="videoLessonsFrame" type="id"/>
     <item name="logOutFrame" type="id"/>
-    <item name="settingsFrame" type="id"/>
+    <item name="settingsFrame" type="id"/>-->
 
 	<item name="list_item_id" type="id"/>
 	<item name="list_item_id_group" type="id"/>

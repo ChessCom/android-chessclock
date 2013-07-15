@@ -236,10 +236,10 @@
 	<style name="Button.Page">
 		<item name="btn_bevel_lvl">2</item>
 
-		<item name="btn_top">@color/new_soft_grey1</item>
-		<item name="btn_left">@color/new_soft_grey1</item>
-		<item name="btn_right">@color/new_soft_grey1</item>
-		<item name="btn_bottom">@color/new_soft_grey1</item>
+		<item name="btn_top">@color/new_soft_grey3</item>
+		<item name="btn_left">@color/new_soft_grey3</item>
+		<item name="btn_right">@color/new_soft_grey3</item>
+		<item name="btn_bottom">@color/new_soft_grey3</item>
 
 		<item name="btn_top_2">@color/white</item>
 		<item name="btn_left_2">@color/white</item>
@@ -248,11 +248,10 @@
 
 		<item name="btn_solid">@color/new_square_button</item>
 
-		<item name="android:paddingLeft">@dimen/button_login_fb_left_padding</item> <!--TODO check-->
-
-		<item name="android:minHeight">31dip</item>
-		<item name="android:minWidth">31dip</item>
-		<item name="android:textSize">27dip</item>
+		<item name="android:minHeight">@dimen/page_indicator_button_size</item>
+		<item name="android:minWidth">@dimen/page_indicator_button_size</item>
+		<!--<item name="android:textSize">@dimen/page_indicator_text_size</item>-->
+		<item name="android:textSize">19sp</item>
 		<item name="android:textColor">@color/hint_text</item>
 		<item name="ttf">Bold</item>
 

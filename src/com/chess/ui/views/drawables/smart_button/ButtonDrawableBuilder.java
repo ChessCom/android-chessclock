@@ -167,6 +167,11 @@ public class ButtonDrawableBuilder {
 			createGlassy(buttonDrawable, resources);
 
 			return buttonDrawable;
+		} else if (styleId == R.style.Button_Page) {
+			ButtonDrawable buttonDrawable = setDefaults(context);
+			createPage(buttonDrawable, resources);
+
+			return buttonDrawable;
 		} else if (styleId == R.style.Rect_Top_Left) {
 			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
 			rectButtonDrawable.rectPosition = TOP_LEFT;
@@ -403,6 +408,24 @@ public class ButtonDrawableBuilder {
 		buttonDrawable.colorBottom2 = resources.getColor(R.color.orange_emboss_bottom_2);
 		// Button colors
 		buttonDrawable.colorSolid = resources.getColor(R.color.orange_button);
+		// init layers
+		buttonDrawable.init(resources);
+	}
+
+	private static void createPage(ButtonDrawable buttonDrawable, Resources resources) {
+		buttonDrawable.bevelLvl = 2;
+		// Colors for bevel
+		buttonDrawable.colorTop = resources.getColor(R.color.new_soft_grey3);
+		buttonDrawable.colorLeft = resources.getColor(R.color.new_soft_grey3);
+		buttonDrawable.colorRight = resources.getColor(R.color.new_soft_grey3);
+		buttonDrawable.colorBottom = resources.getColor(R.color.new_soft_grey3);
+		// Level 2 for bevel
+		buttonDrawable.colorTop2 = resources.getColor(R.color.white);
+		buttonDrawable.colorLeft2 = resources.getColor(R.color.white);
+		buttonDrawable.colorRight2 = resources.getColor(R.color.white);
+		buttonDrawable.colorBottom2 = resources.getColor(R.color.white);
+		// Button colors
+		buttonDrawable.colorSolid = resources.getColor(R.color.new_square_button);
 		// init layers
 		buttonDrawable.init(resources);
 	}

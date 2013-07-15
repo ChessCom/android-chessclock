@@ -118,9 +118,11 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getForumTopicsParams() {
+	public static QueryParams getForumTopicByCategoryParams(int categoryId) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.FORUM_TOPICS]);
+		queryParams.setSelection(DBDataManager.SELECTION_CATEGORY_ID);
+		queryParams.setArguments(new String[]{String.valueOf(categoryId)});
 		return queryParams;
 	}
 
@@ -130,9 +132,11 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getForumPostsParams() {
+	public static QueryParams getForumPostsParams(int topicId) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.FORUM_POSTS]);
+		queryParams.setSelection(DBDataManager.SELECTION_ITEM_ID);
+		queryParams.setArguments(new String[]{String.valueOf(topicId)});
 		return queryParams;
 	}
 

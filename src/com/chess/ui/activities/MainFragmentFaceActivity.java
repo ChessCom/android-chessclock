@@ -43,7 +43,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private List<SlidingMenu.OnOpenedListener> openMenuListeners;
 	private boolean showActionBar;
 	private int customActionBarViewId;
-	private AppData appData;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +60,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			// set the Above View
 			if (!TextUtils.isEmpty(getAppData().getUserToken())) { // if user have login token already
 				switchFragment(new HomeTabsFragment());
-//				switchFragment(new VideosFragment());
+//				switchFragment(new ForumCategoriesFragment());
 				showActionBar = true;
 			} else {
 				switchFragment(new WelcomeTabsFragment());

@@ -7,5 +7,6 @@ package com.chess.ui.interfaces;
  * @created at: 17.04.12 6:09
  */
 public interface LccConnectionListener {
+
 	void onConnected(boolean connected);
 }

@@ -25,8 +25,6 @@ public interface ActiveFragmentInterface {
 
     void showPreviousFragment();
 
-//    void updateCurrentActiveFragment();
-
     void setBadgeValueForId(int menuId, int value);
 
 	CoreActivityActionBar getActionBarActivity();
@@ -46,8 +44,6 @@ public interface ActiveFragmentInterface {
 	void removeOnOpenMenuListener(SlidingMenu.OnOpenedListener listener);
 
 	void setFullScreen();
-
-//	LccHelper getMeLccHolder();
 
 	void clearFragmentStack();
 

@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.ForumTopicItem;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -20,8 +21,8 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.SaveForumTopicsTask;
 import com.chess.ui.adapters.ForumTopicsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.views.PageIndicatorView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,22 +31,28 @@ import java.util.List;
  * Date: 13.07.13
  * Time: 6:44
  */
-public class ForumTopicsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
+public class ForumTopicsFragment extends CommonLogicFragment implements PageIndicatorView.PagerFace, AdapterView.OnItemClickListener {
 
 	private static final String CATEGORY_ID = "category_id";
+	private static final int DEFAULT_PAGE = 0;
 	private int categoryId;
+
 	private ForumTopicsCursorAdapter topicsCursorAdapter;
 	private SaveForumTopicsListener saveForumTopicsListener;
 	private SparseArray<String> categoriesMap;
 	private TopicsUpdateListener topicsUpdateListener;
 	private TextView forumHeaderTxt;
 	private boolean need2update = true;
+	private PageIndicatorView pageIndicatorView;
+	private int pagesToShow;
+	private int currentPage = -1;
+	private ListView listView;
 
 	public ForumTopicsFragment() {
 
 	}
 
-	public static ForumTopicsFragment createInstance(int categoryId){
+	public static ForumTopicsFragment createInstance(int categoryId) {
 		ForumTopicsFragment fragment = new ForumTopicsFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(CATEGORY_ID, categoryId);
@@ -66,7 +73,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements AdapterV
 		if (cursor.moveToFirst()) {
 			do {
 				categoriesMap.put(DBDataManager.getInt(cursor, DBConstants.V_ID), DBDataManager.getString(cursor, DBConstants.V_NAME));
-			} while(cursor.moveToNext());
+			} while (cursor.moveToNext());
 		}
 	}
 
@@ -80,15 +87,18 @@ public class ForumTopicsFragment extends CommonLogicFragment implements AdapterV
 		super.onViewCreated(view, savedInstanceState);
 
 		setTitle(R.string.forums);
-		// add headerView
 
+		// add headerView
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_forum_header_view, null, false);
 		forumHeaderTxt = (TextView) headerView.findViewById(R.id.forumHeaderTxt);
 
-		ListView listView = (ListView) view.findViewById(R.id.listView);
+		listView = (ListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
 		listView.setAdapter(topicsCursorAdapter);
 		listView.setOnItemClickListener(this);
+
+		pageIndicatorView = (PageIndicatorView) view.findViewById(R.id.pageIndicatorView);
+		pageIndicatorView.setPagerFace(this);
 
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_search, true);
@@ -113,13 +123,11 @@ public class ForumTopicsFragment extends CommonLogicFragment implements AdapterV
 	public void onStart() {
 		super.onStart();
 
+		forumHeaderTxt.setText(categoriesMap.get(categoryId));
 		if (need2update) {
-
-			forumHeaderTxt.setText(categoriesMap.get(categoryId));
-
-
-			LoadItem loadItem = LoadHelper.getForumTopicsForCategory(getUserToken(), categoryId, 0);
-			new RequestJsonTask<ForumTopicItem>(topicsUpdateListener).executeTask(loadItem);
+			requestPage(DEFAULT_PAGE);
+		} else {
+			pageIndicatorView.setTotalPageCnt(pagesToShow);
 		}
 	}
 
@@ -132,43 +140,85 @@ public class ForumTopicsFragment extends CommonLogicFragment implements AdapterV
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		int topicId = DBDataManager.getInt(cursor, DBConstants.V_ID);
-		getActivityFace().openFragment(ForumPostsFragment.createInstance(topicId));
+		boolean headerAdded = listView.getHeaderViewsCount() > 0;
+		int offset = headerAdded ? -1 : 0;
+
+		if (position == 0) { // if listView header
+			// see onClick(View) handle
+		} else {
+			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+			int topicId = DBDataManager.getInt(cursor, DBConstants.V_ID);
+			String topicTitle = DBDataManager.getString(cursor, DBConstants.V_TITLE);
+			getActivityFace().openFragment(ForumPostsFragment.createInstance(topicId, topicTitle));
+		}
 	}
 
-	private class TopicsUpdateListener extends ChessLoadUpdateListener<ForumTopicItem>{
+	@Override
+	public void showPrevPage() {
+		requestPage(currentPage - 1);
+	}
+
+	@Override
+	public void showNextPage() {
+		requestPage(currentPage + 1);
+	}
+
+	@Override
+	public void showPage(int page) {
+		requestPage(page-1);
+	}
+
+	private void requestPage(int page){
+		if (page == currentPage) {
+			return;
+		}
+		currentPage = page;
+
+		if (currentPage == DEFAULT_PAGE) {
+			pageIndicatorView.enableLeftBtn(false);
+		} else {
+			pageIndicatorView.enableLeftBtn(true);
+		}
+
+		if (currentPage == pagesToShow) {
+			pageIndicatorView.enableRightBtn(false);
+		} else {
+			pageIndicatorView.enableRightBtn(true);
+		}
+
+		LoadItem loadItem = LoadHelper.getForumTopicsForCategory(getUserToken(), categoryId, page);
+		new RequestJsonTask<ForumTopicItem>(topicsUpdateListener).executeTask(loadItem);
+	}
+
+	private class TopicsUpdateListener extends ChessUpdateListener<ForumTopicItem> {
 
 		private TopicsUpdateListener() {
 			super(ForumTopicItem.class);
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			pageIndicatorView.setEnabled(!show);
+		}
+
+		@Override
 		public void updateData(ForumTopicItem returnedObj) {
-			List<ForumTopicItem.Data> topics = returnedObj.getData();
-			List<ForumTopicItem.Data> topics2Remove = new ArrayList<ForumTopicItem.Data>();
+			List<ForumTopicItem.Topic> topics = returnedObj.getData().getTopics();
+			pagesToShow = (int) Math.ceil((returnedObj.getData().getTopicsTotalCount() / (float) (RestHelper.DEFAULT_ITEMS_PER_PAGE)));
+			pageIndicatorView.setTotalPageCnt(pagesToShow);
 
-			for (ForumTopicItem.Data topic : topics) {
-				if (topic.getTopicsTotalCount() != 0) {
-					topics2Remove.add(topic);
-					break;
-				}
-			}
-
-			topics.removeAll(topics2Remove);
-
-			new SaveForumTopicsTask(saveForumTopicsListener, topics, getContentResolver(),
-					categoriesMap).executeTask();
+			new SaveForumTopicsTask(saveForumTopicsListener, topics, getContentResolver(), categoriesMap).executeTask();
 		}
 	}
 
-	private class SaveForumTopicsListener extends ChessLoadUpdateListener<ForumTopicItem.Data> {
+	private class SaveForumTopicsListener extends ChessUpdateListener<ForumTopicItem.Topic> {
 
 		@Override
-		public void updateData(ForumTopicItem.Data returnedObj) {
+		public void updateData(ForumTopicItem.Topic returnedObj) {
 			super.updateData(returnedObj);
 
-			Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumTopicsParams());
+			Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumTopicByCategoryParams(categoryId));
 			if (cursor.moveToFirst()) {
 				topicsCursorAdapter.changeCursor(cursor);
 			} else {

@@ -42,6 +42,7 @@
         <attr name="greyButtonSmall" format="reference" />
         <attr name="orangeButtonSmall" format="reference" />
         <attr name="greyButtonSmallSolid" format="reference" />
+        <attr name="pageButton" format="reference" />
     </declare-styleable>
 
 
