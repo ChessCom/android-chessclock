@@ -1080,6 +1080,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		private boolean firstRun = true;
 		private final Move move;
 		private final boolean forward;
+		private long animationTime;
 
 		public MoveAnimator(Move move, boolean forward) {
 			this.move = move;
@@ -1160,9 +1161,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 
 		public long getAnimationTime() {
-			updateState();
-			long animationTime = stopTime - now;
-			return animationTime < 0 ? 0 : animationTime;
+			return animationTime;
 		}
 
 		public boolean isSquareHidden(int square) {
@@ -1176,7 +1175,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int dy = ChessBoard.getRow(move.to) - ChessBoard.getRow(move.from);
 			double dist = Math.sqrt(dx * dx + dy * dy);
 			double t = Math.sqrt(dist) * PIECE_ANIM_SPEED;
-			int animationTime = (int) Math.round(t);
+			animationTime = (int) Math.round(t);
 
 			startTime = System.currentTimeMillis();
 			stopTime = startTime + animationTime;
@@ -1191,17 +1190,17 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			double animationTimeFactor = (now - startTime) / (double)(stopTime - startTime);
 			drawAnimPiece(canvas, pieceBitmap, from1, to1, animationTimeFactor);
 			drawAnimPiece(canvas, rookCastlingBitmap, from2, to2, animationTimeFactor);
-			long now2 = System.currentTimeMillis();
+			/*long now2 = System.currentTimeMillis();
 			long delay = 20 - (now2 - now);
 			if (delay < 1) {
 				delay = 1;
-			}
-			new Handler().postDelayed(new Runnable() {
+			}*/
+			/*handler.postDelayed(new Runnable() {
 				@Override
-				public void run() {
+				public void run() {*/
 					invalidate();
-				}
-			}, delay);
+				/*}
+			}, delay);*/
 		}
 
 		private void drawAnimPiece(Canvas canvas, Bitmap pieceBitmap, int from, int to, double animationTimeFactor) {

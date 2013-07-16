@@ -134,7 +134,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 		long delay = appData.isComputerVsHumanGameMode(getBoardFace())
 				&& !movesToAnimate.isEmpty()
-				? movesToAnimate.getFirst().getAnimationTime() : 0;
+				? movesToAnimate.getFirst().getAnimationTime() : 0; // todo: hide piece anyway
 
 		handler.postDelayed(new Runnable() {
 			@Override
