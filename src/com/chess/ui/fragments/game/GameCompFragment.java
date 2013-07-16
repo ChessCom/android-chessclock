@@ -441,6 +441,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	private Runnable reverseHintTask = new Runnable() {
 		@Override
 		public void run() {
+			boardView.scheduleMoveAnimation(getBoardFace().getLastMove(), false);
 			getBoardFace().takeBack();
 			boardView.invalidate();
 

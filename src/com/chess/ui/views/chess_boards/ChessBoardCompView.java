@@ -39,13 +39,11 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 	public ChessBoardCompView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
     }
 
     public void setGameActivityFace(GameCompActivityFace gameActivityFace) {
 		super.setGameActivityFace(gameActivityFace);
         gameCompActivityFace = gameActivityFace;
-
     }
 
 	public void setControlsView(ControlsCompView controlsView) {
@@ -131,17 +129,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		Log.d(CompEngineHelper.TAG, "make move lastMove " + lastMove);
 
 		computeMoveTask = new PostMoveToCompTask(computeMoveItem, AppData.getCompEngineHelper(), gameCompActivityFace);
-
-		long delay = appData.isComputerVsHumanGameMode(getBoardFace())
-				&& !movesToAnimate.isEmpty()
-				? movesToAnimate.getFirst().getAnimationTime() : 0; // todo: hide piece anyway
-
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				computeMoveTask.execute();
-			}
-		}, delay);
+		computeMoveTask.execute();
 	}
 
 	public void computerMove(final int time) {
@@ -190,6 +178,9 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			if (animationActive) {
 				moveAnimator.draw(canvas);
 			} else {
+				if (moveAnimator.isForceCompEngine()) {
+					afterMove();
+				}
 				movesToAnimate.remove(moveAnimator);
 				if (movesToAnimate.size() > 0) {
 					moveAnimator = movesToAnimate.getFirst();
@@ -274,17 +265,24 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 					gameCompActivityFace.showChoosePieceDialog(col, row);
                     return true;
                 }
-                if (found && getBoardFace().makeMove(move)) {
-                    invalidate();
-                    afterMove();
-                } else if (getBoardFace().getPieces()[to] != 6 && getBoardFace().getSide() == getBoardFace().getColor()[to]) {
-                    pieceSelected = true;
-                    firstClick = false;
-                    from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
-                    invalidate();
-                } else {
-                    invalidate();
-                }
+
+				boolean moveMade = false;
+				MoveAnimator moveAnimator = null;
+				if (found) {
+					moveAnimator = new MoveAnimator(move, true);
+					moveMade = getBoardFace().makeMove(move);
+				}
+				if (moveMade) {
+					moveAnimator.setForceCompEngine(true); // TODO @engine: probably pospone afterMove() only for vs comp mode
+					movesToAnimate.add(moveAnimator);
+					//afterMove(); //
+				} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
+						&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
+					pieceSelected = true;
+					firstClick = false;
+					from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
+				}
+				invalidate();
             }
         }
         return true;
@@ -329,17 +327,24 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
                 break;
             }
         }
-        if (found && getBoardFace().makeMove(move)) {
-            invalidate();
-            afterMove();
-        } else if (getBoardFace().getPieces()[to] != 6 && getBoardFace().getSide() == getBoardFace().getColor()[to]) {
-            pieceSelected = true;
-            firstClick = false;
-            from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
-            invalidate();
-        } else {
-            invalidate();
-        }
+
+		boolean moveMade = false;
+		MoveAnimator moveAnimator = null;
+		if (found) {
+			moveAnimator = new MoveAnimator(move, true);
+			moveMade = getBoardFace().makeMove(move);
+		}
+		if (moveMade) {
+			moveAnimator.setForceCompEngine(true); // TODO @engine: probably pospone afterMove() only for vs comp mode
+			movesToAnimate.add(moveAnimator);
+			//afterMove(); //
+		} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
+				&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
+			pieceSelected = true;
+			firstClick = false;
+			from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
+		}
+		invalidate();
     }
 
     @Override

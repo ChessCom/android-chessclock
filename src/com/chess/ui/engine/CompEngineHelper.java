@@ -128,12 +128,9 @@ public class CompEngineHelper implements GUIInterface {
 			} else {
 				String dataStr = settings.getString(CompEngineHelper.GAME_STATE, null);
 				version = settings.getInt(GAME_STATE_VERSION_NAME, version);
-				log("MOVEMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! dataStr=" + dataStr);
 				if (dataStr != null)
 					data = strToByteArr(dataStr);
 			}
-			log("MOVEMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! savedInstanceState=" + savedInstanceState);
-			log("MOVEMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! restoring data="+data);
 			if (data != null) {
 				engineCtrl.fromByteArray(data, version);
 			}

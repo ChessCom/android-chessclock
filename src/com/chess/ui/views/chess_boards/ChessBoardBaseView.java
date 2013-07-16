@@ -610,8 +610,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				return true;
 			}
 
-			Log.d("DEBUGBOARD", "found " + found);
-
 			boolean moveMade = false;
 			MoveAnimator moveAnimator = null;
 			if (found) {
@@ -621,18 +619,15 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				moveMade = getBoardFace().makeMove(move);
 			}
 
-			Log.d("DEBUGBOARD", "moveMade " + moveMade);
-			Log.d("DEBUGBOARD", "move " + move);
-
-			if (moveMade) { // if move is valid
-				Log.d("DEBUGBOARD", "onActionUp 1");
+			if (moveMade) {
 				if (showAnimation) {
+					moveAnimator.setForceCompEngine(true); // TODO @engine: probably pospone afterMove() only for vs comp mode
 					movesToAnimate.add(moveAnimator);
+				} else {
+					afterMove(); //
 				}
-				afterMove();
 			} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 					&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
-				Log.d("DEBUGBOARD", "onActionUp 2");
 				pieceSelected = true;
 				firstClick = false;
 				from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
@@ -665,18 +660,24 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				break;
 			}
 		}
-		if (found && getBoardFace().makeMove(move)) {
-			invalidate();
-			afterMove();
+
+		boolean moveMade = false;
+		MoveAnimator moveAnimator = null;
+		if (found) {
+			moveAnimator = new MoveAnimator(move, true);
+			moveMade = getBoardFace().makeMove(move);
+		}
+		if (moveMade) {
+			moveAnimator.setForceCompEngine(true); // TODO @engine: probably pospone afterMove() only for vs comp mode
+			movesToAnimate.add(moveAnimator);
+			//afterMove(); //
 		} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 				&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
 			pieceSelected = true;
 			firstClick = false;
 			from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
-			invalidate();
-		} else {
-			invalidate();
 		}
+		invalidate();
 	}
 
 	/**
@@ -1081,14 +1082,22 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		private final Move move;
 		private final boolean forward;
 		private long animationTime;
+		private boolean forceCompEngine;
 
 		public MoveAnimator(Move move, boolean forward) {
 			this.move = move;
 			this.forward = forward;
 
+			Log.d("debugboard", "move " + move);
+
 			int moveFromPosition = forward ? move.from : move.to;
 			int fromColor = getBoardFace().getColor()[moveFromPosition];
 			int fromPiece = getBoardFace().getPieces()[moveFromPosition];
+
+			Log.d("debugboard", "moveFromPosition " + moveFromPosition);
+			Log.d("debugboard", "fromColor " + fromColor);
+			Log.d("debugboard", "fromPiece " + fromPiece);
+
 			pieceBitmap = piecesBitmaps[fromColor][fromPiece];
 
 			// todo: check game load
@@ -1215,6 +1224,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 			rect.set(xCrd, yCrd, xCrd + square, yCrd + square);
 			canvas.drawBitmap(pieceBitmap, null, rect, null);
+		}
+
+		public boolean isForceCompEngine() {
+			return forceCompEngine;
+		}
+
+		public void setForceCompEngine(boolean forceCompEngine) {
+			this.forceCompEngine = forceCompEngine;
 		}
 	}
 }
