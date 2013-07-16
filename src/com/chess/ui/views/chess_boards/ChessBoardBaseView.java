@@ -59,7 +59,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public static final int EMPTY_ID = 6;
 	private static final int QVGA_WIDTH = 240;
 	private final float density;
-	private AppData appData;
+	protected AppData appData;
 	private int boardId;
 
 	protected Bitmap[][] piecesBitmaps;
@@ -566,6 +566,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		int col = (int) (event.getX() - event.getX() % square) / square;
 		int row = (int) (event.getY() - event.getY() % square) / square;
 
+		boolean showAnimation = !drag;
+
 		drag = false;
 		// if outside of the boardBitmap - return
 		if (col > 7 || col < 0 || row > 7 || row < 0) { // if touched out of board
@@ -611,16 +613,22 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			Log.d("DEBUGBOARD", "found " + found);
 
 			boolean moveMade = false;
+			MoveAnimator moveAnimator = null;
 			if (found) {
+				if (showAnimation) {
+					moveAnimator = new MoveAnimator(move, true);
+				}
 				moveMade = getBoardFace().makeMove(move);
 			}
 
 			Log.d("DEBUGBOARD", "moveMade " + moveMade);
 			Log.d("DEBUGBOARD", "move " + move);
 
-			// todo: show move animation when player makes move by click, and do not show for drag
-			if (found && moveMade) { // if move is valid
+			if (moveMade) { // if move is valid
 				Log.d("DEBUGBOARD", "onActionUp 1");
+				if (showAnimation) {
+					movesToAnimate.add(moveAnimator);
+				}
 				afterMove();
 			} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 					&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
@@ -977,7 +985,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	public final void setMoveHints(HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> moveHints) {
-		boolean equal;
+		/*boolean equal;
 		if ((this.moveHints == null) || (moveHints == null)) {
 			equal = this.moveHints == moveHints;
 		} else {
@@ -986,7 +994,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (!equal) {
 			this.moveHints = moveHints;
 			invalidate();
-		}
+		}*/
 	}
 
 	public final void drawMoveHints(Canvas canvas) {
@@ -1108,9 +1116,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					rookCastlingBitmap = piecesBitmaps[fromColor][ChessBoard.ROOK];
 				}
 			} else {
-				// todo: check promotions
-				/*if (move.promote > 0)
-					moveAnimator.piece1 = getBoardFace().isWhite(move.from) ? Piece.WPAWN : Piece.BPAWN;*/
 				from1 = move.to;
 				to1 = move.from;
 				hide1 = to1;
@@ -1137,24 +1142,30 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			return capturedPieceBitmap;
 		}
 
-		public final boolean updateState() {
+		public boolean updateState() {
 			now = System.currentTimeMillis();
 			return isAnimationActive();
 		}
 
-		private final boolean isAnimationActive() {
+		private boolean isAnimationActive() {
 
 			if (firstRun) {
 				initTimer();
 				firstRun = false;
 			}
 
-			if ((startTime < 0) || (now >= stopTime))
+			if (/*(startTime < 0) ||*/ (now >= stopTime))
 				return false;
 			return true;
 		}
 
-		public final boolean isSquareHidden(int square) {
+		public long getAnimationTime() {
+			updateState();
+			long animationTime = stopTime - now;
+			return animationTime < 0 ? 0 : animationTime;
+		}
+
+		public boolean isSquareHidden(int square) {
 			/*if (!isAnimationActive())
 				return false;*/
 			return (square == hide1) || (square == hide2);
@@ -1177,9 +1188,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				return;
 			}
 
-			double animationTime = (now - startTime) / (double)(stopTime - startTime);
-			drawAnimPiece(canvas, pieceBitmap, from1, to1, animationTime);
-			drawAnimPiece(canvas, rookCastlingBitmap, from2, to2, animationTime);
+			double animationTimeFactor = (now - startTime) / (double)(stopTime - startTime);
+			drawAnimPiece(canvas, pieceBitmap, from1, to1, animationTimeFactor);
+			drawAnimPiece(canvas, rookCastlingBitmap, from2, to2, animationTimeFactor);
 			long now2 = System.currentTimeMillis();
 			long delay = 20 - (now2 - now);
 			if (delay < 1) {

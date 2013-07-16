@@ -131,7 +131,17 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		Log.d(CompEngineHelper.TAG, "make move lastMove " + lastMove);
 
 		computeMoveTask = new PostMoveToCompTask(computeMoveItem, AppData.getCompEngineHelper(), gameCompActivityFace);
-		computeMoveTask.execute();
+
+		long delay = appData.isComputerVsHumanGameMode(getBoardFace())
+				&& !movesToAnimate.isEmpty()
+				? movesToAnimate.getFirst().getAnimationTime() : 0;
+
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				computeMoveTask.execute();
+			}
+		}, delay);
 	}
 
 	public void computerMove(final int time) {
