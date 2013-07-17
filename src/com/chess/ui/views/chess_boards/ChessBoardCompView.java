@@ -170,34 +170,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		drawDragPosition(canvas);
 		drawTrackballDrag(canvas);
 
-		// todo: move to base class for all boards
-		if (movesToAnimate.size() > 0) { // todo: refactor to While construction and List
-			MoveAnimator moveAnimator = movesToAnimate.getFirst();
-			boolean animationActive = moveAnimator.updateState();
-			drawPieces(canvas, animationActive, moveAnimator);
-			if (animationActive) {
-				moveAnimator.draw(canvas);
-			} else {
-				if (moveAnimator.isForceCompEngine()) {
-					afterMove();
-				}
-				movesToAnimate.remove(moveAnimator);
-				if (movesToAnimate.size() > 0) {
-					moveAnimator = movesToAnimate.getFirst();
-					if (moveAnimator.isForward()) {
-						getBoardFace().takeNext();
-					}
-					else {
-						getBoardFace().takeBack();
-					}
-					animationActive = moveAnimator.updateState();
-					drawPieces(canvas, animationActive, moveAnimator);
-					moveAnimator.draw(canvas);
-				}
-			}
-		} else {
-			drawPieces(canvas, false, null);
-		}
+		drawPiecesAndAnimation(canvas);
 
 		drawMoveHints(canvas); // todo @compengine: move to base class for all game modes
 		drawCoordinates(canvas);
@@ -273,7 +246,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 					moveMade = getBoardFace().makeMove(move);
 				}
 				if (moveMade) {
-					moveAnimator.setForceCompEngine(true); // TODO @engine: probably pospone afterMove() only for vs comp mode
+					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
 					movesToAnimate.add(moveAnimator);
 					//afterMove(); //
 				} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
@@ -335,7 +308,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			moveMade = getBoardFace().makeMove(move);
 		}
 		if (moveMade) {
-			moveAnimator.setForceCompEngine(true); // TODO @engine: probably pospone afterMove() only for vs comp mode
+			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
 			movesToAnimate.add(moveAnimator);
 			//afterMove(); //
 		} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY

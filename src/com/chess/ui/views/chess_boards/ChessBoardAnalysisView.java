@@ -100,10 +100,11 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 		super.onDraw(canvas);
 		drawBoard(canvas);
 
-		drawPieces(canvas, false, null);
 		drawHighlights(canvas);
 		drawDragPosition(canvas);
 		drawTrackballDrag(canvas);
+
+		drawPiecesAndAnimation(canvas);
 
 		drawCoordinates(canvas);
 	}
@@ -170,17 +171,24 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 					gameAnalysisActivityFace.showChoosePieceDialog(col, row);
 					return true;
 				}
-				if (found && getBoardFace().makeMove(move)) {
-					invalidate();
-					afterMove();
-				} else if (getBoardFace().getPieces()[to] != 6 && getBoardFace().getSide() == getBoardFace().getColor()[to]) {
+
+				boolean moveMade = false;
+				MoveAnimator moveAnimator = null;
+				if (found) {
+					moveAnimator = new MoveAnimator(move, true);
+					moveMade = getBoardFace().makeMove(move);
+				}
+				if (moveMade) {
+					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
+					movesToAnimate.add(moveAnimator);
+					//afterMove(); //
+				} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
+						&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
 					pieceSelected = true;
 					firstClick = false;
 					from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
-					invalidate();
-				} else {
-					invalidate();
 				}
+				invalidate();
 			}
 		}
 		return true;
@@ -216,17 +224,24 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 				break;
 			}
 		}
-		if (found && getBoardFace().makeMove(move)) {
-			invalidate();
-			afterMove();
-		} else if (getBoardFace().getPieces()[to] != 6 && getBoardFace().getSide() == getBoardFace().getColor()[to]) {
+
+		boolean moveMade = false;
+		MoveAnimator moveAnimator = null;
+		if (found) {
+			moveAnimator = new MoveAnimator(move, true);
+			moveMade = getBoardFace().makeMove(move);
+		}
+		if (moveMade) {
+			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
+			movesToAnimate.add(moveAnimator);
+			//afterMove(); //
+		} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
+				&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
 			pieceSelected = true;
 			firstClick = false;
 			from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
-			invalidate();
-		} else {
-			invalidate();
 		}
+		invalidate();
 	}
 
 	@Override
@@ -249,19 +264,33 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 
 	@Override
 	public void moveBack() {
-		getBoardFace().setFinished(false);
-		pieceSelected = false;
-		getBoardFace().takeBack();
-		invalidate();
-		gameAnalysisActivityFace.invalidateGameScreen();
+
+		if (movesToAnimate.size() == 0 && getBoardFace().getHply() > 0) {
+			getBoardFace().setFinished(false);
+			pieceSelected = false;
+			scheduleMoveAnimation(getBoardFace().getLastMove(), false);
+			getBoardFace().takeBack();
+			invalidate();
+			gameAnalysisActivityFace.invalidateGameScreen();
+		}
 	}
 
 	@Override
 	public void moveForward() {
-		pieceSelected = false;
-		getBoardFace().takeNext();
-		invalidate();
-		gameAnalysisActivityFace.invalidateGameScreen();
+
+		if (movesToAnimate.size() == 0) {
+			pieceSelected = false;
+
+			Move move = getBoardFace().getNextMove();
+			if (move == null) {
+				return;
+			}
+			scheduleMoveAnimation(move, true);
+			getBoardFace().takeNext();
+
+			invalidate();
+			gameAnalysisActivityFace.invalidateGameScreen();
+		}
 	}
 
 	@Override

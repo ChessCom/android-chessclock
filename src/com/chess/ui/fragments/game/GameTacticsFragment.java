@@ -33,6 +33,7 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
+import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
@@ -223,16 +224,16 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void playLastMoveAnimationAndCheck() {
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				getBoardFace().takeNext();
-				invalidateGameScreen();
+		Move move = getBoardFace().getNextMove();
+		if (move == null) {
+			return;
+		}
+		boardView.scheduleMoveAnimation(move, true);
+		getBoardFace().takeNext();
+		invalidateGameScreen();
 
-				if (getBoardFace().isLatestMoveMadeUser())
-					verifyMove();
-			}
-		}, LAST_MOVE_ANIM_DELAY);
+		if (getBoardFace().isLatestMoveMadeUser())
+			verifyMove();
 	}
 
 	@Override
@@ -266,7 +267,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			boardFace.increaseTacticsCorrectMoves();
 
 			if (boardFace.getMovesCount() < boardFace.getTacticMoves().length - 1) { // if it's not last move, make comp move
-				boardFace.updateMoves(boardFace.getTacticMoves()[boardFace.getHply()], true);
+				final Move move = boardFace.convertMove(boardFace.getTacticMoves()[boardFace.getHply()]);
+				boardView.scheduleMoveAnimation(move, true);
+				boardFace.makeMove(move, true);
 				invalidateGameScreen();
 			} else { // correct
 				if (tacticItem.isWasShowed()) {
@@ -459,7 +462,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				return;
 			}
 
-			getBoardFace().updateMoves(boardFace.getTacticMoves()[currentTacticAnswerCnt], true);
+			final Move move = boardFace.convertMove(boardFace.getTacticMoves()[currentTacticAnswerCnt]);
+			boardView.scheduleMoveAnimation(move, true);
+			boardFace.makeMove(move, true);
 			invalidateGameScreen();
 
 			currentTacticAnswerCnt++;

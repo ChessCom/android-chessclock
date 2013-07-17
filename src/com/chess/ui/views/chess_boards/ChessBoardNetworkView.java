@@ -65,13 +65,12 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		drawBoard(canvas);
 
 		if (gameActivityFace != null && getBoardFace() != null) {
-			drawPieces(canvas, false, null);
 
 			drawHighlights(canvas);
-
 			drawDragPosition(canvas);
-
 			drawTrackballDrag(canvas);
+
+			drawPiecesAndAnimation(canvas);
 		}
 
 		drawCoordinates(canvas);
@@ -139,17 +138,24 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 					gameActivityFace.showChoosePieceDialog(col, row);
 					return true;
 				}
-				if (found && getBoardFace().makeMove(move)) {
-					invalidate();
-					afterMove();
-				} else if (getBoardFace().getPieces()[to] != 6 && getBoardFace().getSide() == getBoardFace().getColor()[to]) {
+
+				boolean moveMade = false;
+				MoveAnimator moveAnimator = null;
+				if (found) {
+					moveAnimator = new MoveAnimator(move, true);
+					moveMade = getBoardFace().makeMove(move);
+				}
+				if (moveMade) {
+					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
+					movesToAnimate.add(moveAnimator);
+					//afterMove(); //
+				} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
+						&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
 					pieceSelected = true;
 					firstClick = false;
 					from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
-					invalidate();
-				} else {
-					invalidate();
 				}
+				invalidate();
 			}
 		}
 		return true;

@@ -748,21 +748,27 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public void updateMoves(String newMove, boolean playSound) {
-		int[] moveFT = MoveParser.parse(this, newMove);
+		final Move move = convertMove(newMove);
+		makeMove(move, playSound);
+	}
+
+	public Move convertMove(String move) {
+		int[] moveFT = MoveParser.parse(this, move);
+		return convertMove(moveFT);
+	}
+
+	public Move convertMove(int[] moveFT) {
+		Move move;
 		if (moveFT.length == 4) {
-			Move move;
 			if (moveFT[3] == 2)
 				move = new Move(moveFT[0], moveFT[1], 0, Move.CASTLING_MASK);
 			else
 				move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-
-			makeMove(move, playSound);
 		} else {
-			Move move = new Move(moveFT[0], moveFT[1], 0, 0);
-			makeMove(move, playSound);
+			move = new Move(moveFT[0], moveFT[1], 0, 0);
 		}
+		return move;
 	}
-
 
 	/* makeMove() makes a move. If the move is illegal, it
 			undoes whatever it did and returns false. Otherwise, it

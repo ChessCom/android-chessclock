@@ -421,17 +421,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		Log.d(CompEngineHelper.TAG, "updateComputerMove " + engineMove);
 
 		int[] moveFT = MoveParser.parseCoordinate(getBoardFace(), engineMove.toString());
-
-		final Move move;
-		if (moveFT.length == 4) {
-			if (moveFT[3] == 2) {
-				move = new Move(moveFT[0], moveFT[1], 0, Move.CASTLING_MASK);
-			} else {
-				move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-			}
-		} else {
-			move = new Move(moveFT[0], moveFT[1], 0, 0);
-		}
+		final Move move = getBoardFace().convertMove(moveFT);
 
 		Log.d(CompEngineHelper.TAG, "comp make move: " + move);
 		Log.d(CompEngineHelper.TAG, "isHint = " + boardView.isHint());

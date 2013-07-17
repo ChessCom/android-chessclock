@@ -280,14 +280,19 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	@Override
 	public void moveBack() {
-		getBoardFace().setFinished(false);
-		pieceSelected = false;
-		getBoardFace().takeBack();
-		invalidate();
-		gameActivityFace.invalidateGameScreen();
 
-		if (notationsView != null) { // in puzzles we don't have notations  so probably should be moved to activity level
-			notationsView.moveBack(getBoardFace().getHply());
+		if (movesToAnimate.size() == 0 && getBoardFace().getHply() > 0) {
+
+			getBoardFace().setFinished(false);
+			pieceSelected = false;
+			scheduleMoveAnimation(getBoardFace().getLastMove(), false);
+			getBoardFace().takeBack();
+			invalidate();
+			gameActivityFace.invalidateGameScreen();
+
+			if (notationsView != null) { // in puzzles we don't have notations  so probably should be moved to activity level
+				notationsView.moveBack(getBoardFace().getHply());
+			}
 		}
 	}
 
@@ -302,13 +307,23 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	@Override
 	public void moveForward() {
-		pieceSelected = false;
-		getBoardFace().takeNext();
-		invalidate();
-		gameActivityFace.invalidateGameScreen();
 
-		if (notationsView != null) {
-			notationsView.moveForward(getBoardFace().getHply());
+		if (movesToAnimate.size() == 0) {
+			pieceSelected = false;
+
+			Move move = getBoardFace().getNextMove();
+			if (move == null) {
+				return;
+			}
+			scheduleMoveAnimation(move, true);
+			getBoardFace().takeNext();
+
+			invalidate();
+			gameActivityFace.invalidateGameScreen();
+
+			if (notationsView != null) {
+				notationsView.moveForward(getBoardFace().getHply());
+			}
 		}
 	}
 
@@ -376,6 +391,36 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			square = viewWidth / 8;
 		}
 		canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), boardBackPaint);
+	}
+
+	protected void drawPiecesAndAnimation(Canvas canvas) {
+		if (movesToAnimate.size() > 0) {
+			MoveAnimator moveAnimator = movesToAnimate.getFirst();
+			boolean animationActive = moveAnimator.updateState();
+			drawPieces(canvas, animationActive, moveAnimator);
+			if (animationActive) {
+				moveAnimator.draw(canvas);
+			} else {
+				if (moveAnimator.isForceCompEngine()) {
+					afterMove();
+				}
+				movesToAnimate.remove(moveAnimator);
+				if (movesToAnimate.size() > 0) {
+					moveAnimator = movesToAnimate.getFirst();
+					if (moveAnimator.isForward()) {
+						getBoardFace().takeNext();
+					}
+					else {
+						getBoardFace().takeBack();
+					}
+					animationActive = moveAnimator.updateState();
+					drawPieces(canvas, animationActive, moveAnimator);
+					moveAnimator.draw(canvas);
+				}
+			}
+		} else {
+			drawPieces(canvas, false, null);
+		}
 	}
 
 	protected void drawPieces(Canvas canvas, boolean animationActive, MoveAnimator moveAnimator) {
@@ -621,7 +666,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 			if (moveMade) {
 				if (showAnimation) {
-					moveAnimator.setForceCompEngine(true); // TODO @engine: probably pospone afterMove() only for vs comp mode
+					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
 					movesToAnimate.add(moveAnimator);
 				} else {
 					afterMove(); //
@@ -668,7 +713,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			moveMade = getBoardFace().makeMove(move);
 		}
 		if (moveMade) {
-			moveAnimator.setForceCompEngine(true); // TODO @engine: probably pospone afterMove() only for vs comp mode
+			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
 			movesToAnimate.add(moveAnimator);
 			//afterMove(); //
 		} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
@@ -742,6 +787,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					getBoardFace().takeBack();
 				}
 			}
+			// TODO @comp: check, show animation for notation scroll
 			checkControlsButtons();
 			invalidate();
 		}

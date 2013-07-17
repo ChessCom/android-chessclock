@@ -16,6 +16,7 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.BaseGameItem;
 import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.GameActivityFace;
@@ -33,8 +34,6 @@ import java.text.SimpleDateFormat;
  * Time: 13:46
  */
 public abstract class GameBaseFragment extends LiveBaseFragment implements GameActivityFace {
-
-	public static final int LAST_MOVE_ANIM_DELAY = 1300;
 
 	protected static final String GAME_GOES = "*";
 	protected static final String WHITE_WINS = "1-0";
@@ -200,14 +199,16 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 	}
 
 	protected void playLastMoveAnimation() {
-		handler.postDelayed(new Runnable() {    // seems to be working that way
-			@Override
-			public void run() {
-				getBoardFace().takeNext();
-				if (getActivity() != null)
-					invalidateGameScreen();
-			}
-		}, LAST_MOVE_ANIM_DELAY);
+		Move move = getBoardFace().getNextMove();
+		if (move == null) {
+			return;
+		}
+		boardView.scheduleMoveAnimation(move, true);
+		getBoardFace().takeNext();
+
+		if (getActivity() != null)
+			invalidateGameScreen();
+
 	}
 
 	public Context getMeContext() {

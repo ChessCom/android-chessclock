@@ -124,4 +124,8 @@ public interface BoardFace {
 	void setFinished(boolean finished);
 
 	boolean isFinished();
+
+	Move convertMove(int[] moveFT);
+
+	Move convertMove(String move);
 }
