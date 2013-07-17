@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.utilities.AppUtils;
 
@@ -54,6 +53,7 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 		holder.dateTxt = (TextView) view.findViewById(R.id.dateTxt);
 		holder.quoteTxt = (TextView) view.findViewById(R.id.quoteTxt);
 		holder.bodyTxt = (TextView) view.findViewById(R.id.bodyTxt);
+		holder.commentNumberTxt = (TextView) view.findViewById(R.id.commentNumberTxt);
 
 		view.setTag(holder);
 
@@ -65,6 +65,7 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 		ViewHolder holder = (ViewHolder) view.getTag();
 
 		holder.authorTxt.setText(getString(cursor, DBConstants.V_USERNAME));
+		holder.commentNumberTxt.setText("# " + getInt(cursor, DBConstants.V_COMMENT_NUMBER));
 		holder.bodyTxt.setText(Html.fromHtml(getString(cursor, DBConstants.V_DESCRIPTION)));
 
 		long timestamp = getLong(cursor, DBConstants.V_CREATE_DATE);
@@ -72,13 +73,11 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 		holder.dateTxt.setText(lastCommentAgoStr);
 
 		// set premium icon
-//		int status = getInt(cursor, DBConstants.V_PREMIUM_STATUS);
-		int status = StaticData.DIAMOND_USER;
+		int status = getInt(cursor, DBConstants.V_PREMIUM_STATUS);
 		holder.premiumImg.setImageResource(AppUtils.getPremiumIcon(status));
 
 		// set country flag
-//		int countryId = getInt(cursor, DBConstants.V_COUNTRY_ID);
-		int countryId = 116;
+		int countryId = getInt(cursor, DBConstants.V_COUNTRY_ID);
 		Drawable drawable;
 		if (countryDrawables.get(countryId) == null) {
 			drawable = AppUtils.getCountryFlagScaled(context, countryMap.get(countryId));
@@ -89,8 +88,7 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 
 		holder.countryImg.setImageDrawable(drawable);
 
-		String url = "http://s3.amazonaws.com/chess-7/images_users/avatars/rest_origin.14.png";
-//		String url = getString(cursor, DBConstants.V_PHOTO_URL);
+		String url = getString(cursor, DBConstants.V_PHOTO_URL);
 		imageLoader.download(url, holder.photoImg, imageSize);
 	}
 
@@ -102,5 +100,6 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 		public TextView dateTxt;
 		public TextView quoteTxt;
 		public TextView bodyTxt;
+		public TextView commentNumberTxt;
 	}
 }

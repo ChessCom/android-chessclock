@@ -118,25 +118,25 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getForumTopicByCategoryParams(int categoryId) {
-		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DBConstants.uriArray[DBConstants.FORUM_TOPICS]);
-		queryParams.setSelection(DBDataManager.SELECTION_CATEGORY_ID);
-		queryParams.setArguments(new String[]{String.valueOf(categoryId)});
-		return queryParams;
-	}
-
 	public static QueryParams getForumCategoriesParams() {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.FORUM_CATEGORIES]);
 		return queryParams;
 	}
 
-	public static QueryParams getForumPostsParams(int topicId) {
+	public static QueryParams getForumTopicByCategoryParams(int categoryId, int currentPage) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DBConstants.uriArray[DBConstants.FORUM_TOPICS]);
+		queryParams.setSelection(DBDataManager.SELECTION_CATEGORY_ID_AND_PAGE);
+		queryParams.setArguments(new String[]{String.valueOf(categoryId), String.valueOf(currentPage)});
+		return queryParams;
+	}
+
+	public static QueryParams getForumPostsParams(int topicId, int currentPage) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.FORUM_POSTS]);
-		queryParams.setSelection(DBDataManager.SELECTION_ITEM_ID);
-		queryParams.setArguments(new String[]{String.valueOf(topicId)});
+		queryParams.setSelection(DBDataManager.SELECTION_ITEM_ID_AND_PAGE);
+		queryParams.setArguments(new String[]{String.valueOf(topicId), String.valueOf(currentPage)});
 		return queryParams;
 	}
 

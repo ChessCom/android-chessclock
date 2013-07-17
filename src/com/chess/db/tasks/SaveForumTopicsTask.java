@@ -22,11 +22,13 @@ public class SaveForumTopicsTask extends AbstractUpdateTask<ForumTopicItem.Topic
 	private ContentResolver contentResolver;
 	protected static String[] arguments = new String[1];
 	private SparseArray<String> categoriesMap;
+	private int currentPage;
 
 	public SaveForumTopicsTask(TaskUpdateInterface<ForumTopicItem.Topic> taskFace, List<ForumTopicItem.Topic> currentItems,
-							   ContentResolver resolver, SparseArray<String> categoriesMap) {
+							   ContentResolver resolver, SparseArray<String> categoriesMap, int currentPage) {
 		super(taskFace, new ArrayList<ForumTopicItem.Topic>());
 		this.categoriesMap = categoriesMap;
+		this.currentPage = currentPage;
 		this.itemList.addAll(currentItems);
 
 		this.contentResolver = resolver;
@@ -37,6 +39,7 @@ public class SaveForumTopicsTask extends AbstractUpdateTask<ForumTopicItem.Topic
 		synchronized (itemList) {
 			for (ForumTopicItem.Topic currentItem : itemList) {
 				currentItem.setCategoryName(categoriesMap.get(currentItem.getCategoryId()));
+				currentItem.setPage(currentPage);
 				DBDataManager.updateForumTopicItem(contentResolver, currentItem);
 			}
 		}

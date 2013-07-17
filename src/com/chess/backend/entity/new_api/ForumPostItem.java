@@ -14,27 +14,14 @@ public class ForumPostItem extends BaseResponseItem<ForumPostItem.Data> {
     "comments_total_count": 35,
     "comments": [
       {
-        "username": "Lucky",
-        "create_date": 1309917367,
-        "body": "<p>It totally is.&nbsp;</p>\r\n<p>Editing to test a thread can be edited by staff whilst its locked</p>"
-      },
-
-      {
-        "username": "deepgreene",
-        "create_date": 1324663848,
-        "body": "<p><span style=\"color: #800000;\"></span>Blah blah blah&nbsp;<strong>Bold</strong>&nbsp;<em>italics&nbsp;</em></p>\r\n<p><span style=\"color: #ffff00;\">Yellow!!!!!</span></p>\r\n<p><span style=\"color: #ffff00;\"></span></p>\r\n<hr />\r\n<p><span style=\"color: #ffff00;\"><br /></span></p>"
-      },
-      {
-        "username": "kohai",
-        "create_date": 1324664523,
-        "body": "deepgreene wrote:\r\n          Blah blah blah Bold italics \r\nYellow!!!!!\r\n\r\n\r\n\r\n        test"
-      },
-      {
-        "username": "deepgreene",
-        "create_date": 1324703604,
-        "body": "<p>Ok this is a normal sentence.&nbsp;</p>\r\n<ol>\r\n<li>List item</li>\r\n<li>List item</li>\r\n<li>Etc</li>\r\n</ol>\r\n<p><strong>Bold text can be&nbsp;<em>really</em>&nbsp;<span style=\"color: #ff0000;\">RED<span style=\"color: #000000;\">.</span></span></strong><span style=\"color: #ff0000;\"><span style=\"color: #000000;\">&nbsp;This is no longer bold.&nbsp;</span></span></p>"
-      },
-
+		"avatar_url": "//d1lalstwiwz2br.cloudfront.net/images_users/avatars/erik.gif",
+		"body": "comment 1",
+		"comment_number": 1,
+		"country_id": 225,
+		"create_date": 1309917367,
+		"premium_status": true,
+		"username": "erik"
+	  },
     ]
   }
 */
@@ -62,7 +49,12 @@ public class ForumPostItem extends BaseResponseItem<ForumPostItem.Data> {
 		private String username;
 		private long create_date;
 		private String body;
+		private String avatar_url;
+		private int premium_status;
+		private int comment_number;
+		private int country_id;
 		private long topicId;
+		private int page;
 
 		public String getUsername() {
 			return username;
@@ -82,6 +74,30 @@ public class ForumPostItem extends BaseResponseItem<ForumPostItem.Data> {
 
 		public void setTopicId(long topicId) {
 			this.topicId = topicId;
+		}
+
+		public String getAvatarUrl() {
+			return avatar_url;
+		}
+
+		public int isPremiumStatus() {
+			return premium_status;
+		}
+
+		public int getCountryId() {
+			return country_id;
+		}
+
+		public int getCommentNumber() {
+			return comment_number;
+		}
+
+		public int getPage() {
+			return page;
+		}
+
+		public void setPage(int page) {
+			this.page = page;
 		}
 	}
 

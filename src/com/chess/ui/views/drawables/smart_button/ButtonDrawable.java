@@ -212,6 +212,8 @@ public class ButtonDrawable extends StateListDrawable {
 		if (usePressedLayer) { // by default we apply color filter and alpha for different states
 			createPressedState(pressedLayers);
 		}
+
+		// TODO add ability to use selected custom layer
 	}
 
 	@Override

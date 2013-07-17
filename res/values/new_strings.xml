@@ -253,6 +253,7 @@
 	<string name="minutes_arg">%s minutes</string>
 	<string name="ago_arg">%s ago &#8226;</string>
 	<string name="posts_arg">%s Posts</string>
+	<string name="quote">Quote</string>
 	<!--Game mode-->
 
 </resources>

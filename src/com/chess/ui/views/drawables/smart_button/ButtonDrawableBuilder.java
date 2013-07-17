@@ -172,6 +172,12 @@ public class ButtonDrawableBuilder {
 			createPage(buttonDrawable, resources);
 
 			return buttonDrawable;
+		} else if (styleId == R.style.Button_Page_Selected) {
+			ButtonDrawable buttonDrawable = setDefaults(context);
+			buttonDrawable.colorSolid = resources.getColor(R.color.white);
+			createPage(buttonDrawable, resources);
+
+			return buttonDrawable;
 		} else if (styleId == R.style.Rect_Top_Left) {
 			RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
 			rectButtonDrawable.rectPosition = TOP_LEFT;
@@ -425,7 +431,8 @@ public class ButtonDrawableBuilder {
 		buttonDrawable.colorRight2 = resources.getColor(R.color.white);
 		buttonDrawable.colorBottom2 = resources.getColor(R.color.white);
 		// Button colors
-		buttonDrawable.colorSolid = resources.getColor(R.color.new_square_button);
+		if (buttonDrawable.colorSolid == 0)
+			buttonDrawable.colorSolid = resources.getColor(R.color.new_square_button);
 		// init layers
 		buttonDrawable.init(resources);
 	}

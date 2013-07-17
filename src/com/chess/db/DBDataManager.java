@@ -68,9 +68,13 @@ public class DBDataManager {
 
 	public static String SELECTION_CATEGORY_ID = concatArguments(DBConstants.V_CATEGORY_ID);
 
+	public static String SELECTION_CATEGORY_ID_AND_PAGE = concatArguments(DBConstants.V_CATEGORY_ID, DBConstants.V_PAGE);
+
 	public static String SELECTION_CATEGORY = concatArguments(DBConstants.V_CATEGORY);
 
 	public static String SELECTION_ITEM_ID = concatArguments(DBConstants.V_ID);
+
+	public static String SELECTION_ITEM_ID_AND_PAGE = concatArguments(DBConstants.V_ID, DBConstants.V_PAGE);
 
 	public static String SELECTION_CREATE_DATE = concatArguments(DBConstants.V_CREATE_DATE);
 
@@ -1002,22 +1006,6 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static ContentValues putForumTopicItemToValues(ForumTopicItem.Topic dataObj) {
-		ContentValues values = new ContentValues();
-
-		values.put(DBConstants.V_TITLE, dataObj.getSubject());
-		values.put(DBConstants.V_ID, dataObj.getId());
-		values.put(DBConstants.V_CATEGORY_ID, dataObj.getCategoryId());
-		values.put(DBConstants.V_CATEGORY, dataObj.getCategoryName());
-		values.put(DBConstants.V_URL, dataObj.getUrl());
-		values.put(DBConstants.V_USERNAME, dataObj.getTopicUsername());
-		values.put(DBConstants.V_LAST_POST_USERNAME, dataObj.getLastPostUsername());
-		values.put(DBConstants.V_POST_COUNT, dataObj.getPostCount());
-		values.put(DBConstants.V_LAST_POST_DATE, dataObj.getLastPostDate());
-
-		return values;
-	}
-
 	public static ContentValues putForumCategoryItemToValues(ForumCategoryItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
@@ -1034,6 +1022,23 @@ public class DBDataManager {
 		return values;
 	}
 
+	public static ContentValues putForumTopicItemToValues(ForumTopicItem.Topic dataObj) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_TITLE, dataObj.getSubject());
+		values.put(DBConstants.V_ID, dataObj.getId());
+		values.put(DBConstants.V_CATEGORY_ID, dataObj.getCategoryId());
+		values.put(DBConstants.V_CATEGORY, dataObj.getCategoryName());
+		values.put(DBConstants.V_URL, dataObj.getUrl());
+		values.put(DBConstants.V_USERNAME, dataObj.getTopicUsername());
+		values.put(DBConstants.V_LAST_POST_USERNAME, dataObj.getLastPostUsername());
+		values.put(DBConstants.V_POST_COUNT, dataObj.getPostCount());
+		values.put(DBConstants.V_LAST_POST_DATE, dataObj.getLastPostDate());
+		values.put(DBConstants.V_PAGE, dataObj.getPage());
+
+		return values;
+	}
+
 	public static ContentValues putForumPostItemToValues(ForumPostItem.Post dataObj) {
 		ContentValues values = new ContentValues();
 
@@ -1041,6 +1046,11 @@ public class DBDataManager {
 		values.put(DBConstants.V_ID, dataObj.getTopicId());
 		values.put(DBConstants.V_CREATE_DATE, dataObj.getCreateDate());
 		values.put(DBConstants.V_USERNAME, dataObj.getUsername());
+		values.put(DBConstants.V_COUNTRY_ID, dataObj.getCountryId());
+		values.put(DBConstants.V_PREMIUM_STATUS, dataObj.isPremiumStatus());
+		values.put(DBConstants.V_PHOTO_URL, dataObj.getAvatarUrl());
+		values.put(DBConstants.V_COMMENT_NUMBER, dataObj.getCommentNumber());
+		values.put(DBConstants.V_PAGE, dataObj.getPage());
 
 		return values;
 	}

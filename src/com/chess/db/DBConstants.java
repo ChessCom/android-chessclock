@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 36;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 38;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -192,6 +192,8 @@ public class DBConstants {
 	public static final String V_POST_COUNT 		= "post_count";
 	public static final String V_TOPIC_COUNT 		= "topic_count";
 	public static final String V_MIN_MEMBERSHIP 	= "min_membership_lvl";
+	public static final String V_COMMENT_NUMBER 	= "comment_number";
+	public static final String V_PAGE 				= "page";
 
 	/* common commands */
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists ";
@@ -357,18 +359,6 @@ public class DBConstants {
 			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
 			+ V_DISPLAY_ORDER 	    	+ _INT_NOT_NULL + _CLOSE;
 
-	static final String FORUM_TOPIC_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[FORUM_TOPICS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_TITLE 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_ID 						+ _INT_NOT_NULL + _COMMA
-			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
-			+ V_CATEGORY 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_URL 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_LAST_POST_USERNAME 		+ _TEXT_NOT_NULL + _COMMA
-			+ V_POST_COUNT 				+ _INT_NOT_NULL + _COMMA
-			+ V_LAST_POST_DATE 	    	+ _LONG_NOT_NULL + _CLOSE;
-
 	static final String FORUM_CATEGORIES_CREATE =
 			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[FORUM_CATEGORIES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_ID 						+ _INT_NOT_NULL + _COMMA
@@ -381,13 +371,28 @@ public class DBConstants {
 			+ V_POST_COUNT				+ _INT_NOT_NULL + _COMMA
 			+ V_MIN_MEMBERSHIP			+ _INT_NOT_NULL + _CLOSE;
 
+	static final String FORUM_TOPIC_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[FORUM_TOPICS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_TITLE 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_ID 						+ _INT_NOT_NULL + _COMMA
+			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
+			+ V_CATEGORY 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_URL 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
+			+ V_LAST_POST_USERNAME 		+ _TEXT_NOT_NULL + _COMMA
+			+ V_POST_COUNT 				+ _INT_NOT_NULL + _COMMA
+			+ V_PAGE 					+ _INT_NOT_NULL + _COMMA
+			+ V_LAST_POST_DATE 	    	+ _LONG_NOT_NULL + _CLOSE;
+
 	static final String FORUM_POSTS_CREATE =
 			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[FORUM_POSTS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_ID 						+ _INT_NOT_NULL + _COMMA    // Topic id!
 			+ V_USERNAME				+ _TEXT_NOT_NULL + _COMMA
-//			+ V_PHOTO_URL				+ _TEXT_NOT_NULL + _COMMA
-//			+ V_COUNTRY_ID				+ _INT_NOT_NULL + _COMMA
-//			+ V_PREMIUM_STATUS			+ _INT_NOT_NULL + _COMMA
+			+ V_PHOTO_URL				+ _TEXT_NOT_NULL + _COMMA
+			+ V_COUNTRY_ID				+ _INT_NOT_NULL + _COMMA
+			+ V_PREMIUM_STATUS			+ _INT_NOT_NULL + _COMMA
+			+ V_COMMENT_NUMBER			+ _INT_NOT_NULL + _COMMA
+			+ V_PAGE					+ _INT_NOT_NULL + _COMMA
 			+ V_CREATE_DATE				+ _LONG_NOT_NULL + _COMMA
 			+ V_DESCRIPTION				+ _LONG_NOT_NULL + _CLOSE;
 

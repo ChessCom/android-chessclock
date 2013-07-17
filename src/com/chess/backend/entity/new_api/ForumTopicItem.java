@@ -48,6 +48,7 @@ public class ForumTopicItem extends BaseResponseItem<ForumTopicItem.Data>{
 		private String last_post_username;
 		private int post_count;
 		private long last_post_create_date;
+		private int page;
 
 		public int getId() {
 			return id;
@@ -87,6 +88,14 @@ public class ForumTopicItem extends BaseResponseItem<ForumTopicItem.Data>{
 
 		public void setCategoryName(String category_name) {
 			this.category_name = category_name;
+		}
+
+		public int getPage() {
+			return page;
+		}
+
+		public void setPage(int page) {
+			this.page = page;
 		}
 	}
 

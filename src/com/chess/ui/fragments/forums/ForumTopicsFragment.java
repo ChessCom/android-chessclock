@@ -188,6 +188,8 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 
 		LoadItem loadItem = LoadHelper.getForumTopicsForCategory(getUserToken(), categoryId, page);
 		new RequestJsonTask<ForumTopicItem>(topicsUpdateListener).executeTask(loadItem);
+		// lock page changing
+		pageIndicatorView.setEnabled(false);
 	}
 
 	private class TopicsUpdateListener extends ChessUpdateListener<ForumTopicItem> {
@@ -207,8 +209,13 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 			List<ForumTopicItem.Topic> topics = returnedObj.getData().getTopics();
 			pagesToShow = (int) Math.ceil((returnedObj.getData().getTopicsTotalCount() / (float) (RestHelper.DEFAULT_ITEMS_PER_PAGE)));
 			pageIndicatorView.setTotalPageCnt(pagesToShow);
+			if (currentPage == pagesToShow) {
+				pageIndicatorView.enableRightBtn(false);
+			} else {
+				pageIndicatorView.enableRightBtn(true);
+			}
 
-			new SaveForumTopicsTask(saveForumTopicsListener, topics, getContentResolver(), categoriesMap).executeTask();
+			new SaveForumTopicsTask(saveForumTopicsListener, topics, getContentResolver(), categoriesMap, currentPage).executeTask();
 		}
 	}
 
@@ -218,7 +225,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		public void updateData(ForumTopicItem.Topic returnedObj) {
 			super.updateData(returnedObj);
 
-			Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumTopicByCategoryParams(categoryId));
+			Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumTopicByCategoryParams(categoryId, currentPage));
 			if (cursor.moveToFirst()) {
 				topicsCursorAdapter.changeCursor(cursor);
 			} else {
@@ -226,6 +233,9 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 			}
 
 			need2update = false;
+			// unlock page changing
+			pageIndicatorView.setEnabled(true);
+			pageIndicatorView.activateCurrentPage(currentPage);
 		}
 	}
 }

@@ -149,9 +149,11 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			pageIndicatorView.enableRightBtn(true);
 		}
 
-		LoadItem loadItem = LoadHelper.getForumPostsForTopic(getUserToken(), topicId, 1);
+		LoadItem loadItem = LoadHelper.getForumPostsForTopic(getUserToken(), topicId, page);
 
 		new RequestJsonTask<ForumPostItem>(postsUpdateListener).executeTask(loadItem);
+		// lock page changing
+		pageIndicatorView.setEnabled(false);
 	}
 
 	@Override
@@ -184,8 +186,13 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		public void updateData(ForumPostItem returnedObj) {
 			pagesToShow = (int) Math.ceil((returnedObj.getData().getCommentsCount() / (float) (RestHelper.DEFAULT_ITEMS_PER_PAGE)));
 			pageIndicatorView.setTotalPageCnt(pagesToShow);
+			if (currentPage == pagesToShow) {
+				pageIndicatorView.enableRightBtn(false);
+			} else {
+				pageIndicatorView.enableRightBtn(true);
+			}
 
-			new SaveForumPostsTask(savePostsListener, returnedObj.getData().getPosts(), getContentResolver(), topicId).executeTask();
+			new SaveForumPostsTask(savePostsListener, returnedObj.getData().getPosts(), getContentResolver(), topicId, currentPage).executeTask();
 		}
 	}
 
@@ -195,7 +202,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		public void updateData(ForumPostItem.Post returnedObj) {
 			super.updateData(returnedObj);
 
-			Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumPostsParams(topicId));
+			Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumPostsParams(topicId, currentPage));
 			if (cursor.moveToFirst()) {
 				postsCursorAdapter.changeCursor(cursor);
 				postsCursorAdapter.notifyDataSetChanged();
@@ -204,6 +211,9 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			}
 
 			need2update= false;
+			// unlock page changing
+			pageIndicatorView.setEnabled(true);
+			pageIndicatorView.activateCurrentPage(currentPage);
 		}
 	}
 

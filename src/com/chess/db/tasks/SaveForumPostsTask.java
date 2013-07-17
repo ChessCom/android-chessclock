@@ -21,11 +21,13 @@ public class SaveForumPostsTask extends AbstractUpdateTask<ForumPostItem.Post, L
 	private ContentResolver contentResolver;
 	protected static String[] arguments = new String[1];
 	private long topicId;
+	private int currentPage;
 
 	public SaveForumPostsTask(TaskUpdateInterface<ForumPostItem.Post> taskFace, List<ForumPostItem.Post> currentItems,
-							  ContentResolver resolver, long topicId) {
+							  ContentResolver resolver, long topicId, int currentPage) {
 		super(taskFace, new ArrayList<ForumPostItem.Post>());
 		this.topicId = topicId;
+		this.currentPage = currentPage;
 		this.itemList.addAll(currentItems);
 
 		this.contentResolver = resolver;
@@ -36,6 +38,7 @@ public class SaveForumPostsTask extends AbstractUpdateTask<ForumPostItem.Post, L
 		synchronized (itemList) {
 			for (ForumPostItem.Post currentItem : itemList) {
 				currentItem.setTopicId(topicId);
+				currentItem.setPage(currentPage);
 				DBDataManager.updateForumPostItem(contentResolver, currentItem);
 			}
 		}

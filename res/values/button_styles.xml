@@ -232,7 +232,7 @@
 
 	<!--====================================== Page Indicator Button =========================================== -->
 
-	<!-- Facebook -->
+	<!-- Page Indicator -->
 	<style name="Button.Page">
 		<item name="btn_bevel_lvl">2</item>
 
@@ -266,6 +266,11 @@
 
 	</style>
 
+	<!--Page Indicator Selected-->
+	<style name="Button.Page.Selected">
+		<item name="btn_solid">@color/white</item>
+
+	</style>
     <!--====================================== Rect Buttons =========================================== -->
 
     <style name="Rect" parent="android:Widget.CompoundButton.RadioButton">

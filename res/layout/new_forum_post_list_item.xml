@@ -9,6 +9,7 @@
 	android:paddingLeft="@dimen/default_scr_side_padding"
 	android:paddingRight="@dimen/default_scr_side_padding"
 	android:paddingBottom="15dip"
+	android:background="@color/white"
 	>
 
 	<com.chess.backend.image_load.ProgressImageView
@@ -19,14 +20,13 @@
 		android:layout_below="@id/titleTxt"
 		android:contentDescription="@string/image"
 		android:layout_marginRight="11dip"
-		android:layout_marginBottom="13dip"/>
+		/>
 
 	<com.chess.RoboTextView
 		android:id="@+id/authorTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/photoImg"
-		android:paddingBottom="2dip"
 		android:layout_marginTop="-4dip"
 		android:textColor="@color/new_author_dark_grey"
 		android:textSize="14sp"
@@ -53,8 +53,23 @@
 		android:src="@drawable/ic_nav_upgrade"
 		android:layout_alignTop="@id/photoImg"
 		android:layout_marginLeft="10dip"
+		android:layout_marginTop="-3dip"
 		android:adjustViewBounds="true"
 		android:scaleType="fitXY"
+		/>
+
+	<com.chess.RoboTextView
+		android:id="@+id/commentNumberTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:textColor="@color/white"
+		android:background="@drawable/button_post_number_back"
+		android:paddingLeft="6dip"
+		android:paddingRight="6dip"
+		android:paddingTop="3dip"
+		android:paddingBottom="3dip"
+		custom:ttf="Bold"
 		/>
 
 	<!--12 minutes ago-->
@@ -64,8 +79,9 @@
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/photoImg"
 		android:layout_below="@id/authorTxt"
-		android:textColor="@color/new_subtitle_light_grey"
+		android:textColor="@color/stats_label_light_grey"
 		android:textSize="13sp"
+		android:paddingTop="6dip"
 		/>
 
 	<com.chess.RoboTextView
@@ -74,9 +90,11 @@
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/dateTxt"
 		android:layout_below="@id/authorTxt"
+		android:paddingTop="6dip"
 		android:paddingLeft="5dip"
 		android:textColor="@color/new_text_blue"
 		android:textSize="13sp"
+		android:text="@string/quote"
 		/>
 
 	<com.chess.RoboTextView
@@ -85,6 +103,7 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@id/photoImg"
 		android:textColor="@color/new_subtitle_dark_grey"
+		android:paddingTop="15dip"
 		/>
 
 </RelativeLayout>

@@ -25,12 +25,14 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 
 	private static final int FIRST = 0;
 	private static final float ARROW_TEXT_SIZE = 25;
+	private static final int NON_INIT = -1;
 	private int buttonSize;
 	private LayoutParams buttonParams;
 	private int buttonsCnt;
 	private int totalPageCnt;
 	private PagerFace pagerFace;
 	private int visiblePageButtonsCnt;
+	private int previousActivePage = NON_INIT;
 
 	public PageIndicatorView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -148,6 +150,14 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 
 	public void enableRightBtn(boolean enable) {
 		findViewById(getRightBtn()).setEnabled(enable);
+	}
+
+	public void activateCurrentPage(int page) {
+		if (previousActivePage != NON_INIT) {
+			((RoboButton)findViewById(BASE_BTN_ID + previousActivePage + 1)).setDrawableStyle(R.style.Button_Page);
+		}
+		((RoboButton)findViewById(BASE_BTN_ID + page + 1)).setDrawableStyle(R.style.Button_Page_Selected);
+		previousActivePage = page;
 	}
 
 	public interface PagerFace {
