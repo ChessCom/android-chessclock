@@ -414,7 +414,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		Log.d(CompEngineHelper.TAG, "updateEngineMove getBoardFace().getHply()=" + getBoardFace().getHply());
 		Log.d(CompEngineHelper.TAG, "updateEngineMove getBoardFace().getMovesCount()=" + getBoardFace().getMovesCount());
 
-		if (getBoardFace().getHply() < getBoardFace().getMovesCount()) { // ignoring Forward move fired by engine
+		if (!boardView.isHint() && getBoardFace().getHply() < getBoardFace().getMovesCount()) { // ignoring Forward move fired by engine
 			return;
 		}
 
