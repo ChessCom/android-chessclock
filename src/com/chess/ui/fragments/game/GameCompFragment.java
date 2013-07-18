@@ -172,8 +172,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 			}
 		}
 
-		Log.d("", "testtest 6 " + AppData.getCompEngineHelper());
-
 		if (AppData.getCompEngineHelper() != null && AppData.getCompEngineHelper().isInitialized()) {
 			AppData.getCompEngineHelper().setPaused(false);
 		}
