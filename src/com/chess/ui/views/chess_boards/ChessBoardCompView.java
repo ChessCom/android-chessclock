@@ -336,6 +336,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 				setComputerMoving(true);
 				gameCompActivityFace.onCompMove();
 				engineMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
+				AppData.getCompEngineHelper().updateEngineGameMode(engineMode);
 				AppData.getCompEngineHelper().setGameMode(engineMode);
                 //postMoveToEngine(getBoardFace().getLastMove(), false, compStrength);
             }

@@ -111,7 +111,7 @@ public class CompEngineHelper implements GUIInterface {
 
 		log("INIT ENGINE AND START GAME");
 
-		this.gameMode = new GameMode(gameMode);
+		setGameMode(gameMode);
 		this.gameCompActivityFace = gameCompActivityFace;
 		this.depth = depth;
 
@@ -407,15 +407,18 @@ public class CompEngineHelper implements GUIInterface {
 		gameCompActivityFace.run(runnable);
 	}
 
-	public void setGameMode(int newMode) {
+	public void updateEngineGameMode(int newMode) {
 		final GameMode newGameMode = new GameMode(newMode);
 		engineCtrl.setGameMode(newGameMode);
-		//gameMode = newGameMode;
+	}
+
+	public void setGameMode(int gameMode) {
+		this.gameMode = new GameMode(gameMode);
 	}
 
 	// todo @engine: should we invoked in onGameOver for Analysis mode
 	public void setAnalysisMode() {
-		setGameMode(GameMode.ANALYSIS);
+		updateEngineGameMode(GameMode.ANALYSIS);
 	}
 
 	public void makeHint() {
@@ -440,7 +443,7 @@ public class CompEngineHelper implements GUIInterface {
 
 	private void inverseColor() {
 		int inversedColor = engineCtrl.getCurrentPosition().whiteMove ? GameMode.PLAYER_BLACK : GameMode.PLAYER_WHITE;
-		setGameMode(inversedColor);
+		updateEngineGameMode(inversedColor);
 	}
 
 	public void moveBack() {
