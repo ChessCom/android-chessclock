@@ -326,13 +326,14 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
             getBoardFace().setReside(!getBoardFace().isReside());
             if (getAppData().isComputerVsHumanGameMode(getBoardFace())) {
 				int engineMode;
-				if (getAppData().isComputerVsHumanWhiteGameMode(getBoardFace())) {
+				//if (getAppData().isComputerVsHumanWhiteGameMode(getBoardFace())) {
+				if (getBoardFace().isWhiteToMove()) { // supports Flip when user navigated moves Back
                     getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK);
-
-                } else if (getAppData().isComputerVsHumanBlackGameMode(getBoardFace())) {
+                } else /*if (getAppData().isComputerVsHumanBlackGameMode(getBoardFace()))*/ {
                     getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
 
                 }
+				getBoardFace().setMovesCount(getBoardFace().getHply()); // supports Flip when user navigated moves Back
 				setComputerMoving(true);
 				gameCompActivityFace.onCompMove();
 				engineMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
