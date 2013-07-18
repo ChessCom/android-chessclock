@@ -470,8 +470,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 			boardView.invalidate();
 
 			boardView.setHint(false);
-			controlsCompView.enableGameControls(false);
-//			gamePanelView.toggleControlButton(GamePanelView.B_HINT_ID, false);
+			controlsCompView.enableGameControls(true);
 		}
 	};
 
@@ -503,14 +502,11 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	private void loadSavedGame() {
-		String[] moves = getAppData().getCompSavedGame().split(RestHelper.SYMBOL_PARAMS_SPLIT_SLASH);
-
-		BoardFace boardFace = getBoardFace();
-		boardFace.setMovesCount(moves.length);
+		String[] savedGame = getAppData().getCompSavedGame().split(RestHelper.SYMBOL_PARAMS_SPLIT_SLASH);
 
 		int i;
-		for (i = 1; i < moves.length; i++) {
-			String[] move = moves[i].split(RestHelper.SYMBOL_PARAMS_SPLIT);
+		for (i = 1; i < savedGame.length; i++) {
+			String[] move = savedGame[i].split(RestHelper.SYMBOL_PARAMS_SPLIT);
 			try {
 				getBoardFace().makeMove(new Move(
 						Integer.parseInt(move[0]),
@@ -518,11 +514,17 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 						Integer.parseInt(move[2]),
 						Integer.parseInt(move[3])), false);
 			} catch (Exception e) {
-				String debugInfo = "move=" + moves[i] + getAppData().getCompSavedGame();
+				String debugInfo = "move=" + savedGame[i] + getAppData().getCompSavedGame();
 				BugSenseHandler.addCrashExtraData("APP_COMP_DEBUG", debugInfo);
 				throw new IllegalArgumentException(debugInfo, e);
 			}
 		}
+
+		/*Log.d("debugengine", "getAppData().getCompSavedGame() " + getAppData().getCompSavedGame());
+		Log.d("debugengine", "getAppData().getCompSavedGame().split(RestHelper.SYMBOL_PARAMS_SPLIT_SLASH) " + getAppData().getCompSavedGame().split(RestHelper.SYMBOL_PARAMS_SPLIT_SLASH));
+		Log.d("debugengine", "getBoardFace().getHply() " + getBoardFace().getHply());*/
+
+		getBoardFace().setMovesCount(getBoardFace().getHply());
 
 		playLastMoveAnimation();
 	}

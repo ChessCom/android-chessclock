@@ -327,10 +327,8 @@ public class CompEngineHelper implements GUIInterface {
 			return;
 		}
 
-		log("setAnimMove set game mode " + gameMode);
 		log("setAnimMove isWhiteUserTurn " + isWhiteUserTurn);
 		log("setAnimMove isBlackUserTurn " + isBlackUserTurn);
-		//this.gameMode = gameMode;
 
 		gameCompActivityFace.updateEngineMove(engineMove);
 	}
@@ -415,6 +413,7 @@ public class CompEngineHelper implements GUIInterface {
 		//gameMode = newGameMode;
 	}
 
+	// todo @engine: should we invoked in onGameOver for Analysis mode
 	public void setAnalysisMode() {
 		setGameMode(GameMode.ANALYSIS);
 	}
