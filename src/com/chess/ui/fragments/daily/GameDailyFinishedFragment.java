@@ -487,12 +487,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGamesParams(getUserName()), // TODO adjust
 				getContentResolver()).executeTask();
 
-//		LoadItem listLoadItem = new LoadItem();
-//		listLoadItem.setLoadPath(RestHelper.ECHESS_CURRENT_GAMES);
-//		listLoadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken(getContext()));
-//		listLoadItem.addRequestParams(RestHelper.P_ALL, RestHelper.V_ALL_USERS_GAMES);
-//
-//		new GetStringObjTask(gamesListUpdateListener).executeTask(listLoadItem);
 	}
 
 	@Override

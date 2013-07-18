@@ -4,12 +4,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
-    android:layout_height="30dip"
-    android:paddingTop="8dip"
+    android:layout_height="wrap_content"
+	android:minHeight="29dip"
     android:paddingLeft="7dip"
     android:paddingRight="8dip"
-    android:paddingBottom="8dip"
     android:background="@color/white"
+	android:gravity="center_vertical"
     >
 
     <com.chess.RoboTextView

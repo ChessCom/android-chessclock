@@ -241,8 +241,11 @@ public class RestHelper {
 	public static final String P_THEME = "theme";
 	public static final String P_PAGE_SIZE = "page-size";
 	public static final String P_FORUM_CATEGORY_ID = "forumCategoryId";
+	public static final String P_PARENT_TOPIC_ID = "parentTopicId";
 	public static final String P_FORUM_TOPIC_ID = "forumTopicId";
 	public static final String P_TOPICS_PER_PAGE = "topicsPerPage";
+	public static final String P_SUBJECT = "subject";
+	public static final String P_BODY = "body";
 	public static final String P_COMMENTS_PER_PAGE = "commentsPerPage";
 
 	private static final String GOTO = "&goto=";

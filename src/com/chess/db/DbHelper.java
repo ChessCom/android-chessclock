@@ -132,6 +132,14 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	public static QueryParams getForumTopicById(int topicId) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DBConstants.uriArray[DBConstants.FORUM_TOPICS]);
+		queryParams.setSelection(DBDataManager.SELECTION_ITEM_ID);
+		queryParams.setArguments(new String[]{String.valueOf(topicId)});
+		return queryParams;
+	}
+
 	public static QueryParams getForumPostsParams(int topicId, int currentPage) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[DBConstants.FORUM_POSTS]);

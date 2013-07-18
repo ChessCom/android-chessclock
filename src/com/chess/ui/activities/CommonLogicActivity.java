@@ -221,13 +221,11 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 				// hence the use of AsyncTask instead of a raw thread.
 
 				LoadItem loadItem = new LoadItem();
-//				loadItem.setLoadPath(RestHelper.GCM_REGISTER);
 				loadItem.setLoadPath(RestHelper.CMD_GCM);
 				loadItem.setRequestMethod(RestHelper.POST);
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
-//				new PostJsonDataTask(new PostUpdateListener(REQUEST_REGISTER)).execute(loadItem);
 				new RequestJsonTask<GcmItem>(new PostUpdateListener(REQUEST_REGISTER)).execute(loadItem);
 			}
 		}
@@ -310,16 +308,13 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		}
 
 		LoadItem loadItem = new LoadItem();
-//		loadItem.setLoadPath(RestHelper.LOGIN);
 		loadItem.setLoadPath(RestHelper.CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
-//		loadItem.addRequestParams(RestHelper.P_USERNAME, userName);
 		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
 
-//		new PostDataTask(loginUpdateListener).executeTask(loadItem);
 		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
 
 		loginReturnCode = SIGNIN_CALLBACK_CODE;

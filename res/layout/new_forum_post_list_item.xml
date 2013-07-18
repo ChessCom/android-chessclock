@@ -8,9 +8,9 @@
 	android:paddingTop="15dip"
 	android:paddingLeft="@dimen/default_scr_side_padding"
 	android:paddingRight="@dimen/default_scr_side_padding"
-	android:paddingBottom="15dip"
 	android:background="@color/white"
 	>
+	<!--android:paddingBottom="15dip"-->
 
 	<com.chess.backend.image_load.ProgressImageView
 		android:id="@+id/photoImg"

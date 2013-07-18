@@ -3,11 +3,11 @@ package com.chess.ui.fragments.forums;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
@@ -85,6 +85,16 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		int categoryId = DBDataManager.getInt(cursor, DBConstants.V_ID);
 		getActivityFace().openFragment(ForumTopicsFragment.createInstance(categoryId));
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_add:
+				getActivityFace().openFragment(new ForumNewTopicFragment());
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private class CategoriesUpdateListener extends ChessUpdateListener<ForumCategoryItem> {

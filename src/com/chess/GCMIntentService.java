@@ -132,7 +132,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 					editor.commit();
 				}
 
-//				new PostJsonDataTask(new PostUpdateListener(GcmHelper.REQUEST_UNREGISTER)).execute(loadItem);// don't need as we are on worker thread alreay
 				Log.d(TAG, "Unregistering from server, registrationId = " + registrationId + "token = " + token);
 			}
 		} else {

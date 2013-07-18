@@ -1,11 +1,14 @@
 package com.chess.ui.fragments.forums;
 
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.text.TextUtils;
+import android.view.*;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
@@ -13,13 +16,18 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.ForumPostItem;
+import com.chess.backend.entity.new_api.VacationItem;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.SaveForumPostsTask;
 import com.chess.ui.adapters.ForumPostsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.PageIndicatorView;
+import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,32 +35,38 @@ import com.chess.ui.views.PageIndicatorView;
  * Date: 13.07.13
  * Time: 6:43
  */
-public class ForumPostsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, PageIndicatorView.PagerFace {
+public class ForumPostsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
+		PageIndicatorView.PagerFace, TextView.OnEditorActionListener, ItemClickListenerFace {
 
 
 	private static final String TOPIC_ID = "topic_id";
-	private static final String TOPIC_TITLE = "topic_title";
-	private static final int DEFAULT_PAGE = 0;
+	public static final String P_TAG_OPEN = "<p>";
+	public static final String P_TAG_CLOSE = "</p>";
+	private static final long KEYBOARD_DELAY = 100;
 	private int topicId;
 	private ForumPostsCursorAdapter postsCursorAdapter;
 	private SavePostsListener savePostsListener;
-	private boolean need2update = true;
 	private PostsUpdateListener postsUpdateListener;
 	private TextView forumHeaderTxt;
 	private String topicTitle;
 	private PageIndicatorView pageIndicatorView;
-	private int currentPage = -1;
+	private int currentPage;
 	private int pagesToShow;
+	private View replyView;
+	private EditText topicBodyEdt;
+	private int paddingSide;
+	private TopicCreateListener topicCreateListener;
+	private String topicUrl;
 
 	public ForumPostsFragment() {
 
 	}
 
-	public static ForumPostsFragment createInstance(int topicId, String topicTitle){
+	public static ForumPostsFragment createInstance(int topicId){
 		ForumPostsFragment fragment = new ForumPostsFragment();
+		fragment.topicId = topicId;
 		Bundle bundle = new Bundle();
 		bundle.putInt(TOPIC_ID, topicId);
-		bundle.putString(TOPIC_TITLE, topicTitle);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
@@ -61,9 +75,18 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		postsCursorAdapter = new ForumPostsCursorAdapter(getActivity(), null);
+		postsCursorAdapter = new ForumPostsCursorAdapter(this, null);
 		savePostsListener = new SavePostsListener();
 		postsUpdateListener = new PostsUpdateListener();
+		topicCreateListener = new TopicCreateListener();
+
+		paddingSide = getResources().getDimensionPixelSize(R.dimen.default_scr_side_padding);
+
+		Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumTopicById(topicId));
+		cursor.moveToFirst();
+		topicTitle = DBDataManager.getString(cursor, DBConstants.V_TITLE);
+		topicUrl = DBDataManager.getString(cursor, DBConstants.V_URL);
+
 	}
 
 	@Override
@@ -89,6 +112,10 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		pageIndicatorView = (PageIndicatorView) view.findViewById(R.id.pageIndicatorView);
 		pageIndicatorView.setPagerFace(this);
 
+		replyView = view.findViewById(R.id.replyView);
+		topicBodyEdt = (EditText) view.findViewById(R.id.topicBodyEdt);
+		topicBodyEdt.setOnEditorActionListener(this);
+
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_share, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
@@ -103,10 +130,8 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 		if (getArguments() != null) {
 			topicId = getArguments().getInt(TOPIC_ID);
-			topicTitle = getArguments().getString(TOPIC_TITLE);
 		} else {
 			topicId = savedInstanceState.getInt(TOPIC_ID);
-			topicTitle = savedInstanceState.getString(TOPIC_TITLE);
 		}
 	}
 
@@ -116,11 +141,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 		forumHeaderTxt.setText(topicTitle);
 
-		if (need2update) {
-			requestPage(DEFAULT_PAGE);
-		}  else {
-			pageIndicatorView.setTotalPageCnt(pagesToShow);
-		}
+		requestPage(currentPage);
 	}
 
 	@Override
@@ -128,16 +149,12 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		super.onSaveInstanceState(outState);
 
 		outState.putInt(TOPIC_ID, topicId);
-		outState.putString(TOPIC_TITLE, topicTitle);
 	}
 
 	private void requestPage(int page){
-		if (page == currentPage) {
-			return;
-		}
 		currentPage = page;
 
-		if (currentPage == 1) {
+		if (currentPage == 0) {
 			pageIndicatorView.enableLeftBtn(false);
 		} else {
 			pageIndicatorView.enableLeftBtn(true);
@@ -157,8 +174,67 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	public void onClick(View view) {
+		super.onClick(view);
 
+		if (view.getId() == R.id.quoteTxt) {
+			Integer position = (Integer) view.getTag(R.id.list_item_id);
+
+			Cursor cursor = (Cursor) postsCursorAdapter.getItem(position);
+			String username = DBDataManager.getString(cursor, DBConstants.V_USERNAME);
+			String body = DBDataManager.getString(cursor, DBConstants.V_DESCRIPTION);
+
+			replyView.setVisibility(View.VISIBLE);
+			replyView.setBackgroundResource(R.color.header_light);
+			replyView.setPadding(paddingSide, paddingSide, paddingSide, paddingSide);
+
+			// add quote text
+//			"<span class=\"quoted-user\">dove wrote:</span><div class=\"quoted-text\"><p>test</p></div></div>"
+			String quote = "<div class=\"fquote\"><span class=\"quoted-user\">" + getString(R.string.username_wrote, username) +"</span>" +
+					"<div class=\"quoted-text\">\n" +
+					"<p>" + body + "</p>\n" +
+					"</div></div>";
+			topicBodyEdt.setText(quote);
+			topicBodyEdt.setSelection(topicBodyEdt.getText().length());
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					topicBodyEdt.requestFocus();
+					showKeyBoard(topicBodyEdt);
+					showKeyBoardImplicit(topicBodyEdt);
+				}
+			}, KEYBOARD_DELAY);
+		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		replyView.setVisibility(View.VISIBLE);
+		replyView.setBackgroundResource(R.color.header_light);
+		replyView.setPadding(paddingSide, paddingSide, paddingSide, paddingSide);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				topicBodyEdt.requestFocus();
+				showKeyBoard(topicBodyEdt);
+				showKeyBoardImplicit(topicBodyEdt);
+			}
+		}, KEYBOARD_DELAY);
+
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_share:
+				Intent shareIntent = new Intent(Intent.ACTION_SEND);
+				shareIntent.setType("text/plain");
+				shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this topic - "
+						+ RestHelper.BASE_URL + "/" + topicUrl);
+				startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -173,7 +249,26 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 	@Override
 	public void showPage(int page) {
-		requestPage(page-1);
+		requestPage(page - 1);
+	}
+
+	@Override
+	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.FLAG_EDITOR_ACTION
+				|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live
+				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
+			} else {
+				createPost();
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public Context getMeContext() {
+		return getActivity();
 	}
 
 	private class PostsUpdateListener extends ChessUpdateListener<ForumPostItem>{
@@ -186,7 +281,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		public void updateData(ForumPostItem returnedObj) {
 			pagesToShow = (int) Math.ceil((returnedObj.getData().getCommentsCount() / (float) (RestHelper.DEFAULT_ITEMS_PER_PAGE)));
 			pageIndicatorView.setTotalPageCnt(pagesToShow);
-			if (currentPage == pagesToShow) {
+			if (currentPage == pagesToShow - 1) {
 				pageIndicatorView.enableRightBtn(false);
 			} else {
 				pageIndicatorView.enableRightBtn(true);
@@ -210,11 +305,59 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 				showToast("Internal error");
 			}
 
-			need2update= false;
 			// unlock page changing
 			pageIndicatorView.setEnabled(true);
 			pageIndicatorView.activateCurrentPage(currentPage);
 		}
 	}
 
+	private void createPost() {
+		String body = getTextFromField(topicBodyEdt);
+		if (TextUtils.isEmpty(body)) {
+			topicBodyEdt.requestFocus();
+			topicBodyEdt.setError(getString(R.string.can_not_be_empty));
+			return;
+		}
+
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_FORUMS_COMMENTS);
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		loadItem.addRequestParams(RestHelper.P_PARENT_TOPIC_ID, topicId);
+		loadItem.addRequestParams(RestHelper.P_BODY, P_TAG_OPEN + body + P_TAG_CLOSE);
+
+		new RequestJsonTask<VacationItem>(topicCreateListener).executeTask(loadItem); // use Vacation item as a simple return obj to get status
+	}
+
+	private class TopicCreateListener extends ChessLoadUpdateListener<VacationItem> {
+
+		private TopicCreateListener() {
+			super(VacationItem.class);
+		}
+
+		@Override
+		public void updateData(VacationItem returnedObj) {
+			if(returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+				showToast(R.string.post_created);
+			} else {
+				showToast(R.string.error);
+			}
+			replyView.setVisibility(View.GONE);
+			topicBodyEdt.setText(StaticData.SYMBOL_EMPTY);
+
+			// update page
+			requestPage(currentPage);
+			// lock page changing
+			pageIndicatorView.setEnabled(false);
+
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					hideKeyBoard(topicBodyEdt);
+					hideKeyBoard();
+
+				}
+			}, KEYBOARD_DELAY);
+		}
+	}
 }

@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -34,7 +35,6 @@ import java.util.List;
 public class ForumTopicsFragment extends CommonLogicFragment implements PageIndicatorView.PagerFace, AdapterView.OnItemClickListener {
 
 	private static final String CATEGORY_ID = "category_id";
-	private static final int DEFAULT_PAGE = 0;
 	private int categoryId;
 
 	private ForumTopicsCursorAdapter topicsCursorAdapter;
@@ -42,10 +42,9 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 	private SparseArray<String> categoriesMap;
 	private TopicsUpdateListener topicsUpdateListener;
 	private TextView forumHeaderTxt;
-	private boolean need2update = true;
 	private PageIndicatorView pageIndicatorView;
 	private int pagesToShow;
-	private int currentPage = -1;
+	private int currentPage;
 	private ListView listView;
 
 	public ForumTopicsFragment() {
@@ -105,7 +104,6 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		getActivityFace().showActionMenu(R.id.menu_add, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
-
 	}
 
 	@Override
@@ -124,11 +122,8 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		super.onStart();
 
 		forumHeaderTxt.setText(categoriesMap.get(categoryId));
-		if (need2update) {
-			requestPage(DEFAULT_PAGE);
-		} else {
-			pageIndicatorView.setTotalPageCnt(pagesToShow);
-		}
+		// always update as we can create topic in down fragments
+		requestPage(currentPage);
 	}
 
 	@Override
@@ -148,9 +143,18 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		} else {
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 			int topicId = DBDataManager.getInt(cursor, DBConstants.V_ID);
-			String topicTitle = DBDataManager.getString(cursor, DBConstants.V_TITLE);
-			getActivityFace().openFragment(ForumPostsFragment.createInstance(topicId, topicTitle));
+			getActivityFace().openFragment(ForumPostsFragment.createInstance(topicId));
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_add:
+				getActivityFace().openFragment(new ForumNewTopicFragment());
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -169,12 +173,9 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 	}
 
 	private void requestPage(int page){
-		if (page == currentPage) {
-			return;
-		}
 		currentPage = page;
 
-		if (currentPage == DEFAULT_PAGE) {
+		if (currentPage == 0) {
 			pageIndicatorView.enableLeftBtn(false);
 		} else {
 			pageIndicatorView.enableLeftBtn(true);
@@ -209,7 +210,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 			List<ForumTopicItem.Topic> topics = returnedObj.getData().getTopics();
 			pagesToShow = (int) Math.ceil((returnedObj.getData().getTopicsTotalCount() / (float) (RestHelper.DEFAULT_ITEMS_PER_PAGE)));
 			pageIndicatorView.setTotalPageCnt(pagesToShow);
-			if (currentPage == pagesToShow) {
+			if (currentPage == pagesToShow - 1) {
 				pageIndicatorView.enableRightBtn(false);
 			} else {
 				pageIndicatorView.enableRightBtn(true);
@@ -232,7 +233,6 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 				showToast("Internal error");
 			}
 
-			need2update = false;
 			// unlock page changing
 			pageIndicatorView.setEnabled(true);
 			pageIndicatorView.activateCurrentPage(currentPage);
