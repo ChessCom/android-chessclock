@@ -51,7 +51,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public static final int P_MODERN_ID = 7;
 	public static final int P_VINTAGE_ID = 8;
 
-	public static final int PIECE_ANIM_SPEED = 200; // 250 looks too long. is not?
+	public static final int PIECE_ANIM_SPEED = 150; // 250 looks too long. is not?
 
 	int pieceXDelta, pieceYDelta; // top/left pixel draw position relative to square
 
@@ -425,18 +425,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	protected void drawPieces(Canvas canvas, boolean animationActive, MoveAnimator moveAnimator) {
 		for (int i = 0; i < 64; i++) {
-			if (drag && i == from) {
-				continue;
-			}
-
-			if (animationActive && moveAnimator.isSquareHidden(i)) {
-				if (moveAnimator.getCapturedPieceBitmap() != null) {
-					// todo: refactor
-					int x = ChessBoard.getColumn(i, getBoardFace().isReside());
-					int y = ChessBoard.getRow(i, getBoardFace().isReside());
-					rect.set(x * square, y * square, x * square + square, y * square + square);
-					canvas.drawBitmap(moveAnimator.getCapturedPieceBitmap(), null, rect, null);
-				}
+			if ((drag && i == from) || (animationActive && moveAnimator.isSquareHidden(i))) {
 				continue;
 			}
 
@@ -450,6 +439,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				rect.set(x * square + inSet, y * square + inSet, x * square + square - inSet, y * square + square - inSet);
 				canvas.drawBitmap(piecesBitmaps[color][piece], null, rect, null);
 			}
+		}
+
+		if (animationActive && moveAnimator.getCapturedPieceBitmap() != null) {
+			int capturedPiecePosition = moveAnimator.getCapturedPiecePosition();
+			int x = ChessBoard.getColumn(capturedPiecePosition, getBoardFace().isReside());
+			int y = ChessBoard.getRow(capturedPiecePosition, getBoardFace().isReside());
+			rect.set(x * square, y * square, x * square + square, y * square + square);
+			canvas.drawBitmap(moveAnimator.getCapturedPieceBitmap(), null, rect, null);
 		}
 	}
 
@@ -1124,6 +1121,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		private Bitmap pieceBitmap;
 		private Bitmap rookCastlingBitmap;
 		private Bitmap capturedPieceBitmap;
+		private int capturedPiecePosition;
 		private boolean firstRun = true;
 		private final Move move;
 		private final boolean forward;
@@ -1149,10 +1147,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			// todo: check game load
 
 			int moveToPosition = forward ? move.to : move.from;
-			if (getBoardFace().getPiece(moveToPosition) != ChessBoard.EMPTY) { // check back and forward
-				int capturedColor = getBoardFace().getColor()[moveToPosition]; //
-				int capturedPiece = getBoardFace().getPieces()[moveToPosition]; //
+			if (getBoardFace().getPiece(moveToPosition) != ChessBoard.EMPTY) {
+				int capturedColor = getBoardFace().getColor()[moveToPosition];
+				int capturedPiece = getBoardFace().getPieces()[moveToPosition];
 				capturedPieceBitmap = piecesBitmaps[capturedColor][capturedPiece];
+				capturedPiecePosition = moveToPosition;
+				hide2 = moveToPosition;
 			}
 
 			// todo: refactor!
@@ -1196,6 +1196,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		public Bitmap getCapturedPieceBitmap() {
 			return capturedPieceBitmap;
+		}
+
+		public int getCapturedPiecePosition() {
+			return capturedPiecePosition;
 		}
 
 		public boolean updateState() {

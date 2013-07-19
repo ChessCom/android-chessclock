@@ -26,7 +26,6 @@ import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.live.client.PieceColor;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.ChessBoard;
@@ -207,8 +206,8 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 			}
 		}
 
-		if (AppData.getCompEngineHelper() != null && AppData.getCompEngineHelper().isInitialized()) {
-			AppData.getCompEngineHelper().setPaused(false);
+		if (CompEngineHelper.getInstance() != null && CompEngineHelper.getInstance().isInitialized()) {
+			CompEngineHelper.getInstance().setPaused(false);
 		}
 
 		if (!tourWasClicked) {
@@ -219,12 +218,12 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	@Override
 	public void onPause() {
 		// todo @compengine: extract method and put to engine helper
-		if (AppData.getCompEngineHelper() != null && AppData.getCompEngineHelper().isInitialized()) {
-			AppData.getCompEngineHelper().setPaused(true);
-			if (AppData.getCompEngineHelper() != null && AppData.getCompEngineHelper().isGameValid()) {
-				byte[] data = AppData.getCompEngineHelper().toByteArray();
+		if (CompEngineHelper.getInstance() != null && CompEngineHelper.getInstance().isInitialized()) {
+			CompEngineHelper.getInstance().setPaused(true);
+			if (CompEngineHelper.getInstance() != null && CompEngineHelper.getInstance().isGameValid()) {
+				byte[] data = CompEngineHelper.getInstance().toByteArray();
 				SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-				String dataStr = AppData.getCompEngineHelper().byteArrToString(data);
+				String dataStr = CompEngineHelper.getInstance().byteArrToString(data);
 				editor.putString(CompEngineHelper.GAME_STATE, dataStr);
 				editor.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
 				editor.commit();
@@ -248,17 +247,17 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	/*@Override
 	public void onDestroy() {
-		Log.d("DEBUGDEBUG", "DESTROY AppData.getCompEngineHelper().isInitialized() " + AppData.getCompEngineHelper().isInitialized());
-		if (AppData.getCompEngineHelper().isInitialized())
-			AppData.getCompEngineHelper().shutdownEngine();
+		Log.d("DEBUGDEBUG", "DESTROY CompEngineHelper.getInstance().isInitialized() " + CompEngineHelper.getInstance().isInitialized());
+		if (CompEngineHelper.getInstance().isInitialized())
+			CompEngineHelper.getInstance().shutdownEngine();
 		super.onDestroy();
 	}*/
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		if (AppData.getCompEngineHelper() != null && AppData.getCompEngineHelper().isInitialized()) {
-			byte[] data = AppData.getCompEngineHelper().toByteArray();
+		if (CompEngineHelper.getInstance() != null && CompEngineHelper.getInstance().isInitialized()) {
+			byte[] data = CompEngineHelper.getInstance().toByteArray();
 			outState.putByteArray(CompEngineHelper.GAME_STATE, data);
 			outState.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
 		}
@@ -428,7 +427,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 		if (boardView.isHint()) {
 			//onPlayerMove();
-			AppData.getCompEngineHelper().undoHint();
+			CompEngineHelper.getInstance().undoHint();
 		}
 
 		getActivity().runOnUiThread(new Runnable() {
@@ -437,7 +436,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 				if (boardView.isHint()) {
 					onPlayerMove();
-					//AppData.getCompEngineHelper().undoHint();
+					//CompEngineHelper.getInstance().undoHint();
 				}
 
 				boardView.setComputerMoving(false);
@@ -977,7 +976,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 						new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();
 				if (hints != null) {
 					for (org.petero.droidfish.gamelogic.Move move : hints) {
-						boolean isWhite = AppData.getCompEngineHelper().isWhitePiece(move.from);
+						boolean isWhite = CompEngineHelper.getInstance().isWhitePiece(move.from);
 						PieceColor pieceColor = isWhite ? PieceColor.WHITE : PieceColor.BLACK;
 						hintsMap.put(move, pieceColor);
 					}

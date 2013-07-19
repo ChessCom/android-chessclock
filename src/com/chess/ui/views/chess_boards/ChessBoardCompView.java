@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.model.ComputeMoveItem;
 import com.chess.ui.engine.ChessBoard;
@@ -128,7 +127,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 		Log.d(CompEngineHelper.TAG, "make move lastMove " + lastMove);
 
-		computeMoveTask = new PostMoveToCompTask(computeMoveItem, AppData.getCompEngineHelper(), gameCompActivityFace);
+		computeMoveTask = new PostMoveToCompTask(computeMoveItem, CompEngineHelper.getInstance(), gameCompActivityFace);
 		computeMoveTask.execute();
 	}
 
@@ -150,7 +149,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		Log.d(CompEngineHelper.TAG, "ask for move hint");
 
 		gameCompActivityFace.onCompMove();
-		AppData.getCompEngineHelper().makeHint();
+		CompEngineHelper.getInstance().makeHint();
 	}
 
 	public void stopComputerMove() {
@@ -337,8 +336,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 				setComputerMoving(true);
 				gameCompActivityFace.onCompMove();
 				engineMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
-				AppData.getCompEngineHelper().updateEngineGameMode(engineMode);
-				AppData.getCompEngineHelper().setGameMode(engineMode);
+				CompEngineHelper.getInstance().updateEngineGameMode(engineMode);
+				CompEngineHelper.getInstance().setGameMode(engineMode);
                 //postMoveToEngine(getBoardFace().getLastMove(), false, compStrength);
             }
             invalidate();
@@ -360,7 +359,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
         if (!isComputerMoving() && movesToAnimate.size() == 0 && getBoardFace().getHply() > 0 && !blackCompFirstMove) {
 
-			AppData.getCompEngineHelper().moveBack();
+			CompEngineHelper.getInstance().moveBack();
 
 			getBoardFace().setFinished(false);
             pieceSelected = false;
@@ -381,7 +380,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
     public void moveForward() {
         if (!isComputerMoving() && movesToAnimate.size() == 0) {
 
-			AppData.getCompEngineHelper().moveForward();
+			CompEngineHelper.getInstance().moveForward();
 
             pieceSelected = false;
 

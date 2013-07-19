@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.ui.interfaces.game_ui.GameCompFace;
@@ -46,12 +45,9 @@ public class StartEngineTask extends AbstractUpdateTask<CompEngineHelper, Void> 
 	@Override
 	protected Integer doTheTask(Void... params) {
 
-		final CompEngineHelper engine = new CompEngineHelper();
-		engine.init(context);
+		CompEngineHelper.getInstance().init(context);
 
-		AppData.setCompEngineHelper(engine);
-
-		engine.startGame(gameMode, restoreGame, strength, time, depth, gameCompActivityFace, settings, savedInstanceState);
+		CompEngineHelper.getInstance().startGame(gameMode, restoreGame, strength, time, depth, gameCompActivityFace, settings, savedInstanceState);
 
 		return StaticData.RESULT_OK;
 	}

@@ -1,21 +1,20 @@
-package com.chess.ui.engine;
+package com.chess.ui.engine.stockfish;
 
-import java.io.File;
-import java.util.ArrayList;
-
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import com.chess.backend.statics.AppConstants;
-import com.chess.ui.interfaces.game_ui.GameCompFace;
+import com.chess.ui.interfaces.GameCompActivityFace;
 import org.petero.droidfish.*;
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.gamelogic.*;
 import org.petero.droidfish.gamelogic.GameTree.Node;
-import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gtb.Probe;
-import android.content.Context;
-import android.os.Environment;
+
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,8 +25,6 @@ import android.os.Environment;
 
 public class CompEngineHelper implements GUIInterface {
 
-	// todo: should be singleton
-
 	private static final String ENGINE = "stockfish";
 	//private static final String ENGINE = "cuckoochess";
 
@@ -35,15 +32,16 @@ public class CompEngineHelper implements GUIInterface {
 	public static final String GAME_STATE_VERSION_NAME = "gameStateVersion";
 	public static final int GAME_STATE_VERSION = 3;
 	public static final int MAX_NUM_HINT_ARROWS = 2;
-
 	private static final boolean LOGGING_ON = true;
 	public static final String TAG = "COMPENGINE";
 
-	private static DroidChessController engineCtrl = null;
+	private DroidChessController engineCtrl;
+
+	private final static CompEngineHelper ourInstance = new CompEngineHelper();
 
 	private boolean whiteBasedScores;
 
-	int depth;
+	private int depth;
 	private GameMode gameMode;
 	private boolean mPonderMode;
 	private int mEngineThreads;
@@ -58,7 +56,7 @@ public class CompEngineHelper implements GUIInterface {
 	private EngineOptions engineOptions = new EngineOptions();
 
 	private Context context;
-	private GameCompFace gameCompActivityFace;
+	private GameCompActivityFace gameCompActivityFace;
 	private byte[] stateBeforeHint;
 	private TimeControlData timeControlData;
 	private String variantStr = "";
@@ -66,9 +64,14 @@ public class CompEngineHelper implements GUIInterface {
 	private ArrayList<Move> bookMoves;
 	private ArrayList<ArrayList<Move>> pvMoves;
 
-	public DroidChessController init(Context context) {
+	public static CompEngineHelper getInstance() {
+		return ourInstance;
+	}
 
-		//long start = System.currentTimeMillis();
+	private CompEngineHelper() {
+	}
+
+	public DroidChessController init(Context context) {
 
 		this.context = context;
 
@@ -107,7 +110,7 @@ public class CompEngineHelper implements GUIInterface {
 		return engineCtrl;
 	}
 
-	public void startGame(int gameMode, boolean restoreGame, int strength, int time, int depth, GameCompFace gameCompActivityFace, SharedPreferences settings, Bundle savedInstanceState) {
+	public void startGame(int gameMode, boolean restoreGame, int strength, int time, int depth, GameCompActivityFace gameCompActivityFace, SharedPreferences settings, Bundle savedInstanceState) {
 
 		log("INIT ENGINE AND START GAME");
 
@@ -157,7 +160,7 @@ public class CompEngineHelper implements GUIInterface {
 		log("FINISHED");
 	}
 
-	public void makeMove(String move,/* boolean force,*/ GameCompFace gameCompActivityFace) {
+	public void makeMove(String move,/* boolean force,*/ GameCompActivityFace gameCompActivityFace) {
 		this.gameCompActivityFace = gameCompActivityFace;
 
 		//log("MAKE MOVE position\n" + engineCtrl.getCurrentPosition());
@@ -535,6 +538,10 @@ public class CompEngineHelper implements GUIInterface {
 		boolean result = Piece.isWhite(piece);
 
 		return result;
+	}
+
+	public boolean isGameValid() {
+		return engineCtrl.isGamExist();
 	}
 
 	public static void log(String message) {

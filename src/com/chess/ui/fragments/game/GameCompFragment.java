@@ -22,7 +22,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.PieceColor;
 import com.chess.model.PopupItem;
@@ -171,19 +170,19 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			}
 		}
 
-		if (AppData.getCompEngineHelper() != null && AppData.getCompEngineHelper().isInitialized()) {
-			AppData.getCompEngineHelper().setPaused(false);
+		if (CompEngineHelper.getInstance() != null && CompEngineHelper.getInstance().isInitialized()) {
+			CompEngineHelper.getInstance().setPaused(false);
 		}
 	}
 
 	@Override
 	public void onPause() {
 		// todo @compengine: extract method and put to engine helper
-		if (AppData.getCompEngineHelper().isInitialized()) {
-			AppData.getCompEngineHelper().setPaused(true);
-			byte[] data = AppData.getCompEngineHelper().toByteArray();
+		if (CompEngineHelper.getInstance().isInitialized()) {
+			CompEngineHelper.getInstance().setPaused(true);
+			byte[] data = CompEngineHelper.getInstance().toByteArray();
 			SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-			String dataStr = AppData.getCompEngineHelper().byteArrToString(data);
+			String dataStr = CompEngineHelper.getInstance().byteArrToString(data);
 			editor.putString(CompEngineHelper.GAME_STATE, dataStr);
 			editor.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
 			editor.commit();
@@ -207,16 +206,16 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	/*@Override
 	public void onDestroy() {
-		if (AppData.getCompEngineHelper().isInitialized())
-			AppData.getCompEngineHelper().shutdownEngine();
+		if (CompEngineHelper.getInstance().isInitialized())
+			CompEngineHelper.getInstance().shutdownEngine();
 		super.onDestroy();
 	}*/
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		if (AppData.getCompEngineHelper() != null && AppData.getCompEngineHelper().isInitialized()) {
-			byte[] data = AppData.getCompEngineHelper().toByteArray();
+		if (CompEngineHelper.getInstance() != null && CompEngineHelper.getInstance().isInitialized()) {
+			byte[] data = CompEngineHelper.getInstance().toByteArray();
 			outState.putByteArray(CompEngineHelper.GAME_STATE, data);
 			outState.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
 		}
@@ -401,7 +400,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		if (boardView.isHint()) {
 			//onPlayerMove();
-			AppData.getCompEngineHelper().undoHint();
+			CompEngineHelper.getInstance().undoHint();
 		}
 
 		getActivity().runOnUiThread(new Runnable() {
@@ -410,7 +409,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 				if (boardView.isHint()) {
 					onPlayerMove();
-					//AppData.getCompEngineHelper().undoHint();
+					//CompEngineHelper.getInstance().undoHint();
 				}
 
 				boardView.setComputerMoving(false);
@@ -891,7 +890,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 						new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();
 				if (hints != null) {
 					for (org.petero.droidfish.gamelogic.Move move : hints) {
-						boolean isWhite = AppData.getCompEngineHelper().isWhitePiece(move.from);
+						boolean isWhite = CompEngineHelper.getInstance().isWhitePiece(move.from);
 						PieceColor pieceColor = isWhite ? PieceColor.WHITE : PieceColor.BLACK;
 						hintsMap.put(move, pieceColor);
 					}

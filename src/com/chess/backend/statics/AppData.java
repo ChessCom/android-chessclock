@@ -6,8 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.ui.engine.stockfish.CompEngineHelper;
-import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.interfaces.BoardFace;
 import com.chess.utilities.AppUtils;
 
 import static com.chess.backend.statics.AppConstants.*;
@@ -417,17 +416,6 @@ public class AppData {
 	private void setIntValue(String field, int value) {
 		String userName = getUsername();
 		editor.putInt(userName + field, value).commit();
-	}
-
-	// ---------------------------- new engine addition
-	private static CompEngineHelper compEngineHelper;
-
-	public static void setCompEngineHelper(CompEngineHelper engine) {
-		compEngineHelper = engine;
-	}
-
-	public static CompEngineHelper getCompEngineHelper() {
-		return compEngineHelper;
 	}
 
 	public void setCompStrength(Context context, int value) {
