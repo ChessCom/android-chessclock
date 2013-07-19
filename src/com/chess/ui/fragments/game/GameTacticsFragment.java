@@ -227,7 +227,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		if (move == null) {
 			return;
 		}
-		boardView.scheduleMoveAnimation(move, true);
+		boardView.setMoveAnimator(move, true);
 		getBoardFace().takeNext();
 		invalidateGameScreen();
 
@@ -267,7 +267,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 			if (boardFace.getMovesCount() < boardFace.getTacticMoves().length - 1) { // if it's not last move, make comp move
 				final Move move = boardFace.convertMove(boardFace.getTacticMoves()[boardFace.getHply()]);
-				boardView.scheduleMoveAnimation(move, true);
+				boardView.setMoveAnimator(move, true);
 				boardFace.makeMove(move, true);
 				invalidateGameScreen();
 			} else { // correct
@@ -458,7 +458,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			}
 
 			final Move move = boardFace.convertMove(boardFace.getTacticMoves()[currentTacticAnswerCnt]);
-			boardView.scheduleMoveAnimation(move, true);
+			boardView.setMoveAnimator(move, true);
 			boardFace.makeMove(move, true);
 			invalidateGameScreen();
 

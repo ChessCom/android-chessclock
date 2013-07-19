@@ -246,7 +246,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 				}
 				if (moveMade) {
 					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
-					movesToAnimate.add(moveAnimator);
+					setMoveAnimator(moveAnimator);
 					//afterMove(); //
 				} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 						&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
@@ -308,7 +308,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		}
 		if (moveMade) {
 			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
-			movesToAnimate.add(moveAnimator);
+			setMoveAnimator(moveAnimator);
 			//afterMove(); //
 		} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 				&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
@@ -357,19 +357,19 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		boolean blackCompFirstMove =
 				getAppData().isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().getHply() == 1;
 
-        if (!isComputerMoving() && movesToAnimate.size() == 0 && getBoardFace().getHply() > 0 && !blackCompFirstMove) {
+        if (!isComputerMoving() && noMovesToAnimate() && getBoardFace().getHply() > 0 && !blackCompFirstMove) {
 
 			CompEngineHelper.getInstance().moveBack();
 
 			getBoardFace().setFinished(false);
             pieceSelected = false;
 
-			scheduleMoveAnimation(getBoardFace().getLastMove(), false);
+			setMoveAnimator(getBoardFace().getLastMove(), false);
 			getBoardFace().takeBack();
 
 			Move move = getBoardFace().getLastMove();
 			if (move != null && getAppData().isComputerVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {
-				scheduleMoveAnimation(move, false);
+				setSecondMoveAnimator(new MoveAnimator(move, false));
 			}
             invalidate();
 			gameCompActivityFace.invalidateGameScreen();
@@ -378,7 +378,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
     @Override
     public void moveForward() {
-        if (!isComputerMoving() && movesToAnimate.size() == 0) {
+        if (!isComputerMoving() && noMovesToAnimate()) {
 
 			CompEngineHelper.getInstance().moveForward();
 
@@ -388,7 +388,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			if (move == null) {
 				return;
 			}
-			scheduleMoveAnimation(move, true);
+			setMoveAnimator(move, true);
 			getBoardFace().takeNext();
 
 			if (getAppData().isComputerVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {
@@ -396,7 +396,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 				if (move == null) {
 					return;
 				}
-				scheduleMoveAnimation(move, true);
+				setSecondMoveAnimator(new MoveAnimator(move, true));
 			}
             invalidate();
 			gameCompActivityFace.invalidateGameScreen();

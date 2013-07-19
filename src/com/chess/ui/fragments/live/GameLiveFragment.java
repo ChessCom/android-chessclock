@@ -578,7 +578,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void cancelMove() {
 		showSubmitButtonsLay(false);
-		boardView.scheduleMoveAnimation(getBoardFace().getLastMove(), false);
+		boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 		getBoardFace().takeBack();
 		getBoardFace().decreaseMovesCount();
 		boardView.invalidate();
@@ -930,7 +930,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		super.onClick(view);
 		if (view.getId() == R.id.cancelBtn) {
 			showSubmitButtonsLay(false);
-			boardView.scheduleMoveAnimation(getBoardFace().getLastMove(), false);
+			boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 			getBoardFace().takeBack();
 			getBoardFace().decreaseMovesCount();
 			boardView.invalidate();

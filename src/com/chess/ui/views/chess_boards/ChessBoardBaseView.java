@@ -28,10 +28,7 @@ import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.game_controls.ControlsBaseView;
 import org.petero.droidfish.gamelogic.Position;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * ChessBoardBaseView class
@@ -120,7 +117,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private String[] originalNotations;
 
 	// new engine
-	protected LinkedList<MoveAnimator> movesToAnimate = new LinkedList<MoveAnimator>();
+	private MoveAnimator moveAnimator;
+	private MoveAnimator secondMoveAnimator;
 	private HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> moveHints =
 			new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();
 	private Paint whiteMoveArrowPaint;
@@ -281,11 +279,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	@Override
 	public void moveBack() {
 
-		if (movesToAnimate.size() == 0 && getBoardFace().getHply() > 0) {
+		if (noMovesToAnimate() && getBoardFace().getHply() > 0) {
 
 			getBoardFace().setFinished(false);
 			pieceSelected = false;
-			scheduleMoveAnimation(getBoardFace().getLastMove(), false);
+			setMoveAnimator(getBoardFace().getLastMove(), false);
 			getBoardFace().takeBack();
 			invalidate();
 			gameFace.invalidateGameScreen();
@@ -308,14 +306,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	@Override
 	public void moveForward() {
 
-		if (movesToAnimate.size() == 0) {
+		if (noMovesToAnimate()) {
 			pieceSelected = false;
 
 			Move move = getBoardFace().getNextMove();
 			if (move == null) {
 				return;
 			}
-			scheduleMoveAnimation(move, true);
+			setMoveAnimator(move, true);
 			getBoardFace().takeNext();
 
 			invalidate();
@@ -394,9 +392,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected void drawPiecesAndAnimation(Canvas canvas) {
-		if (movesToAnimate.size() > 0) {
-			MoveAnimator moveAnimator = movesToAnimate.getFirst();
-			boolean animationActive = moveAnimator.updateState();
+		boolean animationActive;
+
+		if (moveAnimator == null && secondMoveAnimator == null) {
+			drawPieces(canvas, false, null);
+		}
+
+		if (moveAnimator != null) {
+			animationActive = moveAnimator.updateState();
 			drawPieces(canvas, animationActive, moveAnimator);
 			if (animationActive) {
 				moveAnimator.draw(canvas);
@@ -404,22 +407,26 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				if (moveAnimator.isForceCompEngine()) {
 					afterMove();
 				}
-				movesToAnimate.remove(moveAnimator);
-				if (movesToAnimate.size() > 0) {
-					moveAnimator = movesToAnimate.getFirst();
-					if (moveAnimator.isForward()) {
+				moveAnimator = null;
+
+				if (secondMoveAnimator != null) {
+					if (secondMoveAnimator.isForward()) {
 						getBoardFace().takeNext();
-					}
-					else {
+					} else {
 						getBoardFace().takeBack();
 					}
-					animationActive = moveAnimator.updateState();
-					drawPieces(canvas, animationActive, moveAnimator);
-					moveAnimator.draw(canvas);
 				}
 			}
-		} else {
-			drawPieces(canvas, false, null);
+		}
+
+		if (moveAnimator == null && secondMoveAnimator != null) {
+			animationActive = secondMoveAnimator.updateState();
+			drawPieces(canvas, animationActive, secondMoveAnimator);
+			if (animationActive) {
+				secondMoveAnimator.draw(canvas);
+			} else {
+				secondMoveAnimator = null;
+			}
 		}
 	}
 
@@ -664,7 +671,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			if (moveMade) {
 				if (showAnimation) {
 					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
-					movesToAnimate.add(moveAnimator);
+					setMoveAnimator(moveAnimator);
 				} else {
 					afterMove(); //
 				}
@@ -711,7 +718,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 		if (moveMade) {
 			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
-			movesToAnimate.add(moveAnimator);
+			setMoveAnimator(moveAnimator);
 			//afterMove(); //
 		} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 				&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
@@ -1105,11 +1112,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		return square * (getBoardFace().isReside() ? y : 7 - y);
 	}
 
-	public void scheduleMoveAnimation(Move move, boolean forward) {
-		MoveAnimator moveAnimator = new MoveAnimator(move, forward);
-		movesToAnimate.add(moveAnimator);
-	}
-
 	// TODO: refactor!
 
 	protected class MoveAnimator {
@@ -1226,7 +1228,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		public boolean isSquareHidden(int square) {
 			/*if (!isAnimationActive())
 				return false;*/
-			return (square == hide1) || (square == hide2);
+			return square == hide1 || square == hide2;
 		}
 
 		private void initTimer() {
@@ -1283,5 +1285,21 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		public void setForceCompEngine(boolean forceCompEngine) {
 			this.forceCompEngine = forceCompEngine;
 		}
+	}
+
+	protected boolean noMovesToAnimate() {
+		return moveAnimator == null && secondMoveAnimator == null;
+	}
+
+	public void setMoveAnimator(Move move, boolean forward) {
+		this.moveAnimator = new MoveAnimator(move, forward);
+	}
+
+	public void setMoveAnimator(MoveAnimator moveAnimator) {
+		this.moveAnimator = moveAnimator;
+	}
+
+	public void setSecondMoveAnimator(MoveAnimator moveAnimator) {
+		this.secondMoveAnimator = moveAnimator;
 	}
 }

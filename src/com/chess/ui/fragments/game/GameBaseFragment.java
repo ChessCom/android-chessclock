@@ -205,7 +205,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		if (move == null) {
 			return;
 		}
-		boardView.scheduleMoveAnimation(move, true);
+		boardView.setMoveAnimator(move, true);
 		getBoardFace().takeNext();
 
 		if (getActivity() != null)

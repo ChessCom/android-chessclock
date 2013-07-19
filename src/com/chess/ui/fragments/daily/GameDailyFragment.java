@@ -575,7 +575,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	public void cancelMove() {
 		showSubmitButtonsLay(false);
 
-		boardView.scheduleMoveAnimation(getBoardFace().getLastMove(), false);
+		boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 		getBoardFace().takeBack();
 		getBoardFace().decreaseMovesCount();
 		boardView.invalidate();

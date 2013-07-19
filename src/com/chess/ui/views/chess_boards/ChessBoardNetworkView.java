@@ -147,7 +147,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 				}
 				if (moveMade) {
 					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
-					movesToAnimate.add(moveAnimator);
+					setMoveAnimator(moveAnimator);
 					//afterMove(); //
 				} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 						&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {

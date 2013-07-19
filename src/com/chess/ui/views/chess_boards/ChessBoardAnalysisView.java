@@ -180,7 +180,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 				}
 				if (moveMade) {
 					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
-					movesToAnimate.add(moveAnimator);
+					setMoveAnimator(moveAnimator);
 					//afterMove(); //
 				} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 						&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
@@ -233,7 +233,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 		}
 		if (moveMade) {
 			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
-			movesToAnimate.add(moveAnimator);
+			setMoveAnimator(moveAnimator);
 			//afterMove(); //
 		} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 				&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
@@ -265,10 +265,10 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	@Override
 	public void moveBack() {
 
-		if (movesToAnimate.size() == 0 && getBoardFace().getHply() > 0) {
+		if (noMovesToAnimate() && getBoardFace().getHply() > 0) {
 			getBoardFace().setFinished(false);
 			pieceSelected = false;
-			scheduleMoveAnimation(getBoardFace().getLastMove(), false);
+			setMoveAnimator(getBoardFace().getLastMove(), false);
 			getBoardFace().takeBack();
 			invalidate();
 			gameAnalysisActivityFace.invalidateGameScreen();
@@ -278,14 +278,14 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	@Override
 	public void moveForward() {
 
-		if (movesToAnimate.size() == 0) {
+		if (noMovesToAnimate()) {
 			pieceSelected = false;
 
 			Move move = getBoardFace().getNextMove();
 			if (move == null) {
 				return;
 			}
-			scheduleMoveAnimation(move, true);
+			setMoveAnimator(move, true);
 			getBoardFace().takeNext();
 
 			invalidate();

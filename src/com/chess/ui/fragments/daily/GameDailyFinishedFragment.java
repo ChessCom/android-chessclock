@@ -520,7 +520,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	public void cancelMove() {
 		showSubmitButtonsLay(false);
 
-		boardView.scheduleMoveAnimation(getBoardFace().getLastMove(), false);
+		boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 		getBoardFace().takeBack();
 		getBoardFace().decreaseMovesCount();
 		boardView.invalidate();

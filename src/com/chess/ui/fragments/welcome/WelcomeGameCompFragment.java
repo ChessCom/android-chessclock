@@ -441,7 +441,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 				boardView.setComputerMoving(false);
 
-				boardView.scheduleMoveAnimation(move, true);
+				boardView.setMoveAnimator(move, true);
 				getBoardFace().makeMove(move);
 
 				if (boardView.isHint()) {
@@ -464,7 +464,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	private Runnable reverseHintTask = new Runnable() {
 		@Override
 		public void run() {
-			boardView.scheduleMoveAnimation(getBoardFace().getLastMove(), false);
+			boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 			getBoardFace().takeBack();
 			boardView.invalidate();
 
