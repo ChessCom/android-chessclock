@@ -104,7 +104,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			Log.d(CompEngineHelper.TAG, "STORE game " + builder.toString());
 
 			SharedPreferences.Editor editor = preferences.edit();
-			editor.putString(getAppData().getUserName() + AppConstants.SAVED_COMPUTER_GAME, builder.toString());
+			editor.putString(getAppData().getUsername() + AppConstants.SAVED_COMPUTER_GAME, builder.toString());
 			editor.commit();
         }
 		return super.isGameOver();

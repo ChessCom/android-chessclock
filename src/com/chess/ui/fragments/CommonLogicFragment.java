@@ -559,8 +559,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		return getActivityFace().getMeAppData();
 	}
 
-	protected String getUserName() {
-		return getActivityFace().getMeUserName();
+	protected String getUsername() {
+		return getActivityFace().getMeUsername();
 	}
 
 	protected String getUserToken() {

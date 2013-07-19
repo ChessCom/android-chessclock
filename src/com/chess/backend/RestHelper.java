@@ -120,17 +120,30 @@ public class RestHelper {
 		return CMD_ARTICLES + "/" + id + "/comments";
 	} // POST
 
-	/*Other stuff*/
+	/* Friends */
 	public static final String CMD_FRIENDS = BASE_URL + V1 + "/friends";
 	public static final String CMD_FRIENDS_REQUEST = CMD_FRIENDS + "/requests";
+	/* Videos */
 	public static final String CMD_VIDEOS = BASE_URL + V1 + "/videos";
 	public static final String CMD_VIDEO_CATEGORIES = CMD_VIDEOS + "/categories";
 	public static String CMD_VIDEO_BY_ID(long id) {
 		return CMD_VIDEOS + "/" + id;
 	}
+	/* Tactics */
 	public static final String CMD_TACTICS = BASE_URL + V1 + "/tactics";
 	public static final String CMD_TACTICS_STATS = CMD_TACTICS + "/stats";
 	public static final String CMD_TACTIC_TRAINER = CMD_TACTICS + "/trainer";
+	/* Lessons */
+	public static final String CMD_LESSONS = BASE_URL + V1 + "/lessons";
+	public static final String CMD_LESSONS_CATEGORIES = CMD_LESSONS + "/categories";
+	public static final String CMD_LESSONS_COURSES = CMD_LESSONS + "/courses";
+	public static String CMD_COURSE_BY_ID(long id) {
+		return CMD_LESSONS + "/course/" + id;
+	}
+
+	public static String CMD_LESSON_BY_ID(long id) {
+		return CMD_LESSONS + "/" + id;
+	}
 
 	public static String CMD_ANSWER_GAME_SEEK(long gameSeekId) {
 		return CMD_GAMES + "/" + gameSeekId + "/seeks";

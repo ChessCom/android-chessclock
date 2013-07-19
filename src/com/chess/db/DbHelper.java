@@ -53,7 +53,7 @@ public class DbHelper {
 //		queryParams.setUri(DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES]);
 //		queryParams.setProjection(DBDataManager.PROJECTION_DAILY_PLAYER_NAMES);
 //		queryParams.setSelection(DBDataManager.SELECTION_USER);
-//		queryParams.setArguments(new String[]{getAppData().getUserName(context)});
+//		queryParams.setArguments(new String[]{getAppData().getUsername(context)});
 //		return queryParams;
 //	}
 
@@ -148,5 +148,12 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	public static QueryParams getLessonCourseById(int topicId) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DBConstants.uriArray[DBConstants.LESSONS_COURSES]);
+		queryParams.setSelection(DBDataManager.SELECTION_ITEM_ID);
+		queryParams.setArguments(new String[]{String.valueOf(topicId)});
+		return queryParams;
+	}
 
 }

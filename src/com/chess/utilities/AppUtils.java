@@ -214,7 +214,7 @@ public class AppUtils {
 
 		AppData appData = new AppData(context);
 		SharedPreferences preferences = appData.getPreferences();
-		boolean playSounds = preferences.getBoolean(appData.getUserName() + AppConstants.PREF_SOUNDS, false);
+		boolean playSounds = preferences.getBoolean(appData.getUsername() + AppConstants.PREF_SOUNDS, false);
 		if(playSounds){
 			final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
 

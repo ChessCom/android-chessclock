@@ -34,7 +34,6 @@ public class ControlsCompView extends ControlsBaseView {
 
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
 		addControlButton(HINT, R.style.Rect_Bottom_Middle);
-//		addControlButton(HELP, R.style.Rect_Bottom_Middle);
 		addControlButton(BACK, R.style.Rect_Bottom_Middle);
 		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
 

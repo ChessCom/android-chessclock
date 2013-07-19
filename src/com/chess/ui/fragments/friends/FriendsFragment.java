@@ -80,7 +80,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		init();
 
 		if (need2update){
-			boolean haveSavedData = DBDataManager.haveSavedFriends(getActivity(), getUserName());
+			boolean haveSavedData = DBDataManager.haveSavedFriends(getActivity(), getUsername());
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
 				updateData();
@@ -184,7 +184,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 	private void loadFromDb() {
 		new LoadDataFromDbTask(friendsCursorUpdateListener,
-				DbHelper.getUserParams(getAppData().getUserName(), DBConstants.FRIENDS),
+				DbHelper.getUserParams(getAppData().getUsername(), DBConstants.FRIENDS),
 				getContentResolver()).executeTask();
 
 	}

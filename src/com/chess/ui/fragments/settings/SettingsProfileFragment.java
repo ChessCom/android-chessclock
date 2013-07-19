@@ -493,7 +493,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			cacheDir.mkdirs();
 
 		// save scaled bitmap to sd for upload
-		String filename = getAppData().getUserName() + System.currentTimeMillis();
+		String filename = getAppData().getUsername() + System.currentTimeMillis();
 		logTest("saveImageForUpload filename = " + filename);
 
 		File imgFile = new File(cacheDir, filename);

@@ -158,7 +158,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
 
 		if (need2update) {
-			boolean haveSavedData = DBDataManager.haveSavedDailyGame(getActivity(), getUserName());
+			boolean haveSavedData = DBDataManager.haveSavedDailyGame(getActivity(), getUsername());
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
 				updateData();
@@ -383,7 +383,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	private void loadDbGames() {
 		new LoadDataFromDbTask(currentGamesMyCursorUpdateListener,
-				DbHelper.getDailyCurrentListGamesParams(getUserName()),
+				DbHelper.getDailyCurrentListGamesParams(getUsername()),
 				getContentResolver()).executeTask();
 	}
 
@@ -467,7 +467,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
 			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-					DbHelper.getDailyFinishedListGamesParams(getUserName()),
+					DbHelper.getDailyFinishedListGamesParams(getUsername()),
 					getContentResolver()).executeTask();
 		}
 	}
@@ -504,7 +504,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 //					}
 
 					if (finishedGameDataList != null) {
-						boolean gamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUserName());
+						boolean gamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUsername());
 
 						if (gamesLeft) {
 							new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
@@ -514,7 +514,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 						}
 					} else {
 						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-								DbHelper.getDailyFinishedListGamesParams(getUserName()),
+								DbHelper.getDailyFinishedListGamesParams(getUsername()),
 								getContentResolver()).executeTask();
 					}
 					break;
@@ -531,7 +531,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			if (resultCode == StaticData.EMPTY_DATA) {
 				if (gameType == CURRENT_MY) {
 					new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-							DbHelper.getDailyFinishedListGamesParams(getUserName()),
+							DbHelper.getDailyFinishedListGamesParams(getUsername()),
 							getContentResolver()).executeTask();
 				} else {
 					emptyView.setText(R.string.no_games);
@@ -564,7 +564,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			boolean currentGamesLeft;
 			{ // current games
 				final List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
-				currentGamesLeft = DBDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList, getUserName());
+				currentGamesLeft = DBDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList, getUsername());
 
 				if (currentGamesLeft) {
 					new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, currentGamesList, getContentResolver()).executeTask();
@@ -588,7 +588,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			finishedGameDataList = returnedObj.getData().getFinished();
 			if (!currentGamesLeft) { // if SaveTask will not return to LoadFinishedGamesPoint
 				if (finishedGameDataList != null) {
-					boolean gamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUserName());
+					boolean gamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUsername());
 
 					if (gamesLeft) {
 						new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
@@ -598,7 +598,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					}
 				} else {
 					new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-							DbHelper.getDailyFinishedListGamesParams(getUserName()),
+							DbHelper.getDailyFinishedListGamesParams(getUsername()),
 							getContentResolver()).executeTask();
 				}
 			}

@@ -280,7 +280,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 	@Override
 	public void invalidateGameScreen() {
 		if (!labelsSet) {
-			String userName = getAppData().getUserName();
+			String userName = getAppData().getUsername();
 			switch (getBoardFace().getMode()) {
 				case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {    //w - human; b - comp
 					humanBlack = false;
@@ -538,7 +538,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 				[Termination "alien_roger won on time"]
 				 */
 		CharSequence moves = getBoardFace().getMoveListSAN();
-		String whitePlayerName = getAppData().getUserName();
+		String whitePlayerName = getAppData().getUsername();
 		String blackPlayerName = getString(R.string.comp);
 		String result = GAME_GOES;
 
@@ -551,7 +551,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		}
 		if (!isUserColorWhite()) {
 			whitePlayerName = getString(R.string.comp);
-			blackPlayerName = getAppData().getUserName();
+			blackPlayerName = getAppData().getUsername();
 		}
 		String date = datePgnFormat.format(Calendar.getInstance().getTime());
 
@@ -744,14 +744,14 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 		public String composeMessage() {
 			String vsStr = getString(R.string.vs);
 			String space = StaticData.SYMBOL_SPACE;
-			return getAppData().getUserName()+ space + vsStr + space + getString(R.string.vs_computer)
+			return getAppData().getUsername()+ space + vsStr + space + getString(R.string.vs_computer)
 					+ " - " + getString(R.string.chess) + space	+ getString(R.string.via_chesscom);
 		}
 
 		public String getTitle() {
 			String vsStr = getString(R.string.vs);
 			String space = StaticData.SYMBOL_SPACE;
-			return "Chess: " + getAppData().getUserName()+ space + vsStr + space + getString(R.string.vs_computer); // TODO adjust i18n
+			return "Chess: " + getAppData().getUsername()+ space + vsStr + space + getString(R.string.vs_computer); // TODO adjust i18n
 		}
 	}
 

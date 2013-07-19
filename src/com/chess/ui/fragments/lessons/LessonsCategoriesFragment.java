@@ -1,4 +1,4 @@
-package com.chess.ui.fragments.videos;
+package com.chess.ui.fragments.lessons;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +28,9 @@ import com.chess.db.tasks.SaveVideosListTask;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
 import com.chess.ui.adapters.VideosThumbCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.videos.VideoCategoriesFragment;
+import com.chess.ui.fragments.videos.VideoDetailsFragment;
+import com.chess.ui.fragments.videos.VideosFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
 import java.util.ArrayList;
@@ -36,10 +39,10 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 27.01.13
- * Time: 19:12
+ * Date: 18.07.13
+ * Time: 14:56
  */
-public class VideoCategoriesFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+public class LessonsCategoriesFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
 	public static final String SECTION_NAME = "section_name";
 	private static final int WATCH_VIDEO_REQUEST = 9896;

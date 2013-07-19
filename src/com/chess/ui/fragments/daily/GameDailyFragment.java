@@ -228,7 +228,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private void loadGameAndUpdate() {
 		// load game from DB. After load update
 		Cursor cursor = DBDataManager.executeQuery(getContentResolver(),
-				DbHelper.getDailyGameParams(gameId, getUserName()));
+				DbHelper.getDailyGameParams(gameId, getUsername()));
 
 		if (cursor.moveToFirst()) {
 			showSubmitButtonsLay(false);
@@ -300,7 +300,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	}
 
 	private void adjustBoardForGame() {
-		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUserName());
+		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUsername());
 
 		if (userPlayWhite) {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
@@ -540,7 +540,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	private void loadGamesList() {
 		// replace with db update
 //		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getContext()), // TODO adjust
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGamesParams(getUserName()), // TODO adjust
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGamesParams(getUsername()), // TODO adjust
 				getContentResolver()).executeTask();
 
 	}
@@ -590,7 +590,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 	@Override
 	public Boolean isUserColorWhite() {
 		if (currentGame != null && getActivity() != null)
-			return currentGame.getWhiteUsername().equals(getAppData().getUserName());
+			return currentGame.getWhiteUsername().equals(getAppData().getUsername());
 		else
 			return null;
 	}
@@ -602,7 +602,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 	private boolean isUserMove() {
 		userPlayWhite = currentGame.getWhiteUsername()
-				.equals(getAppData().getUserName());
+				.equals(getAppData().getUsername());
 
 		return /*(*/currentGame.isMyTurn()/* && userPlayWhite)
 				|| (!currentGame.isWhiteMove() && !userPlayWhite)*/;
@@ -693,7 +693,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			String draw;
 
-			String userName = getAppData().getUserName();
+			String userName = getAppData().getUsername();
 			boolean drawWasOffered = DBDataManager.checkIfDrawOffered(getContentResolver(), userName, gameId);
 
 			if (drawWasOffered) { // If Draw was already offered by the opponent, we send accept to it.
@@ -818,7 +818,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkAc
 
 			currentGame = returnedObj;
 
-			DBDataManager.updateDailyGame(getContentResolver(), currentGame, getAppData().getUserName());
+			DBDataManager.updateDailyGame(getContentResolver(), currentGame, getAppData().getUsername());
 
 			adjustBoardForGame();
 		}

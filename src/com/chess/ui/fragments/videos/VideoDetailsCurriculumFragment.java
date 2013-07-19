@@ -32,7 +32,7 @@ public class VideoDetailsCurriculumFragment extends VideoDetailsFragment {
 
 	@Override
 	protected void updateData() {
-		boolean videoViewed = DBDataManager.isVideoViewed(getActivity(), getUserName(), itemId);
+		boolean videoViewed = DBDataManager.isVideoViewed(getActivity(), getUsername(), itemId);
 		if (videoViewed) {
 			playBtnTxt.setText(R.string.ic_check);
 		} else {

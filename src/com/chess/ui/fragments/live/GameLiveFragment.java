@@ -528,7 +528,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 						", analysisBoard=" + getBoardFace().isAnalysis() +
 						", latestMoveNumber=" + liveService.getLatestMoveNumber() +
 						", debugString=" + debugString +
-						", submit=" + preferences.getBoolean(getAppData().getUserName() + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false) +
+						", submit=" + preferences.getBoolean(getAppData().getUsername() + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false) +
 						", movesLive=" + liveService.getCurrentGame().getMoves() +
 						", moves=" + getBoardFace().getMoveListSAN() +
 						", trace=" + stackTrace;

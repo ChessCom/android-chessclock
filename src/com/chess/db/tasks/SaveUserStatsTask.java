@@ -31,7 +31,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		this.item = item;
 		this.resolver = resolver;
 		AppData appData = new AppData(getTaskFace().getMeContext());
-		userName = appData.getUserName();
+		userName = appData.getUsername();
 
 	}
 

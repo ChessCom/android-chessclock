@@ -62,7 +62,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 
-		Cursor cursor = DBDataManager.getRecentOpponentsCursor(getActivity(), getUserName());
+		Cursor cursor = DBDataManager.getRecentOpponentsCursor(getActivity(), getUsername());
 
 		RecentOpponentsCursorAdapter adapter = new RecentOpponentsCursorAdapter(getActivity(), cursor);
 

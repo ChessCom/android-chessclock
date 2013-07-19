@@ -20,6 +20,7 @@ import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.game.GameCompFragment;
 import com.chess.ui.fragments.game.GameTacticsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
+import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;

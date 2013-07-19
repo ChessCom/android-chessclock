@@ -35,7 +35,7 @@ public class GetAndSaveUserStats extends IntentService {
 		}
 
 		if (item != null) {
-			String userName = appData.getUserName();
+			String userName = appData.getUsername();
 
 			SaveUserStatsTask.saveLiveStats(userName, item.getData(), getContentResolver());
 			SaveUserStatsTask.saveDailyStats(userName, item.getData(), getContentResolver());

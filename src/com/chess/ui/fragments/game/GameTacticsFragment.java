@@ -152,9 +152,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		if (firstRun) {
 
-			if (DBDataManager.haveSavedTacticGame(getActivity(), getUserName())) {
+			if (DBDataManager.haveSavedTacticGame(getActivity(), getUsername())) {
 				// TODO load tactic item from batch
-				tacticItem = DBDataManager.getLastTacticItemFromDb(getActivity(), getUserName());
+				tacticItem = DBDataManager.getLastTacticItemFromDb(getActivity(), getUsername());
 				adjustBoardForGame();
 
 				if (getBoardFace().isLatestMoveMadeUser()) {
@@ -191,7 +191,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		stopTacticsTimer();
 
 		if (needToSaveTactic()) {
-			DBDataManager.saveTacticItemToDb(getActivity(), tacticItem, getUserName());
+			DBDataManager.saveTacticItemToDb(getActivity(), tacticItem, getUsername());
 		}
 	}
 
@@ -384,12 +384,12 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		if (isTacticItemValid()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
 			getContentResolver().delete(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
-					DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments);
+					DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
 		}
 
-		if (DBDataManager.haveSavedTacticGame(getActivity(), getUserName())) {
+		if (DBDataManager.haveSavedTacticGame(getActivity(), getUsername())) {
 
-			tacticItem = DBDataManager.getLastTacticItemFromDb(getActivity(), getUserName());
+			tacticItem = DBDataManager.getLastTacticItemFromDb(getActivity(), getUsername());
 
 			adjustBoardForGame();
 			currentTacticAnswerCnt = 0;
@@ -898,7 +898,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		if (isTacticItemValid()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
 			getContentResolver().delete(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
-					DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments);
+					DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
 		}
 	}
 

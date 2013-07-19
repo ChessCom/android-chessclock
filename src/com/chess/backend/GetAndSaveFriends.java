@@ -42,7 +42,7 @@ public class GetAndSaveFriends extends IntentService {
 		}
 
 		if (item != null) {
-			String userName = appData.getUserName();
+			String userName = appData.getUsername();
 			ContentResolver contentResolver = getContentResolver();
 
 			for (FriendsItem.Data currentItem : item.getData()) { // if

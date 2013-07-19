@@ -127,7 +127,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	private void loadGame() {
 		// load game from DB. After load update
-		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyGameParams(gameId, getUserName()),
+		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyGameParams(gameId, getUsername()),
 				getContentResolver()).executeTask();
 	}
 
@@ -164,7 +164,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	}
 
 	private void adjustBoardForGame() {
-		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUserName());
+		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUsername());
 
 		labelsConfig.topAvatar = opponentAvatarDrawable;
 		labelsConfig.bottomAvatar = userAvatarDrawable;
@@ -376,7 +376,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	@Override
 	public Boolean isUserColorWhite() {
 		if (currentGame != null)
-			return currentGame.getWhiteUsername().equals(getAppData().getUserName());
+			return currentGame.getWhiteUsername().equals(getAppData().getUsername());
 		else
 			return null;
 	}
@@ -391,7 +391,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	}
 
 	private boolean isUserMove() {
-		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUserName());
+		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUsername());
 
 		return /*(*/currentGame.isMyTurn()/*>WhiteMove() && userPlayWhite)
 				|| (!currentGame.isWhiteMove() && !userPlayWhite)*/;

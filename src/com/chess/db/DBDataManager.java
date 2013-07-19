@@ -39,7 +39,7 @@ public class DBDataManager {
 
 	// -------------- SELECTION DEFINITIONS ---------------------------
 
-	public static String SELECTION_TACTIC_ID_AND_USER = concatArguments(
+	public static String SELECTION_ITEM_ID_AND_USER = concatArguments(
 			DBConstants.V_ID,
 			DBConstants.V_USER);
 
@@ -80,7 +80,7 @@ public class DBDataManager {
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
-	public static final String[] PROJECTION_TACTIC_ITEM_ID_AND_USER = new String[]{
+	public static final String[] PROJECTION_ITEM_ID_AND_USER = new String[]{
 			DBConstants._ID,
 			DBConstants.V_ID,
 			DBConstants.V_USER
@@ -449,8 +449,8 @@ public class DBDataManager {
 		arguments2[1] = userName;
 
 		Uri uri = DBConstants.uriArray[DBConstants.TACTICS_BATCH];
-		Cursor cursor = contentResolver.query(uri, PROJECTION_TACTIC_ITEM_ID_AND_USER,
-				SELECTION_TACTIC_ID_AND_USER, arguments2, null);
+		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID_AND_USER,
+				SELECTION_ITEM_ID_AND_USER, arguments2, null);
 
 		ContentValues values = putTacticItemToValues(tacticItem);
 		if (cursor.moveToFirst()) {
@@ -496,7 +496,7 @@ public class DBDataManager {
 		arguments2[1] = resultItem.getUser();
 
 		Uri uri = DBConstants.uriArray[DBConstants.TACTICS_RESULTS];
-		Cursor cursor = contentResolver.query(uri, null, SELECTION_TACTIC_ID_AND_USER, arguments2, null);
+		Cursor cursor = contentResolver.query(uri, null, SELECTION_ITEM_ID_AND_USER, arguments2, null);
 
 		ContentValues values = putTacticResultItemToValues(resultItem);
 
@@ -516,7 +516,7 @@ public class DBDataManager {
 		arguments2[0] = String.valueOf(id);
 		arguments2[1] = userName;
 		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.TACTICS_RESULTS],
-				null, SELECTION_TACTIC_ID_AND_USER, arguments2, null);
+				null, SELECTION_ITEM_ID_AND_USER, arguments2, null);
 
 		if (cursor.moveToFirst()) {
 			TacticRatingData resultItem = getTacticResultItemFromCursor(cursor);
@@ -1051,6 +1051,18 @@ public class DBDataManager {
 		values.put(DBConstants.V_PHOTO_URL, dataObj.getAvatarUrl());
 		values.put(DBConstants.V_COMMENT_NUMBER, dataObj.getCommentNumber());
 		values.put(DBConstants.V_PAGE, dataObj.getPage());
+
+		return values;
+	}
+
+	public static ContentValues putLessonsCourseItemToValues(LessonCourseItem.Data dataObj) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_ID, dataObj.getId());
+		values.put(DBConstants.V_USER, dataObj.getUser());
+		values.put(DBConstants.V_NAME, dataObj.getName());
+		values.put(DBConstants.V_CATEGORY_ID, dataObj.getCategoryId());
+		values.put(DBConstants.V_COURSE_COMPLETED, dataObj.isCourseCompleted()? 1 : 0);
 
 		return values;
 	}

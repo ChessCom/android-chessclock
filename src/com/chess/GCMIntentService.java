@@ -61,7 +61,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	@Override
 	protected void onRegistered(Context context, String registrationId) {
 		AppData appData = new AppData(context);
-		Log.d(TAG, "User = " + appData.getUserName() + " Device registered: regId = " + registrationId);
+		Log.d(TAG, "User = " + appData.getUsername() + " Device registered: regId = " + registrationId);
 
 		LoadItem loadItem = new LoadItem();
 //		loadItem.setLoadPath(RestHelper.GCM_REGISTER);
@@ -96,7 +96,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	@Override
 	protected void onUnregistered(Context context, String registrationId) {
 		AppData appData = new AppData(context);
-		Log.d(TAG, "User = " + appData.getUserName() + " Device unregistered, registrationId = " + registrationId);
+		Log.d(TAG, "User = " + appData.getUsername() + " Device unregistered, registrationId = " + registrationId);
 
 		if (GCMRegistrar.isRegisteredOnServer(context)) {
 			preferences = appData.getPreferences();
@@ -144,7 +144,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	@Override
 	protected void onMessage(Context context, Intent intent) {
 		AppData appData = new AppData(context);
-		Log.d(TAG, "User = " + appData.getUserName() + " Received message");
+		Log.d(TAG, "User = " + appData.getUsername() + " Received message");
 
 		String type = intent.getStringExtra("type");
 
@@ -174,7 +174,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Log.d(TAG, " is inOnlineGame = " + DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId)));
 
 		// we use the same registerId for all users on a device, so check username to notify only the needed user
-		if (opponentUsername.equalsIgnoreCase(appData.getUserName())) {
+		if (opponentUsername.equalsIgnoreCase(appData.getUsername())) {
 			return; // don't need notificaion of myself game
 		}
 //		Log.d("TEST", " lastMoveInfoItems.size() = " + DataHolder.getInstance().getLastMoveInfoItems().size());
@@ -246,7 +246,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 					gameListItem);
 
 			SharedPreferences preferences = appData.getPreferences();
-			boolean playSounds = preferences.getBoolean(appData.getUserName() + AppConstants.PREF_SOUNDS, false);
+			boolean playSounds = preferences.getBoolean(appData.getUsername() + AppConstants.PREF_SOUNDS, false);
 			if (playSounds) {
 				final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
 				if (player != null) {

@@ -154,9 +154,15 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 
 	public void activateCurrentPage(int page) {
 		if (previousActivePage != NON_INIT) {
-			((RoboButton)findViewById(BASE_BTN_ID + previousActivePage + 1)).setDrawableStyle(R.style.Button_Page);
+			RoboButton roboButton = (RoboButton) findViewById(BASE_BTN_ID + previousActivePage + 1);
+			if (roboButton != null) { // TODO adjust properly!!!
+				roboButton.setDrawableStyle(R.style.Button_Page);
+			}
 		}
-		((RoboButton)findViewById(BASE_BTN_ID + page + 1)).setDrawableStyle(R.style.Button_Page_Selected);
+		RoboButton roboButton = (RoboButton) findViewById(BASE_BTN_ID + page + 1);
+		if (roboButton != null) { // TODO adjust properly!!!
+			roboButton.setDrawableStyle(R.style.Button_Page_Selected);
+		}
 		previousActivePage = page;
 	}
 

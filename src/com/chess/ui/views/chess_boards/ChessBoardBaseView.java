@@ -200,7 +200,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		this.gameActivityFace = gameActivityFace;
 		onBoardFaceSet(gameActivityFace.getBoardFace());
 
-		userName = getAppData().getUserName();
+		userName = getAppData().getUsername();
 
 		isHighlightEnabled = getAppData().isHighlightLastMove();
 		showLegalMoves = getAppData().isShowLegalMoves();

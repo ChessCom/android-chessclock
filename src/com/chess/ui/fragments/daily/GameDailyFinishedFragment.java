@@ -190,7 +190,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //				getContentResolver()).executeTask();
 
 		Cursor cursor = DBDataManager.executeQuery(getContentResolver(),
-				DbHelper.getDailyFinishedGameParams(gameId, getUserName()));
+				DbHelper.getDailyFinishedGameParams(gameId, getUsername()));
 
 		if (cursor.moveToFirst()) {
 			showSubmitButtonsLay(false);
@@ -263,7 +263,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //	}
 
 	private void adjustBoardForGame() {
-		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUserName());
+		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUsername());
 
 		if (userPlayWhite) {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
@@ -485,7 +485,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private void loadGamesList() {
 		// replace with db update
 //		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getContext()), // TODO adjust
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGamesParams(getUserName()), // TODO adjust
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGamesParams(getUsername()), // TODO adjust
 				getContentResolver()).executeTask();
 
 	}
@@ -535,7 +535,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	@Override
 	public Boolean isUserColorWhite() {
 		if (currentGame != null && getActivity() != null)
-			return currentGame.getWhiteUsername().equals(getAppData().getUserName());
+			return currentGame.getWhiteUsername().equals(getAppData().getUsername());
 		else
 			return null;
 	}
@@ -546,7 +546,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	}
 
 //	private boolean isUserMove() {
-//		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUserName(getActivity()));
+//		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUsername(getActivity()));
 //
 //		return (currentGame.isWhiteMove() && userPlayWhite)
 //				|| (!currentGame.isWhiteMove() && !userPlayWhite);

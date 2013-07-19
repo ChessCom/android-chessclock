@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
-import com.chess.backend.statics.AppData;
 
 import static com.chess.db.DBConstants.tablesArray;
 
@@ -84,7 +83,10 @@ public class DBDataProvider extends ContentProvider {
 
 			DBConstants.FORUM_TOPIC_CREATE,
 			DBConstants.FORUM_CATEGORIES_CREATE,
-			DBConstants.FORUM_POSTS_CREATE
+			DBConstants.FORUM_POSTS_CREATE,
+
+			DBConstants.LESSONS_CATEGORIES_CREATE,
+			DBConstants.LESSONS_COURSES_CREATE
 	};
 
 	@Override
@@ -226,7 +228,7 @@ public class DBDataProvider extends ContentProvider {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			new AppData(context).clearPreferences(); // clear all values, to avoid class cast exceptions
+//			new AppData(context).clearPreferences(); // clear all values, to avoid class cast exceptions
 
 			Log.w("Content provider database",
 					"Upgrading database from version " +

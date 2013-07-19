@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 38;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 39;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -53,7 +53,11 @@ public class DBConstants {
 
 			"forum_topics",
 			"forum_categories",
-			"forum_comments"
+			"forum_comments",
+
+			"lessons_categories",
+			"lessons_courses"/*,
+			"lessons_lessons"*/
 	};
 
 	// Content URI
@@ -93,9 +97,14 @@ public class DBConstants {
     public static final int GAME_STATS_DAILY_CHESS960 = 20;
 
     public static final int VIDEO_VIEWED = 21;
+
     public static final int FORUM_TOPICS = 22;
     public static final int FORUM_CATEGORIES = 23;
     public static final int FORUM_POSTS = 24;
+
+    public static final int LESSONS_CATEGORIES = 25;
+    public static final int LESSONS_COURSES = 26;
+    public static final int LESSONS_LESSONS = 27;
 
 
     // general fields
@@ -194,6 +203,10 @@ public class DBConstants {
 	public static final String V_MIN_MEMBERSHIP 	= "min_membership_lvl";
 	public static final String V_COMMENT_NUMBER 	= "comment_number";
 	public static final String V_PAGE 				= "page";
+
+	/* Lessons*/
+	public static final String V_COURSE_COMPLETED 	= "course_completed";
+	public static final String V_LESSON_COMPLETED 	= "lesson_completed";
 
 	/* common commands */
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists ";
@@ -359,6 +372,7 @@ public class DBConstants {
 			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
 			+ V_DISPLAY_ORDER 	    	+ _INT_NOT_NULL + _CLOSE;
 
+	/* Forums */
 	static final String FORUM_CATEGORIES_CREATE =
 			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[FORUM_CATEGORIES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
 			+ V_ID 						+ _INT_NOT_NULL + _COMMA
@@ -395,6 +409,21 @@ public class DBConstants {
 			+ V_PAGE					+ _INT_NOT_NULL + _COMMA
 			+ V_CREATE_DATE				+ _LONG_NOT_NULL + _COMMA
 			+ V_DESCRIPTION				+ _LONG_NOT_NULL + _CLOSE;
+
+	/* Lessons */
+	static final String LESSONS_CATEGORIES_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[LESSONS_CATEGORIES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
+			+ V_DISPLAY_ORDER 	    	+ _INT_NOT_NULL + _CLOSE;
+
+	static final String LESSONS_COURSES_CREATE =
+			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[LESSONS_COURSES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
+			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_ID 						+ _INT_NOT_NULL + _COMMA
+			+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
+			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
+			+ V_COURSE_COMPLETED		+ _INT_NOT_NULL + _CLOSE;
 
 	/* ==================== User Stats ============================== */
 	 /*Rating*/

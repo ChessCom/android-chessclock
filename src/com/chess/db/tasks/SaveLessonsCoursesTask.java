@@ -5,7 +5,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
+import com.chess.backend.entity.new_api.LessonCourseItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
@@ -15,15 +15,22 @@ import com.chess.db.DBDataManager;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class SaveVideoCategoriesTask extends AbstractUpdateTask<CommonFeedCategoryItem.Data, Long> {
+/**
+ * Created with IntelliJ IDEA.
+ * User: roger sent2roger@gmail.com
+ * Date: 18.07.13
+ * Time: 16:09
+ */
+public class SaveLessonsCoursesTask  extends AbstractUpdateTask<LessonCourseItem.Data, Long> {
 
 	private ContentResolver contentResolver;
-	protected static String[] arguments = new String[1];
+	protected static String[] arguments = new String[2];
+	private String username;
 
-	public SaveVideoCategoriesTask(TaskUpdateInterface<CommonFeedCategoryItem.Data> taskFace, List<CommonFeedCategoryItem.Data> currentItems,
-								   ContentResolver resolver) {
-		super(taskFace, new ArrayList<CommonFeedCategoryItem.Data>());
+	public SaveLessonsCoursesTask(TaskUpdateInterface<LessonCourseItem.Data> taskFace, List<LessonCourseItem.Data> currentItems,
+									 ContentResolver resolver, String username) {
+		super(taskFace, new ArrayList<LessonCourseItem.Data>());
+		this.username = username;
 		this.itemList.addAll(currentItems);
 
 		this.contentResolver = resolver;
@@ -32,17 +39,19 @@ public class SaveVideoCategoriesTask extends AbstractUpdateTask<CommonFeedCatego
 	@Override
 	protected Integer doTheTask(Long... ids) {
 		synchronized (itemList) {
-			for (CommonFeedCategoryItem.Data currentItem : itemList) {
+			for (LessonCourseItem.Data currentItem : itemList) {
+				currentItem.setUser(username);
 				final String[] arguments2 = arguments;
 				arguments2[0] = String.valueOf(currentItem.getId());
+				arguments2[1] = username;
 
 				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DBConstants.uriArray[DBConstants.VIDEO_CATEGORIES];
+				Uri uri = DBConstants.uriArray[DBConstants.LESSONS_COURSES];
+				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID_AND_USER,
+						DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments, null);
 
-				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_V_CATEGORY_ID,
-						DBDataManager.SELECTION_CATEGORY_ID, arguments2, null);
 
-				ContentValues values = DBDataManager.putCommonFeedCategoryItemToValues(currentItem);
+				ContentValues values = DBDataManager.putLessonsCourseItemToValues(currentItem);
 
 				if (cursor.moveToFirst()) {
 					contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);

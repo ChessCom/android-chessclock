@@ -417,8 +417,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 	@Override
-	public String getMeUserName() {
-		return getCurrentUserName();
+	public String getMeUsername() {
+		return getCurrentUsername();
 	}
 
 	@Override

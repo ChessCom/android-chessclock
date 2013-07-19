@@ -50,7 +50,7 @@ public class CompGameSetupFragment extends CommonLogicFragment {
 		if (view.getId() == R.id.startPlayBtn) {
 
 			ChessBoardComp.resetInstance();
-			preferencesEditor.putString(getAppData().getUserName() + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
+			preferencesEditor.putString(getAppData().getUsername() + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
 			preferencesEditor.commit();
 
 			CompGameConfig config = getNewCompGameConfig();

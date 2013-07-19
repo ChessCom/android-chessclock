@@ -507,7 +507,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				facebookInit(facebookLoginButton);
 //				facebookLoginButton.logout();
 
-				usernameEdt.setText(getAppData().getUserName());
+				usernameEdt.setText(getAppData().getUsername());
 
 				needReLoginToLive = true;
 			}

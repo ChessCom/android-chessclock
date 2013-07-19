@@ -54,7 +54,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
 
-		if (!DBDataManager.haveSavedFriends(getActivity(), getUserName())) {
+		if (!DBDataManager.haveSavedFriends(getActivity(), getUsername())) {
 			getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class)); // TODO adjust properly
 		}
 	}
@@ -235,11 +235,11 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 			// current games
 			List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
-			boolean currentGamesLeft = DBDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList, getUserName());
+			boolean currentGamesLeft = DBDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList, getUsername());
 
 			// finished
 			List<DailyFinishedGameData> finishedGameDataList = returnedObj.getData().getFinished();
-			boolean finishedGamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUserName());
+			boolean finishedGamesLeft = DBDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUsername());
 
 			showDailyGamesFragment = currentGamesLeft || finishedGamesLeft;
 

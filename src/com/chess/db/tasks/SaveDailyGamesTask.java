@@ -13,16 +13,12 @@ import java.util.List;
 
 public abstract class SaveDailyGamesTask<T extends DailyGameBaseData> extends AbstractUpdateTask<T , Long> {
 
-	private static final String TAG = "SaveDailyGamesTask";
 	private final LoadItem loadItem;
 	protected String userName;
 	protected String userToken;
 	protected AppData appData;
 	protected ContentResolver contentResolver;
 	protected static String[] arguments = new String[2];
-
-//	protected boolean saving;
-
 
 	public SaveDailyGamesTask(TaskUpdateInterface<T> taskFace, List<T> currentItems, ContentResolver resolver) {
 		super(taskFace, new ArrayList<T>());
@@ -37,7 +33,7 @@ public abstract class SaveDailyGamesTask<T extends DailyGameBaseData> extends Ab
 		}
 		appData = new AppData(getTaskFace().getMeContext());
 		userToken = appData.getUserToken();
-		userName = appData.getUserName();
+		userName = appData.getUsername();
 
 		loadItem.setLoadPath(RestHelper.CMD_GAMES);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, userToken);

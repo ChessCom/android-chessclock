@@ -17,7 +17,6 @@ import java.util.List;
 
 
 public class SaveArticleCategoriesTask extends AbstractUpdateTask<CommonFeedCategoryItem.Data, Long> {
-	private static final String TAG = "SaveFriendsListTask";
 
 	private ContentResolver contentResolver;
 	protected static String[] arguments = new String[1];

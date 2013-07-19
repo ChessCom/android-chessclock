@@ -98,8 +98,8 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		return appData == null? new AppData(this) : appData;
 	}
 
-	protected String getCurrentUserName() {
-		return getAppData().getUserName();
+	protected String getCurrentUsername() {
+		return getAppData().getUsername();
 	}
 
 	protected String getCurrentUserToken() {
@@ -577,7 +577,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 			if(haveMoves == 1){ // play for one
 				SharedPreferences preferences = appData.getPreferences(getMeContext());
-				boolean playSounds = preferences.getBoolean(appData.getUserName(getMeContext()) + AppConstants.PREF_SOUNDS, false);
+				boolean playSounds = preferences.getBoolean(appData.getUsername(getMeContext()) + AppConstants.PREF_SOUNDS, false);
 				if(playSounds){
 					final MediaPlayer player = MediaPlayer.create(getMeContext(), R.raw.move_opponent);
 					if(player != null){

@@ -399,8 +399,9 @@
     <string name="new_create_chess_profile">Create Your Online Chess Profile</string>
     <string name="board_and_pieces"><![CDATA[Board & Pieces]]></string>
     <string name="daily">Daily</string>
+	<string name="improve_game_with_lessons">Improve your game with unlimited lessons</string>
 
-    <!--Navigation Menu-->
+	<!--Navigation Menu-->
 
 
 

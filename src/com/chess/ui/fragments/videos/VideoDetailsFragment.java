@@ -151,7 +151,7 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 
 		currentPlayingId =  DBDataManager.getInt(cursor, DBConstants.V_ID);
 
-		boolean videoViewed = DBDataManager.isVideoViewed(getActivity(), getUserName(),currentPlayingId);
+		boolean videoViewed = DBDataManager.isVideoViewed(getActivity(), getUsername(),currentPlayingId);
 		if (videoViewed) {
 			playBtnTxt.setText(R.string.ic_check);
 		} else {
@@ -165,7 +165,7 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == WATCH_VIDEO_REQUEST) {
 
-			VideoViewedItem item = new VideoViewedItem(currentPlayingId, getUserName(), true);
+			VideoViewedItem item = new VideoViewedItem(currentPlayingId, getUsername(), true);
 			DBDataManager.updateVideoViewedState(getContentResolver(), item);
 		}
 	}

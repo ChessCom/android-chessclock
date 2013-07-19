@@ -166,7 +166,8 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 			getActivityFace().openFragment(ArticleDetailsFragment.createInstance(DBDataManager.getId(cursor)));
 		} else if (section == CATEGORIES_SECTION) {
-			String sectionName= (String) adapterView.getItemAtPosition(position);
+			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+			String sectionName = DBDataManager.getString(cursor, DBConstants.V_NAME);
 
 			getActivityFace().openFragment(ArticleCategoriesFragment.createInstance(sectionName));
 		}

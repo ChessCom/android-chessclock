@@ -147,7 +147,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		view.findViewById(R.id.answerShowBottomView).setOnClickListener(this);
 		view.findViewById(R.id.soundsView).setOnClickListener(this);
 
-		String userName = getAppData().getUserName();
+		String userName = getAppData().getUsername();
 
 		soundsSwitch.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SOUNDS, true));
 		coordinatesSwitch.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_COORDINATES, true));

@@ -21,7 +21,7 @@ import java.util.List;
 
 
 public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Long> {
-	private static final String TAG = "SaveFriendsListTask";
+
 	private final String userName;
 	private final String userToken;
 
@@ -37,7 +37,7 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 		this.contentResolver = resolver;
 		loadItem = new LoadItem();
 		AppData appData = new AppData(getTaskFace().getMeContext());
-		userName = appData.getUserName();
+		userName = appData.getUsername();
 		userToken = appData.getUserToken();
 	}
 

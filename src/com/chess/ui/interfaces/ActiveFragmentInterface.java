@@ -61,7 +61,7 @@ public interface ActiveFragmentInterface {
 
 	AppData getMeAppData();
 
-	String getMeUserName();
+	String getMeUsername();
 
 	String getMeUserToken();
 }

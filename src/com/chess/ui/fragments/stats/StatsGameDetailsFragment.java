@@ -157,7 +157,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 	}
 
 	private void updateData() {
-		String userName = getAppData().getUserName();
+		String userName = getAppData().getUsername();
 
 		switch (getArguments().getInt(MODE)) {
 			case LIVE_STANDARD:

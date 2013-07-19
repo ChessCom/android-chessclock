@@ -75,6 +75,12 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		if (getArguments() != null) {
+			topicId = getArguments().getInt(TOPIC_ID);
+		} else {
+			topicId = savedInstanceState.getInt(TOPIC_ID);
+		}
+
 		postsCursorAdapter = new ForumPostsCursorAdapter(this, null);
 		savePostsListener = new SavePostsListener();
 		postsUpdateListener = new PostsUpdateListener();
@@ -122,17 +128,6 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		getActivityFace().showActionMenu(R.id.menu_games, false);
 
 		setTitlePadding(ONE_ICON);
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-		if (getArguments() != null) {
-			topicId = getArguments().getInt(TOPIC_ID);
-		} else {
-			topicId = savedInstanceState.getInt(TOPIC_ID);
-		}
 	}
 
 	@Override

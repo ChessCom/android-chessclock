@@ -261,6 +261,7 @@
 	<string name="write_reply_">Write reply…</string>
 
 	<string name="username_wrote">%s wrote:</string>
+	<string name="full_lesson_library">Full Lesson Library</string>
 	<!--Game mode-->
 
 </resources>

@@ -6,14 +6,16 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minHeight="@dimen/small_button_height"
+    android:minHeight="@dimen/default_list_item_height"
     android:gravity="center_vertical"
     android:paddingLeft="@dimen/default_scr_side_padding"
     android:paddingRight="8dip"
-    android:paddingTop="12dip"
-    android:paddingBottom="4dip"
 	android:background="@drawable/white_list_item_selector"
     >
+<!--
+	android:paddingTop="12dip"
+	android:paddingBottom="4dip"
+-->
 
     <!--Title-->
     <com.chess.RoboTextView
@@ -32,7 +34,7 @@
         android:layout_height="wrap_content"
         android:text="@string/ic_check"
         android:textColor="@color/new_light_grey_2"
-        style="@style/GlyphIcon"
+        style="@style/GlyphIcon.Small"
         />
 
 </LinearLayout>

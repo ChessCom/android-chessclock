@@ -57,7 +57,7 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		Cursor cursor = DBDataManager.getRecentOpponentsCursor(getActivity(), getUserName());
+		Cursor cursor = DBDataManager.getRecentOpponentsCursor(getActivity(), getUsername());
 
 		RecentOpponentsCursorAdapter adapter = new RecentOpponentsCursorAdapter(getActivity(), cursor);
 

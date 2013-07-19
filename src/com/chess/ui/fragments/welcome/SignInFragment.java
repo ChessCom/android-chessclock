@@ -50,7 +50,7 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 	@Override
 	public void onResume() {
 		super.onResume();
-		loginUsernameEdt.setText(getAppData().getUserName());
+		loginUsernameEdt.setText(getAppData().getUsername());
 		loginPasswordEdt.setText(getAppData().getPassword());
 	}
 

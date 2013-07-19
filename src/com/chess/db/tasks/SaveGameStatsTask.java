@@ -40,7 +40,7 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 		this.item = item;
 		this.resolver = resolver;
 		AppData appData = new AppData(getTaskFace().getMeContext());
-		userName = appData.getUserName();
+		userName = appData.getUsername();
 
 	}
 

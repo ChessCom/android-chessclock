@@ -237,7 +237,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	 */
 	public void performConnect(boolean useCurrentCredentials) {
 		AppData appData = new AppData(context);
-		String userName = appData.getUserName();
+		String userName = appData.getUsername();
 		String pass = appData.getPassword();
 		boolean emptyPassword = pass.equals(StaticData.SYMBOL_EMPTY);
 

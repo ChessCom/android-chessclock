@@ -88,7 +88,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 			}
 
 			SharedPreferences.Editor editor = preferences.edit();
-			editor.putString(getAppData().getUserName() + AppConstants.SAVED_COMPUTER_GAME, builder.toString());
+			editor.putString(getAppData().getUsername() + AppConstants.SAVED_COMPUTER_GAME, builder.toString());
 			editor.commit();
 		}
 		return super.isGameOver();

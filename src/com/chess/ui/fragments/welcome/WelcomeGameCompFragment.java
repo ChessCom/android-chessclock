@@ -548,7 +548,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	private void sendPGN() {
 		CharSequence moves = getBoardFace().getMoveListSAN();
-		String whitePlayerName = getAppData().getUserName();
+		String whitePlayerName = getAppData().getUsername();
 		String blackPlayerName = getString(R.string.comp);
 		String result = GAME_GOES;
 		if (getBoardFace().isFinished()) {// means in check state
@@ -560,7 +560,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		}
 		if (!isUserColorWhite()) {
 			whitePlayerName = getString(R.string.comp);
-			blackPlayerName = getAppData().getUserName();
+			blackPlayerName = getAppData().getUsername();
 		}
 		String date = datePgnFormat.format(Calendar.getInstance().getTime());
 

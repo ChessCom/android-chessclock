@@ -79,7 +79,7 @@ public class AppData {
 		return getStringValue(LOCATION, StaticData.SYMBOL_EMPTY);
 	}
 
-	public String getUserName() {
+	public String getUsername() {
 		return preferences.getString(USERNAME, StaticData.SYMBOL_EMPTY);
 	}
 
@@ -362,6 +362,14 @@ public class AppData {
 		return getBooleanValue(PREF_USER_CHOOSE_VIDEO_LIBRARY, false);
 	}
 
+	public void setUserChooseLessonsLibrary(boolean value) {
+		setBooleanValue(PREF_USER_CHOOSE_LESSONS_LIBRARY, value);
+	}
+
+	public boolean isUserChooseLessonsLibrary() {
+		return getBooleanValue(PREF_USER_CHOOSE_LESSONS_LIBRARY, false);
+	}
+
 	/**
 	 * Get saved theme background Id
 	 *
@@ -377,7 +385,7 @@ public class AppData {
 	/*--------------------------- Common Shared logic ------------------------*/
 
 	private void setBooleanValue(String field, boolean checked) {
-		String userName = getUserName();
+		String userName = getUsername();
 		preferences.edit().putBoolean(userName + field, checked).commit();
 	}
 
@@ -386,27 +394,27 @@ public class AppData {
 	}
 
 	private boolean getBooleanValue(String field, boolean defValue) {
-		String userName = getUserName();
+		String userName = getUsername();
 		return preferences.getBoolean(userName + field, defValue);
 	}
 
 	private void setStringValue(String field, String value) {
-		String userName = getUserName();
+		String userName = getUsername();
 		editor.putString(userName + field, value).commit();
 	}
 
 	private String getStringValue(String field, String defValue) {
-		String userName = getUserName();
+		String userName = getUsername();
 		return preferences.getString(userName + field, defValue);
 	}
 
 	private int getIntValue(String field, int defValue) {
-		String userName = getUserName();
+		String userName = getUsername();
 		return preferences.getInt(userName + field, defValue);
 	}
 
 	private void setIntValue(String field, int value) {
-		String userName = getUserName();
+		String userName = getUsername();
 		editor.putInt(userName + field, value).commit();
 	}
 }

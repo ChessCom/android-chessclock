@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+
+	<!--Title-->
+	<com.chess.RoboTextView
+		android:id="@+id/courseTitleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Intermediate: End Games"
+		android:textSize="21sp"
+		android:textColor="@color/new_main_back"
+		android:paddingTop="9dip"
+		android:paddingLeft="15dip"
+		android:paddingRight="15dip"
+		android:paddingBottom="8dip"
+		custom:ttf="Bold" />
+
+	<!--Description-->
+	<com.chess.RoboTextView
+		android:id="@+id/courseDescriptionTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="This course coversd asdfa's;dlfasl ,d;asld,f ;as,d'f;,asd; ,a;sdl,fasd aksmdlfkmalsdkmflskamdfl kmsdlfa df sdf "
+		android:textColor="@color/new_main_back"
+		android:paddingLeft="15dip"
+		android:paddingRight="15dip"
+		android:paddingBottom="15dip" />
+
+</LinearLayout>

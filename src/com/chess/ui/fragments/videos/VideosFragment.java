@@ -150,7 +150,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		expListView.setVisibility(show ? View.GONE : View.VISIBLE);
 
 		// get viewed marks
-		Cursor cursor = DBDataManager.getVideoViewedCursor(getActivity(), getUserName());
+		Cursor cursor = DBDataManager.getVideoViewedCursor(getActivity(), getUsername());
 		if (cursor != null) {
 			do {
 				int videoId = DBDataManager.getInt(cursor, DBConstants.V_ID);
@@ -290,7 +290,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		long resumeFromVideoTime = System.currentTimeMillis();
 
 		if (resumeFromVideoTime - playButtonClickTime > WATCHED_TIME) {
-			VideoViewedItem item = new VideoViewedItem(currentPlayingId, getUserName(), true);
+			VideoViewedItem item = new VideoViewedItem(currentPlayingId, getUsername(), true);
 			DBDataManager.updateVideoViewedState(getContentResolver(), item);
 
 			// update current list
@@ -430,7 +430,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
 
-		int userRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.GAME_STATS_DAILY_CHESS, getUserName());
+		int userRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.GAME_STATS_DAILY_CHESS, getUsername());
 
 		if (getAppData().isUserChooseVideoLibrary() || userRating > USER_PRO_RATING) { // TODO add api logic to check if user saw all videos
 			curriculumMode = false;

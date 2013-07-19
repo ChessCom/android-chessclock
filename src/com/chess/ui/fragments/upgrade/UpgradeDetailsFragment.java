@@ -111,7 +111,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		detailsListener = new GetDetailsListener();
 		getPayloadListener = new GetPayloadListener();
 
-		username = getAppData().getUserName();
+		username = getAppData().getUsername();
 		// get key from server
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_KEY);

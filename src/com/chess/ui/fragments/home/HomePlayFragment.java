@@ -149,7 +149,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	}
 
 	private void loadRecentOpponents() {
-		Cursor cursor = DBDataManager.getRecentOpponentsCursor(getActivity(), getUserName());// TODO load avatars
+		Cursor cursor = DBDataManager.getRecentOpponentsCursor(getActivity(), getUsername());// TODO load avatars
 		if (cursor != null && cursor.moveToFirst()) {
 			if (cursor.getCount() >= 2) {
 				inviteFriendView1.setVisibility(View.VISIBLE);
@@ -218,11 +218,11 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 
 	private void setRatings() {
 		// set live rating    // TODO remove open menu listener when fragment goes on pause
-		int liveRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.GAME_STATS_LIVE_STANDARD, getUserName());
+		int liveRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.GAME_STATS_LIVE_STANDARD, getUsername());
 		liveRatingTxt.setText(String.valueOf(liveRating));
 
 		// set daily rating
-		int dailyRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.GAME_STATS_DAILY_CHESS, getUserName());
+		int dailyRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.GAME_STATS_DAILY_CHESS, getUsername());
 		dailyRatingTxt.setText(String.valueOf(dailyRating));
 
 	}

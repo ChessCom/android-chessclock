@@ -32,7 +32,7 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.Data, Lo
 		this.tacticsBatch.addAll(tacticsBatch);
 		this.contentResolver = resolver;
 		AppData appData = new AppData(getTaskFace().getMeContext());
-		userName = appData.getUserName();
+		userName = appData.getUsername();
 
 	}
 
@@ -45,8 +45,8 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.Data, Lo
 				arguments[1] = userName;
 
 				Uri uri = DBConstants.uriArray[DBConstants.TACTICS_BATCH];
-				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_TACTIC_ITEM_ID_AND_USER,
-						DBDataManager.SELECTION_TACTIC_ID_AND_USER, arguments, null);
+				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID_AND_USER,
+						DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments, null);
 
 				ContentValues values = DBDataManager.putTacticItemToValues(tacticItem);
 

@@ -117,7 +117,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 
 		fillUserStats();
 
-		if (DBDataManager.haveSavedFriends(getActivity(), getUserName())) {
+		if (DBDataManager.haveSavedFriends(getActivity(), getUsername())) {
 			loadFriendsFromDb();
 		} else {
 			getFriends();
@@ -125,7 +125,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 
 		setBadgeValueForId(R.id.menu_games, 2); // TODO use properly later for notifications
 
-		userNameTxt.setText(getAppData().getUserName());
+		userNameTxt.setText(getAppData().getUsername());
 		userCountryTxt.setText(getAppData().getUserCountry());
 		userCountryImg.setImageDrawable(AppUtils.getUserFlag(getActivity()));
 
@@ -175,7 +175,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 
 	private void fillUserStats() {
 		// fill ratings
-		String[] argument = new String[]{getAppData().getUserName()};
+		String[] argument = new String[]{getAppData().getUsername()};
 
 		{// standard
 			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_LIVE_STANDARD],
@@ -240,7 +240,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 
 	private void loadFriendsFromDb() {
 		new LoadDataFromDbTask(friendsCursorUpdateListener,
-				DbHelper.getUserParams(getAppData().getUserName(), DBConstants.FRIENDS),
+				DbHelper.getUserParams(getAppData().getUsername(), DBConstants.FRIENDS),
 				getContentResolver()).executeTask();
 	}
 

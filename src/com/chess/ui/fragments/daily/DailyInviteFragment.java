@@ -217,7 +217,7 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 		labelsConfig.topPlayerName = currentGame.getOpponentUsername();
 		labelsConfig.topPlayerRating = String.valueOf(currentGame.getOpponentRating());
-		labelsConfig.bottomPlayerName = getAppData().getUserName();
+		labelsConfig.bottomPlayerName = getAppData().getUsername();
 		labelsConfig.bottomPlayerRating = String.valueOf(getAppData().getUserDailyRating());
 		labelsConfig.topPlayerAvatar = currentGame.getOpponentAvatar();
 		labelsConfig.bottomPlayerAvatar = getAppData().getUserAvatar();
@@ -238,7 +238,7 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		topPanelView.setPlayerRating(String.valueOf(challengeItem.getOpponentRating()));
 
 		// set user data info
-		bottomPanelView.setPlayerName(getUserName());
+		bottomPanelView.setPlayerName(getUsername());
 
 //		bottomPanelView.setPlayerRating();
 

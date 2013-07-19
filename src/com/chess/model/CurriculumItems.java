@@ -12,7 +12,7 @@ public class CurriculumItems {
 	private int[][] ids;
 	private String[][] titles;
 	private String[][] urls;
-	private boolean[] viewedMarks;
+	private boolean[][] viewedMarks;
 
 
 	public String[] getCategories() {
@@ -47,11 +47,11 @@ public class CurriculumItems {
 		this.urls = urls;
 	}
 
-	public boolean[] getViewedMarks() {
+	public boolean[][] getViewedMarks() {
 		return viewedMarks;
 	}
 
-	public void setViewedMarks(boolean[] viewedMarks) {
+	public void setViewedMarks(boolean[][] viewedMarks) {
 		this.viewedMarks = viewedMarks;
 	}
 }
