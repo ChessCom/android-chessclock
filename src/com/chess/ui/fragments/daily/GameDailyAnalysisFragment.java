@@ -28,8 +28,8 @@ import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
-import com.chess.ui.interfaces.BoardFace;
-import com.chess.ui.interfaces.GameAnalysisFace;
+import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.interfaces.game_ui.GameAnalysisFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardAnalysisView;
@@ -89,7 +89,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_boardview_daily_analysis, container, false);
+		return inflater.inflate(R.layout.new_game_daily_analysis_frame, container, false);
 	}
 
 	@Override

@@ -37,8 +37,8 @@ import com.chess.ui.fragments.CompGameSetupFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsBoardFragment;
-import com.chess.ui.interfaces.BoardFace;
-import com.chess.ui.interfaces.GameCompActivityFace;
+import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.interfaces.game_ui.GameCompFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
@@ -59,9 +59,8 @@ import java.util.List;
  * Date: 24.01.13
  * Time: 6:42
  */
-public class GameCompFragment extends GameBaseFragment implements GameCompActivityFace, PopupListSelectionFace {
+public class GameCompFragment extends GameBaseFragment implements GameCompFace, PopupListSelectionFace {
 
-	private static final String OPTION_SELECTION = "option select popup";
 	private static final String MODE = "mode";
 	private static final String COMP_DELAY = "comp_delay";
 	// Quick action ids
@@ -119,7 +118,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_boardview_comp, container, false);
+		return inflater.inflate(R.layout.new_game_comp_frame, container, false);
 	}
 
 	@Override
@@ -268,7 +267,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompActivi
 			return;
 		}
 		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsArray);
-		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
+		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
 	}
 
 	@Override

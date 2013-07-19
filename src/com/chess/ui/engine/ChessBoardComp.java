@@ -1,6 +1,6 @@
 package com.chess.ui.engine;
 
-import com.chess.ui.interfaces.GameActivityFace;
+import com.chess.ui.interfaces.game_ui.GameFace;
 
 public class ChessBoardComp extends ChessBoard {
 
@@ -8,13 +8,13 @@ public class ChessBoardComp extends ChessBoard {
 	private boolean hint;
 	private boolean computerMoving;
 
-	private ChessBoardComp(GameActivityFace gameActivityFace) {
-		super(gameActivityFace);
+	private ChessBoardComp(GameFace gameFace) {
+		super(gameFace);
 	}
 
-	public static ChessBoardComp getInstance(GameActivityFace gameActivityFace) {
+	public static ChessBoardComp getInstance(GameFace gameFace) {
 		if (instance == null) {
-			instance = new ChessBoardComp(gameActivityFace);
+			instance = new ChessBoardComp(gameFace);
 			instance.justInitialized = true;
 		} else {
 			instance.justInitialized = false;

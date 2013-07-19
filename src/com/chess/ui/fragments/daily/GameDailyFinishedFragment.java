@@ -42,8 +42,8 @@ import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsBoardFragment;
-import com.chess.ui.interfaces.BoardFace;
-import com.chess.ui.interfaces.GameNetworkActivityFace;
+import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.interfaces.game_ui.GameNetworkFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
@@ -61,11 +61,10 @@ import java.util.Calendar;
  * Date: 08.05.13
  * Time: 18:52
  */
-public class GameDailyFinishedFragment extends GameBaseFragment implements GameNetworkActivityFace, PopupListSelectionFace {
+public class GameDailyFinishedFragment extends GameBaseFragment implements GameNetworkFace, PopupListSelectionFace {
 
 	public static final String DOUBLE_SPACE = "  ";
 	private static final String ERROR_TAG = "send request failed popup";
-	private static final String OPTION_SELECTION = "option select popup";
 
 	private static final int SEND_MOVE_UPDATE = 1;
 	private static final int CREATE_CHALLENGE_UPDATE = 2;
@@ -127,7 +126,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_boardview_daily, container, false);
+		return inflater.inflate(R.layout.new_game_daily_frame, container, false);
 	}
 
 	@Override
@@ -558,7 +557,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			return;
 		}
 		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsArray);
-		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
+		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
 	}
 
 	@Override

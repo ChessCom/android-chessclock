@@ -1,9 +1,8 @@
-package com.chess.backend.tasks;
+package com.chess.ui.engine.stockfish;
 
 import android.os.AsyncTask;
 import com.chess.model.ComputeMoveItem;
-import com.chess.ui.engine.CompEngineHelper;
-import com.chess.ui.interfaces.GameCompActivityFace;
+import com.chess.ui.interfaces.game_ui.GameCompFace;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,9 +14,9 @@ public class PostMoveToCompTask extends AsyncTask<Void, Void, Void> {
 
 	private ComputeMoveItem computeMoveItem;
 	private CompEngineHelper engine;
-	private GameCompActivityFace gameCompActivityFace;
+	private GameCompFace gameCompActivityFace;
 
-	public PostMoveToCompTask(ComputeMoveItem computeMoveItem, CompEngineHelper engine, GameCompActivityFace gameCompActivityFace) {
+	public PostMoveToCompTask(ComputeMoveItem computeMoveItem, CompEngineHelper engine, GameCompFace gameCompActivityFace) {
 		this.computeMoveItem = computeMoveItem;
 		this.engine = engine;
 		this.gameCompActivityFace = gameCompActivityFace;

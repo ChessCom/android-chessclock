@@ -1,6 +1,6 @@
 package com.chess.model;
 
-import com.chess.ui.interfaces.BoardFace;
+import com.chess.ui.interfaces.boards.BoardFace;
 
 /**
  * ComputeMoveItem class

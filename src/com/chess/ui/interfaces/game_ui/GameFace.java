@@ -1,15 +1,16 @@
-package com.chess.ui.interfaces;
+package com.chess.ui.interfaces.game_ui;
 
 import android.view.View;
 import com.chess.backend.statics.SoundPlayer;
+import com.chess.ui.interfaces.boards.BoardFace;
 
 /**
- * GameActivityFace class
+ * GameFace class
  *
  * @author alien_roger
  * @created at: 13.03.12 7:08
  */
-public interface GameActivityFace {
+public interface GameFace {
 
 	SoundPlayer getSoundPlayer();
 

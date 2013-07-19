@@ -1055,7 +1055,7 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static ContentValues putLessonsCourseItemToValues(LessonCourseItem.Data dataObj) {
+	public static ContentValues putLessonsCourseItemToValues(LessonCourseListItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_ID, dataObj.getId());

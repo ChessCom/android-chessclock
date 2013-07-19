@@ -1,12 +1,12 @@
-package com.chess.ui.interfaces;
+package com.chess.ui.interfaces.game_ui;
 
 /**
- * GameActivityFace class
+ * GameFace class
  *
  * @author alien_roger
  * @created at: 13.03.12 7:08
  */
-public interface GameTacticsActivityFace extends GameActivityFace {
+public interface GameTacticsFace extends GameFace {
 
 	void verifyMove();
 
@@ -14,7 +14,7 @@ public interface GameTacticsActivityFace extends GameActivityFace {
 
 	void restart();
 
-	void showHint();
+	void showAnswer();
 
 	void showStats();
 }

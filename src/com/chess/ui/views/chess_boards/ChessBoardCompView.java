@@ -15,9 +15,9 @@ import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.stockfish.CompEngineHelper;
 import com.chess.ui.engine.stockfish.PostMoveToCompTask;
-import com.chess.ui.interfaces.BoardFace;
-import com.chess.ui.interfaces.BoardViewCompFace;
-import com.chess.ui.interfaces.GameCompActivityFace;
+import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.interfaces.boards.BoardViewCompFace;
+import com.chess.ui.interfaces.game_ui.GameCompFace;
 import com.chess.ui.views.game_controls.ControlsCompView;
 
 import java.util.Iterator;
@@ -33,7 +33,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 //    private boolean computerMoving; // TODO make independent from board
 	private PostMoveToCompTask computeMoveTask;
 
-	private GameCompActivityFace gameCompActivityFace;
+	private GameCompFace gameCompActivityFace;
 	private ControlsCompView controlsCompView;
 
 
@@ -41,8 +41,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
         super(context, attrs);
     }
 
-    public void setGameActivityFace(GameCompActivityFace gameActivityFace) {
-		super.setGameActivityFace(gameActivityFace);
+    public void setGameActivityFace(GameCompFace gameActivityFace) {
+		super.setGameFace(gameActivityFace);
         gameCompActivityFace = gameActivityFace;
     }
 

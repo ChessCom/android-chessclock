@@ -1,4 +1,4 @@
-package com.chess.ui.interfaces;
+package com.chess.ui.interfaces.boards;
 
 /**
  * Created with IntelliJ IDEA.

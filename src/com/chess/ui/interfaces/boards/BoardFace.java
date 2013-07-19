@@ -1,4 +1,4 @@
-package com.chess.ui.interfaces;
+package com.chess.ui.interfaces.boards;
 
 import com.chess.ui.engine.HistoryData;
 import com.chess.ui.engine.Move;

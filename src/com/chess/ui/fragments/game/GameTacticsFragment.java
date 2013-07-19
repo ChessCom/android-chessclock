@@ -40,9 +40,9 @@ import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsBoardFragment;
 import com.chess.ui.fragments.stats.TacticsStatsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
-import com.chess.ui.interfaces.GameTacticsActivityFace;
+import com.chess.ui.interfaces.game_ui.GameTacticsFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
-import com.chess.ui.interfaces.TacticBoardFace;
+import com.chess.ui.interfaces.boards.TacticBoardFace;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.PanelInfoTacticsView;
 import com.chess.ui.views.chess_boards.ChessBoardTacticsView;
@@ -60,7 +60,7 @@ import java.util.List;
  * Date: 16.02.13
  * Time: 7:10
  */
-public class GameTacticsFragment extends GameBaseFragment implements GameTacticsActivityFace, PopupListSelectionFace {
+public class GameTacticsFragment extends GameBaseFragment implements GameTacticsFace, PopupListSelectionFace {
 
 	private static final int TIMER_UPDATE = 1000;
 	private static final long TACTIC_ANSWER_DELAY = 1500;
@@ -73,7 +73,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private static final int ID_PRACTICE = 2;
 	private static final int ID_SETTINGS = 3;
 
-	private static final String OPTION_SELECTION = "option select popup";
 
 	private Handler tacticsTimer;
 	private ChessBoardTacticsView boardView;
@@ -117,7 +116,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_boardview_tactics, container, false);
+		return inflater.inflate(R.layout.new_game_tactics_frame, container, false);
 	}
 
 	@Override
@@ -418,17 +417,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 
 	@Override
-	public void showHint() {
-		showAnswer();
-	}
-
-	private void showAnswer() {
+	public void showAnswer() {
 		stopTacticsTimer();
 
 		tacticItem.setWasShowed(true);
 
 		ChessBoardTactics.resetInstance();
-		boardView.setGameActivityFace(this);
+		boardView.setGameUiFace(this);
 
 		tacticItem.setRetry(true);
 
@@ -683,7 +678,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 
 		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsArray);
-		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
+		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
 	}
 
 	public void stopTacticsTimer() {
@@ -740,7 +735,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		ChessBoardTactics.resetInstance();
 		final TacticBoardFace boardFace = ChessBoardTactics.getInstance(this);
-		boardView.setGameActivityFace(this);
+		boardView.setGameUiFace(this);
 
 		currentRating = getAppData().getUserTacticsRating();
 
@@ -940,7 +935,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		boardView = (ChessBoardTacticsView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setControlsView(controlsTacticsView);
-		boardView.setGameActivityFace(this);
+//		boardView.setGameFace(this); // TODO check duplication
 
 		controlsTacticsView.setBoardViewFace(boardView);
 
@@ -948,7 +943,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		final ChessBoard chessBoard = ChessBoardTactics.getInstance(this);
 		firstRun = chessBoard.isJustInitialized();
-		boardView.setGameActivityFace(this);
+		boardView.setGameUiFace(this);
 
 		controlsTacticsView.enableGameControls(false);
 

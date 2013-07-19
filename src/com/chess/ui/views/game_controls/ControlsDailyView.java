@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import com.chess.R;
 import com.chess.RoboButton;
-import com.chess.ui.interfaces.BoardViewNetworkFace;
+import com.chess.ui.interfaces.boards.BoardViewNetworkFace;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
 

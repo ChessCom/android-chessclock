@@ -1,14 +1,13 @@
-package com.chess.backend.tasks;
+package com.chess.ui.engine.stockfish;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.ui.engine.CompEngineHelper;
-import com.chess.ui.interfaces.GameCompActivityFace;
+import com.chess.backend.tasks.AbstractUpdateTask;
+import com.chess.ui.interfaces.game_ui.GameCompFace;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +19,7 @@ public class StartEngineTask extends AbstractUpdateTask<CompEngineHelper, Void> 
 
 	private int gameMode;
 	//private String initialFen;
-	private GameCompActivityFace gameCompActivityFace;
+	private GameCompFace gameCompActivityFace;
 	private Bundle savedInstanceState;
 	private final Context context;
 	private SharedPreferences settings;
@@ -29,7 +28,7 @@ public class StartEngineTask extends AbstractUpdateTask<CompEngineHelper, Void> 
 	private int depth;
 	private boolean restoreGame;
 
-	public StartEngineTask(int gameMode, boolean restoreGame, int strength, int time, int depth, GameCompActivityFace gameCompActivityFace, SharedPreferences settings, Bundle savedInstanceState, Context context, TaskUpdateInterface<CompEngineHelper> taskFace) {
+	public StartEngineTask(int gameMode, boolean restoreGame, int strength, int time, int depth, GameCompFace gameCompActivityFace, SharedPreferences settings, Bundle savedInstanceState, Context context, TaskUpdateInterface<CompEngineHelper> taskFace) {
 		super(taskFace);
 		// todo @compengine: extract method parameters to data object
 		this.gameMode = gameMode;

@@ -2,8 +2,8 @@ package com.chess.ui.engine;
 
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
-import com.chess.ui.interfaces.GameActivityFace;
-import com.chess.ui.interfaces.TacticBoardFace;
+import com.chess.ui.interfaces.game_ui.GameFace;
+import com.chess.ui.interfaces.boards.TacticBoardFace;
 
 /**
  * ChessBoardTactics class
@@ -19,15 +19,15 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 	private int tacticsCorrectMoves = 0;
 	private String[] tacticMoves;
 
-	private ChessBoardTactics(GameActivityFace gameActivityFace) {
-		super(gameActivityFace);
+	private ChessBoardTactics(GameFace gameFace) {
+		super(gameFace);
 	}
 
-	public static ChessBoardTactics getInstance(GameActivityFace gameActivityFace) {
-		final Long gameId = gameActivityFace.getGameId();
+	public static ChessBoardTactics getInstance(GameFace gameFace) {
+		final Long gameId = gameFace.getGameId();
 
 		if (instance == null || instance.gameId == null || !instance.gameId.equals(gameId)) {
-			instance = new ChessBoardTactics(gameActivityFace);
+			instance = new ChessBoardTactics(gameFace);
 			instance.gameId = gameId;
 			instance.justInitialized = true;
 		} else {

@@ -8,9 +8,9 @@ import android.view.MotionEvent;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
-import com.chess.ui.interfaces.BoardViewNetworkFace;
-import com.chess.ui.interfaces.GameActivityFace;
-import com.chess.ui.interfaces.GameNetworkActivityFace;
+import com.chess.ui.interfaces.boards.BoardViewNetworkFace;
+import com.chess.ui.interfaces.game_ui.GameFace;
+import com.chess.ui.interfaces.game_ui.GameNetworkFace;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 
 import java.util.Iterator;
@@ -20,7 +20,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 	private String whiteUserName;
 	private String blackUserName;
-	public GameNetworkActivityFace gameActivityFace;
+	public GameNetworkFace gameActivityFace;
 
 	public ChessBoardNetworkView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -29,11 +29,11 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 	protected abstract boolean need2ShowSubmitButtons();
 
 	@Override
-	public void setGameActivityFace(GameActivityFace gameActivityFace) {
-		super.setGameActivityFace(gameActivityFace);
+	public void setGameFace(GameFace gameFace) {
+		super.setGameFace(gameFace);
 
-		whiteUserName = gameActivityFace.getWhitePlayerName();
-		blackUserName = gameActivityFace.getBlackPlayerName();
+		whiteUserName = gameFace.getWhitePlayerName();
+		blackUserName = gameFace.getBlackPlayerName();
 	}
 
 	@Override
@@ -240,8 +240,8 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		controlsView.setBoardViewFace(this);
 	}
 
-	public void setGameActivityFace(GameNetworkActivityFace gameActivityFace) {
-		super.setGameActivityFace(gameActivityFace);
+	public void setGameActivityFace(GameNetworkFace gameActivityFace) {
+		super.setGameFace(gameActivityFace);
 		this.gameActivityFace = gameActivityFace;
 	}
 

@@ -197,4 +197,12 @@ public class LoadHelper {
 		return loadItem;
 	}
 
+	public static LoadItem getLessonsByCourseId(String userToken, int courseId) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(CMD_LESSONS_LESSONS);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
+		loadItem.addRequestParams(P_COURSE_ID, courseId);
+		return loadItem;
+	}
+
 }

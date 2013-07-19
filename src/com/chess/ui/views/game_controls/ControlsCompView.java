@@ -5,7 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import com.chess.R;
-import com.chess.ui.interfaces.BoardViewCompFace;
+import com.chess.ui.interfaces.boards.BoardViewCompFace;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
 

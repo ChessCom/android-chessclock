@@ -5,7 +5,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import com.chess.backend.entity.new_api.LessonCourseItem;
+import com.chess.backend.entity.new_api.LessonCourseListItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
@@ -21,15 +21,15 @@ import java.util.List;
  * Date: 18.07.13
  * Time: 16:09
  */
-public class SaveLessonsCoursesTask  extends AbstractUpdateTask<LessonCourseItem.Data, Long> {
+public class SaveLessonsCoursesTask  extends AbstractUpdateTask<LessonCourseListItem.Data, Long> {
 
 	private ContentResolver contentResolver;
 	protected static String[] arguments = new String[2];
 	private String username;
 
-	public SaveLessonsCoursesTask(TaskUpdateInterface<LessonCourseItem.Data> taskFace, List<LessonCourseItem.Data> currentItems,
+	public SaveLessonsCoursesTask(TaskUpdateInterface<LessonCourseListItem.Data> taskFace, List<LessonCourseListItem.Data> currentItems,
 									 ContentResolver resolver, String username) {
-		super(taskFace, new ArrayList<LessonCourseItem.Data>());
+		super(taskFace, new ArrayList<LessonCourseListItem.Data>());
 		this.username = username;
 		this.itemList.addAll(currentItems);
 
@@ -39,7 +39,7 @@ public class SaveLessonsCoursesTask  extends AbstractUpdateTask<LessonCourseItem
 	@Override
 	protected Integer doTheTask(Long... ids) {
 		synchronized (itemList) {
-			for (LessonCourseItem.Data currentItem : itemList) {
+			for (LessonCourseListItem.Data currentItem : itemList) {
 				currentItem.setUser(username);
 				final String[] arguments2 = arguments;
 				arguments2[0] = String.valueOf(currentItem.getId());

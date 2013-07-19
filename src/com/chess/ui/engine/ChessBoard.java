@@ -13,8 +13,8 @@ import android.util.Log;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.SoundPlayer;
 import com.chess.backend.statics.StaticData;
-import com.chess.ui.interfaces.BoardFace;
-import com.chess.ui.interfaces.GameActivityFace;
+import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.interfaces.game_ui.GameFace;
 import org.apache.http.protocol.HTTP;
 
 import java.net.URLEncoder;
@@ -292,13 +292,13 @@ public class ChessBoard implements BoardFace {
 	private int[] wKingMoveOOO = new int[]{58};
 
 	//private boolean userColorWhite;
-	protected GameActivityFace gameActivityFace;
+	protected GameFace gameFace;
 	private SoundPlayer soundPlayer;
 	private boolean finished;
 
-	protected ChessBoard(GameActivityFace gameActivityFace) {
-		this.gameActivityFace = gameActivityFace;
-		soundPlayer = gameActivityFace.getSoundPlayer();
+	protected ChessBoard(GameFace gameFace) {
+		this.gameFace = gameFace;
+		soundPlayer = gameFace.getSoundPlayer();
 	}
 
 	@Override
@@ -1144,7 +1144,7 @@ public class ChessBoard implements BoardFace {
 		side ^= 1;
 		xside ^= 1;
 
-		Boolean userColorWhite = gameActivityFace.isUserColorWhite();
+		Boolean userColorWhite = gameFace.isUserColorWhite();
 		if (playSound && userColorWhite != null) {
 			if ((userColorWhite && colorFrom == 1) || (!userColorWhite && colorFrom == 0)) {
 				if (inCheck(side)) {

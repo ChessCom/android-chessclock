@@ -1,4 +1,4 @@
-package com.chess.ui.interfaces;
+package com.chess.ui.interfaces.boards;
 
 import android.view.View;
 
@@ -11,8 +11,6 @@ import android.view.View;
 public interface BoardViewFace {
 
 	void showOptions(View view);
-
-//	void flipBoard();
 
 	void switchAnalysis();
 

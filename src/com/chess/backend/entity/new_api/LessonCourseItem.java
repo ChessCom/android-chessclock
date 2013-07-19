@@ -5,26 +5,52 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 18.07.13
- * Time: 16:05
+ * Date: 19.07.13
+ * Time: 22:33
  */
-public class LessonCourseItem extends BaseResponseItem<List<LessonCourseItem.Data>> {
+public class LessonCourseItem extends BaseResponseItem<LessonCourseItem.Data> {
 /*
-  "data": [
-    {
-      "id": 294,
-      "name": "DeepGreene's Learning Bag",
-      "category_id": 1,
-      "course_completed": false
-    },
+  "data": {
+    "course_name": "DeepGreene's Learning Bag",
+    "description": "I reach into the bag and pull out things to learn you chess...",
+    "lessons_total_count": "5",
+    "lessons": [
+      {
+        "id": "5658",
+        "name": "Black Moves Last",
+        "completed": false
+      }
+    ]
+  }
 */
 
-	public static class Data {
+	public class Data {
+		private String course_name;
+		private String description;
+		private int lessons_total_count;
+		private List<LessonListItem> lessons;
+
+		public String getCourseName() {
+			return course_name;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+
+		public int getLessonsTotalCount() {
+			return lessons_total_count;
+		}
+
+		public List<LessonListItem> getLessons() {
+			return lessons;
+		}
+	}
+
+	public class LessonListItem {
 		private int id;
 		private String name;
-		private int category_id;
-		private boolean course_completed;
-		private String user;
+		private boolean completed;
 
 		public int getId() {
 			return id;
@@ -34,36 +60,8 @@ public class LessonCourseItem extends BaseResponseItem<List<LessonCourseItem.Dat
 			return name;
 		}
 
-		public int getCategoryId() {
-			return category_id;
-		}
-
-		public boolean isCourseCompleted() {
-			return course_completed;
-		}
-
-		public String getUser() {
-			return user;
-		}
-
-		public void setUser(String user) {
-			this.user = user;
-		}
-
-		public void setId(int id) {
-			this.id = id;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public void setCategoryId(int category_id) {
-			this.category_id = category_id;
-		}
-
-		public void setCourseCompleted(boolean course_completed) {
-			this.course_completed = course_completed;
+		public boolean isCompleted() {
+			return completed;
 		}
 	}
 }

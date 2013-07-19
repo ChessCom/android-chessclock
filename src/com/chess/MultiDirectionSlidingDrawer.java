@@ -1035,4 +1035,8 @@ public class MultiDirectionSlidingDrawer extends ViewGroup {
 			}
 		}
 	}
+
+	public void setTopOffset(int topOffset){
+		mTopOffset = topOffset;
+	}
 }

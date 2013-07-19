@@ -1,7 +1,7 @@
 package com.chess.ui.engine;
 
 import com.chess.backend.statics.StaticData;
-import com.chess.ui.interfaces.BoardFace;
+import com.chess.ui.interfaces.boards.BoardFace;
 
 import java.util.Iterator;
 import java.util.TreeSet;

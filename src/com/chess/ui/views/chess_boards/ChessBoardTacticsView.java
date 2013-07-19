@@ -7,16 +7,15 @@ import android.view.MotionEvent;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
-import com.chess.ui.interfaces.BoardViewTacticsFace;
-import com.chess.ui.interfaces.GameTacticsActivityFace;
-import com.chess.ui.views.game_controls.ControlsTacticsView;
+import com.chess.ui.interfaces.boards.BoardViewTacticsFace;
+import com.chess.ui.interfaces.game_ui.GameTacticsFace;
 
 import java.util.Iterator;
 import java.util.TreeSet;
 
 public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardViewTacticsFace {
 
-	private GameTacticsActivityFace gameTacticsActivityFace;
+	private GameTacticsFace gameTacticsActivityFace;
 
 
 	public ChessBoardTacticsView(Context context, AttributeSet attrs) {
@@ -24,8 +23,8 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
     }
 
-	public void setGameActivityFace(GameTacticsActivityFace gameActivityFace) {
-		super.setGameActivityFace(gameActivityFace);
+	public void setGameUiFace(GameTacticsFace gameActivityFace) {
+		super.setGameFace(gameActivityFace);
 
 		gameTacticsActivityFace = gameActivityFace;
 	}
@@ -165,19 +164,6 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
         return super.onTouchEvent(event);
     }
 
-    private Runnable checkUserIsActive = new Runnable() {
-        @Override
-        public void run() {
-            if (userActive) {
-                userActive = false;
-                handler.removeCallbacks(this);
-                handler.postDelayed(this, StaticData.WAKE_SCREEN_TIMEOUT);
-            } else
-                gameTacticsActivityFace.turnScreenOff();
-
-        }
-    };
-
     @Override
 	public void promote(int promote, int col, int row) {
         boolean found = false;
@@ -214,7 +200,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
     @Override
     public void showHint() {
-		gameTacticsActivityFace.showHint();
+		gameTacticsActivityFace.showAnswer();
     }
 
 	@Override
@@ -222,7 +208,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 	}
 
 //	public void enableAnalysis() {  // TODO recheck logic
-//		gameActivityFace.switch2Analysis(true);
+//		gameFace.switch2Analysis(true);
 //	}
 
 
@@ -245,7 +231,4 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 		gameTacticsActivityFace.restart();
 	}
 
-	public void setControlsView(ControlsTacticsView controlsView) {
-		super.setControlsView(controlsView);
-	}
 }

@@ -30,6 +30,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	int controlIconSize;
 	private ColorStateList controlIconColor;
 	private float density;
+	protected int controlTextSize;
 
 	enum ButtonIds {
 		OPTIONS,
@@ -47,7 +48,8 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		FORWARD,
 		MAKE_MOVE,
 		NEXT,
-		SKIP
+		SKIP,
+		START
 	}
 
 	private Integer[] glyphIds = new Integer[]{
@@ -56,7 +58,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			R.string.ic_board,
 			R.string.ic_restore,
 			R.string.ic_flip,
-			R.string.ic_close,
+			R.string.ic_exit,
 			R.string.ic_chat,
 			R.string.ic_chat_nm,
 			R.string.ic_help,
@@ -101,6 +103,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		controlButtonHeight = (int) resources.getDimension(R.dimen.game_controls_button_height);
 		controlIconSize = (int) (resources.getDimension(R.dimen.game_controls_icon_size) / density);
 		controlIconColor = resources.getColorStateList(R.color.text_controls_icons);
+		controlTextSize = (int) (resources.getDimension(R.dimen.game_controls_text_size) / density);
 
 		if (AppUtils.hasSoftKeys(((Activity) getContext()).getWindowManager())) {
 			controlButtonHeight = (int) resources.getDimension(R.dimen.game_controls_button_height_smaller);

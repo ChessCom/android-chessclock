@@ -62,9 +62,10 @@
 		android:id="@+id/listView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:divider="@null"
-		android:dividerHeight="0dip"
-		android:background="@android:color/transparent"
+		android:divider="@color/new_friends_list_divider"
+		android:dividerHeight="1dip"
+		android:background="@color/white"
+		android:cacheColorHint="@color/white"
 		/>
 
 </LinearLayout>

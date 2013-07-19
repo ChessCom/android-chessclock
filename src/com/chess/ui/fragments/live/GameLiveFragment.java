@@ -36,8 +36,8 @@ import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
-import com.chess.ui.interfaces.BoardFace;
-import com.chess.ui.interfaces.GameNetworkActivityFace;
+import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.interfaces.game_ui.GameNetworkFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardLiveView;
@@ -57,7 +57,7 @@ import static com.chess.live.rules.GameResult.WIN;
  * Date: 26.01.13
  * Time: 11:33
  */
-public class GameLiveFragment extends GameBaseFragment implements GameNetworkActivityFace, LccEventListener, LccChatMessageListener, QuickAction.OnActionItemClickListener {
+public class GameLiveFragment extends GameBaseFragment implements GameNetworkFace, LccEventListener, LccChatMessageListener, QuickAction.OnActionItemClickListener {
 
 
 	private static final String TAG = "GameLiveScreenActivity";
@@ -118,7 +118,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_boardview_live, container, false);
+		return inflater.inflate(R.layout.new_game_live_frame, container, false);
 	}
 
 	@Override
@@ -913,7 +913,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkAct
 	protected void restoreGame() {
 		if (isLCSBound) {
 //			ChessBoardLive.resetInstance();		 // moved to onGameStarted
-//			boardView.setGameActivityFace(this);
+//			boardView.setGameFace(this);
 			try {
 				onGameStarted();
 			} catch (DataNotValidException e) {

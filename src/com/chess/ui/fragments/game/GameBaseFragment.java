@@ -19,7 +19,7 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
-import com.chess.ui.interfaces.GameActivityFace;
+import com.chess.ui.interfaces.game_ui.GameFace;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
@@ -33,7 +33,7 @@ import java.text.SimpleDateFormat;
  * Date: 15.01.13
  * Time: 13:46
  */
-public abstract class GameBaseFragment extends LiveBaseFragment implements GameActivityFace {
+public abstract class GameBaseFragment extends LiveBaseFragment implements GameFace {
 
 	protected static final String GAME_GOES = "*";
 	protected static final String WHITE_WINS = "1-0";
@@ -43,6 +43,8 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameA
 	protected static final String END_GAME_TAG = "end game popup";
 	protected static final String DRAW_OFFER_RECEIVED_TAG = "draw offer message received";
 	protected static final String ABORT_GAME_TAG = "abort or resign game";
+	protected static final String OPTION_SELECTION_TAG = "option select popup";
+
 	protected SimpleDateFormat datePgnFormat = new SimpleDateFormat("yyyy.MM.dd");
 
 	private ChessBoardBaseView boardView;

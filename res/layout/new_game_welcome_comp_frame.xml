@@ -97,9 +97,9 @@
 		<com.chess.RoboTextView
 			android:id="@id/handle"
 			android:layout_width="match_parent"
-			android:layout_height="@dimen/small_button_height"
+			android:layout_height="@dimen/drawer_handler_height"
 			android:textColor="@color/white"
-			android:text="@string/ic_menu"
+			android:text="@string/ic_handler"
 			android:padding="@dimen/glyph_icon_padding"
 			android:gravity="center"
 			android:textSize="@dimen/glyph_icon_big"

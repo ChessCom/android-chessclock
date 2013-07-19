@@ -39,9 +39,9 @@ import com.chess.ui.engine.stockfish.StartEngineTask;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsBoardFragment;
-import com.chess.ui.interfaces.BoardFace;
+import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.FragmentTabsFace;
-import com.chess.ui.interfaces.GameCompActivityFace;
+import com.chess.ui.interfaces.game_ui.GameCompFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
@@ -65,7 +65,7 @@ import java.util.List;
  * Date: 19.05.13
  * Time: 17:15
  */
-public class WelcomeGameCompFragment extends GameBaseFragment implements GameCompActivityFace,
+public class WelcomeGameCompFragment extends GameBaseFragment implements GameCompFace,
 		PopupListSelectionFace, AdapterView.OnItemClickListener, MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener {
 
 	private static final String MODE = "mode";
@@ -157,7 +157,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_boardview_welcome_comp, container, false);
+		return inflater.inflate(R.layout.new_game_welcome_comp_frame, container, false);
 	}
 
 	@Override

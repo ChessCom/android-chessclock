@@ -25,11 +25,13 @@
     <string name="ic_share">k</string>
     <string name="ic_recent">f</string>
     <string name="ic_menu">t</string>
+    <string name="ic_handler">=</string>
     <string name="ic_email_dark">y</string>
     <string name="ic_email_light">u</string>
     <string name="ic_password">d</string>
     <string name="ic_history">°</string>
     <string name="ic_close">B</string>
+    <string name="ic_exit">×</string>
     <string name="ic_clear">Q</string>
     <string name="ic_clock">\'</string>
     <string name="ic_facebook">S</string>

@@ -1,4 +1,4 @@
-package com.chess.ui.interfaces;
+package com.chess.ui.interfaces.game_ui;
 
 /**
  * Created with IntelliJ IDEA.
@@ -6,7 +6,7 @@ package com.chess.ui.interfaces;
  * Date: 22.02.13
  * Time: 18:25
  */
-public interface GameAnalysisFace extends GameActivityFace  {
+public interface GameAnalysisFace extends GameFace {
 
 	void restart();
 

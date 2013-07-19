@@ -1,6 +1,7 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,14 @@ public abstract class ItemsAdapter<T> extends BaseAdapter {
 	protected final EnhancedImageDownloader imageLoader;
 	protected List<T> itemsList;
 	protected Context context;
+	protected Resources resources;
 	protected final LayoutInflater inflater;
 	protected final int itemListId;
 
 	public ItemsAdapter(Context context, List<T> itemList) {
 		itemsList = itemList;
 		this.context = context;
+		resources = context.getResources();
 		inflater = LayoutInflater.from(context);
 		itemListId = R.id.list_item_id;
 		imageLoader = new EnhancedImageDownloader(context);

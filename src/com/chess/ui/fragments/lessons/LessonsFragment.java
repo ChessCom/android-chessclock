@@ -12,7 +12,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
-import com.chess.backend.entity.new_api.LessonCourseItem;
+import com.chess.backend.entity.new_api.LessonCourseListItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
@@ -231,14 +231,14 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 				loadItem.setLoadPath(RestHelper.CMD_LESSONS_COURSES);
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
-				new RequestJsonTask<LessonCourseItem>(lessonsCoursesUpdateListener).executeTask(loadItem);
+				new RequestJsonTask<LessonCourseListItem>(lessonsCoursesUpdateListener).executeTask(loadItem);
 			}
 		}
 	}
 
-	private class LessonsCoursesUpdateListener extends CommonLogicFragment.ChessUpdateListener<LessonCourseItem> {
+	private class LessonsCoursesUpdateListener extends CommonLogicFragment.ChessUpdateListener<LessonCourseListItem> {
 		public LessonsCoursesUpdateListener() {
-			super(LessonCourseItem.class);
+			super(LessonCourseListItem.class);
 		}
 
 		@Override
@@ -247,7 +247,7 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 		}
 
 		@Override
-		public void updateData(LessonCourseItem returnedObj) {
+		public void updateData(LessonCourseListItem returnedObj) {
 			super.updateData(returnedObj);
 
 			new SaveLessonsCoursesTask(saveLessonsCoursesUpdateListener, returnedObj.getData(), getContentResolver(),
@@ -255,10 +255,10 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 		}
 	}
 
-	private class SaveLessonsCoursesUpdateListener extends CommonLogicFragment.ChessUpdateListener<LessonCourseItem.Data> {
+	private class SaveLessonsCoursesUpdateListener extends CommonLogicFragment.ChessUpdateListener<LessonCourseListItem.Data> {
 
 		@Override
-		public void updateData(LessonCourseItem.Data returnedObj) {
+		public void updateData(LessonCourseListItem.Data returnedObj) {
 			// get saved courses           // TODO check strict mode
 
 			// TODO add user parameter
@@ -266,11 +266,11 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.LESSONS_COURSES], null, null, null, null);
 
 			if (cursor != null && cursor.moveToFirst()) {
-				LinkedHashMap<Integer, List<LessonCourseItem.Data>> courseTable = new LinkedHashMap<Integer, List<LessonCourseItem.Data>>();
+				LinkedHashMap<Integer, List<LessonCourseListItem.Data>> courseTable = new LinkedHashMap<Integer, List<LessonCourseListItem.Data>>();
 				int categoriesCnt = categoriesArray.size();
 				for (int z = 0; z < categoriesCnt; z++) {
 					int categoryId = categoriesArray.keyAt(z);
-					courseTable.put(categoryId, new ArrayList<LessonCourseItem.Data>());
+					courseTable.put(categoryId, new ArrayList<LessonCourseListItem.Data>());
 				}
 				do {
 					int id = DBDataManager.getInt(cursor, DBConstants.V_ID);
@@ -278,7 +278,7 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 					String courseName = DBDataManager.getString(cursor, DBConstants.V_NAME);
 					boolean isCompleted = DBDataManager.getInt(cursor, DBConstants.V_COURSE_COMPLETED) > 0;
 
-					LessonCourseItem.Data data = new LessonCourseItem.Data();
+					LessonCourseListItem.Data data = new LessonCourseListItem.Data();
 					data.setId(id);
 					data.setCategoryId(categoryId);
 					data.setName(courseName);
@@ -293,11 +293,11 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 					String[][] categories = new String[categoriesCnt][];
 					for (int k = 0; k < categoriesCnt; k++) {
 						int categoryId = categoriesArray.keyAt(k);
-						List<LessonCourseItem.Data> list = courseTable.get(categoryId);
+						List<LessonCourseListItem.Data> list = courseTable.get(categoryId);
 						int coursesCnt = list.size();
 						categories[k] = new String[coursesCnt];
 						for (int i = 0; i < coursesCnt; i++) {
-							LessonCourseItem.Data data = list.get(i);
+							LessonCourseListItem.Data data = list.get(i);
 							categories[k][i] = data.getName();
 						}
 					}
@@ -308,11 +308,11 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 					int[][] ids = new int[categoriesCnt][];
 					for (int k = 0; k < categoriesCnt; k++) {
 						int categoryId = categoriesArray.keyAt(k);
-						List<LessonCourseItem.Data> list = courseTable.get(categoryId);
+						List<LessonCourseListItem.Data> list = courseTable.get(categoryId);
 						int coursesCnt = list.size();
 						ids[k] = new int[coursesCnt];
 						for (int i = 0; i < coursesCnt; i++) {
-							LessonCourseItem.Data data = list.get(i);
+							LessonCourseListItem.Data data = list.get(i);
 							ids[k][i] = data.getId();
 						}
 					}
@@ -324,11 +324,11 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 					boolean[][] completedMarks = new boolean[categoriesCnt][];
 					for (int k = 0; k < categoriesCnt; k++) {
 						int categoryId = categoriesArray.keyAt(k);
-						List<LessonCourseItem.Data> list = courseTable.get(categoryId);
+						List<LessonCourseListItem.Data> list = courseTable.get(categoryId);
 						int coursesCnt = list.size();
 						completedMarks[k] = new boolean[coursesCnt];
 						for (int i = 0; i < coursesCnt; i++) {
-							LessonCourseItem.Data data = list.get(i);
+							LessonCourseListItem.Data data = list.get(i);
 							completedMarks[k][i] = data.isCourseCompleted();
 						}
 					}

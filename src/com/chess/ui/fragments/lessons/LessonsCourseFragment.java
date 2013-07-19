@@ -1,17 +1,21 @@
 package com.chess.ui.fragments.lessons;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import com.chess.R;
-import com.chess.db.DBDataManager;
-import com.chess.db.DbHelper;
-import com.chess.ui.adapters.LessonCoursesAdapter;
+import com.chess.backend.LoadHelper;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.LessonCourseItem;
+import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.ui.adapters.LessonsItemAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,13 +27,12 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 	private static final String COURSE_ID = "course_id";
 
-	private LessonCoursesAdapter coursesCursorAdapter;
+	private LessonsItemAdapter lessonsItemsAdapter;
 	private int courseId;
+	private TextView courseTitleTxt;
+	private TextView courseDescriptionTxt;
 
-
-	public LessonsCourseFragment() {
-
-	}
+	public LessonsCourseFragment() {}
 
 	public static LessonsCourseFragment createInstance(int courseId) {
 		LessonsCourseFragment fragment = new LessonsCourseFragment();
@@ -49,8 +52,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 			courseId = savedInstanceState.getInt(COURSE_ID);
 		}
 
-		coursesCursorAdapter = new LessonCoursesAdapter(getActivity(), null);
-
+		lessonsItemsAdapter = new LessonsItemAdapter(getActivity(), null);
 	}
 
 	@Override
@@ -67,9 +69,11 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 		// Set header
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lessons_course_header_view, null, false);
+		courseTitleTxt = (TextView) headerView.findViewById(R.id.courseTitleTxt);
+		courseDescriptionTxt = (TextView) headerView.findViewById(R.id.courseDescriptionTxt);
 		listView.addHeaderView(headerView);
 
-		listView.setAdapter(coursesCursorAdapter);
+		listView.setAdapter(lessonsItemsAdapter);
 		listView.setOnItemClickListener(this);
 
 		// adjust action bar icons
@@ -78,29 +82,15 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		getActivityFace().showActionMenu(R.id.menu_games, false);
 
 		setTitlePadding(ONE_ICON);
-
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-//		if (getArguments() != null) {
-//			courseId = getArguments().getInt(COURSE_ID);
-//		} else {
-//			courseId = savedInstanceState.getInt(COURSE_ID);
-//		}
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
 
-		Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getLessonCourseById(courseId));
-		if (cursor.moveToFirst()) {
-			coursesCursorAdapter.changeCursor(cursor);
-		}
+		LoadItem loadItem = LoadHelper.getLessonsByCourseId(getUserToken(), courseId);
 
+		new RequestJsonTask<LessonCourseItem>(new CourseUpdateListener()).executeTask(loadItem);
 	}
 
 	@Override
@@ -112,7 +102,28 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		LessonCourseItem.LessonListItem lessonItem = (LessonCourseItem.LessonListItem) parent.getItemAtPosition(position);
+		getActivityFace().openFragment(GameLessonFragment.createInstance(lessonItem.getId()));
+	}
 
+	private class CourseUpdateListener extends ChessLoadUpdateListener<LessonCourseItem> {
+
+		private CourseUpdateListener() {
+			super(LessonCourseItem.class);
+		}
+
+		@Override
+		public void updateData(LessonCourseItem returnedObj) {
+			super.updateData(returnedObj);
+
+			LessonCourseItem.Data courseItem = returnedObj.getData();
+
+			courseTitleTxt.setText(courseItem.getCourseName());
+			courseDescriptionTxt.setText(courseItem.getDescription());
+
+			List<LessonCourseItem.LessonListItem> lessons = courseItem.getLessons();
+			lessonsItemsAdapter.setItemsList(lessons);
+		}
 	}
 
 }

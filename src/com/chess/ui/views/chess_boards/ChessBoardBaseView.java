@@ -20,9 +20,9 @@ import com.chess.backend.statics.StaticData;
 import com.chess.live.client.PieceColor;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
-import com.chess.ui.interfaces.BoardFace;
-import com.chess.ui.interfaces.BoardViewFace;
-import com.chess.ui.interfaces.GameActivityFace;
+import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.interfaces.boards.BoardViewFace;
+import com.chess.ui.interfaces.game_ui.GameFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.game_controls.ControlsBaseView;
@@ -109,7 +109,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected Handler handler;
 	protected boolean userActive;
 	protected Resources resources;
-	private GameActivityFace gameActivityFace;
+	private GameFace gameFace;
 	protected boolean locked;
 	protected PaintFlagsDrawFilter drawFilter;
 	private NotationView notationsView;
@@ -194,11 +194,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	/**
-	 * Set gameActivityFace to boardview. It will automatically call getBoardFace() which will init it.
+	 * Set gameFace to boardview. It will automatically call getBoardFace() which will init it.
 	 */
-	public void setGameActivityFace(GameActivityFace gameActivityFace) {
-		this.gameActivityFace = gameActivityFace;
-		onBoardFaceSet(gameActivityFace.getBoardFace());
+	public void setGameFace(GameFace gameFace) {
+		this.gameFace = gameFace;
+		onBoardFaceSet(gameFace.getBoardFace());
 
 		userName = getAppData().getUsername();
 
@@ -225,7 +225,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected BoardFace getBoardFace() {
-		return gameActivityFace.getBoardFace();
+		return gameFace.getBoardFace();
 	}
 
 	protected void onBoardFaceSet(BoardFace boardFace) {
@@ -275,7 +275,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	@Override
 	public void showOptions(View view) {
-		gameActivityFace.showOptions(view);
+		gameFace.showOptions(view);
 	}
 
 	@Override
@@ -288,7 +288,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			scheduleMoveAnimation(getBoardFace().getLastMove(), false);
 			getBoardFace().takeBack();
 			invalidate();
-			gameActivityFace.invalidateGameScreen();
+			gameFace.invalidateGameScreen();
 
 			if (notationsView != null) { // in puzzles we don't have notations  so probably should be moved to activity level
 				notationsView.moveBack(getBoardFace().getHply());
@@ -298,11 +298,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	@Override
 	public void switchAnalysis() {
-		gameActivityFace.switch2Analysis();
+		gameFace.switch2Analysis();
 	}
 
 //	public void enableAnalysis() {  // TODO recheck logic
-//		gameActivityFace.switch2Analysis(true);
+//		gameFace.switch2Analysis(true);
 //	}
 
 	@Override
@@ -319,7 +319,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			getBoardFace().takeNext();
 
 			invalidate();
-			gameActivityFace.invalidateGameScreen();
+			gameFace.invalidateGameScreen();
 
 			if (notationsView != null) {
 				notationsView.moveForward(getBoardFace().getHply());
@@ -329,7 +329,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	@Override
 	public void newGame() {
-		gameActivityFace.newGame();
+		gameFace.newGame();
 	}
 
 	public void updateNotations(String[] notations) {
@@ -373,8 +373,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				handler.removeCallbacks(this);
 				handler.postDelayed(this, StaticData.WAKE_SCREEN_TIMEOUT);
 			} else {
-				if (gameActivityFace != null) {
-					gameActivityFace.turnScreenOff();
+				if (gameFace != null) {
+					gameFace.turnScreenOff();
 				}
 			}
 		}
@@ -534,7 +534,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected boolean isLocked() {
-		return locked || gameActivityFace == null || !gameActivityFace.currentGameExist(); // fix NPE when user clicks on empty board, probably should be refactored
+		return locked || gameFace == null || !gameFace.currentGameExist(); // fix NPE when user clicks on empty board, probably should be refactored
 	}
 
 	@Override
@@ -651,7 +651,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					((to > 55) && (getBoardFace().getSide() == ChessBoard.BLACK_SIDE))) &&
 					(getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
 
-				gameActivityFace.showChoosePieceDialog(col, row);
+				gameFace.showChoosePieceDialog(col, row);
 				return true;
 			}
 
@@ -751,19 +751,19 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 			if (messageId != 0) {
 				boardFace.setFinished(true);
-				gameActivityFace.onGameOver(getResources().getString(messageId), false);
+				gameFace.onGameOver(getResources().getString(messageId), false);
 				return true;
 			}
 		} else if (boardFace.inCheck(side)) {
 			if (!boardFace.isPossibleToMakeMoves()) {
 				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
-				gameActivityFace.invalidateGameScreen();
+				gameFace.invalidateGameScreen();
 				boardFace.setFinished(true);
 				return true;
 			} else {
 				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "+";
-				gameActivityFace.invalidateGameScreen();
-				gameActivityFace.onCheck();
+				gameFace.invalidateGameScreen();
+				gameFace.onCheck();
 			}
 		}
 

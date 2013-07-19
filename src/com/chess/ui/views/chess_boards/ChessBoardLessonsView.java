@@ -1,18 +1,14 @@
 package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
-import com.chess.ui.interfaces.boards.BoardFace;
-import com.chess.ui.interfaces.boards.BoardViewAnalysisFace;
-import com.chess.ui.interfaces.game_ui.GameAnalysisFace;
-import com.chess.ui.views.game_controls.ControlsAnalysisView;
+import com.chess.ui.interfaces.boards.BoardViewLessonsFace;
+import com.chess.ui.interfaces.game_ui.GameLessonFace;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -20,78 +16,21 @@ import java.util.TreeSet;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 22.02.13
- * Time: 18:18
+ * Date: 19.07.13
+ * Time: 12:49
  */
-public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardViewAnalysisFace {
+public class ChessBoardLessonsView extends ChessBoardBaseView implements BoardViewLessonsFace {
 
-	private static final long HINT_REVERSE_DELAY = 1500;
+	private GameLessonFace gameLessonFace;
 
-	private static final String DIVIDER_1 = "|";
-	private static final String DIVIDER_2 = ":";
-
-	private GameAnalysisFace gameAnalysisActivityFace;
-	private ControlsAnalysisView controlsAnalysisView;
-
-
-	public ChessBoardAnalysisView(Context context, AttributeSet attrs) {
+	public ChessBoardLessonsView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-
 	}
 
-	public void setGameActivityFace(GameAnalysisFace gameActivityFace) {
-		super.setGameFace(gameActivityFace);
+	public void setGameUiFace(GameLessonFace gameLessonFace) {
+		super.setGameFace(gameLessonFace);
 
-		gameAnalysisActivityFace = gameActivityFace;
-	}
-
-	public void setControlsView(ControlsAnalysisView controlsView) {
-		super.setControlsView(controlsView);
-		controlsAnalysisView = controlsView;
-		controlsAnalysisView.setBoardViewFace(this);
-	}
-
-	@Override
-	protected void onBoardFaceSet(BoardFace boardFace) {
-//		pieces_tmp = boardFace.getPieces().clone();
-//		colors_tmp = boardFace.getColor().clone();
-	}
-
-	@Override
-	public void afterMove() {
-		getBoardFace().setMovesCount(getBoardFace().getHply());
-		gameAnalysisActivityFace.invalidateGameScreen();
-
-		isGameOver();
-	}
-
-
-	@Override
-	protected boolean isGameOver() {
-		//saving game for comp game mode if human is playing
-		if ((getAppData().isComputerVsHumanGameMode(getBoardFace()) || getAppData().isHumanVsHumanGameMode(getBoardFace()))
-				&& !getBoardFace().isAnalysis()) {
-
-			StringBuilder builder = new StringBuilder();
-			builder.append(getBoardFace().getMode());
-
-			builder.append(" [" + getBoardFace().getMoveListSAN().toString().replaceAll("\n", " ") + "] "); // todo: remove debug info
-
-			int i;
-			for (i = 0; i < getBoardFace().getMovesCount(); i++) {
-				Move move = getBoardFace().getHistDat()[i].move;
-				builder.append(DIVIDER_1)
-						.append(move.from).append(DIVIDER_2)
-						.append(move.to).append(DIVIDER_2)
-						.append(move.promote).append(DIVIDER_2)
-						.append(move.bits);
-			}
-
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putString(getAppData().getUsername() + AppConstants.SAVED_COMPUTER_GAME, builder.toString());
-			editor.commit();
-		}
-		return super.isGameOver();
+		this.gameLessonFace = gameLessonFace;
 	}
 
 	@Override
@@ -100,14 +39,14 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 		super.onDraw(canvas);
 		drawBoard(canvas);
 
+		drawCoordinates(canvas);
 		drawHighlights(canvas);
 		drawDragPosition(canvas);
 		drawTrackballDrag(canvas);
 
 		drawPiecesAndAnimation(canvas);
-
-		drawCoordinates(canvas);
 	}
+
 
 	@Override
 	public boolean onTrackballEvent(MotionEvent event) {
@@ -168,7 +107,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 						((to > 55) && (getBoardFace().getSide() == ChessBoard.BLACK_SIDE))) &&
 						(getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
 
-					gameAnalysisActivityFace.showChoosePieceDialog(col, row);
+					gameLessonFace.showChoosePieceDialog(col, row);
 					return true;
 				}
 
@@ -206,6 +145,15 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 		}
 
 		track = false;
+		if (!getBoardFace().isAnalysis()) {
+//            if (finished ) // TODO probably never happens
+			if (getBoardFace().isFinished()) // TODO probably never happens
+				return true;
+
+			if (getBoardFace().getHply() % 2 == 0) { // probably could be changed to isLatestMoveMadeUser()
+				return true;
+			}
+		}
 
 		return super.onTouchEvent(event);
 	}
@@ -245,58 +193,22 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	}
 
 	@Override
-	public void flipBoard() {
-		getBoardFace().setReside(!getBoardFace().isReside());
-		invalidate();
-		gameAnalysisActivityFace.invalidateGameScreen();
+	protected void afterMove() {
+
 	}
 
 	@Override
-	public void switchAnalysis() {
-		super.switchAnalysis();
-//		controlsAnalysisView.en(ControlsCompView.B_HINT_ID, !getBoardFace().isAnalysis());
+	public void start() {
+		gameLessonFace.startLesson();
+	}
+
+	@Override
+	public void showHint() {
+		gameLessonFace.showHint();
 	}
 
 	@Override
 	public void restart() {
-		gameAnalysisActivityFace.restart();
+		gameLessonFace.restart();
 	}
-
-	@Override
-	public void moveBack() {
-
-		if (movesToAnimate.size() == 0 && getBoardFace().getHply() > 0) {
-			getBoardFace().setFinished(false);
-			pieceSelected = false;
-			scheduleMoveAnimation(getBoardFace().getLastMove(), false);
-			getBoardFace().takeBack();
-			invalidate();
-			gameAnalysisActivityFace.invalidateGameScreen();
-		}
-	}
-
-	@Override
-	public void moveForward() {
-
-		if (movesToAnimate.size() == 0) {
-			pieceSelected = false;
-
-			Move move = getBoardFace().getNextMove();
-			if (move == null) {
-				return;
-			}
-			scheduleMoveAnimation(move, true);
-			getBoardFace().takeNext();
-
-			invalidate();
-			gameAnalysisActivityFace.invalidateGameScreen();
-		}
-	}
-
-	@Override
-	public void closeBoard() {
-		gameAnalysisActivityFace.closeBoard();
-	}
-
 }
-

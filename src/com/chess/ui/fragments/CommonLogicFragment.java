@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -15,6 +16,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import com.chess.R;
 import com.chess.backend.RestHelper;
@@ -605,6 +607,13 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		getAppData().clearSavedCompGame();
 	}
 
+
+	public int getStatusBarHeight() {
+		Rect r = new Rect();
+		Window w = getActivity().getWindow();
+		w.getDecorView().getWindowVisibleDisplayFrame(r);
+		return r.top;
+	}
 //	public void printHashKey() { Don't remove, use to find needed facebook hashkey
 //		try {
 //			PackageInfo info = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(),

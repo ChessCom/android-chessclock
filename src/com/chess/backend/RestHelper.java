@@ -137,12 +137,10 @@ public class RestHelper {
 	public static final String CMD_LESSONS = BASE_URL + V1 + "/lessons";
 	public static final String CMD_LESSONS_CATEGORIES = CMD_LESSONS + "/categories";
 	public static final String CMD_LESSONS_COURSES = CMD_LESSONS + "/courses";
-	public static String CMD_COURSE_BY_ID(long id) {
-		return CMD_LESSONS + "/course/" + id;
-	}
+	public static final String CMD_LESSONS_LESSONS = CMD_LESSONS + "/lessons";
 
 	public static String CMD_LESSON_BY_ID(long id) {
-		return CMD_LESSONS + "/" + id;
+		return CMD_LESSONS + "/lessons/" + id;
 	}
 
 	public static String CMD_ANSWER_GAME_SEEK(long gameSeekId) {
@@ -256,6 +254,7 @@ public class RestHelper {
 	public static final String P_FORUM_CATEGORY_ID = "forumCategoryId";
 	public static final String P_PARENT_TOPIC_ID = "parentTopicId";
 	public static final String P_FORUM_TOPIC_ID = "forumTopicId";
+	public static final String P_COURSE_ID = "courseId";
 	public static final String P_TOPICS_PER_PAGE = "topicsPerPage";
 	public static final String P_SUBJECT = "subject";
 	public static final String P_BODY = "body";

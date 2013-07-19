@@ -262,6 +262,7 @@
 
 	<string name="username_wrote">%s wrote:</string>
 	<string name="full_lesson_library">Full Lesson Library</string>
+	<string name="start_lesson">Start Lesson</string>
 	<!--Game mode-->
 
 </resources>

@@ -26,8 +26,8 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.game.GameBaseFragment;
-import com.chess.ui.interfaces.BoardFace;
-import com.chess.ui.interfaces.GameNetworkActivityFace;
+import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.interfaces.game_ui.GameNetworkFace;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
@@ -40,7 +40,7 @@ import com.chess.utilities.AppUtils;
  * Date: 24.06.13
  * Time: 13:56
  */
-public class DailyInviteFragment extends GameBaseFragment implements GameNetworkActivityFace {
+public class DailyInviteFragment extends GameBaseFragment implements GameNetworkFace {
 
 	private static final int CREATE_CHALLENGE_UPDATE = 2;
 	private static final String ERROR_TAG = "send request failed popup";

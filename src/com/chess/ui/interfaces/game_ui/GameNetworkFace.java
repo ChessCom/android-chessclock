@@ -1,4 +1,4 @@
-package com.chess.ui.interfaces;
+package com.chess.ui.interfaces.game_ui;
 
 /**
  * Created with IntelliJ IDEA.
@@ -6,7 +6,7 @@ package com.chess.ui.interfaces;
  * Date: 22.02.13
  * Time: 13:14
  */
-public interface GameNetworkActivityFace extends GameActivityFace{
+public interface GameNetworkFace extends GameFace {
 
 	void showSubmitButtonsLay(boolean show);
 

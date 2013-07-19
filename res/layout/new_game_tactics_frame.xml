@@ -29,6 +29,7 @@
             android:layout_below="@id/topBorder"
             android:layout_marginTop="-1px"
             />
+
         <!--Bottom Border-->
         <FrameLayout
             android:layout_width="match_parent"
