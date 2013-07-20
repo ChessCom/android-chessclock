@@ -752,11 +752,13 @@ public class ChessBoard implements BoardFace {
 		makeMove(move, playSound);
 	}
 
+	@Override
 	public Move convertMove(String move) {
 		int[] moveFT = MoveParser.parse(this, move);
 		return convertMove(moveFT);
 	}
 
+	@Override
 	public Move convertMove(int[] moveFT) {
 		Move move;
 		if (moveFT.length == 4) {
@@ -2165,6 +2167,7 @@ public class ChessBoard implements BoardFace {
 	}*/
 
 
+	@Override
 	public boolean isWhite(int piecePosition) {
 		return color[piecePosition] == WHITE_PIECE;
 	}

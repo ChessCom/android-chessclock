@@ -56,9 +56,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:minHeight="@dimen/big_button_height"
-        android:text="@string/start_new_game"
+        android:text="@string/new_game"
+		android:textSize="@dimen/game_controls_text_size"
+		android:textColor="@color/white"
         style="@style/Rect.Bottom.Right.Orange"
         android:visibility="gone"
+		android:shadowColor="@color/transparent"
         />
 
 </RelativeLayout>

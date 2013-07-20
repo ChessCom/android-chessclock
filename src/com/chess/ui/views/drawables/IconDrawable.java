@@ -2,10 +2,7 @@ package com.chess.ui.views.drawables;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import com.chess.FontsHelper;
 import com.chess.R;
@@ -67,7 +64,7 @@ public class IconDrawable extends Drawable {
 		iconPaint.setColor(color);
 		iconPaint.setTextSize(size);
 		iconPaint.setTypeface(FontsHelper.getInstance().getTypeFace(context, FontsHelper.ICON_FONT));
-
+		iconPaint.setShadowLayer(5.0f, 10.0f, 10.0f, Color.BLACK);
 		iconSize = (int) iconPaint.measureText(iconStr);
 		iconHalfWidth = iconPaint.measureText(iconStr) / 2;
 	}
@@ -114,5 +111,8 @@ public class IconDrawable extends Drawable {
 		return iconSize;
 	}
 
+	public void setShadowParams(float radius,int dx,int  dy, int color) {
+		iconPaint.setShadowLayer(radius, dx, dy, color);
+	}
 
 }

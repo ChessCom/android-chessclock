@@ -73,6 +73,11 @@
     <string name="ic_triangle_up">|</string>
     <string name="ic_triangle_down">"?"</string>
 
+    <string name="ic_number_one">W</string>
+    <string name="ic_number_two">E</string>
+    <string name="ic_number_three">R</string>
+    <string name="ic_number_none">T</string>
+
 
 
     <!--Dimens -->

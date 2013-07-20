@@ -14,6 +14,7 @@ import com.chess.backend.entity.new_api.LessonCourseItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.LessonsItemAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragment;
 
 import java.util.List;
 
@@ -66,6 +67,8 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 		setTitle(R.string.lessons);
 
+		view.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 		// Set header
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lessons_course_header_view, null, false);
@@ -104,6 +107,16 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		LessonCourseItem.LessonListItem lessonItem = (LessonCourseItem.LessonListItem) parent.getItemAtPosition(position);
 		getActivityFace().openFragment(GameLessonFragment.createInstance(lessonItem.getId()));
+	}
+
+
+	@Override
+	public void onClick(View view) {
+		super.onClick(view);
+
+		if (view.getId() == R.id.upgradeBtn) {
+			getActivityFace().openFragment(new UpgradeFragment());
+		}
 	}
 
 	private class CourseUpdateListener extends ChessLoadUpdateListener<LessonCourseItem> {

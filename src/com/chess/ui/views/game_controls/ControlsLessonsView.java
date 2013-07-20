@@ -7,7 +7,10 @@ import android.view.View;
 import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboButton;
+import com.chess.RoboImageButton;
 import com.chess.ui.interfaces.boards.BoardViewLessonsFace;
+import com.chess.ui.views.drawables.YourMoveDrawable;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
 
@@ -36,12 +39,12 @@ public class ControlsLessonsView extends ControlsBaseView {
 		removeAllViews();
 
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
-		addControlButton(HINT, R.style.Rect_Bottom_Middle);
 
 		addNextButton(R.style.Rect_Bottom_Right_Green, NEXT);
 		addNextButton(R.style.Rect_Bottom_Right_Orange, SKIP);
 		addStartButton();
 		addWrongButton();
+		addYourMoveButton();
 
 		addView(controlsLayout);
 
@@ -57,6 +60,19 @@ public class ControlsLessonsView extends ControlsBaseView {
 		LayoutParams params = new LayoutParams(0, controlButtonHeight);
 
 		params.weight = 2;
+
+		controlsLayout.addView(button, params);
+	}
+
+	protected void addYourMoveButton() {
+		RoboImageButton button = new RoboImageButton(getContext());
+		button.setOnClickListener(this);
+		button.setId(getButtonId(HINT));
+		ButtonDrawableBuilder.setBackgroundToView(button, R.style.Rect_Bottom_Right);
+		button.setImageDrawable(new YourMoveDrawable(getContext()));
+		LayoutParams params = new LayoutParams(0, controlButtonHeight);
+
+		params.weight = 1;
 
 		controlsLayout.addView(button, params);
 	}
