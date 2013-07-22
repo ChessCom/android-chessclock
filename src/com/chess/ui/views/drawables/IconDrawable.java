@@ -64,7 +64,7 @@ public class IconDrawable extends Drawable {
 		iconPaint.setColor(color);
 		iconPaint.setTextSize(size);
 		iconPaint.setTypeface(FontsHelper.getInstance().getTypeFace(context, FontsHelper.ICON_FONT));
-		iconPaint.setShadowLayer(5.0f, 10.0f, 10.0f, Color.BLACK);
+
 		iconSize = (int) iconPaint.measureText(iconStr);
 		iconHalfWidth = iconPaint.measureText(iconStr) / 2;
 	}

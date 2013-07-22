@@ -806,22 +806,6 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 			whatIsTxt.setOnClickListener(this);
 			whatIsTextColor = activity.getResources().getColorStateList(R.color.text_controls_icons);
 			whiteTextColor = activity.getResources().getColor(R.color.white);
-
-
-//			flipFirstHalf = ObjectAnimator.ofFloat(whatIsTxt, "rotationX", 0f, 90f);
-//			flipFirstHalf.setDuration(FLIP_ANIM_DURATION);
-//			flipFirstHalf.setInterpolator(accelerator);
-//
-//			final ObjectAnimator flipSecondHalf = ObjectAnimator.ofFloat(whatIsTxt, "rotationX", -90f, 0f);
-//			flipSecondHalf.setDuration(FLIP_ANIM_DURATION);
-//			flipSecondHalf.setInterpolator(decelerator);
-//
-//			flipFirstHalf.addListener(new AnimatorListenerAdapter() {
-//				@Override
-//				public void onAnimationEnd(Animator anim) {
-//					flipSecondHalf.start();
-//				}
-//			});
 		}
 
 		{// set avatars
