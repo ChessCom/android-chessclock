@@ -376,24 +376,14 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		// TODO @compengine: extract logic and put probably to ChessBoardView
 
-		if (getBoardFace().getHply() < getBoardFace().getMovesCount()) { // ignoring Forward move fired by engine
+		if (!boardView.isHint() && getBoardFace().getHply() < getBoardFace().getMovesCount()) { // ignoring Forward move fired by engine
 			return;
 		}
 
 		Log.d(CompEngineHelper.TAG, "updateComputerMove " + engineMove);
 
 		int[] moveFT = MoveParser.parseCoordinate(getBoardFace(), engineMove.toString());
-
-		final Move move;
-		if (moveFT.length == 4) {
-			if (moveFT[3] == 2) {
-				move = new com.chess.ui.engine.Move(moveFT[0], moveFT[1], 0, Move.CASTLING_MASK);
-			} else {
-				move = new com.chess.ui.engine.Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-			}
-		} else {
-			move = new com.chess.ui.engine.Move(moveFT[0], moveFT[1], 0, 0);
-		}
+		final Move move = getBoardFace().convertMove(moveFT);
 
 		Log.d(CompEngineHelper.TAG, "comp make move: " + move);
 		Log.d(CompEngineHelper.TAG, "isHint = " + boardView.isHint());
@@ -412,8 +402,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 					//CompEngineHelper.getInstance().undoHint();
 				}
 
-				boardView.setComputerMoving(false);
-
 				boardView.setMoveAnimator(move, true);
 				getBoardFace().makeMove(move);
 
@@ -422,6 +410,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 					handler.postDelayed(reverseHintTask, ChessBoardCompView.HINT_REVERSE_DELAY);
 					//}
 				} else {
+					boardView.setComputerMoving(false);
 					invalidateGameScreen();
 					onPlayerMove();
 
@@ -437,6 +426,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	private Runnable reverseHintTask = new Runnable() {
 		@Override
 		public void run() {
+			boardView.setComputerMoving(false);
 			boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 			getBoardFace().takeBack();
 			boardView.invalidate();

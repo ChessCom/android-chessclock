@@ -123,6 +123,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();
 	private Paint whiteMoveArrowPaint;
 	private Paint blackMoveArrowPaint;
+	protected boolean navigating;
 
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -411,6 +412,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					} else {
 						getBoardFace().takeBack();
 					}
+				} else {
+					navigating = false;
 				}
 			}
 		}
@@ -422,6 +425,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				secondMoveAnimator.draw(canvas);
 			} else {
 				secondMoveAnimator = null;
+				navigating = false;
 			}
 		}
 	}

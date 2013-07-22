@@ -357,8 +357,9 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		boolean blackCompFirstMove =
 				getAppData().isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().getHply() == 1;
 
-        if (!isComputerMoving() && noMovesToAnimate() && getBoardFace().getHply() > 0 && !blackCompFirstMove) {
+        if (!isComputerMoving() && noMovesToAnimate() && !navigating && getBoardFace().getHply() > 0 && !blackCompFirstMove) {
 
+			navigating = true;
 			CompEngineHelper.getInstance().moveBack();
 
 			getBoardFace().setFinished(false);
@@ -378,25 +379,24 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
     @Override
     public void moveForward() {
-        if (!isComputerMoving() && noMovesToAnimate()) {
+        if (!isComputerMoving() && noMovesToAnimate() && !navigating) {
 
-			CompEngineHelper.getInstance().moveForward();
-
-            pieceSelected = false;
+			pieceSelected = false;
 
 			Move move = getBoardFace().getNextMove();
 			if (move == null) {
 				return;
 			}
+			navigating = true;
+			CompEngineHelper.getInstance().moveForward();
 			setMoveAnimator(move, true);
 			getBoardFace().takeNext();
 
 			if (getAppData().isComputerVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {
 				move = getBoardFace().getNextMove();
-				if (move == null) {
-					return;
+				if (move != null) {
+					setSecondMoveAnimator(new MoveAnimator(move, true));
 				}
-				setSecondMoveAnimator(new MoveAnimator(move, true));
 			}
             invalidate();
 			gameCompActivityFace.invalidateGameScreen();
@@ -405,7 +405,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
     @Override
     public void showHint() {
-        if (!isComputerMoving() && !isHint()) {
+        if (!isComputerMoving() && noMovesToAnimate() && !navigating && !isHint()) {
 			makeHint();
         }
     }

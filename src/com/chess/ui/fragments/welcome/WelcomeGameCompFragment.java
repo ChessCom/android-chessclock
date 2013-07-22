@@ -439,8 +439,6 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 					//CompEngineHelper.getInstance().undoHint();
 				}
 
-				boardView.setComputerMoving(false);
-
 				boardView.setMoveAnimator(move, true);
 				getBoardFace().makeMove(move);
 
@@ -449,6 +447,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 					handler.postDelayed(reverseHintTask, ChessBoardCompView.HINT_REVERSE_DELAY);
 					//}
 				} else {
+					boardView.setComputerMoving(false);
 					invalidateGameScreen();
 					onPlayerMove();
 
@@ -464,6 +463,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	private Runnable reverseHintTask = new Runnable() {
 		@Override
 		public void run() {
+			boardView.setComputerMoving(false);
 			boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 			getBoardFace().takeBack();
 			boardView.invalidate();
