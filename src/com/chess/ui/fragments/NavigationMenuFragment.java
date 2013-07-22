@@ -73,7 +73,6 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 
 		menuItems.get(0).selected = true;
 		adapter = new NewNavigationMenuAdapter(getActivity(), menuItems);
-
 	}
 
 	@Override
@@ -106,11 +105,6 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		switch (menuItem.iconRes) {
 			case R.drawable.ic_nav_home:
 				getActivityFace().clearFragmentStack();
-//				BasePopupsFragment fragmentByTag = (BasePopupsFragment) findFragmentByTag(HomeTabsFragment.class.getSimpleName());
-//				if(fragmentByTag == null) {
-//					fragmentByTag = new HomeTabsFragment();
-//				}
-//				getActivityFace().switchFragment(fragmentByTag);
 				getActivityFace().switchFragment(new HomeTabsFragment());
 				handler.postDelayed(new Runnable() {
 					@Override
@@ -193,14 +187,13 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				break;
 		}
 		if (fragmentByTag != null) {
-		getActivityFace().openFragment(fragmentByTag);
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				getActivityFace().toggleLeftMenu();
-			}
-		}, SIDE_MENU_DELAY);
-//			getActivityFace().toggleLeftMenu();
+			getActivityFace().openFragment(fragmentByTag);
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					getActivityFace().toggleLeftMenu();
+				}
+			}, SIDE_MENU_DELAY);
 		}
 
 	}
@@ -223,7 +216,6 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 		public NewNavigationMenuAdapter(Context context, List<NavigationMenuItem> menuItems) {
 			super(context, menuItems);
 			userAvatarUrl = getAppData().getUserAvatar();
-			logTest("avatar url for menu = " + userAvatarUrl);
 		}
 
 		@Override
@@ -243,7 +235,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 			if (pos == HOME_POS) {
 				imageLoader.download(userAvatarUrl, holder.icon, imageSize);
 			} else {
-				holder.icon.setImageDrawable(getResources().getDrawable(item.iconRes));// setImageResource(item.iconRes);
+				holder.icon.setImageDrawable(resources.getDrawable(item.iconRes));
 			}
 
 			holder.title.setText(item.tag);
@@ -262,7 +254,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 
 		public class ViewHolder {
 			ProgressImageView icon;
-//			ImageView icon;
+			//			ImageView icon;
 			TextView title;
 		}
 	}

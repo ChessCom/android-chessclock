@@ -23,6 +23,7 @@ import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
 public class ControlsLessonsView extends ControlsBaseView {
 
 	private BoardViewLessonsFace boardViewFace;
+	private int usedHints;
 
 	public ControlsLessonsView(Context context) {
 		super(context);
@@ -59,7 +60,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 		button.setVisibility(GONE);
 		LayoutParams params = new LayoutParams(0, controlButtonHeight);
 
-		params.weight = 2;
+		params.weight = 1;
 
 		controlsLayout.addView(button, params);
 	}
@@ -90,7 +91,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 		button.setVisibility(GONE);
 		LayoutParams params = new LayoutParams(0, controlButtonHeight);
 
-		params.weight = 2;
+		params.weight = 1;
 
 		controlsLayout.addView(button, params);
 	}
@@ -103,7 +104,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 		button.setVisibility(GONE);
 		LayoutParams params = new LayoutParams(0, controlButtonHeight);
 
-		params.weight = 2;
+		params.weight = 1;
 
 		controlsLayout.addView(button, params);
 	}
@@ -134,6 +135,9 @@ public class ControlsLessonsView extends ControlsBaseView {
 		} else if (view.getId() == getButtonId(RESTART)) {
 			boardViewFace.restart();
 		} else if (view.getId() == getButtonId(HINT)) {
+			YourMoveDrawable yourMoveDrawable = (YourMoveDrawable) ((RoboImageButton) findViewById(getButtonId(HINT))).getDrawable();
+			yourMoveDrawable.updateUsedHints(++usedHints);
+
 			boardViewFace.showHint();
 		} else if (view.getId() == getButtonId(NEXT) || view.getId() == getButtonId(SKIP)) {
 			boardViewFace.newGame();
@@ -141,6 +145,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 	}
 
 	public void showWrong() {
+		showGameButton(OPTIONS, true);
 		showGameButton(NEXT, false);
 		showGameButton(START, false);
 		showGameButton(HINT, false);
@@ -149,6 +154,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 	}
 
 	public void showCorrect() {
+		showGameButton(OPTIONS, true);
 		showGameButton(RESTART, false);
 		showGameButton(START, false);
 		showGameButton(HINT, false);
@@ -175,15 +181,14 @@ public class ControlsLessonsView extends ControlsBaseView {
 	}
 
 	public void showAfterRetry() {
+		showGameButton(OPTIONS, true);
 		showGameButton(HINT, false);
 		showGameButton(RESTART, false);
 		showGameButton(NEXT, false);
 		showGameButton(SKIP, true);
-
 	}
 
 	public void enableGameControls(boolean enable) {
 		enableGameButton(OPTIONS, enable);
-
 	}
 }

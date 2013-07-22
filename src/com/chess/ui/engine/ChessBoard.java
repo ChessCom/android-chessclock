@@ -500,7 +500,7 @@ public class ChessBoard implements BoardFace {
 				return attack(i, sideOfKing ^ 1);
 			}
 		}
-		return true;  /* shouldn't get here */
+		return false;  /* shouldn't get here */  // we get here in Chess Mentor mode, when there can be no king at all
 	}
 
 	/**
@@ -2123,7 +2123,7 @@ public class ChessBoard implements BoardFace {
 			MoveParser.fenParse(FEN, this);
 			String[] tmp = FEN.split(StaticData.SYMBOL_SPACE);
 			if (tmp.length > 1) {
-				if (tmp[1].trim().equals(MoveParser.W_SMALL)) {
+				if (tmp[1].trim().equals(MoveParser.B_SMALL)) { // Active color. "w" means white moves next, "b" means black. // http://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
 					setReside(true);
 				}
 			}

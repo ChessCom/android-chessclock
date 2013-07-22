@@ -24,6 +24,7 @@ import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.videos.VideoDetailsCurriculumFragment;
 import com.chess.ui.fragments.videos.VideoDetailsFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -53,7 +54,7 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 	private boolean need2Update = true;
 
 	private CurriculumItems curriculumItems;
-	private boolean curriculumMode = true;
+	private boolean curriculumMode;
 	private LessonsGroupsListAdapter curriculumAdapter;
 	private SparseArray<String> categoriesArray;
 
@@ -81,7 +82,7 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 		{ // Library mode init
 			listView = (ListView) view.findViewById(R.id.listView);
 			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_curriculum_footer, null, false);
-			((TextView)footerView.findViewById(R.id.headerTitleTxt)).setText(R.string.full_lesson_library);
+			((TextView) footerView.findViewById(R.id.headerTitleTxt)).setText(R.string.curriculum_lessons);
 			footerView.setOnClickListener(this);
 			listView.addFooterView(footerView);
 			listView.setAdapter(categoriesCursorAdapter);
@@ -91,7 +92,8 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 		{ // Curriculum mode
 			expListView = (ExpandableListView) view.findViewById(R.id.expListView);
 			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_curriculum_footer, null, false);
-			((TextView)footerView.findViewById(R.id.headerTitleTxt)).setText(R.string.full_lesson_library);
+			footerView.findViewById(R.id.headerTitleTxt).setId(R.id.lessonsVideoLibFooterTxt);
+			((TextView) footerView.findViewById(R.id.lessonsVideoLibFooterTxt)).setText(R.string.full_lesson_library);
 			footerView.setOnClickListener(this);
 			expListView.addFooterView(footerView);
 			expListView.setOnChildClickListener(this);
@@ -110,30 +112,34 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 
 	private void showLibrary() {
 		boolean show = !curriculumMode;
-		listView.setVisibility(show ? View.VISIBLE : View.GONE);
-		expListView.setVisibility(show ? View.GONE : View.VISIBLE);
+		listView.setVisibility(show ? View.GONE : View.VISIBLE);
+		expListView.setVisibility(show ? View.VISIBLE : View.GONE);
 
-		getCategories();
-//		if (show) {
-//			if (need2Update) {
-//
-//				// get saved categories
-//				Cursor categoriesCursor = getContentResolver().query(DBConstants.uriArray[DBConstants.LESSONS_CATEGORIES], null, null, null, null);
-//
-//				if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
-//					categoriesCursorAdapter.changeCursor(categoriesCursor);
-//				}
-//
-//				if (AppUtils.isNetworkAvailable(getActivity())) {
-//					getCategories();
-//				}
-//
-//			} else { // load data to listHeader view
+		if (show) {
+			if (need2Update) {
+
+				// get saved categories
+				Cursor categoriesCursor = getContentResolver().query(DBConstants.uriArray[DBConstants.LESSONS_CATEGORIES], null, null, null, null);
+
+				if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
+					fillCategoriesList(categoriesCursor);
+					Cursor coursesCursor = getContentResolver().query(DBConstants.uriArray[DBConstants.LESSONS_COURSES], null, null, null, null);
+
+					if (coursesCursor != null && coursesCursor.moveToFirst()) {
+						fillCoursesList(coursesCursor);
+					} else {
+						getFullCourses();
+					}
+				} else if (AppUtils.isNetworkAvailable(getActivity())) {
+					getCategories();
+				}
+
+			} else { // load data to listHeader view
 //				categoriesCursorAdapter.notifyDataSetChanged();
-//			}
-//		} else {
+			}
+		} else {
 //			expListView.setAdapter(curriculumAdapter);
-//		}
+		}
 	}
 
 	private void getCategories() {
@@ -168,13 +174,14 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 				getActivityFace().openFragment(VideoDetailsCurriculumFragment.createInstance4Curriculum(id));
 			}
 
+		} else if (v.getId() == R.id.lessonsVideoLibFooterTxt) {
+			getAppData().setUserChooseLessonsLibrary(false);
+			curriculumMode = true;
+			showLibrary();
 		} else if (v.getId() == R.id.curriculumHeader) {
-
-
-
-//			getAppData().setUserChooseLessonsLibrary(false);
-//			curriculumMode = true;
-//			showLibrary();
+			getAppData().setUserChooseLessonsLibrary(true);
+			curriculumMode = false;
+			showLibrary();
 		}
 	}
 
@@ -211,29 +218,38 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.LESSONS_CATEGORIES], null, null, null, null);
 
 			if (cursor != null && cursor.moveToFirst()) {
-				String[] categories = new String[cursor.getCount()];
-				categoriesArray = new SparseArray<String>();
 
-				int i = 0;
-				do {
-					int id = DBDataManager.getInt(cursor, DBConstants.V_CATEGORY_ID);
-					String name = DBDataManager.getString(cursor, DBConstants.V_NAME);
-					categoriesArray.put(id, name);
-					categories[i] = name;
-					i++;
-				} while (cursor.moveToNext());
+				fillCategoriesList(cursor);
 
-
-				curriculumItems.setCategories(categories);
-
-				// get courses
-				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.CMD_LESSONS_COURSES);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-
-				new RequestJsonTask<LessonCourseListItem>(lessonsCoursesUpdateListener).executeTask(loadItem);
+				getFullCourses();
 			}
 		}
+	}
+
+	private void getFullCourses(){
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_LESSONS_COURSES);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+
+		new RequestJsonTask<LessonCourseListItem>(lessonsCoursesUpdateListener).executeTask(loadItem);
+	}
+
+	private void fillCategoriesList(Cursor cursor) {
+		String[] categories = new String[cursor.getCount()];
+		categoriesArray = new SparseArray<String>();
+
+		int i = 0;
+		do {
+			int id = DBDataManager.getInt(cursor, DBConstants.V_CATEGORY_ID);
+			String name = DBDataManager.getString(cursor, DBConstants.V_NAME);
+			categoriesArray.put(id, name);
+			categories[i] = name;
+			i++;
+		} while (cursor.moveToNext());
+
+
+		curriculumItems.setCategories(categories);
+
 	}
 
 	private class LessonsCoursesUpdateListener extends CommonLogicFragment.ChessUpdateListener<LessonCourseListItem> {
@@ -266,98 +282,99 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.LESSONS_COURSES], null, null, null, null);
 
 			if (cursor != null && cursor.moveToFirst()) {
-				LinkedHashMap<Integer, List<LessonCourseListItem.Data>> courseTable = new LinkedHashMap<Integer, List<LessonCourseListItem.Data>>();
-				int categoriesCnt = categoriesArray.size();
-				for (int z = 0; z < categoriesCnt; z++) {
-					int categoryId = categoriesArray.keyAt(z);
-					courseTable.put(categoryId, new ArrayList<LessonCourseListItem.Data>());
-				}
-				do {
-					int id = DBDataManager.getInt(cursor, DBConstants.V_ID);
-					int categoryId = DBDataManager.getInt(cursor, DBConstants.V_CATEGORY_ID);
-					String courseName = DBDataManager.getString(cursor, DBConstants.V_NAME);
-					boolean isCompleted = DBDataManager.getInt(cursor, DBConstants.V_COURSE_COMPLETED) > 0;
-
-					LessonCourseListItem.Data data = new LessonCourseListItem.Data();
-					data.setId(id);
-					data.setCategoryId(categoryId);
-					data.setName(courseName);
-					data.setCourseCompleted(isCompleted);
-
-					courseTable.get(categoryId).add(data);
-
-				} while (cursor.moveToNext());
-
-				{ // Titles
-					// organize by category
-					String[][] categories = new String[categoriesCnt][];
-					for (int k = 0; k < categoriesCnt; k++) {
-						int categoryId = categoriesArray.keyAt(k);
-						List<LessonCourseListItem.Data> list = courseTable.get(categoryId);
-						int coursesCnt = list.size();
-						categories[k] = new String[coursesCnt];
-						for (int i = 0; i < coursesCnt; i++) {
-							LessonCourseListItem.Data data = list.get(i);
-							categories[k][i] = data.getName();
-						}
-					}
-					curriculumItems.setTitles(categories);
-				}
-
-				{ // Ids
-					int[][] ids = new int[categoriesCnt][];
-					for (int k = 0; k < categoriesCnt; k++) {
-						int categoryId = categoriesArray.keyAt(k);
-						List<LessonCourseListItem.Data> list = courseTable.get(categoryId);
-						int coursesCnt = list.size();
-						ids[k] = new int[coursesCnt];
-						for (int i = 0; i < coursesCnt; i++) {
-							LessonCourseListItem.Data data = list.get(i);
-							ids[k][i] = data.getId();
-						}
-					}
-
-					curriculumItems.setIds(ids);
-				}
-
-				{ // Completed Marks
-					boolean[][] completedMarks = new boolean[categoriesCnt][];
-					for (int k = 0; k < categoriesCnt; k++) {
-						int categoryId = categoriesArray.keyAt(k);
-						List<LessonCourseListItem.Data> list = courseTable.get(categoryId);
-						int coursesCnt = list.size();
-						completedMarks[k] = new boolean[coursesCnt];
-						for (int i = 0; i < coursesCnt; i++) {
-							LessonCourseListItem.Data data = list.get(i);
-							completedMarks[k][i] = data.isCourseCompleted();
-						}
-					}
-
-					curriculumItems.setViewedMarks(completedMarks);
-				}
-
-				curriculumAdapter = new LessonsGroupsListAdapter(LessonsFragment.this, curriculumItems);
-				expListView.setAdapter(curriculumAdapter);
-
-
-//				categoriesCursorAdapter.changeCursor(cursor);
-//				listView.setAdapter(categoriesCursorAdapter);
+				fillCoursesList(cursor);
 
 				need2Update = false;
 			}
 		}
 	}
 
+	private void fillCoursesList(Cursor cursor) {
+		LinkedHashMap<Integer, List<LessonCourseListItem.Data>> courseTable = new LinkedHashMap<Integer, List<LessonCourseListItem.Data>>();
+		int categoriesCnt = categoriesArray.size();
+		for (int z = 0; z < categoriesCnt; z++) {
+			int categoryId = categoriesArray.keyAt(z);
+			courseTable.put(categoryId, new ArrayList<LessonCourseListItem.Data>());
+		}
+		do {
+			int id = DBDataManager.getInt(cursor, DBConstants.V_ID);
+			int categoryId = DBDataManager.getInt(cursor, DBConstants.V_CATEGORY_ID);
+			String courseName = DBDataManager.getString(cursor, DBConstants.V_NAME);
+			boolean isCompleted = DBDataManager.getInt(cursor, DBConstants.V_COURSE_COMPLETED) > 0;
+
+			LessonCourseListItem.Data data = new LessonCourseListItem.Data();
+			data.setId(id);
+			data.setCategoryId(categoryId);
+			data.setName(courseName);
+			data.setCourseCompleted(isCompleted);
+
+			courseTable.get(categoryId).add(data);
+
+		} while (cursor.moveToNext());
+
+		{ // Titles
+			// organize by category
+			String[][] categories = new String[categoriesCnt][];
+			for (int k = 0; k < categoriesCnt; k++) {
+				int categoryId = categoriesArray.keyAt(k);
+				List<LessonCourseListItem.Data> list = courseTable.get(categoryId);
+				int coursesCnt = list.size();
+				categories[k] = new String[coursesCnt];
+				for (int i = 0; i < coursesCnt; i++) {
+					LessonCourseListItem.Data data = list.get(i);
+					categories[k][i] = data.getName();
+				}
+			}
+			curriculumItems.setTitles(categories);
+		}
+
+		{ // Ids
+			int[][] ids = new int[categoriesCnt][];
+			for (int k = 0; k < categoriesCnt; k++) {
+				int categoryId = categoriesArray.keyAt(k);
+				List<LessonCourseListItem.Data> list = courseTable.get(categoryId);
+				int coursesCnt = list.size();
+				ids[k] = new int[coursesCnt];
+				for (int i = 0; i < coursesCnt; i++) {
+					LessonCourseListItem.Data data = list.get(i);
+					ids[k][i] = data.getId();
+				}
+			}
+
+			curriculumItems.setIds(ids);
+		}
+
+		{ // Completed Marks
+			boolean[][] completedMarks = new boolean[categoriesCnt][];
+			for (int k = 0; k < categoriesCnt; k++) {
+				int categoryId = categoriesArray.keyAt(k);
+				List<LessonCourseListItem.Data> list = courseTable.get(categoryId);
+				int coursesCnt = list.size();
+				completedMarks[k] = new boolean[coursesCnt];
+				for (int i = 0; i < coursesCnt; i++) {
+					LessonCourseListItem.Data data = list.get(i);
+					completedMarks[k][i] = data.isCourseCompleted();
+				}
+			}
+
+			curriculumItems.setViewedMarks(completedMarks);
+		}
+
+		curriculumAdapter = new LessonsGroupsListAdapter(LessonsFragment.this, curriculumItems);
+		expListView.setAdapter(curriculumAdapter);
+
+	}
+
 	private void showLoadingView(boolean show) {
 		if (show) {
 			emptyView.setVisibility(View.GONE);
-				loadingView.setVisibility(View.VISIBLE);
+			loadingView.setVisibility(View.VISIBLE);
 		} else {
-			if (curriculumMode) {
-				expListView.setVisibility(View.VISIBLE);
-			} else {
-				listView.setVisibility(View.VISIBLE);
-			}
+//			if (curriculumMode) {
+//				expListView.setVisibility(View.VISIBLE);
+//			} else {
+//				listView.setVisibility(View.VISIBLE);
+//			}
 			loadingView.setVisibility(View.GONE);
 		}
 	}
@@ -451,11 +468,11 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 //			if (groupPosition == LIBRARY) {
 //				holder.icon.setText(R.string.ic_right);
 //			} else {
-				if (isExpanded) {
-					holder.icon.setText(R.string.ic_down);
-				} else {
-					holder.icon.setText(R.string.ic_up);
-				}
+			if (isExpanded) {
+				holder.icon.setText(R.string.ic_down);
+			} else {
+				holder.icon.setText(R.string.ic_up);
+			}
 //			}
 
 			return convertView;

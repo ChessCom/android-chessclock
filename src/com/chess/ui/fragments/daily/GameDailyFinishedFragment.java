@@ -36,15 +36,14 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
-import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsBoardFragment;
+import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameNetworkFace;
-import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
@@ -317,14 +316,9 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			boardFace.setChess960(true);
 		}
 
+		boardFace.setupBoard(currentGame.getStartingFenPosition());
 		if (!userPlayWhite) {
 			boardFace.setReside(true);
-		}
-
-		String FEN = currentGame.getStartingFenPosition();
-		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
-			boardFace.genCastlePos(FEN);
-			MoveParser.fenParse(FEN, boardFace);
 		}
 
 		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {

@@ -1,5 +1,7 @@
 package com.chess.ui.engine;
 
+import com.chess.backend.statics.StaticData;
+import com.chess.ui.interfaces.boards.LessonsBoardFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
 
 /**
@@ -8,7 +10,7 @@ import com.chess.ui.interfaces.game_ui.GameFace;
  * Date: 19.07.13
  * Time: 12:45
  */
-public class ChessBoardLessons extends ChessBoard {
+public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 
 	private static ChessBoardLessons instance;
 
@@ -32,4 +34,34 @@ public class ChessBoardLessons extends ChessBoard {
 	public static void resetInstance(){
 		instance = null;
 	}
+
+	@Override
+	public boolean isLatestMoveMadeUser() {
+		return hply > 0 && hply %2 == 0;
+	}
+
+	@Override
+	public String getLastMoveStr() {
+		int lastIndex = hply - 1;
+		if (/*lastIndex >= tacticMoves.length || */lastIndex >= histDat.length) {
+			return "Pe4"; // TODO invent logic here , we use hardcode to pass possibly invalid move
+		}
+
+		Move move = histDat[lastIndex].move; // get last move
+		String piece = StaticData.SYMBOL_EMPTY;
+		int pieceCode = pieces[move.to];
+		if (pieceCode == 1) { // set piece name
+			piece = MoveParser.WHITE_KNIGHT;
+		} else if (pieceCode == 2) {
+			piece = MoveParser.WHITE_BISHOP;
+		} else if (pieceCode == 3) {
+			piece = MoveParser.WHITE_ROOK;
+		} else if (pieceCode == 4) {
+			piece = MoveParser.WHITE_QUEEN;
+		} else if (pieceCode == 5) {
+			piece = MoveParser.WHITE_KING;
+		}
+		return piece + MoveParser.positionToString(move.to);
+	}
+
 }

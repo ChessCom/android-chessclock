@@ -25,6 +25,7 @@ public class MoveParser {
 
 	public static final String W_SMALL = "w";
 	public static final String A_SMALL = "a";
+	public static final String B_SMALL = "b";
 	public static final String C_SMALL = "c";
 	public static final String D_SMALL = "d";
 	public static final String E_SMALL = "e";
@@ -271,7 +272,7 @@ public class MoveParser {
 		return BNToLetter(ChessBoard.getColumn(pos)) + BNToNum(ChessBoard.getRow(pos));
 	}
 
-	public static void fenParse(String fen, BoardFace b) {
+	public static void fenParse(String fen, BoardFace boardFace) {
 		String[] FEN = fen.split(FEN_DIVIDER);
 		int i, j, p = 0;
 		for (i = 0; i < 8; i++) {
@@ -280,70 +281,70 @@ public class MoveParser {
 				String[] tmp2 = FEN[i].split(StaticData.SYMBOL_SPACE);
 				pos = tmp2[0];
 				if (tmp2[1].contains(W_SMALL)) {
-					b.setSide(0);
-					b.setXside(1);
+					boardFace.setSide(0);
+					boardFace.setXside(1);
 				} else {
-					b.setSide(1);
-					b.setXside(0);
+					boardFace.setSide(1);
+					boardFace.setXside(0);
 				}
 			}
-			String[] f = pos.trim().split(POSITION_DIVIDER);
-			for (j = 1; j < f.length; j++) {
-				if (f[j].matches(REGEXP_NUMBERS)) {
-					int cnt = Integer.parseInt(f[j]);
+			String[] piecesArray = pos.trim().split(POSITION_DIVIDER);
+			for (j = 1; j < piecesArray.length; j++) {
+				if (piecesArray[j].matches(REGEXP_NUMBERS)) {
+					int cnt = Integer.parseInt(piecesArray[j]);
 					while (cnt > 0) {
-						b.getPieces()[p] = 6;
-						b.getColor()[p++] = 6;
+						boardFace.getPieces()[p] = 6;
+						boardFace.getColor()[p++] = 6;
 						cnt--;
 					}
 				}
-				if (f[j].contains(WHITE_PAWN)) {
-					b.getPieces()[p] = 0;
-					b.getColor()[p++] = 0;
+				if (piecesArray[j].contains(WHITE_PAWN)) {
+					boardFace.getPieces()[p] = 0;
+					boardFace.getColor()[p++] = 0;
 				}
-				if (f[j].contains(WHITE_KNIGHT)) {
-					b.getPieces()[p] = 1;
-					b.getColor()[p++] = 0;
+				if (piecesArray[j].contains(WHITE_KNIGHT)) {
+					boardFace.getPieces()[p] = 1;
+					boardFace.getColor()[p++] = 0;
 				}
-				if (f[j].contains(WHITE_BISHOP)) {
-					b.getPieces()[p] = 2;
-					b.getColor()[p++] = 0;
+				if (piecesArray[j].contains(WHITE_BISHOP)) {
+					boardFace.getPieces()[p] = 2;
+					boardFace.getColor()[p++] = 0;
 				}
-				if (f[j].contains(WHITE_ROOK)) {
-					b.getPieces()[p] = 3;
-					b.getColor()[p++] = 0;
+				if (piecesArray[j].contains(WHITE_ROOK)) {
+					boardFace.getPieces()[p] = 3;
+					boardFace.getColor()[p++] = 0;
 				}
-				if (f[j].contains(WHITE_QUEEN)) {
-					b.getPieces()[p] = 4;
-					b.getColor()[p++] = 0;
+				if (piecesArray[j].contains(WHITE_QUEEN)) {
+					boardFace.getPieces()[p] = 4;
+					boardFace.getColor()[p++] = 0;
 				}
-				if (f[j].contains(WHITE_KING)) {
-					b.getPieces()[p] = 5;
-					b.getColor()[p++] = 0;
+				if (piecesArray[j].contains(WHITE_KING)) {
+					boardFace.getPieces()[p] = 5;
+					boardFace.getColor()[p++] = 0;
 				}
-				if (f[j].contains(BLACK_PAWN)) {
-					b.getPieces()[p] = 0;
-					b.getColor()[p++] = 1;
+				if (piecesArray[j].contains(BLACK_PAWN)) {
+					boardFace.getPieces()[p] = 0;
+					boardFace.getColor()[p++] = 1;
 				}
-				if (f[j].contains(BLACK_KNIGHT)) {
-					b.getPieces()[p] = 1;
-					b.getColor()[p++] = 1;
+				if (piecesArray[j].contains(BLACK_KNIGHT)) {
+					boardFace.getPieces()[p] = 1;
+					boardFace.getColor()[p++] = 1;
 				}
-				if (f[j].contains(BLACK_BISHOP)) {
-					b.getPieces()[p] = 2;
-					b.getColor()[p++] = 1;
+				if (piecesArray[j].contains(BLACK_BISHOP)) {
+					boardFace.getPieces()[p] = 2;
+					boardFace.getColor()[p++] = 1;
 				}
-				if (f[j].contains(BLACK_ROOK)) {
-					b.getPieces()[p] = 3;
-					b.getColor()[p++] = 1;
+				if (piecesArray[j].contains(BLACK_ROOK)) {
+					boardFace.getPieces()[p] = 3;
+					boardFace.getColor()[p++] = 1;
 				}
-				if (f[j].contains(BLACK_QUEEN)) {
-					b.getPieces()[p] = 4;
-					b.getColor()[p++] = 1;
+				if (piecesArray[j].contains(BLACK_QUEEN)) {
+					boardFace.getPieces()[p] = 4;
+					boardFace.getColor()[p++] = 1;
 				}
-				if (f[j].contains(BLACK_KING)) {
-					b.getPieces()[p] = 5;
-					b.getColor()[p++] = 1;
+				if (piecesArray[j].contains(BLACK_KING)) {
+					boardFace.getPieces()[p] = 5;
+					boardFace.getColor()[p++] = 1;
 				}
 			}
 		}

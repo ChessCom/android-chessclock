@@ -20,7 +20,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 	private String whiteUserName;
 	private String blackUserName;
-	public GameNetworkFace gameActivityFace;
+	public GameNetworkFace gameFace;
 
 	public ChessBoardNetworkView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -39,14 +39,14 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 	@Override
 	public void afterMove() {
 		getBoardFace().setMovesCount(getBoardFace().getHply());
-		gameActivityFace.invalidateGameScreen();
+		gameFace.invalidateGameScreen();
 
 		if (!getBoardFace().isAnalysis()) {
 			if (need2ShowSubmitButtons()) {
 				getBoardFace().setSubmit(true);
-				gameActivityFace.showSubmitButtonsLay(true);
+				gameFace.showSubmitButtonsLay(true);
 			} else {
-				gameActivityFace.updateAfterMove();
+				gameFace.updateAfterMove();
 			}
 		}
 
@@ -58,13 +58,9 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		canvas.setDrawFilter(drawFilter);
 		super.onDraw(canvas);
 
-		if (isInEditMode()) {
-			return;
-		}
-
 		drawBoard(canvas);
 
-		if (gameActivityFace != null && getBoardFace() != null) {
+		if (gameFace != null && getBoardFace() != null) {
 
 			drawHighlights(canvas);
 			drawDragPosition(canvas);
@@ -135,7 +131,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 						((to > 55) && (getBoardFace().getSide() == ChessBoard.BLACK_SIDE))) &&
 						(getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
 
-					gameActivityFace.showChoosePieceDialog(col, row);
+					gameFace.showChoosePieceDialog(col, row);
 					return true;
 				}
 
@@ -166,8 +162,8 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		getBoardFace().setReside(!getBoardFace().isReside());
 
 		invalidate();
-		gameActivityFace.toggleSides();
-		gameActivityFace.invalidateGameScreen();
+		gameFace.toggleSides();
+		gameFace.invalidateGameScreen();
 	}
 
 
@@ -209,7 +205,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
     @Override
 	public void showChat() {
-		gameActivityFace.switch2Chat();
+		gameFace.switch2Chat();
 	}
 
 //	public void updateMoves(String newMove) {
@@ -242,7 +238,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 	public void setGameActivityFace(GameNetworkFace gameActivityFace) {
 		super.setGameFace(gameActivityFace);
-		this.gameActivityFace = gameActivityFace;
+		this.gameFace = gameActivityFace;
 	}
 
 }

@@ -8,6 +8,7 @@ import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.boards.BoardViewLessonsFace;
+import com.chess.ui.interfaces.boards.LessonsBoardFace;
 import com.chess.ui.interfaces.game_ui.GameLessonFace;
 
 import java.util.Iterator;
@@ -39,14 +40,15 @@ public class ChessBoardLessonsView extends ChessBoardBaseView implements BoardVi
 		super.onDraw(canvas);
 		drawBoard(canvas);
 
-		drawCoordinates(canvas);
-		drawHighlights(canvas);
-		drawDragPosition(canvas);
-		drawTrackballDrag(canvas);
+		if (gameLessonFace != null && getBoardFace() != null) {
+			drawCoordinates(canvas);
+			drawHighlights(canvas);
+			drawDragPosition(canvas);
+			drawTrackballDrag(canvas);
 
-		drawPiecesAndAnimation(canvas);
+			drawPiecesAndAnimation(canvas);
+		}
 	}
-
 
 	@Override
 	public boolean onTrackballEvent(MotionEvent event) {
@@ -146,11 +148,10 @@ public class ChessBoardLessonsView extends ChessBoardBaseView implements BoardVi
 
 		track = false;
 		if (!getBoardFace().isAnalysis()) {
-//            if (finished ) // TODO probably never happens
-			if (getBoardFace().isFinished()) // TODO probably never happens
-				return true;
+//			if (getBoardFace().isFinished()) // TODO probably never happens
+//				return true;
 
-			if (getBoardFace().getHply() % 2 == 0) { // probably could be changed to isLatestMoveMadeUser()
+			if (((LessonsBoardFace)getBoardFace()).isLatestMoveMadeUser()) {
 				return true;
 			}
 		}
@@ -194,7 +195,12 @@ public class ChessBoardLessonsView extends ChessBoardBaseView implements BoardVi
 
 	@Override
 	protected void afterMove() {
+		getBoardFace().setMovesCount(getBoardFace().getHply());
+		gameLessonFace.invalidateGameScreen();
 
+		if (!getBoardFace().isAnalysis()) {
+			gameLessonFace.verifyMove();
+		}
 	}
 
 	@Override

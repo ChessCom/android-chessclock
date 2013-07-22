@@ -20,7 +20,7 @@ public class ChessBoardLiveView extends ChessBoardNetworkView {
 		if (!getBoardFace().isPossibleToMakeMoves()) {
 			if (getBoardFace().inCheck(getBoardFace().getSide())) {
 				getBoardFace().getHistDat()[getBoardFace().getHply() - 1].notation += "#";
-				gameActivityFace.invalidateGameScreen();
+				gameFace.invalidateGameScreen();
 			}
 //			finished = true; // todo: probably it is better to set Finished flag by lcc.onGameEnded event
 			getBoardFace().setFinished(true); // todo: probably it is better to set Finished flag by lcc.onGameEnded event
@@ -29,19 +29,19 @@ public class ChessBoardLiveView extends ChessBoardNetworkView {
 
 		if (getBoardFace().inCheck(getBoardFace().getSide())) {
 			getBoardFace().getHistDat()[getBoardFace().getHply() - 1].notation += "+";
-			gameActivityFace.invalidateGameScreen();
-			gameActivityFace.onCheck();
+			gameFace.invalidateGameScreen();
+			gameFace.onCheck();
 		}
 		return false;
 	}
 
 	@Override
 	public void playMove() {
-		gameActivityFace.playMove();
+		gameFace.playMove();
 	}
 
 	@Override
 	public void cancelMove() {
-		gameActivityFace.cancelMove();
+		gameFace.cancelMove();
 	}
 }

@@ -28,6 +28,7 @@
 
 	<item name="list_item_id" type="id"/>
 	<item name="list_item_id_group" type="id"/>
+	<item name="lessonsVideoLibFooterTxt" type="id"/>
 
     <!--Sliding Menu-->
     <item name="selected_view" type="id"/>

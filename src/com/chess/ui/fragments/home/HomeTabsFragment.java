@@ -117,6 +117,14 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+
+		setBadgeValueForId(R.id.menu_games, 7); // TODO use properly
+//		setBadgeValueForId(R.id.menu_notifications, 7); // TODO use properly
+	}
+
+	@Override
 	public void onStart() {
 		super.onStart();
 
@@ -155,13 +163,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 //		}
 //	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
 
-		setBadgeValueForId(R.id.menu_games, 7); // TODO use properly
-//		setBadgeValueForId(R.id.menu_notifications, 7); // TODO use properly
-	}
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {

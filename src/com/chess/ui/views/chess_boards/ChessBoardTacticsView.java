@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.engine.ChessBoardTactics;
 import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.boards.BoardViewTacticsFace;
 import com.chess.ui.interfaces.game_ui.GameTacticsFace;
@@ -15,7 +16,7 @@ import java.util.TreeSet;
 
 public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardViewTacticsFace {
 
-	private GameTacticsFace gameTacticsActivityFace;
+	private GameTacticsFace gameTacticsFace;
 
 
 	public ChessBoardTacticsView(Context context, AttributeSet attrs) {
@@ -23,19 +24,19 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
     }
 
-	public void setGameUiFace(GameTacticsFace gameActivityFace) {
+	public void setGameFace(GameTacticsFace gameActivityFace) {
 		super.setGameFace(gameActivityFace);
 
-		gameTacticsActivityFace = gameActivityFace;
+		gameTacticsFace = gameActivityFace;
 	}
 
     @Override
 	public void afterMove() {
 		getBoardFace().setMovesCount(getBoardFace().getHply());
-		gameTacticsActivityFace.invalidateGameScreen();
+		gameTacticsFace.invalidateGameScreen();
 
 		if (!getBoardFace().isAnalysis()) {
-			gameTacticsActivityFace.verifyMove();
+			gameTacticsFace.verifyMove();
         }
     }
 
@@ -45,12 +46,14 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
         super.onDraw(canvas);
 		drawBoard(canvas);
 
-		drawCoordinates(canvas);
-		drawHighlights(canvas);
-		drawDragPosition(canvas);
-		drawTrackballDrag(canvas);
+		if (gameTacticsFace != null && getBoardFace() != null) {
+			drawCoordinates(canvas);
+			drawHighlights(canvas);
+			drawDragPosition(canvas);
+			drawTrackballDrag(canvas);
 
-		drawPiecesAndAnimation(canvas);
+			drawPiecesAndAnimation(canvas);
+		}
     }
 
 
@@ -113,7 +116,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
                         ((to > 55) && (getBoardFace().getSide() == ChessBoard.BLACK_SIDE))) &&
                         (getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
 
-                    gameTacticsActivityFace.showChoosePieceDialog(col, row);
+                    gameTacticsFace.showChoosePieceDialog(col, row);
                     return true;
                 }
 
@@ -152,11 +155,10 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
         track = false;
         if (!getBoardFace().isAnalysis()) {
-//            if (finished ) // TODO probably never happens
             if (getBoardFace().isFinished()) // TODO probably never happens
                 return true;
 
-            if (getBoardFace().getHply() % 2 == 0) { // probably could be changed to isLatestMoveMadeUser()
+            if (((ChessBoardTactics)getBoardFace()).isLatestMoveMadeUser()) {
                 return true;
             }
         }
@@ -200,7 +202,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
     @Override
     public void showHint() {
-		gameTacticsActivityFace.showAnswer();
+		gameTacticsFace.showAnswer();
     }
 
 	@Override
@@ -211,24 +213,19 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 //		gameFace.switch2Analysis(true);
 //	}
 
-
-//	public void setFinished(boolean finished) {
-//		this.finished = finished;
-//	}
-
 	@Override
 	public void showStats() {
-		gameTacticsActivityFace.showStats();
+		gameTacticsFace.showStats();
 	}
 
 	@Override
 	public void showHelp() {
-		gameTacticsActivityFace.showHelp();
+		gameTacticsFace.showHelp();
 	}
 
 	@Override
 	public void restart() {
-		gameTacticsActivityFace.restart();
+		gameTacticsFace.restart();
 	}
 
 }

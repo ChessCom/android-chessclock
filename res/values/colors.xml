@@ -432,7 +432,7 @@
     <color name="profile_light_grey_ratings_back_p">#ffc7c6c4</color>
 
 
-    <color name="possible_move_highlight">#6000ad00</color>
+    <color name="possible_move_highlight">#30000000</color>
 
     <!--Board-->
     <color name="coordinate_color">#FF2f3c22</color>

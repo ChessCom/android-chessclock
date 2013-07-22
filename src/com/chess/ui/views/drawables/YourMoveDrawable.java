@@ -15,11 +15,13 @@ import com.chess.R;
  */
 public class YourMoveDrawable extends Drawable {
 
+	public static final int MAX_HINTS = 3;
 
 	private final IconDrawable helpIcon;
 	private final IconDrawable oneIcon;
 	private final IconDrawable twoIcon;
 	private final IconDrawable noneIcon;
+	private final IconDrawable threeIcon;
 	private final int iconWidth1;
 	private final int iconWidth2;
 	private final int iconWidth3;
@@ -28,6 +30,9 @@ public class YourMoveDrawable extends Drawable {
 	private final int space1;
 	private final int space2;
 	private final int offset;
+	private final Drawable[] dots;
+	private final Drawable[] fullDots;
+	private int usedHints;
 
 	public YourMoveDrawable(Context context) {
 		float density = context.getResources().getDisplayMetrics().density;
@@ -36,6 +41,7 @@ public class YourMoveDrawable extends Drawable {
 		helpIcon = new IconDrawable(context, R.string.ic_help, R.color.controls_icon, R.dimen.game_controls_lesson_help_icon_size_big);
 		oneIcon = new IconDrawable(context, R.string.ic_number_one, R.color.controls_icon, R.dimen.game_controls_lesson_help_icon_size);
 		twoIcon = new IconDrawable(context, R.string.ic_number_two, R.color.controls_icon, R.dimen.game_controls_lesson_help_icon_size);
+		threeIcon = new IconDrawable(context, R.string.ic_number_three, R.color.controls_icon, R.dimen.game_controls_lesson_help_icon_size);
 		noneIcon = new IconDrawable(context, R.string.ic_number_none, R.color.controls_icon, R.dimen.game_controls_lesson_help_icon_size);
 
 		float shadowRadius = 2 * density;
@@ -45,6 +51,7 @@ public class YourMoveDrawable extends Drawable {
 		helpIcon.setShadowParams(shadowRadius, shadowDx, shadowDy, shadowColor);
 		oneIcon.setShadowParams(shadowRadius, shadowDx, shadowDy, shadowColor);
 		twoIcon.setShadowParams(shadowRadius, shadowDx, shadowDy, shadowColor);
+		threeIcon.setShadowParams(shadowRadius, shadowDx, shadowDy, shadowColor);
 		noneIcon.setShadowParams(shadowRadius, shadowDx, shadowDy, shadowColor);
 
 		iconWidth1 = helpIcon.getIntrinsicWidth();
@@ -56,6 +63,8 @@ public class YourMoveDrawable extends Drawable {
 		imageZoneWidth = iconWidth1 + iconWidth2 + iconWidth3 + iconWidth4 + space1 + space2 * 2;
 
 		offset = (int) (10 * density);
+		fullDots = new Drawable[]{oneIcon, twoIcon, threeIcon};
+		dots = new Drawable[]{noneIcon, noneIcon, noneIcon};
 	}
 
 	@Override
@@ -64,6 +73,11 @@ public class YourMoveDrawable extends Drawable {
 		int right = clipBounds.right;
 		int bottom = clipBounds.bottom;
 		int centerX = right / 2 + offset;
+
+		if (usedHints <= MAX_HINTS) {
+			System.arraycopy(fullDots, 0, dots, 0, usedHints);
+		}
+
 		canvas.save();
 		canvas.translate(centerX - imageZoneWidth / 2, bottom / 2);
 		helpIcon.draw(canvas);
@@ -71,21 +85,19 @@ public class YourMoveDrawable extends Drawable {
 
 		canvas.save();
 		canvas.translate(centerX - imageZoneWidth / 2 + iconWidth1 + space1, bottom / 2);
-		oneIcon.draw(canvas);
+		dots[0].draw(canvas);
 		canvas.restore();
 
 		canvas.save();
 		canvas.translate(centerX - imageZoneWidth / 2 + iconWidth1 + space1 + iconWidth2 + space2, bottom / 2);
-		twoIcon.draw(canvas);
+		dots[1].draw(canvas);
 		canvas.restore();
 
 		canvas.save();
 		canvas.translate(centerX - imageZoneWidth / 2 + iconWidth1 + space1 + iconWidth2
 				+ space2 + iconWidth3 + space2, bottom / 2);
-		noneIcon.draw(canvas);
+		dots[2].draw(canvas);
 		canvas.restore();
-
-
 	}
 
 	@Override
@@ -100,5 +112,9 @@ public class YourMoveDrawable extends Drawable {
 	@Override
 	public int getOpacity() {
 		return 0;
+	}
+
+	public void updateUsedHints(int usedHints) {
+		this.usedHints = usedHints;
 	}
 }

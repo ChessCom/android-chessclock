@@ -9,6 +9,11 @@ import java.util.List;
  * Time: 8:35
  */
 public class LessonItem extends BaseResponseItem<LessonItem.Data> {
+
+	public static final String MOVE_DEFAULT = "default";
+	public static final String MOVE_ALTERNATE = "alternate";
+	public static final String MOVE_WRONG = "wrong";
+
 /*
 {
     "status": "success",
@@ -78,6 +83,7 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 	}
 
 	public class MentorPosition {
+
 /*
 		"position_number": 1,
 		"fen": "2r2rk1/p4ppp/1p6/n2P1Q2/8/5N2/P1q2PPP/3RR1K1 w - - 0 1",
@@ -112,7 +118,7 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 		private String standard_wrong_move_commentary;
 		private int final_position;
 		private String about;
-		private List<LessonMove> cm_moves;
+		private List<PossibleMove> cm_moves;
 
 		public int getPositionNumber() {
 			return position_number;
@@ -158,11 +164,11 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 			return about;
 		}
 
-		public List<LessonMove> getLessonMoves() {
+		public List<PossibleMove> getLessonMoves() {
 			return cm_moves;
 		}
 
-		public class LessonMove {
+		public class PossibleMove {
 /*
 				"move_number": 0,
 				"move": "Qf4",

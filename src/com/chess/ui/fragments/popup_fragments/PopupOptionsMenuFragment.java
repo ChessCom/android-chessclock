@@ -45,7 +45,7 @@ public class PopupOptionsMenuFragment extends DialogFragment implements View.OnC
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0));
+		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0x00000000)); // set transparent background
 		return inflater.inflate(R.layout.new_popup_option_select_frame, container, false);
 	}
 

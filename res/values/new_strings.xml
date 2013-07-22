@@ -262,7 +262,15 @@
 
 	<string name="username_wrote">%s wrote:</string>
 	<string name="full_lesson_library">Full Lesson Library</string>
+	<string name="curriculum_lessons">Curriculum Lessons</string>
 	<string name="start_lesson">Start Lesson</string>
+	<string name="skip">Skip</string>
+	<string name="key_squares">Key Squares</string>
+	<string name="correct_square">Correct Square</string>
+	<string name="key_pieces">Key Pieces</string>
+	<string name="correct_piece">Correct Piece</string>
+	<string name="skip_lesson">Skip Lesson</string>
+	<string name="hint_arg">Hint %s:</string>
 	<!--Game mode-->
 
 </resources>

@@ -85,7 +85,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected Paint coordinatesPaint;
 	protected Paint madeMovePaint;
 	protected Paint greenPaint;
-	protected Paint greenHighlightPaint;
+	protected Paint possibleMovePaint;
 
 	protected String[] signs = {"a", "b", "c", "d", "e", "f", "g", "h"};
 	protected String[] nums = {"1", "2", "3", "4", "5", "6", "7", "8"};
@@ -147,7 +147,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		yellowPaint = new Paint();
 		coordinatesPaint = new Paint();
 		madeMovePaint = new Paint();
-		greenHighlightPaint = new Paint();
+		possibleMovePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		rect = new Rect();
 
 		yellowPaint.setStrokeWidth(3.0f);
@@ -171,10 +171,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		greenPaint.setStyle(Style.STROKE);
 		greenPaint.setColor(Color.GREEN);
 
-		int possibleMoveHighlight = resources.getColor(R.color.possible_move_highlight);
-		greenHighlightPaint.setStrokeWidth(4.0f);
-		greenHighlightPaint.setStyle(Style.FILL);
-		greenHighlightPaint.setColor(possibleMoveHighlight);
+		int possibleMoveHighlightColor = resources.getColor(R.color.possible_move_highlight);
+		possibleMovePaint.setStrokeWidth(4.0f);
+		possibleMovePaint.setStyle(Style.FILL);
+		possibleMovePaint.setColor(possibleMoveHighlightColor);
 
 		width = resources.getDisplayMetrics().widthPixels;
 		height = resources.getDisplayMetrics().heightPixels;
@@ -298,10 +298,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public void switchAnalysis() {
 		gameFace.switch2Analysis();
 	}
-
-//	public void enableAnalysis() {  // TODO recheck logic
-//		gameFace.switch2Analysis(true);
-//	}
 
 	@Override
 	public void moveForward() {
@@ -500,8 +496,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				if (move.from == from && getBoardFace().makeMove(move, false)) {
 					getBoardFace().takeBack();
 					int x = ChessBoard.getColumn(move.to, getBoardFace().isReside());
-					int y = ChessBoard.getRow(move.to, getBoardFace().isReside());
-					canvas.drawRect(x * square, y * square, x * square + square, y * square + square, greenHighlightPaint);
+					int y = ChessBoard.getRow(move.to, getBoardFace().isReside()) + 1;
+					canvas.drawCircle(x * square + square / 2, y * square - square / 2, square / 5, possibleMovePaint);
 				}
 			}
 		}

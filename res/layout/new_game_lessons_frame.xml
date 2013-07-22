@@ -59,6 +59,27 @@
 			android:padding="15dip"
 			/>
 
+		<!--Divider-->
+		<View
+			android:id="@+id/hintDivider"
+			android:layout_width="match_parent"
+			android:layout_height="1dip"
+			android:background="@color/new_friends_list_divider"
+			android:visibility="gone"
+			/>
+
+		<!--Hint-->
+		<com.chess.RoboTextView
+			android:id="@+id/hintTxt"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:textColor="@color/new_main_back"
+			android:textSize="15sp"
+			android:padding="15dip"
+			android:background="@color/header_light"
+			android:visibility="gone"
+			/>
+
 	</LinearLayout>
 
 	<com.chess.MultiDirectionSlidingDrawer
@@ -74,15 +95,16 @@
 		<LinearLayout
 			android:id="@id/content"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			>
 			<RelativeLayout
 				android:id="@+id/boardLayout"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="@color/white"
-				>
 
+				>
+				<!--android:background="@color/white"-->
 				<!--Top Border-->
 				<FrameLayout
 					android:id="@+id/topBorder"

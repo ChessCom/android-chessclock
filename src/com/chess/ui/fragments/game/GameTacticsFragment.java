@@ -137,8 +137,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void onStart() {
-//		init();
-
 		super.onStart();
 		FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED);
 	}
@@ -195,12 +193,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	@Override
-	public void onStop() {
-		super.onStop();
-//		releaseResources();
-	}
-
-	@Override
 	protected void dismissDialogs() {
 		if (findFragmentByTag(WRONG_MOVE_TAG) != null) {
 			((BasePopupDialogFragment) findFragmentByTag(WRONG_MOVE_TAG)).dismiss();
@@ -219,7 +211,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private boolean needToSaveTactic() {
 		return !getBoardFace().isTacticCanceled()
 				&& !TacticsDataHolder.getInstance().isTacticLimitReached()
-				&& isTacticItemValid();
+				&& currentGameExist();
 	}
 
 	private void playLastMoveAnimationAndCheck() {
@@ -247,7 +239,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public boolean currentGameExist() {
-		return isTacticItemValid();
+		return tacticItem != null;
 	}
 
 	@Override
@@ -370,7 +362,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public Long getGameId() {
-		if (!isTacticItemValid()) {
+		if (!currentGameExist()) {
 			return null;
 		} else {
 			return tacticItem.getId();
@@ -380,7 +372,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private void getNextTactic() {
 		handler.removeCallbacks(showTacticMoveTask);
 
-		if (isTacticItemValid()) {
+		if (currentGameExist()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
 			getContentResolver().delete(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
 					DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
@@ -397,25 +389,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 	}
 
-
-//	private class GetTacticsUpdateListener extends ChessUpdateListener {
-//
-//		@Override
-//		public void updateData(String returnedObj) {
-//			String[] tmp = returnedObj.trim().split(RestHelper.SYMBOL_ITEM_SPLIT);
-//			if (tmp.length < 2) {
-//				showLimitReachedPopup();   // This is also wrong step, because we should never reach this condition
-//				return;
-//			}
-//		}
-//
-//		@Override
-//		public void errorHandle(Integer resultCode) {
-//			handleErrorRequest();
-//		}
-//	}
-
-
 	@Override
 	public void showAnswer() {
 		stopTacticsTimer();
@@ -423,7 +396,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		tacticItem.setWasShowed(true);
 
 		ChessBoardTactics.resetInstance();
-		boardView.setGameUiFace(this);
+		boardView.setGameFace(this);
 
 		tacticItem.setRetry(true);
 
@@ -522,17 +495,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					handleErrorRequest();
 				}
 			}
-//			if (returnedObj.getCount() == 0) { // "Success+||"   - means we reached limit and there is no tactics
-//				showLimitReachedPopup(); // limit dialog should be shown after updating tactic, while getting new
-//				return;
-//			}
-//			if (listenerCode == GET_TACTIC) {
-//				if (resultMessage.equals(RestHelper.R_TACTICS_LIMIT_REACHED)) {
-//					showLimitReachedPopup();  // This should be the only way to show limit dialog for registered user
-//				} else {
-//					showSinglePopupDialog(resultMessage);
-//				}
-//			}
 		}
 	}
 
@@ -671,7 +633,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			return;
 		}
 
-		if (isTacticItemValid() && tacticItem.isRetry()) {
+		if (currentGameExist() && tacticItem.isRetry()) {
 			optionsArray.put(ID_PRACTICE, getString(R.string.practice_mode));
 		} else {
 			optionsArray.remove(ID_PRACTICE);
@@ -682,7 +644,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	public void stopTacticsTimer() {
-		if (isTacticItemValid()) {
+		if (currentGameExist()) {
 			tacticItem.setStop(true);
 		}
 
@@ -714,7 +676,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	protected void restoreGame() {
-		if (!isTacticItemValid() || tacticItem.isStop()) {
+		if (!currentGameExist() || tacticItem.isStop()) {
 			return;
 		}
 
@@ -729,13 +691,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void adjustBoardForGame() {
-		if (!isTacticItemValid()) { // just in case something weird happen :)
+		if (!currentGameExist()) { // just in case something weird happen :)
 			return;
 		}
 
 		ChessBoardTactics.resetInstance();
 		final TacticBoardFace boardFace = ChessBoardTactics.getInstance(this);
-		boardView.setGameUiFace(this);
+		boardView.setGameFace(this);
 
 		currentRating = getAppData().getUserTacticsRating();
 
@@ -786,12 +748,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				FlurryAgent.logEvent(FlurryData.UPGRADE_FROM_TACTICS);
 				getActivityFace().openFragment(new UpgradeFragment());
 			}
-//		} else if (view.getId() == R.id.stopBtn) {
-//			getBoardFace().setFinished(true);
-//			tacticItem.setStop(true);
-//			stopTacticsTimer();
-//			dismissDialogs();
-
 		} else if (view.getId() == R.id.cancelBtn) {
 			dismissDialogs();
 
@@ -890,15 +846,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void clearSavedTactics() {
-		if (isTacticItemValid()) {
+		if (currentGameExist()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
 			getContentResolver().delete(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
 					DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
 		}
-	}
-
-	private boolean isTacticItemValid() {
-		return tacticItem != null;
 	}
 
 	private void releaseResources() {
@@ -935,7 +887,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		boardView = (ChessBoardTacticsView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setControlsView(controlsTacticsView);
-//		boardView.setGameFace(this); // TODO check duplication
 
 		controlsTacticsView.setBoardViewFace(boardView);
 
@@ -943,7 +894,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		final ChessBoard chessBoard = ChessBoardTactics.getInstance(this);
 		firstRun = chessBoard.isJustInitialized();
-		boardView.setGameUiFace(this);
+		boardView.setGameFace(this);
 
 		controlsTacticsView.enableGameControls(false);
 

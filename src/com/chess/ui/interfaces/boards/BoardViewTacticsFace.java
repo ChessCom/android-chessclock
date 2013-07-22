@@ -14,5 +14,4 @@ public interface BoardViewTacticsFace extends BoardViewCompFace {
 
 	void restart();
 
-
 }

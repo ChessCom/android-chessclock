@@ -32,6 +32,9 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 	private int courseId;
 	private TextView courseTitleTxt;
 	private TextView courseDescriptionTxt;
+	private CourseUpdateListener courseUpdateListener;
+	private boolean need2update = true;
+	private LessonCourseItem.Data courseItem;
 
 	public LessonsCourseFragment() {}
 
@@ -54,6 +57,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		}
 
 		lessonsItemsAdapter = new LessonsItemAdapter(getActivity(), null);
+		courseUpdateListener = new CourseUpdateListener();
 	}
 
 	@Override
@@ -91,9 +95,17 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 	public void onStart() {
 		super.onStart();
 
-		LoadItem loadItem = LoadHelper.getLessonsByCourseId(getUserToken(), courseId);
+		if (need2update) {
+			LoadItem loadItem = LoadHelper.getLessonsByCourseId(getUserToken(), courseId);
 
-		new RequestJsonTask<LessonCourseItem>(new CourseUpdateListener()).executeTask(loadItem);
+			new RequestJsonTask<LessonCourseItem>(courseUpdateListener).executeTask(loadItem);
+		} else {
+			courseTitleTxt.setText(courseItem.getCourseName());
+			courseDescriptionTxt.setText(courseItem.getDescription());
+
+			List<LessonCourseItem.LessonListItem> lessons = courseItem.getLessons();
+			lessonsItemsAdapter.setItemsList(lessons);
+		}
 	}
 
 	@Override
@@ -129,13 +141,15 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		public void updateData(LessonCourseItem returnedObj) {
 			super.updateData(returnedObj);
 
-			LessonCourseItem.Data courseItem = returnedObj.getData();
+			courseItem = returnedObj.getData();
 
 			courseTitleTxt.setText(courseItem.getCourseName());
 			courseDescriptionTxt.setText(courseItem.getDescription());
 
 			List<LessonCourseItem.LessonListItem> lessons = courseItem.getLessons();
 			lessonsItemsAdapter.setItemsList(lessons);
+
+			need2update = false;
 		}
 	}
 
