@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import com.chess.backend.statics.AppConstants;
-import com.chess.ui.interfaces.GameCompActivityFace;
+import com.chess.ui.interfaces.game_ui.GameCompFace;
 import org.petero.droidfish.*;
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.gamelogic.*;
@@ -56,7 +56,7 @@ public class CompEngineHelper implements GUIInterface {
 	private EngineOptions engineOptions = new EngineOptions();
 
 	private Context context;
-	private GameCompActivityFace gameCompActivityFace;
+	private GameCompFace gameCompActivityFace;
 	private byte[] stateBeforeHint;
 	private TimeControlData timeControlData;
 	private String variantStr = "";
@@ -110,7 +110,7 @@ public class CompEngineHelper implements GUIInterface {
 		return engineCtrl;
 	}
 
-	public void startGame(int gameMode, boolean restoreGame, int strength, int time, int depth, GameCompActivityFace gameCompActivityFace, SharedPreferences settings, Bundle savedInstanceState) {
+	public void startGame(int gameMode, boolean restoreGame, String fen, int strength, int time, int depth, GameCompFace gameCompActivityFace, SharedPreferences settings, Bundle savedInstanceState) {
 
 		log("INIT ENGINE AND START GAME");
 
@@ -142,25 +142,24 @@ public class CompEngineHelper implements GUIInterface {
 		engineCtrl.setGuiPaused(true);
 		engineCtrl.setGuiPaused(false);
 
-		//String fenNew = fen == null ? TextIO.startPosFEN : fen;
-		/*if (fen != null) {
+
+		if (fen != null) {
 			try {
 				engineCtrl.setFENOrPGN(fen);
-				log("RESTORE set engine setFENOrPGN = " + fen);
 			} catch (ChessParseError chessParseError) {
 				log("setFENOrPGN: " + chessParseError);
 				chessParseError.printStackTrace();
 			}
-		}*/
+		}
 
 		log("set strength = " + strength);
 		engineCtrl.setEngineStrength(ENGINE, strength);
 
-		engineCtrl.startGame(); // it was before setFENOrPGN
+		engineCtrl.startGame(); // it was before setFENOrPGN - check fen init
 		log("FINISHED");
 	}
 
-	public void makeMove(String move,/* boolean force,*/ GameCompActivityFace gameCompActivityFace) {
+	public void makeMove(String move,/* boolean force,*/ GameCompFace gameCompActivityFace) {
 		this.gameCompActivityFace = gameCompActivityFace;
 
 		//log("MAKE MOVE position\n" + engineCtrl.getCurrentPosition());

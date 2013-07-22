@@ -26,8 +26,9 @@ public class StartEngineTask extends AbstractUpdateTask<CompEngineHelper, Void> 
 	private int time;
 	private int depth;
 	private boolean restoreGame;
+	private String fen;
 
-	public StartEngineTask(int gameMode, boolean restoreGame, int strength, int time, int depth, GameCompFace gameCompActivityFace, SharedPreferences settings, Bundle savedInstanceState, Context context, TaskUpdateInterface<CompEngineHelper> taskFace) {
+	public StartEngineTask(int gameMode, boolean restoreGame, String fen, int strength, int time, int depth, GameCompFace gameCompActivityFace, SharedPreferences settings, Bundle savedInstanceState, Context context, TaskUpdateInterface<CompEngineHelper> taskFace) {
 		super(taskFace);
 		// todo @compengine: extract method parameters to data object
 		this.gameMode = gameMode;
@@ -40,6 +41,7 @@ public class StartEngineTask extends AbstractUpdateTask<CompEngineHelper, Void> 
 		this.time = time;
 		this.depth = depth;
 		this.restoreGame = restoreGame;
+		this.fen = fen;
 	}
 
 	@Override
@@ -47,7 +49,7 @@ public class StartEngineTask extends AbstractUpdateTask<CompEngineHelper, Void> 
 
 		CompEngineHelper.getInstance().init(context);
 
-		CompEngineHelper.getInstance().startGame(gameMode, restoreGame, strength, time, depth, gameCompActivityFace, settings, savedInstanceState);
+		CompEngineHelper.getInstance().startGame(gameMode, restoreGame, fen, strength, time, depth, gameCompActivityFace, settings, savedInstanceState);
 
 		return StaticData.RESULT_OK;
 	}

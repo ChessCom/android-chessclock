@@ -232,10 +232,11 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		int time = Integer.parseInt(compTimeLimitArray[getAppData().getCompStrength(getContext())]);
 		int depth = Integer.parseInt(compDepth[getAppData().getCompStrength(getContext())]);
 		boolean restoreGame = getAppData().haveSavedCompGame() || getBoardFace().isAnalysis();
+		String fen = null;
 
 		Bundle state = savedInstanceState.length > 0 ? savedInstanceState[0] : null;
 
-		new StartEngineTask(engineMode, restoreGame, strength, time, depth, this,
+		new StartEngineTask(engineMode, restoreGame, fen, strength, time, depth, this,
 				PreferenceManager.getDefaultSharedPreferences(getActivity()), state, getActivity().getApplicationContext(),
 				new InitComputerEngineUpdateListener()).executeTask();
 	}

@@ -274,10 +274,11 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		int time = Integer.parseInt(compTimeLimitArray[getAppData().getCompStrength(getContext())]);
 		int depth = Integer.parseInt(compDepth[getAppData().getCompStrength(getContext())]);
 		boolean restoreGame = getAppData().haveSavedCompGame() || getBoardFace().isAnalysis();
+		String fen = null;
 
 		Bundle state = savedInstanceState;
 
-		new StartEngineTask(engineMode, restoreGame, strength, time, depth, this,
+		new StartEngineTask(engineMode, restoreGame, fen, strength, time, depth, this,
 				PreferenceManager.getDefaultSharedPreferences(getActivity()), state, getActivity().getApplicationContext(),
 				new InitComputerEngineUpdateListener()).executeTask();
 	}
