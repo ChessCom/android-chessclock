@@ -748,13 +748,19 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public void updateMoves(String newMove, boolean playSound) {
-		final Move move = convertMove(newMove);
+		final Move move = convertMoveAlgebraic(newMove);
 		makeMove(move, playSound);
 	}
 
 	@Override
-	public Move convertMove(String move) {
+	public Move convertMoveAlgebraic(String move) {
 		int[] moveFT = MoveParser.parse(this, move);
+		return convertMove(moveFT);
+	}
+
+	@Override
+	public Move convertMoveCoordinate(String move) {
+		int[] moveFT = MoveParser.parseCoordinate(this, move);
 		return convertMove(moveFT);
 	}
 

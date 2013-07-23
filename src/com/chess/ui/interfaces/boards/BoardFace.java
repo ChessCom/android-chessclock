@@ -127,5 +127,7 @@ public interface BoardFace {
 
 	Move convertMove(int[] moveFT);
 
-	Move convertMove(String move);
+	Move convertMoveAlgebraic(String move);
+
+	Move convertMoveCoordinate(String move);
 }
