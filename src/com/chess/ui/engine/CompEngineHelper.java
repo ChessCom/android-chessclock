@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import com.chess.backend.statics.AppConstants;
+import com.chess.model.CompEngineItem;
 import com.chess.ui.interfaces.game_ui.GameCompFace;
 import org.petero.droidfish.*;
 import org.petero.droidfish.book.BookOptions;
@@ -110,19 +111,19 @@ public class CompEngineHelper implements GUIInterface {
 		return engineCtrl;
 	}
 
-	public void startGame(int gameMode, boolean restoreGame, String fen, int strength, int time, int depth, GameCompFace gameCompActivityFace, SharedPreferences settings, Bundle savedInstanceState) {
+	public void startGame(CompEngineItem compEngineItem, GameCompFace gameCompActivityFace, SharedPreferences settings, Bundle savedInstanceState) {
 
 		log("INIT ENGINE AND START GAME");
 
-		setGameMode(gameMode);
+		setGameMode(compEngineItem.getGameMode());
 		this.gameCompActivityFace = gameCompActivityFace;
-		this.depth = depth;
+		this.depth = compEngineItem.getDepth();
 
-		initTimeControlData(time);
+		initTimeControlData(compEngineItem.getTime());
 
 		engineCtrl.newGame(this.gameMode, timeControlData, depth);
 
-		if (restoreGame) {
+		if (compEngineItem.isRestoreGame()) {
 			byte[] data = null;
 			int version = 1;
 			if (savedInstanceState != null) {
@@ -143,17 +144,16 @@ public class CompEngineHelper implements GUIInterface {
 		engineCtrl.setGuiPaused(false);
 
 
-		if (fen != null) {
+		if (compEngineItem.getFen() != null) {
 			try {
-				engineCtrl.setFENOrPGN(fen);
+				engineCtrl.setFENOrPGN(compEngineItem.getFen());
 			} catch (ChessParseError chessParseError) {
 				log("setFENOrPGN: " + chessParseError);
 				chessParseError.printStackTrace();
 			}
 		}
 
-		log("set strength = " + strength);
-		engineCtrl.setEngineStrength(ENGINE, strength);
+		engineCtrl.setEngineStrength(ENGINE, compEngineItem.getStrength());
 
 		engineCtrl.startGame(); // it was before setFENOrPGN - check fen init
 		log("FINISHED");

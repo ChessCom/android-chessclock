@@ -24,6 +24,7 @@ import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.PieceColor;
+import com.chess.model.CompEngineItem;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
@@ -36,9 +37,9 @@ import com.chess.ui.fragments.CompGameSetupFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsBoardFragment;
+import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameCompFace;
-import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardCompView;
@@ -222,21 +223,29 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	}
 
 	private void startGame(Bundle... savedInstanceState) {
-		int engineMode;
+		int gameMode;
 		if (getBoardFace().isAnalysis()) {
-			engineMode = GameMode.ANALYSIS;
+			gameMode = GameMode.ANALYSIS;
 		} else {
-			engineMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
+			gameMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
 		}
 		int strength = compStrengthArray[getAppData().getCompStrength(getContext())];
 		int time = Integer.parseInt(compTimeLimitArray[getAppData().getCompStrength(getContext())]);
 		int depth = Integer.parseInt(compDepth[getAppData().getCompStrength(getContext())]);
-		boolean restoreGame = getAppData().haveSavedCompGame() || getBoardFace().isAnalysis();
+		boolean isRestoreGame = getAppData().haveSavedCompGame() || getBoardFace().isAnalysis();
 		String fen = null;
 
 		Bundle state = savedInstanceState.length > 0 ? savedInstanceState[0] : null;
 
-		new StartEngineTask(engineMode, restoreGame, fen, strength, time, depth, this,
+		CompEngineItem compEngineItem = new CompEngineItem();
+		compEngineItem.setGameMode(gameMode);
+		compEngineItem.setDepth(depth);
+		compEngineItem.setFen(fen);
+		compEngineItem.setRestoreGame(isRestoreGame);
+		compEngineItem.setStrength(strength);
+		compEngineItem.setTime(time);
+
+		new StartEngineTask(compEngineItem, this,
 				PreferenceManager.getDefaultSharedPreferences(getActivity()), state, getActivity().getApplicationContext(),
 				new InitComputerEngineUpdateListener()).executeTask();
 	}

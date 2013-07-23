@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
+import com.chess.model.CompEngineItem;
 import com.chess.ui.interfaces.game_ui.GameCompFace;
 
 /**
@@ -16,40 +17,26 @@ import com.chess.ui.interfaces.game_ui.GameCompFace;
  */
 public class StartEngineTask extends AbstractUpdateTask<CompEngineHelper, Void> {
 
-	private int gameMode;
-	//private String initialFen;
-	private GameCompFace gameCompActivityFace;
-	private Bundle savedInstanceState;
+	private final GameCompFace gameCompActivityFace;
+	private final Bundle savedInstanceState;
 	private final Context context;
-	private SharedPreferences settings;
-	private int strength;
-	private int time;
-	private int depth;
-	private boolean restoreGame;
-	private String fen;
+	private final SharedPreferences settings;
+	private final CompEngineItem compEngineItem;
 
-	public StartEngineTask(int gameMode, boolean restoreGame, String fen, int strength, int time, int depth, GameCompFace gameCompActivityFace, SharedPreferences settings, Bundle savedInstanceState, Context context, TaskUpdateInterface<CompEngineHelper> taskFace) {
+	public StartEngineTask(CompEngineItem compEngineItem, GameCompFace gameCompActivityFace, SharedPreferences settings, Bundle savedInstanceState, Context context, TaskUpdateInterface<CompEngineHelper> taskFace) {
 		super(taskFace);
-		// todo @compengine: extract method parameters to data object
-		this.gameMode = gameMode;
-		//this.initialFen = initialFen;
 		this.gameCompActivityFace = gameCompActivityFace;
 		this.savedInstanceState = savedInstanceState;
 		this.context = context;
 		this.settings = settings;
-		this.strength = strength;
-		this.time = time;
-		this.depth = depth;
-		this.restoreGame = restoreGame;
-		this.fen = fen;
+		this.compEngineItem = compEngineItem;
 	}
 
 	@Override
 	protected Integer doTheTask(Void... params) {
 
 		CompEngineHelper.getInstance().init(context);
-
-		CompEngineHelper.getInstance().startGame(gameMode, restoreGame, fen, strength, time, depth, gameCompActivityFace, settings, savedInstanceState);
+		CompEngineHelper.getInstance().startGame(compEngineItem, gameCompActivityFace, settings, savedInstanceState);
 
 		return StaticData.RESULT_OK;
 	}
