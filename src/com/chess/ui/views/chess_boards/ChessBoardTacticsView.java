@@ -49,10 +49,10 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 		if (gameTacticsFace != null && getBoardFace() != null) {
 			drawCoordinates(canvas);
 			drawHighlights(canvas);
-			drawDragPosition(canvas);
 			drawTrackballDrag(canvas);
 
 			drawPiecesAndAnimation(canvas);
+			drawDragPosition(canvas);
 		}
     }
 

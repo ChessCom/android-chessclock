@@ -166,10 +166,10 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		drawBoard(canvas);
 
 		drawHighlights(canvas);
-		drawDragPosition(canvas);
 		drawTrackballDrag(canvas);
 
 		drawPiecesAndAnimation(canvas);
+		drawDragPosition(canvas);
 
 		drawMoveHints(canvas); // todo @compengine: move to base class for all game modes
 		drawCoordinates(canvas);
@@ -273,13 +273,13 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
         track = false;
         if (!getBoardFace().isAnalysis()) {
-            if (isComputerMoving() || getBoardFace().isFinished())
+            if (/*isComputerMoving() ||*/ getBoardFace().isFinished())
                 return true;
 
-			if ((getAppData().isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
+			/*if ((getAppData().isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
 					|| (getAppData().isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove())) {
 				return true;
-			}
+			}*/
 		}
 
         return super.onTouchEvent(event);

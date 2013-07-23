@@ -95,7 +95,7 @@ public class ChessBoard implements BoardFace {
 	private boolean submit;
 
 	private boolean analysis;
-	private int side = WHITE_SIDE;
+	private int side = WHITE_SIDE; // which side is current turn
 	private int xside = BLACK_SIDE;
 	private int rotated = 0;
 	private int ep = -1;  // en passant move

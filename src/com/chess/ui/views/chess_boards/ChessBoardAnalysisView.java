@@ -101,10 +101,10 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 		drawBoard(canvas);
 
 		drawHighlights(canvas);
-		drawDragPosition(canvas);
 		drawTrackballDrag(canvas);
 
 		drawPiecesAndAnimation(canvas);
+		drawDragPosition(canvas);
 
 		drawCoordinates(canvas);
 	}
