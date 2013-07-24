@@ -13,4 +13,7 @@ public interface BoardViewLessonsFace extends BoardViewFace {
 	void showHint();
 
 	void restart();
+
+	void nextPosition();
+
 }

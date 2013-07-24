@@ -137,11 +137,11 @@ public class ControlsLessonsView extends ControlsBaseView {
 		} else if (view.getId() == getButtonId(RESTART)) {
 			boardViewFace.restart();
 		} else if (view.getId() == getButtonId(HINT)) {
-//			YourMoveDrawable yourMoveDrawable = (YourMoveDrawable) ((RoboImageButton) findViewById(getButtonId(HINT))).getDrawable();
 			yourMoveDrawable.updateUsedHints(++usedHints);
-
 			boardViewFace.showHint();
-		} else if (view.getId() == getButtonId(NEXT) || view.getId() == getButtonId(SKIP)) {
+		} else if (view.getId() == getButtonId(NEXT) ) {
+			boardViewFace.nextPosition();
+		} else if (view.getId() == getButtonId(SKIP)) {
 			boardViewFace.newGame();
 		}
 	}
@@ -182,7 +182,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 		showGameButton(SKIP, false);
 	}
 
-	public void showAfterRetry() {
+	public void showNewGame() {
 		showGameButton(OPTIONS, true);
 		showGameButton(HINT, false);
 		showGameButton(RESTART, false);

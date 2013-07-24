@@ -45,6 +45,11 @@ public class MoveParser {
 	public static final String POSITION_DIVIDER = "|";
 	private static final String FEN_DIVIDER = "[/]";
 	private static final String REGEXP_NUMBERS = "[0-9]";
+
+	public static final String W_KINGSIDE_MOVE_CASTLING = "Kg1";
+	public static final String W_QUEENSIDE_MOVE_CASTLING = "Kc1";
+	public static final String B_KINGSIDE_MOVE_CASTLING = "kg8";
+	public static final String B_QUEENSIDE_MOVE_CASTLING = "kc8";
 	public static final String KINGSIDE_CASTLING = "O-O";
 	public static final String QUEENSIDE_CASTLING = "O-O-O";
 

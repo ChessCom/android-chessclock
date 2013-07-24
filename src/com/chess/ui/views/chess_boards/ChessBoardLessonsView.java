@@ -217,4 +217,9 @@ public class ChessBoardLessonsView extends ChessBoardBaseView implements BoardVi
 	public void restart() {
 		gameLessonFace.restart();
 	}
+
+	@Override
+	public void nextPosition() {
+		gameLessonFace.nextPosition();
+	}
 }

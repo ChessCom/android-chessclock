@@ -2,6 +2,7 @@ package com.chess.ui.fragments.lessons;
 
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -69,6 +70,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	private LessonUpdateListener lessonUpdateListener;
 	private int lessonId;
+	private boolean isAnalysis;
+	private LabelsConfig labelsConfig;
+
 	private ControlsLessonsView controlsLessonsView;
 	private ChessBoardLessonsView boardView;
 	private PopupOptionsMenuFragment optionsSelectFragment;
@@ -80,8 +84,13 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private TextView descriptionTxt;
 	private TextView positionDescriptionTxt;
 	private TextView hintTxt;
+	private View scoreLabel;
+	private View ratingLabel;
+	private TextView lessonPercentTxt;
+	private TextView lessonsRatingTxt;
+	private TextView lessonsRatingChangeTxt;
+
 	private MultiDirectionSlidingDrawer slidingDrawer;
-	private boolean isAnalysis;
 	private List<LessonItem.MentorPosition.PossibleMove> possibleMoves;
 	private int currentPoints;
 	private int currentLearningPosition;
@@ -95,11 +104,12 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private int topBoardOffset;
 	private int defaultDescriptionPadding;
 	private int openDescriptionPadding;
+
 	private SparseArray<Float> hintsCostMap;
 	private LessonItem.UserLesson userLesson;
 	private List<Integer> solvedPositionsList;
-	private SparseArray<Float> pointsForMoveMap;
-	private LabelsConfig labelsConfig;
+	private SparseArray<MoveCompleteItem> movesCompleteMap;
+
 
 	public GameLessonFragment() {
 	}
@@ -128,7 +138,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		lessonUpdateListener = new LessonUpdateListener();
 		solvedPositionsList = new ArrayList<Integer>();
-		pointsForMoveMap = new SparseArray<Float>();
+		movesCompleteMap = new SparseArray<MoveCompleteItem>();
 	}
 
 	@Override
@@ -201,9 +211,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	}
 
 	@Override
-	public void newGame() {
-		if (currentLearningPosition < totalLearningPositionsCnt) {
-			currentLearningPosition++;
+	public void nextPosition() {
+		if (++currentLearningPosition < totalLearningPositionsCnt) {
 
 			controlsLessonsView.showDefault();
 			controlsLessonsView.dropUsedHints();
@@ -213,10 +222,12 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			// TODO add animation for next move in lesson
 
 			adjustBoardForGame();
-		} else {
-			// TODO disable skip & next buttons
-			showToast("No more positions to learn");
 		}
+	}
+
+	@Override
+	public void newGame() {
+		getActivityFace().showPreviousFragment();
 	}
 
 	@Override
@@ -278,6 +289,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		slidingDrawer.animateOpen();
 	}
 
+
 	/**
 	 * moves calculation:
 	 * <p/>
@@ -306,32 +318,15 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		LessonsBoardFace boardFace = getBoardFace();
 		String lastUserMove = boardFace.getLastMoveStr();
 
-		int lessonDifficulty = lessonItem.getDifficulty();
-		LessonItem.MentorPosition positionToLearn = positionsToLearn.get(currentLearningPosition);
+		MoveCompleteItem moveCompleteItem = getCurrentCompleteItem();
 
-
-		logTest("getAbout - " + positionToLearn.getAbout());
-		logTest("getAdvice1 - " + positionToLearn.getAdvice1());
-		logTest("getAdvice2 - " + positionToLearn.getAdvice2());
-		logTest("getAdvice3 - " + positionToLearn.getAdvice3());
-		logTest("getStandardWrongMoveCommentary - " + positionToLearn.getStandardWrongMoveCommentary());
-		logTest("getStandardResponseMoveCommentary - " + positionToLearn.getStandardResponseMoveCommentary());
-
-		int moveDifficulty = positionToLearn.getMoveDifficulty();
-		float pointsForMove = moveDifficulty;
-
-		// subtract points for used hints
-		if (usedHints > 0) {
-			pointsForMove -= moveDifficulty * hintsCostMap.get(usedHints) / 100;
-		}
-//		currentPoints // TODO use to SUM and send update to server
-
-		// iterate through possible moves and show corresponding result to user
+		// iterate through possible moves and perform deduction
 		boolean moveRecognized = false;
+		boolean correctMove = false;
 		for (LessonItem.MentorPosition.PossibleMove possibleMove : possibleMoves) {
 			if (possibleMove.getMove().contains(lastUserMove)) {
 
-				if (possibleMove.getMoveType().equals(LessonItem.MOVE_DEFAULT)) {
+				if (possibleMove.getMoveType().equals(LessonItem.MOVE_DEFAULT)) { // Correct move
 					controlsLessonsView.showCorrect();
 					solvedPositionsList.add(currentLearningPosition);
 					if (!TextUtils.isEmpty(possibleMove.getShortResponseMove())) {
@@ -339,15 +334,19 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 						boardView.setMoveAnimator(move, true);
 						boardFace.makeMove(move, true);
 					}
-				} else if (possibleMove.getMoveType().equals(LessonItem.MOVE_ALTERNATE)) {
+					correctMove = true;
+				} else if (possibleMove.getMoveType().equals(LessonItem.MOVE_ALTERNATE)) { // Alternate Correct Move
+					// Correct move, try again!
 					showToast("Alternate correct move!"); // TODO ask to adjust design
 					controlsLessonsView.showCorrect();
 					solvedPositionsList.add(currentLearningPosition);
+
+					correctMove = true;
 				} else if (possibleMove.getMoveType().equals(LessonItem.MOVE_WRONG)) {
 					controlsLessonsView.showWrong();
-					pointsForMove -= moveDifficulty * WRONG_MOVE_COST / 100;
+					moveCompleteItem.wrongMovesCnt++;
 				}
-				descriptionTxt.setText(possibleMove.getMoveCommentary());
+				descriptionTxt.setText(Html.fromHtml(possibleMove.getMoveCommentary()));
 				descriptionView.post(scrollDescriptionUp);
 
 				moveRecognized = true;
@@ -356,30 +355,77 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 
 		if (!moveRecognized) {
-			descriptionTxt.setText(positionToLearn.getStandardWrongMoveCommentary());
+			Spanned wrongMoveComment = Html.fromHtml(positionsToLearn.get(currentLearningPosition).getStandardWrongMoveCommentary());
+			descriptionTxt.setText(wrongMoveComment);
 			descriptionView.post(scrollDescriptionUp);
 			controlsLessonsView.showWrong();
-			pointsForMove -= moveDifficulty * WRONG_MOVE_COST / 100;
+			moveCompleteItem.wrongMovesCnt++;
 		}
 
-		pointsForMoveMap.put(currentLearningPosition, pointsForMove);
-		logTest("pointsForMove - " + pointsForMove);
+		if (currentLearningPosition == totalLearningPositionsCnt - 1 && correctMove) { // calculate all progress for this lesson
+			showCorrectMoveViews(true);
 
-		if (currentLearningPosition == totalLearningPositionsCnt) { // calculate all progress for this lesson
-//			positionToLearn.getStandardResponseMoveCommentary()
-			View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_course_complete_popup, null, false);
+			// collect info about all moves for that lesson
+			float pointsForLesson = 0;
+			int totalPointsForLesson = 0;
+			for (int t = 0; t < movesCompleteMap.size(); t++) {
+				MoveCompleteItem item = movesCompleteMap.get(t);
+				float pointsForMove = item.moveDifficulty;
+				totalPointsForLesson += item.moveDifficulty;
+				{ // subtract points for used hints
+					float hintsSubtraction = 0;
+					for (int z = 1; z <= item.usedHints; z++) {
+						Float hintPercentCost = hintsCostMap.get(z);
+						hintsSubtraction += item.moveDifficulty * hintPercentCost / 100;
+					}
 
-//			courseTitleTxt
-//			coursePercentTxt
-//			lessonsRatingTxt
-//			lessonsRatingChangeTxt
+					pointsForMove -= hintsSubtraction;
+				}
 
-			PopupItem popupItem = new PopupItem();
-			popupItem.setCustomView((LinearLayout) layout);
+				{ // for every wrong move we subtract points
+					float subtraction = 0;
+					for (int z = 0; z < item.wrongMovesCnt; z++) {
+						subtraction += item.moveDifficulty * WRONG_MOVE_COST / 100;
+					}
+					pointsForMove -= subtraction;
+				}
 
-			PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
-			endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
+				pointsForLesson += pointsForMove;
+			}
+			// Add them together and we get 11.5 out of 15 points, or 77% out of 100% on the lesson.
+			int scorePercent = (int) (pointsForLesson * 100 / totalPointsForLesson);
+
+			lessonPercentTxt.setText(getString(R.string.percents, scorePercent) + StaticData.SYMBOL_PERCENT);
+			float currentUserRating = userLesson.getCurrentPoints() + pointsForLesson;
+			lessonsRatingTxt.setText(String.valueOf(currentUserRating));
+			String symbol = pointsForLesson > 0 ? StaticData.SYMBOL_PLUS : StaticData.SYMBOL_EMPTY;
+			lessonsRatingChangeTxt.setText(StaticData.SYMBOL_LEFT_PAR + symbol + pointsForLesson + StaticData.SYMBOL_RIGHT_PAR);
+
+			// show next lesson button
+			controlsLessonsView.showNewGame();
+			if (false) { // show when the whole course completed
+				View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_course_complete_popup, null, false);
+
+
+				PopupItem popupItem = new PopupItem();
+				popupItem.setCustomView((LinearLayout) layout);
+
+				PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
+				endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
+			}
 		}
+	}
+
+	private MoveCompleteItem getCurrentCompleteItem() {
+		return movesCompleteMap.get(currentLearningPosition);
+	}
+
+	private void showCorrectMoveViews(boolean show) {
+		ratingLabel.setVisibility(show ? View.VISIBLE : View.GONE);
+		scoreLabel.setVisibility(show ? View.VISIBLE : View.GONE);
+		lessonPercentTxt.setVisibility(show ? View.VISIBLE : View.GONE);
+		lessonsRatingTxt.setVisibility(show ? View.VISIBLE : View.GONE);
+		lessonsRatingChangeTxt.setVisibility(show ? View.VISIBLE : View.GONE);
 	}
 
 	@Override
@@ -392,6 +438,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	public void showHint() {
 		if (usedHints < YourMoveDrawable.MAX_HINTS) {
 			hintToShow = ++usedHints;
+			getCurrentCompleteItem().usedHints = usedHints;
 		} else {
 			hintToShow = hintToShow > 2 ? 1 : ++hintToShow;
 		}
@@ -557,13 +604,19 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		LessonsBoardFace boardFace = getBoardFace();
 		boardView.setGameUiFace(this);
 
+
 		LessonItem.MentorPosition positionToSolve = positionsToLearn.get(currentLearningPosition);
+		if (getCurrentCompleteItem() == null) {
+			MoveCompleteItem moveCompleteItem = new MoveCompleteItem();
+			moveCompleteItem.moveDifficulty = positionToSolve.getMoveDifficulty();
+			movesCompleteMap.put(currentLearningPosition, moveCompleteItem);
+		}
 
 		possibleMoves = positionToSolve.getLessonMoves();
 
 		boardFace.setupBoard(positionToSolve.getFen());
 
-		labelsConfig.userSide = boardFace.isReside()? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
+		labelsConfig.userSide = boardFace.isReside() ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
 
 		invalidateGameScreen();
 		controlsLessonsView.enableGameControls(true);
@@ -572,6 +625,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		commentTxt.setText(lessonItem.getGoalCommentary());
 		descriptionTxt.setText(Html.fromHtml(lessonItem.getAbout()));
 		positionDescriptionTxt.setText(Html.fromHtml(positionToSolve.getAbout()));
+		descriptionView.post(scrollDescriptionDown);
+
+		showCorrectMoveViews(false);
 	}
 
 	private void widgetsInit(View view) {
@@ -626,6 +682,16 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		hintDivider = view.findViewById(R.id.hintDivider);
 		hintTxt = (TextView) view.findViewById(R.id.hintTxt);
 
+		{// lesson rating changes
+			scoreLabel = view.findViewById(R.id.scoreLabel);
+			ratingLabel = view.findViewById(R.id.ratingLabel);
+			lessonPercentTxt = (TextView) view.findViewById(R.id.lessonPercentTxt);
+			lessonsRatingTxt = (TextView) view.findViewById(R.id.lessonsRatingTxt);
+			lessonsRatingChangeTxt = (TextView) view.findViewById(R.id.lessonsRatingChangeTxt);
+
+			showCorrectMoveViews(false);
+		}
+
 		hintsCostMap = new SparseArray<Float>();
 		hintsCostMap.put(1, HINT_1_COST);
 		hintsCostMap.put(2, HINT_2_COST);
@@ -646,6 +712,12 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
+	}
+
+	private class MoveCompleteItem {
+		int usedHints;
+		int wrongMovesCnt;
+		int moveDifficulty;
 	}
 
 }

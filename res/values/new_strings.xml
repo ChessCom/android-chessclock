@@ -274,6 +274,8 @@
 	<string name="your_lessons_rating">Your Lessons Rating:</string>
 	<string name="score_">Score:</string>
 	<string name="course_complete">Course Complete!</string>
+	<string name="percents">%s</string>
+	<string name="rating_">Rating:</string>
 	<!--Game mode-->
 
 </resources>

@@ -15,4 +15,6 @@ public interface GameLessonFace extends GameFace {
 	void startLesson();
 
 	void verifyMove();
+
+	void nextPosition();
 }

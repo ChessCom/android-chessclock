@@ -87,7 +87,7 @@
 		>
 		<!--Lessons rating value-->
 		<com.chess.RoboTextView
-			android:id="@+id/lessonsRatingTxt"
+			android:id="@+id/courseRatingTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
@@ -100,7 +100,7 @@
 
 		<!--Lesson/Course Rating-->
 		<com.chess.RoboTextView
-			android:id="@+id/lessonsRatingChangeTxt"
+			android:id="@+id/courseRatingChangeTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
@@ -111,7 +111,7 @@
 			custom:ttf="Bold"
 			/>
 
-		</LinearLayout>
+	</LinearLayout>
 
 	<FrameLayout
 		android:layout_width="match_parent"
