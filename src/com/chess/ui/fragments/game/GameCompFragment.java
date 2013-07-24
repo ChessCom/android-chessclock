@@ -2,7 +2,6 @@ package com.chess.ui.fragments.game;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -92,6 +91,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	private String[] compDepth;
 	private TextView engineThinkingPath;
 
+	private Bundle savedInstanceState;
+
 	public GameCompFragment() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
 		Bundle bundle = new Bundle();
@@ -145,7 +146,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			compDepth = getResources().getStringArray(R.array.comp_book_depth);
 		}
 
-		startGame(savedInstanceState);
+		this.savedInstanceState = savedInstanceState;
 	}
 
 	@Override
@@ -171,23 +172,12 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			}
 		}
 
-		if (CompEngineHelper.getInstance() != null && CompEngineHelper.getInstance().isInitialized()) {
-			CompEngineHelper.getInstance().setPaused(false);
-		}
+		startGame(savedInstanceState);
 	}
 
 	@Override
 	public void onPause() {
-		// todo @compengine: extract method and put to engine helper
-		if (CompEngineHelper.getInstance().isInitialized()) {
-			CompEngineHelper.getInstance().setPaused(true);
-			byte[] data = CompEngineHelper.getInstance().toByteArray();
-			SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-			String dataStr = CompEngineHelper.getInstance().byteArrToString(data);
-			editor.putString(CompEngineHelper.GAME_STATE, dataStr);
-			editor.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
-			editor.commit();
-		}
+		CompEngineHelper.getInstance().stop();
 
 		super.onPause();
 		if (getAppData().isComputerVsComputerGameMode(getBoardFace()) || getAppData().isComputerVsHumanGameMode(getBoardFace())
@@ -215,14 +205,14 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		if (CompEngineHelper.getInstance() != null && CompEngineHelper.getInstance().isInitialized()) {
+		if (CompEngineHelper.getInstance().isInitialized()) {
 			byte[] data = CompEngineHelper.getInstance().toByteArray();
 			outState.putByteArray(CompEngineHelper.GAME_STATE, data);
 			outState.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
 		}
 	}
 
-	private void startGame(Bundle... savedInstanceState) {
+	private void startGame(Bundle savedInstanceState) {
 		int gameMode;
 		if (getBoardFace().isAnalysis()) {
 			gameMode = GameMode.ANALYSIS;
@@ -235,7 +225,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		boolean isRestoreGame = getAppData().haveSavedCompGame() || getBoardFace().isAnalysis();
 		String fen = null;
 
-		Bundle state = savedInstanceState.length > 0 ? savedInstanceState[0] : null;
+		Bundle state = savedInstanceState/*.length > 0 ? savedInstanceState[0] : null*/;
 
 		CompEngineItem compEngineItem = new CompEngineItem();
 		compEngineItem.setGameMode(gameMode);

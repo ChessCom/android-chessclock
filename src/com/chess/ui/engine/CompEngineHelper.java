@@ -58,6 +58,7 @@ public class CompEngineHelper implements GUIInterface {
 
 	private Context context;
 	private GameCompFace gameCompActivityFace;
+	private SharedPreferences sharedPreferences;
 	private byte[] stateBeforeHint;
 	private TimeControlData timeControlData;
 	private String variantStr = "";
@@ -111,18 +112,20 @@ public class CompEngineHelper implements GUIInterface {
 		return engineCtrl;
 	}
 
-	public void startGame(CompEngineItem compEngineItem, GameCompFace gameCompActivityFace, SharedPreferences settings, Bundle savedInstanceState) {
+	public void startGame(CompEngineItem compEngineItem, GameCompFace gameCompActivityFace, SharedPreferences sharedPreferences, Bundle savedInstanceState) {
 
 		log("INIT ENGINE AND START GAME");
 
 		setGameMode(compEngineItem.getGameMode());
 		this.gameCompActivityFace = gameCompActivityFace;
+		this.sharedPreferences = sharedPreferences;
 		this.depth = compEngineItem.getDepth();
 
 		initTimeControlData(compEngineItem.getTime());
 
 		engineCtrl.newGame(this.gameMode, timeControlData, depth);
 
+		log("restore=" + compEngineItem.isRestoreGame());
 		if (compEngineItem.isRestoreGame()) {
 			byte[] data = null;
 			int version = 1;
@@ -130,8 +133,8 @@ public class CompEngineHelper implements GUIInterface {
 				data = savedInstanceState.getByteArray(CompEngineHelper.GAME_STATE);
 				version = savedInstanceState.getInt(GAME_STATE_VERSION_NAME, version);
 			} else {
-				String dataStr = settings.getString(CompEngineHelper.GAME_STATE, null);
-				version = settings.getInt(GAME_STATE_VERSION_NAME, version);
+				String dataStr = sharedPreferences.getString(CompEngineHelper.GAME_STATE, null);
+				version = sharedPreferences.getInt(GAME_STATE_VERSION_NAME, version);
 				if (dataStr != null)
 					data = strToByteArr(dataStr);
 			}
@@ -140,9 +143,8 @@ public class CompEngineHelper implements GUIInterface {
 			}
 		}
 
-		engineCtrl.setGuiPaused(true);
-		engineCtrl.setGuiPaused(false);
-
+		/*engineCtrl.setGuiPaused(true);
+		engineCtrl.setGuiPaused(false);*/
 
 		if (compEngineItem.getFen() != null) {
 			try {
@@ -469,7 +471,7 @@ public class CompEngineHelper implements GUIInterface {
 		return ret;
 	}
 
-	public final String byteArrToString(byte[] data) {
+	private final String byteArrToString(byte[] data) {
 		if (data == null)
 			return null;
 		StringBuilder ret = new StringBuilder(32768);
@@ -524,9 +526,9 @@ public class CompEngineHelper implements GUIInterface {
 		return engineCtrl.toByteArray();
 	}
 
-	public void setPaused(boolean paused) {
+	/*public void setPaused(boolean paused) {
 		engineCtrl.setGuiPaused(paused);
-	}
+	}*/
 
 	public void shutdownEngine() {
 		engineCtrl.shutdownEngine();
@@ -541,6 +543,21 @@ public class CompEngineHelper implements GUIInterface {
 
 	public boolean isGameValid() {
 		return engineCtrl.isGamExist();
+	}
+
+	public void stop() {
+		if (isInitialized()) {
+			//CompEngineHelper.getInstance().setPaused(true); // try to avoid this
+			if (isGameValid()) {
+				byte[] data = toByteArray();
+				SharedPreferences.Editor editor = sharedPreferences.edit();
+				String dataStr = byteArrToString(data);
+				editor.putString(CompEngineHelper.GAME_STATE, dataStr);
+				editor.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
+				editor.commit();
+			}
+			shutdownEngine();
+		}
 	}
 
 	public static void log(String message) {

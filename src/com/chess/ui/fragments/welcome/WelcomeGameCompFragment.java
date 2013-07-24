@@ -2,7 +2,6 @@ package com.chess.ui.fragments.welcome;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -39,10 +38,10 @@ import com.chess.ui.engine.stockfish.StartEngineTask;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsBoardFragment;
-import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.FragmentTabsFace;
-import com.chess.ui.interfaces.game_ui.GameCompFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
+import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.interfaces.game_ui.GameCompFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.PanelInfoWelcomeView;
@@ -129,6 +128,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	private String[] compTimeLimitArray;
 	private String[] compDepth;
 	private TextView engineThinkingPath;
+	private Bundle savedInstanceState;
 
 	public WelcomeGameCompFragment() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
@@ -181,7 +181,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 			compDepth = getResources().getStringArray(R.array.comp_book_depth);
 		}
 
-		startGame(savedInstanceState);
+		this.savedInstanceState = savedInstanceState;
 	}
 
 	@Override
@@ -207,9 +207,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 			}
 		}
 
-		if (CompEngineHelper.getInstance() != null && CompEngineHelper.getInstance().isInitialized()) {
-			CompEngineHelper.getInstance().setPaused(false);
-		}
+		startGame(savedInstanceState);
 
 		if (!tourWasClicked) {
 			handler.postDelayed(blinkWhatIs, BLINK_DELAY);
@@ -218,18 +216,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void onPause() {
-		// todo @compengine: extract method and put to engine helper
-		if (CompEngineHelper.getInstance() != null && CompEngineHelper.getInstance().isInitialized()) {
-			CompEngineHelper.getInstance().setPaused(true);
-			if (CompEngineHelper.getInstance() != null && CompEngineHelper.getInstance().isGameValid()) {
-				byte[] data = CompEngineHelper.getInstance().toByteArray();
-				SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-				String dataStr = CompEngineHelper.getInstance().byteArrToString(data);
-				editor.putString(CompEngineHelper.GAME_STATE, dataStr);
-				editor.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
-				editor.commit();
-			}
-		}
+		CompEngineHelper.getInstance().stop();
 
 		super.onPause();
 		if (getAppData().isComputerVsComputerGameMode(getBoardFace()) || getAppData().isComputerVsHumanGameMode(getBoardFace())
@@ -257,7 +244,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		if (CompEngineHelper.getInstance() != null && CompEngineHelper.getInstance().isInitialized()) {
+		if (CompEngineHelper.getInstance().isInitialized()) {
 			byte[] data = CompEngineHelper.getInstance().toByteArray();
 			outState.putByteArray(CompEngineHelper.GAME_STATE, data);
 			outState.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
