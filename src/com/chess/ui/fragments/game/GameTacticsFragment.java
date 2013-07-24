@@ -40,9 +40,9 @@ import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsBoardFragment;
 import com.chess.ui.fragments.stats.TacticsStatsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
-import com.chess.ui.interfaces.game_ui.GameTacticsFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.TacticBoardFace;
+import com.chess.ui.interfaces.game_ui.GameTacticsFace;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.PanelInfoTacticsView;
 import com.chess.ui.views.chess_boards.ChessBoardTacticsView;
@@ -106,6 +106,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private ImageDownloaderToListener imageDownloader;
 	private SparseArray<String> optionsArray;
 	private PopupOptionsMenuFragment optionsSelectFragment;
+	private LabelsConfig labelsConfig;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -357,7 +358,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public Boolean isUserColorWhite() {
-		return null;
+		return labelsConfig.userSide == ChessBoard.WHITE_SIDE;
 	}
 
 	@Override
@@ -705,6 +706,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		boardFace.setupBoard(tacticItem.getInitialFen());
 
+		labelsConfig.userSide = boardFace.isReside()? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
+
 		if (tacticItem.getCleanMoveString().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
 			boardFace.setTacticMoves(tacticItem.getCleanMoveString());
 			boardFace.setMovesCount(1);
@@ -869,6 +872,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	private void init() {
 		tacticsTimer = new Handler();
+		labelsConfig = new LabelsConfig();
+
 		inflater = (LayoutInflater) getActivity().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 		imageUpdateListener = new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR);
 		imageDownloader = new ImageDownloaderToListener(getContext());

@@ -19,6 +19,7 @@ import com.chess.backend.entity.new_api.LessonItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.PopupItem;
+import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLessons;
 import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.game.GameBaseFragment;
@@ -98,6 +99,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private LessonItem.UserLesson userLesson;
 	private List<Integer> solvedPositionsList;
 	private SparseArray<Float> pointsForMoveMap;
+	private LabelsConfig labelsConfig;
 
 	public GameLessonFragment() {
 	}
@@ -122,6 +124,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		} else {
 			lessonId = savedInstanceState.getInt(LESSON_ID);
 		}
+		labelsConfig = new LabelsConfig();
+
 		lessonUpdateListener = new LessonUpdateListener();
 		solvedPositionsList = new ArrayList<Integer>();
 		pointsForMoveMap = new SparseArray<Float>();
@@ -174,7 +178,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	@Override
 	public Boolean isUserColorWhite() {
-		return null;
+		return labelsConfig.userSide == ChessBoard.WHITE_SIDE;
 	}
 
 	@Override
@@ -331,7 +335,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 					controlsLessonsView.showCorrect();
 					solvedPositionsList.add(currentLearningPosition);
 					if (!TextUtils.isEmpty(possibleMove.getShortResponseMove())) {
-						final Move move = boardFace.convertMove(possibleMove.getShortResponseMove());
+						final Move move = boardFace.convertMoveCoordinate(possibleMove.getShortResponseMove());
 						boardView.setMoveAnimator(move, true);
 						boardFace.makeMove(move, true);
 					}
@@ -558,6 +562,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		possibleMoves = positionToSolve.getLessonMoves();
 
 		boardFace.setupBoard(positionToSolve.getFen());
+
+		labelsConfig.userSide = boardFace.isReside()? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
 
 		invalidateGameScreen();
 		controlsLessonsView.enableGameControls(true);

@@ -281,7 +281,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	private boolean isUserWhite() {
-		return topPanelView.getSide() == ChessBoard.BLACK_SIDE;
+		return gameFace.isUserColorWhite() == null ? true : gameFace.isUserColorWhite();
 	}
 
 	private boolean isUserColor(int color) {
@@ -483,10 +483,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			for (int i = 0; i < SQUARES_NUMBER; i++) {
 				if (getBoardFace().isReside()) {
 					canvas.drawText(nums[i], 2, i * square + NUM_Y_OFFSET, coordinatesPaint);
-					canvas.drawText(signs[7 - i], i * square + (square/8) * 7, SQUARES_NUMBER * square - TEXT_Y_OFFSET, coordinatesPaint);
+					canvas.drawText(signs[7 - i], i * square + (square / 8) * 7, SQUARES_NUMBER * square - TEXT_Y_OFFSET, coordinatesPaint);
 				} else {
 					canvas.drawText(nums[7 - i], 2, i * square + NUM_Y_OFFSET, coordinatesPaint);
-					canvas.drawText(signs[i], i * square + (square/8) * 7 , SQUARES_NUMBER * square - TEXT_Y_OFFSET, coordinatesPaint);
+					canvas.drawText(signs[i], i * square + (square / 8) * 7, SQUARES_NUMBER * square - TEXT_Y_OFFSET, coordinatesPaint);
 				}
 			}
 		}
@@ -504,14 +504,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int x2 = ChessBoard.getColumn(move.to, getBoardFace().isReside());
 			int y2 = ChessBoard.getRow(move.to, getBoardFace().isReside());
 			canvas.drawRect(x2 * square + 1, y2 * square + 1,
-					x2 * square + square - 1, y2 * square + square -1, madeMovePaint);
+					x2 * square + square - 1, y2 * square + square - 1, madeMovePaint);
 		}
 
 		if (pieceSelected) { // draw rectangle around the start move piece position
 			int x = ChessBoard.getColumn(from, getBoardFace().isReside());
 			int y = ChessBoard.getRow(from, getBoardFace().isReside());
 			canvas.drawRect(x * square + 1, y * square + 1,
-					x * square + square - 1 , y * square + square -1, yellowPaint);
+					x * square + square - 1, y * square + square - 1, yellowPaint);
 		}
 
 		if (pieceSelected && showLegalMoves) { // draw all possible move coordinates
@@ -1083,8 +1083,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		if ((moveHints == null || moveHints.isEmpty()))
 			return;
-		float h = (float)(square / 2.0);
-		float d = (float)(square / 8.0);
+		float h = (float) (square / 2.0);
+		float d = (float) (square / 8.0);
 		double v = 35 * Math.PI / 180;
 		double cosv = Math.cos(v);
 		double sinv = Math.sin(v);
@@ -1098,14 +1098,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			float x1 = getXCoordinate(Position.getX(move.to)) + h;
 			float y1 = getYCoordinateForArrow(Position.getY(move.to)) + h;
 
-			float x2 = (float)(Math.hypot(x1 - x0, y1 - y0) + d);
+			float x2 = (float) (Math.hypot(x1 - x0, y1 - y0) + d);
 			float y2 = 0;
-			float x3 = (float)(x2 - h * cosv);
-			float y3 = (float)(y2 - h * sinv);
-			float x4 = (float)(x3 - d * sinv);
-			float y4 = (float)(y3 + d * cosv);
-			float x5 = (float)(x4 + (-d/2 - y4) / tanv);
-			float y5 = (float)(-d / 2);
+			float x3 = (float) (x2 - h * cosv);
+			float y3 = (float) (y2 - h * sinv);
+			float x4 = (float) (x3 - d * sinv);
+			float y4 = (float) (y3 + d * cosv);
+			float x5 = (float) (x4 + (-d / 2 - y4) / tanv);
+			float y5 = (float) (-d / 2);
 			float x6 = 0;
 			float y6 = y5 / 2;
 			Path path = new Path();
@@ -1120,7 +1120,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			path.lineTo(x3, -y3);
 			path.close();
 			Matrix mtx = new Matrix();
-			mtx.postRotate((float)(Math.atan2(y1 - y0, x1 - x0) * 180 / Math.PI));
+			mtx.postRotate((float) (Math.atan2(y1 - y0, x1 - x0) * 180 / Math.PI));
 			mtx.postTranslate(x0, y0);
 			path.transform(mtx);
 
@@ -1279,7 +1279,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				return;
 			}
 
-			double animationTimeFactor = (now - startTime) / (double)(stopTime - startTime);
+			double animationTimeFactor = (now - startTime) / (double) (stopTime - startTime);
 			drawAnimPiece(canvas, pieceBitmap, from1, to1, animationTimeFactor);
 			drawAnimPiece(canvas, rookCastlingBitmap, from2, to2, animationTimeFactor);
 			/*long now2 = System.currentTimeMillis();
@@ -1290,7 +1290,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			/*handler.postDelayed(new Runnable() {
 				@Override
 				public void run() {*/
-					invalidate();
+			invalidate();
 				/*}
 			}, delay);*/
 		}
@@ -1302,8 +1302,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			final int yCrd1 = getYCoordinate(ChessBoard.getRow(from));
 			final int xCrd2 = getXCoordinate(ChessBoard.getColumn(to));
 			final int yCrd2 = getYCoordinate(ChessBoard.getRow(to));
-			final int xCrd = xCrd1 + (int)Math.round((xCrd2 - xCrd1) * animationTimeFactor);
-			final int yCrd = yCrd1 + (int)Math.round((yCrd2 - yCrd1) * animationTimeFactor);
+			final int xCrd = xCrd1 + (int) Math.round((xCrd2 - xCrd1) * animationTimeFactor);
+			final int yCrd = yCrd1 + (int) Math.round((yCrd2 - yCrd1) * animationTimeFactor);
 
 			rect.set(xCrd, yCrd, xCrd + square, yCrd + square);
 			canvas.drawBitmap(pieceBitmap, null, rect, null);
