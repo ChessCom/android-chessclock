@@ -72,6 +72,10 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 	public class Data {
 		private MentorLesson cm_lesson;
 		private List<MentorPosition> cm_positions;
+		private String legal_position_check;
+		private String legal_move_check;
+		private UserLesson user_cm_lesson;
+		private boolean lesson_completed;
 
 		public MentorLesson getLesson() {
 			return cm_lesson;
@@ -79,6 +83,22 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 
 		public List<MentorPosition> getPositions() {
 			return cm_positions;
+		}
+
+		public String getLegalPositionCheck() {
+			return legal_position_check;
+		}
+
+		public String getLegalMoveCheck() {
+			return legal_move_check;
+		}
+
+		public UserLesson getUserLesson() {
+			return user_cm_lesson;
+		}
+
+		public boolean isLessonCompleted() {
+			return lesson_completed;
 		}
 	}
 
@@ -234,7 +254,7 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 		private String goal_code;
 		private int difficulty;
 
-		public int getNumber() {
+		public int getLessonNumber() {
 			return lesson_number;
 		}
 
@@ -264,6 +284,61 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 
 		public int getDifficulty() {
 			return difficulty;
+		}
+	}
+
+	public class UserLesson {
+/*
+		"initial_score": null,
+		"last_score": null,
+		"current_position": 0,
+		"current_points": 29,
+		"current_position_points": 9
+*/
+		private String initial_score;
+		private String last_score;
+		private int current_position;
+		private int current_points;
+		private int current_position_points;
+
+		public String getInitialScore() {
+			return initial_score;
+		}
+
+		public String getLastScore() {
+			return last_score;
+		}
+
+		public int getCurrentPosition() {
+			return current_position;
+		}
+
+		public int getCurrentPoints() {
+			return current_points;
+		}
+
+		public int getCurrentPositionPoints() {
+			return current_position_points;
+		}
+
+		public void setInitialScore(String initial_score) {
+			this.initial_score = initial_score;
+		}
+
+		public void setLastScore(String last_score) {
+			this.last_score = last_score;
+		}
+
+		public void setCurrentPosition(int current_position) {
+			this.current_position = current_position;
+		}
+
+		public void setCurrentPoints(int current_points) {
+			this.current_points = current_points;
+		}
+
+		public void setCurrentPositionPoints(int current_position_points) {
+			this.current_position_points = current_position_points;
 		}
 	}
 }

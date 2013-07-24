@@ -21,7 +21,6 @@
     <color name="new_light_grey_3">#FF8e8c8b</color>
     <color name="new_light_grey_4">#FFb9c2b6</color>
     <color name="new_dark_grey_2">#FF1b1a18</color>
-    <color name="new_main_back">#FF312e2b</color>
 
     <!--Back shadow-->
     <color name="back_shadows_chess">#99000000</color>

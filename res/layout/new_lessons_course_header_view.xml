@@ -14,7 +14,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:textSize="21sp"
-		android:textColor="@color/new_main_back"
+		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingTop="9dip"
 		android:paddingLeft="15dip"
 		android:paddingRight="15dip"
@@ -26,7 +26,7 @@
 		android:id="@+id/courseDescriptionTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:textColor="@color/new_main_back"
+		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingLeft="15dip"
 		android:paddingRight="15dip"
 		android:paddingBottom="15dip" />

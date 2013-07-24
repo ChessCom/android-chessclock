@@ -13,7 +13,7 @@
 		android:id="@+id/forumHeaderTxt"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:textColor="@color/new_main_back"
+		android:textColor="@color/new_subtitle_dark_grey"
 		android:textSize="19sp"
 		android:layout_centerVertical="true"
 		android:paddingLeft="@dimen/default_scr_side_padding"

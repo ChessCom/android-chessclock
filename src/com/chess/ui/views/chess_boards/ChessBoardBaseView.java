@@ -514,9 +514,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int row = ((dragY + square) - (dragY + square) % square) / square;
 			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {
 				rect.set(x - halfSquare, y - halfSquare, x + square + halfSquare, y + square + halfSquare);
-				canvas.drawBitmap(piecesBitmaps[color][piece], null, rect, null);
+				// draw yellow rect above the square
 				canvas.drawRect(col * square - halfSquare, row * square - halfSquare,
 						col * square + square + halfSquare, row * square + square + halfSquare, yellowPaint);
+				// draw piece
+				canvas.drawBitmap(piecesBitmaps[color][piece], null, rect, null);
 			}
 		}
 	}

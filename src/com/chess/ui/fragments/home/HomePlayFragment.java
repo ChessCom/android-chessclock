@@ -332,7 +332,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		friendRealName2Txt = (TextView) view.findViewById(R.id.friendRealName2Txt);
 
 		if (getArguments().getInt(MODE) == CENTER_MODE) { // we use white background and dark titles for centered mode
-			int darkTextColor = getResources().getColor(R.color.new_main_back);
+			int darkTextColor = getResources().getColor(R.color.new_subtitle_dark_grey);
 
 			View homePlayScrollView = view.findViewById(R.id.homePlayScrollView);
 			homePlayScrollView.setBackgroundResource(R.color.white);

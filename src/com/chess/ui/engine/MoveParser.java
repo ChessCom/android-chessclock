@@ -204,7 +204,9 @@ public class MoveParser {
 								promotion = 1;
 
 							return new int[]{k, to, promotion, move1.bits};
-						} else return new int[]{k, to, promotion};
+						} else {
+							return new int[]{k, to, promotion};
+						}
 					}
 				}
 			}

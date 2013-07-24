@@ -30,7 +30,7 @@ public class YourMoveDrawable extends Drawable {
 	private final int space1;
 	private final int space2;
 	private final int offset;
-	private final Drawable[] dots;
+	private Drawable[] dots;
 	private final Drawable[] fullDots;
 	private int usedHints;
 
@@ -116,5 +116,10 @@ public class YourMoveDrawable extends Drawable {
 
 	public void updateUsedHints(int usedHints) {
 		this.usedHints = usedHints;
+		if (usedHints == 0) {
+			dots[0] = noneIcon;
+			dots[1] = noneIcon;
+			dots[2] = noneIcon;
+		}
 	}
 }

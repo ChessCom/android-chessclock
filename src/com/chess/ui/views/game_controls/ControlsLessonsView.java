@@ -24,6 +24,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 
 	private BoardViewLessonsFace boardViewFace;
 	private int usedHints;
+	private YourMoveDrawable yourMoveDrawable;
 
 	public ControlsLessonsView(Context context) {
 		super(context);
@@ -70,7 +71,8 @@ public class ControlsLessonsView extends ControlsBaseView {
 		button.setOnClickListener(this);
 		button.setId(getButtonId(HINT));
 		ButtonDrawableBuilder.setBackgroundToView(button, R.style.Rect_Bottom_Right);
-		button.setImageDrawable(new YourMoveDrawable(getContext()));
+		yourMoveDrawable = new YourMoveDrawable(getContext());
+		button.setImageDrawable(yourMoveDrawable);
 		LayoutParams params = new LayoutParams(0, controlButtonHeight);
 
 		params.weight = 1;
@@ -135,7 +137,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 		} else if (view.getId() == getButtonId(RESTART)) {
 			boardViewFace.restart();
 		} else if (view.getId() == getButtonId(HINT)) {
-			YourMoveDrawable yourMoveDrawable = (YourMoveDrawable) ((RoboImageButton) findViewById(getButtonId(HINT))).getDrawable();
+//			YourMoveDrawable yourMoveDrawable = (YourMoveDrawable) ((RoboImageButton) findViewById(getButtonId(HINT))).getDrawable();
 			yourMoveDrawable.updateUsedHints(++usedHints);
 
 			boardViewFace.showHint();
@@ -190,5 +192,10 @@ public class ControlsLessonsView extends ControlsBaseView {
 
 	public void enableGameControls(boolean enable) {
 		enableGameButton(OPTIONS, enable);
+	}
+
+	public void dropUsedHints() {
+		usedHints = 0;
+		yourMoveDrawable.updateUsedHints(0);
 	}
 }

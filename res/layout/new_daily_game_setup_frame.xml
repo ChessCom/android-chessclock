@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/options"
-            android:textColor="@color/new_main_back"
+            android:textColor="@color/new_subtitle_dark_grey"
             />
 
         <!--Right Icon-->
@@ -66,7 +66,7 @@
             android:layout_centerVertical="true"
             android:text="@string/vs_random_opponent"
             android:paddingLeft="12dip"
-            android:textColor="@color/new_main_back"
+            android:textColor="@color/new_subtitle_dark_grey"
             />
 
         <com.chess.RoboButton
@@ -106,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Joachim"
-            android:textColor="@color/new_main_back"
+            android:textColor="@color/new_subtitle_dark_grey"
             />
 
         <com.chess.RoboTextView
@@ -116,7 +116,7 @@
             android:layout_weight="1"
             android:paddingLeft="4dip"
             android:text="(Friend Name)"
-            android:textColor="@color/new_main_back"
+            android:textColor="@color/new_subtitle_dark_grey"
             />
 
     </com.chess.LinLayout>
@@ -145,7 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Joachim"
-            android:textColor="@color/new_main_back"
+            android:textColor="@color/new_subtitle_dark_grey"
             />
 
         <com.chess.RoboTextView
@@ -155,7 +155,7 @@
             android:layout_weight="1"
             android:paddingLeft="4dip"
             android:text="(Friend Name)"
-            android:textColor="@color/new_main_back"
+            android:textColor="@color/new_subtitle_dark_grey"
             android:visibility="gone"
             />
 
@@ -188,7 +188,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/challenge_friend"
-            android:textColor="@color/new_main_back"
+            android:textColor="@color/new_subtitle_dark_grey"
             android:paddingLeft="12dip"
             />
 

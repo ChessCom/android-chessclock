@@ -4,83 +4,111 @@
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:animateLayoutChanges="true"
 	>
+	<!--android:animateLayoutChanges="true"-->
 
-	<LinearLayout
+	<ScrollView
 		android:id="@+id/descriptionView"
 		android:orientation="vertical"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="@color/white"
 		android:layout_alignParentTop="true"
 		android:layout_alignBottom="@+id/slidingDrawer"
-		android:animateLayoutChanges="true"
+		android:background="@color/white"
+		android:scrollbars="none"
+		android:paddingBottom="20dip"
 		>
+		<!--android:animateLayoutChanges="true"-->
 
-		<!--Title-->
-		<com.chess.RoboTextView
-			android:id="@+id/lessonTitleTxt"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textSize="21sp"
-			android:textColor="@color/new_main_back"
-			android:paddingTop="9dip"
-			android:paddingLeft="15dip"
-			android:paddingRight="15dip"
-			android:paddingBottom="8dip"
-			custom:ttf="Bold" />
-
-		<!--Goal Commentary-->
-		<com.chess.RoboTextView
-			android:id="@+id/commentTxt"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textColor="@color/new_main_back"
-			android:padding="15dip"
-			android:textSize="15sp"
-			custom:ttf="Italic"
-			/>
-
-		<!--Divider-->
-		<View
+		<LinearLayout
+			android:orientation="vertical"
 			android:layout_width="match_parent"
-			android:layout_height="1dip"
-			android:background="@color/new_friends_list_divider"
-			/>
-
-		<!--Description-->
-		<com.chess.RoboTextView
-			android:id="@+id/descriptionTxt"
-			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:textColor="@color/new_main_back"
-			android:textSize="15sp"
-			android:padding="15dip"
-			/>
+			>
+			<!--android:animateLayoutChanges="true"-->
 
-		<!--Divider-->
-		<View
-			android:id="@+id/hintDivider"
-			android:layout_width="match_parent"
-			android:layout_height="1dip"
-			android:background="@color/new_friends_list_divider"
-			android:visibility="gone"
-			/>
+			<!--Title-->
+			<com.chess.RoboTextView
+				android:id="@+id/lessonTitleTxt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="21sp"
+				android:textColor="@color/new_subtitle_dark_grey"
+				android:paddingTop="9dip"
+				android:paddingLeft="15dip"
+				android:paddingRight="15dip"
+				android:paddingBottom="8dip"
+				custom:ttf="Bold" />
 
-		<!--Hint-->
-		<com.chess.RoboTextView
-			android:id="@+id/hintTxt"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:textColor="@color/new_main_back"
-			android:textSize="15sp"
-			android:padding="15dip"
-			android:background="@color/header_light"
-			android:visibility="gone"
-			/>
+			<!--Goal Commentary-->
+			<com.chess.RoboTextView
+				android:id="@+id/commentTxt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/new_subtitle_dark_grey"
+				android:padding="15dip"
+				android:textSize="15sp"
+				custom:ttf="Italic"
+				/>
 
-	</LinearLayout>
+			<!--Divider-->
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dip"
+				android:background="@color/new_friends_list_divider"
+				/>
+
+			<!--Lesson Description-->
+			<com.chess.RoboTextView
+				android:id="@+id/descriptionTxt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/new_subtitle_dark_grey"
+				android:textSize="15sp"
+				android:padding="15dip"
+				/>
+
+			<!--Divider-->
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dip"
+				android:background="@color/new_friends_list_divider"
+				/>
+
+			<!--Position Description-->
+			<com.chess.RoboTextView
+				android:id="@+id/positionDescriptionTxt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/new_subtitle_dark_grey"
+				android:textSize="15sp"
+				android:padding="15dip"
+				/>
+
+			<!--Divider-->
+			<View
+				android:id="@+id/hintDivider"
+				android:layout_width="match_parent"
+				android:layout_height="1dip"
+				android:background="@color/new_friends_list_divider"
+				android:visibility="gone"
+				/>
+
+			<!--Hint-->
+			<com.chess.RoboTextView
+				android:id="@+id/hintTxt"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:textColor="@color/new_subtitle_dark_grey"
+				android:textSize="15sp"
+				android:padding="15dip"
+				android:background="@color/header_light"
+				android:visibility="gone"
+				/>
+
+		</LinearLayout>
+	</ScrollView>
+
 
 	<com.chess.MultiDirectionSlidingDrawer
 		android:id="@id/slidingDrawer"
@@ -102,14 +130,13 @@
 				android:id="@+id/boardLayout"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-
 				>
-				<!--android:background="@color/white"-->
+
 				<!--Top Border-->
 				<FrameLayout
 					android:id="@+id/topBorder"
 					android:layout_width="match_parent"
-					android:layout_height="3px"
+					android:layout_height="0px"
 					android:background="@drawable/game_board_divider"
 					/>
 
@@ -118,7 +145,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_below="@id/topBorder"
-					android:layout_marginTop="-1px"
+					android:layout_marginTop="0px"
 					/>
 				<!--Bottom Border-->
 				<FrameLayout
@@ -133,22 +160,29 @@
 
 		</LinearLayout>
 
-		<com.chess.RoboTextView
+		<FrameLayout
 			android:id="@id/handle"
 			android:layout_width="match_parent"
-			android:layout_height="@dimen/drawer_handler_height"
-			android:textColor="@color/white"
-			android:text="@string/ic_handler"
-			android:padding="0dip"
-			android:gravity="center"
-			android:textSize="35dip"
-			custom:ttf="Icon"
-			style="@style/ListItem.Header_2.Light"
-			android:shadowColor="@color/switch_white_back_border_bot_1"
-			android:shadowRadius="4"
-			android:shadowDx="0"
-			android:shadowDy="0"
-			/>
+			android:layout_height="wrap_content"
+			android:background="@color/white"
+			>
+			<com.chess.RoboTextView
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/drawer_handler_height"
+				android:textColor="@color/white"
+				android:text="@string/ic_handler"
+				android:padding="0dip"
+				android:gravity="center"
+				android:textSize="35dip"
+				custom:ttf="Icon"
+				style="@style/ListItem.Header_2.Light"
+				android:shadowColor="@color/switch_white_back_border_bot_1"
+				android:shadowRadius="4"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				/>
+
+		</FrameLayout>
 
 	</com.chess.MultiDirectionSlidingDrawer>
 

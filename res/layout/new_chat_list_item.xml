@@ -21,7 +21,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
         android:textSize="17sp"
-        android:textColor="@color/new_main_back"
+        android:textColor="@color/new_subtitle_dark_grey"
         android:text="teststtt"
         android:background="@drawable/img_chat_buble_grey"
         android:layout_toRightOf="@id/opponentAvatarImg"

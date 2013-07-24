@@ -271,6 +271,9 @@
 	<string name="correct_piece">Correct Piece</string>
 	<string name="skip_lesson">Skip Lesson</string>
 	<string name="hint_arg">Hint %s:</string>
+	<string name="your_lessons_rating">Your Lessons Rating:</string>
+	<string name="score_">Score:</string>
+	<string name="course_complete">Course Complete!</string>
 	<!--Game mode-->
 
 </resources>

@@ -64,7 +64,7 @@
                 android:paddingBottom="@dimen/invite_overlay_padding_title_bottom"
                 android:gravity="center"
                 android:textSize="22sp"
-                android:textColor="@color/new_main_back"
+                android:textColor="@color/new_subtitle_dark_grey"
                 custom:ttf="Bold"
                 />
 

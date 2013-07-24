@@ -569,17 +569,15 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		if (message.equals(getString(R.string.black_wins))) {
 			if (labelsConfig.userSide == ChessBoard.BLACK_SIDE) {
 				winner = labelsConfig.bottomPlayerLabel;
-			} else { // labelsConfig.userSide == ChessBoard.WHITE_SIDE
+			} else {
 				winner = labelsConfig.topPlayerLabel;
 			}
-
-		} else { // message.equals(getString(R.string.white_wins))
+		} else {
 			if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
 				winner = labelsConfig.bottomPlayerLabel;
-			} else { // labelsConfig.userSide == ChessBoard.BLACK_SIDE
+			} else {
 				winner = labelsConfig.topPlayerLabel;
 			}
-//			winner = labelsConfig.topPlayerLabel;
 		}
 		((TextView) layout.findViewById(R.id.endGameReasonTxt)).setText(getString(R.string.won_by_checkmate, winner)); // TODO adjust
 		layout.findViewById(R.id.ratingTitleTxt).setVisibility(View.GONE);
