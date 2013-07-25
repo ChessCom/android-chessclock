@@ -62,9 +62,9 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	}
 
 	@Override
-	public void afterMove() {
+	public void afterUserMove() {
 
-		Log.d(CompEngineHelper.TAG, "DEBUGBOARD afterMove");
+		super.afterUserMove();
 
         getBoardFace().setMovesCount(getBoardFace().getHply());
 		gameCompActivityFace.invalidateGameScreen();
@@ -245,9 +245,9 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 					moveMade = getBoardFace().makeMove(move);
 				}
 				if (moveMade) {
-					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
+					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
 					setMoveAnimator(moveAnimator);
-					//afterMove(); //
+					//afterUserMove(); //
 				} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 						&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
 					pieceSelected = true;
@@ -307,9 +307,9 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			moveMade = getBoardFace().makeMove(move);
 		}
 		if (moveMade) {
-			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
+			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
 			setMoveAnimator(moveAnimator);
-			//afterMove(); //
+			//afterUserMove(); //
 		} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 				&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
 			pieceSelected = true;
@@ -366,6 +366,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
             pieceSelected = false;
 
 			setMoveAnimator(getBoardFace().getLastMove(), false);
+			resetValidMoves();
 			getBoardFace().takeBack();
 
 			Move move = getBoardFace().getLastMove();
@@ -390,6 +391,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			navigating = true;
 			CompEngineHelper.getInstance().moveForward();
 			setMoveAnimator(move, true);
+			resetValidMoves();
 			getBoardFace().takeNext();
 
 			if (getAppData().isComputerVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {

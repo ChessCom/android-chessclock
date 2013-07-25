@@ -334,6 +334,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			boardFace.setMovesCount(0);
 		}
 
+		boardView.resetValidMoves();
+
 		invalidateGameScreen();
 
 		boardFace.takeBack();
@@ -515,6 +517,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		showSubmitButtonsLay(false);
 
 		boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
+		boardView.resetValidMoves();
 		getBoardFace().takeBack();
 		getBoardFace().decreaseMovesCount();
 		boardView.invalidate();

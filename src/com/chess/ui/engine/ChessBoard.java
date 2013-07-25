@@ -18,7 +18,9 @@ import com.chess.ui.interfaces.game_ui.GameFace;
 import org.apache.http.protocol.HTTP;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.TreeSet;
 
 public class ChessBoard implements BoardFace {
@@ -471,8 +473,8 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public boolean isWhiteToMove() {
-		return hply % 2 == 0;
-		//return (side == WHITE_SIDE);
+		//return hply % 2 == 0;
+		return side == WHITE_SIDE;
 	}
 
 	@Override
@@ -1049,8 +1051,8 @@ public class ChessBoard implements BoardFace {
 			/* switch sides and test for legality (if we can capture
 					   the other guy's king, it's an illegal position and
 					   we need to take the move back) */
-			side ^= 1;
-			xside ^= 1;
+			switchSide();
+
 			if (inCheck(xside)) {
 				takeBack();
 				return false;
@@ -1149,8 +1151,7 @@ public class ChessBoard implements BoardFace {
 		/* switch sides and test for legality (if we can capture
 			   the other guy's king, it's an illegal position and
 			   we need to take the move back) */
-		side ^= 1;
-		xside ^= 1;
+		switchSide();
 
 		Boolean userColorWhite = gameFace.isUserColorWhite();
 		if (playSound && userColorWhite != null) {
@@ -1255,8 +1256,7 @@ public class ChessBoard implements BoardFace {
 		if (hply - 1 < 0)
 			return;
 
-		side ^= 1;
-		xside ^= 1;
+		switchSide();
 		--hply;
 		Move move = histDat[hply].move;
 		ep = histDat[hply].ep;
@@ -2128,6 +2128,8 @@ public class ChessBoard implements BoardFace {
 			genCastlePos(FEN);
 			MoveParser.fenParse(FEN, this);
 			String[] tmp = FEN.split(StaticData.SYMBOL_SPACE);
+			Log.d("testtactic", "FEN " + FEN);
+			Log.d("testtactic", "tmp[1].trim() " + tmp[1].trim());
 			if (tmp.length > 1) {
 				if (tmp[1].trim().equals(MoveParser.B_SMALL)) { // Active color. "w" means white moves next, "b" means black. // http://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
 					setReside(true);
@@ -2180,5 +2182,37 @@ public class ChessBoard implements BoardFace {
 
 	public boolean isBlack(int piecePosition) {
 		return color[piecePosition] == BLACK_PIECE;
+	}
+
+	@Override
+	public void switchSide() {
+		side ^= 1;
+		xside ^= 1;
+	}
+
+	public List<Move> generateValidMoves(boolean forceSwitchSide) {
+
+		int[] piecesBackup = null;
+		int[] colorsBackup = null;
+
+		if (forceSwitchSide) {
+			piecesBackup = pieces.clone();
+			colorsBackup = color.clone();
+			switchSide();
+		}
+		TreeSet<Move> moves = gen();
+		List<Move> validMoves = new ArrayList<Move>();
+		for (Move move : moves) {
+			if (makeMove(move, false)) {
+				takeBack();
+				validMoves.add(move);
+			}
+		}
+		if (forceSwitchSide) {
+			switchSide();
+			pieces = piecesBackup;
+			color = colorsBackup;
+		}
+		return validMoves;
 	}
 }

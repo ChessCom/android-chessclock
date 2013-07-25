@@ -384,6 +384,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			boardFace.setMovesCount(0);
 		}
 
+		boardView.resetValidMoves();
+
 		invalidateGameScreen();
 		boardFace.takeBack();
 		boardView.invalidate();
@@ -570,6 +572,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		showSubmitButtonsLay(false);
 
 		boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
+		boardView.resetValidMoves();
 		getBoardFace().takeBack();
 		getBoardFace().decreaseMovesCount();
 		boardView.invalidate();

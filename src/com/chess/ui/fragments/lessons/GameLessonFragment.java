@@ -348,6 +348,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 					if (!TextUtils.isEmpty(possibleMove.getShortResponseMove())) {
 						final Move move = boardFace.convertMoveCoordinate(possibleMove.getShortResponseMove());
 						boardView.setMoveAnimator(move, true);
+						boardView.resetValidMoves();
 						boardFace.makeMove(move, true);
 					}
 					correctMove = true;

@@ -435,6 +435,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 				}
 
 				boardView.setMoveAnimator(move, true);
+				boardView.resetValidMoves();
 				getBoardFace().makeMove(move);
 
 				if (boardView.isHint()) {
@@ -519,7 +520,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		Log.d("debugengine", "getBoardFace().getHply() " + getBoardFace().getHply());*/
 
 		getBoardFace().setMovesCount(getBoardFace().getHply());
-
+		boardView.resetValidMoves();
 		playLastMoveAnimation();
 	}
 

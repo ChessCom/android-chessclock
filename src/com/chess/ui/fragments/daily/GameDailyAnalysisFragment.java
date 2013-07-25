@@ -246,6 +246,8 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			boardFace.setMovesCount(0);
 		}
 
+		boardView.resetValidMoves();
+
 		invalidateGameScreen();
 		boardFace.takeBack();
 		boardView.invalidate();

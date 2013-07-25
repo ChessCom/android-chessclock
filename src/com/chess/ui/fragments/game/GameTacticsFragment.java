@@ -261,6 +261,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			if (boardFace.getMovesCount() < boardFace.getTacticMoves().length - 1) { // if it's not last move, make comp move
 				final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[boardFace.getHply()]);
 				boardView.setMoveAnimator(move, true);
+				boardView.resetValidMoves();
 				boardFace.makeMove(move, true);
 				invalidateGameScreen();
 			} else { // correct
@@ -433,6 +434,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 			final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[currentTacticAnswerCnt]);
 			boardView.setMoveAnimator(move, true);
+			boardView.resetValidMoves();
 			boardFace.makeMove(move, true);
 			invalidateGameScreen();
 
@@ -705,8 +707,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		topPanelView.setPlayerScore(currentRating);
 
 		boardFace.setupBoard(tacticItem.getInitialFen());
+		boardFace.setReside(!boardFace.isReside()); // we should always reside board in Tactics, because user should make next move
 
-		labelsConfig.userSide = boardFace.isReside()? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
+		labelsConfig.userSide = boardFace.isReside() ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
 
 		if (tacticItem.getCleanMoveString().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
 			boardFace.setTacticMoves(tacticItem.getCleanMoveString());
@@ -716,6 +719,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		startTacticsTimer(tacticItem);
 
 		boardFace.updateMoves(boardFace.getTacticMoves()[0], true);
+
+		boardView.resetValidMoves();
 
 		invalidateGameScreen();
 		boardFace.takeBack();

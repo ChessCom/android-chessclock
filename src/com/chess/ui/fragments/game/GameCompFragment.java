@@ -403,6 +403,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 				}
 
 				boardView.setMoveAnimator(move, true);
+				boardView.resetValidMoves();
 				getBoardFace().makeMove(move);
 
 				if (boardView.isHint()) {
@@ -482,8 +483,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			}
 		}
 
+		boardView.resetValidMoves();
 		getBoardFace().setMovesCount(getBoardFace().getHply());
-
 		playLastMoveAnimation();
 	}
 

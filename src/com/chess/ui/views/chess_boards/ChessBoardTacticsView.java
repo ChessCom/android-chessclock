@@ -31,7 +31,10 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 	}
 
     @Override
-	public void afterMove() {
+	public void afterUserMove() {
+
+		super.afterUserMove();
+
 		getBoardFace().setMovesCount(getBoardFace().getHply());
 		gameTacticsFace.invalidateGameScreen();
 
@@ -127,9 +130,9 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 					moveMade = getBoardFace().makeMove(move);
 				}
 				if (moveMade) {
-					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
+					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
 					setMoveAnimator(moveAnimator);
-					//afterMove(); //
+					//afterUserMove(); //
 				} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 						&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
 					pieceSelected = true;
@@ -188,9 +191,9 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 			moveMade = getBoardFace().makeMove(move);
 		}
 		if (moveMade) {
-			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
+			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
 			setMoveAnimator(moveAnimator);
-			//afterMove(); //
+			//afterUserMove(); //
 		} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 				&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
 			pieceSelected = true;

@@ -360,6 +360,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			getBoardFace().makeMove(move, playSound);
 		}
 
+		boardView.resetValidMoves();
+
 		getBoardFace().setMovesCount(actualMovesSize);
 
 		if (!liveService.isUserColorWhite()) {
@@ -579,6 +581,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void cancelMove() {
 		showSubmitButtonsLay(false);
 		boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
+		boardView.resetValidMoves();
 		getBoardFace().takeBack();
 		getBoardFace().decreaseMovesCount();
 		boardView.invalidate();
@@ -932,6 +935,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			showSubmitButtonsLay(false);
 			boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 			getBoardFace().takeBack();
+			boardView.resetValidMoves();
 			getBoardFace().decreaseMovesCount();
 			boardView.invalidate();
 		} else if (view.getId() == R.id.newGamePopupBtn) {

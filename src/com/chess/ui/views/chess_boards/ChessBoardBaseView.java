@@ -29,9 +29,7 @@ import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.game_controls.ControlsBaseView;
 import org.petero.droidfish.gamelogic.Position;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * ChessBoardBaseView class
@@ -128,6 +126,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private Paint blackMoveArrowPaint;
 	protected boolean navigating;
 	private int draggingFrom = -1;
+	private List<Move> validMoves = new ArrayList<Move>();
 
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -307,6 +306,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			getBoardFace().setFinished(false);
 			pieceSelected = false;
 			setMoveAnimator(getBoardFace().getLastMove(), false);
+			resetValidMoves();
 			getBoardFace().takeBack();
 			invalidate();
 			gameFace.invalidateGameScreen();
@@ -333,6 +333,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				return;
 			}
 			setMoveAnimator(move, true);
+			resetValidMoves();
 			getBoardFace().takeNext();
 
 			invalidate();
@@ -424,14 +425,16 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				moveAnimator.draw(canvas);
 			} else {
 				if (moveAnimator.isForceCompEngine()) {
-					afterMove();
+					afterUserMove();
 				}
 				moveAnimator = null;
 
 				if (secondMoveAnimator != null) {
 					if (secondMoveAnimator.isForward()) {
+						resetValidMoves();
 						getBoardFace().takeNext();
 					} else {
+						resetValidMoves();
 						getBoardFace().takeBack();
 					}
 				} else {
@@ -517,13 +520,16 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		if (pieceSelected && showLegalMoves) { // draw all possible move coordinates
 
-			// optimization: try to calculate possible moves list after piece selecting one time and use for redrawing
+			boolean isWhiteToMove = getBoardFace().isWhiteToMove();
+			boolean isUserWhite = isUserWhite();
+			boolean isUsersTurn = (isUserWhite && isWhiteToMove) || (!isUserWhite && !isWhiteToMove);
 
-			TreeSet<Move> moves = getBoardFace().gen();
+			if (validMoves.isEmpty() && isUsersTurn) {
+				validMoves = getBoardFace().generateValidMoves(false);
+			}
 
-			for (Move move : moves) {
-				if ((move.from == from /*|| move.from == draggingFrom*/) && getBoardFace().makeMove(move, false)) {
-					getBoardFace().takeBack();
+			for (Move move : validMoves) {
+				if (move.from == from || move.from == draggingFrom) {
 					int x = ChessBoard.getColumn(move.to, getBoardFace().isReside());
 					int y = ChessBoard.getRow(move.to, getBoardFace().isReside()) + 1;
 					canvas.drawCircle(x * square + square / 2, y * square - square / 2, square / 5, possibleMovePaint);
@@ -702,10 +708,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 			if (moveMade) {
 				if (showAnimation) {
-					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
+					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
 					setMoveAnimator(moveAnimator);
 				} else {
-					afterMove(); //
+					afterUserMove(); //
 				}
 			} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 					&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
@@ -749,9 +755,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			moveMade = getBoardFace().makeMove(move);
 		}
 		if (moveMade) {
-			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
+			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
 			setMoveAnimator(moveAnimator);
-			//afterMove(); //
+			//afterUserMove(); //
 		} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 				&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
 			pieceSelected = true;
@@ -806,12 +812,18 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		return false;
 	}
 
-	protected abstract void afterMove();
+	protected void afterUserMove() {
+		if (showLegalMoves) {
+			validMoves = getBoardFace().generateValidMoves(true);
+		}
+	}
 
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == NotationView.NOTATION_ID) {// scroll to the specified position
 			Integer pos = (Integer) v.getTag(R.id.list_item_id);
+
+			resetValidMoves();
 
 			int totalHply = getBoardFace().getHply() - 1;
 			if (totalHply < pos) {
@@ -1341,5 +1353,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	public void setSecondMoveAnimator(MoveAnimator moveAnimator) {
 		this.secondMoveAnimator = moveAnimator;
+	}
+
+	public void resetValidMoves() {
+		// todo: possible refactoring - get rid of resetValidMoves,
+		// but Compare board Changing when drawing move coordinate highlights instead,
+		// for example by moves list and currentMoveNumber
+		validMoves.clear();
 	}
 }

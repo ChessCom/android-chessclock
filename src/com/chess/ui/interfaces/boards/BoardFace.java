@@ -3,6 +3,7 @@ package com.chess.ui.interfaces.boards;
 import com.chess.ui.engine.HistoryData;
 import com.chess.ui.engine.Move;
 
+import java.util.List;
 import java.util.TreeSet;
 
 /**
@@ -130,4 +131,8 @@ public interface BoardFace {
 	Move convertMoveAlgebraic(String move);
 
 	Move convertMoveCoordinate(String move);
+
+	void switchSide();
+
+	List<Move> generateValidMoves(boolean forceSwitchSide);
 }

@@ -37,7 +37,10 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 	}
 
 	@Override
-	public void afterMove() {
+	public void afterUserMove() {
+
+		super.afterUserMove();
+
 		getBoardFace().setMovesCount(getBoardFace().getHply());
 		gameFace.invalidateGameScreen();
 
@@ -142,9 +145,9 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 					moveMade = getBoardFace().makeMove(move);
 				}
 				if (moveMade) {
-					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterMove() only for vs comp mode
+					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
 					setMoveAnimator(moveAnimator);
-					//afterMove(); //
+					//afterUserMove(); //
 				} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
 						&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
 					pieceSelected = true;
