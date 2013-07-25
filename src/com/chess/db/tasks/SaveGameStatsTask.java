@@ -48,15 +48,15 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 	protected Integer doTheTask(Long... params) {
 
 		if (gameType.equals(STANDARD)) {
-			saveStatsGameLive(userName, DBConstants.GAME_STATS_LIVE_STANDARD);
+			saveStatsGameLive(userName, DBConstants.Tables.GAME_STATS_LIVE_STANDARD.ordinal());
 		} else if (gameType.equals(LIGHTNING)) {
-			saveStatsGameLive(userName, DBConstants.GAME_STATS_LIVE_LIGHTNING);
+			saveStatsGameLive(userName, DBConstants.Tables.GAME_STATS_LIVE_LIGHTNING.ordinal());
 		} else if (gameType.equals(BLITZ)) {
-			saveStatsGameLive(userName, DBConstants.GAME_STATS_LIVE_BLITZ);
+			saveStatsGameLive(userName, DBConstants.Tables.GAME_STATS_LIVE_BLITZ.ordinal());
 		} else if (gameType.equals(CHESS)) {
-			saveDailyStats(userName, DBConstants.GAME_STATS_DAILY_CHESS);
+			saveDailyStats(userName, DBConstants.Tables.GAME_STATS_DAILY_CHESS.ordinal());
 		} else if (gameType.equals(CHESS960)) {
-			saveDailyStats(userName, DBConstants.GAME_STATS_DAILY_CHESS960);
+			saveDailyStats(userName, DBConstants.Tables.GAME_STATS_DAILY_CHESS960.ordinal());
 		}
 		return StaticData.RESULT_OK;
 	}

@@ -124,7 +124,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 	private boolean loadCategoriesFromDB() {
-		Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.ARTICLE_CATEGORIES], null, null, null, null);
+		Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.ARTICLE_CATEGORIES.ordinal()], null, null, null, null);
 		if (cursor != null && cursor.moveToFirst()) {
 			categoriesAdapter.changeCursor(cursor);
 			sectionedAdapter.notifyDataSetChanged();

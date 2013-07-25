@@ -65,7 +65,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		{ // load friends from DB          // TODO make it async and fill in popup
 			final String[] arguments1 = new String[1];
 			arguments1[0] = getAppData().getUsername();
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.FRIENDS],
+			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.FRIENDS.ordinal()],
 					DBDataManager.PROJECTION_USERNAME, DBDataManager.SELECTION_USER, arguments1, null);
 
 			firendsList = new ArrayList<SelectionItem>();

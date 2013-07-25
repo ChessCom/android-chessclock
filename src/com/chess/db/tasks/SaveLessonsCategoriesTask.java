@@ -42,7 +42,7 @@ public class SaveLessonsCategoriesTask extends AbstractUpdateTask<CommonFeedCate
 				arguments2[0] = String.valueOf(currentItem.getId());
 
 				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DBConstants.uriArray[DBConstants.LESSONS_CATEGORIES];
+				Uri uri = DBConstants.uriArray[DBConstants.Tables.LESSONS_CATEGORIES.ordinal()];
 
 				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_V_CATEGORY_ID,
 						DBDataManager.SELECTION_CATEGORY_ID, arguments2, null);

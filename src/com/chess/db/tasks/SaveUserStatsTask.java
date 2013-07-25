@@ -59,7 +59,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 				return;
 			}
 
-			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_LIVE_STANDARD];
+			Uri uri = DBConstants.uriArray[DBConstants.Tables.USER_STATS_LIVE_STANDARD.ordinal()];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
@@ -78,7 +78,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 				return;
 			}
 
-			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_LIVE_LIGHTNING];
+			Uri uri = DBConstants.uriArray[DBConstants.Tables.USER_STATS_LIVE_LIGHTNING.ordinal()];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
@@ -97,7 +97,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 				return;
 			}
 
-			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_LIVE_BLITZ];
+			Uri uri = DBConstants.uriArray[DBConstants.Tables.USER_STATS_LIVE_BLITZ.ordinal()];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
@@ -125,7 +125,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 				return;
 			}
 
-			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_DAILY_CHESS];
+			Uri uri = DBConstants.uriArray[DBConstants.Tables.USER_STATS_DAILY_CHESS.ordinal()];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
@@ -144,7 +144,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 				return;
 			}
 
-			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_DAILY_CHESS960];
+			Uri uri = DBConstants.uriArray[DBConstants.Tables.USER_STATS_DAILY_CHESS960.ordinal()];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
@@ -167,7 +167,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		final String[] userArgument = arguments;
 		userArgument[0] = String.valueOf(userName);
 		{ // Standard
-			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_TACTICS];
+			Uri uri = DBConstants.uriArray[DBConstants.Tables.USER_STATS_TACTICS.ordinal()];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 
@@ -191,7 +191,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		userArgument[0] = String.valueOf(userName);
 
 		{ // Standard
-			Uri uri = DBConstants.uriArray[DBConstants.USER_STATS_LESSONS];
+			Uri uri = DBConstants.uriArray[DBConstants.Tables.USER_STATS_LESSONS.ordinal()];
 
 			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
 

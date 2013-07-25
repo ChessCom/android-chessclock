@@ -127,7 +127,7 @@ public class AdView extends WebView {
 
 		disableScrollingAndZoom();
 		getSettings().setJavaScriptEnabled(true);
-		getSettings().setPluginsEnabled(true);
+//		getSettings().setPluginsEnabled(true);
 		setBackgroundColor(Color.TRANSPARENT);
 		setWebViewClient(new AdWebViewClient());
 

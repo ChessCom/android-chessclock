@@ -169,7 +169,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 //				}
 
 				// get saved categories
-				Cursor categoriesCursor = getContentResolver().query(DBConstants.uriArray[DBConstants.VIDEO_CATEGORIES], null, null, null, null);
+				Cursor categoriesCursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
 
 				if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
 					categoriesCursorAdapter.changeCursor(categoriesCursor);
@@ -349,7 +349,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			// save in Db to open in Details View
 			ContentResolver contentResolver = getContentResolver();
 
-			Uri uri = DBConstants.uriArray[DBConstants.VIDEOS];
+			Uri uri = DBConstants.uriArray[DBConstants.Tables.VIDEOS.ordinal()];
 			String[] arguments = new String[1];
 			arguments[0] = String.valueOf(headerData.getTitle());
 			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_TITLE,
@@ -400,7 +400,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		@Override
 		public void updateData(CommonFeedCategoryItem.Data returnedObj) {
 			// get saved categories
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.VIDEO_CATEGORIES], null, null, null, null);
+			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
 
 			if (cursor.moveToFirst()) {
 				categoriesCursorAdapter.changeCursor(cursor);
@@ -430,7 +430,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
 
-		int userRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.GAME_STATS_DAILY_CHESS, getUsername());
+		int userRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.Tables.GAME_STATS_DAILY_CHESS.ordinal(), getUsername());
 
 		if (getAppData().isUserChooseVideoLibrary() || userRating > USER_PRO_RATING) { // TODO add api logic to check if user saw all videos
 			curriculumMode = false;

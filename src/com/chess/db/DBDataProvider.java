@@ -10,7 +10,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-import static com.chess.db.DBConstants.tablesArray;
+import static com.chess.db.DBConstants.Tables;
 
 /**
  * @author alien_roger
@@ -29,13 +29,13 @@ public class DBDataProvider extends ContentProvider {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcherIds = new UriMatcher(UriMatcher.NO_MATCH);
 
-		for (int i = 0; i < tablesArray.length; i++) {
-			String table = tablesArray[i];
+		for (int i = 0; i < Tables.values().length; i++) {
+			String table = Tables.values()[i].name();
 			uriMatcher.addURI(DBConstants.PROVIDER_NAME, table, i);
 		}
 
-		for (int i = 0; i < tablesArray.length; i++) {
-			String table = tablesArray[i];
+		for (int i = 0; i < Tables.values().length; i++) {
+			String table = Tables.values()[i].name();
 			uriMatcherIds.addURI(DBConstants.PROVIDER_NAME, table + SLASH_NUMBER, i);
 		}
 	}
@@ -52,46 +52,11 @@ public class DBDataProvider extends ContentProvider {
 		return (appDataBase != null);
 	}
 
-	private static String[] createTablesArray = new String[]{
-			DBConstants.TACTICS_BATCH_TABLE_CREATE,
-			DBConstants.TACTICS_RESULTS_TABLE_CREATE,
-			DBConstants.DAILY_FINISHED_GAMES_CREATE,
-			DBConstants.DAILY_CURRENT_GAMES_CREATE,
 
-			DBConstants.FRIENDS_CREATE,
-
-			DBConstants.ARTICLES_CREATE,
-			DBConstants.ARTICLE_CATEGORIES_CREATE,
-			DBConstants.VIDEOS_CREATE,
-			DBConstants.VIDEO_CATEGORIES_CREATE,
-
-			DBConstants.USER_STATS_LIVE_STANDARD_CREATE,
-			DBConstants.USER_STATS_LIVE_LIGHTNING_CREATE,
-			DBConstants.USER_STATS_LIVE_BLITZ_CREATE,
-			DBConstants.USER_STATS_DAILY_CHESS_CREATE,
-			DBConstants.USER_STATS_DAILY_CHESS960_CREATE,
-			DBConstants.USER_STATS_TACTICS_CREATE,
-			DBConstants.USER_STATS_CHESS_MENTOR_CREATE,
-
-			DBConstants.GAME_STATS_LIVE_STANDARD_CREATE,
-			DBConstants.GAME_STATS_LIVE_LIGHTNING_CREATE,
-			DBConstants.GAME_STATS_LIVE_BLITZ_CREATE,
-			DBConstants.GAME_STATS_DAILY_CHESS_CREATE,
-			DBConstants.GAME_STATS_DAILY_CHESS960_CREATE,
-
-			DBConstants.VIDEO_VIEWED_CREATE,
-
-			DBConstants.FORUM_TOPIC_CREATE,
-			DBConstants.FORUM_CATEGORIES_CREATE,
-			DBConstants.FORUM_POSTS_CREATE,
-
-			DBConstants.LESSONS_CATEGORIES_CREATE,
-			DBConstants.LESSONS_COURSES_CREATE
-	};
 
 	@Override
 	public String getType(Uri uri) {
-		for (int i=0; i < tablesArray.length; i++) {
+		for (int i=0; i < Tables.values().length; i++) {
 			if (uriMatcher.match(uri) == i) {
 				return VND_ANDROID_CURSOR_DIR + DBConstants.PROVIDER_NAME;
 			} else if (uriMatcherIds.match(uri) == i) {
@@ -108,12 +73,12 @@ public class DBDataProvider extends ContentProvider {
 		SQLiteQueryBuilder sqlBuilder = new SQLiteQueryBuilder();
 
 		boolean found = false;
-		for (int i = 0; i < tablesArray.length; i++) {
+		for (int i = 0; i < Tables.values().length; i++) {
 			if (uriMatcher.match(uri) == i) {
-				sqlBuilder.setTables(tablesArray[i]);
+				sqlBuilder.setTables(Tables.values()[i].name());
 				found = true;
 			} else if (uriMatcherIds.match(uri) == i) {
-				sqlBuilder.setTables(tablesArray[i]);
+				sqlBuilder.setTables(Tables.values()[i].name());
 				sqlBuilder.appendWhere(DBConstants._ID + EQUALS + uri.getPathSegments().get(1));
 				found = true;
 			}
@@ -132,12 +97,12 @@ public class DBDataProvider extends ContentProvider {
 		int count = 0;
 
 		boolean found = false;
-		for (int i = 0; i < tablesArray.length; i++) {
+		for (int i = 0; i < Tables.values().length; i++) {
 			if (uriMatcher.match(uri) == i) {
-				count = appDataBase.update(tablesArray[i], values, selection, selectionArgs);
+				count = appDataBase.update(Tables.values()[i].name(), values, selection, selectionArgs);
 				found = true;
 			} else if (uriMatcherIds.match(uri) == i) {
-				count = appDataBase.update(tablesArray[i], values,
+				count = appDataBase.update(Tables.values()[i].name(), values,
 						DBConstants._ID + EQUALS + uri.getPathSegments().get(1) +
 								(!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
 						selectionArgs);
@@ -154,9 +119,9 @@ public class DBDataProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-		for (int i = 0; i < tablesArray.length; i++) {
+		for (int i = 0; i < Tables.values().length; i++) {
 			if (uriMatcher.match(uri) == i || uriMatcherIds.match(uri) == i) {
-				long rowID = appDataBase.insert(tablesArray[i], "", values);
+				long rowID = appDataBase.insert(Tables.values()[i].name(), "", values);
 				//---if added successfully---
 				if (rowID > 0) {
 					Uri _uri = ContentUris.withAppendedId(DBConstants.uriArray[i], rowID);
@@ -174,14 +139,14 @@ public class DBDataProvider extends ContentProvider {
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		int count = 0;
 		boolean found = false;
-		for (int i = 0; i < tablesArray.length; i++) {
+		for (int i = 0; i < Tables.values().length; i++) {
 			if (uriMatcher.match(uri) == i) {
-				count = appDataBase.delete(tablesArray[i], selection, selectionArgs);
+				count = appDataBase.delete(Tables.values()[i].name(), selection, selectionArgs);
 				found = true;
 			} else if (uriMatcherIds.match(uri) == i) {
 				String id = uri.getPathSegments().get(1);
 				count = appDataBase.delete(
-						tablesArray[i],
+						Tables.values()[i].name(),
 						DBConstants._ID + EQUALS + id + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
 						selectionArgs);
 				found = true;
@@ -221,7 +186,12 @@ public class DBDataProvider extends ContentProvider {
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			for (String createTableCall : createTablesArray) {
+			// Init static tables first
+			DBConstants dbConstants = new DBConstants();
+			dbConstants.createMainTables();
+			dbConstants.createUserStatsTables();
+			dbConstants.createGameStatsTables();
+			for (String createTableCall : dbConstants.createTablesArray) {
 				db.execSQL(createTableCall);
 			}
 		}
@@ -235,8 +205,8 @@ public class DBDataProvider extends ContentProvider {
 							oldVersion + " to " + newVersion +
 							", which will destroy all old data");
 			// TODO handle backup data
-			for (String table : tablesArray) {
-				db.execSQL("DROP TABLE IF EXISTS " + table);
+			for (int i = 0; i < Tables.values().length; i++) {
+				db.execSQL("DROP TABLE IF EXISTS " + Tables.values()[i]);
 			}
 
 			onCreate(db);

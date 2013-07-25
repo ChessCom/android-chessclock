@@ -178,7 +178,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 		String[] argument = new String[]{getAppData().getUsername()};
 
 		{// standard
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_LIVE_STANDARD],
+			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.USER_STATS_LIVE_STANDARD.ordinal()],
 					DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
 				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
@@ -186,7 +186,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 			}
 		}
 		{// blitz
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_LIVE_BLITZ],
+			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.USER_STATS_LIVE_BLITZ.ordinal()],
 					DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
 				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
@@ -194,7 +194,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 			}
 		}
 		{// bullet
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_LIVE_LIGHTNING],
+			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.USER_STATS_LIVE_LIGHTNING.ordinal()],
 					DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
 				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
@@ -203,7 +203,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 			}
 		}
 		{// chess
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_DAILY_CHESS],
+			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.USER_STATS_DAILY_CHESS.ordinal()],
 					DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
 				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
@@ -211,7 +211,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 			}
 		}
 		{// chess960
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_DAILY_CHESS960],
+			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.USER_STATS_DAILY_CHESS960.ordinal()],
 					DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
 				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
@@ -219,7 +219,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 			}
 		}
 		{// tactics
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_TACTICS],
+			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.USER_STATS_TACTICS.ordinal()],
 					DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
 				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
@@ -227,7 +227,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 			}
 		}
 		{// chess mentor
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.USER_STATS_LESSONS],
+			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.USER_STATS_LESSONS.ordinal()],
 					DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
 				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
@@ -240,7 +240,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 
 	private void loadFriendsFromDb() {
 		new LoadDataFromDbTask(friendsCursorUpdateListener,
-				DbHelper.getUserParams(getAppData().getUsername(), DBConstants.FRIENDS),
+				DbHelper.getUserParams(getAppData().getUsername(), DBConstants.Tables.FRIENDS.ordinal()),
 				getContentResolver()).executeTask();
 	}
 

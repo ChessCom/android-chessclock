@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 39;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 40;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -22,94 +22,59 @@ public class DBConstants {
 	 */
     static final String DATABASE_NAME  = "Chess DB";
 
-	// TODO replace with enum!
-	public static final String[] tablesArray = new String[]{
-			"tactics_batch",
-			"tactics_results",
-			"daily_finished_games",
-			"daily_current_games",
-			"friends",
+	public enum Tables {
+		TACTICS_BATCH,
+		TACTICS_RESULTS,
+		DAILY_FINISHED_GAMES,
+		DAILY_CURRENT_GAMES,
+		FRIENDS,
 
-			"articles",
-			"article_categories",
-			"videos",
-			"video_categories",
+		ARTICLES,
+		ARTICLE_CATEGORIES,
+		VIDEOS,
+		VIDEO_CATEGORIES,
 
-			"user_stats_live_standard",
-			"user_stats_live_blitz",
-			"user_stats_live_lightning",
-			"user_stats_daily_chess",
-			"user_stats_daily_chess960",
-			"user_stats_tactics",
-			"user_stats_lessons",
+		USER_STATS_LIVE_STANDARD,
+		USER_STATS_LIVE_BLITZ,
+		USER_STATS_LIVE_LIGHTNING,
+		USER_STATS_DAILY_CHESS,
+		USER_STATS_DAILY_CHESS960,
+		USER_STATS_TACTICS,
+		USER_STATS_LESSONS,
 
-			"game_stats_live_standard",
-			"game_stats_live_blitz",
-			"game_stats_live_lightning",
-			"game_stats_daily_chess",
-			"game_stats_daily_chess960",
+		GAME_STATS_LIVE_STANDARD,
+		GAME_STATS_LIVE_BLITZ,
+		GAME_STATS_LIVE_LIGHTNING,
+		GAME_STATS_DAILY_CHESS,
+		GAME_STATS_DAILY_CHESS960,
 
-			"video_viewed",
+		VIDEO_VIEWED,
 
-			"forum_topics",
-			"forum_categories",
-			"forum_comments",
+		FORUM_TOPICS,
+		FORUM_CATEGORIES,
+		FORUM_POSTS,
 
-			"lessons_categories",
-			"lessons_courses"/*,
-			"lessons_lessons"*/
-	};
+		LESSONS_CATEGORIES,
+		LESSONS_COURSES
+	}
 
 	// Content URI
-	public static final Uri[] uriArray = new Uri[tablesArray.length];
+	public static final Uri[] uriArray = new Uri[Tables.values().length];
+	String[] createTablesArray;
+
+	DBConstants() {
+		createTablesArray = new String[Tables.values().length];
+	}
 
 	static {
-		for (int i = 0; i < tablesArray.length; i++) {
-			String table = tablesArray[i];
+		for (int i = 0; i < Tables.values().length; i++) {
+			String table = Tables.values()[i].name();
 			uriArray[i] = Uri.parse(CONTENT_PATH + PROVIDER_NAME + SLASH + table);
 		}
 	}
 
-    // uri paths      // TODO replace with enum!
-    public static final int TACTICS_BATCH = 0;
-    public static final int TACTICS_RESULTS = 1;
-    public static final int DAILY_FINISHED_GAMES = 2;
-    public static final int DAILY_CURRENT_GAMES = 3;
-    public static final int FRIENDS = 4;
-
-    public static final int ARTICLES = 5;
-    public static final int ARTICLE_CATEGORIES = 6;
-    public static final int VIDEOS = 7;
-    public static final int VIDEO_CATEGORIES = 8;
-
-    public static final int USER_STATS_LIVE_STANDARD = 9;
-    public static final int USER_STATS_LIVE_BLITZ = 10;
-    public static final int USER_STATS_LIVE_LIGHTNING = 11;
-    public static final int USER_STATS_DAILY_CHESS = 12;
-    public static final int USER_STATS_DAILY_CHESS960 = 13;
-    public static final int USER_STATS_TACTICS = 14;
-    public static final int USER_STATS_LESSONS = 15;
-
-    public static final int GAME_STATS_LIVE_STANDARD = 16;
-    public static final int GAME_STATS_LIVE_BLITZ = 17;
-    public static final int GAME_STATS_LIVE_LIGHTNING = 18;
-    public static final int GAME_STATS_DAILY_CHESS = 19;
-    public static final int GAME_STATS_DAILY_CHESS960 = 20;
-
-    public static final int VIDEO_VIEWED = 21;
-
-    public static final int FORUM_TOPICS = 22;
-    public static final int FORUM_CATEGORIES = 23;
-    public static final int FORUM_POSTS = 24;
-
-    public static final int LESSONS_CATEGORIES = 25;
-    public static final int LESSONS_COURSES = 26;
-    public static final int LESSONS_LESSONS = 27;
-
-
     // general fields
     public static final String _ID = "_id";
-    public static final String _COUNT = "_count";
 
     /* TacticsItem Fields */
 
@@ -210,220 +175,211 @@ public class DBConstants {
 
 	/* common commands */
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists ";
+
     private static final String _INT_NOT_NULL 		= " INT not null";
     private static final String _LONG_NOT_NULL 		= " LONG not null";
     private static final String _TEXT_NOT_NULL 		= " TEXT not null";
     private static final String _COMMA 				= ",";
     private static final String _CLOSE 				= ");";
+    private static final String _SPACE 				= " ";
     private static final String ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT = " (_id integer primary key autoincrement, ";
 
+	void createMainTables() {
 
-    static final String TACTICS_BATCH_TABLE_CREATE =
-            CREATE_TABLE_IF_NOT_EXISTS + tablesArray[TACTICS_BATCH] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 		    + _TEXT_NOT_NULL + _COMMA
-			+ V_ID       		+ _LONG_NOT_NULL + _COMMA
-			+ V_FEN 		    + _TEXT_NOT_NULL + _COMMA
-			+ V_MOVE_LIST 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_ATTEMPT_CNT     + _INT_NOT_NULL + _COMMA
-			+ V_PASSED_CNT 	    + _INT_NOT_NULL + _COMMA
-			+ V_RATING          + _INT_NOT_NULL + _COMMA
-			+ V_STOP 		    + _INT_NOT_NULL + _COMMA
-			+ V_WAS_SHOWED	    + _INT_NOT_NULL + _COMMA
-			+ V_IS_RETRY	    + _INT_NOT_NULL + _COMMA
-			+ V_SECONDS_SPENT	+ _LONG_NOT_NULL + _COMMA
-			+ V_AVG_SECONDS     + _TEXT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.TACTICS_BATCH.ordinal()] = createTableForName(Tables.TACTICS_BATCH)
+				+ addField_Text(V_USER)
+				+ addField_Long(V_ID)
+				+ addField_Text(V_FEN)
+				+ addField_Text(V_MOVE_LIST)
+				+ addField_Int(V_ATTEMPT_CNT)
+				+ addField_Int(V_PASSED_CNT)
+				+ addField_Int(V_RATING)
+				+ addField_Int(V_STOP)
+				+ addField_Int(V_WAS_SHOWED)
+				+ addField_Int(V_IS_RETRY)
+				+ addField_Long(V_SECONDS_SPENT)
+				+ addField_Text(V_AVG_SECONDS, true);
 
-    static final String TACTICS_RESULTS_TABLE_CREATE =
-            CREATE_TABLE_IF_NOT_EXISTS + tablesArray[TACTICS_RESULTS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-            + V_USER 		        	+ _TEXT_NOT_NULL + _COMMA
-            + V_ID           			+ _LONG_NOT_NULL + _COMMA
-            + V_SCORE               	+ _TEXT_NOT_NULL + _COMMA
-            + V_USER_RATING_CHANGE		+ _INT_NOT_NULL + _COMMA
-            + V_USER_RATING         	+ _INT_NOT_NULL + _COMMA
-            + V_PROBLEM_RATING_CHANGE 	+ _INT_NOT_NULL + _COMMA
-            + V_PROBLEM_RATING      	+ _INT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.TACTICS_RESULTS.ordinal()] = createTableForName(Tables.TACTICS_RESULTS)
+				+ addField_Text(V_USER)
+				+ addField_Long(V_ID)
+				+ addField_Text(V_SCORE)
+				+ addField_Int(V_USER_RATING_CHANGE)
+				+ addField_Int(V_USER_RATING)
+				+ addField_Int(V_PROBLEM_RATING_CHANGE)
+				+ addField_Int(V_PROBLEM_RATING, true);
 
-	static final String DAILY_CURRENT_GAMES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[DAILY_CURRENT_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
-			+ V_ID 				    		+ _LONG_NOT_NULL + _COMMA
-			+ V_FINISHED 					+ _INT_NOT_NULL + _COMMA
-			+ V_RATED 						+ _INT_NOT_NULL + _COMMA
-			+ V_I_PLAY_AS				    + _INT_NOT_NULL + _COMMA
-			+ V_GAME_TYPE 				    + _INT_NOT_NULL + _COMMA
-			+ V_DAYS_PER_MOVE 			    + _INT_NOT_NULL + _COMMA
-			+ V_FEN 	    				+ _TEXT_NOT_NULL + _COMMA
-			+ V_TIMESTAMP 				    + _LONG_NOT_NULL + _COMMA
-			+ V_GAME_NAME 	    			+ _TEXT_NOT_NULL + _COMMA
-			+ V_LAST_MOVE_FROM_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_LAST_MOVE_TO_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_IS_OPPONENT_ONLINE 			+ _INT_NOT_NULL + _COMMA
-			+ V_HAS_NEW_MESSAGE 			+ _INT_NOT_NULL + _COMMA
-			+ V_WHITE_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_BLACK_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_WHITE_RATING 		    	+ _INT_NOT_NULL + _COMMA
-			+ V_BLACK_RATING 				+ _INT_NOT_NULL + _COMMA
-			+ V_WHITE_PREMIUM_STATUS		+ _INT_NOT_NULL + _COMMA
-			+ V_BLACK_PREMIUM_STATUS		+ _INT_NOT_NULL + _COMMA
-			+ V_WHITE_AVATAR 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_BLACK_AVATAR 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_TIME_REMAINING 				+ _INT_NOT_NULL + _COMMA
-			+ V_FEN_START_POSITION 	    	+ _TEXT_NOT_NULL + _COMMA
-			+ V_MOVE_LIST		 	    	+ _TEXT_NOT_NULL + _COMMA
-			+ V_OPPONENT_OFFERED_DRAW       + _INT_NOT_NULL + _COMMA
-			+ V_IS_MY_TURN 	        		+ _INT_NOT_NULL + _CLOSE;
+		/* Daily Games */
+		createTablesArray[Tables.DAILY_CURRENT_GAMES.ordinal()] = createTableForName(Tables.DAILY_CURRENT_GAMES)
+				+ addField_Text(V_USER)
+				+ addField_Long(V_ID)
+				+ addField_Int(V_FINISHED)
+				+ addField_Int(V_RATED)
+				+ addField_Int(V_I_PLAY_AS)
+				+ addField_Int(V_GAME_TYPE)
+				+ addField_Int(V_DAYS_PER_MOVE)
+				+ addField_Text(V_FEN)
+				+ addField_Long(V_TIMESTAMP)
+				+ addField_Text(V_GAME_NAME)
+				+ addField_Text(V_LAST_MOVE_FROM_SQUARE)
+				+ addField_Text(V_LAST_MOVE_TO_SQUARE)
+				+ addField_Int(V_IS_OPPONENT_ONLINE)
+				+ addField_Int(V_HAS_NEW_MESSAGE)
+				+ addField_Text(V_WHITE_USERNAME)
+				+ addField_Text(V_BLACK_USERNAME)
+				+ addField_Int(V_WHITE_RATING)
+				+ addField_Int(V_BLACK_RATING)
+				+ addField_Int(V_WHITE_PREMIUM_STATUS)
+				+ addField_Int(V_BLACK_PREMIUM_STATUS)
+				+ addField_Text(V_WHITE_AVATAR)
+				+ addField_Text(V_BLACK_AVATAR)
+				+ addField_Int(V_TIME_REMAINING)
+				+ addField_Text(V_FEN_START_POSITION)
+				+ addField_Text(V_MOVE_LIST)
+				+ addField_Int(V_OPPONENT_OFFERED_DRAW)
+				+ addField_Int(V_IS_MY_TURN, true);
 
-    static final String DAILY_FINISHED_GAMES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[DAILY_FINISHED_GAMES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 				    	+ _TEXT_NOT_NULL + _COMMA
-			+ V_ID 				    		+ _LONG_NOT_NULL + _COMMA
-			+ V_FINISHED 					+ _INT_NOT_NULL + _COMMA
-			+ V_RATED 						+ _INT_NOT_NULL + _COMMA
-			+ V_I_PLAY_AS				    + _INT_NOT_NULL + _COMMA
-			+ V_GAME_TYPE 				    + _INT_NOT_NULL + _COMMA
-			+ V_DAYS_PER_MOVE 			    + _INT_NOT_NULL + _COMMA
-			+ V_FEN 	    				+ _TEXT_NOT_NULL + _COMMA
-			+ V_TIMESTAMP 				    + _LONG_NOT_NULL + _COMMA
-			+ V_GAME_NAME 	    			+ _TEXT_NOT_NULL + _COMMA
-			+ V_LAST_MOVE_FROM_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_LAST_MOVE_TO_SQUARE 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_IS_OPPONENT_ONLINE 			+ _INT_NOT_NULL + _COMMA
-			+ V_HAS_NEW_MESSAGE 			+ _INT_NOT_NULL + _COMMA
-			+ V_WHITE_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_BLACK_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_WHITE_AVATAR 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_BLACK_AVATAR 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_WHITE_RATING 		    	+ _INT_NOT_NULL + _COMMA
-			+ V_BLACK_RATING 				+ _INT_NOT_NULL + _COMMA
-			+ V_WHITE_PREMIUM_STATUS		+ _INT_NOT_NULL + _COMMA
-			+ V_BLACK_PREMIUM_STATUS		+ _INT_NOT_NULL + _COMMA
-			+ V_TIME_REMAINING 				+ _INT_NOT_NULL + _COMMA
-			+ V_FEN_START_POSITION 	    	+ _TEXT_NOT_NULL + _COMMA
-			+ V_MOVE_LIST		 	    	+ _TEXT_NOT_NULL + _COMMA
-			+ V_RESULT_MESSAGE 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_GAME_SCORE 					+ _INT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.DAILY_FINISHED_GAMES.ordinal()] = createTableForName(Tables.DAILY_FINISHED_GAMES)
+				+ addField_Text(V_USER)
+				+ addField_Long(V_ID)
+				+ addField_Int(V_FINISHED)
+				+ addField_Int(V_RATED)
+				+ addField_Int(V_I_PLAY_AS)
+				+ addField_Int(V_GAME_TYPE)
+				+ addField_Int(V_DAYS_PER_MOVE)
+				+ addField_Text(V_FEN)
+				+ addField_Long(V_TIMESTAMP)
+				+ addField_Text(V_GAME_NAME)
+				+ addField_Text(V_LAST_MOVE_FROM_SQUARE)
+				+ addField_Text(V_LAST_MOVE_TO_SQUARE)
+				+ addField_Int(V_IS_OPPONENT_ONLINE)
+				+ addField_Int(V_HAS_NEW_MESSAGE)
+				+ addField_Text(V_WHITE_USERNAME)
+				+ addField_Text(V_BLACK_USERNAME)
+				+ addField_Text(V_WHITE_AVATAR)
+				+ addField_Text(V_BLACK_AVATAR)
+				+ addField_Int(V_WHITE_RATING)
+				+ addField_Int(V_BLACK_RATING)
+				+ addField_Int(V_WHITE_PREMIUM_STATUS)
+				+ addField_Int(V_BLACK_PREMIUM_STATUS)
+				+ addField_Int(V_TIME_REMAINING)
+				+ addField_Text(V_FEN_START_POSITION)
+				+ addField_Text(V_MOVE_LIST)
+				+ addField_Text(V_RESULT_MESSAGE)
+				+ addField_Int(V_GAME_SCORE, true);
 
-	static final String FRIENDS_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[FRIENDS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_LOCATION 	    		+ _TEXT_NOT_NULL + _COMMA
-			+ V_COUNTRY_ID 	    		+ _INT_NOT_NULL + _COMMA
-			+ V_PREMIUM_STATUS    		+ _INT_NOT_NULL + _COMMA
-			+ V_IS_OPPONENT_ONLINE 		+ _INT_NOT_NULL + _COMMA
-			+ V_LAST_LOGIN_DATE 		+ _LONG_NOT_NULL + _COMMA
-			+ V_USER_ID 	    		+ _INT_NOT_NULL + _COMMA
-			+ V_PHOTO_URL 	    		+ _TEXT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.FRIENDS.ordinal()] = createTableForName(Tables.FRIENDS)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_USERNAME)
+				+ addField_Text(V_LOCATION)
+				+ addField_Int(V_COUNTRY_ID)
+				+ addField_Int(V_PREMIUM_STATUS)
+				+ addField_Int(V_IS_OPPONENT_ONLINE)
+				+ addField_Long(V_LAST_LOGIN_DATE)
+				+ addField_Int(V_USER_ID)
+				+ addField_Text(V_PHOTO_URL, true);
 
+		/* Articles */
+		createTablesArray[Tables.ARTICLES.ordinal()] = createTableForName(Tables.ARTICLES)
+				+ addField_Long(V_ID)
+				+ addField_Long(V_CATEGORY_ID)
+				+ addField_Long(V_USER_ID)
+				+ addField_Long(V_CREATE_DATE)
+				+ addField_Int(V_COUNTRY_ID)
+				+ addField_Text(V_TITLE)
+				+ addField_Text(V_CATEGORY)
+				+ addField_Text(V_USERNAME)
+				+ addField_Text(V_FIRST_NAME)
+				+ addField_Text(V_LAST_NAME)
+				+ addField_Text(V_USER_AVATAR)
+				+ addField_Text(V_PHOTO_URL)
+				+ addField_Text(V_THUMB_CONTENT)
+				+ addField_Text(V_CHESS_TITLE, true);
 
-	static final String ARTICLES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[ARTICLES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_ID 						+ _LONG_NOT_NULL + _COMMA
-			+ V_TITLE 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CREATE_DATE 			+ _LONG_NOT_NULL + _COMMA
-			+ V_CATEGORY 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_CATEGORY_ID 			+ _LONG_NOT_NULL + _COMMA
-			+ V_USER_ID 				+ _LONG_NOT_NULL + _COMMA
-			+ V_USERNAME 	    		+ _TEXT_NOT_NULL + _COMMA
-			+ V_COUNTRY_ID 	    		+ _INT_NOT_NULL + " DEFAULT 0"+ _COMMA
-			+ V_FIRST_NAME 	    		+ _TEXT_NOT_NULL + " DEFAULT TestFirstName"+ _COMMA
-			+ V_LAST_NAME 	    		+ _TEXT_NOT_NULL + " DEFAULT TestLastName"+ _COMMA
-			+ V_USER_AVATAR 	    	+ _TEXT_NOT_NULL + _COMMA
-			+ V_PHOTO_URL 	    		+ _TEXT_NOT_NULL + _COMMA
-			+ V_THUMB_CONTENT 	    	+ _TEXT_NOT_NULL + _COMMA
-			+ V_CHESS_TITLE 	    	+ _TEXT_NOT_NULL + " DEFAULT TestIM"+ _CLOSE;
+		createTablesArray[Tables.ARTICLE_CATEGORIES.ordinal()] = createTableForName(Tables.ARTICLE_CATEGORIES)
+				+ addField_Text(V_NAME)
+				+ addField_Int(V_CATEGORY_ID)
+				+ addField_Int(V_DISPLAY_ORDER, true);
 
-	static final String ARTICLE_CATEGORIES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[ARTICLE_CATEGORIES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
-			+ V_DISPLAY_ORDER 	    	+ _INT_NOT_NULL + _CLOSE;
+		/* Videos */
+		createTablesArray[Tables.VIDEOS.ordinal()] = createTableForName(Tables.VIDEOS)
+				+ addField_Long(V_CREATE_DATE)
+				+ addField_Int(V_CATEGORY_ID)
+				+ addField_Int(V_ID)
+				+ addField_Int(V_MINUTES)
+				+ addField_Int(V_VIEW_COUNT)
+				+ addField_Int(V_COUNTRY_ID)
+				+ addField_Int(V_COMMENT_COUNT)
+				+ addField_Text(V_TITLE)
+				+ addField_Text(V_DESCRIPTION)
+				+ addField_Text(V_CATEGORY)
+				+ addField_Text(V_SKILL_LEVEL)
+				+ addField_Text(V_USERNAME)
+				+ addField_Text(V_USER_AVATAR)
+				+ addField_Text(V_URL)
+				+ addField_Text(V_KEY_FEN)
+				+ addField_Text(V_FIRST_NAME)
+				+ addField_Text(V_LAST_NAME)
+				+ addField_Text(V_CHESS_TITLE, true);
 
-	static final String VIDEOS_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[VIDEOS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_TITLE 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_DESCRIPTION 			+ _TEXT_NOT_NULL + _COMMA
-			+ V_CATEGORY 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
-			+ V_ID 						+ _INT_NOT_NULL + _COMMA
-			+ V_SKILL_LEVEL 			+ _TEXT_NOT_NULL + _COMMA
-			+ V_USERNAME				+ _TEXT_NOT_NULL + _COMMA
-			+ V_USER_AVATAR				+ _TEXT_NOT_NULL + _COMMA
-			+ V_MINUTES 				+ _INT_NOT_NULL + _COMMA
-			+ V_VIEW_COUNT 				+ _INT_NOT_NULL + _COMMA
-			+ V_COUNTRY_ID 				+ _INT_NOT_NULL + _COMMA
-			+ V_COMMENT_COUNT 			+ _INT_NOT_NULL + _COMMA
-			+ V_CREATE_DATE 	    	+ _LONG_NOT_NULL + _COMMA
-			+ V_URL 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_KEY_FEN 	    		+ _TEXT_NOT_NULL + _COMMA
-			+ V_FIRST_NAME 	    		+ _TEXT_NOT_NULL + _COMMA
-			+ V_LAST_NAME 	    		+ _TEXT_NOT_NULL + _COMMA
-			+ V_CHESS_TITLE 	    	+ _TEXT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.VIDEO_VIEWED.ordinal()] = createTableForName(Tables.VIDEO_VIEWED)
+				+ addField_Text(V_USER)
+				+ addField_Int(V_ID)
+				+ addField_Int(V_VIDEO_VIEWED, true);
 
-	static final String VIDEO_VIEWED_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[VIDEO_VIEWED] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_ID 						+ _INT_NOT_NULL + _COMMA
-			+ V_VIDEO_VIEWED 	    	+ _INT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.VIDEO_CATEGORIES.ordinal()] = createTableForName(Tables.VIDEO_CATEGORIES)
+				+ addField_Text(V_NAME)
+				+ addField_Int(V_CATEGORY_ID)
+				+ addField_Int(V_DISPLAY_ORDER, true);
 
-	static final String VIDEO_CATEGORIES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[VIDEO_CATEGORIES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
-			+ V_DISPLAY_ORDER 	    	+ _INT_NOT_NULL + _CLOSE;
+		/* Forums */
+		createTablesArray[Tables.FORUM_CATEGORIES.ordinal()] = createTableForName(Tables.FORUM_CATEGORIES)
+				+ addField_Long(V_CREATE_DATE)
+				+ addField_Long(V_LAST_POST_DATE)
+				+ addField_Int(V_ID)
+				+ addField_Int(V_DISPLAY_ORDER)
+				+ addField_Int(V_TOPIC_COUNT)
+				+ addField_Text(V_POST_COUNT)
+				+ addField_Text(V_MIN_MEMBERSHIP)
+				+ addField_Text(V_NAME)
+				+ addField_Text(V_DESCRIPTION, true);
 
-	/* Forums */
-	static final String FORUM_CATEGORIES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[FORUM_CATEGORIES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_ID 						+ _INT_NOT_NULL + _COMMA
-			+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CREATE_DATE				+ _LONG_NOT_NULL + _COMMA
-			+ V_LAST_POST_DATE			+ _LONG_NOT_NULL + _COMMA
-			+ V_DISPLAY_ORDER			+ _INT_NOT_NULL + _COMMA
-			+ V_DESCRIPTION				+ _TEXT_NOT_NULL + _COMMA
-			+ V_TOPIC_COUNT				+ _INT_NOT_NULL + _COMMA
-			+ V_POST_COUNT				+ _INT_NOT_NULL + _COMMA
-			+ V_MIN_MEMBERSHIP			+ _INT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.FORUM_TOPICS.ordinal()] = createTableForName(Tables.FORUM_TOPICS)
+				+ addField_Long(V_LAST_POST_DATE)
+				+ addField_Int(V_ID)
+				+ addField_Int(V_CATEGORY_ID)
+				+ addField_Int(V_POST_COUNT)
+				+ addField_Int(V_PAGE)
+				+ addField_Text(V_TITLE)
+				+ addField_Text(V_CATEGORY)
+				+ addField_Text(V_URL)
+				+ addField_Text(V_USERNAME)
+				+ addField_Text(V_LAST_POST_USERNAME, true);
 
-	static final String FORUM_TOPIC_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[FORUM_TOPICS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_TITLE 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_ID 						+ _INT_NOT_NULL + _COMMA
-			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
-			+ V_CATEGORY 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_URL 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_USERNAME 				+ _TEXT_NOT_NULL + _COMMA
-			+ V_LAST_POST_USERNAME 		+ _TEXT_NOT_NULL + _COMMA
-			+ V_POST_COUNT 				+ _INT_NOT_NULL + _COMMA
-			+ V_PAGE 					+ _INT_NOT_NULL + _COMMA
-			+ V_LAST_POST_DATE 	    	+ _LONG_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.FORUM_POSTS.ordinal()] = createTableForName(Tables.FORUM_POSTS)
+				+ addField_Long(V_CREATE_DATE)
+				+ addField_Int(V_COUNTRY_ID)
+				+ addField_Int(V_PREMIUM_STATUS)
+				+ addField_Int(V_COMMENT_NUMBER)
+				+ addField_Int(V_PAGE)
+				+ addField_Int(V_ID)
+				+ addField_Text(V_USERNAME)
+				+ addField_Text(V_DESCRIPTION)
+				+ addField_Text(V_PHOTO_URL, true);
 
-	static final String FORUM_POSTS_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[FORUM_POSTS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_ID 						+ _INT_NOT_NULL + _COMMA    // Topic id!
-			+ V_USERNAME				+ _TEXT_NOT_NULL + _COMMA
-			+ V_PHOTO_URL				+ _TEXT_NOT_NULL + _COMMA
-			+ V_COUNTRY_ID				+ _INT_NOT_NULL + _COMMA
-			+ V_PREMIUM_STATUS			+ _INT_NOT_NULL + _COMMA
-			+ V_COMMENT_NUMBER			+ _INT_NOT_NULL + _COMMA
-			+ V_PAGE					+ _INT_NOT_NULL + _COMMA
-			+ V_CREATE_DATE				+ _LONG_NOT_NULL + _COMMA
-			+ V_DESCRIPTION				+ _LONG_NOT_NULL + _CLOSE;
+		/* Lessons */
+		createTablesArray[Tables.LESSONS_CATEGORIES.ordinal()] = createTableForName(Tables.LESSONS_CATEGORIES)
+				+ addField_Text(V_NAME)
+				+ addField_Int(V_CATEGORY_ID)
+				+ addField_Int(V_DISPLAY_ORDER, true);
 
-	/* Lessons */
-	static final String LESSONS_CATEGORIES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[LESSONS_CATEGORIES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
-			+ V_DISPLAY_ORDER 	    	+ _INT_NOT_NULL + _CLOSE;
-
-	static final String LESSONS_COURSES_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[LESSONS_COURSES] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_ID 						+ _INT_NOT_NULL + _COMMA
-			+ V_NAME 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CATEGORY_ID 			+ _INT_NOT_NULL + _COMMA
-			+ V_COURSE_COMPLETED		+ _INT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.LESSONS_COURSES.ordinal()] = createTableForName(Tables.LESSONS_COURSES)
+				+ addField_Int(V_ID)
+				+ addField_Int(V_CATEGORY_ID)
+				+ addField_Int(V_COURSE_COMPLETED)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_NAME, true);
+	}
 
 	/* ==================== User Stats ============================== */
 	 /*Rating*/
@@ -461,116 +417,110 @@ public class DBConstants {
 	public static final String V_LESSON_COMPLETE_PERCENTAGE = "lesson_complete_percentage";
 	public static final String V_TOTAL_TRAINING_SECONDS 	= "total_training_seconds";
 
+	void createUserStatsTables() {
+		createTablesArray[Tables.USER_STATS_LIVE_STANDARD.ordinal()] = createTableForName(Tables.USER_STATS_LIVE_STANDARD)
+				+ addField_Long(V_HIGHEST_TIMESTAMP)
+				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_HIGHEST_RATING)
+				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Int(V_AVERAGE_OPPONENT)
+				+ addField_Int(V_GAMES_TOTAL)
+				+ addField_Int(V_GAMES_WINS)
+				+ addField_Int(V_GAMES_LOSSES)
+				+ addField_Int(V_GAMES_DRAWS)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_BEST_WIN_USERNAME, true);
 
-	static final String USER_STATS_LIVE_STANDARD_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_LIVE_STANDARD] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
-			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
-			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_WINS   	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_LOSSES 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_DRAWS  	    	+ _INT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.USER_STATS_LIVE_LIGHTNING.ordinal()] = createTableForName(Tables.USER_STATS_LIVE_LIGHTNING)
+				+ addField_Long(V_HIGHEST_TIMESTAMP)
+				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_HIGHEST_RATING)
+				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Int(V_AVERAGE_OPPONENT)
+				+ addField_Int(V_GAMES_TOTAL)
+				+ addField_Int(V_GAMES_WINS)
+				+ addField_Int(V_GAMES_LOSSES)
+				+ addField_Int(V_GAMES_DRAWS)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_BEST_WIN_USERNAME, true);
 
-	static final String USER_STATS_LIVE_LIGHTNING_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_LIVE_LIGHTNING] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
-			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
-			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_WINS   	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_LOSSES 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_DRAWS  	    	+ _INT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.USER_STATS_LIVE_BLITZ.ordinal()] = createTableForName(Tables.USER_STATS_LIVE_BLITZ)
+				+ addField_Long(V_HIGHEST_TIMESTAMP)
+				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_HIGHEST_RATING)
+				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Int(V_AVERAGE_OPPONENT)
+				+ addField_Int(V_GAMES_TOTAL)
+				+ addField_Int(V_GAMES_WINS)
+				+ addField_Int(V_GAMES_LOSSES)
+				+ addField_Int(V_GAMES_DRAWS)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_BEST_WIN_USERNAME, true);
 
-	static final String USER_STATS_LIVE_BLITZ_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_LIVE_BLITZ] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
-			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
-			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_WINS   	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_LOSSES 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_DRAWS  	    	+ _INT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.USER_STATS_DAILY_CHESS.ordinal()] = createTableForName(Tables.USER_STATS_DAILY_CHESS)
+				+ addField_Long(V_HIGHEST_TIMESTAMP)
+				+ addField_Long(V_BEST_WIN_GAME_ID)
+				+ addField_Long(V_TIME_PER_MOVE)
+				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_HIGHEST_RATING)
+				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Int(V_AVERAGE_OPPONENT)
+				+ addField_Int(V_TOTAL_PLAYER_COUNT)
+				+ addField_Int(V_GAMES_TOTAL)
+				+ addField_Int(V_GAMES_WINS)
+				+ addField_Int(V_GAMES_LOSSES)
+				+ addField_Int(V_GAMES_DRAWS)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_BEST_WIN_USERNAME)
+				+ addField_Text(V_RANK)
+				+ addField_Text(V_TIMEOUTS, true);
 
-	static final String USER_STATS_DAILY_CHESS_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_DAILY_CHESS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
-			+ V_BEST_WIN_GAME_ID 	    + _LONG_NOT_NULL + _COMMA
-			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
-			+ V_RANK 	    			+ _TEXT_NOT_NULL + _COMMA
-			+ V_TOTAL_PLAYER_COUNT 	    + _INT_NOT_NULL + _COMMA
-			+ V_TIMEOUTS 	    		+ _TEXT_NOT_NULL + _COMMA
-			+ V_TIME_PER_MOVE 	    	+ _LONG_NOT_NULL + _COMMA
-			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_WINS   	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_LOSSES 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_DRAWS  	    	+ _INT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.USER_STATS_DAILY_CHESS960.ordinal()] = createTableForName(Tables.USER_STATS_DAILY_CHESS960)
+				+ addField_Long(V_HIGHEST_TIMESTAMP)
+				+ addField_Long(V_BEST_WIN_GAME_ID)
+				+ addField_Long(V_TIME_PER_MOVE)
+				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_HIGHEST_RATING)
+				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Int(V_AVERAGE_OPPONENT)
+				+ addField_Int(V_TOTAL_PLAYER_COUNT)
+				+ addField_Int(V_GAMES_TOTAL)
+				+ addField_Int(V_GAMES_WINS)
+				+ addField_Int(V_GAMES_LOSSES)
+				+ addField_Int(V_GAMES_DRAWS)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_BEST_WIN_USERNAME)
+				+ addField_Text(V_RANK)
+				+ addField_Text(V_TIMEOUTS, true);
 
-	static final String USER_STATS_DAILY_CHESS960_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_DAILY_CHESS960] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
-			+ V_BEST_WIN_GAME_ID 	    + _LONG_NOT_NULL + _COMMA
-			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
-			+ V_RANK 	    			+ _TEXT_NOT_NULL + _COMMA
-			+ V_TOTAL_PLAYER_COUNT 	    + _INT_NOT_NULL + _COMMA
-			+ V_TIMEOUTS 	    		+ _TEXT_NOT_NULL + _COMMA
-			+ V_TIME_PER_MOVE 	    	+ _LONG_NOT_NULL + _COMMA
-			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_WINS   	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_LOSSES 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_DRAWS  	    	+ _INT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.USER_STATS_TACTICS.ordinal()] = createTableForName(Tables.USER_STATS_TACTICS)
+				+ addField_Long(V_HIGHEST_TIMESTAMP)
+				+ addField_Long(V_LOWEST_TIMESTAMP)
+				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_HIGHEST_RATING)
+				+ addField_Int(V_LOWEST_RATING)
+				+ addField_Int(V_ATTEMPT_COUNT)
+				+ addField_Int(V_PASSED_COUNT)
+				+ addField_Int(V_FAILED_COUNT)
+				+ addField_Int(V_TODAYS_ATTEMPTS)
+				+ addField_Int(V_TODAYS_AVG_SCORE)
+				+ addField_Int(V_TOTAL_SECONDS)
+				+ addField_Text(V_USER, true);
+
+		createTablesArray[Tables.USER_STATS_LESSONS.ordinal()] = createTableForName(Tables.USER_STATS_LESSONS)
+				+ addField_Long(V_HIGHEST_TIMESTAMP)
+				+ addField_Long(V_LOWEST_TIMESTAMP)
+				+ addField_Long(V_TOTAL_TRAINING_SECONDS)
+				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_HIGHEST_RATING)
+				+ addField_Int(V_LOWEST_RATING)
+				+ addField_Int(V_LESSONS_TRIED)
+				+ addField_Int(V_TOTAL_LESSON_COUNT)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_LESSON_COMPLETE_PERCENTAGE, true);
 
 
-	static final String USER_STATS_TACTICS_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_TACTICS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_ATTEMPT_COUNT  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_PASSED_COUNT   	    	+ _INT_NOT_NULL + _COMMA
-			+ V_FAILED_COUNT 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TODAYS_ATTEMPTS 		+ _INT_NOT_NULL + _COMMA
-			+ V_TODAYS_AVG_SCORE	    + _INT_NOT_NULL + _COMMA
-			+ V_TOTAL_SECONDS  	    	+ _INT_NOT_NULL + _CLOSE;
-
-	static final String USER_STATS_CHESS_MENTOR_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[USER_STATS_LESSONS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_LESSONS_TRIED  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TOTAL_LESSON_COUNT   	    + _INT_NOT_NULL + _COMMA
-			+ V_LESSON_COMPLETE_PERCENTAGE 	+ _TEXT_NOT_NULL + _COMMA
-			+ V_TOTAL_TRAINING_SECONDS  	+ _LONG_NOT_NULL + _CLOSE;
-
+	}
 
 	/* ==================== Game Stats ============================== */
 
@@ -613,232 +563,256 @@ public class DBConstants {
 	public static final String V_TOURNAMENTS_GAMES_DRAWN 			= "tournaments_games_drawn";
 	public static final String V_TOURNAMENTS_GAMES_IN_PROGRESS 		= "tournaments_games_in_progress";
 
-	static final String GAME_STATS_LIVE_STANDARD_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[GAME_STATS_LIVE_STANDARD] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
-			+ V_RANK 	    			+ _TEXT_NOT_NULL + _COMMA
-			+ V_TOTAL_PLAYER_COUNT 	    + _INT_NOT_NULL + _COMMA
-			+ V_PERCENTILE 	    		+ _TEXT_NOT_NULL + _COMMA
-			+ V_GLICKO_RD 	    		+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
-			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
-			+ V_BEST_WIN_GAME_ID 	    + _LONG_NOT_NULL + _COMMA
-			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_AVG_OPPONENT_RATING_WIN + _INT_NOT_NULL + _COMMA
-			+ V_AVG_OPPONENT_RATING_LOSE + _INT_NOT_NULL + _COMMA
-			+ V_AVG_OPPONENT_RATING_DRAW + _INT_NOT_NULL + _COMMA
-			+ V_UNRATED  	    		+ _INT_NOT_NULL + _COMMA
-			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TIMEOUTS  		+ _TEXT_NOT_NULL + _COMMA
-					/* Games */
-			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOSSES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOSSES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOSSES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_DRAWS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_DRAWS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_DRAWS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINNING_STREAK  	    + _INT_NOT_NULL + _COMMA
-			+ V_LOSING_STREAK	  	    + _INT_NOT_NULL + _COMMA
-			+ V_FREQUENT_OPPONENT_NAME  	    + _TEXT_NOT_NULL + _COMMA
-			+ V_FREQUENT_OPPONENT_GAMES_PLAYED	+ _INT_NOT_NULL + _CLOSE;
+	void createGameStatsTables() {
+		createTablesArray[Tables.GAME_STATS_LIVE_STANDARD.ordinal()] = createTableForName(Tables.GAME_STATS_LIVE_STANDARD)
+				+ addField_Long(V_HIGHEST_TIMESTAMP)
+				+ addField_Long(V_LOWEST_TIMESTAMP)
+				+ addField_Long(V_BEST_WIN_GAME_ID)
+				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_TOTAL_PLAYER_COUNT)
+				+ addField_Int(V_GLICKO_RD)
+				+ addField_Int(V_HIGHEST_RATING)
+				+ addField_Int(V_LOWEST_RATING)
+				+ addField_Int(V_AVERAGE_OPPONENT)
+				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Int(V_AVG_OPPONENT_RATING_WIN)
+				+ addField_Int(V_AVG_OPPONENT_RATING_LOSE)
+				+ addField_Int(V_AVG_OPPONENT_RATING_DRAW)
+				+ addField_Int(V_UNRATED)
+				+ addField_Int(V_IN_PROGRESS)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_RANK)
+				+ addField_Text(V_PERCENTILE)
+				+ addField_Text(V_BEST_WIN_USERNAME)
+				+ addField_Text(V_TIMEOUTS)
+				/* Games */
+				+ addField_Int(V_GAMES_TOTAL)
+				+ addField_Int(V_GAMES_WHITE)
+				+ addField_Int(V_GAMES_BLACK)
+				+ addField_Int(V_WINS_TOTAL)
+				+ addField_Int(V_WINS_WHITE)
+				+ addField_Int(V_WINS_BLACK)
+				+ addField_Int(V_LOSSES_TOTAL)
+				+ addField_Int(V_LOSSES_WHITE)
+				+ addField_Int(V_LOSSES_BLACK)
+				+ addField_Int(V_DRAWS_TOTAL)
+				+ addField_Int(V_DRAWS_WHITE)
+				+ addField_Int(V_DRAWS_BLACK)
+				+ addField_Int(V_WINNING_STREAK)
+				+ addField_Int(V_LOSING_STREAK)
+				+ addField_Int(V_FREQUENT_OPPONENT_GAMES_PLAYED)
+				+ addField_Text(V_FREQUENT_OPPONENT_NAME, true);
 
+		createTablesArray[Tables.GAME_STATS_LIVE_BLITZ.ordinal()] = createTableForName(Tables.GAME_STATS_LIVE_BLITZ)
+				+ addField_Long(V_HIGHEST_TIMESTAMP)
+				+ addField_Long(V_LOWEST_TIMESTAMP)
+				+ addField_Long(V_BEST_WIN_GAME_ID)
+				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_TOTAL_PLAYER_COUNT)
+				+ addField_Int(V_GLICKO_RD)
+				+ addField_Int(V_HIGHEST_RATING)
+				+ addField_Int(V_LOWEST_RATING)
+				+ addField_Int(V_AVERAGE_OPPONENT)
+				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Int(V_AVG_OPPONENT_RATING_WIN)
+				+ addField_Int(V_AVG_OPPONENT_RATING_LOSE)
+				+ addField_Int(V_AVG_OPPONENT_RATING_DRAW)
+				+ addField_Int(V_UNRATED)
+				+ addField_Int(V_IN_PROGRESS)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_RANK)
+				+ addField_Text(V_PERCENTILE)
+				+ addField_Text(V_BEST_WIN_USERNAME)
+				+ addField_Text(V_TIMEOUTS)
+				/* Games */
+				+ addField_Int(V_GAMES_TOTAL)
+				+ addField_Int(V_GAMES_WHITE)
+				+ addField_Int(V_GAMES_BLACK)
+				+ addField_Int(V_WINS_TOTAL)
+				+ addField_Int(V_WINS_WHITE)
+				+ addField_Int(V_WINS_BLACK)
+				+ addField_Int(V_LOSSES_TOTAL)
+				+ addField_Int(V_LOSSES_WHITE)
+				+ addField_Int(V_LOSSES_BLACK)
+				+ addField_Int(V_DRAWS_TOTAL)
+				+ addField_Int(V_DRAWS_WHITE)
+				+ addField_Int(V_DRAWS_BLACK)
+				+ addField_Int(V_WINNING_STREAK)
+				+ addField_Int(V_LOSING_STREAK)
+				+ addField_Int(V_FREQUENT_OPPONENT_GAMES_PLAYED)
+				+ addField_Text(V_FREQUENT_OPPONENT_NAME, true);
 
-	static final String GAME_STATS_LIVE_LIGHTNING_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[GAME_STATS_LIVE_LIGHTNING] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
-			+ V_RANK 	    			+ _TEXT_NOT_NULL + _COMMA
-			+ V_TOTAL_PLAYER_COUNT 	    + _INT_NOT_NULL + _COMMA
-			+ V_PERCENTILE 	    		+ _TEXT_NOT_NULL + _COMMA
-			+ V_GLICKO_RD 	    		+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
-			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
-			+ V_BEST_WIN_GAME_ID 	    + _LONG_NOT_NULL + _COMMA
-			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_AVG_OPPONENT_RATING_WIN + _INT_NOT_NULL + _COMMA
-			+ V_AVG_OPPONENT_RATING_LOSE + _INT_NOT_NULL + _COMMA
-			+ V_AVG_OPPONENT_RATING_DRAW + _INT_NOT_NULL + _COMMA
-			+ V_UNRATED  	    		+ _INT_NOT_NULL + _COMMA
-			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TIMEOUTS  		+ _TEXT_NOT_NULL + _COMMA
-					/* Games */
-			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOSSES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOSSES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOSSES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_DRAWS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_DRAWS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_DRAWS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINNING_STREAK  	    + _INT_NOT_NULL + _COMMA
-			+ V_LOSING_STREAK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_FREQUENT_OPPONENT_NAME  	    + _TEXT_NOT_NULL + _COMMA
-			+ V_FREQUENT_OPPONENT_GAMES_PLAYED	+ _INT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.GAME_STATS_LIVE_LIGHTNING.ordinal()] = createTableForName(Tables.GAME_STATS_LIVE_LIGHTNING)
+				+ addField_Long(V_HIGHEST_TIMESTAMP)
+				+ addField_Long(V_LOWEST_TIMESTAMP)
+				+ addField_Long(V_BEST_WIN_GAME_ID)
+				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_TOTAL_PLAYER_COUNT)
+				+ addField_Int(V_GLICKO_RD)
+				+ addField_Int(V_HIGHEST_RATING)
+				+ addField_Int(V_LOWEST_RATING)
+				+ addField_Int(V_AVERAGE_OPPONENT)
+				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Int(V_AVG_OPPONENT_RATING_WIN)
+				+ addField_Int(V_AVG_OPPONENT_RATING_LOSE)
+				+ addField_Int(V_AVG_OPPONENT_RATING_DRAW)
+				+ addField_Int(V_UNRATED)
+				+ addField_Int(V_IN_PROGRESS)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_RANK)
+				+ addField_Text(V_PERCENTILE)
+				+ addField_Text(V_BEST_WIN_USERNAME)
+				+ addField_Text(V_TIMEOUTS)
+				/* Games */
+				+ addField_Int(V_GAMES_TOTAL)
+				+ addField_Int(V_GAMES_WHITE)
+				+ addField_Int(V_GAMES_BLACK)
+				+ addField_Int(V_WINS_TOTAL)
+				+ addField_Int(V_WINS_WHITE)
+				+ addField_Int(V_WINS_BLACK)
+				+ addField_Int(V_LOSSES_TOTAL)
+				+ addField_Int(V_LOSSES_WHITE)
+				+ addField_Int(V_LOSSES_BLACK)
+				+ addField_Int(V_DRAWS_TOTAL)
+				+ addField_Int(V_DRAWS_WHITE)
+				+ addField_Int(V_DRAWS_BLACK)
+				+ addField_Int(V_WINNING_STREAK)
+				+ addField_Int(V_LOSING_STREAK)
+				+ addField_Int(V_FREQUENT_OPPONENT_GAMES_PLAYED)
+				+ addField_Text(V_FREQUENT_OPPONENT_NAME, true);
 
-	static final String GAME_STATS_LIVE_BLITZ_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[GAME_STATS_LIVE_BLITZ] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
-			+ V_RANK 	    			+ _TEXT_NOT_NULL + _COMMA
-			+ V_TOTAL_PLAYER_COUNT 	    + _INT_NOT_NULL + _COMMA
-			+ V_PERCENTILE 	    		+ _TEXT_NOT_NULL + _COMMA
-			+ V_GLICKO_RD 	    		+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
-			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
-			+ V_BEST_WIN_GAME_ID 	    + _LONG_NOT_NULL + _COMMA
-			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_AVG_OPPONENT_RATING_WIN + _INT_NOT_NULL + _COMMA
-			+ V_AVG_OPPONENT_RATING_LOSE + _INT_NOT_NULL + _COMMA
-			+ V_AVG_OPPONENT_RATING_DRAW + _INT_NOT_NULL + _COMMA
-			+ V_UNRATED  	    		+ _INT_NOT_NULL + _COMMA
-			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TIMEOUTS  		+ _TEXT_NOT_NULL + _COMMA
-					/* Games */
-			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOSSES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOSSES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOSSES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_DRAWS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_DRAWS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_DRAWS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINNING_STREAK  	    + _INT_NOT_NULL + _COMMA
-			+ V_LOSING_STREAK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_FREQUENT_OPPONENT_NAME  	    + _TEXT_NOT_NULL + _COMMA
-			+ V_FREQUENT_OPPONENT_GAMES_PLAYED	+ _INT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.GAME_STATS_DAILY_CHESS.ordinal()] = createTableForName(Tables.GAME_STATS_DAILY_CHESS)
+				+ addField_Long(V_HIGHEST_TIMESTAMP)
+				+ addField_Long(V_LOWEST_TIMESTAMP)
+				+ addField_Long(V_BEST_WIN_GAME_ID)
+				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_TOTAL_PLAYER_COUNT)
+				+ addField_Int(V_GLICKO_RD)
+				+ addField_Int(V_HIGHEST_RATING)
+				+ addField_Int(V_LOWEST_RATING)
+				+ addField_Int(V_AVERAGE_OPPONENT)
+				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Int(V_AVG_OPPONENT_RATING_WIN)
+				+ addField_Int(V_AVG_OPPONENT_RATING_LOSE)
+				+ addField_Int(V_AVG_OPPONENT_RATING_DRAW)
+				+ addField_Int(V_UNRATED)
+				+ addField_Int(V_IN_PROGRESS)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_RANK)
+				+ addField_Text(V_PERCENTILE)
+				+ addField_Text(V_BEST_WIN_USERNAME)
+				+ addField_Text(V_TIMEOUTS)
+				/* Games */
+				+ addField_Int(V_GAMES_TOTAL)
+				+ addField_Int(V_GAMES_WHITE)
+				+ addField_Int(V_GAMES_BLACK)
+				+ addField_Int(V_WINS_TOTAL)
+				+ addField_Int(V_WINS_WHITE)
+				+ addField_Int(V_WINS_BLACK)
+				+ addField_Int(V_LOSSES_TOTAL)
+				+ addField_Int(V_LOSSES_WHITE)
+				+ addField_Int(V_LOSSES_BLACK)
+				+ addField_Int(V_DRAWS_TOTAL)
+				+ addField_Int(V_DRAWS_WHITE)
+				+ addField_Int(V_DRAWS_BLACK)
+				+ addField_Int(V_WINNING_STREAK)
+				+ addField_Int(V_LOSING_STREAK)
+				+ addField_Int(V_FREQUENT_OPPONENT_GAMES_PLAYED)
+				+ addField_Text(V_FREQUENT_OPPONENT_NAME)
+				/* Tournaments */
+				+ addField_Int(V_TOURNAMENTS_LEADERBOARD_POINTS)
+				+ addField_Int(V_TOURNAMENTS_EVENTS_ENTERED)
+				+ addField_Int(V_TOURNAMENTS_FIRST_PLACE_FINISHES)
+				+ addField_Int(V_TOURNAMENTS_SECOND_PLACE_FINISHES)
+				+ addField_Int(V_TOURNAMENTS_THIRD_PLACE_FINISHES)
+				+ addField_Int(V_TOURNAMENTS_WITHDRAWALS)
+				+ addField_Int(V_TOURNAMENTS_HOSTED)
+				+ addField_Int(V_TOTAL_COUNT_PLAYERS_HOSTED)
+				+ addField_Int(V_TOURNAMENTS_GAMES_TOTAL)
+				+ addField_Int(V_TOURNAMENTS_GAMES_WON)
+				+ addField_Int(V_TOURNAMENTS_GAMES_LOST)
+				+ addField_Int(V_TOURNAMENTS_GAMES_DRAWN)
+				+ addField_Int(V_TOURNAMENTS_GAMES_IN_PROGRESS, true);
 
-	static final String GAME_STATS_DAILY_CHESS_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[GAME_STATS_DAILY_CHESS] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
-			+ V_RANK 	    			+ _TEXT_NOT_NULL + _COMMA
-			+ V_TOTAL_PLAYER_COUNT 	    + _INT_NOT_NULL + _COMMA
-			+ V_PERCENTILE 	    		+ _TEXT_NOT_NULL + _COMMA
-			+ V_GLICKO_RD 	    		+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
-			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
-			+ V_BEST_WIN_GAME_ID 	    + _LONG_NOT_NULL + _COMMA
-			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_AVG_OPPONENT_RATING_WIN + _INT_NOT_NULL + _COMMA
-			+ V_AVG_OPPONENT_RATING_LOSE + _INT_NOT_NULL + _COMMA
-			+ V_AVG_OPPONENT_RATING_DRAW + _INT_NOT_NULL + _COMMA
-			+ V_UNRATED  	    		+ _INT_NOT_NULL + _COMMA
-			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TIMEOUTS  		+ _TEXT_NOT_NULL + _COMMA
-			/* Games */
-			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOSSES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOSSES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOSSES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_DRAWS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_DRAWS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_DRAWS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINNING_STREAK  	    + _INT_NOT_NULL + _COMMA
-			+ V_LOSING_STREAK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_FREQUENT_OPPONENT_NAME  	    + _TEXT_NOT_NULL + _COMMA
-			+ V_FREQUENT_OPPONENT_GAMES_PLAYED	+ _INT_NOT_NULL + _COMMA
-			/* Tournaments */
-			+ V_TOURNAMENTS_LEADERBOARD_POINTS  	    + _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_EVENTS_ENTERED  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_FIRST_PLACE_FINISHES  	    + _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_SECOND_PLACE_FINISHES  	    + _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_THIRD_PLACE_FINISHES  	    + _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_WITHDRAWALS  	    		+ _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_HOSTED  	    			+ _INT_NOT_NULL + _COMMA
-			+ V_TOTAL_COUNT_PLAYERS_HOSTED  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_GAMES_TOTAL  	   			+ _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_GAMES_WON  	    			+ _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_GAMES_LOST  	    		+ _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_GAMES_DRAWN  	    		+ _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_GAMES_IN_PROGRESS  	    	+ _INT_NOT_NULL + _CLOSE;
+		createTablesArray[Tables.GAME_STATS_DAILY_CHESS960.ordinal()] = createTableForName(Tables.GAME_STATS_DAILY_CHESS960)
+				+ addField_Long(V_HIGHEST_TIMESTAMP)
+				+ addField_Long(V_LOWEST_TIMESTAMP)
+				+ addField_Long(V_BEST_WIN_GAME_ID)
+				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_TOTAL_PLAYER_COUNT)
+				+ addField_Int(V_GLICKO_RD)
+				+ addField_Int(V_HIGHEST_RATING)
+				+ addField_Int(V_LOWEST_RATING)
+				+ addField_Int(V_AVERAGE_OPPONENT)
+				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Int(V_AVG_OPPONENT_RATING_WIN)
+				+ addField_Int(V_AVG_OPPONENT_RATING_LOSE)
+				+ addField_Int(V_AVG_OPPONENT_RATING_DRAW)
+				+ addField_Int(V_UNRATED)
+				+ addField_Int(V_IN_PROGRESS)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_RANK)
+				+ addField_Text(V_PERCENTILE)
+				+ addField_Text(V_BEST_WIN_USERNAME)
+				+ addField_Text(V_TIMEOUTS)
+				/* Games */
+				+ addField_Int(V_GAMES_TOTAL)
+				+ addField_Int(V_GAMES_WHITE)
+				+ addField_Int(V_GAMES_BLACK)
+				+ addField_Int(V_WINS_TOTAL)
+				+ addField_Int(V_WINS_WHITE)
+				+ addField_Int(V_WINS_BLACK)
+				+ addField_Int(V_LOSSES_TOTAL)
+				+ addField_Int(V_LOSSES_WHITE)
+				+ addField_Int(V_LOSSES_BLACK)
+				+ addField_Int(V_DRAWS_TOTAL)
+				+ addField_Int(V_DRAWS_WHITE)
+				+ addField_Int(V_DRAWS_BLACK)
+				+ addField_Int(V_WINNING_STREAK)
+				+ addField_Int(V_LOSING_STREAK)
+				+ addField_Int(V_FREQUENT_OPPONENT_GAMES_PLAYED)
+				+ addField_Text(V_FREQUENT_OPPONENT_NAME)
+				/* Tournaments */
+				+ addField_Int(V_TOURNAMENTS_LEADERBOARD_POINTS)
+				+ addField_Int(V_TOURNAMENTS_EVENTS_ENTERED)
+				+ addField_Int(V_TOURNAMENTS_FIRST_PLACE_FINISHES)
+				+ addField_Int(V_TOURNAMENTS_SECOND_PLACE_FINISHES)
+				+ addField_Int(V_TOURNAMENTS_THIRD_PLACE_FINISHES)
+				+ addField_Int(V_TOURNAMENTS_WITHDRAWALS)
+				+ addField_Int(V_TOURNAMENTS_HOSTED)
+				+ addField_Int(V_TOTAL_COUNT_PLAYERS_HOSTED)
+				+ addField_Int(V_TOURNAMENTS_GAMES_TOTAL)
+				+ addField_Int(V_TOURNAMENTS_GAMES_WON)
+				+ addField_Int(V_TOURNAMENTS_GAMES_LOST)
+				+ addField_Int(V_TOURNAMENTS_GAMES_DRAWN)
+				+ addField_Int(V_TOURNAMENTS_GAMES_IN_PROGRESS, true);
+	}
 
-	static final String GAME_STATS_DAILY_CHESS960_CREATE =
-			CREATE_TABLE_IF_NOT_EXISTS + tablesArray[GAME_STATS_DAILY_CHESS960] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT
-			+ V_USER 					+ _TEXT_NOT_NULL + _COMMA
-			+ V_CURRENT 				+ _INT_NOT_NULL + _COMMA
-			+ V_RANK 	    			+ _TEXT_NOT_NULL + _COMMA
-			+ V_TOTAL_PLAYER_COUNT 	    + _INT_NOT_NULL + _COMMA
-			+ V_PERCENTILE 	    		+ _TEXT_NOT_NULL + _COMMA
-			+ V_GLICKO_RD 	    		+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_HIGHEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_LOWEST_RATING 	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOWEST_TIMESTAMP 	    + _LONG_NOT_NULL + _COMMA
-			+ V_AVERAGE_OPPONENT 	    + _INT_NOT_NULL + _COMMA
-			+ V_BEST_WIN_RATING 	    + _INT_NOT_NULL + _COMMA
-			+ V_BEST_WIN_GAME_ID 	    + _LONG_NOT_NULL + _COMMA
-			+ V_BEST_WIN_USERNAME 	    + _TEXT_NOT_NULL + _COMMA
-			+ V_AVG_OPPONENT_RATING_WIN + _INT_NOT_NULL + _COMMA
-			+ V_AVG_OPPONENT_RATING_LOSE + _INT_NOT_NULL + _COMMA
-			+ V_AVG_OPPONENT_RATING_DRAW + _INT_NOT_NULL + _COMMA
-			+ V_UNRATED  	    		+ _INT_NOT_NULL + _COMMA
-			+ V_IN_PROGRESS  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TIMEOUTS  				+ _TEXT_NOT_NULL + _COMMA
-			/* Games */
-			+ V_GAMES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_GAMES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOSSES_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOSSES_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_LOSSES_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_DRAWS_TOTAL  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_DRAWS_WHITE  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_DRAWS_BLACK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_WINNING_STREAK  	    + _INT_NOT_NULL + _COMMA
-			+ V_LOSING_STREAK  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_FREQUENT_OPPONENT_NAME  	    + _TEXT_NOT_NULL + _COMMA
-			+ V_FREQUENT_OPPONENT_GAMES_PLAYED	+ _INT_NOT_NULL + _COMMA
-			/* Tournaments */
-			+ V_TOURNAMENTS_LEADERBOARD_POINTS  	    + _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_EVENTS_ENTERED  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_FIRST_PLACE_FINISHES  	    + _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_SECOND_PLACE_FINISHES  	    + _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_THIRD_PLACE_FINISHES  	    + _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_WITHDRAWALS  	    		+ _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_HOSTED  	    			+ _INT_NOT_NULL + _COMMA
-			+ V_TOTAL_COUNT_PLAYERS_HOSTED  	    	+ _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_GAMES_TOTAL  	   			+ _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_GAMES_WON  	    			+ _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_GAMES_LOST  	    		+ _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_GAMES_DRAWN  	    		+ _INT_NOT_NULL + _COMMA
-			+ V_TOURNAMENTS_GAMES_IN_PROGRESS  	    	+ _INT_NOT_NULL + _CLOSE;
+	private String createTableForName(Tables  tableName){
+		return CREATE_TABLE_IF_NOT_EXISTS + Tables.values()[tableName.ordinal()] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT;
+	}
+
+	private String addField_Int(String columnName){
+		return addField_Int(columnName, false);
+	}
+
+	private String addField_Int(String columnName, boolean last){
+		return _SPACE + columnName + _INT_NOT_NULL + (last ? _CLOSE : _COMMA);
+	}
+
+	private String addField_Text(String columnName){
+		return addField_Text(columnName, false);
+	}
+
+	private String addField_Text(String columnName, boolean last){
+		return _SPACE + columnName + _TEXT_NOT_NULL + (last ? _CLOSE : _COMMA);
+	}
+
+	private String addField_Long(String columnName){
+		return addFieldLong(columnName, false);
+	}
+
+	private String addFieldLong(String columnName, boolean last){
+		return _SPACE + columnName + _LONG_NOT_NULL + (last ? _CLOSE : _COMMA);
+	}
 }

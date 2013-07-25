@@ -98,7 +98,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	}
 
 	private boolean fillCategories() {
-		Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.ARTICLE_CATEGORIES], null, null, null, null);
+		Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.ARTICLE_CATEGORIES.ordinal()], null, null, null, null);
 		List<String> list = new ArrayList<String>();
 		if (!cursor.moveToFirst()) {
 			showToast("Categories are not loaded");

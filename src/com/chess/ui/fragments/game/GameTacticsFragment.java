@@ -375,7 +375,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		if (currentGameExist()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
-			getContentResolver().delete(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
+			getContentResolver().delete(DBConstants.uriArray[DBConstants.Tables.TACTICS_BATCH.ordinal()],
 					DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
 		}
 
@@ -851,7 +851,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private void clearSavedTactics() {
 		if (currentGameExist()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
-			getContentResolver().delete(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
+			getContentResolver().delete(DBConstants.uriArray[DBConstants.Tables.TACTICS_BATCH.ordinal()],
 					DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
 		}
 	}

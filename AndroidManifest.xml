@@ -31,7 +31,7 @@
     <!--In-App Billing Permissions-->
     <uses-permission android:name="com.android.vending.BILLING" /> <!-- VERY IMPORTANT! Don't forget this permission, or in-app billing won't work. -->
 
-	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
+	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="18"/>
 	<supports-screens android:largeScreens="true" android:xlargeScreens="true" />
 
 	<application android:icon="@drawable/ic_launcher"

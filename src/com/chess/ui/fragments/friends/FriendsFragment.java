@@ -184,7 +184,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 	private void loadFromDb() {
 		new LoadDataFromDbTask(friendsCursorUpdateListener,
-				DbHelper.getUserParams(getAppData().getUsername(), DBConstants.FRIENDS),
+				DbHelper.getUserParams(getAppData().getUsername(), DBConstants.Tables.FRIENDS.ordinal()),
 				getContentResolver()).executeTask();
 
 	}

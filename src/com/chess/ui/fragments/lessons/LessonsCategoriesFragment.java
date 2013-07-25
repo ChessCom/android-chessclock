@@ -159,7 +159,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 	}
 
 	private boolean fillCategories() {
-		Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.VIDEO_CATEGORIES], null, null, null, null);
+		Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
 
 		if (!cursor.moveToFirst()) {
 			showToast("Categories are not loaded");

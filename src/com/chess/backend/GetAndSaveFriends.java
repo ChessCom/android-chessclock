@@ -51,7 +51,7 @@ public class GetAndSaveFriends extends IntentService {
 				arguments2[1] = String.valueOf(currentItem.getUserId());
 
 				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DBConstants.uriArray[DBConstants.FRIENDS];
+				Uri uri = DBConstants.uriArray[DBConstants.Tables.FRIENDS.ordinal()];
 				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_USER_ID, DBDataManager.SELECTION_USER_ID, arguments2, null);
 
 				ContentValues values = DBDataManager.putFriendItemToValues(currentItem, userName);

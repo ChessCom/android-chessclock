@@ -46,7 +46,7 @@ public class SaveLessonsCoursesTask  extends AbstractUpdateTask<LessonCourseList
 				arguments2[1] = username;
 
 				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DBConstants.uriArray[DBConstants.LESSONS_COURSES];
+				Uri uri = DBConstants.uriArray[DBConstants.Tables.LESSONS_COURSES.ordinal()];
 				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID_AND_USER,
 						DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments, null);
 

@@ -44,7 +44,7 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.Data, Lo
 				arguments[0] = String.valueOf(tacticItem.getId());
 				arguments[1] = userName;
 
-				Uri uri = DBConstants.uriArray[DBConstants.TACTICS_BATCH];
+				Uri uri = DBConstants.uriArray[DBConstants.Tables.TACTICS_BATCH.ordinal()];
 				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID_AND_USER,
 						DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments, null);
 

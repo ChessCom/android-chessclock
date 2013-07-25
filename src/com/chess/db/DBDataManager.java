@@ -224,12 +224,12 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES],
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.DAILY_CURRENT_GAMES.ordinal()],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = cursor != null && cursor.moveToFirst();
 
 		if (!exist) { // check finished games list
-			cursor = contentResolver.query(DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES],
+			cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.DAILY_FINISHED_GAMES.ordinal()],
 					PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 			exist = cursor != null && cursor.moveToFirst();
 		}
@@ -246,7 +246,7 @@ public class DBDataManager {
 		arguments2[0] = userName;
 		arguments2[1] = String.valueOf(currentGame.getGameId());
 
-		Uri uri = DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES];
+		Uri uri = DBConstants.uriArray[DBConstants.Tables.DAILY_CURRENT_GAMES.ordinal()];
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER_AND_ID,
 				arguments2, null);
 		if (cursor.moveToFirst()) {
@@ -269,7 +269,7 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Uri uri = DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES];
+		Uri uri = DBConstants.uriArray[DBConstants.Tables.DAILY_CURRENT_GAMES.ordinal()];
 		long[] gamesIds;
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER, arguments1, null);
 		if (cursor != null && cursor.moveToFirst()) {
@@ -320,7 +320,7 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Uri uri = DBConstants.uriArray[DBConstants.DAILY_FINISHED_GAMES];
+		Uri uri = DBConstants.uriArray[DBConstants.Tables.DAILY_FINISHED_GAMES.ordinal()];
 		long[] gamesIds;
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER, arguments1, null);
 		if (cursor != null && cursor.moveToFirst()) {
@@ -379,7 +379,7 @@ public class DBDataManager {
 				+ AND_ + DBConstants.V_I_PLAY_AS + EQUALS_ARG_ + ")";
 
 		QueryParams params = new QueryParams();
-		params.setDbName(DBConstants.tablesArray[DBConstants.DAILY_FINISHED_GAMES]);
+		params.setDbName(DBConstants.Tables.DAILY_FINISHED_GAMES.name());
 		params.setProjection(PROJECTION_DAILY_PLAYER_NAMES);
 		params.setSelection(selection);
 		params.setArguments(arguments3);
@@ -409,7 +409,7 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.FRIENDS],
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.FRIENDS.ordinal()],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = false;
 		if (cursor != null) {
@@ -433,7 +433,7 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.TACTICS_BATCH.ordinal()],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
@@ -448,7 +448,7 @@ public class DBDataManager {
 		arguments2[0] = String.valueOf(tacticItem.getId());
 		arguments2[1] = userName;
 
-		Uri uri = DBConstants.uriArray[DBConstants.TACTICS_BATCH];
+		Uri uri = DBConstants.uriArray[DBConstants.Tables.TACTICS_BATCH.ordinal()];
 		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID_AND_USER,
 				SELECTION_ITEM_ID_AND_USER, arguments2, null);
 
@@ -474,7 +474,7 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.TACTICS_BATCH],
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.TACTICS_BATCH.ordinal()],
 				null, SELECTION_USER, arguments1, null);
 
 		cursor.moveToFirst();
@@ -495,7 +495,7 @@ public class DBDataManager {
 		arguments2[0] = String.valueOf(resultItem.getId());
 		arguments2[1] = resultItem.getUser();
 
-		Uri uri = DBConstants.uriArray[DBConstants.TACTICS_RESULTS];
+		Uri uri = DBConstants.uriArray[DBConstants.Tables.TACTICS_RESULTS.ordinal()];
 		Cursor cursor = contentResolver.query(uri, null, SELECTION_ITEM_ID_AND_USER, arguments2, null);
 
 		ContentValues values = putTacticResultItemToValues(resultItem);
@@ -515,7 +515,7 @@ public class DBDataManager {
 		final String[] arguments2 = sArguments2;
 		arguments2[0] = String.valueOf(id);
 		arguments2[1] = userName;
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.TACTICS_RESULTS],
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.TACTICS_RESULTS.ordinal()],
 				null, SELECTION_ITEM_ID_AND_USER, arguments2, null);
 
 		if (cursor.moveToFirst()) {
@@ -801,7 +801,7 @@ public class DBDataManager {
 		arguments1[0] = String.valueOf(currentItem.getVideoId());
 
 		// TODO implement beginTransaction logic for performance increase
-		Uri uri = DBConstants.uriArray[DBConstants.VIDEOS];
+		Uri uri = DBConstants.uriArray[DBConstants.Tables.VIDEOS.ordinal()];
 
 		Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID,
 				DBDataManager.SELECTION_ITEM_ID, arguments1, null);
@@ -821,7 +821,7 @@ public class DBDataManager {
 		arguments1[0] = String.valueOf(currentItem.getId());
 
 		// TODO implement beginTransaction logic for performance increase
-		Uri uri = DBConstants.uriArray[DBConstants.FORUM_TOPICS];
+		Uri uri = DBConstants.uriArray[DBConstants.Tables.FORUM_TOPICS.ordinal()];
 
 		Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID,
 				DBDataManager.SELECTION_ITEM_ID, arguments1, null);
@@ -841,7 +841,7 @@ public class DBDataManager {
 		arguments1[0] = String.valueOf(currentItem.getId());
 
 		// TODO implement beginTransaction logic for performance increase
-		Uri uri = DBConstants.uriArray[DBConstants.FORUM_CATEGORIES];
+		Uri uri = DBConstants.uriArray[DBConstants.Tables.FORUM_CATEGORIES.ordinal()];
 
 		Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID,
 				DBDataManager.SELECTION_ITEM_ID, arguments1, null);
@@ -861,7 +861,7 @@ public class DBDataManager {
 		arguments1[0] = String.valueOf(currentItem.getCreateDate());
 
 		// TODO implement beginTransaction logic for performance increase
-		Uri uri = DBConstants.uriArray[DBConstants.FORUM_POSTS];
+		Uri uri = DBConstants.uriArray[DBConstants.Tables.FORUM_POSTS.ordinal()];
 
 		Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_CREATE_DATE,
 				DBDataManager.SELECTION_CREATE_DATE, arguments1, null);
@@ -885,7 +885,7 @@ public class DBDataManager {
 	public static boolean haveSavedVideos(Context context) {
 		ContentResolver contentResolver = context.getContentResolver();
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.VIDEOS],
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.VIDEOS.ordinal()],
 				PROJECTION_ITEM_ID, null, null, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
@@ -903,7 +903,7 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = String.valueOf(videoId);
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.VIDEOS],
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.VIDEOS.ordinal()],
 				PROJECTION_ITEM_ID, SELECTION_ITEM_ID, arguments1, LIMIT_1);
 		if (cursor != null) {
 			boolean exist = cursor.moveToFirst();
@@ -920,7 +920,7 @@ public class DBDataManager {
 		arguments2[0] = String.valueOf(currentItem.getUsername());
 		arguments2[1] = String.valueOf(currentItem.getVideoId());
 
-		Uri uri = DBConstants.uriArray[DBConstants.VIDEO_VIEWED];
+		Uri uri = DBConstants.uriArray[DBConstants.Tables.VIDEO_VIEWED.ordinal()];
 
 		Cursor cursor = contentResolver.query(uri, null,
 				DBDataManager.SELECTION_USER_AND_ID, arguments2, null);
@@ -941,7 +941,7 @@ public class DBDataManager {
 
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.VIDEO_VIEWED],
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.VIDEO_VIEWED.ordinal()],
 				null, SELECTION_USER, arguments1, null);
 
 		if (cursor != null && cursor.moveToFirst()) {
@@ -958,7 +958,7 @@ public class DBDataManager {
 		arguments2[0] = userName;
 		arguments2[1] = String.valueOf(videoId);
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.VIDEO_VIEWED],
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.VIDEO_VIEWED.ordinal()],
 				null, SELECTION_USER_AND_ID, arguments2, null);
 
 		return cursor != null && cursor.moveToFirst() && getInt(cursor, DBConstants.V_VIDEO_VIEWED) > 0;
@@ -973,7 +973,7 @@ public class DBDataManager {
 	public static boolean haveSavedArticles(Context context) {
 		ContentResolver contentResolver = context.getContentResolver();
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.ARTICLES], null, null, null, LIMIT_1);
+		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.ARTICLES.ordinal()], null, null, null, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
 
@@ -1322,7 +1322,7 @@ public class DBDataManager {
 		arguments2[0] = userName;
 		arguments2[1] = String.valueOf(gameId);
 
-		Cursor cursor = resolver.query(DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES],
+		Cursor cursor = resolver.query(DBConstants.uriArray[DBConstants.Tables.DAILY_CURRENT_GAMES.ordinal()],
 				PROJECTION_DAILY_DRAW_OFFERED, SELECTION_OPPONENT_OFFERED_DRAW, arguments2, null);
 		return cursor != null && cursor.moveToFirst() && getInt(cursor, DBConstants.V_OPPONENT_OFFERED_DRAW) > 0;
 	}

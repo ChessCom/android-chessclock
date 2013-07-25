@@ -218,11 +218,11 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 
 	private void setRatings() {
 		// set live rating    // TODO remove open menu listener when fragment goes on pause
-		int liveRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.GAME_STATS_LIVE_STANDARD, getUsername());
+		int liveRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.Tables.GAME_STATS_LIVE_STANDARD.ordinal(), getUsername());
 		liveRatingTxt.setText(String.valueOf(liveRating));
 
 		// set daily rating
-		int dailyRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.GAME_STATS_DAILY_CHESS, getUsername());
+		int dailyRating = DBDataManager.getUserCurrentRating(getActivity(), DBConstants.Tables.GAME_STATS_DAILY_CHESS.ordinal(), getUsername());
 		dailyRatingTxt.setText(String.valueOf(dailyRating));
 
 	}

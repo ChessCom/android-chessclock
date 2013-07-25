@@ -40,7 +40,7 @@ public class SaveDailyCurrentGamesListTask extends SaveDailyGamesTask<DailyCurre
 					arguments2[1] = String.valueOf(currentItem.getGameId());
 
 					// TODO implement beginTransaction logic for performance increase
-					Uri uri = DBConstants.uriArray[DBConstants.DAILY_CURRENT_GAMES];
+					Uri uri = DBConstants.uriArray[DBConstants.Tables.DAILY_CURRENT_GAMES.ordinal()];
 //					Log.d("TEST", " save DCG , game id = " + currentItem.getGameId() + " user = " + userName);
 					final Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
 							DBDataManager.SELECTION_USER_AND_ID, arguments2, null);

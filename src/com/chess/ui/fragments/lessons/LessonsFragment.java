@@ -119,11 +119,11 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 			if (need2Update) {
 
 				// get saved categories
-				Cursor categoriesCursor = getContentResolver().query(DBConstants.uriArray[DBConstants.LESSONS_CATEGORIES], null, null, null, null);
+				Cursor categoriesCursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
 
 				if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
 					fillCategoriesList(categoriesCursor);
-					Cursor coursesCursor = getContentResolver().query(DBConstants.uriArray[DBConstants.LESSONS_COURSES], null, null, null, null);
+					Cursor coursesCursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.LESSONS_COURSES.ordinal()], null, null, null, null);
 
 					if (coursesCursor != null && coursesCursor.moveToFirst()) {
 						fillCoursesList(coursesCursor);
@@ -215,7 +215,7 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 		@Override
 		public void updateData(CommonFeedCategoryItem.Data returnedObj) {
 			// get saved categories
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.LESSONS_CATEGORIES], null, null, null, null);
+			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
 
 			if (cursor != null && cursor.moveToFirst()) {
 
@@ -279,7 +279,7 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 
 			// TODO add user parameter
 
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.LESSONS_COURSES], null, null, null, null);
+			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.LESSONS_COURSES.ordinal()], null, null, null, null);
 
 			if (cursor != null && cursor.moveToFirst()) {
 				fillCoursesList(cursor);
