@@ -130,7 +130,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		String category = (String) categorySpinner.getSelectedItem();
 
 		new LoadDataFromDbTask(articlesCursorUpdateListener,
-				DbHelper.getArticlesListByCategoryParams(category),
+				DbHelper.getArticlesListByCategory(category),
 				getContentResolver()).executeTask();
 	}
 

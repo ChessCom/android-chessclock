@@ -184,11 +184,11 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	private void loadGameAndUpdate() {
 		// load game from DB. After load update
-//		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyFinishedGameParams(getActivity(), gameId),
+//		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyFinishedGame(getActivity(), gameId),
 //				getContentResolver()).executeTask();
 
 		Cursor cursor = DBDataManager.executeQuery(getContentResolver(),
-				DbHelper.getDailyFinishedGameParams(gameId, getUsername()));
+				DbHelper.getDailyFinishedGame(gameId, getUsername()));
 
 		if (cursor.moveToFirst()) {
 			showSubmitButtonsLay(false);
@@ -477,8 +477,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	private void loadGamesList() {
 		// replace with db update
-//		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getContext()), // TODO adjust
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGamesParams(getUsername()), // TODO adjust
+//		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGames(getContext()), // TODO adjust
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGames(getUsername()), // TODO adjust
 				getContentResolver()).executeTask();
 
 	}

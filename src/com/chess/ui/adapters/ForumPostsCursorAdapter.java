@@ -79,7 +79,7 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 		holder.quoteTxt.setTag(R.id.list_item_id, cursor.getPosition());
 
 		holder.authorTxt.setText(getString(cursor, DBConstants.V_USERNAME));
-		holder.commentNumberTxt.setText("# " + getInt(cursor, DBConstants.V_COMMENT_NUMBER));
+		holder.commentNumberTxt.setText("# " + getInt(cursor, DBConstants.V_NUMBER));
 		holder.bodyTxt.setText(Html.fromHtml(getString(cursor, DBConstants.V_DESCRIPTION), imageGetter, myHtmlTagHandler));
 //		holder.bodyTxt.setText(getString(cursor, DBConstants.V_DESCRIPTION));
 

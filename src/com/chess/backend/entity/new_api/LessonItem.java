@@ -69,13 +69,22 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 
 */
 
-	public class Data {
+	public static class Data {
+		private long id;
 		private MentorLesson cm_lesson;
 		private List<MentorPosition> cm_positions;
 		private String legal_position_check;
 		private String legal_move_check;
 		private UserLesson user_cm_lesson;
 		private boolean lesson_completed;
+
+		public long getId() {
+			return id;
+		}
+
+		public void setId(long id) {
+			this.id = id;
+		}
 
 		public MentorLesson getLesson() {
 			return cm_lesson;
@@ -86,11 +95,11 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 		}
 
 		public String getLegalPositionCheck() {
-			return legal_position_check;
+			return getSafeValue(legal_position_check);
 		}
 
 		public String getLegalMoveCheck() {
-			return legal_move_check;
+			return getSafeValue(legal_move_check);
 		}
 
 		public UserLesson getUserLesson() {
@@ -100,33 +109,29 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 		public boolean isLessonCompleted() {
 			return lesson_completed;
 		}
+
+		public void setLesson(MentorLesson cm_lesson) {
+			this.cm_lesson = cm_lesson;
+		}
+
+		public void setPositions(List<MentorPosition> cm_positions) {
+			this.cm_positions = cm_positions;
+		}
+
+		public void setLegalPositionCheck(String legal_position_check) {
+			this.legal_position_check = legal_position_check;
+		}
+
+		public void setLegalMoveCheck(String legal_move_check) {
+			this.legal_move_check = legal_move_check;
+		}
+
+		public void setUserLesson(UserLesson user_cm_lesson) {
+			this.user_cm_lesson = user_cm_lesson;
+		}
 	}
 
-	public class MentorPosition {
-
-/*
-		"position_number": 1,
-		"fen": "2r2rk1/p4ppp/1p6/n2P1Q2/8/5N2/P1q2PPP/3RR1K1 w - - 0 1",
-		"user_to_move": 1,
-		"move_difficulty": 9,
-		"advice1": "The rules for ownership of a passed pawn are: trade off the minor pieces but retain the Queens and at least one Rook; control the square directly in front of your passed pawn (thereby preventing the opponent from blockading it). Look for a move that accomplishes both of these goals.",
-		"advice2": "The White Queen is hanging. If White doesn't trade Queens he will lose his a2-pawn. If he does trade Queens he will break the rule saying that the side with the passed pawn should avoid the exchange of Queens. Who and what should you believe?",
-		"advice3": "Fight for control of the square directly in front of the passed pawn. Don't worry about minor material loss.",
-		"standard_response_move_commentary": "",
-		"standard_wrong_move_commentary": "You have to move your Queen, you should avoid the exchange of Queens, and you should fight for control of the square directly in front of your passed pawn (d6). Your move doesn't accomplish these goals.",
-		"final_position": 0,
-		"about": "Rules for the player who owns a passed pawn: 1) Control the square directly in front of the pawn; 2) Trade all the minor pieces so that a Knight or Bishop can't block the pawn; 3) Keep the Queens on so the opponent's King won't feel comfortable rushing up to combat your pawn; 4) Keep at least one Rook on.",
-		"cm_moves": [
-			{
-				"move_number": 0,
-				"move": "Qf4",
-				"move_commentary": "1.Qf4 retains the Queens (usually a good idea for the player who owns the passed pawn) and eyes the d6-square (the square directly in front of the pawn). White is quite willing to give up a pawn in order to get his own passer rolling.",
-				"short_response_move": "c2a2",
-				"response_move_commentary": "1...Qxa2 wins a pawn and gives Black two connected passed pawns on the queenside. White's passed d-pawn is worth more than Black's two queenside pawns, though, because it is further advanced than the Black pawns and will play a more aggressive role in the battle than the passive creatures on a7 and b6.",
-				"move_type": "default"
-			}
-		]
-*/
+	public static class MentorPosition {
 		private int position_number;
 		private String fen;
 		private int user_to_move;
@@ -139,13 +144,23 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 		private int final_position;
 		private String about;
 		private List<PossibleMove> cm_moves;
+		/* Local addition */
+		private long lessonId;
+
+		public long getLessonId() {
+			return lessonId;
+		}
+
+		public void setLessonId(long id) {
+			this.lessonId = id;
+		}
 
 		public int getPositionNumber() {
 			return position_number;
 		}
 
 		public String getFen() {
-			return fen;
+			return getSafeValue(fen);
 		}
 
 		public int getUserToMove() {
@@ -157,23 +172,23 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 		}
 
 		public String getAdvice1() {
-			return advice1;
+			return getSafeValue(advice1);
 		}
 
 		public String getAdvice2() {
-			return advice2;
+			return getSafeValue(advice2);
 		}
 
 		public String getAdvice3() {
-			return advice3;
+			return getSafeValue(advice3);
 		}
 
 		public String getStandardResponseMoveCommentary() {
-			return standard_response_move_commentary;
+			return getSafeValue(standard_response_move_commentary);
 		}
 
 		public String getStandardWrongMoveCommentary() {
-			return standard_wrong_move_commentary;
+			return getSafeValue(standard_wrong_move_commentary);
 		}
 
 		public int getFinalPosition() {
@@ -181,70 +196,140 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 		}
 
 		public String getAbout() {
-			return about;
+			return getSafeValue(about);
 		}
 
-		public List<PossibleMove> getLessonMoves() {
+		public List<PossibleMove> getPossibleMoves() {
 			return cm_moves;
 		}
 
-		public class PossibleMove {
-/*
-				"move_number": 0,
-				"move": "Qf4",
-				"move_commentary": "1.Qf4 retains the Queens (usually a good idea for the player who owns the passed pawn) and eyes the d6-square (the square directly in front of the pawn). White is quite willing to give up a pawn in order to get his own passer rolling.",
-				"short_response_move": "c2a2",
-				"response_move_commentary": "1...Qxa2 wins a pawn and gives Black two connected passed pawns on the queenside. White's passed d-pawn is worth more than Black's two queenside pawns, though, because it is further advanced than the Black pawns and will play a more aggressive role in the battle than the passive creatures on a7 and b6.",
-				"move_type": "default"
- */
+		public void setPositionNumber(int position_number) {
+			this.position_number = position_number;
+		}
+
+		public void setFen(String fen) {
+			this.fen = fen;
+		}
+
+		public void setUserToMove(int user_to_move) {
+			this.user_to_move = user_to_move;
+		}
+
+		public void setMoveDifficulty(int move_difficulty) {
+			this.move_difficulty = move_difficulty;
+		}
+
+		public void setAdvice1(String advice1) {
+			this.advice1 = advice1;
+		}
+
+		public void setAdvice2(String advice2) {
+			this.advice2 = advice2;
+		}
+
+		public void setAdvice3(String advice3) {
+			this.advice3 = advice3;
+		}
+
+		public void setStandardResponseMoveCommentary(String standard_response_move_commentary) {
+			this.standard_response_move_commentary = standard_response_move_commentary;
+		}
+
+		public void setStandardWrongMoveCommentary(String standard_wrong_move_commentary) {
+			this.standard_wrong_move_commentary = standard_wrong_move_commentary;
+		}
+
+		public void setFinalPosition(int final_position) {
+			this.final_position = final_position;
+		}
+
+		public void setAbout(String about) {
+			this.about = about;
+		}
+
+		public void setPossibleMoves(List<PossibleMove> cm_moves) {
+			this.cm_moves = cm_moves;
+		}
+
+		public static class PossibleMove {
 			private int move_number;
 			private String move;
 			private String move_commentary;
 			private String short_response_move;
 			private String response_move_commentary;
 			private String move_type;
+			/* Local addition */
+			private long lessonId;
+			private int positionNumber;
+
+			public long getLessonId() {
+				return lessonId;
+			}
+
+			public void setLessonId(long lessonId) {
+				this.lessonId = lessonId;
+			}
+
+			public int getPositionNumber() {
+				return positionNumber;
+			}
+
+			public void setPositionNumber(int positionNumber) {
+				this.positionNumber = positionNumber;
+			}
 
 			public int getMoveNumber() {
 				return move_number;
 			}
 
 			public String getMove() {
-				return move;
+				return getSafeValue(move);
 			}
 
 			public String getMoveCommentary() {
-				return move_commentary;
+				return getSafeValue(move_commentary);
 			}
 
 			public String getShortResponseMove() {
-				return short_response_move;
+				return getSafeValue(short_response_move);
 			}
 
 			public String getResponseMoveCommentary() {
-				return response_move_commentary;
+				return getSafeValue(response_move_commentary);
 			}
 
 			public String getMoveType() {
-				return move_type;
+				return getSafeValue(move_type);
+			}
+
+			public void setMoveNumber(int move_number) {
+				this.move_number = move_number;
+			}
+
+			public void setMove(String move) {
+				this.move = move;
+			}
+
+			public void setMoveCommentary(String move_commentary) {
+				this.move_commentary = move_commentary;
+			}
+
+			public void setShortResponseMove(String short_response_move) {
+				this.short_response_move = short_response_move;
+			}
+
+			public void setResponseMoveCommentary(String response_move_commentary) {
+				this.response_move_commentary = response_move_commentary;
+			}
+
+			public void setMoveType(String move_type) {
+				this.move_type = move_type;
 			}
 		}
 
 	}
 
-/*
-        "cm_lesson": {
-            "lesson_number": 36,
-            "author": "Jeremy Silman",
-            "name": "Spassky-Petrosian, Moscow (World Championship) 1969",
-            "about": "In the present position Spassky enjoys a passed d-pawn. Black hopes that his queenside majority and his threats against White's a-pawn will compensate him while White wants to prove that his unblocked passer is the major force on the board.",
-            "goal": 7,
-            "goal_commentary": "White wants to show that his passed d-pawn will throw the enemy army into a panic.",
-            "goal_code": "positional_gain",
-            "difficulty": 6
-        },
-*/
-
-	public class MentorLesson {
+	public static class MentorLesson {
 		private int lesson_number;
 		private String author;
 		private String name;
@@ -253,21 +338,31 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 		private String goal_commentary;
 		private String goal_code;
 		private int difficulty;
+		/* Local addition */
+		private long lessonId;
+
+		public long getLessonId() {
+			return lessonId;
+		}
+
+		public void setLessonId(long id) {
+			this.lessonId = id;
+		}
 
 		public int getLessonNumber() {
 			return lesson_number;
 		}
 
 		public String getAuthor() {
-			return author;
+			return getSafeValue(author);
 		}
 
 		public String getName() {
-			return name;
+			return getSafeValue(name);
 		}
 
 		public String getAbout() {
-			return about;
+			return getSafeValue(about);
 		}
 
 		public int getGoal() {
@@ -275,38 +370,85 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 		}
 
 		public String getGoalCommentary() {
-			return goal_commentary;
+			return getSafeValue(goal_commentary);
 		}
 
 		public String getGoalCode() {
-			return goal_code;
+			return getSafeValue(goal_code);
 		}
 
 		public int getDifficulty() {
 			return difficulty;
 		}
+
+		public void setLessonNumber(int lesson_number) {
+			this.lesson_number = lesson_number;
+		}
+
+		public void setAuthor(String author) {
+			this.author = author;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public void setAbout(String about) {
+			this.about = about;
+		}
+
+		public void setGoal(int goal) {
+			this.goal = goal;
+		}
+
+		public void setGoalCommentary(String goal_commentary) {
+			this.goal_commentary = goal_commentary;
+		}
+
+		public void setGoalCode(String goal_code) {
+			this.goal_code = goal_code;
+		}
+
+		public void setDifficulty(int difficulty) {
+			this.difficulty = difficulty;
+		}
 	}
 
-	public class UserLesson {
-/*
-		"initial_score": null,
-		"last_score": null,
-		"current_position": 0,
-		"current_points": 29,
-		"current_position_points": 9
-*/
+	public static class UserLesson {
 		private String initial_score;
 		private String last_score;
 		private int current_position;
 		private int current_points;
 		private int current_position_points;
+		/* Local addition */
+		private long lessonId;
+		private String username;
+		private String legal_position_check;
+		private String legal_move_check;
+		private boolean lesson_completed;
+
+		public long getLessonId() {
+			return lessonId;
+		}
+
+		public void setLessonId(long id) {
+			this.lessonId = id;
+		}
+
+		public String getUsername() {
+			return username;
+		}
+
+		public void setUsername(String username) {
+			this.username = username;
+		}
 
 		public String getInitialScore() {
-			return initial_score;
+			return getSafeValue(initial_score);
 		}
 
 		public String getLastScore() {
-			return last_score;
+			return getSafeValue(last_score);
 		}
 
 		public int getCurrentPosition() {
@@ -339,6 +481,30 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 
 		public void setCurrentPositionPoints(int current_position_points) {
 			this.current_position_points = current_position_points;
+		}
+
+		public String getLegalPositionCheck() {
+			return legal_position_check;
+		}
+
+		public void setLegalPositionCheck(String legal_position_check) {
+			this.legal_position_check = legal_position_check;
+		}
+
+		public String getLegalMoveCheck() {
+			return legal_move_check;
+		}
+
+		public void setLegalMoveCheck(String legal_move_check) {
+			this.legal_move_check = legal_move_check;
+		}
+
+		public boolean isLessonCompleted() {
+			return lesson_completed;
+		}
+
+		public void setLessonCompleted(boolean lesson_completed) {
+			this.lesson_completed = lesson_completed;
 		}
 	}
 }

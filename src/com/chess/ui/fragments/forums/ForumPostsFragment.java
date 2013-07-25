@@ -292,7 +292,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		public void updateData(ForumPostItem.Post returnedObj) {
 			super.updateData(returnedObj);
 
-			Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumPostsParams(topicId, currentPage));
+			Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumPostsById(topicId, currentPage));
 			if (cursor.moveToFirst()) {
 				postsCursorAdapter.changeCursor(cursor);
 				postsCursorAdapter.notifyDataSetChanged();

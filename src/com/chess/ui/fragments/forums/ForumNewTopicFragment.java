@@ -50,7 +50,7 @@ public class ForumNewTopicFragment extends CommonLogicFragment implements TextVi
 
 		categoriesList = new ArrayList<String>();
 		categoriesMap = new SparseArray<String>();
-		Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumCategoriesParams());
+		Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumCategories());
 		if (cursor.moveToFirst()) {
 			do {
 				categoriesList.add(DBDataManager.getString(cursor, DBConstants.V_NAME));

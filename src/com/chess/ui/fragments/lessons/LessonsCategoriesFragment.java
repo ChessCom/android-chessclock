@@ -178,7 +178,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 //		String category = (String) categorySpinner.getSelectedItem();
 
 		new LoadDataFromDbTask(videosCursorUpdateListener,
-				DbHelper.getVideosByCategoryParams(previousCategoryId),
+				DbHelper.getVideosByCategory(previousCategoryId),
 				getContentResolver()).executeTask();
 	}
 
@@ -275,7 +275,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 
 			// check if we have saved videos more than 2(from previous page)
 			Cursor cursor = DBDataManager.executeQuery(getContentResolver(),
-					DbHelper.getVideosByCategoryParams(previousCategoryId));
+					DbHelper.getVideosByCategory(previousCategoryId));
 
 			if (cursor != null && cursor.getCount() > VideosFragment.ITEMS_PER_CATEGORY) {
 				cursor.moveToFirst();

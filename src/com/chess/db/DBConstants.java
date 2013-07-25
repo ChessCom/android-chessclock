@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 40;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 42;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -23,16 +23,32 @@ public class DBConstants {
     static final String DATABASE_NAME  = "Chess DB";
 
 	public enum Tables {
-		TACTICS_BATCH,
-		TACTICS_RESULTS,
-		DAILY_FINISHED_GAMES,
 		DAILY_CURRENT_GAMES,
+		DAILY_FINISHED_GAMES,
 		FRIENDS,
 
 		ARTICLES,
 		ARTICLE_CATEGORIES,
+
 		VIDEOS,
 		VIDEO_CATEGORIES,
+		VIDEO_VIEWED,
+
+		FORUM_TOPICS,
+		FORUM_CATEGORIES,
+		FORUM_POSTS,
+
+		TACTICS_BATCH,
+		TACTICS_RESULTS,
+
+		LESSONS_CATEGORIES,
+		LESSONS_COURSE_LIST,
+		LESSONS_COURSES,
+		LESSONS_LESSONS_LIST,
+		LESSONS_MENTOR_LESSONS,
+		LESSONS_USER_LESSONS,
+		LESSONS_POSITIONS,
+		LESSONS_POSITION_MOVES,
 
 		USER_STATS_LIVE_STANDARD,
 		USER_STATS_LIVE_BLITZ,
@@ -46,16 +62,7 @@ public class DBConstants {
 		GAME_STATS_LIVE_BLITZ,
 		GAME_STATS_LIVE_LIGHTNING,
 		GAME_STATS_DAILY_CHESS,
-		GAME_STATS_DAILY_CHESS960,
-
-		VIDEO_VIEWED,
-
-		FORUM_TOPICS,
-		FORUM_CATEGORIES,
-		FORUM_POSTS,
-
-		LESSONS_CATEGORIES,
-		LESSONS_COURSES
+		GAME_STATS_DAILY_CHESS960
 	}
 
 	// Content URI
@@ -145,33 +152,59 @@ public class DBConstants {
 	public static final String V_THUMB_CONTENT 			= "thumb_in_content";
 
 	/*Articles Categories*/
-	public static final String V_ID 				= "id";
-	public static final String V_NAME 				= "name";
-	public static final String V_DISPLAY_ORDER 		= "display_order";
+	public static final String V_ID 					= "id";
+	public static final String V_NAME 					= "name";
+	public static final String V_DISPLAY_ORDER 			= "display_order";
 
 	/*Videos*/
-	public static final String V_DESCRIPTION 		= "description";
-	public static final String V_SKILL_LEVEL 		= "skill_level";
-	public static final String V_MINUTES 			= "minutes";
-	public static final String V_URL 				= "url";
-	public static final String V_KEY_FEN 			= "key_fen";
-	public static final String V_USER_AVATAR 		= "user_avatar";
-	public static final String V_VIEW_COUNT 		= "view_count";
-	public static final String V_COMMENT_COUNT 		= "comment_count";
-	public static final String V_VIDEO_VIEWED 		= "video_viewed";
+	public static final String V_DESCRIPTION 			= "description";
+	public static final String V_SKILL_LEVEL 			= "skill_level";
+	public static final String V_MINUTES 				= "minutes";
+	public static final String V_URL 					= "url";
+	public static final String V_KEY_FEN 				= "key_fen";
+	public static final String V_USER_AVATAR 			= "user_avatar";
+	public static final String V_VIEW_COUNT 			= "view_count";
+	public static final String V_COMMENT_COUNT 			= "comment_count";
+	public static final String V_VIDEO_VIEWED 			= "video_viewed";
 
 	/* Forums */
-	public static final String V_LAST_POST_USERNAME = "last_post_username";
-	public static final String V_LAST_POST_DATE = "last_post_date";
-	public static final String V_POST_COUNT 		= "post_count";
-	public static final String V_TOPIC_COUNT 		= "topic_count";
-	public static final String V_MIN_MEMBERSHIP 	= "min_membership_lvl";
-	public static final String V_COMMENT_NUMBER 	= "comment_number";
-	public static final String V_PAGE 				= "page";
+	public static final String V_LAST_POST_USERNAME 	= "last_post_username";
+	public static final String V_LAST_POST_DATE 		= "last_post_date";
+	public static final String V_POST_COUNT 			= "post_count";
+	public static final String V_TOPIC_COUNT 			= "topic_count";
+	public static final String V_MIN_MEMBERSHIP 		= "min_membership_lvl";
+	public static final String V_NUMBER 				= "number";
+	public static final String V_PAGE 					= "page";
 
 	/* Lessons*/
-	public static final String V_COURSE_COMPLETED 	= "course_completed";
-	public static final String V_LESSON_COMPLETED 	= "lesson_completed";
+	public static final String V_COURSE_COMPLETED 		= "course_completed";
+	public static final String V_GOAL					= "goal";
+	public static final String V_GOAL_COMMENT			= "goal_comment";
+	public static final String V_GOAL_CODE				= "goal_code";
+	public static final String V_DIFFICULTY				= "difficulty";
+	public static final String V_AUTHOR					= "author";
+		/* User Lessons */
+	public static final String V_CURRENT_POSITION		= "current_position";
+	public static final String V_CURRENT_POINTS			= "current_points";
+	public static final String V_CURRENT_POSITION_POINTS= "current_position_points";
+	public static final String V_INITIAL_SCORE			= "initial_score";
+	public static final String V_LAST_SCORE				= "last_score";
+	public static final String V_LESSON_COMPLETED 		= "lesson_completed";
+	public static final String V_LEGAL_POSITION_CHECK	= "legal_position_check";
+	public static final String V_LEGAL_MOVE_CHECK		= "legal_move_check";
+		/* Lesson Positions */
+	public static final String V_USER_TO_MOVE			= "user_to_move";
+	public static final String V_FINAL_POSITION			= "final_position";
+	public static final String V_ADVICE_1				= "advice_1";
+	public static final String V_ADVICE_2				= "advice_2";
+	public static final String V_ADVICE_3				= "advice_3";
+	public static final String V_RESPONSE_MOVE_COMMENT 	= "response_move_comment";
+	public static final String V_WRONG_MOVE_COMMENT		= "wrong_move_comment";
+		/* Lesson Position Move */
+	public static final String V_MOVE					= "move";
+	public static final String V_MOVE_COMMENT			= "move_comment";
+	public static final String V_SHORT_RESPONSE_MOVE	= "short_response_move";
+	public static final String V_MOVE_TYPE				= "move_type";
 
 	/* common commands */
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists ";
@@ -360,7 +393,7 @@ public class DBConstants {
 				+ addField_Long(V_CREATE_DATE)
 				+ addField_Int(V_COUNTRY_ID)
 				+ addField_Int(V_PREMIUM_STATUS)
-				+ addField_Int(V_COMMENT_NUMBER)
+				+ addField_Int(V_NUMBER)
 				+ addField_Int(V_PAGE)
 				+ addField_Int(V_ID)
 				+ addField_Text(V_USERNAME)
@@ -373,12 +406,73 @@ public class DBConstants {
 				+ addField_Int(V_CATEGORY_ID)
 				+ addField_Int(V_DISPLAY_ORDER, true);
 
-		createTablesArray[Tables.LESSONS_COURSES.ordinal()] = createTableForName(Tables.LESSONS_COURSES)
-				+ addField_Int(V_ID)
+		createTablesArray[Tables.LESSONS_COURSE_LIST.ordinal()] = createTableForName(Tables.LESSONS_COURSE_LIST)
+				+ addField_Long(V_ID)
 				+ addField_Int(V_CATEGORY_ID)
 				+ addField_Int(V_COURSE_COMPLETED)
 				+ addField_Text(V_USER)
 				+ addField_Text(V_NAME, true);
+
+		createTablesArray[Tables.LESSONS_COURSES.ordinal()] = createTableForName(Tables.LESSONS_COURSES)
+				+ addField_Long(V_ID)
+				+ addField_Text(V_DESCRIPTION)
+				+ addField_Text(V_NAME, true);
+
+		createTablesArray[Tables.LESSONS_LESSONS_LIST.ordinal()] = createTableForName(Tables.LESSONS_LESSONS_LIST)
+				+ addField_Int(V_ID)
+				+ addField_Long(V_CATEGORY_ID)
+				+ addField_Int(V_LESSON_COMPLETED)
+				+ addField_Text(V_NAME, true);
+
+		createTablesArray[Tables.LESSONS_MENTOR_LESSONS.ordinal()] = createTableForName(Tables.LESSONS_MENTOR_LESSONS)
+				+ addField_Long(V_ID) // lessonId
+				+ addField_Int(V_NUMBER)
+				+ addField_Int(V_GOAL)
+				+ addField_Int(V_DIFFICULTY)
+				+ addField_Text(V_AUTHOR)
+				+ addField_Text(V_NAME)
+				+ addField_Text(V_DESCRIPTION)
+				+ addField_Text(V_GOAL_COMMENT)
+				+ addField_Text(V_GOAL_CODE, true);
+
+		createTablesArray[Tables.LESSONS_USER_LESSONS.ordinal()] = createTableForName(Tables.LESSONS_USER_LESSONS)
+				/* UserLesson */
+				+ addField_Long(V_ID) // lessonId
+				+ addField_Int(V_CURRENT_POSITION)
+				+ addField_Int(V_CURRENT_POINTS)
+				+ addField_Int(V_CURRENT_POSITION_POINTS)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_INITIAL_SCORE)
+				+ addField_Text(V_LAST_SCORE)
+				/* Common Lesson data */
+				+ addField_Int(V_LESSON_COMPLETED)
+				+ addField_Text(V_LEGAL_POSITION_CHECK)
+				+ addField_Text(V_LEGAL_MOVE_CHECK, true);
+
+		createTablesArray[Tables.LESSONS_POSITIONS.ordinal()] = createTableForName(Tables.LESSONS_POSITIONS)
+				+ addField_Long(V_ID)  // lessonId
+				+ addField_Int(V_NUMBER)
+				+ addField_Int(V_USER_TO_MOVE)
+				+ addField_Int(V_DIFFICULTY)
+				+ addField_Int(V_FINAL_POSITION)
+				+ addField_Text(V_FEN)
+				+ addField_Text(V_ADVICE_1)
+				+ addField_Text(V_ADVICE_2)
+				+ addField_Text(V_ADVICE_3)
+				+ addField_Text(V_RESPONSE_MOVE_COMMENT)
+				+ addField_Text(V_WRONG_MOVE_COMMENT)
+				+ addField_Text(V_DESCRIPTION, true);
+
+		createTablesArray[Tables.LESSONS_POSITION_MOVES.ordinal()] = createTableForName(Tables.LESSONS_POSITION_MOVES)
+				+ addField_Long(V_ID) // lessonId
+				+ addField_Int(V_CURRENT_POSITION) // lesson position
+				+ addField_Int(V_NUMBER) // move number
+				+ addField_Text(V_MOVE)
+				+ addField_Text(V_MOVE_COMMENT)
+				+ addField_Text(V_SHORT_RESPONSE_MOVE)
+				+ addField_Text(V_RESPONSE_MOVE_COMMENT)
+				+ addField_Text(V_MOVE_TYPE, true);
+
 	}
 
 	/* ==================== User Stats ============================== */
@@ -809,10 +903,10 @@ public class DBConstants {
 	}
 
 	private String addField_Long(String columnName){
-		return addFieldLong(columnName, false);
+		return addField_Long(columnName, false);
 	}
 
-	private String addFieldLong(String columnName, boolean last){
+	private String addField_Long(String columnName, boolean last){
 		return _SPACE + columnName + _LONG_NOT_NULL + (last ? _CLOSE : _COMMA);
 	}
 }

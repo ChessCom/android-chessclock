@@ -124,7 +124,7 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 	}
 
 	private boolean loadFromDb() {
-		Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumCategoriesParams());
+		Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumCategories());
 		if (cursor != null && cursor.moveToFirst()) {
 			categoriesCursorAdapter.changeCursor(cursor);
 

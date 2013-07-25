@@ -226,7 +226,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private void loadGameAndUpdate() {
 		// load game from DB. After load update
 		Cursor cursor = DBDataManager.executeQuery(getContentResolver(),
-				DbHelper.getDailyGameParams(gameId, getUsername()));
+				DbHelper.getDailyGame(gameId, getUsername()));
 
 		if (cursor.moveToFirst()) {
 			showSubmitButtonsLay(false);
@@ -532,8 +532,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	private void loadGamesList() {
 		// replace with db update
-//		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGamesParams(getContext()), // TODO adjust
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGamesParams(getUsername()), // TODO adjust
+//		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGames(getContext()), // TODO adjust
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGames(getUsername()), // TODO adjust
 				getContentResolver()).executeTask();
 
 	}

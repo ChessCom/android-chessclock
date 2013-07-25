@@ -24,43 +24,26 @@ public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<DailyFini
 	@Override
 	protected Integer doTheTask(Long... ids) {
 		synchronized (itemList) {
-//			try {
-//				while (saving) {
-//					Thread.sleep(100);
-//					itemList.wait();
-//				}
-//
-//				saving = true;
-				for (DailyFinishedGameData finishedItem : itemList) {
+			for (DailyFinishedGameData finishedItem : itemList) {
 
-					final String[] arguments2 = arguments;
-					arguments2[0] = String.valueOf(userName);
-					arguments2[1] = String.valueOf(finishedItem.getGameId()); // Test
+				final String[] arguments2 = arguments;
+				arguments2[0] = String.valueOf(userName);
+				arguments2[1] = String.valueOf(finishedItem.getGameId()); // Test
 
-					Uri uri = DBConstants.uriArray[DBConstants.Tables.DAILY_FINISHED_GAMES.ordinal()];
-//					Log.d("TEST", " save FINISHED , game id = " + finishedItem.getGameId() + " user = " + userName);
-					final Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
-							DBDataManager.SELECTION_USER_AND_ID, arguments2, null);
+				Uri uri = DBConstants.uriArray[DBConstants.Tables.DAILY_FINISHED_GAMES.ordinal()];
+				final Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
+						DBDataManager.SELECTION_USER_AND_ID, arguments2, null);
 
-					ContentValues values = DBDataManager.putDailyFinishedGameToValues(finishedItem, userName);
+				ContentValues values = DBDataManager.putDailyFinishedGameToValues(finishedItem, userName);
 
-					if (cursor.moveToFirst()) {
-//						Log.d("TEST", " update FINISHED , game id = " + finishedItem.getGameId() + " user = " + userName);
-						contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
-					} else {
-//						Log.d("TEST", " insert FINISHED , game id = " + finishedItem.getGameId() + " user = " + userName);
-						contentResolver.insert(uri, values);
-					}
-
-					cursor.close();
-
-					updateOnlineGame(finishedItem.getGameId(), userName);
+				if (cursor.moveToFirst()) {
+					contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+				} else {
+					contentResolver.insert(uri, values);
 				}
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//			saving = false;
-//			itemList.notifyAll();
+
+				cursor.close();
+			}
 		}
 		result = StaticData.RESULT_OK;
 

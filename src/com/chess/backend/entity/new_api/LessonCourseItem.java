@@ -24,11 +24,21 @@ public class LessonCourseItem extends BaseResponseItem<LessonCourseItem.Data> {
   }
 */
 
-	public class Data {
+	public static class Data {
 		private String course_name;
 		private String description;
 		private int lessons_total_count;
 		private List<LessonListItem> lessons;
+		/* Local additions */
+		private long id;
+
+		public long getId() {
+			return id;
+		}
+
+		public void setId(long id) {
+			this.id = id;
+		}
 
 		public String getCourseName() {
 			return course_name;
@@ -45,12 +55,34 @@ public class LessonCourseItem extends BaseResponseItem<LessonCourseItem.Data> {
 		public List<LessonListItem> getLessons() {
 			return lessons;
 		}
+
+		public void setCourseName(String course_name) {
+			this.course_name = course_name;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+		public void setLessonsTotalCount(int lessons_total_count) {
+			this.lessons_total_count = lessons_total_count;
+		}
+
+		public void setLessons(List<LessonListItem> lessons) {
+			this.lessons = lessons;
+		}
 	}
 
-	public class LessonListItem {
+	public static class LessonListItem {
 		private int id;
 		private String name;
 		private boolean completed;
+		/* Local addition */
+		private long courseId;
+
+		public void setId(int id) {
+			this.id = id;
+		}
 
 		public int getId() {
 			return id;
@@ -62,6 +94,22 @@ public class LessonCourseItem extends BaseResponseItem<LessonCourseItem.Data> {
 
 		public boolean isCompleted() {
 			return completed;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public void setCompleted(boolean completed) {
+			this.completed = completed;
+		}
+
+		public long getCourseId() {
+			return courseId;
+		}
+
+		public void setCourseId(long courseId) {
+			this.courseId = courseId;
 		}
 	}
 }

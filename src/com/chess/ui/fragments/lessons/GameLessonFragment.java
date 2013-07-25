@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.lessons;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -19,6 +20,10 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.LessonItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DBDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.tasks.LoadLessonItemTask;
+import com.chess.db.tasks.SaveLessonsLessonTask;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLessons;
@@ -69,6 +74,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private static final float WRONG_MOVE_COST = 40f;
 
 	private LessonUpdateListener lessonUpdateListener;
+	private LessonDataUpdateListener saveLessonUpdateListener;
+	private LessonDataUpdateListener lessonLoadListener;
 	private int lessonId;
 	private boolean isAnalysis;
 	private LabelsConfig labelsConfig;
@@ -77,7 +84,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private ChessBoardLessonsView boardView;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private SparseArray<String> optionsArray;
-	private LessonItem.MentorLesson lessonItem;
+	private LessonItem.Data lessonItem;
+	private LessonItem.MentorLesson mentorLesson;
 	private List<LessonItem.MentorPosition> positionsToLearn;
 	private TextView lessonTitleTxt;
 	private TextView commentTxt;
@@ -136,7 +144,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 		labelsConfig = new LabelsConfig();
 
+		saveLessonUpdateListener = new LessonDataUpdateListener(LessonDataUpdateListener.SAVE);
 		lessonUpdateListener = new LessonUpdateListener();
+		lessonLoadListener = new LessonDataUpdateListener(LessonDataUpdateListener.LOAD);
 		solvedPositionsList = new ArrayList<Integer>();
 		movesCompleteMap = new SparseArray<MoveCompleteItem>();
 	}
@@ -167,12 +177,18 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		super.onStart();
 
 		if (need2update) {
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_LESSON_BY_ID(lessonId));
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+			// check if we have that lesson in DB
+			Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getMentorLessonById(lessonId));
+			if (cursor != null && cursor.moveToFirst()) { // we have saved lesson data
+				new LoadLessonItemTask(lessonLoadListener, getContentResolver(), getUsername()).executeTask((long) lessonId);
+			} else {
+				LoadItem loadItem = new LoadItem();
+				loadItem.setLoadPath(RestHelper.CMD_LESSON_BY_ID(lessonId));
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
-			// TODO user restart parameter http GET http://api.c.com/v1/lessons/lessons/1 loginToken==4a3183b2355b85983d81a810c0191a27 restart==true
-			new RequestJsonTask<LessonItem>(lessonUpdateListener).executeTask(loadItem);
+				// TODO user restart parameter http GET http://api.c.com/v1/lessons/lessons/1 loginToken==4a3183b2355b85983d81a810c0191a27 restart==true
+				new RequestJsonTask<LessonItem>(lessonUpdateListener).executeTask(loadItem);
+			}
 		} else {
 			startLesson();
 			adjustBoardForGame();
@@ -262,7 +278,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	@Override
 	public boolean currentGameExist() {
-		return lessonItem != null;
+		return mentorLesson != null;
 	}
 
 	@Override
@@ -460,10 +476,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		hintTxt.setText(hintChars);
 
 		descriptionView.postDelayed(scrollDescriptionDown, 100);
-		descriptionView.invalidate();
-//		if (slidingDrawer.isOpened()) {
-//			slidingDrawer.animateClose();
-//		}
 	}
 
 	private void showHintViews(boolean show) {
@@ -523,12 +535,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 
 		descriptionView.setPadding(0, 0, 0, openDescriptionPadding);
-//		descriptionView.fullScroll(View.FOCUS_DOWN);
-//		descriptionView.invalidate();
 		descriptionView.postDelayed(scrollDescriptionDown, 50);
-//		descriptionView.post(scrollDescriptionDown);
-//		descriptionView.postInvalidate();
-//		descriptionView.performClick();
 	}
 
 	@Override
@@ -554,8 +561,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		@Override
 		public void run() {
 			descriptionView.fullScroll(View.FOCUS_DOWN);
-//			descriptionView.requestFocus();
-			descriptionView.performClick();
 		}
 	};
 
@@ -576,18 +581,11 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		public void updateData(LessonItem returnedObj) {
 			super.updateData(returnedObj);
 
-			lessonItem = returnedObj.getData().getLesson();
-			positionsToLearn = returnedObj.getData().getPositions();
-//			String legalMoveCheck = returnedObj.getData().getLegalMoveCheck();// TODO use for something...
-//			String legalPositionCheck = returnedObj.getData().getLegalPositionCheck();
-			userLesson = returnedObj.getData().getUserLesson();
-			totalLearningPositionsCnt = positionsToLearn.size();
+			lessonItem = returnedObj.getData();
+			fillLessonData();
 
-			currentLearningPosition = userLesson.getCurrentPosition();
-			currentPoints = userLesson.getCurrentPoints();
-			adjustBoardForGame();
-
-			need2update = false;
+			new SaveLessonsLessonTask(saveLessonUpdateListener, lessonItem, getContentResolver(),
+					getUsername()).executeTask();
 		}
 
 		@Override
@@ -612,7 +610,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			movesCompleteMap.put(currentLearningPosition, moveCompleteItem);
 		}
 
-		possibleMoves = positionToSolve.getLessonMoves();
+		possibleMoves = positionToSolve.getPossibleMoves();
 
 		boardFace.setupBoard(positionToSolve.getFen());
 
@@ -621,13 +619,54 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		invalidateGameScreen();
 		controlsLessonsView.enableGameControls(true);
 
-		lessonTitleTxt.setText(lessonItem.getName());
-		commentTxt.setText(lessonItem.getGoalCommentary());
-		descriptionTxt.setText(Html.fromHtml(lessonItem.getAbout()));
+		lessonTitleTxt.setText(mentorLesson.getName());
+		commentTxt.setText(mentorLesson.getGoalCommentary());
+		descriptionTxt.setText(Html.fromHtml(mentorLesson.getAbout()));
 		positionDescriptionTxt.setText(Html.fromHtml(positionToSolve.getAbout()));
 		descriptionView.post(scrollDescriptionDown);
 
 		showCorrectMoveViews(false);
+	}
+
+	private class LessonDataUpdateListener extends ChessLoadUpdateListener<LessonItem.Data> {
+
+		static final int SAVE = 0;
+		static final int LOAD = 1;
+
+		private int listenerCode;
+
+		private LessonDataUpdateListener(int listenerCode) {
+			this.listenerCode = listenerCode;
+		}
+
+		@Override
+		public void updateData(LessonItem.Data returnedObj) {
+			super.updateData(returnedObj);
+
+			if (listenerCode == LOAD) {
+				lessonItem = returnedObj;
+				fillLessonData();
+			}
+			adjustBoardForGame();
+
+			need2update = false;
+		}
+	}
+
+	private void fillLessonData() {
+		lessonItem.setId(lessonId);
+		mentorLesson = lessonItem.getLesson();
+		positionsToLearn = lessonItem.getPositions();
+
+		userLesson = lessonItem.getUserLesson();
+		userLesson.setLegalMoveCheck(lessonItem.getLegalMoveCheck());
+		userLesson.setLegalPositionCheck(lessonItem.getLegalPositionCheck());
+		userLesson.setLessonCompleted(lessonItem.isLessonCompleted());
+
+		totalLearningPositionsCnt = positionsToLearn.size();
+
+		currentLearningPosition = userLesson.getCurrentPosition();
+		currentPoints = userLesson.getCurrentPoints();
 	}
 
 	private void widgetsInit(View view) {

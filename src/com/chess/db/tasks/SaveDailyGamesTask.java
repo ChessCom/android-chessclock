@@ -39,19 +39,4 @@ public abstract class SaveDailyGamesTask<T extends DailyGameBaseData> extends Ab
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, userToken);
 	}
 
-	protected void updateOnlineGame(long gameId, String userName) {
-		loadItem.addRequestParams(RestHelper.P_GAME_ID, gameId);
-
-//		DailyGameBaseData.Data currentGame = null;
-//		try {
-//			currentGame = RestHelper.requestData(loadItem, DailyGameBaseData.class).getData();
-//		} catch (InternalErrorException e) {
-//			e.logMe();
-//		}
-//		if (currentGame != null) {
-//			result = StaticData.RESULT_OK;
-//			DBDataManager.updateDailyGame(contentResolver, currentGame, userName);
-//		}
-	}
-
 }

@@ -118,7 +118,7 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 
 
 	protected void updateData() {
-		QueryParams queryParams = DbHelper.getVideosListParams();
+		QueryParams queryParams = DbHelper.getVideosList();
 		Uri uri = ContentUris.withAppendedId(queryParams.getUri(), itemId);
 		queryParams.setUri(uri);
 		Cursor cursor = DBDataManager.executeQuery(getContentResolver(), queryParams);

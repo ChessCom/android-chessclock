@@ -101,7 +101,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private void loadFromDb() {
 		long itemId = getArguments().getLong(ITEM_ID);
 
-		new LoadDataFromDbTask(articleCursorUpdateListener, DbHelper.getArticlesListParams(0),
+		new LoadDataFromDbTask(articleCursorUpdateListener, DbHelper.getArticlesList(0),
 				getContentResolver()).executeTask(itemId);
 	}
 

@@ -17,7 +17,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
 import com.chess.db.tasks.SaveLessonsCategoriesTask;
-import com.chess.db.tasks.SaveLessonsCoursesTask;
+import com.chess.db.tasks.SaveLessonsCoursesListTask;
 import com.chess.model.CurriculumItems;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -123,7 +123,7 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 
 				if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
 					fillCategoriesList(categoriesCursor);
-					Cursor coursesCursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.LESSONS_COURSES.ordinal()], null, null, null, null);
+					Cursor coursesCursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.LESSONS_COURSE_LIST.ordinal()], null, null, null, null);
 
 					if (coursesCursor != null && coursesCursor.moveToFirst()) {
 						fillCoursesList(coursesCursor);
@@ -135,6 +135,8 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 				}
 
 			} else { // load data to listHeader view
+				expListView.setAdapter(curriculumAdapter);
+				curriculumAdapter.notifyDataSetChanged();
 //				categoriesCursorAdapter.notifyDataSetChanged();
 			}
 		} else {
@@ -266,12 +268,12 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 		public void updateData(LessonCourseListItem returnedObj) {
 			super.updateData(returnedObj);
 
-			new SaveLessonsCoursesTask(saveLessonsCoursesUpdateListener, returnedObj.getData(), getContentResolver(),
+			new SaveLessonsCoursesListTask(saveLessonsCoursesUpdateListener, returnedObj.getData(), getContentResolver(),
 					getUsername()).executeTask();
 		}
 	}
 
-	private class SaveLessonsCoursesUpdateListener extends CommonLogicFragment.ChessUpdateListener<LessonCourseListItem.Data> {
+	private class SaveLessonsCoursesUpdateListener extends ChessUpdateListener<LessonCourseListItem.Data> {
 
 		@Override
 		public void updateData(LessonCourseListItem.Data returnedObj) {
@@ -279,7 +281,7 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 
 			// TODO add user parameter
 
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.LESSONS_COURSES.ordinal()], null, null, null, null);
+			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.LESSONS_COURSE_LIST.ordinal()], null, null, null, null);
 
 			if (cursor != null && cursor.moveToFirst()) {
 				fillCoursesList(cursor);

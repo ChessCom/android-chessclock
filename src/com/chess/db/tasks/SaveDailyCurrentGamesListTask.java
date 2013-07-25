@@ -27,43 +27,26 @@ public class SaveDailyCurrentGamesListTask extends SaveDailyGamesTask<DailyCurre
 		// TODO compare received list of current games with saved db data for current games.
 		// if item is not found in received list that means it became finished
 		synchronized (itemList) {
-//			try {
-//				while (saving) {
-//					Thread.sleep(100);
-//					itemList.wait();
-//				}
+			for (DailyCurrentGameData currentItem : itemList) { // if
+				final String[] arguments2 = arguments;
+				arguments2[0] = String.valueOf(userName);
+				arguments2[1] = String.valueOf(currentItem.getGameId());
 
-//				saving = true;
-				for (DailyCurrentGameData currentItem : itemList) { // if
-					final String[] arguments2 = arguments;
-					arguments2[0] = String.valueOf(userName);
-					arguments2[1] = String.valueOf(currentItem.getGameId());
+				// TODO implement beginTransaction logic for performance increase
+				Uri uri = DBConstants.uriArray[DBConstants.Tables.DAILY_CURRENT_GAMES.ordinal()];
+				final Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
+						DBDataManager.SELECTION_USER_AND_ID, arguments2, null);
 
-					// TODO implement beginTransaction logic for performance increase
-					Uri uri = DBConstants.uriArray[DBConstants.Tables.DAILY_CURRENT_GAMES.ordinal()];
-//					Log.d("TEST", " save DCG , game id = " + currentItem.getGameId() + " user = " + userName);
-					final Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
-							DBDataManager.SELECTION_USER_AND_ID, arguments2, null);
+				ContentValues values = DBDataManager.putDailyGameCurrentItemToValues(currentItem, userName);
 
-					ContentValues values = DBDataManager.putDailyGameCurrentItemToValues(currentItem, userName);
-
-					if (cursor.moveToFirst()) {
-//						Log.d("TEST", " update DCG , game id = " + currentItem.getGameId() + " user = " + userName);
-						contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
-					} else {
-//						Log.d("TEST", " insert DCG , game id = " + currentItem.getGameId() + " user = " + userName);
-						contentResolver.insert(uri, values);
-					}
-
-					cursor.close();
-
-					updateOnlineGame(currentItem.getGameId(), userName);
+				if (cursor.moveToFirst()) {
+					contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+				} else {
+					contentResolver.insert(uri, values);
 				}
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//			saving = false;
-//			itemList.notifyAll();
+
+				cursor.close();
+			}
 		}
 		result = StaticData.RESULT_OK;
 

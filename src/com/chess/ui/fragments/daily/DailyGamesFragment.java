@@ -383,7 +383,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	private void loadDbGames() {
 		new LoadDataFromDbTask(currentGamesMyCursorUpdateListener,
-				DbHelper.getDailyCurrentListGamesParams(getUsername()),
+				DbHelper.getDailyCurrentListGames(getUsername()),
 				getContentResolver()).executeTask();
 	}
 
@@ -467,7 +467,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
 			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-					DbHelper.getDailyFinishedListGamesParams(getUsername()),
+					DbHelper.getDailyFinishedListGames(getUsername()),
 					getContentResolver()).executeTask();
 		}
 	}
@@ -499,7 +499,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 //						updateData();
 //					} else {
 //						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-//								DbHelper.getDailyFinishedListGamesParams(getContext()),
+//								DbHelper.getDailyFinishedListGames(getContext()),
 //								getContentResolver()).executeTask();
 //					}
 
@@ -514,7 +514,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 						}
 					} else {
 						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-								DbHelper.getDailyFinishedListGamesParams(getUsername()),
+								DbHelper.getDailyFinishedListGames(getUsername()),
 								getContentResolver()).executeTask();
 					}
 					break;
@@ -531,7 +531,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			if (resultCode == StaticData.EMPTY_DATA) {
 				if (gameType == CURRENT_MY) {
 					new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-							DbHelper.getDailyFinishedListGamesParams(getUsername()),
+							DbHelper.getDailyFinishedListGames(getUsername()),
 							getContentResolver()).executeTask();
 				} else {
 					emptyView.setText(R.string.no_games);
@@ -598,7 +598,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					}
 				} else {
 					new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-							DbHelper.getDailyFinishedListGamesParams(getUsername()),
+							DbHelper.getDailyFinishedListGames(getUsername()),
 							getContentResolver()).executeTask();
 				}
 			}

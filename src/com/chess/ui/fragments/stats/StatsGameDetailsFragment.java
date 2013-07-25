@@ -161,19 +161,19 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 
 		switch (getArguments().getInt(MODE)) {
 			case LIVE_STANDARD:
-				new LoadDataFromDbTask(standardCursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.Tables.GAME_STATS_LIVE_STANDARD.ordinal()), getContentResolver()).executeTask();
+				new LoadDataFromDbTask(standardCursorUpdateListener, DbHelper.getUser(userName, DBConstants.Tables.GAME_STATS_LIVE_STANDARD.ordinal()), getContentResolver()).executeTask();
 				break;
 			case LIVE_LIGHTNING:
-				new LoadDataFromDbTask(lightningCursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.Tables.GAME_STATS_LIVE_LIGHTNING.ordinal()), getContentResolver()).executeTask();
+				new LoadDataFromDbTask(lightningCursorUpdateListener, DbHelper.getUser(userName, DBConstants.Tables.GAME_STATS_LIVE_LIGHTNING.ordinal()), getContentResolver()).executeTask();
 				break;
 			case LIVE_BLITZ:
-				new LoadDataFromDbTask(blitzCursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.Tables.GAME_STATS_LIVE_BLITZ.ordinal()), getContentResolver()).executeTask();
+				new LoadDataFromDbTask(blitzCursorUpdateListener, DbHelper.getUser(userName, DBConstants.Tables.GAME_STATS_LIVE_BLITZ.ordinal()), getContentResolver()).executeTask();
 				break;
 			case DAILY_CHESS:
-				new LoadDataFromDbTask(chessCursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.Tables.GAME_STATS_DAILY_CHESS.ordinal()), getContentResolver()).executeTask();
+				new LoadDataFromDbTask(chessCursorUpdateListener, DbHelper.getUser(userName, DBConstants.Tables.GAME_STATS_DAILY_CHESS.ordinal()), getContentResolver()).executeTask();
 				break;
 			case DAILY_CHESS960:
-				new LoadDataFromDbTask(chess960CursorUpdateListener, DbHelper.getUserParams(userName, DBConstants.Tables.GAME_STATS_DAILY_CHESS960.ordinal()), getContentResolver()).executeTask();
+				new LoadDataFromDbTask(chess960CursorUpdateListener, DbHelper.getUser(userName, DBConstants.Tables.GAME_STATS_DAILY_CHESS960.ordinal()), getContentResolver()).executeTask();
 				break;
 		}
 	}

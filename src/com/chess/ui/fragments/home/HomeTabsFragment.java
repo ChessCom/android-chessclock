@@ -129,11 +129,11 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		super.onStart();
 
 //		new LoadDataFromDbTask(new DbCursorUpdateListener(),
-//				DbHelper.getAllByUri(DBConstants.DAILY_FINISHED_GAMES),
+//				DbHelper.getAllByUri(DBConstants.Tables.DAILY_FINISHED_GAMES.ordinal()),
 //				getContentResolver()).executeTask();
 //
 //		new LoadDataFromDbTask(new DbCursorUpdateListener(),
-//				DbHelper.getAllByUri(DBConstants.DAILY_CURRENT_GAMES),
+//				DbHelper.getAllByUri(DBConstants.Tables.DAILY_CURRENT_GAMES.ordinal()),
 //				getContentResolver()).executeTask();
 
 		// check if user have daily games in progress or completed. May check in DB

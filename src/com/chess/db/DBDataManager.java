@@ -76,6 +76,19 @@ public class DBDataManager {
 
 	public static String SELECTION_ITEM_ID_AND_PAGE = concatArguments(DBConstants.V_ID, DBConstants.V_PAGE);
 
+	public static String SELECTION_ITEM_ID_AND_NUMBER = concatArguments(DBConstants.V_ID, DBConstants.V_NUMBER);
+
+	public static String SELECTION_ITEM_ID_AND_CURRENT_POSITION = concatArguments(
+			DBConstants.V_ID,
+			DBConstants.V_CURRENT_POSITION);
+
+	public static String SELECTION_ITEM_ID_POSITION_NUMBER = concatArguments(
+			DBConstants.V_ID,
+			DBConstants.V_CURRENT_POSITION,
+			DBConstants.V_NUMBER);
+
+	public static String SELECTION_ITEM_ID_AND_CATEGORY_ID = concatArguments(DBConstants.V_ID, DBConstants.V_CATEGORY_ID);
+
 	public static String SELECTION_CREATE_DATE = concatArguments(DBConstants.V_CREATE_DATE);
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
@@ -190,8 +203,27 @@ public class DBDataManager {
 			DBConstants.V_USER,
 			DBConstants.V_ID,
 			DBConstants.V_VIDEO_VIEWED
-
 	};
+
+	public static final String[] PROJECTION_ITEM_ID_AND_NUMBER = new String[]{
+			DBConstants._ID,
+			DBConstants.V_ID,
+			DBConstants.V_NUMBER
+	};
+
+	public static final String[] PROJECTION_ITEM_ID_POSITION_NUMBER = new String[]{
+			DBConstants._ID,
+			DBConstants.V_ID,
+			DBConstants.V_CURRENT_POSITION,
+			DBConstants.V_NUMBER
+	};
+
+	public static final String[] PROJECTION_ITEM_ID_AND_CATEGORY_ID = new String[]{
+			DBConstants._ID,
+			DBConstants.V_ID,
+			DBConstants.V_CATEGORY_ID
+	};
+
 
 	public static String concatArguments(String... arguments) {
 		StringBuilder selection = new StringBuilder();
@@ -1049,13 +1081,13 @@ public class DBDataManager {
 		values.put(DBConstants.V_COUNTRY_ID, dataObj.getCountryId());
 		values.put(DBConstants.V_PREMIUM_STATUS, dataObj.isPremiumStatus());
 		values.put(DBConstants.V_PHOTO_URL, dataObj.getAvatarUrl());
-		values.put(DBConstants.V_COMMENT_NUMBER, dataObj.getCommentNumber());
+		values.put(DBConstants.V_NUMBER, dataObj.getCommentNumber());
 		values.put(DBConstants.V_PAGE, dataObj.getPage());
 
 		return values;
 	}
 
-	public static ContentValues putLessonsCourseItemToValues(LessonCourseListItem.Data dataObj) {
+	public static ContentValues putLessonsCourseListItemToValues(LessonCourseListItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_ID, dataObj.getId());
@@ -1065,6 +1097,183 @@ public class DBDataManager {
 		values.put(DBConstants.V_COURSE_COMPLETED, dataObj.isCourseCompleted()? 1 : 0);
 
 		return values;
+	}
+
+	public static ContentValues putLessonsCourseItemToValues(LessonCourseItem.Data dataObj) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_ID, dataObj.getId());
+		values.put(DBConstants.V_DESCRIPTION, dataObj.getDescription());
+		values.put(DBConstants.V_NAME, dataObj.getCourseName());
+
+		return values;
+	}
+
+	public static LessonCourseItem.Data getLessonsCourseItemFromCursor(Cursor cursor) {
+		LessonCourseItem.Data dataObj = new LessonCourseItem.Data();
+//		dataObj.set(get(cursor, DBConstants.V_));
+
+		dataObj.setId(getLong(cursor, DBConstants.V_ID));
+		dataObj.setDescription(getString(cursor, DBConstants.V_DESCRIPTION));
+		dataObj.setCourseName(getString(cursor, DBConstants.V_NAME));
+
+		return dataObj;
+	}
+
+	public static ContentValues putLessonsListItemToValues(LessonCourseItem.LessonListItem dataObj) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_ID, dataObj.getId());
+		values.put(DBConstants.V_CATEGORY_ID, dataObj.getCourseId());
+		values.put(DBConstants.V_LESSON_COMPLETED, dataObj.isCompleted()? 1: 0);
+		values.put(DBConstants.V_NAME, dataObj.getName());
+
+		return values;
+	}
+
+	public static LessonCourseItem.LessonListItem getLessonsListItemFromCursor(Cursor cursor) {
+		LessonCourseItem.LessonListItem dataObj = new LessonCourseItem.LessonListItem();
+
+		dataObj.setId(getInt(cursor, DBConstants.V_ID));
+		dataObj.setCourseId(getLong(cursor, DBConstants.V_CATEGORY_ID));
+		dataObj.setCompleted(getInt(cursor, DBConstants.V_LESSON_COMPLETED) > 0);
+		dataObj.setName(getString(cursor, DBConstants.V_NAME));
+
+		return dataObj;
+	}
+
+	public static ContentValues putLessonsMentorLessonToValues(LessonItem.MentorLesson dataObj) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_ID, dataObj.getLessonId());
+		values.put(DBConstants.V_NUMBER, dataObj.getLessonNumber());
+		values.put(DBConstants.V_GOAL, dataObj.getGoal());
+		values.put(DBConstants.V_DIFFICULTY, dataObj.getDifficulty());
+		values.put(DBConstants.V_AUTHOR, dataObj.getAuthor());
+		values.put(DBConstants.V_NAME, dataObj.getName());
+		values.put(DBConstants.V_DESCRIPTION, dataObj.getAbout());
+		values.put(DBConstants.V_GOAL_COMMENT, dataObj.getGoalCommentary());
+		values.put(DBConstants.V_GOAL_CODE, dataObj.getGoalCode());
+
+		return values;
+	}
+
+	public static LessonItem.MentorLesson getLessonsMentorLessonFromCursor(Cursor cursor) {
+		LessonItem.MentorLesson dataObj = new LessonItem.MentorLesson();
+
+		dataObj.setLessonId(getLong(cursor, DBConstants.V_ID));
+		dataObj.setLessonNumber(getInt(cursor, DBConstants.V_NUMBER));
+		dataObj.setGoal(getInt(cursor, DBConstants.V_GOAL));
+		dataObj.setDifficulty(getInt(cursor, DBConstants.V_DIFFICULTY));
+		dataObj.setAuthor(getString(cursor, DBConstants.V_AUTHOR));
+		dataObj.setName(getString(cursor, DBConstants.V_NAME));
+		dataObj.setAbout(getString(cursor, DBConstants.V_DESCRIPTION));
+		dataObj.setGoalCommentary(getString(cursor, DBConstants.V_GOAL_COMMENT));
+		dataObj.setGoalCode(getString(cursor, DBConstants.V_GOAL_CODE));
+
+		return dataObj;
+	}
+
+	public static ContentValues putLessonsPositionToValues(LessonItem.MentorPosition dataObj) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_ID, dataObj.getLessonId());
+		values.put(DBConstants.V_NUMBER, dataObj.getPositionNumber());
+		values.put(DBConstants.V_USER_TO_MOVE, dataObj.getUserToMove());
+		values.put(DBConstants.V_DIFFICULTY, dataObj.getMoveDifficulty());
+		values.put(DBConstants.V_FINAL_POSITION, dataObj.getFinalPosition());
+		values.put(DBConstants.V_FEN, dataObj.getFen());
+		values.put(DBConstants.V_ADVICE_1, dataObj.getAdvice1());
+		values.put(DBConstants.V_ADVICE_2, dataObj.getAdvice2());
+		values.put(DBConstants.V_ADVICE_3, dataObj.getAdvice3());
+		values.put(DBConstants.V_RESPONSE_MOVE_COMMENT, dataObj.getStandardResponseMoveCommentary());
+		values.put(DBConstants.V_WRONG_MOVE_COMMENT, dataObj.getStandardWrongMoveCommentary());
+		values.put(DBConstants.V_DESCRIPTION, dataObj.getAbout());
+
+		return values;
+	}
+
+	public static LessonItem.MentorPosition getLessonsPositionFromCursor(Cursor cursor) {
+		LessonItem.MentorPosition dataObj = new LessonItem.MentorPosition();
+
+		dataObj.setLessonId(getLong(cursor, DBConstants.V_ID));
+		dataObj.setPositionNumber(getInt(cursor, DBConstants.V_NUMBER));
+		dataObj.setUserToMove(getInt(cursor, DBConstants.V_USER_TO_MOVE));
+		dataObj.setMoveDifficulty(getInt(cursor, DBConstants.V_DIFFICULTY));
+		dataObj.setFinalPosition(getInt(cursor, DBConstants.V_FINAL_POSITION));
+		dataObj.setFen(getString(cursor, DBConstants.V_FEN));
+		dataObj.setAdvice1(getString(cursor, DBConstants.V_ADVICE_1));
+		dataObj.setAdvice2(getString(cursor, DBConstants.V_ADVICE_2));
+		dataObj.setAdvice3(getString(cursor, DBConstants.V_ADVICE_3));
+		dataObj.setStandardResponseMoveCommentary(getString(cursor, DBConstants.V_RESPONSE_MOVE_COMMENT));
+		dataObj.setStandardWrongMoveCommentary(getString(cursor, DBConstants.V_WRONG_MOVE_COMMENT));
+		dataObj.setAbout(getString(cursor, DBConstants.V_DESCRIPTION));
+
+		return dataObj;
+	}
+
+	public static ContentValues putLessonsPositionMoveToValues(LessonItem.MentorPosition.PossibleMove dataObj) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_ID, dataObj.getLessonId());
+		values.put(DBConstants.V_CURRENT_POSITION, dataObj.getPositionNumber());
+		values.put(DBConstants.V_NUMBER, dataObj.getMoveNumber());
+		values.put(DBConstants.V_MOVE, dataObj.getMove());
+		values.put(DBConstants.V_MOVE_COMMENT, dataObj.getMoveCommentary());
+		values.put(DBConstants.V_SHORT_RESPONSE_MOVE, dataObj.getShortResponseMove());
+		values.put(DBConstants.V_RESPONSE_MOVE_COMMENT, dataObj.getResponseMoveCommentary());
+		values.put(DBConstants.V_MOVE_TYPE, dataObj.getMoveType());
+
+		return values;
+	}
+
+	public static LessonItem.MentorPosition.PossibleMove getLessonsPositionMoveFromCursor(Cursor cursor) {
+		LessonItem.MentorPosition.PossibleMove dataObj = new LessonItem.MentorPosition.PossibleMove();
+
+		dataObj.setLessonId(getLong(cursor, DBConstants.V_ID));
+		dataObj.setPositionNumber(getInt(cursor, DBConstants.V_CURRENT_POSITION));
+		dataObj.setMoveNumber(getInt(cursor, DBConstants.V_NUMBER));
+		dataObj.setMove(getString(cursor, DBConstants.V_MOVE));
+		dataObj.setMoveCommentary(getString(cursor, DBConstants.V_MOVE_COMMENT));
+		dataObj.setShortResponseMove(getString(cursor, DBConstants.V_SHORT_RESPONSE_MOVE));
+		dataObj.setResponseMoveCommentary(getString(cursor, DBConstants.V_RESPONSE_MOVE_COMMENT));
+		dataObj.setMoveType(getString(cursor, DBConstants.V_MOVE_TYPE));
+
+		return dataObj;
+	}
+
+	public static ContentValues putLessonsUserLessonToValues(LessonItem.UserLesson dataObj) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_ID, dataObj.getLessonId());
+		values.put(DBConstants.V_CURRENT_POSITION, dataObj.getCurrentPosition());
+		values.put(DBConstants.V_CURRENT_POINTS, dataObj.getCurrentPoints());
+		values.put(DBConstants.V_CURRENT_POSITION_POINTS, dataObj.getCurrentPositionPoints());
+		values.put(DBConstants.V_USER, dataObj.getUsername());
+		values.put(DBConstants.V_INITIAL_SCORE, dataObj.getInitialScore());
+		values.put(DBConstants.V_LAST_SCORE, dataObj.getLastScore());
+		values.put(DBConstants.V_LEGAL_POSITION_CHECK, dataObj.getLegalPositionCheck());
+		values.put(DBConstants.V_LEGAL_MOVE_CHECK, dataObj.getLegalMoveCheck());
+		values.put(DBConstants.V_LESSON_COMPLETED, dataObj.isLessonCompleted()? 1 : 0);
+
+		return values;
+	}
+
+	public static LessonItem.UserLesson getLessonsUserLessonFromCursor(Cursor cursor) {
+		LessonItem.UserLesson dataObj = new LessonItem.UserLesson();
+
+		dataObj.setLessonId(getLong(cursor, DBConstants.V_ID));
+		dataObj.setCurrentPosition(getInt(cursor, DBConstants.V_CURRENT_POSITION));
+		dataObj.setCurrentPoints(getInt(cursor, DBConstants.V_CURRENT_POINTS));
+		dataObj.setCurrentPositionPoints(getInt(cursor, DBConstants.V_CURRENT_POSITION_POINTS));
+		dataObj.setUsername(getString(cursor, DBConstants.V_USER));
+		dataObj.setInitialScore(getString(cursor, DBConstants.V_INITIAL_SCORE));
+		dataObj.setLastScore(getString(cursor, DBConstants.V_LAST_SCORE));
+		dataObj.setLegalPositionCheck(getString(cursor, DBConstants.V_LEGAL_POSITION_CHECK));
+		dataObj.setLegalMoveCheck(getString(cursor, DBConstants.V_LEGAL_MOVE_CHECK));
+		dataObj.setLessonCompleted(getInt(cursor, DBConstants.V_LESSON_COMPLETED) > 0);
+
+		return dataObj;
 	}
 
 	public static ContentValues putVideoViewedItemToValues(VideoViewedItem dataObj) {

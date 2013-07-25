@@ -68,7 +68,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		saveForumTopicsListener = new SaveForumTopicsListener();
 
 		categoriesMap = new SparseArray<String>();
-		Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumCategoriesParams());
+		Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumCategories());
 		if (cursor.moveToFirst()) {
 			do {
 				categoriesMap.put(DBDataManager.getInt(cursor, DBConstants.V_ID), DBDataManager.getString(cursor, DBConstants.V_NAME));
@@ -226,7 +226,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		public void updateData(ForumTopicItem.Topic returnedObj) {
 			super.updateData(returnedObj);
 
-			Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumTopicByCategoryParams(categoryId, currentPage));
+			Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumTopicByCategory(categoryId, currentPage));
 			if (cursor.moveToFirst()) {
 				topicsCursorAdapter.changeCursor(cursor);
 			} else {

@@ -266,7 +266,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 	private void loadFromDb() {
-		new LoadDataFromDbTask(articlesCursorUpdateListener, DbHelper.getArticlesListParams(LATEST_ARTICLES_CNT),
+		new LoadDataFromDbTask(articlesCursorUpdateListener, DbHelper.getArticlesList(LATEST_ARTICLES_CNT),
 				getContentResolver()).executeTask();
 	}
 

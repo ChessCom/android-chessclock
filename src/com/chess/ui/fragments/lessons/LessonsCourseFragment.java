@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.lessons;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +13,14 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.LessonCourseItem;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DBDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.tasks.SaveLessonsCourseTask;
 import com.chess.ui.adapters.LessonsItemAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +40,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 	private CourseUpdateListener courseUpdateListener;
 	private boolean need2update = true;
 	private LessonCourseItem.Data courseItem;
+	private CourseSaveListener courseSaveListener;
 
 	public LessonsCourseFragment() {}
 
@@ -58,6 +64,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 		lessonsItemsAdapter = new LessonsItemAdapter(getActivity(), null);
 		courseUpdateListener = new CourseUpdateListener();
+		courseSaveListener = new CourseSaveListener();
 	}
 
 	@Override
@@ -96,9 +103,27 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		super.onStart();
 
 		if (need2update) {
-			LoadItem loadItem = LoadHelper.getLessonsByCourseId(getUserToken(), courseId);
 
-			new RequestJsonTask<LessonCourseItem>(courseUpdateListener).executeTask(loadItem);
+			Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getLessonCourseById(courseId));
+
+			if (cursor != null && cursor.moveToFirst()) {
+				courseItem = DBDataManager.getLessonsCourseItemFromCursor(cursor);
+
+				Cursor lessonsListCursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getLessonsListByCourseId(courseId));
+				if (lessonsListCursor.moveToFirst()) {
+					List<LessonCourseItem.LessonListItem> lessons = new ArrayList<LessonCourseItem.LessonListItem>();
+					do {
+						lessons.add(DBDataManager.getLessonsListItemFromCursor(lessonsListCursor));
+					} while(lessonsListCursor.moveToNext());
+					courseItem.setLessons(lessons);
+
+					fillCourseData();
+				}
+			} else {
+				LoadItem loadItem = LoadHelper.getLessonsByCourseId(getUserToken(), courseId);
+
+				new RequestJsonTask<LessonCourseItem>(courseUpdateListener).executeTask(loadItem);
+			}
 		} else {
 			courseTitleTxt.setText(courseItem.getCourseName());
 			courseDescriptionTxt.setText(courseItem.getDescription());
@@ -142,15 +167,26 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 			super.updateData(returnedObj);
 
 			courseItem = returnedObj.getData();
+			fillCourseData();
 
-			courseTitleTxt.setText(courseItem.getCourseName());
-			courseDescriptionTxt.setText(courseItem.getDescription());
-
-			List<LessonCourseItem.LessonListItem> lessons = courseItem.getLessons();
-			lessonsItemsAdapter.setItemsList(lessons);
-
-			need2update = false;
+			new SaveLessonsCourseTask(courseSaveListener, courseItem, getContentResolver()).executeTask();
 		}
+	}
+
+	private void fillCourseData() {
+		courseItem.setId(courseId);
+
+		courseTitleTxt.setText(courseItem.getCourseName());
+		courseDescriptionTxt.setText(courseItem.getDescription());
+
+		List<LessonCourseItem.LessonListItem> lessons = courseItem.getLessons();
+		lessonsItemsAdapter.setItemsList(lessons);
+
+		need2update = false;
+	}
+
+	private class CourseSaveListener extends ChessUpdateListener<LessonCourseItem.Data> {
+
 	}
 
 }

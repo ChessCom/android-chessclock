@@ -407,13 +407,13 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 
 	private void loadDbGames() {
 		new LoadDataFromDbTask(currentGamesMyCursorUpdateListener,
-				DbHelper.getDailyCurrentMyListGamesParams(getUsername()),
+				DbHelper.getDailyCurrentMyListGames(getUsername()),
 				getContentResolver()).executeTask();
 		new LoadDataFromDbTask(currentGamesTheirCursorUpdateListener,
-				DbHelper.getDailyCurrentTheirListGamesParams(getUsername()),
+				DbHelper.getDailyCurrentTheirListGames(getUsername()),
 				getContentResolver()).executeTask();
 		new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-				DbHelper.getDailyFinishedListGamesParams(getUsername()),
+				DbHelper.getDailyFinishedListGames(getUsername()),
 				getContentResolver()).executeTask();
 	}
 
@@ -514,7 +514,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
 			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-					DbHelper.getDailyFinishedListGamesParams(getUsername()),
+					DbHelper.getDailyFinishedListGames(getUsername()),
 					getContentResolver()).executeTask();
 		}
 	}
@@ -547,7 +547,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 //						updateData();
 //					} else {
 //						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-//								DbHelper.getDailyFinishedListGamesParams(getContext()),
+//								DbHelper.getDailyFinishedListGames(getContext()),
 //								getContentResolver()).executeTask();
 //					}
 
