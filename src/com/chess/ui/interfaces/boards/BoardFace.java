@@ -118,8 +118,6 @@ public interface BoardFace {
 
 	Move getNextMove();
 
-	boolean isWhite(int piecePosition);
-
 	boolean isWhiteToMove();
 
 	void setFinished(boolean finished);

@@ -2174,16 +2174,6 @@ public class ChessBoard implements BoardFace {
 		return fen;
 	}*/
 
-
-	@Override
-	public boolean isWhite(int piecePosition) {
-		return color[piecePosition] == WHITE_PIECE;
-	}
-
-	public boolean isBlack(int piecePosition) {
-		return color[piecePosition] == BLACK_PIECE;
-	}
-
 	@Override
 	public void switchSide() {
 		side ^= 1;

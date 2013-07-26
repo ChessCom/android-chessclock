@@ -10,7 +10,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -288,12 +287,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (appData.isHumanVsHumanGameMode(getBoardFace())) {
 			return true;
 		} else if (isUserWhite()) {
-			Log.d("dragdrag", "isUserWhite() " + isUserWhite());
-			Log.d("dragdrag", "color == ChessBoard.WHITE_SIDE " + (color == ChessBoard.WHITE_SIDE));
 			return color == ChessBoard.WHITE_SIDE;
 		} else {
-			Log.d("dragdrag", "isUserWhite() " + isUserWhite());
-			Log.d("dragdrag", "color == ChessBoard.BLACK_SIDE " + (color == ChessBoard.BLACK_SIDE));
 			return color == ChessBoard.BLACK_SIDE;
 		}
 	}
@@ -604,7 +599,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (firstClick) {
 			from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
 			//draggingFrom = from;
-			Log.d("drag", "from " + from);
 			if (isUserColor(getBoardFace().getColor()[from])) {
 				pieceSelected = true;
 				firstClick = false;
@@ -612,8 +606,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			}
 		} else {
 			int fromPosIndex = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
-			if (getBoardFace().getPieces()[fromPosIndex] != ChessBoard.EMPTY
-					&& getBoardFace().getSide() == getBoardFace().getColor()[fromPosIndex]) {
+			if (isUserColor(getBoardFace().getColor()[fromPosIndex])) {
 				from = fromPosIndex;
 				pieceSelected = true;
 				firstClick = false;
@@ -647,8 +640,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	protected boolean onActionUp(MotionEvent event) {
 
-		Log.d("DEBUGBOARD", "onActionUp");
-
 		int col = (int) (event.getX() - event.getX() % square) / square;
 		int row = (int) (event.getY() - event.getY() % square) / square;
 
@@ -664,8 +655,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		if (firstClick) {
 			from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
-			if (getBoardFace().getPieces()[from] != ChessBoard.EMPTY
-					&& getBoardFace().getSide() == getBoardFace().getColor()[from]) {
+			if (isUserColor(getBoardFace().getColor()[from])) {
 				pieceSelected = true;
 				firstClick = false;
 				invalidate();
@@ -713,8 +703,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				} else {
 					afterUserMove(); //
 				}
-			} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
-					&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
+			} else if (isUserColor(getBoardFace().getColor()[to])) {
 				pieceSelected = true;
 				firstClick = false;
 				from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
@@ -1186,15 +1175,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			this.move = move;
 			this.forward = forward;
 
-			Log.d("debugboard", "move " + move);
-
 			int moveFromPosition = forward ? move.from : move.to;
 			int fromColor = getBoardFace().getColor()[moveFromPosition];
 			int fromPiece = getBoardFace().getPieces()[moveFromPosition];
-
-			Log.d("debugboard", "moveFromPosition " + moveFromPosition);
-			Log.d("debugboard", "fromColor " + fromColor);
-			Log.d("debugboard", "fromPiece " + fromPiece);
 
 			pieceBitmap = piecesBitmaps[fromColor][fromPiece];
 
