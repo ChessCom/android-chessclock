@@ -23,9 +23,10 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:textColor="@color/new_light_grey"
+        android:textColor="@color/white"
         android:textSize="17sp"
         android:gravity="center_vertical"
          />
+	<!--android:textColor="@color/new_light_grey"-->
 
 </com.chess.LinLayout>

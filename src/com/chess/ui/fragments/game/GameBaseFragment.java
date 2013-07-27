@@ -114,13 +114,14 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	}
 
 	@Override
-	public void onDestroy() {
-		// try to destroy ad here as Mopub team suggested
+	public void onPause() {
+		super.onPause();
+
+		boardView.releaseRunnable();
+
 		if (AppUtils.isNeedToUpgrade(getActivity())) {
 			MopubHelper.destroyRectangleAd();
 		}
-
-		super.onDestroy();
 	}
 
 	@Override

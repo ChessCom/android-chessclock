@@ -6,8 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.ui.interfaces.BoardFace;
-import com.chess.utilities.AppUtils;
+import com.chess.ui.interfaces.boards.BoardFace;
 
 import static com.chess.backend.statics.AppConstants.*;
 
@@ -350,8 +349,28 @@ public class AppData {
 		setBooleanValue(PREF_BOARD_SHOW_ANSWER_BOTTOM, checked);
 	}
 
+	public void setThemeBackPath(String path) {
+		setStringValue(PREF_THEME_BACK_PATH, path);
+	}
+
+	public String getThemeBackPath() {
+		return getStringValue(PREF_THEME_BACK_PATH, "");
+	}
+
+	public void setThemeBoardPath(String path) {
+		setStringValue(PREF_THEME_BOARD_PATH, path);
+	}
+
+	public String getThemeBoardPath() {
+		return getStringValue(PREF_THEME_BOARD_PATH, "");
+	}
+
 	public void setThemeBackId(int themeId) {
 		setIntValue(PREF_THEME_BACK_ID, themeId);
+	}
+
+	public int getThemeBackId() {
+		return getIntValue(PREF_THEME_BACK_ID, R.drawable.img_theme_green_felt);
 	}
 
 	public void setUserChooseVideoLibrary(boolean value) {
@@ -369,18 +388,6 @@ public class AppData {
 	public boolean isUserChooseLessonsLibrary() {
 		return getBooleanValue(PREF_USER_CHOOSE_LESSONS_LIBRARY, true);
 	}
-
-	/**
-	 * Get saved theme background Id
-	 *
-	 * @return
-	 */
-	public int getThemeBackId() {
-		int backId = getIntValue(PREF_THEME_BACK_ID, R.drawable.img_theme_green_felt);
-		return AppUtils.isThemeBackIdValid(backId) ? backId : R.drawable.img_theme_green_felt;
-//		return R.color.white;
-	}
-
 
 	/*--------------------------- Common Shared logic ------------------------*/
 

@@ -55,6 +55,8 @@ public interface ActiveFragmentInterface {
 
 	void setMainBackground(int drawableThemeId);
 
+	void setMainBackground(String drawableThemeId);
+
 	void showActionMenu(int menuId, boolean show);
 
 	void updateActionBarIcons();

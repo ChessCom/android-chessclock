@@ -8,6 +8,7 @@ import android.graphics.*;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -850,18 +851,26 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (previousWidth != viewWidth) { // update only if size has changed
 			previousWidth = viewWidth;
 
-			BitmapDrawable drawable = (BitmapDrawable) resources.getDrawable(boardsDrawables[boardId]);
-			Bitmap boardBitmap = drawable.getBitmap();
+			Bitmap boardBitmap;
+			BitmapShader shader;
+			if (!TextUtils.isEmpty(appData.getThemeBoardPath())) {
+				boardBitmap = BitmapFactory.decodeFile(appData.getThemeBoardPath());
+				boardBitmap = Bitmap.createScaledBitmap(boardBitmap, viewWidth, viewWidth, true);
 
-			int bitmapSize;
-			if (viewHeight < viewWidth && viewWidth != QVGA_WIDTH) { // if landscape mode
-				bitmapSize = viewHeight / 4;
+				shader = new BitmapShader(boardBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 			} else {
-				bitmapSize = viewWidth / 4;
-			}
-			boardBitmap = Bitmap.createScaledBitmap(boardBitmap, bitmapSize, bitmapSize, true);
+				BitmapDrawable drawable = (BitmapDrawable) resources.getDrawable(boardsDrawables[boardId]);
+				boardBitmap = drawable.getBitmap();
 
-			BitmapShader shader = new BitmapShader(boardBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+				int bitmapSize;
+				if (viewHeight < viewWidth && viewWidth != QVGA_WIDTH) { // if landscape mode
+					bitmapSize = viewHeight / 4;
+				} else {
+					bitmapSize = viewWidth / 4;
+				}
+				boardBitmap = Bitmap.createScaledBitmap(boardBitmap, bitmapSize, bitmapSize, true);
+				shader = new BitmapShader(boardBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+			}
 
 			boardBackPaint.setShader(shader);
 		}

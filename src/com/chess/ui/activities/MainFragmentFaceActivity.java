@@ -2,6 +2,9 @@ package com.chess.ui.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -77,8 +80,13 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		badgeItems = new Hashtable<Integer, Integer>();
 
-		int id = getAppData().getThemeBackId();
-		getWindow().setBackgroundDrawableResource(id);
+		String themeBackPath = getAppData().getThemeBackPath();
+		if (!TextUtils.isEmpty(themeBackPath)) {
+			setMainBackground(themeBackPath);
+		} else {
+			int id = getAppData().getThemeBackId();
+			getWindow().setBackgroundDrawableResource(id);
+		}
 	}
 
 	@Override
@@ -163,7 +171,14 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public void setMainBackground(int drawableThemeId) {
 		getAppData().setThemeBackId(drawableThemeId);
 		getWindow().setBackgroundDrawableResource(drawableThemeId);
-		setBackToDecorChild(drawableThemeId);
+	}
+
+	@Override
+	public void setMainBackground(String drawablePath) {
+		getAppData().setThemeBackPath(drawablePath);
+		Bitmap bitmap = BitmapFactory.decodeFile(drawablePath);
+		BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
+		getWindow().setBackgroundDrawable(drawable);
 	}
 
 	@Override
@@ -333,7 +348,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			FragmentManager fragmentManager = getSupportFragmentManager(); // the only one way to call it after startIntentSenderForResult
 			Fragment fragment = fragmentManager.findFragmentByTag(UpgradeDetailsFragment.class.getSimpleName());
 			if (fragment != null) {
-				fragment.onActivityResult(requestCode, resultCode,data);
+				fragment.onActivityResult(requestCode, resultCode, data);
 			}
 		}
 	}

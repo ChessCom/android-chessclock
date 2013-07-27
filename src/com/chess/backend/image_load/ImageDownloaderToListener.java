@@ -1,27 +1,17 @@
 package com.chess.backend.image_load;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
-import com.chess.backend.RestHelper;
 import com.chess.utilities.AppUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 
 import java.io.*;
 import java.lang.ref.SoftReference;
-import java.lang.ref.WeakReference;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -31,6 +21,9 @@ public class ImageDownloaderToListener {
     private static final String LOG_TAG = "EnhancedImageDownloader";
 	private final Context context;
 	private int imgSize;
+	private int imgWidth;
+	private int imgHeight;
+	private boolean useScale;
 
 	public enum Mode {
         NO_ASYNC_TASK, NO_DOWNLOADED_DRAWABLE, CORRECT
@@ -38,11 +31,8 @@ public class ImageDownloaderToListener {
 
     private File cacheDir;
 
-    private static Resources resources;
-
     public ImageDownloaderToListener(Context context) {
 		this.context = context;
-        resources = context.getResources();
         // Find the dir to save cached images
         if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
             cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), AppUtils.getApplicationCacheDir(context.getPackageName()));
@@ -65,6 +55,7 @@ public class ImageDownloaderToListener {
 	 */
     public void download(String url, ImageReadyListener holder, int imgSize) {
 		this.imgSize = imgSize;
+		useScale = true;
 		if (TextUtils.isEmpty(url)) {
 			Log.e(LOG_TAG, " passed url is null. Don't start loading");
 			return;
@@ -77,6 +68,35 @@ public class ImageDownloaderToListener {
             forceDownload(url, holder);
         }
     }
+
+	/**
+	 * Download the specified image from the Internet and binds it to the
+	 * provided ImageView. The binding is immediate if the image is found in the
+	 * cache and will be done asynchronously otherwise. A null bitmap will be
+	 * associated to the ImageView if an error occurs.
+	 *
+	 * @param url    The URL of the image to download.
+	 * @param holder The ImageView to bind the downloaded image to.
+	 * @param imgWidth width of scaled image
+	 * @param imgHeight height of scaled image
+	 */
+	public void download(String url, ImageReadyListener holder, int imgWidth, int imgHeight) {
+		this.imgWidth = imgWidth;
+		this.imgHeight = imgHeight;
+		useScale = false;
+		if (TextUtils.isEmpty(url)) {
+			Log.e(LOG_TAG, " passed url is null. Don't start loading");
+			return;
+		}
+		Bitmap bitmap = getBitmapFromCache(url, holder);
+		Log.d(LOG_TAG, "^ _________________________________ ^");
+		Log.d(LOG_TAG, " download url = " + url);
+
+		if (bitmap == null) {
+			forceDownload(url, holder);
+		}
+	}
+
     /**
      * @param url The URL of the image that will be retrieved from the cache.
      * @return The cached bitmap or null if it was not found.
@@ -245,118 +265,57 @@ public class ImageDownloaderToListener {
 
     private Bitmap downloadBitmap(String url) {
 		Log.d(LOG_TAG, "downloadBitmap start url = " + url);
-        // AndroidHttpClient is not allowed to be used from the main thread
-        final HttpClient client = AndroidHttpClient.newInstance("Android");
-        url = url.replace(" ", "%20");
+
+		String filename = String.valueOf(url.hashCode());
+
+		url = url.replace(" ", "%20");
 		if (!url.startsWith(EnhancedImageDownloader.HTTP)) {
 			url = EnhancedImageDownloader.HTTP_PREFIX + url;
 		}
-        final HttpGet getRequest = new HttpGet(url);
+		try {
+			// create descriptor
+			File imgFile = new File(cacheDir, filename);
 
-        try {
-			if (RestHelper.IS_TEST_SERVER_MODE) {
-//				getRequest.addHeader(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
+			InputStream is = new URL(url).openStream();
+			// copy stream to imgFile
+			OutputStream os = new FileOutputStream(imgFile); // save stream to
+			// SD
+			AppUtils.copyStream(is, os);
+			os.close();
+
+			if (useScale) {
+				// Get the dimensions of the View
+				int targetW = imgSize;
+				int targetH = imgSize;
+
+				// Get the dimensions of the bitmap
+				BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+				bmOptions.inJustDecodeBounds = true;
+				BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bmOptions);
+				int photoW = bmOptions.outWidth;
+				int photoH = bmOptions.outHeight;
+
+				// Determine how much to scale down the image
+				int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+
+				// Decode the image imgFile into a Bitmap sized to fill the View
+				bmOptions.inJustDecodeBounds = false;
+				bmOptions.inSampleSize = scaleFactor;
+				bmOptions.inPurgeable = true;
+
+				return BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bmOptions);
 			}
+			// TODO adjust usage for width and height
 
-            HttpResponse response = client.execute(getRequest);
-            final int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                Log.e(LOG_TAG, "Error " + statusCode + " while retrieving bitmap from " + url);
-                return null;
-            }
-
-            final HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                InputStream inputStream = null;
-                try {
-                    inputStream = entity.getContent();
-                    // return BitmapFactory.decodeStream(inputStream);
-                    // Bug on slow connections, fixed in future release.
-
-                    // create descriptor
-                    String filename = String.valueOf(url.hashCode());
-                    File f = new File(cacheDir, filename);
-
-                    InputStream is = new URL(url).openStream();
-                    // copy stream to file
-                    OutputStream os = new FileOutputStream(f); // save stream to
-                    // SD
-                    AppUtils.copyStream(is, os);
-                    os.close();
-
-                    // decode image size
-                    BitmapFactory.Options o = new BitmapFactory.Options();
-                    o.inJustDecodeBounds = true;
-                    BitmapFactory.decodeStream(new FileInputStream(f), null, o);
-
-                    // Find the correct scale value. It should be the power of 2.
-                    int width_tmp = o.outWidth, height_tmp = o.outHeight;
-                    int scale = 1;
-                    while (true) {
-                        if (width_tmp / 2 < imgSize || height_tmp / 2 < imgSize)
-                            break;
-                        width_tmp /= 2;
-                        height_tmp /= 2;
-                        scale *= 2;
-                    }
-
-                    // decode with inSampleSize
-                    BitmapFactory.Options o2 = new BitmapFactory.Options();
-                    o2.inSampleSize = scale;
-                    return BitmapFactory.decodeStream(new FlushedInputStream(inputStream), null, o2);
-//					return BitmapFactory.decodeStream(inputStream);
-                } finally {
-                    if (inputStream != null) {
-                        inputStream.close();
-                    }
-                    entity.consumeContent();
-                }
-            }
-        } catch (OutOfMemoryError error) {
-            error.printStackTrace();
-        } catch (IOException e) {
-            getRequest.abort();
-            Log.e(LOG_TAG, "I/O error while retrieving bitmap from " + url, e);
-        } catch (IllegalStateException e) {
-            getRequest.abort();
-            Log.e(LOG_TAG, "Incorrect URL: " + url);
-        } catch (Exception e) {
-            getRequest.abort();
-            Log.e(LOG_TAG, "Error while retrieving bitmap from " + url, e);
-        } finally {
-            if ((client instanceof AndroidHttpClient)) {
-                ((AndroidHttpClient) client).close();
-            }
-        }
+			return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         return null;
-    }
-
-
-    public static class EnhDownloadedDrawable extends BitmapDrawable {
-        private final WeakReference<BitmapDownloaderTask> bitmapDownloaderTaskReference;
-
-        public EnhDownloadedDrawable(BitmapDownloaderTask bitmapDownloaderTask, ProgressImageView holder) {
-            super(resources, holder.placeholder);
-
-            bitmapDownloaderTaskReference = new WeakReference<BitmapDownloaderTask>(bitmapDownloaderTask);
-        }
-
-        public BitmapDownloaderTask getBitmapDownloaderTask() {
-            return bitmapDownloaderTaskReference.get();
-        }
-
-        @Override
-        public int getOpacity() {
-            return 0;
-        }
-
-        @Override
-        public void setAlpha(int alpha) {
-        }
-
-        @Override
-        public void setColorFilter(ColorFilter cf) {
-        }
     }
 
     /*

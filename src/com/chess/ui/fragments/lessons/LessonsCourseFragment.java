@@ -41,6 +41,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 	private boolean need2update = true;
 	private LessonCourseItem.Data courseItem;
 	private CourseSaveListener courseSaveListener;
+	private ListView listView;
 
 	public LessonsCourseFragment() {}
 
@@ -80,13 +81,12 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 		view.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 
-		ListView listView = (ListView) view.findViewById(R.id.listView);
+		listView = (ListView) view.findViewById(R.id.listView);
 		// Set header
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lessons_course_header_view, null, false);
 		courseTitleTxt = (TextView) headerView.findViewById(R.id.courseTitleTxt);
 		courseDescriptionTxt = (TextView) headerView.findViewById(R.id.courseDescriptionTxt);
 		listView.addHeaderView(headerView);
-
 		listView.setAdapter(lessonsItemsAdapter);
 		listView.setOnItemClickListener(this);
 
@@ -142,8 +142,15 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		LessonCourseItem.LessonListItem lessonItem = (LessonCourseItem.LessonListItem) parent.getItemAtPosition(position);
-		getActivityFace().openFragment(GameLessonFragment.createInstance(lessonItem.getId()));
+		boolean headerAdded = listView.getHeaderViewsCount() > 0;
+		int offset = headerAdded ? -1 : 0;
+
+		if (position == 0) { // if listView header
+			// see onClick(View) handle
+		} else {
+			LessonCourseItem.LessonListItem lessonItem = (LessonCourseItem.LessonListItem) parent.getItemAtPosition(position);
+			getActivityFace().openFragment(GameLessonFragment.createInstance(lessonItem.getId()));
+		}
 	}
 
 

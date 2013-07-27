@@ -230,7 +230,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		new RequestJsonTask<UserItem>(new GetUserUpdateListener()).executeTask(loadItem);
 	}
 
-	private class GetUserUpdateListener extends ChessUpdateListener<UserItem> {
+	private class GetUserUpdateListener extends ChessLoadUpdateListener<UserItem> {
 
 		public GetUserUpdateListener() {
 			super(UserItem.class);
@@ -285,7 +285,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		}
 	}
 
-	private class GetDetailsListener extends ChessUpdateListener<MembershipItem> {
+	private class GetDetailsListener extends ChessLoadUpdateListener<MembershipItem> {
 
 		private GetDetailsListener() {
 			super(MembershipItem.class);
@@ -413,22 +413,10 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		new RequestJsonTask<UserItem>(new CreateProfileUpdateListener()).executeTask(loadItem);
 	}
 
-	private class CreateProfileUpdateListener extends ChessUpdateListener<UserItem> {
+	private class CreateProfileUpdateListener extends ChessLoadUpdateListener<UserItem> {
 
 		public CreateProfileUpdateListener() {
 			super(UserItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			if (show) {
-				showPopupProgressDialog(R.string.processing_);
-			} else {
-				if (isPaused)
-					return;
-
-				dismissProgressDialog();
-			}
 		}
 
 		@Override
@@ -459,7 +447,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		bmOptions.inPurgeable = true;
 
 		Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-		if (bitmap == null) {
+		if (bitmap == null) { // TODO improve logic here
 			return;
 		}
 
@@ -477,7 +465,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 		bitmap = Bitmap.createScaledBitmap(bitmap, IMG_SIZE_LIMIT_W, IMG_SIZE_LIMIT_H, false);
 		logTest("saveImageForUpload bitmap = " + bitmap);
-		if (bitmap == null) {
+		if (bitmap == null) { // TODO improve logic here
 			return;
 		}
 		photoFileSize = AppUtils.sizeOfBitmap(bitmap);

@@ -61,7 +61,7 @@ public class SlidingActivityHelper {
 //		TypedArray a = mActivity.getTheme().obtainStyledAttributes(new int[] {android.R.attr.windowBackground});
 //		int background = a.getResourceId(0, 0);
 //		int background = R.color.red;
-//		int background = getAppData().getThemeBackId(mActivity);
+//		int background = getAppData().getThemeBackPath(mActivity);
 //		a.recycle();
 
 		if (mEnableSlide) {

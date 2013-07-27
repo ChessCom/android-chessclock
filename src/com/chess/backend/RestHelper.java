@@ -151,7 +151,18 @@ public class RestHelper {
 		return CMD_GAMES + "/" + gameId + "/actions";
 	}
 
-//	GET /v1/membership/android
+	/* Themes */
+	public static final String CMD_THEMES = BASE_URL + V1 + "/themes";
+	public static final String CMD_THEMES_DEFAULT = CMD_THEMES + "/default";
+	public static final String CMD_THEMES_USER = CMD_THEMES + "/user";
+
+	public static String CMD_THEME_DEFAULT_BY_ID(long id) {
+		return CMD_THEMES_DEFAULT + id;
+	}
+	public static String CMD_THEME_USER_BY_ID(long id) {
+		return CMD_THEMES_USER + id;
+	}
+
 	public static final String CMD_MEMBERSHIP = BASE_URL + V1 + "/membership/android";
 	public static final String CMD_MEMBERSHIP_PAYLOAD = CMD_MEMBERSHIP + "/payload";
 	public static final String CMD_MEMBERSHIP_KEY = CMD_MEMBERSHIP + "/public-key";

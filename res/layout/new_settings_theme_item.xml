@@ -3,15 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
-    android:layout_height="110dip"
+    android:layout_height="@dimen/theme_back_preview_height"
     android:orientation="horizontal"
     android:gravity="center_vertical"
     >
 
-    <ImageView
+    <com.chess.backend.image_load.ProgressImageView
         android:id="@+id/backImg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+		android:layout_width="360dip"
+		android:layout_height="@dimen/theme_back_preview_height"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:contentDescription="@string/image"
@@ -51,9 +51,10 @@
         />
     <!--android:layout_alignBottom="@id/rowTitleTxt"-->
 
-    <ImageView
-        android:layout_width="80dip"
-        android:layout_height="80dip"
+	<com.chess.backend.image_load.ProgressImageView
+		android:id="@+id/boardPreviewImg"
+        android:layout_width="90dip"
+        android:layout_height="90dip"
         android:src="@drawable/img_board_theme_sample"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"

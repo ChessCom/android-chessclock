@@ -1,18 +1,27 @@
 package com.chess.ui.fragments.settings;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.ThemeItem;
+import com.chess.backend.image_load.ImageDownloaderToListener;
+import com.chess.backend.image_load.ImageReadyListener;
+import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
 
-import java.util.ArrayList;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -23,29 +32,32 @@ import java.util.List;
  */
 public class SettingsThemeFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
+	private static final int FILE_SIZE = 100;
+	public static final int PREVIEW_IMG_SIZE = 180;
 	private ListView listView;
-	private List<ThemeItem> menuItems;
+	private ThemesUpdateListener themesUpdateListener;
+	private ImageUpdateListener backgroundUpdateListener;
+	private ImageUpdateListener boardUpdateListener;
+
+	private ImageDownloaderToListener imageDownloader;
+	private String backgroundUrl;
+	private int screenWidth;
+	private int height;
+	private ThemeItem.Data selectedMenuItem;
+	private String boardBackgroundUrl;
+	private List<ThemeItem.Data> themesList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		menuItems = new ArrayList<ThemeItem>();
+		screenWidth = getResources().getDisplayMetrics().widthPixels;
+		height = getResources().getDisplayMetrics().heightPixels;
 
-		menuItems.add(new ThemeItem(R.string.theme_game_room, R.drawable.img_theme_green_felt, R.drawable.img_theme_green_felt_sample));
-//		menuItems.add(new ThemeItem(R.string.theme_dueling_tigers, R.drawable.img_theme_dueling_tigers, R.drawable.img_theme_dueling_tigers_sample));
-//		menuItems.add(new ThemeItem(R.string.theme_blackwood, R.drawable.img_theme_blackwood, R.drawable.img_theme_blackwood_sample));
-//		menuItems.add(new ThemeItem(R.string.theme_blackstone, R.drawable.img_theme_blackstone, R.drawable.img_theme_blackstone_sample));
-//		menuItems.add(new ThemeItem(R.string.theme_charcoal, R.drawable.img_theme_charcoal, R.drawable.img_theme_charcoal_sample));
-//		menuItems.add(new ThemeItem(R.string.theme_agua, R.drawable.img_theme_agua, R.drawable.img_theme_agua_sample));
-//		menuItems.add(new ThemeItem(R.string.theme_grey_felt, R.drawable.img_theme_grey_felt, R.drawable.img_theme_grey_felt_sample));
-//		menuItems.add(new ThemeItem(R.string.theme_grass, R.drawable.img_theme_grass, R.drawable.img_theme_grass_sample));
-
-		int[] themeBackIds = AppUtils.getValidThemeBackIds();
-		if (themeBackIds.length != menuItems.size()) {
-			throw new IllegalStateException("Theme background ids are messed");
-		}
-
+		themesUpdateListener = new ThemesUpdateListener();
+		backgroundUpdateListener = new ImageUpdateListener(ImageUpdateListener.BACKGROUND);
+		boardUpdateListener = new ImageUpdateListener(ImageUpdateListener.BOARD);
+		imageDownloader = new ImageDownloaderToListener(getContext());
 	}
 
 	@Override
@@ -64,43 +76,172 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		ThemesAdapter adapter = new ThemesAdapter(getActivity(), menuItems);
+	public void onStart() {
+		super.onStart();
 
-		listView.setAdapter(adapter);
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_THEMES);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+
+		new RequestJsonTask<ThemeItem>(themesUpdateListener).executeTask(loadItem);
+	}
+
+	private class ThemesUpdateListener extends ChessLoadUpdateListener<ThemeItem> {
+
+		private ThemesUpdateListener() {
+			super(ThemeItem.class);
+		}
+
+		@Override
+		public void updateData(ThemeItem returnedObj) {
+			super.updateData(returnedObj);
+
+			themesList = returnedObj.getData();
+
+			// adding default theme, to allow user to select it from full list
+			ThemeItem.Data defaultThemeItem = new ThemeItem.Data();
+			defaultThemeItem.setLocal(true);
+			themesList.add(0, defaultThemeItem);
+
+			ThemesAdapter adapter = new ThemesAdapter(getActivity(), themesList);
+
+			listView.setAdapter(adapter);
+		}
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		for (ThemeItem menuItem : menuItems) {
-			menuItem.selected = false;
+		for (ThemeItem.Data data : themesList) {
+			data.setSelected(false);
 		}
 
-		menuItems.get(position).selected = true;
-		ThemeItem menuItem = (ThemeItem) listView.getItemAtPosition(position);
-		menuItem.selected = true;
+		selectedMenuItem = (ThemeItem.Data) listView.getItemAtPosition(position);
+		selectedMenuItem.setSelected(true);
+
 		((BaseAdapter)parent.getAdapter()).notifyDataSetChanged();
 
-		getActivityFace().setMainBackground(menuItem.backId);
-	}
+		if (selectedMenuItem.isLocal()) {
+			getAppData().setThemeBackPath(StaticData.SYMBOL_EMPTY); // clear downloaded theme value
+			getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
 
-	private class ThemeItem {
-		public int nameId;
-		public int iconRes;
-		public int backId;
-		public boolean selected;
+		} else { // start loading main background image
+			backgroundUrl = selectedMenuItem.getBackgroundUrl();
 
-		public ThemeItem(int nameId, int backId, int iconRes) {
-			this.nameId = nameId;
-			this.backId = backId;
-			this.iconRes = iconRes;
+			showLoadingProgress(true);
+			imageDownloader.download(backgroundUrl, backgroundUpdateListener, screenWidth, height);
 		}
 	}
 
-	private class ThemesAdapter extends ItemsAdapter<ThemeItem> {
+	private class ImageUpdateListener implements ImageReadyListener {
 
-		public ThemesAdapter(Context context, List<ThemeItem> menuItems) {
+		static final int BACKGROUND = 0;
+		static final int BOARD = 1;
+		private int listenerCode;
+
+		private ImageUpdateListener(int listenerCode) {
+			this.listenerCode = listenerCode;
+		}
+
+		@Override
+		public void onImageReady(Bitmap bitmap) {
+			showLoadingProgress(false);
+
+			Activity activity = getActivity();
+			if (activity == null) {
+				return;
+			}
+
+			if (bitmap == null) {
+				showToast("error loading image. Internal error");
+				return;
+			}
+
+			if (listenerCode == BACKGROUND) {
+				saveMainBackgroundAndSet(bitmap);
+
+				boardBackgroundUrl = selectedMenuItem.getBoardBackgroundUrl();
+				int size = screenWidth;
+				showLoadingProgress(true);
+
+				imageDownloader.download(boardBackgroundUrl, boardUpdateListener, size);
+
+			} else if (listenerCode == BOARD) {
+
+				saveBoardBackgroundAndSet(bitmap);
+				showLoadingProgress(false);
+			}
+		}
+	}
+
+	private void saveMainBackgroundAndSet(Bitmap bitmap) { // TODO move to asynctask
+		File cacheDir;
+		if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+			cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), AppUtils.getApplicationCacheDir(getActivity().getPackageName()));
+		else
+			cacheDir = getActivity().getCacheDir();
+
+		if (!cacheDir.exists())// TODO adjust saving to SD or local , but if not show warning to user
+			cacheDir.mkdirs();
+
+		String filename = String.valueOf(backgroundUrl.hashCode());
+		File imgFile = new File(cacheDir, filename);
+
+//		showLoadingProgress(true);
+		// save stream to SD
+		try {
+			OutputStream os = new FileOutputStream(imgFile);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 0, os);
+			os.flush();
+			os.close();
+		} catch (FileNotFoundException e) {
+			logTest("saveMainBackgroundAndSet FileNotFoundException = " + e.toString());
+			e.printStackTrace();
+		} catch (IOException e) {
+			logTest("saveMainBackgroundAndSet IOException = " + e.toString());
+			e.printStackTrace();
+		}
+//		showLoadingProgress(false);
+
+		getActivityFace().setMainBackground(imgFile.getAbsolutePath());
+	}
+
+	private void saveBoardBackgroundAndSet(Bitmap bitmap) { // TODO move to asynctask
+		File cacheDir;
+		if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+			cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), AppUtils.getApplicationCacheDir(getActivity().getPackageName()));
+		else
+			cacheDir = getActivity().getCacheDir();
+
+		if (!cacheDir.exists())// TODO adjust saving to SD or local , but if not show warning to user
+			cacheDir.mkdirs();
+
+		String filename = String.valueOf(boardBackgroundUrl.hashCode());
+		File imgFile = new File(cacheDir, filename);
+
+//		showLoadingProgress(true);
+		// save stream to SD
+		try {
+			OutputStream os = new FileOutputStream(imgFile);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 0, os);
+			os.flush();
+			os.close();
+		} catch (FileNotFoundException e) {
+			logTest("saveMainBackgroundAndSet FileNotFoundException = " + e.toString());
+			e.printStackTrace();
+		} catch (IOException e) {
+			logTest("saveMainBackgroundAndSet IOException = " + e.toString());
+			e.printStackTrace();
+		}
+//		showLoadingProgress(false);
+
+		String drawablePath = imgFile.getAbsolutePath();
+
+		getAppData().setThemeBoardPath(drawablePath);
+	}
+
+	private class ThemesAdapter extends ItemsAdapter<ThemeItem.Data> {
+
+		public ThemesAdapter(Context context, List<com.chess.backend.entity.new_api.ThemeItem.Data> menuItems) {
 			super(context, menuItems);
 		}
 
@@ -108,26 +249,44 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		protected View createView(ViewGroup parent) {
 			View view = inflater.inflate(R.layout.new_settings_theme_item, parent, false);
 			ViewHolder holder = new ViewHolder();
+
 			holder.check = (TextView) view.findViewById(R.id.iconTxt);
 			holder.title = (TextView) view.findViewById(R.id.rowTitleTxt);
-			holder.backImg = (ImageView) view.findViewById(R.id.backImg);
+			holder.backImg = (ProgressImageView) view.findViewById(R.id.backImg);
+			holder.boardPreviewImg = (ProgressImageView) view.findViewById(R.id.boardPreviewImg);
 			view.setTag(holder);
+
+			int imageHeight = (int) (screenWidth / 2.9f);
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
+			FrameLayout.LayoutParams params1 = new FrameLayout.LayoutParams(screenWidth, imageHeight);
+			holder.backImg.setLayoutParams(params);
+			holder.backImg.getImageView().setLayoutParams(params1);
+			holder.backImg.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
 
 			return view;
 		}
 
 		@Override
-		protected void bindView(ThemeItem item, int pos, View view) {
+		protected void bindView(ThemeItem.Data item, int pos, View view) {
 			ViewHolder holder = (ViewHolder) view.getTag();
 
-			if (item.selected) {
+			if (item.isSelected()) {
 				holder.check.setText(R.string.ic_check);
 			} else {
 				holder.check.setText(StaticData.SYMBOL_EMPTY);
 			}
 
-			holder.title.setText(item.nameId);
-			holder.backImg.setImageResource(item.iconRes);
+			if (item.isLocal()) {
+				holder.title.setText(R.string.theme_game_room);
+
+				holder.backImg.setImageDrawable(getResources().getDrawable(R.drawable.img_theme_green_felt));
+				holder.boardPreviewImg.setImageDrawable(getResources().getDrawable(R.drawable.img_board_theme_sample));
+			} else {
+				holder.title.setText(item.getThemeName());
+
+				imageLoader.download(item.getBackgroundPreviewUrl(), holder.backImg, screenWidth, screenWidth);
+				imageLoader.download(item.getBoardPreviewUrl(), holder.boardPreviewImg, PREVIEW_IMG_SIZE);
+			}
 		}
 
 		public Context getContext() {
@@ -135,7 +294,8 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		}
 
 		public class ViewHolder {
-			ImageView backImg;
+			ProgressImageView backImg;
+			ProgressImageView boardPreviewImg;
 			TextView check;
 			TextView title;
 		}
