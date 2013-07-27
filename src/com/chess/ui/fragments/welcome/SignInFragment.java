@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.AppConstants;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
 
@@ -50,8 +51,11 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 	@Override
 	public void onResume() {
 		super.onResume();
-		loginUsernameEdt.setText(getAppData().getUsername());
-		loginPasswordEdt.setText(getAppData().getPassword());
+		String username = getAppData().getUsername();
+		if (!username.equals(AppConstants.GUEST_NAME)) {
+			loginUsernameEdt.setText(username);
+			loginPasswordEdt.setText(getAppData().getPassword());
+		}
 	}
 
 

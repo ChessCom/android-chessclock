@@ -28,7 +28,7 @@ import com.chess.backend.entity.new_api.BaseResponseItem;
 import com.chess.backend.entity.new_api.DailyCurrentGameData;
 import com.chess.backend.entity.new_api.VacationItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
-import com.chess.backend.image_load.ImageReadyListener;
+import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
@@ -945,7 +945,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		}
 	}
 
-	private class ImageUpdateListener implements ImageReadyListener {
+	private class ImageUpdateListener extends ImageReadyListenerLight {
 
 		private static final int TOP_AVATAR = 0;
 		private static final int BOTTOM_AVATAR = 1;

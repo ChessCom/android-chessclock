@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +17,17 @@ import com.chess.backend.entity.new_api.ThemeItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.backend.tasks.SaveImageToSdTask;
+import com.chess.model.PopupItem;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.utilities.AppUtils;
 
-import java.io.*;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -32,12 +38,19 @@ import java.util.List;
  */
 public class SettingsThemeFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
-	private static final int FILE_SIZE = 100;
+	private static final String THEME_LOAD_TAG = "theme load popup";
+
+	static final int BACKGROUND = 0;
+	static final int BOARD = 1;
+
 	public static final int PREVIEW_IMG_SIZE = 180;
+
 	private ListView listView;
 	private ThemesUpdateListener themesUpdateListener;
 	private ImageUpdateListener backgroundUpdateListener;
 	private ImageUpdateListener boardUpdateListener;
+	private BackgroundImageSaveListener mainBackgroundImgSaveListener;
+	private BackgroundImageSaveListener boardImgSaveListener;
 
 	private ImageDownloaderToListener imageDownloader;
 	private String backgroundUrl;
@@ -46,6 +59,11 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private ThemeItem.Data selectedMenuItem;
 	private String boardBackgroundUrl;
 	private List<ThemeItem.Data> themesList;
+	private String selectedThemeName;
+	private TextView loadTitleTxt;
+	private TextView loadProgressTxt;
+	private TextView taskTitleTxt;
+	private PopupCustomViewFragment loadProgressPopupFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,9 +73,14 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		height = getResources().getDisplayMetrics().heightPixels;
 
 		themesUpdateListener = new ThemesUpdateListener();
-		backgroundUpdateListener = new ImageUpdateListener(ImageUpdateListener.BACKGROUND);
-		boardUpdateListener = new ImageUpdateListener(ImageUpdateListener.BOARD);
+		backgroundUpdateListener = new ImageUpdateListener(BACKGROUND);
+		boardUpdateListener = new ImageUpdateListener(BOARD);
+		mainBackgroundImgSaveListener = new BackgroundImageSaveListener(BACKGROUND);
+		boardImgSaveListener = new BackgroundImageSaveListener(BOARD);
+
 		imageDownloader = new ImageDownloaderToListener(getContext());
+
+		selectedThemeName = getAppData().getThemeName();
 	}
 
 	@Override
@@ -97,6 +120,11 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			super.updateData(returnedObj);
 
 			themesList = returnedObj.getData();
+			for (ThemeItem.Data theme : themesList) {
+				if (theme.getThemeName().equals(selectedThemeName)) {
+					theme.setSelected(true);
+				}
+			}
 
 			// adding default theme, to allow user to select it from full list
 			ThemeItem.Data defaultThemeItem = new ThemeItem.Data();
@@ -118,24 +146,40 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		selectedMenuItem = (ThemeItem.Data) listView.getItemAtPosition(position);
 		selectedMenuItem.setSelected(true);
 
-		((BaseAdapter)parent.getAdapter()).notifyDataSetChanged();
+		((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
 
 		if (selectedMenuItem.isLocal()) {
 			getAppData().setThemeBackPath(StaticData.SYMBOL_EMPTY); // clear downloaded theme value
 			getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
 
+			getAppData().setThemeName(getString(R.string.theme_game_room));
 		} else { // start loading main background image
 			backgroundUrl = selectedMenuItem.getBackgroundUrl();
 
-			showLoadingProgress(true);
+			{  // show popup with percentage of loading theme
+				View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
+
+				loadTitleTxt = (TextView) layout.findViewById(R.id.loadTitleTxt);
+				loadProgressTxt = (TextView) layout.findViewById(R.id.loadProgressTxt);
+				taskTitleTxt = (TextView) layout.findViewById(R.id.taskTitleTxt);
+
+				taskTitleTxt.setText(R.string.loading_background);
+
+				PopupItem popupItem = new PopupItem();
+				popupItem.setCustomView((LinearLayout) layout);
+
+				loadProgressPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
+				loadProgressPopupFragment.show(getFragmentManager(), THEME_LOAD_TAG);
+			}
+
 			imageDownloader.download(backgroundUrl, backgroundUpdateListener, screenWidth, height);
+			selectedThemeName = selectedMenuItem.getThemeName();
+			getAppData().setThemeName(selectedThemeName);
 		}
 	}
 
 	private class ImageUpdateListener implements ImageReadyListener {
 
-		static final int BACKGROUND = 0;
-		static final int BOARD = 1;
 		private int listenerCode;
 
 		private ImageUpdateListener(int listenerCode) {
@@ -144,8 +188,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 		@Override
 		public void onImageReady(Bitmap bitmap) {
-			showLoadingProgress(false);
-
 			Activity activity = getActivity();
 			if (activity == null) {
 				return;
@@ -157,86 +199,77 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			}
 
 			if (listenerCode == BACKGROUND) {
-				saveMainBackgroundAndSet(bitmap);
+				taskTitleTxt.setText(R.string.saving_background);
+				loadProgressTxt.setText(String.valueOf(0));
+				loadProgressTxt.setVisibility(View.GONE);
 
-				boardBackgroundUrl = selectedMenuItem.getBoardBackgroundUrl();
-				int size = screenWidth;
-				showLoadingProgress(true);
-
-				imageDownloader.download(boardBackgroundUrl, boardUpdateListener, size);
-
+				String filename = String.valueOf(backgroundUrl.hashCode());
+				new SaveImageToSdTask(mainBackgroundImgSaveListener, bitmap).executeTask(filename);
 			} else if (listenerCode == BOARD) {
+				taskTitleTxt.setText(R.string.saving_board);
+				loadProgressTxt.setText(String.valueOf(0));
+				loadProgressTxt.setVisibility(View.GONE);
 
-				saveBoardBackgroundAndSet(bitmap);
-				showLoadingProgress(false);
+				String filename = String.valueOf(boardBackgroundUrl.hashCode());
+				new SaveImageToSdTask(boardImgSaveListener, bitmap).executeTask(filename);
 			}
 		}
+
+		@Override
+		public void setProgress(final int progress) {
+			FragmentActivity activity = getActivity();
+			if (activity == null) {
+				return;
+			}
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					loadProgressTxt.setText(String.valueOf(progress) + StaticData.SYMBOL_PERCENT);
+				}
+			});
+		}
 	}
 
-	private void saveMainBackgroundAndSet(Bitmap bitmap) { // TODO move to asynctask
-		File cacheDir;
-		if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
-			cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), AppUtils.getApplicationCacheDir(getActivity().getPackageName()));
-		else
-			cacheDir = getActivity().getCacheDir();
+	private class BackgroundImageSaveListener extends AbstractUpdateListener<Bitmap> {
 
-		if (!cacheDir.exists())// TODO adjust saving to SD or local , but if not show warning to user
-			cacheDir.mkdirs();
+		private int listenerCode;
 
-		String filename = String.valueOf(backgroundUrl.hashCode());
-		File imgFile = new File(cacheDir, filename);
-
-//		showLoadingProgress(true);
-		// save stream to SD
-		try {
-			OutputStream os = new FileOutputStream(imgFile);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 0, os);
-			os.flush();
-			os.close();
-		} catch (FileNotFoundException e) {
-			logTest("saveMainBackgroundAndSet FileNotFoundException = " + e.toString());
-			e.printStackTrace();
-		} catch (IOException e) {
-			logTest("saveMainBackgroundAndSet IOException = " + e.toString());
-			e.printStackTrace();
+		public BackgroundImageSaveListener(int listenerCode) {
+			super(getActivity(), SettingsThemeFragment.this);
+			this.listenerCode = listenerCode;
 		}
-//		showLoadingProgress(false);
 
-		getActivityFace().setMainBackground(imgFile.getAbsolutePath());
-	}
+		@Override
+		public void updateData(Bitmap returnedObj) {
 
-	private void saveBoardBackgroundAndSet(Bitmap bitmap) { // TODO move to asynctask
-		File cacheDir;
-		if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
-			cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), AppUtils.getApplicationCacheDir(getActivity().getPackageName()));
-		else
-			cacheDir = getActivity().getCacheDir();
+			if (listenerCode == BACKGROUND) {
 
-		if (!cacheDir.exists())// TODO adjust saving to SD or local , but if not show warning to user
-			cacheDir.mkdirs();
+				// set main background image as theme
+				String filename = String.valueOf(backgroundUrl.hashCode());
+				File imgFile = AppUtils.openFileByName(getActivity(), filename);
+				getActivityFace().setMainBackground(imgFile.getAbsolutePath());
 
-		String filename = String.valueOf(boardBackgroundUrl.hashCode());
-		File imgFile = new File(cacheDir, filename);
+				// Start loading board background
+				int size = screenWidth;
+				taskTitleTxt.setText(R.string.loading_board);
+				loadProgressTxt.setVisibility(View.VISIBLE);
 
-//		showLoadingProgress(true);
-		// save stream to SD
-		try {
-			OutputStream os = new FileOutputStream(imgFile);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 0, os);
-			os.flush();
-			os.close();
-		} catch (FileNotFoundException e) {
-			logTest("saveMainBackgroundAndSet FileNotFoundException = " + e.toString());
-			e.printStackTrace();
-		} catch (IOException e) {
-			logTest("saveMainBackgroundAndSet IOException = " + e.toString());
-			e.printStackTrace();
+				boardBackgroundUrl = selectedMenuItem.getBoardBackgroundUrl();
+				imageDownloader.download(boardBackgroundUrl, boardUpdateListener, size);
+
+			} else {
+				// set board background image as theme
+				String filename = String.valueOf(boardBackgroundUrl.hashCode());
+				File imgFile = AppUtils.openFileByName(getActivity(), filename);
+				String drawablePath = imgFile.getAbsolutePath();
+
+				getAppData().setThemeBoardPath(drawablePath);
+
+				if (loadProgressPopupFragment != null) {
+					loadProgressPopupFragment.dismiss();
+				}
+			}
 		}
-//		showLoadingProgress(false);
-
-		String drawablePath = imgFile.getAbsolutePath();
-
-		getAppData().setThemeBoardPath(drawablePath);
 	}
 
 	private class ThemesAdapter extends ItemsAdapter<ThemeItem.Data> {
@@ -258,10 +291,22 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 			int imageHeight = (int) (screenWidth / 2.9f);
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
-			FrameLayout.LayoutParams params1 = new FrameLayout.LayoutParams(screenWidth, imageHeight);
 			holder.backImg.setLayoutParams(params);
-			holder.backImg.getImageView().setLayoutParams(params1);
+
+			// Change Placeholder
+			int backIMgColor = getResources().getColor(R.color.upgrade_toggle_button_p);
+			Bitmap bitmap = Bitmap.createBitmap(new int[]{backIMgColor}, 1, 1, Bitmap.Config.ARGB_8888);
+			holder.backImg.placeholder = bitmap;
+
+			// Change Image params
+			FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(screenWidth, imageHeight);
+			holder.backImg.getImageView().setLayoutParams(imageParams);
 			holder.backImg.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
+
+			// Change ProgressBar params
+			FrameLayout.LayoutParams progressParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			progressParams.gravity = Gravity.CENTER;
+			holder.backImg.getProgressBar().setLayoutParams(progressParams);
 
 			return view;
 		}

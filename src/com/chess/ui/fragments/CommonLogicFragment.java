@@ -502,6 +502,13 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		getActivityFace().registerGcm();
 
 		afterLogin();
+
+		String themeBackPath = getAppData().getThemeBackPath();
+		if (!TextUtils.isEmpty(themeBackPath)) {
+			getActivityFace().setMainBackground(themeBackPath);
+		} else {
+			getActivityFace().setMainBackground(getAppData().getThemeBackId());
+		}
 	}
 
 	protected void afterLogin() {
@@ -598,13 +605,15 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			}
 		}, SWITCH_DELAY);
 
-		// clear theme
-		getAppData().setThemeBackId(R.drawable.img_theme_green_felt);
+		// set default theme
 		getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
 
 		// clear comp game
 		ChessBoardComp.resetInstance();
 		getAppData().clearSavedCompGame();
+
+		// clear username
+		getAppData().setUserName(AppConstants.GUEST_NAME);
 	}
 
 

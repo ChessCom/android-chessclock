@@ -23,7 +23,7 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.BaseResponseItem;
 import com.chess.backend.entity.new_api.DailyFinishedGameData;
 import com.chess.backend.image_load.ImageDownloaderToListener;
-import com.chess.backend.image_load.ImageReadyListener;
+import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
@@ -834,7 +834,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //		}
 //	}
 
-	private class ImageUpdateListener implements ImageReadyListener {
+	private class ImageUpdateListener extends ImageReadyListenerLight {
 
 		private static final int TOP_AVATAR = 0;
 		private static final int BOTTOM_AVATAR = 1;

@@ -21,7 +21,7 @@ import com.chess.backend.entity.new_api.TacticInfoItem;
 import com.chess.backend.entity.new_api.TacticItem;
 import com.chess.backend.entity.new_api.TacticRatingData;
 import com.chess.backend.image_load.ImageDownloaderToListener;
-import com.chess.backend.image_load.ImageReadyListener;
+import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetOfflineTacticsBatchTask;
@@ -923,7 +923,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 	}
 
-	private class ImageUpdateListener implements ImageReadyListener {
+	private class ImageUpdateListener extends ImageReadyListenerLight {
 		private static final int BOTTOM_AVATAR = 1;
 		private int code;
 

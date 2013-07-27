@@ -20,6 +20,7 @@ import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.Settings;
 import android.text.SpannableStringBuilder;
 import android.text.style.CharacterStyle;
@@ -40,6 +41,7 @@ import com.chess.model.GameListCurrentItem;
 import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import org.apache.http.HttpEntity;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -76,10 +78,37 @@ public class AppUtils {
 		}
 	}
 
-	public static String getApplicationCacheDir(String packageName) {
+	public static String getApplicationCacheDirPath(String packageName) {
 		// path should match the specified string
 		// /Android/data/<package_name>/files/
 		return "Android/data/" + packageName + "/cache/";
+	}
+
+	/**
+	 *
+	 * @param context te get packageName & {@code cacheDir} from internal storage
+	 * @return file for {@code cacheDir} either SD card or internal storage. Or {@code null} if cacheDir doesn't exist
+	 */
+	public static File getCacheDir(Context context){
+		File cacheDir;
+		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+			String cacheDirPath = getApplicationCacheDirPath(context.getPackageName());
+			cacheDir = new File(Environment.getExternalStorageDirectory(), cacheDirPath);
+		} else {
+			cacheDir = context.getCacheDir();
+		}
+
+		if (cacheDir != null && !cacheDir.exists()) {
+			if (!cacheDir.mkdirs()) {
+				throw new IllegalStateException("can't use cacheDir");
+			}
+		}
+		return cacheDir;
+	}
+
+	public static File openFileByName(Context context, String filename) {
+		File cacheDir = getCacheDir(context);
+		return new File(cacheDir, filename);
 	}
 
 	public static void copyStream(InputStream is, OutputStream os) {

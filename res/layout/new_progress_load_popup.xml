@@ -1,0 +1,51 @@
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:paddingTop="15dip"
+	android:paddingBottom="15dip"
+	android:animateLayoutChanges="true"
+	>
+
+	<!--Title -->
+	<com.chess.RoboTextView
+		android:id="@+id/loadTitleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:textSize="@dimen/game_end_popup_text_size"
+		android:textColor="@color/new_subtitle_dark_grey"
+		android:text="@string/installing_theme"
+		android:paddingBottom="15dip"
+		custom:ttf="Bold"
+		/>
+
+	<!--Current task title-->
+	<com.chess.RoboTextView
+		android:id="@+id/taskTitleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center_horizontal"
+		android:paddingBottom="15dip"
+		android:textSize="17sp"
+		android:textColor="@color/new_author_dark_grey"
+		/>
+
+	<!--Progress  value-->
+	<com.chess.RoboTextView
+		android:id="@+id/loadProgressTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center_horizontal"
+		android:textSize="32sp"
+		android:textColor="@color/new_subtitle_dark_grey"
+		android:paddingLeft="7dip"
+		custom:ttf="Bold"
+		/>
+
+
+</LinearLayout>

@@ -54,7 +54,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		setSlidingActionBarEnabled(true);
 
 		setContentView(R.layout.new_main_active_screen);
-
 		customActionBarViewId = R.layout.new_custom_actionbar;
 
 		openMenuListeners = new ArrayList<SlidingMenu.OnOpenedListener>();

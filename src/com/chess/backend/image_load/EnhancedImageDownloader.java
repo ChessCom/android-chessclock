@@ -42,14 +42,7 @@ public class EnhancedImageDownloader {
     public EnhancedImageDownloader(Context context) {
 		this.context = context;
         resources = context.getResources();
-        // Find the dir to save cached images
-        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
-            cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), AppUtils.getApplicationCacheDir(context.getPackageName()));
-        else
-            cacheDir = context.getCacheDir();
-
-        if (!cacheDir.exists())
-            cacheDir.mkdirs();
+		cacheDir = AppUtils.getCacheDir(context);
     }
 
     /**

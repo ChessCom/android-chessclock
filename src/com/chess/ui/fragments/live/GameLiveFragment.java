@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.image_load.ImageDownloaderToListener;
-import com.chess.backend.image_load.ImageReadyListener;
+import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.DataNotValidException;
@@ -1120,7 +1120,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 //		}
 //	}
 
-	private class ImageUpdateListener implements ImageReadyListener {
+	private class ImageUpdateListener extends ImageReadyListenerLight {
 
 		private static final int TOP_AVATAR = 0;
 		private static final int BOTTOM_AVATAR = 1;

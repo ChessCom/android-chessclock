@@ -29,6 +29,7 @@ public class AppConstants {
 	public static final String LOCATION = "location";
 	public static final String USERNAME = "username";
 	public static final String PASSWORD = "password";
+	public static final String GUEST_NAME = "guest user";
 	public static final String LIVE_SESSION_ID = "live_session_id";
 //	public static final String API_VERSION = "api_version";
 	public static final String PREF_COMPUTER_DELAY = "computer think delay";
@@ -64,7 +65,10 @@ public class AppConstants {
     public static final String PREF_THEME_BACK_ID = "theme_background_id";
     public static final String PREF_THEME_BACK_PATH = "theme_background_path";
     public static final String PREF_THEME_BOARD_PATH = "theme_board_background_path";
-    public static final String PREF_TEMP_TOKEN_GCM = "temporary token for gcm";
+    public static final String PREF_THEME_NAME = "theme_name";
+	public static final String DEFAULT_THEME_NAME = "Game Room";
+
+	public static final String PREF_TEMP_TOKEN_GCM = "temporary token for gcm";
     public static final String PREF_USER_CHOOSE_VIDEO_LIBRARY = "user choose video library mode";
     public static final String PREF_USER_CHOOSE_LESSONS_LIBRARY = "user choose lesson library mode";
 	/* New Daily and Live games*/

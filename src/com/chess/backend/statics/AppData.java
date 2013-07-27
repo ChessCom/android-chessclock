@@ -373,6 +373,14 @@ public class AppData {
 		return getIntValue(PREF_THEME_BACK_ID, R.drawable.img_theme_green_felt);
 	}
 
+	public void setThemeName(String themeName) {
+		setStringValue(PREF_THEME_NAME, themeName);
+	}
+
+	public String getThemeName() {
+		return getStringValue(PREF_THEME_NAME, DEFAULT_THEME_NAME);
+	}
+
 	public void setUserChooseVideoLibrary(boolean value) {
 		setBooleanValue(PREF_USER_CHOOSE_VIDEO_LIBRARY, value);
 	}

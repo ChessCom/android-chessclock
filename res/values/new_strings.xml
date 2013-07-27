@@ -276,6 +276,11 @@
 	<string name="course_complete">Course Complete!</string>
 	<string name="percents">%s</string>
 	<string name="rating_">Rating:</string>
+	<string name="installing_theme">Installing theme</string>
+	<string name="loading_background">Loading background</string>
+	<string name="saving_background">Saving background</string>
+	<string name="saving_board">Saving board</string>
+	<string name="loading_board">Loading board</string>
 	<!--Game mode-->
 
 </resources>

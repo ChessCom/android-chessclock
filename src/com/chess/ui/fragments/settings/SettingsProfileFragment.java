@@ -473,7 +473,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 		File cacheDir;
 		if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
-			cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), AppUtils.getApplicationCacheDir(getActivity().getPackageName()));
+			cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), AppUtils.getApplicationCacheDirPath(getActivity().getPackageName()));
 		else
 			cacheDir = getActivity().getCacheDir();
 

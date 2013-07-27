@@ -13,6 +13,7 @@ import java.io.*;
 import java.lang.ref.SoftReference;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,15 +34,8 @@ public class ImageDownloaderToListener {
 
     public ImageDownloaderToListener(Context context) {
 		this.context = context;
-        // Find the dir to save cached images
-        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
-            cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), AppUtils.getApplicationCacheDir(context.getPackageName()));
-        else
-            cacheDir = context.getCacheDir();
-
-        if (!cacheDir.exists())
-            cacheDir.mkdirs();
-    }
+		cacheDir = AppUtils.getCacheDir(context);
+	}
 
     /**
      * Download the specified image from the Internet and binds it to the
@@ -164,36 +158,8 @@ public class ImageDownloaderToListener {
 		new BitmapDownloaderTask(holder).executeTask(url);
     }
 
-    /*
-      * An InputStream that skips the exact number of bytes provided, unless it
-      * reaches EOF.
-      */
-    static class FlushedInputStream extends FilterInputStream {
-        public FlushedInputStream(InputStream inputStream) {
-            super(inputStream);
-        }
-
-        @Override
-        public long skip(long n) throws IOException {
-            long totalBytesSkipped = 0L;
-            while (totalBytesSkipped < n) {
-                long bytesSkipped = in.skip(n - totalBytesSkipped);
-                if (bytesSkipped == 0L) {
-                    int b = read();
-                    if (b < 0) {
-                        break; // we reached EOF
-                    } else {
-                        bytesSkipped = 1; // we read one byte
-                    }
-                }
-                totalBytesSkipped += bytesSkipped;
-            }
-            return totalBytesSkipped;
-        }
-    }
-
 	/**
-	 * Read file from stored hashlink on SD
+	 * Read file from stored hashLink on SD
 	 *
 	 * @param f file from which we read
 	 * @return read Bitmap
@@ -227,7 +193,7 @@ public class ImageDownloaderToListener {
         protected Bitmap doInBackground(String... params) {
             url = params[0];
 
-			return downloadBitmap(url);
+			return downloadBitmap(url, holderReference);
         }
 
         /**
@@ -263,7 +229,7 @@ public class ImageDownloaderToListener {
         }
     }
 
-    private Bitmap downloadBitmap(String url) {
+    private Bitmap downloadBitmap(String url, ImageReadyListener holderReference) {
 		Log.d(LOG_TAG, "downloadBitmap start url = " + url);
 
 		String filename = String.valueOf(url.hashCode());
@@ -273,14 +239,42 @@ public class ImageDownloaderToListener {
 			url = EnhancedImageDownloader.HTTP_PREFIX + url;
 		}
 		try {
+			// Start loading
+			URLConnection urlConnection = new URL(url).openConnection();
+			int totalSize = urlConnection.getContentLength();
+
+
+			InputStream is = urlConnection.getInputStream();
+
 			// create descriptor
 			File imgFile = new File(cacheDir, filename);
-
-			InputStream is = new URL(url).openStream();
 			// copy stream to imgFile
 			OutputStream os = new FileOutputStream(imgFile); // save stream to
+
+
 			// SD
-			AppUtils.copyStream(is, os);
+			final int buffer_size = 1024;
+			int totalRead = 0;
+			try {
+				byte[] bytes = new byte[buffer_size];
+				for (;;) {
+					int count = is.read(bytes, 0, buffer_size);
+					totalRead += count;
+					int progress = (int) ((totalRead / (float) totalSize) * 100);
+
+					Log.d("TEST", " progress " + progress);
+					holderReference.setProgress(progress);
+					if (count == -1) {
+						break;
+					}
+					os.write(bytes, 0, count);
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				return null;
+			}
+
+//			AppUtils.copyStream(is, os);
 			os.close();
 
 			if (useScale) {

@@ -21,8 +21,9 @@ import com.nineoldandroids.animation.ObjectAnimator;
 /**
  * Created with IntelliJ IDEA.
  * ProgressImageView.java use for show progress bar while image is downloading
- *
+ * <p/>
  * User: roger sent2roger@gmail.com
+ *
  * @version 2.0.0
  * @created 27.07.2011
  * @modified 28.02.13
@@ -62,14 +63,14 @@ public class ProgressImageView extends FrameLayout implements View.OnTouchListen
 
 		if (attrs != null) {
 
-			TypedArray array = getContext().obtainStyledAttributes(attrs,new int[] {android.R.attr.layout_width});
+			TypedArray array = getContext().obtainStyledAttributes(attrs, new int[]{android.R.attr.layout_width});
 			try {
 				size = array.getDimensionPixelSize(0, DEFAULT_IMG_SIZE); // 0 for android.R.attr.layout_width
 			} finally {
 				array.recycle();
 			}
 		} else {
-		size *= density;
+			size *= density;
 		}
 
 		LayoutParams params = new LayoutParams(size, size);
@@ -102,6 +103,11 @@ public class ProgressImageView extends FrameLayout implements View.OnTouchListen
 
 		initClickAnimation();
 	}
+
+	public ProgressBar getProgressBar() {
+		return progress;
+	}
+
 
 	@Override
 	public void setId(int id) {

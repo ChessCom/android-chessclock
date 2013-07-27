@@ -12,4 +12,9 @@ public interface ImageReadyListener {
 
 	void onImageReady(Bitmap bitmap);
 
+	/**
+	 *
+	 * @param progress in percent of downloaded value
+	 */
+	void setProgress(int progress);
 }
