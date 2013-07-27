@@ -46,7 +46,7 @@
     </style>
 
     <style name="GlyphIcon">
-        <!--<item name="android:padding">@dimen/glyph_icon_padding</item>-->
+        <item name="android:padding">@dimen/glyph_icon_padding</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/glyph_icon_default</item>
         <item name="ttf">Icon</item>

@@ -84,8 +84,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		if (!TextUtils.isEmpty(themeBackPath)) {
 			setMainBackground(themeBackPath);
 		} else {
-			int id = getAppData().getThemeBackId();
-			getWindow().setBackgroundDrawableResource(id);
+			getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());
 		}
 	}
 
@@ -177,8 +176,12 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public void setMainBackground(String drawablePath) {
 		getAppData().setThemeBackPath(drawablePath);
 		Bitmap bitmap = BitmapFactory.decodeFile(drawablePath);
-		BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
-		getWindow().setBackgroundDrawable(drawable);
+		if (bitmap != null) {
+			BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
+			getWindow().setBackgroundDrawable(drawable);
+		} else { // If user removed SD card or clear folder
+			getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());
+		}
 	}
 
 	@Override

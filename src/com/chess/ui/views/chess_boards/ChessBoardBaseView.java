@@ -856,25 +856,36 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			BitmapShader shader;
 			if (!TextUtils.isEmpty(appData.getThemeBoardPath())) {
 				boardBitmap = BitmapFactory.decodeFile(appData.getThemeBoardPath());
+				if (boardBitmap == null) {
+					getAppData().setThemeBoardPath(StaticData.SYMBOL_EMPTY); // cleare theme
+					boardBackPaint.setShader(setBoardFromResource());
+					return;
+				}
 				boardBitmap = Bitmap.createScaledBitmap(boardBitmap, viewWidth, viewWidth, true);
 
 				shader = new BitmapShader(boardBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 			} else {
-				BitmapDrawable drawable = (BitmapDrawable) resources.getDrawable(boardsDrawables[boardId]);
-				boardBitmap = drawable.getBitmap();
-
-				int bitmapSize;
-				if (viewHeight < viewWidth && viewWidth != QVGA_WIDTH) { // if landscape mode
-					bitmapSize = viewHeight / 4;
-				} else {
-					bitmapSize = viewWidth / 4;
-				}
-				boardBitmap = Bitmap.createScaledBitmap(boardBitmap, bitmapSize, bitmapSize, true);
-				shader = new BitmapShader(boardBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+				shader = setBoardFromResource();
 			}
 
 			boardBackPaint.setShader(shader);
 		}
+	}
+
+	private BitmapShader setBoardFromResource() {
+		Bitmap boardBitmap;
+		BitmapShader shader;BitmapDrawable drawable = (BitmapDrawable) resources.getDrawable(boardsDrawables[boardId]);
+		boardBitmap = drawable.getBitmap();
+
+		int bitmapSize;
+		if (viewHeight < viewWidth && viewWidth != QVGA_WIDTH) { // if landscape mode
+			bitmapSize = viewHeight / 4;
+		} else {
+			bitmapSize = viewWidth / 4;
+		}
+		boardBitmap = Bitmap.createScaledBitmap(boardBitmap, bitmapSize, bitmapSize, true);
+		shader = new BitmapShader(boardBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+		return shader;
 	}
 
 	private void setPieceBitmapFromArray(int[] drawableArray) {
