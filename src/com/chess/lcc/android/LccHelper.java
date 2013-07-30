@@ -697,15 +697,9 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		Log.d(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move);
 		gameTaskRunner.runMakeMoveTask(game, move, debugInfo);
 
-		if (game.getMoveCount() >= 1) // we should start opponent's clock after at least 2-nd ply (moveCount == 1, or moveCount > 1)
-		{
-			final boolean isWhiteRunning = user.getUsername().equals(game.getWhitePlayer().getUsername());
+			/*final boolean isWhiteRunning = user.getUsername().equals(game.getWhitePlayer().getUsername());
 			final ChessClock clockToBePaused = isWhiteRunning ? whiteClock : blackClock;
-			if (game.getMoveCount() >= 2) // we should stop our clock if it was at least 3-rd ply (seq == 2, or seq > 2)
-			{
-				clockToBePaused.setRunning(false);
-			}
-		}
+			clockToBePaused.setRunning(false);*/
 	}
 
 	public void rematch() {
@@ -840,16 +834,22 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		putGame(game);
 
 		//int time = game.getGameTimeConfig().getBaseTime() * 100;
-		if (whiteClock != null) {
+		/*if (whiteClock != null) {
 			whiteClock.setRunning(false);
 		}
 		if (blackClock != null) {
 			blackClock.setRunning(false);
-		}
+		}*/
 
 		// todo: show actual game over time for ended games
 		setWhiteClock(new ChessClock(this, true));
 		setBlackClock(new ChessClock(this, false));
+
+		if (!game.isGameOver()) {
+			whiteClock.setRunning(true);
+			blackClock.setRunning(true);
+		}
+
 
 		Intent intent = new Intent(context, GameLiveScreenActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP| Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -870,7 +870,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		latestMoveNumber = game.getMoveCount() - 1;
 		User moveMaker = (latestMoveNumber % 2 == 0) ? game.getWhitePlayer() : game.getBlackPlayer();
 		lccEventListener.onGameRefresh(new GameLiveItem(game, latestMoveNumber));
-		doUpdateClocks(game, moveMaker, latestMoveNumber);
+		//doUpdateClocks(game, moveMaker, latestMoveNumber);
 	}
 
 	public void doMoveMade(final Game game, final User moveMaker, int moveIndex) {
@@ -890,16 +890,16 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		} else {
 			// todo: possible optimization - keep gameLiveItem between moves and just add new move when it comes
 			lccEventListener.onGameRefresh(new GameLiveItem(game, moveIndex));
-			doUpdateClocks(game, moveMaker, moveIndex); // update clock only for resumed activity?
+			//doUpdateClocks(game, moveMaker, moveIndex); // update clock only for resumed activity?
 		}
 		// doUpdateClocks(game, moveMaker, moveIndex);
 	}
 
-	private void doUpdateClocks(Game game, User moveMaker, int moveIndex) {
+	/*private void doUpdateClocks(Game game, User moveMaker, int moveIndex) {
 		// TODO: This method does NOT support the game observer mode. Redevelop it if necessary.
 
 		// UPDATELCC todo: probably could be simplified - update clock only for latest move/player in order to get rid of moveIndex/moveMaker params
-		if (game.getMoveCount() >= 2 && moveIndex == game.getMoveCount() - 1) {
+		if (game.getMoveCount() == 0 || moveIndex == game.getMoveCount() - 1) {
 
 			final boolean isWhiteDone = game.getWhitePlayer().getUsername().equals(moveMaker.getUsername());
 			final boolean isBlackDone = game.getBlackPlayer().getUsername().equals(moveMaker.getUsername());
@@ -911,7 +911,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 				getBlackClock().setRunning(isWhiteDone);
 			}
 		}
-	}
+	}*/
 
 	public void setLastGameId(Long lastGameId) {
 		this.lastGameId = lastGameId;
