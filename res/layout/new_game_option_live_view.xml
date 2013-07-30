@@ -1,232 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dip"
-        >
-        <!--Mode labels-->
-        <!--Standard-->
-        <com.chess.RoboTextView
-            android:id="@+id/liveLabelStandardTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/GlyphIcon.Big"
-            android:textColor="@color/new_light_grey_4"
-            android:text="@string/ic_live_standard"
-            android:layout_marginLeft="@dimen/home_play_live_labels_padding_side"
-            android:visibility="gone"
-            />
+	<LinearLayout
+		android:id="@+id/gameOptionsLiveLinLay"
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:animateLayoutChanges="true"
+		>
 
-        <!--Blitz-->
-        <com.chess.RoboTextView
-            android:id="@+id/liveLabelBlitzTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/GlyphIcon.Big"
-            android:textColor="@color/new_light_grey_4"
-            android:text="@string/ic_live_blitz"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone"
-            />
+		<!--Live Chess-->
+		<com.chess.LinLayout
+			android:id="@+id/liveHeaderView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			style="@style/ListItem.Header"
+			android:paddingLeft="13dip"
+			android:paddingRight="8dip">
 
-        <!--Bullet-->
-        <com.chess.RoboTextView
-            android:id="@+id/liveLabelBulletTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/GlyphIcon.Big"
-            android:textColor="@color/new_light_grey_4"
-            android:text="@string/ic_live_bullet"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/home_play_live_labels_padding_side"
-            android:visibility="gone"
-            />
-    </LinearLayout>
+			<!--Icon-->
+			<com.chess.RoboTextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/ic_live_standard"
+				android:textColor="@color/new_light_grey_2"
+				style="@style/GlyphIcon.Big" />
 
-    <GridView
-        android:id="@+id/liveModeGrid"
-        android:layout_width="match_parent"
-        android:layout_height="134dip"
-        android:columnWidth="90dp"
-        android:gravity="center"
-        android:verticalSpacing="1dip"
-        android:horizontalSpacing="1dip"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth"
-        android:visibility="visible"
-        android:background="@android:color/transparent"
-        android:paddingTop="6dip"
-        android:paddingLeft="@dimen/new_game_frame_padding_side"
-        android:paddingRight="@dimen/new_game_frame_padding_side"
-        android:paddingBottom="6dip"
-        android:listSelector="@android:color/transparent"
-        />
+			<com.chess.RoboTextView
+				android:id="@+id/liveChessHeaderTxt"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/live_chess"
+				style="@style/HeaderTitle.Light" />
 
-    <!--Opponent-->
-    <com.chess.LinLayout
-        android:layout_width="match_parent"
-        android:layout_height="65dip"
-        android:gravity="center_vertical"
-        style="@style/ListItem"
-        android:paddingLeft="@dimen/new_game_frame_padding_side"
-        android:paddingRight="@dimen/new_game_frame_padding_side"
-        >
-        <com.chess.RoboTextView
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/opponent_"
-            />
+			<com.chess.RoboTextView
+				android:id="@+id/liveRatingTxt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical"
+				android:textColor="@color/new_light_grey_2"
+				android:text="1200"
+				custom:ttf="Bold" />
 
-    </com.chess.LinLayout>
+			<!--Right Icon-->
+			<com.chess.RoboTextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/ic_right"
+				android:textColor="@color/new_light_grey_2"
+				style="@style/GlyphIcon.Small" />
 
-    <!--I Play As-->
-    <com.chess.LinLayout
-        android:id="@+id/iPlayLay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        style="@style/ListItem"
-        android:paddingLeft="@dimen/new_game_frame_padding_side"
-        android:paddingRight="@dimen/new_game_frame_padding_side"
-        >
-        <com.chess.RoboTextView
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/i_play_as_"
-            />
+		</com.chess.LinLayout>
 
-        <com.chess.RoboButton
-            android:id="@+id/myColorBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/random"
-            style="@style/Button.Glassy.Small"
-            />
-    </com.chess.LinLayout>
+		<com.chess.RelLayout
+			android:id="@+id/liveOptionsView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="8dip"
+			android:paddingBottom="8dip"
+			android:paddingLeft="@dimen/default_scr_side_padding"
+			android:paddingRight="@dimen/default_scr_side_padding"
+			android:animateLayoutChanges="true">
 
-    <!--Rated Game-->
-    <com.chess.LinLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dip"
-        android:gravity="center_vertical"
-        style="@style/ListItem"
-        android:paddingLeft="@dimen/new_game_frame_padding_side"
-        android:paddingRight="@dimen/new_game_frame_padding_side"
-        >
-        <com.chess.RoboTextView
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/rated_game_"
-            />
+			<!--Time selection | Default time-->
+			<com.chess.RoboButton
+				android:id="@+id/liveTimeSelectBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="10 min"
+				style="@style/Button.Glassy.Small" />
 
-        <com.chess.SwitchButton
-            android:id="@+id/ratedGameSwitch"
-            style="@style/Switch.Dark"
-            />
+			<com.chess.RoboButton
+				android:id="@+id/livePlayBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/new_play_ex"
+				android:layout_alignParentRight="true"
+				style="@style/Button.OrangeNoBorder.Small" />
 
-    </com.chess.LinLayout>
+			<!--Live Options-->
+			<RelativeLayout
+				android:id="@+id/liveHomeOptionsFrame"
+				android:layout_below="@id/liveTimeSelectBtn"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
 
-    <!--Rating View-->
-    <com.chess.RelLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        style="@style/ListItem"
-        android:paddingLeft="@dimen/new_game_frame_padding_side"
-        android:paddingRight="@dimen/new_game_frame_padding_side"
-        android:paddingTop="12dip"
-        android:paddingBottom="7dip"
-        >
-        <com.chess.RoboTextView
-            android:id="@+id/minRatingTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/min_rating"
-            android:paddingLeft="18dip"
-            />
+		</com.chess.RelLayout>
 
-        <com.chess.RoboTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/max_rating"
-            android:layout_alignParentRight="true"
-            android:paddingRight="19dip"
-            />
+		<!--Opponent-->
+		<com.chess.LinLayout
+			android:layout_width="match_parent"
+			android:layout_height="65dip"
+			android:gravity="center_vertical"
+			style="@style/ListItem"
+			android:paddingLeft="@dimen/new_game_frame_padding_side"
+			android:paddingRight="@dimen/new_game_frame_padding_side">
+			<com.chess.RoboTextView
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/opponent_" />
 
-        <RelativeLayout
-            android:id="@+id/ratingButtonsLay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/minRatingTxt"
-            android:gravity="center_vertical"
-            android:paddingTop="8dip"
-            android:paddingLeft="17dip"
-            android:paddingRight="17dip"
+		</com.chess.LinLayout>
 
-            >
-            <com.chess.RoboRadioButton
-                android:id="@+id/minRatingBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Button.Glassy.Small"
-                android:button="@null"
-                android:inputType="numberDecimal"
-                />
 
-            <com.chess.RoboTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/to"
-                android:paddingTop="9dip"
-                android:layout_centerInParent="true"
-                />
+		<!--I Play As-->
+		<com.chess.LinLayout
+			android:id="@+id/iPlayLay"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			style="@style/ListItem"
+			android:paddingLeft="@dimen/new_game_frame_padding_side"
+			android:paddingRight="@dimen/new_game_frame_padding_side">
 
-            <com.chess.RoboRadioButton
-                android:id="@+id/maxRatingBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                style="@style/Button.Glassy.Small"
-                android:button="@null"
-                android:inputType="numberDecimal"
-                />
-        </RelativeLayout>
+			<com.chess.RoboTextView
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/i_play_as_"
+				android:textColor="@color/semitransparent_white_65" />
 
-        <SeekBar
-            android:id="@+id/ratingBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ratingButtonsLay"
-            android:max="100"
-            android:progress="50"
-            android:layout_marginTop="11dip"
-            style="@style/RatingSeekBar"
-            />
-    </com.chess.RelLayout>
+			<com.chess.RoboButton
+				android:id="@+id/myColorBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/random"
+				style="@style/Button.Glassy.Small" />
+		</com.chess.LinLayout>
 
-    <!--Play Button-->
-    <com.chess.LinLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/new_game_frame_padding_side"
-        style="@style/ListItem"
-        >
-        <com.chess.RoboButton
-            android:id="@+id/playBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/play"
-            />
-    </com.chess.LinLayout>
-</LinearLayout>
+		<!--Rated Game-->
+		<com.chess.LinLayout
+			android:layout_width="match_parent"
+			android:layout_height="50dip"
+			android:gravity="center_vertical"
+			style="@style/ListItem"
+			android:paddingLeft="@dimen/new_game_frame_padding_side"
+			android:paddingRight="@dimen/new_game_frame_padding_side">
+
+			<com.chess.RoboTextView
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/rated_game_"
+				android:textColor="@color/semitransparent_white_65" />
+
+			<com.chess.SwitchButton
+				android:id="@+id/ratedGameSwitch"
+				style="@style/Switch.Dark" />
+
+		</com.chess.LinLayout>
+
+		<!--Rating View-->
+		<com.chess.RelLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			style="@style/ListItem"
+			android:paddingLeft="@dimen/new_game_frame_padding_side"
+			android:paddingRight="@dimen/new_game_frame_padding_side"
+			android:paddingTop="12dip"
+			android:paddingBottom="7dip">
+
+			<com.chess.RoboTextView
+				android:id="@+id/minRatingTxt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/min_rating"
+				android:paddingLeft="18dip"
+				android:textColor="@color/semitransparent_white_65" />
+
+			<com.chess.RoboTextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/max_rating"
+				android:layout_alignParentRight="true"
+				android:paddingRight="19dip"
+				android:textColor="@color/semitransparent_white_65" />
+
+			<RelativeLayout
+				android:id="@+id/ratingButtonsLay"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/minRatingTxt"
+				android:gravity="center_vertical"
+				android:paddingTop="8dip"
+				android:paddingLeft="17dip"
+				android:paddingRight="17dip"
+
+				>
+
+				<com.chess.RoboRadioButton
+					android:id="@+id/minRatingBtn"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					style="@style/Button.Glassy.Small"
+					android:button="@null"
+					android:inputType="numberDecimal" />
+
+				<com.chess.RoboTextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/to"
+					android:paddingTop="9dip"
+					android:layout_centerInParent="true"
+					android:textColor="@color/semitransparent_white_65" />
+
+				<com.chess.RoboRadioButton
+					android:id="@+id/maxRatingBtn"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					style="@style/Button.Glassy.Small"
+					android:button="@null"
+					android:inputType="numberDecimal" />
+			</RelativeLayout>
+
+			<SeekBar
+				android:id="@+id/ratingBar"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/ratingButtonsLay"
+				android:max="100"
+				android:progress="50"
+				android:layout_marginTop="11dip"
+				style="@style/RatingSeekBar" />
+		</com.chess.RelLayout>
+
+		<!--Play Button-->
+		<com.chess.LinLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:padding="@dimen/new_game_frame_padding_side"
+			style="@style/ListItem"
+			android:paddingTop="9dip"
+			android:paddingBottom="9dip"
+			android:paddingLeft="15dip"
+			android:paddingRight="15dip">
+
+			<com.chess.RoboButton
+				android:id="@+id/playBtn"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/play"
+				style="@style/Button.OrangeNoBorder" />
+		</com.chess.LinLayout>
+	</LinearLayout>
+</ScrollView>

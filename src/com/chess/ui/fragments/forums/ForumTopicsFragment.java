@@ -47,9 +47,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 	private int currentPage;
 	private ListView listView;
 
-	public ForumTopicsFragment() {
-
-	}
+	public ForumTopicsFragment() { }
 
 	public static ForumTopicsFragment createInstance(int categoryId) {
 		ForumTopicsFragment fragment = new ForumTopicsFragment();

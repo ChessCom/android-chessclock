@@ -58,9 +58,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	private TopicCreateListener topicCreateListener;
 	private String topicUrl;
 
-	public ForumPostsFragment() {
-
-	}
+	public ForumPostsFragment() { }
 
 	public static ForumPostsFragment createInstance(int topicId){
 		ForumPostsFragment fragment = new ForumPostsFragment();

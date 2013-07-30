@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.GridView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.chess.*;
+import com.chess.R;
+import com.chess.RoboRadioButton;
+import com.chess.RoboToggleButton;
+import com.chess.SwitchButton;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -81,10 +83,10 @@ public class NewGameLiveView extends NewGameDefaultView implements ItemClickList
 				newGameButtonItems.add(NewLiveGameButtonItem.createNewButtonFromLabel(label, getContext()));
 			}
 
-			GridView gridView = (GridView) optionsView.findViewById(R.id.liveModeGrid);
-			newLiveGamesButtonsAdapter = new NewLiveGamesButtonsAdapter(this, newGameButtonItems);
-			gridView.setAdapter(newLiveGamesButtonsAdapter);
-			newLiveGamesButtonsAdapter.checkButton(0);
+//			GridView gridView = (GridView) optionsView.findViewById(R.id.liveModeGrid);
+//			newLiveGamesButtonsAdapter = new NewLiveGamesButtonsAdapter(this, newGameButtonItems);
+//			gridView.setAdapter(newLiveGamesButtonsAdapter);
+//			newLiveGamesButtonsAdapter.checkButton(0);
 			// set value to builder
 		}
 

@@ -62,7 +62,13 @@ public class DBConstants {
 		GAME_STATS_LIVE_BLITZ,
 		GAME_STATS_LIVE_LIGHTNING,
 		GAME_STATS_DAILY_CHESS,
-		GAME_STATS_DAILY_CHESS960
+		GAME_STATS_DAILY_CHESS960,
+
+		MESSAGES_INBOX,
+		MESSAGES_ARCHIVE
+
+
+
 	}
 
 	// Content URI
@@ -205,6 +211,17 @@ public class DBConstants {
 	public static final String V_MOVE_COMMENT			= "move_comment";
 	public static final String V_SHORT_RESPONSE_MOVE	= "short_response_move";
 	public static final String V_MOVE_TYPE				= "move_type";
+
+	/* Messages*/
+	public static final String V_OTHER_USER_ID 			= "other_user_id";
+	public static final String V_OTHER_USER_USERNAME 	= "other_user_username";
+	public static final String V_OTHER_USER_IS_ONLINE 	= "other_user_is_online";
+	public static final String V_OTHER_USER_AVATAR_URL 	= "other_user_avatar_url";
+	public static final String V_NEW_MESSAGES_COUNT 	= "new_messages_count";
+	public static final String V_LAST_MESSAGE_ID 		= "last_message_id";
+	public static final String V_LAST_MESSAGE_SENDER_USERNAME = "last_message_sender_username";
+	public static final String V_LAST_MESSAGE_CREATED_AT = "last_message_created_at";
+	public static final String V_LAST_MESSAGE_CONTENT 	= "last_message_content";
 
 	/* common commands */
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists ";
@@ -473,6 +490,32 @@ public class DBConstants {
 				+ addField_Text(V_RESPONSE_MOVE_COMMENT)
 				+ addField_Text(V_MOVE_TYPE, true);
 
+		/* Messages */
+		createTablesArray[Tables.MESSAGES_INBOX.ordinal()] = createTableForName(Tables.MESSAGES_INBOX)
+				+ addField_Long(V_ID)
+				+ addField_Long(V_OTHER_USER_ID)
+				+ addField_Long(V_LAST_MESSAGE_ID)
+				+ addField_Long(V_LAST_MESSAGE_CREATED_AT)
+				+ addField_Int(V_OTHER_USER_IS_ONLINE)
+				+ addField_Int(V_NEW_MESSAGES_COUNT)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_OTHER_USER_USERNAME)
+				+ addField_Text(V_OTHER_USER_AVATAR_URL)
+				+ addField_Text(V_LAST_MESSAGE_SENDER_USERNAME)
+				+ addField_Text(V_LAST_MESSAGE_CONTENT, true);
+
+		createTablesArray[Tables.MESSAGES_ARCHIVE.ordinal()] = createTableForName(Tables.MESSAGES_ARCHIVE)
+				+ addField_Long(V_ID)
+				+ addField_Long(V_OTHER_USER_ID)
+				+ addField_Long(V_LAST_MESSAGE_ID)
+				+ addField_Long(V_LAST_MESSAGE_CREATED_AT)
+				+ addField_Int(V_OTHER_USER_IS_ONLINE)
+				+ addField_Int(V_NEW_MESSAGES_COUNT)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_OTHER_USER_USERNAME)
+				+ addField_Text(V_OTHER_USER_AVATAR_URL)
+				+ addField_Text(V_LAST_MESSAGE_SENDER_USERNAME)
+				+ addField_Text(V_LAST_MESSAGE_CONTENT, true);
 	}
 
 	/* ==================== User Stats ============================== */

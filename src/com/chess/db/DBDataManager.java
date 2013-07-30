@@ -1288,12 +1288,41 @@ public class DBDataManager {
 
 	public static ContentValues putCommonFeedCategoryItemToValues(CommonFeedCategoryItem.Data dataObj) {
 		ContentValues values = new ContentValues();
+
+
 		values.put(DBConstants.V_NAME, dataObj.getName());
 		values.put(DBConstants.V_CATEGORY_ID, dataObj.getId());
 		values.put(DBConstants.V_DISPLAY_ORDER, dataObj.getDisplayOrder());
 
 		return values;
 	}
+
+	/* ========================================== Stats ========================================== */
+	public static ContentValues putCommonFeedCategoryItemToValues(MessagesItem.Data dataObj) {
+		ContentValues values = new ContentValues();
+
+
+//		+ addField_Long()
+//				+ addField_Long(V_OTHER_USER_ID)
+//				+ addField_Long(V_LAST_MESSAGE_ID)
+//				+ addField_Long(V_LAST_MESSAGE_CREATED_AT)
+//				+ addField_Int(V_OTHER_USER_IS_ONLINE)
+//				+ addField_Int(V_NEW_MESSAGES_COUNT)
+//				+ addField_Text(V_OTHER_USER_USERNAME)
+//				+ addField_Text(V_OTHER_USER_AVATAR_URL)
+//				+ addField_Text(V_LAST_MESSAGE_SENDER_USERNAME)
+//				+ addField_Text(V_LAST_MESSAGE_CONTENT, true);
+//
+//
+//		values.put(DBConstants.V_NAME, dataObj.getName());
+//		values.put(DBConstants.V_CATEGORY_ID, dataObj.getId());
+//		values.put(DBConstants.V_DISPLAY_ORDER, dataObj.getDisplayOrder());
+
+		return values;
+	}
+
+
+	/* ========================================== Stats ========================================== */
 
 	public static ContentValues putUserStatsLiveItemToValues(UserLiveStatsData.Stats dataObj, String user) {
 		ContentValues values = new ContentValues();

@@ -4,7 +4,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	android:padding="0dp"
+	android:padding="15dip"
 	>
 
 	<com.chess.RoboTextView
@@ -42,6 +42,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/log_in"
+		style="@style/Button.OrangeNoBorder"
 		/>
 
 	<com.facebook.widget.LoginButton

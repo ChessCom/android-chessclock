@@ -163,6 +163,11 @@ public class RestHelper {
 		return CMD_THEMES_USER + id;
 	}
 
+	/* Messages */
+	public static final String CMD_MESSAGES = BASE_URL + V1 + "/messages";
+	public static final String CMD_MESSAGES_INBOX = CMD_MESSAGES + "/inbox";
+	public static final String CMD_MESSAGES_ARCHIVE = CMD_MESSAGES + "/archive";
+
 	public static final String CMD_MEMBERSHIP = BASE_URL + V1 + "/membership/android";
 	public static final String CMD_MEMBERSHIP_PAYLOAD = CMD_MEMBERSHIP + "/payload";
 	public static final String CMD_MEMBERSHIP_KEY = CMD_MEMBERSHIP + "/public-key";

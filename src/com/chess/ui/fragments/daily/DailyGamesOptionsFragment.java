@@ -102,14 +102,14 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		opponentSpinner.setSelection(0);
 
 		{// Daily Games setup
-			NewGameDefaultView.ViewConfig dailyConfig = new NewGameDefaultView.ViewConfig();
-			dailyConfig.setBaseId(DAILY_BASE_ID);
-			dailyConfig.setHeaderIcon(R.string.ic_daily_game);
-			dailyConfig.setHeaderText(R.string.new_daily_chess);
-			dailyConfig.setTitleText(R.string.new_per_turn);
-			int defaultDailyMode = getAppData().getDefaultDailyMode();
-			dailyConfig.setLeftButtonText(getString(R.string.days_arg, defaultDailyMode));
-			dailyConfig.setRightButtonTextId(R.string.random);
+//			NewGameDefaultView.ViewConfig dailyConfig = new NewGameDefaultView.ViewConfig();
+//			dailyConfig.setBaseId(DAILY_BASE_ID);
+//			dailyConfig.setHeaderIcon(R.string.ic_daily_game);
+//			dailyConfig.setHeaderText(R.string.new_daily_chess);
+//			dailyConfig.setTitleText(R.string.new_per_turn);
+//			int defaultDailyMode = getAppData().getDefaultDailyMode();
+//			dailyConfig.setLeftButtonText(getString(R.string.days_arg, defaultDailyMode));
+//			dailyConfig.setRightButtonTextId(R.string.random);
 		}
 
 		{// options setup

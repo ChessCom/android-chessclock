@@ -25,8 +25,8 @@ import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.daily.DailyGamesOptionsFragment;
 import com.chess.ui.fragments.friends.ChallengeFriendFragment;
 import com.chess.ui.fragments.game.GameCompFragment;
+import com.chess.ui.fragments.live.LiveGameOptionsFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
-import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -82,19 +82,15 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		dailyGameConfigBuilder = new DailyGameConfig.Builder();
-		liveGameConfigBuilder = new LiveGameConfig.Builder();
-		createChallengeUpdateListener = new CreateChallengeUpdateListener();
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
 		if (getArguments() != null) {
 			positionMode = getArguments().getInt(MODE);
 		} else {
 			positionMode = savedInstanceState.getInt(MODE);
 		}
+
+		dailyGameConfigBuilder = new DailyGameConfig.Builder();
+		liveGameConfigBuilder = new LiveGameConfig.Builder();
+		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 	}
 
 	@Override
@@ -182,12 +178,18 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		if (view.getId() == R.id.liveTimeSelectBtn) {
 			toggleLiveOptionsView();
 		} else if (view.getId() == R.id.liveHeaderView) {
-			getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.LIVE_STANDARD));
+			if (positionMode == CENTER_MODE) {
+				getActivityFace().openFragment(new LiveGameOptionsFragment());
+			} else {
+				getActivityFace().changeRightFragment(new LiveGameOptionsFragment());
+			}
+//			getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.LIVE_STANDARD));
 		} else if (view.getId() == R.id.livePlayBtn) {
 			createLiveChallenge();
 		} else if (view.getId() == R.id.dailyHeaderView) {
 			if (positionMode == CENTER_MODE) {
-				getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.DAILY_CHESS));
+//				getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.DAILY_CHESS));
+				getActivityFace().openFragment(new DailyGamesOptionsFragment());
 			} else {
 				getActivityFace().changeRightFragment(new DailyGamesOptionsFragment());
 			}

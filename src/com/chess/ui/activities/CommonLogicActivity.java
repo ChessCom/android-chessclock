@@ -26,7 +26,10 @@ import com.chess.backend.entity.new_api.LoginItem;
 import com.chess.backend.entity.new_api.MovesStatusItem;
 import com.chess.backend.entity.new_api.RegisterItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
-import com.chess.backend.statics.*;
+import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
+import com.chess.backend.statics.FlurryData;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import com.facebook.widget.LoginButton;
@@ -83,6 +86,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		super.onCreate(savedInstanceState);
 
 		backgroundChessDrawable = new BackgroundChessDrawable(this);
+		loginUpdateListener = new LoginUpdateListenerNew();
 
 		appData = new AppData(this);
 		preferences = appData.getPreferences();
@@ -310,6 +314,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
 		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, userName);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
@@ -318,6 +323,14 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
 
 		loginReturnCode = SIGNIN_CALLBACK_CODE;
+	}
+
+	protected String getDeviceId() {
+		String string = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+		while ((string != null ? string.length() : 0) < 32) { // 32 length is requirement for deviceId parameter
+			string += "a";
+		}
+		return string;
 	}
 
 	private class LoginUpdateListenerNew extends AbstractUpdateListener<LoginItem> {

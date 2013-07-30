@@ -16,15 +16,20 @@ import com.chess.db.DBDataManager;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Long> {
+/**
+ * Created with IntelliJ IDEA.
+ * User: roger sent2roger@gmail.com
+ * Date: 30.07.13
+ * Time: 21:24
+ */
+public class SaveMessagesInboxTask extends AbstractUpdateTask<FriendsItem.Data, Long> {
 
 	private final String userName;
 
 	private ContentResolver contentResolver;
 	protected static String[] arguments = new String[2];
 
-	public SaveFriendsListTask(TaskUpdateInterface<FriendsItem.Data> taskFace, List<FriendsItem.Data> currentItems,
+	public SaveMessagesInboxTask(TaskUpdateInterface<FriendsItem.Data> taskFace, List<FriendsItem.Data> currentItems,
 							   ContentResolver resolver) {
 		super(taskFace, new ArrayList<FriendsItem.Data>());
 		this.itemList.addAll(currentItems);
