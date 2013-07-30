@@ -357,6 +357,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 			move = getBoardFace().convertMove(moveFT);
 			playSound = i == actualMovesSize - 1;
+
+			boardView.setMoveAnimator(move, true);
+			boardView.resetValidMoves();
+
 			getBoardFace().makeMove(move, playSound);
 		}
 

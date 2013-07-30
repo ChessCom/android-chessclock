@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -519,11 +520,17 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			boolean isUserWhite = isUserWhite();
 			boolean isUsersTurn = (isUserWhite && isWhiteToMove) || (!isUserWhite && !isWhiteToMove);
 
+			Log.d("validmoves", "draw validMoves.isEmpty() " + validMoves.isEmpty());
+			Log.d("validmoves", "draw validMoves.size() " + validMoves.size());
+			Log.d("validmoves", "draw isUsersTurn " + isUsersTurn);
 			if (validMoves.isEmpty() && isUsersTurn) {
 				validMoves = getBoardFace().generateValidMoves(false);
 			}
 
 			for (Move move : validMoves) {
+				Log.d("validmoves", "from " + from);
+				Log.d("validmoves", "move.from " + move.from);
+				Log.d("validmoves", "draggingFrom " + draggingFrom);
 				if (move.from == from || move.from == draggingFrom) {
 					int x = ChessBoard.getColumn(move.to, getBoardFace().isReside());
 					int y = ChessBoard.getRow(move.to, getBoardFace().isReside()) + 1;
@@ -802,6 +809,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected void afterUserMove() {
+		Log.d("validmoves", "afterUserMove generate");
 		if (showLegalMoves) {
 			validMoves = getBoardFace().generateValidMoves(true);
 		}
@@ -1353,6 +1361,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		// todo: possible refactoring - get rid of resetValidMoves,
 		// but Compare board Changing when drawing move coordinate highlights instead,
 		// for example by moves list and currentMoveNumber
+		Log.d("validmoves", "clear");
 		validMoves.clear();
 	}
 }
