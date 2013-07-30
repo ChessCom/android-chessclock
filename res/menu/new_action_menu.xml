@@ -50,4 +50,18 @@
 		android:showAsAction="always"
 		/>
 
+	<item android:id="@+id/menu_cancel"
+		android:title="@string/cancel"
+		android:orderInCategory="5"
+		android:icon="@drawable/ic_action_cancel"
+		android:showAsAction="always"
+		/>
+
+	<item android:id="@+id/menu_accept"
+		android:title="@string/accept"
+		android:orderInCategory="6"
+		android:icon="@drawable/ic_action_accept"
+		android:showAsAction="always"
+		/>
+
 </menu>

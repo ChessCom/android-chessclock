@@ -1,32 +1,37 @@
 package com.chess.ui.fragments.settings;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Debug;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v4.app.FragmentActivity;
+import android.view.*;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.ThemeItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
+import com.chess.backend.image_load.ImageDownloaderToListener;
+import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.SaveImageToSdTask;
+import com.chess.model.PopupItem;
 import com.chess.model.SelectionItem;
-import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.adapters.SelectionAdapter;
 import com.chess.ui.adapters.StringSpinnerAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.popup_fragments.PopupBackgroundsFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.PiecePreviewImg;
+import com.chess.utilities.AppUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +42,23 @@ import java.util.List;
  * Date: 28.07.13
  * Time: 21:07
  */
-public class SettingsThemeCustomizeFragment extends CommonLogicFragment implements AdapterView.OnItemSelectedListener {
+public class SettingsThemeCustomizeFragment extends CommonLogicFragment implements AdapterView.OnItemSelectedListener, PopupListSelectionFace {
+
+	static final int BACKGROUND = 0;
+	static final int BOARD = 1;
 
 	public static final int PREVIEW_IMG_SIZE = 180;
+	private static final String THEME_LOAD_TAG = "theme load popup";
+	private static final String BACKGROUND_SELECTION = "background selection popup";
+	private static final String THEME_ITEM = "theme_item";
 
+	private ImageUpdateListener backgroundUpdateListener;
+	private ImageUpdateListener boardUpdateListener;
+	private BackgroundImageSaveListener mainBackgroundImgSaveListener;
+	private BackgroundImageSaveListener boardImgSaveListener;
+
+	private ImageDownloaderToListener imageDownloader;
+	private EnhancedImageDownloader imageLoader;
 
 	private List<SelectionItem> piecesList;
 	private List<SelectionItem> boardsList;
@@ -49,35 +67,50 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	private Spinner piecesSpinner;
 
 	private ThemeItem.Data themeItem;
-	private Spinner backgroundsSpinner;
+	private TextView backgroundNameTxt;
 	private Spinner soundsSpinner;
 	private Spinner colorsSpinner;
 	private Spinner coordinatesSpinner;
 	private int screenWidth;
-	private float density;
-	private SettingsThemeCustomizeFragment.BackgroundsUpdateListener backgroundsUpdateListener;
-	private List<SelectionItem> backgroundsList;
-	private BackgroundsAdapter backgroundsAdapter;
-	private EnhancedImageDownloader imageLoader;
+	private int height;
+
+	private ThemeItem.Data selectedThemeItem;
+	private String backgroundUrl;
+	private String boardBackgroundUrl;
+
 	private ProgressImageView boardPreviewImg;
 	private PiecePreviewImg piecePreviewImg;
 	private ProgressImageView backgroundPreviewImg;
 	private List<String> soundsList;
 	private TextView rowSampleTitleTxt;
+	private TextView loadProgressTxt;
+	private TextView taskTitleTxt;
+
 	private int lightColor;
 	private int darkColor;
+	private PopupBackgroundsFragment backgroundsFragment;
+	private PopupCustomViewFragment loadProgressPopupFragment;
+
 
 	public SettingsThemeCustomizeFragment() {}
 
 	public static SettingsThemeCustomizeFragment createInstance(ThemeItem.Data themeItem) {
 		SettingsThemeCustomizeFragment fragment = new SettingsThemeCustomizeFragment();
-		fragment.themeItem = themeItem;
+		Bundle bundle = new Bundle();
+		bundle.putParcelable(THEME_ITEM, themeItem);
+		fragment.setArguments(bundle);
 		return fragment;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			themeItem = getArguments().getParcelable(THEME_ITEM);
+		} else {
+			themeItem = savedInstanceState.getParcelable(THEME_ITEM);
+		}
 
 		init();
 	}
@@ -95,39 +128,19 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		widgetsInit(view);
 
+		// adjust action bar icons
+		getActivityFace().showActionMenu(R.id.menu_cancel, true);
+		getActivityFace().showActionMenu(R.id.menu_accept, true);
+		getActivityFace().showActionMenu(R.id.menu_notifications, false);
+		getActivityFace().showActionMenu(R.id.menu_games, false);
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
 
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_THEMES);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-
-		new RequestJsonTask<ThemeItem>(backgroundsUpdateListener).executeTask(loadItem);
+		outState.putParcelable(THEME_ITEM, themeItem);
 	}
-
-	private class BackgroundsUpdateListener extends ChessLoadUpdateListener<ThemeItem> {
-
-		private BackgroundsUpdateListener() {
-			super(ThemeItem.class);
-		}
-
-		@Override
-		public void updateData(ThemeItem returnedObj) {
-			List<ThemeItem.Data> backgroundsThemeList = returnedObj.getData();
-
-			for (ThemeItem.Data theme : backgroundsThemeList) {
-				SelectionItem selectionItem = new SelectionItem(null, theme.getBackgroundPreviewUrl());
-				selectionItem.setCode(theme.getThemeName());
-				backgroundsList.add(selectionItem);
-			}
-
-			backgroundsAdapter.setItemsList(backgroundsList);
-		}
-	}
-
 
 	@Override
 	public void onClick(View view) {
@@ -139,9 +152,11 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		} else if (id == R.id.boardView) {
 			boardsSpinner.performClick();
 		} else if (id == R.id.backgroundView) {
-			Debug.startMethodTracing("spinner");
-			backgroundsSpinner.performClick();
-			Debug.stopMethodTracing();
+			if (backgroundsFragment != null) {
+				return;
+			}
+			backgroundsFragment = PopupBackgroundsFragment.createInstance(this, themeItem);
+			backgroundsFragment.show(getFragmentManager(), BACKGROUND_SELECTION);
 		} else if (id == R.id.soundsView) {
 			soundsSpinner.performClick();
 		} else if (id == R.id.colorsView) {
@@ -161,16 +176,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			getAppData().setPiecesId(pos);
 
 			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(pos);
-			selectionItem.setChecked(true);
-		} else if (adapterView.getId() == R.id.backgroundSpinner){
-			for (SelectionItem item : backgroundsList) {
-				item.setChecked(false);
-			}
-			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(pos);
-			imageLoader.download(selectionItem.getText(), backgroundPreviewImg, screenWidth, screenWidth);
-
-			getAppData().setBackgroundSetId(pos);
-
 			selectionItem.setChecked(true);
 
 		} else if (adapterView.getId() == R.id.coordinatesSpinner){
@@ -198,9 +203,9 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 				boardPreviewUrl = "https://dl.dropboxusercontent.com/s/lfdljkbxorm13t6/ocean_preview.png?token_hash=AAGHRM1q4l1E0DHTQ5cYIqvxpHWVo4c3viIvAXUfiT-2iw&dl=1";
 			}
 
+			selectedThemeItem.setBoardBackgroundUrl("https://dl.dropboxusercontent.com/s/ktoi0ixf2qemlij/graffiti.png?token_hash=AAGxS0fXGPCrbBZw5P1OFV25mFj-RTSJxn2nYZTmuTzDbQ&dl=1");
 			imageLoader.download(boardPreviewUrl, boardPreviewImg, PREVIEW_IMG_SIZE);
 		}
-
 
 		((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
 	}
@@ -209,9 +214,144 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	public void onNothingSelected(AdapterView<?> adapterView) {
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_cancel:
+				// revert changes
+				showToast("cancel");
+				return true;
+			case R.id.menu_accept:
+				// apply changes
+
+				// set main background
+				installSelectedTheme();
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void installSelectedTheme() {
+		backgroundUrl = selectedThemeItem.getBackgroundUrl();
+
+		{  // show popup with percentage of loading theme
+			View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
+
+			loadProgressTxt = (TextView) layout.findViewById(R.id.loadProgressTxt);
+			taskTitleTxt = (TextView) layout.findViewById(R.id.taskTitleTxt);
+
+			taskTitleTxt.setText(R.string.loading_background);
+
+			PopupItem popupItem = new PopupItem();
+			popupItem.setCustomView((LinearLayout) layout);
+
+			loadProgressPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
+			loadProgressPopupFragment.show(getFragmentManager(), THEME_LOAD_TAG);
+		}
+
+		imageDownloader.download(backgroundUrl, backgroundUpdateListener, screenWidth, height);
+		String selectedThemeName = selectedThemeItem.getThemeName();
+		getAppData().setThemeName(selectedThemeName);
+	}
+
+	private class ImageUpdateListener implements ImageReadyListener {
+
+		private int listenerCode;
+
+		private ImageUpdateListener(int listenerCode) {
+			this.listenerCode = listenerCode;
+		}
+
+		@Override
+		public void onImageReady(Bitmap bitmap) {
+			Activity activity = getActivity();
+			if (activity == null) {
+				return;
+			}
+
+			if (bitmap == null) {
+				showToast("error loading image. Internal error");
+				return;
+			}
+
+			if (listenerCode == BACKGROUND) {
+				taskTitleTxt.setText(R.string.saving_background);
+				loadProgressTxt.setText(String.valueOf(0));
+				loadProgressTxt.setVisibility(View.GONE);
+
+				String filename = String.valueOf(backgroundUrl.hashCode());
+				new SaveImageToSdTask(mainBackgroundImgSaveListener, bitmap).executeTask(filename);
+			} else if (listenerCode == BOARD) {
+				taskTitleTxt.setText(R.string.saving_board);
+				loadProgressTxt.setText(String.valueOf(0));
+				loadProgressTxt.setVisibility(View.GONE);
+
+				String filename = String.valueOf(boardBackgroundUrl.hashCode());
+				new SaveImageToSdTask(boardImgSaveListener, bitmap).executeTask(filename);
+			}
+		}
+
+		@Override
+		public void setProgress(final int progress) {
+			FragmentActivity activity = getActivity();
+			if (activity == null) {
+				return;
+			}
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					loadProgressTxt.setText(String.valueOf(progress) + StaticData.SYMBOL_PERCENT);
+				}
+			});
+		}
+	}
+
+	private class BackgroundImageSaveListener extends AbstractUpdateListener<Bitmap> {
+
+		private int listenerCode;
+
+		public BackgroundImageSaveListener(int listenerCode) {
+			super(getActivity(), SettingsThemeCustomizeFragment.this);
+			this.listenerCode = listenerCode;
+		}
+
+		@Override
+		public void updateData(Bitmap returnedObj) {
+
+			if (listenerCode == BACKGROUND) {
+
+				// set main background image as theme
+				String filename = String.valueOf(backgroundUrl.hashCode());
+				File imgFile = AppUtils.openFileByName(getActivity(), filename);
+				getActivityFace().setMainBackground(imgFile.getAbsolutePath());
+
+				// Start loading board background
+				int size = screenWidth;
+				taskTitleTxt.setText(R.string.loading_board);
+				loadProgressTxt.setVisibility(View.VISIBLE);
+
+				boardBackgroundUrl = selectedThemeItem.getBoardBackgroundUrl();
+				imageDownloader.download(boardBackgroundUrl, boardUpdateListener, size);
+
+			} else {
+				// set board background image as theme
+				String filename = String.valueOf(boardBackgroundUrl.hashCode());
+				File imgFile = AppUtils.openFileByName(getActivity(), filename);
+				String drawablePath = imgFile.getAbsolutePath();
+
+				getAppData().setThemeBoardPath(drawablePath);
+
+				if (loadProgressPopupFragment != null) {
+					loadProgressPopupFragment.dismiss();
+				}
+			}
+		}
+	}
 	private void init() {
-		density = getResources().getDisplayMetrics().density;
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
+		height = getResources().getDisplayMetrics().heightPixels;
+
+		selectedThemeItem = themeItem;
 		Resources resources = getResources();
 
 		imageLoader = new EnhancedImageDownloader(getActivity());
@@ -238,7 +378,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		boardsList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_red), getString(R.string.board_red)));
 		boardsList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_tan), getString(R.string.board_tan)));
 
-		backgroundsList = new ArrayList<SelectionItem>();
 
 		soundsList = new ArrayList<String>();
 		soundsList.add("Scheme 1");
@@ -255,7 +394,13 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		lightColor = resources.getColor(R.color.white);
 		darkColor = resources.getColor(R.color.new_subtitle_dark_grey);
 
-		backgroundsUpdateListener = new BackgroundsUpdateListener();
+		backgroundUpdateListener = new ImageUpdateListener(BACKGROUND);
+		boardUpdateListener = new ImageUpdateListener(BOARD);
+		mainBackgroundImgSaveListener = new BackgroundImageSaveListener(BACKGROUND);
+		boardImgSaveListener = new BackgroundImageSaveListener(BOARD);
+
+		imageDownloader = new ImageDownloaderToListener(getContext());
+
 	}
 
 	private void widgetsInit(View view) {
@@ -264,24 +409,28 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		boardPreviewImg = (ProgressImageView) view.findViewById(R.id.boardPreviewImg);
 		piecePreviewImg = (PiecePreviewImg) view.findViewById(R.id.piecePreviewImg);
-		backgroundPreviewImg = (ProgressImageView) view.findViewById(R.id.backImg);
-		int imageHeight = (int) (screenWidth / 2.9f);
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
-		backgroundPreviewImg.setLayoutParams(params);
 
-		// Change Placeholder
-		int backIMgColor = resources.getColor(R.color.upgrade_toggle_button_p);
-		backgroundPreviewImg.placeholder = Bitmap.createBitmap(new int[]{backIMgColor}, 1, 1, Bitmap.Config.ARGB_8888);
+		{ // background params
+			backgroundPreviewImg = (ProgressImageView) view.findViewById(R.id.backImg);
+			int imageHeight = (int) (screenWidth / 2.9f);
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
+			backgroundPreviewImg.setLayoutParams(params);
 
-		// Change Image params
-		FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(screenWidth, imageHeight);
-		backgroundPreviewImg.getImageView().setLayoutParams(imageParams);
-		backgroundPreviewImg.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
+			// Change Placeholder
+			int backIMgColor = resources.getColor(R.color.upgrade_toggle_button_p);
+			backgroundPreviewImg.placeholder = Bitmap.createBitmap(new int[]{backIMgColor}, 1, 1, Bitmap.Config.ARGB_8888);
 
-		// Change ProgressBar params
-		FrameLayout.LayoutParams progressParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		progressParams.gravity = Gravity.CENTER;
-		backgroundPreviewImg.getProgressBar().setLayoutParams(progressParams);
+			// Change Image params
+			FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(screenWidth, imageHeight);
+			backgroundPreviewImg.getImageView().setLayoutParams(imageParams);
+			backgroundPreviewImg.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
+
+			// Change ProgressBar params
+			FrameLayout.LayoutParams progressParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			progressParams.gravity = Gravity.CENTER;
+			backgroundPreviewImg.getProgressBar().setLayoutParams(progressParams);
+
+		}
 
 		AssetManager assetManager = getActivity().getAssets();
 		Bitmap blackPawn = null;
@@ -303,7 +452,8 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		// Menu sample
 		rowSampleTitleTxt = (TextView) view.findViewById(R.id.rowSampleTitleTxt);
-
+		int fontColor = Color.parseColor("#" + themeItem.getFontColor());
+		rowSampleTitleTxt.setTextColor(fontColor);
 
 		//spinners
 		view.findViewById(R.id.backgroundView).setOnClickListener(this);
@@ -332,12 +482,10 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		piecesSpinner.setOnItemSelectedListener(this);
 
 		// Backgrounds
-		backgroundsSpinner = (Spinner) view.findViewById(R.id.backgroundSpinner);
-		backgroundsAdapter = new BackgroundsAdapter(getActivity(), backgroundsList);
-		backgroundsSpinner.setAdapter(backgroundsAdapter);
-		int backgroundPosition = preferences.getInt(userName + AppConstants.PREF_BACKGROUND_SET, 0);
-		backgroundsSpinner.setSelection(backgroundPosition);
-		backgroundsSpinner.setOnItemSelectedListener(this);
+		backgroundNameTxt = (TextView) view.findViewById(R.id.backgroundNameTxt);
+		backgroundNameTxt.setText(themeItem.getThemeName());
+
+		imageLoader.download(themeItem.getBackgroundPreviewUrl(), backgroundPreviewImg, screenWidth, screenWidth);
 
 		// Sounds
 		soundsSpinner = (Spinner) view.findViewById(R.id.soundsSpinner);
@@ -361,103 +509,19 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		coordinatesSpinner.setOnItemSelectedListener(this);
 	}
 
-	private class BackgroundsAdapter extends ItemsAdapter<SelectionItem> {
+	@Override
+	public void onValueSelected(int code) {
+		selectedThemeItem = backgroundsFragment.getItemByCode(code);
 
-		private final int spinnerWidth;
-		private final Bitmap placeHolderBitmap;
-		private final float aspectRatio;
-		private final FrameLayout.LayoutParams imageParams;
-		private final RelativeLayout.LayoutParams relLayoutParams;
-		private final LinearLayout.LayoutParams linearLayoutParams;
-		private final FrameLayout.LayoutParams progressParams;
+		imageLoader.download(selectedThemeItem.getBackgroundPreviewUrl(), backgroundPreviewImg, screenWidth);
+		backgroundNameTxt.setText(selectedThemeItem.getThemeName());
 
-		public BackgroundsAdapter(Context context, List<SelectionItem> menuItems) {
-			super(context, menuItems);
-			spinnerWidth = (int) (180 * density);
-			aspectRatio = 1f / 6f;
-
-			int backIMgColor = getResources().getColor(R.color.upgrade_toggle_button_p);
-			placeHolderBitmap = Bitmap.createBitmap(new int[]{backIMgColor}, 1, 1, Bitmap.Config.ARGB_8888);
-			int imageHeight = (int) (spinnerWidth * aspectRatio);
-			imageParams = new FrameLayout.LayoutParams(spinnerWidth, imageHeight);
-			relLayoutParams = new RelativeLayout.LayoutParams(spinnerWidth, imageHeight);
-			linearLayoutParams = new LinearLayout.LayoutParams(spinnerWidth, imageHeight);
-			progressParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			progressParams.gravity = Gravity.CENTER;
-
-		}
-
-		@Override
-		protected View createView(ViewGroup parent) { // View to display in layout
-			ProgressImageView view = new ProgressImageView(getActivity(), spinnerWidth);
-
-			view.setLayoutParams(relLayoutParams);
-
-			// Change Placeholder
-			view.placeholder = placeHolderBitmap;
-
-			// Change Image params
-			view.getImageView().setLayoutParams(imageParams);
-			view.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
-
-			// Change ProgressBar params
-			view.getProgressBar().setLayoutParams(progressParams);
-
-			return view;
-		}
-
-		@Override
-		protected void bindView(SelectionItem item, int pos, View view) {
-			imageLoader.download(item.getText(), (ProgressImageView) view, spinnerWidth, spinnerWidth);
-		}
-
-		@Override
-		public View getDropDownView(int position, View convertView, ViewGroup parent) { // view that shows that spinner was selected/pressed
-			logTest("convertView = " + convertView + ", pos = " + position);
-
-			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.selection_load_img_dropdown, parent, false);
-				ViewHolder holder = new ViewHolder();
-				holder.image = (ProgressImageView) convertView.findViewById(R.id.image);
-
-				holder.image.setLayoutParams(linearLayoutParams);
-
-				// Change Placeholder
-				holder.image.placeholder = placeHolderBitmap;
-
-				// Change Image params
-				holder.image.getImageView().setLayoutParams(imageParams);
-				holder.image.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
-
-				// Change ProgressBar params
-
-				holder.image.getProgressBar().setLayoutParams(progressParams);
-
-				holder.text = (CheckedTextView) convertView.findViewById(R.id.text);
-
-				convertView.setTag(holder);
-			}
-			bindDropDownView(itemsList.get(position), convertView);
-
-			return convertView;
-		}
-
-		private void bindDropDownView(SelectionItem item, View convertView) {
-			ViewHolder holder = (ViewHolder) convertView.getTag();
-
-			imageLoader.download(item.getText(), holder.image, spinnerWidth, spinnerWidth);
-			holder.text.setText(item.getCode());
-			holder.text.setChecked(item.isChecked());
-		}
-
-		private class ViewHolder {
-			public CheckedTextView text;
-			public ProgressImageView image;
-		}
-
-		public Context getContext() {
-			return context;
-		}
+		backgroundsFragment.dismiss();
+		backgroundsFragment = null;
 	}
 
+	@Override
+	public void onDialogCanceled() {
+		backgroundsFragment = null;
+	}
 }

@@ -49,7 +49,6 @@
         android:textSize="26dip"
         android:layout_marginLeft="10dip"
         />
-    <!--android:layout_alignBottom="@id/rowTitleTxt"-->
 
 	<com.chess.backend.image_load.ProgressImageView
 		android:id="@+id/boardPreviewImg"

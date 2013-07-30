@@ -129,6 +129,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		getActivityFace().showActionMenu(R.id.menu_add, false);
 		getActivityFace().showActionMenu(R.id.menu_search, false);
 		getActivityFace().showActionMenu(R.id.menu_share, false);
+		getActivityFace().showActionMenu(R.id.menu_cancel, false);
+		getActivityFace().showActionMenu(R.id.menu_accept, false);
 		getActivityFace().showActionMenu(R.id.menu_notifications, true);
 		getActivityFace().showActionMenu(R.id.menu_games, true);
 

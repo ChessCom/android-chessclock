@@ -30,9 +30,7 @@ public class PopupSkillsFragment extends DialogFragment implements AdapterView.O
 
 	private PopupListSelectionFace listener;
 
-	public PopupSkillsFragment() {
-
-	}
+	public PopupSkillsFragment() { }
 
 	public static PopupSkillsFragment createInstance(PopupListSelectionFace listener) {
 		PopupSkillsFragment frag = new PopupSkillsFragment();
@@ -92,7 +90,6 @@ public class PopupSkillsFragment extends DialogFragment implements AdapterView.O
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		listener.onValueSelected(position);
 	}
-
 
 	private class SkillItem {
 		String name;

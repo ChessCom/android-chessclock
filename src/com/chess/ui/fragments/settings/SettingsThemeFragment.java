@@ -45,11 +45,11 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 	static final int BACKGROUND = 0;
 	static final int BOARD = 1;
+	private static final int ID_INSTALL = 0;
+	private static final int ID_CUSTOMIZE = 1;
 
 	public static final int PREVIEW_IMG_SIZE = 180;
 	private static final String GAME_THEME_NAME = "Game";
-	private static final int ID_CUSTOMIZE = 0;
-	private static final int ID_INSTALL = 1;
 	private static final String OPTION_SELECTION_TAG = "options select popup";
 
 	private ListView listView;
@@ -67,12 +67,13 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private String boardBackgroundUrl;
 	private List<ThemeItem.Data> themesList;
 	private String selectedThemeName;
-	private TextView loadTitleTxt;
 	private TextView loadProgressTxt;
 	private TextView taskTitleTxt;
 	private PopupCustomViewFragment loadProgressPopupFragment;
 	private SparseArray<String> optionsArray;
 	private PopupOptionsMenuFragment optionsSelectFragment;
+	private boolean need2update = true;
+	private ThemesAdapter themesAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -93,8 +94,8 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 		{// options list setup
 			optionsArray = new SparseArray<String>();
-			optionsArray.put(ID_CUSTOMIZE, getString(R.string.customize));
 			optionsArray.put(ID_INSTALL, getString(R.string.install));
+			optionsArray.put(ID_CUSTOMIZE, getString(R.string.customize));
 		}
 	}
 
@@ -117,11 +118,15 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	public void onStart() {
 		super.onStart();
 
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_THEMES);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		if (need2update) {
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.CMD_THEMES);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
-		new RequestJsonTask<ThemeItem>(themesUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<ThemeItem>(themesUpdateListener).executeTask(loadItem);
+		} else {
+			listView.setAdapter(themesAdapter);
+		}
 	}
 
 	@Override
@@ -158,14 +163,10 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 				}
 			}
 
-			// adding default theme, to allow user to select it from full list
-//			ThemeItem.Data defaultThemeItem = new ThemeItem.Data();
-//			defaultThemeItem.setLocal(true);
-//			themesList.add(0, defaultThemeItem);
+			themesAdapter = new ThemesAdapter(getActivity(), themesList);
+			listView.setAdapter(themesAdapter);
 
-			ThemesAdapter adapter = new ThemesAdapter(getActivity(), themesList);
-
-			listView.setAdapter(adapter);
+			need2update = false;
 		}
 	}
 
@@ -188,8 +189,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsArray);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
-
-
 	}
 
 	private void installSelectedTheme() {
@@ -204,7 +203,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			{  // show popup with percentage of loading theme
 				View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
 
-				loadTitleTxt = (TextView) layout.findViewById(R.id.loadTitleTxt);
 				loadProgressTxt = (TextView) layout.findViewById(R.id.loadProgressTxt);
 				taskTitleTxt = (TextView) layout.findViewById(R.id.taskTitleTxt);
 
@@ -222,7 +220,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			getAppData().setThemeName(selectedThemeName);
 		}
 	}
-
 
 	private class ImageUpdateListener implements ImageReadyListener {
 
