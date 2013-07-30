@@ -19,6 +19,7 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.DailyCurrentGameData;
 import com.chess.backend.entity.new_api.DailyFinishedGameData;
 import com.chess.backend.entity.new_api.DailyGamesAllItem;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBDataManager;
@@ -47,6 +48,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	private int previousCheckedId = NON_INIT;
 	private DailyGamesUpdateListener dailyGamesUpdateListener;
 	private boolean showDailyGamesFragment = true;
+	private String themeName;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		if (!DBDataManager.haveSavedFriends(getActivity(), getUsername())) {
 			getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class)); // TODO adjust properly
 		}
+
+		themeName = getAppData().getThemeName();
 	}
 
 	@Override
@@ -75,6 +79,12 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		((TextView) view.findViewById(R.id.leftTabBtn)).setText(R.string.play);
 		((TextView) view.findViewById(R.id.centerTabBtn)).setText(R.string.learn);
 		((TextView) view.findViewById(R.id.rightTabBtn)).setText(R.string.feed);
+
+		if (themeName.equals(AppConstants.LIGHT_THEME_NAME)) {
+			((TextView) view.findViewById(R.id.leftTabBtn)).setTextColor(getResources().getColor(R.color.transparent_button_border_top));
+			((TextView) view.findViewById(R.id.centerTabBtn)).setTextColor(getResources().getColor(R.color.transparent_button_border_top));
+			((TextView) view.findViewById(R.id.rightTabBtn)).setTextColor(getResources().getColor(R.color.transparent_button_border_top));
+		}
 
 		showActionBar(true);
 

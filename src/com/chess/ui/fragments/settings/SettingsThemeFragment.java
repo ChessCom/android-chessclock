@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,8 @@ import com.chess.model.PopupItem;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
+import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.utilities.AppUtils;
 
 import java.io.File;
@@ -36,7 +39,7 @@ import java.util.List;
  * Date: 20.05.13
  * Time: 11:23
  */
-public class SettingsThemeFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
+public class SettingsThemeFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, PopupListSelectionFace {
 
 	private static final String THEME_LOAD_TAG = "theme load popup";
 
@@ -44,6 +47,10 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	static final int BOARD = 1;
 
 	public static final int PREVIEW_IMG_SIZE = 180;
+	private static final String GAME_THEME_NAME = "Game";
+	private static final int ID_CUSTOMIZE = 0;
+	private static final int ID_INSTALL = 1;
+	private static final String OPTION_SELECTION_TAG = "options select popup";
 
 	private ListView listView;
 	private ThemesUpdateListener themesUpdateListener;
@@ -56,7 +63,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private String backgroundUrl;
 	private int screenWidth;
 	private int height;
-	private ThemeItem.Data selectedMenuItem;
+	private ThemeItem.Data selectedThemeItem;
 	private String boardBackgroundUrl;
 	private List<ThemeItem.Data> themesList;
 	private String selectedThemeName;
@@ -64,6 +71,8 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private TextView loadProgressTxt;
 	private TextView taskTitleTxt;
 	private PopupCustomViewFragment loadProgressPopupFragment;
+	private SparseArray<String> optionsArray;
+	private PopupOptionsMenuFragment optionsSelectFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +90,12 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		imageDownloader = new ImageDownloaderToListener(getContext());
 
 		selectedThemeName = getAppData().getThemeName();
+
+		{// options list setup
+			optionsArray = new SparseArray<String>();
+			optionsArray.put(ID_CUSTOMIZE, getString(R.string.customize));
+			optionsArray.put(ID_INSTALL, getString(R.string.install));
+		}
 	}
 
 	@Override
@@ -109,6 +124,23 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		new RequestJsonTask<ThemeItem>(themesUpdateListener).executeTask(loadItem);
 	}
 
+	@Override
+	public void onValueSelected(int code) {
+		if (code == ID_CUSTOMIZE) {
+			getActivityFace().openFragment(SettingsThemeCustomizeFragment.createInstance(selectedThemeItem));
+		} else if (code == ID_INSTALL) {
+			installSelectedTheme();
+		}
+
+		optionsSelectFragment.dismiss();
+		optionsSelectFragment = null;
+	}
+
+	@Override
+	public void onDialogCanceled() {
+		optionsSelectFragment = null;
+	}
+
 	private class ThemesUpdateListener extends ChessLoadUpdateListener<ThemeItem> {
 
 		private ThemesUpdateListener() {
@@ -127,9 +159,9 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			}
 
 			// adding default theme, to allow user to select it from full list
-			ThemeItem.Data defaultThemeItem = new ThemeItem.Data();
-			defaultThemeItem.setLocal(true);
-			themesList.add(0, defaultThemeItem);
+//			ThemeItem.Data defaultThemeItem = new ThemeItem.Data();
+//			defaultThemeItem.setLocal(true);
+//			themesList.add(0, defaultThemeItem);
 
 			ThemesAdapter adapter = new ThemesAdapter(getActivity(), themesList);
 
@@ -143,18 +175,31 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			data.setSelected(false);
 		}
 
-		selectedMenuItem = (ThemeItem.Data) listView.getItemAtPosition(position);
-		selectedMenuItem.setSelected(true);
+		selectedThemeItem = (ThemeItem.Data) listView.getItemAtPosition(position);
+		selectedThemeItem.setSelected(true);
 
 		((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
 
-		if (selectedMenuItem.isLocal()) {
+		if (optionsSelectFragment != null) {
+			optionsSelectFragment.dismiss();
+			optionsSelectFragment = null;
+			return;
+		}
+
+		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsArray);
+		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
+
+
+	}
+
+	private void installSelectedTheme() {
+		if (selectedThemeItem.getThemeName().equals(GAME_THEME_NAME)) {
 			getAppData().setThemeBackPath(StaticData.SYMBOL_EMPTY); // clear downloaded theme value
 			getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
 
 			getAppData().setThemeName(getString(R.string.theme_game_room));
 		} else { // start loading main background image
-			backgroundUrl = selectedMenuItem.getBackgroundUrl();
+			backgroundUrl = selectedThemeItem.getBackgroundUrl();
 
 			{  // show popup with percentage of loading theme
 				View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
@@ -173,10 +218,11 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			}
 
 			imageDownloader.download(backgroundUrl, backgroundUpdateListener, screenWidth, height);
-			selectedThemeName = selectedMenuItem.getThemeName();
+			selectedThemeName = selectedThemeItem.getThemeName();
 			getAppData().setThemeName(selectedThemeName);
 		}
 	}
+
 
 	private class ImageUpdateListener implements ImageReadyListener {
 
@@ -254,7 +300,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 				taskTitleTxt.setText(R.string.loading_board);
 				loadProgressTxt.setVisibility(View.VISIBLE);
 
-				boardBackgroundUrl = selectedMenuItem.getBoardBackgroundUrl();
+				boardBackgroundUrl = selectedThemeItem.getBoardBackgroundUrl();
 				imageDownloader.download(boardBackgroundUrl, boardUpdateListener, size);
 
 			} else {
@@ -321,17 +367,10 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 				holder.check.setText(StaticData.SYMBOL_EMPTY);
 			}
 
-			if (item.isLocal()) {
-				holder.title.setText(R.string.theme_game_room);
+			holder.title.setText(item.getThemeName());
 
-				holder.backImg.setImageDrawable(getResources().getDrawable(R.drawable.img_theme_green_felt));
-				holder.boardPreviewImg.setImageDrawable(getResources().getDrawable(R.drawable.img_board_theme_sample));
-			} else {
-				holder.title.setText(item.getThemeName());
-
-				imageLoader.download(item.getBackgroundPreviewUrl(), holder.backImg, screenWidth, screenWidth);
-				imageLoader.download(item.getBoardPreviewUrl(), holder.boardPreviewImg, PREVIEW_IMG_SIZE);
-			}
+			imageLoader.download(item.getBackgroundPreviewUrl(), holder.backImg, screenWidth, screenWidth);
+			imageLoader.download(item.getBoardPreviewUrl(), holder.boardPreviewImg, PREVIEW_IMG_SIZE);
 		}
 
 		public Context getContext() {

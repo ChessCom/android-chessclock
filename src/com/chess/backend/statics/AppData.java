@@ -106,6 +106,10 @@ public class AppData {
 		setIntValue(PREF_PIECES_SET, value);
 	}
 
+	public void setBackgroundSetId(int value) {
+		setIntValue(PREF_BACKGROUND_SET, value);
+	}
+
 	public int getLanguageCode() {
 		return getIntValue(PREF_LANGUAGE, 0);
 	}

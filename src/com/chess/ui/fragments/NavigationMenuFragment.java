@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.statics.AppConstants;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.daily.DailyTabsFragment;
@@ -212,10 +213,12 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 	private class NewNavigationMenuAdapter extends ItemsAdapter<NavigationMenuItem> {
 
 		private final String userAvatarUrl;
+		private final String themeName;
 
 		public NewNavigationMenuAdapter(Context context, List<NavigationMenuItem> menuItems) {
 			super(context, menuItems);
 			userAvatarUrl = getAppData().getUserAvatar();
+			themeName = getAppData().getThemeName();
 		}
 
 		@Override
@@ -224,6 +227,10 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 			ViewHolder holder = new ViewHolder();
 			holder.icon = (ProgressImageView) view.findViewById(R.id.iconImg);
 			holder.title = (TextView) view.findViewById(R.id.rowTitleTxt);
+
+			if (themeName.equals(AppConstants.LIGHT_THEME_NAME)) {
+				holder.title.setTextColor(resources.getColor(R.color.transparent_button_border_top));
+			}
 			view.setTag(holder);
 
 			return view;

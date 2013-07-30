@@ -31,7 +31,6 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 		private String theme_name;
 		/* Local addition */
 		private boolean isSelected;
-		private boolean isLocal;
 
 		public int getThemeId() {
 			return theme_id;
@@ -63,14 +62,6 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 
 		public void setSelected(boolean selected) {
 			isSelected = selected;
-		}
-
-		public boolean isLocal() {
-			return isLocal;
-		}
-
-		public void setLocal(boolean local) {
-			isLocal = local;
 		}
 	}
 }

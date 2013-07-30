@@ -39,13 +39,13 @@
                 />
 
             <!--Right Icon-->
-            <com.chess.RoboTextView
+            <!--<com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ic_right"
                 android:textColor="@color/hint_text"
                 style="@style/GlyphIcon.Small"
-                />
+                />-->
         </com.chess.LinLayout>
 
         <!-- Board -->
@@ -73,13 +73,13 @@
                 />
 
             <!--Right Icon-->
-            <com.chess.RoboTextView
+           <!-- <com.chess.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ic_right"
                 android:textColor="@color/hint_text"
                 style="@style/GlyphIcon.Small"
-                />
+                />-->
 
         </com.chess.LinLayout>
 

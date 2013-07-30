@@ -16,7 +16,8 @@
     <color name="new_normal_grey_2">#FF999795</color>
     <color name="new_normal_grey_3">#FFaeaba7</color>
     <color name="new_light_grey_0">#FFcbcbca</color>
-    <color name="new_light_grey">#FFc8c8c8</color>
+    <!--<color name="new_light_grey">#FFc8c8c8</color>-->
+    <color name="new_light_grey">#A6FFFFFF</color>
     <color name="new_light_grey_2">#FFa5a4a4</color>
     <color name="new_light_grey_3">#FF8e8c8b</color>
     <color name="new_light_grey_4">#FFb9c2b6</color>

@@ -33,10 +33,8 @@ public class SpinnerAdapter extends ItemsAdapter<String> {
 		return inflater.inflate(R.layout.spinner_item, parent, false);
 	}
 
-
 	protected View createDropDownView(ViewGroup viewGroup) {
-		View view = inflater.inflate(R.layout.spinner_dropdown_item, viewGroup, false);
-		return view;
+		return inflater.inflate(R.layout.spinner_dropdown_item, viewGroup, false);
 	}
 
 	@Override
@@ -47,7 +45,9 @@ public class SpinnerAdapter extends ItemsAdapter<String> {
 
 	@Override
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) convertView = createDropDownView(parent);
+		if (convertView == null) {
+			convertView = createDropDownView(parent);
+		}
 		bindView(itemsList.get(position), position, convertView);
 		return convertView;
 	}

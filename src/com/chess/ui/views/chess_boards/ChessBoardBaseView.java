@@ -78,8 +78,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected int trackX = 0;
 	protected int trackY = 0;
 
-	private float NUM_Y_OFFSET = 10;
-	private float TEXT_Y_OFFSET = 3;
+	private float numYOffset = 10;
+	private float textYOffset = 3;
 
 	protected Paint yellowPaint;
 	protected Paint coordinatesPaint;
@@ -135,8 +135,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			return;
 		}
 
-		NUM_Y_OFFSET *= density;
-		TEXT_Y_OFFSET *= density;
+		numYOffset *= density;
+		textYOffset *= density;
 
 		drawFilter = new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG);
 		boardBackPaint = new Paint();
@@ -160,9 +160,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		int coordinateFont = resources.getInteger(R.integer.board_highlight_font);
 		int coordinateColor = resources.getColor(R.color.coordinate_color);
 
-//		coordinatesPaint.setStrokeWidth(1.0f);
 		coordinatesPaint.setStyle(Style.FILL);
 		coordinatesPaint.setColor(coordinateColor);
+		coordinatesPaint.setShadowLayer(1.0f, 1.0f, 1.0f, 0x7FFFFFFF);
 		coordinatesPaint.setTextSize(coordinateFont * density);
 		coordinatesPaint.setTypeface(FontsHelper.getInstance().getTypeFace(getContext(), FontsHelper.BOLD_FONT));
 
@@ -481,11 +481,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (showCoordinates) {
 			for (int i = 0; i < SQUARES_NUMBER; i++) {
 				if (getBoardFace().isReside()) {
-					canvas.drawText(nums[i], 2, i * square + NUM_Y_OFFSET, coordinatesPaint);
-					canvas.drawText(signs[7 - i], i * square + (square / 8) * 7, SQUARES_NUMBER * square - TEXT_Y_OFFSET, coordinatesPaint);
+					canvas.drawText(nums[i], 2, i * square + numYOffset, coordinatesPaint);
+					canvas.drawText(signs[7 - i], i * square + (square / 8) * 7, SQUARES_NUMBER * square - textYOffset, coordinatesPaint);
 				} else {
-					canvas.drawText(nums[7 - i], 2, i * square + NUM_Y_OFFSET, coordinatesPaint);
-					canvas.drawText(signs[i], i * square + (square / 8) * 7, SQUARES_NUMBER * square - TEXT_Y_OFFSET, coordinatesPaint);
+					canvas.drawText(nums[7 - i], 2, i * square + numYOffset, coordinatesPaint);
+					canvas.drawText(signs[i], i * square + (square / 8) * 7, SQUARES_NUMBER * square - textYOffset, coordinatesPaint);
 				}
 			}
 		}

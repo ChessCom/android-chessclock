@@ -1946,7 +1946,7 @@ public class ChessBoard implements BoardFace {
 	public static int getRow(int y, boolean reside) {
 		if (reside)
 			y = 63 - y;
-		return (y >> 3);
+		return (y >> 3);  // the same as /8
 	}
 
 	@Override

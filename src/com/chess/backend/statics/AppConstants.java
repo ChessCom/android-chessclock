@@ -50,6 +50,10 @@ public class AppConstants {
 
 	public static final String PREF_BOARD_STYLE = "board style";
 	public static final String PREF_PIECES_SET = "pieces set";
+	public static final String PREF_BACKGROUND_SET = "background set";
+	public static final String PREF_SOUNDS_SET = "sounds set";
+	public static final String PREF_COLORS_SET = "colors set";
+	public static final String PREF_COORDINATES_SET = "colors set";
 	public static final String PREF_LANGUAGE = "application language";
 
 	public static final String PREF_VIDEO_SKILL_LEVEL = "video skill level";
@@ -144,4 +148,5 @@ public class AppConstants {
 
     public static final String NEED_TO_RESTART = "needToRestart";
 	public static final String MOVE_NUMBERS_PATTERN = "[0-9]{1,4}[.]";
+	public static final String LIGHT_THEME_NAME = "Light";
 }
