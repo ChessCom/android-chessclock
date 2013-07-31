@@ -115,9 +115,9 @@ public class LiveChessService extends Service {
 		if (appData.isLiveChess() && !lccHelper.isConnected()
 				&& lccHelper.getClient() == null) { // prevent creating several instances when user navigates between activities in "reconnecting" mode
 			lccHelper.runConnectTask();
-			Log.d("lccClient", "no lccClient running connection task");
+			Log.d(TAG, "no lccClient running connection task");
 		} else if (lccHelper.isConnected()) {
-			Log.d("lccClient", "connected case");
+			Log.d(TAG, "connected case");
 			onLiveConnected();
 		} else {
 			// we get here when network connection changes and we get different ip address
@@ -125,7 +125,7 @@ public class LiveChessService extends Service {
 
 			// vm: lets avoid any manual connects here, LCC is in charge on that.
 
-			Log.d("lccClient", "else case");
+			Log.d(TAG, "else case");
 		}
 	}
 
