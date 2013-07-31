@@ -523,11 +523,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			Log.d("validmoves", "draw validMoves.isEmpty() " + validMoves.isEmpty());
 			Log.d("validmoves", "draw validMoves.size() " + validMoves.size());
 			Log.d("validmoves", "draw isUsersTurn " + isUsersTurn);
-			if (validMoves.isEmpty() && isUsersTurn) {
-				validMoves = getBoardFace().generateValidMoves(false);
+			if (validMoves.isEmpty()) {
+				validMoves = getBoardFace().generateValidMoves(!isUsersTurn);
 			}
 
 			for (Move move : validMoves) {
+				Log.d("validmoves", "move " + move);
 				Log.d("validmoves", "from " + from);
 				Log.d("validmoves", "move.from " + move.from);
 				Log.d("validmoves", "draggingFrom " + draggingFrom);
