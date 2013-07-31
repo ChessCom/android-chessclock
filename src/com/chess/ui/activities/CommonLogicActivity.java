@@ -12,13 +12,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.GcmHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.DataHolder;
-import com.chess.backend.entity.GCMServerResponseItem;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.TacticsDataHolder;
 import com.chess.backend.entity.new_api.GcmItem;
@@ -35,8 +33,6 @@ import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
@@ -45,6 +41,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+
+import static com.chess.backend.statics.AppConstants.LIVE_SESSION_ID;
 
 //import com.facebook.android.Facebook;
 
@@ -242,7 +240,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		GCMRegistrar.unregister(this);
 	}
 
-//	protected class PostUpdateListener extends AbstractUpdateListener<String> {
 	protected class PostUpdateListener extends AbstractUpdateListener<GcmItem> {
 		private int requestCode;
 
@@ -253,8 +250,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 		@Override
 		public void updateData(GcmItem returnedObj) {   // TODO invent exponential leap
-
-//			GCMServerResponseItem responseItem = parseJson(returnedObj);
 
             if (returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
                 switch (requestCode) {
@@ -275,18 +270,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
                 if (requestCode == GcmHelper.REQUEST_REGISTER && getContext() != null) {
                     Toast.makeText(getContext(), R.string.gcm_not_registered, Toast.LENGTH_SHORT).show();
                 }
-            }
-		}
-//{"status":true,"code":200,"message":"Success"}
-		GCMServerResponseItem parseJson(String jRespString) {
-            Gson gson = new Gson();
-            try {
-                return gson.fromJson(jRespString, GCMServerResponseItem.class);
-            }catch(JsonSyntaxException ex) {
-                ex.printStackTrace(); // in case you want to see the stacktrace in your log cat output
-                BugSenseHandler.addCrashExtraData("GCM Server Response Item", jRespString);
-                BugSenseHandler.sendException(ex);
-                return GCMServerResponseItem.createFailResponse();
             }
 		}
 	}
@@ -359,8 +342,8 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 				preferencesEditor.putString(AppConstants.USERNAME, returnedObj.getData().getUsername().trim().toLowerCase());
 			}
 			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, returnedObj.getData().getPremiumStatus());
+			preferencesEditor.putString(LIVE_SESSION_ID, returnedObj.getData().getSessionId());
 			processLogin(returnedObj.getData());
-
 		}
 
 		@Override

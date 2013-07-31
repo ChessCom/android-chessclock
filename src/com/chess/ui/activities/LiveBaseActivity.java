@@ -64,6 +64,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected LiveChessService liveService;
 	private List<PopupDialogFragment> popupChallengesList;
 	private boolean needReLoginToLive;
+	private PopupCustomViewFragment reLoginFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -470,24 +471,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	// ---------- LiveChessClientEventListener ----------------
 	@Override
 	public void onConnecting() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-//				getActionBarHelper().showMenuItemById(R.id.menu_signOut, false);
-				getActionBarHelper().setRefreshActionItemState(true);
-			}
-		});
 	}
 
 	@Override
 	public void onConnectionEstablished() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActionBarHelper().setRefreshActionItemState(false);
-//				getActionBarHelper().showMenuItemById(R.id.menu_signOut, true);
-			}
-		});
 	}
 
 	@Override
@@ -502,7 +489,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				PopupItem popupItem = new PopupItem();
 				popupItem.setCustomView(customView);
 
-				PopupCustomViewFragment reLoginFragment = PopupCustomViewFragment.createInstance(popupItem);
+				reLoginFragment = PopupCustomViewFragment.createInstance(popupItem);
 				reLoginFragment.show(getSupportFragmentManager(), RE_LOGIN_TAG);
 
 				liveService.logout();
@@ -540,14 +527,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	private void processConnectionFailure(String message) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-//				getActionBarHelper().setRefreshActionItemState(false);
-//				getActionBarHelper().showMenuItemById(R.id.menu_signOut, false);
-			}
-		});
-
 		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG, 1);
 		getLastPopupFragment().setCancelable(false);
 	}
@@ -580,6 +559,20 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	// -----------------------------------------------------
+
+
+	@Override
+	protected void afterLogin() {
+		super.afterLogin();
+
+		if (needReLoginToLive) {
+			if (reLoginFragment != null) {
+				reLoginFragment.dismiss();
+			}
+			getAppData().setLiveChessMode(true);
+			connectLcc();
+		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
