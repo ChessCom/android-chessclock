@@ -35,6 +35,13 @@ public class ButtonDrawableBuilder {
 		return buttonDrawable;
 	}
 
+	private static ButtonDrawable setDefaultsNoBorder(Context context) {
+		ButtonDrawable buttonDrawable = setDefaults(context);
+		buttonDrawable.useBorder = false;
+
+		return buttonDrawable;
+	}
+
 	private static ButtonGlassyDrawable setGlassyDefaults(Context context) {
 		Resources resources = context.getResources();
 		ButtonGlassyDrawable buttonDrawable = new ButtonGlassyDrawable();
@@ -160,6 +167,26 @@ public class ButtonDrawableBuilder {
 		} else if (styleId == R.style.Button_White) {
 			ButtonDrawable buttonDrawable = setDefaults(context);
 			createWhite(buttonDrawable, resources);
+
+			return buttonDrawable;
+		} else if (styleId == R.style.Button_White_30) {
+			ButtonDrawable buttonDrawable = setDefaultsNoBorder(context);
+			createWhite30(buttonDrawable, resources);
+
+			return buttonDrawable;
+		} else if (styleId == R.style.Button_White_75) {
+			ButtonDrawable buttonDrawable = setDefaultsNoBorder(context);
+			createWhite75(buttonDrawable, resources);
+
+			return buttonDrawable;
+		} else if (styleId == R.style.Button_Black_30) {
+			ButtonDrawable buttonDrawable = setDefaultsNoBorder(context);
+			createBlack30(buttonDrawable, resources);
+
+			return buttonDrawable;
+		} else if (styleId == R.style.Button_Black_65) {
+			ButtonDrawable buttonDrawable = setDefaultsNoBorder(context);
+			createBlack65(buttonDrawable, resources);
 
 			return buttonDrawable;
 		} else if (styleId == R.style.Button_Glassy) {
@@ -396,6 +423,34 @@ public class ButtonDrawableBuilder {
 		buttonDrawable.colorBottom = resources.getColor(R.color.white_button_solid);
 		// Button colors
 		buttonDrawable.colorSolid = resources.getColor(R.color.white_button_solid);
+		// init layers
+		buttonDrawable.init(resources);
+	}
+
+	private static void createWhite30(ButtonDrawable buttonDrawable, Resources resources) {
+		// Button colors
+		buttonDrawable.colorSolid = resources.getColor(R.color.semitransparent_white_30);
+		// init layers
+		buttonDrawable.init(resources);
+	}
+
+	private static void createWhite75(ButtonDrawable buttonDrawable, Resources resources) {
+		// Button colors
+		buttonDrawable.colorSolid = resources.getColor(R.color.semitransparent_white_75);
+		// init layers
+		buttonDrawable.init(resources);
+	}
+
+	private static void createBlack30(ButtonDrawable buttonDrawable, Resources resources) {
+		// Button colors
+		buttonDrawable.colorSolid = resources.getColor(R.color.semitransparent_black_30);
+		// init layers
+		buttonDrawable.init(resources);
+	}
+
+	private static void createBlack65(ButtonDrawable buttonDrawable, Resources resources) {
+		// Button colors
+		buttonDrawable.colorSolid = resources.getColor(R.color.semitransparent_black_65);
 		// init layers
 		buttonDrawable.init(resources);
 	}

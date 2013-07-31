@@ -98,19 +98,14 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	private ChessBoardNetworkView boardView;
 
-	//	private GameOnlineItem currentGame;
 	private DailyCurrentGameData currentGame;
 	private long gameId;
-
-//	private String timeRemains;
 
 	private IntentFilter boardUpdateFilter;
 	private BroadcastReceiver moveUpdateReceiver;
 
 	protected boolean userPlayWhite = true;
-//	private LoadFromDbUpdateListener loadFromDbUpdateListener;
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
-	private NotationView notationsView;
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
 	private ControlsDailyView controlsDailyView;
@@ -123,9 +118,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private String[] countryNames;
 	private int[] countryCodes;
 
-	public GameDailyFragment(){
-
-	}
+	public GameDailyFragment(){	}
 
 	public static GameDailyFragment createInstance(long gameId) {
 		GameDailyFragment fragment = new GameDailyFragment();
@@ -913,7 +906,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private void widgetsInit(View view) {
 
 		controlsDailyView = (ControlsDailyView) view.findViewById(R.id.controlsNetworkView);
-		notationsView = (NotationView) view.findViewById(R.id.notationsView);
+		NotationView notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 

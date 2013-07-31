@@ -20,7 +20,7 @@
             style="@style/NotationsStyle"
             />
 
-        <com.chess.ui.views.PanelInfoGameView
+        <com.chess.ui.views.PanelInfoLiveView
             android:id="@+id/topPanelView"
             android:layout_width="match_parent"
             android:layout_height="0dip"
@@ -60,7 +60,7 @@
 
         </RelativeLayout>
 
-        <com.chess.ui.views.PanelInfoGameView
+        <com.chess.ui.views.PanelInfoLiveView
             android:id="@+id/bottomPanelView"
             android:layout_width="match_parent"
             android:layout_height="0dp"

@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -126,6 +127,14 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		if (isLCSBound) {
+			executePausedActivityLiveEvents();
+		}
+	}
+
+	@Override
 	protected void onPause() {
 		super.onPause();
 
@@ -133,11 +142,15 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-		if (isLCSBound) {
-			executePausedActivityLiveEvents();
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (getAppData().isLiveChess() && isLCSBound) {
+				liveService.logout();
+				unBindLiveService();
+			}
 		}
+		return super.onKeyUp(keyCode, event);
 	}
 
 	public void executePausedActivityLiveEvents() {

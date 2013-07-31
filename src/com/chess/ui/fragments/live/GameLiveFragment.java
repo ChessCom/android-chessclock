@@ -40,6 +40,7 @@ import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameNetworkFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
+import com.chess.ui.views.PanelInfoLiveView;
 import com.chess.ui.views.chess_boards.ChessBoardLiveView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.game_controls.ControlsLiveView;
@@ -84,8 +85,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 
 	private NotationView notationsView;
-	private PanelInfoGameView topPanelView;
-	private PanelInfoGameView bottomPanelView;
+	private PanelInfoLiveView topPanelView;
+	private PanelInfoLiveView bottomPanelView;
 	private ControlsLiveView controlsLiveView;
 	private QuickAction quickAction;
 	private long gameId;
@@ -96,8 +97,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private ImageDownloaderToListener imageDownloader;
 	private int gameEndTitleId;
 
-	public GameLiveFragment() {
-	}
+	public GameLiveFragment() {	}
 
 	public static GameLiveFragment createInstance(long id) {
 		GameLiveFragment fragment = new GameLiveFragment();
@@ -111,8 +111,13 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		if (getArguments() != null) {
+			gameId = getArguments().getLong(GAME_ID);
+		} else {
+			gameId = savedInstanceState.getLong(GAME_ID);
+		}
+
 		gameTaskListener = new ChessUpdateListener<Game>();
-//		userInfoUpdateListener = new UserInfoUpdateListener();
 		imageDownloader = new ImageDownloaderToListener(getActivity());
 	}
 
@@ -136,16 +141,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		if (getArguments() != null) {
-			gameId = getArguments().getLong(GAME_ID);
-		} else {
-			gameId = savedInstanceState.getLong(GAME_ID);
-		}
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
 
@@ -161,9 +156,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void onPause() {
-		dismissDialogs();
-
 		super.onPause();
+		dismissDialogs();
 		if (isLCSBound) {
 			try {
 				getLiveService().setGameActivityPausedMode(true);
@@ -215,7 +209,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		boardView.updateBoardAndPiecesImgs();
 		notationsView.resetNotations();
-//		boardView.invalidate();
 
 		invalidateGameScreen();
 		if (liveService.getPendingWarnings().size() > 0) {
@@ -238,16 +231,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			liveService.checkAndReplayMoves();
 		}
 
-		// temporary disable playLastMoveAnimation feature, because it can be one of the illegalmove reasons potentially
-		// todo: probably could be enabled with new LCC
-		/*invalidateGameScreen();
-		getBoardFace().takeBack();
-		boardView.invalidate();
-		playLastMoveAnimation();*/
-
 		liveService.checkFirstTestMove();
 		liveService.executePausedActivityGameEvents();
-
 	}
 
 	@Override
@@ -289,11 +274,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	// ----------------------Lcc Events ---------------------------------------------
-
-//	@Override
-//	public void onGameRecreate() {
-//		getActivityFace().showPreviousFragment();
-//	}
 
 	@Override
 	public void startGameFromService() {
@@ -606,7 +586,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 		}
 	}
-
 
 	@Override
 	public void toggleSides() {
@@ -1081,8 +1060,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		controlsLiveView = (ControlsLiveView) view.findViewById(R.id.controlsLiveView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
-		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
-		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
+		topPanelView = (PanelInfoLiveView) view.findViewById(R.id.topPanelView);
+		bottomPanelView = (PanelInfoLiveView) view.findViewById(R.id.bottomPanelView);
 
 		boardView = (ChessBoardLiveView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);

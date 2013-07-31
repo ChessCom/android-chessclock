@@ -103,21 +103,24 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 			GameLiveFragment gameLiveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
 			if (gameLiveFragment != null) {
-				switchFragment(gameLiveFragment);
+				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+				currentActiveFragment = gameLiveFragment;
+
+				ft.replace(R.id.content_frame, gameLiveFragment, gameLiveFragment.getClass().getSimpleName());
+				ft.commitAllowingStateLoss();
 				return;
 			}
-			LiveGameWaitFragment fragmentByTag = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
-			if (fragmentByTag == null) {
-				fragmentByTag = new LiveGameWaitFragment();
-			}
-
+//			LiveGameWaitFragment fragmentByTag = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
+//			if (fragmentByTag == null) {
+//				fragmentByTag = new LiveGameWaitFragment();
+//			}
+			LiveGameWaitFragment fragmentByTag = new LiveGameWaitFragment(); // TODO check correct data in LiveGameWaitFragment
 			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 			currentActiveFragment = fragmentByTag;
 
 			ft.replace(R.id.content_frame, fragmentByTag, fragmentByTag.getClass().getSimpleName());
 			ft.commitAllowingStateLoss();
 		}
-
 	}
 
 	@Override

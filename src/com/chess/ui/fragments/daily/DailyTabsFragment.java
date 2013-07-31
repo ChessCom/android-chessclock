@@ -83,7 +83,7 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
 				case R.id.leftTabBtn:
-					changeInternalFragment(DailyGamesFragment.createInstance(DailyTabsFragment.this, DailyGamesFragment.HOME_MODE));
+					changeInternalFragment(DailyGamesFragment.createInstance(this, DailyGamesFragment.HOME_MODE));
 					break;
 				case R.id.centerTabBtn:
 					changeInternalFragment(new DailyGameSetupFragment());

@@ -229,6 +229,33 @@
         <item name="btn_solid">@color/white_button_solid</item>
     </style>
 
+    <style name="Button.White.30">
+        <item name="btn_solid">@color/semitransparent_white_30</item>
+    </style>
+
+    <style name="Button.White.75">
+        <item name="btn_solid">@color/semitransparent_white_75</item>
+    </style>
+
+    <!--====================================== Black Buttons =========================================== -->
+
+    <style name="Button.Black">
+        <item name="btn_top">@color/transparent</item>
+        <item name="btn_left">@color/transparent</item>
+        <item name="btn_right">@color/transparent</item>
+        <item name="btn_bottom">@color/transparent</item>
+
+        <item name="btn_solid">@color/semitransparent_black_65</item>
+    </style>
+
+    <style name="Button.Black.30">
+        <item name="btn_solid">@color/semitransparent_black_30</item>
+    </style>
+
+    <style name="Button.Black.65">
+        <item name="btn_solid">@color/semitransparent_black_65</item>
+    </style>
+
 
 	<!--====================================== Page Indicator Button =========================================== -->
 

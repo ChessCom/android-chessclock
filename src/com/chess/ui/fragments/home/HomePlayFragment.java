@@ -186,6 +186,9 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 //			getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.LIVE_STANDARD));
 		} else if (view.getId() == R.id.livePlayBtn) {
 			createLiveChallenge();
+			if (positionMode == RIGHT_MENU_MODE) {
+				getActivityFace().toggleRightMenu();
+			}
 		} else if (view.getId() == R.id.dailyHeaderView) {
 			if (positionMode == CENTER_MODE) {
 //				getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.DAILY_CHESS));
@@ -320,6 +323,11 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	}
 
 	private void createLiveChallenge() {
+//		fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
+//		if (fragmentByTag == null) {
+//			fragmentByTag = new LiveGameWaitFragment();
+//		}
+
 		getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build()));
 	}
 

@@ -85,7 +85,6 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		outState.putSerializable("smth", "value");
 		super.onSaveInstanceState(outState);
 		outState.putParcelable(CONFIG, liveGameConfig);
 	}
@@ -164,7 +163,8 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 
 					Long gameId = liveService.getCurrentGameId();
 					logTest("gameId = " + gameId);
-					getActivityFace().switchFragment(GameLiveFragment.createInstance(gameId));
+					getActivityFace().showPreviousFragment();
+					getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
 				}
 			});
 		}
