@@ -575,10 +575,16 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		liveService.setOuterChallengeListener(outerChallengeListener);
 		liveService.setChallengeTaskListener(challengeTaskListener);
 
-		LiveGameWaitFragment waitFragment = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
-		if (waitFragment != null) {
-			waitFragment.onLiveServiceConnected();
+		GameLiveFragment gameLiveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
+		if (gameLiveFragment != null) {
+			gameLiveFragment.onLiveServiceConnected();
+		} else {
+			LiveGameWaitFragment waitFragment = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
+			if (waitFragment != null) {
+				waitFragment.onLiveServiceConnected();
+			}
 		}
+
 		//executePausedActivityLiveEvents();
 	}
 

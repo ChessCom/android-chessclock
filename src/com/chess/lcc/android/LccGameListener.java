@@ -48,6 +48,13 @@ public class LccGameListener implements GameListener {
 		Log.d(TAG, "latestGameId=" + latestGameId);
 
 		if (latestGameId == 0) {
+			// todo: fix NPE
+			if (lccHelper == null) {
+				Log.d(TAG, "onGameListReceived lccHelper is NULL");
+			} else if (lccHelper.getLccEventListener() == null) {
+				Log.d(TAG, "onGameListReceived lccEventListener is NULL");
+			}
+
 			lccHelper.getLccEventListener().createSeek();
 		}
 	}

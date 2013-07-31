@@ -110,11 +110,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				ft.commitAllowingStateLoss();
 				return;
 			}
-//			LiveGameWaitFragment fragmentByTag = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
-//			if (fragmentByTag == null) {
-//				fragmentByTag = new LiveGameWaitFragment();
-//			}
-			LiveGameWaitFragment fragmentByTag = new LiveGameWaitFragment(); // TODO check correct data in LiveGameWaitFragment
+			LiveGameWaitFragment fragmentByTag = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
+			if (fragmentByTag == null) {
+				fragmentByTag = new LiveGameWaitFragment();
+			}
+
 			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 			currentActiveFragment = fragmentByTag;
 

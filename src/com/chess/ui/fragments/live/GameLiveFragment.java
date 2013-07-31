@@ -63,7 +63,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		LccChatMessageListener, PopupListSelectionFace {
 
 
-	private static final String TAG = "GameLiveScreenActivity";
+	private static final String TAG = "LccLog-GameLiveFragment";
 	private static final String WARNING_TAG = "warning message popup";
 
 
@@ -113,6 +113,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		logTest("onCreate");
+		
 		if (getArguments() != null) {
 			gameId = getArguments().getLong(GAME_ID);
 		} else {
@@ -147,6 +149,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void onResume() {
 		super.onResume();
 
+		logTest("onResume");
+
 		if (isLCSBound) {
 			try {
 				onGameStarted();
@@ -160,6 +164,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void onPause() {
 		super.onPause();
+
+		logTest("onPause");
+		
 		dismissDialogs();
 		if (isLCSBound) {
 			try {
@@ -212,6 +219,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		boardView.updateBoardAndPiecesImgs();
 		notationsView.resetNotations();
+		boardView.resetValidMoves();
 
 		invalidateGameScreen();
 		if (liveService.getPendingWarnings().size() > 0) {
@@ -230,7 +238,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			controlsLiveView.haveNewMessage(true);
 		}
 
-		if (liveService.getCurrentGame().isGameOver()) { // avoid races on update moves logic for active game, doUpdateGame updates moves, avoid peaces disappearing and invalidmovie exception
+		if (!liveService.getCurrentGame().isGameOver()) { // avoid races on update moves logic for active game, doUpdateGame updates moves, avoid peaces disappearing and invalidmovie exception
 			liveService.checkAndReplayMoves();
 		}
 
@@ -807,10 +815,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					Log.i(TAG, "Resign game: " + game);
 					liveService.runMakeResignTask();
 				} else if (liveService.isAbortableBySeq()) {
-					Log.i(TAG, "LCCLOG: abort game: " + game);
+					Log.i(TAG, "abort game: " + game);
 					liveService.runAbortGameTask();
 				} else {
-					Log.i(TAG, "LCCLOG: resign game: " + game);
+					Log.i(TAG, "resign game: " + game);
 					liveService.runMakeResignTask();
 				}
 			}
@@ -1197,5 +1205,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					break;
 			}
 		}
+	}
+
+	protected void logTest(String messageToLog) {
+		Log.d(TAG, "LIVE GAME FRAGMENT: " + messageToLog);
 	}
 }
