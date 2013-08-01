@@ -113,7 +113,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		logTest("onCreate");
+		logLiveTest("onCreate");
 		
 		if (getArguments() != null) {
 			gameId = getArguments().getLong(GAME_ID);
@@ -149,7 +149,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void onResume() {
 		super.onResume();
 
-		logTest("onResume");
+		logLiveTest("onResume");
 
 		if (isLCSBound) {
 			try {
@@ -165,7 +165,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void onPause() {
 		super.onPause();
 
-		logTest("onPause");
+		logLiveTest("onPause");
 		
 		dismissDialogs();
 		if (isLCSBound) {
@@ -1207,7 +1207,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		}
 	}
 
-	protected void logTest(String messageToLog) {
+	protected void logLiveTest(String messageToLog) {
 		Log.d(TAG, "LIVE GAME FRAGMENT: " + messageToLog);
 	}
 }

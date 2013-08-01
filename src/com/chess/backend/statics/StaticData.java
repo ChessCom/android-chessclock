@@ -44,7 +44,7 @@ public class StaticData {
 
 	public static final int NAV_FINISH_2_LOGIN = 55;
 	public static final int NAV_FINISH_2_SPLASH = 66;
-	public static final long WAKE_SCREEN_TIMEOUT = 3*60*1000; // TODO investigate problems
+	public static final long WAKE_SCREEN_TIMEOUT = 3*60*1000;
 //	public static final long WAKE_SCREEN_TIMEOUT = 20*1000;
 
 	/* Notification requests codes */

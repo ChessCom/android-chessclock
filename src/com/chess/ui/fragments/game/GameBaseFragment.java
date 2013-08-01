@@ -9,6 +9,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
@@ -126,9 +127,10 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 	@Override
 	public void turnScreenOff() {
-//		Activity activity = getActivity();
-//		if (activity != null)
-//			activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		Activity activity = getActivity();
+		if (activity != null) {
+			activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		}
 	}
 
 	@Override
@@ -140,7 +142,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected void enableScreenLockTimer() {
 		// set touches listener to chessboard. If user don't do any moves, screen will automatically turn off after WAKE_SCREEN_TIMEOUT time
 		boardView.enableTouchTimer();
-//		getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);  // TODO restore
+		getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
 	@Override

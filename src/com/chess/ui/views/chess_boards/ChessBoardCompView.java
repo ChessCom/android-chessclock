@@ -14,7 +14,6 @@ import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.stockfish.CompEngineHelper;
 import com.chess.ui.engine.stockfish.PostMoveToCompTask;
-import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.boards.BoardViewCompFace;
 import com.chess.ui.interfaces.game_ui.GameCompFace;
 import com.chess.ui.views.game_controls.ControlsCompView;
@@ -28,8 +27,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 	private static final String DIVIDER_1 = "|";
 	private static final String DIVIDER_2 = ":";
-//	private boolean hint; // TODO make independent from board
-//    private boolean computerMoving; // TODO make independent from board
+
 	private PostMoveToCompTask computeMoveTask;
 
 	private GameCompFace gameCompActivityFace;
@@ -51,19 +49,12 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		controlsCompView.setBoardViewFace(this);
 	}
 
-	@Override
-	protected void onBoardFaceSet(BoardFace boardFace) {
-//		pieces_tmp = boardFace.getPieces().clone();
-//		colors_tmp = boardFace.getColor().clone();
-	}
-
 	private ChessBoardComp getBoardComp(){
 		return ChessBoardComp.getInstance(gameCompActivityFace);
 	}
 
 	@Override
 	public void afterUserMove() {
-
 		super.afterUserMove();
 
         getBoardFace().setMovesCount(getBoardFace().getHply());
