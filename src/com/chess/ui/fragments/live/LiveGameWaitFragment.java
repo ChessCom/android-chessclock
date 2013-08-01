@@ -23,6 +23,8 @@ import com.chess.ui.fragments.LiveBaseFragment;
  */
 public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventListener {
 
+	private static final long FINISH_FRAGMENT_DELAY = 200;
+
 	private static final String CONFIG = "config";
 	private View loadingView;
 	private LiveGameConfig liveGameConfig;
@@ -46,7 +48,11 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		if (getArguments() != null) {
+			liveGameConfig = getArguments().getParcelable(CONFIG);
+		} else {
+			liveGameConfig = savedInstanceState.getParcelable(CONFIG);
+		}
 		gameTaskListener = new GameTaskListener();
 	}
 
@@ -66,25 +72,20 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		if (getArguments() != null) {
-			liveGameConfig = getArguments().getParcelable(CONFIG);
-		} else {
-			liveGameConfig = savedInstanceState.getParcelable(CONFIG);
-		}
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		if (!closeOnResume) {
 			getAppData().setLiveChessMode(true);
 			liveBaseActivity.connectLcc();
 			loadingView.setVisibility(View.VISIBLE);
 		} else {
-			getActivityFace().showPreviousFragment();
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					getActivityFace().showPreviousFragment();
+				}
+			}, FINISH_FRAGMENT_DELAY);
 		}
 	}
 

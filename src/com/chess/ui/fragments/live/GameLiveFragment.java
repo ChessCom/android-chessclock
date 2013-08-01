@@ -234,9 +234,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		getBoardFace().setFinished(false);
 		getSoundPlayer().playGameStart();
 
-		if (currentGame.hasNewMessage()) {
-			controlsLiveView.haveNewMessage(true);
-		}
+		controlsLiveView.haveNewMessage(currentGame.hasNewMessage());
 
 		if (!liveService.getCurrentGame().isGameOver()) { // avoid races on update moves logic for active game, doUpdateGame updates moves, avoid peaces disappearing and invalidmovie exception
 			liveService.checkAndReplayMoves();
@@ -871,8 +869,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		if (currentGame == null)
 			return StaticData.SYMBOL_EMPTY;
 		else
-			return currentGame.getWhiteUsername() + StaticData.SYMBOL_LEFT_PAR
-					+ currentGame.getWhiteRating() + StaticData.SYMBOL_RIGHT_PAR;
+			return currentGame.getWhiteUsername();
 	}
 
 	@Override
@@ -888,8 +885,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		if (currentGame == null)
 			return StaticData.SYMBOL_EMPTY;
 		else
-			return currentGame.getBlackUsername() + StaticData.SYMBOL_LEFT_PAR
-					+ currentGame.getBlackRating() + StaticData.SYMBOL_RIGHT_PAR;
+			return currentGame.getBlackUsername();
 	}
 
 	@Override
