@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
@@ -194,14 +193,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 			if(TextUtils.isEmpty(whiteUserName) || TextUtils .isEmpty(blackUserName))
 				return true;
-
-			if (whiteUserName.equals(userName)  && !getBoardFace().isWhiteToMove()) {
-				return true;
-			}
-
-			if (blackUserName.equals(userName) && getBoardFace().isWhiteToMove()) {
-				return true;
-			}
 		}
 		return super.onTouchEvent(event);
 	}
