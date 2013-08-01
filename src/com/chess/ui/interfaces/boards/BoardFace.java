@@ -3,8 +3,8 @@ package com.chess.ui.interfaces.boards;
 import com.chess.ui.engine.HistoryData;
 import com.chess.ui.engine.Move;
 
-import java.util.List;
 import java.util.TreeSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * BoardFace class
@@ -132,5 +132,5 @@ public interface BoardFace {
 
 	void switchSide();
 
-	List<Move> generateValidMoves(boolean forceSwitchSide);
+	CopyOnWriteArrayList<Move> generateValidMoves(boolean forceSwitchSide);
 }

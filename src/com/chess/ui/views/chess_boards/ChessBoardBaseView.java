@@ -29,7 +29,10 @@ import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.game_controls.ControlsBaseView;
 import org.petero.droidfish.gamelogic.Position;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.TreeSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * ChessBoardBaseView class
@@ -126,7 +129,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private Paint blackMoveArrowPaint;
 	protected boolean navigating;
 	private int draggingFrom = -1;
-	private List<Move> validMoves = new ArrayList<Move>();
+	private CopyOnWriteArrayList<Move> validMoves = new CopyOnWriteArrayList<Move>(); // lets try this type
 
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);

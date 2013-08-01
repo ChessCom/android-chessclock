@@ -18,10 +18,9 @@ import com.chess.ui.interfaces.game_ui.GameFace;
 import org.apache.http.protocol.HTTP;
 
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.TreeSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ChessBoard implements BoardFace {
 	public static final int WHITE_SIDE = 0;
@@ -2180,7 +2179,7 @@ public class ChessBoard implements BoardFace {
 		xside ^= 1;
 	}
 
-	public List<Move> generateValidMoves(boolean forceSwitchSide) {
+	public CopyOnWriteArrayList<Move> generateValidMoves(boolean forceSwitchSide) {
 
 		int[] piecesBackup = null;
 		int[] colorsBackup = null;
@@ -2191,7 +2190,7 @@ public class ChessBoard implements BoardFace {
 			switchSide();
 		}
 		TreeSet<Move> moves = gen();
-		List<Move> validMoves = new ArrayList<Move>();
+		CopyOnWriteArrayList<Move> validMoves = new CopyOnWriteArrayList<Move>();
 		for (Move move : moves) {
 			if (makeMove(move, false)) {
 				takeBack();
