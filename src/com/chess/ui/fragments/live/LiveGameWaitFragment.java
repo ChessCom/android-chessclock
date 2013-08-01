@@ -27,6 +27,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 	private View loadingView;
 	private LiveGameConfig liveGameConfig;
 	private GameTaskListener gameTaskListener;
+	public boolean closeOnResume;
 
 	public LiveGameWaitFragment() {
 		Bundle bundle = new Bundle();
@@ -78,9 +79,13 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 	public void onStart() {
 		super.onStart();
 
-		getAppData().setLiveChessMode(true);
-		liveBaseActivity.connectLcc();
-		loadingView.setVisibility(View.VISIBLE);
+		if (!closeOnResume) {
+			getAppData().setLiveChessMode(true);
+			liveBaseActivity.connectLcc();
+			loadingView.setVisibility(View.VISIBLE);
+		} else {
+			getActivityFace().showPreviousFragment();
+		}
 	}
 
 	@Override
@@ -163,8 +168,9 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 
 					Long gameId = liveService.getCurrentGameId();
 					logTest("gameId = " + gameId);
-					getActivityFace().showPreviousFragment();
 					getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
+
+					closeOnResume = true;
 				}
 			});
 		}

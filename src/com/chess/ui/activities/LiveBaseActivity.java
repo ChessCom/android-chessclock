@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -146,8 +147,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if (getAppData().isLiveChess() && isLCSBound) {
-				liveService.logout();
-				unBindLiveService();
+				Fragment fragmentByTag = getSupportFragmentManager().findFragmentByTag(GameLiveFragment.class.getSimpleName());
+				if (fragmentByTag != null && fragmentByTag.isVisible()) {
+					liveService.logout();
+					unBindLiveService();
+				}
 			}
 		}
 		return super.onKeyUp(keyCode, event);
