@@ -174,6 +174,11 @@ public class ButtonDrawableBuilder {
 			createWhite30(buttonDrawable, resources);
 
 			return buttonDrawable;
+		} else if (styleId == R.style.Button_White_50) {
+			ButtonDrawable buttonDrawable = setDefaultsNoBorder(context);
+			createWhite50(buttonDrawable, resources);
+
+			return buttonDrawable;
 		} else if (styleId == R.style.Button_White_75) {
 			ButtonDrawable buttonDrawable = setDefaultsNoBorder(context);
 			createWhite75(buttonDrawable, resources);
@@ -430,6 +435,13 @@ public class ButtonDrawableBuilder {
 	private static void createWhite30(ButtonDrawable buttonDrawable, Resources resources) {
 		// Button colors
 		buttonDrawable.colorSolid = resources.getColor(R.color.semitransparent_white_30);
+		// init layers
+		buttonDrawable.init(resources);
+	}
+
+	private static void createWhite50(ButtonDrawable buttonDrawable, Resources resources) {
+		// Button colors
+		buttonDrawable.colorSolid = resources.getColor(R.color.semitransparent_white_50);
 		// init layers
 		buttonDrawable.init(resources);
 	}

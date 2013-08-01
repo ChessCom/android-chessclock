@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,9 @@ import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
-import com.chess.ui.fragments.settings.SettingsFragment;
+import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
+import com.chess.ui.fragments.settings.SettingsBoardFragment;
+import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameNetworkFace;
 import com.chess.ui.views.NotationView;
@@ -45,8 +48,6 @@ import com.chess.ui.views.chess_boards.ChessBoardLiveView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.game_controls.ControlsLiveView;
 import com.chess.utilities.AppUtils;
-import quickaction.ActionItem;
-import quickaction.QuickAction;
 
 import java.util.List;
 
@@ -58,27 +59,26 @@ import static com.chess.live.rules.GameResult.WIN;
  * Date: 26.01.13
  * Time: 11:33
  */
-public class GameLiveFragment extends GameBaseFragment implements GameNetworkFace, LccEventListener, LccChatMessageListener, QuickAction.OnActionItemClickListener {
+public class GameLiveFragment extends GameBaseFragment implements GameNetworkFace, LccEventListener,
+		LccChatMessageListener, PopupListSelectionFace {
 
 
 	private static final String TAG = "GameLiveScreenActivity";
 	private static final String WARNING_TAG = "warning message popup";
 
-	// Quick action ids
+
+	// Options ids
 	private static final int ID_NEW_GAME = 0;
-	//	private static final int ID_FLIP_BOARD = 1;
-	private static final int ID_OFFER_DRAW = 2;
-	private static final int ID_RESIGN_ABORT = 3;
+	private static final int ID_OFFER_DRAW = 1;
+	private static final int ID_ABORT_RESIGN = 2;
+	private static final int ID_REMATCH = 3;
 	private static final int ID_SETTINGS = 4;
+
 	private static final String GAME_ID = "game_id";
 
-	//	private GameLiveItem currentGame;
 	private ChessBoardLiveView boardView;
 
-	private String whiteTimer;
-	private String blackTimer;
 	private View fadeLay;
-	private View gameBoardView;
 	private boolean lccInitiated;
 	private String warningMessage;
 	private ChessUpdateListener<Game> gameTaskListener;
@@ -88,7 +88,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private PanelInfoLiveView topPanelView;
 	private PanelInfoLiveView bottomPanelView;
 	private ControlsLiveView controlsLiveView;
-	private QuickAction quickAction;
+	private PopupOptionsMenuFragment optionsSelectFragment;
+
 	private long gameId;
 	private LabelsConfig labelsConfig;
 	//	private UserInfoUpdateListener userInfoUpdateListener;
@@ -96,6 +97,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private ImageView bottomAvatarImg;
 	private ImageDownloaderToListener imageDownloader;
 	private int gameEndTitleId;
+	private SparseArray<String> optionsMap;
 
 	public GameLiveFragment() {	}
 
@@ -138,6 +140,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		} catch (DataNotValidException e) {
 			logTest(e.getMessage());
 		}
+		enableSlideMenus(false);
 	}
 
 	@Override
@@ -201,7 +204,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		GameLiveItem currentGame = liveService.getGameItem();
 
 		ChessBoardLive.resetInstance();
-		boardView.setGameActivityFace(this);
+		boardView.setGameFace(this);
 
 		if (!liveService.isUserColorWhite()) {
 			getBoardFace().setReside(true);
@@ -236,8 +239,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	@Override
-	public void setWhitePlayerTimer(String timeString) {
-		whiteTimer = timeString;
+	public void setWhitePlayerTimer(final String timeString) {
 		FragmentActivity activity = getActivity();
 		if (activity == null) {
 			return;
@@ -245,18 +247,26 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				if (getBoardFace().isReside()) {
-					topPanelView.setTimeRemain(whiteTimer);
+
+				boolean whiteToMove = getBoardFace().isWhiteToMove();
+
+				if (getBoardFace().isReside()) { // if white at top
+					topPanelView.showTimeLeftIcon(whiteToMove);
+					bottomPanelView.showTimeLeftIcon(!whiteToMove);
+
+					topPanelView.setTimeRemain(timeString);
 				} else {
-					bottomPanelView.setTimeRemain(whiteTimer);
+					topPanelView.showTimeLeftIcon(!whiteToMove);
+					bottomPanelView.showTimeLeftIcon(whiteToMove);
+
+					bottomPanelView.setTimeRemain(timeString);
 				}
 			}
 		});
 	}
 
 	@Override
-	public void setBlackPlayerTimer(String timeString) {
-		blackTimer = timeString;
+	public void setBlackPlayerTimer(final String timeString) {
 		FragmentActivity activity = getActivity();
 		if (activity == null) {
 			return;
@@ -264,13 +274,32 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		activity.runOnUiThread(new Runnable() { // TODO add check
 			@Override
 			public void run() {
+
+				boolean blackToMove = !getBoardFace().isWhiteToMove();
+
 				if (getBoardFace().isReside()) {
-					bottomPanelView.setTimeRemain(blackTimer);
+					topPanelView.showTimeLeftIcon(!blackToMove);
+					bottomPanelView.showTimeLeftIcon(blackToMove);
+
+					bottomPanelView.setTimeRemain(timeString);
 				} else {
-					topPanelView.setTimeRemain(blackTimer);
+					topPanelView.showTimeLeftIcon(blackToMove);
+					bottomPanelView.showTimeLeftIcon(!blackToMove);
+
+					topPanelView.setTimeRemain(timeString);
 				}
 			}
 		});
+	}
+
+	private void indicateCurrentMove(boolean userMove) {
+		if (getBoardFace().isReside()) {
+			topPanelView.showTimeLeftIcon(userMove);
+			bottomPanelView.showTimeLeftIcon(!userMove);
+		} else {
+			topPanelView.showTimeLeftIcon(!userMove);
+			bottomPanelView.showTimeLeftIcon(userMove);
+		}
 	}
 
 	// ----------------------Lcc Events ---------------------------------------------
@@ -356,7 +385,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			@Override
 			public void run() {
 
-				boardView.setGameActivityFace(GameLiveFragment.this);
+				boardView.setGameFace(GameLiveFragment.this);
 				boardView.invalidate();
 				invalidateGameScreen();
 			}
@@ -369,13 +398,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		}
 	}
 
-//	@Override            // TODO restore
-//	public void onConnectionBlocked(boolean blocked) {
-//		super.onConnectionBlocked(blocked);
-//		if (blocked) {
-//			blockGame(blocked);
-//		}
-//	}
+	public void onConnectionBlocked(boolean blocked) {
+		blockGame(blocked);
+	}
 
 	@Override
 	public void onMessageReceived() {
@@ -478,7 +503,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				}
 
 				boardView.lockBoard(block);
-				gameBoardView.invalidate();
 			}
 		});
 	}
@@ -644,8 +668,60 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void showOptions(View view) {
-		quickAction.show(view);
-		quickAction.setAnimStyle(QuickAction.ANIM_REFLECT);
+		if (optionsSelectFragment != null) {
+			return;
+		}
+
+		if (getBoardFace().getHply() < 1 && isUserMove()) {
+			optionsMap.put(ID_ABORT_RESIGN, getString(R.string.abort));
+			optionsMap.remove(ID_OFFER_DRAW);
+		} else {
+			optionsMap.put(ID_ABORT_RESIGN, getString(R.string.resign));
+			optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
+		}
+
+		if (!isUserMove()) {
+			optionsMap.remove(ID_OFFER_DRAW);
+		}
+
+		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsMap);
+		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
+	}
+
+	@Override
+	public void onValueSelected(int code) {
+		if (code == ID_NEW_GAME) {
+			getActivityFace().changeRightFragment(new LiveGameOptionsFragment());
+			getActivityFace().toggleRightMenu();
+		} else if (code == ID_ABORT_RESIGN) {
+			if (getBoardFace().getHply() < 1 && isUserMove()) {
+				showPopupDialog(R.string.abort_game_, ABORT_GAME_TAG);
+			} else {
+				showPopupDialog(R.string.resign_game_, ABORT_GAME_TAG);
+			}
+		} else if (code == ID_OFFER_DRAW) {
+			showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
+		} else if (code == ID_REMATCH) {
+			try {
+				getLiveService().rematch();
+			} catch (DataNotValidException e) {
+				e.printStackTrace();
+			}
+		} else if (code == ID_SETTINGS) {
+			getActivityFace().openFragment(new SettingsBoardFragment());
+		}
+
+		optionsSelectFragment.dismiss();
+		optionsSelectFragment = null;
+	}
+
+	@Override
+	public void onDialogCanceled() {
+		optionsSelectFragment = null;
+	}
+
+	private boolean isUserMove() {
+		return isUserColorWhite() != null && isUserColorWhite() && getBoardFace().isWhiteToMove();
 	}
 
 	@Override
@@ -967,19 +1043,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		}
 	}
 
-	@Override
-	public void onItemClick(QuickAction source, int pos, int actionId) {
-		if (actionId == ID_NEW_GAME) {
-			getActivityFace().changeRightFragment(new LiveGameOptionsFragment());
-			getActivityFace().toggleRightMenu();
-		} else if (actionId == ID_OFFER_DRAW) {
-			showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
-		} else if (actionId == ID_RESIGN_ABORT) {
-			showPopupDialog(R.string.abort_resign_game, R.string.are_you_sure_q, ABORT_GAME_TAG);
-		} else if (actionId == ID_SETTINGS) {
-			getActivityFace().openFragment(new SettingsFragment());
-		}
-	}
+
 
 	private void init() throws DataNotValidException {
 		LiveChessService liveService = getLiveService();
@@ -1013,16 +1077,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			} else {
 				opponentName = currentGame.getWhiteUsername();
 			}
-			// request opponent avatar
-//			LoadItem loadItem = new LoadItem();
-//			loadItem.setLoadPath(RestHelper.CMD_USERS);
-//			loadItem.addRequestParams(RestHelper.P_USERNAME, opponentName);
-//			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken(getActivity()));
-//			new RequestJsonTask<UserItem>(userInfoUpdateListener).executeTask(loadItem);
 
 			String opponentAvatarUrl = liveService.getCurrentGame().getOpponentForPlayer(opponentName).getAvatarUrl(); // TODO test
 			imageDownloader.download(opponentAvatarUrl, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
-
 		}
 
 		{// fill labels
@@ -1043,20 +1100,20 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		}
 
 		int resignTitleId = liveService.getResignTitle();
-		{// Quick action setup
-			quickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
-			quickAction.addActionItem(new ActionItem(ID_NEW_GAME, getString(R.string.new_game)));
-			quickAction.addActionItem(new ActionItem(ID_OFFER_DRAW, getString(R.string.offer_draw)));
-			quickAction.addActionItem(new ActionItem(ID_RESIGN_ABORT, getString(resignTitleId)));
-			quickAction.addActionItem(new ActionItem(ID_SETTINGS, getString(R.string.settings)));
-			quickAction.setOnActionItemClickListener(this);
+		{// options list setup
+			optionsMap = new SparseArray<String>();
+			optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));
+			optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
+			optionsMap.put(ID_ABORT_RESIGN, getString(resignTitleId));
+			optionsMap.put(ID_REMATCH, getString(R.string.rematch));
+			optionsMap.put(ID_SETTINGS, getString(R.string.settings));
 		}
+
 		lccInitiated = true;
 	}
 
 	private void widgetsInit(View view) {
 		fadeLay = view.findViewById(R.id.fadeLay);
-		gameBoardView = view.findViewById(R.id.baseView);
 
 		controlsLiveView = (ControlsLiveView) view.findViewById(R.id.controlsLiveView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
@@ -1070,7 +1127,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		boardView.setControlsView(controlsLiveView);
 		boardView.setNotationsView(notationsView);
 		setBoardView(boardView);
-		boardView.setGameActivityFace(this);
+		boardView.setGameFace(this);
 		controlsLiveView.setBoardViewFace(boardView);
 	}
 

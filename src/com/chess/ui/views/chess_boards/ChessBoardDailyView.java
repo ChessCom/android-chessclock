@@ -18,12 +18,12 @@ public class ChessBoardDailyView extends ChessBoardNetworkView {
 
 	@Override
 	public void playMove() {
-		gameFace.playMove();
+		gameNetworkFace.playMove();
 	}
 
 	@Override
 	public void cancelMove() {
-		gameFace.cancelMove();
+		gameNetworkFace.cancelMove();
 	}
 
 }

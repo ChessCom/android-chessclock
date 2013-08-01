@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -28,7 +27,7 @@ import com.chess.utilities.AppUtils;
  * Date: 31.07.13
  * Time: 8:01
  */
-public class PanelInfoLiveView  extends PanelInfoGameView {
+public class PanelInfoLiveView extends PanelInfoGameView {
 
 	public static final int AVATAR_ID = 0x00004400;
 	public static final int PLAYER_ID = 0x00004401;
@@ -53,8 +52,8 @@ public class PanelInfoLiveView  extends PanelInfoGameView {
 	private float density;
 	private Resources resources;
 	private RoboTextView playerRatingTxt;
-	private int topPlayerTimeLeftColor;
-	private int bottomPlayerTimeLeftColor;
+	private int whitePlayerTimeColor;
+	private int blackPlayerTimeColor;
 	private RoboTextView clockIconTxt;
 	private LinearLayout clockLayout;
 
@@ -89,8 +88,8 @@ public class PanelInfoLiveView  extends PanelInfoGameView {
 		int playerRatingTextSize = (int) (resources.getDimension(R.dimen.panel_info_player_rating_text_size) / density);
 		int playerTextColor = resources.getColor(R.color.white);
 
-		topPlayerTimeLeftColor = resources.getColor(R.color.semitransparent_white_65);
-		bottomPlayerTimeLeftColor = resources.getColor(R.color.new_author_dark_grey);
+		blackPlayerTimeColor = resources.getColor(R.color.semitransparent_white_65);
+		whitePlayerTimeColor = resources.getColor(R.color.semitransparent_black_80);
 
 		int avatarSize;
 		if (useSingleLine) {
@@ -99,7 +98,7 @@ public class PanelInfoLiveView  extends PanelInfoGameView {
 			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_big_size);
 		}
 
-		boolean hasSoftKeys = AppUtils.hasSoftKeys(((Activity)getContext()).getWindowManager());
+		boolean hasSoftKeys = AppUtils.hasSoftKeys(((Activity) getContext()).getWindowManager());
 		if (hasSoftKeys) {
 			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_medium_size);
 		}
@@ -221,14 +220,16 @@ public class PanelInfoLiveView  extends PanelInfoGameView {
 			clockLayoutParams.addRule(ALIGN_PARENT_RIGHT);
 			clockLayoutParams.addRule(CENTER_VERTICAL);
 
-			timeRemainParams.gravity = CENTER_VERTICAL;
-			clockIconParams.gravity = CENTER_VERTICAL;
+			timeRemainParams.gravity = Gravity.CENTER_VERTICAL;
+			clockIconParams.gravity = Gravity.CENTER_VERTICAL;
+
+			clockLayout.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+			clockLayout.setMinimumWidth((int) (70 * density));
 
 			clockIconTxt.setFont(FontsHelper.ICON_FONT);
-			float clockIconSize = resources.getDimension(R.dimen.new_tactics_clock_icon_size)/density; // 21;
+			float clockIconSize = resources.getDimension(R.dimen.new_tactics_clock_icon_size) / density; // 21;
 			clockIconTxt.setTextSize(clockIconSize);
 			clockIconTxt.setText(R.string.ic_clock);
-			clockIconTxt.setTextColor(Color.WHITE);
 			int paddingIcon = (int) (4 * density);
 			int paddingIconTop = (int) (2 * density);
 			clockIconTxt.setPadding(0, paddingIconTop, paddingIcon, 0);
@@ -304,17 +305,15 @@ public class PanelInfoLiveView  extends PanelInfoGameView {
 
 		// change timeLeft color and background
 		if (side == ChessBoard.WHITE_SIDE) {
-			ButtonDrawableBuilder.setBackgroundToView(clockLayout, R.style.Button_White_75);
-//			clockLayout.setBackgroundResource(R.drawable.back_white_emboss);
-			timeRemainTxt.setTextColor(topPlayerTimeLeftColor);
+			ButtonDrawableBuilder.setBackgroundToView(clockLayout, R.style.Button_White_50);
+			timeRemainTxt.setTextColor(whitePlayerTimeColor);
+			clockIconTxt.setTextColor(whitePlayerTimeColor);
 		} else {
 			ButtonDrawableBuilder.setBackgroundToView(clockLayout, R.style.Button_Black_30);
-
-//			clockLayout.setBackgroundResource(R.drawable.back_glassy_rounded);
-			timeRemainTxt.setTextColor(bottomPlayerTimeLeftColor);
+			timeRemainTxt.setTextColor(blackPlayerTimeColor);
+			clockIconTxt.setTextColor(blackPlayerTimeColor);
 		}
 		setTimeRemainPadding();
-
 
 		invalidate();
 	}
@@ -328,8 +327,6 @@ public class PanelInfoLiveView  extends PanelInfoGameView {
 	public void onClick(View view) {  // TODO handle avatar click
 
 	}
-
-
 
 	@Override
 	public void setPlayerName(String playerName) {
@@ -361,7 +358,6 @@ public class PanelInfoLiveView  extends PanelInfoGameView {
 	@Override
 	public void setTimeRemain(String timeRemain) {
 		timeRemainTxt.setText(timeRemain);
-		clockIconTxt.setVisibility(timeRemain.length() > 0? View.VISIBLE : View.GONE);
 	}
 
 	@Override
@@ -371,7 +367,16 @@ public class PanelInfoLiveView  extends PanelInfoGameView {
 
 	@Override
 	public void showTimeLeftIcon(boolean show) {
-		clockIconTxt.setVisibility(show? View.VISIBLE : View.GONE);
+		int styleId;
+		if (show) {
+			styleId = side == ChessBoard.WHITE_SIDE ? R.style.Button_White_75 : R.style.Button_Black_65;
+			clockIconTxt.setVisibility(View.VISIBLE);
+		} else {
+			styleId = side == ChessBoard.WHITE_SIDE ? R.style.Button_White_50 : R.style.Button_Black_30;
+			clockIconTxt.setVisibility(View.GONE);
+		}
+		ButtonDrawableBuilder.setBackgroundToView(clockLayout, styleId);
+		setTimeRemainPadding();
 	}
 
 	@Override
@@ -387,7 +392,7 @@ public class PanelInfoLiveView  extends PanelInfoGameView {
 
 	private void setTimeRemainPadding() {
 		int timeLeftSmallPadding = (int) (2 * density);
-		int timeLeftBigPadding = (int) (10 * density);
+		int timeLeftBigPadding = (int) (12 * density);
 
 		if (smallScreen) {
 			clockLayout.setPadding(timeLeftSmallPadding, timeLeftSmallPadding, timeLeftSmallPadding, timeLeftSmallPadding);

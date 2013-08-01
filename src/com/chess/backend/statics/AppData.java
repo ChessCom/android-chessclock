@@ -409,7 +409,8 @@ public class AppData {
 	}
 
 	private boolean getBooleanValue(String field) {
-		return getBooleanValue(field, true);
+		String userName = getUsername();
+		return getBooleanValue(userName + field, true);
 	}
 
 	private boolean getBooleanValue(String field, boolean defValue) {

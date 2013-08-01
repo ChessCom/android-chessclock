@@ -197,10 +197,12 @@
 	<color name="semitransparent_white">#46FFFFFF</color>
 	<color name="semitransparent_white_1">#AFFFFFFF</color>
 	<color name="semitransparent_white_30">#4DFFFFFF</color>
+	<color name="semitransparent_white_50">#80FFFFFF</color>
 	<color name="semitransparent_white_65">#A5FFFFFF</color>
 	<color name="semitransparent_white_75">#c0FFFFFF</color>
 	<color name="semitransparent_black_30">#4D000000</color>
 	<color name="semitransparent_black_65">#A5000000</color>
+	<color name="semitransparent_black_80">#CC000000</color>
 
     <!--Badge colors-->
     <color name="action_badge_border_1">#ff000000</color>

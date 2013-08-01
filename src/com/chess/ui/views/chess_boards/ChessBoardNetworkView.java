@@ -9,7 +9,6 @@ import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.boards.BoardViewNetworkFace;
-import com.chess.ui.interfaces.game_ui.GameFace;
 import com.chess.ui.interfaces.game_ui.GameNetworkFace;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 
@@ -20,7 +19,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 	private String whiteUserName;
 	private String blackUserName;
-	public GameNetworkFace gameFace;
+	public GameNetworkFace gameNetworkFace;
 
 	public ChessBoardNetworkView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -28,12 +27,12 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 	protected abstract boolean need2ShowSubmitButtons();
 
-	@Override
-	public void setGameFace(GameFace gameFace) {
-		super.setGameFace(gameFace);
+	public void setGameFace(GameNetworkFace gameActivityFace) {
+		super.setGameFace(gameActivityFace);
+		this.gameNetworkFace = gameActivityFace;
 
-		whiteUserName = gameFace.getWhitePlayerName();
-		blackUserName = gameFace.getBlackPlayerName();
+		whiteUserName = gameNetworkFace.getWhitePlayerName();
+		blackUserName = gameNetworkFace.getBlackPlayerName();
 	}
 
 	@Override
@@ -42,14 +41,14 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		super.afterUserMove();
 
 		getBoardFace().setMovesCount(getBoardFace().getHply());
-		gameFace.invalidateGameScreen();
+		gameNetworkFace.invalidateGameScreen();
 
 		if (!getBoardFace().isAnalysis()) {
 			if (need2ShowSubmitButtons()) {
 				getBoardFace().setSubmit(true);
-				gameFace.showSubmitButtonsLay(true);
+				gameNetworkFace.showSubmitButtonsLay(true);
 			} else {
-				gameFace.updateAfterMove();
+				gameNetworkFace.updateAfterMove();
 			}
 		}
 
@@ -63,7 +62,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 		drawBoard(canvas);
 
-		if (gameFace != null && getBoardFace() != null) {
+		if (gameNetworkFace != null && getBoardFace() != null) {
 
 			drawHighlights(canvas);
 			drawTrackballDrag(canvas);
@@ -134,7 +133,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 						((to > 55) && (getBoardFace().getSide() == ChessBoard.BLACK_SIDE))) &&
 						(getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
 
-					gameFace.showChoosePieceDialog(col, row);
+					gameNetworkFace.showChoosePieceDialog(col, row);
 					return true;
 				}
 
@@ -165,8 +164,8 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		getBoardFace().setReside(!getBoardFace().isReside());
 
 		invalidate();
-		gameFace.toggleSides();
-		gameFace.invalidateGameScreen();
+		gameNetworkFace.toggleSides();
+		gameNetworkFace.invalidateGameScreen();
 	}
 
 
@@ -208,7 +207,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
     @Override
 	public void showChat() {
-		gameFace.switch2Chat();
+		gameNetworkFace.switch2Chat();
 	}
 
 //	public void updateMoves(String newMove) {
@@ -237,11 +236,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 
 		controlsView.setBoardViewFace(this);
-	}
-
-	public void setGameActivityFace(GameNetworkFace gameActivityFace) {
-		super.setGameFace(gameActivityFace);
-		this.gameFace = gameActivityFace;
 	}
 
 }

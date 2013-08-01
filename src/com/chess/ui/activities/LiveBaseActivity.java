@@ -11,8 +11,6 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +27,7 @@ import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
+import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
@@ -261,16 +260,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		if (resultCode == RESULT_OK && requestCode == NETWORK_REQUEST) {
 			bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
 		}
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//			case R.id.menu_singOut:
-//				showPopupDialog(R.string.confirm, R.string.signout_confirm, LOGOUT_TAG);
-//				break;
-//		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	public void connectLcc() {
@@ -533,12 +522,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public void onConnectionBlocked(final boolean blocked) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActionBarHelper().setRefreshActionItemState(blocked);
-			}
-		});
+		Log.d(TAG, "onConnectionBlocked = " + blocked);
+		GameLiveFragment gameLiveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
+		if (gameLiveFragment != null) {
+			gameLiveFragment.onConnectionBlocked(blocked);
+		}
 	}
 
 	@Override
@@ -572,24 +560,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			getAppData().setLiveChessMode(true);
 			connectLcc();
 		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		boolean result = super.onCreateOptionsMenu(menu);
-
-		adjustSignOutActionMenu(menu);
-		return result;
-	}
-
-	protected void adjustSignOutActionMenu(Menu menu) {
-//		boolean isConnected = false;
-//		if (isLCSBound) {
-//			isConnected = liveService.isConnected();
-//		}
-//		if (HONEYCOMB_PLUS_API) {// this item doesn't exist at this point in pre-ICS
-////			getActionBarHelper().showMenuItemById(R.id.menu_signOut, isConnected, menu);
-//		}
 	}
 
 	protected void onLiveServiceConnected() {

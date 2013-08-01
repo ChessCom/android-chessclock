@@ -234,7 +234,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 						if (localDbGameId != gameId) {
 							gameId = localDbGameId;
 							showSubmitButtonsLay(false);
-							boardView.setGameActivityFace(GameDailyFinishedFragment.this);
+							boardView.setGameFace(GameDailyFinishedFragment.this);
 
 							getBoardFace().setAnalysis(false);
 
@@ -677,7 +677,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	@Override
 	protected void restoreGame() {
 //		ChessBoardOnline.resetInstance();
-		boardView.setGameActivityFace(this);
+		boardView.setGameFace(this);
 
 		adjustBoardForGame();
 	}
@@ -804,7 +804,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 		setBoardView(boardView);
 
-		boardView.setGameActivityFace(this);
+		boardView.setGameFace(this);
 		boardView.lockBoard(true);
 
 		{// options list setup

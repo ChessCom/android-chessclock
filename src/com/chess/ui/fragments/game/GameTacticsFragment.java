@@ -304,7 +304,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		loadItem.addRequestParams(RestHelper.P_ENCODED_MOVES, RestHelper.V_FALSE);
 
 		new RequestJsonTask<TacticInfoItem>(tacticsCorrectUpdateListener).executeTask(loadItem);
-		controlsTacticsView.enableGameControls(false);
+		lockBoard(true);
 	}
 
 	private void sendWrongResult() {
@@ -318,7 +318,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		loadItem.addRequestParams(RestHelper.P_SECONDS, tacticItem.getSecondsSpent());
 
 		new RequestJsonTask<TacticInfoItem>(tacticsWrongUpdateListener).executeTask(loadItem);
-		controlsTacticsView.enableGameControls(false);
+		lockBoard(true);
 	}
 
 	@Override
@@ -476,7 +476,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 			new SaveTacticsBatchTask(dbTacticBatchSaveListener, returnedObj.getData(),
 					getContentResolver()).executeTask();
-			controlsTacticsView.enableGameControls(true);
 
 			serverError = false;
 		}
@@ -543,7 +542,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 					break;
 			}
-			controlsTacticsView.enableGameControls(true);
+			lockBoard(false);
 		}
 
 		@Override
@@ -592,7 +591,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void handleErrorRequest() {
-		controlsTacticsView.enableGameControls(true);
+		lockBoard(false);
 
 		noNetwork = true;      // TODO handle button click properly
 		if (!userSawOfflinePopup) {
@@ -660,7 +659,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		tacticsTimer.removeCallbacks(timerUpdateTask);
 		tacticsTimer.postDelayed(timerUpdateTask, TIMER_UPDATE);
-		controlsTacticsView.enableGameControls(true);
+		lockBoard(false);
 	}
 
 	private Runnable timerUpdateTask = new Runnable() {
@@ -729,7 +728,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		playLastMoveAnimation();
 
 		firstRun = false;
-		controlsTacticsView.enableGameControls(true);
+		lockBoard(false);
+
 		if (tacticItem.isRetry()) {
 			controlsTacticsView.showAfterRetry();
 		} else {
@@ -802,7 +802,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_FALSE);
 
 			new RequestJsonTask<TacticItem>(getTacticsUpdateListener).executeTask(loadItem);
-			controlsTacticsView.enableGameControls(false);
+			lockBoard(true);
 		}
 	}
 
@@ -824,7 +824,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 	}
 
-	private class DbTacticBatchSaveListener extends ChessUpdateListener<TacticItem.Data> {
+	private class DbTacticBatchSaveListener extends ChessLoadUpdateListener<TacticItem.Data> {
 		@Override
 		public void updateData(TacticItem.Data returnedObj) {
 			getNextTactic();
@@ -904,9 +904,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		final ChessBoard chessBoard = ChessBoardTactics.getInstance(this);
 		firstRun = chessBoard.isJustInitialized();
-		boardView.setGameFace(this);
 
-		controlsTacticsView.enableGameControls(false);
+		lockBoard(true);
 
 		{// set avatars
 			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
@@ -945,6 +944,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					break;
 			}
 		}
+	}
+
+	private void lockBoard(boolean lock) {
+		controlsTacticsView.enableGameControls(!lock);
+		boardView.lockBoard(lock);
 	}
 
 /*

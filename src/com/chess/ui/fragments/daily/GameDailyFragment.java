@@ -186,7 +186,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			if (getBoardFace().getHply() < 1 && isUserMove()) {
 				showPopupDialog(R.string.abort_game_, ABORT_GAME_TAG);
 			} else {
-				showPopupDialog(R.string.abort_game_, ABORT_GAME_TAG);
+				showPopupDialog(R.string.resign_game_, ABORT_GAME_TAG);
 			}
 		} else if (code == ID_OFFER_DRAW) {
 			showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
@@ -268,7 +268,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 						if (localDbGameId != gameId) {
 							gameId = localDbGameId;
 							showSubmitButtonsLay(false);
-							boardView.setGameActivityFace(GameDailyFragment.this);
+							boardView.setGameFace(GameDailyFragment.this);
 
 							getBoardFace().setAnalysis(false);
 
@@ -761,7 +761,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	@Override
 	protected void restoreGame() {
 //		ChessBoardOnline.resetInstance();
-		boardView.setGameActivityFace(this);
+		boardView.setGameFace(this);
 
 		adjustBoardForGame();
 	}
@@ -924,7 +924,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		setBoardView(boardView);
 
-		boardView.setGameActivityFace(this);
+		boardView.setGameFace(this);
 		boardView.lockBoard(true);
 
 		boardUpdateFilter = new IntentFilter(IntentConstants.BOARD_UPDATE);

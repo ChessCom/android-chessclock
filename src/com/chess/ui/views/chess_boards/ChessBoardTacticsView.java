@@ -32,7 +32,6 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
     @Override
 	public void afterUserMove() {
-
 		super.afterUserMove();
 
 		getBoardFace().setMovesCount(getBoardFace().getHply());
@@ -155,6 +154,10 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
         if (square == 0) {
             return super.onTouchEvent(event);
         }
+
+		if (isLocked()) {
+			return processTouchEvent(event);
+		}
 
         track = false;
         if (!getBoardFace().isAnalysis()) {
