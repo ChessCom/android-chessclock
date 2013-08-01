@@ -477,7 +477,18 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
 				}
 
-				updatePlayerLabels(game, ratings.get(0), ratings.get(1));
+				int newWhiteRating = ratings.get(0);
+				int newBlackRating = ratings.get(1);
+
+				if (getBoardFace().isReside()) {
+					topPanelView.setPlayerRating(String.valueOf(newWhiteRating));
+					bottomPanelView.setPlayerRating(String.valueOf(newBlackRating));
+				} else {
+					topPanelView.setPlayerRating(String.valueOf(newBlackRating));
+					bottomPanelView.setPlayerRating(String.valueOf(newWhiteRating));
+				}
+
+				updatePlayerLabels(game, newWhiteRating, newBlackRating);
 				showGameEndPopup(layout, getString(gameEndTitleId), gameEndMessage);
 
 				setBoardToFinishedState();
@@ -908,17 +919,17 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {
 
 		if (getBoardFace().isReside()) {
-			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
-			labelsConfig.topPlayerName = getBlackPlayerName();
-			labelsConfig.topPlayerRating = String.valueOf(newBlackRating);
-			labelsConfig.bottomPlayerName = game.getWhitePlayer().getUsername();
-			labelsConfig.bottomPlayerRating = String.valueOf(newWhiteRating);
-		} else {
 			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 			labelsConfig.topPlayerName = game.getWhitePlayer().getUsername();
 			labelsConfig.topPlayerRating = String.valueOf(newWhiteRating);
 			labelsConfig.bottomPlayerName = game.getBlackPlayer().getUsername();
 			labelsConfig.bottomPlayerRating = String.valueOf(newBlackRating);
+		} else {
+			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+			labelsConfig.topPlayerName = getBlackPlayerName();
+			labelsConfig.topPlayerRating = String.valueOf(newBlackRating);
+			labelsConfig.bottomPlayerName = game.getWhitePlayer().getUsername();
+			labelsConfig.bottomPlayerRating = String.valueOf(newWhiteRating);
 		}
 	}
 
