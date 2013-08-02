@@ -822,7 +822,8 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void checkAndProcessFullGame() {
-		if (currentGameId != null && getGame(currentGameId) != null) {
+		boolean isGameAlreadyPresent = currentGameId != null && getGame(currentGameId) != null;
+		if (isGameAlreadyPresent) {
 			processFullGame(getGame(currentGameId));
 		}
 	}

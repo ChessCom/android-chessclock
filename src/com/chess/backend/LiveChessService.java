@@ -346,7 +346,6 @@ public class LiveChessService extends Service {
 
 	public void checkAndProcessFullGame() {
 		lccHelper.checkAndProcessFullGame();
-
 	}
 
 	public int getOwnSeeksCount() {

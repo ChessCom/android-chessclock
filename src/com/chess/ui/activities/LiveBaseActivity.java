@@ -290,8 +290,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-			Log.d(TAG, "onLiveServiceConnected");
-			Log.d("TEST", "onLiveServiceConnected in " + LiveBaseActivity.this);
+			Log.d(TAG, "onServiceConnected");
+			Log.d("TEST", "onServiceConnected in " + LiveBaseActivity.this);
 
 			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
 			liveService = serviceBinder.getService();
@@ -588,8 +588,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				waitFragment.onLiveServiceConnected();
 			}
 		}
-
-		//executePausedActivityLiveEvents();
 	}
 
 	public LiveChessService getLiveService() {

@@ -2,6 +2,7 @@ package com.chess.ui.fragments.live;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.chess.ui.fragments.LiveBaseFragment;
  */
 public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventListener {
 
+	private static final String TAG = "LccLog-LiveGameWaitFragment";
 	private static final long FINISH_FRAGMENT_DELAY = 200;
 
 	private static final String CONFIG = "config";
@@ -108,6 +110,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 		}
 		liveService.setLccEventListener(this);
 		liveService.setGameTaskListener(gameTaskListener);
+		liveService.checkAndProcessFullGame();
 	}
 
 	@Override
@@ -151,6 +154,9 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 
 	@Override
 	public void startGameFromService() {
+
+		Log.d("lcc", "startGameFromService");
+
 		final FragmentActivity activity = getActivity();
 		if (activity != null) {
 			activity.runOnUiThread(new Runnable() {

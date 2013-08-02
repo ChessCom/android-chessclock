@@ -140,7 +140,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		try {
 			init();
 		} catch (DataNotValidException e) {
-			logTest(e.getMessage());
+			logLiveTest(e.getMessage());
 		}
 		enableSlideMenus(false);
 	}
@@ -155,7 +155,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			try {
 				onGameStarted();
 			} catch (DataNotValidException e) {
-				logTest(e.getMessage());
+				logLiveTest(e.getMessage());
 				isLCSBound = false;
 			}
 		}
@@ -172,7 +172,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			try {
 				getLiveService().setGameActivityPausedMode(true);
 			} catch (DataNotValidException e) {
-				logTest(e.getMessage());
+				logLiveTest(e.getMessage());
 				isLCSBound = false;
 			}
 		}
@@ -205,7 +205,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	// ----------------------Lcc Events ---------------------------------------------
 
 	private void onGameStarted() throws DataNotValidException {
-		logTest("onGameStarted");
+		logLiveTest("onGameStarted");
 
 		LiveChessService liveService = getLiveService();
 		GameLiveItem currentGame = liveService.getGameItem();
@@ -312,6 +312,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void startGameFromService() {
+
+		logLiveTest("startGameFromService");
+
 		Activity activity = getActivity();
 		if (activity != null) {
 			activity.runOnUiThread(new Runnable() {
@@ -337,17 +340,17 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void onGameRefresh(GameLiveItem gameItem) {
-		logTest("onGameRefresh");
+		logLiveTest("onGameRefresh");
 		Activity activity = getActivity();
 		if (activity == null) {
-			logTest("activity = null, quit");
+			logLiveTest("activity = null, quit");
 			return;
 		}
 		LiveChessService liveService;
 		try {
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
-			logTest(e.getMessage());
+			logLiveTest(e.getMessage());
 			return;
 		}
 
@@ -447,7 +450,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		try {
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
-			logTest(e.getMessage());
+			logLiveTest(e.getMessage());
 			return;
 		}
 		final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -543,7 +546,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		String temporaryDebugInfo =
 				"username=" + liveService.getUsername() +
-						"lccInitiated=" + lccInitiated +
+						" lccInitiated=" + lccInitiated +
 //						", " + boardDebug +
 						", gameSeq=" + liveService.getCurrentGame().getMoves().size() +
 						", boardHply=" + getBoardFace().getHply() +
@@ -581,7 +584,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 //		try {
 //			liveService = getLiveService();
 //		} catch (DataNotValidException e) {
-//			logTest(e.getMessage());
+//			logLiveTest(e.getMessage());
 //			return;
 //		}
 //		if(!liveService.isCurrentGameExist()) return;
@@ -597,7 +600,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		try {
 			sendMove();
 		} catch (DataNotValidException e) {
-			logTest(e.getMessage());
+			logLiveTest(e.getMessage());
 		}
 	}
 
@@ -622,7 +625,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			try {
 				sendMove();
 			} catch (DataNotValidException e) {
-				logTest(e.getMessage());
+				logLiveTest(e.getMessage());
 			}
 		}
 	}
@@ -677,7 +680,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			try {
 				getLiveService().paintClocks();
 			} catch (DataNotValidException e) {
-				logTest(e.getMessage());
+				logLiveTest(e.getMessage());
 			}
 		}
 	}
@@ -755,7 +758,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		try {
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
-			logTest(e.getMessage());
+			logLiveTest(e.getMessage());
 			return null;
 		}
 		return liveService.isUserColorWhite();
@@ -767,7 +770,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 //		try {
 //			liveService = getLiveService();
 //		} catch (DataNotValidException e) {
-//			logTest(e.getMessage());
+//			logLiveTest(e.getMessage());
 //			return null;
 //		}
 //		return liveService.getCurrentGameId(); // currentGame initialized in init() method
@@ -785,7 +788,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		try {
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
-			logTest(e.getMessage());
+			logLiveTest(e.getMessage());
 			return;
 		}
 
@@ -807,7 +810,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			try {
 				onGameStarted();
 			} catch (DataNotValidException e) {
-				logTest(e.getMessage());
+				logLiveTest(e.getMessage());
 			}
 
 			if (!isUserColorWhite()) {
@@ -847,7 +850,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		try {
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
-			logTest(e.getMessage());
+			logLiveTest(e.getMessage());
 			return;
 		}
 		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
@@ -872,7 +875,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		try {
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
-			logTest(e.getMessage());
+			logLiveTest(e.getMessage());
 			return StaticData.SYMBOL_EMPTY;
 		}
 		GameLiveItem currentGame = liveService.getGameItem();
@@ -888,7 +891,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		try {
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
-			logTest(e.getMessage());
+			logLiveTest(e.getMessage());
 			return StaticData.SYMBOL_EMPTY;
 		}
 		GameLiveItem currentGame = liveService.getGameItem();
@@ -904,7 +907,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		try {
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
-			logTest(e.getMessage());
+			logLiveTest(e.getMessage());
 			return false;
 		}
 		return liveService.getCurrentGame() != null;
@@ -937,7 +940,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		try {
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
-			logTest(e.getMessage());
+			logLiveTest(e.getMessage());
 			return;
 		}
 		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
@@ -993,7 +996,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			try {
 				onGameStarted();
 			} catch (DataNotValidException e) {
-				logTest(e.getMessage());
+				logLiveTest(e.getMessage());
 				isLCSBound = false;
 				return;
 			}
@@ -1018,7 +1021,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			try {
 				liveService = getLiveService();
 			} catch (DataNotValidException e) {
-				logTest(e.getMessage());
+				logLiveTest(e.getMessage());
 				return;
 			}
 
@@ -1048,7 +1051,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				try {
 					liveService = getLiveService();
 				} catch (DataNotValidException e) {
-					logTest(e.getMessage());
+					logLiveTest(e.getMessage());
 					return;
 				}
 				liveService.rematch();
