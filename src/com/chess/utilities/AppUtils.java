@@ -461,6 +461,18 @@ public class AppUtils {
 		return resources.getConfiguration().locale.getLanguage().equals(StaticData.LOCALE_EN);
 	}
 
+	public static String getAppId(Context context) {
+		PackageManager manager = context.getPackageManager();
+		PackageInfo info;
+		try {
+			info = manager.getPackageInfo(context.getPackageName(), 0);
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+			return "Android0";
+		}
+		return "Android" + info.versionCode;
+	}
+
 	public static class DeviceInfo {
 		public String MODEL;
 		public int SDK_API;

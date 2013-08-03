@@ -13,6 +13,7 @@ import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.statics.AppData;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
+import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,7 +37,7 @@ public class GetAndSaveFriends extends IntentService {
 
 		FriendsItem item = null;
 		try {
-			item  = RestHelper.requestData(loadItem, FriendsItem.class);
+			item  = RestHelper.requestData(loadItem, FriendsItem.class, AppUtils.getAppId(getApplicationContext()));
 		} catch (InternalErrorException e) {
 			e.logMe();
 		}

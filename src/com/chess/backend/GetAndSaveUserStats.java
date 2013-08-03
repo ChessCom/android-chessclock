@@ -7,6 +7,7 @@ import com.chess.backend.entity.new_api.stats.UserStatsItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.statics.AppData;
 import com.chess.db.tasks.SaveUserStatsTask;
+import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,7 +30,7 @@ public class GetAndSaveUserStats extends IntentService {
 
 		UserStatsItem item = null;
 		try {
-			item  = RestHelper.requestData(loadItem, UserStatsItem.class);
+			item  = RestHelper.requestData(loadItem, UserStatsItem.class, AppUtils.getAppId(getApplicationContext()));
 		} catch (InternalErrorException e) {
 			e.logMe();
 		}

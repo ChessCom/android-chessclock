@@ -196,7 +196,7 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 		}
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_MESSAGES + "/"); // TODO remove when server will fix it
+		loadItem.setLoadPath(RestHelper.CMD_MESSAGES);
 
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());

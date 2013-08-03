@@ -18,6 +18,8 @@ import org.apache.http.protocol.HTTP;
 
 import java.io.*;
 import java.net.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -59,17 +61,6 @@ public class RestHelper {
 	private static final String API_V4 = API + "/v4";
 	private static final String API_V5 = API + "/v5";
 
-	/*Google Cloud Messaging API part*/
-	public static final String GCM_BASE_URL = BASE_URL + "/api/gcm";
-	public static final String GCM_REGISTER = GCM_BASE_URL + "/register";
-	public static final String GCM_UNREGISTER = GCM_BASE_URL + "/unregister";
-
-	/* Params */
-//	public static final String GCM_P_ID = "id";
-	public static final String GCM_P_REGISTER_ID = "registrationId";
-//	public static final String GCM_P_DEVICE_ID = "device_id";
-
-
 	/* Methods calls*/
 	public static final String LOGIN_HTML_ALS = BASE_URL + "/login.html?als=";
 	public static final String REGISTER_HTML = BASE_URL + "/register.html";
@@ -97,28 +88,30 @@ public class RestHelper {
 	public static final String CMD_SEEKS = CMD_GAMES + "/seeks";
 	public static final String CMD_MOVES = CMD_GAMES + "/moves";
 	public static final String CMD_GAME_STATS = CMD_GAMES + "/stats";
+
+	public static String CMD_GAME_BY_ID(long id) {
+		return CMD_GAMES + "/" + id;
+	}
+
 	/*Articles*/
 	public static final String CMD_ARTICLES = BASE_URL + V1 + "/articles";
 	public static final String CMD_ARTICLES_LIST = CMD_ARTICLES + "/list";
 	public static final String CMD_ARTICLES_CATEGORIES = CMD_ARTICLES + "/categories";
 	public static final int DEFAULT_ITEMS_PER_PAGE = 20;
+
+	public static String CMD_ARTICLE_BY_ID(long id) {
+		return CMD_ARTICLES + "/" + id;
+	}
+
 	/*Forums*/
 	public static final String CMD_FORUMS = BASE_URL + V1 + "/forums";
 	public static final String CMD_FORUMS_CATEGORIES = CMD_FORUMS + "/categories";
 	public static final String CMD_FORUMS_COMMENTS = CMD_FORUMS + "/comments";
 	public static final String CMD_FORUMS_TOPICS = CMD_FORUMS + "/topics";
 
-	public static String CMD_GAME_BY_ID(long id) {
-		return CMD_GAMES + "/" + id;
-	}
-
-	public static String CMD_ARTICLE_BY_ID(long id) {
-		return CMD_ARTICLES + "/" + id;
-	}
-
 	public static String CMD_ARTICLE_COMMENTS(long id) {
 		return CMD_ARTICLES + "/" + id + "/comments";
-	} // POST
+	}
 
 	/* Friends */
 	public static final String CMD_FRIENDS = BASE_URL + V1 + "/friends";
@@ -126,9 +119,11 @@ public class RestHelper {
 	/* Videos */
 	public static final String CMD_VIDEOS = BASE_URL + V1 + "/videos";
 	public static final String CMD_VIDEO_CATEGORIES = CMD_VIDEOS + "/categories";
+
 	public static String CMD_VIDEO_BY_ID(long id) {
 		return CMD_VIDEOS + "/" + id;
 	}
+
 	/* Tactics */
 	public static final String CMD_TACTICS = BASE_URL + V1 + "/tactics";
 	public static final String CMD_TACTICS_STATS = CMD_TACTICS + "/stats";
@@ -159,26 +154,25 @@ public class RestHelper {
 	public static String CMD_THEME_DEFAULT_BY_ID(long id) {
 		return CMD_THEMES_DEFAULT + "/" + id;
 	}
+
 	public static String CMD_THEME_USER_BY_ID(long id) {
 		return CMD_THEMES_USER + "/" + id;
 	}
 
 	/* Messages */
-	public static final String CMD_MESSAGES = BASE_URL + V1 + "/messages";
-	public static final String CMD_MESSAGES_INBOX = CMD_MESSAGES + "/inbox";
-	public static final String CMD_MESSAGES_ARCHIVE = CMD_MESSAGES + "/archive";
+	public static final String CMD_MESSAGES = BASE_URL + V1 + "/messages/"; // TODO recheck , restore
+	public static final String CMD_MESSAGES_INBOX = CMD_MESSAGES + "inbox";
+	public static final String CMD_MESSAGES_ARCHIVE = CMD_MESSAGES + "archive";
 
 	public static String CMD_MESSAGE_CONVERSATION_BY_ID(long id) {
-		return CMD_MESSAGES + "/" +id;
+		return CMD_MESSAGES + id;
 	}
 
 	public static final String CMD_MEMBERSHIP = BASE_URL + V1 + "/membership/android";
 	public static final String CMD_MEMBERSHIP_PAYLOAD = CMD_MEMBERSHIP + "/payload";
 	public static final String CMD_MEMBERSHIP_KEY = CMD_MEMBERSHIP + "/public-key";
 
-
 	/* Parameters */
-	// new
 	public static final String P_USER_NAME_OR_MAIL = "usernameOrEmail";
 	public static final String P_FIELDS = "fields[]";
 	public static final String P_LOGIN_TOKEN = "loginToken";
@@ -187,6 +181,7 @@ public class RestHelper {
 	public static final String P_ITEMS_PER_PAGE = "itemsPerPage";
 	public static final String P_LIMIT = "limit";
 	public static final String P_ITEMS_PER_CATEGORY = "itemsPerCategory";
+	public static final String GCM_P_REGISTER_ID = "registrationId";
 
 	public static final String P_USERNAME = "username";
 	public static final String P_TACTICS_RATING = "tacticsrating";
@@ -208,7 +203,7 @@ public class RestHelper {
 	public static final String P_FACEBOOK_ACCESS_TOKEN = "facebookAccessToken";
 	public static final String P_APN_DEVICE_TOKEN = "apn_device_token";
 	public static final String P_OPPONENT = "opponent";
-//	public static final String P_CONVERSATION_ID = "conversationId";
+	//	public static final String P_CONVERSATION_ID = "conversationId";
 	public static final String P_CONTENT = "content";
 
 	public static final String P_DAYS_PER_MOVE = "daysPerMove";
@@ -329,6 +324,8 @@ message				false	Only used for `CHAT` command.
 	public static final String V_BASIC = "basic";
 
 	public static final String V_ID = "id";
+	public static final String V_1 = "a1a177e9aa5aa1f6cf6dffebda886cca8b2bbcb6";
+	public static final String V_2 = "b1a177e9aa5aa1f6cf6dffebda886cca8b2bbcb6";
 
 	/*
 1 = Standard Chess | chess
@@ -360,11 +357,11 @@ message				false	Only used for `CHAT` command.
 	public static final int MAX_ITEMS_CNT = 2000;
 
 	private static final String Q_ = "?";
-	private static final String EQUALS = "=";
 	private static final String AND = "&";
+	private static final String EQUALS = "=";
 
 
-	public static String formCustomRequest(LoadItem loadItem) {
+	public static String formGetRequest(LoadItem loadItem) {
 		return loadItem.getLoadPath() + formUrl(loadItem.getRequestParams());
 	}
 
@@ -470,13 +467,16 @@ message				false	Only used for `CHAT` command.
 
 
 	private static final String TAG = "RequestJsonTask";
-	public static <CustomType> CustomType requestData(LoadItem loadItem, Class<CustomType> customTypeClass) throws InternalErrorException {
+
+	public static <CustomType> CustomType requestData(LoadItem loadItem, Class<CustomType> customTypeClass, String appId) throws InternalErrorException {
 		CustomType item = null;
-		String url = formCustomRequest(loadItem);
 		String requestMethod = loadItem.getRequestMethod();
-		if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
-			url = formPostRequest(loadItem);
-		}
+		String url = createSignature(loadItem, appId);
+//		if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
+//			url = formPostRequest(loadItem);
+//		} else {
+//			url = formGetRequest(loadItem);
+//		}
 
 		Log.d(TAG, "requesting by url = " + url);
 
@@ -532,7 +532,7 @@ message				false	Only used for `CHAT` command.
 
 					Log.d(TAG, "SERVER RESPONSE: " + resultString);
 					if (resultString.contains("\"challenges\":[[]")) {
-						resultString = resultString.replace("[],","").replace("[]]", "]");
+						resultString = resultString.replace("[],", "").replace("[]]", "]");
 						Log.d(TAG, "After edit SERVER RESPONSE: " + resultString);
 					}
 				} else {
@@ -623,7 +623,7 @@ message				false	Only used for `CHAT` command.
 			try {
 				input = new FileInputStream(binaryFile);
 				byte[] buffer = new byte[1024];
-				for (int length = 0; (length = input.read(buffer)) > 0;) {
+				for (int length = 0; (length = input.read(buffer)) > 0; ) {
 					output.write(buffer, 0, length);
 				}
 				output.flush(); // Important! Output cannot be closed. Close of writer will close output as well.
@@ -666,6 +666,88 @@ message				false	Only used for `CHAT` command.
 
 	}
 
+/*
+	$appSecret = 'a1a177e9aa5aa1f6cf6dffebda886cca8b2bbcb6';
+	$appId = '`iOS2.4';
+	$method = 'PUT';
+	$request_url = 'http://api.chess.com/v1/articles/20/comments/2863?loginToken=12345abcdef';
+	$data = 'commentBody=Isn%27t+this+awesome%3F';
+	$request_path = preg_replace('!^https?://[^/]+?!', '', $request_url); // strip out protocol and domain
+	$sig = sha1($method . $request_path . $data . $secret);
+	$signed = strpos($request_url, '?') === false ? '?' : '&';
+	$signed .= "signed=$appId-$sig";
+	$signed_request = $request_url . $signed;
+*/
+
+	private static String createSignature(LoadItem loadItem, String appId) {
+
+		String appSecret;
+		if (IS_TEST_SERVER_MODE) {
+			appSecret = V_1;
+		} else {
+			appSecret = V_2;
+		}
+
+		String requestMethod = loadItem.getRequestMethod();
+		String requestUrl = formGetRequest(loadItem);
+		String data = formPostData(loadItem);
+		String requestPath = formUrl(loadItem.getRequestParams());
+
+		String signature;
+		try {
+			signature = SHA1(requestMethod + requestPath + data + appSecret);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			signature = requestMethod + requestPath + data + appSecret;
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			signature = requestMethod + requestPath + data + appSecret;
+		}
+/*
+	The appId and appSecret joined by a hyphen and are appended to the query string as the "signed" parameter.
+ 	It will be matched by the regex [&\?]signed=([^-]+)-([0-9a-f]{40}).
+*/
+		String signed = requestUrl.contains(Q_) ? AND :Q_;
+		signed += "signed=" + appId + "-" + signature;
+		String signedRequest = requestUrl + signed;
+
+		Log.d("TEST", "urls before signature = " + requestUrl);
+		Log.d("TEST", " encoded signature = " + signedRequest);
+
+		return signedRequest;
+	}
+
+/*
+	$method = $_SERVER['REQUEST_METHOD'];
+	$request_path = preg_replace('/[&\?]signed=([^-]+)-([0-9a-f]{40})/', '', $_SERVER['REQUEST_URI']); // strip out the signed param
+	$data = file_get_contents("php://input");
+	list($appId, $sig) = explode('-', $_GET['signed'], 2);
+	if (sha1($method . $request_path . $data . $secret) === $sig) {
+		 // hooray!
+	} else {
+		throw new RestBadSignatureException();
+	}
+*/
+
+	private static String convertToHex(byte[] data) {
+		StringBuilder buf = new StringBuilder();
+		for (byte b : data) {
+			int halfByte = (b >>> 4) & 0x0F;
+			int two_halfs = 0;
+			do {
+				buf.append((0 <= halfByte) && (halfByte <= 9) ? (char) ('0' + halfByte) : (char) ('a' + (halfByte - 10)));
+				halfByte = b & 0x0F;
+			} while (two_halfs++ < 1);
+		}
+		return buf.toString();
+	}
+
+	public static String SHA1(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		MessageDigest md = MessageDigest.getInstance("SHA-1");
+		md.update(text.getBytes("iso-8859-1"), 0, text.length());
+		byte[] sha1hash = md.digest();
+		return convertToHex(sha1hash);
+	}
 
 	public static <ItemType> String parseJsonToString(ItemType jRequest) {
 		Gson gson = new Gson();

@@ -78,7 +78,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		GcmItem item = null;
 		try {
-			item = RestHelper.requestData(loadItem, GcmItem.class);
+			item = RestHelper.requestData(loadItem, GcmItem.class, AppUtils.getAppId(context));
 		} catch (InternalErrorException e) {
 			e.logMe();
 		}
@@ -118,7 +118,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 				GcmItem item = null;
 				try {
-					item = RestHelper.requestData(loadItem, GcmItem.class);
+					item = RestHelper.requestData(loadItem, GcmItem.class, AppUtils.getAppId(context));
 				} catch (InternalErrorException e) {
 					e.logMe();
 				}
@@ -301,7 +301,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 //		int result = StaticData.EMPTY_DATA;
 //		GcmItem item = null;
 //
-////		String url = RestHelper.formCustomRequest(loadItem);
+////		String url = RestHelper.formGetRequest(loadItem);
 //		if (loadItem.getRequestMethod().equals(RestHelper.POST)){
 //			url = RestHelper.formPostRequest(loadItem);
 //		}

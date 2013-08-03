@@ -7,6 +7,7 @@ import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
+import com.chess.utilities.AppUtils;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class VideosPaginationAdapter extends PaginationAdapter<VideoItem.Data> {
 		loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
 		VideoItem item = null;
 		try {
-			 item = RestHelper.requestData(loadItem, VideoItem.class);
+			 item = RestHelper.requestData(loadItem, VideoItem.class, AppUtils.getAppId(context));
 		} catch (InternalErrorException e) {
 			e.logMe();
 		}

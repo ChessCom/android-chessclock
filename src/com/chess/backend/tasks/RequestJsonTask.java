@@ -5,6 +5,7 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
+import com.chess.utilities.AppUtils;
 
 public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, LoadItem> {
 
@@ -15,7 +16,7 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 	@Override
 	protected Integer doTheTask(LoadItem... loadItems) {
 		try {
-			item = RestHelper.requestData(loadItems[0], getTaskFace().getClassType());
+			item = RestHelper.requestData(loadItems[0], getTaskFace().getClassType(), AppUtils.getAppId(getTaskFace().getMeContext()));
 		} catch (InternalErrorException e) {
 			e.logMe();
 			result = e.getCode();
