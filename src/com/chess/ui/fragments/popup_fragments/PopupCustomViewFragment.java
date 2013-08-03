@@ -18,9 +18,9 @@ import com.chess.ui.interfaces.PopupDialogFace;
  */
 public class PopupCustomViewFragment extends BasePopupDialogFragment {
 
-	protected Button leftBtn;
-	protected Button rightBtn;
-	protected FrameLayout customView;
+    protected Button leftBtn;
+    protected Button rightBtn;
+    protected FrameLayout customView;
 
 	public static PopupCustomViewFragment createInstance(PopupItem popupItem) {
 		PopupCustomViewFragment frag = new PopupCustomViewFragment();
@@ -48,8 +48,8 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
 
 		customView = (FrameLayout) view.findViewById(R.id.customView);
 
-		leftBtn = (Button) view.findViewById(R.id.positiveBtn);
-		rightBtn = (Button) view.findViewById(R.id.negativeBtn);
+		leftBtn = (Button)view.findViewById(R.id.positiveBtn);
+		rightBtn = (Button)view.findViewById(R.id.negativeBtn);
 
 		leftBtn.setOnClickListener(this);
 		rightBtn.setOnClickListener(this);
@@ -66,14 +66,13 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
 		} else if (buttonsNumber == 1) {
 			rightBtn.setVisibility(View.GONE);
 		}
-
 //		customView.removeAllViews(); // still haveIllegal exception  after echess game finished
 		// we need remove parent from child's view  see note below. Should work
 		removeParent();
-		if (popupItem.getCustomView() == null) {
-			getDialog().dismiss();
-			return;
-		}
+        if (popupItem.getCustomView() == null) {
+            getDialog().dismiss();
+            return;
+        }
 		customView.addView(popupItem.getCustomView());
 
 		leftBtn.setText(popupItem.getPositiveBtnId());
@@ -99,14 +98,14 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
 		customView = null;
 	}
 
-	private void removeParent() {
+	private void removeParent(){
 		final View view = popupItem.getCustomView();
 		if (view == null) {
 			return;
 		}
 
 		ViewGroup childParent = (ViewGroup) view.getParent();
-		if (childParent != null)
+		if(childParent != null)
 			childParent.removeAllViews();
 		customView.removeAllViews();
 		customView.removeView(view);

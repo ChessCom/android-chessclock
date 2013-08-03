@@ -34,7 +34,6 @@ import java.util.ArrayList;
  */
 public class ForumNewTopicFragment extends CommonLogicFragment implements TextView.OnEditorActionListener {
 
-
 	private ArrayList<String> categoriesList;
 	private TopicsCreateListener topicsCreateListener;
 	private EditText topicNameEdt;
@@ -76,6 +75,12 @@ public class ForumNewTopicFragment extends CommonLogicFragment implements TextVi
 		categorySpinner.setSelection(0);
 		topicBodyEdt = (EditText) view.findViewById(R.id.topicBodyEdt);
 		topicBodyEdt.setOnEditorActionListener(this);
+
+		// adjust action bar icons
+		getActivityFace().showActionMenu(R.id.menu_cancel, true);
+		getActivityFace().showActionMenu(R.id.menu_accept, true);
+		getActivityFace().showActionMenu(R.id.menu_notifications, false);
+		getActivityFace().showActionMenu(R.id.menu_games, false);
 	}
 
 	private void createTopic() {

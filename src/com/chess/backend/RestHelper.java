@@ -157,16 +157,20 @@ public class RestHelper {
 	public static final String CMD_THEMES_USER = CMD_THEMES + "/user";
 
 	public static String CMD_THEME_DEFAULT_BY_ID(long id) {
-		return CMD_THEMES_DEFAULT + id;
+		return CMD_THEMES_DEFAULT + "/" + id;
 	}
 	public static String CMD_THEME_USER_BY_ID(long id) {
-		return CMD_THEMES_USER + id;
+		return CMD_THEMES_USER + "/" + id;
 	}
 
 	/* Messages */
 	public static final String CMD_MESSAGES = BASE_URL + V1 + "/messages";
 	public static final String CMD_MESSAGES_INBOX = CMD_MESSAGES + "/inbox";
 	public static final String CMD_MESSAGES_ARCHIVE = CMD_MESSAGES + "/archive";
+
+	public static String CMD_MESSAGE_CONVERSATION_BY_ID(long id) {
+		return CMD_MESSAGES + "/" +id;
+	}
 
 	public static final String CMD_MEMBERSHIP = BASE_URL + V1 + "/membership/android";
 	public static final String CMD_MEMBERSHIP_PAYLOAD = CMD_MEMBERSHIP + "/payload";
@@ -204,6 +208,8 @@ public class RestHelper {
 	public static final String P_FACEBOOK_ACCESS_TOKEN = "facebookAccessToken";
 	public static final String P_APN_DEVICE_TOKEN = "apn_device_token";
 	public static final String P_OPPONENT = "opponent";
+//	public static final String P_CONVERSATION_ID = "conversationId";
+	public static final String P_CONTENT = "content";
 
 	public static final String P_DAYS_PER_MOVE = "daysPerMove";
 	public static final String P_USER_SIDE = "userPosition";

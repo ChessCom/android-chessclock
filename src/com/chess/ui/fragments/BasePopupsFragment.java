@@ -116,13 +116,13 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 
 	// Single button no callback dialogs
 	protected void showSinglePopupDialog(int titleId, int messageId) {
+		popupItem.setButtons(1);
 		showPopupDialog(titleId, messageId, INFO_POPUP_TAG);
-		getLastPopupFragment().setButtons(1);
 	}
 
 	protected void showSinglePopupDialog(String title, String message) {
+		popupItem.setButtons(1);
 		showPopupDialog(title, message, INFO_POPUP_TAG);
-		getLastPopupFragment().setButtons(1);
 	}
 
 	public void safeShowSinglePopupDialog(int titleId, String message) {
@@ -131,26 +131,26 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 
 		// temporary handling i18n manually
 		final String messageI18n = AppUtils.getI18nStringForAPIError(getActivity(), message);
+		popupItem.setButtons(1);
 		showPopupDialog(titleId, messageI18n, INFO_POPUP_TAG);
-		getLastPopupFragment().setButtons(1);
 	}
 
 
 	protected void showSinglePopupDialog(int titleId, String message) {
 		// temporary handling i18n manually
+		popupItem.setButtons(1);
 		final String messageI18n = AppUtils.getI18nStringForAPIError(getActivity(), message);
 		showPopupDialog(titleId, messageI18n, INFO_POPUP_TAG);
-		getLastPopupFragment().setButtons(1);
 	}
 
 	protected void showSinglePopupDialog(String message) {
+		popupItem.setButtons(1);
 		showPopupDialog(message, INFO_POPUP_TAG);
-		getLastPopupFragment().setButtons(1);
 	}
 
 	protected void showSinglePopupDialog(int messageId) {
+		popupItem.setButtons(1);
 		showPopupDialog(messageId, INFO_POPUP_TAG);
-		getLastPopupFragment().setButtons(1);
 	}
 
 	// Default Dialogs

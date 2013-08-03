@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.db.DBConstants;
 import com.chess.utilities.AppUtils;
 
@@ -42,7 +43,7 @@ public class ForumTopicsCursorAdapter extends ItemsCursorAdapter {
 
 		long timestamp = getLong(cursor, DBConstants.V_LAST_POST_DATE);
 		String lastCommentAgoStr = AppUtils.getMomentsAgoFromSeconds(timestamp, context);
-		holder.lastCommentAgoTxt.setText(lastCommentAgoStr);
+		holder.lastCommentAgoTxt.setText(lastCommentAgoStr + StaticData.SYMBOL_SPACE_DOT);
 		holder.titleTxt.setText(getString(cursor, DBConstants.V_TITLE));
 
 		int postCount = getInt(cursor, DBConstants.V_POST_COUNT);

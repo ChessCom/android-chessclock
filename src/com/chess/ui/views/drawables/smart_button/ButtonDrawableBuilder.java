@@ -154,6 +154,11 @@ public class ButtonDrawableBuilder {
 			createBlue(buttonDrawable, resources);
 
 			return buttonDrawable;
+		} else if (styleId == R.style.Button_Blue_Chip) {
+			ButtonDrawable buttonDrawable = setDefaults(context);
+			createBlueChip(buttonDrawable, resources);
+
+			return buttonDrawable;
 		} else if (styleId == R.style.Button_Grey2Solid_NoBorder) {
 			ButtonDrawable buttonDrawable = setDefaults(context);
 			createGrey2SolidNoBorder(buttonDrawable, resources);
@@ -416,6 +421,20 @@ public class ButtonDrawableBuilder {
 		buttonDrawable.colorBottom = resources.getColor(R.color.blue_emboss_bottom);
 		// Button colors
 		buttonDrawable.colorSolid = resources.getColor(R.color.blue_button);
+		// init layers
+		buttonDrawable.init(resources);
+	}
+
+	private static void createBlueChip(ButtonDrawable buttonDrawable, Resources resources) {
+		buttonDrawable.useBorder = true;
+		// Colors for bevel
+		buttonDrawable.colorOuterBorder = resources.getColor(R.color.chip_button_border);
+		buttonDrawable.colorTop = resources.getColor(R.color.transparent);
+		buttonDrawable.colorLeft = resources.getColor(R.color.transparent);
+		buttonDrawable.colorRight = resources.getColor(R.color.transparent);
+		buttonDrawable.colorBottom = resources.getColor(R.color.transparent);
+		// Button colors
+		buttonDrawable.colorSolid = resources.getColor(R.color.chip_button);
 		// init layers
 		buttonDrawable.init(resources);
 	}

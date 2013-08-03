@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DBConstants {
 
-    static final int DATABASE_VERSION = 42;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 43;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -64,11 +64,9 @@ public class DBConstants {
 		GAME_STATS_DAILY_CHESS,
 		GAME_STATS_DAILY_CHESS960,
 
-		MESSAGES_INBOX,
-		MESSAGES_ARCHIVE
-
-
-
+		CONVERSATIONS_INBOX,
+		CONVERSATIONS_ARCHIVE,
+		CONVERSATIONS_MESSAGES
 	}
 
 	// Content URI
@@ -222,6 +220,7 @@ public class DBConstants {
 	public static final String V_LAST_MESSAGE_SENDER_USERNAME = "last_message_sender_username";
 	public static final String V_LAST_MESSAGE_CREATED_AT = "last_message_created_at";
 	public static final String V_LAST_MESSAGE_CONTENT 	= "last_message_content";
+	public static final String V_CONVERSATION_ID 		= "conversation_id";
 
 	/* common commands */
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists ";
@@ -491,7 +490,7 @@ public class DBConstants {
 				+ addField_Text(V_MOVE_TYPE, true);
 
 		/* Messages */
-		createTablesArray[Tables.MESSAGES_INBOX.ordinal()] = createTableForName(Tables.MESSAGES_INBOX)
+		createTablesArray[Tables.CONVERSATIONS_INBOX.ordinal()] = createTableForName(Tables.CONVERSATIONS_INBOX)
 				+ addField_Long(V_ID)
 				+ addField_Long(V_OTHER_USER_ID)
 				+ addField_Long(V_LAST_MESSAGE_ID)
@@ -504,7 +503,7 @@ public class DBConstants {
 				+ addField_Text(V_LAST_MESSAGE_SENDER_USERNAME)
 				+ addField_Text(V_LAST_MESSAGE_CONTENT, true);
 
-		createTablesArray[Tables.MESSAGES_ARCHIVE.ordinal()] = createTableForName(Tables.MESSAGES_ARCHIVE)
+		createTablesArray[Tables.CONVERSATIONS_ARCHIVE.ordinal()] = createTableForName(Tables.CONVERSATIONS_ARCHIVE)
 				+ addField_Long(V_ID)
 				+ addField_Long(V_OTHER_USER_ID)
 				+ addField_Long(V_LAST_MESSAGE_ID)
@@ -516,6 +515,17 @@ public class DBConstants {
 				+ addField_Text(V_OTHER_USER_AVATAR_URL)
 				+ addField_Text(V_LAST_MESSAGE_SENDER_USERNAME)
 				+ addField_Text(V_LAST_MESSAGE_CONTENT, true);
+
+		createTablesArray[Tables.CONVERSATIONS_MESSAGES.ordinal()] = createTableForName(Tables.CONVERSATIONS_MESSAGES)
+				+ addField_Long(V_ID)
+				+ addField_Long(V_CONVERSATION_ID)
+				+ addField_Long(V_OTHER_USER_ID)
+				+ addField_Long(V_CREATE_DATE)
+				+ addField_Int(V_OTHER_USER_IS_ONLINE)
+				+ addField_Text(V_LAST_MESSAGE_CONTENT)
+				+ addField_Text(V_OTHER_USER_USERNAME)
+				+ addField_Text(V_OTHER_USER_AVATAR_URL)
+				+ addField_Text(V_USER, true);
 	}
 
 	/* ==================== User Stats ============================== */

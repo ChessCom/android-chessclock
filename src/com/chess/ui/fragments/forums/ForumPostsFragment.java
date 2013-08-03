@@ -182,7 +182,6 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			replyView.setPadding(paddingSide, paddingSide, paddingSide, paddingSide);
 
 			// add quote text
-//			"<span class=\"quoted-user\">dove wrote:</span><div class=\"quoted-text\"><p>test</p></div></div>"
 			String quote = "<div class=\"fquote\"><span class=\"quoted-user\">" + getString(R.string.username_wrote, username) +"</span>" +
 					"<div class=\"quoted-text\">\n" +
 					"<p>" + body + "</p>\n" +

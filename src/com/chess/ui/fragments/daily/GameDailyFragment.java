@@ -858,7 +858,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			// show message only for re-login
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCode.YOUR_ARE_ON_VACATAION) {

@@ -52,7 +52,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_friends_frame, container, false);
+		return inflater.inflate(R.layout.new_white_list_view_frame, container, false);
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 	private void loadFromDb() {
 		new LoadDataFromDbTask(friendsCursorUpdateListener,
-				DbHelper.getUser(getAppData().getUsername(), DBConstants.Tables.FRIENDS.ordinal()),
+				DbHelper.getTableForUser(getAppData().getUsername(), DBConstants.Tables.FRIENDS.ordinal()),
 				getContentResolver()).executeTask();
 
 	}

@@ -72,17 +72,11 @@ public abstract class ActionBarUpdateListener<ItemType> extends AbstractUpdateLi
 		// show message only for re-login
 		if (RestHelper.containsServerCode(resultCode)) {
 			int serverCode = RestHelper.decodeServerCode(resultCode);
-//			if (serverCode == ServerErrorCode.INVALID_LOGIN_TOKEN_SUPPLIED) {
-//				String serverMessage = ServerErrorCode.getUserFriendlyMessage(coreActivityActionBar, serverCode); // TODO restore
-//
-//				coreActivityActionBar.safeShowSinglePopupDialog(R.string.session_expired);
-//
-//				new AppData(coreActivityActionBar).setUserToken(null);
-//			} else {
+			if (serverCode != ServerErrorCode.INVALID_LOGIN_TOKEN_SUPPLIED) { // handled in CommonLogicFragment
 				String serverMessage = ServerErrorCode.getUserFriendlyMessage(coreActivityActionBar, serverCode); // TODO restore
 
 				coreActivityActionBar.safeShowSinglePopupDialog(R.string.error, serverMessage);
-//			}
+			}
 		}
 	}
 }

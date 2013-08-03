@@ -240,7 +240,7 @@ public class HomeRatingsFragment extends CommonLogicFragment implements AdapterV
 
 	private void loadFriendsFromDb() {
 		new LoadDataFromDbTask(friendsCursorUpdateListener,
-				DbHelper.getUser(getAppData().getUsername(), DBConstants.Tables.FRIENDS.ordinal()),
+				DbHelper.getTableForUser(getAppData().getUsername(), DBConstants.Tables.FRIENDS.ordinal()),
 				getContentResolver()).executeTask();
 	}
 

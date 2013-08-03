@@ -73,7 +73,7 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getUser(String userName, int uriCode) {
+	public static QueryParams getTableForUser(String userName, int uriCode) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DBConstants.uriArray[uriCode]);
 		queryParams.setSelection(DBDataManager.SELECTION_USER);
@@ -198,4 +198,13 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	/* Messages Conversation */
+	public static QueryParams getConversationMessagesById(long conversationId, String username) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DBConstants.uriArray[DBConstants.Tables.CONVERSATIONS_MESSAGES.ordinal()]);
+		queryParams.setSelection(DBDataManager.SELECTION_USER_CONVERSATION_ID);
+		queryParams.setOrder(DBConstants.V_CREATE_DATE + DBDataManager.ASCEND);
+		queryParams.setArguments(new String[]{username, String.valueOf(conversationId)});
+		return queryParams;
+	}
 }

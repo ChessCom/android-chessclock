@@ -155,6 +155,11 @@
     <color name="share_emboss_right">#ff009bd8</color>
     <color name="share_emboss_bottom">#ff008bcb</color>
 
+	<!--Chip button-->
+	<color name="chip_button">#FFe4f1fc</color>
+	<color name="chip_button_border">#FFb6cfdc</color>
+
+
     <!--Settings -->
     <color name="underline_color_grey">#FF8f8f8f</color>
 

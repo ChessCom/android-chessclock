@@ -131,7 +131,7 @@ public class LeftImageEditText extends RoboEditText {
 			canvas.drawLine(lineXStart, 0, lineXStop, 0, linePaint);
 		}
 
-//		// set padding to make text selection work correct
+		// set padding to make text selection work correct
 		setPadding(height + bottomPadding, 0, 0, bottomPadding);
 		super.onDraw(canvas);
 	}

@@ -73,19 +73,6 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        switch (buttonsNumber){
-            case 1:
-                rightBtn.setVisibility(View.GONE);
-                break;
-            case 3:
-				neutralBtn.setVisibility(View.VISIBLE);
-                break;
-        }
-    }
-
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -103,12 +90,20 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
 			}
 			messageTxt.setVisibility(View.VISIBLE);
 		}
-
 		titleTxt.setText(popupItem.getTitle(getActivity()));
 
+		buttonsNumber = popupItem.getButtons();
+		switch (buttonsNumber) {
+			case 1:
+				rightBtn.setVisibility(View.GONE);
+				break;
+			case 3:
+				neutralBtn.setVisibility(View.VISIBLE);
+				neutralBtn.setText(popupItem.getNeutralBtnId());
+				break;
+		}
+
 		leftBtn.setText(popupItem.getPositiveBtnId());
-		if(buttonsNumber == 3)
-			neutralBtn.setText(popupItem.getNeutralBtnId());
 		rightBtn.setText(popupItem.getNegativeBtnId());
 	}
 

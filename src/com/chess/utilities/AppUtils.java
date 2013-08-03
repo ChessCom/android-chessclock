@@ -395,6 +395,7 @@ public class AppUtils {
 			sb.append(context.getString(R.string.minutes_arg, minutes));
 		} else {
 			sb.append(context.getString(R.string.just_now));
+			return sb.toString();
 		}
 
 		return context.getString(R.string.ago_arg, sb.toString());

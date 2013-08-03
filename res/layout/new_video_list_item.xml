@@ -12,10 +12,6 @@
     android:paddingRight="8dip"
 	android:background="@drawable/white_list_item_selector"
     >
-<!--
-	android:paddingTop="12dip"
-	android:paddingBottom="4dip"
--->
 
     <!--Title-->
     <com.chess.RoboTextView

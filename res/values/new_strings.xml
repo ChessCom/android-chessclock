@@ -251,7 +251,7 @@
     <string name="months">months</string>
     <string name="just_now">just now</string>
 	<string name="minutes_arg">%s minutes</string>
-	<string name="ago_arg">%s ago &#8226;</string>
+	<string name="ago_arg">%s ago</string>
 	<string name="posts_arg">%s Posts</string>
 	<string name="quote">Quote</string>
 	<string name="new_topic">New Topic</string>
@@ -289,6 +289,12 @@
 	<string name="dark">Dark</string>
 	<string name="select_background">Select Background</string>
 	<string name="edit">Edit</string>
+	<string name="message_sent">Message Sent</string>
+	<string name="message">Message</string>
+	<string name="new_message">New Message</string>
+	<string name="to_">To:</string>
+	<string name="write_your_message">Write your message...</string>
+	<string name="random">Random</string>
 	<!--Game mode-->
 
 </resources>

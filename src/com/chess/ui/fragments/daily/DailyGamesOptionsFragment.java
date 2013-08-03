@@ -69,7 +69,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 					DBDataManager.PROJECTION_USERNAME, DBDataManager.SELECTION_USER, arguments1, null);
 
 			firendsList = new ArrayList<SelectionItem>();
-			firendsList.add(new SelectionItem(null, "Random"));
+			firendsList.add(new SelectionItem(null, getString(R.string.random)));
 			if (cursor.moveToFirst()) {
 				do{
 					firendsList.add(new SelectionItem(null, DBDataManager.getString(cursor, DBConstants.V_USERNAME)));

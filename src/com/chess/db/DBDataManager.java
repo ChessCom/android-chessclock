@@ -22,6 +22,8 @@ public class DBDataManager {
 
 	private static final String ORDER_BY = "ORDER BY";
 	private static final String GROUP_BY = "GROUP BY";
+	public static final String ASCEND = " ASC";
+	public static final String DESCEND = " DESC";
 	//	public static final String SLASH_ = "/";
 	public static final String OR_ = " OR ";
 	public static final String LIKE_ = " LIKE ";
@@ -47,7 +49,7 @@ public class DBDataManager {
 
 	public static String SELECTION_ID = concatArguments(DBConstants._ID);
 
-	public static String SELECTION_USER_AND_ID = concatArguments(
+	public static String SELECTION_USER_AND_ID = concatArguments(   // TODO remove duplicate
 			DBConstants.V_USER,
 			DBConstants.V_ID);
 
@@ -90,6 +92,17 @@ public class DBDataManager {
 	public static String SELECTION_ITEM_ID_AND_CATEGORY_ID = concatArguments(DBConstants.V_ID, DBConstants.V_CATEGORY_ID);
 
 	public static String SELECTION_CREATE_DATE = concatArguments(DBConstants.V_CREATE_DATE);
+
+	public static String SELECTION_ID_USER_CONVERSATION_ID = concatArguments(
+			DBConstants.V_ID,
+			DBConstants.V_USER,
+			DBConstants.V_CONVERSATION_ID
+	);
+
+	public static String SELECTION_USER_CONVERSATION_ID = concatArguments(
+			DBConstants.V_USER,
+			DBConstants.V_CONVERSATION_ID
+	);
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
@@ -222,6 +235,13 @@ public class DBDataManager {
 			DBConstants._ID,
 			DBConstants.V_ID,
 			DBConstants.V_CATEGORY_ID
+	};
+
+	public static final String[] PROJECTION_ID_USER_CONVERSATION_ID = new String[]{
+			DBConstants._ID,
+			DBConstants.V_ID,
+			DBConstants.V_USER,
+			DBConstants.V_CONVERSATION_ID
 	};
 
 
@@ -1297,26 +1317,37 @@ public class DBDataManager {
 		return values;
 	}
 
-	/* ========================================== Stats ========================================== */
-	public static ContentValues putCommonFeedCategoryItemToValues(MessagesItem.Data dataObj) {
+	/* ========================================== Messages ========================================== */
+	public static ContentValues putConversationItemToValues(ConversationItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
+		values.put(DBConstants.V_ID, dataObj.getId());
+		values.put(DBConstants.V_OTHER_USER_ID, dataObj.getOtherUserId());
+		values.put(DBConstants.V_LAST_MESSAGE_ID, dataObj.getLastMessageId());
+		values.put(DBConstants.V_LAST_MESSAGE_CREATED_AT, dataObj.getLastMessageCreatedAt());
+		values.put(DBConstants.V_OTHER_USER_IS_ONLINE, dataObj.isOtherUserIsOnline() ? 1 : 0);
+		values.put(DBConstants.V_NEW_MESSAGES_COUNT, dataObj.getNewMessagesCount());
+		values.put(DBConstants.V_USER, dataObj.getUser());
+		values.put(DBConstants.V_OTHER_USER_USERNAME, dataObj.getOtherUserUsername());
+		values.put(DBConstants.V_OTHER_USER_AVATAR_URL, dataObj.getOtherUserAvatarUrl());
+		values.put(DBConstants.V_LAST_MESSAGE_SENDER_USERNAME, dataObj.getLastMessageSenderUsername());
+		values.put(DBConstants.V_LAST_MESSAGE_CONTENT, dataObj.getLastMessageContent());
 
-//		+ addField_Long()
-//				+ addField_Long(V_OTHER_USER_ID)
-//				+ addField_Long(V_LAST_MESSAGE_ID)
-//				+ addField_Long(V_LAST_MESSAGE_CREATED_AT)
-//				+ addField_Int(V_OTHER_USER_IS_ONLINE)
-//				+ addField_Int(V_NEW_MESSAGES_COUNT)
-//				+ addField_Text(V_OTHER_USER_USERNAME)
-//				+ addField_Text(V_OTHER_USER_AVATAR_URL)
-//				+ addField_Text(V_LAST_MESSAGE_SENDER_USERNAME)
-//				+ addField_Text(V_LAST_MESSAGE_CONTENT, true);
-//
-//
-//		values.put(DBConstants.V_NAME, dataObj.getName());
-//		values.put(DBConstants.V_CATEGORY_ID, dataObj.getId());
-//		values.put(DBConstants.V_DISPLAY_ORDER, dataObj.getDisplayOrder());
+		return values;
+	}
+
+	public static ContentValues putMessagesItemToValues(MessagesItem.Data dataObj) {
+		ContentValues values = new ContentValues();
+
+		values.put(DBConstants.V_ID, dataObj.getId());
+		values.put(DBConstants.V_CONVERSATION_ID, dataObj.getConversationId());
+		values.put(DBConstants.V_OTHER_USER_ID, dataObj.getSenderId());
+		values.put(DBConstants.V_CREATE_DATE, dataObj.getCreatedAt());
+		values.put(DBConstants.V_OTHER_USER_IS_ONLINE, dataObj.isSenderIsOnline() ? 1 : 0);
+		values.put(DBConstants.V_USER, dataObj.getUser());
+		values.put(DBConstants.V_OTHER_USER_USERNAME, dataObj.getSenderUsername());
+		values.put(DBConstants.V_OTHER_USER_AVATAR_URL, dataObj.getSenderAvatarUrl());
+		values.put(DBConstants.V_LAST_MESSAGE_CONTENT, dataObj.getContent());
 
 		return values;
 	}

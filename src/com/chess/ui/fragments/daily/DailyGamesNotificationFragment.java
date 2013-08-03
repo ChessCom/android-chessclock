@@ -233,10 +233,9 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 				popupItem.setPositiveBtnId(R.string.accept);
 				popupItem.setNeutralBtnId(R.string.decline);
 				popupItem.setNegativeBtnId(R.string.game);
+				popupItem.setButtons(3);
 
 				showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
-				getLastPopupFragment().setButtons(3);
-
 			} else {
 				ChessBoardOnline.resetInstance();
 				getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));

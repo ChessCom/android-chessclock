@@ -90,6 +90,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
 
+		// adjust actionBar icons
 		getActivityFace().showActionMenu(R.id.menu_search, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);

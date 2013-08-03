@@ -5,75 +5,58 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 30.07.13
- * Time: 20:43
+ * Date: 01.08.13
+ * Time: 21:36
  */
 public class MessagesItem extends BaseResponseItem<List<MessagesItem.Data>> {
 /*
-      "id": 2,
-      "other_user_id": 11436,
-      "other_user_username": "rest",
-      "other_user_is_online": false,
-      "other_user_avatar_url": "//s3.amazonaws.com/chess-7/images_users/avatars/rest_origin.17.png",
-      "new_messages_count": 1,
-      "last_message_id": 1,
-      "last_message_sender_username": "rest",
-      "last_message_created_at": 1375191708,
-      "last_message_content": "test from sandbox"
+      "id": 5,
+      "created_at": 1375361796,
+      "content": "test from sandboxsdasd",
+      "sender_id": 11438,
+      "sender_username": "alien_roger",
+      "sender_avatar_url": "//s3.amazonaws.com/chess-7/images_users/avatars/alien_roger_small.2.png",
+      "sender_is_online": false
 */
 
 	public class Data {
 		private long id;
-		private long other_user_id;
-		private String other_user_username;
-		private boolean other_user_is_online;
-		private String other_user_avatar_url;
-		private int new_messages_count;
-		private long last_message_id;
-		private String last_message_sender_username;
-		private long last_message_created_at;
-		private String last_message_content;
-		/* local addition*/
+		private long created_at;
+		private String content;
+		private long sender_id;
+		private String sender_username;
+		private String sender_avatar_url;
+		private boolean sender_is_online;
+		/* Local addition */
 		private String user;
+		private long conversationId;
 
 		public long getId() {
 			return id;
 		}
 
-		public long getOtherUserId() {
-			return other_user_id;
+		public long getCreatedAt() {
+			return created_at;
 		}
 
-		public String getOtherUserUsername() {
-			return other_user_username;
+		public String getContent() {
+			return content;
 		}
 
-		public boolean isOtherUserIsOnline() {
-			return other_user_is_online;
+		public long getSenderId() {
+			return sender_id;
 		}
 
-		public String getOtherUserAvatarUrl() {
-			return other_user_avatar_url;
+		public String getSenderUsername() {
+			return sender_username;
 		}
 
-		public int getNewMessagesCount() {
-			return new_messages_count;
+		public String getSenderAvatarUrl() {
+			return sender_avatar_url;
 		}
 
-		public long getLastMessageId() {
-			return last_message_id;
-		}
-
-		public String getLastMessageSenderUsername() {
-			return last_message_sender_username;
-		}
-
-		public long getLastMessageCreatedAt() {
-			return last_message_created_at;
-		}
-
-		public String getLastMessageContent() {
-			return last_message_content;
+		public boolean isSenderIsOnline() {
+			return sender_is_online;
 		}
 
 		public String getUser() {
@@ -83,5 +66,14 @@ public class MessagesItem extends BaseResponseItem<List<MessagesItem.Data>> {
 		public void setUser(String user) {
 			this.user = user;
 		}
+
+		public long getConversationId() {
+			return conversationId;
+		}
+
+		public void setConversationId(long conversationId) {
+			this.conversationId = conversationId;
+		}
 	}
+
 }

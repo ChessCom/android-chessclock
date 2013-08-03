@@ -91,10 +91,6 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
 		}
 	}
 
-	public void setButtons(int buttonsNumber) {
-		this.buttonsNumber = buttonsNumber;
-	}
-
 	@Override
 	public void show(FragmentManager manager, String tag) {
 		isShowed = true;
