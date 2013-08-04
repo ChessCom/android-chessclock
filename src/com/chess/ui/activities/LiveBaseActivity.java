@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -18,8 +19,13 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.LoadItem;
+import com.chess.backend.entity.new_api.LoginItem;
+import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.LiveEvent;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
@@ -38,6 +44,8 @@ import com.facebook.widget.LoginButton;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static com.chess.backend.statics.AppConstants.LIVE_SESSION_ID;
 
 /**
  * LiveBaseActivity class
@@ -475,32 +483,50 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				String password = getAppData().getPassword();
+				if (!TextUtils.isEmpty(password)) {
+					// Logout first to make clear connect
+					liveService.logout();
+					unBindLiveService();
 
-				LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-				final LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_relogin_frame, null, false);
+					LoadItem loadItem = new LoadItem();
+					loadItem.setLoadPath(RestHelper.CMD_LOGIN);
+					loadItem.setRequestMethod(RestHelper.POST);
+					loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
+					loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getAppData().getUsername());
+					loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
+					loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
+					loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
 
-				PopupItem popupItem = new PopupItem();
-				popupItem.setCustomView(customView);
+					new RequestJsonTask<LoginItem>(new LoginUpdateListener()).executeTask(loadItem);
+				} else {
+					LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+					final LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_relogin_frame, null, false);
 
-				reLoginFragment = PopupCustomViewFragment.createInstance(popupItem);
-				reLoginFragment.show(getSupportFragmentManager(), RE_LOGIN_TAG);
+					PopupItem popupItem = new PopupItem();
+					popupItem.setCustomView(customView);
 
-				liveService.logout();
-				unBindLiveService();
+					reLoginFragment = PopupCustomViewFragment.createInstance(popupItem);
+					reLoginFragment.show(getSupportFragmentManager(), RE_LOGIN_TAG);
 
-				((TextView) customView.findViewById(R.id.titleTxt)).setText(message);
+					liveService.logout();
+					unBindLiveService();
 
-				EditText usernameEdt = (EditText) customView.findViewById(R.id.usernameEdt);
-				EditText passwordEdt = (EditText) customView.findViewById(R.id.passwordEdt);
-				setLoginFields(usernameEdt, passwordEdt);
+					((TextView) customView.findViewById(R.id.titleTxt)).setText(message);
 
-				customView.findViewById(R.id.re_signin).setOnClickListener(LiveBaseActivity.this);
+					EditText usernameEdt = (EditText) customView.findViewById(R.id.usernameEdt);
+					EditText passwordEdt = (EditText) customView.findViewById(R.id.passwordEdt);
+					setLoginFields(usernameEdt, passwordEdt);
 
-				LoginButton facebookLoginButton = (LoginButton) customView.findViewById(R.id.re_fb_connect);
-				facebookInit(facebookLoginButton);
-//				facebookLoginButton.logout();
+					customView.findViewById(R.id.re_signin).setOnClickListener(LiveBaseActivity.this);
 
-				usernameEdt.setText(getAppData().getUsername());
+					LoginButton facebookLoginButton = (LoginButton) customView.findViewById(R.id.re_fb_connect);
+					facebookInit(facebookLoginButton);
+	//				facebookLoginButton.logout();
+
+					usernameEdt.setText(getAppData().getUsername());
+				}
+
 
 				needReLoginToLive = true;
 			}
@@ -552,6 +578,39 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	// -----------------------------------------------------
 
+	private class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
+		public LoginUpdateListener() {
+			super(getContext(), LoginItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			if (show){
+				showPopupHardProgressDialog(R.string.signing_in_);
+			} else {
+				if(isPaused)
+					return;
+
+				dismissProgressDialog();
+			}
+		}
+
+		@Override
+		public void updateData(LoginItem returnedObj) {
+			if (!TextUtils.isEmpty(returnedObj.getData().getUsername())) {
+				preferencesEditor.putString(AppConstants.USERNAME, returnedObj.getData().getUsername().trim().toLowerCase());
+			}
+			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, returnedObj.getData().getPremiumStatus());
+			preferencesEditor.putString(LIVE_SESSION_ID, returnedObj.getData().getSessionId());
+			preferencesEditor.putString(AppConstants.USER_TOKEN, returnedObj.getData().getLoginToken());
+			preferencesEditor.commit();
+
+			registerGcmService();
+
+			getAppData().setLiveChessMode(true);
+			connectLcc();
+		}
+	}
 
 	@Override
 	protected void afterLogin() {

@@ -11,9 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import com.chess.FontsHelper;
-import com.chess.R;
-import com.chess.RoboTextView;
+import com.chess.*;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
@@ -36,6 +34,9 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 	public static final int PREMIUM_ID = 0x00004404;
 	public static final int CAPTURED_ID = 0x00004405;
 	public static final int TIME_LEFT_ID = 0x00004406;
+	public static final int DRAW_TEXT_ID = 0x00004407;
+	public static final int DRAW_DECLINE_ID = 0x00004418;
+	public static final int DRAW_ACCEPT_ID = 0x00004419;
 
 	private int FLAG_SIZE = 16;
 	private int FLAG_MARGIN = 5;
@@ -56,6 +57,8 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 	private int blackPlayerTimeColor;
 	private RoboTextView clockIconTxt;
 	private LinearLayout clockLayout;
+	private RelLayout drawOfferedRelLay;
+	private OnClickListener clickListener;
 
 	public PanelInfoLiveView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -225,6 +228,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 			clockLayout.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
 			clockLayout.setMinimumWidth((int) (70 * density));
+			clockLayout.setMinimumHeight((int) (35 * density));
 
 			clockIconTxt.setFont(FontsHelper.ICON_FONT);
 			float clockIconSize = resources.getDimension(R.dimen.new_tactics_clock_icon_size) / density; // 21;
@@ -235,7 +239,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			clockIconTxt.setPadding(0, paddingIconTop, paddingIcon, 0);
 			clockIconTxt.setVisibility(GONE);
 
-			clockLayout.setMinimumHeight((int) (35 * density));
+
 			clockLayout.addView(clockIconTxt, clockIconParams);
 
 			LayoutParams timeLeftParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, timeLeftSize);
@@ -277,6 +281,74 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			capturedPiecesView.setId(CAPTURED_ID);
 
 			addView(capturedPiecesView, capturedParams);
+		}
+
+		{ // Draw offered layout
+			int buttonsTextSize = 35;
+			int panelButtonWidth = (int) (60 * density);
+			int panelButtonHeight = (int) (50 * density);
+			drawOfferedRelLay = new RelLayout(getContext());
+			drawOfferedRelLay.setVisibility(GONE);
+
+			{ // Text label
+				RoboTextView drawOfferedTxt = new RoboTextView(getContext());
+				drawOfferedTxt.setFont(FontsHelper.BOLD_FONT);
+				drawOfferedTxt.setId(DRAW_TEXT_ID);
+				drawOfferedTxt.setText(R.string.draw);
+				drawOfferedTxt.setTextColor(playerTextColor);
+				drawOfferedTxt.setTextSize(playerTextSize);
+
+				LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,	ViewGroup.LayoutParams.WRAP_CONTENT);
+				params.addRule(CENTER_VERTICAL);
+				params.addRule(LEFT_OF, DRAW_DECLINE_ID);
+
+				drawOfferedRelLay.addView(drawOfferedTxt, params);
+			}
+
+			{ // Decline button
+				RoboButton declineDrawBtn = new RoboButton(getContext());
+				declineDrawBtn.setFont(FontsHelper.ICON_FONT);
+				declineDrawBtn.setId(DRAW_DECLINE_ID);
+				declineDrawBtn.setText(R.string.ic_close);
+				declineDrawBtn.setTextSize(buttonsTextSize);
+				declineDrawBtn.setDrawableStyle(R.style.Button_Glassy);
+				declineDrawBtn.setMinimumWidth(panelButtonWidth);
+				declineDrawBtn.setMinimumHeight(panelButtonHeight);
+				declineDrawBtn.setMinWidth(panelButtonWidth);
+				declineDrawBtn.setMinHeight(panelButtonHeight);
+				declineDrawBtn.setOnClickListener(this);
+
+				LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+				params.addRule(CENTER_VERTICAL);
+				params.addRule(LEFT_OF, DRAW_ACCEPT_ID);
+				params.setMargins((int) (5 * density), 0, 0, 0);
+
+				drawOfferedRelLay.addView(declineDrawBtn, params);
+			}
+
+			{ // Accept Button
+				RoboButton acceptDrawBtn = new RoboButton(getContext());
+				acceptDrawBtn.setFont(FontsHelper.ICON_FONT);
+				acceptDrawBtn.setId(DRAW_ACCEPT_ID);
+				acceptDrawBtn.setText(R.string.ic_check);
+				acceptDrawBtn.setTextSize(buttonsTextSize);
+				acceptDrawBtn.setDrawableStyle(R.style.Button_Glassy);
+				acceptDrawBtn.setMinimumWidth(panelButtonWidth);
+				acceptDrawBtn.setMinimumHeight(panelButtonHeight);
+				acceptDrawBtn.setMinWidth(panelButtonWidth);
+				acceptDrawBtn.setMinHeight(panelButtonHeight);
+				acceptDrawBtn.setOnClickListener(this);
+
+				LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+				params.addRule(ALIGN_PARENT_RIGHT);
+				params.addRule(CENTER_VERTICAL);
+				params.setMargins((int) (5 * density), 0, 0, 0);
+
+				drawOfferedRelLay.addView(acceptDrawBtn, params);
+			}
+			LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,	ViewGroup.LayoutParams.WRAP_CONTENT);
+			params.addRule(ALIGN_PARENT_RIGHT);
+			addView(drawOfferedRelLay, params);
 		}
 
 		{// Set padding
@@ -325,7 +397,12 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 	@Override
 	public void onClick(View view) {  // TODO handle avatar click
-
+		super.onClick(view);
+		if (view.getId() == DRAW_DECLINE_ID) {
+			clickListener.onClick(view);
+		} else if (view.getId() == DRAW_ACCEPT_ID) {
+			clickListener.onClick(view);
+		}
 	}
 
 	@Override
@@ -362,7 +439,9 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 	@Override
 	public void showTimeRemain(boolean show) {
-		clockLayout.setVisibility(show ? VISIBLE : GONE);
+		if (drawOfferedRelLay.getVisibility() == View.GONE) {
+			clockLayout.setVisibility(show ? VISIBLE : GONE);
+		}
 	}
 
 	@Override
@@ -389,7 +468,6 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).dropPieces();
 	}
 
-
 	private void setTimeRemainPadding() {
 		int timeLeftSmallPadding = (int) (2 * density);
 		int timeLeftBigPadding = (int) (12 * density);
@@ -401,4 +479,16 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 		}
 	}
 
+	public void showDrawOfferedView(boolean show) {
+		drawOfferedRelLay.setVisibility(show ? VISIBLE : GONE);
+		clockLayout.setVisibility(show ? GONE : VISIBLE);
+	}
+
+	/**
+	 * For some unknown reason findViewById and setOnClickListener directly doesn't work. so use interceptor here
+	 * @param listener that will intercept button clicks
+	 */
+	public void setClickHandler(OnClickListener listener){
+		this.clickListener = listener;
+	}
 }

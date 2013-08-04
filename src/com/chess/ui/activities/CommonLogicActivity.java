@@ -33,10 +33,7 @@ import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
-import org.apache.http.protocol.HTTP;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,7 +59,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 	protected static final int REQUEST_REGISTER = 11;
 	private static final int REQUEST_UNREGISTER = 22;
-	protected int AVATAR_SIZE = 44;
 
 //	private LoginUpdateListener loginUpdateListener;
 	private LoginUpdateListenerNew loginUpdateListener;
@@ -70,7 +66,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 	protected BackgroundChessDrawable backgroundChessDrawable;
 	private String currentLocale;
-//	protected Facebook facebook;
+
 	protected Handler handler;
 	private EditText loginUsernameEdt;
 	private EditText passwordEdt;
@@ -378,55 +374,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		}
 	}
 
-//	private class LoginUpdateListener extends AbstractUpdateListener<String> {
-//		public LoginUpdateListener() {
-//			super(getContext());
-//		}
-//
-//		@Override
-//		public void showProgress(boolean show) {
-//			if (show){
-//				showPopupHardProgressDialog(R.string.signingin);
-//			} else {
-//				if(isPaused)
-//					return;
-//
-//				dismissProgressDialog();
-//			}
-//		}
-//
-//		@Override
-//		public void updateData(String returnedObj) {
-//			if (returnedObj.length() > 0) {
-//				final String[] responseArray = returnedObj.split(RestHelper.SYMBOL_PARAMS_SPLIT);
-//				if (responseArray.length >= 4) {
-//					if (loginReturnCode == SIGNIN_CALLBACK_CODE) {
-//						preferencesEditor.putString(AppConstants.USERNAME, loginUsernameEdt.getText().toString().trim().toLowerCase());
-//						processLogin(responseArray, returnedObj);
-//					} else if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE && responseArray.length >= 5) {
-//						FlurryAgent.logEvent(FlurryData.FB_LOGIN, null);
-//						preferencesEditor.putString(AppConstants.USERNAME, responseArray[4].trim().toLowerCase());
-//						processLogin(responseArray, returnedObj);
-//					}
-//				}
-//			}
-//		}
-//
-//		@Override
-//		public void errorHandle(String resultMessage) {
-//			if (resultMessage.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
-//				popupItem.setPositiveBtnId(R.string.sing_up);
-//				showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
-//			} else {
-//				if(resultMessage.equals(RestHelper.R_INVALID_PASS)){
-//					passwordEdt.setError(getResources().getString(R.string.invalid_password));
-//					passwordEdt.requestFocus();
-//				}else{
-//					showToast(resultMessage);
-//				}
-//			}
-//		}
-//	}
 
 //	public class SampleAuthListener implements SessionEvents.AuthListener {
 //		@Override
@@ -466,28 +413,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		}
 
 		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
-
-//		try {
-//			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, returnedObj.getData().getPremiumStatus());
-//		} catch (ArrayIndexOutOfBoundsException e) {
-//			String debugInfo = "response = " + AppUtils.parseJsonToString(returnedObj);
-//			BugSenseHandler.addCrashExtraData("APP_LOGIN_DEBUG", debugInfo);
-//			Map<String, String> params = new HashMap<String, String>();
-//			params.put("DEBUG", debugInfo);
-//			FlurryAgent.logEvent("APP_LOGIN_DEBUG", params);
-//			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, StaticData.NOT_INITIALIZED_USER);
-//			throw new ArrayIndexOutOfBoundsException(debugInfo);
-//		}
-
-//		preferencesEditor.putString(AppConstants.API_VERSION, response[1]);
-		try {
-			preferencesEditor.putString(AppConstants.USER_TOKEN, URLEncoder.encode(returnedObj.getLoginToken(), HTTP.UTF_8));
-		} catch (UnsupportedEncodingException ignored) {
-			preferencesEditor.putString(AppConstants.USER_TOKEN, returnedObj.getLoginToken());
-//			showSinglePopupDialog(R.string.error, R.string.error_occurred_while_login); // or use that logic?
-//			return;
-		}
-// 		preferencesEditor.putString(AppConstants.USER_SESSION_ID, response[3]); // TODO used only for live, so should be separate connection to live
+		preferencesEditor.putString(AppConstants.USER_TOKEN, returnedObj.getLoginToken());
 		preferencesEditor.commit();
 
 		getAppData().setLiveChessMode(false);

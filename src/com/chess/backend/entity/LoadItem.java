@@ -48,9 +48,9 @@ public class LoadItem { // TODO refactor with builder
 		ArrayList<NameValuePair> removedItems = new ArrayList<NameValuePair>();
 
 		for (NameValuePair nameValuePair : nameValuePairs) {
-			if(nameValuePair.getName().equals(key))
+			if(nameValuePair.getName().equals(key)) {
 				removedItems.add(nameValuePair);
-
+			}
 		}
 
 		nameValuePairs.removeAll(removedItems);

@@ -62,10 +62,8 @@ import static com.chess.live.rules.GameResult.WIN;
 public class GameLiveFragment extends GameBaseFragment implements GameNetworkFace, LccEventListener,
 		LccChatMessageListener, PopupListSelectionFace {
 
-
 	private static final String TAG = "LccLog-GameLiveFragment";
 	private static final String WARNING_TAG = "warning message popup";
-
 
 	// Options ids
 	private static final int ID_NEW_GAME = 0;
@@ -428,15 +426,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void onDrawOffered(String drawOfferUsername) {
-		// TODO show button at top panel view
-//		drawButtonsLay = getView().findViewById(R.id.drawButtonsLay);
-//		drawTitleTxt = (TextView) getView().findViewById(R.id.drawTitleTxt);
-//		getView().findViewById(R.id.acceptDrawBtn).setOnClickListener(GameLiveFragment.this);
-//		getView().findViewById(R.id.declineDrawBtn).setOnClickListener(GameLiveFragment.this);
-//		drawButtonsLay.setVisibility(View.VISIBLE);
-//
-//		String message = drawOfferUsername + StaticData.SYMBOL_SPACE + getString(R.string.has_offered_draw);
-//		drawTitleTxt.setText(message);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				topPanelView.showDrawOfferedView(true);
+			}
+		});
 	}
 
 	@Override
@@ -740,7 +735,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	private boolean isUserMove() {
-		return isUserColorWhite() != null && isUserColorWhite() && getBoardFace().isWhiteToMove();
+		Boolean userColorWhite = isUserColorWhite();
+		return userColorWhite != null && (userColorWhite ? getBoardFace().isWhiteToMove() : !getBoardFace().isWhiteToMove());
 	}
 
 	@Override
@@ -1033,18 +1029,28 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
 			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
 			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
-//		} else if (view.getId() == R.id.acceptDrawBtn) { // TODO restore logic from controlsView
-//			if (isLCSBound) {
-//				Log.i(TAG, "Request draw: " + liveService.getCurrentGame());
-//				liveService.runMakeDrawTask();
-//			}
-//			drawButtonsLay.setVisibility(View.GONE);
-//		} else if (view.getId() == R.id.declineDrawBtn) {
-//			if (isLCSBound) {
-//				Log.i(TAG, "Decline draw: " + liveService.getCurrentGame());
-//				liveService.runRejectDrawTask();
-//			}
-//			drawButtonsLay.setVisibility(View.GONE);
+		} else if (view.getId() == PanelInfoLiveView.DRAW_ACCEPT_ID) { // TODO restore logic from controlsView
+			if (isLCSBound) {
+				try {
+					LiveChessService liveService = getLiveService();
+					Log.i(TAG, "Request draw: " + liveService.getCurrentGame());
+					liveService.runMakeDrawTask();
+					topPanelView.showDrawOfferedView(false);
+				} catch (DataNotValidException e) {
+					logLiveTest(e.getMessage());
+				}
+			}
+		} else if (view.getId() == PanelInfoLiveView.DRAW_DECLINE_ID) {
+			if (isLCSBound) {
+				try {
+					LiveChessService liveService = getLiveService();
+					Log.i(TAG, "Decline draw: " + liveService.getCurrentGame());
+					liveService.runRejectDrawTask();
+					topPanelView.showDrawOfferedView(false);
+				} catch (DataNotValidException e) {
+					logLiveTest(e.getMessage());
+				}
+			}
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			if (isLCSBound) {
 				LiveChessService liveService;
@@ -1146,6 +1152,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		setBoardView(boardView);
 		boardView.setGameFace(this);
 		controlsLiveView.setBoardViewFace(boardView);
+		topPanelView.setClickHandler(this);
 	}
 
 	private class LabelsConfig {
@@ -1161,21 +1168,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
 		}
 	}
-
-//	private class UserInfoUpdateListener extends ChessUpdateListener<UserItem> {
-//
-//		public UserInfoUpdateListener() {
-//			super(UserItem.class);
-//		}
-//
-//		@Override
-//		public void updateData(UserItem returnedObj) {
-//			super.updateData(returnedObj);
-//
-//			String opponentAvatarUrl = returnedObj.getData().getAvatar();
-//			imageDownloader.download(opponentAvatarUrl, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
-//		}
-//	}
 
 	private class ImageUpdateListener extends ImageReadyListenerLight {
 
