@@ -16,6 +16,7 @@ import com.chess.ui.adapters.SelectionAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,10 +24,10 @@ import java.util.ArrayList;
  * Date: 28.04.13
  * Time: 5:23
  */
-public class SettingsBoardFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener {
+public class SettingsBoardFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener, AdapterView.OnItemSelectedListener {
 
-	private ArrayList<SelectionItem> piecesList;
-	private ArrayList<SelectionItem> boardsList;
+	private List<SelectionItem> piecesList;
+	private List<SelectionItem> boardsList;
 	private Spinner boardsSpinner;
 	private Spinner piecesSpinner;
 	private SwitchButton coordinatesSwitch;
@@ -87,9 +88,20 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		}
 	}
 
-	private AdapterView.OnItemSelectedListener boardSpinnerListener = new AdapterView.OnItemSelectedListener() {
-		@Override
-		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+	@Override
+	public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+		if (view.getId() == R.id.piecesSpinner) {
+			for (SelectionItem item : piecesList) {
+				item.setChecked(false);
+			}
+
+			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(pos);
+			selectionItem.setChecked(true);
+
+			getAppData().setPiecesId(pos);
+
+			((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
+		} else if (view.getId() == R.id.piecesSpinner) {
 			for (SelectionItem item : boardsList) {
 				item.setChecked(false);
 			}
@@ -101,31 +113,11 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 
 			((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
 		}
+	}
 
-		@Override
-		public void onNothingSelected(AdapterView<?> adapterView) {
-		}
-	};
-
-	private AdapterView.OnItemSelectedListener piecesSpinnerListener = new AdapterView.OnItemSelectedListener() {
-		@Override
-		public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-			for (SelectionItem item : piecesList) {
-				item.setChecked(false);
-			}
-
-			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(pos);
-			selectionItem.setChecked(true);
-
-			getAppData().setPiecesId(pos);
-
-			((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
-		}
-
-		@Override
-		public void onNothingSelected(AdapterView<?> adapterView) {
-		}
-	};
+	@Override
+	public void onNothingSelected(AdapterView<?> adapterView) {
+	}
 
 	private void widgetsInit(View view) {
 
@@ -188,7 +180,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		boardsSpinner.setAdapter(new SelectionAdapter(getActivity(), boardsList));
 		int boardsPosition = preferences.getInt(userName + AppConstants.PREF_BOARD_STYLE, 0);
 		boardsSpinner.setSelection(boardsPosition);
-		boardsSpinner.setOnItemSelectedListener(boardSpinnerListener);
+		boardsSpinner.setOnItemSelectedListener(this);
 		boardsList.get(boardsPosition).setChecked(true);
 
 		piecesSpinner = (Spinner) view.findViewById(R.id.piecesSpinner);
@@ -196,6 +188,6 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		int piecesPosition = preferences.getInt(userName + AppConstants.PREF_PIECES_SET, 0);
 		piecesSpinner.setSelection(piecesPosition);
 		piecesList.get(piecesPosition).setChecked(true);
-		piecesSpinner.setOnItemSelectedListener(piecesSpinnerListener);
+		piecesSpinner.setOnItemSelectedListener(this);
 	}
 }

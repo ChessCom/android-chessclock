@@ -295,6 +295,8 @@
 	<string name="to_">To:</string>
 	<string name="write_your_message">Write your message...</string>
 	<string name="random">Random</string>
+	<string name="comp_play_as">Comp Play As:</string>
+	<string name="two_players">2 Players</string>
 	<!--Game mode-->
 
 </resources>

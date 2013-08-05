@@ -202,7 +202,6 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 				SeekBar ratingBar = (SeekBar) view.findViewById(R.id.ratingBar);
 				ratingBar.setOnSeekBarChangeListener(ratingBarChangeListener);
-				// TODO adjust progress drawable
 				ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingBar));
 			}
 			view.findViewById(R.id.playBtn).setOnClickListener(this);

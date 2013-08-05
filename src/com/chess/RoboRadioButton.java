@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.RadioButton;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.utilities.AppUtils;
 
 public class RoboRadioButton extends RadioButton {
 
@@ -53,4 +55,12 @@ public class RoboRadioButton extends RadioButton {
 		init(getContext(), null);
 	}
 
+	public void setDrawableStyle(int styleId) {
+		ButtonDrawable buttonDrawable = ButtonDrawableBuilder.createDrawable(getContext(), styleId);
+		if (AppUtils.JELLYBEAN_PLUS_API) {
+			setBackground(buttonDrawable);
+		} else {
+			setBackgroundDrawable(buttonDrawable);
+		}
+	}
 }

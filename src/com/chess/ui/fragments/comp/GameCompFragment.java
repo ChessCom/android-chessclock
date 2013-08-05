@@ -1,4 +1,4 @@
-package com.chess.ui.fragments.game;
+package com.chess.ui.fragments.comp;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -32,7 +32,7 @@ import com.chess.ui.engine.MoveParser;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.engine.stockfish.CompEngineHelper;
 import com.chess.ui.engine.stockfish.StartEngineTask;
-import com.chess.ui.fragments.CompGameSetupFragment;
+import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsBoardFragment;
@@ -61,7 +61,7 @@ import java.util.List;
 public class GameCompFragment extends GameBaseFragment implements GameCompFace, PopupListSelectionFace {
 
 	private static final String MODE = "mode";
-	private static final String COMP_DELAY = "comp_delay";
+	private static final String COMP_STRENGTH = "comp_strength";
 	// Quick action ids
 	private static final int ID_NEW_GAME = 0;
 	private static final int ID_EMAIL_GAME = 1;
@@ -97,7 +97,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		CompGameConfig config = new CompGameConfig.Builder().build();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE,  config.getMode());
-		bundle.putInt(COMP_DELAY, config.getMode());
+		bundle.putInt(COMP_STRENGTH, config.getMode());
 		setArguments(bundle);
 	}
 
@@ -105,7 +105,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		GameCompFragment frag = new GameCompFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, config.getMode());
-		bundle.putInt(COMP_DELAY, config.getCompDelay());
+		bundle.putInt(COMP_STRENGTH, config.getStrength());
 		frag.setArguments(bundle);
 		return frag;
 	}
@@ -225,8 +225,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		boolean isRestoreGame = getAppData().haveSavedCompGame() || getBoardFace().isAnalysis();
 		String fen = null;
 
-		Bundle state = savedInstanceState/*.length > 0 ? savedInstanceState[0] : null*/;
-
 		CompEngineItem compEngineItem = new CompEngineItem();
 		compEngineItem.setGameMode(gameMode);
 		compEngineItem.setDepth(depth);
@@ -236,7 +234,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		compEngineItem.setTime(time);
 
 		new StartEngineTask(compEngineItem, this,
-				PreferenceManager.getDefaultSharedPreferences(getActivity()), state, getActivity().getApplicationContext(),
+				PreferenceManager.getDefaultSharedPreferences(getActivity()), savedInstanceState, getActivity().getApplicationContext(),
 				new InitComputerEngineUpdateListener()).executeTask();
 	}
 
@@ -490,7 +488,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	@Override
 	public void newGame() {
-		getActivityFace().openFragment(new CompGameSetupFragment());
+		getActivityFace().changeRightFragment(new CompGameOptionsFragment());
+		getActivityFace().toggleRightMenu();
 	}
 
 	@Override
@@ -656,7 +655,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	@Override
 	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
-//			getActivityFace().openFragment(new CompGameSetupFragment()); // TODO
 			newGame();
 		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();

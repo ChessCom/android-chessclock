@@ -9,11 +9,11 @@ import com.chess.backend.statics.AppConstants;
  * Time: 20:05
  */
 public class CompGameConfig {
-	private int compDelay;
+	private int strength;
 	private int mode;
 
 	public static class Builder{
-		private int compDelay;
+		private int strength;
 		private int mode;
 
 		/**
@@ -21,11 +21,11 @@ public class CompGameConfig {
 		 */
 		public Builder(){
 			mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
-			compDelay = 5;
+			strength = 5;
 		}
 
-		public Builder setCompDelay(int compDelay) {
-			this.compDelay = compDelay;
+		public Builder setStrength(int strength) {
+			this.strength = strength;
 			return this;
 		}
 
@@ -40,12 +40,12 @@ public class CompGameConfig {
 	}
 
 	private CompGameConfig(Builder builder) {
-		this.compDelay = builder.compDelay;
+		this.strength = builder.strength;
 		this.mode = builder.mode;
 	}
 
-	public int getCompDelay() {
-		return compDelay;
+	public int getStrength() {
+		return strength;
 	}
 
 	public int getMode() {

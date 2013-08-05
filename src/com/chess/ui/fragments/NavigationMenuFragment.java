@@ -18,7 +18,7 @@ import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.daily.DailyTabsFragment;
 import com.chess.ui.fragments.forums.ForumCategoriesFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
-import com.chess.ui.fragments.game.GameCompFragment;
+import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.game.GameTacticsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;

@@ -3,8 +3,12 @@ package com.chess;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.ToggleButton;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawable;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.utilities.AppUtils;
 
 import java.io.Serializable;
 
@@ -39,17 +43,28 @@ public class RoboToggleButton extends ToggleButton implements Serializable {
 			array.recycle();
 		}
 
-		init(context);
+		init(context, attrs);
 	}
 
-	private void init(Context context) {
+	private void init(Context context, AttributeSet attrs) {
 		if (!isInEditMode()) {
-			setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
+			Typeface font = FontsHelper.getInstance().getTypeFace(context, ttfName);
+			setTypeface(font);
 		}
+		ButtonDrawableBuilder.setBackgroundToView(this, attrs);
 	}
 
 	public void setFont(String font) {
 		ttfName = font;
-		init(getContext());
+		init(getContext(), null);
+	}
+
+	public void setDrawableStyle(int styleId) {
+		ButtonDrawable buttonDrawable = ButtonDrawableBuilder.createDrawable(getContext(), styleId);
+		if (AppUtils.JELLYBEAN_PLUS_API) {
+			setBackground(buttonDrawable);
+		} else {
+			setBackgroundDrawable(buttonDrawable);
+		}
 	}
 }

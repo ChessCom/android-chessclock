@@ -24,7 +24,7 @@ import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.daily.DailyGamesOptionsFragment;
 import com.chess.ui.fragments.friends.ChallengeFriendFragment;
-import com.chess.ui.fragments.game.GameCompFragment;
+import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.live.LiveGameOptionsFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
@@ -183,7 +183,6 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 			} else {
 				getActivityFace().changeRightFragment(new LiveGameOptionsFragment());
 			}
-//			getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.LIVE_STANDARD));
 		} else if (view.getId() == R.id.livePlayBtn) {
 			createLiveChallenge();
 			if (positionMode == RIGHT_MENU_MODE) {
@@ -191,7 +190,6 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 			}
 		} else if (view.getId() == R.id.dailyHeaderView) {
 			if (positionMode == CENTER_MODE) {
-//				getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.DAILY_CHESS));
 				getActivityFace().openFragment(new DailyGamesOptionsFragment());
 			} else {
 				getActivityFace().changeRightFragment(new DailyGamesOptionsFragment());

@@ -296,7 +296,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		});
 	}
 
-	private void indicateCurrentMove(boolean userMove) {
+	private void indicateCurrentMove(boolean userMove) {  // TODO adjust or remove
 		if (getBoardFace().isReside()) {
 			topPanelView.showTimeLeftIcon(userMove);
 			bottomPanelView.showTimeLeftIcon(!userMove);
@@ -390,7 +390,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-
 				boardView.setGameFace(GameLiveFragment.this);
 				boardView.invalidate();
 				invalidateGameScreen();

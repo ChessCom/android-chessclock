@@ -255,6 +255,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ratingButtonsLay"
+				android:paddingLeft="@dimen/seek_bar_side_padding"
+				android:paddingRight="@dimen/seek_bar_side_padding"
                 android:max="100"
                 android:progress="50"
                 android:layout_marginTop="11dip"

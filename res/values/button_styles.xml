@@ -241,14 +241,20 @@
     </style>
 
     <style name="Button.White.30">
-        <item name="btn_solid">@color/semitransparent_white_30</item>
+		<item name="btn_use_border">false</item>
+		<item name="btn_is_glassy">true</item>
+		<item name="btn_solid">@color/semitransparent_white_30</item>
     </style>
 
     <style name="Button.White.50">
+		<item name="btn_use_border">false</item>
+		<item name="btn_is_glassy">true</item>
         <item name="btn_solid">@color/semitransparent_white_50</item>
     </style>
 
     <style name="Button.White.75">
+		<item name="btn_use_border">false</item>
+		<item name="btn_is_glassy">true</item>
         <item name="btn_solid">@color/semitransparent_white_75</item>
     </style>
 
@@ -264,10 +270,14 @@
     </style>
 
     <style name="Button.Black.30">
+		<item name="btn_use_border">false</item>
+		<item name="btn_is_glassy">true</item>
         <item name="btn_solid">@color/semitransparent_black_30</item>
     </style>
 
     <style name="Button.Black.65">
+		<item name="btn_use_border">false</item>
+		<item name="btn_is_glassy">true</item>
         <item name="btn_solid">@color/semitransparent_black_65</item>
     </style>
 
