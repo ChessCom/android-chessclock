@@ -60,8 +60,6 @@ import java.util.List;
  */
 public class GameCompFragment extends GameBaseFragment implements GameCompFace, PopupListSelectionFace {
 
-	private static final String MODE = "mode";
-	private static final String COMP_STRENGTH = "comp_strength";
 	// Quick action ids
 	private static final int ID_NEW_GAME = 0;
 	private static final int ID_EMAIL_GAME = 1;
@@ -93,19 +91,19 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	private Bundle savedInstanceState;
 
+	private CompGameConfig compGameConfig;
+
 	public GameCompFragment() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
 		Bundle bundle = new Bundle();
-		bundle.putInt(MODE,  config.getMode());
-		bundle.putInt(COMP_STRENGTH, config.getMode());
+		bundle.putParcelable(CONFIG, config);
 		setArguments(bundle);
 	}
 
 	public static GameCompFragment createInstance(CompGameConfig config) {
 		GameCompFragment frag = new GameCompFragment();
 		Bundle bundle = new Bundle();
-		bundle.putInt(MODE, config.getMode());
-		bundle.putInt(COMP_STRENGTH, config.getStrength());
+		bundle.putParcelable(CONFIG, config);
 		frag.setArguments(bundle);
 		return frag;
 	}
@@ -113,6 +111,12 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			compGameConfig = getArguments().getParcelable(CONFIG);
+		} else {
+			compGameConfig = savedInstanceState.getParcelable(CONFIG);
+		}
 
 		labelsConfig = new LabelsConfig();
 	}
@@ -154,7 +158,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		super.onResume();
 
 		ChessBoardComp.resetInstance();
-		getBoardFace().setMode(getArguments().getInt(MODE));
+		getBoardFace().setMode(compGameConfig.getMode());
 		if (getAppData().haveSavedCompGame()) {
 			loadSavedGame();
 		}
@@ -210,6 +214,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			outState.putByteArray(CompEngineHelper.GAME_STATE, data);
 			outState.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
 		}
+		outState.putParcelable(CONFIG, compGameConfig);
 	}
 
 	private void startGame(Bundle savedInstanceState) {
@@ -219,9 +224,10 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		} else {
 			gameMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
 		}
-		int strength = compStrengthArray[getAppData().getCompStrength()];
-		int time = Integer.parseInt(compTimeLimitArray[getAppData().getCompStrength()]);
-		int depth = Integer.parseInt(compDepth[getAppData().getCompStrength()]);
+		int strength = compStrengthArray[compGameConfig.getStrength()];
+		int time = Integer.parseInt(compTimeLimitArray[compGameConfig.getStrength()]);
+		int depth = Integer.parseInt(compDepth[compGameConfig.getStrength()]);
+
 		boolean isRestoreGame = getAppData().haveSavedCompGame() || getBoardFace().isAnalysis();
 		String fen = null;
 
@@ -456,7 +462,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		ChessBoardComp.resetInstance();
 		ChessBoardComp.getInstance(this).setJustInitialized(false);
 		boardView.setGameActivityFace(this);
-		getBoardFace().setMode(getArguments().getInt(AppConstants.GAME_MODE));
+		getBoardFace().setMode(compGameConfig.getMode());
 		loadSavedGame();
 
 		resideBoardIfCompWhite();
@@ -738,7 +744,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	private void init() {
 		labelsConfig = new LabelsConfig();
-		getBoardFace().setMode(getArguments().getInt(MODE));
+		getBoardFace().setMode(compGameConfig.getMode());
 	}
 
 	private void widgetsInit(View view) {

@@ -71,6 +71,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected static final String CHECK_UPDATE_TAG = "check update";
 
 	protected static final String MODE = "mode";
+	protected static final String CONFIG = "config";
 
 	public static final int CENTER_MODE = 1;
 	public static final int RIGHT_MENU_MODE = 2;

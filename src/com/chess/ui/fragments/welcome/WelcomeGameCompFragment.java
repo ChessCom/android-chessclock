@@ -67,9 +67,6 @@ import java.util.List;
 public class WelcomeGameCompFragment extends GameBaseFragment implements GameCompFace,
 		PopupListSelectionFace, AdapterView.OnItemClickListener, MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener {
 
-	private static final String MODE = "mode";
-	private static final String COMP_DELAY = "comp_delay";
-
 	private static final int PLAY_ONLINE_ITEM = 1;
 	private static final int CHALLENGE_ITEM = 2;
 	private static final int REMATCH_ITEM = 3;
@@ -130,19 +127,19 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	private TextView engineThinkingPath;
 	private Bundle savedInstanceState;
 
+	private CompGameConfig compGameConfig;
+
 	public WelcomeGameCompFragment() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
 		Bundle bundle = new Bundle();
-		bundle.putInt(MODE, config.getMode());
-		bundle.putInt(COMP_DELAY, config.getMode());
+		bundle.putParcelable(CONFIG, config);
 		setArguments(bundle);
 	}
 
 	public static WelcomeGameCompFragment createInstance(FragmentTabsFace parentFace, CompGameConfig config) {
 		WelcomeGameCompFragment fragment = new WelcomeGameCompFragment();
 		Bundle bundle = new Bundle();
-		bundle.putInt(MODE, config.getMode());
-		bundle.putInt(COMP_DELAY, config.getMode());
+		bundle.putParcelable(CONFIG, config);
 		fragment.setArguments(bundle);
 		fragment.parentFace = parentFace;
 		return fragment;
@@ -151,6 +148,12 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			compGameConfig = getArguments().getParcelable(CONFIG);
+		} else {
+			compGameConfig = savedInstanceState.getParcelable(CONFIG);
+		}
 
 		labelsConfig = new LabelsConfig();
 	}
@@ -189,7 +192,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		super.onResume();
 
 		ChessBoardComp.resetInstance();
-		getBoardFace().setMode(getArguments().getInt(MODE));
+		getBoardFace().setMode(compGameConfig.getMode());
 		if (getAppData().haveSavedCompGame()) {
 			loadSavedGame();
 		}
@@ -249,6 +252,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 			outState.putByteArray(CompEngineHelper.GAME_STATE, data);
 			outState.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
 		}
+		outState.putParcelable(CONFIG, compGameConfig);
 	}
 
 	private void startGame(Bundle savedInstanceState) {
@@ -258,9 +262,9 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		} else {
 			gameMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
 		}
-		int strength = compStrengthArray[getAppData().getCompStrength()];
-		int time = Integer.parseInt(compTimeLimitArray[getAppData().getCompStrength()]);
-		int depth = Integer.parseInt(compDepth[getAppData().getCompStrength()]);
+		int strength = compStrengthArray[compGameConfig.getStrength()];
+		int time = Integer.parseInt(compTimeLimitArray[compGameConfig.getStrength()]);
+		int depth = Integer.parseInt(compDepth[compGameConfig.getStrength()]);
 		boolean isRestoreGame = getAppData().haveSavedCompGame() || getBoardFace().isAnalysis();
 		String fen = null;
 
@@ -490,7 +494,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		ChessBoardComp.resetInstance();
 		ChessBoardComp.getInstance(this).setJustInitialized(false);
 		boardView.setGameActivityFace(this);
-		getBoardFace().setMode(getArguments().getInt(AppConstants.GAME_MODE));
+		getBoardFace().setMode(compGameConfig.getMode());
 		loadSavedGame();
 
 		resideBoardIfCompWhite();
@@ -772,7 +776,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	private void init() {
 		labelsConfig = new LabelsConfig();
 		ChessBoardComp.resetInstance();
-		getBoardFace().setMode(getArguments().getInt(MODE));
+		getBoardFace().setMode(compGameConfig.getMode());
 
 		ArrayList<PromoteItem> menuItems = new ArrayList<PromoteItem>();
 		menuItems.add(new PromoteItem(R.string.play_online, R.string.ic_play_online));

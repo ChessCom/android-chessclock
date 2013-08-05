@@ -1,5 +1,7 @@
 package com.chess.ui.engine.configs;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.chess.backend.statics.AppConstants;
 
 /**
@@ -8,7 +10,7 @@ import com.chess.backend.statics.AppConstants;
  * Date: 14.04.13
  * Time: 20:05
  */
-public class CompGameConfig {
+public class CompGameConfig implements Parcelable {
 	private int strength;
 	private int mode;
 
@@ -55,4 +57,28 @@ public class CompGameConfig {
 	public void setMode(int mode) {
 		this.mode = mode;
 	}
+
+	protected CompGameConfig(Parcel in) {
+		strength = in.readInt();
+		mode = in.readInt();
+	}
+
+	public int describeContents() {
+		return 0;
+	}
+
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(strength);
+		dest.writeInt(mode);
+	}
+
+	public static final Parcelable.Creator<CompGameConfig> CREATOR = new Parcelable.Creator<CompGameConfig>() {
+		public CompGameConfig createFromParcel(Parcel in) {
+			return new CompGameConfig(in);
+		}
+
+		public CompGameConfig[] newArray(int size) {
+			return new CompGameConfig[size];
+		}
+	};
 }

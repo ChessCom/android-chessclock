@@ -369,8 +369,12 @@ public class AppData {
 		return getStringValue(PREF_THEME_BOARD_PATH, "");
 	}
 
+	public void setThemeBackId(int themeId) {
+		setIntValue(PREF_THEME_BACK_ID, themeId);
+	}
+
 	public int getThemeBackId() {
-		return R.drawable.img_theme_green_felt; // won't be changed
+		return getIntValue(PREF_THEME_BACK_ID, R.drawable.img_theme_green_felt);
 	}
 
 	public void setThemeName(String themeName) {
@@ -395,14 +399,6 @@ public class AppData {
 
 	public boolean isUserChooseLessonsLibrary() {
 		return getBooleanValue(PREF_USER_CHOOSE_LESSONS_LIBRARY, true);
-	}
-
-	public void setCompStrength(int value) {
-		setIntValue(PREF_COMPUTER_STRENGTH, value);
-	}
-
-	public int getCompStrength() {
-		return getIntValue(PREF_COMPUTER_STRENGTH, 2);
 	}
 
 	/*--------------------------- Common Shared logic ------------------------*/
@@ -442,5 +438,11 @@ public class AppData {
 		editor.putInt(userName + field, value).commit();
 	}
 
+	public void setCompStrength(int value) {
+		setIntValue(PREF_COMPUTER_STRENGTH, value);
+	}
 
+	public int getCompStrength() {
+		return getIntValue(PREF_COMPUTER_STRENGTH, 2);
+	}
 }

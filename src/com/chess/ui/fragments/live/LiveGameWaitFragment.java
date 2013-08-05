@@ -27,7 +27,6 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 	private static final String TAG = "LccLog-LiveGameWaitFragment";
 	private static final long FINISH_FRAGMENT_DELAY = 200;
 
-	private static final String CONFIG = "config";
 	private View loadingView;
 	private LiveGameConfig liveGameConfig;
 	private GameTaskListener gameTaskListener;
