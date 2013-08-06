@@ -63,20 +63,24 @@ public class CompGameConfig implements Parcelable {
 		mode = in.readInt();
 	}
 
+	@Override
 	public int describeContents() {
 		return 0;
 	}
 
+	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(strength);
 		dest.writeInt(mode);
 	}
 
 	public static final Parcelable.Creator<CompGameConfig> CREATOR = new Parcelable.Creator<CompGameConfig>() {
+		@Override
 		public CompGameConfig createFromParcel(Parcel in) {
 			return new CompGameConfig(in);
 		}
 
+		@Override
 		public CompGameConfig[] newArray(int size) {
 			return new CompGameConfig[size];
 		}
