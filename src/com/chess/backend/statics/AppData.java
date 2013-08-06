@@ -18,8 +18,6 @@ import static com.chess.backend.statics.AppConstants.*;
  */
 public class AppData {
 
-	public static final Object LOCK = new Object(); // try to use synchronized for Live board async updates
-
 	private final SharedPreferences.Editor editor;
 	private SharedPreferences preferences;
 

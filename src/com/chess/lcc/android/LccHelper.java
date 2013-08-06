@@ -40,6 +40,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	private static final String TAG = "LccLog-LccHelper";
 	public static final int OWN_SEEKS_LIMIT = 3;
 	public static final int CONNECTION_FAILURE_DELAY = 2000;
+	public static final Object LOCK = new Object();
 
 	private final LccChatListener chatListener;
 	private final LccConnectionListener connectionListener;
@@ -298,20 +299,25 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 		setConnected(false);
 		cancelServiceNotification();
+		logout();
+
+		Log.d(TAG, "processConnectionFailure: details=" + details);
+
+		String detailsMessage;
 
 		if (details != null) {
 
-			Log.d(TAG, "processConnectionFailure: details=" + details);
-
-			resetClient();
-
-			String detailsMessage;
 			switch (details) {
 				case USER_KICKED: {
 					detailsMessage = context.getString(R.string.live_chess_server_upgrading);
 					break;
 				}
 				case ACCOUNT_FAILED: { // wrong authKey
+					try {
+						Thread.sleep(CONNECTION_FAILURE_DELAY); // probably should be removed
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 					runConnectTask(true);
 					return;
 				}
@@ -328,10 +334,15 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 					detailsMessage = context.getString(R.string.pleaseLoginAgain);
 					break;
 			}
-			liveChessClientEventListener.onConnectionFailure(detailsMessage);
-
 		} else {
-			Log.d(TAG, "processConnectionFailure: details=null, recreate client and connect");
+			detailsMessage = context.getString(R.string.pleaseLoginAgain);
+		}
+
+		liveChessClientEventListener.onConnectionFailure(detailsMessage);
+
+		// do not do any manual reconnects here
+		/*else {
+			Log.d(TAG, "processConnectionFailure: details=null");
 
 			try {
 				Thread.sleep(CONNECTION_FAILURE_DELAY);
@@ -339,12 +350,12 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 				e.printStackTrace();
 			}
 
-			runConnectTask(true); // recreate and connect
+			runConnectTask(true); // recreate and connect*/
 
 			/*setConnected(false);
 			cancelServiceNotification();
 			liveChessClientEventListener.onSessionExpired(context.getString(R.string.login_failed));*/
-		}
+		//}
 
 	}
 
@@ -824,7 +835,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	public void checkAndProcessFullGame() {
 		boolean isGameAlreadyPresent = currentGameId != null && getGame(currentGameId) != null;
 		if (isGameAlreadyPresent) {
-			synchronized(AppData.LOCK) {
+			synchronized(LccHelper.LOCK) {
 				processFullGame(getGame(currentGameId));
 			}
 		}

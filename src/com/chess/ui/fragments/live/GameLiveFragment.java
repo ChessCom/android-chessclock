@@ -22,6 +22,7 @@ import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.DataNotValidException;
+import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
@@ -151,7 +152,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		if (isLCSBound) {
 			try {
-				synchronized(getAppData().LOCK) {
+				synchronized(LccHelper.LOCK) {
 					onGameStarted();
 				}
 			} catch (DataNotValidException e) {
@@ -326,7 +327,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					dismissDialogs(); // hide game end popup
 
 					try {
-						synchronized(getAppData().LOCK) {
+						synchronized(LccHelper.LOCK) {
 							onGameStarted();
 						}
 					} catch (DataNotValidException e) {
@@ -808,7 +809,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 //			switch2Analysis(false);
 			getBoardFace().setAnalysis(false);
 
-			synchronized(getAppData().LOCK) {
+			synchronized(LccHelper.LOCK) {
 				try {
 					onGameStarted();
 				} catch (DataNotValidException e) {
@@ -997,7 +998,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 //			ChessBoardLive.resetInstance();		 // moved to onGameStarted
 //			boardView.setGameFace(this);
 
-			synchronized(getAppData().LOCK) {
+			synchronized(LccHelper.LOCK) {
 				try {
 					onGameStarted();
 				} catch (DataNotValidException e) {
