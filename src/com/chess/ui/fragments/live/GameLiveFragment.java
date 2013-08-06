@@ -244,7 +244,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		liveService.checkAndReplayMoves();
 
 		liveService.checkFirstTestMove();
-		liveService.executePausedActivityGameEvents();
+
+		liveService.setGameActivityPausedMode(false);
+
+		// remove pausedActivityGameEvents
+		//liveService.executePausedActivityGameEvents();
 	}
 
 	@Override

@@ -4,6 +4,7 @@
 
 package com.chess.lcc.android;
 
+// todo: remove
 public class LiveGameEvent {
 	public enum Event {MOVE, DRAW_OFFER, END_OF_GAME}
 

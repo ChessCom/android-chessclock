@@ -61,7 +61,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	private final Hashtable<Long, Game> lccGames = new Hashtable<Long, Game>();
 	private final Map<String, User> friends = new HashMap<String, User>();
 	private final Map<String, User> onlineFriends = new HashMap<String, User>();
-	private Map<LiveGameEvent.Event, LiveGameEvent> pausedActivityGameEvents = new HashMap<LiveGameEvent.Event, LiveGameEvent>();
+	/*private Map<LiveGameEvent.Event, LiveGameEvent> pausedActivityGameEvents = new HashMap<LiveGameEvent.Event, LiveGameEvent>();*/
 	// todo: clear pausedActivityLiveEvents
 	private Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = new HashMap<LiveEvent.Event, LiveEvent>();
 	private final HashMap<Long, Chat> gameChats = new HashMap<Long, Chat>();
@@ -104,8 +104,8 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		pendingWarnings = new ArrayList<String>();
 	}
 
-	public void executePausedActivityGameEvents() {
-		/*if (gameActivityPausedMode) {*/
+	/*public void executePausedActivityGameEvents() {
+		*//*if (gameActivityPausedMode) {*//*
 
 		Log.d(TAG, "executePausedActivityGameEvents size=" + pausedActivityGameEvents.size() + ", events=" + pausedActivityGameEvents);
 
@@ -117,7 +117,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			if (moveEvent != null && (currentGameId == null || currentGameId.equals(moveEvent.getGameId()))) {
 				pausedActivityGameEvents.remove(LiveGameEvent.Event.MOVE);
 				//lccHolder.getAndroidStuff().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
-				GameLiveItem newGame = new GameLiveItem(getGame(moveEvent.getGameId()), getCurrentGame().getMoveCount() - 1/*moveEvent.getMoveIndex()*/);
+				GameLiveItem newGame = new GameLiveItem(getGame(moveEvent.getGameId()), getCurrentGame().getMoveCount() - 1*//*moveEvent.getMoveIndex()*//*);
 				lccEventListener.onGameRefresh(newGame);
 			}
 
@@ -136,7 +136,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			//pausedActivityGameEvents.clear();
 		}
 		paintClocks();
-	}
+	}*/
 
 	public void paintClocks() {
 		if (whiteClock != null && blackClock != null) {
@@ -824,9 +824,9 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 //		pausedActivityGameEvents.clear();
 	}
 
-	public Map<LiveGameEvent.Event, LiveGameEvent> getPausedActivityGameEvents() {
+	/*public Map<LiveGameEvent.Event, LiveGameEvent> getPausedActivityGameEvents() {
 		return pausedActivityGameEvents;
-	}
+	}*/
 
 	public Map<LiveEvent.Event, LiveEvent> getPausedActivityLiveEvents() {
 		return pausedActivityLiveEvents;
@@ -890,17 +890,20 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		} else {*/
 		latestMoveNumber = moveIndex;
 		//}
-		if (isGameActivityPausedMode()) {
-			LiveGameEvent moveEvent = new LiveGameEvent();
-			moveEvent.setEvent(LiveGameEvent.Event.MOVE);
-			moveEvent.setGameId(game.getId());
-			//moveEvent.setMoveIndex(moveIndex);
-			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);
-		} else {
+
+		// probably we still should ignore background Move as well as other events: draw offer and game end
+		if (!isGameActivityPausedMode()) {
+
 			// todo: possible optimization - keep gameLiveItem between moves and just add new move when it comes
 			lccEventListener.onGameRefresh(new GameLiveItem(game, moveIndex));
 			doUpdateClocks(game, moveMaker, moveIndex); // update clock only for resumed activity?
-		}
+		} /*else {
+			*//*LiveGameEvent moveEvent = new LiveGameEvent();
+			moveEvent.setEvent(LiveGameEvent.Event.MOVE);
+			moveEvent.setGameId(game.getId());
+			//moveEvent.setMoveIndex(moveIndex);
+			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);*//*
+		}*/
 		// doUpdateClocks(game, moveMaker, moveIndex);
 	}
 
@@ -1054,7 +1057,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void clearPausedEvents() {
-		pausedActivityGameEvents.clear();
+		//pausedActivityGameEvents.clear();
 		pausedActivityLiveEvents.clear();
 	}
 

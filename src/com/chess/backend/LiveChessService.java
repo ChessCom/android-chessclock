@@ -376,9 +376,9 @@ public class LiveChessService extends Service {
 		lccHelper.setGameActivityPausedMode(gameActivityPausedMode);
 	}
 
-	public void executePausedActivityGameEvents() {
+	/*public void executePausedActivityGameEvents() {
 		lccHelper.executePausedActivityGameEvents();
-	}
+	}*/
 
 	public void checkAndReplayMoves() {
 		lccHelper.checkAndReplayMoves();
