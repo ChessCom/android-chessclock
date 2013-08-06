@@ -151,7 +151,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		if (isLCSBound) {
 			try {
-				onGameStarted();
+				synchronized(getAppData().LOCK) {
+					onGameStarted();
+				}
 			} catch (DataNotValidException e) {
 				logLiveTest(e.getMessage());
 				isLCSBound = false;
@@ -234,9 +236,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		controlsLiveView.haveNewMessage(currentGame.hasNewMessage());
 
-		if (!liveService.getCurrentGame().isGameOver()) { // avoid races on update moves logic for active game, doUpdateGame updates moves, avoid peaces disappearing and invalidmovie exception
-			liveService.checkAndReplayMoves();
-		}
+		// avoid races on update moves logic for active game, doUpdateGame updates moves, avoid peaces disappearing and invalidmovie exception
+		// vm: actually we have to invoke checkAndReplayMoves() here, because we reset a board on pause/resume everytime.
+		// As for doUpdateGame() - that method updates moves only if gameLivePaused=false, so should be safe.
+		// Lets see how synchronized approach is suitable here
+		liveService.checkAndReplayMoves();
 
 		liveService.checkFirstTestMove();
 		liveService.executePausedActivityGameEvents();
@@ -322,7 +326,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					dismissDialogs(); // hide game end popup
 
 					try {
-						onGameStarted();
+						synchronized(getAppData().LOCK) {
+							onGameStarted();
+						}
 					} catch (DataNotValidException e) {
 						logTest(e.getMessage());
 					}
@@ -802,14 +808,16 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 //			switch2Analysis(false);
 			getBoardFace().setAnalysis(false);
 
-			try {
-				onGameStarted();
-			} catch (DataNotValidException e) {
-				logLiveTest(e.getMessage());
-			}
+			synchronized(getAppData().LOCK) {
+				try {
+					onGameStarted();
+				} catch (DataNotValidException e) {
+					logLiveTest(e.getMessage());
+				}
 
-			if (!isUserColorWhite()) {
-				getBoardFace().setReside(true);
+				if (!isUserColorWhite()) {
+					getBoardFace().setReside(true);
+				}
 			}
 		} else if (tag.equals(ABORT_GAME_TAG)) {
 			if (isLCSBound) {
@@ -988,14 +996,17 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		if (isLCSBound) {
 //			ChessBoardLive.resetInstance();		 // moved to onGameStarted
 //			boardView.setGameFace(this);
-			try {
-				onGameStarted();
-			} catch (DataNotValidException e) {
-				logLiveTest(e.getMessage());
-				isLCSBound = false;
-				return;
+
+			synchronized(getAppData().LOCK) {
+				try {
+					onGameStarted();
+				} catch (DataNotValidException e) {
+					logLiveTest(e.getMessage());
+					isLCSBound = false;
+					return;
+				}
+				getBoardFace().setJustInitialized(false);
 			}
-			getBoardFace().setJustInitialized(false);
 		}
 	}
 

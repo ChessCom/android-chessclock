@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
@@ -146,9 +147,12 @@ public class LccGameListener implements GameListener {
 			lccHelper.putGame(game);
 //			return;
 		}
-		lccHelper.setCurrentGameId(game.getId());
-//		lccHelper.setGameActivityPausedMode(true);
-		lccHelper.processFullGame(game);
+
+		synchronized (AppData.LOCK) {
+			lccHelper.setCurrentGameId(game.getId());
+			//lccHelper.setGameActivityPausedMode(true);
+			lccHelper.processFullGame(game);
+		}
 	}
 
 	private void doUpdateGame(boolean checkMoves, Game game) {
@@ -160,7 +164,9 @@ public class LccGameListener implements GameListener {
 			String move = game.getLastMove();
 			Log.d(TAG, "GAME LISTENER: The move #" + game.getMoveCount() + " received by user: " + lccHelper.getUser().getUsername() +
 					", game.id=" + game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
-			lccHelper.doMoveMade(game, moveMaker, game.getMoveCount() - 1);
+			synchronized (AppData.LOCK) {
+				lccHelper.doMoveMade(game, moveMaker, game.getMoveCount() - 1);
+			}
 		}
 
 		final String opponentName = lccHelper.getOpponentName();

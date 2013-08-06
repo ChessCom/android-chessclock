@@ -295,7 +295,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	private class LiveServiceConnectionListener implements ServiceConnection, LccConnectionUpdateFace {
 
-
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
 			Log.d(TAG, "onServiceConnected");
