@@ -14,10 +14,9 @@
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textColor="@color/profile_grey_text"
-        android:textSize="13sp"
+        android:textColor="@color/new_subtitle_dark_grey"
+        android:textSize="14sp"
         android:gravity="center_vertical"
-        android:text="Lightning"
         android:drawablePadding="9dip"
         />
 
@@ -31,15 +30,5 @@
         android:gravity="center_vertical"
         custom:ttf="Bold"
         />
-
-    <!--Right Icon-->
-    <com.chess.RoboTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ic_right"
-        android:textColor="@color/new_light_grey_2"
-        style="@style/GlyphIcon.Small"
-        />
-
 
 </LinearLayout>

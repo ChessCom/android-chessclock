@@ -78,7 +78,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		((TextView) view.findViewById(R.id.leftTabBtn)).setText(R.string.play);
 		((TextView) view.findViewById(R.id.centerTabBtn)).setText(R.string.learn);
-		((TextView) view.findViewById(R.id.rightTabBtn)).setText(R.string.feed);
+		view.findViewById(R.id.rightTabBtn).setVisibility(View.GONE);
+//		((TextView) view.findViewById(R.id.rightTabBtn)).setText(R.string.feed);
 
 		if (themeName.equals(AppConstants.LIGHT_THEME_NAME)) {
 			((TextView) view.findViewById(R.id.leftTabBtn)).setTextColor(getResources().getColor(R.color.transparent_button_border_top));
@@ -206,14 +207,14 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 					changeInternalFragment(fragment);
 					break;
 				}
-				case R.id.rightTabBtn: {
-					Fragment fragment = findFragmentByTag(HomeFeedFragment.class.getSimpleName());
-					if (fragment == null) {
-						fragment = new HomeFeedFragment();
-					}
-					changeInternalFragment(fragment);
-					break;
-				}
+//				case R.id.rightTabBtn: {
+//					Fragment fragment = findFragmentByTag(HomeFeedFragment.class.getSimpleName());
+//					if (fragment == null) {
+//						fragment = new HomeFeedFragment();
+//					}
+//					changeInternalFragment(fragment);
+//					break;
+//				}
 			}
 		}
 	}

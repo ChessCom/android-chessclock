@@ -142,7 +142,7 @@ public abstract class ActionBarHelper {
 
 	public abstract void showActionBar(boolean show);
 
-	public abstract void setTitle(int titleId);
+	public abstract void setTitle(CharSequence title);
 
 	public abstract void setTitlePadding(int padding);
 

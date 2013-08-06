@@ -71,4 +71,19 @@
 		android:showAsAction="always"
 		/>
 
+	<item android:id="@+id/menu_message"
+		android:title="@string/edit"
+		android:orderInCategory="8"
+		android:icon="@drawable/ic_action_message"
+		android:showAsAction="always"
+		/>
+
+	<item android:id="@+id/menu_challenge"
+		android:title="@string/edit"
+		android:orderInCategory="9"
+		android:icon="@drawable/ic_action_challenge"
+		android:showAsAction="always"
+		/>
+
+
 </menu>

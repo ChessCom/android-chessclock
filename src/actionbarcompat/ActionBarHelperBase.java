@@ -297,14 +297,14 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 	}
 
 	@Override
-	public void setTitle(int titleId) {
-		titleChars = mActivity.getString(titleId);
+	public void setTitle(CharSequence title) {
+		titleChars = title;
 
 		View compatView = getActionBarCompat();
 		if (compatView != null) {
 			View titleTxt = customView.findViewById(R.id.actionbar_compat_title);
 			if (titleTxt != null) {
-				((TextView) titleTxt).setText(titleId);
+				((TextView) titleTxt).setText(title);
 			}
 		}
 	}

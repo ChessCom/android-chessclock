@@ -138,17 +138,17 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 	@Override
-	public void setTitle(int titleId) {
-		getActionBarHelper().setTitle(titleId);
+	public void setTitle(CharSequence title) {
+		getActionBarHelper().setTitle(title);
 	}
 
 	@Override
-	public void updateTitle(int titleId) {
+	public void updateTitle(CharSequence title) {
 		if (!HONEYCOMB_PLUS_API) { // set title before custom view for pre-HC
-			getActionBarHelper().setTitle(titleId);
+			getActionBarHelper().setTitle(title);
 		}
 		getActionBarHelper().setCustomView(R.layout.new_custom_actionbar);
-		getActionBarHelper().setTitle(titleId);
+		getActionBarHelper().setTitle(title);
 
 		if (!HONEYCOMB_PLUS_API) {
 			for (Map.Entry<Integer, Integer> entry : badgeItems.entrySet()) {
@@ -170,7 +170,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public void setMainBackground(int drawableThemeId) {
-		getAppData().setThemeBackId(drawableThemeId);
 		getWindow().setBackgroundDrawableResource(drawableThemeId);
 	}
 

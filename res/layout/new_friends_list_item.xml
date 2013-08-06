@@ -3,9 +3,11 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:id="@+id/friendListItemView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="10dip"
+	android:background="@drawable/white_list_item_selector"
     >
 
     <com.chess.RoboButton
@@ -54,7 +56,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/photoImg"
-        android:text="crabcackles"
         android:layout_alignTop="@id/photoImg"
         android:textColor="@color/new_text_blue"
         custom:ttf="Bold"
@@ -67,12 +68,12 @@
         android:layout_height="27dip"
         android:contentDescription="@string/country"
         android:layout_toRightOf="@id/usernameTxt"
-		android:layout_alignTop="@id/photoImg"
 		android:layout_marginTop="5dip"
         android:layout_marginLeft="7dip"
         />
+	<!--android:layout_alignTop="@id/photoImg"-->
 
-    <ImageView
+	<ImageView
         android:id="@+id/premiumImg"
         android:layout_width="20dip"
         android:layout_height="20dip"
@@ -91,7 +92,6 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/photoImg"
         android:layout_below="@id/usernameTxt"
-        android:text="location"
         android:textColor="@color/new_friends_grey_text"
         android:paddingTop="2dip"
         />
@@ -102,7 +102,6 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/photoImg"
         android:layout_alignBottom="@id/photoImg"
-        android:text="offline"
         android:textColor="@color/new_friends_grey_text"
         custom:ttf="Italic"
         android:textSize="13sp"

@@ -135,7 +135,7 @@ public class RestHelper {
 	public static final String CMD_LESSONS_LESSONS = CMD_LESSONS + "/lessons";
 
 	public static String CMD_LESSON_BY_ID(long id) {
-		return CMD_LESSONS + "/lessons/" + id;
+		return CMD_LESSONS + "/" + id;
 	}
 
 	public static String CMD_ANSWER_GAME_SEEK(long gameSeekId) {
@@ -180,6 +180,7 @@ public class RestHelper {
 	public static final String P_PAGE_ = "page";
 	public static final String P_ITEMS_PER_PAGE = "itemsPerPage";
 	public static final String P_LIMIT = "limit";
+	public static final String P_VIEW_USERNAME = "viewUsername";
 	public static final String P_ITEMS_PER_CATEGORY = "itemsPerCategory";
 	public static final String GCM_P_REGISTER_ID = "registrationId";
 

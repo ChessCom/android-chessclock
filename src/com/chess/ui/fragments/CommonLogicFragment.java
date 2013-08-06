@@ -91,7 +91,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected SharedPreferences preferences;
 	protected SharedPreferences.Editor preferencesEditor;
-	private int titleId;
+	private CharSequence title;
 	protected UiLifecycleHelper facebookUiHelper;
 	private boolean facebookActive;
 	protected View loadingView;
@@ -132,6 +132,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		getActivityFace().showActionMenu(R.id.menu_cancel, false);
 		getActivityFace().showActionMenu(R.id.menu_accept, false);
 		getActivityFace().showActionMenu(R.id.menu_edit, false);
+		getActivityFace().showActionMenu(R.id.menu_message, false);
+		getActivityFace().showActionMenu(R.id.menu_challenge, false);
 		getActivityFace().showActionMenu(R.id.menu_notifications, true);
 		getActivityFace().showActionMenu(R.id.menu_games, true);
 
@@ -205,7 +207,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	protected void setTitle(int titleId) {
-		this.titleId = titleId;
+		this.title = getString(titleId);
+	}
+
+	protected void setTitle(String title) {
+		this.title = title;
 	}
 
 	/**
@@ -227,8 +233,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	private void updateTitle() {
-		if (titleId != 0) {
-			getActivityFace().updateTitle(titleId);
+		if (!TextUtils.isEmpty(title)) {
+			getActivityFace().updateTitle(title);
 		}
 	}
 

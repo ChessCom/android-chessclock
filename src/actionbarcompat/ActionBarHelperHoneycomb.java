@@ -159,13 +159,13 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	}
 
 	@Override
-	public void setTitle(int titleId) {
+	public void setTitle(CharSequence title) {
 		if (mActivity == null || mActivity.getActionBar() == null || mActivity.getActionBar().getCustomView() == null) {
 			return;
 		}
 		View titleTxt =  mActivity.getActionBar().getCustomView().findViewById(R.id.actionbar_compat_title);
 		if (titleTxt != null) {
-			((TextView)titleTxt).setText(titleId);
+			((TextView)titleTxt).setText(title);
 		}
 	}
 

@@ -102,12 +102,6 @@ public class StatsUserFragment extends CommonLogicFragment implements AdapterVie
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			// TODO -> File | Settings | File Templates.
-		}
-
-		@Override
 		public void updateData(UserStatsItem returnedObj) {
 			super.updateData(returnedObj);
 
@@ -146,21 +140,9 @@ public class StatsUserFragment extends CommonLogicFragment implements AdapterVie
 
 	private class SaveStatsUpdateListener extends ChessUpdateListener<UserStatsItem.Data> {
 
-		public SaveStatsUpdateListener() {
-			super();
-		}
-
-		@Override
-		public void updateData(UserStatsItem.Data returnedObj) {
-			super.updateData(returnedObj);
-
-
-		}
-
 		@Override
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
-
 			showToast(" code " + resultCode);
 		}
 	}

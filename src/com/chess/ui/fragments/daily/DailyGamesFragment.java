@@ -70,7 +70,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
 	private GamesCursorUpdateListener currentGamesMyCursorUpdateListener;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
-	private DailyGamesUpdateListener dailyGamesUpdateListener;
+	protected DailyGamesUpdateListener dailyGamesUpdateListener;
 
 	private DailyCurrentGamesCursorAdapter currentGamesMyCursorAdapter;
 	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
@@ -104,6 +104,12 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (getArguments() != null) {
+			mode = getArguments().getInt(MODE);
+		} else {
+			mode = savedInstanceState.getInt(MODE);
+		}
+
 		// init adapters
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
 				new int[]{CURRENT_GAMES_SECTION});
@@ -139,19 +145,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-		if (getArguments() != null) {
-			mode = getArguments().getInt(MODE);
-		} else {
-			mode = savedInstanceState.getInt(MODE);
-		}
-	}
-
-	@Override
 	public void onStart() {
 		super.onStart();
+
 		init();
 
 		gamesUpdateReceiver = new GamesUpdateReceiver();
@@ -212,8 +208,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				startActivity(intent);
 			} else if (pos == 1) {
 				String draw = RestHelper.V_OFFERDRAW;
-				if (gameListCurrentItem.isDrawOffered())
+				if (gameListCurrentItem.isDrawOffered()) {
 					draw = RestHelper.V_ACCEPTDRAW;
+				}
 
 				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
 						draw, gameListCurrentItem.getTimestamp());
@@ -366,7 +363,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 	}
 
-	private void updateData() {
+	protected void updateData() {
 		if (!AppUtils.isNetworkAvailable(getActivity())) {
 			return;
 		}

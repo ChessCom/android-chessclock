@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	>
+
+	<com.chess.RelLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		style="@style/Rect.Bottom"
+		android:gravity="fill"
+		android:padding="10dip"
+		>
+
+		<!--Avatar-->
+		<com.chess.backend.image_load.ProgressImageView
+			android:id="@+id/photoImg"
+			android:layout_width="@dimen/profile_frame_photo_size"
+			android:layout_height="@dimen/profile_frame_photo_size"
+			android:layout_marginRight="10dip"
+			/>
+
+		<!--Username -->
+		<com.chess.RoboTextView
+			android:id="@+id/usernameTxt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@id/photoImg"
+			android:layout_marginTop="-4dip"
+			android:textSize="18sp"
+			android:textColor="@color/white"
+			custom:ttf="Bold"
+			/>
+
+		<!--Location-->
+		<com.chess.RoboTextView
+			android:id="@+id/locationTxt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/usernameTxt"
+			android:paddingTop="2dip"
+			android:paddingBottom="2dip"
+			android:layout_toRightOf="@id/photoImg"
+			android:textSize="14sp"
+			android:textColor="@color/semitransparent_white_65"
+			/>
+
+		<!--Country flag-->
+		<ImageView
+			android:id="@+id/countryImg"
+			android:layout_width="23dip"
+			android:layout_height="23dip"
+			android:adjustViewBounds="true"
+			android:layout_below="@id/locationTxt"
+			android:layout_toRightOf="@id/photoImg"
+			android:layout_marginRight="4dip"
+			android:scaleType="fitXY"
+			android:contentDescription="@string/image"
+			/>
+
+		<!--Premium flag-->
+		<ImageView
+			android:id="@+id/premiumIconImg"
+			android:layout_width="19dip"
+			android:layout_height="19dip"
+			android:adjustViewBounds="true"
+			android:layout_below="@id/locationTxt"
+			android:layout_toRightOf="@id/countryImg"
+			android:layout_marginTop="2dip"
+			android:scaleType="fitXY"
+			android:contentDescription="@string/image"
+			/>
+
+	</com.chess.RelLayout>
+
+	<!--Tabs-->
+	<RadioGroup
+		android:id="@+id/tabRadioGroup"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		>
+<!--		<com.chess.RoboRadioButton
+			android:id="@+id/leftTabBtn"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			style="@style/Rect.Tab.Left"
+			/>-->
+		<com.chess.RoboRadioButton
+			android:id="@+id/centerTabBtn"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			style="@style/Rect.Tab.Middle"
+			/>
+		<com.chess.RoboRadioButton
+			android:id="@+id/rightTabBtn"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			style="@style/Rect.Tab.Right"
+			/>
+
+	</RadioGroup>
+
+	<RelativeLayout
+		android:id="@+id/tab_content_frame"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		/>
+
+</LinearLayout>

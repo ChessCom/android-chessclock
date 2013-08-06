@@ -172,5 +172,6 @@
 	<dimen name="message_thumb_size">40dip</dimen>
 	<dimen name="chip_close_icon_size">17dip</dimen>
 	<dimen name="seek_bar_side_padding">8dip</dimen>
+	<dimen name="profile_frame_photo_size">80dip</dimen>
 
 </resources>

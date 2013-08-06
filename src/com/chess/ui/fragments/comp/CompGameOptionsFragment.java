@@ -67,7 +67,7 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 
 
 		compStrengthArray = getResources().getIntArray(R.array.comp_strength);
-		selectedStrength = getAppData().getCompStrength(getActivity());
+		selectedStrength = getAppData().getCompStrength();
 
 		SeekBar strengthBar = (SeekBar) view.findViewById(R.id.strengthBar);
 		strengthBar.setOnSeekBarChangeListener(ratingBarChangeListener);
@@ -115,7 +115,7 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 	};
 
 	public CompGameConfig getNewCompGameConfig(){
-		getAppData().setCompStrength(getActivity(), selectedStrength);
+		getAppData().setCompStrength(selectedStrength);
 		int strengthValue = compStrengthArray[selectedStrength];
 		gameConfigBuilder.setStrength(strengthValue);
 

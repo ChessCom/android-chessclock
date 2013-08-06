@@ -297,6 +297,7 @@
 	<string name="random">Random</string>
 	<string name="comp_play_as">Comp Play As:</string>
 	<string name="two_players">2 Players</string>
+	<string name="activity">Activity</string>
 	<!--Game mode-->
 
 </resources>

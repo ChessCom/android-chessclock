@@ -155,12 +155,12 @@
         <item>Live - Bullet</item>
         <item>Daily - Chess960</item>
         <item>Tactics</item>
-        <item>Chess Mentor</item>
+        <item>Lessons</item>
     </string-array>
 
     <string-array name="upgrade_diamond_features">
         <item>Video Lessons</item>
-        <item>Chess Mentor Online Training (web)</item>
+        <item>Chess Mentor Online Training</item>
         <item>Computer Analysis of Games (web)</item>
         <item>Chess.com TV - Live Shows (web)</item>
         <item>Openings &amp; Game Explorer</item>

@@ -227,7 +227,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private void updateData() {
 		LoadItem loadItem = LoadHelper.getUserInfo(getUserToken());
 
-		new RequestJsonTask<UserItem>(new GetUserUpdateListener()).executeTask(loadItem);
+		new RequestJsonTask<UserItem>(userUpdateListener).executeTask(loadItem);
 	}
 
 	private class GetUserUpdateListener extends ChessLoadUpdateListener<UserItem> {

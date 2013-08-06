@@ -24,6 +24,8 @@ import com.chess.db.tasks.SaveFriendsListTask;
 import com.chess.ui.adapters.FriendsCursorAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.messages.NewMessageFragment;
+import com.chess.ui.fragments.profiles.ProfileTabsFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
@@ -33,7 +35,7 @@ import com.chess.utilities.AppUtils;
  * Date: 22.01.13
  * Time: 11:38
  */
-public class FriendsFragment extends CommonLogicFragment implements ItemClickListenerFace{
+public class FriendsFragment extends CommonLogicFragment implements ItemClickListenerFace {
 
 	private ListView listView;
 	private View loadingView;
@@ -123,8 +125,19 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		super.onClick(view);
 
 		if (view.getId() == R.id.challengeImgBtn) {
-			Cursor cursor = (Cursor) view.getTag(R.id.list_item_id);
+			Integer position = (Integer) view.getTag(R.id.list_item_id);
+			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 			createDailyChallenge(DBDataManager.getString(cursor, DBConstants.V_USERNAME));
+		} else if (view.getId() == R.id.messageImgBtn) {
+			Integer position = (Integer) view.getTag(R.id.list_item_id);
+			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
+			String username = DBDataManager.getString(cursor, DBConstants.V_USERNAME);
+			getActivityFace().openFragment(NewMessageFragment.createInstance(username));
+		} else if (view.getId() == R.id.friendListItemView) {
+			Integer position = (Integer) view.getTag(R.id.list_item_id);
+			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
+			String username = DBDataManager.getString(cursor, DBConstants.V_USERNAME);
+			getActivityFace().openFragment(ProfileTabsFragment.createInstance(username));
 		}
 	}
 

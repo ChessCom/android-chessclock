@@ -57,8 +57,16 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 		holder.premiumImg = (ImageView) view.findViewById(R.id.premiumImg);
 		holder.locationTxt = (TextView) view.findViewById(R.id.locationTxt);
 		holder.onlineTxt = (TextView) view.findViewById(R.id.onlineTxt);
+
+		View friendListItemView = view.findViewById(R.id.friendListItemView);
+		friendListItemView.setOnClickListener(clickListenerFace);
+
 		holder.challengeImgBtn = (Button) view.findViewById(R.id.challengeImgBtn);
 		holder.challengeImgBtn.setOnClickListener(clickListenerFace);
+
+		holder.messageImgBtn = (Button) view.findViewById(R.id.messageImgBtn);
+		holder.messageImgBtn.setOnClickListener(clickListenerFace);
+
 		view.setTag(holder);
 
 		return view;
@@ -68,7 +76,9 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
 
-		holder.challengeImgBtn.setTag(R.id.list_item_id, cursor);
+		holder.challengeImgBtn.setTag(R.id.list_item_id, cursor.getPosition());
+		holder.messageImgBtn.setTag(R.id.list_item_id, cursor.getPosition());
+		view.setTag(R.id.list_item_id, cursor.getPosition());
 
 		// set premium icon
 		int status = getInt(cursor, DBConstants.V_PREMIUM_STATUS);
@@ -117,5 +127,6 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 		public TextView locationTxt;
 		public TextView onlineTxt;
 		public Button challengeImgBtn;
+		public Button messageImgBtn;
 	}
 }

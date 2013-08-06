@@ -47,7 +47,7 @@ public interface ActiveFragmentInterface {
 
 	void clearFragmentStack();
 
-	void updateTitle(int titleId);
+	void updateTitle(CharSequence title);
 
 	void setTitlePadding(int padding);
 

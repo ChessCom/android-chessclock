@@ -258,9 +258,9 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		} else {
 			gameMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
 		}
-		int strength = compStrengthArray[getAppData().getCompStrength(getContext())];
-		int time = Integer.parseInt(compTimeLimitArray[getAppData().getCompStrength(getContext())]);
-		int depth = Integer.parseInt(compDepth[getAppData().getCompStrength(getContext())]);
+		int strength = compStrengthArray[getAppData().getCompStrength()];
+		int time = Integer.parseInt(compTimeLimitArray[getAppData().getCompStrength()]);
+		int depth = Integer.parseInt(compDepth[getAppData().getCompStrength()]);
 		boolean isRestoreGame = getAppData().haveSavedCompGame() || getBoardFace().isAnalysis();
 		String fen = null;
 

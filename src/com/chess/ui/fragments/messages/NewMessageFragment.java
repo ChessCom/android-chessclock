@@ -30,16 +30,34 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 
 	private static final String SENDER_STR = "sender_str";
 	private static final String CONTENT_STR = "content_str";
+	public static final String FRIEND_NAME = "username";
 
 	private MessageCreateListener messageCreateListener;
 	private ChipsAutoCompleteTextView senderNameEdt;
 	private EditText messageBodyEdt;
 	private String contentStr;
 	private String senderStr;
+	private String friendName;
+
+	public NewMessageFragment() {}
+
+	public static NewMessageFragment createInstance(String username) {
+		NewMessageFragment fragment = new NewMessageFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString(FRIEND_NAME, username);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			friendName = getArguments().getString(FRIEND_NAME);
+		} else {
+			friendName = savedInstanceState.getString(FRIEND_NAME);
+		}
 
 		if (savedInstanceState != null) {
 			senderStr = savedInstanceState.getString(SENDER_STR);
@@ -115,6 +133,7 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 
 		outState.putString(SENDER_STR, senderStr);
 		outState.putString(CONTENT_STR, contentStr);
+		outState.putString(FRIEND_NAME, friendName);
 	}
 
 	@Override
