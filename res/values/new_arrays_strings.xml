@@ -17,6 +17,14 @@
         <item>I am high-rated tournament player</item>
     </string-array>
 
+    <string-array name="lesson_difficulty">
+		<item>Beginner</item>
+		<item>Intermediate</item>
+		<item>Advanced</item>
+		<item>Expert</item>
+		<item>Master</item>
+    </string-array>
+
     <string-array name="new_countries">
         <item>United States</item>
         <item>Canada</item>

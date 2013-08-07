@@ -4,15 +4,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.SparseArray;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 import com.chess.R;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
 import com.chess.backend.entity.new_api.LessonCourseListItem;
+import com.chess.backend.entity.new_api.LessonsRatingItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
@@ -57,6 +57,8 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 	private boolean curriculumMode;
 	private LessonsGroupsListAdapter curriculumAdapter;
 	private SparseArray<String> categoriesArray;
+	private LessonsRatingUpdateListener lessonsRatingUpdateListener;
+	private View headerView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,14 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 
 		{ // Library mode init
 			listView = (ListView) view.findViewById(R.id.listView);
+			if (isNeedToUpgrade()) {
+				view.findViewById(R.id.lessonsStatsView).setVisibility(View.GONE);
+				view.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+			} else {
+				headerView = view.findViewById(R.id.lessonsStatsView);
+				view.findViewById(R.id.upgradeView).setVisibility(View.GONE);
+			}
+
 			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_curriculum_footer, null, false);
 			((TextView) footerView.findViewById(R.id.headerTitleTxt)).setText(R.string.curriculum_lessons);
 			footerView.setOnClickListener(this);
@@ -95,6 +105,7 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 			footerView.findViewById(R.id.headerTitleTxt).setId(R.id.lessonsVideoLibFooterTxt);
 			((TextView) footerView.findViewById(R.id.lessonsVideoLibFooterTxt)).setText(R.string.full_lesson_library);
 			footerView.setOnClickListener(this);
+//			expListView.addHeaderView(headerView);
 			expListView.addFooterView(footerView);
 			expListView.setOnChildClickListener(this);
 			expListView.setGroupIndicator(null);
@@ -103,11 +114,21 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 		showLibrary();
 
 		// adjust action bar icons
-		getActivityFace().showActionMenu(R.id.menu_search, true);
+		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
 
 		setTitlePadding(ONE_ICON);
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+
+		if (!isNeedToUpgrade()) {
+			LoadItem loadItem = LoadHelper.getLessonsRating(getUserToken());
+			new RequestJsonTask<LessonsRatingItem>(lessonsRatingUpdateListener).executeTask(loadItem);
+		}
 	}
 
 	private void showLibrary() {
@@ -194,6 +215,16 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 		return false;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_search_btn:
+				getActivityFace().openFragment(new LessonsSearchFragment());
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 	private class LessonsCategoriesUpdateListener extends CommonLogicFragment.ChessUpdateListener<CommonFeedCategoryItem> {
 		public LessonsCategoriesUpdateListener() {
 			super(CommonFeedCategoryItem.class);
@@ -251,7 +282,6 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 
 
 		curriculumItems.setCategories(categories);
-
 	}
 
 	private class LessonsCoursesUpdateListener extends CommonLogicFragment.ChessUpdateListener<LessonCourseListItem> {
@@ -396,6 +426,7 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 		saveLessonsCategoriesUpdateListener = new SaveLessonsCategoriesUpdateListener();
 		lessonsCoursesUpdateListener = new LessonsCoursesUpdateListener();
 		saveLessonsCoursesUpdateListener = new SaveLessonsCoursesUpdateListener();
+		lessonsRatingUpdateListener = new LessonsRatingUpdateListener();
 	}
 
 	public class LessonsGroupsListAdapter extends BaseExpandableListAdapter {
@@ -532,5 +563,25 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 		}
 	}
 
+	private class LessonsRatingUpdateListener extends ChessLoadUpdateListener<LessonsRatingItem> {
+
+		private LessonsRatingUpdateListener() {
+			super(LessonsRatingItem.class);
+		}
+
+		@Override
+		public void updateData(LessonsRatingItem returnedObj) {
+			super.updateData(returnedObj);
+
+			TextView ratingTxt = (TextView) headerView.findViewById(R.id.lessonsRatingTxt);
+			TextView lessonsCntTxt = (TextView) headerView.findViewById(R.id.lessonsCompletedValueTxt);
+			TextView coursesCntTxt = (TextView) headerView.findViewById(R.id.coursesCompletedValueTxt);
+
+			LessonsRatingItem.Data lessonsRating = returnedObj.getData();
+			ratingTxt.setText(String.valueOf(lessonsRating.getRating()));
+			lessonsCntTxt.setText(String.valueOf(lessonsRating.getCompletedLessons()));
+			coursesCntTxt.setText(String.valueOf(lessonsRating.getCompletedCourses()));
+		}
+	}
 
 }

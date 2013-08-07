@@ -489,13 +489,13 @@ public class CompEngineHelper implements GUIInterface {
 	public static int mapGameMode(int mode) {
 		int engineMode = 0;
 		switch (mode) {
-			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE:
+			case AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE:
 				engineMode = GameMode.PLAYER_WHITE;
 				break;
-			case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK:
+			case AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK:
 				engineMode = GameMode.PLAYER_BLACK;
 				break;
-			case AppConstants.GAME_MODE_HUMAN_VS_HUMAN:
+			case AppConstants.GAME_MODE_2_PLAYERS:
 				engineMode = GameMode.TWO_PLAYERS;
 				break;
 			case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER:

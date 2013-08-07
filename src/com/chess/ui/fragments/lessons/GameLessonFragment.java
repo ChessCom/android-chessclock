@@ -119,8 +119,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private SparseArray<MoveCompleteItem> movesCompleteMap;
 
 
-	public GameLessonFragment() {
-	}
+	public GameLessonFragment() { }
 
 	public static GameLessonFragment createInstance(int lessonId) {
 		GameLessonFragment fragment = new GameLessonFragment();
@@ -667,6 +666,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		totalLearningPositionsCnt = positionsToLearn.size();
 
 		currentLearningPosition = userLesson.getCurrentPosition();
+		if (totalLearningPositionsCnt == currentLearningPosition) {
+			currentLearningPosition--;
+		}
 		currentPoints = userLesson.getCurrentPoints();
 	}
 

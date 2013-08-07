@@ -25,6 +25,7 @@ public class BaseResponseItem<ItemType> {
 */
 	private String status;
 	private String message;
+	private String debug;
 	private int count;
 	private int code;
 	private ItemType data;
@@ -60,6 +61,10 @@ public class BaseResponseItem<ItemType> {
 	 */
 	public int getCode() {
 		return code;
+	}
+
+	public String getDebug() {
+		return debug;
 	}
 
 	public String getMore_info() {

@@ -22,7 +22,7 @@ public class CompGameConfig implements Parcelable {
 		 * Create new Seek game with default values
 		 */
 		public Builder(){
-			mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
+			mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
 			strength = 5;
 		}
 
@@ -56,6 +56,10 @@ public class CompGameConfig implements Parcelable {
 
 	public void setMode(int mode) {
 		this.mode = mode;
+	}
+
+	public void setStrength(int strength) {
+		this.strength = strength;
 	}
 
 	protected CompGameConfig(Parcel in) {

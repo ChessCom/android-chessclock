@@ -18,14 +18,12 @@
 		android:scrollbars="none"
 		android:paddingBottom="20dip"
 		>
-		<!--android:animateLayoutChanges="true"-->
 
 		<LinearLayout
 			android:orientation="vertical"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			>
-			<!--android:animateLayoutChanges="true"-->
 
 			<!--Title-->
 			<com.chess.RoboTextView
@@ -108,7 +106,6 @@
 
 		</LinearLayout>
 	</ScrollView>
-
 
 	<com.chess.MultiDirectionSlidingDrawer
 		android:id="@id/slidingDrawer"

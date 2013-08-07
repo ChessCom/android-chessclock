@@ -79,6 +79,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	private static final String TACTICS_TAG = "tactics tag";
 	private static final String LESSONS_TAG = "lessons tag";
 	private static final String VIDEOS_TAG = "videos tag";
+	private static final String OPTION_SELECTION = "option select popup";
 
 	// game op action ids
 	private static final int ID_NEW_GAME = 0;
@@ -89,7 +90,6 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	private static final long BLINK_DELAY = 10 * 1000;
 	private static final long UNBLINK_DELAY = 400;
 	private static final int FADE_ANIM_DURATION = 300;
-	private static final String OPTION_SELECTION = "option select popup";
 	private static final long DRAWER_APPEAR_DELAY = 100;
 	private static final long END_GAME_DELAY = 1000L;
 	private FragmentTabsFace parentFace;
@@ -190,6 +190,13 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				enableSlideMenus(false);
+			}
+		}, 100);
 
 		ChessBoardComp.resetInstance();
 		getBoardFace().setMode(compGameConfig.getMode());
@@ -319,7 +326,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		if (!labelsSet) {
 			String userName = getString(R.string.you);
 			switch (getBoardFace().getMode()) {
-				case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {    //w - human; b - comp
+				case AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE: {    //w - human; b - comp
 					humanBlack = false;
 					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 
@@ -327,7 +334,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 					labelsConfig.bottomPlayerLabel = userName;
 					break;
 				}
-				case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {    //w - comp; b - human
+				case AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK: {    //w - comp; b - human
 					humanBlack = true;
 					labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 
@@ -335,7 +342,7 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 					labelsConfig.bottomPlayerLabel = userName;
 					break;
 				}
-				case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {    //w - human; b - human
+				case AppConstants.GAME_MODE_2_PLAYERS: {    //w - human; b - human
 					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 
 					labelsConfig.topPlayerLabel = userName;
@@ -530,7 +537,13 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void newGame() {
-		parentFace.changeInternalFragment(WelcomeTabsFragment.GAME_SETUP_FRAGMENT);
+		getActivityFace().changeRightFragment(WelcomeCompGameOptionsFragment.createInstance(parentFace));
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				getActivityFace().toggleRightMenu();
+			}
+		}, 100);
 	}
 
 	@Override

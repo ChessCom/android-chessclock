@@ -96,18 +96,11 @@ public class AppConstants {
 	public static final String EXTRA_WEB_URL = "extras weblink url";
 	public static final String EXTRA_TITLE = "screen title";
 
-	public final static int GAME_MODE_COMPUTER_VS_HUMAN_WHITE = 0;
-	public final static int GAME_MODE_COMPUTER_VS_HUMAN_BLACK = 1;
-	public final static int GAME_MODE_HUMAN_VS_HUMAN = 2;
+	public final static int GAME_MODE_COMPUTER_VS_PLAYER_WHITE = 0;
+	public final static int GAME_MODE_COMPUTER_VS_PLAYER_BLACK = 1;
+	public final static int GAME_MODE_2_PLAYERS = 2;
 	public final static int GAME_MODE_COMPUTER_VS_COMPUTER = 3;
 	public final static int GAME_MODE_VIEW_FINISHED_ECHESS = 5;
-
-
-	//public static final String DEFAULT_GAMEBOARD_CASTLE = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-
-
-
-	/* LCC LOG */
 
 	public static final String GAME_LISTENER_IGNORE_OLD_GAME_ID = "GAME LISTENER: ignore old game id=";
 

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
-import com.chess.backend.statics.AppData;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.FragmentTabsFace;
@@ -25,7 +24,6 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 	public static final int SIGN_IN_FRAGMENT = 1;
 	public static final int SIGN_UP_FRAGMENT = 2;
 	public static final int GAME_FRAGMENT = 3;
-	public static final int GAME_SETUP_FRAGMENT = 4;
 
 	private View leftTabBtn;
 	private View rightTabBtn;
@@ -118,10 +116,9 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 			}
 			getActivityFace().openFragment(fragment);
 			openWelcomeFragment = true;
-		} else if (code == GAME_SETUP_FRAGMENT) {
-			changeInternalFragment(WelcomeGameSetupFragment.createInstance(this));
 		} else if (code == GAME_FRAGMENT) {
 			config.setMode(getAppData().getCompGameMode());
+			config.setStrength(getAppData().getCompStrength());
 			changeInternalFragment(WelcomeGameCompFragment.createInstance(this, config));
 		}
 	}

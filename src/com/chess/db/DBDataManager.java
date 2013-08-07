@@ -1140,7 +1140,7 @@ public class DBDataManager {
 		return dataObj;
 	}
 
-	public static ContentValues putLessonsListItemToValues(LessonCourseItem.LessonListItem dataObj) {
+	public static ContentValues putLessonsListItemToValues(LessonListItem dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(DBConstants.V_ID, dataObj.getId());
@@ -1151,8 +1151,8 @@ public class DBDataManager {
 		return values;
 	}
 
-	public static LessonCourseItem.LessonListItem getLessonsListItemFromCursor(Cursor cursor) {
-		LessonCourseItem.LessonListItem dataObj = new LessonCourseItem.LessonListItem();
+	public static LessonListItem getLessonsListItemFromCursor(Cursor cursor) {
+		LessonListItem dataObj = new LessonListItem();
 
 		dataObj.setId(getInt(cursor, DBConstants.V_ID));
 		dataObj.setCourseId(getLong(cursor, DBConstants.V_CATEGORY_ID));
@@ -1285,7 +1285,7 @@ public class DBDataManager {
 		dataObj.setLessonId(getLong(cursor, DBConstants.V_ID));
 		dataObj.setCurrentPosition(getInt(cursor, DBConstants.V_CURRENT_POSITION));
 		dataObj.setCurrentPoints(getInt(cursor, DBConstants.V_CURRENT_POINTS));
-		dataObj.setCurrentPositionPoints(getInt(cursor, DBConstants.V_CURRENT_POSITION_POINTS));
+		dataObj.setCurrentPositionPoints(Float.valueOf(getString(cursor, DBConstants.V_CURRENT_POSITION_POINTS)));
 		dataObj.setUsername(getString(cursor, DBConstants.V_USER));
 		dataObj.setInitialScore(getString(cursor, DBConstants.V_INITIAL_SCORE));
 		dataObj.setLastScore(getString(cursor, DBConstants.V_LAST_SCORE));

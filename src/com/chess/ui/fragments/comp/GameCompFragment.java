@@ -282,7 +282,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		if (!labelsSet) {
 			String userName = getAppData().getUsername();
 			switch (getBoardFace().getMode()) {
-				case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE: {    //w - human; b - comp
+				case AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE: {    //w - human; b - comp
 					humanBlack = false;
 					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 
@@ -290,7 +290,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 					labelsConfig.bottomPlayerLabel = userName;
 					break;
 				}
-				case AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK: {    //w - comp; b - human
+				case AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK: {    //w - comp; b - human
 					humanBlack = true;
 					labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 
@@ -298,7 +298,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 					labelsConfig.bottomPlayerLabel = userName;
 					break;
 				}
-				case AppConstants.GAME_MODE_HUMAN_VS_HUMAN: {    //w - human; b - human
+				case AppConstants.GAME_MODE_2_PLAYERS: {    //w - human; b - human
 					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 
 					labelsConfig.topPlayerLabel = userName;

@@ -1,10 +1,7 @@
 package com.chess.ui.fragments;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -135,6 +132,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		getActivityFace().showActionMenu(R.id.menu_edit, false);
 		getActivityFace().showActionMenu(R.id.menu_message, false);
 		getActivityFace().showActionMenu(R.id.menu_challenge, false);
+		getActivityFace().showActionMenu(R.id.menu_search_btn, false);
 		getActivityFace().showActionMenu(R.id.menu_notifications, true);
 		getActivityFace().showActionMenu(R.id.menu_games, true);
 
@@ -632,6 +630,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		Window w = getActivity().getWindow();
 		w.getDecorView().getWindowVisibleDisplayFrame(r);
 		return r.top;
+	}
+
+	public boolean isNeedToUpgrade() {
+		return getAppData().getUserPremiumStatus() < StaticData.GOLD_USER;
 	}
 //	public void printHashKey() { Don't remove, use to find needed facebook hashkey
 //		try {

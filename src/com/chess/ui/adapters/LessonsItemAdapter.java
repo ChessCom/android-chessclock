@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.new_api.LessonCourseItem;
+import com.chess.backend.entity.new_api.LessonListItem;
 
 import java.util.List;
 
@@ -15,13 +15,13 @@ import java.util.List;
  * Date: 19.07.13
  * Time: 7:16
  */
-public class LessonsItemAdapter extends ItemsAdapter<LessonCourseItem.LessonListItem> {
+public class LessonsItemAdapter extends ItemsAdapter<LessonListItem> {
 
 	private final int watchedTextColor;
 	private final int unWatchedTextColor;
 	private final int watchedIconColor;
 
-	public LessonsItemAdapter(Context context, List<LessonCourseItem.LessonListItem> cursor) {
+	public LessonsItemAdapter(Context context, List<LessonListItem> cursor) {
 		super(context, cursor);
 		watchedTextColor = resources.getColor(R.color.new_light_grey_3);
 		unWatchedTextColor = resources.getColor(R.color.new_text_blue);
@@ -40,7 +40,7 @@ public class LessonsItemAdapter extends ItemsAdapter<LessonCourseItem.LessonList
 	}
 
 	@Override
-	protected void bindView(LessonCourseItem.LessonListItem item, int pos, View convertView) {
+	protected void bindView(LessonListItem item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		holder.text.setText(item.getName());

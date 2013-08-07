@@ -74,11 +74,11 @@ public class NewGameCompView extends NewGameDefaultView {
 	}
 
 	public CompGameConfig getNewCompGameConfig(){
-		int mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
+		int mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
 		if (!whiteHuman.isChecked() && blackHuman.isChecked()) {
-			mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+			mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK;
 		} else if (whiteHuman.isChecked() && blackHuman.isChecked()) {
-			mode = AppConstants.GAME_MODE_HUMAN_VS_HUMAN;
+			mode = AppConstants.GAME_MODE_2_PLAYERS;
 		} else if (!whiteHuman.isChecked() && !blackHuman.isChecked()) {
 			mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
 		}

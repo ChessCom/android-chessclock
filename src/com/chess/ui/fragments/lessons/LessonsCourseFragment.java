@@ -3,6 +3,7 @@ package com.chess.ui.fragments.lessons;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -12,6 +13,7 @@ import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.LessonCourseItem;
+import com.chess.backend.entity.new_api.LessonListItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBDataManager;
 import com.chess.db.DbHelper;
@@ -70,7 +72,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_lessons_course_frame, container, false);
+		return inflater.inflate(R.layout.new_white_list_view_frame, container, false);
 	}
 
 	@Override
@@ -79,11 +81,15 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 		setTitle(R.string.lessons);
 
-		view.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-
 		listView = (ListView) view.findViewById(R.id.listView);
 		// Set header
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lessons_course_header_view, null, false);
+		if (isNeedToUpgrade()) {
+			headerView.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+		} else {
+			headerView.findViewById(R.id.upgradeView).setVisibility(View.GONE);
+		}
+
 		courseTitleTxt = (TextView) headerView.findViewById(R.id.courseTitleTxt);
 		courseDescriptionTxt = (TextView) headerView.findViewById(R.id.courseDescriptionTxt);
 		listView.addHeaderView(headerView);
@@ -91,7 +97,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		listView.setOnItemClickListener(this);
 
 		// adjust action bar icons
-		getActivityFace().showActionMenu(R.id.menu_search, true);
+		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
 
@@ -111,7 +117,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 				Cursor lessonsListCursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getLessonsListByCourseId(courseId));
 				if (lessonsListCursor.moveToFirst()) {
-					List<LessonCourseItem.LessonListItem> lessons = new ArrayList<LessonCourseItem.LessonListItem>();
+					List<LessonListItem> lessons = new ArrayList<LessonListItem>();
 					do {
 						lessons.add(DBDataManager.getLessonsListItemFromCursor(lessonsListCursor));
 					} while(lessonsListCursor.moveToNext());
@@ -128,7 +134,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 			courseTitleTxt.setText(courseItem.getCourseName());
 			courseDescriptionTxt.setText(courseItem.getDescription());
 
-			List<LessonCourseItem.LessonListItem> lessons = courseItem.getLessons();
+			List<LessonListItem> lessons = courseItem.getLessons();
 			lessonsItemsAdapter.setItemsList(lessons);
 		}
 	}
@@ -148,11 +154,10 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		if (position == 0) { // if listView header
 			// see onClick(View) handle
 		} else {
-			LessonCourseItem.LessonListItem lessonItem = (LessonCourseItem.LessonListItem) parent.getItemAtPosition(position);
+			LessonListItem lessonItem = (LessonListItem) parent.getItemAtPosition(position);
 			getActivityFace().openFragment(GameLessonFragment.createInstance(lessonItem.getId()));
 		}
 	}
-
 
 	@Override
 	public void onClick(View view) {
@@ -161,6 +166,16 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		if (view.getId() == R.id.upgradeBtn) {
 			getActivityFace().openFragment(new UpgradeFragment());
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_search_btn:
+				getActivityFace().openFragment(new LessonsSearchFragment());
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private class CourseUpdateListener extends ChessLoadUpdateListener<LessonCourseItem> {
@@ -186,7 +201,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		courseTitleTxt.setText(courseItem.getCourseName());
 		courseDescriptionTxt.setText(courseItem.getDescription());
 
-		List<LessonCourseItem.LessonListItem> lessons = courseItem.getLessons();
+		List<LessonListItem> lessons = courseItem.getLessons();
 		lessonsItemsAdapter.setItemsList(lessons);
 
 		need2update = false;

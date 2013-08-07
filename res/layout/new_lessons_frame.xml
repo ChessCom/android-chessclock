@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:orientation="vertical"
@@ -8,6 +8,18 @@
 	android:layout_height="match_parent"
 	android:background="@color/white"
 	>
+
+	<FrameLayout
+		android:id="@+id/topView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+		<include layout="@layout/new_lessons_upgrade_view" />
+		<include layout="@layout/new_lesson_stats_view" />
+
+	</FrameLayout>
+
+
 
 	<com.chess.RoboTextView
 		android:id="@+id/emptyView"
@@ -46,6 +58,7 @@
 		android:id="@+id/listView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_below="@id/topView"
 		android:divider="@null"
 		android:dividerHeight="0dip"
 		android:background="@android:color/transparent"
@@ -56,6 +69,7 @@
 		android:id="@+id/expListView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_below="@id/topView"
 		android:divider="@null"
 		android:dividerHeight="0dip"
 		android:background="@android:color/transparent"
@@ -63,4 +77,4 @@
 		android:cacheColorHint="@android:color/transparent"
 		/>
 
-</LinearLayout>
+</RelativeLayout>

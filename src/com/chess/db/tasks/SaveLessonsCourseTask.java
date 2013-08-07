@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.new_api.LessonCourseItem;
+import com.chess.backend.entity.new_api.LessonListItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
@@ -55,7 +56,7 @@ public class SaveLessonsCourseTask  extends AbstractUpdateTask<LessonCourseItem.
 			cursor.close();
 		}
 
-		for (LessonCourseItem.LessonListItem lesson : item.getLessons()) {
+		for (LessonListItem lesson : item.getLessons()) {
 			final String[] arguments = arguments2;
 			arguments[0] = String.valueOf(lesson.getId());
 			arguments[1] = String.valueOf(lesson.getCourseId());

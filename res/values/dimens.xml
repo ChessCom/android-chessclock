@@ -35,7 +35,7 @@
     <dimen name="new_tab_button_height">48dip</dimen>
     <dimen name="button_min_width">68dip</dimen>
     <dimen name="wide_button_min_width">108dip</dimen>
-    <dimen name="drawer_handler_height">27dip</dimen>
+    <dimen name="drawer_handler_height">30dip</dimen>
 
     <!--Edit Fields Padding-->
     <dimen name="new_edit_field_padding_top">5dip</dimen>

@@ -14,6 +14,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.ConversationSingleItem;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
@@ -39,7 +40,11 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 	private String senderStr;
 	private String friendName;
 
-	public NewMessageFragment() {}
+	public NewMessageFragment() {
+		Bundle bundle = new Bundle();
+		bundle.putString(FRIEND_NAME, StaticData.SYMBOL_EMPTY);
+		setArguments(bundle);
+	}
 
 	public static NewMessageFragment createInstance(String username) {
 		NewMessageFragment fragment = new NewMessageFragment();

@@ -3,9 +3,9 @@
     <string name="new_options">Options</string>
     <string name="new_per_turn">Per Turn</string>
     <string name="new_time">Time</string>
-    <string name="new_difficulty">Difficulty</string>
-    <string name="new_daily_chess">Daily Chess</string>
-    <string name="new_live_chess">Live Chess</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="daily_chess">Daily Chess</string>
+    <string name="live_chess">Live Chess</string>
     <string name="normal">Normal</string>
     <string name="vs">vs</string>
     <string name="to">to</string>
@@ -293,11 +293,15 @@
 	<string name="message">Message</string>
 	<string name="new_message">New Message</string>
 	<string name="to_">To:</string>
-	<string name="write_your_message">Write your message...</string>
+	<string name="write_your_message">Write your message…</string>
 	<string name="random">Random</string>
 	<string name="comp_play_as">Comp Play As:</string>
 	<string name="two_players">2 Players</string>
 	<string name="activity">Activity</string>
+	<string name="keywords">Keywords</string>
+	<string name="all">All</string>
+	<string name="lessons_completed">Lessons Completed</string>
+	<string name="courses_completed">Courses Completed</string>
 	<!--Game mode-->
 
 </resources>

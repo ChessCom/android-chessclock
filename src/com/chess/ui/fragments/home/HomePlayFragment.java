@@ -209,7 +209,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 			}
 		} else if (view.getId() == R.id.vsCompHeaderView) {
 			CompGameConfig.Builder gameConfigBuilder = new CompGameConfig.Builder();
-			CompGameConfig compGameConfig = gameConfigBuilder.setMode(AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE).build();
+			CompGameConfig compGameConfig = gameConfigBuilder.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE).build();
 			getActivityFace().openFragment(GameCompFragment.createInstance(compGameConfig));
 			if (positionMode == RIGHT_MENU_MODE) {
 				getActivityFace().toggleRightMenu();

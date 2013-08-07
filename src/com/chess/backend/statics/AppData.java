@@ -129,20 +129,20 @@ public class AppData {
 
 	public boolean isComputerVsHumanGameMode(BoardFace boardFace) {
 		final int mode = boardFace.getMode();
-		return mode == GAME_MODE_COMPUTER_VS_HUMAN_WHITE
-				|| mode == GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+		return mode == GAME_MODE_COMPUTER_VS_PLAYER_WHITE
+				|| mode == GAME_MODE_COMPUTER_VS_PLAYER_BLACK;
 	}
 
 	public boolean isHumanVsHumanGameMode(BoardFace boardFace) {
-		return boardFace.getMode() == GAME_MODE_HUMAN_VS_HUMAN;
+		return boardFace.getMode() == GAME_MODE_2_PLAYERS;
 	}
 
 	public boolean isComputerVsHumanWhiteGameMode(BoardFace boardFace) {
-		return boardFace.getMode() == GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
+		return boardFace.getMode() == GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
 	}
 
 	public boolean isComputerVsHumanBlackGameMode(BoardFace boardFace) {
-		return boardFace.getMode() == GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+		return boardFace.getMode() == GAME_MODE_COMPUTER_VS_PLAYER_BLACK;
 	}
 
 	public void setUserPremiumStatus(int level) {
@@ -187,14 +187,6 @@ public class AppData {
 	public Intent getMembershipIntent(String param) {
 		String memberShipUrl = RestHelper.getMembershipLink(getUserToken(), param);
 		return new Intent(Intent.ACTION_VIEW, Uri.parse(memberShipUrl));
-	}
-
-	public void setCompGameMode(int mode) {
-		setIntValue(PREF_COMPUTER_MODE, mode);
-	}
-
-	public int getCompGameMode() {
-		return getIntValue(PREF_COMPUTER_MODE, AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE);
 	}
 
 	public String getCompSavedGame() {
@@ -369,12 +361,8 @@ public class AppData {
 		return getStringValue(PREF_THEME_BOARD_PATH, "");
 	}
 
-	public void setThemeBackId(int themeId) {
-		setIntValue(PREF_THEME_BACK_ID, themeId);
-	}
-
 	public int getThemeBackId() {
-		return getIntValue(PREF_THEME_BACK_ID, R.drawable.img_theme_green_felt);
+		return R.drawable.img_theme_green_felt; // won't be changed
 	}
 
 	public void setThemeName(String themeName) {
@@ -399,6 +387,30 @@ public class AppData {
 
 	public boolean isUserChooseLessonsLibrary() {
 		return getBooleanValue(PREF_USER_CHOOSE_LESSONS_LIBRARY, true);
+	}
+
+	public void setCompStrength(int value) {
+		setIntValue(PREF_COMPUTER_STRENGTH, value);
+	}
+
+	public int getCompStrength() {
+		return getIntValue(PREF_COMPUTER_STRENGTH, 2);
+	}
+
+	/**
+	 * Set Vs Computer default mode for auth user.
+	 * @param value mode ( PLAYER_WHITE & COMB_BLACK, PLAYER_BLACK & COMP_WHITE, COMP & COMP, PLAY & PLAYER
+	 */
+	public void setCompGameMode(int value) {
+		setIntValue(PREF_COMPUTER_MODE, value);
+	}
+
+	/**
+	 * Get default Vs Computer mode for CompOptionsFragment
+	 * @return mode
+	 */
+	public int getCompGameMode() {
+		return getIntValue(PREF_COMPUTER_MODE, AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
 	}
 
 	/*--------------------------- Common Shared logic ------------------------*/
@@ -438,11 +450,4 @@ public class AppData {
 		editor.putInt(userName + field, value).commit();
 	}
 
-	public void setCompStrength(int value) {
-		setIntValue(PREF_COMPUTER_STRENGTH, value);
-	}
-
-	public int getCompStrength() {
-		return getIntValue(PREF_COMPUTER_STRENGTH, 2);
-	}
 }

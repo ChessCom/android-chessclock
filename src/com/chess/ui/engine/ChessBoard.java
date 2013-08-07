@@ -271,7 +271,7 @@ public class ChessBoard implements BoardFace {
 			0, 1, 2, 3, 4, 5, 6, 7
 	};
 
-	private int mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
+	private int mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
 
 	private int BLACK_ROOK_1_INITIAL_POS = 0;
 	private int BLACK_ROOK_2_INITIAL_POS = 7;

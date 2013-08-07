@@ -100,9 +100,9 @@
 			android:layout_height="@dimen/drawer_handler_height"
 			android:textColor="@color/white"
 			android:text="@string/ic_handler"
-			android:padding="@dimen/glyph_icon_padding"
+			android:padding="0dip"
 			android:gravity="center"
-			android:textSize="@dimen/glyph_icon_big"
+			android:textSize="35dip"
 			custom:ttf="Icon"
 			style="@style/ListItem.Header.Dark"
 			android:visibility="gone" />

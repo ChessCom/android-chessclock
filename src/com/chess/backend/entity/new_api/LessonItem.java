@@ -419,7 +419,7 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 		private String last_score;
 		private int current_position;
 		private int current_points;
-		private int current_position_points;
+		private float current_position_points;
 		/* Local addition */
 		private long lessonId;
 		private String username;
@@ -459,7 +459,7 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 			return current_points;
 		}
 
-		public int getCurrentPositionPoints() {
+		public float getCurrentPositionPoints() {
 			return current_position_points;
 		}
 
@@ -479,7 +479,7 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 			this.current_points = current_points;
 		}
 
-		public void setCurrentPositionPoints(int current_position_points) {
+		public void setCurrentPositionPoints(float current_position_points) {
 			this.current_position_points = current_position_points;
 		}
 

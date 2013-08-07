@@ -29,6 +29,7 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 
 	private int[] compStrengthArray;
 	private RoboRadioButton myWhiteColorBtn;
+	private RoboRadioButton myBlackColorBtn;
 	private int selectedStrength;
 	private SwitchButton humanVsHumanSwitch;
 	private SwitchButton compVsCompSwitch;
@@ -63,11 +64,23 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 		compVsCompSwitch.setSwitchChangeListener(this);
 
 		myWhiteColorBtn = (RoboRadioButton) view.findViewById(R.id.myWhiteColorBtn);
+		myBlackColorBtn = (RoboRadioButton) view.findViewById(R.id.myBlackColorBtn);
 		strengthValueBtn = (TextView) view.findViewById(R.id.strengthValueBtn);
 
 
 		compStrengthArray = getResources().getIntArray(R.array.comp_strength);
 		selectedStrength = getAppData().getCompStrength();
+
+		int mode = getAppData().getCompGameMode();
+		if (mode == AppConstants.GAME_MODE_2_PLAYERS) {
+			humanVsHumanSwitch.setChecked(true);
+		} else if (mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) {
+			compVsCompSwitch.setChecked(true);
+		} else if (mode == AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE) {
+			myWhiteColorBtn.setChecked(true);
+		} else /*if (mode == AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK)*/ {
+			myBlackColorBtn.setChecked(true);
+		}
 
 		SeekBar strengthBar = (SeekBar) view.findViewById(R.id.strengthBar);
 		strengthBar.setOnSeekBarChangeListener(ratingBarChangeListener);
@@ -87,15 +100,19 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.playBtn) {
-			ChessBoardComp.resetInstance();
-			preferencesEditor.putString(getAppData().getUsername() + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
-			preferencesEditor.commit();
-
-			CompGameConfig config = getNewCompGameConfig();
-
-			getActivityFace().openFragment(GameCompFragment.createInstance(config));
-			getActivityFace().toggleRightMenu();
+			startGame();
 		}
+	}
+
+	protected void startGame() {
+		ChessBoardComp.resetInstance();
+		preferencesEditor.putString(getAppData().getUsername() + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
+		preferencesEditor.commit();
+
+		CompGameConfig config = getNewCompGameConfig();
+
+		getActivityFace().openFragment(GameCompFragment.createInstance(config));
+		getActivityFace().toggleRightMenu();
 	}
 
 	private SeekBar.OnSeekBarChangeListener ratingBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
@@ -114,21 +131,22 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 		}
 	};
 
-	public CompGameConfig getNewCompGameConfig(){
+	protected CompGameConfig getNewCompGameConfig(){
 		getAppData().setCompStrength(selectedStrength);
 		int strengthValue = compStrengthArray[selectedStrength];
 		gameConfigBuilder.setStrength(strengthValue);
 
 		int mode;
 		if (humanVsHumanSwitch.isChecked()) {
-			mode = AppConstants.GAME_MODE_HUMAN_VS_HUMAN;
+			mode = AppConstants.GAME_MODE_2_PLAYERS;
 		} else if (compVsCompSwitch.isChecked()) {
 			mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
 		} else if (myWhiteColorBtn.isChecked()) {
-			mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_WHITE;
+			mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
 		} else /*if (myBlackColorBtn.isChecked())*/ {
-			mode = AppConstants.GAME_MODE_COMPUTER_VS_HUMAN_BLACK;
+			mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK;
 		}
+		getAppData().setCompGameMode(mode);
 
 		return gameConfigBuilder.setMode(mode).build();
 	}

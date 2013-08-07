@@ -132,7 +132,7 @@ public class RestHelper {
 	public static final String CMD_LESSONS = BASE_URL + V1 + "/lessons";
 	public static final String CMD_LESSONS_CATEGORIES = CMD_LESSONS + "/categories";
 	public static final String CMD_LESSONS_COURSES = CMD_LESSONS + "/courses";
-	public static final String CMD_LESSONS_LESSONS = CMD_LESSONS + "/lessons";
+	public static final String CMD_LESSONS_RATING = CMD_LESSONS + "/rating";
 
 	public static String CMD_LESSON_BY_ID(long id) {
 		return CMD_LESSONS + "/" + id;
@@ -262,6 +262,7 @@ public class RestHelper {
 
 	public static final String P_IPHONE = "iphone";
 	public static final String P_KEYWORD = "keyword";
+	public static final String P_DIFFICULTY = "difficulty";
 	public static final String P_CATEGORY_ID = "categoryId";
 	public static final String P_CATEGORY_CODE = "categoryCode";
 	//	public static final String P_SKILL_LEVEL = "skill_level";
