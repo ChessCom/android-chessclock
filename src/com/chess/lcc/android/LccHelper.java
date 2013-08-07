@@ -27,6 +27,8 @@ import com.flurry.android.FlurryAgent;
 
 import java.util.*;
 
+import static com.chess.live.rules.GameResult.WIN;
+
 public class LccHelper { // todo: keep LccHelper instance in LiveChessService as well?
 
 	public static final boolean TESTING_GAME = false;
@@ -102,6 +104,18 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		adminEventListener = new LccAdminEventListener();
 
 		pendingWarnings = new ArrayList<String>();
+	}
+
+	public void checkGameEvents() {
+		final Game game = getCurrentGame();
+
+		if (game != null) {
+			if (game.isGameOver()) {
+				checkAndProcessEndGame(game);
+			} else {
+				checkAndProcessDrawOffer(game);
+			}
+		}
 	}
 
 	/*public void executePausedActivityGameEvents() {
@@ -891,19 +905,18 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		latestMoveNumber = moveIndex;
 		//}
 
-		// probably we still should ignore background Move as well as other events: draw offer and game end
 		if (!isGameActivityPausedMode()) {
-
 			// todo: possible optimization - keep gameLiveItem between moves and just add new move when it comes
 			lccEventListener.onGameRefresh(new GameLiveItem(game, moveIndex));
 			doUpdateClocks(game, moveMaker, moveIndex); // update clock only for resumed activity?
-		} /*else {
-			*//*LiveGameEvent moveEvent = new LiveGameEvent();
+		} else {
+			Log.d(TAG, "paused mode: postpone MOVE processing");
+			/*LiveGameEvent moveEvent = new LiveGameEvent();
 			moveEvent.setEvent(LiveGameEvent.Event.MOVE);
 			moveEvent.setGameId(game.getId());
 			//moveEvent.setMoveIndex(moveIndex);
-			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);*//*
-		}*/
+			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);*/
+		}
 		// doUpdateClocks(game, moveMaker, moveIndex);
 	}
 
@@ -1105,5 +1118,118 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	public void setNetworkTypeName(String networkTypeName) {
 		this.networkTypeName = networkTypeName;
+	}
+
+	public void checkAndProcessDrawOffer(Game game) {
+		final String opponentName = getOpponentName();
+
+		if (opponentName != null && game.isDrawOfferedByPlayer(opponentName)) { // check if game is not ended?
+			Log.d(TAG, "GAME LISTENER: Draw offered at the move #" + game.getMoveCount() + ", game.id=" + game.getId()
+					+ ", offerer=" + opponentName + ", game=" + game);
+
+			if (!isGameActivityPausedMode()) {
+				Log.d(TAG, "DRAW SHOW");
+				getLccEventListener().onDrawOffered(opponentName);
+			} else {
+				Log.d(TAG, "paused mode: postpone DRAW processing");
+				/*final LiveGameEvent drawOfferedEvent = new LiveGameEvent();
+				drawOfferedEvent.setEvent(LiveGameEvent.Event.DRAW_OFFER);
+				drawOfferedEvent.setGameId(game.getId());
+				drawOfferedEvent.setDrawOffererUsername(opponentName);
+				lccHelper.getPausedActivityGameEvents().put(drawOfferedEvent.getEvent(), drawOfferedEvent);*/
+			}
+		}
+	}
+
+	public void checkAndProcessEndGame(Game game) {
+		List<GameResult> gameResults = game.getResults();
+		final GameResult whitePlayerResult = gameResults.get(0);
+		final GameResult blackPlayerResult = gameResults.get(1);
+		final String whiteUsername = game.getWhitePlayer().getUsername();
+		final String blackUsername = game.getBlackPlayer().getUsername();
+
+		GameResult result;
+		String winnerUsername = null;
+
+		if (whitePlayerResult == WIN) {
+			result = blackPlayerResult;
+			winnerUsername = whiteUsername;
+		} else if (blackPlayerResult == WIN) {
+			result = whitePlayerResult;
+			winnerUsername = blackUsername;
+		} else {
+			result = whitePlayerResult;
+		}
+
+		String message = StaticData.SYMBOL_EMPTY;
+		switch (result) {
+			case TIMEOUT:
+				message = context.getString(R.string.won_on_time, winnerUsername);
+				break;
+			case RESIGNED:
+				message = context.getString(R.string.won_by_resignation, winnerUsername);
+				break;
+			case CHECKMATED:
+				message = context.getString(R.string.won_by_checkmate, winnerUsername);
+				break;
+			case DRAW_BY_REPETITION:
+				message = context.getString(R.string.game_draw_by_repetition);
+				break;
+			case DRAW_AGREED:
+				message = context.getString(R.string.game_drawn_by_agreement);
+				break;
+			case STALEMATE:
+				message = context.getString(R.string.game_drawn_by_stalemate);
+				break;
+			case DRAW_BY_INSUFFICIENT_MATERIAL:
+				message = context.getString(R.string.game_drawn_insufficient_material);
+				break;
+			case DRAW_BY_50_MOVE:
+				message = context.getString(R.string.game_drawn_by_fifty_move_rule);
+				break;
+			case ABANDONED:
+				message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_game_abandoned);
+				break;
+			case ABORTED:
+				message = context.getString(R.string.game_aborted);
+				break;
+		}
+		//message = whiteUsername + " vs. " + blackUsername + " - " + message;
+		Log.d(TAG, "GAME LISTENER: " + message);
+
+		if (getWhiteClock() != null) {
+			getWhiteClock().setRunning(false);
+		}
+		if (getBlackClock() != null) {
+			getBlackClock().setRunning(false);
+		}
+
+		String abortedCodeMessage = game.getCodeMessage(); // used only for aborted games
+		if (abortedCodeMessage != null) {
+			final String messageI18n = AppUtils.getI18nString(context, abortedCodeMessage, game.getAborterUsername());
+			if (messageI18n != null) {
+				message = messageI18n;
+			}
+		}
+
+		if (getCurrentGameId() == null) {
+			setCurrentGameId(game.getId());
+		}
+
+		if (!isGameActivityPausedMode()) {
+			getLccEventListener().onGameEnd(message);
+		} else {
+			Log.d(TAG, "paused mode: postpone GAME END processing");
+			/*Log.d(TAG, "ActivityPausedMode = true");
+			final LiveGameEvent gameEndedEvent = new LiveGameEvent();
+			gameEndedEvent.setGameId(gameId);
+			gameEndedEvent.setEvent(LiveGameEvent.Event.END_OF_GAME);
+			gameEndedEvent.setGameEndedMessage(message);
+			lccHelper.getPausedActivityGameEvents().put(gameEndedEvent.getEvent(), gameEndedEvent);
+			if (lccHelper.getLccEventListener() == null) { // if activity is not started yet
+				lccHelper.processFullGame(game);
+				Log.d(TAG, "processFullGame");
+			}*/
+		}
 	}
 }

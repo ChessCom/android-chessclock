@@ -2,26 +2,20 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.util.Log;
-import com.chess.R;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
 import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
 import com.chess.live.client.User;
-import com.chess.live.rules.GameResult;
-import com.chess.utilities.AppUtils;
 
 import java.util.Collection;
-import java.util.List;
-
-import static com.chess.live.rules.GameResult.WIN;
 
 public class LccGameListener implements GameListener {
+
+	private static final String TAG = "LccLog-GAME";
 
 	private LccHelper lccHelper;
 	private Long latestGameId = 0L;
 	private Context context;
-	private static final String TAG = "LccLog-GAME";
 
 	public LccGameListener(LccHelper lccHelper) {
 		this.lccHelper = lccHelper;
@@ -155,9 +149,6 @@ public class LccGameListener implements GameListener {
 	}
 
 	private void doUpdateGame(boolean checkMoves, Game game) {
-
-		// todo: maybe create two separate methods: new move check and draw check
-
 		if (checkMoves && game.getMoveCount() > lccHelper.getLatestMoveNumber()) { // do not check moves if it was
 			User moveMaker = game.getLastMoveMaker();
 			String move = game.getLastMove();
@@ -168,24 +159,7 @@ public class LccGameListener implements GameListener {
 			}
 		}
 
-		final String opponentName = lccHelper.getOpponentName();
-
-		if (opponentName != null && game.isDrawOfferedByPlayer(opponentName)) { // check if game is not ended?
-			Log.d(TAG, "GAME LISTENER: Draw offered at the move #" + game.getMoveCount() + ", game.id=" + game.getId()
-					+ ", offerer=" + opponentName + ", game=" + game);
-
-			/*if (lccHelper.isGameActivityPausedMode()) {
-				final LiveGameEvent drawOfferedEvent = new LiveGameEvent();
-				drawOfferedEvent.setEvent(LiveGameEvent.Event.DRAW_OFFER);
-				drawOfferedEvent.setGameId(game.getId());
-				drawOfferedEvent.setDrawOffererUsername(opponentName);
-				lccHelper.getPausedActivityGameEvents().put(drawOfferedEvent.getEvent(), drawOfferedEvent);
-				Log.d(TAG, "DRAW PAUSED");
-			} else {*/
-				Log.d(TAG, "DRAW SHOW");
-				lccHelper.getLccEventListener().onDrawOffered(opponentName);
-			//}
-		}
+		lccHelper.checkAndProcessDrawOffer(game);
 	}
 
 	private void doEndGame(Game game) {
@@ -200,97 +174,11 @@ public class LccGameListener implements GameListener {
 
         /*lccHelper.getClient().subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1,
                                                         lccHelper.getSeekListListener());*/
-		Long lastGameId = lccHelper.getCurrentGameId() != null ? lccHelper.getCurrentGameId() : gameId;
-		lccHelper.setLastGameId(lastGameId);
 
-		List<GameResult> gameResults = game.getResults();
-		final GameResult whitePlayerResult = gameResults.get(0);
-		final GameResult blackPlayerResult = gameResults.get(1);
-		final String whiteUsername = game.getWhitePlayer().getUsername();
-		final String blackUsername = game.getBlackPlayer().getUsername();
+		// Long lastGameId = lccHelper.getCurrentGameId() != null ? lccHelper.getCurrentGameId() : gameId; // vm: looks redundant
+		lccHelper.setLastGameId(gameId);
 
-		GameResult result;
-		String winnerUsername = null;
-
-		if (whitePlayerResult == WIN) {
-			result = blackPlayerResult;
-			winnerUsername = whiteUsername;
-		} else if (blackPlayerResult == WIN) {
-			result = whitePlayerResult;
-			winnerUsername = blackUsername;
-		} else {
-			result = whitePlayerResult;
-		}
-
-		String message = StaticData.SYMBOL_EMPTY;
-		switch (result) {
-			case TIMEOUT:
-				message = context.getString(R.string.won_on_time, winnerUsername);
-				break;
-			case RESIGNED:
-				message = context.getString(R.string.won_by_resignation, winnerUsername);
-				break;
-			case CHECKMATED:
-				message = context.getString(R.string.won_by_checkmate, winnerUsername);
-				break;
-			case DRAW_BY_REPETITION:
-				message = context.getString(R.string.game_draw_by_repetition);
-				break;
-			case DRAW_AGREED:
-				message = context.getString(R.string.game_drawn_by_agreement);
-				break;
-			case STALEMATE:
-				message = context.getString(R.string.game_drawn_by_stalemate);
-				break;
-			case DRAW_BY_INSUFFICIENT_MATERIAL:
-				message = context.getString(R.string.game_drawn_insufficient_material);
-				break;
-			case DRAW_BY_50_MOVE:
-				message = context.getString(R.string.game_drawn_by_fifty_move_rule);
-				break;
-			case ABANDONED:
-				message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_game_abandoned);
-				break;
-			case ABORTED:
-				message = context.getString(R.string.game_aborted);
-				break;
-		}
-		//message = whiteUsername + " vs. " + blackUsername + " - " + message;
-		Log.d(TAG, "GAME LISTENER: " + message);
-
-		if (lccHelper.getWhiteClock() != null) {
-			lccHelper.getWhiteClock().setRunning(false);
-		}
-		if (lccHelper.getBlackClock() != null) {
-			lccHelper.getBlackClock().setRunning(false);
-		}
-
-		String abortedCodeMessage = game.getCodeMessage(); // used only for aborted games
-		if (abortedCodeMessage != null) {
-			final String messageI18n = AppUtils.getI18nString(context, abortedCodeMessage, game.getAborterUsername());
-			if (messageI18n != null) {
-				message = messageI18n;
-			}
-		}
-
-		if (lccHelper.getCurrentGameId() == null) {
-			lccHelper.setCurrentGameId(gameId);
-		}
-
-		/*if (lccHelper.isGameActivityPausedMode()) {
-			Log.d(TAG, "ActivityPausedMode = true");
-			final LiveGameEvent gameEndedEvent = new LiveGameEvent();
-			gameEndedEvent.setGameId(gameId);
-			gameEndedEvent.setEvent(LiveGameEvent.Event.END_OF_GAME);
-			gameEndedEvent.setGameEndedMessage(message);
-			lccHelper.getPausedActivityGameEvents().put(gameEndedEvent.getEvent(), gameEndedEvent);
-			if (lccHelper.getLccEventListener() == null) { // if activity is not started yet
-				lccHelper.processFullGame(game);
-				Log.d(TAG, "processFullGame");
-			}
-		} else {*/
-			lccHelper.getLccEventListener().onGameEnd(message);
-		//}
+		lccHelper.checkAndProcessEndGame(game);
 	}
 
     /*public void onDrawRejected(Game game, User rejector) {

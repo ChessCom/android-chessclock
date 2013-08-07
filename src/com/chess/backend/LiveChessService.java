@@ -436,6 +436,10 @@ public class LiveChessService extends Service {
 		lccHelper.rematch();
 	}
 
+	public void checkGameEvents() {
+		lccHelper.checkGameEvents();
+	}
+
 	public void createChallenge(LiveGameConfig config) {
 		lccHelper.createChallenge(config);
 	}

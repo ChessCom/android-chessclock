@@ -245,9 +245,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		liveService.checkFirstTestMove();
 
-		liveService.setGameActivityPausedMode(false);
+		liveService.setGameActivityPausedMode(false); // probably set it above
+		liveService.checkGameEvents();
 
-		// remove pausedActivityGameEvents
 		//liveService.executePausedActivityGameEvents();
 	}
 
