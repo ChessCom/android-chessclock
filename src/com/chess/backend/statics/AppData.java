@@ -389,12 +389,12 @@ public class AppData {
 		return getBooleanValue(PREF_USER_CHOOSE_LESSONS_LIBRARY, true);
 	}
 
-	public void setCompStrength(int value) {
-		setIntValue(PREF_COMPUTER_STRENGTH, value);
+	public void setCompLevel(int value) {
+		setIntValue(PREF_COMPUTER_LEVEL, value);
 	}
 
-	public int getCompStrength() {
-		return getIntValue(PREF_COMPUTER_STRENGTH, 2);
+	public int getCompLevel() {
+		return getIntValue(PREF_COMPUTER_LEVEL, DEFAULT_COMP_LEVEL);
 	}
 
 	/**

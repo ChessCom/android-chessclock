@@ -237,10 +237,15 @@ public class DroidFish extends Activity implements GUIInterface {
 		{
 			actions = new HashMap<String, UIAction>();
 			addAction(new UIAction() {
+				@Override
 				public String getId() { return "flipboard"; }
+				@Override
 				public int getName() { return R.string.flip_board; }
+				@Override
 				public int getIcon() { return R.raw.flip; }
+				@Override
 				public boolean enabled() { return true; }
+				@Override
 				public void run() {
 					boardFlipped = !cb.flipped;
 					setBooleanPref("boardFlipped", boardFlipped);
@@ -248,30 +253,45 @@ public class DroidFish extends Activity implements GUIInterface {
 				}
 			});
 			addAction(new UIAction() {
+				@Override
 				public String getId() { return "showThinking"; }
+				@Override
 				public int getName() { return R.string.toggle_show_thinking; }
+				@Override
 				public int getIcon() { return R.raw.thinking; }
+				@Override
 				public boolean enabled() { return true; }
+				@Override
 				public void run() {
 					mShowThinking = toggleBooleanPref("showThinking");
 					updateThinkingInfo();
 				}
 			});
 			addAction(new UIAction() {
+				@Override
 				public String getId() { return "bookHints"; }
+				@Override
 				public int getName() { return R.string.toggle_book_hints; }
+				@Override
 				public int getIcon() { return R.raw.book; }
+				@Override
 				public boolean enabled() { return true; }
+				@Override
 				public void run() {
 					mShowBookHints = toggleBooleanPref("bookHints");
 					updateThinkingInfo();
 				}
 			});
 			addAction(new UIAction() {
+				@Override
 				public String getId() { return "viewVariations"; }
+				@Override
 				public int getName() { return R.string.toggle_pgn_variations; }
+				@Override
 				public int getIcon() { return R.raw.variation; }
+				@Override
 				public boolean enabled() { return true; }
+				@Override
 				public void run() {
 					pgnOptions.view.variations = toggleBooleanPref("viewVariations");
 					gameTextListener.clear();
@@ -279,10 +299,15 @@ public class DroidFish extends Activity implements GUIInterface {
 				}
 			});
 			addAction(new UIAction() {
+				@Override
 				public String getId() { return "viewComments"; }
+				@Override
 				public int getName() { return R.string.toggle_pgn_comments; }
+				@Override
 				public int getIcon() { return R.raw.comment; }
+				@Override
 				public boolean enabled() { return true; }
+				@Override
 				public void run() {
 					pgnOptions.view.comments = toggleBooleanPref("viewComments");
 					gameTextListener.clear();
@@ -290,10 +315,15 @@ public class DroidFish extends Activity implements GUIInterface {
 				}
 			});
 			addAction(new UIAction() {
+				@Override
 				public String getId() { return "viewHeaders"; }
+				@Override
 				public int getName() { return R.string.toggle_pgn_headers; }
+				@Override
 				public int getIcon() { return R.raw.header; }
+				@Override
 				public boolean enabled() { return true; }
+				@Override
 				public void run() {
 					pgnOptions.view.headers = toggleBooleanPref("viewHeaders");
 					gameTextListener.clear();
@@ -301,11 +331,16 @@ public class DroidFish extends Activity implements GUIInterface {
 				}
 			});
 			addAction(new UIAction() {
+				@Override
 				public String getId() { return "toggleAnalysis"; }
+				@Override
 				public int getName() { return R.string.toggle_analysis; }
+				@Override
 				public int getIcon() { return R.raw.analyze; }
+				@Override
 				public boolean enabled() { return true; }
 				private int oldGameModeType = GameMode.EDIT_GAME;
+				@Override
 				public void run() {
 					int gameModeType;
 					if (ctrl.analysisMode()) {
@@ -319,20 +354,30 @@ public class DroidFish extends Activity implements GUIInterface {
 				}
 			});
 			addAction(new UIAction() {
+				@Override
 				public String getId() { return "largeButtons"; }
+				@Override
 				public int getName() { return R.string.toggle_large_buttons; }
+				@Override
 				public int getIcon() { return R.raw.magnify; }
+				@Override
 				public boolean enabled() { return true; }
+				@Override
 				public void run() {
 					pgnOptions.view.headers = toggleBooleanPref("largeButtons");
 					updateButtons();
 				}
 			});
 			addAction(new UIAction() {
+				@Override
 				public String getId() { return "blindMode"; }
+				@Override
 				public int getName() { return R.string.blind_mode; }
+				@Override
 				public int getIcon() { return R.raw.blind; }
+				@Override
 				public boolean enabled() { return true; }
+				@Override
 				public void run() {
 					boolean blindMode = !cb.blindMode;
 					setBooleanPref("blindMode", blindMode);
@@ -340,19 +385,29 @@ public class DroidFish extends Activity implements GUIInterface {
 				}
 			});
 			addAction(new UIAction() {
+				@Override
 				public String getId() { return "loadLastFile"; }
+				@Override
 				public int getName() { return R.string.load_last_file; }
+				@Override
 				public int getIcon() { return R.raw.open_last_file; }
+				@Override
 				public boolean enabled() { return currFileType() != FT_NONE; }
+				@Override
 				public void run() {
 					loadLastFile();
 				}
 			});
 			addAction(new UIAction() {
+				@Override
 				public String getId() { return "selectEngine"; }
+				@Override
 				public int getName() { return R.string.select_engine; }
+				@Override
 				public int getIcon() { return R.raw.engine; }
+				@Override
 				public boolean enabled() { return true; }
+				@Override
 				public void run() {
 					removeDialog(SELECT_ENGINE_DIALOG_NOMANAGE);
 					showDialog(SELECT_ENGINE_DIALOG_NOMANAGE);
@@ -740,11 +795,13 @@ public class DroidFish extends Activity implements GUIInterface {
 			}
 		});
 		cb.setOnTouchListener(new OnTouchListener() {
+			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				return gd.onTouchEvent(event);
 			}
 		});
 		cb.setOnTrackballListener(new ChessBoard.OnTrackballListener() {
+			@Override
 			public void onTrackballEvent(MotionEvent event) {
 				if (ctrl.humansTurn()) {
 					Move m = cb.handleTrackballEvent(event);
@@ -756,6 +813,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		});
 
 		moveList.setOnLongClickListener(new OnLongClickListener() {
+			@Override
 			public boolean onLongClick(View v) {
 				removeDialog(MOVELIST_MENU_DIALOG);
 				showDialog(MOVELIST_MENU_DIALOG);
@@ -763,6 +821,7 @@ public class DroidFish extends Activity implements GUIInterface {
 			}
 		});
 		thinking.setOnLongClickListener(new OnLongClickListener() {
+			@Override
 			public boolean onLongClick(View v) {
 				if (mShowThinking || gameMode.analysisMode()) {
 					if (!pvMoves.isEmpty()) {
@@ -1103,6 +1162,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	}
 
 	/** Update center field in second header line. */
+	@Override
 	public final void updateTimeControlTitle() {
 		int[] tmpInfo = ctrl.getTimeLimit();
 		StringBuilder sb = new StringBuilder();
@@ -1562,6 +1622,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	}
 
 	/** Report a move made that is a candidate for GUI animation. */
+	@Override
 	public void setAnimMove(Position sourcePos, Move move, boolean forward) {
 		Log.d("", "setAnimMove " + move);
 		if (animateMoves && (move != null))
@@ -1780,6 +1841,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.promote_pawn_to);
 		builder.setItems(items, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				ctrl.reportPromotePiece(item);
 			}
@@ -1802,6 +1864,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.tools_menu);
 		builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				switch (finalActions.get(item)) {
 					case COPY_GAME: {
@@ -1854,6 +1917,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.tools_menu);
 		builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				switch (finalActions.get(item)) {
 					case CLIPBOARD: {
@@ -1909,6 +1973,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.load_save_menu);
 		builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				switch (finalActions.get(item)) {
 					case LOAD_LAST_FILE:
@@ -1985,6 +2050,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		final EditText moveNrView = (EditText)content.findViewById(R.id.selmove_number);
 		moveNrView.setText("1");
 		final Runnable gotoMove = new Runnable() {
+			@Override
 			public void run() {
 				try {
 					int moveNr = Integer.parseInt(moveNrView.getText().toString());
@@ -1995,6 +2061,7 @@ public class DroidFish extends Activity implements GUIInterface {
 			}
 		};
 		builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				gotoMove.run();
 			}
@@ -2004,6 +2071,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		final AlertDialog dialog = builder.create();
 
 		moveNrView.setOnKeyListener(new OnKeyListener() {
+			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					gotoMove.run();
@@ -2043,6 +2111,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.select_opening_book_file);
 		builder.setSingleChoiceItems(items, defaultItem, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				Editor editor = settings.edit();
 				String bookFile = "";
@@ -2099,6 +2168,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.select_chess_engine);
 		builder.setSingleChoiceItems(items, defaultItem, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				if ((item < 0) || (item >= nEngines))
 					return;
@@ -2171,6 +2241,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(selectFileMsg);
 		builder.setSingleChoiceItems(fileNames, defaultItem, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				dialog.dismiss();
 				String sep = File.separator;
@@ -2203,6 +2274,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.select_pgn_file_save);
 		builder.setSingleChoiceItems(finalItems, defaultItem, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				String pgnFile;
 				if (item >= numFiles) {
@@ -2229,6 +2301,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		final EditText fileNameView = (EditText)content.findViewById(R.id.create_pgn_filename);
 		fileNameView.setText("");
 		final Runnable savePGN = new Runnable() {
+			@Override
 			public void run() {
 				String pgnFile = fileNameView.getText().toString();
 				if ((pgnFile.length() > 0) && !pgnFile.contains("."))
@@ -2239,6 +2312,7 @@ public class DroidFish extends Activity implements GUIInterface {
 			}
 		};
 		builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				savePGN.run();
 			}
@@ -2247,6 +2321,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
 		final Dialog dialog = builder.create();
 		fileNameView.setOnKeyListener(new OnKeyListener() {
+			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					savePGN.run();
@@ -2266,6 +2341,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		for (int i = 0; i < themeNames.length; i++)
 			themeNames[i] = getString(ColorTheme.themeNames[i]);
 		builder.setSingleChoiceItems(themeNames, -1, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				ColorTheme.instance().setTheme(settings, item);
 				cb.setColors();
@@ -2290,6 +2366,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.select_game_mode);
 		builder.setItems(items, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				int gameModeType = -1;
                 /* only flip site in case the player was specified resp. changed */
@@ -2349,6 +2426,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.edit_game);
 		builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				switch (finalActions.get(item)) {
 					case EDIT_HEADERS: {
@@ -2378,6 +2456,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
 						builder.setNegativeButton(R.string.cancel, null);
 						builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								headers.put("Event", event.getText().toString().trim());
 								headers.put("Site",  site .getText().toString().trim());
@@ -2417,6 +2496,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
 						builder.setNegativeButton(R.string.cancel, null);
 						builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								String pre = preComment.getText().toString().trim();
 								String post = postComment.getText().toString().trim();
@@ -2484,6 +2564,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.analysis);
 		builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				switch (finalActions.get(item)) {
 					case ADD_ANALYSIS: {
@@ -2551,6 +2632,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.go_back);
 		builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				switch (finalActions.get(item)) {
 					case GOTO_START_GAME: ctrl.gotoMove(0); break;
@@ -2602,6 +2684,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.go_forward);
 		builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				switch (finalActions.get(item)) {
 					case GOTO_END_VAR:  ctrl.gotoMove(Integer.MAX_VALUE); break;
@@ -2647,6 +2730,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(buttonActions.getMenuTitle());
 		builder.setItems(names.toArray(new CharSequence[names.size()]), new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				UIAction a = actions.get(item);
 				a.run();
@@ -2663,6 +2747,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.option_manage_engines);
 		builder.setItems(items, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				switch (item) {
 					case 0:
@@ -2721,6 +2806,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.configure_network_engine);
 		builder.setSingleChoiceItems(items, defaultItem, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				if ((item < 0) || (item >= numItems))
 					return;
@@ -2757,6 +2843,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		final EditText engineNameView = (EditText)content.findViewById(R.id.create_network_engine);
 		engineNameView.setText("");
 		final Runnable createEngine = new Runnable() {
+			@Override
 			public void run() {
 				String engineName = engineNameView.getText().toString();
 				String sep = File.separator;
@@ -2783,6 +2870,7 @@ public class DroidFish extends Activity implements GUIInterface {
 			}
 		};
 		builder.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				createEngine.run();
 			}
@@ -2804,6 +2892,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
 		final Dialog dialog = builder.create();
 		engineNameView.setOnKeyListener(new OnKeyListener() {
+			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					createEngine.run();
@@ -2839,6 +2928,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		hostNameView.setText(hostName);
 		portView.setText(port);
 		final Runnable writeConfig = new Runnable() {
+			@Override
 			public void run() {
 				String hostName = hostNameView.getText().toString();
 				String port = portView.getText().toString();
@@ -2886,6 +2976,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
 		final Dialog dialog = builder.create();
 		portView.setOnKeyListener(new OnKeyListener() {
+			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					writeConfig.run();
@@ -2908,6 +2999,7 @@ public class DroidFish extends Activity implements GUIInterface {
 			msg = msg.substring(msg.lastIndexOf('/')+1);
 		builder.setMessage(getString(R.string.network_engine) + ": " + msg);
 		builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				new File(networkEngineToConfig).delete();
 				String engine = settings.getString("engine", "stockfish");
@@ -2927,6 +3019,7 @@ public class DroidFish extends Activity implements GUIInterface {
 			}
 		});
 		builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.cancel();
 				removeDialog(NETWORK_ENGINE_DIALOG);
@@ -3040,6 +3133,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		String sep = File.separator;
 		File dir = new File(extDir.getAbsolutePath() + sep + dirName);
 		File[] files = dir.listFiles(new FileFilter() {
+			@Override
 			public boolean accept(File pathname) {
 				if (!pathname.isFile())
 					return false;
@@ -3220,6 +3314,7 @@ public class DroidFish extends Activity implements GUIInterface {
 
 	private Handler handlerTimer = new Handler();
 	private Runnable r = new Runnable() {
+		@Override
 		public void run() {
 			ctrl.updateRemainingTime();
 		}
@@ -3274,6 +3369,7 @@ public class DroidFish extends Activity implements GUIInterface {
 			return currPos;
 		}
 
+		@Override
 		public boolean isUpToDate() {
 			return upToDate;
 		}
@@ -3328,6 +3424,7 @@ public class DroidFish extends Activity implements GUIInterface {
 			}
 		}
 
+		@Override
 		public void processToken(Node node, int type, String token) {
 			if (    (prevType == PgnToken.RIGHT_BRACKET) &&
 					(type != PgnToken.LEFT_BRACKET))  {

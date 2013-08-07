@@ -27,8 +27,10 @@ import java.util.List;
  */
 public class PopupOptionsMenuFragment extends DialogFragment implements View.OnClickListener {
 
+	private static final String ITEMS_LIST = "items_list";
 	private PopupListSelectionFace listener;
 	private SparseArray<String> itemsArray;
+	private ArrayList<String> optionsList;
 
 	public static PopupOptionsMenuFragment createInstance(PopupListSelectionFace listener, SparseArray<String> itemsMap) {
 		PopupOptionsMenuFragment frag = new PopupOptionsMenuFragment();
@@ -41,6 +43,10 @@ public class PopupOptionsMenuFragment extends DialogFragment implements View.OnC
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setStyle(STYLE_NO_TITLE, 0);
+
+		if (savedInstanceState != null) {
+			optionsList = savedInstanceState.getStringArrayList(ITEMS_LIST);
+		}
 	}
 
 	@Override
@@ -53,11 +59,14 @@ public class PopupOptionsMenuFragment extends DialogFragment implements View.OnC
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		List<String> optionsList = new ArrayList<String>();
+		if (optionsList == null) {
+			optionsList = new ArrayList<String>();
 
-		for (int i=0; i < itemsArray.size(); i++){
-			optionsList.add(itemsArray.valueAt(i));
+			for (int i=0; i < itemsArray.size(); i++){
+				optionsList.add(itemsArray.valueAt(i));
+			}
 		}
+
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(new StringAdapter(getActivity(), optionsList));
 	}
@@ -69,6 +78,13 @@ public class PopupOptionsMenuFragment extends DialogFragment implements View.OnC
 		if (listener != null) {
 			listener.onDialogCanceled();
 		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putStringArrayList(ITEMS_LIST, optionsList);
 	}
 
 	@Override

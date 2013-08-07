@@ -4,6 +4,7 @@ public class AppConstants {
 	public static final String FACEBOOK_APP_ID = "2427617054";
 	public static final String BUGSENSE_API_KEY = "189b9851";
 	public static final String YOUTUBE_DEVELOPER_KEY = "AIzaSyDunSUhieh0QurCov5Pl0nwJUpURTYiEsw";
+	public static final int DEFAULT_COMP_LEVEL = 2;
 
 	/*Screen Features*/
 	public static final String SMALL_SCREEN = "small_screen";
@@ -48,6 +49,7 @@ public class AppConstants {
 	public static final String PREF_BOARD_HIGHLIGHT_LAST_MOVE = "highlight last move";
 	public static final String PREF_BOARD_SHOW_ANSWER_BOTTOM = "show answer bottom";
 
+	public static final String PREF_COMPUTER_LEVEL = "computer strength lvl";
 	public static final String PREF_BOARD_STYLE = "board style";
 	public static final String PREF_PIECES_SET = "pieces set";
 	public static final String PREF_BACKGROUND_SET = "background set";

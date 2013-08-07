@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.VacationItem;
+import com.chess.backend.entity.new_api.SuccessItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
@@ -116,7 +116,7 @@ public class ForumNewTopicFragment extends CommonLogicFragment implements TextVi
 		loadItem.addRequestParams(RestHelper.P_SUBJECT, subject);
 		loadItem.addRequestParams(RestHelper.P_BODY, body);
 
-		new RequestJsonTask<VacationItem>(topicsCreateListener).executeTask(loadItem);
+		new RequestJsonTask<SuccessItem>(topicsCreateListener).executeTask(loadItem);
 	}
 
 	@Override
@@ -133,14 +133,14 @@ public class ForumNewTopicFragment extends CommonLogicFragment implements TextVi
 		return false;
 	}
 
-	private class TopicsCreateListener extends ChessLoadUpdateListener<VacationItem> {
+	private class TopicsCreateListener extends ChessLoadUpdateListener<SuccessItem> {
 
 		private TopicsCreateListener() {
-			super(VacationItem.class);
+			super(SuccessItem.class);
 		}
 
 		@Override
-		public void updateData(VacationItem returnedObj) {
+		public void updateData(SuccessItem returnedObj) {
 			if(returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 				showToast(R.string.topic_created);
 			} else {

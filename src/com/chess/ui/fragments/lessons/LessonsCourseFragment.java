@@ -84,7 +84,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		listView = (ListView) view.findViewById(R.id.listView);
 		// Set header
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lessons_course_header_view, null, false);
-		if (isNeedToUpgrade()) {
+		if (isNeedToUpgradePremium()) {
 			headerView.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		} else {
 			headerView.findViewById(R.id.upgradeView).setVisibility(View.GONE);

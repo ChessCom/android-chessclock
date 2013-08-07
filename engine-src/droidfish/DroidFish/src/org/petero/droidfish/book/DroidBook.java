@@ -133,7 +133,8 @@ public final class DroidBook {
 
         if (bookMoves != null) {
             Collections.sort(bookMoves, new Comparator<BookEntry>() {
-                public int compare(BookEntry arg0, BookEntry arg1) {
+                @Override
+				public int compare(BookEntry arg0, BookEntry arg1) {
                     double wd = arg1.weight - arg0.weight;
                     if (wd != 0)
                         return (wd > 0) ? 1 : -1;

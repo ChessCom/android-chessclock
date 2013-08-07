@@ -107,11 +107,13 @@ public class EditPGN extends ListActivity {
             showDialog(PROGRESS_DIALOG);
             final EditPGN lpgn = this;
             workThread = new Thread(new Runnable() {
-                public void run() {
+                @Override
+				public void run() {
                     if (!readFile())
                         return;
                     runOnUiThread(new Runnable() {
-                        public void run() {
+                        @Override
+						public void run() {
                             lpgn.showList();
                         }
                     });
@@ -131,11 +133,13 @@ public class EditPGN extends ListActivity {
                 finish();
             } else {
                 workThread = new Thread(new Runnable() {
-                    public void run() {
+                    @Override
+					public void run() {
                         if (!readFile())
                             return;
                         runOnUiThread(new Runnable() {
-                            public void run() {
+                            @Override
+							public void run() {
                                 if (loadItem >= gamesInFile.size()) {
                                     Toast.makeText(getApplicationContext(), R.string.no_next_game,
                                                    Toast.LENGTH_SHORT).show();
@@ -163,11 +167,13 @@ public class EditPGN extends ListActivity {
                 showDialog(PROGRESS_DIALOG);
                 final EditPGN lpgn = this;
                 workThread = new Thread(new Runnable() {
-                    public void run() {
+                    @Override
+					public void run() {
                         if (!readFile())
                             return;
                         runOnUiThread(new Runnable() {
-                            public void run() {
+                            @Override
+							public void run() {
                                 if (gamesInFile.size() == 0) {
                                     pgnFile.appendPGN(pgnToSave, getApplicationContext());
                                     finish();
@@ -339,13 +345,15 @@ public class EditPGN extends ListActivity {
             String msg = gi.toString();
             builder.setMessage(msg);
             builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
+                @Override
+				public void onClick(DialogInterface dialog, int id) {
                     deleteGame(gi);
                     dialog.cancel();
                 }
             });
             builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
+                @Override
+				public void onClick(DialogInterface dialog, int id) {
                     dialog.cancel();
                 }
             });
@@ -363,7 +371,8 @@ public class EditPGN extends ListActivity {
                 getString(R.string.replace_selected),
             };
             builder.setItems(items, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
+                @Override
+				public void onClick(DialogInterface dialog, int item) {
                     GameInfo giToReplace;
                     switch (item) {
                     case 0: giToReplace = new GameInfo().setNull(gi.startPos); break;
@@ -386,13 +395,15 @@ public class EditPGN extends ListActivity {
             String msg = String.format(Locale.US, getString(R.string.delete_named_file), name);
             builder.setMessage(msg);
             builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
+                @Override
+				public void onClick(DialogInterface dialog, int id) {
                     pgnFile.delete();
                     finish();
                 }
             });
             builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
+                @Override
+				public void onClick(DialogInterface dialog, int id) {
                     dialog.cancel();
                 }
             });
@@ -418,7 +429,8 @@ public class EditPGN extends ListActivity {
             switch (p.first) {
             case OUT_OF_MEMORY:
                 runOnUiThread(new Runnable() {
-                    public void run() {
+                    @Override
+					public void run() {
                         Toast.makeText(getApplicationContext(), R.string.file_too_large,
                                        Toast.LENGTH_SHORT).show();
                     }
@@ -426,7 +438,8 @@ public class EditPGN extends ListActivity {
                 break;
             case NOT_PGN:
                 runOnUiThread(new Runnable() {
-                    public void run() {
+                    @Override
+					public void run() {
                         Toast.makeText(getApplicationContext(), R.string.not_a_pgn_file,
                                        Toast.LENGTH_SHORT).show();
                     }

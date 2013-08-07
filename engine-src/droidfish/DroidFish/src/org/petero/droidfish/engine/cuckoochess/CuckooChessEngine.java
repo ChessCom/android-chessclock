@@ -63,7 +63,8 @@ public class CuckooChessEngine extends UCIEngineBase {
     @Override
     protected final void startProcess() {
         engineThread = new Thread(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 mainLoop(guiToEngine, engineToGui);
             }
         });

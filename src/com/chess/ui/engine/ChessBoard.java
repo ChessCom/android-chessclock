@@ -2179,6 +2179,7 @@ public class ChessBoard implements BoardFace {
 		xside ^= 1;
 	}
 
+	@Override
 	public CopyOnWriteArrayList<Move> generateValidMoves(boolean forceSwitchSide) {
 
 		int[] piecesBackup = null;

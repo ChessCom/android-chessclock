@@ -186,6 +186,7 @@ public class ColorPickerPreference
         }
     }
 
+	@Override
 	public boolean onPreferenceClick(Preference preference) {
 		showDialog(null);
 		return false;
@@ -315,13 +316,15 @@ public class ColorPickerPreference
         }
         
         @SuppressWarnings("unused")
-        public static final Parcelable.Creator<SavedState> CREATOR =
-                new Parcelable.Creator<SavedState>() {
-            public SavedState createFromParcel(Parcel in) {
+        public static final Creator<SavedState> CREATOR =
+                new Creator<SavedState>() {
+            @Override
+			public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
             }
 
-            public SavedState[] newArray(int size) {
+            @Override
+			public SavedState[] newArray(int size) {
                 return new SavedState[size];
             }
         };

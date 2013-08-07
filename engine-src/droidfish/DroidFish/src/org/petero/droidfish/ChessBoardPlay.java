@@ -96,7 +96,8 @@ public class ChessBoardPlay extends ChessBoard {
         return (piece != Piece.EMPTY) && (Piece.isWhite(piece) == pos.whiteMove);
     }
 
-    public Move mousePressed(int sq) {
+    @Override
+	public Move mousePressed(int sq) {
         if (sq < 0)
             return null;
         cursorVisible = false;

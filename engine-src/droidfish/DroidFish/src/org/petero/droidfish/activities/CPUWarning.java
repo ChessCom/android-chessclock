@@ -44,7 +44,8 @@ public class CPUWarning extends Activity {
             builder.setTitle(R.string.app_name).setMessage(R.string.cpu_warning);
             AlertDialog alert = builder.create();
             alert.setOnDismissListener(new OnDismissListener() {
-                public void onDismiss(DialogInterface dialog) {
+                @Override
+				public void onDismiss(DialogInterface dialog) {
                     finish();
                 }
             });

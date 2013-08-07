@@ -635,6 +635,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	public boolean isNeedToUpgrade() {
 		return getAppData().getUserPremiumStatus() < StaticData.GOLD_USER;
 	}
+
+	public boolean isNeedToUpgradePremium(){
+		return getAppData().getUserPremiumStatus() < StaticData.DIAMOND_USER;
+	}
+
 //	public void printHashKey() { Don't remove, use to find needed facebook hashkey
 //		try {
 //			PackageInfo info = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(),

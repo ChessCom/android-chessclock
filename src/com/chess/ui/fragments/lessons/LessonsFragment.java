@@ -85,6 +85,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 		{ // Library mode init
 			listView = (ListView) view.findViewById(R.id.listView);
+//			if (isNeedToUpgradePremium()) {
 			if (isNeedToUpgrade()) {
 				view.findViewById(R.id.lessonsStatsView).setVisibility(View.GONE);
 				view.findViewById(R.id.upgradeBtn).setOnClickListener(this);
@@ -126,6 +127,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 	public void onStart() {
 		super.onStart();
 
+//		if (!isNeedToUpgradePremium()) {
 		if (!isNeedToUpgrade()) {
 			LoadItem loadItem = LoadHelper.getLessonsRating(getUserToken());
 			new RequestJsonTask<LessonsRatingItem>(lessonsRatingUpdateListener).executeTask(loadItem);
@@ -260,7 +262,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		}
 	}
 
-	private void getFullCourses(){
+	private void getFullCourses() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_LESSONS_COURSES);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());

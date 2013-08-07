@@ -18,6 +18,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.LessonItem;
+import com.chess.backend.entity.new_api.SuccessItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBDataManager;
@@ -56,17 +57,18 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	public static final String BOLD_DIVIDER = "##";
 
 	private static final long DRAWER_UPDATE_DELAY = 100;
+	private static final long TACTIC_ANSWER_DELAY = 1500;
 
 	// Options ids
-	private static final int ID_KEY_SQUARES = 0;
-	private static final int ID_CORRECT_SQUARE = 1;
-	private static final int ID_KEY_PIECES = 2;
-	private static final int ID_CORRECT_PIECE = 3;
-	private static final int ID_ANALYSIS_BOARD = 4;
-	private static final int ID_VS_COMPUTER = 5;
-	private static final int ID_SKIP_LESSON = 6;
-	private static final int ID_SHOW_ANSWER = 7;
-	private static final int ID_SETTINGS = 8;
+//	private static final int ID_KEY_SQUARES = 0;
+//	private static final int ID_CORRECT_SQUARE = 1;
+//	private static final int ID_KEY_PIECES = 2;
+//	private static final int ID_CORRECT_PIECE = 3;
+	private static final int ID_ANALYSIS_BOARD = 0;
+	private static final int ID_VS_COMPUTER = 1;
+	private static final int ID_SKIP_LESSON = 2;
+	private static final int ID_SHOW_ANSWER = 3;
+	private static final int ID_SETTINGS = 4;
 	/* When user use hints he decrease total points by values below. Values are given in percents*/
 	private static final float HINT_1_COST = 2f;
 	private static final float HINT_2_COST = 6f;
@@ -117,7 +119,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private LessonItem.UserLesson userLesson;
 	private List<Integer> solvedPositionsList;
 	private SparseArray<MoveCompleteItem> movesCompleteMap;
-
+	private int scorePercent;
+	private float pointsForLesson;
+	private GameLessonFragment.SubmitLessonListener submitLessonListener;
+	private String moveToShow;
 
 	public GameLessonFragment() { }
 
@@ -148,6 +153,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		lessonLoadListener = new LessonDataUpdateListener(LessonDataUpdateListener.LOAD);
 		solvedPositionsList = new ArrayList<Integer>();
 		movesCompleteMap = new SparseArray<MoveCompleteItem>();
+		submitLessonListener = new SubmitLessonListener();
 	}
 
 	@Override
@@ -308,13 +314,14 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	/**
 	 * moves calculation:
 	 * <p/>
-	 * - invalid move:     (40%)
-	 * - wrong move:       (40%)
-	 * - alternative move: (0%)
-	 * - default move:     the right move - no subtraction
-	 * - hint 1:  (2%)
-	 * - hint 2:  (6%)
-	 * - hint 3:  (10%)
+	 * - invalid move:     (40%) <p/>
+	 * - wrong move:       (40%) <p/>
+	 * - alternative move: (0%)  <p/>
+	 * - default move:     the right move - no subtraction  <p/>
+	 * - hint 1:  (2%)        <p/>
+	 * - hint 2:  (6%)        <p/>
+	 * - hint 3:  (10%)       <p/>
+	 * - analysis board	(4%)  <p/>
 	 * For details see http://www.chess.com/chessmentor/help
 	 * <p/>
 	 * For example, if you have a lesson that has two moves in it, the first having a move
@@ -339,7 +346,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		boolean moveRecognized = false;
 		boolean correctMove = false;
 		for (LessonItem.MentorPosition.PossibleMove possibleMove : possibleMoves) {
-			if (possibleMove.getMove().contains(lastUserMove)) {
+			if (possibleMove.getMove().toLowerCase().contains(lastUserMove)) {
 
 				if (possibleMove.getMoveType().equals(LessonItem.MOVE_DEFAULT)) { // Correct move
 					controlsLessonsView.showCorrect();
@@ -371,7 +378,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 
 		if (!moveRecognized) {
-			Spanned wrongMoveComment = Html.fromHtml(positionsToLearn.get(currentLearningPosition).getStandardWrongMoveCommentary());
+			Spanned wrongMoveComment = Html.fromHtml(getMentorPosition().getStandardWrongMoveCommentary());
 			descriptionTxt.setText(wrongMoveComment);
 			descriptionView.post(scrollDescriptionUp);
 			controlsLessonsView.showWrong();
@@ -382,7 +389,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			showCorrectMoveViews(true);
 
 			// collect info about all moves for that lesson
-			float pointsForLesson = 0;
+			pointsForLesson = 0;
 			int totalPointsForLesson = 0;
 			for (int t = 0; t < movesCompleteMap.size(); t++) {
 				MoveCompleteItem item = movesCompleteMap.get(t);
@@ -409,7 +416,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				pointsForLesson += pointsForMove;
 			}
 			// Add them together and we get 11.5 out of 15 points, or 77% out of 100% on the lesson.
-			int scorePercent = (int) (pointsForLesson * 100 / totalPointsForLesson);
+			scorePercent = (int) (pointsForLesson * 100 / totalPointsForLesson);
 
 			lessonPercentTxt.setText(getString(R.string.percents, scorePercent) + StaticData.SYMBOL_PERCENT);
 			float currentUserRating = userLesson.getCurrentPoints() + pointsForLesson;
@@ -417,6 +424,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			String symbol = pointsForLesson > 0 ? StaticData.SYMBOL_PLUS : StaticData.SYMBOL_EMPTY;
 			lessonsRatingChangeTxt.setText(StaticData.SYMBOL_LEFT_PAR + symbol + pointsForLesson + StaticData.SYMBOL_RIGHT_PAR);
 
+			submitCorrectSolution();
 			// show next lesson button
 			controlsLessonsView.showNewGame();
 			if (false) { // show when the whole course completed
@@ -432,8 +440,24 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 	}
 
+	private void submitCorrectSolution() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_LESSON_BY_ID(lessonId));
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		loadItem.addRequestParams(RestHelper.P_CURRENT_POINTS, String.format("%.2f", pointsForLesson));  // you can pass float, 2 decimals please
+		loadItem.addRequestParams(RestHelper.P_CURRENT_PERCENT, scorePercent);
+		loadItem.addRequestParams(RestHelper.P_LAST_POS_NUMBER, currentLearningPosition);
+
+		new RequestJsonTask<SuccessItem>(submitLessonListener).executeTask(loadItem);
+	}
+
 	private MoveCompleteItem getCurrentCompleteItem() {
 		return movesCompleteMap.get(currentLearningPosition);
+	}
+
+	private LessonItem.MentorPosition getMentorPosition() {
+		return positionsToLearn.get(currentLearningPosition);
 	}
 
 	private void showCorrectMoveViews(boolean show) {
@@ -461,11 +485,11 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		String hint = StaticData.SYMBOL_EMPTY;
 		if (hintToShow == 1) {
-			hint = positionsToLearn.get(currentLearningPosition).getAdvice1();
+			hint = getMentorPosition().getAdvice1();
 		} else if (hintToShow == 2) {
-			hint = positionsToLearn.get(currentLearningPosition).getAdvice2();
+			hint = getMentorPosition().getAdvice2();
 		} else if (hintToShow == 3) {
-			hint = positionsToLearn.get(currentLearningPosition).getAdvice3();
+			hint = getMentorPosition().getAdvice3();
 		}
 
 		String hintNumberStr = getString(R.string.hint_arg, hintToShow);
@@ -487,23 +511,30 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	public void onValueSelected(int code) {
 		if (code == ID_SKIP_LESSON) {
 			newGame();
-			showToast("skip");
-
 		} else if (code == ID_SHOW_ANSWER) {
 
-			showToast("answer");
-		} else if (code == ID_KEY_SQUARES) {
-			showToast("key squares");
 
-		} else if (code == ID_CORRECT_SQUARE) {
-			showToast("correct square");
+			LessonItem.MentorPosition mentorPosition = getMentorPosition();
+			LessonItem.MentorPosition.PossibleMove correctMove = mentorPosition.getCorrectMove();
 
-		} else if (code == ID_KEY_PIECES) {
-			showToast("key pieces");
+			moveToShow = correctMove.getMove();
 
-		} else if (code == ID_CORRECT_PIECE) {
-			showToast("correct piece");
+			handler.postDelayed(showTacticMoveTask, TACTIC_ANSWER_DELAY);
 
+//		} else if (code == ID_KEY_SQUARES) {
+//			showToast("key squares");
+
+//		} else if (code == ID_CORRECT_SQUARE) {
+//			showToast("correct square");
+
+//		} else if (code == ID_KEY_PIECES) {
+//			showToast("key pieces");
+
+//		} else if (code == ID_CORRECT_PIECE) {
+//			showToast("correct piece");
+
+		} else if (code == ID_VS_COMPUTER) {
+//			getActivityFace().openFragment(GameCompFragment.createInstance()); // TODO pass FEN here
 		} else if (code == ID_ANALYSIS_BOARD) {
 			switch2Analysis();
 		} else if (code == ID_SETTINGS) {
@@ -513,6 +544,21 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		optionsSelectFragment.dismiss();
 		optionsSelectFragment = null;
 	}
+
+	private Runnable showTacticMoveTask = new Runnable() {
+		@Override
+		public void run() {
+			handler.removeCallbacks(this);
+
+			LessonsBoardFace boardFace = getBoardFace();
+
+			final Move move = boardFace.convertMoveAlgebraic(moveToShow);
+			boardView.setMoveAnimator(move, true);
+			boardView.resetValidMoves();
+			boardFace.makeMove(move, true);
+			invalidateGameScreen();
+		}
+	};
 
 	@Override
 	public void onDialogCanceled() {
@@ -603,7 +649,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		boardView.setGameUiFace(this);
 
 
-		LessonItem.MentorPosition positionToSolve = positionsToLearn.get(currentLearningPosition);
+		LessonItem.MentorPosition positionToSolve = getMentorPosition();
 		if (getCurrentCompleteItem() == null) {
 			MoveCompleteItem moveCompleteItem = new MoveCompleteItem();
 			moveCompleteItem.moveDifficulty = positionToSolve.getMoveDifficulty();
@@ -671,6 +717,24 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 		currentPoints = userLesson.getCurrentPoints();
 	}
+
+	private class SubmitLessonListener extends ChessLoadUpdateListener<SuccessItem> {
+
+		private SubmitLessonListener() {
+			super(SuccessItem.class);
+		}
+
+		@Override
+		public void updateData(SuccessItem returnedObj) {
+			if(returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+//				showToast(R.string.topic_created);
+			} else {
+				showToast(R.string.error);
+			}
+		}
+
+	}
+
 
 	private void widgetsInit(View view) {
 		controlsLessonsView = (ControlsLessonsView) view.findViewById(R.id.controlsLessonsView);
@@ -741,10 +805,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		{// options list setup
 			optionsArray = new SparseArray<String>();
-			optionsArray.put(ID_KEY_SQUARES, getString(R.string.key_squares));
-			optionsArray.put(ID_CORRECT_SQUARE, getString(R.string.correct_square));
-			optionsArray.put(ID_KEY_PIECES, getString(R.string.key_pieces));
-			optionsArray.put(ID_CORRECT_PIECE, getString(R.string.correct_piece));
+//			optionsArray.put(ID_KEY_SQUARES, getString(R.string.key_squares));
+//			optionsArray.put(ID_CORRECT_SQUARE, getString(R.string.correct_square));
+//			optionsArray.put(ID_KEY_PIECES, getString(R.string.key_pieces));
+//			optionsArray.put(ID_CORRECT_PIECE, getString(R.string.correct_piece));
 
 			optionsArray.put(ID_ANALYSIS_BOARD, getString(R.string.analysis_board));
 

@@ -111,10 +111,12 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 			isSelected = in.readByte() != 0x00;
 		}
 
+		@Override
 		public int describeContents() {
 			return 0;
 		}
 
+		@Override
 		public void writeToParcel(Parcel dest, int flags) {
 			dest.writeInt(theme_id);
 			dest.writeString(background_url);
@@ -127,10 +129,12 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 		}
 
 		public static final Parcelable.Creator<Data> CREATOR = new Parcelable.Creator<Data>() {
+			@Override
 			public Data createFromParcel(Parcel in) {
 				return new Data(in);
 			}
 
+			@Override
 			public Data[] newArray(int size) {
 				return new Data[size];
 			}

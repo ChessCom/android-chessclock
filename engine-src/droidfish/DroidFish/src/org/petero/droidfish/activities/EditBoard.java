@@ -155,12 +155,14 @@ public class EditBoard extends Activity {
         blackFigText.setEllipsize(where);
 
         okButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
+            @Override
+			public void onClick(View v) {
                 sendBackResult();
             }
         });
         cancelButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
+            @Override
+			public void onClick(View v) {
                 setResult(RESULT_CANCELED);
                 finish();
             }
@@ -218,12 +220,14 @@ public class EditBoard extends Activity {
             }
         });
         cb.setOnTouchListener(new OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
+            @Override
+			public boolean onTouch(View v, MotionEvent event) {
                 return gd.onTouchEvent(event);
             }
         });
         cb.setOnTrackballListener(new ChessBoard.OnTrackballListener() {
-            public void onTrackballEvent(MotionEvent event) {
+            @Override
+			public void onTrackballEvent(MotionEvent event) {
                 Move m = cb.handleTrackballEvent(event);
                 if (m != null)
                     doMove(m);
@@ -397,7 +401,8 @@ public class EditBoard extends Activity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.edit_board);
             builder.setItems(lst.toArray(new CharSequence[lst.size()]), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
+                @Override
+				public void onClick(DialogInterface dialog, int item) {
                     switch (finalActions.get(item)) {
                     case SIDE_TO_MOVE:
                         showDialog(SIDE_DIALOG);
@@ -474,7 +479,8 @@ public class EditBoard extends Activity {
             builder.setTitle(R.string.select_side_to_move_first);
             final int selectedItem = (cb.pos.whiteMove) ? 0 : 1;
             builder.setSingleChoiceItems(new String[]{getString(R.string.white), getString(R.string.black)}, selectedItem, new Dialog.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
+                @Override
+				public void onClick(DialogInterface dialog, int id) {
                     if (id == 0) { // white to move
                         cb.pos.setWhiteMove(true);
                         checkValidAndUpdateMaterialDiff();
@@ -534,7 +540,8 @@ public class EditBoard extends Activity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.select_en_passant_file);
             builder.setSingleChoiceItems(items, getEPFile(), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
+                @Override
+				public void onClick(DialogInterface dialog, int item) {
                     setEPFile(item);
                     dialog.cancel();
                 }
@@ -553,7 +560,8 @@ public class EditBoard extends Activity {
             halfMoveClock.setText(String.format(Locale.US, "%d", cb.pos.halfMoveClock));
             fullMoveCounter.setText(String.format(Locale.US, "%d", cb.pos.fullMoveCounter));
             final Runnable setCounters = new Runnable() {
-                public void run() {
+                @Override
+				public void run() {
                     try {
                         int halfClock = Integer.parseInt(halfMoveClock.getText().toString());
                         int fullCount = Integer.parseInt(fullMoveCounter.getText().toString());
@@ -565,7 +573,8 @@ public class EditBoard extends Activity {
                 }
             };
             builder.setPositiveButton("Ok", new Dialog.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
+                @Override
+				public void onClick(DialogInterface dialog, int which) {
                     setCounters.run();
                 }
             });
@@ -574,7 +583,8 @@ public class EditBoard extends Activity {
             final Dialog dialog = builder.create();
 
             fullMoveCounter.setOnKeyListener(new OnKeyListener() {
-                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                @Override
+				public boolean onKey(View v, int keyCode, KeyEvent event) {
                     if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         setCounters.run();
                         dialog.cancel();

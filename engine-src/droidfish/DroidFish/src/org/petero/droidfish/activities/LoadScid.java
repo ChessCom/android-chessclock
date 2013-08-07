@@ -95,11 +95,13 @@ public class LoadScid extends ListActivity {
             showDialog(PROGRESS_DIALOG);
             final LoadScid lpgn = this;
             workThread = new Thread(new Runnable() {
-                public void run() {
+                @Override
+				public void run() {
                     if (!readFile())
                         return;
                     runOnUiThread(new Runnable() {
-                        public void run() {
+                        @Override
+						public void run() {
                             lpgn.showList();
                         }
                     });
@@ -117,11 +119,13 @@ public class LoadScid extends ListActivity {
                 finish();
             } else {
                 workThread = new Thread(new Runnable() {
-                    public void run() {
+                    @Override
+					public void run() {
                         if (!readFile())
                             return;
                         runOnUiThread(new Runnable() {
-                            public void run() {
+                            @Override
+							public void run() {
                                 if (loadItem >= gamesInFile.size()) {
                                     Toast.makeText(getApplicationContext(), R.string.no_next_game,
                                                    Toast.LENGTH_SHORT).show();
@@ -256,7 +260,8 @@ public class LoadScid extends ListActivity {
                         percent = newPercent;
                         if (progress != null) {
                             runOnUiThread(new Runnable() {
-                                public void run() {
+                                @Override
+								public void run() {
                                     progress.setProgress(newPercent);
                                 }
                             });

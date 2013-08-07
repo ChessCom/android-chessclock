@@ -52,7 +52,8 @@ public class Move {
     }
     
     static public class SortByScore implements Comparator<Move> {
-        public int compare(Move sm1, Move sm2) {
+        @Override
+		public int compare(Move sm1, Move sm2) {
             return sm2.score - sm1.score;
         }
     }

@@ -99,11 +99,13 @@ public class LoadFEN extends ListActivity {
             showDialog(PROGRESS_DIALOG);
             final LoadFEN lfen = this;
             workThread = new Thread(new Runnable() {
-                public void run() {
+                @Override
+				public void run() {
                     if (!readFile())
                         return;
                     runOnUiThread(new Runnable() {
-                        public void run() {
+                        @Override
+						public void run() {
                             lfen.showList();
                         }
                     });
@@ -122,11 +124,13 @@ public class LoadFEN extends ListActivity {
                 finish();
             } else {
                 workThread = new Thread(new Runnable() {
-                    public void run() {
+                    @Override
+					public void run() {
                         if (!readFile())
                             return;
                         runOnUiThread(new Runnable() {
-                            public void run() {
+                            @Override
+							public void run() {
                                 if (loadItem >= fensInFile.size()) {
                                     Toast.makeText(getApplicationContext(), R.string.no_next_fen,
                                                    Toast.LENGTH_SHORT).show();
@@ -189,13 +193,15 @@ public class LoadFEN extends ListActivity {
 
         okButton.setEnabled(false);
         okButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
+            @Override
+			public void onClick(View v) {
                 if (selectedFi != null)
                     sendBackResult(selectedFi);
             }
         });
         cancelButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
+            @Override
+			public void onClick(View v) {
                 setResult(RESULT_CANCELED);
                 finish();
             }
@@ -285,7 +291,8 @@ public class LoadFEN extends ListActivity {
             switch (p.first) {
             case OUT_OF_MEMORY:
                 runOnUiThread(new Runnable() {
-                    public void run() {
+                    @Override
+					public void run() {
                         Toast.makeText(getApplicationContext(), R.string.file_too_large,
                                        Toast.LENGTH_SHORT).show();
                     }

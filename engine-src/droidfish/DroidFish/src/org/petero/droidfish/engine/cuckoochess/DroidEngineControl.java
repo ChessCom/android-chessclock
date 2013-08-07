@@ -87,16 +87,19 @@ public class DroidEngineControl {
             this.os = os;
         }
 
-        public void notifyDepth(int depth) {
+        @Override
+		public void notifyDepth(int depth) {
 			Log.d("FISHLOG", "GOGO depth " + depth);
             os.printLine("info depth %d", depth);
         }
 
-        public void notifyCurrMove(Move m, int moveNr) {
+        @Override
+		public void notifyCurrMove(Move m, int moveNr) {
             os.printLine("info currmove %s currmovenumber %d", moveToString(m), moveNr);
         }
 
-        public void notifyPV(int depth, int score, int time, long nodes, int nps, boolean isMate,
+        @Override
+		public void notifyPV(int depth, int score, int time, long nodes, int nps, boolean isMate,
                 boolean upperBound, boolean lowerBound, ArrayList<Move> pv) {
             StringBuilder pvBuf = new StringBuilder();
             for (Move m : pv) {
@@ -113,7 +116,8 @@ public class DroidEngineControl {
                     depth, isMate ? "mate" : "cp", score, bound, time, nodes, nps, pvBuf.toString());
         }
 
-        public void notifyStats(long nodes, int nps, int time) {
+        @Override
+		public void notifyStats(long nodes, int nps, int time) {
             os.printLine("info nodes %d nps %d time %d", nodes, nps, time);
         }
     }
@@ -253,7 +257,8 @@ public class DroidEngineControl {
         tt.nextGeneration();
         final int srchmaxDepth = maxDepth;
         Runnable run = new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 Move m = null;
                 if (ownBook && !analyseMode) {
                     Book book = new Book(false);

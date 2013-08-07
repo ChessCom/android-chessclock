@@ -140,7 +140,8 @@ public class SeekBarPreference extends Preference
                 final EditText valueView = (EditText)content.findViewById(R.id.selpercentage_number);
                 valueView.setText(currValBox.getText().toString().replaceAll("%", "").replaceAll(",", "."));
                 final Runnable selectValue = new Runnable() {
-                    public void run() {
+                    @Override
+					public void run() {
                         try {
                             String txt = valueView.getText().toString();
                             int value = (int)(Double.parseDouble(txt) * 10 + 0.5);
@@ -152,7 +153,8 @@ public class SeekBarPreference extends Preference
                     }
                 };
                 valueView.setOnKeyListener(new OnKeyListener() {
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    @Override
+					public boolean onKey(View v, int keyCode, KeyEvent event) {
                         if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                             selectValue.run();
                             return true;
@@ -161,7 +163,8 @@ public class SeekBarPreference extends Preference
                     }
                 });
                 builder.setPositiveButton("Ok", new Dialog.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+                    @Override
+					public void onClick(DialogInterface dialog, int which) {
                         selectValue.run();
                     }
                 });

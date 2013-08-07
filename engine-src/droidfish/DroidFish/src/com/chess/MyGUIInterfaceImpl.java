@@ -15,36 +15,47 @@ import java.util.ArrayList;
  * Time: 23:28
  */
 public class MyGUIInterfaceImpl implements GUIInterface {
+	@Override
 	public void setPosition(Position pos, String variantInfo, ArrayList<Move> variantMoves) {
 	}
 
+	@Override
 	public void setSelection(int sq) {
 	}
 
+	@Override
 	public void setStatus(GameStatus status) {
 	}
 
+	@Override
 	public void moveListUpdated() {
 	}
 
+	@Override
 	public void setThinkingInfo(String pvStr, String statStr, String bookInfo, ArrayList<ArrayList<Move>> pvMoves, ArrayList<Move> bookMoves) {
 	}
 
+	@Override
 	public void requestPromotePiece() {
 	}
 
+	@Override
 	public void runOnUIThread(Runnable runnable) {
 	}
 
+	@Override
 	public void reportInvalidMove(Move m) {
 	}
 
+	@Override
 	public void reportEngineName(String engine) {
 	}
 
+	@Override
 	public void reportEngineError(String errMsg) {
 	}
 
+	@Override
 	public void computerMoveMade() {
 	}
 
@@ -56,9 +67,11 @@ public class MyGUIInterfaceImpl implements GUIInterface {
 	public void setRemainingTime(long wTime, long bTime, long nextUpdate) {
 	}
 
+	@Override
 	public void updateEngineTitle() {
 	}
 
+	@Override
 	public void updateMaterialDifferenceTitle(Util.MaterialDiff diff) {
 	}
 
@@ -67,29 +80,36 @@ public class MyGUIInterfaceImpl implements GUIInterface {
 		//To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	@Override
 	public void setAnimMove(Position sourcePos, Move move, boolean forward) {
 	}
 
+	@Override
 	public boolean whiteBasedScores() {
 		return false; // pref
 	}
 
+	@Override
 	public boolean ponderMode() {
 		return true; // pref
 	}
 
+	@Override
 	public int engineThreads() {
 		return 1; // pref
 	}
 
+	@Override
 	public Context getContext() {
 		return getContext();
 	}
 
+	@Override
 	public String playerName() {
 		return "chess.com-player";
 	}
 
+	@Override
 	public boolean discardVariations() {
 		return false; // pref
 	}

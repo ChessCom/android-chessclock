@@ -394,7 +394,8 @@ public class MyFish extends Activity implements GUIInterface {
     }
 
     /** Report a move made that is a candidate for GUI animation. */
-    public void setAnimMove(Position sourcePos, Move move, boolean forward) {
+    @Override
+	public void setAnimMove(Position sourcePos, Move move, boolean forward) {
 		Log.d(TAG, "setAnimMove: sourcePos =\n" + sourcePos);
 		Log.d(TAG, "setAnimMove: move =" + move);
 		Log.d(TAG, "setAnimMove: forward =" + forward);

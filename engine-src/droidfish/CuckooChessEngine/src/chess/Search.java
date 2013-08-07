@@ -140,7 +140,8 @@ public class Search {
         long nodes;
         MoveInfo(Move m, int n) { move = m;  nodes = n; }
         public static final class SortByScore implements Comparator<MoveInfo> {
-            public int compare(MoveInfo mi1, MoveInfo mi2) {
+            @Override
+			public int compare(MoveInfo mi1, MoveInfo mi2) {
                 if ((mi1 == null) && (mi2 == null))
                     return 0;
                 if (mi1 == null)
@@ -151,7 +152,8 @@ public class Search {
             }
         }
         public static final class SortByNodes implements Comparator<MoveInfo> {
-            public int compare(MoveInfo mi1, MoveInfo mi2) {
+            @Override
+			public int compare(MoveInfo mi1, MoveInfo mi2) {
                 if ((mi1 == null) && (mi2 == null))
                     return 0;
                 if (mi1 == null)

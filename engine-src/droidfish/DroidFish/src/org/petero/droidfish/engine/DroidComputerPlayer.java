@@ -679,7 +679,8 @@ public class DroidComputerPlayer {
         final UCIEngine uci = uciEngine;
 		//Log.d(MyFish.TAG, "CHECK START MONITOR LOOP");
         engineMonitor = new Thread(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
 				//Log.d(MyFish.TAG, "CHECK RUN");
                 monitorLoop(uci);
             }

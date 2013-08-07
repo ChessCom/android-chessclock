@@ -154,9 +154,9 @@
 
 		</com.chess.LinLayout>
 
-		<!--Comp Strength View-->
+		<!--Comp Level View-->
 		<com.chess.LinLayout
-			android:id="@+id/compStrengthView"
+			android:id="@+id/compLevelView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
@@ -178,17 +178,16 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_centerVertical="true"
-					android:text="@string/strength"
+					android:text="@string/computer_level"
 					android:textColor="@color/semitransparent_white_65" />
 
 
-				<com.chess.RoboRadioButton
-					android:id="@+id/strengthValueBtn"
+				<com.chess.RoboButton
+					android:id="@+id/compLevelValueBtn"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_alignParentRight="true"
 					style="@style/Button.Glassy.Small"
-					android:button="@null"
 					android:inputType="numberDecimal" />
 			</RelativeLayout>
 

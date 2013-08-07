@@ -27,14 +27,13 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 
 	private CompGameConfig.Builder gameConfigBuilder;
 
-	private int[] compStrengthArray;
 	private RoboRadioButton myWhiteColorBtn;
 	private RoboRadioButton myBlackColorBtn;
-	private int selectedStrength;
+	private int selectedCompLevel;
 	private SwitchButton humanVsHumanSwitch;
 	private SwitchButton compVsCompSwitch;
 	private TextView strengthValueBtn;
-	private View compStrengthView;
+	private View compLevelView;
 	private View iPlayAsView;
 
 	@Override
@@ -56,7 +55,7 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 		humanVsHumanSwitch = (SwitchButton) view.findViewById(R.id.humanVsHumanSwitch);
 		compVsCompSwitch = (SwitchButton) view.findViewById(R.id.compVsCompSwitch);
 		iPlayAsView = view.findViewById(R.id.iPlayAsView);
-		compStrengthView = view.findViewById(R.id.compStrengthView);
+		compLevelView = view.findViewById(R.id.compLevelView);
 
 		humanVsHumanSwitch.setChecked(false);
 		compVsCompSwitch.setChecked(false);
@@ -65,11 +64,9 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 
 		myWhiteColorBtn = (RoboRadioButton) view.findViewById(R.id.myWhiteColorBtn);
 		myBlackColorBtn = (RoboRadioButton) view.findViewById(R.id.myBlackColorBtn);
-		strengthValueBtn = (TextView) view.findViewById(R.id.strengthValueBtn);
+		strengthValueBtn = (TextView) view.findViewById(R.id.compLevelValueBtn);
 
-
-		compStrengthArray = getResources().getIntArray(R.array.comp_strength);
-		selectedStrength = getAppData().getCompStrength();
+		selectedCompLevel = getAppData().getCompLevel();
 
 		int mode = getAppData().getCompGameMode();
 		if (mode == AppConstants.GAME_MODE_2_PLAYERS) {
@@ -85,11 +82,11 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 		SeekBar strengthBar = (SeekBar) view.findViewById(R.id.strengthBar);
 		strengthBar.setOnSeekBarChangeListener(ratingBarChangeListener);
 		strengthBar.setProgressDrawable(new RatingProgressDrawable(getContext(), strengthBar));
-		strengthBar.setProgress(selectedStrength);
-		strengthValueBtn.setText(String.valueOf(compStrengthArray[selectedStrength]));
+		strengthBar.setProgress(selectedCompLevel);
+		strengthValueBtn.setText(String.valueOf(selectedCompLevel + 1));
 
 		if (JELLY_BEAN_PLUS_API) {
-			ViewGroup compStrengthView = (ViewGroup) view.findViewById(R.id.compStrengthView);
+			ViewGroup compStrengthView = (ViewGroup) view.findViewById(R.id.compLevelView);
 			LayoutTransition layoutTransition = compStrengthView.getLayoutTransition();
 			layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
 		}
@@ -118,8 +115,8 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 	private SeekBar.OnSeekBarChangeListener ratingBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-			selectedStrength = progress;
-			strengthValueBtn.setText(String.valueOf(compStrengthArray[selectedStrength]));
+			selectedCompLevel = progress;
+			strengthValueBtn.setText(String.valueOf(progress + 1));
 		}
 
 		@Override
@@ -132,9 +129,8 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 	};
 
 	protected CompGameConfig getNewCompGameConfig(){
-		getAppData().setCompStrength(selectedStrength);
-		int strengthValue = compStrengthArray[selectedStrength];
-		gameConfigBuilder.setStrength(strengthValue);
+		getAppData().setCompLevel(selectedCompLevel);
+		gameConfigBuilder.setStrength(selectedCompLevel);
 
 		int mode;
 		if (humanVsHumanSwitch.isChecked()) {
@@ -156,14 +152,14 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 		if (switchButton.getId() == R.id.humanVsHumanSwitch && checked) {
 			compVsCompSwitch.setChecked(false);
 			iPlayAsView.setEnabled(false);
-			compStrengthView.setVisibility(View.GONE);
+			compLevelView.setVisibility(View.GONE);
 		} else if (switchButton.getId() == R.id.humanVsHumanSwitch && !checked){
 			iPlayAsView.setEnabled(true);
-			compStrengthView.setVisibility(View.VISIBLE);
+			compLevelView.setVisibility(View.VISIBLE);
 
 		} else if (switchButton.getId() == R.id.compVsCompSwitch && checked){
 			humanVsHumanSwitch.setChecked(false);
-			compStrengthView.setVisibility(View.VISIBLE);
+			compLevelView.setVisibility(View.VISIBLE);
 		} else if (switchButton.getId() == R.id.compVsCompSwitch && !checked){
 			iPlayAsView.setEnabled(true);
 		}

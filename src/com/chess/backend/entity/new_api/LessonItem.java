@@ -251,6 +251,15 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 			this.cm_moves = cm_moves;
 		}
 
+		public PossibleMove getCorrectMove() {
+			for (PossibleMove cm_move : cm_moves) {
+				if (cm_move.getMoveType().equals(MOVE_DEFAULT)) {
+					return cm_move;
+				}
+			}
+			return null;
+		}
+
 		public static class PossibleMove {
 			private int move_number;
 			private String move;

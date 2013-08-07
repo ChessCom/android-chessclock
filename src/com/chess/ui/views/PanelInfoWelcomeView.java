@@ -204,6 +204,7 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).updateCapturedPieces(alivePiecesCountArray);
 	}
 
+	@Override
 	public void resetPieces() {
 		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).dropPieces();
 	}
