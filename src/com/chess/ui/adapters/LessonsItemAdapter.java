@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.new_api.LessonListItem;
+import com.chess.backend.statics.StaticData;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class LessonsItemAdapter extends ItemsAdapter<LessonListItem> {
 			holder.icon.setText(R.string.ic_check);
 		} else {
 			holder.text.setTextColor(unWatchedTextColor);
-			holder.icon.setText(R.string.ic_right);
+			holder.icon.setText(StaticData.SYMBOL_EMPTY);
 		}
 	}
 

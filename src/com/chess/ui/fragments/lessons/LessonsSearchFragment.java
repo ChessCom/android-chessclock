@@ -14,7 +14,6 @@ import com.chess.MultiDirectionSlidingDrawer;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.LessonItem;
 import com.chess.backend.entity.new_api.LessonListItem;
 import com.chess.backend.entity.new_api.LessonSearchItem;
 import com.chess.backend.statics.StaticData;
@@ -40,19 +39,15 @@ import java.util.List;
 public class LessonsSearchFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener {
 
 	private static final int FADE_ANIM_DURATION = 300;
-	private static final long DRAWER_APPEAR_DELAY = 100;
 
 	private EditText keywordsEdt;
 	private Spinner difficultySpinner;
 	private Spinner categorySpinner;
 	private String allStr;
 	private LessonItemUpdateListener lessonItemUpdateListener;
-	private SaveLessonUpdateListener saveLessonUpdateListener;
-	private ListView listView;
 	private LessonsItemAdapter lessonsItemsAdapter;
 	private MultiDirectionSlidingDrawer slidingDrawer;
 	private ObjectAnimator fadeDrawerAnimator;
-	private View searchFieldsView;
 	private ObjectAnimator fadeBoardAnimator;
 	private String lastKeyword;
 	private String lastCategory;
@@ -63,7 +58,6 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 		super.onCreate(savedInstanceState);
 
 		lessonItemUpdateListener = new LessonItemUpdateListener();
-		saveLessonUpdateListener = new SaveLessonUpdateListener();
 		lessonsItemsAdapter = new LessonsItemAdapter(getActivity(), null);
 
 		lastKeyword = StaticData.SYMBOL_EMPTY;
@@ -93,8 +87,6 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 
 		view.findViewById(R.id.searchBtn).setOnClickListener(this);
 
-		searchFieldsView = view.findViewById(R.id.searchFieldsView);
-
 		slidingDrawer = (MultiDirectionSlidingDrawer) view.findViewById(R.id.slidingDrawer);
 		slidingDrawer.setOnDrawerOpenListener(this);
 		slidingDrawer.setOnDrawerCloseListener(this);
@@ -103,11 +95,11 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 		slidingDrawer.setVisibility(View.GONE);
 		fadeDrawerAnimator.start();
 
-		View boardLinLay = view.findViewById(R.id.searchFieldsView);
-		fadeBoardAnimator = ObjectAnimator.ofFloat(boardLinLay, "alpha", 1, 0);
+		View searchFieldsView = view.findViewById(R.id.searchFieldsView);
+		fadeBoardAnimator = ObjectAnimator.ofFloat(searchFieldsView, "alpha", 1, 0);
 		fadeBoardAnimator.setDuration(FADE_ANIM_DURATION);
 
-		listView = (ListView) view.findViewById(R.id.listView);
+		ListView listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(lessonsItemsAdapter);
 		listView.setOnItemClickListener(this);
 	}
@@ -207,9 +199,6 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 			lessonsItemsAdapter.setItemsList(lessons);
 
 			showSearchResults();
-
-//			new SaveLessonsLessonTask(saveLessonUpdateListener, returnedObj.getData(), getContentResolver(),
-//					getUsername()).executeTask();
 		}
 	}
 
@@ -234,12 +223,4 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 		fadeBoardAnimator.start();
 	}
 
-	private class SaveLessonUpdateListener extends ChessLoadUpdateListener<LessonItem.Data> {
-
-		@Override
-		public void updateData(LessonItem.Data returnedObj) {
-			super.updateData(returnedObj);
-
-		}
-	}
 }

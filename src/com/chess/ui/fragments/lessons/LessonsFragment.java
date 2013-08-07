@@ -1,10 +1,12 @@
 package com.chess.ui.fragments.lessons;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.SparseArray;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
@@ -13,6 +15,7 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
 import com.chess.backend.entity.new_api.LessonCourseListItem;
 import com.chess.backend.entity.new_api.LessonsRatingItem;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DBConstants;
 import com.chess.db.DBDataManager;
@@ -23,7 +26,6 @@ import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.videos.VideoDetailsCurriculumFragment;
 import com.chess.ui.fragments.videos.VideoDetailsFragment;
-import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ import java.util.List;
  * Date: 18.07.13
  * Time: 14:59
  */
-public class LessonsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener,
+public class LessonsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
 		ExpandableListView.OnChildClickListener {
 
 	private ListView listView;
@@ -105,7 +107,6 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 			footerView.findViewById(R.id.headerTitleTxt).setId(R.id.lessonsVideoLibFooterTxt);
 			((TextView) footerView.findViewById(R.id.lessonsVideoLibFooterTxt)).setText(R.string.full_lesson_library);
 			footerView.setOnClickListener(this);
-//			expListView.addHeaderView(headerView);
 			expListView.addFooterView(footerView);
 			expListView.setOnChildClickListener(this);
 			expListView.setGroupIndicator(null);
@@ -392,7 +393,7 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 			curriculumItems.setViewedMarks(completedMarks);
 		}
 
-		curriculumAdapter = new LessonsGroupsListAdapter(LessonsFragment.this, curriculumItems);
+		curriculumAdapter = new LessonsGroupsListAdapter(curriculumItems);
 		expListView.setAdapter(curriculumAdapter);
 
 	}
@@ -409,11 +410,6 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 //			}
 			loadingView.setVisibility(View.GONE);
 		}
-	}
-
-	@Override
-	public Context getMeContext() {
-		return getActivity();
 	}
 
 	private void init() {
@@ -435,10 +431,8 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 		private final int unWatchedTextColor;
 		private final int watchedIconColor;
 		private final CurriculumItems items;
-		private ItemClickListenerFace clickFace;
 
-		public LessonsGroupsListAdapter(ItemClickListenerFace clickFace, CurriculumItems items) {
-			this.clickFace = clickFace;
+		public LessonsGroupsListAdapter(CurriculumItems items) {
 			this.items = items;
 			inflater = LayoutInflater.from(getActivity());
 			watchedTextColor = getResources().getColor(R.color.new_light_grey_3);
@@ -522,17 +516,9 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 				holder.icon = (TextView) convertView.findViewById(R.id.watchedIconTxt);
 				convertView.setTag(holder);
 
-//				holder.text.setOnClickListener(clickFace);
-//				holder.icon.setOnClickListener(clickFace);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-
-//			holder.text.setTag(R.id.list_item_id, childPosition);
-//			holder.text.setTag(R.id.list_item_id_group, groupPosition);
-//
-//			holder.icon.setTag(R.id.list_item_id, childPosition);
-//			holder.icon.setTag(R.id.list_item_id_group, groupPosition);
 
 			holder.text.setText(getChild(groupPosition, childPosition).toString());
 
@@ -542,7 +528,7 @@ public class LessonsFragment extends CommonLogicFragment implements ItemClickLis
 				holder.icon.setText(R.string.ic_check);
 			} else {
 				holder.text.setTextColor(unWatchedTextColor);
-				holder.icon.setText(R.string.ic_right);
+				holder.icon.setText(StaticData.SYMBOL_EMPTY);
 			}
 
 			return convertView;
