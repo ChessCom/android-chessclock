@@ -530,17 +530,19 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				validMoves = getBoardFace().generateValidMoves(!isUsersTurn);
 			}
 
+			//String movesStr = new String();
 			for (Move move : validMoves) {
-				Log.d("validmoves", "move " + move);
-				Log.d("validmoves", "from " + from);
+				//movesStr += " " + move;
+				/*Log.d("validmoves", "from " + from);
 				Log.d("validmoves", "move.from " + move.from);
-				Log.d("validmoves", "draggingFrom " + draggingFrom);
+				Log.d("validmoves", "draggingFrom " + draggingFrom);*/
 				if (move.from == from || move.from == draggingFrom) {
 					int x = ChessBoard.getColumn(move.to, getBoardFace().isReside());
 					int y = ChessBoard.getRow(move.to, getBoardFace().isReside()) + 1;
 					canvas.drawCircle(x * square + square / 2, y * square - square / 2, square / 5, possibleMovePaint);
 				}
 			}
+			//Log.d("validmoves", "gen and test " + movesStr);
 		}
 	}
 

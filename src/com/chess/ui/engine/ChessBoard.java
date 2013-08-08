@@ -99,7 +99,8 @@ public class ChessBoard implements BoardFace {
 	private int side = WHITE_SIDE; // which side is current turn
 	private int xside = BLACK_SIDE;
 	private int rotated = 0;
-	private int ep = -1;  // en passant move
+	private int enPassant = -1;
+	private int enPassantPrev = -1;
 	private int fifty = 0;
 	private int movesCount = 0;
 	protected int hply = 0;
@@ -676,20 +677,20 @@ public class ChessBoard implements BoardFace {
 	}
 
 	private void generateEnPassantMove(TreeSet<Move> movesSet) {
-		if (ep != -1) {
+		if (enPassant != -1) {
 			if (side == WHITE_SIDE) {
-				if (getColumn(ep) != 0 && color[ep + 7] == WHITE_SIDE && pieces[ep + 7] == PAWN) {
-					genPush(movesSet, ep + 7, ep, 21);
+				if (getColumn(enPassant) != 0 && color[enPassant + 7] == WHITE_SIDE && pieces[enPassant + 7] == PAWN) {
+					genPush(movesSet, enPassant + 7, enPassant, 21);
 				}
-				if (getColumn(ep) != 7 && color[ep + 9] == WHITE_SIDE && pieces[ep + 9] == PAWN) {
-					genPush(movesSet, ep + 9, ep, 21);
+				if (getColumn(enPassant) != 7 && color[enPassant + 9] == WHITE_SIDE && pieces[enPassant + 9] == PAWN) {
+					genPush(movesSet, enPassant + 9, enPassant, 21);
 				}
 			} else {
-				if (getColumn(ep) != 0 && color[ep - 9] == BLACK_SIDE && pieces[ep - 9] == PAWN) {
-					genPush(movesSet, ep - 9, ep, 21);
+				if (getColumn(enPassant) != 0 && color[enPassant - 9] == BLACK_SIDE && pieces[enPassant - 9] == PAWN) {
+					genPush(movesSet, enPassant - 9, enPassant, 21);
 				}
-				if (getColumn(ep) != 7 && color[ep - 7] == BLACK_SIDE && pieces[ep - 7] == PAWN) {
-					genPush(movesSet, ep - 7, ep, 21);
+				if (getColumn(enPassant) != 7 && color[enPassant - 7] == BLACK_SIDE && pieces[enPassant - 7] == PAWN) {
+					genPush(movesSet, enPassant - 7, enPassant, 21);
 				}
 			}
 		}
@@ -1010,12 +1011,12 @@ public class ChessBoard implements BoardFace {
 
 			if ((move.bits & 8) != 0) {
 				if (side == WHITE_SIDE) {
-					ep = move.to + 8;
+					updateEnPassant(move.to + 8);
 				} else {
-					ep = move.to - 8;
+					updateEnPassant(move.to - 8);
 				}
 			} else {
-				ep = -1;
+				updateEnPassant(-1);
 			}
 			if ((move.bits & 17) != 0) {
 				fifty = 0;
@@ -1108,12 +1109,12 @@ public class ChessBoard implements BoardFace {
 
 		if ((move.bits & 8) != 0) {
 			if (side == WHITE_SIDE) {
-				ep = move.to + 8;
+				updateEnPassant(move.to + 8);
 			} else {
-				ep = move.to - 8;
+				updateEnPassant(move.to - 8);
 			}
 		} else {
-			ep = -1;
+			updateEnPassant(-1);
 		}
 		if ((move.bits & 17) != 0) {
 			fifty = 0;
@@ -1184,7 +1185,8 @@ public class ChessBoard implements BoardFace {
 		histDat[hply] = new HistoryData();
 		histDat[hply].move = move;
 		histDat[hply].capture = pieces[move.to];
-		histDat[hply].ep = ep;
+		histDat[hply].enPassant = enPassant;
+		histDat[hply].enPassantPrev = enPassantPrev;
 		histDat[hply].fifty = fifty;
 		histDat[hply].castleMask = castleMask.clone();
 		histDat[hply].whiteCanCastle = whiteCanCastle;
@@ -1258,7 +1260,8 @@ public class ChessBoard implements BoardFace {
 		switchSide();
 		--hply;
 		Move move = histDat[hply].move;
-		ep = histDat[hply].ep;
+		enPassant = histDat[hply].enPassant;
+		enPassantPrev = histDat[hply].enPassantPrev;
 		fifty = histDat[hply].fifty;
 		castleMask = histDat[hply].castleMask.clone();
 		whiteCanCastle = histDat[hply].whiteCanCastle;
@@ -2180,6 +2183,13 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
+	public void switchEnPassant() {
+		int enPassantTemp = enPassant;
+		enPassant = enPassantPrev;
+		enPassantPrev = enPassantTemp;
+	}
+
+	@Override
 	public CopyOnWriteArrayList<Move> generateValidMoves(boolean forceSwitchSide) {
 
 		int[] piecesBackup = null;
@@ -2189,17 +2199,24 @@ public class ChessBoard implements BoardFace {
 			piecesBackup = pieces.clone();
 			colorsBackup = color.clone();
 			switchSide();
+			switchEnPassant();
 		}
 		TreeSet<Move> moves = gen();
 		CopyOnWriteArrayList<Move> validMoves = new CopyOnWriteArrayList<Move>();
+
+		//String movesStr = new String();
 		for (Move move : moves) {
 			if (makeMove(move, false)) {
+				//movesStr += " " + move;
 				takeBack();
 				validMoves.add(move);
 			}
 		}
+		//Log.d("validmoves", "gen and test " + movesStr);
+
 		if (forceSwitchSide) {
 			switchSide();
+			switchEnPassant();
 			pieces = piecesBackup;
 			color = colorsBackup;
 		}
@@ -2207,5 +2224,10 @@ public class ChessBoard implements BoardFace {
 		Log.d("validmoves", "generated validMoves.size() " + validMoves.size());
 
 		return validMoves;
+	}
+
+	private void updateEnPassant(int enPassant) {
+		this.enPassantPrev = this.enPassant;
+		this.enPassant = enPassant;
 	}
 }

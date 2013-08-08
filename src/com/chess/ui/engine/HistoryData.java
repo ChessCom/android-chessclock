@@ -3,7 +3,8 @@ package com.chess.ui.engine;
 final public class HistoryData {
 	public Move move;
 	public int capture;
-	int ep;
+	int enPassant;
+	int enPassantPrev;
 	int fifty;
 	boolean castleMask[] = {false, false, false, false};
 	public int what = -1;

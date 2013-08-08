@@ -132,5 +132,7 @@ public interface BoardFace {
 
 	void switchSide();
 
+	void switchEnPassant();
+
 	CopyOnWriteArrayList<Move> generateValidMoves(boolean forceSwitchSide);
 }
