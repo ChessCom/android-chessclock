@@ -1365,7 +1365,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		// todo: possible refactoring - get rid of resetValidMoves,
 		// but Compare board Changing when drawing move coordinate highlights instead,
 		// for example by moves list and currentMoveNumber
-		Log.d("validmoves", "clear");
+		Log.d("validmoves", "validlog 2 clear");
 		validMoves.clear();
 	}
 }

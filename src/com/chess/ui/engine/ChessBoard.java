@@ -2204,7 +2204,7 @@ public class ChessBoard implements BoardFace {
 			color = colorsBackup;
 		}
 
-		Log.d("validmoves", "draw generate validMoves.size() " + validMoves.size());
+		Log.d("validmoves", "generated validMoves.size() " + validMoves.size());
 
 		return validMoves;
 	}

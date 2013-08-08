@@ -88,7 +88,7 @@ public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 				moveStr = MoveParser.QUEENSIDE_CASTLING;
 			}
 		}
-		return moveStr;
+		return moveStr.toLowerCase();
 	}
 
 }

@@ -513,11 +513,15 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			newGame();
 		} else if (code == ID_SHOW_ANSWER) {
 
-
 			LessonItem.MentorPosition mentorPosition = getMentorPosition();
 			LessonItem.MentorPosition.PossibleMove correctMove = mentorPosition.getCorrectMove();
 
 			moveToShow = correctMove.getMove();
+
+			ChessBoardLessons.resetInstance();
+			boardView.setGameFace(this);
+
+			getBoardFace().setupBoard(getMentorPosition().getFen());
 
 			handler.postDelayed(showTacticMoveTask, TACTIC_ANSWER_DELAY);
 
@@ -648,7 +652,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		LessonsBoardFace boardFace = getBoardFace();
 		boardView.setGameUiFace(this);
 
-
 		LessonItem.MentorPosition positionToSolve = getMentorPosition();
 		if (getCurrentCompleteItem() == null) {
 			MoveCompleteItem moveCompleteItem = new MoveCompleteItem();
@@ -659,6 +662,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		possibleMoves = positionToSolve.getPossibleMoves();
 
 		boardFace.setupBoard(positionToSolve.getFen());
+		boardView.resetValidMoves();
 
 		labelsConfig.userSide = boardFace.isReside() ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
 
