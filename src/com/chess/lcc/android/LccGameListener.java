@@ -67,6 +67,8 @@ public class LccGameListener implements GameListener {
 			return;
 		}
 
+		lccHelper.putGame(game);
+
 		doResetGame(game);
 		doUpdateGame(false, game);
 	}
@@ -81,6 +83,7 @@ public class LccGameListener implements GameListener {
 			return;
 		}
 
+		lccHelper.putGame(game);
 		doUpdateGame(true, game);
 	}
 
@@ -136,15 +139,10 @@ public class LccGameListener implements GameListener {
 	}
 
 	private void doResetGame(Game game) {
-		if (game.isGameOver()) {
-			lccHelper.putGame(game);
-//			return;
-		}
-
 		synchronized (LccHelper.LOCK) {
 			lccHelper.setCurrentGameId(game.getId());
 			//lccHelper.setGameActivityPausedMode(true);
-			lccHelper.processFullGame(game);
+			lccHelper.processFullGame();
 		}
 	}
 

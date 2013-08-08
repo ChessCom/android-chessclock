@@ -850,19 +850,18 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		boolean isGameAlreadyPresent = currentGameId != null && getGame(currentGameId) != null;
 		if (isGameAlreadyPresent) {
 			synchronized(LccHelper.LOCK) {
-				processFullGame(getGame(currentGameId));
+				processFullGame();
 			}
 		}
 	}
 
-	public void processFullGame(Game game) {
+	public void processFullGame() {
 //		if (lccEventListener != null) {
 //			lccEventListener.onGameRecreate();
 //		}
 
 		latestMoveNumber = 0; // it was null before
 		ChessBoardLive.resetInstance();
-		putGame(game);
 
 		//int time = game.getGameTimeConfig().getBaseTime() * 100;
 		if (whiteClock != null) {
