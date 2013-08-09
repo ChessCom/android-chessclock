@@ -20,8 +20,8 @@ import com.chess.backend.ServerErrorCode;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.RequestItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 import com.chess.ui.adapters.RecentOpponentsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.facebook.FacebookException;
@@ -62,7 +62,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 
-		Cursor cursor = DBDataManager.getRecentOpponentsCursor(getActivity(), getUsername());
+		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());
 
 		RecentOpponentsCursorAdapter adapter = new RecentOpponentsCursorAdapter(getActivity(), cursor);
 
@@ -167,7 +167,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		String opponentName = DBDataManager.getString(cursor, DBConstants.V_WHITE_USERNAME);  // TODO adjust correctly
+		String opponentName = DbDataManager.getString(cursor, DbConstants.V_WHITE_USERNAME);  // TODO adjust correctly
 		createFriendRequest(opponentName, getString(R.string.add_friend_request_message));
 	}
 

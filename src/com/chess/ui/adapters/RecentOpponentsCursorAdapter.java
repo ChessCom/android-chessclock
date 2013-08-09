@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.db.DBConstants;
+import com.chess.db.DbConstants;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,9 +40,9 @@ public class RecentOpponentsCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View convertView, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		holder.playerTxt.setText(getString(cursor, DBConstants.V_WHITE_USERNAME));
+		holder.playerTxt.setText(getString(cursor, DbConstants.V_WHITE_USERNAME));
 
-		//		String avatarUrl = getString(cursor, DBConstants.OP)
+		//		String avatarUrl = getString(cursor, DbConstants.OP)
 		String avatarUrl = "https://s3.amazonaws.com/chess-7/images_users/avatars/erik_small.1.png";
 		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 	}

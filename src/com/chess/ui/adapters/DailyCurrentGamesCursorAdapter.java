@@ -9,7 +9,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DBConstants;
+import com.chess.db.DbConstants;
 import com.chess.model.BaseGameItem;
 import com.chess.utilities.AppUtils;
 
@@ -51,32 +51,32 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		String gameType = StaticData.SYMBOL_EMPTY;
-		if (getInt(cursor, DBConstants.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
+		if (getInt(cursor, DbConstants.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
 			gameType = CHESS_960;
 		}
 
 		String draw = StaticData.SYMBOL_EMPTY;
-		if (getInt(cursor, DBConstants.V_OPPONENT_OFFERED_DRAW) > 0) {
+		if (getInt(cursor, DbConstants.V_OPPONENT_OFFERED_DRAW) > 0) {
 			draw = "\n" + context.getString(R.string.draw_offered);
 		}
 
 		// get player side, and choose opponent
 		String avatarUrl;
 		String opponentName;
-		if (getInt(cursor, DBConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
-			avatarUrl = getString(cursor, DBConstants.V_WHITE_AVATAR);
-			opponentName = getString(cursor, DBConstants.V_WHITE_USERNAME) + gameType + draw;
+		if (getInt(cursor, DbConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
+			avatarUrl = getString(cursor, DbConstants.V_WHITE_AVATAR);
+			opponentName = getString(cursor, DbConstants.V_WHITE_USERNAME) + gameType + draw;
 		} else {
-			avatarUrl = getString(cursor, DBConstants.V_BLACK_AVATAR);
-			opponentName = getString(cursor, DBConstants.V_BLACK_USERNAME) + gameType + draw;
+			avatarUrl = getString(cursor, DbConstants.V_BLACK_AVATAR);
+			opponentName = getString(cursor, DbConstants.V_BLACK_USERNAME) + gameType + draw;
 		}
 
 		holder.playerTxt.setText(opponentName + gameType);
 		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 
 		// don't show time if it's not my move
-		if (getInt(cursor, DBConstants.V_IS_MY_TURN) > 0) {
-			long amount = getLong(cursor, DBConstants.V_TIME_REMAINING);
+		if (getInt(cursor, DbConstants.V_IS_MY_TURN) > 0) {
+			long amount = getLong(cursor, DbConstants.V_TIME_REMAINING);
 			if (lessThanDay(amount)) {
 				holder.gameInfoTxt.setTextColor(redColor);
 				holder.timeLeftIcon.setTextColor(redColor);

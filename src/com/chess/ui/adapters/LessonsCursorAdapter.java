@@ -1,28 +1,27 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.new_api.LessonListItem;
 import com.chess.backend.statics.StaticData;
-
-import java.util.List;
+import com.chess.db.DbConstants;
 
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 08.08.13
- * Time: 10:04
+ * Date: 19.07.13
+ * Time: 7:16
  */
-public class LessonsItemAdapter extends ItemsAdapter<LessonListItem> {
+public class LessonsCursorAdapter extends ItemsCursorAdapter {
 
 	private final int watchedTextColor;
 	private final int unWatchedTextColor;
 	private final int watchedIconColor;
 
-	public LessonsItemAdapter(Context context, List<LessonListItem> cursor) {
+	public LessonsCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
 		watchedTextColor = resources.getColor(R.color.new_light_grey_3);
 		unWatchedTextColor = resources.getColor(R.color.new_text_blue);
@@ -30,7 +29,7 @@ public class LessonsItemAdapter extends ItemsAdapter<LessonListItem> {
 	}
 
 	@Override
-	protected View createView(ViewGroup parent) {
+	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_completed_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.text = (TextView) view.findViewById(R.id.titleTxt);
@@ -41,11 +40,11 @@ public class LessonsItemAdapter extends ItemsAdapter<LessonListItem> {
 	}
 
 	@Override
-	protected void bindView(LessonListItem item, int pos, View convertView) {
-		ViewHolder holder = (ViewHolder) convertView.getTag();
+	public void bindView(View view, Context context, Cursor cursor) {
+		ViewHolder holder = (ViewHolder) view.getTag();
 
-		holder.text.setText(item.getName());
-		if (item.isCompleted()) {
+		holder.text.setText(getString(cursor, DbConstants.V_NAME));
+		if (getInt(cursor, DbConstants.V_LESSON_COMPLETED) > 0) {
 			holder.text.setTextColor(watchedTextColor);
 			holder.icon.setTextColor(watchedIconColor);
 			holder.icon.setText(R.string.ic_check);
@@ -53,20 +52,6 @@ public class LessonsItemAdapter extends ItemsAdapter<LessonListItem> {
 			holder.text.setTextColor(unWatchedTextColor);
 			holder.icon.setText(StaticData.SYMBOL_EMPTY);
 		}
-	}
-
-	public void updateCompletedLessonAtPosition(int position) {
-		itemsList.get(position).setCompleted(true);
-	}
-
-	public boolean isAllLessonsCompleted() {
-		for (LessonListItem item : itemsList) {
-			if(!item.isCompleted()) {
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	private static class ViewHolder {

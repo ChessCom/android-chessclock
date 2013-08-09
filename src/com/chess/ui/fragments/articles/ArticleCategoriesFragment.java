@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.adapters.ArticlesThumbCursorAdapter;
@@ -98,7 +98,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	}
 
 	private boolean fillCategories() {
-		Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.ARTICLE_CATEGORIES.ordinal()], null, null, null, null);
+		Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.ARTICLE_CATEGORIES.ordinal()], null, null, null, null);
 		List<String> list = new ArrayList<String>();
 		if (!cursor.moveToFirst()) {
 			showToast("Categories are not loaded");
@@ -106,7 +106,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		}
 
 		do {
-			list.add(DBDataManager.getString(cursor, DBConstants.V_NAME));
+			list.add(DbDataManager.getString(cursor, DbConstants.V_NAME));
 		} while (cursor.moveToNext());
 
 		// get passed argument
@@ -161,7 +161,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		getActivityFace().openFragment(ArticleDetailsFragment.createInstance(DBDataManager.getId(cursor)));
+		getActivityFace().openFragment(ArticleDetailsFragment.createInstance(DbDataManager.getId(cursor)));
 	}
 
 	@Override

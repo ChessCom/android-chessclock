@@ -18,8 +18,8 @@ import com.chess.backend.entity.new_api.LessonListItem;
 import com.chess.backend.entity.new_api.LessonSearchItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 import com.chess.ui.adapters.LessonsItemAdapter;
 import com.chess.ui.adapters.StringSpinnerAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -109,7 +109,7 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 		super.onStart();
 
 		// get saved categories
-		Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
+		Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
 
 		if (cursor != null && cursor.moveToFirst()) {
 			fillCategoriesList(cursor);
@@ -122,8 +122,8 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 		categories.add(allStr);
 
 		do {
-			int id = DBDataManager.getInt(cursor, DBConstants.V_CATEGORY_ID);
-			String name = DBDataManager.getString(cursor, DBConstants.V_NAME);
+			int id = DbDataManager.getInt(cursor, DbConstants.V_CATEGORY_ID);
+			String name = DbDataManager.getString(cursor, DbConstants.V_NAME);
 			categoriesArray.put(id, name);
 			categories.add(name);
 		} while (cursor.moveToNext());
@@ -169,7 +169,7 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		LessonListItem lessonItem = (LessonListItem) parent.getItemAtPosition(position);
 		long lessonId = lessonItem.getId();
-		getActivityFace().openFragment(GameLessonFragment.createInstance((int) lessonId));
+		getActivityFace().openFragment(GameLessonFragment.createInstance((int) lessonId, 0)); // we don't know courseId here
 	}
 
 	@Override

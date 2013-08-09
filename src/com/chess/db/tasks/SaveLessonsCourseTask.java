@@ -10,8 +10,8 @@ import com.chess.backend.entity.new_api.LessonListItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,11 +23,13 @@ public class SaveLessonsCourseTask  extends AbstractUpdateTask<LessonCourseItem.
 
 	private ContentResolver contentResolver;
 	protected static String[] arguments1 = new String[1];
-	protected static String[] arguments2 = new String[2];
+	protected static String[] arguments3 = new String[3];
+	private String username;
 
 	public SaveLessonsCourseTask(TaskUpdateInterface<LessonCourseItem.Data> taskFace, LessonCourseItem.Data currentItem,
-									  ContentResolver resolver) {
+									  ContentResolver resolver, String username) {
 		super(taskFace);
+		this.username = username;
 		this.item = currentItem;
 
 		this.contentResolver = resolver;
@@ -41,14 +43,14 @@ public class SaveLessonsCourseTask  extends AbstractUpdateTask<LessonCourseItem.
 			arguments[0] = String.valueOf(item.getId());
 
 			// TODO implement beginTransaction logic for performance increase
-			Uri uri = DBConstants.uriArray[DBConstants.Tables.LESSONS_COURSES.ordinal()];
-			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID,
-					DBDataManager.SELECTION_ITEM_ID, arguments, null);
+			Uri uri = DbConstants.uriArray[DbConstants.Tables.LESSONS_COURSES.ordinal()];
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID,
+					DbDataManager.SELECTION_ITEM_ID, arguments, null);
 
-			ContentValues values = DBDataManager.putLessonsCourseItemToValues(item);
+			ContentValues values = DbDataManager.putLessonsCourseItemToValues(item);
 
 			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+				contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
 			} else {
 				contentResolver.insert(uri, values);
 			}
@@ -57,26 +59,9 @@ public class SaveLessonsCourseTask  extends AbstractUpdateTask<LessonCourseItem.
 		}
 
 		for (LessonListItem lesson : item.getLessons()) {
-			final String[] arguments = arguments2;
-			arguments[0] = String.valueOf(lesson.getId());
-			arguments[1] = String.valueOf(lesson.getCourseId());
-
 			lesson.setCourseId(item.getId());
-
-			// TODO implement beginTransaction logic for performance increase
-			Uri uri = DBConstants.uriArray[DBConstants.Tables.LESSONS_LESSONS_LIST.ordinal()];
-			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID_AND_CATEGORY_ID,
-					DBDataManager.SELECTION_ITEM_ID_AND_CATEGORY_ID, arguments, null);
-
-			ContentValues values = DBDataManager.putLessonsListItemToValues(lesson);
-
-			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
-			} else {
-				contentResolver.insert(uri, values);
-			}
-
-			cursor.close();
+			lesson.setUser(username);
+		  	DbDataManager.saveLessonListItemToDb(contentResolver, lesson);
 		}
 
 		result = StaticData.RESULT_OK;

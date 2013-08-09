@@ -28,8 +28,8 @@ import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
@@ -187,14 +187,14 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyFinishedGame(getActivity(), gameId),
 //				getContentResolver()).executeTask();
 
-		Cursor cursor = DBDataManager.executeQuery(getContentResolver(),
+		Cursor cursor = DbDataManager.executeQuery(getContentResolver(),
 				DbHelper.getDailyFinishedGame(gameId, getUsername()));
 
 		if (cursor.moveToFirst()) {
 			showSubmitButtonsLay(false);
 			getSoundPlayer().playGameStart();
 
-			currentGame = DBDataManager.getDailyFinishedGameFromCursor(cursor);
+			currentGame = DbDataManager.getDailyFinishedGameFromCursor(cursor);
 			cursor.close();
 
 			adjustBoardForGame();
@@ -219,7 +219,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 					showSubmitButtonsLay(false);
 					getSoundPlayer().playGameStart();
 
-					currentGame = DBDataManager.getDailyFinishedGameFromCursor(returnedObj);
+					currentGame = DbDataManager.getDailyFinishedGameFromCursor(returnedObj);
 					returnedObj.close();
 
 					adjustBoardForGame();
@@ -230,7 +230,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 				case GAMES_LIST:
 					// iterate through all loaded items in cursor
 					do {
-						long localDbGameId = DBDataManager.getLong(returnedObj, DBConstants.V_ID);
+						long localDbGameId = DbDataManager.getLong(returnedObj, DbConstants.V_ID);
 						if (localDbGameId != gameId) {
 							gameId = localDbGameId;
 							showSubmitButtonsLay(false);

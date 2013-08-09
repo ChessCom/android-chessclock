@@ -17,7 +17,7 @@ import com.chess.backend.entity.new_api.DailyCurrentGameData;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
@@ -155,7 +155,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 			getSoundPlayer().playGameStart();
 
-			currentGame = DBDataManager.getDailyCurrentGameFromCursor(returnedObj);
+			currentGame = DbDataManager.getDailyCurrentGameFromCursor(returnedObj);
 			returnedObj.close();
 
 			adjustBoardForGame();

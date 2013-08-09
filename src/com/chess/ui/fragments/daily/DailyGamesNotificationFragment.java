@@ -24,7 +24,7 @@ import com.chess.backend.entity.new_api.DailyFinishedGameData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
@@ -215,7 +215,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(position));
 		} else if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			DailyFinishedGameData finishedItem = DBDataManager.getDailyFinishedGameListFromCursor(cursor);
+			DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
 
 			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
 			getActivityFace().toggleRightMenu();
@@ -227,7 +227,7 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 			}
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			gameListCurrentItem = DBDataManager.getDailyCurrentGameListFromCursor(cursor);
+			gameListCurrentItem = DbDataManager.getDailyCurrentGameListFromCursor(cursor);
 
 			if (gameListCurrentItem.isDrawOffered()) {
 				popupItem.setPositiveBtnId(R.string.accept);
@@ -252,14 +252,14 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(pos));
 		} else if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			DailyFinishedGameData finishedItem = DBDataManager.getDailyFinishedGameFromCursor(cursor);
+			DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameFromCursor(cursor);
 
 			Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
 			intent.putExtra(BaseGameItem.GAME_ID, finishedItem.getGameId());
 			startActivity(intent);
 		} else {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			gameListCurrentItem = DBDataManager.getDailyCurrentGameFromCursor(cursor);
+			gameListCurrentItem = DbDataManager.getDailyCurrentGameFromCursor(cursor);
 
 			new AlertDialog.Builder(getContext())
 					.setItems(new String[]{

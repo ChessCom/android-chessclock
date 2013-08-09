@@ -8,7 +8,7 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.VideoItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbDataManager;
 import com.chess.utilities.AppUtils;
 
 import java.util.Date;
@@ -32,7 +32,7 @@ public class VideoDetailsCurriculumFragment extends VideoDetailsFragment {
 
 	@Override
 	protected void updateData() {
-		boolean videoViewed = DBDataManager.isVideoViewed(getActivity(), getUsername(), itemId);
+		boolean videoViewed = DbDataManager.isVideoViewed(getActivity(), getUsername(), itemId);
 		if (videoViewed) {
 			playBtnTxt.setText(R.string.ic_check);
 		} else {
@@ -88,7 +88,7 @@ public class VideoDetailsCurriculumFragment extends VideoDetailsFragment {
 				videoUrl = videoData.getUrl();
 
 				// Save to DB
-				DBDataManager.updateVideoItem(getContentResolver(), videoData);
+				DbDataManager.updateVideoItem(getContentResolver(), videoData);
 
 				currentPlayingId = (int) videoData.getVideoId();
 			}

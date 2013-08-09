@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DBConstants;
+import com.chess.db.DbConstants;
 import com.chess.utilities.AppUtils;
 
 /**
@@ -41,12 +41,12 @@ public class ForumTopicsCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
 
-		long timestamp = getLong(cursor, DBConstants.V_LAST_POST_DATE);
+		long timestamp = getLong(cursor, DbConstants.V_LAST_POST_DATE);
 		String lastCommentAgoStr = AppUtils.getMomentsAgoFromSeconds(timestamp, context);
 		holder.lastCommentAgoTxt.setText(lastCommentAgoStr + StaticData.SYMBOL_SPACE_DOT);
-		holder.titleTxt.setText(getString(cursor, DBConstants.V_TITLE));
+		holder.titleTxt.setText(getString(cursor, DbConstants.V_TITLE));
 
-		int postCount = getInt(cursor, DBConstants.V_POST_COUNT);
+		int postCount = getInt(cursor, DbConstants.V_POST_COUNT);
 		holder.postsCountTxt.setText(context.getString(R.string.posts_arg, postCount));
 
 		if (haveNewPosts()) {

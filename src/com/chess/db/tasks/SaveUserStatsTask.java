@@ -10,8 +10,8 @@ import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,14 +59,14 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 				return;
 			}
 
-			Uri uri = DBConstants.uriArray[DBConstants.Tables.USER_STATS_LIVE_STANDARD.ordinal()];
+			Uri uri = DbConstants.uriArray[DbConstants.Tables.USER_STATS_LIVE_STANDARD.ordinal()];
 
-			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
+			Cursor cursor = resolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
 
-			ContentValues values = DBDataManager.putUserStatsLiveItemToValues(item.getLive().getStandard(), userName);
+			ContentValues values = DbDataManager.putUserStatsLiveItemToValues(item.getLive().getStandard(), userName);
 
 			if (cursor.moveToFirst()) {
-				resolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+				resolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
 			} else {
 				resolver.insert(uri, values);
 			}
@@ -78,14 +78,14 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 				return;
 			}
 
-			Uri uri = DBConstants.uriArray[DBConstants.Tables.USER_STATS_LIVE_LIGHTNING.ordinal()];
+			Uri uri = DbConstants.uriArray[DbConstants.Tables.USER_STATS_LIVE_LIGHTNING.ordinal()];
 
-			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
+			Cursor cursor = resolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
 
-			ContentValues values = DBDataManager.putUserStatsLiveItemToValues(item.getLive().getLightning(), userName);
+			ContentValues values = DbDataManager.putUserStatsLiveItemToValues(item.getLive().getLightning(), userName);
 
 			if (cursor.moveToFirst()) {
-				resolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+				resolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
 			} else {
 				resolver.insert(uri, values);
 			}
@@ -97,14 +97,14 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 				return;
 			}
 
-			Uri uri = DBConstants.uriArray[DBConstants.Tables.USER_STATS_LIVE_BLITZ.ordinal()];
+			Uri uri = DbConstants.uriArray[DbConstants.Tables.USER_STATS_LIVE_BLITZ.ordinal()];
 
-			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
+			Cursor cursor = resolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
 
-			ContentValues values = DBDataManager.putUserStatsLiveItemToValues(item.getLive().getBlitz(), userName);
+			ContentValues values = DbDataManager.putUserStatsLiveItemToValues(item.getLive().getBlitz(), userName);
 
 			if (cursor.moveToFirst()) {
-				resolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+				resolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
 			} else {
 				resolver.insert(uri, values);
 			}
@@ -125,14 +125,14 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 				return;
 			}
 
-			Uri uri = DBConstants.uriArray[DBConstants.Tables.USER_STATS_DAILY_CHESS.ordinal()];
+			Uri uri = DbConstants.uriArray[DbConstants.Tables.USER_STATS_DAILY_CHESS.ordinal()];
 
-			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
+			Cursor cursor = resolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
 
-			ContentValues values = DBDataManager.putUserStatsDailyItemToValues(item.getDaily().getChess(), userName);
+			ContentValues values = DbDataManager.putUserStatsDailyItemToValues(item.getDaily().getChess(), userName);
 
 			if (cursor.moveToFirst()) {
-				resolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+				resolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
 			} else {
 				resolver.insert(uri, values);
 			}
@@ -144,14 +144,14 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 				return;
 			}
 
-			Uri uri = DBConstants.uriArray[DBConstants.Tables.USER_STATS_DAILY_CHESS960.ordinal()];
+			Uri uri = DbConstants.uriArray[DbConstants.Tables.USER_STATS_DAILY_CHESS960.ordinal()];
 
-			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
+			Cursor cursor = resolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
 
-			ContentValues values = DBDataManager.putUserStatsDailyItemToValues(item.getDaily().getChess960(), userName);
+			ContentValues values = DbDataManager.putUserStatsDailyItemToValues(item.getDaily().getChess960(), userName);
 
 			if (cursor.moveToFirst()) {
-				resolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+				resolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
 			} else {
 				resolver.insert(uri, values);
 			}
@@ -167,14 +167,14 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		final String[] userArgument = arguments;
 		userArgument[0] = String.valueOf(userName);
 		{ // Standard
-			Uri uri = DBConstants.uriArray[DBConstants.Tables.USER_STATS_TACTICS.ordinal()];
+			Uri uri = DbConstants.uriArray[DbConstants.Tables.USER_STATS_TACTICS.ordinal()];
 
-			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
+			Cursor cursor = resolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
 
-			ContentValues values = DBDataManager.putUserStatsTacticsItemToValues(item.getTactics(), userName);
+			ContentValues values = DbDataManager.putUserStatsTacticsItemToValues(item.getTactics(), userName);
 
 			if (cursor.moveToFirst()) {
-				resolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null); // TODO improve performance by updating only needed fields
+				resolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null); // TODO improve performance by updating only needed fields
 			} else {
 				resolver.insert(uri, values);
 			}
@@ -191,14 +191,14 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		userArgument[0] = String.valueOf(userName);
 
 		{ // Standard
-			Uri uri = DBConstants.uriArray[DBConstants.Tables.USER_STATS_LESSONS.ordinal()];
+			Uri uri = DbConstants.uriArray[DbConstants.Tables.USER_STATS_LESSONS.ordinal()];
 
-			Cursor cursor = resolver.query(uri, DBDataManager.PROJECTION_USER, DBDataManager.SELECTION_USER, userArgument, null);
+			Cursor cursor = resolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
 
-			ContentValues values = DBDataManager.putUserStatsChessMentorItemToValues(item.getChessMentor().getRating(), userName);
+			ContentValues values = DbDataManager.putUserStatsChessMentorItemToValues(item.getChessMentor().getRating(), userName);
 
 			if (cursor.moveToFirst()) {
-				resolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+				resolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
 			} else {
 				resolver.insert(uri, values);
 			}

@@ -51,42 +51,22 @@ public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 		String piece = StaticData.SYMBOL_EMPTY;
 		int pieceCode = pieces[move.to];
 		String moveStr;
-		if (isReside()) {
-			if (pieceCode == 1) { // set piece name
-				piece = MoveParser.BLACK_KNIGHT;
-			} else if (pieceCode == 2) {
-				piece = MoveParser.BLACK_BISHOP;
-			} else if (pieceCode == 3) {
-				piece = MoveParser.BLACK_ROOK;
-			} else if (pieceCode == 4) {
-				piece = MoveParser.BLACK_QUEEN;
-			} else if (pieceCode == 5) {
-				piece = MoveParser.BLACK_KING;
-			}
-			moveStr = piece + MoveParser.positionToString(move.to);
-			if (moveStr.equalsIgnoreCase(MoveParser.B_KINGSIDE_MOVE_CASTLING)) {
-				moveStr = MoveParser.KINGSIDE_CASTLING;
-			} else if (moveStr.equalsIgnoreCase(MoveParser.B_QUEENSIDE_MOVE_CASTLING)) {
-				moveStr = MoveParser.QUEENSIDE_CASTLING;
-			}
-		} else {
-			if (pieceCode == 1) { // set piece name
-				piece = MoveParser.WHITE_KNIGHT;
-			} else if (pieceCode == 2) {
-				piece = MoveParser.WHITE_BISHOP;
-			} else if (pieceCode == 3) {
-				piece = MoveParser.WHITE_ROOK;
-			} else if (pieceCode == 4) {
-				piece = MoveParser.WHITE_QUEEN;
-			} else if (pieceCode == 5) {
-				piece = MoveParser.WHITE_KING;
-			}
-			moveStr = piece + MoveParser.positionToString(move.to);
-			if (moveStr.equalsIgnoreCase(MoveParser.W_KINGSIDE_MOVE_CASTLING)) {
-				moveStr = MoveParser.KINGSIDE_CASTLING;
-			} else if (moveStr.equalsIgnoreCase(MoveParser.W_QUEENSIDE_MOVE_CASTLING)) {
-				moveStr = MoveParser.QUEENSIDE_CASTLING;
-			}
+		if (pieceCode == 1) { // set piece name
+			piece = MoveParser.BLACK_KNIGHT;
+		} else if (pieceCode == 2) {
+			piece = MoveParser.BLACK_BISHOP;
+		} else if (pieceCode == 3) {
+			piece = MoveParser.BLACK_ROOK;
+		} else if (pieceCode == 4) {
+			piece = MoveParser.BLACK_QUEEN;
+		} else if (pieceCode == 5) {
+			piece = MoveParser.BLACK_KING;
+		}
+		moveStr = piece + MoveParser.positionToString(move.to);
+		if (moveStr.equalsIgnoreCase(MoveParser.B_KINGSIDE_MOVE_CASTLING)) {
+			moveStr = MoveParser.KINGSIDE_CASTLING;
+		} else if (moveStr.equalsIgnoreCase(MoveParser.B_QUEENSIDE_MOVE_CASTLING)) {
+			moveStr = MoveParser.QUEENSIDE_CASTLING;
 		}
 		return moveStr.toLowerCase();
 	}

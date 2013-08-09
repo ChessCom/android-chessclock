@@ -10,14 +10,14 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-import static com.chess.db.DBConstants.Tables;
+import static com.chess.db.DbConstants.Tables;
 
 /**
  * @author alien_roger
  * @created 27.10.12
  * @modified 27.10.12
  */
-public class DBDataProvider extends ContentProvider {
+public class DbDataProvider extends ContentProvider {
 
 	private static final UriMatcher uriMatcher;
 	private static final UriMatcher uriMatcherIds;
@@ -31,12 +31,12 @@ public class DBDataProvider extends ContentProvider {
 
 		for (int i = 0; i < Tables.values().length; i++) {
 			String table = Tables.values()[i].name();
-			uriMatcher.addURI(DBConstants.PROVIDER_NAME, table, i);
+			uriMatcher.addURI(DbConstants.PROVIDER_NAME, table, i);
 		}
 
 		for (int i = 0; i < Tables.values().length; i++) {
 			String table = Tables.values()[i].name();
-			uriMatcherIds.addURI(DBConstants.PROVIDER_NAME, table + SLASH_NUMBER, i);
+			uriMatcherIds.addURI(DbConstants.PROVIDER_NAME, table + SLASH_NUMBER, i);
 		}
 	}
 
@@ -58,9 +58,9 @@ public class DBDataProvider extends ContentProvider {
 	public String getType(Uri uri) {
 		for (int i=0; i < Tables.values().length; i++) {
 			if (uriMatcher.match(uri) == i) {
-				return VND_ANDROID_CURSOR_DIR + DBConstants.PROVIDER_NAME;
+				return VND_ANDROID_CURSOR_DIR + DbConstants.PROVIDER_NAME;
 			} else if (uriMatcherIds.match(uri) == i) {
-				return VND_ANDROID_CURSOR_ITEM + DBConstants.PROVIDER_NAME;
+				return VND_ANDROID_CURSOR_ITEM + DbConstants.PROVIDER_NAME;
 			}
 
 		}
@@ -79,7 +79,7 @@ public class DBDataProvider extends ContentProvider {
 				found = true;
 			} else if (uriMatcherIds.match(uri) == i) {
 				sqlBuilder.setTables(Tables.values()[i].name());
-				sqlBuilder.appendWhere(DBConstants._ID + EQUALS + uri.getPathSegments().get(1));
+				sqlBuilder.appendWhere(DbConstants._ID + EQUALS + uri.getPathSegments().get(1));
 				found = true;
 			}
 
@@ -103,7 +103,7 @@ public class DBDataProvider extends ContentProvider {
 				found = true;
 			} else if (uriMatcherIds.match(uri) == i) {
 				count = appDataBase.update(Tables.values()[i].name(), values,
-						DBConstants._ID + EQUALS + uri.getPathSegments().get(1) +
+						DbConstants._ID + EQUALS + uri.getPathSegments().get(1) +
 								(!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
 						selectionArgs);
 				found = true;
@@ -124,7 +124,7 @@ public class DBDataProvider extends ContentProvider {
 				long rowID = appDataBase.insert(Tables.values()[i].name(), "", values);
 				//---if added successfully---
 				if (rowID > 0) {
-					Uri _uri = ContentUris.withAppendedId(DBConstants.uriArray[i], rowID);
+					Uri _uri = ContentUris.withAppendedId(DbConstants.uriArray[i], rowID);
 					getContext().getContentResolver().notifyChange(_uri, null);
 					return _uri;
 				}
@@ -147,7 +147,7 @@ public class DBDataProvider extends ContentProvider {
 				String id = uri.getPathSegments().get(1);
 				count = appDataBase.delete(
 						Tables.values()[i].name(),
-						DBConstants._ID + EQUALS + id + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
+						DbConstants._ID + EQUALS + id + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
 						selectionArgs);
 				found = true;
 			}
@@ -166,7 +166,7 @@ public class DBDataProvider extends ContentProvider {
 	 * @return DATABASE_VERSION integer value
 	 */
 	public static int getDbVersion() {
-		return DBConstants.DATABASE_VERSION;
+		return DbConstants.DATABASE_VERSION;
 	}
 
 
@@ -180,14 +180,14 @@ public class DBDataProvider extends ContentProvider {
 	private static class DatabaseHelper extends SQLiteOpenHelper {
 		private Context context;
 		DatabaseHelper(Context context) {
-			super(context, DBConstants.DATABASE_NAME, null, DBConstants.DATABASE_VERSION);
+			super(context, DbConstants.DATABASE_NAME, null, DbConstants.DATABASE_VERSION);
 			this.context = context;
 		}
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			// Init static tables first
-			DBConstants dbConstants = new DBConstants();
+			DbConstants dbConstants = new DbConstants();
 			dbConstants.createMainTables();
 			dbConstants.createUserStatsTables();
 			dbConstants.createGameStatsTables();

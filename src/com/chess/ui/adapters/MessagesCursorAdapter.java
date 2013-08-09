@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.db.DBConstants;
+import com.chess.db.DbConstants;
 import com.chess.utilities.AppUtils;
 
 /**
@@ -43,14 +43,14 @@ public class MessagesCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
 
-		boolean isOtherUserOnline = getInt(cursor, DBConstants.V_OTHER_USER_IS_ONLINE) > 0;
+		boolean isOtherUserOnline = getInt(cursor, DbConstants.V_OTHER_USER_IS_ONLINE) > 0;
 
-		String otherUserAvatarUrl = getString(cursor, DBConstants.V_OTHER_USER_AVATAR_URL);
+		String otherUserAvatarUrl = getString(cursor, DbConstants.V_OTHER_USER_AVATAR_URL);
 		imageLoader.download(otherUserAvatarUrl, holder.photoImg, imgSize);
 
-		holder.authorTxt.setText(getString(cursor, DBConstants.V_OTHER_USER_USERNAME));
-		holder.messageTxt.setText(getString(cursor, DBConstants.V_LAST_MESSAGE_CONTENT));
-		long timeAgo = getLong(cursor, DBConstants.V_CREATE_DATE);
+		holder.authorTxt.setText(getString(cursor, DbConstants.V_OTHER_USER_USERNAME));
+		holder.messageTxt.setText(getString(cursor, DbConstants.V_LAST_MESSAGE_CONTENT));
+		long timeAgo = getLong(cursor, DbConstants.V_CREATE_DATE);
 		String lastDate = AppUtils.getMomentsAgoFromSeconds(timeAgo, context);
 		holder.messageDateTxt.setText(lastDate);
 	}

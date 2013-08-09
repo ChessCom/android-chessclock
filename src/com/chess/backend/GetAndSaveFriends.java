@@ -11,8 +11,8 @@ import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.FriendsItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.statics.AppData;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 import com.chess.utilities.AppUtils;
 
 /**
@@ -52,13 +52,13 @@ public class GetAndSaveFriends extends IntentService {
 				arguments2[1] = String.valueOf(currentItem.getUserId());
 
 				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DBConstants.uriArray[DBConstants.Tables.FRIENDS.ordinal()];
-				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_USER_ID, DBDataManager.SELECTION_USER_ID, arguments2, null);
+				Uri uri = DbConstants.uriArray[DbConstants.Tables.FRIENDS.ordinal()];
+				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER_ID, DbDataManager.SELECTION_USER_ID, arguments2, null);
 
-				ContentValues values = DBDataManager.putFriendItemToValues(currentItem, userName);
+				ContentValues values = DbDataManager.putFriendItemToValues(currentItem, userName);
 
 				if (cursor.moveToFirst()) {
-					contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
 				} else {
 					contentResolver.insert(uri, values);
 				}

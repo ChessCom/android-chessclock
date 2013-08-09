@@ -303,6 +303,8 @@
 	<string name="lessons_completed">Lessons Completed</string>
 	<string name="courses_completed">Courses Completed</string>
 	<string name="computer_level">Computer Level</string>
+	<string name="alternate_correct_move_ex">Alternate correct move!</string>
+	<string name="course_completed_message">Hey, i\'ve just completed @Chess.com %1$s lessons course, and gained %2$s score</string>
 	<!--Game mode-->
 
 </resources>

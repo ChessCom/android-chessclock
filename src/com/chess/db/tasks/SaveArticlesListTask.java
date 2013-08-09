@@ -9,8 +9,8 @@ import com.chess.backend.entity.new_api.ArticleItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,15 +37,15 @@ public class SaveArticlesListTask extends AbstractUpdateTask<ArticleItem.Data, L
 				arguments2[0] = String.valueOf(currentItem.getId());
 
 				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DBConstants.uriArray[DBConstants.Tables.ARTICLES.ordinal()];
+				Uri uri = DbConstants.uriArray[DbConstants.Tables.ARTICLES.ordinal()];
 
-				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID,
-						DBDataManager.SELECTION_ITEM_ID, arguments2, null);
+				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID,
+						DbDataManager.SELECTION_ITEM_ID, arguments2, null);
 
-				ContentValues values = DBDataManager.putArticleItemToValues(currentItem);
+				ContentValues values = DbDataManager.putArticleItemToValues(currentItem);
 
 				if (cursor.moveToFirst()) {
-					contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
 				} else {
 					contentResolver.insert(uri, values);
 				}

@@ -12,6 +12,7 @@ public class LessonListItem {
 	private boolean completed;
 	/* Local addition */
 	private long courseId;
+	private String user;
 
 	public void setId(int id) {
 		this.id = id;
@@ -43,5 +44,13 @@ public class LessonListItem {
 
 	public void setCourseId(long courseId) {
 		this.courseId = courseId;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
 	}
 }

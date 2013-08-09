@@ -14,8 +14,8 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.stats.UserStatsItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 import com.chess.db.tasks.SaveUserStatsTask;
 import com.chess.model.RatingListItem;
 import com.chess.ui.adapters.RatingsAdapter;
@@ -144,59 +144,59 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 		String[] argument = new String[]{getAppData().getUsername()};
 
 		{// standard
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.USER_STATS_LIVE_STANDARD.ordinal()],
-					DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
+			Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.USER_STATS_LIVE_STANDARD.ordinal()],
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
-				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
+				int currentRating = DbDataManager.getInt(cursor, DbConstants.V_CURRENT);
 				ratingList.get(LIVE_STANDARD).setValue(currentRating);
 			}
 		}
 		{// blitz
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.USER_STATS_LIVE_BLITZ.ordinal()],
-					DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
+			Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.USER_STATS_LIVE_BLITZ.ordinal()],
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
-				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
+				int currentRating = DbDataManager.getInt(cursor, DbConstants.V_CURRENT);
 				ratingList.get(LIVE_BLITZ).setValue(currentRating);
 			}
 		}
 		{// bullet
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.USER_STATS_LIVE_LIGHTNING.ordinal()],
-					DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
+			Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.USER_STATS_LIVE_LIGHTNING.ordinal()],
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
-				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
+				int currentRating = DbDataManager.getInt(cursor, DbConstants.V_CURRENT);
 
 				ratingList.get(LIVE_LIGHTNING).setValue(currentRating);
 			}
 		}
 		{// chess
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.USER_STATS_DAILY_CHESS.ordinal()],
-					DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
+			Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.USER_STATS_DAILY_CHESS.ordinal()],
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
-				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
+				int currentRating = DbDataManager.getInt(cursor, DbConstants.V_CURRENT);
 				ratingList.get(DAILY_CHESS).setValue(currentRating);
 			}
 		}
 		{// chess960
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.USER_STATS_DAILY_CHESS960.ordinal()],
-					DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
+			Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.USER_STATS_DAILY_CHESS960.ordinal()],
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
-				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
+				int currentRating = DbDataManager.getInt(cursor, DbConstants.V_CURRENT);
 				ratingList.get(DAILY_CHESS960).setValue(currentRating);
 			}
 		}
 		{// tactics
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.USER_STATS_TACTICS.ordinal()],
-					DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
+			Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.USER_STATS_TACTICS.ordinal()],
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
-				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
+				int currentRating = DbDataManager.getInt(cursor, DbConstants.V_CURRENT);
 				ratingList.get(TACTICS).setValue(currentRating);
 			}
 		}
 		{// chess mentor
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.USER_STATS_LESSONS.ordinal()],
-					DBDataManager.PROJECTION_USER_CURRENT_RATING, DBDataManager.SELECTION_USER, argument, null);
+			Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.USER_STATS_LESSONS.ordinal()],
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
-				int currentRating = DBDataManager.getInt(cursor, DBConstants.V_CURRENT);
+				int currentRating = DbDataManager.getInt(cursor, DbConstants.V_CURRENT);
 				ratingList.get(LESSONS).setValue(currentRating);
 			}
 		}

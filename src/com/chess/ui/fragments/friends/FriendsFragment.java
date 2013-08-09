@@ -16,8 +16,8 @@ import com.chess.backend.entity.new_api.DailySeekItem;
 import com.chess.backend.entity.new_api.FriendsItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveFriendsListTask;
@@ -82,7 +82,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		init();
 
 		if (need2update){
-			boolean haveSavedData = DBDataManager.haveSavedFriends(getActivity(), getUsername());
+			boolean haveSavedData = DbDataManager.haveSavedFriends(getActivity(), getUsername());
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
 				updateData();
@@ -127,16 +127,16 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		if (view.getId() == R.id.challengeImgBtn) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
-			createDailyChallenge(DBDataManager.getString(cursor, DBConstants.V_USERNAME));
+			createDailyChallenge(DbDataManager.getString(cursor, DbConstants.V_USERNAME));
 		} else if (view.getId() == R.id.messageImgBtn) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
-			String username = DBDataManager.getString(cursor, DBConstants.V_USERNAME);
+			String username = DbDataManager.getString(cursor, DbConstants.V_USERNAME);
 			getActivityFace().openFragment(NewMessageFragment.createInstance(username));
 		} else if (view.getId() == R.id.friendListItemView) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
-			String username = DBDataManager.getString(cursor, DBConstants.V_USERNAME);
+			String username = DbDataManager.getString(cursor, DbConstants.V_USERNAME);
 			getActivityFace().openFragment(ProfileTabsFragment.createInstance(username));
 		}
 	}
@@ -197,7 +197,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 	private void loadFromDb() {
 		new LoadDataFromDbTask(friendsCursorUpdateListener,
-				DbHelper.getTableForUser(getAppData().getUsername(), DBConstants.Tables.FRIENDS.ordinal()),
+				DbHelper.getTableForUser(getAppData().getUsername(), DbConstants.Tables.FRIENDS.ordinal()),
 				getContentResolver()).executeTask();
 
 	}

@@ -10,8 +10,8 @@ import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,14 +49,14 @@ public class SaveConversationsInboxTask extends AbstractUpdateTask<ConversationI
 			arguments[1] = String.valueOf(userName);
 
 			// TODO implement beginTransaction logic for performance increase
-			Uri uri = DBConstants.uriArray[DBConstants.Tables.CONVERSATIONS_INBOX.ordinal()];
-			Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID_AND_USER,
-					DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments, null);
+			Uri uri = DbConstants.uriArray[DbConstants.Tables.CONVERSATIONS_INBOX.ordinal()];
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID_AND_USER,
+					DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments, null);
 
-			ContentValues values = DBDataManager.putConversationItemToValues(currentItem);
+			ContentValues values = DbDataManager.putConversationItemToValues(currentItem);
 
 			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+				contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
 			} else {
 				contentResolver.insert(uri, values);
 			}

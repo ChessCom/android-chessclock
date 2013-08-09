@@ -9,8 +9,8 @@ import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,15 +42,15 @@ public class SaveLessonsCategoriesTask extends AbstractUpdateTask<CommonFeedCate
 				arguments2[0] = String.valueOf(currentItem.getId());
 
 				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DBConstants.uriArray[DBConstants.Tables.LESSONS_CATEGORIES.ordinal()];
+				Uri uri = DbConstants.uriArray[DbConstants.Tables.LESSONS_CATEGORIES.ordinal()];
 
-				Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_V_CATEGORY_ID,
-						DBDataManager.SELECTION_CATEGORY_ID, arguments2, null);
+				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_V_CATEGORY_ID,
+						DbDataManager.SELECTION_CATEGORY_ID, arguments2, null);
 
-				ContentValues values = DBDataManager.putCommonFeedCategoryItemToValues(currentItem);
+				ContentValues values = DbDataManager.putCommonFeedCategoryItemToValues(currentItem);
 
 				if (cursor.moveToFirst()) {
-					contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
 				} else {
 					contentResolver.insert(uri, values);
 				}

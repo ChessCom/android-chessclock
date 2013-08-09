@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.db.DBConstants;
+import com.chess.db.DbConstants;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
@@ -81,28 +81,28 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 		view.setTag(R.id.list_item_id, cursor.getPosition());
 
 		// set premium icon
-		int status = getInt(cursor, DBConstants.V_PREMIUM_STATUS);
+		int status = getInt(cursor, DbConstants.V_PREMIUM_STATUS);
 		holder.premiumImg.setImageResource(AppUtils.getPremiumIcon(status));
 
-		boolean isOnline = getInt(cursor, DBConstants.V_IS_OPPONENT_ONLINE) > 0 ; // TODO adjust logic for offline mode
+		boolean isOnline = getInt(cursor, DbConstants.V_IS_OPPONENT_ONLINE) > 0 ; // TODO adjust logic for offline mode
 		if (isOnline) {
 			holder.onlineTxt.setText(R.string.online_now);
 		} else {
 			holder.onlineTxt.setText(context.getString(R.string.last_played, getLastLoginLabel(cursor)));
 		}
-		holder.usernameTxt.setText(getString(cursor, DBConstants.V_USERNAME));
-		holder.locationTxt.setText(getString(cursor, DBConstants.V_LOCATION));
+		holder.usernameTxt.setText(getString(cursor, DbConstants.V_USERNAME));
+		holder.locationTxt.setText(getString(cursor, DbConstants.V_LOCATION));
 
 		// set country flag
-		Drawable drawable = AppUtils.getCountryFlagScaled(context, countryMap.get(getInt(cursor, DBConstants.V_COUNTRY_ID)));
+		Drawable drawable = AppUtils.getCountryFlagScaled(context, countryMap.get(getInt(cursor, DbConstants.V_COUNTRY_ID)));
 		holder.countryImg.setImageDrawable(drawable);
 
 		// load avatar
-		imageLoader.download(getString(cursor, DBConstants.V_PHOTO_URL), holder.photoImg, imageSize);
+		imageLoader.download(getString(cursor, DbConstants.V_PHOTO_URL), holder.photoImg, imageSize);
 	}
 
 	private String getLastLoginLabel(Cursor cursor) {
-		long loginTime = getLong(cursor, DBConstants.V_LAST_LOGIN_DATE) * 1000;
+		long loginTime = getLong(cursor, DbConstants.V_LAST_LOGIN_DATE) * 1000;
 		lastLoginDate.setTimeInMillis(loginTime);
 
 		int cnt = 0;

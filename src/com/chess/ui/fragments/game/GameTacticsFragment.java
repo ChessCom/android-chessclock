@@ -26,8 +26,8 @@ import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetOfflineTacticsBatchTask;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 import com.chess.db.tasks.SaveTacticsBatchTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.PopupItem;
@@ -150,9 +150,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		if (firstRun) {
 
-			if (DBDataManager.haveSavedTacticGame(getActivity(), getUsername())) {
+			if (DbDataManager.haveSavedTacticGame(getActivity(), getUsername())) {
 				// TODO load tactic item from batch
-				tacticItem = DBDataManager.getLastTacticItemFromDb(getActivity(), getUsername());
+				tacticItem = DbDataManager.getLastTacticItemFromDb(getActivity(), getUsername());
 				adjustBoardForGame();
 
 				if (getBoardFace().isLatestMoveMadeUser()) {
@@ -189,7 +189,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		stopTacticsTimer();
 
 		if (needToSaveTactic()) {
-			DBDataManager.saveTacticItemToDb(getActivity(), tacticItem, getUsername());
+			DbDataManager.saveTacticItemToDb(getActivity(), tacticItem, getUsername());
 		}
 	}
 
@@ -376,13 +376,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		if (currentGameExist()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
-			getContentResolver().delete(DBConstants.uriArray[DBConstants.Tables.TACTICS_BATCH.ordinal()],
-					DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
+			getContentResolver().delete(DbConstants.uriArray[DbConstants.Tables.TACTICS_BATCH.ordinal()],
+					DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
 		}
 
-		if (DBDataManager.haveSavedTacticGame(getActivity(), getUsername())) {
+		if (DbDataManager.haveSavedTacticGame(getActivity(), getUsername())) {
 
-			tacticItem = DBDataManager.getLastTacticItemFromDb(getActivity(), getUsername());
+			tacticItem = DbDataManager.getLastTacticItemFromDb(getActivity(), getUsername());
 
 			adjustBoardForGame();
 			currentTacticAnswerCnt = 0;
@@ -856,8 +856,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private void clearSavedTactics() {
 		if (currentGameExist()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
-			getContentResolver().delete(DBConstants.uriArray[DBConstants.Tables.TACTICS_BATCH.ordinal()],
-					DBDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
+			getContentResolver().delete(DbConstants.uriArray[DbConstants.Tables.TACTICS_BATCH.ordinal()],
+					DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
 		}
 	}
 

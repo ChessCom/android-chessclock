@@ -6,7 +6,7 @@ import android.net.Uri;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbDataManager;
 import com.chess.db.QueryParams;
 
 
@@ -32,7 +32,7 @@ public class DeleteByUriTask extends AbstractUpdateTask<Cursor, Long> {
             String[] arguments = new String[cnt];
             StringBuilder stringBuilder = new StringBuilder();
             for(int i=0; i<cnt; i++){
-                stringBuilder.append(DBDataManager.SELECTION_ID);
+                stringBuilder.append(DbDataManager.SELECTION_ID);
                 arguments[i] = String.valueOf(ids[i]);
             }
             deletedCnt = contentResolver.delete(uri, stringBuilder.toString(), arguments);

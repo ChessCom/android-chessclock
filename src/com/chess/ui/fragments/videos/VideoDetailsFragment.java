@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.new_api.VideoViewedItem;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.QueryParams;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -121,15 +121,15 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 		QueryParams queryParams = DbHelper.getVideosList();
 		Uri uri = ContentUris.withAppendedId(queryParams.getUri(), itemId);
 		queryParams.setUri(uri);
-		Cursor cursor = DBDataManager.executeQuery(getContentResolver(), queryParams);
+		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), queryParams);
 		cursor.moveToFirst();
 
 		playBtnTxt.setEnabled(true);
 
 		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
-		String firstName = DBDataManager.getString(cursor, DBConstants.V_FIRST_NAME);
-		CharSequence chessTitle = DBDataManager.getString(cursor, DBConstants.V_CHESS_TITLE);
-		String lastName = DBDataManager.getString(cursor, DBConstants.V_LAST_NAME);
+		String firstName = DbDataManager.getString(cursor, DbConstants.V_FIRST_NAME);
+		CharSequence chessTitle = DbDataManager.getString(cursor, DbConstants.V_CHESS_TITLE);
+		String lastName = DbDataManager.getString(cursor, DbConstants.V_LAST_NAME);
 		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
 				+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
@@ -138,20 +138,20 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 //			videoBackImg // TODO adjust image loader
 //			progressBar // TODO adjust image loader
 
-		titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_TITLE));
+		titleTxt.setText(DbDataManager.getString(cursor, DbConstants.V_TITLE));
 //			thumbnailAuthorImg // TODO adjust image loader
 		countryImg.setImageDrawable(AppUtils.getUserFlag(getActivity())); // TODO set flag properly // invent flag resources set system
 
-		int duration = DBDataManager.getInt(cursor, DBConstants.V_MINUTES);
-		dateTxt.setText(dateFormatter.format(new Date(DBDataManager.getLong(cursor, DBConstants.V_CREATE_DATE)))
+		int duration = DbDataManager.getInt(cursor, DbConstants.V_MINUTES);
+		dateTxt.setText(dateFormatter.format(new Date(DbDataManager.getLong(cursor, DbConstants.V_CREATE_DATE)))
 				+ StaticData.SYMBOL_SPACE + getString(R.string.min_arg, duration));
 
-		contextTxt.setText(DBDataManager.getString(cursor, DBConstants.V_DESCRIPTION));
-		videoUrl = DBDataManager.getString(cursor, DBConstants.V_URL);
+		contextTxt.setText(DbDataManager.getString(cursor, DbConstants.V_DESCRIPTION));
+		videoUrl = DbDataManager.getString(cursor, DbConstants.V_URL);
 
-		currentPlayingId =  DBDataManager.getInt(cursor, DBConstants.V_ID);
+		currentPlayingId =  DbDataManager.getInt(cursor, DbConstants.V_ID);
 
-		boolean videoViewed = DBDataManager.isVideoViewed(getActivity(), getUsername(),currentPlayingId);
+		boolean videoViewed = DbDataManager.isVideoViewed(getActivity(), getUsername(), currentPlayingId);
 		if (videoViewed) {
 			playBtnTxt.setText(R.string.ic_check);
 		} else {
@@ -166,7 +166,7 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 		if (requestCode == WATCH_VIDEO_REQUEST) {
 
 			VideoViewedItem item = new VideoViewedItem(currentPlayingId, getUsername(), true);
-			DBDataManager.updateVideoViewedState(getContentResolver(), item);
+			DbDataManager.updateVideoViewedState(getContentResolver(), item);
 		}
 	}
 

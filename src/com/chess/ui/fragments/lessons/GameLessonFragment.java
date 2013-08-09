@@ -9,7 +9,6 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.chess.FontsHelper;
@@ -18,19 +17,18 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.LessonItem;
+import com.chess.backend.entity.new_api.LessonListItem;
 import com.chess.backend.entity.new_api.SuccessItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadLessonItemTask;
 import com.chess.db.tasks.SaveLessonsLessonTask;
-import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLessons;
 import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.game.GameBaseFragment;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsBoardFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
@@ -53,6 +51,7 @@ import java.util.List;
  */
 public class GameLessonFragment extends GameBaseFragment implements GameLessonFace, PopupListSelectionFace, MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener, MultiDirectionSlidingDrawer.OnDrawerScrollListener {
 
+	private static final String COURSE_ID = "course_id";
 	private static final String LESSON_ID = "lesson_id";
 	public static final String BOLD_DIVIDER = "##";
 
@@ -65,20 +64,26 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 //	private static final int ID_KEY_PIECES = 2;
 //	private static final int ID_CORRECT_PIECE = 3;
 	private static final int ID_ANALYSIS_BOARD = 0;
-	private static final int ID_VS_COMPUTER = 1;
-	private static final int ID_SKIP_LESSON = 2;
-	private static final int ID_SHOW_ANSWER = 3;
-	private static final int ID_SETTINGS = 4;
+//	private static final int ID_VS_COMPUTER = 1;
+	private static final int ID_SKIP_LESSON = 1;
+	private static final int ID_SHOW_ANSWER = 2;
+	private static final int ID_SETTINGS = 3;
 	/* When user use hints he decrease total points by values below. Values are given in percents*/
 	private static final float HINT_1_COST = 2f;
 	private static final float HINT_2_COST = 6f;
 	private static final float HINT_3_COST = 10f;
 	private static final float WRONG_MOVE_COST = 40f;
+	private static final float ANALYSIS_COST = 4f;
+	private static final float ANSWER_COST = 100f;
+	public static final String FLOAT_FORMAT = "%.1f";
 
 	private LessonUpdateListener lessonUpdateListener;
 	private LessonDataUpdateListener saveLessonUpdateListener;
 	private LessonDataUpdateListener lessonLoadListener;
+	private SubmitLessonListener submitLessonListener;
+
 	private int lessonId;
+	private long courseId;
 	private boolean isAnalysis;
 	private LabelsConfig labelsConfig;
 
@@ -89,6 +94,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private LessonItem.Data lessonItem;
 	private LessonItem.MentorLesson mentorLesson;
 	private List<LessonItem.MentorPosition> positionsToLearn;
+
 	private TextView lessonTitleTxt;
 	private TextView commentTxt;
 	private TextView descriptionTxt;
@@ -102,7 +108,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	private MultiDirectionSlidingDrawer slidingDrawer;
 	private List<LessonItem.MentorPosition.PossibleMove> possibleMoves;
-	private int currentPoints;
+	private int startLearningPosition;
 	private int currentLearningPosition;
 	private int totalLearningPositionsCnt;
 	private boolean need2update = true;
@@ -121,15 +127,15 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private SparseArray<MoveCompleteItem> movesCompleteMap;
 	private int scorePercent;
 	private float pointsForLesson;
-	private GameLessonFragment.SubmitLessonListener submitLessonListener;
 	private String moveToShow;
 
 	public GameLessonFragment() { }
 
-	public static GameLessonFragment createInstance(int lessonId) {
+	public static GameLessonFragment createInstance(int lessonId, long courseId) {
 		GameLessonFragment fragment = new GameLessonFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(LESSON_ID, lessonId);
+		bundle.putLong(COURSE_ID, courseId);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
@@ -140,12 +146,14 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		boldSpan = new CustomTypefaceSpan("san-serif", FontsHelper.getInstance().getTypeFace(getActivity(), FontsHelper.BOLD_FONT));
 
-
 		if (getArguments() != null) {
 			lessonId = getArguments().getInt(LESSON_ID);
+			courseId = getArguments().getLong(COURSE_ID);
 		} else {
 			lessonId = savedInstanceState.getInt(LESSON_ID);
+			courseId = savedInstanceState.getLong(COURSE_ID);
 		}
+
 		labelsConfig = new LabelsConfig();
 
 		saveLessonUpdateListener = new LessonDataUpdateListener(LessonDataUpdateListener.SAVE);
@@ -183,7 +191,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		if (need2update) {
 			// check if we have that lesson in DB
-			Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getMentorLessonById(lessonId));
+			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getMentorLessonById(lessonId));
 			if (cursor != null && cursor.moveToFirst()) { // we have saved lesson data
 				new LoadLessonItemTask(lessonLoadListener, getContentResolver(), getUsername()).executeTask((long) lessonId);
 			} else {
@@ -205,6 +213,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		super.onSaveInstanceState(outState);
 
 		outState.putInt(LESSON_ID, lessonId);
+		outState.putLong(COURSE_ID, courseId);
 	}
 
 	@Override
@@ -360,7 +369,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 					correctMove = true;
 				} else if (possibleMove.getMoveType().equals(LessonItem.MOVE_ALTERNATE)) { // Alternate Correct Move
 					// Correct move, try again!
-					showToast("Alternate correct move!"); // TODO ask to adjust design
+					showToast(R.string.alternate_correct_move_ex);
 					controlsLessonsView.showCorrect();
 					solvedPositionsList.add(currentLearningPosition);
 
@@ -391,7 +400,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			// collect info about all moves for that lesson
 			pointsForLesson = 0;
 			int totalPointsForLesson = 0;
-			for (int t = 0; t < movesCompleteMap.size(); t++) {
+			for (int t = startLearningPosition; t < movesCompleteMap.size(); t++) {
 				MoveCompleteItem item = movesCompleteMap.get(t);
 				float pointsForMove = item.moveDifficulty;
 				totalPointsForLesson += item.moveDifficulty;
@@ -403,14 +412,32 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 					}
 
 					pointsForMove -= hintsSubtraction;
+					pointsForMove = pointsForMove < 0 ? 0 : pointsForMove;
 				}
 
-				{ // for every wrong move we subtract points
+				{ // subtract points for wrong moves
 					float subtraction = 0;
 					for (int z = 0; z < item.wrongMovesCnt; z++) {
 						subtraction += item.moveDifficulty * WRONG_MOVE_COST / 100;
 					}
 					pointsForMove -= subtraction;
+					pointsForMove = pointsForMove < 0 ? 0 : pointsForMove;
+				}
+
+				{ // subtract points for analysis
+					if (item.analysisUsed) {
+						float subtraction = item.moveDifficulty * ANALYSIS_COST / 100;
+						pointsForMove -= subtraction;
+						pointsForMove = pointsForMove < 0 ? 0 : pointsForMove;
+					}
+				}
+
+				{ // subtract points for shown answer
+					if (item.answerWasShown) {
+						float subtraction = item.moveDifficulty * ANSWER_COST / 100;
+						pointsForMove -= subtraction;
+						pointsForMove = pointsForMove < 0 ? 0 : pointsForMove;
+					}
 				}
 
 				pointsForLesson += pointsForMove;
@@ -420,23 +447,15 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 			lessonPercentTxt.setText(getString(R.string.percents, scorePercent) + StaticData.SYMBOL_PERCENT);
 			float currentUserRating = userLesson.getCurrentPoints() + pointsForLesson;
-			lessonsRatingTxt.setText(String.valueOf(currentUserRating));
+			lessonsRatingTxt.setText(String.format(FLOAT_FORMAT, currentUserRating));
 			String symbol = pointsForLesson > 0 ? StaticData.SYMBOL_PLUS : StaticData.SYMBOL_EMPTY;
-			lessonsRatingChangeTxt.setText(StaticData.SYMBOL_LEFT_PAR + symbol + pointsForLesson + StaticData.SYMBOL_RIGHT_PAR);
+			lessonsRatingChangeTxt.setText(StaticData.SYMBOL_LEFT_PAR + symbol + String.format(FLOAT_FORMAT, pointsForLesson)
+					+ StaticData.SYMBOL_RIGHT_PAR);
 
 			submitCorrectSolution();
 			// show next lesson button
 			controlsLessonsView.showNewGame();
-			if (false) { // show when the whole course completed
-				View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_course_complete_popup, null, false);
 
-
-				PopupItem popupItem = new PopupItem();
-				popupItem.setCustomView((LinearLayout) layout);
-
-				PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
-				endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
-			}
 		}
 	}
 
@@ -524,6 +543,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			getBoardFace().setupBoard(getMentorPosition().getFen());
 
 			handler.postDelayed(showTacticMoveTask, TACTIC_ANSWER_DELAY);
+			getCurrentCompleteItem().answerWasShown = true;
 
 //		} else if (code == ID_KEY_SQUARES) {
 //			showToast("key squares");
@@ -537,9 +557,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 //		} else if (code == ID_CORRECT_PIECE) {
 //			showToast("correct piece");
 
-		} else if (code == ID_VS_COMPUTER) {
+//		} else if (code == ID_VS_COMPUTER) {
 //			getActivityFace().openFragment(GameCompFragment.createInstance()); // TODO pass FEN here
 		} else if (code == ID_ANALYSIS_BOARD) {
+			getCurrentCompleteItem().analysisUsed = true;
 			switch2Analysis();
 		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(new SettingsBoardFragment());
@@ -715,11 +736,12 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		totalLearningPositionsCnt = positionsToLearn.size();
 
+		startLearningPosition = userLesson.getCurrentPosition();
 		currentLearningPosition = userLesson.getCurrentPosition();
 		if (totalLearningPositionsCnt == currentLearningPosition) {
 			currentLearningPosition--;
 		}
-		currentPoints = userLesson.getCurrentPoints();
+//		currentPoints = userLesson.getCurrentPoints();  // TODO check if needed
 	}
 
 	private class SubmitLessonListener extends ChessLoadUpdateListener<SuccessItem> {
@@ -731,14 +753,20 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		@Override
 		public void updateData(SuccessItem returnedObj) {
 			if(returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
-//				showToast(R.string.topic_created);
+
+				LessonListItem lessonListItem = new LessonListItem();
+				lessonListItem.setUser(getUsername());
+				lessonListItem.setCourseId(courseId);
+				lessonListItem.setId(lessonId);
+				lessonListItem.setName(lessonItem.getLesson().getName());
+				lessonListItem.setCompleted(true);
+
+				DbDataManager.saveLessonListItemToDb(getContentResolver(), lessonListItem);
 			} else {
 				showToast(R.string.error);
 			}
 		}
-
 	}
-
 
 	private void widgetsInit(View view) {
 		controlsLessonsView = (ControlsLessonsView) view.findViewById(R.id.controlsLessonsView);
@@ -817,7 +845,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			optionsArray.put(ID_ANALYSIS_BOARD, getString(R.string.analysis_board));
 
 			optionsArray.put(ID_SHOW_ANSWER, getString(R.string.show_answer));
-			optionsArray.put(ID_VS_COMPUTER, getString(R.string.vs_computer));
+//			optionsArray.put(ID_VS_COMPUTER, getString(R.string.vs_computer));
 			optionsArray.put(ID_SKIP_LESSON, getString(R.string.skip_lesson));
 
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
@@ -828,6 +856,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		int usedHints;
 		int wrongMovesCnt;
 		int moveDifficulty;
+		boolean analysisUsed;
+		boolean answerWasShown;
 	}
 
 }

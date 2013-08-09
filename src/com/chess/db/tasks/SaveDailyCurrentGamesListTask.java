@@ -8,8 +8,8 @@ import android.net.Uri;
 import com.chess.backend.entity.new_api.DailyCurrentGameData;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 
 import java.util.List;
 
@@ -33,14 +33,14 @@ public class SaveDailyCurrentGamesListTask extends SaveDailyGamesTask<DailyCurre
 				arguments2[1] = String.valueOf(currentItem.getGameId());
 
 				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DBConstants.uriArray[DBConstants.Tables.DAILY_CURRENT_GAMES.ordinal()];
-				final Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_GAME_ID,
-						DBDataManager.SELECTION_USER_AND_ID, arguments2, null);
+				Uri uri = DbConstants.uriArray[DbConstants.Tables.DAILY_CURRENT_GAMES.ordinal()];
+				final Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_GAME_ID,
+						DbDataManager.SELECTION_USER_AND_ID, arguments2, null);
 
-				ContentValues values = DBDataManager.putDailyGameCurrentItemToValues(currentItem, userName);
+				ContentValues values = DbDataManager.putDailyGameCurrentItemToValues(currentItem, userName);
 
 				if (cursor.moveToFirst()) {
-					contentResolver.update(ContentUris.withAppendedId(uri, DBDataManager.getId(cursor)), values, null, null);
+					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
 				} else {
 					contentResolver.insert(uri, values);
 				}

@@ -16,8 +16,8 @@ import com.chess.backend.entity.new_api.ArticleItem;
 import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveArticleCategoriesTask;
@@ -105,7 +105,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		init();
 
 		if (need2Update) {
-			boolean haveSavedData = DBDataManager.haveSavedArticles(getActivity());
+			boolean haveSavedData = DbDataManager.haveSavedArticles(getActivity());
 
 			if (!loadCategoriesFromDB()) {
 				getCategories();
@@ -125,7 +125,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 	private boolean loadCategoriesFromDB() {
-		Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.ARTICLE_CATEGORIES.ordinal()], null, null, null, null);
+		Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.ARTICLE_CATEGORIES.ordinal()], null, null, null, null);
 		if (cursor != null && cursor.moveToFirst()) {
 			categoriesAdapter.changeCursor(cursor);
 			sectionedAdapter.notifyDataSetChanged();
@@ -165,10 +165,10 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 		if (section == LATEST_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			getActivityFace().openFragment(ArticleDetailsFragment.createInstance(DBDataManager.getId(cursor)));
+			getActivityFace().openFragment(ArticleDetailsFragment.createInstance(DbDataManager.getId(cursor)));
 		} else if (section == CATEGORIES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			String sectionName = DBDataManager.getString(cursor, DBConstants.V_NAME);
+			String sectionName = DbDataManager.getString(cursor, DbConstants.V_NAME);
 
 			getActivityFace().openFragment(ArticleCategoriesFragment.createInstance(sectionName));
 		}

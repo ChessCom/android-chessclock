@@ -16,8 +16,8 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.DailySeekItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
@@ -65,14 +65,14 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		{ // load friends from DB          // TODO make it async and fill in popup
 			final String[] arguments1 = new String[1];
 			arguments1[0] = getAppData().getUsername();
-			Cursor cursor = getContentResolver().query(DBConstants.uriArray[DBConstants.Tables.FRIENDS.ordinal()],
-					DBDataManager.PROJECTION_USERNAME, DBDataManager.SELECTION_USER, arguments1, null);
+			Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.FRIENDS.ordinal()],
+					DbDataManager.PROJECTION_USERNAME, DbDataManager.SELECTION_USER, arguments1, null);
 
 			firendsList = new ArrayList<SelectionItem>();
 			firendsList.add(new SelectionItem(null, getString(R.string.random)));
 			if (cursor.moveToFirst()) {
 				do{
-					firendsList.add(new SelectionItem(null, DBDataManager.getString(cursor, DBConstants.V_USERNAME)));
+					firendsList.add(new SelectionItem(null, DbDataManager.getString(cursor, DbConstants.V_USERNAME)));
 				}while (cursor.moveToNext());
 			}
 

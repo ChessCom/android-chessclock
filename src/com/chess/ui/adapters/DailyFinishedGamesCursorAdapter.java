@@ -10,7 +10,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DBConstants;
+import com.chess.db.DbConstants;
 import com.chess.model.BaseGameItem;
 
 public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
@@ -58,7 +58,7 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 
 		String gameType = StaticData.SYMBOL_EMPTY;
 
-		if (getInt(cursor, DBConstants.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
+		if (getInt(cursor, DbConstants.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
 			gameType = CHESS_960;
 		}
 
@@ -66,14 +66,14 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 		String avatarUrl;
 		String opponentName;
 		String opponentRating;
-		if (getInt(cursor, DBConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
-			avatarUrl = getString(cursor, DBConstants.V_WHITE_AVATAR);
-			opponentName = getString(cursor, DBConstants.V_WHITE_USERNAME) + gameType;
-			opponentRating = getString(cursor, DBConstants.V_WHITE_RATING);
+		if (getInt(cursor, DbConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
+			avatarUrl = getString(cursor, DbConstants.V_WHITE_AVATAR);
+			opponentName = getString(cursor, DbConstants.V_WHITE_USERNAME) + gameType;
+			opponentRating = getString(cursor, DbConstants.V_WHITE_RATING);
 		} else {
-			avatarUrl = getString(cursor, DBConstants.V_BLACK_AVATAR);
-			opponentName = getString(cursor, DBConstants.V_BLACK_USERNAME) + gameType;
-			opponentRating = getString(cursor, DBConstants.V_BLACK_RATING);
+			avatarUrl = getString(cursor, DbConstants.V_BLACK_AVATAR);
+			opponentName = getString(cursor, DbConstants.V_BLACK_USERNAME) + gameType;
+			opponentRating = getString(cursor, DbConstants.V_BLACK_RATING);
 		}
 
 		holder.playerTxt.setText(opponentName + gameType);
@@ -83,11 +83,11 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 		// Loss orange
 		String result = lossStr;
 		holder.gameResultTxt.setTextColor(colorOrange);
-		if (getInt(cursor, DBConstants.V_GAME_SCORE) == BaseGameItem.GAME_WON) {
+		if (getInt(cursor, DbConstants.V_GAME_SCORE) == BaseGameItem.GAME_WON) {
 			// Win Green
 			result = winStr;
 			holder.gameResultTxt.setTextColor(colorGreen);
-		} else if (getInt(cursor, DBConstants.V_GAME_SCORE) == BaseGameItem.GAME_DRAW) {
+		} else if (getInt(cursor, DbConstants.V_GAME_SCORE) == BaseGameItem.GAME_DRAW) {
 			// Draw Grey
 			result = drawStr;
 			holder.gameResultTxt.setTextColor(colorGrey);

@@ -6,7 +6,7 @@ import com.chess.backend.entity.new_api.LessonItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.QueryParams;
 
@@ -43,7 +43,7 @@ public class LoadLessonItemTask extends AbstractUpdateTask<LessonItem.Data, Long
 					params.getArguments(), params.getOrder());
 
 			if (cursor.moveToFirst()) {
-				item.setLesson(DBDataManager.getLessonsMentorLessonFromCursor(cursor));
+				item.setLesson(DbDataManager.getLessonsMentorLessonFromCursor(cursor));
 			}
 		}
 
@@ -53,7 +53,7 @@ public class LoadLessonItemTask extends AbstractUpdateTask<LessonItem.Data, Long
 					params.getArguments(), params.getOrder());
 
 			if (cursor.moveToFirst()) {
-				item.setUserLesson(DBDataManager.getLessonsUserLessonFromCursor(cursor));
+				item.setUserLesson(DbDataManager.getLessonsUserLessonFromCursor(cursor));
 			}
 		}
 
@@ -65,7 +65,7 @@ public class LoadLessonItemTask extends AbstractUpdateTask<LessonItem.Data, Long
 			if (cursor.moveToFirst()) {
 				List<LessonItem.MentorPosition> positions = new ArrayList<LessonItem.MentorPosition>();
 				do {
-					positions.add(DBDataManager.getLessonsPositionFromCursor(cursor));
+					positions.add(DbDataManager.getLessonsPositionFromCursor(cursor));
 
 				} while (cursor.moveToNext());
 
@@ -83,7 +83,7 @@ public class LoadLessonItemTask extends AbstractUpdateTask<LessonItem.Data, Long
 				if (cursor.moveToFirst()) {
 					List<LessonItem.MentorPosition.PossibleMove> possibleMoves = new ArrayList<LessonItem.MentorPosition.PossibleMove>();
 					do {
-						possibleMoves.add(DBDataManager.getLessonsPositionMoveFromCursor(cursor));
+						possibleMoves.add(DbDataManager.getLessonsPositionMoveFromCursor(cursor));
 					} while(cursor.moveToNext());
 					position.setPossibleMoves(possibleMoves);
 				}

@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
@@ -55,7 +55,7 @@ public class VideosThumbCursorAdapter extends ItemsCursorAdapter {
 		holder.titleTxt = (TextView) view.findViewById(R.id.titleTxt);
 		holder.authorTxt = (TextView) view.findViewById(R.id.authorTxt);
 		holder.durationTxt = (TextView) view.findViewById(R.id.durationTxt);
-		holder.watchedIconTxt = (TextView) view.findViewById(R.id.watchedIconTxt);
+		holder.watchedIconTxt = (TextView) view.findViewById(R.id.completedIconTxt);
 
 		holder.watchedIconTxt.setOnClickListener(clickFace);
 		holder.titleTxt.setOnClickListener(clickFace);
@@ -74,18 +74,18 @@ public class VideosThumbCursorAdapter extends ItemsCursorAdapter {
 		holder.authorTxt.setTag(R.id.list_item_id, cursor.getPosition());
 		holder.watchedIconTxt.setTag(R.id.list_item_id, cursor.getPosition());
 
-		String firstName = DBDataManager.getString(cursor, DBConstants.V_FIRST_NAME);
-		CharSequence chessTitle = DBDataManager.getString(cursor, DBConstants.V_CHESS_TITLE);
-		String lastName =  DBDataManager.getString(cursor, DBConstants.V_LAST_NAME);
+		String firstName = DbDataManager.getString(cursor, DbConstants.V_FIRST_NAME);
+		CharSequence chessTitle = DbDataManager.getString(cursor, DbConstants.V_CHESS_TITLE);
+		String lastName =  DbDataManager.getString(cursor, DbConstants.V_LAST_NAME);
 		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
 				+ firstName + StaticData.SYMBOL_SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		holder.authorTxt.setText(authorStr);
 		holder.durationTxt.setText(DURATION_DIVIDER +
-				context.getString(R.string.min_arg, getString(cursor, DBConstants.V_MINUTES)));
-		holder.titleTxt.setText(DBDataManager.getString(cursor, DBConstants.V_TITLE));
+				context.getString(R.string.min_arg, getString(cursor, DbConstants.V_MINUTES)));
+		holder.titleTxt.setText(DbDataManager.getString(cursor, DbConstants.V_TITLE));
 
-		if (viewedMap.get(getInt(cursor, DBConstants.V_ID), false)) {
+		if (viewedMap.get(getInt(cursor, DbConstants.V_ID), false)) {
 			holder.titleTxt.setTextColor(watchedTextColor);
 			holder.watchedIconTxt.setTextColor(watchedIconColor);
 			holder.watchedIconTxt.setText(R.string.ic_check);

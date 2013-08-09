@@ -17,8 +17,8 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.SuccessItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DBConstants;
-import com.chess.db.DBDataManager;
+import com.chess.db.DbConstants;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -49,11 +49,11 @@ public class ForumNewTopicFragment extends CommonLogicFragment implements TextVi
 
 		categoriesList = new ArrayList<String>();
 		categoriesMap = new SparseArray<String>();
-		Cursor cursor = DBDataManager.executeQuery(getContentResolver(), DbHelper.getForumCategories());
+		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getForumCategories());
 		if (cursor.moveToFirst()) {
 			do {
-				categoriesList.add(DBDataManager.getString(cursor, DBConstants.V_NAME));
-				categoriesMap.put(DBDataManager.getInt(cursor, DBConstants.V_ID), DBDataManager.getString(cursor, DBConstants.V_NAME));
+				categoriesList.add(DbDataManager.getString(cursor, DbConstants.V_NAME));
+				categoriesMap.put(DbDataManager.getInt(cursor, DbConstants.V_ID), DbDataManager.getString(cursor, DbConstants.V_NAME));
 			} while (cursor.moveToNext());
 		}
 	}

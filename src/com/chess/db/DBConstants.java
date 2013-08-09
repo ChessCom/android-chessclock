@@ -7,9 +7,9 @@ import android.net.Uri;
  * @created 27.10.12
  * @modified 27.10.12
  */
-public class DBConstants {
+public class DbConstants {
 
-    static final int DATABASE_VERSION = 44;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 45;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -73,7 +73,7 @@ public class DBConstants {
 	public static final Uri[] uriArray = new Uri[Tables.values().length];
 	String[] createTablesArray;
 
-	DBConstants() {
+	DbConstants() {
 		createTablesArray = new String[Tables.values().length];
 	}
 
@@ -438,6 +438,7 @@ public class DBConstants {
 				+ addField_Int(V_ID)
 				+ addField_Long(V_CATEGORY_ID)
 				+ addField_Int(V_LESSON_COMPLETED)
+				+ addField_Text(V_USER)
 				+ addField_Text(V_NAME, true);
 
 		createTablesArray[Tables.LESSONS_MENTOR_LESSONS.ordinal()] = createTableForName(Tables.LESSONS_MENTOR_LESSONS)

@@ -17,7 +17,7 @@ import java.util.List;
  * @created 27.10.12
  * @modified 27.10.12
  */
-public class DBDataManager {
+public class DbDataManager {
 	// TODO improve performance by updating only needed fields
 
 	private static final String ORDER_BY = "ORDER BY";
@@ -33,7 +33,7 @@ public class DBDataManager {
 	public static final String EQUALS_ARG_ = "=?";
 	public static final String NOT_EQUALS_ARG_ = "!=?";
 	public static final String LIMIT_ = " LIMIT ";
-	public static final String LIMIT_1 = DBConstants._ID + " LIMIT 1";
+	public static final String LIMIT_1 = DbConstants._ID + " LIMIT 1";
 
 	public static String[] sArguments1 = new String[1];
 	public static String[] sArguments2 = new String[2];
@@ -42,206 +42,221 @@ public class DBDataManager {
 	// -------------- SELECTION DEFINITIONS ---------------------------
 
 	public static String SELECTION_ITEM_ID_AND_USER = concatArguments(
-			DBConstants.V_ID,
-			DBConstants.V_USER);
+			DbConstants.V_ID,
+			DbConstants.V_USER);
 
-	public static String SELECTION_USER = concatArguments(DBConstants.V_USER);
+	public static String SELECTION_USER = concatArguments(DbConstants.V_USER);
 
-	public static String SELECTION_ID = concatArguments(DBConstants._ID);
+	public static String SELECTION_ID = concatArguments(DbConstants._ID);
 
 	public static String SELECTION_USER_AND_ID = concatArguments(   // TODO remove duplicate
-			DBConstants.V_USER,
-			DBConstants.V_ID);
+			DbConstants.V_USER,
+			DbConstants.V_ID);
 
 	public static String SELECTION_USER_ID = concatArguments(
-			DBConstants.V_USER,
-			DBConstants.V_USER_ID);
+			DbConstants.V_USER,
+			DbConstants.V_USER_ID);
 
 	public static String SELECTION_OPPONENT_OFFERED_DRAW = concatArguments(
-			DBConstants.V_USER,
-			DBConstants.V_ID,
-			DBConstants.V_OPPONENT_OFFERED_DRAW);
+			DbConstants.V_USER,
+			DbConstants.V_ID,
+			DbConstants.V_OPPONENT_OFFERED_DRAW);
 
 	public static String SELECTION_USER_TURN = concatArguments(
-			DBConstants.V_USER,
-			DBConstants.V_IS_MY_TURN);
+			DbConstants.V_USER,
+			DbConstants.V_IS_MY_TURN);
 
-	public static String SELECTION_TITLE = concatArguments(DBConstants.V_TITLE);
+	public static String SELECTION_TITLE = concatArguments(DbConstants.V_TITLE);
 
-	public static String SELECTION_CATEGORY_ID = concatArguments(DBConstants.V_CATEGORY_ID);
+	public static String SELECTION_CATEGORY_ID = concatArguments(DbConstants.V_CATEGORY_ID);
 
-	public static String SELECTION_CATEGORY_ID_AND_PAGE = concatArguments(DBConstants.V_CATEGORY_ID, DBConstants.V_PAGE);
+	public static String SELECTION_CATEGORY_ID_AND_PAGE = concatArguments(DbConstants.V_CATEGORY_ID, DbConstants.V_PAGE);
 
-	public static String SELECTION_CATEGORY = concatArguments(DBConstants.V_CATEGORY);
+	public static String SELECTION_CATEGORY_ID_AND_USER = concatArguments(DbConstants.V_CATEGORY_ID, DbConstants.V_USER);
 
-	public static String SELECTION_ITEM_ID = concatArguments(DBConstants.V_ID);
+	public static String SELECTION_CATEGORY = concatArguments(DbConstants.V_CATEGORY);
 
-	public static String SELECTION_ITEM_ID_AND_PAGE = concatArguments(DBConstants.V_ID, DBConstants.V_PAGE);
+	public static String SELECTION_ITEM_ID = concatArguments(DbConstants.V_ID);
 
-	public static String SELECTION_ITEM_ID_AND_NUMBER = concatArguments(DBConstants.V_ID, DBConstants.V_NUMBER);
+	public static String SELECTION_ITEM_ID_AND_PAGE = concatArguments(DbConstants.V_ID, DbConstants.V_PAGE);
+
+	public static String SELECTION_ITEM_ID_AND_NUMBER = concatArguments(DbConstants.V_ID, DbConstants.V_NUMBER);
 
 	public static String SELECTION_ITEM_ID_AND_CURRENT_POSITION = concatArguments(
-			DBConstants.V_ID,
-			DBConstants.V_CURRENT_POSITION);
+			DbConstants.V_ID,
+			DbConstants.V_CURRENT_POSITION);
 
 	public static String SELECTION_ITEM_ID_POSITION_NUMBER = concatArguments(
-			DBConstants.V_ID,
-			DBConstants.V_CURRENT_POSITION,
-			DBConstants.V_NUMBER);
+			DbConstants.V_ID,
+			DbConstants.V_CURRENT_POSITION,
+			DbConstants.V_NUMBER);
 
-	public static String SELECTION_ITEM_ID_AND_CATEGORY_ID = concatArguments(DBConstants.V_ID, DBConstants.V_CATEGORY_ID);
+	public static String SELECTION_ID_CATEGORY_ID_USER = concatArguments(
+			DbConstants.V_ID,
+			DbConstants.V_CATEGORY_ID,
+			DbConstants.V_USER
+	);
 
-	public static String SELECTION_CREATE_DATE = concatArguments(DBConstants.V_CREATE_DATE);
+	public static String SELECTION_CREATE_DATE = concatArguments(DbConstants.V_CREATE_DATE);
 
 	public static String SELECTION_ID_USER_CONVERSATION_ID = concatArguments(
-			DBConstants.V_ID,
-			DBConstants.V_USER,
-			DBConstants.V_CONVERSATION_ID
+			DbConstants.V_ID,
+			DbConstants.V_USER,
+			DbConstants.V_CONVERSATION_ID
 	);
 
 	public static String SELECTION_USER_CONVERSATION_ID = concatArguments(
-			DBConstants.V_USER,
-			DBConstants.V_CONVERSATION_ID
+			DbConstants.V_USER,
+			DbConstants.V_CONVERSATION_ID
 	);
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
 	public static final String[] PROJECTION_ITEM_ID_AND_USER = new String[]{
-			DBConstants._ID,
-			DBConstants.V_ID,
-			DBConstants.V_USER
+			DbConstants._ID,
+			DbConstants.V_ID,
+			DbConstants.V_USER
 	};
 
 	public static final String[] PROJECTION_USER = new String[]{
-			DBConstants._ID,
-			DBConstants.V_USER
+			DbConstants._ID,
+			DbConstants.V_USER
 	};
 
 	public static final String[] PROJECTION_GAME_ID = new String[]{
-			DBConstants._ID,
-			DBConstants.V_USER,
-			DBConstants.V_ID
+			DbConstants._ID,
+			DbConstants.V_USER,
+			DbConstants.V_ID
 	};
 
 	public static final String[] PROJECTION_USER_ID = new String[]{
-			DBConstants._ID,
-			DBConstants.V_USER,
-			DBConstants.V_USER_ID
+			DbConstants._ID,
+			DbConstants.V_USER,
+			DbConstants.V_USER_ID
 	};
 
 	public static final String[] PROJECTION_CURRENT_GAMES = new String[]{
-			DBConstants._ID,
-			DBConstants.V_USER,
-			DBConstants.V_ID,
-			DBConstants.V_I_PLAY_AS,
-			DBConstants.V_WHITE_USERNAME,
-			DBConstants.V_BLACK_USERNAME,
-			DBConstants.V_WHITE_AVATAR,
-			DBConstants.V_BLACK_AVATAR,
-			DBConstants.V_WHITE_PREMIUM_STATUS,
-			DBConstants.V_BLACK_PREMIUM_STATUS,
-			DBConstants.V_GAME_TYPE,
-			DBConstants.V_IS_MY_TURN,
-			DBConstants.V_TIMESTAMP,
-			DBConstants.V_OPPONENT_OFFERED_DRAW,
-			DBConstants.V_HAS_NEW_MESSAGE,
-			DBConstants.V_TIME_REMAINING
+			DbConstants._ID,
+			DbConstants.V_USER,
+			DbConstants.V_ID,
+			DbConstants.V_I_PLAY_AS,
+			DbConstants.V_WHITE_USERNAME,
+			DbConstants.V_BLACK_USERNAME,
+			DbConstants.V_WHITE_AVATAR,
+			DbConstants.V_BLACK_AVATAR,
+			DbConstants.V_WHITE_PREMIUM_STATUS,
+			DbConstants.V_BLACK_PREMIUM_STATUS,
+			DbConstants.V_GAME_TYPE,
+			DbConstants.V_IS_MY_TURN,
+			DbConstants.V_TIMESTAMP,
+			DbConstants.V_OPPONENT_OFFERED_DRAW,
+			DbConstants.V_HAS_NEW_MESSAGE,
+			DbConstants.V_TIME_REMAINING
 	};
 
 	public static final String[] PROJECTION_FINISHED_GAMES = new String[]{
-			DBConstants._ID,
-			DBConstants.V_USER,
-			DBConstants.V_ID,
-			DBConstants.V_I_PLAY_AS,
-			DBConstants.V_GAME_TYPE,
-			DBConstants.V_GAME_SCORE,
-			DBConstants.V_WHITE_USERNAME,
-			DBConstants.V_BLACK_USERNAME,
-			DBConstants.V_WHITE_AVATAR,
-			DBConstants.V_BLACK_AVATAR,
-			DBConstants.V_WHITE_RATING,
-			DBConstants.V_BLACK_RATING,
-			DBConstants.V_WHITE_PREMIUM_STATUS,
-			DBConstants.V_BLACK_PREMIUM_STATUS
+			DbConstants._ID,
+			DbConstants.V_USER,
+			DbConstants.V_ID,
+			DbConstants.V_I_PLAY_AS,
+			DbConstants.V_GAME_TYPE,
+			DbConstants.V_GAME_SCORE,
+			DbConstants.V_WHITE_USERNAME,
+			DbConstants.V_BLACK_USERNAME,
+			DbConstants.V_WHITE_AVATAR,
+			DbConstants.V_BLACK_AVATAR,
+			DbConstants.V_WHITE_RATING,
+			DbConstants.V_BLACK_RATING,
+			DbConstants.V_WHITE_PREMIUM_STATUS,
+			DbConstants.V_BLACK_PREMIUM_STATUS
 	};
 
 	public static final String[] PROJECTION_DAILY_PLAYER_NAMES = new String[]{
-			DBConstants._ID,
-			DBConstants.V_USER,
-			DBConstants.V_I_PLAY_AS,
-			DBConstants.V_WHITE_USERNAME,
-			DBConstants.V_BLACK_USERNAME
+			DbConstants._ID,
+			DbConstants.V_USER,
+			DbConstants.V_I_PLAY_AS,
+			DbConstants.V_WHITE_USERNAME,
+			DbConstants.V_BLACK_USERNAME
 	};
 
 	public static final String[] PROJECTION_DAILY_DRAW_OFFERED = new String[]{
-			DBConstants._ID,
-			DBConstants.V_USER,
-			DBConstants.V_ID,
-			DBConstants.V_OPPONENT_OFFERED_DRAW
+			DbConstants._ID,
+			DbConstants.V_USER,
+			DbConstants.V_ID,
+			DbConstants.V_OPPONENT_OFFERED_DRAW
 	};
 
 	public static final String[] PROJECTION_TITLE = new String[]{
-			DBConstants._ID,
-			DBConstants.V_TITLE
+			DbConstants._ID,
+			DbConstants.V_TITLE
 	};
 
 	public static final String[] PROJECTION_USERNAME = new String[]{
-			DBConstants._ID,
-			DBConstants.V_USERNAME
+			DbConstants._ID,
+			DbConstants.V_USERNAME
 	};
 
 	public static final String[] PROJECTION_V_CATEGORY_ID = new String[]{
-			DBConstants._ID,
-			DBConstants.V_CATEGORY_ID
+			DbConstants._ID,
+			DbConstants.V_CATEGORY_ID
 	};
 
 	public static final String[] PROJECTION_ITEM_ID = new String[]{
-			DBConstants._ID,
-			DBConstants.V_ID
+			DbConstants._ID,
+			DbConstants.V_ID
 	};
 
 	public static final String[] PROJECTION_CREATE_DATE = new String[]{
-			DBConstants._ID,
-			DBConstants.V_CREATE_DATE
+			DbConstants._ID,
+			DbConstants.V_CREATE_DATE
 	};
 
 	public static final String[] PROJECTION_USER_CURRENT_RATING = new String[]{
-			DBConstants._ID,
-			DBConstants.V_USER,
-			DBConstants.V_CURRENT
+			DbConstants._ID,
+			DbConstants.V_USER,
+			DbConstants.V_CURRENT
 	};
 
 	public static final String[] PROJECTION_VIEWED_VIDEO = new String[]{
-			DBConstants._ID,
-			DBConstants.V_USER,
-			DBConstants.V_ID,
-			DBConstants.V_VIDEO_VIEWED
+			DbConstants._ID,
+			DbConstants.V_USER,
+			DbConstants.V_ID,
+			DbConstants.V_VIDEO_VIEWED
 	};
 
 	public static final String[] PROJECTION_ITEM_ID_AND_NUMBER = new String[]{
-			DBConstants._ID,
-			DBConstants.V_ID,
-			DBConstants.V_NUMBER
+			DbConstants._ID,
+			DbConstants.V_ID,
+			DbConstants.V_NUMBER
 	};
 
 	public static final String[] PROJECTION_ITEM_ID_POSITION_NUMBER = new String[]{
-			DBConstants._ID,
-			DBConstants.V_ID,
-			DBConstants.V_CURRENT_POSITION,
-			DBConstants.V_NUMBER
+			DbConstants._ID,
+			DbConstants.V_ID,
+			DbConstants.V_CURRENT_POSITION,
+			DbConstants.V_NUMBER
 	};
 
-	public static final String[] PROJECTION_ITEM_ID_AND_CATEGORY_ID = new String[]{
-			DBConstants._ID,
-			DBConstants.V_ID,
-			DBConstants.V_CATEGORY_ID
+	public static final String[] PROJECTION_ID_CATEGORY_ID_USER = new String[]{
+			DbConstants._ID,
+			DbConstants.V_ID,
+			DbConstants.V_CATEGORY_ID,
+			DbConstants.V_USER
+	};
+
+	public static final String[] PROJECTION_ID_CATEGORY_ID_USER_COMPLETED = new String[]{
+			DbConstants._ID,
+			DbConstants.V_ID,
+			DbConstants.V_CATEGORY_ID,
+			DbConstants.V_USER,
+			DbConstants.V_LESSON_COMPLETED
 	};
 
 	public static final String[] PROJECTION_ID_USER_CONVERSATION_ID = new String[]{
-			DBConstants._ID,
-			DBConstants.V_ID,
-			DBConstants.V_USER,
-			DBConstants.V_CONVERSATION_ID
+			DbConstants._ID,
+			DbConstants.V_ID,
+			DbConstants.V_USER,
+			DbConstants.V_CONVERSATION_ID
 	};
 
 
@@ -276,12 +291,12 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.DAILY_CURRENT_GAMES.ordinal()],
+		Cursor cursor = contentResolver.query(DbConstants.uriArray[DbConstants.Tables.DAILY_CURRENT_GAMES.ordinal()],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = cursor != null && cursor.moveToFirst();
 
 		if (!exist) { // check finished games list
-			cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.DAILY_FINISHED_GAMES.ordinal()],
+			cursor = contentResolver.query(DbConstants.uriArray[DbConstants.Tables.DAILY_FINISHED_GAMES.ordinal()],
 					PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 			exist = cursor != null && cursor.moveToFirst();
 		}
@@ -298,7 +313,7 @@ public class DBDataManager {
 		arguments2[0] = userName;
 		arguments2[1] = String.valueOf(currentGame.getGameId());
 
-		Uri uri = DBConstants.uriArray[DBConstants.Tables.DAILY_CURRENT_GAMES.ordinal()];
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.DAILY_CURRENT_GAMES.ordinal()];
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER_AND_ID,
 				arguments2, null);
 		if (cursor.moveToFirst()) {
@@ -321,14 +336,14 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Uri uri = DBConstants.uriArray[DBConstants.Tables.DAILY_CURRENT_GAMES.ordinal()];
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.DAILY_CURRENT_GAMES.ordinal()];
 		long[] gamesIds;
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER, arguments1, null);
 		if (cursor != null && cursor.moveToFirst()) {
 			gamesIds = new long[cursor.getCount()];
 			int i = 0;
 			do {
-				gamesIds[i++] = getLong(cursor, DBConstants.V_ID);
+				gamesIds[i++] = getLong(cursor, DbConstants.V_ID);
 			} while (cursor.moveToNext());
 		} else if (gamesList.size() == 0) { // means no current games for that user
 			arguments1[0] = userName;
@@ -372,14 +387,14 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Uri uri = DBConstants.uriArray[DBConstants.Tables.DAILY_FINISHED_GAMES.ordinal()];
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.DAILY_FINISHED_GAMES.ordinal()];
 		long[] gamesIds;
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER, arguments1, null);
 		if (cursor != null && cursor.moveToFirst()) {
 			gamesIds = new long[cursor.getCount()];
 			int i = 0;
 			do {
-				gamesIds[i++] = getLong(cursor, DBConstants.V_ID);
+				gamesIds[i++] = getLong(cursor, DbConstants.V_ID);
 			} while (cursor.moveToNext());
 		} else if (gamesList.size() == 0) { // means no finished games for that user
 			arguments1[0] = userName;
@@ -424,18 +439,18 @@ public class DBDataManager {
 		arguments3[1] = userName;
 		arguments3[2] = String.valueOf(RestHelper.P_BLACK);
 
-		ContentProviderClient client = contentResolver.acquireContentProviderClient(DBConstants.PROVIDER_NAME);
-		SQLiteDatabase dbHandle = ((DBDataProvider) client.getLocalContentProvider()).getDbHandle();
+		ContentProviderClient client = contentResolver.acquireContentProviderClient(DbConstants.PROVIDER_NAME);
+		SQLiteDatabase dbHandle = ((DbDataProvider) client.getLocalContentProvider()).getDbHandle();
 		StringBuilder projection = new StringBuilder();
-		String selection = DBConstants.V_USER + EQUALS_ARG_ + AND_ + "(" + DBConstants.V_WHITE_USERNAME + NOT_EQUALS_ARG_
-				+ AND_ + DBConstants.V_I_PLAY_AS + EQUALS_ARG_ + ")";
+		String selection = DbConstants.V_USER + EQUALS_ARG_ + AND_ + "(" + DbConstants.V_WHITE_USERNAME + NOT_EQUALS_ARG_
+				+ AND_ + DbConstants.V_I_PLAY_AS + EQUALS_ARG_ + ")";
 
 		QueryParams params = new QueryParams();
-		params.setDbName(DBConstants.Tables.DAILY_FINISHED_GAMES.name());
+		params.setDbName(DbConstants.Tables.DAILY_FINISHED_GAMES.name());
 		params.setProjection(PROJECTION_DAILY_PLAYER_NAMES);
 		params.setSelection(selection);
 		params.setArguments(arguments3);
-		params.setCommands(GROUP_BY + StaticData.SYMBOL_SPACE + DBConstants.V_WHITE_USERNAME + ", " + DBConstants.V_BLACK_USERNAME);
+		params.setCommands(GROUP_BY + StaticData.SYMBOL_SPACE + DbConstants.V_WHITE_USERNAME + ", " + DbConstants.V_BLACK_USERNAME);
 
 		for (String projections : params.getProjection()) {
 			projection.append(projections).append(StaticData.SYMBOL_COMMA);
@@ -461,7 +476,7 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.FRIENDS.ordinal()],
+		Cursor cursor = contentResolver.query(DbConstants.uriArray[DbConstants.Tables.FRIENDS.ordinal()],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = false;
 		if (cursor != null) {
@@ -485,7 +500,7 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.TACTICS_BATCH.ordinal()],
+		Cursor cursor = contentResolver.query(DbConstants.uriArray[DbConstants.Tables.TACTICS_BATCH.ordinal()],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
@@ -500,7 +515,7 @@ public class DBDataManager {
 		arguments2[0] = String.valueOf(tacticItem.getId());
 		arguments2[1] = userName;
 
-		Uri uri = DBConstants.uriArray[DBConstants.Tables.TACTICS_BATCH.ordinal()];
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.TACTICS_BATCH.ordinal()];
 		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID_AND_USER,
 				SELECTION_ITEM_ID_AND_USER, arguments2, null);
 
@@ -526,7 +541,7 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.TACTICS_BATCH.ordinal()],
+		Cursor cursor = contentResolver.query(DbConstants.uriArray[DbConstants.Tables.TACTICS_BATCH.ordinal()],
 				null, SELECTION_USER, arguments1, null);
 
 		cursor.moveToFirst();
@@ -547,7 +562,7 @@ public class DBDataManager {
 		arguments2[0] = String.valueOf(resultItem.getId());
 		arguments2[1] = resultItem.getUser();
 
-		Uri uri = DBConstants.uriArray[DBConstants.Tables.TACTICS_RESULTS.ordinal()];
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.TACTICS_RESULTS.ordinal()];
 		Cursor cursor = contentResolver.query(uri, null, SELECTION_ITEM_ID_AND_USER, arguments2, null);
 
 		ContentValues values = putTacticResultItemToValues(resultItem);
@@ -567,7 +582,7 @@ public class DBDataManager {
 		final String[] arguments2 = sArguments2;
 		arguments2[0] = String.valueOf(id);
 		arguments2[1] = userName;
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.TACTICS_RESULTS.ordinal()],
+		Cursor cursor = contentResolver.query(DbConstants.uriArray[DbConstants.Tables.TACTICS_RESULTS.ordinal()],
 				null, SELECTION_ITEM_ID_AND_USER, arguments2, null);
 
 		if (cursor.moveToFirst()) {
@@ -586,11 +601,11 @@ public class DBDataManager {
 
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[dbUriCode],
+		Cursor cursor = contentResolver.query(DbConstants.uriArray[dbUriCode],
 				PROJECTION_USER_CURRENT_RATING, SELECTION_USER, arguments1, null);
 
 		if (cursor.moveToFirst()) {
-			int rating = getInt(cursor, DBConstants.V_CURRENT);
+			int rating = getInt(cursor, DbConstants.V_CURRENT);
 			cursor.close();
 
 			return rating;
@@ -605,18 +620,18 @@ public class DBDataManager {
 	public static ContentValues putTacticItemToValues(TacticItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_USER, dataObj.getUser());
-		values.put(DBConstants.V_ID, dataObj.getId());
-		values.put(DBConstants.V_FEN, dataObj.getInitialFen());
-		values.put(DBConstants.V_MOVE_LIST, dataObj.getCleanMoveString());
-		values.put(DBConstants.V_ATTEMPT_CNT, dataObj.getAttemptCnt());
-		values.put(DBConstants.V_PASSED_CNT, dataObj.getPassedCnt());
-		values.put(DBConstants.V_RATING, dataObj.getRating());
-		values.put(DBConstants.V_AVG_SECONDS, dataObj.getAvgSeconds());
-		values.put(DBConstants.V_SECONDS_SPENT, dataObj.getSecondsSpent());
-		values.put(DBConstants.V_STOP, dataObj.isStop() ? 1 : 0);
-		values.put(DBConstants.V_WAS_SHOWED, dataObj.isWasShowed() ? 1 : 0);
-		values.put(DBConstants.V_IS_RETRY, dataObj.isRetry() ? 1 : 0);
+		values.put(DbConstants.V_USER, dataObj.getUser());
+		values.put(DbConstants.V_ID, dataObj.getId());
+		values.put(DbConstants.V_FEN, dataObj.getInitialFen());
+		values.put(DbConstants.V_MOVE_LIST, dataObj.getCleanMoveString());
+		values.put(DbConstants.V_ATTEMPT_CNT, dataObj.getAttemptCnt());
+		values.put(DbConstants.V_PASSED_CNT, dataObj.getPassedCnt());
+		values.put(DbConstants.V_RATING, dataObj.getRating());
+		values.put(DbConstants.V_AVG_SECONDS, dataObj.getAvgSeconds());
+		values.put(DbConstants.V_SECONDS_SPENT, dataObj.getSecondsSpent());
+		values.put(DbConstants.V_STOP, dataObj.isStop() ? 1 : 0);
+		values.put(DbConstants.V_WAS_SHOWED, dataObj.isWasShowed() ? 1 : 0);
+		values.put(DbConstants.V_IS_RETRY, dataObj.isRetry() ? 1 : 0);
 
 		return values;
 	}
@@ -625,18 +640,18 @@ public class DBDataManager {
 	public static TacticItem.Data getTacticItemFromCursor(Cursor cursor) {
 		TacticItem.Data dataObj = new TacticItem.Data();
 
-		dataObj.setUser(getString(cursor, DBConstants.V_USER));
-		dataObj.setId(getLong(cursor, DBConstants.V_ID));
-		dataObj.setFen(getString(cursor, DBConstants.V_FEN));
-		dataObj.setMoveList(getString(cursor, DBConstants.V_MOVE_LIST));
-		dataObj.setAttemptCnt(getInt(cursor, DBConstants.V_ATTEMPT_CNT));
-		dataObj.setPassedCnt(getInt(cursor, DBConstants.V_PASSED_CNT));
-		dataObj.setRating(getInt(cursor, DBConstants.V_RATING));
-		dataObj.setAvgSeconds(getInt(cursor, DBConstants.V_AVG_SECONDS));
-		dataObj.setSecondsSpent(getInt(cursor, DBConstants.V_SECONDS_SPENT));
-		dataObj.setStop(getInt(cursor, DBConstants.V_STOP) > 0);
-		dataObj.setWasShowed(getInt(cursor, DBConstants.V_WAS_SHOWED) > 0);
-		dataObj.setRetry(getInt(cursor, DBConstants.V_IS_RETRY) > 0);
+		dataObj.setUser(getString(cursor, DbConstants.V_USER));
+		dataObj.setId(getLong(cursor, DbConstants.V_ID));
+		dataObj.setFen(getString(cursor, DbConstants.V_FEN));
+		dataObj.setMoveList(getString(cursor, DbConstants.V_MOVE_LIST));
+		dataObj.setAttemptCnt(getInt(cursor, DbConstants.V_ATTEMPT_CNT));
+		dataObj.setPassedCnt(getInt(cursor, DbConstants.V_PASSED_CNT));
+		dataObj.setRating(getInt(cursor, DbConstants.V_RATING));
+		dataObj.setAvgSeconds(getInt(cursor, DbConstants.V_AVG_SECONDS));
+		dataObj.setSecondsSpent(getInt(cursor, DbConstants.V_SECONDS_SPENT));
+		dataObj.setStop(getInt(cursor, DbConstants.V_STOP) > 0);
+		dataObj.setWasShowed(getInt(cursor, DbConstants.V_WAS_SHOWED) > 0);
+		dataObj.setRetry(getInt(cursor, DbConstants.V_IS_RETRY) > 0);
 
 		return dataObj;
 	}
@@ -644,13 +659,13 @@ public class DBDataManager {
 	public static ContentValues putTacticResultItemToValues(TacticRatingData dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_USER, dataObj.getUser());
-		values.put(DBConstants.V_ID, dataObj.getId());
-		values.put(DBConstants.V_SCORE, dataObj.getScoreStr());
-		values.put(DBConstants.V_USER_RATING_CHANGE, dataObj.getUserRatingChange());
-		values.put(DBConstants.V_USER_RATING, dataObj.getUserRating());
-		values.put(DBConstants.V_PROBLEM_RATING_CHANGE, dataObj.getProblemRatingChange());
-		values.put(DBConstants.V_PROBLEM_RATING, dataObj.getProblemRating());
+		values.put(DbConstants.V_USER, dataObj.getUser());
+		values.put(DbConstants.V_ID, dataObj.getId());
+		values.put(DbConstants.V_SCORE, dataObj.getScoreStr());
+		values.put(DbConstants.V_USER_RATING_CHANGE, dataObj.getUserRatingChange());
+		values.put(DbConstants.V_USER_RATING, dataObj.getUserRating());
+		values.put(DbConstants.V_PROBLEM_RATING_CHANGE, dataObj.getProblemRatingChange());
+		values.put(DbConstants.V_PROBLEM_RATING, dataObj.getProblemRating());
 
 		return values;
 	}
@@ -659,13 +674,13 @@ public class DBDataManager {
 	public static TacticRatingData getTacticResultItemFromCursor(Cursor cursor) {
 		TacticRatingData dataObj = new TacticRatingData();
 
-		dataObj.setUser(getString(cursor, DBConstants.V_USER));
-		dataObj.setId(getLong(cursor, DBConstants.V_ID));
-		dataObj.setScore(getString(cursor, DBConstants.V_SCORE));
-		dataObj.setUserRatingChange(getInt(cursor, DBConstants.V_USER_RATING_CHANGE));
-		dataObj.setUserRating(getInt(cursor, DBConstants.V_USER_RATING));
-		dataObj.setProblemRatingChange(getInt(cursor, DBConstants.V_PROBLEM_RATING_CHANGE));
-		dataObj.setProblemRating(getInt(cursor, DBConstants.V_PROBLEM_RATING));
+		dataObj.setUser(getString(cursor, DbConstants.V_USER));
+		dataObj.setId(getLong(cursor, DbConstants.V_ID));
+		dataObj.setScore(getString(cursor, DbConstants.V_SCORE));
+		dataObj.setUserRatingChange(getInt(cursor, DbConstants.V_USER_RATING_CHANGE));
+		dataObj.setUserRating(getInt(cursor, DbConstants.V_USER_RATING));
+		dataObj.setProblemRatingChange(getInt(cursor, DbConstants.V_PROBLEM_RATING_CHANGE));
+		dataObj.setProblemRating(getInt(cursor, DbConstants.V_PROBLEM_RATING));
 
 		return dataObj;
 	}
@@ -675,10 +690,10 @@ public class DBDataManager {
 		ContentValues values = new ContentValues();
 
 		setValuesFromGameItem(values, dataObj);
-		values.put(DBConstants.V_FINISHED, 1);
-		values.put(DBConstants.V_USER, userName);
-		values.put(DBConstants.V_GAME_SCORE, dataObj.getGameScore());
-		values.put(DBConstants.V_RESULT_MESSAGE, dataObj.getResultMessage());
+		values.put(DbConstants.V_FINISHED, 1);
+		values.put(DbConstants.V_USER, userName);
+		values.put(DbConstants.V_GAME_SCORE, dataObj.getGameScore());
+		values.put(DbConstants.V_RESULT_MESSAGE, dataObj.getResultMessage());
 		return values;
 	}
 
@@ -686,8 +701,8 @@ public class DBDataManager {
 		DailyFinishedGameData dataObj = new DailyFinishedGameData();
 
 		setDailyGameFromCursor(dataObj, cursor);
-		dataObj.setGameScore(getInt(cursor, DBConstants.V_GAME_SCORE));
-		dataObj.setResultMessage(getString(cursor, DBConstants.V_RESULT_MESSAGE));
+		dataObj.setGameScore(getInt(cursor, DbConstants.V_GAME_SCORE));
+		dataObj.setResultMessage(getString(cursor, DbConstants.V_RESULT_MESSAGE));
 
 		return dataObj;
 	}
@@ -696,45 +711,45 @@ public class DBDataManager {
 		ContentValues values = new ContentValues();
 
 		setValuesFromGameItem(values, dataObj);
-		values.put(DBConstants.V_FINISHED, 0);
-		values.put(DBConstants.V_USER, userName);
-		values.put(DBConstants.V_OPPONENT_OFFERED_DRAW, dataObj.isDrawOffered() ? 1 : 0);
-		values.put(DBConstants.V_IS_MY_TURN, dataObj.isMyTurn() ? 1 : 0);
+		values.put(DbConstants.V_FINISHED, 0);
+		values.put(DbConstants.V_USER, userName);
+		values.put(DbConstants.V_OPPONENT_OFFERED_DRAW, dataObj.isDrawOffered() ? 1 : 0);
+		values.put(DbConstants.V_IS_MY_TURN, dataObj.isMyTurn() ? 1 : 0);
 		return values;
 	}
 
 	private static void setValuesFromGameItem(ContentValues values, DailyGameBaseData dataObj) { // TODO remove
-		values.put(DBConstants.V_ID, dataObj.getGameId());
-		values.put(DBConstants.V_FEN, dataObj.getFen());
-		values.put(DBConstants.V_I_PLAY_AS, dataObj.getMyColor());
-		values.put(DBConstants.V_GAME_TYPE, dataObj.getGameType());
-		values.put(DBConstants.V_WHITE_USERNAME, dataObj.getWhiteUsername());
-		values.put(DBConstants.V_BLACK_USERNAME, dataObj.getBlackUsername());
-		values.put(DBConstants.V_WHITE_RATING, dataObj.getWhiteRating());
-		values.put(DBConstants.V_BLACK_RATING, dataObj.getBlackRating());
-		values.put(DBConstants.V_WHITE_PREMIUM_STATUS, dataObj.getWhitePremiumStatus());
-		values.put(DBConstants.V_BLACK_PREMIUM_STATUS, dataObj.getBlackPremiumStatus());
-		values.put(DBConstants.V_WHITE_AVATAR, dataObj.getWhiteAvatar());
-		values.put(DBConstants.V_BLACK_AVATAR, dataObj.getBlackAvatar());
-		values.put(DBConstants.V_TIME_REMAINING, dataObj.getTimeRemaining());
-		values.put(DBConstants.V_TIMESTAMP, dataObj.getTimestamp());
-		values.put(DBConstants.V_LAST_MOVE_FROM_SQUARE, dataObj.getLastMoveFromSquare());
-		values.put(DBConstants.V_LAST_MOVE_TO_SQUARE, dataObj.getLastMoveToSquare());
-		values.put(DBConstants.V_GAME_NAME, dataObj.getName());
-		values.put(DBConstants.V_FEN_START_POSITION, dataObj.getStartingFenPosition());
-		values.put(DBConstants.V_MOVE_LIST, dataObj.getMoveList());
-		values.put(DBConstants.V_HAS_NEW_MESSAGE, dataObj.hasNewMessage() ? 1 : 0);
-		values.put(DBConstants.V_RATED, dataObj.isRated() ? 1 : 0);
-		values.put(DBConstants.V_DAYS_PER_MOVE, dataObj.getDaysPerMove());
-		values.put(DBConstants.V_IS_OPPONENT_ONLINE, dataObj.isOpponentOnline());
+		values.put(DbConstants.V_ID, dataObj.getGameId());
+		values.put(DbConstants.V_FEN, dataObj.getFen());
+		values.put(DbConstants.V_I_PLAY_AS, dataObj.getMyColor());
+		values.put(DbConstants.V_GAME_TYPE, dataObj.getGameType());
+		values.put(DbConstants.V_WHITE_USERNAME, dataObj.getWhiteUsername());
+		values.put(DbConstants.V_BLACK_USERNAME, dataObj.getBlackUsername());
+		values.put(DbConstants.V_WHITE_RATING, dataObj.getWhiteRating());
+		values.put(DbConstants.V_BLACK_RATING, dataObj.getBlackRating());
+		values.put(DbConstants.V_WHITE_PREMIUM_STATUS, dataObj.getWhitePremiumStatus());
+		values.put(DbConstants.V_BLACK_PREMIUM_STATUS, dataObj.getBlackPremiumStatus());
+		values.put(DbConstants.V_WHITE_AVATAR, dataObj.getWhiteAvatar());
+		values.put(DbConstants.V_BLACK_AVATAR, dataObj.getBlackAvatar());
+		values.put(DbConstants.V_TIME_REMAINING, dataObj.getTimeRemaining());
+		values.put(DbConstants.V_TIMESTAMP, dataObj.getTimestamp());
+		values.put(DbConstants.V_LAST_MOVE_FROM_SQUARE, dataObj.getLastMoveFromSquare());
+		values.put(DbConstants.V_LAST_MOVE_TO_SQUARE, dataObj.getLastMoveToSquare());
+		values.put(DbConstants.V_GAME_NAME, dataObj.getName());
+		values.put(DbConstants.V_FEN_START_POSITION, dataObj.getStartingFenPosition());
+		values.put(DbConstants.V_MOVE_LIST, dataObj.getMoveList());
+		values.put(DbConstants.V_HAS_NEW_MESSAGE, dataObj.hasNewMessage() ? 1 : 0);
+		values.put(DbConstants.V_RATED, dataObj.isRated() ? 1 : 0);
+		values.put(DbConstants.V_DAYS_PER_MOVE, dataObj.getDaysPerMove());
+		values.put(DbConstants.V_IS_OPPONENT_ONLINE, dataObj.isOpponentOnline());
 	}
 
 	public static DailyCurrentGameData getDailyCurrentGameFromCursor(Cursor cursor) {
 		DailyCurrentGameData dataObj = new DailyCurrentGameData();
 
 		setDailyGameFromCursor(dataObj, cursor);
-		dataObj.setDrawOffered(getInt(cursor, DBConstants.V_OPPONENT_OFFERED_DRAW) > 0);
-		dataObj.setMyTurn(getInt(cursor, DBConstants.V_IS_MY_TURN) > 0);
+		dataObj.setDrawOffered(getInt(cursor, DbConstants.V_OPPONENT_OFFERED_DRAW) > 0);
+		dataObj.setMyTurn(getInt(cursor, DbConstants.V_IS_MY_TURN) > 0);
 
 		return dataObj;
 	}
@@ -748,17 +763,17 @@ public class DBDataManager {
 	public static DailyCurrentGameData getDailyCurrentGameListFromCursor(Cursor cursor) {
 		DailyCurrentGameData dataObj = new DailyCurrentGameData();
 
-		dataObj.setGameId(getLong(cursor, DBConstants.V_ID));
-		dataObj.setWhiteUsername(getString(cursor, DBConstants.V_WHITE_USERNAME));
-		dataObj.setBlackUsername(getString(cursor, DBConstants.V_BLACK_USERNAME));
-		dataObj.setWhiteAvatar(getString(cursor, DBConstants.V_WHITE_AVATAR));
-		dataObj.setBlackAvatar(getString(cursor, DBConstants.V_BLACK_AVATAR));
-		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
-		dataObj.setMyTurn(getInt(cursor, DBConstants.V_IS_MY_TURN) > 0);
-		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
-		dataObj.setDrawOffered(getInt(cursor, DBConstants.V_OPPONENT_OFFERED_DRAW) > 0);
-		dataObj.setHasNewMessage(getInt(cursor, DBConstants.V_HAS_NEW_MESSAGE) > 0);
-		dataObj.setTimeRemaining(getLong(cursor, DBConstants.V_TIME_REMAINING));
+		dataObj.setGameId(getLong(cursor, DbConstants.V_ID));
+		dataObj.setWhiteUsername(getString(cursor, DbConstants.V_WHITE_USERNAME));
+		dataObj.setBlackUsername(getString(cursor, DbConstants.V_BLACK_USERNAME));
+		dataObj.setWhiteAvatar(getString(cursor, DbConstants.V_WHITE_AVATAR));
+		dataObj.setBlackAvatar(getString(cursor, DbConstants.V_BLACK_AVATAR));
+		dataObj.setGameType(getInt(cursor, DbConstants.V_GAME_TYPE));
+		dataObj.setMyTurn(getInt(cursor, DbConstants.V_IS_MY_TURN) > 0);
+		dataObj.setTimestamp(getLong(cursor, DbConstants.V_TIMESTAMP));
+		dataObj.setDrawOffered(getInt(cursor, DbConstants.V_OPPONENT_OFFERED_DRAW) > 0);
+		dataObj.setHasNewMessage(getInt(cursor, DbConstants.V_HAS_NEW_MESSAGE) > 0);
+		dataObj.setTimeRemaining(getLong(cursor, DbConstants.V_TIME_REMAINING));
 
 		return dataObj;
 	}
@@ -772,57 +787,57 @@ public class DBDataManager {
 	public static DailyFinishedGameData getDailyFinishedGameListFromCursor(Cursor cursor) {
 		DailyFinishedGameData dataObj = new DailyFinishedGameData();
 
-		dataObj.setGameId(getLong(cursor, DBConstants.V_ID));
-		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
-		dataObj.setGameScore(getInt(cursor, DBConstants.V_GAME_SCORE));
-		dataObj.setWhiteUsername(getString(cursor, DBConstants.V_WHITE_USERNAME));
-		dataObj.setBlackUsername(getString(cursor, DBConstants.V_BLACK_USERNAME));
-		dataObj.setWhiteAvatar(getString(cursor, DBConstants.V_WHITE_AVATAR));
-		dataObj.setBlackAvatar(getString(cursor, DBConstants.V_BLACK_AVATAR));
-		dataObj.setWhiteRating(getInt(cursor, DBConstants.V_WHITE_RATING));
-		dataObj.setBlackRating(getInt(cursor, DBConstants.V_BLACK_RATING));
+		dataObj.setGameId(getLong(cursor, DbConstants.V_ID));
+		dataObj.setGameType(getInt(cursor, DbConstants.V_GAME_TYPE));
+		dataObj.setGameScore(getInt(cursor, DbConstants.V_GAME_SCORE));
+		dataObj.setWhiteUsername(getString(cursor, DbConstants.V_WHITE_USERNAME));
+		dataObj.setBlackUsername(getString(cursor, DbConstants.V_BLACK_USERNAME));
+		dataObj.setWhiteAvatar(getString(cursor, DbConstants.V_WHITE_AVATAR));
+		dataObj.setBlackAvatar(getString(cursor, DbConstants.V_BLACK_AVATAR));
+		dataObj.setWhiteRating(getInt(cursor, DbConstants.V_WHITE_RATING));
+		dataObj.setBlackRating(getInt(cursor, DbConstants.V_BLACK_RATING));
 
 		return dataObj;
 	}
 
 	private static void setDailyGameFromCursor(DailyGameBaseData dataObj, Cursor cursor) {
-		dataObj.setGameId(getLong(cursor, DBConstants.V_ID));
-		dataObj.setFen(getString(cursor, DBConstants.V_FEN));
-		dataObj.setIPlayAs(getInt(cursor, DBConstants.V_I_PLAY_AS));
-		dataObj.setLastMoveFromSquare(getString(cursor, DBConstants.V_LAST_MOVE_FROM_SQUARE));
-		dataObj.setLastMoveToSquare(getString(cursor, DBConstants.V_LAST_MOVE_TO_SQUARE));
-		dataObj.setGameType(getInt(cursor, DBConstants.V_GAME_TYPE));
-		dataObj.setTimestamp(getLong(cursor, DBConstants.V_TIMESTAMP));
-		dataObj.setName(getString(cursor, DBConstants.V_GAME_NAME));
-		dataObj.setWhiteUsername(getString(cursor, DBConstants.V_WHITE_USERNAME));
-		dataObj.setBlackUsername(getString(cursor, DBConstants.V_BLACK_USERNAME));
-		dataObj.setWhitePremiumStatus(getInt(cursor, DBConstants.V_WHITE_PREMIUM_STATUS));
-		dataObj.setBlackPremiumStatus(getInt(cursor, DBConstants.V_BLACK_PREMIUM_STATUS));
-		dataObj.setStartingFenPosition(getString(cursor, DBConstants.V_FEN_START_POSITION));
-		dataObj.setMoveList(getString(cursor, DBConstants.V_MOVE_LIST));
-		dataObj.setWhiteRating(getInt(cursor, DBConstants.V_WHITE_RATING));
-		dataObj.setBlackRating(getInt(cursor, DBConstants.V_BLACK_RATING));
-		dataObj.setWhiteAvatar(getString(cursor, DBConstants.V_WHITE_AVATAR));
-		dataObj.setBlackAvatar(getString(cursor, DBConstants.V_BLACK_AVATAR));
-		dataObj.setHasNewMessage(getInt(cursor, DBConstants.V_HAS_NEW_MESSAGE) > 0);
-		dataObj.setTimeRemaining(getLong(cursor, DBConstants.V_TIME_REMAINING));
-		dataObj.setRated(getInt(cursor, DBConstants.V_RATED) > 0);
-		dataObj.setDaysPerMove(getInt(cursor, DBConstants.V_DAYS_PER_MOVE));
+		dataObj.setGameId(getLong(cursor, DbConstants.V_ID));
+		dataObj.setFen(getString(cursor, DbConstants.V_FEN));
+		dataObj.setIPlayAs(getInt(cursor, DbConstants.V_I_PLAY_AS));
+		dataObj.setLastMoveFromSquare(getString(cursor, DbConstants.V_LAST_MOVE_FROM_SQUARE));
+		dataObj.setLastMoveToSquare(getString(cursor, DbConstants.V_LAST_MOVE_TO_SQUARE));
+		dataObj.setGameType(getInt(cursor, DbConstants.V_GAME_TYPE));
+		dataObj.setTimestamp(getLong(cursor, DbConstants.V_TIMESTAMP));
+		dataObj.setName(getString(cursor, DbConstants.V_GAME_NAME));
+		dataObj.setWhiteUsername(getString(cursor, DbConstants.V_WHITE_USERNAME));
+		dataObj.setBlackUsername(getString(cursor, DbConstants.V_BLACK_USERNAME));
+		dataObj.setWhitePremiumStatus(getInt(cursor, DbConstants.V_WHITE_PREMIUM_STATUS));
+		dataObj.setBlackPremiumStatus(getInt(cursor, DbConstants.V_BLACK_PREMIUM_STATUS));
+		dataObj.setStartingFenPosition(getString(cursor, DbConstants.V_FEN_START_POSITION));
+		dataObj.setMoveList(getString(cursor, DbConstants.V_MOVE_LIST));
+		dataObj.setWhiteRating(getInt(cursor, DbConstants.V_WHITE_RATING));
+		dataObj.setBlackRating(getInt(cursor, DbConstants.V_BLACK_RATING));
+		dataObj.setWhiteAvatar(getString(cursor, DbConstants.V_WHITE_AVATAR));
+		dataObj.setBlackAvatar(getString(cursor, DbConstants.V_BLACK_AVATAR));
+		dataObj.setHasNewMessage(getInt(cursor, DbConstants.V_HAS_NEW_MESSAGE) > 0);
+		dataObj.setTimeRemaining(getLong(cursor, DbConstants.V_TIME_REMAINING));
+		dataObj.setRated(getInt(cursor, DbConstants.V_RATED) > 0);
+		dataObj.setDaysPerMove(getInt(cursor, DbConstants.V_DAYS_PER_MOVE));
 	}
 
 	// ------------------------------------- Friends ----------------------------------------------
 	public static ContentValues putFriendItemToValues(FriendsItem.Data dataObj, String userName) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_USER, userName);
-		values.put(DBConstants.V_USERNAME, dataObj.getUsername());
-		values.put(DBConstants.V_USER_ID, dataObj.getUserId());
-		values.put(DBConstants.V_LOCATION, dataObj.getLocation());
-		values.put(DBConstants.V_COUNTRY_ID, dataObj.getCountryId());
-		values.put(DBConstants.V_PHOTO_URL, dataObj.getAvatarUrl());
-		values.put(DBConstants.V_IS_OPPONENT_ONLINE, dataObj.isOnline() ? 1 : 0);
-		values.put(DBConstants.V_PREMIUM_STATUS, dataObj.getPremiumStatus());
-		values.put(DBConstants.V_LAST_LOGIN_DATE, dataObj.getLastLoginDate());
+		values.put(DbConstants.V_USER, userName);
+		values.put(DbConstants.V_USERNAME, dataObj.getUsername());
+		values.put(DbConstants.V_USER_ID, dataObj.getUserId());
+		values.put(DbConstants.V_LOCATION, dataObj.getLocation());
+		values.put(DbConstants.V_COUNTRY_ID, dataObj.getCountryId());
+		values.put(DbConstants.V_PHOTO_URL, dataObj.getAvatarUrl());
+		values.put(DbConstants.V_IS_OPPONENT_ONLINE, dataObj.isOnline() ? 1 : 0);
+		values.put(DbConstants.V_PREMIUM_STATUS, dataObj.getPremiumStatus());
+		values.put(DbConstants.V_LAST_LOGIN_DATE, dataObj.getLastLoginDate());
 
 		return values;
 	}
@@ -830,20 +845,20 @@ public class DBDataManager {
 	public static ContentValues putArticleItemToValues(ArticleItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_ID, dataObj.getId());
-		values.put(DBConstants.V_TITLE, dataObj.getTitle());
-		values.put(DBConstants.V_CREATE_DATE, dataObj.getCreate_date());
-		values.put(DBConstants.V_CATEGORY, dataObj.getCategoryName());
-		values.put(DBConstants.V_CATEGORY_ID, dataObj.getCategoryId());
-		values.put(DBConstants.V_COUNTRY_ID, dataObj.getCountryId());
-		values.put(DBConstants.V_USER_ID, dataObj.getUserId());
-		values.put(DBConstants.V_USERNAME, dataObj.getUsername());
-		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirstName());
-		values.put(DBConstants.V_LAST_NAME, dataObj.getLastName());
-		values.put(DBConstants.V_CHESS_TITLE, dataObj.getChessTitle());
-		values.put(DBConstants.V_USER_AVATAR, dataObj.getAvatar());
-		values.put(DBConstants.V_PHOTO_URL, dataObj.getImageUrl());
-		values.put(DBConstants.V_THUMB_CONTENT, dataObj.isIsThumbInContent());
+		values.put(DbConstants.V_ID, dataObj.getId());
+		values.put(DbConstants.V_TITLE, dataObj.getTitle());
+		values.put(DbConstants.V_CREATE_DATE, dataObj.getCreate_date());
+		values.put(DbConstants.V_CATEGORY, dataObj.getCategoryName());
+		values.put(DbConstants.V_CATEGORY_ID, dataObj.getCategoryId());
+		values.put(DbConstants.V_COUNTRY_ID, dataObj.getCountryId());
+		values.put(DbConstants.V_USER_ID, dataObj.getUserId());
+		values.put(DbConstants.V_USERNAME, dataObj.getUsername());
+		values.put(DbConstants.V_FIRST_NAME, dataObj.getFirstName());
+		values.put(DbConstants.V_LAST_NAME, dataObj.getLastName());
+		values.put(DbConstants.V_CHESS_TITLE, dataObj.getChessTitle());
+		values.put(DbConstants.V_USER_AVATAR, dataObj.getAvatar());
+		values.put(DbConstants.V_PHOTO_URL, dataObj.getImageUrl());
+		values.put(DbConstants.V_THUMB_CONTENT, dataObj.isIsThumbInContent());
 
 		return values;
 	}
@@ -853,12 +868,12 @@ public class DBDataManager {
 		arguments1[0] = String.valueOf(currentItem.getVideoId());
 
 		// TODO implement beginTransaction logic for performance increase
-		Uri uri = DBConstants.uriArray[DBConstants.Tables.VIDEOS.ordinal()];
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.VIDEOS.ordinal()];
 
-		Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID,
-				DBDataManager.SELECTION_ITEM_ID, arguments1, null);
+		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID,
+				DbDataManager.SELECTION_ITEM_ID, arguments1, null);
 
-		ContentValues values = DBDataManager.putVideoItemToValues(currentItem);
+		ContentValues values = DbDataManager.putVideoItemToValues(currentItem);
 
 		if (cursor.moveToFirst()) {
 			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
@@ -873,12 +888,12 @@ public class DBDataManager {
 		arguments1[0] = String.valueOf(currentItem.getId());
 
 		// TODO implement beginTransaction logic for performance increase
-		Uri uri = DBConstants.uriArray[DBConstants.Tables.FORUM_TOPICS.ordinal()];
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.FORUM_TOPICS.ordinal()];
 
-		Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID,
-				DBDataManager.SELECTION_ITEM_ID, arguments1, null);
+		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID,
+				DbDataManager.SELECTION_ITEM_ID, arguments1, null);
 
-		ContentValues values = DBDataManager.putForumTopicItemToValues(currentItem);
+		ContentValues values = DbDataManager.putForumTopicItemToValues(currentItem);
 
 		if (cursor.moveToFirst()) {
 			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
@@ -893,12 +908,12 @@ public class DBDataManager {
 		arguments1[0] = String.valueOf(currentItem.getId());
 
 		// TODO implement beginTransaction logic for performance increase
-		Uri uri = DBConstants.uriArray[DBConstants.Tables.FORUM_CATEGORIES.ordinal()];
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.FORUM_CATEGORIES.ordinal()];
 
-		Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_ITEM_ID,
-				DBDataManager.SELECTION_ITEM_ID, arguments1, null);
+		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID,
+				DbDataManager.SELECTION_ITEM_ID, arguments1, null);
 
-		ContentValues values = DBDataManager.putForumCategoryItemToValues(currentItem);
+		ContentValues values = DbDataManager.putForumCategoryItemToValues(currentItem);
 
 		if (cursor.moveToFirst()) {
 			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
@@ -913,12 +928,12 @@ public class DBDataManager {
 		arguments1[0] = String.valueOf(currentItem.getCreateDate());
 
 		// TODO implement beginTransaction logic for performance increase
-		Uri uri = DBConstants.uriArray[DBConstants.Tables.FORUM_POSTS.ordinal()];
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.FORUM_POSTS.ordinal()];
 
-		Cursor cursor = contentResolver.query(uri, DBDataManager.PROJECTION_CREATE_DATE,
-				DBDataManager.SELECTION_CREATE_DATE, arguments1, null);
+		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_CREATE_DATE,
+				DbDataManager.SELECTION_CREATE_DATE, arguments1, null);
 
-		ContentValues values = DBDataManager.putForumPostItemToValues(currentItem);
+		ContentValues values = DbDataManager.putForumPostItemToValues(currentItem);
 
 		if (cursor.moveToFirst()) {
 			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
@@ -937,7 +952,7 @@ public class DBDataManager {
 	public static boolean haveSavedVideos(Context context) {
 		ContentResolver contentResolver = context.getContentResolver();
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.VIDEOS.ordinal()],
+		Cursor cursor = contentResolver.query(DbConstants.uriArray[DbConstants.Tables.VIDEOS.ordinal()],
 				PROJECTION_ITEM_ID, null, null, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
@@ -955,7 +970,7 @@ public class DBDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = String.valueOf(videoId);
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.VIDEOS.ordinal()],
+		Cursor cursor = contentResolver.query(DbConstants.uriArray[DbConstants.Tables.VIDEOS.ordinal()],
 				PROJECTION_ITEM_ID, SELECTION_ITEM_ID, arguments1, LIMIT_1);
 		if (cursor != null) {
 			boolean exist = cursor.moveToFirst();
@@ -972,12 +987,12 @@ public class DBDataManager {
 		arguments2[0] = String.valueOf(currentItem.getUsername());
 		arguments2[1] = String.valueOf(currentItem.getVideoId());
 
-		Uri uri = DBConstants.uriArray[DBConstants.Tables.VIDEO_VIEWED.ordinal()];
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.VIDEO_VIEWED.ordinal()];
 
 		Cursor cursor = contentResolver.query(uri, null,
-				DBDataManager.SELECTION_USER_AND_ID, arguments2, null);
+				DbDataManager.SELECTION_USER_AND_ID, arguments2, null);
 
-		ContentValues values = DBDataManager.putVideoViewedItemToValues(currentItem);
+		ContentValues values = DbDataManager.putVideoViewedItemToValues(currentItem);
 
 		if (cursor.moveToFirst()) {
 			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
@@ -993,7 +1008,7 @@ public class DBDataManager {
 
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.VIDEO_VIEWED.ordinal()],
+		Cursor cursor = contentResolver.query(DbConstants.uriArray[DbConstants.Tables.VIDEO_VIEWED.ordinal()],
 				null, SELECTION_USER, arguments1, null);
 
 		if (cursor != null && cursor.moveToFirst()) {
@@ -1010,10 +1025,10 @@ public class DBDataManager {
 		arguments2[0] = userName;
 		arguments2[1] = String.valueOf(videoId);
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.VIDEO_VIEWED.ordinal()],
+		Cursor cursor = contentResolver.query(DbConstants.uriArray[DbConstants.Tables.VIDEO_VIEWED.ordinal()],
 				null, SELECTION_USER_AND_ID, arguments2, null);
 
-		return cursor != null && cursor.moveToFirst() && getInt(cursor, DBConstants.V_VIDEO_VIEWED) > 0;
+		return cursor != null && cursor.moveToFirst() && getInt(cursor, DbConstants.V_VIDEO_VIEWED) > 0;
 	}
 
 	/**
@@ -1025,7 +1040,7 @@ public class DBDataManager {
 	public static boolean haveSavedArticles(Context context) {
 		ContentResolver contentResolver = context.getContentResolver();
 
-		Cursor cursor = contentResolver.query(DBConstants.uriArray[DBConstants.Tables.ARTICLES.ordinal()], null, null, null, LIMIT_1);
+		Cursor cursor = contentResolver.query(DbConstants.uriArray[DbConstants.Tables.ARTICLES.ordinal()], null, null, null, LIMIT_1);
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
 
@@ -1036,24 +1051,24 @@ public class DBDataManager {
 	public static ContentValues putVideoItemToValues(VideoItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_TITLE, dataObj.getTitle());
-		values.put(DBConstants.V_DESCRIPTION, dataObj.getDescription());
-		values.put(DBConstants.V_CATEGORY, dataObj.getCategoryName());
-		values.put(DBConstants.V_CATEGORY_ID, dataObj.getCategoryId());
-		values.put(DBConstants.V_ID, dataObj.getVideoId());
-		values.put(DBConstants.V_SKILL_LEVEL, dataObj.getSkillLevel());
-		values.put(DBConstants.V_USER_AVATAR, dataObj.getUserAvatar());
-		values.put(DBConstants.V_MINUTES, dataObj.getMinutes());
-		values.put(DBConstants.V_VIEW_COUNT, dataObj.getViewCount());
-		values.put(DBConstants.V_COUNTRY_ID, dataObj.getCountryId());
-		values.put(DBConstants.V_COMMENT_COUNT, dataObj.getCommentCount());
-		values.put(DBConstants.V_CREATE_DATE, dataObj.getCreateDate());
-		values.put(DBConstants.V_URL, dataObj.getUrl());
-		values.put(DBConstants.V_KEY_FEN, dataObj.getKeyFen());
-		values.put(DBConstants.V_USERNAME, dataObj.getUsername());
-		values.put(DBConstants.V_FIRST_NAME, dataObj.getFirstName());
-		values.put(DBConstants.V_LAST_NAME, dataObj.getLastName());
-		values.put(DBConstants.V_CHESS_TITLE, dataObj.getChessTitle());
+		values.put(DbConstants.V_TITLE, dataObj.getTitle());
+		values.put(DbConstants.V_DESCRIPTION, dataObj.getDescription());
+		values.put(DbConstants.V_CATEGORY, dataObj.getCategoryName());
+		values.put(DbConstants.V_CATEGORY_ID, dataObj.getCategoryId());
+		values.put(DbConstants.V_ID, dataObj.getVideoId());
+		values.put(DbConstants.V_SKILL_LEVEL, dataObj.getSkillLevel());
+		values.put(DbConstants.V_USER_AVATAR, dataObj.getUserAvatar());
+		values.put(DbConstants.V_MINUTES, dataObj.getMinutes());
+		values.put(DbConstants.V_VIEW_COUNT, dataObj.getViewCount());
+		values.put(DbConstants.V_COUNTRY_ID, dataObj.getCountryId());
+		values.put(DbConstants.V_COMMENT_COUNT, dataObj.getCommentCount());
+		values.put(DbConstants.V_CREATE_DATE, dataObj.getCreateDate());
+		values.put(DbConstants.V_URL, dataObj.getUrl());
+		values.put(DbConstants.V_KEY_FEN, dataObj.getKeyFen());
+		values.put(DbConstants.V_USERNAME, dataObj.getUsername());
+		values.put(DbConstants.V_FIRST_NAME, dataObj.getFirstName());
+		values.put(DbConstants.V_LAST_NAME, dataObj.getLastName());
+		values.put(DbConstants.V_CHESS_TITLE, dataObj.getChessTitle());
 
 		return values;
 	}
@@ -1061,15 +1076,15 @@ public class DBDataManager {
 	public static ContentValues putForumCategoryItemToValues(ForumCategoryItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_NAME, dataObj.getCategory());
-		values.put(DBConstants.V_ID, dataObj.getId());
-		values.put(DBConstants.V_CREATE_DATE, dataObj.getCreateDate());
-		values.put(DBConstants.V_LAST_POST_DATE, dataObj.getLastDate());
-		values.put(DBConstants.V_DISPLAY_ORDER, dataObj.getDisplayOrder());
-		values.put(DBConstants.V_DESCRIPTION, dataObj.getDescription());
-		values.put(DBConstants.V_TOPIC_COUNT, dataObj.getTopicCount());
-		values.put(DBConstants.V_POST_COUNT, dataObj.getPostCount());
-		values.put(DBConstants.V_MIN_MEMBERSHIP, dataObj.getMinimumMembershipLevel());
+		values.put(DbConstants.V_NAME, dataObj.getCategory());
+		values.put(DbConstants.V_ID, dataObj.getId());
+		values.put(DbConstants.V_CREATE_DATE, dataObj.getCreateDate());
+		values.put(DbConstants.V_LAST_POST_DATE, dataObj.getLastDate());
+		values.put(DbConstants.V_DISPLAY_ORDER, dataObj.getDisplayOrder());
+		values.put(DbConstants.V_DESCRIPTION, dataObj.getDescription());
+		values.put(DbConstants.V_TOPIC_COUNT, dataObj.getTopicCount());
+		values.put(DbConstants.V_POST_COUNT, dataObj.getPostCount());
+		values.put(DbConstants.V_MIN_MEMBERSHIP, dataObj.getMinimumMembershipLevel());
 
 		return values;
 	}
@@ -1077,16 +1092,16 @@ public class DBDataManager {
 	public static ContentValues putForumTopicItemToValues(ForumTopicItem.Topic dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_TITLE, dataObj.getSubject());
-		values.put(DBConstants.V_ID, dataObj.getId());
-		values.put(DBConstants.V_CATEGORY_ID, dataObj.getCategoryId());
-		values.put(DBConstants.V_CATEGORY, dataObj.getCategoryName());
-		values.put(DBConstants.V_URL, dataObj.getUrl());
-		values.put(DBConstants.V_USERNAME, dataObj.getTopicUsername());
-		values.put(DBConstants.V_LAST_POST_USERNAME, dataObj.getLastPostUsername());
-		values.put(DBConstants.V_POST_COUNT, dataObj.getPostCount());
-		values.put(DBConstants.V_LAST_POST_DATE, dataObj.getLastPostDate());
-		values.put(DBConstants.V_PAGE, dataObj.getPage());
+		values.put(DbConstants.V_TITLE, dataObj.getSubject());
+		values.put(DbConstants.V_ID, dataObj.getId());
+		values.put(DbConstants.V_CATEGORY_ID, dataObj.getCategoryId());
+		values.put(DbConstants.V_CATEGORY, dataObj.getCategoryName());
+		values.put(DbConstants.V_URL, dataObj.getUrl());
+		values.put(DbConstants.V_USERNAME, dataObj.getTopicUsername());
+		values.put(DbConstants.V_LAST_POST_USERNAME, dataObj.getLastPostUsername());
+		values.put(DbConstants.V_POST_COUNT, dataObj.getPostCount());
+		values.put(DbConstants.V_LAST_POST_DATE, dataObj.getLastPostDate());
+		values.put(DbConstants.V_PAGE, dataObj.getPage());
 
 		return values;
 	}
@@ -1094,27 +1109,49 @@ public class DBDataManager {
 	public static ContentValues putForumPostItemToValues(ForumPostItem.Post dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_DESCRIPTION, dataObj.getBody());
-		values.put(DBConstants.V_ID, dataObj.getTopicId());
-		values.put(DBConstants.V_CREATE_DATE, dataObj.getCreateDate());
-		values.put(DBConstants.V_USERNAME, dataObj.getUsername());
-		values.put(DBConstants.V_COUNTRY_ID, dataObj.getCountryId());
-		values.put(DBConstants.V_PREMIUM_STATUS, dataObj.isPremiumStatus());
-		values.put(DBConstants.V_PHOTO_URL, dataObj.getAvatarUrl());
-		values.put(DBConstants.V_NUMBER, dataObj.getCommentNumber());
-		values.put(DBConstants.V_PAGE, dataObj.getPage());
+		values.put(DbConstants.V_DESCRIPTION, dataObj.getBody());
+		values.put(DbConstants.V_ID, dataObj.getTopicId());
+		values.put(DbConstants.V_CREATE_DATE, dataObj.getCreateDate());
+		values.put(DbConstants.V_USERNAME, dataObj.getUsername());
+		values.put(DbConstants.V_COUNTRY_ID, dataObj.getCountryId());
+		values.put(DbConstants.V_PREMIUM_STATUS, dataObj.isPremiumStatus());
+		values.put(DbConstants.V_PHOTO_URL, dataObj.getAvatarUrl());
+		values.put(DbConstants.V_NUMBER, dataObj.getCommentNumber());
+		values.put(DbConstants.V_PAGE, dataObj.getPage());
 
 		return values;
+	}
+
+	public static void saveCourseListItemToDb(ContentResolver contentResolver, LessonCourseListItem.Data currentItem){
+		final String[] arguments = sArguments2;
+		arguments[0] = String.valueOf(currentItem.getId());
+		arguments[1] = currentItem.getUser();
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.LESSONS_COURSE_LIST.ordinal()];
+		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID_AND_USER,
+				DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments, null);
+
+
+		ContentValues values = DbDataManager.putLessonsCourseListItemToValues(currentItem);
+
+		if (cursor.moveToFirst()) {
+			contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
+		} else {
+			contentResolver.insert(uri, values);
+		}
+
+		cursor.close();
 	}
 
 	public static ContentValues putLessonsCourseListItemToValues(LessonCourseListItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_ID, dataObj.getId());
-		values.put(DBConstants.V_USER, dataObj.getUser());
-		values.put(DBConstants.V_NAME, dataObj.getName());
-		values.put(DBConstants.V_CATEGORY_ID, dataObj.getCategoryId());
-		values.put(DBConstants.V_COURSE_COMPLETED, dataObj.isCourseCompleted()? 1 : 0);
+		values.put(DbConstants.V_ID, dataObj.getId());
+		values.put(DbConstants.V_USER, dataObj.getUser());
+		values.put(DbConstants.V_NAME, dataObj.getName());
+		values.put(DbConstants.V_CATEGORY_ID, dataObj.getCategoryId());
+		values.put(DbConstants.V_COURSE_COMPLETED, dataObj.isCourseCompleted()? 1 : 0);
 
 		return values;
 	}
@@ -1122,31 +1159,74 @@ public class DBDataManager {
 	public static ContentValues putLessonsCourseItemToValues(LessonCourseItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_ID, dataObj.getId());
-		values.put(DBConstants.V_DESCRIPTION, dataObj.getDescription());
-		values.put(DBConstants.V_NAME, dataObj.getCourseName());
+		values.put(DbConstants.V_ID, dataObj.getId());
+		values.put(DbConstants.V_DESCRIPTION, dataObj.getDescription());
+		values.put(DbConstants.V_NAME, dataObj.getCourseName());
 
 		return values;
 	}
 
 	public static LessonCourseItem.Data getLessonsCourseItemFromCursor(Cursor cursor) {
 		LessonCourseItem.Data dataObj = new LessonCourseItem.Data();
-//		dataObj.set(get(cursor, DBConstants.V_));
 
-		dataObj.setId(getLong(cursor, DBConstants.V_ID));
-		dataObj.setDescription(getString(cursor, DBConstants.V_DESCRIPTION));
-		dataObj.setCourseName(getString(cursor, DBConstants.V_NAME));
+		dataObj.setId(getLong(cursor, DbConstants.V_ID));
+		dataObj.setDescription(getString(cursor, DbConstants.V_DESCRIPTION));
+		dataObj.setCourseName(getString(cursor, DbConstants.V_NAME));
 
 		return dataObj;
+	}
+
+	public static void saveLessonListItemToDb(ContentResolver contentResolver, LessonListItem lesson){
+		final String[] arguments = sArguments3;
+		arguments[0] = String.valueOf(lesson.getId());
+		arguments[1] = String.valueOf(lesson.getCourseId());
+		arguments[2] = lesson.getUser();
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.LESSONS_LESSONS_LIST.ordinal()];
+		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ID_CATEGORY_ID_USER,
+				DbDataManager.SELECTION_ID_CATEGORY_ID_USER, arguments, null);
+
+		ContentValues values = DbDataManager.putLessonsListItemToValues(lesson);
+
+		if (cursor.moveToFirst()) {
+			contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
+		} else {
+			contentResolver.insert(uri, values);
+		}
+
+		cursor.close();
+	}
+
+	public static boolean isLessonCompleted(ContentResolver contentResolver, int lessonId, long courseId, String username) {
+		final String[] arguments = sArguments3;
+		arguments[0] = String.valueOf(lessonId);
+		arguments[1] = String.valueOf(courseId);
+		arguments[2] = username;
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.LESSONS_LESSONS_LIST.ordinal()];
+		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ID_CATEGORY_ID_USER_COMPLETED,
+				DbDataManager.SELECTION_ID_CATEGORY_ID_USER, arguments, null);
+
+
+		if (cursor.moveToFirst()) {
+			boolean completed = getInt(cursor, DbConstants.V_LESSON_COMPLETED) > 0;
+			cursor.close();
+
+			return completed;
+		}
+		return false;
 	}
 
 	public static ContentValues putLessonsListItemToValues(LessonListItem dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_ID, dataObj.getId());
-		values.put(DBConstants.V_CATEGORY_ID, dataObj.getCourseId());
-		values.put(DBConstants.V_LESSON_COMPLETED, dataObj.isCompleted()? 1: 0);
-		values.put(DBConstants.V_NAME, dataObj.getName());
+		values.put(DbConstants.V_ID, dataObj.getId());
+		values.put(DbConstants.V_CATEGORY_ID, dataObj.getCourseId());
+		values.put(DbConstants.V_LESSON_COMPLETED, dataObj.isCompleted()? 1: 0);
+		values.put(DbConstants.V_USER, dataObj.getUser());
+		values.put(DbConstants.V_NAME, dataObj.getName());
 
 		return values;
 	}
@@ -1154,10 +1234,10 @@ public class DBDataManager {
 	public static LessonListItem getLessonsListItemFromCursor(Cursor cursor) {
 		LessonListItem dataObj = new LessonListItem();
 
-		dataObj.setId(getInt(cursor, DBConstants.V_ID));
-		dataObj.setCourseId(getLong(cursor, DBConstants.V_CATEGORY_ID));
-		dataObj.setCompleted(getInt(cursor, DBConstants.V_LESSON_COMPLETED) > 0);
-		dataObj.setName(getString(cursor, DBConstants.V_NAME));
+		dataObj.setId(getInt(cursor, DbConstants.V_ID));
+		dataObj.setCourseId(getLong(cursor, DbConstants.V_CATEGORY_ID));
+		dataObj.setCompleted(getInt(cursor, DbConstants.V_LESSON_COMPLETED) > 0);
+		dataObj.setName(getString(cursor, DbConstants.V_NAME));
 
 		return dataObj;
 	}
@@ -1165,15 +1245,15 @@ public class DBDataManager {
 	public static ContentValues putLessonsMentorLessonToValues(LessonItem.MentorLesson dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_ID, dataObj.getLessonId());
-		values.put(DBConstants.V_NUMBER, dataObj.getLessonNumber());
-		values.put(DBConstants.V_GOAL, dataObj.getGoal());
-		values.put(DBConstants.V_DIFFICULTY, dataObj.getDifficulty());
-		values.put(DBConstants.V_AUTHOR, dataObj.getAuthor());
-		values.put(DBConstants.V_NAME, dataObj.getName());
-		values.put(DBConstants.V_DESCRIPTION, dataObj.getAbout());
-		values.put(DBConstants.V_GOAL_COMMENT, dataObj.getGoalCommentary());
-		values.put(DBConstants.V_GOAL_CODE, dataObj.getGoalCode());
+		values.put(DbConstants.V_ID, dataObj.getLessonId());
+		values.put(DbConstants.V_NUMBER, dataObj.getLessonNumber());
+		values.put(DbConstants.V_GOAL, dataObj.getGoal());
+		values.put(DbConstants.V_DIFFICULTY, dataObj.getDifficulty());
+		values.put(DbConstants.V_AUTHOR, dataObj.getAuthor());
+		values.put(DbConstants.V_NAME, dataObj.getName());
+		values.put(DbConstants.V_DESCRIPTION, dataObj.getAbout());
+		values.put(DbConstants.V_GOAL_COMMENT, dataObj.getGoalCommentary());
+		values.put(DbConstants.V_GOAL_CODE, dataObj.getGoalCode());
 
 		return values;
 	}
@@ -1181,15 +1261,15 @@ public class DBDataManager {
 	public static LessonItem.MentorLesson getLessonsMentorLessonFromCursor(Cursor cursor) {
 		LessonItem.MentorLesson dataObj = new LessonItem.MentorLesson();
 
-		dataObj.setLessonId(getLong(cursor, DBConstants.V_ID));
-		dataObj.setLessonNumber(getInt(cursor, DBConstants.V_NUMBER));
-		dataObj.setGoal(getInt(cursor, DBConstants.V_GOAL));
-		dataObj.setDifficulty(getInt(cursor, DBConstants.V_DIFFICULTY));
-		dataObj.setAuthor(getString(cursor, DBConstants.V_AUTHOR));
-		dataObj.setName(getString(cursor, DBConstants.V_NAME));
-		dataObj.setAbout(getString(cursor, DBConstants.V_DESCRIPTION));
-		dataObj.setGoalCommentary(getString(cursor, DBConstants.V_GOAL_COMMENT));
-		dataObj.setGoalCode(getString(cursor, DBConstants.V_GOAL_CODE));
+		dataObj.setLessonId(getLong(cursor, DbConstants.V_ID));
+		dataObj.setLessonNumber(getInt(cursor, DbConstants.V_NUMBER));
+		dataObj.setGoal(getInt(cursor, DbConstants.V_GOAL));
+		dataObj.setDifficulty(getInt(cursor, DbConstants.V_DIFFICULTY));
+		dataObj.setAuthor(getString(cursor, DbConstants.V_AUTHOR));
+		dataObj.setName(getString(cursor, DbConstants.V_NAME));
+		dataObj.setAbout(getString(cursor, DbConstants.V_DESCRIPTION));
+		dataObj.setGoalCommentary(getString(cursor, DbConstants.V_GOAL_COMMENT));
+		dataObj.setGoalCode(getString(cursor, DbConstants.V_GOAL_CODE));
 
 		return dataObj;
 	}
@@ -1197,18 +1277,18 @@ public class DBDataManager {
 	public static ContentValues putLessonsPositionToValues(LessonItem.MentorPosition dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_ID, dataObj.getLessonId());
-		values.put(DBConstants.V_NUMBER, dataObj.getPositionNumber());
-		values.put(DBConstants.V_USER_TO_MOVE, dataObj.getUserToMove());
-		values.put(DBConstants.V_DIFFICULTY, dataObj.getMoveDifficulty());
-		values.put(DBConstants.V_FINAL_POSITION, dataObj.getFinalPosition());
-		values.put(DBConstants.V_FEN, dataObj.getFen());
-		values.put(DBConstants.V_ADVICE_1, dataObj.getAdvice1());
-		values.put(DBConstants.V_ADVICE_2, dataObj.getAdvice2());
-		values.put(DBConstants.V_ADVICE_3, dataObj.getAdvice3());
-		values.put(DBConstants.V_RESPONSE_MOVE_COMMENT, dataObj.getStandardResponseMoveCommentary());
-		values.put(DBConstants.V_WRONG_MOVE_COMMENT, dataObj.getStandardWrongMoveCommentary());
-		values.put(DBConstants.V_DESCRIPTION, dataObj.getAbout());
+		values.put(DbConstants.V_ID, dataObj.getLessonId());
+		values.put(DbConstants.V_NUMBER, dataObj.getPositionNumber());
+		values.put(DbConstants.V_USER_TO_MOVE, dataObj.getUserToMove());
+		values.put(DbConstants.V_DIFFICULTY, dataObj.getMoveDifficulty());
+		values.put(DbConstants.V_FINAL_POSITION, dataObj.getFinalPosition());
+		values.put(DbConstants.V_FEN, dataObj.getFen());
+		values.put(DbConstants.V_ADVICE_1, dataObj.getAdvice1());
+		values.put(DbConstants.V_ADVICE_2, dataObj.getAdvice2());
+		values.put(DbConstants.V_ADVICE_3, dataObj.getAdvice3());
+		values.put(DbConstants.V_RESPONSE_MOVE_COMMENT, dataObj.getStandardResponseMoveCommentary());
+		values.put(DbConstants.V_WRONG_MOVE_COMMENT, dataObj.getStandardWrongMoveCommentary());
+		values.put(DbConstants.V_DESCRIPTION, dataObj.getAbout());
 
 		return values;
 	}
@@ -1216,18 +1296,18 @@ public class DBDataManager {
 	public static LessonItem.MentorPosition getLessonsPositionFromCursor(Cursor cursor) {
 		LessonItem.MentorPosition dataObj = new LessonItem.MentorPosition();
 
-		dataObj.setLessonId(getLong(cursor, DBConstants.V_ID));
-		dataObj.setPositionNumber(getInt(cursor, DBConstants.V_NUMBER));
-		dataObj.setUserToMove(getInt(cursor, DBConstants.V_USER_TO_MOVE));
-		dataObj.setMoveDifficulty(getInt(cursor, DBConstants.V_DIFFICULTY));
-		dataObj.setFinalPosition(getInt(cursor, DBConstants.V_FINAL_POSITION));
-		dataObj.setFen(getString(cursor, DBConstants.V_FEN));
-		dataObj.setAdvice1(getString(cursor, DBConstants.V_ADVICE_1));
-		dataObj.setAdvice2(getString(cursor, DBConstants.V_ADVICE_2));
-		dataObj.setAdvice3(getString(cursor, DBConstants.V_ADVICE_3));
-		dataObj.setStandardResponseMoveCommentary(getString(cursor, DBConstants.V_RESPONSE_MOVE_COMMENT));
-		dataObj.setStandardWrongMoveCommentary(getString(cursor, DBConstants.V_WRONG_MOVE_COMMENT));
-		dataObj.setAbout(getString(cursor, DBConstants.V_DESCRIPTION));
+		dataObj.setLessonId(getLong(cursor, DbConstants.V_ID));
+		dataObj.setPositionNumber(getInt(cursor, DbConstants.V_NUMBER));
+		dataObj.setUserToMove(getInt(cursor, DbConstants.V_USER_TO_MOVE));
+		dataObj.setMoveDifficulty(getInt(cursor, DbConstants.V_DIFFICULTY));
+		dataObj.setFinalPosition(getInt(cursor, DbConstants.V_FINAL_POSITION));
+		dataObj.setFen(getString(cursor, DbConstants.V_FEN));
+		dataObj.setAdvice1(getString(cursor, DbConstants.V_ADVICE_1));
+		dataObj.setAdvice2(getString(cursor, DbConstants.V_ADVICE_2));
+		dataObj.setAdvice3(getString(cursor, DbConstants.V_ADVICE_3));
+		dataObj.setStandardResponseMoveCommentary(getString(cursor, DbConstants.V_RESPONSE_MOVE_COMMENT));
+		dataObj.setStandardWrongMoveCommentary(getString(cursor, DbConstants.V_WRONG_MOVE_COMMENT));
+		dataObj.setAbout(getString(cursor, DbConstants.V_DESCRIPTION));
 
 		return dataObj;
 	}
@@ -1235,14 +1315,14 @@ public class DBDataManager {
 	public static ContentValues putLessonsPositionMoveToValues(LessonItem.MentorPosition.PossibleMove dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_ID, dataObj.getLessonId());
-		values.put(DBConstants.V_CURRENT_POSITION, dataObj.getPositionNumber());
-		values.put(DBConstants.V_NUMBER, dataObj.getMoveNumber());
-		values.put(DBConstants.V_MOVE, dataObj.getMove());
-		values.put(DBConstants.V_MOVE_COMMENT, dataObj.getMoveCommentary());
-		values.put(DBConstants.V_SHORT_RESPONSE_MOVE, dataObj.getShortResponseMove());
-		values.put(DBConstants.V_RESPONSE_MOVE_COMMENT, dataObj.getResponseMoveCommentary());
-		values.put(DBConstants.V_MOVE_TYPE, dataObj.getMoveType());
+		values.put(DbConstants.V_ID, dataObj.getLessonId());
+		values.put(DbConstants.V_CURRENT_POSITION, dataObj.getPositionNumber());
+		values.put(DbConstants.V_NUMBER, dataObj.getMoveNumber());
+		values.put(DbConstants.V_MOVE, dataObj.getMove());
+		values.put(DbConstants.V_MOVE_COMMENT, dataObj.getMoveCommentary());
+		values.put(DbConstants.V_SHORT_RESPONSE_MOVE, dataObj.getShortResponseMove());
+		values.put(DbConstants.V_RESPONSE_MOVE_COMMENT, dataObj.getResponseMoveCommentary());
+		values.put(DbConstants.V_MOVE_TYPE, dataObj.getMoveType());
 
 		return values;
 	}
@@ -1250,14 +1330,14 @@ public class DBDataManager {
 	public static LessonItem.MentorPosition.PossibleMove getLessonsPositionMoveFromCursor(Cursor cursor) {
 		LessonItem.MentorPosition.PossibleMove dataObj = new LessonItem.MentorPosition.PossibleMove();
 
-		dataObj.setLessonId(getLong(cursor, DBConstants.V_ID));
-		dataObj.setPositionNumber(getInt(cursor, DBConstants.V_CURRENT_POSITION));
-		dataObj.setMoveNumber(getInt(cursor, DBConstants.V_NUMBER));
-		dataObj.setMove(getString(cursor, DBConstants.V_MOVE));
-		dataObj.setMoveCommentary(getString(cursor, DBConstants.V_MOVE_COMMENT));
-		dataObj.setShortResponseMove(getString(cursor, DBConstants.V_SHORT_RESPONSE_MOVE));
-		dataObj.setResponseMoveCommentary(getString(cursor, DBConstants.V_RESPONSE_MOVE_COMMENT));
-		dataObj.setMoveType(getString(cursor, DBConstants.V_MOVE_TYPE));
+		dataObj.setLessonId(getLong(cursor, DbConstants.V_ID));
+		dataObj.setPositionNumber(getInt(cursor, DbConstants.V_CURRENT_POSITION));
+		dataObj.setMoveNumber(getInt(cursor, DbConstants.V_NUMBER));
+		dataObj.setMove(getString(cursor, DbConstants.V_MOVE));
+		dataObj.setMoveCommentary(getString(cursor, DbConstants.V_MOVE_COMMENT));
+		dataObj.setShortResponseMove(getString(cursor, DbConstants.V_SHORT_RESPONSE_MOVE));
+		dataObj.setResponseMoveCommentary(getString(cursor, DbConstants.V_RESPONSE_MOVE_COMMENT));
+		dataObj.setMoveType(getString(cursor, DbConstants.V_MOVE_TYPE));
 
 		return dataObj;
 	}
@@ -1265,16 +1345,16 @@ public class DBDataManager {
 	public static ContentValues putLessonsUserLessonToValues(LessonItem.UserLesson dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_ID, dataObj.getLessonId());
-		values.put(DBConstants.V_CURRENT_POSITION, dataObj.getCurrentPosition());
-		values.put(DBConstants.V_CURRENT_POINTS, dataObj.getCurrentPoints());
-		values.put(DBConstants.V_CURRENT_POSITION_POINTS, dataObj.getCurrentPositionPoints());
-		values.put(DBConstants.V_USER, dataObj.getUsername());
-		values.put(DBConstants.V_INITIAL_SCORE, dataObj.getInitialScore());
-		values.put(DBConstants.V_LAST_SCORE, dataObj.getLastScore());
-		values.put(DBConstants.V_LEGAL_POSITION_CHECK, dataObj.getLegalPositionCheck());
-		values.put(DBConstants.V_LEGAL_MOVE_CHECK, dataObj.getLegalMoveCheck());
-		values.put(DBConstants.V_LESSON_COMPLETED, dataObj.isLessonCompleted()? 1 : 0);
+		values.put(DbConstants.V_ID, dataObj.getLessonId());
+		values.put(DbConstants.V_CURRENT_POSITION, dataObj.getCurrentPosition());
+		values.put(DbConstants.V_CURRENT_POINTS, dataObj.getCurrentPoints());
+		values.put(DbConstants.V_CURRENT_POSITION_POINTS, dataObj.getCurrentPositionPoints());
+		values.put(DbConstants.V_USER, dataObj.getUsername());
+		values.put(DbConstants.V_INITIAL_SCORE, dataObj.getInitialScore());
+		values.put(DbConstants.V_LAST_SCORE, dataObj.getLastScore());
+		values.put(DbConstants.V_LEGAL_POSITION_CHECK, dataObj.getLegalPositionCheck());
+		values.put(DbConstants.V_LEGAL_MOVE_CHECK, dataObj.getLegalMoveCheck());
+		values.put(DbConstants.V_LESSON_COMPLETED, dataObj.isLessonCompleted()? 1 : 0);
 
 		return values;
 	}
@@ -1282,16 +1362,16 @@ public class DBDataManager {
 	public static LessonItem.UserLesson getLessonsUserLessonFromCursor(Cursor cursor) {
 		LessonItem.UserLesson dataObj = new LessonItem.UserLesson();
 
-		dataObj.setLessonId(getLong(cursor, DBConstants.V_ID));
-		dataObj.setCurrentPosition(getInt(cursor, DBConstants.V_CURRENT_POSITION));
-		dataObj.setCurrentPoints(getInt(cursor, DBConstants.V_CURRENT_POINTS));
-		dataObj.setCurrentPositionPoints(Float.valueOf(getString(cursor, DBConstants.V_CURRENT_POSITION_POINTS)));
-		dataObj.setUsername(getString(cursor, DBConstants.V_USER));
-		dataObj.setInitialScore(getString(cursor, DBConstants.V_INITIAL_SCORE));
-		dataObj.setLastScore(getString(cursor, DBConstants.V_LAST_SCORE));
-		dataObj.setLegalPositionCheck(getString(cursor, DBConstants.V_LEGAL_POSITION_CHECK));
-		dataObj.setLegalMoveCheck(getString(cursor, DBConstants.V_LEGAL_MOVE_CHECK));
-		dataObj.setLessonCompleted(getInt(cursor, DBConstants.V_LESSON_COMPLETED) > 0);
+		dataObj.setLessonId(getLong(cursor, DbConstants.V_ID));
+		dataObj.setCurrentPosition(getInt(cursor, DbConstants.V_CURRENT_POSITION));
+		dataObj.setCurrentPoints(getInt(cursor, DbConstants.V_CURRENT_POINTS));
+		dataObj.setCurrentPositionPoints(Float.valueOf(getString(cursor, DbConstants.V_CURRENT_POSITION_POINTS)));
+		dataObj.setUsername(getString(cursor, DbConstants.V_USER));
+		dataObj.setInitialScore(getString(cursor, DbConstants.V_INITIAL_SCORE));
+		dataObj.setLastScore(getString(cursor, DbConstants.V_LAST_SCORE));
+		dataObj.setLegalPositionCheck(getString(cursor, DbConstants.V_LEGAL_POSITION_CHECK));
+		dataObj.setLegalMoveCheck(getString(cursor, DbConstants.V_LEGAL_MOVE_CHECK));
+		dataObj.setLessonCompleted(getInt(cursor, DbConstants.V_LESSON_COMPLETED) > 0);
 
 		return dataObj;
 	}
@@ -1299,9 +1379,9 @@ public class DBDataManager {
 	public static ContentValues putVideoViewedItemToValues(VideoViewedItem dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_USER, dataObj.getUsername());
-		values.put(DBConstants.V_ID, dataObj.getVideoId());
-		values.put(DBConstants.V_VIDEO_VIEWED, dataObj.isViewed() ? 1 : 0);
+		values.put(DbConstants.V_USER, dataObj.getUsername());
+		values.put(DbConstants.V_ID, dataObj.getVideoId());
+		values.put(DbConstants.V_VIDEO_VIEWED, dataObj.isViewed() ? 1 : 0);
 
 		return values;
 	}
@@ -1310,9 +1390,9 @@ public class DBDataManager {
 		ContentValues values = new ContentValues();
 
 
-		values.put(DBConstants.V_NAME, dataObj.getName());
-		values.put(DBConstants.V_CATEGORY_ID, dataObj.getId());
-		values.put(DBConstants.V_DISPLAY_ORDER, dataObj.getDisplayOrder());
+		values.put(DbConstants.V_NAME, dataObj.getName());
+		values.put(DbConstants.V_CATEGORY_ID, dataObj.getId());
+		values.put(DbConstants.V_DISPLAY_ORDER, dataObj.getDisplayOrder());
 
 		return values;
 	}
@@ -1321,17 +1401,17 @@ public class DBDataManager {
 	public static ContentValues putConversationItemToValues(ConversationItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_ID, dataObj.getId());
-		values.put(DBConstants.V_OTHER_USER_ID, dataObj.getOtherUserId());
-		values.put(DBConstants.V_LAST_MESSAGE_ID, dataObj.getLastMessageId());
-		values.put(DBConstants.V_LAST_MESSAGE_CREATED_AT, dataObj.getLastMessageCreatedAt());
-		values.put(DBConstants.V_OTHER_USER_IS_ONLINE, dataObj.isOtherUserIsOnline() ? 1 : 0);
-		values.put(DBConstants.V_NEW_MESSAGES_COUNT, dataObj.getNewMessagesCount());
-		values.put(DBConstants.V_USER, dataObj.getUser());
-		values.put(DBConstants.V_OTHER_USER_USERNAME, dataObj.getOtherUserUsername());
-		values.put(DBConstants.V_OTHER_USER_AVATAR_URL, dataObj.getOtherUserAvatarUrl());
-		values.put(DBConstants.V_LAST_MESSAGE_SENDER_USERNAME, dataObj.getLastMessageSenderUsername());
-		values.put(DBConstants.V_LAST_MESSAGE_CONTENT, dataObj.getLastMessageContent());
+		values.put(DbConstants.V_ID, dataObj.getId());
+		values.put(DbConstants.V_OTHER_USER_ID, dataObj.getOtherUserId());
+		values.put(DbConstants.V_LAST_MESSAGE_ID, dataObj.getLastMessageId());
+		values.put(DbConstants.V_LAST_MESSAGE_CREATED_AT, dataObj.getLastMessageCreatedAt());
+		values.put(DbConstants.V_OTHER_USER_IS_ONLINE, dataObj.isOtherUserIsOnline() ? 1 : 0);
+		values.put(DbConstants.V_NEW_MESSAGES_COUNT, dataObj.getNewMessagesCount());
+		values.put(DbConstants.V_USER, dataObj.getUser());
+		values.put(DbConstants.V_OTHER_USER_USERNAME, dataObj.getOtherUserUsername());
+		values.put(DbConstants.V_OTHER_USER_AVATAR_URL, dataObj.getOtherUserAvatarUrl());
+		values.put(DbConstants.V_LAST_MESSAGE_SENDER_USERNAME, dataObj.getLastMessageSenderUsername());
+		values.put(DbConstants.V_LAST_MESSAGE_CONTENT, dataObj.getLastMessageContent());
 
 		return values;
 	}
@@ -1339,15 +1419,15 @@ public class DBDataManager {
 	public static ContentValues putMessagesItemToValues(MessagesItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_ID, dataObj.getId());
-		values.put(DBConstants.V_CONVERSATION_ID, dataObj.getConversationId());
-		values.put(DBConstants.V_OTHER_USER_ID, dataObj.getSenderId());
-		values.put(DBConstants.V_CREATE_DATE, dataObj.getCreatedAt());
-		values.put(DBConstants.V_OTHER_USER_IS_ONLINE, dataObj.isSenderIsOnline() ? 1 : 0);
-		values.put(DBConstants.V_USER, dataObj.getUser());
-		values.put(DBConstants.V_OTHER_USER_USERNAME, dataObj.getSenderUsername());
-		values.put(DBConstants.V_OTHER_USER_AVATAR_URL, dataObj.getSenderAvatarUrl());
-		values.put(DBConstants.V_LAST_MESSAGE_CONTENT, dataObj.getContent());
+		values.put(DbConstants.V_ID, dataObj.getId());
+		values.put(DbConstants.V_CONVERSATION_ID, dataObj.getConversationId());
+		values.put(DbConstants.V_OTHER_USER_ID, dataObj.getSenderId());
+		values.put(DbConstants.V_CREATE_DATE, dataObj.getCreatedAt());
+		values.put(DbConstants.V_OTHER_USER_IS_ONLINE, dataObj.isSenderIsOnline() ? 1 : 0);
+		values.put(DbConstants.V_USER, dataObj.getUser());
+		values.put(DbConstants.V_OTHER_USER_USERNAME, dataObj.getSenderUsername());
+		values.put(DbConstants.V_OTHER_USER_AVATAR_URL, dataObj.getSenderAvatarUrl());
+		values.put(DbConstants.V_LAST_MESSAGE_CONTENT, dataObj.getContent());
 
 		return values;
 	}
@@ -1358,18 +1438,18 @@ public class DBDataManager {
 	public static ContentValues putUserStatsLiveItemToValues(UserLiveStatsData.Stats dataObj, String user) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_USER, user);
-		values.put(DBConstants.V_CURRENT, dataObj.getRating().getCurrent());
-		values.put(DBConstants.V_HIGHEST_RATING, dataObj.getRating().getHighest().getRating());
-		values.put(DBConstants.V_HIGHEST_TIMESTAMP, dataObj.getRating().getHighest().getTimestamp());
-		values.put(DBConstants.V_BEST_WIN_RATING, dataObj.getRating().getBestWin().getRating());
-		values.put(DBConstants.V_BEST_WIN_USERNAME, dataObj.getRating().getBestWin().getUsername());
-		values.put(DBConstants.V_AVERAGE_OPPONENT, dataObj.getRating().getAverageOpponent());
+		values.put(DbConstants.V_USER, user);
+		values.put(DbConstants.V_CURRENT, dataObj.getRating().getCurrent());
+		values.put(DbConstants.V_HIGHEST_RATING, dataObj.getRating().getHighest().getRating());
+		values.put(DbConstants.V_HIGHEST_TIMESTAMP, dataObj.getRating().getHighest().getTimestamp());
+		values.put(DbConstants.V_BEST_WIN_RATING, dataObj.getRating().getBestWin().getRating());
+		values.put(DbConstants.V_BEST_WIN_USERNAME, dataObj.getRating().getBestWin().getUsername());
+		values.put(DbConstants.V_AVERAGE_OPPONENT, dataObj.getRating().getAverageOpponent());
 
-		values.put(DBConstants.V_GAMES_TOTAL, dataObj.getGames().getTotal());
-		values.put(DBConstants.V_GAMES_WINS, dataObj.getGames().getWins());
-		values.put(DBConstants.V_GAMES_LOSSES, dataObj.getGames().getLosses());
-		values.put(DBConstants.V_GAMES_DRAWS, dataObj.getGames().getDraws());
+		values.put(DbConstants.V_GAMES_TOTAL, dataObj.getGames().getTotal());
+		values.put(DbConstants.V_GAMES_WINS, dataObj.getGames().getWins());
+		values.put(DbConstants.V_GAMES_LOSSES, dataObj.getGames().getLosses());
+		values.put(DbConstants.V_GAMES_DRAWS, dataObj.getGames().getDraws());
 
 		return values;
 	}
@@ -1377,24 +1457,24 @@ public class DBDataManager {
 	public static ContentValues putUserStatsDailyItemToValues(UserDailyStatsData.ChessStatsData dataObj, String user) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_USER, user);
-		values.put(DBConstants.V_CURRENT, dataObj.getRating().getCurrent());
-		values.put(DBConstants.V_HIGHEST_RATING, dataObj.getRating().getHighest().getRating());
-		values.put(DBConstants.V_HIGHEST_TIMESTAMP, dataObj.getRating().getHighest().getTimestamp());
+		values.put(DbConstants.V_USER, user);
+		values.put(DbConstants.V_CURRENT, dataObj.getRating().getCurrent());
+		values.put(DbConstants.V_HIGHEST_RATING, dataObj.getRating().getHighest().getRating());
+		values.put(DbConstants.V_HIGHEST_TIMESTAMP, dataObj.getRating().getHighest().getTimestamp());
 
-		values.put(DBConstants.V_BEST_WIN_RATING, dataObj.getRating().getBestWin().getRating());
-		values.put(DBConstants.V_BEST_WIN_GAME_ID, dataObj.getRating().getBestWin().getGameId());
-		values.put(DBConstants.V_BEST_WIN_USERNAME, dataObj.getRating().getBestWin().getUsername());
-		values.put(DBConstants.V_AVERAGE_OPPONENT, dataObj.getRating().getAverageOpponent());
-		values.put(DBConstants.V_RANK, dataObj.getRating().getTodaysRank().getRank());
-		values.put(DBConstants.V_TOTAL_PLAYER_COUNT, dataObj.getRating().getTodaysRank().getTotalPlayerCount());
-		values.put(DBConstants.V_TIMEOUTS, dataObj.getTimeouts());
-		values.put(DBConstants.V_TIME_PER_MOVE, dataObj.getTimePerMove());
+		values.put(DbConstants.V_BEST_WIN_RATING, dataObj.getRating().getBestWin().getRating());
+		values.put(DbConstants.V_BEST_WIN_GAME_ID, dataObj.getRating().getBestWin().getGameId());
+		values.put(DbConstants.V_BEST_WIN_USERNAME, dataObj.getRating().getBestWin().getUsername());
+		values.put(DbConstants.V_AVERAGE_OPPONENT, dataObj.getRating().getAverageOpponent());
+		values.put(DbConstants.V_RANK, dataObj.getRating().getTodaysRank().getRank());
+		values.put(DbConstants.V_TOTAL_PLAYER_COUNT, dataObj.getRating().getTodaysRank().getTotalPlayerCount());
+		values.put(DbConstants.V_TIMEOUTS, dataObj.getTimeouts());
+		values.put(DbConstants.V_TIME_PER_MOVE, dataObj.getTimePerMove());
 
-		values.put(DBConstants.V_GAMES_TOTAL, dataObj.getGames().getTotal());
-		values.put(DBConstants.V_GAMES_WINS, dataObj.getGames().getWins());
-		values.put(DBConstants.V_GAMES_LOSSES, dataObj.getGames().getLosses());
-		values.put(DBConstants.V_GAMES_DRAWS, dataObj.getGames().getDraws());
+		values.put(DbConstants.V_GAMES_TOTAL, dataObj.getGames().getTotal());
+		values.put(DbConstants.V_GAMES_WINS, dataObj.getGames().getWins());
+		values.put(DbConstants.V_GAMES_LOSSES, dataObj.getGames().getLosses());
+		values.put(DbConstants.V_GAMES_DRAWS, dataObj.getGames().getDraws());
 
 		return values;
 	}
@@ -1402,19 +1482,19 @@ public class DBDataManager {
 	public static ContentValues putUserStatsTacticsItemToValues(UserTacticsStatsData dataObj, String user) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_USER, user);
-		values.put(DBConstants.V_CURRENT, dataObj.getCurrent());
-		values.put(DBConstants.V_HIGHEST_RATING, dataObj.getHighest().getRating());
-		values.put(DBConstants.V_HIGHEST_TIMESTAMP, dataObj.getHighest().getTimestamp());
-		values.put(DBConstants.V_LOWEST_RATING, dataObj.getLowest().getRating());
-		values.put(DBConstants.V_LOWEST_TIMESTAMP, dataObj.getLowest().getTimestamp());
+		values.put(DbConstants.V_USER, user);
+		values.put(DbConstants.V_CURRENT, dataObj.getCurrent());
+		values.put(DbConstants.V_HIGHEST_RATING, dataObj.getHighest().getRating());
+		values.put(DbConstants.V_HIGHEST_TIMESTAMP, dataObj.getHighest().getTimestamp());
+		values.put(DbConstants.V_LOWEST_RATING, dataObj.getLowest().getRating());
+		values.put(DbConstants.V_LOWEST_TIMESTAMP, dataObj.getLowest().getTimestamp());
 
-		values.put(DBConstants.V_ATTEMPT_COUNT, dataObj.getAttemptCount());
-		values.put(DBConstants.V_PASSED_COUNT, dataObj.getPassedCount());
-		values.put(DBConstants.V_FAILED_COUNT, dataObj.getFailedCount());
-		values.put(DBConstants.V_TOTAL_SECONDS, dataObj.getTotalSeconds());
-		values.put(DBConstants.V_TODAYS_ATTEMPTS, dataObj.getTodaysAttemps());
-		values.put(DBConstants.V_TODAYS_AVG_SCORE, dataObj.getTodaysAvgScore());
+		values.put(DbConstants.V_ATTEMPT_COUNT, dataObj.getAttemptCount());
+		values.put(DbConstants.V_PASSED_COUNT, dataObj.getPassedCount());
+		values.put(DbConstants.V_FAILED_COUNT, dataObj.getFailedCount());
+		values.put(DbConstants.V_TOTAL_SECONDS, dataObj.getTotalSeconds());
+		values.put(DbConstants.V_TODAYS_ATTEMPTS, dataObj.getTodaysAttemps());
+		values.put(DbConstants.V_TODAYS_AVG_SCORE, dataObj.getTodaysAvgScore());
 
 		return values;
 	}
@@ -1422,17 +1502,17 @@ public class DBDataManager {
 	public static ContentValues putUserStatsChessMentorItemToValues(UserChessMentorStatsData.Rating dataObj, String user) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_USER, user);
-		values.put(DBConstants.V_CURRENT, dataObj.getCurrent());
-		values.put(DBConstants.V_HIGHEST_RATING, dataObj.getHighest().getRating());
-		values.put(DBConstants.V_HIGHEST_TIMESTAMP, dataObj.getHighest().getTimestamp());
-		values.put(DBConstants.V_LOWEST_RATING, dataObj.getLowest().getRating());
-		values.put(DBConstants.V_LOWEST_TIMESTAMP, dataObj.getLowest().getTimestamp());
+		values.put(DbConstants.V_USER, user);
+		values.put(DbConstants.V_CURRENT, dataObj.getCurrent());
+		values.put(DbConstants.V_HIGHEST_RATING, dataObj.getHighest().getRating());
+		values.put(DbConstants.V_HIGHEST_TIMESTAMP, dataObj.getHighest().getTimestamp());
+		values.put(DbConstants.V_LOWEST_RATING, dataObj.getLowest().getRating());
+		values.put(DbConstants.V_LOWEST_TIMESTAMP, dataObj.getLowest().getTimestamp());
 
-		values.put(DBConstants.V_LESSONS_TRIED, dataObj.getLessonsTried());
-		values.put(DBConstants.V_TOTAL_LESSON_COUNT, dataObj.getTotalLessonCount());
-		values.put(DBConstants.V_LESSON_COMPLETE_PERCENTAGE, dataObj.getLessonCompletePercentage());
-		values.put(DBConstants.V_TOTAL_TRAINING_SECONDS, dataObj.getTotalTrainingSeconds());
+		values.put(DbConstants.V_LESSONS_TRIED, dataObj.getLessonsTried());
+		values.put(DbConstants.V_TOTAL_LESSON_COUNT, dataObj.getTotalLessonCount());
+		values.put(DbConstants.V_LESSON_COMPLETE_PERCENTAGE, dataObj.getLessonCompletePercentage());
+		values.put(DbConstants.V_TOTAL_TRAINING_SECONDS, dataObj.getTotalTrainingSeconds());
 
 		return values;
 	}
@@ -1440,53 +1520,53 @@ public class DBDataManager {
 	public static ContentValues putGameStatsLiveItemToValues(GameStatsItem.Data dataObj, String user) {
 		ContentValues values = new ContentValues();
 
-		values.put(DBConstants.V_USER, user);
-		values.put(DBConstants.V_CURRENT, dataObj.getRating().getCurrent());
-		values.put(DBConstants.V_RANK, dataObj.getRating().getTodaysRank().getRank());
-		values.put(DBConstants.V_TOTAL_PLAYER_COUNT, dataObj.getRating().getTodaysRank().getTotalPlayerCount());
-		values.put(DBConstants.V_PERCENTILE, dataObj.getRating().getPercentile());
-		values.put(DBConstants.V_GLICKO_RD, dataObj.getRating().getGlickoRd());
+		values.put(DbConstants.V_USER, user);
+		values.put(DbConstants.V_CURRENT, dataObj.getRating().getCurrent());
+		values.put(DbConstants.V_RANK, dataObj.getRating().getTodaysRank().getRank());
+		values.put(DbConstants.V_TOTAL_PLAYER_COUNT, dataObj.getRating().getTodaysRank().getTotalPlayerCount());
+		values.put(DbConstants.V_PERCENTILE, dataObj.getRating().getPercentile());
+		values.put(DbConstants.V_GLICKO_RD, dataObj.getRating().getGlickoRd());
 
-		values.put(DBConstants.V_HIGHEST_RATING, dataObj.getRating().getHighest().getRating());
-		values.put(DBConstants.V_HIGHEST_TIMESTAMP, dataObj.getRating().getHighest().getTimestamp());
-		values.put(DBConstants.V_LOWEST_RATING, dataObj.getRating().getLowest().getRating());
-		values.put(DBConstants.V_LOWEST_TIMESTAMP, dataObj.getRating().getLowest().getTimestamp());
-		values.put(DBConstants.V_AVERAGE_OPPONENT, dataObj.getRating().getAverageOpponent());
+		values.put(DbConstants.V_HIGHEST_RATING, dataObj.getRating().getHighest().getRating());
+		values.put(DbConstants.V_HIGHEST_TIMESTAMP, dataObj.getRating().getHighest().getTimestamp());
+		values.put(DbConstants.V_LOWEST_RATING, dataObj.getRating().getLowest().getRating());
+		values.put(DbConstants.V_LOWEST_TIMESTAMP, dataObj.getRating().getLowest().getTimestamp());
+		values.put(DbConstants.V_AVERAGE_OPPONENT, dataObj.getRating().getAverageOpponent());
 
-		values.put(DBConstants.V_BEST_WIN_RATING, dataObj.getRating().getBestWin().getRating());
-		values.put(DBConstants.V_BEST_WIN_GAME_ID, dataObj.getRating().getBestWin().getGameId());
-		values.put(DBConstants.V_BEST_WIN_USERNAME, dataObj.getRating().getBestWin().getUsername());
-		values.put(DBConstants.V_AVG_OPPONENT_RATING_WIN, dataObj.getRating().getAverageOpponentRating().getWin());
-		values.put(DBConstants.V_AVG_OPPONENT_RATING_LOSE, dataObj.getRating().getAverageOpponentRating().getLose());
-		values.put(DBConstants.V_AVG_OPPONENT_RATING_DRAW, dataObj.getRating().getAverageOpponentRating().getDraw());
-		values.put(DBConstants.V_UNRATED, dataObj.getGames().getUnrated());
-		values.put(DBConstants.V_IN_PROGRESS, dataObj.getGames().getInProgress());
-		values.put(DBConstants.V_TIMEOUTS, dataObj.getGames().getTimeoutPercent());
+		values.put(DbConstants.V_BEST_WIN_RATING, dataObj.getRating().getBestWin().getRating());
+		values.put(DbConstants.V_BEST_WIN_GAME_ID, dataObj.getRating().getBestWin().getGameId());
+		values.put(DbConstants.V_BEST_WIN_USERNAME, dataObj.getRating().getBestWin().getUsername());
+		values.put(DbConstants.V_AVG_OPPONENT_RATING_WIN, dataObj.getRating().getAverageOpponentRating().getWin());
+		values.put(DbConstants.V_AVG_OPPONENT_RATING_LOSE, dataObj.getRating().getAverageOpponentRating().getLose());
+		values.put(DbConstants.V_AVG_OPPONENT_RATING_DRAW, dataObj.getRating().getAverageOpponentRating().getDraw());
+		values.put(DbConstants.V_UNRATED, dataObj.getGames().getUnrated());
+		values.put(DbConstants.V_IN_PROGRESS, dataObj.getGames().getInProgress());
+		values.put(DbConstants.V_TIMEOUTS, dataObj.getGames().getTimeoutPercent());
 
-		values.put(DBConstants.V_GAMES_TOTAL, dataObj.getGames().getTotal());
-		values.put(DBConstants.V_GAMES_BLACK, dataObj.getGames().getBlack());
-		values.put(DBConstants.V_GAMES_WHITE, dataObj.getGames().getWhite());
+		values.put(DbConstants.V_GAMES_TOTAL, dataObj.getGames().getTotal());
+		values.put(DbConstants.V_GAMES_BLACK, dataObj.getGames().getBlack());
+		values.put(DbConstants.V_GAMES_WHITE, dataObj.getGames().getWhite());
 
-		values.put(DBConstants.V_WINS_TOTAL, dataObj.getGames().getWins().getTotal());
-		values.put(DBConstants.V_WINS_WHITE, dataObj.getGames().getWins().getWhite());
-		values.put(DBConstants.V_WINS_BLACK, dataObj.getGames().getWins().getBlack());
+		values.put(DbConstants.V_WINS_TOTAL, dataObj.getGames().getWins().getTotal());
+		values.put(DbConstants.V_WINS_WHITE, dataObj.getGames().getWins().getWhite());
+		values.put(DbConstants.V_WINS_BLACK, dataObj.getGames().getWins().getBlack());
 
-		values.put(DBConstants.V_LOSSES_TOTAL, dataObj.getGames().getLosses().getTotal());
-		values.put(DBConstants.V_LOSSES_WHITE, dataObj.getGames().getLosses().getWhite());
-		values.put(DBConstants.V_LOSSES_BLACK, dataObj.getGames().getLosses().getBlack());
+		values.put(DbConstants.V_LOSSES_TOTAL, dataObj.getGames().getLosses().getTotal());
+		values.put(DbConstants.V_LOSSES_WHITE, dataObj.getGames().getLosses().getWhite());
+		values.put(DbConstants.V_LOSSES_BLACK, dataObj.getGames().getLosses().getBlack());
 
-		values.put(DBConstants.V_DRAWS_TOTAL, dataObj.getGames().getDraws().getTotal());
-		values.put(DBConstants.V_DRAWS_WHITE, dataObj.getGames().getDraws().getWhite());
-		values.put(DBConstants.V_DRAWS_BLACK, dataObj.getGames().getDraws().getBlack());
+		values.put(DbConstants.V_DRAWS_TOTAL, dataObj.getGames().getDraws().getTotal());
+		values.put(DbConstants.V_DRAWS_WHITE, dataObj.getGames().getDraws().getWhite());
+		values.put(DbConstants.V_DRAWS_BLACK, dataObj.getGames().getDraws().getBlack());
 
-		values.put(DBConstants.V_WINNING_STREAK, dataObj.getGames().getWinningStreak());
-		values.put(DBConstants.V_LOSING_STREAK, dataObj.getGames().getLosingStreak());
+		values.put(DbConstants.V_WINNING_STREAK, dataObj.getGames().getWinningStreak());
+		values.put(DbConstants.V_LOSING_STREAK, dataObj.getGames().getLosingStreak());
 		if (dataObj.getGames().getMostFrequentOpponent() != null) {
-			values.put(DBConstants.V_FREQUENT_OPPONENT_NAME, dataObj.getGames().getMostFrequentOpponent().getUsername());
-			values.put(DBConstants.V_FREQUENT_OPPONENT_GAMES_PLAYED, dataObj.getGames().getMostFrequentOpponent().getGamesPlayed());
+			values.put(DbConstants.V_FREQUENT_OPPONENT_NAME, dataObj.getGames().getMostFrequentOpponent().getUsername());
+			values.put(DbConstants.V_FREQUENT_OPPONENT_GAMES_PLAYED, dataObj.getGames().getMostFrequentOpponent().getGamesPlayed());
 		} else {
-			values.put(DBConstants.V_FREQUENT_OPPONENT_NAME, StaticData.SYMBOL_EMPTY);
-			values.put(DBConstants.V_FREQUENT_OPPONENT_GAMES_PLAYED, 0);
+			values.put(DbConstants.V_FREQUENT_OPPONENT_NAME, StaticData.SYMBOL_EMPTY);
+			values.put(DbConstants.V_FREQUENT_OPPONENT_GAMES_PLAYED, 0);
 		}
 
 		return values;
@@ -1496,60 +1576,60 @@ public class DBDataManager {
 		ContentValues values = new ContentValues();
 
 
-		values.put(DBConstants.V_USER, user);
+		values.put(DbConstants.V_USER, user);
 		GameStatsItem.GameRating rating = dataObj.getRating();
 		if (rating != null) {
-			values.put(DBConstants.V_CURRENT, rating.getCurrent());
-			values.put(DBConstants.V_RANK, rating.getTodaysRank().getRank());
-			values.put(DBConstants.V_TOTAL_PLAYER_COUNT, rating.getTodaysRank().getTotalPlayerCount());
-			values.put(DBConstants.V_PERCENTILE, rating.getPercentile());
-			values.put(DBConstants.V_GLICKO_RD, rating.getGlickoRd());
+			values.put(DbConstants.V_CURRENT, rating.getCurrent());
+			values.put(DbConstants.V_RANK, rating.getTodaysRank().getRank());
+			values.put(DbConstants.V_TOTAL_PLAYER_COUNT, rating.getTodaysRank().getTotalPlayerCount());
+			values.put(DbConstants.V_PERCENTILE, rating.getPercentile());
+			values.put(DbConstants.V_GLICKO_RD, rating.getGlickoRd());
 
-			values.put(DBConstants.V_HIGHEST_RATING, rating.getHighest().getRating());
-			values.put(DBConstants.V_HIGHEST_TIMESTAMP, rating.getHighest().getTimestamp());
-			values.put(DBConstants.V_LOWEST_RATING, rating.getLowest().getRating());
-			values.put(DBConstants.V_LOWEST_TIMESTAMP, rating.getLowest().getTimestamp());
-			values.put(DBConstants.V_AVERAGE_OPPONENT, rating.getAverageOpponent());
+			values.put(DbConstants.V_HIGHEST_RATING, rating.getHighest().getRating());
+			values.put(DbConstants.V_HIGHEST_TIMESTAMP, rating.getHighest().getTimestamp());
+			values.put(DbConstants.V_LOWEST_RATING, rating.getLowest().getRating());
+			values.put(DbConstants.V_LOWEST_TIMESTAMP, rating.getLowest().getTimestamp());
+			values.put(DbConstants.V_AVERAGE_OPPONENT, rating.getAverageOpponent());
 
-			values.put(DBConstants.V_BEST_WIN_RATING, rating.getBestWin().getRating());
-			values.put(DBConstants.V_BEST_WIN_GAME_ID, rating.getBestWin().getGameId());
-			values.put(DBConstants.V_BEST_WIN_USERNAME, rating.getBestWin().getUsername());
-			values.put(DBConstants.V_AVG_OPPONENT_RATING_WIN, rating.getAverageOpponentRating().getWin());
-			values.put(DBConstants.V_AVG_OPPONENT_RATING_LOSE, rating.getAverageOpponentRating().getLose());
-			values.put(DBConstants.V_AVG_OPPONENT_RATING_DRAW, rating.getAverageOpponentRating().getDraw());
+			values.put(DbConstants.V_BEST_WIN_RATING, rating.getBestWin().getRating());
+			values.put(DbConstants.V_BEST_WIN_GAME_ID, rating.getBestWin().getGameId());
+			values.put(DbConstants.V_BEST_WIN_USERNAME, rating.getBestWin().getUsername());
+			values.put(DbConstants.V_AVG_OPPONENT_RATING_WIN, rating.getAverageOpponentRating().getWin());
+			values.put(DbConstants.V_AVG_OPPONENT_RATING_LOSE, rating.getAverageOpponentRating().getLose());
+			values.put(DbConstants.V_AVG_OPPONENT_RATING_DRAW, rating.getAverageOpponentRating().getDraw());
 		}
 
 		GameStatsItem.Games games = dataObj.getGames();
 		if (games != null) {
-			values.put(DBConstants.V_UNRATED, games.getUnrated());
-			values.put(DBConstants.V_IN_PROGRESS, games.getInProgress());
-			values.put(DBConstants.V_TIMEOUTS, games.getTimeoutPercent());
+			values.put(DbConstants.V_UNRATED, games.getUnrated());
+			values.put(DbConstants.V_IN_PROGRESS, games.getInProgress());
+			values.put(DbConstants.V_TIMEOUTS, games.getTimeoutPercent());
 
-			values.put(DBConstants.V_GAMES_TOTAL, games.getTotal());
-			values.put(DBConstants.V_GAMES_BLACK, games.getBlack());
-			values.put(DBConstants.V_GAMES_WHITE, games.getWhite());
+			values.put(DbConstants.V_GAMES_TOTAL, games.getTotal());
+			values.put(DbConstants.V_GAMES_BLACK, games.getBlack());
+			values.put(DbConstants.V_GAMES_WHITE, games.getWhite());
 
-			values.put(DBConstants.V_WINS_TOTAL, games.getWins().getTotal());
-			values.put(DBConstants.V_WINS_WHITE, games.getWins().getWhite());
-			values.put(DBConstants.V_WINS_BLACK, games.getWins().getBlack());
+			values.put(DbConstants.V_WINS_TOTAL, games.getWins().getTotal());
+			values.put(DbConstants.V_WINS_WHITE, games.getWins().getWhite());
+			values.put(DbConstants.V_WINS_BLACK, games.getWins().getBlack());
 
-			values.put(DBConstants.V_LOSSES_TOTAL, games.getLosses().getTotal());
-			values.put(DBConstants.V_LOSSES_WHITE, games.getLosses().getWhite());
-			values.put(DBConstants.V_LOSSES_BLACK, games.getLosses().getBlack());
+			values.put(DbConstants.V_LOSSES_TOTAL, games.getLosses().getTotal());
+			values.put(DbConstants.V_LOSSES_WHITE, games.getLosses().getWhite());
+			values.put(DbConstants.V_LOSSES_BLACK, games.getLosses().getBlack());
 
-			values.put(DBConstants.V_DRAWS_TOTAL, games.getDraws().getTotal());
-			values.put(DBConstants.V_DRAWS_WHITE, games.getDraws().getWhite());
-			values.put(DBConstants.V_DRAWS_BLACK, games.getDraws().getBlack());
+			values.put(DbConstants.V_DRAWS_TOTAL, games.getDraws().getTotal());
+			values.put(DbConstants.V_DRAWS_WHITE, games.getDraws().getWhite());
+			values.put(DbConstants.V_DRAWS_BLACK, games.getDraws().getBlack());
 
-			values.put(DBConstants.V_WINNING_STREAK, games.getWinningStreak());
-			values.put(DBConstants.V_LOSING_STREAK, games.getLosingStreak());
+			values.put(DbConstants.V_WINNING_STREAK, games.getWinningStreak());
+			values.put(DbConstants.V_LOSING_STREAK, games.getLosingStreak());
 
 			if (games.getMostFrequentOpponent() != null) {
-				values.put(DBConstants.V_FREQUENT_OPPONENT_NAME, games.getMostFrequentOpponent().getUsername());
-				values.put(DBConstants.V_FREQUENT_OPPONENT_GAMES_PLAYED, games.getMostFrequentOpponent().getGamesPlayed());
+				values.put(DbConstants.V_FREQUENT_OPPONENT_NAME, games.getMostFrequentOpponent().getUsername());
+				values.put(DbConstants.V_FREQUENT_OPPONENT_GAMES_PLAYED, games.getMostFrequentOpponent().getGamesPlayed());
 			} else {
-				values.put(DBConstants.V_FREQUENT_OPPONENT_NAME, StaticData.SYMBOL_EMPTY);
-				values.put(DBConstants.V_FREQUENT_OPPONENT_GAMES_PLAYED, 0);
+				values.put(DbConstants.V_FREQUENT_OPPONENT_NAME, StaticData.SYMBOL_EMPTY);
+				values.put(DbConstants.V_FREQUENT_OPPONENT_GAMES_PLAYED, 0);
 			}
 
 		}
@@ -1557,31 +1637,31 @@ public class DBDataManager {
 		Tournaments tournaments = dataObj.getTournaments();
 		if (tournaments != null) {
 			Tournaments.All tournamentsAll = tournaments.getAll();
-			values.put(DBConstants.V_TOURNAMENTS_LEADERBOARD_POINTS, tournamentsAll.getLeaderboardPoints());
-			values.put(DBConstants.V_TOURNAMENTS_EVENTS_ENTERED, tournamentsAll.getEventsEntered());
-			values.put(DBConstants.V_TOURNAMENTS_FIRST_PLACE_FINISHES, tournamentsAll.getFirstPlaceFinishes());
-			values.put(DBConstants.V_TOURNAMENTS_SECOND_PLACE_FINISHES, tournamentsAll.getSecondPlaceFinishes());
-			values.put(DBConstants.V_TOURNAMENTS_THIRD_PLACE_FINISHES, tournamentsAll.getThirdPlaceFinishes());
-			values.put(DBConstants.V_TOURNAMENTS_WITHDRAWALS, tournamentsAll.getWithdrawals());
-			values.put(DBConstants.V_TOURNAMENTS_HOSTED, tournamentsAll.getTournamentsHosted());
-			values.put(DBConstants.V_TOTAL_COUNT_PLAYERS_HOSTED, tournamentsAll.getTotalCountPlayersHosted());
+			values.put(DbConstants.V_TOURNAMENTS_LEADERBOARD_POINTS, tournamentsAll.getLeaderboardPoints());
+			values.put(DbConstants.V_TOURNAMENTS_EVENTS_ENTERED, tournamentsAll.getEventsEntered());
+			values.put(DbConstants.V_TOURNAMENTS_FIRST_PLACE_FINISHES, tournamentsAll.getFirstPlaceFinishes());
+			values.put(DbConstants.V_TOURNAMENTS_SECOND_PLACE_FINISHES, tournamentsAll.getSecondPlaceFinishes());
+			values.put(DbConstants.V_TOURNAMENTS_THIRD_PLACE_FINISHES, tournamentsAll.getThirdPlaceFinishes());
+			values.put(DbConstants.V_TOURNAMENTS_WITHDRAWALS, tournamentsAll.getWithdrawals());
+			values.put(DbConstants.V_TOURNAMENTS_HOSTED, tournamentsAll.getTournamentsHosted());
+			values.put(DbConstants.V_TOTAL_COUNT_PLAYERS_HOSTED, tournamentsAll.getTotalCountPlayersHosted());
 
 			Tournaments.Games tournamentsGames = tournaments.getGames();
-			values.put(DBConstants.V_TOURNAMENTS_GAMES_TOTAL, tournamentsGames.getTotal());
-			values.put(DBConstants.V_TOURNAMENTS_GAMES_WON, tournamentsGames.getWins());
-			values.put(DBConstants.V_TOURNAMENTS_GAMES_LOST, tournamentsGames.getLosses());
-			values.put(DBConstants.V_TOURNAMENTS_GAMES_DRAWN, tournamentsGames.getDraws());
-			values.put(DBConstants.V_TOURNAMENTS_GAMES_IN_PROGRESS, tournamentsGames.getInProgress());
+			values.put(DbConstants.V_TOURNAMENTS_GAMES_TOTAL, tournamentsGames.getTotal());
+			values.put(DbConstants.V_TOURNAMENTS_GAMES_WON, tournamentsGames.getWins());
+			values.put(DbConstants.V_TOURNAMENTS_GAMES_LOST, tournamentsGames.getLosses());
+			values.put(DbConstants.V_TOURNAMENTS_GAMES_DRAWN, tournamentsGames.getDraws());
+			values.put(DbConstants.V_TOURNAMENTS_GAMES_IN_PROGRESS, tournamentsGames.getInProgress());
 		}
 		return values;
 	}
 
 	public static GamesInfoByResult getGameStatsGamesByResultFromCursor(Cursor cursor) {
 		GamesInfoByResult tournamentGames = new GamesInfoByResult();
-		tournamentGames.setTotal(getInt(cursor, DBConstants.V_GAMES_TOTAL));
-		tournamentGames.setWins(getInt(cursor, DBConstants.V_WINS_TOTAL));
-		tournamentGames.setLosses(getInt(cursor, DBConstants.V_LOSSES_TOTAL));
-		tournamentGames.setDraws(getInt(cursor, DBConstants.V_DRAWS_TOTAL));
+		tournamentGames.setTotal(getInt(cursor, DbConstants.V_GAMES_TOTAL));
+		tournamentGames.setWins(getInt(cursor, DbConstants.V_WINS_TOTAL));
+		tournamentGames.setLosses(getInt(cursor, DbConstants.V_LOSSES_TOTAL));
+		tournamentGames.setDraws(getInt(cursor, DbConstants.V_DRAWS_TOTAL));
 		return tournamentGames;
 	}
 
@@ -1591,9 +1671,9 @@ public class DBDataManager {
 		arguments2[0] = userName;
 		arguments2[1] = String.valueOf(gameId);
 
-		Cursor cursor = resolver.query(DBConstants.uriArray[DBConstants.Tables.DAILY_CURRENT_GAMES.ordinal()],
+		Cursor cursor = resolver.query(DbConstants.uriArray[DbConstants.Tables.DAILY_CURRENT_GAMES.ordinal()],
 				PROJECTION_DAILY_DRAW_OFFERED, SELECTION_OPPONENT_OFFERED_DRAW, arguments2, null);
-		return cursor != null && cursor.moveToFirst() && getInt(cursor, DBConstants.V_OPPONENT_OFFERED_DRAW) > 0;
+		return cursor != null && cursor.moveToFirst() && getInt(cursor, DbConstants.V_OPPONENT_OFFERED_DRAW) > 0;
 	}
 
 	public static String getString(Cursor cursor, String column) {
@@ -1609,11 +1689,11 @@ public class DBDataManager {
 	}
 
 	public static long getId(Cursor cursor) {
-		return cursor.getLong(cursor.getColumnIndex(DBConstants._ID));
+		return cursor.getLong(cursor.getColumnIndex(DbConstants._ID));
 	}
 
 	public static int getDbVersion() {
-		return DBConstants.DATABASE_VERSION;
+		return DbConstants.DATABASE_VERSION;
 	}
 
 }
