@@ -38,6 +38,10 @@ public class CommonFeedCategoryItem extends BaseResponseItem<List<CommonFeedCate
 		public int getDisplayOrder() {
 			return display_order;
 		}
+
+		public void setDisplay_order(int display_order) {
+			this.display_order = display_order;
+		}
 	}
 
 }

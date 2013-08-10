@@ -24,7 +24,6 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 
 	private final long lessonId;
 	private ContentResolver contentResolver;
-	protected static String[] sArguments1 = new String[1];
 	protected static String[] sArguments2 = new String[2];
 	protected static String[] sArguments3 = new String[3];
 	private String username;
@@ -41,35 +40,16 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 	@Override
 	protected Integer doTheTask(Long... ids) {
 
-		saveMentorLesson(item.getLesson());
+
+		DbDataManager.saveMentorLessonToDb(contentResolver, item.getLesson(), lessonId);
+
 		saveLessonPositions(item.getPositions());
-		saveUserLesson(item.getUserLesson());
+
+		DbDataManager.saveUserLessonToDb(contentResolver, item.getUserLesson(), lessonId, username);
 
 		result = StaticData.RESULT_OK;
 
 		return result;
-	}
-
-	private void saveMentorLesson(LessonItem.MentorLesson mentorLesson) {
-		mentorLesson.setLessonId(lessonId);
-		final String[] arguments1 = sArguments1;
-		arguments1[0] = String.valueOf(mentorLesson.getLessonId());
-
-
-		// TODO implement beginTransaction logic for performance increase
-		Uri uri = DbConstants.uriArray[DbConstants.Tables.LESSONS_MENTOR_LESSONS.ordinal()];
-		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID,
-				DbDataManager.SELECTION_ITEM_ID, arguments1, null);
-
-		ContentValues values = DbDataManager.putLessonsMentorLessonToValues(mentorLesson);
-
-		if (cursor.moveToFirst()) {
-			contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-		} else {
-			contentResolver.insert(uri, values);
-		}
-
-		cursor.close();
 	}
 
 	private void saveLessonPositions(List<LessonItem.MentorPosition> positions) {
@@ -101,6 +81,9 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 	}
 
 	private void saveLessonPositionsMoves(List<LessonItem.MentorPosition.PossibleMove> moves, int positionNumber) {
+		// TODO remove temp solution after server will fix it
+
+		int i = 0;
 		for (LessonItem.MentorPosition.PossibleMove possibleMove : moves) {
 			possibleMove.setLessonId(lessonId);
 			possibleMove.setPositionNumber(positionNumber);
@@ -108,7 +91,8 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 			final String[] arguments = sArguments3;
 			arguments[0] = String.valueOf(possibleMove.getLessonId());
 			arguments[1] = String.valueOf(possibleMove.getPositionNumber());
-			arguments[2] = String.valueOf(possibleMove.getMoveNumber());
+//			arguments[2] = String.valueOf(possibleMove.getMoveNumber());
+			arguments[2] = String.valueOf(i++);
 
 
 			// TODO implement beginTransaction logic for performance increase
@@ -127,31 +111,5 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 			cursor.close();
 		}
 	}
-
-	private void saveUserLesson(LessonItem.UserLesson userLesson) {
-		userLesson.setLessonId(lessonId);
-		userLesson.setUsername(username);
-
-		final String[] arguments1 = sArguments2;
-		arguments1[0] = String.valueOf(userLesson.getLessonId());
-		arguments1[1] = username;
-
-
-		// TODO implement beginTransaction logic for performance increase
-		Uri uri = DbConstants.uriArray[DbConstants.Tables.LESSONS_USER_LESSONS.ordinal()];
-		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID_AND_USER,
-				DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments1, null);
-
-		ContentValues values = DbDataManager.putLessonsUserLessonToValues(userLesson);
-
-		if (cursor.moveToFirst()) {
-			contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-		} else {
-			contentResolver.insert(uri, values);
-		}
-
-		cursor.close();
-	}
-
 }
 

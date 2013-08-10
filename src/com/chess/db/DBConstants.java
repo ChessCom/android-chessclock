@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbConstants {
 
-    static final int DATABASE_VERSION = 45;  // change version on every DB scheme changes
+    static final int DATABASE_VERSION = 46;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -194,6 +194,7 @@ public class DbConstants {
 	public static final String V_INITIAL_SCORE			= "initial_score";
 	public static final String V_LAST_SCORE				= "last_score";
 	public static final String V_LESSON_COMPLETED 		= "lesson_completed";
+	public static final String V_LESSON_STARTED 		= "lesson_started";
 	public static final String V_LEGAL_POSITION_CHECK	= "legal_position_check";
 	public static final String V_LEGAL_MOVE_CHECK		= "legal_move_check";
 		/* Lesson Positions */
@@ -438,6 +439,7 @@ public class DbConstants {
 				+ addField_Int(V_ID)
 				+ addField_Long(V_CATEGORY_ID)
 				+ addField_Int(V_LESSON_COMPLETED)
+				+ addField_Int(V_LESSON_STARTED)
 				+ addField_Text(V_USER)
 				+ addField_Text(V_NAME, true);
 

@@ -15,21 +15,20 @@
 		android:layout_gravity="center"
 		android:textSize="@dimen/game_end_popup_text_size"
 		android:textColor="@color/new_subtitle_dark_grey"
-		android:text="@string/course_complete"
+		android:text="@string/lesson_complete"
 		android:paddingBottom="35dip"
 		custom:ttf="Bold"
 		/>
 
-	<!--Course title-->
+	<!--lesson title-->
 	<com.chess.RoboTextView
-		android:id="@+id/courseTitleTxt"
+		android:id="@+id/lessonTitleTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
 		android:gravity="center_horizontal"
 		android:textSize="17sp"
 		android:textColor="@color/new_author_dark_grey"
-		android:text="This is course TItle"
 		/>
 
 	<LinearLayout
@@ -53,7 +52,7 @@
 
 		<!--Score value-->
 		<com.chess.RoboTextView
-			android:id="@+id/coursePercentTxt"
+			android:id="@+id/lessonPercentTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
@@ -61,13 +60,12 @@
 			android:textSize="32sp"
 			android:textColor="@color/new_subtitle_dark_grey"
 			android:paddingLeft="7dip"
-			android:text="63%"
 			custom:ttf="Bold"
 			/>
 
 		</LinearLayout>
 
-	<!--Lesson/Course Rating-->
+	<!--Lesson Rating-->
 	<com.chess.RoboTextView
 		android:id="@+id/yourRatingTxt"
 		android:layout_width="wrap_content"
@@ -75,7 +73,7 @@
 		android:layout_gravity="center"
 		android:textColor="@color/new_author_dark_grey"
 		android:textSize="17sp"
-		android:text="@string/your_lessons_rating"
+		android:text="@string/your_lesson_rating"
 		custom:ttf="Bold"
 		/>
 
@@ -87,36 +85,35 @@
 		>
 		<!--Lessons rating value-->
 		<com.chess.RoboTextView
-			android:id="@+id/courseRatingTxt"
+			android:id="@+id/lessonRatingTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center_horizontal"
 			android:textSize="32sp"
 			android:textColor="@color/new_subtitle_dark_grey"
-			android:text="1456"
 			custom:ttf="Bold"
 			/>
 
-		<!--Lesson/Course Rating-->
+		<!--Lesson Rating-->
 		<com.chess.RoboTextView
-			android:id="@+id/courseRatingChangeTxt"
+			android:id="@+id/lessonRatingChangeTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:textColor="@color/new_subtitle_dark_grey"
 			android:textSize="@dimen/game_end_popup_text_size"
 			android:paddingLeft="10dip"
-			android:text="(+13)"
 			custom:ttf="Bold"
 			/>
 
 	</LinearLayout>
 
-	<FrameLayout
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="@color/default_button_overlay_p"
+		android:orientation="horizontal"
 		android:paddingLeft="33dip"
 		android:paddingTop="20dip"
 		android:paddingRight="33dip"
@@ -126,14 +123,27 @@
 		<!--Share-->
 		<com.chess.RoboButton
 			android:id="@+id/shareBtn"
-			android:layout_width="match_parent"
+			android:layout_width="0dip"
 			android:layout_height="wrap_content"
+			android:layout_weight="1"
 			style="@style/Button.Facebook"
 			android:text="@string/share"
 			android:drawableLeft="@null"
 			android:paddingLeft="20dip"
+			android:layout_marginRight="2dip"
 			/>
 
-	</FrameLayout>
+		<!--Next lesson-->
+		<com.chess.RoboButton
+			android:id="@+id/nextLessonBtn"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			style="@style/Button.OrangeNoBorder"
+			android:text="@string/next"
+			android:layout_marginLeft="2dip"
+			/>
+
+	</LinearLayout>
 
 </LinearLayout>

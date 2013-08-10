@@ -19,8 +19,6 @@
 
 	</FrameLayout>
 
-
-
 	<com.chess.RoboTextView
 		android:id="@+id/emptyView"
 		android:layout_width="wrap_content"
@@ -59,6 +57,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/topView"
+		android:layout_above="@+id/resumeLessonBtn"
 		android:divider="@null"
 		android:dividerHeight="0dip"
 		android:background="@android:color/transparent"
@@ -70,11 +69,26 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/topView"
+		android:layout_above="@+id/resumeLessonBtn"
 		android:divider="@null"
 		android:dividerHeight="0dip"
 		android:background="@android:color/transparent"
 		android:listSelector="@android:color/transparent"
 		android:cacheColorHint="@android:color/transparent"
+		/>
+
+	<com.chess.RoboButton
+		android:id="@id/resumeLessonBtn"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:minHeight="@dimen/big_button_height"
+		android:text="@string/resume_lesson"
+		android:textSize="@dimen/game_controls_text_size"
+		android:textColor="@color/white"
+		style="@style/Rect.Bottom.Right.Orange"
+		android:visibility="gone"
+		android:shadowColor="@color/transparent"
 		/>
 
 </RelativeLayout>

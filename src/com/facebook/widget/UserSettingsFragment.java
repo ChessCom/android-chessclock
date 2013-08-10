@@ -140,7 +140,7 @@ public class UserSettingsFragment extends FacebookFragment {
     public void onResume() {
         super.onResume();
         fetchUserInfo();
-        updateUI();
+        updateUiData();
     }
 
     /**
@@ -161,7 +161,7 @@ public class UserSettingsFragment extends FacebookFragment {
             loginButton.setSession(newSession);
         }
         fetchUserInfo();
-        updateUI();
+        updateUiData();
     }
 
     /**
@@ -313,7 +313,7 @@ public class UserSettingsFragment extends FacebookFragment {
     @Override
     protected void onSessionStateChange(SessionState state, Exception exception) {
         fetchUserInfo();
-        updateUI();
+        updateUiData();
 
         if (sessionStatusCallback != null) {
             sessionStatusCallback.call(getSession(), state, exception);
@@ -334,7 +334,7 @@ public class UserSettingsFragment extends FacebookFragment {
 					public void onCompleted(GraphUser me, Response response) {
 						if (currentSession == getSession()) {
 							user = me;
-							updateUI();
+							updateUiData();
 						}
 						if (response.getError() != null) {
 							loginButton.handleError(response.getError().getException());
@@ -352,7 +352,7 @@ public class UserSettingsFragment extends FacebookFragment {
         }
     }
     
-    private void updateUI() {
+    private void updateUiData() {
         if (!isAdded()) {
             return;
         }

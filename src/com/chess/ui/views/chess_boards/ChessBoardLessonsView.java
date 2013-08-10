@@ -148,9 +148,6 @@ public class ChessBoardLessonsView extends ChessBoardBaseView implements BoardVi
 
 		track = false;
 		if (!getBoardFace().isAnalysis()) {
-//			if (getBoardFace().isFinished()) // TODO probably never happens
-//				return true;
-
 			if (((LessonsBoardFace)getBoardFace()).isLatestMoveMadeUser()) {
 				return true;
 			}
@@ -195,7 +192,6 @@ public class ChessBoardLessonsView extends ChessBoardBaseView implements BoardVi
 
 	@Override
 	protected void afterUserMove() {
-
 		super.afterUserMove();
 
 		getBoardFace().setMovesCount(getBoardFace().getHply());

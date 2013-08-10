@@ -3,6 +3,8 @@ package com.chess.ui.fragments.lessons;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.SparseArray;
+import android.util.SparseBooleanArray;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +16,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
 import com.chess.backend.entity.new_api.LessonCourseListItem;
+import com.chess.backend.entity.new_api.LessonListItem;
 import com.chess.backend.entity.new_api.LessonsRatingItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -60,10 +63,14 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 	private boolean curriculumMode;
 	private LessonsGroupsListAdapter curriculumAdapter;
 	private SparseArray<String> categoriesArray;
+	private SparseIntArray categoriesOrder;
+
 	private LessonsRatingUpdateListener lessonsRatingUpdateListener;
-	private View headerView;
-	private View topView;
-	private boolean returned;
+	private TextView ratingTxt;
+	private TextView lessonsCntTxt;
+	private TextView coursesCntTxt;
+	private LessonListItem incompleteLesson;
+	private Button resumeLessonBtn;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -88,13 +95,17 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 		{ // Library mode init
 			listView = (ListView) view.findViewById(R.id.listView);
-			topView = view.findViewById(R.id.topView);
 			if (isNeedToUpgradePremium()) {
 				view.findViewById(R.id.lessonsStatsView).setVisibility(View.GONE);
 				view.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 			} else {
-				headerView = view.findViewById(R.id.lessonsStatsView);
+				View headerView = view.findViewById(R.id.lessonsStatsView);
+				ratingTxt = (TextView) headerView.findViewById(R.id.lessonsRatingTxt);
+				lessonsCntTxt = (TextView) headerView.findViewById(R.id.lessonsCompletedValueTxt);
+				coursesCntTxt = (TextView) headerView.findViewById(R.id.coursesCompletedValueTxt);
 				view.findViewById(R.id.upgradeView).setVisibility(View.GONE);
+
+				ratingTxt.setText(String.valueOf(getAppData().getUserLessonsRating()));
 			}
 
 			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_curriculum_footer, null, false);
@@ -116,6 +127,9 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 			expListView.setGroupIndicator(null);
 		}
 
+		resumeLessonBtn = (Button) view.findViewById(R.id.resumeLessonBtn);
+		resumeLessonBtn.setOnClickListener(this);
+
 		showLibrary();
 
 		// adjust action bar icons
@@ -133,10 +147,6 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		if (!isNeedToUpgradePremium()) {
 			LoadItem loadItem = LoadHelper.getLessonsRating(getUserToken());
 			new RequestJsonTask<LessonsRatingItem>(lessonsRatingUpdateListener).executeTask(loadItem);
-		}
-
-		if (!returned) {
-			topView.setVisibility(View.GONE);
 		}
 	}
 
@@ -217,6 +227,11 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 			getAppData().setUserChooseLessonsLibrary(false);
 			curriculumMode = true;
 			showLibrary();
+		} else if (v.getId() == R.id.resumeLessonBtn) {
+			int lessonId = incompleteLesson.getId();
+			long courseId = incompleteLesson.getCourseId();
+
+			getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
 		} else if (v.getId() == R.id.curriculumHeader) {
 			getAppData().setUserChooseLessonsLibrary(true);
 			curriculumMode = false;
@@ -226,7 +241,8 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-		int categoryId = curriculumItems.getCategories().keyAt(groupPosition);
+		int categoryId = curriculumItems.getDisplayOrder().get(groupPosition);
+//		int categoryId = curriculumItems.getCategories().keyAt(groupPosition);
 		int courseId = curriculumItems.getIds().get(categoryId).get(childPosition);
 		getActivityFace().openFragment(LessonsCourseFragment.createInstance(courseId, categoryId));
 		return false;
@@ -285,18 +301,20 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 	}
 
 	private void fillCategoriesList(Cursor cursor) {
-//		List<String> categories = new ArrayList<String>();
 		categoriesArray = new SparseArray<String>();
+		categoriesOrder = new SparseIntArray();
 
 		do {
 			int id = DbDataManager.getInt(cursor, DbConstants.V_CATEGORY_ID);
+			int displayOrder = DbDataManager.getInt(cursor, DbConstants.V_DISPLAY_ORDER);
 			String name = DbDataManager.getString(cursor, DbConstants.V_NAME);
 			categoriesArray.put(id, name);
-//			categories.add(name);
+			categoriesOrder.put(displayOrder, id);
 		} while (cursor.moveToNext());
-
+		cursor.close();
 
 		curriculumItems.setCategories(categoriesArray);
+		curriculumItems.setDisplayOrder(categoriesOrder);
 	}
 
 	private class LessonsCoursesUpdateListener extends CommonLogicFragment.ChessUpdateListener<LessonCourseListItem> {
@@ -374,12 +392,12 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		}
 
 		{ // Ids
-			SparseArray<SparseArray<Integer>> ids = new SparseArray<SparseArray<Integer>>();
+			SparseArray<SparseIntArray> ids = new SparseArray<SparseIntArray>();
 			for (int k = 0; k < categoriesCnt; k++) {
 				int categoryId = categoriesArray.keyAt(k);
 				List<LessonCourseListItem.Data> list = courseTable.get(categoryId);
 				int coursesCnt = list.size();
-				ids.put(categoryId, new SparseArray<Integer>());
+				ids.put(categoryId, new SparseIntArray());
 				for (int i = 0; i < coursesCnt; i++) {
 					LessonCourseListItem.Data data = list.get(i);
 					ids.get(categoryId).put(i, data.getId());
@@ -390,15 +408,15 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		}
 
 		{ // Completed Marks
-			boolean[][] completedMarks = new boolean[categoriesCnt][];
+			SparseArray<SparseBooleanArray> completedMarks = new SparseArray<SparseBooleanArray>();
 			for (int k = 0; k < categoriesCnt; k++) {
-				int categoryId = categoriesArray.keyAt(k);
+				int categoryId = categoriesOrder.get(k);
 				List<LessonCourseListItem.Data> list = courseTable.get(categoryId);
 				int coursesCnt = list.size();
-				completedMarks[k] = new boolean[coursesCnt];
+				completedMarks.put(categoryId, new SparseBooleanArray());
 				for (int i = 0; i < coursesCnt; i++) {
 					LessonCourseListItem.Data data = list.get(i);
-					completedMarks[k][i] = data.isCourseCompleted();
+					completedMarks.get(categoryId).put(i, data.isCourseCompleted());
 				}
 			}
 
@@ -408,6 +426,16 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		curriculumAdapter = new LessonsGroupsListAdapter(curriculumItems);
 		expListView.setAdapter(curriculumAdapter);
 
+		cursor.close();
+
+		// check if we have incomplete lessons
+		List<LessonListItem> incompleteLessons = DbDataManager.haveIncompleteLessons(getContentResolver(), getUsername());
+		if (incompleteLessons != null) {
+			incompleteLesson = incompleteLessons.get(0);
+			resumeLessonBtn.setVisibility(View.VISIBLE);
+		} else {
+			resumeLessonBtn.setVisibility(View.GONE);
+		}
 	}
 
 	private void showLoadingView(boolean show) {
@@ -459,19 +487,19 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 		@Override
 		public int getChildrenCount(int groupPosition) {
-			int categoryId = items.getTitles().keyAt(groupPosition);
+			int categoryId = items.getDisplayOrder().get(groupPosition);
 			return items.getTitles().get(categoryId).size();
 		}
 
 		@Override
 		public Object getGroup(int groupPosition) {
-			int categoryId = items.getCategories().keyAt(groupPosition);
+			int categoryId = items.getDisplayOrder().get(groupPosition);
 			return items.getCategories().get(categoryId);
 		}
 
 		@Override
 		public Object getChild(int groupPosition, int childPosition) {
-			int categoryId = items.getTitles().keyAt(groupPosition);
+			int categoryId = items.getDisplayOrder().get(groupPosition);
 			return items.getTitles().get(categoryId).get(childPosition);
 		}
 
@@ -550,7 +578,8 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		}
 
 		private boolean isCourseCompleted(int groupPosition, int childPosition) {
-			return items.getViewedMarks()[groupPosition][childPosition];
+			int categoryId = items.getDisplayOrder().get(groupPosition);
+			return items.getViewedMarks().get(categoryId).get(childPosition);
 		}
 
 		@Override
@@ -574,19 +603,12 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		public void updateData(LessonsRatingItem returnedObj) {
 			super.updateData(returnedObj);
 
-			if (!returned) {
-				topView.setVisibility(View.VISIBLE);    // TODO don't change visibility if we return here from CourseFragment
-				returned = true;
-			}
-
-			TextView ratingTxt = (TextView) headerView.findViewById(R.id.lessonsRatingTxt);
-			TextView lessonsCntTxt = (TextView) headerView.findViewById(R.id.lessonsCompletedValueTxt);
-			TextView coursesCntTxt = (TextView) headerView.findViewById(R.id.coursesCompletedValueTxt);
-
 			LessonsRatingItem.Data lessonsRating = returnedObj.getData();
 			ratingTxt.setText(String.valueOf(lessonsRating.getRating()));
 			lessonsCntTxt.setText(String.valueOf(lessonsRating.getCompletedLessons()));
 			coursesCntTxt.setText(String.valueOf(lessonsRating.getCompletedCourses()));
+
+			getAppData().setUserLessonsRating(lessonsRating.getRating());
 		}
 	}
 

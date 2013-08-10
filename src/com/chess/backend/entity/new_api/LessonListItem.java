@@ -13,6 +13,7 @@ public class LessonListItem {
 	/* Local addition */
 	private long courseId;
 	private String user;
+	private boolean started;
 
 	public void setId(int id) {
 		this.id = id;
@@ -52,5 +53,13 @@ public class LessonListItem {
 
 	public void setUser(String user) {
 		this.user = user;
+	}
+
+	public boolean isStarted() {
+		return started;
+	}
+
+	public void setStarted(boolean started) {
+		this.started = started;
 	}
 }

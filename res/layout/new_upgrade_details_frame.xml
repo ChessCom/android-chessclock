@@ -183,6 +183,7 @@
                         android:layout_below="@id/monthValueTxt"
                         android:layout_centerHorizontal="true"
                         android:button="@drawable/button_checkmark_diamond_selector"
+						android:minHeight="35dip"
                         />
 
                 </RelativeLayout>
@@ -240,7 +241,8 @@
                         android:layout_centerHorizontal="true"
                         android:button="@drawable/button_checkmark_diamond_selector"
                         android:checked="true"
-                        />
+						android:minHeight="35dip"
+						/>
 
                     <com.chess.RoboTextView
                         android:id="@+id/yearDiscountTxt"

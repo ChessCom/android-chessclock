@@ -27,7 +27,7 @@ public class SaveLessonsCategoriesTask extends AbstractUpdateTask<CommonFeedCate
 	protected static String[] arguments = new String[1];
 
 	public SaveLessonsCategoriesTask(TaskUpdateInterface<CommonFeedCategoryItem.Data> taskFace, List<CommonFeedCategoryItem.Data> currentItems,
-								   ContentResolver resolver) {
+									 ContentResolver resolver) {
 		super(taskFace, new ArrayList<CommonFeedCategoryItem.Data>());
 		this.itemList.addAll(currentItems);
 
@@ -36,32 +36,33 @@ public class SaveLessonsCategoriesTask extends AbstractUpdateTask<CommonFeedCate
 
 	@Override
 	protected Integer doTheTask(Long... ids) {
-		synchronized (itemList) {
-			for (CommonFeedCategoryItem.Data currentItem : itemList) {
-				final String[] arguments2 = arguments;
-				arguments2[0] = String.valueOf(currentItem.getId());
+		int i = 0;
+		for (CommonFeedCategoryItem.Data currentItem : itemList) {
+			currentItem.setDisplay_order(i++);
 
-				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DbConstants.uriArray[DbConstants.Tables.LESSONS_CATEGORIES.ordinal()];
+			final String[] arguments2 = arguments;
+			arguments2[0] = String.valueOf(currentItem.getId());
 
-				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_V_CATEGORY_ID,
-						DbDataManager.SELECTION_CATEGORY_ID, arguments2, null);
+			// TODO implement beginTransaction logic for performance increase
+			Uri uri = DbConstants.uriArray[DbConstants.Tables.LESSONS_CATEGORIES.ordinal()];
 
-				ContentValues values = DbDataManager.putCommonFeedCategoryItemToValues(currentItem);
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_V_CATEGORY_ID,
+					DbDataManager.SELECTION_CATEGORY_ID, arguments2, null);
 
-				if (cursor.moveToFirst()) {
-					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-				} else {
-					contentResolver.insert(uri, values);
-				}
+			ContentValues values = DbDataManager.putCommonFeedCategoryItemToValues(currentItem);
 
-				cursor.close();
-
+			if (cursor.moveToFirst()) {
+				contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
+			} else {
+				contentResolver.insert(uri, values);
 			}
-		}
-		result = StaticData.RESULT_OK;
 
-		return result;
+			cursor.close();
+
+		}
+
+
+		return StaticData.RESULT_OK;
 	}
 
 

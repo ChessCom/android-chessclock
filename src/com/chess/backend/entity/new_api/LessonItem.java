@@ -110,6 +110,10 @@ public class LessonItem extends BaseResponseItem<LessonItem.Data> {
 			return lesson_completed;
 		}
 
+		public void setLessonCompleted(boolean lesson_completed) {
+			this.lesson_completed = lesson_completed;
+		}
+
 		public void setLesson(MentorLesson cm_lesson) {
 			this.cm_lesson = cm_lesson;
 		}

@@ -1,6 +1,8 @@
 package com.chess.model;
 
 import android.util.SparseArray;
+import android.util.SparseBooleanArray;
+import android.util.SparseIntArray;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,10 +12,11 @@ import android.util.SparseArray;
  */
 public class CurriculumLessonsItems {
 	private SparseArray<String> categories;
-	private SparseArray<SparseArray<Integer>> ids;
+	private SparseArray<SparseIntArray> ids;
 	private SparseArray<SparseArray<String>> titles;
 	private SparseArray<SparseArray<String>> urls;
-	private boolean[][] viewedMarks;
+	private SparseIntArray displayOrder;
+	private SparseArray<SparseBooleanArray> viewedMarks;
 
 
 	public SparseArray<String> getCategories() {
@@ -24,11 +27,11 @@ public class CurriculumLessonsItems {
 		this.categories = categories;
 	}
 
-	public SparseArray<SparseArray<Integer>> getIds() {
+	public SparseArray<SparseIntArray> getIds() {
 		return ids;
 	}
 
-	public void setIds(SparseArray<SparseArray<Integer>> ids) {
+	public void setIds(SparseArray<SparseIntArray> ids) {
 		this.ids = ids;
 	}
 
@@ -48,11 +51,19 @@ public class CurriculumLessonsItems {
 		this.urls = urls;
 	}
 
-	public boolean[][] getViewedMarks() {
+	public SparseIntArray getDisplayOrder() {
+		return displayOrder;
+	}
+
+	public void setDisplayOrder(SparseIntArray displayOrder) {
+		this.displayOrder = displayOrder;
+	}
+
+	public SparseArray<SparseBooleanArray> getViewedMarks() {
 		return viewedMarks;
 	}
 
-	public void setViewedMarks(boolean[][] viewedMarks) {
+	public void setViewedMarks(SparseArray<SparseBooleanArray> viewedMarks) {
 		this.viewedMarks = viewedMarks;
 	}
 }

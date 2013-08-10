@@ -11,6 +11,7 @@
     </item>
 
     <item
+		android:id="@+id/btnCheckmark"
         android:top="1dip"
         android:left="1dip"
         android:right="1dip"

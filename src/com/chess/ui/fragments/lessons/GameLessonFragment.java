@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.lessons;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Html;
@@ -9,6 +10,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.chess.FontsHelper;
@@ -25,10 +27,12 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadLessonItemTask;
 import com.chess.db.tasks.SaveLessonsLessonTask;
+import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLessons;
 import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.game.GameBaseFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsBoardFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
@@ -51,6 +55,7 @@ import java.util.List;
  */
 public class GameLessonFragment extends GameBaseFragment implements GameLessonFace, PopupListSelectionFace, MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener, MultiDirectionSlidingDrawer.OnDrawerScrollListener {
 
+	private static final String LESSON_COMPLETE_TAG = "lesson complete popup";
 	private static final String COURSE_ID = "course_id";
 	private static final String LESSON_ID = "lesson_id";
 	public static final String BOLD_DIVIDER = "##";
@@ -58,13 +63,14 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private static final long DRAWER_UPDATE_DELAY = 100;
 	private static final long TACTIC_ANSWER_DELAY = 1500;
 
+
 	// Options ids
 //	private static final int ID_KEY_SQUARES = 0;
 //	private static final int ID_CORRECT_SQUARE = 1;
 //	private static final int ID_KEY_PIECES = 2;
 //	private static final int ID_CORRECT_PIECE = 3;
 	private static final int ID_ANALYSIS_BOARD = 0;
-//	private static final int ID_VS_COMPUTER = 1;
+	//	private static final int ID_VS_COMPUTER = 1;
 	private static final int ID_SKIP_LESSON = 1;
 	private static final int ID_SHOW_ANSWER = 2;
 	private static final int ID_SETTINGS = 3;
@@ -128,8 +134,11 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private int scorePercent;
 	private float pointsForLesson;
 	private String moveToShow;
+	private PopupCustomViewFragment completedPopupFragment;
+	private int updatedUserRating;
 
-	public GameLessonFragment() { }
+	public GameLessonFragment() {
+	}
 
 	public static GameLessonFragment createInstance(int lessonId, long courseId) {
 		GameLessonFragment fragment = new GameLessonFragment();
@@ -154,14 +163,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			courseId = savedInstanceState.getLong(COURSE_ID);
 		}
 
-		labelsConfig = new LabelsConfig();
-
-		saveLessonUpdateListener = new LessonDataUpdateListener(LessonDataUpdateListener.SAVE);
-		lessonUpdateListener = new LessonUpdateListener();
-		lessonLoadListener = new LessonDataUpdateListener(LessonDataUpdateListener.LOAD);
-		solvedPositionsList = new ArrayList<Integer>();
-		movesCompleteMap = new SparseArray<MoveCompleteItem>();
-		submitLessonListener = new SubmitLessonListener();
+		init();
 	}
 
 	@Override
@@ -190,21 +192,24 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		super.onStart();
 
 		if (need2update) {
-			// check if we have that lesson in DB
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getMentorLessonById(lessonId));
-			if (cursor != null && cursor.moveToFirst()) { // we have saved lesson data
-				new LoadLessonItemTask(lessonLoadListener, getContentResolver(), getUsername()).executeTask((long) lessonId);
-			} else {
-				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.CMD_LESSON_BY_ID(lessonId));
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-
-				// TODO user restart parameter http GET http://api.c.com/v1/lessons/lessons/1 loginToken==4a3183b2355b85983d81a810c0191a27 restart==true
-				new RequestJsonTask<LessonItem>(lessonUpdateListener).executeTask(loadItem);
-			}
+			updateUiData();
 		} else {
 			startLesson();
 			adjustBoardForGame();
+		}
+	}
+
+	private void updateUiData() {
+		// check if we have that lesson in DB
+		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getMentorLessonById(lessonId));
+		if (cursor != null && cursor.moveToFirst()) { // we have saved lesson data
+			new LoadLessonItemTask(lessonLoadListener, getContentResolver(), getUsername()).executeTask((long) lessonId);
+		} else {
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.CMD_LESSON_BY_ID(lessonId));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken()); // looks like restart parameter is useless here, because we load from DB
+
+			new RequestJsonTask<LessonItem>(lessonUpdateListener).executeTask(loadItem);
 		}
 	}
 
@@ -244,20 +249,53 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	public void nextPosition() {
 		if (++currentLearningPosition < totalLearningPositionsCnt) {
 
-			controlsLessonsView.showDefault();
-			controlsLessonsView.dropUsedHints();
-			usedHints = 0;
-			showHintViews(false);
-
-			// TODO add animation for next move in lesson
-
+			showDefaultControls();
 			adjustBoardForGame();
 		}
 	}
 
+	private void showDefaultControls() {
+		controlsLessonsView.showDefault();
+		controlsLessonsView.dropUsedHints();
+		usedHints = 0;
+		showHintViews(false);
+	}
+
 	@Override
 	public void newGame() {
-		getActivityFace().showPreviousFragment();
+		Cursor courseCursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getLessonCourseById((int) courseId));
+
+		if (courseCursor != null && courseCursor.moveToFirst()) {  // if we have saved course
+			Cursor lessonsListCursor = DbDataManager.executeQuery(getContentResolver(),
+					DbHelper.getLessonsListByCourseId((int) courseId, getUsername()));
+			if (lessonsListCursor.moveToFirst()) { // if we have saved lessons
+				List<LessonListItem> lessons = new ArrayList<LessonListItem>();
+				do {
+					lessons.add(DbDataManager.getLessonsListItemFromCursor(lessonsListCursor));
+				} while (lessonsListCursor.moveToNext());
+
+				int lessonsInCourse = lessons.size();
+				boolean nextLessonFound = false;
+				for (int i = 0; i < lessonsInCourse; i++) {
+					LessonListItem lesson = lessons.get(i);
+					if (lesson.getId() == lessonId && (i + 1 < lessonsInCourse)) { // get next lesson
+						LessonListItem nextLesson = lessons.get(i + 1);
+						lessonId = nextLesson.getId();
+						nextLessonFound = true;
+						break;
+					}
+				}
+
+				if (nextLessonFound) {
+					slidingDrawer.animateClose();
+					showDefaultControls();
+					updateUiData();
+					controlsLessonsView.showStart();
+				} else {
+					getActivityFace().showPreviousFragment();
+				}
+			}
+		}
 	}
 
 	@Override
@@ -446,16 +484,19 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			scorePercent = (int) (pointsForLesson * 100 / totalPointsForLesson);
 
 			lessonPercentTxt.setText(getString(R.string.percents, scorePercent) + StaticData.SYMBOL_PERCENT);
-			float currentUserRating = userLesson.getCurrentPoints() + pointsForLesson;
-			lessonsRatingTxt.setText(String.format(FLOAT_FORMAT, currentUserRating));
-			String symbol = pointsForLesson > 0 ? StaticData.SYMBOL_PLUS : StaticData.SYMBOL_EMPTY;
-			lessonsRatingChangeTxt.setText(StaticData.SYMBOL_LEFT_PAR + symbol + String.format(FLOAT_FORMAT, pointsForLesson)
-					+ StaticData.SYMBOL_RIGHT_PAR);
+			if (lessonItem.isLessonCompleted()) {
+				updatedUserRating = getAppData().getUserLessonsRating();
+			} else {
+				updatedUserRating = (int) Math.ceil(getAppData().getUserLessonsRating() + pointsForLesson);
+				String symbol = pointsForLesson > 0 ? StaticData.SYMBOL_PLUS : StaticData.SYMBOL_EMPTY;
+				lessonsRatingChangeTxt.setText(StaticData.SYMBOL_LEFT_PAR + symbol + String.format(FLOAT_FORMAT, pointsForLesson)
+						+ StaticData.SYMBOL_RIGHT_PAR);
+			}
 
+			lessonsRatingTxt.setText(String.valueOf(updatedUserRating));
+
+			// Update server with whole lesson scores
 			submitCorrectSolution();
-			// show next lesson button
-			controlsLessonsView.showNewGame();
-
 		}
 	}
 
@@ -524,6 +565,27 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private void showHintViews(boolean show) {
 		hintDivider.setVisibility(show ? View.VISIBLE : View.GONE);
 		hintTxt.setVisibility(show ? View.VISIBLE : View.GONE);
+	}
+
+	@Override
+	public void onClick(View view) {
+		super.onClick(view);
+		if (view.getId() == R.id.shareBtn) {
+			Intent shareIntent = new Intent(Intent.ACTION_SEND);
+			shareIntent.setType("text/plain");
+			shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.lesson_completed_message,
+					lessonItem.getLesson().getName(), scorePercent));
+			shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_completed_lesson_title));
+			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_lesson)));
+
+			completedPopupFragment.dismiss();
+			completedPopupFragment = null;
+		} else if (view.getId() == R.id.nextLessonBtn) {
+			completedPopupFragment.dismiss();
+			completedPopupFragment = null;
+
+			newGame();
+		}
 	}
 
 	@Override
@@ -607,6 +669,17 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		descriptionView.setPadding(0, 0, 0, openDescriptionPadding);
 		descriptionView.postDelayed(scrollDescriptionDown, 50);
+
+		// mark this lesson as incomplete. There can be few incomplete lessons
+		LessonListItem lessonListItem = new LessonListItem();
+		lessonListItem.setUser(getUsername());
+		lessonListItem.setCourseId(courseId);
+		lessonListItem.setId(lessonId);
+		lessonListItem.setName(lessonItem.getLesson().getName());
+		lessonListItem.setCompleted(userLesson.isLessonCompleted());
+		lessonListItem.setStarted(true);
+
+		DbDataManager.saveLessonListItemToDb(getContentResolver(), lessonListItem);
 	}
 
 	@Override
@@ -741,6 +814,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		if (totalLearningPositionsCnt == currentLearningPosition) {
 			currentLearningPosition--;
 		}
+
+		movesCompleteMap.clear();
 //		currentPoints = userLesson.getCurrentPoints();  // TODO check if needed
 	}
 
@@ -752,7 +827,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		@Override
 		public void updateData(SuccessItem returnedObj) {
-			if(returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+			if (returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 
 				LessonListItem lessonListItem = new LessonListItem();
 				lessonListItem.setUser(getUsername());
@@ -760,12 +835,67 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				lessonListItem.setId(lessonId);
 				lessonListItem.setName(lessonItem.getLesson().getName());
 				lessonListItem.setCompleted(true);
+				lessonListItem.setStarted(false);
 
 				DbDataManager.saveLessonListItemToDb(getContentResolver(), lessonListItem);
+
+				userLesson.setLessonCompleted(true);
+				DbDataManager.saveUserLessonToDb(getContentResolver(), userLesson, lessonId, getUsername());
+
+				showCompletedPopup();
+
 			} else {
 				showToast(R.string.error);
 			}
 		}
+	}
+
+	private void showCompletedPopup() {
+		// show next lesson button
+		controlsLessonsView.showNewGame();
+
+		// save updated user lessons rating
+		if (!lessonItem.isLessonCompleted()) {
+			getAppData().setUserLessonsRating(updatedUserRating);
+			lessonItem.setLessonCompleted(true);
+		}
+
+		{ // show Lesson Complete! Popup
+			View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.new_course_complete_popup, null, false);
+			popupView.findViewById(R.id.shareBtn).setOnClickListener(this);
+			popupView.findViewById(R.id.nextLessonBtn).setOnClickListener(this);
+
+			TextView lessonPopupTitleTxt = (TextView) popupView.findViewById(R.id.lessonTitleTxt);
+			TextView lessonPercentTxt = (TextView) popupView.findViewById(R.id.lessonPercentTxt);
+			TextView lessonRatingTxt = (TextView) popupView.findViewById(R.id.lessonRatingTxt);
+			TextView lessonRatingChangeTxt = (TextView) popupView.findViewById(R.id.lessonRatingChangeTxt);
+
+			lessonPopupTitleTxt.setText(lessonItem.getLesson().getName());
+			lessonPercentTxt.setText(getString(R.string.percents, scorePercent) + StaticData.SYMBOL_PERCENT);
+			lessonRatingTxt.setText(String.valueOf(updatedUserRating));
+			if (!lessonItem.isLessonCompleted()) {
+				String symbol = pointsForLesson > 0 ? StaticData.SYMBOL_PLUS : StaticData.SYMBOL_EMPTY;
+				lessonRatingChangeTxt.setText(StaticData.SYMBOL_LEFT_PAR + symbol + String.format(FLOAT_FORMAT, pointsForLesson)
+						+ StaticData.SYMBOL_RIGHT_PAR);
+			}
+
+			PopupItem popupItem = new PopupItem();
+			popupItem.setCustomView((LinearLayout) popupView);
+
+			completedPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
+			completedPopupFragment.show(getFragmentManager(), LESSON_COMPLETE_TAG);
+		}
+	}
+
+	private void init() {
+		labelsConfig = new LabelsConfig();
+
+		saveLessonUpdateListener = new LessonDataUpdateListener(LessonDataUpdateListener.SAVE);
+		lessonUpdateListener = new LessonUpdateListener();
+		lessonLoadListener = new LessonDataUpdateListener(LessonDataUpdateListener.LOAD);
+		solvedPositionsList = new ArrayList<Integer>();
+		movesCompleteMap = new SparseArray<MoveCompleteItem>();
+		submitLessonListener = new SubmitLessonListener();
 	}
 
 	private void widgetsInit(View view) {

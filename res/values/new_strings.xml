@@ -125,6 +125,7 @@
     <string name="chess_com_live">Chess.com Live</string>
     <string name="ches_com">Chess.com</string>
     <string name="share_game">Share Game</string>
+    <string name="share_lesson">Share Lesson</string>
     <string name="chess">Chess</string>
     <string name="via_chesscom">via @Chesscom</string>
 
@@ -271,9 +272,9 @@
 	<string name="correct_piece">Correct Piece</string>
 	<string name="skip_lesson">Skip Lesson</string>
 	<string name="hint_arg">Hint %s:</string>
-	<string name="your_lessons_rating">Your Lessons Rating:</string>
+	<string name="your_lesson_rating">Your Lesson Rating:</string>
 	<string name="score_">Score:</string>
-	<string name="course_complete">Course Complete!</string>
+	<string name="lesson_complete">Lesson Complete!</string>
 	<string name="percents">%s</string>
 	<string name="rating_">Rating:</string>
 	<string name="installing_theme">Installing theme</string>
@@ -304,7 +305,9 @@
 	<string name="courses_completed">Courses Completed</string>
 	<string name="computer_level">Computer Level</string>
 	<string name="alternate_correct_move_ex">Alternate correct move!</string>
-	<string name="course_completed_message">Hey, i\'ve just completed @Chess.com %1$s lessons course, and gained %2$s score</string>
+	<string name="lesson_completed_message">Hey, i\'ve just completed @Chess.com %1$s lesson, and gained %2$s score</string>
+	<string name="share_completed_lesson_title">Chess.com Mentor Lesson completed!</string>
+	<string name="resume_lesson">Resume Lesson</string>
 	<!--Game mode-->
 
 </resources>

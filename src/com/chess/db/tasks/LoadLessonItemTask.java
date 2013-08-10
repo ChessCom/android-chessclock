@@ -32,7 +32,6 @@ public class LoadLessonItemTask extends AbstractUpdateTask<LessonItem.Data, Long
 
 	@Override
 	protected Integer doTheTask(Long... ids) {
-		int result = StaticData.EMPTY_DATA;
 
 		Long lessonId = ids[0];
 		item = new LessonItem.Data();
@@ -54,6 +53,7 @@ public class LoadLessonItemTask extends AbstractUpdateTask<LessonItem.Data, Long
 
 			if (cursor.moveToFirst()) {
 				item.setUserLesson(DbDataManager.getLessonsUserLessonFromCursor(cursor));
+				item.setLessonCompleted(item.getUserLesson().isLessonCompleted());
 			}
 		}
 
@@ -89,8 +89,7 @@ public class LoadLessonItemTask extends AbstractUpdateTask<LessonItem.Data, Long
 				}
 			}
 		}
-		result = StaticData.RESULT_OK;
-		return result;
+		return StaticData.RESULT_OK;
 	}
 
 }

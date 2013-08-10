@@ -304,6 +304,14 @@ public class AppData {
 		return getIntValue(PREF_USER_TACTICS_RATING, 0);
 	}
 
+	public void setUserLessonsRating(int value) {
+		setIntValue(PREF_USER_LESSONS_RATING, value);
+	}
+
+	public int getUserLessonsRating() {
+		return getIntValue(PREF_USER_LESSONS_RATING, 0);
+	}
+
 	public int getUserDailyRating() {
 		return getIntValue(PREF_USER_TACTICS_RATING, 0);
 	}
@@ -421,8 +429,7 @@ public class AppData {
 	}
 
 	private boolean getBooleanValue(String field) {
-		String userName = getUsername();
-		return getBooleanValue(userName + field, true);
+		return getBooleanValue(field, true);
 	}
 
 	private boolean getBooleanValue(String field, boolean defValue) {
