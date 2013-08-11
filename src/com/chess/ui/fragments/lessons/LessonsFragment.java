@@ -106,6 +106,8 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 				view.findViewById(R.id.upgradeView).setVisibility(View.GONE);
 
 				ratingTxt.setText(String.valueOf(getAppData().getUserLessonsRating()));
+				lessonsCntTxt.setText(String.valueOf(getAppData().getUserLessonsCompleteCnt()));
+				coursesCntTxt.setText(String.valueOf(getAppData().getUserCourseCompleteCnt()));
 			}
 
 			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_curriculum_footer, null, false);
@@ -429,7 +431,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		cursor.close();
 
 		// check if we have incomplete lessons
-		List<LessonListItem> incompleteLessons = DbDataManager.haveIncompleteLessons(getContentResolver(), getUsername());
+		List<LessonListItem> incompleteLessons = DbDataManager.getIncompleteLessons(getContentResolver(), getUsername());
 		if (incompleteLessons != null) {
 			incompleteLesson = incompleteLessons.get(0);
 			resumeLessonBtn.setVisibility(View.VISIBLE);
@@ -593,10 +595,15 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		}
 	}
 
-	private class LessonsRatingUpdateListener extends ChessLoadUpdateListener<LessonsRatingItem> {
+	private class LessonsRatingUpdateListener extends ChessUpdateListener<LessonsRatingItem> {
 
 		private LessonsRatingUpdateListener() {
 			super(LessonsRatingItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			// don't show any progress
 		}
 
 		@Override
@@ -609,6 +616,8 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 			coursesCntTxt.setText(String.valueOf(lessonsRating.getCompletedCourses()));
 
 			getAppData().setUserLessonsRating(lessonsRating.getRating());
+			getAppData().setUserLessonsCompleteCnt(lessonsRating.getCompletedLessons());
+			getAppData().setUserCourseCompleteCnt(lessonsRating.getCompletedCourses());
 		}
 	}
 

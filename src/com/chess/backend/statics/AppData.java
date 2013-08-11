@@ -312,6 +312,22 @@ public class AppData {
 		return getIntValue(PREF_USER_LESSONS_RATING, 0);
 	}
 
+	public void setUserLessonsCompleteCnt(int value) {
+		setIntValue(PREF_USER_LESSONS_COMPLETE, value);
+	}
+
+	public int getUserLessonsCompleteCnt() {
+		return getIntValue(PREF_USER_LESSONS_COMPLETE, 0);
+	}
+
+	public void setUserCourseCompleteCnt(int value) {
+		setIntValue(PREF_USER_COURSE_COMPLETE, value);
+	}
+
+	public int getUserCourseCompleteCnt() {
+		return getIntValue(PREF_USER_COURSE_COMPLETE, 0);
+	}
+
 	public int getUserDailyRating() {
 		return getIntValue(PREF_USER_TACTICS_RATING, 0);
 	}

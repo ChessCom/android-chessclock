@@ -5,7 +5,6 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	>
-	<!--android:animateLayoutChanges="true"-->
 
 	<ScrollView
 		android:id="@+id/descriptionView"
@@ -64,13 +63,16 @@
 				android:textColor="@color/new_subtitle_dark_grey"
 				android:textSize="15sp"
 				android:padding="15dip"
+				android:visibility="gone"
 				/>
 
 			<!--Divider-->
 			<View
+				android:id="@+id/lessonDescriptionDivider"
 				android:layout_width="match_parent"
 				android:layout_height="1dip"
 				android:background="@color/new_friends_list_divider"
+				android:visibility="gone"
 				/>
 
 			<!--Position Description-->
@@ -180,74 +182,6 @@
 				android:shadowRadius="4"
 				android:shadowDx="0"
 				android:shadowDy="0"
-				/>
-
-			<!--Score -->
-			<com.chess.RoboTextView
-				android:id="@+id/scoreLabel"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_centerVertical="true"
-				android:textSize="13sp"
-				android:textColor="@color/new_author_dark_grey"
-				android:text="@string/score_"
-				android:paddingLeft="15dip"
-				/>
-
-			<!--Score value-->
-			<com.chess.RoboTextView
-				android:id="@+id/lessonPercentTxt"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_toRightOf="@id/scoreLabel"
-				android:layout_centerVertical="true"
-				android:gravity="center"
-				android:textSize="15sp"
-				android:textColor="@color/new_subtitle_dark_grey"
-				android:paddingLeft="7dip"
-				custom:ttf="Bold"
-				/>
-
-			<!--Rating-->
-			<com.chess.RoboTextView
-				android:id="@+id/ratingLabel"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_centerVertical="true"
-				android:layout_toLeftOf="@+id/lessonsRatingTxt"
-				android:textSize="13sp"
-				android:textColor="@color/new_author_dark_grey"
-				android:text="@string/rating_"
-				android:paddingRight="3dip"
-				/>
-
-			<!--Lessons rating value-->
-			<com.chess.RoboTextView
-				android:id="@id/lessonsRatingTxt"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:layout_toLeftOf="@+id/lessonsRatingChangeTxt"
-				android:layout_centerVertical="true"
-				android:gravity="center_horizontal"
-				android:textSize="15sp"
-				android:textColor="@color/new_subtitle_dark_grey"
-				custom:ttf="Bold"
-				/>
-
-			<!--Lesson/Course Rating-->
-			<com.chess.RoboTextView
-				android:id="@id/lessonsRatingChangeTxt"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
-				android:layout_centerVertical="true"
-				android:layout_gravity="center"
-				android:textColor="@color/new_subtitle_dark_grey"
-				android:textSize="13sp"
-				android:paddingLeft="5dip"
-				android:paddingRight="8dip"
-				custom:ttf="Bold"
 				/>
 
 		</RelativeLayout>

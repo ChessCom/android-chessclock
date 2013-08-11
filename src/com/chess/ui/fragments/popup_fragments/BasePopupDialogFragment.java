@@ -39,16 +39,6 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
 		}
 	}
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-//		if (getArguments() != null) { // TODO verify
-//			popupItem = getArguments().getParcelable(POPUP_ITEM);
-//		} else {
-//			popupItem = savedInstanceState.getParcelable(POPUP_ITEM);
-//		}
-	}
-
 	public void updatePopupItem(PopupItem popupItem) {
 		this.popupItem = popupItem;
 		if (!isVisible()) {

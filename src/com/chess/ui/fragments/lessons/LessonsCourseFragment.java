@@ -38,7 +38,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 	private static final String CATEGORY_ID = "category_id";
 
 	private CourseUpdateListener courseUpdateListener;
-	private ChessUpdateListener<LessonCourseItem.Data> courseSaveListener;
+	private SaveCourseListener courseSaveListener;
 
 	private LessonsItemAdapter lessonsItemAdapter;
 	private LessonCourseItem.Data courseItem;
@@ -48,10 +48,10 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 	private TextView courseTitleTxt;
 	private TextView courseDescriptionTxt;
-	private LessonListItem selectedLessonItem;
-	private int selectedLessonPosition;
+	private boolean haveSavedCourseData;
 
-	public LessonsCourseFragment() {}
+	public LessonsCourseFragment() {
+	}
 
 	public static LessonsCourseFragment createInstance(int courseId, int categoryId) {
 		LessonsCourseFragment fragment = new LessonsCourseFragment();
@@ -76,7 +76,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 		lessonsItemAdapter = new LessonsItemAdapter(getActivity(), null);
 		courseUpdateListener = new CourseUpdateListener();
-		courseSaveListener = new ChessUpdateListener<LessonCourseItem.Data>();
+		courseSaveListener = new SaveCourseListener();
 	}
 
 	@Override
@@ -124,16 +124,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 			if (courseCursor != null && courseCursor.moveToFirst()) {  // if we have saved course
 				courseItem = DbDataManager.getLessonsCourseItemFromCursor(courseCursor);
 
-				Cursor lessonsListCursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getLessonsListByCourseId(courseId, getUsername()));
-				if (lessonsListCursor.moveToFirst()) { // if we have saved lessons
-					List<LessonListItem> lessons = new ArrayList<LessonListItem>();
-					do {
-						lessons.add(DbDataManager.getLessonsListItemFromCursor(lessonsListCursor));
-					} while(lessonsListCursor.moveToNext());
-					courseItem.setLessons(lessons);
-
-					fillCourseData();
-				}
+				updateLessonsListFromDb();
 			}
 			// update anyway because user might solve some lessons on other device
 			LoadItem loadItem = LoadHelper.getLessonsByCourseId(getUserToken(), courseId);
@@ -145,29 +136,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 			List<LessonListItem> lessons = courseItem.getLessons();
 			lessonsItemAdapter.setItemsList(lessons);
 
-			verifyCompletedSelectedLesson();
-		}
-	}
-
-	private void verifyCompletedSelectedLesson() {
-		boolean lessonCompleted = DbDataManager.isLessonCompleted(getContentResolver(), selectedLessonItem.getId(), courseId, getUsername());
-		if (lessonCompleted) {
-			lessonsItemAdapter.updateCompletedLessonAtPosition(selectedLessonPosition -1 ); // reduce number due header addition
-		}
-	}
-
-	private void verifyAllLessonsCompleted() {
-		if (lessonsItemAdapter.isAllLessonsCompleted()) { // show when the whole course completed
-			{ // mark course as completed in DB
-				LessonCourseListItem.Data course = new LessonCourseListItem.Data();
-				course.setId(courseId);
-				course.setName(courseItem.getCourseName());
-				course.setCategoryId(categoryId);
-				course.setUser(getUsername());
-				course.setCourseCompleted(true);
-
-				DbDataManager.saveCourseListItemToDb(getContentResolver(), course);
-			}
+			updateLessonsListFromDb();
 		}
 	}
 
@@ -179,6 +148,21 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		outState.putInt(CATEGORY_ID, categoryId);
 	}
 
+	private void updateLessonsListFromDb() {
+		Cursor lessonsListCursor = DbDataManager.executeQuery(getContentResolver(),
+				DbHelper.getLessonsListByCourseId(courseId, getUsername()));
+		if (lessonsListCursor != null && lessonsListCursor.moveToFirst()) { // if we have saved lessons
+			List<LessonListItem> lessons = new ArrayList<LessonListItem>();
+			do {
+				lessons.add(DbDataManager.getLessonsListItemFromCursor(lessonsListCursor));
+			} while (lessonsListCursor.moveToNext());
+			courseItem.setLessons(lessons);
+
+			haveSavedCourseData = true;
+			fillCourseData();
+		}
+	}
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //		boolean headerAdded = listView.getHeaderViewsCount() > 0; // use to check if header added
@@ -187,9 +171,8 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		if (position == 0) { // if listView header
 			// see onClick(View) handle
 		} else {
-			selectedLessonPosition = position;
-			selectedLessonItem = (LessonListItem) parent.getItemAtPosition(position);
-			getActivityFace().openFragment(GameLessonFragment.createInstance(selectedLessonItem.getId(), courseId));
+			int lessonId = ((LessonListItem) parent.getItemAtPosition(position)).getId();
+			getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
 		}
 	}
 
@@ -219,12 +202,18 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			if (!haveSavedCourseData) {
+				super.showProgress(show);
+			}
+		}
+
+		@Override
 		public void updateData(LessonCourseItem returnedObj) {
 			super.updateData(returnedObj);
 
 			courseItem = returnedObj.getData();
 			fillCourseData();
-			verifyAllLessonsCompleted();
 
 			new SaveLessonsCourseTask(courseSaveListener, courseItem, getContentResolver(), getUsername()).executeTask();
 		}
@@ -239,7 +228,30 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		List<LessonListItem> lessons = courseItem.getLessons();
 		lessonsItemAdapter.setItemsList(lessons);
 
+		verifyAllLessonsCompleted();
+
 		need2update = false;
+	}
+
+	private void verifyAllLessonsCompleted() {
+		if (lessonsItemAdapter.isAllLessonsCompleted()) { // show when the whole course completed
+			// mark course as completed in DB
+			LessonCourseListItem.Data course = new LessonCourseListItem.Data();
+			course.setId(courseId);
+			course.setName(courseItem.getCourseName());
+			course.setCategoryId(categoryId);
+			course.setUser(getUsername());
+			course.setCourseCompleted(true);
+
+			DbDataManager.saveCourseListItemToDb(getContentResolver(), course);
+		}
+	}
+
+	private class SaveCourseListener extends ChessUpdateListener {
+
+		@Override
+		public void showProgress(boolean show) {
+		}
 	}
 
 }

@@ -62,7 +62,13 @@ public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 		} else if (pieceCode == 5) {
 			piece = MoveParser.BLACK_KING;
 		}
-		moveStr = piece + MoveParser.positionToString(move.to);
+
+		String capture = StaticData.SYMBOL_EMPTY;
+		if (histDat[lastIndex].capture != 6) {
+			capture = "x";
+		}
+
+		moveStr = piece + capture + MoveParser.positionToString(move.to);   // Rxa7 is failed!!!
 		if (moveStr.equalsIgnoreCase(MoveParser.B_KINGSIDE_MOVE_CASTLING)) {
 			moveStr = MoveParser.KINGSIDE_CASTLING;
 		} else if (moveStr.equalsIgnoreCase(MoveParser.B_QUEENSIDE_MOVE_CASTLING)) {

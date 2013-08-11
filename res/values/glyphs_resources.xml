@@ -21,8 +21,7 @@
     <string name="ic_settings">d</string>
     <string name="ic_theme">l</string>
     <string name="ic_blocking">&amp;</string>
-    <!--<string name="ic_tracking">m</string>-->
-    <string name="ic_share">k</string>
+    <string name="ic_share">C</string>
     <string name="ic_recent">f</string>
     <string name="ic_menu">t</string>
     <string name="ic_handler">=</string>

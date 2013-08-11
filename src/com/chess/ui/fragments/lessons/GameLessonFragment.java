@@ -20,7 +20,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.LoadItem;
 import com.chess.backend.entity.new_api.LessonItem;
 import com.chess.backend.entity.new_api.LessonListItem;
-import com.chess.backend.entity.new_api.SuccessItem;
+import com.chess.backend.entity.new_api.LessonRatingChangeItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -82,6 +82,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private static final float ANALYSIS_COST = 4f;
 	private static final float ANSWER_COST = 100f;
 	public static final String FLOAT_FORMAT = "%.1f";
+	public static final String SUBMIT_FLOAT_FORMAT = "%.2f";
 
 	private LessonUpdateListener lessonUpdateListener;
 	private LessonDataUpdateListener saveLessonUpdateListener;
@@ -105,12 +106,13 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private TextView commentTxt;
 	private TextView descriptionTxt;
 	private TextView positionDescriptionTxt;
+	private View lessonDescriptionDivider;
 	private TextView hintTxt;
-	private View scoreLabel;
-	private View ratingLabel;
-	private TextView lessonPercentTxt;
-	private TextView lessonsRatingTxt;
-	private TextView lessonsRatingChangeTxt;
+//	private View scoreLabel;
+//	private View ratingLabel;
+//	private TextView lessonPercentTxt;
+//	private TextView lessonsRatingTxt;
+//	private TextView lessonsRatingChangeTxt;
 
 	private MultiDirectionSlidingDrawer slidingDrawer;
 	private List<LessonItem.MentorPosition.PossibleMove> possibleMoves;
@@ -161,6 +163,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		} else {
 			lessonId = savedInstanceState.getInt(LESSON_ID);
 			courseId = savedInstanceState.getLong(COURSE_ID);
+			need2update = true; // we were killed, need to reload lesson data
 		}
 
 		init();
@@ -416,7 +419,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 					controlsLessonsView.showWrong();
 					moveCompleteItem.wrongMovesCnt++;
 				}
-				descriptionTxt.setText(Html.fromHtml(possibleMove.getMoveCommentary()));
+				setDescriptionText(possibleMove.getMoveCommentary());
 				descriptionView.post(scrollDescriptionUp);
 
 				moveRecognized = true;
@@ -425,15 +428,14 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 
 		if (!moveRecognized) {
-			Spanned wrongMoveComment = Html.fromHtml(getMentorPosition().getStandardWrongMoveCommentary());
-			descriptionTxt.setText(wrongMoveComment);
+			setDescriptionText(getMentorPosition().getStandardWrongMoveCommentary());
+
 			descriptionView.post(scrollDescriptionUp);
 			controlsLessonsView.showWrong();
 			moveCompleteItem.wrongMovesCnt++;
 		}
 
 		if (currentLearningPosition == totalLearningPositionsCnt - 1 && correctMove) { // calculate all progress for this lesson
-			showCorrectMoveViews(true);
 
 			// collect info about all moves for that lesson
 			pointsForLesson = 0;
@@ -483,17 +485,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			// Add them together and we get 11.5 out of 15 points, or 77% out of 100% on the lesson.
 			scorePercent = (int) (pointsForLesson * 100 / totalPointsForLesson);
 
-			lessonPercentTxt.setText(getString(R.string.percents, scorePercent) + StaticData.SYMBOL_PERCENT);
-			if (lessonItem.isLessonCompleted()) {
-				updatedUserRating = getAppData().getUserLessonsRating();
-			} else {
-				updatedUserRating = (int) Math.ceil(getAppData().getUserLessonsRating() + pointsForLesson);
-				String symbol = pointsForLesson > 0 ? StaticData.SYMBOL_PLUS : StaticData.SYMBOL_EMPTY;
-				lessonsRatingChangeTxt.setText(StaticData.SYMBOL_LEFT_PAR + symbol + String.format(FLOAT_FORMAT, pointsForLesson)
-						+ StaticData.SYMBOL_RIGHT_PAR);
-			}
-
-			lessonsRatingTxt.setText(String.valueOf(updatedUserRating));
+			updatedUserRating = getAppData().getUserLessonsRating();
 
 			// Update server with whole lesson scores
 			submitCorrectSolution();
@@ -505,11 +497,11 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		loadItem.setLoadPath(RestHelper.CMD_LESSON_BY_ID(lessonId));
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_CURRENT_POINTS, String.format("%.2f", pointsForLesson));  // you can pass float, 2 decimals please
+		loadItem.addRequestParams(RestHelper.P_CURRENT_POINTS, String.format(SUBMIT_FLOAT_FORMAT, pointsForLesson));  // you can pass float, 2 decimals please
 		loadItem.addRequestParams(RestHelper.P_CURRENT_PERCENT, scorePercent);
 		loadItem.addRequestParams(RestHelper.P_LAST_POS_NUMBER, currentLearningPosition);
 
-		new RequestJsonTask<SuccessItem>(submitLessonListener).executeTask(loadItem);
+		new RequestJsonTask<LessonRatingChangeItem>(submitLessonListener).executeTask(loadItem);
 	}
 
 	private MoveCompleteItem getCurrentCompleteItem() {
@@ -518,14 +510,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	private LessonItem.MentorPosition getMentorPosition() {
 		return positionsToLearn.get(currentLearningPosition);
-	}
-
-	private void showCorrectMoveViews(boolean show) {
-		ratingLabel.setVisibility(show ? View.VISIBLE : View.GONE);
-		scoreLabel.setVisibility(show ? View.VISIBLE : View.GONE);
-		lessonPercentTxt.setVisibility(show ? View.VISIBLE : View.GONE);
-		lessonsRatingTxt.setVisibility(show ? View.VISIBLE : View.GONE);
-		lessonsRatingChangeTxt.setVisibility(show ? View.VISIBLE : View.GONE);
 	}
 
 	@Override
@@ -580,11 +564,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 			completedPopupFragment.dismiss();
 			completedPopupFragment = null;
-		} else if (view.getId() == R.id.nextLessonBtn) {
-			completedPopupFragment.dismiss();
-			completedPopupFragment = null;
-
-			newGame();
 		}
 	}
 
@@ -685,7 +664,11 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	@Override
 	public void onDrawerClosed() {
 		lessonTitleTxt.setVisibility(View.VISIBLE);
-		commentTxt.setVisibility(View.VISIBLE);
+		if (!TextUtils.isEmpty(commentTxt.getText())) {
+			commentTxt.setVisibility(View.VISIBLE);
+		} else {
+			commentTxt.setVisibility(View.GONE);
+		}
 
 		descriptionView.setPadding(0, 0, 0, defaultDescriptionPadding);
 		descriptionView.post(scrollDescriptionDown);
@@ -764,12 +747,28 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		controlsLessonsView.enableGameControls(true);
 
 		lessonTitleTxt.setText(mentorLesson.getName());
-		commentTxt.setText(mentorLesson.getGoalCommentary());
-		descriptionTxt.setText(Html.fromHtml(mentorLesson.getAbout()));
+		if (!TextUtils.isEmpty(mentorLesson.getGoalCommentary())) {
+			commentTxt.setText(mentorLesson.getGoalCommentary());
+			commentTxt.setVisibility(View.VISIBLE);
+		} else {
+			commentTxt.setVisibility(View.GONE);
+		}
+
+		setDescriptionText(mentorLesson.getAbout());
 		positionDescriptionTxt.setText(Html.fromHtml(positionToSolve.getAbout()));
 		descriptionView.post(scrollDescriptionDown);
+	}
 
-		showCorrectMoveViews(false);
+	private void setDescriptionText(String descriptionStr){
+		Spanned description = Html.fromHtml(descriptionStr);
+		if (!TextUtils.isEmpty(description)) {
+			descriptionTxt.setText(description);
+			descriptionTxt.setVisibility(View.VISIBLE);
+			lessonDescriptionDivider.setVisibility(View.VISIBLE);
+		} else {
+			descriptionTxt.setVisibility(View.GONE);
+			lessonDescriptionDivider.setVisibility(View.GONE);
+		}
 	}
 
 	private class LessonDataUpdateListener extends ChessLoadUpdateListener<LessonItem.Data> {
@@ -819,14 +818,14 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 //		currentPoints = userLesson.getCurrentPoints();  // TODO check if needed
 	}
 
-	private class SubmitLessonListener extends ChessLoadUpdateListener<SuccessItem> {
+	private class SubmitLessonListener extends ChessLoadUpdateListener<LessonRatingChangeItem> {
 
 		private SubmitLessonListener() {
-			super(SuccessItem.class);
+			super(LessonRatingChangeItem.class);
 		}
 
 		@Override
-		public void updateData(SuccessItem returnedObj) {
+		public void updateData(LessonRatingChangeItem returnedObj) {
 			if (returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 
 				LessonListItem lessonListItem = new LessonListItem();
@@ -842,7 +841,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				userLesson.setLessonCompleted(true);
 				DbDataManager.saveUserLessonToDb(getContentResolver(), userLesson, lessonId, getUsername());
 
-				showCompletedPopup();
+				LessonRatingChangeItem.Data ratingChange = returnedObj.getData();
+				showCompletedPopup(ratingChange);
 
 			} else {
 				showToast(R.string.error);
@@ -850,25 +850,25 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 	}
 
-	private void showCompletedPopup() {
+	private void showCompletedPopup(LessonRatingChangeItem.Data ratingChange) {
 		// show next lesson button
 		controlsLessonsView.showNewGame();
-
-		// save updated user lessons rating
-		if (!lessonItem.isLessonCompleted()) {
-			getAppData().setUserLessonsRating(updatedUserRating);
-			lessonItem.setLessonCompleted(true);
-		}
 
 		{ // show Lesson Complete! Popup
 			View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.new_course_complete_popup, null, false);
 			popupView.findViewById(R.id.shareBtn).setOnClickListener(this);
-			popupView.findViewById(R.id.nextLessonBtn).setOnClickListener(this);
 
 			TextView lessonPopupTitleTxt = (TextView) popupView.findViewById(R.id.lessonTitleTxt);
 			TextView lessonPercentTxt = (TextView) popupView.findViewById(R.id.lessonPercentTxt);
 			TextView lessonRatingTxt = (TextView) popupView.findViewById(R.id.lessonRatingTxt);
 			TextView lessonRatingChangeTxt = (TextView) popupView.findViewById(R.id.lessonRatingChangeTxt);
+
+			float pointsForLesson = 0;
+			if (!lessonItem.isLessonCompleted()) {
+				pointsForLesson = ratingChange.getChange();
+//				updatedUserRating = ratingChange.getNewRating(); // TODO restore
+				updatedUserRating += pointsForLesson;
+			}
 
 			lessonPopupTitleTxt.setText(lessonItem.getLesson().getName());
 			lessonPercentTxt.setText(getString(R.string.percents, scorePercent) + StaticData.SYMBOL_PERCENT);
@@ -877,6 +877,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				String symbol = pointsForLesson > 0 ? StaticData.SYMBOL_PLUS : StaticData.SYMBOL_EMPTY;
 				lessonRatingChangeTxt.setText(StaticData.SYMBOL_LEFT_PAR + symbol + String.format(FLOAT_FORMAT, pointsForLesson)
 						+ StaticData.SYMBOL_RIGHT_PAR);
+				// save updated user lessons rating
+				getAppData().setUserLessonsRating(updatedUserRating);
+				lessonItem.setLessonCompleted(true);
 			}
 
 			PopupItem popupItem = new PopupItem();
@@ -927,9 +930,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 					int actionBarHeight = getResources().getDimensionPixelSize(R.dimen.actionbar_compat_height);
 					int controlsViewHeight = getResources().getDimensionPixelSize(R.dimen.game_controls_button_height);
 					int handleHeight = getResources().getDimensionPixelSize(R.dimen.drawer_handler_height);
-//					int additionalOffset = (int) (1 * getResources().getDisplayMetrics().density);
-					topBoardOffset = height - width - actionBarHeight - controlsViewHeight - handleHeight
-							- statusBarHeight /*- additionalOffset*/;
+
+					topBoardOffset = height - width - actionBarHeight - controlsViewHeight - handleHeight - statusBarHeight;
 					slidingDrawer.setTopOffset(topBoardOffset);
 
 					openDescriptionPadding = width + handleHeight;
@@ -946,19 +948,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		lessonTitleTxt = (TextView) view.findViewById(R.id.lessonTitleTxt);
 		commentTxt = (TextView) view.findViewById(R.id.commentTxt);
 		descriptionTxt = (TextView) view.findViewById(R.id.descriptionTxt);
+		lessonDescriptionDivider = view.findViewById(R.id.lessonDescriptionDivider);
 		positionDescriptionTxt = (TextView) view.findViewById(R.id.positionDescriptionTxt);
 		hintDivider = view.findViewById(R.id.hintDivider);
 		hintTxt = (TextView) view.findViewById(R.id.hintTxt);
-
-		{// lesson rating changes
-			scoreLabel = view.findViewById(R.id.scoreLabel);
-			ratingLabel = view.findViewById(R.id.ratingLabel);
-			lessonPercentTxt = (TextView) view.findViewById(R.id.lessonPercentTxt);
-			lessonsRatingTxt = (TextView) view.findViewById(R.id.lessonsRatingTxt);
-			lessonsRatingChangeTxt = (TextView) view.findViewById(R.id.lessonsRatingChangeTxt);
-
-			showCorrectMoveViews(false);
-		}
 
 		hintsCostMap = new SparseArray<Float>();
 		hintsCostMap.put(1, HINT_1_COST);

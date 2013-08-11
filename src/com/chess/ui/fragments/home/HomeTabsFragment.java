@@ -1,7 +1,6 @@
 package com.chess.ui.fragments.home;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,10 +22,7 @@ import com.chess.backend.entity.new_api.DailyGamesAllItem;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbHelper;
-import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
@@ -147,25 +143,10 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 //				DbHelper.getAllByUri(DbConstants.Tables.DAILY_FINISHED_GAMES.ordinal()),
 //				getContentResolver()).executeTask();
 //
-		new LoadDataFromDbTask(new DbCursorUpdateListener(DbConstants.Tables.LESSONS_LESSONS_LIST.name()),
-				DbHelper.getAllByUri(DbConstants.Tables.LESSONS_LESSONS_LIST.ordinal()),
-				getContentResolver()).executeTask();
 
-		new LoadDataFromDbTask(new DbCursorUpdateListener(DbConstants.Tables.LESSONS_COURSES.name()),
-				DbHelper.getAllByUri(DbConstants.Tables.LESSONS_COURSES.ordinal()),
-				getContentResolver()).executeTask();
-
-		new LoadDataFromDbTask(new DbCursorUpdateListener(DbConstants.Tables.LESSONS_COURSE_LIST.name()),
-				DbHelper.getAllByUri(DbConstants.Tables.LESSONS_COURSE_LIST.ordinal()),
-				getContentResolver()).executeTask();
-
-		new LoadDataFromDbTask(new DbCursorUpdateListener(DbConstants.Tables.LESSONS_MENTOR_LESSONS.name()),
-				DbHelper.getAllByUri(DbConstants.Tables.LESSONS_MENTOR_LESSONS.ordinal()),
-				getContentResolver()).executeTask();
-
-		new LoadDataFromDbTask(new DbCursorUpdateListener(DbConstants.Tables.LESSONS_USER_LESSONS.name()),
-				DbHelper.getAllByUri(DbConstants.Tables.LESSONS_USER_LESSONS.ordinal()),
-				getContentResolver()).executeTask();
+//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbConstants.Tables.LESSONS_LESSONS_LIST.name()),
+//				DbHelper.getAllByUri(DbConstants.Tables.LESSONS_LESSONS_LIST.ordinal()),
+//				getContentResolver()).executeTask();
 
 		// check if user have daily games in progress or completed. May check in DB
 		// get games_id's and compare it to local DB
@@ -182,26 +163,24 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		}
 	}
 
-	private class DbCursorUpdateListener extends ChessUpdateListener<Cursor> {
-
-		private String tableName;
-
-		public DbCursorUpdateListener(String tableName) {
-			this.tableName = tableName;
-		}  // Used for test
-
-		@Override
-		public void updateData(Cursor cursor) {
-			super.updateData(cursor);
-
-			if (HONEYCOMB_PLUS_API) {
-
-				AppUtils.printTableContent(cursor, tableName);
-			}
-		}
-	}
-
-
+//	private class DbCursorUpdateListener extends ChessUpdateListener<Cursor> {
+//
+//		private String tableName;
+//
+//		public DbCursorUpdateListener(String tableName) {
+//			this.tableName = tableName;
+//		}  // Used for test
+//
+//		@Override
+//		public void updateData(Cursor cursor) {
+//			super.updateData(cursor);
+//
+//			if (HONEYCOMB_PLUS_API) {
+//
+//				AppUtils.printTableContent(cursor, tableName);
+//			}
+//		}
+//	}
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {

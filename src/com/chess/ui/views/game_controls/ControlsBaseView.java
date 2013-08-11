@@ -74,7 +74,6 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	protected LayoutParams buttonParams;
 
 	protected boolean blocked;
-//	private int ACTION_BUTTON_MARGIN = 6;
 	int controlButtonHeight;
 	Handler handler;
 	HashMap<ButtonIds, Integer> buttonGlyphsMap;

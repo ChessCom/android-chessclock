@@ -109,7 +109,7 @@
 
 	</LinearLayout>
 
-	<LinearLayout
+	<FrameLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="@color/default_button_overlay_p"
@@ -123,27 +123,17 @@
 		<!--Share-->
 		<com.chess.RoboButton
 			android:id="@+id/shareBtn"
-			android:layout_width="0dip"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_weight="1"
 			style="@style/Button.Facebook"
-			android:text="@string/share"
+			custom:ttf="Icon"
+			android:textSize="@dimen/game_controls_icon_size"
+			android:text="@string/ic_share"
 			android:drawableLeft="@null"
 			android:paddingLeft="20dip"
 			android:layout_marginRight="2dip"
 			/>
 
-		<!--Next lesson-->
-		<com.chess.RoboButton
-			android:id="@+id/nextLessonBtn"
-			android:layout_width="0dip"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			style="@style/Button.OrangeNoBorder"
-			android:text="@string/next"
-			android:layout_marginLeft="2dip"
-			/>
-
-	</LinearLayout>
+	</FrameLayout>
 
 </LinearLayout>

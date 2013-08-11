@@ -18,6 +18,7 @@
 		android:paddingLeft="15dip"
 		android:layout_centerVertical="true"
 		custom:ttf="Bold"
+		android:text="-"
 		/>
 
 	<!--Lessons Completed value-->
@@ -31,6 +32,7 @@
 		android:paddingRight="8dip"
 		android:textSize="14sp"
 		custom:ttf="Bold"
+		android:text="-"
 		/>
 
 	<!--Lessons Completed label-->
@@ -40,6 +42,7 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
 		android:layout_alignTop="@id/lessonsRatingTxt"
+		android:paddingTop="2dip"
 		android:paddingRight="15dip"
 		android:textColor="@color/stats_label_grey"
 		android:text="@string/lessons_completed"
@@ -57,6 +60,7 @@
 		android:paddingRight="8dip"
 		android:textSize="14sp"
 		custom:ttf="Bold"
+		android:text="-"
 		/>
 
 	<!--Courses Completed label-->
@@ -67,6 +71,7 @@
 		android:layout_alignParentRight="true"
 		android:textColor="@color/stats_label_grey"
 		android:layout_below="@id/lessonsCompletedValueTxt"
+		android:paddingTop="2dip"
 		android:text="@string/courses_completed"
 		android:textSize="13sp"
 		android:paddingRight="15dip"
