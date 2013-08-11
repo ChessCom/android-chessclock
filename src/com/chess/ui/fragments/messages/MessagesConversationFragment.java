@@ -104,8 +104,8 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		if (need2update) {
 			updateUiData();

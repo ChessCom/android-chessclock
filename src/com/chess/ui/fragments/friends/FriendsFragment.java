@@ -77,8 +77,8 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 		init();
 
 		if (need2update){

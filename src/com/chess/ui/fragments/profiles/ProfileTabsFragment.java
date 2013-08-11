@@ -96,8 +96,8 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), username);
 

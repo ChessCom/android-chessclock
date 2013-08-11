@@ -143,8 +143,8 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		if (!isNeedToUpgradePremium()) {
 			LoadItem loadItem = LoadHelper.getLessonsRating(getUserToken());

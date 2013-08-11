@@ -72,8 +72,8 @@ public class HomeLearnFragment extends CommonLogicFragment {
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		// load latest video
 //		loadedVideoId

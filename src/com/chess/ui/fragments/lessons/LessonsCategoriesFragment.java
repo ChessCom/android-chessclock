@@ -108,8 +108,8 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		boolean loaded = categoriesNames.size() != 0 || fillCategories();
 

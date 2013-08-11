@@ -116,8 +116,8 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		forumHeaderTxt.setText(categoriesMap.get(categoryId));
 		// always update as we can create topic in down fragments

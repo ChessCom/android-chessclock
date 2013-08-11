@@ -138,6 +138,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private String moveToShow;
 	private PopupCustomViewFragment completedPopupFragment;
 	private int updatedUserRating;
+	private boolean wrongState;
 
 	public GameLessonFragment() {
 	}
@@ -165,6 +166,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			courseId = savedInstanceState.getLong(COURSE_ID);
 			need2update = true; // we were killed, need to reload lesson data
 		}
+		logTest("need2update = " + need2update + " savedInstanceState = " + savedInstanceState);
 
 		init();
 	}
@@ -191,8 +193,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
+		logTest("need2update @onStart = " + need2update);
 
 		if (need2update) {
 			updateUiData();
@@ -205,8 +208,11 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private void updateUiData() {
 		// check if we have that lesson in DB
 		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getMentorLessonById(lessonId));
+		logTest("cursor = " + cursor +  " lessonId = " + lessonId);
 		if (cursor != null && cursor.moveToFirst()) { // we have saved lesson data
 			new LoadLessonItemTask(lessonLoadListener, getContentResolver(), getUsername()).executeTask((long) lessonId);
+			logTest("LoadLessonItemTask");
+
 		} else {
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_LESSON_BY_ID(lessonId));
@@ -390,8 +396,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		LessonsBoardFace boardFace = getBoardFace();
 		String lastUserMove = boardFace.getLastMoveStr();
 
-		MoveCompleteItem moveCompleteItem = getCurrentCompleteItem();
-
 		// iterate through possible moves and perform deduction
 		boolean moveRecognized = false;
 		boolean correctMove = false;
@@ -408,6 +412,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 						boardFace.makeMove(move, true);
 					}
 					correctMove = true;
+					wrongState = false;
 				} else if (possibleMove.getMoveType().equals(LessonItem.MOVE_ALTERNATE)) { // Alternate Correct Move
 					// Correct move, try again!
 					showToast(R.string.alternate_correct_move_ex);
@@ -415,9 +420,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 					solvedPositionsList.add(currentLearningPosition);
 
 					correctMove = true;
+
 				} else if (possibleMove.getMoveType().equals(LessonItem.MOVE_WRONG)) {
-					controlsLessonsView.showWrong();
-					moveCompleteItem.wrongMovesCnt++;
+					showWrongState();
 				}
 				setDescriptionText(possibleMove.getMoveCommentary());
 				descriptionView.post(scrollDescriptionUp);
@@ -431,8 +436,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			setDescriptionText(getMentorPosition().getStandardWrongMoveCommentary());
 
 			descriptionView.post(scrollDescriptionUp);
-			controlsLessonsView.showWrong();
-			moveCompleteItem.wrongMovesCnt++;
+			showWrongState();
 		}
 
 		if (currentLearningPosition == totalLearningPositionsCnt - 1 && correctMove) { // calculate all progress for this lesson
@@ -490,6 +494,12 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			// Update server with whole lesson scores
 			submitCorrectSolution();
 		}
+	}
+
+	private void showWrongState() {
+		controlsLessonsView.showWrong();
+		getCurrentCompleteItem().wrongMovesCnt++;
+		wrongState = true;
 	}
 
 	private void submitCorrectSolution() {
@@ -642,7 +652,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}, 25);
 
 
-		if (!solvedPositionsList.contains(currentLearningPosition)) {
+		if (!solvedPositionsList.contains(currentLearningPosition) && !wrongState) {
 			controlsLessonsView.showDefault();
 		}
 
@@ -725,6 +735,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	}
 
 	private void adjustBoardForGame() {
+		wrongState = false;
 		ChessBoardLessons.resetInstance();
 		LessonsBoardFace boardFace = getBoardFace();
 		boardView.setGameUiFace(this);
@@ -785,6 +796,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		@Override
 		public void updateData(LessonItem.Data returnedObj) {
 			super.updateData(returnedObj);
+			logTest("LoadLessonItemTask -> updateData");
 
 			if (listenerCode == LOAD) {
 				lessonItem = returnedObj;

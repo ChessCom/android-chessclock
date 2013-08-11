@@ -115,8 +115,8 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		if (need2update) {
 			LoadItem loadItem = new LoadItem();

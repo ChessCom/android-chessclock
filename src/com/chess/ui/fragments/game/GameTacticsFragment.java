@@ -137,14 +137,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
-		FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED);
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
+		FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED);
 
 		dismissDialogs();
 

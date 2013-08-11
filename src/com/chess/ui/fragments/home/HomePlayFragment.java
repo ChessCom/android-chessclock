@@ -120,8 +120,8 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		getActivityFace().addOnOpenMenuListener(this);
 

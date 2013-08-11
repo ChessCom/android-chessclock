@@ -99,8 +99,8 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		init();
 

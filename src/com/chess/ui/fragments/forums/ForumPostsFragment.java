@@ -129,8 +129,8 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		forumHeaderTxt.setText(topicTitle);
 

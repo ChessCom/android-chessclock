@@ -109,8 +109,8 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		updateData();
 	}

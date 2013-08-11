@@ -57,7 +57,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 
 		int id = view.getId();
 		if (id == R.id.piecesView) {
-			boardsSpinner.performClick();
+			piecesSpinner.performClick();
 		} else if (id == R.id.boardView) {
 			boardsSpinner.performClick();
 		} else if (id == R.id.coordinatesView) {

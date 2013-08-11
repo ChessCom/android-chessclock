@@ -129,8 +129,8 @@ public class DailyGamesNotificationFragment extends CommonLogicFragment	implemen
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 		init();
 		getActivityFace().addOnOpenMenuListener(this);
 

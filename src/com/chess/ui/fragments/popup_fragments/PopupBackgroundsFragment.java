@@ -101,8 +101,8 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		if (need2update) {
 			LoadItem loadItem = new LoadItem();

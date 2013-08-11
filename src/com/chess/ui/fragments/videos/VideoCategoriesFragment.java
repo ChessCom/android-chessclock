@@ -119,8 +119,8 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		// get viewed marks
 		Cursor cursor = DbDataManager.getVideoViewedCursor(getActivity(), getUsername());

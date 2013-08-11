@@ -105,8 +105,8 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		// get saved categories
 		Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);

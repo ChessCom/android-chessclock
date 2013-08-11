@@ -51,8 +51,8 @@ public class DailyGameSetupFragment extends CommonLogicFragment {
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 		// TODO -> File | Settings | File Templates.
 	}
 

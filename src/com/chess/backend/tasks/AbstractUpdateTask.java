@@ -8,7 +8,6 @@ import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 
 import java.util.List;
-import java.util.Scanner;
 
 public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Input, Void, Integer> {
 
@@ -30,7 +29,7 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	}
 
 	private void init(TaskUpdateInterface<ItemType> taskFace) {
-		if (taskFace == null || taskFace.getMeContext() == null){ // we may start task right after another but listener at this time will be already killed
+		if (taskFace == null || taskFace.getMeContext() == null) { // we may start task right after another but listener at this time will be already killed
 			cancel(true);
 			Log.e(TAG, "TaskFace is null, not running task");
 			return;
@@ -44,17 +43,17 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	protected void onPreExecute() {
 		super.onPreExecute();
 		blockScreenRotation(true);
-		try{
-			if(getTaskFace().getMeContext() != null)
+		try {
+			if (getTaskFace().getMeContext() != null)
 				getTaskFace().showProgress(true);
-		}catch (IllegalStateException ex){
-			Log.d(TAG,"onPreExecute " +ex.toString());
+		} catch (IllegalStateException ex) {
+			Log.d(TAG, "onPreExecute " + ex.toString());
 		}
 	}
 
 	@Override
 	protected Integer doInBackground(Input... params) {
-		if(isCancelled()) {
+		if (isCancelled()) {
 			result = StaticData.EMPTY_DATA;
 			return result;
 		}
@@ -63,7 +62,7 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 
 	protected abstract Integer doTheTask(Input... params);
 
-	protected void blockScreenRotation(boolean block){
+	protected void blockScreenRotation(boolean block) {
 		try {
 			Context context = getTaskFace().getMeContext();
 //			if (context instanceof Activity) {
@@ -88,7 +87,7 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	protected void onCancelled(Integer result) {
 		super.onCancelled(result);
 		blockScreenRotation(false);
-		try{
+		try {
 			getTaskFace().errorHandle(StaticData.TASK_CANCELED);
 		} catch (IllegalStateException ex) {
 			Log.d(TAG, "getTaskFace().errorHandle fails, due to killed state" + ex.toString());
@@ -100,11 +99,11 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 		super.onPostExecute(result);
 		blockScreenRotation(false);
 
-		if(isCancelled()) {   // no need to check as we catch it
+		if (isCancelled()) {   // no need to check as we catch it
 			return;
 		}
 
-		try{
+		try {
 			getTaskFace().showProgress(false);
 			if (notValidToReturnForFragment()) {
 				Log.d(TAG, " fragment is not valid to return data");
@@ -125,7 +124,12 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 		}
 	}
 
-	private boolean notValidToReturnForFragment(){
+	private boolean notValidToReturnForFragment() {
+		if (getTaskFace().isUsedForFragment()) {
+			Log.d(TAG, "getTaskFace().getStartedFragment() == null = " + (getTaskFace().getStartedFragment() == null));
+			Log.d(TAG, "getTaskFace().getStartedFragment().getActivity() == null = " + (getTaskFace().getStartedFragment().getActivity() == null));
+			Log.d(TAG, "!getTaskFace().getStartedFragment().isVisible() = " + (!getTaskFace().getStartedFragment().isVisible()));
+		}
 		return getTaskFace().isUsedForFragment() && (getTaskFace().getStartedFragment() == null
 				|| getTaskFace().getStartedFragment().getActivity() == null
 				|| !getTaskFace().getStartedFragment().isVisible());
@@ -138,16 +142,17 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 //		}
 //	}
 
-	protected TaskUpdateInterface<ItemType> getTaskFace() throws IllegalStateException{
-		if (taskFace == null ) {
+	protected TaskUpdateInterface<ItemType> getTaskFace() throws IllegalStateException {
+		if (taskFace == null) {
+			Log.d(TAG, "taskFace == null");
 			throw new IllegalStateException("TaskFace is already dead");
 		} else {
 			return taskFace;
 		}
 	}
 
-	public AbstractUpdateTask<ItemType, Input> executeTask(Input... input){
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB){
+	public AbstractUpdateTask<ItemType, Input> executeTask(Input... input) {
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
 			executeOnExecutor(THREAD_POOL_EXECUTOR, input);
 		} else {
 			execute(input);
@@ -155,10 +160,10 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 		return this;
 	}
 
-	protected static String convertStreamToString(java.io.InputStream is) {
-		Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
-		return scanner.hasNext() ? scanner.next() : "";
-	}
+//	protected static String convertStreamToString(java.io.InputStream is) {
+//		Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
+//		return scanner.hasNext() ? scanner.next() : "";
+//	}
 
 //	public static String convertStreamToString(InputStream is) throws Exception {
 //		BufferedReader reader = new BufferedReader(new InputStreamReader(is));

@@ -84,8 +84,8 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		if (!categoriesLoaded) {
 			// get list of categories

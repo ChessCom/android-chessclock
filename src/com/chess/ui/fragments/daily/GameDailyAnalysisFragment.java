@@ -101,8 +101,8 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		DataHolder.getInstance().setInOnlineGame(gameId, true);
 		loadGame();

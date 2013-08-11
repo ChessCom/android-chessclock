@@ -65,8 +65,8 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		if (need2update) {
 

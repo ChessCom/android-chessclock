@@ -110,6 +110,11 @@ public class DbDataManager {
 			DbConstants.V_CONVERSATION_ID
 	);
 
+	public static String SELECTION_USER_AND_LESSON_STATED = concatArguments(
+			DbConstants.V_USER,
+			DbConstants.V_LESSON_STARTED
+	);
+
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
 	public static final String[] PROJECTION_ITEM_ID_AND_USER = new String[]{
@@ -1122,6 +1127,55 @@ public class DbDataManager {
 		return values;
 	}
 
+	public static void saveMentorLessonToDb(ContentResolver contentResolver, LessonItem.MentorLesson mentorLesson,
+											long lessonId) {
+		mentorLesson.setLessonId(lessonId);
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = String.valueOf(lessonId);
+
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.LESSONS_MENTOR_LESSONS.ordinal()];
+		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID,
+				DbDataManager.SELECTION_ITEM_ID, arguments1, null);
+
+		ContentValues values = DbDataManager.putLessonsMentorLessonToValues(mentorLesson);
+
+		if (cursor.moveToFirst()) {
+			contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
+		} else {
+			contentResolver.insert(uri, values);
+		}
+
+		cursor.close();
+	}
+
+	public static void saveUserLessonToDb(ContentResolver contentResolver, LessonItem.UserLesson userLesson,
+										  long lessonId, String username) {
+		userLesson.setLessonId(lessonId);
+		userLesson.setUsername(username);
+
+		final String[] arguments1 = sArguments2;
+		arguments1[0] = String.valueOf(userLesson.getLessonId());
+		arguments1[1] = username;
+
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.LESSONS_USER_LESSONS.ordinal()];
+		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID_AND_USER,
+				DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments1, null);
+
+		ContentValues values = DbDataManager.putLessonsUserLessonToValues(userLesson);
+
+		if (cursor != null &&cursor.moveToFirst()) {
+			contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
+		} else {
+			contentResolver.insert(uri, values);
+		}
+
+		cursor.close();
+	}
+
 	public static void saveCourseListItemToDb(ContentResolver contentResolver, LessonCourseListItem.Data currentItem){
 		final String[] arguments = sArguments2;
 		arguments[0] = String.valueOf(currentItem.getId());
@@ -1135,7 +1189,7 @@ public class DbDataManager {
 
 		ContentValues values = DbDataManager.putLessonsCourseListItemToValues(currentItem);
 
-		if (cursor.moveToFirst()) {
+		if (cursor != null &&cursor.moveToFirst()) {
 			contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
 		} else {
 			contentResolver.insert(uri, values);
@@ -1189,7 +1243,7 @@ public class DbDataManager {
 
 		ContentValues values = DbDataManager.putLessonsListItemToValues(lesson);
 
-		if (cursor.moveToFirst()) {
+		if (cursor != null && cursor.moveToFirst()) {
 			contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
 		} else {
 			contentResolver.insert(uri, values);
@@ -1210,7 +1264,7 @@ public class DbDataManager {
 				DbDataManager.SELECTION_ID_CATEGORY_ID_USER, arguments, null);
 
 
-		if (cursor.moveToFirst()) {
+		if (cursor != null && cursor.moveToFirst()) {
 			boolean completed = getInt(cursor, DbConstants.V_LESSON_COMPLETED) > 0;
 			cursor.close();
 
@@ -1219,12 +1273,31 @@ public class DbDataManager {
 		return false;
 	}
 
+	public static List<LessonListItem> getIncompleteLessons(ContentResolver contentResolver, String username) {
+		final String[] arguments = sArguments2;
+		arguments[0] = username;
+		arguments[1] = String.valueOf(1);
+
+		Uri uri = DbConstants.uriArray[DbConstants.Tables.LESSONS_LESSONS_LIST.ordinal()];
+		Cursor cursor = contentResolver.query(uri, null, DbDataManager.SELECTION_USER_AND_LESSON_STATED, arguments, null);
+
+		if (cursor != null && cursor.moveToFirst()) {
+			List<LessonListItem> incompleteLessons = new ArrayList<LessonListItem>();
+			do {
+				incompleteLessons.add(getLessonsListItemFromCursor(cursor));
+			} while(cursor.moveToNext());
+			return incompleteLessons;
+		}
+		return null;
+	}
+
 	public static ContentValues putLessonsListItemToValues(LessonListItem dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(DbConstants.V_ID, dataObj.getId());
 		values.put(DbConstants.V_CATEGORY_ID, dataObj.getCourseId());
 		values.put(DbConstants.V_LESSON_COMPLETED, dataObj.isCompleted()? 1: 0);
+		values.put(DbConstants.V_LESSON_STARTED, dataObj.isStarted()? 1: 0);
 		values.put(DbConstants.V_USER, dataObj.getUser());
 		values.put(DbConstants.V_NAME, dataObj.getName());
 
@@ -1235,8 +1308,10 @@ public class DbDataManager {
 		LessonListItem dataObj = new LessonListItem();
 
 		dataObj.setId(getInt(cursor, DbConstants.V_ID));
+		dataObj.setUser(getString(cursor, DbConstants.V_USER));
 		dataObj.setCourseId(getLong(cursor, DbConstants.V_CATEGORY_ID));
 		dataObj.setCompleted(getInt(cursor, DbConstants.V_LESSON_COMPLETED) > 0);
+		dataObj.setStarted(getInt(cursor, DbConstants.V_LESSON_STARTED) > 0);
 		dataObj.setName(getString(cursor, DbConstants.V_NAME));
 
 		return dataObj;
@@ -1388,7 +1463,6 @@ public class DbDataManager {
 
 	public static ContentValues putCommonFeedCategoryItemToValues(CommonFeedCategoryItem.Data dataObj) {
 		ContentValues values = new ContentValues();
-
 
 		values.put(DbConstants.V_NAME, dataObj.getName());
 		values.put(DbConstants.V_CATEGORY_ID, dataObj.getId());

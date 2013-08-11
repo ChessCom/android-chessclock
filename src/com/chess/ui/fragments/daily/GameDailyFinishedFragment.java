@@ -138,8 +138,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		DataHolder.getInstance().setInOnlineGame(gameId, true);
 		loadGameAndUpdate();

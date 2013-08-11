@@ -106,8 +106,8 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		// update boardView if boardId has changed
 		boardView.updateBoardAndPiecesImgs();

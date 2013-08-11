@@ -70,8 +70,8 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_MESSAGES_INBOX);
