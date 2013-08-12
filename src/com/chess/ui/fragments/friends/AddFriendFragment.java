@@ -20,7 +20,7 @@ import com.chess.backend.ServerErrorCode;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.RequestItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.ui.adapters.RecentOpponentsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -62,7 +62,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 
-		Cursor cursor = DbDataManager1.getRecentOpponentsCursor(getActivity(), getUsername());
+		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());
 
 		RecentOpponentsCursorAdapter adapter = new RecentOpponentsCursorAdapter(getActivity(), cursor);
 
@@ -167,7 +167,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		String opponentName = DbDataManager1.getString(cursor, DbScheme.V_WHITE_USERNAME);  // TODO adjust correctly
+		String opponentName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);  // TODO adjust correctly
 		createFriendRequest(opponentName, getString(R.string.add_friend_request_message));
 	}
 

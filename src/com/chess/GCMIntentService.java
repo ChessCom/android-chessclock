@@ -27,7 +27,7 @@ import android.util.Log;
 import android.widget.Toast;
 import com.chess.backend.gcm.*;
 import com.chess.backend.RestHelper;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.model.DataHolder;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.GcmItem;
@@ -175,7 +175,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
-		DbDataManager1.saveNewFriendRequest(contentResolver, friendRequestItem, username);
+		DbDataManager.saveNewFriendRequest(contentResolver, friendRequestItem, username);
 	}
 
 	private synchronized void showNewChatMessage(Intent intent, Context context){
@@ -189,7 +189,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
-		DbDataManager1.saveNewChatNotification(contentResolver, chatNotificationItem, username);
+		DbDataManager.saveNewChatNotification(contentResolver, chatNotificationItem, username);
 	}
 
 	private synchronized void showGameOver(Intent intent, Context context) {
@@ -201,7 +201,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
-		DbDataManager1.saveGameOverNotification(contentResolver, gameOverNotificationItem, username);
+		DbDataManager.saveGameOverNotification(contentResolver, gameOverNotificationItem, username);
 	}
 
 	private synchronized void showNewChallenge(Intent intent, Context context){
@@ -213,7 +213,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
-		DbDataManager1.saveNewChallengeNotification(contentResolver, challengeNotificationItem, username);
+		DbDataManager.saveNewChallengeNotification(contentResolver, challengeNotificationItem, username);
 	}
 
 	private synchronized void showYouTurnNotification(Intent intent, Context context) {

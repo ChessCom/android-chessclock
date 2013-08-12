@@ -16,7 +16,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
 import com.chess.backend.LoadItem;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.model.TacticsDataHolder;
 import com.chess.backend.entity.api.TacticInfoItem;
 import com.chess.backend.entity.api.TacticItem;
@@ -145,9 +145,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		if (firstRun) {
 
-			if (DbDataManager1.haveSavedTacticGame(getActivity(), getUsername())) {
+			if (DbDataManager.haveSavedTacticGame(getActivity(), getUsername())) {
 				// TODO load tactic item from batch
-				tacticItem = DbDataManager1.getLastTacticItemFromDb(getActivity(), getUsername());
+				tacticItem = DbDataManager.getLastTacticItemFromDb(getActivity(), getUsername());
 				adjustBoardForGame();
 
 				if (getBoardFace().isLatestMoveMadeUser()) {
@@ -184,7 +184,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		stopTacticsTimer();
 
 		if (needToSaveTactic()) {
-			DbDataManager1.saveTacticItemToDb(getActivity(), tacticItem, getUsername());
+			DbDataManager.saveTacticItemToDb(getActivity(), tacticItem, getUsername());
 		}
 	}
 
@@ -372,12 +372,12 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		if (currentGameExist()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
 			getContentResolver().delete(DbScheme.uriArray[DbScheme.Tables.TACTICS_BATCH.ordinal()],
-					DbDataManager1.SELECTION_ITEM_ID_AND_USER, arguments);
+					DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
 		}
 
-		if (DbDataManager1.haveSavedTacticGame(getActivity(), getUsername())) {
+		if (DbDataManager.haveSavedTacticGame(getActivity(), getUsername())) {
 
-			tacticItem = DbDataManager1.getLastTacticItemFromDb(getActivity(), getUsername());
+			tacticItem = DbDataManager.getLastTacticItemFromDb(getActivity(), getUsername());
 
 			adjustBoardForGame();
 			currentTacticAnswerCnt = 0;
@@ -852,7 +852,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		if (currentGameExist()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
 			getContentResolver().delete(DbScheme.uriArray[DbScheme.Tables.TACTICS_BATCH.ordinal()],
-					DbDataManager1.SELECTION_ITEM_ID_AND_USER, arguments);
+					DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
 		}
 	}
 

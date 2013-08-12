@@ -16,7 +16,7 @@ import com.chess.backend.entity.api.ArticleItem;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
@@ -105,7 +105,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		init();
 
 		if (need2Update) {
-			boolean haveSavedData = DbDataManager1.haveSavedArticles(getActivity());
+			boolean haveSavedData = DbDataManager.haveSavedArticles(getActivity());
 
 			if (!loadCategoriesFromDB()) {
 				getCategories();
@@ -165,10 +165,10 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 		if (section == LATEST_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			getActivityFace().openFragment(ArticleDetailsFragment.createInstance(DbDataManager1.getId(cursor)));
+			getActivityFace().openFragment(ArticleDetailsFragment.createInstance(DbDataManager.getId(cursor)));
 		} else if (section == CATEGORIES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			String sectionName = DbDataManager1.getString(cursor, DbScheme.V_NAME);
+			String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
 
 			getActivityFace().openFragment(ArticleCategoriesFragment.createInstance(sectionName));
 		}

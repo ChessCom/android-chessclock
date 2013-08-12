@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
@@ -74,16 +74,16 @@ public class VideosThumbCursorAdapter extends ItemsCursorAdapter {
 		holder.authorTxt.setTag(R.id.list_item_id, cursor.getPosition());
 		holder.watchedIconTxt.setTag(R.id.list_item_id, cursor.getPosition());
 
-		String firstName = DbDataManager1.getString(cursor, DbScheme.V_FIRST_NAME);
-		CharSequence chessTitle = DbDataManager1.getString(cursor, DbScheme.V_CHESS_TITLE);
-		String lastName =  DbDataManager1.getString(cursor, DbScheme.V_LAST_NAME);
+		String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
+		CharSequence chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
+		String lastName =  DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
 		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
 				+ firstName + StaticData.SYMBOL_SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		holder.authorTxt.setText(authorStr);
 		holder.durationTxt.setText(DURATION_DIVIDER +
 				context.getString(R.string.min_arg, getString(cursor, DbScheme.V_MINUTES)));
-		holder.titleTxt.setText(DbDataManager1.getString(cursor, DbScheme.V_TITLE));
+		holder.titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
 
 		if (viewedMap.get(getInt(cursor, DbScheme.V_ID), false)) {
 			holder.titleTxt.setTextColor(watchedTextColor);

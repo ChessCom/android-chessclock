@@ -8,7 +8,7 @@ import android.net.Uri;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 
 import java.util.List;
@@ -34,13 +34,13 @@ public class SaveDailyCurrentGamesListTask extends SaveDailyGamesTask<DailyCurre
 
 				// TODO implement beginTransaction logic for performance increase
 				Uri uri = DbScheme.uriArray[DbScheme.Tables.DAILY_CURRENT_GAMES.ordinal()];
-				final Cursor cursor = contentResolver.query(uri, DbDataManager1.PROJECTION_GAME_ID,
-						DbDataManager1.SELECTION_USER_AND_ID, arguments2, null);
+				final Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_GAME_ID,
+						DbDataManager.SELECTION_USER_AND_ID, arguments2, null);
 
-				ContentValues values = DbDataManager1.putDailyGameCurrentItemToValues(currentItem, userName);
+				ContentValues values = DbDataManager.putDailyGameCurrentItemToValues(currentItem, userName);
 
 				if (cursor.moveToFirst()) {
-					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager1.getId(cursor)), values, null, null);
+					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
 				} else {
 					contentResolver.insert(uri, values);
 				}

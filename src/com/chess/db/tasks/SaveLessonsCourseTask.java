@@ -9,7 +9,7 @@ import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 
 /**
@@ -43,18 +43,18 @@ public class SaveLessonsCourseTask  extends AbstractUpdateTask<LessonCourseItem.
 
 			// TODO implement beginTransaction logic for performance increase
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.LESSONS_COURSES.ordinal()];
-			Cursor cursor = contentResolver.query(uri, DbDataManager1.PROJECTION_ITEM_ID,
-					DbDataManager1.SELECTION_ITEM_ID, arguments, null);
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID,
+					DbDataManager.SELECTION_ITEM_ID, arguments, null);
 
-			ContentValues values = DbDataManager1.putLessonsCourseItemToValues(item);
+			ContentValues values = DbDataManager.putLessonsCourseItemToValues(item);
 
-			DbDataManager1.updateOrInsertValues(contentResolver, cursor, uri, values);
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 
 		for (LessonListItem lesson : item.getLessons()) {
 			lesson.setCourseId(item.getId());
 			lesson.setUser(username);
-		  	DbDataManager1.saveLessonListItemToDb(contentResolver, lesson);
+		  	DbDataManager.saveLessonListItemToDb(contentResolver, lesson);
 		}
 
 		result = StaticData.RESULT_OK;

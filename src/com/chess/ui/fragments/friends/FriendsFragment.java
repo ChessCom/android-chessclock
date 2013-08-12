@@ -16,7 +16,7 @@ import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.entity.api.FriendsItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
@@ -82,7 +82,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		init();
 
 		if (need2update){
-			boolean haveSavedData = DbDataManager1.haveSavedFriends(getActivity(), getUsername());
+			boolean haveSavedData = DbDataManager.haveSavedFriends(getActivity(), getUsername());
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
 				updateData();
@@ -127,16 +127,16 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		if (view.getId() == R.id.challengeImgBtn) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
-			createDailyChallenge(DbDataManager1.getString(cursor, DbScheme.V_USERNAME));
+			createDailyChallenge(DbDataManager.getString(cursor, DbScheme.V_USERNAME));
 		} else if (view.getId() == R.id.messageImgBtn) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
-			String username = DbDataManager1.getString(cursor, DbScheme.V_USERNAME);
+			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
 			getActivityFace().openFragment(NewMessageFragment.createInstance(username));
 		} else if (view.getId() == R.id.friendListItemView) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
-			String username = DbDataManager1.getString(cursor, DbScheme.V_USERNAME);
+			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
 			getActivityFace().openFragment(ProfileTabsFragment.createInstance(username));
 		}
 	}

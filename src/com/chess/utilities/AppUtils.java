@@ -36,7 +36,7 @@ import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.model.GameListCurrentItem;
 import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import org.apache.http.HttpEntity;
@@ -669,10 +669,10 @@ public class AppUtils {
 				for(int i=0; i <= columnCount; i++) {
 					switch (cursor.getType(i)) {
 						case Cursor.FIELD_TYPE_INTEGER: {
-							builder.append(cursor.getColumnName(i)).append(DbDataManager1.EQUALS_).append(cursor.getInt(i)).append(StaticData.SYMBOL_SPACE);
+							builder.append(cursor.getColumnName(i)).append(DbDataManager.EQUALS_).append(cursor.getInt(i)).append(StaticData.SYMBOL_SPACE);
 						} break;
 						case Cursor.FIELD_TYPE_STRING: {
-							builder.append(cursor.getColumnName(i)).append(DbDataManager1.EQUALS_).append(cursor.getString(i)).append(StaticData.SYMBOL_SPACE);
+							builder.append(cursor.getColumnName(i)).append(DbDataManager.EQUALS_).append(cursor.getString(i)).append(StaticData.SYMBOL_SPACE);
 						} break;
 					}
 				}

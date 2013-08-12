@@ -9,7 +9,7 @@ import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 
 import java.util.ArrayList;
@@ -53,12 +53,12 @@ public class SaveMessagesForConversationTask extends AbstractUpdateTask<Messages
 
 			// TODO implement beginTransaction logic for performance increase
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.CONVERSATIONS_MESSAGES.ordinal()];
-			Cursor cursor = contentResolver.query(uri, DbDataManager1.PROJECTION_ID_USER_CONVERSATION_ID,
-					DbDataManager1.SELECTION_ID_USER_CONVERSATION_ID, arguments, null);
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ID_USER_CONVERSATION_ID,
+					DbDataManager.SELECTION_ID_USER_CONVERSATION_ID, arguments, null);
 
-			ContentValues values = DbDataManager1.putMessagesItemToValues(currentItem);
+			ContentValues values = DbDataManager.putMessagesItemToValues(currentItem);
 
-			DbDataManager1.updateOrInsertValues(contentResolver, cursor, uri, values);
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 		result = StaticData.RESULT_OK;
 

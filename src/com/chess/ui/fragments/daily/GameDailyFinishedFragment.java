@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.model.DataHolder;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.BaseResponseItem;
@@ -187,14 +187,14 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyFinishedGame(getActivity(), gameId),
 //				getContentResolver()).executeTask();
 
-		Cursor cursor = DbDataManager1.executeQuery(getContentResolver(),
+		Cursor cursor = DbDataManager.executeQuery(getContentResolver(),
 				DbHelper.getDailyFinishedGame(gameId, getUsername()));
 
 		if (cursor.moveToFirst()) {
 			showSubmitButtonsLay(false);
 			getSoundPlayer().playGameStart();
 
-			currentGame = DbDataManager1.getDailyFinishedGameFromCursor(cursor);
+			currentGame = DbDataManager.getDailyFinishedGameFromCursor(cursor);
 			cursor.close();
 
 			adjustBoardForGame();
@@ -219,7 +219,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 					showSubmitButtonsLay(false);
 					getSoundPlayer().playGameStart();
 
-					currentGame = DbDataManager1.getDailyFinishedGameFromCursor(returnedObj);
+					currentGame = DbDataManager.getDailyFinishedGameFromCursor(returnedObj);
 					returnedObj.close();
 
 					adjustBoardForGame();
@@ -230,7 +230,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 				case GAMES_LIST:
 					// iterate through all loaded items in cursor
 					do {
-						long localDbGameId = DbDataManager1.getLong(returnedObj, DbScheme.V_ID);
+						long localDbGameId = DbDataManager.getLong(returnedObj, DbScheme.V_ID);
 						if (localDbGameId != gameId) {
 							gameId = localDbGameId;
 							showSubmitButtonsLay(false);

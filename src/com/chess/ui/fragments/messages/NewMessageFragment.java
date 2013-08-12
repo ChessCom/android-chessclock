@@ -16,7 +16,7 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.ConversationSingleItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
@@ -92,13 +92,13 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 			final String[] arguments1 = new String[1];
 			arguments1[0] = getAppData().getUsername();
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()],
-					DbDataManager1.PROJECTION_USERNAME, DbDataManager1.SELECTION_USER, arguments1, null);
+					DbDataManager.PROJECTION_USERNAME, DbDataManager.SELECTION_USER, arguments1, null);
 
 			if (cursor != null && cursor.moveToFirst()) { // TODO check if friends already loaded
 				friendsList = new String[cursor.getCount()];
 				int i = 0;
 				do{
-					friendsList[i++] = DbDataManager1.getString(cursor, DbScheme.V_USERNAME);
+					friendsList[i++] = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
 				} while (cursor.moveToNext());
 			}
 		}

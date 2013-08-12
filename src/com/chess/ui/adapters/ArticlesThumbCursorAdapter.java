@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.utilities.AppUtils;
 
@@ -59,19 +59,19 @@ public class ArticlesThumbCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
 
-		String firstName = DbDataManager1.getString(cursor, DbScheme.V_FIRST_NAME).equals("")? "TestFirstName" : DbDataManager1.getString(cursor, DbScheme.V_FIRST_NAME);
-		String chessTitle = DbDataManager1.getString(cursor, DbScheme.V_CHESS_TITLE).equals("")? "TIM" : DbDataManager1.getString(cursor, DbScheme.V_CHESS_TITLE);
-		String lastName = DbDataManager1.getString(cursor, DbScheme.V_LAST_NAME).equals("")? "TestLastName" : DbDataManager1.getString(cursor, DbScheme.V_LAST_NAME);
+		String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME).equals("")? "TestFirstName" : DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
+		String chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE).equals("")? "TIM" : DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
+		String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME).equals("")? "TestLastName" : DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
 		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
 				+ firstName + StaticData.SYMBOL_SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		holder.authorTxt.setText(authorStr);
 
-		holder.titleTxt.setText(DbDataManager1.getString(cursor, DbScheme.V_TITLE));
-		date.setTime(DbDataManager1.getLong(cursor, DbScheme.V_CREATE_DATE) * 1000L);
+		holder.titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
+		date.setTime(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE) * 1000L);
 		holder.dateTxt.setText(dateFormatter.format(date));
 
-		imageLoader.download(DbDataManager1.getString(cursor, DbScheme.V_PHOTO_URL), holder.thumbnailImg, PHOTO_SIZE );
+		imageLoader.download(DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL), holder.thumbnailImg, PHOTO_SIZE );
 	}
 
 	protected class ViewHolder {

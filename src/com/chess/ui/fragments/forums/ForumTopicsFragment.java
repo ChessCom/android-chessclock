@@ -16,8 +16,8 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.ForumTopicItem;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager1;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.SaveForumTopicsTask;
 import com.chess.ui.adapters.ForumTopicsCursorAdapter;
@@ -66,10 +66,10 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		saveForumTopicsListener = new SaveForumTopicsListener();
 
 		categoriesMap = new SparseArray<String>();
-		Cursor cursor = DbDataManager1.executeQuery(getContentResolver(), DbHelper.getForumCategories());
+		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getForumCategories());
 		if (cursor.moveToFirst()) {
 			do {
-				categoriesMap.put(DbDataManager1.getInt(cursor, DbScheme.V_ID), DbDataManager1.getString(cursor, DbScheme.V_NAME));
+				categoriesMap.put(DbDataManager.getInt(cursor, DbScheme.V_ID), DbDataManager.getString(cursor, DbScheme.V_NAME));
 			} while (cursor.moveToNext());
 		}
 	}
@@ -140,7 +140,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 			// see onClick(View) handle
 		} else {
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-			int topicId = DbDataManager1.getInt(cursor, DbScheme.V_ID);
+			int topicId = DbDataManager.getInt(cursor, DbScheme.V_ID);
 			getActivityFace().openFragment(ForumPostsFragment.createInstance(topicId));
 		}
 	}
@@ -224,7 +224,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		public void updateData(ForumTopicItem.Topic returnedObj) {
 			super.updateData(returnedObj);
 
-			Cursor cursor = DbDataManager1.executeQuery(getContentResolver(), DbHelper.getForumTopicByCategory(categoryId, currentPage));
+			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getForumTopicByCategory(categoryId, currentPage));
 			if (cursor.moveToFirst()) {
 				topicsCursorAdapter.changeCursor(cursor);
 			} else {

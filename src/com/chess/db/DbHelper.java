@@ -7,7 +7,7 @@ public class DbHelper {
 	public static QueryParams getAllByUri(int uriCode) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[uriCode]);
-//		queryParams.setSelection(DbDataManager1.SELECTION_USER);
+//		queryParams.setSelection(DbDataManager.SELECTION_USER);
 //		queryParams.setArguments(new String[]{"erik"});
 		return queryParams;
 	}
@@ -15,7 +15,7 @@ public class DbHelper {
 	public static QueryParams getTableForUser(String userName, DbScheme.Tables uriName) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[uriName.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_USER);
+		queryParams.setSelection(DbDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{userName});
 		return queryParams;
 	}
@@ -23,8 +23,8 @@ public class DbHelper {
 	public static QueryParams getDailyCurrentListGames(String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.DAILY_CURRENT_GAMES.ordinal()]);
-		queryParams.setProjection(DbDataManager1.PROJECTION_CURRENT_GAMES);
-		queryParams.setSelection(DbDataManager1.SELECTION_USER);
+		queryParams.setProjection(DbDataManager.PROJECTION_CURRENT_GAMES);
+		queryParams.setSelection(DbDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{username});
 		return queryParams;
 	}
@@ -32,8 +32,8 @@ public class DbHelper {
 	public static QueryParams getDailyCurrentMyListGames(String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.DAILY_CURRENT_GAMES.ordinal()]);
-		queryParams.setProjection(DbDataManager1.PROJECTION_CURRENT_GAMES);
-		queryParams.setSelection(DbDataManager1.SELECTION_USER_TURN);
+		queryParams.setProjection(DbDataManager.PROJECTION_CURRENT_GAMES);
+		queryParams.setSelection(DbDataManager.SELECTION_USER_TURN);
 		queryParams.setArguments(new String[]{username, RestHelper.V_TRUE});
 		return queryParams;
 	}
@@ -41,8 +41,8 @@ public class DbHelper {
 	public static QueryParams getDailyCurrentTheirListGames(String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.DAILY_CURRENT_GAMES.ordinal()]);
-		queryParams.setProjection(DbDataManager1.PROJECTION_CURRENT_GAMES);
-		queryParams.setSelection(DbDataManager1.SELECTION_USER_TURN);
+		queryParams.setProjection(DbDataManager.PROJECTION_CURRENT_GAMES);
+		queryParams.setSelection(DbDataManager.SELECTION_USER_TURN);
 		queryParams.setArguments(new String[]{username, RestHelper.V_FALSE});
 		return queryParams;
 	}
@@ -50,8 +50,8 @@ public class DbHelper {
 	public static QueryParams getDailyFinishedListGames(String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.DAILY_FINISHED_GAMES.ordinal()]);
-		queryParams.setProjection(DbDataManager1.PROJECTION_FINISHED_GAMES);
-		queryParams.setSelection(DbDataManager1.SELECTION_USER);
+		queryParams.setProjection(DbDataManager.PROJECTION_FINISHED_GAMES);
+		queryParams.setSelection(DbDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{username});
 		return queryParams;
 	}
@@ -59,8 +59,8 @@ public class DbHelper {
 //	public static QueryParams getRecentDailyOpponent(Context context){
 //		QueryParams queryParams = new QueryParams();
 //		queryParams.setUri(DbScheme.uriArray[DbScheme.DAILY_FINISHED_GAMES]);
-//		queryParams.setProjection(DbDataManager1.PROJECTION_DAILY_PLAYER_NAMES);
-//		queryParams.setSelection(DbDataManager1.SELECTION_USER);
+//		queryParams.setProjection(DbDataManager.PROJECTION_DAILY_PLAYER_NAMES);
+//		queryParams.setSelection(DbDataManager.SELECTION_USER);
 //		queryParams.setArguments(new String[]{getAppData().getUsername(context)});
 //		return queryParams;
 //	}
@@ -68,7 +68,7 @@ public class DbHelper {
 	public static QueryParams getDailyGame(long gameId, String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.DAILY_CURRENT_GAMES.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_USER_AND_ID);
+		queryParams.setSelection(DbDataManager.SELECTION_USER_AND_ID);
 		queryParams.setArguments(new String[]{username, String.valueOf(gameId)});
 		return queryParams;
 	}
@@ -76,7 +76,7 @@ public class DbHelper {
 	public static QueryParams getDailyFinishedGame(long gameId, String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.DAILY_FINISHED_GAMES.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_USER_AND_ID);
+		queryParams.setSelection(DbDataManager.SELECTION_USER_AND_ID);
 		queryParams.setArguments(new String[]{username, String.valueOf(gameId)});
 		return queryParams;
 	}
@@ -86,7 +86,7 @@ public class DbHelper {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()]);
 		if (limitCnt > 0) {
-			queryParams.setOrder(DbScheme.V_CATEGORY + DbDataManager1.LIMIT_ + limitCnt);
+			queryParams.setOrder(DbScheme.V_CATEGORY + DbDataManager.LIMIT_ + limitCnt);
 		} else {
 			queryParams.setOrder(DbScheme.V_CATEGORY);
 		}
@@ -97,7 +97,7 @@ public class DbHelper {
 	public static QueryParams getVideosByCategory(int categoryId) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.VIDEOS.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_CATEGORY_ID);
+		queryParams.setSelection(DbDataManager.SELECTION_CATEGORY_ID);
 		queryParams.setArguments(new String[]{String.valueOf(categoryId)});
 		return queryParams;
 	}
@@ -113,7 +113,7 @@ public class DbHelper {
 	public static QueryParams getArticlesListByCategory(String category) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_CATEGORY);
+		queryParams.setSelection(DbDataManager.SELECTION_CATEGORY);
 		queryParams.setArguments(new String[]{category});
 		queryParams.setOrder(DbScheme.V_CATEGORY);
 		return queryParams;
@@ -129,7 +129,7 @@ public class DbHelper {
 	public static QueryParams getForumTopicByCategory(int categoryId, int currentPage) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.FORUM_TOPICS.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_CATEGORY_ID_AND_PAGE);
+		queryParams.setSelection(DbDataManager.SELECTION_CATEGORY_ID_AND_PAGE);
 		queryParams.setArguments(new String[]{String.valueOf(categoryId), String.valueOf(currentPage)});
 		return queryParams;
 	}
@@ -137,7 +137,7 @@ public class DbHelper {
 	public static QueryParams getForumTopicById(int topicId) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.FORUM_TOPICS.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_ITEM_ID);
+		queryParams.setSelection(DbDataManager.SELECTION_ITEM_ID);
 		queryParams.setArguments(new String[]{String.valueOf(topicId)});
 		return queryParams;
 	}
@@ -145,7 +145,7 @@ public class DbHelper {
 	public static QueryParams getForumPostsById(int topicId, int currentPage) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.FORUM_POSTS.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_ITEM_ID_AND_PAGE);
+		queryParams.setSelection(DbDataManager.SELECTION_ITEM_ID_AND_PAGE);
 		queryParams.setArguments(new String[]{String.valueOf(topicId), String.valueOf(currentPage)});
 		return queryParams;
 	}
@@ -154,7 +154,7 @@ public class DbHelper {
 	public static QueryParams getLessonCourseById(int courseId) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LESSONS_COURSES.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_ITEM_ID);
+		queryParams.setSelection(DbDataManager.SELECTION_ITEM_ID);
 		queryParams.setArguments(new String[]{String.valueOf(courseId)});
 		return queryParams;
 	}
@@ -162,7 +162,7 @@ public class DbHelper {
 	public static QueryParams getLessonCoursesForUser(String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LESSONS_COURSE_LIST.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_USER );
+		queryParams.setSelection(DbDataManager.SELECTION_USER );
 		queryParams.setArguments(new String[]{username});
 		return queryParams;
 	}
@@ -170,7 +170,7 @@ public class DbHelper {
 	public static QueryParams getLessonsListByCourseId(int courseId, String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LESSONS_LESSONS_LIST.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_CATEGORY_ID_AND_USER);
+		queryParams.setSelection(DbDataManager.SELECTION_CATEGORY_ID_AND_USER);
 		queryParams.setArguments(new String[]{String.valueOf(courseId), username});
 		return queryParams;
 	}
@@ -178,7 +178,7 @@ public class DbHelper {
 	public static QueryParams getMentorLessonById(long lessonId) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LESSONS_MENTOR_LESSONS.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_ITEM_ID);
+		queryParams.setSelection(DbDataManager.SELECTION_ITEM_ID);
 		queryParams.setArguments(new String[]{String.valueOf(lessonId)});
 		return queryParams;
 	}
@@ -186,7 +186,7 @@ public class DbHelper {
 	public static QueryParams getUserLessonById(long lessonId, String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LESSONS_USER_LESSONS.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_ITEM_ID_AND_USER);
+		queryParams.setSelection(DbDataManager.SELECTION_ITEM_ID_AND_USER);
 		queryParams.setArguments(new String[]{String.valueOf(lessonId), username});
 		return queryParams;
 	}
@@ -194,7 +194,7 @@ public class DbHelper {
 	public static QueryParams getLessonPositionsById(long lessonId) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LESSONS_POSITIONS.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_ITEM_ID);
+		queryParams.setSelection(DbDataManager.SELECTION_ITEM_ID);
 		queryParams.setArguments(new String[]{String.valueOf(lessonId)});
 		return queryParams;
 	}
@@ -202,7 +202,7 @@ public class DbHelper {
 	public static QueryParams getLessonPositionMovesById(long lessonId, int positionNumber) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LESSONS_POSITION_MOVES.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_ITEM_ID_AND_CURRENT_POSITION);
+		queryParams.setSelection(DbDataManager.SELECTION_ITEM_ID_AND_CURRENT_POSITION);
 		queryParams.setArguments(new String[]{String.valueOf(lessonId), String.valueOf(positionNumber)});
 		return queryParams;
 	}
@@ -211,7 +211,7 @@ public class DbHelper {
 	public static QueryParams getLessonsByCategory(int categoryId, String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LESSONS_LESSONS_LIST.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_CATEGORY_ID_AND_USER);
+		queryParams.setSelection(DbDataManager.SELECTION_CATEGORY_ID_AND_USER);
 		queryParams.setArguments(new String[]{String.valueOf(categoryId), username});
 		return queryParams;
 	}
@@ -220,8 +220,8 @@ public class DbHelper {
 	public static QueryParams getConversationMessagesById(long conversationId, String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.CONVERSATIONS_MESSAGES.ordinal()]);
-		queryParams.setSelection(DbDataManager1.SELECTION_USER_CONVERSATION_ID);
-		queryParams.setOrder(DbScheme.V_CREATE_DATE + DbDataManager1.ASCEND);
+		queryParams.setSelection(DbDataManager.SELECTION_USER_CONVERSATION_ID);
+		queryParams.setOrder(DbScheme.V_CREATE_DATE + DbDataManager.ASCEND);
 		queryParams.setArguments(new String[]{username, String.valueOf(conversationId)});
 		return queryParams;
 	}

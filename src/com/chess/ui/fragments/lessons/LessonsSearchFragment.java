@@ -18,7 +18,7 @@ import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.entity.api.LessonSearchItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.ui.adapters.LessonsItemAdapter;
 import com.chess.ui.adapters.StringSpinnerAdapter;
@@ -122,8 +122,8 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 		categories.add(allStr);
 
 		do {
-			int id = DbDataManager1.getInt(cursor, DbScheme.V_CATEGORY_ID);
-			String name = DbDataManager1.getString(cursor, DbScheme.V_NAME);
+			int id = DbDataManager.getInt(cursor, DbScheme.V_CATEGORY_ID);
+			String name = DbDataManager.getString(cursor, DbScheme.V_NAME);
 			categoriesArray.put(id, name);
 			categories.add(name);
 		} while (cursor.moveToNext());

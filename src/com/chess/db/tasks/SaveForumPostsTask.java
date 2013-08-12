@@ -5,7 +5,7 @@ import com.chess.backend.entity.api.ForumPostItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class SaveForumPostsTask extends AbstractUpdateTask<ForumPostItem.Post, L
 			for (ForumPostItem.Post currentItem : itemList) {
 				currentItem.setTopicId(topicId);
 				currentItem.setPage(currentPage);
-				DbDataManager1.updateForumPostItem(contentResolver, currentItem);
+				DbDataManager.updateForumPostItem(contentResolver, currentItem);
 			}
 		}
 		result = StaticData.RESULT_OK;

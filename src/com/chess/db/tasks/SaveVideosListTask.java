@@ -5,7 +5,7 @@ import com.chess.backend.entity.api.VideoItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class SaveVideosListTask extends AbstractUpdateTask<VideoItem.Data, Long>
 	protected Integer doTheTask(Long... ids) {
 		synchronized (itemList) {
 			for (VideoItem.Data currentItem : itemList) {
-				DbDataManager1.updateVideoItem(contentResolver, currentItem);
+				DbDataManager.updateVideoItem(contentResolver, currentItem);
 			}
 		}
 		result = StaticData.RESULT_OK;

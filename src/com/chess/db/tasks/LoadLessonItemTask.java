@@ -6,7 +6,7 @@ import com.chess.backend.entity.api.LessonItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.QueryParams;
 
@@ -42,7 +42,7 @@ public class LoadLessonItemTask extends AbstractUpdateTask<LessonItem.Data, Long
 					params.getArguments(), params.getOrder());
 
 			if (cursor.moveToFirst()) {
-				item.setLesson(DbDataManager1.getLessonsMentorLessonFromCursor(cursor));
+				item.setLesson(DbDataManager.getLessonsMentorLessonFromCursor(cursor));
 			}
 		}
 
@@ -52,7 +52,7 @@ public class LoadLessonItemTask extends AbstractUpdateTask<LessonItem.Data, Long
 					params.getArguments(), params.getOrder());
 
 			if (cursor.moveToFirst()) {
-				item.setUserLesson(DbDataManager1.getLessonsUserLessonFromCursor(cursor));
+				item.setUserLesson(DbDataManager.getLessonsUserLessonFromCursor(cursor));
 				item.setLessonCompleted(item.getUserLesson().isLessonCompleted());
 			}
 		}
@@ -65,7 +65,7 @@ public class LoadLessonItemTask extends AbstractUpdateTask<LessonItem.Data, Long
 			if (cursor.moveToFirst()) {
 				List<LessonItem.MentorPosition> positions = new ArrayList<LessonItem.MentorPosition>();
 				do {
-					positions.add(DbDataManager1.getLessonsPositionFromCursor(cursor));
+					positions.add(DbDataManager.getLessonsPositionFromCursor(cursor));
 
 				} while (cursor.moveToNext());
 
@@ -83,7 +83,7 @@ public class LoadLessonItemTask extends AbstractUpdateTask<LessonItem.Data, Long
 				if (cursor.moveToFirst()) {
 					List<LessonItem.MentorPosition.PossibleMove> possibleMoves = new ArrayList<LessonItem.MentorPosition.PossibleMove>();
 					do {
-						possibleMoves.add(DbDataManager1.getLessonsPositionMoveFromCursor(cursor));
+						possibleMoves.add(DbDataManager.getLessonsPositionMoveFromCursor(cursor));
 					} while(cursor.moveToNext());
 					position.setPossibleMoves(possibleMoves);
 				}

@@ -16,7 +16,7 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ItemsAdapter;
@@ -66,13 +66,13 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 			final String[] arguments1 = new String[1];
 			arguments1[0] = getAppData().getUsername();
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()],
-					DbDataManager1.PROJECTION_USERNAME, DbDataManager1.SELECTION_USER, arguments1, null);
+					DbDataManager.PROJECTION_USERNAME, DbDataManager.SELECTION_USER, arguments1, null);
 
 			firendsList = new ArrayList<SelectionItem>();
 			firendsList.add(new SelectionItem(null, getString(R.string.random)));
 			if (cursor.moveToFirst()) {
 				do{
-					firendsList.add(new SelectionItem(null, DbDataManager1.getString(cursor, DbScheme.V_USERNAME)));
+					firendsList.add(new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME)));
 				}while (cursor.moveToNext());
 			}
 

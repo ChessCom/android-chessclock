@@ -14,7 +14,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.stats.UserStatsItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbDataManager1;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveUserStatsTask;
 import com.chess.model.RatingListItem;
@@ -145,58 +145,58 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 
 		{// standard
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal()],
-					DbDataManager1.PROJECTION_USER_CURRENT_RATING, DbDataManager1.SELECTION_USER, argument, null);
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
-				int currentRating = DbDataManager1.getInt(cursor, DbScheme.V_CURRENT);
+				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				ratingList.get(LIVE_STANDARD).setValue(currentRating);
 			}
 		}
 		{// blitz
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal()],
-					DbDataManager1.PROJECTION_USER_CURRENT_RATING, DbDataManager1.SELECTION_USER, argument, null);
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
-				int currentRating = DbDataManager1.getInt(cursor, DbScheme.V_CURRENT);
+				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				ratingList.get(LIVE_BLITZ).setValue(currentRating);
 			}
 		}
 		{// bullet
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal()],
-					DbDataManager1.PROJECTION_USER_CURRENT_RATING, DbDataManager1.SELECTION_USER, argument, null);
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
-				int currentRating = DbDataManager1.getInt(cursor, DbScheme.V_CURRENT);
+				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 
 				ratingList.get(LIVE_LIGHTNING).setValue(currentRating);
 			}
 		}
 		{// chess
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal()],
-					DbDataManager1.PROJECTION_USER_CURRENT_RATING, DbDataManager1.SELECTION_USER, argument, null);
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
-				int currentRating = DbDataManager1.getInt(cursor, DbScheme.V_CURRENT);
+				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				ratingList.get(DAILY_CHESS).setValue(currentRating);
 			}
 		}
 		{// chess960
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_DAILY_CHESS960.ordinal()],
-					DbDataManager1.PROJECTION_USER_CURRENT_RATING, DbDataManager1.SELECTION_USER, argument, null);
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
-				int currentRating = DbDataManager1.getInt(cursor, DbScheme.V_CURRENT);
+				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				ratingList.get(DAILY_CHESS960).setValue(currentRating);
 			}
 		}
 		{// tactics
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_TACTICS.ordinal()],
-					DbDataManager1.PROJECTION_USER_CURRENT_RATING, DbDataManager1.SELECTION_USER, argument, null);
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
-				int currentRating = DbDataManager1.getInt(cursor, DbScheme.V_CURRENT);
+				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				ratingList.get(TACTICS).setValue(currentRating);
 			}
 		}
 		{// chess mentor
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_LESSONS.ordinal()],
-					DbDataManager1.PROJECTION_USER_CURRENT_RATING, DbDataManager1.SELECTION_USER, argument, null);
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor.moveToFirst()) {
-				int currentRating = DbDataManager1.getInt(cursor, DbScheme.V_CURRENT);
+				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				ratingList.get(LESSONS).setValue(currentRating);
 			}
 		}
