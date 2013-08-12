@@ -14,12 +14,12 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.ForumPostItem;
-import com.chess.backend.entity.new_api.VacationItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.ForumPostItem;
+import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.SaveForumPostsTask;
@@ -88,8 +88,8 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getForumTopicById(topicId));
 		cursor.moveToFirst();
-		topicTitle = DbDataManager.getString(cursor, DbConstants.V_TITLE);
-		topicUrl = DbDataManager.getString(cursor, DbConstants.V_URL);
+		topicTitle = DbDataManager.getString(cursor, DbScheme.V_TITLE);
+		topicUrl = DbDataManager.getString(cursor, DbScheme.V_URL);
 
 	}
 
@@ -174,8 +174,8 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 
 			Cursor cursor = (Cursor) postsCursorAdapter.getItem(position);
-			String username = DbDataManager.getString(cursor, DbConstants.V_USERNAME);
-			String body = DbDataManager.getString(cursor, DbConstants.V_DESCRIPTION);
+			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+			String body = DbDataManager.getString(cursor, DbScheme.V_DESCRIPTION);
 
 			replyView.setVisibility(View.VISIBLE);
 			replyView.setBackgroundResource(R.color.header_light);

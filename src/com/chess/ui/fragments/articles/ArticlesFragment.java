@@ -11,12 +11,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.ArticleItem;
-import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.ArticleItem;
+import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
@@ -125,7 +125,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 	private boolean loadCategoriesFromDB() {
-		Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.ARTICLE_CATEGORIES.ordinal()], null, null, null, null);
+		Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.ARTICLE_CATEGORIES.ordinal()], null, null, null, null);
 		if (cursor != null && cursor.moveToFirst()) {
 			categoriesAdapter.changeCursor(cursor);
 			sectionedAdapter.notifyDataSetChanged();
@@ -168,7 +168,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			getActivityFace().openFragment(ArticleDetailsFragment.createInstance(DbDataManager.getId(cursor)));
 		} else if (section == CATEGORIES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			String sectionName = DbDataManager.getString(cursor, DbConstants.V_NAME);
+			String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
 
 			getActivityFace().openFragment(ArticleCategoriesFragment.createInstance(sectionName));
 		}

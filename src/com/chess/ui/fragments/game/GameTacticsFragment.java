@@ -15,18 +15,18 @@ import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.TacticsDataHolder;
-import com.chess.backend.entity.new_api.TacticInfoItem;
-import com.chess.backend.entity.new_api.TacticItem;
-import com.chess.backend.entity.new_api.TacticRatingData;
+import com.chess.backend.LoadItem;
+import com.chess.model.TacticsDataHolder;
+import com.chess.backend.entity.api.TacticInfoItem;
+import com.chess.backend.entity.api.TacticItem;
+import com.chess.backend.entity.api.TacticRatingData;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetOfflineTacticsBatchTask;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.db.tasks.SaveTacticsBatchTask;
 import com.chess.model.BaseGameItem;
@@ -371,7 +371,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		if (currentGameExist()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
-			getContentResolver().delete(DbConstants.uriArray[DbConstants.Tables.TACTICS_BATCH.ordinal()],
+			getContentResolver().delete(DbScheme.uriArray[DbScheme.Tables.TACTICS_BATCH.ordinal()],
 					DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
 		}
 
@@ -851,7 +851,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private void clearSavedTactics() {
 		if (currentGameExist()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
-			getContentResolver().delete(DbConstants.uriArray[DbConstants.Tables.TACTICS_BATCH.ordinal()],
+			getContentResolver().delete(DbScheme.uriArray[DbScheme.Tables.TACTICS_BATCH.ordinal()],
 					DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
 		}
 	}

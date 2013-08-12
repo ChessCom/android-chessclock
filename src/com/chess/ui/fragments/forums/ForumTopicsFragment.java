@@ -13,10 +13,10 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.ForumTopicItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.ForumTopicItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.SaveForumTopicsTask;
@@ -69,7 +69,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getForumCategories());
 		if (cursor.moveToFirst()) {
 			do {
-				categoriesMap.put(DbDataManager.getInt(cursor, DbConstants.V_ID), DbDataManager.getString(cursor, DbConstants.V_NAME));
+				categoriesMap.put(DbDataManager.getInt(cursor, DbScheme.V_ID), DbDataManager.getString(cursor, DbScheme.V_NAME));
 			} while (cursor.moveToNext());
 		}
 	}
@@ -140,7 +140,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 			// see onClick(View) handle
 		} else {
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-			int topicId = DbDataManager.getInt(cursor, DbConstants.V_ID);
+			int topicId = DbDataManager.getInt(cursor, DbScheme.V_ID);
 			getActivityFace().openFragment(ForumPostsFragment.createInstance(topicId));
 		}
 	}

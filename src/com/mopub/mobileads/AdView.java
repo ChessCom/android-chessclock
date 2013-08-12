@@ -56,7 +56,7 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-import com.chess.backend.entity.DataHolder;
+import com.chess.model.DataHolder;
 import com.mopub.mobileads.MoPubView.LocationAwareness;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;

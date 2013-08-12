@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
-import com.chess.backend.entity.new_api.ChatItem;
+import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.StaticData;
 import com.chess.lcc.android.DataNotValidException;

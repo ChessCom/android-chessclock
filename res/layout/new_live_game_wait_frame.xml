@@ -21,9 +21,10 @@
             android:layout_height="wrap_content"
             android:minHeight="@dimen/panel_info_height"
             android:gravity="center"
-            android:text="@string/matching"
-            android:textSize="23sp"
-            android:textColor="@color/hint_text"
+            android:text="@string/finding_opponent"
+            android:textSize="19sp"
+			android:padding="5dip"
+            android:textColor="@color/white"
             custom:ttf="Bold"
             />
 
@@ -33,7 +34,9 @@
             android:layout_height="wrap_content"
             android:text="@string/cancel"
             style="@style/Button.Glassy"
-            android:layout_margin="15dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_marginBottom="15dip"
             />
 
         <RelativeLayout

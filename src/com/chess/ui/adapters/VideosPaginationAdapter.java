@@ -2,8 +2,8 @@ package com.chess.ui.adapters;
 
 import android.content.Context;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.VideoItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.VideoItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;

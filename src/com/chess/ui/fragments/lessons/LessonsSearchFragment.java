@@ -13,12 +13,12 @@ import android.widget.Spinner;
 import com.chess.MultiDirectionSlidingDrawer;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.LessonListItem;
-import com.chess.backend.entity.new_api.LessonSearchItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.LessonListItem;
+import com.chess.backend.entity.api.LessonSearchItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.ui.adapters.LessonsItemAdapter;
 import com.chess.ui.adapters.StringSpinnerAdapter;
@@ -109,7 +109,7 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 		super.onResume();
 
 		// get saved categories
-		Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
+		Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
 
 		if (cursor != null && cursor.moveToFirst()) {
 			fillCategoriesList(cursor);
@@ -122,8 +122,8 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 		categories.add(allStr);
 
 		do {
-			int id = DbDataManager.getInt(cursor, DbConstants.V_CATEGORY_ID);
-			String name = DbDataManager.getString(cursor, DbConstants.V_NAME);
+			int id = DbDataManager.getInt(cursor, DbScheme.V_CATEGORY_ID);
+			String name = DbDataManager.getString(cursor, DbScheme.V_NAME);
 			categoriesArray.put(id, name);
 			categories.add(name);
 		} while (cursor.moveToNext());

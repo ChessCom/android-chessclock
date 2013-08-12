@@ -17,6 +17,7 @@ package com.chess;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,12 +25,12 @@ import android.media.MediaPlayer;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
-import com.chess.backend.GcmHelper;
+import com.chess.backend.gcm.*;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.DataHolder;
-import com.chess.backend.entity.LastMoveInfoItem;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.GcmItem;
+import com.chess.db.DbDataManager;
+import com.chess.model.DataHolder;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.GcmItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
@@ -50,12 +51,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 	private static final String TAG = "GCMIntentService";
 	private static final String TOKEN = Long.toBinaryString(new Random().nextLong());
-	private Context context;
 	private SharedPreferences preferences;
 
 	public GCMIntentService() {
 		super(GcmHelper.SENDER_ID);
-		context = this;
 	}
 
 	@Override
@@ -64,7 +63,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Log.d(TAG, "User = " + appData.getUsername() + " Device registered: regId = " + registrationId);
 
 		LoadItem loadItem = new LoadItem();
-//		loadItem.setLoadPath(RestHelper.GCM_REGISTER);
 		loadItem.setLoadPath(RestHelper.CMD_GCM);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
@@ -150,11 +148,72 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		if (type.equals(GcmHelper.NOTIFICATION_YOUR_MOVE)) {
 			Log.d(TAG, "received move notification, notifications enabled = " + appData.isNotificationsEnabled());
-			if (!appData.isNotificationsEnabled())   // we check it here because we will use GCM for lists update, so it need to be registered.
-				return;
 
 			showYouTurnNotification(intent, context);
+		} else if (type.equals(GcmHelper.NOTIFICATION_NEW_FRIEND_REQUEST)) {
+
+			showNewFriendRequest(intent, context);
+		} else if (type.equals(GcmHelper.NOTIFICATION_NEW_CHAT_MESSAGE)) {
+
+			showNewChatMessage(intent, context);
+		} else if (type.equals(GcmHelper.NOTIFICATION_GAME_OVER)) {
+
+			showGameOver(intent, context);
+		} else if (type.equals(GcmHelper.NOTIFICATION_NEW_CHALLENGE)) {
+
+			showNewChallenge(intent, context);
 		}
+	}
+
+	private synchronized void showNewFriendRequest(Intent intent, Context context){
+		FriendRequestItem friendRequestItem = new FriendRequestItem();
+
+		friendRequestItem.setMessage(intent.getStringExtra("message"));
+		friendRequestItem.setUsername(intent.getStringExtra("sender"));
+		friendRequestItem.setCreatedAt(Long.parseLong(intent.getStringExtra("created_at")));
+		friendRequestItem.setAvatar(intent.getStringExtra("avatar"));
+
+		ContentResolver contentResolver = context.getContentResolver();
+		String username = new AppData(context).getUsername();
+		DbDataManager.saveNewFriendRequest(contentResolver, friendRequestItem, username);
+	}
+
+	private synchronized void showNewChatMessage(Intent intent, Context context){
+		NewChatNotificationItem chatNotificationItem = new NewChatNotificationItem();
+
+		chatNotificationItem.setMessage(intent.getStringExtra("message"));
+		chatNotificationItem.setUsername(intent.getStringExtra("sender"));
+		chatNotificationItem.setGameId(Long.parseLong(intent.getStringExtra("game_id")));
+		chatNotificationItem.setCreatedAt(Long.parseLong(intent.getStringExtra("created_at")));
+		chatNotificationItem.setAvatar(intent.getStringExtra("avatar"));
+
+		ContentResolver contentResolver = context.getContentResolver();
+		String username = new AppData(context).getUsername();
+		DbDataManager.saveNewChatNotification(contentResolver, chatNotificationItem, username);
+	}
+
+	private synchronized void showGameOver(Intent intent, Context context) {
+		GameOverNotificationItem gameOverNotificationItem = new GameOverNotificationItem();
+
+		gameOverNotificationItem.setMessage(intent.getStringExtra("message"));
+		gameOverNotificationItem.setGameId(Long.parseLong(intent.getStringExtra("game_id")));
+		gameOverNotificationItem.setAvatar(intent.getStringExtra("avatar"));
+
+		ContentResolver contentResolver = context.getContentResolver();
+		String username = new AppData(context).getUsername();
+		DbDataManager.saveGameOverNotification(contentResolver, gameOverNotificationItem, username);
+	}
+
+	private synchronized void showNewChallenge(Intent intent, Context context){
+		NewChallengeNotificationItem challengeNotificationItem = new NewChallengeNotificationItem();
+
+		challengeNotificationItem.setUsername(intent.getStringExtra("sender"));
+		challengeNotificationItem.setAvatar(intent.getStringExtra("avatar"));
+		challengeNotificationItem.setChallengeId(Long.parseLong(intent.getStringExtra("challenge_id")));
+
+		ContentResolver contentResolver = context.getContentResolver();
+		String username = new AppData(context).getUsername();
+		DbDataManager.saveNewChallengeNotification(contentResolver, challengeNotificationItem, username);
 	}
 
 	private synchronized void showYouTurnNotification(Intent intent, Context context) {
@@ -175,7 +234,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		// we use the same registerId for all users on a device, so check username to notify only the needed user
 		if (opponentUsername.equalsIgnoreCase(appData.getUsername())) {
-			return; // don't need notificaion of myself game
+			return; // don't need notification of myself game
 		}
 //		Log.d("TEST", " lastMoveInfoItems.size() = " + DataHolder.getInstance().getLastMoveInfoItems().size());
 
@@ -234,31 +293,36 @@ public class GCMIntentService extends GCMBaseIntentService {
 					remainingUnits
 			};
 
+			// TODO add item in Privacy Settings
+			if (appData.isNotificationsEnabled()) {  // we check it here because we will use GCM for lists update, so it need to be registered.
+				GameListCurrentItem gameListItem = GameListCurrentItem.createInstance(gameInfoValues);
 
-			GameListCurrentItem gameListItem = GameListCurrentItem.createInstance(gameInfoValues);
+				AppUtils.showNewMoveStatusNotification(context,
+						context.getString(R.string.your_move),
+						context.getString(R.string.your_turn_in_game_with,
+								opponentUsername,
+								lastMoveSan),
+						StaticData.MOVE_REQUEST_CODE,
+						gameListItem);
 
-			AppUtils.showNewMoveStatusNotification(context,
-					context.getString(R.string.your_move),
-					context.getString(R.string.your_turn_in_game_with,
-							opponentUsername,
-							lastMoveSan),
-					StaticData.MOVE_REQUEST_CODE,
-					gameListItem);
-
-			SharedPreferences preferences = appData.getPreferences();
-			boolean playSounds = preferences.getBoolean(appData.getUsername() + AppConstants.PREF_SOUNDS, false);
-			if (playSounds) {
-				final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
-				if (player != null) {
-					player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-						@Override
-						public void onCompletion(MediaPlayer mediaPlayer) {
-							player.release();
-						}
-					});
-					player.start();
+				SharedPreferences preferences = appData.getPreferences();
+				boolean playSounds = preferences.getBoolean(appData.getUsername() + AppConstants.PREF_SOUNDS, false);
+				if (playSounds) {
+					final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
+					if (player != null) {
+						player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+							@Override
+							public void onCompletion(MediaPlayer mediaPlayer) {
+								player.release();
+							}
+						});
+						player.start();
+					}
 				}
 			}
+
+
+
 		}
 	}
 

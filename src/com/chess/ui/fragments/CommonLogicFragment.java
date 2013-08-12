@@ -1,7 +1,10 @@
 package com.chess.ui.fragments;
 
 import android.app.Activity;
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,20 +19,19 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import com.chess.R;
+import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
-import com.chess.backend.entity.DataHolder;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.TacticsDataHolder;
-import com.chess.backend.entity.new_api.LoginItem;
-import com.chess.backend.entity.new_api.RegisterItem;
+import com.chess.backend.entity.api.LoginItem;
+import com.chess.backend.entity.api.RegisterItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.*;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.model.DataHolder;
+import com.chess.model.TacticsDataHolder;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.engine.ChessBoardComp;
-import com.chess.ui.fragments.daily.DailyGamesNotificationFragment;
-import com.chess.ui.fragments.home.HomePlayFragment;
+import com.chess.ui.fragments.daily.DailyGamesRightFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.welcome.SignInFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
@@ -143,7 +145,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		getActivityFace().setTouchModeToSlidingMenu(slideMenusEnabled? SlidingMenu.TOUCHMODE_FULLSCREEN
+		getActivityFace().setTouchModeToSlidingMenu(slideMenusEnabled ? SlidingMenu.TOUCHMODE_FULLSCREEN
 				: SlidingMenu.TOUCHMODE_NONE);
 
 		LoginButton loginButton = (LoginButton) getView().findViewById(R.id.fb_connect);
@@ -215,6 +217,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	/**
 	 * ONE_ICON means minus 1 from default state, because be default there are 2 icons on right side
+	 *
 	 * @param code can be 1 or 2 - corresponds for one or two icons offset
 	 */
 	protected void setTitlePadding(int code) {
@@ -542,19 +545,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu_games:
-				getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
-				handler.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						getActivityFace().toggleRightMenu();
-					}
-				}, SIDE_MENU_DELAY);
-				return true;
-			case R.id.menu_notifications:
-				CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(DailyGamesNotificationFragment.class.getSimpleName());
+			case R.id.menu_games: {
+				CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(DailyGamesRightFragment.class.getSimpleName());
 				if (fragment == null) {
-					fragment = new DailyGamesNotificationFragment();
+					fragment = new DailyGamesRightFragment();
 				}
 				getActivityFace().changeRightFragment(fragment);
 				handler.postDelayed(new Runnable() {
@@ -564,6 +558,22 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 					}
 				}, SIDE_MENU_DELAY);
 				return true;
+			}
+			case R.id.menu_notifications: {// bell icon
+				CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(NotificationsRightFragment.class.getSimpleName());
+				if (fragment == null) {
+					fragment = new NotificationsRightFragment();
+				}
+
+				getActivityFace().changeRightFragment(fragment);
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						getActivityFace().toggleRightMenu();
+					}
+				}, SIDE_MENU_DELAY);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -636,8 +646,12 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		return getAppData().getUserPremiumStatus() < StaticData.GOLD_USER;
 	}
 
-	public boolean isNeedToUpgradePremium(){
+	public boolean isNeedToUpgradePremium() {
 		return getAppData().getUserPremiumStatus() < StaticData.DIAMOND_USER;
+	}
+
+	protected String upCaseFirst(String string) {
+		return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
 	}
 
 //	public void printHashKey() { Don't remove, use to find needed facebook hashkey

@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.ThemeItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.ThemeItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.image_load.ProgressImageView;
@@ -317,7 +317,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 	private class ThemesAdapter extends ItemsAdapter<ThemeItem.Data> {
 
-		public ThemesAdapter(Context context, List<com.chess.backend.entity.new_api.ThemeItem.Data> menuItems) {
+		public ThemesAdapter(Context context, List<com.chess.backend.entity.api.ThemeItem.Data> menuItems) {
 			super(context, menuItems);
 		}
 

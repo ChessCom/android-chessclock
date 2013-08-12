@@ -2,8 +2,8 @@ package com.chess.db.tasks;
 
 import android.content.ContentResolver;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.DailyGameBaseData;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.DailyGameBaseData;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.tasks.AbstractUpdateTask;

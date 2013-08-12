@@ -9,7 +9,7 @@ import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
 
@@ -51,9 +51,9 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
 
-		boolean isOtherUserOnline = getInt(cursor, DbConstants.V_OTHER_USER_IS_ONLINE) > 0;
+		boolean isOtherUserOnline = getInt(cursor, DbScheme.V_OTHER_USER_IS_ONLINE) > 0;
 
-		boolean haveNewMessages = getInt(cursor, DbConstants.V_NEW_MESSAGES_COUNT) > 0;
+		boolean haveNewMessages = getInt(cursor, DbScheme.V_NEW_MESSAGES_COUNT) > 0;
 		if (haveNewMessages) {
 			holder.lastMessageTxt.setFont(FontsHelper.BOLD_FONT);
 			view.setBackgroundResource(R.drawable.white_list_item_selector);
@@ -64,12 +64,12 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 		}
 		view.setPadding(paddingSide, paddingTop, paddingSide, paddingTop);
 
-		String otherUserAvatarUrl = getString(cursor, DbConstants.V_OTHER_USER_AVATAR_URL);
+		String otherUserAvatarUrl = getString(cursor, DbScheme.V_OTHER_USER_AVATAR_URL);
 		imageLoader.download(otherUserAvatarUrl, holder.photoImg, imgSize);
 
-		holder.authorTxt.setText(getString(cursor, DbConstants.V_OTHER_USER_USERNAME));
-		holder.lastMessageTxt.setText(getString(cursor, DbConstants.V_LAST_MESSAGE_CONTENT));
-		long timeAgo = getLong(cursor, DbConstants.V_LAST_MESSAGE_CREATED_AT);
+		holder.authorTxt.setText(getString(cursor, DbScheme.V_OTHER_USER_USERNAME));
+		holder.lastMessageTxt.setText(getString(cursor, DbScheme.V_LAST_MESSAGE_CONTENT));
+		long timeAgo = getLong(cursor, DbScheme.V_LAST_MESSAGE_CREATED_AT);
 		String lastDate = AppUtils.getMomentsAgoFromSeconds(timeAgo, context);
 		holder.lastMessageDateTxt.setText(lastDate);
 	}

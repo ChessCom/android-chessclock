@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.new_api.ChatItem;
+import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.image_load.ProgressImageView;
 
 import java.util.List;

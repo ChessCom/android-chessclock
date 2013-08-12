@@ -17,10 +17,10 @@ import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.RequestItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.RequestItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.ui.adapters.RecentOpponentsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -167,7 +167,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		String opponentName = DbDataManager.getString(cursor, DbConstants.V_WHITE_USERNAME);  // TODO adjust correctly
+		String opponentName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);  // TODO adjust correctly
 		createFriendRequest(opponentName, getString(R.string.add_friend_request_message));
 	}
 

@@ -9,7 +9,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
 import com.chess.utilities.AppUtils;
 
@@ -42,30 +42,30 @@ public class DailyCurrentGamesMyCursorRightAdapter extends ItemsCursorAdapter {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		String gameType = StaticData.SYMBOL_EMPTY;
-		if (getInt(cursor, DbConstants.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
+		if (getInt(cursor, DbScheme.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
 			gameType = CHESS_960;
 		}
 
 		String draw = StaticData.SYMBOL_EMPTY;
-		if (getInt(cursor, DbConstants.V_OPPONENT_OFFERED_DRAW) > 0) {
+		if (getInt(cursor, DbScheme.V_OPPONENT_OFFERED_DRAW) > 0) {
 			draw = "\n" + context.getString(R.string.draw_offered);
 		}
 
 		// get player side, and choose opponent
 		String avatarUrl;
 		String opponentName;
-		if (getInt(cursor, DbConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
-			avatarUrl = getString(cursor, DbConstants.V_WHITE_AVATAR);
-			opponentName = getString(cursor, DbConstants.V_WHITE_USERNAME) + gameType + draw;
+		if (getInt(cursor, DbScheme.V_I_PLAY_AS) == RestHelper.P_BLACK) {
+			avatarUrl = getString(cursor, DbScheme.V_WHITE_AVATAR);
+			opponentName = getString(cursor, DbScheme.V_WHITE_USERNAME) + gameType + draw;
 		} else {
-			avatarUrl = getString(cursor, DbConstants.V_BLACK_AVATAR);
-			opponentName = getString(cursor, DbConstants.V_BLACK_USERNAME) + gameType + draw;
+			avatarUrl = getString(cursor, DbScheme.V_BLACK_AVATAR);
+			opponentName = getString(cursor, DbScheme.V_BLACK_USERNAME) + gameType + draw;
 		}
 
 		holder.playerTxt.setText(opponentName + gameType);
 		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 
-		long amount = getLong(cursor, DbConstants.V_TIME_REMAINING);
+		long amount = getLong(cursor, DbScheme.V_TIME_REMAINING);
 		String infoText;
 		if (amount == 0) {
 			infoText = context.getString(R.string.few_minutes);

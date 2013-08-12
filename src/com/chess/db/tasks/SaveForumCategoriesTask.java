@@ -1,7 +1,7 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
-import com.chess.backend.entity.new_api.ForumCategoryItem;
+import com.chess.backend.entity.api.ForumCategoryItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;

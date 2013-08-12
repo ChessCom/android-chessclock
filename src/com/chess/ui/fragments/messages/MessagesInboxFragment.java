@@ -11,11 +11,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.ConversationItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.ConversationItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
@@ -100,8 +100,8 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		long conversationId = DbDataManager.getLong(cursor, DbConstants.V_ID);
-		String otherUserName = DbDataManager.getString(cursor, DbConstants.V_OTHER_USER_USERNAME);
+		long conversationId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+		String otherUserName = DbDataManager.getString(cursor, DbScheme.V_OTHER_USER_USERNAME);
 		getActivityFace().openFragment(MessagesConversationFragment.createInstance(conversationId, otherUserName));
 	}
 
@@ -126,7 +126,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 			super.updateData(returnedObj);
 
 			new LoadDataFromDbTask(conversationCursorUpdateListener,
-					DbHelper.getTableForUser(getUsername(), DbConstants.Tables.CONVERSATIONS_INBOX.ordinal()),
+					DbHelper.getTableForUser(getUsername(), DbScheme.Tables.CONVERSATIONS_INBOX),
 					getContentResolver()).executeTask();
 		}
 	}

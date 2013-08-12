@@ -11,12 +11,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.DailySeekItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.engine.configs.DailyGameConfig;
@@ -153,20 +153,20 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 				inviteFriendView2.setVisibility(View.VISIBLE);
 				inviteFriendView2.setOnClickListener(this);
 
-				firstFriendUserName = DbDataManager.getString(cursor, DbConstants.V_WHITE_USERNAME);
+				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
 				friendUserName1Txt.setText(firstFriendUserName);
-				friendRealName1Txt.setText(DbDataManager.getString(cursor, DbConstants.V_WHITE_USERNAME));
+				friendRealName1Txt.setText(DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME));
 				cursor.moveToNext();
-				secondFriendUserName = DbDataManager.getString(cursor, DbConstants.V_WHITE_USERNAME);
+				secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
 				friendUserName2Txt.setText(secondFriendUserName);
-				friendRealName2Txt.setText(DbDataManager.getString(cursor, DbConstants.V_WHITE_USERNAME));
+				friendRealName2Txt.setText(DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME));
 			} else if (cursor.getCount() == 1) {
 				inviteFriendView1.setVisibility(View.VISIBLE);
 				inviteFriendView1.setOnClickListener(this);
 
-				firstFriendUserName = DbDataManager.getString(cursor, DbConstants.V_WHITE_USERNAME);
+				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
 				friendUserName1Txt.setText(firstFriendUserName);
-				friendRealName1Txt.setText(DbDataManager.getString(cursor, DbConstants.V_WHITE_USERNAME));
+				friendRealName1Txt.setText(DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME));
 			}
 		}
 	}
@@ -221,11 +221,11 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 
 	private void setRatings() {
 		// set live rating    // TODO remove open menu listener when fragment goes on pause
-		int liveRating = DbDataManager.getUserCurrentRating(getActivity(), DbConstants.Tables.GAME_STATS_LIVE_STANDARD.ordinal(), getUsername());
+		int liveRating = DbDataManager.getUserCurrentRating(getActivity(), DbScheme.Tables.GAME_STATS_LIVE_STANDARD.ordinal(), getUsername());
 		liveRatingTxt.setText(String.valueOf(liveRating));
 
 		// set daily rating
-		int dailyRating = DbDataManager.getUserCurrentRating(getActivity(), DbConstants.Tables.GAME_STATS_DAILY_CHESS.ordinal(), getUsername());
+		int dailyRating = DbDataManager.getUserCurrentRating(getActivity(), DbScheme.Tables.GAME_STATS_DAILY_CHESS.ordinal(), getUsername());
 		dailyRatingTxt.setText(String.valueOf(dailyRating));
 
 	}

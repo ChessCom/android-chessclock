@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
@@ -98,7 +98,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	}
 
 	private boolean fillCategories() {
-		Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.ARTICLE_CATEGORIES.ordinal()], null, null, null, null);
+		Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.ARTICLE_CATEGORIES.ordinal()], null, null, null, null);
 		List<String> list = new ArrayList<String>();
 		if (!cursor.moveToFirst()) {
 			showToast("Categories are not loaded");
@@ -106,7 +106,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		}
 
 		do {
-			list.add(DbDataManager.getString(cursor, DbConstants.V_NAME));
+			list.add(DbDataManager.getString(cursor, DbScheme.V_NAME));
 		} while (cursor.moveToNext());
 
 		// get passed argument

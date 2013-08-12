@@ -5,11 +5,11 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import com.chess.backend.entity.new_api.LessonItem;
+import com.chess.backend.entity.api.LessonItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 
 import java.util.List;
@@ -62,7 +62,7 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 
 
 			// TODO implement beginTransaction logic for performance increase
-			Uri uri = DbConstants.uriArray[DbConstants.Tables.LESSONS_POSITIONS.ordinal()];
+			Uri uri = DbScheme.uriArray[DbScheme.Tables.LESSONS_POSITIONS.ordinal()];
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID_AND_NUMBER,
 					DbDataManager.SELECTION_ITEM_ID_AND_NUMBER, arguments, null);
 
@@ -96,7 +96,7 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 
 
 			// TODO implement beginTransaction logic for performance increase
-			Uri uri = DbConstants.uriArray[DbConstants.Tables.LESSONS_POSITION_MOVES.ordinal()];
+			Uri uri = DbScheme.uriArray[DbScheme.Tables.LESSONS_POSITION_MOVES.ordinal()];
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID_POSITION_NUMBER,
 					DbDataManager.SELECTION_ITEM_ID_POSITION_NUMBER, arguments, null);
 

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,7 +36,7 @@ public class CommonCategoriesCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View convertView, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		holder.text.setText(getString(cursor, DbConstants.V_NAME));
+		holder.text.setText(getString(cursor, DbScheme.V_NAME));
 		holder.icon.setText(R.string.ic_right);
 	}
 

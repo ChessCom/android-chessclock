@@ -12,13 +12,13 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
-import com.chess.backend.entity.new_api.VideoItem;
-import com.chess.backend.entity.new_api.VideoViewedItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.CommonFeedCategoryItem;
+import com.chess.backend.entity.api.VideoItem;
+import com.chess.backend.entity.api.VideoViewedItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.db.tasks.SaveVideoCategoriesTask;
 import com.chess.model.CurriculumItems;
@@ -152,8 +152,8 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		Cursor cursor = DbDataManager.getVideoViewedCursor(getActivity(), getUsername());
 		if (cursor != null) {
 			do {
-				int videoId = DbDataManager.getInt(cursor, DbConstants.V_ID);
-				boolean isViewed = DbDataManager.getInt(cursor, DbConstants.V_VIDEO_VIEWED) > 0;
+				int videoId = DbDataManager.getInt(cursor, DbScheme.V_ID);
+				boolean isViewed = DbDataManager.getInt(cursor, DbScheme.V_VIDEO_VIEWED) > 0;
 				curriculumViewedMap.put(videoId, isViewed);
 			} while (cursor.moveToNext());
 			cursor.close();
@@ -168,7 +168,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 //				}
 
 				// get saved categories
-				Cursor categoriesCursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
+				Cursor categoriesCursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
 
 				if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
 					categoriesCursorAdapter.changeCursor(categoriesCursor);
@@ -232,7 +232,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			// see onClick(View) handle
 		} else {
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-			String sectionName = DbDataManager.getString(cursor, DbConstants.V_NAME);
+			String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
 
 			getActivityFace().openFragment(VideoCategoriesFragment.createInstance(sectionName));
 		}
@@ -350,7 +350,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			// save in Db to open in Details View
 			ContentResolver contentResolver = getContentResolver();
 
-			Uri uri = DbConstants.uriArray[DbConstants.Tables.VIDEOS.ordinal()];
+			Uri uri = DbScheme.uriArray[DbScheme.Tables.VIDEOS.ordinal()];
 			String[] arguments = new String[1];
 			arguments[0] = String.valueOf(headerData.getTitle());
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_TITLE,
@@ -401,7 +401,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		@Override
 		public void updateData(CommonFeedCategoryItem.Data returnedObj) {
 			// get saved categories
-			Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
+			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
 
 			if (cursor.moveToFirst()) {
 				categoriesCursorAdapter.changeCursor(cursor);
@@ -431,7 +431,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
 
-		int userRating = DbDataManager.getUserCurrentRating(getActivity(), DbConstants.Tables.GAME_STATS_DAILY_CHESS.ordinal(), getUsername());
+		int userRating = DbDataManager.getUserCurrentRating(getActivity(), DbScheme.Tables.GAME_STATS_DAILY_CHESS.ordinal(), getUsername());
 
 		if (getAppData().isUserChooseVideoLibrary() || userRating > USER_PRO_RATING) { // TODO add api logic to check if user saw all videos
 			curriculumMode = false;

@@ -9,7 +9,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
 
 public class DailyFinishedGamesCursorRightAdapter extends ItemsCursorAdapter {
@@ -46,28 +46,28 @@ public class DailyFinishedGamesCursorRightAdapter extends ItemsCursorAdapter {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		String gameType = StaticData.SYMBOL_EMPTY;
-		if (getInt(cursor, DbConstants.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
+		if (getInt(cursor, DbScheme.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
 			gameType = CHESS_960;
 		}
 
 		// get player side, and choose opponent
 		String avatarUrl;
 		String opponentName;
-		if (getInt(cursor, DbConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
-			avatarUrl = getString(cursor, DbConstants.V_WHITE_AVATAR);
-			opponentName = getString(cursor, DbConstants.V_WHITE_USERNAME) + gameType;
+		if (getInt(cursor, DbScheme.V_I_PLAY_AS) == RestHelper.P_BLACK) {
+			avatarUrl = getString(cursor, DbScheme.V_WHITE_AVATAR);
+			opponentName = getString(cursor, DbScheme.V_WHITE_USERNAME) + gameType;
 		} else {
-			avatarUrl = getString(cursor, DbConstants.V_BLACK_AVATAR);
-			opponentName = getString(cursor, DbConstants.V_BLACK_USERNAME) + gameType;
+			avatarUrl = getString(cursor, DbScheme.V_BLACK_AVATAR);
+			opponentName = getString(cursor, DbScheme.V_BLACK_USERNAME) + gameType;
 		}
 
 		holder.playerTxt.setText(opponentName + gameType);
 		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 
 		String result = context.getString(R.string.loss);
-		if (getInt(cursor, DbConstants.V_GAME_SCORE) == BaseGameItem.GAME_WON) {
+		if (getInt(cursor, DbScheme.V_GAME_SCORE) == BaseGameItem.GAME_WON) {
 			result = context.getString(R.string.won);
-		} else if (getInt(cursor, DbConstants.V_GAME_SCORE) == BaseGameItem.GAME_DRAW) {
+		} else if (getInt(cursor, DbScheme.V_GAME_SCORE) == BaseGameItem.GAME_DRAW) {
 			result = context.getString(R.string.draw);
 		}
 		holder.gameInfoTxt.setText(result);

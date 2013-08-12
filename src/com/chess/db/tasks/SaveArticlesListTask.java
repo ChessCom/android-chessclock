@@ -5,11 +5,11 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import com.chess.backend.entity.new_api.ArticleItem;
+import com.chess.backend.entity.api.ArticleItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class SaveArticlesListTask extends AbstractUpdateTask<ArticleItem.Data, L
 				arguments2[0] = String.valueOf(currentItem.getId());
 
 				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DbConstants.uriArray[DbConstants.Tables.ARTICLES.ordinal()];
+				Uri uri = DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()];
 
 				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID,
 						DbDataManager.SELECTION_ITEM_ID, arguments2, null);

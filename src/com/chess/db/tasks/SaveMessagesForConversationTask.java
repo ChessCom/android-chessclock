@@ -1,17 +1,16 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import com.chess.backend.entity.new_api.MessagesItem;
+import com.chess.backend.entity.api.MessagesItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DbConstants;
 import com.chess.db.DbDataManager;
+import com.chess.db.DbScheme;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,19 +52,13 @@ public class SaveMessagesForConversationTask extends AbstractUpdateTask<Messages
 			arguments[2] = String.valueOf(conversationId);
 
 			// TODO implement beginTransaction logic for performance increase
-			Uri uri = DbConstants.uriArray[DbConstants.Tables.CONVERSATIONS_MESSAGES.ordinal()];
+			Uri uri = DbScheme.uriArray[DbScheme.Tables.CONVERSATIONS_MESSAGES.ordinal()];
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ID_USER_CONVERSATION_ID,
 					DbDataManager.SELECTION_ID_USER_CONVERSATION_ID, arguments, null);
 
 			ContentValues values = DbDataManager.putMessagesItemToValues(currentItem);
 
-			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-			} else {
-				contentResolver.insert(uri, values);
-			}
-
-			cursor.close();
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 		result = StaticData.RESULT_OK;
 

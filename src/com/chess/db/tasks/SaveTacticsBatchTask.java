@@ -5,12 +5,12 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import com.chess.backend.entity.new_api.TacticItem;
+import com.chess.backend.entity.api.TacticItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.Data, Lo
 				arguments[0] = String.valueOf(tacticItem.getId());
 				arguments[1] = userName;
 
-				Uri uri = DbConstants.uriArray[DbConstants.Tables.TACTICS_BATCH.ordinal()];
+				Uri uri = DbScheme.uriArray[DbScheme.Tables.TACTICS_BATCH.ordinal()];
 				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID_AND_USER,
 						DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments, null);
 

@@ -10,10 +10,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.ForumCategoryItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.ForumCategoryItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.SaveForumCategoriesTask;
@@ -83,7 +83,7 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		int categoryId = DbDataManager.getInt(cursor, DbConstants.V_ID);
+		int categoryId = DbDataManager.getInt(cursor, DbScheme.V_ID);
 		getActivityFace().openFragment(ForumTopicsFragment.createInstance(categoryId));
 	}
 

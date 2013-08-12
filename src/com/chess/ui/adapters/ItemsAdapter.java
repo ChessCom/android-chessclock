@@ -16,7 +16,7 @@ public abstract class ItemsAdapter<T> extends BaseAdapter {
 	protected final EnhancedImageDownloader imageLoader;
 	protected List<T> itemsList;
 	protected Context context;
-	protected Resources resources;
+	protected final Resources resources;
 	protected final LayoutInflater inflater;
 	protected final int itemListId;
 

@@ -1,7 +1,7 @@
 package com.chess.backend.tasks;
 
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
+import com.chess.backend.LoadItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;

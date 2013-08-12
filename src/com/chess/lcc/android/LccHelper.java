@@ -8,7 +8,7 @@ import android.util.Log;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.new_api.ChatItem;
+import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;

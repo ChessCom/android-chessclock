@@ -197,7 +197,7 @@
     <string name="pieces_style">Pieces Style</string>
     <string name="show_legal_moves">Show Legal Moves</string>
     <string name="flip_board">Flip Board</string>
-    <string name="matching">Matching</string>
+    <string name="finding_opponent">Finding an opponent…</string>
     <string name="solved_with_hint">Solved with Hint</string>
     <string name="close">close</string>
     <string name="required">required</string>
@@ -308,6 +308,7 @@
 	<string name="lesson_completed_message">Hey, i\'ve just completed @Chess.com %1$s lesson, and gained %2$s score</string>
 	<string name="share_completed_lesson_title">Chess.com Mentor Lesson completed!</string>
 	<string name="resume_lesson">Resume Lesson</string>
+	<string name="friend_requests">Friend Requests</string>
 	<!--Game mode-->
 
 </resources>

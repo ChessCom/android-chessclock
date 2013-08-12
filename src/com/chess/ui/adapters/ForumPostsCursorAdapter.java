@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 import org.xml.sax.XMLReader;
@@ -79,21 +79,21 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 
 		holder.quoteTxt.setTag(R.id.list_item_id, cursor.getPosition());
 
-		holder.authorTxt.setText(getString(cursor, DbConstants.V_USERNAME));
-		holder.commentNumberTxt.setText("# " + getInt(cursor, DbConstants.V_NUMBER));
-		holder.bodyTxt.setText(Html.fromHtml(getString(cursor, DbConstants.V_DESCRIPTION), imageGetter, myHtmlTagHandler));
-//		holder.bodyTxt.setText(getString(cursor, DbConstants.V_DESCRIPTION));
+		holder.authorTxt.setText(getString(cursor, DbScheme.V_USERNAME));
+		holder.commentNumberTxt.setText("# " + getInt(cursor, DbScheme.V_NUMBER));
+		holder.bodyTxt.setText(Html.fromHtml(getString(cursor, DbScheme.V_DESCRIPTION), imageGetter, myHtmlTagHandler));
+//		holder.bodyTxt.setText(getString(cursor, DbScheme.V_DESCRIPTION));
 
-		long timestamp = getLong(cursor, DbConstants.V_CREATE_DATE);
+		long timestamp = getLong(cursor, DbScheme.V_CREATE_DATE);
 		String lastCommentAgoStr = AppUtils.getMomentsAgoFromSeconds(timestamp, context);
 		holder.dateTxt.setText(lastCommentAgoStr + StaticData.SYMBOL_SPACE_DOT);
 
 		// set premium icon
-		int status = getInt(cursor, DbConstants.V_PREMIUM_STATUS);
+		int status = getInt(cursor, DbScheme.V_PREMIUM_STATUS);
 		holder.premiumImg.setImageResource(AppUtils.getPremiumIcon(status));
 
 		// set country flag
-		int countryId = getInt(cursor, DbConstants.V_COUNTRY_ID);
+		int countryId = getInt(cursor, DbScheme.V_COUNTRY_ID);
 		Drawable drawable;
 		if (countryDrawables.get(countryId) == null) {
 			drawable = AppUtils.getCountryFlagScaled(context, countryMap.get(countryId));
@@ -104,7 +104,7 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 
 		holder.countryImg.setImageDrawable(drawable);
 
-		String url = getString(cursor, DbConstants.V_PHOTO_URL);
+		String url = getString(cursor, DbScheme.V_PHOTO_URL);
 		imageLoader.download(url, holder.photoImg, imageSize);
 	}
 

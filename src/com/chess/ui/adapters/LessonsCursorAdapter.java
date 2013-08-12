@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,8 +43,8 @@ public class LessonsCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
 
-		holder.text.setText(getString(cursor, DbConstants.V_NAME));
-		if (getInt(cursor, DbConstants.V_LESSON_COMPLETED) > 0) {
+		holder.text.setText(getString(cursor, DbScheme.V_NAME));
+		if (getInt(cursor, DbScheme.V_LESSON_COMPLETED) > 0) {
 			holder.text.setTextColor(watchedTextColor);
 			holder.icon.setTextColor(watchedIconColor);
 			holder.icon.setText(R.string.ic_check);

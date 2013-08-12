@@ -12,7 +12,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import com.chess.R;
-import com.chess.backend.entity.new_api.ChatItem;
+import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.interfaces.TaskUpdateInterface;

@@ -13,14 +13,14 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
-import com.chess.backend.entity.new_api.LessonCourseListItem;
-import com.chess.backend.entity.new_api.LessonListItem;
-import com.chess.backend.entity.new_api.LessonsRatingItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.CommonFeedCategoryItem;
+import com.chess.backend.entity.api.LessonCourseListItem;
+import com.chess.backend.entity.api.LessonListItem;
+import com.chess.backend.entity.api.LessonsRatingItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.SaveLessonsCategoriesTask;
@@ -161,7 +161,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 			if (need2Update) {
 
 				// get saved categories
-				Cursor categoriesCursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
+				Cursor categoriesCursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
 
 				if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
 					fillCategoriesList(categoriesCursor);
@@ -205,7 +205,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		String sectionName = DbDataManager.getString(cursor, DbConstants.V_NAME);
+		String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
 
 		getActivityFace().openFragment(LessonsCategoriesFragment.createInstance(sectionName));
 	}
@@ -283,7 +283,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		@Override
 		public void updateData(CommonFeedCategoryItem.Data returnedObj) {
 			// get saved categories
-			Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
+			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
 
 			if (cursor != null && cursor.moveToFirst()) {
 
@@ -307,9 +307,9 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		categoriesOrder = new SparseIntArray();
 
 		do {
-			int id = DbDataManager.getInt(cursor, DbConstants.V_CATEGORY_ID);
-			int displayOrder = DbDataManager.getInt(cursor, DbConstants.V_DISPLAY_ORDER);
-			String name = DbDataManager.getString(cursor, DbConstants.V_NAME);
+			int id = DbDataManager.getInt(cursor, DbScheme.V_CATEGORY_ID);
+			int displayOrder = DbDataManager.getInt(cursor, DbScheme.V_DISPLAY_ORDER);
+			String name = DbDataManager.getString(cursor, DbScheme.V_NAME);
 			categoriesArray.put(id, name);
 			categoriesOrder.put(displayOrder, id);
 		} while (cursor.moveToNext());
@@ -362,10 +362,10 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 			courseTable.put(categoryId, new ArrayList<LessonCourseListItem.Data>());
 		}
 		do {
-			int id = DbDataManager.getInt(cursor, DbConstants.V_ID);
-			int categoryId = DbDataManager.getInt(cursor, DbConstants.V_CATEGORY_ID);
-			String courseName = DbDataManager.getString(cursor, DbConstants.V_NAME);
-			boolean isCompleted = DbDataManager.getInt(cursor, DbConstants.V_COURSE_COMPLETED) > 0;
+			int id = DbDataManager.getInt(cursor, DbScheme.V_ID);
+			int categoryId = DbDataManager.getInt(cursor, DbScheme.V_CATEGORY_ID);
+			String courseName = DbDataManager.getString(cursor, DbScheme.V_NAME);
+			boolean isCompleted = DbDataManager.getInt(cursor, DbScheme.V_COURSE_COMPLETED) > 0;
 
 			LessonCourseListItem.Data data = new LessonCourseListItem.Data();
 			data.setId(id);

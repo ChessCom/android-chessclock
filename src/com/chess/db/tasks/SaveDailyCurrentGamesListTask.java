@@ -5,10 +5,10 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import com.chess.backend.entity.new_api.DailyCurrentGameData;
+import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class SaveDailyCurrentGamesListTask extends SaveDailyGamesTask<DailyCurre
 				arguments2[1] = String.valueOf(currentItem.getGameId());
 
 				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DbConstants.uriArray[DbConstants.Tables.DAILY_CURRENT_GAMES.ordinal()];
+				Uri uri = DbScheme.uriArray[DbScheme.Tables.DAILY_CURRENT_GAMES.ordinal()];
 				final Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_GAME_ID,
 						DbDataManager.SELECTION_USER_AND_ID, arguments2, null);
 

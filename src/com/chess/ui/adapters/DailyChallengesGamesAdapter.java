@@ -1,11 +1,10 @@
 package com.chess.ui.adapters;
 
-import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.new_api.DailyChallengeItem;
+import com.chess.backend.entity.api.DailyChallengeItem;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
@@ -14,12 +13,10 @@ import java.util.List;
 public class DailyChallengesGamesAdapter extends ItemsAdapter<DailyChallengeItem.Data> {
 
 	private final ItemClickListenerFace clickListenerFace;
-	private final Resources resources;
 	private final int imageSize;
 
 	public DailyChallengesGamesAdapter(ItemClickListenerFace clickListenerFace, List<DailyChallengeItem.Data> itemList) {
 		super(clickListenerFace.getMeContext(), itemList);
-		resources = context.getResources();
 		imageSize = (int) (resources.getDimension(R.dimen.list_item_image_size_big) / resources.getDisplayMetrics().density);
 		this.clickListenerFace = clickListenerFace;
 	}

@@ -1,16 +1,15 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import com.chess.backend.entity.new_api.CommonFeedCategoryItem;
+import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DbConstants;
 import com.chess.db.DbDataManager;
+import com.chess.db.DbScheme;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,20 +35,15 @@ public class SaveArticleCategoriesTask extends AbstractUpdateTask<CommonFeedCate
 				arguments2[0] = String.valueOf(currentItem.getId());
 
 				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DbConstants.uriArray[DbConstants.Tables.ARTICLE_CATEGORIES.ordinal()];
+				Uri uri = DbScheme.uriArray[DbScheme.Tables.ARTICLE_CATEGORIES.ordinal()];
 
 				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_V_CATEGORY_ID,
 						DbDataManager.SELECTION_CATEGORY_ID, arguments2, null);
 
 				ContentValues values = DbDataManager.putCommonFeedCategoryItemToValues(currentItem);
 
-				if (cursor.moveToFirst()) {
-					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-				} else {
-					contentResolver.insert(uri, values);
-				}
+				DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 
-				cursor.close();
 			}
 
 		}

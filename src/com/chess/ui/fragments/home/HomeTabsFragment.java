@@ -15,10 +15,10 @@ import com.chess.backend.GetAndSaveFriends;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.DailyCurrentGameData;
-import com.chess.backend.entity.new_api.DailyFinishedGameData;
-import com.chess.backend.entity.new_api.DailyGamesAllItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.DailyCurrentGameData;
+import com.chess.backend.entity.api.DailyFinishedGameData;
+import com.chess.backend.entity.api.DailyGamesAllItem;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -135,12 +135,12 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 //		setBadgeValueForId(R.id.menu_notifications, 7); // TODO use properly
 
 //		new LoadDataFromDbTask(new DbCursorUpdateListener(),
-//				DbHelper.getAllByUri(DbConstants.Tables.DAILY_FINISHED_GAMES.ordinal()),
+//				DbHelper.getAllByUri(DbScheme.Tables.DAILY_FINISHED_GAMES.ordinal()),
 //				getContentResolver()).executeTask();
 //
 
-//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbConstants.Tables.LESSONS_LESSONS_LIST.name()),
-//				DbHelper.getAllByUri(DbConstants.Tables.LESSONS_LESSONS_LIST.ordinal()),
+//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.LESSONS_LESSONS_LIST.name()),
+//				DbHelper.getAllByUri(DbScheme.Tables.LESSONS_LESSONS_LIST.ordinal()),
 //				getContentResolver()).executeTask();
 
 		// check if user have daily games in progress or completed. May check in DB

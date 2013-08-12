@@ -1,17 +1,16 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import com.chess.backend.entity.new_api.LessonCourseItem;
-import com.chess.backend.entity.new_api.LessonListItem;
+import com.chess.backend.entity.api.LessonCourseItem;
+import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DbConstants;
 import com.chess.db.DbDataManager;
+import com.chess.db.DbScheme;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,19 +42,13 @@ public class SaveLessonsCourseTask  extends AbstractUpdateTask<LessonCourseItem.
 			arguments[0] = String.valueOf(item.getId());
 
 			// TODO implement beginTransaction logic for performance increase
-			Uri uri = DbConstants.uriArray[DbConstants.Tables.LESSONS_COURSES.ordinal()];
+			Uri uri = DbScheme.uriArray[DbScheme.Tables.LESSONS_COURSES.ordinal()];
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID,
 					DbDataManager.SELECTION_ITEM_ID, arguments, null);
 
 			ContentValues values = DbDataManager.putLessonsCourseItemToValues(item);
 
-			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-			} else {
-				contentResolver.insert(uri, values);
-			}
-
-			cursor.close();
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 
 		for (LessonListItem lesson : item.getLessons()) {

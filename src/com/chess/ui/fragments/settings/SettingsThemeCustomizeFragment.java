@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.*;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.entity.new_api.ThemeItem;
+import com.chess.backend.entity.api.ThemeItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;

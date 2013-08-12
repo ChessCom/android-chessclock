@@ -18,17 +18,17 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.DataHolder;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.BaseResponseItem;
-import com.chess.backend.entity.new_api.DailyFinishedGameData;
+import com.chess.model.DataHolder;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.BaseResponseItem;
+import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
@@ -230,7 +230,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 				case GAMES_LIST:
 					// iterate through all loaded items in cursor
 					do {
-						long localDbGameId = DbDataManager.getLong(returnedObj, DbConstants.V_ID);
+						long localDbGameId = DbDataManager.getLong(returnedObj, DbScheme.V_ID);
 						if (localDbGameId != gameId) {
 							gameId = localDbGameId;
 							showSubmitButtonsLay(false);

@@ -12,11 +12,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.VideoItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.VideoItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
@@ -140,7 +140,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 	}
 
 	private boolean fillCategories() {
-		Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
+		Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
 
 		if (!cursor.moveToFirst()) {
 			showToast("Categories are not loaded");
@@ -148,8 +148,8 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 		}
 
 		do {
-			categoriesNames.add(DbDataManager.getString(cursor, DbConstants.V_NAME));
-			categoriesIds.add(Integer.valueOf(DbDataManager.getString(cursor, DbConstants.V_CATEGORY_ID)));
+			categoriesNames.add(DbDataManager.getString(cursor, DbScheme.V_NAME));
+			categoriesIds.add(Integer.valueOf(DbDataManager.getString(cursor, DbScheme.V_CATEGORY_ID)));
 		} while(cursor.moveToNext());
 
 		return true;

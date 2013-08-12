@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.TacticsHistoryItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.TacticsHistoryItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 

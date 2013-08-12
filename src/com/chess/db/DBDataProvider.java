@@ -10,7 +10,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-import static com.chess.db.DbConstants.Tables;
+import static com.chess.db.DbScheme.Tables;
 
 /**
  * @author alien_roger
@@ -31,12 +31,12 @@ public class DbDataProvider extends ContentProvider {
 
 		for (int i = 0; i < Tables.values().length; i++) {
 			String table = Tables.values()[i].name();
-			uriMatcher.addURI(DbConstants.PROVIDER_NAME, table, i);
+			uriMatcher.addURI(DbScheme.PROVIDER_NAME, table, i);
 		}
 
 		for (int i = 0; i < Tables.values().length; i++) {
 			String table = Tables.values()[i].name();
-			uriMatcherIds.addURI(DbConstants.PROVIDER_NAME, table + SLASH_NUMBER, i);
+			uriMatcherIds.addURI(DbScheme.PROVIDER_NAME, table + SLASH_NUMBER, i);
 		}
 	}
 
@@ -58,9 +58,9 @@ public class DbDataProvider extends ContentProvider {
 	public String getType(Uri uri) {
 		for (int i=0; i < Tables.values().length; i++) {
 			if (uriMatcher.match(uri) == i) {
-				return VND_ANDROID_CURSOR_DIR + DbConstants.PROVIDER_NAME;
+				return VND_ANDROID_CURSOR_DIR + DbScheme.PROVIDER_NAME;
 			} else if (uriMatcherIds.match(uri) == i) {
-				return VND_ANDROID_CURSOR_ITEM + DbConstants.PROVIDER_NAME;
+				return VND_ANDROID_CURSOR_ITEM + DbScheme.PROVIDER_NAME;
 			}
 
 		}
@@ -79,7 +79,7 @@ public class DbDataProvider extends ContentProvider {
 				found = true;
 			} else if (uriMatcherIds.match(uri) == i) {
 				sqlBuilder.setTables(Tables.values()[i].name());
-				sqlBuilder.appendWhere(DbConstants._ID + EQUALS + uri.getPathSegments().get(1));
+				sqlBuilder.appendWhere(DbScheme._ID + EQUALS + uri.getPathSegments().get(1));
 				found = true;
 			}
 
@@ -103,7 +103,7 @@ public class DbDataProvider extends ContentProvider {
 				found = true;
 			} else if (uriMatcherIds.match(uri) == i) {
 				count = appDataBase.update(Tables.values()[i].name(), values,
-						DbConstants._ID + EQUALS + uri.getPathSegments().get(1) +
+						DbScheme._ID + EQUALS + uri.getPathSegments().get(1) +
 								(!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
 						selectionArgs);
 				found = true;
@@ -124,7 +124,7 @@ public class DbDataProvider extends ContentProvider {
 				long rowID = appDataBase.insert(Tables.values()[i].name(), "", values);
 				//---if added successfully---
 				if (rowID > 0) {
-					Uri _uri = ContentUris.withAppendedId(DbConstants.uriArray[i], rowID);
+					Uri _uri = ContentUris.withAppendedId(DbScheme.uriArray[i], rowID);
 					getContext().getContentResolver().notifyChange(_uri, null);
 					return _uri;
 				}
@@ -147,7 +147,7 @@ public class DbDataProvider extends ContentProvider {
 				String id = uri.getPathSegments().get(1);
 				count = appDataBase.delete(
 						Tables.values()[i].name(),
-						DbConstants._ID + EQUALS + id + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
+						DbScheme._ID + EQUALS + id + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
 						selectionArgs);
 				found = true;
 			}
@@ -166,7 +166,7 @@ public class DbDataProvider extends ContentProvider {
 	 * @return DATABASE_VERSION integer value
 	 */
 	public static int getDbVersion() {
-		return DbConstants.DATABASE_VERSION;
+		return DbScheme.DATABASE_VERSION;
 	}
 
 
@@ -180,18 +180,19 @@ public class DbDataProvider extends ContentProvider {
 	private static class DatabaseHelper extends SQLiteOpenHelper {
 		private Context context;
 		DatabaseHelper(Context context) {
-			super(context, DbConstants.DATABASE_NAME, null, DbConstants.DATABASE_VERSION);
+			super(context, DbScheme.DATABASE_NAME, null, DbScheme.DATABASE_VERSION);
 			this.context = context;
 		}
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			// Init static tables first
-			DbConstants dbConstants = new DbConstants();
-			dbConstants.createMainTables();
-			dbConstants.createUserStatsTables();
-			dbConstants.createGameStatsTables();
-			for (String createTableCall : dbConstants.createTablesArray) {
+			DbScheme dbScheme = new DbScheme();
+			dbScheme.createMainTables();
+			dbScheme.createUserStatsTables();
+			dbScheme.createGameStatsTables();
+			dbScheme.createNotificationsTables();
+			for (String createTableCall : dbScheme.createTablesArray) {
 				db.execSQL(createTableCall);
 			}
 		}

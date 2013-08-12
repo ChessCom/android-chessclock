@@ -15,12 +15,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.VideoItem;
-import com.chess.backend.entity.new_api.VideoViewedItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.VideoItem;
+import com.chess.backend.entity.api.VideoViewedItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
@@ -126,8 +126,8 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		Cursor cursor = DbDataManager.getVideoViewedCursor(getActivity(), getUsername());
 		if (cursor != null) {
 			do {
-				int videoId = DbDataManager.getInt(cursor, DbConstants.V_ID);
-				boolean isViewed = DbDataManager.getInt(cursor, DbConstants.V_VIDEO_VIEWED) > 0;
+				int videoId = DbDataManager.getInt(cursor, DbScheme.V_ID);
+				boolean isViewed = DbDataManager.getInt(cursor, DbScheme.V_VIDEO_VIEWED) > 0;
 				viewedVideosMap.put(videoId, isViewed);
 			} while (cursor.moveToNext());
 			cursor.close();
@@ -156,7 +156,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	}
 
 	private boolean fillCategories() {
-		Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
+		Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
 
 		if (!cursor.moveToFirst()) {
 			showToast("Categories are not loaded");
@@ -164,8 +164,8 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		}
 
 		do {
-			categoriesNames.add(DbDataManager.getString(cursor, DbConstants.V_NAME));
-			categoriesIds.add(Integer.valueOf(DbDataManager.getString(cursor, DbConstants.V_CATEGORY_ID)));
+			categoriesNames.add(DbDataManager.getString(cursor, DbScheme.V_NAME));
+			categoriesIds.add(Integer.valueOf(DbDataManager.getString(cursor, DbScheme.V_CATEGORY_ID)));
 		} while(cursor.moveToNext());
 
 		return true;
@@ -215,9 +215,9 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
-			currentPlayingId = DbDataManager.getInt(cursor, DbConstants.V_ID);
+			currentPlayingId = DbDataManager.getInt(cursor, DbScheme.V_ID);
 			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.parse(DbDataManager.getString(cursor, DbConstants.V_URL)), "video/*");
+			intent.setDataAndType(Uri.parse(DbDataManager.getString(cursor, DbScheme.V_URL)), "video/*");
 			startActivityForResult(Intent.createChooser(intent, getString(R.string.select_player)), WATCH_VIDEO_REQUEST);
 
 			// start record time to watch

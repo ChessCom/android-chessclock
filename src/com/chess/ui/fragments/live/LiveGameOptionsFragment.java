@@ -79,14 +79,14 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 //		{ // load friends from DB          // TODO make it async and fill in popup
 //			final String[] arguments1 = new String[1];
 //			arguments1[0] = getAppData().getUsername();
-//			Cursor cursor = getContentResolver().query(DbConstants.uriArray[DbConstants.Tables.FRIENDS.ordinal()],
+//			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()],
 //					DbDataManager.PROJECTION_USERNAME, DbDataManager.SELECTION_USER, arguments1, null);
 //
 //			firendsList = new ArrayList<SelectionItem>();
 //			firendsList.add(new SelectionItem(null, "Random"));
 //			if (cursor.moveToFirst()) {
 //				do {
-//					firendsList.add(new SelectionItem(null, DbDataManager.getString(cursor, DbConstants.V_USERNAME)));
+//					firendsList.add(new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME)));
 //				} while (cursor.moveToNext());
 //			}
 //

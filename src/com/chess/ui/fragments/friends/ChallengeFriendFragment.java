@@ -16,10 +16,10 @@ import com.chess.EditButton;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.LoadItem;
-import com.chess.backend.entity.new_api.DailySeekItem;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.ui.adapters.RecentOpponentsCursorAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
@@ -160,10 +160,10 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		String opponentName;
-		if(DbDataManager.getInt(cursor, DbConstants.V_I_PLAY_AS) == RestHelper.P_BLACK) {
-			opponentName = DbDataManager.getString(cursor, DbConstants.V_WHITE_USERNAME);
+		if(DbDataManager.getInt(cursor, DbScheme.V_I_PLAY_AS) == RestHelper.P_BLACK) {
+			opponentName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
 		} else {
-			opponentName = DbDataManager.getString(cursor, DbConstants.V_BLACK_USERNAME);
+			opponentName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
 		}
 		createDailyChallenge(opponentName);
 	}

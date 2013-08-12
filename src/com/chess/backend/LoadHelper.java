@@ -1,7 +1,6 @@
 package com.chess.backend;
 
 import android.text.TextUtils;
-import com.chess.backend.entity.LoadItem;
 
 import static com.chess.backend.RestHelper.*;
 

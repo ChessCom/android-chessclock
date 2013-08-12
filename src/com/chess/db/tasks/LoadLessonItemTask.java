@@ -2,7 +2,7 @@ package com.chess.db.tasks;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
-import com.chess.backend.entity.new_api.LessonItem;
+import com.chess.backend.entity.api.LessonItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;

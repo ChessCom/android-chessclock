@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.new_api.VideoViewedItem;
+import com.chess.backend.entity.api.VideoViewedItem;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DbConstants;
+import com.chess.db.DbScheme;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.QueryParams;
@@ -127,9 +127,9 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 		playBtnTxt.setEnabled(true);
 
 		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
-		String firstName = DbDataManager.getString(cursor, DbConstants.V_FIRST_NAME);
-		CharSequence chessTitle = DbDataManager.getString(cursor, DbConstants.V_CHESS_TITLE);
-		String lastName = DbDataManager.getString(cursor, DbConstants.V_LAST_NAME);
+		String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
+		CharSequence chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
+		String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
 		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
 				+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
@@ -138,18 +138,18 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 //			videoBackImg // TODO adjust image loader
 //			progressBar // TODO adjust image loader
 
-		titleTxt.setText(DbDataManager.getString(cursor, DbConstants.V_TITLE));
+		titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
 //			thumbnailAuthorImg // TODO adjust image loader
 		countryImg.setImageDrawable(AppUtils.getUserFlag(getActivity())); // TODO set flag properly // invent flag resources set system
 
-		int duration = DbDataManager.getInt(cursor, DbConstants.V_MINUTES);
-		dateTxt.setText(dateFormatter.format(new Date(DbDataManager.getLong(cursor, DbConstants.V_CREATE_DATE)))
+		int duration = DbDataManager.getInt(cursor, DbScheme.V_MINUTES);
+		dateTxt.setText(dateFormatter.format(new Date(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE)))
 				+ StaticData.SYMBOL_SPACE + getString(R.string.min_arg, duration));
 
-		contextTxt.setText(DbDataManager.getString(cursor, DbConstants.V_DESCRIPTION));
-		videoUrl = DbDataManager.getString(cursor, DbConstants.V_URL);
+		contextTxt.setText(DbDataManager.getString(cursor, DbScheme.V_DESCRIPTION));
+		videoUrl = DbDataManager.getString(cursor, DbScheme.V_URL);
 
-		currentPlayingId =  DbDataManager.getInt(cursor, DbConstants.V_ID);
+		currentPlayingId =  DbDataManager.getInt(cursor, DbScheme.V_ID);
 
 		boolean videoViewed = DbDataManager.isVideoViewed(getActivity(), getUsername(), currentPlayingId);
 		if (videoViewed) {

@@ -9,7 +9,7 @@ import android.graphics.drawable.shapes.Shape;
 import android.util.AttributeSet;
 import android.view.View;
 import com.chess.R;
-import com.chess.backend.entity.new_api.stats.GamesInfoByResult;
+import com.chess.backend.entity.api.stats.GamesInfoByResult;
 
 
 /**
