@@ -8,7 +8,7 @@ import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DbDataManager;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbScheme;
 
 import java.util.ArrayList;
@@ -37,12 +37,12 @@ public class SaveArticleCategoriesTask extends AbstractUpdateTask<CommonFeedCate
 				// TODO implement beginTransaction logic for performance increase
 				Uri uri = DbScheme.uriArray[DbScheme.Tables.ARTICLE_CATEGORIES.ordinal()];
 
-				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_V_CATEGORY_ID,
-						DbDataManager.SELECTION_CATEGORY_ID, arguments2, null);
+				Cursor cursor = contentResolver.query(uri, DbDataManager1.PROJECTION_V_CATEGORY_ID,
+						DbDataManager1.SELECTION_CATEGORY_ID, arguments2, null);
 
-				ContentValues values = DbDataManager.putCommonFeedCategoryItemToValues(currentItem);
+				ContentValues values = DbDataManager1.putCommonFeedCategoryItemToValues(currentItem);
 
-				DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
+				DbDataManager1.updateOrInsertValues(contentResolver, cursor, uri, values);
 
 			}
 

@@ -24,7 +24,7 @@ import com.chess.backend.entity.api.DailyGamesAllItem;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbDataManager;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
@@ -152,7 +152,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
 
 		if (need2update) {
-			boolean haveSavedData = DbDataManager.haveSavedDailyGame(getActivity(), getUsername());
+			boolean haveSavedData = DbDataManager1.haveSavedDailyGame(getActivity(), getUsername());
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
 				updateData();
@@ -241,13 +241,13 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
+			DailyFinishedGameData finishedItem = DbDataManager1.getDailyFinishedGameListFromCursor(cursor);
 
 			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
 		} else {
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			gameListCurrentItem = DbDataManager.getDailyCurrentGameListFromCursor(cursor);
+			gameListCurrentItem = DbDataManager1.getDailyCurrentGameListFromCursor(cursor);
 
 			if (gameListCurrentItem.isDrawOffered()) {
 				popupItem.setPositiveBtnId(R.string.accept);
@@ -269,14 +269,14 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		if (section == FINISHED_GAMES_SECTION) {
 //			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-//			DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
+//			DailyFinishedGameData finishedItem = DbDataManager1.getDailyFinishedGameListFromCursor(cursor);
 //
 //			Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
 //			intent.putExtra(BaseGameItem.GAME_ID, finishedItem.getGameId());
 //			startActivity(intent);
 		} else {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			gameListCurrentItem = DbDataManager.getDailyCurrentGameListFromCursor(cursor);
+			gameListCurrentItem = DbDataManager1.getDailyCurrentGameListFromCursor(cursor);
 
 			new AlertDialog.Builder(getContext())
 					.setItems(new String[]{
@@ -497,7 +497,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 //					}
 
 					if (finishedGameDataList != null) {
-						boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUsername());
+						boolean gamesLeft = DbDataManager1.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUsername());
 
 						if (gamesLeft) {
 							new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
@@ -557,7 +557,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			boolean currentGamesLeft;
 			{ // current games
 				final List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
-				currentGamesLeft = DbDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList, getUsername());
+				currentGamesLeft = DbDataManager1.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList, getUsername());
 
 				if (currentGamesLeft) {
 					new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, currentGamesList, getContentResolver()).executeTask();
@@ -581,7 +581,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			finishedGameDataList = returnedObj.getData().getFinished();
 			if (!currentGamesLeft) { // if SaveTask will not return to LoadFinishedGamesPoint
 				if (finishedGameDataList != null) {
-					boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUsername());
+					boolean gamesLeft = DbDataManager1.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUsername());
 
 					if (gamesLeft) {
 						new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
@@ -596,7 +596,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				}
 			}
 
-//				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList);
+//				boolean gamesLeft = DbDataManager1.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList);
 //
 //				if (gamesLeft) {
 //					new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,

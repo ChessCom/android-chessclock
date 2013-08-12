@@ -16,7 +16,7 @@ import com.chess.backend.gcm.GameOverNotificationItem;
 import com.chess.backend.gcm.NewChallengeNotificationItem;
 import com.chess.backend.gcm.NewChatNotificationItem;
 import com.chess.backend.statics.AppData;
-import com.chess.db.DbDataManager;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.ui.adapters.CommonAcceptDeclineCursorAdapter;
@@ -83,26 +83,26 @@ public class NotificationsRightFragment extends CommonLogicFragment implements I
 
 
 		{ // get friend requests
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getTableForUser(getUsername(),
+			Cursor cursor = DbDataManager1.executeQuery(getContentResolver(), DbHelper.getTableForUser(getUsername(),
 					DbScheme.Tables.NOTIFICATION_FRIEND_REQUEST));
 			cursor.moveToFirst();
 			friendRequestsAdapter.changeCursor(cursor);
 		}
 		{ // get new challenge notifications
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getTableForUser(getUsername(),
+			Cursor cursor = DbDataManager1.executeQuery(getContentResolver(), DbHelper.getTableForUser(getUsername(),
 					DbScheme.Tables.NOTIFICATION_NEW_CHALLENGES));
 			cursor.moveToFirst();
 
 			challengesGamesAdapter.changeCursor(cursor);
 		}
 		{ // get new chat notifications
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getTableForUser(getUsername(),
+			Cursor cursor = DbDataManager1.executeQuery(getContentResolver(), DbHelper.getTableForUser(getUsername(),
 					DbScheme.Tables.NOTIFICATION_NEW_CHAT_MESSAGES));
 			cursor.moveToFirst();
 			chatMessagesAdapter.changeCursor(cursor);
 		}
 		{ // get game over notifications
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getTableForUser(getUsername(),
+			Cursor cursor = DbDataManager1.executeQuery(getContentResolver(), DbHelper.getTableForUser(getUsername(),
 					DbScheme.Tables.NOTIFICATION_GAMES_OVER));
 			cursor.moveToFirst();
 			gamesOverAdapter.changeCursor(cursor);
@@ -119,7 +119,7 @@ public class NotificationsRightFragment extends CommonLogicFragment implements I
 
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
-		DbDataManager.saveNewFriendRequest(contentResolver, friendRequestItem, username);
+		DbDataManager1.saveNewFriendRequest(contentResolver, friendRequestItem, username);
 	}
 
 	private synchronized void showNewChatMessage(Intent intent, Context context) {
@@ -133,7 +133,7 @@ public class NotificationsRightFragment extends CommonLogicFragment implements I
 
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
-		DbDataManager.saveNewChatNotification(contentResolver, chatNotificationItem, username);
+		DbDataManager1.saveNewChatNotification(contentResolver, chatNotificationItem, username);
 	}
 
 	private synchronized void showGameOver(Intent intent, Context context) {
@@ -145,7 +145,7 @@ public class NotificationsRightFragment extends CommonLogicFragment implements I
 
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
-		DbDataManager.saveGameOverNotification(contentResolver, gameOverNotificationItem, username);
+		DbDataManager1.saveGameOverNotification(contentResolver, gameOverNotificationItem, username);
 	}
 
 	private synchronized void showNewChallenge(Intent intent, Context context) {
@@ -157,7 +157,7 @@ public class NotificationsRightFragment extends CommonLogicFragment implements I
 
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
-		DbDataManager.saveNewChallengeNotification(contentResolver, challengeNotificationItem, username);
+		DbDataManager1.saveNewChallengeNotification(contentResolver, challengeNotificationItem, username);
 	}
 
 	@Override

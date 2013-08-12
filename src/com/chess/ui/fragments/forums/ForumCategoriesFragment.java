@@ -13,8 +13,8 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.ForumCategoryItem;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.SaveForumCategoriesTask;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
@@ -83,7 +83,7 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		int categoryId = DbDataManager.getInt(cursor, DbScheme.V_ID);
+		int categoryId = DbDataManager1.getInt(cursor, DbScheme.V_ID);
 		getActivityFace().openFragment(ForumTopicsFragment.createInstance(categoryId));
 	}
 
@@ -124,7 +124,7 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 	}
 
 	private boolean loadFromDb() {
-		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getForumCategories());
+		Cursor cursor = DbDataManager1.executeQuery(getContentResolver(), DbHelper.getForumCategories());
 		if (cursor != null && cursor.moveToFirst()) {
 			categoriesCursorAdapter.changeCursor(cursor);
 

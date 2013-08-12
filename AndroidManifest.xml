@@ -88,7 +88,7 @@
         <service android:name=".backend.GetAndSaveUserStats"/>
         <service android:name=".backend.GetAndSaveFriends"/>
 
-        <provider android:name=".db.DbDataProvider" android:authorities="com.chess.db_provider" android:exported="false"/>
+        <provider android:name=".db.DbDataProvider1" android:authorities="com.chess.db_provider" android:exported="false"/>
 
 		<!--<meta-data android:name="ADMOB_PUBLISHER_ID" android:value="a14dd6bdf67a607"/>-->
 

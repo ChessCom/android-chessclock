@@ -19,8 +19,8 @@ import com.chess.backend.entity.api.ForumPostItem;
 import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.SaveForumPostsTask;
 import com.chess.ui.adapters.ForumPostsCursorAdapter;
@@ -86,10 +86,10 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 		paddingSide = getResources().getDimensionPixelSize(R.dimen.default_scr_side_padding);
 
-		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getForumTopicById(topicId));
+		Cursor cursor = DbDataManager1.executeQuery(getContentResolver(), DbHelper.getForumTopicById(topicId));
 		cursor.moveToFirst();
-		topicTitle = DbDataManager.getString(cursor, DbScheme.V_TITLE);
-		topicUrl = DbDataManager.getString(cursor, DbScheme.V_URL);
+		topicTitle = DbDataManager1.getString(cursor, DbScheme.V_TITLE);
+		topicUrl = DbDataManager1.getString(cursor, DbScheme.V_URL);
 
 	}
 
@@ -174,8 +174,8 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 
 			Cursor cursor = (Cursor) postsCursorAdapter.getItem(position);
-			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
-			String body = DbDataManager.getString(cursor, DbScheme.V_DESCRIPTION);
+			String username = DbDataManager1.getString(cursor, DbScheme.V_USERNAME);
+			String body = DbDataManager1.getString(cursor, DbScheme.V_DESCRIPTION);
 
 			replyView.setVisibility(View.VISIBLE);
 			replyView.setBackgroundResource(R.color.header_light);
@@ -289,7 +289,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		public void updateData(ForumPostItem.Post returnedObj) {
 			super.updateData(returnedObj);
 
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getForumPostsById(topicId, currentPage));
+			Cursor cursor = DbDataManager1.executeQuery(getContentResolver(), DbHelper.getForumPostsById(topicId, currentPage));
 			if (cursor.moveToFirst()) {
 				postsCursorAdapter.changeCursor(cursor);
 				postsCursorAdapter.notifyDataSetChanged();

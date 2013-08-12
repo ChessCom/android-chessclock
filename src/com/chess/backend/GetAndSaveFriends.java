@@ -10,8 +10,8 @@ import android.net.Uri;
 import com.chess.backend.entity.api.FriendsItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.statics.AppData;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager;
 import com.chess.utilities.AppUtils;
 
 /**
@@ -52,12 +52,12 @@ public class GetAndSaveFriends extends IntentService {
 
 				// TODO implement beginTransaction logic for performance increase
 				Uri uri = DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()];
-				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER_ID, DbDataManager.SELECTION_USER_ID, arguments2, null);
+				Cursor cursor = contentResolver.query(uri, DbDataManager1.PROJECTION_USER_ID, DbDataManager1.SELECTION_USER_ID, arguments2, null);
 
-				ContentValues values = DbDataManager.putFriendItemToValues(currentItem, userName);
+				ContentValues values = DbDataManager1.putFriendItemToValues(currentItem, userName);
 
 				if (cursor.moveToFirst()) {
-					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
+					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager1.getId(cursor)), values, null, null);
 				} else {
 					contentResolver.insert(uri, values);
 				}

@@ -9,7 +9,7 @@ import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DbDataManager;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbScheme;
 
 import java.util.ArrayList;
@@ -44,11 +44,11 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 
 				// TODO implement beginTransaction logic for performance increase
 				Uri uri = DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()];
-				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER_ID, DbDataManager.SELECTION_USER_ID, arguments2, null);
+				Cursor cursor = contentResolver.query(uri, DbDataManager1.PROJECTION_USER_ID, DbDataManager1.SELECTION_USER_ID, arguments2, null);
 
-				ContentValues values = DbDataManager.putFriendItemToValues(currentItem, userName);
+				ContentValues values = DbDataManager1.putFriendItemToValues(currentItem, userName);
 
-				DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
+				DbDataManager1.updateOrInsertValues(contentResolver, cursor, uri, values);
 
 			}
 		}

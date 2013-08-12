@@ -12,12 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.db.DbDataManager1;
 import com.chess.model.DataHolder;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
@@ -155,7 +155,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 			getSoundPlayer().playGameStart();
 
-			currentGame = DbDataManager.getDailyCurrentGameFromCursor(returnedObj);
+			currentGame = DbDataManager1.getDailyCurrentGameFromCursor(returnedObj);
 			returnedObj.close();
 
 			adjustBoardForGame();

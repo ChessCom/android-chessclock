@@ -17,7 +17,7 @@ import static com.chess.db.DbScheme.Tables;
  * @created 27.10.12
  * @modified 27.10.12
  */
-public class DbDataProvider extends ContentProvider {
+public class DbDataProvider1 extends ContentProvider {
 
 	private static final UriMatcher uriMatcher;
 	private static final UriMatcher uriMatcherIds;

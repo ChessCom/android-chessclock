@@ -10,8 +10,8 @@ import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager;
 
 /**
  * Created with IntelliJ IDEA.
@@ -67,12 +67,12 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 
 		Uri uri = DbScheme.uriArray[uriCode];
 
-		Cursor cursor = resolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
+		Cursor cursor = resolver.query(uri, DbDataManager1.PROJECTION_USER, DbDataManager1.SELECTION_USER, userArgument, null);
 
-		ContentValues values = DbDataManager.putGameStatsLiveItemToValues(item, userName);
+		ContentValues values = DbDataManager1.putGameStatsLiveItemToValues(item, userName);
 
 		if (cursor.moveToFirst()) {
-			resolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
+			resolver.update(ContentUris.withAppendedId(uri, DbDataManager1.getId(cursor)), values, null, null);
 		} else {
 			resolver.insert(uri, values);
 		}
@@ -84,12 +84,12 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 
 		Uri uri = DbScheme.uriArray[uriCode];
 
-		Cursor cursor = resolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
+		Cursor cursor = resolver.query(uri, DbDataManager1.PROJECTION_USER, DbDataManager1.SELECTION_USER, userArgument, null);
 
-		ContentValues values = DbDataManager.putGameStatsDailyItemToValues(item, userName);
+		ContentValues values = DbDataManager1.putGameStatsDailyItemToValues(item, userName);
 
 		if (cursor.moveToFirst()) {
-			resolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
+			resolver.update(ContentUris.withAppendedId(uri, DbDataManager1.getId(cursor)), values, null, null);
 		} else {
 			resolver.insert(uri, values);
 		}

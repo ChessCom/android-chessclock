@@ -10,8 +10,8 @@ import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +45,13 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.Data, Lo
 				arguments[1] = userName;
 
 				Uri uri = DbScheme.uriArray[DbScheme.Tables.TACTICS_BATCH.ordinal()];
-				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID_AND_USER,
-						DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments, null);
+				Cursor cursor = contentResolver.query(uri, DbDataManager1.PROJECTION_ITEM_ID_AND_USER,
+						DbDataManager1.SELECTION_ITEM_ID_AND_USER, arguments, null);
 
-				ContentValues values = DbDataManager.putTacticItemToValues(tacticItem);
+				ContentValues values = DbDataManager1.putTacticItemToValues(tacticItem);
 
 				if (cursor.moveToFirst()) {
-					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
+					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager1.getId(cursor)), values, null, null);
 				} else {
 					contentResolver.insert(uri, values);
 				}

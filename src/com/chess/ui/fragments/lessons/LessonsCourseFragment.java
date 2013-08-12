@@ -16,7 +16,7 @@ import com.chess.backend.entity.api.LessonCourseItem;
 import com.chess.backend.entity.api.LessonCourseListItem;
 import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbDataManager;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.SaveLessonsCourseTask;
 import com.chess.ui.adapters.LessonsItemAdapter;
@@ -119,10 +119,10 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 		if (need2update) {
 
-			Cursor courseCursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getLessonCourseById(courseId));
+			Cursor courseCursor = DbDataManager1.executeQuery(getContentResolver(), DbHelper.getLessonCourseById(courseId));
 
 			if (courseCursor != null && courseCursor.moveToFirst()) {  // if we have saved course
-				courseItem = DbDataManager.getLessonsCourseItemFromCursor(courseCursor);
+				courseItem = DbDataManager1.getLessonsCourseItemFromCursor(courseCursor);
 
 				updateLessonsListFromDb();
 			}
@@ -149,12 +149,12 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 	}
 
 	private void updateLessonsListFromDb() {
-		Cursor lessonsListCursor = DbDataManager.executeQuery(getContentResolver(),
+		Cursor lessonsListCursor = DbDataManager1.executeQuery(getContentResolver(),
 				DbHelper.getLessonsListByCourseId(courseId, getUsername()));
 		if (lessonsListCursor != null && lessonsListCursor.moveToFirst()) { // if we have saved lessons
 			List<LessonListItem> lessons = new ArrayList<LessonListItem>();
 			do {
-				lessons.add(DbDataManager.getLessonsListItemFromCursor(lessonsListCursor));
+				lessons.add(DbDataManager1.getLessonsListItemFromCursor(lessonsListCursor));
 			} while (lessonsListCursor.moveToNext());
 			courseItem.setLessons(lessons);
 
@@ -243,7 +243,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 			course.setUser(getUsername());
 			course.setCourseCompleted(true);
 
-			DbDataManager.saveCourseListItemToDb(getContentResolver(), course);
+			DbDataManager1.saveCourseListItemToDb(getContentResolver(), course);
 		}
 	}
 

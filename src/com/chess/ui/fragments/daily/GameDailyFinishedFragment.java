@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
+import com.chess.db.DbDataManager1;
 import com.chess.model.DataHolder;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.BaseResponseItem;
@@ -29,7 +30,6 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
@@ -187,14 +187,14 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyFinishedGame(getActivity(), gameId),
 //				getContentResolver()).executeTask();
 
-		Cursor cursor = DbDataManager.executeQuery(getContentResolver(),
+		Cursor cursor = DbDataManager1.executeQuery(getContentResolver(),
 				DbHelper.getDailyFinishedGame(gameId, getUsername()));
 
 		if (cursor.moveToFirst()) {
 			showSubmitButtonsLay(false);
 			getSoundPlayer().playGameStart();
 
-			currentGame = DbDataManager.getDailyFinishedGameFromCursor(cursor);
+			currentGame = DbDataManager1.getDailyFinishedGameFromCursor(cursor);
 			cursor.close();
 
 			adjustBoardForGame();
@@ -219,7 +219,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 					showSubmitButtonsLay(false);
 					getSoundPlayer().playGameStart();
 
-					currentGame = DbDataManager.getDailyFinishedGameFromCursor(returnedObj);
+					currentGame = DbDataManager1.getDailyFinishedGameFromCursor(returnedObj);
 					returnedObj.close();
 
 					adjustBoardForGame();
@@ -230,7 +230,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 				case GAMES_LIST:
 					// iterate through all loaded items in cursor
 					do {
-						long localDbGameId = DbDataManager.getLong(returnedObj, DbScheme.V_ID);
+						long localDbGameId = DbDataManager1.getLong(returnedObj, DbScheme.V_ID);
 						if (localDbGameId != gameId) {
 							gameId = localDbGameId;
 							showSubmitButtonsLay(false);

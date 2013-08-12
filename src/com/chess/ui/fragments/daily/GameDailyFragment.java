@@ -22,6 +22,7 @@ import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
+import com.chess.db.DbDataManager1;
 import com.chess.model.DataHolder;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.BaseResponseItem;
@@ -36,7 +37,6 @@ import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
@@ -218,14 +218,14 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	private void loadGameAndUpdate() {
 		// load game from DB. After load update
-		Cursor cursor = DbDataManager.executeQuery(getContentResolver(),
+		Cursor cursor = DbDataManager1.executeQuery(getContentResolver(),
 				DbHelper.getDailyGame(gameId, getUsername()));
 
 		if (cursor.moveToFirst()) {
 			showSubmitButtonsLay(false);
 			getSoundPlayer().playGameStart();
 
-			currentGame = DbDataManager.getDailyCurrentGameFromCursor(cursor);
+			currentGame = DbDataManager1.getDailyCurrentGameFromCursor(cursor);
 			cursor.close();
 
 			adjustBoardForGame();
@@ -253,7 +253,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 					showSubmitButtonsLay(false);
 					getSoundPlayer().playGameStart();
 
-					currentGame = DbDataManager.getDailyCurrentGameFromCursor(returnedObj);
+					currentGame = DbDataManager1.getDailyCurrentGameFromCursor(returnedObj);
 					returnedObj.close();
 
 					adjustBoardForGame();
@@ -264,7 +264,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 				case GAMES_LIST:
 					// iterate through all loaded items in cursor
 					do {
-						long localDbGameId = DbDataManager.getLong(returnedObj, DbScheme.V_ID);
+						long localDbGameId = DbDataManager1.getLong(returnedObj, DbScheme.V_ID);
 						if (localDbGameId != gameId) {
 							gameId = localDbGameId;
 							showSubmitButtonsLay(false);
@@ -683,7 +683,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			String draw;
 
 			String userName = getAppData().getUsername();
-			boolean drawWasOffered = DbDataManager.checkIfDrawOffered(getContentResolver(), userName, gameId);
+			boolean drawWasOffered = DbDataManager1.checkIfDrawOffered(getContentResolver(), userName, gameId);
 
 			if (drawWasOffered) { // If Draw was already offered by the opponent, we send accept to it.
 				draw = RestHelper.V_ACCEPTDRAW;
@@ -807,7 +807,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 			currentGame = returnedObj;
 
-			DbDataManager.updateDailyGame(getContentResolver(), currentGame, getAppData().getUsername());
+			DbDataManager1.updateDailyGame(getContentResolver(), currentGame, getAppData().getUsername());
 
 			adjustBoardForGame();
 		}

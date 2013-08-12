@@ -7,7 +7,7 @@ import android.net.Uri;
 import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DbDataManager;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbScheme;
 
 import java.util.List;
@@ -30,12 +30,12 @@ public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<DailyFini
 				arguments2[1] = String.valueOf(finishedItem.getGameId()); // Test
 
 				Uri uri = DbScheme.uriArray[DbScheme.Tables.DAILY_FINISHED_GAMES.ordinal()];
-				final Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_GAME_ID,
-						DbDataManager.SELECTION_USER_AND_ID, arguments2, null);
+				final Cursor cursor = contentResolver.query(uri, DbDataManager1.PROJECTION_GAME_ID,
+						DbDataManager1.SELECTION_USER_AND_ID, arguments2, null);
 
-				ContentValues values = DbDataManager.putDailyFinishedGameToValues(finishedItem, userName);
+				ContentValues values = DbDataManager1.putDailyFinishedGameToValues(finishedItem, userName);
 
-				DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
+				DbDataManager1.updateOrInsertValues(contentResolver, cursor, uri, values);
 
 			}
 		}

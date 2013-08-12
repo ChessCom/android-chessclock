@@ -23,7 +23,7 @@ import static com.chess.db.DbScheme.*;
  * @created 27.10.12
  * @modified 27.10.12
  */
-public class DbDataManager {
+public class DbDataManager1 {
 	// TODO improve performance by updating only needed fields
 
 	private static final String ORDER_BY = "ORDER BY";
@@ -418,7 +418,7 @@ public class DbDataManager {
 		arguments3[2] = String.valueOf(RestHelper.P_BLACK);
 
 		ContentProviderClient client = contentResolver.acquireContentProviderClient(PROVIDER_NAME);
-		SQLiteDatabase dbHandle = ((DbDataProvider) client.getLocalContentProvider()).getDbHandle();
+		SQLiteDatabase dbHandle = ((DbDataProvider1) client.getLocalContentProvider()).getDbHandle();
 		StringBuilder projection = new StringBuilder();
 		String selection = V_USER + EQUALS_ARG_ + AND_ + "(" + V_WHITE_USERNAME + NOT_EQUALS_ARG_
 				+ AND_ + V_I_PLAY_AS + EQUALS_ARG_ + ")";

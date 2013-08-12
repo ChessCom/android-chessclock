@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
+import com.chess.db.DbDataProvider1;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataProvider;
 import com.chess.db.QueryParams;
 
 
@@ -34,7 +34,7 @@ public class LoadDataFromDbTask extends AbstractUpdateTask<Cursor, Long> {
 		} else {
 			if (params.isUseRawQuery()) {
 				ContentProviderClient client = contentResolver.acquireContentProviderClient(DbScheme.PROVIDER_NAME);
-				SQLiteDatabase dbHandle = ((DbDataProvider) client.getLocalContentProvider()).getDbHandle();
+				SQLiteDatabase dbHandle = ((DbDataProvider1) client.getLocalContentProvider()).getDbHandle();
 				StringBuilder projection = new StringBuilder();
 				for (String projections : params.getProjection()) {
 					projection.append(projections).append(StaticData.SYMBOL_COMMA);

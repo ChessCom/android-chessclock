@@ -9,8 +9,8 @@ import com.chess.backend.entity.api.LessonItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager;
 
 import java.util.List;
 
@@ -41,11 +41,11 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 	protected Integer doTheTask(Long... ids) {
 
 
-		DbDataManager.saveMentorLessonToDb(contentResolver, item.getLesson(), lessonId);
+		DbDataManager1.saveMentorLessonToDb(contentResolver, item.getLesson(), lessonId);
 
 		saveLessonPositions(item.getPositions());
 
-		DbDataManager.saveUserLessonToDb(contentResolver, item.getUserLesson(), lessonId, username);
+		DbDataManager1.saveUserLessonToDb(contentResolver, item.getUserLesson(), lessonId, username);
 
 		result = StaticData.RESULT_OK;
 
@@ -63,13 +63,13 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 
 			// TODO implement beginTransaction logic for performance increase
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.LESSONS_POSITIONS.ordinal()];
-			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID_AND_NUMBER,
-					DbDataManager.SELECTION_ITEM_ID_AND_NUMBER, arguments, null);
+			Cursor cursor = contentResolver.query(uri, DbDataManager1.PROJECTION_ITEM_ID_AND_NUMBER,
+					DbDataManager1.SELECTION_ITEM_ID_AND_NUMBER, arguments, null);
 
-			ContentValues values = DbDataManager.putLessonsPositionToValues(position);
+			ContentValues values = DbDataManager1.putLessonsPositionToValues(position);
 
 			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
+				contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager1.getId(cursor)), values, null, null);
 			} else {
 				contentResolver.insert(uri, values);
 			}
@@ -97,13 +97,13 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 
 			// TODO implement beginTransaction logic for performance increase
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.LESSONS_POSITION_MOVES.ordinal()];
-			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID_POSITION_NUMBER,
-					DbDataManager.SELECTION_ITEM_ID_POSITION_NUMBER, arguments, null);
+			Cursor cursor = contentResolver.query(uri, DbDataManager1.PROJECTION_ITEM_ID_POSITION_NUMBER,
+					DbDataManager1.SELECTION_ITEM_ID_POSITION_NUMBER, arguments, null);
 
-			ContentValues values = DbDataManager.putLessonsPositionMoveToValues(possibleMove);
+			ContentValues values = DbDataManager1.putLessonsPositionMoveToValues(possibleMove);
 
 			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
+				contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager1.getId(cursor)), values, null, null);
 			} else {
 				contentResolver.insert(uri, values);
 			}

@@ -5,7 +5,7 @@ import com.chess.backend.entity.api.ForumCategoryItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.db.DbDataManager;
+import com.chess.db.DbDataManager1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class SaveForumCategoriesTask extends AbstractUpdateTask<ForumCategoryIte
 	protected Integer doTheTask(Long... ids) {
 		synchronized (itemList) {
 			for (ForumCategoryItem.Data currentItem : itemList) {
-				DbDataManager.updateForumCategoryItem(contentResolver, currentItem);
+				DbDataManager1.updateForumCategoryItem(contentResolver, currentItem);
 			}
 		}
 		result = StaticData.RESULT_OK;

@@ -22,7 +22,7 @@ import com.chess.backend.entity.api.DailyGamesAllItem;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbDataManager;
+import com.chess.db.DbDataManager1;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
@@ -56,7 +56,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
 
-		if (!DbDataManager.haveSavedFriends(getActivity(), getUsername())) {
+		if (!DbDataManager1.haveSavedFriends(getActivity(), getUsername())) {
 			getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class)); // TODO adjust properly
 		}
 
@@ -249,11 +249,11 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 			// current games
 			List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
-			boolean currentGamesLeft = DbDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList, getUsername());
+			boolean currentGamesLeft = DbDataManager1.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList, getUsername());
 
 			// finished
 			List<DailyFinishedGameData> finishedGameDataList = returnedObj.getData().getFinished();
-			boolean finishedGamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUsername());
+			boolean finishedGamesLeft = DbDataManager1.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUsername());
 
 			showDailyGamesFragment = currentGamesLeft || finishedGamesLeft;
 

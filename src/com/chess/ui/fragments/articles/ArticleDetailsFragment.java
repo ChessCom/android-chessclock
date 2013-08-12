@@ -13,8 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -122,7 +122,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		if (view.getId() == R.id.playBtn) {
 			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.parse(DbDataManager.getString(loadedCursor, DbScheme.V_URL)), "video/*");
+			intent.setDataAndType(Uri.parse(DbDataManager1.getString(loadedCursor, DbScheme.V_URL)), "video/*");
 			startActivity(intent);
 		}
 	}
@@ -146,21 +146,21 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			loadedCursor = cursor;
 
 			int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
-			String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
-			CharSequence chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
-			String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
+			String firstName = DbDataManager1.getString(cursor, DbScheme.V_FIRST_NAME);
+			CharSequence chessTitle = DbDataManager1.getString(cursor, DbScheme.V_CHESS_TITLE);
+			String lastName = DbDataManager1.getString(cursor, DbScheme.V_LAST_NAME);
 			CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
 					+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
 			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
 			authorTxt.setText(authorStr);
 
-			titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
+			titleTxt.setText(DbDataManager1.getString(cursor, DbScheme.V_TITLE));
 //			thumbnailAuthorImg // TODO adjust image loader
 			countryImg.setImageDrawable(AppUtils.getUserFlag(getActivity())); // TODO set flag properly // invent flag resources set system
 
-			dateTxt.setText(dateFormatter.format(new Date(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE))));
+			dateTxt.setText(dateFormatter.format(new Date(DbDataManager1.getLong(cursor, DbScheme.V_CREATE_DATE))));
 
-			contextTxt.setText(DbDataManager.getString(cursor, DbScheme.V_DESCRIPTION));
+			contextTxt.setText(DbDataManager1.getString(cursor, DbScheme.V_DESCRIPTION));
 
 		}
 

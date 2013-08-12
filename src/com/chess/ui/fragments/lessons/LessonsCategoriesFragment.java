@@ -16,8 +16,8 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.VideoItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveVideosListTask;
@@ -148,8 +148,8 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 		}
 
 		do {
-			categoriesNames.add(DbDataManager.getString(cursor, DbScheme.V_NAME));
-			categoriesIds.add(Integer.valueOf(DbDataManager.getString(cursor, DbScheme.V_CATEGORY_ID)));
+			categoriesNames.add(DbDataManager1.getString(cursor, DbScheme.V_NAME));
+			categoriesIds.add(Integer.valueOf(DbDataManager1.getString(cursor, DbScheme.V_CATEGORY_ID)));
 		} while(cursor.moveToNext());
 
 		return true;
@@ -201,7 +201,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 			need2update = true;
 
 			// check if we have saved videos more than 2(from previous page)
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(),
+			Cursor cursor = DbDataManager1.executeQuery(getContentResolver(),
 					DbHelper.getLessonsByCategory(previousCategoryId, getUsername()));
 
 			if (cursor != null && cursor.moveToFirst()) {

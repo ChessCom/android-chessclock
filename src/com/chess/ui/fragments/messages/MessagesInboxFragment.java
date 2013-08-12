@@ -15,8 +15,8 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.ConversationItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveConversationsInboxTask;
@@ -100,8 +100,8 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		long conversationId = DbDataManager.getLong(cursor, DbScheme.V_ID);
-		String otherUserName = DbDataManager.getString(cursor, DbScheme.V_OTHER_USER_USERNAME);
+		long conversationId = DbDataManager1.getLong(cursor, DbScheme.V_ID);
+		String otherUserName = DbDataManager1.getString(cursor, DbScheme.V_OTHER_USER_USERNAME);
 		getActivityFace().openFragment(MessagesConversationFragment.createInstance(conversationId, otherUserName));
 	}
 

@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.api.VideoViewedItem;
 import com.chess.backend.statics.StaticData;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.QueryParams;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -121,15 +121,15 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 		QueryParams queryParams = DbHelper.getVideosList();
 		Uri uri = ContentUris.withAppendedId(queryParams.getUri(), itemId);
 		queryParams.setUri(uri);
-		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), queryParams);
+		Cursor cursor = DbDataManager1.executeQuery(getContentResolver(), queryParams);
 		cursor.moveToFirst();
 
 		playBtnTxt.setEnabled(true);
 
 		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
-		String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
-		CharSequence chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
-		String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
+		String firstName = DbDataManager1.getString(cursor, DbScheme.V_FIRST_NAME);
+		CharSequence chessTitle = DbDataManager1.getString(cursor, DbScheme.V_CHESS_TITLE);
+		String lastName = DbDataManager1.getString(cursor, DbScheme.V_LAST_NAME);
 		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
 				+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
@@ -138,20 +138,20 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 //			videoBackImg // TODO adjust image loader
 //			progressBar // TODO adjust image loader
 
-		titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
+		titleTxt.setText(DbDataManager1.getString(cursor, DbScheme.V_TITLE));
 //			thumbnailAuthorImg // TODO adjust image loader
 		countryImg.setImageDrawable(AppUtils.getUserFlag(getActivity())); // TODO set flag properly // invent flag resources set system
 
-		int duration = DbDataManager.getInt(cursor, DbScheme.V_MINUTES);
-		dateTxt.setText(dateFormatter.format(new Date(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE)))
+		int duration = DbDataManager1.getInt(cursor, DbScheme.V_MINUTES);
+		dateTxt.setText(dateFormatter.format(new Date(DbDataManager1.getLong(cursor, DbScheme.V_CREATE_DATE)))
 				+ StaticData.SYMBOL_SPACE + getString(R.string.min_arg, duration));
 
-		contextTxt.setText(DbDataManager.getString(cursor, DbScheme.V_DESCRIPTION));
-		videoUrl = DbDataManager.getString(cursor, DbScheme.V_URL);
+		contextTxt.setText(DbDataManager1.getString(cursor, DbScheme.V_DESCRIPTION));
+		videoUrl = DbDataManager1.getString(cursor, DbScheme.V_URL);
 
-		currentPlayingId =  DbDataManager.getInt(cursor, DbScheme.V_ID);
+		currentPlayingId =  DbDataManager1.getInt(cursor, DbScheme.V_ID);
 
-		boolean videoViewed = DbDataManager.isVideoViewed(getActivity(), getUsername(), currentPlayingId);
+		boolean videoViewed = DbDataManager1.isVideoViewed(getActivity(), getUsername(), currentPlayingId);
 		if (videoViewed) {
 			playBtnTxt.setText(R.string.ic_check);
 		} else {
@@ -166,7 +166,7 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 		if (requestCode == WATCH_VIDEO_REQUEST) {
 
 			VideoViewedItem item = new VideoViewedItem(currentPlayingId, getUsername(), true);
-			DbDataManager.updateVideoViewedState(getContentResolver(), item);
+			DbDataManager1.updateVideoViewedState(getContentResolver(), item);
 		}
 	}
 

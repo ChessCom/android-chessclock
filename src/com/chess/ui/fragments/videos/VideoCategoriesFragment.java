@@ -21,7 +21,7 @@ import com.chess.backend.entity.api.VideoViewedItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveVideosListTask;
@@ -123,11 +123,11 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		super.onResume();
 
 		// get viewed marks
-		Cursor cursor = DbDataManager.getVideoViewedCursor(getActivity(), getUsername());
+		Cursor cursor = DbDataManager1.getVideoViewedCursor(getActivity(), getUsername());
 		if (cursor != null) {
 			do {
-				int videoId = DbDataManager.getInt(cursor, DbScheme.V_ID);
-				boolean isViewed = DbDataManager.getInt(cursor, DbScheme.V_VIDEO_VIEWED) > 0;
+				int videoId = DbDataManager1.getInt(cursor, DbScheme.V_ID);
+				boolean isViewed = DbDataManager1.getInt(cursor, DbScheme.V_VIDEO_VIEWED) > 0;
 				viewedVideosMap.put(videoId, isViewed);
 			} while (cursor.moveToNext());
 			cursor.close();
@@ -164,8 +164,8 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		}
 
 		do {
-			categoriesNames.add(DbDataManager.getString(cursor, DbScheme.V_NAME));
-			categoriesIds.add(Integer.valueOf(DbDataManager.getString(cursor, DbScheme.V_CATEGORY_ID)));
+			categoriesNames.add(DbDataManager1.getString(cursor, DbScheme.V_NAME));
+			categoriesIds.add(Integer.valueOf(DbDataManager1.getString(cursor, DbScheme.V_CATEGORY_ID)));
 		} while(cursor.moveToNext());
 
 		return true;
@@ -210,14 +210,14 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		if (id == R.id.titleTxt || id == R.id.authorTxt || id == R.id.dateTxt){
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
-			getActivityFace().openFragment(VideoDetailsFragment.createInstance(DbDataManager.getId(cursor)));
+			getActivityFace().openFragment(VideoDetailsFragment.createInstance(DbDataManager1.getId(cursor)));
 		} else if (id == R.id.thumbnailImg || id == R.id.playBtn){
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
-			currentPlayingId = DbDataManager.getInt(cursor, DbScheme.V_ID);
+			currentPlayingId = DbDataManager1.getInt(cursor, DbScheme.V_ID);
 			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.parse(DbDataManager.getString(cursor, DbScheme.V_URL)), "video/*");
+			intent.setDataAndType(Uri.parse(DbDataManager1.getString(cursor, DbScheme.V_URL)), "video/*");
 			startActivityForResult(Intent.createChooser(intent, getString(R.string.select_player)), WATCH_VIDEO_REQUEST);
 
 			// start record time to watch
@@ -239,7 +239,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 		if (resumeFromVideoTime - playButtonClickTime > VideosFragment.WATCHED_TIME) {
 			VideoViewedItem item = new VideoViewedItem(currentPlayingId, getUsername(), true);
-			DbDataManager.updateVideoViewedState(getContentResolver(), item);
+			DbDataManager1.updateVideoViewedState(getContentResolver(), item);
 
 			// update current list
 			viewedVideosMap.put(currentPlayingId, true);
@@ -259,7 +259,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		getActivityFace().openFragment(VideoDetailsFragment.createInstance(DbDataManager.getId(cursor)));
+		getActivityFace().openFragment(VideoDetailsFragment.createInstance(DbDataManager1.getId(cursor)));
 	}
 
 	@Override
@@ -271,7 +271,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 			need2update = true;
 
 			// check if we have saved videos more than 2(from previous page)
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(),
+			Cursor cursor = DbDataManager1.executeQuery(getContentResolver(),
 					DbHelper.getVideosByCategory(previousCategoryId));
 
 			if (cursor != null && cursor.moveToFirst()) {

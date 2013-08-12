@@ -11,8 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -197,20 +197,20 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 			super.updateData(returnedObj);
 
 			{ // top info view
-				int current = DbDataManager.getInt(returnedObj, DbScheme.V_CURRENT);
+				int current = DbDataManager1.getInt(returnedObj, DbScheme.V_CURRENT);
 				currentRatingTxt.setText(String.valueOf(current));
 
-				int rank = DbDataManager.getInt(returnedObj, DbScheme.V_RANK);
+				int rank = DbDataManager1.getInt(returnedObj, DbScheme.V_RANK);
 				if (rank == 0) {
 					absoluteRankTxt.setText(R.string.not_available);
 
 				} else {
 					absoluteRankTxt.setText(String.valueOf(rank));
-					int totalPlayers = DbDataManager.getInt(returnedObj, DbScheme.V_TOTAL_PLAYER_COUNT);
+					int totalPlayers = DbDataManager1.getInt(returnedObj, DbScheme.V_TOTAL_PLAYER_COUNT);
 					totalRankedTxt.setText(getString(R.string.of_arg, totalPlayers));
 				}
 
-				String percentile = DbDataManager.getString(returnedObj, DbScheme.V_PERCENTILE);
+				String percentile = DbDataManager1.getString(returnedObj, DbScheme.V_PERCENTILE);
 				if (percentile.equals(String.valueOf(0.f))) {
 					percentileValueTxt.setText(R.string.not_available);
 				} else {
@@ -218,32 +218,32 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 				}
 			}
 
-			int totalGamesPlayed = DbDataManager.getInt(returnedObj, DbScheme.V_GAMES_TOTAL);
+			int totalGamesPlayed = DbDataManager1.getInt(returnedObj, DbScheme.V_GAMES_TOTAL);
 			totalGamesValueTxt.setText(String.valueOf(totalGamesPlayed));
 
 			fillRatings(returnedObj);
 
 			{// avg opponent rating when i
-				int winCnt = DbDataManager.getInt(returnedObj, DbScheme.V_AVG_OPPONENT_RATING_WIN);
+				int winCnt = DbDataManager1.getInt(returnedObj, DbScheme.V_AVG_OPPONENT_RATING_WIN);
 				winCntValueTxt.setText(String.valueOf(winCnt));
 
-				int loseCnt = DbDataManager.getInt(returnedObj, DbScheme.V_AVG_OPPONENT_RATING_LOSE);
+				int loseCnt = DbDataManager1.getInt(returnedObj, DbScheme.V_AVG_OPPONENT_RATING_LOSE);
 				loseCntValueTxt.setText(String.valueOf(loseCnt));
 
-				int drawCnt = DbDataManager.getInt(returnedObj, DbScheme.V_AVG_OPPONENT_RATING_DRAW);
+				int drawCnt = DbDataManager1.getInt(returnedObj, DbScheme.V_AVG_OPPONENT_RATING_DRAW);
 				drawCntValueTxt.setText(String.valueOf(drawCnt));
 			}
 
 			{// Streaks
-				int winCnt = DbDataManager.getInt(returnedObj, DbScheme.V_WINNING_STREAK);
+				int winCnt = DbDataManager1.getInt(returnedObj, DbScheme.V_WINNING_STREAK);
 				winningStreakValueTxt.setText(String.valueOf(winCnt));
 
-				int loseCnt = DbDataManager.getInt(returnedObj, DbScheme.V_LOSING_STREAK);
+				int loseCnt = DbDataManager1.getInt(returnedObj, DbScheme.V_LOSING_STREAK);
 				losingStreakValueTxt.setText(String.valueOf(loseCnt));
 			}
 
 			// donut/pie chart
-			pieView.setGames(DbDataManager.getGameStatsGamesByResultFromCursor(returnedObj));
+			pieView.setGames(DbDataManager1.getGameStatsGamesByResultFromCursor(returnedObj));
 
 			{// timeouts
 				String timeoutsStr = getString(R.string.timeouts_last_90_days);
@@ -253,7 +253,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 				timeoutChr = AppUtils.setSpanBetweenTokens(timeoutChr, GREY_COLOR_DIVIDER, foregroundSpan);
 				timeoutsLabelTxt.setText(timeoutChr);
 
-				int timeouts = DbDataManager.getInt(returnedObj, DbScheme.V_TIMEOUTS);
+				int timeouts = DbDataManager1.getInt(returnedObj, DbScheme.V_TIMEOUTS);
 				if (timeouts == 0) {
 					timeoutsValueTxt.setText(R.string.not_available);
 				} else {
@@ -261,11 +261,11 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 				}
 			}
 
-			int glickoRd = DbDataManager.getInt(returnedObj, DbScheme.V_GLICKO_RD);
+			int glickoRd = DbDataManager1.getInt(returnedObj, DbScheme.V_GLICKO_RD);
 			glickoValueTxt.setText(String.valueOf(glickoRd));
 
-			String mostFrequentOpponentName = DbDataManager.getString(returnedObj, DbScheme.V_FREQUENT_OPPONENT_NAME);
-			int mostFrequentOpponentGamesPlayed = DbDataManager.getInt(returnedObj, DbScheme.V_FREQUENT_OPPONENT_GAMES_PLAYED);
+			String mostFrequentOpponentName = DbDataManager1.getString(returnedObj, DbScheme.V_FREQUENT_OPPONENT_NAME);
+			int mostFrequentOpponentGamesPlayed = DbDataManager1.getInt(returnedObj, DbScheme.V_FREQUENT_OPPONENT_GAMES_PLAYED);
 			if (mostFrequentOpponentGamesPlayed == 0) {
 				mostFrequentOpponentGamesTxt.setText(R.string.not_available);
 			} else {
@@ -277,33 +277,33 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 
 	private void fillRatings(Cursor cursor) {
 		{ // highest
-			int rating = DbDataManager.getInt(cursor, DbScheme.V_HIGHEST_RATING);
-			long ratingTime = DbDataManager.getLong(cursor, DbScheme.V_HIGHEST_TIMESTAMP) * 1000L;
+			int rating = DbDataManager1.getInt(cursor, DbScheme.V_HIGHEST_RATING);
+			long ratingTime = DbDataManager1.getLong(cursor, DbScheme.V_HIGHEST_TIMESTAMP) * 1000L;
 
 			setTextById((HIGHEST_ID + RATING_VALUE_ID), String.valueOf(rating));
 			setTextById((HIGHEST_ID + RATING_SUBTITLE_ID), dateFormatter.format(new Date(ratingTime)));
 		}
 
 		{ // lowest
-			int rating = DbDataManager.getInt(cursor, DbScheme.V_LOWEST_RATING);
-			long ratingTime = DbDataManager.getLong(cursor, DbScheme.V_LOWEST_TIMESTAMP) * 1000L;
+			int rating = DbDataManager1.getInt(cursor, DbScheme.V_LOWEST_RATING);
+			long ratingTime = DbDataManager1.getLong(cursor, DbScheme.V_LOWEST_TIMESTAMP) * 1000L;
 
 			setTextById((LOWEST_ID + RATING_VALUE_ID), String.valueOf(rating));
 			setTextById((LOWEST_ID + RATING_SUBTITLE_ID), dateFormatter.format(new Date(ratingTime)));
 		}
 
 		{ // average opponent
-			int rating = DbDataManager.getInt(cursor, DbScheme.V_AVERAGE_OPPONENT);
+			int rating = DbDataManager1.getInt(cursor, DbScheme.V_AVERAGE_OPPONENT);
 
 			setTextById((AVERAGE_ID + RATING_VALUE_ID), String.valueOf(rating));
 		}
 
 		{ // best win on
-			int rating = DbDataManager.getInt(cursor, DbScheme.V_BEST_WIN_RATING);
+			int rating = DbDataManager1.getInt(cursor, DbScheme.V_BEST_WIN_RATING);
 			if (rating == 0) {
 				setTextById((BEST_WIN_ID + RATING_VALUE_ID), R.string.not_available);
 			} else {
-				String userName = DbDataManager.getString(cursor, DbScheme.V_BEST_WIN_USERNAME);
+				String userName = DbDataManager1.getString(cursor, DbScheme.V_BEST_WIN_USERNAME);
 
 				setTextById((BEST_WIN_ID + RATING_VALUE_ID), String.valueOf(rating));
 				setTextById((BEST_WIN_ID + RATING_SUBTITLE_ID), userName);

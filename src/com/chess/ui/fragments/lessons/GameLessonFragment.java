@@ -23,7 +23,7 @@ import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.entity.api.LessonRatingChangeItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbDataManager;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadLessonItemTask;
 import com.chess.db.tasks.SaveLessonsLessonTask;
@@ -207,7 +207,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	private void updateUiData() {
 		// check if we have that lesson in DB
-		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getMentorLessonById(lessonId));
+		Cursor cursor = DbDataManager1.executeQuery(getContentResolver(), DbHelper.getMentorLessonById(lessonId));
 		logTest("cursor = " + cursor +  " lessonId = " + lessonId);
 		if (cursor != null && cursor.moveToFirst()) { // we have saved lesson data
 			new LoadLessonItemTask(lessonLoadListener, getContentResolver(), getUsername()).executeTask((long) lessonId);
@@ -272,15 +272,15 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	@Override
 	public void newGame() {
-		Cursor courseCursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getLessonCourseById((int) courseId));
+		Cursor courseCursor = DbDataManager1.executeQuery(getContentResolver(), DbHelper.getLessonCourseById((int) courseId));
 
 		if (courseCursor != null && courseCursor.moveToFirst()) {  // if we have saved course
-			Cursor lessonsListCursor = DbDataManager.executeQuery(getContentResolver(),
+			Cursor lessonsListCursor = DbDataManager1.executeQuery(getContentResolver(),
 					DbHelper.getLessonsListByCourseId((int) courseId, getUsername()));
 			if (lessonsListCursor.moveToFirst()) { // if we have saved lessons
 				List<LessonListItem> lessons = new ArrayList<LessonListItem>();
 				do {
-					lessons.add(DbDataManager.getLessonsListItemFromCursor(lessonsListCursor));
+					lessons.add(DbDataManager1.getLessonsListItemFromCursor(lessonsListCursor));
 				} while (lessonsListCursor.moveToNext());
 
 				int lessonsInCourse = lessons.size();
@@ -668,7 +668,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		lessonListItem.setCompleted(userLesson.isLessonCompleted());
 		lessonListItem.setStarted(true);
 
-		DbDataManager.saveLessonListItemToDb(getContentResolver(), lessonListItem);
+		DbDataManager1.saveLessonListItemToDb(getContentResolver(), lessonListItem);
 	}
 
 	@Override
@@ -848,10 +848,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				lessonListItem.setCompleted(true);
 				lessonListItem.setStarted(false);
 
-				DbDataManager.saveLessonListItemToDb(getContentResolver(), lessonListItem);
+				DbDataManager1.saveLessonListItemToDb(getContentResolver(), lessonListItem);
 
 				userLesson.setLessonCompleted(true);
-				DbDataManager.saveUserLessonToDb(getContentResolver(), userLesson, lessonId, getUsername());
+				DbDataManager1.saveUserLessonToDb(getContentResolver(), userLesson, lessonId, getUsername());
 
 				LessonRatingChangeItem.Data ratingChange = returnedObj.getData();
 				showCompletedPopup(ratingChange);

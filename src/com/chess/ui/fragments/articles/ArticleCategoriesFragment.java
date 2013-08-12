@@ -10,7 +10,7 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DbScheme;
-import com.chess.db.DbDataManager;
+import com.chess.db.DbDataManager1;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.adapters.ArticlesThumbCursorAdapter;
@@ -106,7 +106,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		}
 
 		do {
-			list.add(DbDataManager.getString(cursor, DbScheme.V_NAME));
+			list.add(DbDataManager1.getString(cursor, DbScheme.V_NAME));
 		} while (cursor.moveToNext());
 
 		// get passed argument
@@ -161,7 +161,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		getActivityFace().openFragment(ArticleDetailsFragment.createInstance(DbDataManager.getId(cursor)));
+		getActivityFace().openFragment(ArticleDetailsFragment.createInstance(DbDataManager1.getId(cursor)));
 	}
 
 	@Override
