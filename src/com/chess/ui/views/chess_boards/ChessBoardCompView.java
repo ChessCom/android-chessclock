@@ -310,7 +310,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
     @Override
     public void flipBoard() {
-        if (!isComputerMoving()) {// shouldn't be able to flip while comp moving
+        if (!isComputerMoving()) {
             getBoardFace().setReside(!getBoardFace().isReside());
             if (getAppData().isComputerVsHumanGameMode(getBoardFace())) {
 				int engineMode;
@@ -319,7 +319,6 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
                     getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK);
                 } else /*if (getAppData().isComputerVsHumanBlackGameMode(getBoardFace()))*/ {
                     getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
-
                 }
 				getBoardFace().setMovesCount(getBoardFace().getHply()); // supports Flip when user navigated moves Back
 				setComputerMoving(true);

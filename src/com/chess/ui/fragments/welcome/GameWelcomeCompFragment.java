@@ -362,7 +362,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 			}
 			labelsSet = true;
 		}
-		topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+		topAvatarImg.setImageDrawable(labelsConfig.topAvatar); // check
 		bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
 
 		topPanelView.setSide(labelsConfig.getOpponentSide());
@@ -490,13 +490,13 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		} else {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 		}
-		BoardAvatarDrawable tempDrawable = labelsConfig.topAvatar;
+		/*BoardAvatarDrawable tempDrawable = labelsConfig.topAvatar;
 		labelsConfig.topAvatar = labelsConfig.bottomAvatar;
 		labelsConfig.bottomAvatar = tempDrawable;
 
 		String tempLabel = labelsConfig.topPlayerLabel;
 		labelsConfig.topPlayerLabel = labelsConfig.bottomPlayerLabel;
-		labelsConfig.bottomPlayerLabel = tempLabel;
+		labelsConfig.bottomPlayerLabel = tempLabel;*/
 	}
 
 	@Override
@@ -682,6 +682,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		if (code == ID_NEW_GAME) {
 			newGame();
 		} else if (code == ID_FLIP_BOARD) {
+			//resideBoardIfCompWhite();
 			boardView.flipBoard();
 		} else if (code == ID_EMAIL_GAME) {
 			sendPGN();
