@@ -445,4 +445,5 @@
 
     <!--Board-->
     <color name="coordinate_color">#FF2f3c22</color>
+    <color name="highlight_color">#BFffff65</color>
 </resources>

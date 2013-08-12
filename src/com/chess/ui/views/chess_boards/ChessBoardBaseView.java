@@ -86,6 +86,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private float textYOffset = 3;
 
 	protected Paint yellowPaint;
+	protected Paint whitePaint;
 	protected Paint coordinatesPaint;
 	protected Paint madeMovePaint;
 	protected Paint greenPaint;
@@ -152,14 +153,21 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		handler = new Handler();
 		greenPaint = new Paint();
 		yellowPaint = new Paint();
+		whitePaint = new Paint();
 		coordinatesPaint = new Paint();
 		madeMovePaint = new Paint();
 		possibleMovePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		rect = new Rect();
 
+		int highlightColor = resources.getColor(R.color.highlight_color);
+
 		yellowPaint.setStrokeWidth(3.0f);
 		yellowPaint.setStyle(Style.STROKE);
-		yellowPaint.setColor(Color.YELLOW);
+		yellowPaint.setColor(highlightColor);
+
+		whitePaint.setStrokeWidth(3.0f);
+		whitePaint.setStyle(Style.STROKE);
+		whitePaint.setColor(Color.WHITE);
 
 		int coordinateFont = resources.getInteger(R.integer.board_highlight_font);
 		int coordinateColor = resources.getColor(R.color.coordinate_color);
@@ -560,7 +568,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				rect.set(x - halfSquare, y - halfSquare, x + square + halfSquare, y + square + halfSquare);
 				// draw yellow rect above the square
 				canvas.drawRect(col * square - halfSquare, row * square - halfSquare,
-						col * square + square + halfSquare, row * square + square + halfSquare, yellowPaint);
+						col * square + square + halfSquare, row * square + square + halfSquare, whitePaint);
 				// draw piece
 				canvas.drawBitmap(piecesBitmaps[color][piece], null, rect, null);
 			}

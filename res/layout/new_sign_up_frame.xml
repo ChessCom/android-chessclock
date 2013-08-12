@@ -39,6 +39,14 @@
             android:gravity="center_horizontal"
             >
 
+			<com.chess.RoboTextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/sign_up_now_free"
+				style="@style/SetupSmallFont"
+				android:paddingBottom="@dimen/new_signup_title_padding_bottom"
+				/>
+
             <com.facebook.widget.LoginButton
                 android:id="@+id/fb_connect"
                 style="@style/Button.Facebook"
@@ -53,6 +61,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/or_use_your_email"
+				android:paddingTop="8dip"
+				android:paddingBottom="8dip"
                 style="@style/SetupSmallFont"
                 />
 

@@ -196,5 +196,56 @@
                 />
         </com.chess.LinLayout>
 
+
+		<!--Comp Level View-->
+		<com.chess.LinLayout
+			android:id="@+id/compLevelView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			style="@style/ListItem"
+			android:paddingLeft="@dimen/new_game_frame_padding_side"
+			android:paddingRight="@dimen/new_game_frame_padding_side"
+			android:paddingTop="12dip"
+			android:paddingBottom="7dip"
+			android:animateLayoutChanges="true"
+			>
+
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical"
+				>
+
+				<com.chess.RoboTextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerVertical="true"
+					android:text="@string/computer_level"
+					style="@style/SettingsListText"
+					/>
+
+
+				<com.chess.RoboButton
+					android:id="@+id/compLevelValueBtn"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					style="@style/Button.Glassy.Small"
+					android:inputType="numberDecimal" />
+			</RelativeLayout>
+
+			<SeekBar
+				android:id="@+id/strengthBar"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:paddingLeft="@dimen/seek_bar_side_padding"
+				android:paddingRight="@dimen/seek_bar_side_padding"
+				android:max="9"
+				android:progress="2"
+				android:layout_marginTop="5dip"
+				style="@style/RatingSeekBar" />
+
+		</com.chess.LinLayout>
     </com.chess.LinLayout>
 </ScrollView>

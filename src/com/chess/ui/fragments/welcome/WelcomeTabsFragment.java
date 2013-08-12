@@ -36,7 +36,7 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 
 		config = new CompGameConfig.Builder().build();
 
-		changeInternalFragment(WelcomeGameCompFragment.createInstance(this, config));
+		changeInternalFragment(GameWelcomeCompFragment.createInstance(this, config));
 	}
 
 	@Override
@@ -80,9 +80,9 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 
 		} else if (id == R.id.centerTabBtn) {
 			openWelcomeFragment = false;
-			fragment = (CommonLogicFragment) findFragmentByTag(WelcomeGameCompFragment.class.getSimpleName());
+			fragment = (CommonLogicFragment) findFragmentByTag(GameWelcomeCompFragment.class.getSimpleName());
 			if (fragment == null) {
-				fragment = WelcomeGameCompFragment.createInstance(this, config);
+				fragment = GameWelcomeCompFragment.createInstance(this, config);
 			}
 			changeInternalFragment(fragment);
 		} else if (id == R.id.rightTabBtn) {
@@ -119,7 +119,7 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 		} else if (code == GAME_FRAGMENT) {
 			config.setMode(getAppData().getCompGameMode());
 			config.setStrength(getAppData().getCompLevel());
-			changeInternalFragment(WelcomeGameCompFragment.createInstance(this, config));
+			changeInternalFragment(GameWelcomeCompFragment.createInstance(this, config));
 		}
 	}
 

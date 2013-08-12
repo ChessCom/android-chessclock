@@ -270,6 +270,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			} else {
 				capturedParams.addRule(RIGHT_OF, AVATAR_ID);
 				capturedParams.addRule(BELOW, PLAYER_ID);
+				capturedParams.addRule(ALIGN_BOTTOM, AVATAR_ID);
 			}
 
 			CapturedPiecesDrawable capturedPiecesDrawable = new CapturedPiecesDrawable(context);

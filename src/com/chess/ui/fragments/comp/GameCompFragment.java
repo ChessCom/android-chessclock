@@ -119,6 +119,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		}
 
 		labelsConfig = new LabelsConfig();
+
+		init();
 	}
 
 	@Override
@@ -138,8 +140,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-
-		init();
 
 		widgetsInit(view);
 
@@ -224,6 +224,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		} else {
 			gameMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
 		}
+		// apply changes from settings immediately
+		compGameConfig.setStrength(getAppData().getCompLevel());
+
 		int strength = compStrengthArray[compGameConfig.getStrength()];
 		int time = Integer.parseInt(compTimeLimitArray[compGameConfig.getStrength()]);
 		int depth = Integer.parseInt(compDepth[compGameConfig.getStrength()]);

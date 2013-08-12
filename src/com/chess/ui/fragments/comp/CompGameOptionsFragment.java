@@ -64,9 +64,6 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 
 		myWhiteColorBtn = (RoboRadioButton) view.findViewById(R.id.myWhiteColorBtn);
 		myBlackColorBtn = (RoboRadioButton) view.findViewById(R.id.myBlackColorBtn);
-		strengthValueBtn = (TextView) view.findViewById(R.id.compLevelValueBtn);
-
-		selectedCompLevel = getAppData().getCompLevel();
 
 		int mode = getAppData().getCompGameMode();
 		if (mode == AppConstants.GAME_MODE_2_PLAYERS) {
@@ -78,6 +75,9 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 		} else /*if (mode == AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK)*/ {
 			myBlackColorBtn.setChecked(true);
 		}
+
+		strengthValueBtn = (TextView) view.findViewById(R.id.compLevelValueBtn);
+		selectedCompLevel = getAppData().getCompLevel();
 
 		SeekBar strengthBar = (SeekBar) view.findViewById(R.id.strengthBar);
 		strengthBar.setOnSeekBarChangeListener(ratingBarChangeListener);

@@ -58,7 +58,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/or_use_your_email"
-                style="@style/SetupSmallFont"
+				android:paddingTop="8dip"
+				android:paddingBottom="8dip"
+				style="@style/SetupSmallFont"
                 />
 
             <com.chess.LeftImageEditText

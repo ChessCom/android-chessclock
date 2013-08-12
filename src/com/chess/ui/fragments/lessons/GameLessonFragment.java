@@ -509,7 +509,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_CURRENT_POINTS, String.format(SUBMIT_FLOAT_FORMAT, pointsForLesson));  // you can pass float, 2 decimals please
 		loadItem.addRequestParams(RestHelper.P_CURRENT_PERCENT, scorePercent);
-		loadItem.addRequestParams(RestHelper.P_LAST_POS_NUMBER, currentLearningPosition);
+		loadItem.addRequestParams(RestHelper.P_LAST_POS_NUMBER, totalLearningPositionsCnt);
 
 		new RequestJsonTask<LessonRatingChangeItem>(submitLessonListener).executeTask(loadItem);
 	}

@@ -16,7 +16,7 @@ public class LessonRatingChangeItem extends BaseResponseItem<LessonRatingChangeI
 
 	public class Data {
 		private int change;
-		private int new_rating = 1234; // TODO remove hardcode and replace with other name that comes from server
+		private int new_rating;
 
 		public int getChange() {
 			return change;

@@ -64,7 +64,7 @@ import java.util.List;
  * Date: 19.05.13
  * Time: 17:15
  */
-public class WelcomeGameCompFragment extends GameBaseFragment implements GameCompFace,
+public class GameWelcomeCompFragment extends GameBaseFragment implements GameCompFace,
 		PopupListSelectionFace, AdapterView.OnItemClickListener, MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener {
 
 	private static final int PLAY_ONLINE_ITEM = 1;
@@ -129,15 +129,15 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 
 	private CompGameConfig compGameConfig;
 
-	public WelcomeGameCompFragment() {
+	public GameWelcomeCompFragment() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(CONFIG, config);
 		setArguments(bundle);
 	}
 
-	public static WelcomeGameCompFragment createInstance(FragmentTabsFace parentFace, CompGameConfig config) {
-		WelcomeGameCompFragment fragment = new WelcomeGameCompFragment();
+	public static GameWelcomeCompFragment createInstance(FragmentTabsFace parentFace, CompGameConfig config) {
+		GameWelcomeCompFragment fragment = new GameWelcomeCompFragment();
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(CONFIG, config);
 		fragment.setArguments(bundle);
@@ -269,6 +269,9 @@ public class WelcomeGameCompFragment extends GameBaseFragment implements GameCom
 		} else {
 			gameMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
 		}
+		// apply changes from settings immediately
+		compGameConfig.setStrength(getAppData().getCompLevel());
+
 		int strength = compStrengthArray[compGameConfig.getStrength()];
 		int time = Integer.parseInt(compTimeLimitArray[compGameConfig.getStrength()]);
 		int depth = Integer.parseInt(compDepth[compGameConfig.getStrength()]);

@@ -5,15 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.Spinner;
+import android.widget.*;
 import com.chess.R;
 import com.chess.SwitchButton;
 import com.chess.backend.statics.AppConstants;
 import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.SelectionAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.views.drawables.RatingProgressDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +34,8 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 	private SwitchButton answerShowBottomSwitch;
 	private SwitchButton soundsSwitch;
 	private SwitchButton showLegalMovesSwitch;
+	private TextView strengthValueBtn;
+	private int selectedCompLevel;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,7 +49,6 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		setTitle(R.string.board_and_pieces);
 
 		widgetsInit(view);
-
 	}
 
 	@Override
@@ -189,5 +189,35 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		piecesSpinner.setSelection(piecesPosition);
 		piecesList.get(piecesPosition).setChecked(true);
 		piecesSpinner.setOnItemSelectedListener(this);
+
+		{ // Comp level
+			strengthValueBtn = (TextView) view.findViewById(R.id.compLevelValueBtn);
+			selectedCompLevel = getAppData().getCompLevel();
+
+			SeekBar strengthBar = (SeekBar) view.findViewById(R.id.strengthBar);
+			strengthBar.setOnSeekBarChangeListener(ratingBarChangeListener);
+			strengthBar.setProgressDrawable(new RatingProgressDrawable(getContext(), strengthBar));
+			strengthBar.setProgress(selectedCompLevel);
+			strengthValueBtn.setText(String.valueOf(selectedCompLevel + 1));
+
+		}
 	}
+
+	private SeekBar.OnSeekBarChangeListener ratingBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+		@Override
+		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+			selectedCompLevel = progress;
+			strengthValueBtn.setText(String.valueOf(progress + 1));
+
+			getAppData().setCompLevel(selectedCompLevel);
+		}
+
+		@Override
+		public void onStartTrackingTouch(SeekBar seekBar) {
+		}
+
+		@Override
+		public void onStopTrackingTouch(SeekBar seekBar) {
+		}
+	};
 }

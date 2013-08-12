@@ -123,6 +123,7 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			} else {
 				capturedParams.addRule(RIGHT_OF, AVATAR_ID);
 				capturedParams.addRule(BELOW, PLAYER_ID);
+				capturedParams.addRule(ALIGN_BOTTOM, AVATAR_ID);
 			}
 
 			CapturedPiecesDrawable capturedPiecesDrawable = new CapturedPiecesDrawable(context);
