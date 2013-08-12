@@ -369,12 +369,12 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	@Override
 	public void onPlayerMove() {
-//		controlsCompView.enableGameControls(true);
+		topPanelView.showThinkingView(false);
 	}
 
 	@Override
 	public void onCompMove() {
-//		controlsCompView.enableGameControls(false);
+		topPanelView.showThinkingView(true);
 	}
 
 	// todo: use only our Move class

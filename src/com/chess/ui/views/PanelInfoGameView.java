@@ -1,6 +1,7 @@
 package com.chess.ui.views;
 
 
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -8,12 +9,12 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RelLayout;
@@ -61,13 +62,17 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	private int bottomPlayerTimeLeftColor;
 	private RoboTextView clockIconTxt;
 	private LinearLayout clockLayout;
+	private RoboTextView thinkingTxt;
+	private int paddingTop;
+	private int paddingRight;
+	private int paddingLeft;
 
 	public PanelInfoGameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		onCreate(attrs);
 	}
 
-	public void onCreate(AttributeSet attrs) {
+	protected void onCreate(AttributeSet attrs) {
 		boolean useSingleLine;
 		if (isInEditMode()) {
 			return;
@@ -108,7 +113,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_big_size);
 		}
 
-		boolean hasSoftKeys = AppUtils.hasSoftKeys(((Activity)getContext()).getWindowManager());
+		boolean hasSoftKeys = AppUtils.hasSoftKeys(((Activity) getContext()).getWindowManager());
 		if (hasSoftKeys) {
 			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_medium_size);
 		}
@@ -123,11 +128,21 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		FLAG_SIZE *= density;
 		FLAG_MARGIN *= density;
 
+		{ // set padding
+			paddingTop = (int) resources.getDimension(R.dimen.panel_info_padding_top);
+			paddingRight = (int) (4 * density);
+			paddingLeft = (int) (11 * density);
+
+			if (hasSoftKeys) {
+				paddingTop = (int) (3 * density);
+			}
+		}
+
 		{// add avatar view
 			avatarImg = new ImageView(context);
 
 			LayoutParams avatarParams = new LayoutParams(avatarSize, avatarSize);
-			avatarParams.setMargins(0, 0, avatarMarginRight, 0);
+			avatarParams.setMargins(paddingLeft, paddingTop, avatarMarginRight, paddingTop);
 			avatarParams.addRule(CENTER_VERTICAL);
 
 			avatarImg.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -235,7 +250,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			clockIconParams.gravity = CENTER_VERTICAL;
 
 			clockIconTxt.setFont(FontsHelper.ICON_FONT);
-			float clockIconSize = resources.getDimension(R.dimen.new_tactics_clock_icon_size)/density; // 21;
+			float clockIconSize = resources.getDimension(R.dimen.new_tactics_clock_icon_size) / density; // 21;
 			clockIconTxt.setTextSize(clockIconSize);
 			clockIconTxt.setText(R.string.ic_clock);
 			clockIconTxt.setTextColor(Color.WHITE);
@@ -244,12 +259,13 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			clockIconTxt.setPadding(0, paddingIconTop, paddingIcon, 0);
 			clockIconTxt.setVisibility(GONE);
 
+
 			clockLayout.addView(clockIconTxt, clockIconParams);
 
 			LayoutParams timeLeftParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, timeLeftSize);
 			timeLeftParams.addRule(ALIGN_PARENT_RIGHT);
 			timeLeftParams.addRule(CENTER_VERTICAL);
-			timeLeftParams.setMargins((int) (7 * density), 0, 0, 0); // use to set space between captured pieces in single line mode
+			timeLeftParams.setMargins((int) (7 * density), paddingTop, paddingRight, paddingTop); // use to set space between captured pieces in single line mode
 
 			timeRemainTxt.setTextSize(playerTextSize);
 			timeRemainTxt.setTextColor(resources.getColor(R.color.light_grey));
@@ -290,16 +306,26 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			addView(capturedPiecesView, capturedParams);
 		}
 
-		{// Set padding
-			int padding = (int) resources.getDimension(R.dimen.panel_info_padding_top);
-			int paddingRight = (int) (4 * density);
-			int paddingLeft = (int) (11 * density);
+		{ // Thinking View
+			thinkingTxt = new RoboTextView(getContext());
+			thinkingTxt.setFont(FontsHelper.BOLD_FONT);
+			thinkingTxt.setTextSize(playerTextSize);
+			thinkingTxt.setText(R.string.thinking_);
+			thinkingTxt.setTextColor(Color.WHITE);
+			thinkingTxt.setBackgroundResource(R.color.glassy_button);
+			thinkingTxt.setVisibility(GONE);
+			thinkingTxt.setGravity(Gravity.CENTER);
 
-			if (hasSoftKeys) {
-				padding = (int) (3 * density);
+			RelativeLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+			addView(thinkingTxt, params);
+
+			if (AppUtils.JELLYBEAN_PLUS_API) {
+				LayoutTransition layoutTransition = getLayoutTransition();
+				if (layoutTransition != null) { // we have it only in comp game frames
+					layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
+				}
 			}
-
-			setPadding(paddingLeft, padding, paddingRight, padding);
 		}
 	}
 
@@ -344,7 +370,6 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	}
 
 
-
 	public void setPlayerName(String playerName) {
 		playerTxt.setText(playerName);
 	}
@@ -369,7 +394,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 	public void setTimeRemain(String timeRemain) {
 		timeRemainTxt.setText(timeRemain);
-		clockIconTxt.setVisibility(timeRemain.length() > 0? View.VISIBLE : View.GONE);
+		clockIconTxt.setVisibility(timeRemain.length() > 0 ? View.VISIBLE : View.GONE);
 	}
 
 	public void showTimeRemain(boolean show) {
@@ -377,7 +402,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	}
 
 	public void showTimeLeftIcon(boolean show) {
-		clockIconTxt.setVisibility(show? View.VISIBLE : View.GONE);
+		clockIconTxt.setVisibility(show ? View.VISIBLE : View.GONE);
 	}
 
 	public void updateCapturedPieces(int[] alivePiecesCountArray) {
@@ -400,4 +425,25 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		}
 	}
 
+	public void showThinkingView(boolean show) {
+		if (show) {
+			premiumImg.setVisibility(GONE);
+			flagImg.setVisibility(GONE);
+			avatarImg.setVisibility(GONE);
+			playerTxt.setVisibility(GONE);
+			playerRatingTxt.setVisibility(GONE);
+			clockLayout.setVisibility(GONE);
+			capturedPiecesView.setVisibility(GONE);
+			thinkingTxt.setVisibility(VISIBLE);
+		} else {
+			premiumImg.setVisibility(VISIBLE);
+			flagImg.setVisibility(VISIBLE);
+			avatarImg.setVisibility(VISIBLE);
+			playerTxt.setVisibility(VISIBLE);
+			playerRatingTxt.setVisibility(VISIBLE);
+			clockLayout.setVisibility(VISIBLE);
+			capturedPiecesView.setVisibility(VISIBLE);
+			thinkingTxt.setVisibility(GONE);
+		}
+	}
 }

@@ -1,15 +1,18 @@
 package com.chess.ui.views;
 
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
@@ -27,7 +30,10 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 
 	public static final int WHAT_IS_TXT_ID = 0x00004305;
 	private int side;
-
+	private RoboTextView thinkingTxt;
+	private int paddingTop;
+	private int paddingRight;
+	private int paddingLeft;
 
 	public PanelInfoWelcomeView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -35,7 +41,7 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 	}
 
 	@Override
-	public void onCreate(AttributeSet attrs) {
+	protected void onCreate(AttributeSet attrs) {
 		boolean useSingleLine;
 		Context context = getContext();
 		if (isInEditMode() || context == null) {
@@ -75,11 +81,22 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 		int whatIsTextSize = (int) (resources.getDimension(R.dimen.panel_info_what_is_size) / density);
 		int avatarMarginRight = (int) resources.getDimension(R.dimen.panel_info_avatar_margin_right);
 
+		{ // set padding
+			paddingTop = (int) resources.getDimension(R.dimen.panel_info_padding_top);
+			paddingRight = (int) (4 * density);
+			paddingLeft = (int) (11 * density);
+
+			if (hasSoftKeys) {
+				paddingTop = (int) (3 * density);
+			}
+		}
+
 
 		{// add avatar view
 			avatarImg = new ImageView(context);
 			LayoutParams avatarParams = new LayoutParams(avatarSize, avatarSize);
-			avatarParams.setMargins(0, 0, avatarMarginRight, 0);
+			avatarParams.setMargins(paddingLeft, paddingTop, avatarMarginRight, paddingTop);
+
 			avatarParams.addRule(CENTER_VERTICAL);
 
 			avatarImg.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -158,16 +175,26 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 
 		}
 
-		{// Set padding
-			int padding = (int) resources.getDimension(R.dimen.panel_info_padding_top);
-			int paddingRight = (int) (4 * density);
-			int paddingLeft = (int) (11 * density);
+		{ // Thinking View
+			thinkingTxt = new RoboTextView(getContext());
+			thinkingTxt.setFont(FontsHelper.BOLD_FONT);
+			thinkingTxt.setTextSize(playerTextSize);
+			thinkingTxt.setText(R.string.thinking_);
+			thinkingTxt.setTextColor(Color.WHITE);
+			thinkingTxt.setBackgroundResource(R.color.glassy_button);
+			thinkingTxt.setVisibility(GONE);
+			thinkingTxt.setGravity(Gravity.CENTER);
 
-			if (hasSoftKeys) {
-				padding = (int) (3 * density);
+			RelativeLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+			addView(thinkingTxt, params);
+
+			if (AppUtils.JELLYBEAN_PLUS_API) {
+				LayoutTransition layoutTransition = getLayoutTransition();
+				if (layoutTransition != null) { // we have it only in comp game frames
+					layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
+				}
 			}
-
-			setPadding(paddingLeft, padding, paddingRight, padding);
 		}
 	}
 
@@ -210,4 +237,18 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).dropPieces();
 	}
 
+	@Override
+	public void showThinkingView(boolean show) {
+		if (show) {
+			findViewById(AVATAR_ID).setVisibility(GONE);
+			playerTxt.setVisibility(GONE);
+			capturedPiecesView.setVisibility(GONE);
+			thinkingTxt.setVisibility(VISIBLE);
+		} else {
+			findViewById(AVATAR_ID).setVisibility(VISIBLE);
+			playerTxt.setVisibility(VISIBLE);
+			capturedPiecesView.setVisibility(VISIBLE);
+			thinkingTxt.setVisibility(GONE);
+		}
+	}
 }

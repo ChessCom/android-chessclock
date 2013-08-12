@@ -29,7 +29,9 @@
 			android:layout_width="match_parent"
 			android:layout_height="0dip"
 			android:layout_weight="1"
-			custom:oneLine="@bool/one_line_for_board" />
+			custom:oneLine="@bool/one_line_for_board"
+			android:animateLayoutChanges="true"
+			/>
 
 		<RelativeLayout
 			android:id="@+id/welcomeBoardView"
@@ -64,7 +66,9 @@
 			android:layout_width="match_parent"
 			android:layout_height="0dip"
 			android:layout_weight="1"
-			custom:oneLine="@bool/one_line_for_board" />
+			custom:oneLine="@bool/one_line_for_board"
+			android:animateLayoutChanges="true"
+			/>
 
 		<com.chess.ui.views.game_controls.ControlsCompView
 			android:id="@+id/controlsCompView"

@@ -405,12 +405,12 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void onPlayerMove() {
-//		controlsCompView.enableGameControls(true);
+		topPanelView.showThinkingView(false);
 	}
 
 	@Override
 	public void onCompMove() {
-//		controlsCompView.enableGameControls(false);
+		topPanelView.showThinkingView(true);
 	}
 
 	// todo: use only our Move class

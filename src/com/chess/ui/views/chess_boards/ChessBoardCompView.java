@@ -65,9 +65,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
         if (isGameOver())
             return;
 
-        //if (!getBoardFace().isAnalysis() && !getAppData().isHumanVsHumanGameMode(getBoardFace())) {
 		postMoveToEngine(getBoardFace().getLastMove());
-		//}
     }
 
     @Override
