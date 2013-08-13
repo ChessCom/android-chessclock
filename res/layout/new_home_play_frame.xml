@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            style="@style/ListItem.Header"
+            style="@style/ListItem.Header_2.Light"
             android:paddingLeft="13dip"
             android:paddingRight="8dip"
             >
@@ -108,7 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            style="@style/ListItem.Header"
+            style="@style/ListItem.Header_2.Light"
             android:paddingLeft="13dip"
             android:paddingRight="8dip"
             >
@@ -137,7 +137,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:textColor="@color/new_light_grey_2"
-                android:text="1200"
                 custom:ttf="Bold"
                 />
 

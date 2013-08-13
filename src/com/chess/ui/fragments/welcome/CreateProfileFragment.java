@@ -15,14 +15,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import com.chess.LeftImageEditText;
 import com.chess.LeftRightImageEditText;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.UserItem;
-import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
@@ -30,6 +30,7 @@ import com.chess.ui.fragments.popup_fragments.PopupCountriesFragment;
 import com.chess.ui.fragments.popup_fragments.PopupSelectPhotoFragment;
 import com.chess.ui.fragments.popup_fragments.PopupSkillsFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
+import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.utilities.AppUtils;
 
 import java.io.File;
@@ -54,7 +55,6 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 	private static final int REQ_CODE_TAKE_IMAGE = 55;
 	private static final int NON_INIT = -1;
 
-
 	private String[] skillNames;
 	private String[] countryNames;
 	private String[] countryCodes;
@@ -68,13 +68,11 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 	private LeftImageEditText firstNameEdt;
 	private LeftImageEditText lastNameEdt;
 	/* photo */
-	private EnhancedImageDownloader imageDownloader;
 	private PopupCountriesFragment countriesFragment;
 	private PopupSelectPhotoFragment photoSelectFragment;
 	private PhotoSelectedListener photoSelectedListener;
 	private CountrySelectedListener countrySelectedListener;
 	private String mCurrentPhotoPath;
-	private boolean photoChanged;
 	private int photoFileSize;
 
 
@@ -86,7 +84,6 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		countryNames = getResources().getStringArray(R.array.new_countries);
 		countryCodes = getResources().getStringArray(R.array.new_countries_codes);
 		countryIds = getResources().getIntArray(R.array.new_country_ids);
-		imageDownloader = new EnhancedImageDownloader(getActivity());
 		countrySelectedListener = new CountrySelectedListener();
 		photoSelectedListener = new PhotoSelectedListener();
 
@@ -105,9 +102,11 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		enableSlideMenus(false);
 
 		view.findViewById(R.id.createProfileBtn).setOnClickListener(this);
-		view.findViewById(R.id.skipBtn).setOnClickListener(this);
 		view.findViewById(R.id.skipLay).setOnClickListener(this);
-
+		TextView skipBtn = (TextView) view.findViewById(R.id.skipBtn);
+		skipBtn.setOnClickListener(this);
+		IconDrawable rightIconDrawable = new IconDrawable(getActivity(), R.string.ic_right);
+		skipBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, rightIconDrawable, null);
 		firstNameEdt = (LeftImageEditText) view.findViewById(R.id.firstNameEdt);
 		lastNameEdt = (LeftImageEditText) view.findViewById(R.id.lastNameEdt);
 		countryEdt = (LeftRightImageEditText) view.findViewById(R.id.countryEdt);
@@ -236,7 +235,6 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
 
 		profilePhotoEdt.setRightIcon(drawable);
-		photoChanged = true;
 	}
 
 	private void createProfile() {
@@ -256,29 +254,17 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		new RequestJsonTask<UserItem>(createProfileUpdateListener).executeTask(loadItem);
 	}
 
-	private class CreateProfileUpdateListener extends ChessUpdateListener<UserItem> {
+	private class CreateProfileUpdateListener extends ChessLoadUpdateListener<UserItem> {
 
 		public CreateProfileUpdateListener() {
 			super(UserItem.class);
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			if (show) {
-				showPopupHardProgressDialog(R.string.processing_);
-			} else {
-				if (isPaused)
-					return;
-
-				dismissProgressDialog();
-			}
-		}
-
-		@Override
 		public void updateData(UserItem returnedObj) {
 			getAppData().setUserAvatar(returnedObj.getData().getAvatar());
 
-			getActivityFace().openFragment(new InviteFragment());
+			getActivityFace().switchFragment(new HomeTabsFragment());
 		}
 	}
 

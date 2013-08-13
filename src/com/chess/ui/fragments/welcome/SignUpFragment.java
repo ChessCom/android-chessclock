@@ -120,7 +120,7 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 		if (!emailPattern.matcher(getTextFromField(emailEdt)).matches()) {
 			emailEdt.setError(getString(R.string.invalidEmail));
 			emailEdt.requestFocus();
-			return true;
+			return false;
 		}
 
 		if (email.equals(StaticData.SYMBOL_EMPTY)) {

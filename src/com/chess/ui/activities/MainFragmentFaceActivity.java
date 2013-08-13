@@ -62,7 +62,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			// set the Above View
 			if (!TextUtils.isEmpty(getAppData().getUserToken())) { // if user have login token already
 				switchFragment(new HomeTabsFragment());
-//				switchFragment(new CompGameOptionsFragment());
+//				switchFragment(new CreateProfileFragment());
 				showActionBar = true;
 			} else {
 				switchFragment(new WelcomeTabsFragment());

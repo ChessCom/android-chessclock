@@ -8,6 +8,21 @@
     android:layout_height="match_parent"
     >
 
+	<com.chess.LinLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		style="@style/Rect.Top.Middle"
+		>
+
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/img_new_logo_bar"
+			android:contentDescription="@string/image"
+			/>
+
+	</com.chess.LinLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/skill_level"
                 style="@style/WhiteGrayEditText.Middle"
-                custom:leftImage="@drawable/ic_skills"
+                custom:leftImage="@string/ic_skills"
                 custom:rightImage="@string/ic_right"
                 android:editable="false"
                 android:clickable="true"
@@ -87,8 +102,9 @@
                 android:hint="@string/profile_picture"
                 android:inputType="textPersonName"
                 style="@style/WhiteGrayEditText.Bottom"
-                custom:rightImage="@drawable/img_profile_picture_stub"
+                custom:rightImageDrawable="@drawable/img_profile_picture_stub"
                 custom:leftImage="@string/ic_photo"
+				android:editable="false"
                 android:clickable="true"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
@@ -117,10 +133,10 @@
                     style="@style/SetupSmallFont"
                     android:textSize="16sp"
                     android:paddingTop="@dimen/create_profile_skip_padding_top"
-                    android:drawableRight="@string/ic_right"
                     android:layout_gravity="center_horizontal"
                     />
-            </FrameLayout>
+
+			</FrameLayout>
         </LinearLayout>
 
     </ScrollView>
