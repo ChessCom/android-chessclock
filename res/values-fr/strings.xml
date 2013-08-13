@@ -202,7 +202,7 @@
 	<string name="abort_resign_game">Abandonner / Démission d\'un jeu:</string>
 	<string name="are_you_sure_q">Etes-vous sûr?</string>
 	<string name="correct">Corrigez!</string>
-	<string name="wrong">Faux!</string>
+	<string name="incorrect">Faux!</string>
 
 	<string name="you_got_new_msg">Vous avez un nouveau message!</string>
 	<string name="browse">Parcourir</string>

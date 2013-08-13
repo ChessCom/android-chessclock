@@ -200,7 +200,7 @@
 	<string name="abort_resign_game">Abortar / Resign um jogo:</string>
 	<string name="are_you_sure_q">Tem certeza?</string>
 	<string name="correct">Correto?</string>
-	<string name="wrong">Errado</string>
+	<string name="incorrect">Errado</string>
 
 	<string name="you_got_new_msg">Você tem uma nova mensagem!</string>
 	<string name="browse">Procurar</string>

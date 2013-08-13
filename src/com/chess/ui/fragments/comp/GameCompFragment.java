@@ -835,7 +835,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 						}*/
 					}
 					//}
-					engineThinkingPath.setText(s, TextView.BufferType.SPANNABLE);
+					// TODO reuse when someone will need to need that enhancements. For example in computer analysis
+					// engineThinkingPath is always invisible
+//					engineThinkingPath.setText(s, TextView.BufferType.SPANNABLE);
 					log = s;
 				}
 				// todo @compengine: show book hints for human player

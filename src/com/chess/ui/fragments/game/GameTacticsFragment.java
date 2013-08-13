@@ -3,7 +3,6 @@ package com.chess.ui.fragments.game;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.SparseArray;
@@ -12,12 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCode;
-import com.chess.backend.LoadItem;
-import com.chess.db.DbDataManager;
-import com.chess.model.TacticsDataHolder;
 import com.chess.backend.entity.api.TacticInfoItem;
 import com.chess.backend.entity.api.TacticItem;
 import com.chess.backend.entity.api.TacticRatingData;
@@ -27,10 +25,12 @@ import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.GetOfflineTacticsBatchTask;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveTacticsBatchTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.PopupItem;
+import com.chess.model.TacticsDataHolder;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
 import com.chess.ui.engine.Move;
@@ -62,6 +62,7 @@ import java.util.List;
  */
 public class GameTacticsFragment extends GameBaseFragment implements GameTacticsFace, PopupListSelectionFace {
 
+	private static final long MOVE_RESULT_HIDE_DELAY = 2000;
 	private static final int TIMER_UPDATE = 1000;
 	private static final long TACTIC_ANSWER_DELAY = 1500;
 	private static final int CORRECT_RESULT = 0;
@@ -73,8 +74,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private static final int ID_PRACTICE = 2;
 	private static final int ID_SETTINGS = 3;
 
-
-	private Handler tacticsTimer;
 	private ChessBoardTacticsView boardView;
 
 	private boolean noNetwork;
@@ -107,6 +106,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private SparseArray<String> optionsArray;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private LabelsConfig labelsConfig;
+	private TextView moveResultTxt;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -186,6 +186,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		if (needToSaveTactic()) {
 			DbDataManager.saveTacticItemToDb(getActivity(), tacticItem, getUsername());
 		}
+
+		handler.removeCallbacks(hideMoveResultTask);
 	}
 
 	@Override
@@ -261,7 +263,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				invalidateGameScreen();
 			} else { // correct
 				if (tacticItem.isWasShowed()) {
-					sendWrongResult();
+					submitWrongResult();
 				} else if (tacticItem.isRetry() || noNetwork) {
 					String newRatingStr = StaticData.SYMBOL_EMPTY;
 					if (tacticItem.getResultItem() != null) {
@@ -269,7 +271,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					}
 					showCorrect(newRatingStr);
 				} else {
-					sendCorrectResult();
+					submitCorrectResult();
 				}
 				stopTacticsTimer();
 			}
@@ -281,13 +283,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				}
 				showWrong(newRatingStr);
 			} else {
-				sendWrongResult();
+				submitWrongResult();
 			}
 			stopTacticsTimer();
 		}
 	}
 
-	private void sendCorrectResult() {
+	private void submitCorrectResult() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
 		loadItem.setRequestMethod(RestHelper.POST);
@@ -302,7 +304,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		lockBoard(true);
 	}
 
-	private void sendWrongResult() {
+	private void submitWrongResult() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
 		loadItem.setRequestMethod(RestHelper.POST);
@@ -573,6 +575,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		topPanelView.showCorrect(true, newRatingStr);
 		controlsTacticsView.showCorrect();
 		getBoardFace().setFinished(true);
+
+		moveResultTxt.setVisibility(View.VISIBLE);
+		moveResultTxt.setText(getString(R.string.correct) + StaticData.SYMBOL_EX);
+
+		handler.postDelayed(hideMoveResultTask, MOVE_RESULT_HIDE_DELAY);
 	}
 
 	private void showWrong(String newRatingStr) {
@@ -583,7 +590,21 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		topPanelView.showWrong(true, newRatingStr);
 		controlsTacticsView.showWrong();
 		getBoardFace().setFinished(true);
+
+		moveResultTxt.setVisibility(View.VISIBLE);
+		moveResultTxt.setText(R.string.incorrect);
+
+		handler.postDelayed(hideMoveResultTask, MOVE_RESULT_HIDE_DELAY);
 	}
+
+	private Runnable hideMoveResultTask = new Runnable() {
+		@Override
+		public void run() {
+			moveResultTxt.setVisibility(View.GONE);
+			handler.removeCallbacks(hideMoveResultTask);
+		}
+	};
+
 
 	private void handleErrorRequest() {
 		lockBoard(false);
@@ -645,23 +666,23 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			tacticItem.setStop(true);
 		}
 
-		tacticsTimer.removeCallbacks(timerUpdateTask);
+		handler.removeCallbacks(timerUpdateTask);
 	}
 
 	public void startTacticsTimer(TacticItem.Data tacticItem) {
 		getBoardFace().setFinished(false);
 		tacticItem.setStop(false);
 
-		tacticsTimer.removeCallbacks(timerUpdateTask);
-		tacticsTimer.postDelayed(timerUpdateTask, TIMER_UPDATE);
+		handler.removeCallbacks(timerUpdateTask);
+		handler.postDelayed(timerUpdateTask, TIMER_UPDATE);
 		lockBoard(false);
 	}
 
 	private Runnable timerUpdateTask = new Runnable() {
 		@Override
 		public void run() {
-			tacticsTimer.removeCallbacks(this);
-			tacticsTimer.postDelayed(timerUpdateTask, TIMER_UPDATE);
+			handler.removeCallbacks(this);
+			handler.postDelayed(timerUpdateTask, TIMER_UPDATE);
 
 			if (getBoardFace().isAnalysis())
 				return;
@@ -871,7 +892,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void init() {
-		tacticsTimer = new Handler();
 		labelsConfig = new LabelsConfig();
 
 		inflater = (LayoutInflater) getActivity().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -885,6 +905,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void widgetsInit(View view) {
+		moveResultTxt = (TextView) view.findViewById(R.id.moveResultTxt);
+
 		topPanelView = (PanelInfoTacticsView) view.findViewById(R.id.topPanelView);
 		topPanelView.setPlayerScore(getAppData().getUserTacticsRating());
 		controlsTacticsView = (ControlsTacticsView) view.findViewById(R.id.controlsTacticsView);

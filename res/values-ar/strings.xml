@@ -201,7 +201,7 @@
 	<string name="abort_resign_game">إحباط / الاستقالة لعبة:</string>
 	<string name="are_you_sure_q">هل أنت متأكد؟</string>
 	<string name="correct">صحيح</string>
-	<string name="wrong">خطأ!</string>
+	<string name="incorrect">خطأ!</string>
 
 
 	<string name="you_got_new_msg">لديك رسالة جديدة!</string>

@@ -201,7 +201,7 @@
 	<string name="abort_resign_game">Abbruch / resign ein Spiel:</string>
 	<string name="are_you_sure_q">Sind Sie sicher?</string>
 	<string name="correct">Korrekt!</string>
-	<string name="wrong">falsch</string>
+	<string name="incorrect">falsch</string>
 
 
 	<string name="you_got_new_msg">Sie haben eine neue Nachricht!</string>

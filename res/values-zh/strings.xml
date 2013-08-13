@@ -198,7 +198,7 @@
 	<string name="abort_resign_game">中止/辞职的游戏：</string>
 	<string name="are_you_sure_q">您确定吗？</string>
 	<string name="correct">n.修正,校准</string>
-	<string name="wrong">但这种想法大错特错。</string>
+	<string name="incorrect">但这种想法大错特错。</string>
 
 	<string name="you_got_new_msg">你有一个新的消息！</string>
 	<string name="browse">浏览</string>

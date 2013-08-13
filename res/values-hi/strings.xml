@@ -201,7 +201,7 @@
 	<string name="abort_resign_game">विफल / खेल इस्तीफा:</string>
 	<string name="are_you_sure_q">क्या तुम्हें यकीन है?</string>
 	<string name="correct">सही कहा आपने!</string>
-	<string name="wrong">गलत </string>
+	<string name="incorrect">गलत </string>
 
 	<string name="you_got_new_msg">आप एक नया संदेश है!</string>
 	<string name="browse">ब्राउज़ करें</string>

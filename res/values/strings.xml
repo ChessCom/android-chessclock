@@ -223,7 +223,7 @@
     <string name="offline_mode">Offline mode</string>
     <string name="no_network_rating_not_changed">Internet access is not currently available. As a result, your rating will not change after completing problems until your Internet connection returns.</string>
     <string name="correct">Correct</string>  <!--Popup Title-->
-    <string name="wrong">Wrong</string>  <!--Popup Title-->
+    <string name="incorrect">Incorrect</string>  <!--Popup Title-->
     <string name="problem_solved_">Problem Solved!</string>   <!--Popup Title-->
     <string name="score_arg">Score: %1$s</string> <!--Game results-->
     <string name="new_rating_arg">New rating %2$s </string> <!--Game results-->

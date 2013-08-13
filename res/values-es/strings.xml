@@ -201,7 +201,7 @@
 	<string name="abort_resign_game">Anular / Renunciar a un juego:</string>
 	<string name="are_you_sure_q">¿Está seguro?</string>
 	<string name="correct">corrector || correctivo</string>
-	<string name="wrong">¡Falso!</string>
+	<string name="incorrect">¡Falso!</string>
 
 
 	<string name="you_got_new_msg">Tiene un mensaje nuevo!</string>
