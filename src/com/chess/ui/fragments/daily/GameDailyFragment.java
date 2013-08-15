@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
-import com.chess.backend.ServerErrorCode;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.db.DbDataManager;
 import com.chess.model.DataHolder;
 import com.chess.backend.LoadItem;
@@ -781,16 +781,13 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	private void sendRematch() {
 		String opponent;
-		int color; // reversed color
 		if (userPlayWhite) {
 			opponent = currentGame.getBlackUsername();
-			color = 2;
 		} else {
 			opponent = currentGame.getWhiteUsername();
-			color = 1;
 		}
 
-		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), currentGame.getDaysPerMove(), color,
+		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), currentGame.getDaysPerMove(),
 				currentGame.isRated() ? 1 : 0,  currentGame.getGameType(), opponent);
 		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
@@ -860,7 +857,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		public void errorHandle(Integer resultCode) {
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				if (serverCode == ServerErrorCode.YOUR_ARE_ON_VACATAION) {
+				if (serverCode == ServerErrorCodes.YOUR_ARE_ON_VACATAION) {
 
 					popupItem.setPositiveBtnId(R.string.end_vacation);
 					showPopupDialog(R.string.you_cant_move_on_vacation, END_VACATION_TAG);

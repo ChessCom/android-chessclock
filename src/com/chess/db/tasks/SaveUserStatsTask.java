@@ -1,7 +1,6 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -41,167 +40,83 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		saveLiveStats(userName, item, resolver);
 		saveDailyStats(userName, item, resolver);
 		saveTacticsStats(userName, item, resolver);
-		saveChessMentorStats(userName, item, resolver);
+		saveLessonsStats(userName, item, resolver);
 
 		return StaticData.RESULT_OK;
 	}
 
 	public static void saveLiveStats(String userName, UserStatsItem.Data item, ContentResolver contentResolver) {
-		if (item.getLive() == null) {
-			return;
-		}
 
 		final String[] userArgument = arguments;
 		userArgument[0] = String.valueOf(userName);
 
-		{ // Standard
-			if (item.getLive().getStandard() == null) {
-				return;
-			}
-
+		// save Live Standard
+		if (item.getLiveStandard() != null) {
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal()];
-
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-
-			ContentValues values = DbDataManager.putUserStatsLiveItemToValues(item.getLive().getStandard(), userName);
-
+			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getLiveStandard(), userName);
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 
-		{ // Lightning
-			if (item.getLive().getLightning() == null) {
-				return;
-			}
-
+		// save Live Lightning
+		if (item.getLiveBullet() != null) {
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal()];
-
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-
-			ContentValues values = DbDataManager.putUserStatsLiveItemToValues(item.getLive().getLightning(), userName);
-
-			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-			} else {
-				contentResolver.insert(uri, values);
-			}
-			cursor.close();
+			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getLiveStandard(), userName);
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 
-		{ // Blitz
-			if (item.getLive().getBlitz() == null) {
-				return;
-			}
-
+		// save Live Blitz
+		if (item.getLiveBlitz() != null) {
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal()];
-
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-
-			ContentValues values = DbDataManager.putUserStatsLiveItemToValues(item.getLive().getBlitz(), userName);
-
-			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-			} else {
-				contentResolver.insert(uri, values);
-			}
-			cursor.close();
+			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getLiveBlitz(), userName);
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 	}
 
-	public static  void saveDailyStats(String userName, UserStatsItem.Data item, ContentResolver resolver) {
-		if (item.getDaily() == null) {
-			return;
-		}
-
+	public static void saveDailyStats(String userName, UserStatsItem.Data item, ContentResolver contentResolver) {
 		final String[] userArgument = arguments;
 		userArgument[0] = String.valueOf(userName);
 
-		{ // Classic Chess
-			if (item.getDaily().getChess() == null) {
-				return;
-			}
-
+		// save Daily Chess
+		if (item.getDailyChess() != null) {
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal()];
-
-			Cursor cursor = resolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-
-			ContentValues values = DbDataManager.putUserStatsDailyItemToValues(item.getDaily().getChess(), userName);
-
-			if (cursor.moveToFirst()) {
-				resolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-			} else {
-				resolver.insert(uri, values);
-			}
-			cursor.close();
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
+			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getDailyChess(), userName);
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 
-		{ // Chess960
-			if (item.getDaily().getChess960() == null) {
-				return;
-			}
-
+		// save  Chess960
+		if (item.getChess960() != null) {
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_DAILY_CHESS960.ordinal()];
-
-			Cursor cursor = resolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-
-			ContentValues values = DbDataManager.putUserStatsDailyItemToValues(item.getDaily().getChess960(), userName);
-
-			if (cursor.moveToFirst()) {
-				resolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-			} else {
-				resolver.insert(uri, values);
-			}
-			cursor.close();
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
+			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getChess960(), userName);
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 	}
 
-	public static  void saveTacticsStats(String userName, UserStatsItem.Data item, ContentResolver resolver) {
-		if (item.getTactics() == null) {
-			return;
-		}
+	public static void saveTacticsStats(String userName, UserStatsItem.Data item, ContentResolver contentResolver) {
+		if (item.getTactics() != null) {
+			final String[] userArgument = arguments;
+			userArgument[0] = String.valueOf(userName);
 
-		final String[] userArgument = arguments;
-		userArgument[0] = String.valueOf(userName);
-		{ // Standard
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_TACTICS.ordinal()];
-
-			Cursor cursor = resolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
 			ContentValues values = DbDataManager.putUserStatsTacticsItemToValues(item.getTactics(), userName);
-
-			if (cursor.moveToFirst()) {
-				resolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null); // TODO improve performance by updating only needed fields
-			} else {
-				resolver.insert(uri, values);
-			}
-			cursor.close();
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 	}
 
-	public static  void saveChessMentorStats(String userName, UserStatsItem.Data item, ContentResolver resolver) {
-		if (item.getChessMentor() == null) {
-			return;
-		}
+	public static void saveLessonsStats(String userName, UserStatsItem.Data item, ContentResolver contentResolver) {
+		if (item.getLessons() != null) {
+			final String[] userArgument = arguments;
+			userArgument[0] = String.valueOf(userName);
 
-		final String[] userArgument = arguments;
-		userArgument[0] = String.valueOf(userName);
-
-		{ // Standard
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_LESSONS.ordinal()];
-
-			Cursor cursor = resolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-
-			ContentValues values = DbDataManager.putUserStatsChessMentorItemToValues(item.getChessMentor().getRating(), userName);
-
-			if (cursor.moveToFirst()) {
-				resolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-			} else {
-				resolver.insert(uri, values);
-			}
-			cursor.close();
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
+			ContentValues values = DbDataManager.putUserStatsLessonsItemToValues(item.getLessons(), userName);
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 	}
-
-
-
-
 }

@@ -15,7 +15,7 @@ public class NewChallengeNotificationItem {
 */
 	private String username;
 	private long challengeId;
-	private String avatar;
+	private String avatar_url;
 
 	public String getUsername() {
 		return username;
@@ -34,10 +34,10 @@ public class NewChallengeNotificationItem {
 	}
 
 	public String getAvatar() {
-		return avatar == null ? StaticData.SYMBOL_EMPTY : avatar;
+		return avatar_url == null ? StaticData.SYMBOL_EMPTY : avatar_url;
 	}
 
 	public void setAvatar(String avatar) {
-		this.avatar = avatar;
+		this.avatar_url = avatar;
 	}
 }

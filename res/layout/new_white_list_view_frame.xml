@@ -13,7 +13,7 @@
         android:id="@+id/emptyView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="@string/no_network"
+        android:text="@string/error"
         android:gravity="center"
         android:layout_gravity="center"
         android:textSize="20sp"

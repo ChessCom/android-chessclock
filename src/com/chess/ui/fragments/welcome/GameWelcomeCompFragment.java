@@ -2,7 +2,6 @@ package com.chess.ui.fragments.welcome;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -67,12 +66,13 @@ import java.util.List;
 public class GameWelcomeCompFragment extends GameBaseFragment implements GameCompFace,
 		PopupListSelectionFace, AdapterView.OnItemClickListener, MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener {
 
-	private static final int PLAY_ONLINE_ITEM = 1;
-	private static final int CHALLENGE_ITEM = 2;
-	private static final int REMATCH_ITEM = 3;
-	private static final int TACTICS_ITEM = 4;
-	private static final int LESSONS_ITEM = 5;
-	private static final int VIDEOS_ITEM = 6;
+	private static final int WHAT_IS_CHESSCOM = 1;
+	private static final int PLAY_ONLINE_ITEM = 2;
+	private static final int CHALLENGE_ITEM = 3;
+	private static final int REMATCH_ITEM = 4;
+	private static final int TACTICS_ITEM = 5;
+	private static final int LESSONS_ITEM = 6;
+	private static final int VIDEOS_ITEM = 7;
 
 	private static final String PLAY_ONLINE_TAG = "play online tag";
 	private static final String CHALLENGE_TAG = "challenge friend tag";
@@ -115,16 +115,12 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	private RoboTextView resultTxt;
 	private ObjectAnimator fadeBoardAnimator;
 	private ObjectAnimator fadeDrawerAnimator;
-	private TextView whatIsTxt;
-	private ColorStateList whatIsTextColor;
-	private int whiteTextColor;
-	private boolean tourWasClicked;
 
 	// new engine
 	private int[] compStrengthArray;
 	private String[] compTimeLimitArray;
 	private String[] compDepth;
-	private TextView engineThinkingPath;
+//	private TextView engineThinkingPath;
 	private Bundle savedInstanceState;
 
 	private CompGameConfig compGameConfig;
@@ -178,7 +174,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		widgetsInit(view);
 
 		{ // Engine init
-			engineThinkingPath = (TextView) view.findViewById(R.id.engineThinkingPath);
+//			engineThinkingPath = (TextView) view.findViewById(R.id.engineThinkingPath);
 			compStrengthArray = getResources().getIntArray(R.array.comp_strength);
 			compTimeLimitArray = getResources().getStringArray(R.array.comp_time_limit);
 			compDepth = getResources().getStringArray(R.array.comp_book_depth);
@@ -218,10 +214,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		}
 
 		startGame(savedInstanceState);
-
-		if (!tourWasClicked) {
-			handler.postDelayed(blinkWhatIs, BLINK_DELAY);
-		}
 	}
 
 	@Override
@@ -234,11 +226,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 			boardView.stopComputerMove();
 			ChessBoardComp.resetInstance();
-		}
-
-		if (!tourWasClicked) {
-			handler.removeCallbacks(blinkWhatIs);
-			handler.removeCallbacks(unBlinkWhatIs);
 		}
 		labelsSet = false;
 	}
@@ -635,20 +622,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		boardView.computerMove(getAppData().getCompThinkTime());
 	}
 
-	@Override
-	public void onClick(View view) {
-		super.onClick(view);
-
-		if (view.getId() == PanelInfoWelcomeView.WHAT_IS_TXT_ID) {
-			if (parentFace != null)
-				parentFace.changeInternalFragment(WelcomeTabsFragment.FEATURES_FRAGMENT);
-			tourWasClicked = true;
-
-			handler.removeCallbacks(blinkWhatIs);
-			handler.removeCallbacks(unBlinkWhatIs);
-		}
-	}
-
 	private class InitComputerEngineUpdateListener extends ChessLoadUpdateListener<CompEngineHelper> {
 
 		@Override
@@ -702,6 +675,9 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		switch (position) {
+			case WHAT_IS_CHESSCOM:
+				parentFace.changeInternalFragment(WelcomeTabsFragment.FEATURES_FRAGMENT);
+				break;
 			case PLAY_ONLINE_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
@@ -796,6 +772,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		getBoardFace().setMode(compGameConfig.getMode());
 
 		ArrayList<PromoteItem> menuItems = new ArrayList<PromoteItem>();
+		menuItems.add(new PromoteItem(R.string.what_is_chess_com, R.string.ic_pawn));
 		menuItems.add(new PromoteItem(R.string.play_online, R.string.ic_play_online));
 		menuItems.add(new PromoteItem(R.string.challenge_friend, R.string.ic_challenge_friend));
 		menuItems.add(new PromoteItem(R.string.rematch_computer, R.string.ic_comp_game));
@@ -816,14 +793,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-
-		{ // animate whatIsChess.com
-			whatIsTxt = (TextView) bottomPanelView.findViewById(PanelInfoWelcomeView.WHAT_IS_TXT_ID);
-			whatIsTxt.setVisibility(View.VISIBLE);
-			whatIsTxt.setOnClickListener(this);
-			whatIsTextColor = activity.getResources().getColorStateList(R.color.text_controls_icons);
-			whiteTextColor = activity.getResources().getColor(R.color.white);
-		}
 
 		{// set avatars
 			Drawable user = new IconDrawable(activity, R.string.ic_profile,
@@ -914,7 +883,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 				boolean thinkingEmpty = true;
 				{
 					//if (mShowThinking || gameMode.analysisMode()) { // getBoardFace().isAnalysis(
-					String s = "";
+					String s;
 					s = thinkingStr1;
 					if (s.length() > 0) {
 						thinkingEmpty = false;
@@ -926,7 +895,9 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 						}*/
 					}
 					//}
-					engineThinkingPath.setText(s, TextView.BufferType.SPANNABLE);
+					// use later
+					// engineThinkingPath is invisible, always
+//					engineThinkingPath.setText(s, TextView.BufferType.SPANNABLE);
 					log = s;
 				}
 				// todo @compengine: show book hints for human player
@@ -1005,26 +976,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 			activity.runOnUiThread(runnable);
 		}
 	}
-
-	private Runnable blinkWhatIs = new Runnable() {
-		@Override
-		public void run() {
-			whatIsTxt.setTextColor(whiteTextColor);
-
-			handler.removeCallbacks(unBlinkWhatIs);
-			handler.postDelayed(unBlinkWhatIs, UNBLINK_DELAY);
-		}
-	};
-
-	private Runnable unBlinkWhatIs = new Runnable() {
-		@Override
-		public void run() {
-			whatIsTxt.setTextColor(whatIsTextColor);
-
-			handler.removeCallbacks(blinkWhatIs);
-			handler.postDelayed(blinkWhatIs, BLINK_DELAY);
-		}
-	};
 
 	private class PromoteItem {
 		public int nameId;

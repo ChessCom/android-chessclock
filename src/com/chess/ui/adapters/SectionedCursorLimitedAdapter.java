@@ -244,7 +244,6 @@ public abstract class SectionedCursorLimitedAdapter extends ItemsCursorAdapter {
 //				offset++;
 //			}
 //
-//			Log.d("TEST", "offset = " + offset);
 //			int positionInSection = position - offset;
 //			return positionInSection > ITEMS_PER_SECTION_CNT ? 1 : positionInSection;
 //		}

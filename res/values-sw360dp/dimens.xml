@@ -49,7 +49,7 @@
     <dimen name="nav_item_image_size">32dip</dimen>
     <dimen name="new_tactics_board_top_offset">72dip</dimen>
     <dimen name="popup_options_select_padding">25dip</dimen>
-    <dimen name="result_title_min_height">100dip</dimen>
+    <dimen name="result_title_min_height">80dip</dimen>
     <dimen name="welcome_result_list_item_height">65dip</dimen>
     <dimen name="friend_list_photo_size">80dip</dimen>
     <dimen name="new_daily_grid_button_width">70dip</dimen>

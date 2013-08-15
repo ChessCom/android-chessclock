@@ -21,7 +21,7 @@ import android.widget.EditText;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.ServerErrorCode;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.LoginItem;
 import com.chess.backend.entity.api.RegisterItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
@@ -413,7 +413,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			// show message only for re-login
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				if (serverCode == ServerErrorCode.INVALID_LOGIN_TOKEN_SUPPLIED) {
+				if (serverCode == ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) {
 
 					safeShowSinglePopupDialog(R.string.session_expired, RE_LOGIN_TAG);
 				}
@@ -471,16 +471,16 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				// get server code
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				switch (serverCode) {
-					case ServerErrorCode.INVALID_USERNAME_PASSWORD:
+					case ServerErrorCodes.INVALID_USERNAME_PASSWORD:
 						showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
 						passwordEdt.requestFocus();
 						break;
-					case ServerErrorCode.FACEBOOK_USER_NO_ACCOUNT:
+					case ServerErrorCodes.FACEBOOK_USER_NO_ACCOUNT:
 						popupItem.setPositiveBtnId(R.string.sign_up);
 						showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
 						break;
 					default:
-						String serverMessage = ServerErrorCode.getUserFriendlyMessage(getActivity(), serverCode); // TODO restore
+						String serverMessage = ServerErrorCodes.getUserFriendlyMessage(getActivity(), serverCode); // TODO restore
 						showToast(serverMessage);
 
 						break;

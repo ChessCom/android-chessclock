@@ -291,10 +291,17 @@
     <color name="switch_white_back_inner_main_2">#FFe9e9e9</color>
 
     <!--Checked-->
+<!--
     <color name="switch_white_back_border_top_2_c">#FF7ba452</color>
     <color name="switch_white_back_border_bot_2_c">#FF7ba452</color>
     <color name="switch_white_back_inner_main_1_c">#FF80ab55</color>
     <color name="switch_white_back_inner_main_2_c">#FF83ae57</color>
+-->
+
+    <color name="switch_white_back_border_top_2_c">#FF797571</color>
+    <color name="switch_white_back_border_bot_2_c">#FF797571</color>
+    <color name="switch_white_back_inner_main_1_c">#ff837f7b</color>
+    <color name="switch_white_back_inner_main_2_c">#ff6f6b67</color>
 
     <!--Switch Button White Handler-->
     <color name="switch_white_btn_border">#FF616161</color>

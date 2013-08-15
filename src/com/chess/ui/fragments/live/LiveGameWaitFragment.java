@@ -24,7 +24,7 @@ import com.chess.ui.fragments.LiveBaseFragment;
  */
 public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventListener {
 
-	private static final String TAG = "LccLog-LiveGameWaitFragment";
+//	private static final String TAG = "LccLog-LiveGameWaitFragment";
 	private static final long FINISH_FRAGMENT_DELAY = 200;
 
 	private View loadingView;

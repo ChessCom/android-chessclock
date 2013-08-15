@@ -431,7 +431,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
 
-		int userRating = DbDataManager.getUserCurrentRating(getActivity(), DbScheme.Tables.GAME_STATS_DAILY_CHESS.ordinal(), getUsername());
+		int userRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), getUsername());
 
 		if (getAppData().isUserChooseVideoLibrary() || userRating > USER_PRO_RATING) { // TODO add api logic to check if user saw all videos
 			curriculumMode = false;

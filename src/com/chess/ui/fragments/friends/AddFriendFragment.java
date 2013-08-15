@@ -16,7 +16,7 @@ import com.chess.EditButton;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
-import com.chess.backend.ServerErrorCode;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.RequestItem;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -194,7 +194,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		public void errorHandle(Integer resultCode) {
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				if (serverCode == ServerErrorCode.RESOURCE_NOT_FOUND) {
+				if (serverCode == ServerErrorCodes.RESOURCE_NOT_FOUND) {
 
 					showSinglePopupDialog(R.string.username_not_found);
 				} else {

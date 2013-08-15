@@ -329,8 +329,8 @@ message				false	Only used for `CHAT` command.
 	public static final String V_BASIC = "basic";
 
 	public static final String V_ID = "id";
-	public static final String V_1 = "a1a177e9aa5aa1f6cf6dffebda886cca8b2bbcb6";
-	public static final String V_2 = "b1a177e9aa5aa1f6cf6dffebda886cca8b2bbcb6";
+	public static final String V_1 = "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea";
+	public static final String V_2 = "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea";
 
 	/*
 1 = Standard Chess | chess

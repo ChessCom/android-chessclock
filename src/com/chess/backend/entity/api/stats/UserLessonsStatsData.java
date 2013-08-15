@@ -4,11 +4,11 @@ package com.chess.backend.entity.api.stats;
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
  * Date: 04.02.13
- * Time: 15:24
+ * Time: 15:31
  */
-public class UserTacticsStatsData {
+public class UserLessonsStatsData {
 /*
-	"tactics": {
+"tactics": {
 		"rating": {
 			"current": 1219,
 			"highest": {
@@ -38,7 +38,6 @@ public class UserTacticsStatsData {
 		}
 	}
 */
-
 	private Ratings rating;
 	private Lessons lessons;
 

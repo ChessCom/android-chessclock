@@ -2,6 +2,7 @@ package com.chess.ui.fragments.live;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,12 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.RoboRadioButton;
+import com.chess.RoboSpinner;
 import com.chess.SwitchButton;
 import com.chess.backend.statics.StaticData;
+import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.LiveGameConfig;
@@ -32,26 +37,32 @@ import java.util.Map;
  */
 public class LiveGameOptionsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemSelectedListener {
 
-	private static final int LIVE_BASE_ID = 0x00001100;
+	private static final int MIN_RATING_DIFF = 200;
+	private static final int MAX_RATING_DIFF = 200;
+	private static final int MIN_RATING_MIN = 1000;
+	private static final int MIN_RATING_MAX = 2000;
+	private static final int MAX_RATING_MIN = 1000;
+	private static final int MAX_RATING_MAX = 2400;
 
 	private LiveGameConfig.Builder gameConfigBuilder;
 	private RoboRadioButton minRatingBtn;
 	private RoboRadioButton maxRatingBtn;
 	private SwitchButton ratedGameSwitch;
 
-	private List<SelectionItem> firendsList;
+	private List<SelectionItem> friendsList;
 	private List<View> liveOptionsGroup;
 	private HashMap<Integer, Button> liveButtonsModeMap;
 	private boolean liveOptionsVisible;
 
 	private int darkBtnColor;
 	private String[] newGameButtonsArray;
-	private Button liveTimeSelectBtn;
+//	private Button liveTimeSelectBtn;
 	private int positionMode;
+	private int liveRating;
 
 	public LiveGameOptionsFragment() {
 		Bundle bundle = new Bundle();
-		bundle.putInt(MODE, CENTER_MODE);
+		bundle.putInt(MODE, RIGHT_MENU_MODE);
 		setArguments(bundle);
 	}
 
@@ -75,23 +86,21 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 		gameConfigBuilder = new LiveGameConfig.Builder();
 
-		// get from live???
-//		{ // load friends from DB          // TODO make it async and fill in popup
-//			final String[] arguments1 = new String[1];
-//			arguments1[0] = getAppData().getUsername();
-//			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()],
-//					DbDataManager.PROJECTION_USERNAME, DbDataManager.SELECTION_USER, arguments1, null);
-//
-//			firendsList = new ArrayList<SelectionItem>();
-//			firendsList.add(new SelectionItem(null, "Random"));
-//			if (cursor.moveToFirst()) {
-//				do {
-//					firendsList.add(new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME)));
-//				} while (cursor.moveToNext());
-//			}
-//
-//			firendsList.get(0).setChecked(true);
-//		}
+		{ // load friends from DB
+			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getTableForUser(getUsername(), DbScheme.Tables.FRIENDS));
+
+			friendsList = new ArrayList<SelectionItem>();
+			friendsList.add(new SelectionItem(null, getString(R.string.random)));
+			if (cursor != null && cursor.moveToFirst()) {
+				do {
+					friendsList.add(new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME)));
+				} while (cursor.moveToNext());
+			}
+
+			friendsList.get(0).setChecked(true);
+		}
+
+		liveRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), getUsername());
 	}
 
 	@Override
@@ -111,29 +120,16 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		View liveHeaderView = view.findViewById(R.id.liveHeaderView);
 		ButtonDrawableBuilder.setBackgroundToView(liveHeaderView, R.style.ListItem_Header_Dark);
 
-//		RoboSpinner opponentSpinner = (RoboSpinner) view.findViewById(R.id.opponentSpinner);
-//		Resources resources = getResources();
-//
-//		OpponentsAdapter selectionAdapter = new OpponentsAdapter(getActivity(), firendsList);
-//		opponentSpinner.setAdapter(selectionAdapter);
-//		opponentSpinner.setOnItemSelectedListener(this);
-//
-//		opponentSpinner.setSelection(0);
-
-		{// Live Games setup
-//			NewGameDefaultView.ViewConfig dailyConfig = new NewGameDefaultView.ViewConfig();
-//			dailyConfig.setBaseId(LIVE_BASE_ID);
-//			dailyConfig.setHeaderIcon(R.string.ic_daily_game);
-//			dailyConfig.setHeaderText(R.string.new_daily_chess);
-//			dailyConfig.setTitleText(R.string.new_per_turn);
-//			int defaultDailyMode = getAppData().getDefaultDailyMode();
-//			dailyConfig.setLeftButtonText(getString(R.string.days_arg, defaultDailyMode));
-//			dailyConfig.setRightButtonTextId(R.string.random);
+		if (getArguments().getInt(MODE) == CENTER_MODE) { // we use white background and dark titles for centered mode
+			view.findViewById(R.id.liveGameOptionsMainView).setBackgroundResource(R.color.white);
 		}
 
-		liveTimeSelectBtn = (Button) view.findViewById(R.id.liveTimeSelectBtn);
-		liveTimeSelectBtn.setOnClickListener(this);
-		view.findViewById(R.id.livePlayBtn).setOnClickListener(this);
+		RoboSpinner opponentSpinner = (RoboSpinner) view.findViewById(R.id.opponentSpinner);
+
+		OpponentsAdapter selectionAdapter = new OpponentsAdapter(getActivity(), friendsList);
+		opponentSpinner.setAdapter(selectionAdapter);
+		opponentSpinner.setOnItemSelectedListener(this);
+		opponentSpinner.setSelection(0);
 
 		{ // live options
 			if (JELLY_BEAN_PLUS_API) {
@@ -176,18 +172,13 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			}
 		}
 
-		liveTimeSelectBtn = (Button) view.findViewById(R.id.liveTimeSelectBtn);
-		liveTimeSelectBtn.setOnClickListener(this);
-
 		{// options setup
-
-
 			// rated games switch
 			ratedGameSwitch = (SwitchButton) view.findViewById(R.id.ratedGameSwitch);
 
 			{// Rating part
-				int minRatingDefault = 1500; // TODO adjust properly
-				int maxRatingDefault = 1700;
+				int minRatingDefault = liveRating - MIN_RATING_DIFF;
+				int maxRatingDefault = liveRating + MAX_RATING_DIFF;
 
 				minRatingBtn = (RoboRadioButton) view.findViewById(R.id.minRatingBtn);
 				minRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
@@ -207,6 +198,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			view.findViewById(R.id.playBtn).setOnClickListener(this);
 		}
 
+		toggleLiveOptionsView();
 	}
 
 	@Override
@@ -230,7 +222,8 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+		SelectionItem opponent = (SelectionItem) parent.getItemAtPosition(position);
+		gameConfigBuilder.setOpponentName(opponent.getText());
 	}
 
 	@Override
@@ -261,7 +254,6 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 	private void setDefaultQuickLiveMode(View view, int mode) {
 		view.setSelected(true);
-		liveTimeSelectBtn.setText(getLiveModeButtonLabel(newGameButtonsArray[mode]));
 		gameConfigBuilder.setTimeFromLabel(newGameButtonsArray[mode]);
 		getAppData().setDefaultLiveMode(mode);
 	}
@@ -306,12 +298,12 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			int maxRating;
 			if (maxRatingBtn.isChecked()) {
 				checkedButton = maxRatingBtn;
-				minRating = 1000; // TODO set from resources
-				maxRating = 2400;
+				minRating = MAX_RATING_MIN;
+				maxRating = MAX_RATING_MAX;
 			} else {
 				checkedButton = minRatingBtn;
-				minRating = 1000;
-				maxRating = 2000;
+				minRating = MIN_RATING_MIN;
+				maxRating = MIN_RATING_MAX;
 			}
 			// get percent progress and convert it to values
 
@@ -345,15 +337,10 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	public void onClick(View view) {
 		super.onClick(view);
 
-		if (view.getId() == R.id.liveTimeSelectBtn) {
-			toggleLiveOptionsView();
-		} else if (view.getId() == R.id.myColorBtn) {
-		} else if (view.getId() == R.id.minRatingBtn) {
-		} else if (view.getId() == R.id.maxRatingBtn) {
-		} else if (view.getId() == R.id.liveOptionsView) {
+		if (view.getId() == R.id.liveOptionsView) {
 			getActivityFace().toggleRightMenu();
 		} else if (view.getId() == R.id.playBtn) {
-			getActivityFace().openFragment(new LiveGameWaitFragment());
+			getActivityFace().openFragment(LiveGameWaitFragment.createInstance(getLiveGameConfig()));
 			if (getArguments().getInt(MODE) == RIGHT_MENU_MODE) {
 				getActivityFace().toggleRightMenu();
 			}
@@ -362,12 +349,9 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		}
 	}
 
-
-
 	public LiveGameConfig getLiveGameConfig() {
 		// set params
 		gameConfigBuilder.setRated(ratedGameSwitch.isChecked());
-
 		return gameConfigBuilder.build();
 	}
 

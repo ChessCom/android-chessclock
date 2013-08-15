@@ -15,7 +15,7 @@ import com.chess.RoboButton;
 import com.chess.RoboTextView;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
-import com.chess.backend.ServerErrorCode;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.billing.*;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.MembershipItem;
@@ -522,7 +522,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			// show message only for re-login
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				if (serverCode == ServerErrorCode.INVALID_ORDER) {
+				if (serverCode == ServerErrorCodes.INVALID_ORDER) {
 					LoadItem loadItem = LoadHelper.getMembershipDetails(getUserToken());
 					new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem); // TODO set proper item
 				} else {
@@ -562,7 +562,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		public void errorHandle(Integer resultCode) {
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				if (serverCode == ServerErrorCode.USER_DONT_HAVE_VALID_PAYLOAD) {
+				if (serverCode == ServerErrorCodes.USER_DONT_HAVE_VALID_PAYLOAD) {
 					requestPayload(RestHelper.V_FALSE);
 				} else {
 					super.errorHandle(resultCode);
@@ -645,7 +645,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		public void errorHandle(Integer resultCode) {
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				if (serverCode == ServerErrorCode.USER_DONT_HAVE_VALID_PAYLOAD) {
+				if (serverCode == ServerErrorCodes.USER_DONT_HAVE_VALID_PAYLOAD) {
 					requestPayload(RestHelper.V_FALSE);
 				} else {
 					super.errorHandle(resultCode);

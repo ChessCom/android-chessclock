@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
-import com.chess.backend.ServerErrorCode;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.DailyChallengeItem;
@@ -599,7 +599,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment	implements Adap
 		public void errorHandle(Integer resultCode) {
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				showToast(ServerErrorCode.getUserFriendlyMessage(getActivity(), serverCode));
+				showToast(ServerErrorCodes.getUserFriendlyMessage(getActivity(), serverCode));
 			} else if (resultCode == StaticData.INTERNAL_ERROR) {
 				showToast("Internal error occurred"); // TODO adjust properly
 			}

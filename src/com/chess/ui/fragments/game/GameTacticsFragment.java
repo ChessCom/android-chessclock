@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.ServerErrorCode;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.TacticInfoItem;
 import com.chess.backend.entity.api.TacticItem;
 import com.chess.backend.entity.api.TacticRatingData;
@@ -482,7 +482,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				switch (serverCode) {
-					case ServerErrorCode.TACTICS_DAILY_LIMIT_REACHED:
+					case ServerErrorCodes.TACTICS_DAILY_LIMIT_REACHED:
 						showLimitReachedPopup();
 						break;
 				}
@@ -547,7 +547,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				switch (serverCode) {
-					case ServerErrorCode.TACTICS_DAILY_LIMIT_REACHED:
+					case ServerErrorCodes.TACTICS_DAILY_LIMIT_REACHED:
 						showLimitReachedPopup();
 						break;
 				}

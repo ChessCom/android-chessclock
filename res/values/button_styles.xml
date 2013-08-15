@@ -436,6 +436,12 @@
         <item name="btn_solid">@color/light_green_button</item>
     </style>
 
+    <style name="Rect.Bottom.Right.Blue">
+        <item name="btn_rect_pos">bottomRight</item>
+
+        <item name="btn_solid">@color/blue_button</item>
+    </style>
+
     <!--====================================== List Items(can't be derived from Text or Button) =================== -->
 
     <style name="ListItem">

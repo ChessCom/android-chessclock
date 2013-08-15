@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.daily;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.GetAndSaveUserStats;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
@@ -32,7 +34,6 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-//		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class)); // TODO adjust properly
 	}
 
 	@Override

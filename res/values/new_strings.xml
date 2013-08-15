@@ -309,6 +309,6 @@
 	<string name="share_completed_lesson_title">Chess.com Mentor Lesson completed!</string>
 	<string name="resume_lesson">Resume Lesson</string>
 	<string name="friend_requests">Friend Requests</string>
-	<!--Game mode-->
+	<string name="lessons_limit_reached_message">Lesson limit reached for the day. Upgrade now to improve your game with unlimited lessons.</string>
 
 </resources>

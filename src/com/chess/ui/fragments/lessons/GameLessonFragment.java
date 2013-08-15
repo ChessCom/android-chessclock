@@ -16,8 +16,8 @@ import android.widget.TextView;
 import com.chess.FontsHelper;
 import com.chess.MultiDirectionSlidingDrawer;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.LessonItem;
 import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.entity.api.LessonRatingChangeItem;
@@ -214,6 +214,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			logTest("LoadLessonItemTask");
 
 		} else {
+			// drop flag here for lessons limit reached
+			getAppData().setLessonLimitWasReached(false);
+
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.CMD_LESSON_BY_ID(lessonId));
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken()); // looks like restart parameter is useless here, because we load from DB
@@ -727,9 +730,21 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		@Override
 		public void errorHandle(Integer resultCode) {
+//			if (RestHelper.containsServerCode(resultCode)) {
+//				int serverCode = RestHelper.decodeServerCode(resultCode);
+//				if (serverCode == ServerErrorCodes.USER_HAS_REACHED_THE_DAILY_LIMIT_OF_LESSONS) {
+//
+//					getActivityFace().showPreviousFragment();
+//				} else {
+//					super.errorHandle(resultCode);
+//				}
+//			} else {
+//				super.errorHandle(resultCode);
+//			}
 			super.errorHandle(resultCode);
+			// saving flag here for limit reached error
+			getAppData().setLessonLimitWasReached(true);
 
-			showToast("Internal Error occurred");
 			getActivityFace().showPreviousFragment();
 		}
 	}

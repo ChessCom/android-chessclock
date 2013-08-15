@@ -1,12 +1,12 @@
 package com.chess.ui.views;
 
 
-import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -34,6 +34,8 @@ import com.chess.utilities.AppUtils;
  */
 public class PanelInfoGameView extends RelLayout implements View.OnClickListener {
 
+	public static final long THINKING_DOT_DELAY = 500;
+
 	public static final int AVATAR_ID = 0x00004400;
 	public static final int PLAYER_ID = 0x00004401;
 	public static final int RATING_ID = 0x00004402;
@@ -44,6 +46,8 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 	private int FLAG_SIZE = 16;
 	private int FLAG_MARGIN = 5;
+
+	protected Handler handler;
 
 	protected RoboTextView playerTxt;
 	protected ImageView avatarImg;
@@ -81,6 +85,8 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		Context context = getContext();
 		resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
+
+		handler = new Handler();
 
 		if (AppUtils.HONEYCOMB_PLUS_API) {
 			useSingleLine = true;
@@ -320,12 +326,6 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 			addView(thinkingTxt, params);
 
-			if (AppUtils.JELLYBEAN_PLUS_API) {
-				LayoutTransition layoutTransition = getLayoutTransition();
-				if (layoutTransition != null) { // we have it only in comp game frames
-					layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
-				}
-			}
 		}
 	}
 
@@ -427,23 +427,25 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 	public void showThinkingView(boolean show) {
 		if (show) {
-			premiumImg.setVisibility(GONE);
-			flagImg.setVisibility(GONE);
-			avatarImg.setVisibility(GONE);
-			playerTxt.setVisibility(GONE);
-			playerRatingTxt.setVisibility(GONE);
-			clockLayout.setVisibility(GONE);
-			capturedPiecesView.setVisibility(GONE);
-			thinkingTxt.setVisibility(VISIBLE);
+			playerTxt.setText(R.string.thinking);
+			handler.postDelayed(thinkingDotTask, THINKING_DOT_DELAY);
 		} else {
-			premiumImg.setVisibility(VISIBLE);
-			flagImg.setVisibility(VISIBLE);
-			avatarImg.setVisibility(VISIBLE);
-			playerTxt.setVisibility(VISIBLE);
-			playerRatingTxt.setVisibility(VISIBLE);
-			clockLayout.setVisibility(VISIBLE);
-			capturedPiecesView.setVisibility(VISIBLE);
-			thinkingTxt.setVisibility(GONE);
+			playerTxt.setText(R.string.computer);
+			handler.removeCallbacks(thinkingDotTask);
 		}
 	}
+
+	private int dotsAdded;
+	protected Runnable thinkingDotTask = new Runnable() {
+		@Override
+		public void run() {
+			if (dotsAdded++ < 3) {
+				playerTxt.setText(playerTxt.getText() + StaticData.SYMBOL_DOT.trim());
+			} else {
+				dotsAdded = 0;
+				playerTxt.setText(R.string.thinking);
+			}
+			handler.postDelayed(thinkingDotTask, THINKING_DOT_DELAY);
+		}
+	};
 }

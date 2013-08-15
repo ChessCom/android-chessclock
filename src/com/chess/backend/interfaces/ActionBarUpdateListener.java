@@ -4,7 +4,7 @@ import actionbarcompat.ActionBarHelper;
 import android.support.v4.app.Fragment;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.ServerErrorCode;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.ui.activities.CoreActivityActionBar;
 
 /**
@@ -72,8 +72,8 @@ public abstract class ActionBarUpdateListener<ItemType> extends AbstractUpdateLi
 		// show message only for re-login
 		if (RestHelper.containsServerCode(resultCode)) {
 			int serverCode = RestHelper.decodeServerCode(resultCode);
-			if (serverCode != ServerErrorCode.INVALID_LOGIN_TOKEN_SUPPLIED) { // handled in CommonLogicFragment
-				String serverMessage = ServerErrorCode.getUserFriendlyMessage(coreActivityActionBar, serverCode); // TODO restore
+			if (serverCode != ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) { // handled in CommonLogicFragment
+				String serverMessage = ServerErrorCodes.getUserFriendlyMessage(coreActivityActionBar, serverCode); // TODO restore
 
 				coreActivityActionBar.safeShowSinglePopupDialog(R.string.error, serverMessage);
 			}

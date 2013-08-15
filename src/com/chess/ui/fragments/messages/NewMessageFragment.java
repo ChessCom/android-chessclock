@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.chess.ChipsAutoCompleteTextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.ServerErrorCode;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.ConversationSingleItem;
 import com.chess.backend.statics.StaticData;
@@ -211,7 +211,7 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 		public void errorHandle(Integer resultCode) {
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				if (serverCode == ServerErrorCode.RESOURCE_NOT_FOUND) {
+				if (serverCode == ServerErrorCodes.RESOURCE_NOT_FOUND) {
 
 					showSinglePopupDialog(R.string.username_not_found);
 				} else {

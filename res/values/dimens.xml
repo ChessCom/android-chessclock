@@ -249,7 +249,6 @@
     <dimen name="panel_info_captured_pieces_width">125dip</dimen>
     <dimen name="panel_info_time_left_size">24sp</dimen>
     <dimen name="panel_info_welcome_player_text_size">14sp</dimen>
-    <dimen name="panel_info_what_is_size">14sp</dimen>
     <dimen name="notations_text_size">14sp</dimen>
     <dimen name="notations_margin_top">0dip</dimen>
     <dimen name="default_header_height">45dip</dimen>

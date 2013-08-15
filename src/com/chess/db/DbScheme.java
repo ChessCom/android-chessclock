@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 47;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 48;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -562,94 +562,98 @@ public class DbScheme {
 	/* Tactics */
 	public static final String V_LOWEST_RATING = "lowest_rating";
 	public static final String V_LOWEST_TIMESTAMP = "lowest_timestamp";
-	public static final String V_ATTEMPT_COUNT = "attempt_count";
-	public static final String V_PASSED_COUNT = "passed_count";
-	public static final String V_FAILED_COUNT = "failed_count";
-	public static final String V_TOTAL_SECONDS = "total_seconds";
-	public static final String V_TODAYS_ATTEMPTS = "todays_attempts";
-	public static final String V_TODAYS_AVG_SCORE = "todays_average_score";
+//	public static final String V_ATTEMPT_COUNT = "attempt_count";
+//	public static final String V_PASSED_COUNT = "passed_count";
+//	public static final String V_FAILED_COUNT = "failed_count";
+//	public static final String V_TOTAL_SECONDS = "total_seconds";
+//	public static final String V_TODAYS_ATTEMPTS = "todays_attempts";
+//	public static final String V_TODAYS_AVG_SCORE = "todays_average_score";
 
 	/* Lessons*/
 	public static final String V_LESSONS_TRIED = "lessons_tried";
 	public static final String V_TOTAL_LESSON_COUNT = "total_lesson_count";
 	public static final String V_LESSON_COMPLETE_PERCENTAGE = "lesson_complete_percentage";
 	public static final String V_TOTAL_TRAINING_SECONDS = "total_training_seconds";
+	public static final String V_SCORE_90_100 = "p_90_100";
+	public static final String V_SCORE_80_89 = "p_80_89";
+	public static final String V_SCORE_70_79 = "p_70_79";
+	public static final String V_SCORE_60_69 = "p_60_69";
+	public static final String V_SCORE_50_59 = "p_50_59";
+	public static final String V_SCORE_50 = "p_50";
 
 	void createUserStatsTables() {
+/*
+		private String rating;
+		private int highest_rating;
+		private int avg_oponent_rating;
+		private int total_games;
+		private int wins;
+		private int losses;
+		private int draws;
+		private String best_win_rating;
+		private String best_win_username;
+*/
+
+
 		createTablesArray[Tables.USER_STATS_LIVE_STANDARD.ordinal()] = createTableForName(Tables.USER_STATS_LIVE_STANDARD)
-				+ addField_Long(V_HIGHEST_TIMESTAMP)
-				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_RATING)
 				+ addField_Int(V_HIGHEST_RATING)
-				+ addField_Int(V_BEST_WIN_RATING)
 				+ addField_Int(V_AVERAGE_OPPONENT)
 				+ addField_Int(V_GAMES_TOTAL)
 				+ addField_Int(V_GAMES_WINS)
 				+ addField_Int(V_GAMES_LOSSES)
 				+ addField_Int(V_GAMES_DRAWS)
-				+ addField_Text(V_USER)
-				+ addField_Text(V_BEST_WIN_USERNAME, true);
+				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Text(V_BEST_WIN_USERNAME)
+				+ addField_Text(V_USER, true);
 
 		createTablesArray[Tables.USER_STATS_LIVE_LIGHTNING.ordinal()] = createTableForName(Tables.USER_STATS_LIVE_LIGHTNING)
-				+ addField_Long(V_HIGHEST_TIMESTAMP)
-				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_RATING)
 				+ addField_Int(V_HIGHEST_RATING)
-				+ addField_Int(V_BEST_WIN_RATING)
 				+ addField_Int(V_AVERAGE_OPPONENT)
 				+ addField_Int(V_GAMES_TOTAL)
 				+ addField_Int(V_GAMES_WINS)
 				+ addField_Int(V_GAMES_LOSSES)
 				+ addField_Int(V_GAMES_DRAWS)
-				+ addField_Text(V_USER)
-				+ addField_Text(V_BEST_WIN_USERNAME, true);
+				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Text(V_BEST_WIN_USERNAME)
+				+ addField_Text(V_USER, true);
 
 		createTablesArray[Tables.USER_STATS_LIVE_BLITZ.ordinal()] = createTableForName(Tables.USER_STATS_LIVE_BLITZ)
-				+ addField_Long(V_HIGHEST_TIMESTAMP)
-				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_RATING)
 				+ addField_Int(V_HIGHEST_RATING)
-				+ addField_Int(V_BEST_WIN_RATING)
 				+ addField_Int(V_AVERAGE_OPPONENT)
 				+ addField_Int(V_GAMES_TOTAL)
 				+ addField_Int(V_GAMES_WINS)
 				+ addField_Int(V_GAMES_LOSSES)
 				+ addField_Int(V_GAMES_DRAWS)
-				+ addField_Text(V_USER)
-				+ addField_Text(V_BEST_WIN_USERNAME, true);
+				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Text(V_BEST_WIN_USERNAME)
+				+ addField_Text(V_USER, true);
 
 		createTablesArray[Tables.USER_STATS_DAILY_CHESS.ordinal()] = createTableForName(Tables.USER_STATS_DAILY_CHESS)
-				+ addField_Long(V_HIGHEST_TIMESTAMP)
-				+ addField_Long(V_BEST_WIN_GAME_ID)
-				+ addField_Long(V_TIME_PER_MOVE)
-				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_RATING)
 				+ addField_Int(V_HIGHEST_RATING)
-				+ addField_Int(V_BEST_WIN_RATING)
 				+ addField_Int(V_AVERAGE_OPPONENT)
-				+ addField_Int(V_TOTAL_PLAYER_COUNT)
 				+ addField_Int(V_GAMES_TOTAL)
 				+ addField_Int(V_GAMES_WINS)
 				+ addField_Int(V_GAMES_LOSSES)
 				+ addField_Int(V_GAMES_DRAWS)
-				+ addField_Text(V_USER)
+				+ addField_Int(V_BEST_WIN_RATING)
 				+ addField_Text(V_BEST_WIN_USERNAME)
-				+ addField_Text(V_RANK)
-				+ addField_Text(V_TIMEOUTS, true);
+				+ addField_Text(V_USER, true);
 
 		createTablesArray[Tables.USER_STATS_DAILY_CHESS960.ordinal()] = createTableForName(Tables.USER_STATS_DAILY_CHESS960)
-				+ addField_Long(V_HIGHEST_TIMESTAMP)
-				+ addField_Long(V_BEST_WIN_GAME_ID)
-				+ addField_Long(V_TIME_PER_MOVE)
-				+ addField_Int(V_CURRENT)
+				+ addField_Int(V_RATING)
 				+ addField_Int(V_HIGHEST_RATING)
-				+ addField_Int(V_BEST_WIN_RATING)
 				+ addField_Int(V_AVERAGE_OPPONENT)
-				+ addField_Int(V_TOTAL_PLAYER_COUNT)
 				+ addField_Int(V_GAMES_TOTAL)
 				+ addField_Int(V_GAMES_WINS)
 				+ addField_Int(V_GAMES_LOSSES)
 				+ addField_Int(V_GAMES_DRAWS)
-				+ addField_Text(V_USER)
+				+ addField_Int(V_BEST_WIN_RATING)
 				+ addField_Text(V_BEST_WIN_USERNAME)
-				+ addField_Text(V_RANK)
-				+ addField_Text(V_TIMEOUTS, true);
+				+ addField_Text(V_USER, true);
 
 		createTablesArray[Tables.USER_STATS_TACTICS.ordinal()] = createTableForName(Tables.USER_STATS_TACTICS)
 				+ addField_Long(V_HIGHEST_TIMESTAMP)
@@ -657,27 +661,37 @@ public class DbScheme {
 				+ addField_Int(V_CURRENT)
 				+ addField_Int(V_HIGHEST_RATING)
 				+ addField_Int(V_LOWEST_RATING)
-				+ addField_Int(V_ATTEMPT_COUNT)
-				+ addField_Int(V_PASSED_COUNT)
-				+ addField_Int(V_FAILED_COUNT)
-				+ addField_Int(V_TODAYS_ATTEMPTS)
-				+ addField_Int(V_TODAYS_AVG_SCORE)
-				+ addField_Int(V_TOTAL_SECONDS)
+				/* Stats */
+				+ addField_Int(V_LESSONS_TRIED)
+				+ addField_Int(V_TOTAL_LESSON_COUNT)
+				+ addField_Int(V_LESSON_COMPLETE_PERCENTAGE)
+				+ addField_Int(V_TOTAL_TRAINING_SECONDS)
+				+ addField_Int(V_SCORE_90_100)
+				+ addField_Int(V_SCORE_80_89)
+				+ addField_Int(V_SCORE_70_79)
+				+ addField_Int(V_SCORE_60_69)
+				+ addField_Int(V_SCORE_50_59)
+				+ addField_Int(V_SCORE_50)
 				+ addField_Text(V_USER, true);
 
 		createTablesArray[Tables.USER_STATS_LESSONS.ordinal()] = createTableForName(Tables.USER_STATS_LESSONS)
 				+ addField_Long(V_HIGHEST_TIMESTAMP)
 				+ addField_Long(V_LOWEST_TIMESTAMP)
-				+ addField_Long(V_TOTAL_TRAINING_SECONDS)
 				+ addField_Int(V_CURRENT)
 				+ addField_Int(V_HIGHEST_RATING)
 				+ addField_Int(V_LOWEST_RATING)
+				/* Stats */
 				+ addField_Int(V_LESSONS_TRIED)
 				+ addField_Int(V_TOTAL_LESSON_COUNT)
-				+ addField_Text(V_USER)
-				+ addField_Text(V_LESSON_COMPLETE_PERCENTAGE, true);
-
-
+				+ addField_Int(V_LESSON_COMPLETE_PERCENTAGE)
+				+ addField_Int(V_TOTAL_TRAINING_SECONDS)
+				+ addField_Int(V_SCORE_90_100)
+				+ addField_Int(V_SCORE_80_89)
+				+ addField_Int(V_SCORE_70_79)
+				+ addField_Int(V_SCORE_60_69)
+				+ addField_Int(V_SCORE_50_59)
+				+ addField_Int(V_SCORE_50)
+				+ addField_Text(V_USER, true);
 	}
 
 	/* ==================== Game Stats ============================== */

@@ -48,7 +48,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:textColor="@color/new_light_grey_2"
-                android:text="1200"
                 custom:ttf="Bold"
                 />
 
@@ -79,7 +78,6 @@
                 android:id="@+id/liveTimeSelectBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10 min"
                 style="@style/Button.Glassy.Small"
                 />
 
@@ -219,7 +217,6 @@
                 android:id="@+id/friendUserName1Txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Joachim"
                 android:textColor="@color/semitransparent_white_65"
                 />
 
@@ -229,7 +226,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingLeft="4dip"
-                android:text="(Friend Name)"
                 android:textColor="@color/semitransparent_white_65"
                 />
 
@@ -259,7 +255,6 @@
                 android:id="@+id/friendUserName2Txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Joachim"
                 android:textColor="@color/semitransparent_white_65"
                 />
 
@@ -269,7 +264,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingLeft="4dip"
-                android:text="(Friend Name)"
                 android:textColor="@color/semitransparent_white_65"
                 />
 

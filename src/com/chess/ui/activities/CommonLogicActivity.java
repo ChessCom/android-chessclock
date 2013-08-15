@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.gcm.GcmHelper;
 import com.chess.backend.RestHelper;
-import com.chess.backend.ServerErrorCode;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.model.DataHolder;
 import com.chess.backend.LoadItem;
 import com.chess.model.TacticsDataHolder;
@@ -348,16 +348,16 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 				// get server code
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				switch (serverCode){
-					case ServerErrorCode.INVALID_USERNAME_PASSWORD:
+					case ServerErrorCodes.INVALID_USERNAME_PASSWORD:
 						passwordEdt.setError(getResources().getString(R.string.invalid_username_or_password));
 						passwordEdt.requestFocus();
 						break;
-					case ServerErrorCode.FACEBOOK_USER_NO_ACCOUNT:
+					case ServerErrorCodes.FACEBOOK_USER_NO_ACCOUNT:
 						popupItem.setPositiveBtnId(R.string.sign_up);
 						showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
 						break;
 					default:
-//						String serverMessage = ServerErrorCode.getUserFriendlyMessage(); // TODO restore
+//						String serverMessage = ServerErrorCodes.getUserFriendlyMessage(); // TODO restore
 //						showToast(serverMessage);
 
 						break;

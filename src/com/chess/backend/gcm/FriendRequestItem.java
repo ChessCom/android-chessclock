@@ -17,7 +17,7 @@ public class FriendRequestItem {
 	private String username;
 	private String message;
 	private long createdAt;
-	private String avatar;
+	private String avatar_url;
 
 	public String getUsername() {
 		return username;
@@ -44,10 +44,10 @@ public class FriendRequestItem {
 	}
 
 	public String getAvatar() {
-		return avatar == null ? StaticData.SYMBOL_EMPTY : avatar;
+		return avatar_url == null ? StaticData.SYMBOL_EMPTY : avatar_url;
 	}
 
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
+	public void setAvatar(String avatar_url) {
+		this.avatar_url = avatar_url;
 	}
 }

@@ -1,11 +1,11 @@
 package com.chess.ui.views;
 
-import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
+import com.chess.backend.statics.StaticData;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
 import com.chess.utilities.AppUtils;
@@ -28,7 +29,6 @@ import com.chess.utilities.AppUtils;
  */
 public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnClickListener {
 
-	public static final int WHAT_IS_TXT_ID = 0x00004305;
 	private int side;
 	private RoboTextView thinkingTxt;
 	private int paddingTop;
@@ -49,6 +49,8 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 		}
 		Resources resources = context.getResources();
 		float density = resources.getDisplayMetrics().density;
+
+		handler = new Handler();
 
 		if (AppUtils.HONEYCOMB_PLUS_API) {
 			useSingleLine = true;
@@ -78,7 +80,6 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 
 		int capturedPiecesViewHeight = (int) resources.getDimension(R.dimen.panel_info_captured_pieces_height);
 		int capturedPiecesViewWidth = (int) resources.getDimension(R.dimen.panel_info_captured_pieces_width);
-		int whatIsTextSize = (int) (resources.getDimension(R.dimen.panel_info_what_is_size) / density);
 		int avatarMarginRight = (int) resources.getDimension(R.dimen.panel_info_avatar_margin_right);
 
 		{ // set padding
@@ -90,7 +91,6 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 				paddingTop = (int) (3 * density);
 			}
 		}
-
 
 		{// add avatar view
 			avatarImg = new ImageView(context);
@@ -134,7 +134,6 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			capturedPiecesView = new View(context);
 			LayoutParams capturedParams = new LayoutParams(capturedPiecesViewWidth, capturedPiecesViewHeight);
 			if (useSingleLine) {
-				capturedParams.addRule(LEFT_OF, WHAT_IS_TXT_ID);
 				capturedParams.addRule(CENTER_VERTICAL);
 				capturedParams.addRule(RIGHT_OF, PLAYER_ID);
 			} else {
@@ -154,27 +153,6 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			addView(capturedPiecesView, capturedParams);
 		}
 
-		{// add "What is Chess.com?"
-			RoboTextView whatIsTxt = new RoboTextView(context);
-			LayoutParams timeLeftParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-			timeLeftParams.addRule(ALIGN_PARENT_RIGHT);
-			timeLeftParams.addRule(CENTER_VERTICAL);
-
-			whatIsTxt.setTextSize(whatIsTextSize);
-			whatIsTxt.setTextColor(resources.getColorStateList(R.color.text_controls_icons));
-			whatIsTxt.setText(R.string.what_is_chess_com);
-			whatIsTxt.setId(WHAT_IS_TXT_ID);
-			whatIsTxt.setGravity(Gravity.CENTER_VERTICAL);
-			whatIsTxt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_right_badge, 0);
-			whatIsTxt.setCompoundDrawablePadding((int) (7 * density));
-			whatIsTxt.setVisibility(GONE);
-			whatIsTxt.setPadding(0, 0, (int) (15 * density), 0);
-
-			addView(whatIsTxt, timeLeftParams);
-
-		}
-
 		{ // Thinking View
 			thinkingTxt = new RoboTextView(getContext());
 			thinkingTxt.setFont(FontsHelper.BOLD_FONT);
@@ -188,13 +166,6 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			RelativeLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
 			addView(thinkingTxt, params);
-
-			if (AppUtils.JELLYBEAN_PLUS_API) {
-				LayoutTransition layoutTransition = getLayoutTransition();
-				if (layoutTransition != null) { // we have it only in comp game frames
-					layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
-				}
-			}
 		}
 	}
 
@@ -237,18 +208,27 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).dropPieces();
 	}
 
-	@Override
 	public void showThinkingView(boolean show) {
 		if (show) {
-			findViewById(AVATAR_ID).setVisibility(GONE);
-			playerTxt.setVisibility(GONE);
-			capturedPiecesView.setVisibility(GONE);
-			thinkingTxt.setVisibility(VISIBLE);
+			playerTxt.setText(R.string.thinking);
+			handler.postDelayed(thinkingDotTask, THINKING_DOT_DELAY);
 		} else {
-			findViewById(AVATAR_ID).setVisibility(VISIBLE);
-			playerTxt.setVisibility(VISIBLE);
-			capturedPiecesView.setVisibility(VISIBLE);
-			thinkingTxt.setVisibility(GONE);
+			playerTxt.setText(R.string.computer);
+			handler.removeCallbacks(thinkingDotTask);
 		}
 	}
+
+	private int dotsAdded;
+	protected Runnable thinkingDotTask = new Runnable() {
+		@Override
+		public void run() {
+			if (dotsAdded++ < 3) {
+				playerTxt.setText(playerTxt.getText() + StaticData.SYMBOL_DOT.trim());
+			} else {
+				dotsAdded = 0;
+				playerTxt.setText(R.string.thinking);
+			}
+			handler.postDelayed(thinkingDotTask, THINKING_DOT_DELAY);
+		}
+	};
 }

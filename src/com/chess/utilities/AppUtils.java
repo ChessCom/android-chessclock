@@ -60,6 +60,7 @@ public class AppUtils {
 	public static final float MDPI = 1.0f;
 	public static final float HDPI = 1.5f;
 	public static final float XHDPI = 2.0f;
+	private static final String VERSION_CODE = "3_0";
 	private static boolean ENABLE_LOG = true;
 	private static final String DAYS = "d";
 	private static final String H = "h";
@@ -470,7 +471,7 @@ public class AppUtils {
 			e.printStackTrace();
 			return "Android0";
 		}
-		return "Android" + info.versionCode;
+		return "Android" + VERSION_CODE;
 	}
 
 	public static class DeviceInfo {

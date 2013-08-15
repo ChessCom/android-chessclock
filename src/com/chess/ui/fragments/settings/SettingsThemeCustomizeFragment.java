@@ -63,6 +63,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	private List<SelectionItem> piecesList;
 	private List<SelectionItem> boardsList;
 	private List<String> colorsList;
+	private List<String> soundsList;
 	private Spinner boardsSpinner;
 	private Spinner piecesSpinner;
 
@@ -81,7 +82,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	private ProgressImageView boardPreviewImg;
 	private PiecePreviewImg piecePreviewImg;
 	private ProgressImageView backgroundPreviewImg;
-	private List<String> soundsList;
 	private TextView rowSampleTitleTxt;
 	private TextView loadProgressTxt;
 	private TextView taskTitleTxt;

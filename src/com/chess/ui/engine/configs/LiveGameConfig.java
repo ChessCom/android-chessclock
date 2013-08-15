@@ -12,7 +12,6 @@ import com.chess.backend.statics.StaticData;
  * Time: 6:55
  */
 public class LiveGameConfig implements Parcelable {
-	private int userColor;
 	private boolean rated;
 	private int minRating;
 	private int maxRating;
@@ -21,7 +20,6 @@ public class LiveGameConfig implements Parcelable {
 	private String opponentName;
 
 	public static class Builder {
-		private int userColor;
 		private boolean rated;
 		private int initialTime;
 		private int bonusTime;
@@ -34,11 +32,6 @@ public class LiveGameConfig implements Parcelable {
 		 */
 		public Builder() {
 			rated = true;
-		}
-
-		public Builder setUserColor(int userColor) {
-			this.userColor = userColor;
-			return this;
 		}
 
 		public Builder setRated(boolean rated) {
@@ -77,17 +70,12 @@ public class LiveGameConfig implements Parcelable {
 	}
 
 	private LiveGameConfig(Builder builder) {
-		this.userColor = builder.userColor;
 		this.rated = builder.rated;
 		this.opponentName = builder.opponentName;
 		this.minRating = builder.minRating;
 		this.maxRating = builder.maxRating;
 		this.initialTime = builder.initialTime;
 		this.bonusTime = builder.bonusTime;
-	}
-
-	public int getUserColor() {
-		return userColor;
 	}
 
 	public boolean isRated() {
@@ -119,7 +107,6 @@ public class LiveGameConfig implements Parcelable {
 	}
 
 	protected LiveGameConfig(Parcel in) {
-		userColor = in.readInt();
 		rated = in.readByte() != 0x00;
 		minRating = in.readInt();
 		maxRating = in.readInt();
@@ -135,7 +122,6 @@ public class LiveGameConfig implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(userColor);
 		dest.writeByte((byte) (rated ? 0x01 : 0x00));
 		dest.writeInt(minRating);
 		dest.writeInt(maxRating);

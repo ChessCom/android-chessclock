@@ -88,7 +88,6 @@ public class LccChallengeListener implements ChallengeListener {
 						challengeId + ", by: " + by + AppConstants.WARNING + warning);
 		lccHelper.removeChallenge(challengeId);
 
-		Log.d("TEST", "onChallengeAccepted , warning" + warning);
 		lccHelper.addPendingWarning(warning, by);
 	}
 

@@ -262,7 +262,6 @@ public class ImageDownloaderToListener {
 					totalRead += count;
 					int progress = (int) ((totalRead / (float) totalSize) * 100);
 
-					Log.d("TEST", " progress " + progress);
 					holderReference.setProgress(progress);
 					if (count == -1) {
 						break;

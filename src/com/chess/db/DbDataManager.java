@@ -210,6 +210,8 @@ public class DbDataManager {
 
 	public static final String[] PROJECTION_USER_CURRENT_RATING = new String[]{_ID, V_USER, V_CURRENT};
 
+	public static final String[] PROJECTION_USER_AND_RATING = new String[]{_ID, V_USER, V_RATING};
+
 	public static final String[] PROJECTION_VIEWED_VIDEO = new String[]{_ID, V_USER, V_ID, V_VIDEO_VIEWED};
 
 	public static final String[] PROJECTION_ITEM_ID_AND_NUMBER = new String[]{_ID, V_ID, V_NUMBER};
@@ -570,16 +572,19 @@ public class DbDataManager {
 		}
 	}
 
-	public static int getUserCurrentRating(Context context, int dbUriCode, String userName) {
+	public static int getUserRatingFromUsersStats(Context context, int dbUriCode, String userName) {
+		final int DEFAULT_RATING = 1200;
+
 		ContentResolver contentResolver = context.getContentResolver();
 
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 		Cursor cursor = contentResolver.query(uriArray[dbUriCode],
-				PROJECTION_USER_CURRENT_RATING, SELECTION_USER, arguments1, null);
+				PROJECTION_USER_AND_RATING, SELECTION_USER, arguments1, null);
 
 		if (cursor != null && cursor.moveToFirst()) {
-			int rating = getInt(cursor, V_CURRENT);
+			int rating = getInt(cursor, V_RATING);
+			rating = rating == 0 ? DEFAULT_RATING : rating;
 			cursor.close();
 
 			return rating;
@@ -587,7 +592,7 @@ public class DbDataManager {
 			if (cursor != null) {
 				cursor.close();
 			}
-			return 0;
+			return DEFAULT_RATING;
 		}
 	}
 
@@ -1412,46 +1417,19 @@ public class DbDataManager {
 
 	/* ========================================== Stats ========================================== */
 
-	public static ContentValues putUserStatsLiveItemToValues(UserLiveStatsData.Stats dataObj, String user) {
+	public static ContentValues putUserStatsGameItemToValues(UserStatsData dataObj, String user) {
 		ContentValues values = new ContentValues();
 
 		values.put(V_USER, user);
-		values.put(V_CURRENT, dataObj.getRating().getCurrent());
-		values.put(V_HIGHEST_RATING, dataObj.getRating().getHighest().getRating());
-		values.put(V_HIGHEST_TIMESTAMP, dataObj.getRating().getHighest().getTimestamp());
-		values.put(V_BEST_WIN_RATING, dataObj.getRating().getBestWin().getRating());
-		values.put(V_BEST_WIN_USERNAME, dataObj.getRating().getBestWin().getUsername());
-		values.put(V_AVERAGE_OPPONENT, dataObj.getRating().getAverageOpponent());
-
-		values.put(V_GAMES_TOTAL, dataObj.getGames().getTotal());
-		values.put(V_GAMES_WINS, dataObj.getGames().getWins());
-		values.put(V_GAMES_LOSSES, dataObj.getGames().getLosses());
-		values.put(V_GAMES_DRAWS, dataObj.getGames().getDraws());
-
-		return values;
-	}
-
-	public static ContentValues putUserStatsDailyItemToValues(UserDailyStatsData.ChessStatsData dataObj, String user) {
-		ContentValues values = new ContentValues();
-
-		values.put(V_USER, user);
-		values.put(V_CURRENT, dataObj.getRating().getCurrent());
-		values.put(V_HIGHEST_RATING, dataObj.getRating().getHighest().getRating());
-		values.put(V_HIGHEST_TIMESTAMP, dataObj.getRating().getHighest().getTimestamp());
-
-		values.put(V_BEST_WIN_RATING, dataObj.getRating().getBestWin().getRating());
-		values.put(V_BEST_WIN_GAME_ID, dataObj.getRating().getBestWin().getGameId());
-		values.put(V_BEST_WIN_USERNAME, dataObj.getRating().getBestWin().getUsername());
-		values.put(V_AVERAGE_OPPONENT, dataObj.getRating().getAverageOpponent());
-		values.put(V_RANK, dataObj.getRating().getTodaysRank().getRank());
-		values.put(V_TOTAL_PLAYER_COUNT, dataObj.getRating().getTodaysRank().getTotalPlayerCount());
-		values.put(V_TIMEOUTS, dataObj.getTimeouts());
-		values.put(V_TIME_PER_MOVE, dataObj.getTimePerMove());
-
-		values.put(V_GAMES_TOTAL, dataObj.getGames().getTotal());
-		values.put(V_GAMES_WINS, dataObj.getGames().getWins());
-		values.put(V_GAMES_LOSSES, dataObj.getGames().getLosses());
-		values.put(V_GAMES_DRAWS, dataObj.getGames().getDraws());
+		values.put(V_RATING, dataObj.getRating());
+		values.put(V_HIGHEST_RATING, dataObj.getHighestRating());
+		values.put(V_AVERAGE_OPPONENT, dataObj.getAvgOponentRating());
+		values.put(V_GAMES_TOTAL, dataObj.getTotalGames());
+		values.put(V_GAMES_WINS, dataObj.getWins());
+		values.put(V_GAMES_LOSSES, dataObj.getLosses());
+		values.put(V_GAMES_DRAWS, dataObj.getDraws());
+		values.put(V_BEST_WIN_RATING, dataObj.getBestWinRating());
+		values.put(V_BEST_WIN_USERNAME, dataObj.getBestWinUsername());
 
 		return values;
 	}
@@ -1460,36 +1438,58 @@ public class DbDataManager {
 		ContentValues values = new ContentValues();
 
 		values.put(V_USER, user);
-		values.put(V_CURRENT, dataObj.getCurrent());
-		values.put(V_HIGHEST_RATING, dataObj.getHighest().getRating());
-		values.put(V_HIGHEST_TIMESTAMP, dataObj.getHighest().getTimestamp());
-		values.put(V_LOWEST_RATING, dataObj.getLowest().getRating());
-		values.put(V_LOWEST_TIMESTAMP, dataObj.getLowest().getTimestamp());
 
-		values.put(V_ATTEMPT_COUNT, dataObj.getAttemptCount());
-		values.put(V_PASSED_COUNT, dataObj.getPassedCount());
-		values.put(V_FAILED_COUNT, dataObj.getFailedCount());
-		values.put(V_TOTAL_SECONDS, dataObj.getTotalSeconds());
-		values.put(V_TODAYS_ATTEMPTS, dataObj.getTodaysAttemps());
-		values.put(V_TODAYS_AVG_SCORE, dataObj.getTodaysAvgScore());
+		BaseRating highest = dataObj.getRatings().getHighest();
+		BaseRating lowest = dataObj.getRatings().getLowest();
+		int current = dataObj.getRatings().getCurrent();
+
+		values.put(V_CURRENT, current);
+		values.put(V_HIGHEST_RATING, highest.getRating());
+		values.put(V_HIGHEST_TIMESTAMP, highest.getTimestamp());
+		values.put(V_LOWEST_RATING, lowest.getRating());
+		values.put(V_LOWEST_TIMESTAMP, lowest.getTimestamp());
+
+		UserTacticsStatsData.Stats stats = dataObj.getLessons().getStats();
+		values.put(V_LESSONS_TRIED, stats.getLessonsTried());
+		values.put(V_TOTAL_LESSON_COUNT, stats.getTotalLessonCount());
+		values.put(V_LESSON_COMPLETE_PERCENTAGE, stats.getLessonCompletePercentage());
+		values.put(V_TOTAL_TRAINING_SECONDS, stats.getTotalLessonCount());
+		values.put(V_SCORE_90_100, stats.getScore().getP_90_100());
+		values.put(V_SCORE_80_89, stats.getScore().getP_80_89());
+		values.put(V_SCORE_70_79, stats.getScore().getP_70_79());
+		values.put(V_SCORE_60_69, stats.getScore().getP_60_69());
+		values.put(V_SCORE_50_59, stats.getScore().getP_50_59());
+		values.put(V_SCORE_50, stats.getScore().getP_50());
 
 		return values;
 	}
 
-	public static ContentValues putUserStatsChessMentorItemToValues(UserChessMentorStatsData.Rating dataObj, String user) {
+	public static ContentValues putUserStatsLessonsItemToValues(UserLessonsStatsData dataObj, String user) {
 		ContentValues values = new ContentValues();
 
 		values.put(V_USER, user);
-		values.put(V_CURRENT, dataObj.getCurrent());
-		values.put(V_HIGHEST_RATING, dataObj.getHighest().getRating());
-		values.put(V_HIGHEST_TIMESTAMP, dataObj.getHighest().getTimestamp());
-		values.put(V_LOWEST_RATING, dataObj.getLowest().getRating());
-		values.put(V_LOWEST_TIMESTAMP, dataObj.getLowest().getTimestamp());
 
-		values.put(V_LESSONS_TRIED, dataObj.getLessonsTried());
-		values.put(V_TOTAL_LESSON_COUNT, dataObj.getTotalLessonCount());
-		values.put(V_LESSON_COMPLETE_PERCENTAGE, dataObj.getLessonCompletePercentage());
-		values.put(V_TOTAL_TRAINING_SECONDS, dataObj.getTotalTrainingSeconds());
+		BaseRating highest = dataObj.getRatings().getHighest();
+		BaseRating lowest = dataObj.getRatings().getLowest();
+		int current = dataObj.getRatings().getCurrent();
+
+		values.put(V_CURRENT, current);
+		values.put(V_HIGHEST_RATING, highest.getRating());
+		values.put(V_HIGHEST_TIMESTAMP, highest.getTimestamp());
+		values.put(V_LOWEST_RATING, lowest.getRating());
+		values.put(V_LOWEST_TIMESTAMP, lowest.getTimestamp());
+
+		UserLessonsStatsData.Stats stats = dataObj.getLessons().getStats();
+		values.put(V_LESSONS_TRIED, stats.getLessonsTried());
+		values.put(V_TOTAL_LESSON_COUNT, stats.getTotalLessonCount());
+		values.put(V_LESSON_COMPLETE_PERCENTAGE, stats.getLessonCompletePercentage());
+		values.put(V_TOTAL_TRAINING_SECONDS, stats.getTotalLessonCount());
+		values.put(V_SCORE_90_100, stats.getScore().getP_90_100());
+		values.put(V_SCORE_80_89, stats.getScore().getP_80_89());
+		values.put(V_SCORE_70_79, stats.getScore().getP_70_79());
+		values.put(V_SCORE_60_69, stats.getScore().getP_60_69());
+		values.put(V_SCORE_50_59, stats.getScore().getP_50_59());
+		values.put(V_SCORE_50, stats.getScore().getP_50());
 
 		return values;
 	}

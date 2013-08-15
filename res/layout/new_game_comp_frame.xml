@@ -25,7 +25,6 @@
 		android:layout_weight="1"
 		custom:oneLine="@bool/one_line_for_board"
 		style="@style/ListItem"
-		android:animateLayoutChanges="true"
 		/>
 
 	<RelativeLayout
@@ -61,7 +60,6 @@
 		android:layout_height="0dp"
 		android:layout_weight="1"
 		custom:oneLine="@bool/one_line_for_board"
-		android:animateLayoutChanges="true"
 		/>
 
 	<com.chess.ui.views.game_controls.ControlsCompView

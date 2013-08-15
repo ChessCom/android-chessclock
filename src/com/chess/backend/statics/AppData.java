@@ -437,6 +437,14 @@ public class AppData {
 		return getIntValue(PREF_COMPUTER_MODE, AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
 	}
 
+	public boolean isLessonLimitWasReached() {
+		return getBooleanValue(LESSONS_LIMIT_HAS_REACHED, false);
+	}
+
+	public void setLessonLimitWasReached(boolean value) {
+		setBooleanValue(LESSONS_LIMIT_HAS_REACHED, value);
+	}
+
 	/*--------------------------- Common Shared logic ------------------------*/
 
 	private void setBooleanValue(String field, boolean checked) {

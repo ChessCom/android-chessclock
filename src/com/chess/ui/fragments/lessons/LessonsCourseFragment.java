@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
@@ -49,6 +50,9 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 	private TextView courseTitleTxt;
 	private TextView courseDescriptionTxt;
 	private boolean haveSavedCourseData;
+	private Button upgradeLessonsBtn;
+	private TextView lessonsUpgradeMessageTxt;
+	private View upgradeBtn;
 
 	public LessonsCourseFragment() {
 	}
@@ -81,7 +85,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_white_list_view_frame, container, false);
+		return inflater.inflate(R.layout.new_lessons_course_frame, container, false);
 	}
 
 	@Override
@@ -93,10 +97,17 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 		// Set header
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lessons_course_header_view, null, false);
+		upgradeBtn = headerView.findViewById(R.id.upgradeBtn);
 		if (isNeedToUpgradePremium()) {
-			headerView.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+			upgradeBtn.setOnClickListener(this);
 		} else {
 			headerView.findViewById(R.id.upgradeView).setVisibility(View.GONE);
+		}
+		lessonsUpgradeMessageTxt = (TextView) headerView.findViewById(R.id.lessonsUpgradeMessageTxt);
+
+		if (isNeedToUpgrade()) {
+			upgradeLessonsBtn = (Button) view.findViewById(R.id.upgradeLessonsBtn);
+			upgradeLessonsBtn.setOnClickListener(this);
 		}
 
 		courseTitleTxt = (TextView) headerView.findViewById(R.id.courseTitleTxt);
@@ -137,6 +148,13 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 			lessonsItemAdapter.setItemsList(lessons);
 
 			updateLessonsListFromDb();
+
+			// check if last tried lesson cause limit reached
+			if (getAppData().isLessonLimitWasReached()) {
+				upgradeLessonsBtn.setVisibility(View.VISIBLE);
+				lessonsUpgradeMessageTxt.setText(R.string.lessons_limit_reached_message);
+				upgradeBtn.setVisibility(View.GONE);
+			}
 		}
 	}
 
@@ -180,7 +198,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 	public void onClick(View view) {
 		super.onClick(view);
 
-		if (view.getId() == R.id.upgradeBtn) {
+		if (view.getId() == R.id.upgradeBtn || view.getId() == R.id.upgradeLessonsBtn) {
 			getActivityFace().openFragment(new UpgradeFragment());
 		}
 	}

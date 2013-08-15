@@ -16,7 +16,7 @@
         android:gravity="center"
         android:paddingLeft="48dip"
         android:textSize="20sp"
-        android:textColor="@color/new_light_grey"
+        android:textColor="@color/semitransparent_white_75"
         style="@style/DarkShadowBottom"
         robo:ttf="Bold"
         />

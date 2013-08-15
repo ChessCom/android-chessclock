@@ -95,7 +95,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 			}
-			Log.d("TEST", "onStart isLCSBound = " + isLCSBound + " in " + LiveBaseActivity.this);
 			if (isLCSBound) {
 				onLiveServiceConnected();
 			} else {
@@ -280,7 +279,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 			}
-			Log.d("TEST", "onStart isLCSBound = " + isLCSBound + " in " + LiveBaseActivity.this);
 			if (isLCSBound) {
 				onLiveServiceConnected();
 			} else {
@@ -298,7 +296,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
 			Log.d(TAG, "onServiceConnected");
-			Log.d("TEST", "onServiceConnected in " + LiveBaseActivity.this);
 
 			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
 			liveService = serviceBinder.getService();

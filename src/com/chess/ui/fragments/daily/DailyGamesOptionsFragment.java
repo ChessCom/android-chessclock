@@ -17,14 +17,13 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.ui.views.NewGameDailyView;
-import com.chess.ui.views.NewGameDefaultView;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonGlassyDrawable;
 
@@ -41,11 +40,12 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 
 	private static final String ERROR_TAG = "send request failed popup";
 
-	private static final int DAILY_BASE_ID = 0x00001000;
-
-	private final static int DAILY_RIGHT_BUTTON_ID = DAILY_BASE_ID + NewGameDailyView.RIGHT_BUTTON_ID;
-	private final static int DAILY_LEFT_BUTTON_ID = DAILY_BASE_ID + NewGameDefaultView.LEFT_BUTTON_ID;
-	private final static int DAILY_PLAY_BUTTON_ID = DAILY_BASE_ID + NewGameDefaultView.PLAY_BUTTON_ID;
+	private static final int MIN_RATING_DIFF = 200;
+	private static final int MAX_RATING_DIFF = 200;
+	private static final int MIN_RATING_MIN = 1000;
+	private static final int MIN_RATING_MAX = 2000;
+	private static final int MAX_RATING_MIN = 1000;
+	private static final int MAX_RATING_MAX = 2400;
 
 	private DailyGamesButtonsAdapter dailyGamesButtonsAdapter;
 	private DailyGameConfig.Builder gameConfigBuilder;
@@ -54,7 +54,8 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 	private SwitchButton ratedGameSwitch;
 
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
-	private List<SelectionItem> firendsList;
+	private List<SelectionItem> friendsList;
+	private int dailyRating;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -62,22 +63,21 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 
 		gameConfigBuilder = new DailyGameConfig.Builder();
 
-		{ // load friends from DB          // TODO make it async and fill in popup
-			final String[] arguments1 = new String[1];
-			arguments1[0] = getAppData().getUsername();
-			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()],
-					DbDataManager.PROJECTION_USERNAME, DbDataManager.SELECTION_USER, arguments1, null);
+		{ // load friends from DB
+			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getTableForUser(getUsername(), DbScheme.Tables.FRIENDS));
 
-			firendsList = new ArrayList<SelectionItem>();
-			firendsList.add(new SelectionItem(null, getString(R.string.random)));
-			if (cursor.moveToFirst()) {
+			friendsList = new ArrayList<SelectionItem>();
+			friendsList.add(new SelectionItem(null, getString(R.string.random)));
+			if (cursor != null && cursor.moveToFirst()) {
 				do{
-					firendsList.add(new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME)));
+					friendsList.add(new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME)));
 				}while (cursor.moveToNext());
 			}
 
-			firendsList.get(0).setChecked(true);
+			friendsList.get(0).setChecked(true);
 		}
+		dailyRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), getUsername());
+
 	}
 
 	@Override
@@ -90,27 +90,15 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		super.onViewCreated(view, savedInstanceState);
 
 		view.findViewById(R.id.dailyHeaderView).setOnClickListener(this);
-//		opponentNameTxt = (TextView) view.findViewById(R.id.opponentNameTxt);
 
 		RoboSpinner opponentSpinner = (RoboSpinner) view.findViewById(R.id.opponentSpinner);
 		Resources resources = getResources();
 
-		OpponentsAdapter selectionAdapter = new OpponentsAdapter(getActivity(), firendsList);
+		OpponentsAdapter selectionAdapter = new OpponentsAdapter(getActivity(), friendsList);
 		opponentSpinner.setAdapter(selectionAdapter);
 		opponentSpinner.setOnItemSelectedListener(this);
 
 		opponentSpinner.setSelection(0);
-
-		{// Daily Games setup
-//			NewGameDefaultView.ViewConfig dailyConfig = new NewGameDefaultView.ViewConfig();
-//			dailyConfig.setBaseId(DAILY_BASE_ID);
-//			dailyConfig.setHeaderIcon(R.string.ic_daily_game);
-//			dailyConfig.setHeaderText(R.string.new_daily_chess);
-//			dailyConfig.setTitleText(R.string.new_per_turn);
-//			int defaultDailyMode = getAppData().getDefaultDailyMode();
-//			dailyConfig.setLeftButtonText(getString(R.string.days_arg, defaultDailyMode));
-//			dailyConfig.setRightButtonTextId(R.string.random);
-		}
 
 		{// options setup
 			{// Mode adapter init
@@ -127,18 +115,12 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 				gridView.setAdapter(dailyGamesButtonsAdapter);
 			}
 
-//			EditButtonSpinner opponentEditBtn = (EditButtonSpinner) view.findViewById(R.id.opponentEditBtn);
-//			opponentEditBtn.addOnClickListener(this);
-
-//			EditButtonSpinner myColorEditBtn = (EditButtonSpinner) view.findViewById(R.id.myColorEditBtn);
-//			myColorEditBtn.addOnClickListener(this);
-
 			// rated games switch
 			ratedGameSwitch = (SwitchButton) view.findViewById(R.id.ratedGameSwitch);
 
 			{// Rating part
-				int minRatingDefault = 1500; // TODO adjust properly
-				int maxRatingDefault = 1700;
+				int minRatingDefault = dailyRating - MIN_RATING_DIFF;
+				int maxRatingDefault = dailyRating + MAX_RATING_DIFF;
 
 				minRatingBtn = (RoboRadioButton) view.findViewById(R.id.minRatingBtn);
 				minRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
@@ -153,7 +135,6 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 
 				SeekBar ratingBar = (SeekBar) view.findViewById(R.id.ratingBar);
 				ratingBar.setOnSeekBarChangeListener(ratingBarChangeListener);
-				// TODO adjust progress drawable
 				ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingBar));
 			}
 			view.findViewById(R.id.playBtn).setOnClickListener(this);
@@ -172,13 +153,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		// create challenge using formed configuration
 		DailyGameConfig dailyGameConfig = getDailyGameConfig();
 
-		int color = dailyGameConfig.getUserColor();
-		int days = dailyGameConfig.getDaysPerMove();
-		int gameType = dailyGameConfig.getGameType();
-		int isRated = dailyGameConfig.isRated() ? 1 : 0;
-		String opponentName = dailyGameConfig.getOpponentName();
-
-		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), days, color, isRated, gameType, opponentName);
+		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), dailyGameConfig);
 		new RequestJsonTask<DailySeekItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 
@@ -189,8 +164,12 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-	    updateDailyMode(getAppData().getDefaultDailyMode());
+		if (parent.getAdapter() instanceof OpponentsAdapter) {
+			SelectionItem opponent = (SelectionItem) parent.getItemAtPosition(position);
+			gameConfigBuilder.setOpponentName(opponent.getText());
+		} else {
+			updateDailyMode(getAppData().getDefaultDailyMode());
+		}
 	}
 
 	@Override
@@ -210,7 +189,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 	}
 
 
-	private class CreateChallengeUpdateListener extends ChessUpdateListener<DailySeekItem> {
+	private class CreateChallengeUpdateListener extends ChessLoadUpdateListener<DailySeekItem> {
 
 		public CreateChallengeUpdateListener() {
 			super(DailySeekItem.class);
@@ -249,12 +228,12 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 			int maxRating;
 			if (maxRatingBtn.isChecked()) {
 				checkedButton = maxRatingBtn;
-				minRating = 1000; // TODO set from resources
-				maxRating = 2400;
+				minRating = MAX_RATING_MIN;
+				maxRating = MAX_RATING_MAX;
 			} else {
 				checkedButton = minRatingBtn;
-				minRating = 1000;
-				maxRating = 2000;
+				minRating = MIN_RATING_MIN;
+				maxRating = MIN_RATING_MAX;
 			}
 			// get percent progress and convert it to values
 
@@ -303,9 +282,6 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			updateDailyMode(position);
 			getAppData().setDefaultDailyMode(position);
-		} else if (view.getId() == R.id.myColorBtn){
-		} else if (view.getId() == R.id.minRatingBtn){
-		} else if (view.getId() == R.id.maxRatingBtn){
 		} else if (view.getId() == R.id.dailyHeaderView){
 			getActivityFace().toggleRightMenu();
 		} else if (view.getId() == R.id.playBtn){

@@ -280,13 +280,10 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	private void createDailyChallenge(String opponentName) {
 		// create challenge using formed configuration
 		DailyGameConfig dailyGameConfig = new DailyGameConfig.Builder().build();
+		dailyGameConfig.setOpponentName(opponentName);
 
-		int color = dailyGameConfig.getUserColor();
-		int days = dailyGameConfig.getDaysPerMove();
-		int gameType = dailyGameConfig.getGameType();
-		int isRated = dailyGameConfig.isRated() ? 1 : 0;
 
-		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), days, color, isRated, gameType, opponentName);
+		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), dailyGameConfig);
 		new RequestJsonTask<DailySeekItem>(new CreateChallengeUpdateListener()).executeTask(loadItem);
 	}
 

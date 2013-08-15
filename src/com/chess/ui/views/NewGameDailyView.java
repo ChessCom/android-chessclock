@@ -295,7 +295,6 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 		} else if (view.getId() == R.id.minRatingBtn){
 		} else if (view.getId() == R.id.maxRatingBtn){
 		} else if (view.getId() == R.id.playBtn){
-			Log.d("TEST", "myColorEditBtn clicked");
 
 		}
 

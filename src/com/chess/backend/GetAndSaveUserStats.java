@@ -40,7 +40,7 @@ public class GetAndSaveUserStats extends IntentService {
 			SaveUserStatsTask.saveLiveStats(userName, item.getData(), getContentResolver());
 			SaveUserStatsTask.saveDailyStats(userName, item.getData(), getContentResolver());
 			SaveUserStatsTask.saveTacticsStats(userName, item.getData(), getContentResolver());
-			SaveUserStatsTask.saveChessMentorStats(userName, item.getData(), getContentResolver());
+			SaveUserStatsTask.saveLessonsStats(userName, item.getData(), getContentResolver());
 		}
 	}
 }

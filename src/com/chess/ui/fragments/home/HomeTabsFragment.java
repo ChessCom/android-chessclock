@@ -1,6 +1,7 @@
 package com.chess.ui.fragments.home;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,11 +12,7 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.GetAndSaveFriends;
-import com.chess.backend.LoadHelper;
-import com.chess.backend.RestHelper;
-import com.chess.backend.ServerErrorCode;
-import com.chess.backend.LoadItem;
+import com.chess.backend.*;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.entity.api.DailyGamesAllItem;
@@ -23,6 +20,9 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
+import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
@@ -56,9 +56,9 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
 
-		if (!DbDataManager.haveSavedFriends(getActivity(), getUsername())) {
-			getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class)); // TODO adjust properly
-		}
+		getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class)); // always update friends list. until we implement syncadapter
+		// update stats in async intent service and save in Db there
+		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
 
 		themeName = getAppData().getThemeName();
 	}
@@ -139,9 +139,10 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 //				getContentResolver()).executeTask();
 //
 
-//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.LESSONS_LESSONS_LIST.name()),
-//				DbHelper.getAllByUri(DbScheme.Tables.LESSONS_LESSONS_LIST.ordinal()),
-//				getContentResolver()).executeTask();
+		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.USER_STATS_LIVE_STANDARD.name()),
+				DbHelper.getAllByUri(DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal()),
+				getContentResolver()).executeTask();
+
 
 		// check if user have daily games in progress or completed. May check in DB
 		// get games_id's and compare it to local DB
@@ -158,24 +159,24 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		}
 	}
 
-//	private class DbCursorUpdateListener extends ChessUpdateListener<Cursor> {
-//
-//		private String tableName;
-//
-//		public DbCursorUpdateListener(String tableName) {
-//			this.tableName = tableName;
-//		}  // Used for test
-//
-//		@Override
-//		public void updateData(Cursor cursor) {
-//			super.updateData(cursor);
-//
-//			if (HONEYCOMB_PLUS_API) {
-//
-//				AppUtils.printTableContent(cursor, tableName);
-//			}
-//		}
-//	}
+	private class DbCursorUpdateListener extends ChessUpdateListener<Cursor> {
+
+		private String tableName;
+
+		public DbCursorUpdateListener(String tableName) {
+			this.tableName = tableName;
+		}  // Used for test
+
+		@Override
+		public void updateData(Cursor cursor) {
+			super.updateData(cursor);
+
+			if (HONEYCOMB_PLUS_API) {
+
+				AppUtils.printTableContent(cursor, tableName);
+			}
+		}
+	}
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -268,7 +269,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		public void errorHandle(Integer resultCode) {
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				showToast(ServerErrorCode.getUserFriendlyMessage(getActivity(), serverCode));
+				showToast(ServerErrorCodes.getUserFriendlyMessage(getActivity(), serverCode));
 			} else if (resultCode == StaticData.INTERNAL_ERROR) {
 				showToast("Internal error occurred"); // TODO adjust properly
 //				showEmptyView(true);

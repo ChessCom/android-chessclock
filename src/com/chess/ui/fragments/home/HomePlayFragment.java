@@ -91,6 +91,8 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		dailyGameConfigBuilder = new DailyGameConfig.Builder();
 		liveGameConfigBuilder = new LiveGameConfig.Builder();
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
+		getActivityFace().addOnOpenMenuListener(this);
+
 	}
 
 	@Override
@@ -123,12 +125,8 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	public void onResume() {
 		super.onResume();
 
-		getActivityFace().addOnOpenMenuListener(this);
-
-		if (positionMode == CENTER_MODE) {
-			setRatings();
-			loadRecentOpponents();
-		}
+		setRatings();
+		loadRecentOpponents();
 	}
 
 	@Override
@@ -178,10 +176,9 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		if (view.getId() == R.id.liveTimeSelectBtn) {
 			toggleLiveOptionsView();
 		} else if (view.getId() == R.id.liveHeaderView) {
+			getActivityFace().changeRightFragment(LiveGameOptionsFragment.createInstance(RIGHT_MENU_MODE));
 			if (positionMode == CENTER_MODE) {
-				getActivityFace().openFragment(new LiveGameOptionsFragment());
-			} else {
-				getActivityFace().changeRightFragment(new LiveGameOptionsFragment());
+				getActivityFace().toggleRightMenu();
 			}
 		} else if (view.getId() == R.id.livePlayBtn) {
 			createLiveChallenge();
@@ -189,13 +186,12 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 				getActivityFace().toggleRightMenu();
 			}
 		} else if (view.getId() == R.id.dailyHeaderView) {
+			getActivityFace().changeRightFragment(new DailyGamesOptionsFragment());
 			if (positionMode == CENTER_MODE) {
-				getActivityFace().openFragment(new DailyGamesOptionsFragment());
-			} else {
-				getActivityFace().changeRightFragment(new DailyGamesOptionsFragment());
+				getActivityFace().toggleRightMenu();
 			}
 		} else if (view.getId() == R.id.dailyPlayBtn) {
-			createDailyChallenge(); // TODO adjust
+			createDailyChallenge();
 		} else if (view.getId() == R.id.inviteFriendView1) {
 			dailyGameConfigBuilder.setOpponentName(firstFriendUserName);
 			createDailyChallenge();
@@ -217,17 +213,6 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		} else {
 			handleLiveModeClicks(view);
 		}
-	}
-
-	private void setRatings() {
-		// set live rating    // TODO remove open menu listener when fragment goes on pause
-		int liveRating = DbDataManager.getUserCurrentRating(getActivity(), DbScheme.Tables.GAME_STATS_LIVE_STANDARD.ordinal(), getUsername());
-		liveRatingTxt.setText(String.valueOf(liveRating));
-
-		// set daily rating
-		int dailyRating = DbDataManager.getUserCurrentRating(getActivity(), DbScheme.Tables.GAME_STATS_DAILY_CHESS.ordinal(), getUsername());
-		dailyRatingTxt.setText(String.valueOf(dailyRating));
-
 	}
 
 	private void handleLiveModeClicks(View view) {
@@ -280,13 +265,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		// create challenge using formed configuration
 		DailyGameConfig dailyGameConfig = dailyGameConfigBuilder.build();
 
-		int color = dailyGameConfig.getUserColor();
-		int days = dailyGameConfig.getDaysPerMove();
-		int gameType = dailyGameConfig.getGameType();
-		int isRated = dailyGameConfig.isRated() ? 1 : 0;
-		String opponentName = dailyGameConfig.getOpponentName();
-
-		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), days, color, isRated, gameType, opponentName);
+		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), dailyGameConfig);
 		new RequestJsonTask<DailySeekItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 
@@ -318,6 +297,16 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 			setRatings();
 			loadRecentOpponents();
 		}
+	}
+
+	private void setRatings() {
+		// set live rating
+		int liveRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), getUsername());
+		liveRatingTxt.setText(String.valueOf(liveRating));
+
+		// set daily rating
+		int dailyRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), getUsername());
+		dailyRatingTxt.setText(String.valueOf(dailyRating));
 	}
 
 	private void createLiveChallenge() {

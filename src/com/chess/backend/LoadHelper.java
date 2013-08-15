@@ -1,6 +1,7 @@
 package com.chess.backend;
 
 import android.text.TextUtils;
+import com.chess.ui.engine.configs.DailyGameConfig;
 
 import static com.chess.backend.RestHelper.*;
 
@@ -117,13 +118,21 @@ public class LoadHelper {
 		return loadItem;
 	}
 
-	public static LoadItem postGameSeek(String userToken, int days, int color, int isRated, int gameType, String opponentName) {
+	public static LoadItem postGameSeek(String userToken, DailyGameConfig dailyGameConfig) {
+		int days = dailyGameConfig.getDaysPerMove();
+		int gameType = dailyGameConfig.getGameType();
+		int isRated = dailyGameConfig.isRated() ? 1 : 0;
+		String opponentName = dailyGameConfig.getOpponentName();
+		return postGameSeek(userToken, days, isRated, gameType, opponentName);
+	}
+
+	public static LoadItem postGameSeek(String userToken, int days, int isRated, int gameType, String opponentName) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(CMD_SEEKS);
 		loadItem.setRequestMethod(POST);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_DAYS_PER_MOVE, days);
-		loadItem.addRequestParams(P_USER_SIDE, color);
+		loadItem.addRequestParams(P_USER_SIDE, RestHelper.P_RANDOM); // always random!
 		loadItem.addRequestParams(P_IS_RATED, isRated);
 		loadItem.addRequestParams(P_GAME_TYPE, gameType);
 		if (!TextUtils.isEmpty(opponentName)) {

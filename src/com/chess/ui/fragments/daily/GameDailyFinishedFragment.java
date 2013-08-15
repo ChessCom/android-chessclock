@@ -697,16 +697,13 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	private void sendRematch() {
 		String opponent;
-		int color; // reversed color
 		if (userPlayWhite) {
 			opponent = currentGame.getBlackUsername();
-			color = 2;
 		} else {
 			opponent = currentGame.getWhiteUsername();
-			color = 1;
 		}
 
-		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), currentGame.getDaysPerMove(), color,
+		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), currentGame.getDaysPerMove(),
 				currentGame.isRated() ? 1 : 0,  currentGame.getGameType(), opponent);
 		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
