@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.AvatarView;
 import com.chess.db.DbScheme;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
@@ -51,7 +51,7 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_friends_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
-		holder.photoImg = (ProgressImageView) view.findViewById(R.id.photoImg);
+		holder.photoImg = (AvatarView) view.findViewById(R.id.photoImg);
 		holder.usernameTxt = (TextView) view.findViewById(R.id.usernameTxt);
 		holder.countryImg = (ImageView) view.findViewById(R.id.countryImg);
 		holder.premiumImg = (ImageView) view.findViewById(R.id.premiumImg);
@@ -85,6 +85,7 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 		holder.premiumImg.setImageResource(AppUtils.getPremiumIcon(status));
 
 		boolean isOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0 ; // TODO adjust logic for offline mode
+		holder.photoImg.setOnline(isOnline);
 		if (isOnline) {
 			holder.onlineTxt.setText(R.string.online_now);
 		} else {
@@ -120,7 +121,7 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 	}
 
 	private class ViewHolder {
-		public ProgressImageView photoImg;
+		public AvatarView photoImg;
 		public TextView usernameTxt;
 		public ImageView countryImg;
 		public ImageView premiumImg;

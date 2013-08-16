@@ -13,7 +13,7 @@
     android:paddingBottom="8dip"
     >
 
-    <com.chess.backend.image_load.ProgressImageView
+    <com.chess.backend.image_load.AvatarView
         android:id="@+id/playerImg"
         android:layout_width="@dimen/daily_list_item_image_size"
         android:layout_height="@dimen/daily_list_item_image_size"

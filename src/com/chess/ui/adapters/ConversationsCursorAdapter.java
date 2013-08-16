@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
-import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.AvatarView;
 import com.chess.db.DbScheme;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
@@ -39,7 +39,7 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_conversation_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
-		holder.photoImg = (ProgressImageView) view.findViewById(R.id.photoImg);
+		holder.photoImg = (AvatarView) view.findViewById(R.id.photoImg);
 		holder.authorTxt = (TextView) view.findViewById(R.id.authorTxt);
 		holder.lastMessageTxt = (RoboTextView) view.findViewById(R.id.lastMessageTxt);
 		holder.lastMessageDateTxt = (TextView) view.findViewById(R.id.lastMessageDateTxt);
@@ -53,7 +53,8 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
 
-		boolean isOtherUserOnline = getInt(cursor, DbScheme.V_OTHER_USER_IS_ONLINE) > 0;
+		boolean isOpponentUserOnline = getInt(cursor, DbScheme.V_OTHER_USER_IS_ONLINE) > 0;
+		holder.photoImg.setOnline(isOpponentUserOnline);
 
 		boolean haveNewMessages = getInt(cursor, DbScheme.V_NEW_MESSAGES_COUNT) > 0;
 		if (haveNewMessages) {
@@ -78,7 +79,7 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 	}
 
 	private static class ViewHolder {
-		private ProgressImageView photoImg;
+		private AvatarView photoImg;
 		private TextView authorTxt;
 		private RoboTextView lastMessageTxt;
 		private TextView lastMessageDateTxt;

@@ -23,7 +23,7 @@
         style="@style/GlyphIcon.Square"
         />
 
-    <com.chess.backend.image_load.ProgressImageView
+    <com.chess.backend.image_load.AvatarView
         android:id="@+id/photoImg"
         android:layout_width="@dimen/friend_list_photo_size"
         android:layout_height="@dimen/friend_list_photo_size"

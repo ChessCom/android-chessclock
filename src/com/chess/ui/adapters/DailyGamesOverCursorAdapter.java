@@ -16,12 +16,12 @@ import com.chess.db.DbScheme;
  * Date: 12.08.13
  * Time: 6:10
  */
-public class DailyGamesCursorOverAdapter extends ItemsCursorAdapter {
+public class DailyGamesOverCursorAdapter extends ItemsCursorAdapter {
 
 	private final Resources resources;
 	private final int imageSize;
 
-	public DailyGamesCursorOverAdapter(Context context, Cursor cursor) {
+	public DailyGamesOverCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
 		resources = context.getResources();
 		imageSize = (int) (resources.getDimension(R.dimen.list_item_image_size_big) / resources.getDisplayMetrics().density);

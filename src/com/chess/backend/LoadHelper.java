@@ -49,6 +49,7 @@ public class LoadHelper {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(CMD_GAMES_ALL);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
+		loadItem.addRequestParams(P_AVATAR_SIZE, RestHelper.V_AV_SIZE_TINY);
 		return loadItem;
 	}
 
@@ -56,6 +57,7 @@ public class LoadHelper {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(CMD_FRIENDS);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
+		loadItem.addRequestParams(P_AVATAR_SIZE, RestHelper.V_AV_SIZE_SMALL);
 		return loadItem;
 	}
 

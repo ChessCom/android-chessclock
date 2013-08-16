@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.RestHelper;
+import com.chess.backend.image_load.AvatarView;
 import com.chess.db.DbScheme;
 
 /**
@@ -29,7 +30,7 @@ public class RecentOpponentsCursorAdapter extends ItemsCursorAdapter {
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_recent_opponent_item, parent, false);
 		ViewHolder holder = new ViewHolder();
-		holder.playerImg = (ProgressImageView) view.findViewById(R.id.playerImg);
+		holder.playerImg = (AvatarView) view.findViewById(R.id.playerImg);
 		holder.playerTxt = (TextView) view.findViewById(R.id.playerNameTxt);
 
 		view.setTag(holder);
@@ -40,15 +41,26 @@ public class RecentOpponentsCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View convertView, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		holder.playerTxt.setText(getString(cursor, DbScheme.V_WHITE_USERNAME));
+		// get player side, and choose opponent
+		String avatarUrl;
+		String opponentName;
+		if (getInt(cursor, DbScheme.V_I_PLAY_AS) == RestHelper.P_BLACK) {
+			avatarUrl = getString(cursor, DbScheme.V_WHITE_AVATAR);
+			opponentName = getString(cursor, DbScheme.V_WHITE_USERNAME);
+		} else {
+			avatarUrl = getString(cursor, DbScheme.V_BLACK_AVATAR);
+			opponentName = getString(cursor, DbScheme.V_BLACK_USERNAME);
+		}
 
-		//		String avatarUrl = getString(cursor, DbScheme.OP)
-		String avatarUrl = "https://s3.amazonaws.com/chess-7/images_users/avatars/erik_small.1.png";
+		holder.playerTxt.setText(opponentName);
 		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
+
+		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
+		holder.playerImg.setOnline(isOpponentOnline);
 	}
 
 	protected class ViewHolder {
-		public ProgressImageView playerImg;
+		public AvatarView playerImg;
 		public TextView playerTxt;
 	}
 }

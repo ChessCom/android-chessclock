@@ -230,6 +230,12 @@ public class RestHelper {
 	public static final int P_RANDOM = 0;
 	public static final int P_WHITE = 1;
 	public static final int P_BLACK = 2;
+
+//	origin|small|large|tiny|micro
+//	Description	Image size. Default is `small`.
+
+
+
 	public static final String P_GID = "gid"; // game id
 	public static final String P_ALL = "all";
 	public static final String P_RETURN = "return";
@@ -281,6 +287,7 @@ public class RestHelper {
 	public static final String P_SUBJECT = "subject";
 	public static final String P_BODY = "body";
 	public static final String P_COMMENTS_PER_PAGE = "commentsPerPage";
+	public static final String P_AVATAR_SIZE = "avatarSize";
 
 	private static final String GOTO = "&goto=";
 
@@ -309,6 +316,13 @@ public class RestHelper {
 	public static final int V_GOLD_MEMBER = 1;
 	public static final int V_PLATINUM_MEMBER = 2;
 	public static final int V_DIAMOND_MEMBER = 3;
+
+	/* Avatars sizes */
+	public static final String V_AV_SIZE_ORIG = "origin";
+	public static final String V_AV_SIZE_SMALL = "small"; // default on server // 200
+	public static final String V_AV_SIZE_LARGE = "large"; // 450
+	public static final String V_AV_SIZE_TINY = "tiny"; // 88
+	public static final String V_AV_SIZE_MICRO = "micro"; // 20
 
 /*
 loginToken			\w+	true	Login token used to authenticate user.

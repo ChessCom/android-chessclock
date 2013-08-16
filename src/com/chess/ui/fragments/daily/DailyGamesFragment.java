@@ -368,7 +368,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		// if server have new ids we get those games with ids
 
 		LoadItem loadItem = LoadHelper.getAllGames(getUserToken());
-//		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_ID);
 		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
 

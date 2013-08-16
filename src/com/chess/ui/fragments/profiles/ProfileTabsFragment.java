@@ -13,6 +13,7 @@ import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.UserItem;
+import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.StaticData;
@@ -33,7 +34,7 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 	private int photoImageSize;
 	private String username;
 	private UserUpdateListener userUpdateListener;
-	private ProgressImageView photoImg;
+	private AvatarView photoImg;
 	private TextView usernameTxt;
 	private TextView locationTxt;
 	private ImageView countryImg;
@@ -79,7 +80,7 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 
 		setTitle(username);
 
-		photoImg = (ProgressImageView) view.findViewById(R.id.photoImg);
+		photoImg = (AvatarView) view.findViewById(R.id.photoImg);
 		usernameTxt = (TextView) view.findViewById(R.id.usernameTxt);
 		locationTxt = (TextView) view.findViewById(R.id.locationTxt);
 		countryImg = (ImageView) view.findViewById(R.id.countryImg);

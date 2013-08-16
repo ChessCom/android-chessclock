@@ -10,9 +10,8 @@
 	android:paddingRight="@dimen/default_scr_side_padding"
 	android:background="@color/white"
 	>
-	<!--android:paddingBottom="15dip"-->
 
-	<com.chess.backend.image_load.ProgressImageView
+	<com.chess.backend.image_load.AvatarView
 		android:id="@+id/photoImg"
 		android:layout_width="35dip"
 		android:layout_height="35dip"

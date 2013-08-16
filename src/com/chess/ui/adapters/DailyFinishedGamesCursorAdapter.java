@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
@@ -42,7 +42,7 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_daily_finished_games_item, parent, false);
 		ViewHolder holder = new ViewHolder();
-		holder.playerImg = (ProgressImageView) view.findViewById(R.id.playerImg);
+		holder.playerImg = (AvatarView) view.findViewById(R.id.playerImg);
 		holder.playerTxt = (TextView) view.findViewById(R.id.playerNameTxt);
 		holder.premiumImg = (ImageView) view.findViewById(R.id.premiumImg);
 		holder.ratingTxt = (TextView) view.findViewById(R.id.ratingTxt);
@@ -80,6 +80,9 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 		holder.ratingTxt.setText(StaticData.SYMBOL_LEFT_PAR + opponentRating + StaticData.SYMBOL_RIGHT_PAR);
 		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 
+		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
+		holder.playerImg.setOnline(isOpponentOnline);
+
 		// Loss orange
 		String result = lossStr;
 		holder.gameResultTxt.setTextColor(colorOrange);
@@ -96,7 +99,7 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 	}
 
 	protected class ViewHolder {
-		public ProgressImageView playerImg;
+		public AvatarView playerImg;
 		public TextView playerTxt;
 		public ImageView premiumImg;
 		public TextView ratingTxt;

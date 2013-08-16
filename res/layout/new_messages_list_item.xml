@@ -14,7 +14,7 @@
 	>
 
 	<!--Thumbnail-->
-	<com.chess.backend.image_load.ProgressImageView
+	<com.chess.backend.image_load.AvatarView
 		android:id="@+id/photoImg"
 		android:layout_width="@dimen/message_thumb_size"
 		android:layout_height="@dimen/message_thumb_size"

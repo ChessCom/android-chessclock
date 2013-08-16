@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
@@ -37,7 +37,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_daily_games_home_item, parent, false);
 		ViewHolder holder = new ViewHolder();
-		holder.playerImg = (ProgressImageView) view.findViewById(R.id.playerImg);
+		holder.playerImg = (AvatarView) view.findViewById(R.id.playerImg);
 		holder.playerTxt = (TextView) view.findViewById(R.id.playerNameTxt);
 		holder.gameInfoTxt = (TextView) view.findViewById(R.id.timeLeftTxt);
 		holder.timeLeftIcon = (TextView) view.findViewById(R.id.timeLeftIcon);
@@ -71,8 +71,11 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 			opponentName = getString(cursor, DbScheme.V_BLACK_USERNAME) + gameType + draw;
 		}
 
-		holder.playerTxt.setText(opponentName + gameType);
+		holder.playerTxt.setText(opponentName);
 		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
+
+		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
+		holder.playerImg.setOnline(isOpponentOnline);
 
 		// don't show time if it's not my move
 		if (getInt(cursor, DbScheme.V_IS_MY_TURN) > 0) {
@@ -115,7 +118,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	}
 
 	protected class ViewHolder {
-		public ProgressImageView playerImg;
+		public AvatarView playerImg;
 		public TextView playerTxt;
 		public TextView gameInfoTxt;
 		public TextView timeLeftIcon;

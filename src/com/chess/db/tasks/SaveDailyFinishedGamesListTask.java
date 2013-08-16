@@ -27,7 +27,7 @@ public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<DailyFini
 
 				final String[] arguments2 = arguments;
 				arguments2[0] = String.valueOf(username);
-				arguments2[1] = String.valueOf(finishedItem.getGameId()); // Test
+				arguments2[1] = String.valueOf(finishedItem.getGameId());
 
 				Uri uri = DbScheme.uriArray[DbScheme.Tables.DAILY_FINISHED_GAMES.ordinal()];
 				final Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_GAME_ID,
@@ -36,12 +36,9 @@ public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<DailyFini
 				ContentValues values = DbDataManager.putDailyFinishedGameToValues(finishedItem, username);
 
 				DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
-
 			}
 		}
-		result = StaticData.RESULT_OK;
-
-		return result;
+		return StaticData.RESULT_OK;
 	}
 
 }

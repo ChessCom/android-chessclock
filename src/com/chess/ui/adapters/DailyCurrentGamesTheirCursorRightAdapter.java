@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
@@ -27,7 +27,7 @@ public class DailyCurrentGamesTheirCursorRightAdapter extends ItemsCursorAdapter
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_daily_games_item, parent, false);
 		ViewHolder holder = new ViewHolder();
-		holder.playerImg = (ProgressImageView) view.findViewById(R.id.playerImg);
+		holder.playerImg = (AvatarView) view.findViewById(R.id.playerImg);
 		holder.playerTxt = (TextView) view.findViewById(R.id.playerNameTxt);
 		holder.gameInfoTxt = (TextView) view.findViewById(R.id.timeLeftTxt);
 
@@ -63,6 +63,9 @@ public class DailyCurrentGamesTheirCursorRightAdapter extends ItemsCursorAdapter
 		holder.playerTxt.setText(opponentName + gameType);
 		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 
+		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
+		holder.playerImg.setOnline(isOpponentOnline);
+
 		long amount = getLong(cursor, DbScheme.V_TIME_REMAINING);
 		String infoText;
 		if (amount == 0) {
@@ -74,7 +77,7 @@ public class DailyCurrentGamesTheirCursorRightAdapter extends ItemsCursorAdapter
 	}
 
 	protected class ViewHolder {
-		public ProgressImageView playerImg;
+		public AvatarView playerImg;
 		public TextView playerTxt;
 		public TextView gameInfoTxt;
 	}

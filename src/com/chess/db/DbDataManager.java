@@ -162,6 +162,7 @@ public class DbDataManager {
 			V_IS_MY_TURN,
 			V_TIMESTAMP,
 			V_OPPONENT_OFFERED_DRAW,
+			V_IS_OPPONENT_ONLINE,
 			V_HAS_NEW_MESSAGE,
 			V_TIME_REMAINING
 	};
@@ -179,6 +180,7 @@ public class DbDataManager {
 			V_BLACK_AVATAR,
 			V_WHITE_RATING,
 			V_BLACK_RATING,
+			V_IS_OPPONENT_ONLINE,
 			V_WHITE_PREMIUM_STATUS,
 			V_BLACK_PREMIUM_STATUS
 	};
@@ -188,6 +190,7 @@ public class DbDataManager {
 			V_USER,
 			V_I_PLAY_AS,
 			V_WHITE_USERNAME,
+			V_IS_OPPONENT_ONLINE,
 			V_BLACK_USERNAME
 	};
 

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.api.ChatItem;
-import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.AvatarView;
 
 import java.util.List;
 
@@ -27,8 +27,8 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 
 		View view = inflater.inflate(R.layout.new_chat_list_item, null, false);
 		holder.text = (TextView) view.findViewById(R.id.messageTxt);
-		holder.myImg = (ProgressImageView) view.findViewById(R.id.myAvatarImg);
-		holder.opponentImg = (ProgressImageView) view.findViewById(R.id.opponentAvatarImg);
+		holder.myImg = (AvatarView) view.findViewById(R.id.myAvatarImg);
+		holder.opponentImg = (AvatarView) view.findViewById(R.id.opponentAvatarImg);
 
 		view.setTag(holder);
 		return view;
@@ -62,7 +62,7 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 
 	private static class ViewHolder{
 		TextView text;
-		ProgressImageView myImg;
-		ProgressImageView opponentImg;
+		AvatarView myImg;
+		AvatarView opponentImg;
 	}
 }

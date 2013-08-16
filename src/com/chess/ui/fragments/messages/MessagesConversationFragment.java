@@ -196,7 +196,6 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_MESSAGES);
-
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_USERNAME, otherUsername);

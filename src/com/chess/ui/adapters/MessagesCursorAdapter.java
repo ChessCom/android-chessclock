@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.RoboTextView;
-import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.AvatarView;
 import com.chess.db.DbScheme;
 import com.chess.utilities.AppUtils;
 
@@ -31,7 +31,7 @@ public class MessagesCursorAdapter extends ItemsCursorAdapter {
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_messages_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
-		holder.photoImg = (ProgressImageView) view.findViewById(R.id.photoImg);
+		holder.photoImg = (AvatarView) view.findViewById(R.id.photoImg);
 		holder.authorTxt = (TextView) view.findViewById(R.id.authorTxt);
 		holder.messageTxt = (RoboTextView) view.findViewById(R.id.messageTxt);
 		holder.messageDateTxt = (TextView) view.findViewById(R.id.messageDateTxt);
@@ -45,7 +45,8 @@ public class MessagesCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
 
-		boolean isOtherUserOnline = getInt(cursor, DbScheme.V_OTHER_USER_IS_ONLINE) > 0;
+		boolean isOpponentOnline = getInt(cursor, DbScheme.V_OTHER_USER_IS_ONLINE) > 0;
+		holder.photoImg.setOnline(isOpponentOnline);
 
 		String otherUserAvatarUrl = getString(cursor, DbScheme.V_OTHER_USER_AVATAR_URL);
 		imageLoader.download(otherUserAvatarUrl, holder.photoImg, imgSize);
@@ -59,7 +60,7 @@ public class MessagesCursorAdapter extends ItemsCursorAdapter {
 	}
 
 	private static class ViewHolder {
-		private ProgressImageView photoImg;
+		private AvatarView photoImg;
 		private TextView authorTxt;
 		private RoboTextView messageTxt;
 		private TextView messageDateTxt;

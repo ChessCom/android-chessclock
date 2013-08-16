@@ -21,7 +21,7 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.ui.adapters.CommonAcceptDeclineCursorAdapter;
 import com.chess.ui.adapters.CustomSectionedAdapter;
-import com.chess.ui.adapters.DailyGamesCursorOverAdapter;
+import com.chess.ui.adapters.DailyGamesOverCursorAdapter;
 import com.chess.ui.adapters.NewChatMessagesCursorAdapter;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
@@ -38,7 +38,7 @@ public class NotificationsRightFragment extends CommonLogicFragment implements I
 	private CommonAcceptDeclineCursorAdapter friendRequestsAdapter;
 	private CommonAcceptDeclineCursorAdapter challengesGamesAdapter;
 	private NewChatMessagesCursorAdapter chatMessagesAdapter;
-	private DailyGamesCursorOverAdapter gamesOverAdapter;
+	private DailyGamesOverCursorAdapter gamesOverAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class NotificationsRightFragment extends CommonLogicFragment implements I
 		friendRequestsAdapter = new CommonAcceptDeclineCursorAdapter(this, null);
 		challengesGamesAdapter = new CommonAcceptDeclineCursorAdapter(this, null);
 		chatMessagesAdapter = new NewChatMessagesCursorAdapter(getActivity(), null);
-		gamesOverAdapter = new DailyGamesCursorOverAdapter(getActivity(), null);
+		gamesOverAdapter = new DailyGamesOverCursorAdapter(getActivity(), null);
 
 		sectionedAdapter.addSection(getString(R.string.friend_requests), friendRequestsAdapter);
 		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);

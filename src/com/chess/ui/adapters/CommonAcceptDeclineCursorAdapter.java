@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.AvatarView;
 import com.chess.db.DbScheme;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
@@ -31,7 +31,7 @@ public class CommonAcceptDeclineCursorAdapter extends ItemsCursorAdapter {
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_daily_challenge_game_item, parent, false);
 		ViewHolder holder = new ViewHolder();
-		holder.playerImg = (ProgressImageView) view.findViewById(R.id.playerImg);
+		holder.playerImg = (AvatarView) view.findViewById(R.id.playerImg);
 		holder.playerTxt = (TextView) view.findViewById(R.id.playerNameTxt);
 		holder.acceptBtn = (TextView) view.findViewById(R.id.acceptBtn);
 		holder.cancelBtn = (TextView) view.findViewById(R.id.cancelBtn);
@@ -56,7 +56,7 @@ public class CommonAcceptDeclineCursorAdapter extends ItemsCursorAdapter {
 	}
 
 	protected class ViewHolder {
-		public ProgressImageView playerImg;
+		public AvatarView playerImg;
 		public TextView playerTxt;
 		public TextView cancelBtn;
 		public TextView acceptBtn;

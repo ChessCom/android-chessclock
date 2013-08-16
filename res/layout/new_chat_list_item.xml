@@ -7,7 +7,7 @@
     android:paddingTop="13dip"
     >
 
-    <com.chess.backend.image_load.ProgressImageView
+    <com.chess.backend.image_load.AvatarView
         android:id="@+id/opponentAvatarImg"
         android:layout_width="@dimen/chat_icon_size"
         android:layout_height="@dimen/chat_icon_size"
@@ -28,7 +28,7 @@
         android:layout_toLeftOf="@+id/myAvatarImg"
 		/>
 
-    <com.chess.backend.image_load.ProgressImageView
+    <com.chess.backend.image_load.AvatarView
         android:id="@id/myAvatarImg"
         android:layout_width="@dimen/chat_icon_size"
         android:layout_height="@dimen/chat_icon_size"
