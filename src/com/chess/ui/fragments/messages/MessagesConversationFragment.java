@@ -36,7 +36,6 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 	private static final String OTHER_USERNAME = "otherUserName";
 
 	private ListView listView;
-	private boolean need2update = true;
 	private MessagesUpdateListener messagesUpdateListener;
 	private SaveMessagesListener saveMessagesListener;
 	private MessagesCursorAdapter messagesCursorAdapter;

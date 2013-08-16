@@ -43,6 +43,10 @@ public interface ActiveFragmentInterface {
 
 	void removeOnOpenMenuListener(SlidingMenu.OnOpenedListener listener);
 
+	void addOnCloseMenuListener(SlidingMenu.OnClosedListener listener);
+
+	void removeOnCloseMenuListener(SlidingMenu.OnClosedListener listener);
+
 	void setFullScreen();
 
 	void clearFragmentStack();

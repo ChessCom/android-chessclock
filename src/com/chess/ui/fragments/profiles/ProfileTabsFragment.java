@@ -32,7 +32,7 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 	private static final String USERNAME = "username";
 	private int photoImageSize;
 	private String username;
-	private ProfileTabsFragment.UserUpdateListener userUpdateListener;
+	private UserUpdateListener userUpdateListener;
 	private ProgressImageView photoImg;
 	private TextView usernameTxt;
 	private TextView locationTxt;
@@ -41,6 +41,7 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId;
 	private EnhancedImageDownloader imageLoader;
+	private UserItem.Data userInfo;
 
 	public ProfileTabsFragment() {}
 
@@ -99,10 +100,12 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 	public void onResume() {
 		super.onResume();
 
-		LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), username);
-
-		new RequestJsonTask<UserItem>(userUpdateListener).executeTask(loadItem);
-
+		if (need2update) {
+			LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), username);
+			new RequestJsonTask<UserItem>(userUpdateListener).executeTask(loadItem);
+		} else {
+			updateUiData();
+		}
 	}
 
 	@Override
@@ -151,13 +154,19 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 		@Override
 		public void updateData(UserItem returnedObj) {
 			super.updateData(returnedObj);
-			UserItem.Data userInfo = returnedObj.getData();
+			userInfo = returnedObj.getData();
 
-			imageLoader.download(userInfo.getAvatar(), photoImg, photoImageSize);
-			usernameTxt.setText(userInfo.getFirstName() + StaticData.SYMBOL_SPACE + userInfo.getLastName());
-			locationTxt.setText(userInfo.getLocation());
-			countryImg.setImageDrawable(AppUtils.getCountryFlagScaled(getActivity(), userInfo.getCountryName()));
-			premiumIconImg.setImageResource(AppUtils.getPremiumIcon(userInfo.getPremiumStatus()));
+			updateUiData();
+
+			need2update = false;
 		}
+	}
+
+	private void updateUiData() {
+		imageLoader.download(userInfo.getAvatar(), photoImg, photoImageSize);
+		usernameTxt.setText(userInfo.getFirstName() + StaticData.SYMBOL_SPACE + userInfo.getLastName());
+		locationTxt.setText(userInfo.getLocation());
+		countryImg.setImageDrawable(AppUtils.getCountryFlagScaled(getActivity(), userInfo.getCountryName()));
+		premiumIconImg.setImageResource(AppUtils.getPremiumIcon(userInfo.getPremiumStatus()));
 	}
 }

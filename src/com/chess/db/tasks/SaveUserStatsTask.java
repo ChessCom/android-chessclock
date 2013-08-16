@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.api.stats.UserStatsItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
@@ -20,27 +19,25 @@ import com.chess.db.DbScheme;
  */
 public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Long> {
 
-	private final String userName;
+	private final String username;
 	private ContentResolver resolver;
 	protected static String[] arguments = new String[1];
 
 	public SaveUserStatsTask(TaskUpdateInterface<UserStatsItem.Data> taskFace, UserStatsItem.Data item,
-							 ContentResolver resolver) {
+							 ContentResolver resolver, String username) {
 		super(taskFace);
 		this.item = item;
 		this.resolver = resolver;
-		AppData appData = new AppData(getTaskFace().getMeContext());
-		userName = appData.getUsername();
-
+		this.username = username;
 	}
 
 	@Override
 	protected Integer doTheTask(Long... params) {
 
-		saveLiveStats(userName, item, resolver);
-		saveDailyStats(userName, item, resolver);
-		saveTacticsStats(userName, item, resolver);
-		saveLessonsStats(userName, item, resolver);
+		saveLiveStats(username, item, resolver);
+		saveDailyStats(username, item, resolver);
+		saveTacticsStats(username, item, resolver);
+		saveLessonsStats(username, item, resolver);
 
 		return StaticData.RESULT_OK;
 	}
@@ -62,7 +59,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		if (item.getLiveBullet() != null) {
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal()];
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getLiveStandard(), userName);
+			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getLiveBullet(), userName);
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 

@@ -45,7 +45,6 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 	private LessonCourseItem.Data courseItem;
 	private int courseId;
 	private int categoryId;
-	private boolean need2update = true;
 
 	private TextView courseTitleTxt;
 	private TextView courseDescriptionTxt;

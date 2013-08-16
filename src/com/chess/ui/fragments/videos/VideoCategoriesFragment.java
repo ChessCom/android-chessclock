@@ -58,7 +58,6 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	private SparseBooleanArray viewedVideosMap;
 	private long playButtonClickTime;
 	private int currentPlayingId;
-	private boolean need2update = true;
 	private int previousCategoryId;
 
 	public static VideoCategoriesFragment createInstance(String sectionName) {

@@ -50,7 +50,6 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 	private SaveLessonsUpdateListener saveLessonsUpdateListener;
 	private LessonsUpdateListener lessonsUpdateListener;
 
-	private boolean need2update = true;
 	private int previousCategoryId;
 	private String sectionName;
 

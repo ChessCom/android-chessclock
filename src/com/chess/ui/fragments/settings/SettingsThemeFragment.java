@@ -72,7 +72,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private PopupCustomViewFragment loadProgressPopupFragment;
 	private SparseArray<String> optionsArray;
 	private PopupOptionsMenuFragment optionsSelectFragment;
-	private boolean need2update = true;
 	private ThemesAdapter themesAdapter;
 
 	@Override

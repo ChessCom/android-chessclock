@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,18 +35,21 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 	private static final String TAG = "StatsGameFragment";
 
-	public final static int LIVE_STANDARD = 0;
-	public final static int LIVE_BLITZ = 1;
-	public final static int LIVE_LIGHTNING = 2;
-	public final static int DAILY_CHESS = 3;
+	public final static int DAILY_CHESS = 0;
+	public final static int LIVE_STANDARD = 1;
+	public final static int LIVE_BLITZ = 2;
+	public final static int LIVE_LIGHTNING = 3;
 	public final static int DAILY_CHESS960 = 4;
 
 	private static final String CATEGORY = "mode";
+	private static final String USERNAME = "username";
 
 	private Spinner statsSpinner;
 	private StatsItemUpdateListener statsItemUpdateListener;
 	private SaveStatsUpdateListener saveStatsUpdateListener;
 	private String gameType;
+	private String username;
+	private int categoryId;
 
 	public StatsGameFragment() {
 		Bundle bundle = new Bundle();
@@ -53,10 +57,11 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		setArguments(bundle);
 	}
 
-	public static StatsGameFragment createInstance(int code) {
+	public static StatsGameFragment createInstance(int code, String username) {
 		StatsGameFragment frag = new StatsGameFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(CATEGORY, code);
+		bundle.putString(USERNAME, username);
 		frag.setArguments(bundle);
 		return frag;
 	}
@@ -64,6 +69,18 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			username = getArguments().getString(USERNAME);
+			categoryId = getArguments().getInt(CATEGORY);
+		} else {
+			username = savedInstanceState.getString(USERNAME);
+			categoryId = savedInstanceState.getInt(CATEGORY);
+		}
+
+		if (TextUtils.isEmpty(username)) {
+			username = getUsername();
+		}
 
 		init();
 	}
@@ -82,8 +99,17 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		List<SelectionItem> sortList = createSpinnerList(getActivity());
 		statsSpinner.setAdapter(new DarkSpinnerIconAdapter(getActivity(), sortList));
 		statsSpinner.setOnItemSelectedListener(this);
-		int selectedPosition = getArguments().getInt(CATEGORY);
+		int selectedPosition = categoryId;
 		statsSpinner.setSelection(selectedPosition);
+	}
+
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putInt(CATEGORY, categoryId);
+		outState.putString(USERNAME, username);
 	}
 
 	private void init() {
@@ -91,7 +117,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		saveStatsUpdateListener = new SaveStatsUpdateListener();
 	}
 
-	private void updateData() {
+	private void updateUiData() {
 		SelectionItem selectionItem = (SelectionItem) statsSpinner.getSelectedItem();
 		gameType = selectionItem.getCode();
 
@@ -100,6 +126,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		loadItem.setLoadPath(RestHelper.CMD_GAME_STATS);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
+		loadItem.addRequestParams(RestHelper.P_VIEW_USERNAME, username);
 
 		new RequestJsonTask<GameStatsItem>(statsItemUpdateListener).executeTask(loadItem);
 
@@ -108,13 +135,12 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		updateData();
+		updateUiData();
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
 	}
-
 
 	private class StatsItemUpdateListener extends ChessLoadUpdateListener<GameStatsItem> {
 
@@ -157,8 +183,6 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			statsSpinner.setEnabled(true);
-
-			showToast(" code " + resultCode);
 		}
 	}
 
@@ -183,10 +207,10 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 	/**
 	 *  Fill list according :
+	 *	Daily - Chess
 	 *	Live - Standard
 	 *	Live - Blitz
 	 *	Live - Bullet
-	 *	Daily - Chess
 	 *	Daily - Chess960
 	 *	Tactics
 	 *	Coach Manager
@@ -196,17 +220,17 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	private Drawable getIconByCategory(int index) {
 		Context context = getActivity();
 		switch (index) {
+			case DAILY_CHESS:
+				return new IconDrawable(context, R.string.ic_daily_game);
 			case LIVE_STANDARD:
 				return new IconDrawable(context, R.string.ic_live_standard);
 			case LIVE_BLITZ:
 				return new IconDrawable(context, R.string.ic_live_blitz);
 			case LIVE_LIGHTNING:
 				return new IconDrawable(context, R.string.ic_live_bullet);
-			case DAILY_CHESS:
-				return new IconDrawable(context, R.string.ic_daily_game);
 			case DAILY_CHESS960:
 				return new IconDrawable(context, R.string.ic_daily960_game);
-			default: // case CHESS_MENTOR:
+			default: // case LESSONS:
 				return new IconDrawable(context, R.string.ic_help);
 		}
 	}

@@ -66,7 +66,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private VideoCategoriesUpdateListener videoCategoriesUpdateListener;
 	private SaveVideoCategoriesUpdateListener saveVideoCategoriesUpdateListener;
 
-	private boolean need2Update = true;
 	private boolean headerDataLoaded;
 	private long headerDataId;
 	private VideoItem.Data headerData;
@@ -160,7 +159,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		}
 
 		if (show) {
-			if (need2Update) {
+			if (need2update) {
 
 //				boolean haveSavedData = DbDataManager.haveSavedVideos(getActivity());
 //				if (haveSavedData) {
@@ -407,7 +406,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 				categoriesCursorAdapter.changeCursor(cursor);
 				listView.setAdapter(categoriesCursorAdapter);
 
-				need2Update = false;
+				need2update = false;
 			}
 		}
 	}

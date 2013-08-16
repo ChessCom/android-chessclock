@@ -23,7 +23,7 @@ public class UserStatsData {
 
 	private String rating;
 	private int highest_rating;
-	private int avg_oponent_rating;
+	private float avg_oponent_rating;
 	private int total_games;
 	private int wins;
 	private int losses;
@@ -43,7 +43,7 @@ public class UserStatsData {
 		return highest_rating;
 	}
 
-	public int getAvgOponentRating() {
+	public float getAvgOpponentRating() {
 		return avg_oponent_rating;
 	}
 

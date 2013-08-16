@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 48;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 49;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -547,7 +547,7 @@ public class DbScheme {
 	public static final String V_BEST_WIN_RATING = "best_win_rating";
 	public static final String V_BEST_WIN_GAME_ID = "best_win_game_id";
 	public static final String V_BEST_WIN_USERNAME = "best_win_username";
-	public static final String V_AVERAGE_OPPONENT = "average_opponent";
+	public static final String V_AVERAGE_OPPONENT_RATING = "average_opponent_rating";
 	/*Games*/
 	public static final String V_GAMES_TOTAL = "games_total";
 	public static final String V_GAMES_WINS = "games_wins";
@@ -582,76 +582,63 @@ public class DbScheme {
 	public static final String V_SCORE_50 = "p_50";
 
 	void createUserStatsTables() {
-/*
-		private String rating;
-		private int highest_rating;
-		private int avg_oponent_rating;
-		private int total_games;
-		private int wins;
-		private int losses;
-		private int draws;
-		private String best_win_rating;
-		private String best_win_username;
-*/
-
-
 		createTablesArray[Tables.USER_STATS_LIVE_STANDARD.ordinal()] = createTableForName(Tables.USER_STATS_LIVE_STANDARD)
-				+ addField_Int(V_RATING)
+				+ addField_Int(V_CURRENT)
 				+ addField_Int(V_HIGHEST_RATING)
-				+ addField_Int(V_AVERAGE_OPPONENT)
 				+ addField_Int(V_GAMES_TOTAL)
 				+ addField_Int(V_GAMES_WINS)
 				+ addField_Int(V_GAMES_LOSSES)
 				+ addField_Int(V_GAMES_DRAWS)
 				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Text(V_AVERAGE_OPPONENT_RATING)
 				+ addField_Text(V_BEST_WIN_USERNAME)
 				+ addField_Text(V_USER, true);
 
 		createTablesArray[Tables.USER_STATS_LIVE_LIGHTNING.ordinal()] = createTableForName(Tables.USER_STATS_LIVE_LIGHTNING)
-				+ addField_Int(V_RATING)
+				+ addField_Int(V_CURRENT)
 				+ addField_Int(V_HIGHEST_RATING)
-				+ addField_Int(V_AVERAGE_OPPONENT)
 				+ addField_Int(V_GAMES_TOTAL)
 				+ addField_Int(V_GAMES_WINS)
 				+ addField_Int(V_GAMES_LOSSES)
 				+ addField_Int(V_GAMES_DRAWS)
 				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Text(V_AVERAGE_OPPONENT_RATING)
 				+ addField_Text(V_BEST_WIN_USERNAME)
 				+ addField_Text(V_USER, true);
 
 		createTablesArray[Tables.USER_STATS_LIVE_BLITZ.ordinal()] = createTableForName(Tables.USER_STATS_LIVE_BLITZ)
-				+ addField_Int(V_RATING)
+				+ addField_Int(V_CURRENT)
 				+ addField_Int(V_HIGHEST_RATING)
-				+ addField_Int(V_AVERAGE_OPPONENT)
 				+ addField_Int(V_GAMES_TOTAL)
 				+ addField_Int(V_GAMES_WINS)
 				+ addField_Int(V_GAMES_LOSSES)
 				+ addField_Int(V_GAMES_DRAWS)
 				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Text(V_AVERAGE_OPPONENT_RATING)
 				+ addField_Text(V_BEST_WIN_USERNAME)
 				+ addField_Text(V_USER, true);
 
 		createTablesArray[Tables.USER_STATS_DAILY_CHESS.ordinal()] = createTableForName(Tables.USER_STATS_DAILY_CHESS)
-				+ addField_Int(V_RATING)
+				+ addField_Int(V_CURRENT)
 				+ addField_Int(V_HIGHEST_RATING)
-				+ addField_Int(V_AVERAGE_OPPONENT)
 				+ addField_Int(V_GAMES_TOTAL)
 				+ addField_Int(V_GAMES_WINS)
 				+ addField_Int(V_GAMES_LOSSES)
 				+ addField_Int(V_GAMES_DRAWS)
 				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Text(V_AVERAGE_OPPONENT_RATING)
 				+ addField_Text(V_BEST_WIN_USERNAME)
 				+ addField_Text(V_USER, true);
 
 		createTablesArray[Tables.USER_STATS_DAILY_CHESS960.ordinal()] = createTableForName(Tables.USER_STATS_DAILY_CHESS960)
-				+ addField_Int(V_RATING)
+				+ addField_Int(V_CURRENT)
 				+ addField_Int(V_HIGHEST_RATING)
-				+ addField_Int(V_AVERAGE_OPPONENT)
 				+ addField_Int(V_GAMES_TOTAL)
 				+ addField_Int(V_GAMES_WINS)
 				+ addField_Int(V_GAMES_LOSSES)
 				+ addField_Int(V_GAMES_DRAWS)
 				+ addField_Int(V_BEST_WIN_RATING)
+				+ addField_Text(V_AVERAGE_OPPONENT_RATING)
 				+ addField_Text(V_BEST_WIN_USERNAME)
 				+ addField_Text(V_USER, true);
 
@@ -664,7 +651,6 @@ public class DbScheme {
 				/* Stats */
 				+ addField_Int(V_LESSONS_TRIED)
 				+ addField_Int(V_TOTAL_LESSON_COUNT)
-				+ addField_Int(V_LESSON_COMPLETE_PERCENTAGE)
 				+ addField_Int(V_TOTAL_TRAINING_SECONDS)
 				+ addField_Int(V_SCORE_90_100)
 				+ addField_Int(V_SCORE_80_89)
@@ -672,6 +658,7 @@ public class DbScheme {
 				+ addField_Int(V_SCORE_60_69)
 				+ addField_Int(V_SCORE_50_59)
 				+ addField_Int(V_SCORE_50)
+				+ addField_Text(V_LESSON_COMPLETE_PERCENTAGE)
 				+ addField_Text(V_USER, true);
 
 		createTablesArray[Tables.USER_STATS_LESSONS.ordinal()] = createTableForName(Tables.USER_STATS_LESSONS)
@@ -683,7 +670,6 @@ public class DbScheme {
 				/* Stats */
 				+ addField_Int(V_LESSONS_TRIED)
 				+ addField_Int(V_TOTAL_LESSON_COUNT)
-				+ addField_Int(V_LESSON_COMPLETE_PERCENTAGE)
 				+ addField_Int(V_TOTAL_TRAINING_SECONDS)
 				+ addField_Int(V_SCORE_90_100)
 				+ addField_Int(V_SCORE_80_89)
@@ -691,6 +677,7 @@ public class DbScheme {
 				+ addField_Int(V_SCORE_60_69)
 				+ addField_Int(V_SCORE_50_59)
 				+ addField_Int(V_SCORE_50)
+				+ addField_Text(V_LESSON_COMPLETE_PERCENTAGE)
 				+ addField_Text(V_USER, true);
 	}
 
@@ -745,13 +732,13 @@ public class DbScheme {
 				+ addField_Int(V_GLICKO_RD)
 				+ addField_Int(V_HIGHEST_RATING)
 				+ addField_Int(V_LOWEST_RATING)
-				+ addField_Int(V_AVERAGE_OPPONENT)
 				+ addField_Int(V_BEST_WIN_RATING)
 				+ addField_Int(V_AVG_OPPONENT_RATING_WIN)
 				+ addField_Int(V_AVG_OPPONENT_RATING_LOSE)
 				+ addField_Int(V_AVG_OPPONENT_RATING_DRAW)
 				+ addField_Int(V_UNRATED)
 				+ addField_Int(V_IN_PROGRESS)
+				+ addField_Text(V_AVERAGE_OPPONENT_RATING)
 				+ addField_Text(V_USER)
 				+ addField_Text(V_RANK)
 				+ addField_Text(V_PERCENTILE)
@@ -784,13 +771,13 @@ public class DbScheme {
 				+ addField_Int(V_GLICKO_RD)
 				+ addField_Int(V_HIGHEST_RATING)
 				+ addField_Int(V_LOWEST_RATING)
-				+ addField_Int(V_AVERAGE_OPPONENT)
 				+ addField_Int(V_BEST_WIN_RATING)
 				+ addField_Int(V_AVG_OPPONENT_RATING_WIN)
 				+ addField_Int(V_AVG_OPPONENT_RATING_LOSE)
 				+ addField_Int(V_AVG_OPPONENT_RATING_DRAW)
 				+ addField_Int(V_UNRATED)
 				+ addField_Int(V_IN_PROGRESS)
+				+ addField_Text(V_AVERAGE_OPPONENT_RATING)
 				+ addField_Text(V_USER)
 				+ addField_Text(V_RANK)
 				+ addField_Text(V_PERCENTILE)
@@ -823,13 +810,13 @@ public class DbScheme {
 				+ addField_Int(V_GLICKO_RD)
 				+ addField_Int(V_HIGHEST_RATING)
 				+ addField_Int(V_LOWEST_RATING)
-				+ addField_Int(V_AVERAGE_OPPONENT)
 				+ addField_Int(V_BEST_WIN_RATING)
 				+ addField_Int(V_AVG_OPPONENT_RATING_WIN)
 				+ addField_Int(V_AVG_OPPONENT_RATING_LOSE)
 				+ addField_Int(V_AVG_OPPONENT_RATING_DRAW)
 				+ addField_Int(V_UNRATED)
 				+ addField_Int(V_IN_PROGRESS)
+				+ addField_Text(V_AVERAGE_OPPONENT_RATING)
 				+ addField_Text(V_USER)
 				+ addField_Text(V_RANK)
 				+ addField_Text(V_PERCENTILE)
@@ -862,13 +849,13 @@ public class DbScheme {
 				+ addField_Int(V_GLICKO_RD)
 				+ addField_Int(V_HIGHEST_RATING)
 				+ addField_Int(V_LOWEST_RATING)
-				+ addField_Int(V_AVERAGE_OPPONENT)
 				+ addField_Int(V_BEST_WIN_RATING)
 				+ addField_Int(V_AVG_OPPONENT_RATING_WIN)
 				+ addField_Int(V_AVG_OPPONENT_RATING_LOSE)
 				+ addField_Int(V_AVG_OPPONENT_RATING_DRAW)
 				+ addField_Int(V_UNRATED)
 				+ addField_Int(V_IN_PROGRESS)
+				+ addField_Text(V_AVERAGE_OPPONENT_RATING)
 				+ addField_Text(V_USER)
 				+ addField_Text(V_RANK)
 				+ addField_Text(V_PERCENTILE)
@@ -915,13 +902,13 @@ public class DbScheme {
 				+ addField_Int(V_GLICKO_RD)
 				+ addField_Int(V_HIGHEST_RATING)
 				+ addField_Int(V_LOWEST_RATING)
-				+ addField_Int(V_AVERAGE_OPPONENT)
 				+ addField_Int(V_BEST_WIN_RATING)
 				+ addField_Int(V_AVG_OPPONENT_RATING_WIN)
 				+ addField_Int(V_AVG_OPPONENT_RATING_LOSE)
 				+ addField_Int(V_AVG_OPPONENT_RATING_DRAW)
 				+ addField_Int(V_UNRATED)
 				+ addField_Int(V_IN_PROGRESS)
+				+ addField_Text(V_AVERAGE_OPPONENT_RATING)
 				+ addField_Text(V_USER)
 				+ addField_Text(V_RANK)
 				+ addField_Text(V_PERCENTILE)

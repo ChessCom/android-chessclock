@@ -34,7 +34,6 @@ public class HomeLearnFragment extends CommonLogicFragment {
 	private int currentTacticsRating;
 	private int tacitcsTodaysAttempts;
 	private int todaysAverageScore;
-	private boolean need2update = true;
 	private StatsUpdateListener statsUpdateListener;
 	private View todaysAttemptsLabelTxt;
 	private View avgScoreLabelTxt;

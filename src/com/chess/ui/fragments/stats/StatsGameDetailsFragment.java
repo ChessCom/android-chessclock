@@ -293,9 +293,9 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 		}
 
 		{ // average opponent
-			int rating = DbDataManager.getInt(cursor, DbScheme.V_AVERAGE_OPPONENT);
+			String rating = DbDataManager.getString(cursor, DbScheme.V_AVERAGE_OPPONENT_RATING);
 
-			setTextById((AVERAGE_ID + RATING_VALUE_ID), String.valueOf(rating));
+			setTextById((AVERAGE_ID + RATING_VALUE_ID), rating);
 		}
 
 		{ // best win on

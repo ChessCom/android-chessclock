@@ -79,7 +79,7 @@ public class UserTacticsStatsData {
 	public class Stats {
 		private int lessons_tried;
 		private int total_lesson_count;
-		private int lesson_complete_percentage;
+		private float lesson_complete_percentage;
 		private long total_training_seconds;
 		private Score score;
 
@@ -91,7 +91,7 @@ public class UserTacticsStatsData {
 			return total_lesson_count;
 		}
 
-		public int getLessonCompletePercentage() {
+		public float getLessonCompletePercentage() {
 			return lesson_complete_percentage;
 		}
 

@@ -5,7 +5,10 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -13,13 +16,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import com.chess.R;
 import com.slidingmenu.lib.CustomViewAbove.OnPageChangeListener;
-
-import java.lang.reflect.Method;
 
 public class SlidingMenu extends RelativeLayout {
 
@@ -96,7 +99,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * the onOpened event occurs, that object's appropriate
 	 * method is invoked.
 	 *
-	 * @see OnOpenedEvent
+	 * @see {@code OnClosedEvent}
 	 */
 	public interface OnOpenedListener {
 
@@ -117,7 +120,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * the onClose event occurs, that object's appropriate
 	 * method is invoked.
 	 *
-	 * @see OnCloseEvent
+	 * @see {@code OnClosedEvent}
 	 */
 	public interface OnCloseListener {
 
@@ -136,7 +139,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * the onClosed event occurs, that object's appropriate
 	 * method is invoked.
 	 *
-	 * @see OnClosedEvent
+	 * @see {@code OnClosedEvent}
 	 */
 	public interface OnClosedListener {
 
@@ -377,8 +380,8 @@ public class SlidingMenu extends RelativeLayout {
 	 *
 	 * @param view The desired content to display.
 	 */
-	public void setMenu(View v) {
-		mViewBehind.setContent(v);
+	public void setMenu(View view) {
+		mViewBehind.setContent(view);
 	}
 
 	/**
@@ -407,8 +410,8 @@ public class SlidingMenu extends RelativeLayout {
 	 *
 	 * @param view The desired content to display.
 	 */
-	public void setSecondaryMenu(View v) {
-		mViewBehind.setSecondaryContent(v);
+	public void setSecondaryMenu(View view) {
+		mViewBehind.setSecondaryContent(view);
 		//		mViewBehind.invalidate();
 	}
 
@@ -729,15 +732,15 @@ public class SlidingMenu extends RelativeLayout {
 	 * Options are {@link #TOUCHMODE_MARGIN TOUCHMODE_MARGIN}, {@link #TOUCHMODE_FULLSCREEN TOUCHMODE_FULLSCREEN},
 	 * or {@link #TOUCHMODE_NONE TOUCHMODE_NONE}
 	 *
-	 * @param i the new touch mode
+	 * @param mode the new touch mode
 	 */
-	public void setTouchModeAbove(int i) {
-		if (i != TOUCHMODE_FULLSCREEN && i != TOUCHMODE_MARGIN
-				&& i != TOUCHMODE_NONE) {
+	public void setTouchModeAbove(int mode) {
+		if (mode != TOUCHMODE_FULLSCREEN && mode != TOUCHMODE_MARGIN
+				&& mode != TOUCHMODE_NONE) {
 			throw new IllegalStateException("TouchMode must be set to either" +
 					"TOUCHMODE_FULLSCREEN or TOUCHMODE_MARGIN or TOUCHMODE_NONE.");
 		}
-		mViewAbove.setTouchMode(i);
+		mViewAbove.setTouchMode(mode);
 	}
 
 	/**

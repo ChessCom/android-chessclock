@@ -210,8 +210,6 @@ public class DbDataManager {
 
 	public static final String[] PROJECTION_USER_CURRENT_RATING = new String[]{_ID, V_USER, V_CURRENT};
 
-	public static final String[] PROJECTION_USER_AND_RATING = new String[]{_ID, V_USER, V_RATING};
-
 	public static final String[] PROJECTION_VIEWED_VIDEO = new String[]{_ID, V_USER, V_ID, V_VIDEO_VIEWED};
 
 	public static final String[] PROJECTION_ITEM_ID_AND_NUMBER = new String[]{_ID, V_ID, V_NUMBER};
@@ -580,10 +578,10 @@ public class DbDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = userName;
 		Cursor cursor = contentResolver.query(uriArray[dbUriCode],
-				PROJECTION_USER_AND_RATING, SELECTION_USER, arguments1, null);
+				PROJECTION_USER_CURRENT_RATING, SELECTION_USER, arguments1, null);
 
 		if (cursor != null && cursor.moveToFirst()) {
-			int rating = getInt(cursor, V_RATING);
+			int rating = getInt(cursor, V_CURRENT);
 			rating = rating == 0 ? DEFAULT_RATING : rating;
 			cursor.close();
 
@@ -1421,9 +1419,9 @@ public class DbDataManager {
 		ContentValues values = new ContentValues();
 
 		values.put(V_USER, user);
-		values.put(V_RATING, dataObj.getRating());
+		values.put(V_CURRENT, dataObj.getRating());
 		values.put(V_HIGHEST_RATING, dataObj.getHighestRating());
-		values.put(V_AVERAGE_OPPONENT, dataObj.getAvgOponentRating());
+		values.put(V_AVERAGE_OPPONENT_RATING, dataObj.getAvgOpponentRating());
 		values.put(V_GAMES_TOTAL, dataObj.getTotalGames());
 		values.put(V_GAMES_WINS, dataObj.getWins());
 		values.put(V_GAMES_LOSSES, dataObj.getLosses());
@@ -1508,7 +1506,7 @@ public class DbDataManager {
 		values.put(V_HIGHEST_TIMESTAMP, dataObj.getRating().getHighest().getTimestamp());
 		values.put(V_LOWEST_RATING, dataObj.getRating().getLowest().getRating());
 		values.put(V_LOWEST_TIMESTAMP, dataObj.getRating().getLowest().getTimestamp());
-		values.put(V_AVERAGE_OPPONENT, dataObj.getRating().getAverageOpponent());
+		values.put(V_AVERAGE_OPPONENT_RATING, dataObj.getRating().getAverageOpponent());
 
 		values.put(V_BEST_WIN_RATING, dataObj.getRating().getBestWin().getRating());
 		values.put(V_BEST_WIN_GAME_ID, dataObj.getRating().getBestWin().getGameId());
@@ -1566,7 +1564,7 @@ public class DbDataManager {
 			values.put(V_HIGHEST_TIMESTAMP, rating.getHighest().getTimestamp());
 			values.put(V_LOWEST_RATING, rating.getLowest().getRating());
 			values.put(V_LOWEST_TIMESTAMP, rating.getLowest().getTimestamp());
-			values.put(V_AVERAGE_OPPONENT, rating.getAverageOpponent());
+			values.put(V_AVERAGE_OPPONENT_RATING, rating.getAverageOpponent());
 
 			values.put(V_BEST_WIN_RATING, rating.getBestWin().getRating());
 			values.put(V_BEST_WIN_GAME_ID, rating.getBestWin().getGameId());

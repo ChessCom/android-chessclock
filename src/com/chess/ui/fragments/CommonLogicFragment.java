@@ -98,6 +98,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private int padding;
 	private int paddingCode;
 	private boolean slideMenusEnabled;
+	protected boolean need2update = true;
 
 	@Override
 	public void onAttach(Activity activity) {

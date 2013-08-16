@@ -57,7 +57,6 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 	private LessonsCoursesUpdateListener lessonsCoursesUpdateListener;
 	private SaveLessonsCoursesUpdateListener saveLessonsCoursesUpdateListener;
 
-	private boolean need2Update = true;
 
 	private CurriculumLessonsItems curriculumItems;
 	private boolean curriculumMode;
@@ -158,7 +157,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		expListView.setVisibility(show ? View.VISIBLE : View.GONE);
 
 		if (show) {
-			if (need2Update) {
+			if (need2update) {
 
 				// get saved categories
 				Cursor categoriesCursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
@@ -348,7 +347,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 			if (cursor != null && cursor.moveToFirst()) {
 				fillCoursesList(cursor);
 
-				need2Update = false;
+				need2update = false;
 			}
 		}
 	}

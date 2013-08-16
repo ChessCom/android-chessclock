@@ -78,7 +78,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private TextView emptyView;
 	private ListView listView;
 	private View loadingView;
-	private boolean need2update = true;
 	private Button startNewGameBtn;
 	private List<DailyFinishedGameData> finishedGameDataList;
 	private FragmentTabsFace parentFace;
@@ -108,7 +107,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			mode = savedInstanceState.getInt(MODE);
 		}
 
-		// init adapters
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
 				new int[]{CURRENT_GAMES_SECTION});
 
@@ -170,8 +168,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	@Override
-	public void onStop() {
-		super.onStop();
+	public void onPause() {
+		super.onPause();
 
 		unRegisterMyReceiver(gamesUpdateReceiver);
 
@@ -501,7 +499,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 						if (gamesLeft) {
 							new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-									getContentResolver()).executeTask();
+									getContentResolver(), getUsername()).executeTask();
 						} else {
 							finishedGamesCursorAdapter.changeCursor(null);
 						}
@@ -560,7 +558,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				currentGamesLeft = DbDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList, getUsername());
 
 				if (currentGamesLeft) {
-					new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, currentGamesList, getContentResolver()).executeTask();
+					new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, currentGamesList,
+							getContentResolver(), getUsername()).executeTask();
 				} else {
 					currentGamesMyCursorAdapter.changeCursor(null);
 				}
@@ -585,7 +584,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 					if (gamesLeft) {
 						new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-								getContentResolver()).executeTask();
+								getContentResolver(), getUsername()).executeTask();
 					} else {
 						finishedGamesCursorAdapter.changeCursor(null);
 					}

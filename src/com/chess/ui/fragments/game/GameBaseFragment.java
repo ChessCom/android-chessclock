@@ -24,6 +24,7 @@ import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
+import com.slidingmenu.lib.SlidingMenu;
 
 import java.text.SimpleDateFormat;
 
@@ -33,7 +34,7 @@ import java.text.SimpleDateFormat;
  * Date: 15.01.13
  * Time: 13:46
  */
-public abstract class GameBaseFragment extends LiveBaseFragment implements GameFace {
+public abstract class GameBaseFragment extends LiveBaseFragment implements GameFace, SlidingMenu.OnClosedListener {
 
 	protected static final String GAME_GOES = "*";
 	protected static final String WHITE_WINS = "1-0";
@@ -81,6 +82,8 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 				getAppData().setPlaySounds(getActivity(), false);
 				break;
 		}
+
+		getActivityFace().addOnCloseMenuListener(this);
 	}
 
 	@Override
@@ -123,6 +126,8 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		if (AppUtils.isNeedToUpgrade(getActivity())) {
 			MopubHelper.destroyRectangleAd();
 		}
+
+		getActivityFace().removeOnCloseMenuListener(this);
 	}
 
 	@Override
@@ -232,6 +237,11 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 	protected PopupCustomViewFragment getEndPopupDialogFragment(){
 		return (PopupCustomViewFragment) getFragmentManager().findFragmentByTag(END_GAME_TAG);
+	}
+
+	@Override
+	public void onClosed() {
+		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
 	}
 
 	public class ShareItem {

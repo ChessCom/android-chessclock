@@ -102,15 +102,17 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 	public void onResume() {
 		super.onResume();
 
-		// get full stats
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_USER_STATS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_VIEW_USERNAME, username);
+		if (need2update) {
+			// get full stats
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.CMD_USER_STATS);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+			loadItem.addRequestParams(RestHelper.P_USERNAME, username);
 
-		new RequestJsonTask<UserStatsItem>(statsItemUpdateListener).executeTask(loadItem);
-
-//		fillUserStats();  // TODO adjust properly when API is ready
+			new RequestJsonTask<UserStatsItem>(statsItemUpdateListener).executeTask(loadItem);
+		} else {
+			fillUserStats();
+		}
 	}
 
 	@Override
@@ -128,7 +130,7 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 			case LIVE_LIGHTNING:
 			case DAILY_CHESS:
 			case DAILY_CHESS960:
-				getActivityFace().openFragment(StatsGameFragment.createInstance(position));
+				getActivityFace().openFragment(StatsGameFragment.createInstance(position, username));
 				break;
 			case TACTICS:
 				getActivityFace().openFragment(new StatsGameTacticsFragment());
@@ -141,12 +143,12 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 
 	private void fillUserStats() {
 		// fill ratings
-		String[] argument = new String[]{getAppData().getUsername()};
+		String[] argument = new String[]{username};
 
 		{// standard
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal()],
 					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
-			if (cursor.moveToFirst()) {
+			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				ratingList.get(LIVE_STANDARD).setValue(currentRating);
 			}
@@ -154,7 +156,7 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 		{// blitz
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal()],
 					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
-			if (cursor.moveToFirst()) {
+			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				ratingList.get(LIVE_BLITZ).setValue(currentRating);
 			}
@@ -162,7 +164,7 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 		{// bullet
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal()],
 					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
-			if (cursor.moveToFirst()) {
+			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 
 				ratingList.get(LIVE_LIGHTNING).setValue(currentRating);
@@ -171,7 +173,7 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 		{// chess
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal()],
 					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
-			if (cursor.moveToFirst()) {
+			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				ratingList.get(DAILY_CHESS).setValue(currentRating);
 			}
@@ -187,7 +189,7 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 		{// tactics
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_TACTICS.ordinal()],
 					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
-			if (cursor.moveToFirst()) {
+			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				ratingList.get(TACTICS).setValue(currentRating);
 			}
@@ -195,13 +197,14 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 		{// chess mentor
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_LESSONS.ordinal()],
 					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
-			if (cursor.moveToFirst()) {
+			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				ratingList.get(LESSONS).setValue(currentRating);
 			}
 		}
 
 		ratingsAdapter.notifyDataSetInvalidated();
+		need2update = false;
 	}
 
 	@Override
@@ -219,7 +222,7 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 		public void updateData(UserStatsItem returnedObj) {
 			super.updateData(returnedObj);
 
-			new SaveUserStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
+			new SaveUserStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver(), username).executeTask();
 		}
 	}
 

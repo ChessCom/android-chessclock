@@ -123,18 +123,18 @@
     </string-array>
 
     <string-array name="game_stats_categories">
-        <item>Live - Standard</item>
-        <item>Live - Blitz</item>
-        <item>Live - Bullet</item>
-        <item>Daily - Chess</item>
-        <item>Daily - Chess960</item>
+		<item>Daily Chess</item>
+        <item>Live Chess - Standard</item>
+        <item>Live Chess - Blitz</item>
+        <item>Live Chess - Bullet</item>
+        <item>Daily Chess960</item>
     </string-array>
 
     <string-array name="game_stats_types">
+		<item>chess</item>
         <item>standard</item>
         <item>blitz</item>
         <item>lightning</item>
-        <item>chess</item>
         <item>chess960</item>
     </string-array>
 

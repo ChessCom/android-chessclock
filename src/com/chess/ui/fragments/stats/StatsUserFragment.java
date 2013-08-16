@@ -106,8 +106,8 @@ public class StatsUserFragment extends CommonLogicFragment implements AdapterVie
 			super.updateData(returnedObj);
 
 			// Save stats to DB
-			new SaveUserStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
-
+			new SaveUserStatsTask(saveStatsUpdateListener, returnedObj.getData(),
+					getContentResolver(), getUsername()).executeTask();
 
 			// get selected position of spinner
 			int position = statsSpinner.getSelectedItemPosition();

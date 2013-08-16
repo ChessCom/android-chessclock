@@ -33,7 +33,6 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 	private CommonCategoriesCursorAdapter categoriesCursorAdapter;
 	private CategoriesUpdateListener categoriesUpdateListener;
 	private SaveForumCategoriesListener saveForumCategoriesListener;
-	private boolean need2update = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

@@ -61,6 +61,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		listView.setOnItemClickListener(this);
 
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
+
 		// adjust actionBar icons
 		getActivityFace().showActionMenu(R.id.menu_edit, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);

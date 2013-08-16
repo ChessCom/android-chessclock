@@ -1,7 +1,6 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -36,9 +35,6 @@ public class DarkSpinnerIconAdapter extends ItemsAdapter<SelectionItem> {
 	protected void bindView(SelectionItem item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 		holder.textTxt.setText(item.getText());
-		Drawable drawable = item.getImage();
-		drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-		holder.textTxt.setCompoundDrawables(drawable, null, null, null);
 	}
 
 	@Override
@@ -55,9 +51,6 @@ public class DarkSpinnerIconAdapter extends ItemsAdapter<SelectionItem> {
 
 		holder.textTxt.setTextColor(context.getResources().getColor(R.color.black));
 		holder.textTxt.setText(itemsList.get(position).getText());
-		Drawable drawable = itemsList.get(position).getImage();
-		drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-		holder.textTxt.setCompoundDrawables(drawable, null, null, null);
 
 		return convertView;
 	}

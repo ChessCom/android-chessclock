@@ -179,11 +179,11 @@ public class RestHelper {
 	public static final String P_PAGE_ = "page";
 	public static final String P_ITEMS_PER_PAGE = "itemsPerPage";
 	public static final String P_LIMIT = "limit";
-	public static final String P_VIEW_USERNAME = "viewUsername";
 	public static final String P_ITEMS_PER_CATEGORY = "itemsPerCategory";
 	public static final String GCM_P_REGISTER_ID = "registrationId";
 
 	public static final String P_USERNAME = "username";
+	public static final String P_VIEW_USERNAME = "viewUsername";
 	public static final String P_TACTICS_RATING = "tacticsrating";
 	public static final String P_PASSWORD = "password";
 	public static final String P_EMAIL = "email";

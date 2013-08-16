@@ -44,7 +44,6 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	private FriendsCursorUpdateListener friendsCursorUpdateListener;
 	private FriendsUpdateListener friendsUpdateListener;
 	private SaveFriendsListUpdateListener saveFriendsListUpdateListener;
-	private boolean need2update = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

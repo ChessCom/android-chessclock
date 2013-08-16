@@ -56,7 +56,6 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	private CategoriesUpdateListener categoriesUpdateListener;
 	private SaveCategoriesUpdateListener saveCategoriesUpdateListener;
 
-	private boolean need2Update = true;
 	private CustomSectionedAdapter sectionedAdapter;
 
 	@Override
@@ -104,7 +103,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 		init();
 
-		if (need2Update) {
+		if (need2update) {
 			boolean haveSavedData = DbDataManager.haveSavedArticles(getActivity());
 
 			if (!loadCategoriesFromDB()) {
@@ -286,7 +285,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			articlesCursorAdapter.changeCursor(returnedObj);
 			sectionedAdapter.notifyDataSetChanged();
 
-			need2Update = false;
+			need2update = false;
 		}
 
 		@Override

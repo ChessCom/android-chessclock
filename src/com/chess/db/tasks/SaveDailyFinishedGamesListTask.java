@@ -16,8 +16,8 @@ import java.util.List;
 public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<DailyFinishedGameData> {
 
 	public SaveDailyFinishedGamesListTask(TaskUpdateInterface<DailyFinishedGameData> taskFace,
-										  List<DailyFinishedGameData> finishedItems, ContentResolver resolver) {
-		super(taskFace, finishedItems, resolver);
+							List<DailyFinishedGameData> finishedItems, ContentResolver resolver, String username) {
+		super(taskFace, finishedItems, resolver, username);
 	}
 
 	@Override
@@ -26,14 +26,14 @@ public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<DailyFini
 			for (DailyFinishedGameData finishedItem : itemList) {
 
 				final String[] arguments2 = arguments;
-				arguments2[0] = String.valueOf(userName);
+				arguments2[0] = String.valueOf(username);
 				arguments2[1] = String.valueOf(finishedItem.getGameId()); // Test
 
 				Uri uri = DbScheme.uriArray[DbScheme.Tables.DAILY_FINISHED_GAMES.ordinal()];
 				final Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_GAME_ID,
 						DbDataManager.SELECTION_USER_AND_ID, arguments2, null);
 
-				ContentValues values = DbDataManager.putDailyFinishedGameToValues(finishedItem, userName);
+				ContentValues values = DbDataManager.putDailyFinishedGameToValues(finishedItem, username);
 
 				DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 

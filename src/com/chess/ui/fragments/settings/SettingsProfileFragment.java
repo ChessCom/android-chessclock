@@ -100,7 +100,6 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private float density;
 	private String countryStr;
 	private ActionModeHelper actionModeHelper;
-	private boolean need2Update = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -278,7 +277,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 			updateUserCountry(countryStr);
 
-			if (need2Update) {
+			if (need2update) {
 				LoadItem loadItem = LoadHelper.getMembershipDetails(getUserToken());
 				new RequestJsonTask<MembershipItem>(new GetDetailsListener()).executeTask(loadItem); // TODO set proper item
 			}
@@ -319,7 +318,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			}
 			cancelMembershipTxt.setVisibility(View.VISIBLE);
 
-			need2Update = false;
+			need2update = false;
 		}
 	}
 

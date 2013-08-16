@@ -82,7 +82,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment	implements Adap
 	private ListView listView;
 	private View loadingView;
 	private boolean onVacation;
-	private boolean need2update = true;
 	private Button startNewGameBtn;
 	private View headerView;
 

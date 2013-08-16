@@ -180,7 +180,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		madeMovePaint.setStrokeWidth(3.0f);
 		madeMovePaint.setStyle(Style.STROKE);
-		madeMovePaint.setColor(Color.YELLOW);
+		madeMovePaint.setColor(highlightColor);
 
 		greenPaint.setStrokeWidth(2.0f);
 		greenPaint.setStyle(Style.STROKE);

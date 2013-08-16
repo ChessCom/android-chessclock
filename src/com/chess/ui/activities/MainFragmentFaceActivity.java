@@ -44,6 +44,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private Hashtable<Integer, Integer> badgeItems;
 	private SlidingMenu slidingMenu;
 	private List<SlidingMenu.OnOpenedListener> openMenuListeners;
+	private List<SlidingMenu.OnClosedListener> closeMenuListeners;
 	private boolean showActionBar;
 	private int customActionBarViewId;
 
@@ -57,6 +58,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		customActionBarViewId = R.layout.new_custom_actionbar;
 
 		openMenuListeners = new ArrayList<SlidingMenu.OnOpenedListener>();
+		closeMenuListeners = new ArrayList<SlidingMenu.OnClosedListener>();
 
 		if (savedInstanceState == null) {
 			// set the Above View
@@ -74,8 +76,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		slidingMenu = getSlidingMenu();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-		slidingMenu.setOnOpenedListener(openMenuListener);
-		slidingMenu.setOnCloseListener(closeMenuListener);
+		slidingMenu.setOnOpenedListener(onOpenMenuListener);
+		slidingMenu.setOnCloseListener(onCloseMenuListener);
 
 		badgeItems = new Hashtable<Integer, Integer>();
 
@@ -201,7 +203,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		super.onConfigurationChanged(newConfig);
 	}
 
-	private SlidingMenu.OnOpenedListener openMenuListener = new SlidingMenu.OnOpenedListener() {
+	private SlidingMenu.OnOpenedListener onOpenMenuListener = new SlidingMenu.OnOpenedListener() {
 		@Override
 		public void onOpened() { // Don't remove reuse later
 			if (slidingMenu.isSecondaryMenuShowing()) {
@@ -216,7 +218,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 	};
 
-	private SlidingMenu.OnCloseListener closeMenuListener = new SlidingMenu.OnCloseListener() {
+	private SlidingMenu.OnCloseListener onCloseMenuListener = new SlidingMenu.OnCloseListener() {
 		@Override
 		public void onClose() {
 			hideKeyBoard();
@@ -233,6 +235,18 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public void removeOnOpenMenuListener(SlidingMenu.OnOpenedListener listener) {
 		if (openMenuListeners != null)
 			openMenuListeners.remove(listener);
+	}
+
+	@Override
+	public void addOnCloseMenuListener(SlidingMenu.OnClosedListener listener) {
+		if (closeMenuListeners != null)
+			closeMenuListeners.add(listener);
+	}
+
+	@Override
+	public void removeOnCloseMenuListener(SlidingMenu.OnClosedListener listener) {
+		if (closeMenuListeners != null)
+			closeMenuListeners.remove(listener);
 	}
 
 	@Override

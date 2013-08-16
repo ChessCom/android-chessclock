@@ -5,6 +5,7 @@
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="30dip"
+    android:paddingLeft="15dip"
     android:paddingRight="8dip"
     android:gravity="center_vertical"
     >
@@ -14,7 +15,7 @@
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textColor="@color/white"
+        android:textColor="@color/semitransparent_white_75"
         android:textSize="15sp"
         style="@style/DarkShadowBottom"
         android:paddingLeft="3dip"
@@ -28,8 +29,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/ic_triangle_down"
-        android:textColor="@color/new_light_grey_2"
+        android:textColor="@color/semitransparent_white_75"
         style="@style/GlyphIcon.Small"
+		android:shadowColor="@color/back_shadows_chess"
+		android:shadowRadius="0.5"
+		android:shadowDx="1"
+		android:shadowDy="1"
         />
 
 </LinearLayout>

@@ -1,7 +1,6 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -18,18 +17,17 @@ public class SaveDailyCurrentGamesListTask extends SaveDailyGamesTask<DailyCurre
 
 
 	public SaveDailyCurrentGamesListTask(TaskUpdateInterface<DailyCurrentGameData> taskFace, List<DailyCurrentGameData> currentItems,
-										 ContentResolver resolver) {
-		super(taskFace, currentItems, resolver);
+										 ContentResolver resolver, String username) {
+		super(taskFace, currentItems, resolver, username);
 	}
 
 	@Override
 	protected Integer doTheTask(Long... ids) {
-		// TODO compare received list of current games with saved db data for current games.
 		// if item is not found in received list that means it became finished
 		synchronized (itemList) {
 			for (DailyCurrentGameData currentItem : itemList) { // if
 				final String[] arguments2 = arguments;
-				arguments2[0] = String.valueOf(userName);
+				arguments2[0] = String.valueOf(username);
 				arguments2[1] = String.valueOf(currentItem.getGameId());
 
 				// TODO implement beginTransaction logic for performance increase
@@ -37,20 +35,13 @@ public class SaveDailyCurrentGamesListTask extends SaveDailyGamesTask<DailyCurre
 				final Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_GAME_ID,
 						DbDataManager.SELECTION_USER_AND_ID, arguments2, null);
 
-				ContentValues values = DbDataManager.putDailyGameCurrentItemToValues(currentItem, userName);
+				ContentValues values = DbDataManager.putDailyGameCurrentItemToValues(currentItem, username);
 
-				if (cursor.moveToFirst()) {
-					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-				} else {
-					contentResolver.insert(uri, values);
-				}
-
-				cursor.close();
+				DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 			}
 		}
-		result = StaticData.RESULT_OK;
 
-		return result;
+		return StaticData.RESULT_OK;
 	}
 
 }

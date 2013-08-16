@@ -119,7 +119,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private int startLearningPosition;
 	private int currentLearningPosition;
 	private int totalLearningPositionsCnt;
-	private boolean need2update = true;
 	private int usedHints;
 	private int hintToShow;
 	private View hintDivider;
