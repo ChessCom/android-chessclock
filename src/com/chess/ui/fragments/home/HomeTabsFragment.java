@@ -1,7 +1,6 @@
 package com.chess.ui.fragments.home;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,9 +19,6 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbHelper;
-import com.chess.db.DbScheme;
-import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
@@ -139,9 +135,9 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 //				getContentResolver()).executeTask();
 //
 
-		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.USER_STATS_LIVE_STANDARD.name()),
-				DbHelper.getAllByUri(DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal()),
-				getContentResolver()).executeTask();
+//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.USER_STATS_LIVE_STANDARD.name()),
+//				DbHelper.getAllByUri(DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal()),
+//				getContentResolver()).executeTask();
 
 
 		// check if user have daily games in progress or completed. May check in DB
@@ -159,24 +155,24 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		}
 	}
 
-	private class DbCursorUpdateListener extends ChessUpdateListener<Cursor> {
-
-		private String tableName;
-
-		public DbCursorUpdateListener(String tableName) {
-			this.tableName = tableName;
-		}  // Used for test
-
-		@Override
-		public void updateData(Cursor cursor) {
-			super.updateData(cursor);
-
-			if (HONEYCOMB_PLUS_API) {
-
-				AppUtils.printTableContent(cursor, tableName);
-			}
-		}
-	}
+//	private class DbCursorUpdateListener extends ChessUpdateListener<Cursor> { // use to show Db table content
+//
+//		private String tableName;
+//
+//		public DbCursorUpdateListener(String tableName) {
+//			this.tableName = tableName;
+//		}  // Used for test
+//
+//		@Override
+//		public void updateData(Cursor cursor) {
+//			super.updateData(cursor);
+//
+//			if (HONEYCOMB_PLUS_API) {
+//
+//				AppUtils.printTableContent(cursor, tableName);
+//			}
+//		}
+//	}
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -209,7 +205,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 					changeInternalFragment(fragment);
 					break;
 				}
-//				case R.id.rightTabBtn: {
+//				case R.id.rightTabBtn: { // not used in first iteration
 //					Fragment fragment = findFragmentByTag(HomeFeedFragment.class.getSimpleName());
 //					if (fragment == null) {
 //						fragment = new HomeFeedFragment();

@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 49;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 50;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -129,6 +129,8 @@ public class DbScheme {
 	public static final String V_BLACK_AVATAR = "black_avatar";
 	public static final String V_WHITE_PREMIUM_STATUS = "white_premium_status";
 	public static final String V_BLACK_PREMIUM_STATUS = "black_premium_status";
+	public static final String V_WHITE_USER_COUNTRY = "white_user_country";
+	public static final String V_BLACK_USER_COUNTRY = "black_user_country";
 	public static final String V_HAS_NEW_MESSAGE = "has_new_message";
 	public static final String V_IS_OPPONENT_ONLINE = "is_opponent_online";
 	public static final String V_RATED = "rated";
@@ -289,6 +291,8 @@ public class DbScheme {
 				+ addField_Int(V_BLACK_RATING)
 				+ addField_Int(V_WHITE_PREMIUM_STATUS)
 				+ addField_Int(V_BLACK_PREMIUM_STATUS)
+				+ addField_Int(V_WHITE_USER_COUNTRY)
+				+ addField_Int(V_BLACK_USER_COUNTRY)
 				+ addField_Text(V_WHITE_AVATAR)
 				+ addField_Text(V_BLACK_AVATAR)
 				+ addField_Int(V_TIME_REMAINING)
@@ -320,6 +324,8 @@ public class DbScheme {
 				+ addField_Int(V_BLACK_RATING)
 				+ addField_Int(V_WHITE_PREMIUM_STATUS)
 				+ addField_Int(V_BLACK_PREMIUM_STATUS)
+				+ addField_Int(V_WHITE_USER_COUNTRY)
+				+ addField_Int(V_BLACK_USER_COUNTRY)
 				+ addField_Int(V_TIME_REMAINING)
 				+ addField_Text(V_FEN_START_POSITION)
 				+ addField_Text(V_MOVE_LIST)

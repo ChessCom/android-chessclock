@@ -21,7 +21,7 @@ public class UserStatsData {
 	"best_win_username": null
 */
 
-	private String rating;
+	private int rating;
 	private int highest_rating;
 	private float avg_oponent_rating;
 	private int total_games;
@@ -32,11 +32,8 @@ public class UserStatsData {
 	private String best_win_username;
 
 
-	public String getRating() {
-		if (rating != null && rating.equals("Unrated")) {
-			rating = "0";
-		}
-		return rating == null ? "0" : rating;
+	public int getRating() {
+		return rating;
 	}
 
 	public int getHighestRating() {

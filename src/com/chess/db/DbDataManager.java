@@ -280,7 +280,9 @@ public class DbDataManager {
 		Cursor cursor = contentResolver.query(uriArray[Tables.DAILY_CURRENT_GAMES.ordinal()],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = cursor != null && cursor.moveToFirst();
-
+		if (cursor != null) {
+			cursor.close();
+		}
 		if (!exist) { // check finished games list
 			cursor = contentResolver.query(uriArray[Tables.DAILY_FINISHED_GAMES.ordinal()],
 					PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
@@ -330,8 +332,14 @@ public class DbDataManager {
 			arguments1[0] = userName;
 			contentResolver.delete(uri, SELECTION_USER, arguments1);
 
+			if (cursor != null) {
+				cursor.close();
+			}
 			return false;
 		} else { // current games exist, but not saved yet
+			if (cursor != null) {
+				cursor.close();
+			}
 			return true;
 		}
 
@@ -711,6 +719,8 @@ public class DbDataManager {
 		values.put(V_BLACK_RATING, dataObj.getBlackRating());
 		values.put(V_WHITE_PREMIUM_STATUS, dataObj.getWhitePremiumStatus());
 		values.put(V_BLACK_PREMIUM_STATUS, dataObj.getBlackPremiumStatus());
+		values.put(V_WHITE_USER_COUNTRY, dataObj.getWhiteUserCountry());
+		values.put(V_BLACK_USER_COUNTRY, dataObj.getBlackUserCountry());
 		values.put(V_WHITE_AVATAR, dataObj.getWhiteAvatar());
 		values.put(V_BLACK_AVATAR, dataObj.getBlackAvatar());
 		values.put(V_TIME_REMAINING, dataObj.getTimeRemaining());
@@ -795,6 +805,8 @@ public class DbDataManager {
 		dataObj.setBlackUsername(getString(cursor, V_BLACK_USERNAME));
 		dataObj.setWhitePremiumStatus(getInt(cursor, V_WHITE_PREMIUM_STATUS));
 		dataObj.setBlackPremiumStatus(getInt(cursor, V_BLACK_PREMIUM_STATUS));
+		dataObj.setWhiteUserCountry(getInt(cursor, V_WHITE_USER_COUNTRY));
+		dataObj.setBlackUserCountry(getInt(cursor, V_BLACK_USER_COUNTRY));
 		dataObj.setStartingFenPosition(getString(cursor, V_FEN_START_POSITION));
 		dataObj.setMoveList(getString(cursor, V_MOVE_LIST));
 		dataObj.setWhiteRating(getInt(cursor, V_WHITE_RATING));

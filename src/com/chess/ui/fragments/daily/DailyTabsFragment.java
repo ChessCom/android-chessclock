@@ -104,16 +104,6 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 	}
 
 	@Override
-	public void onPositiveBtnClick(DialogFragment fragment) {
-		String tag = fragment.getTag();
-		if (isTagEmpty(fragment)) {
-			return;
-		}
-
-		super.onPositiveBtnClick(fragment);
-	}
-
-	@Override
 	public void changeInternalFragment(int code) {
 		if (code == NEW_GAME) {
 			tabRadioGroup.check(R.id.centerTabBtn);
