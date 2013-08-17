@@ -303,7 +303,7 @@
 		<item name="android:minHeight">@dimen/page_indicator_button_size</item>
 		<item name="android:minWidth">@dimen/page_indicator_button_size</item>
 		<!--<item name="android:textSize">@dimen/page_indicator_text_size</item>-->
-		<item name="android:textSize">19sp</item>
+		<item name="android:textSize">14sp</item>
 		<item name="android:textColor">@color/hint_text</item>
 		<item name="ttf">Bold</item>
 
