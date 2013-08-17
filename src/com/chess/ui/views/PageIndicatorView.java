@@ -102,79 +102,9 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 	 * @param totalPageCnt number of all pages
 	 */
 	public void setTotalPageCnt(int totalPageCnt) {
-		this.totalPageCnt = totalPageCnt;
-		if (buttonsMode == ButtonsMode.LEFT) {
-			// draw buttons like this
-			// | < | | 1 | | 2 | | 3 | | 4 | | 5 | ... | 65 | | > |
-			if (totalPageCnt > buttonsCnt) {
-				int pageNumber = 0;
-				for (int i = getFirst() - BASE_BTN_ID; i < getPreLast() - BASE_BTN_ID; i++) {
-					setButtonPageNumber(pageNumber++, i);
-				}
-
-				// change number of last button to total pages cnt
-				((TextView) findViewById(getLast())).setText(String.valueOf(totalPageCnt));
-
-				// change preLast button to dots
-				((TextView) findViewById(getPreLast())).setText(DOTS_SYMBOL);
-				(findViewById(getPreLast())).setBackgroundResource(R.drawable.empty);
-			} else {
-				for (int i = getLast() - BASE_BTN_ID; i > totalPageCnt; i--) {  // TODO check
-					findViewById(BASE_BTN_ID + i).setVisibility(INVISIBLE);
-				}
-			}
-		} else if (buttonsMode == ButtonsMode.MIDDLE_FROM_LEFT) {
-			// draw buttons like this
-			// | < | | 1 | ... | 5 | | 6 | | 7 | ... | 65 | | > |
-			//                   ^ - current selected page
-			int pageNumber = selectedPage;
-			for (int i = getPreFirst() - BASE_BTN_ID + 1; i < getPreLast() - BASE_BTN_ID; i++) {
-				setButtonPageNumber(pageNumber, i);
-				pageNumber++;
-			}
-
-			// change preFirst button to dots
-			((TextView) findViewById(getPreFirst())).setText(DOTS_SYMBOL);
-			(findViewById(getPreFirst())).setBackgroundResource(R.drawable.empty);
-
-			// change preLast button to dots
-			((TextView) findViewById(getPreLast())).setText(DOTS_SYMBOL);
-			(findViewById(getPreLast())).setBackgroundResource(R.drawable.empty);
-		} else if (buttonsMode == ButtonsMode.MIDDLE_FROM_RIGHT) {
-			// draw buttons like this
-			// | < | | 1 | ... | 6 | | 7 | | 8 | ... | 65 | | > |
-			//                   ^ -
-			// | < | | 1 | ... | 58 | | 59 | | 60 | ... | 65 | | > |
-			//                                  ^ - current selected page
-
-			int pageNumber = selectedPage;
-			for (int i = getPreLast() - BASE_BTN_ID; i > FIRST + 2; i--) {
-				setButtonPageNumber(pageNumber++, i);
-			}
-
-			// change preFirst button to dots
-			((TextView) findViewById(getPreFirst())).setText(DOTS_SYMBOL);
-			(findViewById(getPreFirst())).setBackgroundResource(R.drawable.empty);
-
-			// change preLast button to dots
-			((TextView) findViewById(getPreLast())).setText(DOTS_SYMBOL);
-			(findViewById(getPreLast())).setBackgroundResource(R.drawable.empty);
-		} else if (buttonsMode == ButtonsMode.RIGHT) {
-			// draw buttons like this
-			// | < | | 1 | ... | 61 | | 62 | | 63 | | 64 | | 65 | | > |
-
-//			((RoboButton) findViewById(getPreLast())).setDrawableStyle(R.style.Button_Page);
-
-			int pageNumber = totalPageCnt;
-			for (int i = getLast() - BASE_BTN_ID; i > FIRST + 1; i--) {
-				setButtonPageNumber(pageNumber--, i);
-			}
-
-			((TextView) findViewById(getFirst())).setText(String.valueOf(FIRST_PAGE_NUMBER));
-
-			// change preFirst button to dots
-			((TextView) findViewById(getPreFirst())).setText(DOTS_SYMBOL);
-			(findViewById(getPreFirst())).setBackgroundResource(R.drawable.empty);
+		if (this.totalPageCnt != totalPageCnt) {
+			this.totalPageCnt = totalPageCnt;
+			updateButtonsNumbers();
 		}
 	}
 
@@ -284,6 +214,7 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 			// do nothing
 			Log.d("TEST", " middle clicked");
 		} else {
+			selectedPage = pageToShow;
 
 			if (buttonsMode == ButtonsMode.RIGHT) {
 				//       65 - (6 - 4)
@@ -312,7 +243,6 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 				roboButton.setDrawableStyle(R.style.Button_Page_Selected);
 			}
 		} else {
-			selectedPage = pageToShow;
 
 			int prevBtnPos = 0;
 			for (int i = 0; i < buttonsMap.size(); i++) {
@@ -326,6 +256,84 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 			if (roboButton != null) {
 				roboButton.setDrawableStyle(R.style.Button_Page_Selected);
 			}
+		}
+
+		updateButtonsNumbers();
+	}
+
+	private void updateButtonsNumbers() {
+		if (buttonsMode == ButtonsMode.LEFT) {
+			// draw buttons like this
+			// | < | | 1 | | 2 | | 3 | | 4 | | 5 | ... | 65 | | > |
+			if (totalPageCnt > buttonsCnt) {
+				int pageNumber = 0;
+				for (int i = getFirst() - BASE_BTN_ID; i < getPreLast() - BASE_BTN_ID; i++) {
+					setButtonPageNumber(pageNumber++, i);
+				}
+
+				// change number of last button to total pages cnt
+				((TextView) findViewById(getLast())).setText(String.valueOf(totalPageCnt));
+
+				// change preLast button to dots
+				((TextView) findViewById(getPreLast())).setText(DOTS_SYMBOL);
+				(findViewById(getPreLast())).setBackgroundResource(R.drawable.empty);
+			} else {
+				for (int i = getLast() - BASE_BTN_ID; i > totalPageCnt; i--) {  // TODO check
+					findViewById(BASE_BTN_ID + i).setVisibility(INVISIBLE);
+				}
+			}
+		} else if (buttonsMode == ButtonsMode.MIDDLE_FROM_LEFT) {
+			// draw buttons like this
+			// | < | | 1 | ... | 5 | | 6 | | 7 | ... | 65 | | > |
+			//                   ^ - current selected page
+			int pageNumber = selectedPage;
+			for (int i = getPreFirst() - BASE_BTN_ID + 1; i < getPreLast() - BASE_BTN_ID; i++) {
+				setButtonPageNumber(pageNumber, i);
+				pageNumber++;
+			}
+
+			// change preFirst button to dots
+			((TextView) findViewById(getPreFirst())).setText(DOTS_SYMBOL);
+			(findViewById(getPreFirst())).setBackgroundResource(R.drawable.empty);
+
+			// change preLast button to dots
+			((TextView) findViewById(getPreLast())).setText(DOTS_SYMBOL);
+			(findViewById(getPreLast())).setBackgroundResource(R.drawable.empty);
+		} else if (buttonsMode == ButtonsMode.MIDDLE_FROM_RIGHT) {
+			// draw buttons like this
+			// | < | | 1 | ... | 6 | | 7 | | 8 | ... | 65 | | > |
+			//                   ^ -
+			// | < | | 1 | ... | 58 | | 59 | | 60 | ... | 65 | | > |
+			//                                  ^ - current selected page
+
+			int pageNumber = selectedPage;
+			for (int i = getPreLast() - BASE_BTN_ID; i > FIRST + 2; i--) {
+				setButtonPageNumber(pageNumber++, i);
+			}
+
+			// change preFirst button to dots
+			((TextView) findViewById(getPreFirst())).setText(DOTS_SYMBOL);
+			(findViewById(getPreFirst())).setBackgroundResource(R.drawable.empty);
+
+			// change preLast button to dots
+			((TextView) findViewById(getPreLast())).setText(DOTS_SYMBOL);
+			(findViewById(getPreLast())).setBackgroundResource(R.drawable.empty);
+		} else if (buttonsMode == ButtonsMode.RIGHT) {
+			// draw buttons like this
+			// | < | | 1 | ... | 61 | | 62 | | 63 | | 64 | | 65 | | > |
+
+//			((RoboButton) findViewById(getPreLast())).setDrawableStyle(R.style.Button_Page);
+
+			int pageNumber = totalPageCnt;
+			for (int i = getLast() - BASE_BTN_ID; i > FIRST + 1; i--) {
+				setButtonPageNumber(pageNumber--, i);
+			}
+
+			((TextView) findViewById(getFirst())).setText(String.valueOf(FIRST_PAGE_NUMBER));
+
+			// change preFirst button to dots
+			((TextView) findViewById(getPreFirst())).setText(DOTS_SYMBOL);
+			(findViewById(getPreFirst())).setBackgroundResource(R.drawable.empty);
 		}
 	}
 
