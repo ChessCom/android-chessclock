@@ -241,7 +241,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 	@Override
 	public void showPage(int page) {
-		requestPage(page - 1);
+		requestPage(page);
 	}
 
 	@Override
@@ -299,7 +299,6 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 			// unlock page changing
 			pageIndicatorView.setEnabled(true);
-			pageIndicatorView.activateCurrentPage(currentPage);
 		}
 	}
 

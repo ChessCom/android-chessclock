@@ -229,7 +229,8 @@ public class ButtonDrawableBuilder {
 			}
 			case R.style.Button_Page_Selected: {
 				ButtonDrawable buttonDrawable = setDefaults(context);
-				buttonDrawable.colorSolid = resources.getColor(R.color.white);
+//				buttonDrawable.colorSolid = resources.getColor(R.color.white);
+				buttonDrawable.colorSolid = resources.getColor(R.color.blue_button);
 				createPage(buttonDrawable, resources);
 
 				return buttonDrawable;

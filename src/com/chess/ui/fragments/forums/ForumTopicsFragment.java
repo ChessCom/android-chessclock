@@ -167,7 +167,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 
 	@Override
 	public void showPage(int page) {
-		requestPage(page-1);
+		requestPage(page);
 	}
 
 	private void requestPage(int page){
@@ -233,7 +233,6 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 
 			// unlock page changing
 			pageIndicatorView.setEnabled(true);
-			pageIndicatorView.activateCurrentPage(currentPage);
 		}
 	}
 }

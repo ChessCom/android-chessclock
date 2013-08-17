@@ -16,10 +16,11 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.home.HomeTabsFragment;
+import com.chess.ui.fragments.forums.ForumCategoriesFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
+import com.chess.ui.fragments.welcome.CreateProfileFragment;
 import com.chess.ui.fragments.welcome.WelcomeFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
@@ -63,8 +64,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		if (savedInstanceState == null) {
 			// set the Above View
 			if (!TextUtils.isEmpty(getAppData().getUserToken())) { // if user have login token already
-				switchFragment(new HomeTabsFragment());
-//				switchFragment(new CreateProfileFragment());
+//				switchFragment(new HomeTabsFragment());
+				switchFragment(new ForumCategoriesFragment());
 				showActionBar = true;
 			} else {
 				switchFragment(new WelcomeTabsFragment());
