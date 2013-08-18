@@ -206,7 +206,7 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 					setButtonPageNumber(pageNumber++, i);
 				}
 
-				if (/*selectedBtnPos == 0 && */selectedPage == 0) {
+				if (selectedPage == 0) {
 					RoboButton roboButton = (RoboButton) findViewById(getFirst());
 					roboButton.setTextColor(selectedColor);
 				}
