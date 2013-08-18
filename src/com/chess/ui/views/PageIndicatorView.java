@@ -41,6 +41,8 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 	private int activeButton;
 	private SparseIntArray buttonsMap;
 	private int selectedBtnPos;
+	private int hintColor;
+	private int selectedColor;
 
 	public PageIndicatorView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -59,6 +61,8 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 		int widthPixels = resources.getDisplayMetrics().widthPixels;
 		float density = resources.getDisplayMetrics().density;
 
+		hintColor = resources.getColor(R.color.hint_text);
+		selectedColor = resources.getColor(R.color.new_text_blue);
 		buttonSize = resources.getDimensionPixelSize(R.dimen.page_indicator_button_size);
 
 		buttonParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -90,7 +94,7 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 		// activate first page button by default
 		selectedPage = 0;
 		RoboButton firstButton = (RoboButton) findViewById(getFirst());
-		firstButton.setDrawableStyle(R.style.Button_Page_Selected);
+		activateButton(firstButton);
 	}
 
 	/**
@@ -113,7 +117,9 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 	private void setButtonPageNumber(int pageNumber, int position) {
 		int displayPageNumber = pageNumber + 1; // we add 1, bcz start from 0
 		buttonsMap.put(position, pageNumber);
-		((TextView) findViewById(BASE_BTN_ID + position)).setText(String.valueOf(displayPageNumber));
+		RoboButton roboButton = (RoboButton) findViewById(BASE_BTN_ID + position);
+		roboButton.setText(String.valueOf(displayPageNumber));
+		roboButton.setTextColor(hintColor);
 	}
 
 	private RoboButton getDefaultButton(Context context) {
@@ -200,6 +206,11 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 					setButtonPageNumber(pageNumber++, i);
 				}
 
+				if (/*selectedBtnPos == 0 && */selectedPage == 0) {
+					RoboButton roboButton = (RoboButton) findViewById(getFirst());
+					roboButton.setTextColor(selectedColor);
+				}
+
 				// change number of last button to total pages cnt
 				((TextView) findViewById(getLast())).setText(String.valueOf(totalPageCnt));
 
@@ -278,9 +289,7 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 			//                   ^ activate this button
 			activeButton = getPreFirst() + 1;
 			RoboButton roboButton = (RoboButton) findViewById(activeButton);
-			if (roboButton != null) {
-				roboButton.setDrawableStyle(R.style.Button_Page_Selected);
-			}
+			activateButton(roboButton);
 		} else {
 			int prevBtnPos = 0;
 			boolean pageFound = false;
@@ -304,9 +313,7 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 			}
 
 			RoboButton roboButton = (RoboButton) findViewById(BASE_BTN_ID + prevBtnPos);
-			if (roboButton != null) {
-				roboButton.setDrawableStyle(R.style.Button_Page_Selected);
-			}
+			activateButton(roboButton);
 
 			if (selectedBtnPos == 0) {
 				selectedBtnPos = prevBtnPos;
@@ -314,6 +321,12 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 		}
 	}
 
+	private void activateButton(RoboButton roboButton) {
+		if (roboButton != null) {
+			roboButton.setDrawableStyle(R.style.Button_Page_Selected);
+			roboButton.setTextColor(selectedColor);
+		}
+	}
 	/**
 	 * Left arrow. Means previous page button
 	 */
