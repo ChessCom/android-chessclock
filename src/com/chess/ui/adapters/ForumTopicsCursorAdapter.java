@@ -43,7 +43,7 @@ public class ForumTopicsCursorAdapter extends ItemsCursorAdapter {
 
 		long timestamp = getLong(cursor, DbScheme.V_LAST_POST_DATE);
 		String lastCommentAgoStr = AppUtils.getMomentsAgoFromSeconds(timestamp, context);
-		holder.lastCommentAgoTxt.setText(lastCommentAgoStr + StaticData.SYMBOL_SPACE_DOT);
+		holder.lastCommentAgoTxt.setText(lastCommentAgoStr + StaticData.SYMBOL_BULLET);
 		holder.titleTxt.setText(getString(cursor, DbScheme.V_TITLE));
 
 		int postCount = getInt(cursor, DbScheme.V_POST_COUNT);

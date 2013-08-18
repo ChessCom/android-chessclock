@@ -62,10 +62,10 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 		buttonSize = resources.getDimensionPixelSize(R.dimen.page_indicator_button_size);
 
 		buttonParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		int buttonMargin = (int) (3 * density);
-		buttonParams.setMargins(buttonMargin, 0, buttonMargin, 0);
+		float buttonMargin = 3 * density;
+		buttonParams.setMargins((int) buttonMargin, 0, (int) buttonMargin, 0);
 
-		buttonsCnt = widthPixels / (buttonSize + buttonMargin * 2);
+		buttonsCnt = (int) Math.floor(widthPixels / (buttonSize + buttonMargin * 2));
 		for (int i = 0; i < buttonsCnt; i++) {
 			RoboButton roboButton = getDefaultButton(context);
 			roboButton.setId(BASE_BTN_ID + i);
@@ -142,7 +142,7 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 
 			if (selectedPage < visiblePageButtonsCnt) { // 3 number of dots buttons
 				buttonsMode = ButtonsMode.LEFT;
-			} else {
+			} else if (selectedPage < totalPageCnt - visiblePageButtonsCnt) { // 65 - 62 = 3  // 65 - 5 = 60
 				buttonsMode = ButtonsMode.MIDDLE_FROM_LEFT;
 			}
 
@@ -174,12 +174,16 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 			// do nothing
 			Log.d("TEST", " middle clicked");
 		} else {
+
+			if (pageToShow + visiblePageButtonsCnt > totalPageCnt) {
+				buttonsMode = ButtonsMode.RIGHT;
+			}
 			selectedPage = pageToShow;
 			pagerFace.showPage(pageToShow);
 		}
 
-		activatePressedButton();
 		updateButtonsNumbers();
+		activatePressedButton();
 	}
 
 	private void updateButtonsNumbers() {
@@ -302,6 +306,10 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 			RoboButton roboButton = (RoboButton) findViewById(BASE_BTN_ID + prevBtnPos);
 			if (roboButton != null) {
 				roboButton.setDrawableStyle(R.style.Button_Page_Selected);
+			}
+
+			if (selectedBtnPos == 0) {
+				selectedBtnPos = prevBtnPos;
 			}
 		}
 	}

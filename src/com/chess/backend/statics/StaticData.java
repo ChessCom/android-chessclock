@@ -32,7 +32,7 @@ public class StaticData {
 	public static final String SYMBOL_SLASH = "|";
 	public static final String SYMBOL_EX = "!";
 	public static final String SYMBOL_DOT = ". ";
-	public static final String SYMBOL_SPACE_DOT = " &#8226;";
+	public static final String SYMBOL_BULLET = SYMBOL_SPACE + "\u2022";
 	public static final String SYMBOL_AMP_CODE = "&amp;";
 	public static final String SYMBOL_AMP = "&";
 	public static final String SYMBOL_PERCENT = "%";

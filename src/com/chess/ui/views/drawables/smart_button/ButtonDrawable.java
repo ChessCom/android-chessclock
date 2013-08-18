@@ -95,6 +95,7 @@ public class ButtonDrawable extends StateListDrawable {
 	int bevelLvl;
 	int bevelInset;
 	int radius;
+	private int borderRadius;
 	int bevelSize;
 
 	/* Padding */
@@ -126,6 +127,7 @@ public class ButtonDrawable extends StateListDrawable {
 		insetTwo.button = new int[]{2, 2, 2, 2};
 	}
 
+
 	/**
 	 * Use for init ButtonDrawableBuilder
 	 */
@@ -148,6 +150,7 @@ public class ButtonDrawable extends StateListDrawable {
 		bevelLvl = 1;
 		isSolid = true;
 		radius = DEFAULT_RADIUS;
+		borderRadius = DEFAULT_RADIUS + 4;
 
 		disabledAlpha = 100;
 		enabledAlpha = 0xFF;
@@ -196,8 +199,10 @@ public class ButtonDrawable extends StateListDrawable {
 			int strokeSize = resources.getDimensionPixelSize(R.dimen.default_stroke_width);
 
 			RectF stroke = new RectF(strokeSize, strokeSize, strokeSize, strokeSize);
+			float[] outerRectBorder = new float[]{borderRadius, borderRadius, borderRadius, borderRadius,
+												  borderRadius, borderRadius, borderRadius, borderRadius};
 
-			RectShape rectShape = new RoundRectShapeFixed(outerRect, stroke, outerRect);
+			RectShape rectShape = new RoundRectShapeFixed(outerRectBorder, stroke, outerRectBorder);
 			ShapeDrawable shapeDrawable = new ShapeDrawable(rectShape);
 			shapeDrawable.getPaint().setColor(colorOuterBorder);
 

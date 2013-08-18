@@ -86,7 +86,7 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 
 		long timestamp = getLong(cursor, DbScheme.V_CREATE_DATE);
 		String lastCommentAgoStr = AppUtils.getMomentsAgoFromSeconds(timestamp, context);
-		holder.dateTxt.setText(lastCommentAgoStr + StaticData.SYMBOL_SPACE_DOT);
+		holder.dateTxt.setText(lastCommentAgoStr + StaticData.SYMBOL_BULLET);
 
 		// set premium icon
 		int status = getInt(cursor, DbScheme.V_PREMIUM_STATUS);

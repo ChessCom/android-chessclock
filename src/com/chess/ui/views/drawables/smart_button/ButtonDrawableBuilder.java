@@ -229,8 +229,7 @@ public class ButtonDrawableBuilder {
 			}
 			case R.style.Button_Page_Selected: {
 				ButtonDrawable buttonDrawable = setDefaults(context);
-//				buttonDrawable.colorSolid = resources.getColor(R.color.white);
-				buttonDrawable.colorSolid = resources.getColor(R.color.blue_button);
+				buttonDrawable.colorSolid = resources.getColor(R.color.white);
 				createPage(buttonDrawable, resources);
 
 				return buttonDrawable;
@@ -545,7 +544,7 @@ public class ButtonDrawableBuilder {
 	}
 
 	private static void createPage(ButtonDrawable buttonDrawable, Resources resources) {
-		buttonDrawable.bevelLvl = 2;
+		buttonDrawable.bevelLvl = 1;
 		// Colors for bevel
 		buttonDrawable.colorTop = resources.getColor(R.color.new_soft_grey3);
 		buttonDrawable.colorLeft = resources.getColor(R.color.new_soft_grey3);
