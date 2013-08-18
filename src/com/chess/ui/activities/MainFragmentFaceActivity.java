@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
@@ -19,6 +20,7 @@ import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
+import com.chess.ui.fragments.settings.SettingsProfileFragment;
 import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
 import com.chess.ui.fragments.welcome.WelcomeFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
@@ -408,6 +410,18 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			int firstFragmentId = fragmentManager.getBackStackEntryAt(0).getId();
 			fragmentManager.popBackStack(firstFragmentId, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		}
+	}
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			SettingsProfileFragment fragmentByTag = (SettingsProfileFragment) getSupportFragmentManager().findFragmentByTag(SettingsProfileFragment.class.getSimpleName());
+			if (fragmentByTag != null && fragmentByTag.isVisible()) {
+				fragmentByTag.discardChanges();
+			}
+		}
+		return super.onKeyUp(keyCode, event);
 	}
 
 	@Override

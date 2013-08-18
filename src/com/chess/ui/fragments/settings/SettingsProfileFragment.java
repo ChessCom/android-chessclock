@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -25,8 +26,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.MembershipItem;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
@@ -100,6 +101,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private float density;
 	private String countryStr;
 	private ActionModeHelper actionModeHelper;
+	private boolean discarded;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -218,7 +220,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		super.onResume();
 
 		logTest("inEditMode = " + inEditMode);
-		if (!inEditMode) {
+		if (!inEditMode && need2update) {
 			updateData();
 		}
 	}
@@ -227,6 +229,15 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		LoadItem loadItem = LoadHelper.getUserInfo(getUserToken());
 
 		new RequestJsonTask<UserItem>(userUpdateListener).executeTask(loadItem);
+	}
+
+	public void discardChanges() {
+		discarded = true;
+		logTest("discard");
+		inEditMode = false;
+		if (actionModeHelper != null) {
+			actionModeHelper.closeActionMode();
+		}
 	}
 
 	private class GetUserUpdateListener extends ChessLoadUpdateListener<UserItem> {
@@ -357,19 +368,40 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		switch (requestCode) {
 			case REQ_CODE_PICK_IMAGE:
 				if (resultCode == Activity.RESULT_OK) {
+					mCurrentPhotoPath = StaticData.SYMBOL_EMPTY; // drop previous file path
+
 					Uri selectedImage = imageReturnedIntent.getData();
+					if (selectedImage == null) {
+						return;
+					}
 					String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-
 					Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-					cursor.moveToFirst();
+					if (cursor != null && cursor.moveToFirst()) {
+						int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+						mCurrentPhotoPath = cursor.getString(columnIndex);
+						cursor.close();
+					}
 
-					int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-					mCurrentPhotoPath = cursor.getString(columnIndex);
-					cursor.close();
+					if (TextUtils.isEmpty(mCurrentPhotoPath)) {
+						mCurrentPhotoPath = selectedImage.getPath();
+					}
+					Bitmap bitmap = null;
+					if (imageReturnedIntent.getDataString() != null && imageReturnedIntent.getDataString().contains("docs.file")) {
+						try {
+							InputStream inputStream = getContentResolver().openInputStream(selectedImage);
+							bitmap = BitmapFactory.decodeStream(inputStream);
+							saveImageForUpload(bitmap); // save to get appropriate filePath
+
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						}
+					}
 
 					int size = (int) (AVATAR_SIZE * density);
-					Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
+					if (bitmap == null) {
+						bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
+					}
 					logTest("PATH: " + mCurrentPhotoPath);
 					if (bitmap == null) {
 						logTest("WRONG PATH: " + mCurrentPhotoPath);
@@ -380,7 +412,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 					int rawSize = AppUtils.sizeOfBitmap(bitmap);
 					if (rawSize > FILE_SIZE_LIMIT) {         // TODO
 						showToast(R.string.optimizing_image);
-						saveImageForUpload();
+						saveImageForUpload(bitmap);
 					}
 
 					bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
@@ -452,15 +484,15 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 		int rawSize = AppUtils.sizeOfBitmap(bitmap);
 		if (rawSize > FILE_SIZE_LIMIT) {
-			saveImageForUpload();
+			saveImageForUpload(bitmap);
 		}
 
 		progressImageView.setImageBitmap(bitmap);
 		photoChanged = true;
 	}
 
-	private void saveImageForUpload() {
-		Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
+	private void saveImageForUpload(Bitmap bitmap) {
+//		Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
 
 		bitmap = Bitmap.createScaledBitmap(bitmap, IMG_SIZE_LIMIT_W, IMG_SIZE_LIMIT_H, false);
 		logTest("saveImageForUpload bitmap = " + bitmap);
@@ -590,7 +622,8 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 		@Override
 		public void onDoneClicked() {
-			if (fieldsWasChanged()) {
+			logTest("done clicked");
+			if (!discarded && fieldsWasChanged()) {
 				hideKeyBoard();
 				// hide close buttons
 				firstNameClearBtn.setVisibility(View.GONE);
