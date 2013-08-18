@@ -40,7 +40,7 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 	private ButtonsMode buttonsMode;
 	private int activeButton;
 	private SparseIntArray buttonsMap;
-//	private int lastPressedButton;
+	private int selectedBtnPos;
 
 	public PageIndicatorView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -131,8 +131,8 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 	@Override
 	public void onClick(View view) {
 		int id = view.getId();
-		int btnPos = id - BASE_BTN_ID;
-		int pageToShow = buttonsMap.get(btnPos);
+		selectedBtnPos = id - BASE_BTN_ID;
+		int pageToShow = buttonsMap.get(selectedBtnPos);
 
 		deactivateSelectedButton();
 
@@ -140,26 +140,10 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 			selectedPage--;
 			pagerFace.showPrevPage();
 
-			// current page = 4
-			// visiblePageButtonsCnt = 6
-			// visibleMiddleButtonsCnt = 3
-
 			if (selectedPage < visiblePageButtonsCnt) { // 3 number of dots buttons
 				buttonsMode = ButtonsMode.LEFT;
-				// need to change buttonsMap from middle state, to edge state
 			} else {
-				if (buttonsMode == ButtonsMode.LEFT) {
-
-				} else if (buttonsMode == ButtonsMode.RIGHT) {
-					// | < | | 1 | ... | 61 | | 62 | | 63 | | 64 | | 65 | | > |
-					//	 ^ - user pressed that button
-					// then buttons goes like this
-					// | < | | 1 | ... | 58 | | 59 | | 60 | ... | 65 | | > |
-					//                               ^ - this button becomes highlighted
-					buttonsMode = ButtonsMode.MIDDLE_FROM_RIGHT;
-				} else {
-					buttonsMode = ButtonsMode.MIDDLE_FROM_RIGHT;
-				}
+				buttonsMode = ButtonsMode.MIDDLE_FROM_LEFT;
 			}
 
 		} else if (id == getRightBtn()) { // right arrow (next page)
@@ -174,14 +158,14 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 				if (selectedPage >= visiblePageButtonsCnt) {
 					buttonsMode = ButtonsMode.MIDDLE_FROM_LEFT;
 				}
-			} else if (buttonsMode == ButtonsMode.RIGHT) {
-
 			}
-		} else if (id == getLast() && buttonsMode == ButtonsMode.LEFT) {   // TODO adjust logic when we have 7 pages
-			pagerFace.showPage(totalPageCnt);
+		} else if (id == getLast() /*&& buttonsMode == ButtonsMode.LEFT*/) {   // TODO adjust logic when we have 7 pages
+			selectedPage = totalPageCnt - 1;
+			pagerFace.showPage(selectedPage);
 			buttonsMode = ButtonsMode.RIGHT;
-		} else if (id == getFirst() && buttonsMode == ButtonsMode.RIGHT) {   // TODO adjust logic when we have 7 pages
-			pagerFace.showPage(FIRST_PAGE_NUMBER);
+		} else if (id == getFirst() /*&& buttonsMode == ButtonsMode.RIGHT*/) {   // TODO adjust logic when we have 7 pages
+			selectedPage = FIRST_PAGE_NUMBER - 1;
+			pagerFace.showPage(selectedPage);
 			buttonsMode = ButtonsMode.LEFT;
 		} else if (id == getPreFirst() && buttonsMode == ButtonsMode.RIGHT) {
 			// do nothing
@@ -191,18 +175,10 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 			Log.d("TEST", " middle clicked");
 		} else {
 			selectedPage = pageToShow;
-
-			if (buttonsMode == ButtonsMode.RIGHT) {
-				//       65 - (6 - 4)
-				pageToShow = totalPageCnt - (buttonsCnt - pageToShow);
-				pagerFace.showPage(pageToShow);
-			} else {
-				pagerFace.showPage(pageToShow);
-			}
+			pagerFace.showPage(pageToShow);
 		}
 
 		activatePressedButton();
-
 		updateButtonsNumbers();
 	}
 
@@ -212,7 +188,7 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 			// | < | | 1 | | 2 | | 3 | | 4 | | 5 | ... | 65 | | > |
 			if (totalPageCnt > buttonsCnt) {
 
-				if (selectedPage != FIRST + 1) {
+				if (selectedBtnPos != FIRST_PAGE_NUMBER + 1) {
 					((RoboButton) findViewById(getPreFirst())).setDrawableStyle(R.style.Button_Page);
 				}
 				int pageNumber = 0;
@@ -248,37 +224,17 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 			// change preLast button to dots
 			((TextView) findViewById(getPreLast())).setText(DOTS_SYMBOL);
 			(findViewById(getPreLast())).setBackgroundResource(R.drawable.empty);
-		} else if (buttonsMode == ButtonsMode.MIDDLE_FROM_RIGHT) {
-			// draw buttons like this
-			// | < | | 1 | ... | 6 | | 7 | | 8 | ... | 65 | | > |
-			//                   ^ -
-			// | < | | 1 | ... | 58 | | 59 | | 60 | ... | 65 | | > |
-			//                                  ^ - current selected page
-
-			int pageNumber = selectedPage;
-			for (int i = getPreLast() - BASE_BTN_ID; i > FIRST + 2; i--) {
-				setButtonPageNumber(pageNumber++, i);
-			}
-
-			// change preFirst button to dots
-			((TextView) findViewById(getPreFirst())).setText(DOTS_SYMBOL);
-			(findViewById(getPreFirst())).setBackgroundResource(R.drawable.empty);
-
-			// change preLast button to dots
-			((TextView) findViewById(getPreLast())).setText(DOTS_SYMBOL);
-			(findViewById(getPreLast())).setBackgroundResource(R.drawable.empty);
 		} else if (buttonsMode == ButtonsMode.RIGHT) {
 			// draw buttons like this
 			// | < | | 1 | ... | 61 | | 62 | | 63 | | 64 | | 65 | | > |
-
-//			((RoboButton) findViewById(getPreLast())).setDrawableStyle(R.style.Button_Page);
-
-			int pageNumber = totalPageCnt;
-			for (int i = getLast() - BASE_BTN_ID; i > FIRST + 1; i--) {
-				setButtonPageNumber(pageNumber--, i);
+			if (selectedBtnPos != buttonsCnt - 3) {
+				((RoboButton) findViewById(getPreLast())).setDrawableStyle(R.style.Button_Page);
 			}
 
-			((TextView) findViewById(getFirst())).setText(String.valueOf(FIRST_PAGE_NUMBER));
+			int pageNumber = totalPageCnt - 1;
+			for (int i = getLast() - BASE_BTN_ID; i > FIRST + 2; i--) {
+				setButtonPageNumber(pageNumber--, i);
+			}
 
 			// change preFirst button to dots
 			((TextView) findViewById(getPreFirst())).setText(DOTS_SYMBOL);
@@ -308,11 +264,6 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 			if (roboButton != null) {
 				roboButton.setDrawableStyle(R.style.Button_Page);
 			}
-		} else if (buttonsMode == ButtonsMode.MIDDLE_FROM_RIGHT) {
-			RoboButton roboButton = (RoboButton) findViewById(activeButton);
-			if (roboButton != null) {
-				roboButton.setDrawableStyle(R.style.Button_Page);
-			}
 		}
 	}
 
@@ -322,14 +273,6 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 			// | < | | 1 | ... | 6 | | 7 | | 8 | ... | 65 | | > |
 			//                   ^ activate this button
 			activeButton = getPreFirst() + 1;
-			RoboButton roboButton = (RoboButton) findViewById(activeButton);
-			if (roboButton != null) {
-				roboButton.setDrawableStyle(R.style.Button_Page_Selected);
-			}
-		} else if (buttonsMode == ButtonsMode.MIDDLE_FROM_RIGHT) {
-			// | < | | 1 | ... | 6 | | 7 | | 8 | ... | 65 | | > |
-			//                               ^ activate this button
-			activeButton = getPreLast() - 1;
 			RoboButton roboButton = (RoboButton) findViewById(activeButton);
 			if (roboButton != null) {
 				roboButton.setDrawableStyle(R.style.Button_Page_Selected);
@@ -346,8 +289,14 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 				}
 			}
 
-			if (!pageFound) { // we came from middle position
-				prevBtnPos = selectedPage + 1;
+			if (buttonsMode == ButtonsMode.LEFT) {
+				if (!pageFound) { // we came from middle position or hit last button
+					prevBtnPos = selectedPage + 1;
+				}
+			} else if (buttonsMode == ButtonsMode.RIGHT) {
+				if (!pageFound) { // we came from middle position or hit last button
+					prevBtnPos = selectedBtnPos;
+				}
 			}
 
 			RoboButton roboButton = (RoboButton) findViewById(BASE_BTN_ID + prevBtnPos);
@@ -396,10 +345,6 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 		this.pagerFace = pagerFace;
 	}
 
-	public int getVisiblePageButtonsCnt() {
-		return visiblePageButtonsCnt;
-	}
-
 	public void enableLeftBtn(boolean enable) {
 		findViewById(getLeftBtn()).setEnabled(enable);
 	}
@@ -419,7 +364,6 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 	enum ButtonsMode {
 		LEFT,
 		MIDDLE_FROM_LEFT,
-		MIDDLE_FROM_RIGHT,
 		RIGHT,
 	}
 }
