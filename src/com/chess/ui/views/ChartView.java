@@ -1,10 +1,16 @@
 package com.chess.ui.views;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.*;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
+import com.chess.R;
+import com.chess.backend.entity.api.stats.GraphData;
+import com.google.gson.Gson;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,14 +20,23 @@ import android.view.View;
  */
 public class ChartView extends View {
 
-	private static final float GRAPH_HEIGHT = 200;
+	private static final int TIME = 0;
+	private static final int VALUE = 1;
 
 	private Paint mPaint;
 	private Path mPath;
-	private PathEffect[] mEffects;
-	private int[] mColors;
-	private float mPhase;
-	private float[] data;
+	private int widthPixels;
+	private float yAspect;
+	private int xPointRange;
+	private int backColor;
+	private Paint borderPaint;
+	private List<long[]> dataArray;
+	private int minY;
+	private int maxY;
+	private float density;
+	private int graphTopColor;
+	private int graphBottomColor;
+	private Rect clipBounds;
 
 	public ChartView(Context context) {
 		super(context);
@@ -38,64 +53,92 @@ public class ChartView extends View {
 		init(context);
 	}
 
+	private static final String graphString = "{\"min_y\":945,\"max_x\":1606,\"series\":[[1260259200000,1045],[1302246000000,1218],[1305270000000,1307],[1306220400000,1318],[1311318000000,1471],[1359619200000,1506],[1367478000000,1319],[1369983600000,1201],[1370674800000,1073]]}";
+// 1260259200000,
+// 1302246000000,
+// 1305270000000,
+// 1306220400000,
+// 1311318000000,
+// 1359619200000,
+// 1367478000000,
+// 1369983600000,
+// 1370674800000,
+
 	private void init(Context context) {
-		data = new float[40];
-		for (int i1 = 0; i1 < data.length; i1++) {
-			data[i1] = ((float) Math.random() * 35);
+		Resources resources = context.getResources();
+		density = resources.getDisplayMetrics().density;
+		clipBounds = new Rect();
 
-		}
+		Gson gson = new Gson();
+		GraphData graphData = gson.fromJson(graphString, GraphData.class);
 
+		dataArray = graphData.getSeries();
+
+		widthPixels = resources.getDisplayMetrics().widthPixels;
 
 		setFocusable(true);
 		setFocusableInTouchMode(true);
 
-		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-//		mPaint.setStyle(Paint.Style.STROKE);
-//		mPaint.setStrokeWidth(6);
+		// get min and max of Y values
+		minY = Integer.MAX_VALUE;
+		maxY = Integer.MIN_VALUE;
+		for (long[] longs : dataArray) {
+			int yValue = (int) longs[VALUE];
+			minY = Math.min(minY, yValue);
+			maxY = Math.max(maxY, yValue);
+		}
+		Log.d("TEST", " _______________________ ");
+		Log.d("TEST", " minY = " + minY + " maxY = " + maxY);
 
-		mPath = makeFollowPath(data);
+		xPointRange = widthPixels / dataArray.size();
 
-		mEffects = new PathEffect[6];
+		int borderColor = resources.getColor(R.color.graph_border);
+		backColor = resources.getColor(R.color.graph_back);
+		graphTopColor = resources.getColor(R.color.graph_gradient_top);
+		graphBottomColor = resources.getColor(R.color.graph_gradient_bottom);
 
-		mColors = new int[]{Color.BLACK,
-				0xFF88b2cc,
-				Color.BLUE,
-				Color.GREEN, Color.MAGENTA, Color.BLACK
-		};
+		borderPaint = new Paint();
+		borderPaint.setColor(borderColor);
+		borderPaint.setStyle(Paint.Style.STROKE);
+		borderPaint.setStrokeWidth(1.5f * density);
+
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		canvas.drawColor(Color.WHITE);
+		canvas.getClipBounds(clipBounds);
+		int bottom = clipBounds.bottom;
+		canvas.drawColor(backColor);
 
-		RectF bounds = new RectF();
-		mPath.computeBounds(bounds, false);
-
-		canvas.translate(10 - bounds.left, 10 - bounds.top);
-
-		makeEffects(mEffects, mPhase);
-		mPhase += 1;
-		invalidate();
-
-//		for (int i = 0; i < mEffects.length; i++) {
-//			mPaint.setPathEffect(mEffects[i]);
-//			mPaint.setColor(mColors[i]);
-//			canvas.drawPath(mPath, mPaint);
-//			canvas.translate(0, 28);
-//		}
-
+		canvas.save();
 		drawPaths(canvas);
+		canvas.restore();
+
+		canvas.drawLine(0, bottom, widthPixels, bottom, borderPaint);
+		canvas.drawLine(0, 0, widthPixels, 0, borderPaint);
 	}
 
 	private void drawPaths(Canvas canvas) {
-//		mPaint.setPathEffect(mEffects[1]);
-//		mPaint.setColor(mColors[1]);
-		mPaint.setAntiAlias(true);
-		mPaint.setShader(new LinearGradient(0, 0, 0, GRAPH_HEIGHT, 0xffe3f3fb, 0xffc8e7f7, Shader.TileMode.CLAMP));
+		if (mPath == null) {
+			int height = canvas.getClipBounds().bottom;
+			minY -= 200;
+			maxY += 400;
+
+			int diff = maxY - minY;
+
+			yAspect = (float) (diff / height);
+
+			mPath = makeFollowPath(dataArray, height);
+
+			mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  			mPaint.setAntiAlias(true);
+			LinearGradient shader = new LinearGradient(0, 0, 0, height, graphTopColor, graphBottomColor, Shader.TileMode.CLAMP);
+			mPaint.setShader(shader);
+		}
+
 		canvas.drawPath(mPath, mPaint);
 
-
-		int strokeWidth = 3;     // TODO
+		int strokeWidth = (int) (1.5f * density);
 
 		Paint strokePaint = new Paint();
 		strokePaint.setAntiAlias(true);
@@ -104,47 +147,28 @@ public class ChartView extends View {
 		strokePaint.setColor(0xFF88b2cc);
 
 		canvas.drawPath(mPath, strokePaint);
-		canvas.translate(0, 28);
-	}
-
-	private static void makeEffects(PathEffect[] e, float phase) {
-		e[1] = new CornerPathEffect(2);
-
-	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-			case KeyEvent.KEYCODE_DPAD_CENTER:
-				mPath = makeFollowPath(data);
-				return true;
-		}
-		return super.onKeyDown(keyCode, event);
 	}
 
 
-
-	private static Path makeFollowPath(float[] data) {
+	private Path makeFollowPath(List<long[]> data, int height) {
 		Path path = new Path();
-		path.moveTo(0, 0);
-		for (int i = 1; i < data.length; i++) {
-			path.lineTo(i * 10, data[i]);
+		Log.d("TEST", " yAspect = " + yAspect);
+		long startYValue = data.get(0)[VALUE] - minY;
+		path.moveTo(-10, height - startYValue / yAspect);
+		for (int i = 1; i < data.size(); i++) {
+			long yValue = data.get(i)[VALUE] - minY;
+			Log.d("TEST", "height = " + height + " graph x = " + i + " y = " + (height - yValue / yAspect));
+			path.lineTo(i * xPointRange, height - yValue / yAspect);
 		}
-		path.lineTo(10 * (data.length - 1), GRAPH_HEIGHT);
-		path.lineTo(0, GRAPH_HEIGHT);
+		long yValue = data.get(data.size() - 1)[VALUE] - minY;
+		path.lineTo(widthPixels, height - yValue / yAspect);
+
+		path.lineTo(widthPixels, height);
+		path.lineTo(-10, height);
 		path.close();
 
 		return path;
 	}
 
-//	private static Path makePathDash() {
-//		Path p = new Path();
-//		p.moveTo(4, 0);
-//		p.lineTo(0, -4);
-//		p.lineTo(8, -4);
-//		p.lineTo(12, 0);
-//		p.lineTo(8, 4);
-//		p.lineTo(0, 4);
-//		return p;
-//	}
+
 }

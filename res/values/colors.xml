@@ -454,4 +454,10 @@
     <!--Board-->
     <color name="coordinate_color">#FF2f3c22</color>
     <color name="highlight_color">#BFffff65</color>
+
+	<!--Graph-->
+	<color name="graph_border">#FFbfbfbf</color>
+	<color name="graph_back">#FFf7f7f7</color>
+	<color name="graph_gradient_top">#FFe2f3fb</color>
+	<color name="graph_gradient_bottom">#FFc9e8f8</color>
 </resources>

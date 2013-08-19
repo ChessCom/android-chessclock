@@ -69,7 +69,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private static final int WRONG_RESULT = 1;
 	private static final int GET_TACTIC = 2;
 	// Quick action ids
-	private static final int ID_NEXT_TACTIC = 0;
+//	private static final int ID_NEXT_TACTIC = 0;
 	private static final int ID_SHOW_ANSWER = 1;
 	private static final int ID_PRACTICE = 2;
 	private static final int ID_SETTINGS = 3;
@@ -442,9 +442,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void onValueSelected(int code) {
-		if (code == ID_NEXT_TACTIC) {
+		/*if (code == ID_NEXT_TACTIC) {
 			getNextTactic();
-		} else if (code == ID_SHOW_ANSWER) {
+		} else*/ if (code == ID_SHOW_ANSWER) {
 			showAnswer();
 		} else if (code == ID_PRACTICE) {
 			switch2Analysis();
@@ -652,7 +652,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 
 		if (currentGameExist() && tacticItem.isRetry()) {
-			optionsArray.put(ID_PRACTICE, getString(R.string.practice_mode));
+			optionsArray.put(ID_PRACTICE, getString(R.string.practice));
 		} else {
 			optionsArray.remove(ID_PRACTICE);
 		}
@@ -933,8 +933,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		{// options list setup
 			optionsArray = new SparseArray<String>();
-			optionsArray.put(ID_NEXT_TACTIC, getString(R.string.next_tactic));
+//			optionsArray.put(ID_NEXT_TACTIC, getString(R.string.next_tactic));
 			optionsArray.put(ID_SHOW_ANSWER, getString(R.string.show_answer));
+			optionsArray.put(ID_PRACTICE, getString(R.string.practice));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
 	}

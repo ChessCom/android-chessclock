@@ -33,9 +33,12 @@ public class YourMoveDrawable extends Drawable {
 	private Drawable[] dots;
 	private final Drawable[] fullDots;
 	private int usedHints;
+	private Rect clipBounds;
 
 	public YourMoveDrawable(Context context) {
 		float density = context.getResources().getDisplayMetrics().density;
+
+		clipBounds = new Rect();
 
 //		int iconId, int colorId, int sizeId
 		helpIcon = new IconDrawable(context, R.string.ic_help, R.color.controls_icon, R.dimen.game_controls_lesson_help_icon_size_big);
@@ -69,7 +72,7 @@ public class YourMoveDrawable extends Drawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-		Rect clipBounds = canvas.getClipBounds();
+		canvas.getClipBounds();
 		int right = clipBounds.right;
 		int bottom = clipBounds.bottom;
 		int centerX = right / 2 + offset;

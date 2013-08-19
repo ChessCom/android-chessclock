@@ -12,8 +12,8 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.views.ChartView;
@@ -110,14 +110,22 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 
 		totalGamesValueTxt = (TextView) view.findViewById(R.id.totalGamesValueTxt);
 
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, CHART_HEIGHT);
 
 		pieView = new PieView(getActivity());
 		ChartView chartView = new ChartView(getActivity());
 
+		float aspect = 192f/640f;
+
+		int widthPixels = getResources().getDisplayMetrics().widthPixels;
+		int height = (int) (widthPixels * aspect);
+
+		LinearLayout.LayoutParams chartParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+				height);
+		LinearLayout.LayoutParams pieChartParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, CHART_HEIGHT);
+
 		LinearLayout statsLinLay = (LinearLayout) view.findViewById(R.id.statsLinLay);
-		statsLinLay.addView(chartView, 1, params);
-		statsLinLay.addView(pieView, 3, params);
+		statsLinLay.addView(chartView, 1, chartParams);
+		statsLinLay.addView(pieView, 3, pieChartParams);
 
 		LinearLayout ratingsLinearView = (LinearLayout) view.findViewById(R.id.ratingsLinearView);
 		addRatingsViews(ratingsLinearView);

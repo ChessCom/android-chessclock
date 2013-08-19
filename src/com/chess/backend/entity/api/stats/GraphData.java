@@ -11,8 +11,8 @@ import java.util.List;
 public class GraphData {
 /*
 "graph_data": {
-            "minY": 1100,
-            "maxX": 1449,
+            "min_y": 1100,
+            "min_x": 1449,
             "series": [
                 [
                     1370070000000,
@@ -22,8 +22,20 @@ public class GraphData {
         }
 	 */
 
-	private int minY;
-	private int maxX;
+	private int min_y;
+	private int max_x;
 	private List<long[]> series;
+
+	public int getMinY() {
+		return min_y;
+	}
+
+	public int getMaxX() {
+		return max_x;
+	}
+
+	public List<long[]> getSeries() {
+		return series;
+	}
 
 }

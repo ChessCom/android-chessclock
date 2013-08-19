@@ -168,7 +168,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			practiceTxt.setShadowLayer(0.5f, 0, -1, Color.BLACK);
 			practiceTxt.setFont(FontsHelper.BOLD_FONT);
 			practiceTxt.setVisibility(GONE);
-			practiceTxt.setText(R.string.practice_mode);
+			practiceTxt.setText(R.string.practice);
 
 			addView(practiceTxt, layoutParams);
 		}

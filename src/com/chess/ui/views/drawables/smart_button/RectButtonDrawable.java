@@ -49,6 +49,7 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 	/* state & other values */
 	private boolean boundsInit;
+	private Rect clipBounds;
 
 	/**
 	 * Use for init ButtonDrawableBuilder
@@ -80,6 +81,9 @@ public class RectButtonDrawable extends ButtonDrawable {
 	@Override
 	void init(Resources resources) {
 		float density = resources.getDisplayMetrics().density;
+
+		clipBounds = new Rect();
+
 		if (radius > 0) {
 			outerRect = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
 		} else {
@@ -193,9 +197,9 @@ public class RectButtonDrawable extends ButtonDrawable {
 	}
 
 	private void initBounds(Canvas canvas){
-		Rect bounds = canvas.getClipBounds();
-		int width = bounds.width();
-		int height = bounds.height();
+		canvas.getClipBounds();
+		int width = clipBounds.width();
+		int height = clipBounds.height();
 		switch (rectPosition) {
 			case TOP_LEFT:
 				enabledDrawable.setBounds(-edgeOffset, -edgeOffset, width + edgeOffset/2, height);
