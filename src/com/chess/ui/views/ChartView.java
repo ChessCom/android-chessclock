@@ -29,7 +29,6 @@ public class ChartView extends View {
 	private float yAspect;
 	private int backColor;
 	private Paint borderPaint;
-//	private List<long[]> dataArray;
 	private int minY;
 	private int maxY;
 	private float density;
@@ -82,7 +81,6 @@ public class ChartView extends View {
 			long lastPoint = System.currentTimeMillis();
 			lastPoint -= lastPoint % MILLISECONDS_PER_DAY;
 			// distribute timestamps at whole width
-			// 1370674800000 - 1260259200000 = 110415600000
 			long xDiff = lastPoint - firstPoint;
 			long xPointRange = xDiff / widthPixels;
 
@@ -91,7 +89,6 @@ public class ChartView extends View {
 			pointsExistArray = new SparseBooleanArray();
 
 			logTest(" xPointRange = " + (xPointRange - xPointRange % xPointRange));
-			long dataTimestamp = 0;
 			for (int i = 0; i < widthPixels; i++) {
 				long timestampValue = firstPoint + i * xPointRange;
 				timestampValue -= timestampValue % MILLISECONDS_PER_DAY;
@@ -102,7 +99,7 @@ public class ChartView extends View {
 					graphTimestamp = aDataArray[TIME] - aDataArray[TIME] % MILLISECONDS_PER_DAY;
 
 					long rating = aDataArray[VALUE];
-					if ((timestampValue - graphTimestamp) > 0 && (timestampValue - graphTimestamp) < (xPointRange * 2)) {
+					if ((timestampValue - graphTimestamp) >= 0 && (timestampValue - graphTimestamp) < (xPointRange * 2)) {
 						logTest(" timestampValue = " + timestampValue + " graphTimestamp = " + graphTimestamp);
 						pointsArray.put(i, rating);
 						found = true;
@@ -110,7 +107,7 @@ public class ChartView extends View {
 					}
 				}
 
-				logTest("timestampValue = " + timestampValue + " graphTimestamp = " + dataTimestamp);
+				logTest("timestampValue = " + timestampValue);
 				pointsExistArray.put(i, found);
 			}
 		}
@@ -181,7 +178,7 @@ public class ChartView extends View {
 		canvas.drawPath(mPath, strokePaint);
 	}
 
-	private Path makeFollowPath(/*List<long[]> data,*/ int height) {
+	private Path makeFollowPath(int height) {
 		Path path = new Path();
 		logTest(" yAspect = " + yAspect);
 //		long startYValue = data.get(0)[VALUE] - minY;
