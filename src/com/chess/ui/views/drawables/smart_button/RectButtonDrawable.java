@@ -197,7 +197,7 @@ public class RectButtonDrawable extends ButtonDrawable {
 	}
 
 	private void initBounds(Canvas canvas){
-		canvas.getClipBounds();
+		canvas.getClipBounds(clipBounds);
 		int width = clipBounds.width();
 		int height = clipBounds.height();
 		switch (rectPosition) {

@@ -72,7 +72,7 @@ public class YourMoveDrawable extends Drawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-		canvas.getClipBounds();
+		canvas.getClipBounds(clipBounds);
 		int right = clipBounds.right;
 		int bottom = clipBounds.bottom;
 		int centerX = right / 2 + offset;
