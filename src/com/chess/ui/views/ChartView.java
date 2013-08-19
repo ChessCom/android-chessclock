@@ -5,11 +5,15 @@ import android.content.res.Resources;
 import android.graphics.*;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.SparseArray;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import com.chess.R;
 import com.chess.backend.entity.api.stats.GraphData;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,12 +26,13 @@ public class ChartView extends View {
 
 	private static final int TIME = 0;
 	private static final int VALUE = 1;
+	private static final long MILLISECONDS_PER_DAY = 86400 * 1000;
 
 	private Paint mPaint;
 	private Path mPath;
 	private int widthPixels;
 	private float yAspect;
-	private int xPointRange;
+	private long xPointRange;
 	private int backColor;
 	private Paint borderPaint;
 	private List<long[]> dataArray;
@@ -37,6 +42,10 @@ public class ChartView extends View {
 	private int graphTopColor;
 	private int graphBottomColor;
 	private Rect clipBounds;
+	private long firstPoint;
+	private long lastPoint;
+	private SparseArray<Long> pointsArray;
+	private SparseBooleanArray pointsExistArray;
 
 	public ChartView(Context context) {
 		super(context);
@@ -78,20 +87,62 @@ public class ChartView extends View {
 
 		setFocusable(true);
 		setFocusableInTouchMode(true);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd' 'HH:mm:ss");
 
-		// get min and max of Y values
-		minY = Integer.MAX_VALUE;
-		maxY = Integer.MIN_VALUE;
-		for (long[] longs : dataArray) {
-			int yValue = (int) longs[VALUE];
-			minY = Math.min(minY, yValue);
-			maxY = Math.max(maxY, yValue);
+		{ // get min and max of X values
+			// remove
+			firstPoint = dataArray.get(0)[TIME] - dataArray.get(0)[TIME] % MILLISECONDS_PER_DAY;
+			lastPoint = dataArray.get(dataArray.size() - 1)[TIME] - dataArray.get(dataArray.size() - 1)[TIME] % MILLISECONDS_PER_DAY;
+			logTest(" first date = " + dateFormat.format(new Date(firstPoint)));
+			logTest(" last date = " + dateFormat.format(new Date(lastPoint)));
+			// distribute timestamps at whole width
+			// 1370674800000 - 1260259200000 = 110415600000
+			long xDiff = lastPoint - firstPoint;
+			xPointRange = xDiff / widthPixels;
+
+			// convert xPointRange to optimal day{time} difference
+			pointsArray = new SparseArray<Long>();
+			pointsExistArray = new SparseBooleanArray();
+
+			logTest(" xPointRange = " + (xPointRange - xPointRange % xPointRange));
+			long dataTimestamp = 0;
+			for (int i= 0; i < widthPixels; i++) {
+				long timestampValue = firstPoint + i * xPointRange;
+				timestampValue -= timestampValue % MILLISECONDS_PER_DAY;
+
+				boolean found = false;
+
+				long graphTimestamp;
+				for (long[] aDataArray : dataArray) {
+					graphTimestamp = aDataArray[TIME] - aDataArray[TIME] % MILLISECONDS_PER_DAY;
+
+					long rating = aDataArray[VALUE];
+					if ((timestampValue - graphTimestamp) > 0 && (timestampValue - graphTimestamp) < (xPointRange*2)) {
+						logTest(" timestampValue = " + timestampValue + " graphTimestamp = " + graphTimestamp);
+						pointsArray.put(i, rating);
+						found = true;
+						break;
+					}
+				}
+
+				logTest("timestampValue = " + timestampValue + " graphTimestamp = " + dataTimestamp);
+				pointsExistArray.put(i, found);
+			}
 		}
-		Log.d("TEST", " _______________________ ");
-		Log.d("TEST", " minY = " + minY + " maxY = " + maxY);
 
-		xPointRange = widthPixels / dataArray.size();
+		{// get min and max of Y values
+			minY = Integer.MAX_VALUE;
+			maxY = Integer.MIN_VALUE;
+			for (long[] longs : dataArray) {
+				int yValue = (int) longs[VALUE];
+				minY = Math.min(minY, yValue);
+				maxY = Math.max(maxY, yValue);
+			}
+			logTest( " _______________________ ");
+			logTest( " minY = " + minY + " maxY = " + maxY);
+		}
 
+		// set colors
 		int borderColor = resources.getColor(R.color.graph_border);
 		backColor = resources.getColor(R.color.graph_back);
 		graphTopColor = resources.getColor(R.color.graph_gradient_top);
@@ -101,7 +152,6 @@ public class ChartView extends View {
 		borderPaint.setColor(borderColor);
 		borderPaint.setStyle(Paint.Style.STROKE);
 		borderPaint.setStrokeWidth(1.5f * density);
-
 	}
 
 	@Override
@@ -121,6 +171,7 @@ public class ChartView extends View {
 	private void drawPaths(Canvas canvas) {
 		if (mPath == null) {
 			int height = canvas.getClipBounds().bottom;
+			int originalMaxY = maxY;
 			minY -= 200;
 			maxY += 400;
 
@@ -131,8 +182,9 @@ public class ChartView extends View {
 			mPath = makeFollowPath(dataArray, height);
 
 			mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-  			mPaint.setAntiAlias(true);
-			LinearGradient shader = new LinearGradient(0, 0, 0, height, graphTopColor, graphBottomColor, Shader.TileMode.CLAMP);
+			mPaint.setAntiAlias(true);
+			int gradientYStart = (int) (height - (originalMaxY - minY) / yAspect);
+			LinearGradient shader = new LinearGradient(0, gradientYStart, 0, height, graphTopColor, graphBottomColor, Shader.TileMode.CLAMP);
 			mPaint.setShader(shader);
 		}
 
@@ -149,25 +201,28 @@ public class ChartView extends View {
 		canvas.drawPath(mPath, strokePaint);
 	}
 
-
 	private Path makeFollowPath(List<long[]> data, int height) {
 		Path path = new Path();
-		Log.d("TEST", " yAspect = " + yAspect);
+		logTest( " yAspect = " + yAspect);
 		long startYValue = data.get(0)[VALUE] - minY;
 		path.moveTo(-10, height - startYValue / yAspect);
-		for (int i = 1; i < data.size(); i++) {
-			long yValue = data.get(i)[VALUE] - minY;
-			Log.d("TEST", "height = " + height + " graph x = " + i + " y = " + (height - yValue / yAspect));
-			path.lineTo(i * xPointRange, height - yValue / yAspect);
+		long yValue = 0;
+		for (int i = 0; i < widthPixels; i++) {
+			if (pointsExistArray.get(i)) {
+				yValue = pointsArray.get(i) - minY;
+			}
+			path.lineTo(i, height - yValue / yAspect);
 		}
-		long yValue = data.get(data.size() - 1)[VALUE] - minY;
-		path.lineTo(widthPixels, height - yValue / yAspect);
 
 		path.lineTo(widthPixels, height);
 		path.lineTo(-10, height);
 		path.close();
 
 		return path;
+	}
+	
+	private void logTest(String string) {
+		Log.d("TEST", string);
 	}
 
 

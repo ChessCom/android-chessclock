@@ -458,6 +458,6 @@
 	<!--Graph-->
 	<color name="graph_border">#FFbfbfbf</color>
 	<color name="graph_back">#FFf7f7f7</color>
-	<color name="graph_gradient_top">#FFe2f3fb</color>
-	<color name="graph_gradient_bottom">#FFc9e8f8</color>
+	<color name="graph_gradient_top">#ffe6f7ff</color>
+	<color name="graph_gradient_bottom">#ffbbdaea</color>
 </resources>
