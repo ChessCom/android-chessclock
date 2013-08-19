@@ -226,4 +226,13 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	/* Graph Stats Data */
+	public static QueryParams getGraphItemForUser(String userName, String gameType) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.GAME_STATS_GRAPH_DATA.ordinal()]);
+		queryParams.setSelection(DbDataManager.SELECTION_GRAPH_TABLE);
+		queryParams.setArguments(new String[]{gameType, userName});
+		return queryParams;
+	}
+
 }

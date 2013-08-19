@@ -1,17 +1,19 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.api.stats.GameStatsItem;
+import com.chess.backend.entity.api.stats.GraphData;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,26 +23,29 @@ import com.chess.db.DbScheme;
  */
 public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Long> {
 
-	private static final String STANDARD = "standard";
-	private static final String BLITZ = "blitz";
-	private static final String LIGHTNING = "lightning";
-	private static final String CHESS = "chess";
-	private static final String CHESS960 = "chess960";
-	private final String userName;
+	public static final String STANDARD = "standard";
+	public static final String BLITZ = "blitz";
+	public static final String LIGHTNING = "lightning";
+	public static final String CHESS = "chess";
+	public static final String CHESS960 = "chess960";
+	private static final int TIMESTAMP = 0;
+	private static final int RATING = 1;
+	private final String username;
 
-	private ContentResolver resolver;
+	private ContentResolver contentResolver;
 	protected static String[] arguments = new String[1];
+	protected static String[] sArguments3 = new String[3];
 	private String gameType;
 
 
 	public SaveGameStatsTask(TaskUpdateInterface<GameStatsItem.Data> taskFace, GameStatsItem.Data item,
-							 ContentResolver resolver, String gameType) {
+							 ContentResolver contentResolver, String gameType) {
 		super(taskFace);
 		this.gameType = gameType;
 		this.item = item;
-		this.resolver = resolver;
+		this.contentResolver = contentResolver;
 		AppData appData = new AppData(getTaskFace().getMeContext());
-		userName = appData.getUsername();
+		username = appData.getUsername();
 
 	}
 
@@ -48,50 +53,80 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 	protected Integer doTheTask(Long... params) {
 
 		if (gameType.equals(STANDARD)) {
-			saveStatsGameLive(userName, DbScheme.Tables.GAME_STATS_LIVE_STANDARD.ordinal());
+			saveStatsGameLive( DbScheme.Tables.GAME_STATS_LIVE_STANDARD.ordinal());
+			saveGraphStats(STANDARD);
 		} else if (gameType.equals(LIGHTNING)) {
-			saveStatsGameLive(userName, DbScheme.Tables.GAME_STATS_LIVE_LIGHTNING.ordinal());
+			saveStatsGameLive(DbScheme.Tables.GAME_STATS_LIVE_LIGHTNING.ordinal());
+			saveGraphStats(LIGHTNING);
 		} else if (gameType.equals(BLITZ)) {
-			saveStatsGameLive(userName, DbScheme.Tables.GAME_STATS_LIVE_BLITZ.ordinal());
+			saveStatsGameLive(DbScheme.Tables.GAME_STATS_LIVE_BLITZ.ordinal());
+			saveGraphStats(BLITZ);
 		} else if (gameType.equals(CHESS)) {
-			saveDailyStats(userName, DbScheme.Tables.GAME_STATS_DAILY_CHESS.ordinal());
+			saveDailyStats(DbScheme.Tables.GAME_STATS_DAILY_CHESS.ordinal());
+			saveGraphStats(CHESS);
 		} else if (gameType.equals(CHESS960)) {
-			saveDailyStats(userName, DbScheme.Tables.GAME_STATS_DAILY_CHESS960.ordinal());
+			saveDailyStats(DbScheme.Tables.GAME_STATS_DAILY_CHESS960.ordinal());
+			saveGraphStats(CHESS960);
 		}
 		return StaticData.RESULT_OK;
 	}
 
-	private void saveStatsGameLive(String userName, int uriCode) {
+	private void saveStatsGameLive(int uriCode) {
 		final String[] userArgument = arguments;
-		userArgument[0] = String.valueOf(userName);
+		userArgument[0] = username;
 
 		Uri uri = DbScheme.uriArray[uriCode];
 
-		Cursor cursor = resolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
+		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
 
-		ContentValues values = DbDataManager.putGameStatsLiveItemToValues(item, userName);
+		ContentValues values = DbDataManager.putGameStatsLiveItemToValues(item, username);
 
-		if (cursor.moveToFirst()) {
-			resolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-		} else {
-			resolver.insert(uri, values);
-		}
+		DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	private void saveDailyStats(String userName, int uriCode) {
+	private void saveDailyStats(int uriCode) {
 		final String[] userArgument = arguments;
-		userArgument[0] = String.valueOf(userName);
+		userArgument[0] = username;
 
 		Uri uri = DbScheme.uriArray[uriCode];
 
-		Cursor cursor = resolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
+		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
 
-		ContentValues values = DbDataManager.putGameStatsDailyItemToValues(item, userName);
+		ContentValues values = DbDataManager.putGameStatsDailyItemToValues(item, username);
 
-		if (cursor.moveToFirst()) {
-			resolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-		} else {
-			resolver.insert(uri, values);
+		DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
+	private void saveGraphStats(String gameType) {
+		int maxX = item.getGraphData().getMaxX();
+		int minY = item.getGraphData().getMinY();
+
+		List<long[]> series = item.getGraphData().getSeries();
+		for (long[] graphPoints : series) {
+
+			long timestamp = graphPoints[TIMESTAMP];
+			final String[] arguments = sArguments3;
+			arguments[0] = String.valueOf(timestamp);
+			arguments[1] = gameType;
+			arguments[2] = username;
+
+			Uri uri = DbScheme.uriArray[DbScheme.Tables.GAME_STATS_GRAPH_DATA.ordinal()];
+
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_GRAPH_RECORD,
+					DbDataManager.SELECTION_GRAPH_RECORD, arguments, null);
+
+			GraphData.SingleItem pointItem = new GraphData.SingleItem();
+
+			pointItem.setTimestamp(timestamp);
+			pointItem.setGameType(gameType);
+			pointItem.setMaxX(maxX);
+			pointItem.setMinY(minY);
+			pointItem.setRating((int) graphPoints[RATING]);
+			pointItem.setUsername(username);
+
+			ContentValues values = DbDataManager.putGraphDataItemToValues(pointItem, username);
+
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 	}
 

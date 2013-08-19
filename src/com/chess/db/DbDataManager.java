@@ -120,7 +120,16 @@ public class DbDataManager {
 
 	public static String SELECTION_USER_AND_USERNAME = concatArguments(V_USER, V_USERNAME);
 
-	public static String SELECTION_ID_AND_USERNAME = concatArguments(V_ID, V_USERNAME);
+	public static String SELECTION_GRAPH_RECORD = concatArguments(
+			V_TIMESTAMP,
+			V_GAME_TYPE,
+			V_USER
+	);
+
+	public static String SELECTION_GRAPH_TABLE = concatArguments(
+			V_GAME_TYPE,
+			V_USER
+	);
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
@@ -243,7 +252,12 @@ public class DbDataManager {
 
 	public static final String[] PROJECTION_USER_AND_USERNAME = new String[]{_ID, V_USER, V_USERNAME};
 
-	public static final String[] PROJECTION_ID_AND_USERNAME = new String[]{_ID, V_ID, V_USERNAME};
+	public static final String[] PROJECTION_GRAPH_RECORD = new String[]{
+			_ID,
+			V_TIMESTAMP,
+			V_GAME_TYPE,
+			V_USER,
+	};
 
 
 	public static String concatArguments(String... arguments) {
@@ -1644,6 +1658,30 @@ public class DbDataManager {
 			values.put(V_TOURNAMENTS_GAMES_IN_PROGRESS, tournamentsGames.getInProgress());
 		}
 		return values;
+	}
+
+	public static ContentValues putGraphDataItemToValues(GraphData.SingleItem dataObj, String user) {
+		ContentValues values = new ContentValues();
+
+		values.put(V_TIMESTAMP, dataObj.getTimestamp());
+		values.put(V_MIN_Y, dataObj.getMinY());
+		values.put(V_MAX_X, dataObj.getMaxX());
+		values.put(V_RATING, dataObj.getRating());
+		values.put(V_GAME_TYPE, dataObj.getGameType());
+		values.put(V_USER, user);
+
+		return values;
+	}
+
+	public static GraphData.SingleItem getGraphSingleItemFromCursor(Cursor cursor) {
+		GraphData.SingleItem pointData = new GraphData.SingleItem();
+
+		pointData.setTimestamp(getLong(cursor, V_TIMESTAMP));
+		pointData.setMinY(getInt(cursor, V_MIN_Y));
+		pointData.setMaxX(getInt(cursor, V_MAX_X));
+		pointData.setRating(getInt(cursor, V_RATING));
+
+		return pointData;
 	}
 
 	public static GamesInfoByResult getGameStatsGamesByResultFromCursor(Cursor cursor) {

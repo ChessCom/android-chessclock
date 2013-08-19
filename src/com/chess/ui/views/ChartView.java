@@ -3,17 +3,12 @@ package com.chess.ui.views;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.*;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import com.chess.R;
-import com.chess.backend.entity.api.stats.GraphData;
-import com.google.gson.Gson;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,73 +27,64 @@ public class ChartView extends View {
 	private Path mPath;
 	private int widthPixels;
 	private float yAspect;
-	private long xPointRange;
 	private int backColor;
 	private Paint borderPaint;
-	private List<long[]> dataArray;
+//	private List<long[]> dataArray;
 	private int minY;
 	private int maxY;
 	private float density;
 	private int graphTopColor;
 	private int graphBottomColor;
 	private Rect clipBounds;
-	private long firstPoint;
-	private long lastPoint;
 	private SparseArray<Long> pointsArray;
 	private SparseBooleanArray pointsExistArray;
+	private boolean initialized;
 
-	public ChartView(Context context) {
+	public ChartView(Context context, List<long[]> dataArray) {
 		super(context);
-		init(context);
+		init(context, dataArray);
 	}
 
-	public ChartView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init(context);
-	}
-
-	public ChartView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		init(context);
-	}
-
-	private static final String graphString = "{\"min_y\":945,\"max_x\":1606,\"series\":[[1260259200000,1045],[1302246000000,1218],[1305270000000,1307],[1306220400000,1318],[1311318000000,1471],[1359619200000,1506],[1367478000000,1319],[1369983600000,1201],[1370674800000,1073]]}";
-// 1260259200000,
-// 1302246000000,
-// 1305270000000,
-// 1306220400000,
-// 1311318000000,
-// 1359619200000,
-// 1367478000000,
-// 1369983600000,
-// 1370674800000,
-
-	private void init(Context context) {
+	private void init(Context context, List<long[]> dataArray) {
 		Resources resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
+		widthPixels = resources.getDisplayMetrics().widthPixels;
+
 		clipBounds = new Rect();
 
-		Gson gson = new Gson();
-		GraphData graphData = gson.fromJson(graphString, GraphData.class);
+		// set colors
+		int borderColor = resources.getColor(R.color.graph_border);
+		backColor = resources.getColor(R.color.graph_back);
+		graphTopColor = resources.getColor(R.color.graph_gradient_top);
+		graphBottomColor = resources.getColor(R.color.graph_gradient_bottom);
 
-		dataArray = graphData.getSeries();
-
-		widthPixels = resources.getDisplayMetrics().widthPixels;
+		borderPaint = new Paint();
+		borderPaint.setColor(borderColor);
+		borderPaint.setStyle(Paint.Style.STROKE);
+		borderPaint.setStrokeWidth(1.5f * density);
 
 		setFocusable(true);
 		setFocusableInTouchMode(true);
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd' 'HH:mm:ss");
 
+		if (dataArray == null) {
+			initialized = false;
+			return;
+		}
+
+		setPoints(dataArray);
+	}
+
+	private void setPoints(List<long[]> dataArray){
 		{ // get min and max of X values
 			// remove
-			firstPoint = dataArray.get(0)[TIME] - dataArray.get(0)[TIME] % MILLISECONDS_PER_DAY;
-			lastPoint = dataArray.get(dataArray.size() - 1)[TIME] - dataArray.get(dataArray.size() - 1)[TIME] % MILLISECONDS_PER_DAY;
-			logTest(" first date = " + dateFormat.format(new Date(firstPoint)));
-			logTest(" last date = " + dateFormat.format(new Date(lastPoint)));
+			long firstPoint = dataArray.get(0)[TIME] - dataArray.get(0)[TIME] % MILLISECONDS_PER_DAY;
+
+			long lastPoint = System.currentTimeMillis();
+			lastPoint -= lastPoint % MILLISECONDS_PER_DAY;
 			// distribute timestamps at whole width
 			// 1370674800000 - 1260259200000 = 110415600000
 			long xDiff = lastPoint - firstPoint;
-			xPointRange = xDiff / widthPixels;
+			long xPointRange = xDiff / widthPixels;
 
 			// convert xPointRange to optimal day{time} difference
 			pointsArray = new SparseArray<Long>();
@@ -106,18 +92,17 @@ public class ChartView extends View {
 
 			logTest(" xPointRange = " + (xPointRange - xPointRange % xPointRange));
 			long dataTimestamp = 0;
-			for (int i= 0; i < widthPixels; i++) {
+			for (int i = 0; i < widthPixels; i++) {
 				long timestampValue = firstPoint + i * xPointRange;
 				timestampValue -= timestampValue % MILLISECONDS_PER_DAY;
 
 				boolean found = false;
-
 				long graphTimestamp;
 				for (long[] aDataArray : dataArray) {
 					graphTimestamp = aDataArray[TIME] - aDataArray[TIME] % MILLISECONDS_PER_DAY;
 
 					long rating = aDataArray[VALUE];
-					if ((timestampValue - graphTimestamp) > 0 && (timestampValue - graphTimestamp) < (xPointRange*2)) {
+					if ((timestampValue - graphTimestamp) > 0 && (timestampValue - graphTimestamp) < (xPointRange * 2)) {
 						logTest(" timestampValue = " + timestampValue + " graphTimestamp = " + graphTimestamp);
 						pointsArray.put(i, rating);
 						found = true;
@@ -138,20 +123,11 @@ public class ChartView extends View {
 				minY = Math.min(minY, yValue);
 				maxY = Math.max(maxY, yValue);
 			}
-			logTest( " _______________________ ");
-			logTest( " minY = " + minY + " maxY = " + maxY);
+			logTest(" _______________________ ");
+			logTest(" minY = " + minY + " maxY = " + maxY);
 		}
 
-		// set colors
-		int borderColor = resources.getColor(R.color.graph_border);
-		backColor = resources.getColor(R.color.graph_back);
-		graphTopColor = resources.getColor(R.color.graph_gradient_top);
-		graphBottomColor = resources.getColor(R.color.graph_gradient_bottom);
-
-		borderPaint = new Paint();
-		borderPaint.setColor(borderColor);
-		borderPaint.setStyle(Paint.Style.STROKE);
-		borderPaint.setStrokeWidth(1.5f * density);
+		initialized = true;
 	}
 
 	@Override
@@ -160,9 +136,13 @@ public class ChartView extends View {
 		int bottom = clipBounds.bottom;
 		canvas.drawColor(backColor);
 
-		canvas.save();
-		drawPaths(canvas);
-		canvas.restore();
+		if (initialized) {
+			canvas.save();
+			drawPaths(canvas);
+			canvas.restore();
+		} else {
+			canvas.drawText("No Data :(", 0 ,0, borderPaint);
+		}
 
 		canvas.drawLine(0, bottom, widthPixels, bottom, borderPaint);
 		canvas.drawLine(0, 0, widthPixels, 0, borderPaint);
@@ -179,7 +159,7 @@ public class ChartView extends View {
 
 			yAspect = (float) (diff / height);
 
-			mPath = makeFollowPath(dataArray, height);
+			mPath = makeFollowPath(/*dataArray,*/ height);
 
 			mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 			mPaint.setAntiAlias(true);
@@ -201,10 +181,11 @@ public class ChartView extends View {
 		canvas.drawPath(mPath, strokePaint);
 	}
 
-	private Path makeFollowPath(List<long[]> data, int height) {
+	private Path makeFollowPath(/*List<long[]> data,*/ int height) {
 		Path path = new Path();
-		logTest( " yAspect = " + yAspect);
-		long startYValue = data.get(0)[VALUE] - minY;
+		logTest(" yAspect = " + yAspect);
+//		long startYValue = data.get(0)[VALUE] - minY;
+		long startYValue = 0;
 		path.moveTo(-10, height - startYValue / yAspect);
 		long yValue = 0;
 		for (int i = 0; i < widthPixels; i++) {
@@ -220,10 +201,13 @@ public class ChartView extends View {
 
 		return path;
 	}
-	
+
 	private void logTest(String string) {
 		Log.d("TEST", string);
 	}
 
-
+	public void setGraphData(List<long[]> series) {
+		setPoints(series);
+		invalidate();
+	}
 }

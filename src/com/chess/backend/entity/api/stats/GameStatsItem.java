@@ -10,83 +10,124 @@ import com.chess.backend.entity.api.BaseResponseItem;
  */
 public class GameStatsItem extends BaseResponseItem<GameStatsItem.Data> {
 /*
-
-"rating": {
-  "current": 1324,
-  "todays_rank": {
-	"rank": null,
-	"total_player_count": null
-  },
-  "percentile": null,
-  "glicko_rd": 159,
-  "highest": {
-	"rating": 1324,
-	"timestamp": 1315586067
-  },
-  "lowest": {
-	"rating": 1324,
-	"timestamp": 1178574672
-  },
-  "average_opponent": 1372.75,
-  "best_win": {
-	"rating": null,
-	"game_id": 309211,
-	"username": null
-  },
-  "average_opponent_rating_when_i": {
-	"win": 0,
-	"lose": 0,
-	"draw": 0
-  }
-},
-"games": {
-  "total": 12,
-  "white": 0,
-  "black": 0,
-  "unrated": 0,
-  "in_progress": 0,
-  "timeout_percent": 0,
-  "wins": {
-	"total": 7,
-	"white": 0,
-	"black": 0
-  },
-  "losses": {
-	"total": 5,
-	"white": 0,
-	"black": 0
-  },
-  "draws": {
-	"total": 0,
-	"white": 0,
-	"black": 0
-  },
-  "winning_streak": 5,
-  "losing_streak": 4
-  "most_frequent_opponent": {
-	"username": "erik",
-	"games_played": 5
-  }
-
-"tournaments": {
-  "all": {
-	"leaderboard_points": 0,
-	"events_entered": 2,
-	"first_place_finishes": 0,
-	"second_place_finishes": 0,
-	"third_place_finishes": 0,
-	"withdrawals": 0,
-	"tournaments_hosted": 0,
-	"total_count_players_hosted": 0
-  },
-  "games": {
-	"total": 11,
-	"won": 6,
-	"lost": 5,
-	"drawn": 0,
-	"in_progress": 2
-  }
-}
+        "rating": {
+            "current": 1073,
+            "todays_rank": {
+                "rank": null,
+                "total_player_count": null
+            },
+            "percentile": null,
+            "glicko_rd": 272,
+            "highest": {
+                "rating": 1506,
+                "timestamp": 1359661966
+            },
+            "lowest": {
+                "rating": 948,
+                "timestamp": 1260233861
+            },
+            "average_opponent": 0,
+            "best_win": {
+                "rating": 1929,
+                "game_id": 35000360,
+                "username": "deepgreene"
+            },
+            "average_opponent_rating_when_i": {
+                "win": 0,
+                "lose": 0,
+                "draw": 0
+            }
+        },
+        "games": {
+            "total": 25,
+            "white": 14,
+            "black": 13,
+            "unrated": 3,
+            "in_progress": 13,
+            "timeout_percent": 50,
+            "wins": {
+                "total": 9,
+                "white": 3,
+                "black": 6
+            },
+            "losses": {
+                "total": 14,
+                "white": 9,
+                "black": 6
+            },
+            "draws": {
+                "total": 2,
+                "white": 2,
+                "black": 1
+            },
+            "winning_streak": 4,
+            "losing_streak": 10,
+            "most_frequent_opponent": {
+                "username": "deepgreene",
+                "games_played": 8
+            }
+        },
+        "tournaments": {
+            "all": {
+                "leaderboard_points": 0,
+                "events_entered": 2,
+                "first_place_finishes": 0,
+                "second_place_finishes": 0,
+                "third_place_finishes": 0,
+                "withdrawals": 1,
+                "tournaments_hosted": 0,
+                "total_count_players_hosted": 0
+            },
+            "games": {
+                "total": 14,
+                "wins": 6,
+                "losses": 8,
+                "draws": 0,
+                "in_progress": 0
+            }
+        },
+        "graph_data": {
+            "min_y": 945,
+            "max_x": 1606,
+            "series": [
+                [
+                    1260259200000,
+                    1045
+                ],
+                [
+                    1302246000000,
+                    1218
+                ],
+                [
+                    1305270000000,
+                    1307
+                ],
+                [
+                    1306220400000,
+                    1318
+                ],
+                [
+                    1311318000000,
+                    1471
+                ],
+                [
+                    1359619200000,
+                    1506
+                ],
+                [
+                    1367478000000,
+                    1319
+                ],
+                [
+                    1369983600000,
+                    1201
+                ],
+                [
+                    1370674800000,
+                    1073
+                ]
+            ]
+        }
 
 */
 
@@ -106,6 +147,10 @@ public class GameStatsItem extends BaseResponseItem<GameStatsItem.Data> {
 
 		public Tournaments getTournaments() {
 			return tournaments == null? new Tournaments() : tournaments;
+		}
+
+		public GraphData getGraphData() {
+			return graph_data;
 		}
 	}
 

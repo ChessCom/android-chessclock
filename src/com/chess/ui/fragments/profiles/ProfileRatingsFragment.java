@@ -73,7 +73,6 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 
 		statsItemUpdateListener = new StatsItemUpdateListener();
 		saveStatsUpdateListener = new SaveStatsUpdateListener();
-
 	}
 
 	@Override

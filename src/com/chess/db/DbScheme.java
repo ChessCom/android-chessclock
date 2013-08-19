@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 50;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 51;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -63,6 +63,8 @@ public class DbScheme {
 		GAME_STATS_LIVE_LIGHTNING,
 		GAME_STATS_DAILY_CHESS,
 		GAME_STATS_DAILY_CHESS960,
+
+		GAME_STATS_GRAPH_DATA,
 
 		CONVERSATIONS_INBOX,
 		CONVERSATIONS_ARCHIVE,
@@ -728,6 +730,10 @@ public class DbScheme {
 	public static final String V_TOURNAMENTS_GAMES_DRAWN = "tournaments_games_drawn";
 	public static final String V_TOURNAMENTS_GAMES_IN_PROGRESS = "tournaments_games_in_progress";
 
+	/* Graph Data */
+	public static final String V_MIN_Y = "min_y";
+	public static final String V_MAX_X = "max_x";
+
 	void createGameStatsTables() {
 		createTablesArray[Tables.GAME_STATS_LIVE_STANDARD.ordinal()] = createTableForName(Tables.GAME_STATS_LIVE_STANDARD)
 				+ addField_Long(V_HIGHEST_TIMESTAMP)
@@ -951,6 +957,14 @@ public class DbScheme {
 				+ addField_Int(V_TOURNAMENTS_GAMES_LOST)
 				+ addField_Int(V_TOURNAMENTS_GAMES_DRAWN)
 				+ addField_Int(V_TOURNAMENTS_GAMES_IN_PROGRESS, true);
+
+		createTablesArray[Tables.GAME_STATS_GRAPH_DATA.ordinal()] = createTableForName(Tables.GAME_STATS_GRAPH_DATA)
+				+ addField_Long(V_TIMESTAMP)
+				+ addField_Int(V_MIN_Y)
+				+ addField_Int(V_MAX_X)
+				+ addField_Int(V_RATING)
+				+ addField_Int(V_GAME_TYPE)
+				+ addField_Text(V_USER, true);
 	}
 
 	/* ==================== Game Stats ============================== */

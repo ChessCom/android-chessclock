@@ -1,8 +1,6 @@
 package com.chess.ui.fragments.daily;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -11,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.GetAndSaveUserStats;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
@@ -90,7 +87,7 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 					changeInternalFragment(new DailyGameSetupFragment());
 					break;
 				case R.id.rightTabBtn:
-					changeInternalFragment(StatsGameDetailsFragment.createInstance(StatsGameFragment.DAILY_CHESS));
+					changeInternalFragment(StatsGameDetailsFragment.createInstance(StatsGameFragment.DAILY_CHESS, getUsername()));
 					break;
 			}
 		}

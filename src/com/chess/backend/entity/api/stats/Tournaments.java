@@ -9,23 +9,23 @@ package com.chess.backend.entity.api.stats;
 public class Tournaments {
 	/*
    "tournaments": {
-      "all": {
-        "leaderboard_points": 0,
-        "events_entered": 2,
-        "first_place_finishes": 0,
-        "second_place_finishes": 0,
-        "third_place_finishes": 0,
-        "withdrawals": 0,
-        "tournaments_hosted": 0,
-        "total_count_players_hosted": 0
-      },
-      "games": {
-        "total": 11,
-        "won": 6,
-        "lost": 5,
-        "drawn": 0,
-        "in_progress": 2
-      }
+		"all": {
+			"leaderboard_points": 0,
+			"events_entered": 2,
+			"first_place_finishes": 0,
+			"second_place_finishes": 0,
+			"third_place_finishes": 0,
+			"withdrawals": 1,
+			"tournaments_hosted": 0,
+			"total_count_players_hosted": 0
+		},
+		"games": {
+			"total": 14,
+			"wins": 6,
+			"losses": 8,
+			"draws": 0,
+			"in_progress": 0
+		}
     }
 
 */

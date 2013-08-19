@@ -2,6 +2,7 @@ package com.chess.ui.fragments.stats;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,18 +11,23 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.entity.api.stats.GraphData;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.db.QueryParams;
 import com.chess.db.tasks.LoadDataFromDbTask;
+import com.chess.db.tasks.SaveGameStatsTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.views.ChartView;
 import com.chess.ui.views.PieView;
 import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.chess.ui.fragments.stats.StatsGameFragment.*;
 
@@ -47,6 +53,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 	private final static SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yy");
 
 	private final static String MODE = "mode";
+	private static final String USERNAME = "username";
 
 	private static final int CHART_HEIGHT = 420;
 
@@ -73,19 +80,42 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 	private TextView mostFrequentOpponentGamesTxt;
 	private TextView timeoutsLabelTxt;
 	private ForegroundColorSpan foregroundSpan;
+	private ChartView chartView;
+	private int mode;
+	private String username;
 
-	public static StatsGameDetailsFragment createInstance(int code) {
-		StatsGameDetailsFragment frag = new StatsGameDetailsFragment();
+	public StatsGameDetailsFragment() {
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, 0);
+
+		setArguments(bundle);
+	}
+
+	public static StatsGameDetailsFragment createInstance(int code, String username) {
+		StatsGameDetailsFragment fragment = new StatsGameDetailsFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, code);
+		bundle.putString(USERNAME, username);
 
-		frag.setArguments(bundle);
-		return frag;
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			username = getArguments().getString(USERNAME);
+			mode = getArguments().getInt(MODE);
+		} else {
+			username = savedInstanceState.getString(USERNAME);
+			mode = savedInstanceState.getInt(MODE);
+		}
+
+		if (TextUtils.isEmpty(username)) {
+			username = getUsername();
+		}
 
 		init();
 	}
@@ -112,9 +142,9 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 
 
 		pieView = new PieView(getActivity());
-		ChartView chartView = new ChartView(getActivity());
+		chartView = new ChartView(getActivity(), null);
 
-		float aspect = 192f/640f;
+		float aspect = 192f / 640f;
 
 		int widthPixels = getResources().getDisplayMetrics().widthPixels;
 		int height = (int) (widthPixels * aspect);
@@ -149,7 +179,17 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 	public void onResume() {
 		super.onResume();
 
-		updateData();
+		if (need2update) {
+			updateData();
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putInt(MODE, mode);
+		outState.putString(USERNAME, username);
 	}
 
 	private void init() {
@@ -165,27 +205,26 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 	}
 
 	private void updateData() {
-		String userName = getAppData().getUsername();
 
-		switch (getArguments().getInt(MODE)) {
+		switch (mode) {
 			case LIVE_STANDARD:
-				new LoadDataFromDbTask(standardCursorUpdateListener, DbHelper.getTableForUser(userName,
+				new LoadDataFromDbTask(standardCursorUpdateListener, DbHelper.getTableForUser(username,
 						DbScheme.Tables.GAME_STATS_LIVE_STANDARD), getContentResolver()).executeTask();
 				break;
 			case LIVE_LIGHTNING:
-				new LoadDataFromDbTask(lightningCursorUpdateListener, DbHelper.getTableForUser(userName,
+				new LoadDataFromDbTask(lightningCursorUpdateListener, DbHelper.getTableForUser(username,
 						DbScheme.Tables.GAME_STATS_LIVE_LIGHTNING), getContentResolver()).executeTask();
 				break;
 			case LIVE_BLITZ:
-				new LoadDataFromDbTask(blitzCursorUpdateListener, DbHelper.getTableForUser(userName,
+				new LoadDataFromDbTask(blitzCursorUpdateListener, DbHelper.getTableForUser(username,
 						DbScheme.Tables.GAME_STATS_LIVE_BLITZ), getContentResolver()).executeTask();
 				break;
 			case DAILY_CHESS:
-				new LoadDataFromDbTask(chessCursorUpdateListener, DbHelper.getTableForUser(userName,
+				new LoadDataFromDbTask(chessCursorUpdateListener, DbHelper.getTableForUser(username,
 						DbScheme.Tables.GAME_STATS_DAILY_CHESS), getContentResolver()).executeTask();
 				break;
 			case DAILY_CHESS960:
-				new LoadDataFromDbTask(chess960CursorUpdateListener, DbHelper.getTableForUser(userName,
+				new LoadDataFromDbTask(chess960CursorUpdateListener, DbHelper.getTableForUser(username,
 						DbScheme.Tables.GAME_STATS_DAILY_CHESS960), getContentResolver()).executeTask();
 				break;
 		}
@@ -203,6 +242,26 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 		@Override
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
+
+			String gameType;
+			switch (listenerCode) {
+				case LIVE_STANDARD:
+					gameType = SaveGameStatsTask.STANDARD;
+					break;
+				case LIVE_LIGHTNING:
+					gameType = SaveGameStatsTask.LIGHTNING;
+					break;
+				case LIVE_BLITZ:
+					gameType = SaveGameStatsTask.BLITZ;
+					break;
+				case DAILY_CHESS:
+					gameType = SaveGameStatsTask.CHESS;
+					break;
+				default:
+				case DAILY_CHESS960:
+					gameType = SaveGameStatsTask.CHESS960;
+					break;
+			}
 
 			{ // top info view
 				int current = DbDataManager.getInt(returnedObj, DbScheme.V_CURRENT);
@@ -248,6 +307,22 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 
 				int loseCnt = DbDataManager.getInt(returnedObj, DbScheme.V_LOSING_STREAK);
 				losingStreakValueTxt.setText(String.valueOf(loseCnt));
+			}
+
+			{ // Graph Rating Data
+				QueryParams params = DbHelper.getGraphItemForUser(username, gameType);
+				Cursor cursor = DbDataManager.executeQuery(getContentResolver(), params);
+
+				if (cursor != null && cursor.moveToFirst()) {
+					List<long[]> series = new ArrayList<long[]>();
+					do {
+						GraphData.SingleItem singleItem = DbDataManager.getGraphSingleItemFromCursor(cursor);
+						long[] point = new long[]{singleItem.getTimestamp(), singleItem.getRating() };
+						series.add(point);
+					} while (cursor.moveToNext());
+
+					chartView.setGraphData(series);
+				}
 			}
 
 			// donut/pie chart

@@ -162,7 +162,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 			// get selected position of spinner
 			int position = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
 
-			changeInternalFragment(StatsGameDetailsFragment.createInstance(position));
+			changeInternalFragment(StatsGameDetailsFragment.createInstance(position, username));
 		}
 	}
 
@@ -176,7 +176,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 			// get selected position of spinner
 			int position = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
 
-			changeInternalFragment(StatsGameDetailsFragment.createInstance(position));
+			changeInternalFragment(StatsGameDetailsFragment.createInstance(position, username));
 		}
 
 		@Override
