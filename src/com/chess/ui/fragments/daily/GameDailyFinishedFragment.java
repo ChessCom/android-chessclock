@@ -400,11 +400,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		topPanelView.setPlayerPremiumIcon(labelsConfig.topPlayerPremiumStatus);
 		bottomPanelView.setPlayerPremiumIcon(labelsConfig.bottomPlayerPremiumStatus);
 
-		if (currentGameExist()) {
-			topPanelView.setTimeRemain(labelsConfig.topPlayerTime);
-			bottomPanelView.setTimeRemain(labelsConfig.bottomPlayerTime);
-		}
-
 		boardView.updateNotations(getBoardFace().getNotationArray());
 	}
 

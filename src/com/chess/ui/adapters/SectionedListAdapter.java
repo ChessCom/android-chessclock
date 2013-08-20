@@ -102,7 +102,7 @@ public abstract class SectionedListAdapter extends BaseAdapter {
 		int passedItems = 0;
 		int lastPassedItems = 0;
 
-		for (section=0; section < sectionsCnt; section++) {
+		for (section = 0; section < sectionsCnt; section++) {
 			passedItems += getSection(section).adapter.getCount(); // items in section. If there are 0 items, don't display/count header
 
 			if (passedItems > lastPassedItems) { // means we switched to another section, adding header

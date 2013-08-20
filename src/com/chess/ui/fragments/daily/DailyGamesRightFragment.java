@@ -46,9 +46,9 @@ import com.slidingmenu.lib.SlidingMenu;
 public class DailyGamesRightFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
 		AdapterView.OnItemLongClickListener, SlidingMenu.OnOpenedListener, ItemClickListenerFace {
 
-	private static final int CHALLENGES_SECTION = 1;
-	private static final int CURRENT_GAMES_SECTION = 2;
-	private static final int FINISHED_GAMES_SECTION = 4;
+	private static final int CHALLENGES_SECTION = 0;
+	private static final int CURRENT_GAMES_SECTION = 1;
+	private static final int FINISHED_GAMES_SECTION = 3;
 
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
@@ -205,7 +205,10 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-		int section = sectionedAdapter.getCurrentSection(position);
+		boolean headerAdded = listView.getHeaderViewsCount() > 0; // use to check if header added
+		int offset = headerAdded ? -1 : 0;
+
+		int section = sectionedAdapter.getCurrentSection(position + offset);
 
 		if (section == CHALLENGES_SECTION) {
 			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(position));
