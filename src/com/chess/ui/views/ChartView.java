@@ -88,7 +88,7 @@ public class ChartView extends View {
 			pointsArray = new SparseArray<Long>();
 			pointsExistArray = new SparseBooleanArray();
 
-			logTest(" xPointRange = " + (xPointRange - xPointRange % xPointRange));
+//			logTest(" xPointRange = " + (xPointRange - xPointRange % xPointRange));
 			for (int i = 0; i < widthPixels; i++) {
 				long timestampValue = firstPoint + i * xPointRange;
 				timestampValue -= timestampValue % MILLISECONDS_PER_DAY;
@@ -100,14 +100,14 @@ public class ChartView extends View {
 
 					long rating = aDataArray[VALUE];
 					if ((timestampValue - graphTimestamp) >= 0 && (timestampValue - graphTimestamp) < (xPointRange * 2)) {
-						logTest(" timestampValue = " + timestampValue + " graphTimestamp = " + graphTimestamp);
+//						logTest(" timestampValue = " + timestampValue + " graphTimestamp = " + graphTimestamp);
 						pointsArray.put(i, rating);
 						found = true;
 						break;
 					}
 				}
 
-				logTest("timestampValue = " + timestampValue);
+//				logTest("timestampValue = " + timestampValue);
 				pointsExistArray.put(i, found);
 			}
 		}
@@ -120,8 +120,8 @@ public class ChartView extends View {
 				minY = Math.min(minY, yValue);
 				maxY = Math.max(maxY, yValue);
 			}
-			logTest(" _______________________ ");
-			logTest(" minY = " + minY + " maxY = " + maxY);
+//			logTest(" _______________________ ");
+//			logTest(" minY = " + minY + " maxY = " + maxY);
 		}
 
 		initialized = true;

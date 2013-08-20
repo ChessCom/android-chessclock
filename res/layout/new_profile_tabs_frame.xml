@@ -17,7 +17,7 @@
 		>
 
 		<!--Avatar-->
-		<com.chess.backend.image_load.AvatarView
+		<com.chess.backend.image_load.ProgressImageView
 			android:id="@+id/photoImg"
 			android:layout_width="@dimen/profile_frame_photo_size"
 			android:layout_height="@dimen/profile_frame_photo_size"

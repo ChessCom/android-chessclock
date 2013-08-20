@@ -9,14 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
+import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.DailyChallengeItem;
 import com.chess.backend.entity.api.DailyCurrentGameData;
@@ -44,12 +43,12 @@ import com.slidingmenu.lib.SlidingMenu;
  * Date: 11.01.13
  * Time: 17:36
  */
-public class DailyGamesRightFragment extends CommonLogicFragment	implements AdapterView.OnItemClickListener,
+public class DailyGamesRightFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
 		AdapterView.OnItemLongClickListener, SlidingMenu.OnOpenedListener, ItemClickListenerFace {
 
-	private static final int CHALLENGES_SECTION = 0;
-	private static final int CURRENT_GAMES_SECTION = 1;
-	private static final int FINISHED_GAMES_SECTION = 3;
+	private static final int CHALLENGES_SECTION = 1;
+	private static final int CURRENT_GAMES_SECTION = 2;
+	private static final int FINISHED_GAMES_SECTION = 4;
 
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
@@ -82,7 +81,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment	implements Adap
 	private ListView listView;
 	private View loadingView;
 	private boolean onVacation;
-	private Button startNewGameBtn;
 	private View headerView;
 
 	@Override
@@ -123,8 +121,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment	implements Adap
 		listView.setOnItemLongClickListener(this);
 		listView.setAdapter(sectionedAdapter);
 
-		startNewGameBtn = (Button) headerView.findViewById(R.id.startNewGameBtn);
-		startNewGameBtn.setOnClickListener(this);
+		headerView.findViewById(R.id.startNewGameBtn).setOnClickListener(this);
 	}
 
 	@Override
