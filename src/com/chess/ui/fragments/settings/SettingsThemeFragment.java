@@ -3,9 +3,9 @@ package com.chess.ui.fragments.settings;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +25,6 @@ import com.chess.model.PopupItem;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
-import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
-import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.utilities.AppUtils;
 
 import java.io.File;
@@ -38,7 +36,7 @@ import java.util.List;
  * Date: 20.05.13
  * Time: 11:23
  */
-public class SettingsThemeFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, PopupListSelectionFace {
+public class SettingsThemeFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
 	private static final String THEME_LOAD_TAG = "theme load popup";
 
@@ -69,8 +67,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private TextView loadProgressTxt;
 	private TextView taskTitleTxt;
 	private PopupCustomViewFragment loadProgressPopupFragment;
-	private SparseArray<String> optionsArray;
-	private PopupOptionsMenuFragment optionsSelectFragment;
 	private ThemesAdapter themesAdapter;
 
 	@Override
@@ -89,12 +85,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		imageDownloader = new ImageDownloaderToListener(getContext());
 
 		selectedThemeName = getAppData().getThemeName();
-
-		{// options list setup
-			optionsArray = new SparseArray<String>();
-			optionsArray.put(ID_INSTALL, getString(R.string.install));
-			optionsArray.put(ID_CUSTOMIZE, getString(R.string.customize));
-		}
 	}
 
 	@Override
@@ -127,23 +117,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		}
 	}
 
-	@Override
-	public void onValueSelected(int code) {
-		if (code == ID_CUSTOMIZE) {
-			getActivityFace().openFragment(SettingsThemeCustomizeFragment.createInstance(selectedThemeItem));
-		} else if (code == ID_INSTALL) {
-			installSelectedTheme();
-		}
-
-		optionsSelectFragment.dismiss();
-		optionsSelectFragment = null;
-	}
-
-	@Override
-	public void onDialogCanceled() {
-		optionsSelectFragment = null;
-	}
-
 	private class ThemesUpdateListener extends ChessLoadUpdateListener<ThemeItem> {
 
 		private ThemesUpdateListener() {
@@ -155,6 +128,13 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			super.updateData(returnedObj);
 
 			themesList = returnedObj.getData();
+
+			// adding customize theme, to allow user to select it from full list
+			ThemeItem.Data customizeItem = new ThemeItem.Data();
+			customizeItem.setThemeName(getString(R.string.customize));
+			customizeItem.setLocal(true);
+			themesList.add(0, customizeItem);
+
 			for (ThemeItem.Data theme : themesList) {
 				if (theme.getThemeName().equals(selectedThemeName)) {
 					theme.setSelected(true);
@@ -170,23 +150,20 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		for (ThemeItem.Data data : themesList) {
-			data.setSelected(false);
-		}
-
 		selectedThemeItem = (ThemeItem.Data) listView.getItemAtPosition(position);
-		selectedThemeItem.setSelected(true);
 
-		((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
+		if (selectedThemeItem.isLocal()) {
+			getActivityFace().openFragment(SettingsThemeCustomizeFragment.createInstance(selectedThemeItem));
+		} else {
+			for (ThemeItem.Data data : themesList) {
+				data.setSelected(false);
+			}
 
-		if (optionsSelectFragment != null) {
-			optionsSelectFragment.dismiss();
-			optionsSelectFragment = null;
-			return;
+			selectedThemeItem.setSelected(true);
+			((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
+
+			installSelectedTheme();
 		}
-
-		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsArray);
-		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
 	}
 
 	private void installSelectedTheme() {
@@ -315,8 +292,11 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 	private class ThemesAdapter extends ItemsAdapter<ThemeItem.Data> {
 
+		private final int customColor;
+
 		public ThemesAdapter(Context context, List<com.chess.backend.entity.api.ThemeItem.Data> menuItems) {
 			super(context, menuItems);
+			customColor = resources.getColor(R.color.theme_customize_back);
 		}
 
 		@Override
@@ -362,10 +342,19 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 				holder.check.setText(StaticData.SYMBOL_EMPTY);
 			}
 
-			holder.title.setText(item.getThemeName());
+			if (item.isLocal()) {
+				holder.title.setText(R.string.customize);
 
-			imageLoader.download(item.getBackgroundPreviewUrl(), holder.backImg, screenWidth, screenWidth);
-			imageLoader.download(item.getBoardPreviewUrl(), holder.boardPreviewImg, PREVIEW_IMG_SIZE);
+				holder.backImg.setImageDrawable(new ColorDrawable(customColor));
+//				holder.boardPreviewImg.setImageDrawable(getResources().getDrawable(R.drawable.img_board_theme_sample));
+			} else {
+				holder.title.setText(item.getThemeName());
+
+				imageLoader.download(item.getBackgroundPreviewUrl(), holder.backImg, screenWidth, screenWidth);
+				imageLoader.download(item.getBoardPreviewUrl(), holder.boardPreviewImg, PREVIEW_IMG_SIZE);
+			}
+
+
 		}
 
 		public Context getContext() {

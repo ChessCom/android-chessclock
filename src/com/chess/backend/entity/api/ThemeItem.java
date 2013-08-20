@@ -35,6 +35,9 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 		private String font_color;
 		/* Local addition */
 		private boolean isSelected;
+		private boolean local;
+
+		public Data() {}
 
 		public int getThemeId() {
 			return theme_id;
@@ -139,5 +142,13 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 				return new Data[size];
 			}
 		};
+
+		public boolean isLocal() {
+			return local;
+		}
+
+		public void setLocal(boolean local) {
+			this.local = local;
+		}
 	}
 }

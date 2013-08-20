@@ -460,4 +460,5 @@
 	<color name="graph_back">#FFf7f7f7</color>
 	<color name="graph_gradient_top">#Afe6f7ff</color>
 	<color name="graph_gradient_bottom">#Afbbdaea</color>
+	<color name="theme_customize_back">#FF99cc00</color>
 </resources>

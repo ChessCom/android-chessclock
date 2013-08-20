@@ -6,14 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ThemeItem;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
@@ -184,9 +183,9 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 		private final int previewWidth;
 		private final Bitmap placeHolderBitmap;
 		private final float aspectRatio;
-		private final FrameLayout.LayoutParams imageParams;
+		private final RelativeLayout.LayoutParams imageParams;
 		private final RelativeLayout.LayoutParams linearLayoutParams;
-		private final FrameLayout.LayoutParams progressParams;
+		private final RelativeLayout.LayoutParams progressParams;
 
 		public BackgroundsAdapter(Context context, List<SelectionItem> menuItems) {
 			super(context, menuItems);
@@ -197,10 +196,10 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 			int backIMgColor = getResources().getColor(R.color.upgrade_toggle_button_p);
 			placeHolderBitmap = Bitmap.createBitmap(new int[]{backIMgColor}, 1, 1, Bitmap.Config.ARGB_8888);
 			int imageHeight = (int) (previewWidth * aspectRatio);
-			imageParams = new FrameLayout.LayoutParams(previewWidth, imageHeight);
+			imageParams = new RelativeLayout.LayoutParams(previewWidth, imageHeight);
 			linearLayoutParams = new RelativeLayout.LayoutParams(previewWidth, imageHeight);
-			progressParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			progressParams.gravity = Gravity.CENTER;
+			progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		}
 
 		@Override
