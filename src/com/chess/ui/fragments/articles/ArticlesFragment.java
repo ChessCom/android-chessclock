@@ -144,7 +144,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		saveCategoriesUpdateListener = new SaveCategoriesUpdateListener();
 	}
 
-	private void updateData() {
+	private void updateUiData() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.CMD_ARTICLES_LIST);
 		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, LATEST_ARTICLES_CNT);
@@ -236,7 +236,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			loadCategoriesFromDB();
 
 			// loading articles
-			ArticlesFragment.this.updateData();
+			updateUiData();
 		}
 	}
 

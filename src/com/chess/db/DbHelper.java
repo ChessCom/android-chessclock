@@ -109,7 +109,6 @@ public class DbHelper {
 		return queryParams;
 	}
 
-
 	public static QueryParams getArticlesListByCategory(String category) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()]);

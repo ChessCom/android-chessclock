@@ -1,7 +1,6 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -44,19 +43,11 @@ public class SaveArticlesListTask extends AbstractUpdateTask<ArticleItem.Data, L
 
 				ContentValues values = DbDataManager.putArticleItemToValues(currentItem);
 
-				if (cursor.moveToFirst()) {
-					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-				} else {
-					contentResolver.insert(uri, values);
-				}
-
-				cursor.close();
+				DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 			}
 		}
 
-        result = StaticData.RESULT_OK;
-
-        return result;
+        return StaticData.RESULT_OK;
     }
 
 

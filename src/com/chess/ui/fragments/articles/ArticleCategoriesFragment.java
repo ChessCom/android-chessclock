@@ -1,24 +1,33 @@
 package com.chess.ui.fragments.articles;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.ArticleItem;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.db.DbHelper;
-import com.chess.db.tasks.LoadDataFromDbTask;
+import com.chess.db.DbScheme;
 import com.chess.ui.adapters.ArticlesThumbCursorAdapter;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -37,8 +46,10 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	private View loadingView;
 	private TextView emptyView;
 	private ListView listView;
-	private ArticlesCursorUpdateListener articlesCursorUpdateListener;
 	private boolean categoriesLoaded;
+	private ArticleItemUpdateListener articleItemUpdateListener;
+	private HashMap<String, Integer> categoriesMap;
+	private String categoryName;
 
 	public static ArticleCategoriesFragment createInstance(String sectionName) {
 		ArticleCategoriesFragment frag = new ArticleCategoriesFragment();
@@ -52,8 +63,10 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		categoriesMap = new HashMap<String, Integer>();
+
 		articlesAdapter = new ArticlesThumbCursorAdapter(getActivity(), null);
-		articlesCursorUpdateListener = new ArticlesCursorUpdateListener();
+		articleItemUpdateListener = new ArticleItemUpdateListener();
 	}
 
 	@Override
@@ -91,70 +104,38 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 			// get list of categories
 			categoriesLoaded = fillCategories();
 		}
-
-		if (!categoriesLoaded) { // load hardcoded categories with passed arg
-
-		}
 	}
 
 	private boolean fillCategories() {
 		Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.ARTICLE_CATEGORIES.ordinal()], null, null, null, null);
-		List<String> list = new ArrayList<String>();
-		if (!cursor.moveToFirst()) {
-			showToast("Categories are not loaded");
+		if (cursor != null && cursor.moveToFirst()) {
+			List<String> list = new ArrayList<String>();
+
+			do {
+				String name = DbDataManager.getString(cursor, DbScheme.V_NAME);
+				int id = DbDataManager.getInt(cursor, DbScheme.V_CATEGORY_ID);
+				categoriesMap.put(name, id);
+				list.add(name);
+			} while (cursor.moveToNext());
+
+			// get passed argument
+			String selectedCategory = getArguments().getString(SECTION_NAME);
+
+			int sectionId;
+			for (sectionId = 0; sectionId < list.size(); sectionId++) {
+				String category = list.get(sectionId);
+				if (category.equals(selectedCategory)) {
+					break;
+				}
+			}
+
+			categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), list));
+			categorySpinner.setOnItemSelectedListener(this);
+			categorySpinner.setSelection(sectionId);  // TODO remember last selection.
+			return true;
+		} else {
+			showToast("categories are not loaded");
 			return false;
-		}
-
-		do {
-			list.add(DbDataManager.getString(cursor, DbScheme.V_NAME));
-		} while (cursor.moveToNext());
-
-		// get passed argument
-		String selectedCategory = getArguments().getString(SECTION_NAME);
-
-		int sectionId;
-		for (sectionId = 0; sectionId < list.size(); sectionId++) {
-			String category = list.get(sectionId);
-			if (category.equals(selectedCategory)) {
-				break;
-			}
-		}
-
-		categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), list));
-		categorySpinner.setOnItemSelectedListener(this);
-		categorySpinner.setSelection(sectionId);  // TODO remember last selection.
-		return true;
-	}
-
-	private void loadFromDb() {
-		String category = (String) categorySpinner.getSelectedItem();
-
-		new LoadDataFromDbTask(articlesCursorUpdateListener,
-				DbHelper.getArticlesListByCategory(category),
-				getContentResolver()).executeTask();
-	}
-
-	private class ArticlesCursorUpdateListener extends ChessUpdateListener<Cursor> {
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
-		}
-
-		@Override
-		public void updateData(Cursor returnedObj) {
-			super.updateData(returnedObj);
-
-			articlesAdapter.changeCursor(returnedObj);
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			if (resultCode == StaticData.UNKNOWN_ERROR) {
-				emptyView.setText(R.string.no_data);
-			}
-			showEmptyView(true);
 		}
 	}
 
@@ -166,7 +147,15 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		loadFromDb();
+		categoryName = (String) parent.getItemAtPosition(position);
+		int categoryId = categoriesMap.get(categoryName);
+
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_ARTICLES_LIST);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
+
+		new RequestJsonTask<ArticleItem>(articleItemUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
@@ -174,6 +163,52 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 	}
 
+	private class ArticleItemUpdateListener extends ChessUpdateListener<ArticleItem> {
+
+		public ArticleItemUpdateListener() {
+			super(ArticleItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+
+			showLoadingView(show);
+		}
+
+		@Override
+		public void updateData(ArticleItem returnedObj) {
+			// TODO check performance
+			String[] arguments = new String[1];
+
+			for (ArticleItem.Data currentItem : returnedObj.getData()) {
+				arguments[0] = String.valueOf(currentItem.getId());
+
+				// TODO implement beginTransaction logic for performance increase
+				Uri uri = DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()];
+
+				Cursor cursor = getContentResolver().query(uri, DbDataManager.PROJECTION_ITEM_ID,
+						DbDataManager.SELECTION_ITEM_ID, arguments, null);
+
+				ContentValues values = DbDataManager.putArticleItemToValues(currentItem);
+
+				DbDataManager.updateOrInsertValues(getContentResolver(), cursor, uri, values);
+			}
+
+			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getArticlesListByCategory(categoryName));
+			if (cursor != null && cursor.moveToFirst()) {
+				articlesAdapter.changeCursor(cursor);
+			}
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			if (resultCode == StaticData.UNKNOWN_ERROR) {
+				emptyView.setText(R.string.no_network);
+			}
+			showEmptyView(true);
+		}
+	}
 
 	private void showEmptyView(boolean show) {
 		if (show) {
