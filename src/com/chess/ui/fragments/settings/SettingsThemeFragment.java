@@ -6,14 +6,13 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.SparseArray;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ThemeItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
@@ -341,13 +340,13 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			holder.backImg.placeholder = bitmap;
 
 			// Change Image params
-			FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(screenWidth, imageHeight);
+			RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
 			holder.backImg.getImageView().setLayoutParams(imageParams);
 			holder.backImg.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
 
 			// Change ProgressBar params
-			FrameLayout.LayoutParams progressParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			progressParams.gravity = Gravity.CENTER;
+			RelativeLayout.LayoutParams progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 			holder.backImg.getProgressBar().setLayoutParams(progressParams);
 
 			return view;

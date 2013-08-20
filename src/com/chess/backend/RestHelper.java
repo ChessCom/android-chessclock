@@ -696,10 +696,22 @@ message				false	Only used for `CHAT` command.
 	$signed = strpos($request_url, '?') === false ? '?' : '&';
 	$signed .= "signed=$appId-$sig";
 	$signed_request = $request_url . $signed;
+
+	The appId and appSecret joined by a hyphen and are appended to the query string as the "signed" parameter.
+ 	It will be matched by the regex [&\?]signed=([^-]+)-([0-9a-f]{40}).
 */
+	            /*
 
+String appSecret = "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea";
+String appId = "Android3_0";
+String method = "GET";
+String requestPath = "/v1/articles";
+String data = "";
+String signed = YourCryptLibrary.generateSha1(method + requestPath + data + appSecret);
+String requestUrl = YourStaticConfig.API_DOMAIN + requestPath + "?signed=" + appId "-" + signed;
+
+*/
 	private static String createSignature(LoadItem loadItem, String appId) {
-
 		String appSecret;
 		if (IS_TEST_SERVER_MODE) {
 			appSecret = V_1;
@@ -708,33 +720,39 @@ message				false	Only used for `CHAT` command.
 		}
 
 		String requestMethod = loadItem.getRequestMethod();
-		String requestUrl = formGetRequest(loadItem);
+		String requestPath = loadItem.getLoadPath().substring(BASE_URL.length());
 		String data = formPostData(loadItem);
-		String requestPath = formUrl(loadItem.getRequestParams());
 
-		String signature;
+		String signed;
 		try {
-			signature = SHA1(requestMethod + requestPath + data + appSecret);
+			signed = requestMethod + requestPath + data + appSecret;
+			Log.d("TEST", " before sign = " + signed);
+			signed = SHA1(signed);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-			signature = requestMethod + requestPath + data + appSecret;
+			signed = requestMethod + requestPath + data + appSecret;
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
-			signature = requestMethod + requestPath + data + appSecret;
+			signed = requestMethod + requestPath + data + appSecret;
 		}
-/*
-	The appId and appSecret joined by a hyphen and are appended to the query string as the "signed" parameter.
- 	It will be matched by the regex [&\?]signed=([^-]+)-([0-9a-f]{40}).
-*/
-		String signed = requestUrl.contains(Q_) ? AND :Q_;
-		signed += "signed=" + appId + "-" + signature;
-		String signedRequest = requestUrl + signed;
 
-		Log.d("TEST", "urls before signature = " + requestUrl);
+		String signedRequest = BASE_URL + requestPath + Q_ + "signed=" + appId + "-" + signed + AND + data;
+
 		Log.d("TEST", " encoded signature = " + signedRequest);
 
 		return signedRequest;
 	}
+
+// full example will be something like
+// http://api.chess-7.com/v1/articles?signed=Android3_0-719f39642c06561d855819dde746686d3d35a397
+// 		String requestUrl = formGetRequest(loadItem);
+
+	/**
+	 * if you need to POST request then "data" parameter should contain URL-encoded value
+	 * The full data content, encoded for sending (e.g., application/x-www-form-urlencoded) and so a single string
+	 *
+	 * in PHP that's very easy: http://php.net/manual/en/function.urlencode.php (in case you need more information)
+	 */
 
 /*
 	$method = $_SERVER['REQUEST_METHOD'];
@@ -761,12 +779,25 @@ message				false	Only used for `CHAT` command.
 		return buf.toString();
 	}
 
-	public static String SHA1(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+	private static String SHA1(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		MessageDigest md = MessageDigest.getInstance("SHA-1");
 		md.update(text.getBytes("iso-8859-1"), 0, text.length());
 		byte[] sha1hash = md.digest();
 		return convertToHex(sha1hash);
 	}
+
+//	private static String SHA1(String s, String keyString) throws
+//			UnsupportedEncodingException, NoSuchAlgorithmException,
+//			InvalidKeyException {
+//
+//		SecretKeySpec key = new SecretKeySpec((keyString).getBytes("UTF-8"), "HmacSHA1");
+//		Mac mac = Mac.getInstance("HmacSHA1");
+//		mac.init(key);
+//
+//		byte[] bytes = mac.doFinal(s.getBytes("UTF-8"));
+//
+//		return Base64.encodeToString(bytes, 0);
+//	}
 
 	public static <ItemType> String parseJsonToString(ItemType jRequest) {
 		Gson gson = new Gson();

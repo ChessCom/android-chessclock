@@ -421,13 +421,13 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			backgroundPreviewImg.placeholder = Bitmap.createBitmap(new int[]{backIMgColor}, 1, 1, Bitmap.Config.ARGB_8888);
 
 			// Change Image params
-			FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(screenWidth, imageHeight);
+			RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
 			backgroundPreviewImg.getImageView().setLayoutParams(imageParams);
 			backgroundPreviewImg.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
 
 			// Change ProgressBar params
-			FrameLayout.LayoutParams progressParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			progressParams.gravity = Gravity.CENTER;
+			RelativeLayout.LayoutParams progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 			backgroundPreviewImg.getProgressBar().setLayoutParams(progressParams);
 
 		}
