@@ -34,7 +34,7 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 	private int photoImageSize;
 	private String username;
 	private UserUpdateListener userUpdateListener;
-	private AvatarView photoImg;
+	private ProgressImageView photoImg;
 	private TextView usernameTxt;
 	private TextView locationTxt;
 	private ImageView countryImg;
@@ -80,7 +80,7 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 
 		setTitle(username);
 
-		photoImg = (AvatarView) view.findViewById(R.id.photoImg);
+		photoImg = (ProgressImageView) view.findViewById(R.id.photoImg);
 		usernameTxt = (TextView) view.findViewById(R.id.usernameTxt);
 		locationTxt = (TextView) view.findViewById(R.id.locationTxt);
 		countryImg = (ImageView) view.findViewById(R.id.countryImg);

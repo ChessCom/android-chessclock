@@ -77,7 +77,7 @@ public class RestHelper {
 	public static final String CMD_LOGIN = CMD_USERS + "/login";
 	public static final String CMD_GCM = CMD_USERS + "/gcm";
 	public static final String CMD_USER_STATS = CMD_USERS + "/stats";
-	public static final String CMD_USER_PROFILE= CMD_USERS + "/profile";
+	public static final String CMD_USER_PROFILE = CMD_USERS + "/profile";
 
 	/*Games*/
 	public static final String CMD_GAMES = BASE_URL + V1 + "/games";
@@ -210,6 +210,13 @@ public class RestHelper {
 	//	public static final String P_CONVERSATION_ID = "conversationId";
 	public static final String P_CONTENT = "content";
 
+	public static final String V_0 = "MmE5NzUxNmMzNTRiNjg4NDhjZGJkOGY1NGEyMjZhMGE1NWIyMWVkMTM4ZTIwN2FzZGZhc2RmYXN3ZWUyM2FlYQ==";
+	public static final String V_2 = "MmE5NzUxNmMzNTRiNjg4NDhjZGJkOGY1NGFhc2RmYXNkZmFkZmVkMTM4ZTIwN2FkNmM1Y2JiOWMwMGFhNWFlYQ==";
+	public static final String V_3 = "MmE5NzUxNmMzNTRiNjg4NDhjZGJkOGY1NGEyMjZhMGE1NWIyMWVkMTM4ZTIwN2FkNmM1Y2JiOWMwMGFhNWFlYQ==";
+	public static final String V_2_2 = "ZTEyMzI4NTdjM2U3NGE3YmI4M2NhNjhlYWNiNzg3ZGFzZHUwMGFzZGtsa2ZhOXNiNjE4M2U2OGM4OTUxNTVlNQ==";
+	public static final String V_3_0 = "ZTEyMzI4NTdjM2U3NGE3YmI4M2NhNjhlYWNiNzg3NWRlZTQ1NTA4NWY0NWIyNmZiNjE4M2U2OGM4OTUxNTVlNQ==";
+	public static final String V_2_1 = "ZTEyMzI4NTdjM2U3NGE3YmI4M2NhNjhlYWNiNzg3NWRlZTQ1NTA4aWFhc2Q4ZmFzODk4M2U2OGM4OTUxNTVlNQ=";
+
 	public static final String P_DAYS_PER_MOVE = "daysPerMove";
 	public static final String P_USER_SIDE = "userPosition";
 	public static final String P_MIN_RATING = "minRating";
@@ -235,7 +242,6 @@ public class RestHelper {
 //	Description	Image size. Default is `small`.
 
 
-
 	public static final String P_GID = "gid"; // game id
 	public static final String P_ALL = "all";
 	public static final String P_RETURN = "return";
@@ -254,6 +260,7 @@ public class RestHelper {
 	public static final String P_GET_ECHESS_CURRENT_GAMES = "get_echess_current_games";
 	public static final String P_ECHESS_CHALLENGES = "echess_challenges";
 	public static final String P_GET_ECHESS_FINISHED_GAMES = "get_echess_finished_games";
+	public static final String P_SYMBOL = !BASE_URL.equals("http://" + HOST_PRODUCTION) ? V_3 : V_3_0;
 
 	public static final String P_STARTING_FEN_POSITION = "starting_fen_position";
 	public static final String P_USER_TO_MOVE = "user_to_move";
@@ -269,15 +276,14 @@ public class RestHelper {
 
 	public static final String P_IS_INSTALL = "isInstall";
 
-	public static final String P_IPHONE = "iphone";
 	public static final String P_KEYWORD = "keyword";
 	public static final String P_DIFFICULTY = "difficulty";
 	public static final String P_CATEGORY_ID = "categoryId";
 	public static final String P_CATEGORY_CODE = "categoryCode";
-	//	public static final String P_SKILL_LEVEL = "skill_level";
 	public static final String P_OPENING = "opening";
 	public static final String P_AUTHOR = "author";
 	public static final String P_THEME = "theme";
+	public static final String SIGNED = "signed=";
 	public static final String P_PAGE_SIZE = "page-size";
 	public static final String P_FORUM_CATEGORY_ID = "forumCategoryId";
 	public static final String P_PARENT_TOPIC_ID = "parentTopicId";
@@ -305,9 +311,7 @@ public class RestHelper {
 
 	public static final String R_DRAW_OFFER_PENDING = "is_draw_offer_pending";
 
-	public static final boolean IS_TEST_SERVER_MODE = !BASE_URL.equals("http://www.chess.com");
-	public static final String AUTHORIZATION_HEADER = "Authorization";
-	public static final String AUTHORIZATION_HEADER_VALUE = "Basic Ym9iYnk6ZmlzY2hlcg==";
+	public static final boolean IS_TEST_SERVER_MODE = !BASE_URL.equals("http://" + HOST_PRODUCTION);
 
 
 	/* Values */
@@ -324,15 +328,6 @@ public class RestHelper {
 	public static final String V_AV_SIZE_TINY = "tiny"; // 88
 	public static final String V_AV_SIZE_MICRO = "micro"; // 20
 
-/*
-loginToken			\w+	true	Login token used to authenticate user.
-command			SUBMIT|RESIGN|OFFERDRAW|ACCEPTDRAW|DECLINEDRAW|CHAT	true	Command to execute.
-timestamp			\d+	true	Timestamp of the game.
-newMove				false	Only used for `SUBMIT` command - format = b7b8=Q or e2e4
-newMoveEncoded		false	Only used for `SUBMIT` command - strange encoded move format.
-message				false	Only used for `CHAT` command.
-	 */
-
 	// old
 	public static final String V_RESIGN = "RESIGN";
 	public static final String V_SUBMIT = "SUBMIT";
@@ -343,26 +338,17 @@ message				false	Only used for `CHAT` command.
 	public static final String V_BASIC = "basic";
 
 	public static final String V_ID = "id";
-	public static final String V_1 = "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea";
-	public static final String V_2 = "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea";
 
-	/*
-1 = Standard Chess | chess
-2 = Chess 960	   | chess(960)
-	 */
 	public static final int V_GAME_CHESS = 1;
 	public static final int V_GAME_CHESS_960 = 2;
 
 	public static final String V_ENCODED_MOVES = "encodedMoves";
 	public static final String V_GAME_ID = "game_id";
 	public static final String V_TACTICS_ID = "tactics_id";
-	//	public static final String V_PASSED = "passed";
 	public static final String V_CORRECT_MOVES = "correct_moves";
 	public static final String V_SECONDS = "seconds";
 	public static final String V_TACTICS_RATING = "tacticsrating";
 	public static final String V_USERNAME = "username";
-	public static final String V_TEST_NAME = "bobby";
-	public static final String V_TEST_NAME2 = "fischer";
 
 	//	all         (0 = show only games where its users turn to move , 1 = show all users games)
 	public static final String V_ONLY_USER_TURN = "0";
@@ -452,14 +438,6 @@ message				false	Only used for `CHAT` command.
 		return encodedParams.toString();
 	}
 
-	public static String formTournamentsLink(String userToken) {
-		return LOGIN_HTML_ALS + userToken + GOTO + TOURNAMENTS;
-	}
-
-	public static String formStatsLink(String userToken, String username) {
-		return LOGIN_HTML_ALS + userToken + GOTO + ECHESS_MOBILE_STATS + username;
-	}
-
 	public static String getMembershipLink(String userToken, String param) {
 		return LOGIN_HTML_ALS + userToken + GOTO + "%2Fmembership.html" + param;
 //				+ sharedData.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
@@ -491,11 +469,6 @@ message				false	Only used for `CHAT` command.
 		CustomType item = null;
 		String requestMethod = loadItem.getRequestMethod();
 		String url = createSignature(loadItem, appId);
-//		if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
-//			url = formPostRequest(loadItem);
-//		} else {
-//			url = formGetRequest(loadItem);
-//		}
 
 		Log.d(TAG, "requesting by url = " + url);
 
@@ -515,7 +488,7 @@ message				false	Only used for `CHAT` command.
 
 			if (!TextUtils.isEmpty(loadItem.getFilePath())) { // if multiPart
 				submitRawData(connection, loadItem);
-			} else if (requestMethod.equals(POST) || requestMethod.equals(PUT) || requestMethod.equals(DELETE)) {
+			} else if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
 				submitPostData(connection, loadItem);
 			} else {
 				connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=" + HTTP.UTF_8);
@@ -601,7 +574,7 @@ message				false	Only used for `CHAT` command.
 
 	@TargetApi(Build.VERSION_CODES.FROYO)
 	private static String getBasicAuth() {
-		return Base64.encodeToString((V_TEST_NAME + ":" + V_TEST_NAME2).getBytes(), Base64.NO_WRAP);
+		return "Ym9iYnk6ZmlzY2hlcg==";
 	}
 
 	private static void submitRawData(HttpURLConnection connection, LoadItem loadItem) throws IOException {
@@ -682,77 +655,36 @@ message				false	Only used for `CHAT` command.
 				}
 			}
 		}
-
 	}
 
-/*
-	$appSecret = 'a1a177e9aa5aa1f6cf6dffebda886cca8b2bbcb6';
-	$appId = '`iOS2.4';
-	$method = 'PUT';
-	$request_url = 'http://api.chess.com/v1/articles/20/comments/2863?loginToken=12345abcdef';
-	$data = 'commentBody=Isn%27t+this+awesome%3F';
-	$request_path = preg_replace('!^https?://[^/]+?!', '', $request_url); // strip out protocol and domain
-	$sig = sha1($method . $request_path . $data . $secret);
-	$signed = strpos($request_url, '?') === false ? '?' : '&';
-	$signed .= "signed=$appId-$sig";
-	$signed_request = $request_url . $signed;
-
-	The appId and appSecret joined by a hyphen and are appended to the query string as the "signed" parameter.
- 	It will be matched by the regex [&\?]signed=([^-]+)-([0-9a-f]{40}).
-*/
-	            /*
-
-String appSecret = "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea";
-String appId = "Android3_0";
-String method = "GET";
-String requestPath = "/v1/articles";
-String data = "";
-String signed = YourCryptLibrary.generateSha1(method + requestPath + data + appSecret);
-String requestUrl = YourStaticConfig.API_DOMAIN + requestPath + "?signed=" + appId "-" + signed;
-
-*/
 	private static String createSignature(LoadItem loadItem, String appId) {
-		String appSecret;
-		if (IS_TEST_SERVER_MODE) {
-			appSecret = V_1;
-		} else {
-			appSecret = V_2;
-		}
-
 		String requestMethod = loadItem.getRequestMethod();
+		String appPart = getAppPartData(loadItem);
 		String requestPath = loadItem.getLoadPath().substring(BASE_URL.length());
-		String data = formPostData(loadItem);
 
-		String signed;
+		String data = Q_ + formPostData(loadItem);
+		if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
+			data = formPostData(loadItem);
+		}
+		String signedPart1 = requestMethod + requestPath + data + appPart;
+		String signedPart = "154c4dc2f899fad29383c0cfa9905ce8143fc200";
 		try {
-			signed = requestMethod + requestPath + data + appSecret;
-			Log.d("TEST", " before sign = " + signed);
-			signed = SHA1(signed);
+			Log.d("TEST", " before sign = " + signedPart1);
+
+			signedPart = SHA1(requestMethod + requestPath + data + appPart);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-			signed = requestMethod + requestPath + data + appSecret;
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
-			signed = requestMethod + requestPath + data + appSecret;
 		}
+		String addStr = AND;
+		if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
+			data = StaticData.SYMBOL_EMPTY;
+			addStr = Q_;
+		}
+		String part = addStr + "signed=" + appId + "-" + signedPart;
 
-		String signedRequest = BASE_URL + requestPath + Q_ + "signed=" + appId + "-" + signed + AND + data;
-
-		Log.d("TEST", " encoded signature = " + signedRequest);
-
-		return signedRequest;
-	}
-
-// full example will be something like
-// http://api.chess-7.com/v1/articles?signed=Android3_0-719f39642c06561d855819dde746686d3d35a397
-// 		String requestUrl = formGetRequest(loadItem);
-
-	/**
-	 * if you need to POST request then "data" parameter should contain URL-encoded value
-	 * The full data content, encoded for sending (e.g., application/x-www-form-urlencoded) and so a single string
-	 *
-	 * in PHP that's very easy: http://php.net/manual/en/function.urlencode.php (in case you need more information)
-	 */
+		String signedRequest = BASE_URL + requestPath + data + addStr + SIGNED + appId + "-" + signedPart;
 
 /*
 	$method = $_SERVER['REQUEST_METHOD'];
@@ -765,6 +697,40 @@ String requestUrl = YourStaticConfig.API_DOMAIN + requestPath + "?signed=" + app
 		throw new RestBadSignatureException();
 	}
 */
+
+		{ // verify it back
+			String sentRequestPath = signedRequest.replace(part, "").replace(BASE_URL, "");
+			try {
+				if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
+					data = formPostData(loadItem);
+				} else {
+					data = StaticData.SYMBOL_EMPTY;
+				}
+
+				if (SHA1(requestMethod + sentRequestPath + data + appPart).equals(signedPart)) {
+					Log.d("TEST", " match");
+				} else {
+					Log.d("TEST", " DONT match");
+				}
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		return signedRequest;
+	}
+
+	private static String getAppPartData(LoadItem loadItem) {
+		String data = "2341kj23n23413nk23kj3n14";
+		try {
+			data = new String(Base64.decode(P_SYMBOL, Base64.DEFAULT), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		return loadItem.getCode().replace(LoadItem.CODE, StaticData.SYMBOL_EMPTY) + data;
+	}
 
 	private static String convertToHex(byte[] data) {
 		StringBuilder buf = new StringBuilder();
@@ -785,19 +751,6 @@ String requestUrl = YourStaticConfig.API_DOMAIN + requestPath + "?signed=" + app
 		byte[] sha1hash = md.digest();
 		return convertToHex(sha1hash);
 	}
-
-//	private static String SHA1(String s, String keyString) throws
-//			UnsupportedEncodingException, NoSuchAlgorithmException,
-//			InvalidKeyException {
-//
-//		SecretKeySpec key = new SecretKeySpec((keyString).getBytes("UTF-8"), "HmacSHA1");
-//		Mac mac = Mac.getInstance("HmacSHA1");
-//		mac.init(key);
-//
-//		byte[] bytes = mac.doFinal(s.getBytes("UTF-8"));
-//
-//		return Base64.encodeToString(bytes, 0);
-//	}
 
 	public static <ItemType> String parseJsonToString(ItemType jRequest) {
 		Gson gson = new Gson();

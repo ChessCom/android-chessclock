@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,7 +145,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		// get games_id's and compare it to local DB
 		// if there are game_id which we don't have, then fetch it
 
-		if (AppUtils.isNetworkAvailable(getActivity())) {
+		if (AppUtils.isNetworkAvailable(getActivity()) && !TextUtils.isEmpty(getUserToken())) { // this check is for logout quick process
 			LoadItem loadItem = LoadHelper.getAllGamesFiltered(getUserToken(), RestHelper.V_ID);
 			new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 		} else {

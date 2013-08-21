@@ -1,6 +1,5 @@
 package com.chess.backend;
 
-import com.chess.backend.RestHelper;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -15,6 +14,7 @@ import java.util.List;
  */
 public class LoadItem { // TODO refactor with builder
 
+	public static final String CODE = "";
     private String loadPath;
 	private List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	private String requestMethod;
@@ -102,5 +102,9 @@ public class LoadItem { // TODO refactor with builder
 
 	public void setFileSize(int fileSize) {
 		this.fileSize = fileSize;
+	}
+
+	public String getCode() {
+		return CODE;
 	}
 }
