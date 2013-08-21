@@ -881,7 +881,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		controlsLessonsView.showNewGame();
 
 		{ // show Lesson Complete! Popup
-			View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.new_course_complete_popup, null, false);
+			View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lesson_complete_popup, null, false);
 			popupView.findViewById(R.id.shareBtn).setOnClickListener(this);
 
 			TextView lessonPopupTitleTxt = (TextView) popupView.findViewById(R.id.lessonTitleTxt);

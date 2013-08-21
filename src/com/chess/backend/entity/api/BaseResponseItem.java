@@ -22,10 +22,17 @@ public class BaseResponseItem<ItemType> {
 	  "code": 5,
 	  "more_info": "http:\/\/www.chess-7.com\/index_api_test.php\/codes#5"
 	}
+    "debug": [
+        "Access denied.",
+        "found method: 'GET'",
+        "found requestPath: '/v1/tactics/?isInstall=0&loginToken=de3d73999ffdfcc44c9b5240c170b823'",
+        "found data: ''",
+        "expected signature: 'c2d049b873acea19d600b28acd57ef08fe55b454'"
+    ]
 */
+
 	private String status;
 	private String message;
-	private String debug;
 	private int count;
 	private int code;
 	private ItemType data;
@@ -61,10 +68,6 @@ public class BaseResponseItem<ItemType> {
 	 */
 	public int getCode() {
 		return code;
-	}
-
-	public String getDebug() {
-		return debug;
 	}
 
 	public String getMore_info() {

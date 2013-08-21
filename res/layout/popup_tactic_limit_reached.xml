@@ -1,25 +1,24 @@
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	android:padding="0dp"
+	android:paddingTop="30dp"
 	>
 
-	<!-- title-->
+	<!--Complete title-->
 	<com.chess.RoboTextView
 		android:id="@+id/titleTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
-		android:gravity="center"
-        android:text="@string/daily_limit_reached"
-		robo:ttf="Bold"
 		android:textSize="@dimen/game_end_popup_text_size"
-		android:paddingBottom="10dip"
+		android:textColor="@color/new_subtitle_dark_grey"
+		android:text="@string/daily_limit_reached"
+		android:paddingBottom="35dip"
+		custom:ttf="Bold"
 		/>
-
 
 	<!--Ads-->
 	<LinearLayout
@@ -27,34 +26,32 @@
 		android:layout_width="@dimen/ad_popup_width"
 		android:layout_height="@dimen/ad_popup_height"
 		android:layout_gravity="center"
+		android:orientation="vertical"
+		android:visibility="gone"
 		/>
 
-	<LinearLayout
+	<FrameLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="vertical"
+		android:background="@color/default_button_overlay_p"
+		android:orientation="horizontal"
+		android:paddingLeft="33dip"
+		android:paddingTop="20dip"
+		android:paddingRight="33dip"
+		android:paddingBottom="20dip"
 		>
 
-		<com.chess.RoboButton
-			android:id="@+id/cancelBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/cancel"
-			style="@style/Button.Glassy"
-			/>
-
+		<!--Upgrade To Continue-->
 		<com.chess.RoboButton
 			android:id="@+id/upgradeBtn"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="@string/upgrade_to_continue"
+			android:text="@string/upgrade"
 			style="@style/Button.Upgrade"
+			android:minHeight="@dimen/main_button_height"
 			/>
 
-	</LinearLayout>
-
-
+	</FrameLayout>
 
 </LinearLayout>

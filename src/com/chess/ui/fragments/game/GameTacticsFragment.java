@@ -344,8 +344,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		clearSavedTactics();
 
-		customView.findViewById(R.id.cancelBtn).setOnClickListener(this);
-//		customView.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+		customView.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(customView);

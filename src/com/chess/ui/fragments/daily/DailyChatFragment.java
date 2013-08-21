@@ -152,7 +152,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 	};
 
 	public void updateList() {
-		LoadItem loadItem = createGetTimeStampLoadItem();
+		LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameId);
 		new RequestJsonTask<DailyCurrentGameItem>(timeStampForListUpdateListener).executeTask(loadItem);
 	}
 
@@ -232,12 +232,8 @@ public class DailyChatFragment extends CommonLogicFragment{
 	}
 
 	private void sendMessage() {
-		LoadItem loadItem = createGetTimeStampLoadItem();
+		LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameId);
 		new RequestJsonTask<DailyCurrentGameItem>(timeStampForSendMessageListener).executeTask(loadItem);
-	}
-
-	private LoadItem createGetTimeStampLoadItem() {
-		return LoadHelper.getGameById(getUserToken(), gameId);
 	}
 
 	private class GetTimeStampListener extends ChessUpdateListener<DailyCurrentGameItem> { // TODO use batch API
