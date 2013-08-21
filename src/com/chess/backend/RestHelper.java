@@ -563,7 +563,7 @@ public class RestHelper {
 			Log.e(TAG, "Incorrect URL: " + url, e);
 			throw new InternalErrorException(e, StaticData.UNKNOWN_ERROR);
 		} catch (Exception e) {
-			Log.e(TAG, "Error while retrieving data from " + url, e);
+			Log.e(TAG, "Error while retrieving data from " + requestMethod + " " + url, e);
 			throw new InternalErrorException(e, StaticData.UNKNOWN_ERROR);
 		} finally {
 			if (connection != null) {
@@ -667,11 +667,11 @@ public class RestHelper {
 		if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
 			data = formPostData(loadItem);
 		}
-		String signedPart1 = requestMethod + requestPath + data + appPart;
+		if (!TextUtils.isEmpty(loadItem.getFilePath())){
+			data = StaticData.SYMBOL_EMPTY;
+		}
 		String signedPart = "154c4dc2f899fad29383c0cfa9905ce8143fc200";
 		try {
-			Log.d("TEST", " before sign = " + signedPart1);
-
 			signedPart = SHA1(requestMethod + requestPath + data + appPart);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -683,43 +683,8 @@ public class RestHelper {
 			data = StaticData.SYMBOL_EMPTY;
 			addStr = Q_;
 		}
-		String part = addStr + "signed=" + appId + "-" + signedPart;
 
-		String signedRequest = BASE_URL + requestPath + data + addStr + SIGNED + appId + "-" + signedPart;
-
-/*
-	$method = $_SERVER['REQUEST_METHOD'];
-	$request_path = preg_replace('/[&\?]signed=([^-]+)-([0-9a-f]{40})/', '', $_SERVER['REQUEST_URI']); // strip out the signed param
-	$data = file_get_contents("php://input");
-	list($appId, $sig) = explode('-', $_GET['signed'], 2);
-	if (sha1($method . $request_path . $data . $secret) === $sig) {
-		 // hooray!
-	} else {
-		throw new RestBadSignatureException();
-	}
-*/
-
-		{ // verify it back
-			String sentRequestPath = signedRequest.replace(part, "").replace(BASE_URL, "");
-			try {
-				if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
-					data = formPostData(loadItem);
-				} else {
-					data = StaticData.SYMBOL_EMPTY;
-				}
-
-				if (SHA1(requestMethod + sentRequestPath + data + appPart).equals(signedPart)) {
-					Log.d("TEST", " match");
-				} else {
-					Log.d("TEST", " DONT match");
-				}
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-		}
-		return signedRequest;
+		return BASE_URL + requestPath + data + addStr + SIGNED + appId + "-" + signedPart;
 	}
 
 	private static String getAppPartData(LoadItem loadItem) {
