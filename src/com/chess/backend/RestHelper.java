@@ -80,16 +80,24 @@ public class RestHelper {
 	public static final String CMD_USER_PROFILE = CMD_USERS + "/profile";
 
 	/*Games*/
-	public static final String CMD_GAMES = BASE_URL + V1 + "/games";
-	public static final String CMD_GAMES_ALL = CMD_GAMES + "/all";
-	public static final String CMD_GAMES_CHALLENGES = CMD_GAMES + "/challenges";
-	public static final String CMD_VACATIONS = CMD_GAMES + "/vacations";
-	public static final String CMD_SEEKS = CMD_GAMES + "/seeks";
-	public static final String CMD_MOVES = CMD_GAMES + "/moves";
-	public static final String CMD_GAME_STATS = CMD_GAMES + "/stats";
+	public static final String CMD_GAMES = BASE_URL + V1 + "/games/";
+	public static final String CMD_GAMES_ALL = CMD_GAMES + "all";
+	public static final String CMD_GAMES_CHALLENGES = CMD_GAMES + "challenges";
+	public static final String CMD_VACATIONS = CMD_GAMES + "vacations";
+	public static final String CMD_SEEKS = CMD_GAMES + "seeks";
+	public static final String CMD_MOVES = CMD_GAMES + "moves";
+	public static final String CMD_GAME_STATS = CMD_GAMES + "stats";
 
 	public static String CMD_GAME_BY_ID(long id) {
-		return CMD_GAMES + "/" + id;
+		return CMD_GAMES + id;
+	}
+
+	public static String CMD_ANSWER_GAME_SEEK(long gameSeekId) {
+		return CMD_GAMES + gameSeekId + "/seeks";
+	}
+
+	public static String CMD_PUT_GAME_ACTION(long gameId) {
+		return CMD_GAMES + gameId + "/actions";
 	}
 
 	/*Articles*/
@@ -137,13 +145,7 @@ public class RestHelper {
 		return CMD_LESSONS + "/" + id;
 	}
 
-	public static String CMD_ANSWER_GAME_SEEK(long gameSeekId) {
-		return CMD_GAMES + "/" + gameSeekId + "/seeks";
-	}
 
-	public static String CMD_PUT_GAME_ACTION(long gameId) {
-		return CMD_GAMES + "/" + gameId + "/actions";
-	}
 
 	/* Themes */
 	public static final String CMD_THEMES = BASE_URL + V1 + "/themes";
@@ -224,7 +226,6 @@ public class RestHelper {
 	public static final String P_IS_RATED = "isRated";
 	public static final String P_GAME_TYPE = "gameTypeCode";
 	public static final String P_TYPE = "type";
-	public static final String P_GAME_ID = "gameId";
 	public static final String P_PRODUCT_SKU = "productSku";
 	public static final String P_RELOAD = "reload";
 	public static final String P_PURCHASE_DATA = "purchaseData";

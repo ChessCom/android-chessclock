@@ -30,7 +30,7 @@ public class DailyCurrentGameData extends DailyGameBaseData{
 	"black_avatar": "//www.c.com/images_users/avatars/zarko5.1.gif"
 */
 	private boolean is_my_turn;
-	private boolean draw_offered;
+	private int draw_offered;
 
 	public boolean isMyTurn() {
 		return is_my_turn;
@@ -40,15 +40,11 @@ public class DailyCurrentGameData extends DailyGameBaseData{
 		this.is_my_turn = is_my_turn;
 	}
 
-	public boolean isDrawOffered() {
+	public int isDrawOffered() {
 		return draw_offered;
 	}
 
-	public void setDrawOffered(boolean draw_offered) {
-		this.draw_offered = draw_offered;
-	}
-
 	public void setDrawOffered(int draw_offered) {
-		this.draw_offered = draw_offered > 0;
+		this.draw_offered = draw_offered;
 	}
 }

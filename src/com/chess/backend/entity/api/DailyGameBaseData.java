@@ -40,6 +40,7 @@ public class DailyGameBaseData {
 
 	private long id;
 	private int i_play_as;
+	private int user_to_move;
 	private int game_type;
 	private String fen;
 	private long timestamp;
@@ -78,6 +79,14 @@ public class DailyGameBaseData {
 
 	public void setMyColor(int i_play_as) {
 		this.i_play_as = i_play_as;
+	}
+
+	public int getUserToMove() {
+		return user_to_move;
+	}
+
+	public void setUserToMove(int user_to_move) {
+		this.user_to_move = user_to_move;
 	}
 
 	public int getGameType() {

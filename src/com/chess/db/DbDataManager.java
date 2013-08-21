@@ -717,7 +717,7 @@ public class DbDataManager {
 		setValuesFromGameItem(values, dataObj);
 		values.put(V_FINISHED, 0);
 		values.put(V_USER, userName);
-		values.put(V_OPPONENT_OFFERED_DRAW, dataObj.isDrawOffered() ? 1 : 0);
+		values.put(V_OPPONENT_OFFERED_DRAW, dataObj.isDrawOffered());
 		values.put(V_IS_MY_TURN, dataObj.isMyTurn() ? 1 : 0);
 		return values;
 	}
@@ -754,7 +754,7 @@ public class DbDataManager {
 		DailyCurrentGameData dataObj = new DailyCurrentGameData();
 
 		setDailyGameFromCursor(dataObj, cursor);
-		dataObj.setDrawOffered(getInt(cursor, V_OPPONENT_OFFERED_DRAW) > 0);
+		dataObj.setDrawOffered(getInt(cursor, V_OPPONENT_OFFERED_DRAW));
 		dataObj.setMyTurn(getInt(cursor, V_IS_MY_TURN) > 0);
 
 		return dataObj;
@@ -777,7 +777,7 @@ public class DbDataManager {
 		dataObj.setGameType(getInt(cursor, V_GAME_TYPE));
 		dataObj.setMyTurn(getInt(cursor, V_IS_MY_TURN) > 0);
 		dataObj.setTimestamp(getLong(cursor, V_TIMESTAMP));
-		dataObj.setDrawOffered(getInt(cursor, V_OPPONENT_OFFERED_DRAW) > 0);
+		dataObj.setDrawOffered(getInt(cursor, V_OPPONENT_OFFERED_DRAW));
 		dataObj.setHasNewMessage(getInt(cursor, V_HAS_NEW_MESSAGE) > 0);
 		dataObj.setTimeRemaining(getLong(cursor, V_TIME_REMAINING));
 

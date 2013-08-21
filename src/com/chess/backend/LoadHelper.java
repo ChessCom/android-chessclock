@@ -80,9 +80,8 @@ public class LoadHelper {
 
 	public static LoadItem getGameById(String userToken, long gameId) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_GAMES);
+		loadItem.setLoadPath(CMD_GAME_BY_ID(gameId));
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
-		loadItem.addRequestParams(P_GAME_ID, gameId);
 		return loadItem;
 	}
 

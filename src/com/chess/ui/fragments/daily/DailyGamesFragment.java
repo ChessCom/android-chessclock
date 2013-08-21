@@ -203,7 +203,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 						gameListCurrentItem.getBlackAvatar())); // TODO adjust
 			} else if (pos == 1) {
 				String draw = RestHelper.V_OFFERDRAW;
-				if (gameListCurrentItem.isDrawOffered()) {
+				if (gameListCurrentItem.isDrawOffered() > 0) {
 					draw = RestHelper.V_ACCEPTDRAW;
 				}
 
@@ -247,7 +247,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 			gameListCurrentItem = DbDataManager.getDailyCurrentGameListFromCursor(cursor);
 
-			if (gameListCurrentItem.isDrawOffered()) {
+			if (gameListCurrentItem.isDrawOffered() > 0) {
 				popupItem.setPositiveBtnId(R.string.accept);
 				popupItem.setNeutralBtnId(R.string.decline);
 				popupItem.setNegativeBtnId(R.string.game);

@@ -20,13 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
+import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.db.DbDataManager;
-import com.chess.model.DataHolder;
-import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.DailyCurrentGameData;
+import com.chess.backend.entity.api.DailyCurrentGameItem;
 import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
@@ -36,10 +35,12 @@ import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbScheme;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
+import com.chess.model.DataHolder;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
@@ -287,7 +288,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	protected void updateGameState(long gameId) {
 		LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameId);
-		new RequestJsonTask<DailyCurrentGameData>(gameStateUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<DailyCurrentGameItem>(gameStateUpdateListener).executeTask(loadItem);
 	}
 
 	private void adjustBoardForGame() {
@@ -792,17 +793,17 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 
-	private class GameStateUpdateListener extends ChessLoadUpdateListener<DailyCurrentGameData> {
+	private class GameStateUpdateListener extends ChessLoadUpdateListener<DailyCurrentGameItem> {
 
 		private GameStateUpdateListener() {
-			super(DailyCurrentGameData.class);
+			super(DailyCurrentGameItem.class);
 		}
 
 		@Override
-		public void updateData(DailyCurrentGameData returnedObj) {
+		public void updateData(DailyCurrentGameItem returnedObj) {
 			super.updateData(returnedObj);
 
-			currentGame = returnedObj;
+			currentGame = returnedObj.getData();
 
 			DbDataManager.updateDailyGame(getContentResolver(), currentGame, getAppData().getUsername());
 

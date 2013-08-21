@@ -3,7 +3,6 @@ package com.chess.ui.fragments.daily;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -11,12 +10,12 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.backend.LoadHelper;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.entity.api.DailyChatItem;
 import com.chess.backend.entity.api.DailyCurrentGameData;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
+import com.chess.backend.entity.api.DailyCurrentGameItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ChatMessagesAdapter;
@@ -154,7 +153,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 
 	public void updateList() {
 		LoadItem loadItem = createGetTimeStampLoadItem();
-		new RequestJsonTask<DailyCurrentGameData>(timeStampForListUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<DailyCurrentGameItem>(timeStampForListUpdateListener).executeTask(loadItem);
 	}
 
 	private class ChatItemsUpdateListener extends ChessUpdateListener<DailyChatItem> {
@@ -226,16 +225,6 @@ public class DailyChatFragment extends CommonLogicFragment{
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()){
-			case R.id.menu_refresh:
-				updateList();
-				break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.sendBtn) {
 			sendMessage();
@@ -244,29 +233,29 @@ public class DailyChatFragment extends CommonLogicFragment{
 
 	private void sendMessage() {
 		LoadItem loadItem = createGetTimeStampLoadItem();
-		new RequestJsonTask<DailyCurrentGameData>(timeStampForSendMessageListener).executeTask(loadItem);
+		new RequestJsonTask<DailyCurrentGameItem>(timeStampForSendMessageListener).executeTask(loadItem);
 	}
 
 	private LoadItem createGetTimeStampLoadItem() {
 		return LoadHelper.getGameById(getUserToken(), gameId);
 	}
 
-	private class GetTimeStampListener extends ActionBarUpdateListener<DailyCurrentGameData> { // TODO use batch API
+	private class GetTimeStampListener extends ChessUpdateListener<DailyCurrentGameItem> { // TODO use batch API
 
 		public GetTimeStampListener() {
-			super(getInstance(), DailyCurrentGameData.class);
+			super(DailyCurrentGameItem.class);
 		}
 
 		@Override
-		public void updateData(DailyCurrentGameData returnedObj) {
-			final DailyCurrentGameData currentGame = returnedObj;
+		public void updateData(DailyCurrentGameItem returnedObj) {
+			final DailyCurrentGameData currentGame = returnedObj.getData();
 			timeStamp = currentGame.getTimestamp();
 		}
 	}
 
 	private class TimeStampForListUpdateListener extends GetTimeStampListener {
 		@Override
-		public void updateData(DailyCurrentGameData returnedObj) {
+		public void updateData(DailyCurrentGameItem returnedObj) {
 			super.updateData(returnedObj);
 
 			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_CHAT, timeStamp);
@@ -276,7 +265,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 
 	private class TimeStampForSendMessageListener extends GetTimeStampListener {
 		@Override
-		public void updateData(DailyCurrentGameData returnedObj) {
+		public void updateData(DailyCurrentGameItem returnedObj) {
 			super.updateData(returnedObj);
 
 			String message = StaticData.SYMBOL_EMPTY;
