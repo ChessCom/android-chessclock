@@ -30,7 +30,6 @@ import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.interfaces.AbstractUpdateListener;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
@@ -869,15 +868,19 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		}
 	}
 
-	private class VacationUpdateListener extends ActionBarUpdateListener<VacationItem> {
+	private class VacationUpdateListener extends ChessLoadUpdateListener<VacationItem> {
 
 		public VacationUpdateListener() {
-			super(getInstance(), VacationItem.class);
+			super(VacationItem.class);
 		}
 
 		@Override
 		public void updateData(VacationItem returnedObj) {
-			showToast(R.string.vacation_off);
+			if (returnedObj.getData().isOnVacation()) {
+				showToast(R.string.vacation_on);
+			} else {
+				showToast(R.string.vacation_off);
+			}
 		}
 	}
 
