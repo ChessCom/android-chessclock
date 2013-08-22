@@ -311,4 +311,9 @@
 	<string name="friend_requests">Friend Requests</string>
 	<string name="lessons_limit_reached_message">Lesson limit reached for the day. Upgrade now to improve your game with unlimited lessons.</string>
 
+	<string name="thirty_days">30 Days</string>
+	<string name="ninety_days">90 Days</string>
+	<string name="one_year">1 Year</string>
+	<string name="all_time">All Time</string>
+
 </resources>

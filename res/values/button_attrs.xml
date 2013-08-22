@@ -94,6 +94,10 @@
             <enum name="listItemHeaderDark" value="12"/>
             <enum name="listItemHeaderDark_2" value="13"/>
             <enum name="listItemHeaderTop" value="14"/>
+
+			<enum name="sideLeft" value="15"/>
+			<enum name="sideMiddle" value="16"/>
+			<enum name="sideRight" value="17"/>
         </attr>
 
     </declare-styleable>

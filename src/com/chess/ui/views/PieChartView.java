@@ -18,7 +18,7 @@ import com.chess.backend.entity.api.stats.GamesInfoByResult;
  * Date: 07.02.13
  * Time: 19:15
  */
-public class PieView extends View {
+public class PieChartView extends View {
 
 
 	private static final int TOP_OFFSET = 30;
@@ -53,22 +53,8 @@ public class PieView extends View {
 	private Paint centerTextPaint;
 	private int INSIDE_TOP_TEXT_OFFSET;
 
-	public PieView(Context context) {
-		super(context);
-		init(context);
-	}
-
-	PieView(Context context, AttributeSet attrs) {
+	public PieChartView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-	}
-
-	PieView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-	}
-
-	public PieView(Context context, GamesInfoByResult games) {
-		super(context);
-		this.games = games;
 		init(context);
 	}
 

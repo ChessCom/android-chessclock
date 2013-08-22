@@ -297,15 +297,15 @@
     </style>
 
     <style name="RoundRadioButton.Left" >
-        <item name="android:background">@drawable/button_upgrade_toggle_left_selector</item>
+        <item name="android:background">@drawable/button_toggle_left_selector</item>
     </style>
 
     <style name="RoundRadioButton.Middle" >
-        <item name="android:background">@drawable/button_upgrade_toggle_middle_selector</item>
+        <item name="android:background">@drawable/button_toggle_middle_selector</item>
     </style>
 
     <style name="RoundRadioButton.Right" >
-        <item name="android:background">@drawable/button_upgrade_toggle_right_selector</item>
+        <item name="android:background">@drawable/button_toggle_right_selector</item>
     </style>
 
 	<style name="SettingsDividerText" parent="Text">

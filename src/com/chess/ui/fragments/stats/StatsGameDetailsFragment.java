@@ -21,7 +21,8 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveGameStatsTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.views.ChartView;
-import com.chess.ui.views.PieView;
+import com.chess.ui.views.PieChartView;
+import com.chess.ui.views.RatingGraphView;
 import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
@@ -55,8 +56,6 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 	private final static String MODE = "mode";
 	private static final String USERNAME = "username";
 
-	private static final int CHART_HEIGHT = 420;
-
 	private CursorUpdateListener standardCursorUpdateListener;
 	private CursorUpdateListener lightningCursorUpdateListener;
 	private CursorUpdateListener blitzCursorUpdateListener;
@@ -73,16 +72,16 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 	private TextView totalRankedTxt;
 	private TextView percentileValueTxt;
 	private TextView totalGamesValueTxt;
-	private PieView pieView;
+	private PieChartView pieChartView;
 	private TextView timeoutsValueTxt;
 	private TextView glickoValueTxt;
 	private TextView mostFrequentOpponentTxt;
 	private TextView mostFrequentOpponentGamesTxt;
 	private TextView timeoutsLabelTxt;
 	private ForegroundColorSpan foregroundSpan;
-	private ChartView chartView;
 	private int mode;
 	private String username;
+	private RatingGraphView ratingGraphView;
 
 	public StatsGameDetailsFragment() {
 		Bundle bundle = new Bundle();
@@ -141,21 +140,8 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 		totalGamesValueTxt = (TextView) view.findViewById(R.id.totalGamesValueTxt);
 
 
-		pieView = new PieView(getActivity());
-		chartView = new ChartView(getActivity(), null);
-
-		float aspect = 192f / 640f;
-
-		int widthPixels = getResources().getDisplayMetrics().widthPixels;
-		int height = (int) (widthPixels * aspect);
-
-		LinearLayout.LayoutParams chartParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-				height);
-		LinearLayout.LayoutParams pieChartParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, CHART_HEIGHT);
-
-		LinearLayout statsLinLay = (LinearLayout) view.findViewById(R.id.statsLinLay);
-		statsLinLay.addView(chartView, 1, chartParams);
-		statsLinLay.addView(pieView, 3, pieChartParams);
+		pieChartView = (PieChartView) view.findViewById(R.id.pieChartView);
+		ratingGraphView = (RatingGraphView) view.findViewById(R.id.ratingGraphView);
 
 		LinearLayout ratingsLinearView = (LinearLayout) view.findViewById(R.id.ratingsLinearView);
 		addRatingsViews(ratingsLinearView);
@@ -321,12 +307,12 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 						series.add(point);
 					} while (cursor.moveToNext());
 
-					chartView.setGraphData(series);
+					ratingGraphView.setGraphData(series);
 				}
 			}
 
 			// donut/pie chart
-			pieView.setGames(DbDataManager.getGameStatsGamesByResultFromCursor(returnedObj));
+			pieChartView.setGames(DbDataManager.getGameStatsGamesByResultFromCursor(returnedObj));
 
 			{// timeouts
 				String timeoutsStr = getString(R.string.timeouts_last_90_days);

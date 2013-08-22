@@ -87,6 +87,15 @@
 
         </RelativeLayout>
 
+		<!--Rating Graph-->
+		<com.chess.ui.views.RatingGraphView
+			android:id="@+id/ratingGraphView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			/>
+
+
         <!--Total Games-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -111,6 +120,13 @@
                 android:textSize="23sp" />
 
         </LinearLayout>
+
+		<!--Games PieChar-->
+		<com.chess.ui.views.PieChartView
+			android:id="@+id/pieChartView"
+			android:layout_width="wrap_content"
+			android:layout_height="420dip"
+			/>
 
         <!--Rating Table-->
         <LinearLayout

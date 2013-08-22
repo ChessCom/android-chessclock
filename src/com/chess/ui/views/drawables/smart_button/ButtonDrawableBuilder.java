@@ -297,6 +297,27 @@ public class ButtonDrawableBuilder {
 
 				return rectButtonDrawable;
 			}
+			case R.style.Rect_Side_Left: {
+				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+				rectButtonDrawable.rectPosition = SIDE_LEFT;
+				createRect(rectButtonDrawable, resources);
+
+				return rectButtonDrawable;
+			}
+			case R.style.Rect_Side_Middle: {
+				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+				rectButtonDrawable.rectPosition = SIDE_MIDDLE;
+				createRect(rectButtonDrawable, resources);
+
+				return rectButtonDrawable;
+			}
+			case R.style.Rect_Side_Right: {
+				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+				rectButtonDrawable.rectPosition = SIDE_RIGHT;
+				createRect(rectButtonDrawable, resources);
+
+				return rectButtonDrawable;
+			}
 			case R.style.ListItem: {
 				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
 				rectButtonDrawable.rectPosition = LIST_ITEM;

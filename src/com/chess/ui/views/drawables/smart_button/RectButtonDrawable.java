@@ -41,6 +41,10 @@ public class RectButtonDrawable extends ButtonDrawable {
 	static final int LIST_ITEM_HEADER_2_DARK = 13;
 	static final int LIST_ITEM_HEADER_TOP = 14;
 
+	static final int SIDE_LEFT = 15;
+	static final int SIDE_MIDDLE = 16;
+	static final int SIDE_RIGHT = 17;
+
 	int rectPosition = DEF_VALUE;
 
 	private int edgeOffset;
@@ -238,6 +242,16 @@ public class RectButtonDrawable extends ButtonDrawable {
 			case LIST_ITEM_HEADER_2_DARK:
 				int width1 = canvas.getWidth();  // use full screen width to make backward compatibility
 				enabledDrawable.setBounds(-edgeOffset, -edgeOffset/2, width1 + edgeOffset, height);
+				break;
+
+			case SIDE_LEFT:
+				enabledDrawable.setBounds(0, -edgeOffset, width + edgeOffset/2, height + edgeOffset);
+				break;
+			case SIDE_MIDDLE:
+				enabledDrawable.setBounds(-edgeOffset/2, -edgeOffset, width + edgeOffset/2, height + edgeOffset);
+				break;
+			case SIDE_RIGHT:
+				enabledDrawable.setBounds(-edgeOffset/2, -edgeOffset, width, height + edgeOffset);
 				break;
 		}
 	}

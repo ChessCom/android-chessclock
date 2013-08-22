@@ -3,6 +3,7 @@ package com.chess.ui.views;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.*;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
@@ -45,12 +46,17 @@ public class ChartView extends View {
 	private Paint minValueTextPaint;
 	private int textOffset;
 
-	public ChartView(Context context, List<long[]> dataArray) {
+	public ChartView(Context context) {
 		super(context);
-		init(context, dataArray);
+		init(context);
 	}
 
-	private void init(Context context, List<long[]> dataArray) {
+	public ChartView(Context context,  AttributeSet attrs) {
+		super(context, attrs);
+		init(context);
+	}
+
+	private void init(Context context) {
 		Resources resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
 		widthPixels = resources.getDisplayMetrics().widthPixels;
@@ -87,13 +93,6 @@ public class ChartView extends View {
 		minValueTextPaint.setTypeface(FontsHelper.getInstance().getTypeFace(getContext(), FontsHelper.DEFAULT_FONT));
 
 		textOffset = (int) (16 * density);
-
-		if (dataArray == null) {
-			initialized = false;
-			return;
-		}
-
-		setPoints(dataArray);
 	}
 
 	private void setPoints(List<long[]> dataArray) {

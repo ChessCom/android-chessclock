@@ -27,6 +27,8 @@
 		<item name="orangeButton">@style/Text.Button</item>
 		<item name="orangeButtonSmall">@style/Button.Orange2.Small</item>
 		<item name="pageButton">@style/Button.Page</item>
+		<item name="roundedRadioBtn">@style/RoundRadioButton</item>
+		<item name="sideGraphBtn">@style/Rect.Side</item>
         <item name="android:scrollbars">none</item>
     </style>
 

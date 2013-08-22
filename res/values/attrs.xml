@@ -43,6 +43,8 @@
         <attr name="orangeButtonSmall" format="reference" />
         <attr name="greyButtonSmallSolid" format="reference" />
         <attr name="pageButton" format="reference" />
+        <attr name="roundedRadioBtn" format="reference" />
+        <attr name="sideGraphBtn" format="reference" />
     </declare-styleable>
 
 

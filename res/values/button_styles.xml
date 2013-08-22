@@ -396,6 +396,25 @@
         <item name="btn_rect_pos">tabRight</item>
     </style>
 
+    <!-- ============= Side ===================== -->
+    <style name="Rect.Side">
+        <item name="btn_top">@color/transparent_button_border_left</item>
+        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
+        <item name="android:minHeight">@dimen/new_side_graph_button_height</item>
+	</style>
+
+    <style name="Rect.Side.Left">
+        <item name="btn_rect_pos">sideLeft</item>
+    </style>
+
+    <style name="Rect.Side.Middle">
+        <item name="btn_rect_pos">sideMiddle</item>
+    </style>
+
+    <style name="Rect.Side.Right">
+        <item name="btn_rect_pos">sideRight</item>
+    </style>
+
     <!-- ============= Bottom(Controls) ===================== -->
     <style name="Rect.Bottom">
         <item name="btn_rect_pos">bottomLeft</item>
