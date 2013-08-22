@@ -44,6 +44,7 @@ public class DbDataManager {
 	public static String[] sArguments1 = new String[1];
 	public static String[] sArguments2 = new String[2];
 	public static String[] sArguments3 = new String[3];
+	public static String[] sArguments5 = new String[5];
 
 	// -------------- SELECTION DEFINITIONS ---------------------------
 
@@ -434,25 +435,32 @@ public class DbDataManager {
 		return gamesIds.length > idsToRemove.size();
 	}
 
-	public static Cursor getRecentOpponentsCursor(Context context, String userName) {
+	/**
+	 * Search in DAILY_FINISHED_GAMES for match to this query : {@code  SELECT user,i_play_as,white_username,is_opponent_online,black_username FROM DAILY_FINISHED_GAMES WHERE user='username' AND ((black_username!='username' AND i_play_as=1) OR (black_username='username' AND i_play_as=2)) GROUP BY white_username, black_username}
+	 * @return Cursor with composition of player names, where current user can be black or white player
+	 */
+	public static Cursor getRecentOpponentsCursor(Context context, String username) {
 
 		ContentResolver contentResolver = context.getContentResolver();
-		final String[] arguments3 = sArguments3;
-		arguments3[0] = userName;
-		arguments3[1] = userName;
-		arguments3[2] = String.valueOf(RestHelper.P_BLACK);
+		final String[] arguments = sArguments5;
+		arguments[0] = username;
+		arguments[1] = username;
+		arguments[2] = String.valueOf(RestHelper.P_WHITE);
+		arguments[3] = username;
+		arguments[4] = String.valueOf(RestHelper.P_BLACK);
 
 		ContentProviderClient client = contentResolver.acquireContentProviderClient(PROVIDER_NAME);
 		SQLiteDatabase dbHandle = ((DbDataProvider) client.getLocalContentProvider()).getDbHandle();
 		StringBuilder projection = new StringBuilder();
-		String selection = V_USER + EQUALS_ARG_ + AND_ + "(" + V_WHITE_USERNAME + NOT_EQUALS_ARG_
-				+ AND_ + V_I_PLAY_AS + EQUALS_ARG_ + ")";
+		String selection = V_USER + EQUALS_ARG_ + AND_ + "((" + V_BLACK_USERNAME + NOT_EQUALS_ARG_
+				+ AND_ + V_I_PLAY_AS + EQUALS_ARG_ + ") OR (" + V_BLACK_USERNAME + EQUALS_ARG_
+				+ AND_ + V_I_PLAY_AS + EQUALS_ARG_ + "))";
 
 		QueryParams params = new QueryParams();
 		params.setDbName(Tables.DAILY_FINISHED_GAMES.name());
 		params.setProjection(PROJECTION_DAILY_PLAYER_NAMES);
 		params.setSelection(selection);
-		params.setArguments(arguments3);
+		params.setArguments(arguments);
 		params.setCommands(GROUP_BY + StaticData.SYMBOL_SPACE + V_WHITE_USERNAME + ", " + V_BLACK_USERNAME);
 
 		for (String projections : params.getProjection()) {

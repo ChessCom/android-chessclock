@@ -57,8 +57,8 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	private int successToastMsgId;
 
 
-	private OnlineUpdateListener challengeInviteUpdateListener;
-	private OnlineUpdateListener acceptDrawUpdateListener;
+	private DailyUpdateListener challengeInviteUpdateListener;
+	private DailyUpdateListener acceptDrawUpdateListener;
 
 	private IntentFilter listUpdateFilter;
 	private BroadcastReceiver gamesUpdateReceiver;
@@ -75,13 +75,14 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	private DailyFinishedGamesCursorRightAdapter finishedGamesCursorAdapter;
 	private CustomSectionedAdapter sectionedAdapter;
 	private DailyCurrentGameData gameListCurrentItem;
-	private DailyChallengeItem.Data gameListChallengeItem;
+	private DailyChallengeItem.Data selectedChallengeItem;
 
 	private TextView emptyView;
 	private ListView listView;
 	private View loadingView;
 	private boolean onVacation;
 	private View headerView;
+	private DailyChallengeItem.Data challengeToRemove;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -151,8 +152,8 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	}
 
 	private void init() {
-		challengeInviteUpdateListener = new OnlineUpdateListener(OnlineUpdateListener.INVITE);
-		acceptDrawUpdateListener = new OnlineUpdateListener(OnlineUpdateListener.DRAW);
+		challengeInviteUpdateListener = new DailyUpdateListener(DailyUpdateListener.INVITE);
+		acceptDrawUpdateListener = new DailyUpdateListener(DailyUpdateListener.DRAW);
 		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
 		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
 		currentGamesMyCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_MY);
@@ -194,11 +195,11 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 		} else if (view.getId() == R.id.acceptBtn) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
-			gameListChallengeItem = challengesGamesAdapter.getItem(position);
+			selectedChallengeItem = challengesGamesAdapter.getItem(position);
 			acceptChallenge();
 		} else if (view.getId() == R.id.cancelBtn) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
-			gameListChallengeItem = challengesGamesAdapter.getItem(position);
+			selectedChallengeItem = challengesGamesAdapter.getItem(position);
 			declineChallenge();
 		}
 	}
@@ -306,29 +307,16 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	private void clickOnChallenge(DailyChallengeItem.Data gameListChallengeItem) {
 		getActivityFace().openFragment(DailyInviteFragment.createInstance(gameListChallengeItem));
 		getActivityFace().toggleRightMenu();
-//
-//		this.gameListChallengeItem = gameListChallengeItem;
-//
-//		String title = gameListChallengeItem.getOpponentUsername() + StaticData.SYMBOL_NEW_STR
-//				+ getString(R.string.win_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.getOpponentWinCount()
-//				+ StaticData.SYMBOL_NEW_STR
-//				+ getString(R.string.loss_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.getOpponentLossCount()
-//				+ StaticData.SYMBOL_NEW_STR
-//				+ getString(R.string.draw_) + StaticData.SYMBOL_SPACE + gameListChallengeItem.getOpponentDrawCount();
-//
-//		popupItem.setPositiveBtnId(R.string.accept);
-//		popupItem.setNegativeBtnId(R.string.decline);
-//		showPopupDialog(title, CHALLENGE_ACCEPT_TAG);
 	}
 
-	private class OnlineUpdateListener extends ChessUpdateListener<BaseResponseItem> {
+	private class DailyUpdateListener extends ChessUpdateListener<BaseResponseItem> {
 		public static final int INVITE = 3;
 		public static final int DRAW = 4;
 		public static final int VACATION = 5;
 
 		private int itemCode;
 
-		public OnlineUpdateListener(int itemCode) {
+		public DailyUpdateListener(int itemCode) {
 			super(BaseResponseItem.class);
 			this.itemCode = itemCode;
 		}
@@ -358,6 +346,9 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 					break;
 			}
+
+			// remove that item from challenges list adapter
+			challengesGamesAdapter.remove(selectedChallengeItem);
 		}
 
 		@Override
@@ -435,7 +426,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	}
 
 	private void acceptChallenge() {
-		LoadItem loadItem = LoadHelper.acceptChallenge(getUserToken(), gameListChallengeItem.getGameId());
+		LoadItem loadItem = LoadHelper.acceptChallenge(getUserToken(), selectedChallengeItem.getGameId());
 		successToastMsgId = R.string.challenge_accepted;
 
 		new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);
@@ -479,7 +470,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	}
 
 	private void declineChallenge() {
-		LoadItem loadItem = LoadHelper.declineChallenge(getUserToken(), gameListChallengeItem.getGameId());
+		LoadItem loadItem = LoadHelper.declineChallenge(getUserToken(), selectedChallengeItem.getGameId());
 		successToastMsgId = R.string.challenge_declined;
 
 		new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);

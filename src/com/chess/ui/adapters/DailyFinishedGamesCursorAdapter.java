@@ -12,6 +12,7 @@ import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
+import com.chess.utilities.AppUtils;
 
 public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 
@@ -66,16 +67,20 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 		String avatarUrl;
 		String opponentName;
 		String opponentRating;
+		int premiumStatus;
 		if (getInt(cursor, DbScheme.V_I_PLAY_AS) == RestHelper.P_BLACK) {
 			avatarUrl = getString(cursor, DbScheme.V_WHITE_AVATAR);
 			opponentName = getString(cursor, DbScheme.V_WHITE_USERNAME) + gameType;
 			opponentRating = getString(cursor, DbScheme.V_WHITE_RATING);
+			premiumStatus = getInt(cursor, DbScheme.V_WHITE_PREMIUM_STATUS);
 		} else {
 			avatarUrl = getString(cursor, DbScheme.V_BLACK_AVATAR);
 			opponentName = getString(cursor, DbScheme.V_BLACK_USERNAME) + gameType;
 			opponentRating = getString(cursor, DbScheme.V_BLACK_RATING);
+			premiumStatus = getInt(cursor, DbScheme.V_BLACK_PREMIUM_STATUS);
 		}
 
+		holder.premiumImg.setImageResource(AppUtils.getPremiumIcon(premiumStatus));
 		holder.playerTxt.setText(opponentName + gameType);
 		holder.ratingTxt.setText(StaticData.SYMBOL_LEFT_PAR + opponentRating + StaticData.SYMBOL_RIGHT_PAR);
 		imageLoader.download(avatarUrl, holder.playerImg, imageSize);

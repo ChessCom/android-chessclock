@@ -136,8 +136,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 //				getContentResolver()).executeTask();
 //
 
-//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.USER_STATS_LIVE_STANDARD.name()),
-//				DbHelper.getAllByUri(DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal()),
+//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.DAILY_FINISHED_GAMES.name()),
+//				DbHelper.getAllByUri(DbScheme.Tables.DAILY_FINISHED_GAMES.ordinal()),
 //				getContentResolver()).executeTask();
 
 
@@ -169,7 +169,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 //			super.updateData(cursor);
 //
 //			if (HONEYCOMB_PLUS_API) {
-//
 //				AppUtils.printTableContent(cursor, tableName);
 //			}
 //		}

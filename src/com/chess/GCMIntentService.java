@@ -71,9 +71,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Log.d(TAG, "Registering to server, registrationId = " + registrationId
 				+ " \ntoken = " + appData.getUserToken());
 
-//		String url = RestHelper.formPostRequest(loadItem);
-//		postData(url, loadItem, GcmHelper.REQUEST_REGISTER);
-
 		GcmItem item = null;
 		try {
 			item = RestHelper.requestData(loadItem, GcmItem.class, AppUtils.getAppId(context));
@@ -105,14 +102,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 				String token = preferences.getString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
 
 				LoadItem loadItem = new LoadItem();
-//				loadItem.setLoadPath(RestHelper.GCM_UNREGISTER);
 				loadItem.setLoadPath(RestHelper.CMD_GCM);
 				loadItem.setRequestMethod(RestHelper.DELETE);
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, token);
 //				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
-
-//				String url = RestHelper.formPostRequest(loadItem); // TODO check
-//				postData(url, loadItem, GcmHelper.REQUEST_UNREGISTER);
 
 				GcmItem item = null;
 				try {

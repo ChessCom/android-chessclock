@@ -30,6 +30,9 @@ public class DailyCurrentGameData extends DailyGameBaseData{
 	"black_avatar": "//www.c.com/images_users/avatars/zarko5.1.gif"
 */
 	private boolean is_my_turn;
+	/**
+	 * draw_offered - 0 = no draw offered, 1 = white offered draw, 2 = black offered draw
+	 */
 	private int draw_offered;
 
 	public boolean isMyTurn() {

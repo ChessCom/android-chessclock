@@ -151,20 +151,28 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 				inviteFriendView2.setVisibility(View.VISIBLE);
 				inviteFriendView2.setOnClickListener(this);
 
-				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
+				if (firstFriendUserName.equals(getUsername())) {
+					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+				}
 				friendUserName1Txt.setText(firstFriendUserName);
-				friendRealName1Txt.setText(DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME));
+
 				cursor.moveToNext();
-				secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+
+				secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
+				if (secondFriendUserName.equals(getUsername())) {
+					secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+				}
 				friendUserName2Txt.setText(secondFriendUserName);
-				friendRealName2Txt.setText(DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME));
 			} else if (cursor.getCount() == 1) {
 				inviteFriendView1.setVisibility(View.VISIBLE);
 				inviteFriendView1.setOnClickListener(this);
 
-				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
+				if (firstFriendUserName.equals(getUsername())) {
+					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+				}
 				friendUserName1Txt.setText(firstFriendUserName);
-				friendRealName1Txt.setText(DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME));
 			}
 		}
 	}
