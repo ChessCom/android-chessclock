@@ -7,6 +7,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.view.View;
+import com.chess.FontsHelper;
 import com.chess.R;
 
 import java.util.List;
@@ -23,8 +24,8 @@ public class ChartView extends View {
 	private static final int VALUE = 1;
 	private static final long MILLISECONDS_PER_DAY = 86400 * 1000;
 
-	private Paint mPaint;
-	private Path mPath;
+	private Paint graphPaint;
+	private Path graphPath;
 	private int widthPixels;
 	private float yAspect;
 	private int backColor;
@@ -38,6 +39,11 @@ public class ChartView extends View {
 	private SparseArray<Long> pointsArray;
 	private SparseBooleanArray pointsExistArray;
 	private boolean initialized;
+	private int orignialMinY;
+	private Paint minValueLinePaint;
+	private Paint strokePaint;
+	private Paint minValueTextPaint;
+	private int textOffset;
 
 	public ChartView(Context context, List<long[]> dataArray) {
 		super(context);
@@ -57,13 +63,30 @@ public class ChartView extends View {
 		graphTopColor = resources.getColor(R.color.graph_gradient_top);
 		graphBottomColor = resources.getColor(R.color.graph_gradient_bottom);
 
+		// Border
 		borderPaint = new Paint();
 		borderPaint.setColor(borderColor);
 		borderPaint.setStyle(Paint.Style.STROKE);
 		borderPaint.setStrokeWidth(1.5f * density);
 
-		setFocusable(true);
-		setFocusableInTouchMode(true);
+		// Minimal Rating line
+		int minValueLineColor = resources.getColor(R.color.graph_min_value_line);
+		minValueLinePaint = new Paint();
+		minValueLinePaint.setColor(minValueLineColor);
+		minValueLinePaint.setStyle(Paint.Style.STROKE);
+		minValueLinePaint.setStrokeWidth(density);
+
+		// Minimal Rating value
+		int minValueTextColor = resources.getColor(R.color.graph_min_value_text);
+		int textSize = (int) (13 * density);
+		minValueTextPaint = new Paint();
+		minValueTextPaint.setColor(minValueTextColor);
+		minValueTextPaint.setStyle(Paint.Style.FILL);
+		minValueTextPaint.setStrokeWidth(density);
+		minValueTextPaint.setTextSize(textSize);  // TODO adjust for tablets
+		minValueTextPaint.setTypeface(FontsHelper.getInstance().getTypeFace(getContext(), FontsHelper.DEFAULT_FONT));
+
+		textOffset = (int) (16 * density);
 
 		if (dataArray == null) {
 			initialized = false;
@@ -73,7 +96,7 @@ public class ChartView extends View {
 		setPoints(dataArray);
 	}
 
-	private void setPoints(List<long[]> dataArray){
+	private void setPoints(List<long[]> dataArray) {
 		{ // get min and max of X values
 			// remove
 			long firstPoint = dataArray.get(0)[TIME] - dataArray.get(0)[TIME] % MILLISECONDS_PER_DAY;
@@ -88,7 +111,6 @@ public class ChartView extends View {
 			pointsArray = new SparseArray<Long>();
 			pointsExistArray = new SparseBooleanArray();
 
-//			logTest(" xPointRange = " + (xPointRange - xPointRange % xPointRange));
 			for (int i = 0; i < widthPixels; i++) {
 				long timestampValue = firstPoint + i * xPointRange;
 				timestampValue -= timestampValue % MILLISECONDS_PER_DAY;
@@ -100,14 +122,12 @@ public class ChartView extends View {
 
 					long rating = aDataArray[VALUE];
 					if ((timestampValue - graphTimestamp) >= 0 && (timestampValue - graphTimestamp) < (xPointRange * 2)) {
-//						logTest(" timestampValue = " + timestampValue + " graphTimestamp = " + graphTimestamp);
 						pointsArray.put(i, rating);
 						found = true;
 						break;
 					}
 				}
 
-//				logTest("timestampValue = " + timestampValue);
 				pointsExistArray.put(i, found);
 			}
 		}
@@ -120,8 +140,7 @@ public class ChartView extends View {
 				minY = Math.min(minY, yValue);
 				maxY = Math.max(maxY, yValue);
 			}
-//			logTest(" _______________________ ");
-//			logTest(" minY = " + minY + " maxY = " + maxY);
+			orignialMinY = minY;
 		}
 
 		initialized = true;
@@ -134,19 +153,23 @@ public class ChartView extends View {
 		canvas.drawColor(backColor);
 
 		if (initialized) {
-			canvas.save();
-			drawPaths(canvas);
-			canvas.restore();
+			drawGraph(canvas);
+
+			int height = canvas.getClipBounds().bottom;
+
+			float yValue = height - (orignialMinY - minY) / yAspect + 1; // 1px offset below line
+			canvas.drawLine(0, yValue, widthPixels, yValue, minValueLinePaint);
+			canvas.drawText(String.valueOf(orignialMinY), 0, yValue + textOffset, minValueTextPaint);
 		} else {
-			canvas.drawText("No Data :(", 0 ,0, borderPaint);
+			canvas.drawText("No Data :(", 0, 0, borderPaint);
 		}
 
 		canvas.drawLine(0, bottom, widthPixels, bottom, borderPaint);
 		canvas.drawLine(0, 0, widthPixels, 0, borderPaint);
 	}
 
-	private void drawPaths(Canvas canvas) {
-		if (mPath == null) {
+	private void drawGraph(Canvas canvas) {
+		if (graphPath == null) {
 			int height = canvas.getClipBounds().bottom;
 			int originalMaxY = maxY;
 			minY -= 200;
@@ -156,35 +179,32 @@ public class ChartView extends View {
 
 			yAspect = (float) (diff / height);
 
-			mPath = makeFollowPath(/*dataArray,*/ height);
+			graphPath = createGraphPath(height);
 
-			mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-			mPaint.setAntiAlias(true);
+			graphPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+			graphPaint.setAntiAlias(true);
 			int gradientYStart = (int) (height - (originalMaxY - minY) / yAspect);
 			LinearGradient shader = new LinearGradient(0, gradientYStart, 0, height, graphTopColor, graphBottomColor, Shader.TileMode.CLAMP);
-			mPaint.setShader(shader);
+			graphPaint.setShader(shader);
+
+			strokePaint = new Paint();
+			strokePaint.setAntiAlias(true);
+			strokePaint.setStyle(Paint.Style.STROKE);
+			strokePaint.setStrokeWidth(1.5f * density);
+			strokePaint.setColor(0xFF88b2cc);
 		}
 
-		canvas.drawPath(mPath, mPaint);
-
-		int strokeWidth = (int) (1.5f * density);
-
-		Paint strokePaint = new Paint();
-		strokePaint.setAntiAlias(true);
-		strokePaint.setStyle(Paint.Style.STROKE);
-		strokePaint.setStrokeWidth(strokeWidth);
-		strokePaint.setColor(0xFF88b2cc);
-
-		canvas.drawPath(mPath, strokePaint);
+		// draw Graph
+		canvas.drawPath(graphPath, graphPaint);
+		canvas.drawPath(graphPath, strokePaint);
 	}
 
-	private Path makeFollowPath(int height) {
+	private Path createGraphPath(int height) {
 		Path path = new Path();
-		logTest(" yAspect = " + yAspect);
-//		long startYValue = data.get(0)[VALUE] - minY;
-		long startYValue = 0;
-		path.moveTo(-10, height - startYValue / yAspect);
-		long yValue = 0;
+
+		long yValue = pointsArray.get(0) - minY;
+		path.moveTo(0, height - yValue / yAspect);
+		path.lineTo(0, height - yValue / yAspect);
 		for (int i = 0; i < widthPixels; i++) {
 			if (pointsExistArray.get(i)) {
 				yValue = pointsArray.get(i) - minY;
