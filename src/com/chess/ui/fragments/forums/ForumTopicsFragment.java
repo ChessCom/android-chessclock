@@ -61,6 +61,12 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		if (getArguments() != null) {
+			categoryId = getArguments().getInt(CATEGORY_ID);
+		} else {
+			categoryId = savedInstanceState.getInt(CATEGORY_ID);
+		}
+
 		topicsCursorAdapter = new ForumTopicsCursorAdapter(getActivity(), null);
 		topicsUpdateListener = new TopicsUpdateListener();
 		saveForumTopicsListener = new SaveForumTopicsListener();
@@ -102,17 +108,6 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		getActivityFace().showActionMenu(R.id.menu_add, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-		if (getArguments() != null) {
-			categoryId = getArguments().getInt(CATEGORY_ID);
-		} else {
-			categoryId = savedInstanceState.getInt(CATEGORY_ID);
-		}
 	}
 
 	@Override

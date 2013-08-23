@@ -70,6 +70,16 @@ public class DailyChatFragment extends CommonLogicFragment{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		if (getArguments() != null) {
+			gameId = getArguments().getLong(GAME_ID);
+//			opponentName = getArguments().getString(OPPONENT_NAME);
+			opponentAvatar = getArguments().getString(OPPONENT_AVATAR);
+		} else {
+			gameId = savedInstanceState.getLong(GAME_ID);
+//			opponentName = savedInstanceState.getString(OPPONENT_NAME);
+			opponentAvatar = savedInstanceState.getString(OPPONENT_AVATAR);
+		}
+
 		myAvatar = getAppData().getUserAvatar();
 	}
 
@@ -91,20 +101,6 @@ public class DailyChatFragment extends CommonLogicFragment{
 		sendUpdateListener = new ChatItemsUpdateListener(ChatItemsUpdateListener.SEND);
 		timeStampForListUpdateListener = new TimeStampForListUpdateListener();
 		timeStampForSendMessageListener = new TimeStampForSendMessageListener();
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		if (getArguments() != null) {
-			gameId = getArguments().getLong(GAME_ID);
-//			opponentName = getArguments().getString(OPPONENT_NAME);
-			opponentAvatar = getArguments().getString(OPPONENT_AVATAR);
-		} else {
-			gameId = savedInstanceState.getLong(GAME_ID);
-//			opponentName = savedInstanceState.getString(OPPONENT_NAME);
-			opponentAvatar = savedInstanceState.getString(OPPONENT_AVATAR);
-		}
 	}
 
 	@Override

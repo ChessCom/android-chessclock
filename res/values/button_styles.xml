@@ -40,6 +40,11 @@
         <item name="btn_bottom">@color/orange_emboss_bottom_1</item>
 
         <item name="btn_solid">@color/orange_button</item>
+		<!--No shadow-->
+		<item name="android:shadowColor">@null</item>
+		<item name="android:shadowRadius">0</item>
+		<item name="android:shadowDx">0</item>
+		<item name="android:shadowDy">0</item>
     </style>
 
     <style name="Button.OrangeNoBorder.Small">

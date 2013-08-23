@@ -1,6 +1,5 @@
 package com.chess.backend.tasks;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
@@ -42,7 +41,7 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		blockScreenRotation(true);
+//		blockScreenRotation(true);
 		try {
 			if (getTaskFace().getMeContext() != null)
 				getTaskFace().showProgress(true);
@@ -54,39 +53,38 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	@Override
 	protected Integer doInBackground(Input... params) {
 		if (isCancelled()) {
-			result = StaticData.EMPTY_DATA;
-			return result;
+			return StaticData.EMPTY_DATA;
 		}
 		return doTheTask(params);
 	}
 
 	protected abstract Integer doTheTask(Input... params);
 
-	protected void blockScreenRotation(boolean block) {
-		try {
-			Context context = getTaskFace().getMeContext();
-//			if (context instanceof Activity) {
-//				Activity activity = (Activity) context;
-//				if(block){
-//					// Stop the screen orientation changing during an event
-//					if(activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-//						activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//					}else{
-//						activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//					}
-//				} else {
-//					activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-//				}
-//			}
-		} catch (IllegalStateException ex) {
-			Log.d(TAG, "blockScreenRotation " + ex.toString());
-		}
-	}
+//	protected void blockScreenRotation(boolean block) {  // Don't remove until move to Loaders
+//		try {
+////			Context context = getTaskFace().getMeContext();
+////			if (context instanceof Activity) {
+////				Activity activity = (Activity) context;
+////				if(block){
+////					// Stop the screen orientation changing during an event
+////					if(activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+////						activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+////					}else{
+////						activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+////					}
+////				} else {
+////					activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+////				}
+////			}
+//		} catch (IllegalStateException ex) {
+//			Log.d(TAG, "blockScreenRotation " + ex.toString());
+//		}
+//	}
 
 	@Override
 	protected void onCancelled(Integer result) {
 		super.onCancelled(result);
-		blockScreenRotation(false);
+//		blockScreenRotation(false);
 		try {
 			getTaskFace().errorHandle(StaticData.TASK_CANCELED);
 		} catch (IllegalStateException ex) {
@@ -97,7 +95,7 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	@Override
 	protected void onPostExecute(Integer result) {
 		super.onPostExecute(result);
-		blockScreenRotation(false);
+//		blockScreenRotation(false);
 
 		if (isCancelled()) {   // no need to check as we catch it
 			return;
@@ -118,29 +116,21 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 				getTaskFace().errorHandle(result);
 			}
 
-//			releaseTaskFace();
 		} catch (IllegalStateException ex) {
 			Log.d(TAG, "getTaskFace() at onPostExecute fails, due to killed state" + ex.toString());
 		}
 	}
 
 	private boolean notValidToReturnForFragment() {
-		if (getTaskFace().isUsedForFragment()) {
-			Log.d(TAG, "getTaskFace().getStartedFragment() == null = " + (getTaskFace().getStartedFragment() == null));
-			Log.d(TAG, "getTaskFace().getStartedFragment().getActivity() == null = " + (getTaskFace().getStartedFragment().getActivity() == null));
-			Log.d(TAG, "!getTaskFace().getStartedFragment().isVisible() = " + (!getTaskFace().getStartedFragment().isVisible()));
-		}
+//		if (getTaskFace().isUsedForFragment()) {
+//			Log.d(TAG, "getTaskFace().getStartedFragment() == null = " + (getTaskFace().getStartedFragment() == null));
+//			Log.d(TAG, "getTaskFace().getStartedFragment().getActivity() == null = " + (getTaskFace().getStartedFragment().getActivity() == null));
+//			Log.d(TAG, "!getTaskFace().getStartedFragment().isVisible() = " + (!getTaskFace().getStartedFragment().isVisible()));
+//		}
 		return getTaskFace().isUsedForFragment() && (getTaskFace().getStartedFragment() == null
 				|| getTaskFace().getStartedFragment().getActivity() == null
 				|| !getTaskFace().getStartedFragment().isVisible());
 	}
-
-//	protected void releaseTaskFace() {  // We are manually release resources in activity
-//		if (taskFace != null) {
-//			taskFace.releaseContext();
-//			taskFace = null;
-//		}
-//	}
 
 	protected TaskUpdateInterface<ItemType> getTaskFace() throws IllegalStateException {
 		if (taskFace == null) {
@@ -160,22 +150,4 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 		return this;
 	}
 
-//	protected static String convertStreamToString(java.io.InputStream is) {
-//		Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
-//		return scanner.hasNext() ? scanner.next() : "";
-//	}
-
-//	public static String convertStreamToString(InputStream is) throws Exception {
-//		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-//		StringBuilder sb = new StringBuilder();
-//		String line = null;
-//
-//		while ((line = reader.readLine()) != null) {
-//			sb.append(line);
-//		}
-//
-//		is.closeBoard();
-//
-//		return sb.toString();
-//	}
 }

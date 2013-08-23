@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.LessonCourseListItem;
 import com.chess.backend.entity.api.LessonListItem;
@@ -21,15 +21,13 @@ import com.chess.backend.entity.api.LessonsRatingItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveLessonsCategoriesTask;
 import com.chess.db.tasks.SaveLessonsCoursesListTask;
 import com.chess.model.CurriculumLessonsItems;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.videos.VideoDetailsCurriculumFragment;
-import com.chess.ui.fragments.videos.VideoDetailsFragment;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
@@ -212,19 +210,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 	@Override
 	public void onClick(View v) {
 		super.onClick(v);
-		if (v.getId() == R.id.titleTxt) { // Clicked on title in Curriculum mode, open details
-			Integer childPosition = (Integer) v.getTag(R.id.list_item_id);
-			Integer groupPosition = (Integer) v.getTag(R.id.list_item_id_group);
-
-			int id = curriculumItems.getIds().get(groupPosition).get(childPosition);
-			long savedId = DbDataManager.haveSavedVideoById(getActivity(), id);
-			if (savedId != -1) {
-				getActivityFace().openFragment(VideoDetailsFragment.createInstance(savedId));
-			} else {
-				getActivityFace().openFragment(VideoDetailsCurriculumFragment.createInstance4Curriculum(id));
-			}
-
-		} else if (v.getId() == R.id.lessonsVideoLibFooterTxt) {
+		if (v.getId() == R.id.lessonsVideoLibFooterTxt) {
 			getAppData().setUserChooseLessonsLibrary(false);
 			curriculumMode = true;
 			showLibrary();
@@ -243,7 +229,6 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 		int categoryId = curriculumItems.getDisplayOrder().get(groupPosition);
-//		int categoryId = curriculumItems.getCategories().keyAt(groupPosition);
 		int courseId = curriculumItems.getIds().get(categoryId).get(childPosition);
 		getActivityFace().openFragment(LessonsCourseFragment.createInstance(courseId, categoryId));
 		return false;

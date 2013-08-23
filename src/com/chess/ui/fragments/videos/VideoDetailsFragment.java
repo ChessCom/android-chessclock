@@ -64,6 +64,17 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			itemId = getArguments().getLong(ITEM_ID);
+		} else {
+			itemId = savedInstanceState.getLong(ITEM_ID);
+		}
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_video_details_frame, container, false);
 	}
@@ -99,65 +110,52 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		if (getArguments() != null) {
-			itemId = getArguments().getLong(ITEM_ID);
-		} else {
-			itemId = savedInstanceState.getLong(ITEM_ID);
-		}
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
 
 		updateData();
 	}
 
-
-
 	protected void updateData() {
 		QueryParams queryParams = DbHelper.getVideosList();
 		Uri uri = ContentUris.withAppendedId(queryParams.getUri(), itemId);
 		queryParams.setUri(uri);
 		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), queryParams);
-		cursor.moveToFirst();
+		if (cursor.moveToFirst()) {
+			playBtnTxt.setEnabled(true);
 
-		playBtnTxt.setEnabled(true);
-
-		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
-		String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
-		CharSequence chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
-		String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
-		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
-				+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
-		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
-		authorTxt.setText(authorStr);
+			int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
+			String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
+			CharSequence chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
+			String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
+			CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
+					+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
+			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
+			authorTxt.setText(authorStr);
 
 //			videoBackImg // TODO adjust image loader
 //			progressBar // TODO adjust image loader
 
-		titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
+			titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
 //			thumbnailAuthorImg // TODO adjust image loader
-		countryImg.setImageDrawable(AppUtils.getUserFlag(getActivity())); // TODO set flag properly // invent flag resources set system
+			countryImg.setImageDrawable(AppUtils.getUserFlag(getActivity())); // TODO set flag properly // invent flag resources set system
 
-		int duration = DbDataManager.getInt(cursor, DbScheme.V_MINUTES);
-		dateTxt.setText(dateFormatter.format(new Date(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE)))
-				+ StaticData.SYMBOL_SPACE + getString(R.string.min_arg, duration));
+			int duration = DbDataManager.getInt(cursor, DbScheme.V_MINUTES);
+			dateTxt.setText(dateFormatter.format(new Date(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE)))
+					+ StaticData.SYMBOL_SPACE + getString(R.string.min_arg, duration));
 
-		contextTxt.setText(DbDataManager.getString(cursor, DbScheme.V_DESCRIPTION));
-		videoUrl = DbDataManager.getString(cursor, DbScheme.V_URL);
+			contextTxt.setText(DbDataManager.getString(cursor, DbScheme.V_DESCRIPTION));
+			videoUrl = DbDataManager.getString(cursor, DbScheme.V_URL);
 
-		currentPlayingId =  DbDataManager.getInt(cursor, DbScheme.V_ID);
+			currentPlayingId =  DbDataManager.getInt(cursor, DbScheme.V_ID);
 
-		boolean videoViewed = DbDataManager.isVideoViewed(getActivity(), getUsername(), currentPlayingId);
-		if (videoViewed) {
-			playBtnTxt.setText(R.string.ic_check);
-		} else {
-			playBtnTxt.setText(R.string.ic_play);
+			boolean videoViewed = DbDataManager.isVideoViewed(getActivity(), getUsername(), currentPlayingId);
+			if (videoViewed) {
+				playBtnTxt.setText(R.string.ic_check);
+			} else {
+				playBtnTxt.setText(R.string.ic_play);
+			}
 		}
-
 	}
 
 	@Override

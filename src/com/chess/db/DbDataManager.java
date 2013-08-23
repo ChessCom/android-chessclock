@@ -938,24 +938,24 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-//	/**
-//	 * Check if we have saved videos for any user
-//	 *
-//	 * @param context to get resources
-//	 * @return true if cursor can be positioned to first
-//	 */
-//	public static boolean haveSavedVideos(Context context) {
-//		ContentResolver contentResolver = context.getContentResolver();
-//
-//		Cursor cursor = contentResolver.query(uriArray[Tables.VIDEOS.ordinal()],
-//				PROJECTION_ITEM_ID, null, null, LIMIT_1);
-//		boolean exist = cursor != null && cursor.moveToFirst();
-//		if (cursor != null) {
-//			cursor.close();
-//		}
-//
-//		return exist;
-//	}
+	/**
+	 * Check if we have saved videos for any user
+	 *
+	 * @param context to get resources
+	 * @return true if cursor can be positioned to first
+	 */
+	public static boolean haveSavedVideos(Context context) {
+		ContentResolver contentResolver = context.getContentResolver();
+
+		Cursor cursor = contentResolver.query(uriArray[Tables.VIDEOS.ordinal()],
+				PROJECTION_ITEM_ID, null, null, LIMIT_1);
+		boolean exist = cursor != null && cursor.moveToFirst();
+		if (cursor != null) {
+			cursor.close();
+		}
+
+		return exist;
+	}
 
 	/**
 	 * @param context to get ContentResolver
