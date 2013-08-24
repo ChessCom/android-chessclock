@@ -4,10 +4,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.SparseArray;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -16,6 +13,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.SuccessItem;
+import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
@@ -120,6 +118,21 @@ public class ForumNewTopicFragment extends CommonLogicFragment implements TextVi
 	}
 
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_cancel:
+				// clear fields
+				topicNameEdt.setText(StaticData.SYMBOL_EMPTY);
+				topicBodyEdt.setText(StaticData.SYMBOL_EMPTY);
+				return true;
+			case R.id.menu_add:
+				createTopic();
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.FLAG_EDITOR_ACTION
 				|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
@@ -143,6 +156,8 @@ public class ForumNewTopicFragment extends CommonLogicFragment implements TextVi
 		public void updateData(SuccessItem returnedObj) {
 			if(returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 				showToast(R.string.topic_created);
+
+				getActivityFace().showPreviousFragment();
 			} else {
 				showToast(R.string.error);
 			}

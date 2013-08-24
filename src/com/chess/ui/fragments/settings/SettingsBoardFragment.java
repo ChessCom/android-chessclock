@@ -31,7 +31,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 	private Spinner piecesSpinner;
 	private SwitchButton coordinatesSwitch;
 	private SwitchButton highlightLastMoveSwitch;
-	private SwitchButton answerShowBottomSwitch;
+	private SwitchButton alwaysShowWhiteBottomSwitch;
 	private SwitchButton soundsSwitch;
 	private SwitchButton showLegalMovesSwitch;
 	private TextView strengthValueBtn;
@@ -66,8 +66,8 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 			highlightLastMoveSwitch.toggle();
 		} else if (id == R.id.showLegalMovesView) {
 			showLegalMovesSwitch.toggle();
-		} else if (id == R.id.answerShowBottomView) {
-			answerShowBottomSwitch.toggle();
+		} else if (id == R.id.alwaysShowWhiteBottomView) {
+			alwaysShowWhiteBottomSwitch.toggle();
 		} else if (id == R.id.soundsView) {
 			soundsSwitch.toggle();
 		}
@@ -90,7 +90,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 
 	@Override
 	public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-		if (view.getId() == R.id.piecesSpinner) {
+		if (adapterView.getId() == R.id.piecesSpinner) {
 			for (SelectionItem item : piecesList) {
 				item.setChecked(false);
 			}
@@ -101,7 +101,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 			getAppData().setPiecesId(pos);
 
 			((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
-		} else if (view.getId() == R.id.piecesSpinner) {
+		} else if (adapterView.getId() == R.id.boardsSpinner) {
 			for (SelectionItem item : boardsList) {
 				item.setChecked(false);
 			}
@@ -124,19 +124,19 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		coordinatesSwitch = (SwitchButton) view.findViewById(R.id.coordinatesSwitch);
 		highlightLastMoveSwitch = (SwitchButton) view.findViewById(R.id.highlightLastMoveSwitch);
 		showLegalMovesSwitch = (SwitchButton) view.findViewById(R.id.showLegalMovesSwitch);
-		answerShowBottomSwitch = (SwitchButton) view.findViewById(R.id.answerShowBottomSwitch);
+		alwaysShowWhiteBottomSwitch = (SwitchButton) view.findViewById(R.id.answerShowBottomSwitch);
 		soundsSwitch = (SwitchButton) view.findViewById(R.id.soundsSwitch);
 
 		coordinatesSwitch.setSwitchChangeListener(this);
 		highlightLastMoveSwitch.setSwitchChangeListener(this);
 		showLegalMovesSwitch.setSwitchChangeListener(this);
-		answerShowBottomSwitch.setSwitchChangeListener(this);
+		alwaysShowWhiteBottomSwitch.setSwitchChangeListener(this);
 		soundsSwitch.setSwitchChangeListener(this);
 
 		view.findViewById(R.id.coordinatesView).setOnClickListener(this);
 		view.findViewById(R.id.highlightLastMoveView).setOnClickListener(this);
 		view.findViewById(R.id.showLegalMovesView).setOnClickListener(this);
-		view.findViewById(R.id.answerShowBottomView).setOnClickListener(this);
+		view.findViewById(R.id.alwaysShowWhiteBottomView).setOnClickListener(this);
 		view.findViewById(R.id.soundsView).setOnClickListener(this);
 
 		String username = getAppData().getUsername();
@@ -145,7 +145,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		coordinatesSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_COORDINATES, true));
 		highlightLastMoveSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_HIGHLIGHT_LAST_MOVE, true));
 		showLegalMovesSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_SHOW_LEGAL_MOVES, true));
-		answerShowBottomSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_SHOW_ANSWER_BOTTOM, true));
+		alwaysShowWhiteBottomSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_SHOW_ANSWER_BOTTOM, true));
 
 
 		//spinners

@@ -146,9 +146,9 @@
 
         </com.chess.LinLayout>
 
-        <!--Answer Show White on Bottom-->
+        <!--Always Show White on Bottom-->
         <com.chess.LinLayout
-            android:id="@+id/answerShowBottomView"
+            android:id="@+id/alwaysShowWhiteBottomView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
@@ -160,7 +160,7 @@
             <com.chess.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:text="@string/answer_show_white_on_bottom"
+                android:text="@string/always_show_white_on_bottom"
                 android:layout_weight="1"
                 style="@style/SettingsListText"
                 />

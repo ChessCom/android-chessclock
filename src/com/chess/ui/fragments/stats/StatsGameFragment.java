@@ -153,7 +153,8 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 			super.updateData(returnedObj);
 
 			// Save stats to DB
-			new SaveGameStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver(), gameType).executeTask();
+			new SaveGameStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver(),
+					gameType, username).executeTask();
 		}
 
 		@Override
@@ -214,7 +215,6 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	 *	Daily - Chess960
 	 *	Tactics
 	 *	Coach Manager
-	 * @param index
 	 * @return Drawable icon for index
 	 */
 	private Drawable getIconByCategory(int index) {

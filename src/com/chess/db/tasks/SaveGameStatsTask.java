@@ -7,7 +7,6 @@ import android.net.Uri;
 import com.chess.backend.entity.api.stats.GameStatsItem;
 import com.chess.backend.entity.api.stats.GraphData;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
@@ -39,14 +38,12 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 
 
 	public SaveGameStatsTask(TaskUpdateInterface<GameStatsItem.Data> taskFace, GameStatsItem.Data item,
-							 ContentResolver contentResolver, String gameType) {
+							 ContentResolver contentResolver, String gameType, String username) {
 		super(taskFace);
 		this.gameType = gameType;
 		this.item = item;
 		this.contentResolver = contentResolver;
-		AppData appData = new AppData(getTaskFace().getMeContext());
-		username = appData.getUsername();
-
+		this.username = username;
 	}
 
 	@Override

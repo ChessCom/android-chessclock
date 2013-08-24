@@ -167,7 +167,12 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		String opponentName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);  // TODO adjust correctly
+		String opponentName;
+		if (DbDataManager.getInt(cursor, DbScheme.V_I_PLAY_AS) == RestHelper.P_BLACK) {
+			opponentName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+		} else {
+			opponentName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
+		}
 		createFriendRequest(opponentName, getString(R.string.add_friend_request_message));
 	}
 

@@ -208,7 +208,9 @@ public class DbDataManager {
 			V_I_PLAY_AS,
 			V_WHITE_USERNAME,
 			V_IS_OPPONENT_ONLINE,
-			V_BLACK_USERNAME
+			V_BLACK_USERNAME,
+			V_BLACK_AVATAR,
+			V_WHITE_AVATAR,
 	};
 
 	public static final String[] PROJECTION_DAILY_DRAW_OFFERED = new String[]{

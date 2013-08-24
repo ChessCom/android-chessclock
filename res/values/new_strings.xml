@@ -192,7 +192,7 @@
     <string name="highlight_last_move">Highlight Last Move</string>
     <string name="on">on</string>
     <string name="off">off</string>
-    <string name="answer_show_white_on_bottom">Answer Show White on Bottom</string>
+    <string name="always_show_white_on_bottom">Always Show White on Bottom</string>
     <string name="sounds">Sounds</string>
     <string name="pieces_style">Pieces Style</string>
     <string name="show_legal_moves">Show Legal Moves</string>
