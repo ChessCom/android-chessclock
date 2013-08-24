@@ -8,7 +8,7 @@ import java.util.List;
  * Date: 23.08.13
  * Time: 17:40
  */
-public class ArticleCommentItem extends BaseResponseItem<List<ArticleCommentItem.Data>> {
+public class CommonCommentItem extends BaseResponseItem<List<CommonCommentItem.Data>> {
 /*
  "data": [
         {
@@ -36,7 +36,7 @@ public class ArticleCommentItem extends BaseResponseItem<List<ArticleCommentItem
 		private String avatar_url;
 		private int country_id;
 		/* Local additions */
-		private long articleId;
+		private long parentId;
 
 		public long getId() {
 			return id;
@@ -74,12 +74,12 @@ public class ArticleCommentItem extends BaseResponseItem<List<ArticleCommentItem
 			return country_id;
 		}
 
-		public long getArticleId() {
-			return articleId;
+		public long getParentId() {
+			return parentId;
 		}
 
-		public void setArticleId(long articleId) {
-			this.articleId = articleId;
+		public void setParentId(long parentId) {
+			this.parentId = parentId;
 		}
 	}
 }

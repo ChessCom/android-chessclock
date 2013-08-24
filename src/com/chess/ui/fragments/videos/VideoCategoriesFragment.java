@@ -209,7 +209,8 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		if (id == R.id.titleTxt || id == R.id.authorTxt || id == R.id.dateTxt){
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
-			getActivityFace().openFragment(VideoDetailsFragment.createInstance(DbDataManager.getId(cursor)));
+			long videoId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+			getActivityFace().openFragment(VideoDetailsFragment.createInstance(videoId));
 		} else if (id == R.id.thumbnailImg || id == R.id.playBtn){
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
@@ -258,7 +259,8 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		getActivityFace().openFragment(VideoDetailsFragment.createInstance(DbDataManager.getId(cursor)));
+		long videoId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+		getActivityFace().openFragment(VideoDetailsFragment.createInstance(videoId));
 	}
 
 	@Override

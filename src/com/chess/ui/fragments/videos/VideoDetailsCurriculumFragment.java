@@ -32,7 +32,7 @@ public class VideoDetailsCurriculumFragment extends VideoDetailsFragment {
 
 	@Override
 	protected void updateData() {
-		boolean videoViewed = DbDataManager.isVideoViewed(getActivity(), getUsername(), itemId);
+		boolean videoViewed = DbDataManager.isVideoViewed(getActivity(), getUsername(), videoId);
 		if (videoViewed) {
 			playBtnTxt.setText(R.string.ic_check);
 		} else {
@@ -40,7 +40,7 @@ public class VideoDetailsCurriculumFragment extends VideoDetailsFragment {
 		}
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_VIDEO_BY_ID(itemId));
+		loadItem.setLoadPath(RestHelper.CMD_VIDEO_BY_ID(videoId));
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 		new RequestJsonTask<VideoItem>(new VideoDetailsUpdateListener()).executeTask(loadItem);
@@ -77,7 +77,7 @@ public class VideoDetailsCurriculumFragment extends VideoDetailsFragment {
 //			progressBar // TODO adjust image loader
 
 				titleTxt.setText(videoData.getTitle());
-//			thumbnailAuthorImg // TODO adjust image loader
+//			authorImg // TODO adjust image loader
 				countryImg.setImageDrawable(AppUtils.getUserFlag(getActivity())); // TODO set flag properly // invent flag resources set system
 
 				int duration = videoData.getMinutes();

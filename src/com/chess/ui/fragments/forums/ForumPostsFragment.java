@@ -53,7 +53,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	private int currentPage;
 	private int pagesToShow;
 	private View replyView;
-	private EditText topicBodyEdt;
+	private EditText newPostEdt;
 	private int paddingSide;
 	private TopicCreateListener topicCreateListener;
 	private String topicUrl;
@@ -117,8 +117,8 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		pageIndicatorView.setPagerFace(this);
 
 		replyView = view.findViewById(R.id.replyView);
-		topicBodyEdt = (EditText) view.findViewById(R.id.topicBodyEdt);
-		topicBodyEdt.setOnEditorActionListener(this);
+		newPostEdt = (EditText) view.findViewById(R.id.newPostEdt);
+		newPostEdt.setOnEditorActionListener(this);
 
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_share, true);
@@ -186,14 +186,14 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 					"<div class=\"quoted-text\">\n" +
 					"<p>" + body + "</p>\n" +
 					"</div></div>";
-			topicBodyEdt.setText(quote);
-			topicBodyEdt.setSelection(topicBodyEdt.getText().length());
+			newPostEdt.setText(quote);
+			newPostEdt.setSelection(newPostEdt.getText().length());
 			handler.postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					topicBodyEdt.requestFocus();
-					showKeyBoard(topicBodyEdt);
-					showKeyBoardImplicit(topicBodyEdt);
+					newPostEdt.requestFocus();
+					showKeyBoard(newPostEdt);
+					showKeyBoardImplicit(newPostEdt);
 				}
 			}, KEYBOARD_DELAY);
 		}
@@ -207,9 +207,9 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				topicBodyEdt.requestFocus();
-				showKeyBoard(topicBodyEdt);
-				showKeyBoardImplicit(topicBodyEdt);
+				newPostEdt.requestFocus();
+				showKeyBoard(newPostEdt);
+				showKeyBoardImplicit(newPostEdt);
 			}
 		}, KEYBOARD_DELAY);
 
@@ -303,10 +303,10 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	private void createPost() {
-		String body = getTextFromField(topicBodyEdt);
+		String body = getTextFromField(newPostEdt);
 		if (TextUtils.isEmpty(body)) {
-			topicBodyEdt.requestFocus();
-			topicBodyEdt.setError(getString(R.string.can_not_be_empty));
+			newPostEdt.requestFocus();
+			newPostEdt.setError(getString(R.string.can_not_be_empty));
 			return;
 		}
 
@@ -334,7 +334,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 				showToast(R.string.error);
 			}
 			replyView.setVisibility(View.GONE);
-			topicBodyEdt.setText(StaticData.SYMBOL_EMPTY);
+			newPostEdt.setText(StaticData.SYMBOL_EMPTY);
 
 			// update page
 			requestPage(currentPage);
@@ -344,7 +344,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			handler.postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					hideKeyBoard(topicBodyEdt);
+					hideKeyBoard(newPostEdt);
 					hideKeyBoard();
 
 				}

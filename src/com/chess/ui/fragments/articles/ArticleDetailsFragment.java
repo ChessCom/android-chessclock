@@ -6,20 +6,20 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.style.ForegroundColorSpan;
+import android.text.TextUtils;
 import android.util.SparseArray;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.view.inputmethod.EditorInfo;
+import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.ArticleCommentItem;
+import com.chess.backend.entity.api.CommonCommentItem;
 import com.chess.backend.entity.api.ArticleDetailsItem;
+import com.chess.backend.entity.api.PostCommentItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.StaticData;
@@ -41,10 +41,13 @@ import java.util.Date;
  * Date: 27.01.13
  * Time: 19:12
  */
-public class ArticleDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener {
+public class ArticleDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener, TextView.OnEditorActionListener {
 
 	public static final String ITEM_ID = "item_id";
 	public static final String GREY_COLOR_DIVIDER = "##";
+	public static final String P_TAG_OPEN = "<p>";
+	public static final String P_TAG_CLOSE = "</p>";
+	private static final long KEYBOARD_DELAY = 100;
 
 	// 11/15/12 | 27 min
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
@@ -67,6 +70,10 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private int imgSize;
 	private SparseArray<String> countryMap;
 	private int widthPixels;
+	private View replyView;
+	private EditText newPostEdt;
+	private int paddingSide;
+	private CommentPostListener commentPostListener;
 
 
 	public static ArticleDetailsFragment createInstance(long articleId) {
@@ -98,14 +105,18 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			countryMap.put(countryCodes[i], countryNames[i]);
 		}
 		imageDownloader = new EnhancedImageDownloader(getActivity());
+
 		articleUpdateListener = new ArticleUpdateListener();
 		commentsUpdateListener = new CommentsUpdateListener();
 		commentsCursorAdapter = new CommentsCursorAdapter(getActivity(), null);
+
+		paddingSide = getResources().getDimensionPixelSize(R.dimen.default_scr_side_padding);
+		commentPostListener = new CommentPostListener();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_white_list_view_frame, container, false);
+		return inflater.inflate(R.layout.new_article_details_frame, container, false);
 	}
 
 	@Override
@@ -129,12 +140,15 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		authorTxt = (TextView) headerView.findViewById(R.id.authorTxt);
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
-		listView.setDivider(null);
-		listView.setDividerHeight(0);
 		listView.addHeaderView(headerView);
 		listView.setAdapter(commentsCursorAdapter);
 		listView.setOnItemClickListener(this);
 
+		replyView = view.findViewById(R.id.replyView);
+		newPostEdt = (EditText) view.findViewById(R.id.newPostEdt);
+		newPostEdt.setOnEditorActionListener(this);
+
+		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_share, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
@@ -173,7 +187,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
 			CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
 					+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
-			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
+//			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
+			authorStr = chessTitle + StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
 			authorTxt.setText(authorStr);
 
 			titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
@@ -185,13 +200,37 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			countryImg.setImageDrawable(drawable);
 
 			dateTxt.setText(dateFormatter.format(new Date(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE))));
-			contentTxt.setText(DbDataManager.getString(cursor, DbScheme.V_BODY));
+			contentTxt.setText(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_BODY)));
 		}
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		replyView.setVisibility(View.VISIBLE);
+		replyView.setBackgroundResource(R.color.header_light);
+		replyView.setPadding(paddingSide, paddingSide, paddingSide, paddingSide);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				newPostEdt.requestFocus();
+				showKeyBoard(newPostEdt);
+				showKeyBoardImplicit(newPostEdt);
+			}
+		}, KEYBOARD_DELAY);
+	}
 
+	@Override
+	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.FLAG_EDITOR_ACTION
+				|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live
+				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
+			} else {
+				createPost();
+			}
+		}
+		return false;
 	}
 
 	private class ArticleUpdateListener extends ChessUpdateListener<ArticleDetailsItem> {
@@ -216,22 +255,25 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			DbDataManager.saveArticleItem(getContentResolver(), articleData);
 
-			// Load comments
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_ARTICLE_COMMENTS(articleId));
-
-			new RequestJsonTask<ArticleCommentItem>(commentsUpdateListener).executeTask(loadItem);
+			updateComments();
 		}
 	}
 
-	private class CommentsUpdateListener extends ChessUpdateListener<ArticleCommentItem> {
+	private void updateComments() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_ARTICLE_COMMENTS(articleId));
+
+		new RequestJsonTask<CommonCommentItem>(commentsUpdateListener).executeTask(loadItem);
+	}
+
+	private class CommentsUpdateListener extends ChessUpdateListener<CommonCommentItem> {
 
 		private CommentsUpdateListener() {
-			super(ArticleCommentItem.class);
+			super(CommonCommentItem.class);
 		}
 
 		@Override
-		public void updateData(ArticleCommentItem returnedObj) {
+		public void updateData(CommonCommentItem returnedObj) {
 			super.updateData(returnedObj);
 
 			DbDataManager.updateArticleCommentToDb(getContentResolver(), returnedObj, articleId);
@@ -243,6 +285,52 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 	}
 
+	private void createPost() {
+		String body = getTextFromField(newPostEdt);
+		if (TextUtils.isEmpty(body)) {
+			newPostEdt.requestFocus();
+			newPostEdt.setError(getString(R.string.can_not_be_empty));
+			return;
+		}
+
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_ARTICLE_COMMENTS(articleId));
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		loadItem.addRequestParams(RestHelper.P_ARTICLE_ID, articleId);
+		loadItem.addRequestParams(RestHelper.P_COMMENT, P_TAG_OPEN + body + P_TAG_CLOSE);
+
+		new RequestJsonTask<PostCommentItem>(commentPostListener).executeTask(loadItem); // use Vacation item as a simple return obj to get status
+	}
+
+	private class CommentPostListener extends ChessLoadUpdateListener<PostCommentItem> {
+
+		private CommentPostListener() {
+			super(PostCommentItem.class);
+		}
+
+		@Override
+		public void updateData(PostCommentItem returnedObj) {
+			if(returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+				showToast(R.string.post_created);
+			} else {
+				showToast(R.string.error);
+			}
+			replyView.setVisibility(View.GONE);
+			newPostEdt.setText(StaticData.SYMBOL_EMPTY);
+
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					hideKeyBoard(newPostEdt);
+					hideKeyBoard();
+
+				}
+			}, KEYBOARD_DELAY);
+
+			updateComments();
+		}
+	}
 
 	@Override
 	public Context getMeContext() {

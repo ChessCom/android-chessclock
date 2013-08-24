@@ -260,6 +260,7 @@
 	<string name="post_created">Post created</string>
 	<string name="post">Post</string>
 	<string name="write_reply_">Write reply…</string>
+	<string name="write_comment_">Write a comment…</string>
 
 	<string name="username_wrote">%s wrote:</string>
 	<string name="full_lesson_library">Full Lesson Library</string>

@@ -77,7 +77,7 @@ public class DbDataManager {
 
 	public static String SELECTION_CATEGORY_ID = concatArguments(V_CATEGORY_ID);
 
-	public static String SELECTION_ARTICLE_ID = concatArguments(V_ARTICLE_ID);
+	public static String SELECTION_PARENT_ID = concatArguments(V_PARENT_ID);
 
 	public static String SELECTION_CATEGORY_ID_AND_PAGE = concatArguments(V_CATEGORY_ID, V_PAGE);
 
@@ -134,8 +134,8 @@ public class DbDataManager {
 			V_USER
 	);
 
-	public static String SELECTION_ARTICLE_ID_AND_COMMENT_ID = concatArguments(
-			V_ARTICLE_ID,
+	public static String SELECTION_PARENT_ID_AND_ITEM_ID = concatArguments(
+			V_PARENT_ID,
 			V_ID
 	);
 
@@ -267,9 +267,9 @@ public class DbDataManager {
 			V_USER,
 	};
 
-	public static final String[] PROJECTION_ARTICLE_ID_AND_COMMENT_ID = new String[]{
+	public static final String[] PROJECTION_PARENT_ID_AND_ITEM_ID = new String[]{
 			_ID,
-			V_ARTICLE_ID,
+			V_PARENT_ID,
 			V_ID
 	};
 
@@ -893,11 +893,11 @@ public class DbDataManager {
 		return values;
 	}
 
-	public static ContentValues putArticleCommentItemToValues(ArticleCommentItem.Data dataObj) {
+	public static ContentValues putCommonCommentItemToValues(CommonCommentItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(V_ID, dataObj.getId());
-		values.put(V_ARTICLE_ID, dataObj.getArticleId());
+		values.put(V_PARENT_ID, dataObj.getParentId());
 		values.put(V_USER_ID, dataObj.getUserId());
 		values.put(V_CREATE_DATE, dataObj.getCreateDate());
 		values.put(V_COUNTRY_ID, dataObj.getCountryId());
@@ -1161,10 +1161,10 @@ public class DbDataManager {
 		return values;
 	}
 
-	public static void updateArticleCommentToDb(ContentResolver contentResolver, ArticleCommentItem dataObj, long articleId) {
+	public static void updateArticleCommentToDb(ContentResolver contentResolver, CommonCommentItem dataObj, long articleId) {
 		String[] arguments = sArguments2;
-		for (ArticleCommentItem.Data currentItem : dataObj.getData()) {
-			currentItem.setArticleId(articleId);
+		for (CommonCommentItem.Data currentItem : dataObj.getData()) {
+			currentItem.setParentId(articleId);
 
 			arguments[0] = String.valueOf(articleId);
 			arguments[1] = String.valueOf(currentItem.getId());
@@ -1172,10 +1172,30 @@ public class DbDataManager {
 			// TODO implement beginTransaction logic for performance increase
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.ARTICLE_COMMENTS.ordinal()];
 
-			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ARTICLE_ID_AND_COMMENT_ID,
-					DbDataManager.SELECTION_ARTICLE_ID_AND_COMMENT_ID, arguments, null);
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_PARENT_ID_AND_ITEM_ID,
+					DbDataManager.SELECTION_PARENT_ID_AND_ITEM_ID, arguments, null);
 
-			ContentValues values = DbDataManager.putArticleCommentItemToValues(currentItem);
+			ContentValues values = DbDataManager.putCommonCommentItemToValues(currentItem);
+
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
+		}
+	}
+
+	public static void updateVideoCommentsToDb(ContentResolver contentResolver, CommonCommentItem dataObj, long videoId) {
+		String[] arguments = sArguments2;
+		for (CommonCommentItem.Data currentItem : dataObj.getData()) {
+			currentItem.setParentId(videoId);
+
+			arguments[0] = String.valueOf(videoId);
+			arguments[1] = String.valueOf(currentItem.getId());
+
+			// TODO implement beginTransaction logic for performance increase
+			Uri uri = DbScheme.uriArray[Tables.VIDEO_COMMENTS.ordinal()];
+
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_PARENT_ID_AND_ITEM_ID,
+					DbDataManager.SELECTION_PARENT_ID_AND_ITEM_ID, arguments, null);
+
+			ContentValues values = DbDataManager.putCommonCommentItemToValues(currentItem);
 
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}

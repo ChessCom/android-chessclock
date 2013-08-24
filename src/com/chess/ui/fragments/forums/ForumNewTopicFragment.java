@@ -73,7 +73,7 @@ public class ForumNewTopicFragment extends CommonLogicFragment implements TextVi
 		categorySpinner = (Spinner) view.findViewById(R.id.categorySpinner);
 		categorySpinner.setAdapter(new WhiteSpinnerAdapter(getActivity(), categoriesList));
 		categorySpinner.setSelection(0);
-		topicBodyEdt = (EditText) view.findViewById(R.id.topicBodyEdt);
+		topicBodyEdt = (EditText) view.findViewById(R.id.newPostEdt);
 		topicBodyEdt.setOnEditorActionListener(this);
 
 		// adjust action bar icons

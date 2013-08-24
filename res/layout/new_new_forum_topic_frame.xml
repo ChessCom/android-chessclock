@@ -44,7 +44,7 @@
 		android:paddingRight="@dimen/default_scr_side_padding"
 		>
 		<com.chess.RoboEditText
-			android:id="@+id/topicBodyEdt"
+			android:id="@+id/newPostEdt"
 			android:inputType="textMultiLine"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

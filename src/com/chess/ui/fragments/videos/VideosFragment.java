@@ -67,7 +67,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private SaveVideoCategoriesUpdateListener saveVideoCategoriesUpdateListener;
 
 	private boolean headerDataLoaded;
-	private long headerDataId;
+	private long headerVideoId;
 	private VideoItem.Data headerData;
 
 	private CurriculumItems curriculumItems;
@@ -242,7 +242,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		super.onClick(v);
 		if (v.getId() == R.id.videoThumbItemView) {
 			if (headerDataLoaded) {
-				getActivityFace().openFragment(VideoDetailsFragment.createInstance(headerDataId));
+				getActivityFace().openFragment(VideoDetailsFragment.createInstance(headerVideoId));
 			}
 		} else if (v.getId() == R.id.titleTxt) { // Clicked on title in Curriculum mode, open details
 			Integer childPosition = (Integer) v.getTag(R.id.list_item_id);
@@ -345,7 +345,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		public void updateData(VideoItem returnedObj) {
 			headerData = returnedObj.getData().get(0);
 
-
+			headerVideoId = headerData.getVideoId();
 			// save in Db to open in Details View
 			ContentResolver contentResolver = getContentResolver();
 
@@ -357,13 +357,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 			ContentValues values = DbDataManager.putVideoItemToValues(headerData);
 
-			if (cursor.moveToFirst()) {
-				headerDataId = DbDataManager.getId(cursor);
-				contentResolver.update(ContentUris.withAppendedId(uri, headerDataId), values, null, null);
-			} else {
-				Uri savedUri = contentResolver.insert(uri, values);
-				headerDataId = Long.parseLong(savedUri.getPathSegments().get(1));
-			}
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 
 			headerDataLoaded = true;
 

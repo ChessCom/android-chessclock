@@ -146,7 +146,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getVideosList());
 
 			cursor.moveToFirst();
-			loadedVideoId = DbDataManager.getId(cursor);
+			loadedVideoId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 			String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
 			String chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
 			String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
@@ -191,7 +191,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 				getActivityFace().openFragment(new LessonsFragment());
 			}
 		} else if (id == R.id.videoThumbItemView) {
-			getActivityFace().openFragment(VideoDetailsFragment.createInstance(loadedVideoId)); // TODO
+			getActivityFace().openFragment(VideoDetailsFragment.createInstance(loadedVideoId));
 		}
 	}
 

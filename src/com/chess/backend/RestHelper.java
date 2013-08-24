@@ -132,6 +132,10 @@ public class RestHelper {
 		return CMD_VIDEOS + "/" + id;
 	}
 
+	public static String CMD_VIDEOS_COMMENTS(long id) {
+		return CMD_VIDEOS + "/" + id + "/comments";
+	}
+
 	/* Tactics */
 	public static final String CMD_TACTICS = BASE_URL + V1 + "/tactics";
 	public static final String CMD_TACTICS_STATS = CMD_TACTICS + "/stats";
@@ -287,12 +291,15 @@ public class RestHelper {
 	public static final String SIGNED = "signed=";
 	public static final String P_PAGE_SIZE = "page-size";
 	public static final String P_FORUM_CATEGORY_ID = "forumCategoryId";
+	public static final String P_ARTICLE_ID = "articleId";
 	public static final String P_PARENT_TOPIC_ID = "parentTopicId";
 	public static final String P_FORUM_TOPIC_ID = "forumTopicId";
 	public static final String P_COURSE_ID = "courseId";
 	public static final String P_TOPICS_PER_PAGE = "topicsPerPage";
 	public static final String P_SUBJECT = "subject";
 	public static final String P_BODY = "body";
+	public static final String P_COMMENT = "comment";
+	public static final String P_COMMENT_BODY = "commentBody";
 	public static final String P_COMMENTS_PER_PAGE = "commentsPerPage";
 	public static final String P_AVATAR_SIZE = "avatarSize";
 

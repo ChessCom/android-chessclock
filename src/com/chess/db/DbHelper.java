@@ -106,10 +106,27 @@ public class DbHelper {
 	public static QueryParams getArticlesCommentsById(long articleId) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.ARTICLE_COMMENTS.ordinal()]);
-		queryParams.setSelection(DbDataManager.SELECTION_ARTICLE_ID);
+		queryParams.setSelection(DbDataManager.SELECTION_PARENT_ID);
 		queryParams.setArguments(new String[]{String.valueOf(articleId)});
 		return queryParams;
 	}
+
+	public static QueryParams getVideoById(long videoId) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.VIDEOS.ordinal()]);
+		queryParams.setSelection(DbDataManager.SELECTION_ITEM_ID);
+		queryParams.setArguments(new String[]{String.valueOf(videoId)});
+		return queryParams;
+	}
+
+	public static QueryParams getVideoCommentsById(long articleId) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.VIDEO_COMMENTS.ordinal()]);
+		queryParams.setSelection(DbDataManager.SELECTION_PARENT_ID);
+		queryParams.setArguments(new String[]{String.valueOf(articleId)});
+		return queryParams;
+	}
+
 	public static QueryParams getVideosByCategory(int categoryId) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.VIDEOS.ordinal()]);

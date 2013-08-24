@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:paddingTop="15dip"
+	android:paddingLeft="@dimen/default_scr_side_padding"
+	android:paddingRight="@dimen/default_scr_side_padding">
+
+	<!--Video Thumbnail-->
+	<RelativeLayout
+		android:id="@+id/thumbnailImg"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:layout_marginBottom="10dip">
+
+		<com.chess.backend.image_load.ProgressImageView
+			android:id="@+id/videoBackImg"
+			android:layout_width="match_parent"
+			android:layout_height="240dip"
+			android:layout_centerInParent="true"
+			android:adjustViewBounds="true"
+			android:scaleType="fitXY"
+			android:contentDescription="@string/image"
+			android:background="@drawable/video_thumb_back" />
+
+		<!--Back round for icon-->
+		<RelativeLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:gravity="fill"
+			android:background="@drawable/video_play_btn_back_big">
+
+			<!--Icon-->
+			<com.chess.RoboTextView
+				android:id="@+id/playBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:text="@string/ic_play"
+				style="@style/GlyphIcon.RoundBack.Play"
+				android:textSize="@dimen/glyph_icon_round_back_big"
+				android:layout_marginLeft="30dip"
+				android:gravity="fill" />
+
+		</RelativeLayout>
+	</RelativeLayout>
+
+	<!--Title-->
+	<com.chess.RoboTextView
+		android:id="@+id/titleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/thumbnailImg"
+		android:paddingBottom="9dip"
+		android:textColor="@color/new_subtitle_dark_grey"
+		android:textSize="18sp"
+		custom:ttf="Bold" />
+
+	<com.chess.backend.image_load.ProgressImageView
+		android:id="@+id/thumbnailAuthorImg"
+		android:layout_width="35dip"
+		android:layout_height="35dip"
+		android:background="@color/new_common_list_thumb_grey"
+		android:layout_below="@id/titleTxt"
+		android:contentDescription="@string/image"
+		android:layout_marginBottom="13dip" />
+
+	<com.chess.RoboTextView
+		android:id="@+id/authorTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/thumbnailAuthorImg"
+		android:layout_below="@id/titleTxt"
+		android:paddingLeft="11dip"
+		android:paddingBottom="2dip"
+		android:layout_marginTop="-4dip"
+		android:textColor="@color/new_author_dark_grey"
+		android:textSize="14sp"
+		custom:ttf="Bold" />
+	<!--android:text="GM Gregory Kaidanov"-->
+
+	<ImageView
+		android:id="@+id/countryImg"
+		android:layout_width="20dip"
+		android:layout_height="20dip"
+		android:contentDescription="@string/country"
+		android:layout_toRightOf="@id/authorTxt"
+		android:layout_below="@id/titleTxt"
+		android:layout_marginTop="-6dip"
+		android:layout_marginLeft="7dip" />
+
+
+	<com.chess.RoboTextView
+		android:id="@+id/dateTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/thumbnailAuthorImg"
+		android:layout_below="@id/authorTxt"
+		android:paddingLeft="11dip"
+		android:textColor="@color/new_subtitle_light_grey"
+		android:textSize="13sp" />
+
+	<!--android:text="11/15/12 | 27 min"-->
+
+
+	<com.chess.RoboTextView
+		android:id="@+id/contentTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/thumbnailAuthorImg"
+		android:textColor="@color/new_subtitle_dark_grey"
+		android:textSize="14sp" />
+	<!--android:text="With good reason, most players who aren't, well, chess professionals, would prefer to avoid the many complicated variations of the Open Sicilian. So what are your options? As GM Kaidanov explains, you have one major weapon in addition to the Closed Sicilian Grand Prix Attack (GM Dzindzichashvili's recommendation). Today he describes the important features of the Alapin Sicilian, and then reviews the 4.g3 varation of the 2..Nf6 line."-->
+
+
+</RelativeLayout>

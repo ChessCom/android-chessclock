@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 52;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 53;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -34,6 +34,7 @@ public class DbScheme {
 		VIDEOS,
 		VIDEO_CATEGORIES,
 		VIDEO_VIEWED,
+		VIDEO_COMMENTS,
 
 		FORUM_TOPICS,
 		FORUM_CATEGORIES,
@@ -163,7 +164,7 @@ public class DbScheme {
 	public static final String V_BODY = "body";
 	public static final String V_CATEGORY = "category";
 	public static final String V_CATEGORY_ID = "category_id";
-	public static final String V_ARTICLE_ID = "article_id";
+	public static final String V_PARENT_ID = "parent_id"; // article id
 	public static final String V_CHESS_TITLE = "chess_title";
 	public static final String V_FIRST_NAME = "first_name";
 	public static final String V_LAST_NAME = "last_name";
@@ -373,7 +374,7 @@ public class DbScheme {
 
 		createTablesArray[Tables.ARTICLE_COMMENTS.ordinal()] = createTableForName(Tables.ARTICLE_COMMENTS)
 				+ addField_Long(V_ID)
-				+ addField_Long(V_ARTICLE_ID)
+				+ addField_Long(V_PARENT_ID)
 				+ addField_Long(V_USER_ID)
 				+ addField_Long(V_CREATE_DATE)
 				+ addField_Int(V_COUNTRY_ID)
@@ -413,6 +414,18 @@ public class DbScheme {
 				+ addField_Text(V_NAME)
 				+ addField_Int(V_CATEGORY_ID)
 				+ addField_Int(V_DISPLAY_ORDER, true);
+
+		createTablesArray[Tables.VIDEO_COMMENTS.ordinal()] = createTableForName(Tables.VIDEO_COMMENTS)
+				+ addField_Long(V_ID)
+				+ addField_Long(V_PARENT_ID)
+				+ addField_Long(V_USER_ID)
+				+ addField_Long(V_CREATE_DATE)
+				+ addField_Int(V_COUNTRY_ID)
+				+ addField_Text(V_USERNAME)
+				+ addField_Text(V_FIRST_NAME)
+				+ addField_Text(V_LAST_NAME)
+				+ addField_Text(V_USER_AVATAR)
+				+ addField_Text(V_BODY, true);
 
 		/* Forums */
 		createTablesArray[Tables.FORUM_CATEGORIES.ordinal()] = createTableForName(Tables.FORUM_CATEGORIES)
