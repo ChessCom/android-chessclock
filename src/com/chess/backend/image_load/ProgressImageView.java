@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -59,13 +60,20 @@ public class ProgressImageView extends RelativeLayout implements View.OnTouchLis
 	protected void onCreate(AttributeSet attrs) {
 		Resources resources = getResources();
 		density = resources.getDisplayMetrics().density;
-
+		int widthPixels = resources.getDisplayMetrics().widthPixels;
 
 		if (attrs != null) {
 
 			TypedArray array = getContext().obtainStyledAttributes(attrs, new int[]{android.R.attr.layout_width});
 			try {
-				size = array.getDimensionPixelSize(0, DEFAULT_IMG_SIZE); // 0 for android.R.attr.layout_width
+				if (array.getLayoutDimension(0, DEFAULT_IMG_SIZE) == ViewGroup.LayoutParams.MATCH_PARENT) {
+					size = widthPixels;
+				} else if (array.getLayoutDimension(0, DEFAULT_IMG_SIZE) == ViewGroup.LayoutParams.WRAP_CONTENT) {
+					size = DEFAULT_IMG_SIZE;  // TODO adjust
+				} else {
+					size = array.getDimensionPixelSize(0, DEFAULT_IMG_SIZE); // 0 for android.R.attr.layout_width
+				}
+
 			} finally {
 				array.recycle();
 			}

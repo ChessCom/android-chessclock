@@ -28,7 +28,7 @@ public class ArticleItem extends BaseResponseItem<List<ArticleItem.Data>> {
 	"is_thumb_in_content": true
 */
 
-	public class Data {
+	public static class Data {
 		private long id;
 		private String title;
 		private long create_date;

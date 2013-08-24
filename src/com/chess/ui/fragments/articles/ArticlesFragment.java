@@ -69,12 +69,12 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		categoriesAdapter = new CommonCategoriesCursorAdapter(getActivity(), null);
 
 		sectionedAdapter.addSection(getString(R.string.articles), articlesCursorAdapter);
-		sectionedAdapter.addSection(getString(R.string.new_my_move), categoriesAdapter); // TODO rename
+		sectionedAdapter.addSection(getString(R.string.category), categoriesAdapter);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_articles_frame, container, false);
+		return inflater.inflate(R.layout.new_white_list_view_frame, container, false);
 	}
 
 	@Override
@@ -87,6 +87,8 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		listView = (ListView) view.findViewById(R.id.listView);
+		listView.setDivider(null);
+		listView.setDividerHeight(0);
 		listView.setOnItemClickListener(this);
 
 		// adjust actionBar icons

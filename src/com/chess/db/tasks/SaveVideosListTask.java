@@ -27,7 +27,7 @@ public class SaveVideosListTask extends AbstractUpdateTask<VideoItem.Data, Long>
 	protected Integer doTheTask(Long... ids) {
 		synchronized (itemList) {
 			for (VideoItem.Data currentItem : itemList) {
-				DbDataManager.updateVideoItem(contentResolver, currentItem);
+				DbDataManager.saveVideoItem(contentResolver, currentItem);
 			}
 		}
 		result = StaticData.RESULT_OK;

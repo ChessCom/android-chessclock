@@ -35,10 +35,6 @@
         android:layout_centerInParent="true"
         />
 
-    <!--Start New Game-->
-
-
-
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
@@ -50,7 +46,8 @@
         android:divider="@null"
         />
 
-    <com.chess.RoboButton
+	<!--Start New Game-->
+	<com.chess.RoboButton
         android:id="@id/startNewGameBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

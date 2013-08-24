@@ -315,5 +315,7 @@
 	<string name="ninety_days">90 Days</string>
 	<string name="one_year">1 Year</string>
 	<string name="all_time">All Time</string>
+	<string name="comments_arg">%s comments</string>
+	<string name="reads_arg">%s reads</string>
 
 </resources>

@@ -725,7 +725,7 @@ public class DbDataManager {
 	public static DailyFinishedGameData getDailyFinishedGameFromCursor(Cursor cursor) {
 		DailyFinishedGameData dataObj = new DailyFinishedGameData();
 
-		setDailyGameFromCursor(dataObj, cursor);
+		getDailyGameFromCursor(dataObj, cursor);
 		dataObj.setGameScore(getInt(cursor, V_GAME_SCORE));
 		dataObj.setResultMessage(getString(cursor, V_RESULT_MESSAGE));
 
@@ -774,7 +774,7 @@ public class DbDataManager {
 	public static DailyCurrentGameData getDailyCurrentGameFromCursor(Cursor cursor) {
 		DailyCurrentGameData dataObj = new DailyCurrentGameData();
 
-		setDailyGameFromCursor(dataObj, cursor);
+		getDailyGameFromCursor(dataObj, cursor);
 		dataObj.setDrawOffered(getInt(cursor, V_OPPONENT_OFFERED_DRAW));
 		dataObj.setMyTurn(getInt(cursor, V_IS_MY_TURN) > 0);
 
@@ -827,7 +827,7 @@ public class DbDataManager {
 		return dataObj;
 	}
 
-	private static void setDailyGameFromCursor(DailyGameBaseData dataObj, Cursor cursor) {
+	private static void getDailyGameFromCursor(DailyGameBaseData dataObj, Cursor cursor) {
 		dataObj.setGameId(getLong(cursor, V_ID));
 		dataObj.setFen(getString(cursor, V_FEN));
 		dataObj.setIPlayAs(getInt(cursor, V_I_PLAY_AS));
@@ -910,7 +910,22 @@ public class DbDataManager {
 		return values;
 	}
 
-	public static void updateVideoItem(ContentResolver contentResolver, VideoItem.Data currentItem) {
+	public static void saveArticleItem(ContentResolver contentResolver, ArticleItem.Data currentItem) {
+		final String[] arguments2 = sArguments1;
+		arguments2[0] = String.valueOf(currentItem.getId());
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()];
+
+		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID,
+				DbDataManager.SELECTION_ITEM_ID, arguments2, null);
+
+		ContentValues values = DbDataManager.putArticleItemToValues(currentItem);
+
+		DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
+	public static void saveVideoItem(ContentResolver contentResolver, VideoItem.Data currentItem) {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = String.valueOf(currentItem.getVideoId());
 
@@ -925,7 +940,7 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	public static void updateForumTopicItem(ContentResolver contentResolver, ForumTopicItem.Topic currentItem) {
+	public static void saveForumTopicItem(ContentResolver contentResolver, ForumTopicItem.Topic currentItem) {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = String.valueOf(currentItem.getId());
 
@@ -940,7 +955,7 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	public static void updateForumCategoryItem(ContentResolver contentResolver, ForumCategoryItem.Data currentItem) {
+	public static void saveForumCategoryItem(ContentResolver contentResolver, ForumCategoryItem.Data currentItem) {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = String.valueOf(currentItem.getId());
 
@@ -955,7 +970,7 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	public static void updateForumPostItem(ContentResolver contentResolver, ForumPostItem.Post currentItem) {
+	public static void saveForumPostItem(ContentResolver contentResolver, ForumPostItem.Post currentItem) {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = String.valueOf(currentItem.getCreateDate());
 
@@ -1010,7 +1025,7 @@ public class DbDataManager {
 		return -1;
 	}
 
-	public static void updateVideoViewedState(ContentResolver contentResolver, VideoViewedItem currentItem) {
+	public static void saveVideoViewedState(ContentResolver contentResolver, VideoViewedItem currentItem) {
 		final String[] arguments2 = sArguments2;
 		arguments2[0] = String.valueOf(currentItem.getUsername());
 		arguments2[1] = String.valueOf(currentItem.getVideoId());
@@ -1146,7 +1161,7 @@ public class DbDataManager {
 		return values;
 	}
 
-	public static void saveArticleCommentToDb(ContentResolver contentResolver, ArticleCommentItem dataObj, long articleId) {
+	public static void updateArticleCommentToDb(ContentResolver contentResolver, ArticleCommentItem dataObj, long articleId) {
 		String[] arguments = sArguments2;
 		for (ArticleCommentItem.Data currentItem : dataObj.getData()) {
 			currentItem.setArticleId(articleId);

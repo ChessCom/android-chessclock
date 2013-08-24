@@ -6,29 +6,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:paddingTop="15dip"
-    android:paddingLeft="@dimen/default_scr_side_padding"
-    android:paddingRight="@dimen/default_scr_side_padding"
     >
+
+	<com.chess.backend.image_load.ProgressImageView
+		android:id="@+id/articleImg"
+		android:layout_width="match_parent"
+		android:layout_height="213dip"
+		android:background="@color/new_common_list_thumb_grey"
+		android:contentDescription="@string/image"
+		android:layout_marginBottom="13dip"/>
 
     <!--Title-->
     <com.chess.RoboTextView
         android:id="@+id/titleTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+		android:layout_below="@id/articleImg"
+		android:paddingTop="15dip"
         android:paddingBottom="9dip"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
         android:textColor="@color/new_dark_green"
         android:textSize="20sp"
         custom:ttf="Bold"
-
         />
-    <!--android:text="The Best Moves Never Played: Key Positions - Part 3"-->
-    <ImageView
+
+    <com.chess.backend.image_load.ProgressImageView
         android:id="@+id/thumbnailAuthorImg"
         android:layout_width="35dip"
         android:layout_height="35dip"
         android:background="@color/new_common_list_thumb_grey"
-        android:layout_below="@id/titleTxt"
+		android:layout_marginLeft="@dimen/default_scr_side_padding"
+		android:layout_below="@id/titleTxt"
         android:contentDescription="@string/image"
         android:layout_marginBottom="13dip"/>
 
@@ -57,7 +66,7 @@
         android:layout_marginLeft="7dip"
         />
 
-
+	<!--Date-->
     <com.chess.RoboTextView
         android:id="@+id/dateTxt"
         android:layout_width="wrap_content"
@@ -69,51 +78,39 @@
         android:textSize="13sp"
         />
 
+	<!--View Count-->
+    <com.chess.RoboTextView
+        android:id="@+id/viewsCntTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/dateTxt"
+        android:layout_below="@id/authorTxt"
+        android:paddingLeft="11dip"
+        android:textColor="@color/new_subtitle_light_grey"
+        android:textSize="13sp"
+        />
+
+	<!--Comments Count-->
+    <com.chess.RoboTextView
+        android:id="@+id/commentsCntTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/viewsCntTxt"
+        android:layout_below="@id/authorTxt"
+        android:paddingLeft="11dip"
+        android:textColor="@color/new_subtitle_light_grey"
+        android:textSize="13sp"
+        />
+
     <com.chess.RoboTextView
         android:id="@+id/contentTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/thumbnailAuthorImg"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
         android:textColor="@color/new_subtitle_dark_grey"
         android:textSize="14sp"
         />
 
-	<ListView
-		android:id="@+id/listView"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/contentTxt"
-		/>
-
-    <com.chess.RoboTextView
-        android:id="@+id/emptyView"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="@string/no_network"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:textSize="20sp"
-        android:paddingLeft="10dip"
-        custom:ttf="Bold"
-        style="@style/DarkShadowBottom"
-        android:visibility="gone"
-        />
-
-    <RelativeLayout
-        android:id="@+id/loadingView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:minHeight="60dip"
-        android:visibility="gone"
-        >
-
-        <ProgressBar
-            android:layout_width="@dimen/pending_progress_bar_size"
-            android:layout_height="@dimen/pending_progress_bar_size"
-            android:layout_margin="5dip"
-            android:layout_centerInParent="true"
-            style="?android:attr/progressBarStyle"
-            />
-
-    </RelativeLayout>
 </RelativeLayout>

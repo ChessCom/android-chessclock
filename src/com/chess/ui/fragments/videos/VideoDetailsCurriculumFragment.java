@@ -88,7 +88,7 @@ public class VideoDetailsCurriculumFragment extends VideoDetailsFragment {
 				videoUrl = videoData.getUrl();
 
 				// Save to DB
-				DbDataManager.updateVideoItem(getContentResolver(), videoData);
+				DbDataManager.saveVideoItem(getContentResolver(), videoData);
 
 				currentPlayingId = (int) videoData.getVideoId();
 			}

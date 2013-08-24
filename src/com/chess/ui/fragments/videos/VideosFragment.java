@@ -289,7 +289,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 		if (resumeFromVideoTime - playButtonClickTime > WATCHED_TIME) {
 			VideoViewedItem item = new VideoViewedItem(currentPlayingId, getUsername(), true);
-			DbDataManager.updateVideoViewedState(getContentResolver(), item);
+			DbDataManager.saveVideoViewedState(getContentResolver(), item);
 
 			// update current list
 			curriculumViewedMap.put(currentPlayingId, true);

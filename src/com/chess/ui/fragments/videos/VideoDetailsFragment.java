@@ -164,7 +164,7 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 		if (requestCode == WATCH_VIDEO_REQUEST) {
 
 			VideoViewedItem item = new VideoViewedItem(currentPlayingId, getUsername(), true);
-			DbDataManager.updateVideoViewedState(getContentResolver(), item);
+			DbDataManager.saveVideoViewedState(getContentResolver(), item);
 		}
 	}
 

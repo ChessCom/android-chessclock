@@ -1,15 +1,11 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.net.Uri;
 import com.chess.backend.entity.api.ArticleItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,18 +28,7 @@ public class SaveArticlesListTask extends AbstractUpdateTask<ArticleItem.Data, L
     protected Integer doTheTask(Long... ids) {
 		synchronized (itemList) {
 			for (ArticleItem.Data currentItem : itemList) {
-				final String[] arguments2 = arguments;
-				arguments2[0] = String.valueOf(currentItem.getId());
-
-				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()];
-
-				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID,
-						DbDataManager.SELECTION_ITEM_ID, arguments2, null);
-
-				ContentValues values = DbDataManager.putArticleItemToValues(currentItem);
-
-				DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
+				DbDataManager.saveArticleItem(contentResolver, currentItem);
 			}
 		}
 

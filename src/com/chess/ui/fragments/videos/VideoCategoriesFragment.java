@@ -238,7 +238,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 		if (resumeFromVideoTime - playButtonClickTime > VideosFragment.WATCHED_TIME) {
 			VideoViewedItem item = new VideoViewedItem(currentPlayingId, getUsername(), true);
-			DbDataManager.updateVideoViewedState(getContentResolver(), item);
+			DbDataManager.saveVideoViewedState(getContentResolver(), item);
 
 			// update current list
 			viewedVideosMap.put(currentPlayingId, true);

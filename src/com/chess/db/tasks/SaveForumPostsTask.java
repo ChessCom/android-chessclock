@@ -39,7 +39,7 @@ public class SaveForumPostsTask extends AbstractUpdateTask<ForumPostItem.Post, L
 			for (ForumPostItem.Post currentItem : itemList) {
 				currentItem.setTopicId(topicId);
 				currentItem.setPage(currentPage);
-				DbDataManager.updateForumPostItem(contentResolver, currentItem);
+				DbDataManager.saveForumPostItem(contentResolver, currentItem);
 			}
 		}
 		result = StaticData.RESULT_OK;

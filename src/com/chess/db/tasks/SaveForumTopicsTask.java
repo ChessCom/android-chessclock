@@ -40,7 +40,7 @@ public class SaveForumTopicsTask extends AbstractUpdateTask<ForumTopicItem.Topic
 			for (ForumTopicItem.Topic currentItem : itemList) {
 				currentItem.setCategoryName(categoriesMap.get(currentItem.getCategoryId()));
 				currentItem.setPage(currentPage);
-				DbDataManager.updateForumTopicItem(contentResolver, currentItem);
+				DbDataManager.saveForumTopicItem(contentResolver, currentItem);
 			}
 		}
 		result = StaticData.RESULT_OK;
