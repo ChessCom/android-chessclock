@@ -110,15 +110,16 @@ public class RestHelper {
 		return CMD_ARTICLES + "/" + id;
 	}
 
+	public static String CMD_ARTICLE_COMMENTS(long id) {
+		return CMD_ARTICLES + "/" + id + "/comments";
+	}
+
 	/*Forums*/
 	public static final String CMD_FORUMS = BASE_URL + V1 + "/forums";
 	public static final String CMD_FORUMS_CATEGORIES = CMD_FORUMS + "/categories";
 	public static final String CMD_FORUMS_COMMENTS = CMD_FORUMS + "/comments";
 	public static final String CMD_FORUMS_TOPICS = CMD_FORUMS + "/topics";
 
-	public static String CMD_ARTICLE_COMMENTS(long id) {
-		return CMD_ARTICLES + "/" + id + "/comments";
-	}
 
 	/* Friends */
 	public static final String CMD_FRIENDS = BASE_URL + V1 + "/friends";

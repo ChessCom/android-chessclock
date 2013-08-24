@@ -77,6 +77,8 @@ public class DbDataManager {
 
 	public static String SELECTION_CATEGORY_ID = concatArguments(V_CATEGORY_ID);
 
+	public static String SELECTION_ARTICLE_ID = concatArguments(V_ARTICLE_ID);
+
 	public static String SELECTION_CATEGORY_ID_AND_PAGE = concatArguments(V_CATEGORY_ID, V_PAGE);
 
 	public static String SELECTION_CATEGORY_ID_AND_USER = concatArguments(V_CATEGORY_ID, V_USER);
@@ -130,6 +132,11 @@ public class DbDataManager {
 	public static String SELECTION_GRAPH_TABLE = concatArguments(
 			V_GAME_TYPE,
 			V_USER
+	);
+
+	public static String SELECTION_ARTICLE_ID_AND_COMMENT_ID = concatArguments(
+			V_ARTICLE_ID,
+			V_ID
 	);
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
@@ -260,6 +267,12 @@ public class DbDataManager {
 			V_USER,
 	};
 
+	public static final String[] PROJECTION_ARTICLE_ID_AND_COMMENT_ID = new String[]{
+			_ID,
+			V_ARTICLE_ID,
+			V_ID
+	};
+
 
 	public static String concatArguments(String... arguments) {
 		StringBuilder selection = new StringBuilder();
@@ -283,14 +296,14 @@ public class DbDataManager {
 	 * Check if we have saved games for current user
 	 *
 	 * @param context  to get resources
-	 * @param userName
+	 * @param username
 	 * @return true if cursor can be positioned to first
 	 */
-	public static boolean haveSavedDailyGame(Context context, String userName) {
+	public static boolean haveSavedDailyGame(Context context, String username) {
 
 		ContentResolver contentResolver = context.getContentResolver();
 		final String[] arguments1 = sArguments1;
-		arguments1[0] = userName;
+		arguments1[0] = username;
 
 		Cursor cursor = contentResolver.query(uriArray[Tables.DAILY_CURRENT_GAMES.ordinal()],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
@@ -310,16 +323,16 @@ public class DbDataManager {
 		return exist;
 	}
 
-	public static void updateDailyGame(ContentResolver contentResolver, DailyCurrentGameData currentGame, String userName) {
+	public static void updateDailyGame(ContentResolver contentResolver, DailyCurrentGameData currentGame, String username) {
 
 		final String[] arguments2 = sArguments2;
-		arguments2[0] = userName;
+		arguments2[0] = username;
 		arguments2[1] = String.valueOf(currentGame.getGameId());
 
 		Uri uri = uriArray[Tables.DAILY_CURRENT_GAMES.ordinal()];
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER_AND_ID,
 				arguments2, null);
-		ContentValues values = putDailyGameCurrentItemToValues(currentGame, userName);
+		ContentValues values = putDailyGameCurrentItemToValues(currentGame, username);
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
@@ -327,12 +340,12 @@ public class DbDataManager {
 	/**
 	 * @return true if still have current games
 	 */
-	public static boolean checkAndDeleteNonExistCurrentGames(Context context, List<DailyCurrentGameData> gamesList, String userName) {
+	public static boolean checkAndDeleteNonExistCurrentGames(Context context, List<DailyCurrentGameData> gamesList, String username) {
 		// compare to current list games
 
 		ContentResolver contentResolver = context.getContentResolver();
 		final String[] arguments1 = sArguments1;
-		arguments1[0] = userName;
+		arguments1[0] = username;
 
 		Uri uri = uriArray[Tables.DAILY_CURRENT_GAMES.ordinal()];
 		long[] gamesIds;
@@ -344,7 +357,7 @@ public class DbDataManager {
 				gamesIds[i++] = getLong(cursor, V_ID);
 			} while (cursor.moveToNext());
 		} else if (gamesList.size() == 0) { // means no current games for that user
-			arguments1[0] = userName;
+			arguments1[0] = username;
 			contentResolver.delete(uri, SELECTION_USER, arguments1);
 
 			if (cursor != null) {
@@ -375,7 +388,7 @@ public class DbDataManager {
 		if (idsToRemove.size() > 0) {
 			for (Long id : idsToRemove) {
 				final String[] arguments2 = sArguments2;
-				arguments2[0] = userName;
+				arguments2[0] = username;
 				arguments2[1] = String.valueOf(id);
 				contentResolver.delete(uri, SELECTION_USER_AND_ID, arguments2);
 			}
@@ -384,12 +397,12 @@ public class DbDataManager {
 		return gamesIds.length > idsToRemove.size();
 	}
 
-	public static boolean checkAndDeleteNonExistFinishedGames(Context context, List<DailyFinishedGameData> gamesList, String userName) {
+	public static boolean checkAndDeleteNonExistFinishedGames(Context context, List<DailyFinishedGameData> gamesList, String username) {
 		// compare to current list games
 
 		ContentResolver contentResolver = context.getContentResolver();
 		final String[] arguments1 = sArguments1;
-		arguments1[0] = userName;
+		arguments1[0] = username;
 
 		Uri uri = uriArray[Tables.DAILY_FINISHED_GAMES.ordinal()];
 		long[] gamesIds;
@@ -401,7 +414,7 @@ public class DbDataManager {
 				gamesIds[i++] = getLong(cursor, V_ID);
 			} while (cursor.moveToNext());
 		} else if (gamesList.size() == 0) { // means no finished games for that user
-			arguments1[0] = userName;
+			arguments1[0] = username;
 			contentResolver.delete(uri, SELECTION_USER, arguments1);
 
 			return false;
@@ -426,7 +439,7 @@ public class DbDataManager {
 		if (idsToRemove.size() > 0) {
 			for (Long id : idsToRemove) {
 				final String[] arguments2 = sArguments2;
-				arguments2[0] = userName;
+				arguments2[0] = username;
 				arguments2[1] = String.valueOf(id);
 				contentResolver.delete(uri, SELECTION_USER_AND_ID, arguments2);
 			}
@@ -481,11 +494,11 @@ public class DbDataManager {
 	 * @param context to get resources
 	 * @return true if cursor can be positioned to first
 	 */
-	public static boolean haveSavedFriends(Context context, String userName) {
+	public static boolean haveSavedFriends(Context context, String username) {
 
 		ContentResolver contentResolver = context.getContentResolver();
 		final String[] arguments1 = sArguments1;
-		arguments1[0] = userName;
+		arguments1[0] = username;
 
 		Cursor cursor = contentResolver.query(uriArray[Tables.FRIENDS.ordinal()],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
@@ -502,14 +515,14 @@ public class DbDataManager {
 	 * Check if we have saved games for current user
 	 *
 	 * @param context  to get resources
-	 * @param userName auth user
+	 * @param username auth user
 	 * @return true if cursor can be positioned to first
 	 */
-	public static boolean haveSavedTacticGame(Context context, String userName) {
+	public static boolean haveSavedTacticGame(Context context, String username) {
 
 		ContentResolver contentResolver = context.getContentResolver();
 		final String[] arguments1 = sArguments1;
-		arguments1[0] = userName;
+		arguments1[0] = username;
 
 		Cursor cursor = contentResolver.query(uriArray[Tables.TACTICS_BATCH.ordinal()],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
@@ -521,12 +534,12 @@ public class DbDataManager {
 		return exist;
 	}
 
-	public static int saveTacticItemToDb(Context context, TacticItem.Data tacticItem, String userName) {
+	public static int saveTacticItemToDb(Context context, TacticItem.Data tacticItem, String username) {
 		ContentResolver contentResolver = context.getContentResolver();
 
 		final String[] arguments2 = sArguments2;
 		arguments2[0] = String.valueOf(tacticItem.getId());
-		arguments2[1] = userName;
+		arguments2[1] = username;
 
 		Uri uri = uriArray[Tables.TACTICS_BATCH.ordinal()];
 		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID_AND_USER,
@@ -542,11 +555,11 @@ public class DbDataManager {
 		return StaticData.RESULT_OK;
 	}
 
-	public static TacticItem.Data getLastTacticItemFromDb(Context context, String userName) {
+	public static TacticItem.Data getLastTacticItemFromDb(Context context, String username) {
 		ContentResolver contentResolver = context.getContentResolver();
 
 		final String[] arguments1 = sArguments1;
-		arguments1[0] = userName;
+		arguments1[0] = username;
 
 		Cursor cursor = contentResolver.query(uriArray[Tables.TACTICS_BATCH.ordinal()],
 				null, SELECTION_USER, arguments1, null);
@@ -557,7 +570,7 @@ public class DbDataManager {
 			cursor.close();
 
 			// set result item
-			TacticRatingData resultItem = getTacticResultItemFromDb(context, tacticItem.getId(), userName);
+			TacticRatingData resultItem = getTacticResultItemFromDb(context, tacticItem.getId(), username);
 			tacticItem.setResultItem(resultItem);
 
 			return tacticItem;
@@ -581,12 +594,12 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	private static TacticRatingData getTacticResultItemFromDb(Context context, long id, String userName) {
+	private static TacticRatingData getTacticResultItemFromDb(Context context, long id, String username) {
 		ContentResolver contentResolver = context.getContentResolver();
 
 		final String[] arguments2 = sArguments2;
 		arguments2[0] = String.valueOf(id);
-		arguments2[1] = userName;
+		arguments2[1] = username;
 		Cursor cursor = contentResolver.query(uriArray[Tables.TACTICS_RESULTS.ordinal()],
 				null, SELECTION_ITEM_ID_AND_USER, arguments2, null);
 
@@ -603,13 +616,13 @@ public class DbDataManager {
 		}
 	}
 
-	public static int getUserRatingFromUsersStats(Context context, int dbUriCode, String userName) {
+	public static int getUserRatingFromUsersStats(Context context, int dbUriCode, String username) {
 		final int DEFAULT_RATING = 1200;
 
 		ContentResolver contentResolver = context.getContentResolver();
 
 		final String[] arguments1 = sArguments1;
-		arguments1[0] = userName;
+		arguments1[0] = username;
 		Cursor cursor = contentResolver.query(uriArray[dbUriCode],
 				PROJECTION_USER_CURRENT_RATING, SELECTION_USER, arguments1, null);
 
@@ -698,12 +711,12 @@ public class DbDataManager {
 	}
 
 	// ----------------------------------- Daily Games -------------------------------------------------------
-	public static ContentValues putDailyFinishedGameToValues(DailyFinishedGameData dataObj, String userName) {
+	public static ContentValues putDailyFinishedGameToValues(DailyFinishedGameData dataObj, String username) {
 		ContentValues values = new ContentValues();
 
 		setValuesFromGameItem(values, dataObj);
 		values.put(V_FINISHED, 1);
-		values.put(V_USER, userName);
+		values.put(V_USER, username);
 		values.put(V_GAME_SCORE, dataObj.getGameScore());
 		values.put(V_RESULT_MESSAGE, dataObj.getResultMessage());
 		return values;
@@ -719,12 +732,12 @@ public class DbDataManager {
 		return dataObj;
 	}
 
-	public static ContentValues putDailyGameCurrentItemToValues(DailyCurrentGameData dataObj, String userName) {
+	public static ContentValues putDailyGameCurrentItemToValues(DailyCurrentGameData dataObj, String username) {
 		ContentValues values = new ContentValues();
 
 		setValuesFromGameItem(values, dataObj);
 		values.put(V_FINISHED, 0);
-		values.put(V_USER, userName);
+		values.put(V_USER, username);
 		values.put(V_OPPONENT_OFFERED_DRAW, dataObj.isDrawOffered());
 		values.put(V_IS_MY_TURN, dataObj.isMyTurn() ? 1 : 0);
 		return values;
@@ -842,10 +855,10 @@ public class DbDataManager {
 	}
 
 	// ------------------------------------- Friends ----------------------------------------------
-	public static ContentValues putFriendItemToValues(FriendsItem.Data dataObj, String userName) {
+	public static ContentValues putFriendItemToValues(FriendsItem.Data dataObj, String username) {
 		ContentValues values = new ContentValues();
 
-		values.put(V_USER, userName);
+		values.put(V_USER, username);
 		values.put(V_USERNAME, dataObj.getUsername());
 		values.put(V_USER_ID, dataObj.getUserId());
 		values.put(V_LOCATION, dataObj.getLocation());
@@ -863,7 +876,8 @@ public class DbDataManager {
 
 		values.put(V_ID, dataObj.getId());
 		values.put(V_TITLE, dataObj.getTitle());
-		values.put(V_CREATE_DATE, dataObj.getCreate_date());
+		values.put(V_CREATE_DATE, dataObj.getCreateDate());
+		values.put(V_BODY, dataObj.getBody());
 		values.put(V_CATEGORY, dataObj.getCategoryName());
 		values.put(V_CATEGORY_ID, dataObj.getCategoryId());
 		values.put(V_COUNTRY_ID, dataObj.getCountryId());
@@ -875,6 +889,23 @@ public class DbDataManager {
 		values.put(V_USER_AVATAR, dataObj.getAvatar());
 		values.put(V_PHOTO_URL, dataObj.getImageUrl());
 		values.put(V_THUMB_CONTENT, dataObj.isIsThumbInContent());
+
+		return values;
+	}
+
+	public static ContentValues putArticleCommentItemToValues(ArticleCommentItem.Data dataObj) {
+		ContentValues values = new ContentValues();
+
+		values.put(V_ID, dataObj.getId());
+		values.put(V_ARTICLE_ID, dataObj.getArticleId());
+		values.put(V_USER_ID, dataObj.getUserId());
+		values.put(V_CREATE_DATE, dataObj.getCreateDate());
+		values.put(V_COUNTRY_ID, dataObj.getCountryId());
+		values.put(V_USERNAME, dataObj.getUsername());
+		values.put(V_FIRST_NAME, dataObj.getFirstName());
+		values.put(V_LAST_NAME, dataObj.getLastName());
+		values.put(V_USER_AVATAR, dataObj.getAvatar());
+		values.put(V_BODY, dataObj.getBody());
 
 		return values;
 	}
@@ -994,11 +1025,11 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	public static Cursor getVideoViewedCursor(Context context, String userName) {
+	public static Cursor getVideoViewedCursor(Context context, String username) {
 		ContentResolver contentResolver = context.getContentResolver();
 
 		final String[] arguments1 = sArguments1;
-		arguments1[0] = userName;
+		arguments1[0] = username;
 		Cursor cursor = contentResolver.query(uriArray[Tables.VIDEO_VIEWED.ordinal()],
 				null, SELECTION_USER, arguments1, null);
 
@@ -1009,11 +1040,11 @@ public class DbDataManager {
 		}
 	}
 
-	public static boolean isVideoViewed(Context context, String userName, long videoId) {
+	public static boolean isVideoViewed(Context context, String username, long videoId) {
 		ContentResolver contentResolver = context.getContentResolver();
 
 		final String[] arguments2 = sArguments2;
-		arguments2[0] = userName;
+		arguments2[0] = username;
 		arguments2[1] = String.valueOf(videoId);
 
 		Cursor cursor = contentResolver.query(uriArray[Tables.VIDEO_VIEWED.ordinal()],
@@ -1113,6 +1144,26 @@ public class DbDataManager {
 		values.put(V_PAGE, dataObj.getPage());
 
 		return values;
+	}
+
+	public static void saveArticleCommentToDb(ContentResolver contentResolver, ArticleCommentItem dataObj, long articleId) {
+		String[] arguments = sArguments2;
+		for (ArticleCommentItem.Data currentItem : dataObj.getData()) {
+			currentItem.setArticleId(articleId);
+
+			arguments[0] = String.valueOf(articleId);
+			arguments[1] = String.valueOf(currentItem.getId());
+
+			// TODO implement beginTransaction logic for performance increase
+			Uri uri = DbScheme.uriArray[DbScheme.Tables.ARTICLE_COMMENTS.ordinal()];
+
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ARTICLE_ID_AND_COMMENT_ID,
+					DbDataManager.SELECTION_ARTICLE_ID_AND_COMMENT_ID, arguments, null);
+
+			ContentValues values = DbDataManager.putArticleCommentItemToValues(currentItem);
+
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
+		}
 	}
 
 	public static void saveMentorLessonToDb(ContentResolver contentResolver, LessonItem.MentorLesson mentorLesson,
@@ -1473,28 +1524,18 @@ public class DbDataManager {
 		ContentValues values = new ContentValues();
 
 		values.put(V_USER, user);
+		values.put(V_CURRENT, dataObj.getCurrent());
+		values.put(V_HIGHEST_RATING, dataObj.getHighest().getRating());
+		values.put(V_HIGHEST_TIMESTAMP, dataObj.getHighest().getTimestamp());
+		values.put(V_LOWEST_RATING, dataObj.getLowest().getRating());
+		values.put(V_LOWEST_TIMESTAMP, dataObj.getLowest().getTimestamp());
 
-		BaseRating highest = dataObj.getRatings().getHighest();
-		BaseRating lowest = dataObj.getRatings().getLowest();
-		int current = dataObj.getRatings().getCurrent();
-
-		values.put(V_CURRENT, current);
-		values.put(V_HIGHEST_RATING, highest.getRating());
-		values.put(V_HIGHEST_TIMESTAMP, highest.getTimestamp());
-		values.put(V_LOWEST_RATING, lowest.getRating());
-		values.put(V_LOWEST_TIMESTAMP, lowest.getTimestamp());
-
-		UserTacticsStatsData.Stats stats = dataObj.getLessons().getStats();
-		values.put(V_LESSONS_TRIED, stats.getLessonsTried());
-		values.put(V_TOTAL_LESSON_COUNT, stats.getTotalLessonCount());
-		values.put(V_LESSON_COMPLETE_PERCENTAGE, stats.getLessonCompletePercentage());
-		values.put(V_TOTAL_TRAINING_SECONDS, stats.getTotalLessonCount());
-		values.put(V_SCORE_90_100, stats.getScore().getP_90_100());
-		values.put(V_SCORE_80_89, stats.getScore().getP_80_89());
-		values.put(V_SCORE_70_79, stats.getScore().getP_70_79());
-		values.put(V_SCORE_60_69, stats.getScore().getP_60_69());
-		values.put(V_SCORE_50_59, stats.getScore().getP_50_59());
-		values.put(V_SCORE_50, stats.getScore().getP_50());
+		values.put(V_ATTEMPT_COUNT, dataObj.getAttemptCount());
+		values.put(V_PASSED_COUNT, dataObj.getPassedCount());
+		values.put(V_FAILED_COUNT, dataObj.getFailedCount());
+		values.put(V_TOTAL_SECONDS, dataObj.getTotalSeconds());
+		values.put(V_TODAYS_ATTEMPTS, dataObj.getTodaysAttemps());
+		values.put(V_TODAYS_AVG_SCORE, dataObj.getTodaysAvgScore());
 
 		return values;
 	}
@@ -1702,9 +1743,9 @@ public class DbDataManager {
 	}
 
 
-	public static boolean checkIfDrawOffered(ContentResolver resolver, String userName, long gameId) {
+	public static boolean checkIfDrawOffered(ContentResolver resolver, String username, long gameId) {
 		final String[] arguments2 = sArguments2;
-		arguments2[0] = userName;
+		arguments2[0] = username;
 		arguments2[1] = String.valueOf(gameId);
 
 		Cursor cursor = resolver.query(uriArray[Tables.DAILY_CURRENT_GAMES.ordinal()],

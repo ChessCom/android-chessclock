@@ -66,7 +66,7 @@ public class UserStatsItem extends BaseResponseItem<UserStatsItem.Data> {
             "best_win_rating": null,
             "best_win_username": null
         },
-        "tactics": {
+        "lessons": {
             "rating": {
                 "current": 1219,
                 "highest": {
@@ -103,8 +103,8 @@ public class UserStatsItem extends BaseResponseItem<UserStatsItem.Data> {
 		private UserStatsData live_bullet;
 		private UserStatsData daily_chess;
 		private UserStatsData chess_960;
-		private UserTacticsStatsData tactics;
 		private UserLessonsStatsData lessons;
+//		private TacticsHistoryItem tactics;
 
 		public UserStatsData getLiveStandard() {
 			return live_standard;
@@ -126,13 +126,13 @@ public class UserStatsItem extends BaseResponseItem<UserStatsItem.Data> {
 			return chess_960;
 		}
 
-		public UserTacticsStatsData getTactics() {
-			return tactics;
-		}
-
-		public void setTactics(UserTacticsStatsData tactics) {
-			this.tactics = tactics;
-		}
+//		public TacticsHistoryItem getTactics() {
+//			return tactics;
+//		}
+//
+//		public void setTactics(TacticsHistoryItem tactics) {
+//			this.tactics = tactics;
+//		}
 
 		public UserLessonsStatsData getLessons() {
 			return lessons;

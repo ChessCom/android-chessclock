@@ -9,131 +9,65 @@ package com.chess.backend.entity.api.stats;
 public class UserTacticsStatsData {
 /*
 	"tactics": {
-		"rating": {
-			"current": 1219,
-			"highest": {
-				"rating": 1473,
-				"timestamp": 1375933728
-			},
-			"lowest": {
-				"rating": 841,
-				"timestamp": 1376097981
-			}
-		},
-		"lessons": {
-			"stats": {
-				"lessons_tried": 99,
-				"total_lesson_count": 2499,
-				"lesson_complete_percentage": 4,
-				"total_training_seconds": 0,
-				"score": {
-					"90 - 100%": 43,
-					"80 - 89%": 1,
-					"70 - 79%": 0,
-					"60 - 69%": 1,
-					"50 - 59%": 0,
-					"< 50%": 54
-				}
-			}
-		}
+	  "current": 1311,
+	  "highest": {
+		"rating": 1474,
+		"timestamp": 1338361200
+	  },
+	  "lowest": {
+		"rating": 0,
+		"timestamp": 1338361200
+	  },
+	  "attempt_count": 53,
+	  "passed_count": 20,
+	  "failed_count": 33,
+	  "total_seconds": 3201
 	}
 */
 
-	private Ratings rating;
-	private Lessons lessons;
+	private int current;
+	private BaseRating highest;
+	private BaseRating lowest;
+	private int attempt_count;
+	private int passed_count;
+	private int failed_count;
+	private long total_seconds;
+	private int todays_attemps;
+	private int todays_average_score;
 
-	public Ratings getRatings() {
-		return rating;
+	public int getCurrent() {
+		return current;
 	}
 
-	public Lessons getLessons() {
-		return lessons;
+	public BaseRating getHighest() {
+		return highest;
 	}
 
-	public class Ratings {
-		private int current;
-		private BaseRating highest;
-		private BaseRating lowest;
-
-		public int getCurrent() {
-			return current;
-		}
-
-		public BaseRating getHighest() {
-			return highest;
-		}
-
-		public BaseRating getLowest() {
-			return lowest;
-		}
+	public BaseRating getLowest() {
+		return lowest;
 	}
 
-	public class Lessons {
-		private Stats stats;
-
-		public Stats getStats() {
-			return stats;
-		}
+	public int getAttemptCount() {
+		return attempt_count;
 	}
 
-	public class Stats {
-		private int lessons_tried;
-		private int total_lesson_count;
-		private float lesson_complete_percentage;
-		private long total_training_seconds;
-		private Score score;
-
-		public int getLessonsTried() {
-			return lessons_tried;
-		}
-
-		public int getTotalLessonCount() {
-			return total_lesson_count;
-		}
-
-		public float getLessonCompletePercentage() {
-			return lesson_complete_percentage;
-		}
-
-		public long getTotalTrainingSeconds() {
-			return total_training_seconds;
-		}
-
-		public Score getScore() {
-			return score;
-		}
+	public int getPassedCount() {
+		return passed_count;
 	}
 
-	public class Score {
-		private int p_90_100;
-		private int p_80_89;
-		private int p_70_79;
-		private int p_60_69;
-		private int p_50_59;
-		private int p_50;
+	public int getFailedCount() {
+		return failed_count;
+	}
 
-		public int getP_90_100() {
-			return p_90_100;
-		}
+	public long getTotalSeconds() {
+		return total_seconds;
+	}
 
-		public int getP_80_89() {
-			return p_80_89;
-		}
+	public int getTodaysAttemps() {
+		return todays_attemps;
+	}
 
-		public int getP_70_79() {
-			return p_70_79;
-		}
-
-		public int getP_60_69() {
-			return p_60_69;
-		}
-
-		public int getP_50_59() {
-			return p_50_59;
-		}
-
-		public int getP_50() {
-			return p_50;
-		}
+	public int getTodaysAvgScore() {
+		return todays_average_score;
 	}
 }

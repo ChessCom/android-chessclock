@@ -45,7 +45,7 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 	private EditText passwordEdt;
 	private EditText passwordRetypeEdt;
 
-	private String userName;
+	private String username;
 	private String email;
 	private String password;
 	private RegisterUpdateListener registerUpdateListener;
@@ -107,11 +107,11 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 	}
 
 	private boolean checkRegisterInfo() {
-		userName = getTextFromField(userNameEdt);
+		username = getTextFromField(userNameEdt);
 		email = getTextFromField(emailEdt);
 		password = getTextFromField(passwordEdt);
 
-		if (userName.length() < 3) {
+		if (username.length() < 3) {
 			userNameEdt.setError(getString(R.string.too_short));
 			userNameEdt.requestFocus();
 			return false;
@@ -145,7 +145,7 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 	}
 
 	private void submitRegisterInfo() {
-		LoadItem loadItem = LoadHelper.postUsers(userName, password, email, getDeviceId());
+		LoadItem loadItem = LoadHelper.postUsers(username, password, email, getDeviceId());
 		new RequestJsonTask<RegisterItem>(registerUpdateListener).executeTask(loadItem);
 	}
 

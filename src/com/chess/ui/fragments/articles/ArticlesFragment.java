@@ -10,15 +10,15 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ArticleItem;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveArticleCategoriesTask;
 import com.chess.db.tasks.SaveArticlesListTask;
@@ -164,7 +164,8 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 		if (section == LATEST_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-			getActivityFace().openFragment(ArticleDetailsFragment.createInstance(DbDataManager.getId(cursor)));
+			long articleId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+			getActivityFace().openFragment(ArticleDetailsFragment.createInstance(articleId));
 		} else if (section == CATEGORIES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 			String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
@@ -297,7 +298,6 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			showEmptyView(true);
 		}
 	}
-
 
 	private void showEmptyView(boolean show) {
 		if (show) {

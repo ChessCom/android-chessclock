@@ -106,7 +106,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected boolean isHighlightEnabled;
 	protected boolean showLegalMoves;
 	protected boolean showCoordinates;
-	protected String userName;
+	protected String username;
 	protected boolean useTouchTimer;
 	protected Handler handler;
 	protected boolean userActive;
@@ -213,7 +213,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		this.gameFace = gameFace;
 		onBoardFaceSet(gameFace.getBoardFace());
 
-		userName = getAppData().getUsername();
+		username = getAppData().getUsername();
 
 		isHighlightEnabled = getAppData().isHighlightLastMove();
 		showLegalMoves = getAppData().isShowLegalMoves();

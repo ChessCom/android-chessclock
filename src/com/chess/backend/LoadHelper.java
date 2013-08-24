@@ -174,11 +174,11 @@ public class LoadHelper {
 		return loadItem;
 	}
 
-	public static LoadItem postUsers(String userName, String password, String email, String deviceId) {
+	public static LoadItem postUsers(String username, String password, String email, String deviceId) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(CMD_USERS);
 		loadItem.setRequestMethod(POST);
-		loadItem.addRequestParams(P_USERNAME, userName);
+		loadItem.addRequestParams(P_USERNAME, username);
 		loadItem.addRequestParams(P_PASSWORD, password);
 		loadItem.addRequestParams(P_EMAIL, email);
 		loadItem.addRequestParams(P_APP_TYPE, V_ANDROID);

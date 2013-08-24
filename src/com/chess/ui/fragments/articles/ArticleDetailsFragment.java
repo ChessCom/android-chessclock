@@ -1,22 +1,26 @@
 package com.chess.ui.fragments.articles;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.ArticleCommentItem;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.db.DbHelper;
-import com.chess.db.tasks.LoadDataFromDbTask;
+import com.chess.db.DbScheme;
+import com.chess.ui.adapters.CommentsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
@@ -30,7 +34,7 @@ import java.util.Date;
  * Date: 27.01.13
  * Time: 19:12
  */
-public class ArticleDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace {
+public class ArticleDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener {
 
 	public static final String ITEM_ID = "item_id";
 	public static final String GREY_COLOR_DIVIDER = "##";
@@ -38,19 +42,17 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	// 11/15/12 | 27 min
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
 
-
 	private TextView authorTxt;
-	private View loadingView;
-	private TextView emptyView;
 
 	private TextView titleTxt;
 	private ImageView thumbnailAuthorImg;
 	private ImageView countryImg;
 	private TextView dateTxt;
-	private TextView contextTxt;
-	private Cursor loadedCursor;
-
-	private ArticleCursorUpdateListener articleCursorUpdateListener;
+	private TextView contentTxt;
+	private long articleId;
+	private CommentsUpdateListener commentsUpdateListener;
+	private CommentsCursorAdapter commentsCursorAdapter;
+	private ListView listView;
 
 
 	public static ArticleDetailsFragment createInstance(long articleId) {
@@ -59,6 +61,20 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		bundle.putLong(ITEM_ID, articleId);
 		frag.setArguments(bundle);
 		return frag;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			articleId = getArguments().getLong(ITEM_ID);
+		} else {
+			articleId = savedInstanceState.getLong(ITEM_ID);
+		}
+
+		commentsUpdateListener = new CommentsUpdateListener();
+		commentsCursorAdapter = new CommentsCursorAdapter(getActivity(), null);
 	}
 
 	@Override
@@ -73,14 +89,17 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		setTitle(R.string.articles);
 
 		loadingView = view.findViewById(R.id.loadingView);
-		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		titleTxt = (TextView) view.findViewById(R.id.titleTxt);
 		thumbnailAuthorImg = (ImageView) view.findViewById(R.id.thumbnailAuthorImg);
 		countryImg = (ImageView) view.findViewById(R.id.countryImg);
 		dateTxt = (TextView) view.findViewById(R.id.dateTxt);
-		contextTxt = (TextView) view.findViewById(R.id.contextTxt);
+		contentTxt = (TextView) view.findViewById(R.id.contentTxt);
 		authorTxt = (TextView) view.findViewById(R.id.authorTxt);
+
+		listView = (ListView) view.findViewById(R.id.listView);
+		listView.setOnItemClickListener(this);
+		listView.setAdapter(commentsCursorAdapter);
 
 		getActivityFace().showActionMenu(R.id.menu_share, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
@@ -93,58 +112,27 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	public void onResume() {
 		super.onResume();
 
-		init();
-
 		loadFromDb();
+
+		// Load comments
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.CMD_ARTICLE_COMMENTS(articleId));
+
+		new RequestJsonTask<ArticleCommentItem>(commentsUpdateListener).executeTask(loadItem);
+	}
+
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putLong(ITEM_ID, articleId);
 	}
 
 	private void loadFromDb() {
-		long itemId = getArguments().getLong(ITEM_ID);
+		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getArticleById(articleId));
 
-		new LoadDataFromDbTask(articleCursorUpdateListener, DbHelper.getArticlesList(0),
-				getContentResolver()).executeTask(itemId);
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		// TODO release resources
-	}
-
-	private void init() {
-
-		articleCursorUpdateListener = new ArticleCursorUpdateListener();
-	}
-
-	@Override
-	public void onClick(View view) {
-		super.onClick(view);
-
-		if (view.getId() == R.id.playBtn) {
-			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.parse(DbDataManager.getString(loadedCursor, DbScheme.V_URL)), "video/*");
-			startActivity(intent);
-		}
-	}
-
-	private class ArticleCursorUpdateListener extends ChessUpdateListener<Cursor> {
-
-		public ArticleCursorUpdateListener() {
-			super();
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
-
-		@Override
-		public void updateData(Cursor cursor) {
-			super.updateData(cursor);
-
-			loadedCursor = cursor;
-
+		if (cursor.moveToFirst()) {
 			int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
 			String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
 			CharSequence chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
@@ -159,51 +147,34 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			countryImg.setImageDrawable(AppUtils.getUserFlag(getActivity())); // TODO set flag properly // invent flag resources set system
 
 			dateTxt.setText(dateFormatter.format(new Date(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE))));
+			contentTxt.setText(DbDataManager.getString(cursor, DbScheme.V_BODY));
+		}
+	}
 
-			contextTxt.setText(DbDataManager.getString(cursor, DbScheme.V_DESCRIPTION));
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+	}
+
+	private class CommentsUpdateListener extends ChessUpdateListener<ArticleCommentItem> {
+
+		private CommentsUpdateListener() {
+			super(ArticleCommentItem.class);
 		}
 
 		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			if (resultCode == StaticData.EMPTY_DATA) {
-				emptyView.setText("No Articles"); // TODO remove after debug, there should be articles
-			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
-				emptyView.setText(R.string.no_network);
+		public void updateData(ArticleCommentItem returnedObj) {
+			super.updateData(returnedObj);
+
+			DbDataManager.saveArticleCommentToDb(getContentResolver(), returnedObj, articleId);
+
+			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getArticlesCommentsById(articleId));
+			if (cursor != null && cursor.moveToFirst()) {
+				commentsCursorAdapter.changeCursor(cursor);
 			}
-			showEmptyView(true);
 		}
 	}
 
-	private void showEmptyView(boolean show) {
-		if (show) {
-			// don't hide loadingView if it's loading
-			if (loadingView.getVisibility() != View.VISIBLE) {
-				loadingView.setVisibility(View.GONE);
-			}
-
-//			emptyView.setVisibility(View.VISIBLE);
-//			listView.setVisibility(View.GONE);
-		} else {
-			emptyView.setVisibility(View.GONE);
-//			listView.setVisibility(View.VISIBLE);
-		}
-	}
-
-	private void showLoadingView(boolean show) {
-		if (show) {
-			emptyView.setVisibility(View.GONE);
-//			if (videosCursorAdapter.getCount() == 0) {
-//				listView.setVisibility(View.GONE);
-//
-//			}
-			loadingView.setVisibility(View.VISIBLE);
-		} else {
-//			listView.setVisibility(View.VISIBLE);
-			loadingView.setVisibility(View.GONE);
-		}
-	}
 
 	@Override
 	public Context getMeContext() {

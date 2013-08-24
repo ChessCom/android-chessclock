@@ -12,11 +12,11 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getTableForUser(String userName, DbScheme.Tables uriName) {
+	public static QueryParams getTableForUser(String username, DbScheme.Tables uriName) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[uriName.ordinal()]);
 		queryParams.setSelection(DbDataManager.SELECTION_USER);
-		queryParams.setArguments(new String[]{userName});
+		queryParams.setArguments(new String[]{username});
 		return queryParams;
 	}
 
@@ -81,7 +81,7 @@ public class DbHelper {
 		return queryParams;
 	}
 
-
+	/* Article */
 	public static QueryParams getArticlesList(int limitCnt) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()]);
@@ -94,6 +94,22 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	public static QueryParams getArticleById(long articleId) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()]);
+		queryParams.setSelection(DbDataManager.SELECTION_ITEM_ID);
+		queryParams.setArguments(new String[]{String.valueOf(articleId)});
+		return queryParams;
+	}
+
+
+	public static QueryParams getArticlesCommentsById(long articleId) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.ARTICLE_COMMENTS.ordinal()]);
+		queryParams.setSelection(DbDataManager.SELECTION_ARTICLE_ID);
+		queryParams.setArguments(new String[]{String.valueOf(articleId)});
+		return queryParams;
+	}
 	public static QueryParams getVideosByCategory(int categoryId) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.VIDEOS.ordinal()]);
@@ -226,12 +242,14 @@ public class DbHelper {
 	}
 
 	/* Graph Stats Data */
-	public static QueryParams getGraphItemForUser(String userName, String gameType) {
+	public static QueryParams getGraphItemForUser(String username, String gameType) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.GAME_STATS_GRAPH_DATA.ordinal()]);
 		queryParams.setSelection(DbDataManager.SELECTION_GRAPH_TABLE);
-		queryParams.setArguments(new String[]{gameType, userName});
+		queryParams.setArguments(new String[]{gameType, username});
 		return queryParams;
 	}
+
+
 
 }

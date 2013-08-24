@@ -682,8 +682,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			String draw;
 
-			String userName = getAppData().getUsername();
-			boolean drawWasOffered = DbDataManager.checkIfDrawOffered(getContentResolver(), userName, gameId);
+			String username = getAppData().getUsername();
+			boolean drawWasOffered = DbDataManager.checkIfDrawOffered(getContentResolver(), username, gameId);
 
 			if (drawWasOffered) { // If Draw was already offered by the opponent, we send accept to it.
 				draw = RestHelper.V_ACCEPTDRAW;
@@ -876,11 +876,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		@Override
 		public void updateData(VacationItem returnedObj) {
-			if (returnedObj.getData().isOnVacation()) {
-				showToast(R.string.vacation_on);
-			} else {
-				showToast(R.string.vacation_off);
-			}
+			showToast(R.string.vacation_off);
 		}
 	}
 

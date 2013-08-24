@@ -149,7 +149,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		gamesUpdateReceiver = new GamesUpdateReceiver();
 		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
 
-		if (need2update) {
+		if (need2update) {    // TODO restore properly
 			boolean haveSavedData = DbDataManager.haveSavedDailyGame(getActivity(), getUsername());
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {

@@ -139,13 +139,13 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		view.findViewById(R.id.answerShowBottomView).setOnClickListener(this);
 		view.findViewById(R.id.soundsView).setOnClickListener(this);
 
-		String userName = getAppData().getUsername();
+		String username = getAppData().getUsername();
 
-		soundsSwitch.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SOUNDS, true));
-		coordinatesSwitch.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_COORDINATES, true));
-		highlightLastMoveSwitch.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_HIGHLIGHT_LAST_MOVE, true));
-		showLegalMovesSwitch.setChecked(preferences.getBoolean(userName + AppConstants.PREF_SHOW_LEGAL_MOVES, true));
-		answerShowBottomSwitch.setChecked(preferences.getBoolean(userName + AppConstants.PREF_BOARD_SHOW_ANSWER_BOTTOM, true));
+		soundsSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_SOUNDS, true));
+		coordinatesSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_COORDINATES, true));
+		highlightLastMoveSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_HIGHLIGHT_LAST_MOVE, true));
+		showLegalMovesSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_SHOW_LEGAL_MOVES, true));
+		answerShowBottomSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_SHOW_ANSWER_BOTTOM, true));
 
 
 		//spinners
@@ -178,14 +178,14 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 
 		boardsSpinner = (Spinner) view.findViewById(R.id.boardsSpinner);
 		boardsSpinner.setAdapter(new SelectionAdapter(getActivity(), boardsList));
-		int boardsPosition = preferences.getInt(userName + AppConstants.PREF_BOARD_STYLE, 0);
+		int boardsPosition = preferences.getInt(username + AppConstants.PREF_BOARD_STYLE, 0);
 		boardsSpinner.setSelection(boardsPosition);
 		boardsSpinner.setOnItemSelectedListener(this);
 		boardsList.get(boardsPosition).setChecked(true);
 
 		piecesSpinner = (Spinner) view.findViewById(R.id.piecesSpinner);
 		piecesSpinner.setAdapter(new SelectionAdapter(getActivity(), piecesList));
-		int piecesPosition = preferences.getInt(userName + AppConstants.PREF_PIECES_SET, 0);
+		int piecesPosition = preferences.getInt(username + AppConstants.PREF_PIECES_SET, 0);
 		piecesSpinner.setSelection(piecesPosition);
 		piecesList.get(piecesPosition).setChecked(true);
 		piecesSpinner.setOnItemSelectedListener(this);

@@ -463,12 +463,12 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		view.findViewById(R.id.colorsView).setOnClickListener(this);
 
 
-		String userName = getUsername();
+		String username = getUsername();
 
 		// Board
 		boardsSpinner = (Spinner) view.findViewById(R.id.boardsSpinner);
 		boardsSpinner.setAdapter(new SelectionAdapter(getActivity(), boardsList));
-		int boardsPosition = preferences.getInt(userName + AppConstants.PREF_BOARD_STYLE, 0);
+		int boardsPosition = preferences.getInt(username + AppConstants.PREF_BOARD_STYLE, 0);
 		boardsSpinner.setSelection(boardsPosition);
 		boardsSpinner.setOnItemSelectedListener(this);
 		boardsList.get(boardsPosition).setChecked(true);
@@ -476,7 +476,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		// Pieces
 		piecesSpinner = (Spinner) view.findViewById(R.id.piecesSpinner);
 		piecesSpinner.setAdapter(new SelectionAdapter(getActivity(), piecesList));
-		int piecesPosition = preferences.getInt(userName + AppConstants.PREF_PIECES_SET, 0);
+		int piecesPosition = preferences.getInt(username + AppConstants.PREF_PIECES_SET, 0);
 		piecesSpinner.setSelection(piecesPosition);
 		piecesList.get(piecesPosition).setChecked(true);
 		piecesSpinner.setOnItemSelectedListener(this);
@@ -490,21 +490,21 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		// Sounds
 		soundsSpinner = (Spinner) view.findViewById(R.id.soundsSpinner);
 		soundsSpinner.setAdapter(new StringSpinnerAdapter(getActivity(), soundsList));
-		int soundsPosition = preferences.getInt(userName + AppConstants.PREF_SOUNDS_SET, 0);
+		int soundsPosition = preferences.getInt(username + AppConstants.PREF_SOUNDS_SET, 0);
 		soundsSpinner.setSelection(soundsPosition);
 		soundsSpinner.setOnItemSelectedListener(this);
 
 		// Colors
 		colorsSpinner = (Spinner) view.findViewById(R.id.colorsSpinner);
 		colorsSpinner.setAdapter(new StringSpinnerAdapter(getActivity(), colorsList));
-		int colorPosition = preferences.getInt(userName + AppConstants.PREF_COLORS_SET, 0);
+		int colorPosition = preferences.getInt(username + AppConstants.PREF_COLORS_SET, 0);
 		colorsSpinner.setSelection(colorPosition);
 		colorsSpinner.setOnItemSelectedListener(this);
 
 		// Coordinates
 		coordinatesSpinner = (Spinner) view.findViewById(R.id.coordinatesSpinner);
 		coordinatesSpinner.setAdapter(new StringSpinnerAdapter(getActivity(), colorsList));
-		int coordinatesPosition = preferences.getInt(userName + AppConstants.PREF_COORDINATES_SET, 0);
+		int coordinatesPosition = preferences.getInt(username + AppConstants.PREF_COORDINATES_SET, 0);
 		coordinatesSpinner.setSelection(coordinatesPosition);
 		coordinatesSpinner.setOnItemSelectedListener(this);
 	}

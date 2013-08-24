@@ -283,14 +283,14 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	@Override
 	public void invalidateGameScreen() {
 		if (!labelsSet) {
-			String userName = getAppData().getUsername();
+			String username = getAppData().getUsername();
 			switch (getBoardFace().getMode()) {
 				case AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE: {    //w - human; b - comp
 					humanBlack = false;
 					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 
 					labelsConfig.topPlayerLabel = getString(R.string.computer);
-					labelsConfig.bottomPlayerLabel = userName;
+					labelsConfig.bottomPlayerLabel = username;
 					break;
 				}
 				case AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK: {    //w - comp; b - human
@@ -298,14 +298,14 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 					labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 
 					labelsConfig.topPlayerLabel = getString(R.string.computer);
-					labelsConfig.bottomPlayerLabel = userName;
+					labelsConfig.bottomPlayerLabel = username;
 					break;
 				}
 				case AppConstants.GAME_MODE_2_PLAYERS: {    //w - human; b - human
 					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 
-					labelsConfig.topPlayerLabel = userName;
-					labelsConfig.bottomPlayerLabel = userName;
+					labelsConfig.topPlayerLabel = username;
+					labelsConfig.bottomPlayerLabel = username;
 					break;
 				}
 				case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {    //w - comp; b - comp

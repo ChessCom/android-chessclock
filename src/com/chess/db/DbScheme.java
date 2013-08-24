@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 51;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 52;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -29,6 +29,7 @@ public class DbScheme {
 
 		ARTICLES,
 		ARTICLE_CATEGORIES,
+		ARTICLE_COMMENTS,
 
 		VIDEOS,
 		VIDEO_CATEGORIES,
@@ -159,8 +160,10 @@ public class DbScheme {
 	/*Articles*/
 	public static final String V_TITLE = "title";
 	public static final String V_CREATE_DATE = "create_date";
+	public static final String V_BODY = "body";
 	public static final String V_CATEGORY = "category";
 	public static final String V_CATEGORY_ID = "category_id";
+	public static final String V_ARTICLE_ID = "article_id";
 	public static final String V_CHESS_TITLE = "chess_title";
 	public static final String V_FIRST_NAME = "first_name";
 	public static final String V_LAST_NAME = "last_name";
@@ -353,6 +356,7 @@ public class DbScheme {
 				+ addField_Long(V_CREATE_DATE)
 				+ addField_Int(V_COUNTRY_ID)
 				+ addField_Text(V_TITLE)
+				+ addField_Text(V_BODY)
 				+ addField_Text(V_CATEGORY)
 				+ addField_Text(V_USERNAME)
 				+ addField_Text(V_FIRST_NAME)
@@ -366,6 +370,18 @@ public class DbScheme {
 				+ addField_Text(V_NAME)
 				+ addField_Int(V_CATEGORY_ID)
 				+ addField_Int(V_DISPLAY_ORDER, true);
+
+		createTablesArray[Tables.ARTICLE_COMMENTS.ordinal()] = createTableForName(Tables.ARTICLE_COMMENTS)
+				+ addField_Long(V_ID)
+				+ addField_Long(V_ARTICLE_ID)
+				+ addField_Long(V_USER_ID)
+				+ addField_Long(V_CREATE_DATE)
+				+ addField_Int(V_COUNTRY_ID)
+				+ addField_Text(V_USERNAME)
+				+ addField_Text(V_FIRST_NAME)
+				+ addField_Text(V_LAST_NAME)
+				+ addField_Text(V_USER_AVATAR)
+				+ addField_Text(V_BODY, true);
 
 		/* Videos */
 		createTablesArray[Tables.VIDEOS.ordinal()] = createTableForName(Tables.VIDEOS)
@@ -570,12 +586,12 @@ public class DbScheme {
 	/* Tactics */
 	public static final String V_LOWEST_RATING = "lowest_rating";
 	public static final String V_LOWEST_TIMESTAMP = "lowest_timestamp";
-//	public static final String V_ATTEMPT_COUNT = "attempt_count";
-//	public static final String V_PASSED_COUNT = "passed_count";
-//	public static final String V_FAILED_COUNT = "failed_count";
-//	public static final String V_TOTAL_SECONDS = "total_seconds";
-//	public static final String V_TODAYS_ATTEMPTS = "todays_attempts";
-//	public static final String V_TODAYS_AVG_SCORE = "todays_average_score";
+	public static final String V_ATTEMPT_COUNT = "attempt_count";
+	public static final String V_PASSED_COUNT = "passed_count";
+	public static final String V_FAILED_COUNT = "failed_count";
+	public static final String V_TOTAL_SECONDS = "total_seconds";
+	public static final String V_TODAYS_ATTEMPTS = "todays_attempts";
+	public static final String V_TODAYS_AVG_SCORE = "todays_average_score";
 
 	/* Lessons*/
 	public static final String V_LESSONS_TRIED = "lessons_tried";
@@ -656,17 +672,12 @@ public class DbScheme {
 				+ addField_Int(V_CURRENT)
 				+ addField_Int(V_HIGHEST_RATING)
 				+ addField_Int(V_LOWEST_RATING)
-				/* Stats */
-				+ addField_Int(V_LESSONS_TRIED)
-				+ addField_Int(V_TOTAL_LESSON_COUNT)
-				+ addField_Int(V_TOTAL_TRAINING_SECONDS)
-				+ addField_Int(V_SCORE_90_100)
-				+ addField_Int(V_SCORE_80_89)
-				+ addField_Int(V_SCORE_70_79)
-				+ addField_Int(V_SCORE_60_69)
-				+ addField_Int(V_SCORE_50_59)
-				+ addField_Int(V_SCORE_50)
-				+ addField_Text(V_LESSON_COMPLETE_PERCENTAGE)
+				+ addField_Int(V_ATTEMPT_COUNT)
+				+ addField_Int(V_PASSED_COUNT)
+				+ addField_Int(V_FAILED_COUNT)
+				+ addField_Int(V_TODAYS_ATTEMPTS)
+				+ addField_Int(V_TODAYS_AVG_SCORE)
+				+ addField_Int(V_TOTAL_SECONDS)
 				+ addField_Text(V_USER, true);
 
 		createTablesArray[Tables.USER_STATS_LESSONS.ordinal()] = createTableForName(Tables.USER_STATS_LESSONS)

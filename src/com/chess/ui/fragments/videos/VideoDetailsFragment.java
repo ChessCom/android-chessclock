@@ -94,7 +94,7 @@ public class VideoDetailsFragment extends CommonLogicFragment {
 		thumbnailAuthorImg = (ImageView) view.findViewById(R.id.thumbnailAuthorImg);
 		countryImg = (ImageView) view.findViewById(R.id.countryImg);
 		dateTxt = (TextView) view.findViewById(R.id.dateTxt);
-		contextTxt = (TextView) view.findViewById(R.id.contextTxt);
+		contextTxt = (TextView) view.findViewById(R.id.contentTxt);
 		authorTxt = (TextView) view.findViewById(R.id.authorTxt);
 
 		playBtnTxt = (TextView) view.findViewById(R.id.playBtn);

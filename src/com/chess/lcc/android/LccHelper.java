@@ -252,7 +252,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	 */
 	public void performConnect(boolean useCurrentCredentials) {
 		AppData appData = new AppData(context);
-		String userName = appData.getUsername();
+		String username = appData.getUsername();
 		String pass = appData.getPassword();
 		boolean emptyPassword = pass.equals(StaticData.SYMBOL_EMPTY);
 
@@ -261,12 +261,12 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 				String sessionId = appData.getLiveSessionId();
 				connectBySessionId(sessionId);
 			} else {
-				connectByCreds(userName, pass);
+				connectByCreds(username, pass);
 			}
 
 		} else {
 			if (!emptyPassword && !RestHelper.IS_TEST_SERVER_MODE) {
-				connectByCreds(userName, pass);
+				connectByCreds(username, pass);
 			} else {
 				liveChessClientEventListener.onSessionExpired(context.getString(R.string.session_expired));
 				//String message = context.getString(R.string.account_error);
@@ -275,10 +275,10 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		}
 	}
 
-	public void connectByCreds(String userName, String pass) {
-//		Log.d(TAG, "connectByCreds : user = " + userName + " pass = " + pass); // do not post in prod
+	public void connectByCreds(String username, String pass) {
+//		Log.d(TAG, "connectByCreds : user = " + username + " pass = " + pass); // do not post in prod
 		Log.d(TAG, "connectByCreds : hidden"); // do not post in pod
-		lccClient.connect(userName, pass, connectionListener);
+		lccClient.connect(username, pass, connectionListener);
 		liveChessClientEventListener.onConnecting();
 	}
 
@@ -751,11 +751,11 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 		String to = null;
 		PieceColor color = PieceColor.WHITE;
-		final String userName = user.getUsername();
-		if (whiteUsername.equals(userName)) {
+		final String username = user.getUsername();
+		if (whiteUsername.equals(username)) {
 			to = blackUsername;
 			color = switchColor ? PieceColor.BLACK : PieceColor.WHITE;
-		} else if (blackUsername.equals(userName)) {
+		} else if (blackUsername.equals(username)) {
 			to = whiteUsername;
 			color = switchColor ? PieceColor.WHITE : PieceColor.BLACK;
 		}
@@ -977,13 +977,13 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	public Boolean isFairPlayRestriction() {
 		Game game = getCurrentGame();
-		String userName = user.getUsername();
+		String username = user.getUsername();
 
 		final String whiteUsername = game.getWhitePlayer().getUsername();
 		final String blackUsername = game.getBlackPlayer().getUsername();
-		if (whiteUsername.equals(userName) && !game.isAbortableByPlayer(whiteUsername)) {
+		if (whiteUsername.equals(username) && !game.isAbortableByPlayer(whiteUsername)) {
 			return true;
-		} else if (blackUsername.equals(userName) && !game.isAbortableByPlayer(blackUsername)) {
+		} else if (blackUsername.equals(username) && !game.isAbortableByPlayer(blackUsername)) {
 			return true;
 		}
 		return false;

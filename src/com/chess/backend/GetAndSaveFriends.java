@@ -2,7 +2,6 @@ package com.chess.backend;
 
 import android.app.IntentService;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -42,27 +41,21 @@ public class GetAndSaveFriends extends IntentService {
 		}
 
 		if (item != null) {
-			String userName = appData.getUsername();
+			String username = appData.getUsername();
 			ContentResolver contentResolver = getContentResolver();
 
 			for (FriendsItem.Data currentItem : item.getData()) { // if
 				final String[] arguments2 = arguments;
-				arguments2[0] = String.valueOf(userName);
+				arguments2[0] = String.valueOf(username);
 				arguments2[1] = String.valueOf(currentItem.getUserId());
 
 				// TODO implement beginTransaction logic for performance increase
 				Uri uri = DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()];
 				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER_ID, DbDataManager.SELECTION_USER_ID, arguments2, null);
 
-				ContentValues values = DbDataManager.putFriendItemToValues(currentItem, userName);
+				ContentValues values = DbDataManager.putFriendItemToValues(currentItem, username);
 
-				if (cursor.moveToFirst()) {
-					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-				} else {
-					contentResolver.insert(uri, values);
-				}
-
-				cursor.close();
+				DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 			}
 		}
 	}

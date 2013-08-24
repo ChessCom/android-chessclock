@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:paddingTop="15dip"
+	android:background="@color/white"
+	>
+<!--
+	android:paddingLeft="@dimen/default_scr_side_padding"
+	android:paddingRight="@dimen/default_scr_side_padding"
+-->
+
+	<com.chess.backend.image_load.AvatarView
+		android:id="@+id/photoImg"
+		android:layout_width="35dip"
+		android:layout_height="35dip"
+		android:background="@color/new_common_list_thumb_grey"
+		android:layout_below="@id/titleTxt"
+		android:contentDescription="@string/image"
+		android:layout_marginRight="11dip"
+		/>
+
+	<com.chess.RoboTextView
+		android:id="@+id/authorTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/photoImg"
+		android:layout_marginTop="-4dip"
+		android:textColor="@color/new_text_blue"
+		android:textSize="14sp"
+		custom:ttf="Bold"
+		/>
+
+	<ImageView
+		android:id="@+id/countryImg"
+		android:layout_width="27dip"
+		android:layout_height="27dip"
+		android:contentDescription="@string/country"
+		android:layout_toRightOf="@id/authorTxt"
+		android:layout_alignTop="@id/photoImg"
+		android:layout_marginTop="-6dip"
+		android:layout_marginLeft="7dip"
+		/>
+
+	<ImageView
+		android:id="@+id/premiumImg"
+		android:layout_width="20dip"
+		android:layout_height="20dip"
+		android:contentDescription="@string/image"
+		android:layout_toRightOf="@id/countryImg"
+		android:layout_alignTop="@id/photoImg"
+		android:layout_marginLeft="10dip"
+		android:layout_marginTop="-3dip"
+		android:adjustViewBounds="true"
+		android:scaleType="fitXY"
+		/>
+
+	<com.chess.RoboTextView
+		android:id="@+id/dateTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:textColor="@color/stats_label_light_grey"
+		android:textSize="12sp"
+		custom:ttf="Bold"
+		/>
+
+	<com.chess.RoboTextView
+		android:id="@+id/bodyTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/photoImg"
+		android:layout_below="@id/authorTxt"
+		android:textColor="@color/new_subtitle_dark_grey"
+		android:paddingTop="5dip"
+		/>
+
+</RelativeLayout>

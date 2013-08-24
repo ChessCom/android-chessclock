@@ -82,8 +82,8 @@ public class AppData {
 		return preferences.getString(USERNAME, StaticData.SYMBOL_EMPTY);
 	}
 
-	public void setUserName(String userName) {
-		editor.putString(USERNAME, userName).commit();
+	public void setUserName(String username) {
+		editor.putString(USERNAME, username).commit();
 	}
 
 	public String getPassword() {
@@ -198,9 +198,9 @@ public class AppData {
 	}
 
 	public void clearSavedCompGame() {
-		String userName = preferences.getString(USERNAME, StaticData.SYMBOL_EMPTY);
+		String username = preferences.getString(USERNAME, StaticData.SYMBOL_EMPTY);
 		preferences.edit()
-				.putString(userName + SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY)
+				.putString(username + SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY)
 				.commit();
 	}
 
@@ -257,9 +257,9 @@ public class AppData {
 	}
 
 	public void setUserSkill(int skillCode) {
-		String userName = preferences.getString(USERNAME, StaticData.SYMBOL_EMPTY);
+		String username = preferences.getString(USERNAME, StaticData.SYMBOL_EMPTY);
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.putInt(userName + PREF_USER_SKILL_LEVEL, skillCode);
+		editor.putInt(username + PREF_USER_SKILL_LEVEL, skillCode);
 		editor.putBoolean(PREF_USER_SKILL_LEVEL_SET, true);
 		editor.commit();
 	}
@@ -448,8 +448,8 @@ public class AppData {
 	/*--------------------------- Common Shared logic ------------------------*/
 
 	private void setBooleanValue(String field, boolean checked) {
-		String userName = getUsername();
-		preferences.edit().putBoolean(userName + field, checked).commit();
+		String username = getUsername();
+		preferences.edit().putBoolean(username + field, checked).commit();
 	}
 
 	private boolean getBooleanValue(String field) {
@@ -457,28 +457,28 @@ public class AppData {
 	}
 
 	private boolean getBooleanValue(String field, boolean defValue) {
-		String userName = getUsername();
-		return preferences.getBoolean(userName + field, defValue);
+		String username = getUsername();
+		return preferences.getBoolean(username + field, defValue);
 	}
 
 	private void setStringValue(String field, String value) {
-		String userName = getUsername();
-		editor.putString(userName + field, value).commit();
+		String username = getUsername();
+		editor.putString(username + field, value).commit();
 	}
 
 	private String getStringValue(String field, String defValue) {
-		String userName = getUsername();
-		return preferences.getString(userName + field, defValue);
+		String username = getUsername();
+		return preferences.getString(username + field, defValue);
 	}
 
 	private int getIntValue(String field, int defValue) {
-		String userName = getUsername();
-		return preferences.getInt(userName + field, defValue);
+		String username = getUsername();
+		return preferences.getInt(username + field, defValue);
 	}
 
 	private void setIntValue(String field, int value) {
-		String userName = getUsername();
-		editor.putInt(userName + field, value).commit();
+		String username = getUsername();
+		editor.putInt(username + field, value).commit();
 	}
 
 }

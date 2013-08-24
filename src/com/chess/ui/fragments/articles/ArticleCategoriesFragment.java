@@ -50,6 +50,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	private ArticleItemUpdateListener articleItemUpdateListener;
 	private HashMap<String, Integer> categoriesMap;
 	private String categoryName;
+	private DarkSpinnerAdapter spinnerAdapter;
 
 	public static ArticleCategoriesFragment createInstance(String sectionName) {
 		ArticleCategoriesFragment frag = new ArticleCategoriesFragment();
@@ -64,7 +65,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		super.onCreate(savedInstanceState);
 
 		categoriesMap = new HashMap<String, Integer>();
-
+		spinnerAdapter = new DarkSpinnerAdapter(getActivity(), null);
 		articlesAdapter = new ArticlesThumbCursorAdapter(getActivity(), null);
 		articleItemUpdateListener = new ArticleItemUpdateListener();
 	}
@@ -84,6 +85,8 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
+		categorySpinner.setAdapter(spinnerAdapter);
+		categorySpinner.setOnItemSelectedListener(this);
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(articlesAdapter);
@@ -129,8 +132,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 				}
 			}
 
-			categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), list));
-			categorySpinner.setOnItemSelectedListener(this);
+			spinnerAdapter.setItemsList(list);
 			categorySpinner.setSelection(sectionId);  // TODO remember last selection.
 			return true;
 		} else {
@@ -142,7 +144,8 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		getActivityFace().openFragment(ArticleDetailsFragment.createInstance(DbDataManager.getId(cursor)));
+		long articleId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+		getActivityFace().openFragment(ArticleDetailsFragment.createInstance(articleId));
 	}
 
 	@Override
@@ -177,7 +180,6 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 		@Override
 		public void updateData(ArticleItem returnedObj) {
-			// TODO check performance
 			String[] arguments = new String[1];
 
 			for (ArticleItem.Data currentItem : returnedObj.getData()) {

@@ -324,8 +324,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	protected void signInUser() {
-		String userName = getTextFromField(loginUsernameEdt);
-		if (userName.length() < MIN_USERNAME_LENGTH || userName.length() > MAX_USERNAME_LENGTH) {
+		String username = getTextFromField(loginUsernameEdt);
+		if (username.length() < MIN_USERNAME_LENGTH || username.length() > MAX_USERNAME_LENGTH) {
 			loginUsernameEdt.setError(getString(R.string.validateUsername));
 			loginUsernameEdt.requestFocus();
 			return;
@@ -342,7 +342,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		loadItem.setLoadPath(RestHelper.CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
-		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, userName);
+		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, username);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);

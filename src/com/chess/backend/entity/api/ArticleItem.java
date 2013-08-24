@@ -11,19 +11,20 @@ import java.util.List;
 public class ArticleItem extends BaseResponseItem<List<ArticleItem.Data>> {
 
 /*
-	"id": 225,
-	"title": "Blueness",
-	"create_date": 1369863194,
+	"id": 224,
+	"title": "Testing thing",
+	"create_date": 1369863079,
+	"body": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irur...",
 	"user_id": 5543,
 	"username": "deepgreene",
-	"category_name": "Strategy",
-	"category_id": 14,
+	"category_name": "For Beginners",
+	"category_id": 11,
 	"chess_title": "NM",
 	"first_name": "Вовк",
 	"last_name": "Андрій",
 	"country_id": 3,
-	"avatar_url": "https://s3.amazonaws.com/chess-7/images_users/avatars/deepgreene.gif",
-	"image_url": "https://s3.amazonaws.com/chess-7/images_users/articles/blueness_origin.1.png",
+	"avatar_url": "//d1lalstwiwz2br.cloudfront.net/images_users/avatars/deepgreene.gif",
+	"image_url": "//d1lalstwiwz2br.cloudfront.net/images_users/articles/testing-thing_origin.1.png",
 	"is_thumb_in_content": true
 */
 
@@ -31,6 +32,7 @@ public class ArticleItem extends BaseResponseItem<List<ArticleItem.Data>> {
 		private long id;
 		private String title;
 		private long create_date;
+		private String body;
 		private long user_id;
 		private String username;
 		private String category_name;
@@ -51,8 +53,12 @@ public class ArticleItem extends BaseResponseItem<List<ArticleItem.Data>> {
 			return title;
 		}
 
-		public long getCreate_date() {
+		public long getCreateDate() {
 			return create_date;
+		}
+
+		public String getBody() {
+			return body;
 		}
 
 		public String getCategoryName() {

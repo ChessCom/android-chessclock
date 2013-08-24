@@ -372,10 +372,10 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 			if (rating == 0) {
 				setTextById((BEST_WIN_ID + RATING_VALUE_ID), R.string.not_available);
 			} else {
-				String userName = DbDataManager.getString(cursor, DbScheme.V_BEST_WIN_USERNAME);
+				String username = DbDataManager.getString(cursor, DbScheme.V_BEST_WIN_USERNAME);
 
 				setTextById((BEST_WIN_ID + RATING_VALUE_ID), String.valueOf(rating));
-				setTextById((BEST_WIN_ID + RATING_SUBTITLE_ID), userName);
+				setTextById((BEST_WIN_ID + RATING_SUBTITLE_ID), username);
 			}
 		}
 	}

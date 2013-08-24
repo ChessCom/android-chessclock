@@ -70,13 +70,20 @@
         />
 
     <com.chess.RoboTextView
-        android:id="@+id/contextTxt"
+        android:id="@+id/contentTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/thumbnailAuthorImg"
         android:textColor="@color/new_subtitle_dark_grey"
         android:textSize="14sp"
         />
+
+	<ListView
+		android:id="@+id/listView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/contentTxt"
+		/>
 
     <com.chess.RoboTextView
         android:id="@+id/emptyView"

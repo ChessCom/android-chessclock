@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class SaveConversationsInboxTask extends AbstractUpdateTask<ConversationItem.Data, Long> {
 
-	private final String userName;
+	private final String username;
 
 	private ContentResolver contentResolver;
 	protected static String[] sArguments = new String[2];
@@ -35,17 +35,17 @@ public class SaveConversationsInboxTask extends AbstractUpdateTask<ConversationI
 
 		this.contentResolver = resolver;
 		AppData appData = new AppData(getTaskFace().getMeContext());
-		userName = appData.getUsername();
+		username = appData.getUsername();
 	}
 
 	@Override
 	protected Integer doTheTask(Long... ids) {
 		for (ConversationItem.Data currentItem : itemList) {
-			currentItem.setUser(userName);
+			currentItem.setUser(username);
 
 			final String[] arguments = sArguments;
 			arguments[0] = String.valueOf(currentItem.getId());
-			arguments[1] = String.valueOf(userName);
+			arguments[1] = String.valueOf(username);
 
 			// TODO implement beginTransaction logic for performance increase
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.CONVERSATIONS_INBOX.ordinal()];

@@ -42,16 +42,16 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		return StaticData.RESULT_OK;
 	}
 
-	public static void saveLiveStats(String userName, UserStatsItem.Data item, ContentResolver contentResolver) {
+	public static void saveLiveStats(String username, UserStatsItem.Data item, ContentResolver contentResolver) {
 
 		final String[] userArgument = arguments;
-		userArgument[0] = String.valueOf(userName);
+		userArgument[0] = String.valueOf(username);
 
 		// save Live Standard
 		if (item.getLiveStandard() != null) {
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal()];
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getLiveStandard(), userName);
+			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getLiveStandard(), username);
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 
@@ -59,7 +59,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		if (item.getLiveBullet() != null) {
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal()];
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getLiveBullet(), userName);
+			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getLiveBullet(), username);
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 
@@ -67,20 +67,20 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		if (item.getLiveBlitz() != null) {
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal()];
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getLiveBlitz(), userName);
+			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getLiveBlitz(), username);
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 	}
 
-	public static void saveDailyStats(String userName, UserStatsItem.Data item, ContentResolver contentResolver) {
+	public static void saveDailyStats(String username, UserStatsItem.Data item, ContentResolver contentResolver) {
 		final String[] userArgument = arguments;
-		userArgument[0] = String.valueOf(userName);
+		userArgument[0] = String.valueOf(username);
 
 		// save Daily Chess
 		if (item.getDailyChess() != null) {
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal()];
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getDailyChess(), userName);
+			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getDailyChess(), username);
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 
@@ -88,31 +88,31 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 		if (item.getChess960() != null) {
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_DAILY_CHESS960.ordinal()];
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getChess960(), userName);
+			ContentValues values = DbDataManager.putUserStatsGameItemToValues(item.getChess960(), username);
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 	}
 
-	public static void saveTacticsStats(String userName, UserStatsItem.Data item, ContentResolver contentResolver) {
-		if (item.getTactics() != null) {
-			final String[] userArgument = arguments;
-			userArgument[0] = String.valueOf(userName);
-
-			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_TACTICS.ordinal()];
-			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-			ContentValues values = DbDataManager.putUserStatsTacticsItemToValues(item.getTactics(), userName);
-			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
-		}
+	public static void saveTacticsStats(String username, UserStatsItem.Data item, ContentResolver contentResolver) {
+//		if (item.getTactics() != null) {
+//			final String[] userArgument = arguments;
+//			userArgument[0] = String.valueOf(username);
+//
+//			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_TACTICS.ordinal()];
+//			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
+//			ContentValues values = DbDataManager.putUserStatsTacticsItemToValues(item.getTactics(), username);
+//			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
+//		}
 	}
 
-	public static void saveLessonsStats(String userName, UserStatsItem.Data item, ContentResolver contentResolver) {
+	public static void saveLessonsStats(String username, UserStatsItem.Data item, ContentResolver contentResolver) {
 		if (item.getLessons() != null) {
 			final String[] userArgument = arguments;
-			userArgument[0] = String.valueOf(userName);
+			userArgument[0] = String.valueOf(username);
 
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_LESSONS.ordinal()];
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-			ContentValues values = DbDataManager.putUserStatsLessonsItemToValues(item.getLessons(), userName);
+			ContentValues values = DbDataManager.putUserStatsLessonsItemToValues(item.getLessons(), username);
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 	}

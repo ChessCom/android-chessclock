@@ -18,7 +18,7 @@ import java.util.List;
 
 public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Long> {
 
-	private final String userName;
+	private final String username;
 
 	private ContentResolver contentResolver;
 	protected static String[] arguments = new String[2];
@@ -30,7 +30,7 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 
 		this.contentResolver = resolver;
 		AppData appData = new AppData(getTaskFace().getMeContext());
-		userName = appData.getUsername();
+		username = appData.getUsername();
 	}
 
 	@Override
@@ -39,14 +39,14 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 		synchronized (itemList) {
 			for (FriendsItem.Data currentItem : itemList) { // if
 				final String[] arguments2 = arguments;
-				arguments2[0] = String.valueOf(userName);
+				arguments2[0] = String.valueOf(username);
 				arguments2[1] = String.valueOf(currentItem.getUserId());
 
 				// TODO implement beginTransaction logic for performance increase
 				Uri uri = DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()];
 				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER_ID, DbDataManager.SELECTION_USER_ID, arguments2, null);
 
-				ContentValues values = DbDataManager.putFriendItemToValues(currentItem, userName);
+				ContentValues values = DbDataManager.putFriendItemToValues(currentItem, username);
 
 				DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 

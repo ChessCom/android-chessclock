@@ -192,9 +192,9 @@ public class LccGameListener implements GameListener {
 	private boolean isMyGame(Game game) {
 		String whiteUsername = game.getWhitePlayer().getUsername();
 		String blackUsername = game.getBlackPlayer().getUsername();
-		String userName = lccHelper.getUsername();
+		String username = lccHelper.getUsername();
 
-		boolean isMyGame = userName.equals(whiteUsername) || userName.equals(blackUsername);
+		boolean isMyGame = username.equals(whiteUsername) || username.equals(blackUsername);
 
 		if (!isMyGame) {
 			Log.d(TAG, "not own game " + game.getId());

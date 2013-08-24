@@ -40,7 +40,7 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 
 		if (item.isMine()) {
 //			holder.text.setTextColor(ownerColor);
-//			holder.text.setText(userName + StaticData.SYMBOL_COLON + StaticData.SYMBOL_SPACE + item.getContent());
+//			holder.text.setText(username + StaticData.SYMBOL_COLON + StaticData.SYMBOL_SPACE + item.getContent());
 			holder.text.setText(item.getContent());
 			holder.text.setBackgroundResource(R.drawable.img_chat_buble_grey);
 

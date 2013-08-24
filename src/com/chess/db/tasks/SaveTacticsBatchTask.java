@@ -20,7 +20,7 @@ import java.util.List;
 //public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItemOld, Long> {
 public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.Data, Long> {
 
-	private final String userName;
+	private final String username;
 	private ContentResolver contentResolver;
 	private final List<TacticItem.Data> tacticsBatch;
 	private static String[] arguments = new String[2];
@@ -32,7 +32,7 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.Data, Lo
 		this.tacticsBatch.addAll(tacticsBatch);
 		this.contentResolver = resolver;
 		AppData appData = new AppData(getTaskFace().getMeContext());
-		userName = appData.getUsername();
+		username = appData.getUsername();
 
 	}
 
@@ -40,9 +40,9 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.Data, Lo
     protected Integer doTheTask(Long... ids) {
 		synchronized (tacticsBatch) {
 			for (TacticItem.Data tacticItem : tacticsBatch) {
-				tacticItem.setUser(userName);
+				tacticItem.setUser(username);
 				arguments[0] = String.valueOf(tacticItem.getId());
-				arguments[1] = userName;
+				arguments[1] = username;
 
 				Uri uri = DbScheme.uriArray[DbScheme.Tables.TACTICS_BATCH.ordinal()];
 				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID_AND_USER,

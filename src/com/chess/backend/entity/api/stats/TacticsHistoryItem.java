@@ -1,6 +1,6 @@
-package com.chess.backend.entity.api;
+package com.chess.backend.entity.api.stats;
 
-import com.chess.backend.entity.api.stats.UserTacticsStatsData;
+import com.chess.backend.entity.api.BaseResponseItem;
 
 import java.util.List;
 
