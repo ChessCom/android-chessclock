@@ -9,6 +9,7 @@ import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ChatItem;
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
@@ -1099,10 +1100,12 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		Integer minMembershipLevel = null;
 		PieceColor pieceColor = PieceColor.UNDEFINED;  // always random!
 
+		String opponentName = config.getOpponentName().equals(AppConstants.RANDOM) ? null : config.getOpponentName();
+
 		final GameType gameType = GameType.Chess;
 		Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
 				getUser(),
-				config.getOpponentName(),
+				opponentName,
 				gameType,
 				pieceColor, rated, gameTimeConfig,
 				minMembershipLevel, minRating, maxRating);

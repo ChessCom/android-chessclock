@@ -110,6 +110,8 @@ public class AppConstants {
 
 	public static final String GAME_LISTENER_IGNORE_OLD_GAME_ID = "GAME LISTENER: ignore old game id=";
 
+	public final static String RANDOM = "Random";
+
 	/* Messages */
 	/**
 	 * Use DB stored value for particular game
