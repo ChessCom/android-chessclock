@@ -11,6 +11,7 @@ import java.util.List;
 public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Input, Void, Integer> {
 
 	private static final String TAG = "AbstractUpdateTask";
+	public static final String TASK_FACE_IS_ALREADY_DEAD = "TaskFace is already dead";
 	private TaskUpdateInterface<ItemType> taskFace; // SoftReferences & WeakReferences are not reliable, because they become killed even at the same activity and task become unfinished
 	protected ItemType item;
 	protected final List<ItemType> itemList;
@@ -135,7 +136,7 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	protected TaskUpdateInterface<ItemType> getTaskFace() throws IllegalStateException {
 		if (taskFace == null) {
 			Log.d(TAG, "taskFace == null");
-			throw new IllegalStateException("TaskFace is already dead");
+			throw new IllegalStateException(TASK_FACE_IS_ALREADY_DEAD);
 		} else {
 			return taskFace;
 		}

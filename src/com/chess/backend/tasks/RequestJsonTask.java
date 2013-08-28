@@ -1,5 +1,6 @@
 package com.chess.backend.tasks;
 
+import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.exceptions.InternalErrorException;
@@ -17,6 +18,8 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 	protected Integer doTheTask(LoadItem... loadItems) {
 		try {
 			item = RestHelper.requestData(loadItems[0], getTaskFace().getClassType(), AppUtils.getAppId(getTaskFace().getMeContext()));
+		} catch (IllegalStateException ex) {
+			Log.d("RequestJsonTask", "getTaskFace().getClassType() fails, due to killed state" + ex.toString());
 		} catch (InternalErrorException e) {
 			e.logMe();
 			result = e.getCode();
