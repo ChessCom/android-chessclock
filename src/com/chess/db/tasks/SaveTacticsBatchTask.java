@@ -1,7 +1,6 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -27,43 +26,32 @@ public class SaveTacticsBatchTask extends AbstractUpdateTask<TacticItem.Data, Lo
 
 	public SaveTacticsBatchTask(TaskUpdateInterface<TacticItem.Data> taskFace, List<TacticItem.Data> tacticsBatch,
 								ContentResolver resolver) {
-        super(taskFace);
+		super(taskFace);
 		this.tacticsBatch = new ArrayList<TacticItem.Data>();
 		this.tacticsBatch.addAll(tacticsBatch);
 		this.contentResolver = resolver;
 		AppData appData = new AppData(getTaskFace().getMeContext());
 		username = appData.getUsername();
-
 	}
 
-    @Override
-    protected Integer doTheTask(Long... ids) {
-		synchronized (tacticsBatch) {
-			for (TacticItem.Data tacticItem : tacticsBatch) {
-				tacticItem.setUser(username);
-				arguments[0] = String.valueOf(tacticItem.getId());
-				arguments[1] = username;
+	@Override
+	protected Integer doTheTask(Long... ids) {
+		for (TacticItem.Data tacticItem : tacticsBatch) {
+			tacticItem.setUser(username);
+			arguments[0] = String.valueOf(tacticItem.getId());
+			arguments[1] = username;
 
-				Uri uri = DbScheme.uriArray[DbScheme.Tables.TACTICS_BATCH.ordinal()];
-				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID_AND_USER,
-						DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments, null);
+			Uri uri = DbScheme.uriArray[DbScheme.Tables.TACTICS_BATCH.ordinal()];
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID_AND_USER,
+					DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments, null);
 
-				ContentValues values = DbDataManager.putTacticItemToValues(tacticItem);
+			ContentValues values = DbDataManager.putTacticItemToValues(tacticItem);
 
-				if (cursor.moveToFirst()) {
-					contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-				} else {
-					contentResolver.insert(uri, values);
-				}
-
-				cursor.close();
-			}
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 
-        result = StaticData.RESULT_OK;
-
-        return result;
-    }
+		return StaticData.RESULT_OK;
+	}
 
 
 }

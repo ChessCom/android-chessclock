@@ -10,27 +10,18 @@
 	<!--Notification-->
 	<item name="notification_message" type="id"/>
 
-    <!--Home screens-->
-<!--    <item name="playLive" type="id"/>
-    <item name="playOnline" type="id"/>
-    <item name="playComputer" type="id"/>
-    <item name="tacticsTrainer" type="id"/>
-    <item name="videoLessons" type="id"/>
-    <item name="logOut" type="id"/>
-
-    <item name="playLiveFrame" type="id"/>
-    <item name="playOnlineFrame" type="id"/>
-    <item name="playComputerFrame" type="id"/>
-    <item name="tacticsTrainerFrame" type="id"/>
-    <item name="videoLessonsFrame" type="id"/>
-    <item name="logOutFrame" type="id"/>
-    <item name="settingsFrame" type="id"/>-->
-
 	<item name="list_item_id" type="id"/>
 	<item name="list_item_id_group" type="id"/>
 	<item name="lessonsVideoLibFooterTxt" type="id"/>
 
-    <!--Sliding Menu-->
+	<!--Stats radioButtons ids-->
+	<item name="thirtyDaysBtn" type="id"/>
+	<item name="ninetyDaysBtn" type="id"/>
+	<item name="oneYearBtn" type="id"/>
+	<item name="allTimeBtn" type="id"/>
+
+
+	<!--Sliding Menu-->
     <item name="selected_view" type="id"/>
 
 </resources>

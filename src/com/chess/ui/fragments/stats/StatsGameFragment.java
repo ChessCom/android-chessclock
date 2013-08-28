@@ -160,11 +160,17 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		@Override
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
-			// get selected position of spinner
-			int position = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
-
-			changeInternalFragment(StatsGameDetailsFragment.createInstance(position, username));
+			showSelectedStats();
 		}
+	}
+
+	private void showSelectedStats() {
+		statsSpinner.setEnabled(true);
+
+		// get selected position of spinner
+		int position = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
+
+		changeInternalFragment(StatsGameDetailsFragment.createInstance(position, username));
 	}
 
 	private class SaveStatsUpdateListener extends ChessLoadUpdateListener<GameStatsItem.Data> {
@@ -172,12 +178,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		@Override
 		public void updateData(GameStatsItem.Data returnedObj) {
 			super.updateData(returnedObj);
-			statsSpinner.setEnabled(true);
-
-			// get selected position of spinner
-			int position = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
-
-			changeInternalFragment(StatsGameDetailsFragment.createInstance(position, username));
+			showSelectedStats();
 		}
 
 		@Override

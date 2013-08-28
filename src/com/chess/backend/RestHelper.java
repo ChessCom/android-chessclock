@@ -114,6 +114,10 @@ public class RestHelper {
 		return CMD_ARTICLES + "/" + id + "/comments";
 	}
 
+	public static String CMD_ARTICLE_EDIT_COMMENT(long articleId, long commentId) {
+		return CMD_ARTICLES + "/" + articleId + "/comments/" + commentId;
+	}
+
 	/*Forums*/
 	public static final String CMD_FORUMS = BASE_URL + V1 + "/forums";
 	public static final String CMD_FORUMS_CATEGORIES = CMD_FORUMS + "/categories";

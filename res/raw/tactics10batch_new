@@ -3,16 +3,16 @@
   "count": 4,
   "data": [
     {
-      "tactics_problem_id": 746,
+      "id": 746,
       "initial_fen": "r3k2r/ppp1b2p/2n1pNp1/1Q1q4/2pp4/8/PPP2PPP/R1B1R1K1 b kq - 1 1",
       "clean_move_string": "1... Bxf6 2. Qxd5 ",
-      "attempt_count": 81,
-      "passed_count": 51,
+      "attempt_count": 0,
+      "passed_count": 0,
       "rating": 940,
       "average_seconds": 14
     },
     {
-      "tactics_problem_id": 766,
+      "id": 766,
       "initial_fen": "r1b1rqk1/5p2/5PQ1/ppp1B3/8/1P1P3R/P5PP/5RK1 b - - 1 1",
       "clean_move_string": "1... fxg6 2. f7+ Qxf7 3. Rh8# ",
       "attempt_count": 0,
@@ -21,7 +21,7 @@
       "average_seconds": 10
     },
     {
-      "tactics_problem_id": 793,
+      "id": 793,
       "initial_fen": "1r4kR/1p2nrb1/p2qp1p1/4NpQ1/3P4/3B2P1/PP3P2/1K5R b - - 1 1",
       "clean_move_string": "1... Bxh8 2. Rxh8+ Kxh8 3. Nxf7+ Kg7 4. Nxd6 ",
       "attempt_count": 0,
@@ -30,7 +30,7 @@
       "average_seconds": 15
     },
     {
-      "tactics_problem_id": 905,
+      "id": 905,
       "initial_fen": "2r3k1/8/5P2/Q3P2p/2q4P/8/P4bP1/5R1K w - - 1 2",
       "clean_move_string": "1. Rxf2 Qxh4+ 2. Kg1 Rc1+ 3. Rf1 Qd4+ ",
       "attempt_count": 0,

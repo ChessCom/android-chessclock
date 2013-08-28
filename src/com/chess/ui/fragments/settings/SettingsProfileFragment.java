@@ -102,6 +102,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private String countryStr;
 	private ActionModeHelper actionModeHelper;
 	private boolean discarded;
+	private MembershipItem.Data membershipData;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -291,6 +292,8 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			if (need2update) {
 				LoadItem loadItem = LoadHelper.getMembershipDetails(getUserToken());
 				new RequestJsonTask<MembershipItem>(new GetDetailsListener()).executeTask(loadItem); // TODO set proper item
+			} else {
+				fillMembershipData();
 			}
 		}
 	}
@@ -305,32 +308,37 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		public void updateData(MembershipItem returnedObj) {
 			super.updateData(returnedObj);
 
-			Activity activity = getActivity();
+			Activity activity = getActivity(); // TODO probably redundant
 			if (activity == null) {
 				return;
 			}
 
 			// update selected modes
-			if (returnedObj.getData().getIs_premium() > 0) {
-				getAppData().setUserPremiumStatus(returnedObj.getData().getLevel());
-
-				Date time = new Date(returnedObj.getData().getDate().getExpires()* 1000L);
-				String membershipExpireDate = dateFormatter.format(time);
-				String text = getString(R.string.profile_membership_renew_cancel, returnedObj.getData().getType(), membershipExpireDate)
-						+ StaticData.SYMBOL_NEW_STR	+ getString(R.string.profile_membership_renew_cancel_1);
-
-				cancelMembershipTxt.setClickable(true);
-				cancelMembershipTxt.setText(Html.fromHtml(text));
-				Linkify.addLinks(cancelMembershipTxt, Linkify.WEB_URLS);
-				cancelMembershipTxt.setMovementMethod(LinkMovementMethod.getInstance());
-				cancelMembershipTxt.setLinkTextColor(Color.WHITE);
-			} else {
-				cancelMembershipTxt.setText("Basic user text");
-			}
-			cancelMembershipTxt.setVisibility(View.VISIBLE);
+			membershipData = returnedObj.getData();
+			fillMembershipData();
 
 			need2update = false;
 		}
+	}
+
+	private void fillMembershipData() {
+		if (membershipData.getIs_premium() > 0) {
+			getAppData().setUserPremiumStatus(membershipData.getLevel());
+
+			Date time = new Date(membershipData.getDate().getExpires()* 1000L);
+			String membershipExpireDate = dateFormatter.format(time);
+			String text = getString(R.string.profile_membership_renew_cancel, membershipData.getType(), membershipExpireDate)
+					+ StaticData.SYMBOL_NEW_STR	+ getString(R.string.profile_membership_renew_cancel_1);
+
+			cancelMembershipTxt.setClickable(true);
+			cancelMembershipTxt.setText(Html.fromHtml(text));
+			Linkify.addLinks(cancelMembershipTxt, Linkify.WEB_URLS);
+			cancelMembershipTxt.setMovementMethod(LinkMovementMethod.getInstance());
+			cancelMembershipTxt.setLinkTextColor(Color.WHITE);
+		} else {
+			cancelMembershipTxt.setText("Basic user text");
+		}
+		cancelMembershipTxt.setVisibility(View.VISIBLE);
 	}
 
 	@Override

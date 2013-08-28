@@ -111,6 +111,7 @@ public class RatingGraphView extends LinearLayout {
 
 			{ // 30 Days button
 				RoboRadioButton radioButton = new RoboRadioButton(context, null, R.attr.roundedRadioBtn);
+				radioButton.setId(R.id.thirtyDaysBtn);
 				radioButton.setTextAppearance(context, R.style.RoundRadioButton_Left);
 				radioButton.setBackgroundResource(R.drawable.button_toggle_left_selector);
 				radioButton.setText(R.string.thirty_days);
@@ -121,6 +122,7 @@ public class RatingGraphView extends LinearLayout {
 
 			{ // 90 Days button
 				RoboRadioButton radioButton = new RoboRadioButton(context, null, R.attr.roundedRadioBtn);
+				radioButton.setId(R.id.ninetyDaysBtn);
 				radioButton.setTextAppearance(context, R.style.RoundRadioButton_Middle);
 				radioButton.setBackgroundResource(R.drawable.button_toggle_middle_selector);
 				radioButton.setText(R.string.ninety_days);
@@ -131,6 +133,7 @@ public class RatingGraphView extends LinearLayout {
 
 			{ // 1 Year button
 				RoboRadioButton radioButton = new RoboRadioButton(context, null, R.attr.roundedRadioBtn);
+				radioButton.setId(R.id.oneYearBtn);
 				radioButton.setTextAppearance(context, R.style.RoundRadioButton_Middle);
 				radioButton.setBackgroundResource(R.drawable.button_toggle_middle_selector);
 				radioButton.setText(R.string.one_year);
@@ -142,10 +145,11 @@ public class RatingGraphView extends LinearLayout {
 			{ // All Time
 				RoboRadioButton radioButton = new RoboRadioButton(context, null, R.attr.roundedRadioBtn);
 				radioButton.setTextAppearance(context, R.style.RoundRadioButton_Right);
+				radioButton.setId(R.id.allTimeBtn);
 				radioButton.setBackgroundResource(R.drawable.button_toggle_right_selector);
 				radioButton.setText(R.string.all_time);
 				radioButton.setFont(FontsHelper.BOLD_FONT);
-				radioButton.setChecked(true);
+//				radioButton.setChecked(true);
 
 				radioGroup.addView(radioButton, buttonParams);
 			}

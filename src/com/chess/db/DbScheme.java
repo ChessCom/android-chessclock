@@ -253,17 +253,17 @@ public class DbScheme {
 	void createMainTables() {
 
 		createTablesArray[Tables.TACTICS_BATCH.ordinal()] = createTableForName(Tables.TACTICS_BATCH)
-				+ addField_Text(V_USER)
 				+ addField_Long(V_ID)
-				+ addField_Text(V_FEN)
-				+ addField_Text(V_MOVE_LIST)
+				+ addField_Long(V_SECONDS_SPENT)
 				+ addField_Int(V_ATTEMPT_CNT)
 				+ addField_Int(V_PASSED_CNT)
 				+ addField_Int(V_RATING)
 				+ addField_Int(V_STOP)
 				+ addField_Int(V_WAS_SHOWED)
 				+ addField_Int(V_IS_RETRY)
-				+ addField_Long(V_SECONDS_SPENT)
+				+ addField_Text(V_FEN)
+				+ addField_Text(V_MOVE_LIST)
+				+ addField_Text(V_USER)
 				+ addField_Text(V_AVG_SECONDS, true);
 
 		createTablesArray[Tables.TACTICS_RESULTS.ordinal()] = createTableForName(Tables.TACTICS_RESULTS)
