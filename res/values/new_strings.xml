@@ -318,5 +318,6 @@
 	<string name="all_time">All Time</string>
 	<string name="comments_arg">%s comments</string>
 	<string name="reads_arg">%s reads</string>
+	<string name="share_article">Share Article</string>
 
 </resources>

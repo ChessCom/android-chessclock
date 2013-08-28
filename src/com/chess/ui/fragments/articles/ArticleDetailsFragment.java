@@ -1,6 +1,7 @@
 package com.chess.ui.fragments.articles;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -8,17 +9,16 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.SparseArray;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.CommonCommentItem;
 import com.chess.backend.entity.api.ArticleDetailsItem;
+import com.chess.backend.entity.api.CommonCommentItem;
 import com.chess.backend.entity.api.PostCommentItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
@@ -41,7 +41,7 @@ import java.util.Date;
  * Date: 27.01.13
  * Time: 19:12
  */
-public class ArticleDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener, TextView.OnEditorActionListener {
+public class ArticleDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener {
 
 	public static final String ITEM_ID = "item_id";
 	public static final String GREY_COLOR_DIVIDER = "##";
@@ -51,6 +51,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 	// 11/15/12 | 27 min
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
+	private static final long NON_EXIST = -1;
 
 	private TextView authorTxt;
 
@@ -74,6 +75,10 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private EditText newPostEdt;
 	private int paddingSide;
 	private CommentPostListener commentPostListener;
+	private String url;
+	private String bodyStr;
+	private long commentId;
+	private boolean inEditMode;
 
 
 	public static ArticleDetailsFragment createInstance(long articleId) {
@@ -146,9 +151,9 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		replyView = view.findViewById(R.id.replyView);
 		newPostEdt = (EditText) view.findViewById(R.id.newPostEdt);
-		newPostEdt.setOnEditorActionListener(this);
 
 		// adjust action bar icons
+		getActivityFace().showActionMenu(R.id.menu_edit, true);
 		getActivityFace().showActionMenu(R.id.menu_share, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
@@ -191,6 +196,12 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			authorStr = chessTitle + StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
 			authorTxt.setText(authorStr);
 
+			try {
+				url = cursor.getString(cursor.getColumnIndexOrThrow(DbScheme.V_URL));
+			} catch (IllegalArgumentException ex) {
+				url = StaticData.SYMBOL_EMPTY;
+			}
+//			url = DbDataManager.getString(cursor, DbScheme.V_URL);
 			titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
 			imageDownloader.download(DbDataManager.getString(cursor, DbScheme.V_USER_AVATAR), authorImg, imgSize);
 
@@ -200,37 +211,97 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			countryImg.setImageDrawable(drawable);
 
 			dateTxt.setText(dateFormatter.format(new Date(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE))));
-			contentTxt.setText(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_BODY)));
+			bodyStr = DbDataManager.getString(cursor, DbScheme.V_BODY);
+			contentTxt.setText(Html.fromHtml(bodyStr));
 		}
 	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_cancel:
+				showEditView(false);
+
+				return true;
+			case R.id.menu_accept:
+				if (inEditMode) {
+					createPost(commentId);
+				} else {
+					createPost();
+				}
+				return true;
+			case R.id.menu_edit:
+				showEditView(true);
+				return true;
+			case R.id.menu_share:
+				String articleShareStr;
+				if (TextUtils.isEmpty(url)) {
+					articleShareStr = String.valueOf(Html.fromHtml(bodyStr));
+				} else {
+					articleShareStr = RestHelper.BASE_URL + "/" + url;
+				}
+
+				Intent shareIntent = new Intent(Intent.ACTION_SEND);
+				shareIntent.setType("text/plain");
+				shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this article - "
+						+ StaticData.SYMBOL_NEW_STR + articleShareStr);
+				startActivity(Intent.createChooser(shareIntent, getString(R.string.share_article)));
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		replyView.setVisibility(View.VISIBLE);
-		replyView.setBackgroundResource(R.color.header_light);
-		replyView.setPadding(paddingSide, paddingSide, paddingSide, paddingSide);
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				newPostEdt.requestFocus();
-				showKeyBoard(newPostEdt);
-				showKeyBoardImplicit(newPostEdt);
-			}
-		}, KEYBOARD_DELAY);
+		// get commentId
+		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+		commentId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+
+		inEditMode = true;
+		showEditView(true);
 	}
 
-	@Override
-	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.FLAG_EDITOR_ACTION
-				|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live
-				popupItem.setPositiveBtnId(R.string.wireless_settings);
-				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
-			} else {
-				createPost();
-			}
+	private void showEditView(boolean show) {
+		if (show) {
+			replyView.setVisibility(View.VISIBLE);
+			replyView.setBackgroundResource(R.color.header_light);
+			replyView.setPadding(paddingSide, paddingSide, paddingSide, paddingSide);
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					newPostEdt.requestFocus();
+					showKeyBoard(newPostEdt);
+					showKeyBoardImplicit(newPostEdt);
+
+					showEditMode(true);
+				}
+			}, KEYBOARD_DELAY);
+		} else {
+
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					hideKeyBoard(newPostEdt);
+					hideKeyBoard();
+
+					replyView.setVisibility(View.GONE);
+					newPostEdt.setText(StaticData.SYMBOL_EMPTY);
+				}
+			}, KEYBOARD_DELAY);
+
+			showEditMode(false);
+			inEditMode = false;
 		}
-		return false;
+	}
+
+	private void showEditMode(boolean show) {
+		getActivityFace().showActionMenu(R.id.menu_share, !show);
+		getActivityFace().showActionMenu(R.id.menu_edit, !show);
+		getActivityFace().showActionMenu(R.id.menu_cancel, show);
+		getActivityFace().showActionMenu(R.id.menu_accept, show);
+
+		getActivityFace().updateActionBarIcons();
 	}
 
 	private class ArticleUpdateListener extends ChessUpdateListener<ArticleDetailsItem> {
@@ -286,6 +357,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	}
 
 	private void createPost() {
+		createPost(NON_EXIST);
+	}
+
+	private void createPost(long commentId) {
+
 		String body = getTextFromField(newPostEdt);
 		if (TextUtils.isEmpty(body)) {
 			newPostEdt.requestFocus();
@@ -294,7 +370,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_ARTICLE_COMMENTS(articleId));
+		if (commentId == NON_EXIST) {
+			loadItem.setLoadPath(RestHelper.CMD_ARTICLE_COMMENTS(articleId));
+		} else {
+			loadItem.setLoadPath(RestHelper.CMD_ARTICLE_EDIT_COMMENT(articleId, commentId));
+		}
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_ARTICLE_ID, articleId);
@@ -311,22 +391,12 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		@Override
 		public void updateData(PostCommentItem returnedObj) {
-			if(returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+			if (returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 				showToast(R.string.post_created);
 			} else {
 				showToast(R.string.error);
 			}
-			replyView.setVisibility(View.GONE);
-			newPostEdt.setText(StaticData.SYMBOL_EMPTY);
-
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					hideKeyBoard(newPostEdt);
-					hideKeyBoard();
-
-				}
-			}, KEYBOARD_DELAY);
+			showEditView(false);
 
 			updateComments();
 		}

@@ -83,6 +83,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	private boolean onVacation;
 	private View headerView;
 	private DailyChallengeItem.Data challengeToRemove;
+	private View topButtonsView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -115,6 +116,8 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
+		topButtonsView = headerView.findViewById(R.id.topButtonsView);
+		topButtonsView.setVisibility(View.GONE);
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
@@ -583,6 +586,8 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 			challengesGamesAdapter.setItemsList(returnedObj.getData());
 			sectionedAdapter.notifyDataSetChanged();
+
+			topButtonsView.setVisibility(View.VISIBLE);
 		}
 
 		@Override

@@ -138,6 +138,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public void updateActionBarIcons() {
 		if (!HONEYCOMB_PLUS_API) {
 			adjustActionBar();
+		} else {
+			invalidateOptionsMenu();
 		}
 	}
 
