@@ -696,16 +696,36 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			return;
 		}
 
-		if (getBoardFace().getHply() < 1 && isUserMove()) {
-			optionsMap.put(ID_ABORT_RESIGN, getString(R.string.abort));
-			optionsMap.remove(ID_OFFER_DRAW);
-		} else {
-			optionsMap.put(ID_ABORT_RESIGN, getString(R.string.resign));
-			optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
+		LiveChessService liveService;
+		try {
+			liveService = getLiveService();
+		} catch (DataNotValidException e) {
+			logLiveTest(e.getMessage());
+			return;
 		}
 
-		if (!isUserMove()) {
+		boolean isGameOver = liveService.getCurrentGame() != null && liveService.getCurrentGame().isGameOver();
+
+		if (isGameOver) {
+			optionsMap.put(ID_REMATCH, getString(R.string.rematch));
 			optionsMap.remove(ID_OFFER_DRAW);
+			optionsMap.remove(ID_ABORT_RESIGN);
+
+		} else {
+
+			if (getBoardFace().getHply() < 1 && isUserMove()) {
+				optionsMap.put(ID_ABORT_RESIGN, getString(R.string.abort));
+				optionsMap.remove(ID_OFFER_DRAW);
+			} else {
+				optionsMap.put(ID_ABORT_RESIGN, getString(R.string.resign));
+				optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
+			}
+
+			if (!isUserMove()) {
+				optionsMap.remove(ID_OFFER_DRAW);
+			}
+
+			optionsMap.remove(ID_REMATCH);
 		}
 
 		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsMap);
@@ -1080,8 +1100,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			dismissDialogs();
 		}
 	}
-
-
 
 	private void init() throws DataNotValidException {
 		LiveChessService liveService = getLiveService();

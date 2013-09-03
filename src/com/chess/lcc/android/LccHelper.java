@@ -1100,7 +1100,8 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		Integer minMembershipLevel = null;
 		PieceColor pieceColor = PieceColor.UNDEFINED;  // always random!
 
-		String opponentName = config.getOpponentName().equals(AppConstants.RANDOM) ? null : config.getOpponentName();
+		String opponentName =
+				config.getOpponentName() == null || config.getOpponentName().equals(AppConstants.RANDOM) ? null : config.getOpponentName();
 
 		final GameType gameType = GameType.Chess;
 		Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(

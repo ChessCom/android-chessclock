@@ -333,7 +333,6 @@ public class LiveChessService extends Service {
 
 	public void setLccEventListener(LccEventListener eventListener) {
 		lccHelper.setLccEventListener(eventListener);
-
 	}
 
 	public List<ChatItem> getMessagesList() {
