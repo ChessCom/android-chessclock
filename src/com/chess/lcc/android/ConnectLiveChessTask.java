@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
+import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
@@ -32,10 +33,13 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 	//static MemoryUsageMonitor muMonitor = new MemoryUsageMonitor(15);
 
+	public static final String LIVE_HOST_PRODUCTION = "chess.com";
+	public static final String LIVE_HOST_TEST = "chess-2.com";
+	public static final String LIVE_HOST = RestHelper.HOST == RestHelper.HOST_PRODUCTION ? LIVE_HOST_PRODUCTION : LIVE_HOST_TEST;
+
 //	public static final String AUTH_URL = RestHelper.CMD_LOGIN + "?username=%s&password=%s";
-	public static final String AUTH_URL = "http://www.chess-2.com/api/v2/login" + "?username=%s&password=%s"; // TODO set correct way
-//	public static final String CONFIG_BAYEUX_HOST = "live." + RestHelper.HOST;
-	public static final String CONFIG_BAYEUX_HOST = "live." + "chess-2.com";
+	public static final String AUTH_URL = "http://www." + LIVE_HOST + "/api/v2/login" + "?username=%s&password=%s";
+	public static final String CONFIG_BAYEUX_HOST = "live." + LIVE_HOST;
 	final static Config CONFIG = new Config(StaticData.SYMBOL_EMPTY, "assets/my.properties", true);
 	public static final String CONFIG_URI =
 			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.uri"), "/cometd");
@@ -54,7 +58,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 	private LccHelper lccHelper;
 
-	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, boolean useCurrentCredentials, LccHelper lccHelper) {
+	public ConnectLiveChessTask(TaskUpdateInterface <LiveChessClient> taskFace, boolean useCurrentCredentials, LccHelper lccHelper) {
 		this(taskFace, lccHelper);
 		this.useCurrentCredentials = useCurrentCredentials;
 	}
