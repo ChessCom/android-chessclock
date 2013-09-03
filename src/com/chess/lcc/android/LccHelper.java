@@ -210,11 +210,20 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		if (chat != null) {
 			LinkedHashMap<Long, ChatMessage> chatMessages = getChatMessages(chat.getId());
 			if (chatMessages != null) {
+
+				User opponent = getCurrentGame().getOpponentForPlayer(getUser().getUsername());
+
 				for (ChatMessage message : chatMessages.values()) {
 					ChatItem chatItem = new ChatItem();
 					chatItem.setContent(message.getMessage());
 					chatItem.setIsMine(message.getAuthor().getUsername().equals(getUser().getUsername()));
 					chatItem.setTimestamp(message.getDateTime().getTime());
+
+					User chatUser = chatItem.isMine() ? user : opponent;
+					if (chatUser.isAvatarPresent()) {
+						chatItem.setAvatar(chatUser.getAvatarUrl());
+					}
+
 					messageItems.add(chatItem);
 				}
 			}
