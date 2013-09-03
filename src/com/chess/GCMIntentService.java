@@ -298,8 +298,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 						StaticData.MOVE_REQUEST_CODE,
 						gameListItem);
 
-				boolean playSounds = appData.isPlaySounds();
-				if (playSounds) {
+				boolean playSoundsFlag = AppUtils.getSoundsPlayFlag(context);
+				if (playSoundsFlag) {
 					final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
 					if (player != null) {
 						player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {

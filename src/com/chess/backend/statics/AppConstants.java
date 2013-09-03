@@ -40,7 +40,7 @@ public class AppConstants {
 	public static final String USER_PREMIUM_SKU = "premium_sku";
 
 	/* Board and Game Preferences */
-	public static final String PREF_SOUNDS = "enable sounds";
+	public static final String PREF_SOUNDS = "enable sounds_"; // change field name to avoid class cast exceptions
 	public static final String PREF_SHOW_SUBMIT_MOVE_LIVE = "show submit move live";
 	public static final String PREF_SHOW_SUBMIT_MOVE_DAILY = "show submit button daily";
 	public static final String PREF_DAILY_NOTIFICATIONS = "use daily notifications";

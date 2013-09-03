@@ -18,6 +18,10 @@ import static com.chess.backend.statics.AppConstants.*;
  */
 public class AppData {
 
+	public static final int UNDEFINED = -1;
+	public static final int TRUE = 1;
+	public static final int FALSE = 0;
+
 	private final SharedPreferences.Editor editor;
 	private SharedPreferences preferences;
 
@@ -332,13 +336,17 @@ public class AppData {
 		return getIntValue(PREF_USER_TACTICS_RATING, 0);
 	}
 
-	public void setPlaySounds(Context context, boolean checked) {
-		setBooleanValue(PREF_SOUNDS, checked);
+	/**
+	 *
+	 * @param play int value used to differentiate if it was set manually by user or depends on general sound system profile
+	 */
+	public void setPlaySounds(Context context, int play) {
+		setIntValue(PREF_SOUNDS, play);
 		SoundPlayer.getInstance(context);// update internal flag
 	}
 
-	public boolean isPlaySounds() {
-		return getBooleanValue(PREF_SOUNDS);
+	public int isPlaySounds() {
+		return getIntValue(PREF_SOUNDS, UNDEFINED);
 	}
 
 	public void setShowLegalMoves(boolean checked) {

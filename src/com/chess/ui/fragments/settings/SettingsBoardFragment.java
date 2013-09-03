@@ -9,10 +9,12 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.SwitchButton;
 import com.chess.backend.statics.AppConstants;
+import com.chess.backend.statics.AppData;
 import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.SelectionAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +86,8 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		} else if (switchButton.getId() == R.id.answerShowBottomSwitch) {
 			getAppData().setAnswerShowBottom(checked);
 		} else if (switchButton.getId() == R.id.soundsSwitch) {
-			getAppData().setPlaySounds(getActivity(), checked);
+			int appSoundMode = checked ? AppData.TRUE : AppData.FALSE;
+			getAppData().setPlaySounds(getActivity(), appSoundMode);
 		}
 	}
 
@@ -141,7 +144,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 
 		String username = getAppData().getUsername();
 
-		soundsSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_SOUNDS, true));
+		soundsSwitch.setChecked(AppUtils.getSoundsPlayFlag(getActivity()));
 		coordinatesSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_COORDINATES, true));
 		highlightLastMoveSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_HIGHLIGHT_LAST_MOVE, true));
 		showLegalMovesSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_SHOW_LEGAL_MOVES, true));

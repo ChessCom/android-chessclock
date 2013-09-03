@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,20 +67,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 			savedInstanceState.putBoolean(AppConstants.SMALL_SCREEN, true);
 		}
 		super.onCreate(savedInstanceState);
-
-		// TODO check logic , add manual handling flag
-		AudioManager audio = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
-		switch( audio.getRingerMode() ){
-			case AudioManager.RINGER_MODE_NORMAL:
-				getAppData().setPlaySounds(getActivity(), true);
-				break;
-			case AudioManager.RINGER_MODE_SILENT:
-				getAppData().setPlaySounds(getActivity(), false);
-				break;
-			case AudioManager.RINGER_MODE_VIBRATE:
-				getAppData().setPlaySounds(getActivity(), false);
-				break;
-		}
 
 		getActivityFace().addOnCloseMenuListener(this);
 	}
@@ -158,7 +143,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		if (!getBoardFace().isSubmit()) {
 
 //			if (!AppUtils.isNeedToUpgrade(getActivity())) {
-				endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
+			endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
 //			}else {
 //				endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);
 //			}
@@ -168,10 +153,10 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		}
 	}
 
-	protected void showGameEndPopup(final View layout, final String message){
+	protected void showGameEndPopup(final View layout, final String message) {
 	}
 
-	protected void setBoardToFinishedState(){ // TODO implement state conditions logic for board
+	protected void setBoardToFinishedState() { // TODO implement state conditions logic for board
 //		boardView.enableAnalysis(); // TODO recheck logic
 
 		getBoardFace().setFinished(true);
@@ -235,7 +220,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		}
 	}
 
-	protected PopupCustomViewFragment getEndPopupDialogFragment(){
+	protected PopupCustomViewFragment getEndPopupDialogFragment() {
 		return (PopupCustomViewFragment) getFragmentManager().findFragmentByTag(END_GAME_TAG);
 	}
 
@@ -258,7 +243,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 			if (gameType.equals(getString(R.string.live))) {
 				gameLink = RestHelper.getLiveGameLink(gameId);
 			} else {
-				gameLink =  RestHelper.getOnlineGameLink(gameId);
+				gameLink = RestHelper.getOnlineGameLink(gameId);
 			}
 		}
 
@@ -267,7 +252,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 			String vsStr = getString(R.string.vs);
 			String space = StaticData.SYMBOL_SPACE;
 			return currentGame.getWhiteUsername() + space + vsStr + space + currentGame.getBlackUsername()
-					+ " - " +  gameType  + space + getString(R.string.chess) + space
+					+ " - " + gameType + space + getString(R.string.chess) + space
 					+ getString(R.string.via_chesscom) + space
 					+ gameLink;
 		}

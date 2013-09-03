@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -240,8 +241,8 @@ public class AppUtils {
 		notifyManager.cancelAll();
 		notifyManager.notify(R.id.notification_message, notification);
 
-		boolean playSounds = new AppData(context).isPlaySounds();
-		if(playSounds){
+		boolean playSoundsFlag = getSoundsPlayFlag(context);
+		if(playSoundsFlag){
 			final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
 
 			if(player == null) // someone hasn't player?
@@ -250,6 +251,22 @@ public class AppUtils {
 			player.setOnCompletionListener(completionListener);
 			player.start();
 		}
+	}
+
+	public static boolean getSoundsPlayFlag(Context context) {
+		int appSoundMode = new AppData(context).isPlaySounds();
+		boolean playSoundsFlag = false;
+		AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+		switch (audio.getRingerMode()) {
+			case AudioManager.RINGER_MODE_NORMAL:
+				playSoundsFlag = appSoundMode == AppData.UNDEFINED || appSoundMode == AppData.TRUE;
+				break;
+			case AudioManager.RINGER_MODE_VIBRATE:
+			case AudioManager.RINGER_MODE_SILENT:
+				playSoundsFlag = appSoundMode != AppData.UNDEFINED && appSoundMode == AppData.TRUE;
+				break;
+		}
+		return playSoundsFlag;
 	}
 
 	private static MediaPlayer.OnCompletionListener completionListener = new MediaPlayer.OnCompletionListener() {

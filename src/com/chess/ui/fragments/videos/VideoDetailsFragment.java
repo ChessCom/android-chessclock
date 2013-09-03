@@ -200,8 +200,14 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 			String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
 			CharSequence chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
 			String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
-			CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
-					+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
+			CharSequence authorStr;
+			if (TextUtils.isEmpty(chessTitle)) {
+				authorStr = firstName + StaticData.SYMBOL_SPACE + lastName;
+			} else {
+				authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
+						+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
+			}
+
 			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
 			authorTxt.setText(authorStr);
 

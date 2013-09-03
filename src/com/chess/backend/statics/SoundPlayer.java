@@ -3,6 +3,7 @@ package com.chess.backend.statics;
 import android.content.Context;
 import android.media.MediaPlayer;
 import com.chess.R;
+import com.chess.utilities.AppUtils;
 
 /**
  * SoundPlayer class
@@ -18,7 +19,20 @@ public class SoundPlayer {
 		if(ourInstance == null){
 			ourInstance = new SoundPlayer(context);
 		}
-		playSounds = new AppData(context).isPlaySounds();
+
+//		int appSoundMode = new AppData(context).isPlaySounds();
+//		boolean playSoundsFlag = false;
+//		AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+//		switch (audio.getRingerMode()) {
+//			case AudioManager.RINGER_MODE_NORMAL:
+//				playSoundsFlag = appSoundMode == AppData.UNDEFINED || appSoundMode == AppData.TRUE;
+//				break;
+//			case AudioManager.RINGER_MODE_VIBRATE:
+//			case AudioManager.RINGER_MODE_SILENT:
+//				playSoundsFlag = appSoundMode != AppData.UNDEFINED && appSoundMode == AppData.TRUE;
+//				break;
+//		}
+		playSounds = AppUtils.getSoundsPlayFlag(context);
 		return ourInstance;
 	}
 
