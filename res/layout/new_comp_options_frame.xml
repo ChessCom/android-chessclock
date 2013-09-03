@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -42,9 +41,9 @@
 
 		</com.chess.LinLayout>
 
-		<!--I Play As-->
+		<!--White Player or Comp-->
 		<com.chess.LinLayout
-			android:id="@+id/iPlayAsView"
+			android:id="@+id/whiteSideView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="center_vertical"
@@ -56,52 +55,52 @@
 				android:layout_width="0dip"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				android:text="@string/i_play_as_"
-				android:textColor="@color/semitransparent_white_65"
-				/>
+				android:text="@string/white"
+				android:textColor="@color/semitransparent_white_65" />
 
 			<RadioGroup
-				android:id="@+id/myColorRadioGroup"
+				android:id="@+id/whiteRadioGroup"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:orientation="horizontal"
-				>
+				android:paddingTop="6dip"
+				android:paddingBottom="6dip">
 
-				<!--White-->
+				<!--Player-->
 				<com.chess.RoboRadioButton
-					android:id="@+id/myWhiteColorBtn"
+					android:id="@+id/whitePlayerBtn"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textColor="@color/semitransparent_black_65"
-					android:textSize="14sp"
-					android:text="@string/white"
+					android:textColor="@color/white"
+					android:textSize="@dimen/glyph_icon_big"
+					android:text="@string/ic_profile"
 					android:layout_marginRight="5dip"
-					android:minHeight="@dimen/small_button_height"
+					android:minHeight="@dimen/big_button_height"
 					style="@style/Button.White.50"
+					custom:ttf="Icon"
 					android:button="@null"
-					android:checked="true"
-					/>
+					android:checked="true" />
 
-				<!--Black-->
+				<!--Comp-->
 				<com.chess.RoboRadioButton
-					android:id="@+id/myBlackColorBtn"
+					android:id="@+id/whiteCompBtn"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:text="@string/black"
-					android:minHeight="@dimen/small_button_height"
-					android:textColor="@color/semitransparent_white_65"
-					android:textSize="14sp"
-					style="@style/Button.Black.65"
-					android:button="@null"
-					/>
+					android:text="@string/ic_comp_game"
+					android:minHeight="@dimen/big_button_height"
+					android:textColor="@color/white"
+					android:textSize="@dimen/glyph_icon_big"
+					style="@style/Button.White.50"
+					custom:ttf="Icon"
+					android:button="@null" />
+
 			</RadioGroup>
 
 		</com.chess.LinLayout>
 
-
-		<!--Human vs Human mode switcher-->
+		<!--Black Player or Comp-->
 		<com.chess.LinLayout
-			android:id="@+id/humanVsHumanLay"
+			android:id="@+id/blackSideView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="center_vertical"
@@ -113,43 +112,46 @@
 				android:layout_width="0dip"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				android:text="@string/two_players"
-				android:textColor="@color/semitransparent_white_65"
-				/>
+				android:text="@string/black"
+				android:textColor="@color/semitransparent_white_65" />
 
-			<com.chess.SwitchButton
-				android:id="@+id/humanVsHumanSwitch"
-				style="@style/Switch.Dark"
-				custom:switchTextOn="@string/on"
-				custom:switchTextOff="@string/off"
-				/>
-
-		</com.chess.LinLayout>
-
-		<!--Comp vs Comp switcher-->
-		<com.chess.LinLayout
-			android:id="@+id/compVsCompLay"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:gravity="center_vertical"
-			style="@style/ListItem"
-			android:paddingLeft="@dimen/new_game_frame_padding_side"
-			android:paddingRight="@dimen/new_game_frame_padding_side">
-
-			<com.chess.RoboTextView
-				android:layout_width="0dip"
+			<RadioGroup
+				android:id="@+id/blackRadioGroup"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:text="@string/comp_vs_comp"
-				android:textColor="@color/semitransparent_white_65"
-				/>
+				android:orientation="horizontal"
+				android:paddingTop="6dip"
+				android:paddingBottom="6dip">
 
-			<com.chess.SwitchButton
-				android:id="@+id/compVsCompSwitch"
-				style="@style/Switch.Dark"
-				custom:switchTextOn="@string/on"
-				custom:switchTextOff="@string/off"
-				/>
+				<!--Player-->
+				<com.chess.RoboRadioButton
+					android:id="@+id/blackPlayerBtn"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/semitransparent_white_65"
+					android:textSize="@dimen/glyph_icon_big"
+					android:text="@string/ic_profile"
+					android:layout_marginRight="5dip"
+					android:minHeight="@dimen/big_button_height"
+					style="@style/Button.Black.65"
+					custom:ttf="Icon"
+					android:button="@null"
+					android:checked="true" />
+
+				<!--Comp-->
+				<com.chess.RoboRadioButton
+					android:id="@+id/blackCompBtn"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/ic_comp_game"
+					android:minHeight="@dimen/big_button_height"
+					android:textColor="@color/semitransparent_white_65"
+					android:textSize="@dimen/glyph_icon_big"
+					style="@style/Button.Black.65"
+					custom:ttf="Icon"
+					android:button="@null" />
+
+			</RadioGroup>
 
 		</com.chess.LinLayout>
 
@@ -164,14 +166,12 @@
 			android:paddingRight="@dimen/new_game_frame_padding_side"
 			android:paddingTop="12dip"
 			android:paddingBottom="7dip"
-			android:animateLayoutChanges="true"
-			>
+			android:animateLayoutChanges="true">
 
 			<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:gravity="center_vertical"
-				>
+				android:gravity="center_vertical">
 
 				<com.chess.RoboTextView
 					android:layout_width="wrap_content"

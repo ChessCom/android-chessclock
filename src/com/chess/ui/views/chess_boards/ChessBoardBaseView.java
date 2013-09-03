@@ -161,11 +161,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		int highlightColor = resources.getColor(R.color.highlight_color);
 
-		yellowPaint.setStrokeWidth(3.0f);
+		yellowPaint.setStrokeWidth(1.5f * density);
 		yellowPaint.setStyle(Style.STROKE);
 		yellowPaint.setColor(highlightColor);
 
-		whitePaint.setStrokeWidth(3.0f);
+		whitePaint.setStrokeWidth(1.5f * density);
 		whitePaint.setStyle(Style.STROKE);
 		whitePaint.setColor(Color.WHITE);
 
@@ -178,11 +178,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		coordinatesPaint.setTextSize(coordinateFont * density);
 		coordinatesPaint.setTypeface(FontsHelper.getInstance().getTypeFace(getContext(), FontsHelper.BOLD_FONT));
 
-		madeMovePaint.setStrokeWidth(3.0f);
+		madeMovePaint.setStrokeWidth(1.5f * density);
 		madeMovePaint.setStyle(Style.STROKE);
 		madeMovePaint.setColor(highlightColor);
 
-		greenPaint.setStrokeWidth(2.0f);
+		greenPaint.setStrokeWidth(1.5f * density);
 		greenPaint.setStyle(Style.STROKE);
 		greenPaint.setColor(Color.GREEN);
 
@@ -1360,7 +1360,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	public void setMoveAnimator(Move move, boolean forward) {
-		this.moveAnimator = new MoveAnimator(move, forward);
+		this.moveAnimator = new MoveAnimator(move, forward); // TODO avoid create instances all the time. Try to reuse object
 	}
 
 	public void setMoveAnimator(MoveAnimator moveAnimator) {

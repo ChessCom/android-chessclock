@@ -16,7 +16,7 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 	private static ChessBoardTactics instance;
 	private boolean tacticCanceled;
 
-	private int tacticsCorrectMoves = 0;
+	private int correctMovesCnt;
 	private String[] tacticMoves;
 
 	private ChessBoardTactics(GameFace gameFace) {
@@ -92,13 +92,13 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 	}
 
 	@Override
-	public int getTacticsCorrectMoves() {
-		return tacticsCorrectMoves;
+	public int getCorrectMovesCnt() {
+		return correctMovesCnt;
 	}
 
 	@Override
 	public void increaseTacticsCorrectMoves() {
-		tacticsCorrectMoves++;
+		correctMovesCnt++;
 	}
 
 	@Override

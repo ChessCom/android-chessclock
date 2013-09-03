@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.StaticData;
 import com.chess.db.DbScheme;
 
 /**
@@ -37,7 +38,8 @@ public class CommonCategoriesCursorAdapter extends ItemsCursorAdapter {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		holder.text.setText(getString(cursor, DbScheme.V_NAME));
-		holder.icon.setText(R.string.ic_right);
+//		holder.icon.setText(R.string.ic_right);
+		holder.icon.setText(StaticData.SYMBOL_EMPTY);
 	}
 
 	private class ViewHolder {

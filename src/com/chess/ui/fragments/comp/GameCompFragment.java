@@ -118,8 +118,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			compGameConfig = savedInstanceState.getParcelable(CONFIG);
 		}
 
-		labelsConfig = new LabelsConfig();
-
 		init();
 	}
 

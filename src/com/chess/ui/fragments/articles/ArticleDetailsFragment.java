@@ -256,10 +256,13 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// get commentId
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		commentId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+		String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+		if (username.equals(getUsername())) {
+			commentId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
-		inEditMode = true;
-		showEditView(true);
+			inEditMode = true;
+			showEditView(true);
+		}
 	}
 
 	private void showEditView(boolean show) {
@@ -317,6 +320,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			ArticleDetailsItem.Data articleData = returnedObj.getData();
 			int commentCount = articleData.getCommentCount();
 			int viewCount = articleData.getViewCount();
+			String url = articleData.getUrl();
 
 			String viewsCntStr = getString(R.string.comments_arg, commentCount);
 			String commentsCntStr = getString(R.string.reads_arg, viewCount);
@@ -372,15 +376,15 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		LoadItem loadItem = new LoadItem();
 		if (commentId == NON_EXIST) {
 			loadItem.setLoadPath(RestHelper.CMD_ARTICLE_COMMENTS(articleId));
+			loadItem.setRequestMethod(RestHelper.POST);
 		} else {
 			loadItem.setLoadPath(RestHelper.CMD_ARTICLE_EDIT_COMMENT(articleId, commentId));
+			loadItem.setRequestMethod(RestHelper.PUT);
 		}
-		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_ARTICLE_ID, articleId);
-		loadItem.addRequestParams(RestHelper.P_COMMENT, P_TAG_OPEN + body + P_TAG_CLOSE);
+		loadItem.addRequestParams(RestHelper.P_COMMENT_BODY, P_TAG_OPEN + body + P_TAG_CLOSE);
 
-		new RequestJsonTask<PostCommentItem>(commentPostListener).executeTask(loadItem); // use Vacation item as a simple return obj to get status
+		new RequestJsonTask<PostCommentItem>(commentPostListener).executeTask(loadItem);
 	}
 
 	private class CommentPostListener extends ChessLoadUpdateListener<PostCommentItem> {

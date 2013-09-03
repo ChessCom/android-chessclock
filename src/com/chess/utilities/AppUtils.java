@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -33,7 +32,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DbDataManager;
@@ -242,9 +240,7 @@ public class AppUtils {
 		notifyManager.cancelAll();
 		notifyManager.notify(R.id.notification_message, notification);
 
-		AppData appData = new AppData(context);
-		SharedPreferences preferences = appData.getPreferences();
-		boolean playSounds = preferences.getBoolean(appData.getUsername() + AppConstants.PREF_SOUNDS, false);
+		boolean playSounds = new AppData(context).isPlaySounds();
 		if(playSounds){
 			final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
 

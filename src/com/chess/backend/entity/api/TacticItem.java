@@ -53,7 +53,7 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.Data>> {
 		private long secondsSpent;
 		private TacticRatingData resultItem;
 		private boolean stop;
-		private boolean wasShowed;
+		private boolean answerWasShowed;
 		private boolean retry;
 
 		public void setId(long id) {
@@ -104,12 +104,12 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.Data>> {
 			this.stop = stop;
 		}
 
-		public boolean isWasShowed() {
-			return wasShowed;
+		public boolean isAnswerWasShowed() {
+			return answerWasShowed;
 		}
 
-		public void setWasShowed(boolean wasShowed) {
-			this.wasShowed = wasShowed;
+		public void setAnswerWasShowed(boolean wasShowed) {
+			this.answerWasShowed = wasShowed;
 		}
 
 		public boolean isRetry() {

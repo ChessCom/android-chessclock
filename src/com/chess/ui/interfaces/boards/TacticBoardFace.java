@@ -16,7 +16,7 @@ public interface TacticBoardFace extends BoardFace {
 
 	boolean isTacticCanceled();
 
-	int getTacticsCorrectMoves();
+	int getCorrectMovesCnt();
 
 	void increaseTacticsCorrectMoves();
 

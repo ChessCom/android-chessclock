@@ -18,21 +18,15 @@
 
 package org.petero.droidfish.book;
 
+import android.util.FloatMath;
+import org.petero.droidfish.book.DroidBook.BookEntry;
+import org.petero.droidfish.gamelogic.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import org.petero.droidfish.book.DroidBook.BookEntry;
-import org.petero.droidfish.gamelogic.ChessParseError;
-import org.petero.droidfish.gamelogic.Move;
-import org.petero.droidfish.gamelogic.Piece;
-import org.petero.droidfish.gamelogic.Position;
-import org.petero.droidfish.gamelogic.TextIO;
-import org.petero.droidfish.gamelogic.UndoInfo;
-
-import android.util.FloatMath;
 
 final class InternalBook implements IOpeningBook {
     private static HashMap<Long, ArrayList<BookEntry>> bookMap;
@@ -120,7 +114,7 @@ final class InternalBook implements IOpeningBook {
             throw new RuntimeException();
         } catch (IOException ex) {
             System.out.println("Can't read opening book resource");
-            throw new RuntimeException();
+//            throw new RuntimeException();  // TODO happened when fast switching from WelcomeCompGameFragment to SignIn Fragment on Android 4.2.2
         }
 /*        {
             long t1 = System.currentTimeMillis();

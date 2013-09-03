@@ -10,11 +10,10 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadItem;
@@ -42,7 +41,7 @@ import java.util.Date;
  * Date: 27.01.13
  * Time: 19:12
  */
-public class VideoDetailsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, TextView.OnEditorActionListener {
+public class VideoDetailsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
 	public static final String ITEM_ID = "item_id";
 
@@ -51,6 +50,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 	public static final String P_TAG_OPEN = "<p>";
 	public static final String P_TAG_CLOSE = "</p>";
 	private static final long KEYBOARD_DELAY = 100;
+	private static final long NON_EXIST = -1;
 
 	// 11/15/12 | 27 min
 	protected static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
@@ -64,7 +64,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 	protected TextView titleTxt;
 	protected ImageView countryImg;
 	protected TextView dateTxt;
-	protected TextView contextTxt;
+	protected TextView contentTxt;
 	protected TextView playBtnTxt;
 	protected long videoId;
 	protected String videoUrl;
@@ -78,6 +78,9 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 	private int imgSize;
 	private SparseArray<String> countryMap;
 	private EnhancedImageDownloader imageDownloader;
+	private long commentId;
+	private boolean inEditMode;
+	private String bodyStr;
 
 	public static VideoDetailsFragment createInstance(long videoId) {
 		VideoDetailsFragment frag = new VideoDetailsFragment();
@@ -140,21 +143,21 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 
 		replyView = view.findViewById(R.id.replyView);
 		newPostEdt = (EditText) view.findViewById(R.id.newPostEdt);
-		newPostEdt.setOnEditorActionListener(this);
 
 		videoBackImg = (ProgressImageView) view.findViewById(R.id.videoBackImg);
 		titleTxt = (TextView) view.findViewById(R.id.titleTxt);
 		authorImg = (ProgressImageView) view.findViewById(R.id.thumbnailAuthorImg);
 		countryImg = (ImageView) view.findViewById(R.id.countryImg);
 		dateTxt = (TextView) view.findViewById(R.id.dateTxt);
-		contextTxt = (TextView) view.findViewById(R.id.contentTxt);
+		contentTxt = (TextView) view.findViewById(R.id.contentTxt);
 		authorTxt = (TextView) view.findViewById(R.id.authorTxt);
 
 		playBtnTxt = (TextView) view.findViewById(R.id.playBtn);
 		playBtnTxt.setOnClickListener(this);
 		playBtnTxt.setEnabled(false);
 
-		// adjust action bar
+		// adjust action bar icons
+		getActivityFace().showActionMenu(R.id.menu_edit, true);
 		getActivityFace().showActionMenu(R.id.menu_share, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
@@ -212,7 +215,8 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 			dateTxt.setText(dateFormatter.format(new Date(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE)))
 					+ StaticData.SYMBOL_SPACE + getString(R.string.min_arg, duration));
 
-			contextTxt.setText(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_DESCRIPTION)));
+			bodyStr = DbDataManager.getString(cursor, DbScheme.V_DESCRIPTION);
+			contentTxt.setText(Html.fromHtml(bodyStr));
 			videoUrl = DbDataManager.getString(cursor, DbScheme.V_URL);
 
 			currentPlayingId =  DbDataManager.getInt(cursor, DbScheme.V_ID);
@@ -238,32 +242,93 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		replyView.setVisibility(View.VISIBLE);
-		replyView.setBackgroundResource(R.color.header_light);
-		replyView.setPadding(paddingSide, paddingSide, paddingSide, paddingSide);
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				newPostEdt.requestFocus();
-				showKeyBoard(newPostEdt);
-				showKeyBoardImplicit(newPostEdt);
-			}
-		}, KEYBOARD_DELAY);
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_cancel:
+				showEditView(false);
+
+				return true;
+			case R.id.menu_accept:
+				if (inEditMode) {
+					createPost(commentId);
+				} else {
+					createPost();
+				}
+				return true;
+			case R.id.menu_edit:
+				showEditView(true);
+				return true;
+			case R.id.menu_share:
+				String articleShareStr;
+//				if (TextUtils.isEmpty(url)) {
+					articleShareStr = String.valueOf(Html.fromHtml(bodyStr));
+//				} else {
+//					articleShareStr = RestHelper.BASE_URL + "/" + url;
+//				}
+
+				Intent shareIntent = new Intent(Intent.ACTION_SEND);
+				shareIntent.setType("text/plain");
+				shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this article - "
+						+ StaticData.SYMBOL_NEW_STR + articleShareStr);
+				startActivity(Intent.createChooser(shareIntent, getString(R.string.share_article)));
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
-	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.FLAG_EDITOR_ACTION
-				|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live
-				popupItem.setPositiveBtnId(R.string.wireless_settings);
-				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
-			} else {
-				createPost();
-			}
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		// get commentId
+		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+		String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+		if (username.equals(getUsername())) {
+			commentId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+
+			inEditMode = true;
+			showEditView(true);
 		}
-		return false;
+	}
+
+	private void showEditView(boolean show) {
+		if (show) {
+			replyView.setVisibility(View.VISIBLE);
+			replyView.setBackgroundResource(R.color.header_light);
+			replyView.setPadding(paddingSide, paddingSide, paddingSide, paddingSide);
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					newPostEdt.requestFocus();
+					showKeyBoard(newPostEdt);
+					showKeyBoardImplicit(newPostEdt);
+
+					showEditMode(true);
+				}
+			}, KEYBOARD_DELAY);
+		} else {
+
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					hideKeyBoard(newPostEdt);
+					hideKeyBoard();
+
+					replyView.setVisibility(View.GONE);
+					newPostEdt.setText(StaticData.SYMBOL_EMPTY);
+				}
+			}, KEYBOARD_DELAY);
+
+			showEditMode(false);
+			inEditMode = false;
+		}
+	}
+
+	private void showEditMode(boolean show) {
+		getActivityFace().showActionMenu(R.id.menu_share, !show);
+		getActivityFace().showActionMenu(R.id.menu_edit, !show);
+		getActivityFace().showActionMenu(R.id.menu_cancel, show);
+		getActivityFace().showActionMenu(R.id.menu_accept, show);
+
+		getActivityFace().updateActionBarIcons();
 	}
 
 	private void updateComments() {
@@ -293,6 +358,10 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 	}
 
 	private void createPost() {
+		createPost(NON_EXIST);
+	}
+
+	private void createPost(long commentId) {
 		String body = getTextFromField(newPostEdt);
 		if (TextUtils.isEmpty(body)) {
 			newPostEdt.requestFocus();
@@ -301,13 +370,17 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		}
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_VIDEOS_COMMENTS(videoId));
-		loadItem.setRequestMethod(RestHelper.POST);
+		if (commentId == NON_EXIST) {
+			loadItem.setLoadPath(RestHelper.CMD_VIDEOS_COMMENTS(videoId));
+			loadItem.setRequestMethod(RestHelper.POST);
+		} else {
+			loadItem.setLoadPath(RestHelper.CMD_VIDEOS_EDIT_COMMENT(videoId, commentId));
+			loadItem.setRequestMethod(RestHelper.PUT);
+		}
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_VIDEO_ID, videoId);
 		loadItem.addRequestParams(RestHelper.P_COMMENT_BODY, P_TAG_OPEN + body + P_TAG_CLOSE);
 
-		new RequestJsonTask<PostCommentItem>(commentPostListener).executeTask(loadItem); // use Vacation item as a simple return obj to get status
+		new RequestJsonTask<PostCommentItem>(commentPostListener).executeTask(loadItem);
 	}
 
 	private class CommentPostListener extends ChessLoadUpdateListener<PostCommentItem> {
@@ -323,17 +396,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 			} else {
 				showToast(R.string.error);
 			}
-			replyView.setVisibility(View.GONE);
-			newPostEdt.setText(StaticData.SYMBOL_EMPTY);
-
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					hideKeyBoard(newPostEdt);
-					hideKeyBoard();
-
-				}
-			}, KEYBOARD_DELAY);
+			showEditView(false);
 
 			updateComments();
 		}

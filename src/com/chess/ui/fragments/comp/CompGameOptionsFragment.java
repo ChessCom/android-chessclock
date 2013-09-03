@@ -9,7 +9,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.RoboRadioButton;
-import com.chess.SwitchButton;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoardComp;
@@ -23,18 +22,14 @@ import com.chess.ui.views.drawables.RatingProgressDrawable;
  * Date: 26.04.13
  * Time: 7:06
  */
-public class CompGameOptionsFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener {
+public class CompGameOptionsFragment extends CommonLogicFragment {
 
 	private CompGameConfig.Builder gameConfigBuilder;
 
-	private RoboRadioButton myWhiteColorBtn;
-	private RoboRadioButton myBlackColorBtn;
 	private int selectedCompLevel;
-	private SwitchButton humanVsHumanSwitch;
-	private SwitchButton compVsCompSwitch;
 	private TextView strengthValueBtn;
-	private View compLevelView;
-	private View iPlayAsView;
+	private RoboRadioButton whitePlayerBtn;
+	private RoboRadioButton blackPlayerBtn;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,28 +47,24 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		humanVsHumanSwitch = (SwitchButton) view.findViewById(R.id.humanVsHumanSwitch);
-		compVsCompSwitch = (SwitchButton) view.findViewById(R.id.compVsCompSwitch);
-		iPlayAsView = view.findViewById(R.id.iPlayAsView);
-		compLevelView = view.findViewById(R.id.compLevelView);
-
-		humanVsHumanSwitch.setChecked(false);
-		compVsCompSwitch.setChecked(false);
-		humanVsHumanSwitch.setSwitchChangeListener(this);
-		compVsCompSwitch.setSwitchChangeListener(this);
-
-		myWhiteColorBtn = (RoboRadioButton) view.findViewById(R.id.myWhiteColorBtn);
-		myBlackColorBtn = (RoboRadioButton) view.findViewById(R.id.myBlackColorBtn);
+		whitePlayerBtn = (RoboRadioButton) view.findViewById(R.id.whitePlayerBtn);
+		RoboRadioButton whiteCompBtn = (RoboRadioButton) view.findViewById(R.id.whiteCompBtn);
+		blackPlayerBtn = (RoboRadioButton) view.findViewById(R.id.blackPlayerBtn);
+		RoboRadioButton blackCompBtn = (RoboRadioButton) view.findViewById(R.id.blackCompBtn);
 
 		int mode = getAppData().getCompGameMode();
 		if (mode == AppConstants.GAME_MODE_2_PLAYERS) {
-			humanVsHumanSwitch.setChecked(true);
+			whitePlayerBtn.setChecked(true);
+			blackPlayerBtn.setChecked(true);
 		} else if (mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) {
-			compVsCompSwitch.setChecked(true);
+			whiteCompBtn.setChecked(true);
+			blackCompBtn.setChecked(true);
 		} else if (mode == AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE) {
-			myWhiteColorBtn.setChecked(true);
+			whitePlayerBtn.setChecked(true);
+			blackCompBtn.setChecked(true);
 		} else /*if (mode == AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK)*/ {
-			myBlackColorBtn.setChecked(true);
+			blackPlayerBtn.setChecked(true);
+			whiteCompBtn.setChecked(true);
 		}
 
 		strengthValueBtn = (TextView) view.findViewById(R.id.compLevelValueBtn);
@@ -132,36 +123,18 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 		getAppData().setCompLevel(selectedCompLevel);
 		gameConfigBuilder.setStrength(selectedCompLevel);
 
-		int mode;
-		if (humanVsHumanSwitch.isChecked()) {
-			mode = AppConstants.GAME_MODE_2_PLAYERS;
-		} else if (compVsCompSwitch.isChecked()) {
-			mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
-		} else if (myWhiteColorBtn.isChecked()) {
-			mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
-		} else /*if (myBlackColorBtn.isChecked())*/ {
+//		int mode;
+
+		int mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
+		if (!whitePlayerBtn.isChecked() && blackPlayerBtn.isChecked())
 			mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK;
-		}
+		else if (whitePlayerBtn.isChecked() && blackPlayerBtn.isChecked())
+			mode = AppConstants.GAME_MODE_2_PLAYERS;
+		else if (!whitePlayerBtn.isChecked() && !blackPlayerBtn.isChecked())
+			mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
+
 		getAppData().setCompGameMode(mode);
 
 		return gameConfigBuilder.setMode(mode).build();
-	}
-
-	@Override
-	public void onSwitchChanged(SwitchButton switchButton, boolean checked) {
-		if (switchButton.getId() == R.id.humanVsHumanSwitch && checked) {
-			compVsCompSwitch.setChecked(false);
-			iPlayAsView.setEnabled(false);
-			compLevelView.setVisibility(View.GONE);
-		} else if (switchButton.getId() == R.id.humanVsHumanSwitch && !checked){
-			iPlayAsView.setEnabled(true);
-			compLevelView.setVisibility(View.VISIBLE);
-
-		} else if (switchButton.getId() == R.id.compVsCompSwitch && checked){
-			humanVsHumanSwitch.setChecked(false);
-			compLevelView.setVisibility(View.VISIBLE);
-		} else if (switchButton.getId() == R.id.compVsCompSwitch && !checked){
-			iPlayAsView.setEnabled(true);
-		}
 	}
 }

@@ -657,7 +657,7 @@ public class DbDataManager {
 		values.put(V_AVG_SECONDS, dataObj.getAvgSeconds());
 		values.put(V_SECONDS_SPENT, dataObj.getSecondsSpent());
 		values.put(V_STOP, dataObj.isStop() ? 1 : 0);
-		values.put(V_WAS_SHOWED, dataObj.isWasShowed() ? 1 : 0);
+		values.put(V_WAS_SHOWED, dataObj.isAnswerWasShowed() ? 1 : 0);
 		values.put(V_IS_RETRY, dataObj.isRetry() ? 1 : 0);
 
 		return values;
@@ -677,7 +677,7 @@ public class DbDataManager {
 		dataObj.setAvgSeconds(getInt(cursor, V_AVG_SECONDS));
 		dataObj.setSecondsSpent(getInt(cursor, V_SECONDS_SPENT));
 		dataObj.setStop(getInt(cursor, V_STOP) > 0);
-		dataObj.setWasShowed(getInt(cursor, V_WAS_SHOWED) > 0);
+		dataObj.setAnswerWasShowed(getInt(cursor, V_WAS_SHOWED) > 0);
 		dataObj.setRetry(getInt(cursor, V_IS_RETRY) > 0);
 
 		return dataObj;

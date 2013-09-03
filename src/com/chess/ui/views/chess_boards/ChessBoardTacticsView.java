@@ -208,25 +208,11 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
     @Override
     public void showHint() {
-		gameTacticsFace.showAnswer();
+		gameTacticsFace.showHint();
     }
 
 	@Override
 	public void flipBoard() {
-	}
-
-//	public void enableAnalysis() {  // TODO recheck logic
-//		gameFace.switch2Analysis(true);
-//	}
-
-	@Override
-	public void showStats() {
-		gameTacticsFace.showStats();
-	}
-
-	@Override
-	public void showHelp() {
-		gameTacticsFace.showHelp();
 	}
 
 	@Override
@@ -234,4 +220,8 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 		gameTacticsFace.restart();
 	}
 
+	@Override
+	public void showExplorer() {
+		gameTacticsFace.showExplorer();
+	}
 }

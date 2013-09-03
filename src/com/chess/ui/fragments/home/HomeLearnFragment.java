@@ -25,7 +25,7 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.game.GameTacticsFragment;
+import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.lessons.GameLessonFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.stats.TacticsStatsFragment;

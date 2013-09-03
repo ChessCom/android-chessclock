@@ -19,6 +19,7 @@ import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
 public class ControlsTacticsView extends ControlsBaseView {
 
 	private BoardViewTacticsFace boardViewFace;
+	private State state;
 
 	public ControlsTacticsView(Context context) {
 		super(context);
@@ -38,6 +39,10 @@ public class ControlsTacticsView extends ControlsBaseView {
 		addControlButton(ANALYSIS, R.style.Rect_Bottom_Middle);
 		addControlButton(HINT, R.style.Rect_Bottom_Middle);
 		addControlButton(HELP, R.style.Rect_Bottom_Middle);
+		addControlButton(CLOSE, R.style.Rect_Bottom_Middle);
+		addControlButton(RESTORE, R.style.Rect_Bottom_Middle);
+		addControlButton(SEARCH, R.style.Rect_Bottom_Middle);
+		addControlButton(FLIP, R.style.Rect_Bottom_Middle);
 		addControlButton(BACK, R.style.Rect_Bottom_Middle);
 		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
 
@@ -87,14 +92,18 @@ public class ControlsTacticsView extends ControlsBaseView {
 
 		if (view.getId() == getButtonId(OPTIONS)) {
 			boardViewFace.showOptions(view);
-		} else if (view.getId() == getButtonId(STATS)) {
-			boardViewFace.showStats();
-		} else if (view.getId() == getButtonId(RESTART)) {
+		} else if (view.getId() == getButtonId(RESTART) || view.getId() == getButtonId(RESTORE)) {
 			boardViewFace.restart();
 		} else if (view.getId() == getButtonId(HINT)) {
 			boardViewFace.showHint();
+		} else if (view.getId() == getButtonId(SEARCH)) {
+			boardViewFace.showExplorer();
+		} else if (view.getId() == getButtonId(FLIP)) {
+			boardViewFace.flipBoard();
+		} else if (view.getId() == getButtonId(ANALYSIS) || view.getId() == getButtonId(CLOSE)) {
+			boardViewFace.switchAnalysis();
 		} else if (view.getId() == getButtonId(HELP)) {
-			boardViewFace.showHelp();
+			boardViewFace.showHint();
 		} else if (view.getId() == getButtonId(BACK)) {
 			boardViewFace.moveBack();
 		} else if (view.getId() == getButtonId(FORWARD)) {
@@ -105,9 +114,16 @@ public class ControlsTacticsView extends ControlsBaseView {
 	}
 
 	public void showWrong() {
+		state = State.WRONG;
+
+		showGameButton(OPTIONS, true);
 		showGameButton(HINT, true);
 		showGameButton(HELP, false);
 		showGameButton(ANALYSIS, false);
+		showGameButton(RESTORE, false);
+		showGameButton(CLOSE, false);
+		showGameButton(SEARCH, false);
+		showGameButton(FLIP, false);
 		showGameButton(BACK, false);
 		showGameButton(FORWARD, false);
 		showGameButton(SKIP, false);
@@ -115,6 +131,9 @@ public class ControlsTacticsView extends ControlsBaseView {
 	}
 
 	public void showCorrect() {
+		state = State.CORRECT;
+
+		showGameButton(OPTIONS, true);
 		showGameButton(HINT, false);
 		showGameButton(HELP, false);
 		showGameButton(BACK, false);
@@ -122,28 +141,68 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showGameButton(ANALYSIS, true);
 		showGameButton(NEXT, true);
 		showGameButton(SKIP, false);
+		showGameButton(RESTORE, false);
+		showGameButton(CLOSE, false);
+		showGameButton(SEARCH, false);
+		showGameButton(FLIP, false);
+		showGameButton(BACK, false);
+		showGameButton(FORWARD, false);
 	}
 
 	public void showDefault() {
+		state = State.DEFAULT;
+
+		showGameButton(OPTIONS, true);
 		showGameButton(RESTART, false);
+		showGameButton(FLIP, false);
 		showGameButton(ANALYSIS, false);
 		showGameButton(HELP, true);
 		showGameButton(HINT, false);
 		showGameButton(NEXT, false);
 		showGameButton(SKIP, false);
+		showGameButton(RESTORE, false);
+		showGameButton(CLOSE, false);
+		showGameButton(SEARCH, false);
+		showGameButton(FLIP, false);
 		showGameButton(BACK, false);
 		showGameButton(FORWARD, false);
 	}
 
 	public void showAfterRetry() {
+		state = State.AFTER_RETRY;
+
+		showGameButton(OPTIONS, true);
 		showGameButton(RESTART, false);
+		showGameButton(FLIP, false);
 		showGameButton(ANALYSIS, true);
 		showGameButton(HELP, false);
 		showGameButton(HINT, false);
 		showGameButton(NEXT, false);
 		showGameButton(SKIP, true);
+		showGameButton(RESTORE, false);
+		showGameButton(CLOSE, false);
+		showGameButton(SEARCH, false);
+		showGameButton(FLIP, false);
 		showGameButton(BACK, false);
 		showGameButton(FORWARD, false);
+	}
+
+	public void showAnalysis() {
+		state = State.ANALYSIS;
+
+		showGameButton(OPTIONS, false);
+		showGameButton(RESTART, false);
+		showGameButton(ANALYSIS, false);
+		showGameButton(HELP, false);
+		showGameButton(HINT, false);
+		showGameButton(NEXT, false);
+		showGameButton(SKIP, false);
+		showGameButton(CLOSE, true);
+		showGameButton(SEARCH, true);
+		showGameButton(RESTORE, true);
+		showGameButton(FLIP, true);
+		showGameButton(BACK, true);
+		showGameButton(FORWARD, true);
 	}
 
 	public void enableGameControls(boolean enable) {
@@ -161,4 +220,15 @@ public class ControlsTacticsView extends ControlsBaseView {
 //		enableGameButton(BACK, enable);
 	}
 
+	public State getState() {
+		return state;
+	}
+
+	public enum State {
+		DEFAULT,
+		WRONG,
+		CORRECT,
+		AFTER_RETRY,
+		ANALYSIS
+	}
 }

@@ -550,7 +550,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 			holder.text.setText(getGroup(groupPosition).toString());
 			if (groupPosition == LIBRARY) {
-				holder.icon.setText(R.string.ic_right);
+				holder.icon.setText(StaticData.SYMBOL_EMPTY);
 			} else {
 				if (isExpanded) {
 					holder.icon.setText(R.string.ic_down);

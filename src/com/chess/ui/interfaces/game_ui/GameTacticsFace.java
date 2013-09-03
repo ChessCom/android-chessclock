@@ -10,11 +10,11 @@ public interface GameTacticsFace extends GameFace {
 
 	void verifyMove();
 
-	void showHelp();
+	void showHint();
 
 	void restart();
 
 	void showAnswer();
 
-	void showStats();
+	void showExplorer();
 }

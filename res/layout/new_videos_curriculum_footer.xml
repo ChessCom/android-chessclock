@@ -24,8 +24,8 @@
         android:id="@+id/headerIconTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ic_right"
         android:textColor="@color/new_light_grey_2"
         style="@style/GlyphIcon.Small" />
+	<!--android:text="@string/ic_right"-->
 
 </com.chess.LinLayout>

@@ -215,9 +215,9 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		boardView.setMoveAnimator(move, true);
 		getBoardFace().takeNext();
 
-		if (getActivity() != null)
+		if (getActivity() != null) {
 			invalidateGameScreen();
-
+		}
 	}
 
 	public Context getMeContext() {

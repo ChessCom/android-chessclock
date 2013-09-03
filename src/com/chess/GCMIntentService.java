@@ -298,14 +298,14 @@ public class GCMIntentService extends GCMBaseIntentService {
 						StaticData.MOVE_REQUEST_CODE,
 						gameListItem);
 
-				SharedPreferences preferences = appData.getPreferences();
-				boolean playSounds = preferences.getBoolean(appData.getUsername() + AppConstants.PREF_SOUNDS, false);
+				boolean playSounds = appData.isPlaySounds();
 				if (playSounds) {
 					final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
 					if (player != null) {
 						player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 							@Override
 							public void onCompletion(MediaPlayer mediaPlayer) {
+								player.stop();
 								player.release();
 							}
 						});

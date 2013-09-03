@@ -17,8 +17,8 @@ public class SoundPlayer {
 	public static SoundPlayer getInstance(Context context) {
 		if(ourInstance == null){
 			ourInstance = new SoundPlayer(context);
-			playSounds = new AppData(context).isPlaySounds();
 		}
+		playSounds = new AppData(context).isPlaySounds();
 		return ourInstance;
 	}
 

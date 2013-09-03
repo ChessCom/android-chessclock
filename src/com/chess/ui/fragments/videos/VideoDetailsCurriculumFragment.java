@@ -84,7 +84,7 @@ public class VideoDetailsCurriculumFragment extends VideoDetailsFragment {
 				dateTxt.setText(dateFormatter.format(new Date(videoData.getCreateDate()))
 						+ StaticData.SYMBOL_SPACE + getString(R.string.min_arg, duration));
 
-				contextTxt.setText(videoData.getDescription());
+				contentTxt.setText(videoData.getDescription());
 				videoUrl = videoData.getUrl();
 
 				// Save to DB

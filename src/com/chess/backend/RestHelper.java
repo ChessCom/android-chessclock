@@ -50,6 +50,7 @@ public class RestHelper {
 	//	http://api.chess-7.com
 	public static final String HOST_PRODUCTION = "api.chess.com";
 	public static final String HOST_TEST = "api.chess-7.com";
+//	public static final String HOST = HOST_PRODUCTION; // switch production/test server
 	public static final String HOST = HOST_TEST; // switch production/test server
 
 	public static final String BASE_URL = "http://" + HOST;
@@ -139,6 +140,11 @@ public class RestHelper {
 	public static String CMD_VIDEOS_COMMENTS(long id) {
 		return CMD_VIDEOS + "/" + id + "/comments";
 	}
+
+	public static String CMD_VIDEOS_EDIT_COMMENT(long videoId, long commentId) {
+		return CMD_VIDEOS + "/" + videoId + "/comments/" + commentId;
+	}
+
 
 	/* Tactics */
 	public static final String CMD_TACTICS = BASE_URL + V1 + "/tactics";
@@ -302,7 +308,6 @@ public class RestHelper {
 	public static final String P_TOPICS_PER_PAGE = "topicsPerPage";
 	public static final String P_SUBJECT = "subject";
 	public static final String P_BODY = "body";
-	public static final String P_COMMENT = "comment";
 	public static final String P_COMMENT_BODY = "commentBody";
 	public static final String P_COMMENTS_PER_PAGE = "commentsPerPage";
 	public static final String P_AVATAR_SIZE = "avatarSize";
