@@ -128,7 +128,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			}
 			LiveGameWaitFragment fragmentByTag = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
 			if (fragmentByTag == null) {
-				fragmentByTag = new LiveGameWaitFragment();
+				fragmentByTag = LiveGameWaitFragment.createInstance(getAppData().getLiveGameConfig());
 			}
 
 			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

@@ -33,9 +33,6 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 	public boolean closeOnResume;
 
 	public LiveGameWaitFragment() {
-		Bundle bundle = new Bundle();
-		bundle.putParcelable(CONFIG, new LiveGameConfig.Builder().build());
-		setArguments(bundle);
 	}
 
 	public static LiveGameWaitFragment createInstance(LiveGameConfig config) {
@@ -52,6 +49,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 		if (getArguments() != null) {
 			liveGameConfig = getArguments().getParcelable(CONFIG);
 		} else {
+			// when is it really reachable for fragment?
 			liveGameConfig = savedInstanceState.getParcelable(CONFIG);
 		}
 		gameTaskListener = new GameTaskListener();

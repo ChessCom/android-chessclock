@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import com.chess.R;
 import com.chess.backend.RestHelper;
+import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.interfaces.boards.BoardFace;
+import com.google.gson.Gson;
 
 import static com.chess.backend.statics.AppConstants.*;
 
@@ -453,6 +455,24 @@ public class AppData {
 		setBooleanValue(LESSONS_LIMIT_HAS_REACHED, value);
 	}
 
+	public void setLiveGameConfig(LiveGameConfig liveGameConfig) {
+		Gson gson = new Gson();
+		setStringValue(LIVE_GAME_CONFIG, gson.toJson(liveGameConfig));
+		editor.commit();
+	}
+
+	public LiveGameConfig getLiveGameConfig() {
+		Gson gson = new Gson();
+
+		LiveGameConfig liveGameConfig = gson.fromJson(getStringValue(LIVE_GAME_CONFIG, ""), LiveGameConfig .class);
+
+		if (liveGameConfig == null) {
+			liveGameConfig = new LiveGameConfig.Builder().build();
+		}
+
+		return liveGameConfig;
+	}
+
 	/*--------------------------- Common Shared logic ------------------------*/
 
 	private void setBooleanValue(String field, boolean checked) {
@@ -488,5 +508,4 @@ public class AppData {
 		String username = getUsername();
 		editor.putInt(username + field, value).commit();
 	}
-
 }

@@ -352,7 +352,11 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	public LiveGameConfig getLiveGameConfig() {
 		// set params
 		gameConfigBuilder.setRated(ratedGameSwitch.isChecked());
-		return gameConfigBuilder.build();
+
+		LiveGameConfig liveGameConfig = gameConfigBuilder.build();
+		getAppData().setLiveGameConfig(liveGameConfig);
+
+		return liveGameConfig;
 	}
 
 	public class OpponentsAdapter extends ItemsAdapter<SelectionItem> {

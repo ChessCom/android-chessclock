@@ -130,7 +130,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 			case R.drawable.ic_nav_play_live:
 				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
 				if (fragmentByTag == null) {
-					fragmentByTag = new LiveGameWaitFragment();
+					fragmentByTag = LiveGameWaitFragment.createInstance(getAppData().getLiveGameConfig());
 				}
 				break;
 			case R.drawable.ic_nav_tactics:

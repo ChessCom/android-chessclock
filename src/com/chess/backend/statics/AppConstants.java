@@ -150,4 +150,6 @@ public class AppConstants {
     public static final String NEED_TO_RESTART = "needToRestart";
 	public static final String MOVE_NUMBERS_PATTERN = "[0-9]{1,4}[.]";
 	public static final String LIGHT_THEME_NAME = "Light";
+
+	public static final String LIVE_GAME_CONFIG = "live_game_config";
 }

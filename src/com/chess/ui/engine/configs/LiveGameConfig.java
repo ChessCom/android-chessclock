@@ -32,6 +32,7 @@ public class LiveGameConfig implements Parcelable {
 		 */
 		public Builder() {
 			rated = true;
+			initialTime = 30;
 		}
 
 		public Builder setRated(boolean rated) {
