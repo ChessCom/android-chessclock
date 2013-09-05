@@ -168,6 +168,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 	private void installSelectedTheme() {
 		if (selectedThemeItem.getThemeName().equals(GAME_THEME_NAME)) {
+			getAppData().setThemeBoardPath(StaticData.SYMBOL_EMPTY); // clear downloaded theme value
 			getAppData().setThemeBackPath(StaticData.SYMBOL_EMPTY); // clear downloaded theme value
 			getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
 

@@ -877,7 +877,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			if (!TextUtils.isEmpty(appData.getThemeBoardPath())) {
 				boardBitmap = BitmapFactory.decodeFile(appData.getThemeBoardPath());
 				if (boardBitmap == null) {
-					getAppData().setThemeBoardPath(StaticData.SYMBOL_EMPTY); // cleare theme
+					getAppData().setThemeBoardPath(StaticData.SYMBOL_EMPTY); // clear theme
 					boardBackPaint.setShader(setBoardFromResource());
 					return;
 				}
