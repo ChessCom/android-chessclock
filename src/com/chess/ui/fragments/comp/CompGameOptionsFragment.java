@@ -99,7 +99,7 @@ public class CompGameOptionsFragment extends CommonLogicFragment {
 
 		CompGameConfig config = getNewCompGameConfig();
 
-		getActivityFace().openFragment(GameCompFragment.createInstance(config));
+		getActivityFace().switchFragment(GameCompFragment.createInstance(config));
 		getActivityFace().toggleRightMenu();
 	}
 
@@ -122,8 +122,6 @@ public class CompGameOptionsFragment extends CommonLogicFragment {
 	protected CompGameConfig getNewCompGameConfig(){
 		getAppData().setCompLevel(selectedCompLevel);
 		gameConfigBuilder.setStrength(selectedCompLevel);
-
-//		int mode;
 
 		int mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
 		if (!whitePlayerBtn.isChecked() && blackPlayerBtn.isChecked())

@@ -323,5 +323,6 @@
 	<string name="you_have_new_chat_message">You have a New Chat Message</string>
 	<string name="you_have_new_challenge">You have a New Challenge</string>
 	<string name="your_game_is_over">Your game is over</string>
+	<string name="switch_colors">Switch Colors</string>
 
 </resources>

@@ -616,11 +616,19 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		super.onClick(view);
 
 		if (view.getId() == R.id.newGamePopupBtn) {
-			newGame(); // TODO adjust comp game setup screen
-			dismissDialogs();
-		} else if (view.getId() == R.id.rematchPopupBtn) {
 			newGame();
 			dismissDialogs();
+		} else if (view.getId() == R.id.rematchPopupBtn) {
+			// change sides
+			int mode = compGameConfig.getMode();
+			if (mode == AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE) {
+				compGameConfig.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK);
+			} else if (mode == AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK) {
+				compGameConfig.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
+			}
+			dismissDialogs();
+
+			startNewGame();
 		}  else if (view.getId() == R.id.shareBtn) {
 			ShareItem shareItem = new ShareItem();
 
@@ -631,6 +639,26 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
 			dismissDialogs();
 		}
+	}
+
+	private void startNewGame() {
+		ChessBoardComp.resetInstance();
+		getBoardFace().setMode(compGameConfig.getMode());
+		resideBoardIfCompWhite();
+		invalidateGameScreen();
+
+		if (!getBoardFace().isAnalysis()) {
+
+			boolean isComputerMove = (getAppData().isComputerVsComputerGameMode(getBoardFace()))
+					|| (getAppData().isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
+					|| (getAppData().isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove());
+
+			if (isComputerMove) {
+				computerMove();
+			}
+		}
+
+		startGame(null);
 	}
 
 	private class InitComputerEngineUpdateListener extends ChessLoadUpdateListener<CompEngineHelper> {
@@ -801,7 +829,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			optionsArray = new SparseArray<String>();
 			optionsArray.put(ID_NEW_GAME, getString(R.string.new_game));
 			optionsArray.put(ID_EMAIL_GAME, getString(R.string.email_game));
-			optionsArray.put(ID_FLIP_BOARD, getString(R.string.flip_board));
+			optionsArray.put(ID_FLIP_BOARD, getString(R.string.switch_colors));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
 	}
