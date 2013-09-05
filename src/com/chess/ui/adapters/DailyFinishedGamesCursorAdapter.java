@@ -37,7 +37,7 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 		colorGreen = resources.getColor(R.color.new_dark_green);
 		colorGrey = resources.getColor(R.color.stats_label_grey);
 
-		}
+	}
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -48,6 +48,7 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 		holder.premiumImg = (ImageView) view.findViewById(R.id.premiumImg);
 		holder.ratingTxt = (TextView) view.findViewById(R.id.ratingTxt);
 		holder.gameResultTxt = (TextView) view.findViewById(R.id.gameResultTxt);
+		holder.gameTypeTxt = (TextView) view.findViewById(R.id.gameTypeTxt);
 
 		view.setTag(holder);
 		return view;
@@ -57,12 +58,6 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View convertView, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		String gameType = StaticData.SYMBOL_EMPTY;
-
-		if (getInt(cursor, DbScheme.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
-			gameType = CHESS_960;
-		}
-
 		// get player side, and choose opponent
 		String avatarUrl;
 		String opponentName;
@@ -70,23 +65,29 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 		int premiumStatus;
 		if (getInt(cursor, DbScheme.V_I_PLAY_AS) == RestHelper.P_BLACK) {
 			avatarUrl = getString(cursor, DbScheme.V_WHITE_AVATAR);
-			opponentName = getString(cursor, DbScheme.V_WHITE_USERNAME) + gameType;
+			opponentName = getString(cursor, DbScheme.V_WHITE_USERNAME);
 			opponentRating = getString(cursor, DbScheme.V_WHITE_RATING);
 			premiumStatus = getInt(cursor, DbScheme.V_WHITE_PREMIUM_STATUS);
 		} else {
 			avatarUrl = getString(cursor, DbScheme.V_BLACK_AVATAR);
-			opponentName = getString(cursor, DbScheme.V_BLACK_USERNAME) + gameType;
+			opponentName = getString(cursor, DbScheme.V_BLACK_USERNAME);
 			opponentRating = getString(cursor, DbScheme.V_BLACK_RATING);
 			premiumStatus = getInt(cursor, DbScheme.V_BLACK_PREMIUM_STATUS);
 		}
 
 		holder.premiumImg.setImageResource(AppUtils.getPremiumIcon(premiumStatus));
-		holder.playerTxt.setText(opponentName + gameType);
+		holder.playerTxt.setText(opponentName);
 		holder.ratingTxt.setText(StaticData.SYMBOL_LEFT_PAR + opponentRating + StaticData.SYMBOL_RIGHT_PAR);
 		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 
 		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
 		holder.playerImg.setOnline(isOpponentOnline);
+
+		if(getInt(cursor, DbScheme.V_GAME_TYPE) == RestHelper.V_GAME_CHESS) {
+			holder.gameTypeTxt.setText(R.string.ic_daily_game);
+		} else {
+			holder.gameTypeTxt.setText(R.string.ic_daily960_game);
+		}
 
 		// Loss orange
 		String result = lossStr;
@@ -109,5 +110,6 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 		public ImageView premiumImg;
 		public TextView ratingTxt;
 		public TextView gameResultTxt;
+		public TextView gameTypeTxt;
 	}
 }

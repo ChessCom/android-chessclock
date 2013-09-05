@@ -8,13 +8,14 @@
     android:orientation="horizontal"
     style="@style/ListItem"
     android:gravity="center_vertical"
+	android:paddingLeft="@dimen/default_scr_side_padding"
+	android:paddingRight="@dimen/default_scr_side_padding"
     >
 
     <com.chess.backend.image_load.AvatarView
         android:id="@+id/playerImg"
         android:layout_width="@dimen/list_item_image_size_big"
         android:layout_height="@dimen/list_item_image_size_big"
-        android:layout_marginLeft="15dip"
         android:layout_marginTop="10dip"
         android:layout_marginBottom="10dip"
         android:layout_marginRight="10dip"
@@ -48,17 +49,25 @@
         android:layout_weight="1"
         android:textColor="@color/new_normal_grey"
         android:gravity="center_vertical"
-        android:text=""
         />
 
     <com.chess.RoboTextView
+        android:id="@+id/gameTypeTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:gravity="center"
+        android:textColor="@color/new_light_grey_2"
+        android:text="@string/ic_daily960_game"
+		style="@style/GlyphIcon.Big"
+		/>
+
+	<com.chess.RoboTextView
         android:id="@+id/gameResultTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/new_light_grey"
-        android:gravity="center_vertical"
-        android:text="test"
-        android:paddingRight="15dip"
+        android:gravity="center"
+		android:minWidth="35dip"
         />
 
 </com.chess.LinLayout>

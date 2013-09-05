@@ -50,8 +50,8 @@ public class RestHelper {
 	//	http://api.chess-7.com
 	public static final String HOST_PRODUCTION = "api.chess.com";
 	public static final String HOST_TEST = "api.chess-7.com";
-	public static final String HOST = HOST_PRODUCTION; // switch production/test server
-//	public static final String HOST = HOST_TEST; // switch production/test server
+//	public static final String HOST = HOST_PRODUCTION; // switch production/test server
+	public static final String HOST = HOST_TEST; // switch production/test server
 
 	public static final String BASE_URL = "http://" + HOST;
 	private static final String API = "/api";
