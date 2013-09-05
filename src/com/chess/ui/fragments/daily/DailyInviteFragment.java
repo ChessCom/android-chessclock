@@ -63,9 +63,7 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 	private int successToastMsgId;
 	private DailyUpdateListener challengeInviteUpdateListener;
 
-	public DailyInviteFragment() {
-
-	}
+	public DailyInviteFragment() { }
 
 	public static DailyInviteFragment createInstance(DailyChallengeItem.Data challengeItem) {
 		DailyInviteFragment fragment = new DailyInviteFragment();
@@ -89,7 +87,11 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.daily);
+		if(challengeItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
+			setTitle(R.string.daily_960);
+		} else {
+			setTitle(R.string.daily);
+		}
 
 		widgetsInit(view);
 	}

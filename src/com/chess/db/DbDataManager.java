@@ -4,6 +4,7 @@ import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.*;
 import com.chess.backend.entity.api.stats.*;
@@ -138,6 +139,10 @@ public class DbDataManager {
 			V_PARENT_ID,
 			V_ID
 	);
+
+	public static String SELECTION_USER_AND_SEEN = concatArguments(
+			V_USER,
+			V_SEEN);
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
@@ -275,6 +280,12 @@ public class DbDataManager {
 			V_ID
 	};
 
+	public static final String[] PROJECTION_USER_AND_SEEN = new String[]{
+			_ID,
+			V_USER,
+			V_USERNAME,
+			V_SEEN
+	};
 
 	public static String concatArguments(String... arguments) {
 		StringBuilder selection = new StringBuilder();
@@ -451,7 +462,8 @@ public class DbDataManager {
 	}
 
 	/**
-	 * Search in DAILY_FINISHED_GAMES for match to this query : {@code  SELECT user,i_play_as,white_username,is_opponent_online,black_username FROM DAILY_FINISHED_GAMES WHERE user='username' AND ((black_username!='username' AND i_play_as=1) OR (black_username='username' AND i_play_as=2)) GROUP BY white_username, black_username}
+	 * Search in DAILY_FINISHED_GAMES for match to this query : {@code SELECT user,i_play_as,white_username,is_opponent_online,black_username FROM DAILY_FINISHED_GAMES WHERE user='username' AND ((black_username!='username' AND i_play_as=1) OR (black_username='username' AND i_play_as=2)) GROUP BY white_username, black_username}
+	 *
 	 * @return Cursor with composition of player names, where current user can be black or white player
 	 */
 	public static Cursor getRecentOpponentsCursor(Context context, String username) {
@@ -890,6 +902,7 @@ public class DbDataManager {
 		values.put(V_CHESS_TITLE, dataObj.getChessTitle());
 		values.put(V_USER_AVATAR, dataObj.getAvatar());
 		values.put(V_PHOTO_URL, dataObj.getImageUrl());
+		values.put(V_URL, dataObj.getUrl());
 		values.put(V_THUMB_CONTENT, dataObj.isIsThumbInContent());
 
 		return values;
@@ -1805,6 +1818,7 @@ public class DbDataManager {
 
 		values.put(V_CREATE_DATE, item.getCreatedAt());
 		values.put(V_USER, username);
+		values.put(V_SEEN, item.userSawIt() ? 1 : 0);
 		values.put(V_MESSAGE, item.getMessage());
 		values.put(V_USERNAME, item.getUsername());
 		values.put(V_USER_AVATAR, item.getAvatar());
@@ -1836,12 +1850,12 @@ public class DbDataManager {
 	public static void saveNewChallengeNotification(ContentResolver contentResolver, NewChallengeNotificationItem item, String username) {
 
 		final String[] arguments1 = sArguments2;
-		arguments1[0] = username; // current auth username
-		arguments1[1] = item.getUsername();
+		arguments1[0] = String.valueOf(item.getChallengeId());
+		arguments1[1] = username; // current auth username
 
 		Uri uri = uriArray[Tables.NOTIFICATION_NEW_CHALLENGES.ordinal()];
-		Cursor cursor = contentResolver.query(uri, PROJECTION_USER_AND_USERNAME,
-				SELECTION_USER_AND_USERNAME, arguments1, null);
+		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID_AND_USER,
+				SELECTION_ITEM_ID_AND_USER, arguments1, null);
 
 		ContentValues values = new ContentValues();
 
@@ -1871,6 +1885,88 @@ public class DbDataManager {
 		values.put(V_USER_AVATAR, item.getAvatar());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
+	public static int getUnreadNotificationsCnt(ContentResolver contentResolver, String username) {
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = username;
+
+		int notificationsCnt = 0;
+		{
+			final String[] arguments = sArguments2;
+			arguments[0] = username;
+			arguments[1] = String.valueOf(0);
+
+			Cursor cursor = contentResolver.query(uriArray[Tables.NOTIFICATION_FRIEND_REQUEST.ordinal()],
+					PROJECTION_USER_AND_SEEN, SELECTION_USER_AND_SEEN, arguments, null);
+			if (cursor != null && cursor.moveToFirst()) {
+				notificationsCnt += cursor.getCount();
+			}
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+		{
+			Cursor cursor = contentResolver.query(uriArray[Tables.NOTIFICATION_NEW_CHAT_MESSAGES.ordinal()],
+					PROJECTION_USER, SELECTION_USER, arguments1, null);
+			if (cursor != null && cursor.moveToFirst()) {
+				notificationsCnt += cursor.getCount();
+			}
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+		{
+			Cursor cursor = contentResolver.query(uriArray[Tables.NOTIFICATION_NEW_CHALLENGES.ordinal()],
+					PROJECTION_USER, SELECTION_USER, arguments1, null);
+			if (cursor != null && cursor.moveToFirst()) {
+				notificationsCnt += cursor.getCount();
+			}
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+		{
+			Cursor cursor = contentResolver.query(uriArray[Tables.NOTIFICATION_GAMES_OVER.ordinal()],
+					PROJECTION_USER, SELECTION_USER, arguments1, null);
+			if (cursor != null && cursor.moveToFirst()) {
+				notificationsCnt += cursor.getCount();
+			}
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+		return notificationsCnt;
+	}
+
+	public static void deleteNewChallengeNotification(ContentResolver contentResolver, String username, Long challengeId) {
+		final String[] arguments = sArguments2;
+		arguments[0] = String.valueOf(challengeId);
+		arguments[1] = username;
+
+		Uri uri = uriArray[Tables.NOTIFICATION_NEW_CHALLENGES.ordinal()];
+		int deleteCnt = contentResolver.delete(uri, SELECTION_ITEM_ID_AND_USER, arguments);
+
+		Log.d("TEST", "deleteCnt = " + deleteCnt);
+	}
+
+	public static void updateNewFriendRequestNotification(ContentResolver contentResolver, String username,
+														  String likelyFriend, boolean userSaw) {
+		final String[] arguments1 = sArguments2;
+		arguments1[0] = username; // current auth username
+		arguments1[1] = likelyFriend;
+
+		Uri uri = uriArray[Tables.NOTIFICATION_FRIEND_REQUEST.ordinal()];
+		Cursor cursor = contentResolver.query(uri, PROJECTION_USER_AND_SEEN,
+				SELECTION_USER_AND_USERNAME, arguments1, null);
+
+		ContentValues values = new ContentValues();
+
+		values.put(V_SEEN, userSaw ? 1 : 0);
+
+		if (cursor != null && cursor.moveToFirst()) {
+			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, SELECTION_USER_AND_USERNAME, arguments1);
+		}
 	}
 
 	// ================================= global help methods =======================================

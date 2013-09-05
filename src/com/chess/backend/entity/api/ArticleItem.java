@@ -43,6 +43,7 @@ public class ArticleItem extends BaseResponseItem<List<ArticleItem.Data>> {
 		private int country_id;
 		private String avatar_url;
 		private String image_url;
+		private String url;
 		private boolean is_thumb_in_content;
 
 		public long getId() {
@@ -99,6 +100,10 @@ public class ArticleItem extends BaseResponseItem<List<ArticleItem.Data>> {
 
 		public String getImageUrl() {
 			return getSafeValue(image_url);
+		}
+
+		public String getUrl() {
+			return getSafeValue(url);
 		}
 
 		public boolean isIsThumbInContent() {

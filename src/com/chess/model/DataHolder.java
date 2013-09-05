@@ -29,6 +29,7 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 	 * we might not care much as notifications comes in very short time period(in few seconds).
 	 */
 	private final List<LastMoveInfoItem> lastMoveInfoItems; // TODO should be saved in store and tied to GCM usage
+	private boolean isMainActivityVisible;
 
 
 	private DataHolder() {
@@ -91,5 +92,13 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 		synchronized (lastMoveInfoItems) {
 			lastMoveInfoItems.add(lastMoveInfoItem);
 		}
+	}
+
+	public synchronized void setMainActivityVisible(boolean visible) {
+		isMainActivityVisible = visible;
+	}
+
+	public synchronized boolean isMainActivityVisible() {
+		return isMainActivityVisible;
 	}
 }

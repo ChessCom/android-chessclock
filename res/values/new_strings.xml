@@ -319,5 +319,9 @@
 	<string name="comments_arg">%s comments</string>
 	<string name="reads_arg">%s reads</string>
 	<string name="share_article">Share Article</string>
+	<string name="you_have_new_friend_request">You have a New Friend Request</string>
+	<string name="you_have_new_chat_message">You have a New Chat Message</string>
+	<string name="you_have_new_challenge">You have a New Challenge</string>
+	<string name="your_game_is_over">Your game is over</string>
 
 </resources>

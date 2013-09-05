@@ -37,6 +37,7 @@ import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DbDataManager;
 import com.chess.model.GameListCurrentItem;
+import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import org.apache.http.HttpEntity;
 
@@ -295,6 +296,22 @@ public class AppUtils {
 //		notification.setLatestEventInfo(context, title, body, contentIntent);
 //
 //		notifyManager.notify((int) currentGameItem.getGameId(), notification);
+	}
+
+	public static void showStatusBarNotification(Context context, String title,  String body) {
+		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		notifyManager.cancelAll(); // clear all previous notifications
+
+		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+		Intent intent = new Intent(context, MainFragmentFaceActivity.class);
+
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
+		notification.setLatestEventInfo(context, title, body, contentIntent);
+
+		notifyManager.notify(R.id.menu_notifications, notification);
 	}
 
 	/**

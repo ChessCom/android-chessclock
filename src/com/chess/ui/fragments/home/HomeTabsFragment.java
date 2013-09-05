@@ -128,7 +128,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	public void onResume() {
 		super.onResume();
 
-		setBadgeValueForId(R.id.menu_games, 7); // TODO use properly
+//		setBadgeValueForId(R.id.menu_games, 7); // TODO use properly
 //		setBadgeValueForId(R.id.menu_notifications, 7); // TODO use properly
 
 //		new LoadDataFromDbTask(new DbCursorUpdateListener(),

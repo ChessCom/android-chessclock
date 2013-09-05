@@ -81,6 +81,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 	private long commentId;
 	private boolean inEditMode;
 	private String bodyStr;
+	private String commentForEditStr;
 
 	public static VideoDetailsFragment createInstance(long videoId) {
 		VideoDetailsFragment frag = new VideoDetailsFragment();
@@ -289,6 +290,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
 		if (username.equals(getUsername())) {
 			commentId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+			commentForEditStr = String.valueOf(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_BODY)));
 
 			inEditMode = true;
 			showEditView(true);
@@ -307,6 +309,10 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 					showKeyBoard(newPostEdt);
 					showKeyBoardImplicit(newPostEdt);
 
+					if (inEditMode) {
+						newPostEdt.setText(commentForEditStr);
+						newPostEdt.setSelection(commentForEditStr.length());
+					}
 					showEditMode(true);
 				}
 			}, KEYBOARD_DELAY);

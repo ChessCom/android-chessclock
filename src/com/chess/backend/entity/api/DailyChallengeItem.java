@@ -19,10 +19,9 @@ public class DailyChallengeItem extends BaseResponseItem<List<DailyChallengeItem
 	"opponent_avatar": "//s3.amazonaws.com/chess-7/images/noavatar_l.gif",
 	"color": 3,
 	"days_per_move": 3,
-	"game_type_id": 1,
+	"game_type": 1,
 	"is_rated": true,
 	"initial_setup_fen": null,
-	"url": "view_game_seek.html?id=368"
 */
 
 
@@ -36,10 +35,9 @@ public class DailyChallengeItem extends BaseResponseItem<List<DailyChallengeItem
 		private String opponent_avatar;
 		private int color;
 		private int days_per_move;
-		private int game_type_id;
+		private int game_type;
 		private boolean is_rated;
 		private String initial_setup_fen;
-		private String url;
 
 		public long getGameId() {
 			return id;
@@ -74,7 +72,7 @@ public class DailyChallengeItem extends BaseResponseItem<List<DailyChallengeItem
 		}
 
 		public int getGameType() {
-			return game_type_id;
+			return game_type;
 		}
 
 		public boolean isRated() {
@@ -83,10 +81,6 @@ public class DailyChallengeItem extends BaseResponseItem<List<DailyChallengeItem
 
 		public String getInitial_setup_fen() {
 			return initial_setup_fen;
-		}
-
-		public String getUrl() {
-			return url;
 		}
 
 		public String getOpponentAvatar() {

@@ -95,17 +95,33 @@ public class LoadHelper {
 		return loadItem;
 	}
 
-	public static LoadItem acceptChallenge(String userToken, long gameId) {
-		return answerGameSeek(userToken, gameId, PUT);
+	public static LoadItem acceptChallenge(String loginToken, long gameId) {
+		return answerGameSeek(loginToken, gameId, PUT);
 	}
 
-	public static LoadItem declineChallenge(String userToken, long gameId) {
-		return answerGameSeek(userToken, gameId, DELETE);
+	public static LoadItem declineChallenge(String loginToken, long gameId) {
+		return answerGameSeek(loginToken, gameId, DELETE);
 	}
 
-	public static LoadItem answerGameSeek(String userToken, long gameId, String command) {
+	public static LoadItem answerGameSeek(String loginToken, long gameId, String command) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(CMD_ANSWER_GAME_SEEK(gameId));
+		loadItem.setRequestMethod(command);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, loginToken);
+		return loadItem;
+	}
+
+	public static LoadItem acceptFriendRequest(String loginToken, long id) {
+		return answerFriendRequest(loginToken, id, PUT);
+	}
+
+	public static LoadItem declineFriendRequest(String loginToken, long id) {
+		return answerFriendRequest(loginToken, id, DELETE);
+	}
+
+	public static LoadItem answerFriendRequest(String userToken, long id, String command) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(CMD_FRIENDS_REQUEST_BY_ID(id));
 		loadItem.setRequestMethod(command);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		return loadItem;

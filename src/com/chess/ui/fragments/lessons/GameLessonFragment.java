@@ -18,6 +18,7 @@ import com.chess.MultiDirectionSlidingDrawer;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.LessonItem;
 import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.entity.api.LessonRatingChangeItem;
@@ -207,11 +208,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private void updateUiData() {
 		// check if we have that lesson in DB
 		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getMentorLessonById(lessonId));
-		logTest("cursor = " + cursor +  " lessonId = " + lessonId);
 		if (cursor != null && cursor.moveToFirst()) { // we have saved lesson data
 			new LoadLessonItemTask(lessonLoadListener, getContentResolver(), getUsername()).executeTask((long) lessonId);
-			logTest("LoadLessonItemTask");
-
 		} else {
 			// drop flag here for lessons limit reached
 			getAppData().setLessonLimitWasReached(false);
@@ -729,21 +727,17 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-//			if (RestHelper.containsServerCode(resultCode)) {
-//				int serverCode = RestHelper.decodeServerCode(resultCode);
-//				if (serverCode == ServerErrorCodes.USER_HAS_REACHED_THE_DAILY_LIMIT_OF_LESSONS) {
-//
-//					getActivityFace().showPreviousFragment();
-//				} else {
-//					super.errorHandle(resultCode);
-//				}
-//			} else {
-//				super.errorHandle(resultCode);
-//			}
-			super.errorHandle(resultCode);
-			// saving flag here for limit reached error
-			getAppData().setLessonLimitWasReached(true);
-
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCodes.USER_HAS_REACHED_THE_DAILY_LIMIT_OF_LESSONS) {
+					getAppData().setLessonLimitWasReached(true);
+				} else {
+					super.errorHandle(resultCode);
+				}
+			} else {
+				super.errorHandle(resultCode);
+			}
+			// in case of any error leave this fragment, as data will be unreliable
 			getActivityFace().showPreviousFragment();
 		}
 	}
@@ -892,7 +886,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			float pointsForLesson = 0;
 			if (!lessonItem.isLessonCompleted()) {
 				pointsForLesson = ratingChange.getChange();
-//				updatedUserRating = ratingChange.getNewRating(); // TODO restore
+//				updatedUserRating = ratingChange.getNewRating(); // TODO check logic if we need that
 				updatedUserRating += pointsForLesson;
 			}
 

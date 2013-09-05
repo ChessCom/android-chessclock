@@ -27,6 +27,8 @@ public interface ActiveFragmentInterface {
 
     void setBadgeValueForId(int menuId, int value);
 
+	int getValueByBadgeId(int badgeId);
+
 	CoreActivityActionBar getActionBarActivity();
 
 	void changeRightFragment(CommonLogicFragment fragment);

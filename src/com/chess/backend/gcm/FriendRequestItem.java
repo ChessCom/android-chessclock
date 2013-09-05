@@ -18,6 +18,8 @@ public class FriendRequestItem {
 	private String message;
 	private long createdAt;
 	private String avatar_url;
+	/* Local additions */
+	private boolean seen;
 
 	public String getUsername() {
 		return username;
@@ -50,4 +52,13 @@ public class FriendRequestItem {
 	public void setAvatar(String avatar_url) {
 		this.avatar_url = avatar_url;
 	}
+
+	public void setUserSawIt(boolean seen) {
+		this.seen = seen;
+	}
+
+	public boolean userSawIt() {
+		return seen;
+	}
+
 }

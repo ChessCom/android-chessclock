@@ -79,6 +79,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private String bodyStr;
 	private long commentId;
 	private boolean inEditMode;
+	private String commentForEditStr;
 
 
 	public static ArticleDetailsFragment createInstance(long articleId) {
@@ -238,7 +239,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				if (TextUtils.isEmpty(url)) {
 					articleShareStr = String.valueOf(Html.fromHtml(bodyStr));
 				} else {
-					articleShareStr = RestHelper.BASE_URL + "/" + url;
+					articleShareStr = RestHelper.BASE_URL + "/article/view/" + url;
 				}
 
 				Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -254,14 +255,18 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		// get commentId
-		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
-		if (username.equals(getUsername())) {
-			commentId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+		if (position != 0) { // if NOT listView header
+			// get commentId
+			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+			if (username.equals(getUsername())) {
+				commentId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
-			inEditMode = true;
-			showEditView(true);
+				commentForEditStr = String.valueOf(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_BODY)));
+
+				inEditMode = true;
+				showEditView(true);
+			}
 		}
 	}
 
@@ -277,6 +282,10 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					showKeyBoard(newPostEdt);
 					showKeyBoardImplicit(newPostEdt);
 
+					if (inEditMode) {
+						newPostEdt.setText(commentForEditStr);
+						newPostEdt.setSelection(commentForEditStr.length());
+					}
 					showEditMode(true);
 				}
 			}, KEYBOARD_DELAY);
@@ -320,7 +329,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			ArticleDetailsItem.Data articleData = returnedObj.getData();
 			int commentCount = articleData.getCommentCount();
 			int viewCount = articleData.getViewCount();
-			String url = articleData.getUrl();
+			url = articleData.getUrl();
 
 			String viewsCntStr = getString(R.string.comments_arg, commentCount);
 			String commentsCntStr = getString(R.string.reads_arg, viewCount);

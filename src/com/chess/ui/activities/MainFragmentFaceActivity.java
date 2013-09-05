@@ -1,6 +1,9 @@
 package com.chess.ui.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,8 +16,11 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import com.chess.R;
+import com.chess.backend.gcm.GcmHelper;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
+import com.chess.db.DbDataManager;
+import com.chess.model.DataHolder;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
@@ -49,6 +55,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private List<SlidingMenu.OnClosedListener> closeMenuListeners;
 	private boolean showActionBar;
 	private int customActionBarViewId;
+	private IntentFilter notificationsUpdateFilter;
+	private NotificationsUpdateReceiver notificationsUpdateReceiver;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -89,6 +97,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		} else {
 			getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());
 		}
+
+		notificationsUpdateFilter = new IntentFilter(IntentConstants.NOTIFICATIONS_UPDATE);
 	}
 
 	@Override
@@ -97,6 +107,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		super.onPostCreate(savedInstanceState);
 
 		getActionBarHelper().showActionBar(showActionBar);
+
+		updateNotificationsBadge();
 	}
 
 	@Override
@@ -125,13 +137,33 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			ft.replace(R.id.content_frame, fragmentByTag, fragmentByTag.getClass().getSimpleName());
 			ft.commitAllowingStateLoss();
 		}
+		// TODO open from notification
+	}
+
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		DataHolder.getInstance().setMainActivityVisible(true);
+
+		notificationsUpdateReceiver = new NotificationsUpdateReceiver();
+		registerReceiver(notificationsUpdateReceiver, notificationsUpdateFilter);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		DataHolder.getInstance().setMainActivityVisible(false);
+
+		unRegisterMyReceiver(notificationsUpdateReceiver);
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putBoolean(SHOW_ACTION_BAR, showActionBar);
-
 	}
 
 	@Override
@@ -362,6 +394,19 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 	}
 
+	private class NotificationsUpdateReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			updateNotificationsBadge();
+		}
+	}
+
+	private void updateNotificationsBadge() {
+		int notificationsCnt = DbDataManager.getUnreadNotificationsCnt(getContentResolver(), getMeUsername());
+		setBadgeValueForId(R.id.menu_notifications, notificationsCnt);
+	}
+
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -432,12 +477,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		getActionBarHelper().setBadgeValueForId(menuId, value);
 	}
 
-//	@Override
-//	public void setBadgeValueForId(int menuId, int value, Menu menu) {
-//		badgeItems.put(menuId, value);
-//		getActionBarHelper().setBadgeValueForId(menuId, value, menu);
-//	}
-
 	@Override
 	public CoreActivityActionBar getActionBarActivity() {
 		return getInstance();
@@ -452,6 +491,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 
 		return displayMenu;
+	}
+
+	@Override
+	public int getValueByBadgeId(int badgeId) {
+		return badgeItems.get(badgeId);
 	}
 
 	public void startActivityFromFragmentForResult(Intent intent, int requestCode) {

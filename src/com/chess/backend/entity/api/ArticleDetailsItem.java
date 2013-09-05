@@ -29,13 +29,8 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 */
 
 	public class Data extends ArticleItem.Data{
-		private String url;
 		private int view_count;
 		private int comment_count;
-
-		public String getUrl() {
-			return url;
-		}
 
 		public int getViewCount() {
 			return view_count;

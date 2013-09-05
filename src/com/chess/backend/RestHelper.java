@@ -50,8 +50,8 @@ public class RestHelper {
 	//	http://api.chess-7.com
 	public static final String HOST_PRODUCTION = "api.chess.com";
 	public static final String HOST_TEST = "api.chess-7.com";
-//	public static final String HOST = HOST_PRODUCTION; // switch production/test server
-	public static final String HOST = HOST_TEST; // switch production/test server
+	public static final String HOST = HOST_PRODUCTION; // switch production/test server
+//	public static final String HOST = HOST_TEST; // switch production/test server
 
 	public static final String BASE_URL = "http://" + HOST;
 	private static final String API = "/api";
@@ -129,6 +129,11 @@ public class RestHelper {
 	/* Friends */
 	public static final String CMD_FRIENDS = BASE_URL + V1 + "/friends";
 	public static final String CMD_FRIENDS_REQUEST = CMD_FRIENDS + "/requests";
+
+	public static String CMD_FRIENDS_REQUEST_BY_ID(long id) {
+		return CMD_FRIENDS + "/" + id + "/requests";
+	}
+
 	/* Videos */
 	public static final String CMD_VIDEOS = BASE_URL + V1 + "/videos";
 	public static final String CMD_VIDEO_CATEGORIES = CMD_VIDEOS + "/categories";

@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 53;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 55;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -364,6 +364,7 @@ public class DbScheme {
 				+ addField_Text(V_LAST_NAME)
 				+ addField_Text(V_USER_AVATAR)
 				+ addField_Text(V_PHOTO_URL)
+				+ addField_Text(V_URL)
 				+ addField_Text(V_THUMB_CONTENT)
 				+ addField_Text(V_CHESS_TITLE, true);
 
@@ -758,6 +759,8 @@ public class DbScheme {
 	public static final String V_MIN_Y = "min_y";
 	public static final String V_MAX_X = "max_x";
 
+	public static final String V_SEEN = "seen";
+
 	void createGameStatsTables() {
 		createTablesArray[Tables.GAME_STATS_LIVE_STANDARD.ordinal()] = createTableForName(Tables.GAME_STATS_LIVE_STANDARD)
 				+ addField_Long(V_HIGHEST_TIMESTAMP)
@@ -996,28 +999,29 @@ public class DbScheme {
 	void createNotificationsTables() {
 		createTablesArray[Tables.NOTIFICATION_FRIEND_REQUEST.ordinal()] = createTableForName(Tables.NOTIFICATION_FRIEND_REQUEST)
 				+ addField_Long(V_CREATE_DATE)
-				+ addField_Text(V_USER)
+				+ addField_Int(V_SEEN) // user saw this notification
+				+ addField_Text(V_USER) // current auth user
 				+ addField_Text(V_MESSAGE)
-				+ addField_Text(V_USERNAME)
+				+ addField_Text(V_USERNAME)  // opponent username
 				+ addField_Text(V_USER_AVATAR, true);
 
 		createTablesArray[Tables.NOTIFICATION_NEW_CHAT_MESSAGES.ordinal()] = createTableForName(Tables.NOTIFICATION_NEW_CHAT_MESSAGES)
 				+ addField_Long(V_ID)  // gameId
 				+ addField_Long(V_CREATE_DATE)
-				+ addField_Text(V_USER)
+				+ addField_Text(V_USER) // current auth user
 				+ addField_Text(V_MESSAGE)
-				+ addField_Text(V_USERNAME)
+				+ addField_Text(V_USERNAME)  // opponent username
 				+ addField_Text(V_USER_AVATAR, true);
 
 		createTablesArray[Tables.NOTIFICATION_NEW_CHALLENGES.ordinal()] = createTableForName(Tables.NOTIFICATION_NEW_CHALLENGES)
 				+ addField_Long(V_ID) // challengeId
-				+ addField_Text(V_USER)
-				+ addField_Text(V_USERNAME)
+				+ addField_Text(V_USER) // current auth user
+				+ addField_Text(V_USERNAME) // opponent username
 				+ addField_Text(V_USER_AVATAR, true);
 
 		createTablesArray[Tables.NOTIFICATION_GAMES_OVER.ordinal()] = createTableForName(Tables.NOTIFICATION_GAMES_OVER)
 				+ addField_Long(V_ID) // gameId
-				+ addField_Text(V_USER)
+				+ addField_Text(V_USER) // current auth user
 				+ addField_Text(V_MESSAGE)
 				+ addField_Text(V_USER_AVATAR, true);
 	}

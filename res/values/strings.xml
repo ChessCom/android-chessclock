@@ -78,6 +78,8 @@
     <string name="accept">Accept</string>  <!--Accept action-->
     <string name="challenge_accepted">Challenge Accepted!</string>
     <string name="challenge_declined">Challenge Declined!</string>
+    <string name="request_accepted">Request Accepted!</string>
+    <string name="request_declined">Request Declined!</string>
     <string name="decline">Decline</string>  <!--Decline action-->
 
     <!--Type of the game-->
@@ -400,6 +402,7 @@
     <string name="new_create_chess_profile">Create Your Online Chess Profile</string>
     <string name="board_and_pieces"><![CDATA[Board & Pieces]]></string>
     <string name="daily">Daily</string>
+    <string name="daily_960">Daily 960</string>
 	<string name="improve_game_with_lessons">Improve your game with unlimited lessons</string>
 
 	<!--Navigation Menu-->

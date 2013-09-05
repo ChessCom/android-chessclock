@@ -1,7 +1,8 @@
 package com.chess.ui.fragments.daily;
 
 import android.app.AlertDialog;
-import android.content.*;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -20,7 +21,6 @@ import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.DailyChallengeItem;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyFinishedGameData;
-import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -34,7 +34,6 @@ import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
 import com.slidingmenu.lib.SlidingMenu;
 
 /**
@@ -51,7 +50,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	private static final int FINISHED_GAMES_SECTION = 3;
 
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
-	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
+//	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
 	private static final String UNABLE_TO_MOVE_TAG = "unable to move popup";
 
 	private int successToastMsgId;
@@ -60,8 +59,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	private DailyUpdateListener challengeInviteUpdateListener;
 	private DailyUpdateListener acceptDrawUpdateListener;
 
-	private IntentFilter listUpdateFilter;
-	private BroadcastReceiver gamesUpdateReceiver;
 	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
 	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
 	private GamesCursorUpdateListener currentGamesTheirCursorUpdateListener;
@@ -82,7 +79,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	private View loadingView;
 	private boolean onVacation;
 	private View headerView;
-	private DailyChallengeItem.Data challengeToRemove;
 	private View topButtonsView;
 
 	@Override
@@ -100,8 +96,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		sectionedAdapter.addSection(getString(R.string.new_my_move), currentGamesMyCursorAdapter);
 		sectionedAdapter.addSection(getString(R.string.new_their_move), currentGamesTheirCursorAdapter);
 		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
-
-		listUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 	}
 
 	@Override
@@ -134,8 +128,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		init();
 		getActivityFace().addOnOpenMenuListener(this);
 
-		gamesUpdateReceiver = new GamesUpdateReceiver();
-		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
 	}
 
 	@Override
@@ -148,8 +140,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	@Override
 	public void onStop() {
 		super.onStop();
-
-		unRegisterMyReceiver(gamesUpdateReceiver);
 
 		releaseResources();
 	}
@@ -300,13 +290,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		return getActivity();
 	}
 
-	private class GamesUpdateReceiver extends BroadcastReceiver {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			updateData();
-		}
-	}
-
 	private void clickOnChallenge(DailyChallengeItem.Data gameListChallengeItem) {
 		getActivityFace().openFragment(DailyInviteFragment.createInstance(gameListChallengeItem));
 		getActivityFace().toggleRightMenu();
@@ -333,35 +316,20 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 		@Override
 		public void updateData(BaseResponseItem returnedObj) {
-			if (isPaused || getActivity() == null) {
-				return;
-			}
-
 			switch (itemCode) {
 				case INVITE:
 					showToast(successToastMsgId);
-					DailyGamesRightFragment.this.updateData();
-					break;
-				case DRAW:
-					DailyGamesRightFragment.this.updateData();
-					break;
+					// remove that item from challenges list adapter
+					challengesGamesAdapter.remove(selectedChallengeItem);
 				case VACATION:
 
 					break;
 			}
 
-			// remove that item from challenges list adapter
-			challengesGamesAdapter.remove(selectedChallengeItem);
 		}
 
 		@Override
 		public void errorHandle(String resultMessage) {
-			// redundant check? we already clean the tasks pool in onPause, or...?
-			// No, cleaning the task pool doesn't stop task immediately if it already reached onPOstExecute state.
-			// this check prevent illegalStateExc for fragments, when they showed after onSavedInstance was called
-			if (isPaused)
-				return;
-
 			if (resultMessage.equals(RestHelper.R_YOU_ARE_ON_VACATION)) {
 				showToast(R.string.no_challenges_during_vacation);
 			} else {
@@ -379,22 +347,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 				}
 			}
 		}
-	}
-
-	private void updateData() {
-		if (!AppUtils.isNetworkAvailable(getActivity())) {
-			return;
-		}
-
-		// First we check ids of games what we have. Challenges also will be stored in DB
-		// when we ask server about new ids of games and challenges
-		// if server have new ids we get those games with ids
-
-//		LoadItem loadItem = new LoadItem();
-//		loadItem.setLoadPath(RestHelper.CMD_GAMES_ALL);
-//		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getAppData().getUserToken(getActivity()));
-//		//		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_ID);
-//		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
 
 	private void loadDbGames() {
@@ -422,8 +374,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 					RestHelper.V_ACCEPTDRAW, gameListCurrentItem.getTimestamp());
 
 			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
-		} else if (tag.equals(CHALLENGE_ACCEPT_TAG)) {
-			acceptChallenge();
 		}
 		super.onPositiveBtnClick(fragment);
 	}
@@ -465,9 +415,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 //			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class); // TODO adjust for fragment
 //			intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
 //			startActivity(intent);
-
-		} else if (tag.equals(CHALLENGE_ACCEPT_TAG)) {
-			declineChallenge();
 		}
 		super.onNegativeBtnClick(fragment);
 	}
