@@ -34,10 +34,10 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 	public static final String FRIEND_NAME = "username";
 
 	private MessageCreateListener messageCreateListener;
-	private ChipsAutoCompleteTextView senderNameEdt;
+	private ChipsAutoCompleteTextView receiverNameEdt;
 	private EditText messageBodyEdt;
 	private String contentStr;
-	private String senderStr;
+	private String receiverName;
 	private String friendName;
 
 	public NewMessageFragment() {
@@ -65,8 +65,12 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 		}
 
 		if (savedInstanceState != null) {
-			senderStr = savedInstanceState.getString(SENDER_STR);
+			receiverName = savedInstanceState.getString(SENDER_STR);
 			contentStr = savedInstanceState.getString(CONTENT_STR);
+		}
+
+		if (!TextUtils.isEmpty(friendName)) {
+			receiverName = friendName;
 		}
 
 		messageCreateListener = new MessageCreateListener();
@@ -83,7 +87,7 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 
 		setTitle(R.string.new_message);
 
-		senderNameEdt = (ChipsAutoCompleteTextView) view.findViewById(R.id.senderNameEdt);
+		receiverNameEdt = (ChipsAutoCompleteTextView) view.findViewById(R.id.receiverNameEdt);
 		messageBodyEdt = (EditText) view.findViewById(R.id.messageBodyEdt);
 		messageBodyEdt.setOnEditorActionListener(this);
 
@@ -103,7 +107,7 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 			}
 		}
 
-		senderNameEdt.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, friendsList));
+		receiverNameEdt.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, friendsList));
 
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_accept, true);
@@ -115,8 +119,8 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 	public void onResume() {
 		super.onResume();
 
-		if (!TextUtils.isEmpty(senderStr)) {
-			senderNameEdt.setText(senderStr);
+		if (!TextUtils.isEmpty(receiverName)) {
+			receiverNameEdt.setText(receiverName);
 		}
 
 		if (!TextUtils.isEmpty(contentStr)) {
@@ -128,7 +132,7 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 	public void onPause() {
 		super.onPause();
 
-		senderStr = getTextFromField(senderNameEdt);
+		receiverName = getTextFromField(receiverNameEdt);
 		contentStr = getTextFromField(messageBodyEdt);
 	}
 
@@ -136,7 +140,7 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
-		outState.putString(SENDER_STR, senderStr);
+		outState.putString(SENDER_STR, receiverName);
 		outState.putString(CONTENT_STR, contentStr);
 		outState.putString(FRIEND_NAME, friendName);
 	}
@@ -166,10 +170,10 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 	}
 
 	private void createMessage() {
-		senderStr = getTextFromField(senderNameEdt);
-		if (TextUtils.isEmpty(senderStr)) {
-			senderNameEdt.requestFocus();
-			senderNameEdt.setError(getString(R.string.can_not_be_empty));
+		receiverName = getTextFromField(receiverNameEdt);
+		if (TextUtils.isEmpty(receiverName)) {
+			receiverNameEdt.requestFocus();
+			receiverNameEdt.setError(getString(R.string.can_not_be_empty));
 			return;
 		}
 
@@ -185,7 +189,7 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_USERNAME, senderStr);
+		loadItem.addRequestParams(RestHelper.P_USERNAME, receiverName);
 		loadItem.addRequestParams(RestHelper.P_CONTENT, contentStr);
 
 		new RequestJsonTask<ConversationSingleItem>(messageCreateListener).executeTask(loadItem);

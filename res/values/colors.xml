@@ -443,7 +443,8 @@
     <color name="welcome_white_glow_back">#FF939393</color>
 
     <!--Profile-->
-    <color name="is_online_color">#FF6a943f</color>
+    <!--<color name="is_online_color">#FF6a943f</color>-->
+    <color name="is_online_color">#FF99CC00</color>
     <color name="profile_grey_text">#FF5a5855</color>
     <color name="profile_light_grey_ratings_back">#FFf5f4f2</color>
     <color name="profile_light_grey_ratings_back_p">#ffc7c6c4</color>

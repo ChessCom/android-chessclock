@@ -359,7 +359,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
-
 		String tag = fragment.getTag();
 		if (tag == null) {
 			super.onPositiveBtnClick(fragment);

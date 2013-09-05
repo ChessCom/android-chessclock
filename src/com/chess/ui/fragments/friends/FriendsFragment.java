@@ -3,6 +3,7 @@ package com.chess.ui.fragments.friends;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,8 +18,8 @@ import com.chess.backend.entity.api.FriendsItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveFriendsListTask;
 import com.chess.ui.adapters.FriendsCursorAdapter;
@@ -37,6 +38,7 @@ import com.chess.utilities.AppUtils;
  */
 public class FriendsFragment extends CommonLogicFragment implements ItemClickListenerFace {
 
+	private static final String CREATE_CHALLENGE_TAG = "create challenge confirm popup";
 	private ListView listView;
 	private View loadingView;
 	private TextView emptyView;
@@ -44,6 +46,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	private FriendsCursorUpdateListener friendsCursorUpdateListener;
 	private FriendsUpdateListener friendsUpdateListener;
 	private SaveFriendsListUpdateListener saveFriendsListUpdateListener;
+	private String opponentName;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -126,7 +129,13 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		if (view.getId() == R.id.challengeImgBtn) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
-			createDailyChallenge(DbDataManager.getString(cursor, DbScheme.V_USERNAME));
+			opponentName = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+			// show popup
+			popupItem.setPositiveBtnId(R.string.yes);
+			popupItem.setNegativeBtnId(R.string.no);
+			String title = getString(R.string.challenge) + StaticData.SYMBOL_SPACE + opponentName + StaticData.SYMBOL_QUESTION;
+			showPopupDialog(title, CREATE_CHALLENGE_TAG);
+
 		} else if (view.getId() == R.id.messageImgBtn) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
@@ -274,6 +283,22 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 			listView.setVisibility(View.VISIBLE);
 			loadingView.setVisibility(View.GONE);
 		}
+	}
+
+	@Override
+	public void onPositiveBtnClick(DialogFragment fragment) {
+		super.onPositiveBtnClick(fragment);
+
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(CREATE_CHALLENGE_TAG)) {
+			createDailyChallenge(opponentName);
+		}
+
 	}
 
 	private void createDailyChallenge(String opponentName) {
