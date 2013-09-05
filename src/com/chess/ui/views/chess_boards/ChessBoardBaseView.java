@@ -504,7 +504,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected void drawHighlights(Canvas canvas) {
-		if (isHighlightEnabled && getBoardFace().getHply() > 0) { // draw moved piece highlight from -> to
+		if (pieceSelected) { // draw rectangle around the start move piece position
+			int x = ChessBoard.getColumn(from, getBoardFace().isReside());
+			int y = ChessBoard.getRow(from, getBoardFace().isReside());
+			canvas.drawRect(x * square + 1, y * square + 1,
+					x * square + square - 1, y * square + square - 1, yellowPaint);
+		} else if (isHighlightEnabled && getBoardFace().getHply() > 0) { // draw moved piece highlight from -> to
 			// from
 			Move move = getBoardFace().getHistDat()[getBoardFace().getHply() - 1].move;
 			int x1 = ChessBoard.getColumn(move.from, getBoardFace().isReside());
@@ -516,13 +521,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int y2 = ChessBoard.getRow(move.to, getBoardFace().isReside());
 			canvas.drawRect(x2 * square + 1, y2 * square + 1,
 					x2 * square + square - 1, y2 * square + square - 1, madeMovePaint);
-		}
-
-		if (pieceSelected) { // draw rectangle around the start move piece position
-			int x = ChessBoard.getColumn(from, getBoardFace().isReside());
-			int y = ChessBoard.getRow(from, getBoardFace().isReside());
-			canvas.drawRect(x * square + 1, y * square + 1,
-					x * square + square - 1, y * square + square - 1, yellowPaint);
 		}
 
 		if (pieceSelected && showLegalMoves) { // draw all possible move coordinates
