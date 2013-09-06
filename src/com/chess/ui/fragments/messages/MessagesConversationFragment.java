@@ -123,7 +123,7 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 
 	private void updateUiData() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_MESSAGE_CONVERSATION_BY_ID(conversationId));
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_MESSAGE_CONVERSATION_BY_ID(conversationId));
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 		new RequestJsonTask<MessagesItem>(messagesUpdateListener).executeTask(loadItem);
@@ -195,7 +195,7 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 		}
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_MESSAGES);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_MESSAGES);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_USERNAME, otherUsername);

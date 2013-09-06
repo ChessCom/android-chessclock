@@ -3,7 +3,6 @@ package com.chess.ui.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -13,22 +12,22 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.chess.R;
-import com.chess.backend.gcm.GcmHelper;
+import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.model.DataHolder;
-import com.chess.backend.LoadItem;
-import com.chess.model.TacticsDataHolder;
 import com.chess.backend.entity.api.GcmItem;
 import com.chess.backend.entity.api.LoginItem;
 import com.chess.backend.entity.api.MovesStatusItem;
 import com.chess.backend.entity.api.RegisterItem;
+import com.chess.backend.gcm.GcmHelper;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.model.DataHolder;
+import com.chess.model.TacticsDataHolder;
 import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
@@ -219,7 +218,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 				// hence the use of AsyncTask instead of a raw thread.
 
 				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.CMD_GCM);
+				loadItem.setLoadPath(RestHelper.getInstance().CMD_GCM);
 				loadItem.setRequestMethod(RestHelper.POST);
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
@@ -291,7 +290,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		}
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_LOGIN);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
 		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, username);
@@ -450,18 +449,18 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		if (tag.equals(NETWORK_CHECK_TAG)){
 			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
 		} else if (tag.equals(CHESS_NO_ACCOUNT_TAG)){
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.REGISTER_HTML)));
+//			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.getInstance().REGISTER_HTML)));
 		}
 		super.onPositiveBtnClick(fragment);
 	}
 
-	protected void checkMove(){
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_MOVES);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
-
-		new RequestJsonTask<MovesStatusItem>(new CheckMoveUpdateListener()).executeTask(loadItem);
-	}
+//	protected void checkMove(){
+//		LoadItem loadItem = new LoadItem();
+//		loadItem.setLoadPath(RestHelper.CMD_MOVES);
+//		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
+//
+//		new RequestJsonTask<MovesStatusItem>(new CheckMoveUpdateListener()).executeTask(loadItem);
+//	}
 
 	private class CheckMoveUpdateListener extends AbstractUpdateListener<MovesStatusItem> {
 		public CheckMoveUpdateListener() {

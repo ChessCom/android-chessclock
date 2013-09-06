@@ -168,7 +168,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		// get full body text from server
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_ARTICLE_BY_ID(articleId));
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLE_BY_ID(articleId));
 
 		new RequestJsonTask<ArticleDetailsItem>(articleUpdateListener).executeTask(loadItem);
 	}
@@ -237,7 +237,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				if (TextUtils.isEmpty(url)) {
 					articleShareStr = String.valueOf(Html.fromHtml(bodyStr));
 				} else {
-					articleShareStr = RestHelper.BASE_URL + "/article/view/" + url;
+					articleShareStr = RestHelper.getInstance().BASE_URL + "/article/view/" + url;
 				}
 
 				Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -343,7 +343,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 	private void updateComments() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_ARTICLE_COMMENTS(articleId));
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLE_COMMENTS(articleId));
 
 		new RequestJsonTask<CommonCommentItem>(commentsUpdateListener).executeTask(loadItem);
 	}
@@ -382,10 +382,10 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		LoadItem loadItem = new LoadItem();
 		if (commentId == NON_EXIST) {
-			loadItem.setLoadPath(RestHelper.CMD_ARTICLE_COMMENTS(articleId));
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLE_COMMENTS(articleId));
 			loadItem.setRequestMethod(RestHelper.POST);
 		} else {
-			loadItem.setLoadPath(RestHelper.CMD_ARTICLE_EDIT_COMMENT(articleId, commentId));
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLE_EDIT_COMMENT(articleId, commentId));
 			loadItem.setRequestMethod(RestHelper.PUT);
 		}
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());

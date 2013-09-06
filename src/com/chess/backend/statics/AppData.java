@@ -182,18 +182,18 @@ public class AppData {
 		}
 	}
 
-	public Intent getMembershipAndroidIntent() {
-		return getMembershipIntent("?c=androidads");
-	}
-
-	public Intent getMembershipVideoIntent() {
-		return getMembershipIntent("?c=androidvideos");
-	}
-
-	public Intent getMembershipIntent(String param) {
-		String memberShipUrl = RestHelper.getMembershipLink(getUserToken(), param);
-		return new Intent(Intent.ACTION_VIEW, Uri.parse(memberShipUrl));
-	}
+//	public Intent getMembershipAndroidIntent() {
+//		return getMembershipIntent("?c=androidads");
+//	}
+//
+//	public Intent getMembershipVideoIntent() {
+//		return getMembershipIntent("?c=androidvideos");
+//	}
+//
+//	public Intent getMembershipIntent(String param) {
+//		String memberShipUrl = RestHelper.getMembershipLink(getUserToken(), param);
+//		return new Intent(Intent.ACTION_VIEW, Uri.parse(memberShipUrl));
+//	}
 
 	public String getCompSavedGame() {
 		return getStringValue(SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
@@ -473,6 +473,39 @@ public class AppData {
 		return liveGameConfig;
 	}
 
+	public void setTestUsername(String value) {
+		preferences.edit().putString("TEST_USERNAME", value);
+	}
+
+	public String getTestUsername() {
+		return preferences.getString("TEST_USERNAME", "rest");
+	}
+
+	public void setTestPassword(String value) {
+		preferences.edit().putString("TEST_PASS", value);
+	}
+
+	public String getTestPassword() {
+		return preferences.getString("TEST_PASS", "okokok");
+	}
+
+	public void setProdUsername(String value) {
+		preferences.edit().putString("PROD_USERNAME", value);
+	}
+
+	public String getProdUsername() {
+		return preferences.getString("PROD_USERNAME", "alien_roger");
+	}
+
+	public void setProdPassword(String value) {
+		preferences.edit().putString("PROD_PASS", value);
+	}
+
+	public String getProdPassword() {
+		return preferences.getString("PROD_PASS", "okokok");
+	}
+
+
 	/*--------------------------- Common Shared logic ------------------------*/
 
 	private void setBooleanValue(String field, boolean checked) {
@@ -508,4 +541,5 @@ public class AppData {
 		String username = getUsername();
 		editor.putInt(username + field, value).commit();
 	}
+
 }

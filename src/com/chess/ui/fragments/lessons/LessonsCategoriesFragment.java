@@ -212,7 +212,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 				// Loading full lessons list from category here!
 
 				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.CMD_LESSONS);
+				loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSONS);
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 				loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
 				loadItem.addRequestParams(RestHelper.P_LIMIT, RestHelper.DEFAULT_ITEMS_PER_PAGE);

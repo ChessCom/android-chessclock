@@ -185,7 +185,7 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 		}
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_MESSAGES);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_MESSAGES);
 
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());

@@ -24,12 +24,12 @@ public class GetAndSaveUserStats extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		AppData appData = new AppData(this);
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_USER_STATS);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_USER_STATS);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
 
 		UserStatsItem item = null;
 		try {
-			item  = RestHelper.requestData(loadItem, UserStatsItem.class, AppUtils.getAppId(getApplicationContext()));
+			item  = RestHelper.getInstance().requestData(loadItem, UserStatsItem.class, AppUtils.getAppId(getApplicationContext()));
 		} catch (InternalErrorException e) {
 			e.logMe();
 		}

@@ -211,7 +211,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				public void run() {
 					getAppData().setLiveChessMode(false);
 					liveService.setConnected(false);
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.PLAY_ANDROID_HTML)));
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.getInstance().PLAY_ANDROID_HTML)));
 				}
 			});
 
@@ -486,7 +486,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 					unBindLiveService();
 
 					LoadItem loadItem = new LoadItem();
-					loadItem.setLoadPath(RestHelper.CMD_LOGIN);
+					loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
 					loadItem.setRequestMethod(RestHelper.POST);
 					loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
 					loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getAppData().getUsername());

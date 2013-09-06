@@ -278,7 +278,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 			return;
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_GAMES_CHALLENGES);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAMES_CHALLENGES);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		new RequestJsonTask<DailyChallengeItem>(dailyGamesUpdateListener).executeTask(loadItem);
 

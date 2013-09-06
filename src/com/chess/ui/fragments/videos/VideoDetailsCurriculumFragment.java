@@ -40,7 +40,7 @@ public class VideoDetailsCurriculumFragment extends VideoDetailsFragment {
 		}
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_VIDEO_BY_ID(videoId));
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEO_BY_ID(videoId));
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 		new RequestJsonTask<VideoItem>(new VideoDetailsUpdateListener()).executeTask(loadItem);

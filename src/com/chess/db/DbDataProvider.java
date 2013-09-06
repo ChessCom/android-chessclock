@@ -42,11 +42,12 @@ public class DbDataProvider extends ContentProvider {
 
 	public static final String VND_ANDROID_CURSOR_DIR = "vnd.android.cursor.dir/";
 	public static final String VND_ANDROID_CURSOR_ITEM = "vnd.android.cursor.item/";
+	private DatabaseHelper dbHelper;
 
 	@Override
 	public boolean onCreate() {
 		Context context = getContext();
-		final DatabaseHelper dbHelper = new DatabaseHelper(context);
+		dbHelper = new DatabaseHelper(context);
 		appDataBase = dbHelper.getWritableDatabase();
 
 		return (appDataBase != null);
@@ -176,8 +177,12 @@ public class DbDataProvider extends ContentProvider {
 		return appDataBase;
 	}
 
+	public DatabaseHelper getDbHelper() {
+		return dbHelper;
+	}
 
-	private static class DatabaseHelper extends SQLiteOpenHelper {
+//	private static class DatabaseHelper extends SQLiteOpenHelper {
+	public static class DatabaseHelper extends SQLiteOpenHelper { // TODO restore
 		private Context context;
 		DatabaseHelper(Context context) {
 			super(context, DbScheme.DATABASE_NAME, null, DbScheme.DATABASE_VERSION);

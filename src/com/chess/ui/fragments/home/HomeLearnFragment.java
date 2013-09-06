@@ -160,7 +160,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 			headerView.invalidate();
 		} else {
 			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEOS);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_LIMIT, 1);
 

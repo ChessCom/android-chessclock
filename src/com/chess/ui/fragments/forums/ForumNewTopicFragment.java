@@ -107,7 +107,7 @@ public class ForumNewTopicFragment extends CommonLogicFragment implements TextVi
 		}
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_FORUMS_TOPICS);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_FORUMS_TOPICS);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_FORUM_CATEGORY_ID, categoryId);

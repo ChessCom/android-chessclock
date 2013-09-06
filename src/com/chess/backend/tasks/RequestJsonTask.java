@@ -17,7 +17,7 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 	@Override
 	protected Integer doTheTask(LoadItem... loadItems) {
 		try {
-			item = RestHelper.requestData(loadItems[0], getTaskFace().getClassType(), AppUtils.getAppId(getTaskFace().getMeContext()));
+			item = RestHelper.getInstance().requestData(loadItems[0], getTaskFace().getClassType(), AppUtils.getAppId(getTaskFace().getMeContext()));
 		} catch (IllegalStateException ex) {
 			Log.d("RequestJsonTask", "getTaskFace().getClassType() fails, due to killed state" + ex.toString());
 		} catch (InternalErrorException e) {

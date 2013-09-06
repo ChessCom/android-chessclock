@@ -15,7 +15,7 @@ public class LoadHelper {
 
 	public static LoadItem getUserInfo(String userToken) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_USERS);
+		loadItem.setLoadPath(getInstance().getInstance().CMD_USERS);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		return loadItem;
 	}
@@ -34,7 +34,7 @@ public class LoadHelper {
 
 	public static LoadItem getTacticsStats(String userToken) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_TACTICS_STATS);
+		loadItem.setLoadPath(getInstance().getInstance().CMD_TACTICS_STATS);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		return loadItem;
 	}
@@ -47,7 +47,7 @@ public class LoadHelper {
 
 	public static LoadItem getAllGames(String userToken) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_GAMES_ALL);
+		loadItem.setLoadPath(getInstance().CMD_GAMES_ALL);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_AVATAR_SIZE, RestHelper.V_AV_SIZE_TINY);
 		return loadItem;
@@ -55,7 +55,7 @@ public class LoadHelper {
 
 	public static LoadItem getFriends(String userToken) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_FRIENDS);
+		loadItem.setLoadPath(getInstance().CMD_FRIENDS);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_AVATAR_SIZE, RestHelper.V_AV_SIZE_SMALL);
 		return loadItem;
@@ -63,7 +63,7 @@ public class LoadHelper {
 
 	public static LoadItem getMembershipDetails(String userToken) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_MEMBERSHIP);
+		loadItem.setLoadPath(getInstance().CMD_MEMBERSHIP);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		return loadItem;
 	}
@@ -71,7 +71,7 @@ public class LoadHelper {
 	public static LoadItem postMembershipUpdate(String userToken, String originalJson, String signature) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(POST);
-		loadItem.setLoadPath(CMD_MEMBERSHIP);
+		loadItem.setLoadPath(getInstance().CMD_MEMBERSHIP);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_PURCHASE_DATA, originalJson);
 		loadItem.addRequestParams(P_DATA_SIGNATURE, signature);
@@ -80,14 +80,14 @@ public class LoadHelper {
 
 	public static LoadItem getGameById(String userToken, long gameId) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_GAME_BY_ID(gameId));
+		loadItem.setLoadPath(getInstance().CMD_GAME_BY_ID(gameId));
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		return loadItem;
 	}
 
 	public static LoadItem putGameAction(String userToken, long gameId, String command, long timestamp) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_PUT_GAME_ACTION(gameId));
+		loadItem.setLoadPath(getInstance().CMD_PUT_GAME_ACTION(gameId));
 		loadItem.setRequestMethod(PUT);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_COMMAND, command);
@@ -105,7 +105,7 @@ public class LoadHelper {
 
 	public static LoadItem answerGameSeek(String loginToken, long gameId, String command) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_ANSWER_GAME_SEEK(gameId));
+		loadItem.setLoadPath(getInstance().CMD_ANSWER_GAME_SEEK(gameId));
 		loadItem.setRequestMethod(command);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, loginToken);
 		return loadItem;
@@ -121,7 +121,7 @@ public class LoadHelper {
 
 	public static LoadItem answerFriendRequest(String userToken, long id, String command) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_FRIENDS_REQUEST_BY_ID(id));
+		loadItem.setLoadPath(getInstance().CMD_FRIENDS_REQUEST_BY_ID(id));
 		loadItem.setRequestMethod(command);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		return loadItem;
@@ -129,7 +129,7 @@ public class LoadHelper {
 
 	public static LoadItem deleteVacation(String userToken) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_VACATIONS);
+		loadItem.setLoadPath(getInstance().CMD_VACATIONS);
 		loadItem.setRequestMethod(DELETE);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		return loadItem;
@@ -145,7 +145,7 @@ public class LoadHelper {
 
 	public static LoadItem postGameSeek(String userToken, int days, int isRated, int gameType, String opponentName) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_SEEKS);
+		loadItem.setLoadPath(getInstance().CMD_SEEKS);
 		loadItem.setRequestMethod(POST);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_DAYS_PER_MOVE, days);
@@ -161,7 +161,7 @@ public class LoadHelper {
 	public static LoadItem postFriend(String userToken, String username, String message) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(POST);
-		loadItem.setLoadPath(CMD_FRIENDS_REQUEST);
+		loadItem.setLoadPath(getInstance().CMD_FRIENDS_REQUEST);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_USERNAME, username);
 		loadItem.addRequestParams(P_MESSAGE, message);
@@ -171,7 +171,7 @@ public class LoadHelper {
 	public static LoadItem postFriendByEmail(String userToken, String email, String message) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(POST);
-		loadItem.setLoadPath(CMD_FRIENDS_REQUEST);
+		loadItem.setLoadPath(getInstance().CMD_FRIENDS_REQUEST);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_EMAIL, email);
 		loadItem.addRequestParams(P_MESSAGE, message);
@@ -181,7 +181,7 @@ public class LoadHelper {
 	public static LoadItem postUserProfile(String userToken, String firstName, String lastName, int userCountryId, int userSkill) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(POST);
-		loadItem.setLoadPath(CMD_USER_PROFILE);
+		loadItem.setLoadPath(getInstance().CMD_USER_PROFILE);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_FIRST_NAME, firstName);
 		loadItem.addRequestParams(P_LAST_NAME, lastName);
@@ -192,7 +192,7 @@ public class LoadHelper {
 
 	public static LoadItem postUsers(String username, String password, String email, String deviceId) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_USERS);
+		loadItem.setLoadPath(getInstance().CMD_USERS);
 		loadItem.setRequestMethod(POST);
 		loadItem.addRequestParams(P_USERNAME, username);
 		loadItem.addRequestParams(P_PASSWORD, password);
@@ -204,7 +204,7 @@ public class LoadHelper {
 
 	public static LoadItem getForumTopicsForCategory(String userToken, int categoryId, int page) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_FORUMS_TOPICS);
+		loadItem.setLoadPath(getInstance().CMD_FORUMS_TOPICS);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_FORUM_CATEGORY_ID, categoryId);
 		loadItem.addRequestParams(P_PAGE_, page);
@@ -214,7 +214,7 @@ public class LoadHelper {
 
 	public static LoadItem getForumPostsForTopic(String userToken, int topicId, int page) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_FORUMS_COMMENTS);
+		loadItem.setLoadPath(getInstance().CMD_FORUMS_COMMENTS);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_FORUM_TOPIC_ID, topicId);
 		loadItem.addRequestParams(P_PAGE_, page);
@@ -224,7 +224,7 @@ public class LoadHelper {
 
 	public static LoadItem getLessonsByCourseId(String userToken, int courseId) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_LESSONS);
+		loadItem.setLoadPath(getInstance().CMD_LESSONS);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_COURSE_ID, courseId);
 		return loadItem;
@@ -232,7 +232,7 @@ public class LoadHelper {
 
 	public static LoadItem getLessonsRating(String userToken) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(CMD_LESSONS_RATING);
+		loadItem.setLoadPath(getInstance().CMD_LESSONS_RATING);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		return loadItem;
 	}

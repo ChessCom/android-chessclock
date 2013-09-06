@@ -156,7 +156,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		int categoryId = categoriesMap.get(categoryName);
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_ARTICLES_LIST);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLES_LIST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
 

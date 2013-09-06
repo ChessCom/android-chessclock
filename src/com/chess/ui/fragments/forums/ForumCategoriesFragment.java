@@ -71,7 +71,7 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 
 			if (!loadFromDb()) {
 				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.CMD_FORUMS_CATEGORIES);
+				loadItem.setLoadPath(RestHelper.getInstance().CMD_FORUMS_CATEGORIES);
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 				new RequestJsonTask<ForumCategoryItem>(categoriesUpdateListener).executeTask(loadItem);

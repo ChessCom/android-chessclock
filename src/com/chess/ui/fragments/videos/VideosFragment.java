@@ -195,7 +195,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private void updateData() {
 		// request latest data for the header
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_VIDEOS);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEOS);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_LIMIT, 1);
 
@@ -204,7 +204,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 	private void getCategories() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_VIDEO_CATEGORIES);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEO_CATEGORIES);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 		new RequestJsonTask<CommonFeedCategoryItem>(videoCategoriesUpdateListener).executeTask(loadItem);

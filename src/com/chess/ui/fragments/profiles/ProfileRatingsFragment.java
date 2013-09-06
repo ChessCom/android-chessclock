@@ -104,7 +104,7 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 		if (need2update) {
 			// get full stats
 			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_USER_STATS);
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_USER_STATS);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_USERNAME, username);
 

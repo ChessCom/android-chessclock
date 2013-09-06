@@ -151,7 +151,7 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 			lastDifficulty = difficulty;
 
 			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_LESSONS);
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSONS);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_KEYWORD, keyword);
 			if (!category.equals(allStr)) {

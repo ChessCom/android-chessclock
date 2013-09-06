@@ -29,22 +29,7 @@ import java.util.Scanner;
  * @author alien_roger
  * @created at: 14.03.12 5:47
  */
-public class RestHelper {
-
-	private static RestHelper ourInstance = new RestHelper();
-
-	public static RestHelper getInstance(){
-		if (ourInstance == null) {
-			ourInstance = new RestHelper();
-		}
-		return ourInstance;
-	}
-
-	private RestHelper(){}
-
-	public static void resetInstance() {
-		ourInstance = null;
-	}
+public class RestHelperOrig {
 
 	/* Methods*/  // new
 	public static final String GET = "GET";
@@ -66,9 +51,9 @@ public class RestHelper {
 	public static final String HOST_PRODUCTION = "api.chess.com";
 	public static final String HOST_TEST = "api.chess-7.com";
 //	public static final String HOST = HOST_PRODUCTION; // switch production/test server
-	public static String HOST = HOST_TEST; // switch production/test server
+	public static final String HOST = HOST_TEST; // switch production/test server
 
-	public String BASE_URL = "http://" + HOST;
+	public static final String BASE_URL = "http://" + HOST;
 	private static final String API = "/api";
 	private static final String V1 = "/v1";
 	private static final String API_V2 = API + "/v2";
@@ -77,135 +62,135 @@ public class RestHelper {
 	private static final String API_V5 = API + "/v5";
 
 	/* Methods calls*/
-//	public static final String LOGIN_HTML_ALS = BASE_URL() + "/login.html?als=";
-//	public static final String REGISTER_HTML = BASE_URL() + "/register.html";
-	public String PLAY_ANDROID_HTML = BASE_URL + "/play/android.html";
-//	public static final String ECHESS_MOBILE_STATS = BASE_URL() + "/echess/mobile-stats/";
-//	public static final String TOURNAMENTS = BASE_URL() + "/tournaments";
-//	public static final String GOOGLE_PLAY_URI = "market://details?id=com.chess";
-//
-//	public static final String GET_ANDROID_VERSION = BASE_URL() + API + "/get_android_version";
-//	public static final String GET_GAME_V5 = BASE_URL() + API_V5 + "/get_game";
+	public static final String LOGIN_HTML_ALS = BASE_URL + "/login.html?als=";
+	public static final String REGISTER_HTML = BASE_URL + "/register.html";
+	public static final String PLAY_ANDROID_HTML = BASE_URL + "/play/android.html";
+	public static final String ECHESS_MOBILE_STATS = BASE_URL + "/echess/mobile-stats/";
+	public static final String TOURNAMENTS = BASE_URL + "/tournaments";
+	public static final String GOOGLE_PLAY_URI = "market://details?id=com.chess";
+
+	public static final String GET_ANDROID_VERSION = BASE_URL + API + "/get_android_version";
+	public static final String GET_GAME_V5 = BASE_URL + API_V5 + "/get_game";
 
 	/* Methods */
 		/*Users*/
-	public String CMD_USERS = BASE_URL + V1 + "/users";
-	public String CMD_LOGIN = CMD_USERS + "/login";
-	public String CMD_GCM = CMD_USERS + "/gcm";
-	public String CMD_USER_STATS = CMD_USERS + "/stats";
-	public String CMD_USER_PROFILE = CMD_USERS + "/profile";
+	public static final String CMD_USERS = BASE_URL + V1 + "/users";
+	public static final String CMD_LOGIN = CMD_USERS + "/login";
+	public static final String CMD_GCM = CMD_USERS + "/gcm";
+	public static final String CMD_USER_STATS = CMD_USERS + "/stats";
+	public static final String CMD_USER_PROFILE = CMD_USERS + "/profile";
 
 	/*Games*/
-	public String CMD_GAMES = BASE_URL + V1 + "/games/";
-	public String CMD_GAMES_ALL = CMD_GAMES + "all";
-	public String CMD_GAMES_CHALLENGES = CMD_GAMES + "challenges";
-	public String CMD_VACATIONS = CMD_GAMES + "vacations";
-	public String CMD_SEEKS = CMD_GAMES + "seeks";
-	public String CMD_MOVES = CMD_GAMES + "moves";
-	public String CMD_GAME_STATS = CMD_GAMES + "stats";
+	public static final String CMD_GAMES = BASE_URL + V1 + "/games/";
+	public static final String CMD_GAMES_ALL = CMD_GAMES + "all";
+	public static final String CMD_GAMES_CHALLENGES = CMD_GAMES + "challenges";
+	public static final String CMD_VACATIONS = CMD_GAMES + "vacations";
+	public static final String CMD_SEEKS = CMD_GAMES + "seeks";
+	public static final String CMD_MOVES = CMD_GAMES + "moves";
+	public static final String CMD_GAME_STATS = CMD_GAMES + "stats";
 
-	public String CMD_GAME_BY_ID(long id) {
+	public static String CMD_GAME_BY_ID(long id) {
 		return CMD_GAMES + id;
 	}
 
-	public String CMD_ANSWER_GAME_SEEK(long gameSeekId) {
+	public static String CMD_ANSWER_GAME_SEEK(long gameSeekId) {
 		return CMD_GAMES + gameSeekId + "/seeks";
 	}
 
-	public String CMD_PUT_GAME_ACTION(long gameId) {
+	public static String CMD_PUT_GAME_ACTION(long gameId) {
 		return CMD_GAMES + gameId + "/actions";
 	}
 
 	/*Articles*/
-	public String CMD_ARTICLES = BASE_URL + V1 + "/articles";
-	public String CMD_ARTICLES_LIST = CMD_ARTICLES + "/list";
-	public String CMD_ARTICLES_CATEGORIES = CMD_ARTICLES + "/categories";
+	public static final String CMD_ARTICLES = BASE_URL + V1 + "/articles";
+	public static final String CMD_ARTICLES_LIST = CMD_ARTICLES + "/list";
+	public static final String CMD_ARTICLES_CATEGORIES = CMD_ARTICLES + "/categories";
 	public static final int DEFAULT_ITEMS_PER_PAGE = 20;
 
-	public String CMD_ARTICLE_BY_ID(long id) {
+	public static String CMD_ARTICLE_BY_ID(long id) {
 		return CMD_ARTICLES + "/" + id;
 	}
 
-	public String CMD_ARTICLE_COMMENTS(long id) {
+	public static String CMD_ARTICLE_COMMENTS(long id) {
 		return CMD_ARTICLES + "/" + id + "/comments";
 	}
 
-	public String CMD_ARTICLE_EDIT_COMMENT(long articleId, long commentId) {
+	public static String CMD_ARTICLE_EDIT_COMMENT(long articleId, long commentId) {
 		return CMD_ARTICLES + "/" + articleId + "/comments/" + commentId;
 	}
 
 	/*Forums*/
-	public String CMD_FORUMS = BASE_URL + V1 + "/forums";
-	public String CMD_FORUMS_CATEGORIES = CMD_FORUMS + "/categories";
-	public String CMD_FORUMS_COMMENTS = CMD_FORUMS + "/comments";
-	public String CMD_FORUMS_TOPICS = CMD_FORUMS + "/topics";
+	public static final String CMD_FORUMS = BASE_URL + V1 + "/forums";
+	public static final String CMD_FORUMS_CATEGORIES = CMD_FORUMS + "/categories";
+	public static final String CMD_FORUMS_COMMENTS = CMD_FORUMS + "/comments";
+	public static final String CMD_FORUMS_TOPICS = CMD_FORUMS + "/topics";
 
 
 	/* Friends */
-	public String CMD_FRIENDS = BASE_URL + V1 + "/friends";
-	public String CMD_FRIENDS_REQUEST = CMD_FRIENDS + "/requests";
+	public static final String CMD_FRIENDS = BASE_URL + V1 + "/friends";
+	public static final String CMD_FRIENDS_REQUEST = CMD_FRIENDS + "/requests";
 
-	public String CMD_FRIENDS_REQUEST_BY_ID(long id) {
+	public static String CMD_FRIENDS_REQUEST_BY_ID(long id) {
 		return CMD_FRIENDS + "/" + id + "/requests";
 	}
 
 	/* Videos */
-	public String CMD_VIDEOS = BASE_URL + V1 + "/videos";
-	public String CMD_VIDEO_CATEGORIES = CMD_VIDEOS + "/categories";
+	public static final String CMD_VIDEOS = BASE_URL + V1 + "/videos";
+	public static final String CMD_VIDEO_CATEGORIES = CMD_VIDEOS + "/categories";
 
-	public String CMD_VIDEO_BY_ID(long id) {
+	public static String CMD_VIDEO_BY_ID(long id) {
 		return CMD_VIDEOS + "/" + id;
 	}
 
-	public String CMD_VIDEOS_COMMENTS(long id) {
+	public static String CMD_VIDEOS_COMMENTS(long id) {
 		return CMD_VIDEOS + "/" + id + "/comments";
 	}
 
-	public String CMD_VIDEOS_EDIT_COMMENT(long videoId, long commentId) {
+	public static String CMD_VIDEOS_EDIT_COMMENT(long videoId, long commentId) {
 		return CMD_VIDEOS + "/" + videoId + "/comments/" + commentId;
 	}
 
 
 	/* Tactics */
-	public String CMD_TACTICS = BASE_URL + V1 + "/tactics";
-	public String CMD_TACTICS_STATS = CMD_TACTICS + "/stats";
-	public String CMD_TACTIC_TRAINER = CMD_TACTICS + "/trainer";
+	public static final String CMD_TACTICS = BASE_URL + V1 + "/tactics";
+	public static final String CMD_TACTICS_STATS = CMD_TACTICS + "/stats";
+	public static final String CMD_TACTIC_TRAINER = CMD_TACTICS + "/trainer";
 	/* Lessons */
-	public String CMD_LESSONS = BASE_URL + V1 + "/lessons";
-	public String CMD_LESSONS_CATEGORIES = CMD_LESSONS + "/categories";
-	public String CMD_LESSONS_COURSES = CMD_LESSONS + "/courses";
-	public String CMD_LESSONS_RATING = CMD_LESSONS + "/rating";
+	public static final String CMD_LESSONS = BASE_URL + V1 + "/lessons";
+	public static final String CMD_LESSONS_CATEGORIES = CMD_LESSONS + "/categories";
+	public static final String CMD_LESSONS_COURSES = CMD_LESSONS + "/courses";
+	public static final String CMD_LESSONS_RATING = CMD_LESSONS + "/rating";
 
-	public String CMD_LESSON_BY_ID(long id) {
+	public static String CMD_LESSON_BY_ID(long id) {
 		return CMD_LESSONS + "/" + id;
 	}
 
 
 	/* Themes */
-	public String CMD_THEMES = BASE_URL + V1 + "/themes";
-	public String CMD_THEMES_DEFAULT = CMD_THEMES + "/default";
-	public String CMD_THEMES_USER = CMD_THEMES + "/user";
+	public static final String CMD_THEMES = BASE_URL + V1 + "/themes";
+	public static final String CMD_THEMES_DEFAULT = CMD_THEMES + "/default";
+	public static final String CMD_THEMES_USER = CMD_THEMES + "/user";
 
-	public String CMD_THEME_DEFAULT_BY_ID(long id) {
+	public static String CMD_THEME_DEFAULT_BY_ID(long id) {
 		return CMD_THEMES_DEFAULT + "/" + id;
 	}
 
-	public String CMD_THEME_USER_BY_ID(long id) {
+	public static String CMD_THEME_USER_BY_ID(long id) {
 		return CMD_THEMES_USER + "/" + id;
 	}
 
 	/* Messages */
-	public String CMD_MESSAGES = BASE_URL + V1 + "/messages/"; // TODO recheck , restore
-	public String CMD_MESSAGES_INBOX = CMD_MESSAGES + "inbox";
-	public String CMD_MESSAGES_ARCHIVE = CMD_MESSAGES + "archive";
+	public static final String CMD_MESSAGES = BASE_URL + V1 + "/messages/"; // TODO recheck , restore
+	public static final String CMD_MESSAGES_INBOX = CMD_MESSAGES + "inbox";
+	public static final String CMD_MESSAGES_ARCHIVE = CMD_MESSAGES + "archive";
 
-	public String CMD_MESSAGE_CONVERSATION_BY_ID(long id) {
+	public static String CMD_MESSAGE_CONVERSATION_BY_ID(long id) {
 		return CMD_MESSAGES + id;
 	}
 
-	public String CMD_MEMBERSHIP = BASE_URL + V1 + "/membership/android";
-	public String CMD_MEMBERSHIP_PAYLOAD = CMD_MEMBERSHIP + "/payload";
-	public String CMD_MEMBERSHIP_KEY = CMD_MEMBERSHIP + "/public-key";
+	public static final String CMD_MEMBERSHIP = BASE_URL + V1 + "/membership/android";
+	public static final String CMD_MEMBERSHIP_PAYLOAD = CMD_MEMBERSHIP + "/payload";
+	public static final String CMD_MEMBERSHIP_KEY = CMD_MEMBERSHIP + "/public-key";
 
 	/* Parameters */
 	public static final String P_USER_NAME_OR_MAIL = "usernameOrEmail";
@@ -295,7 +280,7 @@ public class RestHelper {
 	public static final String P_GET_ECHESS_CURRENT_GAMES = "get_echess_current_games";
 	public static final String P_ECHESS_CHALLENGES = "echess_challenges";
 	public static final String P_GET_ECHESS_FINISHED_GAMES = "get_echess_finished_games";
-	public String P_SYMBOL = !BASE_URL.equals("http://" + HOST_PRODUCTION) ? V_3 : V_3_0;
+	public static final String P_SYMBOL = !BASE_URL.equals("http://" + HOST_PRODUCTION) ? V_3 : V_3_0;
 
 	public static final String P_STARTING_FEN_POSITION = "starting_fen_position";
 	public static final String P_USER_TO_MOVE = "user_to_move";
@@ -348,7 +333,7 @@ public class RestHelper {
 
 	public static final String R_DRAW_OFFER_PENDING = "is_draw_offer_pending";
 
-	public boolean IS_TEST_SERVER_MODE = !BASE_URL.equals("http://" + HOST_PRODUCTION);
+	public static final boolean IS_TEST_SERVER_MODE = !BASE_URL.equals("http://" + HOST_PRODUCTION);
 
 
 	/* Values */
@@ -477,12 +462,12 @@ public class RestHelper {
 		return encodedParams.toString();
 	}
 
-//	public static String getMembershipLink(String userToken, String param) {
-//		return LOGIN_HTML_ALS + userToken + GOTO + "%2Fmembership.html" + param;
-////				+ sharedData.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-////				+ "&goto=http%3A%2F%2Fwww."
-////				+ LccHelper.HOST + "%2Fmembership.html" + param;
-//	}
+	public static String getMembershipLink(String userToken, String param) {
+		return LOGIN_HTML_ALS + userToken + GOTO + "%2Fmembership.html" + param;
+//				+ sharedData.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+//				+ "&goto=http%3A%2F%2Fwww."
+//				+ LccHelper.HOST + "%2Fmembership.html" + param;
+	}
 
 /*	public static String formCustomPaginationRequest(LoadItem loadItem, int page) {
 		loadItem.replaceRequestParams(P_PAGE, String.valueOf(page));
@@ -504,7 +489,7 @@ public class RestHelper {
 
 	private static final String TAG = "RequestJsonTask";
 
-	public <CustomType> CustomType requestData(LoadItem loadItem, Class<CustomType> customTypeClass, String appId) throws InternalErrorException {
+	public static <CustomType> CustomType requestData(LoadItem loadItem, Class<CustomType> customTypeClass, String appId) throws InternalErrorException {
 		CustomType item = null;
 		String requestMethod = loadItem.getRequestMethod();
 		String url = createSignature(loadItem, appId);
@@ -696,7 +681,7 @@ public class RestHelper {
 		}
 	}
 
-	private String createSignature(LoadItem loadItem, String appId) {
+	private static String createSignature(LoadItem loadItem, String appId) {
 		String requestMethod = loadItem.getRequestMethod();
 		String appPart = getAppPartData(loadItem);
 		String requestPath = loadItem.getLoadPath().substring(BASE_URL.length());
@@ -725,7 +710,7 @@ public class RestHelper {
 		return BASE_URL + requestPath + data + addStr + SIGNED + appId + "-" + signedPart;
 	}
 
-	private String getAppPartData(LoadItem loadItem) {
+	private static String getAppPartData(LoadItem loadItem) {
 		String data = "2341kj23n23413nk23kj3n14";
 		try {
 			data = new String(Base64.decode(P_SYMBOL, Base64.DEFAULT), "UTF-8");
@@ -766,11 +751,11 @@ public class RestHelper {
 		return scanner.hasNext() ? scanner.next() : "";
 	}
 
-	public String getOnlineGameLink(long gameId) {
+	public static String getOnlineGameLink(long gameId) {
 		return BASE_URL + "/echess/game?id=" + gameId;
 	}
 
-	public String getLiveGameLink(long gameId) {
+	public static String getLiveGameLink(long gameId) {
 		return BASE_URL + "/livechess/game?id=" + gameId;
 	}
 

@@ -241,9 +241,9 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 			this.gameId = gameId;
 			this.gameType = gameType;
 			if (gameType.equals(getString(R.string.live))) {
-				gameLink = RestHelper.getLiveGameLink(gameId);
+				gameLink = RestHelper.getInstance().getLiveGameLink(gameId);
 			} else {
-				gameLink = RestHelper.getOnlineGameLink(gameId);
+				gameLink = RestHelper.getInstance().getOnlineGameLink(gameId);
 			}
 		}
 

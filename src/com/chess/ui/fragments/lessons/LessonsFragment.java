@@ -192,7 +192,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 	private void getCategories() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_LESSONS_CATEGORIES);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSONS_CATEGORIES);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 		new RequestJsonTask<CommonFeedCategoryItem>(lessonsCategoriesUpdateListener).executeTask(loadItem);
@@ -280,7 +280,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 	private void getFullCourses() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_LESSONS_COURSES);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSONS_COURSES);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 		new RequestJsonTask<LessonCourseListItem>(lessonsCoursesUpdateListener).executeTask(loadItem);

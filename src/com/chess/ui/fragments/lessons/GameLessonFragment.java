@@ -215,7 +215,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			getAppData().setLessonLimitWasReached(false);
 
 			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_LESSON_BY_ID(lessonId));
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSON_BY_ID(lessonId));
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken()); // looks like restart parameter is useless here, because we load from DB
 
 			new RequestJsonTask<LessonItem>(lessonUpdateListener).executeTask(loadItem);
@@ -504,7 +504,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	private void submitCorrectSolution() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_LESSON_BY_ID(lessonId));
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSON_BY_ID(lessonId));
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_CURRENT_POINTS, String.format(SUBMIT_FLOAT_FORMAT, pointsForLesson));  // you can pass float, 2 decimals please

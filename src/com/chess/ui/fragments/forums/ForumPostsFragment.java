@@ -222,7 +222,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 				Intent shareIntent = new Intent(Intent.ACTION_SEND);
 				shareIntent.setType("text/plain");
 				shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this topic - "
-						+ RestHelper.BASE_URL + "/" + topicUrl);
+						+ RestHelper.getInstance().BASE_URL + "/" + topicUrl);
 				startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
 				return true;
 		}
@@ -311,7 +311,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_FORUMS_COMMENTS);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_FORUMS_COMMENTS);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_PARENT_TOPIC_ID, topicId);

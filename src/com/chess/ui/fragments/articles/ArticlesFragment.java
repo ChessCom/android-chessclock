@@ -148,7 +148,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 	private void updateUiData() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_ARTICLES_LIST);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLES_LIST);
 		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, LATEST_ARTICLES_CNT);
 
 		new RequestJsonTask<ArticleItem>(latestArticleUpdateListener).executeTask(loadItem);
@@ -156,7 +156,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 	private void getCategories() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_ARTICLES_CATEGORIES);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLES_CATEGORIES);
 		new RequestJsonTask<CommonFeedCategoryItem>(categoriesUpdateListener).executeTask(loadItem);
 	}
 

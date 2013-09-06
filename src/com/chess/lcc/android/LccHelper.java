@@ -267,7 +267,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		boolean emptyPassword = pass.equals(StaticData.SYMBOL_EMPTY);
 
 		if (!useCurrentCredentials) { // todo: rename flag
-			if (emptyPassword || RestHelper.IS_TEST_SERVER_MODE) {
+			if (emptyPassword || RestHelper.getInstance().IS_TEST_SERVER_MODE) {
 				String sessionId = appData.getLiveSessionId();
 				connectBySessionId(sessionId);
 			} else {
@@ -275,7 +275,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			}
 
 		} else {
-			if (!emptyPassword && !RestHelper.IS_TEST_SERVER_MODE) {
+			if (!emptyPassword && !RestHelper.getInstance().IS_TEST_SERVER_MODE) {
 				connectByCreds(username, pass);
 			} else {
 				liveChessClientEventListener.onSessionExpired(context.getString(R.string.session_expired));

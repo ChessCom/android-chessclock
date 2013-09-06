@@ -75,7 +75,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		super.onResume();
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_MESSAGES_INBOX);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_MESSAGES_INBOX);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 		new RequestJsonTask<ConversationItem>(conversationsUpdateListener).executeTask(loadItem);

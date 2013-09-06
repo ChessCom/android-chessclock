@@ -345,7 +345,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 
 	private void updateComments() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_VIDEOS_COMMENTS(videoId));
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEOS_COMMENTS(videoId));
 
 		new RequestJsonTask<CommonCommentItem>(commentsUpdateListener).executeTask(loadItem);
 	}
@@ -383,10 +383,10 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 
 		LoadItem loadItem = new LoadItem();
 		if (commentId == NON_EXIST) {
-			loadItem.setLoadPath(RestHelper.CMD_VIDEOS_COMMENTS(videoId));
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEOS_COMMENTS(videoId));
 			loadItem.setRequestMethod(RestHelper.POST);
 		} else {
-			loadItem.setLoadPath(RestHelper.CMD_VIDEOS_EDIT_COMMENT(videoId, commentId));
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEOS_EDIT_COMMENT(videoId, commentId));
 			loadItem.setRequestMethod(RestHelper.PUT);
 		}
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());

@@ -322,7 +322,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	private void submitCorrectResult() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTIC_TRAINER);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_TACTICS_ID, tacticItem.getId());
@@ -337,7 +337,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	private void submitHintedResult() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTIC_TRAINER);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_TACTICS_ID, tacticItem.getId());
@@ -351,7 +351,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	private void submitWrongResult() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_TACTIC_TRAINER);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTIC_TRAINER);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_TACTICS_ID, tacticItem.getId());
@@ -947,7 +947,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else {
 
 			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_TACTICS);
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTICS);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_FALSE);
 

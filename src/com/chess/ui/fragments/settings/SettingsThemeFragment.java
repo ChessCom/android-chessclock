@@ -108,7 +108,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 		if (need2update) {
 			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_THEMES);
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_THEMES);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 			new RequestJsonTask<ThemeItem>(themesUpdateListener).executeTask(loadItem);

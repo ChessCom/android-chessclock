@@ -1,10 +1,8 @@
 package com.chess.ui.fragments;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.content.*;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +25,7 @@ import com.chess.backend.entity.api.RegisterItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.*;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataProvider;
 import com.chess.model.DataHolder;
 import com.chess.model.TacticsDataHolder;
 import com.chess.ui.activities.CoreActivityActionBar;
@@ -48,6 +47,7 @@ import com.slidingmenu.lib.SlidingMenu;
 import java.util.Arrays;
 
 import static com.chess.backend.statics.AppConstants.*;
+import static com.chess.db.DbScheme.PROVIDER_NAME;
 
 /**
  * Created with IntelliJ IDEA.
@@ -148,6 +148,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		getActivityFace().setTouchModeToSlidingMenu(slideMenusEnabled ? SlidingMenu.TOUCHMODE_FULLSCREEN
 				: SlidingMenu.TOUCHMODE_NONE);
+
+		loginUpdateListener = new LoginUpdateListener();
 
 		LoginButton loginButton = (LoginButton) getView().findViewById(R.id.fb_connect);
 		if (loginButton != null) {
@@ -258,7 +260,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			}
 		});
 
-		loginUpdateListener = new LoginUpdateListener();
 	}
 
 	protected Session.StatusCallback callback = new Session.StatusCallback() {
@@ -276,7 +277,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	private void loginWithFacebook(Session session) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_LOGIN);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, session.getAccessToken());
 		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
@@ -339,7 +340,38 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_LOGIN);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
+		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, username);
+		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
+		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
+		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
+
+		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
+
+		loginReturnCode = SIGNIN_CALLBACK_CODE;
+	}
+
+	protected void signInUser(EditText loginUsernameEdt, EditText passwordEdt) {
+		String username = getTextFromField(loginUsernameEdt);
+		if (username.length() < MIN_USERNAME_LENGTH || username.length() > MAX_USERNAME_LENGTH) {
+			loginUsernameEdt.setError(getString(R.string.validateUsername));
+			loginUsernameEdt.requestFocus();
+			return;
+		}
+
+		String pass = getTextFromField(passwordEdt);
+		if (pass.length() == 0) {
+			passwordEdt.setError(getString(R.string.password_cant_be_empty));
+			passwordEdt.requestFocus();
+			return;
+		}
+
+		this.passwordEdt = passwordEdt;
+
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
 		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, username);
@@ -634,6 +666,36 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		// clear username
 		getAppData().setUserName(AppConstants.GUEST_NAME);
+	}
+
+	protected void clearTempData(){
+		// un-register from GCM
+		unRegisterGcmService();
+
+		// logout from facebook
+		Session facebookSession = Session.getActiveSession();
+		if (facebookSession != null) {
+			facebookSession.closeAndClearTokenInformation();
+			Session.setActiveSession(null);
+		}
+
+		AppUtils.cancelNotifications(getActivity());
+
+		// set default theme
+		getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
+
+		// clear comp game
+		ChessBoardComp.resetInstance();
+		getAppData().clearSavedCompGame();
+
+		RestHelper.resetInstance();
+
+		ContentProviderClient client = getContentResolver().acquireContentProviderClient(PROVIDER_NAME);
+		SQLiteDatabase dbHandle = ((DbDataProvider) client.getLocalContentProvider()).getDbHandle();
+
+		DbDataProvider.DatabaseHelper dbHelper = ((DbDataProvider) client.getLocalContentProvider()).getDbHelper();
+		dbHelper.onUpgrade(dbHandle, DbDataProvider.getDbVersion(), DbDataProvider.getDbVersion() + 1);
+
 	}
 
 

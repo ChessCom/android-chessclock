@@ -29,7 +29,7 @@ public class TacticsStatsFragment extends CommonLogicFragment {
 		super.onResume();
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_TACTICS_STATS);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTICS_STATS);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 		new RequestJsonTask<TacticsHistoryItem>(new StatsItemUpdateListener()).executeTask(loadItem);

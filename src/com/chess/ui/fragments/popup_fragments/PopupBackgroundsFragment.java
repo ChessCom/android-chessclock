@@ -105,7 +105,7 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 
 		if (need2update) {
 			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.CMD_THEMES);
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_THEMES);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
 
 			new RequestJsonTask<ThemeItem>(backgroundsUpdateListener).executeTask(loadItem);

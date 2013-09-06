@@ -114,7 +114,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		username = getAppData().getUsername();
 		// get key from server
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_KEY);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_MEMBERSHIP_KEY);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 		new RequestJsonTask<MembershipKeyItem>(new GetKeyListener()).executeTask(loadItem); // TODO set proper item
@@ -366,7 +366,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 	private void requestPayload(String isReload, String sku) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_PAYLOAD);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_MEMBERSHIP_PAYLOAD);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		if (sku != null) {
 			loadItem.addRequestParams(RestHelper.P_PRODUCT_SKU, sku);
@@ -573,7 +573,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 	private void sendPayment(String itemId) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_MEMBERSHIP_PAYLOAD);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_MEMBERSHIP_PAYLOAD);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_PRODUCT_SKU, itemId);
 		loadItem.addRequestParams(RestHelper.P_RELOAD, RestHelper.V_TRUE);

@@ -35,7 +35,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 	public static final String LIVE_HOST_PRODUCTION = "chess.com";
 	public static final String LIVE_HOST_TEST = "chess-2.com";
-	public static final String LIVE_HOST = RestHelper.HOST == RestHelper.HOST_PRODUCTION ? LIVE_HOST_PRODUCTION : LIVE_HOST_TEST;
+	public static final String LIVE_HOST = RestHelper.getInstance().HOST == RestHelper.HOST_PRODUCTION ? LIVE_HOST_PRODUCTION : LIVE_HOST_TEST;
 
 //	public static final String AUTH_URL = RestHelper.CMD_LOGIN + "?username=%s&password=%s";
 	public static final String AUTH_URL = "http://www." + LIVE_HOST + "/api/v2/login" + "?username=%s&password=%s";

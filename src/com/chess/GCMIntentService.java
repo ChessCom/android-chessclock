@@ -63,7 +63,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Log.d(TAG, "User = " + appData.getUsername() + " Device registered: regId = " + registrationId);
 
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.CMD_GCM);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_GCM);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
 		loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
@@ -73,7 +73,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		GcmItem item = null;
 		try {
-			item = RestHelper.requestData(loadItem, GcmItem.class, AppUtils.getAppId(context));
+			item = RestHelper.getInstance().requestData(loadItem, GcmItem.class, AppUtils.getAppId(context));
 		} catch (InternalErrorException e) {
 			e.logMe();
 		}
@@ -102,14 +102,14 @@ public class GCMIntentService extends GCMBaseIntentService {
 				String token = preferences.getString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
 
 				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.CMD_GCM);
+				loadItem.setLoadPath(RestHelper.getInstance().CMD_GCM);
 				loadItem.setRequestMethod(RestHelper.DELETE);
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, token);
 //				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
 				GcmItem item = null;
 				try {
-					item = RestHelper.requestData(loadItem, GcmItem.class, AppUtils.getAppId(context));
+					item = RestHelper.getInstance().requestData(loadItem, GcmItem.class, AppUtils.getAppId(context));
 				} catch (InternalErrorException e) {
 					e.logMe();
 				}
