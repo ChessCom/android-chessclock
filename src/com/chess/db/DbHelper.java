@@ -4,11 +4,9 @@ import com.chess.backend.RestHelper;
 
 public class DbHelper {
 
-	public static QueryParams getAllByUri(int uriCode) {
+	public static QueryParams getAllByUri(DbScheme.Tables table) {
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DbScheme.uriArray[uriCode]);
-//		queryParams.setSelection(DbDataManager.SELECTION_USER);
-//		queryParams.setArguments(new String[]{"erik"});
+		queryParams.setUri(DbScheme.uriArray[table.ordinal()]);
 		return queryParams;
 	}
 
@@ -111,6 +109,7 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	/* Videos */
 	public static QueryParams getVideoById(long videoId) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.VIDEOS.ordinal()]);

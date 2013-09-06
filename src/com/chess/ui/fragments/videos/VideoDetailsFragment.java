@@ -193,7 +193,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 	}
 
 	protected void updateData() {
-		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getVideoById(videoId));
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getVideoById(videoId));
 		if (cursor.moveToFirst()) {
 			playBtnTxt.setEnabled(true);
 
@@ -362,7 +362,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 
 			DbDataManager.updateVideoCommentsToDb(getContentResolver(), returnedObj, videoId);
 
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getVideoCommentsById(videoId));
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getVideoCommentsById(videoId));
 			if (cursor != null && cursor.moveToFirst()) {
 				commentsCursorAdapter.changeCursor(cursor);
 			}

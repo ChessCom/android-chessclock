@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import com.chess.R;
@@ -517,6 +518,13 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	@Override
 	public String getMeUserToken() {
 		return getCurrentUserToken();
+	}
+
+	@Override
+	protected void onSearchQuery(String query) {
+		if (currentActiveFragment instanceof CommonLogicFragment) {
+			((CommonLogicFragment)currentActiveFragment).onSearchQuery(query);
+		}
 	}
 
 }

@@ -160,13 +160,13 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 	@Override
 	public void onOpenedRight() {
 		{ // get friend requests
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getTableForUser(getUsername(),
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
 					DbScheme.Tables.NOTIFICATION_FRIEND_REQUEST));
 			cursor.moveToFirst();
 			friendRequestsAdapter.changeCursor(cursor);
 		}
 		{ // get new challenge notifications
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getTableForUser(getUsername(),
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
 					DbScheme.Tables.NOTIFICATION_NEW_CHALLENGES));
 
 			newChallengeIds = new ArrayList<Long>();
@@ -179,13 +179,13 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 			}
 		}
 		{ // get new chat notifications
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getTableForUser(getUsername(),
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
 					DbScheme.Tables.NOTIFICATION_NEW_CHAT_MESSAGES));
 			cursor.moveToFirst();
 			chatMessagesAdapter.changeCursor(cursor);
 		}
 		{ // get game over notifications
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getTableForUser(getUsername(),
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
 					DbScheme.Tables.NOTIFICATION_GAMES_OVER));
 			cursor.moveToFirst();
 			gamesOverAdapter.changeCursor(cursor);

@@ -143,7 +143,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 
 	private void loadVideoToHeader() {
 		if (DbDataManager.haveSavedVideos(getActivity())) {
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getVideosList());
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getVideosList());
 
 			cursor.moveToFirst();
 			loadedVideoId = DbDataManager.getLong(cursor, DbScheme.V_ID);

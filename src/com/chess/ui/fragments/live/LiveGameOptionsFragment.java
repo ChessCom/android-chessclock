@@ -87,7 +87,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		gameConfigBuilder = new LiveGameConfig.Builder();
 
 		{ // load friends from DB
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getTableForUser(getUsername(), DbScheme.Tables.FRIENDS));
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(), DbScheme.Tables.FRIENDS));
 
 			friendsList = new ArrayList<SelectionItem>();
 			friendsList.add(new SelectionItem(null, getString(R.string.random)));

@@ -187,7 +187,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyFinishedGame(getActivity(), gameId),
 //				getContentResolver()).executeTask();
 
-		Cursor cursor = DbDataManager.executeQuery(getContentResolver(),
+		Cursor cursor = DbDataManager.query(getContentResolver(),
 				DbHelper.getDailyFinishedGame(gameId, getUsername()));
 
 		if (cursor.moveToFirst()) {

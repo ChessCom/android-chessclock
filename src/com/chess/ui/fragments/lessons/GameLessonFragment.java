@@ -207,7 +207,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	private void updateUiData() {
 		// check if we have that lesson in DB
-		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getMentorLessonById(lessonId));
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getMentorLessonById(lessonId));
 		if (cursor != null && cursor.moveToFirst()) { // we have saved lesson data
 			new LoadLessonItemTask(lessonLoadListener, getContentResolver(), getUsername()).executeTask((long) lessonId);
 		} else {
@@ -272,10 +272,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	@Override
 	public void newGame() {
-		Cursor courseCursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getLessonCourseById((int) courseId));
+		Cursor courseCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCourseById((int) courseId));
 
 		if (courseCursor != null && courseCursor.moveToFirst()) {  // if we have saved course
-			Cursor lessonsListCursor = DbDataManager.executeQuery(getContentResolver(),
+			Cursor lessonsListCursor = DbDataManager.query(getContentResolver(),
 					DbHelper.getLessonsListByCourseId((int) courseId, getUsername()));
 			if (lessonsListCursor.moveToFirst()) { // if we have saved lessons
 				List<LessonListItem> lessons = new ArrayList<LessonListItem>();

@@ -272,7 +272,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 			need2update = true;
 
 			// check if we have saved videos more than 2(from previous page)
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(),
+			Cursor cursor = DbDataManager.query(getContentResolver(),
 					DbHelper.getVideosByCategory(previousCategoryId));
 
 			if (cursor != null && cursor.moveToFirst()) {

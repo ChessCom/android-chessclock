@@ -20,7 +20,6 @@ import com.chess.db.QueryParams;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveGameStatsTask;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.views.ChartView;
 import com.chess.ui.views.PieChartView;
 import com.chess.ui.views.RatingGraphView;
 import com.chess.utilities.AppUtils;
@@ -297,7 +296,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 
 			{ // Graph Rating Data
 				QueryParams params = DbHelper.getGraphItemForUser(username, gameType);
-				Cursor cursor = DbDataManager.executeQuery(getContentResolver(), params);
+				Cursor cursor = DbDataManager.query(getContentResolver(), params);
 
 				if (cursor != null && cursor.moveToFirst()) {
 					List<long[]> series = new ArrayList<long[]>();

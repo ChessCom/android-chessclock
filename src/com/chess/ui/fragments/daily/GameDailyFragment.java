@@ -218,7 +218,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	private void loadGameAndUpdate() {
 		// load game from DB. After load update
-		Cursor cursor = DbDataManager.executeQuery(getContentResolver(),
+		Cursor cursor = DbDataManager.query(getContentResolver(),
 				DbHelper.getDailyGame(gameId, getUsername()));
 
 		if (cursor.moveToFirst()) {

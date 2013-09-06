@@ -158,8 +158,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		getActivityFace().showActionMenu(R.id.menu_share, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
-
-		setTitlePadding(ONE_ICON);
 	}
 
 	@Override
@@ -184,7 +182,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	}
 
 	private void loadFromDb() {
-		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getArticleById(articleId));
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getArticleById(articleId));
 
 		if (cursor.moveToFirst()) {
 			int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
@@ -362,7 +360,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			DbDataManager.updateArticleCommentToDb(getContentResolver(), returnedObj, articleId);
 
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getArticlesCommentsById(articleId));
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getArticlesCommentsById(articleId));
 			if (cursor != null && cursor.moveToFirst()) {
 				commentsCursorAdapter.changeCursor(cursor);
 			}

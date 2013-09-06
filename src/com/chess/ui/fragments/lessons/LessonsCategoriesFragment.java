@@ -200,7 +200,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 			need2update = true;
 
 			// check if we have saved videos more than 2(from previous page)
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(),
+			Cursor cursor = DbDataManager.query(getContentResolver(),
 					DbHelper.getLessonsByCategory(previousCategoryId, getUsername()));
 
 			if (cursor != null && cursor.moveToFirst()) {

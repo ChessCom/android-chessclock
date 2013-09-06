@@ -6,7 +6,6 @@ import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -80,14 +79,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		if (!HONEYCOMB_PLUS_API) {
 			adjustActionBar();
 		}
-	}
-
-
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-//		backgroundChessDrawable.updateConfig();
-		super.onConfigurationChanged(newConfig);
 	}
 
 	@Override
@@ -174,18 +165,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	@Override
-	protected void onSearchAutoCompleteQuery(String query) {
-
-	}
+	protected void onSearchAutoCompleteQuery(String query) { }
 
 	@Override
-	protected void onSearchQuery(String query) {
-//		Intent intent = new Intent(this, VideoListActivity.class);
-//		intent.putExtra(RestHelper.P_KEYWORD, query);
-//		startActivity(intent);
-	}
-
-
+	protected void onSearchQuery(String query) { }
 
 	@Override
 	public void onClick(View view) {

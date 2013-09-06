@@ -26,12 +26,13 @@
         android:label="@string/search"
         android:hint="@string/search"
         android:searchSettingsDescription="@string/search"
-        android:searchSuggestAuthority="com.chess.db_provider"
         android:searchSuggestIntentAction="android.intent.action.VIEW"
         android:searchSuggestSelection=" ?"
         android:searchSuggestThreshold="1"
-        android:includeInGlobalSearch="true"
-        >
-<!--    android:searchSuggestIntentData="content://com.example.android.searchabledict.DictionaryProvider/dictionary"-->
+        android:includeInGlobalSearch="false"
 
+        >
+	<!--android:searchSuggestAuthority="com.example.android.searchabledict.DictionaryProvider"-->
+
+	<!--android:searchSuggestIntentData="content://com.example.android.searchabledict.DictionaryProvider/dictionary"-->
  </searchable>

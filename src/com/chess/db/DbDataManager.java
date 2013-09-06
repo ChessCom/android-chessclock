@@ -33,7 +33,7 @@ public class DbDataManager {
 	public static final String DESCEND = " DESC";
 	//	public static final String SLASH_ = "/";
 	public static final String OR_ = " OR ";
-	public static final String LIKE_ = " LIKE ";
+	public static final String LIKE_ = " LIKE ?";
 	public static final String AND_ = " AND ";
 	public static final String MORE_ = " > ";
 	public static final String EQUALS_ = " = ";
@@ -300,7 +300,20 @@ public class DbDataManager {
 		return selection.toString();
 	}
 
-	public static Cursor executeQuery(ContentResolver contentResolver, QueryParams params) {
+	public static String concatLikeArguments(String... arguments) {
+		StringBuilder selection = new StringBuilder();
+
+		String separator = StaticData.SYMBOL_EMPTY;
+		for (String argument : arguments) {
+			selection.append(separator);
+			separator = OR_;
+			selection.append(argument);
+			selection.append(LIKE_);
+		}
+		return selection.toString();
+	}
+
+	public static Cursor query(ContentResolver contentResolver, QueryParams params) {
 		return contentResolver.query(params.getUri(), params.getProjection(), params.getSelection(),
 				params.getArguments(), params.getOrder());
 	}
@@ -1997,6 +2010,19 @@ public class DbDataManager {
 	public static long getId(Cursor cursor) {
 		return cursor.getLong(cursor.getColumnIndex(_ID));
 	}
+
+	public static String anyLikeMatch(String query) {
+		return "%" + query + "%";
+	}
+
+	public static String startLikeMatch(String query) {
+		return "%" + query;
+	}
+
+	public static String endLikeMatch(String query) {
+		return query + "%";
+	}
+
 
 	public static int getDbVersion() {
 		return DATABASE_VERSION;

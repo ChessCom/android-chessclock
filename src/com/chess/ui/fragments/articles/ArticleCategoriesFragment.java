@@ -6,12 +6,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
@@ -21,6 +19,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.db.QueryParams;
 import com.chess.ui.adapters.ArticlesThumbCursorAdapter;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -51,6 +50,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	private HashMap<String, Integer> categoriesMap;
 	private String categoryName;
 	private DarkSpinnerAdapter spinnerAdapter;
+	private MyFilterProvider myFilterProvider;
 
 	public static ArticleCategoriesFragment createInstance(String sectionName) {
 		ArticleCategoriesFragment frag = new ArticleCategoriesFragment();
@@ -64,9 +64,11 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		myFilterProvider = new MyFilterProvider();
 		categoriesMap = new HashMap<String, Integer>();
 		spinnerAdapter = new DarkSpinnerAdapter(getActivity(), null);
 		articlesAdapter = new ArticlesThumbCursorAdapter(getActivity(), null);
+		articlesAdapter.setFilterQueryProvider(myFilterProvider);
 		articleItemUpdateListener = new ArticleItemUpdateListener();
 	}
 
@@ -110,7 +112,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	}
 
 	private boolean fillCategories() {
-		Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.ARTICLE_CATEGORIES.ordinal()], null, null, null, null);
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAllByUri(DbScheme.Tables.ARTICLE_CATEGORIES));
 		if (cursor != null && cursor.moveToFirst()) {
 			List<String> list = new ArrayList<String>();
 
@@ -196,7 +198,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 				DbDataManager.updateOrInsertValues(getContentResolver(), cursor, uri, values);
 			}
 
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getArticlesListByCategory(categoryName));
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getArticlesListByCategory(categoryName));
 			if (cursor != null && cursor.moveToFirst()) {
 				articlesAdapter.changeCursor(cursor);
 			}
@@ -209,6 +211,61 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 				emptyView.setText(R.string.no_network);
 			}
 			showEmptyView(true);
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_cancel: {
+				Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getArticlesListByCategory(categoryName));
+				if (cursor != null && cursor.moveToFirst()) {
+					articlesAdapter.changeCursor(cursor);
+				}
+
+				setTitlePadding(ONE_ICON);
+				getActivityFace().showActionMenu(R.id.menu_cancel, false);
+				getActivityFace().updateActionBarIcons();
+				return true;
+			}
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onSearchQuery(String query) {
+		setTitlePadding(TWO_ICON);
+		getActivityFace().showActionMenu(R.id.menu_cancel, true);
+		getActivityFace().updateActionBarIcons();
+
+
+		Cursor cursor = articlesAdapter.runQueryOnBackgroundThread(query);
+		articlesAdapter.changeCursor(cursor);
+	}
+
+	private class MyFilterProvider implements FilterQueryProvider{
+
+		@Override
+		public Cursor runQuery(CharSequence constraint) {
+
+			String query = (String) constraint;
+			String[] selectionArgs = new String[] {DbScheme.V_TITLE, DbScheme.V_BODY, DbScheme.V_CATEGORY,
+					DbScheme.V_USERNAME, DbScheme.V_FIRST_NAME, DbScheme.V_LAST_NAME};
+			String selection = DbDataManager.concatLikeArguments(selectionArgs);
+
+			String[] arguments = new String[selectionArgs.length];
+			for (int i = 0; i < selectionArgs.length; i++) {
+				arguments[i] = DbDataManager.anyLikeMatch(query);
+			}
+
+			QueryParams queryParams = new QueryParams();
+			queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()]);
+			queryParams.setSelection(selection);
+			queryParams.setArguments(arguments);
+
+			Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
+			cursor.moveToFirst();
+			return cursor;
 		}
 	}
 

@@ -162,7 +162,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 				if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
 					fillCategoriesList(categoriesCursor);
-					Cursor coursesCursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getLessonCoursesForUser(getUsername()));
+					Cursor coursesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCoursesForUser(getUsername()));
 
 					if (coursesCursor != null && coursesCursor.moveToFirst()) {
 						fillCoursesList(coursesCursor);
@@ -175,7 +175,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 			} else { // load data to listHeader view
 				// update to display completed mark
-				Cursor coursesCursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getLessonCoursesForUser(getUsername()));
+				Cursor coursesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCoursesForUser(getUsername()));
 
 				if (coursesCursor != null && coursesCursor.moveToFirst()) { // TODO adjust logic if nothing was really changed
 					fillCoursesList(coursesCursor);
@@ -328,7 +328,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		public void updateData(LessonCourseListItem.Data returnedObj) {
 			// get saved courses           // TODO check strict mode
 
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getLessonCoursesForUser(getUsername()));
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCoursesForUser(getUsername()));
 			if (cursor != null && cursor.moveToFirst()) {
 				fillCoursesList(cursor);
 

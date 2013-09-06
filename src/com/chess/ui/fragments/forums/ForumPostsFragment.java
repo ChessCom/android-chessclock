@@ -86,7 +86,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 		paddingSide = getResources().getDimensionPixelSize(R.dimen.default_scr_side_padding);
 
-		Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getForumTopicById(topicId));
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getForumTopicById(topicId));
 		cursor.moveToFirst();
 		topicTitle = DbDataManager.getString(cursor, DbScheme.V_TITLE);
 		topicUrl = DbDataManager.getString(cursor, DbScheme.V_URL);
@@ -289,7 +289,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		public void updateData(ForumPostItem.Post returnedObj) {
 			super.updateData(returnedObj);
 
-			Cursor cursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getForumPostsById(topicId, currentPage));
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getForumPostsById(topicId, currentPage));
 			if (cursor.moveToFirst()) {
 				postsCursorAdapter.changeCursor(cursor);
 				postsCursorAdapter.notifyDataSetChanged();

@@ -129,7 +129,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 		if (need2update) {
 
-			Cursor courseCursor = DbDataManager.executeQuery(getContentResolver(), DbHelper.getLessonCourseById(courseId));
+			Cursor courseCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCourseById(courseId));
 
 			if (courseCursor != null && courseCursor.moveToFirst()) {  // if we have saved course
 				courseItem = DbDataManager.getLessonsCourseItemFromCursor(courseCursor);
@@ -166,7 +166,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 	}
 
 	private void updateLessonsListFromDb() {
-		Cursor lessonsListCursor = DbDataManager.executeQuery(getContentResolver(),
+		Cursor lessonsListCursor = DbDataManager.query(getContentResolver(),
 				DbHelper.getLessonsListByCourseId(courseId, getUsername()));
 		if (lessonsListCursor != null && lessonsListCursor.moveToFirst()) { // if we have saved lessons
 			List<LessonListItem> lessons = new ArrayList<LessonListItem>();

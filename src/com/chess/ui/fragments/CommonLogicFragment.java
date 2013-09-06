@@ -388,6 +388,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 	}
 
+	public void onSearchQuery(String query) { }
+
 	protected class ChessUpdateListener<ItemType> extends ActionBarUpdateListener<ItemType> {
 
 		public ChessUpdateListener(Class<ItemType> clazz) {
