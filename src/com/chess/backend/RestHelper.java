@@ -68,7 +68,7 @@ public class RestHelper {
 //	public static final String HOST = HOST_PRODUCTION; // switch production/test server
 	public static String HOST = HOST_TEST; // switch production/test server
 
-	public String BASE_URL = "http://" + HOST;
+	public String BASE_URL = "http://" + (HOST == null? HOST_TEST : HOST);
 	private static final String API = "/api";
 	private static final String V1 = "/v1";
 	private static final String API_V2 = API + "/v2";

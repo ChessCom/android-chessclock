@@ -57,22 +57,35 @@ public class SettingsApiFragment extends LiveBaseFragment implements SwitchButto
 		super.onClick(view);
 
 		if (view.getId() == R.id.reloginBtn) {
+			if (!TextUtils.isEmpty(prodUsernameEdt.getText())) {
+				String username = prodUsernameEdt.getText().toString();
+				getAppData().setProdUsername(username);
+			}
+
+			if (!TextUtils.isEmpty(prodPasswordEdt.getText())) {
+				String password = prodPasswordEdt.getText().toString();
+				getAppData().setProdPassword(password);
+			}
+
+			if (!TextUtils.isEmpty(testUsernameEdt.getText())) {
+				String username = testUsernameEdt.getText().toString();
+				getAppData().setTestUsername(username);
+			}
+
+			if (!TextUtils.isEmpty(testPasswordEdt.getText())) {
+				String password = testPasswordEdt.getText().toString();
+				getAppData().setTestPassword(password);
+			}
 
 			if (apiSwitch.isChecked()) {
 
-				if (!TextUtils.isEmpty(prodUsernameEdt.getText())) {
-					String username = prodUsernameEdt.getText().toString();
-					getAppData().setProdUsername(username);
-				}  else {
+				if (TextUtils.isEmpty(prodUsernameEdt.getText())) {
 					prodUsernameEdt.setError(getString(R.string.validateUsername));
 					prodUsernameEdt.requestFocus();
 					return;
 				}
 
-				if (!TextUtils.isEmpty(prodPasswordEdt.getText())) {
-					String password = prodPasswordEdt.getText().toString();
-					getAppData().setProdPassword(password);
-				} else {
+				if (TextUtils.isEmpty(prodPasswordEdt.getText())) {
 					prodPasswordEdt.setError(getString(R.string.password_cant_be_empty));
 					prodPasswordEdt.requestFocus();
 					return;
@@ -84,19 +97,13 @@ public class SettingsApiFragment extends LiveBaseFragment implements SwitchButto
 
 				signInUser(prodUsernameEdt, prodPasswordEdt);
 			} else {
-				if (!TextUtils.isEmpty(testUsernameEdt.getText())) {
-					String username = testUsernameEdt.getText().toString();
-					getAppData().setTestUsername(username);
-				} else {
+				if (TextUtils.isEmpty(testUsernameEdt.getText())) {
 					testUsernameEdt.setError(getString(R.string.validateUsername));
 					testUsernameEdt.requestFocus();
 					return;
 				}
 
-				if (!TextUtils.isEmpty(testPasswordEdt.getText())) {
-					String password = testPasswordEdt.getText().toString();
-					getAppData().setTestPassword(password);
-				} else {
+				if (TextUtils.isEmpty(testPasswordEdt.getText())) {
 					testPasswordEdt.setError(getString(R.string.password_cant_be_empty));
 					testPasswordEdt.requestFocus();
 					return;

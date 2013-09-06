@@ -1,11 +1,8 @@
 package com.chess.backend.statics;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.google.gson.Gson;
@@ -474,35 +471,35 @@ public class AppData {
 	}
 
 	public void setTestUsername(String value) {
-		preferences.edit().putString("TEST_USERNAME", value);
+		preferences.edit().putString("TEST_USERNAME", value).commit();
 	}
 
 	public String getTestUsername() {
-		return preferences.getString("TEST_USERNAME", "rest");
+		return preferences.getString("TEST_USERNAME", "");
 	}
 
 	public void setTestPassword(String value) {
-		preferences.edit().putString("TEST_PASS", value);
+		preferences.edit().putString("TEST_PASS", value).commit();
 	}
 
 	public String getTestPassword() {
-		return preferences.getString("TEST_PASS", "okokok");
+		return preferences.getString("TEST_PASS", "");
 	}
 
 	public void setProdUsername(String value) {
-		preferences.edit().putString("PROD_USERNAME", value);
+		preferences.edit().putString("PROD_USERNAME", value).commit();
 	}
 
 	public String getProdUsername() {
-		return preferences.getString("PROD_USERNAME", "alien_roger");
+		return preferences.getString("PROD_USERNAME", "");
 	}
 
 	public void setProdPassword(String value) {
-		preferences.edit().putString("PROD_PASS", value);
+		preferences.edit().putString("PROD_PASS", value).commit();
 	}
 
 	public String getProdPassword() {
-		return preferences.getString("PROD_PASS", "okokok");
+		return preferences.getString("PROD_PASS", "");
 	}
 
 
