@@ -369,7 +369,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		final TacticBoardFace boardFace = getBoardFace();
 		correctMovesBeforeHint = boardFace.getCorrectMovesCnt();
 
-		int hintMoveNumber = correctMovesBeforeHint + boardFace.getHply();
+		int hintMoveNumber = boardFace.getHply();
 		if (hintMoveNumber == getBoardFace().getTacticMoves().length) {
 			return;
 		}
