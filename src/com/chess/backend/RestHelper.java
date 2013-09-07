@@ -520,10 +520,9 @@ public class RestHelper {
 			if (IS_TEST_SERVER_MODE) {
 				connection.setRequestProperty("Authorization", getBasicAuth());
 			}
-			if (requestMethod.equals(DELETE)) {
-//				connection.setRequestMethod(GET);
-				connection.setRequestProperty("X-HTTP-Method-Override", DELETE);
-			}
+//			if (requestMethod.equals(DELETE)) {
+//				connection.setRequestProperty("X-HTTP-Method-Override", DELETE);
+//			}
 
 			if (!TextUtils.isEmpty(loadItem.getFilePath())) { // if multiPart
 				submitRawData(connection, loadItem);
@@ -774,81 +773,4 @@ public class RestHelper {
 		return BASE_URL + "/livechess/game?id=" + gameId;
 	}
 
-//	public static void putValuesInHeaderForDelete(HttpURLConnection connection, LoadItem loadItem) {
-//		List<NameValuePair> nameValuePairs = loadItem.getRequestParams();
-//
-//		for (NameValuePair pair : nameValuePairs) {
-//			String name;
-//			String value;
-//			name = pair.getName();
-//			try {
-//				value = URLEncoder.encode(pair.getValue(), HTTP.UTF_8);
-//			} catch (UnsupportedEncodingException e) {
-//				Log.e(TAG, "failed to encode url");
-//				e.printStackTrace();
-//				value = pair.getValue();
-//			}
-//			connection.addRequestProperty(name, value);
-//		}
-//	}
-
-//	public static String requestDataViaHttpClient(LoadItem loadItem, String appId) throws IOException {
-//		String url = createSignature(loadItem, appId);
-//		HttpParams httpParameters = new BasicHttpParams();
-//		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
-//
-//		Log.d(TAG, "retrieving from url = " + url);
-//
-//		long tag = System.currentTimeMillis();
-//		BugSenseHandler.addCrashExtraData(AppConstants.BUGSENSE_DEBUG_APP_API_REQUEST, "tag=" + tag + " " + url);
-//
-//		HttpRequestBase httpDelete = new HttpDelete(url);
-//
-//		httpDelete.addHeader("accept", "application/json");
-////		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=" + HTTP.UTF_8);
-//
-//		if (RestHelper.IS_TEST_SERVER_MODE) {
-//			httpDelete.addHeader(RestHelper.AUTHORIZATION_HEADER, RestHelper.AUTHORIZATION_HEADER_VALUE);
-//		}
-//		HttpResponse response = httpClient.execute(httpDelete);
-//		final int statusCode = response.getStatusLine().getStatusCode();
-//		if (statusCode != HttpStatus.SC_OK) {
-//			Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
-//			return response.getStatusLine().getReasonPhrase();
-//		}
-//		return EntityUtils.toString(response.getEntity());
-//	}
-
-//			if (requestMethod.equals(DELETE)) {
-//				String resultString = requestDataViaHttpClient(loadItem, appId);
-//				Gson gson = new Gson();
-//
-//				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
-//				if (!baseResponse.getStatus().equals(R_STATUS_SUCCESS)) {
-//					Log.d(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
-//					throw new InternalErrorException(encodeServerCode(baseResponse.getCode()));
-//				} else {
-//					if (resultString.contains(OBJ_START)) {
-//						int firstIndex = resultString.indexOf(OBJ_START);
-//
-//						int lastIndex = resultString.lastIndexOf(OBJ_END);
-//
-//						resultString = resultString.substring(firstIndex, lastIndex + 1);
-//
-//						Log.d(TAG, "SERVER RESPONSE: " + resultString);
-//						if (resultString.contains("\"challenges\":[[]")) {
-//							resultString = resultString.replace("[],", "").replace("[]]", "]");
-//							Log.d(TAG, "After edit SERVER RESPONSE: " + resultString);
-//						}
-//					} else {
-//						Log.d(TAG, "ERROR -> WebRequest SERVER RESPONSE: " + resultString);
-//						throw new InternalErrorException(StaticData.INTERNAL_ERROR);
-//					}
-//					item = gson.fromJson(resultString, customTypeClass);
-//					if (item == null) {
-//						throw new InternalErrorException(StaticData.EMPTY_DATA);
-//					}
-//				}
-//
-//			} else {
 }

@@ -14,19 +14,16 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.VideoItem;
 import com.chess.backend.entity.api.VideoViewedItem;
-import com.chess.backend.statics.StaticData;
-import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.db.DbHelper;
-import com.chess.db.tasks.LoadDataFromDbTask;
-import com.chess.db.tasks.SaveVideosListTask;
+import com.chess.db.DbScheme;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
-import com.chess.ui.adapters.VideosThumbCursorAdapter;
+import com.chess.ui.adapters.VideosCursorAdapter;
+import com.chess.ui.adapters.VideosPaginationAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
@@ -44,13 +41,13 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	public static final String SECTION_NAME = "section_name";
 	private static final int WATCH_VIDEO_REQUEST = 9896;
 
-	private VideosThumbCursorAdapter videosAdapter;
+	private VideosCursorAdapter videosAdapter;
 
 	private Spinner categorySpinner;
 	private View loadingView;
 	private TextView emptyView;
 	private ListView listView;
-	private VideosCursorUpdateListener videosCursorUpdateListener;
+//	private VideosCursorUpdateListener videosCursorUpdateListener;
 	private List<String> categoriesNames;
 	private List<Integer> categoriesIds;
 	private SaveVideosUpdateListener saveVideosUpdateListener;
@@ -75,9 +72,9 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		viewedVideosMap = new SparseBooleanArray();
 		videosUpdateListener = new VideosUpdateListener();
 		saveVideosUpdateListener = new SaveVideosUpdateListener();
-		videosAdapter = new VideosThumbCursorAdapter(this, null);
+		videosAdapter = new VideosCursorAdapter(this, null);
 		videosAdapter.addViewedMap(viewedVideosMap);
-		videosCursorUpdateListener = new VideosCursorUpdateListener();
+//		videosCursorUpdateListener = new VideosCursorUpdateListener();
 		categoriesNames = new ArrayList<String>();
 		categoriesIds = new ArrayList<Integer>();
 
@@ -107,7 +104,6 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
 
 		listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(videosAdapter);
 		listView.setOnItemClickListener(this);
 
 		getActivityFace().showActionMenu(R.id.menu_search, true);
@@ -170,37 +166,37 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		return true;
 	}
 
-	private void loadFromDb() {
-//		String category = (String) categorySpinner.getSelectedItem();
+//	private void loadFromDb() {
+////		String category = (String) categorySpinner.getSelectedItem();
+//
+//		new LoadDataFromDbTask(videosCursorUpdateListener,
+//				DbHelper.getVideosByCategory(previousCategoryId),
+//				getContentResolver()).executeTask();
+//	}
 
-		new LoadDataFromDbTask(videosCursorUpdateListener,
-				DbHelper.getVideosByCategory(previousCategoryId),
-				getContentResolver()).executeTask();
-	}
-
-	private class VideosCursorUpdateListener extends ChessUpdateListener<Cursor> {
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
-		}
-
-		@Override
-		public void updateData(Cursor returnedObj) {
-			super.updateData(returnedObj);
-
-			videosAdapter.changeCursor(returnedObj);
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			if (resultCode == StaticData.UNKNOWN_ERROR) {
-				emptyView.setText(R.string.error);
-			}
-			showEmptyView(true);
-		}
-	}
+//	private class VideosCursorUpdateListener extends ChessUpdateListener<Cursor> {
+//
+//		@Override
+//		public void showProgress(boolean show) {
+//			showLoadingView(show);
+//		}
+//
+//		@Override
+//		public void updateData(Cursor returnedObj) {
+//			super.updateData(returnedObj);
+//
+////			videosAdapter.changeCursor(returnedObj);
+//		}
+//
+//		@Override
+//		public void errorHandle(Integer resultCode) {
+//			super.errorHandle(resultCode);
+//			if (resultCode == StaticData.UNKNOWN_ERROR) {
+//				emptyView.setText(R.string.error);
+//			}
+//			showEmptyView(true);
+//		}
+//	}
 
 	@Override
 	public void onClick(View view) {
@@ -267,7 +263,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		Integer categoryId = categoriesIds.get(position);
 
-		if (need2update || categoryId != previousCategoryId) {
+//		if (need2update || categoryId != previousCategoryId) {
 			previousCategoryId = categoryId;
 			need2update = true;
 
@@ -288,12 +284,21 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 				loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
 				loadItem.addRequestParams(RestHelper.P_LIMIT, RestHelper.DEFAULT_ITEMS_PER_PAGE);
+//
+//				new RequestJsonTask<VideoItem>(videosUpdateListener).executeTask(loadItem);
 
-				new RequestJsonTask<VideoItem>(videosUpdateListener).executeTask(loadItem);
+				//set Pagination adapter params
+//				videosList = new ArrayList<VideoItem>();
+//				VideosAdapter videosAdapter = new VideosAdapter(this, videosList);
+
+				VideosPaginationAdapter paginationAdapter = new VideosPaginationAdapter(getActivity(), videosAdapter,
+						videosUpdateListener, loadItem);
+
+				listView.setAdapter(paginationAdapter);
 			}
-		} else {
-			loadFromDb();
-		}
+//		} else {
+////			loadFromDb();
+//		}
 	}
 
 	@Override
@@ -301,14 +306,11 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 	}
 
-	private class VideosUpdateListener extends ChessLoadUpdateListener<VideoItem> {
-		private VideosUpdateListener() {
-			super(VideoItem.class);
-		}
+	private class VideosUpdateListener extends ChessLoadUpdateListener<VideoItem.Data> {
 
 		@Override
-		public void updateData(VideoItem returnedObj) {
-			new SaveVideosListTask(saveVideosUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
+		public void updateData(VideoItem.Data returnedObj) {
+//			new SaveVideosListTask(saveVideosUpdateListener, returnedObj, getContentResolver()).executeTask();
 		}
 	}
 
@@ -325,7 +327,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 			need2update = false;
 
-			loadFromDb();
+//			loadFromDb();
 		}
 	}
 

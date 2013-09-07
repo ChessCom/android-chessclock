@@ -21,7 +21,7 @@ import com.chess.utilities.AppUtils;
  * Date: 29.01.13
  * Time: 17:28
  */
-public class VideosThumbCursorAdapter extends ItemsCursorAdapter {
+public class VideosCursorAdapter extends ItemsCursorAdapter {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
 	public static final String DURATION_DIVIDER = "| ";
@@ -35,7 +35,7 @@ public class VideosThumbCursorAdapter extends ItemsCursorAdapter {
 	private CharacterStyle foregroundSpan;
 	private SparseBooleanArray viewedMap;
 
-	public VideosThumbCursorAdapter(ItemClickListenerFace clickFace, Cursor cursor) {
+	public VideosCursorAdapter(ItemClickListenerFace clickFace, Cursor cursor) {
 		super(clickFace.getMeContext(), cursor);
 
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
