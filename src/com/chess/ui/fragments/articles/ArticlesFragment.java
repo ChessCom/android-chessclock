@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -92,7 +93,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		listView.setOnItemClickListener(this);
 
 		// adjust actionBar icons
-		getActivityFace().showActionMenu(R.id.menu_search, true);
+		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
 
@@ -158,6 +159,16 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLES_CATEGORIES);
 		new RequestJsonTask<CommonFeedCategoryItem>(categoriesUpdateListener).executeTask(loadItem);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_search_btn:
+				getActivityFace().openFragment(new ArticlesSearchFragment());
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

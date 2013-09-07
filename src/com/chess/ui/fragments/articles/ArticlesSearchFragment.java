@@ -1,4 +1,4 @@
-package com.chess.ui.fragments.lessons;
+package com.chess.ui.fragments.articles;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import com.chess.MultiDirectionSlidingDrawer;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.entity.api.LessonSearchItem;
 import com.chess.backend.statics.StaticData;
@@ -23,7 +23,7 @@ import com.chess.db.DbScheme;
 import com.chess.ui.adapters.LessonsItemAdapter;
 import com.chess.ui.adapters.StringSpinnerAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.utilities.AppUtils;
+import com.chess.ui.fragments.lessons.GameLessonFragment;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ObjectAnimator;
 
@@ -33,15 +33,14 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 06.08.13
- * Time: 14:50
+ * Date: 07.09.13
+ * Time: 11:18
  */
-public class LessonsSearchFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener {
+public class ArticlesSearchFragment extends CommonLogicFragment implements MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener, AdapterView.OnItemClickListener {
 
 	private static final int FADE_ANIM_DURATION = 300;
 
 	private EditText keywordsEdt;
-	private Spinner difficultySpinner;
 	private Spinner categorySpinner;
 	private String allStr;
 	private LessonItemUpdateListener lessonItemUpdateListener;
@@ -51,7 +50,6 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 	private ObjectAnimator fadeSearchAnimator;
 	private String lastKeyword;
 	private String lastCategory;
-	private String lastDifficulty;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -62,29 +60,22 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 
 		lastKeyword = StaticData.SYMBOL_EMPTY;
 		lastCategory = StaticData.SYMBOL_EMPTY;
-		lastDifficulty = StaticData.SYMBOL_EMPTY;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_lessons_search_frame, container, false);
+		return inflater.inflate(R.layout.new_base_search_frame, container, false);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.lessons);
+		setTitle(R.string.articles);
 
 		keywordsEdt = (EditText) view.findViewById(R.id.keywordsEdt);
 		allStr = getString(R.string.all);
 
-		difficultySpinner = (Spinner) view.findViewById(R.id.difficultySpinner);
-		String[] difficultyArray = getResources().getStringArray(R.array.lesson_difficulty);
-		List<String> difficultyList = AppUtils.convertArrayToList(difficultyArray);
-		difficultyList.add(0, allStr);
-
-		difficultySpinner.setAdapter(new StringSpinnerAdapter(getActivity(), difficultyList));
 		categorySpinner = (Spinner) view.findViewById(R.id.categorySpinner);
 
 		view.findViewById(R.id.searchBtn).setOnClickListener(this);
@@ -111,7 +102,7 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 		super.onResume();
 
 		// get saved categories
-		Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
+		Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.ARTICLE_CATEGORIES.ordinal()], null, null, null, null);
 
 		if (cursor != null && cursor.moveToFirst()) {
 			fillCategoriesList(cursor);
@@ -140,27 +131,22 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 		if (view.getId() == R.id.searchBtn) {
 			String keyword = getTextFromField(keywordsEdt);
 			String category = (String) categorySpinner.getSelectedItem();
-			String difficulty = (String) difficultySpinner.getSelectedItem();
 
 			// Check if search query has changed, to reduce load
-			if (lastKeyword.equals(keyword) && lastCategory.equals(category) && lastDifficulty.equals(difficulty)) {
+			if (lastKeyword.equals(keyword) && lastCategory.equals(category)) {
 				showSearchResults();
 				return;
 			}
 
 			lastKeyword = keyword;
 			lastCategory = category;
-			lastDifficulty = difficulty;
 
 			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSONS);
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLES);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_KEYWORD, keyword);
 			if (!category.equals(allStr)) {
 				loadItem.addRequestParams(RestHelper.P_CATEGORY_CODE, category);
-			}
-			if (!category.equals(difficulty)) {
-				loadItem.addRequestParams(RestHelper.P_DIFFICULTY, difficulty);
 			}
 
 			new RequestJsonTask<LessonSearchItem>(lessonItemUpdateListener).executeTask(loadItem);
@@ -224,5 +210,4 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 		});
 		fadeSearchAnimator.start();
 	}
-
 }

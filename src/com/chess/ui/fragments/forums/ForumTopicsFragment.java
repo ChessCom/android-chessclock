@@ -104,7 +104,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		pageIndicatorView.setPagerFace(this);
 
 		// adjust action bar icons
-		getActivityFace().showActionMenu(R.id.menu_search, true);
+		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
 		getActivityFace().showActionMenu(R.id.menu_add, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
@@ -143,6 +143,9 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+			case R.id.menu_search_btn:
+				getActivityFace().openFragment(new ForumSearchFragment());
+				return true;
 			case R.id.menu_add:
 				getActivityFace().openFragment(new ForumNewTopicFragment());
 				return true;
