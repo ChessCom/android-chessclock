@@ -25,8 +25,6 @@ public interface TaskUpdateInterface<ItemType> {
 
 	void errorHandle(Integer resultCode);
 
-	void errorHandle(String resultMessage);
-
 	Context getMeContext();
 
 	void releaseContext();

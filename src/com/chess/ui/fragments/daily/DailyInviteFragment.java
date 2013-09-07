@@ -330,26 +330,7 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 
 		@Override
 		public void updateData(BaseResponseItem returnedObj) {
-			if (isPaused || getActivity() == null) {
-				return;
-			}
-
 			showToast(successToastMsgId);
-		}
-
-		@Override
-		public void errorHandle(String resultMessage) {
-			// redundant check? we already clean the tasks pool in onPause, or...?
-			// No, cleaning the task pool doesn't stop task immediately if it already reached onPOstExecute state.
-			// this check prevent illegalStateExc for fragments, when they showed after onSavedInstance was called
-			if (isPaused)
-				return;
-
-			if (resultMessage.equals(RestHelper.R_YOU_ARE_ON_VACATION)) {
-				showToast(R.string.no_challenges_during_vacation);
-			} else {
-				showSinglePopupDialog(R.string.error, resultMessage);
-			}
 		}
 
 		@Override
@@ -373,17 +354,6 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 			switch (listenerCode) {
 				case CREATE_CHALLENGE_UPDATE:
 					showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
-					break;
-			}
-		}
-
-		@Override
-		public void errorHandle(String resultMessage) {
-			super.errorHandle(resultMessage);
-			switch (listenerCode) {
-				case CREATE_CHALLENGE_UPDATE:
-					showPopupDialog(getString(R.string.error), resultMessage, ERROR_TAG);
-
 					break;
 			}
 		}

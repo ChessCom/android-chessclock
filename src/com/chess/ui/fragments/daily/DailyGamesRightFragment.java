@@ -325,16 +325,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 					break;
 			}
-
-		}
-
-		@Override
-		public void errorHandle(String resultMessage) {
-			if (resultMessage.equals(RestHelper.R_YOU_ARE_ON_VACATION)) {
-				showToast(R.string.no_challenges_during_vacation);
-			} else {
-				showSinglePopupDialog(R.string.error, resultMessage);
-			}
 		}
 
 		@Override

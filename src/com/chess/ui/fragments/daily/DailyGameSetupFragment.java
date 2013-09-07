@@ -51,12 +51,6 @@ public class DailyGameSetupFragment extends CommonLogicFragment {
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-		// TODO -> File | Settings | File Templates.
-	}
-
-	@Override
 	public void onClick(View view) {
 		super.onClick(view);
 
@@ -90,11 +84,6 @@ public class DailyGameSetupFragment extends CommonLogicFragment {
 		@Override
 		public void updateData(DailySeekItem returnedObj) {
 			showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
-		}
-
-		@Override
-		public void errorHandle(String resultMessage) {
-			showPopupDialog(getString(R.string.error), resultMessage, ERROR_TAG);
 		}
 	}
 }

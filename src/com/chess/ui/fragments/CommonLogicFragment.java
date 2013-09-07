@@ -522,13 +522,13 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			}
 		}
 
-		@Override
-		public void errorHandle(String resultMessage) {
-			if (resultMessage.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
-				popupItem.setPositiveBtnId(R.string.sign_up);
-				showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
-			}
-		}
+//		@Override
+//		public void errorHandle(String resultMessage) {
+//			if (resultMessage.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
+//				popupItem.setPositiveBtnId(R.string.sign_up);
+//				showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
+//			}
+//		}
 	}
 
 	protected void processLogin(RegisterItem.Data returnedObj) {

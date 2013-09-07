@@ -844,16 +844,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		}
 
 		@Override
-		public void errorHandle(String resultMessage) {  // TODO check logic, seems like it doesn't call anywhere
-			super.errorHandle(resultMessage);
-			switch (listenerCode) {
-				case CREATE_CHALLENGE_UPDATE:
-					showPopupDialog(getString(R.string.error), resultMessage, ERROR_TAG);
-					break;
-			}
-		}
-
-		@Override
 		public void errorHandle(Integer resultCode) {
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);

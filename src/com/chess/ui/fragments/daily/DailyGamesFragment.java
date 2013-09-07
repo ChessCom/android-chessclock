@@ -335,18 +335,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		@Override
-		public void errorHandle(String resultMessage) {
-			if (isPaused)
-				return;
-
-			if (resultMessage.equals(RestHelper.R_YOU_ARE_ON_VACATION)) {
-				showToast(R.string.no_challenges_during_vacation);
-			} else {
-				showSinglePopupDialog(R.string.error, resultMessage);
-			}
-		}
-
-		@Override
 		public void errorHandle(Integer resultCode) {
 			if (itemCode == GameOnlineItem.CURRENT_TYPE || itemCode == GameOnlineItem.CHALLENGES_TYPE
 					|| itemCode == GameOnlineItem.FINISHED_TYPE) {

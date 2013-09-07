@@ -287,11 +287,6 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		public void updateData(DailySeekItem returnedObj) {
 			showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
 		}
-
-		@Override
-		public void errorHandle(String resultMessage) {
-			showPopupDialog(getString(R.string.error), resultMessage, ERROR_TAG);
-		}
 	}
 
 	@Override

@@ -66,14 +66,8 @@ public abstract class AbstractUpdateListener<ItemType> implements TaskUpdateInte
 
 	}
 
-
 	@Override
 	public void errorHandle(Integer resultCode) {
-	}
-
-
-	@Override
-	public void errorHandle(String resultMessage) {
 	}
 
 	@Override

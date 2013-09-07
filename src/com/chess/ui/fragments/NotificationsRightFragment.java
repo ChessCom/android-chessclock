@@ -315,15 +315,6 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 			// remove that item from challenges list adapter
 			challengesGamesAdapter.remove(selectedChallengeItem);
 		}
-
-		@Override
-		public void errorHandle(String resultMessage) {
-			if (resultMessage.equals(RestHelper.R_YOU_ARE_ON_VACATION)) {
-				showToast(R.string.no_challenges_during_vacation);
-			} else {
-				showSinglePopupDialog(R.string.error, resultMessage);
-			}
-		}
 	}
 
 	private class FriendRequestUpdateListener extends ChessLoadUpdateListener<FriendRequestResultItem> {

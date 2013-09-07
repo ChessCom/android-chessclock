@@ -61,11 +61,6 @@ public abstract class ActionBarUpdateListener<ItemType> extends AbstractUpdateLi
 	}
 
 	@Override
-	public void errorHandle(String resultMessage) {
-		coreActivityActionBar.safeShowSinglePopupDialog(R.string.error, resultMessage);
-	}
-
-	@Override
 	public void errorHandle(Integer resultCode) {
 		super.errorHandle(resultCode);
 

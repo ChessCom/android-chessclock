@@ -745,17 +745,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 					break;
 			}
 		}
-
-		@Override
-		public void errorHandle(String resultMessage) {
-			super.errorHandle(resultMessage);
-			switch (listenerCode) {
-				case CREATE_CHALLENGE_UPDATE:
-					showPopupDialog(getString(R.string.error), resultMessage, ERROR_TAG);
-
-					break;
-			}
-		}
 	}
 
 	public void init() {

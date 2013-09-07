@@ -46,21 +46,15 @@ public class RestHelper {
 		ourInstance = null;
 	}
 
-	/* Methods*/  // new
+	/* Methods*/
 	public static final String GET = "GET";
 	public static final String POST = "POST";
 	public static final String PUT = "PUT";
 	public static final String DELETE = "DELETE";
 
 	/* Results */
-	public static final String R_STATUS_SUCCESS = "success";  // new
-	public static final String R_STATUS_ERROR = "error"; // new
-
-	public static final String R_SUCCESS = "Success";
-	public static final String R_SUCCESS_P = "Success+";
-	public static final String R_ERROR = "Error+";
-	public static final String R_YOUR_MOVE = "Success+1";
-	public static final String R_OPPONENT_MOVE = "Success+0";
+	public static final String R_STATUS_SUCCESS = "success";
+	public static final String R_STATUS_ERROR = "error";
 
 	//	http://api.chess-7.com
 	public static final String HOST_PRODUCTION = "api.chess.com";
@@ -69,23 +63,12 @@ public class RestHelper {
 	public static String HOST = HOST_TEST; // switch production/test server
 
 	public String BASE_URL = "http://" + (HOST == null? HOST_TEST : HOST);
-	private static final String API = "/api";
 	private static final String V1 = "/v1";
-	private static final String API_V2 = API + "/v2";
-	private static final String API_V3 = API + "/v3";
-	private static final String API_V4 = API + "/v4";
-	private static final String API_V5 = API + "/v5";
 
 	/* Methods calls*/
-//	public static final String LOGIN_HTML_ALS = BASE_URL() + "/login.html?als=";
-//	public static final String REGISTER_HTML = BASE_URL() + "/register.html";
 	public String PLAY_ANDROID_HTML = BASE_URL + "/play/android.html";
-//	public static final String ECHESS_MOBILE_STATS = BASE_URL() + "/echess/mobile-stats/";
-//	public static final String TOURNAMENTS = BASE_URL() + "/tournaments";
 //	public static final String GOOGLE_PLAY_URI = "market://details?id=com.chess";
-//
 //	public static final String GET_ANDROID_VERSION = BASE_URL() + API + "/get_android_version";
-//	public static final String GET_GAME_V5 = BASE_URL() + API_V5 + "/get_game";
 
 	/* Methods */
 		/*Users*/
@@ -117,85 +100,83 @@ public class RestHelper {
 	}
 
 	/*Articles*/
-	public String CMD_ARTICLES = BASE_URL + V1 + "/articles";
-	public String CMD_ARTICLES_LIST = CMD_ARTICLES + "/list";
-	public String CMD_ARTICLES_CATEGORIES = CMD_ARTICLES + "/categories";
+	public String CMD_ARTICLES = BASE_URL + V1 + "/articles/";
+	public String CMD_ARTICLES_LIST = CMD_ARTICLES + "list";
+	public String CMD_ARTICLES_CATEGORIES = CMD_ARTICLES + "categories";
 	public static final int DEFAULT_ITEMS_PER_PAGE = 20;
 
 	public String CMD_ARTICLE_BY_ID(long id) {
-		return CMD_ARTICLES + "/" + id;
+		return CMD_ARTICLES + id;
 	}
 
 	public String CMD_ARTICLE_COMMENTS(long id) {
-		return CMD_ARTICLES + "/" + id + "/comments";
+		return CMD_ARTICLES + id + "/comments";
 	}
 
 	public String CMD_ARTICLE_EDIT_COMMENT(long articleId, long commentId) {
-		return CMD_ARTICLES + "/" + articleId + "/comments/" + commentId;
+		return CMD_ARTICLES + articleId + "/comments/" + commentId;
 	}
 
 	/*Forums*/
-	public String CMD_FORUMS = BASE_URL + V1 + "/forums";
-	public String CMD_FORUMS_CATEGORIES = CMD_FORUMS + "/categories";
-	public String CMD_FORUMS_COMMENTS = CMD_FORUMS + "/comments";
-	public String CMD_FORUMS_TOPICS = CMD_FORUMS + "/topics";
+	public String CMD_FORUMS = BASE_URL + V1 + "/forums/";
+	public String CMD_FORUMS_CATEGORIES = CMD_FORUMS + "categories";
+	public String CMD_FORUMS_COMMENTS = CMD_FORUMS + "comments";
+	public String CMD_FORUMS_TOPICS = CMD_FORUMS + "topics";
 
 
 	/* Friends */
-	public String CMD_FRIENDS = BASE_URL + V1 + "/friends";
-	public String CMD_FRIENDS_REQUEST = CMD_FRIENDS + "/requests";
+	public String CMD_FRIENDS = BASE_URL + V1 + "/friends/";
+	public String CMD_FRIENDS_REQUEST = CMD_FRIENDS + "requests";
 
 	public String CMD_FRIENDS_REQUEST_BY_ID(long id) {
-		return CMD_FRIENDS + "/" + id + "/requests";
+		return CMD_FRIENDS + id + "/requests";
 	}
 
 	/* Videos */
-	public String CMD_VIDEOS = BASE_URL + V1 + "/videos";
-	public String CMD_VIDEO_CATEGORIES = CMD_VIDEOS + "/categories";
+	public String CMD_VIDEOS = BASE_URL + V1 + "/videos/";
+	public String CMD_VIDEO_CATEGORIES = CMD_VIDEOS + "categories";
 
 	public String CMD_VIDEO_BY_ID(long id) {
-		return CMD_VIDEOS + "/" + id;
+		return CMD_VIDEOS + id;
 	}
 
 	public String CMD_VIDEOS_COMMENTS(long id) {
-		return CMD_VIDEOS + "/" + id + "/comments";
+		return CMD_VIDEOS + id + "/comments";
 	}
 
 	public String CMD_VIDEOS_EDIT_COMMENT(long videoId, long commentId) {
-		return CMD_VIDEOS + "/" + videoId + "/comments/" + commentId;
+		return CMD_VIDEOS + videoId + "/comments/" + commentId;
 	}
-
 
 	/* Tactics */
-	public String CMD_TACTICS = BASE_URL + V1 + "/tactics";
-	public String CMD_TACTICS_STATS = CMD_TACTICS + "/stats";
-	public String CMD_TACTIC_TRAINER = CMD_TACTICS + "/trainer";
+	public String CMD_TACTICS = BASE_URL + V1 + "/tactics/";
+	public String CMD_TACTICS_STATS = CMD_TACTICS + "stats";
+	public String CMD_TACTIC_TRAINER = CMD_TACTICS + "trainer";
 	/* Lessons */
-	public String CMD_LESSONS = BASE_URL + V1 + "/lessons";
-	public String CMD_LESSONS_CATEGORIES = CMD_LESSONS + "/categories";
-	public String CMD_LESSONS_COURSES = CMD_LESSONS + "/courses";
-	public String CMD_LESSONS_RATING = CMD_LESSONS + "/rating";
+	public String CMD_LESSONS = BASE_URL + V1 + "/lessons/";
+	public String CMD_LESSONS_CATEGORIES = CMD_LESSONS + "categories";
+	public String CMD_LESSONS_COURSES = CMD_LESSONS + "courses";
+	public String CMD_LESSONS_RATING = CMD_LESSONS + "rating";
 
 	public String CMD_LESSON_BY_ID(long id) {
-		return CMD_LESSONS + "/" + id;
+		return CMD_LESSONS + id;
 	}
 
-
 	/* Themes */
-	public String CMD_THEMES = BASE_URL + V1 + "/themes";
-	public String CMD_THEMES_DEFAULT = CMD_THEMES + "/default";
-	public String CMD_THEMES_USER = CMD_THEMES + "/user";
+	public String CMD_THEMES = BASE_URL + V1 + "/themes/";
+	public String CMD_THEMES_DEFAULT = CMD_THEMES + "default";
+	public String CMD_THEMES_USER = CMD_THEMES + "user";
 
 	public String CMD_THEME_DEFAULT_BY_ID(long id) {
-		return CMD_THEMES_DEFAULT + "/" + id;
+		return CMD_THEMES_DEFAULT + id;
 	}
 
 	public String CMD_THEME_USER_BY_ID(long id) {
-		return CMD_THEMES_USER + "/" + id;
+		return CMD_THEMES_USER + id;
 	}
 
 	/* Messages */
-	public String CMD_MESSAGES = BASE_URL + V1 + "/messages/"; // TODO recheck , restore
+	public String CMD_MESSAGES = BASE_URL + V1 + "/messages/";
 	public String CMD_MESSAGES_INBOX = CMD_MESSAGES + "inbox";
 	public String CMD_MESSAGES_ARCHIVE = CMD_MESSAGES + "archive";
 
@@ -203,9 +184,9 @@ public class RestHelper {
 		return CMD_MESSAGES + id;
 	}
 
-	public String CMD_MEMBERSHIP = BASE_URL + V1 + "/membership/android";
-	public String CMD_MEMBERSHIP_PAYLOAD = CMD_MEMBERSHIP + "/payload";
-	public String CMD_MEMBERSHIP_KEY = CMD_MEMBERSHIP + "/public-key";
+	public String CMD_MEMBERSHIP = BASE_URL + V1 + "/membership/android/";
+	public String CMD_MEMBERSHIP_PAYLOAD = CMD_MEMBERSHIP + "payload";
+	public String CMD_MEMBERSHIP_KEY = CMD_MEMBERSHIP + "public-key";
 
 	/* Parameters */
 	public static final String P_USER_NAME_OR_MAIL = "usernameOrEmail";
@@ -332,8 +313,6 @@ public class RestHelper {
 	public static final String P_COMMENTS_PER_PAGE = "commentsPerPage";
 	public static final String P_AVATAR_SIZE = "avatarSize";
 
-	private static final String GOTO = "&goto=";
-
 	/* Returned Values */
 	public static final String R_ERROR_MESSAGE = "error_message";
 	public static final String R_USER_TOKEN = "user_token";
@@ -341,18 +320,10 @@ public class RestHelper {
 	public static final String SYMBOL_PARAMS_SPLIT = ":";
 	public static final String SYMBOL_PARAMS_SPLIT_SLASH = "[|]";
 	public static final String SYMBOL_ITEM_SPLIT = "[|]";
-	public static final String R_PLEASE_LOGIN_AGAIN = "Please login again.";
-	public static final String R_INVALID_PASS = "Invalid password.";
-	public static final String R_YOU_ARE_ON_VACATION = "You are on vacation.";
-	public static final String R_TACTICS_LIMIT_REACHED = "Tactics daily limit reached.";
-
-	public static final String R_DRAW_OFFER_PENDING = "is_draw_offer_pending";
 
 	public boolean IS_TEST_SERVER_MODE = !BASE_URL.equals("http://" + HOST_PRODUCTION);
 
-
 	/* Values */
-	// new
 	public static final int V_BASIC_MEMBER = 0;
 	public static final int V_GOLD_MEMBER = 1;
 	public static final int V_PLATINUM_MEMBER = 2;
@@ -428,29 +399,7 @@ public class RestHelper {
 	}
 
 	public static final String OBJ_START = "{";
-	public static final String SYMBOL_QUOTE = "\"";
-	public static final String OBJ_DIVIDER = ":";
 	public static final String OBJ_END = "}";
-
-
-	public static String formJsonData(List<NameValuePair> requestParams) {
-		StringBuilder data = new StringBuilder();
-		String separator = StaticData.SYMBOL_EMPTY;
-		data.append(OBJ_START);
-		for (NameValuePair requestParam : requestParams) {
-
-			data.append(separator);
-			separator = StaticData.SYMBOL_COMMA;
-			data.append(SYMBOL_QUOTE)
-					.append(requestParam.getName()).append(SYMBOL_QUOTE)
-					.append(OBJ_DIVIDER)
-					.append(SYMBOL_QUOTE)
-					.append(requestParam.getValue())
-					.append(SYMBOL_QUOTE);
-		}
-		data.append(OBJ_END);
-		return data.toString();
-	}
 
 	public static String formPostData(LoadItem loadItem) {
 		List<NameValuePair> nameValuePairs = loadItem.getRequestParams();
@@ -476,18 +425,6 @@ public class RestHelper {
 
 		return encodedParams.toString();
 	}
-
-//	public static String getMembershipLink(String userToken, String param) {
-//		return LOGIN_HTML_ALS + userToken + GOTO + "%2Fmembership.html" + param;
-////				+ sharedData.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
-////				+ "&goto=http%3A%2F%2Fwww."
-////				+ LccHelper.HOST + "%2Fmembership.html" + param;
-//	}
-
-/*	public static String formCustomPaginationRequest(LoadItem loadItem, int page) {
-		loadItem.replaceRequestParams(P_PAGE, String.valueOf(page));
-		return loadItem.getLoadPath() + formUrl(loadItem.getRequestParams());
-	}*/
 
 	public static int encodeServerCode(int code) {
 		return StaticData.INTERNAL_ERROR | code << 8;

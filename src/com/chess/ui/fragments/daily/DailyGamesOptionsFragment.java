@@ -199,11 +199,6 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		public void updateData(DailySeekItem returnedObj) {
 			showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
 		}
-
-		@Override
-		public void errorHandle(String resultMessage) {
-			showPopupDialog(getString(R.string.error), resultMessage, ERROR_TAG);
-		}
 	}
 
 	private CompoundButton.OnCheckedChangeListener ratingSelectionChangeListener = new CompoundButton.OnCheckedChangeListener() {

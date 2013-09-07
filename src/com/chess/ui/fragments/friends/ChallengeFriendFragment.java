@@ -186,11 +186,6 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 		public void updateData(DailySeekItem returnedObj) {
 			showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
 		}
-
-		@Override
-		public void errorHandle(String resultMessage) {
-			showSinglePopupDialog(getString(R.string.error), resultMessage);
-		}
 	}
 
 	@Override
