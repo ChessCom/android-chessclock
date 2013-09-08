@@ -132,12 +132,12 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 //		setBadgeValueForId(R.id.menu_notifications, 7); // TODO use properly
 
 //		new LoadDataFromDbTask(new DbCursorUpdateListener(),
-//				DbHelper.getAllByUri(DbScheme.Tables.DAILY_FINISHED_GAMES.ordinal()),
+//				DbHelper.getAll(DbScheme.Tables.DAILY_FINISHED_GAMES.ordinal()),
 //				getContentResolver()).executeTask();
 //
 
 //		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.ARTICLE_COMMENTS.name()),
-//				DbHelper.getAllByUri(DbScheme.Tables.ARTICLE_COMMENTS.ordinal()),
+//				DbHelper.getAll(DbScheme.Tables.ARTICLE_COMMENTS.ordinal()),
 //				getContentResolver()).executeTask();
 
 

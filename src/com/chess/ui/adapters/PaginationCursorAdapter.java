@@ -1,6 +1,7 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +22,16 @@ import java.util.List;
  */
 public abstract class PaginationCursorAdapter<T> extends EndlessAdapter {
 
+	private static final String TAG = "PaginationCursorAdapter";
+	public static final String TASK_FACE_IS_ALREADY_DEAD = "TaskFace is already dead";
+
 	private final View mPendingView;
 	protected List<T> mAllItems;
 	protected List<T> mNewItems;
 	protected List<T> itemList;
 	private int page;
 	protected Context context;
-	protected TaskUpdateInterface<T> taskFace;
+	private TaskUpdateInterface<T> taskFace;
 	protected int result;
 
 	protected int maxItems = RestHelper.MAX_ITEMS_CNT;
@@ -53,28 +57,27 @@ public abstract class PaginationCursorAdapter<T> extends EndlessAdapter {
 
 	@Override
 	protected void showLoad() {
-		taskFace.showProgress(true);
+		getTaskFace().showProgress(true);
 	}
 
 	@Override
 	protected void dismissLoad() {
-		taskFace.showProgress(false);
+		getTaskFace().showProgress(false);
 	}
 
 	/**
-	 *
 	 * @return true if we need to continue load data,
-	 * false if we reached maximum, or did't receive data at all
+	 * false if we reached maximum, or didn't receive data at all
 	 */
 	@Override
 	protected final boolean cacheInBackground() {
 		mNewItems = fetchMoreItems(page);
 		page++;
 
-		if(mNewItems == null || result == StaticData.MAX_REACHED)
+		if (mNewItems == null || result == StaticData.MAX_REACHED)
 			return false;
 
-		if(maxItems != 0 && mNewItems.size() >= maxItems) {
+		if (maxItems != 0 && mNewItems.size() >= maxItems) {
 			result = StaticData.MAX_REACHED;
 			return false;
 		}
@@ -88,22 +91,25 @@ public abstract class PaginationCursorAdapter<T> extends EndlessAdapter {
 			taskFace.errorHandle(StaticData.EMPTY_DATA);
 			return;
 		}
-
+		if (notValidToReturnForFragment()) {
+			Log.d(TAG, " fragment is not valid to return data");
+			return;
+		}
 		if (result == StaticData.RESULT_OK && !taskCanceled) {
 			taskFace.updateListData(itemList);
-		}else {
+		} else {
 			taskFace.errorHandle(result);
 		}
 
 		ArrayList<T> items = new ArrayList<T>();
 
-		if (mAllItems != null)
+		if (mAllItems != null) {
 			items.addAll(mAllItems);
+		}
 
 		items.addAll(mNewItems);
 		mNewItems = null;
 		mAllItems = items;
-//		getWrappedAdapter().changeCursor();setItemsList(items);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -117,11 +123,35 @@ public abstract class PaginationCursorAdapter<T> extends EndlessAdapter {
 		return mPendingView;
 	}
 
+	private boolean notValidToReturnForFragment() {
+//		if (getTaskFace().isUsedForFragment()) {
+//			Log.d(TAG, "getTaskFace().getStartedFragment() == null = " + (getTaskFace().getStartedFragment() == null));
+//			Log.d(TAG, "getTaskFace().getStartedFragment().getActivity() == null = " + (getTaskFace().getStartedFragment().getActivity() == null));
+//			Log.d(TAG, "!getTaskFace().getStartedFragment().isVisible() = " + (!getTaskFace().getStartedFragment().isVisible()));
+//		}
+		return getTaskFace().isUsedForFragment() && (getTaskFace().getStartedFragment() == null
+				|| getTaskFace().getStartedFragment().getActivity() == null
+				|| !getTaskFace().getStartedFragment().isVisible());
+	}
+
+	protected TaskUpdateInterface<T> getTaskFace() throws IllegalStateException {
+		if (taskFace == null) {
+			Log.d(TAG, "taskFace == null");
+			throw new IllegalStateException(TASK_FACE_IS_ALREADY_DEAD);
+		} else {
+			return taskFace;
+		}
+	}
+
+	public void updateAppendFlag(boolean append) {
+		setKeepOnAppending(append);
+	}
+
 	public void cancelLoad() {
 		taskCanceled = true;
 	}
 
-	protected boolean isTaskCanceled(){
+	protected boolean isTaskCanceled() {
 		return taskCanceled;
 	}
 }

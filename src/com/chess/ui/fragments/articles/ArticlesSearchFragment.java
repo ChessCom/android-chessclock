@@ -43,7 +43,7 @@ public class ArticlesSearchFragment extends CommonLogicFragment implements Multi
 	private EditText keywordsEdt;
 	private Spinner categorySpinner;
 	private String allStr;
-	private LessonItemUpdateListener lessonItemUpdateListener;
+	private ArticleItemUpdateListener articleItemUpdateListener;
 	private LessonsItemAdapter lessonsItemsAdapter;
 	private MultiDirectionSlidingDrawer slidingDrawer;
 	private ObjectAnimator fadeDrawerAnimator;
@@ -55,7 +55,7 @@ public class ArticlesSearchFragment extends CommonLogicFragment implements Multi
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		lessonItemUpdateListener = new LessonItemUpdateListener();
+		articleItemUpdateListener = new ArticleItemUpdateListener();
 		lessonsItemsAdapter = new LessonsItemAdapter(getActivity(), null);
 
 		lastKeyword = StaticData.SYMBOL_EMPTY;
@@ -149,7 +149,7 @@ public class ArticlesSearchFragment extends CommonLogicFragment implements Multi
 				loadItem.addRequestParams(RestHelper.P_CATEGORY_CODE, category);
 			}
 
-			new RequestJsonTask<LessonSearchItem>(lessonItemUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<LessonSearchItem>(articleItemUpdateListener).executeTask(loadItem);
 		}
 	}
 
@@ -172,9 +172,9 @@ public class ArticlesSearchFragment extends CommonLogicFragment implements Multi
 		fadeDrawerAnimator.start();
 	}
 
-	private class LessonItemUpdateListener extends ChessLoadUpdateListener<LessonSearchItem> {
+	private class ArticleItemUpdateListener extends ChessLoadUpdateListener<LessonSearchItem> {
 
-		private LessonItemUpdateListener() {
+		private ArticleItemUpdateListener() {
 			super(LessonSearchItem.class);
 		}
 

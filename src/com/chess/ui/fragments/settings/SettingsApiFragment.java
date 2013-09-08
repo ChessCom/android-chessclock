@@ -127,5 +127,7 @@ public class SettingsApiFragment extends LiveBaseFragment implements SwitchButto
 		} else {
 			RestHelper.HOST = RestHelper.HOST_TEST;
 		}
+
+		getAppData().setApiRoute(RestHelper.HOST);
 	}
 }

@@ -3,6 +3,7 @@ package com.chess.backend.statics;
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.google.gson.Gson;
@@ -502,6 +503,13 @@ public class AppData {
 		return preferences.getString("PROD_PASS", "");
 	}
 
+	public void setApiRoute(String value) {
+		preferences.edit().putString("API", value).commit();
+	}
+
+	public String getApiRoute() {
+		return preferences.getString("API", RestHelper.HOST_TEST);
+	}
 
 	/*--------------------------- Common Shared logic ------------------------*/
 

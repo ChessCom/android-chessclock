@@ -20,6 +20,7 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.CommonCommentItem;
 import com.chess.backend.entity.api.PostCommentItem;
+import com.chess.backend.entity.api.VideoSingleItem;
 import com.chess.backend.entity.api.VideoViewedItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
@@ -54,6 +55,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 
 	// 11/15/12 | 27 min
 	protected static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
+	public static final String SLASH_DIVIDER = " | ";
 
 	protected View loadingView;
 	protected TextView emptyView;
@@ -75,13 +77,15 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 	private CommentsCursorAdapter commentsCursorAdapter;
 	private int paddingSide;
 	private CommentPostListener commentPostListener;
-	private int imgSize;
-	private SparseArray<String> countryMap;
-	private EnhancedImageDownloader imageDownloader;
+	protected int imgSize;
+	protected SparseArray<String> countryMap;
+	protected EnhancedImageDownloader imageDownloader;
 	private long commentId;
 	private boolean inEditMode;
 	private String bodyStr;
 	private String commentForEditStr;
+	protected int scrWidthPixels;
+	private View loadingCommentsView;
 
 	public static VideoDetailsFragment createInstance(long videoId) {
 		VideoDetailsFragment frag = new VideoDetailsFragment();
@@ -102,6 +106,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		}
 
 		Resources resources = getResources();
+		scrWidthPixels = resources.getDisplayMetrics().widthPixels;
 		imgSize = (int) (40 * resources.getDisplayMetrics().density);
 
 		String[] countryNames = resources.getStringArray(R.array.new_countries);
@@ -121,7 +126,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_article_details_frame, container, false);
+		return inflater.inflate(R.layout.new_common_details_comments_frame, container, false);
 	}
 
 	@Override
@@ -133,6 +138,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_video_details_header_frame, null, false);
 
 		loadingView = view.findViewById(R.id.loadingView);
+		loadingCommentsView = headerView.findViewById(R.id.loadingCommentsView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
@@ -162,8 +168,6 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		getActivityFace().showActionMenu(R.id.menu_share, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
-
-		setTitlePadding(ONE_ICON);
 	}
 
 	@Override
@@ -195,46 +199,77 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 	protected void updateData() {
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getVideoById(videoId));
 		if (cursor.moveToFirst()) {
-			playBtnTxt.setEnabled(true);
-
-			int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
-			String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
-			CharSequence chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
-			String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
-			CharSequence authorStr;
-			if (TextUtils.isEmpty(chessTitle)) {
-				authorStr = firstName + StaticData.SYMBOL_SPACE + lastName;
-			} else {
-				authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
-						+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
-			}
-
-			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
-			authorTxt.setText(authorStr);
-
-			titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
-			imageDownloader.download(DbDataManager.getString(cursor, DbScheme.V_USER_AVATAR), authorImg, imgSize);
-
-			Drawable drawable = AppUtils.getCountryFlagScaled(getActivity(), countryMap.get(DbDataManager.getInt(cursor, DbScheme.V_COUNTRY_ID)));
-			countryImg.setImageDrawable(drawable);
-
-			int duration = DbDataManager.getInt(cursor, DbScheme.V_MINUTES);
-			dateTxt.setText(dateFormatter.format(new Date(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE)))
-					+ StaticData.SYMBOL_SPACE + getString(R.string.min_arg, duration));
-
-			bodyStr = DbDataManager.getString(cursor, DbScheme.V_DESCRIPTION);
-			contentTxt.setText(Html.fromHtml(bodyStr));
-			videoUrl = DbDataManager.getString(cursor, DbScheme.V_URL);
-
-			currentPlayingId =  DbDataManager.getInt(cursor, DbScheme.V_ID);
-
-			boolean videoViewed = DbDataManager.isVideoViewed(getActivity(), getUsername(), currentPlayingId);
+			updateUiData(DbDataManager.fillVideoItemFromCursor(cursor));
+		} else { // if video info was not saved
+			boolean videoViewed = DbDataManager.isVideoViewed(getActivity(), getUsername(), videoId);
 			if (videoViewed) {
 				playBtnTxt.setText(R.string.ic_check);
 			} else {
 				playBtnTxt.setText(R.string.ic_play);
 			}
+
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEO_BY_ID(videoId));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+
+			new RequestJsonTask<VideoSingleItem>(new VideoDetailsUpdateListener()).executeTask(loadItem);
 		}
+	}
+
+	private class VideoDetailsUpdateListener extends ChessLoadUpdateListener<VideoSingleItem> {
+
+		public VideoDetailsUpdateListener() {
+			super(VideoSingleItem.class);
+		}
+
+		@Override
+		public void updateData(VideoSingleItem returnedObj) {
+			super.updateData(returnedObj);
+			VideoSingleItem.Data videoData = returnedObj.getData();
+
+			updateUiData(videoData);
+		}
+	}
+
+	private void updateUiData(VideoSingleItem.Data videoData) {
+		playBtnTxt.setEnabled(true);
+		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
+
+		String firstName = videoData.getFirstName();
+		CharSequence chessTitle = videoData.getChessTitle();
+		String lastName = videoData.getLastName();
+		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
+				+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
+		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
+		authorTxt.setText(authorStr);
+
+		// change layout params for image and progress bar
+		RelativeLayout.LayoutParams progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+		videoBackImg.getProgressBar().setLayoutParams(progressParams);
+		videoBackImg.getImageView().setScaleType(ImageView.ScaleType.CENTER_CROP);
+		// TODO set correct link
+		String backImgLink = "http://new.tinygrab.com/6a8e1830f647b5f77917b1cbb53eefc6a75b8c89f3.png";
+		imageDownloader.download(backImgLink, videoBackImg, scrWidthPixels);
+
+		titleTxt.setText(videoData.getTitle());
+		imageDownloader.download(videoData.getUserAvatar(), authorImg, imgSize);
+
+		Drawable drawable = AppUtils.getCountryFlagScaled(getActivity(), countryMap.get(videoData.getCountryId()));
+		countryImg.setImageDrawable(drawable);
+
+		int duration = videoData.getMinutes();
+		dateTxt.setText(dateFormatter.format(new Date(videoData.getCreateDate()))
+				+ StaticData.SYMBOL_SPACE + getString(R.string.min_arg, duration));
+
+		bodyStr = videoData.getDescription();
+		contentTxt.setText(Html.fromHtml(bodyStr));
+		videoUrl = videoData.getUrl();
+
+		// Save to DB
+		DbDataManager.saveVideoItem(getContentResolver(), videoData);
+
+		currentPlayingId = (int) videoData.getVideoId();
 	}
 
 	@Override
@@ -266,17 +301,12 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 				showEditView(true);
 				return true;
 			case R.id.menu_share:
-				String articleShareStr;
-//				if (TextUtils.isEmpty(url)) {
-					articleShareStr = String.valueOf(Html.fromHtml(bodyStr));
-//				} else {
-//					articleShareStr = RestHelper.BASE_URL + "/" + url;
-//				}
+				String shareStr = String.valueOf(Html.fromHtml(bodyStr));
 
 				Intent shareIntent = new Intent(Intent.ACTION_SEND);
 				shareIntent.setType("text/plain");
-				shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this article - "
-						+ StaticData.SYMBOL_NEW_STR + articleShareStr);
+				shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this video - "
+						+ StaticData.SYMBOL_NEW_STR + shareStr);
 				startActivity(Intent.createChooser(shareIntent, getString(R.string.share_article)));
 				return true;
 		}
@@ -285,15 +315,17 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		// get commentId
-		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
-		if (username.equals(getUsername())) {
-			commentId = DbDataManager.getLong(cursor, DbScheme.V_ID);
-			commentForEditStr = String.valueOf(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_BODY)));
+		if (position != 0) { // if NOT listView header
+			// get commentId
+			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+			if (username.equals(getUsername())) {
+				commentId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+				commentForEditStr = String.valueOf(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_BODY)));
 
-			inEditMode = true;
-			showEditView(true);
+				inEditMode = true;
+				showEditView(true);
+			}
 		}
 	}
 
@@ -357,6 +389,11 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			showCommentsLoadingView(show);
+		}
+
+		@Override
 		public void updateData(CommonCommentItem returnedObj) {
 			super.updateData(returnedObj);
 
@@ -403,7 +440,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 
 		@Override
 		public void updateData(PostCommentItem returnedObj) {
-			if(returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+			if (returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 				showToast(R.string.post_created);
 			} else {
 				showToast(R.string.error);
@@ -412,5 +449,9 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 
 			updateComments();
 		}
+	}
+
+	private void showCommentsLoadingView(boolean show) {
+		loadingCommentsView.setVisibility(show ? View.VISIBLE : View.GONE);
 	}
 }

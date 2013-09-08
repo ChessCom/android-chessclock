@@ -10,8 +10,8 @@
 
 	<ProgressBar
         android:id="@+id/pending_list_item_ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+		android:layout_width="@dimen/pending_progress_bar_size"
+		android:layout_height="@dimen/pending_progress_bar_size"
 		android:layout_centerInParent="true"
 		android:layout_margin="5dip"
 		android:layout_centerVertical="true"

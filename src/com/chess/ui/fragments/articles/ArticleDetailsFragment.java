@@ -80,6 +80,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private long commentId;
 	private boolean inEditMode;
 	private String commentForEditStr;
+	private View loadingCommentsView;
 
 
 	public static ArticleDetailsFragment createInstance(long articleId) {
@@ -122,7 +123,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_article_details_frame, container, false);
+		return inflater.inflate(R.layout.new_common_details_comments_frame, container, false);
 	}
 
 	@Override
@@ -134,6 +135,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_article_details_header_frame, null, false);
 
 		loadingView = view.findViewById(R.id.loadingView);
+		loadingCommentsView = headerView.findViewById(R.id.loadingCommentsView);
 
 		titleTxt = (TextView) headerView.findViewById(R.id.titleTxt);
 		articleImg = (ProgressImageView) headerView.findViewById(R.id.articleImg);
@@ -355,6 +357,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			showCommentsLoadingView(show);
+		}
+
+		@Override
 		public void updateData(CommonCommentItem returnedObj) {
 			super.updateData(returnedObj);
 
@@ -411,6 +418,10 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			updateComments();
 		}
+	}
+
+	private void showCommentsLoadingView(boolean show) {
+		loadingCommentsView.setVisibility(show ? View.VISIBLE : View.GONE);
 	}
 
 	@Override

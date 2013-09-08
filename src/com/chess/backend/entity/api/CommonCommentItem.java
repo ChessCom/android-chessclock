@@ -43,7 +43,7 @@ public class CommonCommentItem extends BaseResponseItem<List<CommonCommentItem.D
 		}
 
 		public String getBody() {
-			return body;
+			return getSafeValue(body);
 		}
 
 		public long getCreateDate() {
@@ -55,19 +55,19 @@ public class CommonCommentItem extends BaseResponseItem<List<CommonCommentItem.D
 		}
 
 		public String getUsername() {
-			return username;
+			return getSafeValue(username);
 		}
 
 		public String getFirstName() {
-			return user_first_name;
+			return getSafeValue(user_first_name);
 		}
 
 		public String getLastName() {
-			return user_last_name;
+			return getSafeValue(user_last_name);
 		}
 
 		public String getAvatar() {
-			return avatar_url;
+			return getSafeValue(avatar_url);
 		}
 
 		public int getCountryId() {

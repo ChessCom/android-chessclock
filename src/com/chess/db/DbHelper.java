@@ -4,7 +4,7 @@ import com.chess.backend.RestHelper;
 
 public class DbHelper {
 
-	public static QueryParams getAllByUri(DbScheme.Tables table) {
+	public static QueryParams getAll(DbScheme.Tables table) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[table.ordinal()]);
 		return queryParams;

@@ -953,7 +953,7 @@ public class DbDataManager {
 		DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	public static void saveVideoItem(ContentResolver contentResolver, VideoItem.Data currentItem) {
+	public static void saveVideoItem(ContentResolver contentResolver, VideoSingleItem.Data currentItem) {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = String.valueOf(currentItem.getVideoId());
 
@@ -1036,7 +1036,7 @@ public class DbDataManager {
 	 * @param videoId to search for
 	 * @return _id of video if it was saved before
 	 */
-	public static long haveSavedVideoById(Context context, int videoId) {
+	public static long haveSavedVideoById(Context context, long videoId) {
 		ContentResolver contentResolver = context.getContentResolver();
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = String.valueOf(videoId);
@@ -1045,10 +1045,10 @@ public class DbDataManager {
 				PROJECTION_ITEM_ID, SELECTION_ITEM_ID, arguments1, LIMIT_1);
 		if (cursor != null) {
 			boolean exist = cursor.moveToFirst();
-			cursor.close();
 			if (exist) {
-				return getId(cursor);
+				return getInt(cursor, DbScheme.V_ID);
 			}
+			cursor.close();
 		}
 		return -1;
 	}
@@ -1093,7 +1093,13 @@ public class DbDataManager {
 		Cursor cursor = contentResolver.query(uriArray[Tables.VIDEO_VIEWED.ordinal()],
 				null, SELECTION_USER_AND_ID, arguments2, null);
 
-		return cursor != null && cursor.moveToFirst() && getInt(cursor, V_VIDEO_VIEWED) > 0;
+		if (cursor != null && cursor.moveToFirst()) {
+			boolean isViewed = getInt(cursor, V_VIDEO_VIEWED) > 0;
+			cursor.close();
+			return isViewed;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -1115,7 +1121,7 @@ public class DbDataManager {
 	}
 
 
-	public static ContentValues putVideoItemToValues(VideoItem.Data dataObj) {
+	public static ContentValues putVideoItemToValues(VideoSingleItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(V_TITLE, dataObj.getTitle());
@@ -1138,6 +1144,26 @@ public class DbDataManager {
 		values.put(V_CHESS_TITLE, dataObj.getChessTitle());
 
 		return values;
+	}
+
+	public static VideoSingleItem.Data fillVideoItemFromCursor(Cursor cursor) {
+		VideoSingleItem.Data videoItem = new VideoSingleItem.Data();
+
+		videoItem.setFirstName(getString(cursor, DbScheme.V_FIRST_NAME));
+		videoItem.setChessTitle(getString(cursor, DbScheme.V_CHESS_TITLE));
+		videoItem.setLastName(getString(cursor, DbScheme.V_LAST_NAME));
+		videoItem.setTitle(getString(cursor, DbScheme.V_TITLE));
+		videoItem.setCountryId(getInt(cursor, DbScheme.V_COUNTRY_ID));
+		videoItem.setMinutes(getInt(cursor, DbScheme.V_MINUTES));
+		videoItem.setViewCount(getLong(cursor, DbScheme.V_VIEW_COUNT));
+		videoItem.setCreateDate(getLong(cursor, DbScheme.V_CREATE_DATE));
+		videoItem.setDescription(getString(cursor, DbScheme.V_DESCRIPTION));
+		videoItem.setUrl(getString(cursor, DbScheme.V_URL));
+		videoItem.setVideoId(getInt(cursor, DbScheme.V_ID));
+		videoItem.setAvatarUrl(getString(cursor, DbScheme.V_USER_AVATAR));
+		videoItem.setCommentCount(getInt(cursor, DbScheme.V_COMMENT_COUNT));
+
+		return videoItem;
 	}
 
 	public static ContentValues putForumCategoryItemToValues(ForumCategoryItem.Data dataObj) {

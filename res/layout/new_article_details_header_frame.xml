@@ -5,7 +5,6 @@
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     >
 
 	<com.chess.backend.image_load.ProgressImageView
@@ -112,5 +111,16 @@
         android:textColor="@color/new_subtitle_dark_grey"
         android:textSize="13sp"
         />
+
+	<ProgressBar
+		android:id="@+id/loadingCommentsView"
+		android:layout_width="@dimen/pending_progress_bar_size"
+		android:layout_height="@dimen/pending_progress_bar_size"
+		android:layout_below="@id/contentTxt"
+		android:layout_margin="10dip"
+		android:layout_centerInParent="true"
+		style="?android:attr/progressBarStyle"
+		android:visibility="gone"
+		/>
 
 </RelativeLayout>

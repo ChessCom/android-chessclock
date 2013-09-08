@@ -112,7 +112,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	}
 
 	private boolean fillCategories() {
-		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAllByUri(DbScheme.Tables.ARTICLE_CATEGORIES));
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.ARTICLE_CATEGORIES));
 		if (cursor != null && cursor.moveToFirst()) {
 			List<String> list = new ArrayList<String>();
 

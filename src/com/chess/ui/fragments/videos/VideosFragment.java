@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -19,6 +20,7 @@ import com.chess.backend.entity.api.VideoViewedItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveVideoCategoriesTask;
 import com.chess.model.CurriculumItems;
@@ -46,6 +48,8 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	public static final String GREY_COLOR_DIVIDER = "##";
 	// 11/15/12 | 27 min
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
+	public static final String SLASH_DIVIDER = " | ";
+
 	private static final int LIBRARY = 6;
 	private static final int WATCH_VIDEO_REQUEST = 9898;
 	public static final long WATCHED_TIME = 3 * 60 * 1000;
@@ -74,7 +78,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	private boolean curriculumMode;
 	private VideoGroupsListAdapter curriculumAdapter;
 	private long playButtonClickTime;
-	private int currentPlayingId;
+	private long currentPlayingId;
 	private SparseBooleanArray curriculumViewedMap;
 	private View headerView;
 
@@ -87,7 +91,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		// restore state
 		if (savedInstanceState != null) {
 			playButtonClickTime = savedInstanceState.getLong(CLICK_TIME);
-			currentPlayingId = savedInstanceState.getInt(CURRENT_PLAYING_ID);
+			currentPlayingId = savedInstanceState.getLong(CURRENT_PLAYING_ID);
 
 			verifyAndSaveViewedState();
 		}
@@ -135,7 +139,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		showLibrary();
 
 		// adjust action bar icons
-		getActivityFace().showActionMenu(R.id.menu_search, true);
+		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
 
@@ -223,13 +227,21 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 	}
 
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_search_btn:
+				getActivityFace().openFragment(new VideosSearchFragment());
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //		boolean headerAdded = listView.getHeaderViewsCount() > 0; // used to check if header added
 //		int offset = headerAdded ? -1 : 0;
 
-		if (position == 0) { // if listView header
-			// see onClick(View) handle
-		} else {
+		if (position != 0) { // if listView header
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 			String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
 
@@ -247,18 +259,19 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		} else if (v.getId() == R.id.titleTxt) { // Clicked on title in Curriculum mode, open details
 			Integer childPosition = (Integer) v.getTag(R.id.list_item_id);
 			Integer groupPosition = (Integer) v.getTag(R.id.list_item_id_group);
+			if (childPosition == null || groupPosition == null) {
+				return;
+			}
 
 			int id = curriculumItems.getIds()[groupPosition][childPosition];
-			long savedId = DbDataManager.haveSavedVideoById(getActivity(), id);
-			if (savedId != -1) {
-				getActivityFace().openFragment(VideoDetailsFragment.createInstance(savedId));
-			} else {
-				getActivityFace().openFragment(VideoDetailsCurriculumFragment.createInstance4Curriculum(id));
-			}
+			getActivityFace().openFragment(VideoDetailsFragment.createInstance(id));
 
 		} else if (v.getId() == R.id.completedIconTxt) {
 			Integer childPosition = (Integer) v.getTag(R.id.list_item_id);
 			Integer groupPosition = (Integer) v.getTag(R.id.list_item_id_group);
+			if (childPosition == null || groupPosition == null) {
+				return;
+			}
 
 			String currentPlayingLink = curriculumItems.getUrls()[groupPosition][childPosition];
 			currentPlayingId = curriculumItems.getIds()[groupPosition][childPosition];
@@ -292,7 +305,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			DbDataManager.saveVideoViewedState(getContentResolver(), item);
 
 			// update current list
-			curriculumViewedMap.put(currentPlayingId, true);
+			curriculumViewedMap.put((int) currentPlayingId, true); // TODO test logic
 			curriculumAdapter.notifyDataSetChanged();
 
 			// save updates to DB
@@ -304,7 +317,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		super.onSaveInstanceState(outState);
 
 		outState.putLong(CLICK_TIME, playButtonClickTime);
-		outState.putInt(CURRENT_PLAYING_ID, currentPlayingId);
+		outState.putLong(CURRENT_PLAYING_ID, currentPlayingId);
 	}
 
 	private class VideoCategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem> {
@@ -378,7 +391,9 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		holder.authorTxt.setText(authorStr);
 		holder.titleTxt.setText(headerData.getTitle());
-		holder.dateTxt.setText(dateFormatter.format(new Date(headerData.getCreateDate())));
+		holder.dateTxt.setText(dateFormatter.format(new Date(headerData.getCreateDate()))
+				+ SLASH_DIVIDER + getString(R.string.min_arg, headerData.getMinutes())
+				+ SLASH_DIVIDER + getString(R.string.views_arg, headerData.getViewCount()));
 
 		headerView.invalidate();
 	}
@@ -394,8 +409,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		@Override
 		public void updateData(CommonFeedCategoryItem.Data returnedObj) {
 			// get saved categories
-			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
-
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.VIDEO_CATEGORIES));
 			if (cursor.moveToFirst()) {
 				categoriesCursorAdapter.changeCursor(cursor);
 				listView.setAdapter(categoriesCursorAdapter);
@@ -426,15 +440,13 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 		int userRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), getUsername());
 
-		if (getAppData().isUserChooseVideoLibrary() || userRating > USER_PRO_RATING) { // TODO add api logic to check if user saw all videos
-			curriculumMode = false;
-		} else {
-			// everyone is presented with CURRICULUM view by default unless:
-			// a) they have seen every video or lesson, or
-			// b) they have a rating above 1600, or
-			// c) they chose "full library" from the bottom of the curriculum list ( http://i.imgur.com/aWcHqUh.png )
-			curriculumMode = true;
-		}
+		// TODO add api logic to check if user saw all videos
+		// everyone is presented with CURRICULUM view by default unless:
+		// a) they have seen every video or lesson, or
+		// b) they have a rating above 1600, or
+		// c) they chose "full library" from the bottom of the curriculum list ( http://i.imgur.com/aWcHqUh.png )
+
+		curriculumMode = !(getAppData().isUserChooseVideoLibrary() || userRating > USER_PRO_RATING);
 
 		curriculumItems = new CurriculumItems();
 

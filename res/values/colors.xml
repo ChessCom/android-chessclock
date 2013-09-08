@@ -343,8 +343,8 @@
     <!--Videos-->
     <color name="thumbnail_border">#FFbebebe</color>
     <!--Video Play Btn back-->
-    <color name="thumbnail_play_border_1">#FFe3e2e2</color>
-    <color name="thumbnail_play_border_2">#FFe9e9e9</color>
+    <color name="thumbnail_play_border_1">#7Fe3e2e2</color>
+    <color name="thumbnail_play_border_2">#7Fe9e9e9</color>
     <color name="thumbnail_play_border_inner">#33f3f3f3</color>
     <!--Medium Play Button-->
     <color name="thumbnail_play_border_medium">#88908e8b</color>

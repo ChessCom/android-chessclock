@@ -125,11 +125,11 @@ public class RestHelper {
 
 
 	/* Friends */
-	public String CMD_FRIENDS = BASE_URL + V1 + "/friends/";
-	public String CMD_FRIENDS_REQUEST = CMD_FRIENDS + "requests";
+	public String CMD_FRIENDS = BASE_URL + V1 + "/friends";
+	public String CMD_FRIENDS_REQUEST = CMD_FRIENDS + "/requests";
 
 	public String CMD_FRIENDS_REQUEST_BY_ID(long id) {
-		return CMD_FRIENDS + id + "/requests";
+		return CMD_FRIENDS + "/" + id + "/requests";
 	}
 
 	/* Videos */
@@ -457,9 +457,6 @@ public class RestHelper {
 			if (IS_TEST_SERVER_MODE) {
 				connection.setRequestProperty("Authorization", getBasicAuth());
 			}
-//			if (requestMethod.equals(DELETE)) {
-//				connection.setRequestProperty("X-HTTP-Method-Override", DELETE);
-//			}
 
 			if (!TextUtils.isEmpty(loadItem.getFilePath())) { // if multiPart
 				submitRawData(connection, loadItem);

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,9 +19,12 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.VideoItem;
 import com.chess.backend.entity.api.VideoViewedItem;
+import com.chess.backend.statics.StaticData;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.db.tasks.LoadDataFromDbTask;
+import com.chess.db.tasks.SaveVideosListTask;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
 import com.chess.ui.adapters.VideosCursorAdapter;
 import com.chess.ui.adapters.VideosPaginationAdapter;
@@ -40,6 +44,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 	public static final String SECTION_NAME = "section_name";
 	private static final int WATCH_VIDEO_REQUEST = 9896;
+	private static final int ITEMS_PER_PAGE = 40;
 
 	private VideosCursorAdapter videosAdapter;
 
@@ -47,15 +52,16 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	private View loadingView;
 	private TextView emptyView;
 	private ListView listView;
-//	private VideosCursorUpdateListener videosCursorUpdateListener;
+	private VideosCursorUpdateListener videosCursorUpdateListener;
 	private List<String> categoriesNames;
 	private List<Integer> categoriesIds;
 	private SaveVideosUpdateListener saveVideosUpdateListener;
-	private VideosUpdateListener videosUpdateListener;
 	private SparseBooleanArray viewedVideosMap;
 	private long playButtonClickTime;
 	private int currentPlayingId;
 	private int previousCategoryId;
+	private String sectionName;
+	private VideosPaginationAdapter paginationAdapter;
 
 	public static VideoCategoriesFragment createInstance(String sectionName) {
 		VideoCategoriesFragment frag = new VideoCategoriesFragment();
@@ -69,14 +75,21 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		if (getArguments() != null) {
+			sectionName = getArguments().getString(SECTION_NAME);
+		} else {
+			sectionName = savedInstanceState.getString(SECTION_NAME);
+		}
+
 		viewedVideosMap = new SparseBooleanArray();
-		videosUpdateListener = new VideosUpdateListener();
 		saveVideosUpdateListener = new SaveVideosUpdateListener();
 		videosAdapter = new VideosCursorAdapter(this, null);
 		videosAdapter.addViewedMap(viewedVideosMap);
-//		videosCursorUpdateListener = new VideosCursorUpdateListener();
+		videosCursorUpdateListener = new VideosCursorUpdateListener();
 		categoriesNames = new ArrayList<String>();
 		categoriesIds = new ArrayList<Integer>();
+
+		paginationAdapter = new VideosPaginationAdapter(getActivity(), videosAdapter, new VideosUpdateListener(), null);
 
 		// restore state
 		if (savedInstanceState != null) {
@@ -105,17 +118,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
-
-		getActivityFace().showActionMenu(R.id.menu_search, true);
-		getActivityFace().showActionMenu(R.id.menu_notifications, false);
-		getActivityFace().showActionMenu(R.id.menu_games, false);
-
-		setTitlePadding(ONE_ICON);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
+		listView.setAdapter(paginationAdapter);
 
 		// get viewed marks
 		Cursor cursor = DbDataManager.getVideoViewedCursor(getActivity(), getUsername());
@@ -128,17 +131,13 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 			cursor.close();
 		}
 
-
 		boolean loaded = categoriesNames.size() != 0 || fillCategories();
 
 		if (loaded) {
-			// get passed argument
-			String selectedCategory = getArguments().getString(SECTION_NAME);
-
 			int sectionId;
 			for (sectionId = 0; sectionId < categoriesNames.size(); sectionId++) {
 				String category = categoriesNames.get(sectionId);
-				if (category.equals(selectedCategory)) {
+				if (category.equals(sectionName)) {
 					categoriesIds.get(sectionId);
 					break;
 				}
@@ -148,12 +147,36 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 			categorySpinner.setOnItemSelectedListener(this);
 			categorySpinner.setSelection(sectionId);  // TODO remember last selection.
 		}
+
+		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
+		getActivityFace().showActionMenu(R.id.menu_notifications, false);
+		getActivityFace().showActionMenu(R.id.menu_games, false);
+
+		setTitlePadding(ONE_ICON);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putString(SECTION_NAME, sectionName);
+		outState.putLong(VideosFragment.CLICK_TIME, playButtonClickTime);
+		outState.putInt(VideosFragment.CURRENT_PLAYING_ID, currentPlayingId);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == WATCH_VIDEO_REQUEST) {
+
+			verifyAndSaveViewedState();
+		}
 	}
 
 	private boolean fillCategories() {
 		Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
 
-		if (!cursor.moveToFirst()) {
+		if (!(cursor != null && cursor.moveToFirst())) {
 			showToast("Categories are not loaded");
 			return false;
 		}
@@ -161,53 +184,43 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		do {
 			categoriesNames.add(DbDataManager.getString(cursor, DbScheme.V_NAME));
 			categoriesIds.add(Integer.valueOf(DbDataManager.getString(cursor, DbScheme.V_CATEGORY_ID)));
-		} while(cursor.moveToNext());
+		} while (cursor.moveToNext());
 
 		return true;
 	}
 
-//	private void loadFromDb() {
-////		String category = (String) categorySpinner.getSelectedItem();
-//
-//		new LoadDataFromDbTask(videosCursorUpdateListener,
-//				DbHelper.getVideosByCategory(previousCategoryId),
-//				getContentResolver()).executeTask();
-//	}
+	private void loadFromDb() {
+		new LoadDataFromDbTask(videosCursorUpdateListener,
+				DbHelper.getVideosByCategory(previousCategoryId),
+				getContentResolver()).executeTask();
+	}
 
-//	private class VideosCursorUpdateListener extends ChessUpdateListener<Cursor> {
-//
-//		@Override
-//		public void showProgress(boolean show) {
-//			showLoadingView(show);
-//		}
-//
-//		@Override
-//		public void updateData(Cursor returnedObj) {
-//			super.updateData(returnedObj);
-//
-////			videosAdapter.changeCursor(returnedObj);
-//		}
-//
-//		@Override
-//		public void errorHandle(Integer resultCode) {
-//			super.errorHandle(resultCode);
-//			if (resultCode == StaticData.UNKNOWN_ERROR) {
-//				emptyView.setText(R.string.error);
-//			}
-//			showEmptyView(true);
-//		}
-//	}
+	private class VideosCursorUpdateListener extends ChessUpdateListener<Cursor> {
+
+		@Override
+		public void updateData(Cursor returnedObj) {
+			super.updateData(returnedObj);
+
+			videosAdapter.changeCursor(returnedObj);
+			if (paginationAdapter != null) {
+				paginationAdapter.notifyDataSetChanged();
+			}
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			if (resultCode == StaticData.UNKNOWN_ERROR) {
+				emptyView.setText(R.string.error);
+			}
+			showEmptyView(true);
+		}
+	}
 
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
-		int id = view.getId();
-		if (id == R.id.titleTxt || id == R.id.authorTxt || id == R.id.dateTxt){
-			Integer position = (Integer) view.getTag(R.id.list_item_id);
-			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
-			long videoId = DbDataManager.getLong(cursor, DbScheme.V_ID);
-			getActivityFace().openFragment(VideoDetailsFragment.createInstance(videoId));
-		} else if (id == R.id.thumbnailImg || id == R.id.playBtn){
+		if (view.getId() == R.id.completedIconTxt) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
@@ -218,15 +231,6 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 			// start record time to watch
 			playButtonClickTime = System.currentTimeMillis();
-		}
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == WATCH_VIDEO_REQUEST) {
-
-			verifyAndSaveViewedState();
 		}
 	}
 
@@ -245,11 +249,13 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-
-		outState.putLong(VideosFragment.CLICK_TIME, playButtonClickTime);
-		outState.putInt(VideosFragment.CURRENT_PLAYING_ID, currentPlayingId);
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_search_btn:
+				getActivityFace().openFragment(new VideosSearchFragment());
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -263,42 +269,24 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		Integer categoryId = categoriesIds.get(position);
 
-//		if (need2update || categoryId != previousCategoryId) {
+		if (need2update || categoryId != previousCategoryId) {
 			previousCategoryId = categoryId;
 			need2update = true;
 
-			// check if we have saved videos more than 2(from previous page)
-			Cursor cursor = DbDataManager.query(getContentResolver(),
-					DbHelper.getVideosByCategory(previousCategoryId));
+			// clear current list
+			videosAdapter.changeCursor(null);
+			// TODO add logic to check if new video was added on server since last fetch
 
-			if (cursor != null && cursor.moveToFirst()) {
-				videosAdapter.changeCursor(cursor);
-				videosAdapter.notifyDataSetChanged();
-				showEmptyView(false);
-			} else {
-				// TODO adjust endless adapter here
-				// Loading full video list from category here!
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEOS);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+			loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
+			loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, ITEMS_PER_PAGE);
 
-				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEOS);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-				loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
-				loadItem.addRequestParams(RestHelper.P_LIMIT, RestHelper.DEFAULT_ITEMS_PER_PAGE);
-//
-//				new RequestJsonTask<VideoItem>(videosUpdateListener).executeTask(loadItem);
-
-				//set Pagination adapter params
-//				videosList = new ArrayList<VideoItem>();
-//				VideosAdapter videosAdapter = new VideosAdapter(this, videosList);
-
-				VideosPaginationAdapter paginationAdapter = new VideosPaginationAdapter(getActivity(), videosAdapter,
-						videosUpdateListener, loadItem);
-
-				listView.setAdapter(paginationAdapter);
-			}
-//		} else {
-////			loadFromDb();
-//		}
+			paginationAdapter.updateLoadItem(loadItem);
+		} else {
+			paginationAdapter.notifyDataSetChanged();
+		}
 	}
 
 	@Override
@@ -306,20 +294,16 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 	}
 
-	private class VideosUpdateListener extends ChessLoadUpdateListener<VideoItem.Data> {
+	private class VideosUpdateListener extends ChessUpdateListener<VideoItem.Data> {
 
 		@Override
-		public void updateData(VideoItem.Data returnedObj) {
-//			new SaveVideosListTask(saveVideosUpdateListener, returnedObj, getContentResolver()).executeTask();
+		public void updateListData(List<VideoItem.Data> itemsList) {
+			super.updateListData(itemsList);
+			new SaveVideosListTask(saveVideosUpdateListener, itemsList, getContentResolver()).executeTask();
 		}
 	}
 
 	private class SaveVideosUpdateListener extends ChessUpdateListener<VideoItem.Data> {
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
-		}
 
 		@Override
 		public void updateData(VideoItem.Data returnedObj) {
@@ -327,7 +311,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 			need2update = false;
 
-//			loadFromDb();
+			loadFromDb();
 		}
 	}
 
@@ -343,20 +327,6 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		} else {
 			emptyView.setVisibility(View.GONE);
 			listView.setVisibility(View.VISIBLE);
-		}
-	}
-
-	private void showLoadingView(boolean show) {
-		if (show) {
-			emptyView.setVisibility(View.GONE);
-			if (videosAdapter.getCount() == 0) {
-				listView.setVisibility(View.GONE);
-
-			}
-			loadingView.setVisibility(View.VISIBLE);
-		} else {
-			listView.setVisibility(View.VISIBLE);
-			loadingView.setVisibility(View.GONE);
 		}
 	}
 

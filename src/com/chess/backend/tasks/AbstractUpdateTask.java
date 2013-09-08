@@ -44,8 +44,7 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 		super.onPreExecute();
 //		blockScreenRotation(true);
 		try {
-			if (getTaskFace().getMeContext() != null)
-				getTaskFace().showProgress(true);
+			getTaskFace().showProgress(true);
 		} catch (IllegalStateException ex) {
 			Log.d(TAG, "onPreExecute " + ex.toString());
 		}

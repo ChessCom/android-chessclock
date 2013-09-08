@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.gcm.GcmHelper;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.IntentConstants;
@@ -100,6 +101,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 
 		notificationsUpdateFilter = new IntentFilter(IntentConstants.NOTIFICATIONS_UPDATE);
+
+		// TODO remove after test!!!
+		// restoring correct host
+		RestHelper.resetInstance();
+		RestHelper.HOST = getAppData().getApiRoute();
 	}
 
 	@Override

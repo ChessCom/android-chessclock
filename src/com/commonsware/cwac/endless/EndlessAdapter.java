@@ -98,7 +98,7 @@ abstract public class EndlessAdapter extends AdapterWrapper {
 	@Override
 	public int getItemViewType(int position) {
 		if (position == getWrappedAdapter().getCount()) {
-			return (0/* IGNORE_ITEM_VIEW_TYPE */);
+			return (0);
 		}
 
 		return (super.getItemViewType(position) + 1);
@@ -218,6 +218,10 @@ abstract public class EndlessAdapter extends AdapterWrapper {
 		}
 
 		throw new RuntimeException("You must either override getPendingView() or supply a pending View resource via the constructor");
+	}
+
+	protected void setKeepOnAppending(boolean append) {
+		keepOnAppending.set(append);
 	}
 
 	/**

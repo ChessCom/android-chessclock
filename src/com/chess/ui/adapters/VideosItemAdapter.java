@@ -1,7 +1,5 @@
 package com.chess.ui.adapters;
 
-import android.content.Context;
-import android.database.Cursor;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.util.SparseBooleanArray;
@@ -9,19 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.entity.api.VideoItem;
 import com.chess.backend.statics.StaticData;
-import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 29.01.13
- * Time: 17:28
+ * Date: 08.09.13
+ * Time: 20:41
  */
-public class VideosCursorAdapter extends ItemsCursorAdapter {
+public class VideosItemAdapter extends ItemsAdapter<VideoItem.Data> {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
 	public static final String DURATION_DIVIDER = "| ";
@@ -35,9 +34,8 @@ public class VideosCursorAdapter extends ItemsCursorAdapter {
 	private CharacterStyle foregroundSpan;
 	private SparseBooleanArray viewedMap;
 
-	public VideosCursorAdapter(ItemClickListenerFace clickFace, Cursor cursor) {
-		super(clickFace.getMeContext(), cursor);
-
+	public VideosItemAdapter(ItemClickListenerFace clickFace, List<VideoItem.Data> itemList) {
+		super(clickFace.getMeContext(), itemList);
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
 
@@ -46,10 +44,11 @@ public class VideosCursorAdapter extends ItemsCursorAdapter {
 		watchedIconColor = resources.getColor(R.color.new_light_grey_2);
 		unWatchedIconColor = resources.getColor(R.color.orange_button);
 		this.clickFace = clickFace;
+
 	}
 
 	@Override
-	public View newView(Context context, Cursor cursor, ViewGroup parent) {
+	protected View createView(ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_video_lib_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.titleTxt = (TextView) view.findViewById(R.id.titleTxt);
@@ -59,28 +58,28 @@ public class VideosCursorAdapter extends ItemsCursorAdapter {
 
 		holder.completedIconTxt.setOnClickListener(clickFace);
 		view.setTag(holder);
-
 		return view;
+
 	}
 
 	@Override
-	public void bindView(View view, Context context, Cursor cursor) {
-		ViewHolder holder = (ViewHolder) view.getTag();
+	protected void bindView(VideoItem.Data item, int pos, View convertView) {
+		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		holder.completedIconTxt.setTag(R.id.list_item_id, cursor.getPosition());
+		holder.completedIconTxt.setTag(R.id.list_item_id, pos);
 
-		String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
-		CharSequence chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
-		String lastName =  DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
+		String firstName = item.getFirstName();
+		CharSequence chessTitle = item.getChessTitle();
+		String lastName =  item.getLastName();
 		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
 				+ firstName + StaticData.SYMBOL_SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		holder.authorTxt.setText(authorStr);
 		holder.durationTxt.setText(DURATION_DIVIDER +
-				context.getString(R.string.min_arg, getString(cursor, DbScheme.V_MINUTES)));
-		holder.titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
+				context.getString(R.string.min_arg, item.getMinutes()));
+		holder.titleTxt.setText(item.getTitle());
 
-		if (viewedMap.get(getInt(cursor, DbScheme.V_ID), false)) {
+		if (viewedMap.get((int) item.getVideoId(), false)) {
 			holder.titleTxt.setTextColor(watchedTextColor);
 			holder.completedIconTxt.setTextColor(watchedIconColor);
 			holder.completedIconTxt.setText(R.string.ic_check);
