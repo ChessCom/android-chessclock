@@ -199,7 +199,9 @@ public class ArticlesSearchFragment extends CommonLogicFragment implements Multi
 
 			@Override
 			public void onAnimationEnd(Animator animator) {
-				slidingDrawer.animateOpen();
+				if (!slidingDrawer.isOpened()) {
+					slidingDrawer.animateOpen();
+				}
 			}
 
 			@Override

@@ -213,7 +213,9 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 
 			@Override
 			public void onAnimationEnd(Animator animator) {
-				slidingDrawer.animateOpen();
+				if (!slidingDrawer.isOpened()) {
+					slidingDrawer.animateOpen();
+				}
 			}
 
 			@Override

@@ -280,18 +280,23 @@ public class VideosSearchFragment extends CommonLogicFragment implements MultiDi
 		fadeDrawerAnimator.reverse();
 		fadeDrawerAnimator.addListener(new Animator.AnimatorListener() {
 			@Override
-			public void onAnimationStart(Animator animator) {}
-
-			@Override
-			public void onAnimationEnd(Animator animator) {
-				slidingDrawer.animateOpen();
+			public void onAnimationStart(Animator animator) {
 			}
 
 			@Override
-			public void onAnimationCancel(Animator animator) { }
+			public void onAnimationEnd(Animator animator) {
+				if (!slidingDrawer.isOpened()) {
+					slidingDrawer.animateOpen();
+				}
+			}
 
 			@Override
-			public void onAnimationRepeat(Animator animator) { }
+			public void onAnimationCancel(Animator animator) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator animator) {
+			}
 		});
 		fadeSearchAnimator.start();
 	}
