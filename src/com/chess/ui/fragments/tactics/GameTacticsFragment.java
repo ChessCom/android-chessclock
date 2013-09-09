@@ -263,8 +263,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		TacticBoardFace boardFace = getBoardFace();
 
 		if (hintWasUsed && boardFace.lastTacticMoveIsCorrect()) { // used hint
-//			boardFace.increaseTacticsCorrectMoves();
-
 			if (boardFace.getMovesCount() < boardFace.getTacticMoves().length - 1) { // if it's not last move, make comp move
 				final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[boardFace.getHply()]);
 				boardView.setMoveAnimator(move, true);

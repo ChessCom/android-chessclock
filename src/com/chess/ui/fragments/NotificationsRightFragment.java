@@ -159,6 +159,10 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 
 	@Override
 	public void onOpenedRight() {
+		if (getActivity() == null) {
+			return;
+		}
+
 		{ // get friend requests
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
 					DbScheme.Tables.NOTIFICATION_FRIEND_REQUEST));

@@ -2,8 +2,8 @@ package com.chess.ui.engine;
 
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.StaticData;
-import com.chess.ui.interfaces.game_ui.GameFace;
 import com.chess.ui.interfaces.boards.TacticBoardFace;
+import com.chess.ui.interfaces.game_ui.GameFace;
 
 /**
  * ChessBoardTactics class
@@ -87,7 +87,9 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 		}
 		String moveTo = MoveParser.positionToString(move.to);
 //		Log.d("TEST_MOVE", "piece " + piece + " | move to " + moveTo + " : tactic last move = " + tacticMoves[lastIndex]);
-
+		if (move.isCastling()){
+			moveTo = "O-O"; // TODO verify queen side castling
+		}
 		return tacticMoves[lastIndex].contains(piece) && tacticMoves[lastIndex].contains(moveTo);
 	}
 
