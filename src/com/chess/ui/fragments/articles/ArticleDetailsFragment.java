@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -144,6 +145,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		countryImg = (ImageView) headerView.findViewById(R.id.countryImg);
 		dateTxt = (TextView) headerView.findViewById(R.id.dateTxt);
 		contentTxt = (TextView) headerView.findViewById(R.id.contentTxt);
+		contentTxt.setMovementMethod(LinkMovementMethod.getInstance());
 		authorTxt = (TextView) headerView.findViewById(R.id.authorTxt);
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class CommentsCursorAdapter extends ItemsCursorAdapter {
 		holder.premiumImg = (ImageView) view.findViewById(R.id.premiumImg);
 		holder.dateTxt = (TextView) view.findViewById(R.id.dateTxt);
 		holder.bodyTxt = (TextView) view.findViewById(R.id.bodyTxt);
+		holder.bodyTxt.setMovementMethod(LinkMovementMethod.getInstance());
 
 		view.setTag(holder);
 		return view;

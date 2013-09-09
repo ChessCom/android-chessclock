@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -154,6 +155,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		countryImg = (ImageView) view.findViewById(R.id.countryImg);
 		dateTxt = (TextView) view.findViewById(R.id.dateTxt);
 		contentTxt = (TextView) view.findViewById(R.id.contentTxt);
+		contentTxt.setMovementMethod(LinkMovementMethod.getInstance());
 		authorTxt = (TextView) view.findViewById(R.id.authorTxt);
 
 		playBtnTxt = (TextView) view.findViewById(R.id.playBtn);

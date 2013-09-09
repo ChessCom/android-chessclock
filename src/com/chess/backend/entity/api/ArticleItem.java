@@ -51,7 +51,7 @@ public class ArticleItem extends BaseResponseItem<List<ArticleItem.Data>> {
 		}
 
 		public String getTitle() {
-			return title;
+			return getSafeValue(title);
 		}
 
 		public long getCreateDate() {
@@ -59,11 +59,11 @@ public class ArticleItem extends BaseResponseItem<List<ArticleItem.Data>> {
 		}
 
 		public String getBody() {
-			return body;
+			return getSafeValue(body);
 		}
 
 		public String getCategoryName() {
-			return category_name;
+			return getSafeValue(category_name);
 		}
 
 		public long getCategoryId() {
@@ -75,7 +75,7 @@ public class ArticleItem extends BaseResponseItem<List<ArticleItem.Data>> {
 		}
 
 		public String getUsername() {
-			return username;
+			return getSafeValue(username);
 		}
 
 		public String getFirstName() {

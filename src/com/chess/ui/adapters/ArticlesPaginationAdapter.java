@@ -54,6 +54,7 @@ public class ArticlesPaginationAdapter extends PaginationCursorAdapter<ArticleIt
 
 	public void updateLoadItem(LoadItem loadItem) {
 		this.loadItem = loadItem;
+		setFirstPage(0);
 		setKeepOnAppending(true);
 	}
 }
