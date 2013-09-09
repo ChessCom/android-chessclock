@@ -141,8 +141,6 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
-		listView.setDivider(null);
-		listView.setDividerHeight(0);
 		listView.addHeaderView(headerView);
 		listView.setAdapter(commentsCursorAdapter);
 		listView.setOnItemClickListener(this);

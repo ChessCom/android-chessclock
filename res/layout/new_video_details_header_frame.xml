@@ -53,8 +53,6 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/thumbnailImg"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
 		android:paddingBottom="9dip"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:textSize="18sp"
@@ -65,7 +63,6 @@
 		android:layout_width="35dip"
 		android:layout_height="35dip"
 		android:background="@color/new_common_list_thumb_grey"
-		android:layout_marginLeft="@dimen/default_scr_side_padding"
 		android:layout_below="@id/titleTxt"
 		android:contentDescription="@string/image"
 		android:layout_marginBottom="13dip" />
@@ -105,20 +102,13 @@
 		android:textColor="@color/new_subtitle_light_grey"
 		android:textSize="13sp" />
 
-	<!--android:text="11/15/12 | 27 min"-->
-
-
 	<com.chess.RoboTextView
 		android:id="@+id/contentTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/thumbnailAuthorImg"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:textSize="14sp" />
-	<!--android:text="With good reason, most players who aren't, well, chess professionals, would prefer to avoid the many complicated variations of the Open Sicilian. So what are your options? As GM Kaidanov explains, you have one major weapon in addition to the Closed Sicilian Grand Prix Attack (GM Dzindzichashvili's recommendation). Today he describes the important features of the Alapin Sicilian, and then reviews the 4.g3 varation of the 2..Nf6 line."-->
-
 
 	<ProgressBar
 		android:id="@+id/loadingCommentsView"

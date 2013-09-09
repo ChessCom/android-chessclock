@@ -44,6 +44,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="@color/white"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
 		android:cacheColorHint="@color/white"
 		android:divider="@color/new_friends_list_divider"
 		android:dividerHeight="1dip"

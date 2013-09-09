@@ -7,8 +7,6 @@
 	android:layout_height="match_parent"
 	android:paddingTop="15dip"
 	android:background="@drawable/white_list_item_selector"
-	android:paddingLeft="@dimen/default_scr_side_padding"
-	android:paddingRight="@dimen/default_scr_side_padding"
 	>
 
 	<com.chess.backend.image_load.AvatarView

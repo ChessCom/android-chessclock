@@ -23,8 +23,6 @@
 		android:layout_below="@id/articleImg"
 		android:paddingTop="15dip"
         android:paddingBottom="9dip"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
         android:textColor="@color/new_subtitle_dark_grey"
         android:textSize="18sp"
         custom:ttf="Bold"
@@ -35,7 +33,6 @@
         android:layout_width="35dip"
         android:layout_height="35dip"
         android:background="@color/new_common_list_thumb_grey"
-		android:layout_marginLeft="@dimen/default_scr_side_padding"
 		android:layout_below="@id/titleTxt"
         android:contentDescription="@string/image"
         android:layout_marginBottom="13dip"/>
@@ -77,37 +74,11 @@
         android:textSize="12sp"
         />
 
-<!--	View Count
-    <com.chess.RoboTextView
-        android:id="@+id/viewsCntTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/dateTxt"
-        android:layout_below="@id/authorTxt"
-        android:paddingLeft="11dip"
-        android:textColor="@color/new_friends_grey_text"
-        android:textSize="12sp"
-        />
-
-	&lt;!&ndash;Comments Count&ndash;&gt;
-    <com.chess.RoboTextView
-        android:id="@+id/commentsCntTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/viewsCntTxt"
-        android:layout_below="@id/authorTxt"
-        android:paddingLeft="11dip"
-        android:textColor="@color/new_friends_grey_text"
-        android:textSize="12sp"
-        />-->
-
     <com.chess.RoboTextView
         android:id="@+id/contentTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/thumbnailAuthorImg"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
         android:textColor="@color/new_subtitle_dark_grey"
         android:textSize="13sp"
         />
