@@ -73,11 +73,11 @@
         android:layout_toRightOf="@id/thumbnailAuthorImg"
         android:layout_below="@id/authorTxt"
         android:paddingLeft="11dip"
-        android:textColor="@color/new_subtitle_dark_grey"
+        android:textColor="@color/new_friends_grey_text"
         android:textSize="12sp"
         />
 
-	<!--View Count-->
+<!--	View Count
     <com.chess.RoboTextView
         android:id="@+id/viewsCntTxt"
         android:layout_width="wrap_content"
@@ -85,11 +85,11 @@
         android:layout_toRightOf="@id/dateTxt"
         android:layout_below="@id/authorTxt"
         android:paddingLeft="11dip"
-        android:textColor="@color/new_subtitle_dark_grey"
+        android:textColor="@color/new_friends_grey_text"
         android:textSize="12sp"
         />
 
-	<!--Comments Count-->
+	&lt;!&ndash;Comments Count&ndash;&gt;
     <com.chess.RoboTextView
         android:id="@+id/commentsCntTxt"
         android:layout_width="wrap_content"
@@ -97,9 +97,9 @@
         android:layout_toRightOf="@id/viewsCntTxt"
         android:layout_below="@id/authorTxt"
         android:paddingLeft="11dip"
-        android:textColor="@color/new_subtitle_dark_grey"
+        android:textColor="@color/new_friends_grey_text"
         android:textSize="12sp"
-        />
+        />-->
 
     <com.chess.RoboTextView
         android:id="@+id/contentTxt"

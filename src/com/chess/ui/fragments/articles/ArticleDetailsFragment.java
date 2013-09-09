@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ArticleDetailsItem;
 import com.chess.backend.entity.api.CommonCommentItem;
+import com.chess.backend.entity.api.CommonViewedItem;
 import com.chess.backend.entity.api.PostCommentItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
@@ -51,7 +53,9 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 	// 11/15/12 | 27 min
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
+	public static final String SLASH_DIVIDER = " | ";
 	private static final long NON_EXIST = -1;
+	private static final long READ_DELAY = 2 * 1000;
 
 	private TextView authorTxt;
 
@@ -60,8 +64,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private ProgressImageView authorImg;
 	private ImageView countryImg;
 	private TextView dateTxt;
-	private TextView viewsCntTxt;
-	private TextView commentsCntTxt;
 	private TextView contentTxt;
 	private long articleId;
 	private CommentsUpdateListener commentsUpdateListener;
@@ -81,7 +83,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private boolean inEditMode;
 	private String commentForEditStr;
 	private View loadingCommentsView;
-
 
 	public static ArticleDetailsFragment createInstance(long articleId) {
 		ArticleDetailsFragment frag = new ArticleDetailsFragment();
@@ -142,8 +143,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		authorImg = (ProgressImageView) headerView.findViewById(R.id.thumbnailAuthorImg);
 		countryImg = (ImageView) headerView.findViewById(R.id.countryImg);
 		dateTxt = (TextView) headerView.findViewById(R.id.dateTxt);
-		viewsCntTxt = (TextView) headerView.findViewById(R.id.viewsCntTxt);
-		commentsCntTxt = (TextView) headerView.findViewById(R.id.commentsCntTxt);
 		contentTxt = (TextView) headerView.findViewById(R.id.contentTxt);
 		authorTxt = (TextView) headerView.findViewById(R.id.authorTxt);
 
@@ -175,6 +174,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		new RequestJsonTask<ArticleDetailsItem>(articleUpdateListener).executeTask(loadItem);
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+		handler.removeCallbacks(markAsReadRunnable);
+	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -191,10 +195,14 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
 			CharSequence chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
 			String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
-			CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
-					+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
-//			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
-			authorStr = chessTitle + StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
+			CharSequence authorStr;
+			if (TextUtils.isEmpty(chessTitle)) {
+				authorStr = firstName + StaticData.SYMBOL_SPACE + lastName;
+			} else {
+				authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
+						+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
+				authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
+			}
 			authorTxt.setText(authorStr);
 
 			try {
@@ -270,6 +278,14 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 	}
 
+	private Runnable markAsReadRunnable = new Runnable() {
+		@Override
+		public void run() {
+			CommonViewedItem item = new CommonViewedItem(articleId, getUsername());
+			DbDataManager.saveArticleViewedState(getContentResolver(), item);
+		}
+	};
+
 	private void showEditView(boolean show) {
 		if (show) {
 			replyView.setVisibility(View.VISIBLE);
@@ -331,15 +347,17 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			int viewCount = articleData.getViewCount();
 			url = articleData.getUrl();
 
-			String viewsCntStr = getString(R.string.comments_arg, commentCount);
-			String commentsCntStr = getString(R.string.reads_arg, viewCount);
-			viewsCntTxt.setText(StaticData.SYMBOL_SLASH + StaticData.SYMBOL_SPACE + viewsCntStr);
-			commentsCntTxt.setText(StaticData.SYMBOL_SLASH + StaticData.SYMBOL_SPACE + commentsCntStr);
+			String commentsCntStr = getString(R.string.comments_arg, commentCount);
+			String viewsCntStr  = getString(R.string.views_arg, viewCount);
+			CharSequence text = dateTxt.getText();
+			dateTxt.setText(text + SLASH_DIVIDER + viewsCntStr + SLASH_DIVIDER + commentsCntStr);
 			contentTxt.setText(Html.fromHtml(articleData.getBody()));
 
 			DbDataManager.saveArticleItem(getContentResolver(), articleData);
 
 			updateComments();
+
+			handler.postDelayed(markAsReadRunnable, READ_DELAY);
 		}
 	}
 

@@ -3,7 +3,7 @@ package com.chess.ui.adapters;
 import android.content.Context;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.VideoItem;
+import com.chess.backend.entity.api.ArticleItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
@@ -11,24 +11,30 @@ import com.chess.utilities.AppUtils;
 
 import java.util.List;
 
-public class VideosPaginationAdapter extends PaginationCursorAdapter<VideoItem.Data> {
+/**
+ * Created with IntelliJ IDEA.
+ * User: roger sent2roger@gmail.com
+ * Date: 09.09.13
+ * Time: 11:06
+ */
+public class ArticlesPaginationAdapter extends PaginationCursorAdapter<ArticleItem.Data> {
 
 	protected LoadItem loadItem;
 
-	public VideosPaginationAdapter(Context context, ItemsCursorAdapter adapter,
-								   TaskUpdateInterface<VideoItem.Data> taskFace, LoadItem loadItem) {
+	public ArticlesPaginationAdapter(Context context, ItemsCursorAdapter adapter,
+								   TaskUpdateInterface<ArticleItem.Data> taskFace, LoadItem loadItem) {
 		super(context, adapter, taskFace);
 		this.loadItem = loadItem;
 		setFirstPage(0);
 	}
 
 	@Override
-	protected List<VideoItem.Data> fetchMoreItems(int page) {
+	protected List<ArticleItem.Data> fetchMoreItems(int page) {
 		if (loadItem != null) {
 			loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
-			VideoItem item = null;
+			ArticleItem item = null;
 			try {
-				item = RestHelper.getInstance().requestData(loadItem, VideoItem.class, AppUtils.getAppId(context));
+				item = RestHelper.getInstance().requestData(loadItem, ArticleItem.class, AppUtils.getAppId(context));
 			} catch (InternalErrorException e) {
 				e.logMe();
 			}

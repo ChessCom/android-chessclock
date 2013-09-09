@@ -2,8 +2,10 @@ package com.chess.ui.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -27,15 +29,22 @@ public class ArticlesThumbCursorAdapter extends ItemsCursorAdapter {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
+	private final int watchedTextColor;
+	private final int unWatchedTextColor;
 	private int PHOTO_SIZE;
 	private CharacterStyle foregroundSpan;
 	private Date date;
+	private SparseBooleanArray viewedMap;
 
 	public ArticlesThumbCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
 
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
+
+		watchedTextColor = resources.getColor(R.color.new_light_grey_3);
+		unWatchedTextColor = resources.getColor(R.color.new_text_blue);
+
 		date = new Date();
 
 		PHOTO_SIZE = (int) context.getResources().getDimension(R.dimen.article_thumb_width);
@@ -62,9 +71,14 @@ public class ArticlesThumbCursorAdapter extends ItemsCursorAdapter {
 		String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME).equals("")? "TestFirstName" : DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
 		String chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE).equals("")? "TIM" : DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
 		String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME).equals("")? "TestLastName" : DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
-		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
-				+ firstName + StaticData.SYMBOL_SPACE + lastName;
-		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
+		CharSequence authorStr;
+		if (TextUtils.isEmpty(chessTitle)) {
+			authorStr = firstName + StaticData.SYMBOL_SPACE + lastName;
+		} else {
+			authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
+					+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
+			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
+		}
 		holder.authorTxt.setText(authorStr);
 
 		holder.titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
@@ -72,6 +86,16 @@ public class ArticlesThumbCursorAdapter extends ItemsCursorAdapter {
 		holder.dateTxt.setText(dateFormatter.format(date));
 
 		imageLoader.download(DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL), holder.thumbnailImg, PHOTO_SIZE );
+
+		if (viewedMap.get(getInt(cursor, DbScheme.V_ID), false)) {
+			holder.titleTxt.setTextColor(watchedTextColor);
+		} else {
+			holder.titleTxt.setTextColor(unWatchedTextColor);
+		}
+	}
+
+	public void addViewedMap(SparseBooleanArray viewedArticlesMap) {
+		this.viewedMap = viewedArticlesMap;
 	}
 
 	protected class ViewHolder {

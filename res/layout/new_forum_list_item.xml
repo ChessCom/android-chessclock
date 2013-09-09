@@ -52,7 +52,6 @@
         android:id="@+id/postsCountTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/byTxt"
         android:layout_below="@id/titleTxt"
         android:layout_toRightOf="@id/lastCommentAgoTxt"
         android:paddingTop="2dip"

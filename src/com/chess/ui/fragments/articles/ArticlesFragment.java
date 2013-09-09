@@ -3,6 +3,7 @@ package com.chess.ui.fragments.articles;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,15 +59,21 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	private SaveCategoriesUpdateListener saveCategoriesUpdateListener;
 
 	private CustomSectionedAdapter sectionedAdapter;
+	private SparseBooleanArray articlesViewedMap;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		articlesViewedMap = new SparseBooleanArray();
+
+
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_light,
 				new int[]{LATEST_SECTION, CATEGORIES_SECTION});
 
 		articlesCursorAdapter = new ArticlesThumbCursorAdapter(getActivity(), null);
+		articlesCursorAdapter.addViewedMap(articlesViewedMap);
 		categoriesAdapter = new CommonCategoriesCursorAdapter(getActivity(), null);
 
 		sectionedAdapter.addSection(getString(R.string.articles), articlesCursorAdapter);
@@ -115,11 +122,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 			if (haveSavedData) {
 				loadFromDb();
-			} else {
-				emptyView.setText(R.string.no_data);
-				showEmptyView(true);
 			}
-
 		} else {
 			loadCategoriesFromDB();
 			loadFromDb();
@@ -139,6 +142,17 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 	private void init() {
+		// get viewed marks
+		Cursor cursor = DbDataManager.getArticleViewedCursor(getActivity(), getUsername());
+		if (cursor != null) {
+			do {
+				int videoId = DbDataManager.getInt(cursor, DbScheme.V_ID);
+				boolean isViewed = DbDataManager.getInt(cursor, DbScheme.V_DATA_VIEWED) > 0;
+				articlesViewedMap.put(videoId, isViewed);
+			} while (cursor.moveToNext());
+			cursor.close();
+		}
+
 		latestArticleUpdateListener = new ArticleItemUpdateListener();
 		saveArticlesUpdateListener = new SaveArticlesUpdateListener();
 		articlesCursorUpdateListener = new ArticlesCursorUpdateListener();
@@ -297,7 +311,6 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			super.updateData(returnedObj);
 
 			articlesCursorAdapter.changeCursor(returnedObj);
-			sectionedAdapter.notifyDataSetChanged();
 
 			need2update = false;
 		}

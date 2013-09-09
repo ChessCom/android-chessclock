@@ -508,7 +508,7 @@ public class AppData {
 	}
 
 	public String getApiRoute() {
-		return preferences.getString("API", RestHelper.HOST_TEST);
+		return preferences.getString("API", RestHelper.HOST_PRODUCTION);
 	}
 
 	/*--------------------------- Common Shared logic ------------------------*/

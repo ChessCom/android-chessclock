@@ -2,6 +2,7 @@ package com.chess.ui.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.util.SparseBooleanArray;
@@ -72,9 +73,14 @@ public class VideosCursorAdapter extends ItemsCursorAdapter {
 		String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
 		CharSequence chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
 		String lastName =  DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
-		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
-				+ firstName + StaticData.SYMBOL_SPACE + lastName;
-		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
+		CharSequence authorStr;
+		if (TextUtils.isEmpty(chessTitle)) {
+			authorStr = firstName + StaticData.SYMBOL_SPACE + lastName;
+		} else {
+			authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
+					+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
+			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
+		}
 		holder.authorTxt.setText(authorStr);
 		holder.durationTxt.setText(DURATION_DIVIDER +
 				context.getString(R.string.min_arg, getString(cursor, DbScheme.V_MINUTES)));

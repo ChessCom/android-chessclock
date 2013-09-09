@@ -30,7 +30,7 @@
         />
 
     <!--by-->
-    <com.chess.RoboTextView
+<!--    <com.chess.RoboTextView
         android:id="@+id/byTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,29 +38,30 @@
         android:textColor="@color/new_author_dark_grey"
         android:layout_below="@id/titleTxt"
         android:textSize="14sp"
-        />
+        />-->
 
     <!--Author-->
     <com.chess.RoboTextView
         android:id="@+id/authorTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/byTxt"
         android:layout_below="@id/titleTxt"
         android:text="Test author"
-        android:layout_toRightOf="@id/byTxt"
-        android:paddingLeft="3dip"
         android:textColor="@color/new_author_dark_grey"
         android:textSize="13sp"
         custom:ttf="Bold"
         />
+<!--
+	android:layout_alignBottom="@id/byTxt"
+	android:layout_toRightOf="@id/byTxt"
+-->
 
     <!--Duration-->
     <com.chess.RoboTextView
         android:id="@+id/durationTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/byTxt"
+        android:layout_alignBottom="@id/authorTxt"
         android:layout_below="@id/titleTxt"
         android:text="| 27 min"
         android:layout_toRightOf="@id/authorTxt"

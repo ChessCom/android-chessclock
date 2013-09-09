@@ -237,8 +237,6 @@ public class DbDataManager {
 
 	public static final String[] PROJECTION_USER_CURRENT_RATING = new String[]{_ID, V_USER, V_CURRENT};
 
-	public static final String[] PROJECTION_VIEWED_VIDEO = new String[]{_ID, V_USER, V_ID, V_VIDEO_VIEWED};
-
 	public static final String[] PROJECTION_ITEM_ID_AND_NUMBER = new String[]{_ID, V_ID, V_NUMBER};
 
 	public static final String[] PROJECTION_ITEM_ID_POSITION_NUMBER = new String[]{
@@ -249,14 +247,6 @@ public class DbDataManager {
 	};
 
 	public static final String[] PROJECTION_ID_CATEGORY_ID_USER = new String[]{_ID, V_ID, V_CATEGORY_ID, V_USER};
-
-	public static final String[] PROJECTION_ID_CATEGORY_ID_USER_COMPLETED = new String[]{
-			_ID,
-			V_ID,
-			V_CATEGORY_ID,
-			V_USER,
-			V_LESSON_COMPLETED
-	};
 
 	public static final String[] PROJECTION_ID_USER_CONVERSATION_ID = new String[]{
 			_ID,
@@ -322,7 +312,6 @@ public class DbDataManager {
 	 * Check if we have saved games for current user
 	 *
 	 * @param context  to get resources
-	 * @param username
 	 * @return true if cursor can be positioned to first
 	 */
 	public static boolean haveSavedDailyGame(Context context, String username) {
@@ -1053,17 +1042,32 @@ public class DbDataManager {
 		return -1;
 	}
 
-	public static void saveVideoViewedState(ContentResolver contentResolver, VideoViewedItem currentItem) {
+	public static void saveArticleViewedState(ContentResolver contentResolver, CommonViewedItem currentItem) {
 		final String[] arguments2 = sArguments2;
 		arguments2[0] = String.valueOf(currentItem.getUsername());
-		arguments2[1] = String.valueOf(currentItem.getVideoId());
+		arguments2[1] = String.valueOf(currentItem.getId());
+
+		Uri uri = uriArray[Tables.ARTICLE_VIEWED.ordinal()];
+
+		Cursor cursor = contentResolver.query(uri, null,
+				SELECTION_USER_AND_ID, arguments2, null);
+
+		ContentValues values = putCommonViewedItemToValues(currentItem);
+
+		updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
+	public static void saveVideoViewedState(ContentResolver contentResolver, CommonViewedItem currentItem) {
+		final String[] arguments2 = sArguments2;
+		arguments2[0] = String.valueOf(currentItem.getUsername());
+		arguments2[1] = String.valueOf(currentItem.getId());
 
 		Uri uri = uriArray[Tables.VIDEO_VIEWED.ordinal()];
 
 		Cursor cursor = contentResolver.query(uri, null,
 				SELECTION_USER_AND_ID, arguments2, null);
 
-		ContentValues values = putVideoViewedItemToValues(currentItem);
+		ContentValues values = putCommonViewedItemToValues(currentItem);
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
@@ -1074,6 +1078,21 @@ public class DbDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = username;
 		Cursor cursor = contentResolver.query(uriArray[Tables.VIDEO_VIEWED.ordinal()],
+				null, SELECTION_USER, arguments1, null);
+
+		if (cursor != null && cursor.moveToFirst()) {
+			return cursor;
+		} else {
+			return null;
+		}
+	}
+
+	public static Cursor getArticleViewedCursor(Context context, String username) {
+		ContentResolver contentResolver = context.getContentResolver();
+
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = username;
+		Cursor cursor = contentResolver.query(uriArray[Tables.ARTICLE_VIEWED.ordinal()],
 				null, SELECTION_USER, arguments1, null);
 
 		if (cursor != null && cursor.moveToFirst()) {
@@ -1094,7 +1113,26 @@ public class DbDataManager {
 				null, SELECTION_USER_AND_ID, arguments2, null);
 
 		if (cursor != null && cursor.moveToFirst()) {
-			boolean isViewed = getInt(cursor, V_VIDEO_VIEWED) > 0;
+			boolean isViewed = getInt(cursor, V_DATA_VIEWED) > 0;
+			cursor.close();
+			return isViewed;
+		} else {
+			return false;
+		}
+	}
+
+	public static boolean isArticleViewed(Context context, String username, long articleId) {
+		ContentResolver contentResolver = context.getContentResolver();
+
+		final String[] arguments2 = sArguments2;
+		arguments2[0] = username;
+		arguments2[1] = String.valueOf(articleId);
+
+		Cursor cursor = contentResolver.query(uriArray[Tables.ARTICLE_VIEWED.ordinal()],
+				null, SELECTION_USER_AND_ID, arguments2, null);
+
+		if (cursor != null && cursor.moveToFirst()) {
+			boolean isViewed = getInt(cursor, V_DATA_VIEWED) > 0;
 			cursor.close();
 			return isViewed;
 		} else {
@@ -1534,12 +1572,12 @@ public class DbDataManager {
 		return dataObj;
 	}
 
-	public static ContentValues putVideoViewedItemToValues(VideoViewedItem dataObj) {
+	public static ContentValues putCommonViewedItemToValues(CommonViewedItem dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(V_USER, dataObj.getUsername());
-		values.put(V_ID, dataObj.getVideoId());
-		values.put(V_VIDEO_VIEWED, dataObj.isViewed() ? 1 : 0);
+		values.put(V_ID, dataObj.getId());
+		values.put(V_DATA_VIEWED, dataObj.isViewed() ? 1 : 0);
 
 		return values;
 	}

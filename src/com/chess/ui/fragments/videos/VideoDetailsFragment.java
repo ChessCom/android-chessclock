@@ -19,9 +19,9 @@ import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.CommonCommentItem;
+import com.chess.backend.entity.api.CommonViewedItem;
 import com.chess.backend.entity.api.PostCommentItem;
 import com.chess.backend.entity.api.VideoSingleItem;
-import com.chess.backend.entity.api.VideoViewedItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.StaticData;
@@ -55,7 +55,6 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 
 	// 11/15/12 | 27 min
 	protected static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
-	public static final String SLASH_DIVIDER = " | ";
 
 	protected View loadingView;
 	protected TextView emptyView;
@@ -184,7 +183,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == WATCH_VIDEO_REQUEST) {
 
-			VideoViewedItem item = new VideoViewedItem(currentPlayingId, getUsername(), true);
+			CommonViewedItem item = new CommonViewedItem(currentPlayingId, getUsername());
 			DbDataManager.saveVideoViewedState(getContentResolver(), item);
 		}
 	}
@@ -238,9 +237,14 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		String firstName = videoData.getFirstName();
 		CharSequence chessTitle = videoData.getChessTitle();
 		String lastName = videoData.getLastName();
-		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
-				+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
-		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
+		CharSequence authorStr;
+		if (TextUtils.isEmpty(chessTitle)) {
+			authorStr = firstName + StaticData.SYMBOL_SPACE + lastName;
+		} else {
+			authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
+					+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
+			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
+		}
 		authorTxt.setText(authorStr);
 
 		// change layout params for image and progress bar

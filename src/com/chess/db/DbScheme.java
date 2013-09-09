@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 56;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 57;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -30,6 +30,7 @@ public class DbScheme {
 		ARTICLES,
 		ARTICLE_CATEGORIES,
 		ARTICLE_COMMENTS,
+		ARTICLE_VIEWED,
 
 		VIDEOS,
 		VIDEO_CATEGORIES,
@@ -184,7 +185,7 @@ public class DbScheme {
 	public static final String V_USER_AVATAR = "user_avatar";
 	public static final String V_VIEW_COUNT = "view_count";
 	public static final String V_COMMENT_COUNT = "comment_count";
-	public static final String V_VIDEO_VIEWED = "video_viewed";
+	public static final String V_DATA_VIEWED = "data_viewed";
 
 	/* Forums */
 	public static final String V_LAST_POST_USERNAME = "last_post_username";
@@ -385,6 +386,11 @@ public class DbScheme {
 				+ addField_Text(V_USER_AVATAR)
 				+ addField_Text(V_BODY, true);
 
+		createTablesArray[Tables.ARTICLE_VIEWED.ordinal()] = createTableForName(Tables.ARTICLE_VIEWED)
+				+ addField_Text(V_USER)
+				+ addField_Int(V_ID)
+				+ addField_Int(V_DATA_VIEWED, true);
+
 		/* Videos */
 		createTablesArray[Tables.VIDEOS.ordinal()] = createTableForName(Tables.VIDEOS)
 				+ addField_Long(V_CREATE_DATE)
@@ -409,7 +415,7 @@ public class DbScheme {
 		createTablesArray[Tables.VIDEO_VIEWED.ordinal()] = createTableForName(Tables.VIDEO_VIEWED)
 				+ addField_Text(V_USER)
 				+ addField_Int(V_ID)
-				+ addField_Int(V_VIDEO_VIEWED, true);
+				+ addField_Int(V_DATA_VIEWED, true);
 
 		createTablesArray[Tables.VIDEO_CATEGORIES.ordinal()] = createTableForName(Tables.VIDEO_CATEGORIES)
 				+ addField_Text(V_NAME)

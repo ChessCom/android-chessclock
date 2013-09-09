@@ -6,20 +6,20 @@ package com.chess.backend.entity.api;
  * Date: 08.07.13
  * Time: 6:32
  */
-public class VideoViewedItem {
+public class CommonViewedItem {
 
-	private long video_id;
+	private long id;
 	private String username;
 	private boolean viewed;
 
-	public VideoViewedItem(long video_id, String username, boolean viewed) {
-		this.video_id = video_id;
+	public CommonViewedItem(long id, String username) {
+		this.id = id;
 		this.username = username;
-		this.viewed = viewed;
+		this.viewed = true; // created item is always viewed by default
 	}
 
-	public long getVideoId() {
-		return video_id;
+	public long getId() {
+		return id;
 	}
 
 	public String getUsername() {

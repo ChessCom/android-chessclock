@@ -17,8 +17,8 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.CommonViewedItem;
 import com.chess.backend.entity.api.VideoItem;
-import com.chess.backend.entity.api.VideoViewedItem;
 import com.chess.backend.statics.StaticData;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -48,7 +48,6 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 	private VideosCursorAdapter videosAdapter;
 
-	private Spinner categorySpinner;
 	private View loadingView;
 	private TextView emptyView;
 	private ListView listView;
@@ -81,13 +80,14 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 			sectionName = savedInstanceState.getString(SECTION_NAME);
 		}
 
+		videosCursorUpdateListener = new VideosCursorUpdateListener();
+		categoriesNames = new ArrayList<String>();
+		categoriesIds = new ArrayList<Integer>();
+
 		viewedVideosMap = new SparseBooleanArray();
 		saveVideosUpdateListener = new SaveVideosUpdateListener();
 		videosAdapter = new VideosCursorAdapter(this, null);
 		videosAdapter.addViewedMap(viewedVideosMap);
-		videosCursorUpdateListener = new VideosCursorUpdateListener();
-		categoriesNames = new ArrayList<String>();
-		categoriesIds = new ArrayList<Integer>();
 
 		paginationAdapter = new VideosPaginationAdapter(getActivity(), videosAdapter, new VideosUpdateListener(), null);
 
@@ -114,18 +114,16 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
-		categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
-
 		listView = (ListView) view.findViewById(R.id.listView);
-		listView.setOnItemClickListener(this);
 		listView.setAdapter(paginationAdapter);
+		listView.setOnItemClickListener(this);
 
 		// get viewed marks
 		Cursor cursor = DbDataManager.getVideoViewedCursor(getActivity(), getUsername());
 		if (cursor != null) {
 			do {
 				int videoId = DbDataManager.getInt(cursor, DbScheme.V_ID);
-				boolean isViewed = DbDataManager.getInt(cursor, DbScheme.V_VIDEO_VIEWED) > 0;
+				boolean isViewed = DbDataManager.getInt(cursor, DbScheme.V_DATA_VIEWED) > 0;
 				viewedVideosMap.put(videoId, isViewed);
 			} while (cursor.moveToNext());
 			cursor.close();
@@ -138,11 +136,11 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 			for (sectionId = 0; sectionId < categoriesNames.size(); sectionId++) {
 				String category = categoriesNames.get(sectionId);
 				if (category.equals(sectionName)) {
-					categoriesIds.get(sectionId);
 					break;
 				}
 			}
 
+			Spinner categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
 			categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), categoriesNames));
 			categorySpinner.setOnItemSelectedListener(this);
 			categorySpinner.setSelection(sectionId);  // TODO remember last selection.
@@ -174,8 +172,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	}
 
 	private boolean fillCategories() {
-		Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
-
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.VIDEO_CATEGORIES));
 		if (!(cursor != null && cursor.moveToFirst())) {
 			showToast("Categories are not loaded");
 			return false;
@@ -212,8 +209,8 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 			super.errorHandle(resultCode);
 			if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.error);
+				showEmptyView(true);
 			}
-			showEmptyView(true);
 		}
 	}
 
@@ -238,7 +235,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		long resumeFromVideoTime = System.currentTimeMillis();
 
 		if (resumeFromVideoTime - playButtonClickTime > VideosFragment.WATCHED_TIME) {
-			VideoViewedItem item = new VideoViewedItem(currentPlayingId, getUsername(), true);
+			CommonViewedItem item = new CommonViewedItem(currentPlayingId, getUsername());
 			DbDataManager.saveVideoViewedState(getContentResolver(), item);
 
 			// update current list
@@ -298,7 +295,6 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 		@Override
 		public void updateListData(List<VideoItem.Data> itemsList) {
-			super.updateListData(itemsList);
 			new SaveVideosListTask(saveVideosUpdateListener, itemsList, getContentResolver()).executeTask();
 		}
 	}
