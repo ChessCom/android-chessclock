@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.*;
 import android.widget.SearchView;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.ui.interfaces.PopupDialogFace;
 
@@ -147,6 +148,13 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		if (menuItem != null) {
 			SearchView searchView = (SearchView) menuItem.getActionView();
 			if (searchView != null) {
+				// change text color
+				int searchTextViewId = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+				TextView searchTextView = (TextView) searchView.findViewById(searchTextViewId);
+				searchTextView.setTextColor(getResources().getColor(R.color.white));
+				searchTextView.setHintTextColor(getResources().getColor(R.color.hint_text));
+				searchView.setIconifiedByDefault(false);
+
 				searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 					@Override
 					public boolean onQueryTextSubmit(String query) {
