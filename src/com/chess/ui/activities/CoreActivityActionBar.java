@@ -2,6 +2,7 @@ package com.chess.ui.activities;
 
 import actionbarcompat.ActionBarActivity;
 import actionbarcompat.ActionBarHelper;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
@@ -133,16 +134,35 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 
 		if(HONEYCOMB_PLUS_API){
-			// Get the SearchView and set the searchable configuration
-			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-			MenuItem menuItem = menu.findItem(R.id.menu_search);
-			if (menuItem != null) {
-				SearchView searchView = (SearchView) menuItem.getActionView();
-				if (searchView != null)
-					searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-			}
+			adjustSearchView(menu);
 		}
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void adjustSearchView(Menu menu) {
+		// Get the SearchView and set the searchable configuration
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		MenuItem menuItem = menu.findItem(R.id.menu_search);
+		if (menuItem != null) {
+			SearchView searchView = (SearchView) menuItem.getActionView();
+			if (searchView != null) {
+				searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+					@Override
+					public boolean onQueryTextSubmit(String query) {
+						return false;
+					}
+
+					@Override
+					public boolean onQueryTextChange(String newText) {
+						onSearchAutoCompleteQuery(newText);
+						return false;
+					}
+				});
+
+				searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+			}
+		}
 	}
 
 	@Override

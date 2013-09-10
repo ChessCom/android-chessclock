@@ -15,6 +15,7 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.ConversationSingleItem;
 import com.chess.backend.entity.api.MessagesItem;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
@@ -224,7 +225,7 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 			}, KEYBOARD_DELAY);
 
 			replyView.setVisibility(View.GONE);
-			messageBodyEdt.setText(StaticData.SYMBOL_EMPTY);
+			messageBodyEdt.setText(Symbol.EMPTY);
 		}
 	}
 

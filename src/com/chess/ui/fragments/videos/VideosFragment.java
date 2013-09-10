@@ -18,7 +18,7 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.CommonViewedItem;
 import com.chess.backend.entity.api.VideoItem;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -337,7 +337,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 			List<CommonFeedCategoryItem.Data> dataList = returnedObj.getData();
 			for (CommonFeedCategoryItem.Data category : dataList) {
-				category.setName(category.getName().replace(StaticData.SYMBOL_AMP_CODE, StaticData.SYMBOL_AMP));
+				category.setName(category.getName().replace(Symbol.AMP_CODE, Symbol.AMP));
 			}
 
 			new SaveVideoCategoriesTask(saveVideoCategoriesUpdateListener, dataList, getContentResolver()).executeTask();
@@ -389,10 +389,10 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		String lastName = headerData.getLastName();
 		CharSequence authorStr;
 		if (TextUtils.isEmpty(chessTitle)) {
-			authorStr = firstName + StaticData.SYMBOL_SPACE + lastName;
+			authorStr = firstName + Symbol.SPACE + lastName;
 		} else {
 			authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
-					+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
+					+ Symbol.SPACE + firstName + Symbol.SPACE + lastName;
 			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		}
 		holder.authorTxt.setText(authorStr);
@@ -568,7 +568,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 			holder.text.setText(getGroup(groupPosition).toString());
 			if (groupPosition == LIBRARY) {
-				holder.icon.setText(StaticData.SYMBOL_EMPTY);
+				holder.icon.setText(Symbol.EMPTY);
 			} else {
 				if (isExpanded) {
 					holder.icon.setText(R.string.ic_down);

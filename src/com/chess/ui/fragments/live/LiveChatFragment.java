@@ -10,7 +10,7 @@ import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.ui.adapters.ChatMessagesAdapter;
@@ -107,7 +107,7 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 				}
 				liveService.sendMessage(getTextFromField(sendEdt), messageUpdateListener);
 
-				sendEdt.setText(StaticData.SYMBOL_EMPTY);
+				sendEdt.setText(Symbol.EMPTY);
 			}
 		}
 	}

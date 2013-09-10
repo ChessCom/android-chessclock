@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.utilities.AppUtils;
@@ -73,10 +73,10 @@ public class ArticlesThumbCursorAdapter extends ItemsCursorAdapter {
 		String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME).equals("")? "TestLastName" : DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
 		CharSequence authorStr;
 		if (TextUtils.isEmpty(chessTitle)) {
-			authorStr = firstName + StaticData.SYMBOL_SPACE + lastName;
+			authorStr = firstName + Symbol.SPACE + lastName;
 		} else {
 			authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
-					+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
+					+ Symbol.SPACE + firstName + Symbol.SPACE + lastName;
 			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		}
 		holder.authorTxt.setText(authorStr);

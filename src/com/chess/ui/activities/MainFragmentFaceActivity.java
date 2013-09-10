@@ -533,4 +533,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 	}
 
+	@Override
+	protected void onSearchAutoCompleteQuery(String query) {
+		if (currentActiveFragment instanceof CommonLogicFragment) {
+			((CommonLogicFragment)currentActiveFragment).onSearchAutoCompleteQuery(query);
+		}
+	}
+
 }

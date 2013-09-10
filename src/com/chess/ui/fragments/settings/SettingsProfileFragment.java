@@ -32,7 +32,7 @@ import com.chess.backend.entity.api.MembershipItem;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCountriesFragment;
@@ -186,9 +186,9 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		{ // Terms link handle
 			TextView termsLinkTxt = (TextView) view.findViewById(R.id.termsLinkTxt);
 			termsLinkTxt.setClickable(true);
-			String termsText = getString(R.string.profile_account_message_1) + StaticData.SYMBOL_NEW_STR + StaticData.SYMBOL_NEW_STR
-					+ getString(R.string.profile_account_message_2) + StaticData.SYMBOL_SPACE
-					+ getString(R.string.profile_account_message_3) + StaticData.SYMBOL_SPACE
+			String termsText = getString(R.string.profile_account_message_1) + Symbol.NEW_STR + Symbol.NEW_STR
+					+ getString(R.string.profile_account_message_2) + Symbol.SPACE
+					+ getString(R.string.profile_account_message_3) + Symbol.SPACE
 					+ getString(R.string.profile_account_message_4);
 			termsLinkTxt.setText(Html.fromHtml(termsText));
 			Linkify.addLinks(termsLinkTxt, Linkify.WEB_URLS);
@@ -328,7 +328,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			Date time = new Date(membershipData.getDate().getExpires()* 1000L);
 			String membershipExpireDate = dateFormatter.format(time);
 			String text = getString(R.string.profile_membership_renew_cancel, membershipData.getType(), membershipExpireDate)
-					+ StaticData.SYMBOL_NEW_STR	+ getString(R.string.profile_membership_renew_cancel_1);
+					+ Symbol.NEW_STR + getString(R.string.profile_membership_renew_cancel_1);
 
 			cancelMembershipTxt.setClickable(true);
 			cancelMembershipTxt.setText(Html.fromHtml(text));
@@ -347,11 +347,11 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 		int id = view.getId();
 		if (id == R.id.firstNameClearBtn) {
-			firstNameValueEdt.setText(StaticData.SYMBOL_EMPTY);
+			firstNameValueEdt.setText(Symbol.EMPTY);
 		} else if (id == R.id.lastNameClearBtn) {
-			lastNameValueEdt.setText(StaticData.SYMBOL_EMPTY);
+			lastNameValueEdt.setText(Symbol.EMPTY);
 		} else if (id == R.id.locationClearBtn) {
-			locationValueEdt.setText(StaticData.SYMBOL_EMPTY);
+			locationValueEdt.setText(Symbol.EMPTY);
 		} else if (id == R.id.countryLay || id == R.id.flagImg /*|| id == R.id.countryArrowIconTxt*/) {
 			showCountriesFragment();
 			startActionMode();
@@ -376,7 +376,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		switch (requestCode) {
 			case REQ_CODE_PICK_IMAGE:
 				if (resultCode == Activity.RESULT_OK) {
-					mCurrentPhotoPath = StaticData.SYMBOL_EMPTY; // drop previous file path
+					mCurrentPhotoPath = Symbol.EMPTY; // drop previous file path
 
 					Uri selectedImage = imageReturnedIntent.getData();
 					if (selectedImage == null) {

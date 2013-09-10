@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.RoboRadioButton;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -94,7 +94,7 @@ public class CompGameOptionsFragment extends CommonLogicFragment {
 
 	protected void startGame() {
 		ChessBoardComp.resetInstance();
-		preferencesEditor.putString(getAppData().getUsername() + AppConstants.SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
+		preferencesEditor.putString(getAppData().getUsername() + AppConstants.SAVED_COMPUTER_GAME, Symbol.EMPTY);
 		preferencesEditor.commit();
 
 		CompGameConfig config = getNewCompGameConfig();

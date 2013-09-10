@@ -24,7 +24,7 @@ import com.chess.backend.entity.api.LoginItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.LiveEvent;
 import com.chess.lcc.android.OuterChallengeListener;
@@ -398,7 +398,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		private String composeMessage(Challenge challenge) {
 			String rated = challenge.isRated() ? getString(R.string.rated) : getString(R.string.unrated);
 			GameTimeConfig config = challenge.getGameTimeConfig();
-			String blitz = StaticData.SYMBOL_EMPTY;
+			String blitz = Symbol.EMPTY;
 			if (config.isBlitz()) {
 				blitz = getString(R.string.blitz_game);
 			} else if (config.isLightning()) {
@@ -407,13 +407,13 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				blitz = getString(R.string.standard_game);
 			}
 
-			String timeIncrement = StaticData.SYMBOL_EMPTY;
+			String timeIncrement = Symbol.EMPTY;
 
 			if (config.getTimeIncrement() > 0) {
 				timeIncrement = " | " + String.valueOf(config.getTimeIncrement() / 10);
 			}
 
-			String timeMode = config.getBaseTime() / 10 / 60 + timeIncrement + StaticData.SYMBOL_SPACE + blitz;
+			String timeMode = config.getBaseTime() / 10 / 60 + timeIncrement + Symbol.SPACE + blitz;
 			String playerColor;
 
 			switch (challenge.getColor()) {
@@ -432,12 +432,12 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			}
 
 			return new StringBuilder()
-					.append(getString(R.string.opponent_)).append(StaticData.SYMBOL_SPACE)
-					.append(challenge.getFrom().getUsername()).append(StaticData.SYMBOL_NEW_STR)
-					.append(getString(R.string.time_)).append(StaticData.SYMBOL_SPACE)
-					.append(timeMode).append(StaticData.SYMBOL_NEW_STR)
-					.append(getString(R.string.you_play)).append(StaticData.SYMBOL_SPACE)
-					.append(playerColor).append(StaticData.SYMBOL_NEW_STR)
+					.append(getString(R.string.opponent_)).append(Symbol.SPACE)
+					.append(challenge.getFrom().getUsername()).append(Symbol.NEW_STR)
+					.append(getString(R.string.time_)).append(Symbol.SPACE)
+					.append(timeMode).append(Symbol.NEW_STR)
+					.append(getString(R.string.you_play)).append(Symbol.SPACE)
+					.append(playerColor).append(Symbol.NEW_STR)
 					.append(rated)
 					.toString();
 		}

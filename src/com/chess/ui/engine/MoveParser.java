@@ -1,6 +1,6 @@
 package com.chess.ui.engine;
 
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.ui.interfaces.boards.BoardFace;
 
 import java.util.Iterator;
@@ -95,7 +95,7 @@ public class MoveParser {
 		int i = LetterToBN(MoveTo[0]);
 		int j = NumToBN(MoveTo[1]);
 		int to = j * 8 - i;
-		int from = NumToBN(StaticData.SYMBOL_EMPTY + currentMove.charAt(1)) * 8 - LetterToBN(StaticData.SYMBOL_EMPTY + currentMove.charAt(0));
+		int from = NumToBN(Symbol.EMPTY + currentMove.charAt(1)) * 8 - LetterToBN(Symbol.EMPTY + currentMove.charAt(0));
 
 		Iterator<Move> itr = validMoves.iterator();
 		Move M;
@@ -248,7 +248,7 @@ public class MoveParser {
 	}
 
 	public static String BNToLetter(int i) {
-		String l = StaticData.SYMBOL_EMPTY;
+		String l = Symbol.EMPTY;
 		if (i == 7) l = H_SMALL;
 		if (i == 6) l = G_SMALL;
 		if (i == 5) l = F_SMALL;
@@ -262,7 +262,7 @@ public class MoveParser {
 	}
 
 	public static String BNToNum(int j) {
-		String l = StaticData.SYMBOL_EMPTY;
+		String l = Symbol.EMPTY;
 		if (j == 7) l = NUMB_1;
 		if (j == 6) l = NUMB_2;
 		if (j == 5) l = NUMB_3;
@@ -285,7 +285,7 @@ public class MoveParser {
 		for (i = 0; i < 8; i++) {
 			String pos = FEN[i];
 			if (i == 7) {
-				String[] tmp2 = FEN[i].split(StaticData.SYMBOL_SPACE);
+				String[] tmp2 = FEN[i].split(Symbol.SPACE);
 				pos = tmp2[0];
 				if (tmp2[1].contains(W_SMALL)) {
 					boardFace.setSide(0);

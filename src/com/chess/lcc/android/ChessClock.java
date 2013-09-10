@@ -114,7 +114,7 @@ public class ChessClock {
 		time -= seconds * SECOND_MS;
 		int tenths = time / TENTH_MS;
 		time -= tenths * TENTH_MS;
-		//String signString = isNegative ? "-" : StaticData.SYMBOL_EMPTY;
+		//String signString = isNegative ? "-" : StaticData.EMPTY;
 		switch (getActualDisplayMode()) {
 			case HOUR_MINUTE_DISPLAY_MODE:
 				String sepString = (Math.abs(tenths) > 4) || !isRunning ? ":" : " ";

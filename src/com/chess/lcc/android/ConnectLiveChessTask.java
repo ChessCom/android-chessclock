@@ -7,6 +7,7 @@ import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.live.client.ClientFeature;
 import com.chess.live.client.LiveChessClient;
@@ -40,7 +41,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 //	public static final String AUTH_URL = RestHelper.CMD_LOGIN + "?username=%s&password=%s";
 	public static final String AUTH_URL = "http://www." + LIVE_HOST + "/api/v2/login" + "?username=%s&password=%s";
 	public static final String CONFIG_BAYEUX_HOST = "live." + LIVE_HOST;
-	final static Config CONFIG = new Config(StaticData.SYMBOL_EMPTY, "assets/my.properties", true);
+	final static Config CONFIG = new Config(Symbol.EMPTY, "assets/my.properties", true);
 	public static final String CONFIG_URI =
 			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.uri"), "/cometd");
 

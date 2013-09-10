@@ -21,10 +21,7 @@ import com.chess.backend.entity.api.MovesStatusItem;
 import com.chess.backend.entity.api.RegisterItem;
 import com.chess.backend.gcm.GcmHelper;
 import com.chess.backend.interfaces.AbstractUpdateListener;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.FlurryData;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.*;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.DataHolder;
 import com.chess.model.TacticsDataHolder;
@@ -257,7 +254,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
                         appData.unRegisterOnChessGCM();
                         // remove saved token
                         SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
+                        editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, Symbol.EMPTY);
                         editor.commit();
                         break;
                 }
@@ -381,7 +378,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 //
 //		@Override
 //		public void onAuthFail(String error) {
-//			showToast(getString(R.string.login_failed)+ StaticData.SYMBOL_SPACE + error);
+//			showToast(getString(R.string.login_failed)+ StaticData.SPACE + error);
 //		}
 //	}
 //	public class SampleLogoutListener implements SessionEvents.LogoutListener {
@@ -480,8 +477,8 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 				AppUtils.showMoveStatusNotification(getMeContext(),
 						getMeContext().getString(R.string.your_turn),
-						getMeContext().getString(R.string.your_move) + StaticData.SYMBOL_SPACE
-								+ StaticData.SYMBOL_LEFT_PAR + itemList.size() + StaticData.SYMBOL_RIGHT_PAR,
+						getMeContext().getString(R.string.your_move) + StaticData.SPACE
+								+ StaticData.LEFT_PAR + itemList.size() + StaticData.RIGHT_PAR,
 						0, OnlineScreenActivity.class);
 				getMeContext().sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 			}

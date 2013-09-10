@@ -18,7 +18,7 @@ import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.SaveImageToSdTask;
 import com.chess.model.PopupItem;
 import com.chess.model.SelectionItem;
@@ -300,7 +300,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			activity.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					loadProgressTxt.setText(String.valueOf(progress) + StaticData.SYMBOL_PERCENT);
+					loadProgressTxt.setText(String.valueOf(progress) + Symbol.PERCENT);
 				}
 			});
 		}

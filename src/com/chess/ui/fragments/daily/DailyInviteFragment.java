@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
+import com.chess.backend.statics.Symbol;
 import com.chess.model.DataHolder;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.BaseResponseItem;
@@ -190,8 +191,8 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		int daysPerMove = challengeItem.getDaysPerMove();
 
 		{ // overlay fill
-			inviteTitleTxt.setText(getString(R.string.vs) + StaticData.SYMBOL_SPACE + challengeItem.getOpponentUsername()
-					+ StaticData.SYMBOL_SPACE + StaticData.SYMBOL_LEFT_PAR + challengeItem.getOpponentRating() + StaticData.SYMBOL_RIGHT_PAR);
+			inviteTitleTxt.setText(getString(R.string.vs) + Symbol.SPACE + challengeItem.getOpponentUsername()
+					+ Symbol.SPACE + Symbol.wrapInPars(challengeItem.getOpponentRating()));
 
 			String detailsStr1;
 			if (challengeItem.isRated()) {
@@ -200,18 +201,18 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 				detailsStr1 = getString(R.string.unrated);
 			}
 
-			detailsStr1 += StaticData.SYMBOL_LEFT_PAR + "W +" + challengeItem.getOpponentWinCount()
+			detailsStr1 += Symbol.wrapInPars("W +" + challengeItem.getOpponentWinCount()
 					+ "/L -" + challengeItem.getOpponentLossCount() + "/D -"
-					+ challengeItem.getOpponentDrawCount() + StaticData.SYMBOL_RIGHT_PAR;
+					+ challengeItem.getOpponentDrawCount());
 
-			detailsStr1 += StaticData.SYMBOL_NEW_STR + daysPerMove + StaticData.SYMBOL_SPACE + getString(R.string.days_move);
+			detailsStr1 += Symbol.NEW_STR + daysPerMove + Symbol.SPACE + getString(R.string.days_move);
 			String color = getString(R.string.random);
 			if (challengeItem.getColor() == RestHelper.P_BLACK) {
 				color = getString(R.string.black);
 			} else if (challengeItem.getColor() == RestHelper.P_WHITE) {
 				color = getString(R.string.white);
 			}
-			detailsStr1 += StaticData.SYMBOL_NEW_STR + getString(R.string.i_play_as) + StaticData.SYMBOL_SPACE + color;
+			detailsStr1 += Symbol.NEW_STR + getString(R.string.i_play_as) + Symbol.SPACE + color;
 
 			inviteDetails1Txt.setText(detailsStr1);
 		}

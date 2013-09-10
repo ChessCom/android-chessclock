@@ -3,7 +3,7 @@ package com.chess.ui.engine.configs;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.chess.backend.RestHelper;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 
 /**
  * Created with IntelliJ IDEA.
@@ -56,7 +56,7 @@ public class LiveGameConfig implements Parcelable {
 		}
 
 		public void setTimeFromLabel(String label) {
-			if(label.contains(StaticData.SYMBOL_SLASH)){// "5 | 2"),
+			if(label.contains(Symbol.SLASH)){// "5 | 2"),
 				String[] params = label.split(RestHelper.SYMBOL_ITEM_SPLIT);
 				initialTime = Integer.valueOf(params[0].trim());
 				bonusTime = Integer.valueOf(params[1].trim());

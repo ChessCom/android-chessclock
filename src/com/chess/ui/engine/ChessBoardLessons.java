@@ -1,6 +1,6 @@
 package com.chess.ui.engine;
 
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.ui.interfaces.boards.LessonsBoardFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
 
@@ -48,7 +48,7 @@ public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 		}
 
 		Move move = histDat[lastIndex].move; // get last move
-		String piece = StaticData.SYMBOL_EMPTY;
+		String piece = Symbol.EMPTY;
 		int pieceCode = pieces[move.to];
 		String moveStr;
 		if (pieceCode == 1) { // set piece name
@@ -63,7 +63,7 @@ public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 			piece = MoveParser.BLACK_KING;
 		}
 
-		String capture = StaticData.SYMBOL_EMPTY;
+		String capture = Symbol.EMPTY;
 		if (histDat[lastIndex].capture != 6) {
 			capture = "x";
 		}

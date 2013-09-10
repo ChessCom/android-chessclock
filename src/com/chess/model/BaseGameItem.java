@@ -2,7 +2,7 @@ package com.chess.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 
 /**
  * BaseGameItem class
@@ -48,13 +48,13 @@ public abstract class BaseGameItem implements Parcelable {
 
 	protected BaseGameItem() {
 		color = 0;
-		whiteUsername = StaticData.SYMBOL_EMPTY;
-		blackUsername = StaticData.SYMBOL_EMPTY;
+		whiteUsername = Symbol.EMPTY;
+		blackUsername = Symbol.EMPTY;
 		userNameStrLength = 0;
 		timeRemainingAmount = 0;
-		timeRemainingUnits = StaticData.SYMBOL_EMPTY;
+		timeRemainingUnits = Symbol.EMPTY;
 		fenStrLength = 0;
-		moveList = StaticData.SYMBOL_EMPTY;
+		moveList = Symbol.EMPTY;
 		whiteRating = 0;
 		blackRating = 0;
 		secondsRemain = 0;

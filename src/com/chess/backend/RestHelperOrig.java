@@ -8,6 +8,7 @@ import android.util.Log;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.utilities.AppUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -403,7 +404,7 @@ public class RestHelperOrig {
 		safeList.addAll(nameValuePairs);
 		StringBuilder builder = new StringBuilder();
 		builder.append(Q_);
-		String separator = StaticData.SYMBOL_EMPTY;
+		String separator = Symbol.EMPTY;
 		for (NameValuePair pair : safeList) {
 			builder.append(separator);
 			separator = AND;
@@ -420,12 +421,12 @@ public class RestHelperOrig {
 
 	public static String formJsonData(List<NameValuePair> requestParams) {
 		StringBuilder data = new StringBuilder();
-		String separator = StaticData.SYMBOL_EMPTY;
+		String separator = Symbol.EMPTY;
 		data.append(OBJ_START);
 		for (NameValuePair requestParam : requestParams) {
 
 			data.append(separator);
-			separator = StaticData.SYMBOL_COMMA;
+			separator = Symbol.COMMA;
 			data.append(SYMBOL_QUOTE)
 					.append(requestParam.getName()).append(SYMBOL_QUOTE)
 					.append(OBJ_DIVIDER)
@@ -441,7 +442,7 @@ public class RestHelperOrig {
 		List<NameValuePair> nameValuePairs = loadItem.getRequestParams();
 
 		StringBuilder encodedParams = new StringBuilder();
-		String separator = StaticData.SYMBOL_EMPTY;
+		String separator = Symbol.EMPTY;
 		for (NameValuePair pair : nameValuePairs) {
 			encodedParams.append(separator);
 			separator = AND;
@@ -464,7 +465,7 @@ public class RestHelperOrig {
 
 	public static String getMembershipLink(String userToken, String param) {
 		return LOGIN_HTML_ALS + userToken + GOTO + "%2Fmembership.html" + param;
-//				+ sharedData.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY)
+//				+ sharedData.getString(AppConstants.USER_TOKEN, StaticData.EMPTY)
 //				+ "&goto=http%3A%2F%2Fwww."
 //				+ LccHelper.HOST + "%2Fmembership.html" + param;
 	}
@@ -691,7 +692,7 @@ public class RestHelperOrig {
 			data = formPostData(loadItem);
 		}
 		if (!TextUtils.isEmpty(loadItem.getFilePath())) {
-			data = StaticData.SYMBOL_EMPTY;
+			data = Symbol.EMPTY;
 		}
 		String signedPart = "154c4dc2f899fad29383c0cfa9905ce8143fc200";
 		try {
@@ -703,7 +704,7 @@ public class RestHelperOrig {
 		}
 		String addStr = AND;
 		if (requestMethod.equals(POST)) {
-			data = StaticData.SYMBOL_EMPTY;
+			data = Symbol.EMPTY;
 			addStr = Q_;
 		}
 
@@ -718,7 +719,7 @@ public class RestHelperOrig {
 			e.printStackTrace();
 		}
 
-		return loadItem.getCode().replace(LoadItem.CODE, StaticData.SYMBOL_EMPTY) + data;
+		return loadItem.getCode().replace(LoadItem.CODE, Symbol.EMPTY) + data;
 	}
 
 	private static String convertToHex(byte[] data) {

@@ -1,6 +1,6 @@
 package com.chess.ui.engine;
 
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 
 import java.util.HashMap;
 
@@ -202,9 +202,9 @@ public class MoveCoder {
 		for(int i=0; i<length; i++) {
 			if (i%2 == 0) {
 				int number = (i) / 2 + 1;
-				builder.append(number).append(StaticData.SYMBOL_DOT);
+				builder.append(number).append(Symbol.DOT);
 			}
-			builder.append(movesMap.get(moveList.charAt(i))).append(StaticData.SYMBOL_SPACE);
+			builder.append(movesMap.get(moveList.charAt(i))).append(Symbol.SPACE);
 		}
 
 		return builder.toString();

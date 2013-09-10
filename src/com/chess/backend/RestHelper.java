@@ -8,6 +8,7 @@ import android.util.Log;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.utilities.AppUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -389,7 +390,7 @@ public class RestHelper {
 		safeList.addAll(nameValuePairs);
 		StringBuilder builder = new StringBuilder();
 		builder.append(Q_);
-		String separator = StaticData.SYMBOL_EMPTY;
+		String separator = Symbol.EMPTY;
 		for (NameValuePair pair : safeList) {
 			builder.append(separator);
 			separator = AND;
@@ -405,7 +406,7 @@ public class RestHelper {
 		List<NameValuePair> nameValuePairs = loadItem.getRequestParams();
 
 		StringBuilder encodedParams = new StringBuilder();
-		String separator = StaticData.SYMBOL_EMPTY;
+		String separator = Symbol.EMPTY;
 		for (NameValuePair pair : nameValuePairs) {
 			encodedParams.append(separator);
 			separator = AND;
@@ -495,7 +496,7 @@ public class RestHelper {
 					resultString = resultString.substring(firstIndex, lastIndex + 1);
 
 					Log.d(TAG, "SERVER RESPONSE: " + resultString);
-					if (resultString.contains("\"challenges\":[[]")) {
+					if (resultString.contains("\"challenges\":[[]")) {  // TODO remove before release
 						resultString = resultString.replace("[],", "").replace("[]]", "]");
 						Log.d(TAG, "After edit SERVER RESPONSE: " + resultString);
 					}
@@ -639,7 +640,7 @@ public class RestHelper {
 			data = formPostData(loadItem);
 		}
 		if (!TextUtils.isEmpty(loadItem.getFilePath())) {
-			data = StaticData.SYMBOL_EMPTY;
+			data = Symbol.EMPTY;
 		}
 		String signedPart = "154c4dc2f899fad29383c0cfa9905ce8143fc200";
 		try {
@@ -651,7 +652,7 @@ public class RestHelper {
 		}
 		String addStr = AND;
 		if (requestMethod.equals(POST)) {
-			data = StaticData.SYMBOL_EMPTY;
+			data = Symbol.EMPTY;
 			addStr = Q_;
 		}
 
@@ -666,7 +667,7 @@ public class RestHelper {
 			e.printStackTrace();
 		}
 
-		return loadItem.getCode().replace(LoadItem.CODE, StaticData.SYMBOL_EMPTY) + data;
+		return loadItem.getCode().replace(LoadItem.CODE, Symbol.EMPTY) + data;
 	}
 
 	private static String convertToHex(byte[] data) {

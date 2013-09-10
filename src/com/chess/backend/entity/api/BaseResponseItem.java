@@ -1,6 +1,6 @@
 package com.chess.backend.entity.api;
 
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 
 /**
  * Created with IntelliJ IDEA.
@@ -75,7 +75,7 @@ public class BaseResponseItem<ItemType> {
 	}
 
 	protected static String getSafeValue(String value) {
-		return value == null? StaticData.SYMBOL_EMPTY : value;
+		return value == null? Symbol.EMPTY : value;
 	}
 
 	protected static String getSafeValue(String value, String defaultValue) {

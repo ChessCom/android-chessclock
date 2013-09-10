@@ -52,10 +52,10 @@ public class PopupProgressFragment extends BasePopupDialogFragment {
 	public void onResume() {
 		super.onResume();
 //		String message = popupItem.getMessage(getActivity());
-//		if(message.equals(StaticData.SYMBOL_EMPTY)){
+//		if(message.equals(StaticData.EMPTY)){
 //			messageTxt.setVisibility(View.GONE);
 //		}else{
-//			if(message.contains(StaticData.SYMBOL_TAG)){
+//			if(message.contains(StaticData.TAG)){
 //				messageTxt.setText(Html.fromHtml(message));
 //			}else{
 //				messageTxt.setText(message);

@@ -99,6 +99,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private int paddingCode;
 	private boolean slideMenusEnabled;
 	protected boolean need2update = true;
+	protected boolean inSearch;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -416,11 +417,13 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			}
 			return string;
 		} else {
-			return StaticData.SYMBOL_EMPTY;
+			return Symbol.EMPTY;
 		}
 	}
 
 	public void onSearchQuery(String query) { }
+
+	public void onSearchAutoCompleteQuery(String query) { }
 
 	protected class ChessUpdateListener<ItemType> extends ActionBarUpdateListener<ItemType> {
 
@@ -643,8 +646,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			Session.setActiveSession(null);
 		}
 
-		preferencesEditor.putString(AppConstants.PASSWORD, StaticData.SYMBOL_EMPTY);
-		preferencesEditor.putString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
+		preferencesEditor.putString(AppConstants.PASSWORD, Symbol.EMPTY);
+		preferencesEditor.putString(AppConstants.USER_TOKEN, Symbol.EMPTY);
 		preferencesEditor.commit();
 
 		AppUtils.cancelNotifications(getActivity());

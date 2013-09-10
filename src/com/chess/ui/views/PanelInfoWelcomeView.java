@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
 import com.chess.utilities.AppUtils;
@@ -223,7 +223,7 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 		@Override
 		public void run() {
 			if (dotsAdded++ < 3) {
-				playerTxt.setText(playerTxt.getText() + StaticData.SYMBOL_DOT.trim());
+				playerTxt.setText(playerTxt.getText() + Symbol.DOT.trim());
 			} else {
 				dotsAdded = 0;
 				playerTxt.setText(R.string.thinking);

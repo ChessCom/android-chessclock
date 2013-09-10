@@ -12,12 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.model.DataHolder;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
@@ -235,8 +235,8 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
 			String[] moves = currentGame.getMoveList()
-					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, StaticData.SYMBOL_EMPTY)
-					.replaceAll(DOUBLE_SPACE, StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE);   // Start after "+" sign
+					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
+					.replaceAll(DOUBLE_SPACE, Symbol.SPACE).substring(1).split(Symbol.SPACE);   // Start after "+" sign
 
 			boardFace.setMovesCount(moves.length);
 			for (int i = 0, cnt = boardFace.getMovesCount(); i < cnt; i++) {
@@ -327,19 +327,17 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	@Override
 	public String getWhitePlayerName() {
 		if (currentGame == null)
-			return StaticData.SYMBOL_EMPTY;
+			return Symbol.EMPTY;
 		else
-			return currentGame.getWhiteUsername() + StaticData.SYMBOL_LEFT_PAR
-					+ currentGame.getWhiteRating() + StaticData.SYMBOL_RIGHT_PAR;
+			return currentGame.getWhiteUsername() +Symbol.wrapInPars(currentGame.getWhiteRating());
 	}
 
 	@Override
 	public String getBlackPlayerName() {
 		if (currentGame == null)
-			return StaticData.SYMBOL_EMPTY;
+			return Symbol.EMPTY;
 		else
-			return currentGame.getBlackUsername() + StaticData.SYMBOL_LEFT_PAR
-					+ currentGame.getBlackRating() + StaticData.SYMBOL_RIGHT_PAR;
+			return currentGame.getBlackUsername() + Symbol.wrapInPars(currentGame.getBlackRating());
 	}
 
 	@Override

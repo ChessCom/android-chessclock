@@ -17,7 +17,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.ForumPostItem;
 import com.chess.backend.entity.api.VacationItem;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
@@ -334,7 +334,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 				showToast(R.string.error);
 			}
 			replyView.setVisibility(View.GONE);
-			newPostEdt.setText(StaticData.SYMBOL_EMPTY);
+			newPostEdt.setText(Symbol.EMPTY);
 
 			// update page
 			requestPage(currentPage);

@@ -20,7 +20,7 @@ import com.chess.backend.LiveChessService;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
@@ -904,11 +904,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
-			return StaticData.SYMBOL_EMPTY;
+			return Symbol.EMPTY;
 		}
 		GameLiveItem currentGame = liveService.getGameItem();
 		if (currentGame == null)
-			return StaticData.SYMBOL_EMPTY;
+			return Symbol.EMPTY;
 		else
 			return currentGame.getWhiteUsername();
 	}
@@ -920,11 +920,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
-			return StaticData.SYMBOL_EMPTY;
+			return Symbol.EMPTY;
 		}
 		GameLiveItem currentGame = liveService.getGameItem();
 		if (currentGame == null)
-			return StaticData.SYMBOL_EMPTY;
+			return Symbol.EMPTY;
 		else
 			return currentGame.getBlackUsername();
 	}
@@ -984,16 +984,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		GameRatingClass gameRatingClass = liveService.getLastGame().getGameRatingClass();
 		String newRatingStr = getString(R.string.live);
 		if (gameRatingClass == GameRatingClass.Standard) {
-			newRatingStr += StaticData.SYMBOL_SPACE + getString(R.string.standard);
+			newRatingStr += Symbol.SPACE + getString(R.string.standard);
 		} else if (gameRatingClass == GameRatingClass.Blitz) {
-			newRatingStr += StaticData.SYMBOL_SPACE + getString(R.string.blitz);
+			newRatingStr += Symbol.SPACE + getString(R.string.blitz);
 		} else /*if (gameRatingClass == GameRatingClass.Lightning)*/ {
-			newRatingStr += StaticData.SYMBOL_SPACE + getString(R.string.lightning);
+			newRatingStr += Symbol.SPACE + getString(R.string.lightning);
 		}
 
 		String ratingChangeString = ratingChange > 0 ? "+" + ratingChange : "" + ratingChange;
-		String rating = currentPlayerNewRating + StaticData.SYMBOL_SPACE
-				+ StaticData.SYMBOL_LEFT_PAR + ratingChangeString + StaticData.SYMBOL_RIGHT_PAR;
+		String rating = currentPlayerNewRating + Symbol.SPACE + Symbol.wrapInPars(ratingChangeString);
 		yourRatingTxt.setText(rating);
 		ratingTitleTxt.setText(getString(R.string.new_game_rating_arg, newRatingStr));
 

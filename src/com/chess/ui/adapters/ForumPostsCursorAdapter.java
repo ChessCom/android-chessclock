@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.db.DbScheme;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
@@ -86,7 +86,7 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 
 		long timestamp = getLong(cursor, DbScheme.V_CREATE_DATE);
 		String lastCommentAgoStr = AppUtils.getMomentsAgoFromSeconds(timestamp, context);
-		holder.dateTxt.setText(lastCommentAgoStr + StaticData.SYMBOL_BULLET);
+		holder.dateTxt.setText(lastCommentAgoStr + Symbol.BULLET);
 
 		// set premium icon
 		int status = getInt(cursor, DbScheme.V_PREMIUM_STATUS);

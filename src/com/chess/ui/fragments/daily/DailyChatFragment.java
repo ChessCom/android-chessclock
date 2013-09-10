@@ -16,7 +16,7 @@ import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.entity.api.DailyChatItem;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyCurrentGameItem;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ChatMessagesAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -191,7 +191,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 					} else {
 						messagesAdapter.setItemsList(chatItems);
 					}
-					sendEdt.setText(StaticData.SYMBOL_EMPTY);
+					sendEdt.setText(Symbol.EMPTY);
 
 					listView.setSelection(chatItems.size() - 1);
 					updateList();
@@ -260,7 +260,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 		public void updateData(DailyCurrentGameItem returnedObj) {
 			super.updateData(returnedObj);
 
-			String message = StaticData.SYMBOL_EMPTY;
+			String message = Symbol.EMPTY;
 			try {
 				message = URLEncoder.encode(sendEdt.getText().toString(), HTTP.UTF_8);
 			} catch (UnsupportedEncodingException e) {

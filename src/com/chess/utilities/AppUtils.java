@@ -35,6 +35,7 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.model.GameListCurrentItem;
 import com.chess.ui.activities.MainFragmentFaceActivity;
@@ -389,14 +390,14 @@ public class AppUtils {
 		StringBuilder sb = new StringBuilder();
 
 		if (days > 0) {
-			sb.append(days).append(StaticData.SYMBOL_SPACE).append(context.getString(R.string.days)).append(StaticData.SYMBOL_SPACE);
+			sb.append(days).append(Symbol.SPACE).append(context.getString(R.string.days)).append(Symbol.SPACE);
 		} else if (hours > 0) {
-			if (!sb.toString().trim().equals(StaticData.SYMBOL_EMPTY))
-				sb.append(StaticData.SYMBOL_SPACE);
-			sb.append(hours).append(StaticData.SYMBOL_SPACE).append(context.getString(R.string.hours)).append(StaticData.SYMBOL_SPACE);
+			if (!sb.toString().trim().equals(Symbol.EMPTY))
+				sb.append(Symbol.SPACE);
+			sb.append(hours).append(Symbol.SPACE).append(context.getString(R.string.hours)).append(Symbol.SPACE);
 		} else if (minutes > 0) {
-			if (!sb.toString().trim().equals(StaticData.SYMBOL_EMPTY))
-				sb.append(StaticData.SYMBOL_SPACE);
+			if (!sb.toString().trim().equals(Symbol.EMPTY))
+				sb.append(Symbol.SPACE);
 			sb.append(context.getString(R.string.min_arg, minutes));
 		}
 
@@ -413,16 +414,16 @@ public class AppUtils {
 		StringBuilder sb = new StringBuilder();
 
 		if (months > 0) {
-			sb.append(months).append(StaticData.SYMBOL_SPACE).append(context.getString(R.string.months)).append(StaticData.SYMBOL_SPACE);
+			sb.append(months).append(Symbol.SPACE).append(context.getString(R.string.months)).append(Symbol.SPACE);
 		} else if (days > 0) {
-			sb.append(days).append(StaticData.SYMBOL_SPACE).append(context.getString(R.string.days)).append(StaticData.SYMBOL_SPACE);
+			sb.append(days).append(Symbol.SPACE).append(context.getString(R.string.days)).append(Symbol.SPACE);
 		} else if (hours > 0) {
-			if (!sb.toString().trim().equals(StaticData.SYMBOL_EMPTY))
-				sb.append(StaticData.SYMBOL_SPACE);
-			sb.append(hours).append(StaticData.SYMBOL_SPACE).append(context.getString(R.string.hours)).append(StaticData.SYMBOL_SPACE);
+			if (!sb.toString().trim().equals(Symbol.EMPTY))
+				sb.append(Symbol.SPACE);
+			sb.append(hours).append(Symbol.SPACE).append(context.getString(R.string.hours)).append(Symbol.SPACE);
 		} else if (minutes > 0) {
-			if (!sb.toString().trim().equals(StaticData.SYMBOL_EMPTY))
-				sb.append(StaticData.SYMBOL_SPACE);
+			if (!sb.toString().trim().equals(Symbol.EMPTY))
+				sb.append(Symbol.SPACE);
 			sb.append(context.getString(R.string.minutes_arg, minutes));
 		} else {
 			sb.append(context.getString(R.string.just_now));
@@ -440,17 +441,17 @@ public class AppUtils {
 		StringBuilder sb = new StringBuilder();
 
 		if (days > 0) {
-            sb.append(days).append(StaticData.SYMBOL_COLON);
+            sb.append(days).append(Symbol.COLON);
         }
 
 		if (hours > 0) {
-			sb.append(hours).append(StaticData.SYMBOL_COLON);
+			sb.append(hours).append(Symbol.COLON);
 		}
 
         if (minutes < 10) {
             sb.append(0);
         }
-        sb.append(minutes).append(StaticData.SYMBOL_COLON);
+        sb.append(minutes).append(Symbol.COLON);
 
         if (seconds < 10) {
             sb.append(0);
@@ -507,7 +508,7 @@ public class AppUtils {
 	public static class DeviceInfo {
 		public String MODEL;
 		public int SDK_API;
-		public String APP_VERSION_NAME = StaticData.SYMBOL_EMPTY;
+		public String APP_VERSION_NAME = Symbol.EMPTY;
 		public int APP_VERSION_CODE = 0;
 		public String android_id;
 		/*
@@ -523,13 +524,13 @@ public class AppUtils {
 			Log.i("requested MODEL = ", deviceInfo.MODEL);
 
 			deviceInfo.SDK_API = Build.VERSION.SDK_INT;
-			Log.i("requested SDK_INT = ", deviceInfo.SDK_API + StaticData.SYMBOL_EMPTY);
+			Log.i("requested SDK_INT = ", deviceInfo.SDK_API + Symbol.EMPTY);
 			// get version number and name
 			try {
 				PackageManager manager = context.getPackageManager();
 				PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
 				deviceInfo.APP_VERSION_CODE = info.versionCode;
-				Log.i("requested versionCode = ", deviceInfo.APP_VERSION_CODE + StaticData.SYMBOL_EMPTY);
+				Log.i("requested versionCode = ", deviceInfo.APP_VERSION_CODE + Symbol.EMPTY);
 
 				deviceInfo.APP_VERSION_NAME = info.versionName;
 				Log.i("requested versionName = ", deviceInfo.APP_VERSION_NAME);
@@ -700,10 +701,10 @@ public class AppUtils {
 				for(int i=0; i <= columnCount; i++) {
 					switch (cursor.getType(i)) {
 						case Cursor.FIELD_TYPE_INTEGER: {
-							builder.append(cursor.getColumnName(i)).append(DbDataManager.EQUALS_).append(cursor.getInt(i)).append(StaticData.SYMBOL_SPACE);
+							builder.append(cursor.getColumnName(i)).append(DbDataManager.EQUALS_).append(cursor.getInt(i)).append(Symbol.SPACE);
 						} break;
 						case Cursor.FIELD_TYPE_STRING: {
-							builder.append(cursor.getColumnName(i)).append(DbDataManager.EQUALS_).append(cursor.getString(i)).append(StaticData.SYMBOL_SPACE);
+							builder.append(cursor.getColumnName(i)).append(DbDataManager.EQUALS_).append(cursor.getString(i)).append(Symbol.SPACE);
 						} break;
 					}
 				}

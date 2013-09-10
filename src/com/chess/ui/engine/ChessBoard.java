@@ -12,7 +12,7 @@ package com.chess.ui.engine;
 import android.util.Log;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.SoundPlayer;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
 import org.apache.http.protocol.HTTP;
@@ -333,7 +333,7 @@ public class ChessBoard implements BoardFace {
 				blackCanCastle = false;
 			}
 
-			Log.d(fen, StaticData.SYMBOL_EMPTY + castleMask[2] + castleMask[3] + castleMask[0] + castleMask[1]);
+			Log.d(fen, Symbol.EMPTY + castleMask[2] + castleMask[3] + castleMask[0] + castleMask[1]);
 		}
 
 		String[] FEN = tmp[0].split(SYMBOL_SLASH);
@@ -1372,7 +1372,7 @@ public class ChessBoard implements BoardFace {
 	}
 
 	/*public String getMoveList() {
-		String output = StaticData.SYMBOL_EMPTY;
+		String output = StaticData.EMPTY;
 		int i;
 		for (i = 0; i < hply; i++) {
 			Move m = histDat[i].move;
@@ -1395,7 +1395,7 @@ public class ChessBoard implements BoardFace {
 				output.append(i / 2 + 1).append(MOVE_NUMBER_DOT_SEPARATOR);
 			}
 			output.append(histDat[i].notation);
-			output.append(StaticData.SYMBOL_SPACE);
+			output.append(Symbol.SPACE);
 		}
 		return output.toString();
 	}
@@ -1412,9 +1412,9 @@ public class ChessBoard implements BoardFace {
 	public String getMoveSAN() {
 		Move move = histDat[hply].move;
 		int piece = pieces[move.from];
-		String f = StaticData.SYMBOL_EMPTY;
-		String capture = StaticData.SYMBOL_EMPTY;
-		String promotion = StaticData.SYMBOL_EMPTY;
+		String f = Symbol.EMPTY;
+		String capture = Symbol.EMPTY;
+		String promotion = Symbol.EMPTY;
 		if (piece == 1) {
 			f = MoveParser.WHITE_KNIGHT;
 			//ambiguous
@@ -1506,7 +1506,7 @@ public class ChessBoard implements BoardFace {
 		}
 
 
-		String output = StaticData.SYMBOL_EMPTY;
+		String output = Symbol.EMPTY;
 		try {
 			String to = MoveParser.positionToString(move.to);
 			if (move.isCastling()) {
@@ -1685,7 +1685,7 @@ public class ChessBoard implements BoardFace {
 				try {
 					pieceMat[color[i]] += pieceValue[pieces[i]];
 				} catch (Exception e) {
-					Log.e("I!!!!!!!!:", StaticData.SYMBOL_EMPTY + i + StaticData.SYMBOL_SPACE + e.toString());
+					Log.e("I!!!!!!!!:", Symbol.EMPTY + i + Symbol.SPACE + e.toString());
 				}
 			}
 		}
@@ -2126,10 +2126,10 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public void setupBoard(String FEN) {
-		if (!FEN.equals(StaticData.SYMBOL_EMPTY)) {
+		if (!FEN.equals(Symbol.EMPTY)) {
 			genCastlePos(FEN);
 			MoveParser.fenParse(FEN, this);
-			String[] tmp = FEN.split(StaticData.SYMBOL_SPACE);
+			String[] tmp = FEN.split(Symbol.SPACE);
 			Log.d("testtactic", "FEN " + FEN);
 			Log.d("testtactic", "tmp[1].trim() " + tmp[1].trim());
 			if (tmp.length > 1) {

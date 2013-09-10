@@ -1,6 +1,6 @@
 package com.chess.backend.entity.api.stats;
 
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,7 +19,7 @@ public class BestWin {
 	}
 
 	public String getUsername() {
-		return username == null? StaticData.SYMBOL_EMPTY: username;
+		return username == null? Symbol.EMPTY : username;
 	}
 
 	public long getGameId() {

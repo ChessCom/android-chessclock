@@ -29,7 +29,7 @@ import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.views.drawables.ActionBarBackgroundDrawable;
 import com.chess.ui.views.drawables.BadgeDrawable;
@@ -524,7 +524,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 
 				showSearchPanel(false);
 				String query = textView.getText().toString().trim();
-				if (!query.equals(StaticData.SYMBOL_EMPTY)) {
+				if (!query.equals(Symbol.EMPTY)) {
 					mActivity.onSearchQuery(query);
 				}
 				return true;
@@ -543,7 +543,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 
 			EditText searchEdit = (EditText) mActivity.findViewById(R.id.actionbar_compat_item_search_edit);
 			String query = searchEdit.getText().toString().trim();
-			if (!query.equals(StaticData.SYMBOL_EMPTY))
+			if (!query.equals(Symbol.EMPTY))
 				mActivity.onSearchQuery(query);
 
 		} else if (view.getId() == R.id.done) {

@@ -26,7 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.db.DbDataManager;
 
 import java.util.LinkedHashMap;
@@ -84,7 +84,7 @@ public abstract class SectionedCursorLimitedAdapter extends ItemsCursorAdapter {
 
 	private void calculateSectionHeaders() {
 
-		String previous = StaticData.SYMBOL_EMPTY;
+		String previous = Symbol.EMPTY;
 		int sectionNumber = 0;
 
 		final Cursor cursor = getCursor();

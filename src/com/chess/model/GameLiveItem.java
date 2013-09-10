@@ -1,7 +1,7 @@
 package com.chess.model;
 
 import android.os.Parcel;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameRatingClass;
 
@@ -21,11 +21,11 @@ public class GameLiveItem extends BaseGameItem {
 		whiteUsername = lccGame.getWhitePlayer().getUsername().trim();
 		blackUsername = lccGame.getBlackPlayer().getUsername().trim();
 
-		moveList = StaticData.SYMBOL_EMPTY;
+		moveList = Symbol.EMPTY;
 
 		final Iterator movesIterator = lccGame.getMoves().iterator();
 		for (int i = 0; i <= moveIndex; i++) {
-            moveList += movesIterator.next() + StaticData.SYMBOL_SPACE;
+            moveList += movesIterator.next() + Symbol.SPACE;
 		}
 
 		Integer whiteRating = 0;

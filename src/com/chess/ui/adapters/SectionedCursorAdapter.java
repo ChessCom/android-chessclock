@@ -26,7 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 
 import java.util.LinkedHashMap;
 // Do not remove until release!
@@ -79,7 +79,7 @@ public abstract class SectionedCursorAdapter extends ItemsCursorAdapter {
 	private void calculateSectionHeaders() {
 		int i = 0;
 
-		String previous = StaticData.SYMBOL_EMPTY;
+		String previous = Symbol.EMPTY;
 		int count = 0;
 
 		final Cursor cursor = getCursor();

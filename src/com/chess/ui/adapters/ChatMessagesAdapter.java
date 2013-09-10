@@ -40,7 +40,7 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 
 		if (item.isMine()) {
 //			holder.text.setTextColor(ownerColor);
-//			holder.text.setText(username + StaticData.SYMBOL_COLON + StaticData.SYMBOL_SPACE + item.getContent());
+//			holder.text.setText(username + StaticData.COLON + StaticData.SPACE + item.getContent());
 			holder.text.setText(item.getContent());
 			holder.text.setBackgroundResource(R.drawable.img_chat_buble_grey);
 
@@ -49,7 +49,7 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 			holder.opponentImg.setVisibility(View.GONE);
 		} else {
 //			holder.text.setTextColor(opponentColor);
-//			holder.text.setText(opponentName + StaticData.SYMBOL_COLON + StaticData.SYMBOL_SPACE + item.getContent());
+//			holder.text.setText(opponentName + StaticData.COLON + StaticData.SPACE + item.getContent());
 			holder.text.setText(item.getContent());
 			holder.text.setBackgroundResource(R.drawable.img_chat_buble_white);
 

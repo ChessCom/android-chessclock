@@ -13,7 +13,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.SuccessItem;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
@@ -122,8 +122,8 @@ public class ForumNewTopicFragment extends CommonLogicFragment implements TextVi
 		switch (item.getItemId()) {
 			case R.id.menu_cancel:
 				// clear fields
-				topicNameEdt.setText(StaticData.SYMBOL_EMPTY);
-				topicBodyEdt.setText(StaticData.SYMBOL_EMPTY);
+				topicNameEdt.setText(Symbol.EMPTY);
+				topicBodyEdt.setText(Symbol.EMPTY);
 				return true;
 			case R.id.menu_add:
 				createTopic();

@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import android.view.View;
 import android.widget.LinearLayout;
 import com.chess.R;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 
 /**
  * PopupItem class
@@ -29,8 +29,8 @@ public class PopupItem implements Parcelable {
     public PopupItem() {
         this.positiveBtnId = R.string.ok;
         this.negativeBtnId = R.string.cancel;
-        title = StaticData.SYMBOL_EMPTY;
-        message = StaticData.SYMBOL_EMPTY;
+        title = Symbol.EMPTY;
+        message = Symbol.EMPTY;
     }
 
     public int getPositiveBtnId() {
@@ -50,7 +50,7 @@ public class PopupItem implements Parcelable {
 	}
 
     public String getMessage(Context context) {
-        if(message.equals(StaticData.SYMBOL_EMPTY) && messageId != 0){
+        if(message.equals(Symbol.EMPTY) && messageId != 0){
             return context.getString(messageId);
         }else{
             return message;
@@ -71,7 +71,7 @@ public class PopupItem implements Parcelable {
     }
 
     public String getTitle(Context context) {
-        if(title.equals(StaticData.SYMBOL_EMPTY) && titleId != 0){
+        if(title.equals(Symbol.EMPTY) && titleId != 0){
             return context.getString(titleId);
         }else{
             return title;
@@ -85,12 +85,12 @@ public class PopupItem implements Parcelable {
 
     public void setTitle(int titleId) {
         this.titleId = titleId;
-		title = StaticData.SYMBOL_EMPTY;
+		title = Symbol.EMPTY;
     }
 
     public void setMessage(int messageId) {
         this.messageId = messageId;
-		message = StaticData.SYMBOL_EMPTY;
+		message = Symbol.EMPTY;
     }
 
     public View getCustomView() {

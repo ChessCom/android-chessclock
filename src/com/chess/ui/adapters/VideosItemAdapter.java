@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.api.VideoItem;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
@@ -71,8 +71,8 @@ public class VideosItemAdapter extends ItemsAdapter<VideoItem.Data> {
 		String firstName = item.getFirstName();
 		CharSequence chessTitle = item.getChessTitle();
 		String lastName =  item.getLastName();
-		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
-				+ firstName + StaticData.SYMBOL_SPACE + lastName;
+		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + Symbol.SPACE
+				+ firstName + Symbol.SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		holder.authorTxt.setText(authorStr);
 		holder.durationTxt.setText(DURATION_DIVIDER +

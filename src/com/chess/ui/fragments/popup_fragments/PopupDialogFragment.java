@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.model.PopupItem;
 import com.chess.ui.interfaces.PopupDialogFace;
 
@@ -83,7 +83,7 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
 
 		String message = popupItem.getMessage(getActivity());
 		if (!TextUtils.isEmpty(message)) {
-			if(message.contains(StaticData.SYMBOL_TAG)){
+			if(message.contains(Symbol.TAG)){
 				messageTxt.setText(Html.fromHtml(message));
 			}else{
 				messageTxt.setText(message);

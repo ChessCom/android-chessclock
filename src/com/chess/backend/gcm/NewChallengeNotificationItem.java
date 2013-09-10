@@ -1,6 +1,6 @@
 package com.chess.backend.gcm;
 
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,7 +34,7 @@ public class NewChallengeNotificationItem {
 	}
 
 	public String getAvatar() {
-		return avatar_url == null ? StaticData.SYMBOL_EMPTY : avatar_url;
+		return avatar_url == null ? Symbol.EMPTY : avatar_url;
 	}
 
 	public void setAvatar(String avatar) {

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
@@ -16,10 +17,12 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.entity.api.FriendsItem;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.db.QueryParams;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveFriendsListTask;
 import com.chess.ui.adapters.FriendsCursorAdapter;
@@ -51,7 +54,10 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		friendsAdapter = new FriendsCursorAdapter(this, null);
+		QueryFilterProvider queryFilterProvider = new QueryFilterProvider();
+		friendsAdapter.setFilterQueryProvider(queryFilterProvider);
 	}
 
 	@Override
@@ -81,8 +87,8 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	@Override
 	public void onResume() {
 		super.onResume();
-		init();
 
+		init();
 		if (need2update){
 			boolean haveSavedData = DbDataManager.haveSavedFriends(getActivity(), getUsername());
 
@@ -97,12 +103,12 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 				loadFromDb();
 			}
 		}
-
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
+
 		releaseResources();
 	}
 
@@ -110,7 +116,6 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		friendsCursorUpdateListener = new FriendsCursorUpdateListener();
 		saveFriendsListUpdateListener = new SaveFriendsListUpdateListener();
 		friendsUpdateListener = new FriendsUpdateListener();
-
 	}
 
 	private void updateData() {
@@ -133,7 +138,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 			// show popup
 			popupItem.setPositiveBtnId(R.string.yes);
 			popupItem.setNegativeBtnId(R.string.no);
-			String title = getString(R.string.challenge) + StaticData.SYMBOL_SPACE + opponentName + StaticData.SYMBOL_QUESTION;
+			String title = getString(R.string.challenge) + Symbol.SPACE + opponentName + Symbol.QUESTION;
 			showPopupDialog(title, CREATE_CHALLENGE_TAG);
 
 		} else if (view.getId() == R.id.messageImgBtn) {
@@ -205,7 +210,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 	private void loadFromDb() {
 		new LoadDataFromDbTask(friendsCursorUpdateListener,
-				DbHelper.getTableForUser(getAppData().getUsername(), DbScheme.Tables.FRIENDS),
+				DbHelper.getTableForUser(getUsername(), DbScheme.Tables.FRIENDS),
 				getContentResolver()).executeTask();
 	}
 
@@ -222,7 +227,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 			super.updateData(returnedObj);
 
 			friendsAdapter.changeCursor(returnedObj);
-			listView.setAdapter(friendsAdapter);
+			need2update = false;
 		}
 
 		@Override
@@ -245,6 +250,48 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onSearchAutoCompleteQuery(String query) {
+		if (!inSearch) {
+			inSearch = true;
+			Cursor cursor = friendsAdapter.runQueryOnBackgroundThread(query);
+			if (cursor != null) {
+				friendsAdapter.changeCursor(cursor);
+			}
+			inSearch = false;
+		}
+	}
+
+	private class QueryFilterProvider implements FilterQueryProvider {
+
+		@Override
+		public Cursor runQuery(CharSequence constraint) {
+			if (getActivity() == null) { // if fragment was closed
+				return null;
+			}
+
+			String query = (String) constraint;
+			String[] selectionArgs = new String[] {DbScheme.V_USER, DbScheme.V_USERNAME, DbScheme.V_LOCATION};
+			String selection = DbDataManager.concatLikeArguments(selectionArgs);
+
+			String[] arguments = new String[selectionArgs.length];
+			arguments[0] = DbDataManager.concatArguments(query);
+
+			for (int i = 1; i < selectionArgs.length; i++) {
+				arguments[i] = DbDataManager.anyLikeMatch(query);
+			}
+
+			QueryParams queryParams = new QueryParams();
+			queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()]);
+			queryParams.setSelection(selection);
+			queryParams.setArguments(arguments);
+
+			Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
+			cursor.moveToFirst();
+			return cursor;
+		}
 	}
 
 	private void releaseResources() {

@@ -21,7 +21,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.live.client.PieceColor;
 import com.chess.model.CompEngineItem;
 import com.chess.model.PopupItem;
@@ -759,14 +759,14 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		public String composeMessage() {
 			String vsStr = getString(R.string.vs);
-			String space = StaticData.SYMBOL_SPACE;
+			String space = Symbol.SPACE;
 			return getAppData().getUsername()+ space + vsStr + space + getString(R.string.vs_computer)
 					+ " - " + getString(R.string.chess) + space	+ getString(R.string.via_chesscom);
 		}
 
 		public String getTitle() {
 			String vsStr = getString(R.string.vs);
-			String space = StaticData.SYMBOL_SPACE;
+			String space = Symbol.SPACE;
 			return "Chess: " + getAppData().getUsername()+ space + vsStr + space + getString(R.string.vs_computer); // TODO adjust i18n
 		}
 	}

@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
 
@@ -176,7 +176,7 @@ public class NotationView extends LinearLayout {
 				String notation = originalNotations[currentPosition];
 				if (currentPosition % 2 == 0) {
 					int number = (currentPosition) / 2 + 1;
-					notation = number + StaticData.SYMBOL_DOT + notation;
+					notation = number + Symbol.DOT + notation;
 				}
 
 				textView.setText(notation);
@@ -199,7 +199,7 @@ public class NotationView extends LinearLayout {
 				RoboTextView textView = new RoboTextView(getContext());
 
 				textView.setId(NOTATION_ID);
-				textView.setText(StaticData.SYMBOL_SPACE);
+				textView.setText(Symbol.SPACE);
 				textView.setTextSize(textSize);
 				textView.setFont(FontsHelper.HELV_NEUE_FONT);
 				textView.setPadding(textPadding, textPadding, textPadding, textPadding);
@@ -242,14 +242,14 @@ public class NotationView extends LinearLayout {
 
 						if (currentPosition % 2 == 0) {
 							int number = (currentPosition) / 2 + 1;
-							notation = number + StaticData.SYMBOL_DOT + notation;
+							notation = number + Symbol.DOT + notation;
 						}
 
 						textView.setText(notation);
 						textView.setTag(R.id.list_item_id, currentPosition);
 						textView.setOnClickListener(mOnButtonClicked);
 					} else if (newNotations) {
-						textView.setText(StaticData.SYMBOL_SPACE);
+						textView.setText(Symbol.SPACE);
 					}
 
 					if (currentPosition == selectedPosition) {

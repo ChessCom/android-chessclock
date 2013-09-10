@@ -19,7 +19,7 @@ import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RelLayout;
 import com.chess.RoboTextView;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
@@ -376,7 +376,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 	public void setPlayerRating(String playerRating) {
 		if (playerRating != null)
-			playerRatingTxt.setText(StaticData.SYMBOL_LEFT_PAR + playerRating + StaticData.SYMBOL_RIGHT_PAR);
+			playerRatingTxt.setText(Symbol.wrapInPars(playerRating));
 	}
 
 	public void setPlayerFlag(String country) {
@@ -440,7 +440,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		@Override
 		public void run() {
 			if (dotsAdded++ < 3) {
-				playerTxt.setText(playerTxt.getText() + StaticData.SYMBOL_DOT.trim());
+				playerTxt.setText(playerTxt.getText() + Symbol.DOT.trim());
 			} else {
 				dotsAdded = 0;
 				playerTxt.setText(R.string.thinking);

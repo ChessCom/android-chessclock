@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
@@ -18,6 +19,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.db.DbHelper;
+import com.chess.db.QueryParams;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveConversationsInboxTask;
 import com.chess.ui.adapters.ConversationsCursorAdapter;
@@ -34,9 +36,9 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 	private ListView listView;
 	private ConversationsUpdateListener conversationsUpdateListener;
 	private SaveConversationsListener saveConversationsListener;
-	private ConversationsCursorAdapter conversationsCursorAdapter;
-	private TextView emptyView;
 	private ConversationCursorUpdateListener conversationCursorUpdateListener;
+	private ConversationsCursorAdapter conversationsAdapter;
+	private TextView emptyView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,34 +59,37 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		setTitle(R.string.messages);
 
 		listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(conversationsCursorAdapter);
+		listView.setAdapter(conversationsAdapter);
 		listView.setOnItemClickListener(this);
 
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		// adjust actionBar icons
+		getActivityFace().showActionMenu(R.id.menu_search, true);
 		getActivityFace().showActionMenu(R.id.menu_edit, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
-
-		setTitlePadding(ONE_ICON);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.getInstance().CMD_MESSAGES_INBOX);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		if (need2update) {
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_MESSAGES_INBOX);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
-		new RequestJsonTask<ConversationItem>(conversationsUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<ConversationItem>(conversationsUpdateListener).executeTask(loadItem);
+		}
 	}
 
 	private void init() {
 		conversationsUpdateListener = new ConversationsUpdateListener();
 		saveConversationsListener = new SaveConversationsListener();
-		conversationsCursorAdapter = new ConversationsCursorAdapter(getActivity(), null);
+		conversationsAdapter = new ConversationsCursorAdapter(getActivity(), null);
+		QueryFilterProvider queryFilterProvider = new QueryFilterProvider();
+		conversationsAdapter.setFilterQueryProvider(queryFilterProvider);
 		conversationCursorUpdateListener = new ConversationCursorUpdateListener();
 	}
 
@@ -96,6 +101,48 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onSearchAutoCompleteQuery(String query) {
+		if (!inSearch) {
+			inSearch = true;
+			Cursor cursor = conversationsAdapter.runQueryOnBackgroundThread(query);
+			if (cursor != null) {
+				conversationsAdapter.changeCursor(cursor);
+			}
+			inSearch = false;
+		}
+	}
+
+	private class QueryFilterProvider implements FilterQueryProvider {
+
+		@Override
+		public Cursor runQuery(CharSequence constraint) {
+			if (getActivity() == null) { // if fragment was closed
+				return null;
+			}
+
+			String query = (String) constraint;
+			String[] selectionArgs = new String[] {DbScheme.V_USER, DbScheme.V_OTHER_USER_USERNAME, DbScheme.V_LAST_MESSAGE_CONTENT};
+			String selection = DbDataManager.concatLikeArguments(selectionArgs);
+
+			String[] arguments = new String[selectionArgs.length];
+			arguments[0] = DbDataManager.concatArguments(query);
+
+			for (int i = 1; i < selectionArgs.length; i++) {
+				arguments[i] = DbDataManager.anyLikeMatch(query);
+			}
+
+			QueryParams queryParams = new QueryParams();
+			queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.CONVERSATIONS_INBOX.ordinal()]);
+			queryParams.setSelection(selection);
+			queryParams.setArguments(arguments);
+
+			Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
+			cursor.moveToFirst();
+			return cursor;
+		}
 	}
 
 	@Override
@@ -138,11 +185,8 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
-			if (returnedObj.moveToFirst()) {
-				conversationsCursorAdapter.changeCursor(returnedObj);
-			} else {
-				showToast("Internal error");
-			}
+			conversationsAdapter.changeCursor(returnedObj);
+			need2update = false;
 		}
 
 		@Override
@@ -169,6 +213,5 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 			listView.setVisibility(View.VISIBLE);
 		}
 	}
-
 
 }

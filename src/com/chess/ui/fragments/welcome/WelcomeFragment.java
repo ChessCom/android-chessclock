@@ -25,7 +25,7 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.RegisterItem;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.FlurryData;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.FragmentTabsFace;
@@ -522,7 +522,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 				{ // Terms link handle
 					TextView termsLinkTxt = (TextView) view.findViewById(R.id.termsLinkTxt);
 					termsLinkTxt.setClickable(true);
-					String termsText = getString(R.string.new_by_signing_up_accept_mobile) + StaticData.SYMBOL_NEW_STR + StaticData.SYMBOL_NEW_STR
+					String termsText = getString(R.string.new_by_signing_up_accept_mobile) + Symbol.NEW_STR + Symbol.NEW_STR
 							+ getString(R.string.new_by_signing_up_accept_mobile1) ;
 					termsLinkTxt.setText(Html.fromHtml(termsText));
 					Linkify.addLinks(termsLinkTxt, Linkify.WEB_URLS);
@@ -568,7 +568,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 			return true;
 		}
 
-		if (email.equals(StaticData.SYMBOL_EMPTY)) {
+		if (email.equals(Symbol.EMPTY)) {
 			emailEdt.setError(getString(R.string.can_not_be_empty));
 			emailEdt.requestFocus();
 			return false;

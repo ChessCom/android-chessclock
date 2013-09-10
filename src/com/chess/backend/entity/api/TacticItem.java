@@ -1,7 +1,7 @@
 package com.chess.backend.entity.api;
 
 
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.utilities.AppUtils;
 
 import java.util.List;
@@ -175,14 +175,14 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.Data>> {
 		public String getPositiveScore() {
 			int userRatingChangeInt = resultItem.getUserRatingChange();
 			String userRatingChange = String.valueOf(userRatingChangeInt);
-			String plusSymbol = (userRatingChangeInt > 0) ? StaticData.SYMBOL_PLUS : StaticData.SYMBOL_EMPTY;
-			return StaticData.SYMBOL_LEFT_PAR + plusSymbol + userRatingChange + StaticData.SYMBOL_RIGHT_PAR;
+			String plusSymbol = (userRatingChangeInt > 0) ? Symbol.PLUS : Symbol.EMPTY;
+			return Symbol.wrapInPars(plusSymbol + userRatingChange);
 		}
 
 		public String getNegativeScore() {
 			int userRatingChangeInt = resultItem.getUserRatingChange();
 			String userRatingChange = String.valueOf(userRatingChangeInt);
-			return StaticData.SYMBOL_LEFT_PAR + userRatingChange + StaticData.SYMBOL_RIGHT_PAR;
+			return Symbol.wrapInPars(userRatingChange);
 		}
 	}
 

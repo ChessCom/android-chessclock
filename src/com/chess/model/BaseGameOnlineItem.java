@@ -1,7 +1,7 @@
 package com.chess.model;
 
 import android.os.Parcel;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 
 /**
  * @author alien_roger
@@ -18,11 +18,11 @@ public abstract class BaseGameOnlineItem extends BaseGameItem{
 	protected boolean isMyTurn;
 
 	protected BaseGameOnlineItem() {
-		opponentName = StaticData.SYMBOL_EMPTY;
+		opponentName = Symbol.EMPTY;
 		opponentRating = 0;
 		gameType = 1;
-		lastMoveFromSquare = StaticData.SYMBOL_EMPTY;
-		lastMoveToSquare = StaticData.SYMBOL_EMPTY;
+		lastMoveFromSquare = Symbol.EMPTY;
+		lastMoveToSquare = Symbol.EMPTY;
 	}
 
 	protected BaseGameOnlineItem(String[] values){

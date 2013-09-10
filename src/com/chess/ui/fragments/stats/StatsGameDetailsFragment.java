@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.api.stats.GraphData;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
@@ -266,7 +266,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 				if (percentile.equals(String.valueOf(0.f))) {
 					percentileValueTxt.setText(R.string.not_available);
 				} else {
-					percentileValueTxt.setText(percentile + StaticData.SYMBOL_PERCENT);
+					percentileValueTxt.setText(percentile + Symbol.PERCENT);
 				}
 			}
 
@@ -315,8 +315,8 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 
 			{// timeouts
 				String timeoutsStr = getString(R.string.timeouts_last_90_days);
-				timeoutsStr = timeoutsStr.replace(StaticData.SYMBOL_LEFT_PAR, GREY_COLOR_DIVIDER + StaticData.SYMBOL_LEFT_PAR);
-				timeoutsStr = timeoutsStr.replace(StaticData.SYMBOL_RIGHT_PAR, StaticData.SYMBOL_RIGHT_PAR + GREY_COLOR_DIVIDER);
+				timeoutsStr = timeoutsStr.replace(Symbol.LEFT_PAR, GREY_COLOR_DIVIDER + Symbol.LEFT_PAR);
+				timeoutsStr = timeoutsStr.replace(Symbol.RIGHT_PAR, Symbol.RIGHT_PAR + GREY_COLOR_DIVIDER);
 				CharSequence timeoutChr = timeoutsStr;
 				timeoutChr = AppUtils.setSpanBetweenTokens(timeoutChr, GREY_COLOR_DIVIDER, foregroundSpan);
 				timeoutsLabelTxt.setText(timeoutChr);

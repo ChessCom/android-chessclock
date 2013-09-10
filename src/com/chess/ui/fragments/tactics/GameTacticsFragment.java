@@ -23,6 +23,7 @@ import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.GetOfflineTacticsBatchTask;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -271,7 +272,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				invalidateGameScreen();
 			} else {
 				if (tacticItem.isRetry() || noNetwork) {
-					String newRatingStr = StaticData.SYMBOL_EMPTY;
+					String newRatingStr = Symbol.EMPTY;
 					if (tacticItem.getResultItem() != null) {
 						newRatingStr = tacticItem.getPositiveScore();
 					}
@@ -294,7 +295,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				invalidateGameScreen();
 			} else {
 				if (tacticItem.isRetry() || noNetwork) {
-					String newRatingStr = StaticData.SYMBOL_EMPTY;
+					String newRatingStr = Symbol.EMPTY;
 					if (tacticItem.getResultItem() != null) {
 						newRatingStr = tacticItem.getPositiveScore();
 					}
@@ -306,7 +307,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			}
 		} else { // wrong
 			if (tacticItem.isRetry() || noNetwork) {
-				String newRatingStr = StaticData.SYMBOL_EMPTY;
+				String newRatingStr = Symbol.EMPTY;
 				if (tacticItem.getResultItem() != null) {
 					newRatingStr = tacticItem.getNegativeScore();
 				}
@@ -595,7 +596,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				tacticResultItem.setUser(tacticItem.getUser());
 				tacticItem.setResultItem(tacticResultItem);
 			}
-			String newRatingStr = StaticData.SYMBOL_EMPTY;
+			String newRatingStr = Symbol.EMPTY;
 			switch (listenerCode) {
 				case CORRECT_RESULT:
 					if (tacticItem.getResultItem() != null) {
@@ -636,10 +637,10 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				if (resultCode == StaticData.NO_NETWORK) {
 					switch (listenerCode) {
 						case CORRECT_RESULT:
-							showCorrectViews(StaticData.SYMBOL_EMPTY);
+							showCorrectViews(Symbol.EMPTY);
 							break;
 						case WRONG_RESULT:
-							showWrongViews(StaticData.SYMBOL_EMPTY);
+							showWrongViews(Symbol.EMPTY);
 							break;
 					}
 					handleErrorRequest();
@@ -658,7 +659,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		getBoardFace().setFinished(true);
 
 		moveResultTxt.setVisibility(View.VISIBLE);
-		moveResultTxt.setText(getString(R.string.correct) + StaticData.SYMBOL_EX);
+		moveResultTxt.setText(getString(R.string.correct) + Symbol.EX);
 
 		handler.postDelayed(hideMoveResultTask, MOVE_RESULT_HIDE_DELAY);
 	}

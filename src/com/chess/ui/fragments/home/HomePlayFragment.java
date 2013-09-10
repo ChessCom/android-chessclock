@@ -14,7 +14,7 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
@@ -411,7 +411,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	}
 
 	private String getLiveModeButtonLabel(String label) {
-		if (label.contains(StaticData.SYMBOL_SLASH)) { // "5 | 2"
+		if (label.contains(Symbol.SLASH)) { // "5 | 2"
 			return label;
 		} else { // "10 min"
 			return getString(R.string.min_arg, label);

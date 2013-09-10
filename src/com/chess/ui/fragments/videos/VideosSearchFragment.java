@@ -21,7 +21,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.CommonViewedItem;
 import com.chess.backend.entity.api.VideoItem;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -98,8 +98,8 @@ public class VideosSearchFragment extends CommonLogicFragment implements MultiDi
 			verifyAndSaveViewedState();
 		}
 
-		lastKeyword = StaticData.SYMBOL_EMPTY;
-		lastCategory = StaticData.SYMBOL_EMPTY;
+		lastKeyword = Symbol.EMPTY;
+		lastCategory = Symbol.EMPTY;
 	}
 
 	@Override
@@ -317,7 +317,7 @@ public class VideosSearchFragment extends CommonLogicFragment implements MultiDi
 
 			List<CommonFeedCategoryItem.Data> dataList = returnedObj.getData();
 			for (CommonFeedCategoryItem.Data category : dataList) {
-				category.setName(category.getName().replace(StaticData.SYMBOL_AMP_CODE, StaticData.SYMBOL_AMP));
+				category.setName(category.getName().replace(Symbol.AMP_CODE, Symbol.AMP));
 			}
 
 			new SaveVideoCategoriesTask(saveVideoCategoriesUpdateListener, dataList, getContentResolver()).executeTask();

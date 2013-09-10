@@ -185,7 +185,7 @@ public class LccGameListener implements GameListener {
                         ", game.id=" + game.getId() + ", rejector=" + rejectorUsername + ", game=" + game);
         if (!rejectorUsername.equals(lccHelper.getUser().getUsername())) {
 			lccHelper.getLccEventListener().onInform(context.getString(R.string.draw_declined),
-					rejectorUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.has_declined_draw));
+					rejectorUsername + StaticData.SPACE + context.getString(R.string.has_declined_draw));
         }
     }*/
 

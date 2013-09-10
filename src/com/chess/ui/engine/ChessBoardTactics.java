@@ -1,7 +1,7 @@
 package com.chess.ui.engine;
 
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.ui.interfaces.boards.TacticBoardFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
 
@@ -52,10 +52,10 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 
 	@Override
 	public void setTacticMoves(String tacticMoves) {
-		this.tacticMoves = tacticMoves.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, StaticData.SYMBOL_EMPTY)
-				.replaceAll("[.]", StaticData.SYMBOL_EMPTY)
-				.replaceAll("  ", StaticData.SYMBOL_SPACE)
-				.substring(1).split(StaticData.SYMBOL_SPACE);
+		this.tacticMoves = tacticMoves.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
+				.replaceAll("[.]", Symbol.EMPTY)
+				.replaceAll("  ", Symbol.SPACE)
+				.substring(1).split(Symbol.SPACE);
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 		}
 
 		Move move = histDat[lastIndex].move; // get last move
-		String piece = StaticData.SYMBOL_EMPTY;
+		String piece = Symbol.EMPTY;
 		int pieceCode = pieces[move.to];
 		if (pieceCode == 1) { // set piece name
 			piece = MoveParser.WHITE_KNIGHT;

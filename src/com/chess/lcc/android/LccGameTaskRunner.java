@@ -4,6 +4,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.FlurryData;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.live.client.Game;
 import com.chess.live.client.LiveChessClient;
@@ -41,7 +42,7 @@ public class LccGameTaskRunner {
 
 		@Override
 		protected Integer doTheTask(Game... game) {
-			liveChessClient.makeDraw(game[0], StaticData.SYMBOL_EMPTY);
+			liveChessClient.makeDraw(game[0], Symbol.EMPTY);
 			return StaticData.RESULT_OK;
 		}
 	}
@@ -57,7 +58,7 @@ public class LccGameTaskRunner {
 
 		@Override
 		protected Integer doTheTask(Game... game) {
-			liveChessClient.makeResign(game[0], StaticData.SYMBOL_EMPTY);
+			liveChessClient.makeResign(game[0], Symbol.EMPTY);
 			return StaticData.RESULT_OK;
 		}
 	}
@@ -73,7 +74,7 @@ public class LccGameTaskRunner {
 
 		@Override
 		protected Integer doTheTask(Game... game) {
-			liveChessClient.abortGame(game[0], StaticData.SYMBOL_EMPTY);
+			liveChessClient.abortGame(game[0], Symbol.EMPTY);
 			return StaticData.RESULT_OK;
 		}
 	}
@@ -89,7 +90,7 @@ public class LccGameTaskRunner {
 
 		@Override
 		protected Integer doTheTask(Game... game) {
-			liveChessClient.rejectDraw(game[0], StaticData.SYMBOL_EMPTY);
+			liveChessClient.rejectDraw(game[0], Symbol.EMPTY);
 			return StaticData.RESULT_OK;
 		}
 	}

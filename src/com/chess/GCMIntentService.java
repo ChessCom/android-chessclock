@@ -27,15 +27,12 @@ import android.util.Log;
 import android.widget.Toast;
 import com.chess.backend.gcm.*;
 import com.chess.backend.RestHelper;
+import com.chess.backend.statics.*;
 import com.chess.db.DbDataManager;
 import com.chess.model.DataHolder;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.GcmItem;
 import com.chess.backend.exceptions.InternalErrorException;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.IntentConstants;
-import com.chess.backend.statics.StaticData;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
 import com.chess.utilities.AppUtils;
@@ -96,10 +93,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 		if (GCMRegistrar.isRegisteredOnServer(context)) {
 			preferences = appData.getPreferences();
 			// TODO temporary unregister only if user loged out
-			String realToken = preferences.getString(AppConstants.USER_TOKEN, StaticData.SYMBOL_EMPTY);
-			if (realToken.equals(StaticData.SYMBOL_EMPTY)) {
+			String realToken = preferences.getString(AppConstants.USER_TOKEN, Symbol.EMPTY);
+			if (realToken.equals(Symbol.EMPTY)) {
 
-				String token = preferences.getString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
+				String token = preferences.getString(AppConstants.PREF_TEMP_TOKEN_GCM, Symbol.EMPTY);
 
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.getInstance().CMD_GCM);
@@ -119,7 +116,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 					appData.unRegisterOnChessGCM();
 					// remove saved token
 					SharedPreferences.Editor editor = preferences.edit();
-					editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, StaticData.SYMBOL_EMPTY);
+					editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, Symbol.EMPTY);
 					editor.commit();
 				}
 

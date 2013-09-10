@@ -23,7 +23,7 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.MembershipItem;
 import com.chess.backend.entity.api.MembershipKeyItem;
 import com.chess.backend.entity.api.PayloadItem;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 
@@ -155,7 +155,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		setPlanBtn.setOnClickListener(this);
 		descriptionView = (LinearLayout) view.findViewById(R.id.descriptionView);
 
-		yearDiscountTxt.setText(getString(R.string.save) + StaticData.SYMBOL_NEW_STR + YEAR_DISCOUNT);
+		yearDiscountTxt.setText(getString(R.string.save) + Symbol.NEW_STR + YEAR_DISCOUNT);
 	}
 
 	@Override

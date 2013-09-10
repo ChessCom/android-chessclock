@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataProvider;
 import com.chess.db.DbScheme;
@@ -37,7 +38,7 @@ public class LoadDataFromDbTask extends AbstractUpdateTask<Cursor, Long> {
 				SQLiteDatabase dbHandle = ((DbDataProvider) client.getLocalContentProvider()).getDbHandle();
 				StringBuilder projection = new StringBuilder();
 				for (String projections : params.getProjection()) {
-					projection.append(projections).append(StaticData.SYMBOL_COMMA);
+					projection.append(projections).append(Symbol.COMMA);
 				}
 				// TODO hide to down level
 				item = dbHandle.rawQuery("SELECT " + projection.toString().substring(0, projection.length() - 1)

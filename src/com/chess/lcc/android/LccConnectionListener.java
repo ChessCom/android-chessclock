@@ -2,7 +2,6 @@ package com.chess.lcc.android;
 
 import android.util.Log;
 import com.chess.R;
-import com.chess.backend.statics.StaticData;
 import com.chess.live.client.*;
 
 /**
@@ -92,7 +91,7 @@ public class LccConnectionListener implements ConnectionListener {
 	@Override
 	public void onObsoleteProtocolVersion(User user, String serverProtocolVersion, String clientProtocolVersion) {
 		Log.d(TAG, "Protocol version is obsolete (serverProtocolVersion=" + serverProtocolVersion + ", clientProtocolVersion=" +
-						clientProtocolVersion + StaticData.SYMBOL_RIGHT_PAR);
+						clientProtocolVersion + ")");
 		lccHelper.onObsoleteProtocolVersion();
 	}
 

@@ -33,6 +33,7 @@ import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.IntentConstants;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -366,8 +367,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
 			String[] moves = currentGame.getMoveList()
-					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, StaticData.SYMBOL_EMPTY)
-					.replaceAll(DOUBLE_SPACE, StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE);   // Start after "+" sign
+					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
+					.replaceAll(DOUBLE_SPACE, Symbol.SPACE).substring(1).split(Symbol.SPACE);   // Start after "+" sign
 
 			boardFace.setMovesCount(moves.length);
 			for (int i = 0, cnt = boardFace.getMovesCount(); i < cnt; i++) {
@@ -468,7 +469,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	@Override
 	public String getWhitePlayerName() {
 		if (currentGame == null)
-			return StaticData.SYMBOL_EMPTY;
+			return Symbol.EMPTY;
 		else
 			return currentGame.getWhiteUsername();
 	}
@@ -476,7 +477,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	@Override
 	public String getBlackPlayerName() {
 		if (currentGame == null)
-			return StaticData.SYMBOL_EMPTY;
+			return Symbol.EMPTY;
 		else
 			return currentGame.getBlackUsername();
 	}
@@ -726,10 +727,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 //		String sign;
 //		if(currentPlayerRating < currentPlayerNewRating){ // 800 1200
 //			ratingDiff = currentPlayerNewRating - currentPlayerRating;
-//			sign = StaticData.SYMBOL_PLUS;
+//			sign = StaticData.PLUS;
 //		} else { // 800 700
 //			ratingDiff = currentPlayerRating - currentPlayerNewRating;
-//			sign = StaticData.SYMBOL_MINUS;
+//			sign = StaticData.MINUS;
 //		}
 
 		String rating = getString(R.string.your_end_game_rating_online, currentPlayerNewRating);

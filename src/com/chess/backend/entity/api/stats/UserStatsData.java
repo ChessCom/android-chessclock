@@ -1,6 +1,6 @@
 package com.chess.backend.entity.api.stats;
 
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 
 /**
  * Created with IntelliJ IDEA.
@@ -65,6 +65,6 @@ public class UserStatsData {
 	}
 
 	public String getBestWinUsername() {
-		return best_win_username == null ? StaticData.SYMBOL_EMPTY : best_win_username;
+		return best_win_username == null ? Symbol.EMPTY : best_win_username;
 	}
 }

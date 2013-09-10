@@ -16,7 +16,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.entity.api.LessonSearchItem;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
@@ -60,9 +60,9 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 		lessonItemUpdateListener = new LessonItemUpdateListener();
 		lessonsItemsAdapter = new LessonsItemAdapter(getActivity(), null);
 
-		lastKeyword = StaticData.SYMBOL_EMPTY;
-		lastCategory = StaticData.SYMBOL_EMPTY;
-		lastDifficulty = StaticData.SYMBOL_EMPTY;
+		lastKeyword = Symbol.EMPTY;
+		lastCategory = Symbol.EMPTY;
+		lastDifficulty = Symbol.EMPTY;
 	}
 
 	@Override

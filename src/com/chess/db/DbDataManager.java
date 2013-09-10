@@ -13,6 +13,7 @@ import com.chess.backend.gcm.GameOverNotificationItem;
 import com.chess.backend.gcm.NewChallengeNotificationItem;
 import com.chess.backend.gcm.NewChatNotificationItem;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -280,7 +281,7 @@ public class DbDataManager {
 	public static String concatArguments(String... arguments) {
 		StringBuilder selection = new StringBuilder();
 
-		String separator = StaticData.SYMBOL_EMPTY;
+		String separator = Symbol.EMPTY;
 		for (String argument : arguments) {
 			selection.append(separator);
 			separator = AND_;
@@ -293,7 +294,7 @@ public class DbDataManager {
 	public static String concatLikeArguments(String... arguments) {
 		StringBuilder selection = new StringBuilder();
 
-		String separator = StaticData.SYMBOL_EMPTY;
+		String separator = Symbol.EMPTY;
 		for (String argument : arguments) {
 			selection.append(separator);
 			separator = OR_;
@@ -490,15 +491,15 @@ public class DbDataManager {
 		params.setProjection(PROJECTION_DAILY_PLAYER_NAMES);
 		params.setSelection(selection);
 		params.setArguments(arguments);
-		params.setCommands(GROUP_BY + StaticData.SYMBOL_SPACE + V_WHITE_USERNAME + ", " + V_BLACK_USERNAME);
+		params.setCommands(GROUP_BY + Symbol.SPACE + V_WHITE_USERNAME + ", " + V_BLACK_USERNAME);
 
 		for (String projections : params.getProjection()) {
-			projection.append(projections).append(StaticData.SYMBOL_COMMA);
+			projection.append(projections).append(Symbol.COMMA);
 		}
 
 		Cursor cursor = dbHandle.rawQuery("SELECT " + projection.toString().substring(0, projection.length() - 1)
 				+ " FROM " + params.getDbName() + " WHERE " + params.getSelection() +
-				StaticData.SYMBOL_SPACE + params.getCommands(), params.getArguments());
+				Symbol.SPACE + params.getCommands(), params.getArguments());
 		client.release();
 
 		return cursor;
@@ -1745,7 +1746,7 @@ public class DbDataManager {
 			values.put(V_FREQUENT_OPPONENT_NAME, dataObj.getGames().getMostFrequentOpponent().getUsername());
 			values.put(V_FREQUENT_OPPONENT_GAMES_PLAYED, dataObj.getGames().getMostFrequentOpponent().getGamesPlayed());
 		} else {
-			values.put(V_FREQUENT_OPPONENT_NAME, StaticData.SYMBOL_EMPTY);
+			values.put(V_FREQUENT_OPPONENT_NAME, Symbol.EMPTY);
 			values.put(V_FREQUENT_OPPONENT_GAMES_PLAYED, 0);
 		}
 
@@ -1808,7 +1809,7 @@ public class DbDataManager {
 				values.put(V_FREQUENT_OPPONENT_NAME, games.getMostFrequentOpponent().getUsername());
 				values.put(V_FREQUENT_OPPONENT_GAMES_PLAYED, games.getMostFrequentOpponent().getGamesPlayed());
 			} else {
-				values.put(V_FREQUENT_OPPONENT_NAME, StaticData.SYMBOL_EMPTY);
+				values.put(V_FREQUENT_OPPONENT_NAME, Symbol.EMPTY);
 				values.put(V_FREQUENT_OPPONENT_GAMES_PLAYED, 0);
 			}
 

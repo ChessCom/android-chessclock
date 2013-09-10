@@ -7,7 +7,7 @@ package com.chess.backend.statics;
  * @created at: 20.03.12 5:36
  */
 public class StaticData {
-	/*Result constatnts*/
+	/*Result constants*/
 	public static final int NO_NETWORK = -4;
 	public static final int VALUE_NOT_EXIST = -3;
 	public static final int TASK_CANCELED = -2;
@@ -17,27 +17,6 @@ public class StaticData {
 	public static final int DATA_EXIST = 2;
 	public static final int MAX_REACHED = 3;
 	public static final int INTERNAL_ERROR = 15; // used in combination with server int error codes
-
-	/* String constants*/
-	public static final String SYMBOL_SPACE = " ";
-	public static final String SYMBOL_NEW_STR = "\n";
-	public static final String SYMBOL_EMPTY = "";
-	public static final String SYMBOL_COMMA = ",";
-	public static final String SYMBOL_LEFT_PAR = "(";
-	public static final String SYMBOL_RIGHT_PAR = ")";
-	public static final String SYMBOL_PLUS = "+";
-	public static final String SYMBOL_MINUS = "-";
-	public static final String SYMBOL_TAG = "<";
-	public static final String SYMBOL_COLON = ":";
-	public static final String SYMBOL_SLASH = "|";
-	public static final String SYMBOL_EX = "!";
-	public static final String SYMBOL_DOT = ". ";
-	public static final String SYMBOL_BULLET = SYMBOL_SPACE + "\u2022";
-	public static final String SYMBOL_AMP_CODE = "&amp;";
-	public static final String SYMBOL_AMP = "&";
-	public static final String SYMBOL_PERCENT = "%";
-	public static final String SYMBOL_QUESTION = "?";
-
 
 	public static final String CLEAR_CHAT_NOTIFICATION = "clear_chat_notification";
 
@@ -64,8 +43,6 @@ public class StaticData {
 	public static final long REMIND_ALARM_INTERVAL = 5*60*1000; // 5 minutes
 	//	public static final long REMIND_ALARM_INTERVAL = 10*1000; // 10 sec
 	public static final int YOUR_MOVE_UPDATE_ID = 33;
-
-//	public static final String SAVED_STATE = "saved_state";
 
 	public static final int B_WOOD_DARK_ID 	= 0; // TODO hide to resources
 	public static final int B_WOOD_LIGHT_ID = 1;

@@ -12,7 +12,7 @@ import com.chess.R;
 import com.chess.RoboRadioButton;
 import com.chess.RoboSpinner;
 import com.chess.SwitchButton;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
@@ -208,7 +208,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	}
 
 	private String getLiveModeButtonLabel(String label) {
-		if (label.contains(StaticData.SYMBOL_SLASH)) { // "5 | 2"
+		if (label.contains(Symbol.SLASH)) { // "5 | 2"
 			return label;
 		} else { // "10 min"
 			return getString(R.string.min_arg, label);

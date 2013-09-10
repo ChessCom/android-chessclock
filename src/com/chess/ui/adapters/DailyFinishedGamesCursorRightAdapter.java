@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.AvatarView;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
 
@@ -45,7 +45,7 @@ public class DailyFinishedGamesCursorRightAdapter extends ItemsCursorAdapter {
 	public void bindView(View convertView, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		String gameType = StaticData.SYMBOL_EMPTY;
+		String gameType = Symbol.EMPTY;
 		if (getInt(cursor, DbScheme.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
 			gameType = CHESS_960;
 		}

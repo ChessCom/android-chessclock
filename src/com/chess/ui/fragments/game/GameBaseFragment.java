@@ -12,7 +12,7 @@ import android.view.WindowManager;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.model.BaseGameItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
@@ -250,7 +250,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 		public String composeMessage() {
 			String vsStr = getString(R.string.vs);
-			String space = StaticData.SYMBOL_SPACE;
+			String space = Symbol.SPACE;
 			return currentGame.getWhiteUsername() + space + vsStr + space + currentGame.getBlackUsername()
 					+ " - " + gameType + space + getString(R.string.chess) + space
 					+ getString(R.string.via_chesscom) + space
@@ -259,8 +259,8 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 		public String getTitle() {
 			String vsStr = getString(R.string.vs);
-			return "Chess: " + currentGame.getWhiteUsername() + StaticData.SYMBOL_SPACE
-					+ vsStr + StaticData.SYMBOL_SPACE + currentGame.getBlackUsername(); // TODO adjust i18n
+			return "Chess: " + currentGame.getWhiteUsername() + Symbol.SPACE
+					+ vsStr + Symbol.SPACE + currentGame.getBlackUsername(); // TODO adjust i18n
 		}
 	}
 

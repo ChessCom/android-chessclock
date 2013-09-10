@@ -9,10 +9,7 @@ import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ChatItem;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.FlurryData;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.*;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
@@ -264,7 +261,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		AppData appData = new AppData(context);
 		String username = appData.getUsername();
 		String pass = appData.getPassword();
-		boolean emptyPassword = pass.equals(StaticData.SYMBOL_EMPTY);
+		boolean emptyPassword = pass.equals(Symbol.EMPTY);
 
 		if (!useCurrentCredentials) { // todo: rename flag
 			if (emptyPassword || RestHelper.getInstance().IS_TEST_SERVER_MODE) {
@@ -309,8 +306,8 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	public void processConnectionFailure(String reason, String message) {
 		String kickMessage = context.getString(R.string.live_chess_server_upgrading);
 		liveChessClientEventListener.onConnectionFailure(kickMessage
-				+ StaticData.SYMBOL_NEW_STR + context.getString(R.string.reason_) + reason
-				+ StaticData.SYMBOL_NEW_STR + context.getString(R.string.message_) + message);
+				+ Symbol.NEW_STR + context.getString(R.string.reason_) + reason
+				+ Symbol.NEW_STR + context.getString(R.string.message_) + message);
 	}
 
 	public void processConnectionFailure(FailureDetails details) {
@@ -620,7 +617,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public String[] getOnlineFriends() {
-		final String[] array = new String[]{StaticData.SYMBOL_EMPTY};
+		final String[] array = new String[]{Symbol.EMPTY};
 		return onlineFriends.size() != 0 ? onlineFriends.keySet().toArray(array) : array;
 	}
 
@@ -654,12 +651,12 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 //
 //		gameData[0] = String.valueOf(lccGame.getId());  // TODO eliminate string conversion and use Objects
 //		gameData[1] = "1";
-//		gameData[2] = StaticData.SYMBOL_EMPTY + System.currentTimeMillis(); // todo, resolve GameListItem.TIMESTAMP
-//		gameData[3] = StaticData.SYMBOL_EMPTY;
+//		gameData[2] = StaticData.EMPTY + System.currentTimeMillis(); // todo, resolve GameListItem.TIMESTAMP
+//		gameData[3] = StaticData.EMPTY;
 //		gameData[4] = lccGame.getWhitePlayer().getUsername().trim();
 //		gameData[5] = lccGame.getBlackPlayer().getUsername().trim();
-//		gameData[GameItem.STARTING_FEN_POSITION_NUMB] = StaticData.SYMBOL_EMPTY; // starting_fen_position
-//		String moves = StaticData.SYMBOL_EMPTY;
+//		gameData[GameItem.STARTING_FEN_POSITION_NUMB] = StaticData.EMPTY; // starting_fen_position
+//		String moves = StaticData.EMPTY;
 //
 //
 //		final Iterator movesIterator = lccGame.getMoves().iterator();
@@ -667,11 +664,11 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 //			moves += movesIterator.next() + " ";
 //		}
 //		if (moveIndex == -1) {
-//			moves = StaticData.SYMBOL_EMPTY;
+//			moves = StaticData.EMPTY;
 //		}
 //
 //		gameData[GameItem.MOVE_LIST_NUMB] = moves; // move_list
-//		gameData[8] = StaticData.SYMBOL_EMPTY; // user_to_move
+//		gameData[8] = StaticData.EMPTY; // user_to_move
 //
 //		Integer whiteRating = 0;
 //		Integer blackRating = 0;
@@ -702,9 +699,9 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 //		gameData[9] = whiteRating.toString();
 //		gameData[10] = blackRating.toString();
 //
-//		gameData[11] = StaticData.SYMBOL_EMPTY; // todo: encoded_move_string
-//		gameData[12] = StaticData.SYMBOL_EMPTY; // has_new_message
-//		gameData[13] = StaticData.SYMBOL_EMPTY + (lccGame.getGameTimeConfig().getBaseTime() / 10); // seconds_remaining
+//		gameData[11] = StaticData.EMPTY; // todo: encoded_move_string
+//		gameData[12] = StaticData.EMPTY; // has_new_message
+//		gameData[13] = StaticData.EMPTY + (lccGame.getGameTimeConfig().getBaseTime() / 10); // seconds_remaining
 //
 //		return gameData;
 //	}
@@ -718,7 +715,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			else
 			{
 			  lccMove = move.getMoveString();
-			  lccMove = chessMove.isPromotion() ? lccMove.replaceFirst("=", StaticData.SYMBOL_EMPTY) : lccMove;
+			  lccMove = chessMove.isPromotion() ? lccMove.replaceFirst("=", StaticData.EMPTY) : lccMove;
 			}*/
 
 		Log.d(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move);
@@ -908,7 +905,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	public void doMoveMade(final Game game, final User moveMaker, int moveIndex) {
 		/*if (((latestMoveNumber != null) && (moveIndex < latestMoveNumber)) || (latestMoveNumber == null && moveIndex > 0)) {
 			Log.d(TAG, "GAME LISTENER: Extra onMoveMade received (currentMoveIndex=" + moveIndex
-					+ ", latestMoveNumber=" + latestMoveNumber + StaticData.SYMBOL_RIGHT_PAR);
+					+ ", latestMoveNumber=" + latestMoveNumber + StaticData.RIGHT_PAR);
 			return;
 		} else {*/
 		latestMoveNumber = moveIndex;
@@ -1173,7 +1170,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			result = whitePlayerResult;
 		}
 
-		String message = StaticData.SYMBOL_EMPTY;
+		String message = Symbol.EMPTY;
 		switch (result) {
 			case TIMEOUT:
 				message = context.getString(R.string.won_on_time, winnerUsername);
@@ -1200,7 +1197,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 				message = context.getString(R.string.game_drawn_by_fifty_move_rule);
 				break;
 			case ABANDONED:
-				message = winnerUsername + StaticData.SYMBOL_SPACE + context.getString(R.string.won_game_abandoned);
+				message = winnerUsername + Symbol.SPACE + context.getString(R.string.won_game_abandoned);
 				break;
 			case ABORTED:
 				message = context.getString(R.string.game_aborted);

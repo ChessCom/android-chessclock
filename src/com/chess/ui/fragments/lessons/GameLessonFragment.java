@@ -22,7 +22,7 @@ import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.LessonItem;
 import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.entity.api.LessonRatingChangeItem;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -537,7 +537,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			hintToShow = hintToShow > 2 ? 1 : ++hintToShow;
 		}
 
-		String hint = StaticData.SYMBOL_EMPTY;
+		String hint = Symbol.EMPTY;
 		if (hintToShow == 1) {
 			hint = getMentorPosition().getAdvice1();
 		} else if (hintToShow == 2) {
@@ -547,7 +547,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 
 		String hintNumberStr = getString(R.string.hint_arg, hintToShow);
-		CharSequence hintChars = BOLD_DIVIDER + hintNumberStr + BOLD_DIVIDER + StaticData.SYMBOL_SPACE + hint;
+		CharSequence hintChars = BOLD_DIVIDER + hintNumberStr + BOLD_DIVIDER + Symbol.SPACE + hint;
 		hintChars = AppUtils.setSpanBetweenTokens(hintChars, BOLD_DIVIDER, boldSpan);
 
 		showHintViews(true);
@@ -891,12 +891,11 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			}
 
 			lessonPopupTitleTxt.setText(lessonItem.getLesson().getName());
-			lessonPercentTxt.setText(getString(R.string.percents, scorePercent) + StaticData.SYMBOL_PERCENT);
+			lessonPercentTxt.setText(getString(R.string.percents, scorePercent) + Symbol.PERCENT);
 			lessonRatingTxt.setText(String.valueOf(updatedUserRating));
 			if (!lessonItem.isLessonCompleted()) {
-				String symbol = pointsForLesson > 0 ? StaticData.SYMBOL_PLUS : StaticData.SYMBOL_EMPTY;
-				lessonRatingChangeTxt.setText(StaticData.SYMBOL_LEFT_PAR + symbol + String.format(FLOAT_FORMAT, pointsForLesson)
-						+ StaticData.SYMBOL_RIGHT_PAR);
+				String symbol = pointsForLesson > 0 ? Symbol.PLUS : Symbol.EMPTY;
+				lessonRatingChangeTxt.setText(Symbol.wrapInPars(symbol + String.format(FLOAT_FORMAT, pointsForLesson)));
 				// save updated user lessons rating
 				getAppData().setUserLessonsRating(updatedUserRating);
 				lessonItem.setLessonCompleted(true);

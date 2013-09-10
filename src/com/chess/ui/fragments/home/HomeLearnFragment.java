@@ -19,7 +19,7 @@ import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.entity.api.LessonsRatingItem;
 import com.chess.backend.entity.api.VideoItem;
 import com.chess.backend.entity.api.stats.TacticsBasicStatsItem;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -150,8 +150,8 @@ public class HomeLearnFragment extends CommonLogicFragment {
 			String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
 			String chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
 			String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
-			CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
-					+ firstName + StaticData.SYMBOL_SPACE + lastName;
+			CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + Symbol.SPACE
+					+ firstName + Symbol.SPACE + lastName;
 			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 			holder.authorTxt.setText(authorStr);
 			holder.titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
@@ -212,7 +212,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 
 			tacticsRatingTxt.setText(String.valueOf(currentTacticsRating));
 			todaysAttemptsValueTxt.setText(String.valueOf(tacitcsTodaysAttempts));
-			avgScoreValueTxt.setText(String.valueOf(todaysAverageScore) + StaticData.SYMBOL_PERCENT);
+			avgScoreValueTxt.setText(String.valueOf(todaysAverageScore) + Symbol.PERCENT);
 
 			// Load lessons ratings
 			LoadItem loadItem = LoadHelper.getLessonsRating(getUserToken());
@@ -272,8 +272,8 @@ public class HomeLearnFragment extends CommonLogicFragment {
 			String firstName = headerData.getFirstName();
 			String chessTitle = headerData.getChessTitle();
 			String lastName = headerData.getLastName();
-			CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + StaticData.SYMBOL_SPACE
-					+ firstName + StaticData.SYMBOL_SPACE + lastName;
+			CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + Symbol.SPACE
+					+ firstName + Symbol.SPACE + lastName;
 			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 			holder.authorTxt.setText(authorStr);
 			holder.titleTxt.setText(headerData.getTitle());

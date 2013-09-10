@@ -1,7 +1,7 @@
 package com.chess.lcc.android;
 
 import android.util.Log;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.live.client.*;
 import com.chess.live.client.impl.util.DateTimeUtils;
 
@@ -88,7 +88,7 @@ public class LccChatListener implements ChatListener {
 		for (ChatMember member : members) {
 			str += "\n\tMember: " + member;
 		}
-		str += (headMember != null ? ("\n\tHead: " + headMember) : StaticData.SYMBOL_EMPTY);
+		str += (headMember != null ? ("\n\tHead: " + headMember) : Symbol.EMPTY);
 		Log.d(TAG, str);
 	}
 

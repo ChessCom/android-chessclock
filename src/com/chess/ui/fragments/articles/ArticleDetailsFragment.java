@@ -25,7 +25,7 @@ import com.chess.backend.entity.api.CommonViewedItem;
 import com.chess.backend.entity.api.PostCommentItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -199,10 +199,10 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
 			CharSequence authorStr;
 			if (TextUtils.isEmpty(chessTitle)) {
-				authorStr = firstName + StaticData.SYMBOL_SPACE + lastName;
+				authorStr = firstName + Symbol.SPACE + lastName;
 			} else {
 				authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
-						+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
+						+ Symbol.SPACE + firstName + Symbol.SPACE + lastName;
 				authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
 			}
 			authorTxt.setText(authorStr);
@@ -210,7 +210,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			try {
 				url = cursor.getString(cursor.getColumnIndexOrThrow(DbScheme.V_URL));
 			} catch (IllegalArgumentException ex) {
-				url = StaticData.SYMBOL_EMPTY;
+				url = Symbol.EMPTY;
 			}
 //			url = DbDataManager.getString(cursor, DbScheme.V_URL);
 			titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
@@ -255,7 +255,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				Intent shareIntent = new Intent(Intent.ACTION_SEND);
 				shareIntent.setType("text/plain");
 				shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this article - "
-						+ StaticData.SYMBOL_NEW_STR + articleShareStr);
+						+ Symbol.NEW_STR + articleShareStr);
 				startActivity(Intent.createChooser(shareIntent, getString(R.string.share_article)));
 				return true;
 		}
@@ -316,7 +316,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					hideKeyBoard();
 
 					replyView.setVisibility(View.GONE);
-					newPostEdt.setText(StaticData.SYMBOL_EMPTY);
+					newPostEdt.setText(Symbol.EMPTY);
 				}
 			}, KEYBOARD_DELAY);
 

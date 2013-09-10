@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.AvatarView;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
 import com.chess.utilities.AppUtils;
@@ -77,7 +77,7 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 
 		holder.premiumImg.setImageResource(AppUtils.getPremiumIcon(premiumStatus));
 		holder.playerTxt.setText(opponentName);
-		holder.ratingTxt.setText(StaticData.SYMBOL_LEFT_PAR + opponentRating + StaticData.SYMBOL_RIGHT_PAR);
+		holder.ratingTxt.setText(Symbol.wrapInPars(opponentRating));
 		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 
 		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;

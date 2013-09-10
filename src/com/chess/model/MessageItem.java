@@ -1,15 +1,14 @@
 package com.chess.model;
 
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Date;
 
 public class MessageItem {
-	public String owner = StaticData.SYMBOL_EMPTY;
-	public String message = StaticData.SYMBOL_EMPTY;
+	public String owner = Symbol.EMPTY;
+	public String message = Symbol.EMPTY;
 
 	public MessageItem(String owner, String msg) {
 		this.owner = owner;

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.RestHelper;
+import com.chess.backend.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.model.DataHolder;
 import com.chess.backend.LoadItem;
@@ -323,8 +324,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
 			String[] moves = currentGame.getMoveList()
-					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, StaticData.SYMBOL_EMPTY)
-					.replaceAll(DOUBLE_SPACE, StaticData.SYMBOL_SPACE).substring(1).split(StaticData.SYMBOL_SPACE);   // Start after "+" sign
+					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
+					.replaceAll(DOUBLE_SPACE, Symbol.SPACE).substring(1).split(Symbol.SPACE);   // Start after "+" sign
 
 			boardFace.setMovesCount(moves.length);
 			for (int i = 0, cnt = boardFace.getMovesCount(); i < cnt; i++) {
@@ -412,7 +413,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	@Override
 	public String getWhitePlayerName() {
 		if (currentGame == null)
-			return StaticData.SYMBOL_EMPTY;
+			return Symbol.EMPTY;
 		else
 			return currentGame.getWhiteUsername();
 	}
@@ -420,7 +421,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	@Override
 	public String getBlackPlayerName() {
 		if (currentGame == null)
-			return StaticData.SYMBOL_EMPTY;
+			return Symbol.EMPTY;
 		else
 			return currentGame.getBlackUsername();
 	}
@@ -637,10 +638,10 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 //		String sign;
 //		if(currentPlayerRating < currentPlayerNewRating){ // 800 1200
 //			ratingDiff = currentPlayerNewRating - currentPlayerRating;
-//			sign = StaticData.SYMBOL_PLUS;
+//			sign = StaticData.PLUS;
 //		} else { // 800 700
 //			ratingDiff = currentPlayerRating - currentPlayerNewRating;
-//			sign = StaticData.SYMBOL_MINUS;
+//			sign = StaticData.MINUS;
 //		}
 
 		String rating = getString(R.string.your_end_game_rating_online, currentPlayerNewRating);

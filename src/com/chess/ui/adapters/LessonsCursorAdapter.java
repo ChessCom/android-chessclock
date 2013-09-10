@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.db.DbScheme;
 
 /**
@@ -50,7 +50,7 @@ public class LessonsCursorAdapter extends ItemsCursorAdapter {
 			holder.icon.setText(R.string.ic_check);
 		} else {
 			holder.text.setTextColor(unWatchedTextColor);
-			holder.icon.setText(StaticData.SYMBOL_EMPTY);
+			holder.icon.setText(Symbol.EMPTY);
 		}
 	}
 

@@ -18,6 +18,7 @@ import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.backend.statics.AppData;
 import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.live.client.PieceColor;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
@@ -877,7 +878,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			if (!TextUtils.isEmpty(appData.getThemeBoardPath())) {
 				boardBitmap = BitmapFactory.decodeFile(appData.getThemeBoardPath());
 				if (boardBitmap == null) {
-					getAppData().setThemeBoardPath(StaticData.SYMBOL_EMPTY); // clear theme
+					getAppData().setThemeBoardPath(Symbol.EMPTY); // clear theme
 					boardBackPaint.setShader(setBoardFromResource());
 					return;
 				}

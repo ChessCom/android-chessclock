@@ -20,7 +20,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.FlurryData;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.model.PopupItem;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupProgressFragment;
@@ -289,13 +289,13 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 
 	protected void showPopupDialog(int titleId, String tag) {
 		popupItem.setTitle(titleId);
-		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupItem.setMessage(Symbol.EMPTY);
 		updatePopupAndShow(tag);
 	}
 
 	protected void showPopupDialog(String title, String tag) {  // TODO handle popups overlays - set default button values
 		popupItem.setTitle(title);
-		popupItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupItem.setMessage(Symbol.EMPTY);
 		updatePopupAndShow(tag);
 	}
 
@@ -307,7 +307,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	// Progress Dialogs
 	protected void showPopupProgressDialog(String title) {
 		popupProgressItem.setTitle(title);
-		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupProgressItem.setMessage(Symbol.EMPTY);
 		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.createInstance(popupItem);
 		updateProgressAndShow(popupProgressDialogFragment);
 	}
@@ -321,14 +321,14 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 
 	protected void showPopupProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
-		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupProgressItem.setMessage(Symbol.EMPTY);
 		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.createInstance(popupItem);
 		updateProgressAndShow(popupProgressDialogFragment);
 	}
 
 	protected void showPopupHardProgressDialog(int titleId) {
 		popupProgressItem.setTitle(titleId);
-		popupProgressItem.setMessage(StaticData.SYMBOL_EMPTY);
+		popupProgressItem.setMessage(Symbol.EMPTY);
 		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.createInstance(popupItem);
 		popupProgressDialogFragment.setNotCancelable();
 		updateProgressAndShow(popupProgressDialogFragment);

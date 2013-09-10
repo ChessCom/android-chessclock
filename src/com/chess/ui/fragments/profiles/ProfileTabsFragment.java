@@ -13,10 +13,9 @@ import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.UserItem;
-import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
@@ -165,7 +164,7 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 
 	private void updateUiData() {
 		imageLoader.download(userInfo.getAvatar(), photoImg, photoImageSize);
-		usernameTxt.setText(userInfo.getFirstName() + StaticData.SYMBOL_SPACE + userInfo.getLastName());
+		usernameTxt.setText(userInfo.getFirstName() + Symbol.SPACE + userInfo.getLastName());
 		locationTxt.setText(userInfo.getLocation());
 		countryImg.setImageDrawable(AppUtils.getCountryFlagScaled(getActivity(), userInfo.getCountryName()));
 		premiumIconImg.setImageResource(AppUtils.getPremiumIcon(userInfo.getPremiumStatus()));

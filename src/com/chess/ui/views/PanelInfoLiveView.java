@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.chess.*;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
@@ -414,7 +414,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 	@Override
 	public void setPlayerRating(String playerRating) {
 		if (playerRating != null)
-			playerRatingTxt.setText(StaticData.SYMBOL_LEFT_PAR + playerRating + StaticData.SYMBOL_RIGHT_PAR);
+			playerRatingTxt.setText(Symbol.wrapInPars(playerRating));
 	}
 
 	@Override

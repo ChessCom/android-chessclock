@@ -25,7 +25,7 @@ import com.chess.backend.entity.api.PostCommentItem;
 import com.chess.backend.entity.api.VideoSingleItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -239,10 +239,10 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		String lastName = videoData.getLastName();
 		CharSequence authorStr;
 		if (TextUtils.isEmpty(chessTitle)) {
-			authorStr = firstName + StaticData.SYMBOL_SPACE + lastName;
+			authorStr = firstName + Symbol.SPACE + lastName;
 		} else {
 			authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER
-					+ StaticData.SYMBOL_SPACE + firstName + StaticData.SYMBOL_SPACE + lastName;
+					+ Symbol.SPACE + firstName + Symbol.SPACE + lastName;
 			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, new ForegroundColorSpan(lightGrey));
 		}
 		authorTxt.setText(authorStr);
@@ -264,7 +264,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 
 		int duration = videoData.getMinutes();
 		dateTxt.setText(dateFormatter.format(new Date(videoData.getCreateDate()))
-				+ StaticData.SYMBOL_SPACE + getString(R.string.min_arg, duration));
+				+ Symbol.SPACE + getString(R.string.min_arg, duration));
 
 		bodyStr = videoData.getDescription();
 		contentTxt.setText(Html.fromHtml(bodyStr));
@@ -310,7 +310,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 				Intent shareIntent = new Intent(Intent.ACTION_SEND);
 				shareIntent.setType("text/plain");
 				shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this video - "
-						+ StaticData.SYMBOL_NEW_STR + shareStr);
+						+ Symbol.NEW_STR + shareStr);
 				startActivity(Intent.createChooser(shareIntent, getString(R.string.share_article)));
 				return true;
 		}
@@ -361,7 +361,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 					hideKeyBoard();
 
 					replyView.setVisibility(View.GONE);
-					newPostEdt.setText(StaticData.SYMBOL_EMPTY);
+					newPostEdt.setText(Symbol.EMPTY);
 				}
 			}, KEYBOARD_DELAY);
 

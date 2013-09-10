@@ -51,7 +51,7 @@ public class AppData {
 	}
 
 	public String getUserToken() {
-		return preferences.getString(USER_TOKEN, StaticData.SYMBOL_EMPTY);
+		return preferences.getString(USER_TOKEN, Symbol.EMPTY);
 	}
 
 	public int getAfterMoveAction() {
@@ -63,7 +63,7 @@ public class AppData {
 	}
 
 	public String getUserFirstName() {
-		return getStringValue(FIRST_NAME, StaticData.SYMBOL_EMPTY);
+		return getStringValue(FIRST_NAME, Symbol.EMPTY);
 	}
 
 	public void setUserLastName(String value) {
@@ -71,7 +71,7 @@ public class AppData {
 	}
 
 	public String getUserLastName() {
-		return getStringValue(LAST_NAME, StaticData.SYMBOL_EMPTY);
+		return getStringValue(LAST_NAME, Symbol.EMPTY);
 	}
 
 	public void setUserLocation(String value) {
@@ -79,11 +79,11 @@ public class AppData {
 	}
 
 	public String getUserLocation() {
-		return getStringValue(LOCATION, StaticData.SYMBOL_EMPTY);
+		return getStringValue(LOCATION, Symbol.EMPTY);
 	}
 
 	public String getUsername() {
-		return preferences.getString(USERNAME, StaticData.SYMBOL_EMPTY);
+		return preferences.getString(USERNAME, Symbol.EMPTY);
 	}
 
 	public void setUserName(String username) {
@@ -91,7 +91,7 @@ public class AppData {
 	}
 
 	public String getPassword() {
-		return preferences.getString(PASSWORD, StaticData.SYMBOL_EMPTY);
+		return preferences.getString(PASSWORD, Symbol.EMPTY);
 	}
 
 	public int getChessBoardId() {
@@ -119,7 +119,7 @@ public class AppData {
 	}
 
 	public String getLiveSessionId() {
-		return preferences.getString(LIVE_SESSION_ID, StaticData.SYMBOL_EMPTY);
+		return preferences.getString(LIVE_SESSION_ID, Symbol.EMPTY);
 	}
 
 	/* Game modes */
@@ -162,7 +162,7 @@ public class AppData {
 	}
 
 	public String getUserPremiumSku() {
-		return preferences.getString(USER_PREMIUM_SKU, StaticData.SYMBOL_EMPTY);
+		return preferences.getString(USER_PREMIUM_SKU, Symbol.EMPTY);
 	}
 
 	public String getUserPremiumStatusStr(Context context) {
@@ -194,17 +194,17 @@ public class AppData {
 //	}
 
 	public String getCompSavedGame() {
-		return getStringValue(SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY);
+		return getStringValue(SAVED_COMPUTER_GAME, Symbol.EMPTY);
 	}
 
 	public boolean haveSavedCompGame() {
-		return !getCompSavedGame().equals(StaticData.SYMBOL_EMPTY);
+		return !getCompSavedGame().equals(Symbol.EMPTY);
 	}
 
 	public void clearSavedCompGame() {
-		String username = preferences.getString(USERNAME, StaticData.SYMBOL_EMPTY);
+		String username = preferences.getString(USERNAME, Symbol.EMPTY);
 		preferences.edit()
-				.putString(username + SAVED_COMPUTER_GAME, StaticData.SYMBOL_EMPTY)
+				.putString(username + SAVED_COMPUTER_GAME, Symbol.EMPTY)
 				.commit();
 	}
 
@@ -217,8 +217,8 @@ public class AppData {
 	}
 
 	public boolean isRegisterOnChessGCM() {
-		String savedToken = preferences.getString(GCM_SAVED_TOKEN, StaticData.SYMBOL_EMPTY);
-		String userToken = preferences.getString(USER_TOKEN, StaticData.SYMBOL_EMPTY);
+		String savedToken = preferences.getString(GCM_SAVED_TOKEN, Symbol.EMPTY);
+		String userToken = preferences.getString(USER_TOKEN, Symbol.EMPTY);
 
 		return savedToken.equals(userToken) && preferences.getBoolean(GCM_REGISTERED_ON_SERVER, false);
 	}
@@ -232,7 +232,7 @@ public class AppData {
 	public void unRegisterOnChessGCM() {
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putBoolean(GCM_REGISTERED_ON_SERVER, false);
-		editor.putString(GCM_SAVED_TOKEN, StaticData.SYMBOL_EMPTY);
+		editor.putString(GCM_SAVED_TOKEN, Symbol.EMPTY);
 		editor.commit();
 	}
 
@@ -261,7 +261,7 @@ public class AppData {
 	}
 
 	public void setUserSkill(int skillCode) {
-		String username = preferences.getString(USERNAME, StaticData.SYMBOL_EMPTY);
+		String username = preferences.getString(USERNAME, Symbol.EMPTY);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putInt(username + PREF_USER_SKILL_LEVEL, skillCode);
 		editor.putBoolean(PREF_USER_SKILL_LEVEL_SET, true);
@@ -297,7 +297,7 @@ public class AppData {
 	}
 
 	public String getUserAvatar() {
-		return getStringValue(PREF_USER_AVATAR_URL, StaticData.SYMBOL_EMPTY);
+		return getStringValue(PREF_USER_AVATAR_URL, Symbol.EMPTY);
 	}
 
 	public void setUserTacticsRating(int value) {

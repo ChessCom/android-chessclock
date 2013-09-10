@@ -18,7 +18,7 @@ import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.interfaces.AbstractUpdateListener;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.backend.tasks.SaveImageToSdTask;
 import com.chess.model.PopupItem;
@@ -168,8 +168,8 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 	private void installSelectedTheme() {
 		if (selectedThemeItem.getThemeName().equals(GAME_THEME_NAME)) {
-			getAppData().setThemeBoardPath(StaticData.SYMBOL_EMPTY); // clear downloaded theme value
-			getAppData().setThemeBackPath(StaticData.SYMBOL_EMPTY); // clear downloaded theme value
+			getAppData().setThemeBoardPath(Symbol.EMPTY); // clear downloaded theme value
+			getAppData().setThemeBackPath(Symbol.EMPTY); // clear downloaded theme value
 			getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
 
 			getAppData().setThemeName(getString(R.string.theme_game_room));
@@ -243,7 +243,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			activity.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					loadProgressTxt.setText(String.valueOf(progress) + StaticData.SYMBOL_PERCENT);
+					loadProgressTxt.setText(String.valueOf(progress) + Symbol.PERCENT);
 				}
 			});
 		}
@@ -340,7 +340,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			if (item.isSelected()) {
 				holder.check.setText(R.string.ic_check);
 			} else {
-				holder.check.setText(StaticData.SYMBOL_EMPTY);
+				holder.check.setText(Symbol.EMPTY);
 			}
 
 			if (item.isLocal()) {

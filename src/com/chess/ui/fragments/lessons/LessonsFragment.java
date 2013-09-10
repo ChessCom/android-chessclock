@@ -18,7 +18,7 @@ import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.LessonCourseListItem;
 import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.entity.api.LessonsRatingItem;
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -557,7 +557,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 				holder.icon.setText(R.string.ic_check);
 			} else {
 				holder.text.setTextColor(unWatchedTextColor);
-				holder.icon.setText(StaticData.SYMBOL_EMPTY);
+				holder.icon.setText(Symbol.EMPTY);
 			}
 
 			return convertView;

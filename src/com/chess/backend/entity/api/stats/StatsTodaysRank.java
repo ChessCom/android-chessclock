@@ -1,6 +1,6 @@
 package com.chess.backend.entity.api.stats;
 
-import com.chess.backend.statics.StaticData;
+import com.chess.backend.statics.Symbol;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,7 +13,7 @@ public class StatsTodaysRank {
 	private int total_player_count;
 
 	public String getRank() {
-		return rank == null? StaticData.SYMBOL_EMPTY: rank;
+		return rank == null? Symbol.EMPTY : rank;
 	}
 
 	public int getTotalPlayerCount() {
