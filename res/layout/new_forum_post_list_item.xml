@@ -11,7 +11,7 @@
 	android:background="@color/white"
 	>
 
-	<com.chess.backend.image_load.AvatarView
+	<com.chess.backend.image_load.ProgressImageView
 		android:id="@+id/photoImg"
 		android:layout_width="35dip"
 		android:layout_height="35dip"

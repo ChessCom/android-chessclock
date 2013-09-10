@@ -53,7 +53,8 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 		setOrientation(HORIZONTAL);
 		setGravity(Gravity.CENTER);
 
-		buttonsMode = ButtonsMode.LEFT;
+//		buttonsMode = ButtonsMode.LEFT;
+		buttonsMode = ButtonsMode.DEFAULT;
 		buttonsMap = new SparseIntArray();
 
 		// get width
@@ -109,6 +110,7 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 
 			if (totalPageCnt > visiblePageButtonsCnt) { // if 65 > 6. then we add dots "..."
 				visiblePageButtonsCnt = visiblePageButtonsCnt - 1;
+				buttonsMode = ButtonsMode.LEFT;
 			}
 			updateButtonsNumbers();
 		}
@@ -181,7 +183,9 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 			Log.d("TEST", " middle clicked");
 		} else {
 
-			if (pageToShow + visiblePageButtonsCnt > totalPageCnt) {
+			if (totalPageCnt < visiblePageButtonsCnt) {
+				buttonsMode = ButtonsMode.DEFAULT;
+			} else if (pageToShow + visiblePageButtonsCnt > totalPageCnt) {
 				buttonsMode = ButtonsMode.RIGHT;
 			}
 			selectedPage = pageToShow;
@@ -193,7 +197,19 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 	}
 
 	private void updateButtonsNumbers() {
-		if (buttonsMode == ButtonsMode.LEFT) {
+		if (buttonsMode == ButtonsMode.DEFAULT) {
+			for (int i = getLast() - BASE_BTN_ID; i > totalPageCnt; i--) {
+				findViewById(BASE_BTN_ID + i).setVisibility(INVISIBLE);
+			}
+			int pageNumber = 0;
+			for (int i = getFirst() - BASE_BTN_ID; i < getPreLast() - BASE_BTN_ID; i++) {
+				setButtonPageNumber(pageNumber++, i);
+			}
+			if (selectedPage == 0) {
+				RoboButton roboButton = (RoboButton) findViewById(getFirst());
+				roboButton.setTextColor(selectedColor);
+			}
+		} else if (buttonsMode == ButtonsMode.LEFT) {
 			// draw buttons like this
 			// | < | | 1 | | 2 | | 3 | | 4 | | 5 | ... | 65 | | > |
 			if (totalPageCnt > buttonsCnt) {
@@ -220,6 +236,10 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 			} else {
 				for (int i = getLast() - BASE_BTN_ID; i > totalPageCnt; i--) {
 					findViewById(BASE_BTN_ID + i).setVisibility(INVISIBLE);
+				}
+				int pageNumber = 0;
+				for (int i = getFirst() - BASE_BTN_ID; i < getPreLast() - BASE_BTN_ID; i++) {
+					setButtonPageNumber(pageNumber++, i);
 				}
 			}
 		} else if (buttonsMode == ButtonsMode.MIDDLE_FROM_LEFT) {
@@ -302,7 +322,11 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 				}
 			}
 
-			if (buttonsMode == ButtonsMode.LEFT) {
+			/*if (buttonsMode == ButtonsMode.DEFAULT) {
+				if (!pageFound) { // we came from middle position or hit last button
+					prevBtnPos = selectedPage + 1;
+				}
+			} else*/ if (buttonsMode == ButtonsMode.LEFT) {
 				if (!pageFound) { // we came from middle position or hit last button
 					prevBtnPos = selectedPage + 1;
 				}
@@ -386,5 +410,6 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 		LEFT,
 		MIDDLE_FROM_LEFT,
 		RIGHT,
+		DEFAULT
 	}
 }
