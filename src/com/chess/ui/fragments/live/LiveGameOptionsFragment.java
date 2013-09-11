@@ -22,7 +22,6 @@ import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
-import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +36,7 @@ import java.util.Map;
  */
 public class LiveGameOptionsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemSelectedListener {
 
+	private static final int RATING_VARIABLE_DIFF = 100;
 	private static final int MIN_RATING_DIFF = 200;
 	private static final int MAX_RATING_DIFF = 200;
 	private static final int MIN_RATING_MIN = 1000;
@@ -117,11 +117,11 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		RelativeLayout liveHomeOptionsFrame = (RelativeLayout) view.findViewById(R.id.liveHomeOptionsFrame);
 		inflater.inflate(R.layout.new_right_live_options_view, liveHomeOptionsFrame, true);
-		View liveHeaderView = view.findViewById(R.id.liveHeaderView);
-		ButtonDrawableBuilder.setBackgroundToView(liveHeaderView, R.style.ListItem_Header_Dark);
 
 		if (getArguments().getInt(MODE) == CENTER_MODE) { // we use white background and dark titles for centered mode
-			view.findViewById(R.id.liveGameOptionsMainView).setBackgroundResource(R.color.white);
+			View liveHeaderView = view.findViewById(R.id.liveHeaderView);
+			liveHeaderView.setVisibility(View.VISIBLE);
+			liveHeaderView.setOnClickListener(this);
 		}
 
 		RoboSpinner opponentSpinner = (RoboSpinner) view.findViewById(R.id.opponentSpinner);
@@ -161,10 +161,6 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 				int key = buttonEntry.getKey();
 				buttonEntry.getValue().setText(getLiveModeButtonLabel(newGameButtonsArray[key]));
 				buttonEntry.getValue().setOnClickListener(this);
-
-				if (getArguments().getInt(MODE) == CENTER_MODE) {
-					buttonEntry.getValue().setTextColor(darkBtnColor);
-				}
 
 				if (key == mode) {
 					setDefaultQuickLiveMode(buttonEntry.getValue(), buttonEntry.getKey());
@@ -294,6 +290,10 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 			TextView checkedButton;
+
+			int minRatingValue = Integer.parseInt(minRatingBtn.getText().toString());
+			int maxRatingValue = Integer.parseInt(maxRatingBtn.getText().toString());
+
 			int minRating;
 			int maxRating;
 			if (maxRatingBtn.isChecked()) {
@@ -305,24 +305,30 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 				minRating = MIN_RATING_MIN;
 				maxRating = MIN_RATING_MAX;
 			}
-			// get percent progress and convert it to values
 
+			// get percent progress and convert it to values
 			int diff = minRating;
 			float factor = (maxRating - minRating) / 100; // (maxRating - minRating) / maxSeekProgress
 			// progress - percent
 			int value = (int) (factor * progress) + diff; // k * x + b
 
-			checkedButton.setText(String.valueOf(value));
-
 			if (maxRatingBtn.isChecked()) {
+				if (value < minRatingValue) { // if minRating is lower that minRating
+					value = minRatingValue + RATING_VARIABLE_DIFF;
+				}
+
 				gameConfigBuilder.setMaxRating(value);
-				gameConfigBuilder.setMinRating(Integer.parseInt(minRatingBtn.getText().toString()));
+				gameConfigBuilder.setMinRating(minRatingValue);
 			} else {
+				if (value > maxRatingValue) { // if minRating is greater that maxRating
+					value = maxRatingValue - RATING_VARIABLE_DIFF;
+				}
+
 				gameConfigBuilder.setMinRating(value);
-				gameConfigBuilder.setMaxRating(Integer.parseInt(maxRatingBtn.getText().toString()));
+				gameConfigBuilder.setMaxRating(maxRatingValue);
 			}
 
-		}
+			checkedButton.setText(String.valueOf(value));		}
 
 		@Override
 		public void onStartTrackingTouch(SeekBar seekBar) {
@@ -337,13 +343,11 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	public void onClick(View view) {
 		super.onClick(view);
 
-		if (view.getId() == R.id.liveOptionsView) {
+		if (view.getId() == R.id.liveHeaderView) {
 			getActivityFace().toggleRightMenu();
 		} else if (view.getId() == R.id.playBtn) {
 			getActivityFace().openFragment(LiveGameWaitFragment.createInstance(getLiveGameConfig()));
-			if (getArguments().getInt(MODE) == RIGHT_MENU_MODE) {
-				getActivityFace().toggleRightMenu();
-			}
+			getActivityFace().toggleRightMenu();
 		} else {
 			handleLiveModeClicks(view);
 		}

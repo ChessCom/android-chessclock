@@ -61,8 +61,8 @@
 
     <string name="ic_right">.</string> 			<!-- > -->
     <string name="ic_left">,</string>         	<!-- < -->
-    <string name="ic_up">&#60;</string>			<!-- ^ -->
-    <string name="ic_down">&#62;</string>
+	<string name="ic_up">&#62;</string>         <!-- ^ -->
+    <string name="ic_down">&#60;</string>
 
     <string name="ic_arrow_right">]</string>    <!-- -> -->
     <string name="ic_arrow_left">[</string>		<!-- <- -->

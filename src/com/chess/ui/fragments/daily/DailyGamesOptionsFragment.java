@@ -38,8 +38,7 @@ import java.util.List;
  */
 public class DailyGamesOptionsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemSelectedListener {
 
-	private static final String ERROR_TAG = "send request failed popup";
-
+	private static final int RATING_VARIABLE_DIFF = 100;
 	private static final int MIN_RATING_DIFF = 200;
 	private static final int MAX_RATING_DIFF = 200;
 	private static final int MIN_RATING_MIN = 1000;
@@ -56,10 +55,31 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
 	private List<SelectionItem> friendsList;
 	private int dailyRating;
+	private int positionMode;
+
+	public DailyGamesOptionsFragment() {
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, RIGHT_MENU_MODE);
+		setArguments(bundle);
+	}
+
+	public static DailyGamesOptionsFragment createInstance(int mode) {
+		DailyGamesOptionsFragment fragment = new DailyGamesOptionsFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, mode);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			positionMode = getArguments().getInt(MODE);
+		} else {
+			positionMode = savedInstanceState.getInt(MODE);
+		}
 
 		gameConfigBuilder = new DailyGameConfig.Builder();
 
@@ -76,8 +96,8 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 
 			friendsList.get(0).setChecked(true);
 		}
-		dailyRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), getUsername());
 
+		dailyRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), getUsername());
 	}
 
 	@Override
@@ -89,16 +109,19 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		view.findViewById(R.id.dailyHeaderView).setOnClickListener(this);
-
 		RoboSpinner opponentSpinner = (RoboSpinner) view.findViewById(R.id.opponentSpinner);
 		Resources resources = getResources();
 
 		OpponentsAdapter selectionAdapter = new OpponentsAdapter(getActivity(), friendsList);
 		opponentSpinner.setAdapter(selectionAdapter);
 		opponentSpinner.setOnItemSelectedListener(this);
-
 		opponentSpinner.setSelection(0);
+
+		if (positionMode == CENTER_MODE) {
+			View dailyHeaderView = view.findViewById(R.id.dailyHeaderView);
+			dailyHeaderView.setVisibility(View.VISIBLE);
+			dailyHeaderView.setOnClickListener(this);
+		}
 
 		{// options setup
 			{// Mode adapter init
@@ -147,6 +170,12 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		super.onResume();
 
 		updateDailyMode(getAppData().getDefaultDailyMode());
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt(MODE, positionMode);
 	}
 
 	private void createDailyChallenge() {
@@ -219,6 +248,10 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 			TextView checkedButton;
+
+			int minRatingValue = Integer.parseInt(minRatingBtn.getText().toString());
+			int maxRatingValue = Integer.parseInt(maxRatingBtn.getText().toString());
+
 			int minRating;
 			int maxRating;
 			if (maxRatingBtn.isChecked()) {
@@ -230,23 +263,30 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 				minRating = MIN_RATING_MIN;
 				maxRating = MIN_RATING_MAX;
 			}
-			// get percent progress and convert it to values
 
+			// get percent progress and convert it to values
 			int diff = minRating;
 			float factor = (maxRating - minRating) / 100; // (maxRating - minRating) / maxSeekProgress
 			// progress - percent
 			int value = (int) (factor * progress) + diff; // k * x + b
 
-			checkedButton.setText(String.valueOf(value ));
-
 			if (maxRatingBtn.isChecked()) {
+				if (value < minRatingValue) { // if minRating is lower that minRating
+					value = minRatingValue + RATING_VARIABLE_DIFF;
+				}
+
 				gameConfigBuilder.setMaxRating(value);
-				gameConfigBuilder.setMinRating(Integer.parseInt(minRatingBtn.getText().toString()));
+				gameConfigBuilder.setMinRating(minRatingValue);
 			} else {
+				if (value > maxRatingValue) { // if minRating is greater that maxRating
+					value = maxRatingValue - RATING_VARIABLE_DIFF;
+				}
+
 				gameConfigBuilder.setMinRating(value);
-				gameConfigBuilder.setMaxRating(Integer.parseInt(maxRatingBtn.getText().toString()));
+				gameConfigBuilder.setMaxRating(maxRatingValue);
 			}
 
+			checkedButton.setText(String.valueOf(value));
 		}
 
 		@Override

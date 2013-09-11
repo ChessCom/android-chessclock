@@ -525,9 +525,9 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 //				holder.icon.setText(R.string.ic_right);
 //			} else {
 			if (isExpanded) {
-				holder.icon.setText(R.string.ic_down);
-			} else {
 				holder.icon.setText(R.string.ic_up);
+			} else {
+				holder.icon.setText(R.string.ic_down);
 			}
 //			}
 

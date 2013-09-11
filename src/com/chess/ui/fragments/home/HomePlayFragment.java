@@ -3,13 +3,16 @@ package com.chess.ui.fragments.home;
 import android.animation.LayoutTransition;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.RelLayout;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.DailySeekItem;
@@ -22,9 +25,9 @@ import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.daily.DailyGamesOptionsFragment;
 import com.chess.ui.fragments.friends.ChallengeFriendFragment;
-import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.live.LiveGameOptionsFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
@@ -63,6 +66,14 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	private TextView friendRealName2Txt;
 	private String firstFriendUserName;
 	private String secondFriendUserName;
+	private LinearLayout dailyGameQuickOptions;
+	private RelLayout liveOptionsView;
+	private boolean liveFullOptionsVisible;
+	private boolean dailyFullOptionsVisible;
+	private LiveGameOptionsFragment liveGameOptionsFragment;
+	private DailyGamesOptionsFragment dailyGamesOptionsFragment;
+	private TextView liveExpandIconTxt;
+	private TextView dailyExpandIconTxt;
 
 	public HomePlayFragment() {
 		Bundle bundle = new Bundle();
@@ -106,8 +117,14 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		RelativeLayout liveHomeOptionsFrame = (RelativeLayout) view.findViewById(R.id.liveHomeOptionsFrame);
-		if (getArguments().getInt(MODE) == CENTER_MODE) {
+		liveExpandIconTxt = (TextView) view.findViewById(R.id.liveExpandIconTxt);
+		dailyExpandIconTxt = (TextView) view.findViewById(R.id.dailyExpandIconTxt);
+		liveOptionsView = (RelLayout) view.findViewById(R.id.liveOptionsView);
+		dailyGameQuickOptions = (LinearLayout) view.findViewById(R.id.dailyGameQuickOptions);
+		if (positionMode == CENTER_MODE) {
 			inflater.inflate(R.layout.new_home_live_options_view, liveHomeOptionsFrame, true);
+			liveExpandIconTxt.setText(R.string.ic_right);
+			dailyExpandIconTxt.setText(R.string.ic_right);
 		} else {
 			inflater.inflate(R.layout.new_right_live_options_view, liveHomeOptionsFrame, true);
 			View liveHeaderView = view.findViewById(R.id.liveHeaderView);
@@ -184,20 +201,54 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		if (view.getId() == R.id.liveTimeSelectBtn) {
 			toggleLiveOptionsView();
 		} else if (view.getId() == R.id.liveHeaderView) {
-			getActivityFace().changeRightFragment(LiveGameOptionsFragment.createInstance(RIGHT_MENU_MODE));
-			if (positionMode == CENTER_MODE) {
+			if (positionMode == RIGHT_MENU_MODE) {
+				liveFullOptionsVisible = !liveFullOptionsVisible;
+				liveOptionsView.setVisibility(liveFullOptionsVisible ? View.GONE : View.VISIBLE);
+				if (liveFullOptionsVisible) {
+					liveExpandIconTxt.setText(R.string.ic_up);
+					if (liveGameOptionsFragment == null) {
+						liveGameOptionsFragment = new LiveGameOptionsFragment();
+					}
+
+					FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+					transaction.replace(R.id.liveOptionsFrame, liveGameOptionsFragment).commit();
+				} else {
+					liveExpandIconTxt.setText(R.string.ic_down);
+					FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+					transaction.remove(liveGameOptionsFragment).commit();
+				}
+			} else {
+				getActivityFace().changeRightFragment(LiveGameOptionsFragment.createInstance(CENTER_MODE));
 				getActivityFace().toggleRightMenu();
 			}
+
 		} else if (view.getId() == R.id.livePlayBtn) {
 			createLiveChallenge();
 			if (positionMode == RIGHT_MENU_MODE) {
 				getActivityFace().toggleRightMenu();
 			}
 		} else if (view.getId() == R.id.dailyHeaderView) {
-			getActivityFace().changeRightFragment(new DailyGamesOptionsFragment());
-			if (positionMode == CENTER_MODE) {
+			if (positionMode == RIGHT_MENU_MODE) {
+				dailyFullOptionsVisible = !dailyFullOptionsVisible;
+				dailyGameQuickOptions.setVisibility(dailyFullOptionsVisible ? View.GONE : View.VISIBLE);
+				if (dailyFullOptionsVisible) {
+					dailyExpandIconTxt.setText(R.string.ic_up);
+					if (dailyGamesOptionsFragment == null) {
+						dailyGamesOptionsFragment = new DailyGamesOptionsFragment();
+					}
+
+					FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+					transaction.replace(R.id.dailyOptionsFrame, dailyGamesOptionsFragment).commit();
+				} else {
+					dailyExpandIconTxt.setText(R.string.ic_down);
+					FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+					transaction.remove(dailyGamesOptionsFragment).commit();
+				}
+			} else {
+				getActivityFace().changeRightFragment(DailyGamesOptionsFragment.createInstance(CENTER_MODE));
 				getActivityFace().toggleRightMenu();
 			}
+
 		} else if (view.getId() == R.id.dailyPlayBtn) {
 			createDailyChallenge();
 		} else if (view.getId() == R.id.inviteFriendView1) {
@@ -331,7 +382,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		friendUserName2Txt = (TextView) view.findViewById(R.id.friendUserName2Txt);
 		friendRealName2Txt = (TextView) view.findViewById(R.id.friendRealName2Txt);
 
-		if (getArguments().getInt(MODE) == CENTER_MODE) { // we use white background and dark titles for centered mode
+		if (positionMode == CENTER_MODE) { // we use white background and dark titles for centered mode
 			int darkTextColor = getResources().getColor(R.color.new_subtitle_dark_grey);
 
 			View homePlayScrollView = view.findViewById(R.id.homePlayScrollView);
@@ -399,7 +450,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 				buttonEntry.getValue().setText(getLiveModeButtonLabel(newGameButtonsArray[key]));
 				buttonEntry.getValue().setOnClickListener(this);
 
-				if (getArguments().getInt(MODE) == CENTER_MODE) {
+				if (positionMode == CENTER_MODE) {
 					buttonEntry.getValue().setTextColor(darkBtnColor);
 				}
 

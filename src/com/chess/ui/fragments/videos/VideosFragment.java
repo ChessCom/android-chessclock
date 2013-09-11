@@ -571,9 +571,9 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 				holder.icon.setText(Symbol.EMPTY);
 			} else {
 				if (isExpanded) {
-					holder.icon.setText(R.string.ic_down);
-				} else {
 					holder.icon.setText(R.string.ic_up);
+				} else {
+					holder.icon.setText(R.string.ic_down);
 				}
 			}
 

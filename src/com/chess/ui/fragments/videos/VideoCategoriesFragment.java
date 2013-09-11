@@ -44,7 +44,6 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 	public static final String SECTION_NAME = "section_name";
 	private static final int WATCH_VIDEO_REQUEST = 9896;
-	private static final int ITEMS_PER_PAGE = 40;
 
 	private VideosCursorAdapter videosAdapter;
 
@@ -278,7 +277,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 			loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEOS);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
-			loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+			loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.DEFAULT_ITEMS_PER_PAGE);
 
 			paginationAdapter.updateLoadItem(loadItem);
 		} else {

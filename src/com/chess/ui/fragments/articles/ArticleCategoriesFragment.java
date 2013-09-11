@@ -38,7 +38,6 @@ import java.util.List;
 public class ArticleCategoriesFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
 	public static final String SECTION_NAME = "section_name";
-	private static final int ITEMS_PER_PAGE = 40;
 
 	private ArticlesThumbCursorAdapter articlesAdapter;
 
@@ -182,7 +181,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 			loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLES_LIST);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
-			loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+			loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE,  RestHelper.DEFAULT_ITEMS_PER_PAGE);
 
 			paginationAdapter.updateLoadItem(loadItem);
 		} else {

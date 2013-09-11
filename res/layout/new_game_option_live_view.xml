@@ -21,9 +21,10 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="center_vertical"
-			style="@style/ListItem.Header"
+			style="@style/ListItem.Header.Dark"
 			android:paddingLeft="13dip"
-			android:paddingRight="8dip">
+			android:paddingRight="8dip"
+			android:visibility="gone">
 
 			<!--Icon-->
 			<com.chess.RoboTextView
@@ -53,7 +54,7 @@
 			<com.chess.RoboTextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/ic_right"
+				android:text="@string/ic_left"
 				android:textColor="@color/new_light_grey_2"
 				style="@style/GlyphIcon.Small" />
 
@@ -64,25 +65,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:animateLayoutChanges="true">
-
-			<!--Time selection | Default time-->
-<!--			<com.chess.RoboButton
-				android:id="@+id/liveTimeSelectBtn"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				style="@style/Button.Glassy.Small" />
-
-			<com.chess.RoboButton
-				android:id="@+id/livePlayBtn"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/new_play_ex"
-				android:layout_alignParentRight="true"
-				style="@style/Button.OrangeNoBorder.Small" />
-
-			android:layout_below="@id/liveTimeSelectBtn"
-
-				-->
 
 			<!--Live Options-->
 			<com.chess.RelLayout

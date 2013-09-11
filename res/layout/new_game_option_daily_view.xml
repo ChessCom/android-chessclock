@@ -2,6 +2,7 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -21,25 +22,34 @@
             style="@style/ListItem.Header.Dark"
             android:paddingLeft="13dip"
             android:paddingRight="8dip"
+			android:visibility="gone"
             >
+			<!--Icon-->
+			<com.chess.RoboTextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/ic_daily_game"
+				android:textColor="@color/new_light_grey_2"
+				style="@style/GlyphIcon.Big"
+				/>
 
-            <!--Icon-->
-            <com.chess.RoboTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ic_daily_game"
-                android:textColor="@color/new_light_grey_2"
-                style="@style/GlyphIcon"
-                />
+			<com.chess.RoboTextView
+				android:id="@+id/dailyChessHeaderTxt"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/daily_chess"
+				style="@style/HeaderTitle.Light"
+				/>
 
-            <com.chess.RoboTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/daily_chess"
-                android:textColor="@color/new_list_header_text"
-                android:gravity="center_vertical"
-                />
+			<com.chess.RoboTextView
+				android:id="@+id/dailyRatingTxt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical"
+				android:textColor="@color/new_light_grey_2"
+				custom:ttf="Bold"
+				/>
 
             <!--Right Icon-->
             <com.chess.RoboTextView
