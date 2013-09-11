@@ -32,14 +32,11 @@ public class SaveForumCategoriesTask extends AbstractUpdateTask<ForumCategoryIte
 
 	@Override
 	protected Integer doTheTask(Long... ids) {
-		synchronized (itemList) {
-			for (ForumCategoryItem.Data currentItem : itemList) {
-				DbDataManager.saveForumCategoryItem(contentResolver, currentItem);
-			}
+		for (ForumCategoryItem.Data currentItem : itemList) {
+			DbDataManager.saveForumCategoryItem(contentResolver, currentItem);
 		}
-		result = StaticData.RESULT_OK;
 
-		return result;
+		return StaticData.RESULT_OK;
 	}
 
 }

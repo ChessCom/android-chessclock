@@ -249,7 +249,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				if (TextUtils.isEmpty(url)) {
 					articleShareStr = String.valueOf(Html.fromHtml(bodyStr));
 				} else {
-					articleShareStr = RestHelper.getInstance().BASE_URL + "/article/view/" + url;
+					articleShareStr = "http://chess.com/article/view/" + url;
 				}
 
 				Intent shareIntent = new Intent(Intent.ACTION_SEND);

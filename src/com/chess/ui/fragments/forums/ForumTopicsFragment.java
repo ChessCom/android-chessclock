@@ -128,12 +128,10 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		boolean headerAdded = listView.getHeaderViewsCount() > 0;
-		int offset = headerAdded ? -1 : 0;
+//		boolean headerAdded = listView.getHeaderViewsCount() > 0;
+//		int offset = headerAdded ? -1 : 0;
 
-		if (position == 0) { // if listView header
-			// see onClick(View) handle
-		} else {
+		if (position != 0) { // if NOT listView header
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 			int topicId = DbDataManager.getInt(cursor, DbScheme.V_ID);
 			getActivityFace().openFragment(ForumPostsFragment.createInstance(topicId));

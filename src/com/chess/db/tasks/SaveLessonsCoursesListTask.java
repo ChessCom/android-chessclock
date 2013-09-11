@@ -37,11 +37,9 @@ public class SaveLessonsCoursesListTask extends AbstractUpdateTask<LessonCourseL
 			currentItem.setUser(username);
 
 			DbDataManager.saveCourseListItemToDb(contentResolver, currentItem);
-
 		}
-		result = StaticData.RESULT_OK;
 
-		return result;
+		return StaticData.RESULT_OK;
 	}
 
 }

@@ -44,7 +44,7 @@ public class GetAndSaveFriends extends IntentService {
 			String username = appData.getUsername();
 			ContentResolver contentResolver = getContentResolver();
 
-			for (FriendsItem.Data currentItem : item.getData()) { // if
+			for (FriendsItem.Data currentItem : item.getData()) {
 				final String[] arguments2 = arguments;
 				arguments2[0] = String.valueOf(username);
 				arguments2[1] = String.valueOf(currentItem.getUserId());

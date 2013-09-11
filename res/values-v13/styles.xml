@@ -30,6 +30,7 @@
 		<item name="android:homeAsUpIndicator">@drawable/ic_action_menu</item>
         <item name="android:height">@dimen/actionbar_compat_height</item>
         <item name="android:itemPadding">@dimen/actionbar_compat_height</item>
+		<item name="android:background">@color/action_bar_overlay</item>
 	</style>
 
     <style name="ActionButton" parent="android:style/Widget.ActionButton">

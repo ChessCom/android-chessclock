@@ -3,6 +3,7 @@ package com.chess.ui.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,13 +87,21 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 
 		boolean isOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0 ; // TODO adjust logic for offline mode
 		holder.photoImg.setOnline(isOnline);
+
+		String locationStr = getString(cursor, DbScheme.V_LOCATION);
+		if (!TextUtils.isEmpty(locationStr)) {
+			holder.locationTxt.setText(locationStr);
+			holder.locationTxt.setVisibility(View.VISIBLE);
+		} else {
+			holder.locationTxt.setVisibility(View.GONE);
+		}
+
 		if (isOnline) {
 			holder.onlineTxt.setText(R.string.online_now);
 		} else {
 			holder.onlineTxt.setText(context.getString(R.string.last_played, getLastLoginLabel(cursor)));
 		}
 		holder.usernameTxt.setText(getString(cursor, DbScheme.V_USERNAME));
-		holder.locationTxt.setText(getString(cursor, DbScheme.V_LOCATION));
 
 		// set country flag
 		Drawable drawable = AppUtils.getCountryFlagScaled(context, countryMap.get(getInt(cursor, DbScheme.V_COUNTRY_ID)));

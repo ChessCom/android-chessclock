@@ -24,7 +24,7 @@ import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveArticleCategoriesTask;
 import com.chess.db.tasks.SaveArticlesListTask;
-import com.chess.ui.adapters.ArticlesThumbCursorAdapter;
+import com.chess.ui.adapters.ArticlesCursorAdapter;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -38,7 +38,6 @@ import com.chess.ui.interfaces.ItemClickListenerFace;
  */
 public class ArticlesFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener {
 
-	public static final String GREY_COLOR_DIVIDER = "##";
 	private static final int LATEST_ARTICLES_CNT = 3;
 
 	private static final int LATEST_SECTION = 0;
@@ -48,7 +47,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	private View loadingView;
 	private TextView emptyView;
 
-	private ArticlesThumbCursorAdapter articlesCursorAdapter;
+	private ArticlesCursorAdapter articlesCursorAdapter;
 	private CommonCategoriesCursorAdapter categoriesAdapter;
 
 	private ArticleItemUpdateListener latestArticleUpdateListener;
@@ -68,11 +67,10 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 		articlesViewedMap = new SparseBooleanArray();
 
-
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_light,
 				new int[]{LATEST_SECTION, CATEGORIES_SECTION});
 
-		articlesCursorAdapter = new ArticlesThumbCursorAdapter(getActivity(), null);
+		articlesCursorAdapter = new ArticlesCursorAdapter(getActivity(), null);
 		articlesCursorAdapter.addViewedMap(articlesViewedMap);
 		categoriesAdapter = new CommonCategoriesCursorAdapter(getActivity(), null);
 

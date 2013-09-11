@@ -46,7 +46,7 @@ public class MultiDirectionSlidingDrawer extends ViewGroup {
 	private static final float MAXIMUM_ACCELERATION = 2000.0f;
 	private static final int VELOCITY_UNITS = 1000;
 	private static final int MSG_ANIMATE = 1000;
-	private static final int ANIMATION_FRAME_DURATION = 1000 / 60;
+	private static final int ANIMATION_FRAME_DURATION = 500 / 60;
 
 	private static final int EXPANDED_FULL_OPEN = -10001;
 	private static final int COLLAPSED_FULL_CLOSED = -10002;

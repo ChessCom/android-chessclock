@@ -29,17 +29,6 @@
         custom:ttf="Bold"
         />
 
-    <!--by-->
-<!--    <com.chess.RoboTextView
-        android:id="@+id/byTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/by"
-        android:textColor="@color/new_author_dark_grey"
-        android:layout_below="@id/titleTxt"
-        android:textSize="14sp"
-        />-->
-
     <!--Author-->
     <com.chess.RoboTextView
         android:id="@+id/authorTxt"
@@ -51,10 +40,6 @@
         android:textSize="13sp"
         custom:ttf="Bold"
         />
-<!--
-	android:layout_alignBottom="@id/byTxt"
-	android:layout_toRightOf="@id/byTxt"
--->
 
     <!--Duration-->
     <com.chess.RoboTextView
@@ -66,7 +51,6 @@
         android:text="| 27 min"
         android:layout_toRightOf="@id/authorTxt"
         android:paddingTop="2dip"
-        android:paddingLeft="3dip"
         android:textColor="@color/stats_label_light_grey"
         android:textSize="12sp"
         />

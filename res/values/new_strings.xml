@@ -325,5 +325,6 @@
 	<string name="your_game_is_over">Your game is over</string>
 	<string name="switch_colors">Switch Colors</string>
 	<string name="views_arg">%s views</string>
+	<string name="no_results_found">No Results Found</string>
 
 </resources>

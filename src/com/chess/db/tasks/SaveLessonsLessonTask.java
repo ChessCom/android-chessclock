@@ -1,7 +1,6 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -39,17 +38,13 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 
 	@Override
 	protected Integer doTheTask(Long... ids) {
-
-
 		DbDataManager.saveMentorLessonToDb(contentResolver, item.getLesson(), lessonId);
 
 		saveLessonPositions(item.getPositions());
 
 		DbDataManager.saveUserLessonToDb(contentResolver, item.getUserLesson(), lessonId, username);
 
-		result = StaticData.RESULT_OK;
-
-		return result;
+		return StaticData.RESULT_OK;
 	}
 
 	private void saveLessonPositions(List<LessonItem.MentorPosition> positions) {
@@ -68,13 +63,7 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 
 			ContentValues values = DbDataManager.putLessonsPositionToValues(position);
 
-			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-			} else {
-				contentResolver.insert(uri, values);
-			}
-
-			cursor.close();
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 
 			saveLessonPositionsMoves(position.getPossibleMoves(), position.getPositionNumber());
 		}
@@ -91,7 +80,6 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 			final String[] arguments = sArguments3;
 			arguments[0] = String.valueOf(possibleMove.getLessonId());
 			arguments[1] = String.valueOf(possibleMove.getPositionNumber());
-//			arguments[2] = String.valueOf(possibleMove.getMoveNumber());
 			arguments[2] = String.valueOf(i++);
 
 
@@ -102,13 +90,7 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 
 			ContentValues values = DbDataManager.putLessonsPositionMoveToValues(possibleMove);
 
-			if (cursor.moveToFirst()) {
-				contentResolver.update(ContentUris.withAppendedId(uri, DbDataManager.getId(cursor)), values, null, null);
-			} else {
-				contentResolver.insert(uri, values);
-			}
-
-			cursor.close();
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 	}
 }

@@ -2,33 +2,21 @@ package com.chess.ui.fragments.forums;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.SparseArray;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Spinner;
-import com.chess.MultiDirectionSlidingDrawer;
+import android.widget.ListAdapter;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.LessonListItem;
-import com.chess.backend.entity.api.LessonSearchItem;
-import com.chess.backend.statics.Symbol;
+import com.chess.backend.entity.api.ForumCategoryItem;
+import com.chess.backend.entity.api.ForumTopicItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
-import com.chess.ui.adapters.LessonsItemAdapter;
+import com.chess.ui.adapters.ForumTopicsItemAdapter;
 import com.chess.ui.adapters.StringSpinnerAdapter;
-import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.lessons.GameLessonFragment;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.ObjectAnimator;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.chess.ui.fragments.BaseSearchFragment;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,35 +24,18 @@ import java.util.List;
  * Date: 07.09.13
  * Time: 7:24
  */
-public class ForumSearchFragment extends CommonLogicFragment implements MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener, AdapterView.OnItemClickListener {
+public class ForumSearchFragment extends BaseSearchFragment {
 
-	private static final int FADE_ANIM_DURATION = 300;
+	private ForumTopicsUpdateListener forumTopicsUpdateListener;
+	private ForumTopicsItemAdapter forumTopicsAdapter;
 
-	private EditText keywordsEdt;
-	private Spinner categorySpinner;
-	private String allStr;
-	private LessonItemUpdateListener lessonItemUpdateListener;
-	private LessonsItemAdapter lessonsItemsAdapter;
-	private MultiDirectionSlidingDrawer slidingDrawer;
-	private ObjectAnimator fadeDrawerAnimator;
-	private ObjectAnimator fadeSearchAnimator;
-	private String lastKeyword;
-	private String lastCategory;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		lessonItemUpdateListener = new LessonItemUpdateListener();
-		lessonsItemsAdapter = new LessonsItemAdapter(getActivity(), null);
-
-		lastKeyword = Symbol.EMPTY;
-		lastCategory = Symbol.EMPTY;
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_base_search_frame, container, false);
+		forumTopicsUpdateListener = new ForumTopicsUpdateListener();
+		forumTopicsAdapter = new ForumTopicsItemAdapter(getActivity(), null);
 	}
 
 	@Override
@@ -72,142 +43,99 @@ public class ForumSearchFragment extends CommonLogicFragment implements MultiDir
 		super.onViewCreated(view, savedInstanceState);
 
 		setTitle(R.string.forums);
-
-		keywordsEdt = (EditText) view.findViewById(R.id.keywordsEdt);
-		allStr = getString(R.string.all);
-
-		categorySpinner = (Spinner) view.findViewById(R.id.categorySpinner);
-
-		view.findViewById(R.id.searchBtn).setOnClickListener(this);
-
-		slidingDrawer = (MultiDirectionSlidingDrawer) view.findViewById(R.id.slidingDrawer);
-		slidingDrawer.setOnDrawerOpenListener(this);
-		slidingDrawer.setOnDrawerCloseListener(this);
-		fadeDrawerAnimator = ObjectAnimator.ofFloat(slidingDrawer, "alpha", 1, 0);
-		fadeDrawerAnimator.setDuration(FADE_ANIM_DURATION);
-		slidingDrawer.setVisibility(View.GONE);
-		fadeDrawerAnimator.start();
-
-		View searchFieldsView = view.findViewById(R.id.searchFieldsView);
-		fadeSearchAnimator = ObjectAnimator.ofFloat(searchFieldsView, "alpha", 1, 0);
-		fadeSearchAnimator.setDuration(FADE_ANIM_DURATION);
-
-		ListView listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(lessonsItemsAdapter);
-		listView.setOnItemClickListener(this);
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-
-		// get saved categories
-		Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.FORUM_CATEGORIES.ordinal()], null, null, null, null);
-
-		if (cursor != null && cursor.moveToFirst()) {
-			fillCategoriesList(cursor);
-		}
+	protected ListAdapter getAdapter() {
+		return forumTopicsAdapter;
 	}
 
-	private void fillCategoriesList(Cursor cursor) {
-		List<String> categories = new ArrayList<String>();
-		SparseArray<String> categoriesArray = new SparseArray<String>();
-		categories.add(allStr);
+	@Override
+	protected DbScheme.Tables getTable() {
+		return DbScheme.Tables.FORUM_CATEGORIES;
+	}
 
+	@Override
+	protected void fillCategoriesList(Cursor cursor) {
 		do {
 			int id = DbDataManager.getInt(cursor, DbScheme.V_ID);
 			String name = DbDataManager.getString(cursor, DbScheme.V_NAME);
 			categoriesArray.put(id, name);
 			categories.add(name);
 		} while (cursor.moveToNext());
+		cursor.close();
 
 		categorySpinner.setAdapter(new StringSpinnerAdapter(getActivity(), categories));
 	}
 
 	@Override
-	public void onClick(View view) {
-		super.onClick(view);
-
-		if (view.getId() == R.id.searchBtn) {
-			String keyword = getTextFromField(keywordsEdt);
-			String category = (String) categorySpinner.getSelectedItem();
-
-			// Check if search query has changed, to reduce load
-			if (lastKeyword.equals(keyword) && lastCategory.equals(category)) {
-				showSearchResults();
-				return;
-			}
-
-			lastKeyword = keyword;
-			lastCategory = category;
-
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_FORUMS);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_KEYWORD, keyword);
-			if (!category.equals(allStr)) {
-				loadItem.addRequestParams(RestHelper.P_CATEGORY_CODE, category);
-			}
-
-			new RequestJsonTask<LessonSearchItem>(lessonItemUpdateListener).executeTask(loadItem);
+	protected void startSearch(String keyword, int categoryId) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_FORUMS_TOPICS);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		loadItem.addRequestParams(RestHelper.P_KEYWORD, keyword);
+		if (categoryId != -1) {
+			loadItem.addRequestParams(RestHelper.P_FORUM_CATEGORY_ID, categoryId);
 		}
+
+		new RequestJsonTask<ForumTopicItem>(forumTopicsUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		LessonListItem lessonItem = (LessonListItem) parent.getItemAtPosition(position);
-		long lessonId = lessonItem.getId();
-		getActivityFace().openFragment(GameLessonFragment.createInstance((int) lessonId, 0)); // we don't know courseId here
+		ForumTopicItem.Topic topicItem = (ForumTopicItem.Topic) parent.getItemAtPosition(position);
+		int topicId = topicItem.getId();
+		getActivityFace().openFragment(ForumPostsFragment.createInstance(topicId));
 	}
 
 	@Override
-	public void onDrawerOpened() {
+	protected void getCategories() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_FORUMS_CATEGORIES);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
+		new RequestJsonTask<ForumCategoryItem>(new CategoriesUpdateListener()).executeTask(loadItem);
 	}
 
-	@Override
-	public void onDrawerClosed() {
-		slidingDrawer.setVisibility(View.GONE);
-		fadeSearchAnimator.reverse();
-		fadeDrawerAnimator.start();
-	}
+	private class CategoriesUpdateListener extends ChessUpdateListener<ForumCategoryItem> {
 
-	private class LessonItemUpdateListener extends ChessLoadUpdateListener<LessonSearchItem> {
-
-		private LessonItemUpdateListener() {
-			super(LessonSearchItem.class);
+		private CategoriesUpdateListener() {
+			super(ForumCategoryItem.class);
 		}
 
 		@Override
-		public void updateData(LessonSearchItem returnedObj) {
-			super.updateData(returnedObj);
+		public void updateData(ForumCategoryItem returnedObj) {
 
-
-			List<LessonListItem> lessons = returnedObj.getData().getLessons();
-			lessonsItemsAdapter.setItemsList(lessons);
-
-			showSearchResults();
+			for (ForumCategoryItem.Data currentItem : returnedObj.getData()) {
+				DbDataManager.saveForumCategoryItem(getContentResolver(), currentItem);
+			}
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.FORUM_CATEGORIES));
+			if (cursor != null && cursor.moveToFirst()) {
+				fillCategoriesList(cursor);
+			}
 		}
 	}
 
-	private void showSearchResults() {
-		slidingDrawer.setVisibility(View.VISIBLE);
-		fadeDrawerAnimator.reverse();
-		fadeDrawerAnimator.addListener(new Animator.AnimatorListener() {
-			@Override
-			public void onAnimationStart(Animator animator) {}
+	private class ForumTopicsUpdateListener extends ChessLoadUpdateListener<ForumTopicItem> {
 
-			@Override
-			public void onAnimationEnd(Animator animator) {
-				slidingDrawer.animateOpen();
+		private ForumTopicsUpdateListener() {
+			super(ForumTopicItem.class);
+		}
+
+		@Override
+		public void updateData(ForumTopicItem returnedObj) {
+			super.updateData(returnedObj);
+
+			if (returnedObj.getData().getTopics().size() == 0) {
+				showSinglePopupDialog(R.string.no_results_found);
+				return;
 			}
 
-			@Override
-			public void onAnimationCancel(Animator animator) { }
+			forumTopicsAdapter.setItemsList(returnedObj.getData().getTopics());
+			need2update = false;
 
-			@Override
-			public void onAnimationRepeat(Animator animator) { }
-		});
-		fadeSearchAnimator.start();
+			resultsFound = true;
+			showSearchResults();
+		}
 	}
 }

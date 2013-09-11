@@ -35,16 +35,13 @@ public class SaveForumPostsTask extends AbstractUpdateTask<ForumPostItem.Post, L
 
 	@Override
 	protected Integer doTheTask(Long... ids) {
-		synchronized (itemList) {
-			for (ForumPostItem.Post currentItem : itemList) {
-				currentItem.setTopicId(topicId);
-				currentItem.setPage(currentPage);
-				DbDataManager.saveForumPostItem(contentResolver, currentItem);
-			}
+		for (ForumPostItem.Post currentItem : itemList) {
+			currentItem.setTopicId(topicId);
+			currentItem.setPage(currentPage);
+			DbDataManager.saveForumPostItem(contentResolver, currentItem);
 		}
-		result = StaticData.RESULT_OK;
 
-		return result;
+		return StaticData.RESULT_OK;
 	}
 
 }

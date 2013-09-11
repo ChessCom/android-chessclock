@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
 	<com.chess.backend.image_load.ProgressImageView
 		android:id="@+id/articleImg"
@@ -13,76 +11,76 @@
 		android:layout_height="213dip"
 		android:background="@color/new_common_list_thumb_grey"
 		android:contentDescription="@string/image"
-		android:layout_marginBottom="13dip"/>
+		android:layout_marginBottom="13dip" />
 
-    <!--Title-->
-    <com.chess.RoboTextView
-        android:id="@+id/titleTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+	<!--Title-->
+	<com.chess.RoboTextView
+		android:id="@+id/titleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
 		android:layout_below="@id/articleImg"
 		android:paddingTop="15dip"
-        android:paddingBottom="9dip"
-        android:textColor="@color/new_subtitle_dark_grey"
-        android:textSize="18sp"
-        custom:ttf="Bold"
-        />
+		android:paddingBottom="9dip"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
+		android:textColor="@color/new_subtitle_dark_grey"
+		android:textSize="18sp"
+		custom:ttf="Bold" />
 
-    <com.chess.backend.image_load.ProgressImageView
-        android:id="@+id/thumbnailAuthorImg"
-        android:layout_width="35dip"
-        android:layout_height="35dip"
-        android:background="@color/new_common_list_thumb_grey"
+	<com.chess.backend.image_load.ProgressImageView
+		android:id="@+id/thumbnailAuthorImg"
+		android:layout_width="35dip"
+		android:layout_height="35dip"
+		android:layout_marginLeft="@dimen/default_scr_side_padding"
+		android:background="@color/new_common_list_thumb_grey"
 		android:layout_below="@id/titleTxt"
-        android:contentDescription="@string/image"
-        android:layout_marginBottom="13dip"/>
+		android:contentDescription="@string/image"
+		android:layout_marginBottom="13dip" />
 
-    <com.chess.RoboTextView
-        android:id="@+id/authorTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/thumbnailAuthorImg"
-        android:layout_below="@id/titleTxt"
-        android:paddingLeft="11dip"
-        android:paddingBottom="2dip"
-        android:layout_marginTop="-4dip"
-        android:textColor="@color/new_subtitle_dark_grey"
-        android:textSize="14sp"
-        custom:ttf="Bold"
-        />
+	<com.chess.RoboTextView
+		android:id="@+id/authorTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/thumbnailAuthorImg"
+		android:layout_below="@id/titleTxt"
+		android:layout_marginTop="-4dip"
+		android:paddingLeft="11dip"
+		android:paddingBottom="2dip"
+		android:textColor="@color/new_subtitle_dark_grey"
+		android:textSize="14sp"
+		custom:ttf="Bold" />
 
-    <ImageView
-        android:id="@+id/countryImg"
-        android:layout_width="20dip"
-        android:layout_height="20dip"
-        android:contentDescription="@string/country"
-        android:layout_toRightOf="@id/authorTxt"
-        android:layout_below="@id/titleTxt"
-        android:layout_marginTop="-6dip"
-        android:layout_marginLeft="7dip"
-        />
+	<ImageView
+		android:id="@+id/countryImg"
+		android:layout_width="20dip"
+		android:layout_height="20dip"
+		android:contentDescription="@string/country"
+		android:layout_toRightOf="@id/authorTxt"
+		android:layout_below="@id/titleTxt"
+		android:layout_marginTop="-6dip"
+		android:layout_marginLeft="7dip" />
 
 	<!--Date-->
-    <com.chess.RoboTextView
-        android:id="@+id/dateTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/thumbnailAuthorImg"
-        android:layout_below="@id/authorTxt"
-        android:paddingLeft="11dip"
-        android:textColor="@color/new_friends_grey_text"
-        android:textSize="12sp"
-        />
+	<com.chess.RoboTextView
+		android:id="@+id/dateTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/thumbnailAuthorImg"
+		android:layout_below="@id/authorTxt"
+		android:paddingLeft="11dip"
+		android:textColor="@color/new_friends_grey_text"
+		android:textSize="12sp" />
 
-    <com.chess.RoboTextView
-        android:id="@+id/contentTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/thumbnailAuthorImg"
-        android:textColor="@color/new_subtitle_dark_grey"
+	<com.chess.RoboTextView
+		android:id="@+id/contentTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
+		android:layout_below="@id/thumbnailAuthorImg"
+		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingBottom="2dip"
-        android:textSize="13sp"
-        />
+		android:textSize="13sp" />
 
 	<ProgressBar
 		android:id="@+id/loadingCommentsView"
@@ -92,7 +90,6 @@
 		android:layout_margin="10dip"
 		android:layout_centerInParent="true"
 		style="?android:attr/progressBarStyle"
-		android:visibility="gone"
-		/>
+		android:visibility="gone" />
 
 </RelativeLayout>

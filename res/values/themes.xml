@@ -3,7 +3,7 @@
 <resources>
     <style name="MyAppTheme" parent="AppTheme">
         <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompatBackground</item>
-        <item name="android:windowBackground">@color/black</item>
+        <item name="android:windowBackground">@drawable/img_theme_green_felt</item>
 
     </style>
 

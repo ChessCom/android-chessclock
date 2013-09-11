@@ -42,9 +42,6 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	protected List<PopupProgressFragment> popupProgressManager;
 
 	protected boolean isPaused;
-	private boolean changingConfiguration;
-
-
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -135,6 +132,13 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		showPopupDialog(titleId, messageI18n, INFO_POPUP_TAG);
 	}
 
+	public void safeShowPopupDialog(int titleId, String message, String tag) {
+		if (isPaused)
+			return;
+
+		popupItem.setButtons(1);
+		showPopupDialog(titleId, message, tag);
+	}
 
 	protected void showSinglePopupDialog(int titleId, String message) {
 		// temporary handling i18n manually

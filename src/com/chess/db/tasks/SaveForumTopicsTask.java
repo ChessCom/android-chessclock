@@ -43,9 +43,8 @@ public class SaveForumTopicsTask extends AbstractUpdateTask<ForumTopicItem.Topic
 				DbDataManager.saveForumTopicItem(contentResolver, currentItem);
 			}
 		}
-		result = StaticData.RESULT_OK;
 
-		return result;
+		return StaticData.RESULT_OK;
 	}
 
 }

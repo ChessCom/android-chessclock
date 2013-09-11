@@ -101,10 +101,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/photoImg"
-        android:layout_alignBottom="@id/photoImg"
+		android:layout_below="@id/locationTxt"
+		android:paddingTop="3dip"
         android:textColor="@color/new_friends_grey_text"
         custom:ttf="Italic"
         android:textSize="13sp"
         />
+	<!--android:layout_alignBottom="@id/photoImg"-->
 
 </RelativeLayout>

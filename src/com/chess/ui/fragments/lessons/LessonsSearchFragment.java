@@ -1,19 +1,16 @@
 package com.chess.ui.fragments.lessons;
 
-import android.database.Cursor;
 import android.os.Bundle;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.ListAdapter;
 import android.widget.Spinner;
-import com.chess.MultiDirectionSlidingDrawer;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.entity.api.LessonSearchItem;
 import com.chess.backend.statics.Symbol;
@@ -22,12 +19,10 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.ui.adapters.LessonsItemAdapter;
 import com.chess.ui.adapters.StringSpinnerAdapter;
+import com.chess.ui.fragments.BaseSearchFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.ObjectAnimator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,22 +31,13 @@ import java.util.List;
  * Date: 06.08.13
  * Time: 14:50
  */
-public class LessonsSearchFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener {
+public class LessonsSearchFragment extends BaseSearchFragment implements AdapterView.OnItemClickListener {
 
-	private static final int FADE_ANIM_DURATION = 300;
-
-	private EditText keywordsEdt;
 	private Spinner difficultySpinner;
-	private Spinner categorySpinner;
-	private String allStr;
 	private LessonItemUpdateListener lessonItemUpdateListener;
 	private LessonsItemAdapter lessonsItemsAdapter;
-	private MultiDirectionSlidingDrawer slidingDrawer;
-	private ObjectAnimator fadeDrawerAnimator;
-	private ObjectAnimator fadeSearchAnimator;
-	private String lastKeyword;
-	private String lastCategory;
 	private String lastDifficulty;
+	private StringSpinnerAdapter difficultySpinnerAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,8 +46,11 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 		lessonItemUpdateListener = new LessonItemUpdateListener();
 		lessonsItemsAdapter = new LessonsItemAdapter(getActivity(), null);
 
-		lastKeyword = Symbol.EMPTY;
-		lastCategory = Symbol.EMPTY;
+		String[] difficultyArray = getResources().getStringArray(R.array.lesson_difficulty);
+		List<String> difficultyList = AppUtils.convertArrayToList(difficultyArray);
+		difficultyList.add(0, allStr);
+		difficultySpinnerAdapter = new StringSpinnerAdapter(getActivity(), difficultyList);
+
 		lastDifficulty = Symbol.EMPTY;
 	}
 
@@ -76,61 +65,44 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 
 		setTitle(R.string.lessons);
 
-		keywordsEdt = (EditText) view.findViewById(R.id.keywordsEdt);
-		allStr = getString(R.string.all);
-
 		difficultySpinner = (Spinner) view.findViewById(R.id.difficultySpinner);
-		String[] difficultyArray = getResources().getStringArray(R.array.lesson_difficulty);
-		List<String> difficultyList = AppUtils.convertArrayToList(difficultyArray);
-		difficultyList.add(0, allStr);
-
-		difficultySpinner.setAdapter(new StringSpinnerAdapter(getActivity(), difficultyList));
-		categorySpinner = (Spinner) view.findViewById(R.id.categorySpinner);
-
-		view.findViewById(R.id.searchBtn).setOnClickListener(this);
-
-		slidingDrawer = (MultiDirectionSlidingDrawer) view.findViewById(R.id.slidingDrawer);
-		slidingDrawer.setOnDrawerOpenListener(this);
-		slidingDrawer.setOnDrawerCloseListener(this);
-		fadeDrawerAnimator = ObjectAnimator.ofFloat(slidingDrawer, "alpha", 1, 0);
-		fadeDrawerAnimator.setDuration(FADE_ANIM_DURATION);
-		slidingDrawer.setVisibility(View.GONE);
-		fadeDrawerAnimator.start();
-
-		View searchFieldsView = view.findViewById(R.id.searchFieldsView);
-		fadeSearchAnimator = ObjectAnimator.ofFloat(searchFieldsView, "alpha", 1, 0);
-		fadeSearchAnimator.setDuration(FADE_ANIM_DURATION);
-
-		ListView listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(lessonsItemsAdapter);
-		listView.setOnItemClickListener(this);
+		difficultySpinner.setAdapter(difficultySpinnerAdapter);
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-
-		// get saved categories
-		Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
-
-		if (cursor != null && cursor.moveToFirst()) {
-			fillCategoriesList(cursor);
-		}
+	protected ListAdapter getAdapter() {
+		return lessonsItemsAdapter;
 	}
 
-	private void fillCategoriesList(Cursor cursor) {
-		List<String> categories = new ArrayList<String>();
-		SparseArray<String> categoriesArray = new SparseArray<String>();
-		categories.add(allStr);
+	@Override
+	protected DbScheme.Tables getTable() {
+		return DbScheme.Tables.LESSONS_CATEGORIES;
+	}
 
-		do {
-			int id = DbDataManager.getInt(cursor, DbScheme.V_CATEGORY_ID);
-			String name = DbDataManager.getString(cursor, DbScheme.V_NAME);
-			categoriesArray.put(id, name);
-			categories.add(name);
-		} while (cursor.moveToNext());
+	@Override
+	protected void getCategories() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSONS_CATEGORIES);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
-		categorySpinner.setAdapter(new StringSpinnerAdapter(getActivity(), categories));
+		new RequestJsonTask<CommonFeedCategoryItem>(new LessonsCategoriesUpdateListener()).executeTask(loadItem);
+	}
+
+	private class LessonsCategoriesUpdateListener extends CommonLogicFragment.ChessUpdateListener<CommonFeedCategoryItem> {
+		public LessonsCategoriesUpdateListener() {
+			super(CommonFeedCategoryItem.class);
+		}
+
+		@Override
+		public void updateData(CommonFeedCategoryItem returnedObj) {
+			super.updateData(returnedObj);
+
+			int i = 0;
+			for (CommonFeedCategoryItem.Data currentItem : returnedObj.getData()) {
+				currentItem.setDisplay_order(i++);
+				DbDataManager.saveLessonCategoryToDb(getContentResolver(), currentItem);
+			}
+		}
 	}
 
 	@Override
@@ -143,7 +115,8 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 			String difficulty = (String) difficultySpinner.getSelectedItem();
 
 			// Check if search query has changed, to reduce load
-			if (lastKeyword.equals(keyword) && lastCategory.equals(category) && lastDifficulty.equals(difficulty)) {
+			if (lastKeyword.equals(keyword) && lastCategory.equals(category)
+					&& lastDifficulty.equals(difficulty) && resultsFound) {
 				showSearchResults();
 				return;
 			}
@@ -151,6 +124,8 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 			lastKeyword = keyword;
 			lastCategory = category;
 			lastDifficulty = difficulty;
+
+			resultsFound = false;
 
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSONS);
@@ -168,22 +143,13 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 	}
 
 	@Override
+	protected void startSearch(String keyword, int categoryId) { } // not used here
+
+	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		LessonListItem lessonItem = (LessonListItem) parent.getItemAtPosition(position);
 		long lessonId = lessonItem.getId();
 		getActivityFace().openFragment(GameLessonFragment.createInstance((int) lessonId, 0)); // we don't know courseId here
-	}
-
-	@Override
-	public void onDrawerOpened() {
-
-	}
-
-	@Override
-	public void onDrawerClosed() {
-		slidingDrawer.setVisibility(View.GONE);
-		fadeSearchAnimator.reverse();
-		fadeDrawerAnimator.start();
 	}
 
 	private class LessonItemUpdateListener extends ChessLoadUpdateListener<LessonSearchItem> {
@@ -196,35 +162,18 @@ public class LessonsSearchFragment extends CommonLogicFragment implements Adapte
 		public void updateData(LessonSearchItem returnedObj) {
 			super.updateData(returnedObj);
 
+			if (returnedObj.getData().getLessons().size() == 0) {
+				showSinglePopupDialog(R.string.no_results_found);
+				return;
+			}
 
 			List<LessonListItem> lessons = returnedObj.getData().getLessons();
 			lessonsItemsAdapter.setItemsList(lessons);
 
+			need2update = false;
+			resultsFound = true;
+
 			showSearchResults();
 		}
 	}
-
-	private void showSearchResults() {
-		slidingDrawer.setVisibility(View.VISIBLE);
-		fadeDrawerAnimator.reverse();
-		fadeDrawerAnimator.addListener(new Animator.AnimatorListener() {
-			@Override
-			public void onAnimationStart(Animator animator) {}
-
-			@Override
-			public void onAnimationEnd(Animator animator) {
-				if (!slidingDrawer.isOpened()) {
-					slidingDrawer.animateOpen();
-				}
-			}
-
-			@Override
-			public void onAnimationCancel(Animator animator) { }
-
-			@Override
-			public void onAnimationRepeat(Animator animator) { }
-		});
-		fadeSearchAnimator.start();
-	}
-
 }

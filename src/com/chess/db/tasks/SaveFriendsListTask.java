@@ -35,26 +35,22 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 
 	@Override
 	protected Integer doTheTask(Long... ids) {
+		for (FriendsItem.Data currentItem : itemList) {
+			final String[] arguments2 = arguments;
+			arguments2[0] = String.valueOf(username);
+			arguments2[1] = String.valueOf(currentItem.getUserId());
 
-		synchronized (itemList) {
-			for (FriendsItem.Data currentItem : itemList) { // if
-				final String[] arguments2 = arguments;
-				arguments2[0] = String.valueOf(username);
-				arguments2[1] = String.valueOf(currentItem.getUserId());
+			// TODO implement beginTransaction logic for performance increase
+			Uri uri = DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()];
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER_ID, DbDataManager.SELECTION_USER_ID, arguments2, null);
 
-				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()];
-				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER_ID, DbDataManager.SELECTION_USER_ID, arguments2, null);
+			ContentValues values = DbDataManager.putFriendItemToValues(currentItem, username);
 
-				ContentValues values = DbDataManager.putFriendItemToValues(currentItem, username);
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 
-				DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
-
-			}
 		}
-		result = StaticData.RESULT_OK;
 
-		return result;
+		return StaticData.RESULT_OK;
 	}
 
 }

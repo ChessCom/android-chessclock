@@ -330,8 +330,6 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
-		super.onPositiveBtnClick(fragment);
-
 		String tag = fragment.getTag();
 		if (tag == null) {
 			super.onPositiveBtnClick(fragment);
@@ -341,7 +339,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		if (tag.equals(CREATE_CHALLENGE_TAG)) {
 			createDailyChallenge(opponentName);
 		}
-
+		super.onPositiveBtnClick(fragment);
 	}
 
 	private void createDailyChallenge(String opponentName) {

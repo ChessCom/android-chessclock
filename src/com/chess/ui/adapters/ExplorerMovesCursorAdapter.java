@@ -26,8 +26,8 @@ public class ExplorerMovesCursorAdapter extends ItemsCursorAdapter {
 		ViewHolder holder = new ViewHolder();
 		holder.explorerMoveTxt = (TextView) view.findViewById(R.id.explorerMoveTxt);
 
-		View friendListItemView = view.findViewById(R.id.explorerMovesListItemView);
-		friendListItemView.setOnClickListener(clickListenerFace);
+		View explorerMovesListItemView = view.findViewById(R.id.explorerMovesListItemView);
+		explorerMovesListItemView.setOnClickListener(clickListenerFace);
 
 		view.setTag(holder);
 

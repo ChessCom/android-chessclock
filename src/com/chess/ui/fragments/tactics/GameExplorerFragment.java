@@ -90,13 +90,6 @@ public class GameExplorerFragment extends GameBaseFragment implements GameCompFa
 
 		widgetsInit(view);
 
-//		{ // Engine init
-//			engineThinkingPath = (TextView) view.findViewById(R.id.engineThinkingPath);
-//			compStrengthArray = getResources().getIntArray(R.array.comp_strength);
-//			compTimeLimitArray = getResources().getStringArray(R.array.comp_time_limit);
-//			compDepth = getResources().getStringArray(R.array.comp_book_depth);
-//		}
-
 	}
 
 	private void init() {

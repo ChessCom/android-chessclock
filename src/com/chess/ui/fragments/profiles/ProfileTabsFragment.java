@@ -125,7 +125,7 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 		if (checkedButtonId != previousCheckedId) {
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
-//				case R.id.leftTabBtn:
+//				case R.id.leftTabBtn: // TODO will be implemented later
 //					changeInternalFragment(new ProfileActivityFragment());
 //					break;
 				case R.id.centerTabBtn:

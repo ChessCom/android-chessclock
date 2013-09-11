@@ -60,9 +60,8 @@ public class SaveMessagesForConversationTask extends AbstractUpdateTask<Messages
 
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
-		result = StaticData.RESULT_OK;
 
-		return result;
+		return StaticData.RESULT_OK;
 	}
 
 }

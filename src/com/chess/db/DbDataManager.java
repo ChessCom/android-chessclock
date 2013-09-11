@@ -981,6 +981,20 @@ public class DbDataManager {
 		return values;
 	}
 
+	public static void saveArticleCategory(ContentResolver contentResolver, CommonFeedCategoryItem.Data currentItem) {
+		final String[] arguments2 = sArguments1;
+		arguments2[0] = String.valueOf(currentItem.getId());
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = DbScheme.uriArray[DbScheme.Tables.ARTICLE_CATEGORIES.ordinal()];
+
+		Cursor cursor = contentResolver.query(uri, PROJECTION_V_CATEGORY_ID, SELECTION_CATEGORY_ID, arguments2, null);
+
+		ContentValues values = putCommonFeedCategoryItemToValues(currentItem);
+
+		updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
 	public static void saveArticleItem(ContentResolver contentResolver, ArticleItem.Data currentItem) {
 		final String[] arguments2 = sArguments1;
 		arguments2[0] = String.valueOf(currentItem.getId());
@@ -988,10 +1002,24 @@ public class DbDataManager {
 		// TODO implement beginTransaction logic for performance increase
 		Uri uri = DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()];
 
-		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID,
-				DbDataManager.SELECTION_ITEM_ID, arguments2, null);
+		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID, SELECTION_ITEM_ID, arguments2, null);
 
-		ContentValues values = DbDataManager.putArticleItemToValues(currentItem);
+		ContentValues values = putArticleItemToValues(currentItem);
+
+		updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
+	public static void saveVideoCategory(ContentResolver contentResolver, CommonFeedCategoryItem.Data currentItem) {
+		final String[] arguments2 = sArguments1;
+		arguments2[0] = String.valueOf(currentItem.getId());
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = DbScheme.uriArray[DbScheme.Tables.VIDEO_CATEGORIES.ordinal()];
+
+		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_V_CATEGORY_ID,
+				DbDataManager.SELECTION_CATEGORY_ID, arguments2, null);
+
+		ContentValues values = DbDataManager.putCommonFeedCategoryItemToValues(currentItem);
 
 		DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
@@ -1430,6 +1458,21 @@ public class DbDataManager {
 		dataObj.setCourseName(getString(cursor, V_NAME));
 
 		return dataObj;
+	}
+
+	public static void saveLessonCategoryToDb(ContentResolver contentResolver, CommonFeedCategoryItem.Data currentItem) {
+		final String[] arguments2 = sArguments1;
+		arguments2[0] = String.valueOf(currentItem.getId());
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = DbScheme.uriArray[DbScheme.Tables.LESSONS_CATEGORIES.ordinal()];
+
+		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_V_CATEGORY_ID,
+				DbDataManager.SELECTION_CATEGORY_ID, arguments2, null);
+
+		ContentValues values = DbDataManager.putCommonFeedCategoryItemToValues(currentItem);
+
+		DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
 	public static void saveLessonListItemToDb(ContentResolver contentResolver, LessonListItem lesson) {

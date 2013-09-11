@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
-import com.chess.ui.fragments.CommonLogicFragment;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,7 +12,7 @@ import com.chess.ui.fragments.CommonLogicFragment;
  * Date: 05.08.13
  * Time: 10:31
  */
-public class ProfileActivityFragment extends CommonLogicFragment {
+public class ProfileActivityFragment extends ProfileBaseFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -24,10 +23,6 @@ public class ProfileActivityFragment extends CommonLogicFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		// adjust action bar icons
-		getActivityFace().showActionMenu(R.id.menu_message, true);
-		getActivityFace().showActionMenu(R.id.menu_challenge, true);
-		getActivityFace().showActionMenu(R.id.menu_notifications, false);
-		getActivityFace().showActionMenu(R.id.menu_games, false);
+
 	}
 }

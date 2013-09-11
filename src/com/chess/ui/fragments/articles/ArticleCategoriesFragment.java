@@ -19,8 +19,8 @@ import com.chess.backend.statics.StaticData;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.ui.adapters.ArticlesCursorAdapter;
 import com.chess.ui.adapters.ArticlesPaginationAdapter;
-import com.chess.ui.adapters.ArticlesThumbCursorAdapter;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -39,7 +39,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 	public static final String SECTION_NAME = "section_name";
 
-	private ArticlesThumbCursorAdapter articlesAdapter;
+	private ArticlesCursorAdapter articlesAdapter;
 
 	private View loadingView;
 	private TextView emptyView;
@@ -74,10 +74,8 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		categoriesMap = new HashMap<String, Integer>();
 
 		viewedArticlesMap = new SparseBooleanArray();
-		articlesAdapter = new ArticlesThumbCursorAdapter(getActivity(), null);
+		articlesAdapter = new ArticlesCursorAdapter(getActivity(), null);
 		articlesAdapter.addViewedMap(viewedArticlesMap);
-//		MyFilterProvider myFilterProvider = new MyFilterProvider();
-//		articlesAdapter.setFilterQueryProvider(myFilterProvider);
 		paginationAdapter = new ArticlesPaginationAdapter(getActivity(), articlesAdapter, new ArticleUpdateListener(), null);
 	}
 

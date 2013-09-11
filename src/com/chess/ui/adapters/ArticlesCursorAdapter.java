@@ -10,11 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
-import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,43 +25,40 @@ import com.chess.utilities.AppUtils;
  * Date: 29.01.13
  * Time: 17:28
  */
-public class VideosCursorAdapter extends ItemsCursorAdapter {
+public class ArticlesCursorAdapter extends ItemsCursorAdapter {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
-	public static final String SLASH_DIVIDER = " | ";
-
-	private final ItemClickListenerFace clickFace;
+	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
 	private final int watchedTextColor;
 	private final int unWatchedTextColor;
-	private final int watchedIconColor;
-	private final int unWatchedIconColor;
-
+	private int PHOTO_SIZE;
 	private CharacterStyle foregroundSpan;
+	private Date date;
 	private SparseBooleanArray viewedMap;
 
-	public VideosCursorAdapter(ItemClickListenerFace clickFace, Cursor cursor) {
-		super(clickFace.getMeContext(), cursor);
+	public ArticlesCursorAdapter(Context context, Cursor cursor) {
+		super(context, cursor);
 
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
 
 		watchedTextColor = resources.getColor(R.color.new_light_grey_3);
 		unWatchedTextColor = resources.getColor(R.color.new_text_blue);
-		watchedIconColor = resources.getColor(R.color.new_light_grey_2);
-		unWatchedIconColor = resources.getColor(R.color.orange_button);
-		this.clickFace = clickFace;
+
+		date = new Date();
+
+		PHOTO_SIZE = (int) context.getResources().getDimension(R.dimen.article_thumb_width);
 	}
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_video_lib_list_item, parent, false);
+		View view = inflater.inflate(R.layout.new_article_thumb_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
+		holder.thumbnailImg = (ProgressImageView) view.findViewById(R.id.thumbnailImg);
 		holder.titleTxt = (TextView) view.findViewById(R.id.titleTxt);
 		holder.authorTxt = (TextView) view.findViewById(R.id.authorTxt);
-		holder.durationTxt = (TextView) view.findViewById(R.id.durationTxt);
-		holder.completedIconTxt = (TextView) view.findViewById(R.id.completedIconTxt);
+		holder.dateTxt = (TextView) view.findViewById(R.id.dateTxt);
 
-		holder.completedIconTxt.setOnClickListener(clickFace);
 		view.setTag(holder);
 
 		return view;
@@ -68,11 +68,9 @@ public class VideosCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
 
-		holder.completedIconTxt.setTag(R.id.list_item_id, cursor.getPosition());
-
 		String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
-		CharSequence chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
-		String lastName =  DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
+		String chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
+		String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
 		CharSequence authorStr;
 		if (TextUtils.isEmpty(chessTitle)) {
 			authorStr = firstName + Symbol.SPACE + lastName;
@@ -81,31 +79,29 @@ public class VideosCursorAdapter extends ItemsCursorAdapter {
 					+ Symbol.SPACE + firstName + Symbol.SPACE + lastName;
 			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		}
-		holder.titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
 		holder.authorTxt.setText(authorStr);
-		String durationStr = SLASH_DIVIDER + context.getString(R.string.min_arg, getString(cursor, DbScheme.V_MINUTES));
-		String viewsCntStr = SLASH_DIVIDER + context.getString(R.string.views_arg, getString(cursor, DbScheme.V_VIEW_COUNT));
-		holder.durationTxt.setText(durationStr + viewsCntStr);
+
+		holder.titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
+		date.setTime(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE) * 1000L);
+		holder.dateTxt.setText(dateFormatter.format(date));
+
+		imageLoader.download(DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL), holder.thumbnailImg, PHOTO_SIZE );
 
 		if (viewedMap.get(getInt(cursor, DbScheme.V_ID), false)) {
 			holder.titleTxt.setTextColor(watchedTextColor);
-			holder.completedIconTxt.setTextColor(watchedIconColor);
-			holder.completedIconTxt.setText(R.string.ic_check);
 		} else {
 			holder.titleTxt.setTextColor(unWatchedTextColor);
-			holder.completedIconTxt.setTextColor(unWatchedIconColor);
-			holder.completedIconTxt.setText(R.string.ic_play);
 		}
 	}
 
-	public void addViewedMap(SparseBooleanArray viewedMap) {
-		this.viewedMap = viewedMap;
+	public void addViewedMap(SparseBooleanArray viewedArticlesMap) {
+		this.viewedMap = viewedArticlesMap;
 	}
 
 	protected class ViewHolder {
+		public ProgressImageView thumbnailImg;
 		public TextView titleTxt;
 		public TextView authorTxt;
-		public TextView durationTxt;
-		public TextView completedIconTxt;
+		public TextView dateTxt;
 	}
 }

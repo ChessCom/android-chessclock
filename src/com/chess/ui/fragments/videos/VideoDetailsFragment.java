@@ -56,6 +56,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 
 	// 11/15/12 | 27 min
 	protected static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
+	private static final String SLASH_DIVIDER = " | ";
 
 	protected View loadingView;
 	protected TextView emptyView;
@@ -224,9 +225,8 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		@Override
 		public void updateData(VideoSingleItem returnedObj) {
 			super.updateData(returnedObj);
-			VideoSingleItem.Data videoData = returnedObj.getData();
 
-			updateUiData(videoData);
+			updateUiData(returnedObj.getData());
 		}
 	}
 
@@ -262,9 +262,9 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		Drawable drawable = AppUtils.getCountryFlagScaled(getActivity(), countryMap.get(videoData.getCountryId()));
 		countryImg.setImageDrawable(drawable);
 
-		int duration = videoData.getMinutes();
-		dateTxt.setText(dateFormatter.format(new Date(videoData.getCreateDate()))
-				+ Symbol.SPACE + getString(R.string.min_arg, duration));
+		String durationStr = SLASH_DIVIDER + getString(R.string.min_arg, videoData.getMinutes());
+		String viewsCntStr  = SLASH_DIVIDER + getString(R.string.views_arg, videoData.getViewCount());
+		dateTxt.setText(dateFormatter.format(new Date(videoData.getCreateDate())) + durationStr  + viewsCntStr);
 
 		bodyStr = videoData.getDescription();
 		contentTxt.setText(Html.fromHtml(bodyStr));

@@ -1,6 +1,9 @@
 package com.chess.ui.fragments.videos;
 
-import android.content.*;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,8 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.CommonViewedItem;
 import com.chess.backend.entity.api.VideoItem;
@@ -258,6 +261,10 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 				getActivityFace().openFragment(VideoDetailsFragment.createInstance(headerVideoId));
 			}
 		} else if (v.getId() == R.id.titleTxt) { // Clicked on title in Curriculum mode, open details
+			View parent = (View) v.getParent();
+			if (parent != null) {
+				parent.performClick();
+			}
 			Integer childPosition = (Integer) v.getTag(R.id.list_item_id);
 			Integer groupPosition = (Integer) v.getTag(R.id.list_item_id_group);
 			if (childPosition == null || groupPosition == null) {

@@ -452,7 +452,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) {
 
-					safeShowSinglePopupDialog(R.string.session_expired, RE_LOGIN_TAG);
+					safeShowPopupDialog(R.string.session_expired, Symbol.EMPTY, RE_LOGIN_TAG);
 				}
 			}
 		}

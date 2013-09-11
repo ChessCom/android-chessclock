@@ -50,6 +50,7 @@ public class AvatarView extends ProgressImageView {
 			indicatorParams.addRule(ALIGN_PARENT_RIGHT);
 			indicatorParams.addRule(ALIGN_PARENT_BOTTOM);
 
+			onlineBadge.setVisibility(GONE);
 			onlineBadge.setAdjustViewBounds(true);
 			onlineBadge.setScaleType(ImageView.ScaleType.FIT_XY);
 			int onlineColor = getResources().getColor(R.color.is_online_color);

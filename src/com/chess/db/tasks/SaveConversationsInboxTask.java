@@ -55,11 +55,9 @@ public class SaveConversationsInboxTask extends AbstractUpdateTask<ConversationI
 			ContentValues values = DbDataManager.putConversationItemToValues(currentItem);
 
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
-
 		}
-		result = StaticData.RESULT_OK;
 
-		return result;
+		return StaticData.RESULT_OK;
 	}
 
 }

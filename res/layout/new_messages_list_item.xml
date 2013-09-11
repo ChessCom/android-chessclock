@@ -27,6 +27,8 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/photoImg"
+		android:layout_alignTop="@id/photoImg"
+		android:layout_marginTop="-4dip"
 		android:textColor="@color/new_subtitle_dark_grey"
 		custom:ttf="Bold"
 		/>
@@ -36,6 +38,8 @@
 		android:id="@+id/messageDateTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_alignTop="@id/photoImg"
+		android:layout_marginTop="-4dip"
 		android:layout_alignParentRight="true"
 		android:textColor="@color/stats_label_light_grey"
 		android:textSize="12sp"

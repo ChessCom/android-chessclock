@@ -19,7 +19,6 @@ public class SaveVideosListTask extends AbstractUpdateTask<VideoItem.Data, Long>
 							  ContentResolver resolver) {
 		super(taskFace, new ArrayList<VideoItem.Data>());
 		this.itemList.addAll(currentItems);
-
 		this.contentResolver = resolver;
 	}
 
@@ -30,9 +29,8 @@ public class SaveVideosListTask extends AbstractUpdateTask<VideoItem.Data, Long>
 				DbDataManager.saveVideoItem(contentResolver, currentItem);
 			}
 		}
-		result = StaticData.RESULT_OK;
 
-		return result;
+		return StaticData.RESULT_OK;
 	}
 
 }

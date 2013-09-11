@@ -60,7 +60,6 @@ public class RestHelper {
 	//	http://api.chess-7.com
 	public static final String HOST_PRODUCTION = "api.chess.com";
 	public static final String HOST_TEST = "api.chess-7.com";
-//	public static final String HOST = HOST_PRODUCTION; // switch production/test server
 	public static String HOST = HOST_TEST; // switch production/test server
 
 	public String BASE_URL = "http://" + (HOST == null? HOST_TEST : HOST);
@@ -302,6 +301,7 @@ public class RestHelper {
 	public static final String P_DIFFICULTY = "difficulty";
 	public static final String P_CATEGORY_ID = "categoryId";
 	public static final String P_CATEGORY_CODE = "categoryCode";
+	public static final String P_PREVIEW = "preview";
 	public static final String P_OPENING = "opening";
 	public static final String P_AUTHOR = "author";
 	public static final String P_THEME = "theme";
@@ -672,7 +672,7 @@ public class RestHelper {
 			e.printStackTrace();
 		}
 
-		return loadItem.getCode().replace(LoadItem.CODE, Symbol.EMPTY) + data;
+		return loadItem.getCode() + data;
 	}
 
 	private static String convertToHex(byte[] data) {

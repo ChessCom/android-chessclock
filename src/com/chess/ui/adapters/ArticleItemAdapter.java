@@ -1,7 +1,6 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.text.TextUtils;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
@@ -10,22 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.entity.api.ArticleItem;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.statics.Symbol;
-import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 29.01.13
- * Time: 17:28
+ * Date: 11.09.13
+ * Time: 16:34
  */
-public class ArticlesThumbCursorAdapter extends ItemsCursorAdapter {
+public class ArticleItemAdapter extends ItemsAdapter<ArticleItem.Data> {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
@@ -36,8 +35,9 @@ public class ArticlesThumbCursorAdapter extends ItemsCursorAdapter {
 	private Date date;
 	private SparseBooleanArray viewedMap;
 
-	public ArticlesThumbCursorAdapter(Context context, Cursor cursor) {
-		super(context, cursor);
+
+	public ArticleItemAdapter(Context context, List<ArticleItem.Data> itemList) {
+		super(context, itemList);
 
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
@@ -51,7 +51,7 @@ public class ArticlesThumbCursorAdapter extends ItemsCursorAdapter {
 	}
 
 	@Override
-	public View newView(Context context, Cursor cursor, ViewGroup parent) {
+	protected View createView(ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_article_thumb_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.thumbnailImg = (ProgressImageView) view.findViewById(R.id.thumbnailImg);
@@ -65,12 +65,12 @@ public class ArticlesThumbCursorAdapter extends ItemsCursorAdapter {
 	}
 
 	@Override
-	public void bindView(View view, Context context, Cursor cursor) {
-		ViewHolder holder = (ViewHolder) view.getTag();
+	protected void bindView(ArticleItem.Data item, int pos, View convertView) {
+		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME).equals("")? "TestFirstName" : DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
-		String chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE).equals("")? "TIM" : DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
-		String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME).equals("")? "TestLastName" : DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
+		String firstName = item.getFirstName();
+		String chessTitle = item.getChessTitle();
+		String lastName = item.getLastName();
 		CharSequence authorStr;
 		if (TextUtils.isEmpty(chessTitle)) {
 			authorStr = firstName + Symbol.SPACE + lastName;
@@ -81,13 +81,13 @@ public class ArticlesThumbCursorAdapter extends ItemsCursorAdapter {
 		}
 		holder.authorTxt.setText(authorStr);
 
-		holder.titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
-		date.setTime(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE) * 1000L);
+		holder.titleTxt.setText(item.getTitle());
+		date.setTime(item.getCreateDate() * 1000L);
 		holder.dateTxt.setText(dateFormatter.format(date));
 
-		imageLoader.download(DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL), holder.thumbnailImg, PHOTO_SIZE );
+		imageLoader.download(item.getImageUrl(), holder.thumbnailImg, PHOTO_SIZE );
 
-		if (viewedMap.get(getInt(cursor, DbScheme.V_ID), false)) {
+		if (viewedMap.get((int) item.getId(), false)) {
 			holder.titleTxt.setTextColor(watchedTextColor);
 		} else {
 			holder.titleTxt.setTextColor(unWatchedTextColor);

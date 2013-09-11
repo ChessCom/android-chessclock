@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.stats.UserStatsItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -19,7 +19,6 @@ import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveUserStatsTask;
 import com.chess.model.RatingListItem;
 import com.chess.ui.adapters.RatingsAdapter;
-import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -34,7 +33,7 @@ import java.util.List;
  * Date: 05.08.13
  * Time: 10:32
  */
-public class ProfileRatingsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, ItemClickListenerFace {
+public class ProfileRatingsFragment extends ProfileBaseFragment implements AdapterView.OnItemClickListener, ItemClickListenerFace {
 
 	private final static int DAILY_CHESS = 0;
 	private final static int LIVE_STANDARD = 1;
@@ -43,11 +42,9 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 	private final static int DAILY_CHESS960 = 4;
 	private final static int TACTICS = 5;
 	private final static int LESSONS = 6;
-	private static final String USERNAME = "username";
 
 	private List<RatingListItem> ratingList;
 	private RatingsAdapter ratingsAdapter;
-	private String username;
 	private SaveStatsUpdateListener saveStatsUpdateListener;
 	private StatsItemUpdateListener statsItemUpdateListener;
 
@@ -64,12 +61,6 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		if (getArguments() != null) {
-			username = getArguments().getString(USERNAME);
-		} else {
-			username = savedInstanceState.getString(USERNAME);
-		}
 
 		statsItemUpdateListener = new StatsItemUpdateListener();
 		saveStatsUpdateListener = new SaveStatsUpdateListener();
@@ -90,11 +81,6 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 		listView.setAdapter(ratingsAdapter);
 		listView.setOnItemClickListener(this);
 
-		// adjust action bar icons
-		getActivityFace().showActionMenu(R.id.menu_message, true);
-		getActivityFace().showActionMenu(R.id.menu_challenge, true);
-		getActivityFace().showActionMenu(R.id.menu_notifications, false);
-		getActivityFace().showActionMenu(R.id.menu_games, false);
 	}
 
 	@Override
@@ -112,13 +98,6 @@ public class ProfileRatingsFragment extends CommonLogicFragment implements Adapt
 		} else {
 			fillUserStats();
 		}
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-
-		outState.putString(USERNAME, username);
 	}
 
 	@Override

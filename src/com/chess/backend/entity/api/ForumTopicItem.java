@@ -1,5 +1,7 @@
 package com.chess.backend.entity.api;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
 /**
@@ -40,7 +42,7 @@ public class ForumTopicItem extends BaseResponseItem<ForumTopicItem.Data>{
 
 	public static class Topic {
 		private int id;
-		private int category_id;
+		private String category_id;
 		private String category_name;
 		private String subject;
 		private String url;
@@ -79,7 +81,10 @@ public class ForumTopicItem extends BaseResponseItem<ForumTopicItem.Data>{
 		}
 
 		public int getCategoryId() {
-			return category_id;
+			if (TextUtils.isEmpty(category_id)) {
+				return 0;
+			}
+			return Integer.parseInt(category_id);
 		}
 
 		public String getCategoryName() {

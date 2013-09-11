@@ -3,15 +3,17 @@ package com.chess.ui.fragments.messages;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.*;
-import android.view.inputmethod.EditorInfo;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ConversationSingleItem;
 import com.chess.backend.entity.api.MessagesItem;
 import com.chess.backend.statics.StaticData;
@@ -22,7 +24,6 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveMessagesForConversationTask;
 import com.chess.ui.adapters.MessagesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,7 +31,7 @@ import com.chess.utilities.AppUtils;
  * Date: 01.08.13
  * Time: 20:44
  */
-public class MessagesConversationFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, TextView.OnEditorActionListener {
+public class MessagesConversationFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
 	private static final long KEYBOARD_DELAY = 50;
 	private static final String CONVERSATION_ID = "conversation_id";
@@ -42,12 +43,13 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 	private MessagesCursorAdapter messagesCursorAdapter;
 	private long conversationId;
 	private View replyView;
-	private EditText messageBodyEdt;
+	private EditText newPostEdt;
 	private String otherUsername;
 	private ReplyCreateListener replyCreateListener;
 	private TextView emptyView;
 	private MessagesCursorUpdateListener messageCursorUpdateListener;
 	private int paddingSide;
+	private boolean inEditMode;
 
 	public MessagesConversationFragment() {}
 
@@ -91,8 +93,7 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 		listView.setOnItemClickListener(this);
 
 		replyView = view.findViewById(R.id.replyView);
-		messageBodyEdt = (EditText) view.findViewById(R.id.messageBodyEdt);
-		messageBodyEdt.setOnEditorActionListener(this);
+		newPostEdt = (EditText) view.findViewById(R.id.messageBodyEdt);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		// adjust actionBar icons
@@ -147,6 +148,18 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 			case R.id.menu_edit:
 				showReplyView();
 				return true;
+			case R.id.menu_cancel:
+				showEditView(false);
+
+				return true;
+			case R.id.menu_accept:
+				createMessage();
+//				if (inEditMode) {
+//					createPost(commentId);
+//				} else {
+//					createPost();
+//				}
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -161,37 +174,41 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 		replyView.setBackgroundResource(R.color.header_light);
 		replyView.setPadding(paddingSide, paddingSide, paddingSide, paddingSide);
 
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				messageBodyEdt.requestFocus();
-				showKeyBoard(messageBodyEdt);
-				showKeyBoardImplicit(messageBodyEdt);
-			}
-		}, KEYBOARD_DELAY);
+		inEditMode = true;
+		showEditView(true);
+//		handler.postDelayed(new Runnable() {
+//			@Override
+//			public void run() {
+//				newPostEdt.requestFocus();
+//				showKeyBoard(newPostEdt);
+//				showKeyBoardImplicit(newPostEdt);
+//
+//				getActivityFace().showActionMenu(R.id.menu_accept, true);
+//				getActivityFace().updateActionBarIcons();
+//
+//			}
+//		}, KEYBOARD_DELAY);
 	}
 
-
-	@Override
-	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.FLAG_EDITOR_ACTION
-				|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live
-				popupItem.setPositiveBtnId(R.string.wireless_settings);
-				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
-			} else {
-				createMessage();
-			}
-		}
-		return false;
-	}
+//	@Override
+//	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//		if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.FLAG_EDITOR_ACTION
+//				|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+//			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live
+//				popupItem.setPositiveBtnId(R.string.wireless_settings);
+//				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
+//			} else {
+//
+//			}
+//		}
+//		return false;
+//	}
 
 	private void createMessage() {
-
-		String body = getTextFromField(messageBodyEdt);
+		String body = getTextFromField(newPostEdt);
 		if (TextUtils.isEmpty(body)) {
-			messageBodyEdt.requestFocus();
-			messageBodyEdt.setError(getString(R.string.can_not_be_empty));
+			newPostEdt.requestFocus();
+			newPostEdt.setError(getString(R.string.can_not_be_empty));
 			return;
 		}
 
@@ -213,20 +230,52 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 
 		@Override
 		public void updateData(ConversationSingleItem returnedObj) {
-
 			updateUiData(); // TODO improve performance
+
+			showEditView(false);
+		}
+	}
+
+	private void showEditView(boolean show) {
+		if (show) {
+			replyView.setVisibility(View.VISIBLE);
+			replyView.setBackgroundResource(R.color.header_light);
+			replyView.setPadding(paddingSide, paddingSide, paddingSide, paddingSide);
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					newPostEdt.requestFocus();
+					showKeyBoard(newPostEdt);
+					showKeyBoardImplicit(newPostEdt);
+
+					showEditMode(true);
+				}
+			}, KEYBOARD_DELAY);
+		} else {
 
 			handler.postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					hideKeyBoard(messageBodyEdt);
+					hideKeyBoard(newPostEdt);
 					hideKeyBoard();
+
+					replyView.setVisibility(View.GONE);
+					newPostEdt.setText(Symbol.EMPTY);
 				}
 			}, KEYBOARD_DELAY);
 
-			replyView.setVisibility(View.GONE);
-			messageBodyEdt.setText(Symbol.EMPTY);
+			showEditMode(false);
+			inEditMode = false;
 		}
+	}
+
+	private void showEditMode(boolean show) {
+		getActivityFace().showActionMenu(R.id.menu_share, !show);
+		getActivityFace().showActionMenu(R.id.menu_edit, !show);
+		getActivityFace().showActionMenu(R.id.menu_cancel, show);
+		getActivityFace().showActionMenu(R.id.menu_accept, show);
+
+		getActivityFace().updateActionBarIcons();
 	}
 
 	private class MessagesUpdateListener extends ChessLoadUpdateListener<MessagesItem> {

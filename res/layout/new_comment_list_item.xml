@@ -5,15 +5,25 @@
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:paddingTop="15dip"
 	android:background="@drawable/white_list_item_selector"
 	>
+
+	<!--Divider-->
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1dip"
+		android:background="@color/new_friends_list_divider"
+		android:layout_marginLeft="@dimen/default_scr_side_padding"
+		android:layout_marginRight="@dimen/default_scr_side_padding"
+		/>
 
 	<com.chess.backend.image_load.AvatarView
 		android:id="@+id/photoImg"
 		android:layout_width="35dip"
 		android:layout_height="35dip"
 		android:background="@color/new_common_list_thumb_grey"
+		android:layout_marginTop="15dip"
+		android:layout_marginLeft="@dimen/default_scr_side_padding"
 		android:layout_below="@id/titleTxt"
 		android:contentDescription="@string/image"
 		android:layout_marginRight="11dip"
@@ -24,6 +34,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/photoImg"
+		android:layout_alignTop="@id/photoImg"
 		android:layout_marginTop="-4dip"
 		android:textColor="@color/new_text_blue"
 		android:textSize="14sp"
@@ -37,7 +48,7 @@
 		android:contentDescription="@string/country"
 		android:layout_toRightOf="@id/authorTxt"
 		android:layout_alignTop="@id/photoImg"
-		android:layout_marginTop="-6dip"
+		android:layout_marginTop="-4dip"
 		android:layout_marginLeft="7dip"
 		/>
 
@@ -59,6 +70,9 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
+		android:layout_alignTop="@id/photoImg"
+		android:layout_marginTop="-4dip"
+		android:paddingRight="@dimen/default_scr_side_padding"
 		android:textColor="@color/stats_label_light_grey"
 		android:textSize="12sp"
 		custom:ttf="Bold"
@@ -72,6 +86,7 @@
 		android:layout_below="@id/authorTxt"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingTop="5dip"
+		android:paddingRight="@dimen/default_scr_side_padding"
 		/>
 
 </RelativeLayout>

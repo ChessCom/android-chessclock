@@ -28,7 +28,6 @@ import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
-import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.daily.GameDailyFinishedFragment;
 import com.chess.ui.fragments.daily.GameDailyFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -42,11 +41,7 @@ import java.util.List;
  * Date: 05.08.13
  * Time: 10:33
  */
-public class ProfileGamesFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener {
-
-	private static final String USERNAME = "username";
-
-	private String username;
+public class ProfileGamesFragment extends ProfileBaseFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener {
 
 	private static final int CURRENT_GAMES_SECTION = 0;
 	private static final int FINISHED_GAMES_SECTION = 1;
@@ -65,8 +60,6 @@ public class ProfileGamesFragment extends CommonLogicFragment implements ItemCli
 	private ListView listView;
 	private View loadingView;
 	private List<DailyFinishedGameData> finishedGameDataList;
-//	private FragmentTabsFace parentFace;
-
 
 	public ProfileGamesFragment() {
 		Bundle bundle = new Bundle();
@@ -85,12 +78,6 @@ public class ProfileGamesFragment extends CommonLogicFragment implements ItemCli
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		if (getArguments() != null) {
-			username = getArguments().getString(USERNAME);
-		} else {
-			username = savedInstanceState.getString(USERNAME);
-		}
 
 		// init adapters
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
@@ -118,12 +105,6 @@ public class ProfileGamesFragment extends CommonLogicFragment implements ItemCli
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
 		listView.setAdapter(sectionedAdapter);
-
-		// adjust action bar icons
-		getActivityFace().showActionMenu(R.id.menu_message, true);
-		getActivityFace().showActionMenu(R.id.menu_challenge, true);
-		getActivityFace().showActionMenu(R.id.menu_notifications, false);
-		getActivityFace().showActionMenu(R.id.menu_games, false);
 	}
 
 	@Override
@@ -155,13 +136,6 @@ public class ProfileGamesFragment extends CommonLogicFragment implements ItemCli
 		super.onPause();
 
 		releaseResources();
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-
-		outState.putString(USERNAME, username);
 	}
 
 	private void init() {
@@ -268,14 +242,6 @@ public class ProfileGamesFragment extends CommonLogicFragment implements ItemCli
 			switch (gameType) {
 				case CURRENT_MY:
 					currentGamesMyCursorAdapter.changeCursor(returnedObj);
-//					if (AppUtils.isNetworkAvailable(getContext()) && !hostUnreachable /*&& !isRestarted*/) { // TODO adjust
-//						updateData();
-//					} else {
-//						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-//								DbHelper.getDailyFinishedListGames(getContext()),
-//								getContentResolver()).executeTask();
-//					}
-
 					if (finishedGameDataList != null) {
 						boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, username);
 
