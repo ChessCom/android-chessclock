@@ -76,9 +76,9 @@ public class DbScheme {
 		NOTIFICATION_FRIEND_REQUEST,
 		NOTIFICATION_NEW_CHAT_MESSAGES,
 		NOTIFICATION_NEW_CHALLENGES,
-		NOTIFICATION_GAMES_OVER
+		NOTIFICATION_GAMES_OVER,
 
-
+		EXPLORER_MOVES
 	}
 
 	// Content URI
@@ -239,6 +239,12 @@ public class DbScheme {
 	public static final String V_LAST_MESSAGE_CREATED_AT = "last_message_created_at";
 	public static final String V_LAST_MESSAGE_CONTENT = "last_message_content";
 	public static final String V_CONVERSATION_ID = "conversation_id";
+
+	/* Explorer Moves */
+	public static final String V_NUM_GAMES = "num_games";
+	public static final String V_WHITE_WON_PERCENT = "white_won_percent";
+	public static final String V_BLACK_WON_PERCENT = "black_won_percent";
+	public static final String V_DRAW_PERCENT = "draw_percent";
 
 	/* common commands */
 	private static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists ";
@@ -581,6 +587,15 @@ public class DbScheme {
 				+ addField_Text(V_OTHER_USER_USERNAME)
 				+ addField_Text(V_OTHER_USER_AVATAR_URL)
 				+ addField_Text(V_USER, true);
+
+		/* Explorer Moves */
+		createTablesArray[Tables.EXPLORER_MOVES.ordinal()] = createTableForName(Tables.EXPLORER_MOVES)
+				+ addField_Text(V_FEN)
+				+ addField_Text(V_MOVE)
+				+ addField_Long(V_NUM_GAMES)
+				+ addField_Int(V_WHITE_WON_PERCENT)
+				+ addField_Int(V_BLACK_WON_PERCENT)
+				+ addField_Int(V_DRAW_PERCENT, true);
 	}
 
 	/* ==================== User Stats ============================== */
@@ -1031,7 +1046,6 @@ public class DbScheme {
 				+ addField_Text(V_MESSAGE)
 				+ addField_Text(V_USER_AVATAR, true);
 	}
-
 
 	private String createTableForName(Tables tableName) {
 		return CREATE_TABLE_IF_NOT_EXISTS + Tables.values()[tableName.ordinal()] + ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT;

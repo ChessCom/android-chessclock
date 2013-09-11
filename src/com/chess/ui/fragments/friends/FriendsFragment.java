@@ -119,10 +119,6 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	}
 
 	private void updateData() {
-		if (!AppUtils.isNetworkAvailable(getActivity())) {
-			return;
-		}
-
 		LoadItem loadItem = LoadHelper.getFriends(getUserToken());
 		new RequestJsonTask<FriendsItem>(friendsUpdateListener).executeTask(loadItem);
 	}

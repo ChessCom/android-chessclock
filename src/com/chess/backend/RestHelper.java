@@ -118,12 +118,15 @@ public class RestHelper {
 		return CMD_ARTICLES + articleId + "/comments/" + commentId;
 	}
 
+	/*Explorers*/
+	public final String CMD_EXPLORERS = BASE_URL + V1 + "/explorers";
+	public final String CMD_EXPLORERS_MOVES = CMD_EXPLORERS + "/moves";
+
 	/*Forums*/
 	public String CMD_FORUMS = BASE_URL + V1 + "/forums/";
 	public String CMD_FORUMS_CATEGORIES = CMD_FORUMS + "categories";
 	public String CMD_FORUMS_COMMENTS = CMD_FORUMS + "comments";
 	public String CMD_FORUMS_TOPICS = CMD_FORUMS + "topics";
-
 
 	/* Friends */
 	public String CMD_FRIENDS = BASE_URL + V1 + "/friends";
@@ -284,6 +287,8 @@ public class RestHelper {
 	public static final String P_HAS_NEW_MESSAGE = "has_new_message";
 	public static final String P_GAME_RESULT = "game_result";
 	public static final String P_DRAW_OFFERED = "draw_offered";
+
+	public static final String P_FEN = "fen";
 
 	//	SUBMIT_ECHESS_ACTION
 	public static final String P_COMMAND = "command";

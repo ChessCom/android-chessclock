@@ -237,4 +237,12 @@ public class LoadHelper {
 		return loadItem;
 	}
 
+	public static LoadItem getExplorerMoves(String userToken, String fen) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(getInstance().CMD_EXPLORERS_MOVES);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
+		loadItem.addRequestParams(P_FEN, fen);
+		return loadItem;
+	}
+
 }

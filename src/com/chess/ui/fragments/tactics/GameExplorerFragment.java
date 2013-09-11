@@ -1,17 +1,31 @@
 package com.chess.ui.fragments.tactics;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.chess.R;
+import com.chess.backend.LoadHelper;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.ExplorerMovesItem;
 import com.chess.backend.image_load.ImageReadyListenerLight;
+import com.chess.backend.statics.StaticData;
+import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
+import com.chess.db.tasks.LoadDataFromDbTask;
+import com.chess.db.tasks.SaveExplorerMovesListTask;
+import com.chess.ui.adapters.ExplorerMovesCursorAdapter;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.fragments.game.GameBaseFragment;
+import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.interfaces.game_ui.GameCompFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
@@ -19,6 +33,7 @@ import com.chess.ui.views.chess_boards.ChessBoardCompView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsCompView;
+import com.chess.utilities.AppUtils;
 import org.petero.droidfish.gamelogic.Move;
 
 import java.util.ArrayList;
@@ -29,7 +44,7 @@ import java.util.ArrayList;
  * Date: 03.09.13
  * Time: 6:42
  */
-public class GameExplorerFragment extends GameBaseFragment implements GameCompFace {
+public class GameExplorerFragment extends GameBaseFragment implements GameCompFace, ItemClickListenerFace {
 
 
 	private ControlsCompView controlsCompView;
@@ -41,13 +56,19 @@ public class GameExplorerFragment extends GameBaseFragment implements GameCompFa
 	private ImageView bottomAvatarImg;
 	private ChessBoardCompView boardView;
 
+	private ExplorerMovesUpdateListener explorerMovesUpdateListener;
+	private SaveExplorerMovesListUpdateListener saveExplorerMovesListUpdateListener;
+	private ExplorerMovesCursorUpdateListener explorerMovesCursorUpdateListener;
+	private ExplorerMovesCursorAdapter explorerMovesCursorAdapter;
+
+	private String fen = "rnbqkb1r/ppp2ppp/4pn2/3p4/2P5/2N2N2/PP1PPPPP/R1BQKB1R w KQkq"; // TODO: use real fen
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		init();
 	}
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,7 +101,10 @@ public class GameExplorerFragment extends GameBaseFragment implements GameCompFa
 
 	private void init() {
 		labelsConfig = new LabelsConfig();
-
+		explorerMovesUpdateListener = new ExplorerMovesUpdateListener();
+		saveExplorerMovesListUpdateListener = new SaveExplorerMovesListUpdateListener();
+		explorerMovesCursorUpdateListener = new ExplorerMovesCursorUpdateListener();
+		explorerMovesCursorAdapter = new ExplorerMovesCursorAdapter(this, null);
 	}
 
 	private void widgetsInit(View view) {
@@ -122,6 +146,115 @@ public class GameExplorerFragment extends GameBaseFragment implements GameCompFa
 
 		controlsCompView.enableHintButton(true);
 
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		if (need2update){
+			boolean haveSavedData = DbDataManager.haveSavedExplorerMoves(getActivity(), fen);
+
+			if (AppUtils.isNetworkAvailable(getActivity())) {
+				updateData(fen);
+			} else if(!haveSavedData){
+				/*emptyView.setText(R.string.no_network);
+				showEmptyView(true);*/
+			}
+
+			if (haveSavedData) {
+				loadFromDb();
+			}
+		}
+	}
+
+	private void updateData(String fen) {
+		LoadItem loadItem = LoadHelper.getExplorerMoves(getUserToken(), fen);
+		new RequestJsonTask<ExplorerMovesItem>(explorerMovesUpdateListener).executeTask(loadItem);
+	}
+
+	private class ExplorerMovesUpdateListener extends ChessUpdateListener<ExplorerMovesItem> {
+
+		public ExplorerMovesUpdateListener() {
+			super(ExplorerMovesItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			//showLoadingView(show);
+		}
+
+		@Override
+		public void updateData(ExplorerMovesItem returnedObj) {
+			super.updateData(returnedObj);
+
+			Log.d("apitest", "" + returnedObj);
+
+			new SaveExplorerMovesListTask(saveExplorerMovesListUpdateListener, returnedObj.getData().getMoves(),
+					getContentResolver(), fen).executeTask();
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			if (resultCode == StaticData.INTERNAL_ERROR) {
+				/*emptyView.setText("Internal error occurred");
+				showEmptyView(true);*/
+			}
+		}
+	}
+
+	private class SaveExplorerMovesListUpdateListener extends ChessUpdateListener<ExplorerMovesItem.Move> {
+		public SaveExplorerMovesListUpdateListener() {
+			super(ExplorerMovesItem.Move.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			//showLoadingView(show);
+		}
+
+		@Override
+		public void updateData(ExplorerMovesItem.Move returnedObj) {
+			super.updateData(returnedObj);
+
+			//loadFromDb();
+		}
+	}
+
+	private void loadFromDb() {
+		new LoadDataFromDbTask(explorerMovesCursorUpdateListener,
+				DbHelper.getExplorerMovesForFen(fen, DbScheme.Tables.EXPLORER_MOVES),
+				getContentResolver()).executeTask();
+	}
+
+	private class ExplorerMovesCursorUpdateListener extends ChessUpdateListener<Cursor> {
+
+		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			//showLoadingView(show);
+		}
+
+		@Override
+		public void updateData(Cursor returnedObj) {
+			super.updateData(returnedObj);
+
+			explorerMovesCursorAdapter.changeCursor(returnedObj);
+			//listView.setAdapter(friendsAdapter);
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			if (resultCode == StaticData.EMPTY_DATA) {
+				//emptyView.setText();
+			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
+				//emptyView.setText();
+			}
+			//showEmptyView(true);
+		}
 	}
 
 	@Override
@@ -212,6 +345,10 @@ public class GameExplorerFragment extends GameBaseFragment implements GameCompFa
 	@Override
 	public void run(Runnable runnable) {
 
+	}
+
+	private void releaseResources() {
+		// todo: implement
 	}
 
 	private class ImageUpdateListener extends ImageReadyListenerLight {

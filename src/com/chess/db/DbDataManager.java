@@ -145,6 +145,8 @@ public class DbDataManager {
 			V_USER,
 			V_SEEN);
 
+	public static String SELECTION_FEN = concatArguments(V_FEN);
+
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
 	public static final String[] PROJECTION_ITEM_ID_AND_USER = new String[]{
@@ -276,6 +278,21 @@ public class DbDataManager {
 			V_USER,
 			V_USERNAME,
 			V_SEEN
+	};
+
+	/*public static final String[] PROJECTION_EXPLORER_MOVES = new String[]{
+			_ID,
+			V_FEN,
+			V_MOVE,
+			V_NUM_GAMES,
+			V_WHITE_WON_PERCENT,
+			V_BLACK_WON_PERCENT,
+			V_DRAW_PERCENT
+	};*/
+
+	public static final String[] PROJECTION_FEN = new String[]{
+			_ID,
+			V_FEN
 	};
 
 	public static String concatArguments(String... arguments) {
@@ -522,6 +539,29 @@ public class DbDataManager {
 		boolean exist = false;
 		if (cursor != null) {
 			exist = cursor.moveToFirst();
+			cursor.close();
+		}
+
+		return exist;
+	}
+
+	/**
+	 * Check if we have saved explorer moves for game
+	 *
+	 * @param context to get resources
+	 * @param fen FEN
+	 * @return true if cursor can be positioned to first
+	 */
+	public static boolean haveSavedExplorerMoves(Context context, String fen) {
+
+		ContentResolver contentResolver = context.getContentResolver();
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = fen;
+
+		Cursor cursor = contentResolver.query(uriArray[Tables.EXPLORER_MOVES.ordinal()],
+				PROJECTION_FEN, SELECTION_FEN, arguments1, LIMIT_1);
+		boolean exist = cursor != null && cursor.moveToFirst();
+		if (cursor != null) {
 			cursor.close();
 		}
 
@@ -884,6 +924,19 @@ public class DbDataManager {
 		values.put(V_IS_OPPONENT_ONLINE, dataObj.isOnline() ? 1 : 0);
 		values.put(V_PREMIUM_STATUS, dataObj.getPremiumStatus());
 		values.put(V_LAST_LOGIN_DATE, dataObj.getLastLoginDate());
+
+		return values;
+	}
+
+	public static ContentValues putExplorerMoveItemToValues(ExplorerMovesItem.Move dataObj, String fen) {
+		ContentValues values = new ContentValues();
+
+		values.put(V_FEN, fen);
+		values.put(V_BLACK_WON_PERCENT, dataObj.getBlackWonPercent());
+		values.put(V_DRAW_PERCENT, dataObj.getDrawPercent());
+		values.put(V_MOVE, dataObj.getMove());
+		values.put(V_NUM_GAMES, dataObj.getNumGames());
+		values.put(V_WHITE_WON_PERCENT, dataObj.getWhiteWonPercent());
 
 		return values;
 	}
