@@ -28,12 +28,23 @@ public class ArticlesSearchFragment extends BaseSearchFragment  {
 
 	private ArticleItemUpdateListener articleItemUpdateListener;
 	private ArticleItemAdapter articleItemAdapter;
+	private SparseBooleanArray articlesViewedMap;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		SparseBooleanArray articlesViewedMap = new SparseBooleanArray();
+		articlesViewedMap = new SparseBooleanArray();
+
+		articleItemUpdateListener = new ArticleItemUpdateListener();
+		articleItemAdapter = new ArticleItemAdapter(getActivity(), null);
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		setTitle(R.string.articles);
 
 		// get viewed marks
 		Cursor cursor = DbDataManager.getArticleViewedCursor(getActivity(), getUsername());
@@ -45,16 +56,8 @@ public class ArticlesSearchFragment extends BaseSearchFragment  {
 			} while (cursor.moveToNext());
 			cursor.close();
 		}
-		articleItemUpdateListener = new ArticleItemUpdateListener();
-		articleItemAdapter = new ArticleItemAdapter(getActivity(), null);
 		articleItemAdapter.addViewedMap(articlesViewedMap);
-	}
 
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-
-		setTitle(R.string.articles);
 	}
 
 	@Override

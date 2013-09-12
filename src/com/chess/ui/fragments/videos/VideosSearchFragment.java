@@ -51,19 +51,6 @@ public class VideosSearchFragment extends BaseSearchFragment implements ItemClic
 
 		videosAdapter = new VideosItemAdapter(this, null);
 
-		// get viewed marks
-		Cursor cursor = DbDataManager.getVideoViewedCursor(getActivity(), getUsername());
-		if (cursor != null) {
-			do {
-				int videoId = DbDataManager.getInt(cursor, DbScheme.V_ID);
-				boolean isViewed = DbDataManager.getInt(cursor, DbScheme.V_DATA_VIEWED) > 0;
-				viewedVideosMap.put(videoId, isViewed);
-			} while (cursor.moveToNext());
-			cursor.close();
-		}
-
-		videosAdapter.addViewedMap(viewedVideosMap);
-
 		// restore state
 		if (savedInstanceState != null) {
 			playButtonClickTime = savedInstanceState.getLong(VideosFragment.CLICK_TIME);
@@ -78,6 +65,19 @@ public class VideosSearchFragment extends BaseSearchFragment implements ItemClic
 		super.onViewCreated(view, savedInstanceState);
 
 		setTitle(R.string.videos);
+
+		// get viewed marks
+		Cursor cursor = DbDataManager.getVideoViewedCursor(getActivity(), getUsername());
+		if (cursor != null) {
+			do {
+				int videoId = DbDataManager.getInt(cursor, DbScheme.V_ID);
+				boolean isViewed = DbDataManager.getInt(cursor, DbScheme.V_DATA_VIEWED) > 0;
+				viewedVideosMap.put(videoId, isViewed);
+			} while (cursor.moveToNext());
+			cursor.close();
+		}
+
+		videosAdapter.addViewedMap(viewedVideosMap);
 	}
 
 	@Override

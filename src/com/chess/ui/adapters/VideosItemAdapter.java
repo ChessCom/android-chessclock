@@ -23,7 +23,7 @@ import java.util.List;
 public class VideosItemAdapter extends ItemsAdapter<VideoItem.Data> {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
-	public static final String DURATION_DIVIDER = "| ";
+	public static final String SLASH_DIVIDER = " | ";
 
 	private final ItemClickListenerFace clickFace;
 	private final int watchedTextColor;
@@ -75,8 +75,9 @@ public class VideosItemAdapter extends ItemsAdapter<VideoItem.Data> {
 				+ firstName + Symbol.SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		holder.authorTxt.setText(authorStr);
-		holder.durationTxt.setText(DURATION_DIVIDER +
-				context.getString(R.string.min_arg, item.getMinutes()));
+		String durationStr = SLASH_DIVIDER + context.getString(R.string.min_arg, item.getMinutes());
+		String viewsCntStr = SLASH_DIVIDER + context.getString(R.string.views_arg, item.getViewCount());
+		holder.durationTxt.setText(durationStr + viewsCntStr);
 		holder.titleTxt.setText(item.getTitle());
 
 		if (viewedMap.get((int) item.getVideoId(), false)) {
