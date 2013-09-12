@@ -38,7 +38,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
         super(context, attrs);
     }
 
-    public void setGameActivityFace(GameCompFace gameActivityFace) {
+    public void setGameUiFace(GameCompFace gameActivityFace) {
 		super.setGameFace(gameActivityFace);
         gameCompActivityFace = gameActivityFace;
     }

@@ -891,7 +891,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			}
 
 			lessonPopupTitleTxt.setText(lessonItem.getLesson().getName());
-			lessonPercentTxt.setText(getString(R.string.percents, scorePercent) + Symbol.PERCENT);
+			lessonPercentTxt.setText(String.valueOf(scorePercent) + Symbol.PERCENT);
 			lessonRatingTxt.setText(String.valueOf(updatedUserRating));
 			if (!lessonItem.isLessonCompleted()) {
 				String symbol = pointsForLesson > 0 ? Symbol.PLUS : Symbol.EMPTY;

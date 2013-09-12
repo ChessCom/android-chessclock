@@ -38,7 +38,7 @@
             android:divider="@color/new_friends_list_divider"
             android:fastScrollEnabled="true"
             android:scrollbars="vertical"
-            android:listSelector="@drawable/white_list_item_selector"
+            android:listSelector="@drawable/transparent_list_item_selector"
             android:cacheColorHint="#FFFFFF"
             />
 

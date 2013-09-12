@@ -490,7 +490,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	protected void restoreGame() {
 		ChessBoardComp.resetInstance();
 		ChessBoardComp.getInstance(this).setJustInitialized(false);
-		boardView.setGameActivityFace(this);
+		boardView.setGameUiFace(this);
 		getBoardFace().setMode(compGameConfig.getMode());
 		loadSavedGame();
 
@@ -817,7 +817,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		boardView.setControlsView(controlsCompView);
 		boardView.setNotationsView(notationsView);
 
-		boardView.setGameActivityFace(this);
+		boardView.setGameUiFace(this);
 		setBoardView(boardView);
 
 		boardView.lockBoard(true);

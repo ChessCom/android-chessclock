@@ -10,7 +10,7 @@
 	android:paddingLeft="10dip"
 	android:paddingRight="10dip"
 	android:paddingBottom="12dip"
-	android:background="@drawable/white_list_item_selector"
+	android:background="@drawable/transparent_list_item_selector"
 	>
 
 	<!--Thumbnail-->

@@ -21,7 +21,7 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 	private final String username;
 
 	private ContentResolver contentResolver;
-	protected static String[] arguments = new String[2];
+	protected static String[] sArguments = new String[2];
 
 	public SaveFriendsListTask(TaskUpdateInterface<FriendsItem.Data> taskFace, List<FriendsItem.Data> currentItems,
 							   ContentResolver resolver) {
@@ -36,13 +36,14 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 	@Override
 	protected Integer doTheTask(Long... ids) {
 		for (FriendsItem.Data currentItem : itemList) {
-			final String[] arguments2 = arguments;
-			arguments2[0] = String.valueOf(username);
-			arguments2[1] = String.valueOf(currentItem.getUserId());
+			final String[] arguments = sArguments;
+			arguments[0] = String.valueOf(username);
+			arguments[1] = String.valueOf(currentItem.getUserId());
 
 			// TODO implement beginTransaction logic for performance increase
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()];
-			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER_ID, DbDataManager.SELECTION_USER_ID, arguments2, null);
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER_ID,
+					DbDataManager.SELECTION_USER_ID, arguments, null);
 
 			ContentValues values = DbDataManager.putFriendItemToValues(currentItem, username);
 

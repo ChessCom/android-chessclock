@@ -1618,6 +1618,109 @@ public class ChessBoard implements BoardFace {
 		return sb.toString();
 	}
 
+	private static final String EMPTY_SQUARE = "1";
+
+	/**
+	 * 1. Piece placement (from white's perspective). Each rank is described, starting with rank 8 and ending with rank 1;
+	 * within each rank, the contents of each square are described from file "a" through file "h". Following the
+	 * Standard Algebraic Notation (SAN), each piece is identified by a single letter taken from the standard English
+	 * names (pawn = "P", knight = "N", bishop = "B", rook = "R", queen = "Q" and king = "K").[1] White pieces are
+	 * designated using upper-case letters ("PNBRQK") while black pieces use lowercase ("pnbrqk"). Blank squares are
+	 * noted using digits 1 through 8 (the number of blank squares), and "/" separates ranks.
+	 * 2. Active color. "w" means white moves next, "b" means black.
+	 * 3. Castling availability. If neither side can castle, this is "-". Otherwise, this has one or more letters: "K"
+	 * (White can castle kingside), "Q" (White can castle queenside), "k" (Black can castle kingside), and/or "q"
+	 * (Black can castle queenside).
+	 * 4. En passant target square in algebraic notation. If there's no en passant target square, this is "-". If a pawn
+	 * has just made a two-square move, this is the position "behind" the pawn. This is recorded regardless of whether
+	 * there is a pawn in position to make an en passant capture.[2]
+	 * 5. Halfmove clock: This is the number of halfmoves since the last pawn advance or capture. This is used to
+	 * determine if a draw can be claimed under the fifty-move rule.
+	 * 6. Fullmove number: The number of the full move. It starts at 1, and is incremented after Black's move.
+	 * <p/>
+	 * Example : rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+	 * Example : rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1
+	 *
+	 * @return generated FEN for current board configuration
+	 */
+	@Override
+	public String generateFen() {
+		StringBuilder sb = new StringBuilder();
+		String[] line = new String[8];
+
+		for (int i = 0; i < 64; i++) {
+			if (i > 0 && i % 8 == 0) { // if end of board line
+
+				fillTheFenLine(sb, line);
+			}
+			switch (color[i]) {
+				case EMPTY:
+					line[i % 8] = EMPTY_SQUARE;
+					break;
+				case WHITE_SIDE:
+					line[i % 8] = String.valueOf(pieceChar[pieces[i]]);
+					break;
+				case BLACK_SIDE:
+					line[i % 8] = String.valueOf((char) (pieceChar[pieces[i]] + ('a' - 'A')));
+					break;
+				default:
+					throw new IllegalStateException("Square not EMPTY, WHITE_SIDE or BLACK_SIDE: " + i);
+			}
+
+		}
+
+		// filling last line
+		fillTheFenLine(sb, line);
+		Log.d("TEST", "FEN = " + sb.toString());
+		return sb.toString();
+	}
+
+	private void fillTheFenLine(StringBuilder sb, String[] line) {
+		String previousPiece = EMPTY_SQUARE;
+		String lineResult = "";
+		int replacedCnt = 1;
+		int stringAddedCnt = 0;
+		for (int i = 0; i < line.length; i++) {
+			String piece = line[i];
+			if (isInteger(previousPiece) && isInteger(piece)) {
+				if (i > 0 && isInteger(line[i - 1])) { // replace 2 chars with increment
+					lineResult = lineResult.replace(String.valueOf(replacedCnt), Symbol.EMPTY);
+					replacedCnt++;
+				}
+				if (replacedCnt == 0) {
+					int pieceInt = Integer.parseInt(previousPiece);
+					lineResult += String.valueOf(pieceInt);
+				} else {
+					lineResult += String.valueOf(replacedCnt);
+				}
+				previousPiece = piece;
+			} else {
+				lineResult += piece;
+				replacedCnt = 0;
+				sb.append(lineResult);
+				lineResult = "";
+				stringAddedCnt++;
+			}
+		}
+
+		if (stringAddedCnt < 8){
+			sb.append(lineResult).append("/");
+		} else {
+			sb.append("/");
+		}
+	}
+
+
+	public static boolean isInteger(String s) {
+		try {
+			Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		// only got here if we didn't return false
+		return true;
+	}
+
 	/* reps() returns the number of times that the current
 		position has been repeated. Thanks to John Stanback
 		for this clever algorithm. */
@@ -2164,17 +2267,6 @@ public class ChessBoard implements BoardFace {
 		boolean isHistoryPresent = hply < movesCount && histDat[hply] != null;
 		return isHistoryPresent ? histDat[hply].move : null;
 	}
-
-	/*@Override
-	public void setFen(String fen) {
-		//Log.d(CompEngineHelper.TAG, "RESTORE BOARD setFen " + fen);
-		this.fen = fen;
-	}
-
-	@Override
-	public String getFen() {
-		return fen;
-	}*/
 
 	@Override
 	public void switchSide() {

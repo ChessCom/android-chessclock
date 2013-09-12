@@ -1,35 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
 	<com.chess.RoboTextView
-		android:id="@+id/engineThinkingPath"
+		android:id="@+id/moveVariationTxt"
 		android:layout_width="match_parent"
-		android:layout_height="@dimen/notations_view_height"
-		android:visibility="gone" />
-
-	<com.chess.ui.views.NotationView
-		android:id="@+id/notationsView"
-		android:layout_width="match_parent"
-		android:layout_height="@dimen/notations_view_height"
-		style="@style/NotationsStyle" />
-
-	<com.chess.ui.views.PanelInfoGameView
-		android:id="@+id/topPanelView"
-		android:layout_width="match_parent"
-		android:layout_height="0dip"
-		android:layout_weight="1"
-		custom:oneLine="@bool/one_line_for_board"
-		style="@style/ListItem"
+		android:layout_height="wrap_content"
+		style="@style/ListItem.Header.Dark"
+		android:gravity="center"
+		android:minHeight="42dip"
+		android:textColor="@color/semitransparent_white_65"
+		android:textSize="15sp"
+		android:text="Sicilian Defence: Old Sicilian"
 		/>
 
 	<RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		>
 		<!--Top Border-->
 		<FrameLayout
 			android:id="@+id/topBorder"
@@ -37,7 +28,7 @@
 			android:layout_height="3px"
 			android:background="@drawable/game_board_divider" />
 
-		<com.chess.ui.views.chess_boards.ChessBoardCompView
+		<com.chess.ui.views.chess_boards.ChessBoardExplorerView
 			android:id="@+id/boardview"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -54,17 +45,10 @@
 
 	</RelativeLayout>
 
-	<com.chess.ui.views.PanelInfoGameView
-		android:id="@+id/bottomPanelView"
+	<ListView
+		android:id="@+id/listView"
 		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_weight="1"
-		custom:oneLine="@bool/one_line_for_board"
+		android:layout_height="wrap_content"
 		/>
-
-	<com.chess.ui.views.game_controls.ControlsCompView
-		android:id="@+id/controlsCompView"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content" />
 
 </LinearLayout>

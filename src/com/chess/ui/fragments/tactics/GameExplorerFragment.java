@@ -1,21 +1,16 @@
 package com.chess.ui.fragments.tactics;
 
-import android.app.Activity;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.ExplorerMovesItem;
-import com.chess.backend.image_load.ImageReadyListenerLight;
-import com.chess.backend.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -23,20 +18,14 @@ import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveExplorerMovesListTask;
 import com.chess.ui.adapters.ExplorerMovesCursorAdapter;
-import com.chess.ui.engine.ChessBoardComp;
+import com.chess.ui.engine.ChessBoardExplorer;
+import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.ui.interfaces.game_ui.GameCompFace;
-import com.chess.ui.views.NotationView;
-import com.chess.ui.views.PanelInfoGameView;
-import com.chess.ui.views.chess_boards.ChessBoardCompView;
-import com.chess.ui.views.drawables.BoardAvatarDrawable;
-import com.chess.ui.views.drawables.IconDrawable;
-import com.chess.ui.views.game_controls.ControlsCompView;
+import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.interfaces.game_ui.GameExplorerFace;
+import com.chess.ui.views.chess_boards.ChessBoardExplorerView;
 import com.chess.utilities.AppUtils;
-import org.petero.droidfish.gamelogic.Move;
-
-import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,24 +33,16 @@ import java.util.ArrayList;
  * Date: 03.09.13
  * Time: 6:42
  */
-public class GameExplorerFragment extends GameBaseFragment implements GameCompFace, ItemClickListenerFace {
+public class GameExplorerFragment extends GameBaseFragment implements GameExplorerFace, ItemClickListenerFace, AdapterView.OnItemClickListener {
 
-
-	private ControlsCompView controlsCompView;
-	private NotationView notationsView;
-	private PanelInfoGameView topPanelView;
-	private PanelInfoGameView bottomPanelView;
-	private LabelsConfig labelsConfig;
-	private ImageView topAvatarImg;
-	private ImageView bottomAvatarImg;
-	private ChessBoardCompView boardView;
 
 	private ExplorerMovesUpdateListener explorerMovesUpdateListener;
-	private SaveExplorerMovesListUpdateListener saveExplorerMovesListUpdateListener;
+	private SaveExplorerMovesUpdateListener saveExplorerMovesUpdateListener;
 	private ExplorerMovesCursorUpdateListener explorerMovesCursorUpdateListener;
 	private ExplorerMovesCursorAdapter explorerMovesCursorAdapter;
 
-	private String fen = "rnbqkb1r/ppp2ppp/4pn2/3p4/2P5/2N2N2/PP1PPPPP/R1BQKB1R w KQkq"; // TODO: use real fen
+	private String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq"; // TODO: use real fen
+	private ChessBoardExplorerView boardView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -72,93 +53,51 @@ public class GameExplorerFragment extends GameBaseFragment implements GameCompFa
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_game_comp_frame, container, false);
+		return inflater.inflate(R.layout.new_game_explorer_frame, container, false);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.vs_computer);
-
-		notationsView = (NotationView) view.findViewById(R.id.notationsView);
-		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
-		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
-
-		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+		setTitle(R.string.game_explorer);
 
 		widgetsInit(view);
-
-	}
-
-	private void init() {
-		labelsConfig = new LabelsConfig();
-		explorerMovesUpdateListener = new ExplorerMovesUpdateListener();
-		saveExplorerMovesListUpdateListener = new SaveExplorerMovesListUpdateListener();
-		explorerMovesCursorUpdateListener = new ExplorerMovesCursorUpdateListener();
-		explorerMovesCursorAdapter = new ExplorerMovesCursorAdapter(this, null);
-	}
-
-	private void widgetsInit(View view) {
-
-		controlsCompView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
-		notationsView = (NotationView) view.findViewById(R.id.notationsView);
-		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
-		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
-
-		{// set avatars
-			Drawable user = new IconDrawable(getActivity(), R.string.ic_profile,
-					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
-			Drawable src = new IconDrawable(getActivity(), R.string.ic_comp_game,
-					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
-
-			labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
-			labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), user);
-
-			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-
-		}
-		// hide timeLeft
-		topPanelView.showTimeRemain(false);
-		bottomPanelView.showTimeRemain(false);
-
-		boardView = (ChessBoardCompView) view.findViewById(R.id.boardview);
-		boardView.setFocusable(true);
-
-		boardView.setTopPanelView(topPanelView);
-		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsCompView);
-		boardView.setNotationsView(notationsView);
-
-		boardView.setGameActivityFace(this);
-		setBoardView(boardView);
-
-		boardView.lockBoard(true);
-
-		controlsCompView.enableHintButton(true);
-
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 
-		if (need2update){
-			boolean haveSavedData = DbDataManager.haveSavedExplorerMoves(getActivity(), fen);
+		if (need2update) {
+			adjustBoardForGame();
 
-			if (AppUtils.isNetworkAvailable(getActivity())) {
-				updateData(fen);
-			} else if(!haveSavedData){
-				/*emptyView.setText(R.string.no_network);
-				showEmptyView(true);*/
-			}
+			boolean haveSavedData = DbDataManager.haveSavedExplorerMoves(getActivity(), fen);
 
 			if (haveSavedData) {
 				loadFromDb();
-			}
+			} else if (AppUtils.isNetworkAvailable(getActivity())) {
+				updateData(fen);
+			} /*else { // TODO check logic if we need this case
+				emptyView.setText(R.string.no_network);
+				showEmptyView(true);
+			}*/
 		}
+	}
+
+	private void adjustBoardForGame() {
+		if (!currentGameExist()) { // TODO verify if we need it
+			return;
+		}
+
+		ChessBoardExplorer.resetInstance();
+		final ChessBoardExplorer boardFace = ChessBoardExplorer.getInstance(this);
+		boardView.setGameFace(this);
+
+		boardFace.setupBoard(fen);
+		boardFace.setReside(!boardFace.isReside()); // we should always reside board in Tactics, because user should make next move
+
+		boardFace.setMovesCount(1);
 	}
 
 	private void updateData(String fen) {
@@ -166,87 +105,77 @@ public class GameExplorerFragment extends GameBaseFragment implements GameCompFa
 		new RequestJsonTask<ExplorerMovesItem>(explorerMovesUpdateListener).executeTask(loadItem);
 	}
 
-	private class ExplorerMovesUpdateListener extends ChessUpdateListener<ExplorerMovesItem> {
+	@Override
+	public void nextPosition(String move) {
+
+	}
+
+	@Override
+	public void showNextMoves() {
+
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+		String moveStr = DbDataManager.getString(cursor, DbScheme.V_MOVE);
+
+		BoardFace boardFace = getBoardFace();
+		// get next valid move
+		final Move move = boardFace.convertMoveAlgebraic(moveStr);
+		boardFace.setMovesCount(boardFace.getMovesCount());
+
+		// play move animation
+		boardView.setMoveAnimator(move, true);
+		boardView.resetValidMoves();
+
+		// make actual move
+		boardFace.makeMove(move, true);
+		invalidateGameScreen();
+
+		// update FEN and get next moves
+		fen = boardFace.generateFen();
+		updateData(fen);
+	}
+
+	private class ExplorerMovesUpdateListener extends ChessLoadUpdateListener<ExplorerMovesItem> {
 
 		public ExplorerMovesUpdateListener() {
 			super(ExplorerMovesItem.class);
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			//showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(ExplorerMovesItem returnedObj) {
 			super.updateData(returnedObj);
 
-			Log.d("apitest", "" + returnedObj);
-
-			new SaveExplorerMovesListTask(saveExplorerMovesListUpdateListener, returnedObj.getData().getMoves(),
+			new SaveExplorerMovesListTask(saveExplorerMovesUpdateListener, returnedObj.getData().getMoves(),
 					getContentResolver(), fen).executeTask();
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			if (resultCode == StaticData.INTERNAL_ERROR) {
-				/*emptyView.setText("Internal error occurred");
-				showEmptyView(true);*/
-			}
 		}
 	}
 
-	private class SaveExplorerMovesListUpdateListener extends ChessUpdateListener<ExplorerMovesItem.Move> {
-		public SaveExplorerMovesListUpdateListener() {
-			super(ExplorerMovesItem.Move.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			//showLoadingView(show);
-		}
+	private class SaveExplorerMovesUpdateListener extends ChessUpdateListener<ExplorerMovesItem.Move> {
 
 		@Override
 		public void updateData(ExplorerMovesItem.Move returnedObj) {
 			super.updateData(returnedObj);
 
-			//loadFromDb();
+			loadFromDb();
 		}
 	}
 
 	private void loadFromDb() {
 		new LoadDataFromDbTask(explorerMovesCursorUpdateListener,
-				DbHelper.getExplorerMovesForFen(fen, DbScheme.Tables.EXPLORER_MOVES),
+				DbHelper.getExplorerMovesForFen(fen),
 				getContentResolver()).executeTask();
 	}
 
 	private class ExplorerMovesCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			//showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
 			explorerMovesCursorAdapter.changeCursor(returnedObj);
-			//listView.setAdapter(friendsAdapter);
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			if (resultCode == StaticData.EMPTY_DATA) {
-				//emptyView.setText();
-			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
-				//emptyView.setText();
-			}
-			//showEmptyView(true);
 		}
 	}
 
@@ -301,8 +230,8 @@ public class GameExplorerFragment extends GameBaseFragment implements GameCompFa
 	}
 
 	@Override
-	public ChessBoardComp getBoardFace() {
-		return ChessBoardComp.getInstance(this);
+	public ChessBoardExplorer getBoardFace() {
+		return ChessBoardExplorer.getInstance(this);
 	}
 
 	@Override
@@ -315,67 +244,22 @@ public class GameExplorerFragment extends GameBaseFragment implements GameCompFa
 
 	}
 
-	@Override
-	public void onPlayerMove() {
-
+	private void init() {
+		explorerMovesUpdateListener = new ExplorerMovesUpdateListener();
+		saveExplorerMovesUpdateListener = new SaveExplorerMovesUpdateListener();
+		explorerMovesCursorUpdateListener = new ExplorerMovesCursorUpdateListener();
+		explorerMovesCursorAdapter = new ExplorerMovesCursorAdapter(getActivity(), null);
 	}
 
-	@Override
-	public void onCompMove() {
+	private void widgetsInit(View view) {
+		ListView listView = (ListView) view.findViewById(R.id.listView);
+		listView.setAdapter(explorerMovesCursorAdapter);
+		listView.setOnItemClickListener(this);
 
-	}
+		boardView = (ChessBoardExplorerView) view.findViewById(R.id.boardview);
+		boardView.setFocusable(true);
+		boardView.setGameUiFace(this);
 
-	@Override
-	public void updateEngineMove(Move engineMove) {
-
-	}
-
-	@Override
-	public void onEngineThinkingInfo(String engineThinkingInfo, String variantStr, ArrayList<ArrayList<Move>> pvMoves, ArrayList<Move> variantMoves, ArrayList<Move> bookMoves) {
-
-	}
-
-	@Override
-	public void run(Runnable runnable) {
-
-	}
-
-	private void releaseResources() {
-		// todo: implement
-	}
-
-	private class ImageUpdateListener extends ImageReadyListenerLight {
-
-		private static final int TOP_AVATAR = 0;
-		private static final int BOTTOM_AVATAR = 1;
-		private int code;
-
-		private ImageUpdateListener(int code) {
-			this.code = code;
-		}
-
-		@Override
-		public void onImageReady(Bitmap bitmap) {
-			Activity activity = getActivity();
-			if (activity == null) {
-				return;
-			}
-			switch (code) {
-				case TOP_AVATAR:
-					labelsConfig.topAvatar = new BoardAvatarDrawable(getContext(), bitmap);
-
-					labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
-					topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-					topPanelView.invalidate();
-					break;
-				case BOTTOM_AVATAR:
-					labelsConfig.bottomAvatar = new BoardAvatarDrawable(getContext(), bitmap);
-
-					labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
-					bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
-					bottomPanelView.invalidate();
-					break;
-			}
-		}
+		setBoardView(boardView);
 	}
 }

@@ -12,7 +12,7 @@
     android:paddingBottom="10dip"
     android:paddingLeft="@dimen/default_scr_side_padding"
     android:paddingRight="@dimen/default_scr_side_padding"
-    android:background="@drawable/white_list_item_selector"
+    android:background="@drawable/transparent_list_item_selector"
     >
 
     <!--Title-->

@@ -146,6 +146,7 @@ public class DbDataManager {
 			V_SEEN);
 
 	public static String SELECTION_FEN = concatArguments(V_FEN);
+	public static String SELECTION_FEN_AND_MOVE = concatArguments(V_FEN, V_MOVE);
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
@@ -290,9 +291,10 @@ public class DbDataManager {
 			V_DRAW_PERCENT
 	};*/
 
-	public static final String[] PROJECTION_FEN = new String[]{
+	public static final String[] PROJECTION_FEN_AND_MOVE = new String[]{
 			_ID,
-			V_FEN
+			V_FEN,
+			V_MOVE
 	};
 
 	public static String concatArguments(String... arguments) {
@@ -559,7 +561,7 @@ public class DbDataManager {
 		arguments1[0] = fen;
 
 		Cursor cursor = contentResolver.query(uriArray[Tables.EXPLORER_MOVES.ordinal()],
-				PROJECTION_FEN, SELECTION_FEN, arguments1, LIMIT_1);
+				PROJECTION_FEN_AND_MOVE, SELECTION_FEN_AND_MOVE, arguments1, LIMIT_1);
 		boolean exist = cursor != null && cursor.moveToFirst();
 		if (cursor != null) {
 			cursor.close();

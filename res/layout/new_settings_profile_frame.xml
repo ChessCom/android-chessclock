@@ -156,7 +156,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
-            android:background="@drawable/white_list_item_selector"
+            android:background="@drawable/transparent_list_item_selector"
             >
 
             <!--Label-->
@@ -200,7 +200,7 @@
             style="@style/LinearListItem"
             android:paddingLeft="@dimen/default_scr_side_padding"
             android:paddingRight="@dimen/default_scr_side_padding"
-            android:background="@drawable/white_list_item_selector"
+            android:background="@drawable/transparent_list_item_selector"
             >
 
             <!--Label-->

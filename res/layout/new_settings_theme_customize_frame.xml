@@ -20,7 +20,7 @@
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
 			android:paddingRight="15dip"
-			android:background="@drawable/white_list_item_selector"
+			android:background="@drawable/transparent_list_item_selector"
 			>
 			<com.chess.RoboTextView
 				android:layout_width="0dp"
@@ -44,7 +44,7 @@
 				android:id="@+id/backgroundSpinner"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:background="@drawable/white_list_item_selector"
+				android:background="@drawable/transparent_list_item_selector"
 				/>
 -->
 
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
             android:paddingRight="8dip"
-            android:background="@drawable/white_list_item_selector"
+            android:background="@drawable/transparent_list_item_selector"
             >
             <!--Label-->
             <com.chess.RoboTextView
@@ -72,7 +72,7 @@
                 android:id="@+id/piecesSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="37dip"
-                android:background="@drawable/white_list_item_selector"
+                android:background="@drawable/transparent_list_item_selector"
                 />
 
         </com.chess.LinLayout>
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
             android:paddingRight="8dip"
-            android:background="@drawable/white_list_item_selector"
+            android:background="@drawable/transparent_list_item_selector"
             >
             <com.chess.RoboTextView
                 android:layout_width="0dp"
@@ -98,7 +98,7 @@
                 android:id="@+id/boardsSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/white_list_item_selector"
+                android:background="@drawable/transparent_list_item_selector"
                 />
 
 
@@ -111,7 +111,7 @@
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
             android:paddingRight="8dip"
-            android:background="@drawable/white_list_item_selector"
+            android:background="@drawable/transparent_list_item_selector"
             >
 
             <!--Label-->
@@ -127,7 +127,7 @@
 				android:id="@+id/soundsSpinner"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:background="@drawable/white_list_item_selector"
+				android:background="@drawable/transparent_list_item_selector"
 				/>
 
 		</com.chess.LinLayout>
@@ -139,7 +139,7 @@
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
             android:paddingRight="8dip"
-            android:background="@drawable/white_list_item_selector"
+            android:background="@drawable/transparent_list_item_selector"
             >
 
             <!--Label-->
@@ -155,7 +155,7 @@
 				android:id="@+id/colorsSpinner"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:background="@drawable/white_list_item_selector"
+				android:background="@drawable/transparent_list_item_selector"
 				/>
 
 		</com.chess.LinLayout>
@@ -167,7 +167,7 @@
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
 			android:paddingRight="8dip"
-			android:background="@drawable/white_list_item_selector"
+			android:background="@drawable/transparent_list_item_selector"
 			>
 
 			<!--Label-->
@@ -183,7 +183,7 @@
 				android:id="@+id/coordinatesSpinner"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:background="@drawable/white_list_item_selector"
+				android:background="@drawable/transparent_list_item_selector"
 				/>
 
 		</com.chess.LinLayout>

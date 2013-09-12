@@ -15,6 +15,9 @@
     <color name="new_normal_grey">#FF797571</color>
     <color name="new_normal_grey_2">#FF999795</color>
     <color name="new_normal_grey_3">#FFaeaba7</color>
+	<color name="new_normal_grey_4">#FF4b4642</color>
+	<color name="new_normal_grey_5">#ff524f4d</color>
+	<color name="new_normal_grey_6">#FF878582</color>
     <color name="new_light_grey_0">#FFcbcbca</color>
     <!--<color name="new_light_grey">#FFc8c8c8</color>-->
     <color name="new_light_grey">#A6FFFFFF</color>
@@ -23,6 +26,7 @@
     <color name="new_light_grey_3">#FF8e8c8b</color>
     <color name="new_light_grey_4">#FFb9c2b6</color>
     <color name="new_dark_grey_2">#FF1b1a18</color>
+    <color name="new_dark_grey_3">#FF201d1c</color>
 
     <!--Back shadow-->
     <color name="back_shadows_chess">#99000000</color>

@@ -9,7 +9,7 @@
 	android:paddingRight="8dip"
 	android:paddingTop="6dip"
 	android:paddingBottom="6dip"
-	android:background="@drawable/white_list_item_selector"
+	android:background="@drawable/transparent_list_item_selector"
     >
 
 	<!--New post icon-->

@@ -590,12 +590,12 @@ public class DbScheme {
 
 		/* Explorer Moves */
 		createTablesArray[Tables.EXPLORER_MOVES.ordinal()] = createTableForName(Tables.EXPLORER_MOVES)
-				+ addField_Text(V_FEN)
-				+ addField_Text(V_MOVE)
 				+ addField_Long(V_NUM_GAMES)
 				+ addField_Int(V_WHITE_WON_PERCENT)
 				+ addField_Int(V_BLACK_WON_PERCENT)
-				+ addField_Int(V_DRAW_PERCENT, true);
+				+ addField_Int(V_DRAW_PERCENT)
+				+ addField_Text(V_MOVE)
+				+ addField_Text(V_FEN, true);
 	}
 
 	/* ==================== User Stats ============================== */

@@ -501,4 +501,11 @@
          <item name="android:visibility">gone</item>
     </style>
 
+	<style name="ExplorerWeightItem">
+		<item name="android:textSize">13sp</item>
+		<item name="android:gravity">center</item>
+		<item name="android:paddingTop">6dip</item>
+		<item name="android:paddingBottom">6dip</item>
+	</style>
+
 </resources>

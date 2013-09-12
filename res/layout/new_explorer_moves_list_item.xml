@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/explorerMovesListItemView"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	android:paddingTop="6dip"
+	android:paddingLeft="@dimen/default_scr_side_padding"
+	android:paddingRight="@dimen/default_scr_side_padding"
+	android:paddingBottom="6dip"
+	android:baselineAligned="false"
+	android:background="@drawable/transparent_list_item_selector"
+	>
+
+	<!--48 % of screen width-->
+	<LinearLayout
+		android:layout_width="0dip"
+		android:layout_height="wrap_content"
+		android:layout_weight="0.7"
+		android:orientation="horizontal">
+		<com.chess.RoboTextView
+			android:id="@+id/moveTxt"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:textColor="@color/semitransparent_white_65"
+			android:paddingTop="6dip"
+			android:paddingBottom="6dip"
+			android:layout_weight="1"
+			android:text="1. e4" />
+
+		<com.chess.RoboTextView
+			android:id="@+id/numGamesTxt"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:textColor="@color/semitransparent_white_65"
+			android:layout_weight="1"
+			android:paddingTop="6dip"
+			android:paddingBottom="6dip"
+			android:paddingRight="15dip"
+			android:gravity="right"
+			android:text="111 111" />
+
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="0dip"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:orientation="horizontal"
+		android:weightSum="100">
+
+		<com.chess.RoboTextView
+			android:id="@+id/whiteWinsPercentTxt"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:textColor="@color/new_normal_grey_6"
+			android:background="@color/white_button_solid"
+			android:gravity="center"
+			style="@style/ExplorerWeightItem"
+			android:layout_weight="33"
+			android:text="33%" />
+
+		<com.chess.RoboTextView
+			android:id="@+id/drawsPercentTxt"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:textColor="@color/new_normal_grey_4"
+			android:background="@color/new_normal_grey"
+			style="@style/ExplorerWeightItem"
+			android:layout_weight="33"
+			android:text="33%" />
+
+		<com.chess.RoboTextView
+			android:id="@+id/blackWinsPercentTxt"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:textColor="@color/new_normal_grey_5"
+			android:background="@color/new_dark_grey_3"
+			android:layout_weight="33"
+			style="@style/ExplorerWeightItem"
+			android:text="33%" />
+
+	</LinearLayout>
+
+</LinearLayout>

@@ -15,7 +15,7 @@
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
 			android:paddingRight="10dip"
-			android:background="@drawable/white_list_item_selector">
+			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->
 			<com.chess.RoboTextView
@@ -38,7 +38,7 @@
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
 			android:paddingRight="10dip"
-			android:background="@drawable/white_list_item_selector">
+			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->
 			<com.chess.RoboTextView
@@ -56,7 +56,7 @@
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
 			android:paddingRight="10dip"
-			android:background="@drawable/white_list_item_selector">
+			android:background="@drawable/transparent_list_item_selector">
 
 			<com.chess.RoboEditText
 				android:id="@+id/prodUsernameEdt"
@@ -84,7 +84,7 @@
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
 			android:paddingRight="10dip"
-			android:background="@drawable/white_list_item_selector">
+			android:background="@drawable/transparent_list_item_selector">
 
 			<com.chess.RoboEditText
 				android:id="@+id/prodPasswordEdt"
@@ -112,7 +112,7 @@
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
 			android:paddingRight="10dip"
-			android:background="@drawable/white_list_item_selector">
+			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->
 			<com.chess.RoboTextView
@@ -130,7 +130,7 @@
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
 			android:paddingRight="10dip"
-			android:background="@drawable/white_list_item_selector">
+			android:background="@drawable/transparent_list_item_selector">
 
 			<com.chess.RoboEditText
 				android:id="@+id/testUsernameEdt"
@@ -158,7 +158,7 @@
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
 			android:paddingRight="10dip"
-			android:background="@drawable/white_list_item_selector">
+			android:background="@drawable/transparent_list_item_selector">
 
 			<com.chess.RoboEditText
 				android:id="@+id/testPasswordEdt"

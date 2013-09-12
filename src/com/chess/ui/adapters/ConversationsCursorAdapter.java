@@ -59,7 +59,7 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 		boolean haveNewMessages = getInt(cursor, DbScheme.V_NEW_MESSAGES_COUNT) > 0;
 		if (haveNewMessages) {
 			holder.lastMessageTxt.setFont(FontsHelper.BOLD_FONT);
-			view.setBackgroundResource(R.drawable.white_list_item_selector);
+			view.setBackgroundResource(R.drawable.transparent_list_item_selector);
 
 		} else {
 			holder.lastMessageTxt.setFont(FontsHelper.DEFAULT_FONT);

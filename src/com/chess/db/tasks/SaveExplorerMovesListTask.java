@@ -20,7 +20,7 @@ public class SaveExplorerMovesListTask extends AbstractUpdateTask<ExplorerMovesI
 	private String fen;
 
 	private ContentResolver contentResolver;
-	protected static String[] arguments = new String[1];
+	protected static String[] sArguments = new String[2];
 
 	public SaveExplorerMovesListTask(TaskUpdateInterface<ExplorerMovesItem.Move> taskFace, List<ExplorerMovesItem.Move> currentItems,
 									 ContentResolver resolver, String fen) {
@@ -33,11 +33,14 @@ public class SaveExplorerMovesListTask extends AbstractUpdateTask<ExplorerMovesI
 	@Override
 	protected Integer doTheTask(Long... ids) {
 		for (ExplorerMovesItem.Move currentItem : itemList) {
+			final String[] arguments = sArguments;
 			arguments[0] = fen;
+			arguments[1] = currentItem.getMove();
 
 			// TODO implement beginTransaction logic for performance increase
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.EXPLORER_MOVES.ordinal()];
-			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_FEN, DbDataManager.SELECTION_FEN, arguments, null);
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_FEN_AND_MOVE,
+					DbDataManager.SELECTION_FEN_AND_MOVE, arguments, null);
 
 			ContentValues values = DbDataManager.putExplorerMoveItemToValues(currentItem, fen);
 

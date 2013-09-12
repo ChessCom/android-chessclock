@@ -97,7 +97,7 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 		}
 
 		if (isOnline) {
-			holder.onlineTxt.setText(R.string.online_now);
+			holder.onlineTxt.setText(R.string.online_today);
 		} else {
 			holder.onlineTxt.setText(context.getString(R.string.last_played, getLastLoginLabel(cursor)));
 		}

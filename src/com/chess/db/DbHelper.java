@@ -266,9 +266,10 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getExplorerMovesForFen(String fen, DbScheme.Tables uriName) {
+	/* Explorer */
+	public static QueryParams getExplorerMovesForFen(String fen) {
 		QueryParams queryParams = new QueryParams();
-		queryParams.setUri(DbScheme.uriArray[uriName.ordinal()]);
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.EXPLORER_MOVES.ordinal()]);
 		queryParams.setSelection(DbDataManager.SELECTION_FEN);
 		queryParams.setArguments(new String[]{fen});
 		return queryParams;

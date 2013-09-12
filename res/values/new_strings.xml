@@ -233,8 +233,8 @@
     <string name="facebook_invite_friend_to_play">\"Let\'s play Chess via Chess.com android app\"</string>
     <string name="add_friend_request_message">Let\'s play!</string>
     <string name="select_contact">Select Contact</string>
-    <string name="online_now">Online now</string>
-    <string name="last_played">Last played %s</string>
+    <string name="online_today">Online today</string>
+    <string name="last_played">Online %s</string>
     <string name="x_days_ago">%s days ago</string>
     <string name="today">today</string>
     <string name="abort_game_">Abort Game?</string>
@@ -276,7 +276,6 @@
 	<string name="your_lesson_rating">Your Lesson Rating:</string>
 	<string name="score_">Score:</string>
 	<string name="lesson_complete">Lesson Complete!</string>
-	<string name="percents">%s</string>
 	<string name="rating_">Rating:</string>
 	<string name="installing_theme">Installing theme</string>
 	<string name="loading_background">Loading background</string>
@@ -326,5 +325,6 @@
 	<string name="switch_colors">Switch Colors</string>
 	<string name="views_arg">%s views</string>
 	<string name="no_results_found">No Results Found</string>
+	<string name="game_explorer">Game Explorer</string>
 
 </resources>

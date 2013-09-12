@@ -51,7 +51,7 @@ public class LoadDataFromDbTask extends AbstractUpdateTask<Cursor, Long> {
 			}
 		}
 
-		if (item.moveToFirst()) {
+		if (item != null && item.moveToFirst()) {
 			result = StaticData.RESULT_OK;
 		}
 
