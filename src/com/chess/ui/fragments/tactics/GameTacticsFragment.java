@@ -34,6 +34,7 @@ import com.chess.model.TacticsDataHolder;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
 import com.chess.ui.engine.Move;
+import com.chess.ui.fragments.explorer.GameExplorerFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;

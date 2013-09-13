@@ -23,10 +23,16 @@ import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ChessBoard implements BoardFace {
+
 	public static final int WHITE_SIDE = 0;
 	public static final int BLACK_SIDE = 1;
 	public static final int WHITE_PIECE = 1;
 	public static final int BLACK_PIECE = 0;
+
+	public static final int NO_CASTLING = 0;
+	public static final int KINGSIDE_CASTLING = 1;
+	public static final int QUEENSIDE_CASTLING = 2;
+	public static final int BOTH_CASTLING = 3;
 
 	public static final int NO_SIDE = -1;
 
@@ -187,7 +193,17 @@ public class ChessBoard implements BoardFace {
 			91, 92, 93, 94, 95, 96, 97, 98
 	};
 
-	private boolean castleMask[] = {false, false, false, false};
+	private static final int NOT_SET = -1;
+	private static final int BLACK_KINGSIDE_CASTLE = 0;
+	private static final int BLACK_QUEENSIDE_CASTLE = 1;
+	private static final int WHITE_KINGSIDE_CASTLE = 2;
+	private static final int WHITE_QUEENSIDE_CASTLE = 3;
+
+	/**
+	 * Array of performed castling
+	 * You pass a position and it tells if castling was made for this position
+	 */
+	private boolean castlingHistory[] = {false, false, false, false};
 	private boolean whiteCanCastle = true;
 	private boolean blackCanCastle = true;
 
@@ -279,21 +295,20 @@ public class ChessBoard implements BoardFace {
 	private int WHITE_ROOK_1_INITIAL_POS = 56;
 	private int WHITE_ROOK_2_INITIAL_POS = 63;
 
-	private int bRook1 = BLACK_ROOK_1_INITIAL_POS;
-	private int bKing = 4;
-	private int bRook2 = BLACK_ROOK_2_INITIAL_POS;
+	private int blackRook1 = BLACK_ROOK_1_INITIAL_POS;
+	private int blackKing = 4;
+	private int blackRook2 = BLACK_ROOK_2_INITIAL_POS;
 
-	private int wRook1 = WHITE_ROOK_1_INITIAL_POS;
-	private int wKing = 60;
-	private int wRook2 = WHITE_ROOK_2_INITIAL_POS;
+	private int whiteRook1 = WHITE_ROOK_1_INITIAL_POS;
+	private int whiteKing = 60;
+	private int whiteRook2 = WHITE_ROOK_2_INITIAL_POS;
 
-	private int[] bKingMoveOO = new int[]{6};
-	private int[] bKingMoveOOO = new int[]{2};
+	private int[] blackKingMoveOO = new int[]{6};
+	private int[] blackKingMoveOOO = new int[]{2};
 
-	private int[] wKingMoveOO = new int[]{62};
-	private int[] wKingMoveOOO = new int[]{58};
+	private int[] whiteKingMoveOO = new int[]{62};
+	private int[] whiteKingMoveOOO = new int[]{58};
 
-	//private boolean userColorWhite;
 	protected GameFace gameFace;
 	private SoundPlayer soundPlayer;
 	private boolean finished;
@@ -309,13 +324,13 @@ public class ChessBoard implements BoardFace {
 		String[] tmp = fen.split(SYMBOL_SPACE);
 
 		// set castle masks
-		if (tmp.length > 2) { //0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
+		if (tmp.length > 2) {
 			String castling = tmp[2].trim();
 			if (!castling.contains(MoveParser.WHITE_KING)) {
-				castleMask[2] = true;
+				castlingHistory[2] = true;
 			}
 			if (!castling.contains(MoveParser.WHITE_QUEEN)) {
-				castleMask[3] = true;
+				castlingHistory[3] = true;
 			}
 
 			if (!castling.contains(MoveParser.WHITE_KING) && !castling.contains(MoveParser.WHITE_QUEEN)) {
@@ -323,17 +338,17 @@ public class ChessBoard implements BoardFace {
 			}
 
 			if (!castling.contains(MoveParser.BLACK_KING)) {
-				castleMask[0] = true;
+				castlingHistory[0] = true;
 			}
 			if (!castling.contains(MoveParser.BLACK_QUEEN)) {
-				castleMask[1] = true;
+				castlingHistory[1] = true;
 			}
 
 			if (!castling.contains(MoveParser.BLACK_KING) && !castling.contains(MoveParser.BLACK_QUEEN)) {
 				blackCanCastle = false;
 			}
 
-			Log.d(fen, Symbol.EMPTY + castleMask[2] + castleMask[3] + castleMask[0] + castleMask[1]);
+			Log.d(fen, Symbol.EMPTY + castlingHistory[2] + castlingHistory[3] + castlingHistory[0] + castlingHistory[1]);
 		}
 
 		String[] FEN = tmp[0].split(SYMBOL_SLASH);
@@ -342,16 +357,16 @@ public class ChessBoard implements BoardFace {
 		for (i = 0; i < FEN[0].length(); i++) {
 			if (FEN[0].charAt(i) == CHAR_R) {
 				if (!found) {
-					bRook1 = i + offset;
+					blackRook1 = i + offset;
 					BLACK_ROOK_1_INITIAL_POS = i + offset;
 				} else {
-					bRook2 = i + offset;
+					blackRook2 = i + offset;
 					BLACK_ROOK_2_INITIAL_POS = i + offset;
 				}
 				found = true;
 			}
 			if (FEN[0].charAt(i) == 'k') {
-				bKing = i + offset;
+				blackKing = i + offset;
 				found = true;
 			}
 			if (FEN[0].substring(i, i + 1).matches(NUMBERS_PATTERS)) {
@@ -363,16 +378,16 @@ public class ChessBoard implements BoardFace {
 		for (i = 0; i < FEN[7].length(); i++) {
 			if (FEN[7].charAt(i) == 'R') {
 				if (!found) {
-					wRook1 = i + offset;
+					whiteRook1 = i + offset;
 					WHITE_ROOK_1_INITIAL_POS = i + offset;
 				} else {
-					wRook2 = i + offset;
+					whiteRook2 = i + offset;
 					WHITE_ROOK_2_INITIAL_POS = i + offset;
 				}
 				found = true;
 			}
 			if (FEN[7].charAt(i) == 'K') {
-				wKing = i + offset;
+				whiteKing = i + offset;
 				found = true;
 			}
 			if (FEN[7].substring(i, i + 1).matches(NUMBERS_PATTERS)) {
@@ -381,83 +396,83 @@ public class ChessBoard implements BoardFace {
 		}
 
 		//black O-O
-		if (bKing < 5) {
-			//bKingMoveOO = new int[]{6,7};
-			bKingMoveOO = new int[8 - (bKing + 2)];
-			for (i = 0; i < bKingMoveOO.length; i++)
-				bKingMoveOO[i] = bKing + 2 + i;
+		if (blackKing < 5) {
+			//blackKingMoveOO = new int[]{6,7};
+			blackKingMoveOO = new int[8 - (blackKing + 2)];
+			for (i = 0; i < blackKingMoveOO.length; i++)
+				blackKingMoveOO[i] = blackKing + 2 + i;
 		} else {
-			if (bKing == 5) {
-				if (bRook2 == 6) {
-					bKingMoveOO = new int[]{6, 7};
+			if (blackKing == 5) {
+				if (blackRook2 == 6) {
+					blackKingMoveOO = new int[]{6, 7};
 				} else {
-					bKingMoveOO = new int[]{7};
+					blackKingMoveOO = new int[]{7};
 				}
 			} else {
-				bKingMoveOO = new int[]{7};
+				blackKingMoveOO = new int[]{7};
 			}
 		}
 		//black O-O-O
-		if (bKing > 3) {
-			bKingMoveOOO = new int[]{0, 1, 2};
+		if (blackKing > 3) {
+			blackKingMoveOOO = new int[]{0, 1, 2};
 		} else {
-			if (bKing == 3) {
-				if (bRook1 == 2) {
-					bKingMoveOOO = new int[]{0, 1, 2};
+			if (blackKing == 3) {
+				if (blackRook1 == 2) {
+					blackKingMoveOOO = new int[]{0, 1, 2};
 				} else {
-					bKingMoveOOO = new int[]{0, 1};
+					blackKingMoveOOO = new int[]{0, 1};
 				}
-			} else if (bKing == 2) {
-				if (bRook1 == 1) {
-					bKingMoveOOO = new int[]{0, 1};
+			} else if (blackKing == 2) {
+				if (blackRook1 == 1) {
+					blackKingMoveOOO = new int[]{0, 1};
 				} else {
-					bKingMoveOOO = new int[]{0};
+					blackKingMoveOOO = new int[]{0};
 				}
-			} else if (bKing == 1) {
-				bKingMoveOOO = new int[]{0};
+			} else if (blackKing == 1) {
+				blackKingMoveOOO = new int[]{0};
 			}
 		}
 
 		//white KingSide castling O-O
-		if (wKing < 61) {
-			//wKingMoveOO = new int[]{62,63};
-			wKingMoveOO = new int[64 - (wKing + 2)];
-			for (i = 0; i < 64 - (wKing + 2); i++)
-				wKingMoveOO[i] = wKing + 2 + i;
+		if (whiteKing < 61) {
+			//whiteKingMoveOO = new int[]{62,63};
+			whiteKingMoveOO = new int[64 - (whiteKing + 2)];
+			for (i = 0; i < 64 - (whiteKing + 2); i++)
+				whiteKingMoveOO[i] = whiteKing + 2 + i;
 		} else {
-			if (wKing == 61) {
-				if (wRook2 == 62) {
-					wKingMoveOO = new int[]{62, 63};
+			if (whiteKing == 61) {
+				if (whiteRook2 == 62) {
+					whiteKingMoveOO = new int[]{62, 63};
 				} else {
-					wKingMoveOO = new int[]{63};
+					whiteKingMoveOO = new int[]{63};
 				}
-			} else if (wKing == 62) {
-				wKingMoveOO = new int[]{63};
+			} else if (whiteKing == 62) {
+				whiteKingMoveOO = new int[]{63};
 			}
 		}
 		//white QueenSide castling O-O-O
-		if (wKing > 59) {
-			wKingMoveOOO = new int[]{56, 57, 58};
+		if (whiteKing > 59) {
+			whiteKingMoveOOO = new int[]{56, 57, 58};
 		} else {
-			if (wKing == 59) {
-				if (wRook1 == 58) {
-					wKingMoveOOO = new int[]{56, 57, 58};
+			if (whiteKing == 59) {
+				if (whiteRook1 == 58) {
+					whiteKingMoveOOO = new int[]{56, 57, 58};
 				} else {
-					wKingMoveOOO = new int[]{56, 57};
+					whiteKingMoveOOO = new int[]{56, 57};
 				}
-			} else if (wKing == 58) {
-				if (wRook1 == 57) {
-					wKingMoveOOO = new int[]{56, 57};
+			} else if (whiteKing == 58) {
+				if (whiteRook1 == 57) {
+					whiteKingMoveOOO = new int[]{56, 57};
 				} else {
-					wKingMoveOOO = new int[]{56};
+					whiteKingMoveOOO = new int[]{56};
 				}
 			} else {
-				wKingMoveOOO = new int[]{56};
+				whiteKingMoveOOO = new int[]{56};
 			}
 		}
 
-		Log.d(fen, bRook1 + " " + bKing + " " + bRook2 + " " + wRook1 + " " + wKing + " " + wRook2);
-		return new int[]{bRook1, bKing, bRook2, wRook1, wKing, wRook2};
+		Log.d(fen, blackRook1 + " " + blackKing + " " + blackRook2 + " " + whiteRook1 + " " + whiteKing + " " + whiteRook2);
+		return new int[]{blackRook1, blackKing, blackRook2, whiteRook1, whiteKing, whiteRook2};
 	}
 
 
@@ -603,24 +618,23 @@ public class ChessBoard implements BoardFace {
 
 		/* generate castle moves */
 		int i;
-		//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
 		if (side == WHITE_SIDE) {
-			if (!castleMask[2] && whiteCanCastle) {
-				for (i = 0; i < wKingMoveOO.length; i++)
-					genPush(movesSet, wKing, wKingMoveOO[i], Move.CASTLING_MASK);
+			if (!castlingHistory[2] && whiteCanCastle) {
+				for (i = 0; i < whiteKingMoveOO.length; i++)
+					genPush(movesSet, whiteKing, whiteKingMoveOO[i], Move.CASTLING_MASK);
 			}
-			if (!castleMask[3] && whiteCanCastle) {
-				for (i = 0; i < wKingMoveOOO.length; i++)
-					genPush(movesSet, wKing, wKingMoveOOO[i], Move.CASTLING_MASK);
+			if (!castlingHistory[3] && whiteCanCastle) {
+				for (i = 0; i < whiteKingMoveOOO.length; i++)
+					genPush(movesSet, whiteKing, whiteKingMoveOOO[i], Move.CASTLING_MASK);
 			}
 		} else {
-			if (!castleMask[0] && blackCanCastle) {
-				for (i = 0; i < bKingMoveOO.length; i++)
-					genPush(movesSet, bKing, bKingMoveOO[i], Move.CASTLING_MASK);
+			if (!castlingHistory[0] && blackCanCastle) {
+				for (i = 0; i < blackKingMoveOO.length; i++)
+					genPush(movesSet, blackKing, blackKingMoveOO[i], Move.CASTLING_MASK);
 			}
-			if (!castleMask[1] && blackCanCastle) {
-				for (i = 0; i < bKingMoveOOO.length; i++)
-					genPush(movesSet, bKing, bKingMoveOOO[i], Move.CASTLING_MASK);
+			if (!castlingHistory[1] && blackCanCastle) {
+				for (i = 0; i < blackKingMoveOOO.length; i++)
+					genPush(movesSet, blackKing, blackKingMoveOOO[i], Move.CASTLING_MASK);
 			}
 		}
 
@@ -794,315 +808,49 @@ public class ChessBoard implements BoardFace {
 
 		/* test to see if a castle move is legal and move the rook
 			   (the king is moved with the usual move code later) */
-		int what = -1; //0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
-		int kingToRookDistance;
-		int kingDistance;
+		int castleMaskPosition = NOT_SET;
 		if (move.isCastling()) {
-			int from = -1, to = -1;
-
-			int[] piece_tmp = pieces.clone();
-
-			if (inCheck(side))
-				return false;
-
-			kingToRookDistance = Math.abs(move.from - move.to);
-			int minMove = move.to;
-			if (move.from < move.to) minMove = move.from;
-
-			int i;
-			i = 0;
-			while (i < bKingMoveOO.length) {
-				if (bKingMoveOO[i] == move.to) {
-					what = 0;
-					kingToRookDistance = Math.abs(move.from - bRook2);
-					minMove = bRook2;
-					if (move.from < bRook2) minMove = move.from;
-					break;
-				}
-				i++;
-			}
-			i = 0;
-			while (i < bKingMoveOOO.length) {
-				if (bKingMoveOOO[i] == move.to) {
-					what = 1;
-					kingToRookDistance = Math.abs(move.from - bRook1);
-					minMove = bRook1;
-					if (move.from < bRook1) minMove = move.from;
-					break;
-				}
-				i++;
-			}
-			i = 0;
-			while (i < wKingMoveOO.length) {
-				if (wKingMoveOO[i] == move.to) {
-					what = 2;
-					kingToRookDistance = Math.abs(move.from - wRook2);
-					minMove = wRook2;
-					if (move.from < wRook2)
-						minMove = move.from;
-					break;
-				}
-				i++;
-			}
-			i = 0;
-			while (i < wKingMoveOOO.length) {
-				if (wKingMoveOOO[i] == move.to) {
-					what = 3;
-					kingToRookDistance = Math.abs(move.from - wRook1);
-					minMove = wRook1;
-					if (move.from < wRook1)
-						minMove = move.from;
-					break;
-				}
-				i++;
-			}
-
-			if (castleMask[what])
-				return false;
-
-			if (what == 2) {
-
-				kingDistance = Math.abs(wKing - G1);
-				int minimalSquare = Math.min(wKing, G1);
-				for (int j = 0; j <= kingDistance; j++) {
-					if (attack(minimalSquare + j, xside)) {
-						return false;
-					}
-				}
-
-				if (color[F1] != EMPTY && pieces[F1] != KING && pieces[F1] != ROOK)
-					return false;
-				if (color[G1] != EMPTY && pieces[G1] != KING && pieces[G1] != ROOK)
-					return false;
-				if (pieces[F1] == ROOK && F1 != wRook2)
-					return false;
-				if (pieces[G1] == ROOK && G1 != wRook2)
-					return false;
-
-
-				if (kingToRookDistance > 1) {
-					while (kingToRookDistance != 0) {
-						minMove++;
-						if (minMove != wRook2 && pieces[minMove] != KING && color[minMove] != EMPTY) {
-							return false;
-						}
-						kingToRookDistance--;
-					}
-				}
-
-				from = wRook2;
-				to = F1;
-			} else if (what == 3) {
-
-				kingDistance = Math.abs(wKing - C1);
-				int minimalSquare = Math.min(wKing, C1);
-				for (int j = 0; j <= kingDistance; j++) {
-					if (attack(minimalSquare + j, xside)) {
-						return false;
-					}
-				}
-
-				if (color[C1] != EMPTY && pieces[C1] != KING && pieces[C1] != ROOK)
-					return false;
-				if (color[D1] != EMPTY && pieces[D1] != KING && pieces[D1] != ROOK)
-					return false;
-				if (pieces[C1] == ROOK && C1 != wRook1)
-					return false;
-				if (pieces[D1] == ROOK && D1 != wRook1)
-					return false;
-
-				if (kingToRookDistance > 1) {
-					while (kingToRookDistance != 0) {
-						minMove++;
-						if (minMove != wRook1 && pieces[minMove] != KING && color[minMove] != EMPTY) {
-							return false;
-						}
-						kingToRookDistance--;
-					}
-				}
-
-				from = wRook1;
-				to = D1;
-			} else if (what == 1) {
-
-				kingDistance = Math.abs(bKing - C8);
-				int minimalSquare = Math.min(bKing, C8);
-				for (int j = 0; j <= kingDistance; j++) {
-					if (attack(minimalSquare + j, xside)) {
-						return false;
-					}
-				}
-
-				if (color[C8] != EMPTY && pieces[C8] != KING && pieces[C8] != ROOK)
-					return false;
-				if (color[D8] != EMPTY && pieces[D8] != KING && pieces[D8] != ROOK)
-					return false;
-				if (pieces[C8] == ROOK && C8 != bRook1)
-					return false;
-				if (pieces[D8] == ROOK && D8 != bRook1)
-					return false;
-
-				if (kingToRookDistance > 1) {
-					while (kingToRookDistance != 0) {
-						minMove++;
-						if (minMove != bRook1 && pieces[minMove] != KING && color[minMove] != EMPTY) {
-							return false;
-						}
-						kingToRookDistance--;
-					}
-				}
-
-				from = bRook1;
-				to = D8;
-			} else if (what == 0) {
-
-				kingDistance = Math.abs(bKing - G8);
-				int minimalSquare = Math.min(bKing, G8);
-				for (int j = 0; j <= kingDistance; j++) {
-					if (attack(minimalSquare + j, xside)) {
-						return false;
-					}
-				}
-
-				if (color[F8] != EMPTY && pieces[F8] != KING && pieces[F8] != ROOK)
-					return false;
-				if (color[G8] != EMPTY && pieces[G8] != KING && pieces[G8] != ROOK)
-					return false;
-
-				if (pieces[F8] == ROOK && bRook2 != F8)
-					return false;
-				if (pieces[G8] == ROOK && bRook2 != G8)
-					return false;
-
-				if (kingToRookDistance > 1) {
-					while (kingToRookDistance != 0) {
-						minMove++;
-						if (minMove != bRook2 && pieces[minMove] != KING && color[minMove] != EMPTY) {
-							return false;
-						}
-						kingToRookDistance--;
-					}
-				}
-
-				from = bRook2;
-				to = F8;
-			}
-
-			color[to] = color[from];
-			pieces[to] = pieces[from];
-			if (to != from) {
-				color[from] = EMPTY;
-				pieces[from] = EMPTY;
-			}
-
-			/* back up information so we can take the move back later. */
-			backupHistory(move, what);
-			if (what == 0 || what == 2)
-				histDat[hply].notation = MoveParser.KINGSIDE_CASTLING;
-			else
-				histDat[hply].notation = MoveParser.QUEENSIDE_CASTLING;
-			++hply;
-
-			/* update the castle, en passant, and
-					   fifty-move-draw variables */
-			updateCastleEnPassantFiftyMoveVars(move, what);
-			//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
-			checkCastlingForRook(move);
-
-			if ((move.bits & 8) != 0) {
-				if (side == WHITE_SIDE) {
-					updateEnPassant(move.to + 8);
-				} else {
-					updateEnPassant(move.to - 8);
-				}
-			} else {
-				updateEnPassant(-1);
-			}
-			if ((move.bits & 17) != 0) {
-				fifty = 0;
-			} else {
-				++fifty;
-			}
-
-			/* move the piecesBitmap */
-			int tmp_to = -1;
-			if (what == 3) {
-				color[58] = side;
-				pieces[58] = piece_tmp[move.from];
-				tmp_to = 58;
-			} else if (what == 2) {
-				color[62] = side;
-				pieces[62] = piece_tmp[move.from];
-				tmp_to = 62;
-			} else if (what == 1) {
-				color[2] = side;
-				pieces[2] = piece_tmp[move.from];
-				tmp_to = 2;
-			} else if (what == 0) {
-				color[6] = side;
-				pieces[6] = piece_tmp[move.from];
-				tmp_to = 6;
-			}
-			if (pieces[move.from] != ROOK && tmp_to != move.from) {
-				color[move.from] = EMPTY;
-				pieces[move.from] = EMPTY;
-			}
-
-			/* switch sides and test for legality (if we can capture
-					   the other guy's king, it's an illegal position and
-					   we need to take the move back) */
-			switchSide();
-
-			if (inCheck(xside)) {
-				takeBack();
-				return false;
-			}
-
-			if (playSound) {
-				soundPlayer.playCastle();
-			}
-
-			return true;
+			return makeCastling(move, playSound, castleMaskPosition);
 		}
 
 		/* back up information so we can take the move back later. */
-		backupHistory(move, what);
+		backupHistory(move, castleMaskPosition);
 
 		histDat[hply].notation = getMoveSAN();
 		++hply;
 
 		/* update the castle, en passant, and
 			   fifty-move-draw variables */
-		updateCastleEnPassantFiftyMoveVars(move, what);
-		//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
+		updateCastleEnPassantFiftyMoveVars(move, castleMaskPosition);
+
 		checkCastlingForRook(move);
 
 		// attacked rook
-		if (move.to == BLACK_ROOK_1_INITIAL_POS && !castleMask[1]) // q (fen castle)
+		if (move.to == BLACK_ROOK_1_INITIAL_POS && !castlingHistory[1]) // q (fen castle)
 		{
-			castleMask[1] = true;
-			if (castleMask[0]) {
+			castlingHistory[1] = true;
+			if (castlingHistory[0]) {
 				blackCanCastle = false;
 			}
 		}
-		if (move.to == BLACK_ROOK_2_INITIAL_POS && !castleMask[0]) // k (fen castle)
+		if (move.to == BLACK_ROOK_2_INITIAL_POS && !castlingHistory[0]) // k (fen castle)
 		{
-			castleMask[0] = true;
-			if (castleMask[1]) {
+			castlingHistory[0] = true;
+			if (castlingHistory[1]) {
 				blackCanCastle = false;
 			}
 		}
-		if (move.to == WHITE_ROOK_1_INITIAL_POS && !castleMask[3]) // Q (fen castle)
+		if (move.to == WHITE_ROOK_1_INITIAL_POS && !castlingHistory[3]) // Q (fen castle)
 		{
-			castleMask[3] = true;
-			if (castleMask[2]) {
+			castlingHistory[3] = true;
+			if (castlingHistory[2]) {
 				whiteCanCastle = false;
 			}
 		}
-		if (move.to == WHITE_ROOK_2_INITIAL_POS && !castleMask[2]) // K (fen castle)
+		if (move.to == WHITE_ROOK_2_INITIAL_POS && !castlingHistory[2]) // K (fen castle)
 		{
-			castleMask[2] = true;
-			if (castleMask[3]) {
+			castlingHistory[2] = true;
+			if (castlingHistory[3]) {
 				whiteCanCastle = false;
 			}
 		}
@@ -1181,37 +929,319 @@ public class ChessBoard implements BoardFace {
 		return true;
 	}
 
-	private void backupHistory(Move move, int what) {
+	/**
+	 * Perform castling if possible
+	 * @param move to be made as castling
+	 * @param playSound after move
+	 * @param castleMaskPosition to apply mask
+	 * @return {@code true}  if castling was performed
+	 */
+	private boolean makeCastling(Move move, boolean playSound, int castleMaskPosition) {
+		int from = -1;
+		int to = -1;
+
+		int[] piece_tmp = pieces.clone();
+
+		if (inCheck(side))
+			return false;
+
+		int kingToRookDistance = Math.abs(move.from - move.to);
+		int minMove = move.to;
+		if (move.from < move.to) {
+			minMove = move.from;
+		}
+
+		int i = 0;
+		while (i < blackKingMoveOO.length) { // check black King moves
+			if (blackKingMoveOO[i] == move.to) {
+				castleMaskPosition = BLACK_KINGSIDE_CASTLE;
+				kingToRookDistance = Math.abs(move.from - blackRook2);
+				minMove = blackRook2;
+				if (move.from < blackRook2) {
+					minMove = move.from;
+				}
+				break;
+			}
+			i++;
+		}
+		i = 0;
+		while (i < blackKingMoveOOO.length) {
+			if (blackKingMoveOOO[i] == move.to) {
+				castleMaskPosition = BLACK_QUEENSIDE_CASTLE;
+				kingToRookDistance = Math.abs(move.from - blackRook1);
+				minMove = blackRook1;
+				if (move.from < blackRook1) {
+					minMove = move.from;
+				}
+				break;
+			}
+			i++;
+		}
+		i = 0;
+		while (i < whiteKingMoveOO.length) {
+			if (whiteKingMoveOO[i] == move.to) {
+				castleMaskPosition = WHITE_KINGSIDE_CASTLE;
+				kingToRookDistance = Math.abs(move.from - whiteRook2);
+				minMove = whiteRook2;
+				if (move.from < whiteRook2)
+					minMove = move.from;
+				break;
+			}
+			i++;
+		}
+		i = 0;
+		while (i < whiteKingMoveOOO.length) {
+			if (whiteKingMoveOOO[i] == move.to) {
+				castleMaskPosition = WHITE_QUEENSIDE_CASTLE;
+				kingToRookDistance = Math.abs(move.from - whiteRook1);
+				minMove = whiteRook1;
+				if (move.from < whiteRook1)
+					minMove = move.from;
+				break;
+			}
+			i++;
+		}
+
+		if (castlingHistory[castleMaskPosition]) {
+			return false;
+		}
+
+		int kingDistance;
+		if (castleMaskPosition == WHITE_KINGSIDE_CASTLE) {
+			kingDistance = Math.abs(whiteKing - G1);
+			int minimalSquare = Math.min(whiteKing, G1);
+			for (int j = 0; j <= kingDistance; j++) {
+				if (attack(minimalSquare + j, xside)) {
+					return false;
+				}
+			}
+
+			if (color[F1] != EMPTY && pieces[F1] != KING && pieces[F1] != ROOK)
+				return false;
+			if (color[G1] != EMPTY && pieces[G1] != KING && pieces[G1] != ROOK)
+				return false;
+			if (pieces[F1] == ROOK && F1 != whiteRook2)
+				return false;
+			if (pieces[G1] == ROOK && G1 != whiteRook2)
+				return false;
+
+
+			if (kingToRookDistance > 1) {
+				while (kingToRookDistance != 0) {
+					minMove++;
+					if (minMove != whiteRook2 && pieces[minMove] != KING && color[minMove] != EMPTY) {
+						return false;
+					}
+					kingToRookDistance--;
+				}
+			}
+
+			from = whiteRook2;
+			to = F1;
+		} else if (castleMaskPosition == WHITE_QUEENSIDE_CASTLE) {
+
+			kingDistance = Math.abs(whiteKing - C1);
+			int minimalSquare = Math.min(whiteKing, C1);
+			for (int j = 0; j <= kingDistance; j++) {
+				if (attack(minimalSquare + j, xside)) {
+					return false;
+				}
+			}
+
+			if (color[C1] != EMPTY && pieces[C1] != KING && pieces[C1] != ROOK)
+				return false;
+			if (color[D1] != EMPTY && pieces[D1] != KING && pieces[D1] != ROOK)
+				return false;
+			if (pieces[C1] == ROOK && C1 != whiteRook1)
+				return false;
+			if (pieces[D1] == ROOK && D1 != whiteRook1)
+				return false;
+
+			if (kingToRookDistance > 1) {
+				while (kingToRookDistance != 0) {
+					minMove++;
+					if (minMove != whiteRook1 && pieces[minMove] != KING && color[minMove] != EMPTY) {
+						return false;
+					}
+					kingToRookDistance--;
+				}
+			}
+
+			from = whiteRook1;
+			to = D1;
+		} else if (castleMaskPosition == BLACK_QUEENSIDE_CASTLE) {
+
+			kingDistance = Math.abs(blackKing - C8);
+			int minimalSquare = Math.min(blackKing, C8);
+			for (int j = 0; j <= kingDistance; j++) {
+				if (attack(minimalSquare + j, xside)) {
+					return false;
+				}
+			}
+
+			if (color[C8] != EMPTY && pieces[C8] != KING && pieces[C8] != ROOK)
+				return false;
+			if (color[D8] != EMPTY && pieces[D8] != KING && pieces[D8] != ROOK)
+				return false;
+			if (pieces[C8] == ROOK && C8 != blackRook1)
+				return false;
+			if (pieces[D8] == ROOK && D8 != blackRook1)
+				return false;
+
+			if (kingToRookDistance > 1) {
+				while (kingToRookDistance != 0) {
+					minMove++;
+					if (minMove != blackRook1 && pieces[minMove] != KING && color[minMove] != EMPTY) {
+						return false;
+					}
+					kingToRookDistance--;
+				}
+			}
+
+			from = blackRook1;
+			to = D8;
+		} else if (castleMaskPosition == BLACK_KINGSIDE_CASTLE) {
+
+			kingDistance = Math.abs(blackKing - G8);
+			int minimalSquare = Math.min(blackKing, G8);
+			for (int j = 0; j <= kingDistance; j++) {
+				if (attack(minimalSquare + j, xside)) {
+					return false;
+				}
+			}
+
+			if (color[F8] != EMPTY && pieces[F8] != KING && pieces[F8] != ROOK)
+				return false;
+			if (color[G8] != EMPTY && pieces[G8] != KING && pieces[G8] != ROOK)
+				return false;
+
+			if (pieces[F8] == ROOK && blackRook2 != F8)
+				return false;
+			if (pieces[G8] == ROOK && blackRook2 != G8)
+				return false;
+
+			if (kingToRookDistance > 1) {
+				while (kingToRookDistance != 0) {
+					minMove++;
+					if (minMove != blackRook2 && pieces[minMove] != KING && color[minMove] != EMPTY) {
+						return false;
+					}
+					kingToRookDistance--;
+				}
+			}
+
+			from = blackRook2;
+			to = F8;
+		}
+
+		color[to] = color[from];
+		pieces[to] = pieces[from];
+		if (to != from) {
+			color[from] = EMPTY;
+			pieces[from] = EMPTY;
+		}
+
+		/* back up information so we can take the move back later. */
+		backupHistory(move, castleMaskPosition);
+		if (castleMaskPosition == BLACK_KINGSIDE_CASTLE || castleMaskPosition == WHITE_KINGSIDE_CASTLE)
+			histDat[hply].notation = MoveParser.KINGSIDE_CASTLING;
+		else
+			histDat[hply].notation = MoveParser.QUEENSIDE_CASTLING;
+		++hply;
+
+		/* update the castle, en passant, and
+				   fifty-move-draw variables */
+		updateCastleEnPassantFiftyMoveVars(move, castleMaskPosition);
+
+		checkCastlingForRook(move);
+
+		if ((move.bits & 8) != 0) {
+			if (side == WHITE_SIDE) {
+				updateEnPassant(move.to + 8);
+			} else {
+				updateEnPassant(move.to - 8);
+			}
+		} else {
+			updateEnPassant(-1);
+		}
+		if ((move.bits & 17) != 0) {
+			fifty = 0;
+		} else {
+			++fifty;
+		}
+
+		/* move the piecesBitmap */
+		int tmp_to = -1;
+		if (castleMaskPosition == WHITE_QUEENSIDE_CASTLE) {
+			color[58] = side;
+			pieces[58] = piece_tmp[move.from];
+			tmp_to = 58;
+		} else if (castleMaskPosition == WHITE_KINGSIDE_CASTLE) {
+			color[62] = side;
+			pieces[62] = piece_tmp[move.from];
+			tmp_to = 62;
+		} else if (castleMaskPosition == BLACK_QUEENSIDE_CASTLE) {
+			color[2] = side;
+			pieces[2] = piece_tmp[move.from];
+			tmp_to = 2;
+		} else if (castleMaskPosition == BLACK_KINGSIDE_CASTLE) {
+			color[6] = side;
+			pieces[6] = piece_tmp[move.from];
+			tmp_to = 6;
+		}
+		if (pieces[move.from] != ROOK && tmp_to != move.from) {
+			color[move.from] = EMPTY;
+			pieces[move.from] = EMPTY;
+		}
+
+		/* switch sides and test for legality (if we can capture
+				   the other guy's king, it's an illegal position and
+				   we need to take the move back) */
+		switchSide();
+
+		if (inCheck(xside)) {
+			takeBack();
+			return false;
+		}
+
+		if (playSound) {
+			soundPlayer.playCastle();
+		}
+
+		return true;
+	}
+
+	private void backupHistory(Move move, int castleMaskPosition) {
 		histDat[hply] = new HistoryData();
 		histDat[hply].move = move;
 		histDat[hply].capture = pieces[move.to];
 		histDat[hply].enPassant = enPassant;
 		histDat[hply].enPassantPrev = enPassantPrev;
 		histDat[hply].fifty = fifty;
-		histDat[hply].castleMask = castleMask.clone();
+		histDat[hply].castleMask = castlingHistory.clone();
 		histDat[hply].whiteCanCastle = whiteCanCastle;
 		histDat[hply].blackCanCastle = blackCanCastle;
-		histDat[hply].what = what;
+		histDat[hply].castleMaskPosition = castleMaskPosition;
 	}
 
 
-	private void updateCastleEnPassantFiftyMoveVars(Move move, int what) {
-		if (what != -1) {
-			castleMask[what] = true;
-			if (what == 0 || what == 1) {
+	private void updateCastleEnPassantFiftyMoveVars(Move move, int castleMaskPosition) {
+		if (castleMaskPosition != NOT_SET) {
+			castlingHistory[castleMaskPosition] = true;
+			if (castleMaskPosition == BLACK_KINGSIDE_CASTLE || castleMaskPosition == BLACK_QUEENSIDE_CASTLE) {
 				blackCanCastle = false;
-			} else if (what == 2 || what == 3) {
+			} else if (castleMaskPosition == WHITE_KINGSIDE_CASTLE || castleMaskPosition == WHITE_QUEENSIDE_CASTLE) {
 				whiteCanCastle = false;
 			}
 		}
 		if (pieces[move.from] == KING) {
 			if (side == BLACK_SIDE) {
-				castleMask[0] = true;
-				castleMask[1] = true;
+				castlingHistory[BLACK_KINGSIDE_CASTLE] = true;
+				castlingHistory[BLACK_QUEENSIDE_CASTLE] = true;
 				blackCanCastle = false;
 			} else {
-				castleMask[2] = true;
-				castleMask[3] = true;
+				castlingHistory[WHITE_KINGSIDE_CASTLE] = true;
+				castlingHistory[WHITE_QUEENSIDE_CASTLE] = true;
 				whiteCanCastle = false;
 			}
 		}
@@ -1220,28 +1250,28 @@ public class ChessBoard implements BoardFace {
 	private void checkCastlingForRook(Move move) {
 		if (pieces[move.from] == ROOK) {
 			if (side == BLACK_SIDE) {
-				if (move.from == bRook2) {
-					castleMask[0] = true;
-					if (castleMask[1]) {
+				if (move.from == blackRook2) {
+					castlingHistory[BLACK_KINGSIDE_CASTLE] = true;
+					if (castlingHistory[BLACK_QUEENSIDE_CASTLE]) {
 						blackCanCastle = false;
 					}
 				}
-				if (move.from == bRook1) {
-					castleMask[1] = true;
-					if (castleMask[0]) {
+				if (move.from == blackRook1) {
+					castlingHistory[BLACK_QUEENSIDE_CASTLE] = true;
+					if (castlingHistory[BLACK_KINGSIDE_CASTLE]) {
 						blackCanCastle = false;
 					}
 				}
 			} else {
-				if (move.from == wRook2) {
-					castleMask[2] = true;
-					if (castleMask[3]) {
+				if (move.from == whiteRook2) {
+					castlingHistory[WHITE_KINGSIDE_CASTLE] = true;
+					if (castlingHistory[WHITE_QUEENSIDE_CASTLE]) {
 						whiteCanCastle = false;
 					}
 				}
-				if (move.from == wRook1) {
-					castleMask[3] = true;
-					if (castleMask[2]) {
+				if (move.from == whiteRook1) {
+					castlingHistory[WHITE_QUEENSIDE_CASTLE] = true;
+					if (castlingHistory[WHITE_KINGSIDE_CASTLE]) {
 						whiteCanCastle = false;
 					}
 				}
@@ -1263,7 +1293,7 @@ public class ChessBoard implements BoardFace {
 		enPassant = histDat[hply].enPassant;
 		enPassantPrev = histDat[hply].enPassantPrev;
 		fifty = histDat[hply].fifty;
-		castleMask = histDat[hply].castleMask.clone();
+		castlingHistory = histDat[hply].castleMask.clone();
 		whiteCanCastle = histDat[hply].whiteCanCastle;
 		blackCanCastle = histDat[hply].blackCanCastle;
 
@@ -1271,36 +1301,40 @@ public class ChessBoard implements BoardFace {
 
 			int[] piece_tmp = pieces.clone();
 
-			int i;
-			int what = -1; //0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
-			for (i = 0; i < bKingMoveOO.length; i++) {
-				if (bKingMoveOO[i] == move.to)
-					what = 0;
+
+			int castleMaskPosition = NOT_SET;
+			for (int aBlackKingMoveOO : blackKingMoveOO) {
+				if (aBlackKingMoveOO == move.to) {
+					castleMaskPosition = BLACK_KINGSIDE_CASTLE;
+				}
 			}
-			for (i = 0; i < bKingMoveOOO.length; i++) {
-				if (bKingMoveOOO[i] == move.to)
-					what = 1;
+			for (int aBlackKingMoveOOO : blackKingMoveOOO) {
+				if (aBlackKingMoveOOO == move.to) {
+					castleMaskPosition = BLACK_QUEENSIDE_CASTLE;
+				}
 			}
-			for (i = 0; i < wKingMoveOO.length; i++) {
-				if (wKingMoveOO[i] == move.to)
-					what = 2;
+			for (int aWhiteKingMoveOO : whiteKingMoveOO) {
+				if (aWhiteKingMoveOO == move.to) {
+					castleMaskPosition = WHITE_KINGSIDE_CASTLE;
+				}
 			}
-			for (i = 0; i < wKingMoveOOO.length; i++) {
-				if (wKingMoveOOO[i] == move.to)
-					what = 3;
+			for (int aWhiteKingMoveOOO : whiteKingMoveOOO) {
+				if (aWhiteKingMoveOOO == move.to) {
+					castleMaskPosition = WHITE_QUEENSIDE_CASTLE;
+				}
 			}
 			int moveTo = move.to;
 			int pieceTo = pieces[moveTo];
-			if (what == 3) {
+			if (castleMaskPosition == WHITE_QUEENSIDE_CASTLE) {
 				pieceTo = pieces[58];
 				moveTo = 58;
-			} else if (what == 2) {
+			} else if (castleMaskPosition == WHITE_KINGSIDE_CASTLE) {
 				pieceTo = pieces[62];
 				moveTo = 62;
-			} else if (what == 1) {
+			} else if (castleMaskPosition == BLACK_QUEENSIDE_CASTLE) {
 				pieceTo = pieces[2];
 				moveTo = 2;
-			} else if (what == 0) {
+			} else if (castleMaskPosition == BLACK_KINGSIDE_CASTLE) {
 				pieceTo = pieces[6];
 				moveTo = 6;
 			}
@@ -1313,17 +1347,17 @@ public class ChessBoard implements BoardFace {
 			}
 
 			int from = -1;
-			if (what == 2) {
-				from = wRook2;
+			if (castleMaskPosition == WHITE_KINGSIDE_CASTLE) {
+				from = whiteRook2;
 				moveTo = F1;
-			} else if (what == 3) {
-				from = wRook1;
+			} else if (castleMaskPosition == WHITE_QUEENSIDE_CASTLE) {
+				from = whiteRook1;
 				moveTo = D1;
-			} else if (what == 1) {
-				from = bRook1;
+			} else if (castleMaskPosition == BLACK_QUEENSIDE_CASTLE) {
+				from = blackRook1;
 				moveTo = D8;
-			} else if (what == 0) {
-				from = bRook2;
+			} else if (castleMaskPosition == BLACK_KINGSIDE_CASTLE) {
+				from = blackRook2;
 				moveTo = F8;
 			}
 			color[from] = side;
@@ -1510,29 +1544,33 @@ public class ChessBoard implements BoardFace {
 		try {
 			String to = MoveParser.positionToString(move.to);
 			if (move.isCastling()) {
-				//0 - b O-O; 1 - b O-O-O; 2 - w O-O; 3 - w O-O-O;
-				int what = histDat[hply - 1].what;
 
-				if (what == 0) {
-					if (chess960)
-						to = MoveParser.positionToString(bRook2);
-					else
+				int castleMaskPosition = histDat[hply - 1].castleMaskPosition;
+
+				if (castleMaskPosition == BLACK_KINGSIDE_CASTLE) {
+					if (chess960) {
+						to = MoveParser.positionToString(blackRook2);
+					} else {
 						to = G8_STR;
-				} else if (what == 1) {
-					if (chess960)
-						to = MoveParser.positionToString(bRook1);
-					else
+					}
+				} else if (castleMaskPosition == BLACK_QUEENSIDE_CASTLE) {
+					if (chess960) {
+						to = MoveParser.positionToString(blackRook1);
+					} else {
 						to = C8_STR;
-				} else if (what == 2) {
-					if (chess960)
-						to = MoveParser.positionToString(wRook2);
-					else
+					}
+				} else if (castleMaskPosition == WHITE_KINGSIDE_CASTLE) {
+					if (chess960) {
+						to = MoveParser.positionToString(whiteRook2);
+					} else {
 						to = G1_STR;
-				} else if (what == 3) {
-					if (chess960)
-						to = MoveParser.positionToString(wRook1);
-					else
+					}
+				} else if (castleMaskPosition == WHITE_QUEENSIDE_CASTLE) {
+					if (chess960) {
+						to = MoveParser.positionToString(whiteRook1);
+					} else {
 						to = C1_STR;
+					}
 				}
 			}
 			output = URLEncoder.encode(MoveParser.positionToString(move.from) + to, HTTP.UTF_8);
@@ -1545,19 +1583,19 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public String convertMoveEchess() {
 		String output = convertMove();
-		final Move m = histDat[hply - 1].move;
-		switch (m.promote) {
+		final Move move = histDat[hply - 1].move;
+		switch (move.promote) {
 			case ChessBoard.KNIGHT:
-				output += (color[m.from] == 0 ? EQUALS_N : EQUALS_N_SMALL);
+				output += (color[move.from] == 0 ? EQUALS_N : EQUALS_N_SMALL);
 				break;
 			case ChessBoard.BISHOP:
-				output += (color[m.from] == 0 ? EQUALS_B : EQUALS_B_SMALL);
+				output += (color[move.from] == 0 ? EQUALS_B : EQUALS_B_SMALL);
 				break;
 			case ChessBoard.ROOK:
-				output += (color[m.from] == 0 ? EQUALS_R : EQUALS_R_SMALL);
+				output += (color[move.from] == 0 ? EQUALS_R : EQUALS_R_SMALL);
 				break;
 			case ChessBoard.QUEEN:
-				output += (color[m.from] == 0 ? EQUALS_Q : EQUALS_Q_SMALL);
+				output += (color[move.from] == 0 ? EQUALS_Q : EQUALS_Q_SMALL);
 				break;
 			default:
 				break;
@@ -1568,8 +1606,8 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public String convertMoveLive() {
 		String output = convertMove();
-		final Move m = histDat[hply - 1].move;
-		switch (m.promote) {
+		final Move move = histDat[hply - 1].move;
+		switch (move.promote) {
 			case ChessBoard.KNIGHT:
 				output += CHAR_N;
 				break;
@@ -1640,6 +1678,7 @@ public class ChessBoard implements BoardFace {
 	 * <p/>
 	 * Example : rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
 	 * Example : rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1
+	 * Example : 6k1/ppr1pp1p/2p3p1/4P1Pn/P2rp1B1/1Pq5/7P/R2Q1RK1 w - -
 	 *
 	 * @return generated FEN for current board configuration
 	 */
@@ -1650,7 +1689,6 @@ public class ChessBoard implements BoardFace {
 
 		for (int i = 0; i < 64; i++) {
 			if (i > 0 && i % 8 == 0) { // if end of board line
-
 				fillTheFenLine(sb, line);
 			}
 			switch (color[i]) {
@@ -1671,8 +1709,99 @@ public class ChessBoard implements BoardFace {
 
 		// filling last line
 		fillTheFenLine(sb, line);
+
+		// add active color
+		if (isWhiteToMove()) {
+			sb.append(" w");
+		} else {
+			sb.append(" b");
+		}
+
+		// add castling availability
+		int whiteCastling = castlingAvailabilityForWhite();
+
+		switch (whiteCastling) {
+			case NO_CASTLING:
+				sb.append(" -");
+				break;
+			case KINGSIDE_CASTLING:
+				sb.append(" K");
+				break;
+			case QUEENSIDE_CASTLING:
+				sb.append(" Q");
+				break;
+			case BOTH_CASTLING:
+				sb.append(" KQ");
+				break;
+		}
+		int blackCastling = castlingAvailabilityForBlack();
+
+		switch (blackCastling) {
+			case NO_CASTLING:
+				sb.append("-");
+				break;
+			case KINGSIDE_CASTLING:
+				sb.append("k");
+				break;
+			case QUEENSIDE_CASTLING:
+				sb.append("q");
+				break;
+			case BOTH_CASTLING:
+				sb.append("kq");
+				break;
+		}
+
 		Log.d("TEST", "FEN = " + sb.toString());
 		return sb.toString();
+	}
+
+	/**
+	 * Castling is permissible if and only if all of the following conditions hold (Schiller 2001:19):
+	 * 1. The king has not previously moved.
+	 * 2. The chosen rook has not previously moved.
+	 * 3. There are no pieces between the king and the chosen rook.
+	 * 4. The king is not currently in check.
+	 * 5. The king does not pass through a square that is under attack by an enemy piece.[2]
+	 * 6. The king does not end up in check (true of any legal move).
+	 * 7. The king and the chosen rook are on the first rank of the player (rank 1 for White, rank 8 for Black,
+	 * in algebraic notation).[3]
+	 * Conditions 4 through 6 may be summarized with the more memorable phrase "One cannot castle out of, through,
+	 * or into check."
+	 * It is a common mistake[4] to think that the requirements for castling are even more stringent than the above.
+	 * To clarify:
+	 * The chosen rook may be under attack.
+	 * The square next to the chosen rook may be under attack when castling queenside, but not when castling kingside.
+	 * (Castling kingside would be illegal then, since with only two squares between king and king rook, the king would
+	 * end up in check on the attacked square.)
+	 * @return {@code BOTH_CASTLING} if both queenside and kingside, {@code KINGSIDE_CASTLING} if only kingside available,
+	 * {@code QUEENSIDE_CASTLING} if only queenside available, {@code NO_CASTLING} if neither is available
+	 */
+	private int castlingAvailabilityForWhite() {
+		if (whiteCanCastle) {
+			if (!castlingHistory[WHITE_KINGSIDE_CASTLE] && !castlingHistory[WHITE_QUEENSIDE_CASTLE]) { // if non of castling was made
+				return BOTH_CASTLING;
+			} else if (!castlingHistory[WHITE_KINGSIDE_CASTLE]) { // if kingside castling wasn't performed
+				return KINGSIDE_CASTLING;
+			} else {
+				return QUEENSIDE_CASTLING;
+			}
+		} else {
+			return NO_CASTLING;
+		}
+	}
+
+	private int castlingAvailabilityForBlack() {
+		if (blackCanCastle) {
+			if (!castlingHistory[BLACK_KINGSIDE_CASTLE] && !castlingHistory[BLACK_QUEENSIDE_CASTLE]) { // if non of castling was made
+				return BOTH_CASTLING;
+			} else if (!castlingHistory[BLACK_KINGSIDE_CASTLE]) { // if kingside castling wasn't performed
+				return KINGSIDE_CASTLING;
+			} else {
+				return QUEENSIDE_CASTLING;
+			}
+		} else {
+			return NO_CASTLING;
+		}
 	}
 
 	private void fillTheFenLine(StringBuilder sb, String[] line) {
@@ -1698,7 +1827,7 @@ public class ChessBoard implements BoardFace {
 				lineResult += piece;
 				replacedCnt = 0;
 				sb.append(lineResult);
-				lineResult = "";
+				lineResult = Symbol.EMPTY;
 				stringAddedCnt++;
 			}
 		}
@@ -2157,33 +2286,33 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
-	public int getbKing() {
-		return bKing;
+	public int getBlackKing() {
+		return blackKing;
 	}
 
 	@Override
-	public int getwKing() {
-		return wKing;
+	public int getWhiteKing() {
+		return whiteKing;
 	}
 
 	@Override
-	public int[] getbKingMoveOO() {
-		return bKingMoveOO;
+	public int[] getBlackKingMoveOO() {
+		return blackKingMoveOO;
 	}
 
 	@Override
-	public int[] getbKingMoveOOO() {
-		return bKingMoveOOO;
+	public int[] getBlackKingMoveOOO() {
+		return blackKingMoveOOO;
 	}
 
 	@Override
-	public int[] getwKingMoveOO() {
-		return wKingMoveOO;
+	public int[] getWhiteKingMoveOO() {
+		return whiteKingMoveOO;
 	}
 
 	@Override
-	public int[] getwKingMoveOOO() {
-		return wKingMoveOOO;
+	public int[] getWhiteKingMoveOOO() {
+		return whiteKingMoveOOO;
 	}
 
 	@Override

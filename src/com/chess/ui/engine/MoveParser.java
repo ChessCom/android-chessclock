@@ -8,6 +8,18 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 public class MoveParser {
+	/*
+	Special Symbols
+	x: captures
+	0-0: kingside castle
+	0-0-0: queenside castle
+	+: check
+	#: checkmate
+	!: good move
+	?: poor move
+	more !s and ?s can be added for emphasis.
+	*/
+
 	// white pieces
 	public static final String WHITE_QUEEN = "Q";
 	public static final String WHITE_ROOK = "R";
@@ -51,7 +63,9 @@ public class MoveParser {
 	public static final String B_KINGSIDE_MOVE_CASTLING = "kg8";
 	public static final String B_QUEENSIDE_MOVE_CASTLING = "kc8";
 	public static final String KINGSIDE_CASTLING = "O-O";
+	public static final String KINGSIDE_CASTLING_AND_CHECK = "O-O+";
 	public static final String QUEENSIDE_CASTLING = "O-O-O";
+	public static final String QUEENSIDE_CASTLING_AND_CHECK = "O-O-O+";
 
 	//	String[] pices = new String[]{"K", "Q", "R", "B", "N", "O"};
 //	String[] promotionPices = new String[]{"N", "B", "R", "Q"};
@@ -69,16 +83,16 @@ public class MoveParser {
 
 		if (currentMove.equals(KINGSIDE_CASTLING) || currentMove.equals("O-O+")) {
 			if (board.getSide() == 0) {
-				return new int[]{board.getwKing(), board.getwKingMoveOO()[0], 0, 2};
+				return new int[]{board.getWhiteKing(), board.getWhiteKingMoveOO()[0], 0, 2};
 			} else if (board.getSide() == 1) {
-				return new int[]{board.getbKing(), board.getbKingMoveOO()[0], 0, 2};
+				return new int[]{board.getBlackKing(), board.getBlackKingMoveOO()[0], 0, 2};
 			}
 		}
 		if (currentMove.equals(QUEENSIDE_CASTLING) || currentMove.equals("O-O-O+")) {
 			if (board.getSide() == 0) {
-				return new int[]{board.getwKing(), board.getwKingMoveOOO()[0], 0, 2};
+				return new int[]{board.getWhiteKing(), board.getWhiteKingMoveOOO()[0], 0, 2};
 			} else if (board.getSide() == 1) {
-				return new int[]{board.getbKing(), board.getbKingMoveOOO()[0], 0, 2};
+				return new int[]{board.getBlackKing(), board.getBlackKingMoveOOO()[0], 0, 2};
 			}
 		}
 
@@ -127,18 +141,18 @@ public class MoveParser {
 		String[] moveTo = new String[2];
 		String currentMove = move.trim();
 
-		if (currentMove.equals(KINGSIDE_CASTLING) || currentMove.equals("O-O+")) {
+		if (currentMove.equals(KINGSIDE_CASTLING) || currentMove.equals(KINGSIDE_CASTLING_AND_CHECK)) {
 			if (board.getSide() == 0) {
-				return new int[]{board.getwKing(), board.getwKingMoveOO()[0], 0, 2};
+				return new int[]{board.getWhiteKing(), board.getWhiteKingMoveOO()[0], 0, 2};
 			} else if (board.getSide() == 1) {
-				return new int[]{board.getbKing(), board.getbKingMoveOO()[0], 0, 2};
+				return new int[]{board.getBlackKing(), board.getBlackKingMoveOO()[0], 0, 2};
 			}
 		}
-		if (currentMove.equals(QUEENSIDE_CASTLING) || currentMove.equals("O-O-O+")) {
+		if (currentMove.equals(QUEENSIDE_CASTLING) || currentMove.equals(QUEENSIDE_CASTLING_AND_CHECK)) {
 			if (board.getSide() == 0) {
-				return new int[]{board.getwKing(), board.getwKingMoveOOO()[0], 0, 2};
+				return new int[]{board.getWhiteKing(), board.getWhiteKingMoveOOO()[0], 0, 2};
 			} else if (board.getSide() == 1) {
-				return new int[]{board.getbKing(), board.getbKingMoveOOO()[0], 0, 2};
+				return new int[]{board.getBlackKing(), board.getBlackKingMoveOOO()[0], 0, 2};
 			}
 		}
 

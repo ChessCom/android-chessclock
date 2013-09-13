@@ -72,17 +72,17 @@ public interface BoardFace {
 
 	void setSide(int side);
 
-	int getwKing();
+	int getWhiteKing();
 
-	int[] getwKingMoveOO();
+	int[] getWhiteKingMoveOO();
 
-	int getbKing();
+	int getBlackKing();
 
-	int[] getbKingMoveOO();
+	int[] getBlackKingMoveOO();
 
-	int[] getwKingMoveOOO();
+	int[] getWhiteKingMoveOOO();
 
-	int[] getbKingMoveOOO();
+	int[] getBlackKingMoveOOO();
 
 	int[] getBoardColor();
 

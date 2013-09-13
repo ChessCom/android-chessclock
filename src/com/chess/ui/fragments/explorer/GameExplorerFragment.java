@@ -1,4 +1,4 @@
-package com.chess.ui.fragments.tactics;
+package com.chess.ui.fragments.explorer;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -211,7 +211,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameExplor
 
 	@Override
 	public void invalidateGameScreen() {
-
+		boardView.invalidate();
 	}
 
 	@Override
