@@ -44,7 +44,7 @@ public class AvatarView extends ProgressImageView {
 		}
 
 		// add isOnline indication
-		{// image
+		{// image  // TODO add white border for more visibility
 			onlineBadge = new ImageView(getContext());
 			LayoutParams indicatorParams = new LayoutParams(indicatorSize, indicatorSize);
 			indicatorParams.addRule(ALIGN_PARENT_RIGHT);

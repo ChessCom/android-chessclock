@@ -184,7 +184,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		if (code == ID_NEW_GAME) {
 			getActivityFace().openFragment(new DailyGameSetupFragment());
 		} else if (code == ID_ABORT_RESIGN) {
-			if (getBoardFace().getHply() < 1 && isUserMove()) {
+			if (getBoardFace().getPly() < 1 && isUserMove()) {
 				showPopupDialog(R.string.abort_game_, ABORT_GAME_TAG);
 			} else {
 				showPopupDialog(R.string.resign_game_, ABORT_GAME_TAG);
@@ -368,11 +368,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
 			String[] moves = currentGame.getMoveList()
 					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
-					.replaceAll(DOUBLE_SPACE, Symbol.SPACE).substring(1).split(Symbol.SPACE);   // Start after "+" sign
+					.replaceAll(DOUBLE_SPACE, Symbol.SPACE).substring(1).split(Symbol.SPACE);
 
 			boardFace.setMovesCount(moves.length);
 			for (int i = 0, cnt = boardFace.getMovesCount(); i < cnt; i++) {
-				boardFace.updateMoves(moves[i], false);
+				boardFace.makeMove(moves[i], false);
 			}
 		} else {
 			boardFace.setMovesCount(0);
@@ -604,7 +604,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			return;
 		}
 
-		if (getBoardFace().getHply() < 1 && isUserMove()) {
+		if (getBoardFace().getPly() < 1 && isUserMove()) {
 			optionsMap.put(ID_ABORT_RESIGN, getString(R.string.abort));
 			optionsMap.remove(ID_OFFER_DRAW);
 		} else {

@@ -40,7 +40,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 		super.afterUserMove();
 
-		getBoardFace().setMovesCount(getBoardFace().getHply());
+		getBoardFace().setMovesCount(getBoardFace().getPly());
 		gameNetworkFace.invalidateGameScreen();
 
 		if (!getBoardFace().isAnalysis()) {
@@ -118,7 +118,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 				firstClick = true;
 				boolean found = false;
 
-				TreeSet<Move> moves = getBoardFace().gen();
+				TreeSet<Move> moves = getBoardFace().generateLegalMoves();
 				Iterator<Move> moveIterator = moves.iterator();
 
 				Move move = null;
@@ -187,7 +187,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		track = false;
 		if (!getBoardFace().isAnalysis()) {
 			if (getAppData().isFinishedEchessGameMode(getBoardFace()) || getBoardFace().isFinished() || getBoardFace().isSubmit() ||
-					(getBoardFace().getHply() < getBoardFace().getMovesCount())) {
+					(getBoardFace().getPly() < getBoardFace().getMovesCount())) {
 				return true;
 			}
 
@@ -201,22 +201,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 	public void showChat() {
 		gameNetworkFace.switch2Chat();
 	}
-
-//	public void updateMoves(String newMove) {
-//		int[] moveFT = MoveParser.parse(getBoardFace()(), newMove);
-//		if (moveFT.length == 4) {
-//			Move move;
-//			if (moveFT[3] == 2)
-//				move = new Move(moveFT[0], moveFT[1], 0, 2);
-//			else
-//				move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
-//
-//			getBoardFace().makeMove(move, false);
-//		} else {
-//			Move move = new Move(moveFT[0], moveFT[1], 0, 0);
-//			getBoardFace().makeMove(move, false);
-//		}
-//	}
 
 	public void updatePlayerNames(String whitePlayerName, String blackPlayerName) {
 		whiteUserName = whitePlayerName;

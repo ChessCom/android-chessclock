@@ -19,7 +19,7 @@ public class ChessBoardLiveView extends ChessBoardNetworkView {
 	protected boolean isGameOver() {
 		if (!getBoardFace().isPossibleToMakeMoves()) {
 			if (getBoardFace().inCheck(getBoardFace().getSide())) {
-				getBoardFace().getHistDat()[getBoardFace().getHply() - 1].notation += "#";
+				getBoardFace().getHistDat()[getBoardFace().getPly() - 1].notation += "#";
 				gameNetworkFace.invalidateGameScreen();
 			}
 
@@ -28,7 +28,7 @@ public class ChessBoardLiveView extends ChessBoardNetworkView {
 		}
 
 		if (getBoardFace().inCheck(getBoardFace().getSide())) {
-			getBoardFace().getHistDat()[getBoardFace().getHply() - 1].notation += "+";
+			getBoardFace().getHistDat()[getBoardFace().getPly() - 1].notation += "+";
 			gameNetworkFace.invalidateGameScreen();
 			gameNetworkFace.onCheck();
 		}

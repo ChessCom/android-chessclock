@@ -554,7 +554,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 						" lccInitiated=" + lccInitiated +
 //						", " + boardDebug +
 						", gameSeq=" + liveService.getCurrentGame().getMoves().size() +
-						", boardHply=" + getBoardFace().getHply() +
+						", boardHply=" + getBoardFace().getPly() +
 						", moveLive=" + getBoardFace().convertMoveLive() +
 						", gamesC=" + liveService.getGamesCount() +
 						", gameId=" + getGameId() +
@@ -713,7 +713,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		} else {
 
-			if (getBoardFace().getHply() < 1 && isUserMove()) {
+			if (getBoardFace().getPly() < 1 && isUserMove()) {
 				optionsMap.put(ID_ABORT_RESIGN, getString(R.string.abort));
 				optionsMap.remove(ID_OFFER_DRAW);
 			} else {
@@ -738,7 +738,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			getActivityFace().changeRightFragment(new LiveGameOptionsFragment());
 			getActivityFace().toggleRightMenu();
 		} else if (code == ID_ABORT_RESIGN) {
-			if (getBoardFace().getHply() < 1 && isUserMove()) {
+			if (getBoardFace().getPly() < 1 && isUserMove()) {
 				showPopupDialog(R.string.abort_game_, ABORT_GAME_TAG);
 			} else {
 				showPopupDialog(R.string.resign_game_, ABORT_GAME_TAG);

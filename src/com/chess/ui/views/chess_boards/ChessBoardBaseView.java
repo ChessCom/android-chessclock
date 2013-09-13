@@ -31,7 +31,6 @@ import com.chess.ui.views.game_controls.ControlsBaseView;
 import org.petero.droidfish.gamelogic.Position;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -309,7 +308,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	@Override
 	public void moveBack() {
 
-		if (noMovesToAnimate() && getBoardFace().getHply() > 0) {
+		if (noMovesToAnimate() && getBoardFace().getPly() > 0) {
 
 			getBoardFace().setFinished(false);
 			pieceSelected = false;
@@ -320,7 +319,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			gameFace.invalidateGameScreen();
 
 			if (notationsView != null) { // in puzzles we don't have notations  so probably should be moved to activity level
-				notationsView.moveBack(getBoardFace().getHply());
+				notationsView.moveBack(getBoardFace().getPly());
 			}
 		}
 	}
@@ -348,7 +347,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			gameFace.invalidateGameScreen();
 
 			if (notationsView != null) {
-				notationsView.moveForward(getBoardFace().getHply());
+				notationsView.moveForward(getBoardFace().getPly());
 			}
 		}
 	}
@@ -363,7 +362,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			originalNotations = notations;
 		}
 		if (notationsView != null) {
-			notationsView.updateNotations(notations, this, getBoardFace().getHply());
+			notationsView.updateNotations(notations, this, getBoardFace().getPly());
 		}
 
 		checkControlsButtons();
@@ -374,13 +373,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	private void checkControlsButtons() {
 		BoardFace boardFace = getBoardFace();
-		if (boardFace.getHply() < boardFace.getMovesCount()) {
+		if (boardFace.getPly() < boardFace.getMovesCount()) {
 			controlsBaseView.enableForwardBtn(true);
 		} else {
 			controlsBaseView.enableForwardBtn(false);
 		}
 
-		if (boardFace.getHply() < 1) {
+		if (boardFace.getPly() < 1) {
 			controlsBaseView.enableBackBtn(false);
 		} else {
 			controlsBaseView.enableBackBtn(true);
@@ -510,9 +509,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int y = ChessBoard.getRow(from, getBoardFace().isReside());
 			canvas.drawRect(x * square + 1, y * square + 1,
 					x * square + square - 1, y * square + square - 1, yellowPaint);
-		} else if (isHighlightEnabled && getBoardFace().getHply() > 0) { // draw moved piece highlight from -> to
+		} else if (isHighlightEnabled && getBoardFace().getPly() > 0) { // draw moved piece highlight from -> to
 			// from
-			Move move = getBoardFace().getHistDat()[getBoardFace().getHply() - 1].move;
+			Move move = getBoardFace().getHistDat()[getBoardFace().getPly() - 1].move;
 			int x1 = ChessBoard.getColumn(move.from, getBoardFace().isReside());
 			int y1 = ChessBoard.getRow(move.from, getBoardFace().isReside());
 			canvas.drawRect(x1 * square + 1, y1 * square + 1,
@@ -549,7 +548,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					canvas.drawCircle(x * square + square / 2, y * square - square / 2, square / 5, possibleMovePaint);
 				}
 			}
-			//Log.d("validmoves", "gen and test " + movesStr);
+			//Log.d("validmoves", "generateLegalMoves and test " + movesStr);
 		}
 	}
 
@@ -686,12 +685,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			firstClick = true;
 
 			boolean found = false;
-			TreeSet<Move> moves = getBoardFace().gen();
-			Iterator<Move> moveIterator = moves.iterator();
-
 			Move move = null;
-			while (moveIterator.hasNext()) {
-				move = moveIterator.next();     // search for move that was made
+			TreeSet<Move> moves = getBoardFace().generateLegalMoves();
+			for (Move move1 : moves) { // search for move that was made
+				move = move1;
 				if (move.from == from && move.to == to) {
 					found = true;
 					break;
@@ -733,7 +730,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		return true;
 	}
 
-
 	@Override
 	protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
 		super.onSizeChanged(xNew, yNew, xOld, yOld);
@@ -742,15 +738,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		loadBoard();
 	}
 
-
 	public void promote(int promote, int col, int row) {
 		boolean found = false;
-		TreeSet<Move> moves = getBoardFace().gen();
-		Iterator<Move> iterator = moves.iterator();
-
 		Move move = null;
-		while (iterator.hasNext()) {
-			move = iterator.next();
+		TreeSet<Move> moves = getBoardFace().generateLegalMoves();
+		for (Move move1 : moves) {
+			move = move1;
 			if (move.from == from && move.to == to && move.promote == promote) {
 				found = true;
 				break;
@@ -807,12 +800,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			}
 		} else if (boardFace.inCheck(side)) {
 			if (!boardFace.isPossibleToMakeMoves()) {
-				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "#";
+				boardFace.getHistDat()[boardFace.getPly() - 1].notation += "#";
 				gameFace.invalidateGameScreen();
 				boardFace.setFinished(true);
 				return true;
 			} else {
-				boardFace.getHistDat()[boardFace.getHply() - 1].notation += "+";
+				boardFace.getHistDat()[boardFace.getPly() - 1].notation += "+";
 				gameFace.invalidateGameScreen();
 				gameFace.onCheck();
 			}
@@ -835,7 +828,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 			resetValidMoves();
 
-			int totalHply = getBoardFace().getHply() - 1;
+			int totalHply = getBoardFace().getPly() - 1;
 			if (totalHply < pos) {
 				for (int i = totalHply; i < pos; i++) {
 					getBoardFace().takeNext();

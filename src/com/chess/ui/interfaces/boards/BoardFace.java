@@ -20,7 +20,7 @@ public interface BoardFace {
 
 	void takeBack();
 
-	TreeSet<Move> gen();
+	TreeSet<Move> generateLegalMoves();
 
 	int getSide();
 
@@ -34,7 +34,7 @@ public interface BoardFace {
 
 	HistoryData[] getHistDat();
 
-	void updateMoves(String newMove, boolean playSound);
+	boolean makeMove(String newMove, boolean playSound);
 
 	boolean makeMove(Move m);
 
@@ -50,7 +50,7 @@ public interface BoardFace {
 
 	int getColor(int i, int j);
 
-	int getHply();
+	int getPly();
 
 	int eval();
 
@@ -58,7 +58,7 @@ public interface BoardFace {
 
 	int reps();
 
-	TreeSet<Move> genCaps();
+	TreeSet<Move> generateCapturesAndPromotes();
 
 	int getFifty();
 
@@ -68,7 +68,7 @@ public interface BoardFace {
 
 	boolean isSubmit();
 
-	void setXside(int xside);
+	void setOppositeSide(int xside);
 
 	void setSide(int side);
 
@@ -88,7 +88,7 @@ public interface BoardFace {
 
 	void setChess960(boolean chess960);
 
-	int[] genCastlePos(String fen);
+	int[] buildBoardFromFen(String fen);
 
 	void takeNext();
 
@@ -130,7 +130,7 @@ public interface BoardFace {
 
 	Move convertMoveCoordinate(String move);
 
-	void switchSide();
+	void switchSides();
 
 	void switchEnPassant();
 

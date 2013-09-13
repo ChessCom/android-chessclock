@@ -14,7 +14,7 @@ public final class Move implements Comparable<Object> {
 	public int to;
 	public int promote;
 	public int bits;
-	int score = 0;
+	int score;
 
 	public Move(int from, int to, int promote, int bits) {
 		this.from = from;
@@ -27,8 +27,8 @@ public final class Move implements Comparable<Object> {
 		return score;
 	}
 
-	void setScore(int i) {
-		score = i;
+	void setScore(int score) {
+		this.score = score;
 	}
 
 	public int hashCode() {
@@ -37,17 +37,17 @@ public final class Move implements Comparable<Object> {
 
 	@Override
 	public boolean equals(Object o) {
-		Move m = (Move) o;
-		return (m.from == from && m.to == to && m.promote == promote);
+		Move move = (Move) o;
+		return (move.from == from && move.to == to && move.promote == promote);
 	}
 
 	@Override
 	public int compareTo(Object o) {
-		Move m = (Move) o;
-		int mScore = m.getScore();
+		Move move = (Move) o;
+		int mScore = move.getScore();
 		if (score < mScore) return 1;
 		if (score > mScore) return -1;
-		int mHashCode = m.hashCode();
+		int mHashCode = move.hashCode();
 		int hash = hashCode();
 		if (hash > mHashCode) return 1;
 		if (hash < mHashCode) return -1;
@@ -55,29 +55,29 @@ public final class Move implements Comparable<Object> {
 	}
 
 	public String toString() {
-		char c;
-		StringBuffer sb = new StringBuffer();
+		char piece;
+		StringBuilder sb = new StringBuilder();
 
 		if ((bits & 32) != 0) {
 			switch (promote) {
 				case ChessBoard.KNIGHT:
-					c = 'n';
+					piece = 'n';
 					break;
 				case ChessBoard.BISHOP:
-					c = 'b';
+					piece = 'b';
 					break;
 				case ChessBoard.ROOK:
-					c = 'r';
+					piece = 'r';
 					break;
 				default:
-					c = 'q';
+					piece = 'q';
 					break;
 			}
 			sb.append((char) (ChessBoard.getColumn(from) + 'a'));
 			sb.append(8 - ChessBoard.getRow(from));
 			sb.append((char) (ChessBoard.getColumn(to) + 'a'));
 			sb.append(8 - ChessBoard.getRow(to));
-			sb.append(c);
+			sb.append(piece);
 		} else {
 			sb.append((char) (ChessBoard.getColumn(from) + 'a'));
 			sb.append(8 - ChessBoard.getRow(from));

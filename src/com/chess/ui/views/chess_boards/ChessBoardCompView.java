@@ -57,7 +57,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	public void afterUserMove() {
 		super.afterUserMove();
 
-        getBoardFace().setMovesCount(getBoardFace().getHply());
+        getBoardFace().setMovesCount(getBoardFace().getPly());
 		gameCompActivityFace.invalidateGameScreen();
 
 		Log.d(CompEngineHelper.TAG, "DEBUGBOARD isGameOver() " + isGameOver());
@@ -208,7 +208,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
                 firstClick = true;
                 boolean found = false;
 
-                TreeSet<Move> moves = getBoardFace().gen();
+                TreeSet<Move> moves = getBoardFace().generateLegalMoves();
                 Iterator<Move> moveIterator = moves.iterator();
 
                 Move move = null;
@@ -277,7 +277,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
     @Override
 	public void promote(int promote, int col, int row) {
         boolean found = false;
-        TreeSet<Move> moves = getBoardFace().gen();
+        TreeSet<Move> moves = getBoardFace().generateLegalMoves();
         Iterator<Move> iterator = moves.iterator();
 
         Move move = null;
@@ -320,7 +320,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
                 } else /*if (getAppData().isComputerVsHumanBlackGameMode(getBoardFace()))*/ {
                     getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
                 }
-				getBoardFace().setMovesCount(getBoardFace().getHply()); // supports Flip when user navigated moves Back
+				getBoardFace().setMovesCount(getBoardFace().getPly()); // supports Flip when user navigated moves Back
 				setComputerMoving(true);
 				gameCompActivityFace.onCompMove();
 				engineMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
@@ -343,9 +343,9 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	@Override
     public void moveBack() {
 		boolean blackCompFirstMove =
-				getAppData().isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().getHply() == 1;
+				getAppData().isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().getPly() == 1;
 
-        if (!isComputerMoving() && noMovesToAnimate() && !navigating && getBoardFace().getHply() > 0 && !blackCompFirstMove) {
+        if (!isComputerMoving() && noMovesToAnimate() && !navigating && getBoardFace().getPly() > 0 && !blackCompFirstMove) {
 
 			navigating = true;
 			CompEngineHelper.getInstance().moveBack();

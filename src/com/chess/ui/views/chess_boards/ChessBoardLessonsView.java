@@ -94,7 +94,7 @@ public class ChessBoardLessonsView extends ChessBoardBaseView implements BoardVi
 				firstClick = true;
 				boolean found = false;
 
-				TreeSet<Move> moves = getBoardFace().gen();
+				TreeSet<Move> moves = getBoardFace().generateLegalMoves();
 				Iterator<Move> moveIterator = moves.iterator();
 
 				Move move = null;
@@ -159,7 +159,7 @@ public class ChessBoardLessonsView extends ChessBoardBaseView implements BoardVi
 	@Override
 	public void promote(int promote, int col, int row) {
 		boolean found = false;
-		TreeSet<Move> moves = getBoardFace().gen();
+		TreeSet<Move> moves = getBoardFace().generateLegalMoves();
 		Iterator<Move> iterator = moves.iterator();
 
 		Move move = null;
@@ -194,7 +194,7 @@ public class ChessBoardLessonsView extends ChessBoardBaseView implements BoardVi
 	protected void afterUserMove() {
 		super.afterUserMove();
 
-		getBoardFace().setMovesCount(getBoardFace().getHply());
+		getBoardFace().setMovesCount(getBoardFace().getPly());
 		gameLessonFace.invalidateGameScreen();
 
 		if (!getBoardFace().isAnalysis()) {

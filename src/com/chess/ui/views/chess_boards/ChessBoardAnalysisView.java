@@ -62,7 +62,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 
 		super.afterUserMove();
 
-		getBoardFace().setMovesCount(getBoardFace().getHply());
+		getBoardFace().setMovesCount(getBoardFace().getPly());
 		gameAnalysisActivityFace.invalidateGameScreen();
 
 		isGameOver();
@@ -156,7 +156,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 				firstClick = true;
 				boolean found = false;
 
-				TreeSet<Move> moves = getBoardFace().gen();
+				TreeSet<Move> moves = getBoardFace().generateLegalMoves();
 				Iterator<Move> moveIterator = moves.iterator();
 
 				Move move = null;
@@ -216,7 +216,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	@Override
 	public void promote(int promote, int col, int row) {
 		boolean found = false;
-		TreeSet<Move> moves = getBoardFace().gen();
+		TreeSet<Move> moves = getBoardFace().generateLegalMoves();
 		Iterator<Move> iterator = moves.iterator();
 
 		Move move = null;
@@ -268,7 +268,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	@Override
 	public void moveBack() {
 
-		if (noMovesToAnimate() && getBoardFace().getHply() > 0) {
+		if (noMovesToAnimate() && getBoardFace().getPly() > 0) {
 			getBoardFace().setFinished(false);
 			pieceSelected = false;
 			setMoveAnimator(getBoardFace().getLastMove(), false);

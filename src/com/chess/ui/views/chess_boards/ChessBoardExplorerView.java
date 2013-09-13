@@ -7,8 +7,7 @@ import android.view.MotionEvent;
 import com.chess.backend.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
-import com.chess.ui.interfaces.boards.BoardViewExplorerFace;
-import com.chess.ui.interfaces.game_ui.GameExplorerFace;
+import com.chess.ui.interfaces.game_ui.GameFace;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -19,18 +18,18 @@ import java.util.TreeSet;
  * Date: 12.09.13
  * Time: 10:23
  */
-public class ChessBoardExplorerView extends ChessBoardBaseView implements BoardViewExplorerFace {
+public class ChessBoardExplorerView extends ChessBoardBaseView /*implements BoardViewFace*/ {
 
-	private GameExplorerFace gameExplorerFace;
+	private GameFace gameFace;
 
 	public ChessBoardExplorerView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public void setGameUiFace(GameExplorerFace gameExplorerFace) {
-		super.setGameFace(gameExplorerFace);
+	public void setGameUiFace(GameFace gameFace) {
+		super.setGameFace(gameFace);
 
-		this.gameExplorerFace = gameExplorerFace;
+		this.gameFace = gameFace;
 	}
 
 	@Override
@@ -39,7 +38,7 @@ public class ChessBoardExplorerView extends ChessBoardBaseView implements BoardV
 		super.onDraw(canvas);
 		drawBoard(canvas);
 
-		if (gameExplorerFace != null && getBoardFace() != null) {
+		if (gameFace != null && getBoardFace() != null) {
 			drawCoordinates(canvas);
 			drawHighlights(canvas);
 			drawTrackballDrag(canvas);
@@ -93,7 +92,7 @@ public class ChessBoardExplorerView extends ChessBoardBaseView implements BoardV
 				firstClick = true;
 				boolean found = false;
 
-				TreeSet<Move> moves = getBoardFace().gen();
+				TreeSet<Move> moves = getBoardFace().generateLegalMoves();
 				Iterator<Move> moveIterator = moves.iterator();
 
 				Move move = null;
@@ -108,7 +107,7 @@ public class ChessBoardExplorerView extends ChessBoardBaseView implements BoardV
 						((to > 55) && (getBoardFace().getSide() == ChessBoard.BLACK_SIDE))) &&
 						(getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
 
-					gameExplorerFace.showChoosePieceDialog(col, row);
+					gameFace.showChoosePieceDialog(col, row);
 					return true;
 				}
 
@@ -158,7 +157,7 @@ public class ChessBoardExplorerView extends ChessBoardBaseView implements BoardV
 	@Override
 	public void promote(int promote, int col, int row) {
 		boolean found = false;
-		TreeSet<Move> moves = getBoardFace().gen();
+		TreeSet<Move> moves = getBoardFace().generateLegalMoves();
 		Iterator<Move> iterator = moves.iterator();
 
 		Move move = null;
@@ -193,17 +192,8 @@ public class ChessBoardExplorerView extends ChessBoardBaseView implements BoardV
 	protected void afterUserMove() {
 		super.afterUserMove();
 
-		getBoardFace().setMovesCount(getBoardFace().getHply());
-		gameExplorerFace.invalidateGameScreen();
-
-		if (!getBoardFace().isAnalysis()) {
-			gameExplorerFace.showNextMoves();
-		}
+		getBoardFace().setMovesCount(getBoardFace().getPly());
+		gameFace.invalidateGameScreen();
 	}
 
-
-	@Override
-	public void nextPosition(String move) {
-		gameExplorerFace.nextPosition(move);
-	}
 }

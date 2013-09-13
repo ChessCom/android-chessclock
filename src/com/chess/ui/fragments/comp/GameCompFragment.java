@@ -381,7 +381,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		// TODO @compengine: extract logic and put probably to ChessBoardView
 
-		if (!boardView.isHint() && getBoardFace().getHply() < getBoardFace().getMovesCount()) { // ignoring Forward move fired by engine
+		if (!boardView.isHint() && getBoardFace().getPly() < getBoardFace().getMovesCount()) { // ignoring Forward move fired by engine
 			return;
 		}
 
@@ -420,7 +420,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 					invalidateGameScreen();
 					onPlayerMove();
 
-					getBoardFace().setMovesCount(getBoardFace().getHply());
+					getBoardFace().setMovesCount(getBoardFace().getPly());
 					if (boardView.isGameOver())
 						return;
 				}
@@ -489,7 +489,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		}
 
 		boardView.resetValidMoves();
-		getBoardFace().setMovesCount(getBoardFace().getHply());
+		getBoardFace().setMovesCount(getBoardFace().getPly());
 		playLastMoveAnimation();
 	}
 

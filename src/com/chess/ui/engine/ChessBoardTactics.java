@@ -66,7 +66,7 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 
 	@Override
 	public boolean lastTacticMoveIsCorrect() {
-		int lastIndex = hply - 1;
+		int lastIndex = ply - 1;
 		if (lastIndex >= tacticMoves.length || lastIndex >= histDat.length) {
 			return false;
 		}
@@ -105,6 +105,6 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 
 	@Override
 	public boolean isLatestMoveMadeUser() {
-		return hply > 0 && hply %2 == 0;
+		return ply > 0 && ply %2 == 0;
 	}
 }

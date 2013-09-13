@@ -266,7 +266,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		if (hintWasUsed && boardFace.lastTacticMoveIsCorrect()) { // used hint
 			if (boardFace.getMovesCount() < boardFace.getTacticMoves().length - 1) { // if it's not last move, make comp move
-				final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[boardFace.getHply()]);
+				final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[boardFace.getPly()]);
 				boardView.setMoveAnimator(move, true);
 				boardView.resetValidMoves();
 				boardFace.makeMove(move, true);
@@ -289,7 +289,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			boardFace.increaseTacticsCorrectMoves();
 
 			if (boardFace.getMovesCount() < boardFace.getTacticMoves().length - 1) { // if it's not last move, make comp move
-				final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[boardFace.getHply()]);
+				final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[boardFace.getPly()]);
 				boardView.setMoveAnimator(move, true);
 				boardView.resetValidMoves();
 				boardFace.makeMove(move, true);
@@ -369,7 +369,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		final TacticBoardFace boardFace = getBoardFace();
 		correctMovesBeforeHint = boardFace.getCorrectMovesCnt();
 
-		int hintMoveNumber = boardFace.getHply();
+		int hintMoveNumber = boardFace.getPly();
 		if (hintMoveNumber == getBoardFace().getTacticMoves().length) {
 			return;
 		}
@@ -730,7 +730,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		topPanelView.showPractice(isAnalysis);
 		getBoardFace().setAnalysis(isAnalysis);
 		topPanelView.showClock(!isAnalysis);
-
 	}
 
 	@Override
@@ -857,12 +856,12 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			String[] moves = boardFace.getTacticMoves();
 			boardFace.setMovesCount(moves.length);
 			for (int i = 0, cnt = boardFace.getMovesCount(); i < cnt; i++) {
-				boardFace.updateMoves(moves[i], false);
+				boardFace.makeMove(moves[i], false);
 			}
 		} else { // setup first move
 			startTacticsTimer(tacticItem);
 
-			boardFace.updateMoves(boardFace.getTacticMoves()[0], true);
+			boardFace.makeMove(boardFace.getTacticMoves()[0], true);
 
 			// animate last move
 			boardView.resetValidMoves();

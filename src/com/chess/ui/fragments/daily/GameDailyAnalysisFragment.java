@@ -240,7 +240,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 			boardFace.setMovesCount(moves.length);
 			for (int i = 0, cnt = boardFace.getMovesCount(); i < cnt; i++) {
-				boardFace.updateMoves(moves[i], false);
+				boardFace.makeMove(moves[i], false);
 			}
 		} else {
 			boardFace.setMovesCount(0);

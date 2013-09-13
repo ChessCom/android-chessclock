@@ -23,7 +23,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.interfaces.boards.BoardFace;
-import com.chess.ui.interfaces.game_ui.GameExplorerFace;
+import com.chess.ui.interfaces.game_ui.GameFace;
 import com.chess.ui.views.chess_boards.ChessBoardExplorerView;
 import com.chess.utilities.AppUtils;
 
@@ -33,7 +33,7 @@ import com.chess.utilities.AppUtils;
  * Date: 03.09.13
  * Time: 6:42
  */
-public class GameExplorerFragment extends GameBaseFragment implements GameExplorerFace, ItemClickListenerFace, AdapterView.OnItemClickListener {
+public class GameExplorerFragment extends GameBaseFragment implements GameFace, ItemClickListenerFace, AdapterView.OnItemClickListener {
 
 
 	private ExplorerMovesUpdateListener explorerMovesUpdateListener;
@@ -41,8 +41,8 @@ public class GameExplorerFragment extends GameBaseFragment implements GameExplor
 	private ExplorerMovesCursorUpdateListener explorerMovesCursorUpdateListener;
 	private ExplorerMovesCursorAdapter explorerMovesCursorAdapter;
 
-	private String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq"; // TODO: use real fen
 	private ChessBoardExplorerView boardView;
+	private String fen;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +72,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameExplor
 		if (need2update) {
 			adjustBoardForGame();
 
+			fen = getBoardFace().generateFen();
 			boolean haveSavedData = DbDataManager.haveSavedExplorerMoves(getActivity(), fen);
 
 			if (haveSavedData) {
@@ -86,18 +87,14 @@ public class GameExplorerFragment extends GameBaseFragment implements GameExplor
 	}
 
 	private void adjustBoardForGame() {
-		if (!currentGameExist()) { // TODO verify if we need it
-			return;
-		}
 
 		ChessBoardExplorer.resetInstance();
-		final ChessBoardExplorer boardFace = ChessBoardExplorer.getInstance(this);
-		boardView.setGameFace(this);
+		/*final ChessBoardExplorer boardFace = */ChessBoardExplorer.getInstance(this);
+//		boardView.setGameFace(this);
 
-		boardFace.setupBoard(fen);
-		boardFace.setReside(!boardFace.isReside()); // we should always reside board in Tactics, because user should make next move
+//		boardFace.setupBoard(fen);
 
-		boardFace.setMovesCount(1);
+//		boardFace.setMovesCount(0);
 	}
 
 	private void updateData(String fen) {
@@ -106,36 +103,36 @@ public class GameExplorerFragment extends GameBaseFragment implements GameExplor
 	}
 
 	@Override
-	public void nextPosition(String move) {
-
-	}
-
-	@Override
-	public void showNextMoves() {
-
-	}
-
-	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		String moveStr = DbDataManager.getString(cursor, DbScheme.V_MOVE);
 
-		BoardFace boardFace = getBoardFace();
+		final BoardFace boardFace = getBoardFace();
 		// get next valid move
 		final Move move = boardFace.convertMoveAlgebraic(moveStr);
-		boardFace.setMovesCount(boardFace.getMovesCount());
+		logTest(" new moveStr = " + moveStr + " new move = " + move.toString());
+		boardFace.setMovesCount(boardFace.getMovesCount() /*+ 1*/);
 
 		// play move animation
 		boardView.setMoveAnimator(move, true);
 		boardView.resetValidMoves();
-
 		// make actual move
 		boardFace.makeMove(move, true);
 		invalidateGameScreen();
 
 		// update FEN and get next moves
-		fen = boardFace.generateFen();
-		updateData(fen);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				fen = getBoardFace().generateFen();
+//				fen = "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq";
+				updateData(fen);
+			}
+		}, 1000);
+
 	}
 
 	private class ExplorerMovesUpdateListener extends ChessLoadUpdateListener<ExplorerMovesItem> {
@@ -181,12 +178,12 @@ public class GameExplorerFragment extends GameBaseFragment implements GameExplor
 
 	@Override
 	public Boolean isUserColorWhite() {
-		return null;
+		return true;
 	}
 
 	@Override
 	public Long getGameId() {
-		return null;
+		return 0L;
 	}
 
 	@Override
@@ -216,17 +213,17 @@ public class GameExplorerFragment extends GameBaseFragment implements GameExplor
 
 	@Override
 	public String getWhitePlayerName() {
-		return null;
+		return getUsername();
 	}
 
 	@Override
 	public String getBlackPlayerName() {
-		return null;
+		return "Comp";
 	}
 
 	@Override
 	public boolean currentGameExist() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -245,6 +242,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameExplor
 	}
 
 	private void init() {
+//		fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq";
 		explorerMovesUpdateListener = new ExplorerMovesUpdateListener();
 		saveExplorerMovesUpdateListener = new SaveExplorerMovesUpdateListener();
 		explorerMovesCursorUpdateListener = new ExplorerMovesCursorUpdateListener();

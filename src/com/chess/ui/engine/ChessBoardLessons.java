@@ -37,12 +37,12 @@ public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 
 	@Override
 	public boolean isLatestMoveMadeUser() {
-		return hply > 0 && hply % 2 == 0;
+		return ply > 0 && ply % 2 == 0;
 	}
 
 	@Override
 	public String getLastMoveStr() {
-		int lastIndex = hply - 1;
+		int lastIndex = ply - 1;
 		if (/*lastIndex >= tacticMoves.length || */lastIndex >= histDat.length) {
 			return "Pe4"; // TODO invent logic here , we use hardcode to pass possibly invalid move
 		}
