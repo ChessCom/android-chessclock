@@ -43,6 +43,7 @@ public class ChessBoard implements BoardFace {
 	public static final int QUEEN = 4;
 	public static final int KING = 5;
 	public static final int EMPTY = 6;
+
 	public static final String SYMBOL_SPACE = " ";
 	public static final String SYMBOL_SLASH = "[/]";
 	public static final String NUMBERS_PATTERS = "[0-9]";
@@ -63,6 +64,17 @@ public class ChessBoard implements BoardFace {
 	static final char F8 = 5;
 	static final char G8 = 6;
 	static final char H8 = 7;
+
+	public static enum Board {
+		A8, B8, C8, D8, E8, F8, G8, H8,
+		A7, B7, C7, D7, E7, F7, G7, H7,
+		A6, B6, C6, D6, E6, F6, G6, H6,
+		A5, B5, C5, D5, E5, F5, G5, H5,
+		A4, B4, C4, D4, E4, F4, G4, H4,
+		A3, B3, C3, D3, E3, F3, G3, H3,
+		A2, B2, C2, D2, E2, F2, G2, H2,
+		A1, B1, C1, D1, E1, F1, G1, H1
+	}
 
 	static final int DOUBLED_PAWN_PENALTY = 10;
 	static final int ISOLATED_PAWN_PENALTY = 20;
@@ -105,16 +117,17 @@ public class ChessBoard implements BoardFace {
 	private int side = WHITE_SIDE; // which side is current turn
 	private int oppositeSide = BLACK_SIDE; // opponent's side
 	private int rotated = 0;
-	private int enPassant = -1;
-	private int enPassantPrev = -1;
+	private int enPassant = NOT_SET;
+	private int enPassantPrev = NOT_SET;
 	private int fifty;
 	private int movesCount;
 	/**
 	 * Ply refers to one turn taken by one of the players. The word is used to clarify what is meant when one might otherwise say "turn".
 	 * ply in chess is a half-move
+	 *
 	 * @see <a href="http://en.wikipedia.org/wiki/Ply_(game_theory)">wiki/Ply_(game_theory)</a>
 	 */
-	protected int ply = 0;
+	protected int ply;
 	private int history[][] = new int[64][64];
 	protected HistoryData[] histDat = new HistoryData[HIST_STACK];
 	private int pawnRank[][] = new int[2][10];
@@ -215,8 +228,6 @@ public class ChessBoard implements BoardFace {
 	int pieceValue[] = {
 			100, 300, 300, 500, 900, 0
 	};
-
-	/*  */
 
 	/**
 	 * The "pcsq" arrays are piecesBitmap/square tables. They're values
@@ -572,6 +583,7 @@ public class ChessBoard implements BoardFace {
 	 * It scans the boardBitmap to find friendly piecesBitmap and then determines
 	 * what squares they attack. When it finds a piecesBitmap/square
 	 * combination, it calls addMoveToStack to put the move on the "move stack."
+	 *
 	 * @return {@code TreeSet} collection of pseudo-legal moves
 	 */
 	@Override
@@ -653,13 +665,14 @@ public class ChessBoard implements BoardFace {
 		}
 
 		/* generate en passant moves */
-		generateEnPassantMove(movesSet);
+		addEnPassantMoveToStack(movesSet);
 		return movesSet;
 	}
 
 	/**
 	 * Basically it's a copy of generateLegalMoves() that's modified to only generate capture and promote moves.
 	 * It's used by the quiescence search.
+	 *
 	 * @return
 	 */
 	@Override
@@ -700,12 +713,12 @@ public class ChessBoard implements BoardFace {
 								break;
 						}
 			}
-		generateEnPassantMove(moves);
+		addEnPassantMoveToStack(moves);
 		return moves;
 	}
 
-	private void generateEnPassantMove(TreeSet<Move> movesSet) {
-		if (enPassant != -1) {
+	private void addEnPassantMoveToStack(TreeSet<Move> movesSet) {
+		if (enPassant != NOT_SET) {
 			if (side == WHITE_SIDE) {
 				if (getColumn(enPassant) != 0 && color[enPassant + 7] == WHITE_SIDE && pieces[enPassant + 7] == PAWN) {
 					addMoveToStack(movesSet, enPassant + 7, enPassant, 21);
@@ -724,6 +737,18 @@ public class ChessBoard implements BoardFace {
 		}
 	}
 
+	private String getEnpassantMoveStr() {
+		if (enPassant != NOT_SET) {
+			for (Board board : Board.values()) {
+				if (enPassant == board.ordinal()) {
+				   return board.toString().toLowerCase();
+				}
+			}
+			throw new IllegalStateException("En Passant move should match one of file/square");
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * Puts a move on the move stack, unless it's a
@@ -736,9 +761,9 @@ public class ChessBoard implements BoardFace {
 	 * always gets ordered above a "normal" move.
 	 *
 	 * @param moves {@code TreeSet} of moves
-	 * @param from which square move was made
-	 * @param to which square move is targeted
-	 * @param bits move bits
+	 * @param from  which square move was made
+	 * @param to    which square move is targeted
+	 * @param bits  move bits
 	 */
 	void addMoveToStack(TreeSet<Move> moves, int from, int to, int bits) {
 		if ((bits & 16) != 0) {
@@ -765,6 +790,8 @@ public class ChessBoard implements BoardFace {
 		moves.add(newMove);
 	}
 
+
+
 	/**
 	 * Is just like addMoveToStack(), only it puts 4 moves
 	 * on the move stack, one for each possible promotion piecesBitmap
@@ -780,7 +807,10 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public Move convertMoveAlgebraic(String move) {
 		int[] moveFT = MoveParser.parse(this, move);
-		return convertMove(moveFT);
+		Move move1 = convertMove(moveFT);
+		Log.d("TEST", " new moveStr = " + move + " new move = " + move1.toString());
+
+		return move1;
 	}
 
 	@Override
@@ -811,6 +841,7 @@ public class ChessBoard implements BoardFace {
 
 	/**
 	 * Makes a move. If the move is illegal, it undoes whatever it did and returns false. Otherwise, it returns true.
+	 *
 	 * @param move to be made
 	 * @return {@code true} if move was made
 	 */
@@ -869,12 +900,12 @@ public class ChessBoard implements BoardFace {
 		// update en passant
 		if ((move.bits & 8) != 0) {
 			if (side == WHITE_SIDE) {
-				updateEnPassant(move.to + 8);
+				updateEnPassant(move.to + 8); // enPassant target square will be 8 squares below
 			} else {
-				updateEnPassant(move.to - 8);
+				updateEnPassant(move.to - 8); // enPassant target square will be 8 squares above
 			}
 		} else {
-			updateEnPassant(-1);
+			updateEnPassant(NOT_SET);
 		}
 
 		// update fifty-move-draw variables
@@ -940,8 +971,9 @@ public class ChessBoard implements BoardFace {
 
 	/**
 	 * Perform castling if possible
-	 * @param move to be made as castling
-	 * @param playSound after move
+	 *
+	 * @param move               to be made as castling
+	 * @param playSound          after move
 	 * @param castleMaskPosition to apply mask
 	 * @return {@code true}  if castling was performed
 	 */
@@ -1236,6 +1268,7 @@ public class ChessBoard implements BoardFace {
 	 * castling rights, that is rook- and king moves from their initial squares, including castling itself,
 	 * increment the Halfmove Clock. However, those moves are irreversible in the sense to reverse the same
 	 * rights - since once a castling right is lost, it is lost forever, as considered in detecting repetitions.
+	 *
 	 * @param move to be made
 	 * @see <a href="http://chessprogramming.wikispaces.com/Halfmove+Clock">http://chessprogramming.wikispaces.com/Halfmove+Clock</a>
 	 */
@@ -1723,7 +1756,30 @@ public class ChessBoard implements BoardFace {
 	 * @see <a href="http://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation#cite_note-2">wiki/FEN</a>
 	 */
 	@Override
-	public String generateFen() {
+	public String generateFullFen() {
+		String fen = generateBaseFen();
+		StringBuilder sb = new StringBuilder(fen);
+
+		// add  En passant target square
+		String enPassantStr = "-";
+		if (enPassant != NOT_SET) {
+			enPassantStr = getEnpassantMoveStr();
+		}
+
+		sb.append(" ").append(enPassantStr);
+
+		// add halfmove or ply
+		sb.append(" ").append(fifty);
+
+		// add fullmove
+		sb.append(" ").append(ply);
+
+		Log.d("TEST", "FULL FEN = " + sb.toString());
+		return sb.toString();
+	}
+
+	@Override
+	public String generateBaseFen() {
 		StringBuilder sb = new StringBuilder();
 		String[] line = new String[8];
 
@@ -1790,17 +1846,6 @@ public class ChessBoard implements BoardFace {
 				break;
 		}
 
-		// add  En passant target square
-		// TODO adjust properly
-		// use enPassant value and convert it to string
-//		sb.append(" e3"); // means no en passant target square
-
-		// add halfmove or ply
-//		sb.append(" ").append(fifty);
-
-		// add fullmove
-//		sb.append(" ").append(ply);
-
 		Log.d("TEST", "FEN = " + sb.toString());
 		return sb.toString();
 	}
@@ -1823,6 +1868,7 @@ public class ChessBoard implements BoardFace {
 	 * The square next to the chosen rook may be under attack when castling queenside, but not when castling kingside.
 	 * (Castling kingside would be illegal then, since with only two squares between king and king rook, the king would
 	 * end up in check on the attacked square.)
+	 *
 	 * @return {@code BOTH_CASTLING} if both queenside and kingside, {@code KINGSIDE_CASTLING} if only kingside available,
 	 * {@code QUEENSIDE_CASTLING} if only queenside available, {@code NO_CASTLING} if neither is available
 	 */
@@ -1882,7 +1928,7 @@ public class ChessBoard implements BoardFace {
 			}
 		}
 
-		if (stringAddedCnt < 8){
+		if (stringAddedCnt < 8) {
 			sb.append(lineResult)/*.append("/")*/;
 		}
 
@@ -1903,6 +1949,7 @@ public class ChessBoard implements BoardFace {
 
 	/**
 	 * Returns the number of times that the current position has been repeated. Thanks to John Stanback for this clever algorithm.
+	 *
 	 * @return
 	 */
 	@Override
@@ -2139,6 +2186,7 @@ public class ChessBoard implements BoardFace {
 
 	/**
 	 * Evaluates the Light King Pawn on file f
+	 *
 	 * @param f target file
 	 * @return move rating?
 	 */

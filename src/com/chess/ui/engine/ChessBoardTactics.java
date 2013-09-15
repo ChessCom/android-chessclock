@@ -1,6 +1,5 @@
 package com.chess.ui.engine;
 
-import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.Symbol;
 import com.chess.ui.interfaces.boards.TacticBoardFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
@@ -52,8 +51,7 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 
 	@Override
 	public void setTacticMoves(String tacticMoves) {
-		this.tacticMoves = tacticMoves.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
-				.replaceAll("[.]", Symbol.EMPTY)
+		this.tacticMoves = MoveParser.removeNumbers(tacticMoves)
 				.replaceAll("  ", Symbol.SPACE)
 				.substring(1).split(Symbol.SPACE);
 	}

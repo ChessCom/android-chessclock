@@ -1,7 +1,6 @@
 package com.chess.ui.views;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.v4.view.PagerAdapter;
@@ -96,7 +95,7 @@ public class NotationView extends LinearLayout {
 		if (smallScreen) {
 			setVisibility(GONE);
 		}
-		smallScreen = AppUtils.hasSoftKeys(((Activity)context).getWindowManager());
+		smallScreen = AppUtils.isNexus4Kind(context);
 		if (smallScreen) {
 			setVisibility(GONE);
 		}

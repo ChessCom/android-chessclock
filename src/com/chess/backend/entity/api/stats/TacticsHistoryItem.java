@@ -69,6 +69,14 @@ public class TacticsHistoryItem extends BaseResponseItem<TacticsHistoryItem.Data
 			return daily_stats;
 		}
 
+		public List<RecentProblems> getRecentProblems() {
+			return recent_problems;
+		}
+
+		public UserTacticsStatsData getSummary() {
+			return summary;
+		}
+
 		private class DailyStats {
 			private long timestamp;
 			private int day_open_rating;

@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:robo="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
-    android:layout_height="45dp"
+    android:layout_height="@dimen/actionbar_compat_height"
     android:orientation="horizontal"
     >
 

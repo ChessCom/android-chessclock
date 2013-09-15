@@ -104,7 +104,7 @@ public class UserStatsItem extends BaseResponseItem<UserStatsItem.Data> {
 		private UserStatsData daily_chess;
 		private UserStatsData chess_960;
 		private UserLessonsStatsData lessons;
-//		private TacticsHistoryItem tactics;
+		private TacticsHistoryItem.Data tactics;
 
 		public UserStatsData getLiveStandard() {
 			return live_standard;
@@ -126,13 +126,13 @@ public class UserStatsItem extends BaseResponseItem<UserStatsItem.Data> {
 			return chess_960;
 		}
 
-//		public TacticsHistoryItem getTactics() {
-//			return tactics;
-//		}
-//
-//		public void setTactics(TacticsHistoryItem tactics) {
-//			this.tactics = tactics;
-//		}
+		public TacticsHistoryItem.Data getTactics() {
+			return tactics;
+		}
+
+		public void setTactics(TacticsHistoryItem.Data tactics) {
+			this.tactics = tactics;
+		}
 
 		public UserLessonsStatsData getLessons() {
 			return lessons;

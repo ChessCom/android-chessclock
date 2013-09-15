@@ -502,10 +502,10 @@
     </style>
 
 	<style name="ExplorerWeightItem">
-		<item name="android:textSize">13sp</item>
+		<item name="android:textSize">9sp</item>
 		<item name="android:gravity">center</item>
-		<item name="android:paddingTop">6dip</item>
-		<item name="android:paddingBottom">6dip</item>
+		<item name="android:paddingTop">4dip</item>
+		<item name="android:paddingBottom">4dip</item>
 	</style>
 
 </resources>

@@ -1,7 +1,6 @@
 package com.chess.ui.views.game_controls;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -14,7 +13,6 @@ import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
-import com.chess.utilities.AppUtils;
 
 import java.util.HashMap;
 
@@ -106,9 +104,10 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		controlIconColor = resources.getColorStateList(R.color.text_controls_icons);
 		controlTextSize = (int) (resources.getDimension(R.dimen.game_controls_text_size) / density);
 
-		if (AppUtils.hasSoftKeys(((Activity) getContext()).getWindowManager())) {
-			controlButtonHeight = (int) resources.getDimension(R.dimen.game_controls_button_height_smaller);
-		}
+//		if (AppUtils.hasSoftKeys(((Activity) getContext()).getWindowManager()) &&
+//				!(AppUtils.is7InchTablet(getContext()) || AppUtils.is10InchTablet(getContext()))) {
+//			controlButtonHeight = (int) resources.getDimension(R.dimen.game_controls_button_height_smaller);
+//		}
 		controlsLayout = new LinearLayout(getContext());
 
 		LayoutParams defaultLinLayParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,

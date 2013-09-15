@@ -35,7 +35,6 @@ import com.chess.utilities.AppUtils;
  */
 public class GameExplorerFragment extends GameBaseFragment implements GameFace, ItemClickListenerFace, AdapterView.OnItemClickListener {
 
-
 	private ExplorerMovesUpdateListener explorerMovesUpdateListener;
 	private SaveExplorerMovesUpdateListener saveExplorerMovesUpdateListener;
 	private ExplorerMovesCursorUpdateListener explorerMovesCursorUpdateListener;
@@ -72,7 +71,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 		if (need2update) {
 			adjustBoardForGame();
 
-			fen = getBoardFace().generateFen();
+			fen = getBoardFace().generateFullFen();
 			boolean haveSavedData = DbDataManager.haveSavedExplorerMoves(getActivity(), fen);
 
 			if (haveSavedData) {
@@ -87,14 +86,8 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	}
 
 	private void adjustBoardForGame() {
-
 		ChessBoardExplorer.resetInstance();
-		/*final ChessBoardExplorer boardFace = */ChessBoardExplorer.getInstance(this);
-//		boardView.setGameFace(this);
-
-//		boardFace.setupBoard(fen);
-
-//		boardFace.setMovesCount(0);
+		ChessBoardExplorer.getInstance(this);
 	}
 
 	private void updateData(String fen) {
@@ -103,36 +96,41 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		String moveStr = DbDataManager.getString(cursor, DbScheme.V_MOVE);
 
 		final BoardFace boardFace = getBoardFace();
-		// get next valid move
-		final Move move = boardFace.convertMoveAlgebraic(moveStr);
-		logTest(" new moveStr = " + moveStr + " new move = " + move.toString());
-		boardFace.setMovesCount(boardFace.getMovesCount() /*+ 1*/);
 
-		// play move animation
-		boardView.setMoveAnimator(move, true);
-		boardView.resetValidMoves();
-		// make actual move
-		boardFace.makeMove(move, true);
-		invalidateGameScreen();
+		{
+			// get next valid move
+			final Move move = boardFace.convertMoveAlgebraic(moveStr);
+			logTest(" new moveStr = " + moveStr + " new move = " + move.toString());
+			boardFace.setMovesCount(boardFace.getMovesCount());
+
+			// play move animation
+			boardView.setMoveAnimator(move, true);
+			boardView.resetValidMoves();
+			// make actual move
+			boardFace.makeMove(move, true);
+			invalidateGameScreen();
+		}
+
+		// restore move back
+//		handler.postDelayed(new Runnable() {
+//			@Override
+//			public void run() {
+//				boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
+//				boardView.resetValidMoves();
+//				getBoardFace().takeBack();
+//				invalidateGameScreen();
+//			}
+//		}, 1000);
 
 		// update FEN and get next moves
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				if (getActivity() == null) {
-					return;
-				}
-				fen = getBoardFace().generateFen();
-//				fen = "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq";
-				updateData(fen);
-			}
-		}, 1000);
-
+		fen = getBoardFace().generateFullFen();
+		fen = getBoardFace().generateBaseFen();
+		updateData(fen);
 	}
 
 	private class ExplorerMovesUpdateListener extends ChessLoadUpdateListener<ExplorerMovesItem> {
@@ -242,7 +240,6 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	}
 
 	private void init() {
-//		fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq";
 		explorerMovesUpdateListener = new ExplorerMovesUpdateListener();
 		saveExplorerMovesUpdateListener = new SaveExplorerMovesUpdateListener();
 		explorerMovesCursorUpdateListener = new ExplorerMovesCursorUpdateListener();
@@ -250,6 +247,10 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	}
 
 	private void widgetsInit(View view) {
+		if (AppUtils.isNexus4Kind(getActivity())) {
+			view.findViewById(R.id.moveVariationTxt).setVisibility(View.GONE);
+		}
+
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(explorerMovesCursorAdapter);
 		listView.setOnItemClickListener(this);

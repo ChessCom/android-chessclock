@@ -1,5 +1,6 @@
 package com.chess.ui.engine;
 
+import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.Symbol;
 import com.chess.ui.interfaces.boards.BoardFace;
 
@@ -66,10 +67,21 @@ public class MoveParser {
 	public static final String QUEENSIDE_CASTLING = "O-O-O";
 	public static final String QUEENSIDE_CASTLING_AND_CHECK = "O-O-O+";
 
+	private static final int ROOK = 3;
+	private static final int KNIGHT = 1;
+	private static final int BISHOP = 2;
+	private static final int QUEEN = 4;
+	private static final int KING = 5;
+
 	//	String[] pices = new String[]{"K", "Q", "R", "B", "N", "O"};
 //	String[] promotionPices = new String[]{"N", "B", "R", "Q"};
 
 	public MoveParser() {
+	}
+
+	public static String removeNumbers(String moves) {
+		return moves.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
+				.replaceAll("[.]", Symbol.EMPTY);
 	}
 
 	public static int[] parseCoordinate(BoardFace board, String move) {
@@ -130,6 +142,7 @@ public class MoveParser {
 	}
 
 	public static int[] parse(BoardFace board, String move) {
+		move = removeNumbers(move);
 		TreeSet<Move> validMoves = board.generateLegalMoves();
 
 		int promotion = 0;
@@ -168,14 +181,14 @@ public class MoveParser {
 		int to = j * 8 - i;
 
 		int pieceType = 0;
-		if (currentMove.substring(0, 1).contains(WHITE_KNIGHT)) pieceType = 1;
-		if (currentMove.substring(0, 1).contains(WHITE_BISHOP)) pieceType = 2;
-		if (currentMove.substring(0, 1).contains(WHITE_ROOK)) pieceType = 3;
-		if (currentMove.substring(0, 1).contains(WHITE_QUEEN)) pieceType = 4;
-		if (currentMove.substring(0, 1).contains(WHITE_KING)) pieceType = 5;
+		if (currentMove.substring(0, 1).contains(WHITE_KNIGHT)) pieceType = KNIGHT;
+		if (currentMove.substring(0, 1).contains(WHITE_BISHOP)) pieceType = BISHOP;
+		if (currentMove.substring(0, 1).contains(WHITE_ROOK)) pieceType = ROOK;
+		if (currentMove.substring(0, 1).contains(WHITE_QUEEN)) pieceType = QUEEN;
+		if (currentMove.substring(0, 1).contains(WHITE_KING)) pieceType = KING;
 		int k;
 
-		if ((pieceType >= 1 && pieceType <= 4)/*(pieceType == 3 || pieceType == 1)*/
+		if ((pieceType >= KNIGHT && pieceType <= QUEEN)/*(pieceType == 3 || pieceType == 1)*/
 				&& !currentMove.substring(1, 2).contains(CAPTURE_MARK) && !currentMove.substring(2, 3).matches(REGEXP_NUMBERS)) {//Rooks and Knights which?
 			for (k = 0; k < 64; k++) {
 				int l1 = (ChessBoard.getRow(k) + 1) * 8 - letterToBN(currentMove.substring(1, 2));
@@ -187,8 +200,9 @@ public class MoveParser {
 					}
 				}
 				if (currentMove.substring(1, 2).matches(REGEXP_NUMBERS)) {
-					if (board.getPieces()[l2] == pieceType && board.getColor()[l2] == board.getSide())
+					if (board.getPieces()[l2] == pieceType && board.getColor()[l2] == board.getSide()) {
 						return new int[]{l2, to, promotion};
+					}
 				}
 			}
 		}
@@ -198,8 +212,9 @@ public class MoveParser {
 				for (Move validMove : validMoves) {
 					if (validMove.from == k && validMove.to == to) {
 						if (pieceType == 2) {
-							if (board.getBoardColor()[k] == board.getBoardColor()[to])
+							if (board.getBoardColor()[k] == board.getBoardColor()[to]) {
 								return new int[]{k, to, promotion};
+							}
 						} else if (pieceType == 0) {
 							if (currentMove.contains(CAPTURE_MARK)
 									&& 9 - letterToBN(currentMove.substring(0, 1)) != ChessBoard.getColumn(k) + 1) {
@@ -266,7 +281,7 @@ public class MoveParser {
 		if (i == 4) l = E_SMALL;
 		if (i == 3) l = D_SMALL;
 		if (i == 2) l = C_SMALL;
-		if (i == 1) l = BLACK_BISHOP;
+		if (i == 1) l = B_SMALL;
 		if (i == 0) l = A_SMALL;
 
 		return l;

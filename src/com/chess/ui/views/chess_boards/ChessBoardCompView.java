@@ -57,7 +57,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	public void afterUserMove() {
 		super.afterUserMove();
 
-        getBoardFace().setMovesCount(getBoardFace().getPly());
+		getBoardFace().setMovesCount(getBoardFace().getPly());
 		gameCompActivityFace.invalidateGameScreen();
 
 		Log.d(CompEngineHelper.TAG, "DEBUGBOARD isGameOver() " + isGameOver());

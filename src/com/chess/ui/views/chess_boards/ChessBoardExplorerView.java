@@ -18,7 +18,7 @@ import java.util.TreeSet;
  * Date: 12.09.13
  * Time: 10:23
  */
-public class ChessBoardExplorerView extends ChessBoardBaseView /*implements BoardViewFace*/ {
+public class ChessBoardExplorerView extends ChessBoardBaseView {
 
 	private GameFace gameFace;
 
@@ -194,6 +194,7 @@ public class ChessBoardExplorerView extends ChessBoardBaseView /*implements Boar
 
 		getBoardFace().setMovesCount(getBoardFace().getPly());
 		gameFace.invalidateGameScreen();
+		gameFace.updateAfterMove();
 	}
 
 }

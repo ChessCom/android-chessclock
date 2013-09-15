@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <bool name="one_line_for_board">true</bool>
+	<bool name="is_large_tablet">false</bool>
+	<bool name="is_x_large_tablet">false</bool>
+
 </resources>

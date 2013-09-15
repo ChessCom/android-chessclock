@@ -1,6 +1,7 @@
 package com.chess.utilities;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -28,7 +29,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -192,23 +192,26 @@ public class AppUtils {
 				&& (displayMetrics.heightPixels <= 800 && config.orientation == Configuration.ORIENTATION_PORTRAIT);
 	}
 
+	public static boolean isNexus4Kind(Context context) {
+		return AppUtils.hasSoftKeys(context) && !is7InchTablet(context) && !is10InchTablet(context);
+	}
+
 	/**
 	 * Check if device has software keys and height of screen need to be adjusted
-	 * @param windowManager
-	 * @return
+	 * @return {@code true} if device has software keys like Nexus 4 or Galaxy Nexus
 	 */
-	public static boolean hasSoftKeys(WindowManager windowManager){
+	public static boolean hasSoftKeys(Context context){
 		if (JELLYBEAN1_PLUS_API) {
-			Display d = windowManager.getDefaultDisplay();
+			Display display = ((Activity)context).getWindowManager().getDefaultDisplay();
 
 			DisplayMetrics realDisplayMetrics = new DisplayMetrics();
-			d.getRealMetrics(realDisplayMetrics);
+			display.getRealMetrics(realDisplayMetrics);
 
 			int realHeight = realDisplayMetrics.heightPixels;
 			int realWidth = realDisplayMetrics.widthPixels;
 
 			DisplayMetrics displayMetrics = new DisplayMetrics();
-			d.getMetrics(displayMetrics);
+			display.getMetrics(displayMetrics);
 
 			int displayHeight = displayMetrics.heightPixels;
 			int displayWidth = displayMetrics.widthPixels;
@@ -217,6 +220,14 @@ public class AppUtils {
 		} else {
 			return false;
 		}
+	}
+
+	public static boolean is7InchTablet(Context context) {
+		return  context.getResources().getBoolean(R.bool.is_large_tablet);
+	}
+
+	public static boolean is10InchTablet(Context context) {
+		return  context.getResources().getBoolean(R.bool.is_x_large_tablet);
 	}
 
 	/**

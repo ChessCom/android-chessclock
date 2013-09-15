@@ -56,6 +56,8 @@ public interface BoardFace {
 
 	int[][] getHistory();
 
+	String generateBaseFen();
+
 	int reps();
 
 	TreeSet<Move> generateCapturesAndPromotes();
@@ -136,5 +138,5 @@ public interface BoardFace {
 
 	CopyOnWriteArrayList<Move> generateValidMoves(boolean forceSwitchSide);
 
-	String generateFen();
+	String generateFullFen();
 }

@@ -68,6 +68,10 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.Data>> {
 			return initial_fen;
 		}
 
+		public void setMoveList(String moveList) {
+			clean_move_string = moveList;
+		}
+
 		public String getCleanMoveString() {
 			return clean_move_string;
 		}
@@ -152,9 +156,7 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.Data>> {
 			initial_fen = fen;
 		}
 
-		public void setMoveList(String moveList) {
-			clean_move_string = moveList;
-		}
+
 
 		public void setAttemptCnt(int attemptCnt) {
 			this.attempt_count = attemptCnt;

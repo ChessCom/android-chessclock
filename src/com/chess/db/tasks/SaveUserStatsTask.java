@@ -94,15 +94,15 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 	}
 
 	public static void saveTacticsStats(String username, UserStatsItem.Data item, ContentResolver contentResolver) {
-//		if (item.getTactics() != null) {
-//			final String[] userArgument = arguments;
-//			userArgument[0] = String.valueOf(username);
-//
-//			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_TACTICS.ordinal()];
-//			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-//			ContentValues values = DbDataManager.putUserStatsTacticsItemToValues(item.getTactics(), username);
-//			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
-//		}
+		if (item.getTactics() != null && item.getTactics().getSummary() != null) {
+			final String[] userArgument = arguments;
+			userArgument[0] = String.valueOf(username);
+
+			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_TACTICS.ordinal()];
+			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
+			ContentValues values = DbDataManager.putUserStatsTacticsItemToValues(item.getTactics().getSummary(), username);
+			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
+		}
 	}
 
 	public static void saveLessonsStats(String username, UserStatsItem.Data item, ContentResolver contentResolver) {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="one_line_for_board">false</bool>
+	<bool name="is_large_tablet">true</bool>
+
+</resources>

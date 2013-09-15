@@ -99,7 +99,6 @@ public class ExplorerMovesCursorAdapter extends ItemsCursorAdapter {
 		String drawsStr = String.valueOf(drawPercent) + Symbol.PERCENT;
 		String blackWinsStr = String.valueOf(blackWonPercent) + Symbol.PERCENT;
 
-
 		holder.whiteWinsPercentTxt.setText(whiteWinsStr);
 		holder.drawsPercentTxt.setText(drawsStr);
 		holder.blackWinsPercentTxt.setText(blackWinsStr);

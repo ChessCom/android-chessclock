@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 58;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 59;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -704,6 +704,7 @@ public class DbScheme {
 		createTablesArray[Tables.USER_STATS_TACTICS.ordinal()] = createTableForName(Tables.USER_STATS_TACTICS)
 				+ addField_Long(V_HIGHEST_TIMESTAMP)
 				+ addField_Long(V_LOWEST_TIMESTAMP)
+				+ addField_Long(V_TOTAL_SECONDS)
 				+ addField_Int(V_CURRENT)
 				+ addField_Int(V_HIGHEST_RATING)
 				+ addField_Int(V_LOWEST_RATING)
@@ -712,7 +713,6 @@ public class DbScheme {
 				+ addField_Int(V_FAILED_COUNT)
 				+ addField_Int(V_TODAYS_ATTEMPTS)
 				+ addField_Int(V_TODAYS_AVG_SCORE)
-				+ addField_Int(V_TOTAL_SECONDS)
 				+ addField_Text(V_USER, true);
 
 		createTablesArray[Tables.USER_STATS_LESSONS.ordinal()] = createTableForName(Tables.USER_STATS_LESSONS)

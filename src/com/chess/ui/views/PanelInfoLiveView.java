@@ -1,6 +1,5 @@
 package com.chess.ui.views;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -101,7 +100,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_big_size);
 		}
 
-		boolean hasSoftKeys = AppUtils.hasSoftKeys(((Activity) getContext()).getWindowManager());
+		boolean hasSoftKeys = AppUtils.isNexus4Kind(getContext());
 		if (hasSoftKeys) {
 			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_medium_size);
 		}

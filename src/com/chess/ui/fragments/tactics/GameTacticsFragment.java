@@ -892,6 +892,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else {
 			topPanelView.setSide(ChessBoard.BLACK_SIDE);
 		}
+
+		if (isAnalysis) {
+			controlsTacticsView.showAnalysis();
+			topPanelView.showPractice(isAnalysis);
+			getBoardFace().setAnalysis(isAnalysis);
+			topPanelView.showClock(!isAnalysis);
+		}
 	}
 
 	@Override

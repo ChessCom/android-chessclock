@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+<!--    <dimen name="toggle_button_radius">4px</dimen>
+    <dimen name="toggle_button_stroke_width">1px</dimen>-->
+    <dimen name="toggle_button_height">48dip</dimen>
+
+    <dimen name="blue_button_big_height">42dip</dimen>
+    <dimen name="blue_button_min_width">46dip</dimen>
+
+    <dimen name="blue_bar_button_height">48dip</dimen>
+
+    <dimen name="blue_button_padding_def_top">1dip</dimen>
+    <dimen name="blue_button_padding_def_left">5dip</dimen>
+    <dimen name="blue_button_padding_def_right">5dip</dimen>
+    <dimen name="blue_button_padding_def_bottom">1dip</dimen>
+
+<!--    <dimen name="toggle_button_padding_left">2dip</dimen>
+    <dimen name="toggle_button_padding_right">2dip</dimen>
+    <dimen name="toggle_button_padding_top">2dip</dimen>
+    <dimen name="toggle_button_padding_bottom">2dip</dimen>-->
+
+    <!--<dimen name="default_stroke_width">1px</dimen>-->
+
+    <dimen name="air_switch_button_height">40dip</dimen>
+
+</resources>

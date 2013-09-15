@@ -161,7 +161,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		int highlightColor = resources.getColor(R.color.highlight_color);
 
-		yellowPaint.setStrokeWidth(1.5f * density);
+		yellowPaint.setStrokeWidth(2f * density);
 		yellowPaint.setStyle(Style.STROKE);
 		yellowPaint.setColor(highlightColor);
 
@@ -178,7 +178,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		coordinatesPaint.setTextSize(coordinateFont * density);
 		coordinatesPaint.setTypeface(FontsHelper.getInstance().getTypeFace(getContext(), FontsHelper.BOLD_FONT));
 
-		madeMovePaint.setStrokeWidth(1.5f * density);
+		madeMovePaint.setStrokeWidth(2f * density);
 		madeMovePaint.setStyle(Style.STROKE);
 		madeMovePaint.setColor(highlightColor);
 
@@ -504,23 +504,25 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected void drawHighlights(Canvas canvas) {
+		int offset = (int) (1 * density);
+
 		if (pieceSelected) { // draw rectangle around the start move piece position
 			int x = ChessBoard.getColumn(from, getBoardFace().isReside());
 			int y = ChessBoard.getRow(from, getBoardFace().isReside());
-			canvas.drawRect(x * square + 1, y * square + 1,
-					x * square + square - 1, y * square + square - 1, yellowPaint);
+			canvas.drawRect(x * square + offset, y * square + offset,
+					x * square + square - offset, y * square + square - offset, yellowPaint);
 		} else if (isHighlightEnabled && getBoardFace().getPly() > 0) { // draw moved piece highlight from -> to
 			// from
 			Move move = getBoardFace().getHistDat()[getBoardFace().getPly() - 1].move;
 			int x1 = ChessBoard.getColumn(move.from, getBoardFace().isReside());
 			int y1 = ChessBoard.getRow(move.from, getBoardFace().isReside());
-			canvas.drawRect(x1 * square + 1, y1 * square + 1,
-					x1 * square + square - 1, y1 * square + square - 1, madeMovePaint);
+			canvas.drawRect(x1 * square + offset, y1 * square + offset,
+					x1 * square + square - offset, y1 * square + square - offset, madeMovePaint);
 			// to
 			int x2 = ChessBoard.getColumn(move.to, getBoardFace().isReside());
 			int y2 = ChessBoard.getRow(move.to, getBoardFace().isReside());
-			canvas.drawRect(x2 * square + 1, y2 * square + 1,
-					x2 * square + square - 1, y2 * square + square - 1, madeMovePaint);
+			canvas.drawRect(x2 * square + offset, y2 * square + offset,
+					x2 * square + square - offset, y2 * square + square - offset, madeMovePaint);
 		}
 
 		if (pieceSelected && showLegalMoves) { // draw all possible move coordinates
@@ -718,7 +720,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
 					setMoveAnimator(moveAnimator);
 				} else {
-					afterUserMove(); //
+					afterUserMove();
 				}
 			} else if (isUserColor(getBoardFace().getColor()[to])) {
 				pieceSelected = true;

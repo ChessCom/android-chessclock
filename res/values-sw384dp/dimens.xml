@@ -16,5 +16,7 @@
 	<dimen name="seek_bar_side_padding">8dip</dimen>
 	<dimen name="profile_frame_photo_size">80dip</dimen>
 	<dimen name="result_title_min_height">60dip</dimen>
+	<dimen name="new_top_button_height">44dip</dimen>
+	<dimen name="game_controls_button_height">44dip</dimen>
 
 </resources>
