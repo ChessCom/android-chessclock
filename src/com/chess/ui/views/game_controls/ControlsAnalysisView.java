@@ -31,7 +31,7 @@ public class ControlsAnalysisView extends ControlsBaseView {
 	void init() {
 		super.init();
 
-		addControlButton(CLOSE, R.style.Rect_Bottom_Right);
+		addControlButton(EXIT, R.style.Rect_Bottom_Right);
 		addControlButton(SEARCH, R.style.Rect_Bottom_Middle);
 		addControlButton(RESTART, R.style.Rect_Bottom_Left);
 		addControlButton(BACK, R.style.Rect_Bottom_Middle);
@@ -55,7 +55,7 @@ public class ControlsAnalysisView extends ControlsBaseView {
 		if (blocked)
 			return;
 
-		if (view.getId() == getButtonId(CLOSE)) {
+		if (view.getId() == getButtonId(EXIT)) {
 			boardViewFace.closeBoard();
 		} else if (view.getId() == getButtonId(SEARCH)) {
 			// TODO add search ability

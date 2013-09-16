@@ -22,7 +22,7 @@ public class NewChallengesAdapter extends ItemsAdapter<NewChallengeNotificationI
 
 	public NewChallengesAdapter(Context context, List<NewChallengeNotificationItem> itemList) {
 		super(context, itemList);
-		imageSize = (int) (resources.getDimension(R.dimen.list_item_image_size_big) / resources.getDisplayMetrics().density);
+		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
 	}
 
 	@Override

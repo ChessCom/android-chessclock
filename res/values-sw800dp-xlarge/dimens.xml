@@ -1,8 +1,6 @@
 <resources>
-	<!--Dashboard-->
-	<dimen name="dashboard_padding_top">88dip</dimen>
-	<dimen name="dashboard_padding_bot">209dip</dimen>
-	<dimen name="dashboard_padding_side">60dip</dimen>
+	<dimen name="default_text_size">16sp</dimen>
+	<dimen name="default_button_text_size">18sp</dimen>
 
 	<!--SigIn-->
 	<dimen name="signin_scr_top_padding">20dip</dimen>
@@ -21,7 +19,6 @@
     <dimen name="quick_action_item_min_width">80dip</dimen>
     <dimen name="home_play_live_labels_padding_side">25dip</dimen>
     <dimen name="new_right_live_option_button_width">88dip</dimen>
-    <dimen name="daily_list_item_image_size">30dip</dimen>
     <dimen name="header_title_size">15sp</dimen>
     <dimen name="rect_edge_offset">2dip</dimen>
     <dimen name="splash_progress_margin_top">100dip</dimen>
@@ -56,5 +53,15 @@
 	<dimen name="chip_close_icon_size">17dip</dimen>
 	<dimen name="seek_bar_side_padding">8dip</dimen>
 	<dimen name="profile_frame_photo_size">80dip</dimen>
+	<dimen name="panel_info_avatar_big_size">44dip</dimen>
+	<dimen name="daily_list_item_image_size">70dip</dimen>
+	<dimen name="panel_info_player_text_size">18sp</dimen>
+	<dimen name="panel_info_player_rating_text_size">14sp</dimen>
+	<dimen name="panel_info_flag_size">28dip</dimen>
+	<dimen name="new_tactics_clock_icon_size">24dip</dimen>
+	<dimen name="new_tactics_clock_icon_padding">6dip</dimen>
+	<dimen name="new_tactics_clock_icon_padding_top">4dip</dimen>
+	<dimen name="actionbar_title_height">24sp</dimen>
+	<dimen name="article_detail_image_height">213dip</dimen>
 
 </resources>

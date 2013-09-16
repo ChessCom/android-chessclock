@@ -38,6 +38,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 	private SwitchButton showLegalMovesSwitch;
 	private TextView strengthValueBtn;
 	private int selectedCompLevel;
+	private SwitchButton autoFlipSwitch;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,6 +73,8 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 			alwaysShowWhiteBottomSwitch.toggle();
 		} else if (id == R.id.soundsView) {
 			soundsSwitch.toggle();
+		} else if (view.getId() == R.id.autoFlipView) {
+			autoFlipSwitch.toggle();
 		}
 	}
 
@@ -88,6 +91,8 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		} else if (switchButton.getId() == R.id.soundsSwitch) {
 			int appSoundMode = checked ? AppData.TRUE : AppData.FALSE;
 			getAppData().setPlaySounds(getActivity(), appSoundMode);
+		} else if (switchButton.getId() == R.id.autoFlipSwitch) {
+			getAppData().setAutoFlipFor2Players(autoFlipSwitch.isChecked());
 		}
 	}
 
@@ -129,12 +134,22 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		showLegalMovesSwitch = (SwitchButton) view.findViewById(R.id.showLegalMovesSwitch);
 		alwaysShowWhiteBottomSwitch = (SwitchButton) view.findViewById(R.id.answerShowBottomSwitch);
 		soundsSwitch = (SwitchButton) view.findViewById(R.id.soundsSwitch);
+		View autoFlipView = view.findViewById(R.id.autoFlipView);
+		autoFlipSwitch = (SwitchButton) view.findViewById(R.id.autoFlipSwitch);
+
+		if (getAppData().getCompGameMode() == AppConstants.GAME_MODE_2_PLAYERS) {
+			autoFlipView.setVisibility(View.VISIBLE);
+		} else {
+			autoFlipView.setVisibility(View.GONE);
+		}
 
 		coordinatesSwitch.setSwitchChangeListener(this);
 		highlightLastMoveSwitch.setSwitchChangeListener(this);
 		showLegalMovesSwitch.setSwitchChangeListener(this);
 		alwaysShowWhiteBottomSwitch.setSwitchChangeListener(this);
 		soundsSwitch.setSwitchChangeListener(this);
+		autoFlipView.setOnClickListener(this);
+		autoFlipSwitch.setSwitchChangeListener(this);
 
 		view.findViewById(R.id.coordinatesView).setOnClickListener(this);
 		view.findViewById(R.id.highlightLastMoveView).setOnClickListener(this);
@@ -149,6 +164,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		highlightLastMoveSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_HIGHLIGHT_LAST_MOVE, true));
 		showLegalMovesSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_SHOW_LEGAL_MOVES, true));
 		alwaysShowWhiteBottomSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_SHOW_ANSWER_BOTTOM, true));
+		autoFlipSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_AUTO_FLIP, true));
 
 
 		//spinners

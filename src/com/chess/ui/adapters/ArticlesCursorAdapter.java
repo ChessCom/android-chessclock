@@ -2,6 +2,7 @@ package com.chess.ui.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
@@ -81,7 +82,7 @@ public class ArticlesCursorAdapter extends ItemsCursorAdapter {
 		}
 		holder.authorTxt.setText(authorStr);
 
-		holder.titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
+		holder.titleTxt.setText(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_TITLE)));
 		date.setTime(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE) * 1000L);
 		holder.dateTxt.setText(dateFormatter.format(date));
 

@@ -6,7 +6,7 @@ package com.chess.backend.entity.api;
  * Date: 26.12.12
  * Time: 6:51
  */
-public class TacticInfoItem extends BaseResponseItem<TacticInfoItem.Data> {
+public class TacticTrainerItem extends BaseResponseItem<TacticTrainerItem.Data> {
 	/*
     "status": "success",
     "data": {
@@ -36,15 +36,15 @@ public class TacticInfoItem extends BaseResponseItem<TacticInfoItem.Data> {
 			return rating_info;
 		}
 
-		public void setRating_info(TacticRatingData rating_info) {
+		public void setRatingInfo(TacticRatingData rating_info) {
 			this.rating_info = rating_info;
 		}
 
-		public TacticItem.Data getTactics_problem() {
+		public TacticItem.Data getTacticsProblem() {
 			return tactics_problem;
 		}
 
-		public void setTactics_problem(TacticItem.Data tactics_problem) {
+		public void setTacticsProblem(TacticItem.Data tactics_problem) {
 			this.tactics_problem = tactics_problem;
 		}
 	}

@@ -57,6 +57,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	public static final String SLASH_DIVIDER = " | ";
 	private static final long NON_EXIST = -1;
 	private static final long READ_DELAY = 2 * 1000;
+	public static final String NO_ITEM_IMAGE = "no_item_image";
 
 	private TextView authorTxt;
 
@@ -212,11 +213,21 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			} catch (IllegalArgumentException ex) {
 				url = Symbol.EMPTY;
 			}
-//			url = DbDataManager.getString(cursor, DbScheme.V_URL);
-			titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
-			imageDownloader.download(DbDataManager.getString(cursor, DbScheme.V_USER_AVATAR), authorImg, imgSize);
+			titleTxt.setText(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_TITLE)));
+			String authorImgUrl = DbDataManager.getString(cursor, DbScheme.V_USER_AVATAR);
+			imageDownloader.download(authorImgUrl, authorImg, imgSize);
 
-			imageDownloader.download(DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL), articleImg, widthPixels);
+			String photoUrl = DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL);
+			int imageHeight = (int) (widthPixels * 0.6671f);
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(widthPixels, imageHeight);
+			articleImg.setLayoutParams(params);
+
+			if (photoUrl.contains(NO_ITEM_IMAGE)) {
+				imageDownloader.download(authorImgUrl, articleImg, widthPixels);
+			} else {
+				imageDownloader.download(photoUrl, articleImg, widthPixels);
+			}
+
 
 			Drawable drawable = AppUtils.getCountryFlagScaled(getActivity(), countryMap.get(DbDataManager.getInt(cursor, DbScheme.V_COUNTRY_ID)));
 			countryImg.setImageDrawable(drawable);

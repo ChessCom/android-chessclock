@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
@@ -13,15 +14,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ForumPostItem;
 import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveForumPostsTask;
 import com.chess.ui.adapters.ForumPostsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -122,17 +123,16 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_share, true);
+		getActivityFace().showActionMenu(R.id.menu_edit, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
-
-		setTitlePadding(ONE_ICON);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 
-		forumHeaderTxt.setText(topicTitle);
+		forumHeaderTxt.setText(Html.fromHtml(topicTitle));
 
 		requestPage(currentPage);
 	}
@@ -201,23 +201,34 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		replyView.setVisibility(View.VISIBLE);
-		replyView.setBackgroundResource(R.color.header_light);
-		replyView.setPadding(paddingSide, paddingSide, paddingSide, paddingSide);
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				newPostEdt.requestFocus();
-				showKeyBoard(newPostEdt);
-				showKeyBoardImplicit(newPostEdt);
-			}
-		}, KEYBOARD_DELAY);
+//		replyView.setVisibility(View.VISIBLE);
+//		replyView.setBackgroundResource(R.color.header_light);
+//		replyView.setPadding(paddingSide, paddingSide, paddingSide, paddingSide);
+//		handler.postDelayed(new Runnable() {
+//			@Override
+//			public void run() {
+//				newPostEdt.requestFocus();
+//				showKeyBoard(newPostEdt);
+//				showKeyBoardImplicit(newPostEdt);
+//			}
+//		}, KEYBOARD_DELAY);
 
+		showEditView(true);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+			case R.id.menu_cancel:
+				showEditView(false);
+
+				return true;
+			case R.id.menu_accept:
+				createPost();
+				return true;
+			case R.id.menu_edit:
+				showEditView(true);
+				return true;
 			case R.id.menu_share:
 				Intent shareIntent = new Intent(Intent.ACTION_SEND);
 				shareIntent.setType("text/plain");
@@ -227,6 +238,47 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void showEditView(boolean show) {
+		if (show) {
+			replyView.setVisibility(View.VISIBLE);
+			replyView.setBackgroundResource(R.color.header_light);
+			replyView.setPadding(paddingSide, paddingSide, paddingSide, paddingSide);
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					newPostEdt.requestFocus();
+					showKeyBoard(newPostEdt);
+					showKeyBoardImplicit(newPostEdt);
+
+					showEditMode(true);
+				}
+			}, KEYBOARD_DELAY);
+		} else {
+
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					hideKeyBoard(newPostEdt);
+					hideKeyBoard();
+
+					replyView.setVisibility(View.GONE);
+					newPostEdt.setText(Symbol.EMPTY);
+				}
+			}, KEYBOARD_DELAY);
+
+			showEditMode(false);
+		}
+	}
+
+	private void showEditMode(boolean show) {
+		getActivityFace().showActionMenu(R.id.menu_share, !show);
+		getActivityFace().showActionMenu(R.id.menu_edit, !show);
+		getActivityFace().showActionMenu(R.id.menu_cancel, show);
+		getActivityFace().showActionMenu(R.id.menu_accept, show);
+
+		getActivityFace().updateActionBarIcons();
 	}
 
 	@Override
@@ -315,6 +367,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_PARENT_TOPIC_ID, topicId);
+		loadItem.addRequestParams(RestHelper.P_FORUM_TOPIC_ID, topicId);
 		loadItem.addRequestParams(RestHelper.P_BODY, P_TAG_OPEN + body + P_TAG_CLOSE);
 
 		new RequestJsonTask<VacationItem>(topicCreateListener).executeTask(loadItem); // use Vacation item as a simple return obj to get status

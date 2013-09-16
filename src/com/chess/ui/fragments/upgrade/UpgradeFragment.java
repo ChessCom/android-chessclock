@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
+import com.chess.backend.image_load.EnhancedImageDownloader;
+import com.chess.backend.image_load.ProgressImageView;
 import com.chess.ui.fragments.CommonLogicFragment;
 
 /**
@@ -14,6 +16,20 @@ import com.chess.ui.fragments.CommonLogicFragment;
  * Time: 21:23
  */
 public class UpgradeFragment extends CommonLogicFragment {
+
+	private static final String IMG_URL = "http://images.chesscomfiles.com/images/icons/reviews/membership/peter.png";
+	private ProgressImageView quoteImg;
+	private EnhancedImageDownloader imageDownloader;
+	private int imageSize;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		imageDownloader = new EnhancedImageDownloader(getActivity());
+		imageSize = (int) (getResources().getDimension(R.dimen.daily_list_item_image_size) / getResources().getDisplayMetrics().density);
+
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -25,6 +41,8 @@ public class UpgradeFragment extends CommonLogicFragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		setTitle(R.string.upgrade);
+
+		quoteImg = (ProgressImageView) view.findViewById(R.id.quoteImg);
 
 		view.findViewById(R.id.diamondBtnLay).setOnClickListener(this);
 		view.findViewById(R.id.platinumBtnLay).setOnClickListener(this);
@@ -42,5 +60,12 @@ public class UpgradeFragment extends CommonLogicFragment {
 		} else if (v.getId() == R.id.goldBtnLay) {
 			getActivityFace().openFragment(UpgradeDetailsFragment.createInstance(UpgradeDetailsFragment.GOLD));
 		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		imageDownloader.download(IMG_URL, quoteImg, imageSize);
 	}
 }

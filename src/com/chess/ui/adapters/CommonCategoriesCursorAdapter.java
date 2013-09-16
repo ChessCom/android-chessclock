@@ -2,6 +2,7 @@ package com.chess.ui.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -37,8 +38,7 @@ public class CommonCategoriesCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View convertView, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		holder.text.setText(getString(cursor, DbScheme.V_NAME));
-//		holder.icon.setText(R.string.ic_right);
+		holder.text.setText(Html.fromHtml(getString(cursor, DbScheme.V_NAME)));
 		holder.icon.setText(Symbol.EMPTY);
 	}
 

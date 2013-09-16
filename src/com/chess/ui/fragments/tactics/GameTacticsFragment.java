@@ -11,12 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.TacticInfoItem;
+import com.chess.backend.entity.api.TacticTrainerItem;
 import com.chess.backend.entity.api.TacticItem;
 import com.chess.backend.entity.api.TacticRatingData;
 import com.chess.backend.image_load.ImageDownloaderToListener;
@@ -92,7 +93,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private TacticsInfoUpdateListener tacticsHintedUpdateListener;
 	private DbTacticBatchSaveListener dbTacticBatchSaveListener;
 
-	private static final String FIRST_TACTICS_TAG = "first tactics";
+//	private static final String FIRST_TACTICS_TAG = "first tactics";
 	private static final String TEN_TACTICS_TAG = "ten tactics reached";
 	private static final String OFFLINE_RATING_TAG = "tactics offline rating";
 	private static final String TACTIC_SOLVED_TAG = "tactic solved popup";
@@ -101,10 +102,10 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private LayoutInflater inflater;
 	private int currentTacticAnswerCnt;
 	private int maxTacticAnswerCnt;
+//	private TacticRatingData tacticItem;
 	private TacticItem.Data tacticItem;
 	private PanelInfoTacticsView topPanelView;
 	private ControlsTacticsView controlsTacticsView;
-	private int currentRating;
 	private boolean isAnalysis;
 	private boolean serverError;
 	private boolean userSawOfflinePopup;
@@ -117,6 +118,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private TextView moveResultTxt;
 	private int correctMovesBeforeHint;
 	private boolean hintWasUsed;
+	private TacticTrainerItem.Data trainerData;
+	private View readyOverlay;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -155,18 +158,19 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		if (firstRun) {
 
 			if (DbDataManager.haveSavedTacticGame(getActivity(), getUsername())) {
-				// TODO load tactic item from batch
-				tacticItem = DbDataManager.getLastTacticItemFromDb(getActivity(), getUsername());
+
+				trainerData = DbDataManager.getLastTacticItemFromDb(getActivity(), getUsername());
+				tacticItem = trainerData.getTacticsProblem();
 				adjustBoardForGame();
 
 				if (getBoardFace().isLatestMoveMadeUser()) {
 					verifyMove();
 				}
-
 			} else {
-				popupItem.setPositiveBtnId(R.string.yes);
-				popupItem.setNegativeBtnId(R.string.no);
-				showPopupDialog(R.string.ready_for_first_tactics_q, FIRST_TACTICS_TAG);
+				readyOverlay.setVisibility(View.VISIBLE);
+
+				lockBoard(false);
+				controlsTacticsView.showStart();
 			}
 		} else {
 			if (!tacticItem.isStop() && getBoardFace().getMovesCount() > 0) {
@@ -195,7 +199,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		stopTacticsTimer();
 
 		if (needToSaveTactic()) {
-			DbDataManager.saveTacticItemToDb(getActivity(), tacticItem, getUsername());
+			DbDataManager.saveTacticItemToDb(getContentResolver(), trainerData, getUsername());
 		}
 
 		handler.removeCallbacks(hideMoveResultTask);
@@ -331,7 +335,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		loadItem.addRequestParams(RestHelper.P_SECONDS, tacticItem.getSecondsSpent());
 //		loadItem.addRequestParams(RestHelper.P_ENCODED_MOVES, RestHelper.V_FALSE);
 
-		new RequestJsonTask<TacticInfoItem>(tacticsCorrectUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<TacticTrainerItem>(tacticsCorrectUpdateListener).executeTask(loadItem);
 		lockBoard(true);
 	}
 
@@ -345,7 +349,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, correctMovesBeforeHint);
 		loadItem.addRequestParams(RestHelper.P_SECONDS, tacticItem.getSecondsSpent());
 
-		new RequestJsonTask<TacticInfoItem>(tacticsHintedUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<TacticTrainerItem>(tacticsHintedUpdateListener).executeTask(loadItem);
 		lockBoard(true);
 	}
 
@@ -359,7 +363,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, getBoardFace().getCorrectMovesCnt());
 		loadItem.addRequestParams(RestHelper.P_SECONDS, tacticItem.getSecondsSpent());
 
-		new RequestJsonTask<TacticInfoItem>(tacticsWrongUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<TacticTrainerItem>(tacticsWrongUpdateListener).executeTask(loadItem);
 		lockBoard(true);
 	}
 
@@ -443,18 +447,19 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		if (currentGameExist()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
-			getContentResolver().delete(DbScheme.uriArray[DbScheme.Tables.TACTICS_BATCH.ordinal()],
+			getContentResolver().delete(DbScheme.uriArray[DbScheme.Tables.TACTICS_TRAINER.ordinal()],
 					DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
 		}
 
 		if (DbDataManager.haveSavedTacticGame(getActivity(), getUsername())) {
 
-			tacticItem = DbDataManager.getLastTacticItemFromDb(getActivity(), getUsername());
+			trainerData = DbDataManager.getLastTacticItemFromDb(getActivity(), getUsername());
+			tacticItem = trainerData.getTacticsProblem();
 
 			adjustBoardForGame();
 			currentTacticAnswerCnt = 0;
 		} else {
-			loadNewTacticsBatch();
+			loadNewTactic();
 		}
 	}
 
@@ -542,18 +547,19 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		optionsSelectFragment = null;
 	}
 
-	private class GetTacticsUpdateListener extends ChessLoadUpdateListener<TacticItem> {
+	private class GetTacticsUpdateListener extends ChessLoadUpdateListener<TacticTrainerItem> {
 
 		private GetTacticsUpdateListener() {
-			super(TacticItem.class);
+			super(TacticTrainerItem.class);
 		}
 
 		@Override
-		public void updateData(TacticItem returnedObj) {
+		public void updateData(TacticTrainerItem returnedObj) {
 			noNetwork = false;
 
-			new SaveTacticsBatchTask(dbTacticBatchSaveListener, returnedObj.getData(),
-					getContentResolver()).executeTask();
+
+			DbDataManager.saveTacticItemToDb(getContentResolver(), returnedObj.getData(), getUsername());
+			getNextTactic();
 
 			serverError = false;
 		}
@@ -578,18 +584,20 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 	}
 
-	private class TacticsInfoUpdateListener extends ChessLoadUpdateListener<TacticInfoItem> {
+	private class TacticsInfoUpdateListener extends ChessLoadUpdateListener<TacticTrainerItem> {
 
 		private final int listenerCode;
 
 		public TacticsInfoUpdateListener(int listenerCode) {
-			super(TacticInfoItem.class);
+			super(TacticTrainerItem.class);
 			this.listenerCode = listenerCode;
 		}
 
 		@Override
-		public void updateData(TacticInfoItem returnedObj) {
+		public void updateData(TacticTrainerItem returnedObj) {
 			noNetwork = false;
+
+			DbDataManager.saveTacticItemToDb(getContentResolver(),  returnedObj.getData(), getUsername());
 
 			TacticRatingData tacticResultItem = returnedObj.getData().getRatingInfo();
 			if (tacticResultItem != null) {
@@ -836,9 +844,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		ChessBoardTactics.resetInstance();
 		hintWasUsed = false;
 		final TacticBoardFace boardFace = ChessBoardTactics.getInstance(this);
-		boardView.setGameFace(this);
 
-		currentRating = getAppData().getUserTacticsRating();
+		int currentRating = getAppData().getUserTacticsRating();
 
 		topPanelView.setPlayerScore(currentRating);
 
@@ -929,10 +936,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			return;
 		}
 
-		if (tag.equals(FIRST_TACTICS_TAG)) {
-			loadNewTacticsBatch();
-
-		} else if (tag.equals(TEN_TACTICS_TAG)) {
+		if (tag.equals(TEN_TACTICS_TAG)) {
 			getActivityFace().showPreviousFragment();
 		} else if (tag.equals(OFFLINE_RATING_TAG)) {
 //			loadOfflineTacticsBatch(); // There is a case when you connected to wifi, but no internet connection over it.
@@ -945,19 +949,31 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		super.onPositiveBtnClick(fragment);
 	}
 
+	@Override
+	public void onNotReady() {
+		cancelTacticAndLeave();
+	}
 
-	private void loadNewTacticsBatch() {
+	@Override
+	public void onReady() {
+		readyOverlay.setVisibility(View.GONE);
+		controlsTacticsView.showDefault();
+		loadNewTactic();
+
+	}
+
+	private void loadNewTactic() {
 		noNetwork = !AppUtils.isNetworkAvailable(getActivity());
 		if (noNetwork || serverError) {
 			loadOfflineTacticsBatch();
 		} else {
 
 			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTICS);
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTIC_TRAINER);
+			loadItem.setRequestMethod(RestHelper.POST);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_IS_INSTALL, RestHelper.V_FALSE);
 
-			new RequestJsonTask<TacticItem>(getTacticsUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<TacticTrainerItem>(getTacticsUpdateListener).executeTask(loadItem);
 			lockBoard(true);
 		}
 	}
@@ -995,9 +1011,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			return;
 		}
 
-		if (tag.equals(FIRST_TACTICS_TAG)) { // Cancel
-			cancelTacticAndLeave();
-		} else if (tag.equals(OFFLINE_RATING_TAG)) {
+		if (tag.equals(OFFLINE_RATING_TAG)) {
 			cancelTacticAndLeave();
 		}
 		super.onNegativeBtnClick(fragment);
@@ -1012,7 +1026,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private void clearSavedTactics() {
 		if (currentGameExist()) {
 			String[] arguments = new String[]{String.valueOf(tacticItem.getId()), tacticItem.getUser()};
-			getContentResolver().delete(DbScheme.uriArray[DbScheme.Tables.TACTICS_BATCH.ordinal()],
+			getContentResolver().delete(DbScheme.uriArray[DbScheme.Tables.TACTICS_TRAINER.ordinal()],
 					DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments);
 		}
 	}
@@ -1055,6 +1069,17 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private void widgetsInit(View view) {
 		moveResultTxt = (TextView) view.findViewById(R.id.moveResultTxt);
 
+		{ // Ready Overlay adjustments
+			readyOverlay = view.findViewById(R.id.readyOverlay);
+
+			int sideInset = getResources().getDisplayMetrics().widthPixels / 8;
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT);
+			params.setMargins(sideInset, sideInset * 2, sideInset, 0);
+			params.addRule(RelativeLayout.ALIGN_BOTTOM, R.id.boardView);
+			readyOverlay.setLayoutParams(params);
+		}
+
 		topPanelView = (PanelInfoTacticsView) view.findViewById(R.id.topPanelView);
 		topPanelView.setPlayerScore(getAppData().getUserTacticsRating());
 		controlsTacticsView = (ControlsTacticsView) view.findViewById(R.id.controlsTacticsView);
@@ -1066,6 +1091,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		controlsTacticsView.setBoardViewFace(boardView);
 
 		setBoardView(boardView);
+		boardView.setGameFace(this);
 
 		final ChessBoard chessBoard = ChessBoardTactics.getInstance(this);
 		firstRun = chessBoard.isJustInitialized();
@@ -1118,18 +1144,5 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		controlsTacticsView.enableGameControls(!lock);
 		boardView.lockBoard(lock);
 	}
-
-/*
-1. help makes one move for you, and you fail the tactic. check how it works on iphone if you can.
-2. michael, what is under options?
-3. if no network, we should have offline tactics still (there should be 100 of them).
-
-Actions:
-- Next Tactic
-- Show Answer
-- Settings
-
-And yeah, Help is actually Hint. It "reveals" the next move (just like in Vs Computer), but then your result is "Solved with Hint"; your score is calculated by treating the request for Hint as a wrong move.
-*/
 
 }

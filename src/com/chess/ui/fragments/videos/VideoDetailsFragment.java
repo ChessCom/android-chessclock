@@ -3,6 +3,7 @@ package com.chess.ui.fragments.videos;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ import java.util.Date;
  */
 public class VideoDetailsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
+	private static final String BACK_IMG_LINK = "https://dl.dropboxusercontent.com/u/24444064/video_back.png";
 	public static final String ITEM_ID = "item_id";
 
 	public static final String GREY_COLOR_DIVIDER = "##";
@@ -252,9 +254,11 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		videoBackImg.getProgressBar().setLayoutParams(progressParams);
 		videoBackImg.getImageView().setScaleType(ImageView.ScaleType.CENTER_CROP);
-		// TODO set correct link
-		String backImgLink = "http://new.tinygrab.com/6a8e1830f647b5f77917b1cbb53eefc6a75b8c89f3.png";
-		imageDownloader.download(backImgLink, videoBackImg, scrWidthPixels);
+
+		BitmapDrawable image = (BitmapDrawable) getResources().getDrawable(R.drawable.board_white_grey_full_size);
+		videoBackImg.placeholder = image.getBitmap();
+
+		imageDownloader.download(BACK_IMG_LINK, videoBackImg, scrWidthPixels);
 
 		titleTxt.setText(videoData.getTitle());
 		imageDownloader.download(videoData.getUserAvatar(), authorImg, imgSize);

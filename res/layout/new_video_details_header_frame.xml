@@ -113,7 +113,7 @@
 		android:paddingRight="@dimen/default_scr_side_padding"
 		android:layout_below="@id/thumbnailAuthorImg"
 		android:textColor="@color/new_subtitle_dark_grey"
-		android:paddingBottom="2dip"
+		android:paddingBottom="10dip"
 		android:textSize="14sp" />
 
 	<ProgressBar

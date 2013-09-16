@@ -11,12 +11,16 @@ import com.chess.backend.statics.AppConstants;
  * Time: 20:05
  */
 public class CompGameConfig implements Parcelable {
+
 	private int strength;
 	private int mode;
+	private boolean autoFlip;
 
 	public static class Builder{
 		private int strength;
 		private int mode;
+		private boolean autoFlip;
+
 
 		/**
 		 * Create new Seek game with default values
@@ -36,6 +40,11 @@ public class CompGameConfig implements Parcelable {
 			return this;
 		}
 
+		public Builder setAutoFlip(boolean autoFlip) {
+			this.autoFlip = autoFlip;
+			return this;
+		}
+
 		public CompGameConfig build(){
 			return new CompGameConfig(this);
 		}
@@ -44,6 +53,7 @@ public class CompGameConfig implements Parcelable {
 	private CompGameConfig(Builder builder) {
 		this.strength = builder.strength;
 		this.mode = builder.mode;
+		this.autoFlip = builder.autoFlip;
 	}
 
 	public int getStrength() {
@@ -62,9 +72,14 @@ public class CompGameConfig implements Parcelable {
 		this.strength = strength;
 	}
 
+	public void setAutoFlip(boolean autoFlip) {
+		this.autoFlip = autoFlip;
+	}
+
 	protected CompGameConfig(Parcel in) {
 		strength = in.readInt();
 		mode = in.readInt();
+		autoFlip = in.readByte() != 0x00;
 	}
 
 	@Override
@@ -76,6 +91,7 @@ public class CompGameConfig implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(strength);
 		dest.writeInt(mode);
+		dest.writeByte((byte) (autoFlip ? 0x01 : 0x00));
 	}
 
 	public static final Parcelable.Creator<CompGameConfig> CREATOR = new Parcelable.Creator<CompGameConfig>() {

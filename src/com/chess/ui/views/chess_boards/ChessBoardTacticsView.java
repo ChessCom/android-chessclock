@@ -224,4 +224,14 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 	public void showExplorer() {
 		gameTacticsFace.showExplorer();
 	}
+
+	@Override
+	public void onNotReady() {
+		gameTacticsFace.onNotReady();
+	}
+
+	@Override
+	public void onReady() {
+		gameTacticsFace.onReady();
+	}
 }

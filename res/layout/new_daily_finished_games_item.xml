@@ -14,8 +14,8 @@
 
     <com.chess.backend.image_load.AvatarView
         android:id="@+id/playerImg"
-        android:layout_width="@dimen/list_item_image_size_big"
-        android:layout_height="@dimen/list_item_image_size_big"
+        android:layout_width="@dimen/daily_list_item_image_size"
+        android:layout_height="@dimen/daily_list_item_image_size"
         android:layout_marginTop="10dip"
         android:layout_marginBottom="10dip"
         android:layout_marginRight="10dip"

@@ -7,7 +7,7 @@
     </style>
 
 	<style name="Text" parent="@android:style/TextAppearance.Small">
-		<item name="android:textSize">14sp</item>
+		<item name="android:textSize">@dimen/default_text_size</item>
 		<item name="android:textColor">@color/new_normal_grey</item>
 		<item name="android:textStyle">normal</item>
 	</style>

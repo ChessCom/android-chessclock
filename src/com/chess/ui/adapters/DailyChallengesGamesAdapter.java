@@ -17,7 +17,7 @@ public class DailyChallengesGamesAdapter extends ItemsAdapter<DailyChallengeItem
 
 	public DailyChallengesGamesAdapter(ItemClickListenerFace clickListenerFace, List<DailyChallengeItem.Data> itemList) {
 		super(clickListenerFace.getMeContext(), itemList);
-		imageSize = (int) (resources.getDimension(R.dimen.list_item_image_size_big) / resources.getDisplayMetrics().density);
+		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
 		this.clickListenerFace = clickListenerFace;
 	}
 

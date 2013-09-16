@@ -247,5 +247,31 @@
 				style="@style/RatingSeekBar" />
 
 		</com.chess.LinLayout>
+
+		<!--Auto-flip-->
+		<com.chess.LinLayout
+			android:id="@+id/autoFlipView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearListItem"
+			android:paddingRight="10dip"
+			android:background="@drawable/transparent_list_item_selector"
+			android:visibility="gone"
+			>
+
+			<!--Label-->
+			<com.chess.RoboTextView
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:text="@string/auto_flip"
+				android:layout_weight="1"
+				style="@style/SettingsListText"
+				/>
+
+			<com.chess.SwitchButton
+				android:id="@+id/autoFlipSwitch"
+				style="@style/Switch.White"
+				/>
+		</com.chess.LinLayout>
     </com.chess.LinLayout>
 </ScrollView>

@@ -8,6 +8,10 @@ package com.chess.ui.interfaces.boards;
  */
 public interface BoardViewTacticsFace extends BoardViewCompFace {
 
+	void onNotReady();
+
+	void onReady();
+
 	void restart();
 
 	void showExplorer();

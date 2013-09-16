@@ -65,6 +65,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	private static final int ID_EMAIL_GAME = 1;
 	private static final int ID_FLIP_BOARD = 2;
 	private static final int ID_SETTINGS = 3;
+	private static final long AUTO_FLIP_DELAY = 500;
 
 	private ChessBoardCompView boardView;
 
@@ -92,6 +93,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	private Bundle savedInstanceState;
 
 	private CompGameConfig compGameConfig;
+	private boolean isAutoFlip;
 
 	public GameCompFragment() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
@@ -156,6 +158,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		super.onResume();
 
 		ChessBoardComp.resetInstance();
+
+		isAutoFlip = getAppData().isAutoFlipFor2Players();
+
 		getBoardFace().setMode(compGameConfig.getMode());
 		if (getAppData().haveSavedCompGame()) {
 			loadSavedGame();
@@ -164,7 +169,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		invalidateGameScreen();
 
 		if (!getBoardFace().isAnalysis()) {
-
 			boolean isComputerMove = (getAppData().isComputerVsComputerGameMode(getBoardFace()))
 					|| (getAppData().isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
 					|| (getAppData().isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove());
@@ -276,12 +280,23 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	@Override
 	public void updateAfterMove() {
+		if (getBoardFace().getMode() == AppConstants.GAME_MODE_2_PLAYERS && isAutoFlip) {
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					boardView.flipBoard();
+				}
+			}, AUTO_FLIP_DELAY);
+
+		}
 	}
 
 	@Override
 	public void invalidateGameScreen() {
 		if (!labelsSet) {
 			String username = getAppData().getUsername();
+			String blackStr = getString(R.string.black);
+			String whiteStr = getString(R.string.white);
 			switch (getBoardFace().getMode()) {
 				case AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE: {    //w - human; b - comp
 					humanBlack = false;
@@ -302,8 +317,14 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 				case AppConstants.GAME_MODE_2_PLAYERS: {    //w - human; b - human
 					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 
-					labelsConfig.topPlayerLabel = username;
-					labelsConfig.bottomPlayerLabel = username;
+					if(getBoardFace().isReside()) {
+						labelsConfig.topPlayerLabel = whiteStr;
+						labelsConfig.bottomPlayerLabel = blackStr;
+					} else {
+						labelsConfig.topPlayerLabel = blackStr;
+						labelsConfig.bottomPlayerLabel = whiteStr;
+					}
+
 					break;
 				}
 				case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {    //w - comp; b - comp
@@ -449,13 +470,18 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		} else {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 		}
-		/*BoardAvatarDrawable tempDrawable = labelsConfig.topAvatar;
-		labelsConfig.topAvatar = labelsConfig.bottomAvatar;
-		labelsConfig.bottomAvatar = tempDrawable;
 
-		String tempLabel = labelsConfig.topPlayerLabel;
-		labelsConfig.topPlayerLabel = labelsConfig.bottomPlayerLabel;
-		labelsConfig.bottomPlayerLabel = tempLabel;*/
+		if (getBoardFace().getMode() == AppConstants.GAME_MODE_2_PLAYERS) {
+			String blackStr = getString(R.string.black);
+			String whiteStr = getString(R.string.white);
+			if(getBoardFace().isReside()) {
+				labelsConfig.topPlayerLabel = whiteStr;
+				labelsConfig.bottomPlayerLabel = blackStr;
+			} else {
+				labelsConfig.topPlayerLabel = blackStr;
+				labelsConfig.bottomPlayerLabel = whiteStr;
+			}
+		}
 	}
 
 	@Override
@@ -783,6 +809,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
+		int mode = getBoardFace().getMode();
 		{// set avatars
 			Drawable user = new IconDrawable(getActivity(), R.string.ic_profile,
 					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
@@ -790,7 +817,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
 
 			labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
-			if (getBoardFace().getMode() == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) {
+			if (mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) {
 				user = src;
 			}
 			labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), user);
@@ -798,7 +825,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-			if (getBoardFace().getMode() != AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) {
+			if (mode != AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER	&& mode != AppConstants.GAME_MODE_2_PLAYERS) {
 				ImageDownloaderToListener imageDownloader = new ImageDownloaderToListener(getContext());
 
 				String userAvatarUrl = getAppData().getUserAvatar();

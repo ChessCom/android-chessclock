@@ -332,7 +332,7 @@
 
     <style name="Rect" parent="android:Widget.CompoundButton.RadioButton">
         <item name="android:button">@null</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/default_button_text_size</item>
         <item name="android:textColor">@color/new_light_grey</item>
         <item name="android:gravity">center</item>
         <item name="android:minHeight">@dimen/new_tab_button_height</item>

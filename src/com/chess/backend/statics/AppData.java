@@ -445,6 +445,21 @@ public class AppData {
 		return getIntValue(PREF_COMPUTER_MODE, AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
 	}
 
+	/**
+	 * When it is WHITE human to play, he should be on bottom. once he moves, flip so BLACK is on the bottom.
+	 * @param autoFlip flag
+	 */
+	public void setAutoFlipFor2Players(boolean autoFlip) {
+		setBooleanValue(PREF_AUTO_FLIP, autoFlip);
+	}
+
+	/**
+	 * When it is WHITE human to play, he should be on bottom. once he moves, flip so BLACK is on the bottom.
+	 */
+	public boolean isAutoFlipFor2Players() {
+		return getBooleanValue(PREF_AUTO_FLIP, true);
+	}
+
 	public boolean isLessonLimitWasReached() {
 		return getBooleanValue(LESSONS_LIMIT_HAS_REACHED, false);
 	}

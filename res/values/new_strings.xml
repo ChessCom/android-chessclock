@@ -327,5 +327,7 @@
 	<string name="views_arg">%s views</string>
 	<string name="no_results_found">No Results Found</string>
 	<string name="game_explorer">Game Explorer</string>
+	<string name="ready_">Ready?</string>
+	<string name="auto_flip">Auto Flip</string>
 
 </resources>

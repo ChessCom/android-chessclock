@@ -57,5 +57,7 @@
 	<dimen name="chip_close_icon_size">17dip</dimen>
 	<dimen name="seek_bar_side_padding">8dip</dimen>
 	<dimen name="profile_frame_photo_size">80dip</dimen>
+	<dimen name="actionbar_title_height">20sp</dimen>
+	<dimen name="article_detail_image_height">213dip</dimen>
 
 </resources>

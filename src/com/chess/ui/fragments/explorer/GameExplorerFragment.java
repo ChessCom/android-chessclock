@@ -128,7 +128,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 //		}, 1000);
 
 		// update FEN and get next moves
-		fen = getBoardFace().generateFullFen();
+//		fen = getBoardFace().generateFullFen();
 		fen = getBoardFace().generateBaseFen();
 		updateData(fen);
 	}

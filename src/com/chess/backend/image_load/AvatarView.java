@@ -14,10 +14,7 @@ import com.chess.R;
  */
 public class AvatarView extends ProgressImageView {
 
-
-	private static final float BIG_SIZE = 15;
-	private static final float SMALL_SIZE = 7.5f;
-
+	public static final float INDICATOR_SCALE_FACTOR = 0.2542f;
 	private ImageView onlineBadge;
 
 	public AvatarView(Context context, AttributeSet attrs) {
@@ -36,15 +33,11 @@ public class AvatarView extends ProgressImageView {
 	protected void onCreate(AttributeSet attrs) {
 		super.onCreate(attrs);
 
-		int indicatorSize;
-		if (size > DEFAULT_IMG_SIZE) {
-			indicatorSize = (int) (BIG_SIZE * density);
-		} else {
-			indicatorSize = (int) (SMALL_SIZE * density);
-		}
+		int indicatorSize = (int) (size * INDICATOR_SCALE_FACTOR);
+
 
 		// add isOnline indication
-		{// image  // TODO add white border for more visibility
+		{// image
 			onlineBadge = new ImageView(getContext());
 			LayoutParams indicatorParams = new LayoutParams(indicatorSize, indicatorSize);
 			indicatorParams.addRule(ALIGN_PARENT_RIGHT);
@@ -55,6 +48,7 @@ public class AvatarView extends ProgressImageView {
 			onlineBadge.setScaleType(ImageView.ScaleType.FIT_XY);
 			int onlineColor = getResources().getColor(R.color.is_online_color);
 			ColorDrawable drawable = new ColorDrawable(onlineColor);
+//			Drawable drawable = getResources().getDrawable(R.drawable.is_online_drawable);
 			onlineBadge.setImageDrawable(drawable);
 
 			addView(onlineBadge, indicatorParams);

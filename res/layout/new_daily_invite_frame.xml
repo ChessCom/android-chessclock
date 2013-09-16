@@ -68,7 +68,7 @@
                 custom:ttf="Bold"
                 />
 
-            <!--Invite Details 1-->
+            <!--Invite Details-->
             <com.chess.RoboTextView
                 android:id="@+id/inviteDetails1Txt"
                 android:layout_width="match_parent"

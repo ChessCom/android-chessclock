@@ -23,7 +23,7 @@ public class RecentOpponentsCursorAdapter extends ItemsCursorAdapter {
 
 	public RecentOpponentsCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
-		imageSize = (int) (resources.getDimension(R.dimen.list_item_image_size_big) / resources.getDisplayMetrics().density);
+		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
 	}
 
 	@Override

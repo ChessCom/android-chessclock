@@ -20,7 +20,7 @@ public class DailyCurrentGamesTheirCursorRightAdapter extends ItemsCursorAdapter
 
 	public DailyCurrentGamesTheirCursorRightAdapter(Context context, Cursor cursor) {
 		super(context, cursor);// TODO change later with CursorLoader
-		imageSize = (int) (resources.getDimension(R.dimen.list_item_image_size_big) / resources.getDisplayMetrics().density);
+		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
 	}
 
 	@Override

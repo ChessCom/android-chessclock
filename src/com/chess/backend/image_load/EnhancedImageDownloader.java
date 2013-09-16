@@ -58,7 +58,6 @@ public class EnhancedImageDownloader {
 	 */
     public void download(String url, ProgressImageView holder, int imgSize) {
 		imgSizeMap.put(url, imgSize);
-//		this.imgSize = imgSize;
 		useScale = true;
 		if (TextUtils.isEmpty(url)) {
 			Log.e(LOG_TAG, " passed url is null. Don't start loading");
@@ -283,7 +282,7 @@ public class EnhancedImageDownloader {
             Bitmap bmp = downloadBitmap(url);
 
             if (bmp == null) { // in case http link was wrong
-                if (holderReference != null && holderReference.get() != null && holderReference.get().placeholder != null)
+                if (holderReference != null && holderReference.get() != null && holderReference.get().noImage != null)
                     bmp = holderReference.get().noImage; // set no image if we didn't load
             }
 
@@ -321,9 +320,8 @@ public class EnhancedImageDownloader {
             holder.setImageView(holderReference.get().getImageView());
 
             BitmapDownloaderTask bitmapDownloaderTask = getBitmapDownloaderTask(holder.getImageView());
+
             // Change bitmap only if this process is still associated with it
-            // Or if we don't use any bitmap to task association
-            // (NO_DOWNLOADED_DRAWABLE mode)
             if (this == bitmapDownloaderTask) {
                 holder.updateImageBitmap();
             }
@@ -399,6 +397,7 @@ public class EnhancedImageDownloader {
 
 
     public static class EnhDownloadedDrawable extends BitmapDrawable {
+
         private final WeakReference<BitmapDownloaderTask> bitmapDownloaderTaskReference;
 
         public EnhDownloadedDrawable(BitmapDownloaderTask bitmapDownloaderTask, ProgressImageView holder, Resources resources) {

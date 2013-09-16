@@ -43,8 +43,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	public static final int CAPTURED_ID = 0x00004405;
 	public static final int TIME_LEFT_ID = 0x00004406;
 
-	private int FLAG_SIZE = 16;
-	private int FLAG_MARGIN = 5;
+	private int flagMargin = 5;
 
 	protected Handler handler;
 
@@ -118,8 +117,8 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_big_size);
 		}
 
-		boolean hasSoftKeys = AppUtils.isNexus4Kind(getContext());
-		if (hasSoftKeys) {
+		boolean nexus4Kind = AppUtils.isNexus4Kind(getContext());
+		if (nexus4Kind) {
 			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_medium_size);
 		}
 
@@ -130,15 +129,15 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		int timeLeftSize = (int) resources.getDimension(R.dimen.panel_info_time_left_size);
 		int avatarMarginRight = (int) resources.getDimension(R.dimen.panel_info_avatar_margin_right);
 
-		FLAG_SIZE *= density;
-		FLAG_MARGIN *= density;
+		int flagSize = (int) resources.getDimension(R.dimen.panel_info_flag_size);
+		flagMargin *= density;
 
 		{ // set padding
 			paddingTop = (int) resources.getDimension(R.dimen.panel_info_padding_top);
 			paddingRight = (int) (4 * density);
 			paddingLeft = (int) (11 * density);
 
-			if (hasSoftKeys) {
+			if (nexus4Kind) {
 				paddingTop = (int) (3 * density);
 			}
 		}
@@ -203,8 +202,8 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		{// add player flag
 			flagImg = new ImageView(context);
 
-			LayoutParams flagParams = new LayoutParams(FLAG_SIZE, FLAG_SIZE);
-			flagParams.setMargins(FLAG_MARGIN, 0, FLAG_MARGIN, FLAG_MARGIN);
+			LayoutParams flagParams = new LayoutParams(flagSize, flagSize);
+			flagParams.setMargins(flagMargin, 0, flagMargin, flagMargin);
 			flagParams.addRule(RIGHT_OF, RATING_ID);
 			if (useSingleLine) {
 				flagParams.addRule(CENTER_VERTICAL);
@@ -222,8 +221,8 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		{// add player premium icon
 			premiumImg = new ImageView(context);
 
-			LayoutParams premiumParams = new LayoutParams(FLAG_SIZE, FLAG_SIZE);
-			premiumParams.setMargins(FLAG_MARGIN, 0, FLAG_MARGIN, FLAG_MARGIN);
+			LayoutParams premiumParams = new LayoutParams(flagSize, flagSize);
+			premiumParams.setMargins(flagMargin, 0, flagMargin, flagMargin);
 			premiumParams.addRule(RIGHT_OF, FLAG_ID);
 			if (useSingleLine) {
 				premiumParams.addRule(CENTER_VERTICAL);
@@ -259,11 +258,10 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			clockIconTxt.setTextSize(clockIconSize);
 			clockIconTxt.setText(R.string.ic_clock);
 			clockIconTxt.setTextColor(Color.WHITE);
-			int paddingIcon = (int) (4 * density);
-			int paddingIconTop = (int) (2 * density);
+			int paddingIcon = resources.getDimensionPixelSize(R.dimen.new_tactics_clock_icon_padding);
+			int paddingIconTop = resources.getDimensionPixelSize(R.dimen.new_tactics_clock_icon_padding_top);
 			clockIconTxt.setPadding(0, paddingIconTop, paddingIcon, 0);
 			clockIconTxt.setVisibility(GONE);
-
 
 			clockLayout.addView(clockIconTxt, clockIconParams);
 
@@ -275,8 +273,9 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			timeRemainTxt.setTextSize(playerTextSize);
 			timeRemainTxt.setTextColor(resources.getColor(R.color.light_grey));
 
-			if (timeLeftHasBack)
+			if (timeLeftHasBack) {
 				clockLayout.setBackgroundResource(R.drawable.back_glassy_rounded);
+			}
 			timeRemainTxt.setId(TIME_LEFT_ID);
 			timeRemainTxt.setFont(FontsHelper.BOLD_FONT);
 			timeRemainTxt.setGravity(Gravity.CENTER_VERTICAL);
@@ -426,7 +425,8 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 	public void showThinkingView(boolean show) {
 		if (show) {
-			playerTxt.setText(R.string.thinking);
+			playerTxt.setText(getContext().getString(R.string.computer) + Symbol.SPACE +
+					getContext().getString(R.string.thinking));
 			handler.postDelayed(thinkingDotTask, THINKING_DOT_DELAY);
 		} else {
 			playerTxt.setText(R.string.computer);
@@ -442,7 +442,8 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 				playerTxt.setText(playerTxt.getText() + Symbol.DOT.trim());
 			} else {
 				dotsAdded = 0;
-				playerTxt.setText(R.string.thinking);
+				playerTxt.setText(getContext().getString(R.string.computer) + Symbol.SPACE +
+						getContext().getString(R.string.thinking));
 			}
 			handler.postDelayed(thinkingDotTask, THINKING_DOT_DELAY);
 		}

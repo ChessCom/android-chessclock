@@ -39,7 +39,6 @@ import com.chess.backend.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.model.GameListCurrentItem;
 import com.chess.ui.activities.MainFragmentFaceActivity;
-import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import org.apache.http.HttpEntity;
 
 import java.io.File;
@@ -139,20 +138,6 @@ public class AppUtils {
 		public void run() {
 			listView.setSelection(pos);
 		}
-	}
-
-	public static void setBackground(View mainView, Context context) {
-		if (JELLYBEAN_PLUS_API){
-			mainView.setBackground(new BackgroundChessDrawable(context));
-		} else {
-			mainView.setBackgroundDrawable(new BackgroundChessDrawable(context));
-		}
-
-		int paddingTop = (int) context.getResources().getDimension(R.dimen.dashboard_padding_top);
-		int paddingLeft = (int) context.getResources().getDimension(R.dimen.dashboard_padding_side);
-		int paddingRight = (int) context.getResources().getDimension(R.dimen.dashboard_padding_side);
-		int paddingBot = (int) context.getResources().getDimension(R.dimen.dashboard_padding_bot);
-		mainView.setPadding(paddingLeft, paddingTop, paddingRight, paddingBot);
 	}
 
 	/**

@@ -23,7 +23,7 @@ public class DailyFinishedGamesCursorRightAdapter extends ItemsCursorAdapter {
 
 	public DailyFinishedGamesCursorRightAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
-		imageSize = (int) (resources.getDimension(R.dimen.list_item_image_size_big) / resources.getDisplayMetrics().density);
+		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
 		lossStr = context.getString(R.string.loss);
 		winStr = context.getString(R.string.won);
 		drawStr = context.getString(R.string.draw);

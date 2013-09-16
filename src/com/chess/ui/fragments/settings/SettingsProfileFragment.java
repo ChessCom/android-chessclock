@@ -147,7 +147,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.profile);
+		setTitle(getUsername());
 
 		{// Edit texts and clear buttons
 			firstNameValueEdt = (EditText) view.findViewById(R.id.firstNameValueEdt);

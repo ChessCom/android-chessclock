@@ -25,7 +25,6 @@ import com.chess.backend.statics.*;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.DataHolder;
 import com.chess.model.TacticsDataHolder;
-import com.chess.ui.views.drawables.BackgroundChessDrawable;
 import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
@@ -60,7 +59,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	private LoginUpdateListenerNew loginUpdateListener;
 	private int loginReturnCode;
 
-	protected BackgroundChessDrawable backgroundChessDrawable;
 	private String currentLocale;
 
 	protected Handler handler;
@@ -75,7 +73,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		backgroundChessDrawable = new BackgroundChessDrawable(this);
 		loginUpdateListener = new LoginUpdateListenerNew();
 
 		appData = new AppData(this);

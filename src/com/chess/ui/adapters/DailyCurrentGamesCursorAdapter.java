@@ -27,7 +27,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 
 		fullPadding = (int) context.getResources().getDimension(R.dimen.default_scr_side_padding);
 		halfPadding = fullPadding / 2;
-		imageSize = (int) (resources.getDimension(R.dimen.list_item_image_size_big) / resources.getDisplayMetrics().density);
+		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
 
 		redColor = resources.getColor(R.color.red);
 		greyColor = resources.getColor(R.color.grey_button_flat);

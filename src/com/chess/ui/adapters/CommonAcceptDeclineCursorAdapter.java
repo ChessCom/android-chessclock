@@ -23,7 +23,7 @@ public class CommonAcceptDeclineCursorAdapter extends ItemsCursorAdapter {
 
 	public CommonAcceptDeclineCursorAdapter(ItemClickListenerFace clickListenerFace, Cursor cursor) {
 		super(clickListenerFace.getMeContext(), cursor);
-		imageSize = (int) (resources.getDimension(R.dimen.list_item_image_size_big) / resources.getDisplayMetrics().density);
+		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
 		this.clickListenerFace = clickListenerFace;
 	}
 

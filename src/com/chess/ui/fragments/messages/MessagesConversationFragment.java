@@ -176,33 +176,7 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 
 		inEditMode = true;
 		showEditView(true);
-//		handler.postDelayed(new Runnable() {
-//			@Override
-//			public void run() {
-//				newPostEdt.requestFocus();
-//				showKeyBoard(newPostEdt);
-//				showKeyBoardImplicit(newPostEdt);
-//
-//				getActivityFace().showActionMenu(R.id.menu_accept, true);
-//				getActivityFace().updateActionBarIcons();
-//
-//			}
-//		}, KEYBOARD_DELAY);
 	}
-
-//	@Override
-//	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//		if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.FLAG_EDITOR_ACTION
-//				|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-//			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live
-//				popupItem.setPositiveBtnId(R.string.wireless_settings);
-//				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
-//			} else {
-//
-//			}
-//		}
-//		return false;
-//	}
 
 	private void createMessage() {
 		String body = getTextFromField(newPostEdt);

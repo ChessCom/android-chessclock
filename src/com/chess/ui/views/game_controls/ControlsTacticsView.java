@@ -35,11 +35,14 @@ public class ControlsTacticsView extends ControlsBaseView {
 
 		removeAllViews();
 
+		addActionButton(CLOSE, R.string.ic_close, R.style.Rect_Bottom_Left);
+		addActionButton(MAKE_MOVE, R.string.ic_check, R.style.Rect_Bottom_Right_Orange);
+
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
+		addControlButton(EXIT, R.style.Rect_Bottom_Left);
 		addControlButton(ANALYSIS, R.style.Rect_Bottom_Middle);
 		addControlButton(HINT, R.style.Rect_Bottom_Middle);
 		addControlButton(HELP, R.style.Rect_Bottom_Middle);
-		addControlButton(CLOSE, R.style.Rect_Bottom_Middle);
 		addControlButton(RESTORE, R.style.Rect_Bottom_Middle);
 		addControlButton(SEARCH, R.style.Rect_Bottom_Middle);
 		addControlButton(FLIP, R.style.Rect_Bottom_Middle);
@@ -52,7 +55,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 
 		addView(controlsLayout);
 
-		showDefault();
+		showStart();
 	}
 
 	protected void addNextButton(int styleId, ButtonIds id) {
@@ -90,7 +93,11 @@ public class ControlsTacticsView extends ControlsBaseView {
 		if (blocked)
 			return;
 
-		if (view.getId() == getButtonId(OPTIONS)) {
+		if (view.getId() == getButtonId(CLOSE)) {
+			boardViewFace.onNotReady();
+		} else if (view.getId() == getButtonId(MAKE_MOVE)) {
+			boardViewFace.onReady();
+		} else if (view.getId() == getButtonId(OPTIONS)) {
 			boardViewFace.showOptions(view);
 		} else if (view.getId() == getButtonId(RESTART) || view.getId() == getButtonId(RESTORE)) {
 			boardViewFace.restart();
@@ -113,15 +120,36 @@ public class ControlsTacticsView extends ControlsBaseView {
 		}
 	}
 
+	public void showStart() {
+		state = State.START;
+
+		showGameButton(CLOSE, true);
+		showGameButton(MAKE_MOVE, true);
+		showGameButton(OPTIONS, false);
+		showGameButton(HINT, false);
+		showGameButton(HELP, false);
+		showGameButton(ANALYSIS, false);
+		showGameButton(RESTORE, false);
+		showGameButton(EXIT, false);
+		showGameButton(SEARCH, false);
+		showGameButton(FLIP, false);
+		showGameButton(BACK, false);
+		showGameButton(FORWARD, false);
+		showGameButton(SKIP, false);
+		showGameButton(RESTART, false);
+	}
+
 	public void showWrong() {
 		state = State.WRONG;
 
+		showGameButton(CLOSE, false);
+		showGameButton(MAKE_MOVE, false);
 		showGameButton(OPTIONS, true);
 		showGameButton(HINT, true);
 		showGameButton(HELP, false);
 		showGameButton(ANALYSIS, false);
 		showGameButton(RESTORE, false);
-		showGameButton(CLOSE, false);
+		showGameButton(EXIT, false);
 		showGameButton(SEARCH, false);
 		showGameButton(FLIP, false);
 		showGameButton(BACK, false);
@@ -133,6 +161,8 @@ public class ControlsTacticsView extends ControlsBaseView {
 	public void showCorrect() {
 		state = State.CORRECT;
 
+		showGameButton(CLOSE, false);
+		showGameButton(MAKE_MOVE, false);
 		showGameButton(OPTIONS, true);
 		showGameButton(HINT, false);
 		showGameButton(HELP, false);
@@ -142,7 +172,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showGameButton(NEXT, true);
 		showGameButton(SKIP, false);
 		showGameButton(RESTORE, false);
-		showGameButton(CLOSE, false);
+		showGameButton(EXIT, false);
 		showGameButton(SEARCH, false);
 		showGameButton(FLIP, false);
 		showGameButton(BACK, false);
@@ -152,6 +182,8 @@ public class ControlsTacticsView extends ControlsBaseView {
 	public void showDefault() {
 		state = State.DEFAULT;
 
+		showGameButton(CLOSE, false);
+		showGameButton(MAKE_MOVE, false);
 		showGameButton(OPTIONS, true);
 		showGameButton(RESTART, false);
 		showGameButton(FLIP, false);
@@ -161,7 +193,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showGameButton(NEXT, false);
 		showGameButton(SKIP, false);
 		showGameButton(RESTORE, false);
-		showGameButton(CLOSE, false);
+		showGameButton(EXIT, false);
 		showGameButton(SEARCH, false);
 		showGameButton(FLIP, false);
 		showGameButton(BACK, false);
@@ -171,6 +203,8 @@ public class ControlsTacticsView extends ControlsBaseView {
 	public void showAfterRetry() {
 		state = State.AFTER_RETRY;
 
+		showGameButton(CLOSE, false);
+		showGameButton(MAKE_MOVE, false);
 		showGameButton(OPTIONS, true);
 		showGameButton(RESTART, false);
 		showGameButton(FLIP, false);
@@ -180,7 +214,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showGameButton(NEXT, false);
 		showGameButton(SKIP, true);
 		showGameButton(RESTORE, false);
-		showGameButton(CLOSE, false);
+		showGameButton(EXIT, false);
 		showGameButton(SEARCH, false);
 		showGameButton(FLIP, false);
 		showGameButton(BACK, false);
@@ -190,6 +224,8 @@ public class ControlsTacticsView extends ControlsBaseView {
 	public void showAnalysis() {
 		state = State.ANALYSIS;
 
+		showGameButton(CLOSE, false);
+		showGameButton(MAKE_MOVE, false);
 		showGameButton(OPTIONS, false);
 		showGameButton(RESTART, false);
 		showGameButton(ANALYSIS, false);
@@ -197,7 +233,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showGameButton(HINT, false);
 		showGameButton(NEXT, false);
 		showGameButton(SKIP, false);
-		showGameButton(CLOSE, true);
+		showGameButton(EXIT, true);
 		showGameButton(SEARCH, true);
 		showGameButton(RESTORE, true);
 		showGameButton(FLIP, true);
@@ -225,6 +261,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 	}
 
 	public enum State {
+		START,
 		DEFAULT,
 		WRONG,
 		CORRECT,

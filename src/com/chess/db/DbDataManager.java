@@ -583,7 +583,7 @@ public class DbDataManager {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = username;
 
-		Cursor cursor = contentResolver.query(uriArray[Tables.TACTICS_BATCH.ordinal()],
+		Cursor cursor = contentResolver.query(uriArray[Tables.TACTICS_TRAINER.ordinal()],
 				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = cursor != null && cursor.moveToFirst();
 		if (cursor != null) {
@@ -593,9 +593,8 @@ public class DbDataManager {
 		return exist;
 	}
 
-	public static int saveTacticItemToDb(Context context, TacticItem.Data tacticItem, String username) {
-		ContentResolver contentResolver = context.getContentResolver();
-
+	public static int saveTacticBatchItemToDb(ContentResolver contentResolver, TacticItem.Data tacticItem, String username) {
+		tacticItem.setUser(username);
 		final String[] arguments2 = sArguments2;
 		arguments2[0] = String.valueOf(tacticItem.getId());
 		arguments2[1] = username;
@@ -608,29 +607,52 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 
 		if (tacticItem.getResultItem() != null) {
-			saveTacticResultItemToDb(context, tacticItem.getResultItem());
+			saveTacticResultItemToDb(contentResolver, tacticItem.getResultItem());
 		}
 
 		return StaticData.RESULT_OK;
 	}
 
-	public static TacticItem.Data getLastTacticItemFromDb(Context context, String username) {
+	public static int saveTacticItemToDb(ContentResolver contentResolver, TacticTrainerItem.Data tacticItem, String username) {
+//		if (tacticItem.getRatingInfo() != null) {
+//			tacticItem.getRatingInfo().setUser(username);
+//		}
+		tacticItem.getTacticsProblem().setUser(username);
+
+		final String[] arguments2 = sArguments2;
+		arguments2[0] = String.valueOf(tacticItem.getTacticsProblem().getId());
+		arguments2[1] = username;
+
+		Uri uri = uriArray[Tables.TACTICS_TRAINER.ordinal()];
+		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID_AND_USER,
+				SELECTION_ITEM_ID_AND_USER, arguments2, null);
+
+		ContentValues values = putTacticItemToValues(tacticItem.getTacticsProblem());
+		updateOrInsertValues(contentResolver, cursor, uri, values);
+
+//		if (tacticItem.getRatingInfo() != null) {
+//			saveTacticResultItemToDb(contentResolver, tacticItem.getRatingInfo());
+//		}
+
+		return StaticData.RESULT_OK;
+	}
+
+	public static TacticTrainerItem.Data getLastTacticItemFromDb(Context context, String username) {
 		ContentResolver contentResolver = context.getContentResolver();
 
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = username;
 
-		Cursor cursor = contentResolver.query(uriArray[Tables.TACTICS_BATCH.ordinal()],
+		Cursor cursor = contentResolver.query(uriArray[Tables.TACTICS_TRAINER.ordinal()],
 				null, SELECTION_USER, arguments1, null);
 
-		if (cursor != null) {
-			cursor.moveToFirst();
-			TacticItem.Data tacticItem = getTacticItemFromCursor(cursor);
+		if (cursor != null && cursor.moveToFirst()) {
+			TacticTrainerItem.Data tacticItem = getTacticItemFromCursor(cursor);
 			cursor.close();
 
 			// set result item
-			TacticRatingData resultItem = getTacticResultItemFromDb(context, tacticItem.getId(), username);
-			tacticItem.setResultItem(resultItem);
+//			TacticRatingData ratingData = getTacticResultItemFromDb(context, tacticItem.getTacticsProblem().getId(), username);
+//			tacticItem.setRatingInfo(ratingData);
 
 			return tacticItem;
 		} else {
@@ -638,9 +660,7 @@ public class DbDataManager {
 		}
 	}
 
-	private static void saveTacticResultItemToDb(Context context, TacticRatingData resultItem) {
-		ContentResolver contentResolver = context.getContentResolver();
-
+	private static void saveTacticResultItemToDb(ContentResolver contentResolver, TacticRatingData resultItem) {
 		final String[] arguments2 = sArguments2;
 		arguments2[0] = String.valueOf(resultItem.getId());
 		arguments2[1] = resultItem.getUser();
@@ -721,21 +741,28 @@ public class DbDataManager {
 	}
 
 
-	public static TacticItem.Data getTacticItemFromCursor(Cursor cursor) {
-		TacticItem.Data dataObj = new TacticItem.Data();
+	public static TacticTrainerItem.Data getTacticItemFromCursor(Cursor cursor) {
+		TacticTrainerItem.Data dataObj = new TacticTrainerItem.Data();
 
-		dataObj.setUser(getString(cursor, V_USER));
-		dataObj.setId(getLong(cursor, V_ID));
-		dataObj.setFen(getString(cursor, V_FEN));
-		dataObj.setMoveList(getString(cursor, V_MOVE_LIST));
-		dataObj.setAttemptCnt(getInt(cursor, V_ATTEMPT_CNT));
-		dataObj.setPassedCnt(getInt(cursor, V_PASSED_CNT));
-		dataObj.setRating(getInt(cursor, V_RATING));
-		dataObj.setAvgSeconds(getInt(cursor, V_AVG_SECONDS));
-		dataObj.setSecondsSpent(getInt(cursor, V_SECONDS_SPENT));
-		dataObj.setStop(getInt(cursor, V_STOP) > 0);
-		dataObj.setAnswerWasShowed(getInt(cursor, V_WAS_SHOWED) > 0);
-		dataObj.setRetry(getInt(cursor, V_IS_RETRY) > 0);
+		TacticRatingData ratingInfo = new TacticRatingData();
+		dataObj.setRatingInfo(ratingInfo);
+		ratingInfo.setUser(getString(cursor, V_USER));
+		ratingInfo.setId(getLong(cursor, V_ID));
+
+		TacticItem.Data tacticProblem = new TacticItem.Data();
+		tacticProblem.setId(getLong(cursor, V_ID));
+		tacticProblem.setUser(getString(cursor, V_USER));
+		tacticProblem.setFen(getString(cursor, V_FEN));
+		tacticProblem.setMoveList(getString(cursor, V_MOVE_LIST));
+		tacticProblem.setAttemptCnt(getInt(cursor, V_ATTEMPT_CNT));
+		tacticProblem.setPassedCnt(getInt(cursor, V_PASSED_CNT));
+		tacticProblem.setRating(getInt(cursor, V_RATING));
+		tacticProblem.setAvgSeconds(getInt(cursor, V_AVG_SECONDS));
+		tacticProblem.setSecondsSpent(getInt(cursor, V_SECONDS_SPENT));
+		tacticProblem.setStop(getInt(cursor, V_STOP) > 0);
+		tacticProblem.setAnswerWasShowed(getInt(cursor, V_WAS_SHOWED) > 0);
+		tacticProblem.setRetry(getInt(cursor, V_IS_RETRY) > 0);
+		dataObj.setTacticsProblem(tacticProblem);
 
 		return dataObj;
 	}

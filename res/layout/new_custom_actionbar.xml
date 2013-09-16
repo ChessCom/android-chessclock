@@ -15,7 +15,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:paddingLeft="48dip"
-        android:textSize="20sp"
+        android:textSize="@dimen/actionbar_title_height"
         android:textColor="@color/semitransparent_white_75"
         style="@style/DarkShadowBottom"
         robo:ttf="Bold"

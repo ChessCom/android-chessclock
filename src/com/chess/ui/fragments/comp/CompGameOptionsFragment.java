@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.RoboRadioButton;
+import com.chess.SwitchButton;
 import com.chess.backend.statics.AppConstants;
 import com.chess.backend.statics.Symbol;
 import com.chess.ui.engine.ChessBoardComp;
@@ -22,7 +24,8 @@ import com.chess.ui.views.drawables.RatingProgressDrawable;
  * Date: 26.04.13
  * Time: 7:06
  */
-public class CompGameOptionsFragment extends CommonLogicFragment {
+public class CompGameOptionsFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener,
+		CompoundButton.OnCheckedChangeListener {
 
 	private CompGameConfig.Builder gameConfigBuilder;
 
@@ -30,6 +33,8 @@ public class CompGameOptionsFragment extends CommonLogicFragment {
 	private TextView strengthValueBtn;
 	private RoboRadioButton whitePlayerBtn;
 	private RoboRadioButton blackPlayerBtn;
+	private View autoFlipView;
+	private SwitchButton autoFlipSwitch;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,10 +52,18 @@ public class CompGameOptionsFragment extends CommonLogicFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		autoFlipView = view.findViewById(R.id.autoFlipView);
+		autoFlipView.setOnClickListener(this);
+		autoFlipSwitch = (SwitchButton) view.findViewById(R.id.autoFlipSwitch);
+		autoFlipSwitch.setSwitchChangeListener(this);
+
 		whitePlayerBtn = (RoboRadioButton) view.findViewById(R.id.whitePlayerBtn);
 		RoboRadioButton whiteCompBtn = (RoboRadioButton) view.findViewById(R.id.whiteCompBtn);
 		blackPlayerBtn = (RoboRadioButton) view.findViewById(R.id.blackPlayerBtn);
 		RoboRadioButton blackCompBtn = (RoboRadioButton) view.findViewById(R.id.blackCompBtn);
+
+		whitePlayerBtn.setOnCheckedChangeListener(this);
+		blackPlayerBtn.setOnCheckedChangeListener(this);
 
 		int mode = getAppData().getCompGameMode();
 		if (mode == AppConstants.GAME_MODE_2_PLAYERS) {
@@ -66,6 +79,8 @@ public class CompGameOptionsFragment extends CommonLogicFragment {
 			blackPlayerBtn.setChecked(true);
 			whiteCompBtn.setChecked(true);
 		}
+
+		autoFlipSwitch.setChecked(getAppData().isAutoFlipFor2Players());
 
 		strengthValueBtn = (TextView) view.findViewById(R.id.compLevelValueBtn);
 		selectedCompLevel = getAppData().getCompLevel();
@@ -89,6 +104,8 @@ public class CompGameOptionsFragment extends CommonLogicFragment {
 	public void onClick(View view) {
 		if (view.getId() == R.id.playBtn) {
 			startGame();
+		} else if (view.getId() == R.id.autoFlipView) {
+			autoFlipSwitch.toggle();
 		}
 	}
 
@@ -124,15 +141,32 @@ public class CompGameOptionsFragment extends CommonLogicFragment {
 		gameConfigBuilder.setStrength(selectedCompLevel);
 
 		int mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
-		if (!whitePlayerBtn.isChecked() && blackPlayerBtn.isChecked())
+		if (!whitePlayerBtn.isChecked() && blackPlayerBtn.isChecked()) {
 			mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK;
-		else if (whitePlayerBtn.isChecked() && blackPlayerBtn.isChecked())
+		} else if (whitePlayerBtn.isChecked() && blackPlayerBtn.isChecked()) {
 			mode = AppConstants.GAME_MODE_2_PLAYERS;
-		else if (!whitePlayerBtn.isChecked() && !blackPlayerBtn.isChecked())
+
+		} else if (!whitePlayerBtn.isChecked() && !blackPlayerBtn.isChecked()) {
 			mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
+		}
 
 		getAppData().setCompGameMode(mode);
+		getAppData().setAutoFlipFor2Players(autoFlipSwitch.isChecked());
 
 		return gameConfigBuilder.setMode(mode).build();
+	}
+
+	@Override
+	public void onSwitchChanged(SwitchButton switchButton, boolean checked) {
+		gameConfigBuilder.setAutoFlip(checked);
+	}
+
+	@Override
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		if (whitePlayerBtn.isChecked() && blackPlayerBtn.isChecked()) {
+			autoFlipView.setVisibility(View.VISIBLE);
+		} else {
+			autoFlipView.setVisibility(View.GONE);
+		}
 	}
 }

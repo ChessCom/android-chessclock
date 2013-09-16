@@ -221,7 +221,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <com.chess.backend.image_load.ProgressImageView
                 android:id="@+id/quoteImg"
                 android:layout_width="45dip"
                 android:layout_height="45dip"
@@ -236,7 +236,7 @@
                 android:id="@+id/quoteTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="&quot;Tactics Trainer and Chess Mentor reallyhelp my chess skills&quot;"
+                android:text="&quot;Tactics Trainer and Chess Mentor really help my chess skills&quot;"
                 android:textColor="@color/upgrade_grey_sub_title"
                 android:textSize="12sp"
                 android:paddingBottom="4dip"

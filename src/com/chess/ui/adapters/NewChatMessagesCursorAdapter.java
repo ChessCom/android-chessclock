@@ -21,7 +21,7 @@ public class NewChatMessagesCursorAdapter extends ItemsCursorAdapter {
 
 	public NewChatMessagesCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
-		imageSize = (int) (resources.getDimension(R.dimen.list_item_image_size_big) / resources.getDisplayMetrics().density);
+		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
 	}
 
 	@Override

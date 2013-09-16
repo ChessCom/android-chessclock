@@ -140,9 +140,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			return;
 		}
 
-		numYOffset *= density;
-		textYOffset *= density;
-
 		drawFilter = new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG);
 		boardBackPaint = new Paint();
 
@@ -171,6 +168,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		int coordinateFont = resources.getInteger(R.integer.board_highlight_font);
 		int coordinateColor = resources.getColor(R.color.coordinate_color);
+
+		numYOffset = coordinateFont * density;
+		textYOffset *= density;
 
 		coordinatesPaint.setStyle(Style.FILL);
 		coordinatesPaint.setColor(coordinateColor);
@@ -491,13 +491,15 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	protected void drawCoordinates(Canvas canvas) {
 		if (showCoordinates) {
+			int xOffset = (square / 8) * 7;
+			float yPosition = SQUARES_NUMBER * square - textYOffset;
 			for (int i = 0; i < SQUARES_NUMBER; i++) {
 				if (getBoardFace().isReside()) {
 					canvas.drawText(nums[i], 2, i * square + numYOffset, coordinatesPaint);
-					canvas.drawText(signs[7 - i], i * square + (square / 8) * 7, SQUARES_NUMBER * square - textYOffset, coordinatesPaint);
+					canvas.drawText(signs[7 - i], i * square + xOffset, yPosition, coordinatesPaint);
 				} else {
 					canvas.drawText(nums[7 - i], 2, i * square + numYOffset, coordinatesPaint);
-					canvas.drawText(signs[i], i * square + (square / 8) * 7, SQUARES_NUMBER * square - textYOffset, coordinatesPaint);
+					canvas.drawText(signs[i], i * square + xOffset, yPosition, coordinatesPaint);
 				}
 			}
 		}
@@ -890,7 +892,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	private BitmapShader setBoardFromResource() {
 		Bitmap boardBitmap;
-		BitmapShader shader;BitmapDrawable drawable = (BitmapDrawable) resources.getDrawable(boardsDrawables[boardId]);
+		BitmapShader shader;
+		BitmapDrawable drawable = (BitmapDrawable) resources.getDrawable(boardsDrawables[boardId]);
 		boardBitmap = drawable.getBitmap();
 
 		int bitmapSize;
