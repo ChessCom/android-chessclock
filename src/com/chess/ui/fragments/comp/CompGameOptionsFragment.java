@@ -69,6 +69,7 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 		if (mode == AppConstants.GAME_MODE_2_PLAYERS) {
 			whitePlayerBtn.setChecked(true);
 			blackPlayerBtn.setChecked(true);
+			autoFlipView.setVisibility(View.VISIBLE);
 		} else if (mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) {
 			whiteCompBtn.setChecked(true);
 			blackCompBtn.setChecked(true);
