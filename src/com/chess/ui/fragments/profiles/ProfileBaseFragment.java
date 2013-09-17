@@ -62,9 +62,6 @@ public abstract class ProfileBaseFragment extends CommonLogicFragment {
 				getActivityFace().openFragment(NewMessageFragment.createInstance(username));
 				break;
 			case R.id.menu_challenge:
-				// show popup
-				popupItem.setPositiveBtnId(R.string.yes);
-				popupItem.setNegativeBtnId(R.string.no);
 				String title = getString(R.string.challenge) + Symbol.SPACE + username + Symbol.QUESTION;
 				showPopupDialog(title, CREATE_CHALLENGE_TAG);
 				break;

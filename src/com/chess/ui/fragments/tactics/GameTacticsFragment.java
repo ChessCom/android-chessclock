@@ -11,15 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.TacticTrainerItem;
 import com.chess.backend.entity.api.TacticItem;
 import com.chess.backend.entity.api.TacticRatingData;
+import com.chess.backend.entity.api.TacticTrainerItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.statics.FlurryData;
@@ -93,7 +92,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private TacticsInfoUpdateListener tacticsHintedUpdateListener;
 	private DbTacticBatchSaveListener dbTacticBatchSaveListener;
 
-//	private static final String FIRST_TACTICS_TAG = "first tactics";
+	private static final String FIRST_TACTICS_TAG = "first tactics";
 	private static final String TEN_TACTICS_TAG = "ten tactics reached";
 	private static final String OFFLINE_RATING_TAG = "tactics offline rating";
 	private static final String TACTIC_SOLVED_TAG = "tactic solved popup";
@@ -119,7 +118,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private int correctMovesBeforeHint;
 	private boolean hintWasUsed;
 	private TacticTrainerItem.Data trainerData;
-	private View readyOverlay;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -167,10 +165,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					verifyMove();
 				}
 			} else {
-				readyOverlay.setVisibility(View.VISIBLE);
-
-				lockBoard(false);
-				controlsTacticsView.showStart();
+				showPopupDialog(R.string.ready_, FIRST_TACTICS_TAG);
 			}
 		} else {
 			if (!tacticItem.isStop() && getBoardFace().getMovesCount() > 0) {
@@ -214,6 +209,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		if (findFragmentByTag(TACTIC_SOLVED_TAG) != null) {
 			((BasePopupDialogFragment) findFragmentByTag(TACTIC_SOLVED_TAG)).dismiss();
 		}
+		dismissAllPopups();
 	}
 
 
@@ -928,40 +924,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 	}
 
-	@Override
-	public void onPositiveBtnClick(DialogFragment fragment) {
-		String tag = fragment.getTag();
-		if (tag == null) {
-			super.onPositiveBtnClick(fragment);
-			return;
-		}
-
-		if (tag.equals(TEN_TACTICS_TAG)) {
-			getActivityFace().showPreviousFragment();
-		} else if (tag.equals(OFFLINE_RATING_TAG)) {
-//			loadOfflineTacticsBatch(); // There is a case when you connected to wifi, but no internet connection over it.
-			// user saw popup, don't show it again
-			if (!userSawOfflinePopup) {
-				getNextTactic();
-			}
-			userSawOfflinePopup = true;
-		}
-		super.onPositiveBtnClick(fragment);
-	}
-
-	@Override
-	public void onNotReady() {
-		cancelTacticAndLeave();
-	}
-
-	@Override
-	public void onReady() {
-		readyOverlay.setVisibility(View.GONE);
-		controlsTacticsView.showDefault();
-		loadNewTactic();
-
-	}
-
 	private void loadNewTactic() {
 		noNetwork = !AppUtils.isNetworkAvailable(getActivity());
 		if (noNetwork || serverError) {
@@ -1004,14 +966,46 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	@Override
+	public void onPositiveBtnClick(DialogFragment fragment) {
+		// comment to test if dismissAllPopups works fine
+//		if (getActivity() == null) { // this happens when app was restored and popup re-appears again
+//			return;
+//		}
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(FIRST_TACTICS_TAG)) {
+			loadNewTactic();
+		} else if (tag.equals(TEN_TACTICS_TAG)) {
+			getActivityFace().showPreviousFragment();
+		} else if (tag.equals(OFFLINE_RATING_TAG)) {
+//			loadOfflineTacticsBatch(); // There is a case when you connected to wifi, but no internet connection over it.
+			// user saw popup, don't show it again
+			if (!userSawOfflinePopup) {
+				getNextTactic();
+			}
+			userSawOfflinePopup = true;
+		}
+		super.onPositiveBtnClick(fragment);
+	}
+
+	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
+//		if (getActivity() == null) { // this happens when app was restored and popup re-appears again
+//			return;
+//		}
 		String tag = fragment.getTag();
 		if (tag == null) {
 			super.onNegativeBtnClick(fragment);
 			return;
 		}
 
-		if (tag.equals(OFFLINE_RATING_TAG)) {
+		if (tag.equals(FIRST_TACTICS_TAG)) { // Cancel
+			cancelTacticAndLeave();
+		} else if (tag.equals(OFFLINE_RATING_TAG)) {
 			cancelTacticAndLeave();
 		}
 		super.onNegativeBtnClick(fragment);
@@ -1068,17 +1062,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	private void widgetsInit(View view) {
 		moveResultTxt = (TextView) view.findViewById(R.id.moveResultTxt);
-
-		{ // Ready Overlay adjustments
-			readyOverlay = view.findViewById(R.id.readyOverlay);
-
-			int sideInset = getResources().getDisplayMetrics().widthPixels / 8;
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-			params.setMargins(sideInset, sideInset * 2, sideInset, 0);
-			params.addRule(RelativeLayout.ALIGN_BOTTOM, R.id.boardView);
-			readyOverlay.setLayoutParams(params);
-		}
 
 		topPanelView = (PanelInfoTacticsView) view.findViewById(R.id.topPanelView);
 		topPanelView.setPlayerScore(getAppData().getUserTacticsRating());

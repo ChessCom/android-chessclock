@@ -38,6 +38,7 @@ import com.chess.model.GameListCurrentItem;
 import com.chess.utilities.AppUtils;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
+import com.google.gson.Gson;
 
 import java.util.Random;
 
@@ -181,8 +182,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 
 	private void sendNotificationBroadcast(Context context, String type) {
-
-
 		Intent notifyIntent = new Intent(IntentConstants.NOTIFICATIONS_UPDATE);
 		notifyIntent.putExtra(IntentConstants.TYPE, type);
 		context.sendBroadcast(notifyIntent);
@@ -194,7 +193,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 		friendRequestItem.setMessage(intent.getStringExtra("message"));
 		friendRequestItem.setUsername(intent.getStringExtra("sender"));
 		friendRequestItem.setCreatedAt(Long.parseLong(intent.getStringExtra("created_at")));
-		friendRequestItem.setAvatar(intent.getStringExtra("avatar"));
+		friendRequestItem.setAvatar(intent.getStringExtra("avatar_url"));
+		friendRequestItem.setRequestId(Long.parseLong(intent.getStringExtra("request_id")));
+		Log.d(TAG, " _________________________________");
+		Log.d(TAG, " FriendRequestItem = " + new Gson().toJson(friendRequestItem));
 
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
@@ -208,7 +210,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 		chatNotificationItem.setUsername(intent.getStringExtra("sender"));
 		chatNotificationItem.setGameId(Long.parseLong(intent.getStringExtra("game_id")));
 		chatNotificationItem.setCreatedAt(Long.parseLong(intent.getStringExtra("created_at")));
-		chatNotificationItem.setAvatar(intent.getStringExtra("avatar"));
+		chatNotificationItem.setAvatar(intent.getStringExtra("avatar_url"));
+		Log.d(TAG, " _________________________________");
+		Log.d(TAG, " NewChatNotificationItem = " + new Gson().toJson(chatNotificationItem));
 
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
@@ -220,8 +224,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		gameOverNotificationItem.setMessage(intent.getStringExtra("message"));
 		gameOverNotificationItem.setGameId(Long.parseLong(intent.getStringExtra("game_id")));
-		gameOverNotificationItem.setAvatar(intent.getStringExtra("avatar"));
-
+		gameOverNotificationItem.setAvatar(intent.getStringExtra("avatar_url"));
+		Log.d(TAG, " _________________________________");
+		Log.d(TAG, " GameOverNotificationItem = " + new Gson().toJson(gameOverNotificationItem));
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
 		DbDataManager.saveGameOverNotification(contentResolver, gameOverNotificationItem, username);
@@ -231,9 +236,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 		NewChallengeNotificationItem challengeNotificationItem = new NewChallengeNotificationItem();
 
 		challengeNotificationItem.setUsername(intent.getStringExtra("sender"));
-		challengeNotificationItem.setAvatar(intent.getStringExtra("avatar"));
+		challengeNotificationItem.setAvatar(intent.getStringExtra("avatar_url"));
 		challengeNotificationItem.setChallengeId(Long.parseLong(intent.getStringExtra("challenge_id")));
-
+		Log.d(TAG, " _________________________________");
+		Log.d(TAG, " NewChallengeNotificationItem = " + new Gson().toJson(challengeNotificationItem));
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
 		DbDataManager.saveNewChallengeNotification(contentResolver, challengeNotificationItem, username);

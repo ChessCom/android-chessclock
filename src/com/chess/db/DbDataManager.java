@@ -2019,6 +2019,7 @@ public class DbDataManager {
 
 		ContentValues values = new ContentValues();
 
+		values.put(V_ID, item.getRequestId());
 		values.put(V_CREATE_DATE, item.getCreatedAt());
 		values.put(V_USER, username);
 		values.put(V_SEEN, item.userSawIt() ? 1 : 0);
@@ -2027,6 +2028,7 @@ public class DbDataManager {
 		values.put(V_USER_AVATAR, item.getAvatar());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
+		Log.d("TEST", "friend request saved = " + values);
 	}
 
 	public static void saveNewChatNotification(ContentResolver contentResolver, NewChatNotificationItem item, String username) {

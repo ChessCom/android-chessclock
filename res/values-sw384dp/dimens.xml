@@ -19,5 +19,6 @@
 	<dimen name="new_top_button_height">44dip</dimen>
 	<dimen name="game_controls_button_height">44dip</dimen>
 	<dimen name="article_detail_image_height">213dip</dimen>
+	<dimen name="popup_title_text_size">21sp</dimen>
 
 </resources>

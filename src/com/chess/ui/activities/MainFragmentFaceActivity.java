@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import com.chess.R;
@@ -113,6 +114,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		getActionBarHelper().showActionBar(showActionBar);
 
+		Log.d("TEST", " onPostCreated ");
 		updateNotificationsBadge();
 	}
 
@@ -402,12 +404,15 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private class NotificationsUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			Log.d("TEST", " onReceive= ");
+
 			updateNotificationsBadge();
 		}
 	}
 
 	private void updateNotificationsBadge() {
 		int notificationsCnt = DbDataManager.getUnreadNotificationsCnt(getContentResolver(), getMeUsername());
+		Log.d("TEST", " total unread notifications = " + notificationsCnt);
 		setBadgeValueForId(R.id.menu_notifications, notificationsCnt);
 	}
 

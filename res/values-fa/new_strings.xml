@@ -1,6 +1,5 @@
 <resources>
 
-	<string name="unable_to_move_on_vacation">قادر به حرکت می کند تا در تعطیلات</string>
 	<string name="current_games">بازی های کنونی</string>
 	<string name="finished_games">بازی به پایان رسید</string>
 	<string name="no_challenges_during_vacation">چالش ها نشان داده نخواهد شد در طول تعطیلات</string>

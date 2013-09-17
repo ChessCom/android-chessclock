@@ -63,5 +63,6 @@
 	<dimen name="new_tactics_clock_icon_padding_top">4dip</dimen>
 	<dimen name="actionbar_title_height">24sp</dimen>
 	<dimen name="article_detail_image_height">213dip</dimen>
+	<dimen name="popup_title_text_size">21sp</dimen>
 
 </resources>

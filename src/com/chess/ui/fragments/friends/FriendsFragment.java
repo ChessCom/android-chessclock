@@ -131,9 +131,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 			opponentName = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
-			// show popup
-			popupItem.setPositiveBtnId(R.string.yes);
-			popupItem.setNegativeBtnId(R.string.no);
+
 			String title = getString(R.string.challenge) + Symbol.SPACE + opponentName + Symbol.QUESTION;
 			showPopupDialog(title, CREATE_CHALLENGE_TAG);
 

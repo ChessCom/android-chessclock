@@ -8,13 +8,18 @@
 	android:orientation="vertical"
 	android:minWidth="@dimen/popup_dialog_width"
 	android:paddingTop="@dimen/popup_top_padding"
-	android:paddingBottom="@dimen/popup__bottom_padding"
-	android:paddingLeft="@dimen/popup_side_padding"
-	android:paddingRight="@dimen/popup_side_padding"
 	android:background="@drawable/popup_white_back"
 	android:layout_marginRight="@dimen/popup_side_margin"
 	android:layout_marginLeft="@dimen/popup_side_margin"
+	android:paddingBottom="1dip"
+	android:paddingLeft="1dip"
+	android:paddingRight="1dip"
 	>
+<!--
+	android:paddingBottom="@dimen/popup__bottom_padding"
+	android:paddingLeft="@dimen/popup_side_padding"
+	android:paddingRight="@dimen/popup_side_padding"
+-->
 
 	<com.chess.RoboTextView
 		android:id="@+id/popupTitle"
@@ -23,7 +28,7 @@
 		android:maxWidth="@dimen/popup_dialog_text_max_width"
         android:paddingBottom="@dimen/default_scr_bottom_padding"
 		android:gravity="center"
-		android:textSize="19sp"
+		android:textSize="@dimen/popup_title_text_size"
 		android:textColor="@color/new_dark_green"
         custom:ttf="Bold"
         android:text="Title"
@@ -52,10 +57,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/Button.Grey2Solid.NoBorder.Light"
-            android:text="@string/cancel"
+            style="@style/Rect.Bottom.Left.Grey"
+            android:text="@string/ic_close"
+			android:textSize="@dimen/game_controls_icon_size"
+			android:textColor="@color/white"
             android:layout_gravity="center_horizontal"
-            android:layout_marginRight="2dip"
+			custom:ttf="Icon"
             />
 
 		<com.chess.RoboButton
@@ -63,23 +70,25 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			style="@style/Button.Grey2Solid.NoBorder.Light"
-			android:text="@string/not_now"
+			style="@style/Rect.Bottom.Middle.Grey"
+			android:text="@string/ic_arrow_right"
+			android:textSize="@dimen/game_controls_icon_size"
+			android:textColor="@color/white"
 			android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="2dip"
-            android:layout_marginRight="2dip"
+			custom:ttf="Icon"
 			/>
 
         <com.chess.RoboButton
             android:id="@+id/positiveBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Button.OrangeNoBorder"
-            android:text="@string/ok"
+            style="@style/Rect.Bottom.Right.Orange"
+            android:text="@string/ic_check"
+			android:textSize="@dimen/game_controls_icon_size"
+			android:textColor="@color/white"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-            android:layout_marginLeft="2dip"
-            android:minHeight="@dimen/grey_button_height"
+			custom:ttf="Icon"
             />
 
 	</LinearLayout>

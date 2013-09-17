@@ -96,7 +96,6 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 	public void onResume() {
 		super.onResume();
 		getActivityFace().addOnOpenMenuListener(this);
-
 	}
 
 	@Override
@@ -244,12 +243,12 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 		public void onClick(View view) {
 			if (view.getId() == R.id.acceptBtn) {
 				Integer position = (Integer) view.getTag(R.id.list_item_id);
-				// TODO set correct requestId
-				acceptFriendRequest();
+				Cursor cursor = (Cursor) friendRequestsAdapter.getItem(position);
+				acceptFriendRequest(DbDataManager.getLong(cursor, DbScheme.V_ID));
 			} else if (view.getId() == R.id.cancelBtn) {
 				Integer position = (Integer) view.getTag(R.id.list_item_id);
-				// TODO set correct requestId
-				declineFriendRequest();
+				Cursor cursor = (Cursor) friendRequestsAdapter.getItem(position);
+				declineFriendRequest(DbDataManager.getLong(cursor, DbScheme.V_ID));
 			}
 		}
 	}
@@ -275,14 +274,14 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 		}
 	}
 
-	private void acceptFriendRequest() {
-		LoadItem loadItem = LoadHelper.acceptFriendRequest(getUserToken(), 0);  // TODO set correct requestId
+	private void acceptFriendRequest(long requestId) {
+		LoadItem loadItem = LoadHelper.acceptFriendRequest(getUserToken(), requestId);
 		successToastMsgId = R.string.request_accepted;
 		new RequestJsonTask<FriendRequestResultItem>(friendRequestUpdateListener).executeTask(loadItem);
 	}
 
-	private void declineFriendRequest() {
-		LoadItem loadItem = LoadHelper.declineFriendRequest(getUserToken(), 0); // TODO set correct requestId
+	private void declineFriendRequest(long requestId) {
+		LoadItem loadItem = LoadHelper.declineFriendRequest(getUserToken(), requestId);
 		successToastMsgId = R.string.request_declined;
 
 		new RequestJsonTask<FriendRequestResultItem>(friendRequestUpdateListener).executeTask(loadItem);

@@ -466,7 +466,19 @@
         <item name="btn_solid">@color/blue_button</item>
     </style>
 
-    <!--====================================== List Items(can't be derived from Text or Button) =================== -->
+	<style name="Rect.Bottom.Left.Grey">
+		<item name="btn_rect_pos">bottomLeft</item>
+
+		<item name="btn_solid">@color/new_normal_grey</item>
+	</style>
+
+	<style name="Rect.Bottom.Middle.Grey">
+		<item name="btn_rect_pos">bottomMiddle</item>
+
+		<item name="btn_solid">@color/new_normal_grey</item>
+	</style>
+
+	<!--====================================== List Items(can't be derived from Text or Button) =================== -->
 
     <style name="ListItem">
         <!--ButtonDrawable params-->

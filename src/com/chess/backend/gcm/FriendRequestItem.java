@@ -18,6 +18,7 @@ public class FriendRequestItem {
 	private String message;
 	private long createdAt;
 	private String avatar_url;
+	private long request_id;
 	/* Local additions */
 	private boolean seen;
 
@@ -61,4 +62,11 @@ public class FriendRequestItem {
 		return seen;
 	}
 
+	public long getRequestId() {
+		return request_id;
+	}
+
+	public void setRequestId(long request_id) {
+		this.request_id = request_id;
+	}
 }

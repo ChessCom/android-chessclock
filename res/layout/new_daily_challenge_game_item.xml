@@ -3,10 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     style="@style/ListItem"
     android:gravity="center_vertical"
+    android:paddingTop="8dip"
+    android:paddingBottom="8dip"
     android:paddingRight="10dip"
+	android:minHeight="@dimen/new_nav_menu_item_height"
     >
 
     <com.chess.backend.image_load.AvatarView
@@ -14,10 +16,7 @@
         android:layout_width="@dimen/daily_list_item_image_size"
         android:layout_height="@dimen/daily_list_item_image_size"
         android:layout_marginLeft="15dip"
-        android:layout_marginTop="10dip"
-        android:layout_marginBottom="10dip"
         android:layout_marginRight="10dip"
-        android:src="@drawable/img_profile_picture_stub"
         android:contentDescription="@string/image"
         android:layout_centerVertical="true"
         />
@@ -30,7 +29,6 @@
         android:layout_toRightOf="@id/playerImg"
         android:layout_centerVertical="true"
         />
-
 
     <com.chess.RoboTextView
         android:id="@+id/cancelBtn"

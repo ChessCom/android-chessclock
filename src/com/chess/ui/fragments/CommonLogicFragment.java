@@ -513,7 +513,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 						passwordEdt.requestFocus();
 						break;
 					case ServerErrorCodes.FACEBOOK_USER_NO_ACCOUNT:
-						popupItem.setPositiveBtnId(R.string.sign_up);
 						showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
 						break;
 					default:

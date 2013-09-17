@@ -54,37 +54,6 @@
             android:layout_marginTop="-1px"
             />
 
-		<!--Ready overlay-->
-		<RelativeLayout
-			android:id="@+id/readyOverlay"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:minHeight="160dip"
-			android:background="@drawable/popup_white_back"
-			android:paddingTop="@dimen/invite_overlay_padding_top"
-			android:paddingBottom="@dimen/invite_overlay_padding_bottom"
-			android:visibility="gone"
-			>
-
-			<!--Ready Title-->
-			<com.chess.RoboTextView
-				android:id="@+id/readyTitleTxt"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:maxWidth="@dimen/popup_dialog_text_max_width"
-				android:layout_centerInParent="true"
-				android:gravity="center"
-				android:textSize="26sp"
-				android:textColor="@color/new_subtitle_dark_grey"
-				android:text="@string/ready_"
-				custom:ttf="Bold"
-				/>
-			<!--android:paddingBottom="@dimen/invite_overlay_padding_title_bottom"-->
-
-
-
-		</RelativeLayout>
-
     </RelativeLayout>
 
     <com.chess.ui.views.PanelInfoTacticsView

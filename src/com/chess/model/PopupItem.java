@@ -27,8 +27,8 @@ public class PopupItem implements Parcelable {
 	private int buttons;
 
     public PopupItem() {
-        this.positiveBtnId = R.string.ok;
-        this.negativeBtnId = R.string.cancel;
+        this.positiveBtnId = R.string.ic_check;
+        this.negativeBtnId = R.string.ic_close;
         title = Symbol.EMPTY;
         message = Symbol.EMPTY;
     }

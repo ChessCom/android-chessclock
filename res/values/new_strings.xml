@@ -10,7 +10,7 @@
     <string name="vs">vs</string>
     <string name="to">to</string>
 
-	<string name="unable_to_move_on_vacation">Unable to make moves until on vacation</string>
+	<string name="leave_vacation_to_submit_move_q">Leave Vacation to submit move?</string>
     <string name="sign_up_with_facebook"><b>Sign Up</b> with <b>Facebook</b></string>
 	<string name="current_games">Current Games</string>
 	<string name="finished_games">Finished Games</string>
@@ -242,7 +242,6 @@
     <string name="days_move">days/move</string>
     <string name="unable_to_select_this_photo">Unable to pick this photo</string>
     <string name="optimizing_image">Image optimization…</string>
-    <string name="you_cant_move_on_vacation">You can\'t move while on vacation.</string>
     <string name="request_sent">Request sent</string>
     <string name="username_not_found">Username not found</string>
     <string name="you_have_not_added_friends_yet">You haven\'t added friends yet</string>

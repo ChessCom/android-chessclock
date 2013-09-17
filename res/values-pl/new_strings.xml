@@ -1,6 +1,5 @@
 <resources>
 
-	<string name="unable_to_move_on_vacation">Nie można uczynić ruchy dopiero na wakacjach</string>
 	<string name="current_games">Aktualne Gry</string>
 	<string name="finished_games">Gotowe Gry</string>
 	<string name="no_challenges_during_vacation">Wyzwania nie pokaże w czasie wakacji</string>

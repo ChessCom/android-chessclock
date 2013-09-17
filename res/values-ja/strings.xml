@@ -187,7 +187,6 @@
 	<string name="upgrade_to_full_videos">ビデオへのフルアクセスのためにアップグレードしましょう​​！</string>
 	<string name="removeAds">アップグレードして、広告を削除する！</string>
 	<string name="accept_draw_q">描画を受け入れる？</string>
-	<string name="ready_for_first_tactics_q">あなたの最初の戦術のための準備ができていますか？</string>
 
 	<string name="max_tactics_reached">あなたは今日のために戦術の最大数に達している。あなたはより多くの戦術を行うことができるようにしたいと思います？</string>
 	<string name="yes">はい</string>

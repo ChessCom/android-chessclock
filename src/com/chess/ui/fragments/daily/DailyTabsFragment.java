@@ -66,8 +66,6 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 	public void onResume() {
 		super.onResume();
 		updateTabs();
-
-		setBadgeValueForId(R.id.menu_games, 7);
 	}
 
 	@Override

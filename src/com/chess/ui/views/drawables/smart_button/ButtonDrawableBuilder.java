@@ -372,6 +372,20 @@ public class ButtonDrawableBuilder {
 
 				return rectButtonDrawable;
 			}
+			case R.style.Rect_Bottom_Middle_Grey: {
+				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+				rectButtonDrawable.rectPosition = BOTTOM_MIDDLE;
+				createRect(rectButtonDrawable, resources, R.color.new_normal_grey);
+
+				return rectButtonDrawable;
+			}
+			case R.style.Rect_Bottom_Left_Grey: {
+				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+				rectButtonDrawable.rectPosition = BOTTOM_LEFT;
+				createRect(rectButtonDrawable, resources, R.color.new_normal_grey);
+
+				return rectButtonDrawable;
+			}
 			case R.style.Rect_Bottom_Right_Red: {
 				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
 				rectButtonDrawable.rectPosition = BOTTOM_RIGHT;

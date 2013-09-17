@@ -217,7 +217,6 @@
 
 
     <!--Tactics-->
-    <string name="ready_for_first_tactics_q">Are you ready for your first tactic?</string>
     <string name="max_tactics_reached">You have hit your maximum number of tactics for today. Would you like to be able to do more tactics?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>

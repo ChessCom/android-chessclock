@@ -1,6 +1,5 @@
 <resources>
 
-	<string name="unable_to_move_on_vacation">Incapaz de fazer movimentos até nas férias</string>
 	<string name="current_games">Jogos Atuais</string>
 	<string name="finished_games">Jogos Acabados</string>
 	<string name="no_challenges_during_vacation">Desafios não será exibido durante as férias</string>

@@ -850,8 +850,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.YOUR_ARE_ON_VACATAION) {
 
-					popupItem.setPositiveBtnId(R.string.end_vacation);
-					showPopupDialog(R.string.you_cant_move_on_vacation, END_VACATION_TAG);
+					showPopupDialog(R.string.leave_vacation_to_submit_move_q, END_VACATION_TAG);
 				} else {
 					super.errorHandle(resultCode);
 				}

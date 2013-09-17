@@ -258,10 +258,14 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 			dailyGameConfigBuilder.setOpponentName(secondFriendUserName);
 			createDailyChallenge();
 		} else if (view.getId() == R.id.playFriendView) {
-			getActivityFace().changeRightFragment(new ChallengeFriendFragment());
+			ChallengeFriendFragment challengeFriendFragment;
 			if (positionMode == CENTER_MODE) {
+				challengeFriendFragment = ChallengeFriendFragment.createInstance(CENTER_MODE);
 				getActivityFace().toggleRightMenu();
+			} else {
+				challengeFriendFragment = new ChallengeFriendFragment();
 			}
+			getActivityFace().changeRightFragment(challengeFriendFragment);
 		} else if (view.getId() == R.id.vsCompHeaderView) {
 			CompGameConfig.Builder gameConfigBuilder = new CompGameConfig.Builder();
 			CompGameConfig compGameConfig = gameConfigBuilder.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE).build();

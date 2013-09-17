@@ -18,7 +18,4 @@ public interface GameTacticsFace extends GameFace {
 
 	void showExplorer();
 
-	void onNotReady();
-
-	void onReady();
 }

@@ -24,6 +24,7 @@ import com.chess.db.DbScheme;
 import com.chess.ui.adapters.RecentOpponentsCursorAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.home.HomePlayFragment;
 import com.facebook.FacebookException;
 import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Session;
@@ -46,6 +47,20 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 	private View emailTxt;
 	private EditButton emailEditBtn;
 	private Button addEmailBtn;
+
+	public ChallengeFriendFragment() {
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, RIGHT_MENU_MODE);
+		setArguments(bundle);
+	}
+
+	public static ChallengeFriendFragment createInstance(int mode){
+		ChallengeFriendFragment fragment = new ChallengeFriendFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, mode);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,9 +102,13 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 
 		int id = view.getId();
 		if (id == R.id.challengeFriendHeaderView) {
-			getActivityFace().toggleRightMenu();
+			if (getArguments().getInt(MODE) == CENTER_MODE) {
+				getActivityFace().toggleRightMenu();
+			} else {
+				getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
+			}
 		} else if (id == R.id.chesscomFriendsView) {
-			getActivityFace().openFragment(new FriendsFragment()); // TODO add friend selection
+			getActivityFace().openFragment(new FriendsFragment());
 			getActivityFace().toggleRightMenu();
 		} else if (id == R.id.dailyPlayBtn) {
 			createDailyChallenge(getTextFromField(usernameEditBtn));

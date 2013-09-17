@@ -248,9 +248,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			gameListCurrentItem = DbDataManager.getDailyCurrentGameListFromCursor(cursor);
 
 			if (gameListCurrentItem.isDrawOffered() > 0) {
-				popupItem.setPositiveBtnId(R.string.accept);
-				popupItem.setNeutralBtnId(R.string.decline);
-				popupItem.setNegativeBtnId(R.string.game);
+				popupItem.setNeutralBtnId(R.string.ic_play);
 				popupItem.setButtons(3);
 
 				showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
@@ -266,12 +264,10 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		int section = sectionedAdapter.getCurrentSection(pos);
 
 		if (section == FINISHED_GAMES_SECTION) {
-//			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-//			DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
-//
-//			Intent intent = new Intent(getContext(), ChatOnlineActivity.class);
-//			intent.putExtra(BaseGameItem.GAME_ID, finishedItem.getGameId());
-//			startActivity(intent);
+			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
+			DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
+
+			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
 		} else {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
 			gameListCurrentItem = DbDataManager.getDailyCurrentGameListFromCursor(cursor);
@@ -283,7 +279,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 							getString(R.string.resign_or_abort)},
 							gameListItemDialogListener)
 					.create().show();
-
 		}
 		return true;
 	}
@@ -375,9 +370,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
-
 			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
 					RestHelper.V_ACCEPTDRAW, gameListCurrentItem.getTimestamp());
+
 			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
 		}
 		super.onPositiveBtnClick(fragment);
@@ -392,11 +387,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
-
-			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
-					RestHelper.V_DECLINEDRAW, gameListCurrentItem.getTimestamp());
-
-			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
+			ChessBoardOnline.resetInstance();
+			getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
 		}
 		super.onNeutralBtnCLick(fragment);
 	}
@@ -410,11 +402,10 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
-			ChessBoardOnline.resetInstance();
+			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
+					RestHelper.V_DECLINEDRAW, gameListCurrentItem.getTimestamp());
 
-//			Intent intent = new Intent(getContext(), GameOnlineScreenActivity.class); // TODO adjust for fragment
-//			intent.putExtra(BaseGameItem.GAME_ID, gameListCurrentItem.getGameId());
-//			startActivity(intent);
+			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
 		}
 		super.onNegativeBtnClick(fragment);
 	}

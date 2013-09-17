@@ -26,17 +26,20 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
 	protected int buttonsNumber;
 	protected boolean isShowed;
 	protected boolean isPaused;
+	protected float density;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setStyle(STYLE_NO_FRAME, 0);
+		setStyle(STYLE_NO_TITLE, 0);
 
 		if (getArguments() != null) {
 			popupItem = getArguments().getParcelable(POPUP_ITEM);
 		} else {
 			popupItem = savedInstanceState.getParcelable(POPUP_ITEM);
 		}
+
+		density = getResources().getDisplayMetrics().density;
 	}
 
 	public void updatePopupItem(PopupItem popupItem) {

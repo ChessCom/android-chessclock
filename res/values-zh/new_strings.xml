@@ -1,6 +1,5 @@
 <resources>
 
-	<string name="unable_to_move_on_vacation">无法移动，直到休假</string>
 	<string name="current_games">本届运动会</string>
 	<string name="finished_games">已完成的游戏</string>
 	<string name="no_challenges_during_vacation">挑战将不会显示在假期</string>
