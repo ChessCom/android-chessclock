@@ -23,7 +23,7 @@ import java.util.TreeSet;
 
 public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewCompFace {
 
-	public static final long HINT_REVERSE_DELAY = 1500;
+	public static final long HINT_REVERSE_DELAY = 500;
 
 	private static final String DIVIDER_1 = "|";
 	private static final String DIVIDER_2 = ":";
