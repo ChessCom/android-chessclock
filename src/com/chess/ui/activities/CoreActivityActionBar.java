@@ -10,14 +10,13 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.util.SparseBooleanArray;
 import android.view.*;
 import android.widget.SearchView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.ui.interfaces.PopupDialogFace;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class CoreActivityActionBar extends ActionBarActivity implements View.OnClickListener
 		, PopupDialogFace {
@@ -25,7 +24,8 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected Bundle extras;
 	protected Handler handler;
 
-	private HashMap<Integer, Boolean> actionMenuMap;
+	private SparseBooleanArray actionMenuMap;
+	private ActionBarDrawerToggle mDrawerToggle;
 
 	// we may have this add on every screen, so control it on the lowest level
 	//protected MoPubView moPubView;
@@ -41,15 +41,32 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH && getActionBar() != null) {
-			getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME
+
+		adjustActionBarHomeIcon();
+
+
+		handler = new Handler();
+		extras = getIntent().getExtras();
+		actionMenuMap = new SparseBooleanArray();
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void adjustActionBarHomeIcon() {
+		ActionBar actionBar = getActionBar();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH && actionBar != null) {
+			actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME
 					| ActionBar.DISPLAY_HOME_AS_UP
 					| ActionBar.DISPLAY_SHOW_CUSTOM);
 		}
 
-		handler = new Handler();
-		extras = getIntent().getExtras();
-		actionMenuMap = new HashMap<Integer, Boolean>();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 && actionBar != null) {
+			hideUpIcon(actionBar);
+		}
+	}
+
+	@TargetApi(18)
+	private void hideUpIcon(ActionBar actionBar) {
+		actionBar.setHomeAsUpIndicator(getResources().getDrawable(R.drawable.ic_ab_back_empty));
 	}
 
 	protected void initUpgradeAndAdWidgets() {
@@ -107,8 +124,10 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	public void adjustActionBar() {
-		for (Map.Entry<Integer, Boolean> entry : actionMenuMap.entrySet()) {
-			getActionBarHelper().showMenuItemById(entry.getKey(), entry.getValue());
+		for (int i = 0; i < actionMenuMap.size(); i++) {
+			int key = actionMenuMap.keyAt(i);
+			boolean value = actionMenuMap.valueAt(i);
+			getActionBarHelper().showMenuItemById(key, value);
 		}
 	}
 
@@ -125,16 +144,20 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.new_action_menu, menu);
 
-		for (Map.Entry<Integer, Boolean> entry : actionMenuMap.entrySet()) {
-			getActionBarHelper().showMenuItemById(entry.getKey(), entry.getValue(), menu);
+		for (int i = 0; i < actionMenuMap.size(); i++) {
+			int key = actionMenuMap.keyAt(i);
+			boolean value = actionMenuMap.valueAt(i);
+			getActionBarHelper().showMenuItemById(key, value, menu);
 		}
 
-		if(HONEYCOMB_PLUS_API){
+
+		if (HONEYCOMB_PLUS_API) {
 			adjustSearchView(menu);
 		}
 		return super.onCreateOptionsMenu(menu);
@@ -193,14 +216,16 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	}
 
 	@Override
-	protected void onSearchAutoCompleteQuery(String query) { }
+	protected void onSearchAutoCompleteQuery(String query) {
+	}
 
 	@Override
-	protected void onSearchQuery(String query) { }
+	protected void onSearchQuery(String query) {
+	}
 
 	@Override
 	public void onClick(View view) {
-		if(view.getId() == R.id.re_signin){
+		if (view.getId() == R.id.re_signin) {
 			signInUser();
 		}
 	}
