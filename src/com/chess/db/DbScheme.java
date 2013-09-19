@@ -9,8 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 64;  // change version on every DB scheme changes
-
+	static final int DATABASE_VERSION = 66;  // change version on every DB scheme changes
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
 
@@ -41,9 +40,9 @@ public class DbScheme {
 		FORUM_CATEGORIES,
 		FORUM_POSTS,
 
-		TACTICS_BATCH,
+//		TACTICS_BATCH,
 		TACTICS_TRAINER,
-		TACTICS_RESULTS,
+		TACTICS_RATING_INFO,
 
 		LESSONS_CATEGORIES,
 		LESSONS_COURSE_LIST,
@@ -115,6 +114,8 @@ public class DbScheme {
 	public static final String V_AVG_SECONDS = "avg_seconds";
 	public static final String V_SECONDS_SPENT = "seconds_spent";
 	public static final String V_STOP = "stop";
+	public static final String V_COMPLETED = "completed";
+	public static final String V_HINT_WAS_USED = "hint_was_used";
 	public static final String V_WAS_SHOWED = "was_showed";
 	public static final String V_IS_RETRY = "is_retry";
 
@@ -264,19 +265,21 @@ public class DbScheme {
 
 	void createMainTables() {
 
-		createTablesArray[Tables.TACTICS_BATCH.ordinal()] = createTableForName(Tables.TACTICS_BATCH)
-				+ addField_Long(V_ID)
-				+ addField_Long(V_SECONDS_SPENT)
-				+ addField_Int(V_ATTEMPT_CNT)
-				+ addField_Int(V_PASSED_CNT)
-				+ addField_Int(V_RATING)
-				+ addField_Int(V_STOP)
-				+ addField_Int(V_WAS_SHOWED)
-				+ addField_Int(V_IS_RETRY)
-				+ addField_Text(V_FEN)
-				+ addField_Text(V_MOVE_LIST)
-				+ addField_Text(V_USER)
-				+ addField_Text(V_AVG_SECONDS, true);
+//		createTablesArray[Tables.TACTICS_BATCH.ordinal()] = createTableForName(Tables.TACTICS_BATCH)
+//				+ addField_Long(V_ID)
+//				+ addField_Long(V_SECONDS_SPENT)
+//				+ addField_Int(V_ATTEMPT_CNT)
+//				+ addField_Int(V_PASSED_CNT)
+//				+ addField_Int(V_RATING)
+//				+ addField_Int(V_STOP)
+//				+ addField_Int(V_COMPLETED)
+//				+ addField_Int(V_HINT_WAS_USED)
+//				+ addField_Int(V_WAS_SHOWED)
+//				+ addField_Int(V_IS_RETRY)
+//				+ addField_Text(V_FEN)
+//				+ addField_Text(V_MOVE_LIST)
+//				+ addField_Text(V_USER)
+//				+ addField_Text(V_AVG_SECONDS, true);
 
 		createTablesArray[Tables.TACTICS_TRAINER.ordinal()] = createTableForName(Tables.TACTICS_TRAINER)
 				+ addField_Long(V_ID)
@@ -285,6 +288,8 @@ public class DbScheme {
 				+ addField_Int(V_PASSED_CNT)
 				+ addField_Int(V_RATING)
 				+ addField_Int(V_STOP)
+				+ addField_Int(V_COMPLETED)
+				+ addField_Int(V_HINT_WAS_USED)
 				+ addField_Int(V_WAS_SHOWED)
 				+ addField_Int(V_IS_RETRY)
 				+ addField_Text(V_FEN)
@@ -292,9 +297,9 @@ public class DbScheme {
 				+ addField_Text(V_USER)
 				+ addField_Text(V_AVG_SECONDS, true);
 
-		createTablesArray[Tables.TACTICS_RESULTS.ordinal()] = createTableForName(Tables.TACTICS_RESULTS)
+		createTablesArray[Tables.TACTICS_RATING_INFO.ordinal()] = createTableForName(Tables.TACTICS_RATING_INFO)
 				+ addField_Text(V_USER)
-				+ addField_Long(V_ID)
+				+ addField_Long(V_ID) // id of tactic which it belongs to
 				+ addField_Text(V_SCORE)
 				+ addField_Int(V_USER_RATING_CHANGE)
 				+ addField_Int(V_USER_RATING)

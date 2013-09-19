@@ -17,13 +17,14 @@ public class TacticRatingData {
         }
 	 */
 
-	private String user;
-	private long id;
 	private float score;
 	private int user_rating_change;
 	private int user_rating;
 	private int problem_rating_change;
 	private int problem_rating;
+	/* Local addition */
+	private String user;
+	private long id;
 
 	public String getUser() {
 		return user;

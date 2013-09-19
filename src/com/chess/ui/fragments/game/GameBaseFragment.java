@@ -193,6 +193,10 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	}
 
 	protected void playLastMoveAnimation() {
+		if (getActivity() == null) {
+			return;
+		}
+
 		Move move = getBoardFace().getNextMove();
 		if (move == null) {
 			return;
@@ -200,9 +204,8 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		boardView.setMoveAnimator(move, true);
 		getBoardFace().takeNext();
 
-		if (getActivity() != null) {
-			invalidateGameScreen();
-		}
+		invalidateGameScreen();
+
 	}
 
 	public Context getMeContext() {

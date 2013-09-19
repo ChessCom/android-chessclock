@@ -806,10 +806,7 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public Move convertMoveAlgebraic(String move) {
 		int[] moveFT = MoveParser.parse(this, move);
-		Move move1 = convertMove(moveFT);
-		Log.d("TEST", " new moveStr = " + move + " new move = " + move1.toString());
-
-		return move1;
+		return convertMove(moveFT);
 	}
 
 	@Override

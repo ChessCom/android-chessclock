@@ -1,7 +1,7 @@
 package com.chess.backend.tasks;
 
 import android.content.res.Resources;
-import com.chess.backend.entity.api.TacticItem;
+import com.chess.backend.entity.api.TacticProblemItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.statics.StaticData;
 import com.google.gson.Gson;
@@ -17,12 +17,12 @@ import java.util.ArrayList;
  * @created 24.12.12
  * @modified 24.12.12
  */
-public class GetOfflineTacticsBatchTask extends AbstractUpdateTask<TacticItem.Data, Integer> {
+public class GetOfflineTacticsBatchTask extends AbstractUpdateTask<TacticProblemItem.Data, Integer> {
 
 	private Resources resources;
 
-	public GetOfflineTacticsBatchTask(TaskUpdateInterface<TacticItem.Data> taskUpdateInterface, Resources resources){
-		super(taskUpdateInterface, new ArrayList<TacticItem.Data>());
+	public GetOfflineTacticsBatchTask(TaskUpdateInterface<TacticProblemItem.Data> taskUpdateInterface, Resources resources){
+		super(taskUpdateInterface, new ArrayList<TacticProblemItem.Data>());
 		this.resources = resources;
 	}
 
@@ -32,10 +32,10 @@ public class GetOfflineTacticsBatchTask extends AbstractUpdateTask<TacticItem.Da
 		InputStream inputStream = resources.openRawResource(resourceId);
 		try {
 
-			TacticItem tacticItem = parseJson(inputStream);
+			TacticProblemItem tacticProblemItem = parseJson(inputStream);
 
 			itemList.clear();
-			itemList.addAll(tacticItem.getData());
+			itemList.addAll(tacticProblemItem.getData());
 
 			inputStream.close();
 		} catch (IOException e) {
@@ -46,9 +46,9 @@ public class GetOfflineTacticsBatchTask extends AbstractUpdateTask<TacticItem.Da
 		return StaticData.RESULT_OK;
 	}
 
-	private TacticItem parseJson(InputStream jRespString) {
+	private TacticProblemItem parseJson(InputStream jRespString) {
 		Gson gson = new Gson();
 		Reader reader = new InputStreamReader(jRespString);
-		return gson.fromJson(reader, TacticItem.class);
+		return gson.fromJson(reader, TacticProblemItem.class);
 	}
 }

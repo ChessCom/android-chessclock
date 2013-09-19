@@ -99,11 +99,11 @@ public class CapturedPiecesDrawable extends Drawable {
 
 		currentSideDrawables = blackPieceDrawables;
 
-		capturedPawnCnt = 8;
-		capturedKnightCnt = 2;
-		capturedBishopCnt = 2;
-		capturedRookCnt = 2;
-		capturedQueenCnt = 1;
+//		capturedPawnCnt = 8;
+//		capturedKnightCnt = 2;
+//		capturedBishopCnt = 2;
+//		capturedRookCnt = 2;
+//		capturedQueenCnt = 1;
 	}
 
 	@Override

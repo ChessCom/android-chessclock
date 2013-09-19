@@ -92,14 +92,14 @@ public class MoveParser {
 		String[] MoveTo = new String[2];
 		String currentMove = move.trim();
 
-		if (currentMove.equals(KINGSIDE_CASTLING) || currentMove.equals("O-O+")) {
+		if (currentMove.equals(KINGSIDE_CASTLING) || currentMove.equals(KINGSIDE_CASTLING_AND_CHECK)) {
 			if (board.getSide() == 0) {
 				return new int[]{board.getWhiteKing(), board.getWhiteKingMoveOO()[0], 0, 2};
 			} else if (board.getSide() == 1) {
 				return new int[]{board.getBlackKing(), board.getBlackKingMoveOO()[0], 0, 2};
 			}
 		}
-		if (currentMove.equals(QUEENSIDE_CASTLING) || currentMove.equals("O-O-O+")) {
+		if (currentMove.equals(QUEENSIDE_CASTLING) || currentMove.equals(QUEENSIDE_CASTLING_AND_CHECK)) {
 			if (board.getSide() == 0) {
 				return new int[]{board.getWhiteKing(), board.getWhiteKingMoveOOO()[0], 0, 2};
 			} else if (board.getSide() == 1) {

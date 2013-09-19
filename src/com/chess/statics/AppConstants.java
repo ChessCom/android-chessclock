@@ -79,6 +79,7 @@ public class AppConstants {
     public static final String PREF_SOUND_THEME_NAME = "sound_theme_name";
 	public static final String DEFAULT_THEME_NAME = "Game";
 
+	public static final String PREF_DEMO_TACTICS_LOADED = "demo tactics loaded";
 	public static final String PREF_TEMP_TOKEN_GCM = "temporary token for gcm";
     public static final String PREF_USER_CHOOSE_VIDEO_LIBRARY = "user choose video library mode";
     public static final String PREF_USER_CHOOSE_LESSONS_LIBRARY = "user choose lesson library mode";

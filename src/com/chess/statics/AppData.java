@@ -544,6 +544,14 @@ public class AppData {
 		return preferences.getString("API", RestHelper.HOST_PRODUCTION);
 	}
 
+	public void setDemoTacticsLoaded(boolean value) {
+		setBooleanValue(PREF_DEMO_TACTICS_LOADED, value);
+	}
+
+	public boolean isDemoTacticsLoaded() {
+		return getBooleanValue(PREF_DEMO_TACTICS_LOADED, false);
+	}
+
 	/*--------------------------- Common Shared logic ------------------------*/
 
 	private void setBooleanValue(String field, boolean checked) {
