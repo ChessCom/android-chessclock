@@ -1,6 +1,6 @@
 package com.chess.ui.engine;
 
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.boards.LessonsBoardFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
 

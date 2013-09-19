@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.api.LessonListItem;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 
 import java.util.List;
 

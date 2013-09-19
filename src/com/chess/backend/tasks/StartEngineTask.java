@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.model.CompEngineItem;
 import com.chess.ui.interfaces.game_ui.GameCompFace;

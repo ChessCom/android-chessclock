@@ -12,7 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.chess.R;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.model.PopupItem;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;

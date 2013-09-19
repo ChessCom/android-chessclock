@@ -1,4 +1,4 @@
-package com.chess.backend.statics;
+package com.chess.statics;
 
 /**
  * IntentConstants class

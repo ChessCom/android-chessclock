@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import com.chess.backend.statics.AppConstants;
+import com.chess.statics.AppConstants;
 import com.chess.model.CompEngineItem;
 import com.chess.ui.interfaces.game_ui.GameCompFace;
 import org.petero.droidfish.*;

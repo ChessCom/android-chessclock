@@ -8,12 +8,13 @@ import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.*;
 import com.chess.backend.entity.api.stats.*;
+import com.chess.backend.entity.api.themes.SoundItem;
 import com.chess.backend.gcm.FriendRequestItem;
 import com.chess.backend.gcm.GameOverNotificationItem;
 import com.chess.backend.gcm.NewChallengeNotificationItem;
 import com.chess.backend.gcm.NewChatNotificationItem;
-import com.chess.backend.statics.StaticData;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.StaticData;
+import com.chess.statics.Symbol;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,6 +148,7 @@ public class DbDataManager {
 
 	public static String SELECTION_FEN = concatArguments(V_FEN);
 	public static String SELECTION_FEN_AND_MOVE = concatArguments(V_FEN, V_MOVE);
+	public static String SELECTION_URL = concatArguments(V_URL);
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
@@ -331,7 +333,7 @@ public class DbDataManager {
 	/**
 	 * Check if we have saved games for current user
 	 *
-	 * @param context  to get resources
+	 * @param context to get resources
 	 * @return true if cursor can be positioned to first
 	 */
 	public static boolean haveSavedDailyGame(Context context, String username) {
@@ -551,7 +553,7 @@ public class DbDataManager {
 	 * Check if we have saved explorer moves for game
 	 *
 	 * @param context to get resources
-	 * @param fen FEN
+	 * @param fen     FEN
 	 * @return true if cursor can be positioned to first
 	 */
 	public static boolean haveSavedExplorerMoves(Context context, String fen) {
@@ -1015,7 +1017,7 @@ public class DbDataManager {
 		arguments2[0] = String.valueOf(currentItem.getId());
 
 		// TODO implement beginTransaction logic for performance increase
-		Uri uri = DbScheme.uriArray[DbScheme.Tables.ARTICLE_CATEGORIES.ordinal()];
+		Uri uri = uriArray[Tables.ARTICLE_CATEGORIES.ordinal()];
 
 		Cursor cursor = contentResolver.query(uri, PROJECTION_V_CATEGORY_ID, SELECTION_CATEGORY_ID, arguments2, null);
 
@@ -1029,7 +1031,7 @@ public class DbDataManager {
 		arguments2[0] = String.valueOf(currentItem.getId());
 
 		// TODO implement beginTransaction logic for performance increase
-		Uri uri = DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()];
+		Uri uri = uriArray[Tables.ARTICLES.ordinal()];
 
 		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID, SELECTION_ITEM_ID, arguments2, null);
 
@@ -1043,7 +1045,7 @@ public class DbDataManager {
 		arguments2[0] = String.valueOf(currentItem.getId());
 
 		// TODO implement beginTransaction logic for performance increase
-		Uri uri = DbScheme.uriArray[DbScheme.Tables.VIDEO_CATEGORIES.ordinal()];
+		Uri uri = uriArray[Tables.VIDEO_CATEGORIES.ordinal()];
 
 		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_V_CATEGORY_ID,
 				DbDataManager.SELECTION_CATEGORY_ID, arguments2, null);
@@ -1146,7 +1148,7 @@ public class DbDataManager {
 		if (cursor != null) {
 			boolean exist = cursor.moveToFirst();
 			if (exist) {
-				return getInt(cursor, DbScheme.V_ID);
+				return getInt(cursor, V_ID);
 			}
 			cursor.close();
 		}
@@ -1298,19 +1300,19 @@ public class DbDataManager {
 	public static VideoSingleItem.Data fillVideoItemFromCursor(Cursor cursor) {
 		VideoSingleItem.Data videoItem = new VideoSingleItem.Data();
 
-		videoItem.setFirstName(getString(cursor, DbScheme.V_FIRST_NAME));
-		videoItem.setChessTitle(getString(cursor, DbScheme.V_CHESS_TITLE));
-		videoItem.setLastName(getString(cursor, DbScheme.V_LAST_NAME));
-		videoItem.setTitle(getString(cursor, DbScheme.V_TITLE));
-		videoItem.setCountryId(getInt(cursor, DbScheme.V_COUNTRY_ID));
-		videoItem.setMinutes(getInt(cursor, DbScheme.V_MINUTES));
-		videoItem.setViewCount(getLong(cursor, DbScheme.V_VIEW_COUNT));
-		videoItem.setCreateDate(getLong(cursor, DbScheme.V_CREATE_DATE));
-		videoItem.setDescription(getString(cursor, DbScheme.V_DESCRIPTION));
-		videoItem.setUrl(getString(cursor, DbScheme.V_URL));
-		videoItem.setVideoId(getInt(cursor, DbScheme.V_ID));
-		videoItem.setAvatarUrl(getString(cursor, DbScheme.V_USER_AVATAR));
-		videoItem.setCommentCount(getInt(cursor, DbScheme.V_COMMENT_COUNT));
+		videoItem.setFirstName(getString(cursor, V_FIRST_NAME));
+		videoItem.setChessTitle(getString(cursor, V_CHESS_TITLE));
+		videoItem.setLastName(getString(cursor, V_LAST_NAME));
+		videoItem.setTitle(getString(cursor, V_TITLE));
+		videoItem.setCountryId(getInt(cursor, V_COUNTRY_ID));
+		videoItem.setMinutes(getInt(cursor, V_MINUTES));
+		videoItem.setViewCount(getLong(cursor, V_VIEW_COUNT));
+		videoItem.setCreateDate(getLong(cursor, V_CREATE_DATE));
+		videoItem.setDescription(getString(cursor, V_DESCRIPTION));
+		videoItem.setUrl(getString(cursor, V_URL));
+		videoItem.setVideoId(getInt(cursor, V_ID));
+		videoItem.setAvatarUrl(getString(cursor, V_USER_AVATAR));
+		videoItem.setCommentCount(getInt(cursor, V_COMMENT_COUNT));
 
 		return videoItem;
 	}
@@ -1373,7 +1375,7 @@ public class DbDataManager {
 			arguments[1] = String.valueOf(currentItem.getId());
 
 			// TODO implement beginTransaction logic for performance increase
-			Uri uri = DbScheme.uriArray[DbScheme.Tables.ARTICLE_COMMENTS.ordinal()];
+			Uri uri = uriArray[Tables.ARTICLE_COMMENTS.ordinal()];
 
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_PARENT_ID_AND_ITEM_ID,
 					DbDataManager.SELECTION_PARENT_ID_AND_ITEM_ID, arguments, null);
@@ -1393,7 +1395,7 @@ public class DbDataManager {
 			arguments[1] = String.valueOf(currentItem.getId());
 
 			// TODO implement beginTransaction logic for performance increase
-			Uri uri = DbScheme.uriArray[Tables.VIDEO_COMMENTS.ordinal()];
+			Uri uri = uriArray[Tables.VIDEO_COMMENTS.ordinal()];
 
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_PARENT_ID_AND_ITEM_ID,
 					DbDataManager.SELECTION_PARENT_ID_AND_ITEM_ID, arguments, null);
@@ -1494,7 +1496,7 @@ public class DbDataManager {
 		arguments2[0] = String.valueOf(currentItem.getId());
 
 		// TODO implement beginTransaction logic for performance increase
-		Uri uri = DbScheme.uriArray[DbScheme.Tables.LESSONS_CATEGORIES.ordinal()];
+		Uri uri = uriArray[Tables.LESSONS_CATEGORIES.ordinal()];
 
 		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_V_CATEGORY_ID,
 				DbDataManager.SELECTION_CATEGORY_ID, arguments2, null);
@@ -2172,6 +2174,88 @@ public class DbDataManager {
 		if (cursor != null && cursor.moveToFirst()) {
 			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, SELECTION_USER_AND_USERNAME, arguments1);
 		}
+	}
+
+	/* Themes */
+	public static void saveThemeItemToDb(ContentResolver contentResolver, ThemeItem.Data currentItem) {
+		final String[] arguments2 = sArguments1;
+		arguments2[0] = String.valueOf(currentItem.getId());
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = uriArray[Tables.THEMES.ordinal()];
+
+		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID, SELECTION_ITEM_ID, arguments2, null);
+
+		ContentValues values = new ContentValues();
+
+		values.put(V_ID, currentItem.getId());
+		values.put(V_BACKGROUND_URL, currentItem.getBackgroundUrl());
+		values.put(V_BOARD_BACKGROUND_URL, currentItem.getBoardBackgroundUrl());
+		values.put(V_BACKGROUND_PREVIEW_URL, currentItem.getBackgroundPreviewUrl());
+		values.put(V_BOARD_PREVIEW_URL, currentItem.getBoardPreviewUrl());
+		values.put(V_FONT_COLOR, currentItem.getFontColor());
+		values.put(V_NAME, currentItem.getThemeName());
+
+		updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
+	public static ThemeItem.Data getThemeItemFromCursor(Cursor cursor) {
+		ThemeItem.Data data = new ThemeItem.Data();
+
+		data.setThemeId(getInt(cursor, V_ID));
+		data.setBackgroundUrl(getString(cursor, V_BACKGROUND_URL));
+		data.setBoardBackgroundUrl(getString(cursor, V_BOARD_BACKGROUND_URL));
+		data.setBackgroundPreviewUrl(getString(cursor, V_BACKGROUND_PREVIEW_URL));
+		data.setBoardPreviewUrl(getString(cursor, V_BOARD_PREVIEW_URL));
+		data.setFontColor(getString(cursor, V_FONT_COLOR));
+		data.setThemeName(getString(cursor, V_NAME));
+		return data;
+	}
+
+	/* Sounds */
+	public static void saveSoundToDb(ContentResolver contentResolver, SoundItem.Data item) {
+		final String[] arguments = sArguments1;
+		arguments[0] = String.valueOf(item.getUserThemeSoundId());
+
+		Uri uri = uriArray[Tables.THEME_SOUNDS.ordinal()];
+		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID, SELECTION_ITEM_ID, arguments, null);
+
+		ContentValues values = new ContentValues();
+		values.put(V_ID, item.getUserThemeSoundId());
+		values.put(V_NAME, item.getName());
+		values.put(V_URL, item.getSoundPackZipUrl());
+
+		updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
+	/**
+	 * @return path if it was saved
+	 */
+	public static String haveSavedSoundPackForUrl(ContentResolver contentResolver, String soundPackUrl) {
+		final String[] arguments = sArguments1;
+		arguments[0] = soundPackUrl;
+
+		Uri uri = uriArray[Tables.SOUND_PACKS.ordinal()];
+		Cursor cursor = contentResolver.query(uri, null, SELECTION_URL, arguments, null);
+		String path = null;
+		if (cursor != null && cursor.moveToFirst()) {
+			path = getString(cursor, V_PATH);
+		}
+		return path;
+	}
+
+	public static void saveSoundPathToDb(ContentResolver contentResolver, String url, String path) {
+		final String[] arguments = sArguments1;
+		arguments[0] = url;
+
+		Uri uri = uriArray[Tables.SOUND_PACKS.ordinal()];
+		Cursor cursor = contentResolver.query(uri, null, SELECTION_URL, arguments, null);
+
+		ContentValues values = new ContentValues();
+		values.put(V_URL, url);
+		values.put(V_PATH, path);
+
+		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
 	// ================================= global help methods =======================================

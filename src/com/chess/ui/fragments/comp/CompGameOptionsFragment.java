@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.RoboRadioButton;
 import com.chess.SwitchButton;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.AppConstants;
+import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -117,7 +117,12 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 
 		CompGameConfig config = getNewCompGameConfig();
 
-		getActivityFace().switchFragment(GameCompFragment.createInstance(config));
+		GameCompFragment gameCompFragment = (GameCompFragment) getFragmentManager().findFragmentByTag(GameCompFragment.class.getSimpleName());
+		if (gameCompFragment != null) { // shouldn't be null
+			gameCompFragment.updateConfig(config);
+		}
+		getActivityFace().switchFragment(gameCompFragment);
+//		getActivityFace().openFragment(GameCompFragment.createInstance(config));
 		getActivityFace().toggleRightMenu();
 	}
 

@@ -16,8 +16,8 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.entity.api.FriendsItem;
-import com.chess.backend.statics.StaticData;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.StaticData;
+import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -250,6 +250,9 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	public void onSearchAutoCompleteQuery(String query) {
 		if (!inSearch) {
 			inSearch = true;
+			if (friendsAdapter == null) {
+				return;
+			}
 			Cursor cursor = friendsAdapter.runQueryOnBackgroundThread(query);
 			if (cursor != null) {
 				friendsAdapter.changeCursor(cursor);

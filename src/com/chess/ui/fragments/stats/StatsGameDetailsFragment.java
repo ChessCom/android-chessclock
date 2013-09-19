@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.api.stats.GraphData;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;

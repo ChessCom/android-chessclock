@@ -81,6 +81,7 @@
 	<dimen name="list_item_image_marging">5dip</dimen>
 	<dimen name="list_item_text_size">17sp</dimen>
 	<dimen name="list_item_height">48dip</dimen>
+	<dimen name="options_list_item_height">48dip</dimen>
 	<dimen name="list_padding_top">10dip</dimen>
 		
     <dimen name="text_size_small">16sp</dimen>
@@ -314,5 +315,6 @@
 	<dimen name="actionbar_title_height">20sp</dimen>
 	<dimen name="article_detail_image_height">213dip</dimen>
 	<dimen name="popup_title_text_size">21sp</dimen>
+	<dimen name="content_text_size">14sp</dimen>
 
 </resources>

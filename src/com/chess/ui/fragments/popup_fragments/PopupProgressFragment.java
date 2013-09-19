@@ -14,8 +14,6 @@ import com.chess.model.PopupItem;
  */
 public class PopupProgressFragment extends BasePopupDialogFragment {
 
-//    private TextView titleTxt;
-//    private TextView messageTxt;
     private boolean cancelable = true;
 
 	public static PopupProgressFragment createInstance(PopupItem popupItem) {
@@ -34,11 +32,7 @@ public class PopupProgressFragment extends BasePopupDialogFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.popup_progress, container, false);
-
-//		titleTxt = (TextView) view.findViewById(R.id.popupTitle);
-//		messageTxt = (TextView) view.findViewById(R.id.popupMessage);
-		return view;
+		return inflater.inflate(R.layout.popup_progress, container, false);
 	}
 
     @Override
@@ -47,23 +41,6 @@ public class PopupProgressFragment extends BasePopupDialogFragment {
         if(!cancelable)
             setCancelable(false);
     }
-
-	@Override
-	public void onResume() {
-		super.onResume();
-//		String message = popupItem.getMessage(getActivity());
-//		if(message.equals(StaticData.EMPTY)){
-//			messageTxt.setVisibility(View.GONE);
-//		}else{
-//			if(message.contains(StaticData.TAG)){
-//				messageTxt.setText(Html.fromHtml(message));
-//			}else{
-//				messageTxt.setText(message);
-//			}
-//			messageTxt.setVisibility(View.VISIBLE);
-//		}
-//		titleTxt.setText(popupItem.getTitle(getActivity()));
-	}
 
 	public void setNotCancelable(){
         cancelable = false;

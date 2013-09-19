@@ -100,7 +100,7 @@ public class PopupOptionsMenuFragment extends DialogFragment implements View.OnC
 		public StringAdapter(Context context, List<String> itemList) {
 			super(context, itemList);
 			textColor = context.getResources().getColorStateList(R.color.text_controls_icons_white);
-			minHeight = context.getResources().getDimensionPixelSize(R.dimen.list_item_height);
+			minHeight = context.getResources().getDimensionPixelSize(R.dimen.options_list_item_height);
 		}
 
 		@Override

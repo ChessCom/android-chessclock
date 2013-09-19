@@ -33,9 +33,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
-import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.StaticData;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.AppData;
+import com.chess.statics.StaticData;
+import com.chess.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.model.GameListCurrentItem;
 import com.chess.ui.activities.MainFragmentFaceActivity;
@@ -56,6 +56,8 @@ import java.util.List;
  * @created at: 01.02.12 7:50
  */
 public class AppUtils {
+
+	public static final String UNZIPPED = "/unzipped/";
 
 	public static final float MDPI = 1.0f;
 	public static final float HDPI = 1.5f;
@@ -106,6 +108,34 @@ public class AppUtils {
 		}
 		return cacheDir;
 	}
+
+	public static File getSoundsThemeDir(Context context) {
+		AppData appData = new AppData(context);
+		String soundThemePath = appData.getSoundThemePath();
+		return getLocalDirForPath(context, "sounds" + UNZIPPED + soundThemePath);
+	}
+
+	public static File getLocalDirForSounds(Context context) {
+		return getLocalDirForPath(context, "sounds");
+	}
+
+	public static File getLocalDirForPath(Context context, String path) {
+		File cacheDir;
+		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+			String cacheDirPath = "Android/data/" + context.getPackageName() + "/" + path + "/";
+			cacheDir = new File(Environment.getExternalStorageDirectory(), cacheDirPath);
+		} else {
+			cacheDir = context.getCacheDir();
+		}
+
+		if (cacheDir != null && !cacheDir.exists()) {
+			if (!cacheDir.mkdirs()) {
+				throw new IllegalStateException("can't use cacheDir");
+			}
+		}
+		return cacheDir;
+	}
+
 
 	public static File openFileByName(Context context, String filename) {
 		File cacheDir = getCacheDir(context);

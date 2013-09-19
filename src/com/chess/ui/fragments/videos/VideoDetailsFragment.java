@@ -26,7 +26,7 @@ import com.chess.backend.entity.api.PostCommentItem;
 import com.chess.backend.entity.api.VideoSingleItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -87,7 +87,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 	private boolean inEditMode;
 	private String bodyStr;
 	private String commentForEditStr;
-	protected int scrWidthPixels;
+	protected int widthPixels;
 	private View loadingCommentsView;
 
 	public static VideoDetailsFragment createInstance(long videoId) {
@@ -109,7 +109,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		}
 
 		Resources resources = getResources();
-		scrWidthPixels = resources.getDisplayMetrics().widthPixels;
+		widthPixels = resources.getDisplayMetrics().widthPixels;
 		imgSize = (int) (40 * resources.getDisplayMetrics().density);
 
 		String[] countryNames = resources.getStringArray(R.array.new_countries);
@@ -249,6 +249,11 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		}
 		authorTxt.setText(authorStr);
 
+		// Change main article Image params
+		int imageHeight = (int) (widthPixels * 0.6671f);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(widthPixels, imageHeight);
+		videoBackImg.setLayoutParams(params);
+
 		// change layout params for image and progress bar
 		RelativeLayout.LayoutParams progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -258,7 +263,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		BitmapDrawable image = (BitmapDrawable) getResources().getDrawable(R.drawable.board_white_grey_full_size);
 		videoBackImg.placeholder = image.getBitmap();
 
-		imageDownloader.download(BACK_IMG_LINK, videoBackImg, scrWidthPixels);
+		imageDownloader.download(BACK_IMG_LINK, videoBackImg, widthPixels);
 
 		titleTxt.setText(videoData.getTitle());
 		imageDownloader.download(videoData.getUserAvatar(), authorImg, imgSize);

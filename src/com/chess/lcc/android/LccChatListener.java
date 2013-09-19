@@ -1,7 +1,7 @@
 package com.chess.lcc.android;
 
 import android.util.Log;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.live.client.*;
 import com.chess.live.client.impl.util.DateTimeUtils;
 

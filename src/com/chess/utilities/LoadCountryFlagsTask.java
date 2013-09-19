@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import com.chess.R;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 
 import java.util.ArrayList;

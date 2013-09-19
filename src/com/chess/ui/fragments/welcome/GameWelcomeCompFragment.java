@@ -23,7 +23,7 @@ import com.chess.MultiDirectionSlidingDrawer;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.RestHelper;
-import com.chess.backend.statics.AppConstants;
+import com.chess.statics.AppConstants;
 import com.chess.live.client.PieceColor;
 import com.chess.model.CompEngineItem;
 import com.chess.ui.adapters.ItemsAdapter;

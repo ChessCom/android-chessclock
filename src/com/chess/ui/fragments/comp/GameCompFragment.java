@@ -20,8 +20,8 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.AppConstants;
+import com.chess.statics.Symbol;
 import com.chess.live.client.PieceColor;
 import com.chess.model.CompEngineItem;
 import com.chess.model.PopupItem;
@@ -577,7 +577,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 				.append("\n [Date \"").append(date).append("\"]")
 				.append("\n [White \"").append(whitePlayerName).append("\"]")
 				.append("\n [Black \"").append(blackPlayerName).append("\"]")
-				.append("\n [Result \"").append(result).append("\"]");
+				.append("\n [Result \"").append(result).append("\"]")
+				.append("\n\n \"").append(result).append("\"]")
+				.append("\n [FEN  \"").append(getBoardFace().generateFullFen()).append("\"]");
 
 		builder.append("\n ").append(moves)
 				.append("\n \n Sent from my Android");
@@ -685,6 +687,10 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		}
 
 		startGame(null);
+	}
+
+	public void updateConfig(CompGameConfig config) {
+		compGameConfig = config;
 	}
 
 	private class InitComputerEngineUpdateListener extends ChessLoadUpdateListener<CompEngineHelper> {

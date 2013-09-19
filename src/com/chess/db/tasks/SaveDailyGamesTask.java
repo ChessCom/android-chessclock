@@ -3,7 +3,7 @@ package com.chess.db.tasks;
 import android.content.ContentResolver;
 import com.chess.backend.entity.api.DailyGameBaseData;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.AppData;
+import com.chess.statics.AppData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 
 import java.util.ArrayList;

@@ -2,7 +2,7 @@ package com.chess.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 
 /**
  * BaseGameItem class

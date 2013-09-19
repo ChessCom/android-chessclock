@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.AppConstants;
+import com.chess.statics.AppData;
+import com.chess.statics.StaticData;
 import org.apache.http.util.ByteArrayBuffer;
 
 import java.io.BufferedInputStream;

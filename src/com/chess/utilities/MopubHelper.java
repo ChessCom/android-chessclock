@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.AppConstants;
+import com.chess.statics.StaticData;
 import com.mopub.mobileads.MoPubView;
 
 public class MopubHelper {

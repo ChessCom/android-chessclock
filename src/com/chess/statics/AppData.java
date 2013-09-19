@@ -1,14 +1,15 @@
-package com.chess.backend.statics;
+package com.chess.statics;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.chess.R;
 import com.chess.backend.RestHelper;
+import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.google.gson.Gson;
 
-import static com.chess.backend.statics.AppConstants.*;
+import static com.chess.statics.AppConstants.*;
 
 /**
  * AppData class
@@ -403,6 +404,23 @@ public class AppData {
 
 	public String getThemeName() {
 		return getStringValue(PREF_THEME_NAME, DEFAULT_THEME_NAME);
+	}
+
+	public void setSoundSetPosition(int value) {
+		setIntValue(PREF_SOUNDS_SET, value);
+	}
+
+	public int getSoundSetPosition() {
+		return getIntValue(PREF_SOUNDS_SET, 0);
+	}
+
+
+	public void setSoundThemePath(String themeName) {
+		setStringValue(PREF_SOUND_THEME_NAME, themeName);
+	}
+
+	public String getSoundThemePath() {
+		return getStringValue(PREF_SOUND_THEME_NAME, "");
 	}
 
 	public void setUserChooseVideoLibrary(boolean value) {

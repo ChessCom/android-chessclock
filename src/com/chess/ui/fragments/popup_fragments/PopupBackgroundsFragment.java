@@ -16,7 +16,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ThemeItem;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.AppData;
+import com.chess.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.SelectionItem;
 import com.chess.ui.activities.CoreActivityActionBar;

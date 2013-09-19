@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.StaticData;
 import com.commonsware.cwac.endless.EndlessAdapter;
 
 import java.util.ArrayList;

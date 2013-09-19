@@ -16,7 +16,7 @@ import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.entity.api.DailyChatItem;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyCurrentGameItem;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ChatMessagesAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;

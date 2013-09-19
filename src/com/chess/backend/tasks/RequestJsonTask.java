@@ -5,7 +5,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.StaticData;
 import com.chess.utilities.AppUtils;
 
 public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, LoadItem> {

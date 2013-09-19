@@ -18,7 +18,7 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ForumPostItem;
 import com.chess.backend.entity.api.VacationItem;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;

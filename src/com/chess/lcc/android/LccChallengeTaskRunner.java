@@ -2,7 +2,7 @@ package com.chess.lcc.android;
 
 import android.util.Log;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClient;

@@ -10,7 +10,7 @@ import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.ui.adapters.ChatMessagesAdapter;

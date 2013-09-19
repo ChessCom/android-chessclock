@@ -13,7 +13,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.entity.api.LessonSearchItem;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;

@@ -10,7 +10,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.statics.AppConstants;
+import com.chess.statics.AppConstants;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
 

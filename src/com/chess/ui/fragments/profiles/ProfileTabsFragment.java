@@ -15,7 +15,7 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;

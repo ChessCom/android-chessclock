@@ -5,7 +5,7 @@
 package com.chess.lcc.android;
 
 import android.util.Log;
-import com.chess.backend.statics.AppConstants;
+import com.chess.statics.AppConstants;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.PaginationInfo;
 import com.chess.live.client.SeekListListener;

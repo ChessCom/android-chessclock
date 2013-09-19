@@ -1,7 +1,7 @@
 package com.chess.ui.interfaces.game_ui;
 
 import android.view.View;
-import com.chess.backend.statics.SoundPlayer;
+import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.interfaces.boards.BoardFace;
 
 /**

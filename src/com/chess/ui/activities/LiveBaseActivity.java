@@ -23,8 +23,8 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.LoginItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.AppConstants;
+import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.LiveEvent;
 import com.chess.lcc.android.OuterChallengeListener;
@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.chess.backend.statics.AppConstants.LIVE_SESSION_ID;
+import static com.chess.statics.AppConstants.LIVE_SESSION_ID;
 
 /**
  * LiveBaseActivity class

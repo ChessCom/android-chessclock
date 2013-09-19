@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
 

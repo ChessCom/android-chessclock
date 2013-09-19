@@ -4,7 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import com.chess.backend.entity.api.stats.UserStatsItem;
 import com.chess.backend.exceptions.InternalErrorException;
-import com.chess.backend.statics.AppData;
+import com.chess.statics.AppData;
 import com.chess.db.tasks.SaveUserStatsTask;
 import com.chess.utilities.AppUtils;
 

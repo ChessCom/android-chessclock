@@ -17,7 +17,7 @@ import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.entity.api.DailyGamesAllItem;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;

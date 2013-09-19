@@ -2,7 +2,7 @@ package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import com.chess.backend.statics.AppConstants;
+import com.chess.statics.AppConstants;
 
 public class ChessBoardDailyView extends ChessBoardNetworkView {
 

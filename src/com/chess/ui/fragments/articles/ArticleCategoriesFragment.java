@@ -15,7 +15,7 @@ import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ArticleItem;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.StaticData;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;

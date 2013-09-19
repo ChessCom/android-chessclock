@@ -3,27 +3,41 @@ package com.chess.ui.fragments.settings;
 import android.app.Activity;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.*;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
+import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ThemeItem;
+import com.chess.backend.entity.api.themes.SoundItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.interfaces.AbstractUpdateListener;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.Symbol;
+import com.chess.backend.interfaces.FileReadyListener;
+import com.chess.backend.tasks.GetAndSaveFileToSdTask;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.backend.tasks.SaveImageToSdTask;
+import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.model.PopupItem;
 import com.chess.model.SelectionItem;
+import com.chess.statics.AppConstants;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.SelectionAdapter;
 import com.chess.ui.adapters.StringSpinnerAdapter;
+import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.popup_fragments.PopupBackgroundsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
@@ -63,7 +77,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	private List<SelectionItem> piecesList;
 	private List<SelectionItem> boardsList;
 	private List<String> colorsList;
-	private List<String> soundsList;
+
 	private Spinner boardsSpinner;
 	private Spinner piecesSpinner;
 
@@ -90,9 +104,22 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	private int darkColor;
 	private PopupBackgroundsFragment backgroundsFragment;
 	private PopupCustomViewFragment loadProgressPopupFragment;
+	private SoundsGetUpdateListener soundsGetUpdateListener;
+	private List<String> soundsUrlsList;
+	private SoundPackSaveListener soundPackSaveListener;
+	private String selectedSoundPackUrl;
+	private View loadProgressBar;
+	private View applyBackgroundBtn;
 
+	public SettingsThemeCustomizeFragment() {
+		ThemeItem.Data customizeItem = new ThemeItem.Data();
+		customizeItem.setThemeName("Customize");
+		customizeItem.setLocal(true);
 
-	public SettingsThemeCustomizeFragment() {}
+		Bundle bundle = new Bundle();
+		bundle.putParcelable(THEME_ITEM, customizeItem);
+		setArguments(bundle);
+	}
 
 	public static SettingsThemeCustomizeFragment createInstance(ThemeItem.Data themeItem) {
 		SettingsThemeCustomizeFragment fragment = new SettingsThemeCustomizeFragment();
@@ -128,11 +155,22 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		widgetsInit(view);
 
-		// adjust action bar icons
-		getActivityFace().showActionMenu(R.id.menu_cancel, true);
-		getActivityFace().showActionMenu(R.id.menu_accept, true);
-		getActivityFace().showActionMenu(R.id.menu_notifications, false);
-		getActivityFace().showActionMenu(R.id.menu_games, false);
+//		// adjust action bar icons
+//		getActivityFace().showActionMenu(R.id.menu_cancel, true);
+//		getActivityFace().showActionMenu(R.id.menu_accept, true);
+//		getActivityFace().showActionMenu(R.id.menu_notifications, false);
+//		getActivityFace().showActionMenu(R.id.menu_games, false);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		if (TextUtils.isEmpty(getAppData().getSoundThemePath())) {
+			getSounds();
+		} else {
+			loadSoundsFromDb();
+		}
 	}
 
 	@Override
@@ -163,6 +201,8 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			colorsSpinner.performClick();
 		} else if (id == R.id.coordinatesView) {
 			coordinatesSpinner.performClick();
+		} else if (id == R.id.applyBackgroundBtn) {
+			installSelectedTheme();
 		}
 	}
 
@@ -181,6 +221,16 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		} else if (adapterView.getId() == R.id.coordinatesSpinner){
 
 		} else if (adapterView.getId() == R.id.soundsSpinner){
+			selectedSoundPackUrl = soundsUrlsList.get(pos);
+			getAppData().setSoundSetPosition(pos);
+
+			String savedPath = DbDataManager.haveSavedSoundPackForUrl(getContentResolver(), selectedSoundPackUrl);
+			if (TextUtils.isEmpty(savedPath)) {
+				new GetAndSaveFileToSdTask(soundPackSaveListener).executeTask(selectedSoundPackUrl);
+			} else {
+				updateSelectedSoundScheme(savedPath);
+			}
+
 		} else if (adapterView.getId() == R.id.colorsSpinner){
 			if (pos == 0) {
 				rowSampleTitleTxt.setTextColor(lightColor);
@@ -193,6 +243,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			}
 
 			getAppData().setChessBoardId(pos);
+			getAppData().setThemeBoardPath(Symbol.EMPTY);
 
 			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(pos);
 			selectionItem.setChecked(true);
@@ -210,29 +261,96 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
 	}
 
+	private class SoundPackSaveListener extends ChessLoadUpdateListener<String> implements FileReadyListener {
+
+		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			if (show) { // show popup with percentage of loading theme
+
+				View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
+
+				TextView loadTitleTxt = (TextView) layout.findViewById(R.id.loadTitleTxt);
+				loadProgressBar = layout.findViewById(R.id.loadProgressBar);
+				loadProgressTxt = (TextView) layout.findViewById(R.id.loadProgressTxt);
+				taskTitleTxt = (TextView) layout.findViewById(R.id.taskTitleTxt);
+
+				loadTitleTxt.setText(R.string.installing_sound_pack);
+				taskTitleTxt.setText(R.string.loading_sounds);
+				loadProgressTxt.setVisibility(View.GONE);
+				loadProgressBar.setVisibility(View.VISIBLE);
+
+				PopupItem popupItem = new PopupItem();
+				popupItem.setCustomView((LinearLayout) layout);
+
+				loadProgressPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
+				loadProgressPopupFragment.show(getFragmentManager(), THEME_LOAD_TAG);
+			} else {
+				if (loadProgressPopupFragment != null) {
+					loadProgressPopupFragment.dismiss();
+				}
+			}
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
+			super.updateData(returnedObj);
+
+			DbDataManager.saveSoundPathToDb(getContentResolver(), selectedSoundPackUrl, returnedObj);
+
+			updateSelectedSoundScheme(returnedObj);
+		}
+
+		@Override
+		public void changeTitle(final String title) {
+			FragmentActivity activity = getActivity();
+			if (activity == null) {
+				return;
+			}
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					taskTitleTxt.setText(title);
+				}
+			});
+		}
+
+		@Override
+		public void setProgress(final int progress) {
+			FragmentActivity activity = getActivity();
+			if (activity == null) {
+				return;
+			}
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					loadProgressBar.setVisibility(View.GONE);
+					loadProgressTxt.setVisibility(View.VISIBLE);
+					loadProgressTxt.setText(String.valueOf(progress) + Symbol.PERCENT);
+				}
+			});
+		}
+	}
+
+	private void updateSelectedSoundScheme(String path) {
+		getAppData().setSoundThemePath(path);
+
+		// update sounds flag
+		SoundPlayer.setUseThemePack(true);
+		SoundPlayer.setThemePath(path);
+	}
+
+
 	@Override
 	public void onNothingSelected(AdapterView<?> adapterView) {
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_cancel:
-				// revert changes
-				showToast("cancel");
-				return true;
-			case R.id.menu_accept:
-				// apply changes
-
-				// set main background
-				installSelectedTheme();
-				return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
 	private void installSelectedTheme() {
 		backgroundUrl = selectedThemeItem.getBackgroundUrl();
+
+		if (TextUtils.isEmpty(backgroundUrl)) {
+			return;
+		}
 
 		{  // show popup with percentage of loading theme
 			View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
@@ -344,6 +462,10 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 				if (loadProgressPopupFragment != null) {
 					loadProgressPopupFragment.dismiss();
 				}
+
+				// hide checkMark button
+				applyBackgroundBtn.setVisibility(View.GONE);
+
 			}
 		}
 	}
@@ -351,6 +473,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
 		height = getResources().getDisplayMetrics().heightPixels;
 
+		soundsUrlsList = new ArrayList<String>();
 		selectedThemeItem = themeItem;
 		Resources resources = getResources();
 
@@ -378,15 +501,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		boardsList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_red), getString(R.string.board_red)));
 		boardsList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_tan), getString(R.string.board_tan)));
 
-
-		soundsList = new ArrayList<String>();
-		soundsList.add("Scheme 1");
-		soundsList.add("Scheme 2");
-		soundsList.add("Scheme 3");
-		soundsList.add("Scheme 4");
-		soundsList.add("Scheme 5");
-		soundsList.add("Scheme 6");
-
 		colorsList = new ArrayList<String>();
 		colorsList.add(getString(R.string.light));
 		colorsList.add(getString(R.string.dark));
@@ -399,8 +513,55 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		mainBackgroundImgSaveListener = new BackgroundImageSaveListener(BACKGROUND);
 		boardImgSaveListener = new BackgroundImageSaveListener(BOARD);
 
-		imageDownloader = new ImageDownloaderToListener(getContext());
+		soundsGetUpdateListener = new SoundsGetUpdateListener();
+		soundPackSaveListener = new SoundPackSaveListener();
 
+		imageDownloader = new ImageDownloaderToListener(getContext());
+	}
+
+	private void getSounds() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_SOUND);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+
+		new RequestJsonTask<SoundItem>(soundsGetUpdateListener).executeTask(loadItem);
+	}
+
+	private class SoundsGetUpdateListener extends ChessLoadUpdateListener<SoundItem> {
+
+		private SoundsGetUpdateListener() {
+			super(SoundItem.class);
+		}
+
+		@Override
+		public void updateData(SoundItem returnedObj) {
+			super.updateData(returnedObj);
+
+			List<SoundItem.Data> itemsList = returnedObj.getData();
+			for (SoundItem.Data currentItem : itemsList) {
+				DbDataManager.saveSoundToDb(getContentResolver(), currentItem);
+			}
+
+			loadSoundsFromDb();
+		}
+	}
+
+	private void loadSoundsFromDb() {
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_SOUNDS));
+
+		List<String> soundsList = new ArrayList<String>();
+		if (cursor != null && cursor.moveToFirst()) {
+			do {
+				soundsUrlsList.add(DbDataManager.getString(cursor, DbScheme.V_URL));
+				soundsList.add(DbDataManager.getString(cursor, DbScheme.V_NAME));
+			} while(cursor.moveToNext());
+		} else { // DB was cleared
+			getSounds();
+		}
+
+		soundsSpinner.setAdapter(new StringSpinnerAdapter(getActivity(), soundsList));
+		soundsSpinner.setEnabled(true);
+		soundsSpinner.setSelection(getAppData().getSoundSetPosition());
 	}
 
 	private void widgetsInit(View view) {
@@ -462,6 +623,9 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		view.findViewById(R.id.soundsView).setOnClickListener(this);
 		view.findViewById(R.id.colorsView).setOnClickListener(this);
 
+		applyBackgroundBtn = view.findViewById(R.id.applyBackgroundBtn);
+		applyBackgroundBtn.setOnClickListener(this);
+
 
 		String username = getUsername();
 
@@ -489,9 +653,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		// Sounds
 		soundsSpinner = (Spinner) view.findViewById(R.id.soundsSpinner);
-		soundsSpinner.setAdapter(new StringSpinnerAdapter(getActivity(), soundsList));
-		int soundsPosition = preferences.getInt(username + AppConstants.PREF_SOUNDS_SET, 0);
-		soundsSpinner.setSelection(soundsPosition);
+		soundsSpinner.setEnabled(false);
 		soundsSpinner.setOnItemSelectedListener(this);
 
 		// Colors
@@ -518,6 +680,9 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		backgroundsFragment.dismiss();
 		backgroundsFragment = null;
+
+		// show button to apply changes
+		applyBackgroundBtn.setVisibility(View.VISIBLE);
 	}
 
 	@Override

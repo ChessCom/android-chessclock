@@ -11,7 +11,7 @@ import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.RoboTextView;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.model.PopupItem;
 import com.chess.ui.interfaces.PopupDialogFace;
 

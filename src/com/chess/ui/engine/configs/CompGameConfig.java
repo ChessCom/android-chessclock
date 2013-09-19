@@ -2,7 +2,7 @@ package com.chess.ui.engine.configs;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.chess.backend.statics.AppConstants;
+import com.chess.statics.AppConstants;
 
 /**
  * Created with IntelliJ IDEA.

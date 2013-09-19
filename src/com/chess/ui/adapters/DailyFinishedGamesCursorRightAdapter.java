@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.AvatarView;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
 

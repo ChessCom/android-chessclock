@@ -12,7 +12,7 @@ import com.chess.R;
 import com.chess.RoboRadioButton;
 import com.chess.RoboSpinner;
 import com.chess.SwitchButton;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;

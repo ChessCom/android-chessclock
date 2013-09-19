@@ -10,9 +10,8 @@
 package com.chess.ui.engine;
 
 import android.util.Log;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.SoundPlayer;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.AppConstants;
+import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
 import org.apache.http.protocol.HTTP;

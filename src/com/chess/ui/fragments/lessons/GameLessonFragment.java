@@ -22,7 +22,7 @@ import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.LessonItem;
 import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.entity.api.LessonRatingChangeItem;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;

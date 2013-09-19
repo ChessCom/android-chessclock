@@ -25,7 +25,7 @@ import com.chess.backend.entity.api.CommonViewedItem;
 import com.chess.backend.entity.api.PostCommentItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -218,9 +218,16 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			imageDownloader.download(authorImgUrl, authorImg, imgSize);
 
 			String photoUrl = DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL);
+			// Change main article Image params
 			int imageHeight = (int) (widthPixels * 0.6671f);
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(widthPixels, imageHeight);
 			articleImg.setLayoutParams(params);
+
+			// Change ProgressBar params
+			RelativeLayout.LayoutParams progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT);
+			progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+			articleImg.getProgressBar().setLayoutParams(progressParams);
 
 			if (photoUrl.contains(NO_ITEM_IMAGE)) {
 				imageDownloader.download(authorImgUrl, articleImg, widthPixels);

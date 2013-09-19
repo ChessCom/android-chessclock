@@ -18,10 +18,11 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.statics.AppData;
-import com.chess.backend.statics.IntentConstants;
 import com.chess.db.DbDataManager;
 import com.chess.model.DataHolder;
+import com.chess.statics.AppData;
+import com.chess.statics.IntentConstants;
+import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
@@ -75,7 +76,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			// set the Above View
 			if (!TextUtils.isEmpty(getAppData().getUserToken())) { // if user have login token already
 				switchFragment(new HomeTabsFragment());
-//				switchFragment(new VideosFragment());
+//				switchFragment(new SettingsThemeCustomizeFragment());
 				showActionBar = true;
 			} else {
 				switchFragment(new WelcomeTabsFragment());
@@ -105,6 +106,13 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		// restoring correct host
 		RestHelper.resetInstance();
 		RestHelper.HOST = getAppData().getApiRoute();
+
+		// apply sound theme
+		String soundThemePath = getAppData().getSoundThemePath();
+		if (!TextUtils.isEmpty(soundThemePath)) {
+			SoundPlayer.setUseThemePack(true);
+			SoundPlayer.setThemePath(soundThemePath);
+		}
 	}
 
 	@Override
@@ -114,7 +122,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		getActionBarHelper().showActionBar(showActionBar);
 
-		Log.d("TEST", " onPostCreated ");
 		updateNotificationsBadge();
 	}
 

@@ -1,7 +1,7 @@
 package com.chess.model;
 
 import android.os.Parcel;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameRatingClass;
 

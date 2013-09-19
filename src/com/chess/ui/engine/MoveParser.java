@@ -1,7 +1,7 @@
 package com.chess.ui.engine;
 
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.AppConstants;
+import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.boards.BoardFace;
 
 import java.util.TreeSet;

@@ -47,5 +47,15 @@
 		custom:ttf="Bold"
 		/>
 
+	<!--Indeterminate Progress-->
+	<ProgressBar
+		android:id="@+id/loadProgressBar"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:indeterminate="true"
+		style="@style/ChessProgressBar"
+		android:layout_gravity="center_horizontal"
+		android:visibility="gone"
+		/>
 
 </LinearLayout>

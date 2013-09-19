@@ -3,7 +3,7 @@ package com.chess.backend.tasks;
 import android.content.Context;
 import android.graphics.Bitmap;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.StaticData;
 import com.chess.utilities.AppUtils;
 
 import java.io.*;

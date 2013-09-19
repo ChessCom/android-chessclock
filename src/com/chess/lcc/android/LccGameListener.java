@@ -2,7 +2,7 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.util.Log;
-import com.chess.backend.statics.AppConstants;
+import com.chess.statics.AppConstants;
 import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
 import com.chess.live.client.User;

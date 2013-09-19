@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import android.view.View;
 import android.widget.LinearLayout;
 import com.chess.R;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 
 /**
  * PopupItem class

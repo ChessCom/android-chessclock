@@ -37,7 +37,7 @@
     <dimen name="board_avatar_icon_size">32dip</dimen>
     <dimen name="game_controls_button_height">72dip</dimen>
     <dimen name="game_controls_icon_size">40dip</dimen>
-    <dimen name="new_tab_button_height">48dip</dimen>
+    <dimen name="new_tab_button_height">56dip</dimen>
     <dimen name="welcome_features_padding_bottom">26dip</dimen>
     <dimen name="new_top_button_height">48dip</dimen>
     <dimen name="new_bottom_button_height">48dip</dimen>
@@ -45,7 +45,7 @@
     <dimen name="article_thumb_width">105dip</dimen>
     <dimen name="nav_item_image_size">32dip</dimen>
     <dimen name="new_tactics_board_top_offset">72dip</dimen>
-    <dimen name="popup_options_select_padding">30dip</dimen>
+    <dimen name="popup_options_select_padding">120dip</dimen>
     <dimen name="result_title_min_height">100dip</dimen>
     <dimen name="welcome_result_list_item_height">65dip</dimen>
     <dimen name="friend_list_photo_size">80dip</dimen>
@@ -74,5 +74,7 @@
 	<dimen name="actionbar_title_height">24sp</dimen>
 	<dimen name="article_detail_image_height">213dip</dimen>
 	<dimen name="popup_title_text_size">21sp</dimen>
+	<dimen name="options_list_item_height">56dip</dimen>
+	<dimen name="content_text_size">14sp</dimen>
 
 </resources>

@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 61;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 64;  // change version on every DB scheme changes
 
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
@@ -79,7 +79,11 @@ public class DbScheme {
 		NOTIFICATION_NEW_CHALLENGES,
 		NOTIFICATION_GAMES_OVER,
 
-		EXPLORER_MOVES
+		EXPLORER_MOVES,
+
+		THEMES,
+		THEME_SOUNDS,
+		SOUND_PACKS,
 	}
 
 	// Content URI
@@ -1030,7 +1034,7 @@ public class DbScheme {
 				+ addField_Text(V_USER, true);
 	}
 
-	/* ==================== Game Stats ============================== */
+	/* ==================== Notifications ============================== */
 
 	void createNotificationsTables() {
 		createTablesArray[Tables.NOTIFICATION_FRIEND_REQUEST.ordinal()] = createTableForName(Tables.NOTIFICATION_FRIEND_REQUEST)
@@ -1061,6 +1065,38 @@ public class DbScheme {
 				+ addField_Text(V_USER) // current auth user
 				+ addField_Text(V_MESSAGE)
 				+ addField_Text(V_USER_AVATAR, true);
+	}
+
+	/* ==================== Notifications ============================== */
+
+	/* Themes */
+	public static final String V_PATH = "path";
+
+	public static final String V_BACKGROUND_URL = "background_url";
+	public static final String V_BOARD_BACKGROUND_URL = "board_background_url";
+	public static final String V_BACKGROUND_PREVIEW_URL = "background_preview_url";
+	public static final String V_BOARD_PREVIEW_URL = "board_preview_url";
+	public static final String V_FONT_COLOR = "font_color";
+
+	void createThemesTables() {
+
+		createTablesArray[Tables.THEMES.ordinal()] = createTableForName(Tables.THEMES)
+				+ addField_Int(V_ID)
+				+ addField_Text(V_BACKGROUND_URL)
+				+ addField_Text(V_BOARD_BACKGROUND_URL)
+				+ addField_Text(V_BACKGROUND_PREVIEW_URL)
+				+ addField_Text(V_BOARD_PREVIEW_URL)
+				+ addField_Text(V_FONT_COLOR)
+				+ addField_Text(V_NAME, true);
+
+		createTablesArray[Tables.THEME_SOUNDS.ordinal()] = createTableForName(Tables.THEME_SOUNDS)
+				+ addField_Int(V_ID) // user_theme_sound_id
+				+ addField_Text(V_NAME) // current auth user
+				+ addField_Text(V_URL, true);
+
+		createTablesArray[Tables.SOUND_PACKS.ordinal()] = createTableForName(Tables.SOUND_PACKS)
+				+ addField_Text(V_URL)
+				+ addField_Text(V_PATH, true);
 	}
 
 	private String createTableForName(Tables tableName) {

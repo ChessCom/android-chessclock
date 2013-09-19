@@ -1,7 +1,7 @@
 package com.chess.backend.entity.api;
 
 
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.utilities.AppUtils;
 
 import java.util.List;
@@ -55,6 +55,7 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.Data>> {
 		private boolean stop;
 		private boolean answerWasShowed;
 		private boolean retry;
+		private boolean completed;
 
 		public void setId(long id) {
 			this.id = id;
@@ -124,6 +125,13 @@ public class TacticItem extends BaseResponseItem<List<TacticItem.Data>> {
 			this.retry = retry;
 		}
 
+		public boolean isCompleted() {
+			return completed;
+		}
+
+		public void setCompleted(boolean completed) {
+			this.completed = completed;
+		}
 
 		public String getSecondsSpentStr() {
 			return AppUtils.getSecondsTimeFromSecondsStr(secondsSpent);

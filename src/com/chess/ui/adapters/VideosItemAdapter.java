@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.api.VideoItem;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 

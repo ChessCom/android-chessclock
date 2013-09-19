@@ -80,7 +80,7 @@
 		android:layout_below="@id/thumbnailAuthorImg"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingBottom="2dip"
-		android:textSize="13sp" />
+		android:textSize="@dimen/content_text_size" />
 
 	<ProgressBar
 		android:id="@+id/loadingCommentsView"

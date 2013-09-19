@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.boards.BoardViewNetworkFace;

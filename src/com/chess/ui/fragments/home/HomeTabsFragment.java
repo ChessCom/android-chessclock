@@ -16,8 +16,8 @@ import com.chess.backend.*;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.entity.api.DailyGamesAllItem;
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.AppConstants;
+import com.chess.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -46,6 +46,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	private DailyGamesUpdateListener dailyGamesUpdateListener;
 	private boolean showDailyGamesFragment = true;
 	private String themeName;
+	private View tabsLoadProgressBar;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		tabRadioGroup = (RadioGroup) view.findViewById(R.id.tabRadioGroup);
 		tabRadioGroup.setOnCheckedChangeListener(this);
+
+		tabsLoadProgressBar = view.findViewById(R.id.tabsLoadProgressBar);
 	}
 
 	@Override
@@ -110,6 +113,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 				getActivityFace().changeLeftFragment(leftMenuFragment);
 			}
 		}, LEFT_MENU_DELAY);
+
 		// and right menu fragments
 		handler.postDelayed(new Runnable() {
 			@Override
@@ -132,9 +136,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 //				DbHelper.getAll(DbScheme.Tables.DAILY_FINISHED_GAMES),
 //				getContentResolver()).executeTask();
 //
-
-
-
 
 		// check if user have daily games in progress or completed. May check in DB
 		// get games_id's and compare it to local DB
@@ -233,6 +234,11 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		public DailyGamesUpdateListener() {
 			super(DailyGamesAllItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			tabsLoadProgressBar.setVisibility(show? View.VISIBLE : View.GONE);
 		}
 
 		@Override

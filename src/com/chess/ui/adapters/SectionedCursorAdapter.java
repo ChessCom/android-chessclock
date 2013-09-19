@@ -26,7 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 
 import java.util.LinkedHashMap;
 // Do not remove until release!

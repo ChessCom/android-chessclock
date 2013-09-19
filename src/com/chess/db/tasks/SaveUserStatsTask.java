@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.api.stats.UserStatsItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
@@ -94,13 +94,13 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 	}
 
 	public static void saveTacticsStats(String username, UserStatsItem.Data item, ContentResolver contentResolver) {
-		if (item.getTactics() != null && item.getTactics().getSummary() != null) {
+		if (item.getTactics() != null && item.getTactics() != null) {
 			final String[] userArgument = arguments;
 			userArgument[0] = String.valueOf(username);
 
 			Uri uri = DbScheme.uriArray[DbScheme.Tables.USER_STATS_TACTICS.ordinal()];
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER, DbDataManager.SELECTION_USER, userArgument, null);
-			ContentValues values = DbDataManager.putUserStatsTacticsItemToValues(item.getTactics().getSummary(), username);
+			ContentValues values = DbDataManager.putUserStatsTacticsItemToValues(item.getTactics(), username);
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}
 	}

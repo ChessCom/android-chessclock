@@ -3,7 +3,7 @@ package com.chess.backend.tasks;
 import android.content.res.Resources;
 import com.chess.backend.entity.api.TacticItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.StaticData;
 import com.google.gson.Gson;
 
 import java.io.IOException;

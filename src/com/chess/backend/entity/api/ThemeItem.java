@@ -39,7 +39,7 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 
 		public Data() {}
 
-		public int getThemeId() {
+		public int getId() {
 			return theme_id;
 		}
 

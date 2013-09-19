@@ -23,13 +23,14 @@ import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.LoginItem;
 import com.chess.backend.entity.api.RegisterItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.statics.*;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataProvider;
 import com.chess.model.DataHolder;
 import com.chess.model.TacticsDataHolder;
+import com.chess.statics.*;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.engine.ChessBoardComp;
+import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.daily.DailyGamesRightFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.welcome.SignInFragment;
@@ -46,7 +47,7 @@ import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.Arrays;
 
-import static com.chess.backend.statics.AppConstants.*;
+import static com.chess.statics.AppConstants.*;
 import static com.chess.db.DbScheme.PROVIDER_NAME;
 
 /**
@@ -413,9 +414,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		if (activity != null) {
 			String string = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
 			while ((string != null ? string.length() : 0) < 32) { // 32 length is requirement for deviceId parameter
-				string += "a";
+				string += string;
 			}
-			return string;
+			return string.substring(0, 32);
 		} else {
 			return Symbol.EMPTY;
 		}

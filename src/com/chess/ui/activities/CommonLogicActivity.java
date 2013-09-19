@@ -21,10 +21,10 @@ import com.chess.backend.entity.api.MovesStatusItem;
 import com.chess.backend.entity.api.RegisterItem;
 import com.chess.backend.gcm.GcmHelper;
 import com.chess.backend.interfaces.AbstractUpdateListener;
-import com.chess.backend.statics.*;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.DataHolder;
 import com.chess.model.TacticsDataHolder;
+import com.chess.statics.*;
 import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
@@ -34,7 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import static com.chess.backend.statics.AppConstants.LIVE_SESSION_ID;
+import static com.chess.statics.AppConstants.LIVE_SESSION_ID;
 
 //import com.facebook.android.Facebook;
 
@@ -300,9 +300,9 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	protected String getDeviceId() {
 		String string = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 		while ((string != null ? string.length() : 0) < 32) { // 32 length is requirement for deviceId parameter
-			string += "a";
+			string += string;
 		}
-		return string;
+		return string.substring(0, 32);
 	}
 
 	private class LoginUpdateListenerNew extends AbstractUpdateListener<LoginItem> {

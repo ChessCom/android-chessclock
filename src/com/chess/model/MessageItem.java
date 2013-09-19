@@ -1,6 +1,6 @@
 package com.chess.model;
 
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;

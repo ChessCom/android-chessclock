@@ -1,7 +1,7 @@
 package com.chess.utilities;
 
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.FlurryData;
+import com.chess.statics.AppConstants;
+import com.chess.statics.FlurryData;
 import com.flurry.android.FlurryAgent;
 import com.mopub.mobileads.MoPubView;
 

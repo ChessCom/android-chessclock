@@ -3,7 +3,7 @@ package com.chess.ui.engine.configs;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.chess.backend.RestHelper;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 
 /**
  * Created with IntelliJ IDEA.

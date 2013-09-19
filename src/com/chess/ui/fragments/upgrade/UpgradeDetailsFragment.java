@@ -23,7 +23,7 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.MembershipItem;
 import com.chess.backend.entity.api.MembershipKeyItem;
 import com.chess.backend.entity.api.PayloadItem;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
 

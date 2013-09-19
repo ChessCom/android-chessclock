@@ -1,6 +1,6 @@
 package com.chess.lcc.android;
 
-import com.chess.backend.statics.SoundPlayer;
+import com.chess.ui.engine.SoundPlayer;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
 

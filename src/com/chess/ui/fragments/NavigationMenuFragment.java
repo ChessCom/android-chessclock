@@ -12,7 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.AppConstants;
+import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.daily.DailyTabsFragment;

@@ -1,6 +1,6 @@
 package com.chess.backend.entity.api;
 
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 
 /**
  * Created with IntelliJ IDEA.

@@ -251,8 +251,7 @@ public class ImageDownloaderToListener {
 			// copy stream to imgFile
 			OutputStream os = new FileOutputStream(imgFile); // save stream to
 
-
-			// SD
+			// save img to SD and update progress
 			final int buffer_size = 1024;
 			int totalRead = 0;
 			try {
@@ -273,7 +272,6 @@ public class ImageDownloaderToListener {
 				return null;
 			}
 
-//			AppUtils.copyStream(is, os);
 			os.close();
 
 			if (useScale) {

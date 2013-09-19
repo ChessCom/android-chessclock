@@ -8,7 +8,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
-import com.chess.backend.statics.AppData;
+import com.chess.statics.AppData;
 
 public class NetworkChangeService extends Service {
 

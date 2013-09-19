@@ -1,7 +1,7 @@
 package com.chess.ui.fragments.welcome;
 
-import com.chess.backend.statics.AppConstants;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.AppConstants;
+import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.fragments.comp.CompGameOptionsFragment;
 import com.chess.ui.interfaces.FragmentTabsFace;

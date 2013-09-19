@@ -114,7 +114,7 @@
 		android:layout_below="@id/thumbnailAuthorImg"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingBottom="10dip"
-		android:textSize="14sp" />
+		android:textSize="@dimen/content_text_size" />
 
 	<ProgressBar
 		android:id="@+id/loadingCommentsView"

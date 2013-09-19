@@ -13,7 +13,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.chess.R;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;

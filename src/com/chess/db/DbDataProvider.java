@@ -197,6 +197,8 @@ public class DbDataProvider extends ContentProvider {
 			dbScheme.createUserStatsTables();
 			dbScheme.createGameStatsTables();
 			dbScheme.createNotificationsTables();
+			dbScheme.createThemesTables();
+
 			for (String createTableCall : dbScheme.createTablesArray) {
 				db.execSQL(createTableCall);
 			}

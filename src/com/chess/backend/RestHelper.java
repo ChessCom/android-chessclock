@@ -7,8 +7,8 @@ import android.util.Base64;
 import android.util.Log;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.exceptions.InternalErrorException;
-import com.chess.backend.statics.StaticData;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.StaticData;
+import com.chess.statics.Symbol;
 import com.chess.utilities.AppUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -165,10 +165,12 @@ public class RestHelper {
 		return CMD_LESSONS + id;
 	}
 
-	/* Themes */
-	public String CMD_THEMES = BASE_URL + V1 + "/themes/";
-	public String CMD_THEMES_DEFAULT = CMD_THEMES + "default";
-	public String CMD_THEMES_USER = CMD_THEMES + "user";
+	/**
+	 * Themes
+ 	 */
+	public String CMD_THEMES = BASE_URL + V1 + "/themes";
+	public String CMD_THEMES_DEFAULT = CMD_THEMES + "/default";
+	public String CMD_THEMES_USER = CMD_THEMES + "/user";
 
 	public String CMD_THEME_DEFAULT_BY_ID(long id) {
 		return CMD_THEMES_DEFAULT + id;
@@ -177,6 +179,43 @@ public class RestHelper {
 	public String CMD_THEME_USER_BY_ID(long id) {
 		return CMD_THEMES_USER + id;
 	}
+
+	/**
+	 * Theme Backgrounds
+	 */
+	public String CMD_BACKGROUND = BASE_URL + V1 + "/background";
+
+	public String CMD_BACKGROUND_BY_ID(long id) {
+		return CMD_BACKGROUND + "/" + id;
+	}
+
+	/**
+	 * Theme Boards
+ 	 */
+	public String CMD_BOARD = BASE_URL + V1 + "/board";
+
+	public String CMD_BOARD_BY_ID(long id) {
+		return CMD_BOARD + "/" + id;
+	}
+
+	/**
+	 * Theme Pieces
+ 	 */
+	public String CMD_PIECES = BASE_URL + V1 + "/pieces";
+
+	public String CMD_PIECES_BY_ID(long id) {
+		return CMD_BOARD + "/" + id;
+	}
+
+	/**
+	 * Theme Sounds
+ 	 */
+	public String CMD_SOUND = BASE_URL + V1 + "/sound";
+
+	public String CMD_SOUND_BY_ID(long id) {
+		return CMD_SOUND + "/" + id;
+	}
+
 
 	/* Messages */
 	public String CMD_MESSAGES = BASE_URL + V1 + "/messages/";
@@ -219,6 +258,14 @@ public class RestHelper {
 	public static final String P_CURRENT_POINTS = "currentPoints";
 	public static final String P_CURRENT_PERCENT = "currentPercent";
 	public static final String P_LAST_POS_NUMBER = "lastPositionNumber";
+
+	public static final String P_BACKGROUND_ID = "backgroundId";
+	public static final String P_SCREEN = "screen";
+	public static final String P_WIDTH = "width";
+	public static final String P_HEIGHT = "height";
+	public static final String P_BOARD_ID = "boardId";
+	public static final String P_SOUND_ID = "soundId";
+	public static final String P_PIECE_ID = "pieceId";
 
 	public static final String P_MEMBERSHIP_TYPE = "membershipType";
 	//	public static final String P_APP_TYPE = "app_type";
@@ -341,6 +388,11 @@ public class RestHelper {
 	public static final String V_AV_SIZE_LARGE = "large"; // 450
 	public static final String V_AV_SIZE_TINY = "tiny"; // 88
 	public static final String V_AV_SIZE_MICRO = "micro"; // 20
+
+	/* Theme background values */
+	public static final String V_BACK_SIZE_HANDSET = "handset";
+	public static final String V_BACK_SIZE_IPAD = "ipad";
+	public static final String V_BACK_SIZE_TABLET = "tablet";
 
 	// old
 	public static final String V_RESIGN = "RESIGN";

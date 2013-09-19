@@ -18,7 +18,7 @@ import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.LessonCourseListItem;
 import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.entity.api.LessonsRatingItem;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;

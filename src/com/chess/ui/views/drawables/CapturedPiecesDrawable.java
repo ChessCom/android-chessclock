@@ -51,6 +51,8 @@ public class CapturedPiecesDrawable extends Drawable {
 		BETWEEN_PIECE_OFFSET *= density;
 		BETWEEN_PAWN_PIECE_OFFSET *= density;
 
+		// TODO get selected pieces set and create scaled versions of each piece
+
 		int[] whitePieceDrawableIds = new int[]{
 				R.drawable.captured_wp,
 				R.drawable.captured_wn,
@@ -97,11 +99,11 @@ public class CapturedPiecesDrawable extends Drawable {
 
 		currentSideDrawables = blackPieceDrawables;
 
-//		capturedPawnCnt = 8;
-//		capturedKnightCnt = 2;
-//		capturedBishopCnt = 2;
-//		capturedRookCnt = 2;
-//		capturedQueenCnt = 1;
+		capturedPawnCnt = 8;
+		capturedKnightCnt = 2;
+		capturedBishopCnt = 2;
+		capturedRookCnt = 2;
+		capturedQueenCnt = 1;
 	}
 
 	@Override

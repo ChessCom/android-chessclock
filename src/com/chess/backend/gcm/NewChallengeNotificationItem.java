@@ -1,6 +1,6 @@
 package com.chess.backend.gcm;
 
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 
 /**
  * Created with IntelliJ IDEA.

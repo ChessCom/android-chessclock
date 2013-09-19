@@ -6,7 +6,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.VideoItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.StaticData;
 import com.chess.utilities.AppUtils;
 
 import java.util.List;

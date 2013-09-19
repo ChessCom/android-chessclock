@@ -21,6 +21,7 @@
 			style="@style/LinearListItem"
 			android:paddingRight="15dip"
 			android:background="@drawable/transparent_list_item_selector"
+			android:animateLayoutChanges="true"
 			>
 			<com.chess.RoboTextView
 				android:layout_width="0dp"
@@ -35,18 +36,23 @@
 				android:id="@+id/backgroundNameTxt"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/pieces_style"
+				android:text="Background Name"
 				style="@style/SettingsListText"
 				/>
 
-<!--
-			<Spinner
-				android:id="@+id/backgroundSpinner"
+
+			<com.chess.RoboTextView
+				android:id="@+id/applyBackgroundBtn"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:background="@drawable/transparent_list_item_selector"
+				android:text="@string/ic_check"
+				android:layout_alignParentRight="true"
+				android:layout_centerVertical="true"
+				style="@style/GlyphIcon.Big"
+				android:textColor="@color/text_controls_icons"
+				android:visibility="gone"
+				android:padding="15dip"
 				/>
--->
 
 		</com.chess.LinLayout>
 

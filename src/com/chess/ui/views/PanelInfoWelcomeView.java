@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
 import com.chess.utilities.AppUtils;

@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.RadioButton;
 import com.chess.R;
-import com.chess.backend.statics.AppConstants;
+import com.chess.statics.AppConstants;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 

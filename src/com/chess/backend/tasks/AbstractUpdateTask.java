@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.StaticData;
 
 import java.util.List;
 

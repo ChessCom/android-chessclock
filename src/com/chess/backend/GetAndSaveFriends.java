@@ -8,7 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.api.FriendsItem;
 import com.chess.backend.exceptions.InternalErrorException;
-import com.chess.backend.statics.AppData;
+import com.chess.statics.AppData;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.utilities.AppUtils;

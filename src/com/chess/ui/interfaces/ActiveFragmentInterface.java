@@ -1,7 +1,7 @@
 package com.chess.ui.interfaces;
 
 
-import com.chess.backend.statics.AppData;
+import com.chess.statics.AppData;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;

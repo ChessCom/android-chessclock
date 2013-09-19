@@ -1,6 +1,6 @@
 package com.chess.ui.engine;
 
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 
 import java.util.HashMap;
 

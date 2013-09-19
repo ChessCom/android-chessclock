@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 import com.chess.db.DbScheme;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;

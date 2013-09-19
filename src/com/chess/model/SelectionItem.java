@@ -1,7 +1,7 @@
 package com.chess.model;
 
 import android.graphics.drawable.Drawable;
-import com.chess.backend.statics.Symbol;
+import com.chess.statics.Symbol;
 
 public class SelectionItem {
 	private Drawable image;

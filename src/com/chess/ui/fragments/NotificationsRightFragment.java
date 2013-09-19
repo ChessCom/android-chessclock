@@ -17,7 +17,7 @@ import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.DailyChallengeItem;
 import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.entity.api.FriendRequestResultItem;
-import com.chess.backend.statics.StaticData;
+import com.chess.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
