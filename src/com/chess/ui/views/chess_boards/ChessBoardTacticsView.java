@@ -213,6 +213,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
 	@Override
 	public void flipBoard() {
+		getBoardFace().setReside(!getBoardFace().isReside());
 	}
 
 	@Override

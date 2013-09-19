@@ -15,11 +15,6 @@
 	android:paddingLeft="1dip"
 	android:paddingRight="1dip"
 	>
-<!--
-	android:paddingBottom="@dimen/popup__bottom_padding"
-	android:paddingLeft="@dimen/popup_side_padding"
-	android:paddingRight="@dimen/popup_side_padding"
--->
 
 	<com.chess.RoboTextView
 		android:id="@+id/popupTitle"

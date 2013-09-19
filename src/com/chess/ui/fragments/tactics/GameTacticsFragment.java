@@ -71,6 +71,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private static final long TIMER_UPDATE = 1000;
 	private static final long START_DELAY = 500;
 	private static final long RESUME_TACTIC_DELAY = 1000;
+	private static final int COUNT_BACK = 2;
 
 	private static final int NON_INIT = -1;
 	private static final int CORRECT_RESULT = 0;
@@ -80,10 +81,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 //	private static final int ID_NEXT_TACTIC = 0;
 	private static final int ID_SHOW_ANSWER = 1;
 	private static final int ID_PRACTICE = 2;
-	private static final int ID_HINT = 3;
-	private static final int ID_PERFORMANCE = 4;
-	private static final int ID_SETTINGS = 5;
-	private static final int COUNT_BACK = 2;
+//	private static final int ID_HINT = 3;
+	private static final int ID_PERFORMANCE = 3;
+	private static final int ID_SETTINGS = 4;
 
 	private ChessBoardTacticsView boardView;
 
@@ -578,9 +578,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else*/
 		if (code == ID_SHOW_ANSWER) {
 			showAnswer();
-		} else if (code == ID_HINT) {
+		} else /*if (code == ID_HINT) {
 			showHint();
-		} else if (code == ID_PERFORMANCE) {
+		} else*/ if (code == ID_PERFORMANCE) {
 			getActivityFace().openFragment(new TacticsStatsFragment());
 		} else if (code == ID_PRACTICE) {
 			switch2Analysis();
@@ -815,19 +815,19 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			return;
 		}
 
-//		if (currentGameExist() && trainerData.isRetry()) {
-//			optionsArray.put(ID_PRACTICE, getString(R.string.practice));
-//		} else {
-//			optionsArray.remove(ID_PRACTICE);
-//		}
-
-		if (controlsTacticsView.getState() == ControlsTacticsView.State.AFTER_RETRY) {
-			optionsArray.remove(ID_PRACTICE);
-			optionsArray.put(ID_HINT, getString(R.string.hint));
-		} else {
+		if (currentGameExist() && trainerData.isRetry()) { // don't show practice before first try
 			optionsArray.put(ID_PRACTICE, getString(R.string.practice));
-			optionsArray.remove(ID_HINT);
+		} else {
+			optionsArray.remove(ID_PRACTICE);
 		}
+
+//		if (controlsTacticsView.getState() == ControlsTacticsView.State.AFTER_RETRY) {
+//			optionsArray.remove(ID_PRACTICE);
+//			optionsArray.put(ID_HINT, getString(R.string.hint));
+//		} else {
+//			optionsArray.put(ID_PRACTICE, getString(R.string.practice));
+//			optionsArray.remove(ID_HINT);
+//		}
 
 		if (trainerData.isAnswerWasShowed()) {
 			optionsArray.remove(ID_SHOW_ANSWER);
@@ -1177,7 +1177,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 //			optionsArray.put(ID_NEXT_TACTIC, getString(R.string.next_tactic));
 			optionsArray.put(ID_SHOW_ANSWER, getString(R.string.show_answer));
 			optionsArray.put(ID_PRACTICE, getString(R.string.practice));
-			optionsArray.put(ID_HINT, getString(R.string.hint));
+//			optionsArray.put(ID_HINT, getString(R.string.hint));
 			optionsArray.put(ID_PERFORMANCE, getString(R.string.performance));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}

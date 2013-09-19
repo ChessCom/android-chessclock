@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/popup_options_select_padding"
     android:paddingRight="@dimen/popup_options_select_padding"
-    >
+	>
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
@@ -15,8 +15,7 @@
         android:divider="@null"
         android:dividerHeight="0px"
         android:cacheColorHint="@color/transparent"
-        android:background="@color/white"
-        />
-
+		android:background="@drawable/popup_white_back"
+		/>
 
 </LinearLayout>
