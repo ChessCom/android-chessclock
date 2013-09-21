@@ -12,8 +12,6 @@ import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.RelativeLayout;
 import com.chess.utilities.AppUtils;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 /**
@@ -90,7 +88,7 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 			handleDrawable = array.getDrawable(R.styleable.SwitchButton_switchHandle);
 			handleWidth = array.getInteger(R.styleable.SwitchButton_switchHandleWidth, HANDLE_BUTTON_WIDTH);
 			handleHeight = array.getInteger(R.styleable.SwitchButton_switchHandleHeight, HANDLE_BUTTON_HEIGHT);
-			handleMargin = array.getFloat(R.styleable.SwitchButton_switchHandleMargin, HANDLE_BUTTON_MARGIN) * density;
+			handleMargin = array.getFloat(R.styleable.SwitchButton_switchHandleMargin, HANDLE_BUTTON_MARGIN);
 			handleShift = array.getFloat(R.styleable.SwitchButton_switchHandleShift, HANDLE_SHIFT);
 			textShift = array.getFloat(R.styleable.SwitchButton_switchTextShift, TEXT_SHIFT);
 			textLeftPadding = array.getInteger(R.styleable.SwitchButton_switchTextLeftPadding, TEXT_LEFT_PADDING);
@@ -111,6 +109,7 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 
 		handleHeight *= density;
 		handleWidth *= density;
+		handleMargin *= density;
 
 		handleShift *= density;
 		textShift *= density;
@@ -157,21 +156,14 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 
 	@Override
 	public void onClick(View view) {
-		toggle(view);
+		toggle();
+//		toggle(view);
 	}
 
 	@Override
 	public void setOnClickListener(OnClickListener l) {
 		handleButton.setOnClickListener(l);
 		textView.setOnClickListener(l);
-	}
-
-	public void toggle(View view){
-		if (AppUtils.HONEYCOMB_PLUS_API && view.getId() == TEXT_ID) { // ignore text clicks
-			return;
-		}
-
-		toggle();
 	}
 
 	private android.view.animation.Interpolator accelerator = new LinearInterpolator();
@@ -182,24 +174,9 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 		animateHandleLeftShift.setDuration(DURATION);
 		animateHandleLeftShift.setInterpolator(accelerator);
 
-		animateHandleLeftShift.addListener(new AnimatorListenerAdapter() {
-			@Override
-			public void onAnimationEnd(Animator anim) {
-				// TODO inform listener
-			}
-		});
-
 		animateHandleRightShift = ObjectAnimator.ofFloat(handleButton, "translationX", handleShift, 0f);
 		animateHandleRightShift.setDuration(DURATION);
 		animateHandleRightShift.setInterpolator(accelerator);
-
-		animateHandleRightShift.addListener(new AnimatorListenerAdapter() {
-			@Override
-			public void onAnimationEnd(Animator anim) {
-				// TODO inform listener
-			}
-		});
-
 
 		animateTextLeftShift = ObjectAnimator.ofFloat(textView, "translationX", 0f, textShift);
 		animateTextLeftShift.setDuration(DURATION);

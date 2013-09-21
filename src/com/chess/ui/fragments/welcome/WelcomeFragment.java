@@ -49,8 +49,8 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	public static final int SIGN_UP_PAGE = 3;
 
 	public static final String YOUTUBE_DEMO_LINK1 = "AgTQJUhK2MY";
-	public static final String YOUTUBE_DEMO_LINK2 = "sXZ9fAO7YWg";
-	public static final String YOUTUBE_DEMO_LINK3 = "iHXCZAShyIY";
+	public static final String YOUTUBE_DEMO_LINK2 = "AgTQJUhK2MY";
+	public static final String YOUTUBE_DEMO_LINK3 = "AgTQJUhK2MY";
 	private static final String YOUTUBE_FRAGMENT_TAG = "youtube fragment";
 
 	private FragmentTabsFace parentFace;
@@ -149,7 +149,9 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 				((RadioButton) homePageRadioGroup.getChildAt(position)).setChecked(true);
 			}
 
-			parentFace.onPageSelected(position);
+			if (parentFace != null) { // can be null after onSavedInstance
+				parentFace.onPageSelected(position);
+			}
 			if (position == SIGN_UP_PAGE) {
 				releaseYouTubeFragment(youTubeFrameContainer1, youTubePlayerFragment1);
 				releaseYouTubeFragment(youTubeFrameContainer2, youTubePlayerFragment2);
@@ -180,6 +182,8 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 			youTubePlayerFragment3 = initYoutubeFragment(R.id.youTubeFrameContainer3);
 			youTubeFrameContainer3.setVisibility(View.VISIBLE);
 			closeYouTubeBtn3.setVisibility(View.VISIBLE);
+		} else if (view.getId() == R.id.loginLinkTxt) {
+			((WelcomeTabsFragment)parentFace).openSignInFragment();
 		} else if (view.getId() == R.id.completeSignUpBtn) {
 			if (!checkRegisterInfo()) {
 				return;
@@ -511,6 +515,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 					passwordEdt = (EditText) view.findViewById(R.id.passwordEdt);
 					passwordRetypeEdt = (EditText) view.findViewById(R.id.passwordRetypeEdt);
 					view.findViewById(R.id.completeSignUpBtn).setOnClickListener(WelcomeFragment.this);
+					view.findViewById(R.id.loginLinkTxt).setOnClickListener(WelcomeFragment.this);
 
 					userNameEdt.addTextChangedListener(new FieldChangeWatcher(userNameEdt));
 					emailEdt.addTextChangedListener(new FieldChangeWatcher(emailEdt));

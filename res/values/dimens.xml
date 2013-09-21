@@ -22,8 +22,6 @@
     <dimen name="default_stroke_width">4px</dimen>
     <dimen name="default_bevel_size">1dip</dimen>
     <dimen name="default_bevel_glassy_size">1px</dimen>
-    <!--<dimen name="rect_edge_offset">2dip</dimen>-->
-    <!--<dimen name="rect_edge_offset">2dip</dimen>-->
 
     <!--New Buttons and Fields-->
     <dimen name="facebook_button_height">40dip</dimen>
@@ -202,11 +200,18 @@
     <dimen name="button_switch_dark_height">26dip</dimen>
     <dimen name="button_switch_back_corners">24dip</dimen>
     <dimen name="button_switch_white_back_corners">70dip</dimen>
+    <dimen name="button_switch_default_back_corners">3dip</dimen>
     <dimen name="button_switch_corners">51dip</dimen>
+    <dimen name="button_switch_default_corners">3dip</dimen>
     <dimen name="button_switch_inner_offset">5dip</dimen>
-    <!--White-->
+
+    <!--Switch White-->
     <dimen name="button_switch_white_width">77dip</dimen>
     <dimen name="button_switch_white_height">27dip</dimen>
+
+    <!--Switch Default-->
+    <dimen name="button_switch_default_width">85dip</dimen>
+    <dimen name="button_switch_default_height">27dip</dimen>
 
     <!--Friends-->
     <dimen name="new_button_square_size">37dip</dimen>
@@ -316,5 +321,7 @@
 	<dimen name="article_detail_image_height">213dip</dimen>
 	<dimen name="popup_title_text_size">21sp</dimen>
 	<dimen name="content_text_size">14sp</dimen>
+	<dimen name="highlight_stroke_width">2dip</dimen>
+	<dimen name="play_button_left_offset">25dip</dimen>
 
 </resources>

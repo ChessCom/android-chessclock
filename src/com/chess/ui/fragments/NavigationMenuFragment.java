@@ -14,12 +14,12 @@ import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.ItemsAdapter;
+import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.articles.ArticlesFragment;
+import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.daily.DailyTabsFragment;
 import com.chess.ui.fragments.forums.ForumCategoriesFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
-import com.chess.ui.fragments.comp.GameCompFragment;
-import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
@@ -27,6 +27,7 @@ import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.messages.MessagesInboxFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
+import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.videos.VideosFragment;
 
@@ -190,7 +191,7 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 			case R.drawable.ic_nav_vs_comp:
 				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameCompFragment.class.getSimpleName());
 				if (fragmentByTag == null) {
-					fragmentByTag = new GameCompFragment();
+					fragmentByTag = prepareGameCompFragmentInstance();
 				}
 				break;
 		}
@@ -203,7 +204,18 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				}
 			}, SIDE_MENU_DELAY);
 		}
+	}
 
+	private GameCompFragment prepareGameCompFragmentInstance() {
+		int compGameMode = getAppData().getCompGameMode();
+		if (compGameMode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) { // replace this fast speed fun
+			compGameMode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
+			getAppData().setCompGameMode(compGameMode);
+		}
+		CompGameConfig.Builder builder = new CompGameConfig.Builder()
+				.setMode(compGameMode)
+				.setStrength(getAppData().getCompLevel());
+		return GameCompFragment.createInstance(builder.build());
 	}
 
 	private class NavigationMenuItem {

@@ -77,4 +77,10 @@
 	<dimen name="options_list_item_height">56dip</dimen>
 	<dimen name="content_text_size">14sp</dimen>
 
+	<!--Switch Default-->
+	<dimen name="button_switch_default_width">85dip</dimen>
+	<dimen name="button_switch_default_height">26dip</dimen>
+	<dimen name="highlight_stroke_width">3dip</dimen>
+	<dimen name="play_button_left_offset">25dip</dimen>
+
 </resources>

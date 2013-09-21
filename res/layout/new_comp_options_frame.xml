@@ -55,7 +55,8 @@
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
 				android:text="@string/white"
-				android:textColor="@color/semitransparent_white_65" />
+				style="@style/SettingsListText"
+				/>
 
 			<RadioGroup
 				android:id="@+id/whiteRadioGroup"
@@ -75,10 +76,10 @@
 					android:text="@string/ic_profile"
 					android:layout_marginRight="5dip"
 					android:minHeight="@dimen/big_button_height"
-					style="@style/Button.White.50"
+					style="@style/Button.White.30"
 					custom:ttf="Icon"
 					android:button="@null"
-					android:checked="true" />
+					/>
 
 				<!--Comp-->
 				<com.chess.RoboRadioButton
@@ -87,11 +88,13 @@
 					android:layout_height="wrap_content"
 					android:text="@string/ic_comp_game"
 					android:minHeight="@dimen/big_button_height"
+					android:minWidth="@dimen/button_min_width"
 					android:textColor="@color/white"
 					android:textSize="@dimen/glyph_icon_big"
-					style="@style/Button.White.50"
+					android:gravity="center"
 					custom:ttf="Icon"
 					android:button="@null" />
+				<!--style="@style/Button"-->
 
 			</RadioGroup>
 
@@ -112,7 +115,8 @@
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
 				android:text="@string/black"
-				android:textColor="@color/semitransparent_white_65" />
+				style="@style/SettingsListText"
+				/>
 
 			<RadioGroup
 				android:id="@+id/blackRadioGroup"
@@ -131,11 +135,12 @@
 					android:textSize="@dimen/glyph_icon_big"
 					android:text="@string/ic_profile"
 					android:layout_marginRight="5dip"
+					android:minWidth="@dimen/button_min_width"
 					android:minHeight="@dimen/big_button_height"
-					style="@style/Button.Black.65"
+					android:gravity="center"
 					custom:ttf="Icon"
 					android:button="@null"
-					android:checked="true" />
+					/>
 
 				<!--Comp-->
 				<com.chess.RoboRadioButton
@@ -177,8 +182,8 @@
 					android:layout_height="wrap_content"
 					android:layout_centerVertical="true"
 					android:text="@string/computer_level"
-					android:textColor="@color/semitransparent_white_65" />
-
+					style="@style/SettingsListText"
+					/>
 
 				<com.chess.RoboButton
 					android:id="@+id/compLevelValueBtn"
@@ -186,7 +191,9 @@
 					android:layout_height="wrap_content"
 					android:layout_alignParentRight="true"
 					style="@style/Button.Glassy.Small"
-					android:inputType="numberDecimal" />
+					android:textSize="15sp"
+
+					/>
 			</RelativeLayout>
 
 			<SeekBar
@@ -224,7 +231,7 @@
 
 			<com.chess.SwitchButton
 				android:id="@+id/autoFlipSwitch"
-				style="@style/Switch.White"
+				style="@style/Switch.Default"
 				/>
 		</com.chess.LinLayout>
 

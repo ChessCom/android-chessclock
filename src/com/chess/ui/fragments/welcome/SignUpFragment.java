@@ -66,6 +66,7 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 		passwordEdt = (EditText) view.findViewById(R.id.passwordEdt);
 		passwordRetypeEdt = (EditText) view.findViewById(R.id.passwordRetypeEdt);
 		view.findViewById(R.id.completeSignUpBtn).setOnClickListener(this);
+		view.findViewById(R.id.loginLinkTxt).setOnClickListener(this);
 
 		userNameEdt.addTextChangedListener(new FieldChangeWatcher(userNameEdt));
 		emailEdt.addTextChangedListener(new FieldChangeWatcher(emailEdt));
@@ -103,6 +104,8 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 			}
 
 			submitRegisterInfo();
+		} else if (view.getId() == R.id.loginLinkTxt) {
+			getActivityFace().openFragment(new SignInFragment());
 		}
 	}
 

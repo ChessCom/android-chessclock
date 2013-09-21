@@ -42,8 +42,9 @@ public class ControlsCompView extends ControlsBaseView {
 
 	@Override
 	public void onClick(View view) {  // TODO rework click handles
-		if (blocked)
+		if (blocked) {
 			return;
+		}
 
 		if (view.getId() == getButtonId(OPTIONS)) {
 			boardViewFace.showOptions(view);

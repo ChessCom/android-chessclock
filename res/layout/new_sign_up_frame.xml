@@ -130,7 +130,16 @@
                 android:paddingTop="10dip"
                 />
 
-        </LinearLayout>
+			<com.chess.RoboTextView
+				android:id="@+id/loginLinkTxt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				style="@style/SetupSmallFont"
+				android:text="@string/already_member_log_in"
+				android:paddingTop="10dip"
+				/>
+
+		</LinearLayout>
     </ScrollView>
 
 </RelativeLayout>

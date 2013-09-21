@@ -87,8 +87,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	private static final int ID_FLIP_BOARD = 2;
 	private static final int ID_SETTINGS = 3;
 
-	private static final long BLINK_DELAY = 10 * 1000;
-	private static final long UNBLINK_DELAY = 400;
+	private static final long AUTO_FLIP_DELAY = 500;
 	private static final int FADE_ANIM_DURATION = 300;
 	private static final long DRAWER_APPEAR_DELAY = 100;
 	private static final long END_GAME_DELAY = 1000L;
@@ -124,6 +123,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	private Bundle savedInstanceState;
 
 	private CompGameConfig compGameConfig;
+	private boolean isAutoFlip;
 
 	public GameWelcomeCompFragment() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
@@ -195,6 +195,9 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		}, 100);
 
 		ChessBoardComp.resetInstance();
+
+		isAutoFlip = getAppData().isAutoFlipFor2Players();
+
 		getBoardFace().setMode(compGameConfig.getMode());
 		if (getAppData().haveSavedCompGame()) {
 			loadSavedGame();
@@ -309,6 +312,14 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void updateAfterMove() {
+		if (getBoardFace().getMode() == AppConstants.GAME_MODE_2_PLAYERS && isAutoFlip) {
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					boardView.flipBoard();
+				}
+			}, AUTO_FLIP_DELAY);
+		}
 	}
 
 	@Override
@@ -440,9 +451,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 				getBoardFace().makeMove(move);
 
 				if (boardView.isHint()) {
-					//if (/*AppData.isComputerVsComputerGameMode(getBoardFace()) || */(!AppData.isHumanVsHumanGameMode(getBoardFace()))) {
 					handler.postDelayed(reverseHintTask, ChessBoardCompView.HINT_REVERSE_DELAY);
-					//}
 				} else {
 					boardView.setComputerMoving(false);
 					invalidateGameScreen();
@@ -477,13 +486,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		} else {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 		}
-		/*BoardAvatarDrawable tempDrawable = labelsConfig.topAvatar;
-		labelsConfig.topAvatar = labelsConfig.bottomAvatar;
-		labelsConfig.bottomAvatar = tempDrawable;
-
-		String tempLabel = labelsConfig.topPlayerLabel;
-		labelsConfig.topPlayerLabel = labelsConfig.bottomPlayerLabel;
-		labelsConfig.bottomPlayerLabel = tempLabel;*/
 	}
 
 	@Override
@@ -583,7 +585,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void onGameOver(final String message, boolean need2Finish) {
-		handler.postDelayed(new Runnable() {
+		handler.postDelayed(new Runnable() {  // TODO add logic to set another delay for Nexus 7, bcz sometimes it show nothing after game over
 			@Override
 			public void run() {
 				boolean userWon = !message.equals(getString(R.string.black_wins));

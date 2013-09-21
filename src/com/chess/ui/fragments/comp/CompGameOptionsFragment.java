@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.chess.R;
@@ -25,7 +25,7 @@ import com.chess.ui.views.drawables.RatingProgressDrawable;
  * Time: 7:06
  */
 public class CompGameOptionsFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener,
-		CompoundButton.OnCheckedChangeListener {
+		RadioGroup.OnCheckedChangeListener {
 
 	private CompGameConfig.Builder gameConfigBuilder;
 
@@ -35,6 +35,8 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 	private RoboRadioButton blackPlayerBtn;
 	private View autoFlipView;
 	private SwitchButton autoFlipSwitch;
+	private RoboRadioButton whiteCompBtn;
+	private RoboRadioButton blackCompBtn;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,18 +59,21 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 		autoFlipSwitch = (SwitchButton) view.findViewById(R.id.autoFlipSwitch);
 		autoFlipSwitch.setSwitchChangeListener(this);
 
+		RadioGroup whiteRadioGroup = (RadioGroup) view.findViewById(R.id.whiteRadioGroup);
+		RadioGroup blackRadioGroup = (RadioGroup) view.findViewById(R.id.blackRadioGroup);
 		whitePlayerBtn = (RoboRadioButton) view.findViewById(R.id.whitePlayerBtn);
-		RoboRadioButton whiteCompBtn = (RoboRadioButton) view.findViewById(R.id.whiteCompBtn);
+		whiteCompBtn = (RoboRadioButton) view.findViewById(R.id.whiteCompBtn);
 		blackPlayerBtn = (RoboRadioButton) view.findViewById(R.id.blackPlayerBtn);
-		RoboRadioButton blackCompBtn = (RoboRadioButton) view.findViewById(R.id.blackCompBtn);
+		blackCompBtn = (RoboRadioButton) view.findViewById(R.id.blackCompBtn);
 
-		whitePlayerBtn.setOnCheckedChangeListener(this);
-		blackPlayerBtn.setOnCheckedChangeListener(this);
+		whiteRadioGroup.setOnCheckedChangeListener(this);
+		blackRadioGroup.setOnCheckedChangeListener(this);
 
 		int mode = getAppData().getCompGameMode();
 		if (mode == AppConstants.GAME_MODE_2_PLAYERS) {
 			whitePlayerBtn.setChecked(true);
 			blackPlayerBtn.setChecked(true);
+
 			autoFlipView.setVisibility(View.VISIBLE);
 		} else if (mode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) {
 			whiteCompBtn.setChecked(true);
@@ -118,11 +123,10 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 		CompGameConfig config = getNewCompGameConfig();
 
 		GameCompFragment gameCompFragment = (GameCompFragment) getFragmentManager().findFragmentByTag(GameCompFragment.class.getSimpleName());
-		if (gameCompFragment != null) { // shouldn't be null
+//		if (gameCompFragment != null) { // shouldn't be null
 			gameCompFragment.updateConfig(config);
-		}
-		getActivityFace().switchFragment(gameCompFragment);
-//		getActivityFace().openFragment(GameCompFragment.createInstance(config));
+//		}
+//		getActivityFace().switchFragment(gameCompFragment);
 		getActivityFace().toggleRightMenu();
 	}
 
@@ -151,7 +155,6 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 			mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK;
 		} else if (whitePlayerBtn.isChecked() && blackPlayerBtn.isChecked()) {
 			mode = AppConstants.GAME_MODE_2_PLAYERS;
-
 		} else if (!whitePlayerBtn.isChecked() && !blackPlayerBtn.isChecked()) {
 			mode = AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER;
 		}
@@ -168,11 +171,29 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 	}
 
 	@Override
-	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+	public void onCheckedChanged(RadioGroup group, int checkedId) {
+		updateBackgroundForButton(whitePlayerBtn, R.style.Button_White_50);
+		updateBackgroundForButton(whiteCompBtn, R.style.Button_White_50);
+		updateBackgroundForButton(blackPlayerBtn, R.style.Button_Black_65);
+		updateBackgroundForButton(blackCompBtn, R.style.Button_Black_65);
+
+		whitePlayerBtn.setSelected(whitePlayerBtn.isChecked());
+		whiteCompBtn.setSelected(whiteCompBtn.isChecked());
+		blackPlayerBtn.setSelected(blackPlayerBtn.isChecked());
+		blackCompBtn.setSelected(blackCompBtn.isChecked());
+
 		if (whitePlayerBtn.isChecked() && blackPlayerBtn.isChecked()) {
 			autoFlipView.setVisibility(View.VISIBLE);
 		} else {
 			autoFlipView.setVisibility(View.GONE);
+		}
+	}
+
+	private void updateBackgroundForButton(RoboRadioButton button, int styleId) {
+		if (button.isChecked()) {
+			button.setDrawableStyle(styleId);
+		} else {
+			button.setBackgroundResource(R.drawable.empty);
 		}
 	}
 }

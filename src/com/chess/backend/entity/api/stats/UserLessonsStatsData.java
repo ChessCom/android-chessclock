@@ -20,33 +20,31 @@ public class UserLessonsStatsData {
                     "timestamp": 1376097981
                 }
             },
-            "lessons": {
-                "stats": {
-                    "lessons_tried": 101,
-                    "total_lesson_count": 2499,
-                    "lesson_complete_percentage": 4,
-                    "total_training_seconds": 0,
-                    "score": {
-                        "p_90_100": 44,
-                        "p_80_89": 1,
-                        "p_70_79": 0,
-                        "p_60_69": 1,
-                        "p_50_59": 0,
-                        "p_50": 55
-                    }
-                }
+			"stats": {
+				"lessons_tried": 101,
+				"total_lesson_count": 2499,
+				"lesson_complete_percentage": 4,
+				"total_training_seconds": 0,
+				"score": {
+					"p_90_100": 44,
+					"p_80_89": 1,
+					"p_70_79": 0,
+					"p_60_69": 1,
+					"p_50_59": 0,
+					"p_50": 55
+				}
             }
         },
 */
 	private Ratings rating;
-	private Lessons lessons;
+	private Stats stats;
 
 	public Ratings getRatings() {
-		return rating;
+		return rating == null ? new Ratings() : rating;
 	}
 
-	public Lessons getLessons() {
-		return lessons;
+	public Stats getStats() {
+		return stats;
 	}
 
 	public class Ratings {
@@ -59,19 +57,11 @@ public class UserLessonsStatsData {
 		}
 
 		public BaseRating getHighest() {
-			return highest;
+			return highest == null ? new BaseRating() : highest;
 		}
 
 		public BaseRating getLowest() {
-			return lowest;
-		}
-	}
-
-	public class Lessons {
-		private Stats stats;
-
-		public Stats getStats() {
-			return stats;
+			return lowest == null ? new BaseRating() : highest;
 		}
 	}
 
@@ -99,7 +89,7 @@ public class UserLessonsStatsData {
 		}
 
 		public Score getScore() {
-			return score;
+			return score == null ? new Score() : score;
 		}
 	}
 

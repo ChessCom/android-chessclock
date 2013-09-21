@@ -2,7 +2,6 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -87,7 +86,7 @@
 
             <com.chess.SwitchButton
                 android:id="@+id/coordinatesSwitch"
-                style="@style/Switch.White"
+                style="@style/Switch.Default"
                 />
         </com.chess.LinLayout>
 
@@ -112,9 +111,7 @@
 
             <com.chess.SwitchButton
                 android:id="@+id/highlightLastMoveSwitch"
-                style="@style/Switch.White"
-                custom:switchTextOn="@string/yes"
-                custom:switchTextOff="@string/no"
+                style="@style/Switch.Default.Yes"
                 />
         </com.chess.LinLayout>
 
@@ -139,9 +136,7 @@
 
             <com.chess.SwitchButton
                 android:id="@+id/showLegalMovesSwitch"
-                style="@style/Switch.White"
-                custom:switchTextOn="@string/yes"
-                custom:switchTextOff="@string/no"
+                style="@style/Switch.Default"
                 />
 
         </com.chess.LinLayout>
@@ -167,7 +162,7 @@
 
             <com.chess.SwitchButton
                 android:id="@+id/answerShowBottomSwitch"
-                style="@style/Switch.White"
+                style="@style/Switch.Default"
                 />
         </com.chess.LinLayout>
 
@@ -192,7 +187,7 @@
 
             <com.chess.SwitchButton
                 android:id="@+id/soundsSwitch"
-                style="@style/Switch.White"
+                style="@style/Switch.Default"
                 />
         </com.chess.LinLayout>
 
@@ -270,7 +265,7 @@
 
 			<com.chess.SwitchButton
 				android:id="@+id/autoFlipSwitch"
-				style="@style/Switch.White"
+				style="@style/Switch.Default"
 				/>
 		</com.chess.LinLayout>
     </com.chess.LinLayout>

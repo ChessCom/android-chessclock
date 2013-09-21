@@ -52,7 +52,7 @@ public class RectButtonDrawable extends ButtonDrawable {
 	InsetInfo insetTwo = new InsetInfo();
 
 	/* state & other values */
-	private boolean boundsInit;
+//	private boolean boundsInit;
 	private Rect clipBounds;
 
 	/**
@@ -193,9 +193,9 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-		if (!boundsInit) {
+//		if (!boundsInit) {
 			initBounds(canvas);
-		}
+//		}
 
 		super.draw(canvas);
 	}
@@ -304,13 +304,13 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 	@Override
 	protected boolean onStateChange(int[] states) {
-		boundsInit = false;
+//		boundsInit = false;
 		return super.onStateChange(states);
 	}
 
 	@Override
 	protected void onBoundsChange(Rect bounds) {
-		boundsInit = false;
+//		boundsInit = false;
 		super.onBoundsChange(bounds);
 	}
 

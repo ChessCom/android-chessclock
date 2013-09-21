@@ -404,7 +404,7 @@
         <item name="android:layout_height">@dimen/button_switch_dark_height</item>
     </style>
 
-    <style name="Switch.White">
+<!--    <style name="Switch.White">
         <item name="switchBackOn">@drawable/button_switch_white_back_checked</item>
         <item name="switchBackOff">@drawable/button_switch_white_back_default</item>
         <item name="switchHandle">@drawable/button_switch_white_handle_selector</item>
@@ -423,6 +423,34 @@
         <item name="switchTextUseShadow">true</item>
         <item name="android:layout_width">@dimen/button_switch_white_width</item>
         <item name="android:layout_height">@dimen/button_switch_white_height</item>
+    </style>-->
+
+    <style name="Switch.Default">
+        <item name="switchBackOn">@drawable/button_switch_default_back_checked</item>
+        <item name="switchBackOff">@drawable/button_switch_default_back_default</item>
+        <item name="switchHandle">@drawable/button_switch_default_handle_selector</item>
+        <item name="switchHandleWidth">36</item>
+        <item name="switchHandleHeight">27</item>
+        <item name="switchHandleShift">@integer/button_switch_default_handle_shift</item>
+        <item name="switchHandleMargin">0</item>
+        <item name="switchTextShift">33.0</item>
+        <item name="switchTextSize">16sp</item>
+        <item name="switchTextColorOn">@color/white</item>
+        <item name="switchTextColorOff">@color/switch_default_back_border_top_1</item>
+        <item name="switchTextFont">NeueBold</item>
+        <item name="switchTextOn">@string/on</item>
+        <item name="switchTextOff">@string/off</item>
+        <item name="switchTextLeftPadding">13</item>
+        <item name="switchTextUseShadow">true</item>
+        <item name="android:layout_width">@dimen/button_switch_default_width</item>
+        <item name="android:layout_height">@dimen/button_switch_default_height</item>
+    </style>
+
+    <style name="Switch.Default.Yes">
+        <item name="switchTextOn">@string/yes</item>
+        <item name="switchTextOff">@string/no</item>
+        <item name="switchTextLeftPadding">8</item>
+		<item name="switchTextShift">41.0</item>
     </style>
 
 	<style name="DarkShadowBottom">

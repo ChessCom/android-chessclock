@@ -1805,7 +1805,7 @@ public class DbDataManager {
 		values.put(V_LOWEST_RATING, lowest.getRating());
 		values.put(V_LOWEST_TIMESTAMP, lowest.getTimestamp());
 
-		UserLessonsStatsData.Stats stats = dataObj.getLessons().getStats();
+		UserLessonsStatsData.Stats stats = dataObj.getStats();
 		values.put(V_LESSONS_TRIED, stats.getLessonsTried());
 		values.put(V_TOTAL_LESSON_COUNT, stats.getTotalLessonCount());
 		values.put(V_LESSON_COMPLETE_PERCENTAGE, stats.getLessonCompletePercentage());

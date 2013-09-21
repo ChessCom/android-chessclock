@@ -40,7 +40,6 @@ public class DbScheme {
 		FORUM_CATEGORIES,
 		FORUM_POSTS,
 
-//		TACTICS_BATCH,
 		TACTICS_TRAINER,
 		TACTICS_RATING_INFO,
 
@@ -264,22 +263,6 @@ public class DbScheme {
 	private static final String ID_INTEGER_PRIMARY_KEY_AUTOINCREMENT = " (_id integer primary key autoincrement, ";
 
 	void createMainTables() {
-
-//		createTablesArray[Tables.TACTICS_BATCH.ordinal()] = createTableForName(Tables.TACTICS_BATCH)
-//				+ addField_Long(V_ID)
-//				+ addField_Long(V_SECONDS_SPENT)
-//				+ addField_Int(V_ATTEMPT_CNT)
-//				+ addField_Int(V_PASSED_CNT)
-//				+ addField_Int(V_RATING)
-//				+ addField_Int(V_STOP)
-//				+ addField_Int(V_COMPLETED)
-//				+ addField_Int(V_HINT_WAS_USED)
-//				+ addField_Int(V_WAS_SHOWED)
-//				+ addField_Int(V_IS_RETRY)
-//				+ addField_Text(V_FEN)
-//				+ addField_Text(V_MOVE_LIST)
-//				+ addField_Text(V_USER)
-//				+ addField_Text(V_AVG_SECONDS, true);
 
 		createTablesArray[Tables.TACTICS_TRAINER.ordinal()] = createTableForName(Tables.TACTICS_TRAINER)
 				+ addField_Long(V_ID)

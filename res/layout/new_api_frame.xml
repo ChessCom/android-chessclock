@@ -27,7 +27,7 @@
 
 			<com.chess.SwitchButton
 				android:id="@+id/apiSwitch"
-				style="@style/Switch.White" />
+				style="@style/Switch.Default" />
 		</com.chess.LinLayout>
 
 

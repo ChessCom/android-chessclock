@@ -123,6 +123,15 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 		}
 	}
 
+	public void openSignInFragment() {
+		CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(SignInFragment.class.getSimpleName());
+		if (fragment == null) {
+			fragment = new SignInFragment();
+		}
+		getActivityFace().openFragment(fragment);
+		openWelcomeFragment = false;
+	}
+
 	@Override
 	public void onPageSelected(int page) {
 		if (page == WelcomeFragment.SIGN_UP_PAGE) {

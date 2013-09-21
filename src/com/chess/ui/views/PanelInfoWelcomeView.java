@@ -207,9 +207,11 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).dropPieces();
 	}
 
+	@Override
 	public void showThinkingView(boolean show) {
 		if (show) {
-			playerTxt.setText(R.string.thinking);
+			playerTxt.setText(getContext().getString(R.string.computer) + Symbol.SPACE +
+					getContext().getString(R.string.thinking));
 			handler.postDelayed(thinkingDotTask, THINKING_DOT_DELAY);
 		} else {
 			playerTxt.setText(R.string.computer);
@@ -225,7 +227,8 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 				playerTxt.setText(playerTxt.getText() + Symbol.DOT.trim());
 			} else {
 				dotsAdded = 0;
-				playerTxt.setText(R.string.thinking);
+				playerTxt.setText(getContext().getString(R.string.computer) + Symbol.SPACE +
+						getContext().getString(R.string.thinking));
 			}
 			handler.postDelayed(thinkingDotTask, THINKING_DOT_DELAY);
 		}

@@ -25,7 +25,8 @@ import java.util.List;
  * Date: 28.04.13
  * Time: 5:23
  */
-public class SettingsBoardFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener, AdapterView.OnItemSelectedListener {
+public class SettingsBoardFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener,
+		AdapterView.OnItemSelectedListener {
 
 	private List<SelectionItem> piecesList;
 	private List<SelectionItem> boardsList;
@@ -165,7 +166,6 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		showLegalMovesSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_SHOW_LEGAL_MOVES, true));
 		alwaysShowWhiteBottomSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_SHOW_ANSWER_BOTTOM, true));
 		autoFlipSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_AUTO_FLIP, true));
-
 
 		//spinners
 		view.findViewById(R.id.piecesView).setOnClickListener(this);

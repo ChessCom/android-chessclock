@@ -40,11 +40,11 @@ public class UserTacticsStatsData {
 	}
 
 	public BaseRating getHighest() {
-		return highest;
+		return highest == null ? new BaseRating() : highest;
 	}
 
 	public BaseRating getLowest() {
-		return lowest;
+		return lowest == null ? new BaseRating() : lowest;
 	}
 
 	public int getAttemptCount() {

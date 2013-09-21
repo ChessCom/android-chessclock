@@ -646,9 +646,15 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		public void updateData(TacticTrainerItem returnedObj) {
 			noNetwork = false;
 
-			DbDataManager.saveTacticTrainerToDb(getContentResolver(), returnedObj.getData(), getUsername());
+			TacticProblemItem.Data tacticsProblem = returnedObj.getData().getTacticsProblem();
+			if (tacticsProblem != null) {
+				DbDataManager.saveTacticTrainerToDb(getContentResolver(), returnedObj.getData(), getUsername());
+			} else {
+				showLimitReachedPopup();
+			}
 
 			TacticRatingData ratingInfo = returnedObj.getData().getRatingInfo();
+			// if we request first tactic, there will be no rating_info! It might be returned only after you solve one.
 			if (ratingInfo != null) {
 				ratingInfo.setId(trainerData.getId());
 				ratingInfo.setUser(trainerData.getUser());
@@ -660,7 +666,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					if (trainerData.getRatingInfo() != null) {
 						newRatingStr = trainerData.getPositiveScore();
 						trainerData.setRetry(true); // set auto retry because we will save tactic
-						trainerData.setCompleted(true);
 					}
 
 					showCorrectViews(newRatingStr);

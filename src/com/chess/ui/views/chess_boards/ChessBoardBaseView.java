@@ -158,7 +158,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		int highlightColor = resources.getColor(R.color.highlight_color);
 
-		yellowPaint.setStrokeWidth(2f * density);
+		yellowPaint.setStrokeWidth(resources.getDimension(R.dimen.highlight_stroke_width));
 		yellowPaint.setStyle(Style.STROKE);
 		yellowPaint.setColor(highlightColor);
 
@@ -178,7 +178,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		coordinatesPaint.setTextSize(coordinateFont * density);
 		coordinatesPaint.setTypeface(FontsHelper.getInstance().getTypeFace(getContext(), FontsHelper.BOLD_FONT));
 
-		madeMovePaint.setStrokeWidth(2f * density);
+		madeMovePaint.setStrokeWidth(resources.getDimension(R.dimen.highlight_stroke_width));
 		madeMovePaint.setStyle(Style.STROKE);
 		madeMovePaint.setColor(highlightColor);
 

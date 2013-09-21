@@ -183,7 +183,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 	public void lock(boolean lock) {
 		blocked = lock;
-		setEnabled(!lock);
+//		setEnabled(!lock); // don't lock controls to prevent drawable glitches(temp)
 	}
 
 	public abstract void enableForwardBtn(boolean enable);

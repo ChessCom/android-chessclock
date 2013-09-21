@@ -371,7 +371,7 @@ public class ButtonDrawable extends StateListDrawable {
 		drawable.setPadding(leftPad, topPad, rightPad, bottomPad);
 	}
 
-	Shader makeLinear(int width, int height, int startColor, int centerColor, int endColor) {
+	Shader makeLinear(int width, int height, int startColor, int centerColor, int endColor) { // TODO improve performance
 		RectF r = new RectF(0, 0, width, height);
 		float x0, x1, y0, y1;
 		switch (gradientAngle) {
@@ -439,30 +439,31 @@ public class ButtonDrawable extends StateListDrawable {
 		boolean checked = false;
 
 		for (int state : states) {
-			if (state == android.R.attr.state_enabled)
+			if (state == android.R.attr.state_enabled) {
 				enabled = true;
-			else if (state == android.R.attr.state_pressed)
+			} else if (state == android.R.attr.state_pressed) {
 				pressed = true;
-			else if (state == android.R.attr.state_selected)
+			} else if (state == android.R.attr.state_selected) {
 				selected = true;
-			else if (state == android.R.attr.state_checked)
+			} else if (state == android.R.attr.state_checked) {
 				checked = true;
+			}
 		}
 
 		Drawable drawable = mutate();
 		if (enabled && pressed) {
-			drawable.setColorFilter(pressedFilter);
+			drawable.mutate().setColorFilter(pressedFilter);
 			drawable.setAlpha(enabledAlpha);
 		} else if (enabled && selected) {
 			drawable.mutate().setColorFilter(selectedFilter);
 			drawable.setAlpha(enabledAlpha);
 		} else if (enabled && checked) {
-			drawable.setColorFilter(checkedFilter);
+			drawable.mutate().setColorFilter(checkedFilter);
 			drawable.setAlpha(enabledAlpha);
 		} else if (!enabled) {
 			drawable.setAlpha(disabledAlpha);
 		} else {
-			drawable.setColorFilter(enabledFilter);
+			drawable.mutate().setColorFilter(enabledFilter);
 			drawable.setAlpha(enabledAlpha);
 		}
 

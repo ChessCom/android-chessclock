@@ -2,5 +2,6 @@
 <resources>
 
 	<integer name="board_highlight_font">15</integer>
+	<integer name="button_switch_default_handle_shift">-50</integer>
 
 </resources>

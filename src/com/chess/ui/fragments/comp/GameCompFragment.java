@@ -88,7 +88,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	private int[] compStrengthArray;
 	private String[] compTimeLimitArray;
 	private String[] compDepth;
-	private TextView engineThinkingPath;
+//	private TextView engineThinkingPath;
 
 	private Bundle savedInstanceState;
 
@@ -144,7 +144,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		widgetsInit(view);
 
 		{ // Engine init
-			engineThinkingPath = (TextView) view.findViewById(R.id.engineThinkingPath);
+//			engineThinkingPath = (TextView) view.findViewById(R.id.engineThinkingPath);
 			compStrengthArray = getResources().getIntArray(R.array.comp_strength);
 			compTimeLimitArray = getResources().getStringArray(R.array.comp_time_limit);
 			compDepth = getResources().getStringArray(R.array.comp_book_depth);
@@ -157,6 +157,10 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	public void onResume() {
 		super.onResume();
 
+		updateData();
+	}
+
+	private void updateData() {
 		ChessBoardComp.resetInstance();
 
 		isAutoFlip = getAppData().isAutoFlipFor2Players();
@@ -287,7 +291,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 					boardView.flipBoard();
 				}
 			}, AUTO_FLIP_DELAY);
-
 		}
 	}
 
@@ -691,6 +694,12 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	public void updateConfig(CompGameConfig config) {
 		compGameConfig = config;
+		getBoardFace().setMode(compGameConfig.getMode());
+
+		labelsSet = false;
+		invalidateGameScreen();
+		boardView.invalidate();
+		updateData();
 	}
 
 	private class InitComputerEngineUpdateListener extends ChessLoadUpdateListener<CompEngineHelper> {

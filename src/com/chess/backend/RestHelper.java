@@ -155,6 +155,7 @@ public class RestHelper {
 	public String CMD_TACTICS = BASE_URL + V1 + "/tactics/";
 	public String CMD_TACTICS_STATS = CMD_TACTICS + "stats";
 	public String CMD_TACTIC_TRAINER = CMD_TACTICS + "trainer";
+
 	/* Lessons */
 	public String CMD_LESSONS = BASE_URL + V1 + "/lessons/";
 	public String CMD_LESSONS_CATEGORIES = CMD_LESSONS + "categories";
@@ -226,9 +227,9 @@ public class RestHelper {
 		return CMD_MESSAGES + id;
 	}
 
-	public String CMD_MEMBERSHIP = BASE_URL + V1 + "/membership/android/";
-	public String CMD_MEMBERSHIP_PAYLOAD = CMD_MEMBERSHIP + "payload";
-	public String CMD_MEMBERSHIP_KEY = CMD_MEMBERSHIP + "public-key";
+	public String CMD_MEMBERSHIP = BASE_URL + V1 + "/membership/android";
+	public String CMD_MEMBERSHIP_PAYLOAD = CMD_MEMBERSHIP + "/payload";
+	public String CMD_MEMBERSHIP_KEY = CMD_MEMBERSHIP + "/public-key";
 
 	/* Parameters */
 	public static final String P_USER_NAME_OR_MAIL = "usernameOrEmail";

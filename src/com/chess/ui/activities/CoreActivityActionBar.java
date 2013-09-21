@@ -52,15 +52,14 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void adjustActionBarHomeIcon() {
-		ActionBar actionBar = getActionBar();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH && actionBar != null) {
-			actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH && getActionBar() != null) {
+			getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME
 					| ActionBar.DISPLAY_HOME_AS_UP
 					| ActionBar.DISPLAY_SHOW_CUSTOM);
 		}
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 && actionBar != null) {
-			hideUpIcon(actionBar);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 && getActionBar() != null) {
+			hideUpIcon(getActionBar());
 		}
 	}
 
