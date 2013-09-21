@@ -66,7 +66,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private BroadcastReceiver gamesUpdateReceiver;
 	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
 	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
-	private GamesCursorUpdateListener currentGamesMyCursorUpdateListener;
+	private GamesCursorUpdateListener currentGamesCursorUpdateListener;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
 	protected DailyGamesUpdateListener dailyGamesUpdateListener;
 
@@ -188,7 +188,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		acceptDrawUpdateListener = new OnlineUpdateListener(OnlineUpdateListener.DRAW);
 		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
 		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
-		currentGamesMyCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_MY);
+		currentGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_MY);
 		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.FINISHED);
 
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
@@ -356,7 +356,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	private void loadDbGames() {
-		new LoadDataFromDbTask(currentGamesMyCursorUpdateListener,
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener,
 				DbHelper.getDailyCurrentListGames(getUsername()),
 				getContentResolver()).executeTask();
 	}
@@ -604,8 +604,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		acceptDrawUpdateListener = null;
 		saveCurrentGamesListUpdateListener.releaseContext();
 		saveCurrentGamesListUpdateListener = null;
-		currentGamesMyCursorUpdateListener.releaseContext();
-		currentGamesMyCursorUpdateListener = null;
+		currentGamesCursorUpdateListener.releaseContext();
+		currentGamesCursorUpdateListener = null;
 
 		dailyGamesUpdateListener.releaseContext();
 		dailyGamesUpdateListener = null;

@@ -580,9 +580,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 				.append("\n [Date \"").append(date).append("\"]")
 				.append("\n [White \"").append(whitePlayerName).append("\"]")
 				.append("\n [Black \"").append(blackPlayerName).append("\"]")
-				.append("\n [Result \"").append(result).append("\"]")
-				.append("\n\n \"")
-				.append("\n [FEN  \"").append(getBoardFace().generateFullFen()).append("\"]");
+				.append("\n [Result \"").append(result).append("\"]");
 
 		builder.append("\n ").append(moves)
 				.append("\n \n Sent from my Android");

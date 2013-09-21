@@ -34,6 +34,7 @@ import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.daily.DailyGamesRightFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.welcome.SignInFragment;
+import com.chess.ui.fragments.welcome.SignUpFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.utilities.AppUtils;
@@ -401,6 +402,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		if (tag.equals(RE_LOGIN_TAG)) {
 			performLogout();
+		} else if (tag.equals(CHESS_NO_ACCOUNT_TAG)){
+			getActivityFace().openFragment(new SignUpFragment());
 		}
 		super.onPositiveBtnClick(fragment);
 	}

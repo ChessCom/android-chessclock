@@ -182,15 +182,17 @@
                 />
 
             <com.chess.RoboButton
+				android:id="@+id/gameTypeBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/normal"
+                android:text="@string/chess"
                 style="@style/Button.Glassy.Small"
                 />
         </com.chess.LinLayout>
 
         <!--Rating View-->
         <com.chess.RelLayout
+			android:id="@+id/ratingView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"

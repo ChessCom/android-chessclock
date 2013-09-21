@@ -815,6 +815,23 @@ public class DbDataManager {
 		return dataObj;
 	}
 
+	public static void saveDailyGame(ContentResolver contentResolver, DailyCurrentGameData currentItem, String username) {
+		final String[] arguments = sArguments2;
+		arguments[0] = String.valueOf(username);
+		arguments[1] = String.valueOf(currentItem.getGameId());
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = DbScheme.uriArray[DbScheme.Tables.DAILY_CURRENT_GAMES.ordinal()];
+		final Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_GAME_ID,
+				DbDataManager.SELECTION_USER_AND_ID, arguments, null);
+
+		ContentValues values = DbDataManager.putDailyGameCurrentItemToValues(currentItem, username);
+
+		DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
+
+	}
+
+
 	public static ContentValues putDailyGameCurrentItemToValues(DailyCurrentGameData dataObj, String username) {
 		ContentValues values = new ContentValues();
 

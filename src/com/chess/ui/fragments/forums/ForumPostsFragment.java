@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
-import android.view.*;
-import android.view.inputmethod.EditorInfo;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -18,17 +20,16 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ForumPostItem;
 import com.chess.backend.entity.api.VacationItem;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveForumPostsTask;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ForumPostsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.PageIndicatorView;
-import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,7 +38,7 @@ import com.chess.utilities.AppUtils;
  * Time: 6:43
  */
 public class ForumPostsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
-		PageIndicatorView.PagerFace, TextView.OnEditorActionListener, ItemClickListenerFace {
+		PageIndicatorView.PagerFace, ItemClickListenerFace {
 
 
 	private static final String TOPIC_ID = "topic_id";
@@ -119,7 +120,6 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 		replyView = view.findViewById(R.id.replyView);
 		newPostEdt = (EditText) view.findViewById(R.id.newPostEdt);
-		newPostEdt.setOnEditorActionListener(this);
 
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_share, true);
@@ -294,20 +294,6 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	@Override
 	public void showPage(int page) {
 		requestPage(page);
-	}
-
-	@Override
-	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.FLAG_EDITOR_ACTION
-				|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live
-				popupItem.setPositiveBtnId(R.string.wireless_settings);
-				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
-			} else {
-				createPost();
-			}
-		}
-		return false;
 	}
 
 	@Override

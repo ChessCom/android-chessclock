@@ -514,6 +514,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private void moveWasSent() {
 		showSubmitButtonsLay(false);
 
+		// update DB
+		currentGame.setMyTurn(false);
+		DbDataManager.saveDailyGame(getContentResolver(), currentGame, getUsername());
+
 		if (getBoardFace().isFinished()) {
 			showGameEndPopup(endGamePopupView, endGameMessage);
 		} else {

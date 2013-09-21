@@ -352,7 +352,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			lastNameValueEdt.setText(Symbol.EMPTY);
 		} else if (id == R.id.locationClearBtn) {
 			locationValueEdt.setText(Symbol.EMPTY);
-		} else if (id == R.id.countryLay || id == R.id.flagImg /*|| id == R.id.countryArrowIconTxt*/) {
+		} else if (id == R.id.countryLay || id == R.id.flagImg || id == R.id.countryValueTxt) {
 			showCountriesFragment();
 			startActionMode();
 		} else if (id == R.id.userPhotoImg || id == R.id.userPhotoLay) {

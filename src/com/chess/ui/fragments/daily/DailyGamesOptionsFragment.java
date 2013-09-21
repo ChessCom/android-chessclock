@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.*;
 import com.chess.*;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -23,7 +25,9 @@ import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonGlassyDrawable;
 
@@ -36,7 +40,7 @@ import java.util.List;
  * Date: 24.04.13
  * Time: 14:26
  */
-public class DailyGamesOptionsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemSelectedListener {
+public class DailyGamesOptionsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemSelectedListener, PopupListSelectionFace {
 
 	private static final int RATING_VARIABLE_DIFF = 100;
 	private static final int MIN_RATING_DIFF = 200;
@@ -45,6 +49,11 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 	private static final int MIN_RATING_MAX = 2000;
 	private static final int MAX_RATING_MIN = 1000;
 	private static final int MAX_RATING_MAX = 2400;
+
+	private static final int ID_CHESS = 0;
+	private static final int ID_CHESS_960 = 1;
+	private static final String OPTION_SELECTION_TAG = "options selection popup";
+
 
 	private DailyGamesButtonsAdapter dailyGamesButtonsAdapter;
 	private DailyGameConfig.Builder gameConfigBuilder;
@@ -56,6 +65,10 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 	private List<SelectionItem> friendsList;
 	private int dailyRating;
 	private int positionMode;
+	private View ratingView;
+	private SparseArray<String> optionsMap;
+	private PopupOptionsMenuFragment optionsSelectFragment;
+	private Button gameTypeBtn;
 
 	public DailyGamesOptionsFragment() {
 		Bundle bundle = new Bundle();
@@ -124,6 +137,8 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		}
 
 		{// options setup
+			gameTypeBtn = (Button) view.findViewById(R.id.gameTypeBtn);
+			gameTypeBtn.setOnClickListener(this);
 			{// Mode adapter init
 				int[] newGameButtonsArray = resources.getIntArray(R.array.days_per_move_array);
 				List<DailyGameButtonItem> newGameButtonItems = new ArrayList<DailyGameButtonItem>();
@@ -140,8 +155,13 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 
 			// rated games switch
 			ratedGameSwitch = (SwitchButton) view.findViewById(R.id.ratedGameSwitch);
-
+			{// options list setup
+				optionsMap = new SparseArray<String>();
+				optionsMap.put(ID_CHESS, getString(R.string.chess));
+				optionsMap.put(ID_CHESS_960, getString(R.string.chess_960));
+			}
 			{// Rating part
+				ratingView = view.findViewById(R.id.ratingView);
 				int minRatingDefault = dailyRating - MIN_RATING_DIFF;
 				int maxRatingDefault = dailyRating + MAX_RATING_DIFF;
 
@@ -196,6 +216,11 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		if (parent.getAdapter() instanceof OpponentsAdapter) {
 			SelectionItem opponent = (SelectionItem) parent.getItemAtPosition(position);
 			gameConfigBuilder.setOpponentName(opponent.getText());
+			if (!opponent.getText().equals(getString(R.string.random))) {
+				ratingView.setVisibility(View.GONE);
+			} else {
+				ratingView.setVisibility(View.VISIBLE);
+			}
 		} else {
 			updateDailyMode(getAppData().getDefaultDailyMode());
 		}
@@ -215,6 +240,25 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 				gameConfigBuilder.setDaysPerMove(dailyGamesButtonsAdapter.getItem(position).days);
 			}
 		}, 250);
+	}
+
+	@Override
+	public void onValueSelected(int code) {
+		if (code == ID_CHESS) {
+			gameConfigBuilder.setGameType(RestHelper.V_GAME_CHESS);
+			gameTypeBtn.setText(R.string.chess);
+		} else if (code == ID_CHESS_960) {
+			gameConfigBuilder.setGameType(RestHelper.V_GAME_CHESS_960);
+			gameTypeBtn.setText(R.string.chess_960);
+		}
+
+		optionsSelectFragment.dismiss();
+		optionsSelectFragment = null;
+	}
+
+	@Override
+	public void onDialogCanceled() {
+		optionsSelectFragment = null;
 	}
 
 
@@ -319,6 +363,12 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 			getAppData().setDefaultDailyMode(position);
 		} else if (view.getId() == R.id.dailyHeaderView){
 			getActivityFace().toggleRightMenu();
+		} else if (view.getId() == R.id.gameTypeBtn){
+			if (optionsSelectFragment != null) { // if we already showing these options
+				return;
+			}
+			optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsMap);
+			optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
 		} else if (view.getId() == R.id.playBtn){
 			createDailyChallenge();
 		}

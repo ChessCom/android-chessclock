@@ -17,6 +17,7 @@ import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.drawables.ActionBarBackgroundDrawable;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.CountryItem;
 import com.chess.utilities.LoadCountryFlagsTask;
 
@@ -58,7 +59,11 @@ public class PopupCountriesFragment extends DialogFragment implements AdapterVie
 		super.onViewCreated(view, savedInstanceState);
 
 		View popupTitleLay = view.findViewById(R.id.popupTitleLay);
-		popupTitleLay.setBackgroundDrawable(new ActionBarBackgroundDrawable(getActivity()));
+		if (AppUtils.JELLYBEAN_PLUS_API) {
+			popupTitleLay.setBackground(new ActionBarBackgroundDrawable(getActivity()));
+		} else {
+			popupTitleLay.setBackgroundDrawable(new ActionBarBackgroundDrawable(getActivity()));
+		}
 
 		((TextView)view.findViewById(R.id.popupTitleTxt)).setText(R.string.select_country);
 
