@@ -21,6 +21,7 @@ import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.entity.api.DailyGamesAllItem;
+import com.chess.db.DbScheme;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -464,6 +465,20 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 			switch (gameType) {
 				case CURRENT_MY:
+					returnedObj.moveToFirst();
+					// check if we need to show new game button in dailyGamesFragment
+					boolean myTurnInDailyGames = false;
+					do {
+						if (DbDataManager.getInt(returnedObj, DbScheme.V_IS_MY_TURN) > 0) {
+							myTurnInDailyGames = true;
+
+						}
+					} while (returnedObj.moveToNext());
+					startNewGameBtn.setVisibility(myTurnInDailyGames ? View.GONE : View.VISIBLE);
+
+					// restore position
+					returnedObj.moveToFirst();
+
 					currentGamesMyCursorAdapter.changeCursor(returnedObj);
 //					if (AppUtils.isNetworkAvailable(getContext()) && !hostUnreachable /*&& !isRestarted*/) { // TODO adjust
 //						updateData();
@@ -542,17 +557,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				} else {
 					currentGamesMyCursorAdapter.changeCursor(null);
 				}
-
-				// check if we need to show new game button in dailyGamesFragment
-				boolean myTurnInDailyGames = false;
-				for (DailyCurrentGameData dailyGame : currentGamesList) {
-					if (dailyGame.isMyTurn()) {
-						myTurnInDailyGames = true;
-						break;
-					}
-				}
-
-				startNewGameBtn.setVisibility(myTurnInDailyGames ? View.GONE : View.VISIBLE);
 			}
 
 //			{ // finished

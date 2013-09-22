@@ -22,8 +22,7 @@ import com.chess.ui.fragments.forums.ForumCategoriesFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
-import com.chess.ui.fragments.live.GameLiveFragment;
-import com.chess.ui.fragments.live.LiveGameWaitFragment;
+import com.chess.ui.fragments.live.LiveTabsFragment;
 import com.chess.ui.fragments.messages.MessagesInboxFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
@@ -129,10 +128,15 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				}
 				break;
 			case R.drawable.ic_nav_play_live:
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
+
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(LiveTabsFragment.class.getSimpleName());
 				if (fragmentByTag == null) {
-					fragmentByTag = LiveGameWaitFragment.createInstance(getAppData().getLiveGameConfig());
+					fragmentByTag = new LiveTabsFragment();
 				}
+//				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
+//				if (fragmentByTag == null) {
+//					fragmentByTag = LiveGameWaitFragment.createInstance(getAppData().getLiveGameConfig());
+//				}
 				break;
 			case R.drawable.ic_nav_tactics:
 				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragment.class.getSimpleName());

@@ -17,8 +17,7 @@
         android:layout_height="wrap_content"
         android:text="@string/start_new_game"
         android:layout_marginLeft="4dip"
-        style="@style/Button.OrangeNoBorder"
-        android:minHeight="60dip"
-        android:textSize="23sp" />
+        style="@style/Button.OrangeNoBorder.Big"
+        />
 
 </com.chess.RelLayout>

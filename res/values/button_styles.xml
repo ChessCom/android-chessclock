@@ -52,6 +52,12 @@
         <item name="android:minHeight">@dimen/small_orange_button_height</item>
     </style>
 
+	<style name="Button.OrangeNoBorder.Big">
+        <item name="btn_use_border">false</item>
+        <item name="android:minHeight">@dimen/big_orange_button_height</item>
+        <item name="android:textSize">@dimen/big_button_text_size</item>
+    </style>
+
     <style name="Button.Orange2.Small">
         <item name="android:minHeight">@dimen/small_orange_button_height</item>
     </style>

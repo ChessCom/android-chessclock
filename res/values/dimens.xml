@@ -29,6 +29,8 @@
     <dimen name="big_button_height">50dip</dimen>
     <dimen name="small_button_height">35dip</dimen>
     <dimen name="small_orange_button_height">35dip</dimen>
+    <dimen name="big_orange_button_height">56dip</dimen>
+    <dimen name="big_button_text_size">23sp</dimen>
     <dimen name="grey_button_height">42dip</dimen>
     <dimen name="new_edit_field_height">40dip</dimen>
     <dimen name="new_tab_button_height">48dip</dimen>
