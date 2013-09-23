@@ -32,6 +32,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 	enum ButtonIds {
 		OPTIONS,
+		HOME,
 		SEARCH,
 		EXIT,
 		ANALYSIS,
@@ -54,6 +55,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 	private Integer[] glyphIds = new Integer[]{
 			R.string.ic_options,
+			R.string.ic_home,
 			R.string.ic_search,
 			R.string.ic_exit,
 			R.string.ic_board,

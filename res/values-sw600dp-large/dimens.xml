@@ -85,5 +85,7 @@
 	<dimen name="video_play_btn_back_ring_size_medium">120dip</dimen>
 	<dimen name="glyph_icon_round_back_medium">105dip</dimen>
 	<dimen name="play_button_left_offset">35dip</dimen>
+	<dimen name="popup_end_game_width">300dip</dimen>
+	<dimen name="rating_result_text_size">32sp</dimen>
 
 </resources>

@@ -18,4 +18,5 @@ public interface BoardViewAnalysisFace {
 
 	void closeBoard();
 
+	void showExplorer();
 }

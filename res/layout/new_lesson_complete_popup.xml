@@ -90,7 +90,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center_horizontal"
-			android:textSize="32sp"
+			android:textSize="@dimen/rating_result_text_size"
 			android:textColor="@color/new_subtitle_dark_grey"
 			custom:ttf="Bold"
 			/>

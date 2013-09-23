@@ -367,8 +367,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			PopupItem popupItem = new PopupItem();
 			popupItem.setTitle(R.string.you_been_challenged);
 			popupItem.setMessage(composeMessage(challenge));
-			popupItem.setNegativeBtnId(R.string.decline);
-			popupItem.setPositiveBtnId(R.string.accept);
 
 			PopupDialogFragment popupDialogFragment = PopupDialogFragment.createInstance(popupItem);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);

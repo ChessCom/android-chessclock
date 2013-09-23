@@ -333,6 +333,7 @@
 	<string name="go_ex">Go!</string>
 	<string name="ready_q_">Ready?...</string>
 	<string name="already_member_log_in">Already a member? Log in</string>
+	<string name="analyze">Analyze</string>
 
 
 </resources>

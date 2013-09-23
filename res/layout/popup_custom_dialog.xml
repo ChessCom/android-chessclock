@@ -30,15 +30,6 @@
 		android:paddingRight="10dip"
 		>
 
-		<com.chess.RoboButton
-			android:id="@+id/positiveBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			style="@style/Text.Button"
-			android:text="@string/ok"
-			android:layout_gravity="center_horizontal"
-			android:layout_weight="1"
-			/>
 
 		<com.chess.RoboButton
 			android:id="@+id/negativeBtn"
@@ -49,6 +40,17 @@
 			android:text="@string/cancel"
 			android:layout_gravity="center_horizontal"
 			/>
+
+		<com.chess.RoboButton
+			android:id="@+id/positiveBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/Text.Button"
+			android:text="@string/ok"
+			android:layout_gravity="center_horizontal"
+			android:layout_weight="1"
+			/>
+
 	</LinearLayout>
 
 </LinearLayout>

@@ -403,7 +403,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	@Override
 	public void updateEngineMove(final org.petero.droidfish.gamelogic.Move engineMove) {
 
-		// TODO @compengine: extract logic and put probably to ChessBoardView
+		// TODO @compengine: extract logic and put probably to ChessBoardView . Maybe in ChessBoardCompView instead.
 
 		if (!boardView.isHint() && getBoardFace().getPly() < getBoardFace().getMovesCount()) { // ignoring Forward move fired by engine
 			return;
@@ -557,7 +557,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 				[TimeControl "1 in 1 day"]
 				[Termination "alien_roger won on time"]
 				 */
-		CharSequence moves = getBoardFace().getMoveListSAN();
+		String moves = getBoardFace().getMoveListSAN();
 		String whitePlayerName = getAppData().getUsername();
 		String blackPlayerName = getString(R.string.comp);
 		String result = GAME_GOES;
@@ -607,7 +607,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		}
 		((TextView) layout.findViewById(R.id.endGameReasonTxt)).setText(getString(R.string.won_by_checkmate, winner)); // TODO adjust
 		layout.findViewById(R.id.ratingTitleTxt).setVisibility(View.GONE);
-		layout.findViewById(R.id.yourRatingTxt).setVisibility(View.GONE);
+		layout.findViewById(R.id.resultRatingTxt).setVisibility(View.GONE);
+		layout.findViewById(R.id.resultRatingChangeTxt).setVisibility(View.GONE);
 
 //		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
 //		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
@@ -619,7 +620,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
-		layout.findViewById(R.id.shareBtn).setOnClickListener(this);
+		layout.findViewById(R.id.sharePopupBtn).setOnClickListener(this);
 
 		getAppData().clearSavedCompGame();
 

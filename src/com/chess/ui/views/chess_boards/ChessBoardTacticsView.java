@@ -11,8 +11,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.boards.BoardViewTacticsFace;
 import com.chess.ui.interfaces.game_ui.GameTacticsFace;
 
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.List;
 
 public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardViewTacticsFace {
 
@@ -103,17 +102,15 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
                 firstClick = true;
                 boolean found = false;
 
-                TreeSet<Move> moves = getBoardFace().generateLegalMoves();
-                Iterator<Move> moveIterator = moves.iterator();
-
-                Move move = null;
-                while (moveIterator.hasNext()) {
-                    move = moveIterator.next();
-                    if (move.from == from && move.to == to) {
-                        found = true;
-                        break;
-                    }
-                }
+				Move move = null;
+                List<Move> moves = getBoardFace().generateLegalMoves();
+				for (Move move1 : moves) {
+					move = move1;
+					if (move.from == from && move.to == to) {
+						found = true;
+						break;
+					}
+				}
                 if ((((to < 8) && (getBoardFace().getSide() == ChessBoard.WHITE_SIDE)) ||
                         ((to > 55) && (getBoardFace().getSide() == ChessBoard.BLACK_SIDE))) &&
                         (getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
@@ -175,17 +172,15 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
     @Override
 	public void promote(int promote, int col, int row) {
         boolean found = false;
-        TreeSet<Move> moves = getBoardFace().generateLegalMoves();
-        Iterator<Move> iterator = moves.iterator();
-
-        Move move = null;
-        while (iterator.hasNext()) {
-            move = iterator.next();
-            if (move.from == from && move.to == to && move.promote == promote) {
-                found = true;
-                break;
-            }
-        }
+		Move move = null;
+		List<Move> moves = getBoardFace().generateLegalMoves();
+		for (Move move1 : moves) {
+			move = move1;
+			if (move.from == from && move.to == to && move.promote == promote) {
+				found = true;
+				break;
+			}
+		}
 
 		boolean moveMade = false;
 		MoveAnimator moveAnimator = null;

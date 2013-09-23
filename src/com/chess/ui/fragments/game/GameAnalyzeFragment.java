@@ -1,6 +1,5 @@
-package com.chess.ui.fragments.daily;
+package com.chess.ui.fragments.game;
 
-import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -8,25 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.api.DailyCurrentGameData;
-import com.chess.backend.interfaces.AbstractUpdateListener;
-import com.chess.db.DbDataManager;
-import com.chess.db.DbHelper;
-import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
-import com.chess.model.DataHolder;
-import com.chess.model.PopupItem;
+import com.chess.model.GameAnalysisItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.engine.ChessBoardAnalysis;
 import com.chess.ui.fragments.explorer.GameExplorerFragment;
-import com.chess.ui.fragments.game.GameBaseFragment;
-import com.chess.ui.fragments.home.HomePlayFragment;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameAnalysisFace;
 import com.chess.ui.views.NotationView;
@@ -35,27 +23,23 @@ import com.chess.ui.views.chess_boards.ChessBoardAnalysisView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsAnalysisView;
-import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 22.02.13
- * Time: 7:26
+ * Date: 22.09.13
+ * Time: 15:21
  */
-public class GameDailyAnalysisFragment extends GameBaseFragment implements GameAnalysisFace {
+public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysisFace {
 
 	public static final String DOUBLE_SPACE = "  ";
 	private static final String ERROR_TAG = "send request failed popup";
 
-	private static final int CURRENT_GAME = 0;
+	private static final String GAME_ITEM = "game_item";
 
 	private ChessBoardAnalysisView boardView;
-
-	private DailyCurrentGameData currentGame;
-
+	private GameAnalysisItem analysisItem;
 	protected boolean userPlayWhite = true;
-	private LoadFromDbUpdateListener loadFromDbUpdateListener;
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
 	private ControlsAnalysisView controlsView;
@@ -64,13 +48,11 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	private BoardAvatarDrawable opponentAvatarDrawable;
 	private BoardAvatarDrawable userAvatarDrawable;
 	private LabelsConfig labelsConfig;
-	private String[] countryNames;
-	private int[] countryCodes;
 
-	public static GameDailyAnalysisFragment createInstance(long gameId) {
-		GameDailyAnalysisFragment fragment = new GameDailyAnalysisFragment();
+	public static GameAnalyzeFragment createInstance(GameAnalysisItem analysisItem) {
+		GameAnalyzeFragment fragment = new GameAnalyzeFragment();
 		Bundle arguments = new Bundle();
-		arguments.putLong(GAME_ID, gameId);
+		arguments.putParcelable(GAME_ITEM, analysisItem);
 		fragment.setArguments(arguments);
 
 		return fragment;
@@ -81,10 +63,11 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		super.onCreate(savedInstanceState);
 
 		if (getArguments() != null) {
-			gameId = getArguments().getLong(GAME_ID);
+			analysisItem = getArguments().getParcelable(GAME_ITEM);
 		} else {
-			gameId = savedInstanceState.getLong(GAME_ID);
+			analysisItem = savedInstanceState.getParcelable(GAME_ITEM);
 		}
+
 		init();
 	}
 
@@ -106,24 +89,24 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	public void onResume() {
 		super.onResume();
 
-		DataHolder.getInstance().setInOnlineGame(gameId, true);
-		loadGame();
+		adjustBoardForGame();
+
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 
-		DataHolder.getInstance().setInOnlineGame(gameId, false);
 		if (HONEYCOMB_PLUS_API) {
 			dismissDialogs();
 		}
 	}
 
-	private void loadGame() {
-		// load game from DB. After load update
-		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyGame(gameId, getUsername()),
-				getContentResolver()).executeTask();
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putParcelable(GAME_ITEM, analysisItem);
 	}
 
 	@Override
@@ -141,103 +124,52 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		getActivityFace().openFragment(GameExplorerFragment.createInstance(getBoardFace().generateBaseFen()));
 	}
 
-	private class LoadFromDbUpdateListener extends AbstractUpdateListener<Cursor> {
-
-		private int listenerCode;
-
-		public LoadFromDbUpdateListener(int listenerCode) {
-			super(getContext());
-			this.listenerCode = listenerCode;
-		}
-
-		@Override
-		public void updateData(Cursor returnedObj) {
-			super.updateData(returnedObj);
-
-			getSoundPlayer().playGameStart();
-
-			currentGame = DbDataManager.getDailyCurrentGameFromCursor(returnedObj);
-			returnedObj.close();
-
-			adjustBoardForGame();
-		}
-	}
-
 	private void adjustBoardForGame() {
-		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUsername());
+		userPlayWhite = analysisItem.getUserColor() == ChessBoard.WHITE_SIDE;
 
 		labelsConfig.topAvatar = opponentAvatarDrawable;
 		labelsConfig.bottomAvatar = userAvatarDrawable;
 
 		if (userPlayWhite) {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
-			labelsConfig.topPlayerName = currentGame.getBlackUsername();
-			labelsConfig.topPlayerRating = String.valueOf(currentGame.getBlackRating());
-			labelsConfig.bottomPlayerName = currentGame.getWhiteUsername();
-			labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getWhiteRating());
-			labelsConfig.topPlayerAvatar = currentGame.getBlackAvatar();
-			labelsConfig.bottomPlayerAvatar = currentGame.getWhiteAvatar();
-			labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
-			labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
-			labelsConfig.topPlayerPremiumStatus = currentGame.getBlackPremiumStatus();
-			labelsConfig.bottomPlayerPremiumStatus = currentGame.getWhitePremiumStatus();
 		} else {
 			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
-			labelsConfig.topPlayerName = currentGame.getWhiteUsername();
-			labelsConfig.topPlayerRating = String.valueOf(currentGame.getWhiteRating());
-			labelsConfig.bottomPlayerName = currentGame.getBlackUsername();
-			labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
-			labelsConfig.topPlayerAvatar = currentGame.getWhiteAvatar();
-			labelsConfig.bottomPlayerAvatar = currentGame.getBlackAvatar();
-			labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getWhiteUserCountry());
-			labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, currentGame.getBlackUserCountry());
-			labelsConfig.topPlayerPremiumStatus = currentGame.getWhitePremiumStatus();
-			labelsConfig.bottomPlayerPremiumStatus = currentGame.getBlackPremiumStatus();
 		}
 
-		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
+		labelsConfig.topPlayerName = analysisItem.getOpponent();
+		labelsConfig.topPlayerRating = "----";
+		labelsConfig.bottomPlayerName = getUsername();
+		labelsConfig.bottomPlayerRating = "----";
+		labelsConfig.topPlayerAvatar = "";
+		labelsConfig.bottomPlayerAvatar = getAppData().getUserAvatar();
+		labelsConfig.topPlayerCountry = "International";
+		labelsConfig.bottomPlayerCountry = getAppData().getUserCountry();
+		labelsConfig.topPlayerPremiumStatus = 0;
+		labelsConfig.bottomPlayerPremiumStatus = getAppData().getUserPremiumStatus();
 
 		controlsView.enableGameControls(true);
 		boardView.lockBoard(false);
 
 		getBoardFace().setFinished(false);
 
-		long secondsRemain = currentGame.getTimeRemaining();
-		String timeRemains;
-		if (secondsRemain == 0) {
-			timeRemains = getString(R.string.less_than_60_sec);
-		} else {
-			timeRemains = AppUtils.getTimeLeftFromSeconds(secondsRemain, getActivity());
-		}
 
-		String defaultTime = getString(R.string.days_arg, currentGame.getDaysPerMove());
-		boolean userMove = isUserMove();
-		if (userMove) {
-			labelsConfig.topPlayerTime = defaultTime;
-			labelsConfig.bottomPlayerTime = timeRemains;
-		} else {
-			labelsConfig.topPlayerTime = timeRemains;
-			labelsConfig.bottomPlayerTime = defaultTime;
-		}
+		topPanelView.showTimeLeftIcon(false);
+		bottomPanelView.showTimeLeftIcon(false);
 
-		topPanelView.showTimeLeftIcon(!userMove);
-		bottomPanelView.showTimeLeftIcon(userMove);
-
-		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
-		if (currentGame.getGameType() == BaseGameItem.CHESS_960) {
+		if (analysisItem.getGameType() == BaseGameItem.CHESS_960) {
 			boardFace.setChess960(true);
 		}
 
-		boardFace.setupBoard(currentGame.getStartingFenPosition());
+		boardFace.setupBoard(analysisItem.getFen());
 		if (!userPlayWhite) {
 			boardFace.setReside(true);
 		}
 
-		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
-			String[] moves = currentGame.getMoveList()
+		if (analysisItem.getMovesList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
+			String[] moves = analysisItem.getMovesList()
 					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
-					.replaceAll(DOUBLE_SPACE, Symbol.SPACE).substring(1).split(Symbol.SPACE);   // Start after "+" sign
+					.replaceAll(DOUBLE_SPACE, Symbol.SPACE).substring(1).split(Symbol.SPACE);
 
 			boardFace.setMovesCount(moves.length);
 			for (String move : moves) {
@@ -314,49 +246,39 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		topPanelView.setPlayerPremiumIcon(labelsConfig.topPlayerPremiumStatus);
 		bottomPanelView.setPlayerPremiumIcon(labelsConfig.bottomPlayerPremiumStatus);
 
-		if (currentGameExist()) {
-			topPanelView.setTimeRemain(labelsConfig.topPlayerTime);
-			bottomPanelView.setTimeRemain(labelsConfig.bottomPlayerTime);
-
-			boolean userMove = isUserMove();
-			topPanelView.showTimeLeftIcon(!userMove);
-			bottomPanelView.showTimeLeftIcon(userMove);
-		}
 		boardView.updateNotations(getBoardFace().getNotationArray());
 	}
 
 	@Override
 	public String getWhitePlayerName() {
-		if (currentGame == null)
+		if (labelsConfig.userSide == ChessBoard.BLACK_SIDE) {
 			return Symbol.EMPTY;
-		else
-			return currentGame.getWhiteUsername();
+		} else {
+			return getUsername();
+		}
 	}
 
 	@Override
 	public String getBlackPlayerName() {
-		if (currentGame == null)
+		if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
 			return Symbol.EMPTY;
-		else
-			return currentGame.getBlackUsername();
+		} else {
+			return getUsername();
+		}
 	}
 
 	@Override
 	public boolean currentGameExist() {
-		return currentGame != null;
+		return true;
 	}
 
 	@Override
 	public BoardFace getBoardFace() {
-		return ChessBoardOnline.getInstance(this);
+		return ChessBoardAnalysis.getInstance(this);
 	}
 
 	@Override
 	public void updateAfterMove() {
-		if (currentGame == null) { // TODO fix inappropriate state, current game can't be null here // if we don't have Game entity
-			// get game entity
-			throw new IllegalStateException("Current game became NULL");
-		}
 	}
 
 	@Override
@@ -370,10 +292,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	@Override
 	public Boolean isUserColorWhite() {
-		if (currentGame != null)
-			return currentGame.getWhiteUsername().equals(getAppData().getUsername());
-		else
-			return null;
+		return labelsConfig.userSide == ChessBoard.WHITE_SIDE;
 	}
 
 	@Override
@@ -383,12 +302,6 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	@Override
 	public void showOptions(View view) {
-	}
-
-	private boolean isUserMove() {
-		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUsername());
-
-		return currentGame.isMyTurn();
 	}
 
 	@Override
@@ -407,70 +320,19 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	@Override
 	protected void showGameEndPopup(View layout, String message) {
-		if (currentGame == null) {
-			throw new IllegalStateException("showGameEndPopup starts with currentGame = null");
-		}
 
-//		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
-		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
-		TextView yourRatingTxt = (TextView) layout.findViewById(R.id.yourRatingTxt);
-//		endGameTitleTxt.setText(R.string.game_over); // already set to game over
-		endGameReasonTxt.setText(message);
-
-		int currentPlayerNewRating = getCurrentPlayerRating();
-
-		String rating = getString(R.string.your_end_game_rating_online, currentPlayerNewRating);
-		yourRatingTxt.setText(rating);
-
-//		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-//		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
-		PopupItem popupItem = new PopupItem();
-		popupItem.setCustomView((LinearLayout) layout);
-
-		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
-		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
-
-		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
-		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
-//		if (AppUtils.isNeedToUpgrade(getActivity())) {
-//			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-//		}
-	}
-
-	private int getCurrentPlayerRating() {
-		if (userPlayWhite) {
-			return currentGame.getWhiteRating();
-		} else {
-			return currentGame.getBlackRating();
-		}
 	}
 
 	@Override
 	protected void restoreGame() {
-//		ChessBoardOnline.resetInstance();
 		boardView.setGameActivityFace(this);
 
 		adjustBoardForGame();
 		getBoardFace().setJustInitialized(false);
 	}
 
-
-	@Override
-	public void onClick(View view) {
-		super.onClick(view);
-		if (view.getId() == R.id.newGamePopupBtn) {
-			dismissDialogs();
-			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
-		}
-	}
-
 	private void init() {
 		labelsConfig = new LabelsConfig();
-
-		loadFromDbUpdateListener = new LoadFromDbUpdateListener(CURRENT_GAME);
-
-		countryNames = getResources().getStringArray(R.array.new_countries);
-		countryCodes = getResources().getIntArray(R.array.new_country_ids);
 	}
 
 	private void widgetsInit(View view) {
@@ -506,4 +368,5 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		boardView.setGameActivityFace(this);
 		boardView.lockBoard(true);
 	}
+
 }

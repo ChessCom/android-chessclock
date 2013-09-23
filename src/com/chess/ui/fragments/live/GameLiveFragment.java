@@ -17,10 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
+import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
-import com.chess.statics.AppConstants;
-import com.chess.statics.Symbol;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
@@ -28,15 +27,19 @@ import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
 import com.chess.live.rules.GameResult;
 import com.chess.live.util.GameRatingClass;
+import com.chess.model.GameAnalysisItem;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
+import com.chess.statics.AppConstants;
+import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MoveParser;
+import com.chess.ui.fragments.game.GameAnalyzeFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsBoardFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
@@ -73,7 +76,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private static final int ID_REMATCH = 3;
 	private static final int ID_SETTINGS = 4;
 
-	private static final String GAME_ID = "game_id";
 
 	private ChessBoardLiveView boardView;
 
@@ -89,7 +91,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private ControlsLiveView controlsLiveView;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 
-	private long gameId;
 	private LabelsConfig labelsConfig;
 	//	private UserInfoUpdateListener userInfoUpdateListener;
 	private ImageView topAvatarImg;
@@ -98,7 +99,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private int gameEndTitleId;
 	private SparseArray<String> optionsMap;
 
-	public GameLiveFragment() {	}
+	public GameLiveFragment() {
+	}
 
 	public static GameLiveFragment createInstance(long id) {
 		GameLiveFragment fragment = new GameLiveFragment();
@@ -112,13 +114,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		logLiveTest("onCreate");
-		
 		if (getArguments() != null) {
 			gameId = getArguments().getLong(GAME_ID);
 		} else {
 			gameId = savedInstanceState.getLong(GAME_ID);
 		}
+		logLiveTest("onCreate");
 
 		gameTaskListener = new ChessUpdateListener<Game>();
 		imageDownloader = new ImageDownloaderToListener(getActivity());
@@ -152,7 +153,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		if (isLCSBound) {
 			try {
-				synchronized(LccHelper.LOCK) {
+				synchronized (LccHelper.LOCK) {
 					onGameStarted();
 				}
 			} catch (DataNotValidException e) {
@@ -167,7 +168,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		super.onPause();
 
 		logLiveTest("onPause");
-		
+
 		dismissDialogs();
 		if (isLCSBound) {
 			try {
@@ -177,13 +178,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				isLCSBound = false;
 			}
 		}
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-
-		outState.putLong(GAME_ID, gameId);
 	}
 
 	@Override
@@ -232,6 +226,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		showSubmitButtonsLay(false);
 		controlsLiveView.enableAnalysisMode(false);
+		controlsLiveView.showDefault();
+
 		getBoardFace().setFinished(false);
 		getSoundPlayer().playGameStart();
 
@@ -331,7 +327,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					dismissDialogs(); // hide game end popup
 
 					try {
-						synchronized(LccHelper.LOCK) {
+						synchronized (LccHelper.LOCK) {
 							onGameStarted();
 						}
 					} catch (DataNotValidException e) {
@@ -499,10 +495,68 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				showGameEndPopup(layout, getString(gameEndTitleId), gameEndMessage);
 
 				setBoardToFinishedState();
+
+				controlsLiveView.showAfterMatch();
 			}
 		});
 
 	}
+
+	private void showGameEndPopup(View layout, String title, String message) {
+		LiveChessService liveService;
+		try {
+			liveService = getLiveService();
+		} catch (DataNotValidException e) {
+			logLiveTest(e.getMessage());
+			return;
+		}
+		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
+		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
+		TextView ratingTitleTxt = (TextView) layout.findViewById(R.id.ratingTitleTxt);
+		TextView resultRatingTxt = (TextView) layout.findViewById(R.id.resultRatingTxt);
+		TextView resultRatingChangeTxt = (TextView) layout.findViewById(R.id.resultRatingChangeTxt);
+		endGameTitleTxt.setText(title);
+		endGameReasonTxt.setText(message);
+
+		int currentPlayerNewRating = liveService.getLastGame().getRatingForPlayer(liveService.getUsername());
+		int ratingChange = liveService.getLastGame().getRatingChangeForPlayer(liveService.getUsername());
+
+		GameRatingClass gameRatingClass = liveService.getLastGame().getGameRatingClass();
+		String newRatingStr = getString(R.string.live);
+		if (gameRatingClass == GameRatingClass.Standard) {
+			newRatingStr += Symbol.SPACE + getString(R.string.standard);
+		} else if (gameRatingClass == GameRatingClass.Blitz) {
+			newRatingStr += Symbol.SPACE + getString(R.string.blitz);
+		} else /*if (gameRatingClass == GameRatingClass.Lightning)*/ {
+			newRatingStr += Symbol.SPACE + getString(R.string.lightning);
+		}
+
+		String ratingChangeString = Symbol.wrapInPars(ratingChange > 0 ? "+" + ratingChange : "" + ratingChange);
+
+		resultRatingTxt.setText(String.valueOf(currentPlayerNewRating));
+		resultRatingChangeTxt.setText(ratingChangeString);
+		ratingTitleTxt.setText(getString(R.string.new_game_rating_arg, newRatingStr));
+
+//		inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
+//		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
+
+		PopupItem popupItem = new PopupItem();
+		popupItem.setCustomView((LinearLayout) layout);
+
+		PopupGameEndFragment endPopupFragment = PopupGameEndFragment.createInstance(popupItem);
+		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
+
+		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.analyzePopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.sharePopupBtn).setOnClickListener(this);
+
+
+//		if (AppUtils.isNeedToUpgrade(getActivity())) {
+//			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+//		}
+	}
+
 
 	@Override
 	protected void setBoardToFinishedState() { // TODO implement state conditions logic for board
@@ -617,6 +671,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		getBoardFace().takeBack();
 		getBoardFace().decreaseMovesCount();
 		boardView.invalidate();
+	}
+
+	@Override
+	public void goHome() {
+		getActivityFace().showPreviousFragment();
 	}
 
 	@Override
@@ -833,7 +892,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 //			switch2Analysis(false);
 			getBoardFace().setAnalysis(false);
 
-			synchronized(LccHelper.LOCK) {
+			synchronized (LccHelper.LOCK) {
 				try {
 					onGameStarted();
 				} catch (DataNotValidException e) {
@@ -963,65 +1022,13 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		}
 	}
 
-	private void showGameEndPopup(View layout, String title, String message) {
-		LiveChessService liveService;
-		try {
-			liveService = getLiveService();
-		} catch (DataNotValidException e) {
-			logLiveTest(e.getMessage());
-			return;
-		}
-		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
-		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
-		TextView ratingTitleTxt = (TextView) layout.findViewById(R.id.ratingTitleTxt);
-		TextView yourRatingTxt = (TextView) layout.findViewById(R.id.yourRatingTxt);
-		endGameTitleTxt.setText(title);
-		endGameReasonTxt.setText(message);
-
-		int currentPlayerNewRating = liveService.getLastGame().getRatingForPlayer(liveService.getUsername());
-		int ratingChange = liveService.getLastGame().getRatingChangeForPlayer(liveService.getUsername());
-
-		GameRatingClass gameRatingClass = liveService.getLastGame().getGameRatingClass();
-		String newRatingStr = getString(R.string.live);
-		if (gameRatingClass == GameRatingClass.Standard) {
-			newRatingStr += Symbol.SPACE + getString(R.string.standard);
-		} else if (gameRatingClass == GameRatingClass.Blitz) {
-			newRatingStr += Symbol.SPACE + getString(R.string.blitz);
-		} else /*if (gameRatingClass == GameRatingClass.Lightning)*/ {
-			newRatingStr += Symbol.SPACE + getString(R.string.lightning);
-		}
-
-		String ratingChangeString = ratingChange > 0 ? "+" + ratingChange : "" + ratingChange;
-		String rating = currentPlayerNewRating + Symbol.SPACE + Symbol.wrapInPars(ratingChangeString);
-		yourRatingTxt.setText(rating);
-		ratingTitleTxt.setText(getString(R.string.new_game_rating_arg, newRatingStr));
-
-//		inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
-//		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
-
-		PopupItem popupItem = new PopupItem();
-		popupItem.setCustomView((LinearLayout) layout);
-
-		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
-		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
-
-		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
-		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
-		layout.findViewById(R.id.shareBtn).setOnClickListener(this);
-
-//		if (AppUtils.isNeedToUpgrade(getActivity())) {
-//			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-//		}
-	}
-
-
 	@Override
 	protected void restoreGame() {
 		if (isLCSBound) {
 //			ChessBoardLive.resetInstance();		 // moved to onGameStarted
 //			boardView.setGameFace(this);
 
-			synchronized(LccHelper.LOCK) {
+			synchronized (LccHelper.LOCK) {
 				try {
 					onGameStarted();
 				} catch (DataNotValidException e) {
@@ -1046,7 +1053,25 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			boardView.invalidate();
 		} else if (view.getId() == R.id.newGamePopupBtn) {
 			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
-		} else if (view.getId() == R.id.shareBtn) {
+		} else if (view.getId() == R.id.analyzePopupBtn) {
+			GameAnalysisItem analysisItem = new GameAnalysisItem();  // TODO reuse later
+			analysisItem.setGameType(RestHelper.V_GAME_CHESS);
+			analysisItem.setFen(getBoardFace().generateFullFen());
+			analysisItem.setMovesList(getBoardFace().getMoveListSAN());
+			String opponentName;
+			int userColor;
+			if (isUserColorWhite()) {
+				opponentName = getBlackPlayerName();
+				userColor = ChessBoard.WHITE_SIDE;
+			} else {
+				opponentName = getWhitePlayerName();
+				userColor = ChessBoard.BLACK_SIDE;
+			}
+			analysisItem.setOpponent(opponentName);
+			analysisItem.setUserColor(userColor);
+
+			getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
+		} else if (view.getId() == R.id.sharePopupBtn) {
 			LiveChessService liveService;
 			try {
 				liveService = getLiveService();

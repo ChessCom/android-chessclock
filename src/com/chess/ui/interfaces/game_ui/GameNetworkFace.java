@@ -16,4 +16,5 @@ public interface GameNetworkFace extends GameFace {
 
 	void cancelMove();
 
+	void goHome();
 }

@@ -30,10 +30,6 @@ import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.interfaces.AbstractUpdateListener;
-import com.chess.statics.AppConstants;
-import com.chess.statics.IntentConstants;
-import com.chess.statics.StaticData;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -42,11 +38,15 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
 import com.chess.model.PopupItem;
+import com.chess.statics.AppConstants;
+import com.chess.statics.IntentConstants;
+import com.chess.statics.StaticData;
+import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsBoardFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
@@ -100,7 +100,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private ChessBoardNetworkView boardView;
 
 	private DailyCurrentGameData currentGame;
-	private long gameId;
 
 	private IntentFilter boardUpdateFilter;
 	private BroadcastReceiver moveUpdateReceiver;
@@ -123,9 +122,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	public static GameDailyFragment createInstance(long gameId) {
 		GameDailyFragment fragment = new GameDailyFragment();
-		fragment.gameId = gameId;
 		Bundle arguments = new Bundle();
-		arguments.putLong(BaseGameItem.GAME_ID, gameId);
+		arguments.putLong(GAME_ID, gameId);
 		fragment.setArguments(arguments);
 
 		return fragment;
@@ -135,6 +133,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		if (getArguments() != null) {
+			gameId = getArguments().getLong(GAME_ID);
+		} else {
+			gameId = savedInstanceState.getLong(GAME_ID);
+		}
 		init();
 	}
 
@@ -166,17 +169,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	public void onPause() {
 		super.onPause();
 
-		if (HONEYCOMB_PLUS_API) {
-			dismissDialogs();
-		}
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
 		unRegisterMyReceiver(moveUpdateReceiver);
 
 		DataHolder.getInstance().setInOnlineGame(gameId, false);
+		if (HONEYCOMB_PLUS_API) {
+			dismissDialogs();
+		}
 	}
 
 	@Override
@@ -371,8 +369,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 					.replaceAll(DOUBLE_SPACE, Symbol.SPACE).substring(1).split(Symbol.SPACE);
 
 			boardFace.setMovesCount(moves.length);
-			for (int i = 0, cnt = boardFace.getMovesCount(); i < cnt; i++) {
-				boardFace.makeMove(moves[i], false);
+			for (String move : moves) {
+				boardFace.makeMove(move, false);
 			}
 		} else {
 			boardFace.setMovesCount(0);
@@ -547,12 +545,9 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	@Override
 	public void switch2Chat() {
-		if (currentGame == null)
+		if (currentGame == null) {
 			return;
-
-		preferencesEditor.putString(AppConstants.OPPONENT, userPlayWhite
-				? currentGame.getBlackUsername() : currentGame.getWhiteUsername());
-		preferencesEditor.commit();
+		}
 
 		currentGame.setHasNewMessage(false);
 		controlsDailyView.haveNewMessage(false);
@@ -574,6 +569,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		getBoardFace().takeBack();
 		getBoardFace().decreaseMovesCount();
 		boardView.invalidate();
+	}
+
+	@Override
+	public void goHome() {
+		// not used in daily
 	}
 
 	@Override
@@ -633,7 +633,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	}
 
 	private void sendPGN() {
-		CharSequence moves = getBoardFace().getMoveListSAN();
+		String moves = getBoardFace().getMoveListSAN();
 		String whitePlayerName = currentGame.getWhiteUsername();
 		String blackPlayerName = currentGame.getBlackUsername();
 		String result = GAME_GOES;
@@ -745,11 +745,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView((LinearLayout) layout);
 
-		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
+		PopupGameEndFragment endPopupFragment = PopupGameEndFragment.createInstance(popupItem);
 		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
+
 //		if (AppUtils.isNeedToUpgrade(getActivity())) {
 //			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 //		}

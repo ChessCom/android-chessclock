@@ -3,7 +3,7 @@ package com.chess.ui.interfaces.boards;
 import com.chess.ui.engine.HistoryData;
 import com.chess.ui.engine.Move;
 
-import java.util.TreeSet;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -20,7 +20,7 @@ public interface BoardFace {
 
 	void takeBack();
 
-	TreeSet<Move> generateLegalMoves();
+	List<Move> generateLegalMoves();
 
 	int getSide();
 
@@ -60,7 +60,7 @@ public interface BoardFace {
 
 	int reps();
 
-	TreeSet<Move> generateCapturesAndPromotes();
+	List<Move> generateCapturesAndPromotes();
 
 	int getFifty();
 
@@ -94,7 +94,7 @@ public interface BoardFace {
 
 	void takeNext();
 
-	CharSequence getMoveListSAN();
+	String getMoveListSAN();
 
 	String[] getNotationArray();
 

@@ -49,6 +49,7 @@
 
 
     <string name="ic_options">r</string>
+    <string name="ic_home">w</string>
     <string name="ic_restore">L</string>
     <string name="ic_refresh">:</string>
     <string name="ic_flip">N</string>

@@ -14,8 +14,7 @@ import com.chess.ui.interfaces.boards.BoardViewAnalysisFace;
 import com.chess.ui.interfaces.game_ui.GameAnalysisFace;
 import com.chess.ui.views.game_controls.ControlsAnalysisView;
 
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -78,7 +77,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 			StringBuilder builder = new StringBuilder();
 			builder.append(getBoardFace().getMode());
 
-			builder.append(" [" + getBoardFace().getMoveListSAN().toString().replaceAll("\n", " ") + "] "); // todo: remove debug info
+			builder.append(" [").append(getBoardFace().getMoveListSAN()).append("] "); // todo: remove debug info
 
 			int i;
 			for (i = 0; i < getBoardFace().getMovesCount(); i++) {
@@ -156,12 +155,10 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 				firstClick = true;
 				boolean found = false;
 
-				TreeSet<Move> moves = getBoardFace().generateLegalMoves();
-				Iterator<Move> moveIterator = moves.iterator();
-
 				Move move = null;
-				while (moveIterator.hasNext()) {
-					move = moveIterator.next();
+				List<Move> moves = getBoardFace().generateLegalMoves();
+				for (Move move1 : moves) {
+					move = move1;
 					if (move.from == from && move.to == to) {
 						found = true;
 						break;
@@ -216,12 +213,10 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	@Override
 	public void promote(int promote, int col, int row) {
 		boolean found = false;
-		TreeSet<Move> moves = getBoardFace().generateLegalMoves();
-		Iterator<Move> iterator = moves.iterator();
-
 		Move move = null;
-		while (iterator.hasNext()) {
-			move = iterator.next();
+		List<Move> moves = getBoardFace().generateLegalMoves();
+		for (Move move1 : moves) {
+			move = move1;
 			if (move.from == from && move.to == to && move.promote == promote) {
 				found = true;
 				break;
@@ -301,6 +296,11 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	@Override
 	public void closeBoard() {
 		gameAnalysisActivityFace.closeBoard();
+	}
+
+	@Override
+	public void showExplorer() {
+		gameAnalysisActivityFace.showExplorer();
 	}
 
 }

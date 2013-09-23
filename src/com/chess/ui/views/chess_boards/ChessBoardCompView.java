@@ -6,9 +6,9 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import com.chess.model.ComputeMoveItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.StaticData;
-import com.chess.model.ComputeMoveItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
@@ -18,8 +18,7 @@ import com.chess.ui.interfaces.boards.BoardViewCompFace;
 import com.chess.ui.interfaces.game_ui.GameCompFace;
 import com.chess.ui.views.game_controls.ControlsCompView;
 
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.List;
 
 public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewCompFace {
 
@@ -79,7 +78,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			StringBuilder builder = new StringBuilder();
 			builder.append(getBoardFace().getMode());
 
-			builder.append(" [").append(getBoardFace().getMoveListSAN().toString().replaceAll("\n", " ")).append("] "); // todo: remove debug info
+			builder.append(" [").append(getBoardFace().getMoveListSAN()).append("] "); // todo: remove debug info
 
             int i;
             for (i = 0; i < getBoardFace().getMovesCount(); i++) {
@@ -210,17 +209,15 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
                 firstClick = true;
                 boolean found = false;
 
-                TreeSet<Move> moves = getBoardFace().generateLegalMoves();
-                Iterator<Move> moveIterator = moves.iterator();
-
-                Move move = null;
-                while (moveIterator.hasNext()) {
-                    move = moveIterator.next();
-                    if (move.from == from && move.to == to) {
-                        found = true;
-                        break;
-                    }
-                }
+				Move move = null;
+                List<Move> moves = getBoardFace().generateLegalMoves();
+				for (Move move1 : moves) {
+					move = move1;
+					if (move.from == from && move.to == to) {
+						found = true;
+						break;
+					}
+				}
                 if ((((to < 8) && (getBoardFace().getSide() == ChessBoard.WHITE_SIDE)) ||
 						((to > 55) && (getBoardFace().getSide() == ChessBoard.BLACK_SIDE))) &&
                         (getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
@@ -279,17 +276,15 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
     @Override
 	public void promote(int promote, int col, int row) {
         boolean found = false;
-        TreeSet<Move> moves = getBoardFace().generateLegalMoves();
-        Iterator<Move> iterator = moves.iterator();
-
-        Move move = null;
-        while (iterator.hasNext()) {
-            move = iterator.next();
-            if (move.from == from && move.to == to && move.promote == promote) {
-                found = true;
-                break;
-            }
-        }
+		Move move = null;
+        List<Move> moves = getBoardFace().generateLegalMoves();
+		for (Move move1 : moves) {
+			move = move1;
+			if (move.from == from && move.to == to && move.promote == promote) {
+				found = true;
+				break;
+			}
+		}
 
 		boolean moveMade = false;
 		MoveAnimator moveAnimator = null;

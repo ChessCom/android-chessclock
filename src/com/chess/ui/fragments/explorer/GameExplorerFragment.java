@@ -35,6 +35,8 @@ import com.chess.utilities.AppUtils;
  */
 public class GameExplorerFragment extends GameBaseFragment implements GameFace, ItemClickListenerFace, AdapterView.OnItemClickListener {
 
+	private static final String FEN = "fen";
+
 	private ExplorerMovesUpdateListener explorerMovesUpdateListener;
 	private SaveExplorerMovesUpdateListener saveExplorerMovesUpdateListener;
 	private ExplorerMovesCursorUpdateListener explorerMovesCursorUpdateListener;
@@ -43,9 +45,25 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	private ChessBoardExplorerView boardView;
 	private String fen;
 
+	public GameExplorerFragment() {}
+
+	public static GameExplorerFragment createInstance(String fen) {
+		GameExplorerFragment fragment = new GameExplorerFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString(FEN, fen);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			fen = getArguments().getString(FEN);
+		} else {
+			fen = savedInstanceState.getString(FEN);
+		}
 
 		init();
 	}
@@ -71,18 +89,22 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 		if (need2update) {
 			adjustBoardForGame();
 
-			fen = getBoardFace().generateFullFen();
+			fen = getBoardFace().generateBaseFen();
 			boolean haveSavedData = DbDataManager.haveSavedExplorerMoves(getActivity(), fen);
 
 			if (haveSavedData) {
 				loadFromDb();
 			} else if (AppUtils.isNetworkAvailable(getActivity())) {
 				updateData(fen);
-			} /*else { // TODO check logic if we need this case
-				emptyView.setText(R.string.no_network);
-				showEmptyView(true);
-			}*/
+			}
 		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putString(FEN, fen);
 	}
 
 	private void adjustBoardForGame() {
@@ -128,7 +150,6 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 //		}, 1000);
 
 		// update FEN and get next moves
-//		fen = getBoardFace().generateFullFen();
 		fen = getBoardFace().generateBaseFen();
 		updateData(fen);
 	}

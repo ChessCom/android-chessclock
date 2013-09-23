@@ -16,10 +16,10 @@ import android.view.View;
 import android.widget.ImageView;
 import com.chess.FontsHelper;
 import com.chess.R;
+import com.chess.live.client.PieceColor;
 import com.chess.statics.AppData;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
-import com.chess.live.client.PieceColor;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.boards.BoardFace;
@@ -31,7 +31,7 @@ import com.chess.ui.views.game_controls.ControlsBaseView;
 import org.petero.droidfish.gamelogic.Position;
 
 import java.util.HashMap;
-import java.util.TreeSet;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -136,9 +136,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		super(context, attrs);
 		resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
-		if (isInEditMode()) {
-			return;
-		}
+//		if (isInEditMode()) {
+//			return;
+//		}
 
 		drawFilter = new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG);
 		boardBackPaint = new Paint();
@@ -690,7 +690,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 			boolean found = false;
 			Move move = null;
-			TreeSet<Move> moves = getBoardFace().generateLegalMoves();
+			List<Move> moves = getBoardFace().generateLegalMoves();
 			for (Move move1 : moves) { // search for move that was made
 				move = move1;
 				if (move.from == from && move.to == to) {
@@ -745,7 +745,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public void promote(int promote, int col, int row) {
 		boolean found = false;
 		Move move = null;
-		TreeSet<Move> moves = getBoardFace().generateLegalMoves();
+		List<Move> moves = getBoardFace().generateLegalMoves();
 		for (Move move1 : moves) {
 			move = move1;
 			if (move.from == from && move.to == to && move.promote == promote) {
@@ -1209,6 +1209,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int fromColor = getBoardFace().getColor()[moveFromPosition];
 			int fromPiece = getBoardFace().getPieces()[moveFromPosition];
 
+			if (fromPiece == ChessBoard.EMPTY) {
+				throw new IllegalArgumentException("fromPiece can't be EMPTY square here, check Move generation object. move is " + move);
+			}
 			pieceBitmap = piecesBitmaps[fromColor][fromPiece];
 
 			// todo: check game load

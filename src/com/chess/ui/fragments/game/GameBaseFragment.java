@@ -11,13 +11,13 @@ import android.view.View;
 import android.view.WindowManager;
 import com.chess.R;
 import com.chess.backend.RestHelper;
+import com.chess.model.BaseGameItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
-import com.chess.model.BaseGameItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.LiveBaseFragment;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.interfaces.game_ui.GameFace;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
@@ -45,11 +45,14 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected static final String ABORT_GAME_TAG = "abort or resign game";
 	protected static final String OPTION_SELECTION_TAG = "option select popup";
 
+	protected static final String GAME_ID = "game_id";
+
 	protected SimpleDateFormat datePgnFormat = new SimpleDateFormat("yyyy.MM.dd");
 
 	private ChessBoardBaseView boardView;
 	protected View endGamePopupView;
 	protected String endGameMessage;
+	protected long gameId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -113,6 +116,13 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		}
 
 		getActivityFace().removeOnCloseMenuListener(this);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putLong(GAME_ID, gameId);
 	}
 
 	@Override
@@ -223,8 +233,8 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		}
 	}
 
-	protected PopupCustomViewFragment getEndPopupDialogFragment() {
-		return (PopupCustomViewFragment) getFragmentManager().findFragmentByTag(END_GAME_TAG);
+	protected BasePopupDialogFragment getEndPopupDialogFragment() {
+		return (BasePopupDialogFragment) getFragmentManager().findFragmentByTag(END_GAME_TAG);
 	}
 
 	@Override

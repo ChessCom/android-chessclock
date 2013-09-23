@@ -35,15 +35,8 @@ public class ControlsTacticsView extends ControlsBaseView {
 
 		removeAllViews();
 
-/*
-RIGHT: menu, lightbulb, advance (double-width, orange)
-
-WRONG: menu, lightbulb, advance (white arrow on background), Retry (red)
-		 */
-
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
 		addControlButton(EXIT, R.style.Rect_Bottom_Left);
-//		addControlButton(ANALYSIS, R.style.Rect_Bottom_Middle);
 		addControlButton(HINT, R.style.Rect_Bottom_Middle);
 		addNextWhiteButton(R.style.Rect_Bottom_Middle, NEXT);
 		addControlButton(HELP, R.style.Rect_Bottom_Middle);
@@ -119,7 +112,7 @@ WRONG: menu, lightbulb, advance (white arrow on background), Retry (red)
 			boardViewFace.showExplorer();
 		} else if (view.getId() == getButtonId(FLIP)) {
 			boardViewFace.flipBoard();
-		} else if (/*view.getId() == getButtonId(ANALYSIS) || */view.getId() == getButtonId(EXIT)) {
+		} else if (view.getId() == getButtonId(EXIT)) {
 			boardViewFace.switchAnalysis();
 		} else if (view.getId() == getButtonId(HELP)) {
 			boardViewFace.showHint();

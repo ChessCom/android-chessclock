@@ -1,10 +1,11 @@
 package com.chess.ui.engine;
 
+import android.text.TextUtils;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.boards.BoardFace;
 
-import java.util.TreeSet;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class MoveParser {
@@ -44,6 +45,9 @@ public class MoveParser {
 	public static final String F_SMALL = "f";
 	public static final String G_SMALL = "g";
 	public static final String H_SMALL = "h";
+
+	public static final char fileLetters[] = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+	public static final int rankNumbers[] = new int[]{1, 2, 3, 4, 5, 6, 7, 8};
 	public static final String CAPTURE_MARK = "x";
 
 	public static final String NUMB_1 = "1";
@@ -67,11 +71,13 @@ public class MoveParser {
 	public static final String QUEENSIDE_CASTLING = "O-O-O";
 	public static final String QUEENSIDE_CASTLING_AND_CHECK = "O-O-O+";
 
-	private static final int ROOK = 3;
+	private static final int PAWN = 0;
 	private static final int KNIGHT = 1;
 	private static final int BISHOP = 2;
+	private static final int ROOK = 3;
 	private static final int QUEEN = 4;
 	private static final int KING = 5;
+	public static final String REGEXP_CHARS = "[abcdefgh]";
 
 	//	String[] pices = new String[]{"K", "Q", "R", "B", "N", "O"};
 //	String[] promotionPices = new String[]{"N", "B", "R", "Q"};
@@ -85,7 +91,7 @@ public class MoveParser {
 	}
 
 	public static int[] parseCoordinate(BoardFace board, String move) {
-		TreeSet<Move> validMoves = board.generateLegalMoves();
+		List<Move> validMoves = board.generateLegalMoves();
 
 		int promotion = 0;
 
@@ -141,9 +147,35 @@ public class MoveParser {
 		return new int[]{from, to, promotion};
 	}
 
+	/**
+	 * Method will parse {@code String} move and return array of {@code int}
+	 * <SAN move descriptor piece moves>   ::= <Piece symbol>[<from file>|<from rank>|<from square>]['x']<to square>
+	 * <SAN move descriptor pawn captures> ::= <from file>[<from rank>] 'x' <to square>[<promoted to>]
+	 * <SAN move descriptor pawn push>     ::= <to square>[<promoted to>]
+	 * <p></p>
+	 * {@code currentMove.substring(1, 2)} is a selection to identify Disambiguating move
+	 * When two (or more) identical pieces can move to the same square, the moving piece is uniquely identified
+	 * by specifying the piece's letter, followed by (in descending order of preference):
+	 * the file of departure (if they differ); or
+	 * the rank of departure (if the files are the same but the ranks differ); or
+	 * both the file and rank (if neither alone is sufficient to identify the piece—which occurs only in rare cases
+	 * where one or more pawns have promoted, resulting in a player having three or more identical pieces able to
+	 * reach the same square).
+	 * For example, with knights on g1 and d2, either of which might move to f3, the move is specified as Ngf3 or Ndf3,
+	 * as appropriate. With knights on g5 and g1, the moves are N5f3 or N1f3. As above, an "x" can be inserted
+	 * to indicate a capture, for example: N5xf3. Another example: two rooks on d3 and h5, either one of which
+	 * may move to d5. If the rook on d3 moves to d5, it is possible to disambiguate with either Rdd5 or R3d5,
+	 * but the file takes precedence over the rank, so Rdd5 is correct.
+	 * (And likewise if the move is a capture, Rdxd5 is correct.)
+	 * @param board to be used as resource to identify move from positions
+	 * @param move String move representation like <Piece symbol>[<from file>|<from rank>|<from square>]['x']<to square>
+	 * @return the {@code int} array of move(s)
+	 * @see <a href="http://en.wikipedia.org/wiki/Algebraic_notation_(chess)>http://en.wikipedia.org/wiki/Algebraic_notation_(chess)</a>
+	 */
 	public static int[] parse(BoardFace board, String move) {
+		// possible values ,e4, e4xd5, Rfg1, Rdxd5
 		move = removeNumbers(move);
-		TreeSet<Move> validMoves = board.generateLegalMoves();
+		List<Move> validMoves = board.generateLegalMoves();
 
 		int promotion = 0;
 
@@ -165,11 +197,12 @@ public class MoveParser {
 			}
 		}
 
+		// detecting destination square(file and rank)
 		int end = currentMove.length() - 1;
 		while (end != 0) {
-			if (Pattern.matches(REGEXP_NUMBERS, currentMove.substring(end, end + 1))) {
-				moveTo[0] = currentMove.substring(end - 1, end);
-				moveTo[1] = currentMove.substring(end, end + 1);
+			if (Pattern.matches(REGEXP_NUMBERS, currentMove.substring(end, end + 1))) { // if last symbol in string match number of square
+				moveTo[0] = currentMove.substring(end - 1, end); // get letter coordinate
+				moveTo[1] = currentMove.substring(end, end + 1); // get number coordinate
 				break;
 			}
 			end--;
@@ -180,63 +213,94 @@ public class MoveParser {
 		int from = 0;
 		int to = j * 8 - i;
 
-		int pieceType = 0;
-		if (currentMove.substring(0, 1).contains(WHITE_KNIGHT)) pieceType = KNIGHT;
-		if (currentMove.substring(0, 1).contains(WHITE_BISHOP)) pieceType = BISHOP;
-		if (currentMove.substring(0, 1).contains(WHITE_ROOK)) pieceType = ROOK;
-		if (currentMove.substring(0, 1).contains(WHITE_QUEEN)) pieceType = QUEEN;
-		if (currentMove.substring(0, 1).contains(WHITE_KING)) pieceType = KING;
-		int k;
+		int pieceType = PAWN;
+		String movePieceStr = currentMove.substring(0, 1);
+		if (movePieceStr.contains(WHITE_KNIGHT)) {
+			pieceType = KNIGHT;
+		} else if (movePieceStr.contains(WHITE_BISHOP)) {
+			pieceType = BISHOP;
+		} else if (movePieceStr.contains(WHITE_ROOK)) {
+			pieceType = ROOK;
+		} else if (movePieceStr.contains(WHITE_QUEEN)) {
+			pieceType = QUEEN;
+		} else if (movePieceStr.contains(WHITE_KING)) {
+			pieceType = KING;
+		}
 
-		if ((pieceType >= KNIGHT && pieceType <= QUEEN)/*(pieceType == 3 || pieceType == 1)*/
-				&& !currentMove.substring(1, 2).contains(CAPTURE_MARK) && !currentMove.substring(2, 3).matches(REGEXP_NUMBERS)) {//Rooks and Knights which?
-			for (k = 0; k < 64; k++) {
-				int l1 = (ChessBoard.getRow(k) + 1) * 8 - letterToBN(currentMove.substring(1, 2));
-				int l2 = numToBN(currentMove.substring(1, 2)) * 8 - (ChessBoard.getColumn(k) + 1);
+		// Rfg1 for example
+		String fromSquare = Symbol.EMPTY; // can be any file or rank, or even square , e4xd5, Rfg1, Rdd5, Rdxd5, but the file takes precedence over the rank, so Rdd5 is correct.
+		String fromFile = Symbol.EMPTY;
+		String fromRank = Symbol.EMPTY;
+		if (currentMove.length() > 3) { // i.e. 4  // if we have Piece, or capture mark, or from file/rank/square
+			fromSquare = currentMove.replace(CAPTURE_MARK, Symbol.EMPTY); // remove capture mark
+			fromSquare = fromSquare.replaceAll("[N,R,K,Q,B]", Symbol.EMPTY); // remove Piece
+			String destinationSquare = moveTo[0] + moveTo[1];
+			fromSquare = fromSquare.replace(destinationSquare, Symbol.EMPTY); // remove destination square
 
-				if (currentMove.substring(1, 2).matches("[abcdefgh]")) {
-					if (board.getPieces()[l1] == pieceType && board.getColor()[l1] == board.getSide()) {
-						return new int[]{l1, to, promotion};
-					}
-				}
-				if (currentMove.substring(1, 2).matches(REGEXP_NUMBERS)) {
-					if (board.getPieces()[l2] == pieceType && board.getColor()[l2] == board.getSide()) {
-						return new int[]{l2, to, promotion};
-					}
+			if (fromSquare.length() < 2) {
+				if (fromSquare.matches(REGEXP_CHARS)) {
+					fromFile = fromSquare;
+				} else {
+					fromRank = fromSquare;
 				}
 			}
 		}
 
-		for (k = 0; k < 64; k++) {
-			if (board.getPieces()[k] == pieceType && board.getColor()[k] == board.getSide()) {
+		// detect piece that was moved
+		// if KNIGHT, BISHOP, ROOK OR QUEEN
+		if ((pieceType >= KNIGHT && pieceType <= QUEEN)
+				&& !fromSquare.contains(CAPTURE_MARK) // looks like always will be true
+				&& !currentMove.substring(2, 3).matches(REGEXP_NUMBERS) // it check
+				) {
+			for (int k = 0; k < 64; k++) {
+				if (!TextUtils.isEmpty(fromFile)) {
+					int fromFileInt = (ChessBoard.getRow(k) + 1) * 8 - letterToBN(fromFile);
+
+//					if (fromSquare.matches(REGEXP_CHARS)) {
+						if (board.getPieces()[fromFileInt] == pieceType && board.getColor()[fromFileInt] == board.getSide()) { // if we have found that piece and color on board
+							return new int[]{fromFileInt, to, promotion};
+						}
+//					}
+				}
+				if (!TextUtils.isEmpty(fromRank)) {
+					int fromRankInt = numToBN(fromRank) * 8 - (ChessBoard.getColumn(k) + 1);
+//					if (fromSquare.matches(REGEXP_NUMBERS)) {
+						if (board.getPieces()[fromRankInt] == pieceType && board.getColor()[fromRankInt] == board.getSide()) { // if we have found that piece and color on board
+							return new int[]{fromRankInt, to, promotion};
+						}
+//					}
+				}
+			}
+		}
+
+		// detect move pawn piece... i think
+		for (int pieceFrom = 0; pieceFrom < 64; pieceFrom++) {
+			if (board.getPieces()[pieceFrom] == pieceType && board.getColor()[pieceFrom] == board.getSide()) {
 				for (Move validMove : validMoves) {
-					if (validMove.from == k && validMove.to == to) {
-						if (pieceType == 2) {
-							if (board.getBoardColor()[k] == board.getBoardColor()[to]) {
-								return new int[]{k, to, promotion};
+					if (validMove.from == pieceFrom && validMove.to == to) {
+						/*if (pieceType == BISHOP) { // shouldn't be called here
+							if (board.getBoardColor()[pieceFrom] == board.getBoardColor()[to]) {
+								return new int[]{pieceFrom, to, promotion};
 							}
-						} else if (pieceType == 0) {
+						} else*/ if (pieceType == PAWN) {
 							if (currentMove.contains(CAPTURE_MARK)
-									&& 9 - letterToBN(currentMove.substring(0, 1)) != ChessBoard.getColumn(k) + 1) {
+									&& 9 - letterToBN(movePieceStr) != ChessBoard.getColumn(pieceFrom) + 1) {
 								break;
 							}
 
 							if (currentMove.contains(WHITE_QUEEN)) {
-								promotion = 4;
-							}
-							if (currentMove.contains(WHITE_ROOK)) {
-								promotion = 3;
-							}
-							if (currentMove.contains(WHITE_BISHOP)) {
-								promotion = 2;
-							}
-							if (currentMove.contains(WHITE_KNIGHT)) {
-								promotion = 1;
+								promotion = QUEEN;
+							} else if (currentMove.contains(WHITE_ROOK)) {
+								promotion = ROOK;
+							} else if (currentMove.contains(WHITE_BISHOP)) {
+								promotion = BISHOP;
+							} else if (currentMove.contains(WHITE_KNIGHT)) {
+								promotion = KNIGHT;
 							}
 
-							return new int[]{k, to, promotion, validMove.bits};
+							return new int[]{pieceFrom, to, promotion, validMove.bits};
 						} else {
-							return new int[]{k, to, promotion};
+							return new int[]{pieceFrom, to, promotion};
 						}
 					}
 				}
@@ -246,63 +310,102 @@ public class MoveParser {
 		return new int[]{from, to, promotion};
 	}
 
-	public static int letterToBN(String l) {
-		int i = 0;
-		if (l.toLowerCase().contains(A_SMALL)) i = 8;
-		if (l.toLowerCase().contains(B_SMALL)) i = 7;
-		if (l.toLowerCase().contains(C_SMALL)) i = 6;
-		if (l.toLowerCase().contains(D_SMALL)) i = 5;
-		if (l.toLowerCase().contains(E_SMALL)) i = 4;
-		if (l.toLowerCase().contains(F_SMALL)) i = 3;
-		if (l.toLowerCase().contains(G_SMALL)) i = 2;
-		if (l.toLowerCase().contains(H_SMALL)) i = 1;
+	public static int letterToBN(String letter) {
+		for (int i = 0; i < fileLetters.length; i++) {
+			char symbol = fileLetters[i];
+			if (letter.equalsIgnoreCase(String.valueOf(symbol))) {
+				return 8 - i;
+			}
+		}
+		throw new IllegalStateException(" letterToBN haven't found a needed int for symbol " + letter);
 
-		return i;
+//		int number = 0;
+//		String symbol = letter.toLowerCase();
+//		if (symbol.contains(A_SMALL)) {
+//			number = 8;
+//		} else if (symbol.contains(B_SMALL)) {
+//			number = 7;
+//		} else if (symbol.contains(C_SMALL)) {
+//			number = 6;
+//		} else if (symbol.contains(D_SMALL)) {
+//			number = 5;
+//		} else if (symbol.contains(E_SMALL)) {
+//			number = 4;
+//		} else if (symbol.contains(F_SMALL)) {
+//			number = 3;
+//		} else if (symbol.contains(G_SMALL)) {
+//			number = 2;
+//		} else if (symbol.contains(H_SMALL)) {
+//			number = 1;
+//		}
+//
+//		return number;
 	}
 
-	public static int numToBN(String l) {
-		int j = 0;
-		if (l.contains(NUMB_1)) j = 8;
-		if (l.contains(NUMB_2)) j = 7;
-		if (l.contains(NUMB_3)) j = 6;
-		if (l.contains(NUMB_4)) j = 5;
-		if (l.contains(NUMB_5)) j = 4;
-		if (l.contains(NUMB_6)) j = 3;
-		if (l.contains(NUMB_7)) j = 2;
-		if (l.contains(NUMB_8)) j = 1;
-		return j;
+	public static int numToBN(String symbol) {
+		return 9 - Integer.parseInt(symbol);
+//		int j = 0;
+//		if (symbol.contains(NUMB_1)) j = 8;
+//		if (symbol.contains(NUMB_2)) j = 7;
+//		if (symbol.contains(NUMB_3)) j = 6;
+//		if (symbol.contains(NUMB_4)) j = 5;
+//		if (symbol.contains(NUMB_5)) j = 4;
+//		if (symbol.contains(NUMB_6)) j = 3;
+//		if (symbol.contains(NUMB_7)) j = 2;
+//		if (symbol.contains(NUMB_8)) j = 1;
+//		return j;
 	}
 
-	public static String BNToLetter(int i) {
-		String l = Symbol.EMPTY;
-		if (i == 7) l = H_SMALL;
-		if (i == 6) l = G_SMALL;
-		if (i == 5) l = F_SMALL;
-		if (i == 4) l = E_SMALL;
-		if (i == 3) l = D_SMALL;
-		if (i == 2) l = C_SMALL;
-		if (i == 1) l = B_SMALL;
-		if (i == 0) l = A_SMALL;
-
-		return l;
+	public static String BNToLetter(int symbol) {
+		return String.valueOf(fileLetters[symbol]);
+//		String number = Symbol.EMPTY;
+//		if (symbol == 7) {
+//			number = H_SMALL;
+//		} else if (symbol == 6) {
+//			number = G_SMALL;
+//		} else if (symbol == 5) {
+//			number = F_SMALL;
+//		} else if (symbol == 4) {
+//			number = E_SMALL;
+//		} else if (symbol == 3) {
+//			number = D_SMALL;
+//		} else if (symbol == 2) {
+//			number = C_SMALL;
+//		} else if (symbol == 1) {
+//			number = B_SMALL;
+//		} else if (symbol == 0) {
+//			number = A_SMALL;
+//		}
+//
+//		return number;
 	}
 
-	public static String BNToNum(int j) {
-		String l = Symbol.EMPTY;
-		if (j == 7) l = NUMB_1;
-		if (j == 6) l = NUMB_2;
-		if (j == 5) l = NUMB_3;
-		if (j == 4) l = NUMB_4;
-		if (j == 3) l = NUMB_5;
-		if (j == 2) l = NUMB_6;
-		if (j == 1) l = NUMB_7;
-		if (j == 0) l = NUMB_8;
-
-		return l;
+	public static String BNToNum(int number) {
+		return String.valueOf(8 - number);
+//		String symbol = Symbol.EMPTY;
+//		if (number == 7) {
+//			symbol = NUMB_1;
+//		} else if (number == 6) {
+//			symbol = NUMB_2;
+//		} else if (number == 5) {
+//			symbol = NUMB_3;
+//		} else if (number == 4) {
+//			symbol = NUMB_4;
+//		} else if (number == 3) {
+//			symbol = NUMB_5;
+//		} else if (number == 2) {
+//			symbol = NUMB_6;
+//		} else if (number == 1) {
+//			symbol = NUMB_7;
+//		} else if (number == 0) {
+//			symbol = NUMB_8;
+//		}
+//
+//		return symbol;
 	}
 
 	public static String positionToString(int pos) {
-		return BNToLetter(ChessBoard.getColumn(pos)) + BNToNum(ChessBoard.getRow(pos));
+		return ChessBoard.Board.values()[pos].toString().toLowerCase();
 	}
 
 	public static void fenParse(String fen, BoardFace boardFace) {

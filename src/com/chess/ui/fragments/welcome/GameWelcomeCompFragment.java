@@ -553,7 +553,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	private void sendPGN() {
-		CharSequence moves = getBoardFace().getMoveListSAN();
+		String moves = getBoardFace().getMoveListSAN();
 		String whitePlayerName = getAppData().getUsername();
 		String blackPlayerName = getString(R.string.comp);
 		String result = GAME_GOES;

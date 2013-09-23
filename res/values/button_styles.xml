@@ -112,7 +112,8 @@
 
         <item name="btn_solid">@color/upgrade_plan_platinum</item>
 
-        <item name="android:minHeight">@dimen/grey_button_height</item>
+        <!--<item name="android:minHeight">@dimen/grey_button_height</item>-->
+        <item name="android:minHeight">@dimen/main_button_height</item>
     </style>
 
     <style name="Button.Grey2Solid.NoBorder">

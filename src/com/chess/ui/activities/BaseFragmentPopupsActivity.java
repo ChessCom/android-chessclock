@@ -188,8 +188,8 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	}
 
 	private void dismissFragmentDialog(DialogFragment fragment){
-		popupItem.setPositiveBtnId(R.string.ok);
-		popupItem.setNegativeBtnId(R.string.cancel);
+		popupItem.setPositiveBtnId(R.string.ic_check);
+		popupItem.setNegativeBtnId(R.string.ic_close);
 		fragment.setCancelable(true);
 		fragment.dismiss();
 		popupManager.remove(fragment);

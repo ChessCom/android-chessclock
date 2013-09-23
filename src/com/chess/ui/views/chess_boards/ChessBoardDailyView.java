@@ -26,4 +26,9 @@ public class ChessBoardDailyView extends ChessBoardNetworkView {
 		gameNetworkFace.cancelMove();
 	}
 
+	@Override
+	public void goHome() {
+
+	}
+
 }

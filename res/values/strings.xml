@@ -299,6 +299,7 @@
 
 	<!--Game-->
 	<string name="opponent_">Opponent:</string>
+	<string name="opponent">Opponent</string>
 	<string name="time_">Time:</string>
 	<string name="rated">Rated</string>
 	<string name="unrated">Unrated</string>

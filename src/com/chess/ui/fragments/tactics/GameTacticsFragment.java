@@ -541,7 +541,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void showExplorer() {
-		getActivityFace().openFragment(new GameExplorerFragment());
+		getActivityFace().openFragment(GameExplorerFragment.createInstance(getBoardFace().generateBaseFen()));
 	}
 
 	private boolean answerWasShowed() {
@@ -918,8 +918,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 			String[] moves = boardFace.getTacticMoves();
 			boardFace.setMovesCount(moves.length);
-			for (int i = 0, cnt = boardFace.getMovesCount(); i < cnt; i++) {
-				boardFace.makeMove(moves[i], false);
+			for (String move : moves) {
+				boardFace.makeMove(move, false);
 			}
 		} else { // setup first move
 			startTacticsTimer(trainerData);

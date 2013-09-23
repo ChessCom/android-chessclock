@@ -12,8 +12,7 @@ import com.chess.ui.interfaces.boards.BoardViewNetworkFace;
 import com.chess.ui.interfaces.game_ui.GameNetworkFace;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.List;
 
 public abstract class ChessBoardNetworkView extends ChessBoardBaseView implements BoardViewNetworkFace {
 
@@ -118,12 +117,10 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 				firstClick = true;
 				boolean found = false;
 
-				TreeSet<Move> moves = getBoardFace().generateLegalMoves();
-				Iterator<Move> moveIterator = moves.iterator();
-
 				Move move = null;
-				while (moveIterator.hasNext()) {
-					move = moveIterator.next();
+				List<Move> moves = getBoardFace().generateLegalMoves();
+				for (Move move1 : moves) {
+					move = move1;
 					if (move.from == from && move.to == to) {
 						found = true;
 						break;

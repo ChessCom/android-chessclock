@@ -31,11 +31,11 @@ public class ControlsAnalysisView extends ControlsBaseView {
 	void init() {
 		super.init();
 
-		addControlButton(EXIT, R.style.Rect_Bottom_Right);
+		addControlButton(EXIT, R.style.Rect_Bottom_Left);
 		addControlButton(SEARCH, R.style.Rect_Bottom_Middle);
-		addControlButton(RESTART, R.style.Rect_Bottom_Left);
+		addControlButton(RESTART, R.style.Rect_Bottom_Middle);
 		addControlButton(BACK, R.style.Rect_Bottom_Middle);
-		addControlButton(FORWARD, R.style.Rect_Bottom_Middle);
+		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
 
 		addView(controlsLayout);
 	}
@@ -58,6 +58,7 @@ public class ControlsAnalysisView extends ControlsBaseView {
 		if (view.getId() == getButtonId(EXIT)) {
 			boardViewFace.closeBoard();
 		} else if (view.getId() == getButtonId(SEARCH)) {
+			boardViewFace.showExplorer();
 			// TODO add search ability
 		} else if (view.getId() == getButtonId(RESTART)) {
 			boardViewFace.restart();

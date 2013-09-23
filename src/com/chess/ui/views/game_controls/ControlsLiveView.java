@@ -34,11 +34,11 @@ public class ControlsLiveView extends ControlsBaseView {
 	}
 
 	@Override
-		void init() {
-			super.init();
-
+	void init() {
+		super.init();
 
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
+		addControlButton(HOME, R.style.Rect_Bottom_Left);
 		addControlButton(CHAT, R.style.Rect_Bottom_Middle);
 		addControlButton(BACK, R.style.Rect_Bottom_Middle);
 		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
@@ -47,6 +47,8 @@ public class ControlsLiveView extends ControlsBaseView {
 		addActionButton(MAKE_MOVE, R.string.ic_check, R.style.Rect_Bottom_Right_Orange);
 
 		addView(controlsLayout);
+
+		showDefault();
 	}
 
 	@Override
@@ -56,8 +58,9 @@ public class ControlsLiveView extends ControlsBaseView {
 
 		if (view.getId() == getButtonId(OPTIONS)) {
 			boardViewFace.showOptions(view);
-		}
-		if (view.getId() == getButtonId(CHAT)) {
+		} else if (view.getId() == getButtonId(HOME)) {
+			boardViewFace.goHome();
+		} else if (view.getId() == getButtonId(CHAT)) {
 			boardViewFace.showChat();
 		} else if (view.getId() == getButtonId(BACK)) {
 			boardViewFace.moveBack();
@@ -82,24 +85,26 @@ public class ControlsLiveView extends ControlsBaseView {
 	}
 
 	public void enableAnalysisMode(boolean enable) {
-		enableGameButton(FORWARD, enable);
-		enableGameButton(BACK, enable);
+//		enableGameButton(FORWARD, enable);
+//		enableGameButton(BACK, enable);
 	}
 
 	public void enableControlButtons(boolean enable) {
-		enableGameButton(FORWARD, enable);
-		enableGameButton(BACK, enable);
+//		enableGameButton(FORWARD, enable);
+//		enableGameButton(BACK, enable);
 	}
 
-	public void enableGameControls(boolean enable) {
-		enableGameButton(OPTIONS, enable);
-		enableGameButton(CHAT, enable);
-		enableGameButton(FORWARD, enable);
-		enableGameButton(BACK, enable);
-	}
+//	public void enableGameControls(boolean enable) { // not used
+//		enableGameButton(OPTIONS, enable);
+//		enableGameButton(HOME, enable);
+//		enableGameButton(CHAT, enable);
+//		enableGameButton(FORWARD, enable);
+//		enableGameButton(BACK, enable);
+//	}
 
 	public void showSubmitButtons(boolean show) {
 		showGameButton(OPTIONS, !show);
+		showGameButton(HOME, !show);
 		showGameButton(CHAT, !show);
 		showGameButton(FORWARD, !show);
 		showGameButton(BACK, !show);
@@ -110,6 +115,28 @@ public class ControlsLiveView extends ControlsBaseView {
 		if (!show) {
 			handler.removeCallbacks(blinkSubmitButton);
 		}
+	}
+
+	public void showDefault() {
+		showGameButton(OPTIONS, true);
+		showGameButton(HOME, false);
+		showGameButton(CHAT, true);
+		showGameButton(FORWARD, true);
+		showGameButton(BACK, true);
+
+		showGameButton(CLOSE, false);
+		showGameButton(MAKE_MOVE, false);
+	}
+
+	public void showAfterMatch() {
+		showGameButton(OPTIONS, false);
+		showGameButton(HOME, true);
+		showGameButton(CHAT, true);
+		showGameButton(FORWARD, true);
+		showGameButton(BACK, true);
+
+		showGameButton(CLOSE, false);
+		showGameButton(MAKE_MOVE, false);
 	}
 
 	@Override
@@ -130,7 +157,7 @@ public class ControlsLiveView extends ControlsBaseView {
 	private Runnable blinkSubmitButton = new Runnable() {
 		@Override
 		public void run() {
-			((RoboButton)findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(R.style.Button_Grey2Solid_NoBorder_Light);
+			((RoboButton) findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(R.style.Button_Grey2Solid_NoBorder_Light);
 
 			handler.removeCallbacks(unBlinkSubmitButton);
 			handler.postDelayed(unBlinkSubmitButton, UNBLINK_DELAY);
@@ -140,7 +167,7 @@ public class ControlsLiveView extends ControlsBaseView {
 	private Runnable unBlinkSubmitButton = new Runnable() {
 		@Override
 		public void run() {
-			((RoboButton)findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(R.style.Button_Orange2);
+			((RoboButton) findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(R.style.Button_Orange2);
 
 			blinkSubmitBtn();
 		}

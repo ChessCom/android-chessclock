@@ -175,5 +175,6 @@
 	<dimen name="actionbar_title_height">20sp</dimen>
 	<dimen name="article_detail_image_height">213dip</dimen>
 	<dimen name="popup_title_text_size">21sp</dimen>
+	<dimen name="popup_end_game_width">300dip</dimen>
 
 </resources>

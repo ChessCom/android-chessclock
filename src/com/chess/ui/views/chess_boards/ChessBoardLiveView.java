@@ -44,4 +44,9 @@ public class ChessBoardLiveView extends ChessBoardNetworkView {
 	public void cancelMove() {
 		gameNetworkFace.cancelMove();
 	}
+
+	@Override
+	public void goHome() {
+		gameNetworkFace.goHome();
+	}
 }

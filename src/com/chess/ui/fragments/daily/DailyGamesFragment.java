@@ -343,16 +343,11 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	protected void updateData() {
-		if (!AppUtils.isNetworkAvailable(getActivity())) {
-			return;
-		}
-
 		// First we check ids of games what we have. Challenges also will be stored in DB
 		// when we ask server about new ids of games and challenges
 		// if server have new ids we get those games with ids
 
 		LoadItem loadItem = LoadHelper.getAllGames(getUserToken());
-		logTest("userToken = " + getUserToken());
 		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
 

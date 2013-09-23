@@ -15,4 +15,6 @@ public interface BoardViewNetworkFace extends BoardViewFace {
 	void cancelMove();
 
 	void flipBoard();
+
+	void goHome();
 }

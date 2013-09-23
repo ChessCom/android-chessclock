@@ -1,6 +1,5 @@
 package com.chess.ui.engine;
 
-import android.util.Log;
 import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.boards.TacticBoardFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
@@ -85,7 +84,7 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 			piece = MoveParser.WHITE_KING;
 		}
 		String moveTo = MoveParser.positionToString(move.to);
-		Log.d("TEST_MOVE", "piece " + piece + " | move to " + moveTo + " : tactic last move = " + tacticMoves[lastIndex]);
+//		Log.d("TEST_MOVE", "piece " + piece + " | move to " + moveTo + " : tactic last move = " + tacticMoves[lastIndex]);
 		if (move.isCastling()){
 			moveTo = "O-O";
 		}

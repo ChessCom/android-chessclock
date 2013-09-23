@@ -11,8 +11,7 @@ import com.chess.ui.interfaces.boards.BoardViewLessonsFace;
 import com.chess.ui.interfaces.boards.LessonsBoardFace;
 import com.chess.ui.interfaces.game_ui.GameLessonFace;
 
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -94,12 +93,10 @@ public class ChessBoardLessonsView extends ChessBoardBaseView implements BoardVi
 				firstClick = true;
 				boolean found = false;
 
-				TreeSet<Move> moves = getBoardFace().generateLegalMoves();
-				Iterator<Move> moveIterator = moves.iterator();
-
 				Move move = null;
-				while (moveIterator.hasNext()) {
-					move = moveIterator.next();
+				List<Move> moves = getBoardFace().generateLegalMoves();
+				for (Move move1 : moves) {
+					move = move1;
 					if (move.from == from && move.to == to) {
 						found = true;
 						break;
@@ -159,12 +156,10 @@ public class ChessBoardLessonsView extends ChessBoardBaseView implements BoardVi
 	@Override
 	public void promote(int promote, int col, int row) {
 		boolean found = false;
-		TreeSet<Move> moves = getBoardFace().generateLegalMoves();
-		Iterator<Move> iterator = moves.iterator();
-
 		Move move = null;
-		while (iterator.hasNext()) {
-			move = iterator.next();
+		List<Move> moves = getBoardFace().generateLegalMoves();
+		for (Move move1 : moves) {
+			move = move1;
 			if (move.from == from && move.to == to && move.promote == promote) {
 				found = true;
 				break;

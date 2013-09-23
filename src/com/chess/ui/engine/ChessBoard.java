@@ -17,7 +17,8 @@ import com.chess.ui.interfaces.game_ui.GameFace;
 import org.apache.http.protocol.HTTP;
 
 import java.net.URLEncoder;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ChessBoard implements BoardFace {
@@ -134,7 +135,7 @@ public class ChessBoard implements BoardFace {
 	private int pawnMat[] = new int[2];
 
 
-	private int boardColor[] = {
+	private final static int boardColor[] = {
 			0, 1, 0, 1, 0, 1, 0, 1,
 			1, 0, 1, 0, 1, 0, 1, 0,
 			0, 1, 0, 1, 0, 1, 0, 1,
@@ -586,8 +587,8 @@ public class ChessBoard implements BoardFace {
 	 * @return {@code TreeSet} collection of pseudo-legal moves
 	 */
 	@Override
-	public TreeSet<Move> generateLegalMoves() {
-		TreeSet<Move> movesSet = new TreeSet<Move>();
+	public List<Move> generateLegalMoves() {
+		List<Move> movesSet = new ArrayList<Move>();
 
 		for (int i = 0; i < 64; ++i) {
 			if (color[i] == side) {
@@ -675,8 +676,8 @@ public class ChessBoard implements BoardFace {
 	 * @return
 	 */
 	@Override
-	public TreeSet<Move> generateCapturesAndPromotes() {
-		TreeSet<Move> moves = new TreeSet<Move>();
+	public List<Move> generateCapturesAndPromotes() {
+		List<Move> moves = new ArrayList<Move>();
 
 		for (int i = 0; i < 64; ++i)
 			if (color[i] == side) {
@@ -716,7 +717,7 @@ public class ChessBoard implements BoardFace {
 		return moves;
 	}
 
-	private void addEnPassantMoveToStack(TreeSet<Move> movesSet) {
+	private void addEnPassantMoveToStack(List<Move> movesSet) {
 		if (enPassant != NOT_SET) {
 			if (side == WHITE_SIDE) {
 				if (getColumn(enPassant) != 0 && color[enPassant + 7] == WHITE_SIDE && pieces[enPassant + 7] == PAWN) {
@@ -764,7 +765,7 @@ public class ChessBoard implements BoardFace {
 	 * @param to    which square move is targeted
 	 * @param bits  move bits
 	 */
-	void addMoveToStack(TreeSet<Move> moves, int from, int to, int bits) {
+	void addMoveToStack(List<Move> moves, int from, int to, int bits) {
 		if ((bits & 16) != 0) {
 			if (side == WHITE_SIDE) {
 				if (to <= H8) {
@@ -795,7 +796,7 @@ public class ChessBoard implements BoardFace {
 	 * Is just like addMoveToStack(), only it puts 4 moves
 	 * on the move stack, one for each possible promotion piecesBitmap
 	 */
-	void addPromotionMove(TreeSet<Move> moves, int from, int to, int bits) {
+	void addPromotionMove(List<Move> moves, int from, int to, int bits) {
 		for (char i = KNIGHT; i <= QUEEN; ++i) {
 			Move move = new Move(from, to, i, (bits | 32));
 			move.setScore(CAPTURE_PIECE_SCORE + (i * 10));
@@ -1488,7 +1489,7 @@ public class ChessBoard implements BoardFace {
 		StringBuilder output = new StringBuilder();
 		for (int i = 0; i < ply; i++) {
 			if (i % 2 == 0) { //
-				output.append(SYMBOL_NEW_STRING);
+//				output.append(SYMBOL_NEW_STRING);
 				// add move number
 				output.append(i / 2 + 1).append(MOVE_NUMBER_DOT_SEPARATOR);
 			}
@@ -2269,8 +2270,9 @@ public class ChessBoard implements BoardFace {
 	 * Get horizontal coordinate on the board for the given index of column
 	 */
 	public static int getColumn(int x, boolean reside) {
-		if (reside)
+		if (reside) {
 			x = 63 - x;
+		}
 		return (x & 7);
 	}
 
@@ -2442,9 +2444,8 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public boolean isPossibleToMakeMoves() {
-		TreeSet<Move> validMoves = generateLegalMoves();
-
 		boolean found = false;
+		List<Move> validMoves = generateLegalMoves();
 		for (Move validMove : validMoves) {   // compute available moves
 			if (makeMove(validMove, false)) {  // TODO replace with generatePossibleMove method
 				takeBack();
@@ -2520,7 +2521,7 @@ public class ChessBoard implements BoardFace {
 			switchSides();
 			switchEnPassant();
 		}
-		TreeSet<Move> moves = generateLegalMoves();
+		List<Move> moves = generateLegalMoves();
 		CopyOnWriteArrayList<Move> validMoves = new CopyOnWriteArrayList<Move>();
 
 		//String movesStr = new String();

@@ -309,6 +309,11 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		declineChallenge();
 	}
 
+	@Override
+	public void goHome() {
+		// not used here
+	}
+
 	private void acceptChallenge() {
 		LoadItem loadItem = LoadHelper.acceptChallenge(getUserToken(), challengeItem.getGameId());
 		successToastMsgId = R.string.challenge_accepted;
