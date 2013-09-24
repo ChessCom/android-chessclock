@@ -148,6 +148,7 @@ public class DbDataManager {
 
 	public static String SELECTION_FEN = concatArguments(V_FEN);
 	public static String SELECTION_FEN_AND_MOVE = concatArguments(V_FEN, V_MOVE);
+	public static String SELECTION_FEN_AND_NUMBER = concatArguments(V_FEN, V_NUMBER);
 	public static String SELECTION_URL = concatArguments(V_URL);
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
@@ -1369,6 +1370,7 @@ public class DbDataManager {
 		values.put(V_ID, dataObj.getTopicId());
 		values.put(V_CREATE_DATE, dataObj.getCreateDate());
 		values.put(V_USERNAME, dataObj.getUsername());
+		values.put(V_COMMENT_ID, dataObj.getCommentId());
 		values.put(V_COUNTRY_ID, dataObj.getCountryId());
 		values.put(V_PREMIUM_STATUS, dataObj.isPremiumStatus());
 		values.put(V_PHOTO_URL, dataObj.getAvatarUrl());
@@ -2268,6 +2270,27 @@ public class DbDataManager {
 		values.put(V_PATH, path);
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
+	public static void saveExplorerMoveVariations(ContentResolver contentResolver, String fen, List<String> variations) {
+		int index = 0;
+		for (String variation : variations) {
+			final String[] arguments = sArguments2;
+			arguments[0] = fen;
+			arguments[0] = String.valueOf(index);
+
+			Uri uri = uriArray[Tables.EXPLORER_VARIATIONS.ordinal()];
+			Cursor cursor = contentResolver.query(uri, null, SELECTION_FEN_AND_NUMBER, arguments, null);
+
+			ContentValues values = new ContentValues();
+			values.put(V_FEN, fen);
+			values.put(V_NUMBER, index);
+			values.put(V_NAME, variation);
+
+			updateOrInsertValues(contentResolver, cursor, uri, values);
+
+			index++;
+		}
 	}
 
 	// ================================= global help methods =======================================

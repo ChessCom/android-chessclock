@@ -91,7 +91,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
             if (firstClick) {
                 from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
-                if (getBoardFace().getPieces()[from] != 6 && getBoardFace().getSide() == getBoardFace().getColor()[from]) {
+                if (getBoardFace().getPiece(from) != 6 && getBoardFace().getSide() == getBoardFace().getColor(from)) {
                     pieceSelected = true;
                     firstClick = false;
                     invalidate();
@@ -113,7 +113,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 				}
                 if ((((to < 8) && (getBoardFace().getSide() == ChessBoard.WHITE_SIDE)) ||
                         ((to > 55) && (getBoardFace().getSide() == ChessBoard.BLACK_SIDE))) &&
-                        (getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
+                        (getBoardFace().getPiece(from) == ChessBoard.PAWN) && found) {
 
                     gameTacticsFace.showChoosePieceDialog(col, row);
                     return true;
@@ -129,8 +129,8 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
 					setMoveAnimator(moveAnimator);
 					//afterUserMove(); //
-				} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
-						&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
+				} else if (getBoardFace().getPiece(to) != ChessBoard.EMPTY
+						&& getBoardFace().getSide() == getBoardFace().getColor(to)) {
 					pieceSelected = true;
 					firstClick = false;
 					from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
@@ -192,8 +192,8 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
 			setMoveAnimator(moveAnimator);
 			//afterUserMove(); //
-		} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
-				&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
+		} else if (getBoardFace().getPiece(to) != ChessBoard.EMPTY
+				&& getBoardFace().getSide() == getBoardFace().getColor(to)) {
 			pieceSelected = true;
 			firstClick = false;
 			from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());

@@ -47,6 +47,7 @@ public class ForumPostItem extends BaseResponseItem<ForumPostItem.Data> {
 */
 
 		private String username;
+		private long comment_id;
 		private long create_date;
 		private String body;
 		private String avatar_url;
@@ -58,6 +59,10 @@ public class ForumPostItem extends BaseResponseItem<ForumPostItem.Data> {
 
 		public String getUsername() {
 			return username;
+		}
+
+		public long getCommentId() {
+			return comment_id;
 		}
 
 		public long getCreateDate() {

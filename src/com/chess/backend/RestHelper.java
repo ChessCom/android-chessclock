@@ -357,8 +357,8 @@ public class RestHelper {
 	public static final String P_PAGE_SIZE = "page-size";
 	public static final String P_FORUM_CATEGORY_ID = "forumCategoryId";
 	public static final String P_ARTICLE_ID = "articleId";
-	public static final String P_PARENT_TOPIC_ID = "parentTopicId";
 	public static final String P_FORUM_TOPIC_ID = "forumTopicId";
+	public static final String P_COMMENT_ID = "commentId";
 	public static final String P_COURSE_ID = "courseId";
 	public static final String P_TOPICS_PER_PAGE = "topicsPerPage";
 	public static final String P_SUBJECT = "subject";

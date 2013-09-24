@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 66;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 68;  // change version on every DB scheme changes
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
 
@@ -78,6 +78,7 @@ public class DbScheme {
 		NOTIFICATION_GAMES_OVER,
 
 		EXPLORER_MOVES,
+		EXPLORER_VARIATIONS,
 
 		THEMES,
 		THEME_SOUNDS,
@@ -199,6 +200,7 @@ public class DbScheme {
 	public static final String V_TOPIC_COUNT = "topic_count";
 	public static final String V_MIN_MEMBERSHIP = "min_membership_lvl";
 	public static final String V_NUMBER = "number";
+	public static final String V_COMMENT_ID = "comment_id";
 	public static final String V_PAGE = "page";
 
 	/* Lessons*/
@@ -473,6 +475,7 @@ public class DbScheme {
 
 		createTablesArray[Tables.FORUM_POSTS.ordinal()] = createTableForName(Tables.FORUM_POSTS)
 				+ addField_Long(V_CREATE_DATE)
+				+ addField_Long(V_COMMENT_ID)
 				+ addField_Int(V_COUNTRY_ID)
 				+ addField_Int(V_PREMIUM_STATUS)
 				+ addField_Int(V_NUMBER)
@@ -602,6 +605,11 @@ public class DbScheme {
 				+ addField_Int(V_BLACK_WON_PERCENT)
 				+ addField_Int(V_DRAW_PERCENT)
 				+ addField_Text(V_MOVE)
+				+ addField_Text(V_FEN, true);
+
+		createTablesArray[Tables.EXPLORER_VARIATIONS.ordinal()] = createTableForName(Tables.EXPLORER_VARIATIONS)
+				+ addField_Int(V_NUMBER)
+				+ addField_Text(V_NAME)
 				+ addField_Text(V_FEN, true);
 	}
 

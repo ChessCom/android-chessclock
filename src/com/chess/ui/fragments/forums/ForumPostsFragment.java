@@ -45,6 +45,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	public static final String P_TAG_OPEN = "<p>";
 	public static final String P_TAG_CLOSE = "</p>";
 	private static final long KEYBOARD_DELAY = 100;
+	private static final long NON_EXIST = -1;
 	private int topicId;
 	private ForumPostsCursorAdapter postsCursorAdapter;
 	private SavePostsListener savePostsListener;
@@ -59,6 +60,9 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	private int paddingSide;
 	private TopicCreateListener topicCreateListener;
 	private String topicUrl;
+	private long commentId;
+	private boolean inEditMode;
+	private String commentForEditStr;
 
 	public ForumPostsFragment() { }
 
@@ -201,19 +205,17 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//		replyView.setVisibility(View.VISIBLE);
-//		replyView.setBackgroundResource(R.color.header_light);
-//		replyView.setPadding(paddingSide, paddingSide, paddingSide, paddingSide);
-//		handler.postDelayed(new Runnable() {
-//			@Override
-//			public void run() {
-//				newPostEdt.requestFocus();
-//				showKeyBoard(newPostEdt);
-//				showKeyBoardImplicit(newPostEdt);
-//			}
-//		}, KEYBOARD_DELAY);
+		// get commentId
+		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+		String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+		if (username.equals(getUsername())) {
+			commentId = DbDataManager.getLong(cursor, DbScheme.V_COMMENT_ID);
 
-		showEditView(true);
+			commentForEditStr = String.valueOf(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_DESCRIPTION)));
+
+			inEditMode = true;
+			showEditView(true);
+		}
 	}
 
 	@Override
@@ -224,7 +226,11 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 				return true;
 			case R.id.menu_accept:
-				createPost();
+				if (inEditMode) {
+					createPost(commentId);
+				} else {
+					createPost();
+				}
 				return true;
 			case R.id.menu_edit:
 				showEditView(true);
@@ -252,6 +258,10 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 					showKeyBoard(newPostEdt);
 					showKeyBoardImplicit(newPostEdt);
 
+					if (inEditMode) {
+						newPostEdt.setText(commentForEditStr);
+						newPostEdt.setSelection(commentForEditStr.length());
+					}
 					showEditMode(true);
 				}
 			}, KEYBOARD_DELAY);
@@ -269,6 +279,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			}, KEYBOARD_DELAY);
 
 			showEditMode(false);
+			inEditMode = false;
 		}
 	}
 
@@ -341,6 +352,10 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	private void createPost() {
+		createPost(NON_EXIST);
+	}
+
+	private void createPost(long commentId) {
 		String body = getTextFromField(newPostEdt);
 		if (TextUtils.isEmpty(body)) {
 			newPostEdt.requestFocus();
@@ -352,8 +367,14 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_FORUMS_COMMENTS);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_PARENT_TOPIC_ID, topicId);
 		loadItem.addRequestParams(RestHelper.P_FORUM_TOPIC_ID, topicId);
+		if (commentId == NON_EXIST) {
+
+		} else {
+			loadItem.addRequestParams(RestHelper.P_COMMENT_ID, commentId);
+
+		}
+
 		loadItem.addRequestParams(RestHelper.P_BODY, P_TAG_OPEN + body + P_TAG_CLOSE);
 
 		new RequestJsonTask<VacationItem>(topicCreateListener).executeTask(loadItem); // use Vacation item as a simple return obj to get status
@@ -372,22 +393,8 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			} else {
 				showToast(R.string.error);
 			}
-			replyView.setVisibility(View.GONE);
-			newPostEdt.setText(Symbol.EMPTY);
+			showEditView(false);
 
-			// update page
-			requestPage(currentPage);
-			// lock page changing
-			pageIndicatorView.setEnabled(false);
-
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					hideKeyBoard(newPostEdt);
-					hideKeyBoard();
-
-				}
-			}, KEYBOARD_DELAY);
 		}
 	}
 }

@@ -35,7 +35,6 @@ import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.Move;
-import com.chess.ui.engine.MoveParser;
 import com.chess.ui.fragments.game.GameAnalyzeFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
@@ -376,7 +375,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		for (int i = getBoardFace().getMovesCount(); i < actualMovesSize; i++) {
 
-			moveFT = MoveParser.parseCoordinate(getBoardFace(), actualMoves[i]);
+			moveFT = getBoardFace().parseCoordinate(actualMoves[i]);
 
 			move = getBoardFace().convertMove(moveFT);
 			playSound = i == actualMovesSize - 1;
@@ -1060,7 +1059,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			analysisItem.setMovesList(getBoardFace().getMoveListSAN());
 			String opponentName;
 			int userColor;
-			if (isUserColorWhite()) {
+			Boolean userColorWhite = isUserColorWhite();
+			if (userColorWhite != null && userColorWhite) {
 				opponentName = getBlackPlayerName();
 				userColor = ChessBoard.WHITE_SIDE;
 			} else {

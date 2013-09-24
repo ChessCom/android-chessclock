@@ -62,7 +62,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	public static final String DOUBLE_SPACE = "  ";
 	private static final String ERROR_TAG = "send request failed popup";
 
-//	private static final int SEND_MOVE_UPDATE = 1;
 	private static final int CREATE_CHALLENGE_UPDATE = 2;
 	private static final int CURRENT_GAME = 0;
 	private static final int GAMES_LIST = 1;
@@ -151,7 +150,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	@Override
 	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
-			getActivityFace().openFragment(new DailyGameSetupFragment());
+			getActivityFace().openFragment(new DailyNewGameFragment());
 		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
 		} else if (code == ID_EMAIL_GAME) {
@@ -411,24 +410,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	public void switch2Analysis() {
 		showSubmitButtonsLay(false);
 
-//		GameAnalysisItem analysisItem = new GameAnalysisItem();  // TODO reuse later
-//		analysisItem.setGameType(currentGame.getGameType());
-//		analysisItem.setFen(getBoardFace().generateFullFen());
-//		analysisItem.setMovesList(getBoardFace().getMoveListSAN());
-//		String opponentName;
-//		int userColor;
-//		if (userPlayWhite) {
-//			opponentName = getBlackPlayerName();
-//			userColor = ChessBoard.WHITE_SIDE;
-//		} else {
-//			opponentName = getWhitePlayerName();
-//			userColor = ChessBoard.BLACK_SIDE;
-//		}
-//		analysisItem.setOpponent(opponentName);
-//		analysisItem.setUserColor(userColor);
-
-//		getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
-		getActivityFace().openFragment(GameDailyAnalysisFragment.createInstance(gameId));
+		getActivityFace().openFragment(GameDailyFinishedAnalysisFragment.createInstance(gameId));
 	}
 
 	@Override

@@ -180,7 +180,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	@Override
 	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
-			getActivityFace().openFragment(new DailyGameSetupFragment());
+			getActivityFace().openFragment(new DailyNewGameFragment());
 		} else if (code == ID_ABORT_RESIGN) {
 			if (getBoardFace().getPly() < 1 && isUserMove()) {
 				showPopupDialog(R.string.abort_game_, ABORT_GAME_TAG);

@@ -31,7 +31,7 @@ public class ArticlesPaginationAdapter extends PaginationCursorAdapter<ArticleIt
 	@Override
 	protected List<ArticleItem.Data> fetchMoreItems(int page) {
 		if (loadItem != null) {
-			loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
+			loadItem.replaceRequestParams(RestHelper.P_PAGE_, String.valueOf(page));
 			ArticleItem item = null;
 			try {
 				item = RestHelper.getInstance().requestData(loadItem, ArticleItem.class, AppUtils.getAppId(context));

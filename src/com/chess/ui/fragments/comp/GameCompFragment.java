@@ -20,15 +20,14 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
-import com.chess.statics.AppConstants;
-import com.chess.statics.Symbol;
 import com.chess.live.client.PieceColor;
 import com.chess.model.CompEngineItem;
 import com.chess.model.PopupItem;
+import com.chess.statics.AppConstants;
+import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
-import com.chess.ui.engine.MoveParser;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.engine.stockfish.CompEngineHelper;
 import com.chess.ui.engine.stockfish.StartEngineTask;
@@ -404,15 +403,15 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	public void updateEngineMove(final org.petero.droidfish.gamelogic.Move engineMove) {
 
 		// TODO @compengine: extract logic and put probably to ChessBoardView . Maybe in ChessBoardCompView instead.
-
-		if (!boardView.isHint() && getBoardFace().getPly() < getBoardFace().getMovesCount()) { // ignoring Forward move fired by engine
+		final BoardFace boardFace = getBoardFace();
+		if (!boardView.isHint() && boardFace.getPly() < boardFace.getMovesCount()) { // ignoring Forward move fired by engine
 			return;
 		}
 
 		Log.d(CompEngineHelper.TAG, "updateComputerMove " + engineMove);
 
-		int[] moveFT = MoveParser.parseCoordinate(getBoardFace(), engineMove.toString());
-		final Move move = getBoardFace().convertMove(moveFT);
+		int[] moveFT = boardFace.parseCoordinate(engineMove.toString());
+		final Move move = boardFace.convertMove(moveFT);
 
 		Log.d(CompEngineHelper.TAG, "comp make move: " + move);
 		Log.d(CompEngineHelper.TAG, "isHint = " + boardView.isHint());
@@ -433,7 +432,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 				boardView.setMoveAnimator(move, true);
 				boardView.resetValidMoves();
-				getBoardFace().makeMove(move);
+				boardFace.makeMove(move);
 
 				if (boardView.isHint()) {
 					//if (/*AppData.isComputerVsComputerGameMode(getBoardFace()) || */(!AppData.isHumanVsHumanGameMode(getBoardFace()))) {
@@ -444,7 +443,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 					invalidateGameScreen();
 					onPlayerMove();
 
-					getBoardFace().setMovesCount(getBoardFace().getPly());
+					boardFace.setMovesCount(boardFace.getPly());
 					if (boardView.isGameOver())
 						return;
 				}

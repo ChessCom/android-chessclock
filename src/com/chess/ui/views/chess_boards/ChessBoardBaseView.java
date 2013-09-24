@@ -254,7 +254,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				continue;
 			}
 
-			if (getBoardFace().getColor()[i] == ChessBoard.WHITE_SIDE) {
+			if (getBoardFace().getColor(i) == ChessBoard.WHITE_SIDE) {
 				whiteAlivePiecesCount[pieceId]++;
 			} else {
 				blackAlivePiecesCount[pieceId]++;
@@ -468,8 +468,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				continue;
 			}
 
-			int color = getBoardFace().getColor()[i];
-			int piece = getBoardFace().getPieces()[i];
+			int color = getBoardFace().getColor(i);
+			int piece = getBoardFace().getPiece(i);
 			int x = ChessBoard.getColumn(i, getBoardFace().isReside());
 			int y = ChessBoard.getRow(i, getBoardFace().isReside());
 			int inSet = (int) (1 * density);
@@ -558,8 +558,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	protected void drawDragPosition(Canvas canvas) {
 		if (drag) {
-			int color = getBoardFace().getColor()[draggingFrom];
-			int piece = getBoardFace().getPieces()[draggingFrom];
+			int color = getBoardFace().getColor(draggingFrom);
+			int piece = getBoardFace().getPiece(draggingFrom);
 
 			int halfSquare = square / 2;
 			int x = dragX - halfSquare;
@@ -622,14 +622,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (firstClick) {
 			from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
 			//draggingFrom = from;
-			if (isUserColor(getBoardFace().getColor()[from])) {
+			if (isUserColor(getBoardFace().getColor(from))) {
 				pieceSelected = true;
 				firstClick = false;
 				invalidate();
 			}
 		} else {
 			int fromPosIndex = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
-			if (isUserColor(getBoardFace().getColor()[fromPosIndex])) {
+			if (isUserColor(getBoardFace().getColor(fromPosIndex))) {
 				from = fromPosIndex;
 				pieceSelected = true;
 				firstClick = false;
@@ -654,7 +654,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		if (!firstClick) {
 			draggingFrom = from;
-			drag = isUserColor(getBoardFace().getColor()[draggingFrom]); // do not drag captured piece
+			drag = isUserColor(getBoardFace().getColor(draggingFrom)); // do not drag captured piece
 			to = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
 			invalidate();
 		}
@@ -678,7 +678,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		if (firstClick) {
 			from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
-			if (isUserColor(getBoardFace().getColor()[from])) {
+			if (isUserColor(getBoardFace().getColor(from))) {
 				pieceSelected = true;
 				firstClick = false;
 				invalidate();
@@ -702,7 +702,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			// if promote
 			if ((((to < 8) && (getBoardFace().getSide() == ChessBoard.WHITE_SIDE)) ||
 					((to > 55) && (getBoardFace().getSide() == ChessBoard.BLACK_SIDE))) &&
-					(getBoardFace().getPieces()[from] == ChessBoard.PAWN) && found) {
+					(getBoardFace().getPiece(from) == ChessBoard.PAWN) && found) {
 
 				gameFace.showChoosePieceDialog(col, row);
 				return true;
@@ -724,7 +724,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				} else {
 					afterUserMove();
 				}
-			} else if (isUserColor(getBoardFace().getColor()[to])) {
+			} else if (isUserColor(getBoardFace().getColor(to))) {
 				pieceSelected = true;
 				firstClick = false;
 				from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
@@ -764,8 +764,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
 			setMoveAnimator(moveAnimator);
 			//afterUserMove(); //
-		} else if (getBoardFace().getPieces()[to] != ChessBoard.EMPTY
-				&& getBoardFace().getSide() == getBoardFace().getColor()[to]) {
+		} else if (getBoardFace().getPiece(to) != ChessBoard.EMPTY
+				&& getBoardFace().getSide() == getBoardFace().getColor(to)) {
 			pieceSelected = true;
 			firstClick = false;
 			from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
@@ -793,7 +793,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				} else {
 					messageId = R.string.draw_by_stalemate;
 				}
-			} else if (boardFace.reps() == 3) {
+			} else if (boardFace.getRepetitions() == 3) {
 				messageId = R.string.draw_by_3fold_repetition;
 			}
 
@@ -1206,11 +1206,15 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			this.forward = forward;
 
 			int moveFromPosition = forward ? move.from : move.to;
-			int fromColor = getBoardFace().getColor()[moveFromPosition];
-			int fromPiece = getBoardFace().getPieces()[moveFromPosition];
+			int fromColor = getBoardFace().getColor(moveFromPosition);
+			int fromPiece = getBoardFace().getPiece(moveFromPosition);
 
 			if (fromPiece == ChessBoard.EMPTY) {
-				throw new IllegalArgumentException("fromPiece can't be EMPTY square here, check Move generation object. move is " + move);
+//				throw new IllegalArgumentException("fromPiece can't be EMPTY square here, check Move generation object. move is " + move);
+				fromPiece = ChessBoard.PAWN; // TODO fix real problem
+			}
+			if (fromColor == ChessBoard.EMPTY) {
+				fromColor = 0;
 			}
 			pieceBitmap = piecesBitmaps[fromColor][fromPiece];
 
@@ -1218,8 +1222,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 			int moveToPosition = forward ? move.to : move.from;
 			if (getBoardFace().getPiece(moveToPosition) != ChessBoard.EMPTY) {
-				int capturedColor = getBoardFace().getColor()[moveToPosition];
-				int capturedPiece = getBoardFace().getPieces()[moveToPosition];
+				int capturedColor = getBoardFace().getColor(moveToPosition);
+				int capturedPiece = getBoardFace().getPiece(moveToPosition);
 				capturedPieceBitmap = piecesBitmaps[capturedColor][capturedPiece];
 				capturedPiecePosition = moveToPosition;
 				hide2 = moveToPosition;

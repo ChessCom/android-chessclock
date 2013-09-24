@@ -48,24 +48,22 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	public static final String DOUBLE_SPACE = "  ";
 	private static final String ERROR_TAG = "send request failed popup";
 
-	private static final int CURRENT_GAME = 0;
-
-	private ChessBoardAnalysisView boardView;
+	protected ChessBoardAnalysisView boardView;
 
 	private DailyCurrentGameData currentGame;
 
 	protected boolean userPlayWhite = true;
-	private LoadFromDbUpdateListener loadFromDbUpdateListener;
-	private PanelInfoGameView topPanelView;
-	private PanelInfoGameView bottomPanelView;
-	private ControlsAnalysisView controlsView;
+	protected LoadFromDbUpdateListener loadFromDbUpdateListener;
+	protected PanelInfoGameView topPanelView;
+	protected PanelInfoGameView bottomPanelView;
+	protected ControlsAnalysisView controlsView;
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
-	private BoardAvatarDrawable opponentAvatarDrawable;
-	private BoardAvatarDrawable userAvatarDrawable;
-	private LabelsConfig labelsConfig;
-	private String[] countryNames;
-	private int[] countryCodes;
+	protected BoardAvatarDrawable opponentAvatarDrawable;
+	protected BoardAvatarDrawable userAvatarDrawable;
+	protected LabelsConfig labelsConfig;
+	protected String[] countryNames;
+	protected int[] countryCodes;
 
 	public static GameDailyAnalysisFragment createInstance(long gameId) {
 		GameDailyAnalysisFragment fragment = new GameDailyAnalysisFragment();
@@ -120,7 +118,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		}
 	}
 
-	private void loadGame() {
+	protected void loadGame() {
 		// load game from DB. After load update
 		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyGame(gameId, getUsername()),
 				getContentResolver()).executeTask();
@@ -138,16 +136,13 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	@Override
 	public void showExplorer() {
-		getActivityFace().openFragment(GameExplorerFragment.createInstance(getBoardFace().generateBaseFen()));
+		getActivityFace().openFragment(GameExplorerFragment.createInstance(getBoardFace().generateFullFen()));
 	}
 
-	private class LoadFromDbUpdateListener extends AbstractUpdateListener<Cursor> {
+	protected class LoadFromDbUpdateListener extends AbstractUpdateListener<Cursor> {
 
-		private int listenerCode;
-
-		public LoadFromDbUpdateListener(int listenerCode) {
+		public LoadFromDbUpdateListener() {
 			super(getContext());
-			this.listenerCode = listenerCode;
 		}
 
 		@Override
@@ -163,7 +158,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		}
 	}
 
-	private void adjustBoardForGame() {
+	protected void adjustBoardForGame() {
 		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUsername());
 
 		labelsConfig.topAvatar = opponentAvatarDrawable;
@@ -454,7 +449,6 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		getBoardFace().setJustInitialized(false);
 	}
 
-
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
@@ -464,10 +458,10 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		}
 	}
 
-	private void init() {
+	protected void init() {
 		labelsConfig = new LabelsConfig();
 
-		loadFromDbUpdateListener = new LoadFromDbUpdateListener(CURRENT_GAME);
+		loadFromDbUpdateListener = new LoadFromDbUpdateListener();
 
 		countryNames = getResources().getStringArray(R.array.new_countries);
 		countryCodes = getResources().getIntArray(R.array.new_country_ids);

@@ -275,4 +275,12 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	public static QueryParams getExplorerVariationNamesForFen(String fen) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.EXPLORER_VARIATIONS.ordinal()]);
+		queryParams.setSelection(DbDataManager.SELECTION_FEN);
+		queryParams.setArguments(new String[]{fen});
+		return queryParams;
+	}
+
 }

@@ -52,15 +52,15 @@ public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 		int pieceCode = pieces[move.to];
 		String moveStr;
 		if (pieceCode == 1) { // set piece name
-			piece = MoveParser.BLACK_KNIGHT;
+			piece = MovesParser.BLACK_KNIGHT;
 		} else if (pieceCode == 2) {
-			piece = MoveParser.BLACK_BISHOP;
+			piece = MovesParser.BLACK_BISHOP;
 		} else if (pieceCode == 3) {
-			piece = MoveParser.BLACK_ROOK;
+			piece = MovesParser.BLACK_ROOK;
 		} else if (pieceCode == 4) {
-			piece = MoveParser.BLACK_QUEEN;
+			piece = MovesParser.BLACK_QUEEN;
 		} else if (pieceCode == 5) {
-			piece = MoveParser.BLACK_KING;
+			piece = MovesParser.BLACK_KING;
 		}
 
 		String capture = Symbol.EMPTY;
@@ -68,11 +68,11 @@ public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 			capture = "x";
 		}
 
-		moveStr = piece + capture + MoveParser.positionToString(move.to);   // Rxa7 is failed!!!
-		if (moveStr.equalsIgnoreCase(MoveParser.B_KINGSIDE_MOVE_CASTLING)) {
-			moveStr = MoveParser.KINGSIDE_CASTLING;
-		} else if (moveStr.equalsIgnoreCase(MoveParser.B_QUEENSIDE_MOVE_CASTLING)) {
-			moveStr = MoveParser.QUEENSIDE_CASTLING;
+		moveStr = piece + capture + movesParser.positionToString(move.to);   // Rxa7 is failed!!!
+		if (moveStr.equalsIgnoreCase(MovesParser.B_KINGSIDE_MOVE_CASTLING)) {
+			moveStr = MovesParser.KINGSIDE_CASTLING;
+		} else if (moveStr.equalsIgnoreCase(MovesParser.B_QUEENSIDE_MOVE_CASTLING)) {
+			moveStr = MovesParser.QUEENSIDE_CASTLING;
 		}
 		return moveStr.toLowerCase();
 	}

@@ -36,9 +36,9 @@ public class LiveNewGameFragment extends CommonLogicFragment {
 
 	private LiveGameConfig.Builder liveGameConfigBuilder;
 	private int positionMode;
-	private List<View> liveOptionsGroup;
-	private HashMap<Integer, Button> liveButtonsModeMap;
-	private boolean liveOptionsVisible;
+	private List<View> timeOptionsGroup;
+	private HashMap<Integer, Button> timeButtonsModeMap;
+	private boolean timeOptionsVisible;
 	private Button liveTimeSelectBtn;
 	private String[] newGameButtonsArray;
 	private View inviteFriendView1;
@@ -83,7 +83,7 @@ public class LiveNewGameFragment extends CommonLogicFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_live_home_new_frame, container, false);
+		return inflater.inflate(R.layout.new_live_home_new_game_frame, container, false);
 	}
 
 	@Override
@@ -161,7 +161,7 @@ public class LiveNewGameFragment extends CommonLogicFragment {
 		super.onClick(view);
 
 		if (view.getId() == R.id.liveTimeSelectBtn) {
-			toggleLiveOptionsView();
+			toggleTimeOptionsView();
 		} else if (view.getId() == R.id.liveHeaderView) {
 			if (positionMode == RIGHT_MENU_MODE) {
 				liveFullOptionsVisible = !liveFullOptionsVisible;
@@ -214,7 +214,7 @@ public class LiveNewGameFragment extends CommonLogicFragment {
 	private void handleLiveModeClicks(View view) {
 		int id = view.getId();
 		boolean liveModeButton = false;
-		for (Button button : liveButtonsModeMap.values()) {
+		for (Button button : timeButtonsModeMap.values()) {
 			if (id == button.getId()) {
 				liveModeButton = true;
 				break;
@@ -222,34 +222,34 @@ public class LiveNewGameFragment extends CommonLogicFragment {
 		}
 
 		if (liveModeButton) {
-			for (Map.Entry<Integer, Button> buttonEntry : liveButtonsModeMap.entrySet()) {
+			for (Map.Entry<Integer, Button> buttonEntry : timeButtonsModeMap.entrySet()) {
 				Button button = buttonEntry.getValue();
 				button.setSelected(false);
 				if (id == button.getId()) {
-					setDefaultQuickLiveMode(view, buttonEntry.getKey());
+					setDefaultTimeMode(view, buttonEntry.getKey());
 				}
 			}
 		}
 	}
 
-	private void setDefaultQuickLiveMode(View view, int mode) {
+	private void setDefaultTimeMode(View view, int mode) {
 		view.setSelected(true);
 		liveTimeSelectBtn.setText(getLiveModeButtonLabel(newGameButtonsArray[mode]));
 		liveGameConfigBuilder.setTimeFromLabel(newGameButtonsArray[mode]);
 		getAppData().setDefaultLiveMode(mode);
 	}
 
-	private void toggleLiveOptionsView() {
-		liveOptionsVisible = !liveOptionsVisible;
-		for (View view : liveOptionsGroup) {
-			view.setVisibility(liveOptionsVisible ? View.VISIBLE : View.GONE);
+	private void toggleTimeOptionsView() {
+		timeOptionsVisible = !timeOptionsVisible;
+		for (View view : timeOptionsGroup) {
+			view.setVisibility(timeOptionsVisible ? View.VISIBLE : View.GONE);
 		}
 
 		int selectedLiveTimeMode = getAppData().getDefaultLiveMode();
-		for (Map.Entry<Integer, Button> buttonEntry : liveButtonsModeMap.entrySet()) {
+		for (Map.Entry<Integer, Button> buttonEntry : timeButtonsModeMap.entrySet()) {
 			Button button = buttonEntry.getValue();
-			button.setVisibility(liveOptionsVisible ? View.VISIBLE : View.GONE);
-			if (liveOptionsVisible) {
+			button.setVisibility(timeOptionsVisible ? View.VISIBLE : View.GONE);
+			if (timeOptionsVisible) {
 				if (selectedLiveTimeMode == buttonEntry.getKey()) {
 					button.setSelected(true);
 				}
@@ -311,26 +311,26 @@ public class LiveNewGameFragment extends CommonLogicFragment {
 				layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
 			}
 
-			liveOptionsGroup = new ArrayList<View>();
-			liveOptionsGroup.add(view.findViewById(R.id.liveLabelStandardTxt));
-			liveOptionsGroup.add(view.findViewById(R.id.liveLabelBlitzTxt));
-			liveOptionsGroup.add(view.findViewById(R.id.liveLabelBulletTxt));
+			timeOptionsGroup = new ArrayList<View>();
+			timeOptionsGroup.add(view.findViewById(R.id.liveLabelStandardTxt));
+			timeOptionsGroup.add(view.findViewById(R.id.liveLabelBlitzTxt));
+			timeOptionsGroup.add(view.findViewById(R.id.liveLabelBulletTxt));
 
-			liveButtonsModeMap = new HashMap<Integer, Button>();
-			liveButtonsModeMap.put(0, (Button) view.findViewById(R.id.standard1SelectBtn));
-			liveButtonsModeMap.put(1, (Button) view.findViewById(R.id.blitz1SelectBtn));
-			liveButtonsModeMap.put(2, (Button) view.findViewById(R.id.blitz2SelectBtn));
-			liveButtonsModeMap.put(3, (Button) view.findViewById(R.id.bullet1SelectBtn));
-			liveButtonsModeMap.put(4, (Button) view.findViewById(R.id.standard2SelectBtn));
-			liveButtonsModeMap.put(5, (Button) view.findViewById(R.id.blitz3SelectBtn));
-			liveButtonsModeMap.put(6, (Button) view.findViewById(R.id.blitz4SelectBtn));
-			liveButtonsModeMap.put(7, (Button) view.findViewById(R.id.bullet2SelectBtn));
+			timeButtonsModeMap = new HashMap<Integer, Button>();
+			timeButtonsModeMap.put(0, (Button) view.findViewById(R.id.standard1SelectBtn));
+			timeButtonsModeMap.put(1, (Button) view.findViewById(R.id.blitz1SelectBtn));
+			timeButtonsModeMap.put(2, (Button) view.findViewById(R.id.blitz2SelectBtn));
+			timeButtonsModeMap.put(3, (Button) view.findViewById(R.id.bullet1SelectBtn));
+			timeButtonsModeMap.put(4, (Button) view.findViewById(R.id.standard2SelectBtn));
+			timeButtonsModeMap.put(5, (Button) view.findViewById(R.id.blitz3SelectBtn));
+			timeButtonsModeMap.put(6, (Button) view.findViewById(R.id.blitz4SelectBtn));
+			timeButtonsModeMap.put(7, (Button) view.findViewById(R.id.bullet2SelectBtn));
 
 			int mode = getAppData().getDefaultLiveMode();
 			darkBtnColor = getResources().getColor(R.color.text_controls_icons_white);
 			// set texts to buttons
 			newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
-			for (Map.Entry<Integer, Button> buttonEntry : liveButtonsModeMap.entrySet()) {
+			for (Map.Entry<Integer, Button> buttonEntry : timeButtonsModeMap.entrySet()) {
 				int key = buttonEntry.getKey();
 				buttonEntry.getValue().setText(getLiveModeButtonLabel(newGameButtonsArray[key]));
 				buttonEntry.getValue().setOnClickListener(this);
@@ -340,7 +340,7 @@ public class LiveNewGameFragment extends CommonLogicFragment {
 				}
 
 				if (key == mode) {
-					setDefaultQuickLiveMode(buttonEntry.getValue(), buttonEntry.getKey());
+					setDefaultTimeMode(buttonEntry.getValue(), buttonEntry.getKey());
 				}
 			}
 		}

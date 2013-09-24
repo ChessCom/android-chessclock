@@ -73,12 +73,8 @@ public class ControlsAnalysisView extends ControlsBaseView {
 		this.boardViewFace = boardViewFace;
 	}
 
-	public void enableControlButtons(boolean enable) {
-		enableGameButton(FORWARD, enable);
-		enableGameButton(BACK, enable);
-	}
-
 	public void enableGameControls(boolean enable) {
+		enableGameButton(EXIT, enable);
 		enableGameButton(SEARCH, enable);
 		enableGameButton(RESTART, enable);
 		enableGameButton(BACK, enable);

@@ -35,6 +35,7 @@ import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
+import com.chess.ui.engine.FenHelper;
 import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.explorer.GameExplorerFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
@@ -906,9 +907,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		topPanelView.setPlayerScore(currentRating);
 
 		boardFace.setupBoard(trainerData.getInitialFen());
-		boardFace.setReside(!boardFace.isReside()); // we should always reside board in Tactics, because user should make next move
 
-		labelsConfig.userSide = boardFace.isReside() ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
+		// based on FEN we detect which player is next to move
+		boolean whiteToMove = trainerData.getInitialFen().contains(FenHelper.WHITE_TO_MOVE);
+		// if whiteToMove that means that comp makes first move and user is on black side
+		labelsConfig.userSide = whiteToMove ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
 
 		boardFace.setTacticMoves(trainerData.getCleanMoveString());
 		boardFace.setMovesCount(1);

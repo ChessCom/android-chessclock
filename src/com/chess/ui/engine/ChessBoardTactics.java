@@ -51,7 +51,7 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 
 	@Override
 	public void setTacticMoves(String tacticMoves) {
-		this.tacticMoves = MoveParser.removeNumbers(tacticMoves)
+		this.tacticMoves = movesParser.removeNumbers(tacticMoves)
 				.replaceAll("  ", Symbol.SPACE)
 				.substring(1).split(Symbol.SPACE);
 	}
@@ -73,17 +73,17 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 		String piece = Symbol.EMPTY;
 		int pieceCode = pieces[move.to];
 		if (pieceCode == 1) { // set piece name
-			piece = MoveParser.WHITE_KNIGHT;
+			piece = MovesParser.WHITE_KNIGHT;
 		} else if (pieceCode == 2) {
-			piece = MoveParser.WHITE_BISHOP;
+			piece = MovesParser.WHITE_BISHOP;
 		} else if (pieceCode == 3) {
-			piece = MoveParser.WHITE_ROOK;
+			piece = MovesParser.WHITE_ROOK;
 		} else if (pieceCode == 4) {
-			piece = MoveParser.WHITE_QUEEN;
+			piece = MovesParser.WHITE_QUEEN;
 		} else if (pieceCode == 5) {
-			piece = MoveParser.WHITE_KING;
+			piece = MovesParser.WHITE_KING;
 		}
-		String moveTo = MoveParser.positionToString(move.to);
+		String moveTo = movesParser.positionToString(move.to);
 //		Log.d("TEST_MOVE", "piece " + piece + " | move to " + moveTo + " : tactic last move = " + tacticMoves[lastIndex]);
 		if (move.isCastling()){
 			moveTo = "O-O";

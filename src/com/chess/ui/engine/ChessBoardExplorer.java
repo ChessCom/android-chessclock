@@ -19,12 +19,9 @@ public class ChessBoardExplorer extends ChessBoard {
 	public static ChessBoardExplorer getInstance(GameFace gameFace) {
 		final Long gameId = gameFace.getGameId();
 
-		if (instance == null || instance.gameId == null || !instance.gameId.equals(gameId)) {
+		if (instance == null) {
 			instance = new ChessBoardExplorer(gameFace);
 			instance.gameId = gameId;
-			instance.justInitialized = true;
-		} else {
-			instance.justInitialized = false;
 		}
 		return instance;
 	}

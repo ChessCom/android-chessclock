@@ -125,6 +125,15 @@
         <item name="android:visibility">gone</item>
     </style>
 
+    <style name="HomeDailyOptionsButton" parent="Button.Glassy">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">2dip</item>
+        <item name="android:layout_margin">5dip</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
     <style name="RightLiveOptionsButton" parent="Button.Glassy.Small">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

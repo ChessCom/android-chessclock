@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
@@ -44,6 +45,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 
 	private ChessBoardExplorerView boardView;
 	private String fen;
+	private TextView moveVariationTxt;
 
 	public GameExplorerFragment() {}
 
@@ -110,6 +112,10 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	private void adjustBoardForGame() {
 		ChessBoardExplorer.resetInstance();
 		ChessBoardExplorer.getInstance(this);
+
+		getBoardFace().setupBoard(fen);
+
+		invalidateGameScreen();
 	}
 
 	private void updateData(String fen) {
@@ -138,17 +144,6 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 			invalidateGameScreen();
 		}
 
-		// restore move back
-//		handler.postDelayed(new Runnable() {
-//			@Override
-//			public void run() {
-//				boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
-//				boardView.resetValidMoves();
-//				getBoardFace().takeBack();
-//				invalidateGameScreen();
-//			}
-//		}, 1000);
-
 		// update FEN and get next moves
 		fen = getBoardFace().generateBaseFen();
 		updateData(fen);
@@ -164,8 +159,14 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 		public void updateData(ExplorerMovesItem returnedObj) {
 			super.updateData(returnedObj);
 
-			new SaveExplorerMovesListTask(saveExplorerMovesUpdateListener, returnedObj.getData().getMoves(),
-					getContentResolver(), fen).executeTask();
+			if (returnedObj.getData().getMoves() != null) {
+				new SaveExplorerMovesListTask(saveExplorerMovesUpdateListener, returnedObj.getData().getMoves(),
+						getContentResolver(), fen).executeTask();
+			}
+
+			if (returnedObj.getData().getVariations() != null) {
+				DbDataManager.saveExplorerMoveVariations(getContentResolver(), fen, returnedObj.getData().getVariations());
+			}
 		}
 	}
 
@@ -192,6 +193,12 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 			super.updateData(returnedObj);
 
 			explorerMovesCursorAdapter.changeCursor(returnedObj);
+
+			// get variation name
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getExplorerVariationNamesForFen(fen));
+			if (cursor != null && cursor.moveToFirst()) {
+				moveVariationTxt.setText(DbDataManager.getString(cursor, DbScheme.V_NAME));
+			}
 		}
 	}
 
@@ -268,8 +275,9 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	}
 
 	private void widgetsInit(View view) {
+		moveVariationTxt = (TextView) view.findViewById(R.id.moveVariationTxt);
 		if (AppUtils.isNexus4Kind(getActivity())) {
-			view.findViewById(R.id.moveVariationTxt).setVisibility(View.GONE);
+			moveVariationTxt.setVisibility(View.GONE);
 		}
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);

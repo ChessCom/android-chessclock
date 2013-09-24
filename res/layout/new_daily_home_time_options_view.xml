@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<!--Time selections-->
+	<LinearLayout
+		android:id="@+id/dailyTimeSelectionFirstRowView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+
+		<!--1 day-->
+		<com.chess.RoboButton
+			android:id="@+id/time1SelectBtn"
+			style="@style/HomeDailyOptionsButton"
+			/>
+
+		<!--2 days-->
+		<com.chess.RoboButton
+			android:id="@+id/time2SelectBtn"
+			style="@style/HomeDailyOptionsButton"
+			/>
+		<!--3 days-->
+		<com.chess.RoboButton
+			android:id="@+id/time3SelectBtn"
+			style="@style/HomeDailyOptionsButton"
+			/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/dailyTimeSelectionFirstRowView"
+		>
+
+		<!--5 days-->
+		<com.chess.RoboButton
+			android:id="@+id/time4SelectBtn"
+			style="@style/HomeDailyOptionsButton"
+			/>
+
+		<!--7 days-->
+		<com.chess.RoboButton
+			android:id="@+id/time5SelectBtn"
+			style="@style/HomeDailyOptionsButton"
+			/>
+
+		<!--14 days-->
+		<com.chess.RoboButton
+			android:id="@+id/time6SelectBtn"
+			style="@style/HomeDailyOptionsButton"
+			/>
+
+	</LinearLayout>
+</merge>

@@ -8,6 +8,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -31,6 +32,7 @@ import com.chess.db.tasks.SaveLessonsLessonTask;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLessons;
+import com.chess.ui.engine.FenHelper;
 import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
@@ -195,7 +197,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	@Override
 	public void onResume() {
 		super.onResume();
-		logTest("need2update @onStart = " + need2update);
 
 		if (need2update) {
 			updateUiData();
@@ -562,19 +563,35 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	}
 
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_share:
+				submitShareIntent(getString(R.string.lesson_share_message,
+						lessonItem.getLesson().getName()));
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
 	public void onClick(View view) {
 		super.onClick(view);
 		if (view.getId() == R.id.shareBtn) {
-			Intent shareIntent = new Intent(Intent.ACTION_SEND);
-			shareIntent.setType("text/plain");
-			shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.lesson_completed_message,
+
+			submitShareIntent(getString(R.string.lesson_completed_message,
 					lessonItem.getLesson().getName(), scorePercent));
-			shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_completed_lesson_title));
-			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_lesson)));
 
 			completedPopupFragment.dismiss();
 			completedPopupFragment = null;
 		}
+	}
+
+	private void submitShareIntent(String message) {
+		Intent shareIntent = new Intent(Intent.ACTION_SEND);
+		shareIntent.setType("text/plain");
+		shareIntent.putExtra(Intent.EXTRA_TEXT, message);
+		shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_completed_lesson_title));
+		startActivity(Intent.createChooser(shareIntent, getString(R.string.share_lesson)));
 	}
 
 	@Override
@@ -760,7 +777,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		boardFace.setupBoard(positionToSolve.getFen());
 		boardView.resetValidMoves();
 
-		labelsConfig.userSide = boardFace.isReside() ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
+		// based on FEN we detect which player is next to move
+		boolean whiteToMove = positionToSolve.getFen().contains(FenHelper.WHITE_TO_MOVE);
+		labelsConfig.userSide = whiteToMove ? ChessBoard.WHITE_SIDE : ChessBoard.BLACK_SIDE;
 
 		invalidateGameScreen();
 		controlsLessonsView.enableGameControls(true);

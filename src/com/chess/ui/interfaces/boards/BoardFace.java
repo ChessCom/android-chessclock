@@ -22,6 +22,10 @@ public interface BoardFace {
 
 	List<Move> generateLegalMoves();
 
+	/**
+	 *
+	 * @return {@code 0} if == ChessBoard.WHITE_SIDE, else {@code 1} if == ChessBoard.BLACK_SIDE
+	 */
 	int getSide();
 
 	boolean isAnalysis();
@@ -42,27 +46,29 @@ public interface BoardFace {
 
 	boolean inCheck(int s);
 
-	int[] getPieces();
+//	int[] getPieces();
 
 	int getPiece(int pieceId);
 
-	int[] getColor();
+//	int[] getColor();
+
+	int getColor(int color);
 
 	int getColor(int i, int j);
 
 	int getPly();
 
-	int eval();
+//	int eval();
 
-	int[][] getHistory();
+//	int[][] getHistory();
 
 	String generateBaseFen();
 
-	int reps();
+	int getRepetitions();
 
-	List<Move> generateCapturesAndPromotes();
+//	List<Move> generateCapturesAndPromotes();
 
-	int getFifty();
+//	int getFifty();
 
 	boolean isReside();
 
@@ -74,23 +80,24 @@ public interface BoardFace {
 
 	void setSide(int side);
 
-	int getWhiteKing();
+//	int getWhiteKing();
 
-	int[] getWhiteKingMoveOO();
+//	int[] getWhiteKingMoveOO();
 
-	int getBlackKing();
+//	int getBlackKing();
 
-	int[] getBlackKingMoveOO();
+//	int[] getBlackKingMoveOO();
 
-	int[] getWhiteKingMoveOOO();
+//	int[] getWhiteKingMoveOOO();
 
-	int[] getBlackKingMoveOOO();
+//	int[] getBlackKingMoveOOO();
 
 	int[] getBoardColor();
 
 	void setChess960(boolean chess960);
 
-	int[] buildBoardFromFen(String fen);
+//	int[] setupCastlingPositions(String fen);
+	void setupCastlingPositions(String fen);
 
 	void takeNext();
 
@@ -126,6 +133,8 @@ public interface BoardFace {
 
 	boolean isFinished();
 
+	int[] parseCoordinate(String actualMove);
+
 	Move convertMove(int[] moveFT);
 
 	Move convertMoveAlgebraic(String move);
@@ -139,4 +148,6 @@ public interface BoardFace {
 	CopyOnWriteArrayList<Move> generateValidMoves(boolean forceSwitchSide);
 
 	String generateFullFen();
+
+
 }

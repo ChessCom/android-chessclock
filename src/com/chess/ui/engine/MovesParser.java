@@ -3,12 +3,11 @@ package com.chess.ui.engine;
 import android.text.TextUtils;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
-import com.chess.ui.interfaces.boards.BoardFace;
 
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class MoveParser {
+public class MovesParser {
 	/*
 	Special Symbols
 	x: captures
@@ -36,34 +35,15 @@ public class MoveParser {
 	public static final String BLACK_KING = "k";
 	public static final String BLACK_PAWN = "p";
 
-	public static final String W_SMALL = "w";
-	public static final String A_SMALL = "a";
-	public static final String B_SMALL = "b";
-	public static final String C_SMALL = "c";
-	public static final String D_SMALL = "d";
-	public static final String E_SMALL = "e";
-	public static final String F_SMALL = "f";
-	public static final String G_SMALL = "g";
-	public static final String H_SMALL = "h";
 
 	public static final char fileLetters[] = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 	public static final int rankNumbers[] = new int[]{1, 2, 3, 4, 5, 6, 7, 8};
 	public static final String CAPTURE_MARK = "x";
 
-	public static final String NUMB_1 = "1";
-	public static final String NUMB_2 = "2";
-	public static final String NUMB_3 = "3";
-	public static final String NUMB_4 = "4";
-	public static final String NUMB_5 = "5";
-	public static final String NUMB_6 = "6";
-	public static final String NUMB_7 = "7";
-	public static final String NUMB_8 = "8";
-	public static final String POSITION_DIVIDER = "|";
-	private static final String FEN_DIVIDER = "[/]";
-	private static final String REGEXP_NUMBERS = "[0-9]";
+	public static final String REGEXP_CHARS = "[a,b,c,d,e,f,g,h]";
+	public static final String REGEXP_NUMBERS = "[0-9]";
 
-	public static final String W_KINGSIDE_MOVE_CASTLING = "Kg1";
-	public static final String W_QUEENSIDE_MOVE_CASTLING = "Kc1";
+
 	public static final String B_KINGSIDE_MOVE_CASTLING = "kg8";
 	public static final String B_QUEENSIDE_MOVE_CASTLING = "kc8";
 	public static final String KINGSIDE_CASTLING = "O-O";
@@ -77,54 +57,51 @@ public class MoveParser {
 	private static final int ROOK = 3;
 	private static final int QUEEN = 4;
 	private static final int KING = 5;
-	public static final String REGEXP_CHARS = "[abcdefgh]";
 
-	//	String[] pices = new String[]{"K", "Q", "R", "B", "N", "O"};
-//	String[] promotionPices = new String[]{"N", "B", "R", "Q"};
+	public MovesParser() {	}
 
-	public MoveParser() {
-	}
-
-	public static String removeNumbers(String moves) {
+	String removeNumbers(String moves) {
 		return moves.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
 				.replaceAll("[.]", Symbol.EMPTY);
 	}
 
-	public static int[] parseCoordinate(BoardFace board, String move) {
+
+
+	int[] parseCoordinate(ChessBoard board, String move) {
 		List<Move> validMoves = board.generateLegalMoves();
 
 		int promotion = 0;
 
-		String[] MoveTo = new String[2];
+		String[] moveTo = new String[2];
 		String currentMove = move.trim();
 
 		if (currentMove.equals(KINGSIDE_CASTLING) || currentMove.equals(KINGSIDE_CASTLING_AND_CHECK)) {
 			if (board.getSide() == 0) {
-				return new int[]{board.getWhiteKing(), board.getWhiteKingMoveOO()[0], 0, 2};
+				return new int[]{board.whiteKing, board.whiteKingMoveOO[0], 0, 2};
 			} else if (board.getSide() == 1) {
-				return new int[]{board.getBlackKing(), board.getBlackKingMoveOO()[0], 0, 2};
+				return new int[]{board.blackKing, board.blackKingMoveOO[0], 0, 2};
 			}
 		}
 		if (currentMove.equals(QUEENSIDE_CASTLING) || currentMove.equals(QUEENSIDE_CASTLING_AND_CHECK)) {
 			if (board.getSide() == 0) {
-				return new int[]{board.getWhiteKing(), board.getWhiteKingMoveOOO()[0], 0, 2};
+				return new int[]{board.whiteKing, board.whiteKingMoveOOO[0], 0, 2};
 			} else if (board.getSide() == 1) {
-				return new int[]{board.getBlackKing(), board.getBlackKingMoveOOO()[0], 0, 2};
+				return new int[]{board.blackKing, board.blackKingMoveOOO[0], 0, 2};
 			}
 		}
 
 		int end = currentMove.length() - 1;
 		while (end != 0) {
 			if (Pattern.matches(REGEXP_NUMBERS, currentMove.substring(end, end + 1))) {
-				MoveTo[0] = currentMove.substring(end - 1, end);
-				MoveTo[1] = currentMove.substring(end, end + 1);
+				moveTo[0] = currentMove.substring(end - 1, end);
+				moveTo[1] = currentMove.substring(end, end + 1);
 				break;
 			}
 			end--;
 		}
 
-		int i = letterToBN(MoveTo[0]);
-		int j = numToBN(MoveTo[1]);
+		int i = letterToBN(moveTo[0]);
+		int j = numToBN(moveTo[1]);
 		int to = j * 8 - i;
 		int from = numToBN(Symbol.EMPTY + currentMove.charAt(1)) * 8 - letterToBN(Symbol.EMPTY + currentMove.charAt(0));
 
@@ -172,7 +149,7 @@ public class MoveParser {
 	 * @return the {@code int} array of move(s)
 	 * @see <a href="http://en.wikipedia.org/wiki/Algebraic_notation_(chess)>http://en.wikipedia.org/wiki/Algebraic_notation_(chess)</a>
 	 */
-	public static int[] parse(BoardFace board, String move) {
+	int[] parse(ChessBoard board, String move) {
 		// possible values ,e4, e4xd5, Rfg1, Rdxd5
 		move = removeNumbers(move);
 		List<Move> validMoves = board.generateLegalMoves();
@@ -184,16 +161,16 @@ public class MoveParser {
 
 		if (currentMove.equals(KINGSIDE_CASTLING) || currentMove.equals(KINGSIDE_CASTLING_AND_CHECK)) {
 			if (board.getSide() == ChessBoard.WHITE_SIDE) {
-				return new int[]{board.getWhiteKing(), board.getWhiteKingMoveOO()[ChessBoard.BLACK_KINGSIDE_CASTLE], 0, 2};
+				return new int[]{board.whiteKing, board.whiteKingMoveOO[ChessBoard.BLACK_KINGSIDE_CASTLE], 0, 2};
 			} else if (board.getSide() == ChessBoard.BLACK_SIDE) {
-				return new int[]{board.getBlackKing(), board.getBlackKingMoveOO()[ChessBoard.BLACK_KINGSIDE_CASTLE], 0, 2};
+				return new int[]{board.blackKing, board.blackKingMoveOO[ChessBoard.BLACK_KINGSIDE_CASTLE], 0, 2};
 			}
 		}
 		if (currentMove.equals(QUEENSIDE_CASTLING) || currentMove.equals(QUEENSIDE_CASTLING_AND_CHECK)) {
 			if (board.getSide() == ChessBoard.WHITE_SIDE) {
-				return new int[]{board.getWhiteKing(), board.getWhiteKingMoveOOO()[ChessBoard.BLACK_KINGSIDE_CASTLE], 0, 2};
+				return new int[]{board.whiteKing, board.whiteKingMoveOOO[ChessBoard.BLACK_KINGSIDE_CASTLE], 0, 2};
 			} else if (board.getSide() == ChessBoard.BLACK_SIDE) {
-				return new int[]{board.getBlackKing(), board.getBlackKingMoveOOO()[ChessBoard.BLACK_KINGSIDE_CASTLE], 0, 2};
+				return new int[]{board.blackKing, board.blackKingMoveOOO[ChessBoard.BLACK_KINGSIDE_CASTLE], 0, 2};
 			}
 		}
 
@@ -228,11 +205,12 @@ public class MoveParser {
 		}
 
 		// Rfg1 for example
+		// check if we have Disambiguating move
 		String fromSquare = Symbol.EMPTY; // can be any file or rank, or even square , e4xd5, Rfg1, Rdd5, Rdxd5, but the file takes precedence over the rank, so Rdd5 is correct.
 		String fromFile = Symbol.EMPTY;
 		String fromRank = Symbol.EMPTY;
 		if (currentMove.length() > 3) { // i.e. 4  // if we have Piece, or capture mark, or from file/rank/square
-			fromSquare = currentMove.replace(CAPTURE_MARK, Symbol.EMPTY); // remove capture mark
+			fromSquare = fromSquare.replaceAll("[+,!,?,#,x]", Symbol.EMPTY); // remove special symbols
 			fromSquare = fromSquare.replaceAll("[N,R,K,Q,B]", Symbol.EMPTY); // remove Piece
 			String destinationSquare = moveTo[0] + moveTo[1];
 			fromSquare = fromSquare.replace(destinationSquare, Symbol.EMPTY); // remove destination square
@@ -246,18 +224,18 @@ public class MoveParser {
 			}
 		}
 
-		// detect piece that was moved
+		// use Disambiguating move, and fill from data
 		// if KNIGHT, BISHOP, ROOK OR QUEEN
 		if ((pieceType >= KNIGHT && pieceType <= QUEEN)
 				&& !fromSquare.contains(CAPTURE_MARK) // looks like always will be true
-				&& !currentMove.substring(2, 3).matches(REGEXP_NUMBERS) // it check
+				&& !currentMove.substring(2, 3).matches(REGEXP_NUMBERS) // it check  ??? TODO investigate what is it for
 				) {
 			for (int k = 0; k < 64; k++) {
 				if (!TextUtils.isEmpty(fromFile)) {
 					int fromFileInt = (ChessBoard.getRow(k) + 1) * 8 - letterToBN(fromFile);
 
 //					if (fromSquare.matches(REGEXP_CHARS)) {
-						if (board.getPieces()[fromFileInt] == pieceType && board.getColor()[fromFileInt] == board.getSide()) { // if we have found that piece and color on board
+						if (board.pieces[fromFileInt] == pieceType && board.colors[fromFileInt] == board.getSide()) { // if we have found that piece and color on board
 							return new int[]{fromFileInt, to, promotion};
 						}
 //					}
@@ -265,7 +243,7 @@ public class MoveParser {
 				if (!TextUtils.isEmpty(fromRank)) {
 					int fromRankInt = numToBN(fromRank) * 8 - (ChessBoard.getColumn(k) + 1);
 //					if (fromSquare.matches(REGEXP_NUMBERS)) {
-						if (board.getPieces()[fromRankInt] == pieceType && board.getColor()[fromRankInt] == board.getSide()) { // if we have found that piece and color on board
+						if (board.pieces[fromRankInt] == pieceType && board.colors[fromRankInt] == board.getSide()) { // if we have found that piece and color on board
 							return new int[]{fromRankInt, to, promotion};
 						}
 //					}
@@ -273,18 +251,18 @@ public class MoveParser {
 			}
 		}
 
-		// detect move pawn piece... i think
+		// detect piece that was moved
 		for (int pieceFrom = 0; pieceFrom < 64; pieceFrom++) {
-			if (board.getPieces()[pieceFrom] == pieceType && board.getColor()[pieceFrom] == board.getSide()) {
+			if (board.pieces[pieceFrom] == pieceType && board.colors[pieceFrom] == board.getSide()) {
 				for (Move validMove : validMoves) {
 					if (validMove.from == pieceFrom && validMove.to == to) {
-						/*if (pieceType == BISHOP) { // shouldn't be called here
+						if (pieceType == BISHOP) { // TODO investigate why we have only BISHOP check here???
 							if (board.getBoardColor()[pieceFrom] == board.getBoardColor()[to]) {
 								return new int[]{pieceFrom, to, promotion};
 							}
-						} else*/ if (pieceType == PAWN) {
+						} else if (pieceType == PAWN) {
 							if (currentMove.contains(CAPTURE_MARK)
-									&& 9 - letterToBN(movePieceStr) != ChessBoard.getColumn(pieceFrom) + 1) {
+									&& 9 - letterToBN(movePieceStr) != ChessBoard.getColumn(pieceFrom) + 1) { // TODO investigate why do we break here?
 								break;
 							}
 
@@ -310,7 +288,7 @@ public class MoveParser {
 		return new int[]{from, to, promotion};
 	}
 
-	public static int letterToBN(String letter) {
+	int letterToBN(String letter) {
 		for (int i = 0; i < fileLetters.length; i++) {
 			char symbol = fileLetters[i];
 			if (letter.equalsIgnoreCase(String.valueOf(symbol))) {
@@ -342,7 +320,7 @@ public class MoveParser {
 //		return number;
 	}
 
-	public static int numToBN(String symbol) {
+	int numToBN(String symbol) {
 		return 9 - Integer.parseInt(symbol);
 //		int j = 0;
 //		if (symbol.contains(NUMB_1)) j = 8;
@@ -356,7 +334,7 @@ public class MoveParser {
 //		return j;
 	}
 
-	public static String BNToLetter(int symbol) {
+	String BNToLetter(int symbol) {
 		return String.valueOf(fileLetters[symbol]);
 //		String number = Symbol.EMPTY;
 //		if (symbol == 7) {
@@ -380,7 +358,7 @@ public class MoveParser {
 //		return number;
 	}
 
-	public static String BNToNum(int number) {
+	String BNToNum(int number) {
 		return String.valueOf(8 - number);
 //		String symbol = Symbol.EMPTY;
 //		if (number == 7) {
@@ -404,85 +382,9 @@ public class MoveParser {
 //		return symbol;
 	}
 
-	public static String positionToString(int pos) {
+	String positionToString(int pos) {
 		return ChessBoard.Board.values()[pos].toString().toLowerCase();
 	}
 
-	public static void fenParse(String fen, BoardFace boardFace) {
-		String[] FEN = fen.split(FEN_DIVIDER);
-		int i, j, p = 0;
-		for (i = 0; i < 8; i++) {
-			String pos = FEN[i];
-			if (i == 7) {
-				String[] tmp2 = FEN[i].split(Symbol.SPACE);
-				pos = tmp2[0];
-				if (tmp2[1].contains(W_SMALL)) {
-					boardFace.setSide(0);
-					boardFace.setOppositeSide(1);
-				} else {
-					boardFace.setSide(1);
-					boardFace.setOppositeSide(0);
-				}
-			}
-			String[] piecesArray = pos.trim().split(POSITION_DIVIDER);
-			for (j = 1; j < piecesArray.length; j++) {
-				if (piecesArray[j].matches(REGEXP_NUMBERS)) {
-					int cnt = Integer.parseInt(piecesArray[j]);
-					while (cnt > 0) {
-						boardFace.getPieces()[p] = 6;
-						boardFace.getColor()[p++] = 6;
-						cnt--;
-					}
-				}
-				if (piecesArray[j].contains(WHITE_PAWN)) {
-					boardFace.getPieces()[p] = 0;
-					boardFace.getColor()[p++] = 0;
-				}
-				if (piecesArray[j].contains(WHITE_KNIGHT)) {
-					boardFace.getPieces()[p] = 1;
-					boardFace.getColor()[p++] = 0;
-				}
-				if (piecesArray[j].contains(WHITE_BISHOP)) {
-					boardFace.getPieces()[p] = 2;
-					boardFace.getColor()[p++] = 0;
-				}
-				if (piecesArray[j].contains(WHITE_ROOK)) {
-					boardFace.getPieces()[p] = 3;
-					boardFace.getColor()[p++] = 0;
-				}
-				if (piecesArray[j].contains(WHITE_QUEEN)) {
-					boardFace.getPieces()[p] = 4;
-					boardFace.getColor()[p++] = 0;
-				}
-				if (piecesArray[j].contains(WHITE_KING)) {
-					boardFace.getPieces()[p] = 5;
-					boardFace.getColor()[p++] = 0;
-				}
-				if (piecesArray[j].contains(BLACK_PAWN)) {
-					boardFace.getPieces()[p] = 0;
-					boardFace.getColor()[p++] = 1;
-				}
-				if (piecesArray[j].contains(BLACK_KNIGHT)) {
-					boardFace.getPieces()[p] = 1;
-					boardFace.getColor()[p++] = 1;
-				}
-				if (piecesArray[j].contains(BLACK_BISHOP)) {
-					boardFace.getPieces()[p] = 2;
-					boardFace.getColor()[p++] = 1;
-				}
-				if (piecesArray[j].contains(BLACK_ROOK)) {
-					boardFace.getPieces()[p] = 3;
-					boardFace.getColor()[p++] = 1;
-				}
-				if (piecesArray[j].contains(BLACK_QUEEN)) {
-					boardFace.getPieces()[p] = 4;
-					boardFace.getColor()[p++] = 1;
-				}
-				if (piecesArray[j].contains(BLACK_KING)) {
-					boardFace.getPieces()[p] = 5;
-					boardFace.getColor()[p++] = 1;
-				}
-			}
-		}
-	}
+
 }

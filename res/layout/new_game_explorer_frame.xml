@@ -14,7 +14,6 @@
 		android:minHeight="42dip"
 		android:textColor="@color/semitransparent_white_65"
 		android:textSize="15sp"
-		android:text="Sicilian Defence: Old Sicilian"
 		/>
 
 	<RelativeLayout
