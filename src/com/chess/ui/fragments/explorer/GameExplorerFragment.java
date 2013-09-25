@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.ExplorerMovesItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -166,6 +168,19 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 
 			if (returnedObj.getData().getVariations() != null) {
 				DbDataManager.saveExplorerMoveVariations(getContentResolver(), fen, returnedObj.getData().getVariations());
+			}
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCodes.RESOURCE_NOT_FOUND) {
+
+					showSinglePopupDialog(R.string.no_games_matching_this_fen);
+				} else {
+					super.errorHandle(resultCode);
+				}
 			}
 		}
 	}

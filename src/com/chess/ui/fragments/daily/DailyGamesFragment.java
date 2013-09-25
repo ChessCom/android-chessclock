@@ -235,17 +235,17 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+	public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
 		int section = sectionedAdapter.getCurrentSection(position);
 
 		if (section == FINISHED_GAMES_SECTION) {
-			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 			DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
 
 			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
 		} else {
 
-			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 			gameListCurrentItem = DbDataManager.getDailyCurrentGameListFromCursor(cursor);
 
 			if (gameListCurrentItem.isDrawOffered() > 0) {
@@ -255,7 +255,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
 			} else {
 				ChessBoardOnline.resetInstance();
-				getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
+				long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+
+				getActivityFace().openFragment(GameDailyFragment.createInstance(gameId));
 			}
 		}
 	}

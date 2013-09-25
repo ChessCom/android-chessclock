@@ -103,6 +103,24 @@ public class DailyChatFragment extends CommonLogicFragment{
 		timeStampForSendMessageListener = new TimeStampForSendMessageListener();
 	}
 
+
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		showKeyBoard(sendEdt);
+
+		updateList();
+		handler.postDelayed(updateListOrder, UPDATE_DELAY);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		handler.removeCallbacks(updateListOrder);
+	}
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -120,22 +138,6 @@ public class DailyChatFragment extends CommonLogicFragment{
 
 		sendBtn = (RoboButton) view.findViewById(R.id.sendBtn);
 		sendBtn.setOnClickListener(this);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		showKeyBoard(sendEdt);
-
-		updateList();
-		handler.postDelayed(updateListOrder, UPDATE_DELAY);
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		handler.removeCallbacks(updateListOrder);
 	}
 
 	private Runnable updateListOrder = new Runnable() {

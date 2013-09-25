@@ -6,7 +6,7 @@ package com.chess.backend.entity.api;
  * Date: 24.12.12
  * Time: 6:49
  */
-public class DailyFinishedGameData extends DailyGameBaseData{
+public class DailyFinishedGameData extends DailyGameBaseData {
 	/*
     "id": 35000778,
 	"i_play_as": 1,

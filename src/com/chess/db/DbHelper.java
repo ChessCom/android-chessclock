@@ -54,6 +54,23 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	public static QueryParams getLiveArchiveListGames(String username) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LIVE_ARCHIVE_GAMES.ordinal()]);
+		queryParams.setProjection(DbDataManager.PROJECTION_FINISHED_GAMES);
+		queryParams.setSelection(DbDataManager.SELECTION_USER);
+		queryParams.setArguments(new String[]{username});
+		return queryParams;
+	}
+
+	public static QueryParams getLiveArchiveGame(long gameId, String username) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LIVE_ARCHIVE_GAMES.ordinal()]);
+		queryParams.setSelection(DbDataManager.SELECTION_USER_AND_ID);
+		queryParams.setArguments(new String[]{username, String.valueOf(gameId)});
+		return queryParams;
+	}
+
 //	public static QueryParams getRecentDailyOpponent(Context context){
 //		QueryParams queryParams = new QueryParams();
 //		queryParams.setUri(DbScheme.uriArray[DbScheme.DAILY_FINISHED_GAMES]);

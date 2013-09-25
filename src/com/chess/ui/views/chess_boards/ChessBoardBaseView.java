@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.ImageView;
 import com.chess.FontsHelper;
 import com.chess.R;
-import com.chess.live.client.PieceColor;
 import com.chess.statics.AppData;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
@@ -28,9 +27,7 @@ import com.chess.ui.interfaces.game_ui.GameFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.game_controls.ControlsBaseView;
-import org.petero.droidfish.gamelogic.Position;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -124,10 +121,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	// new engine
 	private MoveAnimator moveAnimator;
 	private MoveAnimator secondMoveAnimator;
-	private HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> moveHints =
-			new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();
-	private Paint whiteMoveArrowPaint;
-	private Paint blackMoveArrowPaint;
+//	private HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> moveHints =
+//			new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();
+//	private Paint whiteMoveArrowPaint;
+//	private Paint blackMoveArrowPaint;
 	protected boolean navigating;
 	private int draggingFrom = -1;
 	private CopyOnWriteArrayList<Move> validMoves = new CopyOnWriteArrayList<Move>(); // lets try this type
@@ -199,8 +196,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		preferences = appData.getPreferences();
 
-		whiteMoveArrowPaint = initMoveArrowPaint(Color.WHITE);
-		blackMoveArrowPaint = initMoveArrowPaint(Color.BLACK);
+//		whiteMoveArrowPaint = initMoveArrowPaint(Color.WHITE);
+//		blackMoveArrowPaint = initMoveArrowPaint(Color.BLACK);
 
 		pieceXDelta = -1;
 		pieceYDelta = -1;
@@ -1106,69 +1103,69 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		return paint;
 	}
 
-	public final void setMoveHints(HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> moveHints) {
-		/*boolean equal;
-		if ((this.moveHints == null) || (moveHints == null)) {
-			equal = this.moveHints == moveHints;
-		} else {
-			equal = this.moveHints.equals(moveHints);
-		}
-		if (!equal) {
-			this.moveHints = moveHints;
-			invalidate();
-		}*/
-	}
+//	public final void setMoveHints(HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> moveHints) {
+//		/*boolean equal;
+//		if ((this.moveHints == null) || (moveHints == null)) {
+//			equal = this.moveHints == moveHints;
+//		} else {
+//			equal = this.moveHints.equals(moveHints);
+//		}
+//		if (!equal) {
+//			this.moveHints = moveHints;
+//			invalidate();
+//		}*/
+//	}
 
-	public final void drawMoveHints(Canvas canvas) {
-
-		if ((moveHints == null || moveHints.isEmpty()))
-			return;
-		float h = (float) (square / 2.0);
-		float d = (float) (square / 8.0);
-		double v = 35 * Math.PI / 180;
-		double cosv = Math.cos(v);
-		double sinv = Math.sin(v);
-		double tanv = Math.tan(v);
-
-		for (org.petero.droidfish.gamelogic.Move move : moveHints.keySet()) {
-			if ((move == null) || (move.from == move.to))
-				continue;
-			float x0 = getXCoordinate(Position.getX(move.from)) + h;
-			float y0 = getYCoordinateForArrow(Position.getY(move.from)) + h;
-			float x1 = getXCoordinate(Position.getX(move.to)) + h;
-			float y1 = getYCoordinateForArrow(Position.getY(move.to)) + h;
-
-			float x2 = (float) (Math.hypot(x1 - x0, y1 - y0) + d);
-			float y2 = 0;
-			float x3 = (float) (x2 - h * cosv);
-			float y3 = (float) (y2 - h * sinv);
-			float x4 = (float) (x3 - d * sinv);
-			float y4 = (float) (y3 + d * cosv);
-			float x5 = (float) (x4 + (-d / 2 - y4) / tanv);
-			float y5 = (float) (-d / 2);
-			float x6 = 0;
-			float y6 = y5 / 2;
-			Path path = new Path();
-			path.moveTo(x2, y2);
-			path.lineTo(x3, y3);
-//          path.lineTo(x4, y4);
-			path.lineTo(x5, y5);
-			path.lineTo(x6, y6);
-			path.lineTo(x6, -y6);
-			path.lineTo(x5, -y5);
-//          path.lineTo(x4, -y4);
-			path.lineTo(x3, -y3);
-			path.close();
-			Matrix mtx = new Matrix();
-			mtx.postRotate((float) (Math.atan2(y1 - y0, x1 - x0) * 180 / Math.PI));
-			mtx.postTranslate(x0, y0);
-			path.transform(mtx);
-
-			Paint p = moveHints.get(move) == PieceColor.WHITE ? whiteMoveArrowPaint : blackMoveArrowPaint;
-
-			canvas.drawPath(path, p);
-		}
-	}
+//	public final void drawMoveHints(Canvas canvas) {
+//
+//		if ((moveHints == null || moveHints.isEmpty()))
+//			return;
+//		float h = (float) (square / 2.0);
+//		float d = (float) (square / 8.0);
+//		double v = 35 * Math.PI / 180;
+//		double cosv = Math.cos(v);
+//		double sinv = Math.sin(v);
+//		double tanv = Math.tan(v);
+//
+//		for (org.petero.droidfish.gamelogic.Move move : moveHints.keySet()) {
+//			if ((move == null) || (move.from == move.to))
+//				continue;
+//			float x0 = getXCoordinate(Position.getX(move.from)) + h;
+//			float y0 = getYCoordinateForArrow(Position.getY(move.from)) + h;
+//			float x1 = getXCoordinate(Position.getX(move.to)) + h;
+//			float y1 = getYCoordinateForArrow(Position.getY(move.to)) + h;
+//
+//			float x2 = (float) (Math.hypot(x1 - x0, y1 - y0) + d);
+//			float y2 = 0;
+//			float x3 = (float) (x2 - h * cosv);
+//			float y3 = (float) (y2 - h * sinv);
+//			float x4 = (float) (x3 - d * sinv);
+//			float y4 = (float) (y3 + d * cosv);
+//			float x5 = (float) (x4 + (-d / 2 - y4) / tanv);
+//			float y5 = (float) (-d / 2);
+//			float x6 = 0;
+//			float y6 = y5 / 2;
+//			Path path = new Path();
+//			path.moveTo(x2, y2);
+//			path.lineTo(x3, y3);
+////          path.lineTo(x4, y4);
+//			path.lineTo(x5, y5);
+//			path.lineTo(x6, y6);
+//			path.lineTo(x6, -y6);
+//			path.lineTo(x5, -y5);
+////          path.lineTo(x4, -y4);
+//			path.lineTo(x3, -y3);
+//			path.close();
+//			Matrix mtx = new Matrix();
+//			mtx.postRotate((float) (Math.atan2(y1 - y0, x1 - x0) * 180 / Math.PI));
+//			mtx.postTranslate(x0, y0);
+//			path.transform(mtx);
+//
+//			Paint p = moveHints.get(move) == PieceColor.WHITE ? whiteMoveArrowPaint : blackMoveArrowPaint;
+//
+//			canvas.drawPath(path, p);
+//		}
+//	}
 
 	private int getXCoordinate(int x) {
 		return square * (getBoardFace().isReside() ? 7 - x : x);

@@ -331,6 +331,22 @@ public class DbDataManager {
 				params.getArguments(), params.getOrder());
 	}
 
+	public static boolean haveSavedLiveArchiveGame(Context context, String username) {
+
+		ContentResolver contentResolver = context.getContentResolver();
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = username;
+
+		Cursor cursor = contentResolver.query(uriArray[Tables.LIVE_ARCHIVE_GAMES.ordinal()],
+					PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
+		boolean exist = cursor != null && cursor.moveToFirst();
+		if (cursor != null) {
+			cursor.close();
+		}
+
+		return exist;
+	}
+
 	/**
 	 * Check if we have saved games for current user
 	 *
@@ -413,6 +429,57 @@ public class DbDataManager {
 		for (long gamesId : gamesIds) {
 			boolean found = false;
 			for (DailyCurrentGameData listCurrentItem : gamesList) {
+				if (listCurrentItem.getGameId() == gamesId) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				idsToRemove.add(gamesId);
+			}
+		}
+
+		if (idsToRemove.size() > 0) {
+			for (Long id : idsToRemove) {
+				final String[] arguments2 = sArguments2;
+				arguments2[0] = username;
+				arguments2[1] = String.valueOf(id);
+				contentResolver.delete(uri, SELECTION_USER_AND_ID, arguments2);
+			}
+		}
+
+		return gamesIds.length > idsToRemove.size();
+	}
+
+	public static boolean checkAndDeleteNonExistLiveArchiveGames(Context context, List<LiveArchiveGameData> gamesList, String username) {
+		// compare to current list games
+
+		ContentResolver contentResolver = context.getContentResolver();
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = username;
+
+		Uri uri = uriArray[Tables.LIVE_ARCHIVE_GAMES.ordinal()];  // TODO reuse  checkAndDeleteNonExistFinishedGames
+		long[] gamesIds;
+		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER, arguments1, null);
+		if (cursor != null && cursor.moveToFirst()) {
+			gamesIds = new long[cursor.getCount()];
+			int i = 0;
+			do {
+				gamesIds[i++] = getLong(cursor, V_ID);
+			} while (cursor.moveToNext());
+		} else if (gamesList.size() == 0) { // means no finished games for that user
+			arguments1[0] = username;
+			contentResolver.delete(uri, SELECTION_USER, arguments1);
+
+			return false;
+		} else { // finished games exist, but not saved yet
+			return true;
+		}
+
+		List<Long> idsToRemove = new ArrayList<Long>();
+		for (long gamesId : gamesIds) {
+			boolean found = false;
+			for (LiveArchiveGameData listCurrentItem : gamesList) {
 				if (listCurrentItem.getGameId() == gamesId) {
 					found = true;
 					break;
@@ -790,6 +857,28 @@ public class DbDataManager {
 		dataObj.setUserRating(getInt(cursor, V_USER_RATING));
 		dataObj.setProblemRatingChange(getInt(cursor, V_PROBLEM_RATING_CHANGE));
 		dataObj.setProblemRating(getInt(cursor, V_PROBLEM_RATING));
+
+		return dataObj;
+	}
+
+	// ----------------------------------- Live Games -------------------------------------------------------
+	public static ContentValues putLiveArchiveGameToValues(LiveArchiveGameData dataObj, String username) {
+		ContentValues values = new ContentValues();
+
+		setValuesFromGameItem(values, dataObj);
+		values.put(V_FINISHED, 1);
+		values.put(V_USER, username);
+		values.put(V_GAME_SCORE, dataObj.getGameScore());
+		values.put(V_RESULT_MESSAGE, dataObj.getResultMessage());
+		return values;
+	}
+
+	public static LiveArchiveGameData getLiveArchiveGameFromCursor(Cursor cursor) {
+		LiveArchiveGameData dataObj = new LiveArchiveGameData();
+
+		getDailyGameFromCursor(dataObj, cursor);
+		dataObj.setGameScore(getInt(cursor, V_GAME_SCORE));
+		dataObj.setResultMessage(getString(cursor, V_RESULT_MESSAGE));
 
 		return dataObj;
 	}

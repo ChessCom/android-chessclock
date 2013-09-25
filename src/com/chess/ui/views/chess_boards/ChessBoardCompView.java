@@ -161,7 +161,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		drawPiecesAndAnimation(canvas);
 		drawDragPosition(canvas);
 
-		drawMoveHints(canvas); // todo @compengine: move to base class for all game modes
+		// TODO restore when needed
+//		drawMoveHints(canvas); // todo @compengine: move to base class for all game modes
 		drawCoordinates(canvas);
     }
 

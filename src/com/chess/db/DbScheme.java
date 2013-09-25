@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 68;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 69;  // change version on every DB scheme changes
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
 
@@ -24,6 +24,8 @@ public class DbScheme {
 	public enum Tables {
 		DAILY_CURRENT_GAMES,
 		DAILY_FINISHED_GAMES,
+		LIVE_ARCHIVE_GAMES,
+
 		FRIENDS,
 
 		ARTICLES,
@@ -324,6 +326,37 @@ public class DbScheme {
 				+ addField_Int(V_IS_MY_TURN, true);
 
 		createTablesArray[Tables.DAILY_FINISHED_GAMES.ordinal()] = createTableForName(Tables.DAILY_FINISHED_GAMES)
+				+ addField_Text(V_USER)
+				+ addField_Long(V_ID)
+				+ addField_Int(V_FINISHED)
+				+ addField_Int(V_RATED)
+				+ addField_Int(V_I_PLAY_AS)
+				+ addField_Int(V_GAME_TYPE)
+				+ addField_Int(V_DAYS_PER_MOVE)
+				+ addField_Text(V_FEN)
+				+ addField_Long(V_TIMESTAMP)
+				+ addField_Text(V_GAME_NAME)
+				+ addField_Text(V_LAST_MOVE_FROM_SQUARE)
+				+ addField_Text(V_LAST_MOVE_TO_SQUARE)
+				+ addField_Int(V_IS_OPPONENT_ONLINE)
+				+ addField_Int(V_HAS_NEW_MESSAGE)
+				+ addField_Text(V_WHITE_USERNAME)
+				+ addField_Text(V_BLACK_USERNAME)
+				+ addField_Text(V_WHITE_AVATAR)
+				+ addField_Text(V_BLACK_AVATAR)
+				+ addField_Int(V_WHITE_RATING)
+				+ addField_Int(V_BLACK_RATING)
+				+ addField_Int(V_WHITE_PREMIUM_STATUS)
+				+ addField_Int(V_BLACK_PREMIUM_STATUS)
+				+ addField_Int(V_WHITE_USER_COUNTRY)
+				+ addField_Int(V_BLACK_USER_COUNTRY)
+				+ addField_Int(V_TIME_REMAINING)
+				+ addField_Text(V_FEN_START_POSITION)
+				+ addField_Text(V_MOVE_LIST)
+				+ addField_Text(V_RESULT_MESSAGE)
+				+ addField_Int(V_GAME_SCORE, true);
+
+		createTablesArray[Tables.LIVE_ARCHIVE_GAMES.ordinal()] = createTableForName(Tables.LIVE_ARCHIVE_GAMES)
 				+ addField_Text(V_USER)
 				+ addField_Long(V_ID)
 				+ addField_Int(V_FINISHED)

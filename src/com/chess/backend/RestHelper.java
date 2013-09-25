@@ -84,7 +84,6 @@ public class RestHelper {
 	public String CMD_GAMES_CHALLENGES = CMD_GAMES + "challenges";
 	public String CMD_VACATIONS = CMD_GAMES + "vacations";
 	public String CMD_SEEKS = CMD_GAMES + "seeks";
-	public String CMD_MOVES = CMD_GAMES + "moves";
 	public String CMD_GAME_STATS = CMD_GAMES + "stats";
 
 	public String CMD_GAME_BY_ID(long id) {
@@ -98,6 +97,9 @@ public class RestHelper {
 	public String CMD_PUT_GAME_ACTION(long gameId) {
 		return CMD_GAMES + gameId + "/actions";
 	}
+
+	/* Live Games Archive */
+	public String CMD_GAMES_LIVE_ARCHIVE = CMD_GAMES + "live/archive";
 
 	/*Articles*/
 	public String CMD_ARTICLES = BASE_URL + V1 + "/articles/";
@@ -408,6 +410,10 @@ public class RestHelper {
 
 	public static final int V_GAME_CHESS = 1;
 	public static final int V_GAME_CHESS_960 = 2;
+
+	public static final int V_GAME_LIVE_STANDARD = 1;
+	public static final int V_GAME_LIVE_BLITZ = 2;
+	public static final int V_GAME_LIVE_BULLET = 3;
 
 	public static final String V_ENCODED_MOVES = "encodedMoves";
 	public static final String V_GAME_ID = "game_id";

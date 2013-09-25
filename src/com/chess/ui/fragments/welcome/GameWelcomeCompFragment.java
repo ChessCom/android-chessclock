@@ -23,7 +23,6 @@ import com.chess.MultiDirectionSlidingDrawer;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.RestHelper;
-import com.chess.live.client.PieceColor;
 import com.chess.model.CompEngineItem;
 import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.ItemsAdapter;
@@ -53,7 +52,6 @@ import org.petero.droidfish.GameMode;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -924,39 +922,39 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 				setThinkingVisibility(!thinkingEmpty);
 
 				// hints arrow
-				List<org.petero.droidfish.gamelogic.Move> hints = null;
-				if (/*mShowThinking ||*/ getBoardFace().isAnalysis()) {
-					ArrayList<ArrayList<org.petero.droidfish.gamelogic.Move>> pvMovesTmp = pvMoves;
-					if (pvMovesTmp.size() == 1) {
-						hints = pvMovesTmp.get(0);
-					} else if (pvMovesTmp.size() > 1) {
-						hints = new ArrayList<org.petero.droidfish.gamelogic.Move>();
-						for (ArrayList<org.petero.droidfish.gamelogic.Move> pv : pvMovesTmp)
-							if (!pv.isEmpty())
-								hints.add(pv.get(0));
-					}
-				}
-				/*if ((hints == null) && mShowBookHints)
-					hints = bookMoves;*/
-				if (((hints == null) || hints.isEmpty()) &&
-						(variantMoves != null) && variantMoves.size() > 1) {
-					hints = variantMoves;
-				}
-				if ((hints != null) && (hints.size() > CompEngineHelper.MAX_NUM_HINT_ARROWS)) {
-					hints = hints.subList(0, CompEngineHelper.MAX_NUM_HINT_ARROWS);
-				}
+//				List<org.petero.droidfish.gamelogic.Move> hints = null;
+//				if (/*mShowThinking ||*/ getBoardFace().isAnalysis()) {
+//					ArrayList<ArrayList<org.petero.droidfish.gamelogic.Move>> pvMovesTmp = pvMoves;
+//					if (pvMovesTmp.size() == 1) {
+//						hints = pvMovesTmp.get(0);
+//					} else if (pvMovesTmp.size() > 1) {
+//						hints = new ArrayList<org.petero.droidfish.gamelogic.Move>();
+//						for (ArrayList<org.petero.droidfish.gamelogic.Move> pv : pvMovesTmp)
+//							if (!pv.isEmpty())
+//								hints.add(pv.get(0));
+//					}
+//				}
+//				/*if ((hints == null) && mShowBookHints)
+//					hints = bookMoves;*/
+//				if (((hints == null) || hints.isEmpty()) &&
+//						(variantMoves != null) && variantMoves.size() > 1) {
+//					hints = variantMoves;
+//				}
+//				if ((hints != null) && (hints.size() > CompEngineHelper.MAX_NUM_HINT_ARROWS)) {
+//					hints = hints.subList(0, CompEngineHelper.MAX_NUM_HINT_ARROWS);
+//				}
 
-				HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> hintsMap =
-						new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();
-				if (hints != null) {
-					for (org.petero.droidfish.gamelogic.Move move : hints) {
-						boolean isWhite = CompEngineHelper.getInstance().isWhitePiece(move.from);
-						PieceColor pieceColor = isWhite ? PieceColor.WHITE : PieceColor.BLACK;
-						hintsMap.put(move, pieceColor);
-					}
-				}
+//				HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> hintsMap =
+//						new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();
+//				if (hints != null) {
+//					for (org.petero.droidfish.gamelogic.Move move : hints) {
+//						boolean isWhite = CompEngineHelper.getInstance().isWhitePiece(move.from);
+//						PieceColor pieceColor = isWhite ? PieceColor.WHITE : PieceColor.BLACK;
+//						hintsMap.put(move, pieceColor);
+//					}
+//				}
 
-				boardView.setMoveHints(hintsMap);
+//				boardView.setMoveHints(hintsMap);
 
 				CompEngineHelper.log("Thinking info:\n" + log);
 			}
