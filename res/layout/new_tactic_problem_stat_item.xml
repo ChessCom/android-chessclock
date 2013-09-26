@@ -36,6 +36,7 @@
 			android:layout_below="@id/idTxt"
 			android:textColor="@color/stats_label_light_grey"
 			android:textSize="13sp"
+			android:paddingLeft="2dip"
 			android:text="17/01 18:56" />
 
 	</RelativeLayout>
