@@ -50,16 +50,18 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private static final int ID_INSTALL = 0;
 	private static final int ID_CUSTOMIZE = 1;
 
-	public static final int PREVIEW_IMG_SIZE = 180;
+	//	public static final int PREVIEW_IMG_SIZE = 180;
 	private static final String GAME_THEME_NAME = "Game";
 	private static final String OPTION_SELECTION_TAG = "options select popup";
 
 	private ListView listView;
+	private ThemesAdapter themesAdapter;
 	private ThemesUpdateListener themesUpdateListener;
 	private ImageUpdateListener backgroundUpdateListener;
 	private ImageUpdateListener boardUpdateListener;
 	private BackgroundImageSaveListener mainBackgroundImgSaveListener;
 	private BackgroundImageSaveListener boardImgSaveListener;
+	private PopupCustomViewFragment loadProgressPopupFragment;
 
 	private ImageDownloaderToListener imageDownloader;
 	private String backgroundUrl;
@@ -72,8 +74,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private String selectedThemeName;
 	private TextView loadProgressTxt;
 	private TextView taskTitleTxt;
-	private PopupCustomViewFragment loadProgressPopupFragment;
-	private ThemesAdapter themesAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -119,7 +119,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			if (cursor != null && cursor.moveToFirst()) {
 				do {
 					themesList.add(DbDataManager.getThemeItemFromCursor(cursor));
-				} while(cursor.moveToNext());
+				} while (cursor.moveToNext());
 
 				updateUiData();
 			} else {
@@ -322,10 +322,12 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private class ThemesAdapter extends ItemsAdapter<ThemeItem.Data> {
 
 		private final int customColor;
+		private final int boardPreviewImgSize;
 
 		public ThemesAdapter(Context context, List<com.chess.backend.entity.api.ThemeItem.Data> menuItems) {
 			super(context, menuItems);
 			customColor = resources.getColor(R.color.theme_customize_back);
+			boardPreviewImgSize = (int) (resources.getDimensionPixelSize(R.dimen.theme_board_preview_size) / resources.getDisplayMetrics().density);
 		}
 
 		@Override
@@ -342,6 +344,10 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			int imageHeight = (int) (screenWidth / 2.9f);
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
 			holder.backImg.setLayoutParams(params);
+
+			// List item params
+			ListView.LayoutParams listItemParams = new ListView.LayoutParams(screenWidth, imageHeight);
+			view.setLayoutParams(listItemParams);
 
 			// Change Placeholder
 			int backIMgColor = getResources().getColor(R.color.upgrade_toggle_button_p);
@@ -380,7 +386,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 				holder.title.setText(item.getThemeName());
 
 				imageLoader.download(item.getBackgroundPreviewUrl(), holder.backImg, screenWidth, screenWidth);
-				imageLoader.download(item.getBoardPreviewUrl(), holder.boardPreviewImg, PREVIEW_IMG_SIZE);
+				imageLoader.download(item.getBoardPreviewUrl(), holder.boardPreviewImg, boardPreviewImgSize);
 			}
 
 

@@ -1854,10 +1854,9 @@ public class ChessBoard implements BoardFace {
 			String[] tmp = fen.split(Symbol.SPACE);
 			if (tmp.length > 1) {
 				// Active color. "w" means white moves next, "b" means black. // http://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
-				// we don't need to reside. It just tells who is next to move
-//				if (tmp[1].trim().equals(movesParser.B_SMALL)) {
-//					setReside(true);
-//				}
+				if (!tmp[1].trim().equals(FenHelper.WHITE_TO_MOVE)) {
+					setReside(true);
+				}
 			}
 		}
 	}

@@ -137,6 +137,11 @@ public class DbDataManager {
 			V_USER
 	);
 
+	public static String SELECTION_TIMESTAMP_AND_USER = concatArguments(
+			V_TIMESTAMP,
+			V_USER
+	);
+
 	public static String SELECTION_PARENT_ID_AND_ITEM_ID = concatArguments(
 			V_PARENT_ID,
 			V_ID
@@ -212,6 +217,25 @@ public class DbDataManager {
 			V_IS_OPPONENT_ONLINE,
 			V_WHITE_PREMIUM_STATUS,
 			V_BLACK_PREMIUM_STATUS
+	};
+
+	public static final String[] PROJECTION_LIVE_ARCHIVE_GAMES = new String[]{
+			_ID,
+			V_USER,
+			V_ID,
+			V_I_PLAY_AS,
+			V_GAME_TYPE,
+			V_GAME_SCORE,
+			V_WHITE_USERNAME,
+			V_BLACK_USERNAME,
+			V_WHITE_AVATAR,
+			V_BLACK_AVATAR,
+			V_WHITE_RATING,
+			V_BLACK_RATING,
+			V_IS_OPPONENT_ONLINE,
+			V_WHITE_PREMIUM_STATUS,
+			V_BLACK_PREMIUM_STATUS,
+			V_GAME_TIME_CLASS
 	};
 
 	public static final String[] PROJECTION_DAILY_PLAYER_NAMES = new String[]{
@@ -298,6 +322,12 @@ public class DbDataManager {
 			_ID,
 			V_FEN,
 			V_MOVE
+	};
+
+	public static final String[] PROJECTION_TIMESTAMP_AND_USER = new String[]{
+			_ID,
+			V_TIMESTAMP,
+			V_USER
 	};
 
 	public static String concatArguments(String... arguments) {
@@ -870,6 +900,7 @@ public class DbDataManager {
 		values.put(V_USER, username);
 		values.put(V_GAME_SCORE, dataObj.getGameScore());
 		values.put(V_RESULT_MESSAGE, dataObj.getResultMessage());
+		values.put(V_GAME_TIME_CLASS, dataObj.getGameTimeClass());
 		return values;
 	}
 
@@ -1894,6 +1925,38 @@ public class DbDataManager {
 		values.put(V_TOTAL_SECONDS, dataObj.getTotalSeconds());
 		values.put(V_TODAYS_ATTEMPTS, dataObj.getTodaysAttemps());
 		values.put(V_TODAYS_AVG_SCORE, dataObj.getTodaysAvgScore());
+
+		return values;
+	}
+
+	public static ContentValues putTacticDailyStatsItemToValues(TacticsHistoryItem.Data.DailyStats dataObj, String user) {
+		ContentValues values = new ContentValues();
+
+		values.put(V_USER, user);
+		values.put(V_TIMESTAMP, dataObj.getTimestamp());
+		values.put(V_OPEN_RATING, dataObj.getDayOpenRating());
+		values.put(V_HIGHEST_RATING, dataObj.getDayHighRating());
+		values.put(V_LOWEST_RATING, dataObj.getDayLowRating());
+		values.put(V_CLOSE_RATING, dataObj.getDayCloseRating());
+
+		return values;
+	}
+
+	public static ContentValues putTacticProblemStatsItemToValues(TacticsHistoryItem.Data.RecentProblem dataObj, String user) {
+		ContentValues values = new ContentValues();
+
+		values.put(V_USER, user);
+		values.put(V_ID, dataObj.getId());
+		values.put(V_CREATE_DATE, dataObj.getDate());
+		values.put(V_RATING, dataObj.getRating());
+		values.put(V_AVG_SECONDS, dataObj.getAverageSeconds());
+		values.put(V_USER_RATING, dataObj.getMyRating());
+		values.put(V_MOVES_CORRECT_CNT, dataObj.getMoves().getCorrectMoveCount());
+		values.put(V_MOVES_CNT, dataObj.getMoves().getMoveCount());
+		values.put(V_SECONDS_SPENT, dataObj.getUserSeconds());
+		values.put(V_OUTCOME_SCORE, dataObj.getOutcome().getScore());
+		values.put(V_OUTCOME_RATING_CHANGE, dataObj.getOutcome().getUserRatingChange());
+		values.put(V_OUTCOME_STATUS, dataObj.getOutcome().getStatus());
 
 		return values;
 	}

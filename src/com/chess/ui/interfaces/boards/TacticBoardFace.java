@@ -20,7 +20,7 @@ public interface TacticBoardFace extends BoardFace {
 
 	void increaseTacticsCorrectMoves();
 
-	boolean lastTacticMoveIsCorrect();
+	boolean isLastTacticMoveCorrect();
 
 	public boolean isLatestMoveMadeUser();
 }

@@ -336,6 +336,7 @@
 	<string name="already_member_log_in">Already a member? Log in</string>
 	<string name="analyze">Analyze</string>
 	<string name="no_games_matching_this_fen">No games was found matching this fen</string>
+	<string name="recent_problems">Recent Problems</string>
 
 
 </resources>

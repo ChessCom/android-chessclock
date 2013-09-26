@@ -43,7 +43,7 @@ import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsBoardFragment;
-import com.chess.ui.fragments.stats.TacticsStatsFragment;
+import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.TacticBoardFace;
@@ -320,7 +320,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		TacticBoardFace boardFace = getBoardFace();
 
-		if (trainerData.hintWasUsed() && boardFace.lastTacticMoveIsCorrect()) { // used hint
+		if (trainerData.hintWasUsed() && boardFace.isLastTacticMoveCorrect()) { // used hint
 			if (boardFace.getMovesCount() < boardFace.getTacticMoves().length - 1) { // if it's not last move, make comp move
 				final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[boardFace.getPly()]);
 				boardView.setMoveAnimator(move, true);
@@ -341,7 +341,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			}
 		} else if (trainerData.isAnswerWasShowed()) { // used "show answer" feature
 			stopTacticsTimer();
-		} else if (boardFace.lastTacticMoveIsCorrect()) { // correct
+		} else if (boardFace.isLastTacticMoveCorrect()) { // correct
 			boardFace.increaseTacticsCorrectMoves();
 
 			if (boardFace.getMovesCount() < boardFace.getTacticMoves().length - 1) { // if it's not last move, make comp move
@@ -582,7 +582,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else /*if (code == ID_HINT) {
 			showHint();
 		} else*/ if (code == ID_PERFORMANCE) {
-			getActivityFace().openFragment(new TacticsStatsFragment());
+			getActivityFace().openFragment(new StatsGameTacticsFragment());
 		} else if (code == ID_PRACTICE) {
 			switch2Analysis();
 		} else if (code == ID_SETTINGS) {
@@ -912,6 +912,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		boolean whiteToMove = trainerData.getInitialFen().contains(FenHelper.WHITE_TO_MOVE);
 		// if whiteToMove that means that comp makes first move and user is on black side
 		labelsConfig.userSide = whiteToMove ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
+		// reside board for user to move
+		boardFace.setReside(!boardFace.isReside());
 
 		boardFace.setTacticMoves(trainerData.getCleanMoveString());
 		boardFace.setMovesCount(1);

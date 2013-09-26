@@ -69,15 +69,6 @@ public class GraphData {
 		return series;
 	}
 
-/*
-	+ addField_Long(V_TIMESTAMP)
-	+ addField_Int(V_MIN_Y)
-	+ addField_Int(V_MAX_X)
-	+ addField_Int(V_RATING)
-	+ addField_Int(V_GAME_TYPE)
-	+ addField_Text(V_USER, true);
-*/
-
 	public static class SingleItem {
 		private long timestamp;
 		private int minY;

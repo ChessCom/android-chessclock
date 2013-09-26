@@ -41,11 +41,11 @@ public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 	}
 
 	@Override
-	public String getLastMoveStr() {
+	public boolean isLastLessonMoveIsCorrect(String validMove) {
 		int lastIndex = ply - 1;
-		if (/*lastIndex >= tacticMoves.length || */lastIndex >= histDat.length) {
-			return "Pe4"; // TODO invent logic here , we use hardcode to pass possibly invalid move
-		}
+//		if (/*lastIndex >= tacticMoves.length || */lastIndex >= histDat.length) {
+//			return "Pe4"; // TODO invent logic here , we use hardcode to pass possibly invalid move
+//		}
 
 		Move move = histDat[lastIndex].move; // get last move
 		String piece = Symbol.EMPTY;
@@ -68,13 +68,24 @@ public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 			capture = "x";
 		}
 
-		moveStr = piece + capture + movesParser.positionToString(move.to);   // Rxa7 is failed!!!
+		// rc7  instead of rcc7 :(
+		String fromSquare = movesParser.positionToString(move.to);
+		moveStr = piece + capture + fromSquare;   // Rxa7 is failed!!!
+		boolean wasCastled = false;
 		if (moveStr.equalsIgnoreCase(MovesParser.B_KINGSIDE_MOVE_CASTLING)) {
 			moveStr = MovesParser.KINGSIDE_CASTLING;
+			wasCastled = true;
 		} else if (moveStr.equalsIgnoreCase(MovesParser.B_QUEENSIDE_MOVE_CASTLING)) {
 			moveStr = MovesParser.QUEENSIDE_CASTLING;
+			wasCastled = true;
 		}
-		return moveStr.toLowerCase();
+
+		if (wasCastled) {
+			return validMove.contains(moveStr);
+		} else {
+			validMove = validMove.toLowerCase();
+			return validMove.contains(piece) && validMove.contains(fromSquare);
+		}
 	}
 
 }

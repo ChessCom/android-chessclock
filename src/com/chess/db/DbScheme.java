@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 69;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 72;  // change version on every DB scheme changes
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
 
@@ -69,6 +69,8 @@ public class DbScheme {
 		GAME_STATS_DAILY_CHESS960,
 
 		GAME_STATS_GRAPH_DATA,
+		TACTICS_DAILY_STATS,
+		TACTICS_PROBLEM_STATS,
 
 		CONVERSATIONS_INBOX,
 		CONVERSATIONS_ARCHIVE,
@@ -157,6 +159,8 @@ public class DbScheme {
 	public static final String V_GAME_SCORE = "game_score";
 	public static final String V_RESULT_MESSAGE = "result_message";
 	public static final String V_IS_MY_TURN = "is_my_turn";
+	/* Live Archive */
+	public static final String V_GAME_TIME_CLASS = "game_time_class";
 
 	/*Friends*/
 	public static final String V_USERNAME = "username";
@@ -382,6 +386,7 @@ public class DbScheme {
 				+ addField_Int(V_WHITE_USER_COUNTRY)
 				+ addField_Int(V_BLACK_USER_COUNTRY)
 				+ addField_Int(V_TIME_REMAINING)
+				+ addField_Text(V_GAME_TIME_CLASS)
 				+ addField_Text(V_FEN_START_POSITION)
 				+ addField_Text(V_MOVE_LIST)
 				+ addField_Text(V_RESULT_MESSAGE)
@@ -830,6 +835,15 @@ public class DbScheme {
 
 	public static final String V_SEEN = "seen";
 
+	/* Tactics */
+	public static final String V_OPEN_RATING = "open_rating";
+	public static final String V_CLOSE_RATING = "close_rating";
+	public static final String V_MOVES_CORRECT_CNT = "moves_correct_cnt";
+	public static final String V_MOVES_CNT = "moves_cnt";
+	public static final String V_OUTCOME_SCORE = "outcome_score";
+	public static final String V_OUTCOME_RATING_CHANGE = "outcome_rating_change";
+	public static final String V_OUTCOME_STATUS = "outcome_status";
+
 	void createGameStatsTables() {
 		createTablesArray[Tables.GAME_STATS_LIVE_STANDARD.ordinal()] = createTableForName(Tables.GAME_STATS_LIVE_STANDARD)
 				+ addField_Long(V_HIGHEST_TIMESTAMP)
@@ -1060,6 +1074,28 @@ public class DbScheme {
 				+ addField_Int(V_MAX_X)
 				+ addField_Int(V_RATING)
 				+ addField_Int(V_GAME_TYPE)
+				+ addField_Text(V_USER, true);
+
+		createTablesArray[Tables.TACTICS_DAILY_STATS.ordinal()] = createTableForName(Tables.TACTICS_DAILY_STATS)
+				+ addField_Long(V_TIMESTAMP)
+				+ addField_Int(V_OPEN_RATING)
+				+ addField_Int(V_HIGHEST_RATING)
+				+ addField_Int(V_LOWEST_RATING)
+				+ addField_Int(V_CLOSE_RATING)
+				+ addField_Text(V_USER, true);
+
+		createTablesArray[Tables.TACTICS_PROBLEM_STATS.ordinal()] = createTableForName(Tables.TACTICS_PROBLEM_STATS)
+				+ addField_Long(V_ID)
+				+ addField_Long(V_CREATE_DATE)
+				+ addField_Int(V_RATING)
+				+ addField_Int(V_AVG_SECONDS)
+				+ addField_Int(V_USER_RATING)
+				+ addField_Int(V_MOVES_CORRECT_CNT)
+				+ addField_Int(V_MOVES_CNT)
+				+ addField_Int(V_SECONDS_SPENT)
+				+ addField_Int(V_OUTCOME_SCORE)
+				+ addField_Int(V_OUTCOME_RATING_CHANGE)
+				+ addField_Text(V_OUTCOME_STATUS)
 				+ addField_Text(V_USER, true);
 	}
 

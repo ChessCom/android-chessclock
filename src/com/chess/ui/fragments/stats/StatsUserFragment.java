@@ -94,7 +94,6 @@ public class StatsUserFragment extends CommonLogicFragment implements AdapterVie
 	public void onNothingSelected(AdapterView<?> parent) {
 	}
 
-
 	private class StatsItemUpdateListener extends ChessUpdateListener<UserStatsItem> {
 
 		public StatsItemUpdateListener() {

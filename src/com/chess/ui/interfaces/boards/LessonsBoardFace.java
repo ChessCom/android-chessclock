@@ -10,5 +10,5 @@ public interface LessonsBoardFace extends BoardFace {
 
 	public boolean isLatestMoveMadeUser();
 
-	String getLastMoveStr();
+	boolean isLastLessonMoveIsCorrect(String validMove);
 }

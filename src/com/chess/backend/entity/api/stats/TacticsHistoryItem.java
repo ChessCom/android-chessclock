@@ -60,16 +60,16 @@ public class TacticsHistoryItem extends BaseResponseItem<TacticsHistoryItem.Data
   }
 */
 
-	public class Data {
+	public static class Data {
 		private List<DailyStats> daily_stats;
-		private List<RecentProblems> recent_problems;
+		private List<RecentProblem> recent_problems;
 		private UserTacticsStatsData summary;
 
-		public List<DailyStats> getDaily_stats() {
+		public List<DailyStats> getDailyStats() {
 			return daily_stats;
 		}
 
-		public List<RecentProblems> getRecentProblems() {
+		public List<RecentProblem> getRecentProblems() {
 			return recent_problems;
 		}
 
@@ -77,55 +77,35 @@ public class TacticsHistoryItem extends BaseResponseItem<TacticsHistoryItem.Data
 			return summary;
 		}
 
-		private class DailyStats {
+		public static class DailyStats {
 			private long timestamp;
 			private int day_open_rating;
 			private int day_high_rating;
 			private int day_low_rating;
 			private int day_close_rating;
 
-			private long getTimestamp() {
+			public long getTimestamp() {
 				return timestamp;
 			}
 
-			private void setTimestamp(long timestamp) {
-				this.timestamp = timestamp;
-			}
-
-			private int getDay_open_rating() {
+			public int getDayOpenRating() {
 				return day_open_rating;
 			}
 
-			private void setDay_open_rating(int day_open_rating) {
-				this.day_open_rating = day_open_rating;
-			}
-
-			private int getDay_high_rating() {
+			public int getDayHighRating() {
 				return day_high_rating;
 			}
 
-			private void setDay_high_rating(int day_high_rating) {
-				this.day_high_rating = day_high_rating;
-			}
-
-			private int getDay_low_rating() {
+			public int getDayLowRating() {
 				return day_low_rating;
 			}
 
-			private void setDay_low_rating(int day_low_rating) {
-				this.day_low_rating = day_low_rating;
-			}
-
-			private int getDay_close_rating() {
+			public int getDayCloseRating() {
 				return day_close_rating;
-			}
-
-			private void setDay_close_rating(int day_close_rating) {
-				this.day_close_rating = day_close_rating;
 			}
 		}
 
-		private class RecentProblems {
+		public static class RecentProblem {
 /*
       {
         "id": 758,
@@ -155,53 +135,85 @@ public class TacticsHistoryItem extends BaseResponseItem<TacticsHistoryItem.Data
 			private int user_seconds;
 			private Outcome outcome;
 
-			private class Moves {
+			public int getId() {
+				return id;
+			}
+
+			public int getRating() {
+				return rating;
+			}
+
+			public int getAverageSeconds() {
+				return average_seconds;
+			}
+
+			public long getDate() {
+				return date;
+			}
+
+			public int getMyRating() {
+				return my_rating;
+			}
+
+			public Moves getMoves() {
+				return moves;
+			}
+
+			public int getUserSeconds() {
+				return user_seconds;
+			}
+
+			public Outcome getOutcome() {
+				return outcome;
+			}
+
+			public static class Moves {
 				private int correct_move_count;
 				private int move_count;
 
-				private int getCorrectMoveCount() {
+				public int getCorrectMoveCount() {
 					return correct_move_count;
 				}
 
-				private void setCorrectMoveCount(int correct_move_count) {
+				public void setCorrectMoveCount(int correct_move_count) {
 					this.correct_move_count = correct_move_count;
 				}
 
-				private int getMoveCount() {
+				public int getMoveCount() {
 					return move_count;
 				}
 
-				private void setMoveCount(int move_count) {
+				public void setMoveCount(int move_count) {
 					this.move_count = move_count;
 				}
 			}
 
-			private class Outcome {
+			public static class Outcome {
 				private String status;
 				private int score;
 				private int user_rating_change;
 
-				private String getStatus() {
+				public String getStatus() {
 					return status;
 				}
 
-				private void setStatus(String status) {
+				public void setStatus(String status) {
 					this.status = status;
 				}
 
-				private int getScore() {
+				public int getScore() {
 					return score;
 				}
 
-				private void setScore(int score) {
+				public void setScore(int score) {
 					this.score = score;
 				}
 
-				private int getUserRatingChange() {
+				public int getUserRatingChange() {
 					return user_rating_change;
 				}
 
-				private void setUserRatingChange(int user_rating_change) {
+				public void setUserRatingChange(int user_rating_change) {
 					this.user_rating_change = user_rating_change;
 				}
 			}

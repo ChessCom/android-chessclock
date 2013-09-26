@@ -40,6 +40,8 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	public final static int LIVE_BLITZ = 2;
 	public final static int LIVE_LIGHTNING = 3;
 	public final static int DAILY_CHESS960 = 4;
+	public static final int TACTICS = 5;
+	public static final int LESSONS = 6;
 
 	private static final String CATEGORY = "mode";
 	private static final String USERNAME = "username";
@@ -135,7 +137,14 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		updateUiData();
+		if (position == TACTICS) {
+			changeInternalFragment(new StatsGameTacticsFragment());
+		} else if (position == LESSONS) {
+			changeInternalFragment(new StatsGameTacticsFragment());
+		} else {
+			updateUiData();
+		}
+
 	}
 
 	@Override

@@ -395,13 +395,12 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	@Override
 	public void verifyMove() {
 		LessonsBoardFace boardFace = getBoardFace();
-		String lastUserMove = boardFace.getLastMoveStr();
 
 		// iterate through possible moves and perform deduction
 		boolean moveRecognized = false;
 		boolean correctMove = false;
 		for (LessonItem.MentorPosition.PossibleMove possibleMove : possibleMoves) {
-			if (possibleMove.getMove().toLowerCase().contains(lastUserMove)) {
+			if (boardFace.isLastLessonMoveIsCorrect(possibleMove.getMove())) {
 
 				if (possibleMove.getMoveType().equals(LessonItem.MOVE_DEFAULT)) { // Correct move
 					controlsLessonsView.showCorrect();

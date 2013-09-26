@@ -36,7 +36,7 @@ public class FenHelper {
 	public static final int BOTH_CASTLING = 3;
 	private static final String EMPTY_SQUARE = "1";
 
-	public static final String WHITE_TO_MOVE = " w ";
+	public static final String WHITE_TO_MOVE = "w";
 
 
 	public static final String POSITION_DIVIDER = "|";
@@ -312,7 +312,7 @@ public class FenHelper {
 			if (i == 7) { // if last line
 				String[] tmp2 = line.split(Symbol.SPACE);
 				line = tmp2[0];
-				if (tmp2[1].contains(WHITE_TO_MOVE.trim())) {
+				if (tmp2[1].contains(WHITE_TO_MOVE)) {
 					board.setSide(WHITE_SIDE);
 					board.setOppositeSide(BLACK_SIDE);
 				} else {

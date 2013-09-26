@@ -38,6 +38,7 @@ public class LiveArchiveGameData extends DailyGameBaseData {
 
 	private int game_score;
 	private String result_message;
+	private String game_time_class;
 
 	public int getGameScore() {
 		return game_score;
@@ -55,4 +56,11 @@ public class LiveArchiveGameData extends DailyGameBaseData {
 		this.result_message = result_message;
 	}
 
+	public String getGameTimeClass() {
+		return game_time_class;
+	}
+
+	public void setGameTimeClass(String game_time_class) {
+		this.game_time_class = game_time_class;
+	}
 }

@@ -124,8 +124,8 @@
 		<!--Games PieChar-->
 		<com.chess.ui.views.PieChartView
 			android:id="@+id/pieChartView"
-			android:layout_width="wrap_content"
-			android:layout_height="420dip"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
 			/>
 
         <!--Rating Table-->

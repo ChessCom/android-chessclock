@@ -57,7 +57,7 @@ public class DbHelper {
 	public static QueryParams getLiveArchiveListGames(String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LIVE_ARCHIVE_GAMES.ordinal()]);
-		queryParams.setProjection(DbDataManager.PROJECTION_FINISHED_GAMES);
+		queryParams.setProjection(DbDataManager.PROJECTION_LIVE_ARCHIVE_GAMES);
 		queryParams.setSelection(DbDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{username});
 		return queryParams;

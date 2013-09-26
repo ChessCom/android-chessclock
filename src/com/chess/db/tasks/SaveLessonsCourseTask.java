@@ -22,7 +22,6 @@ public class SaveLessonsCourseTask  extends AbstractUpdateTask<LessonCourseItem.
 
 	private ContentResolver contentResolver;
 	protected static String[] arguments1 = new String[1];
-	protected static String[] arguments3 = new String[3];
 	private String username;
 
 	public SaveLessonsCourseTask(TaskUpdateInterface<LessonCourseItem.Data> taskFace, LessonCourseItem.Data currentItem,

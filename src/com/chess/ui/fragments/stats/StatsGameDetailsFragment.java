@@ -11,14 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.api.stats.GraphData;
-import com.chess.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.QueryParams;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveGameStatsTask;
+import com.chess.statics.Symbol;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.views.PieChartView;
 import com.chess.ui.views.RatingGraphView;
@@ -158,7 +157,6 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 		mostFrequentOpponentTxt = (TextView) view.findViewById(R.id.mostFrequentOpponentTxt);
 		mostFrequentOpponentGamesTxt = (TextView) view.findViewById(R.id.mostFrequentOpponentGamesTxt);
 	}
-
 
 	@Override
 	public void onResume() {
@@ -301,8 +299,9 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 				if (cursor != null && cursor.moveToFirst()) {
 					List<long[]> series = new ArrayList<long[]>();
 					do {
-						GraphData.SingleItem singleItem = DbDataManager.getGraphSingleItemFromCursor(cursor);
-						long[] point = new long[]{singleItem.getTimestamp(), singleItem.getRating() };
+						long timestamp = DbDataManager.getLong(cursor, DbScheme.V_TIMESTAMP);
+						int rating = DbDataManager.getInt(cursor, DbScheme.V_RATING);
+						long[] point = new long[]{timestamp, rating };
 						series.add(point);
 					} while (cursor.moveToNext());
 

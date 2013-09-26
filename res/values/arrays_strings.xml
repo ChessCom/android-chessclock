@@ -128,6 +128,8 @@
         <item>Live Chess - Blitz</item>
         <item>Live Chess - Bullet</item>
         <item>Daily Chess960</item>
+        <item>Tactics</item>
+        <item>Lessons</item>
     </string-array>
 
     <string-array name="game_stats_types">
@@ -136,6 +138,8 @@
         <item>blitz</item>
         <item>lightning</item>
         <item>chess960</item>
+        <item>tactics</item>
+        <item>lessons</item>
     </string-array>
 
     <string-array name="user_stats_types">

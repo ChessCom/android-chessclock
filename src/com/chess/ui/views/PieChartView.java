@@ -8,6 +8,7 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.Shape;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.backend.entity.api.stats.GamesInfoByResult;
 
@@ -21,8 +22,8 @@ import com.chess.backend.entity.api.stats.GamesInfoByResult;
 public class PieChartView extends View {
 
 
-	private static final int TOP_OFFSET = 30;
-	private static final float LINE_LEFT_OFFSET = 10;
+	private static int TOP_OFFSET;
+	private static float LINE_LEFT_OFFSET;
 	public static int DONUT_HALF_SIZE;
 	private int TEXT_WIDTH;
 
@@ -68,6 +69,12 @@ public class PieChartView extends View {
 		DONUT_OVERLAY_SIZE = (int) (112 * density);
 		INSIDE_TOP_TEXT_OFFSET = (int) (8 * density);
 		TEXT_WIDTH = (int) (20 * density);
+		TOP_OFFSET = (int) (30 * density);
+		LINE_LEFT_OFFSET = (int) (10 * density);
+
+		int height = DONUT_SIZE + TEXT_WIDTH * 2 + TOP_OFFSET;
+
+		setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height));
 
 		backgroundColor = context.getResources().getColor(R.color.white);
 
@@ -119,18 +126,18 @@ public class PieChartView extends View {
 
 
 		{
-			MyShapeDrawable msd = (MyShapeDrawable) mDrawables[0];
-			msd.getStrokePaint().setStrokeWidth(1);
+			MyShapeDrawable drawable = (MyShapeDrawable) mDrawables[0];
+			drawable.getStrokePaint().setStrokeWidth(1);
 		}
 
 		{
-			MyShapeDrawable msd = (MyShapeDrawable) mDrawables[1];
-			msd.getStrokePaint().setStrokeWidth(1);
+			MyShapeDrawable drawable = (MyShapeDrawable) mDrawables[1];
+			drawable.getStrokePaint().setStrokeWidth(1);
 		}
 
 		{
-			MyShapeDrawable msd = (MyShapeDrawable) mDrawables[2];
-			msd.getStrokePaint().setStrokeWidth(1);
+			MyShapeDrawable drawable = (MyShapeDrawable) mDrawables[2];
+			drawable.getStrokePaint().setStrokeWidth(1);
 		}
 
 		Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), MAIN_PATH + "Bold" + ".ttf");

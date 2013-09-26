@@ -19,16 +19,16 @@ import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.entity.api.LessonsRatingItem;
 import com.chess.backend.entity.api.VideoItem;
 import com.chess.backend.entity.api.stats.TacticsBasicStatsItem;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.statics.Symbol;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.lessons.GameLessonFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
-import com.chess.ui.fragments.stats.TacticsStatsFragment;
+import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
+import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.videos.VideoDetailsFragment;
 import com.chess.ui.fragments.videos.VideosFragment;
 import com.chess.utilities.AppUtils;
@@ -174,7 +174,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 
 		int id = view.getId();
 		if (id == R.id.tacticsHeaderView) {
-			getActivityFace().openFragment(new TacticsStatsFragment());
+			getActivityFace().openFragment(new StatsGameTacticsFragment());
 		} else if (id == R.id.lessonsHeaderView) {
 			getActivityFace().openFragment(new LessonsFragment());
 		} else if (id == R.id.videosHeaderView) {

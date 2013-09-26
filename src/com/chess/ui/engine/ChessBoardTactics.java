@@ -63,7 +63,7 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 
 
 	@Override
-	public boolean lastTacticMoveIsCorrect() {
+	public boolean isLastTacticMoveCorrect() {
 		int lastIndex = ply - 1;
 		if (lastIndex >= tacticMoves.length || lastIndex >= histDat.length) {
 			return false;
@@ -88,11 +88,6 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 		if (move.isCastling()){
 			moveTo = "O-O";
 		}
-
-		// tacticMoves[lastIndex] = Ng5+
-		// piece = ""
-		// moveTo = g5
-		// e4g5 vs g6g5 // TODO solve problem of identifying move when two pieces can be place at correct square and move will be recognized as correct
 
 		return tacticMoves[lastIndex].contains(piece) && tacticMoves[lastIndex].contains(moveTo);
 	}

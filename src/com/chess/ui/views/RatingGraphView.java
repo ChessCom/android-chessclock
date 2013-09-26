@@ -26,6 +26,11 @@ public class RatingGraphView extends LinearLayout {
 		init(context);
 	}
 
+	public RatingGraphView(Context context) {
+		super(context);
+		init(context);
+	}
+
 	private void init(Context context) {
 		setOrientation(VERTICAL);
 

@@ -23,6 +23,9 @@ import com.chess.utilities.AppUtils;
 public class LiveArchiveGamesAdapter extends ItemsCursorAdapter {
 
 	protected static final String CHESS_960 = " (960)";
+	protected static final String STANDARD = "standard";
+	protected static final String LIGHTNING = "lightning";
+	protected static final String BLITZ = "blitz";
 	private final int imageSize;
 	private final String drawStr;
 	private final String lossStr;
@@ -88,13 +91,13 @@ public class LiveArchiveGamesAdapter extends ItemsCursorAdapter {
 		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
 		holder.playerImg.setOnline(isOpponentOnline);
 
-		int gameType = getInt(cursor, DbScheme.V_GAME_TYPE);
-		if(gameType == RestHelper.V_GAME_LIVE_STANDARD) {
+		String gameType = getString(cursor, DbScheme.V_GAME_TIME_CLASS);
+		if(gameType.equals(STANDARD)) {
 			holder.gameTypeTxt.setText(R.string.ic_live_standard);
-		} else if (gameType == RestHelper.V_GAME_LIVE_BLITZ) {
-			holder.gameTypeTxt.setText(R.string.ic_live_blitz);
-		} else {
+		} else if (gameType.equals(LIGHTNING)) {
 			holder.gameTypeTxt.setText(R.string.ic_live_bullet);
+		} else {
+			holder.gameTypeTxt.setText(R.string.ic_live_blitz);
 		}
 
 		// Loss orange
