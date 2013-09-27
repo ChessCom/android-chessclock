@@ -5,14 +5,15 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.api.stats.GameStatsItem;
-import com.chess.backend.entity.api.stats.GraphData;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.statics.StaticData;
 
 import java.util.List;
+
+import static com.chess.db.DbScheme.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -112,16 +113,14 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_GRAPH_RECORD,
 					DbDataManager.SELECTION_GRAPH_RECORD, arguments, null);
 
-			GraphData.SingleItem pointItem = new GraphData.SingleItem();
+			ContentValues values = new ContentValues();
 
-			pointItem.setTimestamp(timestamp);
-			pointItem.setGameType(gameType);
-			pointItem.setMaxX(maxX);
-			pointItem.setMinY(minY);
-			pointItem.setRating((int) graphPoints[RATING]);
-			pointItem.setUsername(username);
-
-			ContentValues values = DbDataManager.putGraphDataItemToValues(pointItem, username);
+			values.put(V_USER, username);
+			values.put(V_TIMESTAMP, timestamp);
+			values.put(V_MIN_Y, minY);
+			values.put(V_MAX_X, maxX);
+			values.put(V_RATING, graphPoints[RATING]);
+			values.put(V_GAME_TYPE, gameType);
 
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}

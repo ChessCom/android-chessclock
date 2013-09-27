@@ -51,7 +51,7 @@ public class ChartView extends View {
 		init(context);
 	}
 
-	public ChartView(Context context,  AttributeSet attrs) {
+	public ChartView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init(context);
 	}
@@ -102,9 +102,11 @@ public class ChartView extends View {
 
 			long lastPoint = System.currentTimeMillis();
 			lastPoint -= lastPoint % MILLISECONDS_PER_DAY;
+
 			// distribute timestamps at whole width
 			long xDiff = lastPoint - firstPoint;
 			long xPointRange = xDiff / widthPixels;
+//			logTest("firstPoint = " + firstPoint + " lastPoint = " + lastPoint + " xDiff = " + xDiff + " xPointRange = " + xPointRange);
 
 			// convert xPointRange to optimal day{time} difference
 			pointsArray = new SparseArray<Long>();
@@ -120,6 +122,7 @@ public class ChartView extends View {
 					graphTimestamp = aDataArray[TIME] - aDataArray[TIME] % MILLISECONDS_PER_DAY;
 
 					long rating = aDataArray[VALUE];
+//					logTest(" data rating = " + rating);
 					if ((timestampValue - graphTimestamp) >= 0 && (timestampValue - graphTimestamp) < (xPointRange * 2)) {
 						pointsArray.put(i, rating);
 						found = true;
@@ -134,6 +137,7 @@ public class ChartView extends View {
 		{// get min and max of Y values
 			minY = Integer.MAX_VALUE;
 			maxY = Integer.MIN_VALUE;
+
 			for (long[] longs : dataArray) {
 				int yValue = (int) longs[VALUE];
 				minY = Math.min(minY, yValue);
@@ -141,6 +145,7 @@ public class ChartView extends View {
 			}
 			orignialMinY = minY;
 		}
+//		logTest("minY = " + minY + " maxY = " + maxY + " orignialMinY = " + orignialMinY);
 
 		initialized = true;
 	}
@@ -152,7 +157,7 @@ public class ChartView extends View {
 		canvas.drawColor(backColor);
 
 		if (initialized) {
-			drawGraph(canvas);
+			createGraphPath(canvas);
 
 			int height = canvas.getClipBounds().bottom;
 
@@ -167,7 +172,7 @@ public class ChartView extends View {
 		canvas.drawLine(0, 0, widthPixels, 0, borderPaint);
 	}
 
-	private void drawGraph(Canvas canvas) {
+	private void createGraphPath(Canvas canvas) {
 		if (graphPath == null) {
 			int height = canvas.getClipBounds().bottom;
 			int originalMaxY = maxY;
@@ -207,6 +212,7 @@ public class ChartView extends View {
 		for (int i = 0; i < widthPixels; i++) {
 			if (pointsExistArray.get(i)) {
 				yValue = pointsArray.get(i) - minY;
+//				logTest("yValue = " + yValue + " minY = " + minY + " height = " + height + " yAspect = " + yAspect);
 			}
 			path.lineTo(i, height - yValue / yAspect);
 		}

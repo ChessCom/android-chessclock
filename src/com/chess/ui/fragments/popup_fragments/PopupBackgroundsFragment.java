@@ -23,6 +23,7 @@ import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.drawables.ActionBarBackgroundDrawable;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +90,11 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 		super.onViewCreated(view, savedInstanceState);
 
 		View popupTitleLay = view.findViewById(R.id.popupTitleLay);
-		popupTitleLay.setBackgroundDrawable(new ActionBarBackgroundDrawable(getActivity()));
+		if (AppUtils.JELLYBEAN_PLUS_API) {
+			popupTitleLay.setBackground(new ActionBarBackgroundDrawable(getActivity()));
+		} else {
+			popupTitleLay.setBackgroundDrawable(new ActionBarBackgroundDrawable(getActivity()));
+		}
 
 		((TextView) view.findViewById(R.id.popupTitleTxt)).setText(R.string.select_background);
 

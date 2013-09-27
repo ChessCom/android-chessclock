@@ -140,7 +140,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		if (position == TACTICS) {
 			changeInternalFragment(new StatsGameTacticsFragment());
 		} else if (position == LESSONS) {
-			changeInternalFragment(new StatsGameTacticsFragment());
+			changeInternalFragment(new StatsGameLessonsFragment());
 		} else {
 			updateUiData();
 		}

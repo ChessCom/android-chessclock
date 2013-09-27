@@ -94,6 +94,23 @@ public class UserStatsItem extends BaseResponseItem<UserStatsItem.Data> {
                     }
                 }
             }
+        },
+		"tactics": {
+            "current": 1446,
+             "highest": {
+                 "rating": 1474,
+                 "timestamp": 1338361200
+             },
+             "lowest": {
+                 "rating": 0,
+                 "timestamp": 1338361200
+             },
+             "attempt_count": 47,
+             "passed_count": 17,
+             "failed_count": 30,
+             "total_seconds": 780,
+             "todays_attempts": 0,
+             "todays_average_score": 0
         }
 */
 

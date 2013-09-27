@@ -295,6 +295,12 @@ public class DbDataManager {
 			V_USER,
 	};
 
+	public static final String[] PROJECTION_GRAPH_LESSONS_RECORD = new String[]{
+			_ID,
+			V_TIMESTAMP,
+			V_USER,
+	};
+
 	public static final String[] PROJECTION_PARENT_ID_AND_ITEM_ID = new String[]{
 			_ID,
 			V_PARENT_ID,
@@ -1909,88 +1915,6 @@ public class DbDataManager {
 		return values;
 	}
 
-	public static ContentValues putUserStatsTacticsItemToValues(UserTacticsStatsData dataObj, String user) {
-		ContentValues values = new ContentValues();
-
-		values.put(V_USER, user);
-		values.put(V_CURRENT, dataObj.getCurrent());
-		values.put(V_HIGHEST_RATING, dataObj.getHighest().getRating());
-		values.put(V_HIGHEST_TIMESTAMP, dataObj.getHighest().getTimestamp());
-		values.put(V_LOWEST_RATING, dataObj.getLowest().getRating());
-		values.put(V_LOWEST_TIMESTAMP, dataObj.getLowest().getTimestamp());
-
-		values.put(V_ATTEMPT_COUNT, dataObj.getAttemptCount());
-		values.put(V_PASSED_COUNT, dataObj.getPassedCount());
-		values.put(V_FAILED_COUNT, dataObj.getFailedCount());
-		values.put(V_TOTAL_SECONDS, dataObj.getTotalSeconds());
-		values.put(V_TODAYS_ATTEMPTS, dataObj.getTodaysAttemps());
-		values.put(V_TODAYS_AVG_SCORE, dataObj.getTodaysAvgScore());
-
-		return values;
-	}
-
-	public static ContentValues putTacticDailyStatsItemToValues(TacticsHistoryItem.Data.DailyStats dataObj, String user) {
-		ContentValues values = new ContentValues();
-
-		values.put(V_USER, user);
-		values.put(V_TIMESTAMP, dataObj.getTimestamp());
-		values.put(V_OPEN_RATING, dataObj.getDayOpenRating());
-		values.put(V_HIGHEST_RATING, dataObj.getDayHighRating());
-		values.put(V_LOWEST_RATING, dataObj.getDayLowRating());
-		values.put(V_CLOSE_RATING, dataObj.getDayCloseRating());
-
-		return values;
-	}
-
-	public static ContentValues putTacticProblemStatsItemToValues(TacticsHistoryItem.Data.RecentProblem dataObj, String user) {
-		ContentValues values = new ContentValues();
-
-		values.put(V_USER, user);
-		values.put(V_ID, dataObj.getId());
-		values.put(V_CREATE_DATE, dataObj.getDate());
-		values.put(V_RATING, dataObj.getRating());
-		values.put(V_AVG_SECONDS, dataObj.getAverageSeconds());
-		values.put(V_USER_RATING, dataObj.getMyRating());
-		values.put(V_MOVES_CORRECT_CNT, dataObj.getMoves().getCorrectMoveCount());
-		values.put(V_MOVES_CNT, dataObj.getMoves().getMoveCount());
-		values.put(V_SECONDS_SPENT, dataObj.getUserSeconds());
-		values.put(V_OUTCOME_SCORE, dataObj.getOutcome().getScore());
-		values.put(V_OUTCOME_RATING_CHANGE, dataObj.getOutcome().getUserRatingChange());
-		values.put(V_OUTCOME_STATUS, dataObj.getOutcome().getStatus());
-
-		return values;
-	}
-
-	public static ContentValues putUserStatsLessonsItemToValues(UserLessonsStatsData dataObj, String user) {
-		ContentValues values = new ContentValues();
-
-		values.put(V_USER, user);
-
-		BaseRating highest = dataObj.getRatings().getHighest();
-		BaseRating lowest = dataObj.getRatings().getLowest();
-		int current = dataObj.getRatings().getCurrent();
-
-		values.put(V_CURRENT, current);
-		values.put(V_HIGHEST_RATING, highest.getRating());
-		values.put(V_HIGHEST_TIMESTAMP, highest.getTimestamp());
-		values.put(V_LOWEST_RATING, lowest.getRating());
-		values.put(V_LOWEST_TIMESTAMP, lowest.getTimestamp());
-
-		UserLessonsStatsData.Stats stats = dataObj.getStats();
-		values.put(V_LESSONS_TRIED, stats.getLessonsTried());
-		values.put(V_TOTAL_LESSON_COUNT, stats.getTotalLessonCount());
-		values.put(V_LESSON_COMPLETE_PERCENTAGE, stats.getLessonCompletePercentage());
-		values.put(V_TOTAL_TRAINING_SECONDS, stats.getTotalLessonCount());
-		values.put(V_SCORE_90_100, stats.getScore().getP_90_100());
-		values.put(V_SCORE_80_89, stats.getScore().getP_80_89());
-		values.put(V_SCORE_70_79, stats.getScore().getP_70_79());
-		values.put(V_SCORE_60_69, stats.getScore().getP_60_69());
-		values.put(V_SCORE_50_59, stats.getScore().getP_50_59());
-		values.put(V_SCORE_50, stats.getScore().getP_50());
-
-		return values;
-	}
-
 	public static ContentValues putGameStatsLiveItemToValues(GameStatsItem.Data dataObj, String user) {
 		ContentValues values = new ContentValues();
 
@@ -2128,30 +2052,6 @@ public class DbDataManager {
 			values.put(V_TOURNAMENTS_GAMES_IN_PROGRESS, tournamentsGames.getInProgress());
 		}
 		return values;
-	}
-
-	public static ContentValues putGraphDataItemToValues(GraphData.SingleItem dataObj, String user) {
-		ContentValues values = new ContentValues();
-
-		values.put(V_TIMESTAMP, dataObj.getTimestamp());
-		values.put(V_MIN_Y, dataObj.getMinY());
-		values.put(V_MAX_X, dataObj.getMaxX());
-		values.put(V_RATING, dataObj.getRating());
-		values.put(V_GAME_TYPE, dataObj.getGameType());
-		values.put(V_USER, user);
-
-		return values;
-	}
-
-	public static GraphData.SingleItem getGraphSingleItemFromCursor(Cursor cursor) {
-		GraphData.SingleItem pointData = new GraphData.SingleItem();
-
-		pointData.setTimestamp(getLong(cursor, V_TIMESTAMP));
-		pointData.setMinY(getInt(cursor, V_MIN_Y));
-		pointData.setMaxX(getInt(cursor, V_MAX_X));
-		pointData.setRating(getInt(cursor, V_RATING));
-
-		return pointData;
 	}
 
 	public static GamesInfoByResult getGameStatsGamesByResultFromCursor(Cursor cursor) {

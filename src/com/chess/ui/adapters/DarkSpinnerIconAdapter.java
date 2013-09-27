@@ -25,7 +25,7 @@ public class DarkSpinnerIconAdapter extends ItemsAdapter<SelectionItem> {
 	protected View createView(ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_dark_spinner_item, parent, false);
 		ViewHolder holder = new ViewHolder();
-		holder.textTxt = (TextView) view.findViewById(android.R.id.text1);
+		holder.categoryNameTxt = (TextView) view.findViewById(R.id.categoryNameTxt);
 
 		view.setTag(holder);
 		return view;
@@ -34,7 +34,7 @@ public class DarkSpinnerIconAdapter extends ItemsAdapter<SelectionItem> {
 	@Override
 	protected void bindView(SelectionItem item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
-		holder.textTxt.setText(item.getText());
+		holder.categoryNameTxt.setText(item.getText());
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class DarkSpinnerIconAdapter extends ItemsAdapter<SelectionItem> {
 	}
 
 	private static class ViewHolder {
-		TextView textTxt;
+		TextView categoryNameTxt;
 	}
 
 	private static class DropViewHolder {

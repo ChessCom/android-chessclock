@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 72;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 73;  // change version on every DB scheme changes
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
 
@@ -70,7 +70,9 @@ public class DbScheme {
 
 		GAME_STATS_GRAPH_DATA,
 		TACTICS_DAILY_STATS,
-		TACTICS_PROBLEM_STATS,
+		TACTICS_RECENT_STATS,
+		LESSONS_RECENT_STATS,
+		LESSONS_GRAPH_STATS,
 
 		CONVERSATIONS_INBOX,
 		CONVERSATIONS_ARCHIVE,
@@ -234,6 +236,8 @@ public class DbScheme {
 	public static final String V_ADVICE_3 = "advice_3";
 	public static final String V_RESPONSE_MOVE_COMMENT = "response_move_comment";
 	public static final String V_WRONG_MOVE_COMMENT = "wrong_move_comment";
+	public static final String V_CODE = "code";
+
 	/* Lesson Position Move */
 	public static final String V_MOVE = "move";
 	public static final String V_MOVE_COMMENT = "move_comment";
@@ -1076,6 +1080,7 @@ public class DbScheme {
 				+ addField_Int(V_GAME_TYPE)
 				+ addField_Text(V_USER, true);
 
+		/* Tactics */
 		createTablesArray[Tables.TACTICS_DAILY_STATS.ordinal()] = createTableForName(Tables.TACTICS_DAILY_STATS)
 				+ addField_Long(V_TIMESTAMP)
 				+ addField_Int(V_OPEN_RATING)
@@ -1084,7 +1089,7 @@ public class DbScheme {
 				+ addField_Int(V_CLOSE_RATING)
 				+ addField_Text(V_USER, true);
 
-		createTablesArray[Tables.TACTICS_PROBLEM_STATS.ordinal()] = createTableForName(Tables.TACTICS_PROBLEM_STATS)
+		createTablesArray[Tables.TACTICS_RECENT_STATS.ordinal()] = createTableForName(Tables.TACTICS_RECENT_STATS)
 				+ addField_Long(V_ID)
 				+ addField_Long(V_CREATE_DATE)
 				+ addField_Int(V_RATING)
@@ -1096,6 +1101,21 @@ public class DbScheme {
 				+ addField_Int(V_OUTCOME_SCORE)
 				+ addField_Int(V_OUTCOME_RATING_CHANGE)
 				+ addField_Text(V_OUTCOME_STATUS)
+				+ addField_Text(V_USER, true);
+
+		/* Lessons */
+		createTablesArray[Tables.LESSONS_RECENT_STATS.ordinal()] = createTableForName(Tables.LESSONS_RECENT_STATS)
+				+ addField_Long(V_ID)
+				+ addField_Int(V_RATING)
+				+ addField_Int(V_SCORE)
+				+ addField_Text(V_CODE)
+				+ addField_Text(V_NAME)
+				+ addField_Text(V_CATEGORY)
+				+ addField_Text(V_USER, true);
+
+		createTablesArray[Tables.LESSONS_GRAPH_STATS.ordinal()] = createTableForName(Tables.LESSONS_GRAPH_STATS)
+				+ addField_Long(V_TIMESTAMP)
+				+ addField_Int(V_RATING)
 				+ addField_Text(V_USER, true);
 	}
 

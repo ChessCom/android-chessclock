@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.chess.R;
@@ -198,10 +197,9 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		 */
 
 		final String registrationId = GCMRegistrar.getRegistrationId(this);
-		if (registrationId.equals("")) {
+		if (TextUtils.isEmpty(registrationId)) {
 			// Automatically registers application on startup.
 			GCMRegistrar.register(this, GcmHelper.SENDER_ID);
-			Log.d("TEST", " no regId - > GCMRegistrar.register");
 		} else {
 			// Device is already registered on GCM, check server.
 			if (GCMRegistrar.isRegisteredOnServer(this) && appData.isRegisterOnChessGCM()) {

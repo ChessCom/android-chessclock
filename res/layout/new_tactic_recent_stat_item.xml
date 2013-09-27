@@ -6,10 +6,11 @@
 	android:layout_height="wrap_content"
 	android:orientation="horizontal"
 	android:paddingLeft="@dimen/default_scr_side_padding"
-	android:paddingRight="@dimen/default_scr_side_padding"
+	android:paddingRight="8dip"
 	android:paddingTop="8dip"
 	android:paddingBottom="8dip"
-	android:background="@color/white">
+	android:background="@color/white"
+	android:baselineAligned="false">
 
 	<RelativeLayout
 		android:layout_width="0dip"

@@ -70,7 +70,7 @@ public class AppUtils {
 
 	public static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 	public static final boolean JELLYBEAN_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
-	public static final boolean JELLYBEAN1_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+	public static final boolean JELLYBEAN_1_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
 	public static int sizeOfBitmap(Bitmap data) {
@@ -216,7 +216,7 @@ public class AppUtils {
 	 * @return {@code true} if device has software keys like Nexus 4 or Galaxy Nexus
 	 */
 	public static boolean hasSoftKeys(Context context){
-		if (JELLYBEAN1_PLUS_API) {
+		if (JELLYBEAN_1_PLUS_API) {
 			Display display = ((Activity)context).getWindowManager().getDefaultDisplay();
 
 			DisplayMetrics realDisplayMetrics = new DisplayMetrics();

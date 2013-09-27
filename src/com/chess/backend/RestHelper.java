@@ -163,6 +163,7 @@ public class RestHelper {
 	public String CMD_LESSONS_CATEGORIES = CMD_LESSONS + "categories";
 	public String CMD_LESSONS_COURSES = CMD_LESSONS + "courses";
 	public String CMD_LESSONS_RATING = CMD_LESSONS + "rating";
+	public String CMD_LESSONS_STATS = CMD_LESSONS + "stats";
 
 	public String CMD_LESSON_BY_ID(long id) {
 		return CMD_LESSONS + id;

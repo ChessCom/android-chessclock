@@ -11,12 +11,12 @@
     >
 
     <com.chess.RoboTextView
-        android:id="@android:id/text1"
+        android:id="@+id/categoryNameTxt"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="@color/semitransparent_white_75"
-        android:textSize="15sp"
+        android:textSize="16sp"
         style="@style/DarkShadowBottom"
         android:paddingLeft="3dip"
         android:gravity="center_vertical"

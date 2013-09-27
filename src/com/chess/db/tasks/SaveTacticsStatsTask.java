@@ -13,6 +13,10 @@ import com.chess.statics.StaticData;
 
 import java.util.List;
 
+import static com.chess.db.DbScheme.*;
+import static com.chess.db.DbScheme.V_CLOSE_RATING;
+import static com.chess.db.DbScheme.V_LOWEST_RATING;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -49,7 +53,15 @@ public class SaveTacticsStatsTask extends AbstractUpdateTask<TacticsHistoryItem.
 				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_TIMESTAMP_AND_USER,
 						DbDataManager.SELECTION_TIMESTAMP_AND_USER, arguments, null);
 
-				ContentValues values = DbDataManager.putTacticDailyStatsItemToValues(dailyStats, username);
+				ContentValues values = new ContentValues();
+
+				values.put(V_USER, username);
+				values.put(V_TIMESTAMP, dailyStats.getTimestamp());
+				values.put(V_OPEN_RATING, dailyStats.getDayOpenRating());
+				values.put(V_HIGHEST_RATING, dailyStats.getDayHighRating());
+				values.put(V_LOWEST_RATING, dailyStats.getDayLowRating());
+				values.put(V_CLOSE_RATING, dailyStats.getDayCloseRating());
+
 
 				DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 			}
@@ -64,11 +76,25 @@ public class SaveTacticsStatsTask extends AbstractUpdateTask<TacticsHistoryItem.
 				arguments[1] = username;
 
 				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DbScheme.uriArray[DbScheme.Tables.TACTICS_PROBLEM_STATS.ordinal()];
+				Uri uri = DbScheme.uriArray[DbScheme.Tables.TACTICS_RECENT_STATS.ordinal()];
 				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ITEM_ID_AND_USER,
 						DbDataManager.SELECTION_ITEM_ID_AND_USER, arguments, null);
 
-				ContentValues values = DbDataManager.putTacticProblemStatsItemToValues(problem, username);
+				ContentValues values = new ContentValues();
+
+				values.put(V_USER, username);
+				values.put(V_ID, problem.getId());
+				values.put(V_CREATE_DATE, problem.getDate());
+				values.put(V_RATING, problem.getRating());
+				values.put(V_AVG_SECONDS, problem.getAverageSeconds());
+				values.put(V_USER_RATING, problem.getMyRating());
+				values.put(V_MOVES_CORRECT_CNT, problem.getMoves().getCorrectMoveCount());
+				values.put(V_MOVES_CNT, problem.getMoves().getMoveCount());
+				values.put(V_SECONDS_SPENT, problem.getUserSeconds());
+				values.put(V_OUTCOME_SCORE, problem.getOutcome().getScore());
+				values.put(V_OUTCOME_RATING_CHANGE, problem.getOutcome().getUserRatingChange());
+				values.put(V_OUTCOME_STATUS, problem.getOutcome().getStatus());
+
 
 				DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 			}
