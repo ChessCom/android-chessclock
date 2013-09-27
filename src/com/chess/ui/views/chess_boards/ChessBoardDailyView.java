@@ -3,11 +3,18 @@ package com.chess.ui.views.chess_boards;
 import android.content.Context;
 import android.util.AttributeSet;
 import com.chess.statics.AppConstants;
+import com.chess.ui.interfaces.game_ui.GameNetworkFace;
 
 public class ChessBoardDailyView extends ChessBoardNetworkView {
 
 	public ChessBoardDailyView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+	}
+
+	@Override
+	public void setGameFace(GameNetworkFace gameActivityFace) {
+		super.setGameFace(gameActivityFace);
+		this.gameNetworkFace = gameActivityFace;
 	}
 
 	@Override

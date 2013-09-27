@@ -52,7 +52,7 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 	private PanelInfoGameView bottomPanelView;
 	private String[] countryNames;
 	private int[] countryCodes;
-	private GameDailyUpdatesListener createChallengeUpdateListener;
+//	private GameDailyUpdatesListener createChallengeUpdateListener;
 	private ImageDownloaderToListener imageDownloader;
 	private DailyChallengeItem.Data challengeItem;
 	private GameBaseFragment.LabelsConfig labelsConfig;
@@ -172,7 +172,7 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 
 	public void init() {
 		labelsConfig = new GameBaseFragment.LabelsConfig();
-		createChallengeUpdateListener = new GameDailyUpdatesListener(CREATE_CHALLENGE_UPDATE);
+//		createChallengeUpdateListener = new GameDailyUpdatesListener(CREATE_CHALLENGE_UPDATE);
 		challengeInviteUpdateListener = new DailyUpdateListener();
 
 		imageDownloader = new ImageDownloaderToListener(getActivity());
@@ -257,6 +257,9 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 
 		imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 		imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
+
+		boardView.lockBoard(false);
+
 	}
 
 
@@ -402,7 +405,6 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-//		controlsDailyView.enableGameControls(false);
 		controlsDailyView.showSubmitButtons(true);
 		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
@@ -412,6 +414,7 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 
 		setBoardView(boardView);
 
+		boardView.setGameFace(this);
 		boardView.lockBoard(true);
 	}
 
