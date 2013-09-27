@@ -163,6 +163,8 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 
 		cursor.moveToFirst();
 		recentStatsAdapter.changeCursor(cursor);
+
+		need2update = false;
 	}
 
 	protected void fillGraph() {

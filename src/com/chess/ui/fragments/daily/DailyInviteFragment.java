@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +12,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
-import com.chess.backend.RestHelper;
-import com.chess.statics.Symbol;
-import com.chess.model.DataHolder;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.DailyChallengeItem;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.model.DataHolder;
+import com.chess.statics.StaticData;
+import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.game.GameBaseFragment;
@@ -431,8 +430,7 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		@Override
 		public void onImageReady(Bitmap bitmap) {
 			Activity activity = getActivity();
-			if (activity == null/* || bitmap == null*/) {
-				Log.e("TEST", "ImageLoader bitmap == null");
+			if (activity == null) {
 				return;
 			}
 			switch (code) {

@@ -24,7 +24,7 @@ public class StringSpinnerAdapter  extends ItemsAdapter<String> {
 	protected View createView(ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_dark_spinner_item, parent, false);
 		ViewHolder holder = new ViewHolder();
-		holder.textTxt = (TextView) view.findViewById(android.R.id.text1);
+		holder.categoryNameTxt = (TextView) view.findViewById(R.id.categoryNameTxt);
 		view.findViewById(R.id.spinnerIcon).setVisibility(View.GONE);
 		view.setTag(holder);
 		return view;
@@ -33,7 +33,7 @@ public class StringSpinnerAdapter  extends ItemsAdapter<String> {
 	@Override
 	protected void bindView(String item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
-		holder.textTxt.setText(item);
+		holder.categoryNameTxt.setText(item);
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class StringSpinnerAdapter  extends ItemsAdapter<String> {
 	}
 
 	private static class ViewHolder {
-		TextView textTxt;
+		TextView categoryNameTxt;
 	}
 
 	private static class DropViewHolder {

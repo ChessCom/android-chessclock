@@ -52,6 +52,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	private String gameType;
 	private String username;
 	private int categoryId;
+	private int previousPosition = -1;
 
 	public StatsGameFragment() {
 		Bundle bundle = new Bundle();
@@ -137,6 +138,11 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		if (position == previousPosition) {
+			return;
+		}
+		previousPosition = position;
+
 		if (position == TACTICS) {
 			changeInternalFragment(new StatsGameTacticsFragment());
 		} else if (position == LESSONS) {
@@ -144,7 +150,6 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		} else {
 			updateUiData();
 		}
-
 	}
 
 	@Override
