@@ -246,7 +246,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	}
 
 	@Override
-	public void showOptions(View view) {
+	public void showOptions() {
 		if (optionsSelectFragment != null) {
 			return;
 		}

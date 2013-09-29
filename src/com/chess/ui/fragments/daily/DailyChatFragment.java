@@ -103,8 +103,6 @@ public class DailyChatFragment extends CommonLogicFragment{
 		timeStampForSendMessageListener = new TimeStampForSendMessageListener();
 	}
 
-
-
 	@Override
 	public void onResume() {
 		super.onResume();

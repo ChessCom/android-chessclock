@@ -169,20 +169,13 @@ public class StatsGameLessonsFragment extends CommonLogicFragment implements Ada
 
 		if (cursor != null && cursor.moveToFirst()) {
 			List<long[]> series = new ArrayList<long[]>();
-			cursor.moveToLast();
+
 			do {
 				long timestamp = DbDataManager.getLong(cursor, DbScheme.V_TIMESTAMP) * 1000L;
 				int rating = DbDataManager.getInt(cursor, DbScheme.V_RATING);
 				long[] point = new long[]{timestamp, rating};
 				series.add(point);
-			} while (cursor.moveToPrevious());
-
-//			do { // TODO restore after server will fix ordering
-//				long timestamp = DbDataManager.getLong(cursor, DbScheme.V_TIMESTAMP) * 1000L;
-//				int rating = DbDataManager.getInt(cursor, DbScheme.V_RATING);
-//				long[] point = new long[]{timestamp, rating};
-//				series.add(point);
-//			} while (cursor.moveToNext());
+			} while (cursor.moveToNext());
 			cursor.close();
 
 			ratingGraphView.setGraphData(series);

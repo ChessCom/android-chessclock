@@ -1111,29 +1111,6 @@ public class DbDataManager {
 		return values;
 	}
 
-	public static ContentValues putArticleItemToValues(ArticleItem.Data dataObj) {
-		ContentValues values = new ContentValues();
-
-		values.put(V_ID, dataObj.getId());
-		values.put(V_TITLE, dataObj.getTitle());
-		values.put(V_CREATE_DATE, dataObj.getCreateDate());
-		values.put(V_BODY, dataObj.getBody());
-		values.put(V_CATEGORY, dataObj.getCategoryName());
-		values.put(V_CATEGORY_ID, dataObj.getCategoryId());
-		values.put(V_COUNTRY_ID, dataObj.getCountryId());
-		values.put(V_USER_ID, dataObj.getUserId());
-		values.put(V_USERNAME, dataObj.getUsername());
-		values.put(V_FIRST_NAME, dataObj.getFirstName());
-		values.put(V_LAST_NAME, dataObj.getLastName());
-		values.put(V_CHESS_TITLE, dataObj.getChessTitle());
-		values.put(V_USER_AVATAR, dataObj.getAvatar());
-		values.put(V_PHOTO_URL, dataObj.getImageUrl());
-		values.put(V_URL, dataObj.getUrl());
-		values.put(V_THUMB_CONTENT, dataObj.isIsThumbInContent());
-
-		return values;
-	}
-
 	public static ContentValues putCommonCommentItemToValues(CommonCommentItem.Data dataObj) {
 		ContentValues values = new ContentValues();
 
@@ -1174,7 +1151,41 @@ public class DbDataManager {
 
 		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID, SELECTION_ITEM_ID, arguments2, null);
 
-		ContentValues values = putArticleItemToValues(currentItem);
+		ContentValues values = new ContentValues();
+
+		values.put(V_ID, currentItem.getId());
+		values.put(V_TITLE, currentItem.getTitle());
+		values.put(V_CREATE_DATE, currentItem.getCreateDate());
+		values.put(V_BODY, currentItem.getBody());
+		values.put(V_CATEGORY, currentItem.getCategoryName());
+		values.put(V_CATEGORY_ID, currentItem.getCategoryId());
+		values.put(V_COUNTRY_ID, currentItem.getCountryId());
+		values.put(V_USER_ID, currentItem.getUserId());
+		values.put(V_USERNAME, currentItem.getUsername());
+		values.put(V_FIRST_NAME, currentItem.getFirstName());
+		values.put(V_LAST_NAME, currentItem.getLastName());
+		values.put(V_CHESS_TITLE, currentItem.getChessTitle());
+		values.put(V_USER_AVATAR, currentItem.getAvatar());
+		values.put(V_PHOTO_URL, currentItem.getImageUrl());
+		values.put(V_URL, currentItem.getUrl());
+		values.put(V_THUMB_CONTENT, currentItem.isIsThumbInContent());
+
+		updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
+	public static void saveArticlesDiagramItem(ContentResolver contentResolver, ArticleDetailsItem.Diagram currentItem) {
+		final String[] arguments2 = sArguments1;
+		arguments2[0] = String.valueOf(currentItem.getDiagramId());
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = uriArray[Tables.ARTICLE_DIAGRAMS.ordinal()];
+
+		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID, SELECTION_ITEM_ID, arguments2, null);
+
+		ContentValues values = new ContentValues();
+
+		values.put(V_ID, currentItem.getDiagramId());
+		values.put(V_BODY, currentItem.getDiagramCode());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}

@@ -12,6 +12,7 @@
     <color name="new_soft_grey1">#FFeef2ed</color>
     <color name="new_soft_grey2">#FFdbd8d5</color>
     <color name="new_soft_grey3">#FFe5e5e5</color>
+    <color name="new_soft_grey4">#7Fe6e4e3</color>
     <color name="new_normal_grey">#FF797571</color>
     <color name="new_normal_grey_2">#FF999795</color>
     <color name="new_normal_grey_3">#FFaeaba7</color>
@@ -110,6 +111,12 @@
     <color name="controls_icon_p">#A5FFFFFF</color>
     <color name="controls_icon_s">#FFFFFFFF</color>
     <color name="controls_icon_d">#66FFFFFF</color>
+
+	<!--Diagram Controls-->
+    <color name="controls_icon_diagram">#7Fe6e4e3</color>
+    <color name="controls_icon_diagram_p">#FFFFFFFF</color>
+    <color name="controls_icon_diagram_s">#FFFFFFFF</color>
+    <color name="controls_icon_diagram_d">#66FFFFFF</color>
 
     <!--Grey Solid-->
     <color name="white_button_solid">#FFf0f0f0</color>

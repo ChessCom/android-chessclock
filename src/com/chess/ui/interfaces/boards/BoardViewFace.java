@@ -1,7 +1,5 @@
 package com.chess.ui.interfaces.boards;
 
-import android.view.View;
-
 /**
  * BoardFace class
  *
@@ -10,7 +8,7 @@ import android.view.View;
  */
 public interface BoardViewFace {
 
-	void showOptions(View view);
+	void showOptions();
 
 	void switchAnalysis();
 

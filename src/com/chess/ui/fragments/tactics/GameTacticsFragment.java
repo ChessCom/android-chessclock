@@ -816,7 +816,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	@Override
-	public void showOptions(View view) {
+	public void showOptions() {
 		if (optionsSelectFragment != null) {
 			return;
 		}

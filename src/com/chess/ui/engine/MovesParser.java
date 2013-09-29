@@ -65,8 +65,6 @@ public class MovesParser {
 				.replaceAll("[.]", Symbol.EMPTY);
 	}
 
-
-
 	int[] parseCoordinate(ChessBoard board, String move) {
 		List<Move> validMoves = board.generateLegalMoves();
 
@@ -188,7 +186,7 @@ public class MovesParser {
 		int i = letterToBN(moveTo[0]);
 		int j = numToBN(moveTo[1]);
 		int from = 0;
-		int to = j * 8 - i;
+		int squareTo = j * 8 - i;
 
 		int pieceType = PAWN;
 		String movePieceStr = currentMove.substring(0, 1);
@@ -210,7 +208,7 @@ public class MovesParser {
 		String fromFile = Symbol.EMPTY;
 		String fromRank = Symbol.EMPTY;
 		if (currentMove.length() > 3) { // i.e. 4  // if we have Piece, or capture mark, or from file/rank/square
-			fromSquare = fromSquare.replaceAll("[+,!,?,#,x]", Symbol.EMPTY); // remove special symbols
+			fromSquare = currentMove.replaceAll("[+,!,?,#,x]", Symbol.EMPTY); // remove special symbols
 			fromSquare = fromSquare.replaceAll("[N,R,K,Q,B]", Symbol.EMPTY); // remove Piece
 			String destinationSquare = moveTo[0] + moveTo[1];
 			fromSquare = fromSquare.replace(destinationSquare, Symbol.EMPTY); // remove destination square
@@ -236,7 +234,7 @@ public class MovesParser {
 
 //					if (fromSquare.matches(REGEXP_CHARS)) {
 						if (board.pieces[fromFileInt] == pieceType && board.colors[fromFileInt] == board.getSide()) { // if we have found that piece and color on board
-							return new int[]{fromFileInt, to, promotion};
+							return new int[]{fromFileInt, squareTo, promotion};
 						}
 //					}
 				}
@@ -244,7 +242,7 @@ public class MovesParser {
 					int fromRankInt = numToBN(fromRank) * 8 - (ChessBoard.getColumn(k) + 1);
 //					if (fromSquare.matches(REGEXP_NUMBERS)) {
 						if (board.pieces[fromRankInt] == pieceType && board.colors[fromRankInt] == board.getSide()) { // if we have found that piece and color on board
-							return new int[]{fromRankInt, to, promotion};
+							return new int[]{fromRankInt, squareTo, promotion};
 						}
 //					}
 				}
@@ -252,17 +250,17 @@ public class MovesParser {
 		}
 
 		// detect piece that was moved
-		for (int pieceFrom = 0; pieceFrom < 64; pieceFrom++) {
-			if (board.pieces[pieceFrom] == pieceType && board.colors[pieceFrom] == board.getSide()) {
+		for (int squareFrom = 0; squareFrom < 64; squareFrom++) {
+			if (board.pieces[squareFrom] == pieceType && board.colors[squareFrom] == board.getSide()) {
 				for (Move validMove : validMoves) {
-					if (validMove.from == pieceFrom && validMove.to == to) {
+					if (validMove.from == squareFrom && validMove.to == squareTo) {
 						if (pieceType == BISHOP) { // TODO investigate why we have only BISHOP check here???
-							if (board.getBoardColor()[pieceFrom] == board.getBoardColor()[to]) {
-								return new int[]{pieceFrom, to, promotion};
+							if (board.getBoardColor()[squareFrom] == board.getBoardColor()[squareTo]) {
+								return new int[]{squareFrom, squareTo, promotion};
 							}
 						} else if (pieceType == PAWN) {
 							if (currentMove.contains(CAPTURE_MARK)
-									&& 9 - letterToBN(movePieceStr) != ChessBoard.getColumn(pieceFrom) + 1) { // TODO investigate why do we break here?
+									&& 9 - letterToBN(movePieceStr) != ChessBoard.getColumn(squareFrom) + 1) { // TODO investigate why do we break here?
 								break;
 							}
 
@@ -276,16 +274,16 @@ public class MovesParser {
 								promotion = KNIGHT;
 							}
 
-							return new int[]{pieceFrom, to, promotion, validMove.bits};
+							return new int[]{squareFrom, squareTo, promotion, validMove.bits};
 						} else {
-							return new int[]{pieceFrom, to, promotion};
+							return new int[]{squareFrom, squareTo, promotion};
 						}
 					}
 				}
 			}
 		}
 
-		return new int[]{from, to, promotion};
+		return new int[]{from, squareTo, promotion};
 	}
 
 	int letterToBN(String letter) {

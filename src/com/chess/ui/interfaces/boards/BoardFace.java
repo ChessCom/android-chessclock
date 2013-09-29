@@ -46,11 +46,7 @@ public interface BoardFace {
 
 	boolean inCheck(int s);
 
-//	int[] getPieces();
-
 	int getPiece(int pieceId);
-
-//	int[] getColor();
 
 	int getColor(int color);
 
@@ -58,17 +54,9 @@ public interface BoardFace {
 
 	int getPly();
 
-//	int eval();
-
-//	int[][] getHistory();
-
 	String generateBaseFen();
 
 	int getRepetitions();
-
-//	List<Move> generateCapturesAndPromotes();
-
-//	int getFifty();
 
 	boolean isReside();
 
@@ -80,23 +68,10 @@ public interface BoardFace {
 
 	void setSide(int side);
 
-//	int getWhiteKing();
-
-//	int[] getWhiteKingMoveOO();
-
-//	int getBlackKing();
-
-//	int[] getBlackKingMoveOO();
-
-//	int[] getWhiteKingMoveOOO();
-
-//	int[] getBlackKingMoveOOO();
-
 	int[] getBoardColor();
 
 	void setChess960(boolean chess960);
 
-//	int[] setupCastlingPositions(String fen);
 	void setupCastlingPositions(String fen);
 
 	void takeNext();
@@ -149,5 +124,7 @@ public interface BoardFace {
 
 	String generateFullFen();
 
+	boolean checkAndParseMovesList(String moveList);
 
+	boolean isPromote(int from, int to);
 }

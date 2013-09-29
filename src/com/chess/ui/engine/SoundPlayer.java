@@ -38,24 +38,6 @@ public class SoundPlayer {
 			ourInstance = new SoundPlayer(context);
 		}
 
-//		String soundThemePath = new AppData(context).getSoundThemePath();
-//		if (!TextUtils.isEmpty(soundThemePath)) {
-//			setThemePath(soundThemePath);
-//			setUseThemePack(true);
-//		}
-
-//		int appSoundMode = new AppData(context).isPlaySounds();
-//		boolean playSoundsFlag = false;
-//		AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-//		switch (audio.getRingerMode()) {
-//			case AudioManager.RINGER_MODE_NORMAL:
-//				playSoundsFlag = appSoundMode == AppData.UNDEFINED || appSoundMode == AppData.TRUE;
-//				break;
-//			case AudioManager.RINGER_MODE_VIBRATE:
-//			case AudioManager.RINGER_MODE_SILENT:
-//				playSoundsFlag = appSoundMode != AppData.UNDEFINED && appSoundMode == AppData.TRUE;
-//				break;
-//		}
 		playSounds = AppUtils.getSoundsPlayFlag(context);
 
 		return ourInstance;

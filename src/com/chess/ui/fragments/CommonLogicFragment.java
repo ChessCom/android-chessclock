@@ -102,6 +102,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private boolean slideMenusEnabled;
 	protected boolean need2update = true;
 	protected boolean inSearch;
+	private boolean needToChangeActionButtons = true;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -130,17 +131,19 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		loadingView = view.findViewById(R.id.loadingView);
 
-		getActivityFace().showActionMenu(R.id.menu_add, false);
-		getActivityFace().showActionMenu(R.id.menu_search, false);
-		getActivityFace().showActionMenu(R.id.menu_share, false);
-		getActivityFace().showActionMenu(R.id.menu_cancel, false);
-		getActivityFace().showActionMenu(R.id.menu_accept, false);
-		getActivityFace().showActionMenu(R.id.menu_edit, false);
-		getActivityFace().showActionMenu(R.id.menu_message, false);
-		getActivityFace().showActionMenu(R.id.menu_challenge, false);
-		getActivityFace().showActionMenu(R.id.menu_search_btn, false);
-		getActivityFace().showActionMenu(R.id.menu_notifications, true);
-		getActivityFace().showActionMenu(R.id.menu_games, true);
+		if (needToChangeActionButtons) {
+			getActivityFace().showActionMenu(R.id.menu_add, false);
+			getActivityFace().showActionMenu(R.id.menu_search, false);
+			getActivityFace().showActionMenu(R.id.menu_share, false);
+			getActivityFace().showActionMenu(R.id.menu_cancel, false);
+			getActivityFace().showActionMenu(R.id.menu_accept, false);
+			getActivityFace().showActionMenu(R.id.menu_edit, false);
+			getActivityFace().showActionMenu(R.id.menu_message, false);
+			getActivityFace().showActionMenu(R.id.menu_challenge, false);
+			getActivityFace().showActionMenu(R.id.menu_search_btn, false);
+			getActivityFace().showActionMenu(R.id.menu_notifications, true);
+			getActivityFace().showActionMenu(R.id.menu_games, true);
+		}
 
 		setTitlePadding(DEFAULT_ICON);
 	}
@@ -207,6 +210,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		if (facebookActive) {
 			facebookUiHelper.onDestroy();
 		}
+	}
+
+	protected void setNeedToChangeActionButtons(boolean change) {
+		needToChangeActionButtons = change;
 	}
 
 	protected void showActionBar(boolean show) {

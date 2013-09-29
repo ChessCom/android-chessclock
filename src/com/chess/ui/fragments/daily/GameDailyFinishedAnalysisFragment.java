@@ -10,8 +10,6 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
-import com.chess.statics.AppConstants;
-import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.interfaces.boards.BoardFace;
@@ -61,8 +59,6 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 		@Override
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
-
-			getSoundPlayer().playGameStart();
 
 			currentGame = DbDataManager.getDailyFinishedGameFromCursor(returnedObj);
 			returnedObj.close();
@@ -144,18 +140,7 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 			boardFace.setReside(true);
 		}
 
-		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
-			String[] moves = currentGame.getMoveList()
-					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
-					.replaceAll(DOUBLE_SPACE, Symbol.SPACE).substring(1).split(Symbol.SPACE);   // Start after "+" sign
-
-			boardFace.setMovesCount(moves.length);
-			for (String move : moves) {
-				boardFace.makeMove(move, false);
-			}
-		} else {
-			boardFace.setMovesCount(0);
-		}
+		boardFace.checkAndParseMovesList(currentGame.getMoveList());
 
 		boardView.resetValidMoves();
 
@@ -166,6 +151,7 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 		playLastMoveAnimation();
 
 		boardFace.setJustInitialized(false);
+		boardFace.setAnalysis(true);
 	}
 
 }

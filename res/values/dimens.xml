@@ -265,8 +265,10 @@
 
     <!--GameControlsView-->
     <dimen name="game_controls_button_height">48dip</dimen>
+    <dimen name="game_controls_button_diagram_height">44dip</dimen>
     <dimen name="game_controls_button_height_smaller">45dip</dimen>
     <dimen name="game_controls_icon_size">40dip</dimen>
+    <dimen name="game_controls_icon_diagram_size">25dip</dimen>
     <dimen name="game_controls_lesson_help_icon_size">21dip</dimen>
     <dimen name="game_controls_lesson_help_icon_size_big">36dip</dimen>
     <dimen name="game_controls_text_size">17sp</dimen>

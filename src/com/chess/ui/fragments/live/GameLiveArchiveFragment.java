@@ -29,7 +29,6 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
 import com.chess.model.PopupItem;
-import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
@@ -174,7 +173,6 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 		if (cursor.moveToFirst()) {
 			showSubmitButtonsLay(false);
-			getSoundPlayer().playGameStart();
 
 			currentGame = DbDataManager.getLiveArchiveGameFromCursor(cursor);
 			cursor.close();
@@ -199,7 +197,6 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 			switch (listenerCode) {
 				case CURRENT_GAME:
 					showSubmitButtonsLay(false);
-					getSoundPlayer().playGameStart();
 
 					currentGame = DbDataManager.getLiveArchiveGameFromCursor(returnedObj);
 					returnedObj.close();
@@ -283,18 +280,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 			boardFace.setReside(true);
 		}
 
-		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
-			String[] moves = currentGame.getMoveList()
-					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
-					.replaceAll(DOUBLE_SPACE, Symbol.SPACE).substring(1).split(Symbol.SPACE);   // Start after "+" sign
-
-			boardFace.setMovesCount(moves.length);
-			for (String move : moves) {
-				boardFace.makeMove(move, false);
-			}
-		} else {
-			boardFace.setMovesCount(0);
-		}
+		boardFace.checkAndParseMovesList(currentGame.getMoveList());
 
 		boardView.resetValidMoves();
 
@@ -310,7 +296,6 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 		imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 		imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 	}
-
 
 	@Override
 	public void toggleSides() {
@@ -465,7 +450,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 	}
 
 	@Override
-	public void showOptions(View view) {
+	public void showOptions() {
 		if (optionsSelectFragment != null) {
 			return;
 		}

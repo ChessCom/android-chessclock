@@ -70,8 +70,8 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 			highlightLastMoveSwitch.toggle();
 		} else if (id == R.id.showLegalMovesView) {
 			showLegalMovesSwitch.toggle();
-		} else if (id == R.id.alwaysShowWhiteBottomView) {
-			alwaysShowWhiteBottomSwitch.toggle();
+//		} else if (id == R.id.alwaysShowWhiteBottomView) {
+//			alwaysShowWhiteBottomSwitch.toggle();
 		} else if (id == R.id.soundsView) {
 			soundsSwitch.toggle();
 		} else if (view.getId() == R.id.autoFlipView) {
@@ -87,8 +87,8 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 			getAppData().setHighlightLastMove(checked);
 		} else if (switchButton.getId() == R.id.showLegalMovesSwitch) {
 			getAppData().setShowLegalMoves(checked);
-		} else if (switchButton.getId() == R.id.answerShowBottomSwitch) {
-			getAppData().setAnswerShowBottom(checked);
+//		} else if (switchButton.getId() == R.id.answerShowBottomSwitch) {
+//			getAppData().setAnswerShowBottom(checked);
 		} else if (switchButton.getId() == R.id.soundsSwitch) {
 			int appSoundMode = checked ? AppData.TRUE : AppData.FALSE;
 			getAppData().setPlaySounds(getActivity(), appSoundMode);
@@ -133,7 +133,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		coordinatesSwitch = (SwitchButton) view.findViewById(R.id.coordinatesSwitch);
 		highlightLastMoveSwitch = (SwitchButton) view.findViewById(R.id.highlightLastMoveSwitch);
 		showLegalMovesSwitch = (SwitchButton) view.findViewById(R.id.showLegalMovesSwitch);
-		alwaysShowWhiteBottomSwitch = (SwitchButton) view.findViewById(R.id.answerShowBottomSwitch);
+//		alwaysShowWhiteBottomSwitch = (SwitchButton) view.findViewById(R.id.answerShowBottomSwitch);
 		soundsSwitch = (SwitchButton) view.findViewById(R.id.soundsSwitch);
 		View autoFlipView = view.findViewById(R.id.autoFlipView);
 		autoFlipSwitch = (SwitchButton) view.findViewById(R.id.autoFlipSwitch);
@@ -155,7 +155,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		view.findViewById(R.id.coordinatesView).setOnClickListener(this);
 		view.findViewById(R.id.highlightLastMoveView).setOnClickListener(this);
 		view.findViewById(R.id.showLegalMovesView).setOnClickListener(this);
-		view.findViewById(R.id.alwaysShowWhiteBottomView).setOnClickListener(this);
+//		view.findViewById(R.id.alwaysShowWhiteBottomView).setOnClickListener(this);
 		view.findViewById(R.id.soundsView).setOnClickListener(this);
 
 		String username = getAppData().getUsername();

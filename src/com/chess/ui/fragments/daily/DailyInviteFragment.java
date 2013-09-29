@@ -115,7 +115,7 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 	}
 
 	@Override
-	public void showOptions(View view) {
+	public void showOptions() {
 
 	}
 

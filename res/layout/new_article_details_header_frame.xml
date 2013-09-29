@@ -73,7 +73,7 @@
 
 	<com.chess.RoboTextView
 		android:id="@+id/contentTxt"
-		android:layout_width="wrap_content"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
@@ -81,6 +81,26 @@
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingBottom="2dip"
 		android:textSize="@dimen/content_text_size" />
+
+	<!--Complex article body layout-->
+	<LinearLayout
+		android:id="@+id/complexContentLinLay"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:layout_below="@id/thumbnailAuthorImg"
+		android:paddingBottom="2dip"
+		/>
+<!--	<FrameLayout
+		android:id="@+id/diagramContainerView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/contentTxt"
+		android:orientation="vertical"
+		android:paddingBottom="15dip"
+		>
+
+	</FrameLayout>-->
 
 	<ProgressBar
 		android:id="@+id/loadingCommentsView"

@@ -4,8 +4,6 @@
     <string name="new_per_turn">Per Turn</string>
     <string name="new_time">Time</string>
     <string name="difficulty">Difficulty</string>
-    <string name="daily_chess">Daily Chess</string>
-    <string name="live_chess">Live Chess</string>
     <string name="normal">Normal</string>
     <string name="vs">vs</string>
     <string name="to">to</string>
@@ -332,10 +330,10 @@
 	<string name="auto_flip">Auto Flip</string>
 	<string name="installing_sound_pack">Installing sound pack</string>
 	<string name="go_ex">Go!</string>
-	<string name="ready_q_">Ready?...</string>
+	<string name="ready_q_">Ready?…</string>
 	<string name="already_member_log_in">Already a member? Log in</string>
 	<string name="analyze">Analyze</string>
-	<string name="no_games_matching_this_fen">No games was found matching this fen</string>
+	<string name="no_games_found">No games found</string>
 	<string name="recent_problems">Recent Problems</string>
 	<string name="recent_lessons">Recent Lessons</string>
 

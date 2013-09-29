@@ -270,7 +270,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	}
 
 	@Override
-	public void showOptions(View view) {
+	public void showOptions() {
 		if (optionsSelectFragment != null) {
 			return;
 		}

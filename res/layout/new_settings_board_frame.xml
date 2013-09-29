@@ -142,7 +142,7 @@
         </com.chess.LinLayout>
 
         <!--Always Show White on Bottom-->
-        <com.chess.LinLayout
+      <!--  <com.chess.LinLayout
             android:id="@+id/alwaysShowWhiteBottomView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
             android:background="@drawable/transparent_list_item_selector"
             >
 
-            <!--Label-->
+            &lt;!&ndash;Label&ndash;&gt;
             <com.chess.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
                 android:id="@+id/answerShowBottomSwitch"
                 style="@style/Switch.Default"
                 />
-        </com.chess.LinLayout>
+        </com.chess.LinLayout>-->
 
         <!--Sounds-->
         <com.chess.LinLayout

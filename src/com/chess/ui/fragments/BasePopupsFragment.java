@@ -33,7 +33,7 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	protected static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 	protected static final boolean JELLY_BEAN_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
 
-	private static final String INFO_POPUP_TAG = "information popup";
+	protected static final String INFO_POPUP_TAG = "information popup";
 	private static final String PROGRESS_TAG = "progress dialog popup";
 
 	protected PopupItem popupItem;

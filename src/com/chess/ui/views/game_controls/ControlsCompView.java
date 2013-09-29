@@ -47,7 +47,7 @@ public class ControlsCompView extends ControlsBaseView {
 		}
 
 		if (view.getId() == getButtonId(OPTIONS)) {
-			boardViewFace.showOptions(view);
+			boardViewFace.showOptions();
 		} else if (view.getId() == getButtonId(HINT)) {
 			boardViewFace.showHint();
 		} else if (view.getId() == getButtonId(HELP)) {

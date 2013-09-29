@@ -131,7 +131,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 			return;
 
 		if (view.getId() == getButtonId(OPTIONS)) {
-			boardViewFace.showOptions(view);
+			boardViewFace.showOptions();
 		} else if (view.getId() == getButtonId(START)) {
 			boardViewFace.start();
 		} else if (view.getId() == getButtonId(RESTART)) {

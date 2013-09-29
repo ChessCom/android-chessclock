@@ -8,7 +8,10 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.image_load.AvatarView;
+import org.apache.http.protocol.HTTP;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
@@ -38,19 +41,19 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 	protected void bindView(ChatItem item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		if (item.isMine()) {
-//			holder.text.setTextColor(ownerColor);
-//			holder.text.setText(username + StaticData.COLON + StaticData.SPACE + item.getContent());
+		try {
+			holder.text.setText(URLDecoder.decode(URLDecoder.decode(item.getContent(), HTTP.UTF_8), HTTP.UTF_8)); // TODO remove after server will apply changes
+		} catch (UnsupportedEncodingException e) {
 			holder.text.setText(item.getContent());
+		}
+
+		if (item.isMine()) {
 			holder.text.setBackgroundResource(R.drawable.img_chat_buble_grey);
 
 			imageLoader.download(item.getAvatar(), holder.myImg, imageSize);
 			holder.myImg.setVisibility(View.VISIBLE);
 			holder.opponentImg.setVisibility(View.GONE);
 		} else {
-//			holder.text.setTextColor(opponentColor);
-//			holder.text.setText(opponentName + StaticData.COLON + StaticData.SPACE + item.getContent());
-			holder.text.setText(item.getContent());
 			holder.text.setBackgroundResource(R.drawable.img_chat_buble_white);
 
 			imageLoader.download(item.getAvatar(), holder.opponentImg, imageSize);
@@ -58,7 +61,6 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 			holder.opponentImg.setVisibility(View.VISIBLE);
 		}
 	}
-
 
 	private static class ViewHolder{
 		TextView text;

@@ -76,6 +76,12 @@
     <string name="ic_triangle_up">|</string>
     <string name="ic_triangle_down">"?"</string>
 
+    <string name="ic_back_end">"#"</string>	<!-- |< -->
+    <string name="ic_fwd_end">"@"</string>	<!-- >| -->
+    <string name="ic_rewind_fwd">"!"</string>	<!-- >> -->
+    <string name="ic_rewind_back">"~"</string>	<!-- << -->
+    <string name="ic_dots">"%"</string>	<!-- *** -->
+
     <string name="ic_number_one">W</string>
     <string name="ic_number_two">E</string>
     <string name="ic_number_three">R</string>

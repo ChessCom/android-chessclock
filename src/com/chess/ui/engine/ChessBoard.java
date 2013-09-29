@@ -10,6 +10,7 @@
 package com.chess.ui.engine;
 
 import android.util.Log;
+import com.chess.model.BaseGameItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.boards.BoardFace;
@@ -37,6 +38,7 @@ public class ChessBoard implements BoardFace {
 	public static final int KING = 5;
 	public static final int EMPTY = 6;
 
+	public static final String DOUBLE_SPACE = "  ";
 	public static final String SYMBOL_SPACE = " ";
 	public static final String SYMBOL_SLASH = "[/]";
 	public static final String NUMBERS_PATTERS = "[0-9]";
@@ -1759,6 +1761,39 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public String generateFullFen() {
 		return fenHelper.generateFullFen(this);
+	}
+
+	/**
+	 *
+	 * @param moveList to parse
+	 * @return true if {@code moveList} wasn't empty & moves was applied
+	 */
+	@Override
+	public boolean checkAndParseMovesList(String moveList) {
+		if (moveList != null && moveList.contains(BaseGameItem.FIRST_MOVE_INDEX)) {
+			String[] moves = moveList.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
+					.replaceAll(DOUBLE_SPACE, Symbol.SPACE)
+					.trim().split(Symbol.SPACE);
+
+			setMovesCount(moves.length);
+			for (String move : moves) {
+				makeMove(move, false);
+			}
+			return true;
+		} else {
+			setMovesCount(0);
+			return false;
+		}
+	}
+
+	/**
+	 *
+	 * @return {@code true} if piece is pawn and moved to first or last rank
+	 */
+	@Override
+	public boolean isPromote(int from, int to) {
+		return pieces[from] == PAWN
+				&& (to < 8 && side == WHITE_SIDE || to > 55 && side == BLACK_SIDE);
 	}
 
 	@Override

@@ -55,7 +55,6 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 
 	private FragmentTabsFace parentFace;
 
-
 	private RadioGroup homePageRadioGroup;
 	private LayoutInflater inflater;
 	private ViewPager viewPager;
@@ -197,14 +196,17 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 
 			submitRegisterInfo();
 		} else if (view.getId() == R.id.closeBtn1) { // TODO adjust properly
+			youTubePlayer1.pause();
 			releaseYouTubeFragment(youTubeFrameContainer1, youTubePlayerFragment1);
 			youTubePlayerFragment1 = null;
 			closeYouTubeBtn1.setVisibility(View.GONE);
 		} else if (view.getId() == R.id.closeBtn2) {
+			youTubePlayer2.pause();
 			releaseYouTubeFragment(youTubeFrameContainer2, youTubePlayerFragment2);
 			youTubePlayerFragment2 = null;
 			closeYouTubeBtn2.setVisibility(View.GONE);
 		} else if (view.getId() == R.id.closeBtn3) {
+			youTubePlayer3.pause();
 			releaseYouTubeFragment(youTubeFrameContainer3, youTubePlayerFragment3);
 			youTubePlayerFragment3 = null;
 			closeYouTubeBtn3.setVisibility(View.GONE);
@@ -251,6 +253,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 					youTubePlayer1 = youTubePlayer;
 					youTubePlayer1.setOnFullscreenListener(WelcomeFragment.this);
 					youTubePlayer1.setPlaybackEventListener(new YouTubePlaybackListener());
+					youTubePlayer1.loadVideo(YOUTUBE_DEMO_LINK1);
 					break;
 				case R.id.youTubeFrameContainer2:
 					if (!wasRestored) {
@@ -259,6 +262,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 					youTubePlayer2 = youTubePlayer;
 					youTubePlayer2.setOnFullscreenListener(WelcomeFragment.this);
 					youTubePlayer2.setPlaybackEventListener(new YouTubePlaybackListener());
+					youTubePlayer2.loadVideo(YOUTUBE_DEMO_LINK2);
 					break;
 				case R.id.youTubeFrameContainer3:
 					if (!wasRestored) {
@@ -267,6 +271,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 					youTubePlayer3 = youTubePlayer;
 					youTubePlayer3.setOnFullscreenListener(WelcomeFragment.this);
 					youTubePlayer3.setPlaybackEventListener(new YouTubePlaybackListener());
+					youTubePlayer3.loadVideo(YOUTUBE_DEMO_LINK3);
 					break;
 			}
 

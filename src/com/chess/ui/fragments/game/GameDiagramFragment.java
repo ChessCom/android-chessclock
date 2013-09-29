@@ -3,7 +3,6 @@ package com.chess.ui.fragments.game;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,45 +10,45 @@ import android.widget.ImageView;
 import com.chess.R;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameAnalysisItem;
+import com.chess.model.GameDiagramItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardAnalysis;
-import com.chess.ui.fragments.explorer.GameExplorerFragment;
+import com.chess.ui.engine.ChessBoardDiagram;
 import com.chess.ui.interfaces.boards.BoardFace;
-import com.chess.ui.interfaces.game_ui.GameAnalysisFace;
+import com.chess.ui.interfaces.game_ui.GameDiagramFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
-import com.chess.ui.views.chess_boards.ChessBoardAnalysisView;
+import com.chess.ui.views.chess_boards.ChessBoardDiagramView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
-import com.chess.ui.views.game_controls.ControlsAnalysisView;
+import com.chess.ui.views.game_controls.ControlsDiagramView;
 
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 22.09.13
- * Time: 15:21
+ * Date: 27.09.13
+ * Time: 15:30
  */
-public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysisFace {
+public class GameDiagramFragment extends GameBaseFragment implements GameDiagramFace {
 
 	private static final String ERROR_TAG = "send request failed popup";
 
 	private static final String GAME_ITEM = "game_item";
 
-	private ChessBoardAnalysisView boardView;
+	private ChessBoardDiagramView boardView;
 	private GameAnalysisItem analysisItem;
 	protected boolean userPlayWhite = true;
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
-	private ControlsAnalysisView controlsView;
+	private ControlsDiagramView controlsView;
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
 	private BoardAvatarDrawable opponentAvatarDrawable;
 	private BoardAvatarDrawable userAvatarDrawable;
 	private LabelsConfig labelsConfig;
 
-	public static GameAnalyzeFragment createInstance(GameAnalysisItem analysisItem) {
-		GameAnalyzeFragment fragment = new GameAnalyzeFragment();
+	public static GameDiagramFragment createInstance(GameDiagramItem analysisItem) {
+		GameDiagramFragment fragment = new GameDiagramFragment();
 		Bundle arguments = new Bundle();
 		arguments.putParcelable(GAME_ITEM, analysisItem);
 		fragment.setArguments(arguments);
@@ -72,14 +71,14 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_game_analysis_frame, container, false);
+		return inflater.inflate(R.layout.new_game_diagram_frame, container, false);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
+		// we are inside of fragment already, don't change action buttons of parent fragment
+		setNeedToChangeActionButtons(false);
 		super.onViewCreated(view, savedInstanceState);
-
-		setTitle(R.string.analysis);
 
 		widgetsInit(view);
 	}
@@ -109,22 +108,32 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	}
 
 	@Override
-	public void restart() {
+	public void onPlay() {
+
+	}
+
+	@Override
+	public void onRewindBack() {
 		adjustBoardForGame();
 	}
 
 	@Override
-	public void closeBoard() {
-		getActivityFace().showPreviousFragment();
+	public void onMoveBack() {
+
 	}
 
 	@Override
-	public void showExplorer() {
-		getActivityFace().openFragment(GameExplorerFragment.createInstance(getBoardFace().generateBaseFen()));
+	public void onMoveForward() {
+
+	}
+
+	@Override
+	public void onRewindForward() {
+
 	}
 
 	private void adjustBoardForGame() {
-		ChessBoardAnalysis.resetInstance();
+		ChessBoardDiagram.resetInstance();
 		userPlayWhite = analysisItem.getUserColor() == ChessBoard.WHITE_SIDE;
 
 		labelsConfig.topAvatar = opponentAvatarDrawable;
@@ -137,12 +146,12 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		}
 
 		labelsConfig.topPlayerName = analysisItem.getOpponent();
-		labelsConfig.topPlayerRating = null;
+		labelsConfig.topPlayerRating = "----";
 		labelsConfig.bottomPlayerName = getUsername();
-		labelsConfig.bottomPlayerRating = null;
+		labelsConfig.bottomPlayerRating = "----";
 		labelsConfig.topPlayerAvatar = "";
 		labelsConfig.bottomPlayerAvatar = getAppData().getUserAvatar();
-		labelsConfig.topPlayerCountry = null;
+		labelsConfig.topPlayerCountry = "International";
 		labelsConfig.bottomPlayerCountry = getAppData().getUserCountry();
 		labelsConfig.topPlayerPremiumStatus = 0;
 		labelsConfig.bottomPlayerPremiumStatus = getAppData().getUserPremiumStatus();
@@ -161,7 +170,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 			boardFace.setChess960(true);
 		}
 
-		if (TextUtils.isEmpty(analysisItem.getMovesList())) {  // don't parse FEN if we have movesList
+		if (analysisItem.getFen() != null) {
 			boardFace.setupBoard(analysisItem.getFen());
 		}
 
@@ -180,7 +189,6 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		playLastMoveAnimation();
 
 		boardFace.setJustInitialized(false);
-		boardFace.setAnalysis(true);
 	}
 
 
@@ -266,8 +274,8 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	}
 
 	@Override
-	public BoardFace getBoardFace() {
-		return ChessBoardAnalysis.getInstance(this);
+	public ChessBoardDiagram getBoardFace() {
+		return ChessBoardDiagram.getInstance(this);
 	}
 
 	@Override
@@ -329,7 +337,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	}
 
 	private void widgetsInit(View view) {
-		controlsView = (ControlsAnalysisView) view.findViewById(R.id.controlsAnalysisView);
+		controlsView = (ControlsDiagramView) view.findViewById(R.id.controlsDiagramView);
 		NotationView notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
@@ -349,7 +357,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 		controlsView.enableGameControls(false);
 
-		boardView = (ChessBoardAnalysisView) view.findViewById(R.id.boardview);
+		boardView = (ChessBoardDiagramView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);

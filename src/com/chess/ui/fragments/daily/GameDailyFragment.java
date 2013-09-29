@@ -38,7 +38,6 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
 import com.chess.model.PopupItem;
-import com.chess.statics.AppConstants;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
@@ -70,7 +69,6 @@ import java.util.Calendar;
  */
 public class GameDailyFragment extends GameBaseFragment implements GameNetworkFace, PopupListSelectionFace {
 
-	public static final String DOUBLE_SPACE = "  ";
 	private static final String DRAW_OFFER_TAG = "offer draw";
 	private static final String ERROR_TAG = "send request failed popup";
 
@@ -222,7 +220,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		if (cursor.moveToFirst()) {
 			showSubmitButtonsLay(false);
-			getSoundPlayer().playGameStart();
 
 			currentGame = DbDataManager.getDailyCurrentGameFromCursor(cursor);
 			cursor.close();
@@ -250,7 +247,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			switch (listenerCode) {
 				case CURRENT_GAME:
 					showSubmitButtonsLay(false);
-					getSoundPlayer().playGameStart();
 
 					currentGame = DbDataManager.getDailyCurrentGameFromCursor(returnedObj);
 					returnedObj.close();
@@ -363,18 +359,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			boardFace.setReside(true);
 		}
 
-		if (currentGame.getMoveList().contains(BaseGameItem.FIRST_MOVE_INDEX)) {
-			String[] moves = currentGame.getMoveList()
-					.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
-					.replaceAll(DOUBLE_SPACE, Symbol.SPACE).substring(1).split(Symbol.SPACE);
-
-			boardFace.setMovesCount(moves.length);
-			for (String move : moves) {
-				boardFace.makeMove(move, false);
-			}
-		} else {
-			boardFace.setMovesCount(0);
-		}
+		boardFace.checkAndParseMovesList(currentGame.getMoveList());
 
 		boardView.resetValidMoves();
 
@@ -603,7 +588,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	}
 
 	@Override
-	public void showOptions(View view) {
+	public void showOptions() {
 		if (optionsSelectFragment != null) {
 			return;
 		}

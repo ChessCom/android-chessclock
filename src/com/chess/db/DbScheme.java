@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 73;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 74;  // change version on every DB scheme changes
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
 
@@ -32,6 +32,7 @@ public class DbScheme {
 		ARTICLE_CATEGORIES,
 		ARTICLE_COMMENTS,
 		ARTICLE_VIEWED,
+		ARTICLE_DIAGRAMS,
 
 		VIDEOS,
 		VIDEO_CATEGORIES,
@@ -447,6 +448,10 @@ public class DbScheme {
 				+ addField_Text(V_USER)
 				+ addField_Int(V_ID)
 				+ addField_Int(V_DATA_VIEWED, true);
+
+		createTablesArray[Tables.ARTICLE_DIAGRAMS.ordinal()] = createTableForName(Tables.ARTICLE_DIAGRAMS)
+				+ addField_Int(V_ID)
+				+ addField_Int(V_BODY, true);
 
 		/* Videos */
 		createTablesArray[Tables.VIDEOS.ordinal()] = createTableForName(Tables.VIDEOS)

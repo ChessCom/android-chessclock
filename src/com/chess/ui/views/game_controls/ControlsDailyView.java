@@ -55,7 +55,7 @@ public class ControlsDailyView extends ControlsBaseView {
 			return;
 
 		if (view.getId() == getButtonId(OPTIONS)) {
-			boardViewFace.showOptions(view);
+			boardViewFace.showOptions();
 		}
 		if (view.getId() == getButtonId(ANALYSIS)) {
 			boardViewFace.switchAnalysis();

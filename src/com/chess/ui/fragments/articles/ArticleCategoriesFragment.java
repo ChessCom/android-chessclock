@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -125,7 +126,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 			categorySpinner.setSelection(sectionId);  // TODO remember last selection.
 		}
 
-		getActivityFace().showActionMenu(R.id.menu_search, true);
+		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
 
@@ -153,6 +154,16 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		} while (cursor.moveToNext());
 
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_search_btn:
+				getActivityFace().openFragment(new ArticlesSearchFragment());
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

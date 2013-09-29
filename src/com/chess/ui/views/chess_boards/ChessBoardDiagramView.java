@@ -10,40 +10,38 @@ import com.chess.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.boards.BoardFace;
-import com.chess.ui.interfaces.boards.BoardViewAnalysisFace;
-import com.chess.ui.interfaces.game_ui.GameAnalysisFace;
-import com.chess.ui.views.game_controls.ControlsAnalysisView;
+import com.chess.ui.interfaces.boards.BoardViewDiagramFace;
+import com.chess.ui.interfaces.game_ui.GameDiagramFace;
+import com.chess.ui.views.game_controls.ControlsDiagramView;
 
 import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 22.02.13
- * Time: 18:18
+ * Date: 27.09.13
+ * Time: 19:23
  */
-public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardViewAnalysisFace {
-
-	private static final long HINT_REVERSE_DELAY = 1500;
+public class ChessBoardDiagramView extends ChessBoardBaseView implements BoardViewDiagramFace {
 
 	private static final String DIVIDER_1 = "|";
 	private static final String DIVIDER_2 = ":";
 
-	private GameAnalysisFace gameAnalysisActivityFace;
+	private GameDiagramFace gameAnalysisActivityFace;
 
 
-	public ChessBoardAnalysisView(Context context, AttributeSet attrs) {
+	public ChessBoardDiagramView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 	}
 
-	public void setGameActivityFace(GameAnalysisFace gameActivityFace) {
+	public void setGameActivityFace(GameDiagramFace gameActivityFace) {
 		super.setGameFace(gameActivityFace);
 
 		gameAnalysisActivityFace = gameActivityFace;
 	}
 
-	public void setControlsView(ControlsAnalysisView controlsView) {
+	public void setControlsView(ControlsDiagramView controlsView) {
 		super.setControlsView(controlsView);
 		controlsView.setBoardViewFace(this);
 	}
@@ -109,89 +107,6 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 		drawCoordinates(canvas);
 	}
 
-//	@Override  // no need to support further as it was only on 2.1, and we don't support 2.1
-//	public boolean onTrackballEvent(MotionEvent event) {
-//		if (useTouchTimer) { // start count before next touch
-//			handler.postDelayed(checkUserIsActive, StaticData.WAKE_SCREEN_TIMEOUT);
-//			userActive = true;
-//		}
-//
-//		float sens = 0.3f;
-//		if (event.getAction() == MotionEvent.ACTION_MOVE) {
-//			track = true;
-//			if (event.getX() > sens)
-//				trackX += squareSize;
-//			else if (event.getX() < -sens)
-//				trackX -= squareSize;
-//			if (event.getY() > sens)
-//				trackY += squareSize;
-//			else if (event.getY() < -sens)
-//				trackY -= squareSize;
-//			if (trackX < 0)
-//				trackX = 0;
-//			if (trackY < 0)
-//				trackY = 0;
-//			if (trackX > 7 * squareSize)
-//				trackX = 7 * squareSize;
-//			if (trackY > 7 * squareSize)
-//				trackY = 7 * squareSize;
-//			invalidate();
-//		} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//			int col = (trackX - trackX % squareSize) / squareSize;
-//			int row = (trackY - trackY % squareSize) / squareSize;
-//
-//			if (firstClick) {
-//				from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
-//				if (getBoardFace().getPiece(from) != 6 && getBoardFace().getSide() == getBoardFace().getColor(from)) {
-//					pieceSelected = true;
-//					firstClick = false;
-//					invalidate();
-//				}
-//			} else {
-//				to = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
-//				pieceSelected = false;
-//				firstClick = true;
-//				boolean found = false;
-//
-//				Move move = null;
-//				List<Move> moves = getBoardFace().generateLegalMoves();
-//				for (Move move1 : moves) {
-//					move = move1;
-//					if (move.from == from && move.to == to) {
-//						found = true;
-//						break;
-//					}
-//				}
-//				if ((((to < 8) && (getBoardFace().getSide() == ChessBoard.WHITE_SIDE)) ||
-//						((to > 55) && (getBoardFace().getSide() == ChessBoard.BLACK_SIDE))) &&
-//						(getBoardFace().getPiece(from) == ChessBoard.PAWN) && found) {
-//
-//					gameAnalysisActivityFace.showChoosePieceDialog(col, row);
-//					return true;
-//				}
-//
-//				boolean moveMade = false;
-//				MoveAnimator moveAnimator = null;
-//				if (found) {
-//					moveAnimator = new MoveAnimator(move, true);
-//					moveMade = getBoardFace().makeMove(move);
-//				}
-//				if (moveMade) {
-//					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
-//					setMoveAnimator(moveAnimator);
-//					//afterUserMove(); //
-//				} else if (getBoardFace().getPiece(to) != ChessBoard.EMPTY
-//						&& getBoardFace().getSide() == getBoardFace().getColor(to)) {
-//					pieceSelected = true;
-//					firstClick = false;
-//					from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
-//				}
-//				invalidate();
-//			}
-//		}
-//		return true;
-//	}
-
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (useTouchTimer) { // start count before next touch
@@ -240,26 +155,14 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 		invalidate();
 	}
 
-	@Override
-	public void flipBoard() {
-		getBoardFace().setReside(!getBoardFace().isReside());
-		invalidate();
-		gameAnalysisActivityFace.invalidateGameScreen();
-	}
+//	@Override
+//	public void switchAnalysis() {
+//		super.switchAnalysis();
+//	//		controlsAnalysisView.en(ControlsCompView.B_HINT_ID, !getBoardFace().isAnalysis());
+//	}
 
 	@Override
-	public void switchAnalysis() {
-		super.switchAnalysis();
-//		controlsAnalysisView.en(ControlsCompView.B_HINT_ID, !getBoardFace().isAnalysis());
-	}
-
-	@Override
-	public void restart() {
-		gameAnalysisActivityFace.restart();
-	}
-
-	@Override
-	public void moveBack() {
+	public void onMoveBack() {
 
 		if (noMovesToAnimate() && getBoardFace().getPly() > 0) {
 			getBoardFace().setFinished(false);
@@ -273,8 +176,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	}
 
 	@Override
-	public void moveForward() {
-
+	public void onMoveForward() {
 		if (noMovesToAnimate()) {
 			pieceSelected = false;
 
@@ -292,14 +194,20 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	}
 
 	@Override
-	public void closeBoard() {
-		gameAnalysisActivityFace.closeBoard();
+	public void onPlay() {
+
 	}
 
 	@Override
-	public void showExplorer() {
-		gameAnalysisActivityFace.showExplorer();
+	public void onRewindBack() {
+
+	}
+
+	@Override
+	public void onRewindForward() {
+
 	}
 
 }
+
 

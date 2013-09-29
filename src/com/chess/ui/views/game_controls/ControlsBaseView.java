@@ -26,11 +26,19 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 	public static final int BUTTON_PREFIX = 0x00002000;
 	int controlIconSize;
-	private ColorStateList controlIconColor;
-	private float density;
+	protected ColorStateList controlIconColor;
+	protected float density;
 	protected int controlTextSize;
 
 	enum ButtonIds {
+		/* Diagram Controls */
+		BACK_END,
+		FWD_END,
+		REWIND_FWD,
+		REWIND_BACK,
+		DOTS_OPTIONS,
+
+		/* Default Game Controls*/
 		OPTIONS,
 		HOME,
 		SEARCH,
@@ -54,6 +62,12 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	}
 
 	private Integer[] glyphIds = new Integer[]{
+			R.string.ic_back_end,
+			R.string.ic_fwd_end,
+			R.string.ic_rewind_fwd,
+			R.string.ic_rewind_back,
+			R.string.ic_dots,
+			/* Default Game Controls*/
 			R.string.ic_options,
 			R.string.ic_home,
 			R.string.ic_search,

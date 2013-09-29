@@ -166,91 +166,6 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		drawCoordinates(canvas);
     }
 
-	@Override
-    public boolean onTrackballEvent(MotionEvent event) {
-        if (useTouchTimer) { // start count before next touch
-            handler.postDelayed(checkUserIsActive, StaticData.WAKE_SCREEN_TIMEOUT);
-            userActive = true;
-        }
-
-        float sens = 0.3f;
-        if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            track = true;
-            if (event.getX() > sens)
-                trackX += square;
-            else if (event.getX() < -sens)
-                trackX -= square;
-            if (event.getY() > sens)
-                trackY += square;
-            else if (event.getY() < -sens)
-                trackY -= square;
-            if (trackX < 0)
-                trackX = 0;
-            if (trackY < 0)
-                trackY = 0;
-            if (trackX > 7 * square)
-                trackX = 7 * square;
-            if (trackY > 7 * square)
-                trackY = 7 * square;
-            invalidate();
-        } else if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            int file = (trackX - trackX % square) / square; // file is for columns
-            int rank = (trackY - trackY % square) / square; // rank is for rows
-
-            if (firstClick) {
-                from = ChessBoard.getPositionIndex(file, rank, getBoardFace().isReside());
-                if (getBoardFace().getPiece(from) != ChessBoard.EMPTY
-						&& getBoardFace().getSide() == getBoardFace().getColor(from)) {
-                    pieceSelected = true;
-                    firstClick = false;
-                    invalidate();
-                }
-            } else {
-                to = ChessBoard.getPositionIndex(file, rank, getBoardFace().isReside());
-                pieceSelected = false;
-                firstClick = true;
-                boolean found = false;
-
-				Move move = null;
-                List<Move> moves = getBoardFace().generateLegalMoves();
-				for (Move move1 : moves) {
-					move = move1;
-					if (move.from == from && move.to == to) {
-						found = true;
-						break;
-					}
-				}
-				// if target square is on opponents first rank, then show promotion popup
-                if ((((to < 8) && (getBoardFace().getSide() == ChessBoard.WHITE_SIDE)) ||
-						((to > 55) && (getBoardFace().getSide() == ChessBoard.BLACK_SIDE))) &&
-                        (getBoardFace().getPiece(from) == ChessBoard.PAWN) && found) {
-
-					gameCompActivityFace.showChoosePieceDialog(file, rank);
-                    return true;
-                }
-
-				boolean moveMade = false;
-				MoveAnimator moveAnimator = null;
-				if (found) {
-					moveAnimator = new MoveAnimator(move, true);
-					moveMade = getBoardFace().makeMove(move);
-				}
-				if (moveMade) {
-					moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
-					setMoveAnimator(moveAnimator);
-					//afterUserMove(); //
-				} else if (getBoardFace().getPiece(to) != ChessBoard.EMPTY
-						&& getBoardFace().getSide() == getBoardFace().getColor(to)) {
-					pieceSelected = true;
-					firstClick = false;
-					from = ChessBoard.getPositionIndex(file, rank, getBoardFace().isReside());
-				}
-				invalidate();
-            }
-        }
-        return true;
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (useTouchTimer) { // start count before next touch
@@ -258,7 +173,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
             userActive = true;
         }
 
-        if (square == 0) {
+        if (squareSize == 0) {
             return super.processTouchEvent(event);
         }
 
@@ -277,7 +192,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
     }
 
     @Override
-	public void promote(int promote, int col, int row) {
+	public void promote(int promote, int file, int rank) {
         boolean found = false;
 		Move move = null;
         List<Move> moves = getBoardFace().generateLegalMoves();
@@ -303,7 +218,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 				&& getBoardFace().getSide() == getBoardFace().getColor(to)) {
 			pieceSelected = true;
 			firstClick = false;
-			from = ChessBoard.getPositionIndex(col, row, getBoardFace().isReside());
+			from = ChessBoard.getPositionIndex(file, rank, getBoardFace().isReside());
 		}
 		invalidate();
     }

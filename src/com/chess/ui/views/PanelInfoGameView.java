@@ -378,7 +378,11 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	}
 
 	public void setPlayerFlag(String country) {
-		flagImg.setImageDrawable(AppUtils.getCountryFlagScaled(getContext(), country));
+		if (country != null) {
+			flagImg.setImageDrawable(AppUtils.getCountryFlagScaled(getContext(), country));
+		} else {
+			flagImg.setVisibility(GONE);
+		}
 	}
 
 	public void setPlayerPremiumIcon(int status) {

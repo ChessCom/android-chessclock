@@ -2,6 +2,7 @@ package com.chess.ui.fragments.explorer;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -131,11 +132,9 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 		String moveStr = DbDataManager.getString(cursor, DbScheme.V_MOVE);
 
 		final BoardFace boardFace = getBoardFace();
-
 		{
 			// get next valid move
 			final Move move = boardFace.convertMoveAlgebraic(moveStr);
-			logTest(" new moveStr = " + moveStr + " new move = " + move.toString());
 			boardFace.setMovesCount(boardFace.getMovesCount());
 
 			// play move animation
@@ -149,6 +148,22 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 		// update FEN and get next moves
 		fen = getBoardFace().generateBaseFen();
 		updateData(fen);
+	}
+
+	@Override
+	public void onPositiveBtnClick(DialogFragment fragment) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(INFO_POPUP_TAG)) {
+			getActivityFace().showPreviousFragment();
+			return;
+		}
+
+		super.onPositiveBtnClick(fragment);
 	}
 
 	private class ExplorerMovesUpdateListener extends ChessLoadUpdateListener<ExplorerMovesItem> {
@@ -177,7 +192,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.RESOURCE_NOT_FOUND) {
 
-					showSinglePopupDialog(R.string.no_games_matching_this_fen);
+					showSinglePopupDialog(R.string.no_games_found);
 				} else {
 					super.errorHandle(resultCode);
 				}
@@ -228,7 +243,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	}
 
 	@Override
-	public void showOptions(View view) {
+	public void showOptions() {
 
 	}
 
