@@ -20,13 +20,14 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.backend.LoadHelper;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.RegisterItem;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.statics.AppConstants;
 import com.chess.statics.FlurryData;
 import com.chess.statics.Symbol;
-import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.statics.WelcomeHolder;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.FragmentTabsFace;
 import com.chess.utilities.AppUtils;
@@ -85,6 +86,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	private RoboButton closeYouTubeBtn1;
 	private RoboButton closeYouTubeBtn2;
 	private RoboButton closeYouTubeBtn3;
+	private WelcomePagerAdapter mainPageAdapter;
 
 	public WelcomeFragment() {
 	}
@@ -93,6 +95,18 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 		WelcomeFragment fragment = new WelcomeFragment();
 		fragment.parentFace = parentFace;
 		return fragment;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		mainPageAdapter = new WelcomePagerAdapter();
+		logTest("Welcome Fragment onCreate");
+
+		{// SignUp part
+			registerUpdateListener = new RegisterUpdateListener();
+		}
 	}
 
 	@Override
@@ -106,22 +120,23 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 
 		enableSlideMenus(false);
 
+		logTest("Welcome Fragment onViewCreated");
 		inflater = LayoutInflater.from(getActivity());
 
-		viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-		WelcomePagerAdapter mainPageAdapter = new WelcomePagerAdapter();
-		viewPager.setAdapter(mainPageAdapter);
-		viewPager.setOnPageChangeListener(pageChangeListener);
+		if (viewPager == null) {
+			logTest("viewPager == null");
+			viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+			viewPager.setAdapter(mainPageAdapter);
+			viewPager.setOnPageChangeListener(pageChangeListener);
 
-		homePageRadioGroup = (RadioGroup) view.findViewById(R.id.pagerIndicatorGroup);
-		for (int i = 0; i < PAGE_CNT; ++i) {
-			inflater.inflate(R.layout.new_page_indicator_view, homePageRadioGroup, true);
-		}
+			homePageRadioGroup = (RadioGroup) view.findViewById(R.id.pagerIndicatorGroup);
+			for (int i = 0; i < PAGE_CNT; ++i) {
+				inflater.inflate(R.layout.new_page_indicator_view, homePageRadioGroup, true);
+			}
 
-		((RadioButton) homePageRadioGroup.getChildAt(0)).setChecked(true);
-
-		{// SignUp part
-			registerUpdateListener = new RegisterUpdateListener();
+			((RadioButton) homePageRadioGroup.getChildAt(0)).setChecked(true);
+		} else {
+			logTest("viewPager != null , " + viewPager + " mainAdapter " + mainPageAdapter);
 		}
 	}
 
@@ -129,6 +144,7 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 	public void onPause() {
 		super.onPause();
 
+		logTest(" WelcomeFragment - onPause youtubeFragmentGoFullScreen = " + youtubeFragmentGoFullScreen);
 		if (!youtubeFragmentGoFullScreen) {
 			releaseYouTubeFragment(youTubeFrameContainer1, youTubePlayerFragment1);
 			releaseYouTubeFragment(youTubeFrameContainer2, youTubePlayerFragment2);
@@ -330,6 +346,8 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 
 	@Override
 	public void onFullscreen(boolean youtubeFragmentGoFullScreen) {
+		logTest(" WelcomeFragment - onFullscreen " + youtubeFragmentGoFullScreen);
+		WelcomeHolder.getInstance().setFullscreen(true);
 		this.youtubeFragmentGoFullScreen = youtubeFragmentGoFullScreen;
 	}
 
@@ -407,7 +425,9 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 				int orientation = getResources().getConfiguration().orientation; // auto-init for fullscreen
 				if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 					Fragment fragmentByTag = getFragmentManager().findFragmentByTag(YOUTUBE_FRAGMENT_TAG + R.id.youTubeFrameContainer1);
-					youTubePlayerFragment1 = initYoutubeFragment(R.id.youTubeFrameContainer1, (YouTubePlayerSupportFragment) fragmentByTag);
+					if (fragmentByTag != null) {
+						youTubePlayerFragment1 = initYoutubeFragment(R.id.youTubeFrameContainer1, (YouTubePlayerSupportFragment) fragmentByTag);
+					}
 				}
 
 				if (!initiatedFirst) {
@@ -449,7 +469,9 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 				orientation = getResources().getConfiguration().orientation; // auto-init for fullscreen
 				if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 					Fragment fragmentByTag = getFragmentManager().findFragmentByTag(YOUTUBE_FRAGMENT_TAG + R.id.youTubeFrameContainer2);
-					youTubePlayerFragment2 = initYoutubeFragment(R.id.youTubeFrameContainer2, (YouTubePlayerSupportFragment) fragmentByTag);
+					if (fragmentByTag != null) {
+						youTubePlayerFragment2 = initYoutubeFragment(R.id.youTubeFrameContainer2, (YouTubePlayerSupportFragment) fragmentByTag);
+					}
 				}
 
 				if (!initiatedSecond) {
@@ -489,7 +511,9 @@ public class WelcomeFragment extends CommonLogicFragment implements YouTubePlaye
 				orientation = getResources().getConfiguration().orientation; // auto-init for fullscreen
 				if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 					Fragment fragmentByTag = getFragmentManager().findFragmentByTag(YOUTUBE_FRAGMENT_TAG + R.id.youTubeFrameContainer3);
-					youTubePlayerFragment3 = initYoutubeFragment(R.id.youTubeFrameContainer3, (YouTubePlayerSupportFragment) fragmentByTag);
+					if (fragmentByTag != null) {
+						youTubePlayerFragment3 = initYoutubeFragment(R.id.youTubeFrameContainer3, (YouTubePlayerSupportFragment) fragmentByTag);
+					}
 				}
 
 				if (!initiatedThird) {

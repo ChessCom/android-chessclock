@@ -108,10 +108,11 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 				return;
 			}
 			if (result == StaticData.RESULT_OK) {
-				if (useList)
+				if (useList) {
 					getTaskFace().updateListData(itemList);
-				else
+				} else {
 					getTaskFace().updateData(item);
+				}
 			} else {
 				getTaskFace().errorHandle(result);
 			}

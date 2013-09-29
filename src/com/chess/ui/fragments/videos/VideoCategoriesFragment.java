@@ -30,6 +30,7 @@ import com.chess.ui.adapters.VideosCursorAdapter;
 import com.chess.ui.adapters.VideosPaginationAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -271,15 +272,18 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 			// clear current list
 			videosAdapter.changeCursor(null);
-			// TODO add logic to check if new video was added on server since last fetch
 
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEOS);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
-			loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.DEFAULT_ITEMS_PER_PAGE);
+			if (AppUtils.isNetworkAvailable(getActivity())) {
+				LoadItem loadItem = new LoadItem();
+				loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEOS);
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+				loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
+				loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.DEFAULT_ITEMS_PER_PAGE);
 
-			paginationAdapter.updateLoadItem(loadItem);
+				paginationAdapter.updateLoadItem(loadItem);
+			} else {
+				loadFromDb();
+			}
 		} else {
 			paginationAdapter.notifyDataSetChanged();
 		}

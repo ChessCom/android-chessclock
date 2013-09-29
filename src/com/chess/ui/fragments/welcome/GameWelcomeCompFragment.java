@@ -676,7 +676,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		switch (position) {
 			case WHAT_IS_CHESSCOM:
-				parentFace.changeInternalFragment(WelcomeTabsFragment.FEATURES_FRAGMENT);
+				parentFace.changeInternalFragment(WelcomeTabsFragment.WELCOME_FRAGMENT);
 				break;
 			case PLAY_ONLINE_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);

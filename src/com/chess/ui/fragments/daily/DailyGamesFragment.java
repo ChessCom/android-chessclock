@@ -59,6 +59,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private static final int FINISHED_GAMES_SECTION = 1;
 
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
+	private static final long FRAGMENT_VISIBILITY_DELAY = 200;
 
 	private OnlineUpdateListener challengeInviteUpdateListener;
 	private OnlineUpdateListener acceptDrawUpdateListener;
@@ -150,7 +151,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		gamesUpdateReceiver = new GamesUpdateReceiver();
 		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
 
-		if (need2update) {    // TODO restore properly
+		if (need2update) {
 			boolean haveSavedData = DbDataManager.haveSavedDailyGame(getActivity(), getUsername());
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
@@ -161,7 +162,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			}
 
 			if (haveSavedData) {
-				loadDbGames();
+				handler.postDelayed(delayedLoadFromDb, FRAGMENT_VISIBILITY_DELAY);
 			}
 		} else {
 			loadDbGames();
@@ -174,6 +175,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		unRegisterMyReceiver(gamesUpdateReceiver);
 
+		handler.removeCallbacks(delayedLoadFromDb);
 		releaseResources();
 	}
 
@@ -183,6 +185,16 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		outState.putInt(MODE, mode);
 	}
+
+	private Runnable delayedLoadFromDb = new Runnable() {
+		@Override
+		public void run() {
+			if (getActivity() == null) {
+				return;
+			}
+			loadDbGames();
+		}
+	};
 
 	private void init() {
 		challengeInviteUpdateListener = new OnlineUpdateListener(OnlineUpdateListener.INVITE);
@@ -447,12 +459,12 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		private int gameType;
 
 		public GamesCursorUpdateListener(int gameType) {
+			super();
 			this.gameType = gameType;
 		}
 
 		@Override
 		public void showProgress(boolean show) {
-			super.showProgress(show);
 			showLoadingView(show);
 		}
 
@@ -525,8 +537,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			}
 		}
 	}
-
-	// TODO http://www.chess.com/diagram?fen=rnbqkbnr%2Fpppppppp%2F8%2F8%2F3P4%2F8%2FPPP1PPPP%2FRNBQKBNR&size=1
 
 	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyGamesAllItem> {
 

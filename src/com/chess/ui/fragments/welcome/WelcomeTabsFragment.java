@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
+import com.chess.statics.WelcomeHolder;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.FragmentTabsFace;
@@ -20,7 +22,7 @@ import com.chess.ui.interfaces.FragmentTabsFace;
  */
 public class WelcomeTabsFragment extends CommonLogicFragment implements FragmentTabsFace {
 
-	public static final int FEATURES_FRAGMENT = 0;
+	public static final int WELCOME_FRAGMENT = 0;
 	public static final int SIGN_IN_FRAGMENT = 1;
 	public static final int SIGN_UP_FRAGMENT = 2;
 	public static final int GAME_FRAGMENT = 3;
@@ -37,6 +39,9 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 		config = new CompGameConfig.Builder().build();
 
 		changeInternalFragment(GameWelcomeCompFragment.createInstance(this, config));
+		if (WelcomeHolder.getInstance().isFullscreen()) {
+			changeInternalFragment(WELCOME_FRAGMENT);
+		}
 	}
 
 	@Override
@@ -97,7 +102,7 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 
 	@Override
 	public void changeInternalFragment(int code) {
-		if (code == FEATURES_FRAGMENT) {
+		if (code == WELCOME_FRAGMENT) {
 			openInternalFragment(WelcomeFragment.createInstance(this));
 			openWelcomeFragment = true;
 		} else if (code == SIGN_IN_FRAGMENT) {
@@ -142,8 +147,6 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 			rightTabBtn.setVisibility(View.VISIBLE);
 		}
 	}
-
-
 
 	private void changeInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();

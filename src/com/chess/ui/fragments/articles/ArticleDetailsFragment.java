@@ -272,8 +272,10 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			dateTxt.setText(dateFormatter.format(new Date(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE))));
 			bodyStr = DbDataManager.getString(cursor, DbScheme.V_BODY);
-//			checkDiagramInBody(bodyStr);
+			checkDiagramInBody(bodyStr);
 			contentTxt.setText(Html.fromHtml(bodyStr));
+
+			diagramsList = DbDataManager.getArticleDiagramItemFromDb(getContentResolver(), getUsername());
 		}
 	}
 

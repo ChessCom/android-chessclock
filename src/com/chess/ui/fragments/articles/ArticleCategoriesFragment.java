@@ -25,6 +25,7 @@ import com.chess.ui.adapters.ArticlesPaginationAdapter;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -184,15 +185,18 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 			// clear current list
 			articlesAdapter.changeCursor(null);
-			// TODO add logic to check if new video was added on server since last fetch
 
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLES_LIST);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
-			loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE,  RestHelper.DEFAULT_ITEMS_PER_PAGE);
+			if (AppUtils.isNetworkAvailable(getActivity())) {
+				LoadItem loadItem = new LoadItem();
+				loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLES_LIST);
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+				loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
+				loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE,  RestHelper.DEFAULT_ITEMS_PER_PAGE);
 
-			paginationAdapter.updateLoadItem(loadItem);
+				paginationAdapter.updateLoadItem(loadItem);
+			} else {
+				loadFromDb();
+			}
 		} else {
 			paginationAdapter.notifyDataSetChanged();
 		}
@@ -217,13 +221,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 			}
 			need2update = false;
 
-			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getArticlesListByCategory(categoryName));
-			if (cursor != null && cursor.moveToFirst()) {
-				articlesAdapter.changeCursor(cursor);
-				if (paginationAdapter != null) {
-					paginationAdapter.notifyDataSetChanged();
-				}
-			}
+			loadFromDb();
 		}
 
 		@Override
@@ -232,6 +230,16 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 			if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.no_network);
 				showEmptyView(true);
+			}
+		}
+	}
+
+	private void loadFromDb() {
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getArticlesListByCategory(categoryName));
+		if (cursor != null && cursor.moveToFirst()) {
+			articlesAdapter.changeCursor(cursor);
+			if (paginationAdapter != null) {
+				paginationAdapter.notifyDataSetChanged();
 			}
 		}
 	}

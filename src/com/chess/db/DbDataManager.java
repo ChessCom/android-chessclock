@@ -1173,6 +1173,23 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
+	public static List<ArticleDetailsItem.Diagram> getArticleDiagramItemFromDb(ContentResolver contentResolver, String username) {
+		Cursor cursor = query(contentResolver, DbHelper.getTableForUser(username, Tables.ARTICLE_DIAGRAMS));
+
+		List<ArticleDetailsItem.Diagram> diagramList = new ArrayList<ArticleDetailsItem.Diagram>();
+		if (cursor != null && cursor.moveToFirst()) {
+			do {
+
+				ArticleDetailsItem.Diagram diagram = new ArticleDetailsItem.Diagram();
+				diagram.setDiagramCode(getString(cursor, V_BODY));
+				diagram.setDiagramId(getLong(cursor, V_ID));
+
+				diagramList.add(diagram);
+			} while (cursor.moveToNext());
+		}
+		return diagramList;
+	}
+
 	public static void saveArticlesDiagramItem(ContentResolver contentResolver, ArticleDetailsItem.Diagram currentItem) {
 		final String[] arguments2 = sArguments1;
 		arguments2[0] = String.valueOf(currentItem.getDiagramId());

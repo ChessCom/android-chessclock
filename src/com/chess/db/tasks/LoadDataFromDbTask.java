@@ -6,12 +6,12 @@ import android.content.ContentUris;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.StaticData;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataProvider;
 import com.chess.db.DbScheme;
 import com.chess.db.QueryParams;
+import com.chess.statics.StaticData;
+import com.chess.statics.Symbol;
 
 
 public class LoadDataFromDbTask extends AbstractUpdateTask<Cursor, Long> {

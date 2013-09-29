@@ -140,6 +140,14 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 			return diagram_code;
 		}
 
+		public void setDiagramId(long diagram_id) {
+			this.diagram_id = diagram_id;
+		}
+
+		public void setDiagramCode(String diagram_code) {
+			this.diagram_code = diagram_code;
+		}
+
 		public int getType() {
 			if (type == -1) { // if undefined
 				if (diagram_code.contains("simpleDiagram")) {
