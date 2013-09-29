@@ -130,8 +130,6 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 		LayoutParams defaultLinLayParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
-		buttonParams = new LayoutParams(0, controlButtonHeight);
-		buttonParams.weight = 1;
 
 		controlsLayout.setLayoutParams(defaultLinLayParams);
 
@@ -151,6 +149,11 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		button.setText(buttonGlyphsMap.get(buttonId));
 		ButtonDrawableBuilder.setBackgroundToView(button, styleId);
 		button.setId(getButtonId(buttonId));
+
+		if (buttonParams == null) {
+			buttonParams = new LayoutParams(0, controlButtonHeight);
+			buttonParams.weight = 1;
+		}
 
 		button.setLayoutParams(buttonParams);
 		return button;
