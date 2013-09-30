@@ -439,7 +439,7 @@ public class ButtonDrawableBuilder {
 			}
 			case R.style.Rect_Bottom_Middle_Badge: {
 				RectButtonBadgeDrawable rectButtonDrawable = setRectBadgeDefaults(context);
-				rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
+				rectButtonDrawable.rectPosition = BOTTOM_MIDDLE;
 				createRect(rectButtonDrawable, resources);
 
 				return rectButtonDrawable;

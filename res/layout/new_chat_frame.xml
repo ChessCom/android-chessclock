@@ -14,7 +14,6 @@
         android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll"
         android:layout_weight="1"
-        android:paddingTop="@dimen/default_scr_top_padding"
         android:paddingLeft="@dimen/default_scr_side_padding"
         android:paddingRight="@dimen/default_scr_side_padding"
         style="@style/ListItem"
@@ -24,7 +23,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:padding="8dip"
+        android:paddingLeft="8dip"
+        android:paddingRight="8dip"
+        android:paddingBottom="8dip"
         style="@style/ListItem"
         >
 

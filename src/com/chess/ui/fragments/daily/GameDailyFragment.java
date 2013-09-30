@@ -221,7 +221,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private class NewChatUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			showToast("new chat");
 			controlsDailyView.haveNewMessage(true);
 		}
 	}

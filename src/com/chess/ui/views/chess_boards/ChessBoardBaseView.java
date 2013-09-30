@@ -532,7 +532,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					x2 * squareSize + squareSize - offset, y2 * squareSize + squareSize - offset, madeMovePaint);
 		}
 
-		if (pieceSelected && showLegalMoves) { // draw all possible move coordinates
+		// highlight with semi-transparent dots all possible moves for selected piece
+		if (pieceSelected && showLegalMoves) {
 
 			boolean isWhiteToMove = boardFace.isWhiteToMove();
 			boolean isUserWhite = isUserWhite();
