@@ -1,6 +1,6 @@
 package com.chess.ui.views.drawables;
 
-import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
@@ -11,20 +11,19 @@ import com.chess.utilities.AppUtils;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 31.12.12
- * Time: 6:22
+ * Date: 29.09.13
+ * Time: 20:43
  */
-public class BadgeDrawable extends Drawable {
+public class ChatBadgeDrawable extends Drawable {
+
+	public static final int BADGE_SIZE = 17;
 
 	private static final int ICON_SIZE = 48;
-	private final Drawable icon;
 	private final boolean badDevice;
-	private int value;
 	private Paint rectangleMainPaint;
 	private Paint rectangleBorderPaint;
 	private Paint textPaint;
-	private final int bottom;
-	private final int right;
+
 	private final float density;
 	private final RectF badgeRect;
 	private final float cornerRadius;
@@ -36,27 +35,30 @@ public class BadgeDrawable extends Drawable {
 	private final float textHeight;
 	private final float viewHeight;
 	private final float viewWidth;
+	private Rect parentBounds;
+	private String value;
 
-	public BadgeDrawable(Context context, Drawable icon, int value) {
-		this.icon = icon;
-		this.value = value;
-		badDevice = isBadDevice(context);
+	public ChatBadgeDrawable(Resources resources, Rect parentBounds) {
+		this.parentBounds = parentBounds;
 
-		if (badDevice) {
-			this.icon.setBounds(0, 0, icon.getIntrinsicWidth() + 5, icon.getIntrinsicHeight() + 5);
-		} else {
-			this.icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
-		}
+
+		badDevice = isBadDevice(resources);
+
+//		if (badDevice) {
+//			this.icon.setBounds(0, 0, icon.getIntrinsicWidth() + 5, icon.getIntrinsicHeight() + 5);
+//		} else {
+//			this.icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+//		}
 		rectangleSize = 17;
 
-		density = context.getResources().getDisplayMetrics().density;
+		density = resources.getDisplayMetrics().density;
 
-		int border1Color = context.getResources().getColor(R.color.action_badge_border_1);
-		int borderMainColor1 = context.getResources().getColor(R.color.action_badge_main_1);
-		int borderMainColor2 = context.getResources().getColor(R.color.action_badge_main_2);
-		int borderBorderTopColor = context.getResources().getColor(R.color.action_badge_border_top);
-		int borderBorderBottomColor = context.getResources().getColor(R.color.action_badge_border_bottom);
-		int main1 = context.getResources().getColor(R.color.action_badge_main_1);
+		int border1Color = resources.getColor(R.color.action_badge_border_1);
+		int borderMainColor1 = resources.getColor(R.color.action_badge_main_1);
+		int borderMainColor2 = resources.getColor(R.color.action_badge_main_2);
+		int borderBorderTopColor = resources.getColor(R.color.action_badge_border_top);
+		int borderBorderBottomColor = resources.getColor(R.color.action_badge_border_bottom);
+		int main1 = resources.getColor(R.color.action_badge_main_1);
 		Shader mainShader = new LinearGradient(0, 0, rectangleSize, rectangleSize, borderMainColor1, borderMainColor2, Shader.TileMode.CLAMP);
 		Shader borderShader = new LinearGradient(0, 0, rectangleSize, rectangleSize, borderBorderTopColor, borderBorderBottomColor, Shader.TileMode.CLAMP);
 
@@ -65,7 +67,6 @@ public class BadgeDrawable extends Drawable {
 		rectangleMainPaint.setColor(main1);
 		rectangleMainPaint.setStrokeWidth(0.0f);
 		rectangleMainPaint.setStyle(Paint.Style.FILL);
-//		Shader mainShader = new LinearGradient(0, 0, rectangleSize, rectangleSize, Color.WHITE, Color.RED, Shader.TileMode.CLAMP);
 		rectangleMainPaint.setShader(mainShader);
 
 		rectangleBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -81,18 +82,14 @@ public class BadgeDrawable extends Drawable {
 		rectangleBorderBottomPaint.setStyle(Paint.Style.STROKE);
 		rectangleBorderBottomPaint.setShader(borderShader);
 
-		textSize = 11 * density;
+		textSize = 13 * density;
 		textWidth = 3 * density;
 		textHeight = 5 * density;
 
 		textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		textPaint.setColor(Color.WHITE);
 		textPaint.setTextSize(textSize);
-		textPaint.setTypeface(FontsHelper.getInstance().getTypeFace(context, FontsHelper.BOLD_FONT));
-
-		Rect bounds = icon.getBounds();
-		bottom = (int) (bounds.bottom * density);
-		right = (int) (bounds.right * density);
+		textPaint.setTypeface(FontsHelper.getInstance().getTypeFace(resources, FontsHelper.BOLD_FONT));
 
 		badgeRect = new RectF();
 		badgeBorderRect = new RectF();
@@ -100,12 +97,12 @@ public class BadgeDrawable extends Drawable {
 		cornerRadius = 4 * density;
 
 		// Used only for PRE-ICE
-		viewHeight = context.getResources().getDimension(R.dimen.actionbar_compat_height);
-		viewWidth = context.getResources().getDimension(R.dimen.actionbar_compat_button_width);
+		viewHeight = resources.getDimension(R.dimen.actionbar_compat_height);
+		viewWidth = resources.getDimension(R.dimen.actionbar_compat_button_width);
 	}
 
-	private boolean isBadDevice(Context context) {
-		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+	private boolean isBadDevice(Resources resources) {
+		DisplayMetrics displayMetrics = resources.getDisplayMetrics();
 		return (displayMetrics.density == 1.0f || displayMetrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM)
 				&& (displayMetrics.heightPixels <= 480) && AppUtils.HONEYCOMB_PLUS_API;
 	}
@@ -138,17 +135,17 @@ public class BadgeDrawable extends Drawable {
 				badgeBorderRect.set(x0 + 1, y0 + 1, (rectangleSize - 0.5f) * density, (rectangleSize - 0.5f) * density);
 			}
 
-			float iconX0 = -icon.getIntrinsicWidth() / 2;
-			float iconY0 = -icon.getIntrinsicHeight() / 2;
+			float iconX0 = parentBounds.right / 2;
+			float iconY0 = parentBounds.bottom / 2;
+
 			canvas.save();
 			if (badDevice) {
-				float xx = icon.getIntrinsicWidth();
+				float xx = parentBounds.right;
 				canvas.translate((ICON_SIZE - xx) / 2 - 4, (ICON_SIZE - xx) / 2 - 4); // hate this stupid hardcode :(
 			} else {
 				canvas.translate(iconX0, iconY0);
 			}
 
-			icon.draw(canvas);
 			canvas.restore();
 
 		} else {
@@ -164,23 +161,20 @@ public class BadgeDrawable extends Drawable {
 			badgeRect.set(x0, y0, x1, y1);
 			badgeBorderRect.set(x0, y0, x1, y1);
 
-			float iconX0 = (viewWidth - icon.getIntrinsicWidth()) / 2;
-			float iconY0 = (viewHeight - icon.getIntrinsicHeight()) / 2;
+			float iconX0 = (viewWidth - parentBounds.right) / 2;
+			float iconY0 = (viewHeight - parentBounds.bottom) / 2;
 			canvas.save();
 			canvas.translate(iconX0, iconY0);
-			icon.draw(canvas);
 			canvas.restore();
 		}
 
-		if (value != 0) {
-			canvas.drawRoundRect(badgeRect, cornerRadius, cornerRadius, rectangleMainPaint);
-			canvas.drawRoundRect(badgeBorderRect, cornerRadius, cornerRadius, rectangleBorderBottomPaint);
-			canvas.drawRoundRect(badgeRect, cornerRadius, cornerRadius, rectangleBorderPaint);
+		canvas.drawRoundRect(badgeRect, cornerRadius, cornerRadius, rectangleMainPaint);
+		canvas.drawRoundRect(badgeBorderRect, cornerRadius, cornerRadius, rectangleBorderBottomPaint);
+		canvas.drawRoundRect(badgeRect, cornerRadius, cornerRadius, rectangleBorderPaint);
 
-			// Draw text
-			canvas.drawText(String.valueOf(value), badgeRect.centerX() - textWidth - density,
-					badgeRect.centerY() + textHeight - density, textPaint);
-		}
+		// Draw text
+		canvas.drawText(value, badgeRect.centerX() - textWidth,
+				badgeRect.centerY() + textHeight - density, textPaint);
 	}
 
 	@Override
@@ -214,7 +208,7 @@ public class BadgeDrawable extends Drawable {
 		return PixelFormat.OPAQUE;
 	}
 
-	public void setValue(int value) {
+	public void setValue(String value) {
 		this.value = value;
 		invalidateSelf();
 	}

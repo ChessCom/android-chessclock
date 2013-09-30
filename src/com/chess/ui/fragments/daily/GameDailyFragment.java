@@ -100,7 +100,9 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private DailyCurrentGameData currentGame;
 
 	private IntentFilter boardUpdateFilter;
+	private IntentFilter newChatUpdateFilter;
 	private BroadcastReceiver moveUpdateReceiver;
+	private NewChatUpdateReceiver newChatUpdateReceiver;
 
 	protected boolean userPlayWhite = true;
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
@@ -157,7 +159,9 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	public void onResume() {
 		super.onResume();
 		moveUpdateReceiver = new MoveUpdateReceiver();
+		newChatUpdateReceiver = new NewChatUpdateReceiver();
 		registerReceiver(moveUpdateReceiver, boardUpdateFilter);
+		registerReceiver(newChatUpdateReceiver, newChatUpdateFilter);
 
 		DataHolder.getInstance().setInOnlineGame(gameId, true);
 		loadGameAndUpdate();
@@ -168,6 +172,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		super.onPause();
 
 		unRegisterMyReceiver(moveUpdateReceiver);
+		unRegisterMyReceiver(newChatUpdateReceiver);
 
 		DataHolder.getInstance().setInOnlineGame(gameId, false);
 		if (HONEYCOMB_PLUS_API) {
@@ -210,6 +215,14 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			long gameId = intent.getLongExtra(BaseGameItem.GAME_ID, 0);
 
 			updateGameState(gameId);
+		}
+	}
+
+	private class NewChatUpdateReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			showToast("new chat");
+			controlsDailyView.haveNewMessage(true);
 		}
 	}
 
@@ -688,7 +701,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId,  RestHelper.V_RESIGN, currentGame.getTimestamp());
 			new RequestJsonTask<BaseResponseItem>(abortGameUpdateListener).executeTask(loadItem);
 		} else if (tag.equals(END_VACATION_TAG)) {
-			LoadItem loadItem = LoadHelper.deleteVacation(getUserToken());
+			LoadItem loadItem = LoadHelper.deleteOnVacation(getUserToken());
 			new RequestJsonTask<VacationItem>(new VacationUpdateListener()).executeTask(loadItem);
 
 		} else if (tag.equals(ERROR_TAG)) {
@@ -862,6 +875,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	public void init() {
 		gameId = getArguments().getLong(BaseGameItem.GAME_ID, 0);
+
+		boardUpdateFilter = new IntentFilter(IntentConstants.BOARD_UPDATE);
+		newChatUpdateFilter = new IntentFilter(IntentConstants.NOTIFICATIONS_UPDATE);
+
 		labelsConfig = new LabelsConfig();
 
 		abortGameUpdateListener = new GameDailyUpdatesListener(ABORT_GAME_UPDATE);
@@ -902,8 +919,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		boardView.setGameFace(this);
 		boardView.lockBoard(true);
-
-		boardUpdateFilter = new IntentFilter(IntentConstants.BOARD_UPDATE);
 
 		{// options list setup
 			optionsMap = new SparseArray<String>();

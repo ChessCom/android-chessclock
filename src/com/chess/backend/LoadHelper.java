@@ -127,10 +127,25 @@ public class LoadHelper {
 		return loadItem;
 	}
 
-	public static LoadItem deleteVacation(String userToken) {
+	public static LoadItem deleteOnVacation(String userToken) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(getInstance().CMD_VACATIONS);
 		loadItem.setRequestMethod(DELETE);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
+		return loadItem;
+	}
+
+	public static LoadItem getOnVacation(String userToken) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(getInstance().CMD_VACATIONS);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
+		return loadItem;
+	}
+
+	public static LoadItem postOnVacation(String userToken) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(getInstance().CMD_VACATIONS);
+		loadItem.setRequestMethod(POST);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		return loadItem;
 	}

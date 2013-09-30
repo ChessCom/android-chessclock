@@ -411,7 +411,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private class NotificationsUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Log.d("TEST", " onReceive= ");
+			Log.d("TEST", " onReceive = " + intent);
 
 			updateNotificationsBadge();
 		}

@@ -74,6 +74,22 @@ public class ButtonDrawableBuilder {
 		return buttonDrawable;
 	}
 
+	private static RectButtonBadgeDrawable setRectBadgeDefaults(Context context) {
+		Resources resources = context.getResources();
+		RectButtonBadgeDrawable buttonDrawable = new RectButtonBadgeDrawable();// TODO improve code - remove duplicates
+		buttonDrawable.isSolid = true;
+		buttonDrawable.useBorder = true;
+		buttonDrawable.usePressedLayer = false;
+		buttonDrawable.gradientAngle = TL_BR;
+		buttonDrawable.bevelLvl = 1;
+		buttonDrawable.bevelInset = DEFAULT_BEVEL_INSET;
+
+		buttonDrawable.radius = resources.getDimensionPixelSize(R.dimen.rounded_button_radius);
+		buttonDrawable.colorOuterBorder = resources.getColor(R.color.semi_transparent_border);
+
+		return buttonDrawable;
+	}
+
 	public static void setBackgroundToView(View view, int styleId) {
 		ButtonDrawable buttonDrawable = createDrawable(view.getContext(), styleId);
 		if (AppUtils.JELLYBEAN_PLUS_API) {
@@ -418,6 +434,13 @@ public class ButtonDrawableBuilder {
 				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
 				rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
 				createRect(rectButtonDrawable, resources, R.color.light_green_button);
+
+				return rectButtonDrawable;
+			}
+			case R.style.Rect_Bottom_Middle_Badge: {
+				RectButtonBadgeDrawable rectButtonDrawable = setRectBadgeDefaults(context);
+				rectButtonDrawable.rectPosition = BOTTOM_RIGHT;
+				createRect(rectButtonDrawable, resources);
 
 				return rectButtonDrawable;
 			}

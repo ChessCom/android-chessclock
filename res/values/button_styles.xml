@@ -448,6 +448,12 @@
         <item name="btn_rect_pos">bottomRight</item>
     </style>
 
+	<!-- ============= Chat Badge Button ===================== -->
+
+	<style name="Rect.Bottom.Middle.Badge">
+		<item name="btn_rect_pos">bottomMiddle</item>
+	</style>
+
     <!-- ============= Colored Buttons ===================== -->
     <style name="Rect.Bottom.Right.Orange">
         <item name="btn_rect_pos">bottomRight</item>

@@ -40,7 +40,7 @@
 		<item>Taktik</item>
 	</string-array>	
 
-	<string-array name="AIM">
+	<string-array name="afterMyMove">
 	    <item>Gå till nästa Ready Game</item>
 		<item>Stay On Same Game</item>
 		<item>Återgå till Game List</item>

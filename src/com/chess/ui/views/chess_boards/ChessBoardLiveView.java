@@ -2,7 +2,6 @@ package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import com.chess.statics.AppConstants;
 
 public class ChessBoardLiveView extends ChessBoardNetworkView {
 
@@ -12,7 +11,7 @@ public class ChessBoardLiveView extends ChessBoardNetworkView {
 
 	@Override
 	protected boolean need2ShowSubmitButtons() {
-		return preferences.getBoolean(getAppData().getUsername() + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false);
+		return getAppData().getShowSubmitButtonsLive();
 	}
 
 	@Override

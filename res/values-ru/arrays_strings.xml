@@ -40,7 +40,7 @@
 		<item>Тактики</item>
 	</string-array>	
 
-	<string-array name="AIM">
+	<string-array name="afterMyMove">
 	    <item>Перейти к следующей готовой игре</item>
 		<item>Остаться в текущей</item>
 		<item>Вернуться к списку игр</item>

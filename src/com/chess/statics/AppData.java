@@ -55,6 +55,10 @@ public class AppData {
 		return preferences.getString(USER_TOKEN, Symbol.EMPTY);
 	}
 
+	public void setAfterMoveAction(int action) {
+		setIntValue(PREF_ACTION_AFTER_MY_MOVE, action);
+	}
+
 	public int getAfterMoveAction() {
 		return getIntValue(PREF_ACTION_AFTER_MY_MOVE, StaticData.AFTER_MOVE_GO_TO_NEXT_GAME);
 	}
@@ -148,6 +152,30 @@ public class AppData {
 
 	public boolean isComputerVsHumanBlackGameMode(BoardFace boardFace) {
 		return boardFace.getMode() == GAME_MODE_COMPUTER_VS_PLAYER_BLACK;
+	}
+
+	public void setShowSubmitButtonsDaily(boolean show) {
+		setBooleanValue(PREF_SHOW_SUBMIT_MOVE_DAILY, show);
+	}
+
+	public boolean getShowSubmitButtonsDaily() {
+		return getBooleanValue(PREF_SHOW_SUBMIT_MOVE_DAILY, true);
+	}
+
+	public void setShowSubmitButtonsLive(boolean show) {
+		setBooleanValue(PREF_SHOW_SUBMIT_MOVE_LIVE, show);
+	}
+
+	public boolean getShowSubmitButtonsLive() {
+		return getBooleanValue(PREF_SHOW_SUBMIT_MOVE_LIVE, true);
+	}
+
+	public void setOnVacation(boolean show) {
+		setBooleanValue(PREF_ON_VACATION, show);
+	}
+
+	public boolean isOnVacation() {
+		return getBooleanValue(PREF_ON_VACATION, false);
 	}
 
 	public void setUserPremiumStatus(int level) {

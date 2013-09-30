@@ -138,6 +138,7 @@
 	<string name="invite_a_friend">Invite A Friend</string>
 	<string name="contactUs">Contact Us</string>
 	<string name="logout">Logout</string>
+	<string name="on_vacation">On Vacation</string> <!--Checkbox if user is on vacation-->
 	<string name="vacation_on">On Vacation</string> <!--Checkbox if user is on vacation-->
 	<string name="vacation_off">Not on Vacation</string> <!--Checkbox if user is not on vacation-->
     <string name="confirm_vacation_title">Confirm Vacation</string>

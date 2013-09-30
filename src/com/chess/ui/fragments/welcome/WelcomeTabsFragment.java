@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,7 +158,7 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 		.addToBackStack(fragment.getClass().getSimpleName()).commit();
 	}
 
-	public boolean showPreviousFragment(){
+	public boolean showPreviousFragment() {
 		if (getChildFragmentManager().getBackStackEntryCount() > 0) {
 			FragmentManager.BackStackEntry entry = getChildFragmentManager().getBackStackEntryAt(0);  // findFragmentByTag gives null :(
 			if (entry!= null && entry.getName().equals(WelcomeFragment.class.getSimpleName()) && openWelcomeFragment){

@@ -98,6 +98,12 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 			case R.string.ic_board:
 				getActivityFace().openFragment(new SettingsBoardFragment());
 				break;
+			case R.string.ic_daily_game:
+				getActivityFace().openFragment(new SettingsDailyChessFragment());
+				break;
+//			case R.string.ic_live_standard:
+//				getActivityFace().openFragment(new SettingsDailyChessFragment());
+//				break;
 			case R.string.ic_theme:
 				getActivityFace().openFragment(new SettingsThemeFragment());
 				break;

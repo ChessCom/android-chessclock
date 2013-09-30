@@ -62,7 +62,7 @@
 		<item>Tattica</item>
 	</string-array>	
 	
-	<string-array name="AIM">
+	<string-array name="afterMyMove">
 	    <item>Vai al prossimo Game Ready</item>
 		<item>Stay On Same Game</item>
 		<item>Return To Game List</item>

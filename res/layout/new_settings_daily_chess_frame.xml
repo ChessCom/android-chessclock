@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	>
+
+	<com.chess.LinLayout
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+
+		<!-- After i Move -->
+		<com.chess.LinLayout
+			android:id="@+id/afterMoveView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearListItem"
+			android:paddingRight="0dip"
+			android:background="@drawable/transparent_list_item_selector"
+			>
+			<!--Label-->
+			<com.chess.RoboTextView
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:text="@string/after_i_move"
+				android:layout_weight="1"
+				style="@style/SettingsListText"
+				/>
+
+			<Spinner
+				android:id="@+id/afterMoveSpinner"
+				android:layout_width="wrap_content"
+				android:layout_height="37dip"
+				android:background="@drawable/transparent_list_item_selector"
+				/>
+
+		</com.chess.LinLayout>
+
+		<!--Show Submit button-->
+		<com.chess.LinLayout
+			android:id="@+id/showSubmitView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearListItem"
+			android:paddingRight="10dip"
+			android:background="@drawable/transparent_list_item_selector"
+			>
+
+			<!--Label-->
+			<com.chess.RoboTextView
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:text="@string/show_submit_button"
+				android:layout_weight="1"
+				style="@style/SettingsListText"
+				/>
+
+			<com.chess.SwitchButton
+				android:id="@+id/showSubmitSwitch"
+				style="@style/Switch.Default.Yes"
+				/>
+		</com.chess.LinLayout>
+
+		<!--On Vacation-->
+		<com.chess.LinLayout
+			android:id="@+id/onVacationView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearListItem"
+			android:paddingRight="10dip"
+			android:background="@drawable/transparent_list_item_selector"
+			>
+
+			<!--Label-->
+			<com.chess.RoboTextView
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:text="@string/on_vacation"
+				android:layout_weight="1"
+				style="@style/SettingsListText"
+				/>
+
+			<com.chess.SwitchButton
+				android:id="@+id/onVacationSwitch"
+				style="@style/Switch.Default.Yes"
+				/>
+
+		</com.chess.LinLayout>
+
+
+	</com.chess.LinLayout>
+</ScrollView>

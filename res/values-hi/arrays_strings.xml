@@ -40,7 +40,7 @@
 		<item>रणनीति</item>
 	</string-array>	
 	
-	<string-array name="AIM">
+	<string-array name="afterMyMove">
 	    <item>अगले तैयार खेल</item>
 		<item>एक ही खेल रहो</item>
 		<item>खेल सूची</item>

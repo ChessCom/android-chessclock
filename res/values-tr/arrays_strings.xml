@@ -40,7 +40,7 @@
 		<item>Taktikler</item>
 	</string-array>	
 
-	<string-array name="AIM">
+	<string-array name="afterMyMove">
 	    <item>Sonraki Hazır Oyun Git</item>
 		<item>Aynı Oyunu Stay</item>
 		<item>Oyun Listesi Return To</item>

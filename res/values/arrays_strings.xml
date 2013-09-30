@@ -194,10 +194,10 @@
         <item>No Ads!</item>
     </string-array>
 
-    <string-array name="AIM">
+    <string-array name="afterMyMove">
         <item>Go To Next Ready Game</item>
         <item>Stay On Same Game</item>
-        <item>Return To Game List</item>
+        <item>Return To Games List</item>
     </string-array>
 
     <string-array name="Notif">

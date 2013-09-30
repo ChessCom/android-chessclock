@@ -564,6 +564,26 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		soundsSpinner.setSelection(getAppData().getSoundSetPosition());
 	}
 
+
+	@Override
+	public void onValueSelected(int code) {
+		selectedThemeItem = backgroundsFragment.getItemByCode(code);
+
+		imageLoader.download(selectedThemeItem.getBackgroundPreviewUrl(), backgroundPreviewImg, screenWidth);
+		backgroundNameTxt.setText(selectedThemeItem.getThemeName());
+
+		backgroundsFragment.dismiss();
+		backgroundsFragment = null;
+
+		// show button to apply changes
+		applyBackgroundBtn.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void onDialogCanceled() {
+		backgroundsFragment = null;
+	}
+
 	private void widgetsInit(View view) {
 
 		Resources resources = getResources();
@@ -626,7 +646,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		applyBackgroundBtn = view.findViewById(R.id.applyBackgroundBtn);
 		applyBackgroundBtn.setOnClickListener(this);
 
-
 		String username = getUsername();
 
 		// Board
@@ -671,22 +690,4 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		coordinatesSpinner.setOnItemSelectedListener(this);
 	}
 
-	@Override
-	public void onValueSelected(int code) {
-		selectedThemeItem = backgroundsFragment.getItemByCode(code);
-
-		imageLoader.download(selectedThemeItem.getBackgroundPreviewUrl(), backgroundPreviewImg, screenWidth);
-		backgroundNameTxt.setText(selectedThemeItem.getThemeName());
-
-		backgroundsFragment.dismiss();
-		backgroundsFragment = null;
-
-		// show button to apply changes
-		applyBackgroundBtn.setVisibility(View.VISIBLE);
-	}
-
-	@Override
-	public void onDialogCanceled() {
-		backgroundsFragment = null;
-	}
 }

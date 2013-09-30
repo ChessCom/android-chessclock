@@ -1,5 +1,9 @@
 package com.chess.ui.fragments.daily;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +20,7 @@ import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.entity.api.DailyChatItem;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyCurrentGameItem;
+import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ChatMessagesAdapter;
@@ -55,6 +60,8 @@ public class DailyChatFragment extends CommonLogicFragment{
 	private TimeStampForSendMessageListener timeStampForSendMessageListener;
 	private String myAvatar;
 	private String opponentAvatar;
+	private NewChatUpdateReceiver newChatUpdateReceiver;
+	private IntentFilter newChatUpdateFilter;
 
 	public static DailyChatFragment createInstance(long gameId, String opponentAvatar) {
 		DailyChatFragment fragment = new DailyChatFragment();
@@ -81,6 +88,8 @@ public class DailyChatFragment extends CommonLogicFragment{
 		}
 
 		myAvatar = getAppData().getUserAvatar();
+		newChatUpdateFilter = new IntentFilter(IntentConstants.NOTIFICATIONS_UPDATE);
+
 	}
 
 	@Override
@@ -107,6 +116,9 @@ public class DailyChatFragment extends CommonLogicFragment{
 	public void onResume() {
 		super.onResume();
 
+		newChatUpdateReceiver = new NewChatUpdateReceiver();
+		registerReceiver(newChatUpdateReceiver, newChatUpdateFilter);
+
 		showKeyBoard(sendEdt);
 
 		updateList();
@@ -116,6 +128,9 @@ public class DailyChatFragment extends CommonLogicFragment{
 	@Override
 	public void onPause() {
 		super.onPause();
+
+		unRegisterMyReceiver(newChatUpdateReceiver);
+
 		handler.removeCallbacks(updateListOrder);
 	}
 
@@ -125,6 +140,13 @@ public class DailyChatFragment extends CommonLogicFragment{
 		outState.putLong(GAME_ID, gameId);
 //		outState.putString(OPPONENT_NAME, opponentName);
 		outState.putString(OPPONENT_AVATAR, opponentAvatar);
+	}
+
+	private class NewChatUpdateReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			updateList();
+		}
 	}
 
 	protected void widgetsInit(View view){

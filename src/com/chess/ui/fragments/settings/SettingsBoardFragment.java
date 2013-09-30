@@ -34,7 +34,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 	private Spinner piecesSpinner;
 	private SwitchButton coordinatesSwitch;
 	private SwitchButton highlightLastMoveSwitch;
-	private SwitchButton alwaysShowWhiteBottomSwitch;
+//	private SwitchButton alwaysShowWhiteBottomSwitch;
 	private SwitchButton soundsSwitch;
 	private SwitchButton showLegalMovesSwitch;
 	private TextView strengthValueBtn;
@@ -147,7 +147,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		coordinatesSwitch.setSwitchChangeListener(this);
 		highlightLastMoveSwitch.setSwitchChangeListener(this);
 		showLegalMovesSwitch.setSwitchChangeListener(this);
-		alwaysShowWhiteBottomSwitch.setSwitchChangeListener(this);
+//		alwaysShowWhiteBottomSwitch.setSwitchChangeListener(this);
 		soundsSwitch.setSwitchChangeListener(this);
 		autoFlipView.setOnClickListener(this);
 		autoFlipSwitch.setSwitchChangeListener(this);
@@ -164,7 +164,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		coordinatesSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_COORDINATES, true));
 		highlightLastMoveSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_HIGHLIGHT_LAST_MOVE, true));
 		showLegalMovesSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_SHOW_LEGAL_MOVES, true));
-		alwaysShowWhiteBottomSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_SHOW_ANSWER_BOTTOM, true));
+//		alwaysShowWhiteBottomSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_SHOW_ANSWER_BOTTOM, true));
 		autoFlipSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_AUTO_FLIP, true));
 
 		//spinners

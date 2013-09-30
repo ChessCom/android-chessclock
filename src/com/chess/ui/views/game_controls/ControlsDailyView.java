@@ -7,6 +7,8 @@ import android.view.View;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.ui.interfaces.boards.BoardViewNetworkFace;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.ui.views.drawables.smart_button.RectButtonBadgeDrawable;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
 
@@ -21,6 +23,7 @@ public class ControlsDailyView extends ControlsBaseView {
 
 	private static final long BLINK_DELAY = 5 * 1000;
 	private static final long UNBLINK_DELAY = 400;
+	public static final String NEW_MESSAGE_MARK = "!";
 
 	private BoardViewNetworkFace boardViewFace;
 
@@ -77,9 +80,18 @@ public class ControlsDailyView extends ControlsBaseView {
 	}
 
 	public void haveNewMessage(boolean newMessage) {
-//		int imgId = newMessage ? R.drawable.ic_chat_nm : R.drawable.ic_chat; // TODO create custom top badge drawable
+		RoboButton chatButton = (RoboButton) findViewById(getButtonId(ButtonIds.CHAT));
 
-//		((ImageButton) findViewById(getButtonId(ButtonIds.CHAT)).setImageResource(imgId);
+		if (newMessage) {
+			ButtonDrawableBuilder.setBackgroundToView(chatButton, R.style.Rect_Bottom_Middle_Badge);
+			RectButtonBadgeDrawable background = (RectButtonBadgeDrawable) chatButton.getBackground();
+			if (background != null) {
+				background.setBadgeValue(NEW_MESSAGE_MARK);
+			}
+		} else {
+			ButtonDrawableBuilder.setBackgroundToView(chatButton, R.style.Rect_Bottom_Middle);
+		}
+
 		invalidate();
 	}
 

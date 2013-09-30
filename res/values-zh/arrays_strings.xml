@@ -39,7 +39,7 @@
 		<item>策略</item>
 	</string-array>	
 	
-	<string-array name="AIM">
+	<string-array name="afterMyMove">
 	    <item>转到下一步准备游戏</item>
 		<item>留在相同的游戏</item>
 		<item>返回游戏列表</item>

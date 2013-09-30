@@ -45,6 +45,7 @@ public class AppConstants {
 	public static final String PREF_SHOW_SUBMIT_MOVE_LIVE = "show submit move live";
 	public static final String PREF_SHOW_SUBMIT_MOVE_DAILY = "show submit button daily";
 	public static final String PREF_DAILY_NOTIFICATIONS = "use daily notifications";
+	public static final String PREF_ON_VACATION = "user on vacation";
 	public static final String PREF_SHOW_LEGAL_MOVES = "show possible move highlights";
 	public static final String PREF_BOARD_COORDINATES = "show coordinates";
 	public static final String PREF_BOARD_HIGHLIGHT_LAST_MOVE = "highlight last move";
@@ -59,8 +60,6 @@ public class AppConstants {
 	public static final String PREF_COORDINATES_SET = "colors set";
 	public static final String PREF_LANGUAGE = "application language";
 
-	public static final String PREF_VIDEO_SKILL_LEVEL = "video skill level";
-    public static final String PREF_VIDEO_CATEGORY = "video category";
 	public static final String PREF_USER_SKILL_LEVEL = "user_skill_level";
 	public static final String PREF_USER_SKILL_LEVEL_SET = "user_skill_level_was_set";
 	public static final String PREF_USER_COUNTRY = "user_country";

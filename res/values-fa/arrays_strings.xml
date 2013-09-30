@@ -39,7 +39,7 @@
 		<item>تاکتیک</item>
 	</string-array>	
 	
-	<string-array name="AIM">
+	<string-array name="afterMyMove">
 	    <item>برو برای بازی بعدی آماده</item>
 		<item>اقامت در بازی همان</item>
 		<item>بازگشت به لیست بازی</item>

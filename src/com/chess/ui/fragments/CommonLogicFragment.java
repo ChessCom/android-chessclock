@@ -46,7 +46,9 @@ import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
 import com.slidingmenu.lib.SlidingMenu;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.chess.statics.AppConstants.*;
 import static com.chess.db.DbScheme.PROVIDER_NAME;
@@ -729,6 +731,17 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected String upCaseFirst(String string) {
 		return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
+	}
+
+	protected List<String> getItemsFromEntries(int entries){
+		String[] array = getResources().getStringArray(entries);
+		return getItemsFromArray(array);
+	}
+
+	protected List<String> getItemsFromArray(String[] array){
+		List<String> items = new ArrayList<String>();
+		items.addAll(Arrays.asList(array));
+		return items;
 	}
 
 //	public void printHashKey() { Don't remove, use to find needed facebook hashkey

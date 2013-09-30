@@ -1,6 +1,7 @@
 package com.chess;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 
 import java.util.HashMap;
@@ -35,12 +36,16 @@ public class FontsHelper {
 	}
 
 	public Typeface getTypeFace(Context context, String ttfName) {
+		return getTypeFace(context.getResources(), ttfName);
+	}
+
+	public Typeface getTypeFace(Resources resources, String ttfName) {
 		ttfName = ttfName == null? DEFAULT_FONT: ttfName;
 
 		if (fontsMap.containsKey(ttfName)) {
 		    return fontsMap.get(ttfName);
 		} else {
-			Typeface font = Typeface.createFromAsset(context.getAssets(), MAIN_PATH + ttfName + TTF);
+			Typeface font = Typeface.createFromAsset(resources.getAssets(), MAIN_PATH + ttfName + TTF);
 			fontsMap.put(ttfName, font);
 			return font;
 		}

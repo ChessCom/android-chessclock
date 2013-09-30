@@ -40,7 +40,7 @@
 		<item>"טקטיקה"</item>
 	</string-array>
 
-	<string-array name="AIM">
+	<string-array name="afterMyMove">
 		<item>"מוכן ללכת למשחק הבא"</item>
 		<item>"להישאר על אותו משחק"</item>
 		<item>"חזרה ל רשימת משחק"</item>
