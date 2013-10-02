@@ -1,5 +1,8 @@
 package com.chess.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -72,6 +75,10 @@ public class GameDiagramItem extends GameAnalysisItem {
 	private String colorScheme;
 	private String date;
 	private String eventName;
+	private boolean showAnimation = true;
+
+	public GameDiagramItem() {
+	}
 
 	public String getDiagramType() {
 		return diagramType;
@@ -136,4 +143,57 @@ public class GameDiagramItem extends GameAnalysisItem {
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
 	}
+
+	public boolean isShowAnimation() {
+		return showAnimation;
+	}
+
+	public void setShowAnimation(boolean showAnimation) {
+		this.showAnimation = showAnimation;
+	}
+
+
+	protected GameDiagramItem(Parcel in) {
+		super(in);
+		diagramType = in.readString();
+		moves = in.readString();
+		whitePlayerName = in.readString();
+		blackPlayerName = in.readString();
+		gameResult = in.readString();
+		colorScheme = in.readString();
+		date = in.readString();
+		eventName = in.readString();
+		showAnimation = in.readByte() != 0x00;
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		super.writeToParcel(dest, flags);
+		dest.writeString(diagramType);
+		dest.writeString(moves);
+		dest.writeString(whitePlayerName);
+		dest.writeString(blackPlayerName);
+		dest.writeString(gameResult);
+		dest.writeString(colorScheme);
+		dest.writeString(date);
+		dest.writeString(eventName);
+		dest.writeByte((byte) (showAnimation ? 0x01 : 0x00));
+	}
+
+	public static final Parcelable.Creator<GameDiagramItem> CREATOR = new Parcelable.Creator<GameDiagramItem>() {
+		@Override
+		public GameDiagramItem createFromParcel(Parcel in) {
+			return new GameDiagramItem(in);
+		}
+
+		@Override
+		public GameDiagramItem[] newArray(int size) {
+			return new GameDiagramItem[size];
+		}
+	};
 }

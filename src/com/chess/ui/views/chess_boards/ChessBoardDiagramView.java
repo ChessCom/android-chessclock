@@ -29,7 +29,10 @@ public class ChessBoardDiagramView extends ChessBoardBaseView implements BoardVi
 
 	private GameDiagramFace gameAnalysisActivityFace;
 
+	public ChessBoardDiagramView(Context context) {
+		super(context);
 
+	}
 	public ChessBoardDiagramView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 

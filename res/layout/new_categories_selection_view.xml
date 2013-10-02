@@ -14,7 +14,6 @@
         android:layout_width="0dip"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:paddingLeft="@dimen/default_scr_side_padding"
         style="@style/ListItem"
         />
 

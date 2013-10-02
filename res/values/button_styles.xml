@@ -394,7 +394,9 @@
         <item name="btn_top">@color/transparent_button_border_left</item>  <!--dark-->
         <item name="btn_bottom">@color/transparent_button_border_bottom</item> <!--dark-->
         <item name="btn_solid">#01000000</item>
-    </style>
+		<item name="android:textColor">@color/text_tabs_color_selector</item>
+
+	</style>
 
     <style name="Rect.Tab.Left">
         <item name="btn_rect_pos">tabLeft</item>

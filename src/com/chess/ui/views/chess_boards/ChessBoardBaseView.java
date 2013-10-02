@@ -57,7 +57,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private static final int SQUARES_NUMBER = 8;
 	public static final int EMPTY_ID = 6;
 	private static final int QVGA_WIDTH = 240;
-	private final float density;
+	private float density;
 	protected AppData appData;
 	private int boardId;
 
@@ -132,8 +132,17 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private int draggingFrom = -1;
 	private CopyOnWriteArrayList<Move> validMoves = new CopyOnWriteArrayList<Move>(); // lets try this type
 
+	public ChessBoardBaseView(Context context) {
+		super(context);
+		init(context);
+	}
+
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+			init(context);
+	}
+
+	private void init(Context context) {
 		resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
 //		if (isInEditMode()) {

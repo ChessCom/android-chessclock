@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.chess.R;
 import com.chess.model.BaseGameItem;
-import com.chess.model.GameAnalysisItem;
 import com.chess.model.GameDiagramItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
@@ -35,9 +34,10 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	private static final String ERROR_TAG = "send request failed popup";
 
 	private static final String GAME_ITEM = "game_item";
+	private static final String SHOW_ANIMATION = "show_animation";
 
 	private ChessBoardDiagramView boardView;
-	private GameAnalysisItem analysisItem;
+	private GameDiagramItem diagramItem;
 	protected boolean userPlayWhite = true;
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
@@ -62,9 +62,9 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		super.onCreate(savedInstanceState);
 
 		if (getArguments() != null) {
-			analysisItem = getArguments().getParcelable(GAME_ITEM);
+			diagramItem = getArguments().getParcelable(GAME_ITEM);
 		} else {
-			analysisItem = savedInstanceState.getParcelable(GAME_ITEM);
+			diagramItem = savedInstanceState.getParcelable(GAME_ITEM);
 		}
 
 		init();
@@ -105,7 +105,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
-		outState.putParcelable(GAME_ITEM, analysisItem);
+		outState.putParcelable(GAME_ITEM, diagramItem);
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 	private void adjustBoardForGame() {
 		ChessBoardDiagram.resetInstance();
-		userPlayWhite = analysisItem.getUserColor() == ChessBoard.WHITE_SIDE;
+		userPlayWhite = diagramItem.getUserColor() == ChessBoard.WHITE_SIDE;
 
 		labelsConfig.topAvatar = opponentAvatarDrawable;
 		labelsConfig.bottomAvatar = userAvatarDrawable;
@@ -146,7 +146,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 		}
 
-		labelsConfig.topPlayerName = analysisItem.getOpponent();
+		labelsConfig.topPlayerName = diagramItem.getOpponent();
 		labelsConfig.topPlayerRating = "----";
 		labelsConfig.bottomPlayerName = getUsername();
 		labelsConfig.bottomPlayerRating = "----";
@@ -167,12 +167,13 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		bottomPanelView.showTimeLeftIcon(false);
 
 		BoardFace boardFace = getBoardFace();
-		if (analysisItem.getGameType() == BaseGameItem.CHESS_960) {
+		if (diagramItem.getGameType() == BaseGameItem.CHESS_960) {
 			boardFace.setChess960(true);
 		}
 
-		if (analysisItem.getFen() != null) {
-			boardFace.setupBoard(analysisItem.getFen());
+		if (diagramItem.getFen() != null) {
+			logTest(" using fen = " + diagramItem.getFen());
+			boardFace.setupBoard(diagramItem.getFen());
 		}
 
 		if (!userPlayWhite) {
@@ -181,20 +182,23 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 		// remove comments from movesList
 
-		String movesList = analysisItem.getMovesList();
+		String movesList = diagramItem.getMovesList();
 		if (movesList != null) {
+			logTest(" using moves = " + movesList);
 			movesList = MovesParser.removeCommentsFromMovesList(movesList);
 
 			boardFace.checkAndParseMovesList(movesList);
 		}
 
-		boardView.resetValidMoves();
+		if (diagramItem.isShowAnimation()) {
+			boardView.resetValidMoves();
 
-		invalidateGameScreen();
-		boardFace.takeBack();
-		boardView.invalidate();
+			invalidateGameScreen();
+			boardFace.takeBack();
+			boardView.invalidate();
 
-		playLastMoveAnimation();
+			playLastMoveAnimation();
+		}
 
 		boardFace.setJustInitialized(false);
 	}

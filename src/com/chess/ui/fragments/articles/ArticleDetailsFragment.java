@@ -30,11 +30,14 @@ import com.chess.backend.entity.api.CommonViewedItem;
 import com.chess.backend.entity.api.PostCommentItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.interfaces.TaskUpdateInterface;
+import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.model.GameDiagramItem;
+import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommentsCursorAdapter;
 import com.chess.ui.engine.ChessBoard;
@@ -119,6 +122,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private boolean diagramsLoaded;
 	private int controlButtonHeight;
 	private int actionBarHeight;
+	private String[] contentParts;
+	private int parsedPartCnt;
 
 	public static ArticleDetailsFragment createInstance(long articleId) {
 		ArticleDetailsFragment frag = new ArticleDetailsFragment();
@@ -326,8 +331,10 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			// deactivate previous diagram
 			for (final Integer previousClickedId : activeIdsMap.keySet()) {
-				// remove fragment
-				hideDiagramById(previousClickedId);
+				// remove fragment if active
+				if (activeIdsMap.get(previousClickedId)) {
+					hideDiagramById(previousClickedId);
+				}
 			}
 
 			// restore listView scrolling
@@ -468,10 +475,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			final View fragmentView = fragmentById.getView();
 			AnimatorSet.Builder animationBuilder = null;
-			Bitmap bitmapFromView = null;
 			if (fragmentView != null) {
-
-//				bitmapFromView = getBitmapFromView(fragmentView, (int) (widthPixels * 0.8f), (int) (widthPixels * 0.8f));
 
 				Animator fragmentAnimator = ObjectAnimator.ofFloat(fragmentView, "alpha", 1, 0);
 
@@ -482,12 +486,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			// start image animation
 			final ImageView imageView = (ImageView) getView().findViewById(IMAGE_PREFIX + previousClickedId);
-//			final ProgressImageView imageView = (ProgressImageView) getView().findViewById(IMAGE_PREFIX + previousClickedId);
-//			if (bitmapFromView != null) {
-//				BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmapFromView);
-//				drawable.setBounds(0, 0, (int) (widthPixels * 0.8f), (int) (widthPixels * 0.8f));
-//				imageView.setImageDrawable(drawable);
-//			}
 
 			Animator imageAlphaAnimator = ObjectAnimator.ofFloat(imageView, "alpha", 0, 1);
 			ObjectAnimator scaleX = ObjectAnimator.ofFloat(imageView, "scaleX", 1.3f, 1f);
@@ -534,14 +532,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	public Bitmap getBitmapFromView(View view, int width, int height) {
 		Bitmap returnedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(returnedBitmap);
-		Drawable bgDrawable = view.getBackground();
-//		if (view == mainPage.boardView) {
-//			canvas.drawColor(BoardView.BOARD_BG_COLOR);
-//		} else if (bgDrawable!=null) {
-//			bgDrawable.draw(canvas);
-//		} else {
 		canvas.drawColor(Color.WHITE);
-//		}
 		view.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
 		view.layout(0, 0, width, height);
 		view.draw(canvas);
@@ -663,6 +654,119 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 	}
 
+	private class DiagramLoaderTask extends AbstractUpdateTask<String, String> {
+
+		public DiagramLoaderTask(TaskUpdateInterface<String> taskFace) {
+			super(taskFace);
+		}
+
+		@Override
+		protected Integer doTheTask(String... params) {
+			logTest(" task in progress start");
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			logTest(" task in progress end");
+
+			item = params[0];
+			return StaticData.RESULT_OK;
+		}
+	}
+
+	private class DiagramUpdateListener extends ChessUpdateListener<String> {
+		private final int textColor;
+		private final int textSize;
+		private List<ArticleDetailsItem.Diagram> diagramList;
+
+		private DiagramUpdateListener(List<ArticleDetailsItem.Diagram> diagramList) {
+			super();
+			this.diagramList = diagramList;
+			Resources resources = getResources();
+			textColor = resources.getColor(R.color.new_subtitle_dark_grey);
+			textSize = (int) (resources.getDimensionPixelSize(R.dimen.content_text_size) / density);
+			paddingSide = resources.getDimensionPixelSize(R.dimen.default_scr_side_padding);
+		}
+
+		@Override
+		public void updateData(String part) {
+			{
+
+				String diagramPart = part.substring(part.indexOf("<div "));
+				String partAfterDiagram = diagramPart.substring(diagramPart.indexOf("</div>") + "</div>".length());
+
+				String diagramIdStr = diagramPart.substring(diagramPart.indexOf("id=\"chess_com_diagram_")
+						+ "id=\"chess_com_diagram_".length());
+				diagramIdStr = diagramIdStr.substring(0, diagramIdStr.indexOf("\" class"));
+				String[] diagramIdParts = diagramIdStr.split("_");
+				final int diagramId = Integer.parseInt(diagramIdParts[ID_POSITION]);
+				diagramIdsList.add(diagramId);
+
+				FrameLayout frameLayout = new FrameLayout(getActivity());
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthPixels,
+						ViewGroup.LayoutParams.WRAP_CONTENT);
+				params.gravity = Gravity.CENTER;
+				frameLayout.setId(DIAGRAM_PREFIX + diagramId);
+				frameLayout.setLayoutParams(params);
+
+				complexContentLinLay.addView(frameLayout);
+
+				// take 80% of screen width
+				int imageSize = (int) (widthPixels * 0.8f);
+				FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(imageSize, imageSize);
+				imageParams.gravity = Gravity.CENTER;
+
+				final ImageView imageView = new ImageView(getActivity());
+				imageView.setImageResource(R.drawable.board_white_grey_full_size);
+				imageView.setLayoutParams(imageParams);
+				imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+				imageView.setId(IMAGE_PREFIX + diagramId);
+
+				// set click handler and then get this tag from view to show diagram
+				imageView.setOnClickListener(ArticleDetailsFragment.this);
+
+				frameLayout.addView(imageView);
+
+				handler.postDelayed(new DiagramFragmentCreator(diagramId, diagramList), 200);
+
+
+				RoboTextView textView = new RoboTextView(getActivity());
+				textView.setTextSize(textSize);
+				textView.setTextColor(textColor);
+				textView.setText(Html.fromHtml(partAfterDiagram));
+				textView.setPadding(paddingSide, paddingSide, paddingSide, 0);
+				textView.setId(TEXT_PREFIX + diagramId);
+				textView.setOnClickListener(ArticleDetailsFragment.this);
+
+				complexContentLinLay.addView(textView);
+			}
+			// starting next task
+			parsedPartCnt++;
+
+			if (parsedPartCnt >= contentParts.length) {
+				return;
+			}
+
+			if (contentParts[parsedPartCnt].contains("chess_com_diagram")) {
+				logTest(" part starting task");
+				new DiagramLoaderTask(new DiagramUpdateListener(diagramList)).executeTask(contentParts[parsedPartCnt]);
+
+
+			} else {
+				RoboTextView textView = new RoboTextView(getActivity());
+				textView.setTextSize(textSize);
+				textView.setTextColor(textColor);
+				textView.setText(Html.fromHtml(contentParts[parsedPartCnt]));
+				textView.setPadding(paddingSide, 0, paddingSide, 0);
+				textView.setId(TEXT_PREFIX + ZERO);
+				textView.setOnClickListener(ArticleDetailsFragment.this);
+
+				complexContentLinLay.addView(textView);
+			}
+		}
+	}
+
 	private void loadDiagramsFromContent(String bodyStr, List<ArticleDetailsItem.Diagram> diagramList) {
 		if (bodyStr.contains(DIAGRAM_START_TAG)) {
 
@@ -671,7 +775,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			int textSize = (int) (resources.getDimensionPixelSize(R.dimen.content_text_size) / density);
 			int paddingSide = resources.getDimensionPixelSize(R.dimen.default_scr_side_padding);
 			// we go through the article body and divide it to parts
-			String[] parts = bodyStr.split(DIAGRAM_START_TAG);
+			contentParts = bodyStr.split(DIAGRAM_START_TAG);
 			// hide simple container
 			contentTxt.setVisibility(View.GONE);
 
@@ -679,91 +783,18 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			complexContentLinLay.setVisibility(View.VISIBLE);
 
 			// divide text and add corresponding views: TextView for text part and image for diagram part
-			for (String part : parts) {
-				if (part.contains("chess_com_diagram")) {
-					String diagramPart = part.substring(part.indexOf("<div "));
-					String partAfterDiagram = diagramPart.substring(diagramPart.indexOf("</div>") + "</div>".length());
+			for (parsedPartCnt = 0; parsedPartCnt < contentParts.length; parsedPartCnt++) {
+				if (contentParts[parsedPartCnt].contains("chess_com_diagram")) {
+					logTest(" part starting task");
+					new DiagramLoaderTask(new DiagramUpdateListener(diagramList)).executeTask(contentParts[parsedPartCnt]);
+					diagramsLoaded = true;
 
-					String diagramId = diagramPart.substring(diagramPart.indexOf("id=\"chess_com_diagram_")
-							+ "id=\"chess_com_diagram_".length());
-					diagramId = diagramId.substring(0, diagramId.indexOf("\" class"));
-					String[] diagramIdParts = diagramId.split("_");
-					int id = Integer.parseInt(diagramIdParts[ID_POSITION]);
-					diagramIdsList.add(id);
-
-					FrameLayout frameLayout = new FrameLayout(getActivity());
-					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthPixels,
-							ViewGroup.LayoutParams.WRAP_CONTENT);
-					params.gravity = Gravity.CENTER;
-					frameLayout.setId(DIAGRAM_PREFIX + id);
-					frameLayout.setLayoutParams(params);
-
-					complexContentLinLay.addView(frameLayout);
-
-					// take 80% of screen width
-					int imageSize = (int) (widthPixels * 0.8f);
-					FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(imageSize, imageSize);
-					imageParams.gravity = Gravity.CENTER;
-
-					final ImageView imageView = new ImageView(getActivity());
-					imageView.setImageResource(R.drawable.board_white_grey_full_size);
-					imageView.setLayoutParams(imageParams);
-					imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-					imageView.setId(IMAGE_PREFIX + id);
-
-					for (ArticleDetailsItem.Diagram diagramToShow : diagramList) {
-						if (diagramToShow.getDiagramId() == id) {
-
-							//create a real fragment
-
-							final GameDiagramItem diagramItem = new GameDiagramItem();
-							diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
-							if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PUZZLE) {
-								diagramItem.setMovesList(diagramToShow.getMoveList());
-							} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.CHESS_GAME) {
-								diagramItem.setMovesList(diagramToShow.getMoveList());
-							} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
-								diagramItem.setFen(diagramToShow.getFen());
-							} else { // non valid format
-								return;
-							}
-
-							// load it
-							final GameDiagramFragment fragment = GameDiagramFragment.createInstance(diagramItem);
-							FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-							transaction.replace(DIAGRAM_PREFIX + id, fragment, fragment.getClass().getSimpleName());
-							transaction.addToBackStack(fragment.getClass().getSimpleName());
-							transaction.commit();
-
-							// then hide to receive an exact view and set to imageView
-
-							// do delay bcz of fragment transaction
-							handler.postDelayed(new DiagramFragmentCreator(id), 200);
-
-							break;
-						}
-					}
-
-					// set click handler and then get this tag from view to show diagram
-					imageView.setOnClickListener(this);
-
-					frameLayout.addView(imageView);
-
-					RoboTextView textView = new RoboTextView(getActivity());
-					textView.setTextSize(textSize);
-					textView.setTextColor(textColor);
-					textView.setText(Html.fromHtml(partAfterDiagram));
-					textView.setPadding(paddingSide, paddingSide, paddingSide, 0);
-					textView.setId(TEXT_PREFIX + id);
-					textView.setOnClickListener(this);
-
-					complexContentLinLay.addView(textView);
-
+					break;
 				} else {
 					RoboTextView textView = new RoboTextView(getActivity());
 					textView.setTextSize(textSize);
 					textView.setTextColor(textColor);
-					textView.setText(Html.fromHtml(part));
+					textView.setText(Html.fromHtml(contentParts[parsedPartCnt]));
 					textView.setPadding(paddingSide, 0, paddingSide, 0);
 					textView.setId(TEXT_PREFIX + ZERO);
 					textView.setOnClickListener(this);
@@ -772,7 +803,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				}
 			}
 
-			diagramsLoaded = true;
+//			diagramsLoaded = true;
 		} else {
 			complexContentLinLay.setVisibility(View.GONE);
 			contentTxt.setVisibility(View.VISIBLE);
@@ -782,28 +813,80 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private class DiagramFragmentCreator implements Runnable {
 
 		private int diagramId;
+		private List<ArticleDetailsItem.Diagram> diagramList;
 
-		private DiagramFragmentCreator(int diagramId) {
+		public DiagramFragmentCreator(int diagramId, List<ArticleDetailsItem.Diagram> diagramList) {
 			this.diagramId = diagramId;
+			this.diagramList = diagramList;
 		}
 
 		@Override
 		public void run() {
-			final Fragment fragment = getChildFragmentManager().findFragmentById(DIAGRAM_PREFIX + diagramId);
+			if (getActivity() == null) {
+				return;
+			}
 
-			final View fragmentView = fragment.getView();
-			// get bitmap from fragmentView
-			Bitmap bitmapFromView = getBitmapFromView(fragmentView, (int) (widthPixels * 0.8f),
-					(int) (widthPixels * 0.8f));
+			for (ArticleDetailsItem.Diagram diagramToShow : diagramList) {
+				if (diagramToShow.getDiagramId() == diagramId) {
+					// create a real fragment
+					logTest(" create a real fragment for id = " + diagramId);
 
-			BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmapFromView);
-			drawable.setBounds(0, 0, (int) (widthPixels * 0.8f), (int) (widthPixels * 0.8f));
-			ImageView imageView = (ImageView) getView().findViewById(IMAGE_PREFIX + diagramId);
-			imageView.setImageDrawable(drawable);
+					final GameDiagramItem diagramItem = new GameDiagramItem();
+					diagramItem.setShowAnimation(false);
+					diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
+					if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PUZZLE) {
+						diagramItem.setMovesList(diagramToShow.getMoveList());
+						logTest(" id = " + diagramId + " use moves");
+					} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.CHESS_GAME) {
+						diagramItem.setMovesList(diagramToShow.getMoveList());
+						logTest(" id = " + diagramId + " use moves");
+					} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
+						diagramItem.setFen(diagramToShow.getFen());
+						logTest(" id = " + diagramId + " use fen = " + diagramToShow.getFen());
+					} else { // non valid format
+						return;
+					}
 
-			// remove fragment
-			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-			transaction.remove(fragment).commit();
+					// load it
+					final GameDiagramFragment fragment = GameDiagramFragment.createInstance(diagramItem);
+					FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+					transaction.replace(DIAGRAM_PREFIX + diagramId, fragment, fragment.getClass().getSimpleName());
+//					transaction.addToBackStack(fragment.getClass().getSimpleName());
+					transaction.commit();
+
+					// then hide to receive an exact view and set to imageView
+					handler.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							if (getActivity() == null) {
+								return;
+							}
+
+							final Fragment fragment = getChildFragmentManager().findFragmentById(DIAGRAM_PREFIX + diagramId);
+
+							if (fragment == null) {
+								return;
+							}
+							final View fragmentView = fragment.getView();
+							// get bitmap from fragmentView
+							Bitmap bitmapFromView = getBitmapFromView(fragmentView, (int) (widthPixels * 0.8f),
+									(int) (widthPixels * 0.8f));
+
+							BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmapFromView);
+							drawable.setBounds(0, 0, (int) (widthPixels * 0.8f), (int) (widthPixels * 0.8f));
+							ImageView imageView = (ImageView) getView().findViewById(IMAGE_PREFIX + diagramId);
+							imageView.setImageDrawable(drawable);
+							logTest(" diagramId = " + diagramId + " fragment = " + fragment + " \n imageView = " + imageView);
+
+							// remove fragment
+							FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+							transaction.remove(fragment).commit();
+						}
+					}, 200);
+
+					break;
+				}
+			}
 		}
 	}
 
