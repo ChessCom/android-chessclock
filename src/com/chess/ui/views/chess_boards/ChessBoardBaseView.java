@@ -139,7 +139,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	public ChessBoardBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-			init(context);
+		init(context);
 	}
 
 	private void init(Context context) {
@@ -307,7 +307,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	private boolean isUserColor(int color) {
 		if (appData.isHumanVsHumanGameMode(getBoardFace())) {
-			return true;
+			return getBoardFace().isWhiteToMove() ? color == ChessBoard.WHITE_SIDE : color == ChessBoard.BLACK_SIDE;
 		} else if (isUserWhite()) {
 			return color == ChessBoard.WHITE_SIDE;
 		} else {
@@ -546,7 +546,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 			boolean isWhiteToMove = boardFace.isWhiteToMove();
 			boolean isUserWhite = isUserWhite();
-			boolean isUsersTurn = (isUserWhite && isWhiteToMove) || (!isUserWhite && !isWhiteToMove);
+			boolean isUsersTurn = ((isUserWhite && isWhiteToMove) || (!isUserWhite && !isWhiteToMove))
+					|| appData.isHumanVsHumanGameMode(getBoardFace());
 
 			Log.d(VALIDMOVES, "draw validMoves.isEmpty() " + validMoves.isEmpty());
 			Log.d(VALIDMOVES, "draw validMoves.size() " + validMoves.size());
@@ -725,7 +726,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				}
 			}
 
-			// if promote - show popup ant return
+			// if promote - show popup and return
 			if (found && boardFace.isPromote(from, to)) {
 				gameFace.showChoosePieceDialog(file, rank);
 				return true;
@@ -747,8 +748,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				} else {
 					afterUserMove();
 				}
-			} else if (isUserColor(boardFace.getColor(to))
-					|| (boardFace.isAnalysis() && boardFace.getPiece(to) != ChessBoard.EMPTY)) {
+			} else if (boardFace.getPiece(to) != ChessBoard.EMPTY
+					&& (isUserColor(boardFace.getColor(to)) || boardFace.isAnalysis())) {
 				pieceSelected = true;
 				firstClick = false;
 				from = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
