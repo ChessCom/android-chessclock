@@ -10,7 +10,6 @@
 package com.chess.ui.engine;
 
 import android.util.Log;
-import com.chess.model.BaseGameItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.boards.BoardFace;
@@ -243,9 +242,11 @@ public class ChessBoard implements BoardFace {
 	private boolean finished;
 	final FenHelper fenHelper;
 
-	protected ChessBoard(GameFace gameFace) {
+	public ChessBoard(GameFace gameFace) {
 		this.gameFace = gameFace;
-		soundPlayer = gameFace.getSoundPlayer();
+		if (gameFace != null) { // TODO improve logic to create a new ChessBoard only for parsing movesList to FEN
+			soundPlayer = gameFace.getSoundPlayer();
+		}
 
 		movesParser = new MovesParser();
 		fenHelper = new FenHelper();
@@ -850,8 +851,9 @@ public class ChessBoard implements BoardFace {
 		// and we need to take the move back)
 		switchSides();
 
-		Boolean userColorWhite = gameFace.isUserColorWhite();
-		if (playSound && userColorWhite != null) {
+
+		if (playSound && gameFace != null && gameFace.isUserColorWhite() != null) {
+			Boolean userColorWhite = gameFace.isUserColorWhite();
 			if ((userColorWhite && colorFrom == 1) || (!userColorWhite && colorFrom == 0)) {
 				if (inCheck(side)) {
 					soundPlayer.playMoveOpponentCheck();
@@ -1770,7 +1772,7 @@ public class ChessBoard implements BoardFace {
 	 */
 	@Override
 	public boolean checkAndParseMovesList(String moveList) {
-		if (moveList != null && moveList.contains(BaseGameItem.FIRST_MOVE_INDEX)) {
+		if (moveList != null /*&& moveList.contains(BaseGameItem.FIRST_MOVE_INDEX)*/) { // movesList always contains first move index
 			String[] moves = moveList.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
 					.replaceAll(DOUBLE_SPACE, Symbol.SPACE)
 					.trim().split(Symbol.SPACE);

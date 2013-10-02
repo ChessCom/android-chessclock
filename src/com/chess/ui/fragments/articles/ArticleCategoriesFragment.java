@@ -217,7 +217,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		public void updateListData(List<ArticleItem.Data> itemsList) {
 
 			for (ArticleItem.Data currentItem : itemsList) {
-				DbDataManager.saveArticleItem(getContentResolver(), currentItem);
+				DbDataManager.saveArticleItem(getContentResolver(), currentItem, false);
 			}
 			need2update = false;
 

@@ -57,6 +57,7 @@ public class MovesParser {
 	private static final int ROOK = 3;
 	private static final int QUEEN = 4;
 	private static final int KING = 5;
+	private static final CharSequence COMMENT_SYMBOL = "{";
 
 	public MovesParser() {	}
 
@@ -384,5 +385,15 @@ public class MovesParser {
 		return ChessBoard.Board.values()[pos].toString().toLowerCase();
 	}
 
+	public static String removeCommentsFromMovesList(String movesList) {
+		while (movesList.contains(COMMENT_SYMBOL)) {
+			int firstIndex = movesList.indexOf("{");
+			int lastIndex =  movesList.indexOf("}") + 1;
+
+			String result = movesList.substring(firstIndex, lastIndex);
+			movesList = movesList.replace(result, "");
+		}
+		return movesList;
+	}
 
 }

@@ -1,9 +1,14 @@
 package com.chess.ui.fragments.articles;
 
+import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,10 +18,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 import com.chess.R;
 import com.chess.RoboTextView;
@@ -39,11 +41,16 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.game.GameDiagramFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.ui.views.ControlledListView;
 import com.chess.utilities.AppUtils;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -52,7 +59,8 @@ import java.util.List;
  * Date: 27.01.13
  * Time: 19:12
  */
-public class ArticleDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener {
+public class ArticleDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace,
+		AdapterView.OnItemClickListener {
 
 	public static final String ITEM_ID = "item_id";
 	public static final String GREY_COLOR_DIVIDER = "##";
@@ -61,6 +69,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private static final long KEYBOARD_DELAY = 100;
 	public static final int DIAGRAM_PREFIX = 0x00009000;
 	public static final int IMAGE_PREFIX = 0x0000A000;
+	public static final int TEXT_PREFIX = 0x0000B000;
 
 	// 11/15/12 | 27 min
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
@@ -70,6 +79,9 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	public static final String NO_ITEM_IMAGE = "no_item_image";
 	public static final String DIAGRAM_START_TAG = "<!-- CHESS_COM_DIAGRAM";
 	private static final int ID_POSITION = 1;
+	private static final int ZERO = 0;
+	private static final long DISAPPEAR_DURATION = 300;
+	private static final long ANIMATION_SET_DURATION = 350;
 
 	private TextView authorTxt;
 
@@ -87,6 +99,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private int imgSize;
 	private SparseArray<String> countryMap;
 	private int widthPixels;
+	private int heightPixels;
 	private View replyView;
 	private EditText newPostEdt;
 	private int paddingSide;
@@ -101,6 +114,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private float density;
 	private List<Integer> diagramIdsList;
 	private List<ArticleDetailsItem.Diagram> diagramsList;
+	private HashMap<Integer, Boolean> activeIdsMap;
+	private ControlledListView listView;
+	private boolean diagramsLoaded;
+	private int controlButtonHeight;
+	private int actionBarHeight;
 
 	public static ArticleDetailsFragment createInstance(long articleId) {
 		ArticleDetailsFragment frag = new ArticleDetailsFragment();
@@ -124,7 +142,12 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		imgSize = (int) (40 * density);
 
 		widthPixels = resources.getDisplayMetrics().widthPixels;
-		diagramIdsList = new ArrayList();
+		heightPixels = resources.getDisplayMetrics().heightPixels;
+		controlButtonHeight = (int) resources.getDimension(R.dimen.game_controls_button_diagram_height);
+		actionBarHeight = resources.getDimensionPixelSize(R.dimen.actionbar_compat_height);
+
+		diagramIdsList = new ArrayList<Integer>();
+		activeIdsMap = new HashMap<Integer, Boolean>();
 
 		String[] countryNames = resources.getStringArray(R.array.new_countries);
 		int[] countryCodes = resources.getIntArray(R.array.new_country_ids);
@@ -153,29 +176,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		setTitle(R.string.articles);
 
-		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_article_details_header_frame, null, false);
-
-		loadingView = view.findViewById(R.id.loadingView);
-		loadingCommentsView = headerView.findViewById(R.id.loadingCommentsView);
-
-		titleTxt = (TextView) headerView.findViewById(R.id.titleTxt);
-		articleImg = (ProgressImageView) headerView.findViewById(R.id.articleImg);
-		authorImg = (ProgressImageView) headerView.findViewById(R.id.thumbnailAuthorImg);
-		countryImg = (ImageView) headerView.findViewById(R.id.countryImg);
-		dateTxt = (TextView) headerView.findViewById(R.id.dateTxt);
-		contentTxt = (TextView) headerView.findViewById(R.id.contentTxt);
-		contentTxt.setMovementMethod(LinkMovementMethod.getInstance());
-		authorTxt = (TextView) headerView.findViewById(R.id.authorTxt);
-
-		complexContentLinLay = (LinearLayout) headerView.findViewById(R.id.complexContentLinLay);
-
-		ListView listView = (ListView) view.findViewById(R.id.listView);
-		listView.addHeaderView(headerView);
-		listView.setAdapter(commentsCursorAdapter);
-		listView.setOnItemClickListener(this);
-
-		replyView = view.findViewById(R.id.replyView);
-		newPostEdt = (EditText) view.findViewById(R.id.newPostEdt);
+		widgetsInit(view);
 
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_edit, true);
@@ -272,10 +273,10 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			dateTxt.setText(dateFormatter.format(new Date(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE))));
 			bodyStr = DbDataManager.getString(cursor, DbScheme.V_BODY);
-			checkDiagramInBody(bodyStr);
 			contentTxt.setText(Html.fromHtml(bodyStr));
 
 			diagramsList = DbDataManager.getArticleDiagramItemFromDb(getContentResolver(), getUsername());
+			loadDiagramsFromContent(bodyStr, diagramsList);
 		}
 	}
 
@@ -319,11 +320,39 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		super.onClick(view);
 
 		int id = view.getId();
-		for (Integer diagramId : diagramIdsList) {
-			int clickedId = id - IMAGE_PREFIX;
-			if (diagramId == clickedId) {
 
-				view.setVisibility(View.GONE);
+		if (id == TEXT_PREFIX + ZERO) { // if first text part in article
+			// detect active diagram
+
+			// deactivate previous diagram
+			for (final Integer previousClickedId : activeIdsMap.keySet()) {
+				// remove fragment
+				hideDiagramById(previousClickedId);
+			}
+
+			// restore listView scrolling
+			enableListViewScrolling(true);
+
+			return;
+		}
+
+		// if clicked on image
+		for (Integer diagramId : diagramIdsList) {
+			final int clickedId = id - IMAGE_PREFIX;
+			if (diagramId.equals(clickedId)) {
+
+				// deactivate previous diagram
+				for (Integer previousClickedId : activeIdsMap.keySet()) {
+					// hide view
+					if (activeIdsMap.get(previousClickedId)) {
+
+						// remove fragment
+						hideDiagramById(previousClickedId);
+					}
+				}
+
+				activeIdsMap.put(clickedId, true);
+
 				ArticleDetailsItem.Diagram diagramToShow = null;
 				for (ArticleDetailsItem.Diagram diagram : diagramsList) {
 					if (diagram.getDiagramId() == diagramId) {
@@ -332,21 +361,191 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					}
 				}
 
-				GameDiagramItem diagramItem = new GameDiagramItem();
+				final GameDiagramItem diagramItem = new GameDiagramItem();
 				diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
-				if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PROBLEM) {
+				if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PUZZLE) {
 					diagramItem.setMovesList(diagramToShow.getMoveList());
-				} else {
+				} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.CHESS_GAME) {
+					diagramItem.setMovesList(diagramToShow.getMoveList());
+				} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
 					diagramItem.setFen(diagramToShow.getFen());
+				} else { // non valid format
+					return;
 				}
 
-				GameDiagramFragment fragment = GameDiagramFragment.createInstance(diagramItem);
-				FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-				transaction.replace(DIAGRAM_PREFIX + clickedId, fragment, fragment.getClass().getSimpleName());
-				transaction.addToBackStack(fragment.getClass().getSimpleName());
-				transaction.commit();
+				// hide image
+				AnimatorSet animatorSet = new AnimatorSet();
+				Animator imageAnimator = ObjectAnimator.ofFloat(view, "alpha", 1, 0f);
+				imageAnimator.setDuration(DISAPPEAR_DURATION);
+				ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.3f);
+				ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.3f);
+
+				animatorSet.play(imageAnimator).with(scaleX).with(scaleY);
+				animatorSet.setDuration(ANIMATION_SET_DURATION);
+				animatorSet.addListener(new Animator.AnimatorListener() {
+					@Override
+					public void onAnimationStart(Animator animator) {
+
+					}
+
+					@Override
+					public void onAnimationEnd(Animator animator) {
+						GameDiagramFragment fragment = GameDiagramFragment.createInstance(diagramItem);
+						FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+						transaction.replace(DIAGRAM_PREFIX + clickedId, fragment, fragment.getClass().getSimpleName());
+						transaction.addToBackStack(fragment.getClass().getSimpleName());
+						transaction.commit();
+					}
+
+					@Override
+					public void onAnimationCancel(Animator animator) {
+
+					}
+
+					@Override
+					public void onAnimationRepeat(Animator animator) {
+
+					}
+				});
+				animatorSet.start();
+
+				// scroll listView to the top of diagram view
+				int[] locationCoordinates = new int[2];
+				view.getLocationOnScreen(locationCoordinates);
+				int fragmentDiagramHeight = controlButtonHeight + widthPixels;
+				int viewYPosition = locationCoordinates[1];
+
+//				int listViewScrollOffset = heightPixels - (viewYPosition + fragmentDiagramHeight);
+//				logTest( " viewYPosition = " + viewYPosition +  " fragmentDiagramHeight = " + fragmentDiagramHeight
+//						+ " heightPixels = " + heightPixels + " listViewScrollOffset = " + listViewScrollOffset);
+
+				// if distance is positive then it scrolls to the top else to the bottom
+				int spaceLeft = heightPixels + actionBarHeight - fragmentDiagramHeight;
+				int topOptimalPosition = spaceLeft / 2; // 708/2 = 354
+				int distance = viewYPosition - topOptimalPosition;
+
+				listView.smoothScrollBy(distance, 200); // if distance is positive we scroll to the top
+
+				// block listView scrolling
+				enableListViewScrolling(false);
+
+				return;
 			}
 		}
+
+		// if clicked on text below first and other diagrams
+		for (Integer diagramId : diagramIdsList) {
+			int clickedId = id - TEXT_PREFIX;
+			if (diagramId.equals(clickedId)) {
+
+				// deactivate previous diagram
+				for (Integer previousClickedId : activeIdsMap.keySet()) {
+					// hide view
+					if (activeIdsMap.get(previousClickedId)) {
+						// remove fragment
+						hideDiagramById(previousClickedId);
+					}
+				}
+
+				// restore listView scrolling
+				enableListViewScrolling(true);
+
+				return;
+			}
+		}
+	}
+
+	private void enableListViewScrolling(boolean enable) {
+		listView.setScrollingEnabled(enable);
+	}
+
+	private void hideDiagramById(Integer previousClickedId) {
+		final Fragment fragmentById = getChildFragmentManager().findFragmentById(DIAGRAM_PREFIX + previousClickedId);
+
+		if (fragmentById != null) {
+
+			AnimatorSet animatorSet = new AnimatorSet();
+
+			final View fragmentView = fragmentById.getView();
+			AnimatorSet.Builder animationBuilder = null;
+			Bitmap bitmapFromView = null;
+			if (fragmentView != null) {
+
+//				bitmapFromView = getBitmapFromView(fragmentView, (int) (widthPixels * 0.8f), (int) (widthPixels * 0.8f));
+
+				Animator fragmentAnimator = ObjectAnimator.ofFloat(fragmentView, "alpha", 1, 0);
+
+				ObjectAnimator fragmentScaleX = ObjectAnimator.ofFloat(fragmentView, "scaleX", 1f, 0.8f);
+				ObjectAnimator fragmentScaleY = ObjectAnimator.ofFloat(fragmentView, "scaleY", 1f, 0.8f);
+				animationBuilder = animatorSet.play(fragmentAnimator).with(fragmentScaleX).with(fragmentScaleY);
+			}
+
+			// start image animation
+			final ImageView imageView = (ImageView) getView().findViewById(IMAGE_PREFIX + previousClickedId);
+//			final ProgressImageView imageView = (ProgressImageView) getView().findViewById(IMAGE_PREFIX + previousClickedId);
+//			if (bitmapFromView != null) {
+//				BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmapFromView);
+//				drawable.setBounds(0, 0, (int) (widthPixels * 0.8f), (int) (widthPixels * 0.8f));
+//				imageView.setImageDrawable(drawable);
+//			}
+
+			Animator imageAlphaAnimator = ObjectAnimator.ofFloat(imageView, "alpha", 0, 1);
+			ObjectAnimator scaleX = ObjectAnimator.ofFloat(imageView, "scaleX", 1.3f, 1f);
+			ObjectAnimator scaleY = ObjectAnimator.ofFloat(imageView, "scaleY", 1.3f, 1f);
+
+
+			if (animationBuilder != null) {
+				animationBuilder.with(imageAlphaAnimator).with(scaleX).with(scaleY);
+			} else {
+				animatorSet.play(imageAlphaAnimator).with(scaleX).with(scaleY);
+			}
+
+			final AnimatorSet.Builder finalAnimationBuilder = animationBuilder;
+			animatorSet.addListener(new Animator.AnimatorListener() {
+				@Override
+				public void onAnimationStart(Animator animator) {
+
+				}
+
+				@Override
+				public void onAnimationEnd(Animator animator) {
+					if (finalAnimationBuilder != null) {
+						FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+						transaction.remove(fragmentById).commit();
+					}
+				}
+
+				@Override
+				public void onAnimationCancel(Animator animator) {
+
+				}
+
+				@Override
+				public void onAnimationRepeat(Animator animator) {
+
+				}
+			});
+			animatorSet.setDuration(ANIMATION_SET_DURATION);
+			animatorSet.start();
+			activeIdsMap.put(previousClickedId, false);
+		}
+	}
+
+	public Bitmap getBitmapFromView(View view, int width, int height) {
+		Bitmap returnedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(returnedBitmap);
+		Drawable bgDrawable = view.getBackground();
+//		if (view == mainPage.boardView) {
+//			canvas.drawColor(BoardView.BOARD_BG_COLOR);
+//		} else if (bgDrawable!=null) {
+//			bgDrawable.draw(canvas);
+//		} else {
+		canvas.drawColor(Color.WHITE);
+//		}
+		view.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
+		view.layout(0, 0, width, height);
+		view.draw(canvas);
+		return returnedBitmap;
 	}
 
 	@Override
@@ -443,14 +642,16 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			CharSequence text = dateTxt.getText();
 			dateTxt.setText(text + SLASH_DIVIDER + viewsCntStr + SLASH_DIVIDER + commentsCntStr);
 
-			String bodyStr = articleData.getBody();
-			checkDiagramInBody(bodyStr);
-
-			contentTxt.setText(Html.fromHtml(bodyStr));
-
-			DbDataManager.saveArticleItem(getContentResolver(), articleData);
-
 			diagramsList = articleData.getDiagrams();
+			String bodyStr = articleData.getBody();
+			if (!diagramsLoaded) {
+				loadDiagramsFromContent(bodyStr, diagramsList);
+			}
+
+			contentTxt.setText(Html.fromHtml(bodyStr)); // Shouldn't be used if complex view is used
+
+			DbDataManager.saveArticleItem(getContentResolver(), articleData, true);
+
 			if (diagramsList != null) {
 				for (ArticleDetailsItem.Diagram diagram : diagramsList) {
 					DbDataManager.saveArticlesDiagramItem(getContentResolver(), diagram);
@@ -462,7 +663,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 	}
 
-	private void checkDiagramInBody(String bodyStr) {
+	private void loadDiagramsFromContent(String bodyStr, List<ArticleDetailsItem.Diagram> diagramList) {
 		if (bodyStr.contains(DIAGRAM_START_TAG)) {
 
 			Resources resources = getResources();
@@ -483,22 +684,65 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					String diagramPart = part.substring(part.indexOf("<div "));
 					String partAfterDiagram = diagramPart.substring(diagramPart.indexOf("</div>") + "</div>".length());
 
-					String diagramId = diagramPart.substring(diagramPart.indexOf("id=\"chess_com_diagram_") + "id=\"chess_com_diagram_".length());
+					String diagramId = diagramPart.substring(diagramPart.indexOf("id=\"chess_com_diagram_")
+							+ "id=\"chess_com_diagram_".length());
 					diagramId = diagramId.substring(0, diagramId.indexOf("\" class"));
 					String[] diagramIdParts = diagramId.split("_");
 					int id = Integer.parseInt(diagramIdParts[ID_POSITION]);
 					diagramIdsList.add(id);
 
 					FrameLayout frameLayout = new FrameLayout(getActivity());
-					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthPixels,
+							ViewGroup.LayoutParams.WRAP_CONTENT);
+					params.gravity = Gravity.CENTER;
 					frameLayout.setId(DIAGRAM_PREFIX + id);
 					frameLayout.setLayoutParams(params);
 
 					complexContentLinLay.addView(frameLayout);
 
-					ImageView imageView = new ImageView(getActivity());
+					// take 80% of screen width
+					int imageSize = (int) (widthPixels * 0.8f);
+					FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(imageSize, imageSize);
+					imageParams.gravity = Gravity.CENTER;
+
+					final ImageView imageView = new ImageView(getActivity());
 					imageView.setImageResource(R.drawable.board_white_grey_full_size);
+					imageView.setLayoutParams(imageParams);
+					imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 					imageView.setId(IMAGE_PREFIX + id);
+
+					for (ArticleDetailsItem.Diagram diagramToShow : diagramList) {
+						if (diagramToShow.getDiagramId() == id) {
+
+							//create a real fragment
+
+							final GameDiagramItem diagramItem = new GameDiagramItem();
+							diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
+							if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PUZZLE) {
+								diagramItem.setMovesList(diagramToShow.getMoveList());
+							} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.CHESS_GAME) {
+								diagramItem.setMovesList(diagramToShow.getMoveList());
+							} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
+								diagramItem.setFen(diagramToShow.getFen());
+							} else { // non valid format
+								return;
+							}
+
+							// load it
+							final GameDiagramFragment fragment = GameDiagramFragment.createInstance(diagramItem);
+							FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+							transaction.replace(DIAGRAM_PREFIX + id, fragment, fragment.getClass().getSimpleName());
+							transaction.addToBackStack(fragment.getClass().getSimpleName());
+							transaction.commit();
+
+							// then hide to receive an exact view and set to imageView
+
+							// do delay bcz of fragment transaction
+							handler.postDelayed(new DiagramFragmentCreator(id), 200);
+
+							break;
+						}
+					}
 
 					// set click handler and then get this tag from view to show diagram
 					imageView.setOnClickListener(this);
@@ -510,6 +754,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					textView.setTextColor(textColor);
 					textView.setText(Html.fromHtml(partAfterDiagram));
 					textView.setPadding(paddingSide, paddingSide, paddingSide, 0);
+					textView.setId(TEXT_PREFIX + id);
+					textView.setOnClickListener(this);
 
 					complexContentLinLay.addView(textView);
 
@@ -519,51 +765,47 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					textView.setTextColor(textColor);
 					textView.setText(Html.fromHtml(part));
 					textView.setPadding(paddingSide, 0, paddingSide, 0);
+					textView.setId(TEXT_PREFIX + ZERO);
+					textView.setOnClickListener(this);
 
 					complexContentLinLay.addView(textView);
 				}
 			}
 
-//			String[] parts = bodyStr.split("<!-- CHESS_COM_DIAGRAM <div style=\"text-align:center;\"> -->");
-
-/*
-	///////////////////////////
-	// simpleDiagram Example //
-	///////////////////////////
-
-	&-diagramtype: simpleDiagram
-	&-colorscheme: wooddark
-	&-piecestyle: book
-	&-float: left
-	&-flip: false
-	&-prompt: false
-	&-coords: false
-	&-size: 45
-	&-lastmove:
-	&-focusnode:
-	&-beginnode:
-	&-endnode:
-	&-pgnbody:
-	[Date "????.??.??"]
-	[Result "*"]
-	[FEN "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2"] *
-*/
-			GameDiagramItem diagramItem = new GameDiagramItem();
-			diagramItem.setFen("rnbqkbnr/pppp1ppp/4p3/8/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 1");
-			diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
-
-
-//			GameDiagramFragment fragment = GameDiagramFragment.createInstance(diagramItem);
-//			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//			transaction.replace(R.id.diagramContainerView, fragment, fragment.getClass().getSimpleName());
-//			transaction.addToBackStack(fragment.getClass().getSimpleName());
-//			transaction.commit();
+			diagramsLoaded = true;
 		} else {
 			complexContentLinLay.setVisibility(View.GONE);
 			contentTxt.setVisibility(View.VISIBLE);
 		}
 	}
 
+	private class DiagramFragmentCreator implements Runnable {
+
+		private int diagramId;
+
+		private DiagramFragmentCreator(int diagramId) {
+			this.diagramId = diagramId;
+		}
+
+		@Override
+		public void run() {
+			final Fragment fragment = getChildFragmentManager().findFragmentById(DIAGRAM_PREFIX + diagramId);
+
+			final View fragmentView = fragment.getView();
+			// get bitmap from fragmentView
+			Bitmap bitmapFromView = getBitmapFromView(fragmentView, (int) (widthPixels * 0.8f),
+					(int) (widthPixels * 0.8f));
+
+			BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmapFromView);
+			drawable.setBounds(0, 0, (int) (widthPixels * 0.8f), (int) (widthPixels * 0.8f));
+			ImageView imageView = (ImageView) getView().findViewById(IMAGE_PREFIX + diagramId);
+			imageView.setImageDrawable(drawable);
+
+			// remove fragment
+			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+			transaction.remove(fragment).commit();
+		}
+	}
 
 	private void updateComments() {
 		LoadItem loadItem = new LoadItem();
@@ -649,6 +891,36 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	@Override
 	public Context getMeContext() {
 		return getActivity();
+	}
+
+	private void widgetsInit(View view) {
+		ViewGroup headerView = (ViewGroup) LayoutInflater.from(getActivity()).inflate(R.layout.new_article_details_header_frame, null, false);
+
+		if (JELLY_BEAN_PLUS_API) {
+			LayoutTransition layoutTransition = headerView.getLayoutTransition();
+			layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
+		}
+		loadingView = view.findViewById(R.id.loadingView);
+		loadingCommentsView = headerView.findViewById(R.id.loadingCommentsView);
+
+		titleTxt = (TextView) headerView.findViewById(R.id.titleTxt);
+		articleImg = (ProgressImageView) headerView.findViewById(R.id.articleImg);
+		authorImg = (ProgressImageView) headerView.findViewById(R.id.thumbnailAuthorImg);
+		countryImg = (ImageView) headerView.findViewById(R.id.countryImg);
+		dateTxt = (TextView) headerView.findViewById(R.id.dateTxt);
+		contentTxt = (TextView) headerView.findViewById(R.id.contentTxt);
+		contentTxt.setMovementMethod(LinkMovementMethod.getInstance());
+		authorTxt = (TextView) headerView.findViewById(R.id.authorTxt);
+
+		complexContentLinLay = (LinearLayout) headerView.findViewById(R.id.complexContentLinLay);
+
+		listView = (ControlledListView) view.findViewById(R.id.listView);
+		listView.addHeaderView(headerView);
+		listView.setAdapter(commentsCursorAdapter);
+		listView.setOnItemClickListener(this);
+
+		replyView = view.findViewById(R.id.replyView);
+		newPostEdt = (EditText) view.findViewById(R.id.newPostEdt);
 	}
 
 }

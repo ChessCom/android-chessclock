@@ -15,7 +15,7 @@ public class LoadHelper {
 
 	public static LoadItem getUserInfo(String userToken) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(getInstance().getInstance().CMD_USERS);
+		loadItem.setLoadPath(getInstance().CMD_USERS);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		return loadItem;
 	}
@@ -34,7 +34,7 @@ public class LoadHelper {
 
 	public static LoadItem getTacticsStats(String userToken) {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(getInstance().getInstance().CMD_TACTICS_STATS);
+		loadItem.setLoadPath(getInstance().CMD_TACTICS_STATS);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		return loadItem;
 	}

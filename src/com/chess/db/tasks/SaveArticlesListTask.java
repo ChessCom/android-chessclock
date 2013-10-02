@@ -27,7 +27,7 @@ public class SaveArticlesListTask extends AbstractUpdateTask<ArticleItem.Data, L
 	@Override
     protected Integer doTheTask(Long... ids) {
 		for (ArticleItem.Data currentItem : itemList) {
-			DbDataManager.saveArticleItem(contentResolver, currentItem);
+			DbDataManager.saveArticleItem(contentResolver, currentItem, false);
 		}
 
         return StaticData.RESULT_OK;

@@ -4,7 +4,9 @@
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="@color/white">
+	android:background="@color/white"
+	android:animateLayoutChanges="true"
+	>
 
 	<com.chess.RoboTextView
 		android:id="@+id/emptyView"
@@ -39,7 +41,7 @@
 
 	</RelativeLayout>
 
-	<ListView
+	<com.chess.ui.views.ControlledListView
 		android:id="@+id/listView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

@@ -125,8 +125,8 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 	public static class Diagram {
 
 		public static final int SIMPLE = 0;
-		public static final int PROBLEM = 1;
-		public static final int PROBLEM2 = 2;
+		public static final int CHESS_GAME = 1;
+		public static final int PUZZLE = 2;
 
 		private long diagram_id;
 		private String diagram_code;
@@ -152,10 +152,10 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 			if (type == -1) { // if undefined
 				if (diagram_code.contains("simpleDiagram")) {
 					type = SIMPLE;
+				} else if (diagram_code.contains("chessGame")) {
+					type = CHESS_GAME;
 				} else if (diagram_code.contains("chessProblem")) {
-					type = PROBLEM;
-				} else {
-					type = PROBLEM2;
+					type = PUZZLE;
 				}
 
 				return type;
@@ -175,7 +175,7 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 		}
 
 		public String getFen() {
-			String fenStr =diagram_code.substring(diagram_code.indexOf(FEN_CODE) + FEN_CODE.length(), diagram_code.length());
+			String fenStr = diagram_code.substring(diagram_code.indexOf(FEN_CODE) + FEN_CODE.length(), diagram_code.length());
 			fenStr = fenStr.substring(0, fenStr.indexOf("\"]"));
 			return fenStr;
 		}

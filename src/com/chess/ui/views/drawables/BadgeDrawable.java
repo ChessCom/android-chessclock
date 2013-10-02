@@ -107,7 +107,7 @@ public class BadgeDrawable extends Drawable {
 	private boolean isBadDevice(Context context) {
 		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 		return (displayMetrics.density == 1.0f || displayMetrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM)
-				&& (displayMetrics.heightPixels <= 480) && AppUtils.HONEYCOMB_PLUS_API;
+				/*&& (displayMetrics.heightPixels <= 480) */&& AppUtils.HONEYCOMB_PLUS_API;
 	}
 
 	@Override

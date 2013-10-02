@@ -1147,21 +1147,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		liveService.setLccChatMessageListener(this);
 		liveService.setGameTaskListener(gameTaskListener);
 
-		{// set avatars
-			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-
-			String opponentName;
-			if (isUserColorWhite()) {
-				opponentName = currentGame.getBlackUsername();
-			} else {
-				opponentName = currentGame.getWhiteUsername();
-			}
-
-			String opponentAvatarUrl = liveService.getCurrentGame().getOpponentForPlayer(opponentName).getAvatarUrl(); // TODO test
-			imageDownloader.download(opponentAvatarUrl, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
-		}
-
 		{// fill labels
 			labelsConfig = new LabelsConfig();
 			if (isUserColorWhite()) {
@@ -1178,6 +1163,23 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
 			}
 		}
+
+		{// set avatars
+			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+
+			String opponentName;
+			if (isUserColorWhite()) {
+				opponentName = currentGame.getBlackUsername();
+			} else {
+				opponentName = currentGame.getWhiteUsername();
+			}
+
+			String opponentAvatarUrl = liveService.getCurrentGame().getOpponentForPlayer(opponentName).getAvatarUrl(); // TODO test
+			imageDownloader.download(opponentAvatarUrl, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
+		}
+
+
 
 		int resignTitleId = liveService.getResignTitle();
 		{// options list setup

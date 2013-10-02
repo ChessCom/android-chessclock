@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.AvatarView;
+import com.chess.backend.image_load.ProgressImageView;
 import com.chess.statics.Symbol;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
@@ -21,13 +22,16 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	private final int imageSize;
 	private final int redColor;
 	private final int greyColor;
+	private final int boardPreviewSize;
 
 	public DailyCurrentGamesCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);// TODO change later with CursorLoader
 
 		fullPadding = (int) context.getResources().getDimension(R.dimen.default_scr_side_padding);
 		halfPadding = fullPadding / 2;
-		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
+		float density = resources.getDisplayMetrics().density;
+		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / density);
+		boardPreviewSize = (int) (resources.getDimension(R.dimen.video_thumb_size) / density);
 
 		redColor = resources.getColor(R.color.red);
 		greyColor = resources.getColor(R.color.grey_button_flat);
@@ -41,6 +45,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		holder.playerTxt = (TextView) view.findViewById(R.id.playerNameTxt);
 		holder.gameInfoTxt = (TextView) view.findViewById(R.id.timeLeftTxt);
 		holder.timeLeftIcon = (TextView) view.findViewById(R.id.timeLeftIcon);
+		holder.boardPreviewFrame = (ProgressImageView) view.findViewById(R.id.boardPreviewFrame);
 
 		view.setTag(holder);
 		return view;
@@ -111,6 +116,12 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		} else {
 			convertView.setPadding(fullPadding, halfPadding, fullPadding, halfPadding);
 		}
+
+		String fen = getString(cursor, DbScheme.V_FEN);
+		// take only first part
+		fen = fen.split(Symbol.SPACE)[0];
+
+		imageLoader.download(RestHelper.GET_FEN_IMAGE(fen), holder.boardPreviewFrame, boardPreviewSize);
 	}
 
 	private boolean lessThanDay(long amount) {
@@ -122,5 +133,6 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		public TextView playerTxt;
 		public TextView gameInfoTxt;
 		public TextView timeLeftIcon;
+		public ProgressImageView boardPreviewFrame;
 	}
 }

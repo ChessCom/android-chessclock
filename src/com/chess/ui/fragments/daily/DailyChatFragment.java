@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +19,12 @@ import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.entity.api.DailyChatItem;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyCurrentGameItem;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
-import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ChatMessagesAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
-import org.apache.http.protocol.HTTP;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -282,15 +278,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 		public void updateData(DailyCurrentGameItem returnedObj) {
 			super.updateData(returnedObj);
 
-			String message = Symbol.EMPTY;
-			try {
-				message = URLEncoder.encode(sendEdt.getText().toString(), HTTP.UTF_8);
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-				Log.e("Chat", e.toString());
-				// correctly
-				showToast(R.string.encoding_unsupported);
-			}
+			String message = sendEdt.getText().toString();
 
 			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_CHAT, timeStamp);
 			loadItem.addRequestParams(RestHelper.P_MESSAGE, message);

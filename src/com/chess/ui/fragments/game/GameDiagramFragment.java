@@ -14,6 +14,7 @@ import com.chess.model.GameDiagramItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardDiagram;
+import com.chess.ui.engine.MovesParser;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameDiagramFace;
 import com.chess.ui.views.NotationView;
@@ -178,7 +179,14 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			boardFace.setReside(true);
 		}
 
-		boardFace.checkAndParseMovesList(analysisItem.getMovesList());
+		// remove comments from movesList
+
+		String movesList = analysisItem.getMovesList();
+		if (movesList != null) {
+			movesList = MovesParser.removeCommentsFromMovesList(movesList);
+
+			boardFace.checkAndParseMovesList(movesList);
+		}
 
 		boardView.resetValidMoves();
 
@@ -190,7 +198,6 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 		boardFace.setJustInitialized(false);
 	}
-
 
 	@Override
 	public void toggleSides() { // TODO

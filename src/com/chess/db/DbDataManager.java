@@ -185,6 +185,7 @@ public class DbDataManager {
 			_ID,
 			V_USER,
 			V_ID,
+			V_FEN,
 			V_I_PLAY_AS,
 			V_WHITE_USERNAME,
 			V_BLACK_USERNAME,
@@ -1142,7 +1143,7 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	public static void saveArticleItem(ContentResolver contentResolver, ArticleItem.Data currentItem) {
+	public static void saveArticleItem(ContentResolver contentResolver, ArticleItem.Data currentItem, boolean forceUpdate) {
 		final String[] arguments2 = sArguments1;
 		arguments2[0] = String.valueOf(currentItem.getId());
 
@@ -1170,11 +1171,21 @@ public class DbDataManager {
 		values.put(V_URL, currentItem.getUrl());
 		values.put(V_THUMB_CONTENT, currentItem.isIsThumbInContent());
 
-		updateOrInsertValues(contentResolver, cursor, uri, values);
+		if (cursor != null && cursor.moveToFirst() && forceUpdate) {
+			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
+		} else {
+			contentResolver.insert(uri, values);
+		}
+
+		if (cursor != null) {
+			cursor.close();
+		}
+
+//		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
 	public static List<ArticleDetailsItem.Diagram> getArticleDiagramItemFromDb(ContentResolver contentResolver, String username) {
-		Cursor cursor = query(contentResolver, DbHelper.getTableForUser(username, Tables.ARTICLE_DIAGRAMS));
+		Cursor cursor = query(contentResolver, DbHelper.getAll(Tables.ARTICLE_DIAGRAMS));
 
 		List<ArticleDetailsItem.Diagram> diagramList = new ArrayList<ArticleDetailsItem.Diagram>();
 		if (cursor != null && cursor.moveToFirst()) {

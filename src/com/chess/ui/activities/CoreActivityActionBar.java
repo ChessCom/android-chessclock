@@ -139,6 +139,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		switch (item.getItemId()) {
 			case android.R.id.home:
 				getSlidingMenu().toggle();
+				hideKeyBoard();
 				break;
 		}
 		return super.onOptionsItemSelected(item);

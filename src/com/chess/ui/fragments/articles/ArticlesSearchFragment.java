@@ -136,7 +136,7 @@ public class ArticlesSearchFragment extends BaseSearchFragment  {
 			}
 
 			for (ArticleItem.Data currentItem : returnedObj.getData()) {
-				DbDataManager.saveArticleItem(getContentResolver(), currentItem);
+				DbDataManager.saveArticleItem(getContentResolver(), currentItem, false);
 			}
 
 			articleItemAdapter.setItemsList(returnedObj.getData());

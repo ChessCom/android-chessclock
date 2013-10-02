@@ -42,7 +42,7 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		try {
-			holder.text.setText(URLDecoder.decode(URLDecoder.decode(item.getContent(), HTTP.UTF_8), HTTP.UTF_8)); // TODO remove after server will apply changes
+			holder.text.setText(URLDecoder.decode(item.getContent(), HTTP.UTF_8));
 		} catch (UnsupportedEncodingException e) {
 			holder.text.setText(item.getContent());
 		}
