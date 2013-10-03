@@ -125,7 +125,7 @@ public class ForumNewTopicFragment extends CommonLogicFragment implements TextVi
 				topicNameEdt.setText(Symbol.EMPTY);
 				topicBodyEdt.setText(Symbol.EMPTY);
 				return true;
-			case R.id.menu_add:
+			case R.id.menu_accept:
 				createTopic();
 				return true;
 		}

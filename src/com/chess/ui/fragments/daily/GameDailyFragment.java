@@ -476,7 +476,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	private void sendMove() {
 		LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_SUBMIT, currentGame.getTimestamp());
-		loadItem.addRequestParams(RestHelper.P_NEWMOVE, getBoardFace().convertMoveEchess());
+		loadItem.addRequestParams(RestHelper.P_NEW_MOVE, getBoardFace().convertMoveEchess());
 		new RequestJsonTask<BaseResponseItem>(sendMoveUpdateListener).executeTask(loadItem);
 	}
 

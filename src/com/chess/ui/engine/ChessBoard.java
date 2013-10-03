@@ -10,6 +10,7 @@
 package com.chess.ui.engine;
 
 import android.util.Log;
+import com.chess.model.BaseGameItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.boards.BoardFace;
@@ -1772,7 +1773,7 @@ public class ChessBoard implements BoardFace {
 	 */
 	@Override
 	public boolean checkAndParseMovesList(String moveList) {
-		if (moveList != null /*&& moveList.contains(BaseGameItem.FIRST_MOVE_INDEX)*/) { // movesList always contains first move index
+		if (moveList != null && moveList.contains(BaseGameItem.FIRST_MOVE_INDEX)) {
 			String[] moves = moveList.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
 					.replaceAll(DOUBLE_SPACE, Symbol.SPACE)
 					.trim().split(Symbol.SPACE);

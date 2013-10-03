@@ -163,6 +163,12 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		public void updateData(ConversationItem returnedObj) {
 			super.updateData(returnedObj);
 
+			if (returnedObj.getData().size() == 0) {
+				emptyView.setText(R.string.no_data);
+				showEmptyView(true);
+				return;
+			}
+
 			new SaveConversationsInboxTask(saveConversationsListener, returnedObj.getData(), getContentResolver()).executeTask();
 		}
 	}

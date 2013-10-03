@@ -305,9 +305,7 @@ public class RestHelper {
 	public static final String P_PURCHASE_DATA = "purchaseData";
 	public static final String P_DATA_SIGNATURE = "dataSignature";
 
-	public static final String P_UID = "uid";
 	public static final String P_LOCATION = "location";
-	public static final String P_AMOUNT = "amount";
 
 	public static final int P_RANDOM = 0;
 	public static final int P_WHITE = 1;
@@ -317,37 +315,18 @@ public class RestHelper {
 //	Description	Image size. Default is `small`.
 
 
-	public static final String P_GID = "gid"; // game id
-	public static final String P_ALL = "all";
-	public static final String P_RETURN = "return";
-	public static final String P_GET_GAME = "get_game";
-
 	public static final String P_TACTICS_ID = "tacticsId";
-	public static final String P_TACTICS_TRAINER = "tactics_trainer";
 	public static final String P_PASSED = "passed";
 	public static final String P_CORRECT_MOVES = "correctMoves";
-	public static final String P_ENCODED_MOVES = "encodedMoves";
 	public static final String P_SECONDS = "seconds";
-	public static final String P_GET_ANDROID_VERSION = "get_android_version";
-	public static final String P_ECHESS_OPEN_INVITES = "echess_open_invites";
-	public static final String P_DECLINEINVITEID = "declineinviteid";
-	public static final String P_ACCEPTINVITEID = "acceptinviteid";
-	public static final String P_GET_ECHESS_CURRENT_GAMES = "get_echess_current_games";
-	public static final String P_ECHESS_CHALLENGES = "echess_challenges";
-	public static final String P_GET_ECHESS_FINISHED_GAMES = "get_echess_finished_games";
-	public String P_SYMBOL = !BASE_URL.equals("http://" + HOST_PRODUCTION) ? V_3 : V_3_0;
 
-	public static final String P_STARTING_FEN_POSITION = "starting_fen_position";
-	public static final String P_USER_TO_MOVE = "user_to_move";
-	public static final String P_HAS_NEW_MESSAGE = "has_new_message";
-	public static final String P_GAME_RESULT = "game_result";
-	public static final String P_DRAW_OFFERED = "draw_offered";
+	public String P_SYMBOL = !BASE_URL.equals("http://" + HOST_PRODUCTION) ? V_3 : V_3_0;
 
 	public static final String P_FEN = "fen";
 
 	//	SUBMIT_ECHESS_ACTION
 	public static final String P_COMMAND = "command";
-	public static final String P_NEWMOVE = "newMove";
+	public static final String P_NEW_MOVE = "newMove";
 	public static final String P_TIMESTAMP = "timestamp";
 	public static final String P_MESSAGE = "message";
 
