@@ -513,6 +513,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			}
 		}
 
+		int gameMode = new Integer(savedGame[0].substring(0, 1));
+		getBoardFace().setMode(gameMode);
+
 		boardView.resetValidMoves();
 		getBoardFace().setMovesCount(getBoardFace().getPly());
 		playLastMoveAnimation();

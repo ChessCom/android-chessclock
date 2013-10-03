@@ -521,6 +521,9 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		Log.d("debugengine", "getAppData().getCompSavedGame().split(RestHelper.SYMBOL_PARAMS_SPLIT_SLASH) " + getAppData().getCompSavedGame().split(RestHelper.SYMBOL_PARAMS_SPLIT_SLASH));
 		Log.d("debugengine", "getBoardFace().getPly() " + getBoardFace().getPly());*/
 
+		int gameMode = new Integer(savedGame[0].substring(0, 1));
+		getBoardFace().setMode(gameMode);
+
 		getBoardFace().setMovesCount(getBoardFace().getPly());
 		boardView.resetValidMoves();
 		playLastMoveAnimation();
