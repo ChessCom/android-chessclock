@@ -161,9 +161,10 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		isAutoFlip = getAppData().isAutoFlipFor2Players();
 
-		getBoardFace().setMode(compGameConfig.getMode());
 		if (getAppData().haveSavedCompGame()) {
 			loadSavedGame();
+		} else {
+			getBoardFace().setMode(compGameConfig.getMode());
 		}
 		resideBoardIfCompWhite();
 		invalidateGameScreen();
@@ -488,7 +489,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		ChessBoardComp.resetInstance();
 		ChessBoardComp.getInstance(this).setJustInitialized(false);
 		boardView.setGameUiFace(this);
-		getBoardFace().setMode(compGameConfig.getMode());
 		loadSavedGame();
 
 		resideBoardIfCompWhite();
