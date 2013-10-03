@@ -43,7 +43,7 @@
 	<string name="password">Parola</string>
 	<string name="log_in">Giriş Yapın</string>
 	<string name="sign_up">Kaydolun</string>
-	<string name="complete_sing_up">Kayıt tamamlayın</string>
+	<string name="complete_singup">Kayıt tamamlayın</string>
 	<string name="play_as_guest">Misafir Olarak oyna</string>
 
 	<string name="white">Beyaz</string>

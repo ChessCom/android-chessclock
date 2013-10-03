@@ -71,7 +71,7 @@ public class DailyCurrentGamesMyCursorRightAdapter extends ItemsCursorAdapter {
 		long amount = getLong(cursor, DbScheme.V_TIME_REMAINING);
 		String infoText;
 		if (amount == 0) {
-			infoText = context.getString(R.string.few_minutes);
+			infoText = context.getString(R.string.few_min);
 		} else {
 			infoText = AppUtils.getTimeLeftFromSeconds(amount, context);
 		}

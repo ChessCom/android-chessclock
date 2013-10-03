@@ -43,7 +43,7 @@
 	<string name="password">Wachtwoord</string>
 	<string name="log_in">Inloggen</string>
 	<string name="sign_up">Aanmelden</string>
-	<string name="complete_sing_up">Compleet Inschrijven</string>
+	<string name="complete_singup">Compleet Inschrijven</string>
 	<string name="play_as_guest">Speel als Gast</string>
 
 	<string name="white">Wit</string>

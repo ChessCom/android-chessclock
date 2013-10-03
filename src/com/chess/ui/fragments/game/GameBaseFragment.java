@@ -63,7 +63,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 			}
 			savedInstanceState.putBoolean(AppConstants.SMALL_SCREEN, true);
 		} else if (AppUtils.noNeedTitleBar(getActivity())) {
-//			getActivity().requestWindowFeature(Window.FEATURE_NO_TITLE); // TODO set via another method
 			if (savedInstanceState == null) {
 				savedInstanceState = new Bundle();
 			}

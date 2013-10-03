@@ -50,6 +50,9 @@ public class LiveBaseFragment extends CommonLogicFragment {
 	public void onLiveServiceConnected() {
 	}
 
+	public void onLiveServiceDisconnected() {
+	}
+
 	public boolean isLCSBound() {
 		return isLCSBound;
 	}
@@ -58,6 +61,8 @@ public class LiveBaseFragment extends CommonLogicFragment {
 		isLCSBound = LCSBound;
 		if (isLCSBound) {
 			liveService = liveBaseActivity.getLiveService();
+		} else {
+			onLiveServiceDisconnected();
 		}
 	}
 

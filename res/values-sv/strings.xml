@@ -43,7 +43,7 @@
 	<string name="password">Lösenord</string>
 	<string name="log_in">Logga in</string>
 	<string name="sign_up">Anmäl dig</string>
-	<string name="complete_sing_up">Komplett Registrera</string>
+	<string name="complete_singup">Komplett Registrera</string>
 	<string name="play_as_guest">Spela som gäst</string>
 
 	<string name="white">Vit</string>

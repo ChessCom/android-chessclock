@@ -44,7 +44,7 @@
 	<string name="password">पासवर्ड</string>
 	<string name="log_in">साइन इन करें…</string>
 	<string name="sign_up">साइन-अप</string>
-	<string name="complete_sing_up">पंजीकरण पूरा</string>
+	<string name="complete_singup">पंजीकरण पूरा</string>
 	<string name="play_as_guest">अतिथि के रूप में</string>
 
 	<string name="white">सफेद</string>

@@ -185,7 +185,7 @@
 				android:id="@+id/gameTypeBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/chess"
+                android:text="@string/standard"
                 style="@style/Button.Glassy.Small"
                 />
         </com.chess.LinLayout>

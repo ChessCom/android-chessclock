@@ -272,6 +272,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		@Override
 		public void onClose() {
 			hideKeyBoard();
+			for (SlidingMenu.OnClosedListener closeMenuListener : closeMenuListeners) {
+				closeMenuListener.onClosed();
+			}
 		}
 	};
 

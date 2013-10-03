@@ -1,4 +1,4 @@
-package com.chess.ui.fragments.daily;
+package com.chess.ui.fragments.live;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.interfaces.FragmentTabsFace;
@@ -17,12 +17,10 @@ import com.chess.ui.interfaces.FragmentTabsFace;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 15.04.13
- * Time: 11:39
+ * Date: 22.09.13
+ * Time: 6:25
  */
-public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener, FragmentTabsFace {
-
-	public static final int NEW_GAME = 0;
+public class LiveHomeTabsFragment extends LiveBaseFragment implements RadioGroup.OnCheckedChangeListener, FragmentTabsFace {
 
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId;
@@ -42,18 +40,15 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.daily);
+		setTitle(R.string.live);
 
-		getActivityFace().setCustomActionBarViewId(R.layout.new_home_actionbar);
-
-		((TextView)view.findViewById(R.id.leftTabBtn)).setText(R.string.games);
-		((TextView)view.findViewById(R.id.centerTabBtn)).setText(R.string.new_);
+		((TextView)view.findViewById(R.id.leftTabBtn)).setText(R.string.new_);
+		((TextView)view.findViewById(R.id.centerTabBtn)).setText(R.string.archive);
 		((TextView)view.findViewById(R.id.rightTabBtn)).setText(R.string.stats);
 
 		showActionBar(true);
 
-		Fragment homeGamesFragment = new DailyGamesFragment();
-		changeInternalFragment(homeGamesFragment);
+		changeInternalFragment(new LiveNewGameFragment());
 
 		tabRadioGroup = (RadioGroup) view.findViewById(R.id.tabRadioGroup);
 		tabRadioGroup.setOnCheckedChangeListener(this);
@@ -65,6 +60,10 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		getAppData().setLiveChessMode(true);
+		liveBaseActivity.connectLcc();
+
 		updateTabs();
 	}
 
@@ -79,13 +78,13 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
 				case R.id.leftTabBtn:
-					changeInternalFragment(DailyGamesFragment.createInstance(this, DailyGamesFragment.HOME_MODE));
+					changeInternalFragment(new LiveNewGameFragment());
 					break;
 				case R.id.centerTabBtn:
-					changeInternalFragment(new DailyNewGameFragment());
+					changeInternalFragment(new LiveArchiveFragment());
 					break;
 				case R.id.rightTabBtn:
-					changeInternalFragment(StatsGameDetailsFragment.createInstance(StatsGameFragment.DAILY_CHESS, getUsername()));
+					changeInternalFragment(StatsGameDetailsFragment.createInstance(StatsGameFragment.LIVE_STANDARD, getUsername()));
 					break;
 			}
 		}
@@ -100,9 +99,6 @@ public class DailyTabsFragment extends CommonLogicFragment implements RadioGroup
 
 	@Override
 	public void changeInternalFragment(int code) {
-		if (code == NEW_GAME) {
-			tabRadioGroup.check(R.id.centerTabBtn);
-		}
 	}
 
 	@Override

@@ -237,6 +237,7 @@ public class LoadHelper {
 		return loadItem;
 	}
 
+	/* Lesssons */
 	public static LoadItem getLessonsByCourseId(String userToken, int courseId) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(getInstance().CMD_LESSONS);
@@ -252,6 +253,7 @@ public class LoadHelper {
 		return loadItem;
 	}
 
+	/* Explorer */
 	public static LoadItem getExplorerMoves(String userToken, String fen) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(getInstance().CMD_EXPLORERS_MOVES);
@@ -260,4 +262,14 @@ public class LoadHelper {
 		return loadItem;
 	}
 
+	/* Themes */
+	public static LoadItem getBackgroundForSize(String userToken, int id, int width, int height, String screen) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(getInstance().CMD_BACKGROUND_BY_ID(id));
+		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
+		loadItem.addRequestParams(P_WIDTH, width);
+		loadItem.addRequestParams(P_HEIGHT, height);
+		loadItem.addRequestParams(P_SCREEN, screen);
+		return loadItem;
+	}
 }

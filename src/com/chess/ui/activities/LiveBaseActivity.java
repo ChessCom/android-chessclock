@@ -36,6 +36,7 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
 import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
+import com.chess.ui.fragments.live.LiveHomeTabsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
@@ -158,6 +159,14 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					liveService.logout();
 					unBindLiveService();
+					return super.onKeyUp(keyCode, event);
+				}
+
+				fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveHomeTabsFragment.class.getSimpleName());
+				if (fragmentByTag != null && fragmentByTag.isVisible()) {
+					liveService.logout();
+					unBindLiveService();
+					return super.onKeyUp(keyCode, event);
 				}
 			}
 		}
@@ -203,7 +212,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				liveService.logout();
 			}
 			unBindLiveService();
-//			backToHomeActivity();
 		} else if (tag.equals(OBSOLETE_VERSION_TAG)) {
 			// Show site and
 			runOnUiThread(new Runnable() {
@@ -216,14 +224,12 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			});
 
 			unBindLiveService();
-//			backToHomeActivity();
 
 		} else if (tag.equals(LOGOUT_TAG)) {
 			if (isLCSBound) {
 				liveService.logout();
 				unBindLiveService();
 			}
-//			backToHomeActivity();
 		} else if (tag.contains(CHALLENGE_TAG)) { // Challenge accepted!
 			Log.i(TAG, "Accept challenge: " + currentChallenge);
 			liveService.declineAllChallenges(currentChallenge);
@@ -307,6 +313,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				waitFragment.setLCSBound(isLCSBound);
 			}
 
+			LiveHomeTabsFragment liveHomeFragment = (LiveHomeTabsFragment) findFragmentByTag(LiveHomeTabsFragment.class.getSimpleName());
+			if (liveHomeFragment != null) {
+				liveHomeFragment.setLCSBound(isLCSBound);
+			}
+
 			liveService.checkAndConnect(this);
 		}
 
@@ -317,6 +328,12 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			LiveGameWaitFragment waitFragment = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
 			if (waitFragment != null) {
 				waitFragment.setLCSBound(isLCSBound);
+				return;
+			}
+
+			LiveHomeTabsFragment liveHomeFragment = (LiveHomeTabsFragment) findFragmentByTag(LiveHomeTabsFragment.class.getSimpleName());
+			if (liveHomeFragment != null) {
+				liveHomeFragment.setLCSBound(isLCSBound);
 			}
 		}
 
@@ -635,12 +652,20 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		GameLiveFragment gameLiveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
 		if (gameLiveFragment != null) {
 			gameLiveFragment.onLiveServiceConnected();
-		} else {
-			LiveGameWaitFragment waitFragment = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
-			if (waitFragment != null) {
-				waitFragment.onLiveServiceConnected();
-			}
+			return;
 		}
+
+		LiveGameWaitFragment waitFragment = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
+		if (waitFragment != null) {
+			waitFragment.onLiveServiceConnected();
+			return;
+		}
+
+		LiveHomeTabsFragment liveHomeFragment = (LiveHomeTabsFragment) findFragmentByTag(LiveHomeTabsFragment.class.getSimpleName());
+		if (liveHomeFragment != null) {
+			liveHomeFragment.onLiveServiceConnected();
+		}
+
 	}
 
 	public LiveChessService getLiveService() {

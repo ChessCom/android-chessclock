@@ -95,7 +95,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 
 			String infoText;
 			if (amount == 0) {
-				infoText = context.getString(R.string.few_minutes);
+				infoText = context.getString(R.string.few_min);
 			} else {
 				infoText = AppUtils.getTimeLeftFromSeconds(amount, context);
 			}

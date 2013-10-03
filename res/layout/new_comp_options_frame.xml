@@ -18,7 +18,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="center_vertical"
-			style="@style/ListItem.Header"
+			style="@style/ListItem.Header.Dark"
 			android:paddingLeft="13dip"
 			android:paddingRight="8dip">
 
@@ -181,7 +181,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_centerVertical="true"
-					android:text="@string/computer_level"
+					android:text="@string/difficulty"
 					style="@style/SettingsListText"
 					/>
 

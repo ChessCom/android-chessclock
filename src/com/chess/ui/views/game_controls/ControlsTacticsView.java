@@ -88,7 +88,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 		button.setVisibility(GONE);
 		LayoutParams params = new LayoutParams(0, controlButtonHeight);
 
-		params.weight = 2;
+		params.weight = 1;
 
 		controlsLayout.addView(button, params);
 	}

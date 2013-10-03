@@ -246,7 +246,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 	public void onValueSelected(int code) {
 		if (code == ID_CHESS) {
 			gameConfigBuilder.setGameType(RestHelper.V_GAME_CHESS);
-			gameTypeBtn.setText(R.string.chess);
+			gameTypeBtn.setText(R.string.standard);
 		} else if (code == ID_CHESS_960) {
 			gameConfigBuilder.setGameType(RestHelper.V_GAME_CHESS_960);
 			gameTypeBtn.setText(R.string.chess_960);
@@ -350,7 +350,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 
 		DailyGameButtonItem(int label, Context context){
 			this.days = label;
-			this.label = context.getString(R.string.days_arg, label);
+			this.label = String.valueOf(label);
 		}
 	}
 

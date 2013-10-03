@@ -33,8 +33,6 @@ import java.util.List;
  */
 public class StatsGameFragment extends CommonLogicFragment implements AdapterView.OnItemSelectedListener {
 
-	private static final String TAG = "StatsGameFragment";
-
 	public final static int DAILY_CHESS = 0;
 	public final static int LIVE_STANDARD = 1;
 	public final static int LIVE_BLITZ = 2;
@@ -96,6 +94,8 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		setTitle(R.string.stats);
 
 		statsSpinner = (Spinner) view.findViewById(R.id.statsSpinner);
 

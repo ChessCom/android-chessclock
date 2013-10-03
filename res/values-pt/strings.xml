@@ -43,7 +43,7 @@
 	<string name="password">Palavra-passe</string>
 	<string name="log_in">Entrar</string>
 	<string name="sign_up">Cadastre-se</string>
-	<string name="complete_sing_up">Cadastre-se concluir</string>
+	<string name="complete_singup">Cadastre-se concluir</string>
 	<string name="play_as_guest">Jogue como convidado</string>
 
 	<string name="white">Branco</string>

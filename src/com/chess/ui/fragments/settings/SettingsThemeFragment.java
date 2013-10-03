@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ThemeItem;
+import com.chess.backend.entity.api.themes.BackgroundItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.image_load.ProgressImageView;
@@ -66,7 +68,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private ImageDownloaderToListener imageDownloader;
 	private String backgroundUrl;
 	private int screenWidth;
-	private int height;
+	private int screenHeight;
 	private ThemeItem.Data selectedThemeItem;
 	private ThemeItem.Data currentThemeItem;
 	private String boardBackgroundUrl;
@@ -74,13 +76,14 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private String selectedThemeName;
 	private TextView loadProgressTxt;
 	private TextView taskTitleTxt;
+	private BackgroundItemUpdateListener backgroundItemUpdateListener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
-		height = getResources().getDisplayMetrics().heightPixels;
+		screenHeight = getResources().getDisplayMetrics().heightPixels;
 
 		themesList = new ArrayList<ThemeItem.Data>();
 		themesUpdateListener = new ThemesUpdateListener();
@@ -88,6 +91,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		boardUpdateListener = new ImageUpdateListener(BOARD);
 		mainBackgroundImgSaveListener = new BackgroundImageSaveListener(BACKGROUND);
 		boardImgSaveListener = new BackgroundImageSaveListener(BOARD);
+		backgroundItemUpdateListener = new BackgroundItemUpdateListener();
 
 		imageDownloader = new ImageDownloaderToListener(getContext());
 
@@ -202,7 +206,23 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			getAppData().setThemeName(getString(R.string.theme_game_room));
 		} else { // start loading main background image
 			// get device params
-			backgroundUrl = selectedThemeItem.getBackgroundUrl();
+			LoadItem loadItem = LoadHelper.getBackgroundForSize(getUserToken(), selectedThemeItem.getId(),
+					screenWidth, screenHeight, RestHelper.V_HANDSET);
+
+			new RequestJsonTask<BackgroundItem>(backgroundItemUpdateListener).executeTask(loadItem);
+		}
+	}
+
+	private class BackgroundItemUpdateListener extends ChessLoadUpdateListener<BackgroundItem> {
+
+		private BackgroundItemUpdateListener() {
+			super(BackgroundItem.class);
+		}
+
+		@Override
+		public void updateData(BackgroundItem returnedObj) {
+
+			backgroundUrl = returnedObj.getData().getResizedImage();
 
 			{  // show popup with percentage of loading theme
 				View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
@@ -219,7 +239,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 				loadProgressPopupFragment.show(getFragmentManager(), THEME_LOAD_TAG);
 			}
 
-			imageDownloader.download(backgroundUrl, backgroundUpdateListener, screenWidth, height);
+			imageDownloader.download(backgroundUrl, backgroundUpdateListener, screenWidth, screenHeight);
 			selectedThemeName = selectedThemeItem.getThemeName();
 			getAppData().setThemeName(selectedThemeName);
 		}

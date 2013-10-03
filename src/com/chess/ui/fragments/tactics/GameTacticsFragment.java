@@ -528,10 +528,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		boardFace.setupBoard(trainerData.getInitialFen());
 		boardFace.setReside(!boardFace.isReside()); // we should always reside board in Tactics, because user should make next move
 
-//		if (trainerData.getCleanMoveString().contains(BaseGameItem.FIRST_MOVE_INDEX)) { // always contains first move string
 		boardFace.setTacticMoves(trainerData.getCleanMoveString());
 		boardFace.setMovesCount(1);
-//		}
 
 		boardView.invalidate();
 
@@ -558,6 +556,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			boolean sizeExceed = currentTacticAnswerCnt >= boardFace.getTacticMoves().length;
 
 			if (answerWasShowed() || sizeExceed) {
+				controlsTacticsView.showAfterRetry();
 				return;
 			}
 

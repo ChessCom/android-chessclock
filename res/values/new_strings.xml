@@ -211,7 +211,7 @@
     <string name="add">Add</string>
     <string name="archive">Archive</string>
     <string name="completed">Completed</string>
-    <string name="few_minutes">a few minutes</string>
+    <string name="few_min">a few min</string>
     <string name="password_cant_be_empty">Password can\'t be empty</string>
     <string name="invalid_username_or_password">Invalid Username or Password</string>
     <string name="you_won">You Won!</string>

@@ -648,6 +648,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	protected void performLogout() {
+		if (getActivity() == null) {
+			return;
+		}
 		// un-register from GCM
 		unRegisterGcmService();
 
@@ -710,9 +713,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		DbDataProvider.DatabaseHelper dbHelper = ((DbDataProvider) client.getLocalContentProvider()).getDbHelper();
 		dbHelper.onUpgrade(dbHandle, DbDataProvider.getDbVersion(), DbDataProvider.getDbVersion() + 1);
-
 	}
-
 
 	public int getStatusBarHeight() {
 		Rect r = new Rect();

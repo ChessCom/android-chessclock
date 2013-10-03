@@ -114,7 +114,7 @@
                 android:id="@+id/completeSignUpBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/complete_sing_up"
+                android:text="@string/complete_singup"
                 android:layout_marginTop="@dimen/common_main_hit_button_margin_top"
                 style="@style/Button.Orange2"
                 />

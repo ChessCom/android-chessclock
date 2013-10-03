@@ -17,12 +17,12 @@ import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.comp.GameCompFragment;
-import com.chess.ui.fragments.daily.DailyTabsFragment;
+import com.chess.ui.fragments.daily.DailyHomeTabsFragment;
 import com.chess.ui.fragments.forums.ForumCategoriesFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
-import com.chess.ui.fragments.live.LiveTabsFragment;
+import com.chess.ui.fragments.live.LiveHomeTabsFragment;
 import com.chess.ui.fragments.messages.MessagesInboxFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
@@ -40,7 +40,7 @@ import java.util.List;
  * Date: 02.01.13
  * Time: 11:04
  */
-public class NavigationMenuFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
+public class NavigationMenuFragment extends LiveBaseFragment implements AdapterView.OnItemClickListener {
 
 	private static final int HOME_POS = 0;
 
@@ -125,21 +125,17 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 				}
 				break;
 			case R.drawable.ic_nav_play_daily:
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(DailyTabsFragment.class.getSimpleName());
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(DailyHomeTabsFragment.class.getSimpleName());
 				if (fragmentByTag == null) {
-					fragmentByTag = new DailyTabsFragment();
+					fragmentByTag = new DailyHomeTabsFragment();
 				}
 				break;
 			case R.drawable.ic_nav_play_live:
 
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(LiveTabsFragment.class.getSimpleName());
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(LiveHomeTabsFragment.class.getSimpleName());
 				if (fragmentByTag == null) {
-					fragmentByTag = new LiveTabsFragment();
+					fragmentByTag = new LiveHomeTabsFragment();
 				}
-//				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
-//				if (fragmentByTag == null) {
-//					fragmentByTag = LiveGameWaitFragment.createInstance(getAppData().getLiveGameConfig());
-//				}
 				break;
 			case R.drawable.ic_nav_tactics:
 				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragment.class.getSimpleName());
@@ -287,7 +283,6 @@ public class NavigationMenuFragment extends CommonLogicFragment implements Adapt
 
 		public class ViewHolder {
 			ProgressImageView icon;
-			//			ImageView icon;
 			TextView title;
 		}
 	}

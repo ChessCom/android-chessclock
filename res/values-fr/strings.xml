@@ -45,7 +45,7 @@
 	<string name="password">Mot de passe</string>
 	<string name="log_in">Inscription En</string>
 	<string name="sign_up">Signer</string>
-	<string name="complete_sing_up">Remplissez Inscription</string>
+	<string name="complete_singup">Remplissez Inscription</string>
 	<string name="play_as_guest">Jouer en tant qu\'invité</string>
 
 	<string name="white">Blanc</string>

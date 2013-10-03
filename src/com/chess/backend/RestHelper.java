@@ -399,9 +399,8 @@ public class RestHelper {
 	public static final String V_AV_SIZE_MICRO = "micro"; // 20
 
 	/* Theme background values */
-	public static final String V_BACK_SIZE_HANDSET = "handset";
-	public static final String V_BACK_SIZE_IPAD = "ipad";
-	public static final String V_BACK_SIZE_TABLET = "tablet";
+	public static final String V_HANDSET = "handset";
+	public static final String V_TABLET = "tablet";
 
 	// old
 	public static final String V_RESIGN = "RESIGN";

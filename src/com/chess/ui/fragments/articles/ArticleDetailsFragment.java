@@ -401,7 +401,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 						FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 						transaction.replace(DIAGRAM_PREFIX + clickedId, fragment, fragment.getClass().getSimpleName());
 						transaction.addToBackStack(fragment.getClass().getSimpleName());
-						transaction.commit();
+						transaction.commitAllowingStateLoss();
 					}
 
 					@Override
@@ -664,7 +664,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		protected Integer doTheTask(String... params) {
 			logTest(" task in progress start");
 			try {
-				Thread.sleep(500);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -675,7 +675,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 	}
 
-	private class DiagramUpdateListener extends ChessUpdateListener<String> {
+	private class DiagramUpdateListener extends ChessLoadUpdateListener<String> {
 		private final int textColor;
 		private final int textSize;
 		private List<ArticleDetailsItem.Diagram> diagramList;
@@ -728,7 +728,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 				frameLayout.addView(imageView);
 
-				handler.postDelayed(new DiagramFragmentCreator(diagramId, diagramList), 200);
+				handler.postDelayed(new DiagramFragmentCreator(diagramId, diagramList), 100);
 
 
 				RoboTextView textView = new RoboTextView(getActivity());
@@ -851,8 +851,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					final GameDiagramFragment fragment = GameDiagramFragment.createInstance(diagramItem);
 					FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 					transaction.replace(DIAGRAM_PREFIX + diagramId, fragment, fragment.getClass().getSimpleName());
-//					transaction.addToBackStack(fragment.getClass().getSimpleName());
-					transaction.commit();
+					transaction.commitAllowingStateLoss();
 
 					// then hide to receive an exact view and set to imageView
 					handler.postDelayed(new Runnable() {
@@ -880,9 +879,9 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 							// remove fragment
 							FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-							transaction.remove(fragment).commit();
+							transaction.remove(fragment).commitAllowingStateLoss();
 						}
-					}, 200);
+					}, 100);
 
 					break;
 				}

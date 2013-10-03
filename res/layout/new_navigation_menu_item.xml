@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:minHeight="@dimen/new_nav_menu_item_height"
     android:orientation="horizontal"
+	android:paddingRight="8dip"
     style="@style/ListItem"
     android:gravity="center_vertical">
 
@@ -27,7 +28,5 @@
         android:textSize="17sp"
         android:gravity="center_vertical"
          />
-	<!--android:textColor="@color/new_light_grey"-->
-	<!--android:textColor="@color/white"-->
 
 </com.chess.LinLayout>

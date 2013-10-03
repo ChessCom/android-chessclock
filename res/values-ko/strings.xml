@@ -43,7 +43,7 @@
 	<string name="password">패스워드</string>
 	<string name="log_in">로그인</string>
 	<string name="sign_up">가입하기</string>
-	<string name="complete_sing_up">가입을 완료</string>
+	<string name="complete_singup">가입을 완료</string>
 	<string name="play_as_guest">손님으로 재생</string>
 
 	<string name="white">백색</string>
