@@ -226,7 +226,7 @@ public class DailyNewGameFragment extends CommonLogicFragment {
 		view.findViewById(R.id.playFriendView).setOnClickListener(this);
 		view.findViewById(R.id.dailyHeaderView).setOnClickListener(this);
 
-		{ // live options
+		{ // time options
 			if (JELLY_BEAN_PLUS_API) {
 				ViewGroup dailyNewOptionsView = (ViewGroup) view.findViewById(R.id.dailyNewOptionsView);
 				LayoutTransition layoutTransition = dailyNewOptionsView.getLayoutTransition();

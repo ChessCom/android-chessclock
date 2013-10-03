@@ -29,7 +29,6 @@ import com.chess.backend.entity.api.DailyCurrentGameItem;
 import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
-import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -76,8 +75,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private static final int CREATE_CHALLENGE_UPDATE = 2;
 	private static final int DRAW_OFFER_UPDATE = 3;
 	private static final int ABORT_GAME_UPDATE = 4;
-	private static final int CURRENT_GAME = 0;
-	private static final int GAMES_LIST = 1;
 
 	// Options ids
 	private static final int ID_NEW_GAME = 0;
@@ -94,18 +91,18 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private GameStateUpdateListener gameStateUpdateListener;
 	private GameDailyUpdatesListener sendMoveUpdateListener;
 	private GameDailyUpdatesListener createChallengeUpdateListener;
-
-	private ChessBoardNetworkView boardView;
+	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
+	private ImageDownloaderToListener imageDownloader;
 
 	private DailyCurrentGameData currentGame;
+	protected boolean userPlayWhite = true;
 
 	private IntentFilter boardUpdateFilter;
 	private IntentFilter newChatUpdateFilter;
 	private BroadcastReceiver moveUpdateReceiver;
 	private NewChatUpdateReceiver newChatUpdateReceiver;
 
-	protected boolean userPlayWhite = true;
-	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
+	private ChessBoardNetworkView boardView;
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
 	private ControlsDailyView controlsDailyView;
@@ -114,11 +111,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private LabelsConfig labelsConfig;
 	private SparseArray<String> optionsMap;
 	private PopupOptionsMenuFragment optionsSelectFragment;
-	private ImageDownloaderToListener imageDownloader;
 	private String[] countryNames;
 	private int[] countryCodes;
 
-	public GameDailyFragment(){	}
+	public GameDailyFragment() {
+	}
 
 	public static GameDailyFragment createInstance(long gameId) {
 		GameDailyFragment fragment = new GameDailyFragment();
@@ -237,58 +234,35 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			cursor.close();
 
 			adjustBoardForGame();
-
 		} else {
 			updateGameState(gameId);
 		}
 	}
 
-	private class LoadFromDbUpdateListener extends AbstractUpdateListener<Cursor> {
-
-		private int listenerCode;
-
-		public LoadFromDbUpdateListener(int listenerCode) {
-			super(getContext(), GameDailyFragment.this);
-			this.listenerCode = listenerCode;
-		}
+	private class LoadFromDbUpdateListener extends ChessUpdateListener<Cursor> {
 
 		@Override
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
-			switch (listenerCode) {
-				case CURRENT_GAME:
+			// iterate through all loaded items in cursor
+			do {
+				// check if it's user's move in this game
+				long localDbGameId = DbDataManager.getLong(returnedObj, DbScheme.V_ID);
+				boolean isMyTurn = DbDataManager.getInt(returnedObj, DbScheme.V_IS_MY_TURN) > 0;
+				if (localDbGameId != gameId && isMyTurn) {
+					gameId = localDbGameId;
 					showSubmitButtonsLay(false);
+					boardView.setGameFace(GameDailyFragment.this);
 
-					currentGame = DbDataManager.getDailyCurrentGameFromCursor(returnedObj);
-					returnedObj.close();
+					getBoardFace().setAnalysis(false);
 
-					adjustBoardForGame();
+					loadGameAndUpdate();
+					return;
+				}
+			} while (returnedObj.moveToNext());
 
-//					updateGameState(currentGame.getGameId());
-
-					break;
-				case GAMES_LIST:
-					// iterate through all loaded items in cursor
-					do {
-						long localDbGameId = DbDataManager.getLong(returnedObj, DbScheme.V_ID);
-						if (localDbGameId != gameId) {
-							gameId = localDbGameId;
-							showSubmitButtonsLay(false);
-							boardView.setGameFace(GameDailyFragment.this);
-
-							getBoardFace().setAnalysis(false);
-
-//							updateGameState(gameId);
-							loadGameAndUpdate();
-							return;
-						}
-					} while (returnedObj.moveToNext());
-
-					getActivityFace().showPreviousFragment();
-
-					break;
-			}
+			getActivityFace().showPreviousFragment();
 		}
 	}
 
@@ -501,7 +475,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	}
 
 	private void sendMove() {
-		LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId,  RestHelper.V_SUBMIT, currentGame.getTimestamp());
+		LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_SUBMIT, currentGame.getTimestamp());
 		loadItem.addRequestParams(RestHelper.P_NEWMOVE, getBoardFace().convertMoveEchess());
 		new RequestJsonTask<BaseResponseItem>(sendMoveUpdateListener).executeTask(loadItem);
 	}
@@ -525,12 +499,14 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		}
 	}
 
-	private void loadGamesList() {
-		// replace with db update
-//		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGames(getContext()), // TODO adjust
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGames(getUsername()), // TODO adjust
-				getContentResolver()).executeTask();
+//	private void loadGamesList() {
+//		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGames(getUsername()),
+//				getContentResolver()).executeTask();
+//	}
 
+	private void loadGamesList() {
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGames(getUsername()),
+				getContentResolver()).executeTask();
 	}
 
 	@Override
@@ -697,7 +673,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			new RequestJsonTask<BaseResponseItem>(drawOfferedUpdateListener).executeTask(loadItem);
 		} else if (tag.equals(ABORT_GAME_TAG)) {
 
-			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId,  RestHelper.V_RESIGN, currentGame.getTimestamp());
+			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_RESIGN, currentGame.getTimestamp());
 			new RequestJsonTask<BaseResponseItem>(abortGameUpdateListener).executeTask(loadItem);
 		} else if (tag.equals(END_VACATION_TAG)) {
 			LoadItem loadItem = LoadHelper.deleteOnVacation(getUserToken());
@@ -791,7 +767,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		}
 
 		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), currentGame.getDaysPerMove(),
-				currentGame.isRated() ? 1 : 0,  currentGame.getGameType(), opponent);
+				currentGame.isRated() ? 1 : 0, currentGame.getGameType(), opponent);
 		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 
@@ -887,7 +863,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		sendMoveUpdateListener = new GameDailyUpdatesListener(SEND_MOVE_UPDATE);
 		createChallengeUpdateListener = new GameDailyUpdatesListener(CREATE_CHALLENGE_UPDATE);
 
-		currentGamesCursorUpdateListener = new LoadFromDbUpdateListener(GAMES_LIST);
+		currentGamesCursorUpdateListener = new LoadFromDbUpdateListener();
 
 		imageDownloader = new ImageDownloaderToListener(getActivity());
 
@@ -896,7 +872,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	}
 
 	private void widgetsInit(View view) {
-
 		controlsDailyView = (ControlsDailyView) view.findViewById(R.id.controlsNetworkView);
 		NotationView notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);

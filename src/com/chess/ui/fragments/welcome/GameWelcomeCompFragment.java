@@ -184,12 +184,13 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	public void onResume() {
 		super.onResume();
 
+		// explicitly disable slide menus
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				enableSlideMenus(false);
 			}
-		}, 100);
+		}, 1000);
 
 		ChessBoardComp.resetInstance();
 

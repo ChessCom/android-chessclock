@@ -526,6 +526,8 @@
         <item name="android:textSize">@dimen/welcome_feature_text_size</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
+        <item name="android:paddingTop">@dimen/welcome_features_padding_between_top</item>
+        <item name="android:paddingBottom">@dimen/welcome_features_padding_between_bottom</item>
     </style>
 
     <style name="welcomeCloseBtn" parent="@style/Button.Glassy.Small">

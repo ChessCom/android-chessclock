@@ -520,6 +520,14 @@ public class RestHelper {
 
 		HttpURLConnection connection = null;
 		try {
+//			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+//			String algorithm = TrustManagerFactory.getDefaultAlgorithm();
+//			TrustManagerFactory tmf = TrustManagerFactory.getInstance(algorithm);
+//			tmf.init(keyStore);
+//
+//			SSLContext context = SSLContext.getInstance("TLS");
+//			context.init(null, tmf.getTrustManagers(), null);
+
 			URL urlObj = new URL(url);
 			connection = (HttpURLConnection) urlObj.openConnection();
 			connection.setRequestMethod(requestMethod);

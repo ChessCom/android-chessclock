@@ -30,7 +30,7 @@
     <dimen name="header_title_size">17sp</dimen>
     <dimen name="rect_edge_offset">2dip</dimen>
     <dimen name="splash_progress_margin_top">100dip</dimen>
-    <dimen name="welcome_feature_text_size">17sp</dimen>
+    <dimen name="welcome_feature_text_size">21sp</dimen>
     <dimen name="welcome_title_text_size">26sp</dimen>
     <dimen name="board_avatar_icon_size">32dip</dimen>
     <dimen name="game_controls_button_height">56dip</dimen>
@@ -90,5 +90,7 @@
 	<dimen name="popup_end_game_width">300dip</dimen>
 	<dimen name="rating_result_text_size">32sp</dimen>
 	<dimen name="theme_board_preview_size">120dip</dimen>
+	<dimen name="welcome_features_padding_between_top">4dip</dimen>
+	<dimen name="welcome_features_padding_between_bottom">4dip</dimen>
 
 </resources>

@@ -143,7 +143,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 				int[] newGameButtonsArray = resources.getIntArray(R.array.days_per_move_array);
 				List<DailyGameButtonItem> newGameButtonItems = new ArrayList<DailyGameButtonItem>();
 				for (int label : newGameButtonsArray) {
-					newGameButtonItems.add(new DailyGameButtonItem(label, getContext()));
+					newGameButtonItems.add(new DailyGameButtonItem(label));
 				}
 				int dailyMode = getAppData().getDefaultDailyMode();
 				newGameButtonItems.get(dailyMode).checked = true;
@@ -239,7 +239,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 				// set value to builder
 				gameConfigBuilder.setDaysPerMove(dailyGamesButtonsAdapter.getItem(position).days);
 			}
-		}, 250);
+		}, 1000);
 	}
 
 	@Override
@@ -348,7 +348,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		public int days;
 		public String label;
 
-		DailyGameButtonItem(int label, Context context){
+		DailyGameButtonItem(int label){
 			this.days = label;
 			this.label = String.valueOf(label);
 		}
@@ -405,6 +405,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 			((RoboButton)convertView).setText(item.label);
 
 			Drawable background = convertView.getBackground();
+			logTest(" pos = " + pos + " checked = " + item.checked);
 			if (item.checked) {
 				((RoboButton)convertView).setTextColor(Color.WHITE);
 				background.mutate().setState(ButtonGlassyDrawable.STATE_SELECTED);
@@ -419,6 +420,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 				item.checked = false;
 			}
 
+			logTest(" position = " + checkedPosition);
 			itemsList.get(checkedPosition).checked = true;
 			notifyDataSetChanged();
 		}

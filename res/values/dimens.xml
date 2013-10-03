@@ -330,5 +330,7 @@
 	<dimen name="popup_end_game_width">300dip</dimen>
 	<dimen name="rating_result_text_size">32sp</dimen>
 	<dimen name="theme_board_preview_size">90dip</dimen>
+	<dimen name="welcome_features_padding_between_top">2dip</dimen>
+	<dimen name="welcome_features_padding_between_bottom">2dip</dimen>
 
 </resources>

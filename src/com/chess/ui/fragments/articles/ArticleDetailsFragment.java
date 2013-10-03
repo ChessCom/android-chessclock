@@ -662,13 +662,12 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		@Override
 		protected Integer doTheTask(String... params) {
-			logTest(" task in progress start");
+			// we need delay to make transaction to diagram fragments serial, to be able to capture correct bitmaps for them
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			logTest(" task in progress end");
 
 			item = params[0];
 			return StaticData.RESULT_OK;
@@ -749,7 +748,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			}
 
 			if (contentParts[parsedPartCnt].contains("chess_com_diagram")) {
-				logTest(" part starting task");
 				new DiagramLoaderTask(new DiagramUpdateListener(diagramList)).executeTask(contentParts[parsedPartCnt]);
 
 
@@ -785,7 +783,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			// divide text and add corresponding views: TextView for text part and image for diagram part
 			for (parsedPartCnt = 0; parsedPartCnt < contentParts.length; parsedPartCnt++) {
 				if (contentParts[parsedPartCnt].contains("chess_com_diagram")) {
-					logTest(" part starting task");
 					new DiagramLoaderTask(new DiagramUpdateListener(diagramList)).executeTask(contentParts[parsedPartCnt]);
 					diagramsLoaded = true;
 
@@ -829,20 +826,16 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			for (ArticleDetailsItem.Diagram diagramToShow : diagramList) {
 				if (diagramToShow.getDiagramId() == diagramId) {
 					// create a real fragment
-					logTest(" create a real fragment for id = " + diagramId);
 
 					final GameDiagramItem diagramItem = new GameDiagramItem();
 					diagramItem.setShowAnimation(false);
 					diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
 					if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PUZZLE) {
 						diagramItem.setMovesList(diagramToShow.getMoveList());
-						logTest(" id = " + diagramId + " use moves");
 					} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.CHESS_GAME) {
 						diagramItem.setMovesList(diagramToShow.getMoveList());
-						logTest(" id = " + diagramId + " use moves");
 					} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
 						diagramItem.setFen(diagramToShow.getFen());
-						logTest(" id = " + diagramId + " use fen = " + diagramToShow.getFen());
 					} else { // non valid format
 						return;
 					}
@@ -875,7 +868,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 							drawable.setBounds(0, 0, (int) (widthPixels * 0.8f), (int) (widthPixels * 0.8f));
 							ImageView imageView = (ImageView) getView().findViewById(IMAGE_PREFIX + diagramId);
 							imageView.setImageDrawable(drawable);
-							logTest(" diagramId = " + diagramId + " fragment = " + fragment + " \n imageView = " + imageView);
 
 							// remove fragment
 							FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
