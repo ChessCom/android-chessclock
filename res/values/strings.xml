@@ -408,6 +408,7 @@
 	<string name="api">API</string>
 	<string name="prod_api">Production API</string>
 	<string name="test_api">Test API</string>
+	<string name="observe">Observe</string>
 
 	<!--Navigation Menu-->
 

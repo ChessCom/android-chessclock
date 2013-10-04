@@ -23,7 +23,7 @@ public class PopupItem implements Parcelable {
     private int positiveBtnId;
     private int neutralBtnId;
     private int negativeBtnId;
-    private LinearLayout customView;
+    private View customView;
 	private int buttons;
 
     public PopupItem() {
@@ -97,7 +97,7 @@ public class PopupItem implements Parcelable {
         return customView;
     }
 
-    public void setCustomView(LinearLayout customView) {
+    public void setCustomView(View customView) {
         this.customView = customView;
     }
 

@@ -111,7 +111,7 @@
         </com.chess.LinLayout>
 
         <!--I Play As-->
-        <com.chess.LinLayout
+      <!--  <com.chess.LinLayout
             android:id="@+id/iPlayLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
                 android:text="@string/random"
                 style="@style/Button.Glassy.Small"
                 />
-        </com.chess.LinLayout>
+        </com.chess.LinLayout>-->
 
         <!--Rated Game-->
         <com.chess.LinLayout

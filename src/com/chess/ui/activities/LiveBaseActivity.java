@@ -18,13 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.LoginItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.statics.AppConstants;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.LiveEvent;
 import com.chess.lcc.android.OuterChallengeListener;
@@ -34,9 +32,11 @@ import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
+import com.chess.statics.AppConstants;
+import com.chess.statics.Symbol;
 import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
-import com.chess.ui.fragments.live.LiveHomeTabsFragment;
+import com.chess.ui.fragments.live.LiveHomeFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
@@ -162,7 +162,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 					return super.onKeyUp(keyCode, event);
 				}
 
-				fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveHomeTabsFragment.class.getSimpleName());
+				fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveHomeFragment.class.getSimpleName());
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					liveService.logout();
 					unBindLiveService();
@@ -313,7 +313,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				waitFragment.setLCSBound(isLCSBound);
 			}
 
-			LiveHomeTabsFragment liveHomeFragment = (LiveHomeTabsFragment) findFragmentByTag(LiveHomeTabsFragment.class.getSimpleName());
+			LiveHomeFragment liveHomeFragment = (LiveHomeFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());
 			if (liveHomeFragment != null) {
 				liveHomeFragment.setLCSBound(isLCSBound);
 			}
@@ -331,7 +331,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				return;
 			}
 
-			LiveHomeTabsFragment liveHomeFragment = (LiveHomeTabsFragment) findFragmentByTag(LiveHomeTabsFragment.class.getSimpleName());
+			LiveHomeFragment liveHomeFragment = (LiveHomeFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());
 			if (liveHomeFragment != null) {
 				liveHomeFragment.setLCSBound(isLCSBound);
 			}
@@ -661,7 +661,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			return;
 		}
 
-		LiveHomeTabsFragment liveHomeFragment = (LiveHomeTabsFragment) findFragmentByTag(LiveHomeTabsFragment.class.getSimpleName());
+		LiveHomeFragment liveHomeFragment = (LiveHomeFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());
 		if (liveHomeFragment != null) {
 			liveHomeFragment.onLiveServiceConnected();
 		}

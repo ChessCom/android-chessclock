@@ -281,7 +281,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 				loadProgressBar.setVisibility(View.VISIBLE);
 
 				PopupItem popupItem = new PopupItem();
-				popupItem.setCustomView((LinearLayout) layout);
+				popupItem.setCustomView(layout);
 
 				loadProgressPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
 				loadProgressPopupFragment.show(getFragmentManager(), THEME_LOAD_TAG);
@@ -361,7 +361,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			taskTitleTxt.setText(R.string.loading_background);
 
 			PopupItem popupItem = new PopupItem();
-			popupItem.setCustomView((LinearLayout) layout);
+			popupItem.setCustomView(layout);
 
 			loadProgressPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
 			loadProgressPopupFragment.show(getFragmentManager(), THEME_LOAD_TAG);

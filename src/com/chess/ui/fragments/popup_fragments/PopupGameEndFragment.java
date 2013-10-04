@@ -15,9 +15,8 @@ import com.chess.ui.interfaces.PopupDialogFace;
  * Time: 11:28
  */
 public class PopupGameEndFragment extends BasePopupDialogFragment {
-	private int size;
 
-//	protected FrameLayout customView;
+	private int size;
 
 	public static PopupGameEndFragment createInstance(PopupItem popupItem) {
 		PopupGameEndFragment frag = new PopupGameEndFragment();
@@ -39,7 +38,6 @@ public class PopupGameEndFragment extends BasePopupDialogFragment {
 		setStyle(STYLE_NO_TITLE, 0);
 
 		size = getResources().getDisplayMetrics().widthPixels;
-//		density = getResources().getDisplayMetrics().density;
 	}
 
 	@Override
@@ -60,40 +58,6 @@ public class PopupGameEndFragment extends BasePopupDialogFragment {
 		super.onResume();
 
 		getDialog().setCanceledOnTouchOutside(true); // always cancel on touchOutside
-
-
-		// we need remove parent from child's view  see note below. Should work
-//		removeParent();
-//		if (popupItem.getCustomView() == null) {
-//			getDialog().dismiss();
-//			return;
-//		}
-//		customView.addView(popupItem.getCustomView());
 	}
 
-	@Override
-	public void onPause() {
-		super.onPause();
-//		removeParent();
-	}
-
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-//		customView = null;
-	}
-
-//	private void removeParent(){
-//		final View view = popupItem.getCustomView();
-//		if (view == null) {
-//			return;
-//		}
-//
-//		ViewGroup childParent = (ViewGroup) view.getParent();
-//		if(childParent != null) {
-//			childParent.removeAllViews();
-//		}
-//		customView.removeAllViews();
-//		customView.removeView(view);
-//	}
 }

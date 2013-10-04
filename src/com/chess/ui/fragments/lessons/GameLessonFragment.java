@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.chess.FontsHelper;
@@ -23,13 +22,13 @@ import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.LessonItem;
 import com.chess.backend.entity.api.LessonListItem;
 import com.chess.backend.entity.api.LessonRatingChangeItem;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadLessonItemTask;
 import com.chess.db.tasks.SaveLessonsLessonTask;
 import com.chess.model.PopupItem;
+import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLessons;
 import com.chess.ui.engine.FenHelper;
@@ -920,7 +919,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			}
 
 			PopupItem popupItem = new PopupItem();
-			popupItem.setCustomView((LinearLayout) popupView);
+			popupItem.setCustomView(popupView);
 
 			completedPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
 			completedPopupFragment.show(getFragmentManager(), LESSON_COMPLETE_TAG);

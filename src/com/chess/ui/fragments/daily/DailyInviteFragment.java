@@ -1,6 +1,7 @@
 package com.chess.ui.fragments.daily;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -25,9 +26,11 @@ import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.engine.SoundPlayer;
+import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
+import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.boards.BoardFace;
-import com.chess.ui.interfaces.game_ui.GameNetworkFace;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
@@ -40,9 +43,8 @@ import com.chess.utilities.AppUtils;
  * Date: 24.06.13
  * Time: 13:56
  */
-public class DailyInviteFragment extends GameBaseFragment implements GameNetworkFace {
+public class DailyInviteFragment extends CommonLogicFragment {
 
-	private static final int CREATE_CHALLENGE_UPDATE = 2;
 	private static final String ERROR_TAG = "send request failed popup";
 	protected int AVATAR_SIZE = 48;
 
@@ -51,7 +53,6 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 	private PanelInfoGameView bottomPanelView;
 	private String[] countryNames;
 	private int[] countryCodes;
-//	private GameDailyUpdatesListener createChallengeUpdateListener;
 	private ImageDownloaderToListener imageDownloader;
 	private DailyChallengeItem.Data challengeItem;
 	private GameBaseFragment.LabelsConfig labelsConfig;
@@ -62,6 +63,7 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 	private TextView inviteTitleTxt;
 	private int successToastMsgId;
 	private DailyUpdateListener challengeInviteUpdateListener;
+	private GameFaceHelper gameFaceHelper;
 
 	public DailyInviteFragment() { }
 
@@ -104,80 +106,17 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		adjustBoard();
 	}
 
-	@Override
-	public Boolean isUserColorWhite() {
-		return null;
-	}
-
-	@Override
-	public Long getGameId() {
-		return null;
-	}
-
-	@Override
-	public void showOptions() {
-
-	}
-
-	@Override
-	public void newGame() {
-
-	}
-
-	@Override
-	public void switch2Analysis() {
-
-	}
-
-	@Override
-	public void updateAfterMove() {
-
-	}
-
-	@Override
-	public void invalidateGameScreen() {
-
-	}
-
-	@Override
-	public String getWhitePlayerName() {
-		return null;
-	}
-
-	@Override
-	public String getBlackPlayerName() {
-		return null;
-	}
-
-	@Override
-	public boolean currentGameExist() {
-		return false;
-	}
-
-	@Override
-	public BoardFace getBoardFace() {
-		return ChessBoardOnline.getInstance(this);
-	}
-
-	@Override
-	public void toggleSides() {
-
-	}
-
-	@Override
-	protected void restoreGame() {
-
-	}
-
 	public void init() {
+		Resources resources = getResources();
+		gameFaceHelper = new GameFaceHelper();
+
 		labelsConfig = new GameBaseFragment.LabelsConfig();
-//		createChallengeUpdateListener = new GameDailyUpdatesListener(CREATE_CHALLENGE_UPDATE);
 		challengeInviteUpdateListener = new DailyUpdateListener();
 
 		imageDownloader = new ImageDownloaderToListener(getActivity());
 
-		countryNames = getResources().getStringArray(R.array.new_countries);
-		countryCodes = getResources().getIntArray(R.array.new_country_ids);
+		countryNames = resources.getStringArray(R.array.new_countries);
+		countryCodes = resources.getIntArray(R.array.new_country_ids);
 	}
 
 	private void adjustBoard() {
@@ -242,9 +181,7 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		// set user data info
 		bottomPanelView.setPlayerName(getUsername());
 
-//		bottomPanelView.setPlayerRating();
-
-		{ // get users info // TODO check info from local DB
+		{ // get users info // TODO check info from invite item
 			LoadItem loadItem = LoadHelper.getUserInfo(getUserToken());
 			new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.CURRENT_USER)).executeTask(loadItem);
 		}
@@ -291,31 +228,6 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		}
 	}
 
-	@Override
-	public void showSubmitButtonsLay(boolean show) {
-
-	}
-
-	@Override
-	public void switch2Chat() {
-
-	}
-
-	@Override
-	public void playMove() {
-		acceptChallenge();
-	}
-
-	@Override
-	public void cancelMove() {
-		declineChallenge();
-	}
-
-	@Override
-	public void goHome() {
-		// not used here
-	}
-
 	private void acceptChallenge() {
 		LoadItem loadItem = LoadHelper.acceptChallenge(getUserToken(), challengeItem.getGameId());
 		successToastMsgId = R.string.challenge_accepted;
@@ -349,24 +261,6 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		}
 	}
 
-	private class GameDailyUpdatesListener extends ChessLoadUpdateListener<BaseResponseItem> {
-		private int listenerCode;
-
-		private GameDailyUpdatesListener(int listenerCode) {
-			super(BaseResponseItem.class);
-			this.listenerCode = listenerCode;
-		}
-
-		@Override
-		public void updateData(BaseResponseItem returnedObj) {
-			switch (listenerCode) {
-				case CREATE_CHALLENGE_UPDATE:
-					showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
-					break;
-			}
-		}
-	}
-
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		String tag = fragment.getTag();
@@ -382,14 +276,24 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 	}
 
 	private void widgetsInit(View view) {
-
+		Resources resources = getResources();
 		{ // invite overlay setup
 			View inviteOverlay = view.findViewById(R.id.inviteOverlay);
 
-			int sideInset = getResources().getDisplayMetrics().widthPixels / 8;
+			// let's make it to match board properties
+			// it should be 2 squares inset from top of border and 4 squares tall + 1 squares from sides
+			int sideInset = resources.getDisplayMetrics().widthPixels / 8; // one square size
+			int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
+			// now we add few pixel to compensate shadow addition
+			int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
+			borderOffset += shadowOffset;
+			int overlayHeight = sideInset * 4 + borderOffset + shadowOffset;
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-			params.setMargins(sideInset, sideInset * 2, sideInset, 0);
+					overlayHeight);
+			int topMargin = sideInset * 2 + borderOffset - shadowOffset * 2;
+
+			params.setMargins(sideInset - borderOffset, topMargin, sideInset - borderOffset, 0);
+			params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
 			params.addRule(RelativeLayout.ALIGN_BOTTOM, R.id.boardView);
 			inviteOverlay.setLayoutParams(params);
 
@@ -411,9 +315,7 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		boardView.setBottomPanelView(bottomPanelView);
 		boardView.setControlsView(controlsDailyView);
 
-		setBoardView(boardView);
-
-		boardView.setGameFace(this);
+		boardView.setGameFace(gameFaceHelper);
 		boardView.lockBoard(true);
 	}
 
@@ -453,4 +355,26 @@ public class DailyInviteFragment extends GameBaseFragment implements GameNetwork
 		}
 	}
 
+	private class GameFaceHelper extends AbstractGameNetworkFaceHelper {
+
+		@Override
+		public SoundPlayer getSoundPlayer() {
+			return SoundPlayer.getInstance(getActivity());
+		}
+
+		@Override
+		public void playMove() {
+			acceptChallenge();
+		}
+
+		@Override
+		public void cancelMove() {
+			declineChallenge();
+		}
+
+		@Override
+		public BoardFace getBoardFace() {
+			return ChessBoardOnline.getInstance(this);
+		}
+	}
 }

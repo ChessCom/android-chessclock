@@ -233,7 +233,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 				taskTitleTxt.setText(R.string.loading_background);
 
 				PopupItem popupItem = new PopupItem();
-				popupItem.setCustomView((LinearLayout) layout);
+				popupItem.setCustomView(layout);
 
 				loadProgressPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
 				loadProgressPopupFragment.show(getFragmentManager(), THEME_LOAD_TAG);

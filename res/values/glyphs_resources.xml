@@ -60,6 +60,7 @@
     <string name="ic_stats">;</string>
     <string name="ic_search">–</string>
     <string name="ic_hint">g</string>
+    <string name="ic_binoculars">—</string>
 
     <string name="ic_right">.</string> 			<!-- > -->
     <string name="ic_left">,</string>         	<!-- < -->

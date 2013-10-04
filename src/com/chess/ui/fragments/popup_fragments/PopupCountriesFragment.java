@@ -76,7 +76,13 @@ public class PopupCountriesFragment extends DialogFragment implements AdapterVie
 		countriesAdapter = new CountriesAdapter(getActivity(), null);
 		listView.setAdapter(countriesAdapter);
 
+		if (listener == null) { // we were restored from killed state
+			dismiss();
+			return;
+		}
+
 		new LoadCountryFlagsTask(new CountriesLoadListener()).executeTask();
+
 	}
 
 	@Override
@@ -163,7 +169,6 @@ public class PopupCountriesFragment extends DialogFragment implements AdapterVie
 		if (show) {
 			if (countriesAdapter.getCount() == 0) {
 				listView.setVisibility(View.GONE);
-
 			}
 			loadingView.setVisibility(View.VISIBLE);
 		} else {

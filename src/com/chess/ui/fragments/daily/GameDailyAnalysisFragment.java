@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.api.DailyCurrentGameData;
@@ -407,7 +406,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 //		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
 //		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
 		PopupItem popupItem = new PopupItem();
-		popupItem.setCustomView((LinearLayout) layout);
+		popupItem.setCustomView(layout);
 
 		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
 		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);

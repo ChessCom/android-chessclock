@@ -62,6 +62,8 @@ public class LiveArchiveFragment extends CommonLogicFragment implements AdapterV
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		setTitle(R.string.live);
+
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 

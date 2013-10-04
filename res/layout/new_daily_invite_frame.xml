@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="160dip"
-            android:background="@drawable/popup_white_back"
+            android:background="@drawable/invite_white_back"
             android:paddingTop="@dimen/invite_overlay_padding_top"
             android:paddingBottom="@dimen/invite_overlay_padding_bottom"
             >

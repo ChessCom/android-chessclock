@@ -336,6 +336,7 @@
 	<string name="no_games_found">No games found</string>
 	<string name="recent_problems">Recent Problems</string>
 	<string name="recent_lessons">Recent Lessons</string>
+	<string name="players_online_arg">%s Players Online</string>
 
 
 </resources>

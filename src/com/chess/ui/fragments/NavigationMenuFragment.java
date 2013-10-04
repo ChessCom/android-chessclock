@@ -22,7 +22,7 @@ import com.chess.ui.fragments.forums.ForumCategoriesFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
-import com.chess.ui.fragments.live.LiveHomeTabsFragment;
+import com.chess.ui.fragments.live.LiveHomeFragment;
 import com.chess.ui.fragments.messages.MessagesInboxFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
@@ -132,10 +132,14 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				break;
 			case R.drawable.ic_nav_play_live:
 
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(LiveHomeTabsFragment.class.getSimpleName());
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());
 				if (fragmentByTag == null) {
-					fragmentByTag = new LiveHomeTabsFragment();
+					fragmentByTag = new LiveHomeFragment();
 				}
+//				fragmentByTag = (BasePopupsFragment) findFragmentByTag(LiveHomeTabsFragment.class.getSimpleName());
+//				if (fragmentByTag == null) {
+//					fragmentByTag = new LiveHomeTabsFragment();
+//				}
 				break;
 			case R.drawable.ic_nav_tactics:
 				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragment.class.getSimpleName());

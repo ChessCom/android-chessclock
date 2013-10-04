@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item android:drawable="@drawable/shadow_back_default">
+	</item>
+
+
     <item>
         <shape
             android:dither="true"
             android:shape="rectangle">
             <solid android:color="@color/transparent" />
+            <corners android:radius="@dimen/new_round_button_radius" />
             <stroke
                 android:width="@dimen/popup_border_width"
-                android:color="@color/popup_white_border_grey"/>
+                android:color="@color/invite_white_border_grey"/>
         </shape>
     </item>
 
@@ -19,6 +24,7 @@
         android:top="@dimen/popup_border_width"
         >
         <shape >
+            <corners android:radius="@dimen/new_round_button_radius" />
             <solid android:color="@color/popup_back_white" />
         </shape>
     </item>

@@ -83,6 +83,11 @@
 	<dimen name="theme_board_preview_size">90dip</dimen>
 	<dimen name="welcome_features_padding_between_top">2dip</dimen>
 	<dimen name="welcome_features_padding_between_bottom">2dip</dimen>
+	<dimen name="invite_overlay_top_offset">1dip</dimen>
+	<dimen name="popup_border_width">1dip</dimen>
+	<dimen name="start_new_game_overlay_padding_top">25dip</dimen>
+	<dimen name="start_new_game_overlay_padding_side">15dip</dimen>
+	<dimen name="overlay_shadow_offset">3dip</dimen>
 
 
 </resources>

@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
@@ -540,7 +539,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 //		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
 
 		PopupItem popupItem = new PopupItem();
-		popupItem.setCustomView((LinearLayout) layout);
+		popupItem.setCustomView(layout);
 
 		PopupGameEndFragment endPopupFragment = PopupGameEndFragment.createInstance(popupItem);
 		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);

@@ -75,8 +75,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	private TextView emptyView;
 	private ListView listView;
 	private View loadingView;
-	private boolean onVacation;
-	private View headerView;
 	private View topButtonsView;
 
 	@Override
@@ -98,7 +96,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		headerView = inflater.inflate(R.layout.new_start_new_game_button_view, null, false); // init here because of inflater
 		return inflater.inflate(R.layout.new_daily_games_right_frame, container, false);
 	}
 
@@ -106,10 +103,13 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_start_new_game_button_view, null, false);
+
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 		topButtonsView = headerView.findViewById(R.id.topButtonsView);
 		topButtonsView.setVisibility(View.GONE);
+
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
@@ -211,10 +211,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
 			getActivityFace().toggleRightMenu();
 		} else {
-			if (onVacation) { // TODO remove
-				showPopupDialog(R.string.leave_vacation_to_submit_move_q, UNABLE_TO_MOVE_TAG);
-				return;
-			}
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 			gameListCurrentItem = DbDataManager.getDailyCurrentGameListFromCursor(cursor);

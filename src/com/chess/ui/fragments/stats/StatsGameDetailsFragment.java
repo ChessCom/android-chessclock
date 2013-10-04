@@ -11,12 +11,17 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.stats.GameStatsItem;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.QueryParams;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveGameStatsTask;
+import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.views.PieChartView;
@@ -80,12 +85,18 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 	private int mode;
 	private String username;
 	private RatingGraphView ratingGraphView;
+	private boolean showTitle;
 
 	public StatsGameDetailsFragment() {
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, 0);
 
 		setArguments(bundle);
+	}
+	public static StatsGameDetailsFragment createInstance(int code, boolean showTitle, String username) {
+		StatsGameDetailsFragment fragment = createInstance(code, username);
+		fragment.showTitle = showTitle;
+		return fragment;
 	}
 
 	public static StatsGameDetailsFragment createInstance(int code, String username) {
@@ -126,6 +137,10 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		if (showTitle) {
+			setTitle(R.string.stats);
+		}
+
 		currentRatingTxt = (TextView) view.findViewById(R.id.currentRatingTxt);
 
 		absoluteRankTxt = (TextView) view.findViewById(R.id.absoluteRankTxt);
@@ -161,7 +176,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 		super.onResume();
 
 		if (need2update) {
-			updateData();
+			updateUiData();
 		}
 	}
 
@@ -174,18 +189,18 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 	}
 
 	private void init() {
-		standardCursorUpdateListener = new CursorUpdateListener(LIVE_STANDARD);
-		lightningCursorUpdateListener = new CursorUpdateListener(LIVE_LIGHTNING);
-		blitzCursorUpdateListener = new CursorUpdateListener(LIVE_BLITZ);
-		chessCursorUpdateListener = new CursorUpdateListener(DAILY_CHESS);
-		chess960CursorUpdateListener = new CursorUpdateListener(DAILY_CHESS960);
+		standardCursorUpdateListener = new CursorUpdateListener(SaveGameStatsTask.STANDARD);
+		lightningCursorUpdateListener = new CursorUpdateListener(SaveGameStatsTask.LIGHTNING);
+		blitzCursorUpdateListener = new CursorUpdateListener(SaveGameStatsTask.BLITZ);
+		chessCursorUpdateListener = new CursorUpdateListener(SaveGameStatsTask.CHESS);
+		chess960CursorUpdateListener = new CursorUpdateListener(SaveGameStatsTask.CHESS960);
 
 		int lightGrey = getResources().getColor(R.color.stats_label_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
 
 	}
 
-	private void updateData() {
+	private void updateUiData() {
 
 		switch (mode) {
 			case LIVE_STANDARD:
@@ -213,36 +228,16 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 
 	private class CursorUpdateListener extends ChessUpdateListener<Cursor> {
 
-		private int listenerCode;
+		private String gameType;
 
-		public CursorUpdateListener(int listenerCode) {
+		public CursorUpdateListener(String gameType) {
 			super();
-			this.listenerCode = listenerCode;
+			this.gameType = gameType;
 		}
 
 		@Override
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
-
-			String gameType;
-			switch (listenerCode) {
-				case LIVE_STANDARD:
-					gameType = SaveGameStatsTask.STANDARD;
-					break;
-				case LIVE_LIGHTNING:
-					gameType = SaveGameStatsTask.LIGHTNING;
-					break;
-				case LIVE_BLITZ:
-					gameType = SaveGameStatsTask.BLITZ;
-					break;
-				case DAILY_CHESS:
-					gameType = SaveGameStatsTask.CHESS;
-					break;
-				default:
-				case DAILY_CHESS960:
-					gameType = SaveGameStatsTask.CHESS960;
-					break;
-			}
 
 			{ // top info view
 				int current = DbDataManager.getInt(returnedObj, DbScheme.V_CURRENT);
@@ -337,6 +332,50 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 				mostFrequentOpponentTxt.setText(mostFrequentOpponentName);
 				mostFrequentOpponentGamesTxt.setText(getString(R.string.games_arg, mostFrequentOpponentGamesPlayed));
 			}
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+
+			if (resultCode == StaticData.EMPTY_DATA) {
+				// get full stats
+				LoadItem loadItem = new LoadItem();
+				loadItem.setLoadPath(RestHelper.getInstance().CMD_GAME_STATS);
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+				loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
+				loadItem.addRequestParams(RestHelper.P_VIEW_USERNAME, username);
+
+				new RequestJsonTask<GameStatsItem>(new StatsItemUpdateListener(gameType)).executeTask(loadItem);
+			}
+		}
+	}
+
+	private class StatsItemUpdateListener extends ChessLoadUpdateListener<GameStatsItem> {
+
+		private String gameType;
+
+		public StatsItemUpdateListener(String gameType) {
+			super(GameStatsItem.class);
+			this.gameType = gameType;
+		}
+
+		@Override
+		public void updateData(GameStatsItem returnedObj) {
+			super.updateData(returnedObj);
+
+			// Save stats to DB
+			new SaveGameStatsTask(new SaveStatsUpdateListener(), returnedObj.getData(), getContentResolver(),
+					gameType, username).executeTask();
+		}
+	}
+
+	private class SaveStatsUpdateListener extends ChessLoadUpdateListener<GameStatsItem.Data> {
+
+		@Override
+		public void updateData(GameStatsItem.Data returnedObj) {
+			super.updateData(returnedObj);
+			updateUiData();
 		}
 	}
 
