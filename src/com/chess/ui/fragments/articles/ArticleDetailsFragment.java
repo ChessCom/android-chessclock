@@ -142,32 +142,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		} else {
 			articleId = savedInstanceState.getLong(ITEM_ID);
 		}
-		Resources resources = getResources();
-		density = resources.getDisplayMetrics().density;
-		imgSize = (int) (40 * density);
-
-		widthPixels = resources.getDisplayMetrics().widthPixels;
-		heightPixels = resources.getDisplayMetrics().heightPixels;
-		controlButtonHeight = (int) resources.getDimension(R.dimen.game_controls_button_diagram_height);
-		actionBarHeight = resources.getDimensionPixelSize(R.dimen.actionbar_compat_height);
-
-		diagramIdsList = new ArrayList<Integer>();
-		activeIdsMap = new HashMap<Integer, Boolean>();
-
-		String[] countryNames = resources.getStringArray(R.array.new_countries);
-		int[] countryCodes = resources.getIntArray(R.array.new_country_ids);
-		countryMap = new SparseArray<String>();
-		for (int i = 0; i < countryNames.length; i++) {
-			countryMap.put(countryCodes[i], countryNames[i]);
-		}
-		imageDownloader = new EnhancedImageDownloader(getActivity());
-
-		articleUpdateListener = new ArticleUpdateListener();
-		commentsUpdateListener = new CommentsUpdateListener();
-		commentsCursorAdapter = new CommentsCursorAdapter(getActivity(), null);
-
-		paddingSide = getResources().getDimensionPixelSize(R.dimen.default_scr_side_padding);
-		commentPostListener = new CommentPostListener();
+		init();
 	}
 
 	@Override
@@ -194,15 +169,18 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	public void onResume() {
 		super.onResume();
 
-		loadFromDb();
+		if (need2update) {
+			loadFromDb();
 
-		if (AppUtils.isNetworkAvailable(getActivity())) {
-			// get full body text from server
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLE_BY_ID(articleId));
+			if (AppUtils.isNetworkAvailable(getActivity())) {
+				// get full body text from server
+				LoadItem loadItem = new LoadItem();
+				loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLE_BY_ID(articleId));
 
-			new RequestJsonTask<ArticleDetailsItem>(articleUpdateListener).executeTask(loadItem);
+				new RequestJsonTask<ArticleDetailsItem>(articleUpdateListener).executeTask(loadItem);
+			}
 		}
+
 
 	}
 
@@ -281,6 +259,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			contentTxt.setText(Html.fromHtml(bodyStr));
 
 			diagramsList = DbDataManager.getArticleDiagramItemFromDb(getContentResolver(), getUsername());
+
+			// start loading diagrams here
 			loadDiagramsFromContent(bodyStr, diagramsList);
 		}
 	}
@@ -691,7 +671,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		@Override
 		public void updateData(String part) {
 			{
-
 				String diagramPart = part.substring(part.indexOf("<div "));
 				String partAfterDiagram = diagramPart.substring(diagramPart.indexOf("</div>") + "</div>".length());
 
@@ -744,12 +723,13 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			parsedPartCnt++;
 
 			if (parsedPartCnt >= contentParts.length) {
+				diagramsLoaded = true;
+				need2update = false;
 				return;
 			}
 
 			if (contentParts[parsedPartCnt].contains("chess_com_diagram")) {
 				new DiagramLoaderTask(new DiagramUpdateListener(diagramList)).executeTask(contentParts[parsedPartCnt]);
-
 
 			} else {
 				RoboTextView textView = new RoboTextView(getActivity());
@@ -799,8 +779,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					complexContentLinLay.addView(textView);
 				}
 			}
-
-//			diagramsLoaded = true;
 		} else {
 			complexContentLinLay.setVisibility(View.GONE);
 			contentTxt.setVisibility(View.VISIBLE);
@@ -965,6 +943,35 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	@Override
 	public Context getMeContext() {
 		return getActivity();
+	}
+
+	private void init() {
+		Resources resources = getResources();
+		density = resources.getDisplayMetrics().density;
+		imgSize = (int) (40 * density);
+
+		widthPixels = resources.getDisplayMetrics().widthPixels;
+		heightPixels = resources.getDisplayMetrics().heightPixels;
+		controlButtonHeight = (int) resources.getDimension(R.dimen.game_controls_button_diagram_height);
+		actionBarHeight = resources.getDimensionPixelSize(R.dimen.actionbar_compat_height);
+
+		diagramIdsList = new ArrayList<Integer>();
+		activeIdsMap = new HashMap<Integer, Boolean>();
+
+		String[] countryNames = resources.getStringArray(R.array.new_countries);
+		int[] countryCodes = resources.getIntArray(R.array.new_country_ids);
+		countryMap = new SparseArray<String>();
+		for (int i = 0; i < countryNames.length; i++) {
+			countryMap.put(countryCodes[i], countryNames[i]);
+		}
+		imageDownloader = new EnhancedImageDownloader(getActivity());
+
+		articleUpdateListener = new ArticleUpdateListener();
+		commentsUpdateListener = new CommentsUpdateListener();
+		commentsCursorAdapter = new CommentsCursorAdapter(getActivity(), null);
+
+		paddingSide = getResources().getDimensionPixelSize(R.dimen.default_scr_side_padding);
+		commentPostListener = new CommentPostListener();
 	}
 
 	private void widgetsInit(View view) {

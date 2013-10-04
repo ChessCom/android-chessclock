@@ -123,6 +123,7 @@ public class DbHelper {
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.ARTICLE_COMMENTS.ordinal()]);
 		queryParams.setSelection(DbDataManager.SELECTION_PARENT_ID);
 		queryParams.setArguments(new String[]{String.valueOf(articleId)});
+		queryParams.setOrder(DbScheme.V_CREATE_DATE + DbDataManager.DESCEND);
 		return queryParams;
 	}
 
@@ -140,6 +141,7 @@ public class DbHelper {
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.VIDEO_COMMENTS.ordinal()]);
 		queryParams.setSelection(DbDataManager.SELECTION_PARENT_ID);
 		queryParams.setArguments(new String[]{String.valueOf(articleId)});
+		queryParams.setOrder(DbScheme.V_CREATE_DATE + DbDataManager.DESCEND);
 		return queryParams;
 	}
 

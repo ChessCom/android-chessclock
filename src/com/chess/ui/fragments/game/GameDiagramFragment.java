@@ -81,6 +81,8 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		setNeedToChangeActionButtons(false);
 		super.onViewCreated(view, savedInstanceState);
 
+		enableSlideMenus(true);
+
 		widgetsInit(view);
 	}
 

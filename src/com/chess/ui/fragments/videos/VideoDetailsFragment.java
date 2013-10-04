@@ -416,6 +416,14 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 			if (cursor != null && cursor.moveToFirst()) {
 				commentsCursorAdapter.changeCursor(cursor);
 			}
+
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					showEditView(false);
+				}
+			}, 100);
+
 		}
 	}
 
@@ -458,7 +466,6 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 			} else {
 				showToast(R.string.error);
 			}
-			showEditView(false);
 
 			updateComments();
 		}
